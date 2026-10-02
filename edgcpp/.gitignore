@@ -4,6 +4,9 @@ __pycache__/
 # Generated copies of the canonical backend/configuration.
 /upstream/src/dot_gen_*.c
 /upstream/src/dot_gen_*.h
+/upstream/src/dot_sys_predef.c
+/upstream/src/dot_gen_target_macros.def
+/upstream/src/libc-bindings.def
 /upstream/src/cmake/cpfe-dot/
 /upstream/src/cmake/cpfe-dot-oracle/
 /upstream/cmake/macro-conf/all-extensions/

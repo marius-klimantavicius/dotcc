@@ -830,6 +830,29 @@ NativeAOT publish size/time on increasing workloads.
 
 ## Implementation milestones and acceptance gates
 
+The full implementation campaign is now coordinated in
+[the persistent ledger](implementation-campaign.md), with disjoint worker
+ownership, serialized builds/commits and preserved per-run artifacts. During
+this campaign, use only synthetic sources and EDG tests for verification;
+real-world acceptance, including SQLite, is deferred until the entire plan is
+implemented. Preserve intermediate C/C#, IL, projects, compiler outputs and
+failure evidence. Commit each significant verified milestone.
+
+Prefer NativeMemory for short-lived storage and C/C++ heap allocation. Pinned
+arrays remain appropriate for globals and owner/thread TLS. Exception payload
+and catch-buffer conversion, including final release and host ownership, is a
+tracked runtime task. Correctness takes precedence over allocation shortcuts.
+
+The first campaign integration increment adds exact-signature libc imports,
+callable import addresses, per-owner/thread errno, a portable LP64 header subset,
+and a shared C/C++ NativeMemory allocator under `--libc dotcc`. EDG semantic
+merging now accepts multiple positional input files; synthetic C/C++ fixtures
+cover internal linkage, inline/template identities, initialization and cross-TU
+RTTI/EH. Function-try-blocks reuse EDG's implicit rethrow/subobject lowering;
+cleanup bookkeeping preserves CLR first-pass exception search. Focused JIT/AOT
+evidence is in the campaign ledger; this does not complete libc, full EH or
+the portable target/platform matrix.
+
 Milestones 0 and 1 remain in progress; the first storage portion of milestone
 2 is also implemented. Remaining milestone 2 work and later milestones are
 planned. The initial slices implement the custom target and direct scalar IL emission, static and
@@ -873,12 +896,12 @@ The optional bootstrap now provides all ordinary scalar/array, sized, aligned, p
 | --- | --- |
 | Ordinary function pointers, literal addresses, constant TLS, output controls, large frames | Implemented and covered by Linux x64 JIT/AOT tests; see backend README for exact limits. No Roslyn runtime dependency. |
 | Owner/native callback leases, RuntimeContext binding and disposal | Managed exports and canonical function pointers hold active-call leases; shutdown waits, rejects new entries, drains destructors and releases bootstrap allocations. Foreign TLS requires ReleaseThread on its original thread. Complete lifecycle integration still depends on the libc/native boundary and its resource ownership contract; current exports require the host to retain owners while using returned pointers. |
-| RAII, construction/destruction, EH, dynamic initialization/TLS | Ordinary local/member cleanup, fixed arrays, ordered/conditional temporaries and return ownership/NRVO/copy elision are differential-tested. EDG region tables supply ordered/unordered liveness, including temporary receivers and overlapping results. Integer, enum, object/void pointer, nullptr and class exceptions (including virtual bases) match the EDG C oracle in JIT/NativeAOT. Class ownership counts rethrows and calls the destructor once with the originating owner; throw/catch copy-failure termination traces also match. Pointer catch buffers preserve the original pointer for rethrow. Next: exception_ptr, function-try-blocks and full foreign-exception policy. Function/member/array pointer exception types remain rejected. Dynamic globals (including priorities), local-static retry/concurrency guards, dynamic TLS, reverse destructor registration and explicit shutdown/thread release are now implemented. |
+| RAII, construction/destruction, EH, dynamic initialization/TLS | Ordinary local/member cleanup, fixed arrays, ordered/conditional temporaries and return ownership/NRVO/copy elision are differential-tested. EDG region tables supply ordered/unordered liveness, including temporary receivers and overlapping results. Integer, enum, object/void pointer, nullptr and class exceptions (including virtual bases) match the EDG C oracle in JIT/NativeAOT. Class ownership counts rethrows and calls the destructor once with the originating owner; throw/catch copy-failure termination traces also match. Pointer catch buffers preserve the original pointer for rethrow. Function-try-blocks now have differential traces, including secondary-throw termination before cleanup. Next: exception_ptr and full foreign/uncaught-exception boundary policy. Function/member/array pointer exception types remain rejected. Dynamic globals (including priorities), local-static retry/concurrency guards, dynamic TLS, reverse destructor registration and explicit shutdown/thread release are now implemented. |
 | Inheritance, virtual dispatch, member pointers | Nonvirtual single/multiple inheritance, empty bases, tail-padding reuse and adjusted public/unambiguous base catches are implemented; 48 EDG C traces agree in static/instance JIT/NativeAOT. Virtual dispatch (32 cases) and virtual inheritance (24 cases) now cover primary/secondary and construction vtables, covariant thunks, hidden VTT cleanup and adjusted virtual-base catches. Virtual destructors require translated delete providers. Pointer dynamic_cast now follows EDG runtime traversal over an immutable managed descriptor graph, with 42 differential cases including construction layouts and cross-owner casts. Reference casts/std::bad_cast now use an opt-in translated C++ provider, with 24 differential cases; public type_info equality/inequality/name/ordering and bad_typeid now have 34 differential cases and 24 name comparisons. Opaque metadata virtual operations and cross-module identity remain open. Member-pointer descriptors need the explicit-tag prototype; managed pointer low bits cannot be assumed available. |
 | Portable headers, libc and libc++ | An opt-in pinned EDG exception/header bootstrap now provides exception/bad_cast/bad_typeid/bad_alloc, public type_info operations and scalar/array/sized/aligned/placement/nothrow allocation with new-handler callbacks and an owner heap ledger via .NET NativeMemory. This does not select the final libc++ provider or define ownership for future libc/native resources. Freeze the target contract (including extended floats), inventory libc imports and pin/test a libc++ revision before bulk library translation. Runtime platform selection remains a requirement. |
 | Basic language coverage | Switch/ranges/fallthrough and nested jumps, signed/packed bitfields, float/double, software binary80 long double, 128-bit integers and ordinary volatile access now have 64 differential cases in static/instance JIT/NativeAOT. VLA, binary128, volatile bitfields and vendor extensions remain outside this basic subset. |
 | Initialization and allocation | Implemented for the current single-TU runtime: startup/priority order, local-static guards, dynamic TLS, destruction, scalar/array/aligned/nothrow/placement allocation, new handlers and explicit thread/owner shutdown. Tested against original EDG C and with managed concurrency/GC probes. This does not complete libc or cross-module ownership. |
-| Owned IR/verifier, source diagnostics and multi-TU assembly | Engineering work remains; these are not new user decisions. They have not been silently counted as complete by the runtime increment. |
+| Owned IR/verifier, source diagnostics and multi-TU assembly | EDG semantic merge now accepts multiple positional sources; synthetic C/C++ fixtures cover internal linkage, inline/template state and cross-TU RTTI/EH. Owned IR/verifier, source diagnostics and separate object/linker mode remain unfinished engineering. |
 | Windows/macOS/Arm64 execution | Environment/validation gap; current evidence is Linux x64 only. |
 
 This table distinguishes design dependencies from unfinished engineering. The

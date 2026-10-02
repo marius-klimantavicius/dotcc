@@ -57,6 +57,7 @@ void trace_statement(a_statement_ptr s,int depth) {
 }
 void trace_program(a_scope_ptr scope) {
   for(auto r=scope->routines;r;r=r->next) {
+    if(ignore_routine_in_back_end(r))continue;
     if(r->function_def_number==NULL_function_def_number)continue;
     auto s=scope_for_routine_or_null(r);if(!s)continue;
     fprintf(stderr,"routine %s\n",r->source_corresp.name);

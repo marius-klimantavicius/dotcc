@@ -197,9 +197,10 @@ string function_pointer_type(a_type_ptr t) {
   for (auto p = extra->param_type_list; p; p = p->next) result += type(p->type) + ", ";
   return result + type(t->variant.routine.return_type) + ">";
 }
+#include "dot_gen_imports.h"
 string routine_address(a_routine_ptr r) {
   bool pure=r->compiler_generated && r->source_corresp.name && string(r->source_corresp.name)=="__cxa_pure_virtual";
-  if (r->function_def_number == NULL_function_def_number && !pure) unsupported(("address of external function: "+string(r->source_corresp.name?r->source_corresp.name:"<unnamed>")).c_str());
+  if (r->function_def_number == NULL_function_def_number && !pure && !libc_routine(r)) unsupported(("address of external function: "+string(r->source_corresp.name?r->source_corresp.name:"<unnamed>")).c_str());
   auto found = routine_addresses.find(r);
   if (found != routine_addresses.end()) return found->second + "()";
   auto rt = skip_typerefs(r->type);
@@ -257,7 +258,7 @@ bool function_pointer(a_type_ptr t) {
 }
 std::map<a_variable_ptr, string> expression_variables;
 string variable(a_variable_ptr v) {
-  if(v->storage_class==sc_extern)unsupported("reference to external variable");
+  if(v->storage_class==sc_extern){string imported=libc_variable(v);if(!imported.empty())return imported;unsupported("reference to external variable");}
   if(exception_metadata.count(v))unsupported("native RTTI storage outside exception matching");
   auto captured=expression_variables.find(v);
   if(captured!=expression_variables.end())return captured->second;
@@ -303,7 +304,7 @@ string constant(a_constant_ptr c) {
     if (c->variant.address.kind != abk_variable || !c->variant.address.variant.variable)
       unsupported("address constant", c->variant.address.kind);
     auto v = c->variant.address.variant.variable;
-    if (!global_offsets.count(v) && !tls_offsets.count(v)) unsupported("address of unallocated global");
+    if (!global_offsets.count(v) && !tls_offsets.count(v) && libc_variable(v).empty()) unsupported("address of unallocated global");
     return "((" + type(c->type) + ")((byte*)&" + variable(v) + " + (" +
            std::to_string(c->variant.address.offset) + ")))";
   }
@@ -503,7 +504,7 @@ string location(an_expr_node_ptr e) {
         }
         call=id+"(";
       } else {
-        if (r->function_def_number == NULL_function_def_number || !scope_for_routine_or_null(r))
+        if ((r->function_def_number == NULL_function_def_number || !scope_for_routine_or_null(r)) && !libc_routine(r))
           unsupported(("external call: "+source).c_str());
         call = name(r, "f") + "(";
       }
@@ -665,6 +666,7 @@ string expr(an_expr_node_ptr e) {
 
 void variables(a_variable_ptr v, bool global) {
   for (; v; v = v->next) {
+    if(ignore_variable_in_back_end(v))continue;
     if (v->is_thread_local) unsupported("thread-local storage");
     if (v->storage_class == sc_extern) unsupported(("external variable: "+string(v->source_corresp.name?v->source_corresp.name:"unnamed")).c_str());
     if (local_offsets.count(v)) continue;
@@ -684,6 +686,7 @@ void collect_constant_templates(a_scope_ptr scope) {
   for(auto p=scope->local_static_variable_inits;p;p=p->next)
     if(p->init_kind==initk_static)inits[p->variable]=p->initializer.constant;
   for(auto v=scope->variables;v;v=v->next) {
+    if(ignore_variable_in_back_end(v))continue;
     if(!v->lowering_generated || v->source_corresp.name || !aggregate(v->type))continue;
     auto t=skip_typerefs(v->type);
     // Partial EH lowering also leaves synthesized integer arrays (pointer cv
@@ -705,6 +708,7 @@ void collect_local_static_storage(a_scope_ptr scope) {
   for(auto p=scope->local_static_variable_inits;p;p=p->next)
     if(p->init_kind==initk_static)inits[p->variable]=p->initializer.constant;
   for(auto v=scope->variables;v;v=v->next) {
+    if(ignore_variable_in_back_end(v))continue;
     if(v==cleanup_region_var || v==cleanup_array_var || exception_metadata.count(v) || constant_templates.count(v) || v->storage_class==sc_extern)continue;
     if(inits.count(v))constant_templates[v]=inits[v];
     local_static_storage.push_back(v);
@@ -714,6 +718,7 @@ void collect_local_static_storage(a_scope_ptr scope) {
 void globals(a_variable_ptr first, const char *cls) {
   std::vector<a_variable_ptr> stored_variables;
   for(auto v=first;v;v=v->next) {
+    if(ignore_variable_in_back_end(v))continue;
     // The C backend emits declarations, not storage, for extern variables.
     // Cast-only classes can leave unused vtables/RTTI declarations behind.
     // Actual references still reject in variable() and constant().
@@ -789,6 +794,7 @@ void globals(a_variable_ptr first, const char *cls) {
 }
 void plan_frame(a_scope_ptr s) {
   for (auto v = s->nonstatic_variables; v; v = v->next) {
+    if(ignore_variable_in_back_end(v))continue;
     unsigned long long alignment = alignment_of_type(v->type);
     if (v->alignment > alignment) alignment = v->alignment;
     if (!aggregate(v->type) && alignment <= 8) continue;
@@ -807,7 +813,7 @@ void plan_frame(a_scope_ptr s) {
 void locals(a_scope_ptr s) {
   if (!s) return;
   for(auto v=s->variables;v;v=v->next)
-    if(v!=cleanup_region_var && v!=cleanup_array_var && !exception_metadata.count(v) && !constant_templates.count(v) && !global_offsets.count(v) && !tls_offsets.count(v))
+    if(!ignore_variable_in_back_end(v) && v!=cleanup_region_var && v!=cleanup_array_var && !exception_metadata.count(v) && !constant_templates.count(v) && !global_offsets.count(v) && !tls_offsets.count(v))
       unsupported(("function-local static storage: "+string(v->source_corresp.name?v->source_corresp.name:"unnamed")).c_str());
   variables(s->nonstatic_variables, false);
   for (auto child = s->scopes; child; child = child->next) locals(child);
@@ -883,7 +889,7 @@ void statement(a_statement_ptr s) {
         string adjustment=h->parameter?exception_adjust(id+"_typed"+name(h,"h")+".Type",catch_type(h)):"0";
         line("var "+frame+" = new __edg_catch_frame("+id+"_error, "+(pointer_catch?"true":"false")+", "+adjustment+"); try {");
         statement(h->statement);
-        line("} catch (global::System.Exception handler_error) when (__edg_catch_filter("+frame+", handler_error)) { if ("+frame+".Active) { "+cleanup_unwind(id+"_boundary")+" } throw; } finally { "+frame+".Leave(); }");
+        line("} catch (global::System.Exception handler_error) when (__edg_catch_filter("+frame+", handler_error)) { throw; } finally { if ("+frame+".Active) { "+cleanup_unwind(id+"_boundary")+" } "+frame+".Leave(); }");
         catch_frames.erase(h);
         line("}");
       }
@@ -972,6 +978,8 @@ void back_end(void) {
   virtual_type_tokens.clear(); virtual_types.clear(); rtti_helpers_emitted=false; current_function_scope=nullptr;
   rtti_source_types.clear(); rtti_user_prefix_types.clear(); typeinfo_helpers_emitted=false;
   lifecycle_emitted=false;local_static_storage.clear();startup_routines.clear();
+  libc_enabled=getenv("EDG_DOT_LIBC") && string(getenv("EDG_DOT_LIBC"))=="dotcc";
+  libc_emitted=false;libc_routines.clear();
   runtime_exceptions=getenv("EDG_DOT_RUNTIME") && string(getenv("EDG_DOT_RUNTIME"))=="edg-exceptions";
   if (targ_sizeof_pointer != 8) unsupported("non-64-bit target");
   instance_mode = getenv("EDG_DOT_INSTANCE") && string(getenv("EDG_DOT_INSTANCE")) == "1";
@@ -984,11 +992,13 @@ void back_end(void) {
   if (getenv("EDG_DOT_TRACE")) trace_program(scope);
   collect_virtual_metadata(scope);
   for(auto r=scope->routines;r;r=r->next) {
+    if(ignore_routine_in_back_end(r))continue;
     if(r->function_def_number==NULL_function_def_number)continue;
     auto s=scope_for_routine_or_null(r);
     if(s) { collect_exception_metadata(s->assoc_block); collect_constant_templates(s); }
   }
   for(auto r=scope->routines;r;r=r->next) {
+    if(ignore_routine_in_back_end(r))continue;
     if(r->function_def_number==NULL_function_def_number)continue;
     auto s=scope_for_routine_or_null(r);if(s){prepare_cleanup(s);collect_local_static_storage(s);}
     if(r->is_initialization_routine || (r->source_corresp.name && string(r->source_corresp.name).find(IL_LOWERING_INIT_ROUTINE_PREFIX)==0))
@@ -1010,6 +1020,7 @@ void back_end(void) {
   globals(scope->variables, cls);
   a_routine_ptr main_routine = nullptr;
   for (auto r = scope->routines; r; r = r->next) {
+    if(ignore_routine_in_back_end(r))continue;
     if(r->is_finalization_routine)unsupported("non-atexit finalization routine");
     if (r->function_def_number == NULL_function_def_number) continue;
     auto s = scope_for_routine_or_null(r);
@@ -1060,18 +1071,11 @@ void back_end(void) {
     size_t body_start = output.size();
     statement(s->assoc_block);
     if (cleanup_cursor_used) {
-      string cases = emit_cleanup();
+      emit_cleanup_helper();
       output.insert(body_start, exception_locals+"int __edg_cleanup_state = 0;\nbool __edg_unwinding = false;\ntry {\n");
-      line("} catch { __edg_unwinding = true; throw; } finally {");
-      line("if (__edg_unwinding) { try { while (__edg_cleanup_state != 0) { switch (__edg_cleanup_state) {");
-      line(cases);
-      line("default: global::System.Environment.FailFast(\"Invalid EDG cleanup state\"); break;");
-      line("} } } catch (global::System.Exception error) { global::System.Environment.FailFast(\"Destructor threw during unwinding\", error); } }");
+      line("} catch when (__edg_begin_unwind(ref __edg_unwinding)) { throw; } finally {");
+      line("if (__edg_unwinding) { "+cleanup_unwind("0")+" }");
       line("}");
-      // Try boundaries share exactly the same EDG region decoder as function exit.
-      string marker="/*__EDG_CLEANUP_CASES__*/";
-      for(size_t pos=output.find(marker,body_start);pos!=string::npos;pos=output.find(marker,pos+cases.size()))
-        output.replace(pos,marker.size(),cases);
     }
     if (heap_frame) line("} finally { global::System.Runtime.InteropServices.NativeMemory.Free(__edg_frame_raw); }");
     if (no_throw) line("} catch (global::System.Exception error) { global::System.Environment.FailFast(\"Exception escaped noexcept function\", error); throw; }");
@@ -1101,6 +1105,8 @@ void back_end(void) {
     }
   }
   output += (nested_types ? type_output : "") + helper_output + address_output;
+  for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_LIBC_THREAD_RELEASE__*/",libc_emitted?"__edg_libc.ReleaseThread();":""},{"/*__EDG_LIBC_DISPOSE__*/",libc_emitted?"__edg_libc.Dispose();":""}})
+    for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);
   for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_ENTER__*/",lifecycle_emitted?"__edg_enter();":""},{"/*__EDG_LEAVE__*/",lifecycle_emitted?"__edg_leave();":""}})
     for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);
   if (!literal_bytes.empty()) {

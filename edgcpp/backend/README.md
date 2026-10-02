@@ -40,7 +40,7 @@ directly to configure output. EDG's existing language-extension gates remain
 compiled in; this does not imply that the C# backend implements those features.
 
 `backend/prepare.py` installs this directory's source and CMake overlay into the
-pinned, ignored upstream checkout. Keep changes here, not only in `upstream/`.
+embedded upstream build tree. Keep changes here, not only in `upstream/`.
 After editing the emitter, the faster incremental build is:
 
 ```sh
@@ -50,13 +50,26 @@ cmake --build edgcpp/build --target cpfe-dot --parallel 12
 
 ## Current contract: experimental-runtime-v3
 
-- One C++17 translation unit (default) or C11 with `--language c`, parsed in explicit GCC 13.3 compatibility
+- One or more C++17 translation units (default) or C11 with `--language c`, parsed in explicit GCC 13.3 compatibility
   mode. `-I` and `-D` supply explicit include roots and definitions; both are recorded in the manifest. The default runtime is `none`; `--runtime edg-exceptions` enables the
   pinned EDG exception/header bootstrap described below. `--emit exe` (default) requires `int main()`; `Run()` invokes it and
   EntryPoint supplies the managed entry point. `--emit managedlib` permits no
   main and exports public entry wrappers for defined routines. `dot-gen.json`
   maps EDG mangled symbols to their generated method names. These names are
   experimental and can change when the source changes.
+- Multiple positional source paths use EDG's semantic merge, preserving
+  internal linkage, shared inline/template definitions and program type identity.
+  The exception bootstrap is supplied once for merged programs. Manifests record
+  input paths and SHA-256 hashes. This is the first tested whole-program path;
+  a separate object/linker format and full ODR diagnostic coverage remain open.
+- `--libc dotcc` enables an audited standalone BCL bridge with explicit LP64
+  headers, currently covering 38 memory/string/math/allocation imports and
+  addressable per-owner/thread errno. Every imported routine has an exact
+  lowered signature contract; incompatible declarations are rejected. External
+  function addresses use the ordinary canonical owner-aware managed adapters.
+  C allocation shares the C++ NativeMemory heap, including realloc preservation
+  and aligned allocation. This subset has no host-libc dependency; full libc,
+  formatting, I/O, locale, fenv and the musl port evaluation remain in progress.
 - `void` returns and signed/unsigned 8-, 16-, 32-, 64- and 128-bit integers
   (including plain `char`, using the EDG target signedness). Integer casts
   and arithmetic use unchecked C# expressions; logical/comparison results use
@@ -114,9 +127,10 @@ cmake --build edgcpp/build --target cpfe-dot --parallel 12
   `--split-size N` is a positive UTF-8 byte target, default 262144. Whole
   functions are indivisible and may exceed the target. Globals and Run remain
   together in Translated.cs. No Roslyn postprocessor is needed for this slice.
-- `dot-gen.json` records mode, ABI version and generated files. The project
-  explicitly lists its source files. Regeneration removes only previously
-  recorded generated files, preserving unrelated files. Translation rejection
+- `dot-gen.json` records mode, ABI version, sources, bound imports and generated files. The project
+  explicitly lists its source files. Regeneration archives superseded owned
+  sources/manifests under `.dot-gen-history` and retires stale split files from
+  the current project, preserving unrelated files and campaign intermediates. Translation rejection
   leaves a previous successful output intact. File replacement is atomic per
   file; the entire project update is not a filesystem transaction.
 - The generated project targets .NET 10 and is AOT-compatible. There are no
@@ -148,17 +162,21 @@ cmake --build edgcpp/build --target cpfe-dot --parallel 12
 - EDG-generated startup bodies run after constant initialization/relocations, in initialization-priority order. Local-static guards synchronize concurrent initialization, retry after failure, and terminate on recursive initialization. TLS initializer aliases resolve to EDG's generated initializer. Global/TLS destructor registrations retain reverse order.
 - `Shutdown()` drains the current thread's TLS destructors, then process/owner destructors, and releases outstanding bootstrap allocations and storage. It is idempotent, waits for active calls, and rejects disposal from an active call. Destructors that throw at shutdown terminate. `ReleaseThread()` coordinates with concurrent shutdown. Generated executables invoke shutdown from their entry point; library hosts own this obligation. Instance ownership remains opt-in with `--instance-methods`; there is no implicit instancification.
 
-**The full portable C++ ABI is not frozen or implemented.** The compiler still
-uses the existing Linux x64 LP64 EDG target and predefined macros. Supported
-integer widths are checked by the emitter and the fixture checks int/long/
-pointer sizes. Do not compile platform-dependent headers or interpret this as
-Windows/macOS target-header support. The emitted scalar C# uses fixed-width
-managed types; execution on Windows, macOS and Arm64 is still unverified.
+**The full portable C++ ABI is not frozen or implemented.** The default
+`--target portable-lp64-binary80-v1` publishes an explicit little-endian 64-bit
+LP64 data model with software binary80 long double. Its custom EDG system-macro
+hook suppresses host OS/CPU macros and the host predefined-macro file;
+`NO_USR_INCLUDE=1` disables implicit native header paths. Only explicit include
+roots are searched. Target layout is validated before translation; profile and
+macro-table hashes are recorded in the manifest. `--target legacy-linux-x64`
+remains an explicit diagnostic compatibility profile. Complete portable library
+headers and binary128 remain pending. Actual execution on Windows, macOS and
+Arm64 is still unverified.
 
 Virtual operations on RTTI metadata objects, member-pointer values, variable-length arrays,
-binary128 floating point, variadic/general external calls and libc/libc++ are not
-implemented. EDG-generated vector construction/destruction/allocation and guard/atexit
-calls are mapped to managed helpers; general external calls remain rejected. The covered negative
+binary128 floating point, variadic calls and complete libc/libc++ are not
+implemented. General external calls require a declared provider binding. EDG-generated vector construction/destruction/allocation and guard/atexit
+calls are mapped to managed helpers; unknown external calls remain rejected. The covered negative
 fixtures reject unsupported constructs with backend errors.
 Designated/flattened multidimensional initializer forms outside the implemented
 initializer walker and partial/cross-type block copies are also rejected.
@@ -178,9 +196,7 @@ Normal destructor calls remain EDG-owned. Managed exception identity survives
 cleanup; noexcept violations and secondary destructor exceptions terminate via
 `Environment.FailFast`. Fixed arrays, NRVO and copy/move/elided returns retain
 their existing coverage. The limit is 4096 EH table entries per function,
-including supplements. Function-try-blocks and unsupported
-region actions (VLA) remain outside this
-slice. The manifest records `cleanupModel: edg-region-tables`.
+including supplements. Constructor, destructor and ordinary function-try-blocks now reuse EDG's subobject cleanup and implicit rethrow. First-pass CLR filters preserve EDG termination before secondary-exception cleanup. One cold cleanup decoder per routine avoids duplicating region switches at every unwind site. Unsupported region actions (VLA) and the uncaught exported-boundary policy remain outside this slice. The manifest records `cleanupModel: edg-region-tables`.
 The C++ exception slice supports built-in integer payloads (including bool
 and character types), enums, object/void pointers, nullptr and
 classes/structs/unions, including polymorphic classes and virtual bases. It handles
@@ -225,7 +241,7 @@ sized-delete failure cleanup. The optional exception bootstrap supplies basic
 scalar/array, sized, aligned, placement and nothrow new/delete, plus per-owner new handlers. A NativeMemory allocation ledger tracks originating owners, permits cross-owner frees, and releases remaining allocations at shutdown. libc remains pending.
 
 Exception_ptr and uncaught-exception counts remain pending. This is a single-translation-unit
-exception runtime; cross-module type identity and native EH interop are not implemented.
+exception runtime; separately emitted assembly type identity and native EH interop are not implemented; semantically merged translation units share identities.
 Only translated handlers participate in payload ownership; retaining a carrier
 in a managed host and transferring/rethrowing it later is not an ownership API.
 Ownership of future libc/native resources and native callbacks remains a separate integration task.

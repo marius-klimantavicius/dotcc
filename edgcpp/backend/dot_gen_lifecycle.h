@@ -72,7 +72,7 @@ public @MOD@void ReleaseThread() {
     if(__edg_state==2)return;
     ++__edg_active;++__edg_threads.Value!.Depth;
   }
-  try {var thread=__edg_threads.Value!;__edg_drain(thread.Finalizers);thread.Storage=null;__edg_threads.Value=new __edg_thread_state();}
+  try {var thread=__edg_threads.Value!;__edg_drain(thread.Finalizers);/*__EDG_LIBC_THREAD_RELEASE__*/thread.Storage=null;__edg_threads.Value=new __edg_thread_state();}
   finally {lock(__edg_sync){--__edg_active;global::System.Threading.Monitor.PulseAll(__edg_sync);}}
 }
 // dot-gen:member-end
@@ -92,7 +92,7 @@ public @MOD@void Shutdown() {
       throw new global::System.InvalidOperationException("ReleaseThread must run on each owning thread before Shutdown");
     }
   }
-  try {__edg_drain(__edg_threads.Value!.Finalizers);__edg_drain(__edg_finalizers);__edg_heap.Dispose();__edg_storage=[];foreach(var thread in __edg_threads.Values)thread.Storage=null;__edg_guards.Clear();}
+  try {__edg_drain(__edg_threads.Value!.Finalizers);__edg_drain(__edg_finalizers);/*__EDG_LIBC_DISPOSE__*/__edg_heap.Dispose();__edg_storage=[];foreach(var thread in __edg_threads.Values)thread.Storage=null;__edg_guards.Clear();}
   finally {lock(__edg_sync){__edg_state=2;__edg_new_handler=0;global::System.Threading.Monitor.PulseAll(__edg_sync);}}
 }
 // dot-gen:member-end
@@ -115,7 +115,7 @@ private @MOD@void __edg_guard_finish(byte* address,bool success) {
 // dot-gen:member-begin
 private sealed class __edg_heap_owner {
   private static readonly object Sync=new object();
-  private static readonly global::System.Collections.Generic.Dictionary<nuint,(__edg_heap_owner Owner,nuint Raw)> All=new();
+  private static readonly global::System.Collections.Generic.Dictionary<nuint,(__edg_heap_owner Owner,nuint Raw,ulong Size)> All=new();
   private readonly global::System.Collections.Generic.HashSet<nuint> pointers=new();
   internal void* Allocate(ulong size,ulong alignment) {
     if(alignment<16)alignment=16;
@@ -125,10 +125,11 @@ private sealed class __edg_heap_owner {
       raw=global::System.Runtime.InteropServices.NativeMemory.Alloc((nuint)(size+alignment));
       if(raw==null)return null;
       nuint result=((nuint)raw+(nuint)alignment-1)&~((nuint)alignment-1);
-      lock(Sync){pointers.Add(result);try{All.Add(result,(this,(nuint)raw));}catch{pointers.Remove(result);throw;}}
+      lock(Sync){pointers.Add(result);try{All.Add(result,(this,(nuint)raw,size));}catch{pointers.Remove(result);throw;}}
       return (void*)result;
     } catch(global::System.OutOfMemoryException){global::System.Runtime.InteropServices.NativeMemory.Free(raw);return null;}
   }
+  internal static ulong Size(void* p) {lock(Sync)return All[(nuint)p].Size;}
   internal static void Free(void* p) {
     if(p==null)return;nuint raw;
     lock(Sync){var entry=All[(nuint)p];All.Remove((nuint)p);entry.Owner.pointers.Remove((nuint)p);raw=entry.Raw;}

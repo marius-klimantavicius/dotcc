@@ -1,5 +1,7 @@
 macro_configuration_to_compile_definitions("cpfe-dot")
-set(DOT_FILES ${CORE_FRONT_END_SOURCE_FILES} ${PROJECT_SOURCE_DIR}/dot_gen_be.c)
+set(DOT_CORE_FILES ${CORE_FRONT_END_SOURCE_FILES})
+list(REMOVE_ITEM DOT_CORE_FILES ${PROJECT_SOURCE_DIR}/sys_predef.c)
+set(DOT_FILES ${DOT_CORE_FILES} ${PROJECT_SOURCE_DIR}/dot_sys_predef.c ${PROJECT_SOURCE_DIR}/dot_gen_be.c)
 set_source_files_properties(${DOT_FILES} PROPERTIES LANGUAGE CXX)
 add_executable(cpfe-dot ${DOT_FILES} ${TXT_FILES})
 target_compile_definitions(cpfe-dot PRIVATE EDG_DOT_BACKEND=1)

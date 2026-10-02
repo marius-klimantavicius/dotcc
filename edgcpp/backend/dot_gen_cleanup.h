@@ -17,6 +17,15 @@ struct cleanup_region {
 };
 std::map<unsigned long long,cleanup_region> cleanup_regions;
 std::vector<std::vector<a_constant_ptr>> cleanup_arrays;
+std::vector<a_variable_ptr> cleanup_capture_variables;
+a_routine_ptr cleanup_routine=nullptr;
+void capture_cleanup_handle(a_constant_ptr c) {
+  if(!c || c->kind!=ck_stack_offset)return;
+  auto v=c->variant.stack_offset.variable;
+  if(v && !global_offsets.count(v) && !tls_offsets.count(v) &&
+     std::find(cleanup_capture_variables.begin(),cleanup_capture_variables.end(),v)==cleanup_capture_variables.end())
+    cleanup_capture_variables.push_back(v);
+}
 unsigned long long cleanup_integer(a_constant_ptr c) {
   if(!c || c->kind!=ck_integer)unsupported("non-integer cleanup table field");
   a_boolean overflow;
@@ -60,6 +69,7 @@ void collect_cleanup_initializers(a_scope_ptr scope) {
 void prepare_cleanup(a_scope_ptr scope) {
   cleanup_cursor_used=false; cleanup_region_var=nullptr; cleanup_array_var=nullptr; cleanup_this=nullptr;
   cleanup_regions.clear(); cleanup_arrays.clear(); cleanup_references.clear();
+  cleanup_capture_variables.clear();cleanup_routine=scope->variant.routine.ptr;
   find_cleanup_prologue(scope->assoc_block);
   cleanup_initializers.clear(); collect_cleanup_initializers(scope);
   for(auto p=scope->variant.routine.parameters;p;p=p->next)
@@ -96,6 +106,14 @@ void prepare_cleanup(a_scope_ptr scope) {
     cleanup_regions[index]=r;
   }
   for(auto &entry:cleanup_regions) {
+    auto &r=entry.second;
+    capture_cleanup_handle(r.handle);capture_cleanup_handle(r.condition);capture_cleanup_handle(r.vtt);
+    if((r.flags & 0x10) && cleanup_this &&
+       std::find(cleanup_capture_variables.begin(),cleanup_capture_variables.end(),cleanup_this)==cleanup_capture_variables.end())
+      cleanup_capture_variables.push_back(cleanup_this);
+  }
+  for(auto &entry:cleanup_arrays)for(auto c:entry)capture_cleanup_handle(c);
+  for(auto &entry:cleanup_regions) {
     std::set<unsigned long long> visited;
     for(auto index=entry.first;index!=null_eh_region_number;) {
       if(!visited.insert(index).second)unsupported("cyclic cleanup region chain");
@@ -129,7 +147,18 @@ string cleanup_handle(a_constant_ptr c,unsigned long long flags) {
   if(!(flags & 1))base="&("+base+")";
   return "((byte*)("+base+") + "+std::to_string(p.offset)+"UL)";
 }
+void ensure_cleanup_failure_filter() {
+  const string name="__edg_cleanup_failure";
+  if(helper_output.find("bool "+name+"(")!=string::npos)return;
+  // throw.c pass 1 terminates upon reaching a throw-processing marker,
+  // before pass 2 unwinds locals in the escaping destructor. A CLR catch
+  // body is too late: use its first-pass filter to retain that ordering.
+  helper_output+="// dot-gen:member-begin\nprivate static bool __edg_begin_unwind(ref bool unwinding) { unwinding = true; return false; }\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate static bool "+name+
+      "(global::System.Exception error) { global::System.Environment.FailFast(\"Destructor threw during unwinding\", error); return false; }\n// dot-gen:member-end\n";
+}
 string emit_cleanup() {
+  ensure_cleanup_failure_filter();
   for(auto n:cleanup_references)
     if(n!=null_eh_region_number && !cleanup_regions.count(n))unsupported("unknown cleanup state");
   string result;
@@ -196,9 +225,31 @@ string emit_cleanup() {
   }
   return result;
 }
-string cleanup_unwind(const string &boundary) {
-  return "try { while (__edg_cleanup_state != "+boundary+") { switch (__edg_cleanup_state) {\n"
-      "/*__EDG_CLEANUP_CASES__*/\n"
+string cleanup_unwind(const string &boundary,const string &slot="__edg_cleanup_state") {
+  string call="__edg_cleanup_"+name(cleanup_routine,"f")+"("+boundary+", &("+slot+")";
+  for(auto v:cleanup_capture_variables)call+=", &("+variable(v)+")";
+  return call+");\n";
+}
+void emit_cleanup_helper() {
+  // One cold decoder per function. Repeating a full switch in each CLR
+  // finally makes native compilation grow dramatically with nested handlers.
+  // Pass addresses, not captured locals: sequence-expression helpers have
+  // their own mapping, and destructors must always observe caller storage.
+  auto saved=expression_variables;
+  string parameters="int boundary, int* state";
+  for(size_t i=0;i<cleanup_capture_variables.size();++i) {
+    auto v=cleanup_capture_variables[i];string p="p"+std::to_string(i);
+    parameters+=", "+type(v->type)+"* "+p;
+    expression_variables[v]="(*"+p+")";
+  }
+  string cases=emit_cleanup();
+  expression_variables=saved;
+  const string marker="__edg_cleanup_state",replacement="(*state)";
+  for(size_t pos=cases.find(marker);pos!=string::npos;pos=cases.find(marker,pos+replacement.size()))
+    cases.replace(pos,marker.size(),replacement);
+  helper_output+="// dot-gen:member-begin\n[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]\nprivate "+
+      string(instance_mode?"":"static ")+"void __edg_cleanup_"+name(cleanup_routine,"f")+"("+parameters+") {\n"
+      "try { while (*state != boundary) { switch (*state) {\n"+cases+
       "default: global::System.Environment.FailFast(\"Invalid EDG cleanup boundary\"); break;\n"
-      "} } } catch (global::System.Exception cleanup_error) { global::System.Environment.FailFast(\"Destructor threw during unwinding\", cleanup_error); }\n";
+      "} } } catch (global::System.Exception error) when (__edg_cleanup_failure(error)) { throw; }\n}\n// dot-gen:member-end\n";
 }

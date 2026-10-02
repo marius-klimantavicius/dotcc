@@ -1,0 +1,80 @@
+{
+  "status": "verified-increment-not-full-plan",
+  "baseCommit": "a63ae45c",
+  "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f",
+  "target": "portable-lp64-binary80-v1",
+  "platform": "linux-x64",
+  "fullRegression": {
+    "checks": 209,
+    "nativeaot": true,
+    "artifact": "artifacts/campaign/milestone-runtime-portable-20261002/results.json"
+  },
+  "supplementalRuntime": {
+    "checks": 17,
+    "artifact": "artifacts/campaign/default-portable-runtime/results.json"
+  },
+  "features": [
+    "38 exact-signature libc imports and canonical managed addresses",
+    "owner/thread errno and shared NativeMemory C/C++ heap",
+    "EDG semantic multi-TU merge",
+    "function-try-blocks and first-pass termination filters",
+    "one cold cleanup decoder per routine",
+    "explicit portable target macros/layout with no implicit host headers",
+    "dependent template entities omitted using EDG backend predicates",
+    "preserved superseded generation revisions"
+  ],
+  "pending": [
+    "full libc/libc++",
+    "varargs",
+    "member pointers",
+    "exception_ptr and full EH boundary contract",
+    "NativeMemory exception storage",
+    "atomics",
+    "VLA/binary128 and remaining language coverage",
+    "owned IR/verifier and diagnostics",
+    "all-platform execution and performance gates"
+  ],
+  "sourceHashes": {
+    "backend/cmake/CMakeLists.txt": "98bdb375e8807d46982891001011647005129b78d5678e952745c4a3daa3b787",
+    "backend/dot_gen_arrays.h": "35c123d2031b8ed2378e56b41cd551dc27402c34e3b97c8943e40098361e3556",
+    "backend/dot_gen_be.c": "6fddb2bbfe8923f83e958fa20f8dd6771f566b2e5b8cba068b4f7e12bc1fc70a",
+    "backend/dot_gen_cleanup.h": "18d0b74e70a9f30b7f1b527213cba1a08aec2f9724031d5569ffdc1decfa760c",
+    "backend/dot_gen_exceptions.h": "f9f5edf82d2001d895bce8a2224ea6e6417d0be236b1ffa2a35e4b1695e87775",
+    "backend/dot_gen_imports.h": "2ad620b74b2172143c78b7a9c6b658e24dde687535e7962e4f719ffd4f816fe9",
+    "backend/dot_gen_lifecycle.h": "cf4e984349d6e40d3e8df9f62bc46f0f2ff02357fbbcc2e8ed6a6dec2c4e84fb",
+    "backend/dot_gen_order.h": "a2ff18d819aca3d196cb96fbcf67fd94649368c983608a5c9c97f28bc0bc574d",
+    "backend/dot_gen_rtti.h": "4862dae362c4fc51f4c448b2a8abf6f3f1a98e8eec2702a33072729c45b3a710",
+    "backend/dot_gen_runtime.h": "82e1c239c5aff5951946b478b22c62090e6d8c7892949a20b577a4dddd22ecc5",
+    "backend/dot_gen_sequence.h": "a096d83cbee590da4eb5ca7ccbcb2ae9b51ff680d88eefa2fb19a3df2ea6a402",
+    "backend/dot_gen_trace.h": "18c37d90142c55c2debf1e002ccc8ab470776299509f0d9d2d7eea2d84f3cd86",
+    "backend/dot_gen_typeinfo.h": "e980d4c5b0e0133c328db8143006d45ef5c023f2b1b5723a03c0c36b966a6439",
+    "backend/dot_gen_virtual.h": "f124068c8c985e66f229e58021f3d9ca7cbea2f576d279bdfd1c1da3e563067a",
+    "backend/dot_sys_predef.c": "216327535ad26128401c99e7905f67f2b06752094876ac588a74e6d24a38f362",
+    "backend/prepare.py": "c7e7dcc7b536286f78f2e0b04951e9be82568ed16a3d7d7a7d016111c50b6a8e",
+    "backend/runtime/LibcContext.cs": "d50a3f9906dfbd7a5f3e5d083cca038974f8f28c40759a6b1282eb4c83236502",
+    "backend/runtime/libc/include/errno.h": "466a6b9fd26a970cf91f315bb85b350a412025d12974bec44abed9f31a2c8ba7",
+    "backend/runtime/libc/include/limits.h": "b6ebee5363f725e4a4c02a3a7be664a498a568393e029afa5a614cc752e5fd86",
+    "backend/runtime/libc/include/math.h": "f4f21da0f23b6f0a719f078442e6df9127e232c74a3250816a57d0ddf87bc4f4",
+    "backend/runtime/libc/include/stddef.h": "6a2b7c0879c6f907d73dd6826d893bfd1a5d37a9e0ca915d2def97189cd1dca8",
+    "backend/runtime/libc/include/stdint.h": "8cb920c838a213c5169bbdf8f876ec83f1bf66704ab88d9120a502565f9cc364",
+    "backend/runtime/libc/include/stdlib.h": "b8573e4bcee4545a1487884ddb160d1f38a145b2b3787b8d7fcd47760102f0c3",
+    "backend/runtime/libc/include/string.h": "2ce7c71dbae87d8298ba3971e4d92a92a6a93d0b82f6db71d829f4164f0f701f",
+    "backend/runtime/libc-bindings.def": "91661aab5c5ee65cf565b47e14a90bd7dfe214c7e984a8859bd12a626fe9bc92",
+    "backend/target/README.md": "0281041a58cd3744b228d4eb958d5401738c8f1380c6d93318c7061699f91454",
+    "backend/target/portable-lp64-binary80-v1.def": "1d78dc99f370a2bd4208d88ea63d30770bb18d66d4f9e83fc6a6995fc7db3f01",
+    "backend/target/portable-lp64-binary80-v1.json": "c3210c0a4a57dcc5f73220883ba2601052481fa9eb0494b97a5cc1569c2d37cb",
+    "config/cpfe-dot.cmakedef": "1e5276dcec037eb7e77d4186227d6c01ff9444d9b258ebb8e45101d4fefe0221",
+    "dotnet.py": "a6066644d03675cbdc1cb591a76489e2222bde3115ade77dedd1de8217d2ed76"
+  },
+  "intermediatesPreserved": true,
+  "verificationInputs": "synthetic and EDG only",
+  "supplementalIncludes": {
+    "checks": 2,
+    "artifact": "artifacts/campaign/portable-includes-001/results.json"
+  },
+  "supplementalTemplates": {
+    "checks": 5,
+    "artifact": "artifacts/campaign/template-entities-acceptance-003/results.json"
+  },
+  "templateInstantiation": "used (whole-program C++ mode)"
+}

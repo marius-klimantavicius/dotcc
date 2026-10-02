@@ -21,8 +21,9 @@ def run(command, expected=0, **kwargs):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--nativeaot", action="store_true")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "artifacts/backend-tests")
     args = parser.parse_args()
-    out = ROOT / "artifacts/backend-tests"
+    out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=True)
     checks = []
     run(["g++", "-std=c++17", "-O0", TESTS / "scalars.cpp", "-o", out / "native-scalars"])
@@ -71,7 +72,6 @@ def main():
         "function-pointer-exception": "void f() {} int main() { try { throw &f; } catch (...) { return 0; } }",
         "array-pointer-exception": "int main() { int n[3]; try { throw &n; } catch (...) { return 0; } }",
         "member-pointer-exception": "struct S { int n; }; int main() { try { throw &S::n; } catch (...) { return 0; } }",
-        "function-try": "struct X { X() try {} catch (...) {} }; int main() {X x;}",
         "external": "int f(); int main() { return f(); }",
     }
     rejected = Path(tempfile.mkdtemp(prefix="rejection-", dir=out)) / "output"
@@ -149,6 +149,18 @@ def main():
     checks.extend(verify_initialization_allocation(ROOT, TESTS, out, args.nativeaot, run))
     from c_language_verify import verify_c_language
     checks.extend(verify_c_language(ROOT, TESTS, out, args.nativeaot, run))
+    from function_try_verify import verify_function_try
+    checks.extend(verify_function_try(ROOT, TESTS, out, args.nativeaot, run))
+    from multi_tu_verify import verify_multi_tu
+    checks.extend(verify_multi_tu(ROOT, TESTS, out, args.nativeaot, run))
+    from libc_imports_verify import verify_libc_imports
+    checks.extend(verify_libc_imports(ROOT, TESTS, out, args.nativeaot, run))
+    from portable_target_verify import verify_portable_target
+    checks.extend(verify_portable_target(ROOT, TESTS, out, args.nativeaot, run))
+    from portable_include_verify import verify_portable_includes
+    checks.extend(verify_portable_includes(ROOT, out, run))
+    from template_entities_verify import verify_template_entities
+    checks.extend(verify_template_entities(ROOT, TESTS, out, args.nativeaot, run))
     report = {"checks": checks, "nativeaot": args.nativeaot, "rid": "linux-x64",
               "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f"}
     (out / "results.json").write_text(json.dumps(report, indent=2) + "\n")

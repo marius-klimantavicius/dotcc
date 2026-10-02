@@ -1,0 +1,30 @@
+{
+  "release": "llvmorg-23.1.1",
+  "releaseUrl": "https://github.com/llvm/llvm-project/releases/tag/llvmorg-23.1.1",
+  "archiveUrl": "https://github.com/llvm/llvm-project/releases/download/llvmorg-23.1.1/llvm-project-23.1.1.src.tar.xz",
+  "sha256": "ebe9be46fe8756d58c5b198ffad0fa2a766257add81a4dc52179bfacc7888ee6",
+  "githubAssetDigest": "sha256:ebe9be46fe8756d58c5b198ffad0fa2a766257add81a4dc52179bfacc7888ee6",
+  "extractedComponents": [
+    "libcxx",
+    "libcxxabi",
+    "cmake"
+  ],
+  "status": "source audit only; no library translation or upstream test execution",
+  "commit": "6dfe1677ab8dffbc6ec13d53a1e0215d75147689",
+  "archiveDigestMatchesGitHub": true,
+  "sourceCounts": {
+    "headerFiles": 1688,
+    "implementationCppFiles": 70
+  },
+  "auditedFiles": {
+    "include/__config_site.in": "460a4a9a227545436fce5b5d5f703d075d4712ebd9627bec9aeb812b98109f84",
+    "include/__configuration/compiler.h": "ea08c8efd33d694dd4d005083d8f1ebb4cfba893f0c076c1bffeee360bae7e1b",
+    "include/__configuration/platform.h": "c5082606d2a83ac238390ecdef46eecf17e57afff1d39a8fe602da875e9552cf",
+    "include/__thread/support.h": "5c8574d2cb73f85c05d849fde0322e19aa2c097d5215b3a1984d897f914d55bc",
+    "include/__thread/support/external.h": "a88ed2c3aed78fb93a159418a7a7aa3ed3383e7cf747be2e902841497adb1c3e",
+    "include/__exception/exception_ptr.h": "094f1b2ed98b31e9407c58e51196f6b8ab3753b46961e6cce1d1037c03ef3d09",
+    "src/support/runtime/exception_pointer_cxxabi.ipp": "9513c028546b5f1ac3a415a299a7c4a3381fbcd8dd72ae453bc07feb80e399f5",
+    "src/CMakeLists.txt": "2e08e6f06c5091500bf0060c3178dbc168286fdde389946beda9b3ce9fa7137a",
+    "LICENSE.TXT": "539dd7aed86e8a4f12cbdd0e6c50c189c7d74847e4fecc64ce2c6ee3a01da38b"
+  }
+}

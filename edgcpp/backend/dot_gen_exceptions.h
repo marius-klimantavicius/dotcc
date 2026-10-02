@@ -157,7 +157,9 @@ void collect_exception_metadata(a_statement_ptr s) {
   switch(s->kind) {
     case stmk_try_block: {
       auto t=s->variant.try_block;
-      if(t->is_function_try_block)unsupported("function try block");
+      // EDG lower_try_block places constructor/destructor subobject wrappers
+      // inside this protected body and supplies implicit handler rethrows.
+      // Emit these through the ordinary region-table try/catch path.
       collect_exception_metadata(t->statement);
       for(auto h=t->handlers;h;h=h->next) {
         if(h->parameter) { (void)catch_type(h); collect_exception_metadata_variable(h->typeinfo_var); }
@@ -251,14 +253,16 @@ private static void __edg_rethrow() {
 private static bool __edg_throw_filter(__edg_exception payload, global::System.Exception error) {
   if (payload.Started && !global::System.Object.ReferenceEquals(payload, error))
     global::System.Environment.FailFast("Exception escaped EDG throw copy", error);
-  return true;
+  return !global::System.Object.ReferenceEquals(payload, error);
 }
 // dot-gen:member-end
 // dot-gen:member-begin
 private static bool __edg_catch_filter(__edg_catch_frame frame, global::System.Exception error) {
   if (!frame.Caught)
     global::System.Environment.FailFast("Exception escaped catch parameter initialization", error);
-  return true;
+  // Bookkeeping must not stop CLR first-pass search before a termination
+  // boundary. Handler cleanup happens in finally during the second pass.
+  return false;
 }
 // dot-gen:member-end
 )CS";

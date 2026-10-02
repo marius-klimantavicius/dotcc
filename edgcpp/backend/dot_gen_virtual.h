@@ -50,8 +50,9 @@ void collect_virtual_metadata(a_scope_ptr scope) {
   collect_virtual_scope(scope,types,tables);
   // Construction vtable groups are distinct from a class's main table.
   for(auto v=scope->variables;v;v=v->next)
-    if(v->vtable_defined)tables.insert(v);
+    if(!ignore_variable_in_back_end(v) && v->vtable_defined)tables.insert(v);
   for(auto r=scope->routines;r;r=r->next) {
+    if(ignore_routine_in_back_end(r))continue;
     if(r->function_def_number==NULL_function_def_number)continue;
     auto s=scope_for_routine_or_null(r);
     if(s)collect_virtual_scope(s,types,tables);

@@ -79,10 +79,7 @@ string expression_effect(an_expr_node_ptr e) {
       string id="__edg_internal_boundary"+std::to_string(++expression_serial);
       auto a=eh.variant.try_and_catch_expr;
       string attempt=expression_effect(a),failure=expression_effect(a->next);
-      string unwind=cleanup_unwind(id),marker="/*__EDG_CLEANUP_CASES__*/";
-      unwind.replace(unwind.find(marker),marker.size(),emit_cleanup());
-      string state="__edg_cleanup_state";
-      for(size_t pos=unwind.find(state);pos!=string::npos;pos=unwind.find(state,pos+cleanup_slot.size()))unwind.replace(pos,state.size(),cleanup_slot);
+      string unwind=cleanup_unwind(id,cleanup_slot);
       return "{int "+id+" = "+cleanup_slot+"; try {\n"+attempt+"} catch {\n"+unwind+failure+"throw;\n}}\n";
     }
     unsupported("EH expression transition",eh.kind);
