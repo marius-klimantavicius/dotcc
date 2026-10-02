@@ -16,16 +16,20 @@ def write_exception_fixture(root,source,library,combined):
 // Synthetic interface adapter only. Original libc++ new.cpp is tested separately.
 #include <cstdlib>
 void* operator new(std::size_t n) {if(void* p=std::malloc(n?n:1))return p;throw std::bad_alloc();}
+#if __cplusplus >= 201703L
 void* operator new(std::size_t n,std::align_val_t a) {
   auto alignment=static_cast<std::size_t>(a);if(!n)n=1;
   if(n>static_cast<std::size_t>(-1)-(alignment-1))throw std::bad_alloc();
   if(void* p=std::aligned_alloc(alignment,(n+alignment-1)&~(alignment-1)))return p;
   throw std::bad_alloc();
 }
+#endif
 void operator delete(void* p) noexcept {std::free(p);}
 void operator delete(void* p,std::size_t) noexcept {std::free(p);}
+#if __cplusplus >= 201703L
 void operator delete(void* p,std::align_val_t) noexcept {std::free(p);}
 void operator delete(void* p,std::size_t,std::align_val_t) noexcept {std::free(p);}
+#endif
 ''')
 
 

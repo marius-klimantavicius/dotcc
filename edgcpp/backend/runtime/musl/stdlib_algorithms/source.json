@@ -1,0 +1,69 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "abs.c": {
+      "upstream": "src/stdlib/abs.c",
+      "originalSha256": "ac564f78ab8f3d301e1e6b31ae8145a460e515e31026f81da55775c800a37929",
+      "adaptedSha256": "ba555c03c12b7646bf33691395eb28b036faac7e2a89a3bc0ac985c9b3497e62"
+    },
+    "labs.c": {
+      "upstream": "src/stdlib/labs.c",
+      "originalSha256": "78a5995f16e631532914bb5bc967462b5b6a9780f4be68a00b2414503df8adb7",
+      "adaptedSha256": "e93b296155b5ad6cc3cfc765a8924a533897a7714ffdd6657d7dd3a5f758013f"
+    },
+    "llabs.c": {
+      "upstream": "src/stdlib/llabs.c",
+      "originalSha256": "4c9baf574b5d64e409b1a0a97e499bec3e6d1ed579cd13ddb39c9094174bb071",
+      "adaptedSha256": "6ef477fe2098019391dc3342b5382013863179408d733e8e29fe04e81acee8eb"
+    },
+    "imaxabs.c": {
+      "upstream": "src/stdlib/imaxabs.c",
+      "originalSha256": "ca8a3f78f746320434deb5ca237abb41f4b13f04cad88765fa5d10104eed78a1",
+      "adaptedSha256": "e9736fcbc3da5809b2ffc00f30c32b1972689219ff72931c31ddceba9a67eb0a"
+    },
+    "div.c": {
+      "upstream": "src/stdlib/div.c",
+      "originalSha256": "7ff1bca64c5a9a625819e138ad0de98d3888cf853d5a24d2ea5c2e9c7a0aa987",
+      "adaptedSha256": "064fefdfa360a4866e2500230d4a0f678720f50ace2b75e1040c48a22efc758c"
+    },
+    "ldiv.c": {
+      "upstream": "src/stdlib/ldiv.c",
+      "originalSha256": "9dfb239a258ea96be56a7f264898cb91d480b4290848c8f97477a162952b5df0",
+      "adaptedSha256": "8710e590e3e27668b5a4df496375a291b79ea84c60b7944f2d8de40f37d423c6"
+    },
+    "lldiv.c": {
+      "upstream": "src/stdlib/lldiv.c",
+      "originalSha256": "ff228ea90ce6ce6f1c63d4bf51294b41b24363a716dc23b2f25a411758ca2ef9",
+      "adaptedSha256": "69285a4aae348b21f9599a0ec6efba28efcfb2d8af887a83de583e3639585626"
+    },
+    "imaxdiv.c": {
+      "upstream": "src/stdlib/imaxdiv.c",
+      "originalSha256": "94fe4d29e24ffe9856e0e9e8755229e6ff59ac479699f435b1bfeb5730301cfd",
+      "adaptedSha256": "0ed7827ccbf53ef0e826a48d3ad2903c4108bbf2fddd86da76f607485e66d9ab"
+    },
+    "bsearch.c": {
+      "upstream": "src/stdlib/bsearch.c",
+      "originalSha256": "91d170a3505dff3d9605e241122ba60d0c4e98b0d0fd6b30ee6a726f70045189",
+      "adaptedSha256": "cf5040a0a7b8c897dc324082353691b65415a6857dcdb230be2335670458a6ec"
+    },
+    "qsort.c": {
+      "upstream": "src/stdlib/qsort.c",
+      "originalSha256": "dc9a8fd43bd2c98c437c05c214a8715df22ed746a2912969eb154fa9090213f4",
+      "adaptedSha256": "49be8f71432604c25188c63405cb49bfce68fb498ef5032da9322039310ca9d1"
+    },
+    "qsort_nr.c": {
+      "upstream": "src/stdlib/qsort_nr.c",
+      "originalSha256": "ba6ce7460e7b4b22d70c8d7acab2bdb5d3916f428d50b42bb29e4da5eec484d9",
+      "adaptedSha256": "ed383e7b70b7f8d11e268ca496ddc3d6a09093b4f35a8557ac18953793520f37"
+    },
+    "atomic.h": {
+      "upstream": "src/internal/atomic.h",
+      "originalSha256": "7564773807b69ceeb5542882ab20e92253ded8289d8944eafe7208903aaa2e18",
+      "adaptedSha256": "04fe8d8adc7e25b68e92b20155b44e7571115e64b79486d0df7843565d1817b4"
+    }
+  },
+  "adapters": {
+    "algorithms_compat.h": "b3703e204f8205117fb1862934cacd815e2a4ef14efa1f4e2ac3d6477af36b80"
+  }
+}

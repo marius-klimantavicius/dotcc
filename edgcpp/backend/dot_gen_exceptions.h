@@ -447,7 +447,7 @@ private sealed class __edg_catch_frame {
 // dot-gen:member-begin
 private static void __edg_rethrow() {
   var error = __edg_active_exception;
-  if (error == null) global::System.Environment.FailFast("C++ rethrow without active exception");
+  if (error == null) __edg_terminate_runtime(null,"C++ rethrow without active exception");
   if (error is __edg_exception payload) payload.Retain();
   __edg_begin_exception(error!);
   global::System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(error!).Throw();
@@ -456,14 +456,14 @@ private static void __edg_rethrow() {
 // dot-gen:member-begin
 private static bool __edg_throw_filter(__edg_exception payload, global::System.Exception error) {
   if (payload.Started && !global::System.Object.ReferenceEquals(payload, error))
-    global::System.Environment.FailFast("Exception escaped EDG throw copy", error);
+    __edg_terminate_runtime(error,"Exception escaped EDG throw copy");
   return !global::System.Object.ReferenceEquals(payload, error);
 }
 // dot-gen:member-end
 // dot-gen:member-begin
 private static bool __edg_catch_filter(__edg_catch_frame frame, global::System.Exception error) {
   if (!frame.Caught)
-    global::System.Environment.FailFast("Exception escaped catch parameter initialization", error);
+    __edg_terminate_runtime(error,"Exception escaped catch parameter initialization");
   // Bookkeeping must not stop CLR first-pass search before a termination
   // boundary. Handler cleanup happens in finally during the second pass.
   return false;
@@ -489,6 +489,11 @@ private static void* __edg_exception_alloc(nuint size) {
 }
 // dot-gen:member-end
 )CS";
+  if(instance_mode)for(const string &signature:std::vector<string>{"void __edg_rethrow(","bool __edg_throw_filter(","bool __edg_catch_filter("}) {
+    string from="private static "+signature,to="private "+signature;
+    auto pos=helper_output.find(from);if(pos==string::npos)unsupported("missing owner-aware EH helper");
+    helper_output.replace(pos,from.size(),to);
+  }
   string receiver=instance_mode?"(("+string(getenv("EDG_DOT_CLASS"))+")owner!).":"";
   string mod=instance_mode?"":"static ";
   helper_output+="private "+mod+"__edg_exception_storage? __edg_exception_head=null;\n";
@@ -562,6 +567,7 @@ private static bool __edg_in_exception_arena(byte[] bytes,void* address) {
       "void* raw=null;bool leased=false;__edg_exception_storage? storage=null;try { "+receiver+"__edg_prepare_exception_ledger();"+receiver+"__edg_acquire_exception_lease();leased=true;\n"
       "raw=__edg_exception_alloc((nuint)size+(nuint)alignment-1+(nuint)sizeof(nint));storage=new __edg_exception_storage(type,alignment,raw,(nuint)size,dtor,owner,&__edg_release_exception_owner);raw=null;leased=false;return new __edg_exception(storage,false);\n"
       "} catch(global::System.OutOfMemoryException error) {if(storage!=null)storage.Abandon(1);else {global::System.Runtime.InteropServices.NativeMemory.Free(raw);if(leased)__edg_release_exception_owner(owner);}global::System.Environment.FailFast(\"Unable to allocate EDG exception storage\",error);throw;}\n}\n// dot-gen:member-end\n";
+  ensure_terminate_helpers();
 }
 string exception_destructor(a_routine_ptr r) {
   if(!r)return "null";

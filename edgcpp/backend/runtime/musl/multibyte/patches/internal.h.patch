@@ -1,0 +1,25 @@
+--- a/internal.h
++++ b/internal.h
+@@ -1,9 +1,14 @@
+ #define bittab __fsmu8
+ 
+ #include <stdint.h>
+-#include <features.h>
+ 
+-extern hidden const uint32_t bittab[];
++#ifdef __cplusplus
++extern "C" {
++#endif
++extern const uint32_t bittab[];
++#ifdef __cplusplus
++}
++#endif
+ 
+ /* Upper 6 state bits are a negative integer offset to bound-check next byte */
+ /*    equivalent to: ( (b-0x80) | (b+offset) ) & ~0x3f      */
+@@ -21,4 +26,4 @@
+ #define IS_CODEUNIT(c) ((unsigned)(c)-0xdf80 < 0x80)
+ 
+ /* Get inline definition of MB_CUR_MAX. */
+-#include "locale_impl.h"
++#include <stdlib.h>

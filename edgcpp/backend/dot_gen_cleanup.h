@@ -158,16 +158,17 @@ string cleanup_handle(a_constant_ptr c,unsigned long long flags) {
   return "((byte*)("+base+") + "+std::to_string(p.offset)+"UL)";
 }
 void ensure_exception_helpers();
+void ensure_terminate_helpers();
 void ensure_cleanup_failure_filter() {
-  ensure_exception_helpers();
+  ensure_terminate_helpers();
   const string name="__edg_cleanup_failure";
   if(helper_output.find("bool "+name+"(")!=string::npos)return;
   // throw.c pass 1 terminates upon reaching a throw-processing marker,
   // before pass 2 unwinds locals in the escaping destructor. A CLR catch
   // body is too late: use its first-pass filter to retain that ordering.
   helper_output+="// dot-gen:member-begin\nprivate static bool __edg_begin_unwind(global::System.Exception error, ref bool unwinding) { __edg_begin_exception(error); unwinding = true; return false; }\n// dot-gen:member-end\n";
-  helper_output+="// dot-gen:member-begin\nprivate static bool "+name+
-      "(global::System.Exception error) { global::System.Environment.FailFast(\"Destructor threw during unwinding\", error); return false; }\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+"bool "+name+
+      "(global::System.Exception error) { __edg_terminate_runtime(error,\"Destructor threw during unwinding\"); return false; }\n// dot-gen:member-end\n";
 }
 string emit_cleanup() {
   ensure_cleanup_failure_filter();

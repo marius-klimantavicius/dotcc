@@ -22,7 +22,7 @@ void ensure_thread_services() {
   }
   // This follows the current backend termination boundary. Once a translated
   // std::terminate handler provider exists, route this adapter through it too.
-  helper_output+="// dot-gen:member-begin\nprivate static void __edg_thread_terminate("+owner_type+" owner, global::System.Exception error) { global::System.Environment.FailFast(\"Exception escaped translated thread\",error); }\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate static void __edg_thread_terminate("+owner_type+" owner, global::System.Exception error) { /*__EDG_THREAD_TERMINATE__*/ }\n// dot-gen:member-end\n";
   helper_output+="// dot-gen:member-begin\nprivate "+mod+runtime+" __edg_thread_services { get { lock(__edg_sync) { if(__edg_thread_services_value==null) __edg_thread_services_value=new "+runtime+"("+
     string(instance_mode?"this":"__edg_thread_owner_value")+", &__edg_thread_retain, &__edg_thread_release, &__edg_thread_enter, &__edg_thread_leave, &__edg_thread_tls, &__edg_thread_terminate); return __edg_thread_services_value; } } }\n// dot-gen:member-end\n";
 }

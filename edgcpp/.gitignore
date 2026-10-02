@@ -25,3 +25,10 @@ __pycache__/
 
 /upstream/src/dot_gen_vla.h
 /upstream/src/libc-clock-bindings.def
+/upstream/src/dot_gen_terminate.h
+/upstream/src/libc-calendar-bindings.def
+/upstream/src/dot_gen_ir.h
+/upstream/src/dot_gen_ir_adapter.h
+/upstream/src/libc-process-bindings.def
+/upstream/src/dot_gen_storage_types.h
+/upstream/src/dot_gen_unexpected.h

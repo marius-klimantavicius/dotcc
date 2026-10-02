@@ -100,8 +100,94 @@ host boundaries: translated callers can catch through them. Concurrent rethrow
 uses fresh `exception_ptr` wrappers; a managed host must not concurrently reuse
 a single escaped carrier.
 
-Remaining gates include configured implicit termination, dynamic exception specifications, separate-assembly
+Remaining gates include separate-assembly
 identity/ownership and complete libc++ integration.
+
+## Termination acceptance
+
+`dot_gen_terminate.h` supplies a per-owner handler and per-thread recursion guard.
+Runtime-initiated termination masks the uncaught count to zero, matching EDG;
+explicit termination during unwinding preserves the current count. A runtime
+termination handler can capture the triggering exception through
+`current_exception`. A returning or throwing handler terminates the process,
+and recursive termination aborts without repeatedly invoking the handler.
+
+Noexcept violations unwind to their boundary before the handler runs. A second
+exception escaping cleanup, throw-copy construction or catch-parameter copying
+terminates during first-pass search. Array cleanup requires this same first-pass
+rule for a secondary destructor exception, while its first failing destructor
+unwinds normally. The original C array oracle is retained at
+`artifacts/campaign/terminate-array-oracle-20261003-014527/results.json`.
+
+Core handler behavior passes 58 checks (18 original C GCC/Clang checks and 40
+static/instance JIT/NativeAOT checks), recorded in
+`artifacts/campaign/exception-terminate-20261003-014814/progress.json`. That run
+subsequently hit an unrelated libc import gap in the boundary fixture, so its
+overall results file correctly remains failed.
+
+Console/main handoff, first-pass worker termination, owner shutdown, secondary
+array destruction and global initializer failure pass 20 further checks in
+`artifacts/campaign/exception-terminate-boundaries-20261003-015047/results.json`.
+The console entry point calls the owner termination adapter after `Run` has
+finished C++ cleanup; managed-library callers retain the explicit host exception
+boundary. Raw runtime invariants and storage-allocation failures still use
+FailFast directly; they are not silently reclassified as C++ termination.
+
+The focused fixture uses synthetic new/delete adapters and nonvariadic output;
+it does not establish complete libc++ allocation or libc import coverage.
+Initial `printf` and `getenv` translation failures remain retained evidence for
+the independent libc import work.
+
+## Legacy dynamic exception specifications
+
+The backend follows `lower_eh.c`'s distinction between `noexcept` and legacy
+`throw(T...)`: a dynamic specification matches the escaping type against its
+permitted list before selecting `unexpected`. The function's ordinary cleanup
+runs first. The unexpected handler sees the original exception as caught, can
+rethrow it, or replace it with a permitted exception. A forbidden replacement
+becomes `std::bad_exception` when that type (or its public base) is permitted;
+otherwise the active owner's terminate handler runs. An empty `throw()` remains
+a dynamic specification in the C++14 fixture. Handler return calls terminate.
+
+`dot_gen_unexpected.h` emits the boundary and typed matchers. The libc++ provider
+exposes `set_unexpected`, `get_unexpected` and `unexpected` only in the relevant
+legacy/opt-in header modes. A private factory's typed `std::bad_exception*`
+parameter supplies the exact public class identity; the backend does not guess
+it from symbol spellings. Original and replacement catch frames release payload
+references in `finally`, with first-pass termination for throwing destructors.
+
+Six positive checks cover direct GCC/Clang, original EDG C GCC/Clang, and generated
+static/instance JIT/NativeAOT. Cases include reference specifications, derived
+objects, pointer qualification, data-member pointers, array/function adjustment,
+nested specifications, replacement and `bad_exception` substitution:
+`artifacts/campaign/dynamic-specs-20261003-022100/results.json`.
+Twenty-eight fatal checks cover empty specifications, returning/forbidden
+handlers, throwing original/replacement destructors, owner isolation and handler
+`current_exception`, including the comparable original EDG C traces:
+`artifacts/campaign/dynamic-specs-fatal-20261003-022320/results.json`.
+
+The original generic EDG C runtime provides useful ordering evidence but does
+not provide persistent `exception_ptr` ownership. Its throw-specification stack
+entry has no original-payload cleanup action (`throw.c`, the pass-two
+`ehsek_throw_spec` case). In the retained observational fixture, replacement of
+an original class exception therefore does not invoke that original destructor.
+Installed GCC/Clang invoke it. No EDG source is changed: the managed runtime
+retains its explicit payload ownership contract and releases the original when
+its final active/retained reference ends, as required for C++ exception-object
+lifetime. Consequently the original-payload destructor case uses the managed
+lifetime contract and direct C++ evidence, rather than asserting equivalence to
+that generic runtime observation. Replacement-payload secondary-throw ordering
+does match the EDG C oracle; native GCC/Clang differ in the permitted amount of
+cleanup before termination. All observations are preserved in
+`artifacts/campaign/dynamic-fatal-oracles-20261003-022032`.
+
+Explicit persistent-handle retention of both original and replacement payloads,
+including successful `bad_exception` substitution, passes five additional
+direct GCC/Clang and static/instance JIT/NativeAOT checks in
+`artifacts/campaign/dynamic-specs-lifetime-20261003-022606/results.json`.
+The fixture verifies exactly one final destructor per payload, immediate cleanup
+of an unretained original before the replacement catch, and rethrow of a saved
+original after the replacement has been substituted with `bad_exception`.
 
 ## Owner-local handles and shutdown classification
 

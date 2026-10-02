@@ -1,0 +1,114 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "btowc.c": {
+      "upstream": "src/multibyte/btowc.c",
+      "originalSha256": "6596721b682c74b58e6f43538012dd38ad796cd70f986cdb488b368383085aba",
+      "adaptedSha256": "01730e2cb47d41322f8ac9c0c03bf1c35c520b2327c31a4d966cfb79693f5c00"
+    },
+    "c16rtomb.c": {
+      "upstream": "src/multibyte/c16rtomb.c",
+      "originalSha256": "c1a73855bf6b0450b09274b5de29e6b21ad39c1d817060bb13dfd58694b279e1",
+      "adaptedSha256": "8a64e47d8876913dd2748f36e8b3e8be6bd4c8e7b44ed93c9af9037b8e2fb651"
+    },
+    "c32rtomb.c": {
+      "upstream": "src/multibyte/c32rtomb.c",
+      "originalSha256": "96fc1db9d6d2e211ffdcbd040271a6dad208771b2b90b8b5bfde58e4a0d1cf67",
+      "adaptedSha256": "4ce0c3cb6ddcfd497df4c18722bff6dadde1af505d874f682de318a905df6d8d"
+    },
+    "internal.c": {
+      "upstream": "src/multibyte/internal.c",
+      "originalSha256": "925f6ac1d116631148076f868700689913ab6c2040b21be16d3abefa598514bd",
+      "adaptedSha256": "f2bbf2c3a136c835cf7dc34f2333235d1ba5cf965ece382ed8ef2e7a8645b54e"
+    },
+    "internal.h": {
+      "upstream": "src/multibyte/internal.h",
+      "originalSha256": "e5ba77a0870b47c515e610827fe4a62842ec9c7a8e04edd6ece3498495e22a83",
+      "adaptedSha256": "16dc4c962facb03f94e80e5212ba6883139155d4203246df01b4f12288cfd996"
+    },
+    "mblen.c": {
+      "upstream": "src/multibyte/mblen.c",
+      "originalSha256": "949137534e0e6c08b03083cd9f1fd22c926a47d2c0691dafd599a77bf8230b14",
+      "adaptedSha256": "aac843e2ae99325f623c3a490472130395866556abf05a2e8fca703abdc1e752"
+    },
+    "mbrlen.c": {
+      "upstream": "src/multibyte/mbrlen.c",
+      "originalSha256": "7bd9496322fce43a66a63c9656bbf51b302f074f3c51ca3f40bd7e62762ef489",
+      "adaptedSha256": "e205e8ac75cb7d6ae7374968d85394bcb8689076a2d28a447c92e9a88ce53877"
+    },
+    "mbrtoc16.c": {
+      "upstream": "src/multibyte/mbrtoc16.c",
+      "originalSha256": "6a4851fa5eba90ca8780856c457a23c1051a360dbd29c551ad443da2389df413",
+      "adaptedSha256": "2d5325c9a9c1d7f8495d7987db19761e81bf476db61c0f2745722126df35f5b4"
+    },
+    "mbrtoc32.c": {
+      "upstream": "src/multibyte/mbrtoc32.c",
+      "originalSha256": "884719a721f71f0d425f62ad694658561801bd0b1bff443b93a471ff3d18f0ab",
+      "adaptedSha256": "d229ea3258f9bd3c63adc88624560f90b5a837327d350738c9e77e67d52e87c8"
+    },
+    "mbrtowc.c": {
+      "upstream": "src/multibyte/mbrtowc.c",
+      "originalSha256": "5e54562b56d55cee9ffafd42bc37bee9428610f657e001c0905153ed698fe43d",
+      "adaptedSha256": "bbfd64b7452f3f2de7dda308ac656f0c1272d501641f4d3fb0c96be6c5c35f1a"
+    },
+    "mbsinit.c": {
+      "upstream": "src/multibyte/mbsinit.c",
+      "originalSha256": "efa33b1b2d0ce4b2eaaa8dfbcde901e745f6e047d744a401dfc4be01be1f09ec",
+      "adaptedSha256": "4c71e95564f2d0b693ee23afe01b6598d5e47b58821ad0375e875b2ede8c68c3"
+    },
+    "mbsnrtowcs.c": {
+      "upstream": "src/multibyte/mbsnrtowcs.c",
+      "originalSha256": "91f9cf9b29581c478c592b60342b5c810def80f6a6866f938714ab0f8d1fa817",
+      "adaptedSha256": "3ea3deb7b722a886a691ebf6e84a597f7265cbc3630028a6c6604282ad529d3c"
+    },
+    "mbsrtowcs.c": {
+      "upstream": "src/multibyte/mbsrtowcs.c",
+      "originalSha256": "008523694e6cb2a8d7c43830e8c466cab4d252e397eecd202302e3c8db275767",
+      "adaptedSha256": "ff64cd961b0269a6fed41cc62c13adfe4c2075a0e4566fce1e38c87dca7a4538"
+    },
+    "mbstowcs.c": {
+      "upstream": "src/multibyte/mbstowcs.c",
+      "originalSha256": "05ab18ff92e32721a1c7dadc6b4d07f389501762069d9022a6361b68336e9a38",
+      "adaptedSha256": "4bad8c2ef4d47e34002eb602a0835a7cbbb5396df4c0c85907703ba557ce5814"
+    },
+    "mbtowc.c": {
+      "upstream": "src/multibyte/mbtowc.c",
+      "originalSha256": "ae0d9e5879735862a5c2cf65c32af8e6c4a4bb695bfcd269fef1cd3ab0be2656",
+      "adaptedSha256": "f2e4d8f5e83321f883bb3bf1264b06e42cf572de4e8d14dbb412d05617ed3eb6"
+    },
+    "wcrtomb.c": {
+      "upstream": "src/multibyte/wcrtomb.c",
+      "originalSha256": "a8f5bfa624c88f1e3214bcd46d909fb9c5b172ac9b634fb32a101161ab680693",
+      "adaptedSha256": "8fa603da69c16da763591047cf3c7f4a45553bc9fc8ac546c55e19fe8013860e"
+    },
+    "wcsnrtombs.c": {
+      "upstream": "src/multibyte/wcsnrtombs.c",
+      "originalSha256": "692b0daf62c9db77c6b67a35f10481be16841df458e7041df643e94a154f5796",
+      "adaptedSha256": "f49989561679910be8677c5d700116cb8ff203bf8e87658a45fe74020e7289f0"
+    },
+    "wcsrtombs.c": {
+      "upstream": "src/multibyte/wcsrtombs.c",
+      "originalSha256": "640d00915f6896ca4352ec82f2e1b182cda5a675f3ffb074483ccdf8c1c94db5",
+      "adaptedSha256": "3f64e7697564092d9f75c2c727c50a8310566977aa86f2b55c07cd08d9c59c99"
+    },
+    "wcstombs.c": {
+      "upstream": "src/multibyte/wcstombs.c",
+      "originalSha256": "7a7b2a54d1545ac30e84af7527cc57f35619d35a3433b758380e067a2a5c0b92",
+      "adaptedSha256": "4aad024be74f7a0faacac21ebc3d144eb1fcee554b551c392026dad721ad84ba"
+    },
+    "wctob.c": {
+      "upstream": "src/multibyte/wctob.c",
+      "originalSha256": "9a78877b06efdaec3f031a9e6f40ce89f7919a86c40a71ec09cf1cf20ae39aeb",
+      "adaptedSha256": "e1370916ae593faad2ec447de274c2e856119fe6a80736fb2cf861348a08bb1b"
+    },
+    "wctomb.c": {
+      "upstream": "src/multibyte/wctomb.c",
+      "originalSha256": "046e38f206c7203d0b1295dcdcd3080e3b1c335ff2e1433f0626066a73e8befc",
+      "adaptedSha256": "34f0fa2bf6cee0831db4b73b1c5b003e74c4ef119900cfad6fc05faad5dd3dcb"
+    }
+  },
+  "adapters": {
+    "mb_compat.h": "ecbf5c4df992452d123364f2813d3afc0bfe49126c02535c7df7231264280d44"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "strftime.c": {
+      "upstream": "src/time/strftime.c",
+      "originalSha256": "89d63a7d0eab750829a12dcefdc513cd3cee6d7261c883df08f630ead46e3a51",
+      "adaptedSha256": "e0b805ba4ecf33e66104070e2144ca1e54652ff4d390174b8f7cee4b28df90cf"
+    },
+    "__year_to_secs.c": {
+      "upstream": "src/time/__year_to_secs.c",
+      "originalSha256": "c11dea580c3810de90a2222c07bbb0b0a127fb326b60ed92e4205bbaace999f1",
+      "adaptedSha256": "615f94a87935c4b9aff9090c7a4103a56d5a62264b29d02b5214d5bcfbadc620"
+    },
+    "__month_to_secs.c": {
+      "upstream": "src/time/__month_to_secs.c",
+      "originalSha256": "ec626ffe4ac4521d7376b148b74cf6eecfe17142e4a1daefd18f9f68c4b01eae",
+      "adaptedSha256": "0e29c85cc5793d5db5827170732bcdd23a7c392a574cff0ab982820167a74828"
+    },
+    "__tm_to_secs.c": {
+      "upstream": "src/time/__tm_to_secs.c",
+      "originalSha256": "dbba28fd7ccb3a774b50732b77d675a3b5b6e4a48a7c713bd31d625018be88c1",
+      "adaptedSha256": "5ae662b1766911c82473645d575d6779d8d5c90ed35230892ebc4038e064f212"
+    },
+    "__secs_to_tm.c": {
+      "upstream": "src/time/__secs_to_tm.c",
+      "originalSha256": "36562b874b867912bf5368d505a6402244fab067d5fdf3c905904d225f3e3d06",
+      "adaptedSha256": "a5368a322662584a26fa14bddc37e1357a8a259ea0b46c2a44291fcbd9ac0c52"
+    },
+    "gmtime_r.c": {
+      "upstream": "src/time/gmtime_r.c",
+      "originalSha256": "c9d54a7acd47b1f777da4a049eff55786c755bf9ae643422d9f9b614d2cd0fc3",
+      "adaptedSha256": "558666348e2a50706a20535eff2fa16c67f6cb3d5717e74ef89654a1b3235b5c"
+    },
+    "gmtime.c": {
+      "upstream": "src/time/gmtime.c",
+      "originalSha256": "11225ec9f85979a515551a23aa89e761a2ddb291628e68d7c989b69c9fc7c77d",
+      "adaptedSha256": "caf5be35726a0c47263a5ff088e579c625243ce5c4f469323f90bc1da63af1c3"
+    },
+    "timegm.c": {
+      "upstream": "src/time/timegm.c",
+      "originalSha256": "1bf6510b27590ef41e9cb181cf8fec3e5b6435f3e57127d95053237ad1a863f8",
+      "adaptedSha256": "e8d5c89670730287969e04c7999d477634213e618b33dacd805e501cab76187d"
+    },
+    "asctime_r.c": {
+      "upstream": "src/time/asctime_r.c",
+      "originalSha256": "ddf7eee8be1f8ed310a2b20fa88f65b5a98210adc6c12babe1fd36353d5316a3",
+      "adaptedSha256": "8d96b9c45d0cac797d3e14754ae0fd4c3b0ed36dd0586edd38c07d8136b2354a"
+    },
+    "asctime.c": {
+      "upstream": "src/time/asctime.c",
+      "originalSha256": "17a307e8f0692f09a9266a8a9abf10cfc2c63847ec5a9a7700530e023023469a",
+      "adaptedSha256": "4b3f3f9373ae4f1fdbacf60573e0f20ef585730165c0a03ff3e09996a91edd20"
+    },
+    "langinfo.c": {
+      "upstream": "src/locale/langinfo.c",
+      "originalSha256": "e6ec8692b91ebb6dc49a00a36b51f6c9c26eaca82e6d21c937ad616a7db84946",
+      "adaptedSha256": "0710cc5603c23b585b12915ac4ae3368ca5c26e330b5a4051889a495adb4ec28"
+    }
+  },
+  "adapters": {
+    "calendar_compat.h": "910a4a4e9267404122a128b109abd96356fd19c9d090e565e8c8d492ac34a2f9",
+    "locale_impl.h": "26bebc6cf7c0b6ab1521cdc6ef7c533acfb3e82244051042010c6cfe7a061add",
+    "calendar_wrappers.c": "b20f24813ceb3f7b43504cc262dd59189befc4b38590d58c5b9859c646e8a51f",
+    "atomic.h": "9b748c9de502bef8f72512c6c14cf65744ef721c53327170f4275f4030cf910b",
+    "time_impl.h": "f90b20df34464b5137f59310517d2598c7199130c89f646575de62b75a820bd7"
+  },
+  "patch": "calendar-managed.patch",
+  "patchSha256": "0508ce317b3edcc6e63094ee9d960b3f5c816cc1f2f4061ac4ce4891796dbebe"
+}

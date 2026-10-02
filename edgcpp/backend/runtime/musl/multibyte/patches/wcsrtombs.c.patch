@@ -1,0 +1,7 @@
+--- a/wcsrtombs.c
++++ b/wcsrtombs.c
+@@ -1,3 +1,4 @@
++#include "mb_compat.h"
+ #include <wchar.h>
+ 
+ size_t wcsrtombs(char *restrict s, const wchar_t **restrict ws, size_t n, mbstate_t *restrict st)

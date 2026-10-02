@@ -153,7 +153,7 @@ private @MOD@void __edg_drain(global::System.Collections.Generic.List<__edg_fina
     __edg_finalizer entry;
     lock(__edg_sync){if(list.Count==0)return;entry=list[list.Count-1];list.RemoveAt(list.Count-1);}
     try {@INVOKE@}
-    catch(global::System.Exception error){global::System.Environment.FailFast("Destructor threw during shutdown",error);}
+    catch(global::System.Exception error){/*__EDG_SHUTDOWN_TERMINATE__*/}
   }
 }
 // dot-gen:member-end

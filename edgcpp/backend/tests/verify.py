@@ -254,6 +254,20 @@ def main():
     checks.extend(verify_libc_clock_abi(ROOT, TESTS, suite_output("libc_clock_abi")))
     from libc_wide_verify import verify_libc_wide
     checks.extend(verify_libc_wide(ROOT, TESTS, suite_output("libc_wide"), args.nativeaot, run))
+    from array_pointer_compat_verify import verify_array_pointer_compat
+    checks.extend(verify_array_pointer_compat(ROOT, TESTS, suite_output("array_pointer_compat"), args.nativeaot, run))
+    from physical_types_verify import verify_physical_types
+    checks.extend(verify_physical_types(ROOT, TESTS, suite_output("physical_types"), args.nativeaot, run))
+    from libc_multibyte_verify import verify_libc_multibyte
+    checks.extend(verify_libc_multibyte(ROOT, TESTS, suite_output("libc_multibyte"), args.nativeaot, run))
+    from libc_wide_numeric_verify import verify_libc_wide_numeric
+    checks.extend(verify_libc_wide_numeric(ROOT, TESTS, suite_output("libc_wide_numeric"), args.nativeaot, run))
+    from libc_calendar_verify import verify_libc_calendar
+    checks.extend(verify_libc_calendar(ROOT, TESTS, suite_output("libc_calendar"), args.nativeaot, run))
+    from libc_wide_calendar_verify import verify_libc_wide_calendar
+    checks.extend(verify_libc_wide_calendar(ROOT, TESTS, suite_output("libc_wide_calendar"), args.nativeaot, run))
+    from libc_stdlib_algorithms_verify import verify_libc_stdlib_algorithms
+    checks.extend(verify_libc_stdlib_algorithms(ROOT, TESTS, suite_output("libc_stdlib_algorithms"), args.nativeaot, run))
     from libc_string_builtins_verify import verify_libc_string_builtins
     checks.extend(verify_libc_string_builtins(ROOT, TESTS, suite_output("libc_string_builtins"), args.nativeaot, run))
     from libcxx_atomic_wait_verify import verify_libcxx_atomic_wait
@@ -270,6 +284,16 @@ def main():
         checks.extend(verify_libcxx_atomic_protocol(ROOT, TESTS, suite_output("libcxx_atomic_protocol"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_counts_verify import verify_libcxx_exception_counts
         checks.extend(verify_libcxx_exception_counts(ROOT, TESTS, suite_output("libcxx_exception_counts"), args.nativeaot, run, args.libcxx_acquisition))
+        from libcxx_terminate_verify import verify_libcxx_terminate
+        checks.extend(verify_libcxx_terminate(ROOT, TESTS, suite_output("libcxx_terminate"), args.nativeaot, run, args.libcxx_acquisition))
+        from libcxx_terminate_boundaries_verify import verify_libcxx_terminate_boundaries
+        checks.extend(verify_libcxx_terminate_boundaries(ROOT, TESTS, suite_output("libcxx_terminate_boundaries"), args.nativeaot, run, args.libcxx_acquisition))
+        from libcxx_dynamic_specs_verify import verify_libcxx_dynamic_specs
+        checks.extend(verify_libcxx_dynamic_specs(ROOT, TESTS, suite_output("libcxx_dynamic_specs"), args.nativeaot, run, args.libcxx_acquisition))
+        from libcxx_dynamic_specs_fatal_verify import verify_libcxx_dynamic_specs_fatal
+        checks.extend(verify_libcxx_dynamic_specs_fatal(ROOT, TESTS, suite_output("libcxx_dynamic_specs_fatal"), args.nativeaot, run, args.libcxx_acquisition))
+        from libcxx_dynamic_specs_lifetime_verify import verify_libcxx_dynamic_specs_lifetime
+        checks.extend(verify_libcxx_dynamic_specs_lifetime(ROOT, TESTS, suite_output("libcxx_dynamic_specs_lifetime"), args.nativeaot, run, args.libcxx_acquisition))
     report = {"checks": checks, "nativeaot": args.nativeaot, "rid": "linux-x64",
               "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f"}
     (out / "results.json").write_text(json.dumps(report, indent=2) + "\n")

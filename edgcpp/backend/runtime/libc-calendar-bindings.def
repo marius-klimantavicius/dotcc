@@ -1,0 +1,3 @@
+// Immutable UTC metadata. Calendar algorithms themselves are translated musl.
+EDG_LIBC("__edg_calendar_utc", "sbyte*", "", "global::Edg.Runtime.LibcCalendar.UtcZone")
+EDG_LIBC("__edg_calendar_zone", "sbyte*", "sbyte*", "global::Edg.Runtime.LibcCalendar.ZoneName")

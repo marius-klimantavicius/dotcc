@@ -11,25 +11,27 @@ signatures and header declaration status. Regenerate it with
 `python3 backend/tests/libc_inventory.py --output docs/libc-api-inventory.json`.
 Its prototype census deliberately excludes macros, inline bodies, data symbols,
 and language features; a count is not a completeness percentage. Selected source
-entries are reviewed public definitions from the package's selected C files (currently 49 after wide integration).
+entries are reviewed public definitions from the package's selected C files.
+The provider manifest records the current packaged components; accepted candidate
+components can be newer than the last committed package milestone.
 
 | Domain / standard headers | Implemented evidence | Remaining work |
 | --- | --- | --- |
 | Memory, allocation, `string.h` | Shared owner NativeMemory heap, aligned allocation, memory and ordinary narrow strings, strerror/strerror_r, strtok/TLS | Audited allocation-failure breadth; POSIX extensions beyond explicit bindings. Byte collation accepted in all generated modes. |
-| Character classification, `ctype.h` | Complete narrow classification, casing and explicit-locale forms; all8 generated modes | Unicode wide classification remains separate. |
+| Character classification, `ctype.h` | Complete narrow classification, casing and explicit-locale forms; all8 generated modes | Broader locale repertoire beyond the supported C/POSIX/C.UTF-8 profile. |
 | Locale, `locale.h` | Owner/TLS C/POSIX/C.UTF-8 objects, category masks, transactional selection, pinned lconv | Environment locale selection, arbitrary locales, actual non-C numeric/monetary/collation data, catalogues. |
 | `stdio.h` | Byte FILE I/O, independent standard cells, buffering, seek/EOF/error/ungetc, synthetic append concurrency; selected musl printf family and one-pass asprintf | scanf family, freopen/tmpfile/tmpnam, perror/rewind, orientation and wide I/O, descriptor sharing, wider failure/concurrency/platform acceptance. fpos_t is still byte-only. |
-| Numeric `stdlib.h`, `inttypes.h` | Integer/float string conversion including binary80, endptr/errno, supported-locale `_l`, atoi family | Wide numeric conversion; imaxabs/imaxdiv; div structs/calls and broader stdlib operations. |
+| Numeric `stdlib.h`, `inttypes.h` | Integer/float string conversion including binary80, endptr/errno, supported-locale `_l`, atoi family; nine wide conversions plus seven `_l` forms, 12,277 exact cases in all8 generated modes | Integer abs/div family and aggregates now have native/all8 generated proof; broader stdlib operations remain. |
 | `math.h`, `float.h` | IEEE classification, frexp, abs/fabs, sqrt, copysign, integral rounding subset; binary80 exact probes | Most declared transcendental/remainder/power/scaling/decomposition functions; correct errno and directed rounding for all types. |
 | `fenv.h`, `complex.h`, `tgmath.h` | No complete provider | Floating environment modes/flags/exceptions, complex algorithms, generic math interface. Existing nearest-mode arithmetic is not fenv support. |
-| `wchar.h`, `wctype.h`, `uchar.h` | wctomb C byte escapes and UTF-8; 59 selected musl wide classifier/case/descriptor/string/memory/collation definitions | Resumable multibyte/UTF16/UTF32 packaging, wide numeric conversion, wide stream I/O; broader Unicode/locale repertoire beyond pinned musl. |
-| `time.h` | BCL realtime/monotonic clock_gettime, timespec_get, time, difftime; exact counter oracle and all8 generated modes | Process clocks, civil conversion, local zones/DST, normalization, formatting/parsing, broader leap/range/error contracts. |
+| `wchar.h`, `wctype.h`, `uchar.h` | wctomb C byte escapes and UTF-8; 59 selected musl wide classifier/case/descriptor/string/memory/collation definitions plus20-TU resumable multibyte/UTF16/UTF32 component with exhaustive scalar native and all8 generated modes, owner/thread hidden state isolation; wide numeric parsing with shared cursor | Wide stream I/O; broader Unicode/locale repertoire beyond pinned musl. |
+| `time.h` | BCL realtime/monotonic clock_gettime, timespec_get, time, difftime; musl UTC/civil conversion, timegm, asctime, narrow/wide strftime and explicit-locale forms; full Gregorian-cycle/extreme-year and all8 generated modes | Process clocks, local zones/DST, local normalization, parsing, broader leap/range/error contracts. |
 | `errno.h`, limits/integer/stddef | Portable normalized errno constants; pinned owner/thread errno; LP64 limits/types including least/fast | Broader conformance and architecture profiles. Portable values must be mapped at OS boundaries. |
 | `stdarg.h` | Aligned typed pack/cursor, va_copy/end, formatter integration | Continue ABI coverage for all admitted aggregate/extended types; no native platform va_list mixing. |
 | `assert.h`, `signal.h`, `setjmp.h` | No full libc header/provider | Assertion termination hooks, portable signals, compiler-assisted setjmp/longjmp with documented managed cleanup semantics. C++ EH does not imply setjmp support. |
 | `stdatomic.h`, `threads.h` | Language atomic lowering and separate libc++ BCL thread provider exist | Public C11 atomics/header integration and C threads API, condition/error/cancellation/lifetime semantics. |
 | `stdalign.h`, `stdbool.h`, `stdnoreturn.h`, `iso646.h` | Underlying language constructs largely supported | Portable C compatibility headers and dedicated C/C++ acceptance. |
-| Remaining `stdlib.h` | Heap, numeric conversion, selected abs helpers | qsort/bsearch and callbacks, rand/state, environment, exit/atexit/quick_exit/abort, system/process model, multibyte APIs. |
+| Remaining `stdlib.h` | Heap, numeric conversion, full integer abs/div helpers, source-backed smoothsort qsort/qsort_r and bsearch with owner/context/exception callbacks | rand/state, environment, exit/atexit/quick_exit/abort, system/process model. Selected multibyte conversion algorithms have accepted synthetic coverage. |
 | Filesystem / descriptors / process | BCL streams; runtime-selected append and remove/rename adapters | POSIX descriptor ownership, stat/directory/path/filesystem semantics, environment/process/execution; explicit unsupported platform capabilities rather than fake success. |
 | Networking, terminals, dynamic loading and other POSIX | No completion claim | Separate scope inventory and portable capability/error model; not covered by the C17 header census. |
 
@@ -61,6 +63,6 @@ or running whole libc++.
 * Filesystem/time zones: descriptor/stat/directory APIs, local zone conversion,
   and locale/formatting demands beyond the current provider.
 
-Next sequence: extend calendar/time formatting (root-owned slice); complete wide numeric conversion and stream orientation; grow stream
+Next sequence: extend calendar/time formatting (root-owned slice); implement stream
 orientation/scanning, math/fenv, and remaining C/POSIX domains. A newly observed
 libc++ blocker may change sequencing, never remove a category from the goal.

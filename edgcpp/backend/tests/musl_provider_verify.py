@@ -20,7 +20,7 @@ def verify_musl_provider(root, tests, out, nativeaot, run):
         manifest=json.loads((directory/'dot-gen.json').read_text())
         provider=manifest['libcProvider']
         assert provider['id']=='musl-selected-bcl-lp64-v1'
-        assert len(provider['translationUnits'])==49
+        assert len(provider['translationUnits'])==97
         import hashlib
         snapshot=Path(provider['snapshot'])
         for item in provider['translationUnits']:

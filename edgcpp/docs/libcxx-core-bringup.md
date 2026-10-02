@@ -69,3 +69,14 @@ diagnostics in the frontend configuration. Adding `<__functional/hash.h>` to
 the atomic protocol's second TU reproduces that boundary. Separate-TU linking
 and owned-IR work remain mandatory. No EDG semantics were changed, and no
 frontend diagnostics were suppressed to count these probes as accepted.
+
+
+## Calendar/wide dependency increment
+
+`libcxx-core-seeds-027` repeats the explicit single-TU source-closure probe with
+the 84-TU musl provider (including accepted restartable multibyte, wide numeric,
+and UTC/calendar formatting). It advances beyond `strftime_l`; the next missing
+operation is the address of `sscanf` in `include/locale:2642`,
+`money_get<char>::do_get`. The libc worker owns the pinned scanning family and
+its binary80/shared typed-variadic integration. This probe is still incomplete
+at translation and is not acceptance of the full library or separate-TU linker.

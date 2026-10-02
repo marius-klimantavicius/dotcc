@@ -56,7 +56,7 @@
     "owner-validated explicit C/POSIX/C.UTF-8 locale conversion wrappers"
   ],
   "adapters": {
-    "scan_string.h": "a69dbe90a5d789a73c79676c77e7751faa203a2e7b14d86fc6c29c1144036a82",
+    "scan_string.h": "99d0a00c6278ccea8dda085206702d07eaa361ed1d989b8efd51b6a29508d345",
     "scan_ctype.h": "ee81b37c6ec58bda099863576da6a9f07121744e609aa470e507147339143421",
     "intscan.h": "fef0f46a7cb481809eb1b5baa0ea193b1de05e5a37749072714b76f31d15fc63",
     "floatscan.h": "8e1e806eb51ddd0fb99a2b47c5fffe5be5cc674a122f65b0beed04f81afd90ab",

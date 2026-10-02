@@ -1,0 +1,9 @@
+#include "mb_compat.h"
+#include <stdlib.h>
+#include <wchar.h>
+
+size_t wcstombs(char *restrict s, const wchar_t *restrict ws, size_t n)
+{
+	const wchar_t *source = ws;
+	return wcsrtombs(s, &source, n, 0);
+}

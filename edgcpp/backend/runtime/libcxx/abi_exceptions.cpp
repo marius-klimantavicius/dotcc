@@ -92,3 +92,29 @@ void terminate() noexcept {__edg_cxx_terminate();}
 bool uncaught_exception() noexcept {return __edg_cxx_uncaught_exceptions()!=0;}
 int uncaught_exceptions() noexcept {return __edg_cxx_uncaught_exceptions();}
 }
+
+#if _LIBCPP_STD_VER <= 14 || defined(_LIBCPP_ENABLE_CXX17_REMOVED_UNEXPECTED_FUNCTIONS) || defined(_LIBCPP_BUILDING_LIBRARY)
+extern "C" {
+std::unexpected_handler __edg_cxx_set_unexpected(std::unexpected_handler) noexcept;
+std::unexpected_handler __edg_cxx_get_unexpected() noexcept;
+[[noreturn]] void __edg_cxx_unexpected();
+[[noreturn]] void __edg_cxx_unexpected_default();
+// The unused typed parameter gives the backend the exact public class identity
+// without guessing it from source names or manufacturing a lowered class.
+[[noreturn]] void __edg_cxx_throw_bad_exception(std::bad_exception*) {throw std::bad_exception();}
+}
+namespace {
+void managed_default_unexpected() {__edg_cxx_unexpected_default();}
+}
+namespace std {
+unexpected_handler set_unexpected(unexpected_handler handler) noexcept {
+  auto previous=__edg_cxx_set_unexpected(handler);
+  return previous?previous:managed_default_unexpected;
+}
+unexpected_handler get_unexpected() noexcept {
+  auto handler=__edg_cxx_get_unexpected();
+  return handler?handler:managed_default_unexpected;
+}
+void unexpected() {__edg_cxx_unexpected();}
+}
+#endif

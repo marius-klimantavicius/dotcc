@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "id": "musl-selected-bcl-lp64-v1",
-  "description": "Selected translated musl formatting, numeric conversion and wide-character algorithms with audited BCL libc services; not complete libc coverage.",
+  "description": "Selected translated musl formatting, numeric, wide/multibyte, UTC calendar and standard utility algorithms with audited BCL services; not complete libc coverage.",
   "components": [
     {
       "directory": "printf",
@@ -65,6 +65,79 @@
         "wmemset.c",
         "wcscoll.c",
         "wcsxfrm.c"
+      ]
+    },
+    {
+      "directory": "multibyte",
+      "translationUnits": [
+        "btowc.c",
+        "c16rtomb.c",
+        "c32rtomb.c",
+        "internal.c",
+        "mblen.c",
+        "mbrlen.c",
+        "mbrtoc16.c",
+        "mbrtoc32.c",
+        "mbrtowc.c",
+        "mbsinit.c",
+        "mbsnrtowcs.c",
+        "mbsrtowcs.c",
+        "mbstowcs.c",
+        "mbtowc.c",
+        "wcrtomb.c",
+        "wcsnrtombs.c",
+        "wcsrtombs.c",
+        "wcstombs.c",
+        "wctob.c",
+        "wctomb.c"
+      ]
+    },
+    {
+      "directory": "wide_numeric",
+      "translationUnits": [
+        "wcstol.c",
+        "wcstod.c",
+        "wide_locale_wrappers.c"
+      ]
+    },
+    {
+      "directory": "calendar",
+      "translationUnits": [
+        "strftime.c",
+        "__year_to_secs.c",
+        "__month_to_secs.c",
+        "__tm_to_secs.c",
+        "__secs_to_tm.c",
+        "gmtime_r.c",
+        "gmtime.c",
+        "timegm.c",
+        "asctime_r.c",
+        "asctime.c",
+        "langinfo.c",
+        "calendar_wrappers.c"
+      ]
+    },
+    {
+      "directory": "wide_calendar",
+      "translationUnits": [
+        "wcsftime.c",
+        "wide_calendar_wrappers.c"
+      ]
+    },
+    {
+      "directory": "stdlib_algorithms",
+      "translationUnits": [
+        "abs.c",
+        "labs.c",
+        "llabs.c",
+        "imaxabs.c",
+        "div.c",
+        "ldiv.c",
+        "lldiv.c",
+        "imaxdiv.c",
+        "bsearch.c",
+        "qsort.c",
+        "qsort_nr.c"
       ]
     }
   ]

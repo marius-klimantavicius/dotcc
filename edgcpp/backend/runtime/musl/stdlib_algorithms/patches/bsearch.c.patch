@@ -1,0 +1,28 @@
+--- a/bsearch.c
++++ b/bsearch.c
+@@ -1,19 +1,20 @@
++#include "algorithms_compat.h"
+ #include <stdlib.h>
+ 
+ void *bsearch(const void *key, const void *base, size_t nel, size_t width, int (*cmp)(const void *, const void *))
+ {
+-	void *try;
++	void *probe;
+ 	int sign;
+ 	while (nel > 0) {
+-		try = (char *)base + width*(nel/2);
+-		sign = cmp(key, try);
++		probe = (char *)base + width*(nel/2);
++		sign = cmp(key, probe);
+ 		if (sign < 0) {
+ 			nel /= 2;
+ 		} else if (sign > 0) {
+-			base = (char *)try + width;
++			base = (char *)probe + width;
+ 			nel -= nel/2+1;
+ 		} else {
+-			return try;
++			return probe;
+ 		}
+ 	}
+ 	return NULL;

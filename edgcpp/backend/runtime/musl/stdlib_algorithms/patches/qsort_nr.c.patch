@@ -1,0 +1,7 @@
+--- a/qsort_nr.c
++++ b/qsort_nr.c
+@@ -1,3 +1,4 @@
++#include "algorithms_compat.h"
+ #define _BSD_SOURCE
+ #include <stdlib.h>
+ 

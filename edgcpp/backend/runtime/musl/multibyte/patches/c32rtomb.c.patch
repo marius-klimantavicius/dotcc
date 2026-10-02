@@ -1,0 +1,7 @@
+--- a/c32rtomb.c
++++ b/c32rtomb.c
+@@ -1,3 +1,4 @@
++#include "mb_compat.h"
+ #include <uchar.h>
+ #include <wchar.h>
+ 

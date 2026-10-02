@@ -1,0 +1,7 @@
+--- a/abs.c
++++ b/abs.c
+@@ -1,3 +1,4 @@
++#include "algorithms_compat.h"
+ #include <stdlib.h>
+ 
+ int abs(int a)

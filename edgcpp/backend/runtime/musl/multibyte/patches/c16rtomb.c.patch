@@ -1,0 +1,17 @@
+--- a/c16rtomb.c
++++ b/c16rtomb.c
+@@ -1,11 +1,12 @@
++#include "mb_compat.h"
+ #include <uchar.h>
+ #include <errno.h>
+ #include <wchar.h>
+ 
+ size_t c16rtomb(char *restrict s, char16_t c16, mbstate_t *restrict ps)
+ {
+-	static unsigned internal_state;
+-	if (!ps) ps = (void *)&internal_state;
++	static EDG_MB_TLS unsigned internal_state;
++	if (!ps) ps = (mbstate_t *)&internal_state;
+ 	unsigned *x = (unsigned *)ps;
+ 	wchar_t wc;
+ 

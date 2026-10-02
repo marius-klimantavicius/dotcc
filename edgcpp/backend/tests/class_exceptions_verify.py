@@ -31,9 +31,22 @@ int main(int argc,char** argv){if(argc>1){report_fatal=1;terminate_case(atoi(arg
     candidates.extend(str(p) for p in sorted(Path('/usr/lib').glob('llvm-*/bin/clang++')))
     clang=next((shutil.which(p) for p in candidates if shutil.which(p)),None)
     if not clang: raise RuntimeError('Clang required for the C oracle')
+    fatal_index=0
     def terminated(command,argument,message):
-        result=subprocess.run([*map(str,command),str(argument)],capture_output=True,text=True,
-             timeout=60,preexec_fn=lambda:resource.setrlimit(resource.RLIMIT_CORE,(0,0)))
+        nonlocal fatal_index
+        prefix=out/f'fatal-{fatal_index:03d}';fatal_index+=1
+        argv=[*map(str,command),str(argument)]
+        try:
+            result=subprocess.run(argv,capture_output=True,text=True,
+                 timeout=60,preexec_fn=lambda:resource.setrlimit(resource.RLIMIT_CORE,(0,0)))
+        except subprocess.TimeoutExpired as error:
+            prefix.with_suffix('.stdout').write_bytes(error.stdout or b'')
+            prefix.with_suffix('.stderr').write_bytes(error.stderr or b'')
+            prefix.with_suffix('.json').write_text(json.dumps({'command':argv,'timeout':60,'expectedMessage':message},indent=2)+'\n')
+            raise
+        prefix.with_suffix('.stdout').write_text(result.stdout)
+        prefix.with_suffix('.stderr').write_text(result.stderr)
+        prefix.with_suffix('.json').write_text(json.dumps({'command':argv,'exit':result.returncode,'expectedMessage':message},indent=2)+'\n')
         assert result.returncode not in (0,90,91) and message in result.stderr,(argument,result.returncode,result.stdout,result.stderr)
         return result.stdout
     fatal={0:'Exception escaped catch parameter initialization',1:'Exception escaped EDG throw copy',

@@ -1,0 +1,20 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "wcstol.c": {
+      "upstream": "src/stdlib/wcstol.c",
+      "originalSha256": "ff9bdb00a80a11494d96617ee22774b433c2bfe1a7b4a8c44c120f4fbc82ac7f",
+      "adaptedSha256": "6039c6e4112edf9b6aa1bb7d2865c813dcc0ecdc8327436bba346ebdda31935e"
+    },
+    "wcstod.c": {
+      "upstream": "src/stdlib/wcstod.c",
+      "originalSha256": "b2aa59fd169e699c10d4bd7576ac346550e71a8f04cc75e120e71b4383528e27",
+      "adaptedSha256": "b1e3f243f01d371bab48f5e598f869c534f689983756bc74bee7c5cf3ccc360a"
+    }
+  },
+  "adapters": {
+    "wide_numeric.h": "804473c3fe7e5289c5da725892d807301eb73ede3e2f5a49794c4f948c05b400",
+    "wide_locale_wrappers.c": "b39ffcb6e856832a4583fc9dd317c1fec9ea79b53f75fabc9b9d70a8dd487ac6"
+  }
+}

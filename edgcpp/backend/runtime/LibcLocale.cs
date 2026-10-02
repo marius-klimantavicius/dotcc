@@ -103,6 +103,16 @@ public sealed unsafe class LibcLocale : IDisposable
             return Allocate(result);
         }
     }
+    // Private selected-source bridge: null means the current thread/global
+    // selection. Public _l APIs still validate and reject null beforehand.
+    public int Categories(void* handle)
+    {
+        lock(gate) {
+            Alive();
+            if(handle==null)return Current.Locale?.Categories??Volatile.Read(ref categories);
+            return Find(handle)?.Categories??-1;
+        }
+    }
     public void* DupLocale(void* source)
     {
         lock(gate) {

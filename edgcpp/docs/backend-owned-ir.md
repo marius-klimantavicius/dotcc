@@ -54,6 +54,24 @@ Negative fixtures must reject duplicate strong definitions, incompatible
 complete types, unresolved externals and mismatched target/owner ABI versions.
 Compare semantic merged-TU output and the original C backend where applicable.
 
-This document records a concrete migration boundary, not an implemented IR or
-linker. Source diagnostics, semantic multi-TU support and output splitting are
-already independently tested; they do not close these remaining gates.
+## First implemented slice
+
+The opt-in `--type-ir` path copies physical types into `dot_gen_ir.h` records
+containing strings, integer IDs, scalar layout facts and ID edges. Only the
+ingestion adapter retains EDG pointer keys. It covers scalar encodings,
+qualifiers, pointers, function signatures, arrays, recursive records, unions and
+bitfield extents. The verifier checks edge validity, array stride/count, field
+bounds/alignment and rejects embedded-object cycles while allowing recursive
+pointers. Array/record emission begins consuming owned size facts.
+
+The driver saves `dot-gen.types.json` and records its SHA256 in the manifest;
+the file is not compiled as C#. `physical-types-translated-001` passes five
+native/static/instance JIT/NativeAOT checks with byte-identical emitted C# under
+the direct and owned-type paths. Additional validator adversarial cases run as
+a standalone C++ test. This is an experimental physical-type graph, explicitly
+marked `physical-types-only`, not a linkable program object. It does not yet own
+operations, symbols, relocations, sequencing or lifetime/control flow, and it
+does not unify independent translation units. Those migration gates remain open.
+
+Source diagnostics, semantic multi-TU support and output splitting are
+independently tested; they do not close these remaining gates.

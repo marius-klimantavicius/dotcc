@@ -51,6 +51,8 @@ char *getenv(const char *);
 int system(const char *);
 void *bsearch(const void *, const void *, size_t, size_t, int (*)(const void *, const void *));
 void qsort(void *, size_t, size_t, int (*)(const void *, const void *));
+/* Portable GNU/POSIX context-last contract, independent of the host OS ABI. */
+void qsort_r(void *, size_t, size_t, int (*)(const void *, const void *, void *), void *);
 int abs(int);
 long labs(long);
 long long llabs(long long);

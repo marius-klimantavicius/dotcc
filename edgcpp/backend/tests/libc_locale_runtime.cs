@@ -8,6 +8,8 @@ unsafe class Program {
   void* global=(void*)(nint)(-1);Check(a.Locales.UseLocale(null)==global,"initial global selection");
   void* locale=a.Locales.NewLocale(1,(sbyte*)utf,null);Check(locale!=null && a.MbCurMax()==1,"creation does not select");
   Check(a.Locales.UseLocale(locale)==global && a.MbCurMax()==4,"thread select");
+  error.Value=71;Check(a.Locales.Categories(null)==1 && a.Locales.Categories(locale)==1 && error.Value==71,"private effective category query");
+  Check(b.Locales.Categories(locale)==-1 && a.Locales.Categories(global)==-1 && error.Value==22,"private category foreign/sentinel rejection");
   Check(a.Locales.UseLocale(null)==locale && b.MbCurMax()==1,"owner separation");
   byte* buffer=stackalloc byte[4];Check(a.Wctomb((sbyte*)buffer,0x20ac)==3 && buffer[0]==0xe2,"selected UTF8 conversion");
   Check(a.SetLocale(6,(sbyte*)c)!=null && a.MbCurMax()==4,"thread overrides owner global");

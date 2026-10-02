@@ -25,6 +25,7 @@ clock_t clock(void);
 int clock_gettime(clockid_t, struct timespec *);
 double difftime(time_t, time_t);
 time_t mktime(struct tm *);
+time_t timegm(struct tm *);
 time_t time(time_t *);
 char *asctime(const struct tm *);
 char *ctime(const time_t *);

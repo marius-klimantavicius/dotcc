@@ -1,0 +1,166 @@
+--- a/strftime.c
++++ b/strftime.c
+@@ -1,3 +1,4 @@
++#include "calendar_compat.h"
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -238,7 +239,7 @@
+ 			width = strtoul(f, &p, 10);
+ 		} else {
+ 			width = 0;
+-			p = (void *)f;
++			p = (char *)f;
+ 		}
+ 		if (*p == 'C' || *p == 'F' || *p == 'G' || *p == 'Y') {
+ 			if (!width && p!=f) width = 1;
+@@ -284,4 +285,3 @@
+ 	return __strftime_l(s, n, f, tm, CURRENT_LOCALE);
+ }
+ 
+-weak_alias(__strftime_l, strftime_l);
+--- a/__year_to_secs.c
++++ b/__year_to_secs.c
+@@ -1,3 +1,5 @@
++#include "calendar_compat.h"
++#include "time_impl.h"
+ long long __year_to_secs(long long year, int *is_leap)
+ {
+ 	if (year-2ULL <= 136) {
+--- a/__month_to_secs.c
++++ b/__month_to_secs.c
+@@ -1,3 +1,5 @@
++#include "calendar_compat.h"
++#include "time_impl.h"
+ int __month_to_secs(int month, int is_leap)
+ {
+ 	static const int secs_through_month[] = {
+--- a/__tm_to_secs.c
++++ b/__tm_to_secs.c
+@@ -1,3 +1,4 @@
++#include "calendar_compat.h"
+ #include "time_impl.h"
+ 
+ long long __tm_to_secs(const struct tm *tm)
+--- a/__secs_to_tm.c
++++ b/__secs_to_tm.c
+@@ -1,3 +1,4 @@
++#include "calendar_compat.h"
+ #include "time_impl.h"
+ #include <limits.h>
+ 
+--- a/gmtime_r.c
++++ b/gmtime_r.c
+@@ -1,3 +1,4 @@
++#include "calendar_compat.h"
+ #include "time_impl.h"
+ #include <errno.h>
+ 
+@@ -13,4 +14,3 @@
+ 	return tm;
+ }
+ 
+-weak_alias(__gmtime_r, gmtime_r);
+--- a/gmtime.c
++++ b/gmtime.c
+@@ -1,3 +1,4 @@
++#include "calendar_compat.h"
+ #include "time_impl.h"
+ #include <errno.h>
+ 
+--- a/timegm.c
++++ b/timegm.c
+@@ -1,16 +1,17 @@
++#include "calendar_compat.h"
+ #define _GNU_SOURCE
+ #include "time_impl.h"
+ #include <errno.h>
+ 
+ time_t timegm(struct tm *tm)
+ {
+-	struct tm new;
++	struct tm converted;
+ 	long long t = __tm_to_secs(tm);
+-	if (__secs_to_tm(t, &new) < 0) {
++	if (__secs_to_tm(t, &converted) < 0) {
+ 		errno = EOVERFLOW;
+ 		return -1;
+ 	}
+-	*tm = new;
++	*tm = converted;
+ 	tm->tm_isdst = 0;
+ 	tm->__tm_gmtoff = 0;
+ 	tm->__tm_zone = __utc;
+--- a/asctime_r.c
++++ b/asctime_r.c
+@@ -1,3 +1,4 @@
++#include "calendar_compat.h"
+ #include <time.h>
+ #include <stdio.h>
+ #include <langinfo.h>
+@@ -25,4 +26,3 @@
+ 	return buf;
+ }
+ 
+-weak_alias(__asctime_r, asctime_r);
+--- a/asctime.c
++++ b/asctime.c
+@@ -1,3 +1,4 @@
++#include "calendar_compat.h"
+ #include <time.h>
+ 
+ char *asctime(const struct tm *tm)
+--- a/langinfo.c
++++ b/langinfo.c
+@@ -1,3 +1,4 @@
++#include "calendar_compat.h"
+ #include <locale.h>
+ #include <langinfo.h>
+ #include "locale_impl.h"
+@@ -32,31 +33,33 @@
+ 	int idx = item & 65535;
+ 	const char *str;
+ 
+-	if (item == CODESET) return loc->cat[LC_CTYPE] ? "UTF-8" : "ASCII";
++	int mask = loc == C_LOCALE ? 0 : __edg_locale_categories(loc);
++	if (mask < 0) return (char *)"";
++	if (item == CODESET) return (char *)((mask & (1 << LC_CTYPE)) ? "UTF-8" : "ASCII");
+ 
+ 	/* _NL_LOCALE_NAME extension */
+ 	if (idx == 65535 && cat < LC_ALL)
+-		return loc->cat[cat] ? (char *)loc->cat[cat]->name : "C";
++		return (char *)((mask & (1 << cat)) ? "C.UTF-8" : "C");
+ 	
+ 	switch (cat) {
+ 	case LC_NUMERIC:
+-		if (idx > 1) return "";
++		if (idx > 1) return (char *)"";
+ 		str = c_numeric;
+ 		break;
+ 	case LC_TIME:
+-		if (idx > 0x31) return "";
++		if (idx > 0x31) return (char *)"";
+ 		str = c_time;
+ 		break;
+ 	case LC_MONETARY:
+-		if (idx > 0) return "";
++		if (idx > 0) return (char *)"";
+ 		str = "";
+ 		break;
+ 	case LC_MESSAGES:
+-		if (idx > 3) return "";
++		if (idx > 3) return (char *)"";
+ 		str = c_messages;
+ 		break;
+ 	default:
+-		return "";
++		return (char *)"";
+ 	}
+ 
+ 	for (; idx; idx--, str++) for (; *str; str++);
+@@ -69,5 +72,3 @@
+ 	return __nl_langinfo_l(item, CURRENT_LOCALE);
+ }
+ 
+-weak_alias(__nl_langinfo, nl_langinfo);
+-weak_alias(__nl_langinfo_l, nl_langinfo_l);

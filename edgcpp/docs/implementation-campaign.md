@@ -238,3 +238,32 @@ providers, configured termination, dynamic exception specifications and the
 owned-type graph prototype remain separate subsequent work. Full libc/libc++,
 separate-TU assembly, performance closure and other platform executions remain
 open. No real-world project acceptance was run.
+
+## Sixth increment in progress: configured termination and portable library breadth
+
+The next accepted component set adds configured owner-specific termination
+(78 focused checks plus 50 targeted regressions), dynamic exception specification
+positive and fatal cases (six positive, 28 fatal and five persistent-lifetime native/JIT/NativeAOT checks), and compatible array storage
+(ten checks). The opt-in physical type graph passes six checks including
+adversarial validation and byte-identical C# emission. It remains physical types
+only; owned operations, lifetimes and separate-TU linking are still required.
+
+Selected musl packaging now includes 97 translation units. Multibyte, wide
+numeric, UTC calendar, wide calendar and standard utility algorithms each pass
+nine component checks; automatic packaging passes eight checks at
+`artifacts/campaign/musl-provider-calendar-algorithms-001/results.json`.
+The source-backed sort retains musl's smoothsort algorithm and native allocation
+policy; multibyte hidden states are owner/thread scoped. Calendar acceptance
+covers UTC/civil arithmetic and formatting, not local zones or DST.
+
+`checkpoint-calendar-termination-001` preserves canonical inputs and a separate
+exact installed compiler overlay. New environment and scanf drafts in its
+canonical tree are explicitly not accepted by that checkpoint. Local-time/environment integration
+and scanf remain active work.
+Full libc/libc++, architecture/platform execution, performance closure and the
+owned program IR are not complete. All intermediates remain retained.
+
+The sixth focused evidence index records 245 checks, including targeted
+regressions; it is not a new complete-suite run. Exact staged inputs are saved
+in `evidence/milestone-calendar-termination.json`. Environment/scanf work stays
+outside this increment.

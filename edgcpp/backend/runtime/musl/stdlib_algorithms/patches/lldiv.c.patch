@@ -1,0 +1,7 @@
+--- a/lldiv.c
++++ b/lldiv.c
+@@ -1,3 +1,4 @@
++#include "algorithms_compat.h"
+ #include <stdlib.h>
+ 
+ lldiv_t lldiv(long long num, long long den)

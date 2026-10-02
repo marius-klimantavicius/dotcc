@@ -1,0 +1,19 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "wcsftime.c": {
+      "upstream": "src/time/wcsftime.c",
+      "originalSha256": "895d612ebf63998db116fe78ec867006d0172b786b6c5bd364c551f0d14667b6",
+      "adaptedSha256": "66d6db48c85468f8630559acc5fbd5c7dcc55813ad71a5946b3c363957e7752a"
+    }
+  },
+  "adapters": {
+    "wide_calendar_compat.h": "6c88823bf822d8fa08dc0ff03457d24db0e8f2af332ed0bd7ad533d28502ec1b",
+    "locale_impl.h": "8db69eee9e1fecd32b3c50b1b81aceb3674b3e746d45db19b7c547d0853d7241",
+    "time_impl.h": "bac75afa45ba4803203812dd6076171035a6eda654a88e3c8cb760864f49d91f",
+    "wide_calendar_wrappers.c": "92f60f093091c8e41d772f3733e7a28aa2c40e1c7a74dcc7f691288ff4cce5d3"
+  },
+  "patch": "wide-calendar-managed.patch",
+  "patchSha256": "59bbfb8364448d393aab249f4611c2d980f9071a52ddcbbf63d58e370fd081a7"
+}

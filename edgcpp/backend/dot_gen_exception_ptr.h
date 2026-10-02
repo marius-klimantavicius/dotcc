@@ -80,11 +80,7 @@ private static void __edg_free_primary_exception(void* token) {
   helper_output+="// dot-gen:member-begin\nprivate static void* __edg_init_primary_exception(void* token,void* type,nint function) {\n"
       "var storage=__edg_exception_storage.FromAddress(token);long id=(byte*)type-__edg_type_token_base;\n"
       "if(id>=0 && (id&7)==0)switch(id/8) {\n"+cases+"}\nglobal::System.Environment.FailFast(\"Unknown primary exception type_info\");return null;\n}\n// dot-gen:member-end\n";
-  string term_callback="delegate* managed<"+string(instance_mode?string(getenv("EDG_DOT_CLASS"))+", ":"")+"void>";
-  string term_invoke="(("+term_callback+")handler)("+string(instance_mode?"this":"")+");";
-  helper_output+="private "+mod+"nint __edg_terminate_handler;\n";
-  helper_output+="// dot-gen:member-begin\nprivate "+mod+"nint __edg_set_terminate(nint handler) {return global::System.Threading.Interlocked.Exchange(ref __edg_terminate_handler,handler);}\n// dot-gen:member-end\n";
-  helper_output+="// dot-gen:member-begin\nprivate "+mod+"void __edg_terminate() {nint handler=global::System.Threading.Interlocked.CompareExchange(ref __edg_terminate_handler,0,0);if(handler!=0) {try {"+term_invoke+"} catch(global::System.Exception error) {global::System.Environment.FailFast(\"C++ terminate handler threw\",error);}}global::System.Environment.FailFast(\"C++ terminate\");}\n// dot-gen:member-end\n";
+
 }
 string exception_ptr_call(a_routine_ptr r,an_expr_node_ptr args) {
   if(r->function_def_number!=NULL_function_def_number)return "";
@@ -109,7 +105,7 @@ string exception_ptr_call(a_routine_ptr r,an_expr_node_ptr args) {
   }
   if(source=="__cxa_current_primary_exception" || source=="__edg_cxx_terminate" || source=="__edg_cxx_terminate_default" || source=="__edg_cxx_get_terminate" || source=="__edg_cxx_uncaught_exceptions") {
     if(!values.empty())unsupported("primary exception no-argument ABI");
-    if(source=="__edg_cxx_uncaught_exceptions")return "__edg_uncaught_count";
+    if(source=="__edg_cxx_uncaught_exceptions")return "__edg_uncaught_exceptions";
     if(source=="__cxa_current_primary_exception")return "__edg_current_primary_exception(null)";
     if(source=="__edg_cxx_get_terminate")return "("+type(skip_typerefs(r->type)->variant.routine.return_type)+")global::System.Threading.Interlocked.CompareExchange(ref __edg_terminate_handler,0,0)";
     if(source=="__edg_cxx_terminate_default")return "global::System.Environment.FailFast(\"C++ default terminate\")";

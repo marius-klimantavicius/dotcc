@@ -19,7 +19,7 @@ RUNTIME_DEPENDENCIES = {
     "LibcFilesFormat": ("LibcFiles", "VaList"),
     "LibcText": ("LibcErrorMessages", "LibcLocale"), "LibcErrorMessages": (), "LibcLocale": (),
     "LibcClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
-    "LibcxxThreads": (),
+    "LibcxxThreads": (), "LibcCalendar": (), "LibcProcess": (),
 }
 
 
@@ -53,6 +53,8 @@ def main():
     parser.add_argument("--instance-methods", action="store_true",
                         help="give each generated class instance its own globals and TLS")
     parser.add_argument("--emit", choices=("exe", "managedlib"), default="exe")
+    parser.add_argument("--type-ir", action="store_true",
+                        help="verify and save the experimental backend-owned physical type graph (not a linkable program IR)")
     parser.add_argument("--runtime", choices=("none", "edg-exceptions"), default="none",
                         help="opt in to the pinned EDG exception classes and allocation bootstrap")
     parser.add_argument("--libc", choices=("none", "dotcc", "musl"), default="none",
@@ -80,7 +82,7 @@ def main():
                EDG_DOT_INSTANCE="1" if args.instance_methods else "0",
                EDG_DOT_EMIT=args.emit, EDG_DOT_NEST="1" if args.nest_types else "0",
                EDG_DOT_RUNTIME=args.runtime, EDG_DOT_LIBC="dotcc" if args.libc=="musl" else args.libc,
-               EDG_DOT_TARGET=args.target)
+               EDG_DOT_TARGET=args.target, EDG_DOT_TYPE_IR="1" if args.type_ir else "0")
     # Never discover host system headers. The optional bootstrap exposes only
     # the pinned EDG exception headers for the current LP64 target. Keep EH
     # enabled so unsupported EH remains visible in the IL.
@@ -136,6 +138,13 @@ def main():
         return ""
     source = re.sub(r"^// dot-gen:export ([0-9a-f]*) (\w+)\n", export_record, result.stdout, flags=re.M)
     source = source.replace("// dot-gen:main-arguments utf8-owned-v1\n", "")
+    type_ir_records = re.findall(r"^// dot-gen:type-ir (.*)\n", source, flags=re.M)
+    if args.type_ir and len(type_ir_records) != 1:
+        parser.error("backend did not emit one owned physical type graph")
+    type_ir = json.loads(type_ir_records[0]) if type_ir_records else None
+    source = re.sub(r"^// dot-gen:type-ir .*\n", "", source, flags=re.M)
+    termination = "// dot-gen:termination owner-v1\n" in source
+    source = source.replace("// dot-gen:termination owner-v1\n", "")
     imports = sorted(set(re.findall(r"^// dot-gen:import (\w+)\n", source, flags=re.M)))
     source = re.sub(r"^// dot-gen:import \w+\n", "", source, flags=re.M)
     # These are explicit backend protocol delimiters, not a C# source parser.
@@ -145,8 +154,15 @@ def main():
     files = {
         "Translated.cs": translated,
     }
+    if type_ir is not None:
+        files["dot-gen.types.json"] = json.dumps(type_ir, indent=2) + "\n"
     if args.emit == "exe":
-        if "void Shutdown()" in result.stdout:
+        if termination:
+            receiver = "owner" if args.instance_methods else qualified
+            owner = f"using var owner=new {qualified}(); " if args.instance_methods else ""
+            cleanup = f" finally {{ {qualified}.Shutdown(); }}" if not args.instance_methods and "void Shutdown()" in result.stdout else ""
+            files["EntryPoint.cs"] = f"internal static class EntryPoint {{ public static int Main() {{ {owner}try {{ return {receiver}.Run({run_arguments}); }} catch(global::System.Exception error) {{ {receiver}.__EdgUnhandledProgram(error); throw; }}{cleanup} }} }}\n"
+        elif "void Shutdown()" in result.stdout:
             if args.instance_methods:
                 files["EntryPoint.cs"] = f"internal static class EntryPoint {{ public static int Main() {{ using var owner=new {qualified}(); return owner.Run({run_arguments}); }} }}\n"
             else:
@@ -174,7 +190,7 @@ def main():
                 runtime_helpers.add(dependency);pending.append(dependency)
     for helper in sorted(runtime_helpers):
         files[f"Runtime.{helper}.cs"] = (ROOT / f"backend/runtime/{helper}.cs").read_text()
-    compile_items = "\n".join(f'    <Compile Include="{filename}" />' for filename in files)
+    compile_items = "\n".join(f'    <Compile Include="{filename}" />' for filename in files if filename.endswith(".cs"))
     files["Generated.csproj"] = '''<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>OUTPUT_TYPE</OutputType>
@@ -195,7 +211,7 @@ COMPILE_ITEMS
     owned = set()
     if manifest.exists():
         owned = set(json.loads(manifest.read_text())["files"])
-        allowed={"Translated.cs", "EntryPoint.cs", "Generated.csproj"} | {f"Runtime.{name}.cs" for name in RUNTIME_DEPENDENCIES}
+        allowed={"Translated.cs", "EntryPoint.cs", "Generated.csproj", "dot-gen.types.json"} | {f"Runtime.{name}.cs" for name in RUNTIME_DEPENDENCIES}
         if any(name not in allowed and
                not re.fullmatch(r"Translated\.part[0-9]{5,}\.cs", name) for name in owned):
             parser.error("invalid generated-file ownership manifest")
@@ -219,6 +235,8 @@ COMPILE_ITEMS
         "emit": args.emit, "runtime": args.runtime, "nestTypes": args.nest_types, "exports": exports,
         "libc": args.libc, "libcProvider": libc_provider, "imports": imports,
         "target": target_manifest,
+        "termination": "owner-v1" if termination else None,
+        "physicalTypeIR": {"file":"dot-gen.types.json", "sha256":hashlib.sha256(files["dot-gen.types.json"].encode()).hexdigest()} if type_ir is not None else None,
     }, indent=2) + "\n"
     # Keep superseded generation inputs during the full implementation campaign.
     # Historical files are outside the explicit project Compile item list.

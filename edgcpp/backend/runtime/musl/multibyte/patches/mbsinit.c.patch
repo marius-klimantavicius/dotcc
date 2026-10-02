@@ -1,0 +1,7 @@
+--- a/mbsinit.c
++++ b/mbsinit.c
+@@ -1,3 +1,4 @@
++#include "mb_compat.h"
+ #include <wchar.h>
+ 
+ int mbsinit(const mbstate_t *st)

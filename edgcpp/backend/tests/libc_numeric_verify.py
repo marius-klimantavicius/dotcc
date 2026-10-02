@@ -46,8 +46,8 @@ def validate_golden(rows,data):
         assert records[kind,10,'18446744073709551615']==((1<<64)-1,0,71,20)
         assert records[kind,10,'18446744073709551616']==((1<<64)-1,0,34,20)
 
-def verify_libc_numeric(root,tests,out,nativeaot,run,translate=True):
-    out.mkdir(parents=True,exist_ok=True);library=out/'selected-sources';shutil.copytree(root/'backend/runtime/musl/strto',library);rows=corpus();cases=out/'cases.txt'
+def verify_libc_numeric(root,tests,out,nativeaot,run,translate=True,library_source=None):
+    out.mkdir(parents=True,exist_ok=True);library=out/'selected-sources';shutil.copytree(library_source or root/'backend/runtime/musl/strto',library);rows=corpus();cases=out/'cases.txt'
     manifest=json.loads((library/'source.json').read_text())
     for name,item in manifest['sources'].items():
         original=library/name.replace('.c','.original.c');adapted=library/name
@@ -92,7 +92,7 @@ Console.WriteLine($"{index} selected musl numeric cases passed: exact results, e
     return checks
 
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output-dir',required=True,type=Path);parser.add_argument('--nativeaot',action='store_true');parser.add_argument('--native-only',action='store_true');a=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output-dir',required=True,type=Path);parser.add_argument('--nativeaot',action='store_true');parser.add_argument('--native-only',action='store_true');parser.add_argument('--source-dir',type=Path);a=parser.parse_args()
     out=a.output_dir.resolve();out.mkdir(parents=True,exist_ok=False);root=Path(__file__).resolve().parents[2];index=0;checks=[]
     def run(command):
         nonlocal index
@@ -100,7 +100,7 @@ def main():
         (out/f'{i:03}.command.json').write_text(json.dumps(command,indent=2));(out/f'{i:03}.log').write_text(r.stdout+r.stderr)
         if r.returncode:print(r.stdout+r.stderr)
         r.check_returncode()
-    try:checks=verify_libc_numeric(root,root/'backend/tests',out,a.nativeaot,run,not a.native_only)
+    try:checks=verify_libc_numeric(root,root/'backend/tests',out,a.nativeaot,run,not a.native_only,library_source=a.source_dir)
     finally:(out/'results.json').write_text(json.dumps(checks,indent=2)+'\n')
     print(json.dumps(checks,indent=2))
 if __name__=='__main__':main()

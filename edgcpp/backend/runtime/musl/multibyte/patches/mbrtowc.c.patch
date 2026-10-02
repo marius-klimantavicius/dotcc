@@ -1,0 +1,24 @@
+--- a/mbrtowc.c
++++ b/mbrtowc.c
+@@ -1,3 +1,4 @@
++#include "mb_compat.h"
+ #include <stdlib.h>
+ #include <wchar.h>
+ #include <errno.h>
+@@ -5,13 +6,13 @@
+ 
+ size_t mbrtowc(wchar_t *restrict wc, const char *restrict src, size_t n, mbstate_t *restrict st)
+ {
+-	static unsigned internal_state;
++	static EDG_MB_TLS unsigned internal_state;
+ 	unsigned c;
+-	const unsigned char *s = (const void *)src;
++	const unsigned char *s = (const unsigned char *)src;
+ 	const size_t N = n;
+ 	wchar_t dummy;
+ 
+-	if (!st) st = (void *)&internal_state;
++	if (!st) st = (mbstate_t *)&internal_state;
+ 	c = *(unsigned *)st;
+ 	
+ 	if (!s) {

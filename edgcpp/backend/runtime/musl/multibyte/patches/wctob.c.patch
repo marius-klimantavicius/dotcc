@@ -1,0 +1,7 @@
+--- a/wctob.c
++++ b/wctob.c
+@@ -1,3 +1,4 @@
++#include "mb_compat.h"
+ #include <wchar.h>
+ #include <stdio.h>
+ #include <stdlib.h>

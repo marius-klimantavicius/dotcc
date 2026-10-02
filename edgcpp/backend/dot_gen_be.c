@@ -112,21 +112,32 @@ string name(const void *p, const char *prefix) {
 }
 #include "dot_gen_trace.h"
 #include "dot_gen_order.h"
+#include "dot_gen_ir_adapter.h"
+#include "dot_gen_storage_types.h"
+bool owned_ir_enabled=false;
 
 string aggregate_type(a_type_ptr t) {
+  const auto layout_size=owned_ir_enabled?owned_ir.types[own_type(t)].size:(unsigned long long)t->size;
   auto found = aggregate_types.find(t);
   if (found != aggregate_types.end()) return found->second;
+  string array_key;
+  if(t->kind==tk_array) {
+    array_key=storage_type_key(t);
+    auto prior=array_storage_types.find(array_key);
+    if(prior!=array_storage_types.end())return aggregate_types[t]=prior->second;
+  }
   if(t->kind==tk_array && !t->size && !t->variant.array.is_vla && !t->variant.array.is_template_dependent_size_array) {
     // An address-only view for C flexible/incomplete array tails. No CLR field
     // is embedded for this marker; the containing record keeps its EDG size.
     string id=name(t,"__edg_array_tail");
     if(!nested_types)id=string(getenv("EDG_DOT_CLASS")+1)+"_"+id;
-    aggregate_types[t]=id;type_output+="public struct "+id+" {}\n";return id;
+    aggregate_types[t]=id;array_storage_types[array_key]=id;type_output+="public struct "+id+" {}\n";return id;
   }
-  if (!t->size || t->size > 64*1024*1024) unsupported(("aggregate size "+std::to_string(t->size)+" for "+string(t->source_corresp.name?t->source_corresp.name:"<anonymous>")+" (1..64 MiB bytes required)").c_str());
+  if (!layout_size || layout_size > 64*1024*1024) unsupported(("aggregate size "+std::to_string(layout_size)+" for "+string(t->source_corresp.name?t->source_corresp.name:"<anonymous>")+" (1..64 MiB bytes required)").c_str());
   string id = name(t, "__edg_type");
   if (!nested_types) id = string(getenv("EDG_DOT_CLASS") + 1) + "_" + id;
   aggregate_types[t] = id; // Register before walking self-referential pointers.
+  if(!array_key.empty())array_storage_types[array_key]=id;
   string fields;
   if (t->kind == tk_array) {
     if (t->variant.array.is_variable_size_array || t->variant.array.is_vla ||
@@ -199,10 +210,11 @@ string aggregate_type(a_type_ptr t) {
     }
   }
   type_output += "[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = " +
-                 std::to_string(t->size) + ", Pack = 1)]\npublic unsafe struct " + id + " {\n" + fields + "}\n";
+                 std::to_string(layout_size) + ", Pack = 1)]\npublic unsafe struct " + id + " {\n" + fields + "}\n";
   return id;
 }
 string type(a_type_ptr t) {
+  if(owned_ir_enabled)own_type(t);
   // Restrict constrains valid source aliases; omitting that optimization
   // promise in managed code preserves valid-program behavior. EDG itself has
   // SUPPRESS_RESTRICT_IN_GENERATED_CODE in il_to_str.c::form_type_qualifiers.
@@ -514,12 +526,14 @@ bool selected_runtime_branch(a_statement_ptr s,a_statement_ptr &branch) {
 #include "dot_gen_arrays.h"
 #include "dot_gen_vla.h"
 #include "dot_gen_cleanup.h"
+#include "dot_gen_terminate.h"
 #include "dot_gen_exceptions.h"
 #include "dot_gen_lifecycle.h"
 #include "dot_gen_virtual.h"
 #include "dot_gen_rtti.h"
 #include "dot_gen_typeinfo.h"
 #include "dot_gen_exception_ptr.h"
+#include "dot_gen_unexpected.h"
 #include "dot_gen_runtime.h"
 string location(an_expr_node_ptr e);
 #include "dot_gen_materialize.h"
@@ -622,6 +636,8 @@ string location(an_expr_node_ptr e) {
       if(!lifecycle.empty())return lifecycle;
       string primary_exception=exception_ptr_call(r,b);
       if(!primary_exception.empty())return primary_exception;
+      string unexpected=unexpected_call(r,b);
+      if(!unexpected.empty())return unexpected;
       string provider=runtime_provider_call(r,b);
       if(!provider.empty())return provider;
       string atomic=atomic_call(r,b);
@@ -935,7 +951,7 @@ void globals(a_variable_ptr first, const char *cls) {
   }
   if(!startup_routines.empty()) {
     line("try {");for(auto r:startup_routines)line(name(r,"f")+"();");
-    line("} catch(global::System.Exception error) {global::System.Environment.FailFast(\"Exception during global initialization\",error);}");
+    line("} catch(global::System.Exception error) {/*__EDG_GLOBAL_TERMINATE__*/}");
   }
   line("}");
   if (has_tls) {
@@ -1130,6 +1146,8 @@ void statement(a_statement_ptr s) {
 
 // EDG's custom-backend entry point intentionally has global namespace linkage.
 void back_end(void) {
+  reset_owned_ir();owned_ir_enabled=getenv("EDG_DOT_TYPE_IR") && string(getenv("EDG_DOT_TYPE_IR"))=="1";
+  storage_record_ids.clear();array_storage_types.clear();
   diagnostic_position={};
   names.clear(); global_offsets.clear(); tls_offsets.clear(); assignment_helpers.clear();
   emitting_tls_initializer = false;
@@ -1139,6 +1157,8 @@ void back_end(void) {
   expression_variables.clear(); expression_serial=0; cleanup_slot="__edg_cleanup_state"; array_helpers_emitted=false; array_allocation_helpers.clear();
   context = "file scope";
   exception_helpers_emitted=false; pending_exception.clear(); exception_metadata.clear(); catch_frames.clear();
+  terminate_helpers_emitted=false;
+  unexpected_helpers_emitted=false;bad_exception_factory=nullptr;bad_exception_type=nullptr;
   exception_classes.clear(); exception_destructors.clear();
   exception_types.clear(); exception_matchers.clear();
   constant_templates.clear(); constant_template_variables.clear();
@@ -1164,6 +1184,7 @@ void back_end(void) {
   collect_primary_exception_types();
   for(auto r=scope->routines;r;r=r->next) {
     if(!routine_body_needed(r))continue;
+    collect_dynamic_specification(r);
     if(r->function_def_number==NULL_function_def_number)continue;
     auto s=scope_for_routine_or_null(r);
     if(s) { collect_exception_metadata(s->assoc_block); collect_constant_templates(s); }
@@ -1228,9 +1249,11 @@ void back_end(void) {
     line("// dot-gen:member-begin");
     line(signature + ") {");
     auto spec = rt->variant.routine.extra_info->exception_specification;
-    bool no_throw = spec && !spec->throw_any;
+    bool no_throw = spec && !spec->throw_any && spec->is_noexcept;
+    bool dynamic_spec = dynamic_exception_spec(r);
     if (spec && spec->indeterminate) unsupported("indeterminate exception specification");
-    if (no_throw) line("try {");
+    if (no_throw) {ensure_terminate_helpers();line("try {");}
+    else if(dynamic_spec) {ensure_unexpected_helpers();line("try {");}
     bool heap_frame = frame_size + frame_alignment > 65536;
     if (frame_size) {
       if (heap_frame) {
@@ -1257,7 +1280,8 @@ void back_end(void) {
       line("} finally { global::Edg.Runtime.Vla.Restore(__edg_vla_mark); }");
     }
     if (heap_frame) line("} finally { global::System.Runtime.InteropServices.NativeMemory.Free(__edg_frame_raw); }");
-    if (no_throw) line("} catch (global::System.Exception error) { global::System.Environment.FailFast(\"Exception escaped noexcept function\", error); throw; }");
+    if (no_throw) line("} catch (global::System.Exception error) { __edg_terminate_runtime(error, \"Exception escaped noexcept function\"); throw; }");
+    else if(dynamic_spec)line(dynamic_exception_boundary(r));
     line("}");
     line("// dot-gen:member-end");
     if (library_mode) {
@@ -1285,6 +1309,14 @@ void back_end(void) {
     }
   }
   output += (nested_types ? type_output : "") + helper_output + address_output;
+  for(const auto &item:std::vector<std::pair<string,string>>{
+      {"SHUTDOWN","Destructor threw during shutdown"},{"GLOBAL","Exception during global initialization"},{"THREAD","Exception escaped translated thread"}}) {
+    string marker="/*__EDG_"+item.first+"_TERMINATE__*/";
+    string prefix=item.first=="THREAD" && instance_mode?"owner.":"";
+    string code=terminate_helpers_emitted?prefix+"__edg_terminate_runtime(error,"+string("\"")+item.second+"\");":
+        "global::System.Environment.FailFast(\""+item.second+"\",error);";
+    for(size_t pos=output.find(marker);pos!=string::npos;pos=output.find(marker,pos+code.size()))output.replace(pos,marker.size(),code);
+  }
   const string exception_boundary="/*__EDG_EXCEPTION_BOUNDARY__*/";
   const string exception_boundary_code=exception_helpers_emitted?
       "catch (global::System.Exception __edg_boundary_error) { __edg_end_exception(__edg_boundary_error); throw; }":"";
@@ -1310,6 +1342,10 @@ void back_end(void) {
   if (main_routine)emit_main(main_routine);
   line("}");
   if (!nested_types) output += type_output;
+  if(owned_ir_enabled) {
+    auto problem=owned_ir.verify();if(!problem.empty())unsupported(("owned physical type graph: "+problem).c_str());
+    line("// dot-gen:type-ir "+dot_ir::serialize(owned_ir,getenv("EDG_DOT_TARGET")?getenv("EDG_DOT_TARGET"):"legacy-linux-x64"));
+  }
   // Commit output only after the complete IL passed the subset checks.
   if (fwrite(output.data(), 1, output.size(), stdout) != output.size() || fflush(stdout)) {
     perror("dot_gen_be output"); exit(1);

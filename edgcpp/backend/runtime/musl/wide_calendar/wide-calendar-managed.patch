@@ -1,0 +1,13 @@
+--- a/wcsftime.c
++++ b/wcsftime.c
+@@ -1,3 +1,4 @@
++#include "wide_calendar_compat.h"
+ #include <wchar.h>
+ #include <time.h>
+ #include <locale.h>
+@@ -68,4 +69,4 @@
+ 	return __wcsftime_l(wcs, n, f, tm, CURRENT_LOCALE);
+ }
+ 
+-weak_alias(__wcsftime_l, wcsftime_l);
++
