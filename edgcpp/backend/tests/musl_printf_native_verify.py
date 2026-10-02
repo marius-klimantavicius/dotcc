@@ -24,6 +24,8 @@ def main():
     manifest = json.loads((snapshot / 'source.json').read_text())
     for name, field in [('vfprintf.original.c', 'originalSha256'), ('vfprintf.c', 'adaptedSha256')]:
         assert hashlib.sha256((snapshot / name).read_bytes()).hexdigest() == manifest[field], name
+    for name, digest in manifest.get("adapterSha256", {}).items():
+        assert hashlib.sha256((snapshot / name).read_bytes()).hexdigest() == digest, name
     checks = []
     try:
         # Patch verification uses an isolated copy; never rewrites the vendored source.

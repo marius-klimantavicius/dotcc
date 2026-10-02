@@ -7,15 +7,24 @@
   "tagRef": "9fa28ece75d8a2191de7c5bb53bed224c5947417",
   "upstreamPath": "src/stdio/vfprintf.c",
   "originalSha256": "642d9649d96702ca689f9b0cb47e78e8585a04e2de4478d987e5718691909b2e",
-  "adaptedSha256": "d718a9e8d4a0fe39b20ced07190b624e49c5f16dbfb85652124a6e8a082cc326",
-  "status": "vendored selected algorithm; native synthetic proof only; not yet wired into generated C#",
+  "adaptedSha256": "ad5f5ddeae2660e09ed5424b6481694c70ff26a2c64ea5e82bebe953ab3e2479",
+  "status": "translated C/C++ static/instance JIT/NativeAOT verified on 25 synthetic cases; nearest-even arithmetic and bounded C/C.UTF-8 locale only",
   "changes": [
     "replace native FILE wrapper with private sink",
     "preserve parser/digit algorithms",
     "bounded target-derived scratch with original logical extent",
     "namespace formatter entry symbol",
-    "private positional argument limit independent of host limits.h"
+    "private positional argument limit independent of host limits.h",
+    "C11/C++17 compatibility: explicit conversions, exact digit initializer, portable assertion and const literal pointer",
+    "explicit private nearest-even scaling dependency; public scalbn remains unbound"
   ],
-  "patchDeletedLines": 55,
-  "patchAddedLines": 35
+  "patchDeletedLines": 63,
+  "patchAddedLines": 41,
+  "adapterSha256": {
+    "format_sink.h": "05fb965d60fce5cd251155d71377255987093882ca3fd34af4c90d483500ff9b",
+    "format_file.h": "407c450f932dd7e301b2a3a3b10664c3564b1f749460caa00504241aa7359745",
+    "vsnprintf.c": "524c1833d32ddff40f834a9534139cb9077f97e4f2bfb2706c2b6a902a5f07dd",
+    "format_wrappers.c": "af05dc90159b46cabb4af381c7a71a7d17c90e97541197010366c8229d18cdfe"
+  },
+  "translatedEvidence": "artifacts/campaign/musl-printf-translated-20261002-235819/results.json"
 }

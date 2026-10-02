@@ -6,8 +6,15 @@ __pycache__/
 /upstream/src/dot_gen_*.h
 /upstream/src/dot_sys_predef.c
 /upstream/src/dot_gen_target_macros.def
+/upstream/src/dot_gen_target_macros_v2.def
 /upstream/src/libc-bindings.def
 /upstream/src/libc-files-bindings.def
+/upstream/src/libc-text-bindings.def
+/upstream/src/libc-float-bindings.def
 /upstream/src/cmake/cpfe-dot/
 /upstream/src/cmake/cpfe-dot-oracle/
 /upstream/cmake/macro-conf/all-extensions/
+
+/upstream/src/dot_gen_main.h
+
+/upstream/src/libc-math-bindings.def

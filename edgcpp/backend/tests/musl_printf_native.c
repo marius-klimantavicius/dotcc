@@ -12,6 +12,8 @@
 #include <fenv.h>
 #include <locale.h>
 #include <wchar.h>
+/* Native bridge for the explicitly private selected-core scaling dependency. */
+double __edg_scalbn_nearest(double value, int power) { return scalbn(value,power); }
 static int checks;
 static void compare(size_t capacity,const char *format,...) {
     char actual[2048],expected[2048];memset(actual,0xa5,sizeof actual);memset(expected,0xa5,sizeof expected);

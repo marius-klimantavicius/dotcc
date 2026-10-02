@@ -1,5 +1,6 @@
-// Integer, enum, object pointer and class exceptions.
+// Scalar, class, ordinary pointer and member-pointer exceptions.
 // EDG owns construction/catch copying; the carrier owns final destruction.
+#include "dot_gen_exception_identity.h"
 bool exception_helpers_emitted=false;
 string pending_exception;
 std::map<a_handler_ptr,string> catch_frames;
@@ -12,16 +13,17 @@ struct exception_type {
   string leaf;
   a_type_ptr record=nullptr;
   std::vector<unsigned> qualifiers; // Outermost pointee first; no top-level cv.
+  unsigned member_kind=0; // 2=data member, 3=member function, at the leaf.
+  bool nothrow=false;
 };
 std::map<string,exception_type> exception_types;
 std::set<string> exception_matchers;
 string exception_leaf(a_type_ptr t) {
-  if(is_or_was_ptr_to_data_member_type(t) || is_or_was_ptr_to_member_function_type(t))
-    unsupported("member pointer exception type");
   // Lowering represents nullptr_t as a void* typeref. Retain its C++ identity.
   if(is_or_was_nullptr_type(t))return "N";
   t=skip_typerefs(t);
   if(t->kind==tk_void)return "V";
+  if(t->kind==tk_float)return "F"+std::to_string((unsigned)t->variant.float_kind);
   if(t->kind==tk_class || t->kind==tk_struct || t->kind==tk_union ||
      (t->kind==tk_integer && t->variant.integer.enum_type)) {
     (void)type(t);
@@ -30,7 +32,7 @@ string exception_leaf(a_type_ptr t) {
     return "T"+std::to_string(found->second);
   }
   if(t->kind!=tk_integer)
-    unsupported("exception leaf type (integer, enum, void, nullptr or class required)");
+    unsupported("exception leaf type");
   (void)type(t);
   auto &i=t->variant.integer;
   // C# representation alone conflates e.g. long/long long and char/signed char.
@@ -49,10 +51,11 @@ const exception_type &exception_descriptor(a_type_ptr t) {
     result.qualifiers.push_back(q);
     signature+="P"+std::to_string(q)+":";
   }
-  result.leaf=exception_leaf(t);
+  result.leaf=extended_exception_leaf(t,result.nothrow,result.member_kind);
+  if(result.leaf.empty())result.leaf=exception_leaf(t);
   auto leaf=skip_typerefs(t);
-  if(leaf->kind==tk_class || leaf->kind==tk_struct)result.record=leaf;
-  signature+=result.leaf;
+  if(!result.member_kind && (leaf->kind==tk_class || leaf->kind==tk_struct))result.record=leaf;
+  signature+=result.leaf+(result.nothrow?"!":"");
   auto found=exception_types.find(signature);
   if(found==exception_types.end()) {
     if(exception_types.size()>=0x7fffffffU)unsupported("exception type ID overflow");
@@ -64,9 +67,13 @@ const exception_type &exception_descriptor(a_type_ptr t) {
 string exception_key(a_type_ptr t) { return std::to_string(exception_descriptor(t).id); }
 int exception_adjustment(const exception_type &src,const exception_type &dst) {
   if(src.id==dst.id)return 0;
-  if(src.qualifiers.empty() && src.leaf=="N" && !dst.qualifiers.empty())return 0;
+  if(src.qualifiers.empty() && src.leaf=="N" &&
+      (!dst.qualifiers.empty() || dst.member_kind))return 0;
   if(src.leaf==dst.leaf && src.qualifiers.size()==dst.qualifiers.size()) {
     bool previous_const=true,okay=true;
+    // throw.c treats noexcept as a separate flag for single-level function
+    // pointers and top-level member pointers, after comparing source RTTI.
+    if(src.qualifiers.size()<=1 && dst.nothrow && !src.nothrow)okay=false;
     for(size_t i=0;i<src.qualifiers.size();++i) {
       unsigned s=src.qualifiers[i],d=dst.qualifiers[i];
       if((s & ~d) || ((d & ~s) && !previous_const))okay=false;
@@ -109,6 +116,19 @@ string exception_adjust(string value,a_type_ptr t) {
   return id+"("+value+")";
 }
 string exception_match(string value,a_type_ptr t) { return "("+exception_adjust(value,t)+" >= 0)"; }
+string exception_catch_frame(string error,a_type_ptr t) {
+  unsigned kind=0;
+  string adjustment="0",null_conversion="false";
+  if(t) {
+    const auto &d=exception_descriptor(t);
+    kind=d.qualifiers.empty()?d.member_kind:1;
+    adjustment=exception_adjust("((__edg_exception)"+error+").Type",t);
+    auto null_type=exception_types.find("N");
+    if(kind && null_type!=exception_types.end())
+      null_conversion="((__edg_exception)"+error+").Type == "+std::to_string(null_type->second.id);
+  }
+  return "__edg_create_catch_frame("+error+", "+std::to_string(kind)+", "+adjustment+", "+null_conversion+")";
+}
 // Native typeinfo storage is replaced by explicit IDs. Exclude its initializer
 // dependency graph, including type-name strings and the runtime RTTI vtable.
 void collect_exception_metadata_variable(a_variable_ptr v);
@@ -130,6 +150,8 @@ void collect_exception_typeinfo(a_type_ptr t) {
   while(!is_or_was_nullptr_type(t) && skip_typerefs(t)->kind==tk_pointer)
     t=skip_typerefs(t)->variant.pointer.type;
   collect_exception_metadata_variable(get_underlying_type(t)->typeinfo_var);
+  bool nothrow=false;
+  collect_exception_metadata_variable(exception_identity_type(t,nothrow)->typeinfo_var);
 }
 void collect_exception_expression(an_expr_node_ptr e) {
   if(!e)return;
@@ -153,6 +175,8 @@ a_type_ptr catch_type(a_handler_ptr h) {
 }
 void collect_exception_metadata(a_statement_ptr s) {
   if(!s)return;
+  a_statement_ptr selected=nullptr;
+  if(selected_runtime_branch(s,selected)){collect_exception_metadata(selected);return;}
   collect_exception_expression(s->expr);
   switch(s->kind) {
     case stmk_try_block: {
@@ -238,13 +262,20 @@ private sealed class __edg_catch_frame {
     : ((__edg_exception)Error).Address + offset;
   internal bool Active = true;
   internal bool Caught = false;
-  internal __edg_catch_frame(global::System.Exception error, bool pointerCatch, int adjustment) {
+  internal __edg_catch_frame(global::System.Exception error, int pointerKind, int adjustment, bool nullConversion) {
     // Like throw.c's pointer_buffer, mutations through T*& affect this catch
     // only. Rethrow starts from the original payload, not this adjusted copy.
-    if (pointerCatch) {
-      pointerStorage = (nuint*)__edg_exception_alloc((nuint)sizeof(nuint));
-      pointerStorage[0] = *(nuint*)((__edg_exception)error).Address;
-      if (pointerStorage[0] != 0) pointerStorage[0] += (nuint)adjustment;
+    if (pointerKind==1 || nullConversion) {
+      // nullptr -> member function needs the whole two-word descriptor. A
+      // data-member null uses -1, unlike ordinary and function-member nulls.
+      pointerStorage = (nuint*)__edg_exception_alloc((nuint)(pointerKind==3?16:8));
+      if(nullConversion) {
+        pointerStorage[0]=pointerKind==2?nuint.MaxValue:0;
+        if(pointerKind==3)pointerStorage[1]=0;
+      } else {
+        pointerStorage[0] = *(nuint*)((__edg_exception)error).Address;
+        if (pointerStorage[0] != 0) pointerStorage[0] += (nuint)adjustment;
+      }
     }
     offset = adjustment;
     Error = error; parent = __edg_current_catch; __edg_current_catch = this;
@@ -285,8 +316,8 @@ private static bool __edg_catch_filter(__edg_catch_frame frame, global::System.E
 }
 // dot-gen:member-end
 // dot-gen:member-begin
-private static __edg_catch_frame __edg_create_catch_frame(global::System.Exception error,bool pointerCatch,int adjustment) {
-  try {return new __edg_catch_frame(error,pointerCatch,adjustment);}
+private static __edg_catch_frame __edg_create_catch_frame(global::System.Exception error,int pointerKind,int adjustment,bool nullConversion) {
+  try {return new __edg_catch_frame(error,pointerKind,adjustment,nullConversion);}
   catch(global::System.OutOfMemoryException failure) {
     global::System.Environment.FailFast("Unable to allocate EDG exception storage",failure);throw;
   }

@@ -14,7 +14,8 @@ void enter_system_specific_predefined_macros_and_assertions(void) {
     edg_host_system_predefined_macros_and_assertions();
     return;
   }
-  if (strcmp(profile, "portable-lp64-binary80-v1") != 0) {
+  a_boolean variant_profile = strcmp(profile, "portable-lp64-binary80-v2") == 0;
+  if (!variant_profile && strcmp(profile, "portable-lp64-binary80-v1") != 0) {
     fprintf(stderr, "dot_gen_be: unknown target profile: %s\n", profile);
     exit(1);
   }
@@ -38,7 +39,11 @@ void enter_system_specific_predefined_macros_and_assertions(void) {
       targ_sizeof_wchar_t != 4 || targ_sizeof_char16_t != 2 || targ_sizeof_char32_t != 4 ||
       targ_size_t_int_kind != ik_unsigned_long ||
       targ_ptrdiff_t_int_kind != ik_long) {
-    fprintf(stderr, "dot_gen_be: frontend layout does not match portable-lp64-binary80-v1\n");
+    fprintf(stderr, "dot_gen_be: frontend layout does not match %s\n", profile);
+    exit(1);
+  }
+  if (variant_profile && !targ_ia64_abi_use_variant_ptr_to_member_function_repr) {
+    fprintf(stderr, "dot_gen_be: target v2 requires the EDG member-pointer variant ABI\n");
     exit(1);
   }
   // macro.c reads the host file after this hook. Never allow it to reintroduce
@@ -46,7 +51,11 @@ void enter_system_specific_predefined_macros_and_assertions(void) {
   use_predefined_macro_file = FALSE;
 #define DOT_TARGET_MACRO(name, value) \
   (void)enter_predef_macro(value, #name, TRUE, FALSE);
+  if(variant_profile) {
+#include "dot_gen_target_macros_v2.def"
+  } else {
 #include "dot_gen_target_macros.def"
+  }
 #undef DOT_TARGET_MACRO
 }
 

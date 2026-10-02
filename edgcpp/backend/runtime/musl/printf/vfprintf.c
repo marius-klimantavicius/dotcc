@@ -149,9 +149,7 @@ static void pad(struct edg_format_sink *f, char c, int w, int l, int fl)
 	out(f, pad, l);
 }
 
-static const char xdigits[16] = {
-	"0123456789ABCDEF"
-};
+static const char xdigits[16] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
 
 static char *fmt_x(uintmax_t x, char *s, int lower)
 {
@@ -191,7 +189,7 @@ static int fmt_fp(struct edg_format_sink *f, long double y, int w, int p, int fl
 	int max_exp_slots = (max_exp+max_mant_dig+28+8)/9;
 	int bufsize = max_mant_slots + max_exp_slots;
 	enum { edg_big_capacity = 1 + (LDBL_MANT_DIG-29+7)/8 + 1 + (LDBL_MAX_EXP+LDBL_MANT_DIG+28+8)/9 };
-	_Static_assert(LDBL_MANT_DIG >= DBL_MANT_DIG && LDBL_MAX_EXP >= DBL_MAX_EXP,
+	EDG_PRINTF_STATIC_ASSERT(LDBL_MANT_DIG >= DBL_MANT_DIG && LDBL_MAX_EXP >= DBL_MAX_EXP,
 	               "long double scratch must bound double scratch");
 	uint32_t big[edg_big_capacity];
 	uint32_t *a, *d, *r, *z;
@@ -211,7 +209,7 @@ static int fmt_fp(struct edg_format_sink *f, long double y, int w, int p, int fl
 	} else prefix++, pl=0;
 
 	if (!isfinite(y)) {
-		char *s = (t&32)?"inf":"INF";
+		const char *s = (t&32)?"inf":"INF";
 		if (y!=y) s=(t&32)?"nan":"NAN";
 		pad(f, ' ', w, 3+pl, fl&~ZERO_PAD);
 		out(f, prefix, pl);
@@ -228,7 +226,7 @@ static int fmt_fp(struct edg_format_sink *f, long double y, int w, int p, int fl
 		pl += 2;
 
 		if (p>=0 && p<(LDBL_MANT_DIG-1+3)/4) {
-			double round = scalbn(1, LDBL_MANT_DIG-1-(p*4));
+			double round = __edg_scalbn_nearest(1, LDBL_MANT_DIG-1-(p*4));
 			if (*prefix=='-') {
 				y=-y;
 				y-=round;
@@ -602,7 +600,7 @@ static int printf_core(struct edg_format_sink *f, const char *fmt, va_list *ap, 
 		case 'm':
 			if (1) a = strerror(errno); else
 		case 's':
-			a = arg.p ? arg.p : "(null)";
+			a = (char *)(arg.p ? arg.p : "(null)");
 			z = a + strnlen(a, p<0 ? INT_MAX : p);
 			if (p<0 && *z) goto overflow;
 			p = z-a;
@@ -615,13 +613,13 @@ static int printf_core(struct edg_format_sink *f, const char *fmt, va_list *ap, 
 			arg.p = wc;
 			p = -1;
 		case 'S':
-			ws = arg.p;
+			ws = (wchar_t *)arg.p;
 			for (i=l=0; i<p && *ws && (l=wctomb(mb, *ws++))>=0 && l<=p-i; i+=l);
 			if (l<0) return -1;
 			if (i > INT_MAX) goto overflow;
 			p = i;
 			pad(f, ' ', w, p, fl);
-			ws = arg.p;
+			ws = (wchar_t *)arg.p;
 			for (i=0; i<0U+p && *ws && i+(l=wctomb(mb, *ws++))<=p; i+=l)
 				out(f, mb, l);
 			pad(f, ' ', w, p, fl^LEFT_ADJ);

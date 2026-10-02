@@ -13,6 +13,14 @@ import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parent
+RUNTIME_DEPENDENCIES = {
+    "Float80": (), "LibcContext": (), "AtomicOps": (), "VaList": (),
+    "LibcFiles": ("LibcAppend", "LibcPaths"), "LibcAppend": (), "LibcPaths": (),
+    "LibcFilesFormat": ("LibcFiles", "VaList"),
+    "LibcText": ("LibcErrorMessages",), "LibcErrorMessages": (),
+    "LibcFloat": ("Float80",),
+    "LibcxxThreads": (),
+}
 
 
 def identifier(value):
@@ -33,8 +41,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path, nargs="+")
     parser.add_argument("--language", choices=("c", "c++"), default="c++")
-    parser.add_argument("--target", choices=("legacy-linux-x64", "portable-lp64-binary80-v1"),
-                        default="portable-lp64-binary80-v1", help="select the translated program's target ABI and predefined macros")
+    parser.add_argument("--std", choices=("c89", "c99", "c11", "c17", "c23", "c++11", "c++14", "c++17", "c++20", "c++23", "c++26"),
+                        help="select EDG language mode (default C11 or C++17)")
+    parser.add_argument("--target", choices=("legacy-linux-x64", "portable-lp64-binary80-v1", "portable-lp64-binary80-v2"),
+                        default="portable-lp64-binary80-v2", help="select the translated program's target ABI and predefined macros")
     parser.add_argument("-I", "--include", action="append", type=Path, default=[])
     parser.add_argument("-D", "--define", action="append", default=[])
     parser.add_argument("--output-dir", required=True, type=Path)
@@ -52,6 +62,9 @@ def main():
     parser.add_argument("--split-size", type=int, default=262144,
                         help="target UTF-8 bytes per member file in size mode; functions stay whole")
     args = parser.parse_args()
+    standard=args.std or ("c11" if args.language=="c" else "c++17")
+    if ("++" in standard) != (args.language=="c++"):
+        parser.error("--std must match --language")
     if args.split_size <= 0:
         parser.error("--split-size must be positive")
     if args.class_name in ("Run", "Dispose", "Shutdown", "ReleaseThread") or args.class_name.startswith("__edg_"):
@@ -98,7 +111,7 @@ def main():
         target_manifest["inputs"] = [{"file": p.name, "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
                                      for p in (ROOT / "backend/target" / (args.target+".json"),
                                                ROOT / "backend/target" / (args.target+".def"))]
-    result = subprocess.run([str(compiler), "--c11" if args.language == "c" else "--c++17", "--gnu_version", "130300", *frontend_options, *runtime_options, "--", *map(str,sources+runtime_sources)],
+    result = subprocess.run([str(compiler), "--"+standard, "--gnu_version", "130300", *frontend_options, *runtime_options, "--", *map(str,sources+runtime_sources)],
                             env=env, capture_output=True, text=True)
     if result.stderr:
         print(result.stderr, end="", file=sys.stderr)
@@ -141,15 +154,16 @@ def main():
                 groups[-1] += chunk
         for index, group in enumerate(groups):
             files[f"Translated.part{index:05d}.cs"] = wrapper + group + "}\n"
-    if "global::Edg.Runtime.Float80" in source:
-        files["Runtime.Float80.cs"] = (ROOT / "backend/runtime/Float80.cs").read_text()
-    if "global::Edg.Runtime.LibcContext" in source:
-        files["Runtime.LibcContext.cs"] = (ROOT / "backend/runtime/LibcContext.cs").read_text()
-    if "global::Edg.Runtime.AtomicOps" in source:
-        files["Runtime.AtomicOps.cs"] = (ROOT / "backend/runtime/AtomicOps.cs").read_text()
-    for helper in ("VaList", "LibcFiles", "LibcAppend", "LibcPaths"):
-        if (helper == "VaList" and "global::Edg.Runtime.VaList" in source) or (helper != "VaList" and "global::Edg.Runtime.LibcFiles" in source):
-            files[f"Runtime.{helper}.cs"] = (ROOT / f"backend/runtime/{helper}.cs").read_text()
+    runtime_helpers={name for name in RUNTIME_DEPENDENCIES if f"global::Edg.Runtime.{name}" in source}
+    if "__edg_with_file_lock" in imports:
+        runtime_helpers.add("LibcFilesFormat")
+    pending=list(runtime_helpers)
+    while pending:
+        for dependency in RUNTIME_DEPENDENCIES[pending.pop()]:
+            if dependency not in runtime_helpers:
+                runtime_helpers.add(dependency);pending.append(dependency)
+    for helper in sorted(runtime_helpers):
+        files[f"Runtime.{helper}.cs"] = (ROOT / f"backend/runtime/{helper}.cs").read_text()
     compile_items = "\n".join(f'    <Compile Include="{filename}" />' for filename in files)
     files["Generated.csproj"] = '''<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
@@ -171,7 +185,8 @@ COMPILE_ITEMS
     owned = set()
     if manifest.exists():
         owned = set(json.loads(manifest.read_text())["files"])
-        if any(name not in ("Translated.cs", "EntryPoint.cs", "Generated.csproj", "Runtime.Float80.cs", "Runtime.LibcContext.cs", "Runtime.VaList.cs", "Runtime.LibcFiles.cs", "Runtime.LibcAppend.cs", "Runtime.LibcPaths.cs", "Runtime.AtomicOps.cs") and
+        allowed={"Translated.cs", "EntryPoint.cs", "Generated.csproj"} | {f"Runtime.{name}.cs" for name in RUNTIME_DEPENDENCIES}
+        if any(name not in allowed and
                not re.fullmatch(r"Translated\.part[0-9]{5,}\.cs", name) for name in owned):
             parser.error("invalid generated-file ownership manifest")
     for filename in files:
@@ -182,10 +197,11 @@ COMPILE_ITEMS
         "schema": 1, "abi": "experimental-runtime-v3", "cleanupModel": "edg-region-tables", "source": str(sources[0]) if len(sources)==1 else None,
         "sources": [{"path": str(p), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in sources],
         "runtimeSources": [{"path": str(p), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in runtime_sources],
+        "runtimeHelpers": {name: hashlib.sha256(files[f"Runtime.{name}.cs"].encode()).hexdigest() for name in sorted(runtime_helpers)},
         "namespace": args.namespace, "class": args.class_name,
         "instanceMethods": args.instance_methods, "files": sorted(files),
         "split": args.split, "splitSize": args.split_size,
-        "language": args.language, "includeDirectories": [str(p.resolve()) for p in args.include],
+        "language": args.language, "standard": standard, "includeDirectories": [str(p.resolve()) for p in args.include],
         "defines": args.define, "lifecycle": "explicit-shutdown-release-thread" if "void Shutdown()" in source else "process",
         "longDouble": "software-binary80" if "global::Edg.Runtime.Float80" in source else None,
         "varargs": "portable-typed-pack-v1" if "global::Edg.Runtime.VaList" in source else None,

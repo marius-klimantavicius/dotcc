@@ -1,4 +1,4 @@
-/* EDG dot-gen portable LP64 ABI: initial audited libc subset. */
+/* C17 string declarations plus existing bounded/POSIX extensions. */
 #ifndef __EDG_DOT_LIBC_STRING_H
 #define __EDG_DOT_LIBC_STRING_H
 #ifdef __cplusplus
@@ -13,6 +13,9 @@ void *memchr(const void *, int, size_t);
 size_t strlen(const char *);
 size_t strnlen(const char *, size_t);
 int strcmp(const char *, const char *);
+int strcoll(const char *, const char *);
+size_t strxfrm(char *, const char *, size_t);
+char *strerror(int);
 int strncmp(const char *, const char *, size_t);
 char *strcpy(char *, const char *);
 char *strncpy(char *, const char *, size_t);

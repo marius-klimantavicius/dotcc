@@ -1,0 +1,6 @@
+// Pending integration: every stateful target belongs to the generated owner.
+EDG_LIBC("strerror", "sbyte*", "int", "__edg_text.Strerror")
+EDG_LIBC("isdigit", "int", "int", "global::Edg.Runtime.LibcText.IsDigit")
+EDG_LIBC("wctomb", "int", "sbyte*,int", "__edg_text.Wctomb")
+EDG_LIBC("setlocale", "sbyte*", "int,sbyte*", "__edg_text.SetLocale")
+EDG_LIBC("__edg_mb_cur_max", "ulong", "", "__edg_text.MbCurMax")

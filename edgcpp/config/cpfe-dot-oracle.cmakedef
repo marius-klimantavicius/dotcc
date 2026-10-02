@@ -2,3 +2,4 @@ import <linux-gcc-release/cpfe>
 # C-emitting test oracle for the canonical operand-order contract used by C#.
 # EDG documents this profile in targ_def.h. Full portable EH remains enabled.
 DO_UNORDERED_EH_PROCESSING=0
+TARG_IA64_ABI_USE_VARIANT_PTR_TO_MEMBER_FUNCTION_REPR=1

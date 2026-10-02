@@ -27,6 +27,8 @@ void check_operand_order(an_expr_node_ptr e) {
 }
 void check_operand_order(a_statement_ptr s) {
   if(!s)return;
+  a_statement_ptr selected=nullptr;
+  if(selected_runtime_branch(s,selected)){check_operand_order(selected);return;}
   if(s->kind!=stmk_end_test_while && s->kind!=stmk_for)check_operand_order(s->expr);
   switch(s->kind) {
     case stmk_try_block:

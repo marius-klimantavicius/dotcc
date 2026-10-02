@@ -5,11 +5,19 @@ import shutil
 
 root = Path(__file__).resolve().parents[1]
 for source, target in [
+    (root / "backend/dot_gen_threads.h", root / "upstream/src/dot_gen_threads.h"),
+    (root / "backend/dot_gen_materialize.h", root / "upstream/src/dot_gen_materialize.h"),
+    (root / "backend/dot_gen_members.h", root / "upstream/src/dot_gen_members.h"),
+    (root / "backend/dot_gen_intrinsics.h", root / "upstream/src/dot_gen_intrinsics.h"),
+    (root / "backend/dot_gen_exception_identity.h", root / "upstream/src/dot_gen_exception_identity.h"),
     (root / "backend/dot_gen_varargs.h", root / "upstream/src/dot_gen_varargs.h"),
     (root / "backend/dot_gen_atomics.h", root / "upstream/src/dot_gen_atomics.h"),
     (root / "backend/runtime/libc-files-bindings.def", root / "upstream/src/libc-files-bindings.def"),
+    (root / "backend/runtime/libc-text-bindings.def", root / "upstream/src/libc-text-bindings.def"),
+    (root / "backend/runtime/libc-float-bindings.def", root / "upstream/src/libc-float-bindings.def"),
     (root / "backend/dot_sys_predef.c", root / "upstream/src/dot_sys_predef.c"),
     (root / "backend/target/portable-lp64-binary80-v1.def", root / "upstream/src/dot_gen_target_macros.def"),
+    (root / "backend/target/portable-lp64-binary80-v2.def", root / "upstream/src/dot_gen_target_macros_v2.def"),
     (root / "backend/dot_gen_imports.h", root / "upstream/src/dot_gen_imports.h"),
     (root / "backend/runtime/libc-bindings.def", root / "upstream/src/libc-bindings.def"),
     (root / "backend/dot_gen_lifecycle.h", root / "upstream/src/dot_gen_lifecycle.h"),

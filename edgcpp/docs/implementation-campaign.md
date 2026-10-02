@@ -10,7 +10,7 @@ all implementation gates are met. Preserve intermediates and per-run evidence.
 
 | Owner | Work | State |
 | --- | --- | --- |
-| Root | Embed upstream, portable target, multi-TU, atomics and libc++ audit | Embedding complete; atomics acceptance in progress |
+| Root | Embed upstream, portable target, multi-TU, atomics and libc++ audit | Embedding/portable ABI/atomics complete; libc++ thread integration in progress |
 | Coordinator | Integration, import ABI, driver, lifecycle/heap adapters, ledger, builds/commits | In progress |
 | Core language worker | Function-try-blocks, then member-pointer/full EH coverage | In progress |
 | Libc worker | Audited BCL libc bridge, portable header subset, synthetic conformance | In progress |
@@ -94,6 +94,8 @@ portable profile is the driver default. See
 
 The second increment passes the combined regression suite from an isolated
 source/compiler snapshot at `artifacts/campaign/milestone-native-snapshot`.
+Commit `5cc5d52d1` records 250 combined checks and 594 successful commands;
+`evidence/milestone-native-runtime.json` hashes the exact committed inputs.
 The initial run preserved 555 successful command results before a strict
 nullable-field warning; the corrected field is covered by the successful
 complete rerun. Snapshot hashes, command logs, generated projects and all
@@ -129,3 +131,32 @@ evidence; errno/fenv and directed arithmetic are not inferred from that proof.
 Next integrated gates are member-pointer variant ABI and extended pointer EH,
 formatter dependencies/translation, and libc++ component bring-up.
 The complete campaign checklist above remains open.
+
+## Third increment: member pointers, language modes and library foundations
+
+The third increment passes 332 combined regression checks and 816 recorded
+commands from `artifacts/campaign/milestone-member-library-snapshot`. The source
+and compiler snapshot remains independent of subsequent work:
+
+- Version-two target profile selects EDG's supported integer-tagged member
+  function pointer representation, without assumptions about CLR pointer bits.
+  The 48-case descriptor fixture passes five checks, including static/instance
+  JIT/NativeAOT and C++17 sequencing. Forty extended pointer exception cases
+  cover exact member/function/array/noexcept identities, adjusted nullptr
+  buffers, rethrows and native-storage cleanup.
+- Needed entity and needed definition predicates follow the original C backend,
+  avoiding dependent pack placeholders and unused header-inline bodies.
+- Runtime constant-evaluation queries and launder follow the C backend; ten
+  constexpr/template-pack checks pass. New explicit language modes and
+  constexpr/consteval statement selection pass 21 focused checks, including unsigned negation and C17/C23/C++20/23/26 modes.
+- Libc++18 acquisition is reproducible and its first synthetic traits consumer
+  passes JIT/NativeAOT. Other seeds expose concrete remaining library/API gaps.
+- Selected musl formatting passes nine emitted-program checks (25 original EDG C cases; C/C++ × static/instance × JIT/NativeAOT), at `artifacts/campaign/musl-printf-translated-20261002-235819/results.json`. Eleven malformed import contracts are rejected before C# emission.
+- BCL thread services pass six generated/native checks covering retained worker leases, global-destructor thread creation, TLS/key cleanup order and independent owners. A supplementary four JIT/NativeAOT checks verify first-pass fatal-thread termination.
+- Aggregate-prvalue caller-frame materialization passes 16 differential cases under static/instance JIT/NativeAOT, including nested/conditional/comma returns, simultaneous temporaries, loop reuse, forced GC and cleanup.
+- Member-pointer RTTI adds five passing checks at `artifacts/campaign/member-typeinfo-20261002-232630/results.json`; the semantic descriptor retains member-class/cv/noexcept identities rather than confusing its physical record layout with class RTTI.
+
+The exact milestone inputs are hashed in `evidence/milestone-member-library.json`.
+Main arguments, additional math, compact large-array storage and the libc++
+exception-pointer adapter are subsequent work and are not included in this snapshot.
+New standalone runtime or native proofs do not substitute for emitted-program acceptance.

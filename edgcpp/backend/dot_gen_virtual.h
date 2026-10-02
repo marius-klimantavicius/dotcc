@@ -17,7 +17,9 @@ void register_rtti_type(a_type_ptr t) {
   if(!virtual_types.count(v)) {
     if(virtual_types.size()>=65536)unsupported("RTTI token count");
     virtual_types[v]=(unsigned)virtual_types.size();
-    rtti_source_types[v]=skip_typerefs(t);
+    // A lowered member-function pointer is physically a record, but its RTTI
+    // describes the source member-pointer type, not a class-inheritance graph.
+    rtti_source_types[v]=get_underlying_type(t);
   }
 }
 void collect_virtual_scope(a_scope_ptr scope,std::map<a_variable_ptr,unsigned> &types,
@@ -50,9 +52,9 @@ void collect_virtual_metadata(a_scope_ptr scope) {
   collect_virtual_scope(scope,types,tables);
   // Construction vtable groups are distinct from a class's main table.
   for(auto v=scope->variables;v;v=v->next)
-    if(!ignore_variable_in_back_end(v) && v->vtable_defined)tables.insert(v);
+    if(variable_needed(v) && v->vtable_defined)tables.insert(v);
   for(auto r=scope->routines;r;r=r->next) {
-    if(ignore_routine_in_back_end(r))continue;
+    if(!routine_body_needed(r))continue;
     if(r->function_def_number==NULL_function_def_number)continue;
     auto s=scope_for_routine_or_null(r);
     if(s)collect_virtual_scope(s,types,tables);

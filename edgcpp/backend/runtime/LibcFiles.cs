@@ -9,7 +9,7 @@ namespace Edg.Runtime;
 
 /// <summary>Owner-specific byte-oriented FILE services. Handles are opaque;
 /// no native libc FILE object or process-wide mutable provider is used.</summary>
-public sealed unsafe class LibcFiles : IDisposable
+public sealed unsafe partial class LibcFiles : IDisposable
 {
     private const int Eof = -1, Ebadf = 9, Enomem = 12, Einval = 22, Espipe = 29, Eoverflow = 75;
     private readonly Action<int> setErrno;

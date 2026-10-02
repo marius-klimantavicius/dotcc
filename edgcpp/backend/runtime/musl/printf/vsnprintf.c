@@ -10,7 +10,7 @@ struct edg_print_buffer {
 
 static int edg_print_buffer_write(void *context, const char *bytes, size_t count)
 {
-    struct edg_print_buffer *buffer = context;
+    struct edg_print_buffer *buffer = (struct edg_print_buffer *)context;
     size_t copied = count < buffer->capacity ? count : buffer->capacity;
     if (copied) {
         memcpy(buffer->next, bytes, copied);

@@ -40,19 +40,24 @@ object conventions, ABI namespace `__dotgen_v1`, no native visibility metadata,
 and serial parallel-algorithm execution. These are bring-up configuration
 choices, not final coverage claims.
 
-- `<type_traits>` initially fails because our `stdint.h` lacks the standard
+- `<type_traits>` initially failed because our `stdint.h` lacked the standard
   `int_least*`/`uint_least*` and `int_fast*`/`uint_fast*` typedefs. A diagnostic
   overlay supplying those declarations allows EDG parsing/lowering to reach
   the C# emitter, which rejects a template-dependent constant at file scope.
   A header-free [variable-template fixture](../backend/tests/template_entities.cpp)
   reproduces this. The C backend skips dependent variables using
-  `ignore_variable_in_back_end`; our global-storage walk needs the same rule.
+  `ignore_variable_in_back_end`; our global-storage walk now follows that rule,
+  and the missing typedef families have been added. The follow-up synthetic
+  probe (`header-probe-18-updated-001`) reaches the emitted runtime call to
+  `__builtin_is_constant_evaluated`. The original C backend's
+  `dump_intrinsic_call` emits a typed zero for that builtin and passes through
+  the operand of `__builtin_launder`; the C# emitter needs the same adaptation.
 - `<utility>` needs complete C math declarations, including extended-precision
   variants. `<array>` additionally reaches missing stdlib and wide-character
   interfaces. Declarations alone will not supply their eventual runtime bodies.
 - The probes exposed implicit `/usr/include` fallback for a missing `wchar.h`.
-  EDG's supported `NO_USR_INCLUDE` cross-compiler configuration must disable
-  that fallback in `cpfe-dot`. The new portable include sentinel test covers
+  EDG's supported `NO_USR_INCLUDE` cross-compiler configuration now disables
+  that fallback in `cpfe-dot`. The portable include sentinel test covers
   implicit `USR_INCLUDE` injection and explicit `-I` behavior.
 - Header order matters: libc++ headers precede C provider headers, so its
   wrapper headers can use `include_next`. A generated config directory must

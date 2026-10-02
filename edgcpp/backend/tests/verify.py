@@ -81,9 +81,6 @@ def main():
         "external-variable-reference": "extern int n; int main(){return n;}",
         "external-variable-address": "extern int n; int* p=&n; int main(){return *p;}",
         "external-delete-provider": "struct X { virtual ~X() {} }; int main() { try { throw X{}; } catch (...) { return 0; } }",
-        "function-pointer-exception": "void f() {} int main() { try { throw &f; } catch (...) { return 0; } }",
-        "array-pointer-exception": "int main() { int n[3]; try { throw &n; } catch (...) { return 0; } }",
-        "member-pointer-exception": "struct S { int n; }; int main() { try { throw &S::n; } catch (...) { return 0; } }",
         "external": "int f(); int main() { return f(); }",
     }
     rejected = Path(tempfile.mkdtemp(prefix="rejection-", dir=out)) / "output"
@@ -181,6 +178,30 @@ def main():
     checks.extend(verify_libc_files(ROOT, TESTS, out, args.nativeaot, run))
     from atomic_builtins_verify import verify_atomic_builtins
     checks.extend(verify_atomic_builtins(ROOT, TESTS, out, args.nativeaot, run))
+    from constant_intrinsics_verify import verify_constant_intrinsics
+    checks.extend(verify_constant_intrinsics(ROOT, TESTS, out, args.nativeaot, run))
+    from template_packs_verify import verify_template_packs
+    checks.extend(verify_template_packs(ROOT, TESTS, out, args.nativeaot, run))
+    from language_modes_verify import verify_language_modes
+    checks.extend(verify_language_modes(ROOT, TESTS, out, args.nativeaot, run))
+    from member_pointers_verify import verify_member_pointers
+    checks.extend(verify_member_pointers(ROOT, TESTS, out, args.nativeaot, run))
+    from member_type_info_verify import verify_member_type_info
+    checks.extend(verify_member_type_info(ROOT, TESTS, out, args.nativeaot, run))
+    from materialize_verify import verify_materialize
+    checks.extend(verify_materialize(ROOT, TESTS, out, args.nativeaot, run))
+    from extended_pointer_exceptions_verify import verify_extended_pointer_exceptions
+    checks.extend(verify_extended_pointer_exceptions(ROOT, TESTS, out, args.nativeaot, run))
+    from portable_integer_headers_verify import verify_portable_libc_headers
+    checks.extend(verify_portable_libc_headers(ROOT, TESTS, out, args.nativeaot, run))
+    from musl_printf_translated_verify import verify_musl_printf
+    checks.extend(verify_musl_printf(ROOT, TESTS, out, args.nativeaot, run))
+    from libcxx_threads_verify import verify_libcxx_threads
+    checks.extend(verify_libcxx_threads(ROOT, TESTS, out, args.nativeaot, run))
+    from libc_import_abi_verify import verify_libc_import_abi
+    checks.extend(verify_libc_import_abi(ROOT, TESTS, out / "libc-import-abi"))
+    from libcxx_threads_fatal_verify import verify_libcxx_threads_fatal
+    checks.extend(verify_libcxx_threads_fatal(ROOT, TESTS, out / "libcxx-threads-fatal", args.nativeaot, run))
     report = {"checks": checks, "nativeaot": args.nativeaot, "rid": "linux-x64",
               "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f"}
     (out / "results.json").write_text(json.dumps(report, indent=2) + "\n")

@@ -61,6 +61,34 @@ const char *context = "file scope";
   fprintf(stderr, "dot_gen_be: unsupported %s (kind %d) in %s\n", what, kind, context);
   exit(1);
 }
+// Same entity liveness contract as c_gen_be.c::start_unreferenced_bracket.
+bool entity_needed(a_source_correspondence *source) {
+#if MAINTAIN_NEEDED_FLAGS
+  return needed_flag_is_set(source);
+#else
+  return source->referenced;
+#endif
+}
+bool variable_needed(a_variable_ptr v) {
+  if(ignore_variable_in_back_end(v))return false;
+  auto &source=v->source_corresp;
+  // The C backend additionally preserves a Sun-C-only varargs marker. Our
+  // generated target is managed code, so that target-specific case is absent.
+  bool magic=source.name_linkage==nlk_internal && source.name && string(source.name)=="__link";
+  return magic || entity_needed(&source);
+}
+bool routine_needed(a_routine_ptr r) {
+  return !ignore_routine_in_back_end(r) && entity_needed(&r->source_corresp);
+}
+bool routine_body_needed(a_routine_ptr r) {
+  return routine_needed(r) && r->function_def_number!=NULL_function_def_number
+#if MAINTAIN_NEEDED_FLAGS
+    && r->definition_needed
+#endif
+    ;
+}
+bool selected_runtime_branch(a_statement_ptr s,a_statement_ptr &branch);
+#include "dot_gen_members.h"
 string name(const void *p, const char *prefix) {
   auto i = names.find(p);
   if (i != names.end()) return i->second;
@@ -122,7 +150,7 @@ string aggregate_type(a_type_ptr t) {
       bool vptr=f->compiler_generated && f->source_corresp.name && string(f->source_corresp.name)=="__vptr" &&
           f->offset==class_type_supp(t)->virtual_function_info_offset && ft->kind==tk_pointer &&
           skip_typerefs(ft->variant.pointer.type)->kind==tk_integer && skip_typerefs(ft->variant.pointer.type)->size==8;
-      if (f->compiler_generated && !f->is_lowered_base_class && !vptr)
+      if (f->compiler_generated && !f->is_lowered_base_class && !vptr && !member_pointer_field(t,f))
         unsupported(("bitfield or synthetic record field: "+string(f->source_corresp.name?f->source_corresp.name:"unnamed")).c_str());
       if(ft->kind==tk_array && !ft->size)continue; // Flexible tail: address only, no storage field.
       if (f->offset + skip_typerefs(f->type)->size > t->size) unsupported("field outside record");
@@ -204,9 +232,10 @@ string function_pointer_type(a_type_ptr t) {
   return result + type(t->variant.routine.return_type) + ">";
 }
 #include "dot_gen_imports.h"
+#include "dot_gen_threads.h"
 string routine_address(a_routine_ptr r) {
   bool pure=r->compiler_generated && r->source_corresp.name && string(r->source_corresp.name)=="__cxa_pure_virtual";
-  if (r->function_def_number == NULL_function_def_number && !pure && !libc_routine(r)) unsupported(("address of external function: "+string(r->source_corresp.name?r->source_corresp.name:"<unnamed>")).c_str());
+  if (r->function_def_number == NULL_function_def_number && !pure && !libc_routine(r) && !thread_routine(r)) unsupported(("address of external function: "+string(r->source_corresp.name?r->source_corresp.name:"<unnamed>")).c_str());
   auto found = routine_addresses.find(r);
   if (found != routine_addresses.end()) return found->second + "()";
   auto rt = skip_typerefs(r->type);
@@ -391,6 +420,17 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c) {
 }
 string expr(an_expr_node_ptr e);
 void ensure_lifecycle();
+bool selected_runtime_branch(a_statement_ptr s,a_statement_ptr &branch) {
+  // c_gen_be.c emits only the selected branch of constexpr/consteval forms.
+  switch(s->kind) {
+    case stmk_constexpr_if:
+      branch=s->variant.constexpr_if->value?s->variant.constexpr_if->then_statement:s->variant.constexpr_if->else_statement;
+      return true;
+    case stmk_if_consteval:branch=s->variant.if_stmt.else_statement;return true;
+    case stmk_if_not_consteval:branch=s->variant.if_stmt.then_statement;return true;
+    default:return false;
+  }
+}
 #include "dot_gen_arrays.h"
 #include "dot_gen_cleanup.h"
 #include "dot_gen_exceptions.h"
@@ -400,9 +440,11 @@ void ensure_lifecycle();
 #include "dot_gen_typeinfo.h"
 #include "dot_gen_runtime.h"
 string location(an_expr_node_ptr e);
+#include "dot_gen_materialize.h"
 #include "dot_gen_sequence.h"
 #include "dot_gen_varargs.h"
 #include "dot_gen_atomics.h"
+#include "dot_gen_intrinsics.h"
 
 string condition(an_expr_node_ptr e) {
   return "(" + expr(e) + (skip_typerefs(e->type)->kind == tk_pointer ? " != null)" : " != 0)");
@@ -445,6 +487,8 @@ string bitfield_mutation(an_expr_node_ptr e,an_expr_node_ptr rhs,const string &o
 }
 string location(an_expr_node_ptr e) {
   if (!e) unsupported("null expression");
+  string materialized=materialized_location(e);
+  if(!materialized.empty())return materialized;
   string metadata=typeinfo_expression(e);
   if(!metadata.empty())return metadata;
   switch (e->kind) {
@@ -479,6 +523,8 @@ string location(an_expr_node_ptr e) {
   if (op == eok_comma) return sequence_expression(e);
   if (op == eok_lvalue_adjust) return "(*(" + type(e->type) + "*)&(" + location(a) + "))";
   if (op == eok_call) {
+    string intrinsic=intrinsic_call(e);
+    if(!intrinsic.empty())return intrinsic;
     string packed=variadic_call(a,b);
     if(!packed.empty())return packed;
     string call;
@@ -517,14 +563,14 @@ string location(an_expr_node_ptr e) {
         if(!assignment_helpers.count(id)) {
           assignment_helpers[id]=id;
           helper_output+="// dot-gen:member-begin\nprivate static void* "+id+"(void* dst, "+
-              (source=="memcpy"?"void* src":"int value")+", ulong count) {\nbyte* d=(byte*)dst;\n"+
-              (source=="memcpy"?"byte* s=(byte*)src;\nwhile(count!=0) { *d++=*s++; --count; }\n":
-                                  "while(count!=0) { *d++=unchecked((byte)value); --count; }\n")+
+              (source=="memcpy"?"void* src":"int value")+", ulong count) {\n"+
+              (source=="memcpy"?"if(count!=0)global::System.Buffer.MemoryCopy(src,dst,count,count);\n":
+                                  "if(count!=0)global::System.Runtime.InteropServices.NativeMemory.Fill(dst,(nuint)count,unchecked((byte)value));\n")+
               "return dst; }\n// dot-gen:member-end\n";
         }
         call=id+"(";
       } else {
-        if ((r->function_def_number == NULL_function_def_number || !scope_for_routine_or_null(r)) && !libc_routine(r))
+        if ((r->function_def_number == NULL_function_def_number || !scope_for_routine_or_null(r)) && !libc_routine(r) && !thread_routine(r))
           unsupported(("external call: "+source).c_str());
         call = name(r, "f") + "(";
       }
@@ -585,6 +631,13 @@ string location(an_expr_node_ptr e) {
   if (op == eok_not) return "(" + condition(a) + " ? 0 : 1)";
   if (op == eok_land || op == eok_lor)
     return "((" + condition(a) + (op == eok_land ? " && " : " || ") + condition(b) + ") ? 1 : 0)";
+  if(op==eok_negate) {
+    auto operand_type=skip_typerefs(a->type);
+    // C/C++ unsigned negation is modular subtraction. C# has no unary minus
+    // for ulong, so preserve EDG's promoted operand width explicitly.
+    if(operand_type->kind==tk_integer && !int_type_is_signed(operand_type))
+      return convert(e->type,"("+type(operand_type)+")0 - ("+expr(a)+")");
+  }
   if (op == eok_negate || op == eok_unary_plus || op == eok_complement)
     return convert(e->type, string(op == eok_negate ? "-" : op == eok_unary_plus ? "+" : "~") + expr(a));
   if (op == eok_pre_incr || op == eok_pre_decr || op == eok_post_incr || op == eok_post_decr) {
@@ -686,7 +739,7 @@ string expr(an_expr_node_ptr e) {
 
 void variables(a_variable_ptr v, bool global) {
   for (; v; v = v->next) {
-    if(ignore_variable_in_back_end(v))continue;
+    if(!variable_needed(v))continue;
     if (v->is_thread_local) unsupported("thread-local storage");
     if (v->storage_class == sc_extern) unsupported(("external variable: "+string(v->source_corresp.name?v->source_corresp.name:"unnamed")).c_str());
     if (local_offsets.count(v)) continue;
@@ -706,7 +759,7 @@ void collect_constant_templates(a_scope_ptr scope) {
   for(auto p=scope->local_static_variable_inits;p;p=p->next)
     if(p->init_kind==initk_static)inits[p->variable]=p->initializer.constant;
   for(auto v=scope->variables;v;v=v->next) {
-    if(ignore_variable_in_back_end(v))continue;
+    if(!variable_needed(v))continue;
     if(!v->lowering_generated || v->source_corresp.name || !aggregate(v->type))continue;
     auto t=skip_typerefs(v->type);
     // Partial EH lowering also leaves synthesized integer arrays (pointer cv
@@ -728,7 +781,7 @@ void collect_local_static_storage(a_scope_ptr scope) {
   for(auto p=scope->local_static_variable_inits;p;p=p->next)
     if(p->init_kind==initk_static)inits[p->variable]=p->initializer.constant;
   for(auto v=scope->variables;v;v=v->next) {
-    if(ignore_variable_in_back_end(v))continue;
+    if(!variable_needed(v))continue;
     if(v==cleanup_region_var || v==cleanup_array_var || exception_metadata.count(v) || constant_templates.count(v) || v->storage_class==sc_extern)continue;
     if(inits.count(v))constant_templates[v]=inits[v];
     local_static_storage.push_back(v);
@@ -738,7 +791,7 @@ void collect_local_static_storage(a_scope_ptr scope) {
 void globals(a_variable_ptr first, const char *cls) {
   std::vector<a_variable_ptr> stored_variables;
   for(auto v=first;v;v=v->next) {
-    if(ignore_variable_in_back_end(v))continue;
+    if(!variable_needed(v))continue;
     // The C backend emits declarations, not storage, for extern variables.
     // Cast-only classes can leave unused vtables/RTTI declarations behind.
     // Actual references still reject in variable() and constant().
@@ -783,6 +836,8 @@ void globals(a_variable_ptr first, const char *cls) {
   line(string(instance_mode ? "public " : "static ") + cls + "() {");
   line("if (sizeof(void*) != 8 || !global::System.BitConverter.IsLittleEndian) "
        "throw new global::System.PlatformNotSupportedException(\"EDG storage ABI requires little-endian 64-bit .NET\");");
+  if(getenv("EDG_DOT_TARGET") && string(getenv("EDG_DOT_TARGET"))=="portable-lp64-binary80-v2")
+    line("if(global::System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture is not (global::System.Runtime.InteropServices.Architecture.X64 or global::System.Runtime.InteropServices.Architecture.Arm64)) throw new global::System.PlatformNotSupportedException(\"EDG v2 target requires x64 or Arm64 .NET\");");
   for (auto v : stored_variables) {
     if(exception_metadata.count(v))continue;
     if (v->is_thread_local) continue;
@@ -814,7 +869,7 @@ void globals(a_variable_ptr first, const char *cls) {
 }
 void plan_frame(a_scope_ptr s) {
   for (auto v = s->nonstatic_variables; v; v = v->next) {
-    if(ignore_variable_in_back_end(v))continue;
+    if(!variable_needed(v))continue;
     unsigned long long alignment = alignment_of_type(v->type);
     if (v->alignment > alignment) alignment = v->alignment;
     if (!aggregate(v->type) && alignment <= 8) continue;
@@ -833,7 +888,7 @@ void plan_frame(a_scope_ptr s) {
 void locals(a_scope_ptr s) {
   if (!s) return;
   for(auto v=s->variables;v;v=v->next)
-    if(!ignore_variable_in_back_end(v) && v!=cleanup_region_var && v!=cleanup_array_var && !exception_metadata.count(v) && !constant_templates.count(v) && !global_offsets.count(v) && !tls_offsets.count(v))
+    if(variable_needed(v) && v!=cleanup_region_var && v!=cleanup_array_var && !exception_metadata.count(v) && !constant_templates.count(v) && !global_offsets.count(v) && !tls_offsets.count(v))
       unsupported(("function-local static storage: "+string(v->source_corresp.name?v->source_corresp.name:"unnamed")).c_str());
   variables(s->nonstatic_variables, false);
   for (auto child = s->scopes; child; child = child->next) locals(child);
@@ -841,6 +896,8 @@ void locals(a_scope_ptr s) {
 
 void statement(a_statement_ptr s) {
   if (!s) return;
+  a_statement_ptr selected=nullptr;
+  if(selected_runtime_branch(s,selected)){statement(selected);return;}
   switch (s->kind) {
     case stmk_decl: break; // Declarations are hoisted; stmk_init retains execution order.
     case stmk_empty: line(";"); break;
@@ -905,9 +962,7 @@ void statement(a_statement_ptr s) {
         first=false; ellipsis|=!h->parameter;
         string frame=id+"_frame"+name(h,"h");
         catch_frames[h]=frame;
-        bool pointer_catch=h->parameter && !exception_descriptor(catch_type(h)).qualifiers.empty();
-        string adjustment=h->parameter?exception_adjust(id+"_typed"+name(h,"h")+".Type",catch_type(h)):"0";
-        line("var "+frame+" = __edg_create_catch_frame("+id+"_error, "+(pointer_catch?"true":"false")+", "+adjustment+"); try {");
+        line("var "+frame+" = "+exception_catch_frame(id+"_error",h->parameter?catch_type(h):nullptr)+"; try {");
         statement(h->statement);
         line("} catch (global::System.Exception handler_error) when (__edg_catch_filter("+frame+", handler_error)) { throw; } finally { if ("+frame+".Active) { "+cleanup_unwind(id+"_boundary")+" } "+frame+".Leave(); }");
         catch_frames.erase(h);
@@ -999,7 +1054,9 @@ void back_end(void) {
   rtti_source_types.clear(); rtti_user_prefix_types.clear(); typeinfo_helpers_emitted=false;
   lifecycle_emitted=false;local_static_storage.clear();startup_routines.clear();
   libc_enabled=getenv("EDG_DOT_LIBC") && string(getenv("EDG_DOT_LIBC"))=="dotcc";
-  libc_emitted=false;files_emitted=false;libc_routines.clear();
+  reset_libc_imports();
+  reset_thread_imports();
+  reset_materialization();
   runtime_exceptions=getenv("EDG_DOT_RUNTIME") && string(getenv("EDG_DOT_RUNTIME"))=="edg-exceptions";
   if (targ_sizeof_pointer != 8) unsupported("non-64-bit target");
   instance_mode = getenv("EDG_DOT_INSTANCE") && string(getenv("EDG_DOT_INSTANCE")) == "1";
@@ -1012,13 +1069,13 @@ void back_end(void) {
   if (getenv("EDG_DOT_TRACE")) trace_program(scope);
   collect_virtual_metadata(scope);
   for(auto r=scope->routines;r;r=r->next) {
-    if(ignore_routine_in_back_end(r))continue;
+    if(!routine_body_needed(r))continue;
     if(r->function_def_number==NULL_function_def_number)continue;
     auto s=scope_for_routine_or_null(r);
     if(s) { collect_exception_metadata(s->assoc_block); collect_constant_templates(s); }
   }
   for(auto r=scope->routines;r;r=r->next) {
-    if(ignore_routine_in_back_end(r))continue;
+    if(!routine_body_needed(r))continue;
     if(r->function_def_number==NULL_function_def_number)continue;
     auto s=scope_for_routine_or_null(r);if(s){prepare_cleanup(s);collect_local_static_storage(s);}
     if(r->is_initialization_routine || (r->source_corresp.name && string(r->source_corresp.name).find(IL_LOWERING_INIT_ROUTINE_PREFIX)==0))
@@ -1040,7 +1097,7 @@ void back_end(void) {
   globals(scope->variables, cls);
   a_routine_ptr main_routine = nullptr;
   for (auto r = scope->routines; r; r = r->next) {
-    if(ignore_routine_in_back_end(r))continue;
+    if(!routine_body_needed(r))continue;
     if(r->is_finalization_routine)unsupported("non-atexit finalization routine");
     if (r->function_def_number == NULL_function_def_number) continue;
     auto s = scope_for_routine_or_null(r);
@@ -1057,6 +1114,7 @@ void back_end(void) {
                        type(rt->variant.routine.return_type) + " " + name(r, "f") + "(";
     local_offsets.clear(); frame_size = 0; frame_alignment = 8;
     plan_frame(s);
+    prepare_materialization(s->assoc_block);
     auto params = s->variant.routine.parameters;
     for (auto p = params; p; p = p->next) {
       unsigned long long align=std::max<a_targ_alignment>(alignment_of_type(p->type),p->alignment);
@@ -1127,7 +1185,7 @@ void back_end(void) {
     }
   }
   output += (nested_types ? type_output : "") + helper_output + address_output;
-  for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_LIBC_THREAD_RELEASE__*/",libc_emitted?"__edg_libc.ReleaseThread();":""},{"/*__EDG_LIBC_DISPOSE__*/",string(files_emitted?"__edg_files_value?.Dispose();":"")+(libc_emitted?"__edg_libc.Dispose();":"")}})
+  for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_LIBC_THREAD_KEYS_RELEASE__*/",thread_keys_release_code()},{"/*__EDG_LIBC_THREAD_RELEASE__*/",libc_thread_release_code()},{"/*__EDG_LIBC_DISPOSE__*/",thread_disposal_code()+libc_disposal_code()}})
     for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);
   for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_ENTER__*/",lifecycle_emitted?"__edg_enter();":""},{"/*__EDG_LEAVE__*/",lifecycle_emitted?"__edg_leave();":""}})
     for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);

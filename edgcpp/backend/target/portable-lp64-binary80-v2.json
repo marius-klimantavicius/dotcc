@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "id": "portable-lp64-binary80-v2",
+  "status": "experimental",
+  "byteBits": 8,
+  "byteOrder": "little",
+  "pointerBytes": 8,
+  "pointerAlignment": 8,
+  "plainCharSigned": true,
+  "integers": {
+    "bool": [
+      1,
+      1
+    ],
+    "char": [
+      1,
+      1
+    ],
+    "short": [
+      2,
+      2
+    ],
+    "int": [
+      4,
+      4
+    ],
+    "long": [
+      8,
+      8
+    ],
+    "longLong": [
+      8,
+      8
+    ],
+    "int128": [
+      16,
+      16
+    ],
+    "wchar_t": [
+      4,
+      4
+    ],
+    "char16_t": [
+      2,
+      2
+    ],
+    "char32_t": [
+      4,
+      4
+    ]
+  },
+  "integerLayoutTuple": [
+    "sizeBytes",
+    "alignmentBytes"
+  ],
+  "sizeType": "unsigned long",
+  "ptrdiffType": "long",
+  "wcharType": "int",
+  "wintType": "unsigned int",
+  "floating": {
+    "float": {
+      "format": "binary32",
+      "sizeBytes": 4,
+      "alignmentBytes": 4
+    },
+    "double": {
+      "format": "binary64",
+      "sizeBytes": 8,
+      "alignmentBytes": 8
+    },
+    "longDouble": {
+      "format": "binary80",
+      "sizeBytes": 16,
+      "alignmentBytes": 16,
+      "valueBytes": 10,
+      "paddingBytes": 6,
+      "precisionBits": 64
+    }
+  },
+  "objectModel": "EDG Itanium structural lowering; managed function pointers are not a native C++ ABI",
+  "defaultNewAlignment": 16,
+  "systemMacros": "none; select OS services in managed runtime",
+  "macroTable": "portable-lp64-binary80-v2.def",
+  "runtimeArchitectureRequirement": "64-bit little-endian .NET",
+  "nativeBoundary": "Explicit adapters must convert native layouts and calling conventions",
+  "pending": [
+    "binary128 target and arithmetic",
+    "complete libc/libc++ headers",
+    "all-platform execution matrix",
+    "native and cross-assembly boundary adapters"
+  ],
+  "memberFunctionPointer": {
+    "sizeBytes": 16,
+    "alignmentBytes": 8,
+    "lowering": "EDG IA64 variant",
+    "fields": [
+      {
+        "offsetBytes": 0,
+        "meaning": "untagged managed function address or virtual-table byte offset"
+      },
+      {
+        "offsetBytes": 8,
+        "meaning": "signed this adjustment shifted left one, bit zero virtual tag"
+      }
+    ],
+    "nativeInterop": false
+  },
+  "variadicABI": {
+    "id": "portable-typed-pack-v1",
+    "vaListSizeBytes": 24,
+    "vaListAlignmentBytes": 8,
+    "valueAlignment": "promoted EDG type alignment",
+    "ownership": "caller until call returns; va_copy copies cursor",
+    "nativeVarargs": false
+  },
+  "atomicABI": {
+    "id": "managed-atomic-v1",
+    "primitiveWidthsBytes": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "fallback": "global address-striped locks within generated runtime assembly",
+    "nativeInterop": false
+  }
+}

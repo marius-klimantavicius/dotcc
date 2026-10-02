@@ -1,15 +1,18 @@
 # Printf core selection and adaptation audit
 
-Status: selected-library prototype with synthetic inputs, 2026-10-02.
-Prefer the pinned musl formatting core over extending dotcc's current builder.
-The small sink adaptation has native numerical evidence; C# translation,
-portable-va_list integration and full floating/locale contracts remain gates.
+Status: selected musl formatter translated and verified, 2026-10-03.
+The pinned musl core now runs as generated C# with real imports, typed VaList,
+owner-specific locale/error state and FILE-wide managed callback locking.
+C11 and C++17, static and instance modes, JIT and NativeAOT all pass the same
+25-case native EDG differential corpus. The selected arithmetic remains
+nearest-even and locales remain bounded to C/POSIX and C.UTF-8; full floating
+environment and arbitrary locale support are still separate gates.
 
-The reviewed core is now preserved in
-[`backend/runtime/musl/printf`](../backend/runtime/musl/printf/), with its
-unchanged upstream file, exact adaptation patch, license and hash manifest.
-The private buffer adapter is also present. Neither source is yet wired into
-the generated C# provider.
+The reviewed core is preserved in
+[`backend/runtime/musl/printf`](../backend/runtime/musl/printf/), with unchanged
+upstream source, exact adaptation patch, license and source/adapter hashes.
+`format_wrappers.c` supplies all eight printf/fprintf/sprintf/snprintf and va_list
+entry points. Source definitions win over imports in the semantic merge.
 
 ## Evidence and patch cost
 
@@ -31,7 +34,7 @@ it does not translate or accept a whole musl project.
 | Native FILE wrapper replacement | Patch deletes 41 lines and adds 15, including the changed include |
 | Prototype sink bridge | 20 lines; callback, context and an independent error flag |
 | Fixed scratch adaptation | Two original lines replaced by five lines, retaining the original logical extent |
-| Final vendored adaptation | 55 deleted / 35 added lines; also namespaces the sink type, helpers, entry and fixed positional limit |
+| Final vendored adaptation | 63 deleted / 41 added lines; namespaces the sink/entry/positional limit, supports C11/C++17 and uses private nearest scaling |
 
 The native wrapper contains all direct `f->flags`, buffer, locking and FILE
 write-function accesses. The preceding algorithm core uses `ferror` and
@@ -42,7 +45,8 @@ integer conversion, `%n` stores and floating digit generation in upstream code.
 The unbounded/VLA prototype and the bounded-scratch prototype both pass the
 native synthetic corpus. The bounded version passes under GCC and Clang:
 **109 comparisons/assertions per compiler**. This is native adaptation evidence,
-not a claim that the new C# VaList ABI or translated formatter already passes.
+a native adaptation baseline. The later translated acceptance below verifies
+the real C# VaList and callback path separately.
 The final vendored files and their new snprintf buffer sink independently pass
 the same 109 cases under each compiler, with source hashes and patch replay
 verified. Evidence is retained in
@@ -88,7 +92,7 @@ Int128 in general varargs does not make `%j` accept it when intmax_t is 64-bit.
 | `isdigit` | Unsigned-character-safe ASCII digit classification used by the parser. |
 | `errno`, `strerror` | Owner/thread errno and provider-owned stable message storage, including GNU `%m`; report EINVAL/EOVERFLOW. |
 | `signbit`, `isfinite` | Exact double/long-double classification, including signed zero and NaNs. |
-| `frexpl`, `scalbn` | Exact exponent decomposition/scaling with binary80 support and the selected floating-environment policy. |
+| `frexpl`, private `__edg_scalbn_nearest` | Exact exponent decomposition and explicitly nearest-even scaling; public scalbn remains unbound pending its errno/fenv contract. |
 | `wctomb` | Owner/thread locale contract, 32-bit wchar_t and bounded multibyte output; report EILSEQ without splitting a character at a precision limit. |
 | Target headers | Consistent float.h, limits.h, stdint.h, inttypes.h, wchar.h and stdarg.h; no host Linux layout leakage. |
 
@@ -177,3 +181,37 @@ binary80 hexadecimal golden vectors and callback exceptions. Test Windows,
 Linux and macOS execution separately. Preserve the upstream revision and patch
 manifest, and record unsupported extensions rather than silently accepting
 incorrect output.
+
+## Generated C# acceptance
+
+[`artifacts/campaign/musl-printf-translated-20261002-235819/results.json`](../artifacts/campaign/musl-printf-translated-20261002-235819/results.json)
+records nine checks: the original EDG C oracle, then C/C++ × static/instance ×
+JIT/NativeAOT. All 25 cases compare exact return values and all 512 destination
+bytes, including untouched/truncated storage. Cases cover integer widths,
+positional arguments, `%n` destination widths, nested varargs, signed zero,
+double and binary80 extremes/subnormals, hexadecimal output, ties-to-even,
+NaN/infinity, byte NUL/high bytes, UTF-8/wide conversion, GNU `%m`, invalid
+conversion/count diagnostics and buffer truncation. Separate FILE checks
+exercise nested formatting and a call through the imported lock routine's
+canonical address wrapper. Owner locale/error-pool isolation and forced-GC
+pointer stability are also checked.
+
+The repeatable entry point is `backend/tests/musl_printf_translated_verify.py`;
+it also exports `verify_musl_printf(root, tests, out, nativeaot, run)`.
+The initial C# build exposed unsupported unsigned unary minus in our backend
+for musl's `arg.i = -arg.i`. Comparing the unchanged C backend established
+modulo unsigned subtraction; the C# emitter was corrected without modifying
+musl's expression or EDG. Its failure is preserved in
+`musl-printf-managed-smoke-20261002-235040`. A separate retained native fixture
+failure removed an invalid assumption about mixed positional/nonpositional
+format syntax; `%Q` now tests musl's explicit invalid-conversion path.
+
+Eleven malformed import declarations are rejected before C# emission,
+including wrong callback results/arguments, fake va_list records, pointer-to-
+va_list-array confusion, complete fake FILE records, varargs where fixed ABI
+is required, wrong wchar_t/long-double widths, and unsupported public scalbn.
+Evidence: `artifacts/campaign/libc-import-abi-20261003-000221/results.json`.
+
+These tests execute on Linux x64. Windows/macOS runtime execution, directed
+rounding/fenv flags, signaling-NaN behavior and arbitrary locales remain open;
+the milestone is not full libc completion.

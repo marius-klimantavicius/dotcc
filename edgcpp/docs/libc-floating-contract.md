@@ -3,7 +3,9 @@
 `backend/runtime/LibcFloat.cs` supplies allocation-free bit operations for the
 translated binary32, binary64 and binary80 representations. It is a helper
 layer, not a complete implementation of C's floating environment. The current
-provider does not yet bind these new declarations to emitted wrappers.
+provider now binds classification/frexp through exact signatures, and exposes
+only the private `__edg_scalbn_nearest` scaling import. Public scalbn remains
+unbound until range-error/fenv wrappers are implemented.
 
 The three overload families accept `float`, `double` or `Float80`:
 

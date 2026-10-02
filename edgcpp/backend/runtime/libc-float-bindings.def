@@ -1,0 +1,15 @@
+// Pending exact-ABI registry integration. Float80 is the EDG long-double value.
+EDG_LIBC("__edg_signbitf", "int", "float", "global::Edg.Runtime.LibcFloat.SignBit")
+EDG_LIBC("__edg_signbit", "int", "double", "global::Edg.Runtime.LibcFloat.SignBit")
+EDG_LIBC("__edg_signbitl", "int", "global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcFloat.SignBit")
+EDG_LIBC("__edg_isfinitef", "int", "float", "global::Edg.Runtime.LibcFloat.IsFinite")
+EDG_LIBC("__edg_isfinite", "int", "double", "global::Edg.Runtime.LibcFloat.IsFinite")
+EDG_LIBC("__edg_isfinitel", "int", "global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcFloat.IsFinite")
+EDG_LIBC("__edg_fpclassifyf", "int", "float", "global::Edg.Runtime.LibcFloat.Classify")
+EDG_LIBC("__edg_fpclassify", "int", "double", "global::Edg.Runtime.LibcFloat.Classify")
+EDG_LIBC("__edg_fpclassifyl", "int", "global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcFloat.Classify")
+EDG_LIBC("frexpf", "float", "float,int*", "global::Edg.Runtime.LibcFloat.Frexp")
+EDG_LIBC("frexp", "double", "double,int*", "global::Edg.Runtime.LibcFloat.Frexp")
+EDG_LIBC("frexpl", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80,int*", "global::Edg.Runtime.LibcFloat.Frexp")
+EDG_LIBC("__edg_scalbn_nearest", "double", "double,int", "global::Edg.Runtime.LibcFloat.ScaleB")
+// scalbn[f/l] intentionally omitted: public errno/fenv range wrappers required.

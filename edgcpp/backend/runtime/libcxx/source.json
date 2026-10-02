@@ -1,0 +1,16 @@
+{
+  "release": "llvmorg-18.1.8",
+  "version": "18.1.8",
+  "releaseUrl": "https://github.com/llvm/llvm-project/releases/tag/llvmorg-18.1.8",
+  "archiveUrl": "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/libcxx-18.1.8.src.tar.xz",
+  "archive": "libcxx-18.1.8.src.tar.xz",
+  "archiveRoot": "libcxx-18.1.8.src",
+  "sha256": "bdecf90be0072bc720fd5c9c8ab061cdb197edd0c8ad3e170dc3e6bfaa49f388",
+  "license": "Apache-2.0 WITH LLVM-exception",
+  "status": "initial compatibility provider; full port and modern-release upgrade remain open",
+  "frontendMode": "GNU 13.3, C++17",
+  "abiNamespace": "__dotgen_v1",
+  "runtime": "managed EH and NativeMemory allocation; BCL platform services",
+  "nativeCxxAbiLibrary": null,
+  "allowedValidationInputsDuringCampaign": ["synthetic", "EDG tests"]
+}
