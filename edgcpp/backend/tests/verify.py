@@ -6,25 +6,37 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import time
 
 ROOT = Path(__file__).resolve().parents[2]
 TESTS = Path(__file__).resolve().parent
+command_log = []
+evidence_directory = None
 
 
 def run(command, expected=0, **kwargs):
     result = subprocess.run(list(map(str, command)), text=True, capture_output=True, **kwargs)
+    if evidence_directory is not None:
+        index=len(command_log)
+        (evidence_directory/f"command-{index:04d}.stdout").write_text(result.stdout)
+        (evidence_directory/f"command-{index:04d}.stderr").write_text(result.stderr)
+        command_log.append({"command":list(map(str,command)),"exit":result.returncode,"expected":expected})
+        (evidence_directory/'commands.json').write_text(json.dumps(command_log,indent=2)+'\n')
     if result.returncode != expected:
         raise RuntimeError(f"{command}\nexit={result.returncode}, expected={expected}\n{result.stdout}\n{result.stderr}")
     return result
 
 
 def main():
+    global evidence_directory
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--nativeaot", action="store_true")
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "artifacts/backend-tests")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "artifacts" / f"backend-tests-{time.time_ns()}")
     args = parser.parse_args()
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=True)
+    evidence_directory=out/'commands'
+    evidence_directory.mkdir(exist_ok=False)
     checks = []
     run(["g++", "-std=c++17", "-O0", TESTS / "scalars.cpp", "-o", out / "native-scalars"])
     run([out / "native-scalars"])
@@ -161,6 +173,14 @@ def main():
     checks.extend(verify_portable_includes(ROOT, out, run))
     from template_entities_verify import verify_template_entities
     checks.extend(verify_template_entities(ROOT, TESTS, out, args.nativeaot, run))
+    from varargs_verify import verify_varargs
+    checks.extend(verify_varargs(ROOT, TESTS, out, args.nativeaot, run))
+    from exception_storage_verify import verify_exception_storage
+    checks.extend(verify_exception_storage(ROOT, TESTS, out, args.nativeaot, run))
+    from libc_files_verify import verify_libc_files
+    checks.extend(verify_libc_files(ROOT, TESTS, out, args.nativeaot, run))
+    from atomic_builtins_verify import verify_atomic_builtins
+    checks.extend(verify_atomic_builtins(ROOT, TESTS, out, args.nativeaot, run))
     report = {"checks": checks, "nativeaot": args.nativeaot, "rid": "linux-x64",
               "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f"}
     (out / "results.json").write_text(json.dumps(report, indent=2) + "\n")

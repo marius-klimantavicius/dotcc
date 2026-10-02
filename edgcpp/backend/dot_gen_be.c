@@ -38,6 +38,8 @@ std::map<a_routine_ptr, string> routine_addresses;
 std::map<string, unsigned long long> literal_offsets;
 string routine_address(a_routine_ptr r);
 string function_pointer_type(a_type_ptr t);
+bool va_tag_type(a_type_ptr t);
+bool variadic_routine(a_type_ptr t);
 std::map<a_type_ptr, string> aggregate_types;
 std::map<a_constant_ptr, string> aggregate_constants;
 std::map<a_variable_ptr, unsigned long long> local_offsets;
@@ -138,6 +140,10 @@ string aggregate_type(a_type_ptr t) {
 string type(a_type_ptr t) {
   if ((get_type_qualifiers(t) & ~(TQ_CONST | TQ_VOLATILE)) != 0) unsupported("qualified type");
   t = skip_typerefs(t);
+  if(va_tag_type(t)) {
+    if(t->size!=24 || alignment_of_type(t)!=8)unsupported("builtin va_list tag layout");
+    return "global::Edg.Runtime.VaList";
+  }
   if(rtti_user_prefix_types.count(t)) {
     if(!type_of_type_info)unsupported("missing public type_info definition");
     return type(type_of_type_info);
@@ -191,10 +197,10 @@ string type(a_type_ptr t) {
 }
 string function_pointer_type(a_type_ptr t) {
   auto extra = t->variant.routine.extra_info;
-  if (extra->has_ellipsis) unsupported("variadic function pointer");
   string result = "delegate* managed<";
   if (instance_mode) result += string(getenv("EDG_DOT_CLASS")) + ", ";
   for (auto p = extra->param_type_list; p; p = p->next) result += type(p->type) + ", ";
+  if(extra->has_ellipsis)result+="global::Edg.Runtime.VaList*, ";
   return result + type(t->variant.routine.return_type) + ">";
 }
 #include "dot_gen_imports.h"
@@ -224,6 +230,10 @@ string routine_address(a_routine_ptr r) {
       signature += string(instance_mode || index>1 ? ", " : "") + type(p->type) + " " + arg;
       if (!args.empty()) args += ", ";
       args += arg;
+    }
+    if(rt->variant.routine.extra_info->has_ellipsis) {
+      signature+=string(instance_mode || index?", ":"")+"global::Edg.Runtime.VaList* __edg_arguments";
+      args+=string(args.empty()?"":", ")+"__edg_arguments";
     }
     address_output += "// dot-gen:member-begin\n" + signature + ") { "+string(instance_mode?"owner.__edg_enter();":"/*__EDG_ENTER__*/")+" try { " +
                       (type(rt->variant.routine.return_type) == "void" ? "" : "return ") +
@@ -391,6 +401,8 @@ void ensure_lifecycle();
 #include "dot_gen_runtime.h"
 string location(an_expr_node_ptr e);
 #include "dot_gen_sequence.h"
+#include "dot_gen_varargs.h"
+#include "dot_gen_atomics.h"
 
 string condition(an_expr_node_ptr e) {
   return "(" + expr(e) + (skip_typerefs(e->type)->kind == tk_pointer ? " != null)" : " != 0)");
@@ -452,6 +464,8 @@ string location(an_expr_node_ptr e) {
         if(p!=current_function_scope->variant.routine.parameters)call+=", ";
         call+=variable(p);
       }
+      if(variadic_routine(current_function_scope->variant.routine.ptr->type))
+        call+=string(current_function_scope->variant.routine.parameters?", ":"")+"__edg_arguments";
       return call+")";
     }
     case enk_operation: break;
@@ -460,9 +474,13 @@ string location(an_expr_node_ptr e) {
   auto op = e->variant.operation.kind;
   auto a = e->variant.operation.operands;
   auto b = a ? a->next : nullptr;
+  string vararg_operation=va_operation(e);
+  if(!vararg_operation.empty())return vararg_operation;
   if (op == eok_comma) return sequence_expression(e);
   if (op == eok_lvalue_adjust) return "(*(" + type(e->type) + "*)&(" + location(a) + "))";
   if (op == eok_call) {
+    string packed=variadic_call(a,b);
+    if(!packed.empty())return packed;
     string call;
     if (a->kind == enk_routine) {
       auto r = a->variant.routine.ptr;
@@ -473,6 +491,8 @@ string location(an_expr_node_ptr e) {
       if(!lifecycle.empty())return lifecycle;
       string provider=runtime_provider_call(r,b);
       if(!provider.empty())return provider;
+      string atomic=atomic_call(r,b);
+      if(!atomic.empty())return atomic;
       if (r->compiler_generated && r->function_def_number == NULL_function_def_number && source=="__dynamic_cast")
         return dynamic_cast_call(r,b);
       if (r->compiler_generated && r->function_def_number == NULL_function_def_number && (source=="__cxa_vec_ctor" || source=="__cxa_vec_dtor")) {
@@ -887,7 +907,7 @@ void statement(a_statement_ptr s) {
         catch_frames[h]=frame;
         bool pointer_catch=h->parameter && !exception_descriptor(catch_type(h)).qualifiers.empty();
         string adjustment=h->parameter?exception_adjust(id+"_typed"+name(h,"h")+".Type",catch_type(h)):"0";
-        line("var "+frame+" = new __edg_catch_frame("+id+"_error, "+(pointer_catch?"true":"false")+", "+adjustment+"); try {");
+        line("var "+frame+" = __edg_create_catch_frame("+id+"_error, "+(pointer_catch?"true":"false")+", "+adjustment+"); try {");
         statement(h->statement);
         line("} catch (global::System.Exception handler_error) when (__edg_catch_filter("+frame+", handler_error)) { throw; } finally { if ("+frame+".Active) { "+cleanup_unwind(id+"_boundary")+" } "+frame+".Leave(); }");
         catch_frames.erase(h);
@@ -979,7 +999,7 @@ void back_end(void) {
   rtti_source_types.clear(); rtti_user_prefix_types.clear(); typeinfo_helpers_emitted=false;
   lifecycle_emitted=false;local_static_storage.clear();startup_routines.clear();
   libc_enabled=getenv("EDG_DOT_LIBC") && string(getenv("EDG_DOT_LIBC"))=="dotcc";
-  libc_emitted=false;libc_routines.clear();
+  libc_emitted=false;files_emitted=false;libc_routines.clear();
   runtime_exceptions=getenv("EDG_DOT_RUNTIME") && string(getenv("EDG_DOT_RUNTIME"))=="edg-exceptions";
   if (targ_sizeof_pointer != 8) unsupported("non-64-bit target");
   instance_mode = getenv("EDG_DOT_INSTANCE") && string(getenv("EDG_DOT_INSTANCE")) == "1";
@@ -1033,7 +1053,6 @@ void back_end(void) {
     if (r->source_corresp.name && string(r->source_corresp.name) == "main") main_routine = r;
     auto rt = skip_typerefs(r->type);
     function_returns_void=skip_typerefs(rt->variant.routine.return_type)->kind==tk_void;
-    if (rt->variant.routine.extra_info->has_ellipsis) unsupported("variadic function");
     string signature = "private " + string(instance_mode ? "" : "static ") +
                        type(rt->variant.routine.return_type) + " " + name(r, "f") + "(";
     local_offsets.clear(); frame_size = 0; frame_alignment = 8;
@@ -1050,6 +1069,8 @@ void back_end(void) {
       if (p != params) signature += ", ";
       signature += type(p->type) + " " + name(p, "v");
     }
+    if(rt->variant.routine.extra_info->has_ellipsis)
+      signature+=string(params?", ":"")+"global::Edg.Runtime.VaList* __edg_arguments";
     line("// dot-gen:member-begin");
     line(signature + ") {");
     auto spec = rt->variant.routine.extra_info->exception_specification;
@@ -1087,6 +1108,7 @@ void back_end(void) {
         if (p != params) args += ", ";
         args += name(p, "v");
       }
+      if(rt->variant.routine.extra_info->has_ellipsis)args+=string(args.empty()?"":", ")+"__edg_arguments";
       // The driver consumes these protocol records into the symbol manifest.
       string source = r->source_corresp.name ? r->source_corresp.name : "";
       string hex;
@@ -1105,7 +1127,7 @@ void back_end(void) {
     }
   }
   output += (nested_types ? type_output : "") + helper_output + address_output;
-  for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_LIBC_THREAD_RELEASE__*/",libc_emitted?"__edg_libc.ReleaseThread();":""},{"/*__EDG_LIBC_DISPOSE__*/",libc_emitted?"__edg_libc.Dispose();":""}})
+  for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_LIBC_THREAD_RELEASE__*/",libc_emitted?"__edg_libc.ReleaseThread();":""},{"/*__EDG_LIBC_DISPOSE__*/",string(files_emitted?"__edg_files_value?.Dispose();":"")+(libc_emitted?"__edg_libc.Dispose();":"")}})
     for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);
   for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_ENTER__*/",lifecycle_emitted?"__edg_enter();":""},{"/*__EDG_LEAVE__*/",lifecycle_emitted?"__edg_leave();":""}})
     for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);

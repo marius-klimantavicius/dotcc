@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "upstream": "musl",
+  "version": "1.2.6",
+  "releaseArchive": "https://musl.libc.org/releases/musl-1.2.6.tar.gz",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "tagRef": "9fa28ece75d8a2191de7c5bb53bed224c5947417",
+  "upstreamPath": "src/stdio/vfprintf.c",
+  "originalSha256": "642d9649d96702ca689f9b0cb47e78e8585a04e2de4478d987e5718691909b2e",
+  "adaptedSha256": "d718a9e8d4a0fe39b20ced07190b624e49c5f16dbfb85652124a6e8a082cc326",
+  "status": "vendored selected algorithm; native synthetic proof only; not yet wired into generated C#",
+  "changes": [
+    "replace native FILE wrapper with private sink",
+    "preserve parser/digit algorithms",
+    "bounded target-derived scratch with original logical extent",
+    "namespace formatter entry symbol",
+    "private positional argument limit independent of host limits.h"
+  ],
+  "patchDeletedLines": 55,
+  "patchAddedLines": 35
+}

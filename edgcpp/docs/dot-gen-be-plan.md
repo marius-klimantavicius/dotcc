@@ -504,7 +504,7 @@ backend completion bits. Numeric region transitions and symbolic local/this
 handles become direct C# operations, not native EH tables or setjmp.
 The previous canonical-order group restriction is removed. Ordinary objects,
 members, arrays, temporaries and returns retain their regression coverage.
-The C++ exception slice now supports pinned built-in integer and class payloads,
+The C++ exception slice now supports aligned native built-in integer and class payloads,
 exact typed catches by value/reference, catch-all and rethrow through a
 thread-local active-catch stack shared across owners. Try boundaries drain EDG
 regions before entering handlers; EDG try/catch epilogues control return/goto
@@ -519,7 +519,7 @@ public/ambiguous path checks, partial base cleanup, empty bases and tail-padding
 reuse. All 48 layout/value/lifetime cases agree with EDG C under GCC and Clang
 in static/instance JIT/NativeAOT, including origin-owner destruction under GC.
 Object/void pointer and nullptr catches now use C++ type/qualification matching
-and separate pinned catch buffers, preserving EDG's original-pointer rethrow
+and separate native catch buffers, preserving EDG's original-pointer rethrow
 behavior. Enums retain nominal identity. All 48 pointer/enum traces match the C
 backend under GCC and Clang in static/instance JIT/NativeAOT modes, including GC
 and concurrent catches. Function/member pointers, array pointees and volatile
@@ -533,6 +533,16 @@ active construction vtables. Reference casts now use an opt-in translated EDG st
 (`--runtime edg-exceptions`), with 24 differential cases and noexcept/secondary
 exception termination tests. Public `type_info` equality/inequality, name, ordering and `std::bad_typeid` now have 34 differential cases and 24 name comparisons; virtual metadata-object operations and cross-module identity remain open. Scalar new/delete accepts translated providers; the optional exception
 bootstrap supplies a basic NativeMemory-backed scalar provider. Exception_ptr and the complete EH/runtime policy remain pending; see the implementation document for the supported boundary.
+
+The implementation campaign replaces short-lived pinned exception arrays with
+NativeMemory storage. Escaped managed carriers support explicit disposal, which
+runs the C++ destructor on the originating owner and releases storage once.
+Finalizers release native bytes only. Outstanding carriers hold owner leases;
+shutdown rejects premature disposal and preserves storage if a destructor's
+host callback retains a new carrier. Deferred shutdown rejects ordinary calls,
+permits carrier disposal (including cross-thread callback reentry), and can be
+retried after release. These mechanisms have focused Linux x64 JIT/NativeAOT
+coverage; they do not implement exception_ptr or settle all foreign boundaries.
 
 Generate `try/finally` around actual destruction lifetimes: function scopes,
 inner scopes, expression temporaries and construction phases. Functions with
@@ -889,6 +899,15 @@ calls under JIT and NativeAOT. These are implemented portions of milestones
 The basic-language and initialization/allocation increment adds flattened ordinary control flow, bitfield access, exact float/double constants, software binary80 arithmetic, 128-bit integers and volatile scalar/pointer access. EDG startup bodies and TLS initializer aliases are executed directly; local-static guard cleanup follows the C runtime's region flag 0x80. Vector allocation and expression-level internal-try cleanup preserve EDG cookies, constructor failure and reverse destruction. No EDG lowering changes were made for these cases.
 
 The optional bootstrap now provides all ordinary scalar/array, sized, aligned, placement and nothrow allocation signatures. Each owner has its own new handler and heap ledger. Generated library hosts call `ReleaseThread()` at translated thread exit and `Shutdown()`/`Dispose()` at owner end. Executable wrappers automatically shut down. Native callbacks, libc resources, dynamic libraries and cross-module lifetime still require their own contracts. Instance ownership remains selected solely by `--instance-methods`.
+
+The next runtime increment adds explicit portable variadic packs and opt-in
+byte-stream libc imports. Variadic signatures receive a hidden VaList pointer;
+callers evaluate arguments once, preserve EDG's default promotions and write
+aligned values to caller-owned storage. va_copy copies cursors, and packs above
+64 KiB use NativeMemory with finally-based release. The FILE bridge uses opaque
+native tokens, owner-specific pinned standard-stream cells and BCL streams,
+with runtime-selected append/path adapters where required for C semantics.
+Native varargs, wide-oriented FILE behavior and complete libc remain open.
 
 ### Remaining work after the autonomous runtime increment
 

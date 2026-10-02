@@ -1,0 +1,5 @@
+#ifndef __EDG_DOT_CSTDARG
+#define __EDG_DOT_CSTDARG
+#include <stdarg.h>
+namespace std { using ::va_list; }
+#endif

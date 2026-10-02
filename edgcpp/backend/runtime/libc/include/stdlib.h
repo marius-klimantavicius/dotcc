@@ -13,6 +13,7 @@ void *realloc(void *, size_t);
 void free(void *);
 void *aligned_alloc(size_t, size_t);
 int posix_memalign(void **, size_t, size_t);
+int wctomb(char *, wchar_t);
 #ifdef __cplusplus
 }
 #endif

@@ -145,6 +145,11 @@ def main():
         files["Runtime.Float80.cs"] = (ROOT / "backend/runtime/Float80.cs").read_text()
     if "global::Edg.Runtime.LibcContext" in source:
         files["Runtime.LibcContext.cs"] = (ROOT / "backend/runtime/LibcContext.cs").read_text()
+    if "global::Edg.Runtime.AtomicOps" in source:
+        files["Runtime.AtomicOps.cs"] = (ROOT / "backend/runtime/AtomicOps.cs").read_text()
+    for helper in ("VaList", "LibcFiles", "LibcAppend", "LibcPaths"):
+        if (helper == "VaList" and "global::Edg.Runtime.VaList" in source) or (helper != "VaList" and "global::Edg.Runtime.LibcFiles" in source):
+            files[f"Runtime.{helper}.cs"] = (ROOT / f"backend/runtime/{helper}.cs").read_text()
     compile_items = "\n".join(f'    <Compile Include="{filename}" />' for filename in files)
     files["Generated.csproj"] = '''<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
@@ -166,7 +171,7 @@ COMPILE_ITEMS
     owned = set()
     if manifest.exists():
         owned = set(json.loads(manifest.read_text())["files"])
-        if any(name not in ("Translated.cs", "EntryPoint.cs", "Generated.csproj", "Runtime.Float80.cs", "Runtime.LibcContext.cs") and
+        if any(name not in ("Translated.cs", "EntryPoint.cs", "Generated.csproj", "Runtime.Float80.cs", "Runtime.LibcContext.cs", "Runtime.VaList.cs", "Runtime.LibcFiles.cs", "Runtime.LibcAppend.cs", "Runtime.LibcPaths.cs", "Runtime.AtomicOps.cs") and
                not re.fullmatch(r"Translated\.part[0-9]{5,}\.cs", name) for name in owned):
             parser.error("invalid generated-file ownership manifest")
     for filename in files:
@@ -183,6 +188,7 @@ COMPILE_ITEMS
         "language": args.language, "includeDirectories": [str(p.resolve()) for p in args.include],
         "defines": args.define, "lifecycle": "explicit-shutdown-release-thread" if "void Shutdown()" in source else "process",
         "longDouble": "software-binary80" if "global::Edg.Runtime.Float80" in source else None,
+        "varargs": "portable-typed-pack-v1" if "global::Edg.Runtime.VaList" in source else None,
         "emit": args.emit, "runtime": args.runtime, "nestTypes": args.nest_types, "exports": exports,
         "libc": args.libc, "imports": imports,
         "target": target_manifest,

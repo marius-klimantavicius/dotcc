@@ -10,7 +10,7 @@ all implementation gates are met. Preserve intermediates and per-run evidence.
 
 | Owner | Work | State |
 | --- | --- | --- |
-| Root | Embed upstream EDG with provenance and no nested Git | Complete: `a63ae45c`; now portable target audit |
+| Root | Embed upstream, portable target, multi-TU, atomics and libc++ audit | Embedding complete; atomics acceptance in progress |
 | Coordinator | Integration, import ABI, driver, lifecycle/heap adapters, ledger, builds/commits | In progress |
 | Core language worker | Function-try-blocks, then member-pointer/full EH coverage | In progress |
 | Libc worker | Audited BCL libc bridge, portable header subset, synthetic conformance | In progress |
@@ -48,7 +48,7 @@ focused checks, recorded in `evidence/dot-gen-backend.json`. Those results prove
 the documented subset only. New milestone results and commits will be recorded
 here with retained artifact paths.
 
-Targeted integration evidence (full regression still pending):
+First integration milestone `f98f512fb` (portable target, imports, multi-TU and function-try blocks):
 
 - `artifacts/campaign/libc-imports-final-20261002-214539/results.json`: seven
   checks, 24 C-oracle cases, static/instance JIT/NativeAOT, header and ABI probes.
@@ -89,3 +89,43 @@ variable-template checks at `artifacts/campaign/template-entities-acceptance-003
 C++ whole-program translation now requests EDG `--instantiate used`, and the
 portable profile is the driver default. See
 `evidence/milestone-runtime-portable.json` for the source hashes and remaining gates.
+
+## Second increment: native exception storage, varargs, files and atomics
+
+The second increment passes the combined regression suite from an isolated
+source/compiler snapshot at `artifacts/campaign/milestone-native-snapshot`.
+The initial run preserved 555 successful command results before a strict
+nullable-field warning; the corrected field is covered by the successful
+complete rerun. Snapshot hashes, command logs, generated projects and all
+failure evidence are retained. Focused evidence, all synthetic:
+
+- `artifacts/campaign/exception-storage-20261002-223655/results.json`: five
+  checks with GCC/Clang C-oracle agreement and static/instance JIT/NativeAOT.
+  Payloads and catch adjustment cells use native memory. Explicit carrier
+  disposal runs translated destructors once; finalization releases bytes only.
+  Live carriers retain owners. Shutdown preserves storage while deferred
+  carrier cleanup runs, including cross-thread disposal and callback reentry.
+- `artifacts/campaign/libc-files-integrated-20261002-224609/results.json`:
+  seven checks, 25 strict FILE imports, 11 native traces, owner-specific
+  addressable standard streams and fpos, buffering, errors and concurrent
+  append. Linux execution is verified; Windows/macOS branches still require
+  execution on those systems.
+- `artifacts/campaign/varargs-004/results.json`: ten C/C++ checks for explicit
+  typed packs, default promotions, binary80/128-bit/aggregate arguments,
+  va_copy/end, forwarding, recursion, indirect calls and EH. Static/instance
+  JIT/NativeAOT agree with original EDG C. Packs exceeding 64 KiB use temporary
+  NativeMemory; the test passes a 70 KiB pack. Arbitrary aggregate-size limits
+  remain a separate unresolved representation gate.
+- `artifacts/campaign/atomic-runtime-003`: isolated atomic helpers pass
+  JIT/NativeAOT; `artifacts/campaign/atomic-builtins-003/results.json` adds
+  twelve passing emitted C/C++ checks, including concurrent calls.
+
+Selected musl printf source, license, provenance, replayable adaptation and
+private sink are retained under `backend/runtime/musl/printf`. Its 109 native
+synthetic cases pass GCC/Clang, but translated C# formatter acceptance is not
+yet established. New bit-level floating helpers have separate native-vector
+evidence; errno/fenv and directed arithmetic are not inferred from that proof.
+
+Next integrated gates are member-pointer variant ABI and extended pointer EH,
+formatter dependencies/translation, and libc++ component bring-up.
+The complete campaign checklist above remains open.

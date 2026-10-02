@@ -1,0 +1,4 @@
+# Replayable patches preserve upstream context indentation and blank lines.
+backend/runtime/musl/printf/*.patch -whitespace
+# Byte-for-byte upstream snapshots and their adapted copies retain source style.
+backend/runtime/musl/printf/vfprintf*.c -whitespace

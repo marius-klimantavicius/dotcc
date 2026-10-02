@@ -2,6 +2,8 @@
 #ifndef __EDG_DOT_LIBC_LIMITS_H
 #define __EDG_DOT_LIBC_LIMITS_H
 #define CHAR_BIT 8
+/* Selected UTF-8 conversion profile; locale implementation remains separate. */
+#define MB_LEN_MAX 4
 #define SCHAR_MIN (-127-1)
 #define SCHAR_MAX 127
 #define UCHAR_MAX 255

@@ -5,6 +5,9 @@ import shutil
 
 root = Path(__file__).resolve().parents[1]
 for source, target in [
+    (root / "backend/dot_gen_varargs.h", root / "upstream/src/dot_gen_varargs.h"),
+    (root / "backend/dot_gen_atomics.h", root / "upstream/src/dot_gen_atomics.h"),
+    (root / "backend/runtime/libc-files-bindings.def", root / "upstream/src/libc-files-bindings.def"),
     (root / "backend/dot_sys_predef.c", root / "upstream/src/dot_sys_predef.c"),
     (root / "backend/target/portable-lp64-binary80-v1.def", root / "upstream/src/dot_gen_target_macros.def"),
     (root / "backend/dot_gen_imports.h", root / "upstream/src/dot_gen_imports.h"),

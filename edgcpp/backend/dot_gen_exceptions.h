@@ -179,30 +179,49 @@ void collect_exception_metadata(a_statement_ptr s) {
 void ensure_exception_helpers() {
   if(exception_helpers_emitted)return;
   exception_helpers_emitted=true;
+  ensure_lifecycle();
   helper_output+=R"CS(
 // dot-gen:member-begin
-private sealed class __edg_exception : global::System.Exception {
+private sealed class __edg_exception : global::System.Exception, global::System.IDisposable {
   internal readonly int Type;
-  private readonly byte[] storage;
+  private nint storage;
   private readonly nuint mask;
   private readonly delegate* managed<object?, byte*, void> destructor;
-  private readonly object? owner;
+  private readonly delegate* managed<object?, void> releaseOwner;
+  private object? owner;
   internal bool Started = false, Complete = false;
-  private bool destroyed;
-  private int uses = 1; // The original throw; each rethrow adds one use.
-  internal byte* Address => (byte*)(((nuint)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref storage[0]) + mask) & ~mask);
-  internal __edg_exception(int type, int size, int alignment,
-      delegate* managed<object?, byte*, void> dtor, object? owner) {
-    Type = type; mask = (nuint)(alignment - 1); destructor = dtor; this.owner = owner;
-    storage = global::System.GC.AllocateArray<byte>(size + alignment - 1, pinned: true);
+  private int disposeRequested;
+  private int uses = 1; // Original throw; each rethrow adds one use.
+  internal byte* Address => (byte*)(((nuint)storage + mask) & ~mask);
+  internal __edg_exception(int type, int alignment, void* storage,
+      delegate* managed<object?, byte*, void> dtor, object? owner,
+      delegate* managed<object?, void> releaseOwner) {
+    Type=type;mask=(nuint)(alignment-1);destructor=dtor;this.owner=owner;
+    this.releaseOwner=releaseOwner;this.storage=(nint)storage;
   }
-  internal void Retain() { checked { ++uses; } }
+  // A host catching this private carrier can own it through IDisposable.
+  // Abandonment releases bytes only: never run C++ code on the finalizer thread.
+  ~__edg_exception() { FreeStorage(); }
+  private void FreeStorage() {
+    nint raw=global::System.Threading.Interlocked.Exchange(ref storage,0);
+    if(raw==0)return;
+    try { global::System.Runtime.InteropServices.NativeMemory.Free((void*)raw); }
+    finally { object? held=owner;owner=null;releaseOwner(held); }
+  }
+  public void Dispose() {
+    if(global::System.Threading.Interlocked.Exchange(ref disposeRequested,1)==0)Release();
+  }
+  internal void Retain() {
+    if(global::System.Threading.Interlocked.Increment(ref uses)<=1)
+      global::System.Environment.FailFast("Invalid EDG exception retain");
+  }
   internal void Release() {
-    if (--uses < 0) global::System.Environment.FailFast("Invalid EDG exception use count");
-    if (uses != 0 || destroyed) return;
-    destroyed = true; // A throwing destructor must never be invoked twice.
-    try { if (Complete && destructor != null) destructor(owner, Address); }
-    finally { global::System.GC.KeepAlive(this); }
+    int count=global::System.Threading.Interlocked.Decrement(ref uses);
+    if(count<0)global::System.Environment.FailFast("Invalid EDG exception use count");
+    if(count!=0)return;
+    global::System.Threading.Interlocked.Exchange(ref disposeRequested,1);
+    try { if(Complete && destructor!=null)destructor(owner,Address); }
+    finally { FreeStorage();global::System.GC.SuppressFinalize(this);global::System.GC.KeepAlive(this); }
   }
 }
 // dot-gen:member-end
@@ -212,10 +231,10 @@ private static global::System.Exception? __edg_active_exception => __edg_current
 private sealed class __edg_catch_frame {
   internal readonly global::System.Exception Error;
   private readonly __edg_catch_frame? parent;
-  private readonly nuint[]? pointerStorage;
+  private readonly nuint* pointerStorage;
   private readonly int offset;
   internal byte* Address => pointerStorage != null
-    ? (byte*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref pointerStorage[0])
+    ? (byte*)pointerStorage
     : ((__edg_exception)Error).Address + offset;
   internal bool Active = true;
   internal bool Caught = false;
@@ -223,7 +242,7 @@ private sealed class __edg_catch_frame {
     // Like throw.c's pointer_buffer, mutations through T*& affect this catch
     // only. Rethrow starts from the original payload, not this adjusted copy.
     if (pointerCatch) {
-      pointerStorage = global::System.GC.AllocateArray<nuint>(1, pinned: true);
+      pointerStorage = (nuint*)__edg_exception_alloc((nuint)sizeof(nuint));
       pointerStorage[0] = *(nuint*)((__edg_exception)error).Address;
       if (pointerStorage[0] != 0) pointerStorage[0] += (nuint)adjustment;
     }
@@ -237,7 +256,7 @@ private sealed class __edg_catch_frame {
     Active = false;
     // As in EDG's __free_thrown_object, destruction precedes popping the entry.
     try { if (Error is __edg_exception payload) payload.Release(); }
-    finally { __edg_current_catch = parent; global::System.GC.KeepAlive(this); }
+    finally { __edg_current_catch = parent; global::System.Runtime.InteropServices.NativeMemory.Free(pointerStorage); global::System.GC.KeepAlive(this); }
   }
 }
 // dot-gen:member-end
@@ -265,7 +284,32 @@ private static bool __edg_catch_filter(__edg_catch_frame frame, global::System.E
   return false;
 }
 // dot-gen:member-end
+// dot-gen:member-begin
+private static __edg_catch_frame __edg_create_catch_frame(global::System.Exception error,bool pointerCatch,int adjustment) {
+  try {return new __edg_catch_frame(error,pointerCatch,adjustment);}
+  catch(global::System.OutOfMemoryException failure) {
+    global::System.Environment.FailFast("Unable to allocate EDG exception storage",failure);throw;
+  }
+}
+// dot-gen:member-end
+// dot-gen:member-begin
+private static void* __edg_exception_alloc(nuint size) {
+  try {
+    void* result=global::System.Runtime.InteropServices.NativeMemory.Alloc(size);
+    if(result==null)global::System.Environment.FailFast("Unable to allocate EDG exception storage");
+    return result;
+  } catch(global::System.OutOfMemoryException error) {
+    global::System.Environment.FailFast("Unable to allocate EDG exception storage",error);throw;
+  }
+}
+// dot-gen:member-end
 )CS";
+  string receiver=instance_mode?"(("+string(getenv("EDG_DOT_CLASS"))+")owner!).":"";
+  helper_output+="// dot-gen:member-begin\nprivate static void __edg_release_exception_owner(object? owner) { "+receiver+"__edg_release_exception_lease(); }\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate static __edg_exception __edg_create_exception(int type,int size,int alignment,delegate* managed<object?,byte*,void> dtor,object? owner) {\n"
+      "void* raw=null;bool leased=false;try { "+receiver+"__edg_acquire_exception_lease();leased=true;\n"
+      "raw=__edg_exception_alloc((nuint)(size+alignment-1));return new __edg_exception(type,alignment,raw,dtor,owner,&__edg_release_exception_owner);\n"
+      "} catch(global::System.OutOfMemoryException error) {global::System.Runtime.InteropServices.NativeMemory.Free(raw);if(leased)__edg_release_exception_owner(owner);global::System.Environment.FailFast(\"Unable to allocate EDG exception storage\",error);throw;}\n}\n// dot-gen:member-end\n";
 }
 string exception_destructor(a_routine_ptr r) {
   if(!r)return "null";
@@ -288,9 +332,10 @@ string exception_destructor(a_routine_ptr r) {
      skip_typerefs(rt->variant.routine.return_type)->kind!=tk_void)unsupported("exception destructor ABI");
   string id="__edg_exception_dtor"+std::to_string(exception_destructors.size());
   exception_destructors[r]=id;
+  string receiver=instance_mode?"(("+string(getenv("EDG_DOT_CLASS"))+")owner!).":"";
   helper_output+="// dot-gen:member-begin\nprivate static void "+id+"(object? owner, byte* address) {\n"+
-      (instance_mode?"(("+string(getenv("EDG_DOT_CLASS"))+")owner!).":"")+name(r,"f")+
-      "(("+type(p->type)+")address); }\n// dot-gen:member-end\n";
+      receiver+"__edg_enter_exception_disposal(); try { "+receiver+name(r,"f")+
+      "(("+type(p->type)+")address); } finally { "+receiver+"__edg_leave(); } }\n// dot-gen:member-end\n";
   return "&"+id;
 }
 string exception_address(an_expr_node_ptr e) {
@@ -320,7 +365,7 @@ string throw_effect(an_expr_node_ptr e) {
   pending_exception=saved;
   // Keep the carrier rooted throughout initializer helpers and a failing
   // initializer. Successful throws transfer that root to CLR exception handling.
-  return "{ var "+id+" = new __edg_exception("+key+", "+std::to_string(payload_type->size)+", "+
+  return "{ var "+id+" = __edg_create_exception("+key+", "+std::to_string(payload_type->size)+", "+
       std::to_string(alignment)+", "+dtor+", "+(instance_mode?"this":"null")+");\ntry {\n"+init+
       id+".Complete = true; throw "+id+";\n} catch (global::System.Exception initialization_error) when (__edg_throw_filter("+id+", initialization_error)) {\n"
       "if (!global::System.Object.ReferenceEquals(initialization_error, "+id+")) {\n"+

@@ -32,19 +32,37 @@ private @MOD@readonly object __edg_sync=new object();
 private @MOD@readonly global::System.Collections.Generic.List<__edg_finalizer> __edg_finalizers=new();
 private @MOD@readonly global::System.Collections.Generic.Dictionary<nint,__edg_guard> __edg_guards=new();
 private @MOD@readonly global::System.Threading.ThreadLocal<__edg_thread_state> __edg_threads=new(()=>new __edg_thread_state(),true);
-private @MOD@int __edg_active,__edg_state,__edg_shutdown_thread;
+private @MOD@int __edg_active,__edg_state,__edg_shutdown_thread,__edg_exception_leases;
 private @MOD@nint __edg_new_handler;
 // dot-gen:member-begin
 private @MOD@void __edg_enter() {
   lock(__edg_sync) {
-    if(__edg_state!=0 && !(__edg_state==1 && (__edg_shutdown_thread==global::System.Environment.CurrentManagedThreadId || __edg_threads.Value!.Depth!=0)))
+    if(__edg_state!=0 && !((__edg_state==1 || __edg_state==3) && ((__edg_state==1 && __edg_shutdown_thread==global::System.Environment.CurrentManagedThreadId) || __edg_threads.Value!.Depth!=0)))
       throw new global::System.ObjectDisposedException("translated program");
     ++__edg_active;++__edg_threads.Value!.Depth;
   }
 }
 // dot-gen:member-end
 // dot-gen:member-begin
+private @MOD@void __edg_enter_exception_disposal() {
+  lock(__edg_sync) {
+    if(__edg_state==2)global::System.Environment.FailFast("Exception outlived EDG owner storage");
+    ++__edg_active;++__edg_threads.Value!.Depth;
+  }
+}
+// dot-gen:member-end
+// dot-gen:member-begin
 private @MOD@void __edg_leave() {lock(__edg_sync){--__edg_threads.Value!.Depth;--__edg_active;global::System.Threading.Monitor.PulseAll(__edg_sync);}}
+// dot-gen:member-end
+// dot-gen:member-begin
+private @MOD@void __edg_acquire_exception_lease() {
+  lock(__edg_sync){if(__edg_state==2)throw new global::System.ObjectDisposedException("translated program");checked{++__edg_exception_leases;}}
+}
+// dot-gen:member-end
+// dot-gen:member-begin
+private @MOD@void __edg_release_exception_lease() {
+  lock(__edg_sync){if(--__edg_exception_leases<0)global::System.Environment.FailFast("Invalid EDG exception owner lease");global::System.Threading.Monitor.PulseAll(__edg_sync);}
+}
 // dot-gen:member-end
 // dot-gen:member-begin
 private @MOD@int __edg_register(nint fn,nint arg,bool tls) {
@@ -85,15 +103,33 @@ public @MOD@void Shutdown() {
       if(__edg_shutdown_thread==global::System.Environment.CurrentManagedThreadId)return;
       while(__edg_state==1)global::System.Threading.Monitor.Wait(__edg_sync);if(__edg_state==2)return;
     }
+    bool deferred=__edg_state==3;
     __edg_state=1;__edg_shutdown_thread=global::System.Environment.CurrentManagedThreadId;
     while(__edg_active!=0)global::System.Threading.Monitor.Wait(__edg_sync);
+    if(__edg_exception_leases!=0) {
+      __edg_state=deferred?3:0;global::System.Threading.Monitor.PulseAll(__edg_sync);
+      throw new global::System.InvalidOperationException("Dispose escaped C++ exception carriers before Shutdown");
+    }
     foreach(var thread in __edg_threads.Values)if(thread!=__edg_threads.Value && thread.Finalizers.Count!=0) {
-      __edg_state=0;global::System.Threading.Monitor.PulseAll(__edg_sync);
+      __edg_state=deferred?3:0;global::System.Threading.Monitor.PulseAll(__edg_sync);
       throw new global::System.InvalidOperationException("ReleaseThread must run on each owning thread before Shutdown");
     }
   }
-  try {__edg_drain(__edg_threads.Value!.Finalizers);__edg_drain(__edg_finalizers);/*__EDG_LIBC_DISPOSE__*/__edg_heap.Dispose();__edg_storage=[];foreach(var thread in __edg_threads.Values)thread.Storage=null;__edg_guards.Clear();}
-  finally {lock(__edg_sync){__edg_state=2;__edg_new_handler=0;global::System.Threading.Monitor.PulseAll(__edg_sync);}}
+  bool closed=false;
+  try {
+    __edg_drain(__edg_threads.Value!.Finalizers);__edg_drain(__edg_finalizers);
+    lock(__edg_sync) {
+      // Destructors can call hosts that retain a fresh carrier. Keep storage
+      // alive but ordinary entry closed until its owner explicitly releases it.
+      while(__edg_active!=0)global::System.Threading.Monitor.Wait(__edg_sync);
+      if(__edg_exception_leases!=0)
+        throw new global::System.InvalidOperationException("Dispose exceptions retained during shutdown and retry Shutdown");
+      foreach(var thread in __edg_threads.Values)if(thread!=__edg_threads.Value && thread.Finalizers.Count!=0)
+        throw new global::System.InvalidOperationException("ReleaseThread must run before retrying Shutdown");
+    }
+    /*__EDG_LIBC_DISPOSE__*/__edg_heap.Dispose();__edg_storage=[];foreach(var thread in __edg_threads.Values)thread.Storage=null;__edg_guards.Clear();closed=true;
+  }
+  finally {lock(__edg_sync){__edg_state=closed?2:3;if(closed)__edg_new_handler=0;global::System.Threading.Monitor.PulseAll(__edg_sync);}}
 }
 // dot-gen:member-end
 // dot-gen:member-begin

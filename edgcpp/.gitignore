@@ -7,6 +7,7 @@ __pycache__/
 /upstream/src/dot_sys_predef.c
 /upstream/src/dot_gen_target_macros.def
 /upstream/src/libc-bindings.def
+/upstream/src/libc-files-bindings.def
 /upstream/src/cmake/cpfe-dot/
 /upstream/src/cmake/cpfe-dot-oracle/
 /upstream/cmake/macro-conf/all-extensions/
