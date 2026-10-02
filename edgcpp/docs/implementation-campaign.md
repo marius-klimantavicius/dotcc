@@ -134,7 +134,7 @@ The complete campaign checklist above remains open.
 
 ## Third increment: member pointers, language modes and library foundations
 
-The third increment passes 332 combined regression checks and 816 recorded
+Commit `043b1cca8` records the third increment: 332 combined regression checks and 816 recorded
 commands from `artifacts/campaign/milestone-member-library-snapshot`. The source
 and compiler snapshot remains independent of subsequent work:
 
@@ -160,3 +160,41 @@ The exact milestone inputs are hashed in `evidence/milestone-member-library.json
 Main arguments, additional math, compact large-array storage and the libc++
 exception-pointer adapter are subsequent work and are not included in this snapshot.
 New standalone runtime or native proofs do not substitute for emitted-program acceptance.
+
+The third run exposed a harness retention limitation after acceptance: three
+new modules reused `static`/`instance` project directories. Driver source
+history and command logs remain available, but some build outputs and oracle
+paths could be overwritten by later modules. Every module now receives its
+own fresh suite directory; the next full run retains complete independent
+module artifacts. This does not alter the recorded successful executions.
+
+## Fourth increment: numeric libraries, storage and exception handles
+
+The immutable `milestone-numeric-owners-snapshot` passes 439 checks and 1,069
+recorded commands, including static/instance JIT and Linux-x64 NativeAOT.
+Every suite retains separate artifacts, and completed checks are checkpointed.
+The earlier `milestone-numeric-arrays-snapshot` failure remains preserved:
+known-token type-info destruction had reached a runtime guard instead of its
+required translation rejection. The field bridge now preserves that rejection;
+the original negative tests were not relaxed.
+
+This increment includes main arguments; selected math and musl integer/floating
+conversion; compact large/repeated arrays; anonymous records; public type-info
+fields; residual void/floating intrinsics; source diagnostics; bounded locale
+objects, allocating formatting and POSIX strerror_r. `--libc musl` selects
+thirteen pinned source translation units plus audited BCL services, recording
+retained inputs and hashes. It remains selected libc coverage, not complete libc.
+
+Libc++ local exception handles, make/nested exceptions, normal owner/global/TLS/
+heap ownership, concurrent rethrows and explicit host disposal are included.
+Foreign containing-region abandonment, uncaught counts and implicit termination
+integration remain subsequent gates. The original libc++ new/memory/locale
+source providers and production separate-TU linking are not accepted by the
+component handle fixtures. Source diagnostics do not constitute an owned IR.
+
+Exact inputs and evidence are recorded in `evidence/milestone-numeric-owners.json`.
+Newer packed-bitfield optimization, foreign-region reference bookkeeping,
+atomic waits, narrow classification/collation and BCL clocks have focused
+results but are not part of this immutable snapshot. VLA lowering is undergoing
+verification. Full library/API coverage, platform execution and performance
+closure remain open; no real-world project acceptance has been run.

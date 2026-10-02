@@ -1,0 +1,9 @@
+--- atoll.c.upstream
++++ atoll.c
+@@ -1,5 +1,5 @@
+ #include <stdlib.h>
+-#include <ctype.h>
++#include "scan_ctype.h"
+ 
+ long long atoll(const char *s)
+ {

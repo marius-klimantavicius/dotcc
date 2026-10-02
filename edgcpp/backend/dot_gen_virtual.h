@@ -3,6 +3,9 @@
 void register_rtti_type(a_type_ptr t) {
   if(!t->typeinfo_var)return;
   auto v=t->typeinfo_var;
+  // Follow the C backend variable-liveness contract. Header-only declarations
+  // may have unneeded, undefined typeinfo placeholders.
+  if(!variable_needed(v))return;
   auto prefix=skip_typerefs(v->type);
   while(prefix->kind==tk_class || prefix->kind==tk_struct) {
     auto f=prefix->variant.class_struct_union.field_list;
@@ -20,6 +23,7 @@ void register_rtti_type(a_type_ptr t) {
     // A lowered member-function pointer is physically a record, but its RTTI
     // describes the source member-pointer type, not a class-inheritance graph.
     rtti_source_types[v]=get_underlying_type(t);
+    rtti_lowered_types[v]=t;
   }
 }
 void collect_virtual_scope(a_scope_ptr scope,std::map<a_variable_ptr,unsigned> &types,
@@ -28,7 +32,7 @@ void collect_virtual_scope(a_scope_ptr scope,std::map<a_variable_ptr,unsigned> &
     register_rtti_type(t);
     if(t->kind!=tk_class && t->kind!=tk_struct)continue;
     auto info=class_type_supp(t);
-    if(info->virtual_function_table_var)tables.insert(info->virtual_function_table_var);
+    if(info->virtual_function_table_var && variable_needed(info->virtual_function_table_var))tables.insert(info->virtual_function_table_var);
   }
   for(auto s=scope->scopes;s;s=s->next)collect_virtual_scope(s,types,tables);
 }

@@ -12,7 +12,7 @@ def main():
     parser.add_argument('--nativeaot',action='store_true')
     args=parser.parse_args();out=args.output_dir.resolve();out.mkdir(parents=True,exist_ok=False)
     root=Path(__file__).resolve().parents[2];runtime=root/'backend/runtime';tests=root/'backend/tests'
-    for name in ['LibcContext.cs','LibcText.cs','LibcErrorMessages.cs']:shutil.copy2(runtime/name,out)
+    for name in ['LibcContext.cs','LibcText.cs','LibcErrorMessages.cs','LibcLocale.cs']:shutil.copy2(runtime/name,out)
     shutil.copy2(tests/'libc_text_native.c',out/'native.c');shutil.copy2(tests/'libc_text_runtime.cs',out/'Program.cs')
     (out/'Text.csproj').write_text('''<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType>
 <TargetFramework>net10.0</TargetFramework><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>enable</Nullable>

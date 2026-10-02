@@ -4,6 +4,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+int isascii(int);
 int isalnum(int);
 int isalpha(int);
 int isblank(int);

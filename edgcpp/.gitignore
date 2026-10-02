@@ -18,3 +18,6 @@ __pycache__/
 /upstream/src/dot_gen_main.h
 
 /upstream/src/libc-math-bindings.def
+
+/upstream/src/libc-numeric-bindings.def
+/upstream/src/libc-locale-bindings.def

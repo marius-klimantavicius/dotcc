@@ -1,0 +1,101 @@
+--- floatscan.c.upstream
++++ floatscan.c
+@@ -1,12 +1,12 @@
+ #include <stdint.h>
+-#include <stdio.h>
++#include "scan_string.h"
+ #include <math.h>
+ #include <float.h>
+ #include <limits.h>
+ #include <errno.h>
+-#include <ctype.h>
+-
+-#include "shgetc.h"
++#include "scan_ctype.h"
++
++#include "scan_string.h"
+ #include "floatscan.h"
+ 
+ #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
+@@ -33,7 +33,16 @@
+ 
+ #define MASK (KMAX-1)
+ 
+-static long long scanexp(FILE *f, int pok)
++/* Portable errno-only profile: numeric overflow must set ERANGE. The pinned
++   scanner's final hex scaling otherwise permits infinity without errno. */
++static long double edg_scan_scaled(long double value, int exponent)
++{
++ long double result = __edg_scan_scalbnl_nearest(value, exponent);
++ if (result > LDBL_MAX || result < -LDBL_MAX) errno = ERANGE;
++ return result;
++}
++
++static long long scanexp(struct edg_string_scan *f, int pok)
+ {
+ 	int c;
+ 	int x;
+@@ -60,7 +69,7 @@
+ }
+ 
+ 
+-static long double decfloat(FILE *f, int c, int bits, int emin, int sign, int pok)
++static long double decfloat(struct edg_string_scan *f, int c, int bits, int emin, int sign, int pok)
+ {
+ 	uint32_t x[KMAX];
+ 	static const uint32_t th[] = { LD_B1B_MAX };
+@@ -271,8 +280,8 @@
+ 
+ 	/* Calculate bias term to force rounding, move out lower bits */
+ 	if (bits < LDBL_MANT_DIG) {
+-		bias = copysignl(scalbn(1, 2*LDBL_MANT_DIG-bits-1), y);
+-		frac = fmodl(y, scalbn(1, LDBL_MANT_DIG-bits));
++		bias = copysignl(__edg_scalbn_nearest(1, 2*LDBL_MANT_DIG-bits-1), y);
++		frac = __edg_scan_remainder(y, __edg_scalbn_nearest(1, LDBL_MANT_DIG-bits));
+ 		y -= frac;
+ 		y += bias;
+ 	}
+@@ -290,7 +299,7 @@
+ 			else
+ 				frac += 0.75*sign;
+ 		}
+-		if (LDBL_MANT_DIG-bits >= 2 && !fmodl(frac, 1))
++		if (LDBL_MANT_DIG-bits >= 2 && !__edg_scan_remainder(frac, 1))
+ 			frac++;
+ 	}
+ 
+@@ -308,10 +317,10 @@
+ 			errno = ERANGE;
+ 	}
+ 
+-	return scalbnl(y, e2);
++	return edg_scan_scaled(y, e2);
+ }
+ 
+-static long double hexfloat(FILE *f, int bits, int emin, int sign, int pok)
++static long double hexfloat(struct edg_string_scan *f, int bits, int emin, int sign, int pok)
+ {
+ 	uint32_t x = 0;
+ 	long double y = 0;
+@@ -411,7 +420,7 @@
+ 	}
+ 
+ 	if (bits < LDBL_MANT_DIG)
+-		bias = copysignl(scalbn(1, 32+LDBL_MANT_DIG-bits-1), sign);
++		bias = copysignl(__edg_scalbn_nearest(1, 32+LDBL_MANT_DIG-bits-1), sign);
+ 
+ 	if (bits<32 && y && !(x&1)) x++, y=0;
+ 
+@@ -420,10 +429,10 @@
+ 
+ 	if (!y) errno = ERANGE;
+ 
+-	return scalbnl(y, e2);
++	return edg_scan_scaled(y, e2);
+ }
+ 
+-long double __floatscan(FILE *f, int prec, int pok)
++long double __floatscan(struct edg_string_scan *f, int prec, int pok)
+ {
+ 	int sign = 1;
+ 	size_t i;

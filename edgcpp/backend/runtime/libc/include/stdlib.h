@@ -3,6 +3,7 @@
 #ifndef __EDG_DOT_LIBC_STDLIB_H
 #define __EDG_DOT_LIBC_STDLIB_H
 #include <stddef.h>
+#include <locale.h>
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE 1
 #define RAND_MAX 2147483647
@@ -21,10 +22,17 @@ long long atoll(const char *);
 double strtod(const char *, char **);
 float strtof(const char *, char **);
 long double strtold(const char *, char **);
+float strtof_l(const char *, char **, locale_t);
+double strtod_l(const char *, char **, locale_t);
+long double strtold_l(const char *, char **, locale_t);
 long strtol(const char *, char **, int);
 long long strtoll(const char *, char **, int);
 unsigned long strtoul(const char *, char **, int);
 unsigned long long strtoull(const char *, char **, int);
+long strtol_l(const char *, char **, int, locale_t);
+unsigned long strtoul_l(const char *, char **, int, locale_t);
+long long strtoll_l(const char *, char **, int, locale_t);
+unsigned long long strtoull_l(const char *, char **, int, locale_t);
 int rand(void);
 void srand(unsigned int);
 void *malloc(size_t);

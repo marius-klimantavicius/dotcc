@@ -74,6 +74,11 @@ string sequence_expression(an_expr_node_ptr e) {
 }
 string expression_effect(an_expr_node_ptr e) {
   if(!e)return "";
+  // c_gen_be -> il_to_str::form_constant renders retained ck_void as (void)0.
+  if(e->kind==enk_constant && node_constant(e)->kind==ck_void) {
+    if(skip_typerefs(e->type)->kind!=tk_void)unsupported("void constant type");
+    return "";
+  }
   if(e->kind==enk_throw)return throw_effect(e);
   if(e->kind==enk_object_lifetime) return expression_effect(e->variant.object_lifetime.expr);
   if(e->kind==enk_lowered_eh_construct) {

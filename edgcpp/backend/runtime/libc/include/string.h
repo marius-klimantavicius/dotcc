@@ -16,6 +16,7 @@ int strcmp(const char *, const char *);
 int strcoll(const char *, const char *);
 size_t strxfrm(char *, const char *, size_t);
 char *strerror(int);
+int strerror_r(int, char *, size_t);
 int strncmp(const char *, const char *, size_t);
 char *strcpy(char *, const char *);
 char *strncpy(char *, const char *, size_t);

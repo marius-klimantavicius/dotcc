@@ -24,7 +24,9 @@
     "format_sink.h": "05fb965d60fce5cd251155d71377255987093882ca3fd34af4c90d483500ff9b",
     "format_file.h": "407c450f932dd7e301b2a3a3b10664c3564b1f749460caa00504241aa7359745",
     "vsnprintf.c": "524c1833d32ddff40f834a9534139cb9077f97e4f2bfb2706c2b6a902a5f07dd",
-    "format_wrappers.c": "af05dc90159b46cabb4af381c7a71a7d17c90e97541197010366c8229d18cdfe"
+    "format_wrappers.c": "af05dc90159b46cabb4af381c7a71a7d17c90e97541197010366c8229d18cdfe",
+    "format_allocating.c": "6b4355082a7a4b45f0d6fe4bb8a918356d0b849cd0763552eeb00a58ce513743"
   },
-  "translatedEvidence": "artifacts/campaign/musl-printf-translated-20261002-235819/results.json"
+  "translatedEvidence": "artifacts/campaign/musl-printf-translated-20261002-235819/results.json",
+  "allocatingEvidence": "artifacts/campaign/libc-locale-translated-20261003-013235/results.json"
 }

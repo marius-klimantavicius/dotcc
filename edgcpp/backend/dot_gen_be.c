@@ -23,7 +23,7 @@ std::map<a_variable_ptr, unsigned long long> global_offsets, tls_offsets;
 std::set<a_variable_ptr> exception_metadata;
 std::map<a_constant_ptr,unsigned> virtual_type_tokens;
 std::map<a_variable_ptr,unsigned> virtual_types;
-std::map<a_variable_ptr,a_type_ptr> rtti_source_types;
+std::map<a_variable_ptr,a_type_ptr> rtti_source_types,rtti_lowered_types;
 std::set<a_type_ptr> rtti_user_prefix_types;
 bool rtti_helpers_emitted=false;
 bool typeinfo_helpers_emitted=false;
@@ -56,8 +56,21 @@ bool instance_mode, nested_types, library_mode;
 bool function_returns_void;
 string output;
 const char *context = "file scope";
+a_source_position diagnostic_position{};
+struct diagnostic_scope {
+  a_source_position previous;
+  explicit diagnostic_scope(const a_source_position &position):previous(diagnostic_position) {
+    if(position.seq)diagnostic_position=position;
+  }
+  ~diagnostic_scope(){diagnostic_position=previous;}
+};
 
 [[noreturn]] void unsupported(const char *what, int kind = -1) {
+  if(diagnostic_position.seq) {
+    a_const_char *file=nullptr,*full=nullptr;a_line_number line_number=0;a_boolean at_end=FALSE;
+    conv_seq_to_file_and_line(diagnostic_position.seq,&file,&full,&line_number,&at_end);
+    if(file)fprintf(stderr,"%s:%llu:%u: ",file,(unsigned long long)line_number,(unsigned)diagnostic_position.column);
+  }
   fprintf(stderr, "dot_gen_be: unsupported %s (kind %d) in %s\n", what, kind, context);
   exit(1);
 }
@@ -110,7 +123,7 @@ string aggregate_type(a_type_ptr t) {
     if(!nested_types)id=string(getenv("EDG_DOT_CLASS")+1)+"_"+id;
     aggregate_types[t]=id;type_output+="public struct "+id+" {}\n";return id;
   }
-  if (!t->size || t->size > 65536) unsupported(("aggregate size "+std::to_string(t->size)+" for "+string(t->source_corresp.name?t->source_corresp.name:"<anonymous>")+" (1..65536 bytes required)").c_str());
+  if (!t->size || t->size > 64*1024*1024) unsupported(("aggregate size "+std::to_string(t->size)+" for "+string(t->source_corresp.name?t->source_corresp.name:"<anonymous>")+" (1..64 MiB bytes required)").c_str());
   string id = name(t, "__edg_type");
   if (!nested_types) id = string(getenv("EDG_DOT_CLASS") + 1) + "_" + id;
   aggregate_types[t] = id; // Register before walking self-referential pointers.
@@ -123,13 +136,18 @@ string aggregate_type(a_type_ptr t) {
         t->size / element->size != t->variant.array.variant.number_of_elements)
       unsupported("array size/stride mismatch");
     auto count = t->variant.array.variant.number_of_elements;
-    if (count > 16384) unsupported("array exceeds 16384 elements");
     string element_type = type(t->variant.array.element_type);
-    // Every element must be a real CLR field. Treating the tail as padding
-    // would allow managed value copies/promotion to discard array contents.
-    for (unsigned long long i = 0; i < count; ++i)
-      fields += "[global::System.Runtime.InteropServices.FieldOffset(" + std::to_string(i * element->size) +
-                ")] public " + element_type + " e" + std::to_string(i) + ";\n";
+    // InlineArray informs the CLR that the full extent contains elements,
+    // avoiding both padding-only copies and one source field per element.
+    // Like dotcc, wrap pointer cells so C# generic-type restrictions do not
+    // produce CS9184; translated accesses still use original element pointers.
+    if(element->kind==tk_pointer) {
+      string cell=id+"_Element";
+      type_output+="[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential, Pack=1)]\npublic unsafe struct "+cell+" { public "+element_type+" Value; }\n";
+      element_type=cell;
+    }
+    type_output+="[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential, Pack=1)]\n[global::System.Runtime.CompilerServices.InlineArray("+std::to_string(count)+")]\npublic unsafe struct "+id+" { public "+element_type+" e0; }\n";
+    return id;
   } else {
     std::set<unsigned long long> bit_bytes;
     for (auto f = t->variant.class_struct_union.field_list; f; f = f->next) {
@@ -150,7 +168,8 @@ string aggregate_type(a_type_ptr t) {
       bool vptr=f->compiler_generated && f->source_corresp.name && string(f->source_corresp.name)=="__vptr" &&
           f->offset==class_type_supp(t)->virtual_function_info_offset && ft->kind==tk_pointer &&
           skip_typerefs(ft->variant.pointer.type)->kind==tk_integer && skip_typerefs(ft->variant.pointer.type)->size==8;
-      if (f->compiler_generated && !f->is_lowered_base_class && !vptr && !member_pointer_field(t,f))
+      if (f->compiler_generated && !f->is_lowered_base_class && !vptr && !member_pointer_field(t,f) &&
+          !(f->is_anonymous_parent_object && (ft->kind==tk_struct || ft->kind==tk_union)))
         unsupported(("bitfield or synthetic record field: "+string(f->source_corresp.name?f->source_corresp.name:"unnamed")).c_str());
       if(ft->kind==tk_array && !ft->size)continue; // Flexible tail: address only, no storage field.
       if (f->offset + skip_typerefs(f->type)->size > t->size) unsupported("field outside record");
@@ -236,6 +255,7 @@ string function_pointer_type(a_type_ptr t) {
 string routine_address(a_routine_ptr r) {
   bool pure=r->compiler_generated && r->source_corresp.name && string(r->source_corresp.name)=="__cxa_pure_virtual";
   if (r->function_def_number == NULL_function_def_number && !pure && !libc_routine(r) && !thread_routine(r)) unsupported(("address of external function: "+string(r->source_corresp.name?r->source_corresp.name:"<unnamed>")).c_str());
+  r=libc_address_routine(r);
   auto found = routine_addresses.find(r);
   if (found != routine_addresses.end()) return found->second + "()";
   auto rt = skip_typerefs(r->type);
@@ -400,8 +420,31 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c) {
     if (item->kind == ck_init_repeat) {
       count = item->variant.init_repeat.count;
       value = item->variant.init_repeat.constant;
+    } else if(t->kind==tk_array) {
+      // EDG can expand repeated aggregate designators into adjacent equal
+      // constants rather than ck_init_repeat. Its strict representation-aware
+      // comparison preserves signed zero, pointer identity and relocations.
+      while(item->next && item->next->kind!=ck_init_repeat &&
+            compare_constants(value,item->next,CC_STRICTLY_IDENTICAL|CC_EXACT_EQUIVALENCE)) {
+        ++count;item=item->next;
+      }
     }
-    if (count > 65536) unsupported("initializer repetition limit");
+    if(t->kind==tk_array && count>1) {
+      auto element=t->variant.array.element_type;
+      auto elements=t->variant.array.variant.number_of_elements;
+      if(index>elements || count>elements-index)unsupported("array initializer repetition bounds");
+      if(skip_typerefs(value->type)->size!=skip_typerefs(element)->size)
+        unsupported("flattened multidimensional initializer");
+      a_boolean overflow=FALSE;
+      bool zero=value->kind==ck_integer && unsigned_value_of_integer_constant(value,&overflow)==0 && !overflow;
+      if(!zero) {
+        string counter="__edg_repeat"+std::to_string(++serial);
+        result+="for(ulong "+counter+"=0; "+counter+"<"+std::to_string(count)+"; ++"+counter+") {\n";
+        result+=initializer("(("+type(element)+"*)&("+dst+"))["+std::to_string(index)+"+"+counter+"]",element,value);
+        result+="}\n";
+      }
+      index+=count;continue;
+    }
     for (unsigned long long repeat = 0; repeat < count; ++repeat) {
       if (t->kind == tk_array) {
         auto element = t->variant.array.element_type;
@@ -438,6 +481,7 @@ bool selected_runtime_branch(a_statement_ptr s,a_statement_ptr &branch) {
 #include "dot_gen_virtual.h"
 #include "dot_gen_rtti.h"
 #include "dot_gen_typeinfo.h"
+#include "dot_gen_exception_ptr.h"
 #include "dot_gen_runtime.h"
 string location(an_expr_node_ptr e);
 #include "dot_gen_materialize.h"
@@ -487,6 +531,7 @@ string bitfield_mutation(an_expr_node_ptr e,an_expr_node_ptr rhs,const string &o
 }
 string location(an_expr_node_ptr e) {
   if (!e) unsupported("null expression");
+  diagnostic_scope diagnostic(e->position);
   string materialized=materialized_location(e);
   if(!materialized.empty())return materialized;
   string metadata=typeinfo_expression(e);
@@ -535,6 +580,8 @@ string location(an_expr_node_ptr e) {
       if(!array_call.empty())return array_call;
       string lifecycle=lifecycle_call(r,b);
       if(!lifecycle.empty())return lifecycle;
+      string primary_exception=exception_ptr_call(r,b);
+      if(!primary_exception.empty())return primary_exception;
       string provider=runtime_provider_call(r,b);
       if(!provider.empty())return provider;
       string atomic=atomic_call(r,b);
@@ -591,7 +638,7 @@ string location(an_expr_node_ptr e) {
     auto object=skip_typerefs(a->type);
     if(op==eok_points_to_field)object=skip_typerefs(object->variant.pointer.type);
     if(user_typeinfo(object))
-      unsupported("virtual or field access on opaque std::type_info metadata");
+      return typeinfo_field(field,op==eok_dot_field?"&("+location(a)+")":expr(a),a);
     auto ft=skip_typerefs(field->type);
     if(ft->kind==tk_array && !ft->size) {
       string base=op==eok_dot_field?"&("+location(a)+")":expr(a);
@@ -804,6 +851,7 @@ void globals(a_variable_ptr first, const char *cls) {
   bool has_tls = false;
   for (auto v : stored_variables) {
     if(exception_metadata.count(v))continue;
+    diagnostic_scope diagnostic(v->source_corresp.decl_position);
     unsigned n = v->is_thread_local ? 1 : 0;
     has_tls |= n != 0;
     if (v->storage_class == sc_extern) unsupported(("external variable: "+string(v->source_corresp.name?v->source_corresp.name:"unnamed")).c_str());
@@ -870,6 +918,7 @@ void globals(a_variable_ptr first, const char *cls) {
 void plan_frame(a_scope_ptr s) {
   for (auto v = s->nonstatic_variables; v; v = v->next) {
     if(!variable_needed(v))continue;
+    diagnostic_scope diagnostic(v->source_corresp.decl_position);
     unsigned long long alignment = alignment_of_type(v->type);
     if (v->alignment > alignment) alignment = v->alignment;
     if (!aggregate(v->type) && alignment <= 8) continue;
@@ -896,6 +945,7 @@ void locals(a_scope_ptr s) {
 
 void statement(a_statement_ptr s) {
   if (!s) return;
+  diagnostic_scope diagnostic(s->position);
   a_statement_ptr selected=nullptr;
   if(selected_runtime_branch(s,selected)){statement(selected);return;}
   switch (s->kind) {
@@ -1035,10 +1085,12 @@ void statement(a_statement_ptr s) {
     default: unsupported("statement", s->kind);
   }
 }
+#include "dot_gen_main.h"
 }
 
 // EDG's custom-backend entry point intentionally has global namespace linkage.
 void back_end(void) {
+  diagnostic_position={};
   names.clear(); global_offsets.clear(); tls_offsets.clear(); assignment_helpers.clear();
   emitting_tls_initializer = false;
   helper_output.clear(); type_output.clear(); aggregate_types.clear(); aggregate_constants.clear();
@@ -1051,12 +1103,13 @@ void back_end(void) {
   exception_types.clear(); exception_matchers.clear();
   constant_templates.clear(); constant_template_variables.clear();
   virtual_type_tokens.clear(); virtual_types.clear(); rtti_helpers_emitted=false; current_function_scope=nullptr;
-  rtti_source_types.clear(); rtti_user_prefix_types.clear(); typeinfo_helpers_emitted=false;
+  rtti_source_types.clear();rtti_lowered_types.clear(); rtti_user_prefix_types.clear(); typeinfo_helpers_emitted=false;
   lifecycle_emitted=false;local_static_storage.clear();startup_routines.clear();
   libc_enabled=getenv("EDG_DOT_LIBC") && string(getenv("EDG_DOT_LIBC"))=="dotcc";
   reset_libc_imports();
   reset_thread_imports();
   reset_materialization();
+  exception_ptr_helpers_emitted=false;
   runtime_exceptions=getenv("EDG_DOT_RUNTIME") && string(getenv("EDG_DOT_RUNTIME"))=="edg-exceptions";
   if (targ_sizeof_pointer != 8) unsupported("non-64-bit target");
   instance_mode = getenv("EDG_DOT_INSTANCE") && string(getenv("EDG_DOT_INSTANCE")) == "1";
@@ -1068,6 +1121,7 @@ void back_end(void) {
   nested_types = !getenv("EDG_DOT_NEST") || string(getenv("EDG_DOT_NEST")) == "1";
   if (getenv("EDG_DOT_TRACE")) trace_program(scope);
   collect_virtual_metadata(scope);
+  collect_primary_exception_types();
   for(auto r=scope->routines;r;r=r->next) {
     if(!routine_body_needed(r))continue;
     if(r->function_def_number==NULL_function_def_number)continue;
@@ -1103,11 +1157,12 @@ void back_end(void) {
     auto s = scope_for_routine_or_null(r);
     if (!s) continue;
     context = r->source_corresp.name ? r->source_corresp.name : "generated function";
+    diagnostic_scope diagnostic(r->source_corresp.decl_position);
     current_function_scope=s;
     try_frames.clear(); exception_locals.clear();
     prepare_cleanup(s);
     check_operand_order(s->assoc_block);
-    if (r->source_corresp.name && string(r->source_corresp.name) == "main") main_routine = r;
+    if (r->source_corresp.name && string(r->source_corresp.name) == "main") { main_routine = r; if(main_arguments(r))ensure_lifecycle(); }
     auto rt = skip_typerefs(r->type);
     function_returns_void=skip_typerefs(rt->variant.routine.return_type)->kind==tk_void;
     string signature = "private " + string(instance_mode ? "" : "static ") +
@@ -1202,16 +1257,7 @@ void back_end(void) {
     line("// dot-gen:member-end");
   }
   if (!main_routine && !library_mode) unsupported("program without main()");
-  if (main_routine) {
-  if (scope_for_routine(main_routine)->variant.routine.parameters) unsupported("main arguments");
-  line("public " + string(instance_mode ? "" : "static ") + "int Run() {");
-  if(lifecycle_emitted)line("__edg_enter();");
-  line("try { return " + name(main_routine, "f") + "(); }");
-  // A raw interior pointer is not a GC root. Keep the owner alive through the
-  // complete translated call tree, including exceptional exits into managed code.
-  line("finally { "+string(lifecycle_emitted?"__edg_leave(); ":"")+"global::System.GC.KeepAlive(" + string(instance_mode ? "this" : "__edg_storage") + "); }");
-  line("}");
-  }
+  if (main_routine)emit_main(main_routine);
   line("}");
   if (!nested_types) output += type_output;
   // Commit output only after the complete IL passed the subset checks.

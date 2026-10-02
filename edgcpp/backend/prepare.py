@@ -5,6 +5,11 @@ import shutil
 
 root = Path(__file__).resolve().parents[1]
 for source, target in [
+    (root / "backend/runtime/libc-locale-bindings.def", root / "upstream/src/libc-locale-bindings.def"),
+    (root / "backend/dot_gen_exception_ptr.h", root / "upstream/src/dot_gen_exception_ptr.h"),
+    (root / "backend/runtime/libc-numeric-bindings.def", root / "upstream/src/libc-numeric-bindings.def"),
+    (root / "backend/runtime/libc-math-bindings.def", root / "upstream/src/libc-math-bindings.def"),
+    (root / "backend/dot_gen_main.h", root / "upstream/src/dot_gen_main.h"),
     (root / "backend/dot_gen_threads.h", root / "upstream/src/dot_gen_threads.h"),
     (root / "backend/dot_gen_materialize.h", root / "upstream/src/dot_gen_materialize.h"),
     (root / "backend/dot_gen_members.h", root / "upstream/src/dot_gen_members.h"),

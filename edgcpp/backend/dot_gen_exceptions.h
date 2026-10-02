@@ -206,34 +206,86 @@ void ensure_exception_helpers() {
   ensure_lifecycle();
   helper_output+=R"CS(
 // dot-gen:member-begin
-private sealed class __edg_exception : global::System.Exception, global::System.IDisposable {
-  internal readonly int Type;
+private sealed class __edg_exception_storage {
+  internal int Type;
+  internal __edg_exception_storage? Previous,Next;
+  internal readonly nuint Size;
+  private int internalHandles;
   private nint storage;
+  private nint handle;
+  private int pendingPrimary;
+  private nint primaryDestructor;
+  private delegate* managed<object?,byte*,nint,void> invokePrimaryDestructor;
   private readonly nuint mask;
   private readonly delegate* managed<object?, byte*, void> destructor;
   private readonly delegate* managed<object?, void> releaseOwner;
   private object? owner;
-  internal bool Started = false, Complete = false;
-  private int disposeRequested;
-  private int uses = 1; // Original throw; each rethrow adds one use.
-  internal byte* Address => (byte*)(((nuint)storage + mask) & ~mask);
-  internal __edg_exception(int type, int alignment, void* storage,
+  internal bool Complete;
+  private int uses = 1; // Active throws and persistent exception handles.
+  internal byte* Address => (byte*)(((nuint)storage + (nuint)sizeof(nint) + mask) & ~mask);
+  internal __edg_exception_storage(int type, int alignment, void* storage,nuint size,
       delegate* managed<object?, byte*, void> dtor, object? owner,
       delegate* managed<object?, void> releaseOwner) {
-    Type=type;mask=(nuint)(alignment-1);destructor=dtor;this.owner=owner;
-    this.releaseOwner=releaseOwner;this.storage=(nint)storage;
+    Type=type;Size=size;mask=(nuint)(alignment-1);destructor=dtor;this.owner=owner;
+    this.releaseOwner=releaseOwner;
+    // Allocate the handle before taking ownership of raw bytes: constructor
+    // OOM leaves the factory responsible, and this partial finalizer sees zero.
+    handle=global::System.Runtime.InteropServices.GCHandle.ToIntPtr(
+        global::System.Runtime.InteropServices.GCHandle.Alloc(this));
+    this.storage=(nint)storage;*((nint*)Address-1)=handle;
+    try {__edg_register_exception_storage(owner,this);}
+    catch {this.storage=0;global::System.Runtime.InteropServices.GCHandle.FromIntPtr(handle).Free();handle=0;throw;}
   }
-  // A host catching this private carrier can own it through IDisposable.
-  // Abandonment releases bytes only: never run C++ code on the finalizer thread.
-  ~__edg_exception() { FreeStorage(); }
+  internal static __edg_exception_storage FromAddress(void* address) {
+    return (__edg_exception_storage)global::System.Runtime.InteropServices.GCHandle.FromIntPtr(*((nint*)address-1)).Target!;
+  }
+  internal void PreparePrimary() {pendingPrimary=1;}
+  internal void InitializePrimary(int type,nint dtor,delegate* managed<object?,byte*,nint,void> invoke) {
+    Type=type;primaryDestructor=dtor;invokePrimaryDestructor=invoke;
+  }
+  internal void RetainPrimary(void* holder) {
+    // The allocation's construction reference becomes its first handle only
+    // after libc++ successfully placement-constructs the object.
+    if(global::System.Threading.Interlocked.Exchange(ref pendingPrimary,0)!=0)Complete=true;
+    else Retain();
+    if(__edg_owned_exception_holder(owner,holder))global::System.Threading.Interlocked.Increment(ref internalHandles);
+    else __edg_change_exception_owner_references(owner,1);
+  }
+  internal void ReleasePrimary(void* holder) {
+    bool local=__edg_owned_exception_holder(owner,holder);object? held=owner;
+    if(local && global::System.Threading.Interlocked.Decrement(ref internalHandles)<0)
+      global::System.Environment.FailFast("Invalid internal exception handle count");
+    try {Release();}finally{if(!local)__edg_change_exception_owner_references(held,-1);}
+  }
+  internal void AddWrapper(bool retain) {
+    __edg_change_exception_owner_references(owner,1);if(retain)Retain();
+  }
+  internal void ReleaseWrapper() {
+    object? held=owner;
+    try {Release();}finally{__edg_change_exception_owner_references(held,-1);}
+  }
+  internal void AbandonWrappers(int count) {
+    object? held=owner;
+    try {Abandon(count);}finally{__edg_change_exception_owner_references(held,-count);}
+  }
+  internal void AbandonOwnedHandles() {
+    int count=global::System.Threading.Interlocked.Exchange(ref internalHandles,0)+
+        global::System.Threading.Interlocked.Exchange(ref pendingPrimary,0);
+    if(count<=0 || global::System.Threading.Volatile.Read(ref uses)!=count)
+      global::System.Environment.FailFast("Unclassified exception payload reference at shutdown");
+    Abandon(count);
+  }
+  ~__edg_exception_storage() { FreeStorage(); }
   private void FreeStorage() {
     nint raw=global::System.Threading.Interlocked.Exchange(ref storage,0);
     if(raw==0)return;
+    __edg_unregister_exception_storage(owner,this);
     try { global::System.Runtime.InteropServices.NativeMemory.Free((void*)raw); }
-    finally { object? held=owner;owner=null;releaseOwner(held); }
-  }
-  public void Dispose() {
-    if(global::System.Threading.Interlocked.Exchange(ref disposeRequested,1)==0)Release();
+    finally {
+      nint token=global::System.Threading.Interlocked.Exchange(ref handle,0);
+      if(token!=0)global::System.Runtime.InteropServices.GCHandle.FromIntPtr(token).Free();
+      object? held=owner;owner=null;releaseOwner(held);
+    }
   }
   internal void Retain() {
     if(global::System.Threading.Interlocked.Increment(ref uses)<=1)
@@ -243,18 +295,64 @@ private sealed class __edg_exception : global::System.Exception, global::System.
     int count=global::System.Threading.Interlocked.Decrement(ref uses);
     if(count<0)global::System.Environment.FailFast("Invalid EDG exception use count");
     if(count!=0)return;
-    global::System.Threading.Interlocked.Exchange(ref disposeRequested,1);
-    try { if(Complete && destructor!=null)destructor(owner,Address); }
+    try {
+      if(Complete) {
+        if(destructor!=null)destructor(owner,Address);
+        else if(primaryDestructor!=0)invokePrimaryDestructor(owner,Address,primaryDestructor);
+      }
+    }
     finally { FreeStorage();global::System.GC.SuppressFinalize(this);global::System.GC.KeepAlive(this); }
+  }
+  internal void Abandon(int count) {
+    int remaining=global::System.Threading.Interlocked.Add(ref uses,-count);
+    if(remaining<0)global::System.Environment.FailFast("Invalid abandoned EDG exception use count");
+    // A surviving exception_ptr still owns normal final destruction. Only
+    // abandonment of the final reference skips user code on this thread.
+    if(remaining==0){FreeStorage();global::System.GC.SuppressFinalize(this);}
+  }
+}
+// dot-gen:member-end
+// dot-gen:member-begin
+private sealed class __edg_exception : global::System.Exception, global::System.IDisposable {
+  internal readonly __edg_exception_storage Storage;
+  internal int Type => Storage.Type;
+  internal byte* Address => Storage.Address;
+  internal bool Started=false;
+  internal bool Complete {get=>Storage.Complete;set=>Storage.Complete=value;}
+  private int disposeRequested,uses=1;
+  internal __edg_exception(__edg_exception_storage storage,bool retain) {
+    storage.AddWrapper(retain);Storage=storage;
+  }
+  // Each exception_ptr rethrow has an independent host disposal boundary.
+  // Bare C++ rethrow retains this wrapper while the previous catch releases.
+  ~__edg_exception() {Storage?.AbandonWrappers(global::System.Threading.Interlocked.Exchange(ref uses,0));}
+  public void Dispose() {
+    if(global::System.Threading.Interlocked.Exchange(ref disposeRequested,1)==0)Release();
+  }
+  internal void Retain() {
+    Storage.AddWrapper(true);
+    if(global::System.Threading.Interlocked.Increment(ref uses)<=1)
+      global::System.Environment.FailFast("Invalid EDG exception wrapper retain");
+  }
+  internal void Release() {
+    int remaining=global::System.Threading.Interlocked.Decrement(ref uses);
+    if(remaining<0)global::System.Environment.FailFast("Invalid EDG exception wrapper use count");
+    if(remaining==0) {
+      global::System.Threading.Interlocked.Exchange(ref disposeRequested,1);
+      global::System.GC.SuppressFinalize(this);
+    }
+    try{Storage.ReleaseWrapper();}finally{global::System.GC.KeepAlive(this);}
   }
 }
 // dot-gen:member-end
 [global::System.ThreadStatic] private static __edg_catch_frame? __edg_current_catch;
-private static global::System.Exception? __edg_active_exception => __edg_current_catch?.Error;
+private static global::System.Exception? __edg_active_exception {
+  get {var frame=__edg_current_catch;while(frame!=null && !frame.Active)frame=frame.parent;return frame?.Error;}
+}
 // dot-gen:member-begin
 private sealed class __edg_catch_frame {
   internal readonly global::System.Exception Error;
-  private readonly __edg_catch_frame? parent;
+  internal readonly __edg_catch_frame? parent;
   private readonly nuint* pointerStorage;
   private readonly int offset;
   internal byte* Address => pointerStorage != null
@@ -336,11 +434,32 @@ private static void* __edg_exception_alloc(nuint size) {
 // dot-gen:member-end
 )CS";
   string receiver=instance_mode?"(("+string(getenv("EDG_DOT_CLASS"))+")owner!).":"";
+  string mod=instance_mode?"":"static ";
+  helper_output+="private "+mod+"__edg_exception_storage? __edg_exception_head=null;\n";
+  helper_output+="// dot-gen:member-begin\nprivate "+mod+"void __edg_prepare_exception_ledger() {lock(__edg_sync){if(__edg_abandon_exception_handles==null)__edg_abandon_exception_handles=__edg_abandon_owned_exception_handles;}}\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate static void __edg_change_exception_owner_references(object? owner,int delta) {"+receiver+"__edg_change_exception_references(delta);}\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate static void __edg_register_exception_storage(object? owner,__edg_exception_storage storage) {\nlock("+receiver+"__edg_sync) {storage.Next="+receiver+"__edg_exception_head;if(storage.Next!=null)storage.Next.Previous=storage;"+receiver+"__edg_exception_head=storage;}\n}\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate static void __edg_unregister_exception_storage(object? owner,__edg_exception_storage storage) {\nlock("+receiver+"__edg_sync) {if(storage.Previous!=null)storage.Previous.Next=storage.Next;else "+receiver+"__edg_exception_head=storage.Next;if(storage.Next!=null)storage.Next.Previous=storage.Previous;storage.Previous=null;storage.Next=null;}\n}\n// dot-gen:member-end\n";
+  helper_output+=R"CS(
+// dot-gen:member-begin
+private static bool __edg_in_exception_arena(byte[] bytes,void* address) {
+  if(bytes.Length==0)return false;
+  nuint start=(nuint)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref bytes[0]);
+  return (nuint)address>=start && (nuint)address-start<(nuint)bytes.Length;
+}
+// dot-gen:member-end
+)CS";
+  helper_output+="// dot-gen:member-begin\nprivate static bool __edg_owned_exception_holder(object? owner,void* address) {\nif(address==null)return false;lock("+receiver+"__edg_sync) {\n"+
+      "if(__edg_in_exception_arena("+receiver+"__edg_storage,address))return true;\n"+
+      "foreach(var thread in "+receiver+"__edg_threads.Values)if(thread.Storage!=null && __edg_in_exception_arena(thread.Storage,address))return true;\n"+
+      "for(var payload="+receiver+"__edg_exception_head;payload!=null;payload=payload.Next)if((nuint)address>=(nuint)payload.Address && (nuint)address-(nuint)payload.Address<payload.Size)return true;\n"+
+      "if("+receiver+"__edg_heap.Contains(address))return true;\nreturn false;}\n}\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate "+mod+"void __edg_abandon_owned_exception_handles() {lock(__edg_sync){while(__edg_exception_head!=null)__edg_exception_head.AbandonOwnedHandles();}}\n// dot-gen:member-end\n";
   helper_output+="// dot-gen:member-begin\nprivate static void __edg_release_exception_owner(object? owner) { "+receiver+"__edg_release_exception_lease(); }\n// dot-gen:member-end\n";
   helper_output+="// dot-gen:member-begin\nprivate static __edg_exception __edg_create_exception(int type,int size,int alignment,delegate* managed<object?,byte*,void> dtor,object? owner) {\n"
-      "void* raw=null;bool leased=false;try { "+receiver+"__edg_acquire_exception_lease();leased=true;\n"
-      "raw=__edg_exception_alloc((nuint)(size+alignment-1));return new __edg_exception(type,alignment,raw,dtor,owner,&__edg_release_exception_owner);\n"
-      "} catch(global::System.OutOfMemoryException error) {global::System.Runtime.InteropServices.NativeMemory.Free(raw);if(leased)__edg_release_exception_owner(owner);global::System.Environment.FailFast(\"Unable to allocate EDG exception storage\",error);throw;}\n}\n// dot-gen:member-end\n";
+      "void* raw=null;bool leased=false;__edg_exception_storage? storage=null;try { "+receiver+"__edg_prepare_exception_ledger();"+receiver+"__edg_acquire_exception_lease();leased=true;\n"
+      "raw=__edg_exception_alloc((nuint)size+(nuint)alignment-1+(nuint)sizeof(nint));storage=new __edg_exception_storage(type,alignment,raw,(nuint)size,dtor,owner,&__edg_release_exception_owner);raw=null;leased=false;return new __edg_exception(storage,false);\n"
+      "} catch(global::System.OutOfMemoryException error) {if(storage!=null)storage.Abandon(1);else {global::System.Runtime.InteropServices.NativeMemory.Free(raw);if(leased)__edg_release_exception_owner(owner);}global::System.Environment.FailFast(\"Unable to allocate EDG exception storage\",error);throw;}\n}\n// dot-gen:member-end\n";
 }
 string exception_destructor(a_routine_ptr r) {
   if(!r)return "null";

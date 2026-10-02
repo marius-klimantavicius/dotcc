@@ -33,8 +33,10 @@ selects Itanium structural conventions, the external thread API, libc++'s
 portable default rune table, and serial
 parallel algorithms, with no host OS identity or native visibility attributes.
 External thread support uses `config/__external_threading` and the separately
-tested `LibcxxThreads.cs` BCL runtime. Its 19 C imports still need generated
-binding/lifetime acceptance. No native thread layout is exposed by this header.
+tested `LibcxxThreads.cs` BCL runtime. Its 19 C imports pass generated static
+and instance JIT/NativeAOT binding/lifetime acceptance; see
+`docs/libcxx-thread-abi.md` for precise coverage. No native thread layout is
+exposed by this header.
 
 Run only synthetic seed consumers during this campaign:
 
@@ -51,6 +53,24 @@ portable header overlays use `-I PATH` after libc++ includes. Each stage keeps
 stdout/stderr and its exact command; incomplete translation/build/execution
 returns failure and is recorded explicitly. A translated header consumer does
 not prove the out-of-line library or complete language coverage.
+
+Library source probes default to C++20 because this revision's out-of-line
+sources use `constinit`; header-only compatibility probes may pass
+`--std c++17`. `--unity` is an explicit single-translation-unit diagnostic mode
+that includes the selected synthetic consumer and library sources together.
+Its report labels this narrower scope; it does not establish cross-unit
+identity, linkage or separate compilation. The initial C++20 multi-unit
+allocation probe reports constrained-template declaration conflicts in both
+the unchanged EDG C backend and our frontend profile
+(`libcxx-core-source-audit-004/`). Those diagnostics remain unsuppressed.
+
+`abi_core.cpp` supplies only the base exception class operations selected from
+the pinned release's `exception_fallback.ipp`, with its license retained, plus
+three compiler-inserted failure entry points implemented with ordinary C++
+throws. It excludes the fallback's unimplemented uncaught-exception functions.
+Use the original `src/typeinfo.cpp`, `src/new.cpp`, `src/new_helpers.cpp` and
+`src/new_handler.cpp` for their corresponding definitions. The exception handle
+and termination provider is separate; no native C++ ABI library is linked.
 
 ## Initial source and ABI dependency inventory
 

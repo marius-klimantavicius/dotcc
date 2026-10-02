@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "id": "musl-selected-bcl-lp64-v1",
+  "description": "Selected translated musl formatting and numeric conversion with the audited BCL libc bridge; not complete libc coverage.",
+  "components": [
+    {
+      "directory": "printf",
+      "translationUnits": [
+        "vfprintf.c",
+        "vsnprintf.c",
+        "format_wrappers.c",
+        "format_allocating.c"
+      ]
+    },
+    {
+      "directory": "strto",
+      "translationUnits": [
+        "intscan.c",
+        "floatscan.c",
+        "strtol.c",
+        "strtod.c",
+        "atoi.c",
+        "atol.c",
+        "atoll.c",
+        "atof.c",
+        "locale_wrappers.c"
+      ]
+    }
+  ]
+}

@@ -45,15 +45,18 @@ After editing the emitter, the faster incremental build is:
 
 ```sh
 python3 edgcpp/backend/prepare.py
-cmake --build edgcpp/build --target cpfe-dot --parallel 12
+EDG_BASE="$PWD/edgcpp/upstream/bases/docker/dev-env/gcc" \
+  cmake --build edgcpp/build --target cpfe-dot --parallel 12
 ```
 
 ## Current contract: experimental-runtime-v3
 
 - One or more C++17 translation units (default) or C11 with `--language c`, parsed in explicit GCC 13.3 compatibility
   mode. `-I` and `-D` supply explicit include roots and definitions; both are recorded in the manifest. The default runtime is `none`; `--runtime edg-exceptions` enables the
-  pinned EDG exception/header bootstrap described below. `--emit exe` (default) requires `int main()`; `Run()` invokes it and
-  EntryPoint supplies the managed entry point. `--emit managedlib` permits no
+  pinned EDG exception/header bootstrap described below. `--emit exe` (default) accepts `int main()` or `int main(int,char**)`; `Run()` invokes it and
+  EntryPoint supplies the managed entry point. Argument-bearing main also exposes
+  `Run(string[])` with owned UTF-8 argv storage through shutdown; see
+  [main arguments](../docs/main-arguments.md). `--emit managedlib` permits no
   main and exports public entry wrappers for defined routines. `dot-gen.json`
   maps EDG mangled symbols to their generated method names. These names are
   experimental and can change when the source changes.
@@ -63,13 +66,16 @@ cmake --build edgcpp/build --target cpfe-dot --parallel 12
   input paths and SHA-256 hashes. This is the first tested whole-program path;
   a separate object/linker format and full ODR diagnostic coverage remain open.
 - `--libc dotcc` enables an audited standalone BCL bridge with explicit LP64
-  headers, currently covering 38 memory/string/math/allocation imports and
+  headers, covering signature-checked memory/string/math/allocation/FILE/text imports and
   addressable per-owner/thread errno. Every imported routine has an exact
   lowered signature contract; incompatible declarations are rejected. External
   function addresses use the ordinary canonical owner-aware managed adapters.
   C allocation shares the C++ NativeMemory heap, including realloc preservation
   and aligned allocation. This subset has no host-libc dependency; full libc,
-  formatting, I/O, locale, fenv and the musl port evaluation remain in progress.
+  fenv and arbitrary locales remain in progress. Selected musl formatting and
+  numeric conversion sources now pass generated JIT/NativeAOT tests; source
+  inclusion is still explicit. See [numeric conversion](../docs/libc-numeric-conversion.md)
+  and [formatting](../docs/printf-cpp-and-stream-integration.md).
 - `void` returns and signed/unsigned 8-, 16-, 32-, 64- and 128-bit integers
   (including plain `char`, using the EDG target signedness). Integer casts
   and arithmetic use unchecked C# expressions; logical/comparison results use
@@ -86,9 +92,9 @@ cmake --build edgcpp/build --target cpfe-dot --parallel 12
   null tests and indirect assignment. Const is erased after C++ validation;
   ordinary volatile reads/writes use memory barriers around typed accesses; read helpers cannot inline, so discarded volatile loads remain observable. Volatile bitfields and atomic qualifiers remain unsupported.
 - Fixed-size arrays, nested plain POD records and unions use explicit-layout
-  unmanaged structs with EDG sizes and field offsets. Arrays have an actual
-  CLR field for every element so value copies cannot discard their contents
-  as padding. Supported brace initializers recursively write fields/elements;
+  unmanaged structs with EDG sizes and field offsets. Arrays use `InlineArray`
+  storage, preserving their full extent in value copies with compact source.
+  Pointer elements use one-field cells to satisfy C# generic-element constraints. Supported brace initializers recursively write fields/elements;
   omitted elements are zeroed. Plain records support value passing, returns,
   copies, nested arrays and pointers to members/subobjects. C flexible array tails are address-only views at the EDG offset; they add no CLR storage field and preserve the containing record size.
 - Nonvirtual single/multiple inheritance uses EDG's base fields and offsets.
@@ -107,8 +113,8 @@ cmake --build edgcpp/build --target cpfe-dot --parallel 12
   function invocation, including declarations inside loops. Aggregate and explicit
   scalar-local alignment up to 4096 bytes is supported. Parameters requiring alignment above eight bytes are copied to aligned frame slots. Globals use aligned offsets
   in the pinned arena.
-- Initial resource limits are 64 MiB per global arena, 65536 bytes per aggregate
-  type, 16384 elements per array type and 64 KiB per aggregate stack frame
+- Resource limits are 64 MiB per global/TLS arena, aggregate type and local
+  frame, with a 64 KiB stack-allocation budget
   including alignment slack. Larger frames use NativeMemory allocation and
   a `finally` that releases storage on returns and managed exception exits;
   frames above 64 MiB are rejected. Named types stay in the shared file when

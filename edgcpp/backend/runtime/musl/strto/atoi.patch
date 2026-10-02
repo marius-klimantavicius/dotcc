@@ -1,0 +1,9 @@
+--- atoi.c.upstream
++++ atoi.c
+@@ -1,5 +1,5 @@
+ #include <stdlib.h>
+-#include <ctype.h>
++#include "scan_ctype.h"
+ 
+ int atoi(const char *s)
+ {

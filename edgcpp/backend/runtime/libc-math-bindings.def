@@ -1,0 +1,13 @@
+// Explicit provider additions. Public fenv-dependent rounding APIs stay unbound.
+EDG_LIBC("abs", "int", "int", "global::Edg.Runtime.LibcMath.Abs")
+EDG_LIBC("labs", "long", "long", "global::Edg.Runtime.LibcMath.Abs")
+EDG_LIBC("llabs", "long", "long", "global::Edg.Runtime.LibcMath.Abs")
+EDG_LIBC("fabsl", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcMath.Abs")
+EDG_LIBC("sqrtl", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80", "__edg_math.Sqrt")
+EDG_LIBC("copysignf", "float", "float,float", "global::Edg.Runtime.LibcMath.CopySign")
+EDG_LIBC("copysign", "double", "double,double", "global::Edg.Runtime.LibcMath.CopySign")
+EDG_LIBC("copysignl", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80,global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcMath.CopySign")
+EDG_LIBC("truncl", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcMath.Truncate")
+EDG_LIBC("floorl", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcMath.Floor")
+EDG_LIBC("ceill", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcMath.Ceiling")
+EDG_LIBC("roundl", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcMath.Round")

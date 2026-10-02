@@ -8,9 +8,12 @@
   "sha256": "bdecf90be0072bc720fd5c9c8ab061cdb197edd0c8ad3e170dc3e6bfaa49f388",
   "license": "Apache-2.0 WITH LLVM-exception",
   "status": "initial compatibility provider; full port and modern-release upgrade remain open",
-  "frontendMode": "GNU 13.3, C++17",
+  "frontendMode": "GNU 13.3; C++17 header baseline, C++20 out-of-line implementation sources",
   "abiNamespace": "__dotgen_v1",
   "runtime": "managed EH and NativeMemory allocation; BCL platform services",
   "nativeCxxAbiLibrary": null,
-  "allowedValidationInputsDuringCampaign": ["synthetic", "EDG tests"]
+  "allowedValidationInputsDuringCampaign": [
+    "synthetic",
+    "EDG tests"
+  ]
 }

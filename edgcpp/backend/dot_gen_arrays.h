@@ -56,8 +56,20 @@ string array_allocation_call(a_routine_ptr r,an_expr_node_ptr args) {
     string code="// dot-gen:member-begin\nprivate "+mod+signature+") {\n";
     if(create) {
       a_routine_ptr bad=nullptr;
-      for(auto p=il_header.primary_scope->routines;p;p=p->next)if(p->source_corresp.name && string(p->source_corresp.name)=="__edg_dot_throw_bad_array_new_length")bad=p;
+      // lib_src/vec_newdel.c delegates overflow to __cxa_throw_bad_array_new_length.
+      // A translated libc++ ABI provider can define that entry directly; retain
+      // the explicit bootstrap helper for the existing edg-exceptions provider.
+      for(auto p=il_header.primary_scope->routines;p;p=p->next)if(p->source_corresp.name &&
+          p->function_def_number!=NULL_function_def_number) {
+        string n=p->source_corresp.name;
+        if(n=="__cxa_throw_bad_array_new_length" || (n=="__edg_dot_throw_bad_array_new_length" && !bad))bad=p;
+      }
       if(!bad)unsupported("missing bad_array_new_length provider");
+      auto bad_type=skip_typerefs(bad->type);
+      if(bad_type->variant.routine.extra_info->param_type_list ||
+         bad_type->variant.routine.extra_info->has_ellipsis ||
+         skip_typerefs(bad_type->variant.routine.return_type)->kind!=tk_void)
+        unsupported("bad_array_new_length provider ABI");
       code+="if (stride != 0 && count > (ulong.MaxValue-prefix)/stride) "+name(bad,"f")+"();\n"
           "ulong bytes=count*stride; ulong size=(bytes==0?1UL:bytes)+prefix;\n"
           "void* raw="+alloc+"; if(raw==null)return null; void* data=(byte*)raw+prefix;\n"

@@ -6,7 +6,8 @@
     "arch/generic/bits/errno.h": "1760adb5572357ae1fa93625bd501e975c1ba03fdb3f97fc4fce46398772ae7b",
     "src/multibyte/wctomb.c": "046e38f206c7203d0b1295dcdcd3080e3b1c335ff2e1433f0626066a73e8befc",
     "src/multibyte/wcrtomb.c": "a8f5bfa624c88f1e3214bcd46d909fb9c5b172ac9b634fb32a101161ab680693",
-    "src/multibyte/internal.h": "e5ba77a0870b47c515e610827fe4a62842ec9c7a8e04edd6ece3498495e22a83"
+    "src/multibyte/internal.h": "e5ba77a0870b47c515e610827fe4a62842ec9c7a8e04edd6ece3498495e22a83",
+    "src/string/strerror_r.c": "74c82a1394b092f0626286168947768733736db53b5882a74225cc295eb65354"
   },
   "generatedSha256": "8f8bc6122350bd0f367a9aef09e2327e82c7c752ee41c9cfe9ba7ae1b08779e5",
   "messageCount": 95

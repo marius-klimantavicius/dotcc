@@ -1,0 +1,3 @@
+// Private helpers for the selected nearest-mode musl numeric scanner.
+EDG_LIBC("__edg_scan_scalbnl_nearest", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80,int", "global::Edg.Runtime.LibcFloat.ScaleB")
+EDG_LIBC("__edg_scan_remainder", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80,global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcScanMath.Remainder")

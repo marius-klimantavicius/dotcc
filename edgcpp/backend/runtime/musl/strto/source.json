@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "version": "musl 1.2.6",
+  "archive": "https://musl.libc.org/releases/musl-1.2.6.tar.gz",
+  "archiveSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "status": "synthetic C/C++ static/instance JIT/NativeAOT verified on 2563 corpus cases plus 12 long-tail cases; nearest-even and C/POSIX/C.UTF-8 numeric grammar",
+  "sources": {
+    "intscan.c": {
+      "upstream": "src/internal/intscan.c",
+      "originalSha256": "ed96c758c94666f2557059bd8fca26db8340b9e6b417852f1599e7c30f67deca",
+      "adaptedSha256": "326af1898ee07e155dca49b647149572e1ad8f1a8dc32dd3ba9ff7528ba5987d"
+    },
+    "floatscan.c": {
+      "upstream": "src/internal/floatscan.c",
+      "originalSha256": "13a007ee0be8682efa12c80e088a1758a425d8be1842980609f20c0f9d6d9ad5",
+      "adaptedSha256": "988356af3ef9ef9a140dafbd5d482bdb660db36e791d4755ecabd94f4cb51fc3"
+    },
+    "strtol.c": {
+      "upstream": "src/stdlib/strtol.c",
+      "originalSha256": "2291cd02a25622bd31de831d7dfaff5c618ed7846b3123033a714188de78e61e",
+      "adaptedSha256": "f6513daa19cbb1de13953ce688b7097360bee4393f7ea92275f95ee1751b9713"
+    },
+    "strtod.c": {
+      "upstream": "src/stdlib/strtod.c",
+      "originalSha256": "4b1945084cb6bf53a6d5684ca3bfd0c824eab9cbdb2b2fdfc9811fb526dd67ab",
+      "adaptedSha256": "6a8d6f0eabb21fb47e4537156beff3f7ed5c518df991ff40c6426c3c85192792"
+    },
+    "atoi.c": {
+      "upstream": "src/stdlib/atoi.c",
+      "originalSha256": "76cf48cf82b18f7f5350209e453e5ad003d7a75c60a64b9c5c5d6db0f4e9db27",
+      "adaptedSha256": "37956f1de17eb5b7e09020b3c93ce9bd325919a289511aa8265dfdf72d6e94d8"
+    },
+    "atol.c": {
+      "upstream": "src/stdlib/atol.c",
+      "originalSha256": "8262cd55bd64fc505a660ac5736be610fed712e0615553ae561878f3f15ca5e7",
+      "adaptedSha256": "30a5f32c716d2e8c4c1e3fe7e9c1f71c919459d34b7d470ff8dc1551a90f0c76"
+    },
+    "atoll.c": {
+      "upstream": "src/stdlib/atoll.c",
+      "originalSha256": "8d3646e048efde88cceddcc095baa34f9a3f3597539f1153a83aae103bf9b53c",
+      "adaptedSha256": "2f5605881a8de0a4a397152d38ff752e1a0f355dcd7373a3b1406bc4def4e462"
+    },
+    "atof.c": {
+      "upstream": "src/stdlib/atof.c",
+      "originalSha256": "2d5733fbc1ae1b50b0b0b5bd6533551a6e69dae5491b0150f3b4c459dd722e45",
+      "adaptedSha256": "2d5733fbc1ae1b50b0b0b5bd6533551a6e69dae5491b0150f3b4c459dd722e45"
+    }
+  },
+  "adaptations": [
+    "string-only cursor replaces FILE internals",
+    "private ASCII classification for C/POSIX/C.UTF-8",
+    "preserve pinned parser and rounding algorithms",
+    "private nearest binary80 scaling and finite remainder imports",
+    "explicit C/C++ declarations and lossless unsigned-byte table initialization",
+    "numeric overflow ERANGE and documented all-nonzero-subnormal ERANGE policy",
+    "owner-validated explicit C/POSIX/C.UTF-8 locale conversion wrappers"
+  ],
+  "adapters": {
+    "scan_string.h": "a69dbe90a5d789a73c79676c77e7751faa203a2e7b14d86fc6c29c1144036a82",
+    "scan_ctype.h": "ee81b37c6ec58bda099863576da6a9f07121744e609aa470e507147339143421",
+    "intscan.h": "fef0f46a7cb481809eb1b5baa0ea193b1de05e5a37749072714b76f31d15fc63",
+    "floatscan.h": "8e1e806eb51ddd0fb99a2b47c5fffe5be5cc674a122f65b0beed04f81afd90ab",
+    "locale_wrappers.c": "a5d53ad79c29a6c1e9c8026bb54e0387430cf86bf2349c9b310c179295aa8fc9"
+  },
+  "translatedEvidence": "artifacts/campaign/libc-numeric-translated-20261003-005855/results.json",
+  "longTailEvidence": "artifacts/campaign/libc-numeric-long-tail-20261003-010130/results.json",
+  "localeEvidence": "artifacts/campaign/libc-locale-translated-20261003-013235/results.json"
+}

@@ -1,7 +1,48 @@
 // Explicit import contracts for the portable LP64 libc bridge. Definitions in
 // translated input always win; an unknown symbol or mismatched ABI is an error.
-bool libc_enabled=false,libc_emitted=false,files_emitted=false,text_emitted=false;
+bool libc_enabled=false,libc_emitted=false,files_emitted=false,text_emitted=false,math_emitted=false;
 std::set<a_routine_ptr> libc_routines;
+std::map<string,a_routine_ptr> libc_binding_addresses;
+std::map<a_routine_ptr,a_routine_ptr> libc_address_aliases;
+a_routine_ptr libc_address_routine(a_routine_ptr r) {
+  auto found=libc_address_aliases.find(r);
+  return found==libc_address_aliases.end()?r:found->second;
+}
+void libc_register_routine(a_routine_ptr r,const string& symbol) {
+  libc_routines.insert(r);
+  auto inserted=libc_binding_addresses.emplace(symbol,r);
+  libc_address_aliases[r]=inserted.first->second;
+}
+string libc_builtin_symbol(a_routine_ptr r) {
+  // The C backend preserves these GNU intrinsic calls. Route only audited EDG
+  // builtin identities, not arbitrary user spellings beginning __builtin_.
+  if(!special_kind_is(r,sfk_none))return "";
+  switch(r->variant.builtin_function_kind) {
+    case bfk_abs:return "abs";
+    case bfk_labs:return "labs";
+    case bfk_llabs:return "llabs";
+    case bfk_fabs:return "fabs";
+    case bfk_fabsf:return "fabsf";
+    case bfk_fabsl:return "fabsl";
+    case bfk_sqrt:return "sqrt";
+    case bfk_sqrtf:return "sqrtf";
+    case bfk_sqrtl:return "sqrtl";
+    case bfk_copysign:return "copysign";
+    case bfk_copysignf:return "copysignf";
+    case bfk_copysignl:return "copysignl";
+    case bfk_trunc:return "trunc";
+    case bfk_truncf:return "truncf";
+    case bfk_truncl:return "truncl";
+    case bfk_floor:return "floor";
+    case bfk_floorf:return "floorf";
+    case bfk_floorl:return "floorl";
+    case bfk_ceil:return "ceil";
+    case bfk_ceilf:return "ceilf";
+    case bfk_ceill:return "ceill";
+    case bfk_roundl:return "roundl";
+    default:return "";
+  }
+}
 struct libc_binding {const char *symbol,*result,*parameters,*target;};
 const libc_binding libc_bindings[]={
 #define EDG_LIBC(s,r,p,t) {s,r,p,t},
@@ -9,12 +50,16 @@ const libc_binding libc_bindings[]={
 #include "libc-files-bindings.def"
 #include "libc-text-bindings.def"
 #include "libc-float-bindings.def"
+#include "libc-math-bindings.def"
+#include "libc-numeric-bindings.def"
+#include "libc-locale-bindings.def"
 #undef EDG_LIBC
 };
 void reset_libc_imports() {
-  libc_emitted=false;files_emitted=false;text_emitted=false;libc_routines.clear();
+  libc_emitted=false;files_emitted=false;text_emitted=false;math_emitted=false;libc_routines.clear();
+  libc_binding_addresses.clear();libc_address_aliases.clear();
 }
-string libc_thread_release_code() {return libc_emitted?"__edg_libc.ReleaseThread();":"";}
+string libc_thread_release_code() {return string(text_emitted?"__edg_text_value?.ReleaseThread();":"")+(libc_emitted?"__edg_libc.ReleaseThread();":"");}
 string libc_disposal_code() {
   return string(files_emitted?"__edg_files_value?.Dispose();":"")+
     (text_emitted?"__edg_text_value?.Dispose();":"")+(libc_emitted?"__edg_libc.Dispose();":"");
@@ -83,6 +128,13 @@ void ensure_text() {
   helper_output+="private "+mod+"global::Edg.Runtime.LibcText? __edg_text_value;\n";
   helper_output+="private "+mod+"global::Edg.Runtime.LibcText __edg_text { get { lock(__edg_libc) { if(__edg_text_value==null)__edg_text_value=new global::Edg.Runtime.LibcText(__edg_libc.SetErrno); return __edg_text_value; } } }\n";
 }
+void ensure_math() {
+  if(math_emitted)return;
+  ensure_libc();math_emitted=true;
+  string mod=instance_mode?"":"static ";
+  helper_output+="private "+mod+"global::Edg.Runtime.LibcMath? __edg_math_value;\n";
+  helper_output+="private "+mod+"global::Edg.Runtime.LibcMath __edg_math { get { lock(__edg_libc) { if(__edg_math_value==null)__edg_math_value=new global::Edg.Runtime.LibcMath(__edg_libc.SetErrno); return __edg_math_value; } } }\n";
+}
 bool libc_file_pointer(a_type_ptr t) {
   t=skip_typerefs(t);if(t->kind!=tk_pointer)return false;
   t=skip_typerefs(t->variant.pointer.type);
@@ -90,7 +142,35 @@ bool libc_file_pointer(a_type_ptr t) {
     t->source_corresp.name && string(t->source_corresp.name)=="__edg_FILE" &&
     t->source_corresp.parent_scope && t->source_corresp.parent_scope->kind==sck_file;
 }
-string libc_abi_type(a_type_ptr t) {return libc_file_pointer(t)?"FILE*":type(t);}
+bool libc_locale_pointer(a_type_ptr t) {
+  t=skip_typerefs(t);if(t->kind!=tk_pointer || t->size!=8)return false;
+  t=skip_typerefs(t->variant.pointer.type);
+  return (t->kind==tk_struct || t->kind==tk_class) && t->incomplete &&
+    t->source_corresp.name && string(t->source_corresp.name)=="__edg_locale" &&
+    t->source_corresp.parent_scope && t->source_corresp.parent_scope->kind==sck_file;
+}
+bool libc_lconv_pointer(a_type_ptr t) {
+  t=skip_typerefs(t);if(t->kind!=tk_pointer || t->size!=8)return false;
+  t=skip_typerefs(t->variant.pointer.type);
+  if((t->kind!=tk_struct && t->kind!=tk_class) || t->incomplete || t->size!=96 || alignment_of_type(t)!=8 ||
+     !t->source_corresp.name || string(t->source_corresp.name)!="lconv" ||
+     !t->source_corresp.parent_scope || t->source_corresp.parent_scope->kind!=sck_file)return false;
+  const char* field_names[]={"decimal_point","thousands_sep","grouping","int_curr_symbol","currency_symbol","mon_decimal_point","mon_thousands_sep","mon_grouping","positive_sign","negative_sign",
+    "int_frac_digits","frac_digits","p_cs_precedes","p_sep_by_space","n_cs_precedes","n_sep_by_space","p_sign_posn","n_sign_posn","int_p_cs_precedes","int_p_sep_by_space","int_n_cs_precedes","int_n_sep_by_space","int_p_sign_posn","int_n_sign_posn"};
+  unsigned index=0;
+  for(auto f=t->variant.class_struct_union.field_list;f;f=f->next,++index) {
+    if(index>=24 || f->is_bit_field || !f->source_corresp.name || string(f->source_corresp.name)!=field_names[index] ||
+       f->offset!=(index<10?index*8:80+index-10) || type(f->type)!=(index<10?"sbyte*":"sbyte"))return false;
+  }
+  return index==24;
+}
+bool libc_boundary_pointer(a_type_ptr t) {return libc_file_pointer(t)||libc_locale_pointer(t)||libc_lconv_pointer(t);}
+string libc_abi_type(a_type_ptr t) {
+  if(libc_file_pointer(t))return "FILE*";
+  if(libc_locale_pointer(t))return "LOCALE*";
+  if(libc_lconv_pointer(t))return "LCONV*";
+  return type(t);
+}
 bool libc_va_pointer(a_type_ptr t) {
   t=skip_typerefs(t);
   if(t->kind!=tk_pointer || t->size!=8)return false;
@@ -118,7 +198,7 @@ bool libc_format_lock_routine(a_routine_ptr r) {
      !libc_format_callback(parameters[1]) || type(parameters[2])!="void*" ||
      type(parameters[3])!="sbyte*" || !libc_va_pointer(parameters[4]))
     unsupported("libc import ABI for __edg_with_file_lock: expected int(FILE*, int(*)(void*,const char*,va_list),void*,const char*,va_list) with builtin va_list");
-  ensure_files();libc_routines.insert(r);
+  ensure_files();libc_register_routine(r,"__edg_with_file_lock");
   string signature;
   for(unsigned i=0;i<parameters.size();++i) {
     if(i)signature+=", ";
@@ -136,22 +216,24 @@ bool libc_routine(a_routine_ptr r) {
   if(libc_routines.count(r))return true;
   string symbol=r->source_corresp.name?r->source_corresp.name:"";
   if(symbol=="__edg_with_file_lock")return libc_format_lock_routine(r);
-  for(const auto &binding:libc_bindings)if(symbol==binding.symbol) {
+  string builtin_symbol=libc_builtin_symbol(r),lookup_symbol=builtin_symbol.empty()?symbol:builtin_symbol;
+  for(const auto &binding:libc_bindings)if(lookup_symbol==binding.symbol) {
     auto rt=skip_typerefs(r->type);auto extra=rt->variant.routine.extra_info;
     string parameters,signature,args;unsigned index=0;
     for(auto p=extra->param_type_list;p;p=p->next) {
       string ty=type(p->type),arg="a"+std::to_string(index++);
       if(p!=extra->param_type_list){parameters+=",";signature+=", ";args+=", ";}
-      parameters+=libc_abi_type(p->type);signature+=ty+" "+arg;args+=(libc_file_pointer(p->type)?"(void*)":"")+arg;
+      parameters+=libc_abi_type(p->type);signature+=ty+" "+arg;args+=(libc_boundary_pointer(p->type)?"(void*)":"")+arg;
     }
     string result=type(rt->variant.routine.return_type);
     if(extra->has_ellipsis || parameters!=binding.parameters || libc_abi_type(rt->variant.routine.return_type)!=binding.result)
       unsupported(("libc import ABI for "+symbol+": expected "+binding.result+"("+binding.parameters+") but got "+result+"("+parameters+")").c_str());
     ensure_libc();if(string(binding.target).find("__edg_files.")==0)ensure_files();
     if(string(binding.target).find("__edg_text.")==0)ensure_text();
-    libc_routines.insert(r);
+    if(string(binding.target).find("__edg_math.")==0)ensure_math();
+    libc_register_routine(r,binding.symbol);
     helper_output+="// dot-gen:import "+symbol+"\n// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+result+" "+name(r,"f")+"("+signature+") { "+
-      (result=="void"?"":"return ")+(libc_file_pointer(rt->variant.routine.return_type)?"("+result+")":"")+binding.target+"("+args+"); }\n// dot-gen:member-end\n";
+      (result=="void"?"":"return ")+(libc_boundary_pointer(rt->variant.routine.return_type)?"("+result+")":"")+binding.target+"("+args+"); }\n// dot-gen:member-end\n";
     return true;
   }
   return false;

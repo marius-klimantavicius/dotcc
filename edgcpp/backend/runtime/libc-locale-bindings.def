@@ -1,0 +1,7 @@
+// Exact portable opaque-locale and lconv layouts are validated before wrapping.
+EDG_LIBC("newlocale", "LOCALE*", "int,sbyte*,LOCALE*", "__edg_text.Locales.NewLocale")
+EDG_LIBC("duplocale", "LOCALE*", "LOCALE*", "__edg_text.Locales.DupLocale")
+EDG_LIBC("freelocale", "void", "LOCALE*", "__edg_text.Locales.FreeLocale")
+EDG_LIBC("uselocale", "LOCALE*", "LOCALE*", "__edg_text.Locales.UseLocale")
+EDG_LIBC("localeconv", "LCONV*", "", "__edg_text.Locales.LocaleConv")
+EDG_LIBC("__edg_locale_validate", "int", "LOCALE*", "__edg_text.Locales.Validate")
