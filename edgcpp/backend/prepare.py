@@ -5,6 +5,7 @@ import shutil
 
 root = Path(__file__).resolve().parents[1]
 for source, target in [
+    (root / "backend/dot_gen_unbound.h", root / "upstream/src/dot_gen_unbound.h"),
     (root / "backend/dot_gen_source_control.h", root / "upstream/src/dot_gen_source_control.h"),
     (root / "backend/dot_gen_source_expressions.h", root / "upstream/src/dot_gen_source_expressions.h"),
     (root / "backend/dot_gen_source_expression_api.h", root / "upstream/src/dot_gen_source_expression_api.h"),

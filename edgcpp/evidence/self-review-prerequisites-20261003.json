@@ -1,0 +1,34 @@
+{
+  "scope": "Review-only unbound external declarations and increased immutable literal capacity; not a runnable EDG selfhost",
+  "unbound": {
+    "artifact": "artifacts/campaign/persistent-continuation/edg-self-review-unbound-tests-002",
+    "checks": [
+      "default rejects",
+      "static JIT",
+      "instance JIT",
+      "static NativeAOT",
+      "instance NativeAOT"
+    ],
+    "perExecution": [
+      "ordinary function remains correct",
+      "direct unavailable call throws",
+      "indirect unavailable call throws",
+      "unavailable variable read throws",
+      "unavailable variable address throws",
+      "unavailable variable constant-address read throws"
+    ]
+  },
+  "literalPool": {
+    "artifact": "artifacts/campaign/persistent-continuation/edg-self-review-literal-limit-001",
+    "fixture": "five different 900-KiB string literals",
+    "before": "canonical backend rejected pool beyond4MiB",
+    "after": "promotion-enabled backend with64MiB cap emitted, built and executed under JIT and NativeAOT with exit0",
+    "buildWarnings": 0,
+    "buildErrors": 0
+  },
+  "inputs": {
+    "backend/dot_gen_unbound.h": "1ae83d238152b5ed2aa8e1ee3050133a0c2da0423cd90823025cd63be3628ab0",
+    "backend/tests/unbound_externals.cpp": "ca0d79a1cbb509a9e6a4ed10d754d3be52047ffe26075ca8e9b64c355c50ae2e",
+    "backend/tests/unbound_externals_verify.py": "bded47e424488d093c39af6c5cb29ccc9c93c5a2bb271024366396217cb9fda6"
+  }
+}

@@ -101,6 +101,10 @@ def main():
     parser.add_argument("-I", "--include", action="append", type=Path, default=[])
     parser.add_argument("-D", "--define", action="append", default=[])
     parser.add_argument("--output-dir", required=True, type=Path)
+    parser.add_argument("--compiler", type=Path, default=ROOT / "build/bin/cpfe-dot",
+                        help="use an explicitly selected dot_gen_be compiler (default: current workspace build)")
+    parser.add_argument("--unbound-externals", choices=("reject", "declarations"), default="reject",
+                        help="explicit review-only output with throwing declarations for unbound external symbols")
     parser.add_argument("--namespace", default="Edg.Generated", type=namespace)
     parser.add_argument("--class-name", default="TranslatedProgram", type=identifier)
     parser.add_argument("--instance-methods", action="store_true",
@@ -126,9 +130,10 @@ def main():
         parser.error("--split-size must be positive")
     if args.class_name in ("Run", "Dispose", "Shutdown", "ReleaseThread") or args.class_name.startswith("__edg_"):
         parser.error("class name conflicts with a reserved backend member")
-    compiler = ROOT / "build/bin/cpfe-dot"
+    compiler = args.compiler.resolve()
     if not compiler.is_file():
         parser.error("build the backend first: EDG_BUILD_TARGET=cpfe-dot edgcpp/build.sh")
+    compiler_sha256 = hashlib.sha256(compiler.read_bytes()).hexdigest()
     # Verbatim identifiers also accept C# keywords, including namespace components.
     ns = ".".join("@" + part for part in args.namespace.split(".")) if args.namespace else ""
     cls = "@" + args.class_name
@@ -136,6 +141,7 @@ def main():
                EDG_DOT_NAMESPACE=ns, EDG_DOT_CLASS=cls,
                EDG_DOT_INSTANCE="1" if args.instance_methods else "0",
                EDG_DOT_EMIT=args.emit, EDG_DOT_NEST="1" if args.nest_types else "0",
+               EDG_DOT_UNBOUND_EXTERNALS=args.unbound_externals,
                EDG_DOT_RUNTIME=args.runtime, EDG_DOT_LIBC="dotcc" if args.libc=="musl" else args.libc,
                EDG_DOT_TARGET=args.target, EDG_DOT_TYPE_IR="1" if args.type_ir else "0")
     # Never discover host system headers. The optional bootstrap exposes only
@@ -188,6 +194,13 @@ def main():
     run_arguments = "global::System.Environment.GetCommandLineArgs()" if main_arguments else ""
     invocation = f"new {qualified}().Run({run_arguments})" if args.instance_methods else f"{qualified}.Run({run_arguments})"
     exports = []
+    unbound = []
+    def unbound_record(match):
+        unbound.append({"kind": match[1], "symbol": bytes.fromhex(match[2]).decode("utf-8"), "managedName": match[3]})
+        return ""
+    result.stdout = re.sub(r"^// dot-gen:unbound (function|variable) ([0-9a-f]+) (@?\w+)\n", unbound_record, result.stdout, flags=re.M)
+    if unbound:
+        print(f"Review-only output: {len(unbound)} unbound external declarations throw PlatformNotSupportedException; this is not an executable library.", file=sys.stderr)
     def export_record(match):
         exports.append({"symbol": bytes.fromhex(match[1]).decode("utf-8"), "method": match[2]})
         return ""
@@ -364,6 +377,8 @@ RESOURCE_ITEMS
     files["dot-gen.json"] = json.dumps({
         "schema": 1, "abi": "experimental-runtime-v3", "cleanupModel": "edg-region-tables", "source": str(sources[0]) if len(sources)==1 else None,
         "sources": [{"path": str(p), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in sources],
+        "compiler": {"path": str(compiler), "sha256": compiler_sha256},
+        "unboundExternals": {"mode": args.unbound_externals, "reviewOnly": bool(unbound), "symbols": unbound},
         "runtimeSources": [{"path": str(p), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in runtime_sources],
         "runtimeAssets": asset_manifest,
         "runtimeHelpers": {name: hashlib.sha256(files[f"Runtime.{name}.cs"].encode()).hexdigest() for name in sorted(runtime_helpers)},

@@ -1,0 +1,40 @@
+// Explicit review-only declarations for external symbols without a binding.
+// These never provide a fabricated implementation or storage: every access
+// throws. Normal translation continues to reject all such symbols.
+bool unbound_declarations=false;
+std::set<a_routine_ptr> unbound_routines;
+std::set<a_variable_ptr> unbound_variables;
+
+bool unbound_routine(a_routine_ptr routine) {
+  if(!unbound_declarations)return false;
+  if(!unbound_routines.insert(routine).second)return true;
+  auto rt=skip_typerefs(routine->type);
+  string id=name(routine,"f"),parameters;
+  unsigned index=0;
+  for(auto p=rt->variant.routine.extra_info->param_type_list;p;p=p->next) {
+    if(!parameters.empty())parameters+=", ";
+    parameters+=type(p->type)+" arg"+std::to_string(index++);
+  }
+  if(rt->variant.routine.extra_info->has_ellipsis)
+    parameters+=string(parameters.empty()?"":", ")+"global::Edg.Runtime.VaList* __edg_arguments";
+  string symbol=routine->source_corresp.name?routine->source_corresp.name:"<unnamed>";
+  helper_output+="// dot-gen:unbound function "+source_hex(symbol)+" "+id+"\n";
+  helper_output+="// dot-gen:member-begin\n// Unbound external declaration; review-only output.\nprivate "+
+    string(instance_mode?"":"static ")+type(rt->variant.routine.return_type)+" "+id+"("+parameters+
+    ") { throw new global::System.PlatformNotSupportedException(\"Unbound external function in review-only translation: "+source_hex(symbol)+" (UTF-8 hex)\"); }\n// dot-gen:member-end\n";
+  return true;
+}
+
+string unbound_variable_address(a_variable_ptr variable_ptr) {
+  if(!unbound_declarations)return "";
+  string id=name(variable_ptr,"v"),getter="__edg_unbound_address_"+source_identifier_component(id);
+  if(unbound_variables.insert(variable_ptr).second) {
+    string ty=type(variable_ptr->type);
+    string symbol=variable_ptr->source_corresp.name?variable_ptr->source_corresp.name:"<unnamed>";
+    helper_output+="// dot-gen:unbound variable "+source_hex(symbol)+" "+id+"\n";
+    helper_output+="// dot-gen:member-begin\n// Unbound external declaration; review-only output.\nprivate "+
+      string(instance_mode?"":"static ")+ty+"* "+getter+"() { throw new global::System.PlatformNotSupportedException(\"Unbound external variable in review-only translation: "+source_hex(symbol)+" (UTF-8 hex)\"); }\n// dot-gen:member-end\n";
+    helper_output+="// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+"ref "+ty+" "+id+" => ref *"+getter+"();\n// dot-gen:member-end\n";
+  }
+  return source_owner_reference(getter)+"()";
+}

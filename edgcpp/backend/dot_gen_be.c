@@ -270,9 +270,10 @@ string function_pointer_type(a_type_ptr t) {
 #include "dot_gen_imports.h"
 #include "dot_gen_threads.h"
 #include "dot_gen_process.h"
+#include "dot_gen_unbound.h"
 string routine_address(a_routine_ptr r) {
   bool pure=r->compiler_generated && r->source_corresp.name && string(r->source_corresp.name)=="__cxa_pure_virtual";
-  if (r->function_def_number == NULL_function_def_number && !pure && !libc_routine(r) && !thread_routine(r) && !process_routine(r)) unsupported(("address of external function: "+string(r->source_corresp.name?r->source_corresp.name:"<unnamed>")).c_str());
+  if (r->function_def_number == NULL_function_def_number && !pure && !libc_routine(r) && !thread_routine(r) && !process_routine(r) && !unbound_routine(r)) unsupported(("address of external function: "+string(r->source_corresp.name?r->source_corresp.name:"<unnamed>")).c_str());
   r=libc_address_routine(r);
   auto found = routine_addresses.find(r);
   if (found != routine_addresses.end()) return found->second + "()";
@@ -322,7 +323,10 @@ string literal_address(a_constant_ptr c) {
   if (found != literal_offsets.end()) offset = found->second;
   else {
     offset = (literal_bytes.size() + 7) & ~7ULL;
-    if (offset + bytes.size() > 4 * 1024 * 1024) unsupported("literal pool exceeds 4 MiB");
+    // Large programs (including this front end's diagnostic tables) exceed
+    // 4 MiB of immutable data. Match the existing global/TLS arena budget.
+    const unsigned long long pool_limit=64ULL*1024*1024;
+    if (offset>pool_limit || bytes.size()>pool_limit-offset) unsupported("literal pool exceeds 64 MiB");
     literal_bytes.resize(offset, 0);
     literal_bytes += bytes;
     literal_offsets[bytes] = offset;
@@ -336,7 +340,7 @@ bool function_pointer(a_type_ptr t) {
 std::map<a_variable_ptr, string> expression_variables;
 #include "dot_gen_source_storage.h"
 string variable(a_variable_ptr v) {
-  if(v->storage_class==sc_extern){string imported=libc_variable(v);if(!imported.empty())return imported;unsupported("reference to external variable");}
+  if(v->storage_class==sc_extern){string imported=libc_variable(v);if(!imported.empty())return imported;if(!unbound_variable_address(v).empty())return source_owner_reference(name(v,"v"));unsupported("reference to external variable");}
   if(exception_metadata.count(v))unsupported("native RTTI storage outside exception matching");
   auto captured=expression_variables.find(v);
   if(captured!=expression_variables.end())return captured->second;
@@ -354,6 +358,7 @@ string variable(a_variable_ptr v) {
   return "(*(" + type(v->type) + "*)(__edg_base + " + std::to_string(it->second) + "))";
 }
 string variable_address(a_variable_ptr v) {
+  if(v->storage_class==sc_extern && unbound_declarations && libc_variable(v).empty())return unbound_variable_address(v);
   auto captured=expression_variables.find(v);
   if(captured!=expression_variables.end())return "&("+captured->second+")";
   string stored=source_storage_address(v);if(!stored.empty())return stored;
@@ -390,7 +395,8 @@ string constant(a_constant_ptr c) {
     if (c->variant.address.kind != abk_variable || !c->variant.address.variant.variable)
       unsupported("address constant", c->variant.address.kind);
     auto v = c->variant.address.variant.variable;
-    if (!global_offsets.count(v) && !tls_offsets.count(v) && libc_variable(v).empty()) unsupported(("address of unallocated global: "+string(v->source_corresp.name?v->source_corresp.name:"<unnamed>")).c_str());
+    if (!global_offsets.count(v) && !tls_offsets.count(v) && libc_variable(v).empty() &&
+        !(v->storage_class==sc_extern && unbound_declarations)) unsupported(("address of unallocated global: "+string(v->source_corresp.name?v->source_corresp.name:"<unnamed>")).c_str());
     return "((" + type(c->type) + ")((byte*)" + variable_address(v) + " + (" +
            std::to_string(c->variant.address.offset) + ")))";
   }
@@ -755,7 +761,7 @@ string location(an_expr_node_ptr e) {
         }
         call=id+"(";
       } else {
-        if ((r->function_def_number == NULL_function_def_number || !scope_for_routine_or_null(r)) && !libc_routine(r) && !thread_routine(r) && !process_routine(r))
+        if ((r->function_def_number == NULL_function_def_number || !scope_for_routine_or_null(r)) && !libc_routine(r) && !thread_routine(r) && !process_routine(r) && !unbound_routine(r))
           unsupported(("external call: "+source).c_str());
         call = source_routine_reference(r) + "(";
       }
@@ -1392,6 +1398,8 @@ void emit_library_export(a_routine_ptr r,a_variable_ptr params,const string &sig
 
 // EDG's custom-backend entry point intentionally has global namespace linkage.
 void back_end(void) {
+  unbound_declarations=getenv("EDG_DOT_UNBOUND_EXTERNALS") && string(getenv("EDG_DOT_UNBOUND_EXTERNALS"))=="declarations";
+  unbound_routines.clear();unbound_variables.clear();
   reset_owned_ir();
   coroutine_helpers_emitted=false;
   source_jumps_used=false;owned_ir_enabled=getenv("EDG_DOT_TYPE_IR") && string(getenv("EDG_DOT_TYPE_IR"))=="1";
