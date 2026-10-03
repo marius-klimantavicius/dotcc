@@ -1,6 +1,6 @@
 // Explicit import contracts for the portable LP64 libc bridge. Definitions in
 // translated input always win; an unknown symbol or mismatched ABI is an error.
-bool libc_enabled=false,libc_emitted=false,files_emitted=false,text_emitted=false,math_emitted=false,clock_emitted=false;
+bool libc_enabled=false,libc_emitted=false,files_emitted=false,text_emitted=false,math_emitted=false,clock_emitted=false,environment_emitted=false,timezone_emitted=false;
 std::set<a_routine_ptr> libc_routines;
 std::map<string,a_routine_ptr> libc_binding_addresses;
 std::map<a_routine_ptr,a_routine_ptr> libc_address_aliases;
@@ -67,6 +67,7 @@ const libc_binding libc_bindings[]={
 #define EDG_LIBC(s,r,p,t) {s,r,p,t},
 #include "libc-bindings.def"
 #include "libc-files-bindings.def"
+#include "libc-wide-files-bindings.def"
 #include "libc-text-bindings.def"
 #include "libc-float-bindings.def"
 #include "libc-math-bindings.def"
@@ -75,16 +76,18 @@ const libc_binding libc_bindings[]={
 #include "libc-clock-bindings.def"
 #include "libc-calendar-bindings.def"
 #include "libc-process-bindings.def"
+#include "libc-environment-bindings.def"
+#include "libc-timezone-bindings.def"
 #undef EDG_LIBC
 };
 void reset_libc_imports() {
-  libc_emitted=false;files_emitted=false;text_emitted=false;math_emitted=false;clock_emitted=false;libc_routines.clear();
+  libc_emitted=false;files_emitted=false;text_emitted=false;math_emitted=false;clock_emitted=false;environment_emitted=false;timezone_emitted=false;libc_routines.clear();
   libc_binding_addresses.clear();libc_address_aliases.clear();
 }
 string libc_thread_release_code() {return string(text_emitted?"__edg_text_value?.ReleaseThread();":"")+(libc_emitted?"__edg_libc.ReleaseThread();":"");}
 string libc_disposal_code() {
   return string(files_emitted?"__edg_files_value?.Dispose();":"")+
-    (text_emitted?"__edg_text_value?.Dispose();":"")+(libc_emitted?"__edg_libc.Dispose();":"");
+    (text_emitted?"__edg_text_value?.Dispose();":"")+(environment_emitted?"__edg_environment_value?.Dispose();":"")+(timezone_emitted?"__edg_timezone_value?.Dispose();":"")+(libc_emitted?"__edg_libc.Dispose();":"");
 }
 void ensure_lifecycle();
 void ensure_libc() {
@@ -134,14 +137,15 @@ private @MOD@int __edg_posix_memalign(void** result,ulong alignment,ulong size) 
   for(size_t pos=code.find("@MOD@");pos!=string::npos;pos=code.find("@MOD@",pos+mod.size()))code.replace(pos,5,mod);
   helper_output+=code;
 }
+void ensure_text();
 void ensure_files() {
   if(files_emitted)return;
-  ensure_libc();files_emitted=true;
+  ensure_libc();ensure_text();files_emitted=true;
   // Instance field initializers cannot refer to other instance fields. A lazy
   // holder also avoids opening standard streams when only memory APIs are used.
   string mod=instance_mode?"":"static ";
   helper_output+="private "+mod+"global::Edg.Runtime.LibcFiles? __edg_files_value;\n";
-  helper_output+="private "+mod+"global::Edg.Runtime.LibcFiles __edg_files { get { lock(__edg_libc) { if(__edg_files_value==null)__edg_files_value=new global::Edg.Runtime.LibcFiles(__edg_libc.SetErrno); return __edg_files_value; } } }\n";
+  helper_output+="private "+mod+"global::Edg.Runtime.LibcFiles __edg_files { get { lock(__edg_libc) { if(__edg_files_value==null)__edg_files_value=new global::Edg.Runtime.LibcFiles(__edg_libc.SetErrno,getEncoding:()=>__edg_text.MbCurMax()); return __edg_files_value; } } }\n";
 }
 void ensure_text() {
   if(text_emitted)return;
@@ -163,6 +167,20 @@ void ensure_clock() {
   string mod=instance_mode?"":"static ";
   helper_output+="private "+mod+"global::Edg.Runtime.LibcClock? __edg_clock_value;\n";
   helper_output+="private "+mod+"global::Edg.Runtime.LibcClock __edg_clock { get { lock(__edg_libc) { if(__edg_clock_value==null)__edg_clock_value=new global::Edg.Runtime.LibcClock(__edg_libc.SetErrno); return __edg_clock_value; } } }\n";
+}
+void ensure_environment() {
+  if(environment_emitted)return;
+  ensure_libc();environment_emitted=true;
+  string mod=instance_mode?"":"static ";
+  helper_output+="private "+mod+"global::Edg.Runtime.LibcEnvironment? __edg_environment_value;\n";
+  helper_output+="private "+mod+"global::Edg.Runtime.LibcEnvironment __edg_environment { get { lock(__edg_libc) { if(__edg_environment_value==null)__edg_environment_value=new global::Edg.Runtime.LibcEnvironment(); return __edg_environment_value; } } }\n";
+}
+void ensure_timezone() {
+  if(timezone_emitted)return;
+  ensure_libc();timezone_emitted=true;
+  string mod=instance_mode?"":"static ";
+  helper_output+="private "+mod+"global::Edg.Runtime.LibcTimezone? __edg_timezone_value;\n";
+  helper_output+="private "+mod+"global::Edg.Runtime.LibcTimezone __edg_timezone { get { lock(__edg_libc) { if(__edg_timezone_value==null)__edg_timezone_value=new global::Edg.Runtime.LibcTimezone(__edg_libc.SetErrno); return __edg_timezone_value; } } }\n";
 }
 bool libc_timespec_pointer(a_type_ptr t) {
   t=skip_typerefs(t);if(t->kind!=tk_pointer || t->size!=8)return false;
@@ -206,8 +224,22 @@ bool libc_lconv_pointer(a_type_ptr t) {
   }
   return index==24;
 }
-bool libc_boundary_pointer(a_type_ptr t) {return libc_file_pointer(t)||libc_locale_pointer(t)||libc_lconv_pointer(t)||libc_timespec_pointer(t);}
+bool libc_fpos_pointer(a_type_ptr t) {
+  t=skip_typerefs(t);if(t->kind!=tk_pointer || t->size!=8)return false;
+  t=skip_typerefs(t->variant.pointer.type);
+  if((t->kind!=tk_struct && t->kind!=tk_class) || t->incomplete || t->size!=16 || alignment_of_type(t)!=8 ||
+     !t->source_corresp.name || string(t->source_corresp.name)!="__edg_fpos" ||
+     !t->source_corresp.parent_scope || t->source_corresp.parent_scope->kind!=sck_file)return false;
+  const char* fpos_field_names[]={"offset","state","value"};unsigned index=0;
+  for(auto f=t->variant.class_struct_union.field_list;f;f=f->next,++index) {
+    if(index>=3 || f->is_bit_field || !f->source_corresp.name || string(f->source_corresp.name)!=fpos_field_names[index] ||
+       f->offset!=(index==0?0:index==1?8:12) || type(f->type)!=(index==0?"long":"uint"))return false;
+  }
+  return index==3;
+}
+bool libc_boundary_pointer(a_type_ptr t) {return libc_fpos_pointer(t)||libc_file_pointer(t)||libc_locale_pointer(t)||libc_lconv_pointer(t)||libc_timespec_pointer(t);}
 string libc_abi_type(a_type_ptr t) {
+  if(libc_fpos_pointer(t))return "FPOS*";
   if(libc_timespec_pointer(t))return "TIMESPEC*";
   if(libc_file_pointer(t))return "FILE*";
   if(libc_locale_pointer(t))return "LOCALE*";
@@ -232,7 +264,8 @@ bool libc_format_callback(a_type_ptr t) {
   p=p->next;
   return p && libc_va_pointer(p->type) && !p->next;
 }
-bool libc_format_lock_routine(a_routine_ptr r) {
+bool libc_format_lock_routine(a_routine_ptr r,bool reading=false) {
+  string symbol=reading?"__edg_with_file_read_lock":"__edg_with_file_lock";
   auto rt=skip_typerefs(r->type);auto extra=rt->variant.routine.extra_info;
   std::vector<a_type_ptr> parameters;
   for(auto p=extra->param_type_list;p;p=p->next)parameters.push_back(p->type);
@@ -240,8 +273,8 @@ bool libc_format_lock_routine(a_routine_ptr r) {
      parameters.size()!=5 || !libc_file_pointer(parameters[0]) ||
      !libc_format_callback(parameters[1]) || type(parameters[2])!="void*" ||
      type(parameters[3])!="sbyte*" || !libc_va_pointer(parameters[4]))
-    unsupported("libc import ABI for __edg_with_file_lock: expected int(FILE*, int(*)(void*,const char*,va_list),void*,const char*,va_list) with builtin va_list");
-  ensure_files();libc_register_routine(r,"__edg_with_file_lock");
+    unsupported(("libc import ABI for "+symbol+": expected int(FILE*, int(*)(void*,const char*,va_list),void*,const char*,va_list) with builtin va_list").c_str());
+  ensure_files();libc_register_routine(r,symbol);
   string signature;
   for(unsigned i=0;i<parameters.size();++i) {
     if(i)signature+=", ";
@@ -249,8 +282,8 @@ bool libc_format_lock_routine(a_routine_ptr r) {
   }
   // This is an ordinary routine wrapper: address-taking reuses the canonical
   // routine_address adapter, including its owner lifecycle lease and identity.
-  helper_output+="// dot-gen:import __edg_with_file_lock\n// dot-gen:member-begin\nprivate "+
-    string(instance_mode?"":"static ")+"int "+name(r,"f")+"("+signature+") { return __edg_files.WithFileLock((void*)a0, a1, "+
+  helper_output+="// dot-gen:import "+symbol+"\n// dot-gen:member-begin\nprivate "+
+    string(instance_mode?"":"static ")+"int "+name(r,"f")+"("+signature+") { return __edg_files."+string(reading?"WithFileReadLock":"WithFileLock")+"((void*)a0, a1, "+
     string(instance_mode?"this, ":"")+"a2, a3, a4); }\n// dot-gen:member-end\n";
   return true;
 }
@@ -259,6 +292,7 @@ bool libc_routine(a_routine_ptr r) {
   if(libc_routines.count(r))return true;
   string symbol=r->source_corresp.name?r->source_corresp.name:"";
   if(symbol=="__edg_with_file_lock")return libc_format_lock_routine(r);
+  if(symbol=="__edg_with_file_read_lock")return libc_format_lock_routine(r,true);
   string builtin_symbol=libc_builtin_symbol(r),lookup_symbol=builtin_symbol.empty()?symbol:builtin_symbol;
   for(const auto &binding:libc_bindings)if(lookup_symbol==binding.symbol) {
     auto rt=skip_typerefs(r->type);auto extra=rt->variant.routine.extra_info;
@@ -275,6 +309,8 @@ bool libc_routine(a_routine_ptr r) {
     if(string(binding.target).find("__edg_text.")==0)ensure_text();
     if(string(binding.target).find("__edg_math.")==0)ensure_math();
     if(string(binding.target).find("__edg_clock.")==0)ensure_clock();
+    if(string(binding.target).find("__edg_environment.")==0)ensure_environment();
+    if(string(binding.target).find("__edg_timezone.")==0)ensure_timezone();
     libc_register_routine(r,binding.symbol);
     helper_output+="// dot-gen:import "+symbol+"\n// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+result+" "+name(r,"f")+"("+signature+") { "+
       (result=="void"?"":"return ")+(libc_boundary_pointer(rt->variant.routine.return_type)?"("+result+")":"")+binding.target+"("+args+"); }\n// dot-gen:member-end\n";

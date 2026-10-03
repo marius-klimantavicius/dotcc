@@ -19,6 +19,7 @@ public sealed unsafe partial class LibcFiles : IDisposable
     // appropriate here. FILE tokens and short-lived I/O buffers use NativeMemory.
     private readonly nint[] standard = GC.AllocateArray<nint>(3, pinned: true);
     private readonly string workingDirectory;
+    private readonly Func<ulong> getEncoding;
     private bool disposed;
     private static readonly UTF8Encoding Utf8 = new(false, true);
 
@@ -29,6 +30,9 @@ public sealed unsafe partial class LibcFiles : IDisposable
         internal readonly bool Readable, Writable, Append, OwnStream;
         internal bool Closed, End, Error, Started;
         internal int Direction, Pushback = -1, BufferMode;
+        internal int Orientation, WidePushback = -1, WidePushbackBytes;
+        internal bool Utf8Encoding;
+        internal uint DecodeState, DecodeValue;
         internal int ReadOffset, ReadCount, FailureEpoch;
         internal byte* Buffer;
         internal nuint Capacity = 8192, Used;
@@ -38,9 +42,10 @@ public sealed unsafe partial class LibcFiles : IDisposable
     }
 
     public LibcFiles(Action<int> setErrno, Stream? input = null, Stream? output = null, Stream? error = null,
-        string? workingDirectory = null)
+        string? workingDirectory = null, Func<ulong>? getEncoding = null)
     {
         this.setErrno = setErrno;
+        this.getEncoding = getEncoding ?? (() => 1UL);
         this.workingDirectory = Path.GetFullPath(workingDirectory ?? Directory.GetCurrentDirectory());
         try
         {
@@ -240,44 +245,45 @@ public sealed unsafe partial class LibcFiles : IDisposable
 
     public ulong Fread(void* destination, ulong size, ulong count, void* handle)
     {
-        if (size == 0 || count == 0) return 0;
-        var entry = Find(handle); if (entry is null) return 0;
-        lock (entry.Gate)
+        if(size==0 || count==0)return 0;
+        var entry=Find(handle);if(entry is null)return 0;
+        lock(entry.Gate) { if(!Orient(entry,-1))return 0;return ReadBytes(destination,size,count,entry); }
+    }
+    private ulong ReadBytes(void* destination,ulong size,ulong count,Entry entry)
+    {
+        if (count > (ulong)nint.MaxValue / size) { Fail(entry, Eoverflow); return 0; }
+        if (!PrepareRead(entry) || entry.End) return 0;
+        ulong total = size * count, read = 0;
+        byte* output = (byte*)destination;
+        if (entry.Pushback >= 0) { output[read++] = (byte)entry.Pushback; entry.Pushback = -1; }
+        try
         {
-            if (count > (ulong)nint.MaxValue / size) { Fail(entry, Eoverflow); return 0; }
-            if (!PrepareRead(entry) || entry.End) return 0;
-            ulong total = size * count, read = 0;
-            byte* output = (byte*)destination;
-            if (entry.Pushback >= 0) { output[read++] = (byte)entry.Pushback; entry.Pushback = -1; }
-            try
+            while (read < total)
             {
-                while (read < total)
+                if (entry.ReadOffset < entry.ReadCount)
                 {
-                    if (entry.ReadOffset < entry.ReadCount)
-                    {
-                        int copied = (int)Math.Min(total - read, (uint)(entry.ReadCount - entry.ReadOffset));
-                        Buffer.MemoryCopy(entry.Buffer + entry.ReadOffset, output + read, total - read, (ulong)copied);
-                        entry.ReadOffset += copied; read += (uint)copied; continue;
-                    }
-                    if (entry.BufferMode != 2 && total - read < entry.Capacity)
-                    {
-                        if (!AllocateBuffer(entry)) break;
-                        entry.ReadOffset = 0;
-                        entry.ReadCount = entry.Stream.Read(new Span<byte>(entry.Buffer, (int)Math.Min((ulong)entry.Capacity, int.MaxValue)));
-                        if (entry.ReadCount == 0) { entry.End = true; break; }
-                    }
-                    else
-                    {
-                        int length = (int)Math.Min(total - read, int.MaxValue);
-                        int n = entry.Stream.Read(new Span<byte>(output + read, length));
-                        if (n == 0) { entry.End = true; break; }
-                        read += (uint)n;
-                    }
+                    int copied = (int)Math.Min(total - read, (uint)(entry.ReadCount - entry.ReadOffset));
+                    Buffer.MemoryCopy(entry.Buffer + entry.ReadOffset, output + read, total - read, (ulong)copied);
+                    entry.ReadOffset += copied; read += (uint)copied; continue;
+                }
+                if (entry.BufferMode != 2 && total - read < entry.Capacity)
+                {
+                    if (!AllocateBuffer(entry)) break;
+                    entry.ReadOffset = 0;
+                    entry.ReadCount = entry.Stream.Read(new Span<byte>(entry.Buffer, (int)Math.Min((ulong)entry.Capacity, int.MaxValue)));
+                    if (entry.ReadCount == 0) { entry.End = true; break; }
+                }
+                else
+                {
+                    int length = (int)Math.Min(total - read, int.MaxValue);
+                    int n = entry.Stream.Read(new Span<byte>(output + read, length));
+                    if (n == 0) { entry.End = true; break; }
+                    read += (uint)n;
                 }
             }
-            catch (Exception error) when (PlatformFailure(error)) { Fail(entry, ErrorNumber(error)); }
-            return read / size;
         }
+        catch (Exception error) when (PlatformFailure(error)) { Fail(entry, ErrorNumber(error)); }
+        return read / size;
     }
 
     private bool AllocateBuffer(Entry entry)
@@ -294,53 +300,54 @@ public sealed unsafe partial class LibcFiles : IDisposable
 
     public ulong Fwrite(void* source, ulong size, ulong count, void* handle)
     {
-        if (size == 0 || count == 0) return 0;
-        var entry = Find(handle); if (entry is null) return 0;
-        lock (entry.Gate)
+        if(size==0 || count==0)return 0;
+        var entry=Find(handle);if(entry is null)return 0;
+        lock(entry.Gate) { if(!Orient(entry,-1))return 0;return WriteBytes(source,size,count,entry); }
+    }
+    private ulong WriteBytes(void* source,ulong size,ulong count,Entry entry)
+    {
+        if (count > (ulong)nint.MaxValue / size) { Fail(entry, Eoverflow); return 0; }
+        if (!PrepareWrite(entry)) return 0;
+        ulong total = size * count, accepted = 0;
+        byte* input = (byte*)source;
+        try
         {
-            if (count > (ulong)nint.MaxValue / size) { Fail(entry, Eoverflow); return 0; }
-            if (!PrepareWrite(entry)) return 0;
-            ulong total = size * count, accepted = 0;
-            byte* input = (byte*)source;
-            try
+            if (entry.BufferMode == 2)
             {
-                if (entry.BufferMode == 2)
+                while (accepted < total)
                 {
-                    while (accepted < total)
-                    {
-                        int length = (int)Math.Min(total - accepted, int.MaxValue);
-                        var bytes = new ReadOnlySpan<byte>(input + accepted, length);
-                        if (entry.Append) LibcAppend.Write((FileStream)entry.Stream, bytes);
-                        else entry.Stream.Write(bytes);
-                        accepted += (uint)length;
-                    }
+                    int length = (int)Math.Min(total - accepted, int.MaxValue);
+                    var bytes = new ReadOnlySpan<byte>(input + accepted, length);
+                    if (entry.Append) LibcAppend.Write((FileStream)entry.Stream, bytes);
+                    else entry.Stream.Write(bytes);
+                    accepted += (uint)length;
                 }
-                else
+            }
+            else
+            {
+                if (!AllocateBuffer(entry)) return 0;
+                ulong bufferedFromCall = 0;
+                while (accepted < total)
                 {
-                    if (!AllocateBuffer(entry)) return 0;
-                    ulong bufferedFromCall = 0;
-                    while (accepted < total)
+                    int length = (int)Math.Min(Math.Min(total - accepted, (ulong)(entry.Capacity - entry.Used)), int.MaxValue);
+                    bool newline = false;
+                    if (entry.BufferMode == 1)
                     {
-                        int length = (int)Math.Min(Math.Min(total - accepted, (ulong)(entry.Capacity - entry.Used)), int.MaxValue);
-                        bool newline = false;
-                        if (entry.BufferMode == 1)
-                        {
-                            int index = new ReadOnlySpan<byte>(input + accepted, length).IndexOf((byte)'\n');
-                            if (index >= 0) { length = index + 1; newline = true; }
-                        }
-                        Buffer.MemoryCopy(input + accepted, entry.Buffer + entry.Used, (ulong)(entry.Capacity - entry.Used), (ulong)length);
-                        accepted += (uint)length; bufferedFromCall += (uint)length; entry.Used += (uint)length;
-                        if (newline || entry.Used == entry.Capacity)
-                        {
-                            if (!FlushOutput(entry)) { accepted -= bufferedFromCall; break; }
-                            bufferedFromCall = 0;
-                        }
+                        int index = new ReadOnlySpan<byte>(input + accepted, length).IndexOf((byte)'\n');
+                        if (index >= 0) { length = index + 1; newline = true; }
+                    }
+                    Buffer.MemoryCopy(input + accepted, entry.Buffer + entry.Used, (ulong)(entry.Capacity - entry.Used), (ulong)length);
+                    accepted += (uint)length; bufferedFromCall += (uint)length; entry.Used += (uint)length;
+                    if (newline || entry.Used == entry.Capacity)
+                    {
+                        if (!FlushOutput(entry)) { accepted -= bufferedFromCall; break; }
+                        bufferedFromCall = 0;
                     }
                 }
             }
-            catch (Exception error) when (PlatformFailure(error)) { Fail(entry, ErrorNumber(error)); }
-            return accepted / size;
         }
+        catch (Exception error) when (PlatformFailure(error)) { Fail(entry, ErrorNumber(error)); }
+        return accepted / size;
     }
 
     public int Fflush(void* handle)
@@ -362,10 +369,10 @@ public sealed unsafe partial class LibcFiles : IDisposable
         lock (entry.Gate)
         {
             if (entry.Closed) return Fail(null, Ebadf);
-            int unread = entry.ReadCount - entry.ReadOffset + (entry.Pushback >= 0 ? 1 : 0);
+            int unread = entry.ReadCount - entry.ReadOffset + (entry.Pushback >= 0 ? 1 : 0) + entry.WidePushbackBytes;
             if (entry.Direction == 1 && unread != 0)
             {
-                try { entry.Stream.Seek(-unread, SeekOrigin.Current); entry.Pushback = -1; entry.ReadCount = entry.ReadOffset = 0; }
+                try { entry.Stream.Seek(-unread, SeekOrigin.Current); entry.Pushback = -1; entry.WidePushback = -1; entry.WidePushbackBytes = 0; entry.DecodeState = entry.DecodeValue = 0; entry.ReadCount = entry.ReadOffset = 0; }
                 catch (Exception error) when (PlatformFailure(error)) { return Fail(entry, ErrorNumber(error)); }
             }
             if (entry.Writable && !FlushOutput(entry)) return Eof;
@@ -384,9 +391,9 @@ public sealed unsafe partial class LibcFiles : IDisposable
             if (entry.Writable && !FlushOutput(entry)) return -1;
             try
             {
-                if (origin == 1) offset = checked(offset - (entry.ReadCount - entry.ReadOffset) - (entry.Pushback >= 0 ? 1 : 0));
+                if (origin == 1) offset = checked(offset - (entry.ReadCount - entry.ReadOffset) - (entry.Pushback >= 0 ? 1 : 0) - entry.WidePushbackBytes);
                 entry.Stream.Seek(offset, (SeekOrigin)origin);
-                entry.Pushback = -1; entry.ReadCount = entry.ReadOffset = 0;
+                entry.Pushback = -1; entry.WidePushback = -1; entry.WidePushbackBytes = 0; entry.DecodeState = entry.DecodeValue = 0; entry.ReadCount = entry.ReadOffset = 0;
                 entry.End = false; entry.Direction = 0; entry.Started = true; return 0;
             }
             catch (OverflowException) { return Fail(entry, Eoverflow); }
@@ -406,7 +413,7 @@ public sealed unsafe partial class LibcFiles : IDisposable
                 // An append stream's pending bytes will be written at current
                 // end, irrespective of its last explicit seek position.
                 long position = entry.Append && entry.Used != 0 ? entry.Stream.Length : entry.Stream.Position;
-                return checked(position + (long)entry.Used - (entry.ReadCount - entry.ReadOffset) - (entry.Pushback >= 0 ? 1 : 0));
+                return checked(position + (long)entry.Used - (entry.ReadCount - entry.ReadOffset) - (entry.Pushback >= 0 ? 1 : 0) - entry.WidePushbackBytes);
             }
             catch (OverflowException) { return Fail(entry, Eoverflow); }
             catch (Exception error) when (PlatformFailure(error)) { return Fail(entry, ErrorNumber(error)); }
@@ -443,7 +450,7 @@ public sealed unsafe partial class LibcFiles : IDisposable
         var entry = Find(handle); if (entry is null) return null;
         lock (entry.Gate)
         {
-            if (!PrepareRead(entry)) return null;
+            if (!Orient(entry,-1) || !PrepareRead(entry)) return null;
             if (count == 1) { *destination = 0; return destination; }
             int length = 0, epoch = entry.FailureEpoch;
             while (length < count - 1)
@@ -463,7 +470,7 @@ public sealed unsafe partial class LibcFiles : IDisposable
         var entry = Find(handle); if (entry is null) return Eof;
         lock (entry.Gate)
         {
-            if (!PrepareRead(entry) || entry.Pushback >= 0) return Eof;
+            if (!Orient(entry,-1) || !PrepareRead(entry) || entry.Pushback >= 0) return Eof;
             entry.Pushback = unchecked((byte)value); entry.End = false; return entry.Pushback;
         }
     }

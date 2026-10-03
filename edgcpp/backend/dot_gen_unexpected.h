@@ -43,7 +43,8 @@ void ensure_unexpected_helpers() {
   helper_output+="// dot-gen:member-begin\n[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]\nprivate "+mod+"void __edg_unexpected() {\n"
       "nint handler=global::System.Threading.Interlocked.CompareExchange(ref __edg_unexpected_handler,0,0);\n"
       "if(handler!=0) {"+invoke+"}\n__edg_terminate();\n}\n// dot-gen:member-end\n";
-  helper_output+="// dot-gen:member-begin\nprivate "+mod+"bool __edg_unexpected_cleanup_failure(global::System.Exception error) {\n"
+  helper_output+="// dot-gen:member-begin\nprivate "+mod+"bool __edg_unexpected_cleanup_failure(global::System.Exception error) {\n"+
+      string(source_jumps_used?"if(error is global::Edg.Runtime.NonlocalJump.Transfer)return false;\n":"")+
       "__edg_terminate_runtime(error,\"Destructor threw during unexpected replacement\");return false;\n}\n// dot-gen:member-end\n";
 }
 string unexpected_call(a_routine_ptr r,an_expr_node_ptr args) {

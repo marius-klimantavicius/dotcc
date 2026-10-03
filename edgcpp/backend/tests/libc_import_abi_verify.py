@@ -20,6 +20,7 @@ def verify_libc_import_abi(root, tests, out):
       ('classifier-record','struct fake {unsigned long value;unsigned short exp;};int __edg_isfinitel(struct fake);','__edg_isfinitel','libc import ABI'),
       ('public-scalbn','double scalbn(double,int);','scalbn','external function'),
     ]
+    cases += [('read-'+name,declaration.replace('__edg_with_file_lock','__edg_with_file_read_lock'),'__edg_with_file_read_lock',diagnostic) for name,declaration,symbol,diagnostic in cases[:6]]
     checks=[]
     for name,declaration,symbol,diagnostic in cases:
         source=out/f'{name}.c';source.write_text(declaration+f'\nvoid *address(void){{return (void*){symbol};}}\n')

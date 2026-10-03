@@ -100,6 +100,20 @@ host boundaries: translated callers can catch through them. Concurrent rethrow
 uses fresh `exception_ptr` wrappers; a managed host must not concurrently reuse
 a single escaped carrier.
 
+The combined foreign-boundary matrix passes twenty static/instance
+JIT/NativeAOT checks in
+`artifacts/campaign/foreign-clr-boundaries-20261003-023012/results.json`.
+It preserves the exact CLR object across repeated catch-all/bare rethrows,
+restores an enclosing C++ `current_exception` after a nested foreign handler,
+captures an empty `nested_exception` inside a foreign handler, and supports
+allowed C++/`bad_exception` replacements through dynamic specifications.
+Foreign `noexcept` escapes, secondary foreign throws during C++ cleanup,
+empty nested rethrows and forbidden unexpected replacements invoke the active
+owner's terminate handler with zero C++ count and no fabricated C++ payload.
+The secondary-throw case terminates during first-pass search before further
+destructor cleanup. These are managed interoperation assertions, not native
+exception ABI compatibility claims.
+
 Remaining gates include separate-assembly
 identity/ownership and complete libc++ integration.
 

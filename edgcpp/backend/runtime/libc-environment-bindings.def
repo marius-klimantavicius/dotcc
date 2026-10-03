@@ -1,0 +1,2 @@
+/* Initial BCL snapshot only; environment APIs are translated musl definitions. */
+EDG_LIBC("__edg_environment_snapshot", "sbyte**", "", "__edg_environment.Snapshot")

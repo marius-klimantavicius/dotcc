@@ -10,7 +10,7 @@ def verify_libc_files(root, tests, out, nativeaot, run):
     # Keep managed runtime error injection/concurrency tests separate from the
     # native oracle. Native FILE/fpos_t layouts never cross the managed boundary.
     standalone=out/'libc-files-runtime';standalone.mkdir(exist_ok=True)
-    sources=''.join(f'<Compile Include="{root / "backend/runtime" / name}" />' for name in ('LibcFiles.cs','LibcAppend.cs','LibcPaths.cs'))
+    sources=''.join(f'<Compile Include="{root / "backend/runtime" / name}" />' for name in ('LibcFiles.cs','LibcFilesWide.cs','LibcAppend.cs','LibcPaths.cs'))
     (standalone/'Runtime.csproj').write_text(f'''<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup>
 <OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 <IsAotCompatible>true</IsAotCompatible></PropertyGroup><ItemGroup>{sources}</ItemGroup></Project>''')

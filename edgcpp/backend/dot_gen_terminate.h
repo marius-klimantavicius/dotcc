@@ -21,9 +21,13 @@ void ensure_terminate_helpers() {
     "nint handler=global::System.Threading.Interlocked.CompareExchange(ref __edg_terminate_handler,0,0);\n"
     "if(handler!=0) {\n"
     "if(runtime && error!=null) {var frame=__edg_create_catch_frame(error,0,0,false);frame.MarkCaught();}\n"
-    "try {"+invoke+"} catch(global::System.Exception failure) {global::System.Environment.FailFast(\"C++ terminate handler threw\",failure);}\n"
+    "try {"+invoke+"} catch(global::System.Exception failure) {"+
+    string(source_jumps_used?"if(failure is global::Edg.Runtime.NonlocalJump.Transfer)global::System.Environment.FailFast(\"Nonlocal jump from C++ terminate handler\",failure);":"")+
+    "global::System.Environment.FailFast(\"C++ terminate handler threw\",failure);}\n"
     "}\nglobal::System.Environment.FailFast(reason,error);\n}\n// dot-gen:member-end\n";
   helper_output+="// dot-gen:member-begin\n[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]\nprivate "+mod+"void __edg_terminate() {__edg_terminate_core(false,null,\"C++ terminate\");}\n// dot-gen:member-end\n";
-  helper_output+="// dot-gen:member-begin\n[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]\nprivate "+mod+"void __edg_terminate_runtime(global::System.Exception? error,string reason) {__edg_terminate_core(true,error,reason);}\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\n[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]\nprivate "+mod+"void __edg_terminate_runtime(global::System.Exception? error,string reason) {"+
+    string(source_jumps_used?"if(error is global::Edg.Runtime.NonlocalJump.Transfer)global::System.Environment.FailFast(\"Nonlocal jump escaped translated runtime boundary\",error);":"")+
+    "__edg_terminate_core(true,error,reason);}\n// dot-gen:member-end\n";
   helper_output+="// dot-gen:member-begin\ninternal "+mod+"void __EdgUnhandledProgram(global::System.Exception error) {__edg_terminate_runtime(error,\"Exception escaped translated main\");}\n// dot-gen:member-end\n";
 }

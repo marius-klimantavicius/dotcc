@@ -1,5 +1,5 @@
 {
-  "bindingCount": 142,
+  "bindingCount": 157,
   "bindings": {
     "__edg_calendar_utc": {
       "parameters": "",
@@ -12,6 +12,12 @@
       "result": "sbyte*",
       "source": "libc-calendar-bindings.def",
       "target": "global::Edg.Runtime.LibcCalendar.ZoneName"
+    },
+    "__edg_environment_snapshot": {
+      "parameters": "",
+      "result": "sbyte**",
+      "source": "libc-environment-bindings.def",
+      "target": "__edg_environment.Snapshot"
     },
     "__edg_fpclassify": {
       "parameters": "double",
@@ -102,6 +108,30 @@
       "result": "int",
       "source": "libc-float-bindings.def",
       "target": "global::Edg.Runtime.LibcFloat.SignBit"
+    },
+    "__edg_timezone_enter": {
+      "parameters": "",
+      "result": "void",
+      "source": "libc-timezone-bindings.def",
+      "target": "__edg_timezone.Enter"
+    },
+    "__edg_timezone_exit": {
+      "parameters": "",
+      "result": "void",
+      "source": "libc-timezone-bindings.def",
+      "target": "__edg_timezone.Exit"
+    },
+    "__edg_timezone_map": {
+      "parameters": "sbyte*,ulong*",
+      "result": "byte*",
+      "source": "libc-timezone-bindings.def",
+      "target": "__edg_timezone.MapFile"
+    },
+    "__edg_timezone_unmap": {
+      "parameters": "void*,ulong",
+      "result": "int",
+      "source": "libc-timezone-bindings.def",
+      "target": "__edg_timezone.Unmap"
     },
     "__errno_location": {
       "parameters": "",
@@ -242,16 +272,28 @@
       "target": "__edg_files.Fgetc"
     },
     "fgetpos": {
-      "parameters": "FILE*,long*",
+      "parameters": "FILE*,FPOS*",
       "result": "int",
       "source": "libc-files-bindings.def",
-      "target": "__edg_files.Fgetpos"
+      "target": "__edg_files.FgetposState"
     },
     "fgets": {
       "parameters": "sbyte*,int,FILE*",
       "result": "sbyte*",
       "source": "libc-files-bindings.def",
       "target": "__edg_files.Fgets"
+    },
+    "fgetwc": {
+      "parameters": "FILE*",
+      "result": "uint",
+      "source": "libc-wide-files-bindings.def",
+      "target": "__edg_files.Fgetwc"
+    },
+    "fgetws": {
+      "parameters": "int*,int,FILE*",
+      "result": "int*",
+      "source": "libc-wide-files-bindings.def",
+      "target": "__edg_files.Fgetws"
     },
     "floor": {
       "parameters": "double",
@@ -288,6 +330,18 @@
       "result": "int",
       "source": "libc-files-bindings.def",
       "target": "__edg_files.Fputs"
+    },
+    "fputwc": {
+      "parameters": "int,FILE*",
+      "result": "uint",
+      "source": "libc-wide-files-bindings.def",
+      "target": "__edg_files.Fputwc"
+    },
+    "fputws": {
+      "parameters": "int*,FILE*",
+      "result": "int",
+      "source": "libc-wide-files-bindings.def",
+      "target": "__edg_files.Fputws"
     },
     "fread": {
       "parameters": "void*,ulong,ulong,FILE*",
@@ -332,16 +386,22 @@
       "target": "__edg_files.Fseek"
     },
     "fsetpos": {
-      "parameters": "FILE*,long*",
+      "parameters": "FILE*,FPOS*",
       "result": "int",
       "source": "libc-files-bindings.def",
-      "target": "__edg_files.Fsetpos"
+      "target": "__edg_files.FsetposState"
     },
     "ftell": {
       "parameters": "FILE*",
       "result": "long",
       "source": "libc-files-bindings.def",
       "target": "__edg_files.Ftell"
+    },
+    "fwide": {
+      "parameters": "FILE*,int",
+      "result": "int",
+      "source": "libc-wide-files-bindings.def",
+      "target": "__edg_files.Fwide"
     },
     "fwrite": {
       "parameters": "void*,ulong,ulong,FILE*",
@@ -360,6 +420,18 @@
       "result": "int",
       "source": "libc-files-bindings.def",
       "target": "__edg_files.Getchar"
+    },
+    "getwc": {
+      "parameters": "FILE*",
+      "result": "uint",
+      "source": "libc-wide-files-bindings.def",
+      "target": "__edg_files.Fgetwc"
+    },
+    "getwchar": {
+      "parameters": "",
+      "result": "uint",
+      "source": "libc-wide-files-bindings.def",
+      "target": "__edg_files.Getwchar"
     },
     "isalnum": {
       "parameters": "int",
@@ -594,6 +666,18 @@
       "result": "int",
       "source": "libc-files-bindings.def",
       "target": "__edg_files.Puts"
+    },
+    "putwc": {
+      "parameters": "int,FILE*",
+      "result": "uint",
+      "source": "libc-wide-files-bindings.def",
+      "target": "__edg_files.Fputwc"
+    },
+    "putwchar": {
+      "parameters": "int",
+      "result": "uint",
+      "source": "libc-wide-files-bindings.def",
+      "target": "__edg_files.Putwchar"
     },
     "realloc": {
       "parameters": "void*,ulong",
@@ -841,6 +925,12 @@
       "source": "libc-files-bindings.def",
       "target": "__edg_files.Ungetc"
     },
+    "ungetwc": {
+      "parameters": "uint,FILE*",
+      "result": "uint",
+      "source": "libc-wide-files-bindings.def",
+      "target": "__edg_files.Ungetwc"
+    },
     "uselocale": {
       "parameters": "LOCALE*",
       "result": "LOCALE*",
@@ -1084,6 +1174,7 @@
       "truncf": "runtime-binding",
       "truncl": "runtime-binding"
     },
+    "setjmp.h": {},
     "stdarg.h": {},
     "stddef.h": {},
     "stdint.h": {},
@@ -1103,7 +1194,7 @@
       "fputs": "runtime-binding",
       "fread": "runtime-binding",
       "freopen": "declaration-only",
-      "fscanf": "declaration-only",
+      "fscanf": "selected-source",
       "fseek": "runtime-binding",
       "fsetpos": "runtime-binding",
       "ftell": "runtime-binding",
@@ -1118,23 +1209,23 @@
       "remove": "runtime-binding",
       "rename": "runtime-binding",
       "rewind": "declaration-only",
-      "scanf": "declaration-only",
+      "scanf": "selected-source",
       "setbuf": "declaration-only",
       "setvbuf": "runtime-binding",
       "snprintf": "selected-source",
       "sprintf": "selected-source",
-      "sscanf": "declaration-only",
+      "sscanf": "selected-source",
       "tmpfile": "declaration-only",
       "tmpnam": "declaration-only",
       "ungetc": "runtime-binding",
       "vasprintf": "selected-source",
       "vfprintf": "selected-source",
-      "vfscanf": "declaration-only",
+      "vfscanf": "selected-source",
       "vprintf": "selected-source",
-      "vscanf": "declaration-only",
+      "vscanf": "selected-source",
       "vsnprintf": "selected-source",
       "vsprintf": "selected-source",
-      "vsscanf": "declaration-only"
+      "vsscanf": "selected-source"
     },
     "stdlib.h": {
       "_Exit": "declaration-only",
@@ -1149,6 +1240,7 @@
       "atoll": "selected-source",
       "bsearch": "selected-source",
       "calloc": "runtime-binding",
+      "clearenv": "declaration-only",
       "div": "selected-source",
       "exit": "declaration-only",
       "free": "runtime-binding",
@@ -1162,11 +1254,13 @@
       "mbstowcs": "selected-source",
       "mbtowc": "selected-source",
       "posix_memalign": "runtime-binding",
+      "putenv": "declaration-only",
       "qsort": "selected-source",
       "qsort_r": "selected-source",
       "quick_exit": "declaration-only",
       "rand": "declaration-only",
       "realloc": "runtime-binding",
+      "setenv": "declaration-only",
       "srand": "declaration-only",
       "strtod": "selected-source",
       "strtod_l": "selected-source",
@@ -1183,6 +1277,7 @@
       "strtoull": "selected-source",
       "strtoull_l": "selected-source",
       "system": "declaration-only",
+      "unsetenv": "declaration-only",
       "wcstombs": "selected-source",
       "wctomb": "runtime-binding"
     },
@@ -1232,7 +1327,8 @@
       "strftime_l": "selected-source",
       "time": "runtime-binding",
       "timegm": "selected-source",
-      "timespec_get": "runtime-binding"
+      "timespec_get": "runtime-binding",
+      "tzset": "declaration-only"
     },
     "uchar.h": {
       "c16rtomb": "selected-source",
@@ -1242,25 +1338,25 @@
     },
     "wchar.h": {
       "btowc": "selected-source",
-      "fgetwc": "declaration-only",
-      "fgetws": "declaration-only",
-      "fputwc": "declaration-only",
-      "fputws": "declaration-only",
-      "fwide": "declaration-only",
+      "fgetwc": "runtime-binding",
+      "fgetws": "runtime-binding",
+      "fputwc": "runtime-binding",
+      "fputws": "runtime-binding",
+      "fwide": "runtime-binding",
       "fwprintf": "declaration-only",
       "fwscanf": "declaration-only",
-      "getwc": "declaration-only",
-      "getwchar": "declaration-only",
+      "getwc": "runtime-binding",
+      "getwchar": "runtime-binding",
       "mbrlen": "selected-source",
       "mbrtowc": "selected-source",
       "mbsinit": "selected-source",
       "mbsnrtowcs": "selected-source",
       "mbsrtowcs": "selected-source",
-      "putwc": "declaration-only",
-      "putwchar": "declaration-only",
+      "putwc": "runtime-binding",
+      "putwchar": "runtime-binding",
       "swprintf": "declaration-only",
       "swscanf": "declaration-only",
-      "ungetwc": "declaration-only",
+      "ungetwc": "runtime-binding",
       "vfwprintf": "declaration-only",
       "vfwscanf": "declaration-only",
       "vswprintf": "declaration-only",
@@ -1490,13 +1586,43 @@
           "qsort.c",
           "qsort_nr.c"
         ]
+      },
+      {
+        "directory": "environment",
+        "translationUnits": [
+          "getenv.c",
+          "setenv.c",
+          "unsetenv.c",
+          "putenv.c",
+          "clearenv.c",
+          "environment_startup.c"
+        ]
+      },
+      {
+        "directory": "scanf",
+        "translationUnits": [
+          "vfscanf.c",
+          "scan_wrappers.c"
+        ]
+      },
+      {
+        "directory": "timezone",
+        "translationUnits": [
+          "__tz.c",
+          "localtime_r.c",
+          "localtime.c",
+          "mktime.c",
+          "ctime_r.c",
+          "ctime.c",
+          "timezone_wrappers.c"
+        ]
       }
     ],
-    "description": "Selected translated musl formatting, numeric, wide/multibyte, UTC calendar and standard utility algorithms with audited BCL services; not complete libc coverage.",
+    "description": "Selected translated musl formatting, scanning, numeric, wide/multibyte, calendar/timezone, environment and standard utility algorithms with audited BCL services; not complete libc coverage.",
     "id": "musl-selected-bcl-lp64-v1",
     "schema": 1
   },
-  "publicBindingCount": 124,
+  "publicBindingCount": 134,
   "schema": 1,
   "scope": "C17 header-category ledger plus explicit POSIX extensions; not an exhaustive POSIX API catalogue; regex declaration census excludes macros, data and compiler facilities",
   "selectedPublicDefinitions": [
@@ -1645,14 +1771,19 @@
     "nl_langinfo",
     "nl_langinfo_l",
     "wcsftime",
-    "wcsftime_l"
+    "wcsftime_l",
+    "scanf",
+    "fscanf",
+    "sscanf",
+    "vscanf",
+    "vfscanf",
+    "vsscanf"
   ],
   "standardHeadersAbsent": [
     "assert.h",
     "complex.h",
     "fenv.h",
     "iso646.h",
-    "setjmp.h",
     "signal.h",
     "stdalign.h",
     "stdatomic.h",

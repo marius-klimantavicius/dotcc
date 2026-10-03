@@ -13,11 +13,14 @@ accepted binary80 profile; NativeAOT acceptance currently uses linux-x64.
 | libc_multibyte_verify | verify_libc_multibyte(root, tests, out, nativeaot, run, translate=True) | 9 |
 | libc_wide_numeric_verify | verify_libc_wide_numeric(root, tests, out, nativeaot, run, translate=True, library_source=None) | 9 |
 | libc_stdlib_algorithms_verify | verify_libc_stdlib_algorithms(root, tests, out, nativeaot, run, translate=True) | 9 |
+| libc_scanf_verify | verify_libc_scanf(root, tests, out, nativeaot, run, translate=True, library_source=None) | 9 |
+| libc_scanf_failure_verify | verify_libc_scanf_failure(root, tests, out, nativeaot, run, library_source=None) | 8 |
 | libc_numeric_verify | verify_libc_numeric(root, tests, out, nativeaot, run, translate=True, library_source=None) | 9 |
 | libc_musl_patch_verify | verify_musl_patches(root, out, components=...) | one per component |
 
-With NativeAOT disabled the first four return five checks: one native plus
+With NativeAOT disabled the native-oracle matrices return five checks: one native plus
 C/C++ × static/instance JIT. `translate=False` returns just the native check.
+The allocation-failure matrix has no native aggregate check and returns four/eight generated checks.
 The standalone CLIs accept `--output-dir`, `--nativeaot` and `--native-only`.
 Both numeric verifiers also accept `--source-dir`. Narrow numeric expects the
 strto directory; wide numeric expects its parent containing strto and
@@ -38,9 +41,18 @@ ReleaseThread. Stdlib verification compares original and adapted algorithms,
 then tests integer aggregates, function addresses, callback context/reentrancy,
 owner separation and C++ exceptions crossing translated sort frames.
 
-The patch verifier currently defaults to wide, multibyte, wide_numeric and
-stdlib_algorithms. An immutable milestone snapshot can pass an explicit list
+The patch verifier currently defaults to wide, multibyte, wide_numeric,
+stdlib_algorithms and scanf. An immutable milestone snapshot can pass an explicit list
 matching the components it actually contains. It checks original/adapted
 hashes, replayed patches, and adapter hashes separately. Provider component
 registration and broad verifier registration are independent of focused proof;
 only report the modules actually invoked by a saved broad run.
+
+## Wide FILE and position ABI
+
+`libc_wide_files_translated_verify.verify_libc_wide_files(root, tests, out,
+nativeaot, run)` supplies one native and eight C/C++ static/instance JIT/AOT
+checks. `libc_fpos_abi_verify.verify_libc_fpos_abi(root, out)` supplies sixteen
+strict malformed/obsolete position ABI rejection checks. Reuse existing
+`verify_libc_files`, `verify_musl_printf` and `verify_libc_scanf` hooks for the
+byte-stream regression; no duplicate suite wrapper is required.

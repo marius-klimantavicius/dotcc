@@ -1,0 +1,105 @@
+--- a/vfscanf.c
++++ b/vfscanf.c
+@@ -7,10 +7,10 @@
+ #include <string.h>
+ #include <stdint.h>
+ 
+-#include "stdio_impl.h"
+-#include "shgetc.h"
+-#include "intscan.h"
+-#include "floatscan.h"
++#include "scan_file.h"
++#include "../strto/scan_string.h"
++#include "../strto/intscan.h"
++#include "../strto/floatscan.h"
+ 
+ #define SIZE_hh -2
+ #define SIZE_h  -1
+@@ -53,7 +53,7 @@
+ 	return p;
+ }
+ 
+-int vfscanf(FILE *restrict f, const char *restrict fmt, va_list ap)
++int __edg_musl_vscan(struct edg_string_scan *restrict f, const char *restrict fmt, va_list ap)
+ {
+ 	int width;
+ 	int size;
+@@ -69,15 +69,11 @@
+ 	int matches=0;
+ 	unsigned long long x;
+ 	long double y;
+-	off_t pos = 0;
++	long pos = 0;
+ 	unsigned char scanset[257];
+ 	size_t i, k;
+ 	wchar_t wc;
+ 
+-	FLOCK(f);
+-
+-	if (!f->rpos) __toread(f);
+-	if (!f->rpos) goto input_fail;
+ 
+ 	for (p=(const unsigned char *)fmt; *p; p++) {
+ 
+@@ -226,41 +222,42 @@
+ 			k = t=='c' ? width+1U : 31;
+ 			if (size == SIZE_l) {
+ 				if (alloc) {
+-					wcs = malloc(k*sizeof(wchar_t));
++					wcs = (wchar_t *)malloc(k*sizeof(wchar_t));
+ 					if (!wcs) goto alloc_fail;
+ 				} else {
+-					wcs = dest;
++					wcs = (wchar_t *)dest;
+ 				}
+ 				st = (mbstate_t){0};
+ 				while (scanset[(c=shgetc(f))+1]) {
+-					switch (mbrtowc(&wc, &(char){c}, 1, &st)) {
+-					case -1:
++					char current = (char)c;
++					switch (mbrtowc(&wc, &current, 1, &st)) {
++					case (size_t)-1:
+ 						goto input_fail;
+-					case -2:
++					case (size_t)-2:
+ 						continue;
+ 					}
+ 					if (wcs) wcs[i++] = wc;
+ 					if (alloc && i==k) {
+ 						k+=k+1;
+-						wchar_t *tmp = realloc(wcs, k*sizeof(wchar_t));
++						wchar_t *tmp = (wchar_t *)realloc(wcs, k*sizeof(wchar_t));
+ 						if (!tmp) goto alloc_fail;
+ 						wcs = tmp;
+ 					}
+ 				}
+ 				if (!mbsinit(&st)) goto input_fail;
+ 			} else if (alloc) {
+-				s = malloc(k);
++				s = (char *)malloc(k);
+ 				if (!s) goto alloc_fail;
+ 				while (scanset[(c=shgetc(f))+1]) {
+ 					s[i++] = c;
+ 					if (i==k) {
+ 						k+=k+1;
+-						char *tmp = realloc(s, k);
++						char *tmp = (char *)realloc(s, k);
+ 						if (!tmp) goto alloc_fail;
+ 						s = tmp;
+ 					}
+ 				}
+-			} else if ((s = dest)) {
++			} else if ((s = (char *)dest)) {
+ 				while (scanset[(c=shgetc(f))+1])
+ 					s[i++] = c;
+ 			} else {
+@@ -332,8 +329,7 @@
+ 			free(wcs);
+ 		}
+ 	}
+-	FUNLOCK(f);
+ 	return matches;
+ }
+ 
+-weak_alias(vfscanf,__isoc99_vfscanf);
++

@@ -230,6 +230,16 @@ def main():
     checks.extend(verify_type_info_fields(ROOT, TESTS, suite_output("type_info_fields"), args.nativeaot, run))
     from void_constants_verify import verify_void_constants
     checks.extend(verify_void_constants(ROOT, TESTS, suite_output("void_constants"), args.nativeaot, run))
+    from extended_float_verify import verify_extended_float
+    checks.extend(verify_extended_float(ROOT, TESTS, suite_output("extended_float"), args.nativeaot, run))
+    from unreachable_builtin_verify import verify_unreachable_builtin
+    checks.extend(verify_unreachable_builtin(ROOT, TESTS, suite_output("unreachable_builtin"), args.nativeaot, run))
+    from class_rvalue_adjust_verify import verify_class_rvalue_adjust
+    checks.extend(verify_class_rvalue_adjust(ROOT, TESTS, suite_output("class_rvalue_adjust"), args.nativeaot, run))
+    from integer_intrinsics_verify import verify_integer_intrinsics
+    checks.extend(verify_integer_intrinsics(ROOT, TESTS, suite_output("integer_intrinsics"), args.nativeaot, run))
+    from setjmp_control_verify import verify_setjmp_control
+    checks.extend(verify_setjmp_control(ROOT, TESTS, suite_output("setjmp_control"), args.nativeaot, run))
     from floating_intrinsics_verify import verify_floating_intrinsics
     checks.extend(verify_floating_intrinsics(ROOT, TESTS, suite_output("floating_intrinsics"), args.nativeaot, run))
     from musl_provider_verify import verify_musl_provider
@@ -268,6 +278,18 @@ def main():
     checks.extend(verify_libc_wide_calendar(ROOT, TESTS, suite_output("libc_wide_calendar"), args.nativeaot, run))
     from libc_stdlib_algorithms_verify import verify_libc_stdlib_algorithms
     checks.extend(verify_libc_stdlib_algorithms(ROOT, TESTS, suite_output("libc_stdlib_algorithms"), args.nativeaot, run))
+    from libc_timezone_verify import verify_libc_timezone
+    checks.extend(verify_libc_timezone(ROOT, TESTS, suite_output("libc_timezone"), args.nativeaot, run))
+    from libc_environment_verify import verify_libc_environment
+    checks.extend(verify_libc_environment(ROOT, TESTS, suite_output("libc_environment"), args.nativeaot, run))
+    from libc_scanf_verify import verify_libc_scanf
+    checks.extend(verify_libc_scanf(ROOT, TESTS, suite_output("libc_scanf"), args.nativeaot, run))
+    from libc_scanf_failure_verify import verify_libc_scanf_failure
+    checks.extend(verify_libc_scanf_failure(ROOT, TESTS, suite_output("libc_scanf_failure"), args.nativeaot, run))
+    from libc_wide_files_translated_verify import verify_libc_wide_files
+    checks.extend(verify_libc_wide_files(ROOT, TESTS, suite_output("libc_wide_files"), args.nativeaot, run))
+    from libc_fpos_abi_verify import verify_libc_fpos_abi
+    checks.extend(verify_libc_fpos_abi(ROOT, suite_output("libc_fpos_abi")))
     from libc_string_builtins_verify import verify_libc_string_builtins
     checks.extend(verify_libc_string_builtins(ROOT, TESTS, suite_output("libc_string_builtins"), args.nativeaot, run))
     from libcxx_atomic_wait_verify import verify_libcxx_atomic_wait
@@ -294,6 +316,10 @@ def main():
         checks.extend(verify_libcxx_dynamic_specs_fatal(ROOT, TESTS, suite_output("libcxx_dynamic_specs_fatal"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_dynamic_specs_lifetime_verify import verify_libcxx_dynamic_specs_lifetime
         checks.extend(verify_libcxx_dynamic_specs_lifetime(ROOT, TESTS, suite_output("libcxx_dynamic_specs_lifetime"), args.nativeaot, run, args.libcxx_acquisition))
+        from libcxx_foreign_exceptions_verify import verify_libcxx_foreign_exceptions
+        checks.extend(verify_libcxx_foreign_exceptions(ROOT, TESTS, suite_output("libcxx_foreign_exceptions"), args.nativeaot, run, args.libcxx_acquisition))
+        from setjmp_cpp_verify import verify_setjmp_cpp
+        checks.extend(verify_setjmp_cpp(ROOT, TESTS, suite_output("setjmp_cpp"), args.nativeaot, run, args.libcxx_acquisition))
     report = {"checks": checks, "nativeaot": args.nativeaot, "rid": "linux-x64",
               "edgRevision": "89e67e07c7f6d0fc38622f9778d8e79f40deaa0f"}
     (out / "results.json").write_text(json.dumps(report, indent=2) + "\n")

@@ -29,6 +29,8 @@ def inventory(root):
         selected += ['strftime','strftime_l','gmtime_r','gmtime','timegm','asctime_r','asctime','nl_langinfo','nl_langinfo_l']
     if any(component['directory']=='wide_calendar' for component in provider['components']):
         selected += ['wcsftime','wcsftime_l']
+    if any(component['directory']=='scanf' for component in provider['components']):
+        selected += ['scanf','fscanf','sscanf','vscanf','vfscanf','vsscanf']
     headers={}
     for path in sorted((runtime/'libc/include').glob('*.h')):
         text=re.sub(r'/\*.*?\*/','',path.read_text(),flags=re.S)

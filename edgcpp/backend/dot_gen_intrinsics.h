@@ -1,3 +1,4 @@
+#include "dot_gen_integer_intrinsics.h"
 // GNU floating classification builtins have special, non-promoted argument
 // lists. Handle them before the ordinary variadic ABI, as c_gen_be preserves
 // these as compiler intrinsics instead of materializing a C va_list.
@@ -27,7 +28,7 @@ string floating_intrinsic_call(an_expr_node_ptr call,a_routine_ptr routine,an_ex
     if(builtin==bfk_fpclassify && count<5) {
       if(ty!="int")unsupported("floating classifier selector ABI");
     } else {
-      int rank=ty=="float"?1:ty=="double"?2:ty=="global::Edg.Runtime.Float80"?3:0;
+      int rank=ty=="global::System.Half"?1:ty=="float"?2:ty=="double"?3:ty=="global::Edg.Runtime.Float80"?4:ty=="global::Edg.Runtime.Float128"?5:0;
       auto operand_type=get_underlying_type(a->type);
       if(!rank && !(expected==2 && (operand_type->kind==tk_integer || operand_type->kind==tk_enum)))
         unsupported("floating builtin operand type");
@@ -43,12 +44,16 @@ string floating_intrinsic_call(an_expr_node_ptr call,a_routine_ptr routine,an_ex
   // floating type, and every operand is still evaluated once by the call.
   string preamble;
   if(expected==2) {
-    string common=floating_rank==3?"global::Edg.Runtime.Float80":floating_rank==2?"double":"float";
+    string common=floating_rank==5?"global::Edg.Runtime.Float128":floating_rank==4?"global::Edg.Runtime.Float80":floating_rank==3?"double":floating_rank==2?"float":"global::System.Half";
     preamble=common+" c0=("+common+")a0,c1=("+common+")a1;";
     for(const string &id:{string("a0"),string("a1")}) {
       std::size_t position=0;
       while((position=body.find(id,position))!=string::npos){body[position]='c';position+=2;}
     }
+  }
+  if(floating_rank==1 || floating_rank==5) {
+    string from="global::Edg.Runtime.LibcFloat",to="global::Edg.Runtime.ExtendedFloat";
+    size_t position=0;while((position=body.find(from,position))!=string::npos){body.replace(position,from.size(),to);position+=to.size();}
   }
   auto found=assignment_helpers.find(key);string id;
   if(found!=assignment_helpers.end())id=found->second;
@@ -68,9 +73,22 @@ string intrinsic_call(an_expr_node_ptr call) {
   auto routine=routine_expression->variant.routine.ptr;
   if(!special_kind_is(routine,sfk_none))return "";
   auto first=routine_expression->next;
+  string integer=integer_intrinsic_call(call,routine,first);
+  if(!integer.empty())return integer;
   string floating=floating_intrinsic_call(call,routine,first);
   if(!floating.empty())return floating;
   switch(routine->variant.builtin_function_kind) {
+    case bfk_unreachable: {
+      // c_gen_be preserves this intrinsic for the native C compiler. Reaching
+      // it is undefined; use a non-returning managed boundary, not a C++ throw.
+      if(first || skip_typerefs(call->type)->kind!=tk_void)unsupported("unreachable builtin arguments");
+      string key="intrinsic:unreachable";
+      if(!assignment_helpers.count(key)) {
+        assignment_helpers[key]="__edg_unreachable";
+        helper_output+="// dot-gen:member-begin\n[global::System.Diagnostics.CodeAnalysis.DoesNotReturn]\nprivate static void __edg_unreachable() {global::System.Environment.FailFast(\"Reached __builtin_unreachable\");}\n// dot-gen:member-end\n";
+      }
+      return "__edg_unreachable()";
+    }
     case bfk_constant_p:
       // expr.c folds proven constants. A surviving function-scope query is
       // optimization-dependent (the C backend delegates it to GCC). Choosing

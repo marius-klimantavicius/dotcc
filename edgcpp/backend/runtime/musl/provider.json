@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "id": "musl-selected-bcl-lp64-v1",
-  "description": "Selected translated musl formatting, numeric, wide/multibyte, UTC calendar and standard utility algorithms with audited BCL services; not complete libc coverage.",
+  "description": "Selected translated musl formatting, scanning, numeric, wide/multibyte, calendar/timezone, environment and standard utility algorithms with audited BCL services; not complete libc coverage.",
   "components": [
     {
       "directory": "printf",
@@ -138,6 +138,36 @@
         "bsearch.c",
         "qsort.c",
         "qsort_nr.c"
+      ]
+    },
+    {
+      "directory": "environment",
+      "translationUnits": [
+        "getenv.c",
+        "setenv.c",
+        "unsetenv.c",
+        "putenv.c",
+        "clearenv.c",
+        "environment_startup.c"
+      ]
+    },
+    {
+      "directory": "scanf",
+      "translationUnits": [
+        "vfscanf.c",
+        "scan_wrappers.c"
+      ]
+    },
+    {
+      "directory": "timezone",
+      "translationUnits": [
+        "__tz.c",
+        "localtime_r.c",
+        "localtime.c",
+        "mktime.c",
+        "ctime_r.c",
+        "ctime.c",
+        "timezone_wrappers.c"
       ]
     }
   ]

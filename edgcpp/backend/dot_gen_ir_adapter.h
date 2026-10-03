@@ -19,7 +19,9 @@ dot_ir::TypeId own_type(a_type_ptr source) {
     case tk_void:result.kind="void";break;
     case tk_integer:result.kind=int_type_is_signed(t)?"signed-integer":"unsigned-integer";break;
     case tk_float:
-      result.kind=t->variant.float_kind==fk_float?"binary32":t->variant.float_kind==fk_double?"binary64":
+      result.kind=(t->variant.float_kind==fk_float128 || t->variant.float_kind==fk_std_float128)?"binary128":
+          (t->variant.float_kind==fk_float16 || t->variant.float_kind==fk_fp16 || t->variant.float_kind==fk_std_float16)?"binary16":
+          t->variant.float_kind==fk_float?"binary32":t->variant.float_kind==fk_double?"binary64":
           (t->variant.float_kind==fk_long_double || t->variant.float_kind==fk_float80)?"binary80":"extended-float";
       break;
     case tk_pointer:result.kind="pointer";result.element=own_type(t->variant.pointer.type);break;

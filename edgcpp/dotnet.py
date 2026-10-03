@@ -14,13 +14,51 @@ import time
 
 ROOT = Path(__file__).resolve().parent
 RUNTIME_DEPENDENCIES = {
+    "LibcTimezone": ("LibcTimezoneData",), "LibcTimezoneData": (),
+    "NonlocalJump": (),
+    "ExtendedFloat": ("Float128", "LibcFloat"),
+    "Float128": ("Float128Conversions",), "Float128Conversions": ("Float80",),
     "Float80": (), "LibcContext": (), "AtomicOps": (), "VaList": (),
-    "LibcFiles": ("LibcAppend", "LibcPaths"), "LibcAppend": (), "LibcPaths": (),
+    "LibcFiles": ("LibcAppend", "LibcPaths", "LibcFilesWide"), "LibcFilesWide": (), "LibcAppend": (), "LibcPaths": (),
     "LibcFilesFormat": ("LibcFiles", "VaList"),
+    "LibcFilesScan": ("LibcFiles", "VaList"), "LibcEnvironment": (),
     "LibcText": ("LibcErrorMessages", "LibcLocale"), "LibcErrorMessages": (), "LibcLocale": (),
     "LibcClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
     "LibcxxThreads": (), "LibcCalendar": (), "LibcProcess": (),
 }
+
+def content_bytes(value):
+    return value.encode("utf-8") if isinstance(value, str) else value
+
+
+def runtime_assets(files, helpers):
+    """Copy only selected, hashed deployment assets into the generated project."""
+    if "LibcTimezoneData" not in helpers:
+        return {}, ""
+    directory = ROOT / "backend/runtime/tzdb"
+    bundle = (directory / "tzdb.bin").read_bytes()
+    source = (directory / "source.json").read_bytes()
+    metadata_bytes = (directory / "bundle.json").read_bytes()
+    metadata = json.loads(metadata_bytes)
+    if hashlib.sha256(bundle).hexdigest() != metadata["bundleSha256"]:
+        raise ValueError("timezone bundle hash mismatch")
+    if hashlib.sha256(source).hexdigest() != metadata["sourceManifestSha256"]:
+        raise ValueError("timezone source manifest hash mismatch")
+    if json.loads(source)["version"] != metadata["version"]:
+        raise ValueError("timezone source and bundle versions differ")
+    if len(bundle) != metadata["bundleBytes"]:
+        raise ValueError("timezone bundle length mismatch")
+    assets = {
+        "Runtime.Tzdb.bin": bundle,
+        "Runtime.Tzdb.source.json": source,
+        "Runtime.Tzdb.bundle.json": metadata_bytes,
+        "Runtime.Tzdb.LICENSE.txt": (directory / "LICENSE").read_bytes(),
+    }
+    files.update(assets)
+    manifest = {name: {"sha256": hashlib.sha256(value).hexdigest(), "bytes": len(value)}
+                for name, value in assets.items()}
+    manifest["Runtime.Tzdb.bin"].update(version=metadata["version"], logicalName="Edg.Runtime.Tzdb.bin")
+    return manifest, '    <EmbeddedResource Include="Runtime.Tzdb.bin" LogicalName="Edg.Runtime.Tzdb.bin" />'
 
 
 def identifier(value):
@@ -183,6 +221,8 @@ def main():
     runtime_helpers={name for name in RUNTIME_DEPENDENCIES if f"global::Edg.Runtime.{name}" in source}
     if "__edg_with_file_lock" in imports:
         runtime_helpers.add("LibcFilesFormat")
+    if "__edg_with_file_read_lock" in imports:
+        runtime_helpers.add("LibcFilesScan")
     pending=list(runtime_helpers)
     while pending:
         for dependency in RUNTIME_DEPENDENCIES[pending.pop()]:
@@ -190,6 +230,7 @@ def main():
                 runtime_helpers.add(dependency);pending.append(dependency)
     for helper in sorted(runtime_helpers):
         files[f"Runtime.{helper}.cs"] = (ROOT / f"backend/runtime/{helper}.cs").read_text()
+    asset_manifest, resource_items = runtime_assets(files, runtime_helpers)
     compile_items = "\n".join(f'    <Compile Include="{filename}" />' for filename in files if filename.endswith(".cs"))
     files["Generated.csproj"] = '''<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
@@ -203,15 +244,16 @@ def main():
   </PropertyGroup>
   <ItemGroup>
 COMPILE_ITEMS
+RESOURCE_ITEMS
   </ItemGroup>
 </Project>
-'''.replace("COMPILE_ITEMS", compile_items).replace("OUTPUT_TYPE", "Exe" if args.emit == "exe" else "Library")
+'''.replace("COMPILE_ITEMS", compile_items).replace("RESOURCE_ITEMS", resource_items).replace("OUTPUT_TYPE", "Exe" if args.emit == "exe" else "Library")
     out = args.output_dir.resolve()
     manifest = out / "dot-gen.json"
     owned = set()
     if manifest.exists():
         owned = set(json.loads(manifest.read_text())["files"])
-        allowed={"Translated.cs", "EntryPoint.cs", "Generated.csproj", "dot-gen.types.json"} | {f"Runtime.{name}.cs" for name in RUNTIME_DEPENDENCIES}
+        allowed={"Translated.cs", "EntryPoint.cs", "Generated.csproj", "dot-gen.types.json", "Runtime.Tzdb.bin", "Runtime.Tzdb.source.json", "Runtime.Tzdb.bundle.json", "Runtime.Tzdb.LICENSE.txt"} | {f"Runtime.{name}.cs" for name in RUNTIME_DEPENDENCIES}
         if any(name not in allowed and
                not re.fullmatch(r"Translated\.part[0-9]{5,}\.cs", name) for name in owned):
             parser.error("invalid generated-file ownership manifest")
@@ -223,6 +265,7 @@ COMPILE_ITEMS
         "schema": 1, "abi": "experimental-runtime-v3", "cleanupModel": "edg-region-tables", "source": str(sources[0]) if len(sources)==1 else None,
         "sources": [{"path": str(p), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in sources],
         "runtimeSources": [{"path": str(p), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in runtime_sources],
+        "runtimeAssets": asset_manifest,
         "runtimeHelpers": {name: hashlib.sha256(files[f"Runtime.{name}.cs"].encode()).hexdigest() for name in sorted(runtime_helpers)},
         "namespace": args.namespace, "class": args.class_name,
         "instanceMethods": args.instance_methods, "files": sorted(files),
@@ -231,8 +274,12 @@ COMPILE_ITEMS
         "language": args.language, "standard": standard, "includeDirectories": [str(p.resolve()) for p in args.include],
         "defines": args.define, "lifecycle": "explicit-shutdown-release-thread" if "void Shutdown()" in source else "process",
         "longDouble": "software-binary80" if "global::Edg.Runtime.Float80" in source else None,
+        "extendedFloating": {"binary128": "software-ieee-v1" if "global::Edg.Runtime.Float128" in source else None,
+                             "binary16": "system-half-v1" if "global::System.Half" in source else None},
+        "nonlocalJump": {"version": 1, "bufferSize": 16, "bufferAlignment": 8, "continuation": "activation-site-dispatch"} if "NonlocalJump" in runtime_helpers else None,
         "varargs": "portable-typed-pack-v1" if "global::Edg.Runtime.VaList" in source else None,
         "emit": args.emit, "runtime": args.runtime, "nestTypes": args.nest_types, "exports": exports,
+        "filePositionABI": {"version": 2, "size": 16, "alignment": 8, "fields": {"offset": "i64@0", "state": "u32@8", "value": "u32@12"}} if "LibcFiles" in runtime_helpers else None,
         "libc": args.libc, "libcProvider": libc_provider, "imports": imports,
         "target": target_manifest,
         "termination": "owner-v1" if termination else None,
@@ -242,15 +289,15 @@ COMPILE_ITEMS
     # Historical files are outside the explicit project Compile item list.
     changed = {name for name in owned | {"dot-gen.json"}
                if (out / name).is_file() and
-               (name not in files or (out / name).read_text() != files[name])}
+               (name not in files or (out / name).read_bytes() != content_bytes(files[name]))}
     if changed:
         history = out / ".dot-gen-history" / str(time.time_ns())
         history.mkdir(parents=True)
         for name in sorted(changed):
             shutil.copy2(out / name, history / name)
     for filename, content in files.items():
-        with tempfile.NamedTemporaryFile(mode="w", dir=out, delete=False) as tmp:
-            tmp.write(content)
+        with tempfile.NamedTemporaryFile(mode="wb", dir=out, delete=False) as tmp:
+            tmp.write(content_bytes(content))
         os.replace(tmp.name, out / filename)
     for filename in owned - files.keys():
         # The previous revision has been retained in .dot-gen-history above.

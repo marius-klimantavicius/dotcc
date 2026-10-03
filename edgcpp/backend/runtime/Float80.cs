@@ -101,6 +101,7 @@ public readonly struct Float80 : IEquatable<Float80> {
         return Pack(exp==0?fraction:fraction|(1UL<<52),Math.Max(exp,1)-1023-52,sign);
     }
     public static implicit operator Float80(float value)=>(Float80)(double)value;
+    public static implicit operator Float80(Half value)=>(Float80)(double)value;
     private ulong BinaryBits(int precision,int min,int max,int bias,int exponentBits) {
         ulong sign=Negative?1UL<<(precision-1+exponentBits):0;
         ulong infinity=((1UL<<exponentBits)-1)<<(precision-1);
@@ -117,6 +118,7 @@ public readonly struct Float80 : IEquatable<Float80> {
         return sign|((ulong)exp<<(precision-1))|((ulong)mantissa&((1UL<<(precision-1))-1));
     }
     public static explicit operator double(Float80 value)=>BitConverter.Int64BitsToDouble((long)value.BinaryBits(53,-1022,1023,1023,11));
+    public static explicit operator Half(Float80 value)=>BitConverter.UInt16BitsToHalf((ushort)value.BinaryBits(11,-14,15,15,5));
     public static explicit operator float(Float80 value)=>BitConverter.Int32BitsToSingle((int)value.BinaryBits(24,-126,127,127,8));
     private BigInteger Integer(){BigInteger n=Power>=0?(BigInteger)Significand<<Power:(BigInteger)Significand>>-Power;return Negative?-n:n;}
     public static explicit operator long(Float80 value)=>(long)value.Integer();

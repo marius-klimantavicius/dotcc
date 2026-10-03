@@ -1,0 +1,24 @@
+{
+  "version": "2026e",
+  "releasePage": "https://www.iana.org/time-zones/releases/2026e",
+  "archives": [
+    {
+      "file": "tzdata2026e.tar.gz",
+      "url": "https://data.iana.org/time-zones/releases/tzdata2026e.tar.gz",
+      "sha256": "b26882805f26aac59d5b222978e6580484b834ccdc98be89df2f05a6dc53a652"
+    },
+    {
+      "file": "tzcode2026e.tar.gz",
+      "url": "https://data.iana.org/time-zones/releases/tzcode2026e.tar.gz",
+      "sha256": "cc3d27ca2a0d8399504551b920970d80af83bfb9c216e8082a15491921935d54"
+    }
+  ],
+  "configuration": {
+    "DATAFORM": "main",
+    "BACKWARD": "backward",
+    "PACKRATDATA": "",
+    "PACKRATLIST": "",
+    "leapSeconds": false,
+    "zicBloat": "fat"
+  }
+}

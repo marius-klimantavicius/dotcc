@@ -1,0 +1,33 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "vfscanf.c": {
+      "upstream": "src/stdio/vfscanf.c",
+      "originalSha256": "d4940fce26d88baa8d0c0f84fb68230c93323f518d0153f0dd293b5c78113b0c",
+      "adaptedSha256": "29f524416a78c20985da2ce40dc0033c84f5de53d6c5be7858157c51e3f5008d"
+    }
+  },
+  "adapters": {
+    "scan_file.h": "9e4218f574a1721f92358ba3657fc451f9346543dc4353d21bbcc38e5a4046c8",
+    "scan_wrappers.c": "c740c527d207278e81fd2d47317cbda38d5993d2ce9ab60ea733e27da58b5bf9"
+  },
+  "referenceOnly": {
+    "shgetc.c": {
+      "upstream": "src/internal/shgetc.c",
+      "sha256": "0b076498bc7e64f0756692f431bf5d39ea3964a175b9eba4ce6cfe23d4c76dd2"
+    },
+    "shgetc.h": {
+      "upstream": "src/internal/shgetc.h",
+      "sha256": "8bf68f99a81d25c7a7b17b3f862498c94e5dbd6d2daa2a94765ef7a5d950563d"
+    },
+    "intscan.h": {
+      "upstream": "src/internal/intscan.h",
+      "sha256": "0fda860250bd54a01384bb693be886e5f64fe01316d2be8e21b4db72244220f9"
+    },
+    "floatscan.h": {
+      "upstream": "src/internal/floatscan.h",
+      "sha256": "84b09ffb83d5bf7d0751f8cf21b7a1ab241576057b275339807b6a3af0f07f6b"
+    }
+  }
+}

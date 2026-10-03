@@ -267,3 +267,49 @@ The sixth focused evidence index records 245 checks, including targeted
 regressions; it is not a new complete-suite run. Exact staged inputs are saved
 in `evidence/milestone-calendar-termination.json`. Environment/scanf work stays
 outside this increment.
+
+## Seventh increment in progress: environment, scanning and nonlocal control
+
+Commit `d7083852a` records the sixth increment above (245 focused checks,
+237 files). Subsequent source-backed environment and scanf components bring
+automatic musl packaging to 105 translation units. The environment snapshot
+runs at implementation startup priority0, before user constructors, and mutations
+stay owner-local. Scanner acceptance retains original musl parsing, typed
+variadic cursors, shared numeric lookahead and managed FILE locking. Independent
+packaging matrices pass eight checks each for environment103 and scanner105.
+
+Binary128 and binary16 basic language operations pass ten native/JIT/AOT checks
+at `artifacts/campaign/extended-float-translated-001/results.json`. Software
+quadruple arithmetic reuses audited dotcc code with direct destination rounding
+and exact integer/binary80 adapters; BigInteger allocation/performance and full
+floating-environment semantics remain pending. Foreign CLR boundaries pass
+20 focused checks without backend changes.
+
+Source setjmp ABI v1 (16-byte buffer) now passes 14 control-flow checks and six
+C++ boundary checks, including static/instance JIT/AOT; activation dispatch skips
+translated C++ catches, noexcept and dynamic-specification handling while CLR
+finally blocks balance host resources. Target functions containing protected
+regions or VLA allocation remain excluded in this first accepted slice. A
+32-byte VLA checkpoint candidate is held for the next increment.
+Wide FILE orientation, captured encoding and version2 16-byte fpos storage now
+pass nine generated/native checks and sixteen strict ABI rejection checks;
+byte FILE, formatter and scanner regressions also pass. Wscanf remains a
+separate candidate. All intermediates
+remain retained; no application-level acceptance has run.
+
+
+Timezone integration now has nine component checks at
+`artifacts/campaign/libc-timezone-translated-003/results.json`, plus standalone
+runtime, exact patch replay and reproducible pinned IANA2026e bundle evidence.
+The musl algorithms retain integer full-range civil/DST/POSIX-rule behavior;
+BCL discovers default identifiers and reads explicit paths. Automatic packaging
+now includes112 translation units and passes all eight packaging JIT/AOT checks
+at `artifacts/campaign/musl-provider-timezone-001/results.json`.
+Unmappable custom OS timezone defaults remain an explicit portability boundary.
+
+The C backend requires `LOWER_CLASS_RVALUE_ADJUST=1`. Enabling that same
+supported configuration materializes qualifier-adjusted class rvalues before
+our emitter, addressing const aggregate copies and constexpr class arrays
+observed in the synthetic libc++ chrono source closure. No EDG semantic source
+was changed; five focused native/generated JIT/AOT checks pass at
+`artifacts/campaign/class-rvalue-adjust-translated-001/results.json`.

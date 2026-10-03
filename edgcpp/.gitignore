@@ -32,3 +32,8 @@ __pycache__/
 /upstream/src/libc-process-bindings.def
 /upstream/src/dot_gen_storage_types.h
 /upstream/src/dot_gen_unexpected.h
+/upstream/src/libc-environment-bindings.def
+/upstream/src/dot_gen_setjmp.h
+/upstream/src/libc-wide-files-bindings.def
+/upstream/src/libc-timezone-bindings.def
+/upstream/src/dot_gen_integer_intrinsics.h

@@ -252,9 +252,11 @@ string type(a_type_ptr t) {
     return type(t->variant.pointer.type) + "*";
   }
   if(t->kind==tk_float) {
-    if(t->variant.float_kind==fk_float && t->size==4)return "float";
-    if(t->variant.float_kind==fk_double && t->size==8)return "double";
-    if((t->variant.float_kind==fk_long_double || t->variant.float_kind==fk_float80) && t->size==16)
+    if((t->variant.float_kind==fk_float || t->variant.float_kind==fk_std_float32) && t->size==4)return "float";
+    if((t->variant.float_kind==fk_float16 || t->variant.float_kind==fk_fp16 || t->variant.float_kind==fk_std_float16) && t->size==2)return "global::System.Half";
+    if((t->variant.float_kind==fk_float128 || t->variant.float_kind==fk_std_float128) && t->size==16)return "global::Edg.Runtime.Float128";
+    if((t->variant.float_kind==fk_double || t->variant.float_kind==fk_float32x || t->variant.float_kind==fk_std_float64) && t->size==8)return "double";
+    if((t->variant.float_kind==fk_long_double || t->variant.float_kind==fk_float80 || t->variant.float_kind==fk_float64x) && t->size==16)
       return "global::Edg.Runtime.Float80";
     unsupported("extended floating representation");
   }
@@ -404,6 +406,11 @@ string constant(a_constant_ptr c) {
     auto t=skip_typerefs(c->type);
     string bits=fp_to_hex_string(t->variant.float_kind,&c->variant.float_value).as_temp_characters();
     string ty=type(t);
+    if(ty=="global::Edg.Runtime.Float128") {
+      if(bits.size()!=32)unsupported("binary128 constant encoding");
+      return "global::Edg.Runtime.Float128.FromBits(((global::System.UInt128)0x"+bits.substr(0,16)+"UL<<64)|0x"+bits.substr(16)+"UL)";
+    }
+    if(ty=="global::System.Half")return "global::System.BitConverter.UInt16BitsToHalf(0x"+bits+")";
     if(ty=="global::Edg.Runtime.Float80") {
       if(bits.size()<20 || (bits.size()>20 && bits.substr(0,bits.size()-20).find_first_not_of('0')!=string::npos))
         unsupported("binary80 constant encoding");
@@ -523,9 +530,11 @@ bool selected_runtime_branch(a_statement_ptr s,a_statement_ptr &branch) {
     default:return false;
   }
 }
+string source_jump_exclusion(const string &error);
 #include "dot_gen_arrays.h"
 #include "dot_gen_vla.h"
 #include "dot_gen_cleanup.h"
+#include "dot_gen_setjmp.h"
 #include "dot_gen_terminate.h"
 #include "dot_gen_exceptions.h"
 #include "dot_gen_lifecycle.h"
@@ -550,6 +559,7 @@ string convert(a_type_ptr t, string value) {
 }
 string arithmetic_type(a_type_ptr a,a_type_ptr b) {
   a=skip_typerefs(a);b=skip_typerefs(b);
+  if((a->kind==tk_float && type(a)=="global::Edg.Runtime.Float128") || (b->kind==tk_float && type(b)=="global::Edg.Runtime.Float128"))return "global::Edg.Runtime.Float128";
   if((a->kind==tk_float && a->size==16)||(b->kind==tk_float && b->size==16))return "global::Edg.Runtime.Float80";
   if(a->kind==tk_float || b->kind==tk_float)
     return (type(a)=="double" || type(b)=="double")?"double":"float";
@@ -584,6 +594,8 @@ string bitfield_mutation(an_expr_node_ptr e,an_expr_node_ptr rhs,const string &o
 string location(an_expr_node_ptr e) {
   if (!e) unsupported("null expression");
   diagnostic_scope diagnostic(e->position);
+  string jump=source_jump_expression(e);
+  if(!jump.empty())return jump;
   string materialized=materialized_location(e);
   if(!materialized.empty())return materialized;
   string metadata=typeinfo_expression(e);
@@ -1008,6 +1020,7 @@ void statement(a_statement_ptr s) {
     case stmk_decl: break; // Declarations are hoisted; stmk_init retains execution order.
     case stmk_empty: line(";"); break;
     case stmk_expr:
+      output+=source_jump_prefix(s->expr);
       if (s->expr && s->expr->kind == enk_lowered_eh_construct) {
         auto &eh = s->expr->variant.lowered_eh;
         switch (eh.kind) {
@@ -1080,14 +1093,17 @@ void statement(a_statement_ptr s) {
     }
     case stmk_if: {
       string id=name(s,"__edg_if");
+      output+=source_jump_prefix(s->expr);
       line("if (!"+condition(s->expr)+") goto "+id+"_else;");
       statement(s->variant.if_stmt.then_statement);line("goto "+id+"_end;");
       line(id+"_else: ;");statement(s->variant.if_stmt.else_statement);line(id+"_end: ;");break;
     }
     case stmk_while: case stmk_end_test_while: {
       string id=name(s,"__edg_loop");line(id+"_head: ;");
+      if(s->kind==stmk_while)output+=source_jump_prefix(s->expr);
       if(s->kind==stmk_while)line("if (!"+condition(s->expr)+") goto "+id+"_end;");
       statement(s->variant.loop_statement);
+      if(s->kind==stmk_end_test_while)output+=source_jump_prefix(s->expr);
       line(s->kind==stmk_while?"goto "+id+"_head;":"if "+condition(s->expr)+" goto "+id+"_head;");
       if(s->kind==stmk_while)line(id+"_end: ;");
       break;
@@ -1096,12 +1112,14 @@ void statement(a_statement_ptr s) {
       auto f = s->variant.for_loop.extra_info;
       statement(f->initialization);
       string id=name(s,"__edg_for");line(id+"_head: ;");
+      output+=source_jump_prefix(s->expr);
       if(s->expr)line("if (!"+condition(s->expr)+") goto "+id+"_end;");
       statement(s->variant.for_loop.statement);line(expression_effect(f->increment));
       line("goto "+id+"_head;");if(s->expr)line(id+"_end: ;");break;
     }
     case stmk_switch: {
       string id=name(s,"__edg_switch");
+      output+=source_jump_prefix(s->expr);
       line(type(s->expr->type)+" "+id+"_value = "+expr(s->expr)+";");
       auto descr=s->variant.switch_stmt.extra_info;
       for(auto c=descr->cases;c;c=c->next) {
@@ -1146,7 +1164,8 @@ void statement(a_statement_ptr s) {
 
 // EDG's custom-backend entry point intentionally has global namespace linkage.
 void back_end(void) {
-  reset_owned_ir();owned_ir_enabled=getenv("EDG_DOT_TYPE_IR") && string(getenv("EDG_DOT_TYPE_IR"))=="1";
+  reset_owned_ir();
+  source_jumps_used=false;owned_ir_enabled=getenv("EDG_DOT_TYPE_IR") && string(getenv("EDG_DOT_TYPE_IR"))=="1";
   storage_record_ids.clear();array_storage_types.clear();
   diagnostic_position={};
   names.clear(); global_offsets.clear(); tls_offsets.clear(); assignment_helpers.clear();
@@ -1180,6 +1199,10 @@ void back_end(void) {
   // Exception metadata visits aggregate types before ordinary emission.
   nested_types = !getenv("EDG_DOT_NEST") || string(getenv("EDG_DOT_NEST")) == "1";
   if (getenv("EDG_DOT_TRACE")) trace_program(scope);
+  for(auto r=scope->routines;r;r=r->next) {
+    if(!routine_body_needed(r) || r->function_def_number==NULL_function_def_number)continue;
+    auto body=scope_for_routine_or_null(r);if(body)collect_source_jump_statements(body->assoc_block,false);
+  }
   collect_virtual_metadata(scope);
   collect_primary_exception_types();
   for(auto r=scope->routines;r;r=r->next) {
@@ -1223,6 +1246,7 @@ void back_end(void) {
     function_vla_used=false;
     try_frames.clear(); exception_locals.clear();
     prepare_cleanup(s);
+    prepare_source_jumps(s->assoc_block);
     check_operand_order(s->assoc_block);
     if (r->source_corresp.name && string(r->source_corresp.name) == "main") { main_routine = r; if(main_arguments(r))ensure_lifecycle(); }
     auto rt = skip_typerefs(r->type);
@@ -1267,7 +1291,9 @@ void back_end(void) {
     for(auto p=params;p;p=p->next)if(local_offsets.count(p))line(variable(p)+" = "+name(p,"v")+";");
     locals(s);
     size_t body_start = output.size();
+    output+=source_jump_dispatch_prefix();
     statement(s->assoc_block);
+    output+=source_jump_dispatch_suffix();
     if (cleanup_cursor_used) {
       emit_cleanup_helper();
       output.insert(body_start, exception_locals+"int __edg_cleanup_state = 0;\nbool __edg_unwinding = false;\ntry {\n");
@@ -1280,7 +1306,7 @@ void back_end(void) {
       line("} finally { global::Edg.Runtime.Vla.Restore(__edg_vla_mark); }");
     }
     if (heap_frame) line("} finally { global::System.Runtime.InteropServices.NativeMemory.Free(__edg_frame_raw); }");
-    if (no_throw) line("} catch (global::System.Exception error) { __edg_terminate_runtime(error, \"Exception escaped noexcept function\"); throw; }");
+    if (no_throw) line("} catch (global::System.Exception error) when ("+source_jump_exclusion("error")+") { __edg_terminate_runtime(error, \"Exception escaped noexcept function\"); throw; }");
     else if(dynamic_spec)line(dynamic_exception_boundary(r));
     line("}");
     line("// dot-gen:member-end");

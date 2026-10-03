@@ -72,7 +72,7 @@ extern "C" FILE **stdio_global_address() {return &stdout;}
 extern "C" int stdio_globals_distinct() {return stdin && stdout && stderr && stdin!=stdout && stdout!=stderr;}
 extern "C" int file_positions(const char *path) {
   FILE *file=fopen(path,"w+b");if(!file)return 0;
-  fpos_t start=0;int good=fgetpos(file,&start)==0 && fputs("abc",file)>=0;
+  fpos_t start={0};int good=fgetpos(file,&start)==0 && fputs("abc",file)>=0;
   good=good && fsetpos(file,&start)==0 && fgetc(file)=='a';
   return fclose(file)==0 && good;
 }

@@ -1,0 +1,108 @@
+--- a/getenv.c
++++ b/getenv.c
+@@ -1,6 +1,6 @@
++#include "environment_compat.h"
+ #include <stdlib.h>
+ #include <string.h>
+-#include <unistd.h>
+ 
+ char *getenv(const char *name)
+ {
+--- a/setenv.c
++++ b/setenv.c
+@@ -1,24 +1,25 @@
++#include "environment_compat.h"
+ #include <stdlib.h>
+ #include <string.h>
+ #include <errno.h>
+ 
+-void __env_rm_add(char *old, char *new)
++void __env_rm_add(char *old, char *replacement)
+ {
+ 	static char **env_alloced;
+ 	static size_t env_alloced_n;
+ 	for (size_t i=0; i < env_alloced_n; i++)
+ 		if (env_alloced[i] == old) {
+-			env_alloced[i] = new;
++			env_alloced[i] = replacement;
+ 			free(old);
+ 			return;
+-		} else if (!env_alloced[i] && new) {
+-			env_alloced[i] = new;
+-			new = 0;
++		} else if (!env_alloced[i] && replacement) {
++			env_alloced[i] = replacement;
++			replacement = 0;
+ 		}
+-	if (!new) return;
+-	char **t = realloc(env_alloced, sizeof *t * (env_alloced_n+1));
++	if (!replacement) return;
++	char **t = (char **)realloc(env_alloced, sizeof *t * (env_alloced_n+1));
+ 	if (!t) return;
+-	(env_alloced = t)[env_alloced_n++] = new;
++	(env_alloced = t)[env_alloced_n++] = replacement;
+ }
+ 
+ int setenv(const char *var, const char *value, int overwrite)
+@@ -33,7 +34,7 @@
+ 	if (!overwrite && getenv(var)) return 0;
+ 
+ 	l2 = strlen(value);
+-	s = malloc(l1+l2+2);
++	s = (char *)malloc(l1+l2+2);
+ 	if (!s) return -1;
+ 	memcpy(s, var, l1);
+ 	s[l1] = '=';
+--- a/unsetenv.c
++++ b/unsetenv.c
+@@ -1,10 +1,8 @@
++#include "environment_compat.h"
+ #include <stdlib.h>
+ #include <string.h>
+ #include <errno.h>
+-#include <unistd.h>
+ 
+-static void dummy(char *old, char *new) {}
+-weak_alias(dummy, __env_rm_add);
+ 
+ int unsetenv(const char *name)
+ {
+--- a/putenv.c
++++ b/putenv.c
+@@ -1,9 +1,7 @@
++#include "environment_compat.h"
+ #include <stdlib.h>
+ #include <string.h>
+-#include <unistd.h>
+ 
+-static void dummy(char *old, char *new) {}
+-weak_alias(dummy, __env_rm_add);
+ 
+ int __putenv(char *s, size_t l, char *r)
+ {
+@@ -20,10 +18,10 @@
+ 	static char **oldenv;
+ 	char **newenv;
+ 	if (__environ == oldenv) {
+-		newenv = realloc(oldenv, sizeof *newenv * (i+2));
++		newenv = (char **)realloc(oldenv, sizeof *newenv * (i+2));
+ 		if (!newenv) goto oom;
+ 	} else {
+-		newenv = malloc(sizeof *newenv * (i+2));
++		newenv = (char **)malloc(sizeof *newenv * (i+2));
+ 		if (!newenv) goto oom;
+ 		if (i) memcpy(newenv, __environ, sizeof *newenv * i);
+ 		free(oldenv);
+--- a/clearenv.c
++++ b/clearenv.c
+@@ -1,9 +1,7 @@
++#include "environment_compat.h"
+ #define _GNU_SOURCE
+ #include <stdlib.h>
+-#include <unistd.h>
+ 
+-static void dummy(char *old, char *new) {}
+-weak_alias(dummy, __env_rm_add);
+ 
+ int clearenv()
+ {

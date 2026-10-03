@@ -6,7 +6,7 @@ from pathlib import Path
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output-dir',type=Path,required=True);parser.add_argument('--nativeaot',action='store_true');args=parser.parse_args()
     root=Path(__file__).resolve().parents[2];out=args.output_dir.resolve();out.mkdir(parents=True,exist_ok=False)
-    for name in ['LibcFiles.cs','LibcFilesFormat.cs','LibcAppend.cs','LibcPaths.cs','VaList.cs']:shutil.copy2(root/'backend/runtime'/name,out/name)
+    for name in ['LibcFiles.cs','LibcFilesWide.cs','LibcFilesFormat.cs','LibcAppend.cs','LibcPaths.cs','VaList.cs']:shutil.copy2(root/'backend/runtime'/name,out/name)
     # During the campaign freeze the active class remains unchanged. Apply only
     # this mechanical declaration change to the preserved isolated prototype.
     source=out/'LibcFiles.cs';s=source.read_text().replace('public sealed unsafe class LibcFiles','public sealed unsafe partial class LibcFiles');source.write_text(s)

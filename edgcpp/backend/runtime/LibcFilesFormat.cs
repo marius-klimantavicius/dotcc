@@ -14,7 +14,7 @@ public sealed unsafe partial class LibcFiles
         var entry=Find(file);if(entry is null)return Eof;
         lock(entry.Gate)
         {
-            if(!PrepareWrite(entry))return Eof;
+            if(!Orient(entry,-1) || !PrepareWrite(entry))return Eof;
             return formatter(context,format,arguments);
         }
     }
@@ -26,7 +26,7 @@ public sealed unsafe partial class LibcFiles
         var entry=Find(file);if(entry is null)return Eof;
         lock(entry.Gate)
         {
-            if(!PrepareWrite(entry))return Eof;
+            if(!Orient(entry,-1) || !PrepareWrite(entry))return Eof;
             return formatter(owner,context,format,arguments);
         }
     }

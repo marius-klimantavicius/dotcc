@@ -1,8 +1,10 @@
 # Local-time boundary after UTC/calendar acceptance
 
-This is the implementation handoff for the remaining calendar provider, not a
-claim that `localtime`, `mktime`, `tzset` or environment handling works yet.
-The initial UTC/calendar component is documented in `libc-calendar-port.md`.
+This checklist now has an accepted Linux x64 C/C++ JIT/NativeAOT implementation
+in [the timezone port](libc-timezone-port.md), backed by the accepted owner-local
+[environment provider](libc-environment-port.md). Cross-platform execution and
+custom Windows default-zone conversion remain open. The initial UTC/calendar
+component is documented in `libc-calendar-port.md`.
 
 Keep musl's `__tm_to_secs`, `__secs_to_tm`, `localtime_r` and `mktime` algorithms.
 `mktime` explicitly requests both the active offset and the opposite-DST offset,

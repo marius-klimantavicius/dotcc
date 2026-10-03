@@ -5,6 +5,11 @@ import shutil
 
 root = Path(__file__).resolve().parents[1]
 for source, target in [
+    (root / "backend/dot_gen_integer_intrinsics.h", root / "upstream/src/dot_gen_integer_intrinsics.h"),
+    (root / "backend/runtime/libc-timezone-bindings.def", root / "upstream/src/libc-timezone-bindings.def"),
+    (root / "backend/runtime/libc-wide-files-bindings.def", root / "upstream/src/libc-wide-files-bindings.def"),
+    (root / "backend/dot_gen_setjmp.h", root / "upstream/src/dot_gen_setjmp.h"),
+    (root / "backend/runtime/libc-environment-bindings.def", root / "upstream/src/libc-environment-bindings.def"),
     (root / "backend/dot_gen_unexpected.h", root / "upstream/src/dot_gen_unexpected.h"),
     (root / "backend/dot_gen_storage_types.h", root / "upstream/src/dot_gen_storage_types.h"),
     (root / "backend/runtime/libc-process-bindings.def", root / "upstream/src/libc-process-bindings.def"),

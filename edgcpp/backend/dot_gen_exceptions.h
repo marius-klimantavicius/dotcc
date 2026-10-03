@@ -489,6 +489,14 @@ private static void* __edg_exception_alloc(nuint size) {
 }
 // dot-gen:member-end
 )CS";
+  if(source_jumps_used)for(const string &signature:std::vector<string>{
+      "private static bool __edg_begin_exception(global::System.Exception error) {\n",
+      "private static bool __edg_throw_filter(__edg_exception payload, global::System.Exception error) {\n",
+      "private static bool __edg_catch_filter(__edg_catch_frame frame, global::System.Exception error) {\n"}) {
+    auto pos=helper_output.find(signature);
+    if(pos==string::npos)unsupported("missing source-jump EH filter");
+    helper_output.insert(pos+signature.size(),"  if(error is global::Edg.Runtime.NonlocalJump.Transfer)return false;\n");
+  }
   if(instance_mode)for(const string &signature:std::vector<string>{"void __edg_rethrow(","bool __edg_throw_filter(","bool __edg_catch_filter("}) {
     string from="private static "+signature,to="private "+signature;
     auto pos=helper_output.find(from);if(pos==string::npos)unsupported("missing owner-aware EH helper");

@@ -53,6 +53,24 @@ int main(void) {
  if(values[0]!=-2 || values[5]!=9 || !bsearch(&key,values,6,sizeof(int),compare_ints))return 16;
  div_t quotient=div(-17,5);
  if(quotient.quot!=-3 || quotient.rem!=-2 || labs(-37)!=37)return 17;
+ if(setenv("__EDG_SYNTHETIC_PROVIDER_ENV_791", "first",1) ||
+    strcmp(getenv("__EDG_SYNTHETIC_PROVIDER_ENV_791"),"first"))return 18;
+ char borrowed[]="__EDG_SYNTHETIC_PROVIDER_ENV_791=second";
+ if(putenv(borrowed) || strcmp(getenv("__EDG_SYNTHETIC_PROVIDER_ENV_791"),"second"))return 19;
+ if(unsetenv("__EDG_SYNTHETIC_PROVIDER_ENV_791") || getenv("__EDG_SYNTHETIC_PROVIDER_ENV_791"))return 20;
+ int scanned=0,consumed=-1;long double real=0;char word[8];
+ if(sscanf("-81 0x1.8p2 sample!","%d %Lf %6s%n",&scanned,&real,word,&consumed)!=3 ||
+    scanned!=-81 || real!=6 || strcmp(word,"sample") || consumed!=18)return 21;
+ if(setenv("TZ","EST5EDT,M3.2.0/2,M11.1.0/2",1))return 22;
+ tzset();
+ if(!localtime_r(&epoch,&civil) || civil.tm_year!=69 || civil.tm_mon!=11 ||
+    civil.tm_mday!=31 || civil.tm_hour!=19 || civil.tm_isdst!=0 || mktime(&civil)!=epoch)return 23;
+ time_t summer=1719835200;
+ if(!localtime_r(&summer,&civil) || civil.tm_year!=124 || civil.tm_mon!=6 ||
+    civil.tm_mday!=1 || civil.tm_hour!=8 || civil.tm_isdst!=1 || mktime(&civil)!=summer)return 24;
+ if(setenv("TZ","UTC0",1))return 25;
+ tzset();
+ if(!localtime_r(&epoch,&civil) || civil.tm_year!=70 || civil.tm_hour!=0)return 26;
  uselocale(previous);freelocale(locale);
  return 0;
 }

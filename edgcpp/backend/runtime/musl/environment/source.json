@@ -1,0 +1,37 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "getenv.c": {
+      "upstream": "src/env/getenv.c",
+      "originalSha256": "40d803615b9ef1e1f59cfd0a8fc025ff50d5308b56d4b76ecaec7a596bc92ec9",
+      "adaptedSha256": "627df5d8844a476e6b034283524e1c8f35c8354c7962547476b3faf3189b8b3a"
+    },
+    "setenv.c": {
+      "upstream": "src/env/setenv.c",
+      "originalSha256": "647c038697cec287d793a8b6365e6ef6d381bc48fb9e623aa51203166a9bc814",
+      "adaptedSha256": "3ef8e2deb6587740fab7d3f735ac9ebcdcfb7055a2392a3946ce85988ac92dbe"
+    },
+    "unsetenv.c": {
+      "upstream": "src/env/unsetenv.c",
+      "originalSha256": "47d9ee56e37ea1b678e965eab3892c1172566fec791de980e2aad7096a62bc57",
+      "adaptedSha256": "aff45081d4c70f0263bdc01013f6ed6c5586b288fdd765a5ea146ce44c8de318"
+    },
+    "putenv.c": {
+      "upstream": "src/env/putenv.c",
+      "originalSha256": "89744985a70d778f7c9f75eae5af218df4c4b3f8698219513dd9eb271466e7a2",
+      "adaptedSha256": "d19858d46d923fec8705b7c27b4c4516fb00bada0d8c8925a10a65bdd43fcc10"
+    },
+    "clearenv.c": {
+      "upstream": "src/env/clearenv.c",
+      "originalSha256": "c09e857e54014c7a838446fc1f9d2ecb4e3610f0aedf308a148d15cd9d48c6db",
+      "adaptedSha256": "8ffea78e2919022a17e0b0d2e73c098b43243fd770e618979eabc6844daa1aa0"
+    }
+  },
+  "adapters": {
+    "environment_compat.h": "4c1df68efa4e716e6724364ae74a935f54fd5131af286a79a4a2f1f8a05c1652",
+    "environment_startup.c": "320caf5d462e4cb833659463f31309456cd106889fd3ead501a44051af5a58c0"
+  },
+  "patch": "environment-managed.patch",
+  "patchSha256": "7cfee6486a658545df3cf2dea42ef07f94c952fbc3aec5dc3939e540d76f0177"
+}

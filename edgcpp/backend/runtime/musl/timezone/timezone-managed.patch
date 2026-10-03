@@ -1,0 +1,202 @@
+--- a/__tz.c
++++ b/__tz.c
+@@ -1,26 +1,16 @@
++#include "timezone_compat.h"
+ #include "time_impl.h"
+ #include <stdint.h>
+ #include <limits.h>
+ #include <stdlib.h>
+ #include <string.h>
+-#include <sys/mman.h>
+ #include <ctype.h>
+-#include "libc.h"
+-#include "lock.h"
+-#include "fork_impl.h"
+-
+-#define malloc __libc_malloc
+-#define calloc undef
+-#define realloc undef
+-#define free undef
++
+ 
+ long  __timezone = 0;
+ int   __daylight = 0;
+ char *__tzname[2] = { 0, 0 };
+ 
+-weak_alias(__timezone, timezone);
+-weak_alias(__daylight, daylight);
+-weak_alias(__tzname, tzname);
+ 
+ static char std_name[TZNAME_MAX+1];
+ static char dst_name[TZNAME_MAX+1];
+@@ -35,8 +25,6 @@
+ static char *old_tz = old_tz_buf;
+ static size_t old_tz_size = sizeof old_tz_buf;
+ 
+-static volatile int lock[1];
+-volatile int *const __timezone_lockptr = lock;
+ 
+ static int getint(const char **p)
+ {
+@@ -125,7 +113,7 @@
+ static void do_tzset()
+ {
+ 	char buf[NAME_MAX+25], *pathname=buf+24;
+-	const char *try, *s, *p;
++	const char *try_path, *s, *p;
+ 	const unsigned char *map = 0;
+ 	size_t i;
+ 	static const char search[] =
+@@ -150,7 +138,7 @@
+ 		old_tz_size *= 2;
+ 		if (i >= old_tz_size) old_tz_size = i+1;
+ 		if (old_tz_size > PATH_MAX+2) old_tz_size = PATH_MAX+2;
+-		old_tz = malloc(old_tz_size);
++		old_tz = (char *)malloc(old_tz_size);
+ 	}
+ 	if (old_tz) memcpy(old_tz, s, i+1);
+ 
+@@ -171,16 +159,16 @@
+ 	if (!posix_form) {
+ 		if (*s == ':') s++;
+ 		if (*s == '/' || *s == '.') {
+-			if (!libc.secure || !strcmp(s, "/etc/localtime"))
++			if (!__EDG_TIMEZONE_SECURE || !strcmp(s, "/etc/localtime"))
+ 				map = __map_file(s, &map_size);
+ 		} else {
+ 			size_t l = strlen(s);
+ 			if (l <= NAME_MAX && !strchr(s, '.')) {
+ 				memcpy(pathname, s, l+1);
+ 				pathname[l] = 0;
+-				for (try=search; !map && *try; try+=l+1) {
+-					l = strlen(try);
+-					memcpy(pathname-l, try, l);
++				for (try_path=search; !map && *try_path; try_path+=l+1) {
++					l = strlen(try_path);
++					memcpy(pathname-l, try_path, l);
+ 					map = __map_file(pathname-l, &map_size);
+ 				}
+ 			}
+@@ -379,16 +367,17 @@
+ 		}
+ 	}
+ 
++	long long y, t0, t1;
+ 	if (!__daylight) goto std;
+ 
+ 	/* FIXME: may be broken if DST changes right at year boundary?
+ 	 * Also, this could be more efficient.*/
+-	long long y = t / 31556952 + 70;
++	y = t / 31556952 + 70;
+ 	while (__year_to_secs(y, 0) > t) y--;
+ 	while (__year_to_secs(y+1, 0) < t) y++;
+ 
+-	long long t0 = rule_to_secs(r0, y);
+-	long long t1 = rule_to_secs(r1, y);
++	t0 = rule_to_secs(r0, y);
++	t1 = rule_to_secs(r1, y);
+ 
+ 	if (!local) {
+ 		t0 += __timezone;
+@@ -416,23 +405,22 @@
+ 	UNLOCK(lock);
+ }
+ 
+-static void __tzset()
++void tzset(void)
+ {
+ 	LOCK(lock);
+ 	do_tzset();
+ 	UNLOCK(lock);
+ }
+ 
+-weak_alias(__tzset, tzset);
+-
+-const char *__tm_to_tzname(const struct tm *tm)
+-{
+-	const void *p = tm->__tm_zone;
++
++char *__edg_calendar_zone(const char *name)
++{
++	const void *p = name;
+ 	LOCK(lock);
+ 	do_tzset();
+ 	if (p != __utc && p != __tzname[0] && p != __tzname[1] &&
+ 	    (!zi || (uintptr_t)p-(uintptr_t)abbrevs >= abbrevs_end - abbrevs))
+ 		p = "";
+ 	UNLOCK(lock);
+-	return p;
+-}
++	return (char *)p;
++}
+--- a/localtime_r.c
++++ b/localtime_r.c
+@@ -1,3 +1,4 @@
++#include "timezone_compat.h"
+ #include "time_impl.h"
+ #include <errno.h>
+ #include <limits.h>
+@@ -18,4 +19,4 @@
+ 	return tm;
+ }
+ 
+-weak_alias(__localtime_r, localtime_r);
++
+--- a/localtime.c
++++ b/localtime.c
+@@ -1,3 +1,4 @@
++#include "timezone_compat.h"
+ #include "time_impl.h"
+ 
+ struct tm *localtime(const time_t *t)
+--- a/mktime.c
++++ b/mktime.c
+@@ -1,25 +1,26 @@
++#include "timezone_compat.h"
+ #include "time_impl.h"
+ #include <errno.h>
+ 
+ time_t mktime(struct tm *tm)
+ {
+-	struct tm new;
++	struct tm converted;
+ 	long opp;
+ 	long long t = __tm_to_secs(tm);
+ 
+-	__secs_to_zone(t, 1, &new.tm_isdst, &new.__tm_gmtoff, &opp, &new.__tm_zone);
++	__secs_to_zone(t, 1, &converted.tm_isdst, &converted.__tm_gmtoff, &opp, &converted.__tm_zone);
+ 
+-	if (tm->tm_isdst>=0 && new.tm_isdst!=tm->tm_isdst)
+-		t -= opp - new.__tm_gmtoff;
++	if (tm->tm_isdst>=0 && converted.tm_isdst!=tm->tm_isdst)
++		t -= opp - converted.__tm_gmtoff;
+ 
+-	t -= new.__tm_gmtoff;
++	t -= converted.__tm_gmtoff;
+ 	if ((time_t)t != t) goto error;
+ 
+-	__secs_to_zone(t, 0, &new.tm_isdst, &new.__tm_gmtoff, &opp, &new.__tm_zone);
++	__secs_to_zone(t, 0, &converted.tm_isdst, &converted.__tm_gmtoff, &opp, &converted.__tm_zone);
+ 
+-	if (__secs_to_tm(t + new.__tm_gmtoff, &new) < 0) goto error;
++	if (__secs_to_tm(t + converted.__tm_gmtoff, &converted) < 0) goto error;
+ 
+-	*tm = new;
++	*tm = converted;
+ 	return t;
+ 
+ error:
+--- a/ctime_r.c
++++ b/ctime_r.c
+@@ -1,3 +1,4 @@
++#include "timezone_compat.h"
+ #include <time.h>
+ 
+ char *ctime_r(const time_t *t, char *buf)
+--- a/ctime.c
++++ b/ctime.c
+@@ -1,3 +1,4 @@
++#include "timezone_compat.h"
+ #include <time.h>
+ 
+ char *ctime(const time_t *t)

@@ -1,0 +1,11 @@
+{
+  "source": "DotCC.Libc/Float128.cs",
+  "sha256": "bd20f47c74711f0e38e8d7cdab9bf987145fb2c91576f2a9eae7f30f4b1670a3",
+  "license": "Repository MIT license",
+  "adaptations": [
+    "Namespace Edg.Runtime",
+    "Partial declaration for exact C conversion adapter",
+    "Explicit sequential16-byte layout"
+  ],
+  "adaptedSha256": "838b3668b5a52adf8f6bc94c835e19a5be85a84cf01e3cee5769961884e17009"
+}

@@ -39,6 +39,10 @@ struct tm *gmtime_r(const time_t *, struct tm *);
 struct tm *localtime_r(const time_t *, struct tm *);
 char *asctime_r(const struct tm *, char *);
 char *ctime_r(const time_t *, char *);
+void tzset(void);
+extern long timezone;
+extern int daylight;
+extern char *tzname[2];
 #ifdef __cplusplus
 }
 #endif

@@ -1,10 +1,11 @@
-/* Portable byte-stream ABI. fpos_t will grow with wide-stream conversion state. */
+/* Portable FILE ABI, version2 positions retain opaque decoder state. */
 #ifndef __EDG_DOT_LIBC_STDIO_H
 #define __EDG_DOT_LIBC_STDIO_H
 #include <stddef.h>
 #include <stdarg.h>
 typedef struct __edg_FILE FILE;
-typedef long fpos_t;
+#define __EDG_FPOS_ABI_VERSION 2
+typedef struct __edg_fpos { long offset; unsigned int state, value; } fpos_t;
 #define EOF (-1)
 #define SEEK_SET 0
 #define SEEK_CUR 1

@@ -1,0 +1,5 @@
+/* BCL boundary only; TZif/POSIX/calendar algorithms remain translated musl. */
+EDG_LIBC("__edg_timezone_enter", "void", "", "__edg_timezone.Enter")
+EDG_LIBC("__edg_timezone_exit", "void", "", "__edg_timezone.Exit")
+EDG_LIBC("__edg_timezone_map", "byte*", "sbyte*,ulong*", "__edg_timezone.MapFile")
+EDG_LIBC("__edg_timezone_unmap", "int", "void*,ulong", "__edg_timezone.Unmap")

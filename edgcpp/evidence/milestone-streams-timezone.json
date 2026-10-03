@@ -1,0 +1,129 @@
+{
+  "schema": 1,
+  "scope": "Source setjmp ABI v1, extended floating types, strict wide FILE ABI, environment/scanning/timezone libc, and configured class-rvalue lowering",
+  "snapshot": "artifacts/campaign/milestone-streams-timezone-snapshot-001",
+  "validation": "Focused synthetic/EDG differential and Linux-x64 JIT/NativeAOT checks; frozen complete JIT regression is running separately and not yet claimed",
+  "checkCount": 202,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/extended-float-translated-001/results.json",
+      "sha256": "5d316f306e3f1994c2aa1a7cb25317521814ad659df00b9b86ce3bcd6740f10e",
+      "checkCount": 10
+    },
+    {
+      "path": "artifacts/campaign/setjmp-control-20261003-025248/results.json",
+      "sha256": "929e397c89445f4d7cf2c048ad3c496af0656fcb7e9430e25c026b8302e1e41b",
+      "checkCount": 14
+    },
+    {
+      "path": "artifacts/campaign/setjmp-cpp-20261003-025515/results.json",
+      "sha256": "180bb360a7bee015b28ed054e55e09406c12b3e92f373dd4a8ac13626061929c",
+      "checkCount": 6
+    },
+    {
+      "path": "artifacts/campaign/foreign-clr-boundaries-20261003-023012/results.json",
+      "sha256": "7993eb5cca3f7906daa9473ffd3972fb810f89fc3450113eb25132768ea0a78d",
+      "checkCount": 20
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-files-translated-20261003-052200/results.json",
+      "sha256": "24eed12d81b466578d587fe8728ec44ec1d079d92412c7b31fc8b74ee1107a3b",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-files-byte-translated-regression-20261003-052310/results.json",
+      "sha256": "db682109940b3bd3b0515ea9cc97b09b1ae863490da345f821889c825338367c",
+      "checkCount": 16
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-files-scanf-regression-20261003-052310/results.json",
+      "sha256": "72bfb5fbc5e4f8776eca7329283e191991ae34164734cedb0fe4f503893f3ed0",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-environment-translated-002/results.json",
+      "sha256": "cb729adf1a7334ff972d388f5f2b22ca811ba58a042fd1c4571dbc28e7a7845f",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-scanf-translated-20261003-043120/results.json",
+      "sha256": "6c03a11bb6727dc047399030d2514cf7921e2197f22f90e74cee1fb3d1e5f9be",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-timezone-translated-003/results.json",
+      "sha256": "9287eaa99be4b4d3c5929243c8280e6d8080d930be7f4f882e03edabe6dbbf17",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-timezone-runtime-001/results.json",
+      "sha256": "40964227871fbaf9ad6ba10b80104359f97ed4438b035dfd19706d31c4694221",
+      "checkCount": 2
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-timezone-001/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/integer-intrinsics-translated-001/results.json",
+      "sha256": "06686ef49ed558a07abb161885c43dca2cfe70cc34ebbef9c8f750a11574c9a5",
+      "checkCount": 5
+    },
+    {
+      "path": "artifacts/campaign/unreachable-builtin-translated-001/results.json",
+      "sha256": "83840549d3b95700f229de8a52e7b7f643cb83e63ca683a38022bca90d13b70c",
+      "checkCount": 5
+    },
+    {
+      "path": "artifacts/campaign/class-rvalue-adjust-translated-001/results.json",
+      "sha256": "3d84bba40c894ed73a2748789e0c305ebd5bcb593a98a384ada8e9fa87ecf44e",
+      "checkCount": 5
+    },
+    {
+      "path": "artifacts/campaign/setjmp-runtime-20261003-023759/results.json",
+      "sha256": "fc8e1ea81254167a33e24e74cef5d3730119df5cefca2df48c51f9b6bbd91c20",
+      "checkCount": 12
+    },
+    {
+      "path": "artifacts/campaign/libc-fpos-abi-20261003-052200/results.json",
+      "sha256": "b7f1c85ec66f202e9d2e3f966e76c1799f15694705fbe0ffe2fd8c855e37e1da",
+      "checkCount": 16
+    },
+    {
+      "path": "artifacts/campaign/libc-scanf-failure-20261003-044400/results.json",
+      "sha256": "18d3a66e29f6be2e54639332c109aad00ecaf38a16e761763d24aebd0ec9c1f9",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/libc-read-lock-abi-20261003-044400/results.json",
+      "sha256": "3a1610cff35cc73d0b87bc6d8f1fdd5e5b88b648ca80720fa5e697bf2a7b9cb6",
+      "checkCount": 17
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-files-c-escape-translated-20261003-055500/results.json",
+      "sha256": "24eed12d81b466578d587fe8728ec44ec1d079d92412c7b31fc8b74ee1107a3b",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-files-c-escape-20261003-055700/results.json",
+      "sha256": "a291b576d118c494a8edf8c369ca34df3e26177b91540d8828cfd1c75043e2ef",
+      "checkCount": 4
+    }
+  ],
+  "selectedMuslTranslationUnits": 112,
+  "remaining": "Complete libc/libc++, separate-TU owned program IR, coroutine frames, fenv/performance and other platform execution remain open. Source-jump VLA v2 is a subsequent accepted component, outside this snapshot.",
+  "correctionOverlay": {
+    "directory": "artifacts/campaign/milestone-streams-timezone-snapshot-001/correction-overlay",
+    "reason": "Independent original musl byte oracle found C-locale FILE escapes must be DF80..DFFF, not DC80..DCFF. Four corrected runtime/oracle and nine generated checks pass. Frozen broad run predates correction; no unchanged broad-run claim is made.",
+    "files": [
+      "backend/runtime/LibcFilesWide.cs",
+      "backend/tests/libc_wide_files_runtime.cs",
+      "backend/tests/libc_wide_files_verify.py",
+      "backend/tests/libc_c_locale_oracle.py",
+      "backend/tests/libc_wide_files.c",
+      "docs/libc-wide-file-abi.md"
+    ]
+  },
+  "stagedSourceManifest": "artifacts/campaign/milestone-streams-timezone-snapshot-001/staging.json"
+}

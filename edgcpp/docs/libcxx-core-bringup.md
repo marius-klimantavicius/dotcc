@@ -80,3 +80,24 @@ operation is the address of `sscanf` in `include/locale:2642`,
 `money_get<char>::do_get`. The libc worker owns the pinned scanning family and
 its binary80/shared typed-variadic integration. This probe is still incomplete
 at translation and is not acceptance of the full library or separate-TU linker.
+
+The 105-TU selected provider now includes accepted environment and scanning
+implementations. Probe `028` advances past `sscanf`; `029` adds the accepted
+C++ exception ABI adapter, and `030/031` add original `thread.cpp`, `mutex.cpp`,
+`condition_variable.cpp`, and `future.cpp` to supply actual referenced methods
+and RTTI. Probe `032` adds `abi_mutex.cpp`: the original separate-TU destructor
+sources deliberately redeclare historical ABI classes, so the portable external
+thread ABI adapter includes the actual public headers and retains the original
+destructor bodies. `mutex-source.json` records provenance. This adapter remains
+unaccepted until generated library execution passes.
+
+Probe `032` reaches `__builtin_unreachable`; the coordinator's exact intrinsic
+binding advances `033` to `__builtin_clz` in `__bit/countl.h`. These probes still
+stop during translation. The expanding source list is dependency discovery with
+a synthetic consumer, not a claim of full libc++ or separate-TU acceptance.
+
+Probe `034` passes exact bit-count intrinsics and adds the real original
+`call_once.cpp` provider in `035`; `036` adds `chrono.cpp` and reaches an
+`eok_class_rvalue_adjust` in `chrono::year_month_day_last::day`. The C backend's
+lowering configuration is the reference for that cv-adjusted class prvalue.
+No EDG behavior is changed to bypass the diagnostic.

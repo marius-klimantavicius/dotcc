@@ -1,4 +1,4 @@
-/* Selected portable wide-character declarations. Wide I/O is not implemented. */
+/* Portable wide-character declarations; only registered/selected APIs bind. */
 #ifndef __EDG_DOT_LIBC_WCHAR_H
 #define __EDG_DOT_LIBC_WCHAR_H
 #include <stddef.h>

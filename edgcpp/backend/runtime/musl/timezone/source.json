@@ -1,0 +1,43 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "__tz.c": {
+      "upstream": "src/time/__tz.c",
+      "originalSha256": "36b2f947da983c7420cf922ebead479734b101be817213fc04c12eb7a960bf3a",
+      "adaptedSha256": "77528d3ca47b5e28bc5440adc5d815149ee5c9ff040a442da966638b0a0b55d3"
+    },
+    "localtime_r.c": {
+      "upstream": "src/time/localtime_r.c",
+      "originalSha256": "dce838262d6adb8a6f1ced91ea9c8c335514b5836b0acb2b1c0e655ea45ec022",
+      "adaptedSha256": "6a30604a03ee013020f801b0dd6e3ca2b23fd5f72fd44dd1bb553f64b019a385"
+    },
+    "localtime.c": {
+      "upstream": "src/time/localtime.c",
+      "originalSha256": "f49c8610cc848d1d96421cc5800d28a25cbd7671d65b492938f404583fcff1b7",
+      "adaptedSha256": "96fab6dddc1a1d318638b1f54b3ba2c1f76550eb2bf4238f594ece15e8d09fc7"
+    },
+    "mktime.c": {
+      "upstream": "src/time/mktime.c",
+      "originalSha256": "d51e48e0832b5eeb2cffbe7b774edad3d61f71533160743b63eb351db5d97fec",
+      "adaptedSha256": "7c1722fddc3f08772c431f48a8d61b5884eb937612d5b81ef222c8d6b66ea541"
+    },
+    "ctime_r.c": {
+      "upstream": "src/time/ctime_r.c",
+      "originalSha256": "53123b650dec7193e1a4c855b41d051277c86c1f5bb212ec2a7d75d951e659a4",
+      "adaptedSha256": "4b22798f6e46c2dc5cd78cf4403eb01d2fd415a08dde0ea1e16337cbc1f32c97"
+    },
+    "ctime.c": {
+      "upstream": "src/time/ctime.c",
+      "originalSha256": "ed504f63339be57b6e143d1d4df3f4c1e13555c0127af124a99ca7077d978b84",
+      "adaptedSha256": "b2aac3bd5868fe9ce0484efcac67af0b76ef2d003222366cbca28c135ad5fe27"
+    }
+  },
+  "adapters": {
+    "timezone_compat.h": "8c1a7500f404a93efd638e8005003385a783eac6ec3818bb7b14281a1c0f6e09",
+    "time_impl.h": "678e7b43a2250619fd90ad439b838f34fa0941261bac8cb8ad8ccbbf7b233305",
+    "timezone_wrappers.c": "68a7e45fa13836cdcb099236b7f583003f34bba174c5ac76bf1b32fa2db5a02b"
+  },
+  "patch": "timezone-managed.patch",
+  "patchSha256": "1812111576c72f7ba647d2d4844072c5b5ba40d4b48ed059a7958f2665e8e770"
+}

@@ -93,7 +93,7 @@ string expression_effect(an_expr_node_ptr e) {
       auto a=eh.variant.try_and_catch_expr;
       string attempt=expression_effect(a),failure=expression_effect(a->next);
       string unwind=cleanup_unwind(id,cleanup_slot);
-      return "{int "+id+" = "+cleanup_slot+"; try {\n"+attempt+"} catch {\n"+unwind+failure+"throw;\n}}\n";
+      return "{int "+id+" = "+cleanup_slot+"; try {\n"+attempt+"} catch (global::System.Exception jump_check) when ("+source_jump_exclusion("jump_check")+") {\n"+unwind+failure+"throw;\n}}\n";
     }
     unsupported("EH expression transition",eh.kind);
   }
