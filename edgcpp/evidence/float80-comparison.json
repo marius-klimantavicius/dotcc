@@ -1,0 +1,31 @@
+{
+  "scope": "Exact allocation-free binary80 comparisons",
+  "checks": 13,
+  "runs": [
+    {
+      "path": "artifacts/campaign/float80-comparison-001/results.json",
+      "sha256": "f0e6a80d6f0a290aca11dbaa6ee12dc7da5456160998f90e7a5e55bf1e5a236f",
+      "checks": 2
+    },
+    {
+      "path": "artifacts/campaign/float80-comparison-runtime-regression-001/results.json",
+      "sha256": "4e6ecbb41fc63c8f88cc5405d226ec334885ab4392a023bb27ec5ef92415de50",
+      "checks": 2
+    },
+    {
+      "path": "artifacts/campaign/float80-comparison-math-regression-001/results.json",
+      "sha256": "1dd0e1066fce4425869a1ea44f4407215f029a9b7a16b0f19c871bfec0f9bffa",
+      "checks": 9
+    }
+  ],
+  "sources": {
+    "backend/runtime/Float80.cs": "307c3e605c6c65b554f3d9688c33bde1082fbd6c1783518a4c69c8f9b28a4ccc",
+    "backend/tests/float80_compare_native.c": "50e763c72e98ac454f5b524bbbab0e662fe15659ef0e8f06c91f174ba99554ed",
+    "backend/tests/float80_compare_runtime.cs": "096312d6a0108779f9c7baa586c3d0528d11c2cc1ebe9a079345864b2b4b3b75",
+    "backend/tests/float80_compare_verify.py": "990b12bfb8e37e3ab0227aca89731b7cd09127c5894d9db028836abc043fff00"
+  },
+  "limitations": [
+    "Only Linux-x64 JIT/NativeAOT execution verified",
+    "Does not establish floating environment or arithmetic allocation coverage"
+  ]
+}

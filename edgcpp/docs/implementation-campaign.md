@@ -454,3 +454,10 @@ storage. No EDG IL or flags are changed. Wide-format29 checks include native
 and generated formatting, sanitizers, strict ABI, runtime locking, patch replay
 and automatic packaging. Documented musl pointer-format/count adaptations avoid
 undefined native source behavior; selected provider count reaches138.
+
+Binary80 comparisons now normalize integer significands and compare exponents
+without allocating BigInteger values. Thirteen focused checks cover 18,400
+native comparison vectors, arbitrary finite-encoding reference comparisons,
+one million allocation-free operator calls, and existing binary80 math/source
+regressions under JIT/NativeAOT. Other arithmetic and floating-environment gates
+remain open; see float80-comparison.md and its evidence index.

@@ -72,14 +72,23 @@ public readonly struct Float80 : IEquatable<Float80> {
         if(a.Negative!=b.Negative)return a.Negative?-1:1;
         int c;
         if(a.Infinity || b.Infinity)c=a.Infinity?(b.Infinity?0:1):-1;
-        else {int power=Math.Min(a.Power,b.Power);c=((BigInteger)a.Significand<<(a.Power-power)).CompareTo((BigInteger)b.Significand<<(b.Power-power));}
+        else if(a.Zero || b.Zero)c=a.Zero?-1:1;
+        else {
+            // Compare exact binary magnitudes without building (potentially 32K-bit)
+            // integers. Normalizing also preserves the existing numerical meaning
+            // of finite noncanonical encodings and x87 pseudo-denormals.
+            int az=BitOperations.LeadingZeroCount(a.Significand),bz=BitOperations.LeadingZeroCount(b.Significand);
+            int ah=Math.Max(1,a.Exponent)-az,bh=Math.Max(1,b.Exponent)-bz;
+            c=ah.CompareTo(bh);
+            if(c==0)c=(a.Significand<<az).CompareTo(b.Significand<<bz);
+        }
         return a.Negative?-c:c;
     }
     public static bool operator ==(Float80 a,Float80 b)=>!a.NaN && !b.NaN && Compare(a,b)==0;
     public static bool operator !=(Float80 a,Float80 b)=>!(a==b);
     public static bool operator <(Float80 a,Float80 b)=>!a.NaN && !b.NaN && Compare(a,b)<0;
     public static bool operator >(Float80 a,Float80 b)=>b<a;
-    public static bool operator <=(Float80 a,Float80 b)=>a<b || a==b;
+    public static bool operator <=(Float80 a,Float80 b)=>!a.NaN && !b.NaN && Compare(a,b)<=0;
     public static bool operator >=(Float80 a,Float80 b)=>b<=a;
     public static Float80 operator ++(Float80 a)=>a+(Float80)1;
     public static Float80 operator --(Float80 a)=>a-(Float80)1;
