@@ -192,6 +192,8 @@ def main():
     checks.extend(verify_libc_files(ROOT, TESTS, suite_output("libc_files"), args.nativeaot, run))
     from atomic_builtins_verify import verify_atomic_builtins
     checks.extend(verify_atomic_builtins(ROOT, TESTS, suite_output("atomic_builtins"), args.nativeaot, run))
+    from overflow_builtins_verify import verify_overflow_builtins
+    checks.extend(verify_overflow_builtins(ROOT, TESTS, suite_output("overflow_builtins"), args.nativeaot, run))
     from constant_intrinsics_verify import verify_constant_intrinsics
     checks.extend(verify_constant_intrinsics(ROOT, TESTS, suite_output("constant_intrinsics"), args.nativeaot, run))
     from template_packs_verify import verify_template_packs

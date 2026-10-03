@@ -1,4 +1,5 @@
 #include "dot_gen_integer_intrinsics.h"
+#include "dot_gen_overflow.h"
 // GNU floating classification builtins have special, non-promoted argument
 // lists. Handle them before the ordinary variadic ABI, as c_gen_be preserves
 // these as compiler intrinsics instead of materializing a C va_list.
@@ -77,6 +78,8 @@ string intrinsic_call(an_expr_node_ptr call) {
   if(!coroutine.empty())return coroutine;
   string integer=integer_intrinsic_call(call,routine,first);
   if(!integer.empty())return integer;
+  string overflow=overflow_intrinsic_call(call,routine,first);
+  if(!overflow.empty())return overflow;
   string floating=floating_intrinsic_call(call,routine,first);
   if(!floating.empty())return floating;
   switch(routine->variant.builtin_function_kind) {

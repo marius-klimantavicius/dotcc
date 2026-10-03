@@ -1,0 +1,14 @@
+{
+  "scope": "SQLite-required GNU checked arithmetic builtins",
+  "checks": 10,
+  "evidence": "artifacts/campaign/persistent-continuation/overflow-builtins-20261003-052100/results.json",
+  "sha256": "c8eb66d180777a0164b9641d1a5a26966ebb81ed9b17f2f432448e8846c076d2",
+  "helperSha256": "7b688939a3a8916ccffee06b7420fc20bec729892238ca4e9111cab8b492ef0a",
+  "sqliteInterimStrictBuild": "artifacts/campaign/persistent-continuation/sqlite-baseline-003/build.log",
+  "sqliteInterimBuildSha256": "93befda8145046eaf2db4e3973629b6a89033f0f4d1bce17667008a83a381e3f",
+  "limitations": [
+    "Predicate-only overflow_p forms not implemented in this slice",
+    "Linux-x64 execution evidence",
+    "Interim SQLite excludes optional math; full-profile acceptance pending"
+  ]
+}

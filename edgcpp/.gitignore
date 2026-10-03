@@ -62,3 +62,4 @@ __pycache__/
 
 /upstream/src/libc-locale-environment-bindings.def
 /upstream/src/dot_gen_volatile_bits.h
+/upstream/src/dot_gen_overflow.h

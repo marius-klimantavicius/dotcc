@@ -537,3 +537,11 @@ preserve neighbors, configured integer promotion, boolean values and one-time
 receiver/RHS evaluation. Native MMIO container widths and atomicity are not
 promised. An analogous preexisting nonvolatile C++ bool:1 sign-extraction path
 remains a candidate gap to validate when project-driven work needs it.
+
+SQLite's checked-in full profile first reached missing exp, then the explicit
+no-math diagnostic profile reached GNU checked-overflow builtins. Add/subtract/
+multiply builtins now pass ten C/C++ native/original-C/static/instance JIT/AOT
+checks, including generic mixed sign/width arithmetic through128bits, destination
+writes on overflow and alias/evaluation behavior. The interim SQLite library
+strict-builds and its core executable matches the native transcript. Full-profile
+math and project NativeAOT/owner acceptance are still separate pending steps.

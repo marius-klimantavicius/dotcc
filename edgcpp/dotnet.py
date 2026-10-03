@@ -267,7 +267,7 @@ def main():
     <IsAotCompatible>true</IsAotCompatible>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <NoWarn>$(NoWarn);CS0162;CS0164;CS0219;CS0414;CS1718</NoWarn>
+    <NoWarn>$(NoWarn);CS0162;CS0164;CS0219;CS0414;CS0675;CS1718</NoWarn>
   </PropertyGroup>
   <ItemGroup>
 COMPILE_ITEMS
