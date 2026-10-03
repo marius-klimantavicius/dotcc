@@ -435,3 +435,21 @@ diffs are retained in
 `coroutine-function-try-view-candidate-20261003-070000/parity-coroutine-results.json`.
 This is a scoped parity check; the coordinated default-terminate change is
 intentionally excluded, not represented as unchanged output.
+
+Source function-try catch parameters now admit their exact nontrivial destructor
+regions. The view checks the handler's parameter variable and retained
+dynamic-initialization destructor, the direct zero-offset cleanup handle, and
+the predecessor link to that same handler's first cleanup-state marker. That
+marker must name a compiler-generated exception-release region with a zero
+outer boundary. The check uses the order established by
+`lower_eh.c::begin_catch_clause`; it neither rewrites a region nor infers scope
+from generated names. Handler-local RAII regions remain rejected.
+
+Nine new native/static/instance JIT/NativeAOT checks pass in
+`coroutine-function-try-parameter-20261003-042305/parameter/results.json`.
+They distinguish catch-copy destruction from primary payload destruction and
+match the native order for both rethrow and replacement exceptions. Twenty-six
+affected protocol and handler-local guard JIT checks pass in the same campaign's
+`protocol-regression/results.json`; the previously accepted protocol NativeAOT
+paths are unchanged. The combined `results.json`, source checkpoint and hashes
+record this 35-check extension.

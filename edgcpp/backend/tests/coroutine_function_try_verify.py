@@ -52,7 +52,7 @@ def verify_coroutine_function_try(root, tests, out, nativeaot, run, acquisition=
             executable = out / ('cleanup-' + label + optimization)
             run([compiler, '-std=c++20', optimization, cleanup, '-o', executable])
             run([executable])
-    checks.append('native GCC/Clang O0/O2: valid nontrivial catch-parameter cleanup')
+    checks.append('native GCC/Clang O0/O2: valid nontrivial handler-local cleanup')
     for instance in (False, True):
         mode = 'instance' if instance else 'static'
         directory = out / ('cleanup-' + mode)

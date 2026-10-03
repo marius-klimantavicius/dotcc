@@ -419,6 +419,8 @@ def main():
         checks.extend(verify_coroutine_placement_conversion(ROOT, TESTS, suite_output("coroutine_placement_conversion"), args.nativeaot, run, args.libcxx_acquisition))
         from coroutine_global_nothrow_verify import verify_coroutine_global_nothrow
         checks.extend(verify_coroutine_global_nothrow(ROOT, TESTS, suite_output("coroutine_global_nothrow"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_function_try_parameter_verify import verify_coroutine_function_try_parameter
+        checks.extend(verify_coroutine_function_try_parameter(ROOT, TESTS, suite_output("coroutine_function_try_parameter"), args.nativeaot, run, args.libcxx_acquisition))
         from coroutine_function_try_verify import verify_coroutine_function_try
         checks.extend(verify_coroutine_function_try(ROOT, TESTS, suite_output("coroutine_function_try"), args.nativeaot, run, args.libcxx_acquisition))
         from coroutine_provider_boundaries_verify import verify_coroutine_provider_boundaries

@@ -1,0 +1,15 @@
+{
+  "scope": "Exact nontrivial catch-parameter cleanup in coroutine function-try views",
+  "checks": 35,
+  "evidence": {
+    "path": "artifacts/campaign/coroutine-function-try-parameter-20261003-042305/results.json",
+    "sha256": "2cac6950657d835c3bab5fe8b651159406a0e8029fbaa999433c0bc861d661ef"
+  },
+  "sourceSha256": "eb2e9011caa1f22334ba623abb178b09f512ddce6d5ab93644946317d9eaee10",
+  "limitations": [
+    "Only exact direct catch-parameter handles/destructors with proven catch-release ancestry admitted",
+    "Handler-local and other nontrivial RAII regions remain diagnosed",
+    "Original-frontend handler co_return/body-RAII gates remain open",
+    "Linux-x64 execution only"
+  ]
+}

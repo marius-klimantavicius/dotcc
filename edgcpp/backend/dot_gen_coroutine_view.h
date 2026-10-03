@@ -45,15 +45,42 @@ void coroutine_prepare_function_try_view(a_statement_ptr root,a_coroutine_descr_
     source=node;
   }
   if(!source)return;
-  // First bounded view keeps every surviving cleanup boundary at zero. Real
-  // source cleanup regions need explicit lifetime-edge remapping before their
-  // handler regions can be moved across the implicit coroutine catch.
+  // Keep the source/implicit catch boundary at zero. A catch parameter may
+  // have its exact retained destructor region linked to that handler's own
+  // release entry (lower_eh.c::begin_catch_clause inserts this entry first).
+  // Other source lifetime regions still require a separately proven view.
+  std::map<a_variable_ptr,std::pair<a_routine_ptr,unsigned long long>> parameters;
+  for(auto handler=source->variant.try_block->handlers;handler;handler=handler->next) {
+    if(!handler->parameter || !handler->dynamic_init || !handler->dynamic_init->destructor)continue;
+    std::vector<a_statement_ptr> statements;coroutine_flatten_blocks(handler->statement,statements);
+    if(statements.empty())unsupported("coroutine function-try catch-parameter cleanup provenance");
+    auto first=statements.front();
+    if(first->kind!=stmk_expr || !first->expr || first->expr->kind!=enk_lowered_eh_construct ||
+       first->expr->variant.lowered_eh.kind!=leck_cleanup_state)
+      unsupported("coroutine function-try catch-parameter cleanup provenance");
+    auto release_index=first->expr->variant.lowered_eh.variant.cleanup_region_number;
+    auto release=cleanup_regions.find(release_index);
+    if(release==cleanup_regions.end() || release->second.flags ||
+       release->second.next!=null_eh_region_number || !release->second.destructor ||
+       !release->second.destructor->compiler_generated || !release->second.destructor->source_corresp.name ||
+       string(release->second.destructor->source_corresp.name)!="__destroy_exception_object")
+      unsupported("coroutine function-try catch-parameter release provenance");
+    parameters[handler->parameter]={handler->dynamic_init->destructor,release_index};
+  }
   for(auto &entry:cleanup_regions) {
     auto &region=entry.second;auto routine=region.destructor;
-    if(region.flags || region.next!=null_eh_region_number || !routine ||
-       !routine->compiler_generated || !routine->source_corresp.name ||
-       string(routine->source_corresp.name)!="__destroy_exception_object")
-      unsupported("coroutine function-try nontrivial cleanup boundary");
+    bool release=!region.flags && region.next==null_eh_region_number && routine &&
+      routine->compiler_generated && routine->source_corresp.name &&
+      string(routine->source_corresp.name)=="__destroy_exception_object";
+    if(release)continue;
+    bool parameter=false;
+    if(!region.flags && region.handle && region.handle->kind==ck_stack_offset &&
+       region.handle->variant.stack_offset.offset==0) {
+      auto found=parameters.find(region.handle->variant.stack_offset.variable);
+      parameter=found!=parameters.end() && region.destructor==found->second.first &&
+        region.next==found->second.second;
+    }
+    if(!parameter)unsupported("coroutine function-try nontrivial cleanup boundary");
   }
   for(auto node:outer)if(coroutine_view_epilogue(node,source->variant.try_block)) {
     if(epilogue)unsupported("multiple coroutine source try epilogues");

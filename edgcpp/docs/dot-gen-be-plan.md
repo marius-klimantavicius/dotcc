@@ -1084,3 +1084,10 @@ uses a bounded128-bit numerator and exact remainder for ties. Thirteen focused
 checks cover native/reference vectors, zero-allocation loops and composed
 translated logarithms (`evidence/milestone-float80-add-divide.json`). Conversion
 and other library-helper allocation paths and dynamic fenv remain open.
+
+The coroutine function-try view also admits exact nontrivial catch-parameter
+cleanup when the retained direct handle, destructor and catch-release ancestry
+prove its lifetime. Thirty-five focused checks cover rethrow/replacement order,
+JIT/NativeAOT and affected handler regressions
+(`evidence/milestone-coroutine-function-try-parameter.json`). Handler-local RAII
+and other unproven regions continue to fail closed.
