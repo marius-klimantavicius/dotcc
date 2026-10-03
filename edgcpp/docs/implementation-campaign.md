@@ -474,3 +474,9 @@ regressions. Three additional checks preserve a valid default-argument fixture
 as an explicit early diagnostic: lowered metadata no longer contains the
 required source expression. This remaining feature needs prelower semantic
 capture; no EDG behavior is changed. See milestone-coroutine-allocation-failure.json.
+
+The frozen coroutine-lifetime/wide-format checkpoint passed the complete752-check
+synthetic JIT regression suite. All1134 snapshot file hashes were revalidated
+after completion. This is evidence for that exact checkpoint; later focused
+comparison, math-extrema and allocation-failure changes have separate evidence.
+NativeAOT scope remains the focused matrices, not a claimed full-suite AOT run.

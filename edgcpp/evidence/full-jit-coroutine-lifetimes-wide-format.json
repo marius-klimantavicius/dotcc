@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "snapshot": "artifacts/campaign/milestone-coroutine-lifetimes-wide-format-snapshot-001",
+  "snapshotManifestSha256": "c15f71243e66da5d3e520dbc3de300866d56bb13005d48bd3838d54c94249e90",
+  "verifiedSnapshotFiles": 1134,
+  "status": "passed",
+  "checkCount": 752,
+  "nativeaot": false,
+  "rid": "linux-x64",
+  "evidence": {
+    "path": "artifacts/campaign/full-jit-coroutine-lifetimes-wide-format-001/results.json",
+    "sha256": "83e72dd0eed9caf7a6a983cf4113ce2b6bf39214232edf2e24f23d6701f205d9"
+  },
+  "scope": "Frozen source checkpoint committed as2b0351ff4. Later comparison/math-extrema/coroutine-allocation and in-progress stdio/placement changes are not included. Focused NativeAOT evidence is recorded separately."
+}
