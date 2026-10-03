@@ -6,5 +6,7 @@
   "newSeconds": 0.0152139,
   "rawProbeByteIdentical": true,
   "compilerSha256": "ada0b7b79438df741c8d80f74160e3ee9881eca1310fb6bda90f98ee93b44bbe",
-  "artifact": "artifacts/campaign/persistent-continuation/output-marker-linear-001"
+  "artifact": "artifacts/campaign/persistent-continuation/output-marker-linear-001",
+  "sqliteByteIdenticalFiles": 74,
+  "sqliteTranslateSeconds": 55.974
 }

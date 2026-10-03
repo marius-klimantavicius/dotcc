@@ -6,10 +6,12 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Deterministic>true</Deterministic>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
   <!-- Use the SDK's compiler assemblies; the translator needs no NuGet package
        or formatter dependency in the generated application / NativeAOT image. -->
   <ItemGroup>
+    <Compile Include="Program.cs" />
     <Reference Include="Microsoft.CodeAnalysis">
       <HintPath>$(MSBuildSDKsPath)/../Roslyn/bincore/Microsoft.CodeAnalysis.dll</HintPath>
       <Private>true</Private>

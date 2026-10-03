@@ -1,0 +1,19 @@
+{
+  "artifact": "artifacts/campaign/persistent-continuation/edg-self-review-named-imports-001/checks-002",
+  "status": "passed",
+  "checks": [
+    "default external rejection",
+    "default and disabled EH/RTTI",
+    "original external function and variable names",
+    "static JIT",
+    "instance JIT",
+    "static NativeAOT",
+    "instance NativeAOT"
+  ],
+  "resultsSha256": "bda7736f3886ded906e164f5033e08e6e8a196e89adb1b9f4b6384814c9330dd",
+  "inputs": {
+    "backend/dot_gen_unbound.h": "7c38a69a7697e8042333290d1c3cb1e24f1d9fdc60e9ab999ac7b9e8d7fc4de3",
+    "backend/tests/unbound_externals_verify.py": "cf689e82591302f215705150f06f5fae612ad9a1281bbac961df2446fdc6c9b7",
+    "backend/formatter/Edg.SourceFormatter.csproj": "0b9b799603ff3b4e808652f6ce1ea22d9182ea28d972abeb80d81504349386cb"
+  }
+}

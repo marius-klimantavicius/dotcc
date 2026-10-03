@@ -46,6 +46,9 @@ def main():
         assert manifest['unboundExternals']['reviewOnly']
         symbols={item['symbol'] for item in manifest['unboundExternals']['symbols']}
         assert {'unavailable_function','unavailable_variable'} <= symbols
+        for item in manifest['unboundExternals']['symbols']:
+            if item['symbol'] in ('unavailable_function','unavailable_variable'):
+                assert item['managedName']==item['symbol']
         assert any('ExternalBase' in symbol for symbol in symbols)
         receiver='owner' if instance else 'Review.Core'
         host=('using System; unsafe class Program { static int Main() { '+('var owner=new Review.Core();' if instance else '')+
