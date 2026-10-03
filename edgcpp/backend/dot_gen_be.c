@@ -15,6 +15,7 @@
 #include "lower_il.h"
 #include "lower_eh.h"
 #include "decls.h"
+#include "exprutil.h"
 USING_NAMESPACE_EDG
 
 namespace {
@@ -602,7 +603,9 @@ a_field_ptr bitfield(an_expr_node_ptr e) {
   auto f=node_field(e->variant.operation.operands->next);
   return f->is_bit_field?f:nullptr;
 }
+#include "dot_gen_volatile_bits.h"
 string bitfield_mutation(an_expr_node_ptr e,an_expr_node_ptr rhs,const string &op,bool post=false) {
+  if(volatile_bitfield(e))return volatile_bitfield_access(e,rhs,op,post);
   auto f=bitfield(e);auto base=e->variant.operation.operands;
   bool pointer=e->variant.operation.kind==eok_points_to_field;
   auto obj=pointer?skip_typerefs(base->type)->variant.pointer.type:base->type;
@@ -870,8 +873,9 @@ string expr(an_expr_node_ptr e) {
   if(!coroutine_value.empty())return coroutine_value;
   string value=location(e);
   if(e->is_lvalue && c11_atomic_type(e->type))return c11_atomic_read(e,"&("+value+")");
+  if(volatile_bitfield(e))return volatile_bitfield_access(e,nullptr,"");
   if(!(get_type_qualifiers(e->type)&TQ_VOLATILE) || !e->is_lvalue)return value;
-  if(bitfield(e))unsupported("volatile bitfield access");
+  if(bitfield(e))return volatile_bitfield_access(e,nullptr,"");
   string ty=type(e->type),key="volatile-read:"+ty,id;
   auto found=assignment_helpers.find(key);
   if(found!=assignment_helpers.end())id=found->second;

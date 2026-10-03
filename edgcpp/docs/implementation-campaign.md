@@ -529,3 +529,11 @@ integer boundary grids agree, while one million warmed conversion groups allocat
 zero managed bytes in JIT and NativeAOT. Other extended math helpers, dynamic
 fenv and execution on other platforms remain open. See float80-conversions.md,
 libc-locale-environment.md and milestone-locale-float80-conversions.json.
+
+The bounded volatile-bitfield task passes ten checks: original EDG C/C++
+oracles plus static/instance JIT/NativeAOT. Accesses honor qualifiers retained on
+the field or containing object after rvalue conversion; exact byte loads/stores
+preserve neighbors, configured integer promotion, boolean values and one-time
+receiver/RHS evaluation. Native MMIO container widths and atomicity are not
+promised. An analogous preexisting nonvolatile C++ bool:1 sign-extraction path
+remains a candidate gap to validate when project-driven work needs it.

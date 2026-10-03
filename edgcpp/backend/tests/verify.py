@@ -164,6 +164,8 @@ def main():
     checks.extend(verify_reference_cast(ROOT, TESTS, suite_output("reference_cast"), args.nativeaot, run))
     from type_info_verify import verify_type_info
     checks.extend(verify_type_info(ROOT, TESTS, suite_output("type_info"), args.nativeaot, run))
+    from volatile_bitfields_verify import verify_volatile_bitfields
+    checks.extend(verify_volatile_bitfields(ROOT, TESTS, suite_output("volatile_bitfields"), args.nativeaot, run))
     from basic_language_verify import verify_basic_language
     checks.extend(verify_basic_language(ROOT, TESTS, suite_output("basic_language"), args.nativeaot, run))
     from initialization_allocation_verify import verify_initialization_allocation

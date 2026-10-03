@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "artifact": "artifacts/campaign/persistent-continuation/volatile-bitfields-final-004",
+  "checks": [
+    "c: original EDG C oracle, values/evaluation and 512 independent sign/layout patterns",
+    "c-static: JIT volatile bitfields",
+    "c-static: NativeAOT volatile bitfields",
+    "c-instance: JIT volatile bitfields",
+    "c-instance: NativeAOT volatile bitfields",
+    "cxx: original EDG C oracle, values/evaluation and 512 independent sign/layout patterns",
+    "cxx-static: JIT volatile bitfields",
+    "cxx-static: NativeAOT volatile bitfields",
+    "cxx-instance: JIT volatile bitfields",
+    "cxx-instance: NativeAOT volatile bitfields"
+  ],
+  "inputs": [
+    {
+      "path": "backend/tests/volatile_bitfields.c",
+      "sha256": "e41ed14dffa385be6302b8d06b475da4ed26c35945a6757a691a567ad2f37344"
+    },
+    {
+      "path": "backend/tests/volatile_bitfields_verify.py",
+      "sha256": "9d7c3dac49bff786a859f975045c04b5ea19ef2c9622cfb24e9c6d4221a5057f"
+    },
+    {
+      "path": "backend/dot_gen_volatile_bits.h",
+      "sha256": "cc255d7fb303349681f4926e62a6e41760ca255beee581aab052828fe186503a"
+    }
+  ],
+  "resultsSha256": "4e6ffa3c8336b84fbf368c7a19bd59fb8a74fc9cc76fab75308cfecbe4da87a1",
+  "contract": "Ordered volatile byte reads and writes restricted to occupied bitfield bytes; no atomic RMW or native MMIO container-width claim. Results checked against original EDG C backend separately for C11/C++17.",
+  "traceCounts": {
+    "c": 4265,
+    "cxx": 4283
+  },
+  "coverage": [
+    "512 independent packed layout/sign-extension patterns",
+    "volatile member and containing object qualification",
+    "assignment/compound/prefix/postfix values and receiver/RHS single evaluation",
+    "narrow unsigned promotions, signed shifts with wide count, bool normalization",
+    "nested C++ bitfield lvalue expressions",
+    "generated non-inlined Volatile.Read helpers",
+    "independent owner globals, TLS, managed thread teardown and GC"
+  ],
+  "limitations": [
+    "Linux x64 execution only",
+    "GNU __thread in C input and nonvolatile C++ bool bitfield signed extraction remain separate deferred observations"
+  ]
+}

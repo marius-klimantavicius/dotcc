@@ -61,3 +61,4 @@ __pycache__/
 /upstream/src/dot_gen_coroutine_view.h
 
 /upstream/src/libc-locale-environment-bindings.def
+/upstream/src/dot_gen_volatile_bits.h
