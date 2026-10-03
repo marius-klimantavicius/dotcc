@@ -697,3 +697,22 @@ replace the current emitter: unsupported adapters remain explicit diagnostics,
 and strict emission rejects the deliberately incomplete packages. Commands,
 evidence and remaining work are recorded in
 `docs/semantic-export-implementation.md` and `semantic-export/README.md`.
+
+Direct C# emission of the original 75-TU EDG compiler has now succeeded, using
+the native C++14/no-exceptions/no-RTTI build profile and the C backend's supported
+local-entity promotion configuration in an isolated compiler. The formatted
+review package contains 155 C# files and explicitly records 82 unbound external
+declarations. These declarations retain source names and throw when accessed;
+they are review placeholders, not portable host bindings or a runnable selfhost.
+See `docs/self-csharp-review.md` for the final review location and build status.
+
+The large project exposed scaling limits in our emission/packaging tools.
+Marker substitution and export-origin lookup now avoid repeated whole-output
+or whole-symbol-table scans. SQLite's 74 C# files remain byte-identical after
+these optimizations; source-index equivalence accounts only for timestamped
+musl snapshot paths. Roslyn formatting preserves exact tokens/trivia within
+huge synthetic initialization blocks and numeric collections while formatting
+source methods normally. Large formatter responses use Unicode-safe chunks.
+Bulk/token-identity and JIT/NativeAOT checks, chunk-boundary tests, and the six
+existing formatter checks pass. Native raw output is retained; explicit replay
+is marked packaging-only and never attributed to an unused compiler binary.

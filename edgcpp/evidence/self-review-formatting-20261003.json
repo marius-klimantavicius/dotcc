@@ -1,0 +1,109 @@
+{
+  "scope": "Token-preserving bounded formatting and transport for full original EDG C# output",
+  "bulkSynthetic": {
+    "formatter": {
+      "mode": "roslyn-whitespace-v2",
+      "sdk": "10.0.111",
+      "sourceSha256": "1030e05eae00057320e122f8900d07fec6d27fa752bb6f692cf2c8c27245db84",
+      "toolSha256": "232b4c7fae6b60acf6b818016514b4a0ebfbf3d8064aaff696ff2aa679405ec2"
+    },
+    "runs": [
+      {
+        "label": "token-identity",
+        "command": [
+          "dotnet",
+          "run",
+          "--project",
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-review-formatter-checks-001/verify/Verify.csproj",
+          "-c",
+          "Release",
+          "--",
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-review-formatter-checks-001/Original.cs",
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-review-formatter-checks-001/Formatted.cs"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "jit",
+        "command": [
+          "dotnet",
+          "run",
+          "--project",
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-review-formatter-checks-001/app/App.csproj",
+          "-c",
+          "Release"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "publish",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-review-formatter-checks-001/app/App.csproj",
+          "-c",
+          "Release",
+          "-p:PublishAot=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-review-formatter-checks-001/app/aot"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "aot",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-review-formatter-checks-001/app/aot/App"
+        ],
+        "exitCode": 0
+      }
+    ]
+  },
+  "transport": {
+    "formatter": {
+      "mode": "roslyn-whitespace-v2",
+      "sdk": "10.0.111",
+      "sourceSha256": "c6307c46af3959caa2f85f9ffbc015027d245e632bc6698ec3df819b4acda48e",
+      "toolSha256": "4a122f3c9f42f814f9add36138d9a1dc1595d501e2dc9498afbac230dc7970bf"
+    },
+    "chunkCharacters": [
+      16777215,
+      67
+    ],
+    "sha256": "26b5e9afa0d94ab5f3bd74100a03521beda2b32243bb26dcb2fdf1881a338845",
+    "surrogateBoundaryPreserved": true,
+    "escapedUnicodeAndNewlinesPreserved": true,
+    "smallOutputUnchanged": true,
+    "pythonRejoinIdentical": true
+  },
+  "literalNormalization": {
+    "seconds": 5.619280286133289,
+    "bytes": 26662316,
+    "literalTextUnchanged": true,
+    "formatter": {
+      "mode": "roslyn-whitespace-v2",
+      "sdk": "10.0.111",
+      "sourceSha256": "1030e05eae00057320e122f8900d07fec6d27fa752bb6f692cf2c8c27245db84",
+      "toolSha256": "232b4c7fae6b60acf6b818016514b4a0ebfbf3d8064aaff696ff2aa679405ec2"
+    }
+  },
+  "profile": "edg-self-review-linear-packaged-002/formatter.speedscope.json",
+  "profilingFinding": "~99.5% sampled time in SyntaxNormalizer token navigation across giant generated constructor block; earlier isolated numeric collection formatting intentionally stopped after 749.8 seconds. Bulk placeholder change preserves exact tokens and internal trivia; source methods remain formatted.",
+  "inputs": {
+    "edgcpp/backend/formatter/Program.cs": "eaff8f1387143642ec0bfad32e8076f8eca4e74da8fedc53212bb23b0f97fe9b",
+    "edgcpp/backend/source_format.py": "55f88187ac2045f95a9d664715cf9114171e764443655274730c0db9a2d8ab71",
+    "edgcpp/backend/tests/formatter_bulk_verify.py": "12e79dd767eeddf413cdcb7808284adb849dc337eb1d7fdb9405ac302b4b70ef",
+    "edgcpp/backend/tests/formatter_transport_verify.py": "2e691c296e6a3e481b9702ee718a5b341f479281e1359e209401956d05596f8d"
+  },
+  "existingFormatterRegression": {
+    "artifact": "artifacts/campaign/persistent-continuation/edg-self-review-formatter-regression-001/results.json",
+    "status": "PASS (parent-verified): small-batch indentation, idempotence, directives, raw/escaped Unicode, error reporting, original/formatted JIT and NativeAOT",
+    "checks": [
+      "formatter: batch indentation, metadata/comments, raw/escaped Unicode literals and idempotence",
+      "formatter: syntax errors preserved and malformed request diagnostics",
+      "formatter original: JIT executable literals/directives/pointers",
+      "formatter original: Linux x64 NativeAOT",
+      "formatter formatted: JIT executable literals/directives/pointers",
+      "formatter formatted: Linux x64 NativeAOT"
+    ]
+  }
+}

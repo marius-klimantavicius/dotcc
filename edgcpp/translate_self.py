@@ -69,6 +69,7 @@ def main():
                '--emit', 'managedlib', '--namespace', 'Edg.Compiler', '--class-name', 'EdgCompiler',
                '--compiler', str(args.compiler.resolve()),
                '--unbound-externals', args.unbound_externals,
+               '--raw-output', str(out / 'raw.cs'),
                '--split', args.split, '--output-dir', str(out / 'managed')]
     report = {
         'scope': f'Original {len(sources)}-TU all-extensions cpfe compiler, directly translated as C++14; no lowered-C fallback',

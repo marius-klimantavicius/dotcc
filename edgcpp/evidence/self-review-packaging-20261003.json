@@ -1,0 +1,23 @@
+{
+  "scope": "Linear export source-origin packaging, retained raw backend output, and explicit packaging-only replay",
+  "dictionaryEquivalence": {
+    "artifact": "artifacts/campaign/persistent-continuation/edg-self-review-driver-origin-equivalence-001/results.json",
+    "cases": 1000,
+    "lookups": 25000,
+    "selection": "first matching function with exact sourceName; duplicates/missing keys preserved"
+  },
+  "sqliteIntegration": {
+    "artifact": "artifacts/campaign/persistent-continuation/output-marker-linear-001/dictionary-results.json",
+    "generatedCSharpFilesByteIdentical": 74,
+    "sourceSymbols": 28564,
+    "sourceMembers": 7779,
+    "sourceMapAndIndex": "identical after normalizing only timestamped musl-provider snapshot directory; raw metadata bytes are not claimed identical"
+  },
+  "rawOutput": "Exclusive new-file snapshot before protocol processing and Roslyn formatting; self runner enables it",
+  "driverSha256": "ce442ebc8830b2830a5ff5e04568698a5c0072229313d64d1b686fe59693c44f",
+  "rawInput": {
+    "provenance": "compiler=null; path/SHA-256 recorded with packagingOnly=true and nativeProvenanceVerified=false",
+    "validationArtifact": "artifacts/campaign/persistent-continuation/edg-self-review-replay-validation-001/results.json",
+    "fullReplayArtifact": "artifacts/campaign/persistent-continuation/edg-self-review-final-packaged-001"
+  }
+}

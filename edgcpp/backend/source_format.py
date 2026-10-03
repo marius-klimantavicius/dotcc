@@ -50,5 +50,10 @@ def format_sources(root, sources):
     response = json.loads(result.stdout)
     if set(response["files"]) != set(sources) or response["diagnostics"]:
         raise RuntimeError("source formatter returned unexpected files or diagnostics")
-    return response["files"], {"mode": "roslyn-whitespace-v1", "sdk": sdk, "sourceSha256": identity,
+    for name, value in response["files"].items():
+        if isinstance(value, list) and all(isinstance(chunk, str) for chunk in value):
+            response["files"][name] = "".join(value)
+        elif not isinstance(value, str):
+            raise RuntimeError("source formatter returned an invalid file value: " + name)
+    return response["files"], {"mode": "roslyn-whitespace-v2", "sdk": sdk, "sourceSha256": identity,
                                "toolSha256": hashlib.sha256(tool.read_bytes()).hexdigest()}

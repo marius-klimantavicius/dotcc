@@ -6,6 +6,13 @@ the C backend, with the all-extensions build's definitions. It does not translat
 the historical lowered C and does not substitute a small demonstration compiler.
 The generated project uses `Edg.Compiler.EdgCompiler` and source-oriented file
 grouping by default. `--split size` remains available.
+The completed review checkpoint is available through
+[`artifacts/review/edg/README.md`](../artifacts/review/edg/README.md): 155 C# files,
+279,023,677 source bytes, 41,890 exported wrappers, and 82 explicitly unbound
+external declarations. All 75 original translation units were emitted and the
+complete output passed Roslyn syntax checking and formatting. This is review
+coverage, not a claim of a runnable managed compiler or finished readability:
+some source loops still use `goto`, and some assignments retain helper calls.
 The runner also preserves native `-fno-exceptions` and `-fno-rtti` through the
 driver's explicit `--no-exceptions --no-rtti` flags. Ordinary driver invocations
 continue to enable both features by default.
@@ -27,7 +34,7 @@ no EDG semantic source changes are needed.
 The current investigation's isolated binary is under:
 
 ```
-artifacts/campaign/persistent-continuation/edg-self-review-promote-build-001/build/bin/cpfe-dot
+artifacts/campaign/persistent-continuation/edg-self-review-linear-build-002/cpfe-dot
 ```
 
 To request a fresh review artifact using such a compiler:
@@ -44,6 +51,23 @@ invocation. The self-translation report additionally records original source
 hashes, native build definitions, generated configuration hash, header search
 paths, exact commands, exit codes, and logs. A nonzero translation exit means
 there is **no complete generated project** in that output directory.
+The runner retains `raw.cs` before formatting or packaging, using the driver's
+optional `--raw-output` argument. Raw files must be new; they are never silently
+overwritten. This preserves the full backend result even if later tooling fails.
+For such a retained result, `dotnet.py --raw-input /path/to/raw.cs` explicitly
+replays only packaging, with the same language, target, layout, and output options.
+Its manifest records the raw input path/hash and `packagingOnly: true`; `compiler`
+is null because replay does not invoke a compiler or independently verify the
+raw file's native provenance. Keep the original self-translation report beside
+the replayed project. `--raw-input` and `--raw-output` are mutually exclusive.
+
+The formatter keeps very large synthetic storage constructors and numeric
+literal collections compact internally, preserving their exact tokens and
+formatting source functions normally. This avoids quadratic Roslyn token
+navigation over millions of synthetic initializer siblings. Large formatted
+files travel through JSON as ordered string chunks; chunk boundaries preserve
+UTF-16 surrogate pairs, and the Python driver rejoins the exact text before
+source splitting and mapping.
 
 ## Explicit unbound declarations
 
