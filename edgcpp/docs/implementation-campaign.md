@@ -705,6 +705,11 @@ review package contains 155 C# files and explicitly records 82 unbound external
 declarations. These declarations retain source names and throw when accessed;
 they are review placeholders, not portable host bindings or a runnable selfhost.
 See `docs/self-csharp-review.md` for the final review location and build status.
+The strict full C# build was stopped after Roslyn reached 78.2 GiB RSS and host
+memory became scarce. No compiler diagnostics or assembly were produced before
+the stop, so semantic compilation remains unverified. The terminated build's
+zero exit code is not accepted as success; retained resource evidence records
+the incomplete check.
 
 The large project exposed scaling limits in our emission/packaging tools.
 Marker substitution and export-origin lookup now avoid repeated whole-output

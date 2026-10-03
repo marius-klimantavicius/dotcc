@@ -46,5 +46,15 @@
     "Some source loops still use goto and some assignments still use helper calls",
     "Synthetic bulk initializers intentionally remain compact"
   ],
-  "build": "pending strict Release compiler diagnostics"
+  "build": {
+    "status": "UNVERIFIED: intentionally stopped at resource limit",
+    "artifact": "artifacts/campaign/persistent-continuation/edg-self-review-final-packaged-001/build.resource-limit.json",
+    "elapsedSeconds": 325.58293686504476,
+    "observedCompilerRssKiB": 82022808,
+    "hostAvailableKiB": 5928476,
+    "diagnostics": [],
+    "assemblyProduced": false,
+    "processExitCode": 0,
+    "exitCodeInterpretation": "dotnet returned 0 on SIGTERM, but emitted no success footer or assembly; this is NOT a successful compilation"
+  }
 }

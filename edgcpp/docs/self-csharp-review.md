@@ -13,6 +13,11 @@ external declarations. All 75 original translation units were emitted and the
 complete output passed Roslyn syntax checking and formatting. This is review
 coverage, not a claim of a runnable managed compiler or finished readability:
 some source loops still use `goto`, and some assignments retain helper calls.
+The optional strict Release build was stopped after about 326 seconds when
+Roslyn reached 78.2 GiB resident memory, leaving 5.65 GiB available on the host.
+It had emitted neither compiler diagnostics nor an assembly. Full semantic
+compilation therefore remains unverified; the retained resource-limit record
+distinguishes this controlled stop from a passing build or a compiler error.
 The runner also preserves native `-fno-exceptions` and `-fno-rtti` through the
 driver's explicit `--no-exceptions --no-rtti` flags. Ordinary driver invocations
 continue to enable both features by default.
