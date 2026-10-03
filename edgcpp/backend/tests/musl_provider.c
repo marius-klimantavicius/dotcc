@@ -17,6 +17,9 @@ static int compare_ints(const void* a,const void* b) {
  int x=*(const int*)a,y=*(const int*)b;return (x>y)-(x<y);
 }
 int main(void) {
+  srand(17);int first_random=rand();srand(17);if(rand()!=first_random)return 81;
+  srandom(19);long first_bsd=random();srandom(19);if(random()!=first_bsd)return 82;
+  srand48(23);double first_48=drand48();srand48(23);if(drand48()!=first_48)return 83;
  char text[80];char* end;int count=-1;
  ++calls;
  if(calls!=1)return 1;

@@ -1,0 +1,29 @@
+--- a/random.c
++++ b/random.c
+@@ -1,7 +1,6 @@
+ #include <stdlib.h>
+ #include <stdint.h>
+-#include "lock.h"
+-#include "fork_impl.h"
++#include "prng_lock.h"
+ 
+ /*
+ this code uses the same lagged fibonacci generator as the
+@@ -91,7 +90,7 @@
+ 	__srandom(seed);
+ 	savestate();
+ 	UNLOCK(lock);
+-	return old;
++	return (char *)old;
+ }
+ 
+ char *setstate(char *state) {
+@@ -101,7 +100,7 @@
+ 	old = savestate();
+ 	loadstate((uint32_t*)state);
+ 	UNLOCK(lock);
+-	return old;
++	return (char *)old;
+ }
+ 
+ long random(void) {

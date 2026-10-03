@@ -416,3 +416,9 @@ cleanup. Live source workers are not joined or given freed owner storage during
 process exit. Source coroutine values/addresses that survive suspension reside
 in the coroutine frame. Initial-main-thread thrd_exit and richer lifetime forms
 remain separate gates. Evidence:milestone-process-coroutine-values.json.
+
+The selected PRNG component adds eleven original musl algorithm units and
+raises automatic packaging to 129. Its 18 checks cover exact streams, explicit
+state switching, owner isolation, forced GC and concurrent BSD random access
+under JIT/NativeAOT, plus packaging and exact source-patch replay. Source state
+and algorithms remain translated C; only contention yield reaches BCL services.

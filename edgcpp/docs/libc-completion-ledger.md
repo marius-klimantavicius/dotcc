@@ -68,3 +68,7 @@ or running whole libc++.
 Next sequence: finish C11 thread boundaries; implement remaining formatted output,
 math/fenv, process/signals and C/POSIX domains. A newly observed
 libc++ blocker may change sequencing, never remove a category from the goal.
+
+Selected PRNG support adds 11 musl source units (provider 129). Eighteen focused
+checks cover exact sequences/state ownership, concurrent BSD random state and
+automatic packaging; see libc-prng.md. Other libc categories remain open.

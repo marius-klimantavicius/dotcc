@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "scope": "Selected musl deterministic PRNG source provider",
+  "checkCount": 18,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/libc-prng-translated-002/results.json",
+      "sha256": "24052b617d6af962e670e589cfdb5bdc08fac87e3defca51ea590bc724d581ef",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-prng-001/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/libc-prng-patch-001/results.json",
+      "sha256": "73d69dc4fca232e5686021da4adc884aa82cfaaa0c7289a915dbc85ef0cb6b3e",
+      "checkCount": 1
+    }
+  ],
+  "providerUnits": 129,
+  "platform": "Linux-x64 JIT/NativeAOT"
+}
