@@ -290,9 +290,10 @@ string function_pointer_type(a_type_ptr t) {
 }
 #include "dot_gen_imports.h"
 #include "dot_gen_threads.h"
+#include "dot_gen_process.h"
 string routine_address(a_routine_ptr r) {
   bool pure=r->compiler_generated && r->source_corresp.name && string(r->source_corresp.name)=="__cxa_pure_virtual";
-  if (r->function_def_number == NULL_function_def_number && !pure && !libc_routine(r) && !thread_routine(r)) unsupported(("address of external function: "+string(r->source_corresp.name?r->source_corresp.name:"<unnamed>")).c_str());
+  if (r->function_def_number == NULL_function_def_number && !pure && !libc_routine(r) && !thread_routine(r) && !process_routine(r)) unsupported(("address of external function: "+string(r->source_corresp.name?r->source_corresp.name:"<unnamed>")).c_str());
   r=libc_address_routine(r);
   auto found = routine_addresses.find(r);
   if (found != routine_addresses.end()) return found->second + "()";
@@ -532,6 +533,8 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c) {
   return result;
 }
 string expr(an_expr_node_ptr e);
+string coroutine_expression_override(an_expr_node_ptr e,bool location);
+bool coroutine_expression_captures(an_expr_node_ptr e);
 string gnu_statement_expression(an_expr_node_ptr e);
 string statement_expression_result(an_expr_node_ptr e);
 void ensure_lifecycle();
@@ -612,6 +615,8 @@ string bitfield_mutation(an_expr_node_ptr e,an_expr_node_ptr rhs,const string &o
 }
 string location(an_expr_node_ptr e) {
   if (!e) unsupported("null expression");
+  string coroutine_value=coroutine_expression_override(e,true);
+  if(!coroutine_value.empty())return coroutine_value;
   diagnostic_scope diagnostic(e->position);
   string jump=source_jump_expression(e);
   if(!jump.empty())return jump;
@@ -707,7 +712,7 @@ string location(an_expr_node_ptr e) {
         }
         call=id+"(";
       } else {
-        if ((r->function_def_number == NULL_function_def_number || !scope_for_routine_or_null(r)) && !libc_routine(r) && !thread_routine(r))
+        if ((r->function_def_number == NULL_function_def_number || !scope_for_routine_or_null(r)) && !libc_routine(r) && !thread_routine(r) && !process_routine(r))
           unsupported(("external call: "+source).c_str());
         call = name(r, "f") + "(";
       }
@@ -858,6 +863,9 @@ string location(an_expr_node_ptr e) {
 }
 void line(string s) { output += s + "\n"; }
 string expr(an_expr_node_ptr e) {
+  if (!e) unsupported("null expression");
+  string coroutine_value=coroutine_expression_override(e,false);
+  if(!coroutine_value.empty())return coroutine_value;
   string value=location(e);
   if(e->is_lvalue && c11_atomic_type(e->type))return c11_atomic_read(e,"&("+value+")");
   if(!(get_type_qualifiers(e->type)&TQ_VOLATILE) || !e->is_lvalue)return value;
@@ -1215,6 +1223,7 @@ void back_end(void) {
   libc_enabled=getenv("EDG_DOT_LIBC") && string(getenv("EDG_DOT_LIBC"))=="dotcc";
   reset_libc_imports();
   reset_thread_imports();
+  reset_process_exit_imports();
   reset_materialization();
   exception_ptr_helpers_emitted=false;
   runtime_exceptions=getenv("EDG_DOT_RUNTIME") && string(getenv("EDG_DOT_RUNTIME"))=="edg-exceptions";
@@ -1281,7 +1290,7 @@ void back_end(void) {
     }
     prepare_source_jumps(s->assoc_block);
     check_operand_order(s->assoc_block);
-    if (r->source_corresp.name && string(r->source_corresp.name) == "main") { main_routine = r; if(main_arguments(r))ensure_lifecycle(); }
+    if (r->source_corresp.name && string(r->source_corresp.name) == "main") { main_routine = r; if(main_arguments(r))ensure_lifecycle(); if(libc_enabled)ensure_process_exit(); }
     auto rt = skip_typerefs(r->type);
     function_returns_void=skip_typerefs(rt->variant.routine.return_type)->kind==tk_void;
     string signature = "private " + string(instance_mode ? "" : "static ") +
@@ -1381,7 +1390,7 @@ void back_end(void) {
       "catch (global::System.Exception __edg_boundary_error) { __edg_end_exception(__edg_boundary_error); throw; }":"";
   for(size_t pos=output.find(exception_boundary);pos!=string::npos;pos=output.find(exception_boundary,pos+exception_boundary_code.size()))
     output.replace(pos,exception_boundary.size(),exception_boundary_code);
-  for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_THREAD_EXIT_CATCH__*/",thread_finalizer_catch_code()},{"/*__EDG_LIBC_THREAD_KEYS_RELEASE__*/",thread_keys_release_code()},{"/*__EDG_LIBC_THREAD_RELEASE__*/",libc_thread_release_code()},{"/*__EDG_LIBC_DISPOSE__*/",coroutine_disposal_code()+thread_disposal_code()+libc_disposal_code()}})
+  for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_PROCESS_FLUSH__*/",files_emitted?"__edg_files_value?.Fflush(null);":""},{"/*__EDG_THREAD_EXIT_CATCH__*/",thread_finalizer_catch_code()},{"/*__EDG_LIBC_THREAD_KEYS_RELEASE__*/",thread_keys_release_code()},{"/*__EDG_LIBC_THREAD_RELEASE__*/",libc_thread_release_code()},{"/*__EDG_LIBC_DISPOSE__*/",coroutine_disposal_code()+thread_disposal_code()+libc_disposal_code()}})
     for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);
   for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_ENTER__*/",lifecycle_emitted?"__edg_enter();":""},{"/*__EDG_LEAVE__*/",lifecycle_emitted?"__edg_leave();":""}})
     for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);

@@ -25,7 +25,7 @@ RUNTIME_DEPENDENCIES = {
     "LibcFilesAssert": ("LibcFiles", "LibcProcess"), "LibcFilesWideScan": ("LibcFiles", "VaList"), "LibcEnvironment": (),
     "LibcText": ("LibcErrorMessages", "LibcLocale"), "LibcErrorMessages": (), "LibcLocale": (),
     "LibcClock": (), "LibcCpuClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
-    "LibcxxThreads": ("LibcC11Threads",), "LibcC11Threads": (), "LibcCalendar": (), "LibcProcess": (),
+    "LibcxxThreads": ("LibcC11Threads",), "LibcC11Threads": (), "LibcCalendar": (), "LibcProcess": (), "LibcProcessExit": (),
 }
 
 def content_bytes(value):
@@ -196,7 +196,14 @@ def main():
     if type_ir is not None:
         files["dot-gen.types.json"] = json.dumps(type_ir, indent=2) + "\n"
     if args.emit == "exe":
-        if termination:
+        if "// dot-gen:process-exit process-v1" in source:
+            receiver = "owner" if args.instance_methods else qualified
+            owner = f"var owner=new {qualified}(); " if args.instance_methods else ""
+            body = f"int status={receiver}.Run({run_arguments}); {receiver}.__EdgProcessExit(status); return status;"
+            if termination:
+                body = f"try {{ {body} }} catch(global::System.Exception error) {{ {receiver}.__EdgUnhandledProgram(error); throw; }}"
+            files["EntryPoint.cs"] = f"internal static class EntryPoint {{ public static int Main() {{ {owner}{body} }} }}\n"
+        elif termination:
             receiver = "owner" if args.instance_methods else qualified
             owner = f"using var owner=new {qualified}(); " if args.instance_methods else ""
             cleanup = f" finally {{ {qualified}.Shutdown(); }}" if not args.instance_methods and "void Shutdown()" in result.stdout else ""

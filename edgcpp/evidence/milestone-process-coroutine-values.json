@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "scope": "Process-wide normal/quick/immediate termination and initial value-producing coroutine continuations",
+  "checkCount": 77,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/libc-process-translated-20261003-030100/results.json",
+      "sha256": "d9214d898695ca40cf4204e68f3602cccaf311c59accf8e93e0285d91498709f",
+      "checkCount": 18
+    },
+    {
+      "path": "artifacts/campaign/libc-process-abi-20261003-030100/results.json",
+      "sha256": "65bcb75de46a57729a217f78044a82656fea2faec6b71e4aa6a00f0771818c01",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-process-candidate-20261003-023000/proof/results.json",
+      "sha256": "65353e7138d725c12876dde9ce7ac83a567d572733a48e2a9bb9c99e1c5674d5",
+      "checkCount": 2
+    },
+    {
+      "path": "artifacts/campaign/coroutine-cps-values-20261003-045934/results.json",
+      "sha256": "45802b82f919063dfe18063cef7f2d1878f5d55fa6b6b9d6efca474badf936f8",
+      "checkCount": 10
+    },
+    {
+      "path": "artifacts/campaign/coroutine-cps-regression-20261003-050031/results.json",
+      "sha256": "d5aa1bf640eae1c6ee7f452d57718c4e99b90ecd99e2a5648f358df24fd6cc56",
+      "checkCount": 38
+    }
+  ],
+  "validation": "Synthetic native oracles and Linux-x64 static/instance JIT/NativeAOT. The preceding frozen650 JIT suite predates these changes.",
+  "limitations": [
+    "Initial-main-thread thrd_exit and owner-local process termination remain in progress.",
+    "Coroutines still reject protected expression suspension and unsupported allocator/lifetime forms.",
+    "Full libc/libc++ and cross-platform validation remain open."
+  ]
+}

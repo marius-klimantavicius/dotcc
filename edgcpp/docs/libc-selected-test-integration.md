@@ -95,3 +95,19 @@ was added; the canonical stdatomic header is now the default input.
 Assertion facade: `libc_assert_verify.verify_libc_assert(root, tests, out, nativeaot, run)` returns four JIT checks or eight with NativeAOT. Each configuration checks enabled/disabled/reincluded assertions plus fatal subprocesses for ordinary and redirected wide-oriented owner stderr. Child subprocess outputs are retained; core dump generation is disabled for intentional aborts. Registered in the full suite using `suite_output("libc_assert")`.
 
 C11 threads: `libc_c11_threads_verify.verify_libc_c11_threads(root, tests, out, nativeaot, run)` returns two native checks plus four/eight generated checks. It explicitly supplies `runtime/libc/threads/threads.c`. `libc_c11_threads_abi_verify.verify_libc_c11_threads_abi(root, out)` returns thirteen rejected ABI checks. `libc_c11_threads_runtime_verify.verify_libc_c11_threads_runtime(root, tests, out, nativeaot, run)` adds three/six standalone C11/shared-C++ normal and first-pass fatal checks. Runtime helpers must be copied together: `LibcxxThreads.cs` and `LibcC11Threads.cs`. Main/host exit completion is outside this worker matrix.
+
+Process termination: `libc_process_exit_verify.verify_libc_process_exit(root, tests,
+out, nativeaot, run)` supplies ten checks without AOT or eighteen with AOT;
+`libc_process_exit_abi_verify.verify_libc_process_exit_abi(root, out)` supplies
+nine malformed-ABI rejections. Both are registered with isolated suite outputs.
+Each process case retains stdout/stderr/file bytes and command; managed hosts
+explicitly exercise returning Run and separate thread/owner cleanup.
+
+Wide scanf registration correction: the wide scanner and allocator-failure
+verifiers detect automatic provider registration and omit duplicate explicit
+translation units. Copied wscanf/strto candidate bytes must match the registered
+provider; differing candidates fail before generated acceptance and require a
+separate provider snapshot. The native-only path can still inspect candidates.
+The two-file correction is independent of compiler/runtime changes; registration,
+candidate rejection and unregistered paths have retained harness checks in
+`libc-wscanf-harness-registration-20261003-030000/results.json`.

@@ -406,3 +406,13 @@ duplicate-source interruption and200 in the recorded continuation with the same
 compiler/runtime. The two corrected wide-scanning verifiers compare source
 bytes and use the registered provider once. Evidence is indexed separately in
 `evidence/full-jit-coroutines-threads.json`; this is not an all-platform claim.
+
+The next accepted increment adds process-wide normal/quick/immediate exit and
+initial value-producing coroutine continuations. Seventy-seven focused checks
+cover static/instance JIT and NativeAOT:77 is the combined process29 and CPS48
+acceptance count, not complete language/library coverage. Executable main return
+uses normal process termination; managed Run still returns for explicit host
+cleanup. Live source workers are not joined or given freed owner storage during
+process exit. Source coroutine values/addresses that survive suspension reside
+in the coroutine frame. Initial-main-thread thrd_exit and richer lifetime forms
+remain separate gates. Evidence:milestone-process-coroutine-values.json.

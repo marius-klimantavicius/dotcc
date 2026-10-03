@@ -44,7 +44,7 @@ string sequence_expression(an_expr_node_ptr e) {
   expression_captures(e,vars);
   string id="__edg_expr"+std::to_string(++expression_serial);
   string args="&("+cleanup_slot+")", parameters="int* __edg_state";
-  if(materialization_captures(e)) {
+  if(materialization_captures(e) || coroutine_expression_captures(e)) {
     args+=", __edg_frame";
     parameters+=", byte* __edg_frame";
   }

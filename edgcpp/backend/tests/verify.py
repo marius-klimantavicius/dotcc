@@ -298,6 +298,10 @@ def main():
     checks.extend(verify_libc_stdatomic(ROOT, TESTS, suite_output("libc_stdatomic"), args.nativeaot, run))
     from libc_assert_verify import verify_libc_assert
     checks.extend(verify_libc_assert(ROOT, TESTS, suite_output("libc_assert"), args.nativeaot, run))
+    from libc_process_exit_verify import verify_libc_process_exit
+    checks.extend(verify_libc_process_exit(ROOT, TESTS, suite_output("libc_process_exit"), args.nativeaot, run))
+    from libc_process_exit_abi_verify import verify_libc_process_exit_abi
+    checks.extend(verify_libc_process_exit_abi(ROOT, suite_output("libc_process_exit_abi")))
     from libc_c11_threads_verify import verify_libc_c11_threads
     checks.extend(verify_libc_c11_threads(ROOT, TESTS, suite_output("libc_c11_threads"), args.nativeaot, run))
     from libc_c11_threads_abi_verify import verify_libc_c11_threads_abi
@@ -341,6 +345,10 @@ def main():
         checks.extend(verify_coroutine_noop(ROOT, TESTS, suite_output("coroutine_noop"), args.nativeaot, run, args.libcxx_acquisition))
         from coroutine_initial_failure_verify import verify_coroutine_initial_failure
         checks.extend(verify_coroutine_initial_failure(ROOT, TESTS, suite_output("coroutine_initial_failure"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_value_await_verify import verify_coroutine_value_await
+        checks.extend(verify_coroutine_value_await(ROOT, TESTS, suite_output("coroutine_value_await"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_saved_value_verify import verify_coroutine_saved_value
+        checks.extend(verify_coroutine_saved_value(ROOT, TESTS, suite_output("coroutine_saved_value"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_ptr_verify import verify_libcxx_exception_ptr
         checks.extend(verify_libcxx_exception_ptr(ROOT, TESTS, suite_output("libcxx_exception_ptr"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_owner_verify import verify_libcxx_exception_owner

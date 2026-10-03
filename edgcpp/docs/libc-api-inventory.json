@@ -1,6 +1,12 @@
 {
-  "bindingCount": 159,
+  "bindingCount": 164,
   "bindings": {
+    "_Exit": {
+      "parameters": "int",
+      "result": "void",
+      "source": "libc-process-exit-bindings.def",
+      "target": "global::Edg.Runtime.LibcProcessExit.Exit(a0)"
+    },
     "__assert_fail": {
       "parameters": "sbyte*,sbyte*,int,sbyte*",
       "result": "void",
@@ -163,6 +169,18 @@
       "source": "libc-bindings.def",
       "target": "__edg_aligned_alloc"
     },
+    "at_quick_exit": {
+      "parameters": "void()",
+      "result": "int",
+      "source": "libc-process-exit-bindings.def",
+      "target": "__edg_register_exit((nint)a0,true)"
+    },
+    "atexit": {
+      "parameters": "void()",
+      "result": "int",
+      "source": "libc-process-exit-bindings.def",
+      "target": "__edg_register_exit((nint)a0,false)"
+    },
     "calloc": {
       "parameters": "ulong,ulong",
       "result": "void*",
@@ -234,6 +252,12 @@
       "result": "LOCALE*",
       "source": "libc-locale-bindings.def",
       "target": "__edg_text.Locales.DupLocale"
+    },
+    "exit": {
+      "parameters": "int",
+      "result": "void",
+      "source": "libc-process-exit-bindings.def",
+      "target": "__edg_process_exit(a0,false)"
     },
     "fabs": {
       "parameters": "double",
@@ -690,6 +714,12 @@
       "result": "uint",
       "source": "libc-wide-files-bindings.def",
       "target": "__edg_files.Putwchar"
+    },
+    "quick_exit": {
+      "parameters": "int",
+      "result": "void",
+      "source": "libc-process-exit-bindings.def",
+      "target": "__edg_process_exit(a0,true)"
     },
     "realloc": {
       "parameters": "void*,ulong",
@@ -1252,12 +1282,12 @@
       "vsscanf": "selected-source"
     },
     "stdlib.h": {
-      "_Exit": "declaration-only",
+      "_Exit": "runtime-binding",
       "abort": "runtime-binding",
       "abs": "runtime-binding",
       "aligned_alloc": "runtime-binding",
-      "at_quick_exit": "declaration-only",
-      "atexit": "declaration-only",
+      "at_quick_exit": "runtime-binding",
+      "atexit": "runtime-binding",
       "atof": "selected-source",
       "atoi": "selected-source",
       "atol": "selected-source",
@@ -1266,7 +1296,7 @@
       "calloc": "runtime-binding",
       "clearenv": "selected-source",
       "div": "selected-source",
-      "exit": "declaration-only",
+      "exit": "runtime-binding",
       "free": "runtime-binding",
       "getenv": "selected-source",
       "labs": "runtime-binding",
@@ -1281,7 +1311,7 @@
       "putenv": "selected-source",
       "qsort": "selected-source",
       "qsort_r": "selected-source",
-      "quick_exit": "declaration-only",
+      "quick_exit": "runtime-binding",
       "rand": "declaration-only",
       "realloc": "runtime-binding",
       "setenv": "selected-source",
@@ -1708,7 +1738,7 @@
     "id": "musl-selected-bcl-lp64-v1",
     "schema": 1
   },
-  "publicBindingCount": 135,
+  "publicBindingCount": 140,
   "schema": 1,
   "scope": "C17 header-category ledger plus explicit POSIX extensions; not an exhaustive POSIX API catalogue; regex declaration census excludes macros, data and compiler facilities",
   "selectedPublicDefinitions": [

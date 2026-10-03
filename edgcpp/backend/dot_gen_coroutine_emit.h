@@ -209,27 +209,15 @@ void coroutine_dispatch(const std::map<unsigned,string> &routes) {
   for(auto &route:routes)line("case "+std::to_string(route.first)+": goto "+route.second+";");
   line("case 0: break;default: global::System.Environment.FailFast(\"Invalid coroutine continuation\");break;}\n");
 }
-void coroutine_effect(an_expr_node_ptr expression) {
-  if(!expression)return;
-  if(expression==current_coroutine->unhandled_exception_call) {
-    line("try {"+expression_effect(expression)+"} catch(global::System.Exception error) when(__edg_coroutine_final_filter(error,__edg_coro,ref __edg_final_exception)){throw;}");
-    return;
-  }
-  bool semantic_call=false;
-  coroutine_walk_expression(expression,[&](an_expr_node_ptr node){semantic_call|=node==current_coroutine->unhandled_exception_call;});
-  if(!semantic_call && !coroutine_has_await(expression)){line(expression_effect(expression));return;}
-  if(expression->kind==enk_object_lifetime){coroutine_effect(expression->variant.object_lifetime.expr);return;}
-  if(expression->kind==enk_operation && expression->variant.operation.kind==eok_comma) {
-    auto first=expression->variant.operation.operands;coroutine_effect(first);coroutine_effect(first->next);return;
-  }
-  if(expression->kind!=enk_await && expression->kind!=enk_yield)
-    unsupported("coroutine suspension inside an unnormalized value expression");
+#include "dot_gen_coroutine_cps.h"
+string coroutine_schedule_await(an_expr_node_ptr expression,coroutine_value_mode mode) {
   auto ready=expression->variant.await_info.ready_resume_suspend;
   auto resume=ready?ready->next:nullptr;auto suspend=resume?resume->next:nullptr;
-  if(!suspend || suspend->next || coroutine_has_await(ready) || coroutine_has_await(resume) || coroutine_has_await(suspend))
+  if(!suspend || suspend->next || coroutine_has_await(resume) || coroutine_has_await(suspend))
     unsupported("nested coroutine await protocol");
   auto site=coroutine_await_sites.at(expression);
-  line("if (!"+condition(ready)+") {");
+  string ready_test=coroutine_has_await(ready)?"("+coroutine_schedule_expression(ready,cvm_value)+"!=0)":condition(ready);
+  line("if (!"+ready_test+") {");
   line("__edg_coro->State="+std::to_string(site.state)+";__edg_coro->Cleanup=__edg_cleanup_state;");
   if(site.final)line("__edg_coro->Resume=null;");
   auto suspend_type=skip_typerefs(suspend->type);
@@ -243,7 +231,28 @@ void coroutine_effect(an_expr_node_ptr expression) {
     line("return *(void**)&"+temporary+";");
   } else unsupported("coroutine await_suspend result ABI");
   line("}");line(coroutine_resume_label(expression)+": ;");line("__edg_coro->State=0;");
-  line(expression_effect(resume));
+  if(mode==cvm_effect){line(expression_effect(resume));return "";}
+  return coroutine_save_expression(expression,mode,mode==cvm_address?"&("+location(resume)+")":expr(resume));
+}
+void coroutine_effect(an_expr_node_ptr expression) {
+  if(!expression)return;
+  if(expression==current_coroutine->unhandled_exception_call) {
+    line("try {"+expression_effect(expression)+"} catch(global::System.Exception error) when(__edg_coroutine_final_filter(error,__edg_coro,ref __edg_final_exception)){throw;}");
+    return;
+  }
+  bool semantic_call=false;
+  coroutine_walk_expression(expression,[&](an_expr_node_ptr node){semantic_call|=node==current_coroutine->unhandled_exception_call;});
+  if(!semantic_call && coroutine_has_await(expression)){coroutine_expression_root(expression,cvm_effect);return;}
+  if(!semantic_call){line(expression_effect(expression));return;}
+  if(expression->kind==enk_object_lifetime){coroutine_effect(expression->variant.object_lifetime.expr);return;}
+  if(expression->kind==enk_operation && expression->variant.operation.kind==eok_comma) {
+    auto first=expression->variant.operation.operands;coroutine_effect(first);coroutine_effect(first->next);return;
+  }
+  unsupported("coroutine unhandled-exception expression boundary");
+}
+string coroutine_condition(an_expr_node_ptr expression) {
+  if(!coroutine_has_await(expression))return condition(expression);
+  return "("+coroutine_expression_root(expression,cvm_value)+(skip_typerefs(expression->type)->kind==tk_pointer?"!=null)":"!=0)");
 }
 void coroutine_statement(a_statement_ptr statement);
 void coroutine_try(a_statement_ptr statement) {
@@ -295,33 +304,37 @@ void coroutine_statement(a_statement_ptr node) {
   if(!structured && !semantic_call && coroutine_awaits(node).empty()){statement(node);return;}
   switch(node->kind) {
     case stmk_expr:coroutine_effect(node->expr);break;
+    case stmk_init: {
+      auto init=node->variant.dynamic_init;
+      if(init->kind!=dik_expression || !init->variable)unsupported("suspended coroutine initialization kind");
+      auto expression=init->variant.expression;
+      if(skip_typerefs(expression->type)->kind==tk_void)coroutine_expression_root(expression,cvm_effect);
+      else {string value=coroutine_expression_root(expression,cvm_value);line(variable(init->variable)+"="+value+";");}
+      break;
+    }
     case stmk_if: {
-      if(coroutine_has_await(node->expr))unsupported("coroutine condition suspension");
-      string id=name(node,"__edg_if");line("if (!"+condition(node->expr)+") goto "+id+"_else;");
+      string id=name(node,"__edg_if");line("if (!"+coroutine_condition(node->expr)+") goto "+id+"_else;");
       coroutine_statement(node->variant.if_stmt.then_statement);line("goto "+id+"_end;");
       line(id+"_else: ;");coroutine_statement(node->variant.if_stmt.else_statement);line(id+"_end: ;");break;
     }
     case stmk_for: {
       auto loop=node->variant.for_loop.extra_info;
-      if(coroutine_has_await(node->expr) || coroutine_has_await(loop->increment))unsupported("coroutine loop-control suspension");
       coroutine_statement(loop->initialization);string id=name(node,"__edg_for");line(id+"_head: ;");
-      if(node->expr)line("if (!"+condition(node->expr)+") goto "+id+"_end;");
-      coroutine_statement(node->variant.for_loop.statement);line(expression_effect(loop->increment));line("goto "+id+"_head;");
+      if(node->expr)line("if (!"+coroutine_condition(node->expr)+") goto "+id+"_end;");
+      coroutine_statement(node->variant.for_loop.statement);coroutine_effect(loop->increment);line("goto "+id+"_head;");
       if(node->expr)line(id+"_end: ;");
       break;
     }
     case stmk_while:case stmk_end_test_while: {
-      if(coroutine_has_await(node->expr))unsupported("coroutine loop-condition suspension");
       string id=name(node,"__edg_loop");line(id+"_head: ;");
-      if(node->kind==stmk_while)line("if (!"+condition(node->expr)+") goto "+id+"_end;");
+      if(node->kind==stmk_while)line("if (!"+coroutine_condition(node->expr)+") goto "+id+"_end;");
       coroutine_statement(node->variant.loop_statement);
-      line(node->kind==stmk_while?"goto "+id+"_head;":"if "+condition(node->expr)+" goto "+id+"_head;");
+      line(node->kind==stmk_while?"goto "+id+"_head;":"if "+coroutine_condition(node->expr)+" goto "+id+"_head;");
       if(node->kind==stmk_while)line(id+"_end: ;");
       break;
     }
     case stmk_switch: {
-      if(coroutine_has_await(node->expr))unsupported("coroutine switch-condition suspension");
-      string id=name(node,"__edg_switch");line(type(node->expr->type)+" "+id+"_value="+expr(node->expr)+";");
+      string id=name(node,"__edg_switch");line(type(node->expr->type)+" "+id+"_value="+(coroutine_has_await(node->expr)?coroutine_expression_root(node->expr,cvm_value):expr(node->expr))+";");
       auto extra=node->variant.switch_stmt.extra_info;
       for(auto entry=extra->cases;entry;entry=entry->next) {
         if(!entry->case_value)continue;
@@ -432,6 +445,7 @@ void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_pt
   if(!coroutine_initial_try)unsupported("coroutine initial suspension region");
   coroutine_plan_tries(scope->assoc_block);
   for(auto variable:cleanup_capture_variables)coroutine_frame_variable(variable);
+  coroutine_prepare_expressions(scope->assoc_block);
   if(skip_typerefs(descriptor->handle->type)->size!=8)unsupported("coroutine handle representation");
   auto rt=skip_typerefs(routine->type);auto extra=rt->variant.routine.extra_info;
   auto specification=extra->exception_specification;

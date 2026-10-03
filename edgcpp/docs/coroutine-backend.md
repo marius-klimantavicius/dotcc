@@ -168,7 +168,27 @@ construction, get_return_object, initial await_ready and initial await_suspend.
 The latter use a trivial returned handle, yielding identical GCC/Clang O0/O2
 traces without the earlier owning-return-object disagreement.
 
-Value-producing awaits, suspended condition expressions, allocation-failure
-return hooks, placement allocators, exported factories and function-try
-coroutine factories remain open. `coroutine_value_await.cpp` is a native-only
-next-slice fixture; it is not translated acceptance evidence.
+Suspension-dependent scalar expressions now pass ten focused checks in
+`coroutine-cps-values-20261003-045934/results.json`, with 38 counter/protocol
+regression checks in `coroutine-cps-regression-20261003-050031/results.json`.
+The emitter schedules values and lvalue addresses into the selected-allocator
+frame, preserves assignment RHS-before-LHS ordering and short-circuit branches,
+and supports awaited initialization, conditional expressions and loop conditions.
+Cached reads bypass a second volatile/atomic read; saved addresses continue to
+use ordinary access semantics when their value is subsequently needed. Expression
+helpers explicitly receive the frame pointer. No helper-local stack address is
+retained across suspension.
+
+`coroutine_value_await.cpp` agrees with GCC/Clang O0/O2; both static and instance
+C# pass JIT/NativeAOT with strict warning checks. `coroutine_saved_value.cpp`
+adds a C++17 sequenced shift whose left-hand volatile read must survive suspension
+and mutation on the right. Clang O0/O2 and generated JIT/NativeAOT agree. The
+native GCC observation is retained separately in
+`coroutine-value-native-20261003-045734`: its event sequence agrees but its
+computed result differs, so that fixture uses Clang as its executable oracle.
+No EDG source or semantic rule was changed. Exact accepted input/helper/compiler
+hashes are in `coroutine-cps-checkpoint-20261003-045934/hashes.json`.
+
+Reference/aggregate await results and their full-expression cleanup, protected
+expression suspension, allocation-failure return hooks, placement allocators,
+exported factories and function-try coroutine factories remain open.

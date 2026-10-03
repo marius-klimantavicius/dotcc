@@ -10,11 +10,14 @@ void ensure_lifecycle() {
   string mod=lifecycle_mod();
   string callback="delegate* managed<"+string(instance_mode?string(getenv("EDG_DOT_CLASS"))+", ":"")+"void*, void>";
   string invoke="(("+callback+")entry.Function)("+string(instance_mode?"this, ":"")+"(void*)entry.Argument);";
+  string noarg_callback="delegate* managed<"+string(instance_mode?string(getenv("EDG_DOT_CLASS"))+", ":"")+"void>";
+  invoke="if(entry.NoArguments)(("+noarg_callback+")entry.Function)("+string(instance_mode?"this":"")+");else "+invoke;
   string code=R"CS(
 // dot-gen:member-begin
 private readonly struct __edg_finalizer {
   internal readonly nint Function,Argument;
-  internal __edg_finalizer(nint fn,nint arg) {Function=fn;Argument=arg;}
+  internal readonly bool NoArguments;
+  internal __edg_finalizer(nint fn,nint arg,bool noArguments=false) {Function=fn;Argument=arg;NoArguments=noArguments;}
 }
 // dot-gen:member-end
 // dot-gen:member-begin

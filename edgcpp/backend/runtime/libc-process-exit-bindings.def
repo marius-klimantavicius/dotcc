@@ -1,0 +1,5 @@
+EDG_PROCESS_EXIT("atexit", "int", "void()", "__edg_register_exit((nint)a0,false)")
+EDG_PROCESS_EXIT("at_quick_exit", "int", "void()", "__edg_register_exit((nint)a0,true)")
+EDG_PROCESS_EXIT("exit", "void", "int", "__edg_process_exit(a0,false)")
+EDG_PROCESS_EXIT("quick_exit", "void", "int", "__edg_process_exit(a0,true)")
+EDG_PROCESS_EXIT("_Exit", "void", "int", "global::Edg.Runtime.LibcProcessExit.Exit(a0)")

@@ -46,3 +46,7 @@ __pycache__/
 /upstream/src/libc-assert-bindings.def
 
 /upstream/src/libc-c11-threads-bindings.def
+
+/upstream/src/dot_gen_process.h
+/upstream/src/libc-process-exit-bindings.def
+/upstream/src/dot_gen_coroutine_cps.h

@@ -5,7 +5,7 @@ from pathlib import Path
 def inventory(root):
     runtime=root/'backend/runtime';bindings={}
     for path in sorted(runtime.glob('libc*-bindings.def')):
-        for symbol,result,parameters,target in re.findall(r'EDG_LIBC\("([^"]+)",\s*"([^"]*)",\s*"([^"]*)",\s*"([^"]*)"\)',path.read_text()):
+        for symbol,result,parameters,target in re.findall(r'(?:EDG_LIBC|EDG_PROCESS_EXIT)\("([^"]+)",\s*"([^"]*)",\s*"([^"]*)",\s*"([^"]*)"\)',path.read_text()):
             if symbol in bindings:raise ValueError('duplicate binding '+symbol)
             bindings[symbol]={'result':result,'parameters':parameters,'target':target,'source':path.name}
     # Explicit public definitions of the automatically packaged selected sources.

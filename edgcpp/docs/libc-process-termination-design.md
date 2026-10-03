@@ -1,10 +1,11 @@
 # Process and owner termination implementation design
 
-Status: proposed next component after accepted C11 worker support. No public
-`exit`, `_Exit`, `quick_exit` or registration binding is claimed by this document.
-The existing assertion/abort path remains unchanged while this design is reviewed
-and prototyped. The authoritative backend plan requires embedding termination
-semantics separate from per-instance resource isolation.
+Status: process-mode `exit`, `_Exit`, `quick_exit`, `atexit` and
+`at_quick_exit` are implemented and accepted in synthetic native C/C++,
+translated static/instance JIT and Linux NativeAOT tests. Executable main return
+uses normal process termination; managed `Run` returns to its host. Main-thread
+`thrd_exit` and isolated owner termination remain open and are not implied by
+per-instance resource isolation. The existing assertion/abort path is unchanged.
 
 ## Source distinctions to preserve
 
@@ -32,8 +33,8 @@ cleanup. Dedicated native C/C++ synthetic oracles will pin these sequences.
 Propose `--process-exit process|owner`, independent of namespace, class shape,
 splitting and `--instance-methods`. Default `process` preserves existing abort
 behavior. Owner mode is an explicit embedding contract; it must be recorded in
-metadata and supported by generated host APIs. This default is a proposal for
-coordinator agreement, not a committed driver option.
+metadata and supported by generated host APIs. The coordinator accepted the explicit policy and process default; owner mode
+must remain unavailable until worker cancellation and quiescence are complete.
 
 In process mode, drain the requested normal/quick callbacks on the requesting
 thread and use `Environment.Exit(status)`; immediate exit skips callbacks.
@@ -77,7 +78,7 @@ callbacks; never cast incompatible managed calli signatures. Keep quick handlers
 in a separate stack. No locks span user callbacks; pop an entry before invocation.
 Catch registration OOM and return nonzero without losing existing entries.
 
-Process exit transport differs from `CThreadExitTransfer`: generated language
+The future owner-mode process transfer differs from `CThreadExitTransfer`: generated language
 catch/noexcept/dynamic-spec filters ignore both, but source automatic cleanup
 must be suppressed for process exit and retained for thread exit. Runtime-only
 finally blocks still release invocation leases and temporary allocations.
@@ -103,15 +104,16 @@ entry contract.
 
 ## Concrete implementation sequence
 
-1. Standalone owner request/callback prototype: normal/quick separation,
-   interleaved callback arities, registration during drain, owner isolation,
-   first-winner races, no synchronous task continuations, and polling allocation.
+1. Implement the final BCL process-exit primitive and prove it stops live workers
+   without caller/worker finally execution under JIT/NativeAOT. Keep accepted
+   source abort behavior unchanged.
 2. Integrate `atexit`/`at_quick_exit` into generated lifecycle ordering and test
    normal main return, including C++ global destructors and callback addresses.
 3. Implement process-mode exit/quick/immediate via fatal subprocess fixtures,
    preserving automatic-vs-static destruction, stream buffering and live workers.
 4. Add main thread-exit boundary and last-thread completion with native oracles.
-5. Add owner-mode compiler polls/runtime wakeups, owner-tagged host result and
+5. Prototype owner request/callback notification and then add owner-mode
+   compiler polls/runtime wakeups, owner-tagged host result and
    resource-only teardown; test competing instances, worker-requested exit,
    never-returning source loops, blocked waits and A→B→A host reentry.
 
@@ -120,3 +122,44 @@ requests/notification and explicit unbound process exit; `StdlibLib.cs` explicit
 says it lacks atexit handling. Reuse those ideas, not their incomplete libc
 semantics or ambient binding mechanism. Preserve every candidate and failed
 probe. All acceptance uses synthetic sources and JIT/NativeAOT, not real projects.
+
+Accepted process-only integration contract:
+
+- `LibcProcessExit.Exit(int)` is the final BCL primitive.
+- `atexit`/`at_quick_exit` accept only exact `void()` callback ABI and delegate
+  to generated `__edg_register_exit(nint,bool quick)`.
+- `exit`/`quick_exit` call `__edg_process_exit(int,bool quick)`; `_Exit` directly
+  invokes the BCL primitive. Normal dispatch drains calling-thread C++ TLS and
+  unified normal callbacks, flushes existing FILE state, then exits. Quick
+  dispatch drains only quick callbacks. No path joins workers or frees the
+  translated native heap before actual process termination.
+- Executable main-return dispatch uses the normal process helper. Managed `Run`
+  remains host-controlled; ordinary owner shutdown still preserves active leases.
+
+The synthetic fixture `libc_process_exit.cpp` tests native C/C++ ordering,
+registration during callbacks, forty registrations, source-return versus exit
+automatic lifetimes, skipped TSS destructors, quick/immediate buffered output,
+and a live worker that never exits voluntarily. Initial native12 evidence is
+`libc-process-native-20261003-023000/results.json`; additional normal-main-return
+with a live worker is included in the upcoming generated matrix.
+
+## Acceptance and retained evidence
+
+`artifacts/campaign/libc-process-translated-20261003-030100/results.json`
+records eighteen checks: native C/C++ seven-mode oracles, all eight generated
+executable configurations, and eight managed-host configurations. Each
+executable checks normal return, exit, quick exit, immediate exit, forty callback
+registrations, exit with a live worker, and main return with a live worker.
+Managed tests retain host-controlled return and explicit ReleaseThread/Shutdown;
+instance mode checks two independent owners. Callback routine addresses are
+exercised, as are exact automatic/TLS/TSS/global destruction traces and buffered
+file bytes. No active worker is joined or has its native storage reclaimed
+before process termination.
+
+`libc-process-abi-20261003-030100/results.json` records nine rejected malformed
+callback/result/status declarations. `libc-process-candidate-20261003-023000/proof/results.json`
+records standalone JIT/AOT termination without caller/foreground-worker finally
+execution. These are Linux execution results; BCL-based implementation alone
+does not establish Windows/macOS acceptance. Registration allocation failure,
+concurrent exit behavior outside defined source contracts, signals and temporary
+file removal are not covered by this matrix.
