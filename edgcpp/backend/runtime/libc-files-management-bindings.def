@@ -1,0 +1,7 @@
+// Exact public FILE ABI; __edg_perror is the owner-local raw stream bridge.
+EDG_LIBC("freopen", "FILE*", "sbyte*,sbyte*,FILE*", "__edg_files.Freopen")
+EDG_LIBC("tmpfile", "FILE*", "", "__edg_files.Tmpfile")
+EDG_LIBC("tmpnam", "sbyte*", "sbyte*", "__edg_files.Tmpnam")
+EDG_LIBC("rewind", "void", "FILE*", "__edg_files.Rewind")
+EDG_LIBC("setbuf", "void", "FILE*,sbyte*", "__edg_files.Setbuf")
+EDG_LIBC("__edg_perror", "void", "FILE*,sbyte*,sbyte*", "__edg_files.Perror")

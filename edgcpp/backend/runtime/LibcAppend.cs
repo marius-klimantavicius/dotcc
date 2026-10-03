@@ -36,6 +36,18 @@ internal static unsafe partial class LibcAppend
         catch { stream.Dispose(); throw; }
     }
 
+    internal static void SetAppend(FileStream stream, bool append)
+    {
+        if (OperatingSystem.IsWindows()) return; // Write chooses its explicit EOF offset.
+        if (!OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
+            throw new PlatformNotSupportedException("Atomic append is implemented for Windows, Linux and macOS.");
+        int fd = stream.SafeFileHandle.DangerousGetHandle().ToInt32();
+        int flags = FcntlCommand(fd, 3, 0), flag = OperatingSystem.IsMacOS() ? 8 : 1024;
+        if (flags < 0 || FcntlCommand(fd, 4, append ? flags | flag : flags & ~flag) < 0)
+            throw NativeError();
+        GC.KeepAlive(stream);
+    }
+
     internal static void Write(FileStream stream, ReadOnlySpan<byte> bytes)
     {
         // Accessing SafeFileHandle synchronizes FileStream's cached offset with

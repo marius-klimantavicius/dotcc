@@ -330,6 +330,12 @@ def main():
     checks.extend(verify_libc_wprintf(ROOT,TESTS,suite_output("libc_wprintf"),args.nativeaot,run))
     from libc_wprintf_abi_verify import verify_libc_wprintf_abi
     checks.extend(verify_libc_wprintf_abi(ROOT,TESTS,suite_output("libc_wprintf_abi")))
+    from libc_stdio_management_verify import verify_libc_stdio_management
+    checks.extend(verify_libc_stdio_management(ROOT,TESTS,suite_output("libc_stdio_management"),args.nativeaot,run))
+    from libc_stdio_management_runtime_verify import verify_libc_stdio_management_runtime
+    checks.extend(verify_libc_stdio_management_runtime(ROOT,TESTS,suite_output("libc_stdio_management_runtime"),args.nativeaot,run))
+    from libc_stdio_management_abi_verify import verify_libc_stdio_management_abi
+    checks.extend(verify_libc_stdio_management_abi(ROOT,TESTS,suite_output("libc_stdio_management_abi")))
     from libc_wprintf_runtime_verify import verify_libc_wprintf_runtime
     checks.extend(verify_libc_wprintf_runtime(ROOT,TESTS,suite_output("libc_wprintf_runtime"),args.nativeaot,run))
     from libc_wscanf_verify import verify_libc_wscanf

@@ -76,6 +76,7 @@ const libc_binding libc_bindings[]={
 #define EDG_LIBC(s,r,p,t) {s,r,p,t},
 #include "libc-bindings.def"
 #include "libc-files-bindings.def"
+#include "libc-files-management-bindings.def"
 #include "libc-wide-files-bindings.def"
 #include "libc-text-bindings.def"
 #include "libc-float-bindings.def"

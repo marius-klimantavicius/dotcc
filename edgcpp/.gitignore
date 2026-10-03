@@ -51,3 +51,5 @@ __pycache__/
 /upstream/src/libc-process-exit-bindings.def
 /upstream/src/dot_gen_coroutine_cps.h
 /upstream/src/dot_gen_coroutine_provenance.h
+
+/upstream/src/libc-files-management-bindings.def

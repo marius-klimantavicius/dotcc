@@ -43,6 +43,7 @@ for source, target in [
     (root / "backend/dot_gen_varargs.h", root / "upstream/src/dot_gen_varargs.h"),
     (root / "backend/dot_gen_atomics.h", root / "upstream/src/dot_gen_atomics.h"),
     (root / "backend/runtime/libc-files-bindings.def", root / "upstream/src/libc-files-bindings.def"),
+    (root / "backend/runtime/libc-files-management-bindings.def", root / "upstream/src/libc-files-management-bindings.def"),
     (root / "backend/runtime/libc-text-bindings.def", root / "upstream/src/libc-text-bindings.def"),
     (root / "backend/runtime/libc-float-bindings.def", root / "upstream/src/libc-float-bindings.def"),
     (root / "backend/dot_sys_predef.c", root / "upstream/src/dot_sys_predef.c"),

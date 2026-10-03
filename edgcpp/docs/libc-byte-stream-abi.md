@@ -27,10 +27,9 @@ shutdown I/O may still report an error. Function import contracts validate the
 exact opaque `struct __edg_FILE` type and retain that C++ type identity at the
 generated boundary; the runtime uses `void*` internally.
 
-`fpos_t` is provisionally a signed 64-bit byte position. This is not the host
-libc fpos_t representation and cannot cross a native libc boundary. Wide-stream
-orientation and multibyte conversion state will require an ABI update before
-the final portable target is frozen.
+`fpos_t` uses version2: a signed 64-bit byte offset and two 32-bit decoder
+state fields. This is not the host libc representation and cannot cross a
+native libc boundary. See [wide FILE ABI](libc-wide-file-abi.md).
 
 ## Byte and positioning semantics
 
@@ -100,7 +99,73 @@ diagnostics, Unicode path rename/removal, shutdown and concurrent append via
 independent handles. Native differential tests use original EDG's C output.
 They deliberately do not exchange this provider's fpos_t with native libc.
 
-Still outside this slice: formatted/variadic I/O, scanning, wide stream
-orientation, locale conversion state, freopen/fdopen/descriptor interoperability,
-temporary-file APIs, every platform error condition and cross-platform runtime
-acceptance. These remain required work in the full plan.
+Formatting, scanning and wide orientation have separate accepted components;
+see the [completion ledger](libc-completion-ledger.md). Descriptor interoperability,
+every platform error condition and cross-platform runtime acceptance remain open.
+
+
+## Accepted stream management (2026-10-03)
+
+`LibcFilesManagement` supplies `freopen`, `tmpfile`, `tmpnam`, `rewind`, and
+`setbuf`. The authored `libc/stdio_management/perror.c` resolves owner/TLS errno
+through `strerror` before calling the strict raw-output bridge. The implementation
+was audited against pinned musl 1.2.6 `src/stdio/{freopen,tmpfile,tmpnam,rewind,perror}.c`;
+these are BCL adaptations, not copied musl algorithms.
+
+Successful `freopen` keeps the original FILE token, dictionary Entry, monitor,
+and caller-owned buffering storage. Waiting operations therefore observe the
+new association under the same lock. Pending output is flushed; orientation,
+captured encoding, decoder/pushback, EOF and error state are reset. A failed
+reopen closes the old association and preserves the opening errno. Host-injected
+standard streams remain host-owned, while the replacement file becomes owned by
+the FILE. Standard pointer cells retain their identity. Service disposal waits
+for the same monitor and closes any replacement published before it.
+
+The implementation-defined `freopen(NULL, mode, stream)` profile changes
+logical access and append mode without truncating/repositioning the underlying
+file. It does not upgrade rights beyond the original handle. Unix append uses
+the existing runtime-selected fcntl adapter; Windows selects the accepted EOF
+write operation. This choice is based on musl's null-name mode-change behavior,
+and does not promise glibc's platform-specific extension semantics.
+
+`rewind` clears the error indicator even when its seek fails; failed positioning
+does not clear EOF. `perror` holds the stream lock across the prefix, colon,
+error text and newline, using raw byte writes so an already-wide stderr retains
+its captured encoding and orientation. `setbuf` uses the existing buffering
+contract with BUFSIZ or unbuffered mode.
+
+`tmpfile` creates a fresh read/write BCL file with exclusive creation, Unix user
+read/write permissions and delete sharing, then removes its pathname immediately.
+It transfers the still-open handle into FILE ownership. This is necessary because
+.NET 10.0.11's Unix `DeleteOnClose` unlinks during SafeFileHandle release, which
+`Environment.Exit` need not run. No DeleteOnClose pathname callback is retained:
+it could unlink a later replacement name after an explicit early removal.
+The composition uses BCL File.Delete on both Windows and Unix; runtime tests
+currently prove Linux behavior only.
+[Exact installed runtime source](https://github.com/dotnet/runtime/blob/v10.0.11/src/libraries/System.Private.CoreLib/src/Microsoft/Win32/SafeHandles/SafeFileHandle.Unix.cs),
+[BCL delete sharing](https://learn.microsoft.com/en-us/dotnet/api/system.io.fileshare?view=net-10.0),
+[File.Delete contract](https://learn.microsoft.com/en-us/dotnet/api/system.io.file.delete?view=net-10.0).
+
+`tmpnam` uses an owner-pinned 20-byte buffer when called with NULL; another call
+on the same owner overwrites it. The pointer stays valid until its owner is disposed; disposal drops the pinned
+array reference even if the managed owner itself remains alive. Caller-buffer calls copy into that buffer instead. A per-owner randomized
+sequence produces distinct 19-character relative names; filesystem availability
+is checked against the owner's captured working directory. It does not reserve
+or create the named file. Operations serialize under the owner monitor, but a
+caller retaining the shared buffer must still coordinate other tmpnam calls.
+These are owner global bytes, not short-lived pinned allocation.
+
+Focused standalone evidence is retained in
+`artifacts/campaign/libc-stdio-management-runtime-20261003-051800/results.json`:
+strict JIT and NativeAOT cover named/null reopen, failure, queued operations,
+orientation, errno, temporary-name ownership and actual process exit with an
+open anonymous temporary file. The first native public fixture is retained in
+`libc-stdio-management-native-20261003-050400`. The final runtime fixture also covers queued reopen against service disposal
+and verifies the pinned temporary-name array becomes collectible while the
+disposed service remains strongly referenced.
+`libc-stdio-management-translated-20261003-051100/results.json` records the
+native public oracle and all eight C/C++, static/instance, JIT/NativeAOT modes.
+`libc-stdio-management-abi-20261003-051000/results.json` records eight malformed
+FILE/character-pointer/result contracts rejected before C# emission. The first
+generated attempt at `051000` retains a host-harness missing-parenthesis error;
+the generated library itself compiled. No backend source correction was needed.

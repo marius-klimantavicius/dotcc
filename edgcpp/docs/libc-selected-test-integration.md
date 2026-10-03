@@ -130,3 +130,23 @@ out, nativeaot, run)` returns one/two standalone checks. Runtime dependency:
 LibcFilesWideFormat with LibcFiles/VaList. Component source list is exactly
 vfwprintf.c, wformat_wrappers.c and wcsnlen.c; private numeric dependency is the
 accepted printf component. Add wprintf to the patch verifier component list.
+
+
+Stdio management adds these callable hooks (all output trees remain isolated):
+
+```python
+from libc_stdio_management_verify import verify_libc_stdio_management
+from libc_stdio_management_runtime_verify import verify_libc_stdio_management_runtime
+from libc_stdio_management_abi_verify import verify_libc_stdio_management_abi
+checks.extend(verify_libc_stdio_management(ROOT, TESTS, suite_output("libc_stdio_management"), args.nativeaot, run))
+checks.extend(verify_libc_stdio_management_runtime(ROOT, TESTS, suite_output("libc_stdio_management_runtime"), args.nativeaot, run))
+checks.extend(verify_libc_stdio_management_abi(ROOT, TESTS, suite_output("libc_stdio_management_abi")))
+```
+
+The public fixture uses `--libc dotcc` and explicitly supplies the authored
+`libc/stdio_management/perror.c`; registration in the musl selection therefore
+does not duplicate that TU. The sourceBase is `libc`, with sources:{} and a
+hash-pinned authored adapter in source.json. No musl provenance is invented.
+The separate runtime hook copies the Management partial along with its FILE,
+wide-state, append and path dependencies and includes a subprocess status37
+check proving anonymous tmpfile lifetime across immediate Environment.Exit.

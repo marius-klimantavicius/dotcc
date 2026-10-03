@@ -26,8 +26,8 @@ public sealed unsafe partial class LibcFiles : IDisposable
     private sealed class Entry
     {
         internal readonly object Gate = new();
-        internal readonly Stream Stream;
-        internal readonly bool Readable, Writable, Append, OwnStream;
+        internal Stream Stream;
+        internal bool Readable, Writable, Append, OwnStream;
         internal bool Closed, End, Error, Started;
         internal int Direction, Pushback = -1, BufferMode;
         internal int Orientation, WidePushback = -1, WidePushbackBytes;
@@ -133,6 +133,16 @@ public sealed unsafe partial class LibcFiles : IDisposable
 
     public void* Fopen(sbyte* path, sbyte* mode)
     {
+        Entry? entry = OpenEntry(path, mode);
+        if (entry is null) return null;
+        bool added = false;
+        try { void* result = Add(entry); added = true; return result; }
+        catch (Exception error) when (PlatformFailure(error)) { setErrno(ErrorNumber(error)); return null; }
+        finally { if (!added) entry.Stream.Dispose(); }
+    }
+
+    private Entry? OpenEntry(sbyte* path, sbyte* mode)
+    {
         FileStream? stream = null;
         try
         {
@@ -161,7 +171,7 @@ public sealed unsafe partial class LibcFiles : IDisposable
             // ISO C leaves the initial append read position implementation
             // defined. Select beginning for a+ (musl/glibc), end for a.
             if (append && !read) stream.Seek(0, SeekOrigin.End);
-            var result = Add(new Entry(stream, read, write, append, true));
+            var result = new Entry(stream, read, write, append, true);
             stream = null; return result;
         }
         catch (Exception error) when (PlatformFailure(error)) { setErrno(ErrorNumber(error)); return null; }
@@ -487,6 +497,8 @@ public sealed unsafe partial class LibcFiles : IDisposable
         lock (entry.Gate) return Fputs(text, handle) < 0 ? Eof : Fputc('\n', handle) < 0 ? Eof : 0;
     }
 
+    partial void DisposeManagementState();
+
     public void Dispose()
     {
         List<KeyValuePair<nuint, Entry>> snapshot;
@@ -507,6 +519,6 @@ public sealed unsafe partial class LibcFiles : IDisposable
                 NativeMemory.Free((void*)item.Key);
             }
         }
-        lock (gate) { files.Clear(); Array.Clear(standard); }
+        lock (gate) { files.Clear(); Array.Clear(standard); DisposeManagementState(); }
     }
 }

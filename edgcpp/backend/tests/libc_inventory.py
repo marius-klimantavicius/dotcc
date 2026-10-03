@@ -47,6 +47,8 @@ def inventory(root):
         selected += ['rand','srand','rand_r','random','srandom','initstate','setstate','drand48','erand48','lrand48','nrand48','mrand48','jrand48','srand48','seed48','lcong48']
     if any(component['directory']=='math_parts' for component in provider['components']):
         selected += ['fmod','fmodf','fmodl','modf','modff','modfl']
+    if any(component['directory']=='stdio_management' and component.get('sourceBase')=='libc' for component in provider['components']):
+        selected += ['perror']
     if any(component['directory']=='math_extrema' for component in provider['components']):
         selected += [base+suffix for base in ['fmin','fmax','fdim'] for suffix in ['','f','l']]
     if any(component['directory']=='wprintf' for component in provider['components']):

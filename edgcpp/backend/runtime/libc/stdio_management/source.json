@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "version": "EDG authored stdio management facade v1",
+  "provenance": "Authored errno/strerror facade over owner-local BCL stream service. API behavior audited against pinned musl 1.2.6 src/stdio/perror.c; no musl implementation copied.",
+  "abi": "portable-lp64-opaque-FILE-v2",
+  "scope": "perror resolves owner/TLS errno and writes raw bytes under the stream lock without changing orientation or captured encoding. Other management APIs are strict BCL imports.",
+  "sources": {},
+  "adapters": {
+    "perror.c": "f8b4638d559e61723ad93dcf0f57f23ee2f682a085e7c9436e66b89e4d69776b"
+  }
+}

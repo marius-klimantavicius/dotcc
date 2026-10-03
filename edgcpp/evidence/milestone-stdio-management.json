@@ -1,0 +1,44 @@
+{
+  "scope": "Portable stdio management, owner lifetime and FILE association semantics",
+  "checks": 27,
+  "runs": [
+    {
+      "path": "artifacts/campaign/libc-stdio-management-translated-20261003-051100/results.json",
+      "sha256": "1e3688e8fb44488743b00f82674ada214bd6c0f71b46ed8410525fa63d93c883",
+      "checks": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-stdio-management-abi-20261003-051000/results.json",
+      "sha256": "3b80eea5be543a41da1f1197d738a1d70348fcf54ae26294d1bb18987f47396e",
+      "checks": 8
+    },
+    {
+      "path": "artifacts/campaign/libc-stdio-management-runtime-20261003-051800/results.json",
+      "sha256": "63224985cf036527cf1051fed516f0a6225a721d1a719f7e05c0c57f35c09441",
+      "checks": 2
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-stdio-management-001/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082",
+      "checks": 8
+    }
+  ],
+  "selectedTranslationUnits": 148,
+  "sources": {
+    "backend/runtime/LibcFiles.cs": "e663807baa8e43b558c1c8cc7ae7ce029fa7a0874a889e294860d22e5932bc53",
+    "backend/runtime/LibcFilesManagement.cs": "cc50808e08f83978162b8a51a3cb3a3dd374f4dca78a4f7f106d7354e3230b7e",
+    "backend/runtime/LibcAppend.cs": "e3b11596a2778f748dcc5ecbc0084acb824719118c998c1da9776528f1765492",
+    "backend/runtime/libc-files-management-bindings.def": "0efc0f446f88d47412fee8bdca96ea7c03f51b9c45c657174729788c042c1929",
+    "backend/runtime/libc/stdio_management/source.json": "5a118a8167e93688253617399a523abba9d3b1211c0b6182cf79f51cdb593c8d",
+    "backend/runtime/musl/provider.json": "b3aff329c062c1682a9bcba77154c7a7999b3e483393aea10047d0b1b77272d4"
+  },
+  "notes": [
+    "Final runtime check includes post-Dispose collection of pinned tmpnam buffer while owner stays reachable.",
+    "Earlier generated/provider acceptance predates only that isolated release hook; final runtime matrix exercises it directly."
+  ],
+  "limitations": [
+    "Runtime execution on Linux-x64 only",
+    "POSIX filesystem and complete process/signal services remain separate work",
+    "tmpnam has standard non-reserving name semantics; caller buffer/static lifetime documented"
+  ]
+}

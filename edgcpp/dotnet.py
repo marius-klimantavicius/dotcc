@@ -19,7 +19,7 @@ RUNTIME_DEPENDENCIES = {
     "ExtendedFloat": ("Float128", "LibcFloat"),
     "Float128": ("Float128Conversions",), "Float128Conversions": ("Float80",),
     "Float80": (), "LibcContext": (), "AtomicOps": (), "VaList": (),
-    "LibcFiles": ("LibcAppend", "LibcPaths", "LibcFilesWide"), "LibcFilesWide": (), "LibcAppend": (), "LibcPaths": (),
+    "LibcFiles": ("LibcAppend", "LibcPaths", "LibcFilesWide", "LibcFilesManagement"), "LibcFilesManagement": (), "LibcFilesWide": (), "LibcAppend": (), "LibcPaths": (),
     "LibcFilesFormat": ("LibcFiles", "VaList"),
     "LibcFilesScan": ("LibcFiles", "VaList"),
     "LibcFilesAssert": ("LibcFiles", "LibcProcess"), "LibcFilesWideScan": ("LibcFiles", "VaList"), "LibcFilesWideFormat": ("LibcFiles", "VaList"), "LibcEnvironment": (),

@@ -93,6 +93,10 @@ int main(void) {
  if(thrd_create(&thread,provider_worker,&requested)!=thrd_success || thrd_join(thread,&result)!=thrd_success || result!=37)return 30;
  if(fmin(-0.0,0.0)!=0 || !signbit(fmin(-0.0,0.0)) || fmaxf(3.0f,7.0f)!=7.0f || fdiml(7.0L,3.0L)!=4.0L)return 31;
  errno=0;if(fdim(DBL_MAX,-DBL_MAX)!=HUGE_VAL || errno!=ERANGE)return 32;
+ FILE *temporary=tmpfile();if(!temporary)return 33;
+ setbuf(temporary,0);if(fputs("q",temporary)<0)return 34;rewind(temporary);
+ if(fgetc(temporary)!='q' || fclose(temporary))return 35;
+ void (*error_output)(const char*)=perror;if(!error_output)return 36;
  uselocale(previous);freelocale(locale);
  return 0;
 }

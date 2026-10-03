@@ -245,6 +245,13 @@
         "fdimf.c",
         "fdiml.c"
       ]
+    },
+    {
+      "sourceBase": "libc",
+      "directory": "stdio_management",
+      "translationUnits": [
+        "perror.c"
+      ]
     }
   ]
 }

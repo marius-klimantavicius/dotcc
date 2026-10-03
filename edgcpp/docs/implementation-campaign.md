@@ -480,3 +480,10 @@ synthetic JIT regression suite. All1134 snapshot file hashes were revalidated
 after completion. This is evidence for that exact checkpoint; later focused
 comparison, math-extrema and allocation-failure changes have separate evidence.
 NativeAOT scope remains the focused matrices, not a claimed full-suite AOT run.
+
+Stdio management adds freopen, tmpfile, tmpnam, rewind, setbuf and an authored
+perror source facade. Twenty-seven native/generated, ABI, runtime and packaging
+checks cover FILE identity, queued operations and disposal races, mode changes,
+wide stderr preservation, immediate-exit temporary cleanup and collectible
+owner-pinned name storage. Source provider reaches148 units. Other platforms
+and broader POSIX/file/process coverage remain open.
