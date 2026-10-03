@@ -45,6 +45,18 @@ def acquire(output, archive=None):
     shutil.copytree(HERE / 'config', configuration)
     shutil.copy2(source_root / 'vendor/llvm/default_assertion_handler.in',
                  configuration / '__assertion_handler')
+    overlays = []
+    overlay_manifest = configuration / 'edg-overlays.json'
+    if overlay_manifest.exists():
+        overlay_data = json.loads(overlay_manifest.read_text())
+        if overlay_data['release'] != pin['release']:
+            raise RuntimeError('Vendor overlay release does not match pinned sources')
+        for entry in overlay_data['overlays']:
+            if sha256(source_root / entry['upstream']) != entry['upstreamSha256']:
+                raise RuntimeError('Vendor overlay upstream hash mismatch: ' + entry['upstream'])
+            if sha256(configuration / entry['configuration']) != entry['sha256']:
+                raise RuntimeError('Vendor overlay hash mismatch: ' + entry['configuration'])
+            overlays.append(dict(entry, kind='vendor-header-overlay'))
     inputs = {}
     for parent in (source_root, configuration):
         for path in sorted(parent.rglob('*')):
@@ -53,7 +65,7 @@ def acquire(output, archive=None):
     manifest = {
         'schema': 1, 'source': pin, 'fileHashes': inputs,
         'includeOrder': ['config', pin['archiveRoot'] + '/include', 'portable-libc-headers'],
-        'patches': [], 'executedUpstreamTests': False,
+        'patches': overlays, 'executedUpstreamTests': False,
         'providerStatus': 'source/configuration acquired; generated library acceptance is separate',
     }
     (output / 'acquisition.json').write_text(json.dumps(manifest, indent=2) + '\n')

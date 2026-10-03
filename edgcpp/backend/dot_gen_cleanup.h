@@ -166,9 +166,9 @@ void ensure_cleanup_failure_filter() {
   // throw.c pass 1 terminates upon reaching a throw-processing marker,
   // before pass 2 unwinds locals in the escaping destructor. A CLR catch
   // body is too late: use its first-pass filter to retain that ordering.
-  helper_output+="// dot-gen:member-begin\nprivate static bool __edg_begin_unwind(global::System.Exception error, ref bool unwinding) { if(__edg_begin_exception(error)) unwinding = true; return false; }\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate static bool __edg_begin_unwind(global::System.Exception error, ref bool unwinding) { if("+string(c11_thread_exit_used?"error is global::Edg.Runtime.CThreadExitTransfer || ":"")+"__edg_begin_exception(error)) unwinding = true; return false; }\n// dot-gen:member-end\n";
   helper_output+="// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+"bool "+name+
-      "(global::System.Exception error) { if(!("+source_jump_exclusion("error")+"))return false; __edg_terminate_runtime(error,\"Destructor threw during unwinding\"); return false; }\n// dot-gen:member-end\n";
+      "(global::System.Exception error) { if(!("+control_transfer_exclusion("error")+"))return false; __edg_terminate_runtime(error,\"Destructor threw during unwinding\"); return false; }\n// dot-gen:member-end\n";
 }
 string emit_cleanup() {
   ensure_cleanup_failure_filter();

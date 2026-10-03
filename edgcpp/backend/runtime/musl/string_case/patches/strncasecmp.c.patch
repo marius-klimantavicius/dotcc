@@ -1,0 +1,24 @@
+--- a/strncasecmp.c
++++ b/strncasecmp.c
+@@ -1,17 +1,18 @@
++#include "string_case_compat.h"
+ #include <strings.h>
+ #include <ctype.h>
+ 
+ int strncasecmp(const char *_l, const char *_r, size_t n)
+ {
+-	const unsigned char *l=(void *)_l, *r=(void *)_r;
++	const unsigned char *l=(const unsigned char *)_l, *r=(const unsigned char *)_r;
+ 	if (!n--) return 0;
+ 	for (; *l && *r && n && (*l == *r || tolower(*l) == tolower(*r)); l++, r++, n--);
+ 	return tolower(*l) - tolower(*r);
+ }
+ 
+-int __strncasecmp_l(const char *l, const char *r, size_t n, locale_t loc)
++int strncasecmp_l(const char *l, const char *r, size_t n, locale_t loc)
+ {
++	if (!__edg_locale_validate(loc)) return 0;
+ 	return strncasecmp(l, r, n);
+ }
+ 
+-weak_alias(__strncasecmp_l, strncasecmp_l);

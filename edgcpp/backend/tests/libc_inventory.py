@@ -33,6 +33,16 @@ def inventory(root):
         selected += ['scanf','fscanf','sscanf','vscanf','vfscanf','vsscanf']
     if any(component['directory']=='wscanf' for component in provider['components']):
         selected += ['wscanf','fwscanf','swscanf','vwscanf','vfwscanf','vswscanf']
+    if any(component['directory']=='environment' for component in provider['components']):
+        selected += ['getenv','setenv','putenv','unsetenv','clearenv']
+    if any(component['directory']=='timezone' for component in provider['components']):
+        selected += ['tzset','localtime','localtime_r','mktime','ctime','ctime_r']
+    if any(component['directory']=='string_case' for component in provider['components']):
+        selected += ['strcasecmp','strcasecmp_l','strncasecmp','strncasecmp_l']
+    if any(component['directory']=='strptime' for component in provider['components']):
+        selected += ['strptime']
+    if any(component['directory']=='threads' and component.get('sourceBase')=='libc' for component in provider['components']):
+        selected += ['thrd_create','thrd_current','thrd_equal','thrd_join','thrd_detach','thrd_exit','thrd_sleep','thrd_yield','call_once','mtx_init','mtx_destroy','mtx_lock','mtx_trylock','mtx_timedlock','mtx_unlock','cnd_init','cnd_destroy','cnd_signal','cnd_broadcast','cnd_wait','cnd_timedwait','tss_create','tss_delete','tss_get','tss_set']
     headers={}
     for path in sorted((runtime/'libc/include').glob('*.h')):
         text=re.sub(r'/\*.*?\*/','',path.read_text(),flags=re.S)

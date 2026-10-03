@@ -1,0 +1,23 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "strcasecmp.c": {
+      "upstream": "src/string/strcasecmp.c",
+      "originalSha256": "825849aa29c5844b47bc932041606189d9fee51fe17d78baaa4ae8e7c7257ed6",
+      "adaptedSha256": "e84d42984122218e0bc10e69571481dc0c6f75a6ce0899631cc0ceac443de249",
+      "patch": "patches/strcasecmp.c.patch",
+      "patchSha256": "e426efe8549f06aa92b54b76f3b39b03ad3ee3fd087bb3f20afc1e77cd84bad9"
+    },
+    "strncasecmp.c": {
+      "upstream": "src/string/strncasecmp.c",
+      "originalSha256": "eccc4ea3f7776772f6234eea193ccbf97040518372e317abe482c025639be195",
+      "adaptedSha256": "ec80da595ba2119f85cc3f426e92f0cf31c88751029845f8602e589751d7b0fb",
+      "patch": "patches/strncasecmp.c.patch",
+      "patchSha256": "628626e86b55ffa7d53634391c24dd661aca997d5779c6cfe8837b7d733f87a0"
+    }
+  },
+  "adapters": {
+    "string_case_compat.h": "4c320479e41e29fb6d66a9ad68470a5a5a0565e5b32b2af5c1b1d537eb5d8f40"
+  }
+}

@@ -32,6 +32,7 @@ char *ctime(const time_t *);
 struct tm *gmtime(const time_t *);
 struct tm *localtime(const time_t *);
 size_t strftime(char *, size_t, const char *, const struct tm *);
+char *strptime(const char *, const char *, struct tm *);
 size_t strftime_l(char *, size_t, const char *, const struct tm *, locale_t);
 int timespec_get(struct timespec *, int);
 /* Common thread-safe extensions, still gated by provider bindings. */

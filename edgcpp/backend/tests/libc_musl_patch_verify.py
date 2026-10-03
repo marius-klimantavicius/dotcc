@@ -2,7 +2,7 @@
 import argparse,hashlib,json,shutil,subprocess
 from pathlib import Path
 
-def verify_musl_patches(root,out,components=('wide','multibyte','wide_numeric','stdlib_algorithms','scanf','wscanf','c_headers')):
+def verify_musl_patches(root,out,components=('wide','multibyte','wide_numeric','stdlib_algorithms','scanf','wscanf','c_headers','string_case','strptime')):
  out.mkdir(parents=True,exist_ok=True);checks=[]
  for component in components:
   source=root/'backend/runtime/musl'/component;destination=out/component
@@ -10,9 +10,11 @@ def verify_musl_patches(root,out,components=('wide','multibyte','wide_numeric','
   manifest=json.loads((source/'source.json').read_text())
   for name,metadata in manifest['sources'].items():
    assert hashlib.sha256((replay/name).read_bytes()).hexdigest()==metadata['originalSha256']
-   patch=destination/'snapshot/patches'/f'{name}.patch'
+   patch=destination/'snapshot'/metadata.get('patch',manifest.get('patch',f'patches/{name}.patch'))
+   patch_digest=metadata.get('patchSha256',manifest.get('patchSha256'))
+   if patch_digest:assert hashlib.sha256(patch.read_bytes()).hexdigest()==patch_digest
    if patch.stat().st_size:
-    command=['patch','--batch','-p1','-d',str(replay),'-i',str(patch)]
+    command=['patch','--batch','--fuzz=0','-p1','-d',str(replay),'-i',str(patch)]
     result=subprocess.run(command,capture_output=True,text=True)
     (destination/(name+'.command.json')).write_text(json.dumps(command,indent=2));(destination/(name+'.log')).write_text(result.stdout+result.stderr);result.check_returncode()
    assert hashlib.sha256((replay/name).read_bytes()).hexdigest()==metadata['adaptedSha256'],(component,name)

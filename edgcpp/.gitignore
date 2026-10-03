@@ -41,3 +41,8 @@ __pycache__/
 /upstream/src/dot_gen_c11_atomics.h
 /upstream/src/dot_gen_coroutine.h
 /upstream/src/dot_gen_statement_expression.h
+/upstream/src/dot_gen_coroutine_emit.h
+
+/upstream/src/libc-assert-bindings.def
+
+/upstream/src/libc-c11-threads-bindings.def

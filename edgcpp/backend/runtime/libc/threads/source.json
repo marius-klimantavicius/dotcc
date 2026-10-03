@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "version": "EDG authored C11 thread facade v1",
+  "provenance": "Authored portable C facade over the existing owner-specific BCL thread service. No musl implementation source is copied; API contracts audited against C11 N1570 section7.26 and musl1.2.6 threads declarations.",
+  "abi": "portable-lp64-owner-thread-token-v1",
+  "scope": "Created worker APIs and tested C++ cleanup interop; main/host thrd_exit and complete process termination remain explicit pending contracts.",
+  "sources": {},
+  "adapters": {
+    "threads.c": "710cfb6f7122678118208ca0a129ab84b409023c0dfbf3f286ef719dba56fc20"
+  }
+}

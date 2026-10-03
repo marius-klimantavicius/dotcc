@@ -1,10 +1,21 @@
 // libc++'s portable external thread ABI. Fixed C entry points are ordinary
 // imported routines, so canonical address adapters continue to own call leases.
 bool thread_services_emitted=false;
+bool c11_thread_exit_used=false;
 std::set<a_routine_ptr> thread_routines;
-void reset_thread_imports() {thread_services_emitted=false;thread_routines.clear();}
+void reset_thread_imports() {thread_services_emitted=false;c11_thread_exit_used=false;thread_routines.clear();}
+void collect_c11_thread_imports(a_scope_ptr scope) {
+  for(auto routine=scope->routines;routine;routine=routine->next)
+    if(routine_needed(routine) && routine->function_def_number==NULL_function_def_number &&
+       routine->source_corresp.name && string(routine->source_corresp.name)=="__edg_c11_thread_exit")
+      c11_thread_exit_used=true;
+}
 string thread_owner_type() {return instance_mode?string(getenv("EDG_DOT_CLASS")):"__edg_thread_owner";}
 string thread_runtime_type() {return "global::Edg.Runtime.LibcxxThreads<"+thread_owner_type()+">";}
+string thread_finalizer_catch_code() {
+  return c11_thread_exit_used && thread_services_emitted?
+    "catch(global::Edg.Runtime.CThreadExitTransfer exit) when(__edg_thread_services_value!=null && __edg_thread_services_value.AcceptExitResult(exit)) {}":"";
+}
 string thread_keys_release_code() {return thread_services_emitted?"__edg_thread_services_value?.ReleaseThread();":"";}
 string thread_disposal_code() {return thread_services_emitted?"__edg_thread_services_value?.Dispose();":"";}
 void ensure_thread_services() {
@@ -60,9 +71,12 @@ bool thread_routine(a_routine_ptr r) {
   if(!libc_enabled || r->function_def_number!=NULL_function_def_number)return false;
   if(thread_routines.count(r))return true;
   string symbol=r->source_corresp.name?r->source_corresp.name:"";
-  if(symbol.compare(0,13,"__edg_libcpp_")!=0)return false;
+  if(symbol.compare(0,13,"__edg_libcpp_")!=0 && symbol.compare(0,10,"__edg_c11_")!=0)return false;
   struct binding {const char *symbol,*result,*parameters,*expression;};
   const binding bindings[]={
+#define EDG_C11_THREAD(s,r,p,e) {s,r,p,e},
+#include "libc-c11-threads-bindings.def"
+#undef EDG_C11_THREAD
     {"__edg_libcpp_atomic_table","void*","","global::Edg.Runtime.LibcxxAtomicWait.Table()"},
     {"__edg_libcpp_atomic_wait64","void","void*,long","global::Edg.Runtime.LibcxxAtomicWait.Wait64(a0,a1)"},
     {"__edg_libcpp_atomic_wake64","void","void*","global::Edg.Runtime.LibcxxAtomicWait.Wake64(a0)"},

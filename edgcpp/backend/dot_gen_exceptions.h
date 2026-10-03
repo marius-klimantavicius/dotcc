@@ -497,6 +497,14 @@ private static void* __edg_exception_alloc(nuint size) {
     if(pos==string::npos)unsupported("missing source-jump EH filter");
     helper_output.insert(pos+signature.size(),"  if(error is global::Edg.Runtime.NonlocalJump.Transfer)return false;\n");
   }
+  if(c11_thread_exit_used)for(const auto &entry:std::vector<std::pair<string,string>>{
+      {"private static bool __edg_begin_exception(global::System.Exception error) {\n","false"},
+      {"private static bool __edg_throw_filter(__edg_exception payload, global::System.Exception error) {\n","true"},
+      {"private static bool __edg_catch_filter(__edg_catch_frame frame, global::System.Exception error) {\n","false"}}) {
+    auto pos=helper_output.find(entry.first);
+    if(pos==string::npos)unsupported("missing C11 thread-exit EH filter");
+    helper_output.insert(pos+entry.first.size(),"  if(error is global::Edg.Runtime.CThreadExitTransfer){"+string(entry.second=="true"?"__edg_end_exception(payload);":"")+"return "+entry.second+";}\n");
+  }
   if(instance_mode)for(const string &signature:std::vector<string>{"void __edg_rethrow(","bool __edg_throw_filter(","bool __edg_catch_filter("}) {
     string from="private static "+signature,to="private "+signature;
     auto pos=helper_output.find(from);if(pos==string::npos)unsupported("missing owner-aware EH helper");

@@ -73,6 +73,8 @@ string intrinsic_call(an_expr_node_ptr call) {
   auto routine=routine_expression->variant.routine.ptr;
   if(!special_kind_is(routine,sfk_none))return "";
   auto first=routine_expression->next;
+  string coroutine=coroutine_intrinsic(call,routine,first);
+  if(!coroutine.empty())return coroutine;
   string integer=integer_intrinsic_call(call,routine,first);
   if(!integer.empty())return integer;
   string floating=floating_intrinsic_call(call,routine,first);

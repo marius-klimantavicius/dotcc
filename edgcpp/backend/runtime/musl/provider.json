@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "id": "musl-selected-bcl-lp64-v1",
-  "description": "Selected translated musl formatting, scanning, numeric, wide/multibyte, calendar/timezone, environment and standard utility algorithms with audited BCL services; not complete libc coverage.",
+  "description": "Selected translated musl algorithms and authored C11 thread facade with audited BCL services; not complete libc coverage.",
   "components": [
     {
       "directory": "printf",
@@ -175,6 +175,26 @@
       "translationUnits": [
         "vfwscanf.c",
         "wscan_wrappers.c"
+      ]
+    },
+    {
+      "directory": "string_case",
+      "translationUnits": [
+        "strcasecmp.c",
+        "strncasecmp.c"
+      ]
+    },
+    {
+      "directory": "strptime",
+      "translationUnits": [
+        "strptime.c"
+      ]
+    },
+    {
+      "directory": "threads",
+      "sourceBase": "libc",
+      "translationUnits": [
+        "threads.c"
       ]
     }
   ]

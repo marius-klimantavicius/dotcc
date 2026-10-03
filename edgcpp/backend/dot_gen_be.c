@@ -74,6 +74,9 @@ struct diagnostic_scope {
   fprintf(stderr, "dot_gen_be: unsupported %s (kind %d) in %s\n", what, kind, context);
   exit(1);
 }
+bool coroutine_required(a_routine_ptr routine);
+bool coroutine_required(a_variable_ptr variable);
+string coroutine_intrinsic(an_expr_node_ptr call,a_routine_ptr routine,an_expr_node_ptr first);
 // Same entity liveness contract as c_gen_be.c::start_unreferenced_bracket.
 bool entity_needed(a_source_correspondence *source) {
 #if MAINTAIN_NEEDED_FLAGS
@@ -88,15 +91,15 @@ bool variable_needed(a_variable_ptr v) {
   // The C backend additionally preserves a Sun-C-only varargs marker. Our
   // generated target is managed code, so that target-specific case is absent.
   bool magic=source.name_linkage==nlk_internal && source.name && string(source.name)=="__link";
-  return magic || entity_needed(&source);
+  return magic || entity_needed(&source) || coroutine_required(v);
 }
 bool routine_needed(a_routine_ptr r) {
-  return !ignore_routine_in_back_end(r) && entity_needed(&r->source_corresp);
+  return !ignore_routine_in_back_end(r) && (entity_needed(&r->source_corresp) || coroutine_required(r));
 }
 bool routine_body_needed(a_routine_ptr r) {
   return routine_needed(r) && r->function_def_number!=NULL_function_def_number
 #if MAINTAIN_NEEDED_FLAGS
-    && r->definition_needed
+    && (r->definition_needed || coroutine_required(r))
 #endif
     ;
 }
@@ -544,6 +547,7 @@ bool selected_runtime_branch(a_statement_ptr s,a_statement_ptr &branch) {
   }
 }
 string source_jump_exclusion(const string &error);
+string control_transfer_exclusion(const string &error);
 #include "dot_gen_arrays.h"
 #include "dot_gen_vla.h"
 #include "dot_gen_cleanup.h"
@@ -1182,11 +1186,13 @@ void statement(a_statement_ptr s) {
 #include "dot_gen_statement_expression.h"
 #include "dot_gen_main.h"
 #include "dot_gen_coroutine.h"
+#include "dot_gen_coroutine_emit.h"
 }
 
 // EDG's custom-backend entry point intentionally has global namespace linkage.
 void back_end(void) {
   reset_owned_ir();
+  coroutine_helpers_emitted=false;
   source_jumps_used=false;owned_ir_enabled=getenv("EDG_DOT_TYPE_IR") && string(getenv("EDG_DOT_TYPE_IR"))=="1";
   storage_record_ids.clear();array_storage_types.clear();
   diagnostic_position={};
@@ -1220,6 +1226,8 @@ void back_end(void) {
   auto scope = il_header.primary_scope;
   // Exception metadata visits aggregate types before ordinary emission.
   nested_types = !getenv("EDG_DOT_NEST") || string(getenv("EDG_DOT_NEST")) == "1";
+  collect_coroutine_requirements(scope);
+  collect_c11_thread_imports(scope);
   if (getenv("EDG_DOT_TRACE")) {trace_program(scope);trace_coroutines(scope);}
   for(auto r=scope->routines;r;r=r->next) {
     if(!routine_body_needed(r) || r->function_def_number==NULL_function_def_number)continue;
@@ -1232,7 +1240,7 @@ void back_end(void) {
     collect_dynamic_specification(r);
     if(r->function_def_number==NULL_function_def_number)continue;
     auto s=scope_for_routine_or_null(r);
-    if(s) { collect_exception_metadata(s->assoc_block); collect_constant_templates(s); }
+    if(s) { collect_exception_metadata(s->assoc_block); collect_coroutine_metadata(s); collect_constant_templates(s); }
   }
   for(auto r=scope->routines;r;r=r->next) {
     if(!routine_body_needed(r))continue;
@@ -1268,6 +1276,9 @@ void back_end(void) {
     function_vla_used=false;
     try_frames.clear(); exception_locals.clear();
     prepare_cleanup(s);
+    if(auto descriptor=coroutine_descriptor(s->assoc_block)) {
+      function_returns_void=true;emit_coroutine(r,s,descriptor);continue;
+    }
     prepare_source_jumps(s->assoc_block);
     check_operand_order(s->assoc_block);
     if (r->source_corresp.name && string(r->source_corresp.name) == "main") { main_routine = r; if(main_arguments(r))ensure_lifecycle(); }
@@ -1328,7 +1339,7 @@ void back_end(void) {
       line("} finally { global::Edg.Runtime.Vla.Restore(__edg_vla_mark); }");
     }
     if (heap_frame) line("} finally { global::System.Runtime.InteropServices.NativeMemory.Free(__edg_frame_raw); }");
-    if (no_throw) line("} catch (global::System.Exception error) when ("+source_jump_exclusion("error")+") { __edg_terminate_runtime(error, \"Exception escaped noexcept function\"); throw; }");
+    if (no_throw) line("} catch (global::System.Exception error) when ("+control_transfer_exclusion("error")+") { __edg_terminate_runtime(error, \"Exception escaped noexcept function\"); throw; }");
     else if(dynamic_spec)line(dynamic_exception_boundary(r));
     line("}");
     line("// dot-gen:member-end");
@@ -1370,7 +1381,7 @@ void back_end(void) {
       "catch (global::System.Exception __edg_boundary_error) { __edg_end_exception(__edg_boundary_error); throw; }":"";
   for(size_t pos=output.find(exception_boundary);pos!=string::npos;pos=output.find(exception_boundary,pos+exception_boundary_code.size()))
     output.replace(pos,exception_boundary.size(),exception_boundary_code);
-  for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_LIBC_THREAD_KEYS_RELEASE__*/",thread_keys_release_code()},{"/*__EDG_LIBC_THREAD_RELEASE__*/",libc_thread_release_code()},{"/*__EDG_LIBC_DISPOSE__*/",thread_disposal_code()+libc_disposal_code()}})
+  for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_THREAD_EXIT_CATCH__*/",thread_finalizer_catch_code()},{"/*__EDG_LIBC_THREAD_KEYS_RELEASE__*/",thread_keys_release_code()},{"/*__EDG_LIBC_THREAD_RELEASE__*/",libc_thread_release_code()},{"/*__EDG_LIBC_DISPOSE__*/",coroutine_disposal_code()+thread_disposal_code()+libc_disposal_code()}})
     for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);
   for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_ENTER__*/",lifecycle_emitted?"__edg_enter();":""},{"/*__EDG_LEAVE__*/",lifecycle_emitted?"__edg_leave();":""}})
     for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);

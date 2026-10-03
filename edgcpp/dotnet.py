@@ -15,17 +15,17 @@ import time
 ROOT = Path(__file__).resolve().parent
 RUNTIME_DEPENDENCIES = {
     "LibcTimezone": ("LibcTimezoneData",), "LibcTimezoneData": (),
-    "NonlocalJump": ("Vla",),
+    "NonlocalJump": ("Vla",), "Coroutine": (),
     "ExtendedFloat": ("Float128", "LibcFloat"),
     "Float128": ("Float128Conversions",), "Float128Conversions": ("Float80",),
     "Float80": (), "LibcContext": (), "AtomicOps": (), "VaList": (),
     "LibcFiles": ("LibcAppend", "LibcPaths", "LibcFilesWide"), "LibcFilesWide": (), "LibcAppend": (), "LibcPaths": (),
     "LibcFilesFormat": ("LibcFiles", "VaList"),
     "LibcFilesScan": ("LibcFiles", "VaList"),
-    "LibcFilesWideScan": ("LibcFiles", "VaList"), "LibcEnvironment": (),
+    "LibcFilesAssert": ("LibcFiles", "LibcProcess"), "LibcFilesWideScan": ("LibcFiles", "VaList"), "LibcEnvironment": (),
     "LibcText": ("LibcErrorMessages", "LibcLocale"), "LibcErrorMessages": (), "LibcLocale": (),
     "LibcClock": (), "LibcCpuClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
-    "LibcxxThreads": (), "LibcCalendar": (), "LibcProcess": (),
+    "LibcxxThreads": ("LibcC11Threads",), "LibcC11Threads": (), "LibcCalendar": (), "LibcProcess": (),
 }
 
 def content_bytes(value):
@@ -226,6 +226,10 @@ def main():
         runtime_helpers.add("LibcFilesScan")
     if "__edg_with_file_wide_read_lock" in imports:
         runtime_helpers.add("LibcFilesWideScan")
+    if "__assert_fail" in imports:
+        runtime_helpers.add("LibcFilesAssert")
+    if "global::Edg.Runtime.CThreadExitTransfer" in source:
+        runtime_helpers.add("LibcxxThreads")
     pending=list(runtime_helpers)
     while pending:
         for dependency in RUNTIME_DEPENDENCIES[pending.pop()]:

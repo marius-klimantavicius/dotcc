@@ -1,0 +1,16 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "strptime.c": {
+      "upstream": "src/time/strptime.c",
+      "originalSha256": "9d3eb656b897a82c3b43a6ef973239a014ee9ee89361c1b308b0a2429a4766ff",
+      "adaptedSha256": "944974ce05f232b1abf24709b2d8447ca7e4e6718a34d8719c69d284b87d32c0"
+    }
+  },
+  "adapters": {
+    "strptime_compat.h": "0090595ad50bc0e1381060a5cceb26feafccc99071ff808a456317073d0836f7"
+  },
+  "patch": "strptime-managed.patch",
+  "patchSha256": "613b8a98a08aa02d4dc9b3fa877814d1cb86e63df809bdc7eeee30d22e2d2511"
+}

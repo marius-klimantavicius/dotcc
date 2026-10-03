@@ -21,7 +21,7 @@ internal static class ThreadTokenSource
 /// are portable 64-bit tokens; synchronization and threads use BCL objects.
 /// The generated owner supplies static adapters for retained lifetime and TLS.
 /// No reflection, runtime code generation or native pthread ABI is involved.</summary>
-public sealed unsafe class LibcxxThreads<TOwner> : IDisposable where TOwner : class
+public sealed unsafe partial class LibcxxThreads<TOwner> : IDisposable where TOwner : class
 {
     public const int Eagain = 11, Enomem = 12, Ebusy = 16, Einval = 22, Edeadlk = 35, Etimedout = 110;
     [StructLayout(LayoutKind.Sequential)]
@@ -48,6 +48,7 @@ public sealed unsafe class LibcxxThreads<TOwner> : IDisposable where TOwner : cl
     private sealed class MutexEntry : Resource
     {
         internal int Owner, Depth, ConditionWaiters;
+        internal bool CTimed;
         internal MutexEntry(bool recursive) : base(recursive ? Kind.RecursiveMutex : Kind.Mutex) { }
     }
     private sealed class ConditionEntry : Resource
@@ -83,8 +84,11 @@ public sealed unsafe class LibcxxThreads<TOwner> : IDisposable where TOwner : cl
         internal readonly Thread Thread;
         internal int JoinState; // 0=joinable, 1=joining, 2=detached
         internal bool Completed;
-        internal ThreadEntry(LibcxxThreads<TOwner> context, nint function, nint argument, bool hasOwner)
+        internal readonly bool CStart;
+        internal int Result;
+        internal ThreadEntry(LibcxxThreads<TOwner> context, nint function, nint argument, bool hasOwner, bool cStart = false)
         {
+            CStart = cStart;
             Context = context; Function = function; Argument = argument; HasOwner = hasOwner;
             Token = ThreadTokenSource.Next();
             // Returning from the translated process entry terminates remaining
@@ -196,10 +200,10 @@ public sealed unsafe class LibcxxThreads<TOwner> : IDisposable where TOwner : cl
         }
         return 0;
     }
-    public int ConditionWait(ulong* condition, ulong* mutex, Timespec* deadline = null)
+    public int ConditionWait(ulong* condition, ulong* mutex, Timespec* deadline = null, bool recursive = false)
     {
         if (deadline != null && (deadline->Nanoseconds < 0 || deadline->Nanoseconds >= 1_000_000_000)) return Einval;
-        MutexEntry? locked = Mutex(mutex, false, false);
+        MutexEntry? locked = Mutex(mutex, recursive, false);
         if (locked is null || !Monitor.IsEntered(locked.Sync) || locked.Depth != 1) return Einval;
         ConditionEntry? entry;
         Waiter waiter;
@@ -297,7 +301,7 @@ public sealed unsafe class LibcxxThreads<TOwner> : IDisposable where TOwner : cl
     public int ExecuteOnce(ulong* flag, delegate* managed<void> function) => Once(flag, (nint)function, false);
     public int ExecuteOnce(ulong* flag, delegate* managed<TOwner, void> function) => Once(flag, (nint)function, true);
 
-    private int Create(ulong* handle, nint function, void* argument, bool hasOwner)
+    private int Create(ulong* handle, nint function, void* argument, bool hasOwner, bool cStart = false)
     {
         if (handle == null || function == 0) return Einval;
         ThreadEntry? entry = null;
@@ -306,18 +310,20 @@ public sealed unsafe class LibcxxThreads<TOwner> : IDisposable where TOwner : cl
         {
             lock (gate) { if (disposed) return Einval; }
             retainOwner(owner); retained = true;
-            entry = new ThreadEntry(this, function, (nint)argument, hasOwner);
+            entry = new ThreadEntry(this, function, (nint)argument, hasOwner, cStart);
             lock (gate)
             {
                 if (disposed) return Einval;
                 threads.Add(entry.Token, entry); ++running; registered = true;
             }
-            entry.Thread.Start();
+            // Publish the handle before the BCL start barrier exposes caller
+            // storage to the callback (C11 thrd_create synchronization).
             *handle = entry.Token;
+            entry.Thread.Start();
             retained = false; // The started thread now owns this lease.
             return 0;
         }
-        catch (OutOfMemoryException) { return Eagain; }
+        catch (OutOfMemoryException) { return cStart ? Enomem : Eagain; }
         catch (ThreadStateException) { return Eagain; }
         finally
         {
@@ -344,9 +350,15 @@ public sealed unsafe class LibcxxThreads<TOwner> : IDisposable where TOwner : cl
             try
             {
                 enterThread(owner); entered = true;
-                if (entry.HasOwner) ((delegate* managed<TOwner, void*, void*>)entry.Function)(owner, (void*)entry.Argument);
+                cCurrent.Value = entry;
+                if (entry.CStart) {
+                    entry.Result = entry.HasOwner ? ((delegate* managed<TOwner, void*, int>)entry.Function)(owner, (void*)entry.Argument)
+                        : ((delegate* managed<void*, int>)entry.Function)((void*)entry.Argument);
+                }
+                else if (entry.HasOwner) ((delegate* managed<TOwner, void*, void*>)entry.Function)(owner, (void*)entry.Argument);
                 else ((delegate* managed<void*, void*>)entry.Function)((void*)entry.Argument);
             }
+            catch (CThreadExitTransfer exit) when (ReferenceEquals(exit.Context, this) && exit.Token == entry.Token) { entry.Result = exit.Result; }
             catch (Exception error) when (Terminate(error)) { }
             finally
             {
@@ -363,6 +375,7 @@ public sealed unsafe class LibcxxThreads<TOwner> : IDisposable where TOwner : cl
                 if (entry.JoinState == 2) threads.Remove(entry.Token);
                 Monitor.PulseAll(gate);
             }
+            cCurrent.Value = null;
             releaseOwner(owner);
             GC.KeepAlive(owner);
         }
@@ -468,8 +481,11 @@ public sealed unsafe class LibcxxThreads<TOwner> : IDisposable where TOwner : cl
                         !keys.TryGetValue(token, out key) || key.Destructor == 0) continue;
                 }
                 invoked = true;
-                if (key.HasOwner) ((delegate* managed<TOwner, void*, void>)key.Destructor)(owner, (void*)value);
-                else ((delegate* managed<void*, void>)key.Destructor)((void*)value);
+                try {
+                    if (key.HasOwner) ((delegate* managed<TOwner, void*, void>)key.Destructor)(owner, (void*)value);
+                    else ((delegate* managed<void*, void>)key.Destructor)((void*)value);
+                }
+                catch (CThreadExitTransfer exit) when (AcceptExitResult(exit)) { }
             }
             if (!invoked) break;
         }
@@ -491,7 +507,7 @@ public sealed unsafe class LibcxxThreads<TOwner> : IDisposable where TOwner : cl
                     resource is OnceEntry once && Volatile.Read(ref once.State) == 1)
                     throw new InvalidOperationException("Translated synchronization object is still in use");
             }
-            disposed = true; resources.Clear(); keys.Clear(); local.Dispose();
+            disposed = true; resources.Clear(); keys.Clear(); local.Dispose(); cCurrent.Dispose(); cExternalIdentity.Dispose();
         }
     }
 }

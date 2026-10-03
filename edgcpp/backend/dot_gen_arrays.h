@@ -12,7 +12,7 @@ void ensure_array_helpers() {
   string common="(void* data, ulong count, ulong stride, "+fp+" dtor)";
   // throw.c's processing marker stops pass 1 when a remaining element throws
   // during array unwinding. Do not unwind that element's locals first.
-  helper_output+="// dot-gen:member-begin\nprivate "+mod+"bool __edg_array_cleanup_failure(global::System.Exception error) { if(!("+source_jump_exclusion("error")+"))return false; __edg_terminate_runtime(error,\"Array destructor threw during unwinding\");return false; }\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\nprivate "+mod+"bool __edg_array_cleanup_failure(global::System.Exception error) { if(!("+control_transfer_exclusion("error")+"))return false; __edg_terminate_runtime(error,\"Array destructor threw during unwinding\");return false; }\n// dot-gen:member-end\n";
   helper_output+="// dot-gen:member-begin\nprivate "+mod+"void __edg_vec_cleanup"+common+" {\n"
     "try { if (dtor != null) while (count != 0) { --count; dtor("+owner+"(byte*)data + count * stride); } }\n"
     "catch (global::System.Exception error) when (__edg_array_cleanup_failure(error)) { throw; }\n"
@@ -80,7 +80,7 @@ string array_allocation_call(a_routine_ptr r,an_expr_node_ptr args) {
           "void* raw="+alloc+"; if(raw==null)return null; void* data=(byte*)raw+prefix;\n"
           "if(prefix!=0)*((ulong*)data-1)=count;\n"
           "try {__edg_vec_ctor(data,count,stride,ctor,dtor);return data;}\n"
-          "catch (global::System.Exception jump_check) when ("+source_jump_exclusion("jump_check")+") {try {"+release+";}catch(global::System.Exception error) when ("+source_jump_exclusion("error")+"){__edg_terminate_runtime(error,\"Array deallocator threw during unwinding\");}throw;}\n";
+          "catch (global::System.Exception jump_check) when ("+source_jump_exclusion("jump_check")+") {try {"+release+";}catch(global::System.Exception error) when ("+control_transfer_exclusion("error")+"){__edg_terminate_runtime(error,\"Array deallocator threw during unwinding\");}throw;}\n";
     } else {
       code+="if(data==null)return;void* raw=(byte*)data-prefix;ulong count=prefix==0?0:*((ulong*)data-1);\n"
           "ulong size=count*stride+prefix;try{__edg_vec_dtor(data,count,stride,dtor);}finally{"+release+";}\n";

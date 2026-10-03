@@ -1,6 +1,12 @@
 {
-  "bindingCount": 158,
+  "bindingCount": 159,
   "bindings": {
+    "__assert_fail": {
+      "parameters": "sbyte*,sbyte*,int,sbyte*",
+      "result": "void",
+      "source": "libc-assert-bindings.def",
+      "target": "__edg_files.AssertFail"
+    },
     "__edg_calendar_utc": {
       "parameters": "",
       "result": "sbyte*",
@@ -951,6 +957,9 @@
     }
   },
   "headers": {
+    "assert.h": {
+      "__assert_fail": "runtime-binding"
+    },
     "ctype.h": {
       "isalnum": "runtime-binding",
       "isalnum_l": "runtime-binding",
@@ -1255,11 +1264,11 @@
       "atoll": "selected-source",
       "bsearch": "selected-source",
       "calloc": "runtime-binding",
-      "clearenv": "declaration-only",
+      "clearenv": "selected-source",
       "div": "selected-source",
       "exit": "declaration-only",
       "free": "runtime-binding",
-      "getenv": "declaration-only",
+      "getenv": "selected-source",
       "labs": "runtime-binding",
       "ldiv": "selected-source",
       "llabs": "runtime-binding",
@@ -1269,13 +1278,13 @@
       "mbstowcs": "selected-source",
       "mbtowc": "selected-source",
       "posix_memalign": "runtime-binding",
-      "putenv": "declaration-only",
+      "putenv": "selected-source",
       "qsort": "selected-source",
       "qsort_r": "selected-source",
       "quick_exit": "declaration-only",
       "rand": "declaration-only",
       "realloc": "runtime-binding",
-      "setenv": "declaration-only",
+      "setenv": "selected-source",
       "srand": "declaration-only",
       "strtod": "selected-source",
       "strtod_l": "selected-source",
@@ -1292,7 +1301,7 @@
       "strtoull": "selected-source",
       "strtoull_l": "selected-source",
       "system": "declaration-only",
-      "unsetenv": "declaration-only",
+      "unsetenv": "selected-source",
       "wcstombs": "selected-source",
       "wctomb": "runtime-binding"
     },
@@ -1326,25 +1335,59 @@
       "strxfrm": "runtime-binding",
       "strxfrm_l": "runtime-binding"
     },
+    "strings.h": {
+      "strcasecmp": "selected-source",
+      "strcasecmp_l": "selected-source",
+      "strncasecmp": "selected-source",
+      "strncasecmp_l": "selected-source"
+    },
+    "threads.h": {
+      "call_once": "selected-source",
+      "cnd_broadcast": "selected-source",
+      "cnd_destroy": "selected-source",
+      "cnd_init": "selected-source",
+      "cnd_signal": "selected-source",
+      "cnd_timedwait": "selected-source",
+      "cnd_wait": "selected-source",
+      "mtx_destroy": "selected-source",
+      "mtx_init": "selected-source",
+      "mtx_lock": "selected-source",
+      "mtx_timedlock": "selected-source",
+      "mtx_trylock": "selected-source",
+      "mtx_unlock": "selected-source",
+      "thrd_create": "selected-source",
+      "thrd_current": "selected-source",
+      "thrd_detach": "selected-source",
+      "thrd_equal": "selected-source",
+      "thrd_exit": "selected-source",
+      "thrd_join": "selected-source",
+      "thrd_sleep": "selected-source",
+      "thrd_yield": "selected-source",
+      "tss_create": "selected-source",
+      "tss_delete": "selected-source",
+      "tss_get": "selected-source",
+      "tss_set": "selected-source"
+    },
     "time.h": {
       "asctime": "selected-source",
       "asctime_r": "selected-source",
       "clock": "runtime-binding",
       "clock_gettime": "runtime-binding",
-      "ctime": "declaration-only",
-      "ctime_r": "declaration-only",
+      "ctime": "selected-source",
+      "ctime_r": "selected-source",
       "difftime": "runtime-binding",
       "gmtime": "selected-source",
       "gmtime_r": "selected-source",
-      "localtime": "declaration-only",
-      "localtime_r": "declaration-only",
-      "mktime": "declaration-only",
+      "localtime": "selected-source",
+      "localtime_r": "selected-source",
+      "mktime": "selected-source",
       "strftime": "selected-source",
       "strftime_l": "selected-source",
+      "strptime": "selected-source",
       "time": "runtime-binding",
       "timegm": "selected-source",
       "timespec_get": "runtime-binding",
-      "tzset": "declaration-only"
+      "tzset": "selected-source"
     },
     "uchar.h": {
       "c16rtomb": "selected-source",
@@ -1639,9 +1682,29 @@
           "vfwscanf.c",
           "wscan_wrappers.c"
         ]
+      },
+      {
+        "directory": "string_case",
+        "translationUnits": [
+          "strcasecmp.c",
+          "strncasecmp.c"
+        ]
+      },
+      {
+        "directory": "strptime",
+        "translationUnits": [
+          "strptime.c"
+        ]
+      },
+      {
+        "directory": "threads",
+        "sourceBase": "libc",
+        "translationUnits": [
+          "threads.c"
+        ]
       }
     ],
-    "description": "Selected translated musl formatting, scanning, numeric, wide/multibyte, calendar/timezone, environment and standard utility algorithms with audited BCL services; not complete libc coverage.",
+    "description": "Selected translated musl algorithms and authored C11 thread facade with audited BCL services; not complete libc coverage.",
     "id": "musl-selected-bcl-lp64-v1",
     "schema": 1
   },
@@ -1806,14 +1869,53 @@
     "swscanf",
     "vwscanf",
     "vfwscanf",
-    "vswscanf"
+    "vswscanf",
+    "getenv",
+    "setenv",
+    "putenv",
+    "unsetenv",
+    "clearenv",
+    "tzset",
+    "localtime",
+    "localtime_r",
+    "mktime",
+    "ctime",
+    "ctime_r",
+    "strcasecmp",
+    "strcasecmp_l",
+    "strncasecmp",
+    "strncasecmp_l",
+    "strptime",
+    "thrd_create",
+    "thrd_current",
+    "thrd_equal",
+    "thrd_join",
+    "thrd_detach",
+    "thrd_exit",
+    "thrd_sleep",
+    "thrd_yield",
+    "call_once",
+    "mtx_init",
+    "mtx_destroy",
+    "mtx_lock",
+    "mtx_trylock",
+    "mtx_timedlock",
+    "mtx_unlock",
+    "cnd_init",
+    "cnd_destroy",
+    "cnd_signal",
+    "cnd_broadcast",
+    "cnd_wait",
+    "cnd_timedwait",
+    "tss_create",
+    "tss_delete",
+    "tss_get",
+    "tss_set"
   ],
   "standardHeadersAbsent": [
-    "assert.h",
     "complex.h",
     "fenv.h",
     "signal.h",
-    "tgmath.h",
-    "threads.h"
+    "tgmath.h"
   ]
 }

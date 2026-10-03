@@ -1,0 +1,1 @@
+EDG_LIBC("__assert_fail", "void", "sbyte*,sbyte*,int,sbyte*", "__edg_files.AssertFail")

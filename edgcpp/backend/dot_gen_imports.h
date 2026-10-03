@@ -77,6 +77,7 @@ const libc_binding libc_bindings[]={
 #include "libc-cpu-clock-bindings.def"
 #include "libc-calendar-bindings.def"
 #include "libc-process-bindings.def"
+#include "libc-assert-bindings.def"
 #include "libc-environment-bindings.def"
 #include "libc-timezone-bindings.def"
 #undef EDG_LIBC

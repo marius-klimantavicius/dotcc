@@ -149,3 +149,12 @@ string source_jump_dispatch_suffix() {
 string source_jump_exclusion(const string &error) {
   return source_jumps_used?"!("+error+" is global::Edg.Runtime.NonlocalJump.Transfer)":error+" != null";
 }
+
+// Language handlers and fatal boundaries ignore runtime control transfers.
+// Constructor/array cleanup deliberately uses source_jump_exclusion instead:
+// C11 thread exit unwinds automatic objects, while C longjmp does not.
+string control_transfer_exclusion(const string &error) {
+  string condition=source_jump_exclusion(error);
+  if(c11_thread_exit_used)condition="("+condition+" && "+error+" is not global::Edg.Runtime.CThreadExitTransfer)";
+  return condition;
+}

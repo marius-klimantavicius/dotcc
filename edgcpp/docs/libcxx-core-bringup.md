@@ -133,3 +133,14 @@ ordered source recipe and hashes are now retained canonically as
 feature preamble. This recipe explicitly describes the same one-TU bring-up
 configuration, including library feature flags visible to its synthetic consumer;
 it is not a production `--libcxx` backend or separate-TU conformance claim.
+
+The ordered source closure is recorded in
+`backend/runtime/libcxx/core-source-profile.json`, including hashes of every
+original source and adaptation. `libcxx_core_owners_verify.py` validates these
+hashes before its explicitly single-TU component run. Three checks pass at
+`artifacts/campaign/libcxx-core-owners-001/results.json`: native C++ fixture
+semantics plus generated instance JIT/NativeAOT. Two owners independently retain
+container globals, shared allocations, `new_handler`, and C++ TLS across forced
+GC and a second host thread; disposal of the first does not invalidate the
+second. This extends static source-closure evidence without claiming separate-TU
+assembly or whole-library conformance.

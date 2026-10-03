@@ -91,3 +91,7 @@ include=None)`; optional include supplies the candidate header directory.
 It has two native oracles, four C runtime configurations and two C++17 include
 compatibility checks. The public matrix passed after contained GNU statement-expression emission
 was added; the canonical stdatomic header is now the default input.
+
+Assertion facade: `libc_assert_verify.verify_libc_assert(root, tests, out, nativeaot, run)` returns four JIT checks or eight with NativeAOT. Each configuration checks enabled/disabled/reincluded assertions plus fatal subprocesses for ordinary and redirected wide-oriented owner stderr. Child subprocess outputs are retained; core dump generation is disabled for intentional aborts. Registered in the full suite using `suite_output("libc_assert")`.
+
+C11 threads: `libc_c11_threads_verify.verify_libc_c11_threads(root, tests, out, nativeaot, run)` returns two native checks plus four/eight generated checks. It explicitly supplies `runtime/libc/threads/threads.c`. `libc_c11_threads_abi_verify.verify_libc_c11_threads_abi(root, out)` returns thirteen rejected ABI checks. `libc_c11_threads_runtime_verify.verify_libc_c11_threads_runtime(root, tests, out, nativeaot, run)` adds three/six standalone C11/shared-C++ normal and first-pass fatal checks. Runtime helpers must be copied together: `LibcxxThreads.cs` and `LibcC11Threads.cs`. Main/host exit completion is outside this worker matrix.

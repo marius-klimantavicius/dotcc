@@ -1,0 +1,103 @@
+--- a/strptime.c
++++ b/strptime.c
+@@ -1,3 +1,4 @@
++#include "strptime_compat.h"
+ #include <stdlib.h>
+ #include <langinfo.h>
+ #include <time.h>
+@@ -24,11 +25,16 @@
+ 		if (*f == '+') f++;
+ 		if (isdigit(*f)) {
+ 			char *new_f;
+-			w=strtoul(f, &new_f, 10);
++			unsigned long width = strtoul(f, &new_f, 10);
++			if (width > INT_MAX) return 0;
++			w = (int)width;
+ 			f = new_f;
+ 		} else {
+ 			w=-1;
+ 		}
++		/* The admitted C/POSIX/C.UTF-8 time data has no alternate digits/era. */
++		if (*f == 'E') { if (!f[1] || !strchr("cCxXyY", f[1])) return 0; f++; }
++		else if (*f == 'O') { if (!f[1] || !strchr("deHImMSuUVwWy", f[1])) return 0; f++; }
+ 		adj=0;
+ 		switch (*f++) {
+ 		case 'a': case 'A':
+@@ -59,7 +65,7 @@
+ 			s = strptime(s, "%m/%d/%y", tm);
+ 			if (!s) return 0;
+ 			break;
+-		case 'F':
++		case 'F': {
+ 			/* Use temp buffer to implement the odd requirement
+ 			 * that entire field be width-limited but the year
+ 			 * subfield not itself be limited. */
+@@ -75,6 +81,7 @@
+ 			if (!p) return 0;
+ 			s -= tmp+i-p;
+ 			break;
++		}
+ 		case 'H':
+ 			dest = &tm->tm_hour;
+ 			min = 0;
+@@ -207,6 +214,7 @@
+ 			s += 5;
+ 			break;
+ 		case 'Z':
++			tzset();
+ 			if (!strncmp(s, tzname[0], len = strlen(tzname[0]))) {
+ 				tm->tm_isdst = 0;
+ 				s += len;
+@@ -215,7 +223,7 @@
+ 				s += len;
+ 			} else {
+ 				/* FIXME: is this supposed to be an error? */
+-				while ((*s|32)-'a' <= 'z'-'a') s++;
++				while ((unsigned)((*s|32)-'a') <= 'z'-'a') s++;
+ 			}
+ 			break;
+ 		case '%':
+@@ -230,6 +238,7 @@
+ 				*dest = *dest * 10 + *s++ - '0';
+ 			if (*dest - min >= (unsigned)range) return 0;
+ 			*dest -= adj;
++			if (dest == &tm->tm_wday && f[-1] == 'u') *dest %= 7;
+ 			switch((char *)dest - (char *)tm) {
+ 			case offsetof(struct tm, tm_yday):
+ 				;
+@@ -240,10 +249,16 @@
+ 			if (*s == '+') s++;
+ 			else if (*s == '-') neg=1, s++;
+ 			if (!isdigit(*s)) return 0;
+-			for (*dest=i=0; i<w && isdigit(*s); i++)
+-				*dest = *dest * 10 + *s++ - '0';
+-			if (neg) *dest = -*dest;
+-			*dest -= adj;
++			{
++				unsigned long long value = 0;
++				unsigned long long limit = neg ? -(long long)INT_MIN-adj : (long long)INT_MAX+adj;
++				for (i=0; i<w && isdigit(*s); i++) {
++					unsigned digit = *s++ - '0';
++					if (value > limit/10 || (value == limit/10 && digit > limit%10)) return 0;
++					value = value*10 + digit;
++				}
++				*dest = (int)((neg ? -(long long)value : (long long)value)-adj);
++			}
+ 			goto update;
+ 		symbolic_range:
+ 			for (i=2*range-1; i>=0; i--) {
+@@ -262,9 +277,11 @@
+ 		}
+ 	}
+ 	if (want_century) {
+-		tm->tm_year = relyear;
+-		if (want_century & 2) tm->tm_year += century * 100 - 1900;
+-		else if (tm->tm_year <= 68) tm->tm_year += 100;
++		long long year = relyear;
++		if (want_century & 2) year += (long long)century * 100 - 1900;
++		else if (year <= 68) year += 100;
++		if (year < INT_MIN || year > INT_MAX) return 0;
++		tm->tm_year = (int)year;
+ 	}
+ 	return (char *)s;
+ }

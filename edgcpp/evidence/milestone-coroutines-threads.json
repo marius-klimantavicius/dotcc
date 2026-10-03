@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "scope": "Initial source coroutines, C11 threads, assert, strptime and case-insensitive strings, selected libc++ owner isolation",
+  "snapshot": "artifacts/campaign/milestone-coroutines-threads-snapshot-001",
+  "validation": "Synthetic and EDG differential checks; Linux-x64 JIT and NativeAOT. Complete regression continuation pending a duplicate-source harness correction.",
+  "checkCount": 125,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/coroutine-protocol-source-20261003-041353/progress.json",
+      "sha256": "4e48362e060e5b509d8f284b075241e405eed97c7ef4e500c5a7afe238a47ba9",
+      "checkCount": 33
+    },
+    {
+      "path": "artifacts/campaign/coroutine-guard-initial-20261003-043554/results.json",
+      "sha256": "81c533907f73f9d0a014449fe9b8f47858be08bdb3fb12655a27b2d496d81956",
+      "checkCount": 16
+    },
+    {
+      "path": "artifacts/campaign/coroutine-noop-runtime-20261003-041151/results.json",
+      "sha256": "4bde57db4125e4f55a528cdd16d44ee063d147fe17a0f07cc1e32ee963a086b5",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/libc-c11-threads-translated-20261003-020300/results.json",
+      "sha256": "567b4591d2d64f10eba02d003d4177a9051caefb769815f03484171e8259e2ae",
+      "checkCount": 10
+    },
+    {
+      "path": "artifacts/campaign/libc-c11-threads-abi-20261003-015000/results.json",
+      "sha256": "cbacaea3f0b4daa30111919ff13ce9b7fe7bf854550c30cd22a9ff8430884122",
+      "checkCount": 13
+    },
+    {
+      "path": "artifacts/campaign/libc-c11-threads-runtime-20261003-014500/results.json",
+      "sha256": "281af5769574ce7d924a4b9ac2b5bfc74be30aa1e265e3bcc3208418ce13dd93",
+      "checkCount": 6
+    },
+    {
+      "path": "artifacts/campaign/libc-assert-translated-20261003-012300/results.json",
+      "sha256": "6e7236be79bfbc850bf10b14e7b1fc5b97cd0f42245f50144456c3e437982791",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/libc-assert-candidate-20261003-005900/runtime-proof-004/results.json",
+      "sha256": "4429f2609a1d69b6545899aa7fa7fe9300337bf40ca5a55c124d443b3c1842bb",
+      "checkCount": 6
+    },
+    {
+      "path": "artifacts/campaign/libc-assert-candidate-20261003-005900/native-proof/results.json",
+      "sha256": "9a0cae54c565579c50d4e89e0f051f5ac66107e6b02a8758df90f086b607ed49",
+      "checkCount": 2
+    },
+    {
+      "path": "artifacts/campaign/libcxx-core-owners-frozen-002/results.json",
+      "sha256": "7b8a1ed7515af77b5570eb74c3c49040cd1a7dc294354f715aed2c81e8bac4c1",
+      "checkCount": 3
+    },
+    {
+      "path": "artifacts/campaign/libc-strptime-translated-002/results.json",
+      "sha256": "016ca5df0aeecc460adf91983a49211487c71262c06fb23b87db41176f654318",
+      "checkCount": 10
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-c11-threads-001/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/string-case-strptime-patches-001/results.json",
+      "sha256": "4cc9a52ae9df24a9f6aa7d26f56a217f36e80fdc5d2692b5fefea6f9d5b625d3",
+      "checkCount": 2
+    }
+  ],
+  "limitations": [
+    "Value-producing co_await CPS remains in progress.",
+    "Owner-local process termination and foreign-host thrd_exit remain incomplete.",
+    "Complete libc/libc++ and separate-TU library linking remain open.",
+    "Other operating systems and architectures remain unverified."
+  ]
+}

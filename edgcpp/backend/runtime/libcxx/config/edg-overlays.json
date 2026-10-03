@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "release": "llvmorg-18.1.8",
+  "overlays": [
+    {
+      "upstream": "include/__coroutine/noop_coroutine_handle.h",
+      "upstreamSha256": "3f664114651e265324867d977b284d44f4e3cfa1234634bbd172c3366ce8be03",
+      "configuration": "__coroutine/noop_coroutine_handle.h",
+      "sha256": "110452c211ada085a3bf08868f5d9842640fe5fabf89ad8f4386bdb17e702616",
+      "license": "Apache-2.0 WITH LLVM-exception",
+      "purpose": "Replace native noop frame representation with private managed-ABI hook; preserve public one-pointer handle layout.",
+      "patch": "edg-patches/noop-coroutine-managed-abi.patch",
+      "patchSha256": "0907775c81a752afd5924976a169399680a1b44fdcc353c12686172282d0d13a"
+    }
+  ]
+}

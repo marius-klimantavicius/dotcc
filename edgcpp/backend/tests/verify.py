@@ -282,6 +282,8 @@ def main():
     checks.extend(verify_libc_wide_numeric(ROOT, TESTS, suite_output("libc_wide_numeric"), args.nativeaot, run))
     from libc_calendar_verify import verify_libc_calendar
     checks.extend(verify_libc_calendar(ROOT, TESTS, suite_output("libc_calendar"), args.nativeaot, run))
+    from libc_strptime_verify import verify_libc_strptime
+    checks.extend(verify_libc_strptime(ROOT, TESTS, suite_output("libc_strptime"), args.nativeaot, run))
     from libc_wide_calendar_verify import verify_libc_wide_calendar
     checks.extend(verify_libc_wide_calendar(ROOT, TESTS, suite_output("libc_wide_calendar"), args.nativeaot, run))
     from libc_stdlib_algorithms_verify import verify_libc_stdlib_algorithms
@@ -294,6 +296,14 @@ def main():
     checks.extend(verify_c11_implicit_atomics(ROOT, TESTS, suite_output("c11_implicit_atomics"), args.nativeaot, run))
     from libc_stdatomic_verify import verify_libc_stdatomic
     checks.extend(verify_libc_stdatomic(ROOT, TESTS, suite_output("libc_stdatomic"), args.nativeaot, run))
+    from libc_assert_verify import verify_libc_assert
+    checks.extend(verify_libc_assert(ROOT, TESTS, suite_output("libc_assert"), args.nativeaot, run))
+    from libc_c11_threads_verify import verify_libc_c11_threads
+    checks.extend(verify_libc_c11_threads(ROOT, TESTS, suite_output("libc_c11_threads"), args.nativeaot, run))
+    from libc_c11_threads_abi_verify import verify_libc_c11_threads_abi
+    checks.extend(verify_libc_c11_threads_abi(ROOT, suite_output("libc_c11_threads_abi")))
+    from libc_c11_threads_runtime_verify import verify_libc_c11_threads_runtime
+    checks.extend(verify_libc_c11_threads_runtime(ROOT, TESTS, suite_output("libc_c11_threads_runtime"), args.nativeaot, run))
     from libc_timezone_verify import verify_libc_timezone
     checks.extend(verify_libc_timezone(ROOT, TESTS, suite_output("libc_timezone"), args.nativeaot, run))
     from libc_environment_verify import verify_libc_environment
@@ -318,7 +328,19 @@ def main():
     checks.extend(verify_libcxx_atomic_wait(ROOT, TESTS, suite_output("libcxx_atomic_wait"), args.nativeaot, run))
     from diagnostics_verify import verify_diagnostics
     checks.extend(verify_diagnostics(ROOT, TESTS, suite_output("diagnostics"), run))
+    from coroutine_runtime_verify import verify_coroutine_runtime
+    checks.extend(verify_coroutine_runtime(ROOT, TESTS, suite_output("coroutine_runtime"), args.nativeaot, run))
     if args.libcxx_acquisition:
+        from libcxx_core_owners_verify import verify_libcxx_core_owners
+        checks.extend(verify_libcxx_core_owners(ROOT, TESTS, suite_output("libcxx_core_owners"), args.libcxx_acquisition, args.nativeaot, run))
+        from coroutine_counter_verify import verify_coroutine_counter
+        checks.extend(verify_coroutine_counter(ROOT, TESTS, suite_output("coroutine_counter"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_protocol_verify import verify_coroutine_protocol
+        checks.extend(verify_coroutine_protocol(ROOT, TESTS, suite_output("coroutine_protocol"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_noop_verify import verify_coroutine_noop
+        checks.extend(verify_coroutine_noop(ROOT, TESTS, suite_output("coroutine_noop"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_initial_failure_verify import verify_coroutine_initial_failure
+        checks.extend(verify_coroutine_initial_failure(ROOT, TESTS, suite_output("coroutine_initial_failure"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_ptr_verify import verify_libcxx_exception_ptr
         checks.extend(verify_libcxx_exception_ptr(ROOT, TESTS, suite_output("libcxx_exception_ptr"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_owner_verify import verify_libcxx_exception_owner

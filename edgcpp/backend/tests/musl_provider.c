@@ -1,3 +1,5 @@
+#include <strings.h>
+#include <threads.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,6 +12,7 @@
 #include <exception>
 #endif
 static int calls;
+static int provider_worker(void *argument){thrd_exit(*(int*)argument);}
 static int compare_ints(const void* a,const void* b) {
  int x=*(const int*)a,y=*(const int*)b;return (x>y)-(x<y);
 }
@@ -74,6 +77,11 @@ int main(void) {
  wchar_t wide_word[8];int wide_number=0;
  if(swscanf(L"37 omega",L"%d %7ls",&wide_number,wide_word)!=2 ||
     wide_number!=37 || wcscmp(wide_word,L"omega"))return 27;
+ if(strcasecmp("CaLeNdAr","calendar") || strncasecmp_l("AbCd","aBCx",3,locale))return 28;
+ char *parsed=strptime("2024-02-29 23:17:59","%F %T",&civil);
+ if(!parsed || *parsed || civil.tm_year!=124 || civil.tm_mon!=1 || civil.tm_mday!=29 || civil.tm_hour!=23)return 29;
+ int requested=37,result=0;thrd_t thread;
+ if(thrd_create(&thread,provider_worker,&requested)!=thrd_success || thrd_join(thread,&result)!=thrd_success || result!=37)return 30;
  uselocale(previous);freelocale(locale);
  return 0;
 }

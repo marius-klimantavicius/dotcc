@@ -12,7 +12,7 @@ args = parser.parse_args()
 root = Path(__file__).resolve().parents[2]
 out = args.output_dir.resolve()
 out.mkdir(parents=True, exist_ok=True)
-for source in (root / "backend/runtime/LibcxxThreads.cs", root / "backend/tests/libcxx_threads_runtime.cs"):
+for source in (root / "backend/runtime/LibcxxThreads.cs", root / "backend/runtime/LibcC11Threads.cs", root / "backend/tests/libcxx_threads_runtime.cs"):
     shutil.copy2(source, out / source.name)
 project = out / "ThreadProbe.csproj"
 project.write_text('''<Project Sdk="Microsoft.NET.Sdk">

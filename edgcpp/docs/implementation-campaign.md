@@ -358,3 +358,45 @@ The synthetic libc++ source040 allocation, algorithms and container consumers
 all pass translation, strict build, JIT and NativeAOT; their pinned single-TU
 source recipe is being made reproducible. This remains component acceptance,
 not full C++/libc++ completion or separate-TU library linking.
+
+Commit `f985b8c17` records the eighth verified increment: 100 files and 152
+focused checks indexed by `evidence/milestone-c11-library.json`. Its exact
+snapshot excludes subsequent coroutine source emission and C assertion work.
+The source-provider recipe is now pinned by ordered source hashes.
+
+The next working slice has three passing libc++ owner checks in
+`artifacts/campaign/libcxx-core-owners-001/results.json`: a native source oracle
+and translated instance JIT/NativeAOT. Two owners retain independent vector,
+string, tree/hash/shared ownership, `new_handler`, and per-owner/per-thread TLS;
+one owner continues operating after the other is disposed. This remains an
+explicit single-TU component, not production separate-TU library assembly.
+Coroutine source emission has its first five-check counter acceptance at
+`artifacts/campaign/coroutine-counter-source-20261003-040856/results.json`;
+exact checkpoint bytes are retained separately. Exception protocol and broader
+continuation forms are still being implemented and are not counted as complete.
+
+The ninth working slice adds selected musl strptime and case-insensitive string
+comparison: ten original/adapted native, sanitizer and generated C/C++
+static/instance JIT/AOT checks pass at `libc-strptime-translated-002`. Source
+adaptations bound musl's unknown-timezone scan and checked year arithmetic;
+no EDG semantics changed. Three packaged source units bring the provider to117,
+with eight automatic-packaging checks at `musl-provider-strptime-001` and two
+exact source patch-replay checks at `string-case-strptime-patches-001`.
+
+The authored C11 facade now brings selected packaging to118 units. Ten native
+and generated thread checks, 13 strict ABI checks and six standalone/runtime
+regression checks cover worker exit, copy-operand exception cleanup, nested
+arrays, noexcept/catch boundaries, TLS and repeated TSS cleanup. Packaging118
+passes eight checks at `musl-provider-c11-threads-001`. Main/foreign-host exit
+and process/embedding termination remain separate implementation gates.
+
+The ninth checkpoint freezes initial coroutine source emission (counter,
+await-protocol and creation-failure traces), an explicit libc++ no-op handle
+adaptation, C11 worker threads, assert, strptime/string comparison and libc++
+owner isolation. Its evidence index records 125 focused checks; these include
+Linux-x64 JIT and NativeAOT, native differential oracles and strict ABI checks.
+The first complete JIT attempt passed 450 checks before a verification-harness
+duplicate source: wscanf was supplied both explicitly and through its now
+registered provider. That failed run is retained; no runtime regression is
+inferred from that frontend duplicate-definition diagnostic. Value-producing
+co_await continuations and process/owner termination remain the next work.
