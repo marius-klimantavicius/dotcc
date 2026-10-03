@@ -29,5 +29,15 @@ int main(void) {
  l=0x1.0000000000000002p0L;CHECK(sl(l)==1.0L,16);
  l=0x1p-16445L;CHECK(sl(l)==0x1.6a09e667f3bcc908p-8223L,17);
  l=0x1.fffffffffffffffep16383L;CHECK(sl(l)==0x1.fffffffffffffffep8191L,18);
+ double (*rd)(double)=round;float (*rf)(float)=roundf;
+ CHECK(rd==__builtin_round && rf==__builtin_roundf,19);
+ const double inputs[]={0.0,-0.0,0x1p-1074,-0x1p-1074,0x1.fffffffffffffp-2,-0x1.fffffffffffffp-2,0.5,-0.5,1.5,-1.5,2.5,-2.5,0x1.fffffffffffffp51,0x1p52,0x1.fffffffffffffp1023};
+ const double expected[]={0.0,-0.0,0.0,-0.0,0.0,-0.0,1.0,-1.0,2.0,-2.0,3.0,-3.0,0x1p52,0x1p52,0x1.fffffffffffffp1023};
+ for(unsigned n=0;n<sizeof(inputs)/sizeof(*inputs);++n){d=inputs[n];errno=71;double actual=rd(d);CHECK(actual==expected[n] && !!signbit(actual)==!!signbit(expected[n]) && errno==71,20);CHECK(__builtin_round(d)==actual,21);}
+ const float finputs[]={0.0f,-0.0f,0x1p-149f,-0x1p-149f,0x1.fffffep-2f,-0x1.fffffep-2f,0.5f,-0.5f,1.5f,-1.5f,2.5f,-2.5f,0x1.fffffep22f,0x1p23f,0x1.fffffep127f};
+ const float fexpected[]={0.0f,-0.0f,0.0f,-0.0f,0.0f,-0.0f,1.0f,-1.0f,2.0f,-2.0f,3.0f,-3.0f,0x1p23f,0x1p23f,0x1.fffffep127f};
+ for(unsigned n=0;n<sizeof(finputs)/sizeof(*finputs);++n){f=finputs[n];errno=72;float actual=rf(f);CHECK(actual==fexpected[n] && !!signbit(actual)==!!signbit(fexpected[n]) && errno==72,22);CHECK(__builtin_roundf(f)==actual,23);}
+ d=NAN;f=NAN;CHECK(isnan(rd(d)) && isnan(rf(f)),24);
+ d=-INFINITY;f=INFINITY;CHECK(rd(d)==-INFINITY && rf(f)==INFINITY,25);
  return 0;
 }

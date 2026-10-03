@@ -524,8 +524,8 @@ Object/void pointer and nullptr catches now use C++ type/qualification matching
 and separate native catch buffers, preserving EDG's original-pointer rethrow
 behavior. Enums retain nominal identity. All 48 pointer/enum traces match the C
 backend under GCC and Clang in static/instance JIT/NativeAOT modes, including GC
-and concurrent catches. Function/member pointers, array pointees and volatile
-exception types remain rejected. Virtual dispatch and inheritance now cover vtables, covariant thunks, hidden
+and concurrent catches. The later implementation campaign added function/member/array-pointer
+exception descriptors; volatile exception forms still require their own coverage. Virtual dispatch and inheritance now cover vtables, covariant thunks, hidden
 VTT cleanup, complete exception destruction and adjusted virtual-base catches.
 The 32 dispatch and 24 virtual-inheritance cases agree with EDG C under GCC/Clang
 in all four managed modes. RTTI slots have pinned identities, and pointer
@@ -534,7 +534,10 @@ Its 42 result/lifetime cases cover downcasts, cross-casts, access/ambiguity and
 active construction vtables. Reference casts now use an opt-in translated EDG standard-exception provider
 (`--runtime edg-exceptions`), with 24 differential cases and noexcept/secondary
 exception termination tests. Public `type_info` equality/inequality, name, ordering and `std::bad_typeid` now have 34 differential cases and 24 name comparisons; virtual metadata-object operations and cross-module identity remain open. Scalar new/delete accepts translated providers; the optional exception
-bootstrap supplies a basic NativeMemory-backed scalar provider. Exception_ptr and the complete EH/runtime policy remain pending; see the implementation document for the supported boundary.
+bootstrap supplies a basic NativeMemory-backed scalar provider. The later translated libc++ exception_ptr adapter provides originating-owner
+reference counts, nested exceptions and managed escape/reinjection. Complete
+foreign/native EH integration remains a separate boundary; see the current
+status table and implementation documents.
 
 The implementation campaign replaces short-lived pinned exception arrays with
 NativeMemory storage. Escaped managed carriers support explicit disposal, which
@@ -544,7 +547,8 @@ shutdown rejects premature disposal and preserves storage if a destructor's
 host callback retains a new carrier. Deferred shutdown rejects ordinary calls,
 permits carrier disposal (including cross-thread callback reentry), and can be
 retried after release. These mechanisms have focused Linux x64 JIT/NativeAOT
-coverage; they do not implement exception_ptr or settle all foreign boundaries.
+coverage and underpin the subsequently implemented exception_ptr adapter. They
+do not settle every foreign/native exception boundary.
 
 Generate `try/finally` around actual destruction lifetimes: function scopes,
 inner scopes, expression temporaries and construction phases. Functions with

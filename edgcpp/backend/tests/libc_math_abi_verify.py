@@ -9,6 +9,8 @@ def verify_libc_math_abi(root,tests,out):
         ('sqrtl-argument','long double sqrtl(double);','sqrtl','libc import ABI'),
         ('copysignl-width','long double copysignl(long double,double);','copysignl','libc import ABI'),
         ('unknown-builtin','double __builtin_edg_math_private(double);','__builtin_edg_math_private','external function'),
+        ('round-result','float round(double);','round','libc import ABI'),
+        ('roundf-argument','float roundf(double);','roundf','libc import ABI'),
         ('public-rounding','double nearbyint(double);','nearbyint','external function'),
     ]:
         source=out/f'{name}.c';source.write_text(declaration+f'\nvoid *address(void){{return (void*){symbol};}}\n')

@@ -67,6 +67,8 @@ string libc_builtin_symbol(a_routine_ptr r) {
     case bfk_ceil:return "ceil";
     case bfk_ceilf:return "ceilf";
     case bfk_ceill:return "ceill";
+    case bfk_round:return "round";
+    case bfk_roundf:return "roundf";
     case bfk_roundl:return "roundl";
     default:return "";
   }

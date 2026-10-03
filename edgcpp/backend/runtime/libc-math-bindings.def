@@ -11,3 +11,6 @@ EDG_LIBC("truncl", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80",
 EDG_LIBC("floorl", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcMath.Floor")
 EDG_LIBC("ceill", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcMath.Ceiling")
 EDG_LIBC("roundl", "global::Edg.Runtime.Float80", "global::Edg.Runtime.Float80", "global::Edg.Runtime.LibcMath.Round")
+
+EDG_LIBC("round", "double", "double", "global::Edg.Runtime.LibcMath.Round")
+EDG_LIBC("roundf", "float", "float", "global::Edg.Runtime.LibcMath.Round")

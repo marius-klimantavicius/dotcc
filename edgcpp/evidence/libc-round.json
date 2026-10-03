@@ -1,0 +1,27 @@
+{
+  "scope": "float/double round with ties away from zero and exact GNU builtin aliases",
+  "checks": 16,
+  "runs": [
+    {
+      "path": "artifacts/campaign/libc-round-translated-001/results.json",
+      "sha256": "990b1813a4352caf6b8ba83e8ffd832a4c52f2b30f9003118bb994795b9cf8f0",
+      "checks": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-round-abi-001/results.json",
+      "sha256": "e2b57b104a4451edc1e86837dfb4cc3caecf3921b5746b001169311e30630fa4",
+      "checks": 7
+    }
+  ],
+  "sources": {
+    "backend/runtime/LibcMath.cs": "8c0e347b639d4a4b6c8467e25265d9a17c8d9a1d0434e79c68ef4798fc57db7f",
+    "backend/runtime/libc-math-bindings.def": "b7f740981177d16bd75f1be0a50ff95e83f0bf4a7972faa2d18e73d366da0f98",
+    "backend/dot_gen_imports.h": "736c01f98037ac92c165827d59a8b0718419399665de043fd393b5dbeefa6551",
+    "backend/tests/libc_math.c": "62a0faa2afc9d8036aba6f885a5fb83789db82a790ec831b809eea6602cbe9b8",
+    "backend/tests/libc_math_abi_verify.py": "2e004a178e60ab5a9ceb0c62f97f1fa232b553829c471e0b4e62b7c1a0a3ce40"
+  },
+  "limitations": [
+    "Only Linux-x64 execution tested",
+    "Floating exception flags and directed-rounding APIs remain unfinished"
+  ]
+}

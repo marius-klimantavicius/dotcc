@@ -79,4 +79,6 @@ public sealed class LibcMath
     public static Float80 Floor(Float80 value)=>Integral(value,-1);
     public static Float80 Ceiling(Float80 value)=>Integral(value,1);
     public static Float80 Round(Float80 value)=>Integral(value,2);
+    public static double Round(double value)=>Math.Round(value,MidpointRounding.AwayFromZero);
+    public static float Round(float value)=>MathF.Round(value,MidpointRounding.AwayFromZero);
 }

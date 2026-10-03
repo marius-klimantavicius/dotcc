@@ -487,3 +487,11 @@ checks cover FILE identity, queued operations and disposal races, mode changes,
 wide stderr preservation, immediate-exit temporary cleanup and collectible
 owner-pinned name storage. Source provider reaches148 units. Other platforms
 and broader POSIX/file/process coverage remain open.
+
+Float/double round now use BCL ties-away-from-zero overloads and audited GNU
+builtin aliases, completing those widths alongside existing binary80 roundl.
+Sixteen focused native/generated JIT/NativeAOT and ABI checks cover adjacent
+halfway inputs, signed zero, subnormals, large exact integers, infinities/NaNs,
+errno preservation and function-address identity. Fenv-dependent rounding APIs
+remain unsupported. Older exception narrative was reconciled with the accepted
+exception_ptr and pointer-descriptor status; current table remains authoritative.
