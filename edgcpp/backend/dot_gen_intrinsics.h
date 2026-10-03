@@ -80,6 +80,19 @@ string intrinsic_call(an_expr_node_ptr call) {
   string floating=floating_intrinsic_call(call,routine,first);
   if(!floating.empty())return floating;
   switch(routine->variant.builtin_function_kind) {
+    case bfk_expect: {
+      // The C backend preserves this hint for its native compiler. Its value
+      // is the first argument; keep ordinary argument evaluation exactly once.
+      if(!first || !first->next || first->next->next || type(call->type)!="long" ||
+         type(first->type)!="long" || type(first->next->type)!="long")
+        unsupported("expect builtin signature");
+      string key="intrinsic:expect";
+      if(!assignment_helpers.count(key)) {
+        assignment_helpers[key]="__edg_expect";
+        helper_output+="// dot-gen:member-begin\n[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]\nprivate static long __edg_expect(long value,long expected) {return value;}\n// dot-gen:member-end\n";
+      }
+      return "__edg_expect("+expr(first)+", "+expr(first->next)+")";
+    }
     case bfk_unreachable: {
       // c_gen_be preserves this intrinsic for the native C compiler. Reaching
       // it is undefined; use a non-returning managed boundary, not a C++ throw.

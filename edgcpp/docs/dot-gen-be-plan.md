@@ -1043,3 +1043,8 @@ Managed-library coroutine factories now use the ordinary export lifecycle and EH
 wrappers, including owner admission and disposal checks. Five native/JIT/NativeAOT
 checks and four byte-identical ordinary-wrapper comparisons are recorded in
 `evidence/milestone-coroutine-library.json`. Remaining coroutine forms stay open.
+
+GNU `__builtin_expect` now preserves the first long operand and evaluates both
+arguments once through an inlinable helper. Original EDG C/C++ oracles and all
+eight generated JIT/NativeAOT configurations pass; see
+`evidence/milestone-branch-expect.json`. Probability variants remain separate.

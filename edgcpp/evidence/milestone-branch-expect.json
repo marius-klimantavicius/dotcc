@@ -1,0 +1,17 @@
+{
+  "scope": "GNU __builtin_expect long result and single argument evaluation",
+  "checks": 10,
+  "evidence": {
+    "path": "artifacts/campaign/branch-expect-translated-001/results.json",
+    "sha256": "696ddfa19699ba383d322155eb3bb4f24ad6da61782534736d3804638d9f1eae"
+  },
+  "sources": {
+    "backend/dot_gen_intrinsics.h": "97ff6c6d0b2ca54b30436ce43bd3933febde929525508b2f5a3d1d1e1edb7c69",
+    "backend/tests/branch_expect.c": "c6840b4e44066becdb8f101ce6ec4164ff085e6fb2bf8896d8d9798320cda0e1",
+    "backend/tests/branch_expect_verify.py": "6c9cb300c9506fe84e5352fac20be553e843523863a9c217aee64d5a0feaf30c"
+  },
+  "limitations": [
+    "Optimization hint only; no branch-probability variant",
+    "Linux-x64 JIT and NativeAOT execution"
+  ]
+}
