@@ -1,0 +1,14 @@
+{
+  "artifact": "artifacts/campaign/persistent-continuation/review-sqlite-20261003-001",
+  "reviewAlias": "artifacts/review/sqlite",
+  "status": "translation-and-strict-build-passed",
+  "resultsSha256": "ba73a58485bbf0c345d825d6e040ebb17643b4a5bea550d4231d5dd372bafe6f",
+  "manifestSha256": "f6c65dae2632da1e60a4b8d69feef8a5334c37f10cb063118e4d8b745128ccb9",
+  "translationFiles": 42,
+  "translationBytes": 12870889,
+  "limitations": [
+    "Test-only memory VFS",
+    "SQLITE_THREADSAFE=0",
+    "Fresh run validates generation/strict build; prior final matrix covers runtime execution"
+  ]
+}
