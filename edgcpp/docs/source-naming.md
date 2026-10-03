@@ -10,7 +10,9 @@ wrapper uses a `__body` suffix on the translated implementation when needed.
 C# reserved words are escaped (`@params`, `@out`, `@event`, `@ref`). Ordinary
 names, including contextual words such as `value`, remain plain. Collision
 allocation is deterministic within the relevant owner, record, function or
-label scope. It accounts for:
+label scope. The current spelling mapper preserves ASCII identifiers and
+encodes other UTF-8 bytes deterministically; the original spelling remains in
+metadata. It accounts for:
 
 - The configured wrapper class, lifecycle methods and inherited object methods.
 - C's separate record-tag and function namespaces, which share a C# member scope.
@@ -58,13 +60,17 @@ An opaque `handle*` can therefore be declared as `Core.handle*` in a managed
 consumer without obtaining its type name from a manifest. Same-spelled C++
 records remain distinct. Fields and bitfield properties have source names.
 
-Retained enum definitions and symbolic enumerators are emitted, and switch
-cases can recover an enumerator from the retained enum type and exact integer
-value. At this checkpoint, enum storage/signature declarations still use the
-physical integral type. Source-typed enum declarations have a separate prepared
-fixture (`source_enums.c`) and are not yet claimed as implemented. Wider-than-64
-bit extension enums use a named constant container because CLR enum bases stop
-at 64 bits.
+Actual enum types with underlying widths up to 64 bits retain their C# enum
+identity in globals, TLS, locals, fields, bitfield properties, pointers, arrays
+and function/callback signatures. Public enum types are included in the driver
+type map. Promoted integers that merely retain enum affiliation remain numeric;
+C arithmetic and varargs follow EDG's retained promotions. Assignment, calls,
+returns and conditional branches insert conversions when C# requires them.
+Switch cases recover symbolic enumerators from the original enum context, then
+adapt to the actual governing expression type. Unknown enum values use explicit
+casts, including parenthesized negative literals. Wider-than-64-bit extension
+enums remain physical Int128/UInt128 storage with a named constant container,
+because CLR enum bases stop at 64 bits.
 
 ## Metadata and validation
 
@@ -73,8 +79,9 @@ scope, plus public type mappings and routine member origins. The driver writes
 `dot-gen.sources.json` and `source-index.md`; `dot-gen.json` references the source
 map and its hash. Source-oriented grouping and navigation consume this metadata;
 function/size splitting remains available. The compiler's intermediate protocol
-is `dot-gen:source`, `dot-gen:public-type` and `dot-gen:origin` comments, which the
-driver consumes rather than leaving them throughout formatted C#.
+is `dot-gen:source`, `dot-gen:public-type` and `dot-gen:origin` comments. The
+driver consumes the symbol/type tables and retains short member-origin markers
+for generated-source navigation.
 
 Build 008 acceptance is retained under
 `artifacts/campaign/persistent-continuation/`:
@@ -105,3 +112,21 @@ unsupported boundaries). Exact source/compiler/generated hashes are recorded in
 `evidence/source-shadow-components.json`; the retained source snapshot is
 `source-shadow-accepted-010-20261003-102900`. These checks are separate from
 project-wide SQLite acceptance.
+
+Build 012 source enum acceptance passes 12 checks in
+`source-enums-translated-012-20261003-104300`: native/EDG C oracles, C/C++
+static/no-nest and instance/nested JIT/NativeAOT executables, and direct managed
+public enum API hosts in both owner modes. The fixture covers implicit C enum
+conversions, consumed increments, enum bitfield effects, pointer arithmetic
+stride, callback/array/TLS storage, scoped unsigned 64-bit values, and unknown
+negative enum literals/cases. Exact source/compiler/generated hashes are saved
+in `evidence/source-enum-components.json`; source snapshots are retained in
+`source-enums-accepted-012-20261003-104500`.
+
+After nominal enum integration, compiler 012 also passes the full 14-check
+source naming matrix again (`source-names-final-012-20261003-104900`) and six
+source-layout driver checks (`source-layout-final-012-20261003-104900`). The
+latter verifies all four split modes, exact navigation records, keyword-bearing
+namespace/class names, instance NativeAOT, and regeneration preserving previous
+generated artifacts and authored files. No implementation changes were needed;
+`evidence/source-type-final-regressions.json` records the final hashes.

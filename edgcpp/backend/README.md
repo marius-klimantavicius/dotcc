@@ -83,6 +83,10 @@ EDG_BASE="$PWD/edgcpp/upstream/bases/docker/dev-env/gcc" \
   (including plain `char`, using the EDG target signedness). Integer casts
   and arithmetic use unchecked C# expressions; logical/comparison results use
   C-style 0/1 values, including runtime short-circuiting.
+- Enums with CLR-representable underlying types retain source names and nominal
+  types in declarations/signatures. Integral promotions, varargs and conversions
+  remain governed by EDG; generated casts bridge the C# type rules. Wider-than-64-bit
+  enum extensions use named constant containers with the exact 128-bit values.
 - Automatic scalar locals, direct assignments, structured if/else, while/do/for,
   switch (including GNU ranges and fallthrough), break/continue and conditional
   expressions. Initializers stay at their execution point; legal source scopes

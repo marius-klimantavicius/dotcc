@@ -127,8 +127,8 @@ bool source_switch_items(a_statement_ptr s,std::vector<a_statement_ptr> &items) 
 }
 string source_initializer_value(a_dynamic_init_ptr d) {
   if(d->kind==dik_zero)return "default";
-  if(d->kind==dik_constant)return constant(d->variant.constant.ptr);
-  auto p=plan_source_value(d->variant.expression);output+=p.prefix;return p.value;
+  if(d->kind==dik_constant)return enum_boundary_value(d->variable->type,d->variant.constant.ptr->type,constant(d->variant.constant.ptr));
+  auto p=plan_source_value(d->variant.expression);output+=p.prefix;return enum_boundary_value(d->variable->type,d->variant.expression->type,p.value);
 }
 
 bool source_statement_terminates(a_statement_ptr s) {

@@ -55,7 +55,9 @@ assignments no longer call numbered assignment helpers, and simple structured
 branches/loops are not flattened into dispatch labels. Irreducible transfers,
 Duff dispatch and lifetime/setjmp requirements retain legal fallback labels.
 
-Remaining source-fidelity work at this checkpoint is preserving enum types in
-declarations/signatures rather than using their physical integer representation.
-Names and enum members are already retained. Later changes must preserve this
-review and the original-C, JIT and NativeAOT regression evidence.
+At the build010 review checkpoint, source-typed enum declarations were still
+pending. Build012 subsequently retains representable enum types in declarations
+and signatures, with explicit physical promotions only at C# expression/ABI
+boundaries. Its 12 focused checks and existing enum-exception regressions pass.
+Enums wider than 64 bits remain named constant containers. Later changes must
+preserve this review and the original-C, JIT and NativeAOT regression evidence.

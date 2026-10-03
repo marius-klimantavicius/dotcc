@@ -394,10 +394,37 @@ string source_record_name(a_type_ptr record,const char *fallback) {
   }
   return result;
 }
+// Affiliated integers retain enum provenance for diagnostics only: their
+// arithmetic/promotion ABI remains integral. Only actual enum types are named.
+a_type_ptr source_enum_context(a_type_ptr source_type) {
+  if(!source_type)return nullptr;
+  auto original=skip_typerefs(source_type);
+  if(original->kind!=tk_integer)return nullptr;
+  return original->variant.integer.enum_type?original:original->variant.integer.enum_info.affiliated_type;
+}
+bool source_enum_nominal(a_type_ptr source_type) {
+  if(source_enum_literal || !source_type)return false;
+  auto original=skip_typerefs(source_type);
+  return original->kind==tk_integer && original->variant.integer.enum_type && original->size<=8;
+}
+string source_enum_physical_type(a_type_ptr source_type) {
+  bool saved=source_enum_literal;source_enum_literal=true;
+  string result=type(source_type);source_enum_literal=saved;return result;
+}
+string source_enum_physical_constant(a_constant_ptr value) {
+  bool saved=source_enum_literal;source_enum_literal=true;
+  string result=constant(value);source_enum_literal=saved;return result;
+}
 void ensure_source_enum(a_type_ptr enumeration) {
-  if(source_enum_literal || !source_enum_emitted.insert(enumeration).second)return;
+  if(source_enum_literal || !enumeration)return;
+  enumeration=skip_typerefs(enumeration);
+  if(enumeration->kind!=tk_integer || !enumeration->variant.integer.enum_type || !source_enum_emitted.insert(enumeration).second)return;
   source_collect_type(enumeration);
   string id=source_entity_name(enumeration,"enum");if(id.empty())return;
+  if(source_type_mapping_written.insert(enumeration).second) {
+    auto &entry=source_name_entries[enumeration];
+    source_mapping_output+="// dot-gen:public-type "+source_hex(entry.source)+" "+id+" 0\n";
+  }
   source_enum_literal=true;
   string physical=type(enumeration);
   // CLR enum bases stop at64 bits. Retain wider extension enumerators as a
@@ -411,31 +438,43 @@ void ensure_source_enum(a_type_ptr enumeration) {
   }
   source_enum_literal=false;type_output+=declaration+"}\n";
 }
-string source_enum_constant(a_constant_ptr value) {
-  if(source_enum_literal || value->kind!=ck_integer || !value->source_corresp.name || !is_enum_constant(value))return "";
-  auto t=skip_typerefs(value->type);
-  if(!t->variant.integer.enum_type)t=t->variant.integer.enum_info.affiliated_type;
-  if(!t)return "";
-  ensure_source_enum(t);
-  a_constant_ptr original=nullptr;
-  for(auto c=enum_constants(t);c;c=c->next)if(c==value || (c->source_corresp.name && string(c->source_corresp.name)==value->source_corresp.name)){original=c;break;}
-  if(!original)return "";
-  return "(("+type(value->type)+")"+source_type_reference(t)+"."+source_entity_name(original,"enumerator")+")";
+string source_enum_type(a_type_ptr source_type) {
+  if(!source_enum_nominal(source_type))return "";
+  auto enumeration=skip_typerefs(source_type);ensure_source_enum(enumeration);
+  return source_entity_name(enumeration,"enum");
 }
-
-string source_enum_case(a_constant_ptr value,a_type_ptr context_type) {
-  if(!value)return "";
-  string named=source_enum_constant(value);if(!named.empty())return named;
-  if(value->kind!=ck_integer || !context_type)return "";
-  auto enumeration=skip_typerefs(context_type);
-  if(enumeration->kind!=tk_integer)return "";
-  if(!enumeration->variant.integer.enum_type)enumeration=enumeration->variant.integer.enum_info.affiliated_type;
+string source_enum_constant(a_constant_ptr value) {
+  if(source_enum_literal || value->kind!=ck_integer)return "";
+  auto enumeration=source_enum_context(value->type);if(!enumeration)return "";
+  ensure_source_enum(enumeration);
+  a_constant_ptr original=nullptr;
+  if(value->source_corresp.name && is_enum_constant(value))
+    for(auto candidate=enum_constants(enumeration);candidate;candidate=candidate->next)
+      if(candidate==value || (candidate->source_corresp.name && string(candidate->source_corresp.name)==value->source_corresp.name)){original=candidate;break;}
+  if(original) {
+    string member=source_type_reference(enumeration)+"."+source_entity_name(original,"enumerator");
+    return source_enum_nominal(value->type)?member:"(("+type(value->type)+")"+member+")";
+  }
+  if(source_enum_nominal(value->type))return "(("+type(value->type)+")("+source_enum_physical_constant(value)+"))";
+  return "";
+}
+string source_enum_case(a_constant_ptr value,a_type_ptr context_type,a_type_ptr governing_type=nullptr) {
+  if(!governing_type)governing_type=context_type;
+  if(!value || value->kind!=ck_integer || !context_type)return "";
+  auto enumeration=source_enum_context(context_type);
+  if(!enumeration)enumeration=source_enum_context(value->type);
   if(!enumeration)return "";
   ensure_source_enum(enumeration);
   for(auto candidate=enum_constants(enumeration);candidate;candidate=candidate->next) {
     if(candidate->kind!=ck_integer || cmp_integer_constants(value,candidate)!=0)continue;
     string member=source_entity_name(candidate,"enumerator");
-    if(!member.empty())return "(("+type(value->type)+")"+source_type_reference(enumeration)+"."+member+")";
+    if(member.empty())continue;
+    member=source_type_reference(enumeration)+"."+member;
+    return source_enum_nominal(governing_type) && skip_typerefs(governing_type)==enumeration?
+      member:"(("+type(governing_type)+")"+member+")";
   }
-  return "";
+  if(source_enum_nominal(governing_type))return "(("+type(governing_type)+")("+source_enum_physical_constant(value)+"))";
+  // A named enum-valued case can appear under a promoted integral switch.
+  string named=source_enum_constant(value);
+  return named.empty()?"":"(("+type(governing_type)+")"+named+")";
 }

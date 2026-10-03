@@ -48,6 +48,7 @@ std::map<a_constant_ptr, string> aggregate_constants;
 std::map<a_variable_ptr, unsigned long long> local_offsets;
 unsigned long long frame_size = 0, frame_alignment = 8;
 string type(a_type_ptr t);
+string enum_boundary_value(a_type_ptr target,a_type_ptr source,const string &value);
 string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address="");
 string typeinfo_constant(a_constant_ptr c);
 bool aggregate(a_type_ptr t) {
@@ -241,6 +242,7 @@ string type(a_type_ptr t) {
   }
   if (t->kind != tk_integer) unsupported("type", t->kind);
   ensure_source_enum(t);
+  { string named=source_enum_type(t);if(!named.empty())return named; }
   switch (t->variant.integer.int_kind) {
     case ik_char: if (t->size == 1) return targ_has_signed_chars ? "sbyte" : "byte"; break;
     case ik_signed_char: if (t->size == 1) return "sbyte"; break;
@@ -460,7 +462,7 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
                 std::to_string((unsigned char)c->variant.string.value[i]) + ";\n";
     return result;
   }
-  if (c->kind != ck_aggregate) return dst + " = " + constant(c) + ";\n";
+  if (c->kind != ck_aggregate) return dst + " = " + enum_boundary_value(t,c->type,constant(c)) + ";\n";
   if (!aggregate(t)) unsupported("aggregate initializer type");
   string result = dst + " = default;\n";
   auto field = t->kind == tk_array ? nullptr : next_non_empty_initializable_field(t->variant.class_struct_union.field_list);
@@ -603,6 +605,17 @@ string condition(an_expr_node_ptr e) {
 }
 string convert(a_type_ptr t, string value) {
   return "unchecked((" + type(t) + ")(" + value + "))";
+}
+string enum_boundary_value(a_type_ptr target,a_type_ptr source,const string &value) {
+  if((source_enum_nominal(target) || source_enum_nominal(source)) && type(target)!=type(source)) {
+    string operand=value;
+    if(source_enum_nominal(source) && skip_typerefs(target)->kind==tk_pointer)
+      operand="unchecked(("+source_enum_physical_type(source)+")("+operand+"))";
+    if(source_enum_nominal(target) && skip_typerefs(source)->kind==tk_pointer)
+      operand="unchecked(("+source_enum_physical_type(target)+")("+operand+"))";
+    return convert(target,operand);
+  }
+  return value;
 }
 string arithmetic_type(a_type_ptr a,a_type_ptr b) {
   a=skip_typerefs(a);b=skip_typerefs(b);
@@ -751,9 +764,14 @@ string location(an_expr_node_ptr e) {
       if (instance_mode) call += "this";
     }
     bool separator = a->kind != enk_routine && instance_mode;
+    auto callable=skip_typerefs(a->type);
+    if(callable->kind==tk_pointer)callable=skip_typerefs(callable->variant.pointer.type);
+    auto parameter=callable->kind==tk_routine?callable->variant.routine.extra_info->param_type_list:nullptr;
     for (auto arg = b; arg; arg = arg->next) {
       if (separator) call += ", ";
-      call += expr(arg); separator = true;
+      string argument=expr(arg);
+      if(parameter){argument=enum_boundary_value(parameter->type,arg->type,argument);parameter=parameter->next;}
+      call += argument; separator = true;
     }
     return call + ")";
   }
@@ -811,6 +829,8 @@ string location(an_expr_node_ptr e) {
   }
   if (op == eok_cast) {
     if (skip_typerefs(e->type)->kind == tk_void) unsupported("retained void cast");
+    if(source_enum_nominal(e->type) || source_enum_nominal(a->type))
+      return enum_boundary_value(e->type,a->type,expr(a));
     return convert(e->type, expr(a));
   }
   if (op == eok_parens) return "(" + location(a) + ")";
@@ -824,10 +844,14 @@ string location(an_expr_node_ptr e) {
     // C/C++ unsigned negation is modular subtraction. C# has no unary minus
     // for ulong, so preserve EDG's promoted operand width explicitly.
     if(operand_type->kind==tk_integer && !int_type_is_signed(operand_type))
-      return convert(e->type,"("+type(operand_type)+")0 - ("+expr(a)+")");
+      return convert(e->type,"("+source_enum_physical_type(operand_type)+")0 - ("+
+        (source_enum_nominal(a->type)?"("+source_enum_physical_type(operand_type)+")("+expr(a)+")":expr(a))+")");
   }
-  if (op == eok_negate || op == eok_unary_plus || op == eok_complement)
-    return convert(e->type, string(op == eok_negate ? "-" : op == eok_unary_plus ? "+" : "~") + expr(a));
+  if (op == eok_negate || op == eok_unary_plus || op == eok_complement) {
+    string operand=expr(a);
+    if(source_enum_nominal(a->type))operand="("+source_enum_physical_type(node_type_after_integral_promotion(a))+")("+operand+")";
+    return convert(e->type, string(op == eok_negate ? "-" : op == eok_unary_plus ? "+" : "~") + operand);
+  }
   if (op == eok_pre_incr || op == eok_pre_decr || op == eok_post_incr || op == eok_post_decr) {
     string token = (op == eok_pre_incr || op == eok_post_incr) ? "++" : "--";
     bool pre = op == eok_pre_incr || op == eok_pre_decr;
@@ -900,6 +924,21 @@ string location(an_expr_node_ptr e) {
   if ((op == eok_shiftl || op == eok_shiftr) && type(b->type)!="int")
     rhs = "unchecked((int)(" + rhs + "))";
   string lhs = expr(a);
+  if(source_enum_nominal(a->type) || source_enum_nominal(b->type)) {
+    auto promoted=[](an_expr_node_ptr operand) {
+      return skip_typerefs(operand->type)->kind==tk_integer?node_type_after_integral_promotion(operand):operand->type;
+    };
+    bool pointer=skip_typerefs(a->type)->kind==tk_pointer || skip_typerefs(b->type)->kind==tk_pointer;
+    bool shift=op==eok_shiftl || op==eok_shiftr;
+    if(pointer) {
+      if(source_enum_nominal(a->type))lhs="unchecked(("+source_enum_physical_type(promoted(a))+")("+lhs+"))";
+      if(source_enum_nominal(b->type))rhs="unchecked(("+source_enum_physical_type(promoted(b))+")("+rhs+"))";
+    } else {
+      string physical=shift?source_enum_physical_type(promoted(a)):arithmetic_type(promoted(a),promoted(b));
+      lhs="unchecked(("+physical+")("+lhs+"))";
+      if(!shift)rhs="unchecked(("+physical+")("+rhs+"))";
+    }
+  }
   if (comparison && function_pointer(a->type)) {
     lhs = "((nuint)(" + lhs + "))";
     rhs = "((nuint)(" + rhs + "))";
@@ -949,7 +988,7 @@ void variables(a_variable_ptr v, bool global) {
     if (v->alignment > 8 || alignment_of_type(v->type) > 8)
       unsupported("overaligned local");
     string init = "default";
-    if (v->init_kind == initk_static) init = constant(v->initializer.constant);
+    if (v->init_kind == initk_static) init = enum_boundary_value(v->type,v->initializer.constant->type,constant(v->initializer.constant));
     else if (v->init_kind != initk_none && v->init_kind != initk_zero &&
              !(v->init_kind == initk_dynamic && !global))
       unsupported("variable initializer", v->init_kind);
@@ -1138,6 +1177,10 @@ void statement(a_statement_ptr s) {
       // EDG's C backend emits a bare return for the unreachable/fall-through
       // path of a value-returning function. C# requires a typed return or throw.
       auto value=plan_source_value(s->expr);output+=value.prefix;
+      if(s->expr) {
+        auto result=skip_typerefs(current_function_scope->variant.routine.ptr->type)->variant.routine.return_type;
+        value.value=enum_boundary_value(result,s->expr->type,value.value);
+      }
       line(s->expr ? "return " + value.value + ";" : function_returns_void ? "return;" :
            "throw new global::System.InvalidProgramException(\"C++ function returned without a value\");"); break;
     }
@@ -1257,7 +1300,7 @@ void statement(a_statement_ptr s) {
           if(item->kind==stmk_switch_case) {
             auto c=item->variant.switch_case.extra_info;
             if(section && !terminal)line("goto "+name(c,"__edg_case")+";");
-            string case_value=source_enum_case(c->case_value,source_switch_enum_context(s->expr));
+            string case_value=source_enum_case(c->case_value,source_switch_enum_context(s->expr),s->expr->type);
             if(c->case_value && case_value.empty())case_value=constant(c->case_value);
             line(!c->case_value?"default:":c->range_end?"case >= "+case_value+" and <= "+constant(c->range_end)+":":"case "+case_value+":");
             line(name(c,"__edg_case")+": ;");section=true;terminal=false;
@@ -1303,7 +1346,7 @@ void statement(a_statement_ptr s) {
         source_declared_variables.insert(d->variable);break;
       }
       string value;
-      if (d->kind == dik_expression) {auto plan=plan_source_value(d->variant.expression);output+=plan.prefix;value=plan.value;}
+      if (d->kind == dik_expression) {auto plan=plan_source_value(d->variant.expression);output+=plan.prefix;value=enum_boundary_value(d->variable->type,d->variant.expression->type,plan.value);}
       else if (d->kind == dik_constant) {
         line(initializer(variable(d->variable), d->variable->type, d->variant.constant.ptr,variable_address(d->variable)));
         break;

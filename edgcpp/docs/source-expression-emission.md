@@ -187,3 +187,23 @@ passed through default variadic promotion is an additional useful boundary
 case. The next implementation should be verified after the current project
 freeze, alongside the pending omission of source-inaccessible padding-field
 properties; neither requires changing EDG.
+
+## Source-typed enum boundaries
+
+Build012 retains nominal enum types while ordinary arithmetic follows EDG's
+promoted physical types. The planner distinguishes actual enum types from
+integer nodes that merely retain enum affiliation. Same-enum assignments stay
+direct; differing enum/numeric assignments and conditional branches receive
+explicit conversions. Compound/increment results use the existing localized
+storage/result plan where C# operator rules differ, including bitfield
+truncation. Pointer arithmetic keeps its typed pointer and converts only the
+enum displacement, preserving the element stride.
+
+The central emitter applies matching conversions at initializer, fixed-call
+parameter, return and arithmetic boundaries. The focused enum matrix is recorded
+in `evidence/source-enum-components.json`; the unchanged pointer/enum exception
+suite also passes nine checks with 48 native traces in
+`artifacts/campaign/persistent-continuation/source-enum-eh-011`. Build012 changes
+only parenthesization of otherwise-invalid unnamed negative enum literals after
+that exception run. Source correspondence and SQLite core both passed build011;
+the final project acceptance uses build012 throughout.

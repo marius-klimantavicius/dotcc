@@ -77,6 +77,9 @@ bool source_implicit_conversion(an_expr_node_ptr value,a_type_ptr target) {
   string from=type(value->type),to=type(target);
   if(from==to)return true;
   auto source_type=skip_typerefs(value->type),target_type=skip_typerefs(target);
+  // Named enums are not implicitly interchangeable with their integer storage
+  // or another enum in C#. Affiliated EDG promotion types remain integers.
+  if(source_enum_nominal(source_type) || source_enum_nominal(target_type))return false;
   if(source_type->kind==tk_pointer && target_type->kind==tk_pointer)
     return skip_typerefs(target_type->variant.pointer.type)->kind==tk_void;
   if(from.find("global::")!=string::npos || to.find("global::")!=string::npos)return false;
@@ -140,7 +143,8 @@ source_planned_node source_plan_mutation(an_expr_node_ptr e,bool discard,bool wa
       string temp=source_temporary("assignment_target");prefix+=type(lhs->type)+"* "+temp+" = "+source_planned_address(lhs,left)+";\n";place="(*"+temp+")";pointer=temp;
     }
   }
-  bool exact_compound=true;
+  bool enum_target=source_enum_nominal(lhs->type);
+  bool exact_compound=token=="=" || (!enum_target && (increment || !source_enum_nominal(rhs->type)));
   if(!increment) {
     bool shift=token=="<<=" || token==">>=";
     bool pointer_arithmetic=skip_typerefs(lhs->type)->kind==tk_pointer && (token=="+=" || token=="-=");
@@ -170,10 +174,15 @@ source_planned_node source_plan_mutation(an_expr_node_ptr e,bool discard,bool wa
   if(token!="=") {
     string operation=token.substr(0,token.size()-1);
     if(skip_typerefs(lhs->type)->kind==tk_pointer) {
+      if(!increment && source_enum_nominal(rhs->type))
+        right.value="unchecked(("+source_enum_physical_type(node_type_after_integral_promotion(rhs))+")("+right.value+"))";
       value=place+" "+operation+" ("+right.value+")";
     } else {
-      auto promoted=field?node_type_after_integral_promotion(lhs):lhs->type;
-      string calc=(operation=="<<" || operation==">>")?type(promoted):arithmetic_type(promoted,increment?promoted:rhs->type);
+      auto promoted=(field || enum_target)?node_type_after_integral_promotion(lhs):lhs->type;
+      auto right_type=increment?promoted:rhs->type;
+      if(!increment && skip_typerefs(right_type)->kind==tk_integer)
+        right_type=node_type_after_integral_promotion(rhs);
+      string calc=(operation=="<<" || operation==">>")?source_enum_physical_type(promoted):arithmetic_type(promoted,right_type);
       value="(("+calc+")("+place+")) "+operation+" (("+((operation=="<<" || operation==">>")?"int":calc)+")("+right.value+"))";
     }
   }
@@ -216,6 +225,8 @@ source_planned_node source_plan_node(an_expr_node_ptr e,bool discard,bool want_p
       return {prefix,"("+temp+" ? 1 : 0)",""};
     }
     if(skip_typerefs(e->type)->kind==tk_void)return {test.prefix+"if ("+test.value+") {\n"+yes.prefix+(yes.value.empty()?"":yes.value+";\n")+"} else {\n"+no.prefix+(no.value.empty()?"":no.value+";\n")+"}\n","",""};
+    yes.value=enum_boundary_value(e->type,b->type,yes.value);
+    no.value=enum_boundary_value(e->type,b->next->type,no.value);
     if(yes.prefix.empty() && no.prefix.empty())return {test.prefix,"("+test.value+" ? "+yes.value+" : "+no.value+")",""};
     string temp=source_temporary("conditional_value");
     return {test.prefix+type(e->type)+" "+temp+";\nif ("+test.value+") {\n"+yes.prefix+temp+" = "+yes.value+";\n} else {\n"+no.prefix+temp+" = "+no.value+";\n}\n",temp,""};

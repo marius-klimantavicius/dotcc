@@ -1,0 +1,329 @@
+{
+  "schema": 1,
+  "status": "focused-components-passed",
+  "compiler": {
+    "path": "build/bin/cpfe-dot",
+    "sha256": "05a126e6d702e9743eff9b6226a2dbe201e086e8d146e212a34375ef53df44ca"
+  },
+  "artifact": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300",
+  "checkCount": 12,
+  "checks": [
+    "c: native and original EDG C enum arithmetic/promotion oracles",
+    "c-static: JIT enum signatures, fields, pointers, varargs, arithmetic promotions and bitfields",
+    "c-static: NativeAOT typed enum semantics",
+    "c-instance: JIT enum signatures, fields, pointers, varargs, arithmetic promotions and bitfields",
+    "c-instance: NativeAOT typed enum semantics",
+    "c++: native and original EDG C enum arithmetic/promotion oracles",
+    "cpp-static: JIT enum signatures, fields, pointers, varargs, arithmetic promotions and bitfields",
+    "cpp-static: NativeAOT typed enum semantics",
+    "cpp-instance: JIT enum signatures, fields, pointers, varargs, arithmetic promotions and bitfields",
+    "cpp-instance: NativeAOT typed enum semantics",
+    "library-static: direct typed public enum API",
+    "library-instance: direct typed public enum API"
+  ],
+  "sourceInputs": [
+    {
+      "path": "backend/dot_gen_source_names.h",
+      "sha256": "ad481062964cb12d7c864ea3df09dadf0ea04dcb7dfbbe4e1485eac40f6c834c",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-enums-accepted-012-20261003-104500/source/backend/dot_gen_source_names.h"
+    },
+    {
+      "path": "backend/dot_gen_source_storage.h",
+      "sha256": "0d18b5e3f80aefe44e96ea5f5168dc450d580dbeda1b4203fd3bdd29d5ec29e6",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-enums-accepted-012-20261003-104500/source/backend/dot_gen_source_storage.h"
+    },
+    {
+      "path": "backend/tests/source_enums.c",
+      "sha256": "bb74c7b01ce4bb0e10d0107df5bae914d47285797cddbdb82b6e7cd8de3c9f1d",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-enums-accepted-012-20261003-104500/source/backend/tests/source_enums.c"
+    },
+    {
+      "path": "backend/tests/source_enums_verify.py",
+      "sha256": "dd41931fcb2809a266e6d02172f2e312bd99bac4cabd521bd76cdd860892c3ab",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-enums-accepted-012-20261003-104500/source/backend/tests/source_enums_verify.py"
+    },
+    {
+      "path": "backend/dot_gen_be.c",
+      "sha256": "6b7b9f66621395bb534df16b5bb5eb71d198c80f6e0e7d449fc9cba295678f3d",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-enums-accepted-012-20261003-104500/source/backend/dot_gen_be.c"
+    },
+    {
+      "path": "backend/dot_gen_source_expressions.h",
+      "sha256": "6d4ea58dfbd9da7560ed64a44a5260bf0126586058cb3544ceb7626993d9b1ff",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-enums-accepted-012-20261003-104500/source/backend/dot_gen_source_expressions.h"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/results.json",
+      "sha256": "b9db242893ad03752096672b1a15065815f3436ca9c30350c8ce03973481e386"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/commands.json",
+      "sha256": "d197b34ddf6e5dfac012bab1551d0797c00589b688ed6cfd724515276ecb4ba9"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/input-hashes.json",
+      "sha256": "05f0345042ee617d8c712a3bbed6038714d88c721d39601a2bebefa73dce616e"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/dot-gen.json",
+      "sha256": "ecf4bbd46015295cb1f115a489356310ed816ac2ab8e4e3e59d4a877ca8b6316"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/dot-gen.json",
+      "sha256": "0031cbdd93a2ca8ab0f638a4ebd869a5d81714fda45a053c6227e7566dacd3b5"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/dot-gen.json",
+      "sha256": "f1b9728906cd64440fe5e71fc660455129bf75f16b48ac1567d89bddfaa50fff"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/dot-gen.json",
+      "sha256": "92ba646549dc7ffd14c34dde31c01ecc134fac7ea1f1f0ec74125527fff6660e"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/library-instance/dot-gen.json",
+      "sha256": "dfe832c45b78b535788551083871ac387551ad7f238da9c8af558815492c901a"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/library-static/dot-gen.json",
+      "sha256": "d2b20bbedc549df530eeaf866b7020ea5efee995c7ba16914d79eddc51cbfefd"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/dot-gen.sources.json",
+      "sha256": "1eef9cf0129b5a338a3d0aa9af89822155976d69d65d6f46dcf575f3e4e57b5f"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/dot-gen.sources.json",
+      "sha256": "99c28b856613784b304e4be1f27e51202851f1d38e338fb18c82a521d58e6824"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/dot-gen.sources.json",
+      "sha256": "496cb7a26e57509e8a48b452a33c7d9140ce24ec0400a4da4d37b901ef08f567"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/dot-gen.sources.json",
+      "sha256": "f341bb3c3ee31a864aea0f9b8569e61938d2b2aa6fb2674e427122a560944374"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/library-instance/dot-gen.sources.json",
+      "sha256": "85c3abc52940533a8e2de676e25460542efbd4af2c6ca1ad0da79295d21ee444"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/library-static/dot-gen.sources.json",
+      "sha256": "7c264b65d06ebff7a7d69459494e77fe23a8a4fb981131899d12d0246ea2c8c3"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/Translated.cs",
+      "sha256": "336601042af0e35ea1900eb8726d129773e29fe852c64cef565c5de015930efb"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/Translated.part00000.cs",
+      "sha256": "d4d02f5fd789a51af4fc3286775e297d154ca536eaedecabeaf1ff69b3a34ded"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/Translated.part00001.cs",
+      "sha256": "756bdf4512c02a38d19a1b900037b62bd95b2277065f97ec09f5bd4bbacb45e3"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/Translated.part00002.cs",
+      "sha256": "c2aeb9aa74885c9b21ef8c8e22a63a5e372884bd0d0559f6cda489f6a17a5fa7"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/Translated.part00003.cs",
+      "sha256": "87e2ef162c229a038904685c7150afa4e299f6ba648bd379243fe2efcf3cd60f"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/Translated.part00004.cs",
+      "sha256": "7cd8ba51b790124780f57f64dec06c244d2cbf706c99e8b90e9a16fc34ac2d36"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/Translated.part00005.cs",
+      "sha256": "d85f11ca1ff1b0a76aa53770e5f96871ab406bb843003d9f50ad43f9facbe0d1"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/Translated.part00006.cs",
+      "sha256": "ac65d76564ab055e8f814d3d429f21221ea431d99c1a50a18a46c4de073aba59"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/Translated.part00007.cs",
+      "sha256": "71ec6555b13bba376359a4ac068bc4ae347af0fabdc66b4f1dff9ee3059c10f7"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/Translated.part00008.cs",
+      "sha256": "41aa2fabe9625d00e9811493c64f6d3e3e53e5c91eaddcb43eba6d59518b1bc4"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/Translated.part00009.cs",
+      "sha256": "4861db248713d33f64742050d154ba6fff6cd8532b6d1a0f3362f312cf1f1e71"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-instance/Translated.part00010.cs",
+      "sha256": "f154b9e5d1924a9f3cc7340c1f268c648cc9f091538759b330df3539c9032c2b"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/Translated.cs",
+      "sha256": "55fdfaa1471bcc3e7756ece8fed556f887e568c1828f17c7c39dfadff01a80a9"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/Translated.part00000.cs",
+      "sha256": "be0bc59e1359425b435d8c3e0a70a1e5ba181140dd0b21ec71c784eb6f5ba6a9"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/Translated.part00001.cs",
+      "sha256": "58056b1c180a1ddc9e6c8452ce9b73314d6b1b23aa65eed8f14e4618c4375e41"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/Translated.part00002.cs",
+      "sha256": "b33ac921afc079bb0f5ac25783b3fd3c92834b4bc6fac3ae0c568de3e3505a3c"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/Translated.part00003.cs",
+      "sha256": "19961e9b9340a7d838012040ae57c33ca9412e0083ba523377a9b697c229b44e"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/Translated.part00004.cs",
+      "sha256": "2c14f4f8b04f006311a7630488300f694391d4ca7866d3515885bfa5fa2143cf"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/Translated.part00005.cs",
+      "sha256": "90cd4bcc02e2001f80956c78486c74b73cdc687b77462bd8432c0d62b4472a0f"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/Translated.part00006.cs",
+      "sha256": "aacf2b107a629983a2b6377f742b281e68afa457d3b08110d8b2f36da5b11eab"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/Translated.part00007.cs",
+      "sha256": "d3572e7a0d9986e270ad910df83d17f0bbe15c8fc8e452d496ff4bab047fe308"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/Translated.part00008.cs",
+      "sha256": "bf586cbb566382accbe3956affe725fbd97a1b396b17e3422dec0c2c7a9a767f"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/Translated.part00009.cs",
+      "sha256": "4c65fa43437c5cb5a2496668cb51419bbc07c71493eb7f325f3926a1d8923a19"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/c-static/Translated.part00010.cs",
+      "sha256": "191215510502edbc893653415da4c79c20af91b7eb5dc9045015c1b8a670d428"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/Translated.cs",
+      "sha256": "7d6308dcd7a9fd01b300665868c5ba9b6f46ce10d01224ced630641f9f2116f5"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/Translated.part00000.cs",
+      "sha256": "9d402213cdd4e182aff706d1dd9590a6c7989f24904a832aeefaee411dc06432"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/Translated.part00001.cs",
+      "sha256": "4d563c00ef6c51a7fa19552955d2694413d8226c368ca82e45ccd03dd3539d0f"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/Translated.part00002.cs",
+      "sha256": "67c1a7d734895ba3f583d093b533777927df6a4b61517e660679eb559e671a10"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/Translated.part00003.cs",
+      "sha256": "87e2ef162c229a038904685c7150afa4e299f6ba648bd379243fe2efcf3cd60f"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/Translated.part00004.cs",
+      "sha256": "7cd8ba51b790124780f57f64dec06c244d2cbf706c99e8b90e9a16fc34ac2d36"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/Translated.part00005.cs",
+      "sha256": "d85f11ca1ff1b0a76aa53770e5f96871ab406bb843003d9f50ad43f9facbe0d1"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/Translated.part00006.cs",
+      "sha256": "ac65d76564ab055e8f814d3d429f21221ea431d99c1a50a18a46c4de073aba59"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/Translated.part00007.cs",
+      "sha256": "71ec6555b13bba376359a4ac068bc4ae347af0fabdc66b4f1dff9ee3059c10f7"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/Translated.part00008.cs",
+      "sha256": "41aa2fabe9625d00e9811493c64f6d3e3e53e5c91eaddcb43eba6d59518b1bc4"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/Translated.part00009.cs",
+      "sha256": "5d3e1040a9134a579f3be31e87dd693465e92a238303a8460e13f33d9d002273"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-instance/Translated.part00010.cs",
+      "sha256": "f154b9e5d1924a9f3cc7340c1f268c648cc9f091538759b330df3539c9032c2b"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/Translated.cs",
+      "sha256": "5656fcbf861eb4fee52bce5cf83b952e59dfdfd4795a40e6f927eea2bb2b780e"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/Translated.part00000.cs",
+      "sha256": "0de4936bedc56e2e99e7b0f58c135bdb6c1b98256ee655273718af6da78771b9"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/Translated.part00001.cs",
+      "sha256": "efc5f0583a22e94dcd925eac1302cf66bd1cd589679ffb222d19da17f9ca2269"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/Translated.part00002.cs",
+      "sha256": "df68a5aed9554a1558f920f34e9575682bd53c7a029020ab9164b01b066909a7"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/Translated.part00003.cs",
+      "sha256": "2be5d1be316ff627050c23dfef37d4dc24067562fd840c184811b38d702e9ad9"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/Translated.part00004.cs",
+      "sha256": "be4846343086a75a337e30879ada73ef273a7085609274285fe03c9dd3f2a137"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/Translated.part00005.cs",
+      "sha256": "6273446b1a6f77de585f891e79a9bbd04673e746e130fb2a528e711f7f4d37f8"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/Translated.part00006.cs",
+      "sha256": "aacf2b107a629983a2b6377f742b281e68afa457d3b08110d8b2f36da5b11eab"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/Translated.part00007.cs",
+      "sha256": "d3572e7a0d9986e270ad910df83d17f0bbe15c8fc8e452d496ff4bab047fe308"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/Translated.part00008.cs",
+      "sha256": "bf586cbb566382accbe3956affe725fbd97a1b396b17e3422dec0c2c7a9a767f"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/Translated.part00009.cs",
+      "sha256": "5a6abcc970c6dbca8657e0c45317b8577a9dce2789e2cefbea3c57eae0581a12"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/cpp-static/Translated.part00010.cs",
+      "sha256": "191215510502edbc893653415da4c79c20af91b7eb5dc9045015c1b8a670d428"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/library-instance/Translated.cs",
+      "sha256": "c14b70601e188039fd5957eefcdcc154987518089fbecdfa2f68f8aa24164174"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/source-enums-translated-012-20261003-104300/library-static/Translated.cs",
+      "sha256": "d1ac55b41b781c2537f992d3d70cb80a79ff7f1ea235c86f0ce78cc00e4071d5"
+    }
+  ],
+  "coverage": [
+    "Actual enum types retained in globals, TLS, locals, fields, bitfields, pointers, arrays, callback signatures and public APIs.",
+    "C implicit enum/integer assignment, return and call conversions; different-enum assignment; consumed pre/post increments; side-effecting conditional and bitfield expressions.",
+    "Pointer/enum arithmetic retains element stride; C integer promotions and varargs remain physical integers.",
+    "Signed negative unknown enum literals/cases; C++ scoped enums including unsigned 64-bit high value."
+  ],
+  "limits": [
+    "CLR enum bases stop at64bits; extension enums wider than64bits retain physical Int128/UInt128 storage and named static constant containers.",
+    "Fixed configured EDG target ABI remains unchanged; this verifies generated C# representation and conversion fidelity.",
+    "No whole-language completion claim; project acceptance recorded separately."
+  ]
+}

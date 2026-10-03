@@ -14,7 +14,7 @@ clean inactive compiled temporaries under the later explicit user authorization.
 | --- | --- | --- |
 | Root | User-facing review and source-correspondence acceptance assistance | Supplied readability fixtures, source layout helper and direct named SQLite consumer |
 | Coordinator | Control/declarations, integration, driver grouping/navigation, builds/commits and project evidence | Readability14, control10, layout6 and revised SQLite20 accepted; next source-fidelity increment under test |
-| Core language worker | Source identifiers/types and collision mappings | Shadow-aware names14 and GNU statement10 accepted; typed enums remain |
+| Core language worker | Source identifiers/types and collision mappings | Shadow-aware names14, GNU statement10 and source-typed enums12 accepted |
 | Expression worker | Direct expressions, localized evaluation adjustments and named bitfield properties |52 unique focused checks accepted; comma loops and pointer scaling verified |
 
 Compiler preparation/build and Git mutations are serialized through the
@@ -584,14 +584,14 @@ These are C# backend integration issues; fixes do not change EDG lowering.
 At that point there was no revised-emitter SQLite acceptance or completed
 readability claim.
 
-The subsequent integrated milestone now passes14 source-correspondence checks,
+The subsequent integrated milestone now passes 14 source-correspondence checks,
 ten structured-control checks and six complete driver layout/navigation checks.
 The layout matrix covers all four split modes, keyword namespace/class names,
 instance NativeAOT, exact generated line mappings and preservation of superseded
 generation inputs. Source-less split helpers explicitly enable nullable context,
 which Roslyn otherwise suppresses for the `.generated.cs` filename convention.
 
-Revised SQLite core output matches all6337 native/reference bytes under JIT and
+Revised SQLite core output matches all 6337 native/reference bytes under JIT and
 NativeAOT. A separate consumer declares `SqliteCore.sqlite3*` and
 `SqliteCore.sqlite3_stmt*`, calls the original public API names directly, and
 passes independent-owner/transaction/GC checks in both runtimes. These five
@@ -630,6 +630,23 @@ RTTI12 and function-try9 checks, plus fresh SQLite core3 including NativeAOT.
 against saved original bodies. See `evidence/source-correspondence-refinements.json`
 and `evidence/source-shadow-components.json`. Source-typed enum declarations
 remain the next bounded requirement; broader standards/platform gates stay open.
+
+Build012 retains CLR-representable enum types in declarations, fields, globals,
+TLS, pointer/callback signatures and public APIs. Named members remain visible;
+explicit conversions preserve EDG's integral promotions, scalar boundaries,
+conditional results, bitfield truncation and pointer element strides. Unnamed
+negative enum constants use valid parenthesized C# casts. Affiliated/promoted
+integer nodes remain physical integers. Wider-than-64-bit enum extensions retain
+the documented named constant container because CLR enums cannot represent that
+underlying type.
+
+The enum matrix passes 12 C/C++ native/original-C, JIT/NativeAOT and direct typed
+API checks. The existing pointer/enum exception matrix passes nine checks with 48
+native traces, forced GC, owner crossing and thread isolation; source review14
+and SQLite core3 also pass. The final frozen012 project run covers all six
+corpora and both named-API and lifecycle-owner consumers. Source/type evidence
+is `evidence/source-enum-components.json`; broader standards/platform gates are
+not closed by this source-correspondence work.
 
 The complete pre-readability SQLite baseline contains20 unique project checks:
 core/API/VFS/vtable/allocation/FTS5 each match fresh native and checked-in
