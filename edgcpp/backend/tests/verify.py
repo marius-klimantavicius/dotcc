@@ -330,6 +330,10 @@ def main():
     checks.extend(verify_libc_math_logs(ROOT, TESTS, suite_output("libc_math_logs"), args.nativeaot, run))
     from libc_math_extrema_verify import verify_libc_math_extrema
     checks.extend(verify_libc_math_extrema(ROOT,TESTS,suite_output("libc_math_extrema"),args.nativeaot,run))
+    from float80_add_verify import verify_float80_add
+    checks.extend(verify_float80_add(ROOT, TESTS, suite_output("float80_add"), args.nativeaot, run))
+    from float80_divide_verify import verify_float80_divide
+    checks.extend(verify_float80_divide(ROOT, TESTS, suite_output("float80_divide"), args.nativeaot, run))
     from float80_multiply_verify import verify_float80_multiply
     checks.extend(verify_float80_multiply(ROOT, TESTS, suite_output("float80_multiply"), args.nativeaot, run))
     from float80_compare_verify import verify_float80_compare

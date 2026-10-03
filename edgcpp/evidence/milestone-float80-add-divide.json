@@ -1,0 +1,28 @@
+{
+  "scope": "Allocation-free exact binary80 addition/subtraction and division",
+  "checks": 13,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/float80-add-final-001/results.json",
+      "sha256": "17f58167a6d89e23bd4edbb52e3f93639c2a177e4d93e89ca1bd7aba78687be6"
+    },
+    {
+      "path": "artifacts/campaign/float80-divide-final-001/results.json",
+      "sha256": "2be824fd29360e1d589469eb4a8c59d947ad1ca2c4e5a504ffcd05d37fc99693"
+    },
+    {
+      "path": "artifacts/campaign/float80-arithmetic-log-regression-001/results.json",
+      "sha256": "11bd1bb28d8d47260966d3aacc1bc3dcd205b1d2ceed7cca1281078951fc53b3"
+    }
+  ],
+  "runtimeSha256": "409a42a6fc6c0cd5e08a1478f084ba089da4de111d7fb7af0c4428d9080e0093",
+  "nativeVectorsPerOperation": 14738,
+  "independentReferenceCasesPerOperation": 100000,
+  "allocationTestOperationsPerOperation": 1000000,
+  "allocationBytes": 0,
+  "limitations": [
+    "Conversions and other library math helpers still contain BigInteger paths",
+    "Nearest-even only; dynamic floating environment remains open",
+    "Linux-x64 JIT/NativeAOT execution only"
+  ]
+}

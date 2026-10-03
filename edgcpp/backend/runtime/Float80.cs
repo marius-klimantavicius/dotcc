@@ -61,10 +61,18 @@ public readonly struct Float80 : IEquatable<Float80> {
     public static Float80 operator +(Float80 a,Float80 b) {
         if(a.NaN || b.NaN)return QuietNaN;
         if(a.Infinity || b.Infinity)return a.Infinity && b.Infinity && a.Negative!=b.Negative?QuietNaN:a.Infinity?a:b;
-        int power=Math.Min(a.Power,b.Power);
-        BigInteger x=(BigInteger)a.Significand<<(a.Power-power),y=(BigInteger)b.Significand<<(b.Power-power);
-        if(a.Negative)x=-x;if(b.Negative)y=-y;BigInteger sum=x+y;
-        return Pack(BigInteger.Abs(sum),power,sum.Sign<0 || (sum.IsZero && a.Negative && b.Negative));
+        if(a.Zero && b.Zero)return new(0,(ushort)(a.Negative&&b.Negative?0x8000:0));
+        if(a.Zero)return Pack128(b.Significand,b.Power,b.Negative);
+        if(b.Zero)return Pack128(a.Significand,a.Power,a.Negative);
+        int az=BitOperations.LeadingZeroCount(a.Significand),bz=BitOperations.LeadingZeroCount(b.Significand);
+        ulong am=a.Significand<<az,bm=b.Significand<<bz;
+        int ap=a.Power-az,bp=b.Power-bz;bool an=a.Negative,bn=b.Negative;
+        if(ap<bp || (ap==bp && am<bm)){(am,bm)=(bm,am);(ap,bp)=(bp,ap);(an,bn)=(bn,an);}
+        UInt128 x=(UInt128)am<<3,y=(UInt128)bm<<3;int drop=ap-bp;
+        if(drop>=128)y=1;
+        else if(drop>0){UInt128 shifted=y>>drop;y=shifted|((y-(shifted<<drop))!=0?(UInt128)1:0);}
+        UInt128 magnitude=an==bn?x+y:x-y;
+        return Pack128(magnitude,ap-3,magnitude!=0 && an);
     }
     public static Float80 operator -(Float80 a)=>new(a.Significand,(ushort)(a.SignExponent^0x8000));
     public static Float80 operator +(Float80 a)=>a;
@@ -79,16 +87,19 @@ public readonly struct Float80 : IEquatable<Float80> {
         if(a.NaN || b.NaN || (a.Infinity && b.Infinity) || (a.Zero && b.Zero))return QuietNaN;
         if(a.Infinity || b.Zero)return Inf(negative);
         if(a.Zero || b.Infinity)return new(0,(ushort)(negative?0x8000:0));
-        BigInteger numerator=a.Significand,denominator=b.Significand;
-        int ratio=(int)numerator.GetBitLength()-(int)denominator.GetBitLength();
+        UInt128 numerator=a.Significand,denominator=b.Significand;
+        int ratio=BitOperations.LeadingZeroCount(b.Significand)-BitOperations.LeadingZeroCount(a.Significand);
         if(ratio>=0?numerator<(denominator<<ratio):(numerator<<-ratio)<denominator)--ratio;
         int high=ratio+a.Power-b.Power;
         if(high>16383)return Inf(negative);
+        if(high < -16446)return new(0,(ushort)(negative?0x8000:0));
         int quantum=Math.Max(high-63,-16445),shift=a.Power-b.Power-quantum;
+        // Given the nonzero-result bound above, scaled numerator uses at most
+        // 128 bits; a left-scaled denominator uses at most 65 bits.
         if(shift>=0)numerator<<=shift;else denominator<<=-shift;
-        BigInteger q=BigInteger.DivRem(numerator,denominator,out BigInteger r);
-        if((r<<1)>denominator || ((r<<1)==denominator && !q.IsEven))++q;
-        return Pack(q,quantum,negative);
+        UInt128 q=numerator/denominator,r=numerator-q*denominator;
+        if((r<<1)>denominator || ((r<<1)==denominator && (q&1)!=0))++q;
+        return Pack128(q,quantum,negative);
     }
     private static int Compare(Float80 a,Float80 b) {
         if(a.Zero && b.Zero)return 0;

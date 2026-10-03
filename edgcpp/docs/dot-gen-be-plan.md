@@ -1077,3 +1077,10 @@ semantics and first-pass no-unwind boundaries remain intact. Ninety-one
 focused checks cover native/original-EDG references, direct and restored
 default pointers, hostile transfers, prior EH ordering and JIT/NativeAOT
 (`evidence/milestone-default-terminate-signals.json`).
+
+Binary80 addition/subtraction and division now also use exact fixed-width
+arithmetic. Addition normalizes operands and retains guard/sticky bits; division
+uses a bounded128-bit numerator and exact remainder for ties. Thirteen focused
+checks cover native/reference vectors, zero-allocation loops and composed
+translated logarithms (`evidence/milestone-float80-add-divide.json`). Conversion
+and other library-helper allocation paths and dynamic fenv remain open.
