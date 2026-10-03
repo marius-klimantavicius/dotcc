@@ -12,10 +12,10 @@ clean inactive compiled temporaries under the later explicit user authorization.
 
 | Owner | Work | State |
 | --- | --- | --- |
-| Root | SQLite acceptance runner/native references and bounded volatile-bitfield regression | Six native SQLite corpora accepted; translated runs await blockers |
-| Coordinator | SQLite translation, integration, driver, builds/commits and evidence | Portable SQLite parses; overflow/math gaps assigned |
-| Core language worker | GNU checked-overflow builtins required by SQLite | Implementing; local-promotion configuration candidate retained, unpromoted |
-| Libc worker | SQLite double math source dependencies | Implementing exact project imports; descriptor breadth frozen |
+| Root | Source-correspondence fixtures/review, source grouping and navigation, direct named SQLite consumer | Native reference fixtures and layout helper accepted; revised emitter acceptance in progress |
+| Coordinator | Structured control/declarations, addressable source storage, integration, builds/commits and evidence | First compiler build passes control-flow differential matrix; broader integration under test |
+| Core language worker | Source identifier/type/member/enum preservation and deterministic collision mappings | Naming and storage-view helpers integrated; focused C/C++/multi-TU regressions in progress |
+| Expression worker | Direct expressions, localized evaluation adjustments and named bitfield properties | First expression matrix passes; adapter/address/cache regressions being corrected |
 
 Compiler preparation/build and Git mutations are serialized through the
 coordinator. Canonical emitter sources stay in `backend/`. Workers use disjoint
@@ -37,7 +37,8 @@ files; generated overlays are refreshed only at integration boundaries.
 - [ ] Independent owner state, TLS/thread exit and disposal across every runtime subsystem.
 - [ ] Windows/Linux/macOS x64/Arm64 JIT and NativeAOT validation, runtime platform selection.
 - [ ] Efficiency/scalability measurements, reproducible manifests and final supported-feature audit.
-- [ ] Current priority: SQLite translation, native transcript comparison, JIT/NativeAOT and owner isolation; remaining exhaustive gates are deferred.
+- [x] Pre-readability SQLite baseline: six full-profile native/reference/JIT/NativeAOT corpora and two independent-owner checks (20 project checks).
+- [ ] Current priority: source names throughout bodies/types, structured statements/declarations, direct expressions/named bitfields, source navigation/splitting, and fresh SQLite JIT/NativeAOT/direct named API acceptance. Exhaustive unrelated language/library gates remain deferred.
 
 ## Verified milestones
 
@@ -560,3 +561,32 @@ consumer checks with the full feature profile: separate databases/transactions,
 forced collection, sequential thread handoff, one owner's shutdown while the
 other continues, and replacement-owner initialization. THREADSAFE=0 does not
 permit concurrent calls into one engine. Evidence:sqlite-project-owners.json.
+
+
+## Revised source-correspondence implementation (in progress)
+
+The user requested a change in emission strategy after inspecting the working
+SQLite output. Original names now drive backend-owned symbol mappings;
+structured statement views retain EDG control-flow targets, and expression
+plans keep necessary sequencing/conversion temporaries at their source boundary.
+EDG IL and its layout/lifetime semantics remain unchanged. The implementation
+also adds named global/TLS ref views over the existing pinned arenas and named
+frame aliases, keeping ordinary accesses separate from explicit address paths.
+
+First integration evidence is provisional and predates subsequent corrections:
+`persistent-continuation/source-control-translated-001` passes ten original-C
+and generated JIT/NativeAOT checks for C/C++ Duff dispatch, jumps entering loops
+and branches, switch fallthrough and nested break/continue. The first expression
+matrix passed ten checks. Broader naming/multi-TU/packed/volatile regressions
+then exposed address-provenance, special RTTI-call operand handling, narrow
+compound conversions and a helper cache keyed by presentation field name.
+These are C# backend integration issues; fixes do not change EDG lowering.
+No revised-emitter SQLite acceptance or completed readability claim is made yet.
+
+The complete pre-readability SQLite baseline contains20 unique project checks:
+core/API/VFS/vtable/allocation/FTS5 each match fresh native and checked-in
+transcripts under JIT and NativeAOT, and the two-owner consumer passes both
+runtimes. The1402-file frozen-input comparison found only three test-file edits,
+with no implementation/compiler/runtime/provider drift. Consolidated durable
+evidence is `evidence/sqlite-project-baseline.json`. This baseline explicitly
+predates the revised source-correspondence emitter.

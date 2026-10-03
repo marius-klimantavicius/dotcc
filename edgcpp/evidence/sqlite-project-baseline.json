@@ -1,0 +1,172 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "scope": "Pre-source-correspondence emitter SQLite full configured profile baseline",
+  "projectChecks": 20,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/persistent-continuation/sqlite-core-full-001/results.json",
+      "sha256": "ae5142360300a7e97d3f340c4def0266f2d2b3586ac65732fbdb25cab32011bd",
+      "checks": [
+        {
+          "label": "core-native-reference",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-jit-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-aot-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        }
+      ]
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/sqlite-additional-full-001/results.json",
+      "sha256": "7e9cc41c5e10606c1d0c80250fd06f5885cd18fe4358c1cc3b6ca2ecc319c259",
+      "checks": [
+        {
+          "label": "api-native-reference",
+          "stdoutSha256": "46e5ac79406351d9192ed6156de685dbb94f486e72b2671784171c3aab4d76cc",
+          "bytes": 1101
+        },
+        {
+          "label": "api-jit-native-parity",
+          "stdoutSha256": "46e5ac79406351d9192ed6156de685dbb94f486e72b2671784171c3aab4d76cc",
+          "bytes": 1101
+        },
+        {
+          "label": "api-aot-native-parity",
+          "stdoutSha256": "46e5ac79406351d9192ed6156de685dbb94f486e72b2671784171c3aab4d76cc",
+          "bytes": 1101
+        },
+        {
+          "label": "vfs-native-reference",
+          "stdoutSha256": "bc51dc5f4d25480c84ff833cfaa952437efc4041be65402abd2607684fec6456",
+          "bytes": 114
+        },
+        {
+          "label": "vfs-jit-native-parity",
+          "stdoutSha256": "bc51dc5f4d25480c84ff833cfaa952437efc4041be65402abd2607684fec6456",
+          "bytes": 114
+        },
+        {
+          "label": "vfs-aot-native-parity",
+          "stdoutSha256": "bc51dc5f4d25480c84ff833cfaa952437efc4041be65402abd2607684fec6456",
+          "bytes": 114
+        },
+        {
+          "label": "vtable-native-reference",
+          "stdoutSha256": "25c26d223ce4ed6de1ecda12729b78c3e1d62f3aa7d4d464a875e36a405678fa",
+          "bytes": 115
+        },
+        {
+          "label": "vtable-jit-native-parity",
+          "stdoutSha256": "25c26d223ce4ed6de1ecda12729b78c3e1d62f3aa7d4d464a875e36a405678fa",
+          "bytes": 115
+        },
+        {
+          "label": "vtable-aot-native-parity",
+          "stdoutSha256": "25c26d223ce4ed6de1ecda12729b78c3e1d62f3aa7d4d464a875e36a405678fa",
+          "bytes": 115
+        },
+        {
+          "label": "allocation-native-reference",
+          "stdoutSha256": "d9231e65da3709da44242717ce8655c53b9f8009a095c81643075262a0f73000",
+          "bytes": 107
+        },
+        {
+          "label": "allocation-jit-native-parity",
+          "stdoutSha256": "d9231e65da3709da44242717ce8655c53b9f8009a095c81643075262a0f73000",
+          "bytes": 107
+        },
+        {
+          "label": "allocation-aot-native-parity",
+          "stdoutSha256": "d9231e65da3709da44242717ce8655c53b9f8009a095c81643075262a0f73000",
+          "bytes": 107
+        },
+        {
+          "label": "fts5-native-reference",
+          "stdoutSha256": "f053f02f2eb68bd08ebfbd86381971ae4873efe5d3f8f7b60e0154c1c958f0ab",
+          "bytes": 417
+        },
+        {
+          "label": "fts5-jit-native-parity",
+          "stdoutSha256": "f053f02f2eb68bd08ebfbd86381971ae4873efe5d3f8f7b60e0154c1c958f0ab",
+          "bytes": 417
+        },
+        {
+          "label": "fts5-aot-native-parity",
+          "stdoutSha256": "f053f02f2eb68bd08ebfbd86381971ae4873efe5d3f8f7b60e0154c1c958f0ab",
+          "bytes": 417
+        }
+      ]
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/sqlite-owners-full-002/results.json",
+      "sha256": "e8ab4b3ab6cc50d1dcfe3c8fde79707ac254b2a20b54b3c66ec8fbaea0413afe",
+      "checks": [
+        "SQLite independent owners: JIT",
+        "SQLite independent owners: NativeAOT"
+      ]
+    }
+  ],
+  "frozenInputs": {
+    "path": "artifacts/campaign/persistent-continuation/sqlite-core-full-001/campaign-inputs.json",
+    "sha256": "48158f37d4c23cb6fac65693ac4242970b54bbe15fd0da6dd2d664f01bf06279",
+    "verificationSha256": "eae8095fd770d9e24162103c86e958a34f93f9c4f87484ec5dbf88659c267424",
+    "checked": 1402,
+    "implementationInputDrift": false,
+    "testOnlyChanges": [
+      {
+        "path": "backend/tests/libc_inventory.py",
+        "before": "50a3c1de44535e19c56a5dad0629d682aed06236678b47496ec583897401c035",
+        "after": "c50faae854eabc226a69e1c52dbbc033095c5c52915fc7befd36866ad156fe44"
+      },
+      {
+        "path": "backend/tests/sqlite_project_owners_verify.py",
+        "before": "940cb51ecd6f7ee075a282afcf74416a4ad3b15bc317cfb19f3717f1c285e969",
+        "after": "b2aa8e12f199fa479daa23c079d6de6ced7d2ce6b3765f339a877016ae5b2076"
+      },
+      {
+        "path": "backend/tests/verify.py",
+        "before": "e70c4b951e7c07f61d7772c7ef5a321afaef3b968bf78d4fbc975d484c588a15",
+        "after": "6205ef26830bd81d3118f2f63c7a097f709929b16990a0f78951ee10753e82b9"
+      }
+    ]
+  },
+  "profile": {
+    "source": "sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+    "sourceSha256": "b1dd5d74ec7f29055a6684fa06fb3c2f6821c87dd38f9a458dfd2e8a1db28189",
+    "libc": "musl",
+    "providerSourceUnits": 213,
+    "suites": [
+      "core",
+      "api",
+      "vfs",
+      "vtable",
+      "allocation",
+      "fts5"
+    ],
+    "os": "Linux",
+    "architecture": "x64",
+    "runtimes": [
+      "JIT",
+      "NativeAOT"
+    ],
+    "vfs": "unchanged test-only memory VFS",
+    "threadsafe": 0,
+    "mathExtensionEnabled": true,
+    "independentOwners": true
+  },
+  "limits": [
+    "Behavior baseline predates revised naming/control/expression emission; it is not a readability pass.",
+    "Native operating-system VFS and concurrent calls into one engine are not covered.",
+    "Windows, macOS and Arm64 execution remain unverified.",
+    "A project pass does not complete the full C++ and libc/libc++ plan."
+  ]
+}

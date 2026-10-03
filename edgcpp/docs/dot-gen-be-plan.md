@@ -1,6 +1,10 @@
 # Plan for the EDG C# backend dot_gen_be.c
 
-Status: on 2026-10-03 the user redirected work to real-project translation and
+Status: after reviewing the SQLite output on 2026-10-03, the user stopped
+implementation and made source correspondence a primary requirement. The next
+implementation direction is recorded below; inspection and planning do not
+resume the stopped implementation campaign. Earlier that day the user
+redirected work to real-project translation and
 verification, beginning with the pinned SQLite amalgamation. Implement concrete
 project blockers and defer exhaustive C++/libc++ coverage. The broader design
 below remains a backlog, not a prerequisite for project acceptance. The latest
@@ -12,8 +16,9 @@ inspection uses EDG7.0 revision `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`.
 Introduce **`src/dot_gen_be.c`**, compiled as C++ like EDG's other `.c` files,
 to emit C# that builds and runs under .NET and NativeAOT. Generated code may
 use unsafe pointers, explicit layouts, static functions and generated dispatch
-tables throughout. Correct C++ behavior takes priority over readable or
-idiomatic C#.
+tables where required. Preserve correctness and make translated code directly
+reviewable against its source. Unsafe C# is acceptable; unnecessary destruction
+of source names, expressions and control flow is not.
 
 Reuse EDG's semantic analysis and most structural lowering. Implement C++
 unwinding with CLR exceptions and object-lifetime `try/finally` regions. Reuse
@@ -26,6 +31,79 @@ This is an independent EDG backend. It does not translate through C or depend
 on dotcc's C parser. Reusing audited runtime components and build-tool code
 from dotcc is explicitly part of this plan.
 
+## Source correspondence: revised emission direction
+
+For plain C, a reviewer must be able to find the same function in the source
+and generated C#, then compare recognizable declarations, expressions and
+control flow. Preserve function, parameter, local, member, struct, enum and
+enumerator names. Escape C# keywords and resolve genuine naming collisions
+deterministically, with an explicit source mapping. Naming only public export
+wrappers is insufficient: internal function bodies also need source names.
+For C++, retain recognizable source structure while allowing mangling and
+synthetic representations for incompatible language features.
+
+Retain structured `if`/`else`, `while`, `do`, `for` and `switch` nodes through
+emission. Generate labels and jumps where source control flow or C# legality
+requires them. Emit ordinary assignments, compound assignments, member access
+and increments directly whenever their semantics agree. Use explicit local
+temporaries for necessary evaluation-order, conversion or expression-result
+adjustments, rather than pervasive numbered assignment/mutation helpers.
+Keep truth conversion in condition context simple and avoid redundant
+boolean-to-integer-to-boolean conversions. Necessary synthesized declarations
+and operations should have descriptive names and source provenance.
+
+Extend the owned representation to retain source names, lexical scopes,
+structured statements and expressions alongside layout and lifetime facts.
+Inspect EDG's C backend and retained IL before choosing lowering boundaries;
+preserve metadata before an unavoidable lowering loses source correspondence.
+Runtime, ABI, storage and lifetime correctness remain required. Roslyn may
+perform bounded finishing passes, but the emitter must retain this structure
+rather than depend on reconstructing it from flattened generated code.
+
+### Bitfields: follow dotcc's named-property presentation
+
+Inspection of [dotcc's bitfield emitter](../../DotCC.Lib/Backends/CSharpBackend.cs)
+(`PackMappedBitFields`, `BitFieldAccessor`, `SplitBitFieldAccessor`) and actual
+generated output confirms its approach: source-named properties over private
+unsigned backing storage, with masking in setters and extraction/sign extension
+in getters. Split accessors handle fields spanning multiple storage pieces.
+The containing function continues to use `flags->ready = 1` and
+`flags->mode += (uint)(2)`.
+
+Use that presentation for EDG bitfields, with EDG's target layout as the
+authority. Select backing storage that does not touch unrelated fields or tail
+bytes. Preserve named properties and ordinary access at use sites whenever
+semantics permit. Explicitly account for the stored truncated value when an
+assignment/prefix result is consumed, old values for postfix operations,
+single evaluation, C/C++ integral promotions, and volatile qualification.
+These exceptional cases may require local lowering; they do not justify a
+numbered mutation helper for every bitfield write. Consult the existing EDG
+differential bitfield tests as well as dotcc's layout tests.
+
+A retained inspection example is
+`artifacts/campaign/persistent-continuation/dotcc-bitfield-readability-001/`:
+`flags.c`, the actual generated `generated/DotCcProgram.cs`, command and logs.
+This is an inspected reference, not implementation of the new EDG emitter.
+
+### File grouping remains configurable
+
+Source correspondence does not require one generated file per input file.
+Preserve existing `--split=none|function|size` and `--split-size` controls.
+Source-oriented grouping is an additional planned choice (`--split=source`),
+useful for projects whose original file organization should remain visible.
+Amalgamations such as SQLite can continue to split into manageable C# files,
+at whole-function boundaries, with deterministic names and an index mapping
+original functions/source locations to generated files. Splitting changes
+neither source symbol names nor initialization order, linkage, storage or
+program behavior. The existing namespace, wrapper and instance-state options
+remain independent of file grouping.
+
+Acceptance requires both execution equivalence and source correspondence:
+small reviewed output fixtures for names, bitfields, expressions and structured
+control flow, followed by side-by-side review of representative SQLite
+functions. Existing JIT/NativeAOT project passes establish behavior of the old
+emitter; they do not establish completion of this revised requirement.
+
 ## Required outcomes
 
 - The same generated C# project and translated library sources run on Windows,
@@ -37,6 +115,8 @@ from dotcc is explicitly part of this plan.
   architectures require a versioned target profile and their own tests.
 - Preserve explicit C++ storage, object lifetime, pointer identity, template
   instantiation, RTTI and exception behavior for the supported feature set.
+- Preserve source names and recognizable declarations, expressions and control
+  flow; lower only incompatible syntax/semantics and validate reviewability.
 - Port library implementations rather than recreating the standard library
   wholesale in C#. Supply platform and managed-runtime integration in C#.
 - Provide configurable namespace, wrapper class, nested generated types and
@@ -409,7 +489,8 @@ and final-program assembly contracts below are not all implemented yet.
 | `--nest-types` | Put translated types and program-specific helpers inside the wrapper, isolating separately generated engines. Reusable runtime assemblies keep their own namespace. |
 | `--instance-methods` | Explicit opt-in to independent engine instances: owner methods/globals, libc/libc++ state, owner/thread TLS, owner-aware callbacks and safe disposal. Default off; selected for whole-program translation or every object and the final link. |
 | `--state-context` | Optional secondary mode retaining static methods with an explicitly bound context. Mutually exclusive with instance methods; implement only with its own callback/binding contract. |
-| `--split=none|function|size` | One output unit, one whole translated function per file, or groups of whole functions. All are one semantic program. |
+| `--split=none|function|size` | Preserve the implemented choices: one output unit, one whole translated function per file, or groups of whole functions. Useful for splitting amalgamations without changing symbol names. All are one semantic program. |
+| `--split=source` (planned) | Additional source-oriented grouping for projects where original file organization is useful. Does not replace function/size splitting. |
 | `--split-size <bytes>` | Positive UTF-8 grouping target in size mode, initially 262144. Whole functions may exceed it. |
 
 Emit static unsafe partial wrappers in static mode and sealed unsafe partial

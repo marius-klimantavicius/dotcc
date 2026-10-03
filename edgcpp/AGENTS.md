@@ -16,6 +16,12 @@ task allocation, integration, build scheduling, acceptance evidence and commits.
   TLS; use native allocation for short-lived storage and C/C++ heap allocation
   (`malloc`, `new`, etc.), with explicit ownership and cleanup.
 - Instance globals and independent library state remain opt-in CLI features.
+- The latest emission direction prioritizes source correspondence: preserve
+  source names, structured control flow and ordinary expressions, with local
+  transformations only for incompatible C/C++ semantics. Consult dotcc's
+  named bitfield properties/backing storage. Keep source-oriented grouping
+  optional and retain function/size splitting for amalgamations. Passing
+  execution tests alone does not satisfy this readability requirement.
 - Prefer musl over newlib if a manageable BCL-backed port is feasible. Audit
   dependencies; dotcc's libc remains an initial bridge/fallback. C++ standard
   library coverage is also part of the plan.
