@@ -105,3 +105,17 @@ Selected remainder/remquo families add six musl source units (provider173).
 Eighteen focused checks cover original/adapted native bits and quotient outputs,
 all generated modes, errno, owner/TLS, packaging, GNU aliases and patch replay.
 No dynamic fenv or complete libm claim; see libc-math-remainders.md.
+
+The authored synchronous signal component now has 19 focused checks: native
+source/host observations, C/C++ static/instance JIT/NativeAOT and strict private
+ABI rejection. Owner-specific signal/raise, callback reset/identity, abort and
+assertion SIGABRT delivery are implemented, with source longjmp escape and
+process-fatal default actions. External OS delivery, POSIX masking/actions and
+the backend default C++ terminate-to-abort connection remain open.
+See [libc-signals.md](libc-signals.md).
+
+The provider now packages184 source units: nine selected power-of-two scaling
+algorithms plus two authored synchronous signal/assertion units were added.
+This combined milestone has37 focused checks (scaling9, replay1, signals19,
+shared packaging8). OS-delivered signals, POSIX masks and default C++ termination
+integration remain separate gates; see libc-signals.md and libc-math-scale.md.

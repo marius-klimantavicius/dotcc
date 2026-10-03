@@ -1,5 +1,6 @@
 #include <strings.h>
 #include <threads.h>
+#include <signal.h>
 #include <math.h>
 #include <float.h>
 #include <errno.h>
@@ -16,6 +17,8 @@
 #include <exception>
 #endif
 static int calls;
+static volatile sig_atomic_t signal_seen;
+static void provider_signal(int sig){signal_seen=sig;}
 static int provider_worker(void *argument){thrd_exit(*(int*)argument);}
 static int compare_ints(const void* a,const void* b) {
  int x=*(const int*)a,y=*(const int*)b;return (x>y)-(x<y);
@@ -117,6 +120,15 @@ int main(void) {
 #define CHECK_QUOTIENT_ADDRESS(name,T) {T (*volatile ordinary)(T,T,int*)=name; T (*volatile intrinsic)(T,T,int*)=__builtin_##name; if(ordinary!=intrinsic)return 44;}
  CHECK_QUOTIENT_ADDRESS(remquo,double);CHECK_QUOTIENT_ADDRESS(remquof,float);CHECK_QUOTIENT_ADDRESS(remquol,long double);
 #undef CHECK_QUOTIENT_ADDRESS
+ volatile double scaling_input=1.5;
+ if(__builtin_scalbn(scaling_input,3)!=12 || __builtin_ldexpf(1.5f,3)!=12 || __builtin_scalblnl(1.5L,3)!=12)return 45;
+#define CHECK_SCALE_ADDRESS(name,T,N) {T (*volatile ordinary)(T,N)=name; T (*volatile intrinsic)(T,N)=__builtin_##name; if(ordinary!=intrinsic)return 46;}
+ CHECK_SCALE_ADDRESS(scalbn,double,int);CHECK_SCALE_ADDRESS(scalbnf,float,int);CHECK_SCALE_ADDRESS(scalbnl,long double,int);
+ CHECK_SCALE_ADDRESS(ldexp,double,int);CHECK_SCALE_ADDRESS(ldexpf,float,int);CHECK_SCALE_ADDRESS(ldexpl,long double,int);
+ CHECK_SCALE_ADDRESS(scalbln,double,long);CHECK_SCALE_ADDRESS(scalblnf,float,long);CHECK_SCALE_ADDRESS(scalblnl,long double,long);
+#undef CHECK_SCALE_ADDRESS
+ errno=0;if(scalbnl(LDBL_TRUE_MIN,-1)!=0 || errno!=ERANGE)return 47;
+ if(signal(SIGTERM,provider_signal)!=SIG_DFL || raise(SIGTERM)!=0 || signal_seen!=SIGTERM || signal(SIGTERM,SIG_IGN)!=SIG_DFL || raise(SIGTERM)!=0)return 48;
  uselocale(previous);freelocale(locale);
  return 0;
 }

@@ -55,6 +55,15 @@ string libc_builtin_symbol(a_routine_ptr r) {
     case bfk_remquo:return "remquo";
     case bfk_remquof:return "remquof";
     case bfk_remquol:return "remquol";
+    case bfk_scalbn:return "scalbn";
+    case bfk_scalbnf:return "scalbnf";
+    case bfk_scalbnl:return "scalbnl";
+    case bfk_scalbln:return "scalbln";
+    case bfk_scalblnf:return "scalblnf";
+    case bfk_scalblnl:return "scalblnl";
+    case bfk_ldexp:return "ldexp";
+    case bfk_ldexpf:return "ldexpf";
+    case bfk_ldexpl:return "ldexpl";
     case bfk_fmod:return "fmod";
     case bfk_fmodf:return "fmodf";
     case bfk_fmodl:return "fmodl";
@@ -104,6 +113,7 @@ const libc_binding libc_bindings[]={
 #include "libc-cpu-clock-bindings.def"
 #include "libc-calendar-bindings.def"
 #include "libc-process-bindings.def"
+#include "libc-signal-bindings.def"
 #include "libc-assert-bindings.def"
 #include "libc-environment-bindings.def"
 #include "libc-command-bindings.def"

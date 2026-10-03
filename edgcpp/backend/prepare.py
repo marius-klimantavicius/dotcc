@@ -21,6 +21,7 @@ for source, target in [
     (root / "backend/dot_gen_setjmp.h", root / "upstream/src/dot_gen_setjmp.h"),
     (root / "backend/runtime/libc-environment-bindings.def", root / "upstream/src/libc-environment-bindings.def"),
     (root / "backend/runtime/libc-command-bindings.def", root / "upstream/src/libc-command-bindings.def"),
+    (root / "backend/runtime/libc-signal-bindings.def", root / "upstream/src/libc-signal-bindings.def"),
     (root / "backend/dot_gen_unexpected.h", root / "upstream/src/dot_gen_unexpected.h"),
     (root / "backend/dot_gen_storage_types.h", root / "upstream/src/dot_gen_storage_types.h"),
     (root / "backend/runtime/libc-process-bindings.def", root / "upstream/src/libc-process-bindings.def"),

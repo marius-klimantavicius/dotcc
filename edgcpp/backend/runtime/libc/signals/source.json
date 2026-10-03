@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "version": "EDG authored synchronous C signal profile v1",
+  "provenance": "Authored six-slot handler table with GNU atomic operations; no musl source copied. GNU atomics use the existing exact-width generated AtomicOps lowering.",
+  "abi": "portable-lp64-synchronous-signals-v1",
+  "scope": "Owner-specific synchronous signal/raise and abort/assert integration; reset before call; no external OS delivery or POSIX signal masks; process-wide fatal default.",
+  "sources": {},
+  "adapters": {
+    "assert_fail.c": "e33798b931560aa2b63252645f173d5fdb873a28c574e4bc225c2d02b2a15290",
+    "signals.c": "9ad00d22279ac459dc7030256611ff5301f3d7374e77409cfbb2370f6f86bd92"
+  }
+}

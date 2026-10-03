@@ -293,6 +293,28 @@
         "remquof.c",
         "remquol.c"
       ]
+    },
+    {
+      "directory": "math_scale",
+      "translationUnits": [
+        "scalbn.c",
+        "scalbnf.c",
+        "scalbnl.c",
+        "scalbln.c",
+        "scalblnf.c",
+        "scalblnl.c",
+        "ldexp.c",
+        "ldexpf.c",
+        "ldexpl.c"
+      ]
+    },
+    {
+      "sourceBase": "libc",
+      "directory": "signals",
+      "translationUnits": [
+        "signals.c",
+        "assert_fail.c"
+      ]
     }
   ]
 }

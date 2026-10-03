@@ -55,6 +55,10 @@ def inventory(root):
         selected += ['system']
     if any(component['directory']=='math_remainders' for component in provider['components']):
         selected += [base+suffix for base in ['remainder','remquo'] for suffix in ['','f','l']]
+    if any(component['directory']=='math_scale' for component in provider['components']):
+        selected += [base+suffix for base in ['scalbn','scalbln','ldexp'] for suffix in ['','f','l']]
+    if any(component['directory']=='signals' and component.get('sourceBase')=='libc' for component in provider['components']):
+        selected += ['signal','raise','abort']
     if any(component['directory']=='math_extrema' for component in provider['components']):
         selected += [base+suffix for base in ['fmin','fmax','fdim'] for suffix in ['','f','l']]
     if any(component['directory']=='wprintf' for component in provider['components']):

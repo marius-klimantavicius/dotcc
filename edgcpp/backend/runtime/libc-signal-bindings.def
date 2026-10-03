@@ -1,0 +1,2 @@
+EDG_LIBC("__edg_signal_terminate", "void", "int", "global::Edg.Runtime.LibcSignals.Terminate")
+EDG_LIBC("__edg_assert_report", "void", "sbyte*,sbyte*,int,sbyte*", "__edg_files.AssertReport")

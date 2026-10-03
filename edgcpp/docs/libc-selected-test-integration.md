@@ -176,3 +176,17 @@ verifier detects provider registration and avoids passing a duplicate source.
 Evidence and exact implementation profile: [libc-system-profile.md](libc-system-profile.md).
 Child stdio inheritance is still from host OS handles; owner `freopen` integration
 and POSIX signal/wait status semantics remain separate process-layer gates.
+
+## Synchronous signals
+
+`verify_libc_signals(ROOT, TESTS, out, nativeaot, run)` supplies 11 checks with
+NativeAOT: native C/C++ source-profile UBSan, independent host signal observations,
+and all eight generated representations. Each generated mode includes seven
+fatal subprocesses and ordinary state/identity/atomic tests. It detects an
+already registered `sourceBase: libc`, `directory: signals` component and does
+not duplicate its two source translation units.
+
+`verify_libc_signals_abi(ROOT, TESTS, out)` rejects eight malformed fixed imports.
+No additional managed callback binding exists: ordinary translated C owns the
+six function pointers and dispatch. See [libc-signals.md](libc-signals.md) for
+final evidence and the explicit asynchronous/POSIX/default-C++-terminate gates.

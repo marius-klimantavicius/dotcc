@@ -55,3 +55,5 @@ __pycache__/
 /upstream/src/libc-files-management-bindings.def
 
 /upstream/src/libc-command-bindings.def
+
+/upstream/src/libc-signal-bindings.def

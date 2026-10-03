@@ -1,5 +1,5 @@
 {
-  "bindingCount": 173,
+  "bindingCount": 175,
   "bindings": {
     "_Exit": {
       "parameters": "int",
@@ -12,6 +12,12 @@
       "result": "void",
       "source": "libc-assert-bindings.def",
       "target": "__edg_files.AssertFail"
+    },
+    "__edg_assert_report": {
+      "parameters": "sbyte*,sbyte*,int,sbyte*",
+      "result": "void",
+      "source": "libc-signal-bindings.def",
+      "target": "__edg_files.AssertReport"
     },
     "__edg_calendar_utc": {
       "parameters": "",
@@ -108,6 +114,12 @@
       "result": "global::Edg.Runtime.Float80",
       "source": "libc-numeric-bindings.def",
       "target": "global::Edg.Runtime.LibcFloat.ScaleB"
+    },
+    "__edg_signal_terminate": {
+      "parameters": "int",
+      "result": "void",
+      "source": "libc-signal-bindings.def",
+      "target": "global::Edg.Runtime.LibcSignals.Terminate"
     },
     "__edg_signbit": {
       "parameters": "double",
@@ -1183,9 +1195,9 @@
       "ilogb": "declaration-only",
       "ilogbf": "declaration-only",
       "ilogbl": "declaration-only",
-      "ldexp": "declaration-only",
-      "ldexpf": "declaration-only",
-      "ldexpl": "declaration-only",
+      "ldexp": "selected-source",
+      "ldexpf": "selected-source",
+      "ldexpl": "selected-source",
       "lgamma": "declaration-only",
       "lgammaf": "declaration-only",
       "lgammal": "declaration-only",
@@ -1234,24 +1246,24 @@
       "pow": "declaration-only",
       "powf": "declaration-only",
       "powl": "declaration-only",
-      "remainder": "declaration-only",
-      "remainderf": "declaration-only",
-      "remainderl": "declaration-only",
-      "remquo": "declaration-only",
-      "remquof": "declaration-only",
-      "remquol": "declaration-only",
+      "remainder": "selected-source",
+      "remainderf": "selected-source",
+      "remainderl": "selected-source",
+      "remquo": "selected-source",
+      "remquof": "selected-source",
+      "remquol": "selected-source",
       "rint": "declaration-only",
       "rintf": "declaration-only",
       "rintl": "declaration-only",
       "round": "runtime-binding",
       "roundf": "runtime-binding",
       "roundl": "runtime-binding",
-      "scalbln": "declaration-only",
-      "scalblnf": "declaration-only",
-      "scalblnl": "declaration-only",
-      "scalbn": "declaration-only",
-      "scalbnf": "declaration-only",
-      "scalbnl": "declaration-only",
+      "scalbln": "selected-source",
+      "scalblnf": "selected-source",
+      "scalblnl": "selected-source",
+      "scalbn": "selected-source",
+      "scalbnf": "selected-source",
+      "scalbnl": "selected-source",
       "sin": "declaration-only",
       "sinf": "declaration-only",
       "sinh": "declaration-only",
@@ -1275,6 +1287,9 @@
       "truncl": "runtime-binding"
     },
     "setjmp.h": {},
+    "signal.h": {
+      "raise": "selected-source"
+    },
     "stdalign.h": {},
     "stdarg.h": {},
     "stdatomic.h": {
@@ -1398,7 +1413,7 @@
       "strtoul_l": "selected-source",
       "strtoull": "selected-source",
       "strtoull_l": "selected-source",
-      "system": "declaration-only",
+      "system": "selected-source",
       "unsetenv": "selected-source",
       "wcstombs": "selected-source",
       "wctomb": "runtime-binding"
@@ -1880,6 +1895,46 @@
           "__math_divzerof.c",
           "__polevll.c"
         ]
+      },
+      {
+        "directory": "system",
+        "sourceBase": "libc",
+        "translationUnits": [
+          "system.c"
+        ]
+      },
+      {
+        "directory": "math_remainders",
+        "translationUnits": [
+          "remainder.c",
+          "remainderf.c",
+          "remainderl.c",
+          "remquo.c",
+          "remquof.c",
+          "remquol.c"
+        ]
+      },
+      {
+        "directory": "math_scale",
+        "translationUnits": [
+          "scalbn.c",
+          "scalbnf.c",
+          "scalbnl.c",
+          "scalbln.c",
+          "scalblnf.c",
+          "scalblnl.c",
+          "ldexp.c",
+          "ldexpf.c",
+          "ldexpl.c"
+        ]
+      },
+      {
+        "directory": "signals",
+        "sourceBase": "libc",
+        "translationUnits": [
+          "signals.c",
+          "assert_fail.c"
+        ]
       }
     ],
     "description": "Selected translated musl algorithms and authored C11 thread facade with audited BCL services; not complete libc coverage.",
@@ -2121,6 +2176,25 @@
     "log10",
     "log10f",
     "log10l",
+    "system",
+    "remainder",
+    "remainderf",
+    "remainderl",
+    "remquo",
+    "remquof",
+    "remquol",
+    "scalbn",
+    "scalbnf",
+    "scalbnl",
+    "scalbln",
+    "scalblnf",
+    "scalblnl",
+    "ldexp",
+    "ldexpf",
+    "ldexpl",
+    "signal",
+    "raise",
+    "abort",
     "fmin",
     "fminf",
     "fminl",
@@ -2141,7 +2215,6 @@
   "standardHeadersAbsent": [
     "complex.h",
     "fenv.h",
-    "signal.h",
     "tgmath.h"
   ]
 }

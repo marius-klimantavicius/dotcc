@@ -1,0 +1,33 @@
+{
+  "scope": "Source-backed scaling families and owner-local synchronous C signals",
+  "checks": 37,
+  "providerTranslationUnits": 184,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/libc-math-scale-translated-001/results.json",
+      "sha256": "ac09e841b1ebee4e49c022a3a5169072ec438c87e1e410001acccb4474e83a50"
+    },
+    {
+      "path": "artifacts/campaign/libc-math-scale-patch-001/results.json",
+      "sha256": "37b0dc75f1ac1f306f545dbeffe1ccf3e0f6240a41dec18572105d7dd237a090"
+    },
+    {
+      "path": "artifacts/campaign/libc-signals-translated-20261003-060500/results.json",
+      "sha256": "d33cef88058447bd5d278f17ba59019aa449325b80f047552dc5645624d89382"
+    },
+    {
+      "path": "artifacts/campaign/libc-signals-abi-20261003-060000/results.json",
+      "sha256": "368382bd7d798f839ce2b2bd1ef9b7bc52bd1c41cf80fd60da58a9ba252a2e9c"
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-scale-signals-001/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082"
+    }
+  ],
+  "limitations": [
+    "No dynamic fenv or complete libm claim",
+    "Source raise/abort only: no OS delivery or POSIX masks",
+    "Default C++ terminate-to-abort integration remains a separate next gate",
+    "Linux-x64 execution only"
+  ]
+}

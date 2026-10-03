@@ -22,6 +22,7 @@ RUNTIME_DEPENDENCIES = {
     "LibcFiles": ("LibcAppend", "LibcPaths", "LibcFilesWide", "LibcFilesManagement"), "LibcFilesManagement": (), "LibcFilesWide": (), "LibcAppend": (), "LibcPaths": (),
     "LibcFilesFormat": ("LibcFiles", "VaList"),
     "LibcFilesScan": ("LibcFiles", "VaList"),
+    "LibcSignals": (), "LibcFilesSignalAssert": ("LibcFilesAssert",),
     "LibcFilesAssert": ("LibcFiles", "LibcProcess"), "LibcFilesWideScan": ("LibcFiles", "VaList"), "LibcFilesWideFormat": ("LibcFiles", "VaList"), "LibcEnvironment": (),
     "LibcText": ("LibcErrorMessages", "LibcLocale"), "LibcErrorMessages": (), "LibcLocale": (),
     "LibcCommand": ("LibcFiles",), "LibcClock": (), "LibcCpuClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
@@ -241,6 +242,8 @@ def main():
         runtime_helpers.add("LibcFilesWideScan")
     if "__edg_with_file_wide_lock" in imports:
         runtime_helpers.add("LibcFilesWideFormat")
+    if "__edg_assert_report" in imports:
+        runtime_helpers.add("LibcFilesSignalAssert")
     if "__assert_fail" in imports:
         runtime_helpers.add("LibcFilesAssert")
     if "global::Edg.Runtime.CThreadExitTransfer" in source:
@@ -305,6 +308,9 @@ RESOURCE_ITEMS
         "libc": args.libc, "libcProvider": libc_provider, "imports": imports,
         "target": target_manifest,
         "termination": "owner-v1" if termination else None,
+        "signals": {"version":1,"delivery":"source-raise-abort","state":"owner",
+                    "reset":"before-call","defaultAction":"process-failfast","osDelivery":False}
+                   if "__edg_signal_terminate" in imports else None,
         "hostCommand": {"version":1,"status":"bcl-exit-code","environment":"owner-source-environ",
                         "workingDirectory":"owner-service-snapshot","standardIO":"host-os-handles","posixSignalPolicy":False}
                        if "__edg_system" in imports else None,

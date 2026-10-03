@@ -318,6 +318,12 @@ def main():
     checks.extend(verify_libc_system_runtime(ROOT, TESTS, suite_output("libc_system_runtime"), args.nativeaot, run))
     from libc_system_abi_verify import verify_libc_system_abi
     checks.extend(verify_libc_system_abi(ROOT, TESTS, suite_output("libc_system_abi")))
+    from libc_math_scale_verify import verify_libc_math_scale
+    checks.extend(verify_libc_math_scale(ROOT, TESTS, suite_output("libc_math_scale"), args.nativeaot, run))
+    from libc_signals_verify import verify_libc_signals
+    checks.extend(verify_libc_signals(ROOT, TESTS, suite_output("libc_signals"), args.nativeaot, run))
+    from libc_signals_abi_verify import verify_libc_signals_abi
+    checks.extend(verify_libc_signals_abi(ROOT, TESTS, suite_output("libc_signals_abi")))
     from libc_math_remainders_verify import verify_libc_math_remainders
     checks.extend(verify_libc_math_remainders(ROOT, TESTS, suite_output("libc_math_remainders"), args.nativeaot, run))
     from libc_math_logs_verify import verify_libc_math_logs

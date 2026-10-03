@@ -1,0 +1,79 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "scalbn.c": {
+      "upstream": "src/math/scalbn.c",
+      "originalSha256": "a2e766283ed30c2b30c71e01dbdabef58faf92cc9aa84a01c1ce1069b6625696",
+      "adaptedSha256": "aad8807b3caf00d1c4542ec50a69959077e16151d3866cb6444328ba34dc5f1a",
+      "patch": "patches/scalbn.c.patch",
+      "patchSha256": "5d19f1eaa331590bbcdfba844bc9f34f07640b23e01830050dccd255f8faf041"
+    },
+    "scalbnf.c": {
+      "upstream": "src/math/scalbnf.c",
+      "originalSha256": "3fb36f1cf8d9c118bfe85b462e6e0c034543835e5ffee4661f5ab8de997813e5",
+      "adaptedSha256": "a87e5ec5ed0db7107b752df10cf7c61cfd9ad7daff466b5302829252a9afd39c",
+      "patch": "patches/scalbnf.c.patch",
+      "patchSha256": "eca49edc853e2c4db2cb4aabd6c5bc92c56a09c0616e9584d71311bab345dd9a"
+    },
+    "scalbnl.c": {
+      "upstream": "src/math/scalbnl.c",
+      "originalSha256": "f4da2cc8aa06122ce93867a80516abf3f4002abb9fdaf2da826c2c1986759345",
+      "adaptedSha256": "be12f2a8274b93d2bf484ac2a5c81504869f013b4ef40ed531f0d82030fb5049",
+      "patch": "patches/scalbnl.c.patch",
+      "patchSha256": "fbe6ff439267427b5a21343e24c13b4c2ae5c41543d8271490522ad31f36a53c"
+    },
+    "scalbln.c": {
+      "upstream": "src/math/scalbln.c",
+      "originalSha256": "89c39e17be41cb09e8b1e7de187573d571326200648127ab6bb3302f5c520589",
+      "adaptedSha256": "89c39e17be41cb09e8b1e7de187573d571326200648127ab6bb3302f5c520589",
+      "patch": "patches/scalbln.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "scalblnf.c": {
+      "upstream": "src/math/scalblnf.c",
+      "originalSha256": "9c57f71877e0a0ff1c502c4c16e1bbf9207c3f6d5587eeeb515fbc52a30d0d5c",
+      "adaptedSha256": "9c57f71877e0a0ff1c502c4c16e1bbf9207c3f6d5587eeeb515fbc52a30d0d5c",
+      "patch": "patches/scalblnf.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "scalblnl.c": {
+      "upstream": "src/math/scalblnl.c",
+      "originalSha256": "1fd0d4ee300e414ac999876cc90c073549bd6ea2d5541c75616e2c9a3a69160c",
+      "adaptedSha256": "1fd0d4ee300e414ac999876cc90c073549bd6ea2d5541c75616e2c9a3a69160c",
+      "patch": "patches/scalblnl.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ldexp.c": {
+      "upstream": "src/math/ldexp.c",
+      "originalSha256": "702b608d3a5cf9c5d26c26ef2c528a3003555ee48ececec3b817c817d297bfe8",
+      "adaptedSha256": "702b608d3a5cf9c5d26c26ef2c528a3003555ee48ececec3b817c817d297bfe8",
+      "patch": "patches/ldexp.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ldexpf.c": {
+      "upstream": "src/math/ldexpf.c",
+      "originalSha256": "4edbe502fab04f8dc618550f4418a636606842deefdbb997103e3d8a39d03094",
+      "adaptedSha256": "4edbe502fab04f8dc618550f4418a636606842deefdbb997103e3d8a39d03094",
+      "patch": "patches/ldexpf.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ldexpl.c": {
+      "upstream": "src/math/ldexpl.c",
+      "originalSha256": "8a4a5d7a93efa6f46c4ad7c0e56102a972bdc9acf21038f26219978cc2fd22fc",
+      "adaptedSha256": "8a4a5d7a93efa6f46c4ad7c0e56102a972bdc9acf21038f26219978cc2fd22fc",
+      "patch": "patches/ldexpl.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "libm.h": {
+      "upstream": "src/internal/libm.h",
+      "originalSha256": "d5a11757541471030d8f4bf7a39a29de35732ecbb291b2f45bf03296be4f25a2",
+      "adaptedSha256": "d95ceab3f0ceddc3094ac1594921f4bae98abc3c698aa6e98ebdb88245fdf711",
+      "patch": "patches/libm.h.patch",
+      "patchSha256": "065f6dce6945fb3ee8e85b13dd7f0f2a290da3ab329a10ba8446ff76594d7af8"
+    }
+  },
+  "adapters": {
+    "portable_math_abi.h": "108a4dfda6f78e9adef220f4529684bf9d8d0fa22ea977b2fb44cdb46d4d3754"
+  }
+}

@@ -1,0 +1,29 @@
+--- a/scalbnf.c
++++ b/scalbnf.c
+@@ -1,7 +1,9 @@
++#include <errno.h>
++#include <float.h>
+ #include <math.h>
+ #include <stdint.h>
+ 
+-float scalbnf(float x, int n)
++float __edg_musl_scalbnf(float x, int n)
+ {
+ 	union {float f; uint32_t i;} u;
+ 	float_t y = x;
+@@ -29,3 +31,15 @@
+ 	x = y * u.f;
+ 	return x;
+ }
++
++float scalbnf(float x, int n)
++{
++ float result=__edg_musl_scalbnf(x,n);
++ if (isfinite(x) && x != 0) {
++  if (isinf(result) || result == 0) errno=ERANGE;
++  /* Nonzero tiny results are range errors only when scaling lost bits.
++     Here n cannot be INT_MIN: every finite nonzero input then rounds to 0. */
++  else if (n < 0 && fabsf(result) < FLT_MIN && __edg_musl_scalbnf(result,-n) != x) errno=ERANGE;
++ }
++ return result;
++}
