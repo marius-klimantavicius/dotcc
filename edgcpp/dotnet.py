@@ -107,8 +107,10 @@ def main():
                         help="retain successful raw backend C# before packaging (new file required)")
     parser.add_argument("--raw-input", type=Path,
                         help="package retained backend C# without invoking EDG; native provenance is not verified")
-    parser.add_argument("--unbound-externals", choices=("reject", "declarations"), default="reject",
-                        help="explicit review-only output with throwing declarations for unbound external symbols")
+    parser.add_argument("--unbound-externals", choices=("reject", "declarations", "partial"), default="reject",
+                        help="reject unbound symbols, emit throwing review declarations, or require C# partial implementations")
+    parser.add_argument("--runtime-source", action="append", type=Path, default=[],
+                        help="copy a C# runtime implementation file into the generated project (repeatable)")
     parser.add_argument("--exceptions", action=argparse.BooleanOptionalAction, default=True,
                         help="enable C++ exception handling (default); --no-exceptions matches native -fno-exceptions")
     parser.add_argument("--rtti", action=argparse.BooleanOptionalAction, default=True,
@@ -128,6 +130,12 @@ def main():
     parser.add_argument("--split", choices=("none", "function", "size", "source"), default="none")
     parser.add_argument("--format", choices=("roslyn", "none"), default="roslyn",
                         help="whitespace-only Roslyn formatting (default), or raw emitter output for diagnostics")
+    parser.add_argument("--export-macros", action="append", default=[], metavar="REGEX",
+                        help="export matching active macro names (full regex match; repeatable)")
+    parser.add_argument("--macro-source", type=Path,
+                        help="input TU whose final macro state defines exported APIs (required for multiple inputs)")
+    parser.add_argument("--macro-signatures", type=Path,
+                        help="JSON native return/parameter type contracts for selected function-like macros")
     parser.add_argument("--split-size", type=int, default=262144,
                         help="target UTF-8 bytes per member file in size mode; functions stay whole")
     args = parser.parse_args()
@@ -138,6 +146,12 @@ def main():
         parser.error("--split-size must be positive")
     if args.raw_output and args.raw_output.exists():
         parser.error("--raw-output requires a new file")
+    if (args.macro_source or args.macro_signatures) and not args.export_macros:
+        parser.error("--macro-source/--macro-signatures require --export-macros")
+    if args.export_macros and args.emit != "managedlib":
+        parser.error("--export-macros currently requires --emit managedlib")
+    if args.raw_input and args.export_macros:
+        parser.error("macro exports require native translation; --raw-input cannot verify macro provenance")
     if args.raw_input and args.raw_output:
         parser.error("--raw-input and --raw-output are mutually exclusive")
     if args.class_name in ("Run", "Dispose", "Shutdown", "ReleaseThread") or args.class_name.startswith("__edg_"):
@@ -199,6 +213,18 @@ def main():
         target_manifest["inputs"] = [{"file": p.name, "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
                                      for p in (ROOT / "backend/target" / (args.target+".json"),
                                                ROOT / "backend/target" / (args.target+".def"))]
+    macro_manifest = None
+    translation_sources = sources
+    if args.export_macros:
+        from backend.macro_exports import prepare_macro_exports
+        try:
+            translation_sources, macro_manifest = prepare_macro_exports(
+                compiler=compiler, standard=standard, frontend_options=frontend_options,
+                runtime_options=runtime_options, env=env, sources=sources, source=args.macro_source,
+                patterns=args.export_macros, signatures_path=args.macro_signatures,
+                output_dir=args.output_dir, language=args.language)
+        except (OSError, ValueError) as error:
+            parser.error(str(error))
     raw_input_manifest = None
     if args.raw_input:
         raw = args.raw_input.read_bytes()
@@ -206,7 +232,7 @@ def main():
         raw_input_manifest = {"path": str(args.raw_input.resolve()), "sha256": hashlib.sha256(raw).hexdigest(),
                               "packagingOnly": True, "nativeProvenanceVerified": False}
     else:
-        result = subprocess.run([str(compiler), "--"+standard, "--gnu_version", "130300", *frontend_options, *runtime_options, "--", *map(str,sources+runtime_sources)],
+        result = subprocess.run([str(compiler), "--"+standard, "--gnu_version", "130300", *frontend_options, *runtime_options, "--", *map(str,translation_sources+runtime_sources)],
                                 env=env, capture_output=True, text=True)
     if result.stderr:
         print(result.stderr, end="", file=sys.stderr)
@@ -232,7 +258,10 @@ def main():
         return ""
     result.stdout = re.sub(r"^// dot-gen:unbound (function|variable) ([0-9a-f]+) (@?\w+)\n", unbound_record, result.stdout, flags=re.M)
     if unbound:
-        print(f"Review-only output: {len(unbound)} unbound external declarations throw PlatformNotSupportedException; this is not an executable library.", file=sys.stderr)
+        if args.unbound_externals == "partial":
+            print(f"Runtime implementations required: {len(unbound)} external symbols use C# partial method contracts.", file=sys.stderr)
+        else:
+            print(f"Review-only output: {len(unbound)} unbound external declarations throw PlatformNotSupportedException; this is not an executable library.", file=sys.stderr)
     def export_record(match):
         exports.append({"symbol": bytes.fromhex(match[1]).decode("utf-8"), "method": match[2]})
         return ""
@@ -253,8 +282,16 @@ def main():
         public_types.append({"sourceName": decode_source_hex(match[1]), "managedName": match[2], "opaque": match[3] == "1"})
         return ""
     source = re.sub(r"^// dot-gen:public-type ([0-9a-f]+|-) (@?\w+) ([01])\n", public_type_record, source, flags=re.M)
+    if macro_manifest is not None:
+        from backend.macro_exports import emit_macro_exports
+        try:
+            source, macro_symbols = emit_macro_exports(source, macro_manifest, exports, source_symbols,
+                                                       args.class_name, args.instance_methods)
+            source_symbols.extend(macro_symbols)
+        except ValueError as error:
+            parser.error(str(error))
     origins = {item["managedName"]: item for item in source_symbols
-               if item["kind"] in ("function", "global", "static-local", "export")}
+               if item["kind"] in ("function", "global", "static-local", "export", "macro")}
     # Preserve the first matching function, as the former per-export search
     # did, without rescanning every local/field symbol for every exported API.
     function_origins = {}
@@ -378,6 +415,15 @@ def main():
                 runtime_helpers.add(dependency);pending.append(dependency)
     for helper in sorted(runtime_helpers):
         files[f"Runtime.{helper}.cs"] = generated_source((ROOT / f"backend/runtime/{helper}.cs").read_text())
+    external_runtime_sources = []
+    for index, path in enumerate(args.runtime_source):
+        path = path.resolve()
+        if not path.is_file() or path.suffix.lower() != ".cs":
+            parser.error(f"runtime source must be an existing C# file: {path}")
+        raw = path.read_bytes()
+        filename = f"Runtime.External{index:03d}.cs"
+        files[filename] = generated_source(raw.decode("utf-8-sig"))
+        external_runtime_sources.append({"path": str(path), "sha256": hashlib.sha256(raw).hexdigest(), "generatedFile": filename})
     asset_manifest, resource_items = runtime_assets(files, runtime_helpers)
     compile_items = "\n".join(f'    <Compile Include="{filename}" />' for filename in files if filename.endswith(".cs"))
     files["Generated.csproj"] = '''<Project Sdk="Microsoft.NET.Sdk">
@@ -404,7 +450,7 @@ RESOURCE_ITEMS
     if manifest.exists():
         owned = set(json.loads(manifest.read_text())["files"])
         allowed={"dot-gen.sources.json", "source-index.md", "Translated.cs", "EntryPoint.cs", "Generated.csproj", "dot-gen.types.json", "Runtime.Tzdb.bin", "Runtime.Tzdb.source.json", "Runtime.Tzdb.bundle.json", "Runtime.Tzdb.LICENSE.txt"} | {f"Runtime.{name}.cs" for name in RUNTIME_DEPENDENCIES}
-        if any(name not in allowed and
+        if any(name not in allowed and not re.fullmatch(r"Runtime\.External[0-9]+\.cs", name) and
                not is_layout_filename(name) for name in owned):
             parser.error("invalid generated-file ownership manifest")
     for filename in files:
@@ -417,7 +463,11 @@ RESOURCE_ITEMS
         "compiler": {"path": str(compiler), "sha256": compiler_sha256} if not args.raw_input else None,
         "rawOutput": raw_manifest,
         "rawInput": raw_input_manifest,
-        "unboundExternals": {"mode": args.unbound_externals, "reviewOnly": bool(unbound), "symbols": unbound},
+        "macroExports": macro_manifest,
+        "unboundExternals": {"mode": args.unbound_externals,
+                             "reviewOnly": bool(unbound) and args.unbound_externals == "declarations",
+                             "requiresImplementation": bool(unbound) and args.unbound_externals == "partial", "symbols": unbound},
+        "externalRuntimeSources": external_runtime_sources,
         "runtimeSources": [{"path": str(p), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in runtime_sources],
         "runtimeAssets": asset_manifest,
         "runtimeHelpers": {name: hashlib.sha256(files[f"Runtime.{name}.cs"].encode()).hexdigest() for name in sorted(runtime_helpers)},

@@ -128,6 +128,33 @@ string name(const void *p, const char *prefix) {
 #include "dot_gen_storage_types.h"
 bool owned_ir_enabled=false;
 
+// Preserve native alignment for ordinary named locals. A lowered C++ base
+// prefix can have a size that is not a multiple of its complete-object
+// alignment; retain a smaller pack for that view so CLR copies do not grow it.
+unsigned managed_storage_pack(a_type_ptr source) {
+  auto t=skip_typerefs(source);
+  unsigned pack=(unsigned)std::min<unsigned long long>(8,alignment_of_type(t));
+  if(!pack)pack=1;
+  while(pack>1 && t->size%pack)pack/=2;
+  return pack;
+}
+unsigned managed_storage_alignment(a_type_ptr source) {
+  auto t=skip_typerefs(source);
+  if(t->kind==tk_array)
+    return std::min(managed_storage_pack(t),managed_storage_alignment(t->variant.array.element_type));
+  if(t->kind!=tk_struct && t->kind!=tk_class && t->kind!=tk_union)
+    return (unsigned)std::min<unsigned long long>(8,alignment_of_type(t));
+  unsigned result=1;
+  for(auto field=t->variant.class_struct_union.field_list;field;field=field->next) {
+    // Bitfield tiles may be smaller than their declared allocation unit.
+    // Conservatively keep a frame if ordinary fields do not establish enough
+    // alignment; no synthetic overlapping field is added to user records.
+    if(field->is_bit_field || !skip_typerefs(field->type)->size)continue;
+    result=std::max(result,managed_storage_alignment(field->type));
+  }
+  return std::min(result,managed_storage_pack(t));
+}
+
 string aggregate_type(a_type_ptr t) {
   const auto layout_size=owned_ir_enabled?owned_ir.types[own_type(t)].size:(unsigned long long)t->size;
   auto found = aggregate_types.find(t);
@@ -165,10 +192,10 @@ string aggregate_type(a_type_ptr t) {
     // produce CS9184; translated accesses still use original element pointers.
     if(element->kind==tk_pointer) {
       string cell=id+"_Element";
-      type_output+="[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential, Pack=1)]\npublic unsafe struct "+cell+" { public "+element_type+" Value; }\n";
+      type_output+="[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential, Pack=8)]\npublic unsafe struct "+cell+" { public "+element_type+" Value; }\n";
       element_type=cell;
     }
-    type_output+="[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential, Pack=1)]\n[global::System.Runtime.CompilerServices.InlineArray("+std::to_string(count)+")]\npublic unsafe struct "+id+" { public "+element_type+" e0; }\n";
+    type_output+="[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential, Pack="+std::to_string(managed_storage_pack(t))+")]\n[global::System.Runtime.CompilerServices.InlineArray("+std::to_string(count)+")]\npublic unsafe struct "+id+" { public "+element_type+" e0; }\n";
     return id;
   } else {
     fields=source_bitfield_members(t);
@@ -191,7 +218,7 @@ string aggregate_type(a_type_ptr t) {
     }
   }
   type_output += "[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = " +
-                 std::to_string(layout_size) + ", Pack = 1)]\npublic unsafe struct " + id + " {\n" + fields + "}\n";
+                 std::to_string(layout_size) + ", Pack = "+std::to_string(managed_storage_pack(t))+")]\npublic unsafe struct " + id + " {\n" + fields + "}\n";
   return id;
 }
 string type(a_type_ptr t) {
@@ -315,6 +342,7 @@ string routine_address(a_routine_ptr r) {
     "return (" + fp + ")global::System.Threading.Volatile.Read(ref " + getter + "_cache); }\n// dot-gen:member-end\n";
   return getter + "()";
 }
+#include "dot_gen_byte_data.h"
 string literal_address(a_constant_ptr c) {
   if (c->kind != ck_string) unsupported("non-string literal address");
   string bytes(c->variant.string.value, c->variant.string.length);
@@ -331,7 +359,7 @@ string literal_address(a_constant_ptr c) {
     literal_bytes += bytes;
     literal_offsets[bytes] = offset;
   }
-  return "(__edg_literal_base + " + std::to_string(offset) + ")";
+  return "(__edg_literal_base + " + std::to_string(offset) + source_literal_preview(bytes) + ")";
 }
 bool function_pointer(a_type_ptr t) {
   t = skip_typerefs(t);
@@ -462,15 +490,28 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
   }
   if (c->kind == ck_string) {
     if (t->kind != tk_array || c->variant.string.length > t->size) unsupported("string initializer bounds");
-    string result = dst + " = default;\n";
-    for (unsigned long long i = 0; i < c->variant.string.length; ++i)
-      result += "((byte*)(" + storage_address + "))[" + std::to_string(i) + "] = " +
-                std::to_string((unsigned char)c->variant.string.value[i]) + ";\n";
-    return result;
+    return dst + " = default;\n" + source_byte_copy(storage_address,
+        string(c->variant.string.value,c->variant.string.length),
+        skip_typerefs(t->variant.array.element_type)->size==1);
   }
   if (c->kind != ck_aggregate) return dst + " = " + enum_boundary_value(t,c->type,constant(c)) + ";\n";
   if (!aggregate(t)) unsupported("aggregate initializer type");
   string result = dst + " = default;\n";
+  if(t->kind==tk_array && skip_typerefs(t->variant.array.element_type)->kind==tk_integer &&
+     skip_typerefs(t->variant.array.element_type)->size==1) {
+    string bytes;bool simple=true;
+    for(auto item=c->variant.aggregate.first_constant;item;item=item->next) {
+      auto value=item;unsigned long long count=1;
+      if(item->kind==ck_init_repeat){count=item->variant.init_repeat.count;value=item->variant.init_repeat.constant;}
+      if(value->kind!=ck_integer){simple=false;break;}
+      a_boolean overflow=FALSE;
+      auto n=value_of_integer_constant(value,&overflow);
+      if(overflow || n < -128 || n > 255){simple=false;break;}
+      if(bytes.size()>t->size || count>t->size-bytes.size())unsupported("byte array initializer bounds");
+      bytes.append((size_t)count,(char)(unsigned char)n);
+    }
+    if(simple)return result+source_byte_copy(storage_address,bytes,true);
+  }
   auto field = t->kind == tk_array ? nullptr : next_non_empty_initializable_field(t->variant.class_struct_union.field_list);
   unsigned long long index = 0;
   for (auto item = c->variant.aggregate.first_constant; item; item = item->next) {
@@ -1154,6 +1195,45 @@ void plan_frame(a_scope_ptr s) {
   }
   for (auto child = s->scopes; child; child = child->next) plan_frame(child);
 }
+void prefer_named_frame_locals() {
+  // Keep the existing native heap-frame policy for large functions, rather
+  // than silently moving an unbounded aggregate footprint onto the CLR stack.
+  if(frame_size+frame_alignment>65536)return;
+  std::vector<std::pair<unsigned long long,a_variable_ptr>> retained;
+  for(auto item:local_offsets) {
+    auto v=item.first;
+    auto alignment=std::max<a_targ_alignment>(alignment_of_type(v->type),v->alignment);
+    if(alignment<=8 && alignment<=managed_storage_alignment(v->type))continue;
+    retained.push_back({item.second,v});
+  }
+  std::sort(retained.begin(),retained.end());
+  local_offsets.clear();frame_size=0;frame_alignment=8;
+  for(auto item:retained) {
+    auto v=item.second;
+    auto alignment=std::max<a_targ_alignment>(alignment_of_type(v->type),v->alignment);
+    frame_alignment=std::max<unsigned long long>(frame_alignment,alignment);
+    frame_size=(frame_size+alignment-1)&~(alignment-1);
+    local_offsets[v]=frame_size;frame_size+=skip_typerefs(v->type)->size;
+  }
+}
+bool inert_noexcept_body(size_t begin) {
+  // Inspect the emitted body, not the source braces: an apparently empty C++
+  // constructor/destructor can still initialize/destroy bases or members.
+  // Only empty statements/blocks and bare returns are proven inert here.
+  // In particular, a return expression may call, dereference, or initialize
+  // a result, so it retains the noexcept boundary.
+  size_t pos=begin;
+  while(pos<output.size()) {
+    char ch=output[pos];
+    if(ch==' ' || ch=='\t' || ch=='\r' || ch=='\n' || ch==';' || ch=='{' || ch=='}') {++pos;continue;}
+    if(output.compare(pos,6,"return")!=0)return false;
+    pos+=6;
+    while(pos<output.size() && (output[pos]==' ' || output[pos]=='\t' || output[pos]=='\r' || output[pos]=='\n'))++pos;
+    if(pos==output.size() || output[pos]!=';')return false;
+    ++pos;
+  }
+  return true;
+}
 void locals(a_scope_ptr s) {
   if (!s) return;
   for(auto v=s->variables;v;v=v->next)
@@ -1416,7 +1496,8 @@ void emit_library_export(a_routine_ptr r,a_variable_ptr params,const string &sig
 
 // EDG's custom-backend entry point intentionally has global namespace linkage.
 void back_end(void) {
-  unbound_declarations=getenv("EDG_DOT_UNBOUND_EXTERNALS") && string(getenv("EDG_DOT_UNBOUND_EXTERNALS"))=="declarations";
+  unbound_partial=getenv("EDG_DOT_UNBOUND_EXTERNALS") && string(getenv("EDG_DOT_UNBOUND_EXTERNALS"))=="partial";
+  unbound_declarations=unbound_partial || (getenv("EDG_DOT_UNBOUND_EXTERNALS") && string(getenv("EDG_DOT_UNBOUND_EXTERNALS"))=="declarations");
   unbound_routines.clear();unbound_variables.clear();
   reset_owned_ir();
   coroutine_helpers_emitted=false;
@@ -1535,6 +1616,7 @@ void back_end(void) {
       if (p != params) signature += ", ";
       signature += type(p->type) + " " + source_parameter_name(p);
     }
+    prefer_named_frame_locals();
     if(rt->variant.routine.extra_info->has_ellipsis)
       signature+=string(params?", ":"")+"global::Edg.Runtime.VaList* __edg_arguments";
     line("// dot-gen:member-begin");
@@ -1544,8 +1626,8 @@ void back_end(void) {
     bool no_throw = spec && !spec->throw_any && spec->is_noexcept;
     bool dynamic_spec = dynamic_exception_spec(r);
     if (spec && spec->indeterminate) unsupported("indeterminate exception specification");
-    if (no_throw) {ensure_terminate_helpers();line("try {");}
-    else if(dynamic_spec) {ensure_unexpected_helpers();line("try {");}
+    size_t noexcept_body_start=output.size();
+    if(!no_throw && dynamic_spec) {ensure_unexpected_helpers();line("try {");}
     bool heap_frame = frame_size + frame_alignment > 65536;
     if (frame_size) {
       if (heap_frame) {
@@ -1576,8 +1658,11 @@ void back_end(void) {
       line("} finally { global::Edg.Runtime.Vla.Restore(__edg_vla_mark); }");
     }
     if (heap_frame) line("} finally { global::System.Runtime.InteropServices.NativeMemory.Free(__edg_frame_raw); }");
-    if (no_throw) line("} catch (global::System.Exception __edg_noexcept_error) when ("+control_transfer_exclusion("__edg_noexcept_error")+") { __edg_terminate_runtime(__edg_noexcept_error, \"Exception escaped noexcept function\"); throw; }");
-    else if(dynamic_spec)line(dynamic_exception_boundary(r));
+    if (no_throw && !inert_noexcept_body(noexcept_body_start)) {
+      ensure_terminate_helpers();output.insert(noexcept_body_start,"try {\n");
+      line("} catch (global::System.Exception __edg_noexcept_error) when ("+control_transfer_exclusion("__edg_noexcept_error")+") { __edg_terminate_runtime(__edg_noexcept_error, \"Exception escaped noexcept function\"); throw; }");
+    }
+    else if(!no_throw && dynamic_spec)line(dynamic_exception_boundary(r));
     line("}");
     line("// dot-gen:member-end");
     if(library_mode)emit_library_export(r,params,signature+")");

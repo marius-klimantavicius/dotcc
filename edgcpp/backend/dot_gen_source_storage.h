@@ -1,4 +1,5 @@
-// Source-named ref views preserve the existing pinned/native arena layout.
+// Source-named ref views preserve required pinned/native arena layout.
+// Ordinary aggregates use actual named typed locals when alignment permits.
 // They do not own storage, create GC objects, or change initialization order.
 std::set<a_variable_ptr> source_global_accessors,source_frame_aliases;
 std::map<a_variable_ptr,string> source_incoming_parameters;
@@ -6,6 +7,8 @@ void reset_source_storage() {
   source_global_accessors.clear();source_frame_aliases.clear();source_incoming_parameters.clear();
 }
 string source_storage_address(a_variable_ptr variable_ptr) {
+  // CLR generic methods cannot use pointer/function-pointer type arguments.
+  if(source_frame_aliases.count(variable_ptr) && skip_typerefs(variable_ptr->type)->kind!=tk_pointer)return "(("+type(variable_ptr->type)+"*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref "+name(variable_ptr,"v")+"))";
   auto local=local_offsets.find(variable_ptr);
   if(local!=local_offsets.end())return "(("+type(variable_ptr->type)+"*)(__edg_frame+"+std::to_string(local->second)+"))";
   auto tls=tls_offsets.find(variable_ptr);
@@ -46,8 +49,10 @@ string source_parameter_name(a_variable_ptr parameter) {
   source_incoming_parameters[parameter]=result;return result;
 }
 string source_frame_alias_for(a_variable_ptr variable_ptr) {
-  if(!local_offsets.count(variable_ptr) || !source_name_entries.count(variable_ptr) || !source_frame_aliases.insert(variable_ptr).second)return "";
-  return "ref "+type(variable_ptr->type)+" "+name(variable_ptr,"v")+" = ref *"+source_storage_address(variable_ptr)+";\n";
+  if(!local_offsets.count(variable_ptr) || !source_name_entries.count(variable_ptr) || source_frame_aliases.count(variable_ptr))return "";
+  string address=source_storage_address(variable_ptr);
+  source_frame_aliases.insert(variable_ptr);
+  return "ref "+type(variable_ptr->type)+" "+name(variable_ptr,"v")+" = ref *"+address+";\n";
 }
 string source_frame_alias_declarations(a_scope_ptr scope) {
   if(!scope)return "";

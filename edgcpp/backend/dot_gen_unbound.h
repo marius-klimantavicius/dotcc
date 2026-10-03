@@ -1,7 +1,7 @@
-// Explicit review-only declarations for external symbols without a binding.
-// These never provide a fabricated implementation or storage: every access
-// throws. Normal translation continues to reject all such symbols.
+// Explicit external contracts: throwing review declarations or required C#
+// partial implementations. Normal translation rejects symbols without bindings.
 bool unbound_declarations=false;
+bool unbound_partial=false;
 std::set<a_routine_ptr> unbound_routines;
 std::set<a_variable_ptr> unbound_variables;
 
@@ -21,9 +21,12 @@ bool unbound_routine(a_routine_ptr routine) {
     parameters+=string(parameters.empty()?"":", ")+"global::Edg.Runtime.VaList* __edg_arguments";
   string symbol=routine->source_corresp.name?routine->source_corresp.name:"<unnamed>";
   helper_output+="// dot-gen:unbound function "+source_hex(symbol)+" "+id+"\n";
-  helper_output+="// dot-gen:member-begin\n"+source_member_marker(routine)+"\n// Unbound external declaration; review-only output.\nprivate "+
-    string(instance_mode?"":"static ")+type(rt->variant.routine.return_type)+" "+id+"("+parameters+
-    ") { throw new global::System.PlatformNotSupportedException(\"Unbound external function in review-only translation: "+source_hex(symbol)+" (UTF-8 hex)\"); }\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\n"+source_member_marker(routine)+
+    (unbound_partial?"\n// External function; implementation required in another partial class file.\n":"\n// Unbound external declaration; review-only output.\n")+
+    "private "+string(instance_mode?"":"static ")+(unbound_partial?"partial ":"")+
+    type(rt->variant.routine.return_type)+" "+id+"("+parameters+
+    (unbound_partial?");\n":") { throw new global::System.PlatformNotSupportedException(\"Unbound external function in review-only translation: "+source_hex(symbol)+" (UTF-8 hex)\"); }\n")+
+    "// dot-gen:member-end\n";
   return true;
 }
 
@@ -38,8 +41,11 @@ string unbound_variable_address(a_variable_ptr variable_ptr) {
     string ty=type(variable_ptr->type);
     string symbol=variable_ptr->source_corresp.name?variable_ptr->source_corresp.name:"<unnamed>";
     helper_output+="// dot-gen:unbound variable "+source_hex(symbol)+" "+id+"\n";
-    helper_output+="// dot-gen:member-begin\n// Unbound external declaration; review-only output.\nprivate "+
-      string(instance_mode?"":"static ")+ty+"* "+getter+"() { throw new global::System.PlatformNotSupportedException(\"Unbound external variable in review-only translation: "+source_hex(symbol)+" (UTF-8 hex)\"); }\n// dot-gen:member-end\n";
+    helper_output+="// dot-gen:member-begin\n"+
+      string(unbound_partial?"// External storage; implementation must supply a stable address with the source lifetime and alignment.\n":"// Unbound external declaration; review-only output.\n")+
+      "private "+string(instance_mode?"":"static ")+(unbound_partial?"partial ":"")+ty+"* "+getter+"()"+
+      (unbound_partial?";\n":" { throw new global::System.PlatformNotSupportedException(\"Unbound external variable in review-only translation: "+source_hex(symbol)+" (UTF-8 hex)\"); }\n")+
+      "// dot-gen:member-end\n";
     helper_output+="// dot-gen:member-begin\n"+source_member_marker(variable_ptr)+"\nprivate "+string(instance_mode?"":"static ")+"ref "+ty+" "+id+" => ref *"+getter+"();\n// dot-gen:member-end\n";
   }
   return source_owner_reference(getter)+"()";

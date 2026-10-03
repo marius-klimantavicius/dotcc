@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "artifact": "artifacts/campaign/persistent-continuation/sqlite-readable-macro-review-002",
+  "reviewAlias": "artifacts/review/sqlite-readable",
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/source-storage-readability-build-003/cpfe-dot",
+    "sha256": "62d479a5f6d950cd00a6c13d553790d1b4ffc0a8f89fb2a222aa677308154a7c"
+  },
+  "macros": {
+    "count": 29,
+    "constants": 28,
+    "properties": 1,
+    "selection": [
+      "SQLITE_(OK|ERROR|ROW|DONE|VERSION|VERSION_NUMBER|OPEN_.*)"
+    ]
+  },
+  "generated": {
+    "files": 73,
+    "translationFiles": 41,
+    "translationBytes": 12185476
+  },
+  "translationAndBuild": [
+    {
+      "label": "translate",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/dotnet.py",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+        "/home/marius/p/dotcc/sqlite/tests/memory_vfs.c",
+        "--language",
+        "c",
+        "--std",
+        "c17",
+        "--libc",
+        "musl",
+        "--emit",
+        "managedlib",
+        "--namespace",
+        "Edg.SQLite",
+        "--class-name",
+        "SqliteCore",
+        "--instance-methods",
+        "--split",
+        "size",
+        "--split-size",
+        "262144",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/tests",
+        "-DSQLITE_OS_OTHER=1",
+        "-DSQLITE_THREADSAFE=0",
+        "-DSQLITE_TEMP_STORE=3",
+        "-DSQLITE_MAX_MMAP_SIZE=0",
+        "-DSQLITE_OMIT_LOAD_EXTENSION",
+        "-DSQLITE_ENABLE_FTS5",
+        "-DSQLITE_ENABLE_MATH_FUNCTIONS",
+        "-DSQLITE_ENABLE_PERCENTILE",
+        "-DSQLITE_ENABLE_COLUMN_METADATA",
+        "-DSQLITE_ENABLE_PREUPDATE_HOOK",
+        "--output-dir",
+        "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/sqlite-readable-macro-review-002/generated",
+        "--compiler",
+        "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/source-storage-readability-build-003/cpfe-dot",
+        "--export-macros",
+        "SQLITE_(OK|ERROR|ROW|DONE|VERSION|VERSION_NUMBER|OPEN_.*)",
+        "--macro-source",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c"
+      ],
+      "exitCode": 0,
+      "seconds": 9.117847563931718
+    },
+    {
+      "label": "build",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/sqlite-readable-macro-review-002/generated/Generated.csproj",
+        "-c",
+        "Release",
+        "--nologo",
+        "-p:TreatWarningsAsErrors=true"
+      ],
+      "exitCode": 0,
+      "seconds": 13.794270187150687
+    }
+  ],
+  "consumer": [
+    {
+      "label": "build",
+      "command": [
+        "dotnet",
+        "build",
+        "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/sqlite-readable-macro-review-002/consumer/Host.csproj",
+        "-c",
+        "Release",
+        "--nologo",
+        "-p:TreatWarningsAsErrors=true"
+      ],
+      "exitCode": 0,
+      "seconds": 1.1908168320078403
+    },
+    {
+      "label": "jit",
+      "command": [
+        "dotnet",
+        "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/sqlite-readable-macro-review-002/consumer/bin/Release/net10.0/Host.dll"
+      ],
+      "exitCode": 0,
+      "seconds": 0.29830927588045597
+    },
+    {
+      "label": "publish",
+      "command": [
+        "dotnet",
+        "publish",
+        "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/sqlite-readable-macro-review-002/consumer/Host.csproj",
+        "-c",
+        "Release",
+        "--nologo",
+        "-p:PublishAot=true",
+        "-o",
+        "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/sqlite-readable-macro-review-002/consumer/aot"
+      ],
+      "exitCode": 0,
+      "seconds": 18.12042094906792
+    },
+    {
+      "label": "aot",
+      "command": [
+        "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/sqlite-readable-macro-review-002/consumer/aot/Host"
+      ],
+      "exitCode": 0,
+      "seconds": 0.004575817147269845
+    }
+  ],
+  "coreParityArtifact": "artifacts/campaign/persistent-continuation/storage-readability-sqlite-core-001",
+  "limitations": [
+    "Test-only memory VFS",
+    "SQLITE_THREADSAFE=0",
+    "Linux x64 verification; optional historical project suites not all repeated"
+  ]
+}

@@ -1,0 +1,339 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "compilerBuild": "artifacts/campaign/persistent-continuation/source-storage-readability-build-003",
+  "compilerSha256": "62d479a5f6d950cd00a6c13d553790d1b4ffc0a8f89fb2a222aa677308154a7c",
+  "suites": {
+    "byteData": {
+      "artifact": "artifacts/campaign/persistent-continuation/byte-data-readability-managed-001",
+      "resultsSha256": "40493a6d658fe0417af5636cc03b4890ea80b8c6abc7ee2e13719bfa43847614",
+      "result": {
+        "status": "passed",
+        "checks": [
+          "GCC and Clang agree on byte values, local copies, independent arrays and per-thread storage",
+          "static/JIT: native byte traces, forced GC, independent copies, owner and TLS isolation",
+          "static/NativeAOT: native byte traces, forced GC, independent copies, owner and TLS isolation",
+          "instance/JIT: native byte traces, forced GC, independent copies, owner and TLS isolation",
+          "instance/NativeAOT: native byte traces, forced GC, independent copies, owner and TLS isolation"
+        ],
+        "audits": {
+          "static": {
+            "literal_preview_count": 5,
+            "generated_bytes": 73999
+          },
+          "instance": {
+            "literal_preview_count": 5,
+            "generated_bytes": 73529
+          }
+        },
+        "source_sha256": "709bbb876f1f5e6bd2578323219f108cf9b5dabefa245526aad2095d8340903b"
+      }
+    },
+    "namedLocals": {
+      "artifact": "artifacts/campaign/persistent-continuation/named-local-storage-readability-003",
+      "resultsSha256": "5392f0fa3ee23b06e21f40eb9c1dfc0b6d8296058242aa3ce10ca9af648fa208",
+      "result": {
+        "checks": [
+          "native C++ oracle: native layout, address alignment, normal/exception cleanup",
+          "static: named locals, stable addresses, packed/base layouts, aligned/heap fallbacks, destructor unwinding JIT",
+          "static: Linux x64 NativeAOT",
+          "instance: named locals, stable addresses, packed/base layouts, aligned/heap fallbacks, destructor unwinding JIT",
+          "instance: Linux x64 NativeAOT"
+        ]
+      }
+    },
+    "emptyNoexcept": {
+      "artifact": "artifacts/campaign/persistent-continuation/noexcept-empty-readability-001",
+      "resultsSha256": "2f88bfb9517466ce751c12b8071289eed8befceefcee0d09a23ea246c0b3f8bb",
+      "result": {
+        "checks": [
+          "native C++ oracle: empty functions and synthesized member destruction",
+          "static: inert guards omitted; calls, return expressions and synthesized member cleanup guarded; JIT",
+          "static: Linux x64 NativeAOT",
+          "instance: inert guards omitted; calls, return expressions and synthesized member cleanup guarded; JIT",
+          "instance: Linux x64 NativeAOT"
+        ]
+      }
+    },
+    "partialExternals": {
+      "artifact": "artifacts/campaign/persistent-continuation/partial-externals-001",
+      "resultsSha256": "8ce78ffb49c2f5ecebb1ff8bf04461376af4f458854c59621aaf83b942be8414",
+      "result": {
+        "status": "passed",
+        "nativeAot": true,
+        "checks": [
+          "missing implementations fail compilation",
+          "direct and indirect partial calls",
+          "BCL native allocation/free",
+          "stable external storage addresses",
+          "independent instance storage"
+        ]
+      }
+    },
+    "existingUnboundDeclarations": {
+      "artifact": "artifacts/campaign/persistent-continuation/unbound-regression-readability-001",
+      "resultsSha256": "eb6ebe86f138e0091b54ce13c50bf6002c27cf5c55965c262cfbbf0daf0ce92c",
+      "result": {
+        "status": "passed",
+        "commands": 15,
+        "allCommandsMeetExpectedExit": true
+      }
+    },
+    "sqliteCore": {
+      "artifact": "artifacts/campaign/persistent-continuation/storage-readability-sqlite-core-001",
+      "resultsSha256": "1ff735bf34a73297d38427f05c97d1a62be8da791e447abe980b4c661e2e6946",
+      "result": {
+        "schema": 1,
+        "status": "passed",
+        "project": "SQLite",
+        "profile": "pinned feature definitions; deterministic test-only memory VFS; THREADSAFE=0",
+        "target": "portable-lp64-binary80-v2",
+        "libc": "musl",
+        "compiler": "/mnt/storage/dotcc-edg-campaign-20261003/source-storage-readability-build-003/cpfe-dot",
+        "compilerSha256": "62d479a5f6d950cd00a6c13d553790d1b4ffc0a8f89fb2a222aa677308154a7c",
+        "instanceMethods": true,
+        "definitions": [
+          "SQLITE_OS_OTHER=1",
+          "SQLITE_THREADSAFE=0",
+          "SQLITE_TEMP_STORE=3",
+          "SQLITE_MAX_MMAP_SIZE=0",
+          "SQLITE_OMIT_LOAD_EXTENSION",
+          "SQLITE_ENABLE_FTS5",
+          "SQLITE_ENABLE_MATH_FUNCTIONS",
+          "SQLITE_ENABLE_PERCENTILE",
+          "SQLITE_ENABLE_COLUMN_METADATA",
+          "SQLITE_ENABLE_PREUPDATE_HOOK"
+        ],
+        "reducedDiagnosticProfile": false,
+        "archiveSha256": "1e71ddf93849c6a6ecf58b827c0692073d2dd7ee40196158068f7b29f422e87d",
+        "inputs": [
+          {
+            "path": "sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+            "sha256": "b1dd5d74ec7f29055a6684fa06fb3c2f6821c87dd38f9a458dfd2e8a1db28189"
+          },
+          {
+            "path": "sqlite/ref/sqlite-amalgamation-3530400/sqlite3.h",
+            "sha256": "919e7f2e8ed1d8f56ac17b412b8971c76aa5d1a879752cc6058f75e7d5910e1d"
+          },
+          {
+            "path": "sqlite/tests/memory_vfs.c",
+            "sha256": "1641658e862f2da5d77fbbeff8e92b2b20770f92509bab818e668080fe6ed83f"
+          },
+          {
+            "path": "sqlite/tests/memory_vfs.h",
+            "sha256": "4a004e9b089b7325faec65e89dda99de060dd4a7175badb8a1f80130b8edc90c"
+          },
+          {
+            "path": "sqlite/tests/optional_features.h",
+            "sha256": "c308b6ec77d36abd96992b9abae6ae4d20e1c85bd2a09e8d4daaba6b0ab6c0f7"
+          },
+          {
+            "path": "sqlite/config/sources.json",
+            "sha256": "78bfaac9642c85bce440ab889b681ea4155c0a6b644df48e1d6f578a8599dfd3"
+          },
+          {
+            "path": "sqlite/config/defines.txt",
+            "sha256": "14f1f3498f7c4d89244db1d57ee746be539f56f068bf577c2f18912ed3093fb5"
+          },
+          {
+            "path": "sqlite/tests/probe.c",
+            "sha256": "0efc5c82d0e7ec52b89b13592b49cc04e537163c129cb1256ed8e939f5ce9093"
+          },
+          {
+            "path": "sqlite/tests/native-corpus.expected",
+            "sha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6"
+          }
+        ],
+        "commands": [
+          {
+            "label": "core-native-build",
+            "command": [
+              "gcc",
+              "-std=c17",
+              "-O2",
+              "-DSQLITE_OS_OTHER=1",
+              "-DSQLITE_THREADSAFE=0",
+              "-DSQLITE_TEMP_STORE=3",
+              "-DSQLITE_MAX_MMAP_SIZE=0",
+              "-DSQLITE_OMIT_LOAD_EXTENSION",
+              "-DSQLITE_ENABLE_FTS5",
+              "-DSQLITE_ENABLE_MATH_FUNCTIONS",
+              "-DSQLITE_ENABLE_PERCENTILE",
+              "-DSQLITE_ENABLE_COLUMN_METADATA",
+              "-DSQLITE_ENABLE_PREUPDATE_HOOK",
+              "-I",
+              "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400",
+              "-I",
+              "/home/marius/p/dotcc/sqlite/tests",
+              "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+              "/home/marius/p/dotcc/sqlite/tests/probe.c",
+              "/home/marius/p/dotcc/sqlite/tests/memory_vfs.c",
+              "-lm",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/storage-readability-sqlite-core-001/core-native"
+            ],
+            "exitCode": 0,
+            "seconds": 14.908
+          },
+          {
+            "label": "core-native-run",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/storage-readability-sqlite-core-001/core-native"
+            ],
+            "exitCode": 0,
+            "seconds": 0.003
+          },
+          {
+            "label": "core-translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+              "/home/marius/p/dotcc/sqlite/tests/probe.c",
+              "/home/marius/p/dotcc/sqlite/tests/memory_vfs.c",
+              "--compiler",
+              "/mnt/storage/dotcc-edg-campaign-20261003/source-storage-readability-build-003/cpfe-dot",
+              "--language",
+              "c",
+              "--std",
+              "c17",
+              "--libc",
+              "musl",
+              "-DSQLITE_OS_OTHER=1",
+              "-DSQLITE_THREADSAFE=0",
+              "-DSQLITE_TEMP_STORE=3",
+              "-DSQLITE_MAX_MMAP_SIZE=0",
+              "-DSQLITE_OMIT_LOAD_EXTENSION",
+              "-DSQLITE_ENABLE_FTS5",
+              "-DSQLITE_ENABLE_MATH_FUNCTIONS",
+              "-DSQLITE_ENABLE_PERCENTILE",
+              "-DSQLITE_ENABLE_COLUMN_METADATA",
+              "-DSQLITE_ENABLE_PREUPDATE_HOOK",
+              "-I",
+              "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400",
+              "-I",
+              "/home/marius/p/dotcc/sqlite/tests",
+              "--emit",
+              "exe",
+              "--namespace",
+              "Edg.SQLite",
+              "--class-name",
+              "SqliteCore",
+              "--split",
+              "size",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/storage-readability-sqlite-core-001/core-managed",
+              "--instance-methods"
+            ],
+            "exitCode": 0,
+            "seconds": 7.169
+          },
+          {
+            "label": "core-managed-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/storage-readability-sqlite-core-001/core-managed/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exitCode": 0,
+            "seconds": 13.371
+          },
+          {
+            "label": "core-jit-run",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/storage-readability-sqlite-core-001/core-managed/bin/Release/net10.0/Generated.dll"
+            ],
+            "exitCode": 0,
+            "seconds": 0.463
+          },
+          {
+            "label": "core-aot-build",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/storage-readability-sqlite-core-001/core-managed/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "--nologo",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/storage-readability-sqlite-core-001/core-managed/aot"
+            ],
+            "exitCode": 0,
+            "seconds": 16.747
+          },
+          {
+            "label": "core-aot-run",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/storage-readability-sqlite-core-001/core-managed/aot/Generated"
+            ],
+            "exitCode": 0,
+            "seconds": 0.008
+          }
+        ],
+        "checks": [
+          {
+            "label": "core-native-reference",
+            "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+            "bytes": 6337
+          },
+          {
+            "label": "core-jit-native-parity",
+            "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+            "bytes": 6337
+          },
+          {
+            "label": "core-aot-native-parity",
+            "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+            "bytes": 6337
+          }
+        ]
+      }
+    },
+    "canonicalNamedLocals": {
+      "artifact": "artifacts/campaign/persistent-continuation/named-local-storage-canonical-001",
+      "resultsSha256": "5392f0fa3ee23b06e21f40eb9c1dfc0b6d8296058242aa3ce10ca9af648fa208",
+      "result": {
+        "checks": [
+          "native C++ oracle: native layout, address alignment, normal/exception cleanup",
+          "static: named locals, stable addresses, packed/base layouts, aligned/heap fallbacks, destructor unwinding JIT",
+          "static: Linux x64 NativeAOT",
+          "instance: named locals, stable addresses, packed/base layouts, aligned/heap fallbacks, destructor unwinding JIT",
+          "instance: Linux x64 NativeAOT"
+        ]
+      }
+    },
+    "canonicalEmptyNoexcept": {
+      "artifact": "artifacts/campaign/persistent-continuation/noexcept-empty-canonical-001",
+      "resultsSha256": "2f88bfb9517466ce751c12b8071289eed8befceefcee0d09a23ea246c0b3f8bb",
+      "result": {
+        "checks": [
+          "native C++ oracle: empty functions and synthesized member destruction",
+          "static: inert guards omitted; calls, return expressions and synthesized member cleanup guarded; JIT",
+          "static: Linux x64 NativeAOT",
+          "instance: inert guards omitted; calls, return expressions and synthesized member cleanup guarded; JIT",
+          "instance: Linux x64 NativeAOT"
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "Runtime checks executed on Linux x64; Windows/macOS/Arm64 execution not repeated",
+    "Named storage retains explicit alignment/large-frame/coroutine fallbacks",
+    "Partial extern contracts do not supply every outstanding project import",
+    "SQLite uses the existing test-only memory VFS and THREADSAFE=0 profile"
+  ],
+  "canonicalCompiler": {
+    "path": "build/bin/cpfe-dot",
+    "sha256": "de8d76a19a5c20131745e1634c9e59742b102d3ec744fcdc5a095d3dc4117ce1",
+    "buildLog": "artifacts/campaign/persistent-continuation/source-storage-readability-build-003/canonical-build.log"
+  }
+}

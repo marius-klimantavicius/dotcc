@@ -33,6 +33,7 @@ def digest(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output-dir', required=True, type=Path)
+    parser.add_argument('--compiler', type=Path, default=ROOT / 'build/bin/cpfe-dot')
     parser.add_argument('--suite', choices=CORPORA, action='append')
     parser.add_argument('--native-only', action='store_true')
     parser.add_argument('--nativeaot', action='store_true')
@@ -61,6 +62,8 @@ def main():
         'schema': 1, 'status': 'running', 'project': 'SQLite',
         'profile': 'pinned feature definitions; deterministic test-only memory VFS; THREADSAFE=0',
         'target': 'portable-lp64-binary80-v2', 'libc': 'musl',
+        'compiler': str(args.compiler.resolve()),
+        'compilerSha256': digest(args.compiler.resolve()) if not args.native_only else None,
         'instanceMethods': args.instance_methods, 'definitions': definitions,
         'reducedDiagnosticProfile': args.without_math,
         'archiveSha256': config['sha256'],
@@ -125,6 +128,7 @@ def main():
                 continue
             generated = out / (suite + '-managed')
             run(suite + '-translate', [sys.executable, ROOT / 'dotnet.py', *sources,
+                                      '--compiler', args.compiler.resolve(),
                                       '--language', 'c', '--std', 'c17', '--libc', 'musl',
                                       *options, *includes, '--emit', 'exe', '--namespace', 'Edg.SQLite',
                                       '--class-name', 'SqliteCore', '--split', 'size',

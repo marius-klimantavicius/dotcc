@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/macro-exports-006",
+  "results": {
+    "status": "passed",
+    "checks": [
+      "c-static: constants in switch/const contexts, u64, final redefinition, UTF-8 embedded NUL pointer, typed argument-once/aggregate/pointer macros, lifecycle exception boundaries and source navigation",
+      "c-static: NativeAOT direct macro APIs",
+      "cpp-instance: constants in switch/const contexts, u64, final redefinition, UTF-8 embedded NUL pointer, typed argument-once/aggregate/pointer macros, lifecycle exception boundaries and source navigation",
+      "cpp-instance: NativeAOT direct macro APIs",
+      "reject: empty/configuration",
+      "reject: requires a --macro-signatures",
+      "reject: matched no active macros",
+      "reject: invalid --export-macros",
+      "reject: include-sensitive original source"
+    ]
+  },
+  "producer": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "sha256": "8d339fea6d909a8e9c5467bcdd95f4713074a6759137c56f3ba5de826b526296"
+  },
+  "inputs": {
+    "edgcpp/backend/macro_exports.py": "230b096ddec3f5dcde16f462f688eb7e7a405d1a13b156a61e282433d803832e",
+    "edgcpp/backend/tests/macro_exports.c": "660e8baccbfe805626c7cba1d10dd14a47140978cb36877343e7110946e9dadd",
+    "edgcpp/backend/tests/macro_exports.h": "482dac56fc8791f75a3c21efffd648b3bfdc9c6a16f7103b404b466a6ba6956a",
+    "edgcpp/backend/tests/macro_exports.signatures.json": "43087911c1a6c9d6952ae7f8fd3eedd481256d0d3d81719846ef5a4fd46f4b9c",
+    "edgcpp/backend/tests/macro_exports_verify.py": "a2409a361027112955fe672ce7447ca4cb8c385da0931f37de34706e1852a79d"
+  },
+  "scope": "Opt-in macro APIs: C/static and C++/instance synthetic JIT + NativeAOT, final preprocessor state, fail-closed adapter equivalence check. Does not claim arbitrary function-like macro semantics or QuickJS project coverage.",
+  "regression": "Raw single-line API boundaries with catch(Exception parameter) use balanced declaration parameter parsing; C++ fixture includes RAII cleanup to emit the same boundary catch as real SQLite."
+}

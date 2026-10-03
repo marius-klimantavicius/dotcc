@@ -1,5 +1,13 @@
 # Direct C# review of the EDG compiler
 
+The latest exception-enabled readability refresh is at
+[`artifacts/review/edg-readable-exceptions/README.md`](../artifacts/review/edg-readable-exceptions/README.md).
+It uses named ordinary locals, bulk byte initialization, literal previews and
+omits empty noexcept guards. All 75 translation units emit and pass syntax/
+formatting checks; the 155-file package is 242,687,604 bytes. The previous
+checkpoints below remain available. Full managed compilation/runtime still
+remain unverified, and 84 external symbols still require implementations.
+
 `translate_self.py` reads the **original `cpfe` target** from
 `build/compile_commands.json`: currently 75 C++14 translation units, including
 the C backend, with the all-extensions build's definitions. It does not translate

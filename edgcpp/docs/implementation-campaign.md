@@ -732,3 +732,48 @@ show successful-construction state tracking, a false-returning exception filter,
 function-level `finally` and destructor cleanup helper. The previous review is
 retained. No full C# build, managed-compiler runtime or NativeAOT execution is
 claimed; see `evidence/self-review-exceptions-20261003.json`.
+
+### Storage readability, macro APIs and external runtime contracts (2026-10-03)
+
+Ordinary aggregates/arrays now use named typed locals when managed layout
+supplies the native alignment. Explicit alignment, large native heap frames
+and coroutine storage retain their necessary fallbacks. Static byte/string
+initialization uses constant-span bulk copies, selecting exact UTF-8 literals
+or numeric bytes; literal-pool pointers receive safe bounded textual previews.
+Generated empty/bare-return noexcept bodies no longer receive catch/termination
+wrappers. Bodies with synthesized member destruction still do.
+
+`--export-macros REGEX` adds opt-in final-macro-snapshot APIs: EDG-folded integral
+constants become C# const fields; other expressions become typed properties;
+function-like macros require `--macro-signatures` native type contracts. The
+implementation checks include-wrapper preprocessing equivalence and preserves
+the adapters and provenance. A real SQLite test exposed a greedy managed
+signature parser; a balanced parameter scanner and lifecycle-boundary regression
+now cover that case. Arbitrary textual macro semantics are not claimed.
+
+`--unbound-externals partial` emits required partial methods and external-storage
+address hooks. `--runtime-source` includes C# providers in the same assembly.
+Missing implementations fail compilation; existing bound runtime imports and
+the separate throwing review mode retain their behavior. This implements the
+binding mechanism, not every outstanding project import.
+
+Focused native/JIT/NativeAOT tests cover bytes, local layout and unwinding,
+empty noexcept functions, macros and partial runtime implementations. The
+canonical compiler was rebuilt and its local/noexcept checks also pass.
+SQLite's full-feature core corpus matches fresh native output under JIT and
+NativeAOT. The new `artifacts/review/sqlite-readable` library exports 28 actual
+constants plus the version-pointer property; strict build and a direct managed
+consumer pass JIT and NativeAOT. These remain Linux-x64 tests with the test VFS
+and THREADSAFE=0 profile.
+
+The fresh full 75-TU exception-enabled EDG review is at
+`artifacts/review/edg-readable-exceptions`: 155 C# files, 242,687,604 bytes,
+14.83% smaller than the preceding exception review. Raw frames fall from 7,484
+to 1,285 and noexcept guards from 2,519 to 1,929. Emission/syntax/formatting pass;
+full managed compiler build/runtime remain unverified, with 84 unbound symbols.
+Earlier review aliases and all intermediate artifacts remain intact.
+
+Details: `docs/source-storage-readability.md`, `docs/macro-exports.md`,
+`docs/partial-externals.md`. Evidence: `evidence/source-storage-readability-20261003.json`,
+`evidence/macro-exports-20261003.json`, `evidence/sqlite-readable-macros-20261003.json`,
+and `evidence/edg-readable-exceptions-20261003.json`.

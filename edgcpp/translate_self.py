@@ -30,7 +30,9 @@ def main():
     parser.add_argument('--split', choices=('source', 'size', 'function', 'none'), default='source')
     parser.add_argument('--build', action='store_true')
     parser.add_argument('--compiler', type=Path, default=ROOT / 'build/bin/cpfe-dot')
-    parser.add_argument('--unbound-externals', choices=('reject', 'declarations'), default='reject')
+    parser.add_argument('--unbound-externals', choices=('reject', 'declarations', 'partial'), default='reject')
+    parser.add_argument('--runtime-source', action='append', type=Path, default=[],
+                        help='C# runtime implementation file to include (repeatable)')
     parser.add_argument('--exceptions', action=argparse.BooleanOptionalAction, default=None,
                         help='override exception handling (default: match native compilation database)')
     args = parser.parse_args()
@@ -72,6 +74,7 @@ def main():
                '--emit', 'managedlib', '--namespace', 'Edg.Compiler', '--class-name', 'EdgCompiler',
                '--compiler', str(args.compiler.resolve()),
                '--unbound-externals', args.unbound_externals,
+               *[value for path in args.runtime_source for value in ('--runtime-source', str(path.resolve()))],
                '--raw-output', str(out / 'raw.cs'),
                '--split', args.split, '--output-dir', str(out / 'managed')]
     report = {
