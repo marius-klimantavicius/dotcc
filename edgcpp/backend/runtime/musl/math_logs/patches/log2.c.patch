@@ -1,0 +1,24 @@
+--- a/log2.c
++++ b/log2.c
+@@ -25,7 +25,7 @@
+ 	return asuint64(x) >> 48;
+ }
+ 
+-double log2(double x)
++double __edg_musl_log2(double x)
+ {
+ 	double_t z, r, r2, r4, y, invc, logc, kd, hi, lo, t1, t2, t3, p;
+ 	uint64_t ix, iz, tmp;
+@@ -120,3 +120,12 @@
+ 	y = lo + r2 * p + hi;
+ 	return eval_as_double(y);
+ }
++
++/* Portable MATH_ERRNO boundary; original numerical algorithm is above. */
++#include <errno.h>
++double log2(double x)
++{
++	if (x == 0) errno = ERANGE;
++	else if (x < 0) errno = EDOM;
++	return __edg_musl_log2(x);
++}

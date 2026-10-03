@@ -40,6 +40,15 @@ string libc_builtin_symbol(a_routine_ptr r) {
     case bfk_abs:return "abs";
     case bfk_labs:return "labs";
     case bfk_llabs:return "llabs";
+    case bfk_log:return "log";
+    case bfk_logf:return "logf";
+    case bfk_logl:return "logl";
+    case bfk_log2:return "log2";
+    case bfk_log2f:return "log2f";
+    case bfk_log2l:return "log2l";
+    case bfk_log10:return "log10";
+    case bfk_log10f:return "log10f";
+    case bfk_log10l:return "log10l";
     case bfk_fmod:return "fmod";
     case bfk_fmodf:return "fmodf";
     case bfk_fmodl:return "fmodl";

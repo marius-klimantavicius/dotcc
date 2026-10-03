@@ -252,6 +252,29 @@
       "translationUnits": [
         "perror.c"
       ]
+    },
+    {
+      "directory": "math_logs",
+      "translationUnits": [
+        "log.c",
+        "logf.c",
+        "logl.c",
+        "log2.c",
+        "log2f.c",
+        "log2l.c",
+        "log10.c",
+        "log10f.c",
+        "log10l.c",
+        "log_data.c",
+        "logf_data.c",
+        "log2_data.c",
+        "log2f_data.c",
+        "__math_invalid.c",
+        "__math_invalidf.c",
+        "__math_divzero.c",
+        "__math_divzerof.c",
+        "__polevll.c"
+      ]
     }
   ]
 }

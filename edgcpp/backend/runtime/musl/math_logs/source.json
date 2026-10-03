@@ -1,0 +1,170 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "log.c": {
+      "upstream": "src/math/log.c",
+      "originalSha256": "a0694d8587a0d145d0f8ae87cbffba014d7988bc2ebcbfad94cea73b394c9ecc",
+      "adaptedSha256": "6699c70abb3180c0a6cfd6cd3abbe270040564105ba74971dfbd70cb10abc0d0",
+      "patch": "patches/log.c.patch",
+      "patchSha256": "bde20ab2ec91cd1fed4bb7202b2997cb2faf5067deacd0d905bac9c4fbac459b"
+    },
+    "logf.c": {
+      "upstream": "src/math/logf.c",
+      "originalSha256": "eecf8e5dd0afd5f64f938ccae07c85b0a8e82919f5d4269936a3b8493fb64e47",
+      "adaptedSha256": "fc947d3dfc881101776699670c0a386de93f2fc256d60dcecd553f3e22abfcdb",
+      "patch": "patches/logf.c.patch",
+      "patchSha256": "4765c6611eb5f584019e3587c58de7aba69044e296be4c63cb5606be64fe247d"
+    },
+    "logl.c": {
+      "upstream": "src/math/logl.c",
+      "originalSha256": "e1612b2bb9a010c1914beb93fa242981f69f323392bd9816415cafaaec0d94b0",
+      "adaptedSha256": "452568385d9942b973ab6de648f865b035eb7b898b1f9a606db6cb4407dc8f7a",
+      "patch": "patches/logl.c.patch",
+      "patchSha256": "e7193ad04ddde62c0f00772439e767851e410dcfd9d144cc67c0d93dd1ee559c"
+    },
+    "log2.c": {
+      "upstream": "src/math/log2.c",
+      "originalSha256": "281e4fc0f737419e245019d8bc8a8ca53032c2d88c31d08561e9e59dcb4b4640",
+      "adaptedSha256": "ea83ee23c8824bad7b1610ecd58b31a5ad05ccbb3bab1bb258cb7ba6d4a01ba9",
+      "patch": "patches/log2.c.patch",
+      "patchSha256": "1492f8c389df11018244aed498d782c922e4d9824df07050693f97830a75b577"
+    },
+    "log2f.c": {
+      "upstream": "src/math/log2f.c",
+      "originalSha256": "f2393ef18e78e6dc540e7349dbfea000018246d64fca3eefe73f11a286403352",
+      "adaptedSha256": "7a2a12bd3608941714863bbe659dc8c0d658472f80d088ef4707681b2b67a0ac",
+      "patch": "patches/log2f.c.patch",
+      "patchSha256": "ac5eb93ef786278f64d03ee896f2cc7a3571afbe2f557412b93a9db7a9d92999"
+    },
+    "log2l.c": {
+      "upstream": "src/math/log2l.c",
+      "originalSha256": "c3294ef6fcf96c061c4511fb3f6cd2886b2f513938deadcfb16fc19fb2a9ff03",
+      "adaptedSha256": "0b952b35d555c288bbfb2178333e178abb0ddf4611f99ccf969ffd849cae414e",
+      "patch": "patches/log2l.c.patch",
+      "patchSha256": "eb6c5aa2656d9735d214343d09272e213606dea6b43df9d161bc59ef3e25f99e"
+    },
+    "log10.c": {
+      "upstream": "src/math/log10.c",
+      "originalSha256": "ef9b4b1f0918cf1fcb797f9fa4d4ffe177bfa27f668d74a41d613bfbcd83850a",
+      "adaptedSha256": "a9c243edf816c9a21a05cf3c271fdd2c2b908e786b12de1b6cbdaa6264e399f9",
+      "patch": "patches/log10.c.patch",
+      "patchSha256": "2fb0c3794785c9c70da56bf772e62d1aec3c4030d0ec19ca4145b2e390a0e4da"
+    },
+    "log10f.c": {
+      "upstream": "src/math/log10f.c",
+      "originalSha256": "b8de5c0f14be2c622eca1cb33e80e5b131576c7c229aeffb8ea9f1d61555f6b9",
+      "adaptedSha256": "ce8679a17907c4bc0a8f6824e753a3657125c7d429afb77957f41fe586daa8e1",
+      "patch": "patches/log10f.c.patch",
+      "patchSha256": "35229433f516a89a6ebef2b0db73267d815b2782b3b7e9d7d434bca993912561"
+    },
+    "log10l.c": {
+      "upstream": "src/math/log10l.c",
+      "originalSha256": "d23e3d61fe4111628efdef794ae7cd614e3443a81f70742e29070f99fdd078c4",
+      "adaptedSha256": "3ede6a6504e3552d5e21d055d4ec7fe06ac1eb6c476005c85a85419c9c491a05",
+      "patch": "patches/log10l.c.patch",
+      "patchSha256": "79c3792fd896892190bb60d9a8ad212ad1a3da36e6abbff094c603bd623d4d82"
+    },
+    "log_data.c": {
+      "upstream": "src/math/log_data.c",
+      "originalSha256": "e96bcd99d88fc57e0f3686299014f4b949a6212603ce237f39e16cedc155617a",
+      "adaptedSha256": "cf7176986591781227fe53d0662da49cc016c197c49901fb66ea749cfc2b0e13",
+      "patch": "patches/log_data.c.patch",
+      "patchSha256": "bf32295a90a4c142d06f0ac6a192c3eb03866dda1b512ef311232bdbf360bebc"
+    },
+    "logf_data.c": {
+      "upstream": "src/math/logf_data.c",
+      "originalSha256": "60b08342fcef877b393a76fc36d92c576d6340ce153459aad03aad3d4716f9b5",
+      "adaptedSha256": "60b08342fcef877b393a76fc36d92c576d6340ce153459aad03aad3d4716f9b5",
+      "patch": "patches/logf_data.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "log2_data.c": {
+      "upstream": "src/math/log2_data.c",
+      "originalSha256": "5a62bb213f19dc1364cddb612e3d13831e382f5ae6f7fafd7064362f53478dfb",
+      "adaptedSha256": "843205e22fef011d1a3aed1d1bde15b3809c10a791f96e1d5ffd313c23f5fb28",
+      "patch": "patches/log2_data.c.patch",
+      "patchSha256": "c3291381b84a8b6a149d586a239202ec091651aa3e988616868b7bb89175e945"
+    },
+    "log2f_data.c": {
+      "upstream": "src/math/log2f_data.c",
+      "originalSha256": "9261d7fdef29db26bd75310f029823593639ecf7c1cc089a6014623d49d21abe",
+      "adaptedSha256": "9261d7fdef29db26bd75310f029823593639ecf7c1cc089a6014623d49d21abe",
+      "patch": "patches/log2f_data.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "__math_invalid.c": {
+      "upstream": "src/math/__math_invalid.c",
+      "originalSha256": "b56440ed59fa1e1aaaf6bf8b672c8bb71eaf844457906f7773da1d67d7ef013b",
+      "adaptedSha256": "b56440ed59fa1e1aaaf6bf8b672c8bb71eaf844457906f7773da1d67d7ef013b",
+      "patch": "patches/__math_invalid.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "__math_invalidf.c": {
+      "upstream": "src/math/__math_invalidf.c",
+      "originalSha256": "d2af8360271109d77dfab3c538eb158e34633454707dea4efa9f2f1e7e2bd0c7",
+      "adaptedSha256": "d2af8360271109d77dfab3c538eb158e34633454707dea4efa9f2f1e7e2bd0c7",
+      "patch": "patches/__math_invalidf.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "__math_divzero.c": {
+      "upstream": "src/math/__math_divzero.c",
+      "originalSha256": "84aa910bdc5e7ccfed42098c37c44e278aa942d46e5a51d5ee8273336c79e719",
+      "adaptedSha256": "84aa910bdc5e7ccfed42098c37c44e278aa942d46e5a51d5ee8273336c79e719",
+      "patch": "patches/__math_divzero.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "__math_divzerof.c": {
+      "upstream": "src/math/__math_divzerof.c",
+      "originalSha256": "194c95f6cd238ffa14e78087b9acffca3a064f2fe46320d67b090bb7a559b1ca",
+      "adaptedSha256": "194c95f6cd238ffa14e78087b9acffca3a064f2fe46320d67b090bb7a559b1ca",
+      "patch": "patches/__math_divzerof.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "__polevll.c": {
+      "upstream": "src/math/__polevll.c",
+      "originalSha256": "4fef0127318ba19fd5796b6b69a938030d22adb16aaab2ade3e634c8c5c93479",
+      "adaptedSha256": "4fef0127318ba19fd5796b6b69a938030d22adb16aaab2ade3e634c8c5c93479",
+      "patch": "patches/__polevll.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "log_data.h": {
+      "upstream": "src/math/log_data.h",
+      "originalSha256": "a8dced6f0821f30cad040ba326b03e419fbe0a750ed8f3b0d7145992bee4bccc",
+      "adaptedSha256": "a8d9c6befbea06110e60f00c014ea434349352ad36ee0b1b12e8044853ce6e97",
+      "patch": "patches/log_data.h.patch",
+      "patchSha256": "526dfaa948eac4d1e69d516f9be2ba7394ee9afe2d227c387d0258ca499304ad"
+    },
+    "logf_data.h": {
+      "upstream": "src/math/logf_data.h",
+      "originalSha256": "80176d1f045f162e917ca5c2879994ab0ed9e27b479086d752e5793c91135adf",
+      "adaptedSha256": "268c94a4df83968d94b39f17ef63ff0b5e7601ad268128b43a4e3a03790a96c7",
+      "patch": "patches/logf_data.h.patch",
+      "patchSha256": "f899dd0fbec084c617776c35eac8e4c1f09af326438ad83ab99759f9cad06d2b"
+    },
+    "log2_data.h": {
+      "upstream": "src/math/log2_data.h",
+      "originalSha256": "b56e1a56f73a8700caa9787cd399fecf7f96038af56c2a590aeb6f0f8662ea8e",
+      "adaptedSha256": "3722b9a5dbd836bc0103865671e5b2cf8572e17ff22ebe704adbf5f4e64e38aa",
+      "patch": "patches/log2_data.h.patch",
+      "patchSha256": "2e65d1b11b9760a53c71ed884b251b6415da2c0b443324ce0309bb22174b778e"
+    },
+    "log2f_data.h": {
+      "upstream": "src/math/log2f_data.h",
+      "originalSha256": "cb65ee48f557b19c8a6366a05f16ffba38aa46b00c4c136faf2dea8f53675a9b",
+      "adaptedSha256": "da230a9c31af3d666bc024817945ac6561a956d1af49b6243a84856410076fba",
+      "patch": "patches/log2f_data.h.patch",
+      "patchSha256": "ec3672204555310fb74cf2a6412544df595c4aea446312ee1122072b552846ac"
+    },
+    "libm.h": {
+      "upstream": "src/internal/libm.h",
+      "originalSha256": "d5a11757541471030d8f4bf7a39a29de35732ecbb291b2f45bf03296be4f25a2",
+      "adaptedSha256": "d95ceab3f0ceddc3094ac1594921f4bae98abc3c698aa6e98ebdb88245fdf711",
+      "patch": "patches/libm.h.patch",
+      "patchSha256": "065f6dce6945fb3ee8e85b13dd7f0f2a290da3ab329a10ba8446ff76594d7af8"
+    }
+  },
+  "adapters": {
+    "portable_math_abi.h": "108a4dfda6f78e9adef220f4529684bf9d8d0fa22ea977b2fb44cdb46d4d3754"
+  }
+}

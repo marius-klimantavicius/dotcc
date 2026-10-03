@@ -1,0 +1,39 @@
+--- a/log2l.c
++++ b/log2l.c
+@@ -55,7 +55,7 @@
+ #include "libm.h"
+ 
+ #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
+-long double log2l(long double x)
++long double __edg_musl_log2l(long double x)
+ {
+ 	return log2(x);
+ }
+@@ -106,7 +106,7 @@
+ 
+ #define SQRTH 0.70710678118654752440L
+ 
+-long double log2l(long double x)
++long double __edg_musl_log2l(long double x)
+ {
+ 	long double y, z;
+ 	int e;
+@@ -175,8 +175,17 @@
+ }
+ #elif LDBL_MANT_DIG == 113 && LDBL_MAX_EXP == 16384
+ // TODO: broken implementation to make things compile
+-long double log2l(long double x)
++long double __edg_musl_log2l(long double x)
+ {
+ 	return log2(x);
+ }
+ #endif
++
++/* Portable MATH_ERRNO boundary; original numerical algorithm is above. */
++#include <errno.h>
++long double log2l(long double x)
++{
++	if (x == 0) errno = ERANGE;
++	else if (x < 0) errno = EDOM;
++	return __edg_musl_log2l(x);
++}

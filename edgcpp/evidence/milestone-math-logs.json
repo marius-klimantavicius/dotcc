@@ -1,0 +1,25 @@
+{
+  "scope": "Selected musl logarithm families and GNU source aliases",
+  "checks": 18,
+  "providerTranslationUnits": 166,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/libc-math-logs-translated-003/results.json",
+      "sha256": "11bd1bb28d8d47260966d3aacc1bc3dcd205b1d2ceed7cca1281078951fc53b3"
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-math-logs-002/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082"
+    },
+    {
+      "path": "artifacts/campaign/libc-math-logs-patch-001/results.json",
+      "sha256": "3d6078ef453e72e678c4e1138fe85ccc99e424e921ee5fe193dd7ccb13fb9c68"
+    }
+  ],
+  "sourceManifestSha256": "ce2ffeb5bba01eaa8d01eedc1a4d5db790a2a0f9fa3bb811703130dc7729a410",
+  "limitations": [
+    "No dynamic fenv or full libm claim",
+    "Binary80 arithmetic performance remains open",
+    "Linux-x64 execution only"
+  ]
+}

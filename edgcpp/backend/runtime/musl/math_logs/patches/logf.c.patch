@@ -1,0 +1,24 @@
+--- a/logf.c
++++ b/logf.c
+@@ -24,7 +24,7 @@
+ #define N (1 << LOGF_TABLE_BITS)
+ #define OFF 0x3f330000
+ 
+-float logf(float x)
++float __edg_musl_logf(float x)
+ {
+ 	double_t z, r, r2, y, y0, invc, logc;
+ 	uint32_t ix, iz, tmp;
+@@ -69,3 +69,12 @@
+ 	y = y * r2 + (y0 + r);
+ 	return eval_as_float(y);
+ }
++
++/* Portable MATH_ERRNO boundary; original numerical algorithm is above. */
++#include <errno.h>
++float logf(float x)
++{
++	if (x == 0) errno = ERANGE;
++	else if (x < 0) errno = EDOM;
++	return __edg_musl_logf(x);
++}

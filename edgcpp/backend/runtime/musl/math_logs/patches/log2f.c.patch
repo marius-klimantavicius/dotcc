@@ -1,0 +1,24 @@
+--- a/log2f.c
++++ b/log2f.c
+@@ -23,7 +23,7 @@
+ #define A __log2f_data.poly
+ #define OFF 0x3f330000
+ 
+-float log2f(float x)
++float __edg_musl_log2f(float x)
+ {
+ 	double_t z, r, r2, p, y, y0, invc, logc;
+ 	uint32_t ix, iz, top, tmp;
+@@ -70,3 +70,12 @@
+ 	y = y * r2 + p;
+ 	return eval_as_float(y);
+ }
++
++/* Portable MATH_ERRNO boundary; original numerical algorithm is above. */
++#include <errno.h>
++float log2f(float x)
++{
++	if (x == 0) errno = ERANGE;
++	else if (x < 0) errno = EDOM;
++	return __edg_musl_log2f(x);
++}

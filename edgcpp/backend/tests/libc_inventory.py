@@ -49,6 +49,8 @@ def inventory(root):
         selected += ['fmod','fmodf','fmodl','modf','modff','modfl']
     if any(component['directory']=='stdio_management' and component.get('sourceBase')=='libc' for component in provider['components']):
         selected += ['perror']
+    if any(component['directory']=='math_logs' for component in provider['components']):
+        selected += [base+suffix for base in ['log','log2','log10'] for suffix in ['','f','l']]
     if any(component['directory']=='math_extrema' for component in provider['components']):
         selected += [base+suffix for base in ['fmin','fmax','fdim'] for suffix in ['','f','l']]
     if any(component['directory']=='wprintf' for component in provider['components']):

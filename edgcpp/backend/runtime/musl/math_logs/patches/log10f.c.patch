@@ -1,0 +1,24 @@
+--- a/log10f.c
++++ b/log10f.c
+@@ -27,7 +27,7 @@
+ Lg3 = 0x91e9ee.0p-25, /* 0.28498786688 */
+ Lg4 = 0xf89e26.0p-26; /* 0.24279078841 */
+ 
+-float log10f(float x)
++float __edg_musl_log10f(float x)
+ {
+ 	union {float f; uint32_t i;} u = {x};
+ 	float_t hfsq,f,s,z,R,w,t1,t2,dk,hi,lo;
+@@ -75,3 +75,12 @@
+ 	dk = k;
+ 	return dk*log10_2lo + (lo+hi)*ivln10lo + lo*ivln10hi + hi*ivln10hi + dk*log10_2hi;
+ }
++
++/* Portable MATH_ERRNO boundary; original numerical algorithm is above. */
++#include <errno.h>
++float log10f(float x)
++{
++	if (x == 0) errno = ERANGE;
++	else if (x < 0) errno = EDOM;
++	return __edg_musl_log10f(x);
++}

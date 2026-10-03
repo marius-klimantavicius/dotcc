@@ -97,6 +97,16 @@ int main(void) {
  setbuf(temporary,0);if(fputs("q",temporary)<0)return 34;rewind(temporary);
  if(fgetc(temporary)!='q' || fclose(temporary))return 35;
  void (*error_output)(const char*)=perror;if(!error_output)return 36;
+ volatile double logarithm_input=8.0;
+ if(__builtin_log2(logarithm_input)!=3.0 || log10f(100.0f)!=2.0f || logl(1.0L)!=0.0L)return 37;
+ /* Compare runtime addresses: original EDG C++ folds a direct comparison
+    of distinct source entities before either backend sees their addresses. */
+#define CHECK_LOG_ADDRESS(name,T) {T (*volatile ordinary)(T)=name; T (*volatile intrinsic)(T)=__builtin_##name; if(ordinary!=intrinsic)return 38;}
+ CHECK_LOG_ADDRESS(log,double);CHECK_LOG_ADDRESS(logf,float);CHECK_LOG_ADDRESS(logl,long double);
+ CHECK_LOG_ADDRESS(log2,double);CHECK_LOG_ADDRESS(log2f,float);CHECK_LOG_ADDRESS(log2l,long double);
+ CHECK_LOG_ADDRESS(log10,double);CHECK_LOG_ADDRESS(log10f,float);CHECK_LOG_ADDRESS(log10l,long double);
+#undef CHECK_LOG_ADDRESS
+ errno=0;if(log10l(0.0L)!=-HUGE_VALL || errno!=ERANGE)return 39;
  uselocale(previous);freelocale(locale);
  return 0;
 }
