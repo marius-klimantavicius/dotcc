@@ -1,10 +1,12 @@
 # Full implementation campaign
 
 This ledger tracks the user-authorized coordinator and implementation workers.
-The complete contract remains [the backend plan](dot-gen-be-plan.md). A passing
-increment is not completion of the plan. All verification inputs during the
-campaign are synthetic or EDG tests; real-world acceptance resumes only after
-all implementation gates are met. Preserve intermediates and per-run evidence.
+The broader design remains [the backend plan](dot-gen-be-plan.md). On
+2026-10-03 the user prioritized real-project translation and verification,
+starting with SQLite, and deferred exhaustive C++/libc++ coverage. Project
+failures now drive new implementation. A passing project is not completion of
+the broader plan. Preserve generated sources and diagnostic evidence; root may
+clean inactive compiled temporaries under the later explicit user authorization.
 
 ## Ownership and current work
 
@@ -35,7 +37,7 @@ files; generated overlays are refreshed only at integration boundaries.
 - [ ] Independent owner state, TLS/thread exit and disposal across every runtime subsystem.
 - [ ] Windows/Linux/macOS x64/Arm64 JIT and NativeAOT validation, runtime platform selection.
 - [ ] Efficiency/scalability measurements, reproducible manifests and final supported-feature audit.
-- [ ] Only after all above: real-world project translation and validation.
+- [ ] Current priority: SQLite translation, native transcript comparison, JIT/NativeAOT and owner isolation; remaining exhaustive gates are deferred.
 
 ## Verified milestones
 

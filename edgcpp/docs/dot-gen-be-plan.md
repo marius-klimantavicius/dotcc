@@ -1,16 +1,13 @@
 # Plan for the EDG C# backend dot_gen_be.c
 
-Status: implementation started 2026-10-01; continuous implementation campaign
-active. The latest committed snapshot passes 439 checks, including Linux-x64
-JIT/NativeAOT. Additional focused acceptance covers VLA lifetimes/alignment,
-allocation-free exception capture, uncaught counts, wide-character libc,
-atomic waits, clocks and lowered initializer details. See the
-[campaign ledger](implementation-campaign.md) for exact accepted scopes and the
-[implementation status and reproduction](../backend/README.md). Full milestone
-0/1 acceptance is still open. Source inspection uses EDG 7.0 at revision
-`89e67e07c7f6d0fc38622f9778d8e79f40deaa0f` and the current dotcc workspace.
-Updated with an emitter and generated Valkey review on 2026-10-01. The review
-inspected source and generated artifacts; it did not rerun Valkey's campaign.
+Status: on 2026-10-03 the user redirected work to real-project translation and
+verification, beginning with the pinned SQLite amalgamation. Implement concrete
+project blockers and defer exhaustive C++/libc++ coverage. The broader design
+below remains a backlog, not a prerequisite for project acceptance. The latest
+broad regression contains752 JIT checks; later focused JIT/NativeAOT milestones
+are indexed in the [campaign ledger](implementation-campaign.md). Neither these
+counts nor project acceptance imply complete standards coverage. Source
+inspection uses EDG7.0 revision `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`.
 
 Introduce **`src/dot_gen_be.c`**, compiled as C++ like EDG's other `.c` files,
 to emit C# that builds and runs under .NET and NativeAOT. Generated code may
@@ -848,11 +845,13 @@ NativeAOT publish size/time on increasing workloads.
 
 The full implementation campaign is now coordinated in
 [the persistent ledger](implementation-campaign.md), with disjoint worker
-ownership, serialized builds/commits and preserved per-run artifacts. During
-this campaign, use only synthetic sources and EDG tests for verification;
-real-world acceptance, including SQLite, is deferred until the entire plan is
-implemented. Preserve intermediate C/C#, IL, projects, compiler outputs and
-failure evidence. Commit each significant verified milestone.
+ownership and serialized builds/commits. The user now authorizes real-project
+acceptance before full implementation: start SQLite, retain exact source/profile
+hashes and native reference transcripts, and address failures incrementally.
+Exhaustive feature and libc++ work is deferred. Preserve generated sources, IL,
+projects, provenance, logs and failure evidence; user-authorized temporary cleanup
+may remove inactive compiled outputs under root coordination. Commit significant
+verified milestones.
 
 Prefer NativeMemory for short-lived storage and C/C++ heap allocation. Pinned
 arrays remain appropriate for globals and owner/thread TLS. Exception payload

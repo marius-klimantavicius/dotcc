@@ -2,8 +2,9 @@
 
 The provider is incomplete. `--libc musl` packages selected translated musl
 algorithms with the same BCL bridge used by `--libc dotcc`; it does not supply a
-whole native musl installation. The campaign goal remains full libc and C++
-coverage. This ledger tracks every C17 header category and major platform domain,
+whole native musl installation. The broader backlog remains full libc and C++
+coverage, but the user now prioritizes SQLite and subsequent real-project
+translation; implement their concrete blockers before exhaustive breadth. This ledger tracks every C17 header category and major platform domain,
 including facilities not yet needed by current libc++ probes.
 
 The machine-readable [inventory](libc-api-inventory.json) records exact runtime
