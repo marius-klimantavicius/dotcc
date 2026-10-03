@@ -79,7 +79,7 @@ private static void __edg_free_primary_exception(void* token) {
       "} catch(global::System.OutOfMemoryException error) {if(storage!=null)storage.Abandon(1);else {global::System.Runtime.InteropServices.NativeMemory.Free(raw);if(leased)__edg_release_exception_owner("+owner+");}global::System.Environment.FailFast(\"Unable to allocate primary exception\",error);throw;}\n}\n// dot-gen:member-end\n";
   helper_output+="// dot-gen:member-begin\nprivate static void* __edg_init_primary_exception(void* token,void* type,nint function) {\n"
       "var storage=__edg_exception_storage.FromAddress(token);long id=(byte*)type-__edg_type_token_base;\n"
-      "if(id>=0 && (id&7)==0)switch(id/8) {\n"+cases+"}\nglobal::System.Environment.FailFast(\"Unknown primary exception type_info\");return null;\n}\n// dot-gen:member-end\n";
+      "if(id>=0 && (id&7)==0)switch(id/8) {\n"+cases+"default: break;\n}\nglobal::System.Environment.FailFast(\"Unknown primary exception type_info\");return null;\n}\n// dot-gen:member-end\n";
 
 }
 string exception_ptr_call(a_routine_ptr r,an_expr_node_ptr args) {
@@ -108,7 +108,7 @@ string exception_ptr_call(a_routine_ptr r,an_expr_node_ptr args) {
     if(source=="__edg_cxx_uncaught_exceptions")return "__edg_uncaught_exceptions";
     if(source=="__cxa_current_primary_exception")return "__edg_current_primary_exception(null)";
     if(source=="__edg_cxx_get_terminate")return "("+type(skip_typerefs(r->type)->variant.routine.return_type)+")global::System.Threading.Interlocked.CompareExchange(ref __edg_terminate_handler,0,0)";
-    if(source=="__edg_cxx_terminate_default")return "global::System.Environment.FailFast(\"C++ default terminate\")";
+    if(source=="__edg_cxx_terminate_default")return "__edg_default_terminate()";
     return "__edg_terminate()";
   }
   if(source=="__cxa_init_primary_exception") {

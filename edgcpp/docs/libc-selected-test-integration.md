@@ -190,3 +190,18 @@ not duplicate its two source translation units.
 No additional managed callback binding exists: ordinary translated C owns the
 six function pointers and dispatch. See [libc-signals.md](libc-signals.md) for
 final evidence and the explicit asynchronous/POSIX/default-C++-terminate gates.
+
+## Default terminate and source abort
+
+`verify_libcxx_terminate_signals(ROOT, TESTS, out, nativeaot, run, acquisition)`
+adds native and original EDG C references plus static/instance JIT/NativeAOT
+checks (6 with AOT; each generated mode covers nine scenarios). It uses the
+existing pinned libc++ exception fixture adapter, not a whole-project test.
+
+`verify_libcxx_terminate_abort_boundary(ROOT, TESTS, out, nativeaot, run)` supplies
+three source-ABI rejections and four generated modes (7 with AOT). Its deliberately
+hostile abort provider tests foreign/longjmp/thread-exit containment before any
+cleanup and the zero-source-throw type switch. Existing terminate/boundaries
+verifiers remain unchanged and passed all 78 checks after this integration.
+
+Evidence and exact scope: [libc-terminate-signals.md](libc-terminate-signals.md).

@@ -1070,3 +1070,10 @@ Sixty focused checks include eleven native-matched traces across JIT/AOT,
 precise unsupported cleanup guards, prior provider cases and scoped parity
 (`evidence/milestone-coroutine-function-try.json`). Nontrivial cleanup regions
 and retained original-frontend source gates remain open.
+
+The default C++ terminate handler now calls an exact selected source abort
+provider, including SIGABRT handling. Custom-handler return/throw/recursion
+semantics and first-pass no-unwind boundaries remain intact. Ninety-one
+focused checks cover native/original-EDG references, direct and restored
+default pointers, hostile transfers, prior EH ordering and JIT/NativeAOT
+(`evidence/milestone-default-terminate-signals.json`).

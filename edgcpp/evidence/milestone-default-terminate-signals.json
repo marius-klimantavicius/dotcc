@@ -1,0 +1,27 @@
+{
+  "scope": "Default C++ terminate calls selected source abort/SIGABRT with first-pass fatal boundaries",
+  "checks": 91,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/libc-terminate-signals-20261003-061700/results.json",
+      "sha256": "fde71bafbb37369cbcb665a84f61a8b837b93b1ea1d088ed21bb247bbd5113c8"
+    },
+    {
+      "path": "artifacts/campaign/libc-terminate-abort-boundary-20261003-062000/results.json",
+      "sha256": "e8a67b0dfd14be8d32df9d4e4d1499bcf5031c00cbdf416294cd4e0e724e6d28"
+    },
+    {
+      "path": "artifacts/campaign/libc-terminate-regression-20261003-062000/results.json",
+      "sha256": "4dcee7983ef1476b30694784e73a0bb2c32acd69cca101a2c3c7ed808039d25f"
+    }
+  ],
+  "sources": {
+    "backend/dot_gen_terminate.h": "909c40aa0ec9ed98a2c2c897ef8517bf64c4b15afa3bef58204c152f82863851",
+    "backend/dot_gen_exception_ptr.h": "4fbea8a23015838c80c9b2691b12448fb862953b3c242a14a0e6827ddba30f74"
+  },
+  "limitations": [
+    "Synchronous signal profile only; no OS-delivered signals or POSIX masks",
+    "Signal-callback current_exception checks describe implementation behavior, not C++17 async-signal-safe conformance",
+    "Linux-x64 execution only"
+  ]
+}

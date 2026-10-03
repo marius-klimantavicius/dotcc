@@ -28,8 +28,8 @@ components can be newer than the last committed package milestone.
 | `time.h` | BCL realtime/monotonic clock_gettime, timespec_get, time, difftime; musl UTC/civil/local conversion, TZif/POSIX DST rules, mktime/timegm, asctime/ctime, narrow/wide strftime and explicit-locale forms, process CPU clock and strptime; full Gregorian-cycle/extreme-year and all8 generated modes | Local zones/DST and mktime normalization now have pinned TZif/POSIX-rule synthetic native/JIT/AOT evidence; custom unmappable OS defaults and broader leap/range/error contracts remain. |
 | `errno.h`, limits/integer/stddef | Portable normalized errno constants; pinned owner/thread errno; LP64 limits/types including least/fast | Broader conformance and architecture profiles. Portable values must be mapped at OS boundaries. |
 | `stdarg.h` | Aligned typed pack/cursor, va_copy/end, formatter integration | Continue ABI coverage for all admitted aggregate/extended types; no native platform va_list mixing. |
-| `assert.h` | Re-inclusion/NDEBUG/single evaluation; owner stderr diagnostics and uncatchable abort verified C/C++ static/instance JIT/AOT | SIGABRT handlers remain part of the separate signal provider. |
-| `signal.h`, `setjmp.h` | Compiler-assisted nonlocal transfer has focused evidence; no complete signal provider | Portable signals and broader nonlocal control-transfer contracts; see the current language plan for VLA restoration evidence. |
+| `assert.h` | Re-inclusion/NDEBUG/single evaluation; owner stderr diagnostics, source SIGABRT handlers and fatal abort verified C/C++ static/instance JIT/AOT | Broader platform execution coverage. |
+| `signal.h`, `setjmp.h` | Compiler-assisted nonlocal transfer; owner-specific synchronous signal/raise, source abort/assert and default C++ terminate integration with native/JIT/AOT proof | Asynchronous OS delivery and POSIX signal sets/masks/actions; broader nonlocal control-transfer contracts remain in the language plan. |
 | `stdatomic.h` | Public C11 generic APIs plus implicit qualified accesses, exact-width shared atomics, pointer scaling, aggregate/NaN CAS, contention, owner isolation and allocation checks under JIT/AOT | Broader architecture atomic_flag lock-free guarantees, native ABI interoperability and wider memory-model conformance. |
 | `threads.h` | Public worker APIs reuse owner-specific BCL service; result/exit/TSS/TLS, mutex/condition/once, native oracles, ABI13, JIT/AOT10 accepted; executable initial-thread join/exit, descendant lifetime and actual-last-thread status0 process finalization accepted10 | Foreign-host/managed Run thrd_exit and signal interruption remain explicit gates. Cancellation is not a C11 thread API. |
 | `stdalign.h`, `stdbool.h`, `stdnoreturn.h`, `iso646.h` | Pinned musl compatibility headers; bool, all alternative tokens, local/global alignment and noreturn pointer checks in native and all8 generated modes | Additional standards-version profiles beyond C11/C++17. |
@@ -119,3 +119,10 @@ algorithms plus two authored synchronous signal/assertion units were added.
 This combined milestone has37 focused checks (scaling9, replay1, signals19,
 shared packaging8). OS-delivered signals, POSIX masks and default C++ termination
 integration remain separate gates; see libc-signals.md and libc-math-scale.md.
+
+Default C++ terminate now reaches the selected source abort/SIGABRT handler,
+including direct/saved/restored default pointers and active-exception context.
+Ninety-one focused new/regression checks pass; forbidden foreign/nonlocal/thread
+transfers are fatal during first-pass filtering before cleanup. This closes the
+previous default-terminate signal integration gate, while asynchronous OS
+signals and POSIX masks/actions remain open. See libc-terminate-signals.md.

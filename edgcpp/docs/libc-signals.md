@@ -4,8 +4,9 @@ The authored `libc/signals` component implements source `signal`, `raise`,
 `abort` and `__assert_fail`. Its two C translation units contain the handler
 state and dispatch; no native libc or ambient managed signal registry is used.
 This is the synchronous part of the signal provider. External OS delivery,
-POSIX masks/actions and the default C++ terminate-to-abort connection remain
-required integration work.
+POSIX masks/actions remain required integration work. The default C++
+terminate-to-abort connection is now verified separately in
+[libc-terminate-signals.md](libc-terminate-signals.md).
 
 ## Representation and delivery
 
@@ -77,9 +78,9 @@ over its external fallback import.
   resumable C signal callbacks. Explicit source raise is a separate operation.
 * POSIX sigaction, signal sets/masks, blocked/pending delivery and process status
   encoding are not supplied by this profile.
-* The backend's current default C++ terminate path uses an internal FailFast.
-  Routing the standard default terminate handler through this owner-aware abort
-  path remains an EH integration requirement.
+* The backend's default C++ terminate path now reaches source abort, including
+  saved/restored default handler pointers. Intentional internal fatal guards
+  remain separate; see the 91-check integration evidence above.
 * Linux x64 JIT/NativeAOT evidence does not establish Windows/macOS execution.
 
 ## Provenance and verification

@@ -430,6 +430,10 @@ def main():
         checks.extend(verify_libcxx_atomic_protocol(ROOT, TESTS, suite_output("libcxx_atomic_protocol"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_counts_verify import verify_libcxx_exception_counts
         checks.extend(verify_libcxx_exception_counts(ROOT, TESTS, suite_output("libcxx_exception_counts"), args.nativeaot, run, args.libcxx_acquisition))
+        from libcxx_terminate_signals_verify import verify_libcxx_terminate_signals
+        checks.extend(verify_libcxx_terminate_signals(ROOT, TESTS, suite_output("libcxx_terminate_signals"), args.nativeaot, run, args.libcxx_acquisition))
+        from libcxx_terminate_abort_boundary_verify import verify_libcxx_terminate_abort_boundary
+        checks.extend(verify_libcxx_terminate_abort_boundary(ROOT, TESTS, suite_output("libcxx_terminate_abort_boundary"), args.nativeaot, run))
         from libcxx_terminate_verify import verify_libcxx_terminate
         checks.extend(verify_libcxx_terminate(ROOT, TESTS, suite_output("libcxx_terminate"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_terminate_boundaries_verify import verify_libcxx_terminate_boundaries
