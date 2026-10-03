@@ -3,7 +3,8 @@
 Status: after reviewing the SQLite output on 2026-10-03, the user paused
 implementation, made source correspondence a primary requirement, then
 explicitly resumed implementation with coordinated workers. The revised
-emitter is under execution and source-review validation. Earlier that day the user
+emitter now passes the bounded source-correspondence acceptance described below.
+Earlier that day the user
 redirected work to real-project translation and
 verification, beginning with the pinned SQLite amalgamation. Implement concrete
 project blockers and defer exhaustive C++/libc++ coverage. The broader design
@@ -89,7 +90,7 @@ This is an inspected reference, not implementation of the new EDG emitter.
 
 Source correspondence does not require one generated file per input file.
 Preserve existing `--split=none|function|size` and `--split-size` controls.
-Source-oriented grouping is an additional planned choice (`--split=source`),
+Source-oriented grouping is implemented as an additional choice (`--split=source`),
 useful for projects whose original file organization should remain visible.
 Amalgamations such as SQLite can continue to split into manageable C# files,
 at whole-function boundaries, with deterministic names and an index mapping
@@ -103,6 +104,18 @@ small reviewed output fixtures for names, bitfields, expressions and structured
 control flow, followed by side-by-side review of representative SQLite
 functions. Existing JIT/NativeAOT project passes establish behavior of the old
 emitter; they do not establish completion of this revised requirement.
+
+The revised compiler012 checkpoint passes22 fresh SQLite project checks: all six
+corpora match native/reference transcripts under JIT and NativeAOT, and both
+the direct original-name API consumer and independent-owner lifecycle consumer
+pass both runtimes. The945 frozen compiler/backend/driver/runtime/provider input
+hashes show no drift. Source names, representable enum types, named bitfields,
+ordinary expressions, structured legal control flow and all four split modes
+have focused acceptance; four final SQLite implementation bodies match the
+side-by-side reviewed output. See [the review](source-correspondence-review.md),
+`evidence/sqlite-source-correspondence-final.json` and the campaign ledger.
+This accepts the revised emission increment for supported inputs, not complete
+C++/library coverage or untested OS/architecture execution.
 
 ## Required outcomes
 

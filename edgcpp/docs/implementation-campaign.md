@@ -648,6 +648,23 @@ corpora and both named-API and lifecycle-owner consumers. Source/type evidence
 is `evidence/source-enum-components.json`; broader standards/platform gates are
 not closed by this source-correspondence work.
 
+Final frozen012 acceptance is complete: all six SQLite corpora pass native
+reference/JIT/NativeAOT comparisons (18 checks); direct original-name API and
+independent-owner lifecycle consumers each pass JIT/NativeAOT (four more).
+All945 implementation input hashes are unchanged across these22 project checks.
+The final naming14 and layout6 regression matrix also passes012. Four final
+SQLite implementation bodies match the manually reviewed010 bodies byte for
+byte; the reviewed source index points to final generated lines.
+
+Implementation milestones are `a00394edb` (names/structured expressions/storage),
+`9c15c35f3` (local names, arrays and comma loops), and `d84359051` (nominal enums).
+Final durable evidence is `evidence/sqlite-source-correspondence-final.json` and
+`evidence/source-type-final-regressions.json`. The bounded revised-emission
+increment is accepted for supported inputs. Broader language/library coverage,
+production OS VFS/shared SQLite engine concurrency and Windows/macOS/Arm64
+execution remain explicit backlog gates. The separately requested semantic-tree
+export investigation does not change this implementation or authorize migration.
+
 The complete pre-readability SQLite baseline contains20 unique project checks:
 core/API/VFS/vtable/allocation/FTS5 each match fresh native and checked-in
 transcripts under JIT and NativeAOT, and the two-owner consumer passes both

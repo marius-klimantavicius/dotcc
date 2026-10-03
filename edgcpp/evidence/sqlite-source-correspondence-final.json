@@ -1,0 +1,2641 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "implementationCommit": "d84359051",
+  "compilerBuild": "012",
+  "compiler": {
+    "path": "build/bin/cpfe-dot",
+    "sha256": "05a126e6d702e9743eff9b6226a2dbe201e086e8d146e212a34375ef53df44ca"
+  },
+  "project": "SQLite",
+  "checkCount": 22,
+  "platform": "Linux x64; .NET 10 JIT and NativeAOT",
+  "profile": "pinned feature definitions; deterministic test-only memory VFS; THREADSAFE=0",
+  "target": "portable-lp64-binary80-v2",
+  "libc": "musl",
+  "definitions": [
+    "SQLITE_OS_OTHER=1",
+    "SQLITE_THREADSAFE=0",
+    "SQLITE_TEMP_STORE=3",
+    "SQLITE_MAX_MMAP_SIZE=0",
+    "SQLITE_OMIT_LOAD_EXTENSION",
+    "SQLITE_ENABLE_FTS5",
+    "SQLITE_ENABLE_MATH_FUNCTIONS",
+    "SQLITE_ENABLE_PERCENTILE",
+    "SQLITE_ENABLE_COLUMN_METADATA",
+    "SQLITE_ENABLE_PREUPDATE_HOOK"
+  ],
+  "reducedDiagnosticProfile": false,
+  "inputVerification": {
+    "schema": 1,
+    "status": "passed",
+    "compilerBuild": "012",
+    "checkedFiles": 945,
+    "changedFiles": [],
+    "inventory": {
+      "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/campaign-inputs.json",
+      "sha256": "003226c4e3ea584afb91b5f4e37cc2a66cbf49b47dcc9912251f4509de1000ea"
+    }
+  },
+  "inputVerificationFile": {
+    "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/campaign-inputs-verification.json",
+    "sha256": "a251efd5e55a02207820a70c183e65085d863e168372efdc9da4a2e20d6e6406"
+  },
+  "originalInputs": [
+    {
+      "path": "sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+      "sha256": "b1dd5d74ec7f29055a6684fa06fb3c2f6821c87dd38f9a458dfd2e8a1db28189"
+    },
+    {
+      "path": "sqlite/ref/sqlite-amalgamation-3530400/sqlite3.h",
+      "sha256": "919e7f2e8ed1d8f56ac17b412b8971c76aa5d1a879752cc6058f75e7d5910e1d"
+    },
+    {
+      "path": "sqlite/tests/memory_vfs.c",
+      "sha256": "1641658e862f2da5d77fbbeff8e92b2b20770f92509bab818e668080fe6ed83f"
+    },
+    {
+      "path": "sqlite/tests/memory_vfs.h",
+      "sha256": "4a004e9b089b7325faec65e89dda99de060dd4a7175badb8a1f80130b8edc90c"
+    },
+    {
+      "path": "sqlite/tests/optional_features.h",
+      "sha256": "c308b6ec77d36abd96992b9abae6ae4d20e1c85bd2a09e8d4daaba6b0ab6c0f7"
+    },
+    {
+      "path": "sqlite/config/sources.json",
+      "sha256": "78bfaac9642c85bce440ab889b681ea4155c0a6b644df48e1d6f578a8599dfd3"
+    },
+    {
+      "path": "sqlite/config/defines.txt",
+      "sha256": "14f1f3498f7c4d89244db1d57ee746be539f56f068bf577c2f18912ed3093fb5"
+    },
+    {
+      "path": "sqlite/tests/probe.c",
+      "sha256": "0efc5c82d0e7ec52b89b13592b49cc04e537163c129cb1256ed8e939f5ce9093"
+    },
+    {
+      "path": "sqlite/tests/native-corpus.expected",
+      "sha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6"
+    },
+    {
+      "path": "sqlite/tests/api_native.c",
+      "sha256": "cd878af45465ab8eac2ced8072816c3ebb592f071d2e3a5ab2298e50a01745db"
+    },
+    {
+      "path": "sqlite/tests/native-api.expected",
+      "sha256": "46e5ac79406351d9192ed6156de685dbb94f486e72b2671784171c3aab4d76cc"
+    },
+    {
+      "path": "sqlite/tests/vfs_native.c",
+      "sha256": "803f0e46915225b5c7b83b287f5596af85682f20dc6e8fdd88489fce807d91e8"
+    },
+    {
+      "path": "sqlite/tests/native-vfs.expected",
+      "sha256": "bc51dc5f4d25480c84ff833cfaa952437efc4041be65402abd2607684fec6456"
+    },
+    {
+      "path": "sqlite/tests/vtable_native.c",
+      "sha256": "ed40f9df44625c30670c408a890b77d86a511f58b9e179758488d1400319eb8e"
+    },
+    {
+      "path": "sqlite/tests/native-vtable.expected",
+      "sha256": "25c26d223ce4ed6de1ecda12729b78c3e1d62f3aa7d4d464a875e36a405678fa"
+    },
+    {
+      "path": "sqlite/tests/allocation_native.c",
+      "sha256": "6c5b5235cfc0298567fdabb60bbcda2fc50e66f4fc6d87e644e7a89ac13c5a4b"
+    },
+    {
+      "path": "sqlite/tests/native-allocation.expected",
+      "sha256": "d9231e65da3709da44242717ce8655c53b9f8009a095c81643075262a0f73000"
+    },
+    {
+      "path": "sqlite/tests/fts5_native.c",
+      "sha256": "0ce3a91d1d508db4a39f8a3c8cbf628838f3775dd9f74450bdc59c75efcb089f"
+    },
+    {
+      "path": "sqlite/tests/native-fts5.expected",
+      "sha256": "f053f02f2eb68bd08ebfbd86381971ae4873efe5d3f8f7b60e0154c1c958f0ab"
+    }
+  ],
+  "components": [
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012",
+      "results": {
+        "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/results.json",
+        "sha256": "12e26d8ce57b5d2850499e2a8bff4e60b42c2c8f899240b80bdb1e39970843e0"
+      },
+      "checkCount": 18,
+      "checks": [
+        {
+          "label": "core-native-reference",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-jit-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-aot-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "api-native-reference",
+          "stdoutSha256": "46e5ac79406351d9192ed6156de685dbb94f486e72b2671784171c3aab4d76cc",
+          "bytes": 1101
+        },
+        {
+          "label": "api-jit-native-parity",
+          "stdoutSha256": "46e5ac79406351d9192ed6156de685dbb94f486e72b2671784171c3aab4d76cc",
+          "bytes": 1101
+        },
+        {
+          "label": "api-aot-native-parity",
+          "stdoutSha256": "46e5ac79406351d9192ed6156de685dbb94f486e72b2671784171c3aab4d76cc",
+          "bytes": 1101
+        },
+        {
+          "label": "vfs-native-reference",
+          "stdoutSha256": "bc51dc5f4d25480c84ff833cfaa952437efc4041be65402abd2607684fec6456",
+          "bytes": 114
+        },
+        {
+          "label": "vfs-jit-native-parity",
+          "stdoutSha256": "bc51dc5f4d25480c84ff833cfaa952437efc4041be65402abd2607684fec6456",
+          "bytes": 114
+        },
+        {
+          "label": "vfs-aot-native-parity",
+          "stdoutSha256": "bc51dc5f4d25480c84ff833cfaa952437efc4041be65402abd2607684fec6456",
+          "bytes": 114
+        },
+        {
+          "label": "vtable-native-reference",
+          "stdoutSha256": "25c26d223ce4ed6de1ecda12729b78c3e1d62f3aa7d4d464a875e36a405678fa",
+          "bytes": 115
+        },
+        {
+          "label": "vtable-jit-native-parity",
+          "stdoutSha256": "25c26d223ce4ed6de1ecda12729b78c3e1d62f3aa7d4d464a875e36a405678fa",
+          "bytes": 115
+        },
+        {
+          "label": "vtable-aot-native-parity",
+          "stdoutSha256": "25c26d223ce4ed6de1ecda12729b78c3e1d62f3aa7d4d464a875e36a405678fa",
+          "bytes": 115
+        },
+        {
+          "label": "allocation-native-reference",
+          "stdoutSha256": "d9231e65da3709da44242717ce8655c53b9f8009a095c81643075262a0f73000",
+          "bytes": 107
+        },
+        {
+          "label": "allocation-jit-native-parity",
+          "stdoutSha256": "d9231e65da3709da44242717ce8655c53b9f8009a095c81643075262a0f73000",
+          "bytes": 107
+        },
+        {
+          "label": "allocation-aot-native-parity",
+          "stdoutSha256": "d9231e65da3709da44242717ce8655c53b9f8009a095c81643075262a0f73000",
+          "bytes": 107
+        },
+        {
+          "label": "fts5-native-reference",
+          "stdoutSha256": "f053f02f2eb68bd08ebfbd86381971ae4873efe5d3f8f7b60e0154c1c958f0ab",
+          "bytes": 417
+        },
+        {
+          "label": "fts5-jit-native-parity",
+          "stdoutSha256": "f053f02f2eb68bd08ebfbd86381971ae4873efe5d3f8f7b60e0154c1c958f0ab",
+          "bytes": 417
+        },
+        {
+          "label": "fts5-aot-native-parity",
+          "stdoutSha256": "f053f02f2eb68bd08ebfbd86381971ae4873efe5d3f8f7b60e0154c1c958f0ab",
+          "bytes": 417
+        }
+      ],
+      "generatedFiles": [
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/EntryPoint.cs",
+          "sha256": "a5760ba0557c74c48fba48d0eb6867219e64b67ea7f5ae32a9f95ea46880a4f5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Generated.csproj",
+          "sha256": "2199dea67a75a70bbd26cce30186cf0c9882b463beae3dd8658167b11e92dc33"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.AtomicOps.cs",
+          "sha256": "041217230e58ffa9585ed1057e5ff8b0c7ac7075176a57b0e6913011a0957adb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.Float80.cs",
+          "sha256": "d140bb1b3aac9c85eb0bec9bb67ff06c6bf9a993298bde64ea5387866eaa8bf7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcAppend.cs",
+          "sha256": "e3b11596a2778f748dcc5ecbc0084acb824719118c998c1da9776528f1765492"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcC11Threads.cs",
+          "sha256": "7416d9d9f1ee3dfa741f1216ad8476949d0783f2f6bbedfc326fa7cea7767a08"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcCalendar.cs",
+          "sha256": "b42ffcd92d6fbaa27d08655abc7e022e68f7397d02af1b792e2ffd67d436443b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcCommand.cs",
+          "sha256": "cc096680ad5e9e67a740ad822c5a3c17177e72ef9a81fbed43b09cee23e7759d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcContext.cs",
+          "sha256": "d50a3f9906dfbd7a5f3e5d083cca038974f8f28c40759a6b1282eb4c83236502"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcEnvironment.cs",
+          "sha256": "ab48de147c1345d9a77273efef346e2ee20010f64f08e0f39401aff605e5670c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcErrorMessages.cs",
+          "sha256": "8f8bc6122350bd0f367a9aef09e2327e82c7c752ee41c9cfe9ba7ae1b08779e5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcFiles.cs",
+          "sha256": "06764c770e4727f470c33b994dc2e3d8ce7291e4751c9b70831c6b1ec726d9a6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcFilesAssert.cs",
+          "sha256": "9d9a1805d540ee82a6d11ddcdb752c7e9fa1f131af218a41197e9472af9ac087"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcFilesFormat.cs",
+          "sha256": "29808bd0fd3da199d280f6694a8fd2dbedd1b27f2191ced0e1bb196e1f632975"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcFilesManagement.cs",
+          "sha256": "cc50808e08f83978162b8a51a3cb3a3dd374f4dca78a4f7f106d7354e3230b7e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcFilesScan.cs",
+          "sha256": "18cde207bbdc9a094b6b3fe4af83c2a6655e172a242047e5bfce641f2a423e0c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcFilesSignalAssert.cs",
+          "sha256": "b92d714c66475e26f4906d3ae5e0a79cf411f49a55af9c372ef1901de8c23487"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcFilesWide.cs",
+          "sha256": "b574746eb10b079238df262ea570534847ee322ad8f36a22ca5804cdebfb0fa5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcFilesWideFormat.cs",
+          "sha256": "e7b2657ce847f48901ffe69c3a8a25e85285a10d86e1e56754a53f5e4abd1310"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcFilesWideScan.cs",
+          "sha256": "2338ec872badc6df59f60e24c94402d6de5b7899a666d20dad85ba7cfe30d217"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcFloat.cs",
+          "sha256": "954afa0cee860241004fa081cda1db38a62fcf8db7319a4ef490f089aa68d0e3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcInitialThread.cs",
+          "sha256": "ae8154a302e72cf70b1e192367f50af63b4a677c609bed59192cf5aaa10f4a21"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcLocale.cs",
+          "sha256": "3a10d99e9841e46dde934f9b78baef24fc801d1abfefaa1ed875246cbe2a5b28"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcLocaleEnvironment.cs",
+          "sha256": "24accff1e68d292674f0a535b133f79d1ebe3d0c67d681eb0aee802b46517230"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcMath.cs",
+          "sha256": "8c0e347b639d4a4b6c8467e25265d9a17c8d9a1d0434e79c68ef4798fc57db7f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcPaths.cs",
+          "sha256": "1c03a56bf2f357a5ab37531cf1d4984a5802d1cb5074877fdab2de8042cc3037"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcProcess.cs",
+          "sha256": "0173da39b6095ec3099ab30de0c650cf892a05252fe02035053704f7d9040f8c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcProcessExit.cs",
+          "sha256": "869be52f408f938ae56f81e98f54e7091e5571df3509697657b33645bfb03936"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcScanMath.cs",
+          "sha256": "7308e211f7be8c9fab6e481162a6e278b2da275844b8e925a42c2451112bc8ed"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcSignals.cs",
+          "sha256": "7fc5c25ed073d75bf09cad57983962c16678208093bf6c21cc8a3a9529203274"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcText.cs",
+          "sha256": "f10492858f80944b7f86230b6cf546e255e2074ce0eb9d8f2641c7b6c1bd4895"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcTimezone.cs",
+          "sha256": "85d120bd0edb0d827175b2787abc99dc9e8f479a87279553f6cbf7251c937308"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcTimezoneData.cs",
+          "sha256": "d26112bca1ae279f97437b9a219b37a0f5289bad8f703db446d7d8566c739e7d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.LibcxxThreads.cs",
+          "sha256": "8234019730fde73623c17458c9693bf4b61616dcd88ad8b9804c1f0518843a29"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Runtime.VaList.cs",
+          "sha256": "a0dd63e797fd1cdf6350ddd4ca863c3c8b985c21debcb808f9adb4d99477e256"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.cs",
+          "sha256": "16811b8a7c43f83ef54de23fbc8b5a9525bfc5e7fee76be76daa3405286d6911"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00000.cs",
+          "sha256": "f623070a74f8535a1154629ce765e86162043847a94a22e061b28cfca8b48e67"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00001.cs",
+          "sha256": "669516cd80025fede5a47dfb6a848ac9bda89db6ca7938be790f2a351bee23bd"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00002.cs",
+          "sha256": "ebacd06cab5cecccb5f49c2c45515122a0362e37f6b08846598902bf327e643f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00003.cs",
+          "sha256": "50e89adc87c39b5d454aceea1f1037094edfed335bdb442a586af58f124bb861"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00004.cs",
+          "sha256": "2a78f229294a4ebf8cadb54d079667889309f93288a0819015cfaa5c1beebd39"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00005.cs",
+          "sha256": "22faccd55351bfba137321ff6ca713dd86e4f5ec59786cdabb62e2bca63d585c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00006.cs",
+          "sha256": "53324fc3abe39b687addf086814b333b339286b32b62233c1ce198b4f283ea7a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00007.cs",
+          "sha256": "f32b5be44f04afad54031bafe735df6b45a309071722dc9cf9865eee6416a168"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00008.cs",
+          "sha256": "af3248721a684a265642df760941a0946defdaa17612c2022e2ffff0da685524"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00009.cs",
+          "sha256": "e9082d6eafe423426bdf86e2f417018925f83b3650535f3cd77b02b28a273e25"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00010.cs",
+          "sha256": "c243510ebcc82ba6f07e9f92ecf0e7261bbc95b11fc00dfe78032a78e92f4b0e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00011.cs",
+          "sha256": "a0c30c479460b5d8f0b8e270ce45b5b1709f69819c69b4811e5c25a111f50396"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00012.cs",
+          "sha256": "bd39dff970bf592bfaa7a42a35b9aa40478930a20b1c97e41661f48407b04670"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00013.cs",
+          "sha256": "917f97f1f898aa93c602bb252e615fb34275c5e668c349d783089190610130cb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00014.cs",
+          "sha256": "f112745c9c12d28f6bec23225992db49f1917aa517ef59e6bd6253ec87a81beb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00015.cs",
+          "sha256": "1b5ccf4c056a96048743e2667a00a85bc115d98ba080c543f787fed1f278fc04"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00016.cs",
+          "sha256": "9c8d90e38d4786d81b2d33e0c551e8f3f83c141f415a6e9d9f99230010d297b6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00017.cs",
+          "sha256": "a56c0483745f7fcf8a9da0264d104320711ef66e8348acdde49b8cf6a21a3608"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00018.cs",
+          "sha256": "cb28919460b616487cdb867fca9e8449c9efba5d7a7b24bfdb4714f056405025"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00019.cs",
+          "sha256": "d884947899a330103d29b430b131ed3a24798460c63926c2c558e8f0999a80dc"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00020.cs",
+          "sha256": "46c6666425f53a1b82ad1390d3e6a00604610d9c50456fd978773c17d04c334f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00021.cs",
+          "sha256": "993212019a2c6700176048c5f6db77f6ae03a62a86436dae334a2ace27287783"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00022.cs",
+          "sha256": "d6e0e95c7c1c461473093d271cd6eaefc822e03ddd2b8929cd23906ad68dffaf"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00023.cs",
+          "sha256": "c1a5e71339c1dea64e069bc58c315b7f0659cdec5f1eed97d643fddfdee2768d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00024.cs",
+          "sha256": "b82fd3c12510cd9c537001652fa58d0affd8458ef54279c4180635d62e9dbd37"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00025.cs",
+          "sha256": "4a8e8bec570e7189278801f78a6427af19ca92f0709ad89dd1c963add51c8cf3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00026.cs",
+          "sha256": "f718d3c10cb3b9c8ccec7342a2b338680ed97ce3f02e3511319cc4046f3593ba"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00027.cs",
+          "sha256": "70a972364fa75c5156d830b4e604f5bee0e0d348b38166c00ee95126afc751c2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00028.cs",
+          "sha256": "f28a6f50e77687a8056d746ae9c861c935424c1bf8ceb409215977d73a6cd047"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00029.cs",
+          "sha256": "229e70024fd8c9166a72ea15e4bcdc0afd5dbbb863fdb92338b5ed15a121bc85"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00030.cs",
+          "sha256": "742ce4c0cbf14c97110f57ffaa8cd4550ac36d322c0f1eed07ab01aa2cf9858e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/Translated.part00031.cs",
+          "sha256": "0c59ebc274178313de81145fe4c81d301f6ba71f981390da4145f2f61ecf13af"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/dot-gen.json",
+          "sha256": "70bdcb47389af48537a246988ca651a935dc8d9f81ae44d2d7db7be5d29628a5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/dot-gen.sources.json",
+          "sha256": "06e6acc83d2c5fc41c7703fc7eb1256cb3336e02aac80408dbcdb08f73ebdb58"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/allocation-managed/source-index.md",
+          "sha256": "3ae70f82bd35bb9de9791c70593ccdef7f2c83cacb227440907c96e6c412db19"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/EntryPoint.cs",
+          "sha256": "a5760ba0557c74c48fba48d0eb6867219e64b67ea7f5ae32a9f95ea46880a4f5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Generated.csproj",
+          "sha256": "84bf9bcd0f9b1f301d2802f41bac84354a029e65d27d53d47e65afb1967459fc"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.AtomicOps.cs",
+          "sha256": "041217230e58ffa9585ed1057e5ff8b0c7ac7075176a57b0e6913011a0957adb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.Float80.cs",
+          "sha256": "d140bb1b3aac9c85eb0bec9bb67ff06c6bf9a993298bde64ea5387866eaa8bf7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcAppend.cs",
+          "sha256": "e3b11596a2778f748dcc5ecbc0084acb824719118c998c1da9776528f1765492"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcC11Threads.cs",
+          "sha256": "7416d9d9f1ee3dfa741f1216ad8476949d0783f2f6bbedfc326fa7cea7767a08"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcCalendar.cs",
+          "sha256": "b42ffcd92d6fbaa27d08655abc7e022e68f7397d02af1b792e2ffd67d436443b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcCommand.cs",
+          "sha256": "cc096680ad5e9e67a740ad822c5a3c17177e72ef9a81fbed43b09cee23e7759d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcContext.cs",
+          "sha256": "d50a3f9906dfbd7a5f3e5d083cca038974f8f28c40759a6b1282eb4c83236502"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcEnvironment.cs",
+          "sha256": "ab48de147c1345d9a77273efef346e2ee20010f64f08e0f39401aff605e5670c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcErrorMessages.cs",
+          "sha256": "8f8bc6122350bd0f367a9aef09e2327e82c7c752ee41c9cfe9ba7ae1b08779e5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcFiles.cs",
+          "sha256": "06764c770e4727f470c33b994dc2e3d8ce7291e4751c9b70831c6b1ec726d9a6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcFilesAssert.cs",
+          "sha256": "9d9a1805d540ee82a6d11ddcdb752c7e9fa1f131af218a41197e9472af9ac087"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcFilesFormat.cs",
+          "sha256": "29808bd0fd3da199d280f6694a8fd2dbedd1b27f2191ced0e1bb196e1f632975"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcFilesManagement.cs",
+          "sha256": "cc50808e08f83978162b8a51a3cb3a3dd374f4dca78a4f7f106d7354e3230b7e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcFilesScan.cs",
+          "sha256": "18cde207bbdc9a094b6b3fe4af83c2a6655e172a242047e5bfce641f2a423e0c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcFilesSignalAssert.cs",
+          "sha256": "b92d714c66475e26f4906d3ae5e0a79cf411f49a55af9c372ef1901de8c23487"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcFilesWide.cs",
+          "sha256": "b574746eb10b079238df262ea570534847ee322ad8f36a22ca5804cdebfb0fa5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcFilesWideFormat.cs",
+          "sha256": "e7b2657ce847f48901ffe69c3a8a25e85285a10d86e1e56754a53f5e4abd1310"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcFilesWideScan.cs",
+          "sha256": "2338ec872badc6df59f60e24c94402d6de5b7899a666d20dad85ba7cfe30d217"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcFloat.cs",
+          "sha256": "954afa0cee860241004fa081cda1db38a62fcf8db7319a4ef490f089aa68d0e3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcInitialThread.cs",
+          "sha256": "ae8154a302e72cf70b1e192367f50af63b4a677c609bed59192cf5aaa10f4a21"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcLocale.cs",
+          "sha256": "3a10d99e9841e46dde934f9b78baef24fc801d1abfefaa1ed875246cbe2a5b28"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcLocaleEnvironment.cs",
+          "sha256": "24accff1e68d292674f0a535b133f79d1ebe3d0c67d681eb0aee802b46517230"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcMath.cs",
+          "sha256": "8c0e347b639d4a4b6c8467e25265d9a17c8d9a1d0434e79c68ef4798fc57db7f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcPaths.cs",
+          "sha256": "1c03a56bf2f357a5ab37531cf1d4984a5802d1cb5074877fdab2de8042cc3037"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcProcess.cs",
+          "sha256": "0173da39b6095ec3099ab30de0c650cf892a05252fe02035053704f7d9040f8c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcProcessExit.cs",
+          "sha256": "869be52f408f938ae56f81e98f54e7091e5571df3509697657b33645bfb03936"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcScanMath.cs",
+          "sha256": "7308e211f7be8c9fab6e481162a6e278b2da275844b8e925a42c2451112bc8ed"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcSignals.cs",
+          "sha256": "7fc5c25ed073d75bf09cad57983962c16678208093bf6c21cc8a3a9529203274"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcText.cs",
+          "sha256": "f10492858f80944b7f86230b6cf546e255e2074ce0eb9d8f2641c7b6c1bd4895"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcTimezone.cs",
+          "sha256": "85d120bd0edb0d827175b2787abc99dc9e8f479a87279553f6cbf7251c937308"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcTimezoneData.cs",
+          "sha256": "d26112bca1ae279f97437b9a219b37a0f5289bad8f703db446d7d8566c739e7d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.LibcxxThreads.cs",
+          "sha256": "8234019730fde73623c17458c9693bf4b61616dcd88ad8b9804c1f0518843a29"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Runtime.VaList.cs",
+          "sha256": "a0dd63e797fd1cdf6350ddd4ca863c3c8b985c21debcb808f9adb4d99477e256"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.cs",
+          "sha256": "a2222d20d50d6607500cadbd28ec93a739b9ad651c85e2bc8bb8f41da4bdb341"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00000.cs",
+          "sha256": "b0921b372ad503713a6f99197629832509f25ad849c04c1886d859c54cfc65c2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00001.cs",
+          "sha256": "b722397294894d239120115f073f682a8d574dac61c9b01fcafa996e7de95f0f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00002.cs",
+          "sha256": "3a4e30c4032f10066568aeb9a55b0ddc38611f81b96448d9eaafc1da2ae82c36"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00003.cs",
+          "sha256": "50e89adc87c39b5d454aceea1f1037094edfed335bdb442a586af58f124bb861"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00004.cs",
+          "sha256": "128fbbc3e7a3282efae7ac49e9de2b7ad30fd25f7cea820f210fe871aac78a54"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00005.cs",
+          "sha256": "18a6a02c7b171ec4e6e81c476e62448e980368a0f9ae87002035d7cbc0faafd7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00006.cs",
+          "sha256": "53324fc3abe39b687addf086814b333b339286b32b62233c1ce198b4f283ea7a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00007.cs",
+          "sha256": "7b8cd06709c575eacecb06aa78793e7a6171ce639112f0a37484333c00bfab61"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00008.cs",
+          "sha256": "ce509c82cfdf10ff74b76df40ecd747d8fbc19a3936299bd748850d2ccad743c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00009.cs",
+          "sha256": "65ca1ffc3d4fafdbb27b9576d985f5f33d08bfb2f8c9adc8bfdc238766d9f408"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00010.cs",
+          "sha256": "434014d0eb73668e55d8e9325770e87d8101a60a68b92e7d55158ff03bd4fac7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00011.cs",
+          "sha256": "188068a8c27db29b7d437415bd27a2698060001263637282fe73e45ce0bd49cd"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00012.cs",
+          "sha256": "a1169bf71c9db042634ef74dacd15eefb493869be3f2b54ec57adf72de9b1b1a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00013.cs",
+          "sha256": "917f97f1f898aa93c602bb252e615fb34275c5e668c349d783089190610130cb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00014.cs",
+          "sha256": "f112745c9c12d28f6bec23225992db49f1917aa517ef59e6bd6253ec87a81beb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00015.cs",
+          "sha256": "1b5ccf4c056a96048743e2667a00a85bc115d98ba080c543f787fed1f278fc04"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00016.cs",
+          "sha256": "9c8d90e38d4786d81b2d33e0c551e8f3f83c141f415a6e9d9f99230010d297b6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00017.cs",
+          "sha256": "6954f204b98bafcf7edfc4bb2a0fddd05cc06cdafaae1df36c65ba236419dda2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00018.cs",
+          "sha256": "a01eb9489d0af1b30d9c7a8d3a6be13111cc8b94a530a3ce5f7976611bcdf3a1"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00019.cs",
+          "sha256": "12721c6c8c8f1c1eff20c951391e2cff68e7702c13db894775a8da1bd28e682d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00020.cs",
+          "sha256": "51f8ce69fa77879da5d7246e27018e5e2c3717631453d9157a7761c91578ddf7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00021.cs",
+          "sha256": "993212019a2c6700176048c5f6db77f6ae03a62a86436dae334a2ace27287783"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00022.cs",
+          "sha256": "943e9d77fd64594741dd2b65541d082e1c936f97c08fdfcd2eadafe7ced012a1"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00023.cs",
+          "sha256": "7a1877bf60841a3eae37d6237349025a514eca8b54571738deb0f32cae09d090"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00024.cs",
+          "sha256": "c4ae883f680f980b26bc9c6794049b92c478cf09b2016e2cb8783010b5c78070"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00025.cs",
+          "sha256": "2578b7c1c9c75b4345dc1a8e62d3cb49a3e09b8958f6ca0eff17372071777269"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00026.cs",
+          "sha256": "f2a6c0a499148d7c382652a16a1d30873188cb1b4cafe0e11b0a386f774ac857"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00027.cs",
+          "sha256": "70557593dfe539996a908d5b614cce9f50133f46afb412c529c74952be292367"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00028.cs",
+          "sha256": "e38850977c8768bdf51774cd17ee5f2ca767be09f9cded167960b91cb59affca"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00029.cs",
+          "sha256": "2b0e59d0a6d2310e961f104bf05775b408fccb50e4c210cfd5417e27372e7150"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00030.cs",
+          "sha256": "e367e84a45386da9332e498a9fa614415ec45f60b16be46f7636c68efe6bb79a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00031.cs",
+          "sha256": "5280220bc97fa1988a5a8b0987f1fec84880f8c3357fec5d5270defc9112822b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/Translated.part00032.cs",
+          "sha256": "3c3db4c029f18e4e325e661b7889d12211205c319e4fca50816cc6b2a2829886"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/dot-gen.json",
+          "sha256": "b77d39e1c1a47511188be7c81e6a7d9ea282801c80022ae05099a7d5c37efc32"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/dot-gen.sources.json",
+          "sha256": "f78095997684b9d53f6f6f4e99497b30a15d55c0c7a107b4cd9d8521825b6991"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/api-managed/source-index.md",
+          "sha256": "174bd23c28aba7a6f268da9437d03115a8fdfcdd9cd412fb292362dbb8290896"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/EntryPoint.cs",
+          "sha256": "a5760ba0557c74c48fba48d0eb6867219e64b67ea7f5ae32a9f95ea46880a4f5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Generated.csproj",
+          "sha256": "2199dea67a75a70bbd26cce30186cf0c9882b463beae3dd8658167b11e92dc33"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.AtomicOps.cs",
+          "sha256": "041217230e58ffa9585ed1057e5ff8b0c7ac7075176a57b0e6913011a0957adb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.Float80.cs",
+          "sha256": "d140bb1b3aac9c85eb0bec9bb67ff06c6bf9a993298bde64ea5387866eaa8bf7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcAppend.cs",
+          "sha256": "e3b11596a2778f748dcc5ecbc0084acb824719118c998c1da9776528f1765492"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcC11Threads.cs",
+          "sha256": "7416d9d9f1ee3dfa741f1216ad8476949d0783f2f6bbedfc326fa7cea7767a08"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcCalendar.cs",
+          "sha256": "b42ffcd92d6fbaa27d08655abc7e022e68f7397d02af1b792e2ffd67d436443b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcCommand.cs",
+          "sha256": "cc096680ad5e9e67a740ad822c5a3c17177e72ef9a81fbed43b09cee23e7759d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcContext.cs",
+          "sha256": "d50a3f9906dfbd7a5f3e5d083cca038974f8f28c40759a6b1282eb4c83236502"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcEnvironment.cs",
+          "sha256": "ab48de147c1345d9a77273efef346e2ee20010f64f08e0f39401aff605e5670c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcErrorMessages.cs",
+          "sha256": "8f8bc6122350bd0f367a9aef09e2327e82c7c752ee41c9cfe9ba7ae1b08779e5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcFiles.cs",
+          "sha256": "06764c770e4727f470c33b994dc2e3d8ce7291e4751c9b70831c6b1ec726d9a6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcFilesAssert.cs",
+          "sha256": "9d9a1805d540ee82a6d11ddcdb752c7e9fa1f131af218a41197e9472af9ac087"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcFilesFormat.cs",
+          "sha256": "29808bd0fd3da199d280f6694a8fd2dbedd1b27f2191ced0e1bb196e1f632975"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcFilesManagement.cs",
+          "sha256": "cc50808e08f83978162b8a51a3cb3a3dd374f4dca78a4f7f106d7354e3230b7e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcFilesScan.cs",
+          "sha256": "18cde207bbdc9a094b6b3fe4af83c2a6655e172a242047e5bfce641f2a423e0c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcFilesSignalAssert.cs",
+          "sha256": "b92d714c66475e26f4906d3ae5e0a79cf411f49a55af9c372ef1901de8c23487"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcFilesWide.cs",
+          "sha256": "b574746eb10b079238df262ea570534847ee322ad8f36a22ca5804cdebfb0fa5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcFilesWideFormat.cs",
+          "sha256": "e7b2657ce847f48901ffe69c3a8a25e85285a10d86e1e56754a53f5e4abd1310"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcFilesWideScan.cs",
+          "sha256": "2338ec872badc6df59f60e24c94402d6de5b7899a666d20dad85ba7cfe30d217"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcFloat.cs",
+          "sha256": "954afa0cee860241004fa081cda1db38a62fcf8db7319a4ef490f089aa68d0e3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcInitialThread.cs",
+          "sha256": "ae8154a302e72cf70b1e192367f50af63b4a677c609bed59192cf5aaa10f4a21"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcLocale.cs",
+          "sha256": "3a10d99e9841e46dde934f9b78baef24fc801d1abfefaa1ed875246cbe2a5b28"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcLocaleEnvironment.cs",
+          "sha256": "24accff1e68d292674f0a535b133f79d1ebe3d0c67d681eb0aee802b46517230"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcMath.cs",
+          "sha256": "8c0e347b639d4a4b6c8467e25265d9a17c8d9a1d0434e79c68ef4798fc57db7f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcPaths.cs",
+          "sha256": "1c03a56bf2f357a5ab37531cf1d4984a5802d1cb5074877fdab2de8042cc3037"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcProcess.cs",
+          "sha256": "0173da39b6095ec3099ab30de0c650cf892a05252fe02035053704f7d9040f8c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcProcessExit.cs",
+          "sha256": "869be52f408f938ae56f81e98f54e7091e5571df3509697657b33645bfb03936"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcScanMath.cs",
+          "sha256": "7308e211f7be8c9fab6e481162a6e278b2da275844b8e925a42c2451112bc8ed"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcSignals.cs",
+          "sha256": "7fc5c25ed073d75bf09cad57983962c16678208093bf6c21cc8a3a9529203274"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcText.cs",
+          "sha256": "f10492858f80944b7f86230b6cf546e255e2074ce0eb9d8f2641c7b6c1bd4895"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcTimezone.cs",
+          "sha256": "85d120bd0edb0d827175b2787abc99dc9e8f479a87279553f6cbf7251c937308"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcTimezoneData.cs",
+          "sha256": "d26112bca1ae279f97437b9a219b37a0f5289bad8f703db446d7d8566c739e7d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.LibcxxThreads.cs",
+          "sha256": "8234019730fde73623c17458c9693bf4b61616dcd88ad8b9804c1f0518843a29"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Runtime.VaList.cs",
+          "sha256": "a0dd63e797fd1cdf6350ddd4ca863c3c8b985c21debcb808f9adb4d99477e256"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.cs",
+          "sha256": "f6fe67ee446bcca85034984364bf8bed06b58c97725d3bd15b8b7ab2bc637331"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00000.cs",
+          "sha256": "353d396257f1c981009a8e3f153713cbdfcdcaf7e00e357ac537a6f79bb4236d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00001.cs",
+          "sha256": "12c95a820692c40a94f75493f281fa7e50be46fd5a22b2dbac24dbc0b89b3222"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00002.cs",
+          "sha256": "23c51666ef16565d133b842b6df48b94dc7946177d0f9133f8d6d69975d2dec6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00003.cs",
+          "sha256": "f87f98e0a3aa40da4b9aa1475395f5fb860dbacb2c7000b466a4a2722c86c4fa"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00004.cs",
+          "sha256": "4ff66d584078c2a368826d8cec88058e199af2e16c218057aced1654aa99063f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00005.cs",
+          "sha256": "ebfd1e1542f0f1195aa50cb0c6a7ed0cc4badf766bc5e620c794559d28f6a6a1"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00006.cs",
+          "sha256": "47a966c024e7632b2492cc7f265abdb046c4423af20b333b0f68911a574030be"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00007.cs",
+          "sha256": "84869a4fca95cc5621fbc2d5d4f9ecacf086caecbe4081cb05cd05a45f084150"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00008.cs",
+          "sha256": "28e6bf01e99820e5e9589b2b9f59b2a4c2a3cb6055ae2526190ec2ac0bb135c6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00009.cs",
+          "sha256": "cfe622d9416062418c9b782f3c2b57aa05da10ac2e2f70e0af10a970443567cc"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00010.cs",
+          "sha256": "eb0d0d031dd994e8998a0ef555e36a77aa6af64ab71dfd0050c448a24ecbdd67"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00011.cs",
+          "sha256": "599209397ee6773966b05ba4b3d09da2c3069dffddd1a287361ad8ed533683de"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00012.cs",
+          "sha256": "d1b0db5ebdf4685df440a5f5674ce3878aeedbb52066336e0a8661ec1f5f090c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00013.cs",
+          "sha256": "470c296a2320d556379f8e5f28d672a39ac325757872ad6c7f90161fc7cd4de8"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00014.cs",
+          "sha256": "b4857b83d58234874560ae7d672eec4a49f516e55733520770660cc7bb6bb5e2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00015.cs",
+          "sha256": "b4e13bfaf94673d0ed34222ce1273a844c551317284995dc2d6f2ed0421d966c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00016.cs",
+          "sha256": "046361523bb4fddb0892d44740614f5414a2f1f6b3901316be8bd53a58158546"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00017.cs",
+          "sha256": "67ad70ed5b947082cab61af40a7ba1f569729e40c44c5559323f5517831ce925"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00018.cs",
+          "sha256": "2ac63756da6f4ebe41abc03f767886226e8780a7544c0c8ab5e038ce1b1e58ec"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00019.cs",
+          "sha256": "002eab0e188461545f5b5c312f12634bc07f809ab2e2c139e621061bdb6f6771"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00020.cs",
+          "sha256": "7ebdaafdc9ff90b6fb8d4a4c6270b2e7fa2cdca7e460520e6c6308f6e57b4a15"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00021.cs",
+          "sha256": "280b832aa63885456f9b501cae7df9bc80d54205a175f9164fa32275c615e0af"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00022.cs",
+          "sha256": "64d74c3ddfa9828e68a25b8921b2bc4296137aec0ec2cfa685e9e96ce2de31da"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00023.cs",
+          "sha256": "47088b01f5413723f67ad6d718030c856046ea70afaf37b96af12fde876e77da"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00024.cs",
+          "sha256": "16d8dca77caa013fe16d6291101bc1eeb18b1b5be3dc2c01cfaf0fc26e808614"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00025.cs",
+          "sha256": "2611316c1ca52dfbba85c577eec4a2504f3ea18dd4b47e6b86bed2e5cc4a79bc"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00026.cs",
+          "sha256": "a4281561f0b33cd6573fdc6e7ec64fb1290febcafa457659b33d514c51e0f9bd"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00027.cs",
+          "sha256": "6fb16c0e9ba00c2199359994dfad3b9974e1d4b83741c6801db28f689a355565"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00028.cs",
+          "sha256": "8c691990e74e8e06807772bec43416d2ef4c8cc77a5f372e5af642efd3b36585"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00029.cs",
+          "sha256": "38886f263e552265ae00498076d6b935430291e7982fca62cd2f23965973886f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00030.cs",
+          "sha256": "b2655d1d656d9b2e4dae0921dc4a206fe92310f22ad76722d87abbbcae4760bb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/Translated.part00031.cs",
+          "sha256": "dffb2bfd6660c50a68f1c97a46732a75b867854320e8d7718d841fd04bdd46b8"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/dot-gen.json",
+          "sha256": "7551af5a4b884848f915a028c924f2ab8c7d85e00c97f08dd850740817aa5c13"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/dot-gen.sources.json",
+          "sha256": "85e76eab7c12b9e808387a9e863b14cd142f0c02ab91917fb88ddf6b92ec6b9c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/core-managed/source-index.md",
+          "sha256": "055d7d5589c508c93cc078946ae2ab28858aed7c6113a1c40ef0f245279f7089"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/EntryPoint.cs",
+          "sha256": "a5760ba0557c74c48fba48d0eb6867219e64b67ea7f5ae32a9f95ea46880a4f5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Generated.csproj",
+          "sha256": "84bf9bcd0f9b1f301d2802f41bac84354a029e65d27d53d47e65afb1967459fc"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.AtomicOps.cs",
+          "sha256": "041217230e58ffa9585ed1057e5ff8b0c7ac7075176a57b0e6913011a0957adb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.Float80.cs",
+          "sha256": "d140bb1b3aac9c85eb0bec9bb67ff06c6bf9a993298bde64ea5387866eaa8bf7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcAppend.cs",
+          "sha256": "e3b11596a2778f748dcc5ecbc0084acb824719118c998c1da9776528f1765492"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcC11Threads.cs",
+          "sha256": "7416d9d9f1ee3dfa741f1216ad8476949d0783f2f6bbedfc326fa7cea7767a08"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcCalendar.cs",
+          "sha256": "b42ffcd92d6fbaa27d08655abc7e022e68f7397d02af1b792e2ffd67d436443b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcCommand.cs",
+          "sha256": "cc096680ad5e9e67a740ad822c5a3c17177e72ef9a81fbed43b09cee23e7759d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcContext.cs",
+          "sha256": "d50a3f9906dfbd7a5f3e5d083cca038974f8f28c40759a6b1282eb4c83236502"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcEnvironment.cs",
+          "sha256": "ab48de147c1345d9a77273efef346e2ee20010f64f08e0f39401aff605e5670c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcErrorMessages.cs",
+          "sha256": "8f8bc6122350bd0f367a9aef09e2327e82c7c752ee41c9cfe9ba7ae1b08779e5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcFiles.cs",
+          "sha256": "06764c770e4727f470c33b994dc2e3d8ce7291e4751c9b70831c6b1ec726d9a6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcFilesAssert.cs",
+          "sha256": "9d9a1805d540ee82a6d11ddcdb752c7e9fa1f131af218a41197e9472af9ac087"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcFilesFormat.cs",
+          "sha256": "29808bd0fd3da199d280f6694a8fd2dbedd1b27f2191ced0e1bb196e1f632975"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcFilesManagement.cs",
+          "sha256": "cc50808e08f83978162b8a51a3cb3a3dd374f4dca78a4f7f106d7354e3230b7e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcFilesScan.cs",
+          "sha256": "18cde207bbdc9a094b6b3fe4af83c2a6655e172a242047e5bfce641f2a423e0c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcFilesSignalAssert.cs",
+          "sha256": "b92d714c66475e26f4906d3ae5e0a79cf411f49a55af9c372ef1901de8c23487"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcFilesWide.cs",
+          "sha256": "b574746eb10b079238df262ea570534847ee322ad8f36a22ca5804cdebfb0fa5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcFilesWideFormat.cs",
+          "sha256": "e7b2657ce847f48901ffe69c3a8a25e85285a10d86e1e56754a53f5e4abd1310"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcFilesWideScan.cs",
+          "sha256": "2338ec872badc6df59f60e24c94402d6de5b7899a666d20dad85ba7cfe30d217"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcFloat.cs",
+          "sha256": "954afa0cee860241004fa081cda1db38a62fcf8db7319a4ef490f089aa68d0e3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcInitialThread.cs",
+          "sha256": "ae8154a302e72cf70b1e192367f50af63b4a677c609bed59192cf5aaa10f4a21"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcLocale.cs",
+          "sha256": "3a10d99e9841e46dde934f9b78baef24fc801d1abfefaa1ed875246cbe2a5b28"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcLocaleEnvironment.cs",
+          "sha256": "24accff1e68d292674f0a535b133f79d1ebe3d0c67d681eb0aee802b46517230"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcMath.cs",
+          "sha256": "8c0e347b639d4a4b6c8467e25265d9a17c8d9a1d0434e79c68ef4798fc57db7f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcPaths.cs",
+          "sha256": "1c03a56bf2f357a5ab37531cf1d4984a5802d1cb5074877fdab2de8042cc3037"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcProcess.cs",
+          "sha256": "0173da39b6095ec3099ab30de0c650cf892a05252fe02035053704f7d9040f8c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcProcessExit.cs",
+          "sha256": "869be52f408f938ae56f81e98f54e7091e5571df3509697657b33645bfb03936"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcScanMath.cs",
+          "sha256": "7308e211f7be8c9fab6e481162a6e278b2da275844b8e925a42c2451112bc8ed"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcSignals.cs",
+          "sha256": "7fc5c25ed073d75bf09cad57983962c16678208093bf6c21cc8a3a9529203274"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcText.cs",
+          "sha256": "f10492858f80944b7f86230b6cf546e255e2074ce0eb9d8f2641c7b6c1bd4895"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcTimezone.cs",
+          "sha256": "85d120bd0edb0d827175b2787abc99dc9e8f479a87279553f6cbf7251c937308"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcTimezoneData.cs",
+          "sha256": "d26112bca1ae279f97437b9a219b37a0f5289bad8f703db446d7d8566c739e7d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.LibcxxThreads.cs",
+          "sha256": "8234019730fde73623c17458c9693bf4b61616dcd88ad8b9804c1f0518843a29"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Runtime.VaList.cs",
+          "sha256": "a0dd63e797fd1cdf6350ddd4ca863c3c8b985c21debcb808f9adb4d99477e256"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.cs",
+          "sha256": "bb2f0aee24e2764c210e49ebca3ce593ca69438fcef7fc091c1937d0a7f5abf6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00000.cs",
+          "sha256": "b0921b372ad503713a6f99197629832509f25ad849c04c1886d859c54cfc65c2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00001.cs",
+          "sha256": "b722397294894d239120115f073f682a8d574dac61c9b01fcafa996e7de95f0f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00002.cs",
+          "sha256": "3a4e30c4032f10066568aeb9a55b0ddc38611f81b96448d9eaafc1da2ae82c36"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00003.cs",
+          "sha256": "50e89adc87c39b5d454aceea1f1037094edfed335bdb442a586af58f124bb861"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00004.cs",
+          "sha256": "128fbbc3e7a3282efae7ac49e9de2b7ad30fd25f7cea820f210fe871aac78a54"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00005.cs",
+          "sha256": "18a6a02c7b171ec4e6e81c476e62448e980368a0f9ae87002035d7cbc0faafd7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00006.cs",
+          "sha256": "53324fc3abe39b687addf086814b333b339286b32b62233c1ce198b4f283ea7a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00007.cs",
+          "sha256": "7b8cd06709c575eacecb06aa78793e7a6171ce639112f0a37484333c00bfab61"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00008.cs",
+          "sha256": "ce509c82cfdf10ff74b76df40ecd747d8fbc19a3936299bd748850d2ccad743c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00009.cs",
+          "sha256": "65ca1ffc3d4fafdbb27b9576d985f5f33d08bfb2f8c9adc8bfdc238766d9f408"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00010.cs",
+          "sha256": "434014d0eb73668e55d8e9325770e87d8101a60a68b92e7d55158ff03bd4fac7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00011.cs",
+          "sha256": "188068a8c27db29b7d437415bd27a2698060001263637282fe73e45ce0bd49cd"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00012.cs",
+          "sha256": "a1169bf71c9db042634ef74dacd15eefb493869be3f2b54ec57adf72de9b1b1a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00013.cs",
+          "sha256": "917f97f1f898aa93c602bb252e615fb34275c5e668c349d783089190610130cb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00014.cs",
+          "sha256": "f112745c9c12d28f6bec23225992db49f1917aa517ef59e6bd6253ec87a81beb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00015.cs",
+          "sha256": "1b5ccf4c056a96048743e2667a00a85bc115d98ba080c543f787fed1f278fc04"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00016.cs",
+          "sha256": "9c8d90e38d4786d81b2d33e0c551e8f3f83c141f415a6e9d9f99230010d297b6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00017.cs",
+          "sha256": "6954f204b98bafcf7edfc4bb2a0fddd05cc06cdafaae1df36c65ba236419dda2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00018.cs",
+          "sha256": "a01eb9489d0af1b30d9c7a8d3a6be13111cc8b94a530a3ce5f7976611bcdf3a1"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00019.cs",
+          "sha256": "12721c6c8c8f1c1eff20c951391e2cff68e7702c13db894775a8da1bd28e682d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00020.cs",
+          "sha256": "51f8ce69fa77879da5d7246e27018e5e2c3717631453d9157a7761c91578ddf7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00021.cs",
+          "sha256": "993212019a2c6700176048c5f6db77f6ae03a62a86436dae334a2ace27287783"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00022.cs",
+          "sha256": "943e9d77fd64594741dd2b65541d082e1c936f97c08fdfcd2eadafe7ced012a1"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00023.cs",
+          "sha256": "7a1877bf60841a3eae37d6237349025a514eca8b54571738deb0f32cae09d090"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00024.cs",
+          "sha256": "b6a74a716dd81ba89ccddc7339a30dc4529c4173fc1471264abfffb822c6b0f5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00025.cs",
+          "sha256": "f4c0c0374357c1f5e1db3958d56eed07b7c7d7798a3f0ce7d21e0c4597ce548b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00026.cs",
+          "sha256": "60cd4604d113f1099e9c70cdf9d9f990322cdbb5c3bb04b5dd706da8bfaafe05"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00027.cs",
+          "sha256": "df9f919f50b3cd94dbe5619e1f5b49c33ef3483e1d15a5ac42c1a6fd6f98dfab"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00028.cs",
+          "sha256": "3fb4efed3a5b7ac3080d957f9b4fd326ab7d8993a4110cedb26d31185bf2a974"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00029.cs",
+          "sha256": "55e7fbcde2ba369f08cc8d69a2f66610b348c983e5b1ae485963dc0520e08ee6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00030.cs",
+          "sha256": "6a944b601102bffb8c2e6d2ddb8d1ae64bbdab1f640a23abc43c2b33003b34b8"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00031.cs",
+          "sha256": "5ac4065db67084561f46365d035b25295f7938d7fa322ca3880a2a00c15c4330"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/Translated.part00032.cs",
+          "sha256": "3d7cffc6550b9a31692bbf964116cc99ac8bf868aaaf571f6064b5660442731b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/dot-gen.json",
+          "sha256": "30ff08f2e219f0264c1f0dce569f8ef539b2239336f8b5f2d451d012adeab85c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/dot-gen.sources.json",
+          "sha256": "3a3fe806910de80a3545f2e7a73c4356072c7f2a8c96edef7c856c4928ce0a70"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/fts5-managed/source-index.md",
+          "sha256": "c190f5565d58f8270053d51ed8ae9a4eef1ab227c582d9134b4a94c5799e0bf9"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/EntryPoint.cs",
+          "sha256": "a5760ba0557c74c48fba48d0eb6867219e64b67ea7f5ae32a9f95ea46880a4f5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Generated.csproj",
+          "sha256": "84bf9bcd0f9b1f301d2802f41bac84354a029e65d27d53d47e65afb1967459fc"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.AtomicOps.cs",
+          "sha256": "041217230e58ffa9585ed1057e5ff8b0c7ac7075176a57b0e6913011a0957adb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.Float80.cs",
+          "sha256": "d140bb1b3aac9c85eb0bec9bb67ff06c6bf9a993298bde64ea5387866eaa8bf7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcAppend.cs",
+          "sha256": "e3b11596a2778f748dcc5ecbc0084acb824719118c998c1da9776528f1765492"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcC11Threads.cs",
+          "sha256": "7416d9d9f1ee3dfa741f1216ad8476949d0783f2f6bbedfc326fa7cea7767a08"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcCalendar.cs",
+          "sha256": "b42ffcd92d6fbaa27d08655abc7e022e68f7397d02af1b792e2ffd67d436443b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcCommand.cs",
+          "sha256": "cc096680ad5e9e67a740ad822c5a3c17177e72ef9a81fbed43b09cee23e7759d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcContext.cs",
+          "sha256": "d50a3f9906dfbd7a5f3e5d083cca038974f8f28c40759a6b1282eb4c83236502"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcEnvironment.cs",
+          "sha256": "ab48de147c1345d9a77273efef346e2ee20010f64f08e0f39401aff605e5670c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcErrorMessages.cs",
+          "sha256": "8f8bc6122350bd0f367a9aef09e2327e82c7c752ee41c9cfe9ba7ae1b08779e5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcFiles.cs",
+          "sha256": "06764c770e4727f470c33b994dc2e3d8ce7291e4751c9b70831c6b1ec726d9a6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcFilesAssert.cs",
+          "sha256": "9d9a1805d540ee82a6d11ddcdb752c7e9fa1f131af218a41197e9472af9ac087"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcFilesFormat.cs",
+          "sha256": "29808bd0fd3da199d280f6694a8fd2dbedd1b27f2191ced0e1bb196e1f632975"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcFilesManagement.cs",
+          "sha256": "cc50808e08f83978162b8a51a3cb3a3dd374f4dca78a4f7f106d7354e3230b7e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcFilesScan.cs",
+          "sha256": "18cde207bbdc9a094b6b3fe4af83c2a6655e172a242047e5bfce641f2a423e0c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcFilesSignalAssert.cs",
+          "sha256": "b92d714c66475e26f4906d3ae5e0a79cf411f49a55af9c372ef1901de8c23487"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcFilesWide.cs",
+          "sha256": "b574746eb10b079238df262ea570534847ee322ad8f36a22ca5804cdebfb0fa5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcFilesWideFormat.cs",
+          "sha256": "e7b2657ce847f48901ffe69c3a8a25e85285a10d86e1e56754a53f5e4abd1310"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcFilesWideScan.cs",
+          "sha256": "2338ec872badc6df59f60e24c94402d6de5b7899a666d20dad85ba7cfe30d217"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcFloat.cs",
+          "sha256": "954afa0cee860241004fa081cda1db38a62fcf8db7319a4ef490f089aa68d0e3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcInitialThread.cs",
+          "sha256": "ae8154a302e72cf70b1e192367f50af63b4a677c609bed59192cf5aaa10f4a21"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcLocale.cs",
+          "sha256": "3a10d99e9841e46dde934f9b78baef24fc801d1abfefaa1ed875246cbe2a5b28"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcLocaleEnvironment.cs",
+          "sha256": "24accff1e68d292674f0a535b133f79d1ebe3d0c67d681eb0aee802b46517230"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcMath.cs",
+          "sha256": "8c0e347b639d4a4b6c8467e25265d9a17c8d9a1d0434e79c68ef4798fc57db7f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcPaths.cs",
+          "sha256": "1c03a56bf2f357a5ab37531cf1d4984a5802d1cb5074877fdab2de8042cc3037"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcProcess.cs",
+          "sha256": "0173da39b6095ec3099ab30de0c650cf892a05252fe02035053704f7d9040f8c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcProcessExit.cs",
+          "sha256": "869be52f408f938ae56f81e98f54e7091e5571df3509697657b33645bfb03936"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcScanMath.cs",
+          "sha256": "7308e211f7be8c9fab6e481162a6e278b2da275844b8e925a42c2451112bc8ed"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcSignals.cs",
+          "sha256": "7fc5c25ed073d75bf09cad57983962c16678208093bf6c21cc8a3a9529203274"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcText.cs",
+          "sha256": "f10492858f80944b7f86230b6cf546e255e2074ce0eb9d8f2641c7b6c1bd4895"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcTimezone.cs",
+          "sha256": "85d120bd0edb0d827175b2787abc99dc9e8f479a87279553f6cbf7251c937308"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcTimezoneData.cs",
+          "sha256": "d26112bca1ae279f97437b9a219b37a0f5289bad8f703db446d7d8566c739e7d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.LibcxxThreads.cs",
+          "sha256": "8234019730fde73623c17458c9693bf4b61616dcd88ad8b9804c1f0518843a29"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Runtime.VaList.cs",
+          "sha256": "a0dd63e797fd1cdf6350ddd4ca863c3c8b985c21debcb808f9adb4d99477e256"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.cs",
+          "sha256": "0b56c8796163c26f34438dac1e6ac60742ee88a1589686deb01e6ba3ac47b62c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00000.cs",
+          "sha256": "bd6933861064a397d5cdf923092648d6432d8f2351d3484f5cd241209a80834c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00001.cs",
+          "sha256": "94e077c9c076f29f2a66491123121a97bbb14c0cf76efe7f53ed5b8379738d7f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00002.cs",
+          "sha256": "333079b2050de7583454a96a17f6f62094ed70bc323cb8f74ff7da71153e3c73"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00003.cs",
+          "sha256": "50e89adc87c39b5d454aceea1f1037094edfed335bdb442a586af58f124bb861"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00004.cs",
+          "sha256": "bfdf89e2f7c6a1e2d3c752df887f8fa0956fba4847a4ad890e6584a67b229724"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00005.cs",
+          "sha256": "fef2ce781979d06b875fc80778f2c266c7f8155952273a219493107896011f93"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00006.cs",
+          "sha256": "53324fc3abe39b687addf086814b333b339286b32b62233c1ce198b4f283ea7a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00007.cs",
+          "sha256": "759a65f187b819b9062db7bb8fad024d515ba3650d1a880e13abacabf6e3b958"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00008.cs",
+          "sha256": "66adaa659717fcf106a7f5516b029e18d5441d00b1fa4c0b2c34ee279249d217"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00009.cs",
+          "sha256": "5809f43969beb1fd64e8d88b52c107e47f9858ec078aba5088cf212d2ee1d4d7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00010.cs",
+          "sha256": "db76e240f8c294fedd97ba68b0cb500be41ba1762ca77413c8cadd0dbef333bb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00011.cs",
+          "sha256": "c5d18e451d967834e47c460ec7607e499e17614def7d9f5dd0ec094afd199c4f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00012.cs",
+          "sha256": "f73a9e4a53e380460ec93efbb845f1cda40d39b22b1e7e3c6c7299992a565e0e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00013.cs",
+          "sha256": "917f97f1f898aa93c602bb252e615fb34275c5e668c349d783089190610130cb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00014.cs",
+          "sha256": "f112745c9c12d28f6bec23225992db49f1917aa517ef59e6bd6253ec87a81beb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00015.cs",
+          "sha256": "1b5ccf4c056a96048743e2667a00a85bc115d98ba080c543f787fed1f278fc04"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00016.cs",
+          "sha256": "9c8d90e38d4786d81b2d33e0c551e8f3f83c141f415a6e9d9f99230010d297b6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00017.cs",
+          "sha256": "44b8ccb96d10eb8d519ff70eca6bee0cf9484c1ac90473eaf44e837b3a0cecb4"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00018.cs",
+          "sha256": "572195b65773baa284822e2a49dae6c0e01a989075c39a0ac592f9c1961de23c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00019.cs",
+          "sha256": "91fcc4757bfd7d2f8bcac23427f15b1515fa5249f1797c8faeb65ec33c26d25a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00020.cs",
+          "sha256": "9132f2c64b96962e02d97257b212b7c30e0444379d4e5eae0b26b9afae93ab18"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00021.cs",
+          "sha256": "993212019a2c6700176048c5f6db77f6ae03a62a86436dae334a2ace27287783"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00022.cs",
+          "sha256": "3ba75d84dece9dcf693db58727ae9139a3bb1797e077f5c7ee9a9d3c59c583c9"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00023.cs",
+          "sha256": "681d54fa1caaaf8a209cb94516e23ac0ed0e98402b72993359f91c8a40d1de29"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00024.cs",
+          "sha256": "7891d3f14e2cb64bf8a35871e1d9d278ef1d7c5668d4fefe7fb94f662376a74a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00025.cs",
+          "sha256": "a86a07975070c26efaa1abea5995b4ee1fc7fece2447ed0dcb0c06e7b5115733"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00026.cs",
+          "sha256": "8fde0de4409b45cdc59daf30e292051d9c11118d245a5126fd2339552b3db3c2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00027.cs",
+          "sha256": "7ce4dffcc449f566e23e6e24499594dc331111ed8f342366301984077d967e9f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00028.cs",
+          "sha256": "73c23773c50998a6852447d974facd824858ab574b692a1faeffd95d11761635"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00029.cs",
+          "sha256": "8a3aff8c97cb2749717930e4c13266b498781c97510228eaf86f946aaf77cc4b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00030.cs",
+          "sha256": "b947b0cb5033b87823ee235b573f9233f1dc1aa15cbe71d0df30761ccf323e56"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00031.cs",
+          "sha256": "dd1f5975ac16872b6887cfbf728aa778ffa533cd67bc9a91e4a1ce5e947690d7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/Translated.part00032.cs",
+          "sha256": "7533cb6e25be6bdce0369069e34e9d56cb0712f814fb8d0a47e1bbd717c18d71"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/dot-gen.json",
+          "sha256": "7f2272c981383f7fd6344a1ebe448b3608d7f6594e575119dadcc781ee488c99"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/dot-gen.sources.json",
+          "sha256": "b4782db30365a97a20bbb352e927415690b7b1befd34a4a5e9da26149010c919"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vfs-managed/source-index.md",
+          "sha256": "dc1ab2b2ed9a6baf4f1372c6104dd913c4bb5780b1b58726fbe8b35ea8a698c7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/EntryPoint.cs",
+          "sha256": "a5760ba0557c74c48fba48d0eb6867219e64b67ea7f5ae32a9f95ea46880a4f5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Generated.csproj",
+          "sha256": "2199dea67a75a70bbd26cce30186cf0c9882b463beae3dd8658167b11e92dc33"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.AtomicOps.cs",
+          "sha256": "041217230e58ffa9585ed1057e5ff8b0c7ac7075176a57b0e6913011a0957adb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.Float80.cs",
+          "sha256": "d140bb1b3aac9c85eb0bec9bb67ff06c6bf9a993298bde64ea5387866eaa8bf7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcAppend.cs",
+          "sha256": "e3b11596a2778f748dcc5ecbc0084acb824719118c998c1da9776528f1765492"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcC11Threads.cs",
+          "sha256": "7416d9d9f1ee3dfa741f1216ad8476949d0783f2f6bbedfc326fa7cea7767a08"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcCalendar.cs",
+          "sha256": "b42ffcd92d6fbaa27d08655abc7e022e68f7397d02af1b792e2ffd67d436443b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcCommand.cs",
+          "sha256": "cc096680ad5e9e67a740ad822c5a3c17177e72ef9a81fbed43b09cee23e7759d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcContext.cs",
+          "sha256": "d50a3f9906dfbd7a5f3e5d083cca038974f8f28c40759a6b1282eb4c83236502"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcEnvironment.cs",
+          "sha256": "ab48de147c1345d9a77273efef346e2ee20010f64f08e0f39401aff605e5670c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcErrorMessages.cs",
+          "sha256": "8f8bc6122350bd0f367a9aef09e2327e82c7c752ee41c9cfe9ba7ae1b08779e5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcFiles.cs",
+          "sha256": "06764c770e4727f470c33b994dc2e3d8ce7291e4751c9b70831c6b1ec726d9a6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcFilesAssert.cs",
+          "sha256": "9d9a1805d540ee82a6d11ddcdb752c7e9fa1f131af218a41197e9472af9ac087"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcFilesFormat.cs",
+          "sha256": "29808bd0fd3da199d280f6694a8fd2dbedd1b27f2191ced0e1bb196e1f632975"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcFilesManagement.cs",
+          "sha256": "cc50808e08f83978162b8a51a3cb3a3dd374f4dca78a4f7f106d7354e3230b7e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcFilesScan.cs",
+          "sha256": "18cde207bbdc9a094b6b3fe4af83c2a6655e172a242047e5bfce641f2a423e0c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcFilesSignalAssert.cs",
+          "sha256": "b92d714c66475e26f4906d3ae5e0a79cf411f49a55af9c372ef1901de8c23487"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcFilesWide.cs",
+          "sha256": "b574746eb10b079238df262ea570534847ee322ad8f36a22ca5804cdebfb0fa5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcFilesWideFormat.cs",
+          "sha256": "e7b2657ce847f48901ffe69c3a8a25e85285a10d86e1e56754a53f5e4abd1310"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcFilesWideScan.cs",
+          "sha256": "2338ec872badc6df59f60e24c94402d6de5b7899a666d20dad85ba7cfe30d217"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcFloat.cs",
+          "sha256": "954afa0cee860241004fa081cda1db38a62fcf8db7319a4ef490f089aa68d0e3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcInitialThread.cs",
+          "sha256": "ae8154a302e72cf70b1e192367f50af63b4a677c609bed59192cf5aaa10f4a21"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcLocale.cs",
+          "sha256": "3a10d99e9841e46dde934f9b78baef24fc801d1abfefaa1ed875246cbe2a5b28"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcLocaleEnvironment.cs",
+          "sha256": "24accff1e68d292674f0a535b133f79d1ebe3d0c67d681eb0aee802b46517230"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcMath.cs",
+          "sha256": "8c0e347b639d4a4b6c8467e25265d9a17c8d9a1d0434e79c68ef4798fc57db7f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcPaths.cs",
+          "sha256": "1c03a56bf2f357a5ab37531cf1d4984a5802d1cb5074877fdab2de8042cc3037"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcProcess.cs",
+          "sha256": "0173da39b6095ec3099ab30de0c650cf892a05252fe02035053704f7d9040f8c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcProcessExit.cs",
+          "sha256": "869be52f408f938ae56f81e98f54e7091e5571df3509697657b33645bfb03936"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcScanMath.cs",
+          "sha256": "7308e211f7be8c9fab6e481162a6e278b2da275844b8e925a42c2451112bc8ed"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcSignals.cs",
+          "sha256": "7fc5c25ed073d75bf09cad57983962c16678208093bf6c21cc8a3a9529203274"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcText.cs",
+          "sha256": "f10492858f80944b7f86230b6cf546e255e2074ce0eb9d8f2641c7b6c1bd4895"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcTimezone.cs",
+          "sha256": "85d120bd0edb0d827175b2787abc99dc9e8f479a87279553f6cbf7251c937308"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcTimezoneData.cs",
+          "sha256": "d26112bca1ae279f97437b9a219b37a0f5289bad8f703db446d7d8566c739e7d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.LibcxxThreads.cs",
+          "sha256": "8234019730fde73623c17458c9693bf4b61616dcd88ad8b9804c1f0518843a29"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Runtime.VaList.cs",
+          "sha256": "a0dd63e797fd1cdf6350ddd4ca863c3c8b985c21debcb808f9adb4d99477e256"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.cs",
+          "sha256": "d4992aa99f1c9835497ca02a8fa73a1e1f525aefc98b6f3a5e1d85e4b9a00396"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00000.cs",
+          "sha256": "19365df21c4d269e9c2c015d3561537f1320ae412440d976f18410bfd60ca6c6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00001.cs",
+          "sha256": "354ee5e14a5afcaa90c749c245afbaf69298136d3f4f0a54c2e804c559b5d7cd"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00002.cs",
+          "sha256": "6890ba393041c9deb55a48ba7f84f2e1371575a61fcab918eae57ecea3816155"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00003.cs",
+          "sha256": "50e89adc87c39b5d454aceea1f1037094edfed335bdb442a586af58f124bb861"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00004.cs",
+          "sha256": "493ba39facfe753567fd7b04de597aa28432ddec949eaf79a0475d0882e835a7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00005.cs",
+          "sha256": "7d7a85cab2d8cfb97bd259658d0056e54501055a9a72ca6d9d099c44e7b4ec74"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00006.cs",
+          "sha256": "53324fc3abe39b687addf086814b333b339286b32b62233c1ce198b4f283ea7a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00007.cs",
+          "sha256": "4d074fefc40bbcaeecbf7a18e4feea65fab2538387ca8c7ec1282242c2754d67"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00008.cs",
+          "sha256": "0ae7ba4e13fda7859efae850e19f862ae1f5a4aeda1a2edab788e381ead41133"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00009.cs",
+          "sha256": "ff272a7ca207492a1529cda2237d11c204ab0cbe8c6ad034acdd549c28f53e6a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00010.cs",
+          "sha256": "bb5c95c0e3551a10476ba4db46ea691910f748dfa89b024afc58075e17c7741e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00011.cs",
+          "sha256": "54f1c01181f3fe970dedafcef6e2f86b68e52708645486240fc49ded835c46ab"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00012.cs",
+          "sha256": "49096f0484f0c60f94d96e5a9b66c4e30271b70d184cd81fb7d120ba4996e945"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00013.cs",
+          "sha256": "917f97f1f898aa93c602bb252e615fb34275c5e668c349d783089190610130cb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00014.cs",
+          "sha256": "f112745c9c12d28f6bec23225992db49f1917aa517ef59e6bd6253ec87a81beb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00015.cs",
+          "sha256": "1b5ccf4c056a96048743e2667a00a85bc115d98ba080c543f787fed1f278fc04"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00016.cs",
+          "sha256": "9c8d90e38d4786d81b2d33e0c551e8f3f83c141f415a6e9d9f99230010d297b6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00017.cs",
+          "sha256": "8fdef47fe1dd91ac81bc28e1ec9d8e132eef4368b32cd3ab5c8c9cfe20fa691a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00018.cs",
+          "sha256": "fc8d033cfef171028ff1e54e18d14be86b78dab76b344bb1bc1126069d7f4e6a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00019.cs",
+          "sha256": "28b3cf6a357eb18a98297d9e01073ee7b6b8c3d791b986d12c8b7f0f66fe3037"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00020.cs",
+          "sha256": "e487453ac763d6111a734843a1fa204d08c036b6d0aebdab580d94bdf63ebfae"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00021.cs",
+          "sha256": "993212019a2c6700176048c5f6db77f6ae03a62a86436dae334a2ace27287783"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00022.cs",
+          "sha256": "6875602e86317a023ddec0de4b176de9a2adaf7f07060124b333a3ebb1b015b7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00023.cs",
+          "sha256": "ec449ee575e920816c233e6a135d30dbe813b5cbd53190ae9ca0c26a4c43a2fb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00024.cs",
+          "sha256": "08510f0705bdd906db84eebb723c94af966328017ac98a5ea5136953ca0ea131"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00025.cs",
+          "sha256": "3f94e9197eceb5495abd489b4fd3af1e0474781f5714d32f8913bb20b73415b8"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00026.cs",
+          "sha256": "1bd679c73b1699d9c848f457cc15a7a1ae9a4f7dba10293aeb02003b40a4c7ec"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00027.cs",
+          "sha256": "0c235423747caf3dc2da1445f6ba89bf8ad49471c76cd073488ce27fdbe46644"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00028.cs",
+          "sha256": "c66b90c70e73ed60490020caafee258fffa80cf4e7f60d8eef389d97f2e5a1c5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00029.cs",
+          "sha256": "acbefe88d76db22821dfb140a8964717fe9443641abc53193c6c9931e4244070"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00030.cs",
+          "sha256": "0cee586dd9deecfaa1fa13d43ff762b976c1b7520a41a32b977914b2e297fdd5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/Translated.part00031.cs",
+          "sha256": "24864218e9df3f1621719d750be8167e0a2d8303ebfc60e9dc2e33a8b96c63b2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/dot-gen.json",
+          "sha256": "6cac2aede3edb6ac65fc6400125ceeccc629756e175c74b9bd7b72d77ca7b3e9"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/dot-gen.sources.json",
+          "sha256": "515fd264f138c7e6e099b81e6522d4b321a322bae7dfa7a54a9525c128785e87"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-final-012/vtable-managed/source-index.md",
+          "sha256": "2de6148b0b83da3b5ad7ce1b780fc5bc793592a489e7fba868fe2b3523dd3a14"
+        }
+      ]
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012",
+      "results": {
+        "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/results.json",
+        "sha256": "caa8d4826d8601453ba73f113ccb1da0dfe78d625e7099fb557102d2c337855c"
+      },
+      "checkCount": 2,
+      "checks": [
+        "SQLite original public API: JIT",
+        "SQLite original public API: NativeAOT"
+      ],
+      "generatedFiles": [
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Generated.csproj",
+          "sha256": "ae309152171b722471f4e288cfafa1737a488f0574fabd9562ed0187a2ac3258"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.AtomicOps.cs",
+          "sha256": "041217230e58ffa9585ed1057e5ff8b0c7ac7075176a57b0e6913011a0957adb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.Float80.cs",
+          "sha256": "d140bb1b3aac9c85eb0bec9bb67ff06c6bf9a993298bde64ea5387866eaa8bf7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcAppend.cs",
+          "sha256": "e3b11596a2778f748dcc5ecbc0084acb824719118c998c1da9776528f1765492"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcC11Threads.cs",
+          "sha256": "7416d9d9f1ee3dfa741f1216ad8476949d0783f2f6bbedfc326fa7cea7767a08"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcCalendar.cs",
+          "sha256": "b42ffcd92d6fbaa27d08655abc7e022e68f7397d02af1b792e2ffd67d436443b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcCommand.cs",
+          "sha256": "cc096680ad5e9e67a740ad822c5a3c17177e72ef9a81fbed43b09cee23e7759d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcContext.cs",
+          "sha256": "d50a3f9906dfbd7a5f3e5d083cca038974f8f28c40759a6b1282eb4c83236502"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcEnvironment.cs",
+          "sha256": "ab48de147c1345d9a77273efef346e2ee20010f64f08e0f39401aff605e5670c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcErrorMessages.cs",
+          "sha256": "8f8bc6122350bd0f367a9aef09e2327e82c7c752ee41c9cfe9ba7ae1b08779e5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcFiles.cs",
+          "sha256": "06764c770e4727f470c33b994dc2e3d8ce7291e4751c9b70831c6b1ec726d9a6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcFilesAssert.cs",
+          "sha256": "9d9a1805d540ee82a6d11ddcdb752c7e9fa1f131af218a41197e9472af9ac087"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcFilesFormat.cs",
+          "sha256": "29808bd0fd3da199d280f6694a8fd2dbedd1b27f2191ced0e1bb196e1f632975"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcFilesManagement.cs",
+          "sha256": "cc50808e08f83978162b8a51a3cb3a3dd374f4dca78a4f7f106d7354e3230b7e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcFilesScan.cs",
+          "sha256": "18cde207bbdc9a094b6b3fe4af83c2a6655e172a242047e5bfce641f2a423e0c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcFilesSignalAssert.cs",
+          "sha256": "b92d714c66475e26f4906d3ae5e0a79cf411f49a55af9c372ef1901de8c23487"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcFilesWide.cs",
+          "sha256": "b574746eb10b079238df262ea570534847ee322ad8f36a22ca5804cdebfb0fa5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcFilesWideFormat.cs",
+          "sha256": "e7b2657ce847f48901ffe69c3a8a25e85285a10d86e1e56754a53f5e4abd1310"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcFilesWideScan.cs",
+          "sha256": "2338ec872badc6df59f60e24c94402d6de5b7899a666d20dad85ba7cfe30d217"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcFloat.cs",
+          "sha256": "954afa0cee860241004fa081cda1db38a62fcf8db7319a4ef490f089aa68d0e3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcInitialThread.cs",
+          "sha256": "ae8154a302e72cf70b1e192367f50af63b4a677c609bed59192cf5aaa10f4a21"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcLocale.cs",
+          "sha256": "3a10d99e9841e46dde934f9b78baef24fc801d1abfefaa1ed875246cbe2a5b28"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcLocaleEnvironment.cs",
+          "sha256": "24accff1e68d292674f0a535b133f79d1ebe3d0c67d681eb0aee802b46517230"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcMath.cs",
+          "sha256": "8c0e347b639d4a4b6c8467e25265d9a17c8d9a1d0434e79c68ef4798fc57db7f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcPaths.cs",
+          "sha256": "1c03a56bf2f357a5ab37531cf1d4984a5802d1cb5074877fdab2de8042cc3037"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcProcess.cs",
+          "sha256": "0173da39b6095ec3099ab30de0c650cf892a05252fe02035053704f7d9040f8c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcScanMath.cs",
+          "sha256": "7308e211f7be8c9fab6e481162a6e278b2da275844b8e925a42c2451112bc8ed"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcSignals.cs",
+          "sha256": "7fc5c25ed073d75bf09cad57983962c16678208093bf6c21cc8a3a9529203274"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcText.cs",
+          "sha256": "f10492858f80944b7f86230b6cf546e255e2074ce0eb9d8f2641c7b6c1bd4895"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcTimezone.cs",
+          "sha256": "85d120bd0edb0d827175b2787abc99dc9e8f479a87279553f6cbf7251c937308"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcTimezoneData.cs",
+          "sha256": "d26112bca1ae279f97437b9a219b37a0f5289bad8f703db446d7d8566c739e7d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.LibcxxThreads.cs",
+          "sha256": "8234019730fde73623c17458c9693bf4b61616dcd88ad8b9804c1f0518843a29"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Runtime.VaList.cs",
+          "sha256": "a0dd63e797fd1cdf6350ddd4ca863c3c8b985c21debcb808f9adb4d99477e256"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.cs",
+          "sha256": "10f0b11309352551d62ab26e9feb32893d4e1ccd2e38208624a4280851ce0b04"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00000.cs",
+          "sha256": "44a107bdc2e7105adc50f6ee2000607dc1a6c2f957303b662421cb31747abbc8"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00001.cs",
+          "sha256": "3a31231ad8bd86faace0ec9198e4933839b5758692e258521749992f2337e233"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00002.cs",
+          "sha256": "37320664f604b10e3e17827a4251e228feadf8b2557322075c7d15afd99b35a3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00003.cs",
+          "sha256": "316e964afae8262ea3b121b235c7d8eca27bbb06b45cac9888db99622fe404a0"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00004.cs",
+          "sha256": "5f604351796c776434f88c95d74a4dc0f8860dcf6e0693594fd2fd1a1caeb720"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00005.cs",
+          "sha256": "a8e261191c3f7e7762fd958587ad495ea38507a61f35a4cfd4e9f59a934e5aa6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00006.cs",
+          "sha256": "59b796e1baf0466594efa07a50f040c907c96c0f4873e2f929c57d950cfc1517"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00007.cs",
+          "sha256": "d4eb4e5866cb3b16c4a12994e17822732d3e581354ba56fd1e41fec93e8676e0"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00008.cs",
+          "sha256": "f03c67f691072e2317ec39b97727c8401e91a42ceec795a99bc4093ca7134672"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00009.cs",
+          "sha256": "44e01c7eff0acabcab191f2c89cc20a2f6fa38eb35468e187239cd576e259c42"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00010.cs",
+          "sha256": "c25b9fb12ae3f6f2b8b26193cd31455405cfe295341cca11c72a132639e42f1e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00011.cs",
+          "sha256": "b394e095ba83e51658c089f527211c4ff0a520726f11b16917acf27ae4dcafbe"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00012.cs",
+          "sha256": "5fc395fa5d4a7c50b3983f278da08ad2516b2c92b0c29b355a95496292c759f9"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00013.cs",
+          "sha256": "a2cb6dda545ee3e42ef88538a8daa671216104482cc94a64c4447be2648dd6ca"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00014.cs",
+          "sha256": "3fe5e419d977f050d095f5ee1a371b8e19d08e0a2f2b3933084506f29d9b6693"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00015.cs",
+          "sha256": "5d83f52de10262435c3c2dbd4467b1cb10d12e618c29e0fa9375161797809d45"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00016.cs",
+          "sha256": "4905ef1bcc60983fa42dc30ff0dba156eb7bf50d697cb05420507dc66239b918"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00017.cs",
+          "sha256": "5b0e9ea7ecbfdfb11f97b00b5a1034337ca34a42e948d771c08bee37671a84f3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00018.cs",
+          "sha256": "a245db482d7ab62ae2b2aaeaf34d98b3cb4967a2527f31bf1077fbdf0084aab2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00019.cs",
+          "sha256": "066d3752589e39d609aa0c89b5d81238ed052362baf3b32d2734e92739681496"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00020.cs",
+          "sha256": "80bec2fab8435e3af20edd689521f01bababa776a40f1457fc585c5755f67028"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00021.cs",
+          "sha256": "a21af93a232d82d17e5201c16a09adfadadb30fa38c68f0837b87048de39745a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00022.cs",
+          "sha256": "20d5a44c7665b485c2f720428fd49b2b4e8c6ef12a022bbf96e613f5b3ad13de"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00023.cs",
+          "sha256": "b6d4dd99b95a8d9b65b8391d3fe71757c779e3616a9d2b9760390127b0a4e0f9"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00024.cs",
+          "sha256": "a850bbe2e8046d3c356e7fb95de4897f92972f2a28e60da3bf54a7cdb4d644b3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00025.cs",
+          "sha256": "0184ff0d66343de186682fe6f53dce682b6f3c78efe20c42e690ef202292e93f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00026.cs",
+          "sha256": "235a0cf55a0c7fa2f37313f1bdf19b7446a993b7fde77173361290d2aefbc266"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00027.cs",
+          "sha256": "53fe3cc74c8c64b2ea263e2ef375f9c913ac703552c182e43a6c80b15208fff8"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00028.cs",
+          "sha256": "d59ac7b7034200f0efa40ad6762ccf1b64f22bb3fead20ef6550f4c5cb34400a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00029.cs",
+          "sha256": "bdf7696a683ad2616aa121b33fd078d08c165c0088c5cb7b678268cb2343e5e0"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00030.cs",
+          "sha256": "653ef4297108e727d2eebfb3f86482e511452e82268c9662b726cd54549518e3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00031.cs",
+          "sha256": "86ec1501653bfd5ae6ee8677e86748d774b94b2524c19303454758965dcf6e55"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00032.cs",
+          "sha256": "8a91805f28bd3cfa3f2514fbc145da04f561d0016ac972a205c1b6d6d79ad12f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00033.cs",
+          "sha256": "66e24d859b686349121f3bc8aa968b741e756d87c480e66ffa272d3ac79de212"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00034.cs",
+          "sha256": "cb83bfa7d27894f789823fcfc60b4f1f452985323dbf3e776c01f48700fefbe1"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00035.cs",
+          "sha256": "5a84fd7e8f70afb46aafce84768abe471693847b874a40a427a437052d11eb64"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00036.cs",
+          "sha256": "da942e8c5618c40fc877d75bb5703a99b012c4b13dee646852dd0c5fd49eb11d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00037.cs",
+          "sha256": "fd228e90bfff653e3aa2efcec260dd82772d8fd38cbe8e8c9c7e813435928ef4"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00038.cs",
+          "sha256": "a98dc8dc5013ec7897b7a49806bf8d966e28fe30b39fb6aef9fec8bd49ba5639"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00039.cs",
+          "sha256": "33a8c1ecb8db2370ad4e4c0e6d4b00d9acee990dacdca92ed841240bfde023ef"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/Translated.part00040.cs",
+          "sha256": "32fbb65870d0d1e336320c604c5704955432edd2ab80b93044bda92fdc81fb30"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/dot-gen.json",
+          "sha256": "a126f2ab9e7566a7e24a6e65eee13836b20bc15cc471876af43549ecc8fdd433"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/dot-gen.sources.json",
+          "sha256": "b816f4b1eb00cfe4572f68d60f26ef1b8069b228a919bb7b0b55e58747580dc6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/managed/source-index.md",
+          "sha256": "2a128eaaaea4d9d041923fde209f77de71d43a0c78b00f220d6539fe72b5bafc"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/host/Program.cs",
+          "sha256": "29b8b45079ae6986da9519d8e4716c4c204b385269d75e309c62309c084429eb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-final-012/host/Host.csproj",
+          "sha256": "6c25154d82afe511a66e5d76c77ca63b1d41ad884a1599c8f443bbc73b093695"
+        }
+      ]
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012",
+      "results": {
+        "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/results.json",
+        "sha256": "c2517aee856930bff2fed4d5f29ffe70a7256dd3dd7d791516e0fd36c5ad3460"
+      },
+      "checkCount": 2,
+      "checks": [
+        "SQLite independent owners: JIT",
+        "SQLite independent owners: NativeAOT"
+      ],
+      "generatedFiles": [
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Generated.csproj",
+          "sha256": "ae309152171b722471f4e288cfafa1737a488f0574fabd9562ed0187a2ac3258"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.AtomicOps.cs",
+          "sha256": "041217230e58ffa9585ed1057e5ff8b0c7ac7075176a57b0e6913011a0957adb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.Float80.cs",
+          "sha256": "d140bb1b3aac9c85eb0bec9bb67ff06c6bf9a993298bde64ea5387866eaa8bf7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcAppend.cs",
+          "sha256": "e3b11596a2778f748dcc5ecbc0084acb824719118c998c1da9776528f1765492"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcC11Threads.cs",
+          "sha256": "7416d9d9f1ee3dfa741f1216ad8476949d0783f2f6bbedfc326fa7cea7767a08"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcCalendar.cs",
+          "sha256": "b42ffcd92d6fbaa27d08655abc7e022e68f7397d02af1b792e2ffd67d436443b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcCommand.cs",
+          "sha256": "cc096680ad5e9e67a740ad822c5a3c17177e72ef9a81fbed43b09cee23e7759d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcContext.cs",
+          "sha256": "d50a3f9906dfbd7a5f3e5d083cca038974f8f28c40759a6b1282eb4c83236502"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcEnvironment.cs",
+          "sha256": "ab48de147c1345d9a77273efef346e2ee20010f64f08e0f39401aff605e5670c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcErrorMessages.cs",
+          "sha256": "8f8bc6122350bd0f367a9aef09e2327e82c7c752ee41c9cfe9ba7ae1b08779e5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcFiles.cs",
+          "sha256": "06764c770e4727f470c33b994dc2e3d8ce7291e4751c9b70831c6b1ec726d9a6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcFilesAssert.cs",
+          "sha256": "9d9a1805d540ee82a6d11ddcdb752c7e9fa1f131af218a41197e9472af9ac087"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcFilesFormat.cs",
+          "sha256": "29808bd0fd3da199d280f6694a8fd2dbedd1b27f2191ced0e1bb196e1f632975"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcFilesManagement.cs",
+          "sha256": "cc50808e08f83978162b8a51a3cb3a3dd374f4dca78a4f7f106d7354e3230b7e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcFilesScan.cs",
+          "sha256": "18cde207bbdc9a094b6b3fe4af83c2a6655e172a242047e5bfce641f2a423e0c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcFilesSignalAssert.cs",
+          "sha256": "b92d714c66475e26f4906d3ae5e0a79cf411f49a55af9c372ef1901de8c23487"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcFilesWide.cs",
+          "sha256": "b574746eb10b079238df262ea570534847ee322ad8f36a22ca5804cdebfb0fa5"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcFilesWideFormat.cs",
+          "sha256": "e7b2657ce847f48901ffe69c3a8a25e85285a10d86e1e56754a53f5e4abd1310"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcFilesWideScan.cs",
+          "sha256": "2338ec872badc6df59f60e24c94402d6de5b7899a666d20dad85ba7cfe30d217"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcFloat.cs",
+          "sha256": "954afa0cee860241004fa081cda1db38a62fcf8db7319a4ef490f089aa68d0e3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcInitialThread.cs",
+          "sha256": "ae8154a302e72cf70b1e192367f50af63b4a677c609bed59192cf5aaa10f4a21"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcLocale.cs",
+          "sha256": "3a10d99e9841e46dde934f9b78baef24fc801d1abfefaa1ed875246cbe2a5b28"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcLocaleEnvironment.cs",
+          "sha256": "24accff1e68d292674f0a535b133f79d1ebe3d0c67d681eb0aee802b46517230"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcMath.cs",
+          "sha256": "8c0e347b639d4a4b6c8467e25265d9a17c8d9a1d0434e79c68ef4798fc57db7f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcPaths.cs",
+          "sha256": "1c03a56bf2f357a5ab37531cf1d4984a5802d1cb5074877fdab2de8042cc3037"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcProcess.cs",
+          "sha256": "0173da39b6095ec3099ab30de0c650cf892a05252fe02035053704f7d9040f8c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcScanMath.cs",
+          "sha256": "7308e211f7be8c9fab6e481162a6e278b2da275844b8e925a42c2451112bc8ed"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcSignals.cs",
+          "sha256": "7fc5c25ed073d75bf09cad57983962c16678208093bf6c21cc8a3a9529203274"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcText.cs",
+          "sha256": "f10492858f80944b7f86230b6cf546e255e2074ce0eb9d8f2641c7b6c1bd4895"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcTimezone.cs",
+          "sha256": "85d120bd0edb0d827175b2787abc99dc9e8f479a87279553f6cbf7251c937308"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcTimezoneData.cs",
+          "sha256": "d26112bca1ae279f97437b9a219b37a0f5289bad8f703db446d7d8566c739e7d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.LibcxxThreads.cs",
+          "sha256": "8234019730fde73623c17458c9693bf4b61616dcd88ad8b9804c1f0518843a29"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Runtime.VaList.cs",
+          "sha256": "a0dd63e797fd1cdf6350ddd4ca863c3c8b985c21debcb808f9adb4d99477e256"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.cs",
+          "sha256": "b621db9adee76f058b799084c68b87fb4719727dd0ba515a86ffb04044f63117"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00000.cs",
+          "sha256": "a4b81f1bb966ac583d46c1e52a1f57196e888f654c1853a1002546ee406b047c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00001.cs",
+          "sha256": "184b696323ece3b49e3898c6575b4b385d8743ebc122762de37b67c1354e01c0"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00002.cs",
+          "sha256": "be65c147bffacaac223fec4d9519c7e2f602f3c0f095d7ae37714d05892affa4"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00003.cs",
+          "sha256": "e20a042a352e2c34852f1322625ff45741ab7303cc9daa01d5087158f7c29ee9"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00004.cs",
+          "sha256": "f7b704884600c9e738b25d17732686e2f1821cf98d7087c98a2dc17081eed622"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00005.cs",
+          "sha256": "a8e261191c3f7e7762fd958587ad495ea38507a61f35a4cfd4e9f59a934e5aa6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00006.cs",
+          "sha256": "cb48293c6bb89f9fe0cb6393436b2f51cdeb4411ff503c3692a45a3a2f044438"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00007.cs",
+          "sha256": "e83a5b74531a0a337534f90484d42d83c246f298930a6d4a922094efa89794f8"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00008.cs",
+          "sha256": "f03c67f691072e2317ec39b97727c8401e91a42ceec795a99bc4093ca7134672"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00009.cs",
+          "sha256": "44e01c7eff0acabcab191f2c89cc20a2f6fa38eb35468e187239cd576e259c42"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00010.cs",
+          "sha256": "b7adfec9f2bae7abf33b782aef105921840b098ae9d7a0da94a226bdea78ec47"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00011.cs",
+          "sha256": "b394e095ba83e51658c089f527211c4ff0a520726f11b16917acf27ae4dcafbe"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00012.cs",
+          "sha256": "2cbf3202ddcce798488ca8b5bfdef0712073957b15c7cc4bb49f11d12f905e00"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00013.cs",
+          "sha256": "1df9d49f6aff0b674bf492b3e4d951e3904828979bae7d69f4716ae6f823a574"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00014.cs",
+          "sha256": "16decd63fd13ef0b5a67dc3399485454cd309b2a7a0d9b5a7210139f5c895222"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00015.cs",
+          "sha256": "2f2703cfc73bc0fa31210ad7285080085577cb00e77b41ad11093bff3fe78048"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00016.cs",
+          "sha256": "2a7d0d8e38e22796be276dbc38323e668b4d7e0f503de42e7d4a3a12bdd7524d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00017.cs",
+          "sha256": "1b4ba47746395641cac408026ae862f440c7ce4c859fc4b25fbcc253b9fff967"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00018.cs",
+          "sha256": "a245db482d7ab62ae2b2aaeaf34d98b3cb4967a2527f31bf1077fbdf0084aab2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00019.cs",
+          "sha256": "066d3752589e39d609aa0c89b5d81238ed052362baf3b32d2734e92739681496"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00020.cs",
+          "sha256": "80bec2fab8435e3af20edd689521f01bababa776a40f1457fc585c5755f67028"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00021.cs",
+          "sha256": "a21af93a232d82d17e5201c16a09adfadadb30fa38c68f0837b87048de39745a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00022.cs",
+          "sha256": "20d5a44c7665b485c2f720428fd49b2b4e8c6ef12a022bbf96e613f5b3ad13de"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00023.cs",
+          "sha256": "03200fc0708fc3c22b9886f4d2e53b32cda8bbae1334eaca871f5b7998e5f474"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00024.cs",
+          "sha256": "b93f9c0b3c76ba0e18dec7feb5b5a469c09297039785ae6f75dda66adb2f75be"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00025.cs",
+          "sha256": "ff91fde281d83552cd338b573c08e65dfc851939235a03819319afce04d6588d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00026.cs",
+          "sha256": "81d63bacf7a2fa3198030b28ef0520767553344a4f1cdd2018154bd58684532d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00027.cs",
+          "sha256": "53fe3cc74c8c64b2ea263e2ef375f9c913ac703552c182e43a6c80b15208fff8"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00028.cs",
+          "sha256": "d59ac7b7034200f0efa40ad6762ccf1b64f22bb3fead20ef6550f4c5cb34400a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00029.cs",
+          "sha256": "f0d49659c70c0331b80291620894de4eb1d8b00e49fdbd9fc0316c16f984a430"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00030.cs",
+          "sha256": "653ef4297108e727d2eebfb3f86482e511452e82268c9662b726cd54549518e3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00031.cs",
+          "sha256": "2444e043e99ffb5a7b87285d24fe553632762d06a049abc2596871ddff5c4aec"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00032.cs",
+          "sha256": "c12a98da5f929341b677ee9e27ffc310e72f96788e52d404a03d17e99e2dc679"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00033.cs",
+          "sha256": "4ef8566da413fe826794ec234e1e2017fe0512144dea24a39070323377c753ac"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00034.cs",
+          "sha256": "f0a9077a52286a207c16c485815f4e2da15d04303d610a1269f0bf58732c0fe8"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00035.cs",
+          "sha256": "52a0298b934b0235442b8807e7f51bf9a0c600433fe173659753509b4e039154"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00036.cs",
+          "sha256": "e6eee5ea243ae2e8629d9cb8cd88cd7f15b85defb8ca120ce1952011163f5a8a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00037.cs",
+          "sha256": "9b12939fc0f3f5002120aacfe70bc7697968d416128ddded1934b08237b93082"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00038.cs",
+          "sha256": "985b61c1c322a120e0cdbcb1900b2133c36280fffe38d6f5c5b43906080a8f67"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00039.cs",
+          "sha256": "514a855dab4ce50f9c98010c0ebc6cc1fab5963ad4dc88a43095b2d46cb3d4aa"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/Translated.part00040.cs",
+          "sha256": "b5795ae664e5e0672278d565cfa50833482214e04b6db65192f65c0db02f3250"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/dot-gen.json",
+          "sha256": "c60106dd9631390c4206ac521b2726151fd03cc5c4686bb1be3ffd5516a781c2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/dot-gen.sources.json",
+          "sha256": "ff00f828653a10fdba8db863799255fd81e8023a7f519d0b2092702e76c413fe"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/managed/source-index.md",
+          "sha256": "ff5c23cdd9ab383a5b20b51260aa1674d5281cf824dd137a612f5c64813bdf95"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/host/Program.cs",
+          "sha256": "21d2c9acf632dd2f82df46ab01c6629d3db742d4538714192ff25abed1ad0a21"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/sqlite-readable-owners-final-012/host/Host.csproj",
+          "sha256": "6c25154d82afe511a66e5d76c77ca63b1d41ad884a1599c8f443bbc73b093695"
+        }
+      ]
+    }
+  ],
+  "sourceReview": {
+    "path": "artifacts/campaign/persistent-continuation/source-review-final-012/review.json",
+    "sha256": "d118615ea3d51d57dd9592263eba7db64a41bb01deaf1dd3d7bb269863151963"
+  },
+  "relatedEvidence": [
+    {
+      "path": "evidence/source-enum-components.json",
+      "sha256": "88632dd61821378a8bb1a667ab62cf6a69a5526e54df915a38560b6b62f43c19"
+    },
+    {
+      "path": "evidence/source-type-final-regressions.json",
+      "sha256": "1957b18f93e238c0a0188f39920d943de8fbf272f3d30d45e215e23beec96ea0"
+    },
+    {
+      "path": "evidence/source-correspondence-refinements.json",
+      "sha256": "efcfcda1ed15a70766d23a40c63a95c13edc287d00e2609d438ba5909943d65c"
+    }
+  ],
+  "snapshotNotes": [
+    "All 22 project checks use frozen compiler012 and the same 945 implementation input hashes.",
+    "The final naming14 and layout6 checks use012; enum12 includes unnamed negative enum values.",
+    "Source-correspondence14 and pointer/enum exception9 were accepted on011;012 only adds parentheses around unnamed negative enum constants.",
+    "All four reviewed final012 SQLite implementation bodies match the manually reviewed010 bodies byte for byte."
+  ],
+  "limitations": [
+    "SQLite uses the deterministic test-only memory VFS and SQLITE_THREADSAFE=0; no production OS VFS or shared-engine concurrent-thread acceptance.",
+    "No Windows, macOS or Arm64 execution claim; source/platform design remains portable but those execution cells are unverified.",
+    "This accepts the source-correspondence increment for the supported backend subset, not complete C++, libc or libc++ coverage.",
+    "EDG-folded macros are not reconstructed; C++ incompatible semantics, irreducible transfers and lifetime/storage boundaries retain necessary synthetic code.",
+    "CLR enums support at most64-bit underlying types; wider extensions retain named constant containers and exact physical storage."
+  ]
+}
