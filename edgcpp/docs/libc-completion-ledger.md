@@ -72,3 +72,7 @@ libc++ blocker may change sequencing, never remove a category from the goal.
 Selected PRNG support adds 11 musl source units (provider 129). Eighteen focused
 checks cover exact sequences/state ownership, concurrent BSD random state and
 automatic packaging; see libc-prng.md. Other libc categories remain open.
+
+Selected fmod/modf families add six source units (provider135), with18 focused
+checks recorded in libc-math-parts.md. Dynamic rounding and exception flags
+remain absent; this is not complete math/fenv coverage.

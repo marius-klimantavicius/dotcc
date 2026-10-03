@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "scope": "Selected musl floating remainder/decomposition",
+  "checkCount": 18,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/libc-math-parts-translated-002/results.json",
+      "sha256": "1dd0e1066fce4425869a1ea44f4407215f029a9b7a16b0f19c871bfec0f9bffa",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-math-parts-001/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/libc-math-parts-patch-001/results.json",
+      "sha256": "84f899763a72150d5c7c4c13214d93300a858351e7e393b160c19a2a461aa338",
+      "checkCount": 1
+    }
+  ],
+  "providerUnits": 135,
+  "platform": "Linux-x64 JIT/NativeAOT",
+  "limitations": [
+    "Floating environment flags and dynamic rounding modes remain pending."
+  ]
+}

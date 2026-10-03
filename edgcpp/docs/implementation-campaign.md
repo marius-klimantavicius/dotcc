@@ -431,3 +431,10 @@ existing process-exit behavior under JIT/NativeAOT. Managed Run keeps host
 control; arbitrary foreign-host exit and owner-local termination remain open.
 The documented C++ initial-thread cleanup policy is tested explicitly rather
 than claimed identical to observed glibc behavior.
+
+Selected binary32/64/80 remainder and decomposition now translate six original
+musl algorithms, with explicit errno adaptation for the advertised profile.
+Eighteen focused checks cover exact native/generated bits, signed zero, NaN
+classification, output pointers, owner/TLS errno, packaging and patch replay.
+Automatic source packaging reaches135 units; floating environment support and
+the remainder of libm remain open.

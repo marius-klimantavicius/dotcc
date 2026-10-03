@@ -1,0 +1,58 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "fmod.c": {
+      "upstream": "src/math/fmod.c",
+      "originalSha256": "33fb61093e04783081b9e8f8a8a303456b2f919c215cd0c378c1ed0acf41934c",
+      "adaptedSha256": "3a971e872ce73fe51069eee24cdca05e0b408997a97e2fc9bf263d5b81416305",
+      "patch": "patches/fmod.c.patch",
+      "patchSha256": "1cae0eab3c9a0d4f2ce68f14c26a16c91de89294c78f7515fc99ac9ec2451a52"
+    },
+    "fmodf.c": {
+      "upstream": "src/math/fmodf.c",
+      "originalSha256": "eecc1cf499f143181880a33a95f1614be323aca704815a7b57d4969a7cacc2d4",
+      "adaptedSha256": "239a54fc75e4854d22de8745d183e29869ef793510da51069348282e49dd4fe8",
+      "patch": "patches/fmodf.c.patch",
+      "patchSha256": "655352c5dce2e0882ab85fa9e57c0db0e99ec1beea194aa3f2e62a07508779ad"
+    },
+    "fmodl.c": {
+      "upstream": "src/math/fmodl.c",
+      "originalSha256": "2e0331976ad4414bae10293befdb06a36b89cb8a7fcd66522cdb48c8485b97cb",
+      "adaptedSha256": "a3704d1df1db706e293ee4cfd53716499eda67b27741d23d0aa182a5e0d2822e",
+      "patch": "patches/fmodl.c.patch",
+      "patchSha256": "cbcea00aa9089547a0f661fc943d0c9830a0ab73005520eec183a590c911cdaf"
+    },
+    "modf.c": {
+      "upstream": "src/math/modf.c",
+      "originalSha256": "9681ec8b49299a6fc2b2592241232535a1bc8e785f149efadfbb7637d006ca00",
+      "adaptedSha256": "9681ec8b49299a6fc2b2592241232535a1bc8e785f149efadfbb7637d006ca00",
+      "patch": "patches/modf.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "modff.c": {
+      "upstream": "src/math/modff.c",
+      "originalSha256": "a22d1b522e59fc08400cf79523fd631891bc67ff60099df7b651887811e05112",
+      "adaptedSha256": "a22d1b522e59fc08400cf79523fd631891bc67ff60099df7b651887811e05112",
+      "patch": "patches/modff.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "modfl.c": {
+      "upstream": "src/math/modfl.c",
+      "originalSha256": "7071f715cab5797d2ae6085292f03b82ab53a3af25367966a2f0bf103a07956e",
+      "adaptedSha256": "7071f715cab5797d2ae6085292f03b82ab53a3af25367966a2f0bf103a07956e",
+      "patch": "patches/modfl.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "libm.h": {
+      "upstream": "src/internal/libm.h",
+      "originalSha256": "d5a11757541471030d8f4bf7a39a29de35732ecbb291b2f45bf03296be4f25a2",
+      "adaptedSha256": "d95ceab3f0ceddc3094ac1594921f4bae98abc3c698aa6e98ebdb88245fdf711",
+      "patch": "patches/libm.h.patch",
+      "patchSha256": "065f6dce6945fb3ee8e85b13dd7f0f2a290da3ab329a10ba8446ff76594d7af8"
+    }
+  },
+  "adapters": {
+    "portable_math_abi.h": "158f9ca54d89828968683b926cfd4aec13cd86bf01a0085a334450a535340a7a"
+  }
+}

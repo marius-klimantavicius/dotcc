@@ -45,6 +45,8 @@ def inventory(root):
         selected += ['thrd_create','thrd_current','thrd_equal','thrd_join','thrd_detach','thrd_exit','thrd_sleep','thrd_yield','call_once','mtx_init','mtx_destroy','mtx_lock','mtx_trylock','mtx_timedlock','mtx_unlock','cnd_init','cnd_destroy','cnd_signal','cnd_broadcast','cnd_wait','cnd_timedwait','tss_create','tss_delete','tss_get','tss_set']
     if any(component['directory']=='prng' for component in provider['components']):
         selected += ['rand','srand','rand_r','random','srandom','initstate','setstate','drand48','erand48','lrand48','nrand48','mrand48','jrand48','srand48','seed48','lcong48']
+    if any(component['directory']=='math_parts' for component in provider['components']):
+        selected += ['fmod','fmodf','fmodl','modf','modff','modfl']
     headers={}
     for path in sorted((runtime/'libc/include').glob('*.h')):
         text=re.sub(r'/\*.*?\*/','',path.read_text(),flags=re.S)

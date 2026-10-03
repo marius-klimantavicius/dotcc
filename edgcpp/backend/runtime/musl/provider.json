@@ -212,6 +212,17 @@
         "seed48.c",
         "srand48.c"
       ]
+    },
+    {
+      "directory": "math_parts",
+      "translationUnits": [
+        "fmod.c",
+        "fmodf.c",
+        "fmodl.c",
+        "modf.c",
+        "modff.c",
+        "modfl.c"
+      ]
     }
   ]
 }

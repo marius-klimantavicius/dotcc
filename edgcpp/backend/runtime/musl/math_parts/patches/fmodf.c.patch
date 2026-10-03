@@ -1,0 +1,14 @@
+--- a/fmodf.c
++++ b/fmodf.c
+@@ -1,8 +1,11 @@
++#include <errno.h>
+ #include <math.h>
+ #include <stdint.h>
+ 
+ float fmodf(float x, float y)
+ {
++	/* Portable profile advertises MATH_ERRNO, independently of pending fenv. */
++	if (!isnan(x) && !isnan(y) && (isinf(x) || y == 0)) errno = EDOM;
+ 	union {float f; uint32_t i;} ux = {x}, uy = {y};
+ 	int ex = ux.i>>23 & 0xff;
+ 	int ey = uy.i>>23 & 0xff;
