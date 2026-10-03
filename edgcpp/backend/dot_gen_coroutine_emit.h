@@ -397,6 +397,49 @@ string coroutine_delete_call(a_coroutine_descr_ptr descriptor,const string &addr
   if(parameters->next)result+=", ("+type(parameters->next->type)+")"+size;
   return result+");";
 }
+string coroutine_allocation_call(a_coroutine_descr_ptr descriptor,a_scope_ptr scope,a_variable_ptr result_parameter) {
+  auto allocator=descriptor->new_routine;
+  auto allocation_type=allocator?skip_typerefs(allocator->type):nullptr;
+  auto allocation_parameters=allocation_type?allocation_type->variant.routine.extra_info->param_type_list:nullptr;
+  if(!allocation_parameters || allocation_type->variant.routine.extra_info->has_ellipsis)
+    unsupported("coroutine allocator signature");
+  string call=name(allocator,"f")+"(("+type(allocation_parameters->type)+")__edg_size";
+  auto target=allocation_parameters->next;
+  if(!target)return call+")";
+  // select_coroutine_new uses extra arguments globally only for std::nothrow.
+  // Class membership is flattened by lowering; use its semantic tag predicate.
+  if(is_new_nothrow_param(target))
+    unsupported("coroutine global nothrow allocator adapter");
+  auto source_parameters=skip_typerefs(current_coroutine_routine->type)->variant.routine.extra_info->param_type_list;
+  for(auto source=scope->variant.routine.parameters;source;source=source->next,source_parameters=source_parameters->next) {
+    if(!source_parameters)unsupported("coroutine parameter signature correspondence");
+    if(source==result_parameter)continue;
+    if(source==scope->variant.routine.this_param_variable)
+      unsupported("coroutine placement implicit object binding");
+    if(!target)unsupported("coroutine placement argument correspondence");
+    if(source_parameters->passed_via_copy_constructor || target->passed_via_copy_constructor)
+      unsupported("coroutine placement argument copy construction");
+    auto from=get_underlying_type(source->type),to=get_underlying_type(target->type);
+    string value=name(source,"v"),address="&"+value;
+    if(from->kind==tk_pointer && from->variant.pointer.is_reference) {
+      address=value;value="(*"+value+")";from=get_underlying_type(from->variant.pointer.type);
+    }
+    if(to->kind==tk_pointer && to->variant.pointer.is_reference) {
+      auto referred=get_underlying_type(to->variant.pointer.type);
+      if(!identical_types_ignoring_qualifiers(from,referred))
+        unsupported("coroutine placement reference conversion");
+      call+=", ("+type(target->type)+")("+address+")";
+    } else {
+      if((from->kind!=tk_integer && from->kind!=tk_float && from->kind!=tk_pointer) ||
+         !identical_types_ignoring_qualifiers(from,to))
+        unsupported("coroutine placement value conversion");
+      call+=", ("+type(target->type)+")("+value+")";
+    }
+    target=target->next;
+  }
+  if(target)unsupported("coroutine placement allocator default arguments");
+  return call+")";
+}
 void coroutine_emit_allocation_failure(an_expr_node_ptr expression,a_type_ptr return_type,a_variable_ptr result_parameter) {
   // The allocation-failure hook runs before any promise or frame exists.
   // Preserve mandatory return-object elision into the caller's destination.
@@ -515,12 +558,10 @@ void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_pt
   }
   signature+=")";
   string bytes="((nuint)sizeof(global::Edg.Runtime.Coroutine.Frame) + (nuint)"+std::to_string(8+frame_alignment-1+frame_size)+"UL)";
-  auto allocator=descriptor->new_routine;
-  auto allocation_parameters=allocator?skip_typerefs(allocator->type)->variant.routine.extra_info->param_type_list:nullptr;
-  if(!allocation_parameters || allocation_parameters->next)unsupported("coroutine placement/nothrow allocator adapter");
+  string allocation_call=coroutine_allocation_call(descriptor,scope,result_parameter);
   line("// dot-gen:member-begin");line(signature+" {");
   if(no_throw)line("try {");
-  line("nuint __edg_size="+bytes+";void* __edg_allocation="+name(allocator,"f")+"(("+type(allocation_parameters->type)+")__edg_size);");
+  line("nuint __edg_size="+bytes+";void* __edg_allocation="+allocation_call+";");
   if(descriptor->alloc_failure_gro_call) {
     line("if(__edg_allocation==null){");
     coroutine_emit_allocation_failure(descriptor->alloc_failure_gro_call,rt->variant.routine.return_type,result_parameter);

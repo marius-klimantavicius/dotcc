@@ -495,3 +495,10 @@ halfway inputs, signed zero, subnormals, large exact integers, infinities/NaNs,
 errno preservation and function-address identity. Fenv-dependent rounding APIs
 remain unsupported. Older exception narrative was reconciled with the accepted
 exception_ptr and pointer-descriptor status; current table remains authoritative.
+
+Bounded coroutine placement allocation passes28 focused native/JIT/AOT,
+regression and diagnostic checks. Exact scalar/pointer/explicit-reference
+arguments use incoming factory storage before frame copies. Class conversions,
+defaults and implicit-object forms are not approximated. Two native-valid
+source forms reproduce rejection in original EDG C processing, retained as
+frontend gates without changing EDG. Global nothrow allocation is next.

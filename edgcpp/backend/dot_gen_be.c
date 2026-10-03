@@ -14,6 +14,7 @@
 #include "mem_manage.h"
 #include "lower_il.h"
 #include "lower_eh.h"
+#include "decls.h"
 USING_NAMESPACE_EDG
 
 namespace {

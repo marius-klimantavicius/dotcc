@@ -266,3 +266,38 @@ source passes native GCC/Clang O0/O2, and both generated ownership modes reject
 it before C# publication. That directory's `hashes.json` and `checkpoint/`
 retain the final guard helper, fixtures, verifiers and compiler. This diagnostic
 is remaining-feature evidence, not acceptance of default-argument translation.
+
+A bounded placement-allocation adapter now calls the selected allocator with
+exact scalar/pointer values and directly bound explicit reference parameters.
+It uses the incoming factory parameters before copying them into the coroutine
+frame. Hidden result parameters are excluded. Matching uses retained C++ type
+identity and reference flags, not merely equal C# storage types. Class copies,
+user-defined conversions, extra defaults, variadics, implicit-object placement,
+and global `std::nothrow` allocation remain separately diagnosed.
+
+The reference and value fixtures pass ten native/static/instance JIT/NativeAOT
+checks in `coroutine-placement-20261003-060229/progress.json`. They cover reference
+identity and mutation, scalar/pointer arguments, reference-to-value copies,
+allocator throws, and normal promise/frame destruction. The subsequent member
+probe in that run stopped before backend emission. The compiler, helpers and
+input hashes are retained alongside it. Conversion rejection and ordinary
+size-only counter/allocation-failure JIT regressions pass nine checks in
+`coroutine-placement-gates-regression-20261003-060414/results.json`.
+
+Two valid native probes remain frontend source-acceptance gates: binding a
+mutable reference allocator argument to a by-value coroutine parameter, and
+binding an implicit object to an `Engine&` placement parameter. Both pass native
+GCC/Clang O0/O2, but both EDG frontends reject their selected allocator/promise
+constructor calls before backend emission. Identical preprocessed-input evidence
+is retained in `coroutine-placement-20261003-055857/original-c-frontend.log` and
+`coroutine-placement-20261003-060229/member-original-c-frontend.log`. Their
+source fixtures are retained as `coroutine_placement_parameter_lvalues.cpp` and
+`coroutine_placement_member.cpp`; they are not translated-feature acceptance.
+The accepted explicit-reference fixture does not claim either missing form.
+
+The final placement guard checkpoint passes nine scoped JIT/native/diagnostic
+checks in `coroutine-placement-final-20261003-060706/results.json`; its
+`hashes.json` records the final helper and compiler. Both positive ownership
+modes still pass after making unsupported implicit-object placement explicit,
+and the class-conversion probe is rejected before C# publication. The earlier
+ten-check matrix provides the corresponding NativeAOT acceptance.

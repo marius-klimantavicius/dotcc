@@ -1,0 +1,36 @@
+{
+  "scope": "Exact scalar, pointer and explicit-reference coroutine placement arguments",
+  "checks": 28,
+  "runs": [
+    {
+      "path": "artifacts/campaign/coroutine-placement-20261003-060229/progress.json",
+      "sha256": "297a6e24d7117a5fa724d148801f1139f6587691593364b1ea31cfab511cf3d6",
+      "checks": 10
+    },
+    {
+      "path": "artifacts/campaign/coroutine-placement-gates-regression-20261003-060414/results.json",
+      "sha256": "789f5039cb49c83b911e0e1fea98a977e79c4e96e68b46e0e0d4397b3886b5ab",
+      "checks": 9
+    },
+    {
+      "path": "artifacts/campaign/coroutine-placement-final-20261003-060706/results.json",
+      "sha256": "bf3206495c0fc5fd203f5261cc8c6f48d948f3fdc5256c03839e26aaba57f763",
+      "checks": 9
+    }
+  ],
+  "sources": {
+    "backend/dot_gen_be.c": "6b2930da128f262ac6a1d3e6e44fc7c5e852e38008f39ff0604d08f555070c65",
+    "backend/dot_gen_coroutine_emit.h": "84c1d37bbbb57ee2c882716ec3f7a91ecd0ded54684a25c1691ca9f03e89db80",
+    "backend/tests/libcxx/coroutine_placement.cpp": "46b4e65b34dedcd862d60f46a80639d641ad8a1b31c41a4e4d717452c4188272",
+    "backend/tests/libcxx/coroutine_placement_values.cpp": "8496d74072099dbf45ed58e39c5496bba9e330bea3773cc1681882dcb93325ee",
+    "backend/tests/libcxx/coroutine_placement_conversion.cpp": "0e4bb3901e79eab06afa46af5c2cade3b5d6c045f1739256241cb8c6d4d10001",
+    "backend/tests/coroutine_placement_verify.py": "b98574aab4487fa835c1ace51254cc9f40871fce5a97ebc4b3a0075dd8cd57c8",
+    "backend/tests/coroutine_placement_values_verify.py": "d5eca2597be6b515c627c6c81f4591497a2c05da64ae640ded49412812719b19",
+    "backend/tests/coroutine_placement_conversion_verify.py": "7b0254b126b70a7190f8e326a53b64a29e58786934e9af57b41e4ea774743c5b"
+  },
+  "limitations": [
+    "Class conversions, extra defaults, implicit-object placement and global nothrow remain outside this checkpoint",
+    "Two native-valid forms reproduce source rejection with original EDG C frontend; no EDG source changed",
+    "Final guard checkpoint scoped JIT/diagnostic9; preceding positive10 includes NativeAOT"
+  ]
+}
