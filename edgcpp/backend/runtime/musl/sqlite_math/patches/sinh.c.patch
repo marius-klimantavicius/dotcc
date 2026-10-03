@@ -1,0 +1,27 @@
+--- a/sinh.c
++++ b/sinh.c
+@@ -4,7 +4,7 @@
+  *         = (exp(x)-1 + (exp(x)-1)/exp(x))/2
+  *         = x + x^3/6 + o(x^5)
+  */
+-double sinh(double x)
++double __edg_musl_sinh(double x)
+ {
+ 	union {double f; uint64_t i;} u = {.f = x};
+ 	uint32_t w;
+@@ -37,3 +37,15 @@
+ 	t = __expo2(absx, 2*h);
+ 	return t;
+ }
++
++/* Authored portable MATH_ERRNO boundary; the numerical algorithm is retained above. */
++#include <errno.h>
++double sinh(double x)
++{
++ int saved=errno;
++ int error=0;
++ double result=__edg_musl_sinh(x);
++ if (!error && isfinite(x) && (isinf(result) || (result==0 && x!=0))) error=ERANGE;
++ errno=error?error:saved;
++ return result;
++}

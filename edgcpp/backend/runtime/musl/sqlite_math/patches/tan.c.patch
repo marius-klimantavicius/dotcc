@@ -1,0 +1,27 @@
+--- a/tan.c
++++ b/tan.c
+@@ -41,7 +41,7 @@
+ 
+ #include "libm.h"
+ 
+-double tan(double x)
++double __edg_musl_tan(double x)
+ {
+ 	double y[2];
+ 	uint32_t ix;
+@@ -68,3 +68,15 @@
+ 	n = __rem_pio2(x, y);
+ 	return __tan(y[0], y[1], n&1);
+ }
++
++/* Authored portable MATH_ERRNO boundary; the numerical algorithm is retained above. */
++#include <errno.h>
++double tan(double x)
++{
++ int saved=errno;
++ int error=isinf(x) ? EDOM : 0;
++ double result=__edg_musl_tan(x);
++ if (!error && isfinite(x) && (isinf(result) || (result==0 && x!=0))) error=ERANGE;
++ errno=error?error:saved;
++ return result;
++}

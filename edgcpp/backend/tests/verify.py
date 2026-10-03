@@ -336,6 +336,8 @@ def main():
     checks.extend(verify_libc_signals_abi(ROOT, TESTS, suite_output("libc_signals_abi")))
     from libc_math_remainders_verify import verify_libc_math_remainders
     checks.extend(verify_libc_math_remainders(ROOT, TESTS, suite_output("libc_math_remainders"), args.nativeaot, run))
+    from libc_sqlite_math_verify import verify_libc_sqlite_math
+    checks.extend(verify_libc_sqlite_math(ROOT, TESTS, suite_output("libc_sqlite_math"), args.nativeaot, run))
     from libc_math_logs_verify import verify_libc_math_logs
     checks.extend(verify_libc_math_logs(ROOT, TESTS, suite_output("libc_math_logs"), args.nativeaot, run))
     from libc_math_extrema_verify import verify_libc_math_extrema

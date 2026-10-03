@@ -545,3 +545,12 @@ checks, including generic mixed sign/width arithmetic through128bits, destinatio
 writes on overflow and alias/evaluation behavior. The interim SQLite library
 strict-builds and its core executable matches the native transcript. Full-profile
 math and project NativeAOT/owner acceptance are still separate pending steps.
+
+The unchanged pinned SQLite amalgamation now passes its full configured core
+corpus under strict generated C# JIT and NativeAOT. Both6,337-byte transcripts
+match the fresh native run and checked-in reference. The optional SQL math
+extension remains enabled;28 selected musl double math units bring the provider
+to213. Nine math component checks plus three project core checks are indexed in
+`evidence/sqlite-core-math-milestone.json`. This establishes the test-only memory
+VFS/THREADSAFE=0 profile on Linux x64, not native SQLite OS VFS or complete
+project coverage. Additional corpora and independent-owner checks are underway.

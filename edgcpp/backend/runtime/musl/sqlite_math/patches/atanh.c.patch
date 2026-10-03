@@ -1,0 +1,27 @@
+--- a/atanh.c
++++ b/atanh.c
+@@ -1,7 +1,7 @@
+ #include "libm.h"
+ 
+ /* atanh(x) = log((1+x)/(1-x))/2 = log1p(2x/(1-x))/2 ~= x + x^3/3 + o(x^5) */
+-double atanh(double x)
++double __edg_musl_atanh(double x)
+ {
+ 	union {double f; uint64_t i;} u = {.f = x};
+ 	unsigned e = u.i >> 52 & 0x7ff;
+@@ -27,3 +27,15 @@
+ 	}
+ 	return s ? -y : y;
+ }
++
++/* Authored portable MATH_ERRNO boundary; the numerical algorithm is retained above. */
++#include <errno.h>
++double atanh(double x)
++{
++ int saved=errno;
++ int error=fabs(x)>1 ? EDOM : fabs(x)==1 ? ERANGE : 0;
++ double result=__edg_musl_atanh(x);
++ if (!error && isfinite(x) && (isinf(result) || (result==0 && x!=0))) error=ERANGE;
++ errno=error?error:saved;
++ return result;
++}

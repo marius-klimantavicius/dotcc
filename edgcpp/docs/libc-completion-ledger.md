@@ -138,3 +138,11 @@ integer boundary grids agree, while one million warmed conversion groups allocat
 zero managed bytes in JIT and NativeAOT. Other extended math helpers, dynamic
 fenv and execution on other platforms remain open. See float80-conversions.md,
 libc-locale-environment.md and milestone-locale-float80-conversions.json.
+
+SQLite's enabled SQL math extension required the double exp/pow/trigonometric/
+hyperbolic closure. Twenty-eight pinned musl units now provide17 public double
+functions plus internal kernels/tables, taking the registered provider to213.
+Nine native/generated checks compare71,644 numerical results per mode, errno,
+function addresses and owner/TLS behavior. Full SQLite transcript acceptance
+remains a separate integration gate; float/long-double breadth and fenv are
+deferred. See libc-sqlite-math.md.

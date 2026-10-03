@@ -1,0 +1,29 @@
+{
+  "scope": "SQLite full configured core corpus with translated musl double math dependencies",
+  "checks": 12,
+  "groups": {
+    "mathComponentNativeAndGenerated": 9,
+    "sqliteCoreNativeJitAndNativeAot": 3
+  },
+  "selectedProviderTranslationUnits": 213,
+  "sqliteDefinitionsUnchanged": true,
+  "sqliteTranscriptBytes": 6337,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/persistent-continuation/libc-sqlite-math-translated-001/results.json",
+      "sha256": "805b6a7a2ea23ed75ba0d19fc7a07f4308a5e0dfa3016d3265505eb7a2c1d124"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/sqlite-core-full-001/results.json",
+      "sha256": "ae5142360300a7e97d3f340c4def0266f2d2b3586ac65732fbdb25cab32011bd"
+    }
+  ],
+  "componentManifestSha256": "a9c39e061e419efe3df9243972102f6a7b221310aa466129c3d83ad784ab58aa",
+  "providerManifestSha256": "9081a4841d718ed856fa3932cf37921746b42d974a9748f606e5098b772d127c",
+  "limits": [
+    "Test-only memory VFS, THREADSAFE=0, no native OS SQLite VFS",
+    "Linux-x64 JIT/NativeAOT only",
+    "Additional SQLite corpora and simultaneous owner acceptance pending",
+    "Double math nearest-mode errno profile; full fenv and other widths deferred"
+  ]
+}

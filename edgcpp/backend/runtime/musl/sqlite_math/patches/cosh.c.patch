@@ -1,0 +1,27 @@
+--- a/cosh.c
++++ b/cosh.c
+@@ -4,7 +4,7 @@
+  *         = 1 + 0.5*(exp(x)-1)*(exp(x)-1)/exp(x)
+  *         = 1 + x*x/2 + o(x^4)
+  */
+-double cosh(double x)
++double __edg_musl_cosh(double x)
+ {
+ 	union {double f; uint64_t i;} u = {.f = x};
+ 	uint32_t w;
+@@ -38,3 +38,15 @@
+ 	t = __expo2(x, 1.0);
+ 	return t;
+ }
++
++/* Authored portable MATH_ERRNO boundary; the numerical algorithm is retained above. */
++#include <errno.h>
++double cosh(double x)
++{
++ int saved=errno;
++ int error=0;
++ double result=__edg_musl_cosh(x);
++ if (!error && isfinite(x) && (isinf(result) || (result==0 && x!=0))) error=ERANGE;
++ errno=error?error:saved;
++ return result;
++}

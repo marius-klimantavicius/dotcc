@@ -1,0 +1,27 @@
+--- a/cos.c
++++ b/cos.c
+@@ -42,7 +42,7 @@
+ 
+ #include "libm.h"
+ 
+-double cos(double x)
++double __edg_musl_cos(double x)
+ {
+ 	double y[2];
+ 	uint32_t ix;
+@@ -75,3 +75,15 @@
+ 		return  __sin(y[0], y[1], 1);
+ 	}
+ }
++
++/* Authored portable MATH_ERRNO boundary; the numerical algorithm is retained above. */
++#include <errno.h>
++double cos(double x)
++{
++ int saved=errno;
++ int error=isinf(x) ? EDOM : 0;
++ double result=__edg_musl_cos(x);
++ if (!error && isfinite(x) && (isinf(result) || (result==0))) error=ERANGE;
++ errno=error?error:saved;
++ return result;
++}

@@ -61,6 +61,8 @@ def inventory(root):
         selected += ['signal','raise','abort']
     if any(component['directory']=='locale_environment' and component.get('sourceBase')=='libc' for component in provider['components']):
         selected += ['setlocale','newlocale']
+    if any(component['directory']=='sqlite_math' for component in provider['components']):
+        selected += ['exp','pow','sin','cos','tan','asin','acos','atan','atan2','sinh','cosh','tanh','asinh','acosh','atanh','expm1','log1p']
     if any(component['directory']=='math_extrema' for component in provider['components']):
         selected += [base+suffix for base in ['fmin','fmax','fdim'] for suffix in ['','f','l']]
     if any(component['directory']=='wprintf' for component in provider['components']):

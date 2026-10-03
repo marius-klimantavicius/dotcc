@@ -1,0 +1,27 @@
+--- a/tanh.c
++++ b/tanh.c
+@@ -4,7 +4,7 @@
+  *         = (exp(2*x) - 1)/(exp(2*x) - 1 + 2)
+  *         = (1 - exp(-2*x))/(exp(-2*x) - 1 + 2)
+  */
+-double tanh(double x)
++double __edg_musl_tanh(double x)
+ {
+ 	union {double f; uint64_t i;} u = {.f = x};
+ 	uint32_t w;
+@@ -43,3 +43,15 @@
+ 	}
+ 	return sign ? -t : t;
+ }
++
++/* Authored portable MATH_ERRNO boundary; the numerical algorithm is retained above. */
++#include <errno.h>
++double tanh(double x)
++{
++ int saved=errno;
++ int error=0;
++ double result=__edg_musl_tanh(x);
++ if (!error && isfinite(x) && (isinf(result) || (result==0 && x!=0))) error=ERANGE;
++ errno=error?error:saved;
++ return result;
++}

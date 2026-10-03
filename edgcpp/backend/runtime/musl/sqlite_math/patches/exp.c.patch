@@ -1,0 +1,27 @@
+--- a/exp.c
++++ b/exp.c
+@@ -69,7 +69,7 @@
+ 	return asuint64(x) >> 52;
+ }
+ 
+-double exp(double x)
++double __edg_musl_exp(double x)
+ {
+ 	uint32_t abstop;
+ 	uint64_t ki, idx, top, sbits;
+@@ -132,3 +132,15 @@
+ 	   is no spurious underflow here even without fma.  */
+ 	return eval_as_double(scale + scale * tmp);
+ }
++
++/* Authored portable MATH_ERRNO boundary; the numerical algorithm is retained above. */
++#include <errno.h>
++double exp(double x)
++{
++ int saved=errno;
++ int error=0;
++ double result=__edg_musl_exp(x);
++ if (!error && isfinite(x) && (isinf(result) || (result==0))) error=ERANGE;
++ errno=error?error:saved;
++ return result;
++}

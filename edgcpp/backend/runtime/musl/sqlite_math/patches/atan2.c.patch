@@ -1,0 +1,27 @@
+--- a/atan2.c
++++ b/atan2.c
+@@ -43,7 +43,7 @@
+ pi     = 3.1415926535897931160E+00, /* 0x400921FB, 0x54442D18 */
+ pi_lo  = 1.2246467991473531772E-16; /* 0x3CA1A626, 0x33145C07 */
+ 
+-double atan2(double y, double x)
++double __edg_musl_atan2(double y, double x)
+ {
+ 	double z;
+ 	uint32_t m,lx,ly,ix,iy;
+@@ -105,3 +105,15 @@
+ 		return (z-pi_lo) - pi; /* atan(-,-) */
+ 	}
+ }
++
++/* Authored portable MATH_ERRNO boundary; the numerical algorithm is retained above. */
++#include <errno.h>
++double atan2(double x, double y)
++{
++ int saved=errno;
++ int error=0;
++ double result=__edg_musl_atan2(x,y);
++ if (!error && isfinite(x) && isfinite(y) && (isinf(result) || (result==0 && x!=0))) error=ERANGE;
++ errno=error?error:saved;
++ return result;
++}

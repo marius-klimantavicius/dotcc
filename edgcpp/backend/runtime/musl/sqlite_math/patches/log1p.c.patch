@@ -1,0 +1,27 @@
+--- a/log1p.c
++++ b/log1p.c
+@@ -66,7 +66,7 @@
+ Lg6 = 1.531383769920937332e-01,  /* 3FC39A09 D078C69F */
+ Lg7 = 1.479819860511658591e-01;  /* 3FC2F112 DF3E5244 */
+ 
+-double log1p(double x)
++double __edg_musl_log1p(double x)
+ {
+ 	union {double f; uint64_t i;} u = {x};
+ 	double_t hfsq,f,c,s,z,R,w,t1,t2,dk;
+@@ -120,3 +120,15 @@
+ 	dk = k;
+ 	return s*(hfsq+R) + (dk*ln2_lo+c) - hfsq + f + dk*ln2_hi;
+ }
++
++/* Authored portable MATH_ERRNO boundary; the numerical algorithm is retained above. */
++#include <errno.h>
++double log1p(double x)
++{
++ int saved=errno;
++ int error=x < -1 ? EDOM : x == -1 ? ERANGE : 0;
++ double result=__edg_musl_log1p(x);
++ if (!error && isfinite(x) && (isinf(result) || (result==0 && x!=0))) error=ERANGE;
++ errno=error?error:saved;
++ return result;
++}

@@ -1,0 +1,27 @@
+--- a/atan.c
++++ b/atan.c
+@@ -60,7 +60,7 @@
+   1.62858201153657823623e-02, /* 0x3F90AD3A, 0xE322DA11 */
+ };
+ 
+-double atan(double x)
++double __edg_musl_atan(double x)
+ {
+ 	double_t w,s1,s2,z;
+ 	uint32_t ix,sign;
+@@ -114,3 +114,15 @@
+ 	z = atanhi[id] - (x*(s1+s2) - atanlo[id] - x);
+ 	return sign ? -z : z;
+ }
++
++/* Authored portable MATH_ERRNO boundary; the numerical algorithm is retained above. */
++#include <errno.h>
++double atan(double x)
++{
++ int saved=errno;
++ int error=0;
++ double result=__edg_musl_atan(x);
++ if (!error && isfinite(x) && (isinf(result) || (result==0 && x!=0))) error=ERANGE;
++ errno=error?error:saved;
++ return result;
++}

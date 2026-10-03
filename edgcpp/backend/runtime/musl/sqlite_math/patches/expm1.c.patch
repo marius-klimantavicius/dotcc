@@ -1,0 +1,27 @@
+--- a/expm1.c
++++ b/expm1.c
+@@ -118,7 +118,7 @@
+ Q4 =  4.00821782732936239552e-06, /* 3ED0CFCA 86E65239 */
+ Q5 = -2.01099218183624371326e-07; /* BE8AFDB7 6E09C32D */
+ 
+-double expm1(double x)
++double __edg_musl_expm1(double x)
+ {
+ 	double_t y,hi,lo,c,t,e,hxs,hfx,r1,twopk;
+ 	union {double f; uint64_t i;} u = {x};
+@@ -199,3 +199,15 @@
+ 		y = (x-(e+u.f)+1)*twopk;
+ 	return y;
+ }
++
++/* Authored portable MATH_ERRNO boundary; the numerical algorithm is retained above. */
++#include <errno.h>
++double expm1(double x)
++{
++ int saved=errno;
++ int error=0;
++ double result=__edg_musl_expm1(x);
++ if (!error && isfinite(x) && (isinf(result) || (result==0 && x!=0))) error=ERANGE;
++ errno=error?error:saved;
++ return result;
++}

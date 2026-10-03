@@ -1,0 +1,27 @@
+--- a/pow.c
++++ b/pow.c
+@@ -252,7 +252,7 @@
+ 	return 2 * i - 1 >= 2 * asuint64(INFINITY) - 1;
+ }
+ 
+-double pow(double x, double y)
++double __edg_musl_pow(double x, double y)
+ {
+ 	uint32_t sign_bias = 0;
+ 	uint64_t ix, iy;
+@@ -341,3 +341,15 @@
+ #endif
+ 	return exp_inline(ehi, elo, sign_bias);
+ }
++
++/* Authored portable MATH_ERRNO boundary; the numerical algorithm is retained above. */
++#include <errno.h>
++double pow(double x, double y)
++{
++ int saved=errno;
++ int error=isfinite(x) && x<0 && isfinite(y) && trunc(y)!=y ? EDOM : x==0 && y<0 && isfinite(y) ? ERANGE : 0;
++ double result=__edg_musl_pow(x,y);
++ if (!error && isfinite(x) && isfinite(y) && (isinf(result) || (result==0 && x!=0))) error=ERANGE;
++ errno=error?error:saved;
++ return result;
++}
