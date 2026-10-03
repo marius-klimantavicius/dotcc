@@ -1,0 +1,4 @@
+EDG_LIBC("__edg_locale_set_name", "sbyte*", "int,sbyte*", "__edg_text.SetLocale")
+EDG_LIBC("__edg_locale_new_name", "LOCALE*", "int,sbyte*,LOCALE*", "__edg_text.Locales.NewLocale")
+EDG_LIBC("__edg_locale_set_categories", "sbyte*", "int,int", "__edg_text.Locales.SetCategories")
+EDG_LIBC("__edg_locale_new_categories", "LOCALE*", "int,int,LOCALE*", "__edg_text.Locales.NewCategories")

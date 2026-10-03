@@ -252,6 +252,12 @@ def main():
     checks.extend(verify_floating_intrinsics(ROOT, TESTS, suite_output("floating_intrinsics"), args.nativeaot, run))
     from musl_provider_verify import verify_musl_provider
     checks.extend(verify_musl_provider(ROOT, TESTS, suite_output("musl_provider"), args.nativeaot, run))
+    from libc_locale_environment_verify import verify_libc_locale_environment
+    checks.extend(verify_libc_locale_environment(ROOT, TESTS, suite_output("libc_locale_environment"), args.nativeaot, run))
+    from libc_locale_environment_runtime_verify import verify_libc_locale_environment_runtime
+    checks.extend(verify_libc_locale_environment_runtime(ROOT, TESTS, suite_output("libc_locale_environment_runtime"), args.nativeaot, run))
+    from libc_locale_environment_abi_verify import verify_libc_locale_environment_abi
+    checks.extend(verify_libc_locale_environment_abi(ROOT, TESTS, suite_output("libc_locale_environment_abi")))
     from libc_locale_translated_verify import verify_libc_locale
     checks.extend(verify_libc_locale(ROOT, TESTS, suite_output("libc_locale"), args.nativeaot, run))
     from packed_bitfields_verify import verify_packed_bitfields
@@ -330,6 +336,8 @@ def main():
     checks.extend(verify_libc_math_logs(ROOT, TESTS, suite_output("libc_math_logs"), args.nativeaot, run))
     from libc_math_extrema_verify import verify_libc_math_extrema
     checks.extend(verify_libc_math_extrema(ROOT,TESTS,suite_output("libc_math_extrema"),args.nativeaot,run))
+    from float80_conversion_verify import verify_float80_conversion
+    checks.extend(verify_float80_conversion(ROOT, TESTS, suite_output("float80_conversion"), args.nativeaot, run))
     from float80_add_verify import verify_float80_add
     checks.extend(verify_float80_add(ROOT, TESTS, suite_output("float80_add"), args.nativeaot, run))
     from float80_divide_verify import verify_float80_divide

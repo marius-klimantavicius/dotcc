@@ -315,6 +315,13 @@
         "signals.c",
         "assert_fail.c"
       ]
+    },
+    {
+      "sourceBase": "libc",
+      "directory": "locale_environment",
+      "translationUnits": [
+        "locale_environment.c"
+      ]
     }
   ]
 }

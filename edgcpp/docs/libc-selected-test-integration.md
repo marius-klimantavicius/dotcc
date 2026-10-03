@@ -205,3 +205,22 @@ cleanup and the zero-source-throw type switch. Existing terminate/boundaries
 verifiers remain unchanged and passed all 78 checks after this integration.
 
 Evidence and exact scope: [libc-terminate-signals.md](libc-terminate-signals.md).
+
+## Owner environment locale selection
+
+The authored `libc/locale_environment/locale_environment.c` is one sourceBase
+`libc` translation unit. Its manifest retains pinned musl locale references
+separately and does not claim the facade is unchanged musl source.
+
+* `verify_libc_locale_environment(ROOT, TESTS, out, nativeaot, run)` supplies ten
+  checks with NativeAOT: unchanged musl precedence UBSan oracle, native host
+  transaction reference, and C/C++ static/instance JIT/AOT. It detects provider
+  registration and omits the duplicate explicit TU automatically.
+* `verify_libc_locale_environment_runtime(ROOT, TESTS, out, nativeaot, run)`
+  supplies two checks with NativeAOT for owner/TLS/base transaction and pinned
+  lifetime contracts plus warmed allocation-free category updates.
+* `verify_libc_locale_environment_abi(ROOT, TESTS, out)` rejects eight malformed
+  signatures for the four private imports before C# emission.
+
+Evidence and the bounded supported-name semantics are documented in
+[libc-locale-environment.md](libc-locale-environment.md).

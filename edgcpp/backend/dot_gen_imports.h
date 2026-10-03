@@ -109,6 +109,7 @@ const libc_binding libc_bindings[]={
 #include "libc-math-bindings.def"
 #include "libc-numeric-bindings.def"
 #include "libc-locale-bindings.def"
+#include "libc-locale-environment-bindings.def"
 #include "libc-clock-bindings.def"
 #include "libc-cpu-clock-bindings.def"
 #include "libc-calendar-bindings.def"

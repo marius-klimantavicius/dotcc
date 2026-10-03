@@ -19,7 +19,7 @@ components can be newer than the last committed package milestone.
 | --- | --- | --- |
 | Memory, allocation, `string.h` | Shared owner NativeMemory heap, aligned allocation, memory and ordinary narrow strings, strerror/strerror_r, strtok/TLS, selected musl case-insensitive comparisons and explicit-locale forms | Audited allocation-failure breadth; POSIX extensions beyond explicit bindings. Byte collation accepted in all generated modes. |
 | Character classification, `ctype.h` | Complete narrow classification, casing and explicit-locale forms; all8 generated modes | Broader locale repertoire beyond the supported C/POSIX/C.UTF-8 profile. |
-| Locale, `locale.h` | Owner/TLS C/POSIX/C.UTF-8 objects, category masks, transactional selection, pinned lconv | Environment locale selection, arbitrary locales, actual non-C numeric/monetary/collation data, catalogues. |
+| Locale, `locale.h` | Owner/TLS C/POSIX/C.UTF-8 objects, category masks, transactional selection, pinned lconv; empty-name selection from live owner environ with LC_ALL/category/LANG precedence and generated/native20 proof | Arbitrary locales, actual non-C numeric/monetary/collation data, catalogues. |
 | `stdio.h` | Byte FILE I/O, independent standard cells, buffering, seek/EOF/error/ungetc, synthetic append concurrency; selected musl printf family and one-pass asprintf; selected musl narrow scanf/v* with binary80, FILE locking and allocation-failure proof; captured byte/wide orientation and wide FILE operations, version2 stateful fpos ABI, strict obsolete-ABI rejection; selected wide scanf family with 271 original/native records and all8 generated modes; selected wide printf six-API family with native174/ASan and all8 generated configurations; freopen/tmpfile/tmpnam, perror/rewind/setbuf with generated9 + ABI8 + runtime2 (including disposal race and immediate process exit) | Scanf field extents beyond the pinned signed-int width representation; descriptor sharing, wider failure/concurrency/platform acceptance. |
 | Numeric `stdlib.h`, `inttypes.h` | Integer/float string conversion including binary80, endptr/errno, supported-locale `_l`, atoi family; nine wide conversions plus seven `_l` forms, 12,277 exact cases in all8 generated modes | Integer abs/div family and aggregates now have native/all8 generated proof; broader stdlib operations remain. |
 | `math.h`, `float.h` | IEEE classification, frexp, abs/fabs, sqrt, copysign, integral rounding subset; binary80 exact probes | Most declared transcendental/remainder/power/scaling/decomposition functions; correct errno and directed rounding for all types. |
@@ -126,3 +126,14 @@ Ninety-one focused new/regression checks pass; forbidden foreign/nonlocal/thread
 transfers are fatal during first-pass filtering before cleanup. This closes the
 previous default-terminate signal integration gate, while asynchronous OS
 signals and POSIX masks/actions remain open. See libc-terminate-signals.md.
+
+Owner environment locale selection and fixed-width binary80 conversions pass30
+focused checks: locale20, conversion2 and shared provider packaging8. The
+provider now contains185 source units. Empty locale names resolve translated
+LC_ALL/category/LANG without reading live host state, with transactional category
+updates and explicit C/POSIX/C.UTF-8 limits. Float80 has no BigInteger paths;
+36,000 native conversion records,100,000 independent narrowing cases and checked
+integer boundary grids agree, while one million warmed conversion groups allocate
+zero managed bytes in JIT and NativeAOT. Other extended math helpers, dynamic
+fenv and execution on other platforms remain open. See float80-conversions.md,
+libc-locale-environment.md and milestone-locale-float80-conversions.json.

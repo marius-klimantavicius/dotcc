@@ -129,6 +129,9 @@ int main(void) {
 #undef CHECK_SCALE_ADDRESS
  errno=0;if(scalbnl(LDBL_TRUE_MIN,-1)!=0 || errno!=ERANGE)return 47;
  if(signal(SIGTERM,provider_signal)!=SIG_DFL || raise(SIGTERM)!=0 || signal_seen!=SIGTERM || signal(SIGTERM,SIG_IGN)!=SIG_DFL || raise(SIGTERM)!=0)return 48;
+ if(setenv("LC_ALL","C",1) || !setlocale(LC_ALL,"") || strcmp(setlocale(LC_ALL,0),"C"))return 49;
+ if(setenv("LC_ALL","C.UTF-8",1) || !setlocale(LC_ALL,"") || strcmp(setlocale(LC_CTYPE,0),"C.UTF-8"))return 50;
+ locale_t environment_locale=newlocale(LC_ALL_MASK,"",0);if(!environment_locale)return 51;freelocale(environment_locale);
  uselocale(previous);freelocale(locale);
  return 0;
 }

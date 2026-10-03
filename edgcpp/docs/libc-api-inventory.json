@@ -1,5 +1,5 @@
 {
-  "bindingCount": 175,
+  "bindingCount": 179,
   "bindings": {
     "_Exit": {
       "parameters": "int",
@@ -78,6 +78,30 @@
       "result": "int",
       "source": "libc-locale-bindings.def",
       "target": "__edg_text.Locales.Categories"
+    },
+    "__edg_locale_new_categories": {
+      "parameters": "int,int,LOCALE*",
+      "result": "LOCALE*",
+      "source": "libc-locale-environment-bindings.def",
+      "target": "__edg_text.Locales.NewCategories"
+    },
+    "__edg_locale_new_name": {
+      "parameters": "int,sbyte*,LOCALE*",
+      "result": "LOCALE*",
+      "source": "libc-locale-environment-bindings.def",
+      "target": "__edg_text.Locales.NewLocale"
+    },
+    "__edg_locale_set_categories": {
+      "parameters": "int,int",
+      "result": "sbyte*",
+      "source": "libc-locale-environment-bindings.def",
+      "target": "__edg_text.Locales.SetCategories"
+    },
+    "__edg_locale_set_name": {
+      "parameters": "int,sbyte*",
+      "result": "sbyte*",
+      "source": "libc-locale-environment-bindings.def",
+      "target": "__edg_text.SetLocale"
     },
     "__edg_locale_validate": {
       "parameters": "LOCALE*",
@@ -1935,6 +1959,13 @@
           "signals.c",
           "assert_fail.c"
         ]
+      },
+      {
+        "directory": "locale_environment",
+        "sourceBase": "libc",
+        "translationUnits": [
+          "locale_environment.c"
+        ]
       }
     ],
     "description": "Selected translated musl algorithms and authored C11 thread facade with audited BCL services; not complete libc coverage.",
@@ -2195,6 +2226,8 @@
     "signal",
     "raise",
     "abort",
+    "setlocale",
+    "newlocale",
     "fmin",
     "fminf",
     "fminl",

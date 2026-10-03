@@ -7,7 +7,7 @@ using System.Threading;
 namespace Edg.Runtime;
 
 // Portable bounded locale provider. No managed ambient culture or OS locale ABI.
-public sealed unsafe class LibcLocale : IDisposable
+public sealed unsafe partial class LibcLocale : IDisposable
 {
     private sealed class Locale {public int Categories,Users;public Locale(int categories)=>Categories=categories;}
     private sealed class Selection {public nint Handle=-1;public Locale? Locale;}

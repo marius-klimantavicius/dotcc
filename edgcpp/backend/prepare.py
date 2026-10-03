@@ -34,6 +34,7 @@ for source, target in [
     (root / "backend/runtime/libc-clock-bindings.def", root / "upstream/src/libc-clock-bindings.def"),
     (root / "backend/dot_gen_vla.h", root / "upstream/src/dot_gen_vla.h"),
     (root / "backend/runtime/libc-locale-bindings.def", root / "upstream/src/libc-locale-bindings.def"),
+    (root / "backend/runtime/libc-locale-environment-bindings.def", root / "upstream/src/libc-locale-environment-bindings.def"),
     (root / "backend/dot_gen_exception_ptr.h", root / "upstream/src/dot_gen_exception_ptr.h"),
     (root / "backend/runtime/libc-numeric-bindings.def", root / "upstream/src/libc-numeric-bindings.def"),
     (root / "backend/runtime/libc-math-bindings.def", root / "upstream/src/libc-math-bindings.def"),

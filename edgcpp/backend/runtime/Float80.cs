@@ -17,24 +17,6 @@ public readonly struct Float80 : IEquatable<Float80> {
     private bool Zero => Exponent!=32767 && Significand==0;
     private static Float80 Inf(bool negative)=>new(0x8000000000000000UL,(ushort)(0x7fff|(negative?0x8000:0)));
     private static Float80 QuietNaN=>new(0xc000000000000000UL,0x7fff);
-    private static BigInteger RoundShift(BigInteger value,int drop) {
-        if(drop<=0)return value<<-drop;
-        BigInteger q=value>>drop,r=value-(q<<drop),half=BigInteger.One<<(drop-1);
-        return r>half || (r==half && !q.IsEven)?q+1:q;
-    }
-    private static Float80 Pack(BigInteger magnitude,int power,bool negative) {
-        ushort sign=(ushort)(negative?0x8000:0);
-        if(magnitude.IsZero)return new(0,sign);
-        int high=checked((int)magnitude.GetBitLength())-1+power;
-        if(high>16383)return Inf(negative);
-        int quantum=Math.Max(high-63,-16445);
-        BigInteger mantissa=RoundShift(magnitude,quantum-power);
-        if(mantissa.IsZero)return new(0,sign);
-        if(mantissa.GetBitLength()>64){mantissa>>=1;++quantum;}
-        if(quantum>16320)return Inf(negative);
-        int exp=mantissa<(BigInteger.One<<63)?0:quantum+63+16383;
-        return new((ulong)mantissa,(ushort)(sign|exp));
-    }
     private static Float80 Pack128(UInt128 magnitude,int power,bool negative) {
         ushort sign=(ushort)(negative?0x8000:0);
         if(magnitude==0)return new(0,sign);
@@ -129,19 +111,19 @@ public readonly struct Float80 : IEquatable<Float80> {
     public bool Equals(Float80 other)=>this==other;
     public override bool Equals(object? other)=>other is Float80 f && Equals(f);
     public override int GetHashCode()=>Zero?0:HashCode.Combine(Significand,SignExponent);
-    public static implicit operator Float80(Int128 value)=>Pack(BigInteger.Abs((BigInteger)value),0,value<0);
-    public static implicit operator Float80(UInt128 value)=>Pack((BigInteger)value,0,false);
-    public static explicit operator Int128(Float80 value)=>(Int128)value.Integer();
-    public static explicit operator UInt128(Float80 value)=>(UInt128)value.Integer();
-    public static implicit operator Float80(long value)=>Pack(BigInteger.Abs((BigInteger)value),0,value<0);
-    public static implicit operator Float80(ulong value)=>Pack(value,0,false);
+    public static implicit operator Float80(Int128 value)=>Pack128(value<0?unchecked((UInt128)(-value)):(UInt128)value,0,value<0);
+    public static implicit operator Float80(UInt128 value)=>Pack128(value,0,false);
+    public static explicit operator Int128(Float80 value)=>value.SignedInteger();
+    public static explicit operator UInt128(Float80 value)=>value.UnsignedInteger();
+    public static implicit operator Float80(long value)=>Pack128(value<0?unchecked((ulong)(-value)):(ulong)value,0,value<0);
+    public static implicit operator Float80(ulong value)=>Pack128(value,0,false);
     public static implicit operator Float80(int value)=>(Float80)(long)value;
     public static implicit operator Float80(uint value)=>(Float80)(ulong)value;
     public static implicit operator Float80(double value) {
         ulong bits=(ulong)BitConverter.DoubleToInt64Bits(value),fraction=bits&0xfffffffffffffUL;
         int exp=(int)((bits>>52)&2047);bool sign=(bits>>63)!=0;
         if(exp==2047)return fraction!=0?QuietNaN:Inf(sign);
-        return Pack(exp==0?fraction:fraction|(1UL<<52),Math.Max(exp,1)-1023-52,sign);
+        return Pack128(exp==0?fraction:fraction|(1UL<<52),Math.Max(exp,1)-1023-52,sign);
     }
     public static implicit operator Float80(float value)=>(Float80)(double)value;
     public static implicit operator Float80(Half value)=>(Float80)(double)value;
@@ -151,25 +133,50 @@ public readonly struct Float80 : IEquatable<Float80> {
         if(NaN)return sign|infinity|(1UL<<(precision-2));
         if(Infinity)return sign|infinity;
         if(Zero)return sign;
-        int high=(int)((BigInteger)Significand).GetBitLength()-1+Power;
+        int high=63-BitOperations.LeadingZeroCount(Significand)+Power;
         if(high>max)return sign|infinity;
         int quantum=Math.Max(high-(precision-1),min-(precision-1));
-        BigInteger mantissa=RoundShift(Significand,quantum-Power);
-        if(mantissa.GetBitLength()>precision){mantissa>>=1;++quantum;}
+        int drop=quantum-Power;UInt128 mantissa;
+        if(drop<=0)mantissa=(UInt128)Significand<<-drop;
+        else if(drop>64)mantissa=0;
+        else if(drop==64)mantissa=Significand>0x8000000000000000UL?(UInt128)1:0;
+        else {
+            mantissa=Significand>>drop;
+            ulong remainder=Significand-((ulong)mantissa<<drop),half=1UL<<(drop-1);
+            if(remainder>half || (remainder==half && (mantissa&1)!=0))++mantissa;
+        }
+        if((mantissa>>precision)!=0){mantissa>>=1;++quantum;}
         if(quantum+(precision-1)>max)return sign|infinity;
-        int exp=mantissa<(BigInteger.One<<(precision-1))?0:quantum+(precision-1)+bias;
+        int exp=mantissa<((UInt128)1<<(precision-1))?0:quantum+(precision-1)+bias;
         return sign|((ulong)exp<<(precision-1))|((ulong)mantissa&((1UL<<(precision-1))-1));
     }
     public static explicit operator double(Float80 value)=>BitConverter.Int64BitsToDouble((long)value.BinaryBits(53,-1022,1023,1023,11));
     public static explicit operator Half(Float80 value)=>BitConverter.UInt16BitsToHalf((ushort)value.BinaryBits(11,-14,15,15,5));
     public static explicit operator float(Float80 value)=>BitConverter.Int32BitsToSingle((int)value.BinaryBits(24,-126,127,127,8));
-    private BigInteger Integer(){BigInteger n=Power>=0?(BigInteger)Significand<<Power:(BigInteger)Significand>>-Power;return Negative?-n:n;}
-    public static explicit operator long(Float80 value)=>(long)value.Integer();
-    public static explicit operator ulong(Float80 value)=>(ulong)value.Integer();
-    public static explicit operator int(Float80 value)=>(int)value.Integer();
-    public static explicit operator uint(Float80 value)=>(uint)value.Integer();
-    public static explicit operator short(Float80 value)=>(short)value.Integer();
-    public static explicit operator ushort(Float80 value)=>(ushort)value.Integer();
-    public static explicit operator sbyte(Float80 value)=>(sbyte)value.Integer();
-    public static explicit operator byte(Float80 value)=>(byte)value.Integer();
+    private UInt128 IntegerMagnitude() {
+        if(Significand==0)return 0;
+        int power=Power;
+        if(power<0)return power<=-64?0:(UInt128)(Significand>>-power);
+        int bits=64-BitOperations.LeadingZeroCount(Significand);
+        if(bits+power>128)throw new OverflowException();
+        return (UInt128)Significand<<power;
+    }
+    private Int128 SignedInteger() {
+        UInt128 magnitude=IntegerMagnitude();
+        if(Negative){if(magnitude>((UInt128)1<<127))throw new OverflowException();return unchecked(-(Int128)magnitude);}
+        return checked((Int128)magnitude);
+    }
+    private UInt128 UnsignedInteger() {
+        UInt128 magnitude=IntegerMagnitude();
+        if(Negative && magnitude!=0)throw new OverflowException();
+        return magnitude;
+    }
+    public static explicit operator long(Float80 value)=>checked((long)value.SignedInteger());
+    public static explicit operator ulong(Float80 value)=>checked((ulong)value.UnsignedInteger());
+    public static explicit operator int(Float80 value)=>checked((int)value.SignedInteger());
+    public static explicit operator uint(Float80 value)=>checked((uint)value.UnsignedInteger());
+    public static explicit operator short(Float80 value)=>checked((short)value.SignedInteger());
+    public static explicit operator ushort(Float80 value)=>checked((ushort)value.UnsignedInteger());
+    public static explicit operator sbyte(Float80 value)=>checked((sbyte)value.SignedInteger());
+    public static explicit operator byte(Float80 value)=>checked((byte)value.UnsignedInteger());
 }

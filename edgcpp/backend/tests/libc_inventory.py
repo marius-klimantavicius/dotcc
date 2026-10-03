@@ -59,6 +59,8 @@ def inventory(root):
         selected += [base+suffix for base in ['scalbn','scalbln','ldexp'] for suffix in ['','f','l']]
     if any(component['directory']=='signals' and component.get('sourceBase')=='libc' for component in provider['components']):
         selected += ['signal','raise','abort']
+    if any(component['directory']=='locale_environment' and component.get('sourceBase')=='libc' for component in provider['components']):
+        selected += ['setlocale','newlocale']
     if any(component['directory']=='math_extrema' for component in provider['components']):
         selected += [base+suffix for base in ['fmin','fmax','fdim'] for suffix in ['','f','l']]
     if any(component['directory']=='wprintf' for component in provider['components']):

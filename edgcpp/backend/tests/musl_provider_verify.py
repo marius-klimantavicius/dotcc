@@ -20,7 +20,7 @@ def verify_musl_provider(root, tests, out, nativeaot, run):
         manifest=json.loads((directory/'dot-gen.json').read_text())
         provider=manifest['libcProvider']
         assert provider['id']=='musl-selected-bcl-lp64-v1'
-        assert len(provider['translationUnits'])==184
+        assert len(provider['translationUnits'])==185
         import hashlib
         snapshot=Path(provider['snapshot'])
         for item in provider['translationUnits']:
@@ -43,7 +43,7 @@ def verify_musl_provider(root, tests, out, nativeaot, run):
         checks.append(f"selected musl {language}/{mode}: JIT source hashes, formatting, numeric conversion, bootstrap and globals")
         if nativeaot:
             run(["dotnet", "publish", project, "-c", "Release", "-r", "linux-x64",
-                 "-p:PublishAot=true", "-p:IlcTreatWarningsAsErrors=true", "-o", directory / "aot"])
+                 "-p:PublishAot=true", "-p:IlcTreatWarningsAsErrors=true", "-p:DebugType=none", "-p:DebugSymbols=false", "-o", directory / "aot"])
             run([directory / "aot/Generated"])
             checks.append(f"selected musl {language}/{mode}: Linux x64 NativeAOT")
     return checks

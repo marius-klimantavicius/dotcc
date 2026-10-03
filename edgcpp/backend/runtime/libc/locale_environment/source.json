@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "version": "EDG authored owner-environment locale facade v1",
+  "provenance": "Authored supported-name/category facade. References pinned musl1.2.6 locale_map.c/setlocale.c/newlocale.c for environment precedence and transaction ordering; retained reference files are not selected translation units.",
+  "abi": "portable-lp64-locale-mask-v1",
+  "scope": "Owner getenv LC_ALL/category/LANG, C.UTF-8 no-environment fallback, supported C/POSIX/C.UTF-8 aliases only, transactional updates, existing C defaults for unrequested new-locale categories.",
+  "sources": {},
+  "adapters": {
+    "locale_environment.c": "0fa333bf9f0f46ec51257b5cba1a03d85f383b621b3383d0cef5acee237b0f3c"
+  },
+  "references": {
+    "locale_map.c": "888cbca6ed32b1d1a674678cd03adb27369c244a2963a2e6170ea7dfd69aa51a",
+    "newlocale.c": "55e7e5b9278283474650adbdb537562a9b269b9d29f1886de0f0431db3f2fc35",
+    "setlocale.c": "70d643bc5628c281e59a0acaf47bc53fb8535488096c11fd31b5c59a296700e5"
+  }
+}

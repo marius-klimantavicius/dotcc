@@ -24,7 +24,7 @@ RUNTIME_DEPENDENCIES = {
     "LibcFilesScan": ("LibcFiles", "VaList"),
     "LibcSignals": (), "LibcFilesSignalAssert": ("LibcFilesAssert",),
     "LibcFilesAssert": ("LibcFiles", "LibcProcess"), "LibcFilesWideScan": ("LibcFiles", "VaList"), "LibcFilesWideFormat": ("LibcFiles", "VaList"), "LibcEnvironment": (),
-    "LibcText": ("LibcErrorMessages", "LibcLocale"), "LibcErrorMessages": (), "LibcLocale": (),
+    "LibcText": ("LibcErrorMessages", "LibcLocale"), "LibcErrorMessages": (), "LibcLocale": ("LibcLocaleEnvironment",), "LibcLocaleEnvironment": (),
     "LibcCommand": ("LibcFiles",), "LibcClock": (), "LibcCpuClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
     "LibcxxThreads": ("LibcC11Threads", "LibcInitialThread"), "LibcInitialThread": (), "LibcC11Threads": (), "LibcCalendar": (), "LibcProcess": (), "LibcProcessExit": (),
 }

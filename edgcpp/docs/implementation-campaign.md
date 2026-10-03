@@ -516,3 +516,14 @@ patch replay are retained. A separate246-record audit confirms the selected
 ISO byte-counted wide-destination contract;160 glibc differences remain
 observations. Twenty-six checks are indexed, including expected negatives and
 native corpus regressions. Widths beyond INT_MAX remain explicit work.
+
+Owner environment locale selection and fixed-width binary80 conversions pass30
+focused checks: locale20, conversion2 and shared provider packaging8. The
+provider now contains185 source units. Empty locale names resolve translated
+LC_ALL/category/LANG without reading live host state, with transactional category
+updates and explicit C/POSIX/C.UTF-8 limits. Float80 has no BigInteger paths;
+36,000 native conversion records,100,000 independent narrowing cases and checked
+integer boundary grids agree, while one million warmed conversion groups allocate
+zero managed bytes in JIT and NativeAOT. Other extended math helpers, dynamic
+fenv and execution on other platforms remain open. See float80-conversions.md,
+libc-locale-environment.md and milestone-locale-float80-conversions.json.

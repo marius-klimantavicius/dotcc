@@ -1,5 +1,6 @@
 /* Portable locale objects support C/POSIX and C.UTF-8 categories.
-   Unknown and environment-selected locales fail explicitly. */
+   The selected source provider resolves empty names from owner environ.
+   Unknown locale names still fail explicitly. */
 #ifndef __EDG_DOT_LIBC_LOCALE_H
 #define __EDG_DOT_LIBC_LOCALE_H
 #define LC_CTYPE 0

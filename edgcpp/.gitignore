@@ -59,3 +59,5 @@ __pycache__/
 /upstream/src/libc-signal-bindings.def
 
 /upstream/src/dot_gen_coroutine_view.h
+
+/upstream/src/libc-locale-environment-bindings.def

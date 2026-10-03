@@ -1,0 +1,39 @@
+{
+  "scope": "Owner environment locale selection and allocation-free binary80 conversions",
+  "checks": 30,
+  "checkGroups": {
+    "locale": 20,
+    "conversions": 2,
+    "sharedPackaging": 8
+  },
+  "selectedProviderTranslationUnits": 185,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/libc-locale-environment-translated-20261003-063500/results.json",
+      "sha256": "1f5e7d4c41cc86448dac427dff9473275fd97784e9ba86a0b48a5261803ac705"
+    },
+    {
+      "path": "artifacts/campaign/libc-locale-environment-abi-20261003-063400/results.json",
+      "sha256": "f31a57ec1e8d1fc2fd33528ace61eade3c2694358c59c2b41f2f7ebe624c6b88"
+    },
+    {
+      "path": "artifacts/campaign/libc-locale-environment-runtime-20261003-063000/results.json",
+      "sha256": "8a9299312c172a0b0f7cd9844d47930f387149c00281daca70ff6e3d601abd34"
+    },
+    {
+      "path": "artifacts/campaign/float80-conversion-final-001/results.json",
+      "sha256": "3310a0211517fd198453460ff4e78d34896aa8699495f7582dad8a11e55c6cf2"
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-locale-conversions-001/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082"
+    }
+  ],
+  "runtimeSha256": "d140bb1b3aac9c85eb0bec9bb67ff06c6bf9a993298bde64ea5387866eaa8bf7",
+  "limitations": [
+    "Bounded C/POSIX/C.UTF-8 locale repertoire",
+    "Nearest-even numerical conversions, no dynamic fenv/NaN payload contract",
+    "Other extended math helpers still need allocation audit",
+    "Linux-x64 execution only"
+  ]
+}
