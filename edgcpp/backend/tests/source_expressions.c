@@ -102,6 +102,27 @@ static int pointer_compounds(void) {
 #endif
  return 0;
 }
+static unsigned readable_shifts(unsigned value) {
+ value>>=7;value<<=2;return value;
+}
+static int readable_comma_loops(void) {
+ int i,j,total=0;
+ for(i=0,j=3;j>=0;j--,i++) {
+  total+=i;if(i==1)continue;
+ }
+ if(i!=4 || j!=-1 || total!=6)return 1;
+ total=0;
+ for(i=0,j=2;j>=0;(j--,i++),total+=i)continue;
+ if(i!=3 || j!=-1 || total!=6)return 2;
+ scalar=-1;
+ for(i=0;i<3;i++,store_scalar(i))continue;
+ if(i!=3 || scalar!=3)return 3;
+ total=0;bits.mode=0;
+ for(i=0;i<3;i++,total+=(bits.mode=11))continue;
+ if(i!=3 || total!=9 || bits.mode!=3)return 4;
+ if(readable_shifts(896)!=28)return 5;
+ return 0;
+}
 #ifdef __cplusplus
 static int sequencing(void) {
  scalar=1;scalar+=change_scalar();if(scalar!=23)return 1;
@@ -121,6 +142,7 @@ int main(void) {
  result=split_values();if(result)return 50+result;
  result=numeric_conversions();if(result)return 60+result;
  result=pointer_compounds();if(result)return 90+result;
+ result=readable_comma_loops();if(result)return 110+result;
 #ifdef __cplusplus
  result=sequencing();if(result)return 70+result;
 #endif

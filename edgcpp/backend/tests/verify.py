@@ -52,11 +52,13 @@ def main():
         return directory
     from source_names_verify import verify_source_names
     from source_control_verify import verify_source_control
+    from source_arrays_verify import verify_source_arrays
     from source_expressions_verify import verify_source_expressions
     from source_formatter_verify import verify_source_formatter
     from source_layout_driver_verify import verify_source_layout_driver
     for name, verify in (("source_names", verify_source_names),
                          ("source_control", verify_source_control),
+                         ("source_arrays", verify_source_arrays),
                          ("source_expressions", verify_source_expressions),
                          ("source_formatter", verify_source_formatter),
                          ("source_layout_driver", verify_source_layout_driver)):

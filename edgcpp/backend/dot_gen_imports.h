@@ -367,7 +367,7 @@ bool libc_builtin_definition(a_routine_ptr routine,const string &symbol) {
   libc_register_routine(routine,symbol);
   libc_binding_addresses[symbol]=definition;libc_address_aliases[routine]=definition;
   helper_output+="// dot-gen:source-builtin "+symbol+"\n// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+type(result)+" "+name(routine,"f")+"("+signature+") { "+
-    string(skip_typerefs(result)->kind==tk_void?"":"return ")+name(definition,"f")+"("+arguments+"); }\n// dot-gen:member-end\n";
+    string(skip_typerefs(result)->kind==tk_void?"":"return ")+source_routine_reference(definition,true)+"("+arguments+"); }\n// dot-gen:member-end\n";
   return true;
 }
 bool libc_routine(a_routine_ptr r) {

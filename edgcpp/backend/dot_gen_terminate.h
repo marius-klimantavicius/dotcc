@@ -20,7 +20,7 @@ string terminate_source_abort() {
       unsupported("source abort ABI or unavailable body for default terminate");
     definition=candidate;
   }
-  return definition?name(definition,"f")+"()":"";
+  return definition?source_routine_reference(definition,true)+"()":"";
 }
 void ensure_terminate_helpers() {
   if(terminate_helpers_emitted)return;

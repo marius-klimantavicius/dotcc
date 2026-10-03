@@ -81,7 +81,7 @@ string dynamic_exception_boundary(a_routine_ptr r) {
       "try {\ntry {__edg_unexpected();throw new global::System.InvalidProgramException(\"unexpected returned\");}\ncatch(global::System.Exception "+replacement+") when (__edg_begin_exception("+replacement+")) {\n"
       "var __edg_replacement_frame=__edg_create_catch_frame("+replacement+",0,0,false);__edg_replacement_frame.MarkCaught();\ntry {\n"
       "if("+dynamic_exception_match(spec,replacement)+")__edg_rethrow();\n";
-  if(bad_allowed)code+=name(bad_exception_factory,"f")+"(null);\n";
+  if(bad_allowed)code+=source_routine_reference(bad_exception_factory,true)+"(null);\n";
   code+="__edg_terminate_runtime("+replacement+",\"Unexpected handler threw a forbidden exception\");throw;\n"
       "} finally {try {__edg_replacement_frame.Leave();}catch(global::System.Exception __edg_unexpected_cleanup_error) when(__edg_unexpected_cleanup_failure(__edg_unexpected_cleanup_error)){throw;}}\n"
       "}\n} finally {try {__edg_spec_frame.Leave();}catch(global::System.Exception __edg_unexpected_cleanup_error) when(__edg_unexpected_cleanup_failure(__edg_unexpected_cleanup_error)){throw;}}\n}\n";

@@ -58,8 +58,11 @@ EDG_BASE="$PWD/edgcpp/upstream/bases/docker/dev-env/gcc" \
   `Run(string[])` with owned UTF-8 argv storage through shutdown; see
   [main arguments](../docs/main-arguments.md). `--emit managedlib` permits no
   main and exports public entry wrappers for defined routines. `dot-gen.json`
-  maps EDG mangled symbols to their generated method names. These names are
-  experimental and can change when the source changes.
+  maps EDG mangled symbols to their generated method names. Public C functions
+  and record/opaque types retain source names: a managed SQLite consumer can
+  call `core.sqlite3_open(...)` with `SqliteCore.sqlite3*` directly. Internal
+  functions, parameters, locals and fields also retain source names; C# keywords
+  are escaped and genuine identifier conflicts use deterministic suffixes.
 - Multiple positional source paths use EDG's semantic merge, preserving
   internal linkage, shared inline/template definitions and program type identity.
   The exception bootstrap is supplied once for merged programs. Manifests record
@@ -80,9 +83,11 @@ EDG_BASE="$PWD/edgcpp/upstream/bases/docker/dev-env/gcc" \
   (including plain `char`, using the EDG target signedness). Integer casts
   and arithmetic use unchecked C# expressions; logical/comparison results use
   C-style 0/1 values, including runtime short-circuiting.
-- Automatic scalar locals, assignments, if/else, while/do/for, switch (including GNU case ranges and fallthrough), conditional
-  expressions and lowered labels/gotos used by break/continue. EDG's declaration
-  markers are ignored; initialization statements retain their execution order.
+- Automatic scalar locals, direct assignments, structured if/else, while/do/for,
+  switch (including GNU ranges and fallthrough), break/continue and conditional
+  expressions. Initializers stay at their execution point; legal source scopes
+  retain declarations. Duff dispatch, jumps into nested regions, setjmp and
+  lifetime constraints retain necessary labels or hoisted storage.
 - Scalar and pointer constant/zero-initialized globals, including relocations to
   other globals. Static class/methods are the default. **`--instance-methods`
   explicitly enables a sealed owner class, instance methods and a separate
@@ -90,7 +95,7 @@ EDG_BASE="$PWD/edgcpp/upstream/bases/docker/dev-env/gcc" \
 - Pointers to supported types, incomplete opaque record handles and void; lowered C++ references;
   address-of/dereference, pointer arithmetic/difference, subscripting, casts,
   null tests and indirect assignment. Const is erased after C++ validation;
-  ordinary volatile reads/writes use memory barriers around typed accesses; read helpers cannot inline, so discarded volatile loads remain observable. Volatile bitfields and atomic qualifiers remain unsupported.
+  ordinary volatile reads/writes use memory barriers around typed accesses; read helpers cannot inline, so discarded volatile loads remain observable. Volatile bitfields retain their exact occupied-byte access protocol. See [atomic runtime](../docs/atomic-runtime.md) for the separate accepted atomic operations and limits.
 - Fixed-size arrays, nested plain POD records and unions use explicit-layout
   unmanaged structs with EDG sizes and field offsets. Arrays use `InlineArray`
   storage, preserving their full extent in value copies with compact source.
@@ -129,10 +134,16 @@ EDG_BASE="$PWD/edgcpp/upstream/bases/docker/dev-env/gcc" \
   wrapper name. Public record types make managed-library signatures accessible
   to a separate consumer assembly.
   `Run`, `Shutdown`, `ReleaseThread`, `Dispose` and names beginning with `__edg_` are reserved class names.
-  The wrapper is partial. `--split none|function|size` defaults to none;
+  The wrapper is partial. `--split none|function|size|source` defaults to none;
   `--split-size N` is a positive UTF-8 byte target, default 262144. Whole
-  functions are indivisible and may exceed the target. Globals and Run remain
-  together in Translated.cs. No Roslyn postprocessor is needed for this slice.
+  functions are indivisible and may exceed the target. Storage declarations and
+  initialization remain in `Translated.cs`; source mode groups movable members
+  by their original file. Amalgamations can still use function/size splitting.
+  `dot-gen.sources.json` and `source-index.md` map original symbols to exact
+  generated declaration lines in every mode.
+- `--format roslyn` (default) runs the SDK's Roslyn parser as a whitespace-only
+  build tool before splitting; `--format none` disables it. This formatting step
+  does not change expressions or add a dependency to generated applications.
 - `dot-gen.json` records mode, ABI version, sources, bound imports and generated files. The project
   explicitly lists its source files. Regeneration archives superseded owned
   sources/manifests under `.dot-gen-history` and retires stale split files from
@@ -141,8 +152,9 @@ EDG_BASE="$PWD/edgcpp/upstream/bases/docker/dev-env/gcc" \
   file; the entire project update is not a filesystem transaction.
 - The generated project targets .NET 10 and is AOT-compatible. There are no
   external dependencies, runtime code generation, reflection or P/Invoke in
-  the generated source. Globals use a rooted, pinned byte array and typed pointer
-  projections, including pointer-valued slots. All storage is allocated and
+  the generated source. Globals use a rooted, pinned byte array and source-named
+  ref accessors, including pointer-valued slots. Explicit address operations
+  retain the stable storage pointer. All storage is allocated and
   zeroed before constant values and pointer relocations are assigned.
 - Entry wrappers and instance function-pointer adapters use `GC.KeepAlive` in
   `finally` so the owner survives the

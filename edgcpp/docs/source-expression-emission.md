@@ -91,10 +91,10 @@ and is not linked into translated applications.
 The durable hash index is `evidence/source-expression-components.json`. It
 records 52 unique accepted checks and hashes the retained generated sources,
 projects, command/results logs, input snapshots and compiler observation. The
-005 batch ran 25 checks, but its ten expression checks and the expanded 006
-expression checks are superseded by expanded 009 expression checks; the
-combined expression/bitfield count stays 25. The 008 RTTI/EH checks add 21 and
-the independent formatter checks add six.
+005 batch ran 25 checks, but its ten expression checks and the expanded 006/009
+expression checks are superseded by expanded 010 expression checks; the
+combined expression/bitfield count stays 25. The 010 RTTI/EH checks supersede
+008 and add 21; the independent formatter checks add six.
 The 15-file formatting batch and termination-message audit are supplementary
 proofs, not additional counts. These runs used the explicitly recorded compiler
 snapshots; this is not a claim that all checks ran against one final executable.
@@ -124,6 +124,26 @@ lvalues, receiver evaluation counts, and an RHS that changes the pointer.
 The failed SQLite sources/logs remain under `sqlite-readable-named-002`; the
 durable hash index links that evidence. Real SQLite acceptance is recorded
 separately by the coordinator and is not inferred from these focused tests.
+
+## Comma increment headers and exact-int shifts
+
+The discarded-expression planner now preserves nested comma chains as C#
+statement-expression lists when every nonempty operand already has a legal
+header form and needs no preceding statements. Thus `j--, i++` remains in the
+`for` increment rather than forcing a label-based loop. Operand order remains
+left to right. If any child needs temporary statements, the combined plan keeps
+all statements and declines the header form. Value-producing comma expressions
+are unchanged. Compound shift counts already emitted as `int` no longer receive
+a redundant cast; other count types retain their conversion.
+
+`source-comma-translated-010/results.json` passes ten checks including original
+EDG C/C++ oracles and all static/instance JIT/NativeAOT modes. It asserts generated
+two- and three-part comma headers and ordinary `value >>= 7`, and executes
+`continue`, later operands observing earlier updates, void calls, and a
+bitfield assignment that requires the fallback. The related central source-call
+qualification change passed the 21 RTTI/function-try checks at
+`source-shadow-eh-010/{type_info,function_try}/results.json`. These replace the
+earlier component acceptance counts rather than increasing the unique total.
 
 ## Deferred typed-enum integration audit
 

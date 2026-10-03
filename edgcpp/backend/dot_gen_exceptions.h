@@ -510,7 +510,7 @@ private static void* __edg_exception_alloc(nuint size) {
     auto pos=helper_output.find(from);if(pos==string::npos)unsupported("missing owner-aware EH helper");
     helper_output.replace(pos,from.size(),to);
   }
-  string receiver=instance_mode?"(("+string(getenv("EDG_DOT_CLASS"))+")owner!).":"";
+  string receiver=instance_mode?"(("+string(getenv("EDG_DOT_CLASS"))+")owner!).":source_qualified_owner()+".";
   string mod=instance_mode?"":"static ";
   helper_output+="private "+mod+"__edg_exception_storage? __edg_exception_head=null;\n";
   helper_output+="// dot-gen:member-begin\nprivate "+mod+"void __edg_prepare_exception_ledger() {lock(__edg_sync){if(__edg_abandon_exception_handles==null)__edg_abandon_exception_handles=__edg_abandon_owned_exception_handles;if(__edg_heap_owner.RegionReleased==null)__edg_heap_owner.RegionReleased=__edg_abandon_exception_region;}}\n// dot-gen:member-end\n";
@@ -606,7 +606,7 @@ string exception_destructor(a_routine_ptr r) {
      skip_typerefs(rt->variant.routine.return_type)->kind!=tk_void)unsupported("exception destructor ABI");
   string id="__edg_exception_dtor"+std::to_string(exception_destructors.size());
   exception_destructors[r]=id;
-  string receiver=instance_mode?"(("+string(getenv("EDG_DOT_CLASS"))+")owner!).":"";
+  string receiver=instance_mode?"(("+string(getenv("EDG_DOT_CLASS"))+")owner!).":source_qualified_owner()+".";
   helper_output+="// dot-gen:member-begin\nprivate static void "+id+"(object? owner, byte* address) {\n"+
       receiver+"__edg_enter_exception_disposal(); try { "+receiver+name(r,"f")+
       "(("+type(p->type)+")address); } finally { "+receiver+"__edg_leave(); } }\n// dot-gen:member-end\n";

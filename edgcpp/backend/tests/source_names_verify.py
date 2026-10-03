@@ -43,6 +43,12 @@ def verify_source_names(root, tests, out, nativeaot, run):
             assert named['params']=='@params' and named['out']=='@out'
             assert named['_']!='_' and named['_'].startswith('source_')
             assert named['contribution']=='contribution' and named['f123']=='source_f123'
+            assert any(row['kind']=='parameter' and row['sourceName']=='p' and row['managedName']=='p' for row in records)
+            assert any(row['kind']=='local' and row['sourceName']=='a' and row['managedName']=='a' for row in records)
+            assert all(row['managedName']=='value' for row in records if row['kind']=='parameter' and row['sourceName']=='value')
+            assert any(row['kind']=='local' and row['sourceName']=='Item' and row['managedName']=='Item' for row in records)
+            assert re.search(r'global::@?Source\.@?Identity\.',text)
+
             assert any(row['kind']=='label' and row['managedName']=='@event' for row in records)
             assert any(row['kind']=='local' and row['sourceLine']>0 and row['scope'] for row in records)
             if language=='c++':
@@ -65,7 +71,7 @@ def verify_source_names(root, tests, out, nativeaot, run):
         receiver='core' if instance else 'Core'
         setup='using var core=new Core();' if instance else ''
         # Deliberately use direct source APIs: no manifest/reflection lookup.
-        body=f"using Source.Identity; unsafe class EntryPoint {{static int Main(){{{setup} Core.handle* handle=null;return {receiver}.source_names_check()==0 && {receiver}.Run__export(3)==4 && {receiver}.Shutdown__export(3)==5 && {receiver}.Core__export(3)==6 && {receiver}.keyword_names(2,5)==7 && {receiver}.source_f123(3)==7 && {receiver}.echo_handle(handle)==null?0:91;}}}}"
+        body=f"using Source.Identity; unsafe class EntryPoint {{static int Main(){{{setup} Core.handle* handle=null;return {receiver}.source_names_check()==0 && {receiver}.wrapper_collision(9)==10 && {receiver}.Run__export(3)==4 && {receiver}.Shutdown__export(3)==5 && {receiver}.Core__export(3)==6 && {receiver}.keyword_names(2,5)==7 && {receiver}.source_f123(3)==7 && {receiver}.echo_handle(handle)==null?0:91;}}}}"
         (host/'Program.cs').write_text(body)
         run(['dotnet','build',host/'Host.csproj','-c','Release','--nologo','-p:TreatWarningsAsErrors=true'])
         run(['dotnet',host/'bin/Release/net10.0/Host.dll'])

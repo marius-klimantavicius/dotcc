@@ -426,7 +426,7 @@ string coroutine_delete_call(a_coroutine_descr_ptr descriptor,const string &addr
   if(routine->function_def_number==NULL_function_def_number)unsupported("coroutine selected deallocator requires source definition");
   auto parameters=skip_typerefs(routine->type)->variant.routine.extra_info->param_type_list;
   if(!parameters || (parameters->next && parameters->next->next))unsupported("coroutine deallocator parameters");
-  string result=name(routine,"f")+"(("+type(parameters->type)+")"+address;
+  string result=source_routine_reference(routine,true)+"(("+type(parameters->type)+")"+address;
   if(parameters->next)result+=", ("+type(parameters->next->type)+")"+size;
   return result+");";
 }
@@ -437,7 +437,7 @@ string coroutine_allocation_call(a_coroutine_descr_ptr descriptor,a_scope_ptr sc
   auto allocation_parameters=allocation_type?allocation_type->variant.routine.extra_info->param_type_list:nullptr;
   if(!allocation_parameters || allocation_type->variant.routine.extra_info->has_ellipsis)
     unsupported("coroutine allocator signature");
-  string call=name(allocator,"f")+"(("+type(allocation_parameters->type)+")__edg_size";
+  string call=source_routine_reference(allocator,true)+"(("+type(allocation_parameters->type)+")__edg_size";
   auto target=allocation_parameters->next;
   if(!target)return call+")";
   if(coroutine_global_nothrow_allocator(allocator)) {

@@ -13,9 +13,9 @@ clean inactive compiled temporaries under the later explicit user authorization.
 | Owner | Work | State |
 | --- | --- | --- |
 | Root | User-facing review and source-correspondence acceptance assistance | Supplied readability fixtures, source layout helper and direct named SQLite consumer |
-| Coordinator | Control/declarations, integration, driver grouping/navigation, builds/commits and project evidence | Readability14, control10, layout6 and revised SQLite core3/named API2 accepted; five remaining corpora running |
-| Core language worker | Source identifiers/types and collision mappings | Naming8, multi-TU6 and array-pointer6 accepted; typed enums and unnecessary local suffixes remain |
-| Expression worker | Direct expressions, localized evaluation adjustments and named bitfield properties |52 unique focused checks accepted; SQLite pointer-stride regression fixed; comma-loop fidelity next |
+| Coordinator | Control/declarations, integration, driver grouping/navigation, builds/commits and project evidence | Readability14, control10, layout6 and revised SQLite20 accepted; next source-fidelity increment under test |
+| Core language worker | Source identifiers/types and collision mappings | Shadow-aware names14 and GNU statement10 accepted; typed enums remain |
+| Expression worker | Direct expressions, localized evaluation adjustments and named bitfield properties |52 unique focused checks accepted; comma loops and pointer scaling verified |
 
 Compiler preparation/build and Git mutations are serialized through the
 coordinator. Canonical emitter sources stay in `backend/`. Workers use disjoint
@@ -596,7 +596,10 @@ NativeAOT. A separate consumer declares `SqliteCore.sqlite3*` and
 `SqliteCore.sqlite3_stmt*`, calls the original public API names directly, and
 passes independent-owner/transaction/GC checks in both runtimes. These five
 project checks are fresh evidence for the revised emitter. The other five
-corpora are running; their older passes are not substituted. A parser regression
+corpora subsequently passed all15 native/reference/JIT/NativeAOT checks in
+`sqlite-readable-additional-001`, bringing revised project acceptance to20.
+Their older passes are not substituted. Commit `a00394edb` records the first
+verified source-correspondence implementation increment. A parser regression
 exposed by this rerun was fixed locally in the expression planner: pointer
 compound arithmetic now retains the element stride instead of adding raw bytes.
 Expanded C/C++ expression tests cover consumed/discarded pointer compounds,
@@ -609,6 +612,24 @@ distinctions. This is an accepted increment, not completion of source fidelity:
 enum types still use physical integers in declarations, some parameters/locals
 carry unnecessary collision suffixes, and comma-increment loops still fall back
 to labels. These are the next bounded source-correspondence tasks.
+
+Build010 completes the latter two items: locals and parameters preserve their
+spelling unless their own C# scope conflicts; actual shadowed owner references
+are qualified. Source routine domains are distinct and deterministic. Synthetic
+helper bodies explicitly qualify their source calls/references, including GNU
+statement expressions, cleanup, adapters and exception destructors. Comma
+increment expressions remain in `for` headers when every operand admits a legal
+statement-expression form; prefixes retain the semantic fallback. Fixed source
+array-variable accesses now use named InlineArray views without changing their
+explicit address path. Exact-int shift operands no longer receive redundant
+casts.
+
+The refinement passes naming/shadow14, GNU statement10, expressions10, arrays10,
+RTTI12 and function-try9 checks, plus fresh SQLite core3 including NativeAOT.
+`docs/source-correspondence-review.md` reviews four real SQLite implementations
+against saved original bodies. See `evidence/source-correspondence-refinements.json`
+and `evidence/source-shadow-components.json`. Source-typed enum declarations
+remain the next bounded requirement; broader standards/platform gates stay open.
 
 The complete pre-readability SQLite baseline contains20 unique project checks:
 core/API/VFS/vtable/allocation/FTS5 each match fresh native and checked-in

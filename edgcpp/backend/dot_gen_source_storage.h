@@ -17,17 +17,7 @@ string source_storage_address(a_variable_ptr variable_ptr) {
 string source_variable_override(a_variable_ptr variable_ptr) {
   if(emitting_tls_initializer && tls_offsets.count(variable_ptr))return "";
   if(source_global_accessors.count(variable_ptr)) {
-    string identifier=name(variable_ptr,"v");
-    bool shadowed=false;
-    if(current_function_scope) {
-      string domain=source_routine_scope(current_function_scope->variant.routine.ptr);
-      auto locals=source_local_identifiers.find(domain);
-      shadowed=locals!=source_local_identifiers.end() && locals->second.count(identifier);
-    }
-    if(!shadowed)return identifier;
-    const char *ns=getenv("EDG_DOT_NAMESPACE"),*owner=getenv("EDG_DOT_CLASS");
-    string receiver=instance_mode?"this.":"global::"+string(ns&&*ns?string(ns)+".":"")+string(owner?owner:"Generated")+".";
-    return receiver+name(variable_ptr,"v");
+    return source_owner_reference(name(variable_ptr,"v"));
   }
   if(source_frame_aliases.count(variable_ptr))return name(variable_ptr,"v");
   return "";

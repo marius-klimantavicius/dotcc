@@ -144,7 +144,9 @@ source_planned_node source_plan_mutation(an_expr_node_ptr e,bool discard,bool wa
   if(!increment) {
     bool shift=token=="<<=" || token==">>=";
     bool pointer_arithmetic=skip_typerefs(lhs->type)->kind==tk_pointer && (token=="+=" || token=="-=");
-    if(shift)right.value="unchecked((int)("+right.value+"))";
+    if(shift) {
+      if(type(rhs->type)!="int")right.value="unchecked((int)("+right.value+"))";
+    }
     // Pointer +=/-= takes an integral displacement, not a value convertible
     // to the pointer type. C# typed pointer arithmetic supplies EDG's element
     // stride; casting the address to an integer here would lose that stride.
@@ -277,6 +279,17 @@ source_effect_plan plan_source_effect(an_expr_node_ptr e) {
   if(!e)return {};
   if(e->kind==enk_constant && node_constant(e)->kind==ck_void)return {};
   if(e->kind!=enk_operation)return {expression_effect(e),""};
+  if(e->variant.operation.kind==eok_comma) {
+    auto first=e->variant.operation.operands;
+    auto left=plan_source_effect(first),right=plan_source_effect(first->next);
+    string header;
+    if((left.statements.empty() || !left.header.empty()) &&
+       (right.statements.empty() || !right.header.empty())) {
+      header=left.header;
+      if(!right.header.empty())header+=(header.empty()?"":", ")+right.header;
+    }
+    return {left.statements+right.statements,header};
+  }
   auto p=source_plan_node(e,true);auto op=e->variant.operation.kind;
   if(p.value.empty())return {p.prefix,""};
   bool direct=(source_assignment_token(op) || source_increment(op) || skip_typerefs(e->type)->kind==tk_void) && p.value.compare(0,10,"unchecked(")!=0;

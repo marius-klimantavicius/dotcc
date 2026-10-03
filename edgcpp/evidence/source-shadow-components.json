@@ -1,0 +1,448 @@
+{
+  "schema": 1,
+  "status": "focused-components-passed",
+  "compiler": {
+    "path": "build/bin/cpfe-dot",
+    "sha256": "069e31afb14d7c055b62b8071bad6b052381550a1a76c4745b91bfe1c4ce9a26"
+  },
+  "components": [
+    {
+      "name": "source-shadow",
+      "artifact": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700",
+      "checkCount": 14,
+      "checks": [
+        "c: native source and original EDG C symbol/lifetime oracles",
+        "c-static: JIT source names, keywords, tag/function/owner collisions, shadowed locals, TLS/global addresses and enum cases",
+        "c-static: NativeAOT source correspondence semantics",
+        "c-instance: JIT source names, keywords, tag/function/owner collisions, shadowed locals, TLS/global addresses and enum cases",
+        "c-instance: NativeAOT source correspondence semantics",
+        "c++: native source and original EDG C symbol/lifetime oracles",
+        "cpp-static: JIT source names, keywords, tag/function/owner collisions, shadowed locals, TLS/global addresses and enum cases",
+        "cpp-static: NativeAOT source correspondence semantics",
+        "cpp-instance: JIT source names, keywords, tag/function/owner collisions, shadowed locals, TLS/global addresses and enum cases",
+        "cpp-instance: NativeAOT source correspondence semantics",
+        "library-static: direct source API/opaque type and deterministic lifecycle/class-name collision wrappers",
+        "library-static: NativeAOT direct source API",
+        "library-instance: direct source API/opaque type and deterministic lifecycle/class-name collision wrappers",
+        "library-instance: NativeAOT direct source API"
+      ],
+      "evidence": [
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/results.json",
+          "sha256": "2640d68d3be0cafe591f88a671e9a7f1ab50f1ac5419f458a63a75042fcc7d48"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/dot-gen.json",
+          "sha256": "17ca0ba1e8e0d33bbc0b976091ff2a376ac60c031de3a57cbc4005fb6acf253d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/dot-gen.json",
+          "sha256": "e0e99ef09060790b0b735e673bbb4786ce3d097e5b7a9c596f1591d761ca9fa8"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/dot-gen.json",
+          "sha256": "629d0e3b7e9a13df0de8446e144cbdf2027c4345f5d460255911f97e6809d1b7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/dot-gen.json",
+          "sha256": "f6467f83abbf1d9028327869fd320093c19c11292ab768577e234ac313cf1176"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/library-instance/dot-gen.json",
+          "sha256": "5841ed7c183c95d92b2fe976d35f22f877fb02566e1cd8fc43eda2f64027c656"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/library-static/dot-gen.json",
+          "sha256": "b092ed2ab7c717fcf62361c4ae9f80a7fe09ee971cf6c41585c56e4438c80503"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/dot-gen.sources.json",
+          "sha256": "e03b944df9ef62e38b99d00e615643f37e7e519210320b44e870f13dfcb0a4a2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/dot-gen.sources.json",
+          "sha256": "1b05a3a3fb05b410ed467dba7b4890744a3a881691b4af3c5d5ef497b476688e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/dot-gen.sources.json",
+          "sha256": "2518e4b4af5c57079e7793769bccc32566e8c4ba6d430207a3482a5d9390b3c3"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/dot-gen.sources.json",
+          "sha256": "867dbcac6b7a54e10421402ba0c0c060b8a3974ca52f4ac1a44b744fa4fc7642"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/library-instance/dot-gen.sources.json",
+          "sha256": "773a78e169c1d24c24a97bf3a5ce35bc29fa83b7caf686c8ebe2f84eef21ad73"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/library-static/dot-gen.sources.json",
+          "sha256": "cde9f5778fceb7dddf02156fafd5f273e4be430e8e578a0d28b2de3060ab4cb0"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/Translated.cs",
+          "sha256": "9eb0494e49c58305f54f9d9e20c92c915c9ce85773f83e6db308038763c87142"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/Translated.part00000.cs",
+          "sha256": "50af4589aec3e6d4133175f8fbcb7ffb59b1fe298844465fa439ac1997e6946b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/Translated.part00001.cs",
+          "sha256": "072a6e37354ebdcde422b31b51708bf51ae9d83ff8f60c79d9ff1db56cedde6c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/Translated.part00002.cs",
+          "sha256": "773f4bd581ec668266e1a5adb23f16be1e326668d035ad7a8d5d8f8c703870bf"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/Translated.part00003.cs",
+          "sha256": "87e2ef162c229a038904685c7150afa4e299f6ba648bd379243fe2efcf3cd60f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/Translated.part00004.cs",
+          "sha256": "7cd8ba51b790124780f57f64dec06c244d2cbf706c99e8b90e9a16fc34ac2d36"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/Translated.part00005.cs",
+          "sha256": "d85f11ca1ff1b0a76aa53770e5f96871ab406bb843003d9f50ad43f9facbe0d1"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/Translated.part00006.cs",
+          "sha256": "ac65d76564ab055e8f814d3d429f21221ea431d99c1a50a18a46c4de073aba59"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/Translated.part00007.cs",
+          "sha256": "71ec6555b13bba376359a4ac068bc4ae347af0fabdc66b4f1dff9ee3059c10f7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/Translated.part00008.cs",
+          "sha256": "41aa2fabe9625d00e9811493c64f6d3e3e53e5c91eaddcb43eba6d59518b1bc4"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-instance/Translated.part00009.cs",
+          "sha256": "4375c23b3ea6433d9e6afb16d0fc364da418f892f64fce822657228d72ed3693"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/Translated.cs",
+          "sha256": "3b4fa448f6fddc475354c927152fbafbf87d593f6989886b8836e8acc6507b71"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/Translated.part00000.cs",
+          "sha256": "935a433abdafdad645cee645376adf4306a8460f759555f63e625c5d9c004c36"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/Translated.part00001.cs",
+          "sha256": "1d462b08c1b1795fdbb5178ef328da1c20aea3a3ed0789737c466c5532576673"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/Translated.part00002.cs",
+          "sha256": "8a7893f3f4f97a85a1e1acf7c372c06e18f701d0a837508349b43abc2b95eb5a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/Translated.part00003.cs",
+          "sha256": "19961e9b9340a7d838012040ae57c33ca9412e0083ba523377a9b697c229b44e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/Translated.part00004.cs",
+          "sha256": "2c14f4f8b04f006311a7630488300f694391d4ca7866d3515885bfa5fa2143cf"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/Translated.part00005.cs",
+          "sha256": "90cd4bcc02e2001f80956c78486c74b73cdc687b77462bd8432c0d62b4472a0f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/Translated.part00006.cs",
+          "sha256": "aacf2b107a629983a2b6377f742b281e68afa457d3b08110d8b2f36da5b11eab"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/Translated.part00007.cs",
+          "sha256": "d3572e7a0d9986e270ad910df83d17f0bbe15c8fc8e452d496ff4bab047fe308"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/Translated.part00008.cs",
+          "sha256": "bf586cbb566382accbe3956affe725fbd97a1b396b17e3422dec0c2c7a9a767f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/Translated.part00009.cs",
+          "sha256": "b1ec2abc3786852d6e826e8d18b43430be2cb716e099f3068122b5a8d154536e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/c-static/Translated.part00010.cs",
+          "sha256": "dbe26a7c1f91a62552982b92c8cd00ba9fdd8efe22a7c67c17ff7c32c0d7a807"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/Translated.cs",
+          "sha256": "053b584fe122f1134eec2f3ba21ee9bd5cff8bcae95b16f892572dcaaf5efe03"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/Translated.part00000.cs",
+          "sha256": "a8a6b0bf909201f7c202de1fba61a1166e772105722c50160816d1f5aaedeb66"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/Translated.part00001.cs",
+          "sha256": "bd48d97a2252d39381f77fc90df94bd048a8d5f31239f69b0af9378348374031"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/Translated.part00002.cs",
+          "sha256": "96074db819822aef123e1ee77c0d53dbd9bbe0266a22ccc21767df14603f755d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/Translated.part00003.cs",
+          "sha256": "8774f61cb7e71d5ffb895d95acc34cd00b04a91717319d67a0f3d86caa5240e8"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/Translated.part00004.cs",
+          "sha256": "87e2ef162c229a038904685c7150afa4e299f6ba648bd379243fe2efcf3cd60f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/Translated.part00005.cs",
+          "sha256": "7cd8ba51b790124780f57f64dec06c244d2cbf706c99e8b90e9a16fc34ac2d36"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/Translated.part00006.cs",
+          "sha256": "d85f11ca1ff1b0a76aa53770e5f96871ab406bb843003d9f50ad43f9facbe0d1"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/Translated.part00007.cs",
+          "sha256": "ac65d76564ab055e8f814d3d429f21221ea431d99c1a50a18a46c4de073aba59"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/Translated.part00008.cs",
+          "sha256": "71ec6555b13bba376359a4ac068bc4ae347af0fabdc66b4f1dff9ee3059c10f7"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/Translated.part00009.cs",
+          "sha256": "41aa2fabe9625d00e9811493c64f6d3e3e53e5c91eaddcb43eba6d59518b1bc4"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-instance/Translated.part00010.cs",
+          "sha256": "4375c23b3ea6433d9e6afb16d0fc364da418f892f64fce822657228d72ed3693"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.cs",
+          "sha256": "c840a7fb84cb6f7e21bfe0d5ba7a4151e1fd481fb27397e29b020437e8c3db1f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.part00000.cs",
+          "sha256": "8e917e3c737ae55bfea96d09ae85b5956214000c9418b51d5c158c3dd6f04233"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.part00001.cs",
+          "sha256": "cccd90a5012892ddee7123b0a6b1b2ce38cd7cbc29f4e660e041eba109d74b8d"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.part00002.cs",
+          "sha256": "91b27a288a255658aed448506e0f6561c9cc7f1015622df359599e9cfc43230a"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.part00003.cs",
+          "sha256": "387276018870691b6f3aacac19fbfcb2da634474bcea88bfec19b79d4ab7288c"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.part00004.cs",
+          "sha256": "19961e9b9340a7d838012040ae57c33ca9412e0083ba523377a9b697c229b44e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.part00005.cs",
+          "sha256": "2c14f4f8b04f006311a7630488300f694391d4ca7866d3515885bfa5fa2143cf"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.part00006.cs",
+          "sha256": "90cd4bcc02e2001f80956c78486c74b73cdc687b77462bd8432c0d62b4472a0f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.part00007.cs",
+          "sha256": "aacf2b107a629983a2b6377f742b281e68afa457d3b08110d8b2f36da5b11eab"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.part00008.cs",
+          "sha256": "d3572e7a0d9986e270ad910df83d17f0bbe15c8fc8e452d496ff4bab047fe308"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.part00009.cs",
+          "sha256": "bf586cbb566382accbe3956affe725fbd97a1b396b17e3422dec0c2c7a9a767f"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.part00010.cs",
+          "sha256": "b1ec2abc3786852d6e826e8d18b43430be2cb716e099f3068122b5a8d154536e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/cpp-static/Translated.part00011.cs",
+          "sha256": "dbe26a7c1f91a62552982b92c8cd00ba9fdd8efe22a7c67c17ff7c32c0d7a807"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/library-instance/Translated.cs",
+          "sha256": "569f8c402527754f81932aa132a8d02012e289edb03a37686e7386f689a160cb"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700/library-static/Translated.cs",
+          "sha256": "6768017a71c379b4f6e103660d05fdf83a0b056b268ed05193afec3dbb203f39"
+        }
+      ]
+    },
+    {
+      "name": "gnu-statement-expressions",
+      "artifact": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700",
+      "checkCount": 10,
+      "checks": [
+        "c: original EDG C statement expressions",
+        "c-static: JIT statement-expression captures/loops/nesting/aggregate and conditional evaluation",
+        "c-instance: JIT statement-expression captures/loops/nesting/aggregate and conditional evaluation",
+        "cxx: original EDG C statement expressions",
+        "cxx-static: JIT statement-expression captures/loops/nesting/aggregate and conditional evaluation",
+        "cxx-instance: JIT statement-expression captures/loops/nesting/aggregate and conditional evaluation",
+        "outer-return: unsupported nonlocal/lifetime scope rejected explicitly",
+        "outer-goto: unsupported nonlocal/lifetime scope rejected explicitly",
+        "vla: unsupported nonlocal/lifetime scope rejected explicitly",
+        "raii: unsupported nonlocal/lifetime scope rejected explicitly"
+      ],
+      "evidence": [
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/results.json",
+          "sha256": "5fd0519c06f0e8d28a5162d30c192470461714751f31c244cc2ffeaf5f92fac6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/c-instance/dot-gen.json",
+          "sha256": "664341dc825a214e85ad4954b77f211b9596cc12ac8274e44de09e9419e5c04e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/c-static/dot-gen.json",
+          "sha256": "3136b3a88834cdca3cb1d59a9a14b4ba36a9bfe7d243e71cde2d9c4a018fd3f9"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/cxx-instance/dot-gen.json",
+          "sha256": "e28bff90e2896af798799b65375345584ed5d01fe35515b2c724f0b7a2384afe"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/cxx-static/dot-gen.json",
+          "sha256": "1ef48900c0d01e46f1b793fbc429a6dbf5e052ee03311164dc8a6f94316cbe8b"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/c-instance/dot-gen.sources.json",
+          "sha256": "5c3e9979be0a37b515ddfd862f1696d3f6277331ecb96bab4de665d609f029e6"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/c-static/dot-gen.sources.json",
+          "sha256": "a585d55dff4cc7dfe07605fb62903c9c5fb49a039930b02e036982239282a423"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/cxx-instance/dot-gen.sources.json",
+          "sha256": "f5ae9831e5adb77c6193863e6083e249a5d4148417dafa0dc59e8d3718d0f9fa"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/cxx-static/dot-gen.sources.json",
+          "sha256": "1473d409a16d3e1a78c909eb3736010b637d232cf770cb4893f87db962aae25e"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/c-instance/Translated.cs",
+          "sha256": "9546a5323a703aab9f53d0eef2d5e464fe2d71bb0df61885797dc9692de422d2"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/c-static/Translated.cs",
+          "sha256": "b4207b35cd42d6f4d215c27ab84d4fe10d68388a616f7696584ad5467222b8d4"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/cxx-instance/Translated.cs",
+          "sha256": "fe653f3b60c34fb39b9dcbcbf8c38aa8dcbb110742213889a56293095be7da66"
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700/cxx-static/Translated.cs",
+          "sha256": "442d86444c42594688c798a108bba047602cb300a802b801ddc9ef0f16097deb"
+        }
+      ]
+    }
+  ],
+  "sourceInputs": [
+    {
+      "path": "backend/dot_gen_source_names.h",
+      "sha256": "7220694388a63ef88fd658100364aa94be24ba9aa9b33b7c6b2667d42a4bbfde",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_source_names.h"
+    },
+    {
+      "path": "backend/dot_gen_source_storage.h",
+      "sha256": "0d18b5e3f80aefe44e96ea5f5168dc450d580dbeda1b4203fd3bdd29d5ec29e6",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_source_storage.h"
+    },
+    {
+      "path": "backend/tests/source_names.c",
+      "sha256": "cfeea433d4b85355eafa8f048a42e5ee0be19336695d3f23618babb468f18e90",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/tests/source_names.c"
+    },
+    {
+      "path": "backend/tests/source_names_verify.py",
+      "sha256": "b92ef813a59c852bdd905bcabaf905e5927bf6266c3f30788940a64bef8cd7d9",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/tests/source_names_verify.py"
+    },
+    {
+      "path": "backend/dot_gen_be.c",
+      "sha256": "a5292dc5cd858e7dc11a53183156078a79affa71cacca7c65132667d3b86f212",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_be.c"
+    },
+    {
+      "path": "backend/dot_gen_sequence.h",
+      "sha256": "673b0773dec70d94ddf0681b36780d67b359d5f8881070310568d8b5ef5dc110",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_sequence.h"
+    },
+    {
+      "path": "backend/dot_gen_statement_expression.h",
+      "sha256": "9b75b2e8d917601366ab9da7ba8118a2c4a6491ccfac725fe2f3f6169049664e",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_statement_expression.h"
+    },
+    {
+      "path": "backend/dot_gen_cleanup.h",
+      "sha256": "71104fe9f21763fac60219854b2546be5b85f7053484c02c05651ebcf47b86fe",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_cleanup.h"
+    },
+    {
+      "path": "backend/dot_gen_arrays.h",
+      "sha256": "c8a4d72f24392114c555290214656d81b1a73292a0e6b70b86ca05cbba2a80f3",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_arrays.h"
+    },
+    {
+      "path": "backend/dot_gen_runtime.h",
+      "sha256": "e36b881f5324e121791d8330f0f69a024652c88dfc17f548941685ab18614b32",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_runtime.h"
+    },
+    {
+      "path": "backend/dot_gen_lifecycle.h",
+      "sha256": "049a2abf210a6ccf28f2c44e735c83247292476ed0aa50f8b39241b13af3e6ed",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_lifecycle.h"
+    },
+    {
+      "path": "backend/dot_gen_coroutine_emit.h",
+      "sha256": "2eb149bd86e6882ebf4dce4e597312e906741e411d749fea6b93fd8401228bcc",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_coroutine_emit.h"
+    },
+    {
+      "path": "backend/dot_gen_main.h",
+      "sha256": "e74edd890b5127929c0ae2c57792b5b25890f30b5d1f783c215e203f94fcd0eb",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_main.h"
+    },
+    {
+      "path": "backend/dot_gen_unexpected.h",
+      "sha256": "02ed9379b9c8054918821ebcf8ea063284e92d80f72e29df7e1058cc34a9d434",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_unexpected.h"
+    },
+    {
+      "path": "backend/dot_gen_terminate.h",
+      "sha256": "fce846420d2d59f36ee727e960733195e5f489f9a49038bc67c8a7e5da6d8411",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_terminate.h"
+    },
+    {
+      "path": "backend/dot_gen_imports.h",
+      "sha256": "157d5b92b6277df368892e0baf0003de0a776431bd99700094ee38dca21216cf",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_imports.h"
+    },
+    {
+      "path": "backend/dot_gen_exceptions.h",
+      "sha256": "0618d509dfa01c78c97b16ec0c05cdf9672bcafe851a3c001e70e27e8c2fe130",
+      "snapshot": "artifacts/campaign/persistent-continuation/source-shadow-accepted-010-20261003-102900/source/backend/dot_gen_exceptions.h"
+    }
+  ],
+  "limits": [
+    "Source enum storage/signatures remain physical integer until the separate enum-typing milestone.",
+    "Source scopes sharing one C# declaration scope may still need a collision suffix; unrelated owner symbols no longer displace locals.",
+    "No whole-language completion claim. SQLite project acceptance is tracked separately by coordinator."
+  ]
+}

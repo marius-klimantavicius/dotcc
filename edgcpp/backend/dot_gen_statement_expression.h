@@ -85,7 +85,7 @@ string gnu_statement_expression(an_expr_node_ptr e) {
   }
   bool address=e->is_lvalue;
   auto saved_output=std::move(output);output.clear();statement_expression_results.push_back(address);
-  statement(e->variant.statement);
+  { source_qualified_reference_guard references;statement(e->variant.statement); }
   string body=std::move(output);output=std::move(saved_output);statement_expression_results.pop_back();
   expression_variables=std::move(saved_variables);
   helper_output+="// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+type(e->type)+

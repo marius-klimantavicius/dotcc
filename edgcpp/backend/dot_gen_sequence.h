@@ -67,7 +67,7 @@ string sequence_expression(an_expr_node_ptr e) {
   cleanup_cursor_used=true;
   cleanup_slot="(*__edg_state)";
   bool address=e->is_lvalue;
-  string result=sequence_result(e,address);
+  string result;{ source_qualified_reference_guard references;result=sequence_result(e,address); }
   expression_variables=saved;
   cleanup_slot=saved_slot;
   helper_output+="// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+

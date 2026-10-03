@@ -48,8 +48,8 @@ string array_allocation_call(a_routine_ptr r,an_expr_node_ptr args) {
         string n=p->source_corresp.name;if(n=="_Znam")new_array=p;if(n=="_ZdaPv")delete_array=p;
       }
       if(!delete_array || (create && !new_array))unsupported("missing array allocation provider");
-      if(create)alloc=name(new_array,"f")+"(size)";
-      release=name(delete_array,"f")+"(raw)";
+      if(create)alloc=source_routine_reference(new_array,true)+"(size)";
+      release=source_routine_reference(delete_array,true)+"(raw)";
     }
     string signature=create?"void* __edg"+source+"(ulong count, ulong stride, ulong prefix, "+fp+" ctor, "+fp+" dtor":
         "void __edg"+source+"(void* data, ulong stride, ulong prefix, "+fp+" dtor";
@@ -75,7 +75,7 @@ string array_allocation_call(a_routine_ptr r,an_expr_node_ptr args) {
          bad_type->variant.routine.extra_info->has_ellipsis ||
          skip_typerefs(bad_type->variant.routine.return_type)->kind!=tk_void)
         unsupported("bad_array_new_length provider ABI");
-      code+="if (stride != 0 && count > (ulong.MaxValue-prefix)/stride) "+name(bad,"f")+"();\n"
+      code+="if (stride != 0 && count > (ulong.MaxValue-prefix)/stride) "+source_routine_reference(bad,true)+"();\n"
           "ulong bytes=count*stride; ulong size=(bytes==0?1UL:bytes)+prefix;\n"
           "void* raw="+alloc+"; if(raw==null)return null; void* data=(byte*)raw+prefix;\n"
           "if(prefix!=0)*((ulong*)data-1)=count;\n"

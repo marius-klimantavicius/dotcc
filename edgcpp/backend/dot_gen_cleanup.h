@@ -222,7 +222,7 @@ string emit_cleanup() {
       } else address=cleanup_handle(region.handle,region.flags);
       // throw.c uses the array supplement's element_size for sized delete,
       // and does not call either form for a null allocation address.
-      destruction="{ byte* allocation = "+address+"; if(allocation != null) "+name(r,"f")+
+      destruction="{ byte* allocation = "+address+"; if(allocation != null) "+source_routine_reference(r,true)+
           "(("+type(params->type)+")allocation"+size_arg+"); }";
     } else if(region.flags & 8) {
       auto index=cleanup_integer(region.handle);
@@ -241,7 +241,7 @@ string emit_cleanup() {
       destruction="__edg_vec_cleanup("+cleanup_handle(a[0],region.flags)+", "+count+
           ", "+std::to_string(size)+"UL, ("+array_callback_type()+")"+routine_address(r)+");";
     } else {
-      destruction=name(r,"f")+"(("+type(params->type)+")"+cleanup_handle(region.handle,region.flags);
+      destruction=source_routine_reference(r,true)+"(("+type(params->type)+")"+cleanup_handle(region.handle,region.flags);
       if(region.vtt)destruction+=", ("+type(params->next->type)+")"+cleanup_handle(region.vtt,region.vtt_flags);
       destruction+=");";
     }
@@ -271,7 +271,7 @@ void emit_cleanup_helper() {
     parameters+=", "+type(v->type)+"* "+p;
     expression_variables[v]="(*"+p+")";
   }
-  string cases=emit_cleanup();
+  string cases;{ source_qualified_reference_guard references;cases=emit_cleanup(); }
   expression_variables=saved;
   const string marker="__edg_cleanup_state",replacement="(*state)";
   for(size_t pos=cases.find(marker);pos!=string::npos;pos=cases.find(marker,pos+replacement.size()))

@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "compilerBuild": "source-readability-build-010",
+  "compilerSha256": "069e31afb14d7c055b62b8071bad6b052381550a1a76c4745b91bfe1c4ce9a26",
+  "accepted": [
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/source-arrays-translated-010",
+      "resultsSha256": "735f88d28d0979ea3f1ee08c2e4caf74bc9d61fd34e3fd40fe402d0a590d782b",
+      "count": 10
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/source-comma-translated-010",
+      "resultsSha256": "5d852dd80b56e3bbe7287c73cf008bc862fc0a1a728e371fb6efe636ac548e05",
+      "count": 10
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/source-shadow-translated-010-20261003-102700",
+      "resultsSha256": "2640d68d3be0cafe591f88a671e9a7f1ab50f1ac5419f458a63a75042fcc7d48",
+      "count": 14
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/source-shadow-gnu-010-20261003-102700",
+      "resultsSha256": "5fd0519c06f0e8d28a5162d30c192470461714751f31c244cc2ffeaf5f92fac6",
+      "count": 10
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/source-shadow-eh-010/type_info",
+      "resultsSha256": "8aab6e4a6f87ee611588b6c8bd10b8d13aea2bd67fb7110a94f944450689e9bd",
+      "count": 12
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/source-shadow-eh-010/function_try",
+      "resultsSha256": "b7198ad8b406df5b7cd4d7cbc4f983d6d6c4ed23d94cc61ccd1a5711ffd46491",
+      "count": 9
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/sqlite-readable-core-010",
+      "resultsSha256": "1f18359f43e61ef39097f96f6d594b29cb9dd08ab05f5f01481c4ace07fd8a69",
+      "count": 3
+    }
+  ],
+  "review": {
+    "artifact": "artifacts/campaign/persistent-continuation/source-review-010/review.json",
+    "sha256": "239cd30f15c6e7dd1051ffb7f8cf8b5c6e684b0f82edea81f738098c71b6c60b"
+  },
+  "changes": [
+    "Preserve local/parameter names; qualify actual shadowed source references and synthesized helper calls.",
+    "Separate deterministic per-routine local naming domains.",
+    "Retain comma-increment for headers when all operands have valid prefix-free statement forms.",
+    "Remove exact-int shift casts; preserve necessary other conversions.",
+    "Use named fixed array-variable indexing, retaining stable explicit pointer/address paths."
+  ],
+  "remaining": [
+    "Named enum declaration/signature types.",
+    "Full standards and cross-platform execution gates remain deferred."
+  ]
+}

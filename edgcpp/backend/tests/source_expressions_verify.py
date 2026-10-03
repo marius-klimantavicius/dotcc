@@ -44,7 +44,13 @@ def verify_source_expressions(root, tests, out, nativeaot, run):
             assert not re.search(r"__edg_(assign|bits_mutate)\d+", body), body
             assert re.search(r"->@?mode\s*\+=", body), body
             assert re.search(r"->@?ready\s*=", body), body
-            (directory / "expression-readability.json").write_text(json.dumps({"body": body}, indent=2)+"\n")
+            loops = function_body(generated, "readable_comma_loops")
+            assert re.search(r"for\s*\([^;]*;[^;]*;\s*j\s*--\s*,\s*i\s*\+\+\s*\)", loops), loops
+            assert re.search(r"j\s*--\s*,\s*i\s*\+\+\s*,\s*total\s*\+=\s*i", loops), loops
+            shifts = function_body(generated, "readable_shifts")
+            assert re.search(r"value\s*>>=\s*7\s*;", shifts), shifts
+            assert re.search(r"value\s*<<=\s*2\s*;", shifts), shifts
+            (directory / "expression-readability.json").write_text(json.dumps({"body": body,"commaLoops":loops,"shifts":shifts}, indent=2)+"\n")
             if instance:
                 entry = directory / "EntryPoint.cs"
                 (directory / "EntryPoint.generated.cs.saved").write_bytes(entry.read_bytes())

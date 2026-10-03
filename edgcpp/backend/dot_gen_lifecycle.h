@@ -301,7 +301,7 @@ string lifecycle_call(a_routine_ptr r,an_expr_node_ptr args) {
   if(r->function_def_number!=NULL_function_def_number)return "";
   string source=r->source_corresp.name?r->source_corresp.name:"";
   if(r->is_tls_init_alias) {
-    for(auto p=il_header.primary_scope->routines;p;p=p->next)if(p->is_tls_init_routine)return name(p,"f")+"()";
+    for(auto p=il_header.primary_scope->routines;p;p=p->next)if(p->is_tls_init_routine)return source_routine_reference(p,true)+"()";
     unsupported("external TLS initializer");
   }
   if(source=="__cxa_guard_acquire" || source=="__cxa_guard_release" || source=="__cxa_guard_abort") {

@@ -302,7 +302,7 @@ string routine_address(a_routine_ptr r) {
     }
     address_output += "// dot-gen:member-begin\n" + signature + ") { "+string(instance_mode?"owner.__edg_enter();":"/*__EDG_ENTER__*/")+" try { " +
                       (type(rt->variant.routine.return_type) == "void" ? "" : "return ") +
-                      string(instance_mode?"owner.":"") + id + "(" + args + "); } finally { "+string(instance_mode?"owner.__edg_leave(); global::System.GC.KeepAlive(owner);":"/*__EDG_LEAVE__*/")+" } }\n// dot-gen:member-end\n";
+                      (instance_mode?string("owner."):source_qualified_owner()+".") + id + "(" + args + "); } finally { "+string(instance_mode?"owner.__edg_leave(); global::System.GC.KeepAlive(owner);":"/*__EDG_LEAVE__*/")+" } }\n// dot-gen:member-end\n";
   }
   // Cache the managed entry point once. Interlocked publication preserves
   // identity across concurrent first use and tiered-JIT address-taking.
@@ -667,7 +667,7 @@ string location(an_expr_node_ptr e) {
       // parameters after EDG's this/covariant-result adjustments.
       auto r=current_function_scope->variant.routine.ptr->overriding_function_for_wrapper;
       if(!r || r->function_def_number==NULL_function_def_number)unsupported("external virtual thunk target");
-      string call=name(r,"f")+"(";
+      string call=source_routine_reference(r)+"(";
       for(auto p=current_function_scope->variant.routine.parameters;p;p=p->next) {
         if(p!=current_function_scope->variant.routine.parameters)call+=", ";
         call+=variable(p);
@@ -744,7 +744,7 @@ string location(an_expr_node_ptr e) {
       } else {
         if ((r->function_def_number == NULL_function_def_number || !scope_for_routine_or_null(r)) && !libc_routine(r) && !thread_routine(r) && !process_routine(r))
           unsupported(("external call: "+source).c_str());
-        call = name(r, "f") + "(";
+        call = source_routine_reference(r) + "(";
       }
     } else {
       call = expr(a) + "(";
@@ -790,6 +790,21 @@ string location(an_expr_node_ptr e) {
   if (op == eok_indirect && function_pointer(a->type)) return expr(a);
   if (op == eok_indirect || op == eok_ref_indirect) return "(*(" + expr(a) + "))";
   if (op == eok_subscript) {
+    // A fixed source array already has a named InlineArray lvalue. Keep its
+    // ordinary indexing visible; address(e) still supplies the original
+    // element pointer for address-taking and pointer arithmetic. Limit this
+    // view to stable array variables, so evaluating a record receiver is not
+    // duplicated or reordered by the expression planner.
+    if(a->kind==enk_operation && a->variant.operation.kind==eok_array_to_pointer) {
+      auto array=a->variant.operation.operands;auto at=skip_typerefs(array->type);
+      if(array->kind==enk_variable && at->kind==tk_array && at->size &&
+         !at->variant.array.is_vla && !at->variant.array.is_variable_size_array) {
+        string index=expr(b);if(type(b->type)!="int")index="unchecked((int)("+index+"))";
+        string value=location(array)+"["+index+"]";
+        if(skip_typerefs(at->variant.array.element_type)->kind==tk_pointer)value+=".Value";
+        return value;
+      }
+    }
     // C++17 sequences the syntactic left operand first, even for index[p].
     if(skip_typerefs(a->type)->kind==tk_pointer)return "("+expr(a)+")["+expr(b)+"]";
     return "(*(" + expr(a) + " + " + expr(b) + "))";
@@ -882,7 +897,8 @@ string location(an_expr_node_ptr e) {
     }
     return helper + "(" + rhs + ", " + address(a) + ")";
   }
-  if (op == eok_shiftl || op == eok_shiftr) rhs = "unchecked((int)(" + rhs + "))";
+  if ((op == eok_shiftl || op == eok_shiftr) && type(b->type)!="int")
+    rhs = "unchecked((int)(" + rhs + "))";
   string lhs = expr(a);
   if (comparison && function_pointer(a->type)) {
     lhs = "((nuint)(" + lhs + "))";
@@ -976,6 +992,7 @@ void collect_local_static_storage(a_scope_ptr scope) {
   for(auto s=scope->scopes;s;s=s->next)collect_local_static_storage(s);
 }
 void globals(a_variable_ptr first, const char *cls) {
+  source_qualified_reference_guard references;
   std::vector<a_variable_ptr> stored_variables;
   for(auto v=first;v;v=v->next) {
     if(!variable_needed(v))continue;
@@ -1034,7 +1051,7 @@ void globals(a_variable_ptr first, const char *cls) {
     else if (v->init_kind != initk_none && v->init_kind != initk_zero && v->init_kind!=initk_dynamic) unsupported("global initializer", v->init_kind);
   }
   if(!startup_routines.empty()) {
-    line("try {");for(auto r:startup_routines)line(name(r,"f")+"();");
+    line("try {");for(auto r:startup_routines)line(source_routine_reference(r,true)+"();");
     line("} catch(global::System.Exception error) {/*__EDG_GLOBAL_TERMINATE__*/}");
   }
   line("}");
@@ -1323,7 +1340,7 @@ void emit_library_export(a_routine_ptr r,a_variable_ptr params,const string &sig
   line("// dot-gen:member-begin");
   line("// dot-gen:origin "+exported);
   line(api + " { /*__EDG_ENTER__*/ try { " + (type(rt->variant.routine.return_type) == "void" ? "" : "return ") +
-       name(r, "f") + "(" + args + "); } /*__EDG_EXCEPTION_BOUNDARY__*/ finally { /*__EDG_LEAVE__*/ global::System.GC.KeepAlive(" +
+       source_routine_reference(r,true) + "(" + args + "); } /*__EDG_EXCEPTION_BOUNDARY__*/ finally { /*__EDG_LEAVE__*/ global::System.GC.KeepAlive(" +
        string(instance_mode ? "this" : "__edg_storage") + "); } }");
   line("// dot-gen:member-end");
 }

@@ -22,9 +22,14 @@ label scope. It accounts for:
 - `_`, which is renamed rather than allowed to capture generated C# discards.
 
 Collisions retain a source cue with a suffix such as `__type`, `__global` or
-`__local`; metadata records the resulting spelling. Enclosing owner/type name
-sets are shared during local allocation, avoiding one copy of all global names
-per function in large amalgamations.
+`__local`; metadata records the resulting spelling. Unrelated owner members and
+types do not reserve local names. Parameters such as `p` and locals such as `a`
+keep their source spelling even when other functions or globals use that name.
+A shadowed global, routine call or enum-member reference is qualified at its
+use; unshadowed references remain plain. Synthetic helper bodies qualify owner
+references because their generated parameters have independent scopes. Function
+local domains use deterministic per-entity ordinals, so overloads and generated
+routines cannot accidentally share a domain through a repeated source name.
 
 ## C++ context after lowering
 
@@ -87,3 +92,16 @@ Build 008 acceptance is retained under
 
 The focused verifier optionally publishes NativeAOT with debug symbols disabled;
 the checks listed above are JIT acceptance and do not imply that option was run.
+
+Build 010 shadow-aware naming acceptance adds 14 checks in
+`source-shadow-translated-010-20261003-102700`: native/EDG C oracles and C/C++
+static/instance executable JIT/NativeAOT, plus both direct managed-library API
+host modes under JIT/NativeAOT. It verifies unchanged `p`, `a`, and type-shadowing
+local names, explicit owner access through a shadow, enum case qualification,
+wrapper/body parameter collisions and function-pointer/helper parameter names.
+Ten additional GNU statement-expression checks pass in
+`source-shadow-gnu-010-20261003-102700` (original C/JIT and existing explicit
+unsupported boundaries). Exact source/compiler/generated hashes are recorded in
+`evidence/source-shadow-components.json`; the retained source snapshot is
+`source-shadow-accepted-010-20261003-102900`. These checks are separate from
+project-wide SQLite acceptance.

@@ -8,7 +8,8 @@ struct source_name_entry {
 std::map<const void*,source_name_entry> source_name_entries;
 std::vector<const void*> source_name_order;
 std::map<string,std::set<string>> source_name_used,source_name_reserved,source_local_identifiers;
-std::map<a_routine_ptr,string> source_export_names;
+std::map<a_routine_ptr,string> source_export_names,source_function_domains;
+bool source_force_qualified_references=false;
 std::map<a_type_ptr,string> source_record_aliases,source_alias_contexts,source_member_domains;
 std::map<const a_source_correspondence*,string> source_context_cache;
 std::set<a_type_ptr> source_name_types,source_enum_emitted;
@@ -163,7 +164,13 @@ string source_owner_name() {
 }
 string source_routine_scope(a_routine_ptr routine) {
   if(!routine)return "global";
-  return "function:"+string(routine->source_corresp.name?routine->source_corresp.name:"generated");
+  auto found=source_function_domains.find(routine);
+  if(found!=source_function_domains.end())return found->second;
+  // Ordinals are assigned in deterministic declaration traversal. Source names
+  // are metadata, never a uniqueness key for overloaded or generated routines.
+  string domain="function:"+std::to_string(source_function_domains.size()+1)+":"+
+    string(routine->source_corresp.name?routine->source_corresp.name:"generated");
+  return source_function_domains[routine]=domain;
 }
 void source_register(const void *entity,a_source_correspondence *source,const string &kind,
                      const string &scope,const string &domain,const string &candidate) {
@@ -176,13 +183,10 @@ void source_register(const void *entity,a_source_correspondence *source,const st
 }
 string source_allocate(const string &domain,const string &candidate,const string &kind,bool getter=false,bool setter=false) {
   auto &used=source_name_used[domain];string result=candidate;
-  const bool function_domain=domain.compare(0,9,"function:")==0;
-  const auto &enclosing_members=source_name_used["owner"],&enclosing_types=source_name_used["namespace"];
   auto occupied=[&](const string &identifier) {
-    // Share enclosing member/type sets instead of copying thousands of names
-    // into every function's local set (quadratic for large amalgamations).
-    bool enclosing=function_domain && (enclosing_members.count(identifier)||enclosing_types.count(identifier));
-    return used.count(identifier) || enclosing || (getter&&used.count("get_"+identifier)) || (setter&&used.count("set_"+identifier));
+    // C# locals may shadow owner members. References qualify only when needed;
+    // unrelated owner declarations must not displace a source local name.
+    return used.count(identifier) || (getter&&used.count("get_"+identifier)) || (setter&&used.count("set_"+identifier));
   };
   if(occupied(result)) {
     string base=candidate+"__"+source_identifier(kind);result=base;unsigned suffix=2;
@@ -285,7 +289,7 @@ void source_collect_type(a_type_ptr original) {
 }
 void reset_source_names() {
   source_name_entries.clear();source_name_order.clear();source_name_used.clear();source_name_reserved.clear();source_local_identifiers.clear();
-  source_export_names.clear();source_record_aliases.clear();source_alias_contexts.clear();source_context_cache.clear();source_member_domains.clear();source_name_types.clear();source_name_scopes.clear();
+  source_export_names.clear();source_function_domains.clear();source_force_qualified_references=false;source_record_aliases.clear();source_alias_contexts.clear();source_context_cache.clear();source_member_domains.clear();source_name_types.clear();source_name_scopes.clear();
   source_enumerator_types.clear();source_enum_emitted.clear();source_mapping_written.clear();source_type_mapping_written.clear();
   source_mapping_output.clear();source_names_initialized=false;source_enum_literal=false;
   source_library_names=getenv("EDG_DOT_EMIT")&&string(getenv("EDG_DOT_EMIT"))=="managedlib";
@@ -293,6 +297,7 @@ void reset_source_names() {
 void initialize_source_names(a_scope_ptr scope) {
   if(source_names_initialized)return;
   source_names_initialized=true;
+  for(auto routine=scope->routines;routine;routine=routine->next)source_routine_scope(routine);
   for(const char *reserved:{"Run","Shutdown","ReleaseThread","Dispose","Equals","GetHashCode","GetType","ToString","Finalize","MemberwiseClone","ReferenceEquals"})
     source_name_used["owner"].insert(reserved);
   source_name_used["owner"].insert(source_owner_name());source_name_used["namespace"].insert(source_owner_name());
@@ -324,9 +329,8 @@ void initialize_source_names(a_scope_ptr scope) {
     if(routine_body_needed(r))source_collect_scope(scope_for_routine_or_null(r),r);
   }
   source_collect_scope(scope,nullptr);
-  // Owner members/types are fixed before hoisted local declarations. Reserve
-  // them in function-local domains: otherwise a local with the same spelling
-  // could hide a translated method/type referenced from that function.
+  // Owner members/types are fixed before local declarations. Their collision
+  // domain is separate: references qualify a shadowed owner member/type.
   for(const void *entity:source_name_order) {
     auto &entry=source_name_entries[entity];
     if(entry.domain!="owner" && entry.domain!="namespace")continue;
@@ -343,8 +347,39 @@ void initialize_source_names(a_scope_ptr scope) {
   for(const void *entity:source_name_order) {
     auto &entry=source_name_entries[entity];
     if(entry.managed.empty())entry.managed=source_allocate(entry.domain,entry.candidate,entry.kind,entry.has_getter,entry.has_setter);
-    if(entry.kind=="local" || entry.kind=="parameter")source_local_identifiers[entry.domain].insert(entry.managed);
+    if(entry.kind=="local" || entry.kind=="parameter")source_local_identifiers[entry.domain].insert(source_identifier_component(entry.managed));
   }
+}
+// Explicit helper bodies have synthetic parameters not represented by the
+// originating source scope. Their references must be qualified unconditionally.
+struct source_qualified_reference_guard {
+  bool saved;
+  source_qualified_reference_guard():saved(source_force_qualified_references){source_force_qualified_references=true;}
+  ~source_qualified_reference_guard(){source_force_qualified_references=saved;}
+};
+bool source_reference_shadowed(const string &identifier) {
+  if(source_force_qualified_references)return true;
+  if(!current_function_scope)return false;
+  auto found=source_local_identifiers.find(source_routine_scope(current_function_scope->variant.routine.ptr));
+  return found!=source_local_identifiers.end() && found->second.count(source_identifier_component(identifier));
+}
+string source_qualified_owner() {
+  const char *ns=getenv("EDG_DOT_NAMESPACE"),*owner=getenv("EDG_DOT_CLASS");
+  return "global::"+string(ns&&*ns?string(ns)+".":"")+string(owner?owner:"Generated");
+}
+string source_owner_reference(const string &identifier,bool force_qualified=false) {
+  if(!force_qualified && !source_reference_shadowed(identifier))return identifier;
+  return (instance_mode?"this.":source_qualified_owner()+".")+identifier;
+}
+string source_routine_reference(a_routine_ptr routine,bool force_qualified=false) {
+  return source_owner_reference(name(routine,"f"),force_qualified);
+}
+string source_type_reference(a_type_ptr source_type,bool force_qualified=false) {
+  string identifier=source_entity_name(source_type,"type");
+  if(identifier.empty() || (!force_qualified && !source_reference_shadowed(identifier)))return identifier;
+  if(nested_types)return source_qualified_owner()+"."+identifier;
+  const char *ns=getenv("EDG_DOT_NAMESPACE");
+  return "global::"+string(ns&&*ns?string(ns)+".":"")+identifier;
 }
 string source_export_name(a_routine_ptr routine) {
   auto found=source_export_names.find(routine);if(found!=source_export_names.end())return found->second;
@@ -385,7 +420,7 @@ string source_enum_constant(a_constant_ptr value) {
   a_constant_ptr original=nullptr;
   for(auto c=enum_constants(t);c;c=c->next)if(c==value || (c->source_corresp.name && string(c->source_corresp.name)==value->source_corresp.name)){original=c;break;}
   if(!original)return "";
-  return "(("+type(value->type)+")"+source_entity_name(t,"enum")+"."+source_entity_name(original,"enumerator")+")";
+  return "(("+type(value->type)+")"+source_type_reference(t)+"."+source_entity_name(original,"enumerator")+")";
 }
 
 string source_enum_case(a_constant_ptr value,a_type_ptr context_type) {
@@ -400,7 +435,7 @@ string source_enum_case(a_constant_ptr value,a_type_ptr context_type) {
   for(auto candidate=enum_constants(enumeration);candidate;candidate=candidate->next) {
     if(candidate->kind!=ck_integer || cmp_integer_constants(value,candidate)!=0)continue;
     string member=source_entity_name(candidate,"enumerator");
-    if(!member.empty())return "(("+type(value->type)+")"+source_entity_name(enumeration,"enum")+"."+member+")";
+    if(!member.empty())return "(("+type(value->type)+")"+source_type_reference(enumeration)+"."+member+")";
   }
   return "";
 }

@@ -24,7 +24,7 @@ string runtime_provider_call(a_routine_ptr r,an_expr_node_ptr args) {
       if(definition && definition!=p)unsupported("multiple translated compiler throw-entry definitions");
       definition=p;
     }
-    if(definition)return name(definition,"f")+"()";
+    if(definition)return source_routine_reference(definition)+"()";
   }
   if(!runtime_exceptions)return "";
   if((source=="__cxa_bad_cast" || source=="__cxa_bad_typeid" || source=="__cxa_throw_bad_array_new_length") && r->compiler_generated) {
@@ -36,7 +36,7 @@ string runtime_provider_call(a_routine_ptr r,an_expr_node_ptr args) {
         auto pt=skip_typerefs(p->type);
         if(pt->variant.routine.extra_info->param_type_list || type(pt->variant.routine.return_type)!="void")
           unsupported("RTTI throw provider ABI");
-        return name(p,"f")+"()";
+        return source_routine_reference(p)+"()";
       }
     }
     unsupported("missing C++ RTTI throw provider");

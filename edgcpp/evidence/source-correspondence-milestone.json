@@ -79,6 +79,87 @@
         "SQLite original public API: JIT",
         "SQLite original public API: NativeAOT"
       ]
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/sqlite-readable-additional-001",
+      "resultsSha256": "b192dfc002325aa4cee978bde79d303fa15f599370a99addccaf11db9dd594fe",
+      "checks": [
+        {
+          "label": "api-native-reference",
+          "stdoutSha256": "46e5ac79406351d9192ed6156de685dbb94f486e72b2671784171c3aab4d76cc",
+          "bytes": 1101
+        },
+        {
+          "label": "api-jit-native-parity",
+          "stdoutSha256": "46e5ac79406351d9192ed6156de685dbb94f486e72b2671784171c3aab4d76cc",
+          "bytes": 1101
+        },
+        {
+          "label": "api-aot-native-parity",
+          "stdoutSha256": "46e5ac79406351d9192ed6156de685dbb94f486e72b2671784171c3aab4d76cc",
+          "bytes": 1101
+        },
+        {
+          "label": "vfs-native-reference",
+          "stdoutSha256": "bc51dc5f4d25480c84ff833cfaa952437efc4041be65402abd2607684fec6456",
+          "bytes": 114
+        },
+        {
+          "label": "vfs-jit-native-parity",
+          "stdoutSha256": "bc51dc5f4d25480c84ff833cfaa952437efc4041be65402abd2607684fec6456",
+          "bytes": 114
+        },
+        {
+          "label": "vfs-aot-native-parity",
+          "stdoutSha256": "bc51dc5f4d25480c84ff833cfaa952437efc4041be65402abd2607684fec6456",
+          "bytes": 114
+        },
+        {
+          "label": "vtable-native-reference",
+          "stdoutSha256": "25c26d223ce4ed6de1ecda12729b78c3e1d62f3aa7d4d464a875e36a405678fa",
+          "bytes": 115
+        },
+        {
+          "label": "vtable-jit-native-parity",
+          "stdoutSha256": "25c26d223ce4ed6de1ecda12729b78c3e1d62f3aa7d4d464a875e36a405678fa",
+          "bytes": 115
+        },
+        {
+          "label": "vtable-aot-native-parity",
+          "stdoutSha256": "25c26d223ce4ed6de1ecda12729b78c3e1d62f3aa7d4d464a875e36a405678fa",
+          "bytes": 115
+        },
+        {
+          "label": "allocation-native-reference",
+          "stdoutSha256": "d9231e65da3709da44242717ce8655c53b9f8009a095c81643075262a0f73000",
+          "bytes": 107
+        },
+        {
+          "label": "allocation-jit-native-parity",
+          "stdoutSha256": "d9231e65da3709da44242717ce8655c53b9f8009a095c81643075262a0f73000",
+          "bytes": 107
+        },
+        {
+          "label": "allocation-aot-native-parity",
+          "stdoutSha256": "d9231e65da3709da44242717ce8655c53b9f8009a095c81643075262a0f73000",
+          "bytes": 107
+        },
+        {
+          "label": "fts5-native-reference",
+          "stdoutSha256": "f053f02f2eb68bd08ebfbd86381971ae4873efe5d3f8f7b60e0154c1c958f0ab",
+          "bytes": 417
+        },
+        {
+          "label": "fts5-jit-native-parity",
+          "stdoutSha256": "f053f02f2eb68bd08ebfbd86381971ae4873efe5d3f8f7b60e0154c1c958f0ab",
+          "bytes": 417
+        },
+        {
+          "label": "fts5-aot-native-parity",
+          "stdoutSha256": "f053f02f2eb68bd08ebfbd86381971ae4873efe5d3f8f7b60e0154c1c958f0ab",
+          "bytes": 417
+        }
+      ]
     }
   ],
   "componentEvidence": [
@@ -107,13 +188,13 @@
   "snapshotNotes": [
     "Source-correspondence14/control10 passed compiler008. Compiler009 changes pointer compound arithmetic only; expanded expression10 covers this regression.",
     "Core/named project outputs use009 before explicit #nullable enable was added to all split wrappers. Driver layout004 validates that directive with all split modes and instance NativeAOT.",
-    "Additional five SQLite corpora remain running and are not counted here."
+    "All six revised-emitter SQLite corpora now pass native/reference/JIT/NativeAOT parity (18 checks), plus two direct-named independent-owner consumer checks. Additional five corpora used unchanged009 compiler and the explicitly nullable split wrapper validated by layout004."
   ],
   "remaining": [
     "Retain source enum types in declarations/signatures instead of physical integers.",
     "Reduce unnecessary local/parameter suffixes caused by unrelated owner member names.",
     "Retain structured for loops with comma-separated increments where legal.",
-    "Complete representative SQLite side-by-side review and remaining five project corpora.",
+    "Complete representative SQLite side-by-side review.",
     "This milestone does not establish complete C++/libc/libc++ support or Windows/macOS/Arm64 execution."
   ],
   "retainedFailures": [

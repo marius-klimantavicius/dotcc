@@ -31,7 +31,7 @@ void emit_main(a_routine_ptr r) {
     line("for(int i=0;i<arguments.Length;++i) { argv[i]=(sbyte*)text; string argument=arguments[i]; int count=global::System.Text.Encoding.UTF8.GetByteCount(argument); global::System.Text.Encoding.UTF8.GetBytes(global::System.MemoryExtensions.AsSpan(argument),new global::System.Span<byte>(text,count)); text[count]=0;text+=count+1; }");
     line("argv[arguments.Length]=null;");
   }
-  line("return "+name(r,"f")+"("+string(arguments?"arguments.Length,argv":"")+"); }");
+  line("return "+source_routine_reference(r,true)+"("+string(arguments?"arguments.Length,argv":"")+"); }");
   if(exception_helpers_emitted)
     line("catch (global::System.Exception error) { __edg_end_exception(error); throw; }");
   line("finally { "+string(lifecycle_emitted?"__edg_leave(); ":"")+"global::System.GC.KeepAlive("+string(instance_mode?"this":"__edg_storage")+"); }");
