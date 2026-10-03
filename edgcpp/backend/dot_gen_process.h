@@ -28,13 +28,13 @@ private @MOD@int __edg_register_exit(nint function,bool quick) {
 // dot-gen:member-end
 // dot-gen:member-begin
 [global::System.Diagnostics.CodeAnalysis.DoesNotReturn]
-private @MOD@void __edg_process_exit(int status,bool quick) {
+private @MOD@void __edg_process_exit(int status,bool quick,bool threadCleanupComplete=false) {
   if(global::System.Threading.Interlocked.CompareExchange(ref __edg_process_exit_started,1,0)!=0)
     global::System.Environment.FailFast("Repeated translated process termination request");
   if(quick) {
     __edg_drain(__edg_quick_finalizers);
   } else {
-    __edg_drain(__edg_threads.Value!.Finalizers);
+    if(!threadCleanupComplete)__edg_drain(__edg_threads.Value!.Finalizers);
     __edg_drain(__edg_finalizers);
     /*__EDG_PROCESS_FLUSH__*/
   }
@@ -86,4 +86,15 @@ bool process_routine(a_routine_ptr process_routine_ptr) {
     return true;
   }
   return false;
+}
+
+void ensure_initial_process_thread() {
+  if(!process_exit_helpers_emitted || library_mode || !c11_thread_exit_used)return;
+  ensure_thread_services();
+  string mod=instance_mode?"":"static ",prefix=instance_mode?"owner.":"";
+  helper_output+="// dot-gen:initial-thread initial-v1\n";
+  helper_output+="// dot-gen:member-begin\nprivate static void __edg_initial_last_thread("+thread_owner_type()+" owner) { "+prefix+"__edg_process_exit(0,false,true); }\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\npublic "+mod+"void __EdgEnterInitialThread() { __edg_thread_services.EnterInitialThread(&__edg_initial_last_thread); }\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\npublic "+mod+"bool __EdgIsInitialThreadExit(global::Edg.Runtime.CThreadExitTransfer exit) => __edg_thread_services_value!=null && __edg_thread_services_value.IsInitialThreadExit(exit);\n// dot-gen:member-end\n";
+  helper_output+="// dot-gen:member-begin\n[global::System.Diagnostics.CodeAnalysis.DoesNotReturn] public "+mod+"void __EdgExitInitialThread(global::Edg.Runtime.CThreadExitTransfer exit) { __edg_thread_services.ExitInitialThread(exit); }\n// dot-gen:member-end\n";
 }

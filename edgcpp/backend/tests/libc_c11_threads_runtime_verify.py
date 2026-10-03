@@ -6,7 +6,7 @@ def verify_libc_c11_threads_runtime(root,tests,out,nativeaot,run):
  out.mkdir(parents=True,exist_ok=True);checks=[]
  for fixture in ['libc_c11_threads_runtime.cs','libcxx_threads_runtime.cs']:
   directory=out/Path(fixture).stem;directory.mkdir()
-  for name in ['LibcxxThreads.cs','LibcC11Threads.cs']:shutil.copy2(root/'backend/runtime'/name,directory/name)
+  for name in ['LibcxxThreads.cs','LibcC11Threads.cs','LibcInitialThread.cs']:shutil.copy2(root/'backend/runtime'/name,directory/name)
   shutil.copy2(tests/fixture,directory/'Program.cs')
   (directory/'Threads.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks><IsAotCompatible>true</IsAotCompatible></PropertyGroup></Project>')
   run(['dotnet','build',directory/'Threads.csproj','-c','Release','--nologo','-p:TreatWarningsAsErrors=true'])

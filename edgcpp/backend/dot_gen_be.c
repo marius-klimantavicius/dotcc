@@ -1376,6 +1376,7 @@ void back_end(void) {
       line("// dot-gen:member-end");
     }
   }
+  ensure_initial_process_thread();
   output += (nested_types ? type_output : "") + helper_output + address_output;
   for(const auto &item:std::vector<std::pair<string,string>>{
       {"SHUTDOWN","Destructor threw during shutdown"},{"GLOBAL","Exception during global initialization"},{"THREAD","Exception escaped translated thread"}}) {

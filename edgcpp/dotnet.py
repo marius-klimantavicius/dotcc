@@ -25,7 +25,7 @@ RUNTIME_DEPENDENCIES = {
     "LibcFilesAssert": ("LibcFiles", "LibcProcess"), "LibcFilesWideScan": ("LibcFiles", "VaList"), "LibcEnvironment": (),
     "LibcText": ("LibcErrorMessages", "LibcLocale"), "LibcErrorMessages": (), "LibcLocale": (),
     "LibcClock": (), "LibcCpuClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
-    "LibcxxThreads": ("LibcC11Threads",), "LibcC11Threads": (), "LibcCalendar": (), "LibcProcess": (), "LibcProcessExit": (),
+    "LibcxxThreads": ("LibcC11Threads", "LibcInitialThread"), "LibcInitialThread": (), "LibcC11Threads": (), "LibcCalendar": (), "LibcProcess": (), "LibcProcessExit": (),
 }
 
 def content_bytes(value):
@@ -200,8 +200,14 @@ def main():
             receiver = "owner" if args.instance_methods else qualified
             owner = f"var owner=new {qualified}(); " if args.instance_methods else ""
             body = f"int status={receiver}.Run({run_arguments}); {receiver}.__EdgProcessExit(status); return status;"
+            catches = ""
+            if "// dot-gen:initial-thread initial-v1" in source:
+                owner += f"{receiver}.__EdgEnterInitialThread(); "
+                catches += f" catch(global::Edg.Runtime.CThreadExitTransfer exit) when({receiver}.__EdgIsInitialThreadExit(exit)) {{ {receiver}.__EdgExitInitialThread(exit); throw; }}"
             if termination:
-                body = f"try {{ {body} }} catch(global::System.Exception error) {{ {receiver}.__EdgUnhandledProgram(error); throw; }}"
+                catches += f" catch(global::System.Exception error) {{ {receiver}.__EdgUnhandledProgram(error); throw; }}"
+            if catches:
+                body = f"try {{ {body} }}" + catches
             files["EntryPoint.cs"] = f"internal static class EntryPoint {{ public static int Main() {{ {owner}{body} }} }}\n"
         elif termination:
             receiver = "owner" if args.instance_methods else qualified
@@ -297,6 +303,9 @@ RESOURCE_ITEMS
         "libc": args.libc, "libcProvider": libc_provider, "imports": imports,
         "target": target_manifest,
         "termination": "owner-v1" if termination else None,
+        "processExit": {"mode":"process-wide", "entryPoint":"normal-exit" if args.emit=="exe" else "host-controlled",
+                        "initialThread":"logical-completion-v1" if "// dot-gen:initial-thread initial-v1" in source else None}
+                       if "// dot-gen:process-exit process-v1" in source else None,
         "physicalTypeIR": {"file":"dot-gen.types.json", "sha256":hashlib.sha256(files["dot-gen.types.json"].encode()).hexdigest()} if type_ir is not None else None,
     }, indent=2) + "\n"
     # Keep superseded generation inputs during the full implementation campaign.

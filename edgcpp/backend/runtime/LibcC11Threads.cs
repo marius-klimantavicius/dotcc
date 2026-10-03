@@ -32,7 +32,10 @@ public sealed unsafe partial class LibcxxThreads<TOwner> where TOwner : class
             if(entry.Thread.ManagedThreadId==Environment.CurrentManagedThreadId)return 2;
             entry.JoinState=1;
         }
-        try {entry.Thread.Join();}
+        try {
+            if(entry.Initial) {lock(gate)while(!entry.Completed)Monitor.Wait(gate);}
+            else entry.Thread.Join();
+        }
         catch(ThreadInterruptedException) {lock(gate)entry.JoinState=0;return 2;}
         lock(gate) {threads.Remove(token);if(result!=null)*result=entry.Result;}
         return 0;

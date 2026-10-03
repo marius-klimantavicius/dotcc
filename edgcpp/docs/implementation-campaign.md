@@ -422,3 +422,12 @@ raises automatic packaging to 129. Its 18 checks cover exact streams, explicit
 state switching, owner isolation, forced GC and concurrent BSD random access
 under JIT/NativeAOT, plus packaging and exact source-patch replay. Source state
 and algorithms remain translated C; only contention yield reaches BCL services.
+
+Executable initial C11 thread exit now uses logical join completion. The last
+live source thread performs normal status-zero process termination on that
+thread, preserving its identity for callbacks. Forty-two focused checks cover
+initial joins, descendants, detach, cleanup ordering, runtime regressions and
+existing process-exit behavior under JIT/NativeAOT. Managed Run keeps host
+control; arbitrary foreign-host exit and owner-local termination remain open.
+The documented C++ initial-thread cleanup policy is tested explicitly rather
+than claimed identical to observed glibc behavior.

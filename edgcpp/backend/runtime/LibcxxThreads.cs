@@ -84,17 +84,17 @@ public sealed unsafe partial class LibcxxThreads<TOwner> : IDisposable where TOw
         internal readonly Thread Thread;
         internal int JoinState; // 0=joinable, 1=joining, 2=detached
         internal bool Completed;
-        internal readonly bool CStart;
+        internal readonly bool CStart, Initial;
         internal int Result;
-        internal ThreadEntry(LibcxxThreads<TOwner> context, nint function, nint argument, bool hasOwner, bool cStart = false)
+        internal ThreadEntry(LibcxxThreads<TOwner> context, nint function, nint argument, bool hasOwner, bool cStart = false, bool initial = false)
         {
-            CStart = cStart;
+            CStart = cStart; Initial = initial;
             Context = context; Function = function; Argument = argument; HasOwner = hasOwner;
             Token = ThreadTokenSource.Next();
             // Returning from the translated process entry terminates remaining
             // C++ threads. Managed foreground threads would keep it alive.
             // Explicit owner shutdown still waits on the retained owner lease.
-            Thread = new Thread(Run) { IsBackground = true };
+            Thread = initial ? Thread.CurrentThread : new Thread(Run) { IsBackground = true };
         }
         private void Run() => Context.Run(this);
     }
@@ -369,14 +369,10 @@ public sealed unsafe partial class LibcxxThreads<TOwner> : IDisposable where TOw
         catch (Exception error) when (Terminate(error)) { }
         finally
         {
-            lock (gate)
-            {
-                entry.Completed = true; --running;
-                if (entry.JoinState == 2) threads.Remove(entry.Token);
-                Monitor.PulseAll(gate);
-            }
-            cCurrent.Value = null;
+            bool lastSourceThread = CompleteSourceThread(entry);
             releaseOwner(owner);
+            if (lastSourceThread) ExitLastSourceThread();
+            cCurrent.Value = null;
             GC.KeepAlive(owner);
         }
     }

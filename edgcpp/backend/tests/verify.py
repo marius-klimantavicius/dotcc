@@ -302,6 +302,10 @@ def main():
     checks.extend(verify_libc_process_exit(ROOT, TESTS, suite_output("libc_process_exit"), args.nativeaot, run))
     from libc_process_exit_abi_verify import verify_libc_process_exit_abi
     checks.extend(verify_libc_process_exit_abi(ROOT, suite_output("libc_process_exit_abi")))
+    from libc_initial_thread_verify import verify_libc_initial_thread
+    checks.extend(verify_libc_initial_thread(ROOT, TESTS, suite_output("libc_initial_thread"), args.nativeaot, run))
+    from libc_initial_thread_runtime_verify import verify_libc_initial_thread_runtime
+    checks.extend(verify_libc_initial_thread_runtime(ROOT, TESTS, suite_output("libc_initial_thread_runtime"), args.nativeaot, run))
     from libc_prng_verify import verify_libc_prng
     checks.extend(verify_libc_prng(ROOT, TESTS, suite_output("libc_prng"), args.nativeaot, run))
     from libc_c11_threads_verify import verify_libc_c11_threads

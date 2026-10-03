@@ -23,11 +23,13 @@ def verify_libc_process_exit(root,tests,out,nativeaot,run,translate=True):
   for instance in [False,True]:
    label=language.replace('+','x')+'-'+('instance' if instance else 'static');directory=out/label
    run([sys.executable,root/'dotnet.py',fixture,root/'backend/runtime/libc/threads/threads.c','--language',language,'--target','portable-lp64-binary80-v1','--libc','dotcc','--namespace','','--class-name','Core','--split','function','--output-dir',directory,*(['--instance-methods'] if instance else [])])
+   assert json.loads((directory/'dot-gen.json').read_text())['processExit']=={'mode':'process-wide','entryPoint':'normal-exit','initialThread':'logical-completion-v1'}
    run(['dotnet','build',directory/'Generated.csproj','-c','Release','--nologo','-p:TreatWarningsAsErrors=true']);child(['dotnet',directory/'bin/Release/net10.0/Generated.dll'],directory/'jit-cases',language);checks.append(label+': JIT seven process-exit modes')
    if nativeaot:
     run(['dotnet','publish',directory/'Generated.csproj','-c','Release','-r','linux-x64','-p:PublishAot=true','-p:IlcTreatWarningsAsErrors=true','-o',directory/'aot']);child([directory/'aot/Generated'],directory/'aot-cases',language);checks.append(label+': NativeAOT seven process-exit modes')
    library=out/(label+'-managed')
    run([sys.executable,root/'dotnet.py',fixture,root/'backend/runtime/libc/threads/threads.c','--language',language,'--target','portable-lp64-binary80-v1','--libc','dotcc','--emit','managedlib','--namespace','','--class-name','Core','--split','function','--output-dir',library,*(['--instance-methods'] if instance else [])])
+   assert json.loads((library/'dot-gen.json').read_text())['processExit']=={'mode':'process-wide','entryPoint':'host-controlled','initialThread':None}
    host=library/'host';host.mkdir();(host/'Host.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>enable</Nullable><IsAotCompatible>true</IsAotCompatible></PropertyGroup><ItemGroup><ProjectReference Include="../Generated.csproj" /></ItemGroup></Project>')
    main=('using var first=new Core();using var second=new Core();if(first.Run(new[]{"synthetic","0",args[0]})!=17||second.Run(new[]{"synthetic","0",args[1]})!=17)throw new Exception("Run status");Console.Error.Write("H");first.ReleaseThread();first.Shutdown();second.ReleaseThread();second.Shutdown();' if instance else 'if(Core.Run(new[]{"synthetic","0",args[0]})!=17)throw new Exception("Run status");Console.Error.Write("H");Core.ReleaseThread();Core.Shutdown();')
    (host/'Program.cs').write_text('using System;class Program{static void Main(string[]args){'+main+'Console.Error.Write("D");}}')

@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "scope": "Explicit executable initial C11 thread logical exit and last-source-thread process termination",
+  "checkCount": 42,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/libc-initial-thread-translated-20261003-033000/results.json",
+      "sha256": "e1d69e625ad6dfcf218c2f770cd2c12429a2923eb218db5fa7fc88919bd4558d",
+      "checkCount": 10
+    },
+    {
+      "path": "artifacts/campaign/libc-initial-thread-candidate-20261003-031000/proof-002/results.json",
+      "sha256": "51aa39479052c0631de68385493dc58b01fa9c74cd15e0894aa603a586a1b094",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/libc-initial-thread-candidate-20261003-031000/regressions-001/results.json",
+      "sha256": "4a5c48dd3db15f4f76280ff182fe5246a0735a32893da719c44e70f8b6a7d6bd",
+      "checkCount": 6
+    },
+    {
+      "path": "artifacts/campaign/libc-process-initial-regression-20261003-033000/results.json",
+      "sha256": "d9214d898695ca40cf4204e68f3602cccaf311c59accf8e93e0285d91498709f",
+      "checkCount": 18
+    }
+  ],
+  "limitations": [
+    "Managed Run and arbitrary foreign-host thrd_exit remain outside this process boundary.",
+    "C++ initial-thread interoperation uses the documented automatic/TLS/TSS policy; host glibc observations differ.",
+    "Owner-local process termination remains incomplete."
+  ]
+}

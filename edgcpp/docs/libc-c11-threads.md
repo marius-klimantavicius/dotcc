@@ -74,3 +74,41 @@ Accepted focused evidence added after integration:
 
 Failed initial generated probes are retained. They exposed the pending throw
 carrier marker, fixed in backend control-transfer handling without changing EDG.
+
+## Initial process thread
+
+The accepted runtime establishes an explicit logical source-thread boundary only
+for executable entry. It retains the owner while main is active, supplies a
+joinable thrd_t identity, and publishes the main thread's result only after its
+thread cleanup. A joining worker waits for logical completion rather than the
+physical CLR thread; the latter remains a process waiter after thrd_exit. The
+last source thread performs normal process termination with status zero and
+retains its own thrd_current identity during atexit callbacks. Descendants created
+by surviving source workers remain counted. Normal main return still terminates
+the process immediately; managed Run and foreign host calls establish no such
+boundary. Owner-mode termination remains unavailable.
+
+Pinned musl 1.2.6 `src/thread/thrd_exit.c` delegates to `__pthread_exit`; the latter
+runs TSS destructors and calls exit(0) when the last thread exits. Native C probes
+cover no other worker, joining the initial thread, a later descendant, reentrant
+exit from an initial TSS destructor, a detached worker and a detached initial
+thread. Candidate runtime proofs retain four analogous JIT/AOT modes, including
+last-thread callback identity and zero remaining lifetime leases.
+
+C++ interop has an explicit policy: preserve the already accepted automatic →
+C++ TLS → C TSS cleanup order for CThreadExitTransfer. Native glibc/GCC probes on
+this host instead omit initial-thread C++ TLS destruction when a worker survives;
+with no worker, they postpone it until process exit (automatic → C TSS → C++ TLS).
+Those observations are retained at
+`libc-initial-thread-native-20261003-031500/observations.json`; they are not used
+as a false oracle for translated C++ TLS policy. Exact C traces and independently
+specified translated C++ traces remain separate checks. Generated-code acceptance passed ten checks at
+`libc-initial-thread-translated-20261003-033000/results.json`: native C exact
+six-mode oracle, native C++ host observations, and all eight translated
+configurations. Every translated mode asserts process-wide/normal-exit and
+logical-completion-v1 metadata. Standalone runtime JIT/AOT eight checks and
+shared C11/C++ six-check regressions are retained under
+`libc-initial-thread-candidate-20261003-031000/proof-002/results.json` and
+`regressions-001/results.json`. The reusable standalone and source hooks are
+`verify_libc_initial_thread_runtime` and `verify_libc_initial_thread`.
+Foreign-host/managed Run thrd_exit remains explicitly unsupported.
