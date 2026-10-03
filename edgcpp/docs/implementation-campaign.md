@@ -554,3 +554,9 @@ to213. Nine math component checks plus three project core checks are indexed in
 `evidence/sqlite-core-math-milestone.json`. This establishes the test-only memory
 VFS/THREADSAFE=0 profile on Linux x64, not native SQLite OS VFS or complete
 project coverage. Additional corpora and independent-owner checks are underway.
+
+Two independent generated SqliteCore instances also pass strict JIT/NativeAOT
+consumer checks with the full feature profile: separate databases/transactions,
+forced collection, sequential thread handoff, one owner's shutdown while the
+other continues, and replacement-owner initialization. THREADSAFE=0 does not
+permit concurrent calls into one engine. Evidence:sqlite-project-owners.json.

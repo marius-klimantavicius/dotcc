@@ -1,0 +1,42 @@
+{
+  "scope": "Two independent translated SQLite owners",
+  "status": "passed",
+  "checks": [
+    "SQLite independent owners: JIT",
+    "SQLite independent owners: NativeAOT"
+  ],
+  "evidence": "artifacts/campaign/persistent-continuation/sqlite-owners-full-002/results.json",
+  "evidenceSha256": "e8ab4b3ab6cc50d1dcfe3c8fde79707ac254b2a20b54b3c66ec8fbaea0413afe",
+  "sources": [
+    {
+      "path": "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+      "sha256": "b1dd5d74ec7f29055a6684fa06fb3c2f6821c87dd38f9a458dfd2e8a1db28189"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/tests/sqlite_project_owners.c",
+      "sha256": "ad955f71c93c4e48819c88ef3f7189aeef6211bcf704fd54d1450c938e2424b9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/sqlite/tests/memory_vfs.c",
+      "sha256": "1641658e862f2da5d77fbbeff8e92b2b20770f92509bab818e668080fe6ed83f"
+    }
+  ],
+  "definitions": [
+    "SQLITE_OS_OTHER=1",
+    "SQLITE_THREADSAFE=0",
+    "SQLITE_TEMP_STORE=3",
+    "SQLITE_MAX_MMAP_SIZE=0",
+    "SQLITE_OMIT_LOAD_EXTENSION",
+    "SQLITE_ENABLE_FTS5",
+    "SQLITE_ENABLE_MATH_FUNCTIONS",
+    "SQLITE_ENABLE_PERCENTILE",
+    "SQLITE_ENABLE_COLUMN_METADATA",
+    "SQLITE_ENABLE_PREUPDATE_HOOK"
+  ],
+  "profile": "full configured SQLite, test-only memory VFS, independent owners; THREADSAFE=0",
+  "limits": [
+    "No concurrent use of one THREADSAFE=0 engine",
+    "Deterministic test-only memory VFS",
+    "Linux-x64 execution only"
+  ]
+}
