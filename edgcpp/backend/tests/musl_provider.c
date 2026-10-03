@@ -1,6 +1,8 @@
 #include <strings.h>
 #include <threads.h>
 #include <math.h>
+#include <float.h>
+#include <errno.h>
 #include <wchar.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -89,6 +91,8 @@ int main(void) {
  if(!parsed || *parsed || civil.tm_year!=124 || civil.tm_mon!=1 || civil.tm_mday!=29 || civil.tm_hour!=23)return 29;
  int requested=37,result=0;thrd_t thread;
  if(thrd_create(&thread,provider_worker,&requested)!=thrd_success || thrd_join(thread,&result)!=thrd_success || result!=37)return 30;
+ if(fmin(-0.0,0.0)!=0 || !signbit(fmin(-0.0,0.0)) || fmaxf(3.0f,7.0f)!=7.0f || fdiml(7.0L,3.0L)!=4.0L)return 31;
+ errno=0;if(fdim(DBL_MAX,-DBL_MAX)!=HUGE_VAL || errno!=ERANGE)return 32;
  uselocale(previous);freelocale(locale);
  return 0;
 }

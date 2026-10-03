@@ -1,0 +1,33 @@
+{
+  "scope": "Selected musl extrema and positive difference with portable overflow errno",
+  "checks": 18,
+  "runs": [
+    {
+      "path": "artifacts/campaign/libc-math-extrema-translated-001/results.json",
+      "sha256": "72625ba8bc7deb94467e183adff184390ff0daf9c768b23671504c642da3cf1a",
+      "checks": 9
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-math-extrema-001/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082",
+      "checks": 8
+    },
+    {
+      "path": "artifacts/campaign/libc-math-extrema-patch-001/results.json",
+      "sha256": "349d364b74d68575dd48d5107c39d784c4f2d591c4227ad37dd6312c494c2f9c",
+      "checks": 1
+    }
+  ],
+  "selectedTranslationUnits": 147,
+  "sources": {
+    "backend/runtime/musl/math_extrema/source.json": "44cdbcbe29660ec0fa0c7057a74aa17e89b786c799b5919ccddd2ed8bbc3f130",
+    "backend/runtime/musl/provider.json": "d33e098336aafdac9ba194a1f587687f7c13ca0408f34becf4fa226bc91862c5",
+    "backend/tests/libc_math_extrema.c": "74e4eae4d07cd4be600605d3202c772bb38c76eb0f4059f63ebe26f600238601",
+    "backend/tests/libc_math_extrema_verify.py": "141b3cc281c6910892e3004019710bab3093dfefb687adfddd32caa22bc7ae1c"
+  },
+  "limitations": [
+    "Only Linux-x64 execution verified",
+    "Full floating environment and remaining libm APIs are pending",
+    "Long-double difference arithmetic still uses the existing allocating arithmetic provider"
+  ]
+}

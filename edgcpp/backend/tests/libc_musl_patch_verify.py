@@ -2,7 +2,7 @@
 import argparse,hashlib,json,shutil,subprocess
 from pathlib import Path
 
-def verify_musl_patches(root,out,components=('wide','multibyte','wide_numeric','stdlib_algorithms','scanf','wscanf','c_headers','string_case','strptime','prng','math_parts','wprintf')):
+def verify_musl_patches(root,out,components=('wide','multibyte','wide_numeric','stdlib_algorithms','scanf','wscanf','c_headers','string_case','strptime','prng','math_parts','wprintf','math_extrema')):
  out.mkdir(parents=True,exist_ok=True);checks=[]
  for component in components:
   source=root/'backend/runtime/musl'/component;destination=out/component

@@ -231,6 +231,20 @@
         "wformat_wrappers.c",
         "wcsnlen.c"
       ]
+    },
+    {
+      "directory": "math_extrema",
+      "translationUnits": [
+        "fmin.c",
+        "fminf.c",
+        "fminl.c",
+        "fmax.c",
+        "fmaxf.c",
+        "fmaxl.c",
+        "fdim.c",
+        "fdimf.c",
+        "fdiml.c"
+      ]
     }
   ]
 }

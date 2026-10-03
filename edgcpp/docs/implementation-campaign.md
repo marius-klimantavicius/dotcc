@@ -461,3 +461,9 @@ native comparison vectors, arbitrary finite-encoding reference comparisons,
 one million allocation-free operator calls, and existing binary80 math/source
 regressions under JIT/NativeAOT. Other arithmetic and floating-environment gates
 remain open; see float80-comparison.md and its evidence index.
+
+Selected musl fmin/fmax/fdim families add nine source units, bringing the
+automatic provider to 147. Eighteen checks cover original/adapted native
+semantics, all C/C++ static/instance JIT/NativeAOT modes, overflow errno,
+owner/TLS isolation, allocation-free binary80 extrema, packaging and exact
+patch replay. Full libm/fenv remains open; see libc-math-extrema.md.

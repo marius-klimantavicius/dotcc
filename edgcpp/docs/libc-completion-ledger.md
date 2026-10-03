@@ -76,3 +76,9 @@ automatic packaging; see libc-prng.md. Other libc categories remain open.
 Selected fmod/modf families add six source units (provider135), with18 focused
 checks recorded in libc-math-parts.md. Dynamic rounding and exception flags
 remain absent; this is not complete math/fenv coverage.
+
+Selected musl fmin/fmax/fdim families add nine source units, bringing the
+automatic provider to 147. Eighteen checks cover original/adapted native
+semantics, all C/C++ static/instance JIT/NativeAOT modes, overflow errno,
+owner/TLS isolation, allocation-free binary80 extrema, packaging and exact
+patch replay. Full libm/fenv remains open; see libc-math-extrema.md.

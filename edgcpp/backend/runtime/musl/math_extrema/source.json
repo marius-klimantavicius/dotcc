@@ -1,0 +1,70 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "fmin.c": {
+      "upstream": "src/math/fmin.c",
+      "originalSha256": "8f174565b041802c3ee1b141caf2c7240b4ed5f45e920caec11c1585682199a4",
+      "adaptedSha256": "8f174565b041802c3ee1b141caf2c7240b4ed5f45e920caec11c1585682199a4",
+      "patch": "patches/fmin.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fminf.c": {
+      "upstream": "src/math/fminf.c",
+      "originalSha256": "3dbde7d5e5ebe1a91c9f45eebb2ff8dfebc3a381db2630fbab0f1f4b06369821",
+      "adaptedSha256": "3dbde7d5e5ebe1a91c9f45eebb2ff8dfebc3a381db2630fbab0f1f4b06369821",
+      "patch": "patches/fminf.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fminl.c": {
+      "upstream": "src/math/fminl.c",
+      "originalSha256": "7c15f9d8948fba8392a065d90db350f89ff5e964903f4fc0c9bb425ffb8f4a6a",
+      "adaptedSha256": "7c15f9d8948fba8392a065d90db350f89ff5e964903f4fc0c9bb425ffb8f4a6a",
+      "patch": "patches/fminl.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmax.c": {
+      "upstream": "src/math/fmax.c",
+      "originalSha256": "70d8ee2a5c78bf10a45a5e39ab346a9527867cfc16246d162e07c39d29e77c1f",
+      "adaptedSha256": "70d8ee2a5c78bf10a45a5e39ab346a9527867cfc16246d162e07c39d29e77c1f",
+      "patch": "patches/fmax.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmaxf.c": {
+      "upstream": "src/math/fmaxf.c",
+      "originalSha256": "7a65b1d245de6d52925a24d11dd09b47cc5ccfa4a4bcd7958f05a27ed91e04f1",
+      "adaptedSha256": "7a65b1d245de6d52925a24d11dd09b47cc5ccfa4a4bcd7958f05a27ed91e04f1",
+      "patch": "patches/fmaxf.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fmaxl.c": {
+      "upstream": "src/math/fmaxl.c",
+      "originalSha256": "9c2d49e72f416c416827e3ac6cd68d95995add2cfb96c34c815f3f9dd9951d59",
+      "adaptedSha256": "9c2d49e72f416c416827e3ac6cd68d95995add2cfb96c34c815f3f9dd9951d59",
+      "patch": "patches/fmaxl.c.patch",
+      "patchSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fdim.c": {
+      "upstream": "src/math/fdim.c",
+      "originalSha256": "220a4138ffc1aba87eb27a917c063c76e32afc08a52dba1187e5cc528b478268",
+      "adaptedSha256": "809666a855fe2098f38f61c7d06600b7a460c2bd7d5223baa6023a3efa72fd58",
+      "patch": "patches/fdim.c.patch",
+      "patchSha256": "b7e0450db04d09b47e677a4e1bc8edf3fac0f641be25de00cc23f6b36badbb9b"
+    },
+    "fdimf.c": {
+      "upstream": "src/math/fdimf.c",
+      "originalSha256": "e69978804e88cf0e056ce246b3ae94af8b92a67201ed32fbcdeb3c677b98b63d",
+      "adaptedSha256": "ad2e6b2f702648b1a9d46a3ff0271180f3807f375cb1e1540be880305af6775b",
+      "patch": "patches/fdimf.c.patch",
+      "patchSha256": "84dceeb1f92f674e9bf0737ce44044e4965f90ef8707788c40b7578e87e99d09"
+    },
+    "fdiml.c": {
+      "upstream": "src/math/fdiml.c",
+      "originalSha256": "e08d5e8b64f1072d51ea9afdf2b9313a687ccce46f43913a498009bb91839511",
+      "adaptedSha256": "584d52faca20055b58bbcfcb708e3cabd3867c92269c8b4243589208717109e1",
+      "patch": "patches/fdiml.c.patch",
+      "patchSha256": "3caff3c00c75f4843055a76b8d1471285d45ffa351d0358560200a2273d6db2f"
+    }
+  },
+  "adapters": {}
+}

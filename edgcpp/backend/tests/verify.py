@@ -310,6 +310,8 @@ def main():
     checks.extend(verify_libc_source_builtins(ROOT,TESTS,suite_output("libc_source_builtins"),args.nativeaot,run))
     from libc_math_parts_verify import verify_libc_math_parts
     checks.extend(verify_libc_math_parts(ROOT,TESTS,suite_output("libc_math_parts"),args.nativeaot,run))
+    from libc_math_extrema_verify import verify_libc_math_extrema
+    checks.extend(verify_libc_math_extrema(ROOT,TESTS,suite_output("libc_math_extrema"),args.nativeaot,run))
     from float80_compare_verify import verify_float80_compare
     checks.extend(verify_float80_compare(ROOT,TESTS,suite_output("float80_compare"),args.nativeaot,run))
     from libc_prng_verify import verify_libc_prng
