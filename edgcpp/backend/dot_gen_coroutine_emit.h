@@ -422,6 +422,7 @@ a_variable_ptr coroutine_return_storage(an_expr_node_ptr expression,a_type_ptr e
 }
 string coroutine_delete_call(a_coroutine_descr_ptr descriptor,const string &address,const string &size) {
   auto routine=descriptor->delete_routine;if(!routine)unsupported("coroutine without selected delete");
+  if(routine->function_def_number==NULL_function_def_number)unsupported("coroutine selected deallocator requires source definition");
   auto parameters=skip_typerefs(routine->type)->variant.routine.extra_info->param_type_list;
   if(!parameters || (parameters->next && parameters->next->next))unsupported("coroutine deallocator parameters");
   string result=name(routine,"f")+"(("+type(parameters->type)+")"+address;
@@ -430,6 +431,7 @@ string coroutine_delete_call(a_coroutine_descr_ptr descriptor,const string &addr
 }
 string coroutine_allocation_call(a_coroutine_descr_ptr descriptor,a_scope_ptr scope,a_variable_ptr result_parameter) {
   auto allocator=descriptor->new_routine;
+  if(allocator && allocator->function_def_number==NULL_function_def_number)unsupported("coroutine selected allocator requires source definition");
   auto allocation_type=allocator?skip_typerefs(allocator->type):nullptr;
   auto allocation_parameters=allocation_type?allocation_type->variant.routine.extra_info->param_type_list:nullptr;
   if(!allocation_parameters || allocation_type->variant.routine.extra_info->has_ellipsis)
@@ -517,8 +519,21 @@ void coroutine_emit_allocation_failure(an_expr_node_ptr expression,a_type_ptr re
   if(needs_cursor)line("int __edg_failure_cleanup=0;");
   line(action);
 }
+bool coroutine_has_function_try(a_statement_ptr statement) {
+  if(!statement)return false;
+  if(statement->kind==stmk_try_block) {
+    if(statement->variant.try_block->is_function_try_block)return true;
+    return coroutine_has_function_try(statement->variant.try_block->statement);
+  }
+  if(statement->kind==stmk_block)
+    for(auto child=statement->variant.block.statements;child;child=child->next)
+      if(coroutine_has_function_try(child))return true;
+  return false;
+}
 void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_ptr descriptor) {
   diagnostic_scope diagnostic(routine->source_corresp.decl_position);
+  if(coroutine_has_function_try(scope->assoc_block))
+    unsupported("coroutine function-try source-body boundary");
   if(source_jumps_used)unsupported("coroutine/nonlocal-jump lifetime integration");
   check_operand_order(scope->assoc_block);
   check_operand_order(descriptor->get_return_object_call);

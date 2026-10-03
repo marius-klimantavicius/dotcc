@@ -1,0 +1,26 @@
+{
+  "scope": "Fail-closed coroutine function-try and missing selected allocation provider boundaries",
+  "checks": 11,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/coroutine-provider-boundaries-20261003-035132/results.json",
+      "sha256": "8c31eca9cb01884ea7be5c077c6a20db9b540ff07fe5a89612be9b2183b57116"
+    },
+    {
+      "path": "artifacts/campaign/coroutine-boundaries-regression-20261003-035204/results.json",
+      "sha256": "0568c5a53c81df1dfb1ddb8a61a59490e1eb94bbac6db5cdd62c81f6d4d5157b"
+    }
+  ],
+  "sources": {
+    "backend/dot_gen_coroutine_emit.h": "8560455b801736b986dbd3b6b07fcf7fd8f37b1d5a1edcb62a8a2134b0ed01f0",
+    "backend/tests/coroutine_provider_boundaries_verify.py": "b0b22b4a28f3e70e26cb299fa716b35df8def6f9f7cc897e58b031adfafb308d",
+    "backend/tests/libcxx/coroutine_function_try.cpp": "505ff8d755b0f82faf68587a554ea47016644cb9ca4a21757aaa40fddb648c08",
+    "backend/tests/libcxx/coroutine_allocator_provider.cpp": "373631cb54a52986f077a38c1eca392f3f63d4bee094bfe16e2f654aabc8741a"
+  },
+  "limitations": [
+    "Function-try coroutine source handlers require an owned structural view adaptation; now diagnosed before incorrect C# is emitted",
+    "Nontrivial promise case also rejects in unchanged original frontend before backend",
+    "Selected allocator/deallocator must have source definitions",
+    "Linux-x64 execution only"
+  ]
+}

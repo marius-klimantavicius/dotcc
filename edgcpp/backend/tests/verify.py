@@ -407,6 +407,8 @@ def main():
         checks.extend(verify_coroutine_placement_conversion(ROOT, TESTS, suite_output("coroutine_placement_conversion"), args.nativeaot, run, args.libcxx_acquisition))
         from coroutine_global_nothrow_verify import verify_coroutine_global_nothrow
         checks.extend(verify_coroutine_global_nothrow(ROOT, TESTS, suite_output("coroutine_global_nothrow"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_provider_boundaries_verify import verify_coroutine_provider_boundaries
+        checks.extend(verify_coroutine_provider_boundaries(ROOT, TESTS, suite_output("coroutine_provider_boundaries"), args.nativeaot, run, args.libcxx_acquisition))
         from coroutine_library_verify import verify_coroutine_library
         checks.extend(verify_coroutine_library(ROOT, TESTS, suite_output("coroutine_library"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_ptr_verify import verify_libcxx_exception_ptr

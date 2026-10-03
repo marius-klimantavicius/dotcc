@@ -355,3 +355,42 @@ preprocessed-input evidence is in
 uses a non-explicit constructor with the same behavior; explicit-constructor
 source acceptance for that probe remains a separate gate. EDG sources were not
 changed.
+
+The next source-boundary audit found that retained coroutine function-try blocks
+need an additional backend-owned structural view. `generate_coroutine_body` in
+`upstream/src/func_def.c` preserves the source function-try wrapper and inserts
+the implicit promise handler inside its dependent block. The native C backend
+still emits coroutine syntax, so that retained nesting is not an executable
+coroutine exception-handling oracle. The C# backend must place the source body
+and its handlers inside the implicit coroutine catch, while keeping promise
+construction, `get_return_object`, and initial suspension outside the source
+handlers. This follows the replacement-body rule in
+[C++ draft dcl.fct.def.coroutine](https://eel.is/c++draft/dcl.fct.def.coroutine#5).
+
+The minimal trivial-promise probe has a body throwing `3`, a source handler
+adding that value and rethrowing, and `unhandled_exception` adding `100`.
+Native GCC/Clang produce `103`; the previously emitted nesting produced `100`.
+The retained failure is
+`coroutine-function-try-minimal-20261003-064000/generated3`. The emitter now
+rejects the exact retained `is_function_try_block` marker until its initialization,
+continuation and cleanup boundaries have a verified structural adaptation.
+This diagnostic is a correctness guard, not function-try coroutine support.
+
+A separate nontrivial-promise probe fails before backend entry in both EDG
+frontends with the same preprocessed input; its native initialization/body
+failure traces and original-C evidence are retained in
+`coroutine-function-try-audit-20261003-063500/results2.json` and
+`coroutine-function-try-trace-20261003-063845/original-c-frontend.log`.
+No EDG source was changed. Selected coroutine allocation/deallocation routines
+also now require an actual source definition: a declaration alone previously
+left an undefined private C# routine call. Import-only allocation providers
+remain unsupported rather than receiving an invented implementation.
+
+These guards pass eight focused source-oracle/diagnostic checks in
+`coroutine-provider-boundaries-20261003-035132/results.json`: native GCC/Clang
+O0/O2 agree on both complete-provider fixtures, and both C# ownership modes
+reject each unsupported boundary before publishing translated files. Three
+ordinary counter native/static/instance strict JIT regressions pass in
+`coroutine-boundaries-regression-20261003-035204/results.json`; `hashes.json`
+records the accepted helpers, fixtures and compiler. Existing positive
+NativeAOT coroutine acceptance is unchanged by these diagnostic-only guards.

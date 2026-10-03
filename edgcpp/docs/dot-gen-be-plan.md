@@ -1048,3 +1048,11 @@ GNU `__builtin_expect` now preserves the first long operand and evaluates both
 arguments once through an inlinable helper. Original EDG C/C++ oracles and all
 eight generated JIT/NativeAOT configurations pass; see
 `evidence/milestone-branch-expect.json`. Probability variants remain separate.
+
+Coroutine source function-try blocks now fail closed with a precise diagnostic:
+the retained outer source handler needs a backend-owned structural view around
+the body-only region, and the previous output could bypass it. Selected
+allocation/deallocation routines lacking source definitions also fail before
+C# publication. Eleven focused checks are indexed in
+`evidence/milestone-coroutine-provider-boundaries.json`; this is a correctness
+boundary, not completed function-try coroutine support.
