@@ -1,0 +1,28 @@
+{
+  "scope": "Bounded backend-owned coroutine function-try structural view",
+  "checks": 60,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/coroutine-function-try-cleanup-20261003-041006/acceptance.json",
+      "sha256": "e55388e8284edc47ebd7c3557f007e398a329a46c4a9423fa77c7e0aef5b1689"
+    },
+    {
+      "path": "artifacts/campaign/coroutine-provider-boundaries-view-20261003-041019/results.json",
+      "sha256": "c1d2d8e99fd8b94e101806d47f2dd18dfef3db78d323cc224373ea3a53d7e325"
+    },
+    {
+      "path": "artifacts/campaign/coroutine-function-try-view-candidate-20261003-070000/parity-coroutine-results.json",
+      "sha256": "f4ea7527e2f1a003474e9813ad9a60dab47fc30310042a9ededf20522a2a48da"
+    }
+  ],
+  "sources": {
+    "backend/dot_gen_coroutine_view.h": "9305ae6eba1415991f6fe96d5e98686c7cc8ce6be3319ff196b57b9661a5f52a",
+    "backend/dot_gen_coroutine_emit.h": "d33a3cca6398a2fd3773d3bde8c2883a5e41fb83866624d0e0cf6a602ceb1afb"
+  },
+  "limitations": [
+    "Nontrivial cleanup regions remain diagnosed",
+    "Source handler co_return and nontrivial body RAII probes also reject in unchanged original frontend",
+    "Four parity checks exclude separately changed default-terminate helper region; full diffs retained",
+    "Linux-x64 execution only"
+  ]
+}

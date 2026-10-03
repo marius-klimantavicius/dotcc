@@ -1,5 +1,6 @@
 // Included after the ordinary statement emitter. This backend-owned inventory
 // adds descriptor-only references; it never changes EDG needed flags or IL.
+#include "dot_gen_coroutine_view.h"
 std::set<a_routine_ptr> coroutine_required_routines;
 std::set<a_variable_ptr> coroutine_required_variables;
 a_variable_ptr coroutine_nothrow_object=nullptr;
@@ -58,7 +59,7 @@ template<class Visit> void coroutine_walk_statement(a_statement_ptr statement,co
   if(selected_runtime_branch(statement,selected)){coroutine_walk_statement(selected,visit);return;}
   coroutine_walk_expression(statement->expr,visit);
   switch(statement->kind) {
-    case stmk_block:for(auto child=statement->variant.block.statements;child;child=child->next)coroutine_walk_statement(child,visit);break;
+    case stmk_block:for(auto child:coroutine_block_children(statement))coroutine_walk_statement(child,visit);break;
     case stmk_try_block:
       coroutine_walk_statement(statement->variant.try_block->statement,visit);
       for(auto handler=statement->variant.try_block->handlers;handler;handler=handler->next)coroutine_walk_statement(handler->statement,visit);
@@ -224,7 +225,7 @@ void coroutine_dispatch_routes(a_statement_ptr statement,std::map<unsigned,strin
   };
   coroutine_walk_expression(statement->expr,visit);
   switch(statement->kind) {
-    case stmk_block:for(auto child=statement->variant.block.statements;child;child=child->next)coroutine_dispatch_routes(child,routes);break;
+    case stmk_block:for(auto child:coroutine_block_children(statement))coroutine_dispatch_routes(child,routes);break;
     case stmk_if:coroutine_dispatch_routes(statement->variant.if_stmt.then_statement,routes);coroutine_dispatch_routes(statement->variant.if_stmt.else_statement,routes);break;
     case stmk_for:
       coroutine_dispatch_routes(statement->variant.for_loop.extra_info->initialization,routes);
@@ -329,7 +330,7 @@ void coroutine_statement(a_statement_ptr node) {
   if(node->kind==stmk_coroutine)return;
   if(node->kind==stmk_init && coroutine_descriptive_variables.count(node->variant.dynamic_init->variable))return;
   if(node->kind==stmk_coroutine_return){coroutine_effect(node->expr);return;}
-  if(node->kind==stmk_block){for(auto child=node->variant.block.statements;child;child=child->next)coroutine_statement(child);return;}
+  if(node->kind==stmk_block){for(auto child:coroutine_block_children(node))coroutine_statement(child);return;}
   if(node->kind==stmk_try_block){coroutine_try(node);return;}
   bool structured=node->kind==stmk_if || node->kind==stmk_for || node->kind==stmk_while || node->kind==stmk_end_test_while || node->kind==stmk_switch;
   bool semantic_call=false;
@@ -532,8 +533,7 @@ bool coroutine_has_function_try(a_statement_ptr statement) {
 }
 void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_ptr descriptor) {
   diagnostic_scope diagnostic(routine->source_corresp.decl_position);
-  if(coroutine_has_function_try(scope->assoc_block))
-    unsupported("coroutine function-try source-body boundary");
+  coroutine_block_views.clear();
   if(source_jumps_used)unsupported("coroutine/nonlocal-jump lifetime integration");
   check_operand_order(scope->assoc_block);
   check_operand_order(descriptor->get_return_object_call);
@@ -550,6 +550,7 @@ void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_pt
   if(scope->assoc_block->kind!=stmk_block)unsupported("coroutine function-try frame entry");
   current_coroutine=descriptor;current_coroutine_routine=routine;
   coroutine_prepare_descriptive_operands(scope->assoc_block);
+  coroutine_prepare_function_try_view(scope->assoc_block,descriptor);
   coroutine_await_sites.clear();coroutine_try_offsets.clear();coroutine_initial_try=nullptr;
   local_offsets.clear();frame_size=0;frame_alignment=8;reset_materialization();
   coroutine_frame_variable(descriptor->promise);
@@ -576,7 +577,8 @@ void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_pt
   collect_materialization(scope->assoc_block);collect_materialization(descriptor->get_return_object_call);collect_materialization(descriptor->alloc_failure_gro_call);
   coroutine_walk_expression(descriptor->initial_suspend_call,[&](an_expr_node_ptr node){if(coroutine_await_sites.count(node))coroutine_await_sites[node].initial=true;});
   coroutine_walk_expression(descriptor->final_suspend_call,[&](an_expr_node_ptr node){if(coroutine_await_sites.count(node))coroutine_await_sites[node].final=true;});
-  for(auto node=scope->assoc_block->variant.block.statements;node;node=node->next) {
+  auto execution=coroutine_block_children(scope->assoc_block);
+  for(auto node:execution) {
     if(node->kind!=stmk_try_block)continue;
     for(auto await:coroutine_awaits(node))if(coroutine_await_sites.at(await).initial)coroutine_initial_try=node;
   }
@@ -623,8 +625,10 @@ void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_pt
   line("try {__edg_coroutines.Attach(__edg_coro,__edg_frame,__edg_size,&"+resume_id+",&"+destroy_id+");__edg_registered=true;");
   for(auto parameter=parameters;parameter;parameter=parameter->next)line(variable(parameter)+"="+name(parameter,"v")+";");
   line("*(void**)&("+variable(descriptor->handle)+")=__edg_coro;");
-  for(auto node=scope->assoc_block->variant.block.statements;node!=coroutine_initial_try;node=node->next)
+  for(auto node:execution) {
+    if(node==coroutine_initial_try)break;
     if(node->kind!=stmk_coroutine)statement(node);
+  }
   auto saved_variables=expression_variables;
   if(result_storage)expression_variables[result_storage]="(*"+name(result_parameter,"v")+")";
   string result;
@@ -646,9 +650,16 @@ void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_pt
   line("private "+mod+"void* "+resume_id+"_body(global::Edg.Runtime.Coroutine.Frame* __edg_coro){");
   line("byte* __edg_frame=(byte*)__edg_coro->Promise;int __edg_cleanup_state=__edg_coro->Cleanup;bool __edg_unwinding=false,__edg_final_exception=false;try {");
   std::map<unsigned,string> routes;
-  for(auto node=coroutine_initial_try;node;node=node->next)coroutine_dispatch_routes(node,routes);
-  coroutine_dispatch(routes);
-  for(auto node=coroutine_initial_try;node;node=node->next)coroutine_statement(node);
+  bool execution_started=false;
+  for(auto node:execution) {
+    execution_started|=node==coroutine_initial_try;
+    if(execution_started)coroutine_dispatch_routes(node,routes);
+  }
+  coroutine_dispatch(routes);execution_started=false;
+  for(auto node:execution) {
+    execution_started|=node==coroutine_initial_try;
+    if(execution_started)coroutine_statement(node);
+  }
   line("__edg_coro->Cleanup=__edg_cleanup_state;global::Edg.Runtime.Coroutine.Destroy(__edg_coro);return null;");
   line("} catch(global::System.Exception error) when(!__edg_final_exception && __edg_begin_unwind(error,ref __edg_unwinding)){throw;}finally{if(__edg_unwinding){"+cleanup_unwind("0")+"}if(__edg_unwinding || __edg_final_exception)__edg_coro->Cleanup=__edg_cleanup_state;}}");
   line("// dot-gen:member-end");
@@ -665,5 +676,5 @@ void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_pt
   line("// dot-gen:member-end");emit_cleanup_helper();
   if(function_vla_used)unsupported("coroutine variable-length storage lifetime");
   if(library_mode)emit_library_export(routine,scope->variant.routine.parameters,signature);
-  current_coroutine=nullptr;current_coroutine_routine=nullptr;
+  current_coroutine=nullptr;current_coroutine_routine=nullptr;coroutine_block_views.clear();
 }

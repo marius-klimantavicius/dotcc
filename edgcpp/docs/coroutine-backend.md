@@ -371,10 +371,10 @@ The minimal trivial-promise probe has a body throwing `3`, a source handler
 adding that value and rethrowing, and `unhandled_exception` adding `100`.
 Native GCC/Clang produce `103`; the previously emitted nesting produced `100`.
 The retained failure is
-`coroutine-function-try-minimal-20261003-064000/generated3`. The emitter now
-rejects the exact retained `is_function_try_block` marker until its initialization,
-continuation and cleanup boundaries have a verified structural adaptation.
-This diagnostic is a correctness guard, not function-try coroutine support.
+`coroutine-function-try-minimal-20261003-064000/generated3`. The first guard checkpoint
+rejected the exact retained `is_function_try_block` marker pending a verified
+structural adaptation. That historical diagnostic was a correctness guard;
+the subsequent bounded implementation is described below.
 
 A separate nontrivial-promise probe fails before backend entry in both EDG
 frontends with the same preprocessed input; its native initialization/body
@@ -394,3 +394,44 @@ ordinary counter native/static/instance strict JIT regressions pass in
 `coroutine-boundaries-regression-20261003-035204/results.json`; `hashes.json`
 records the accepted helpers, fixtures and compiler. Existing positive
 NativeAOT coroutine acceptance is unchanged by these diagnostic-only guards.
+
+
+A backend-owned statement view now supports the function-try boundary when all
+surviving cleanup regions are zero-predecessor exception-handler release entries.
+It identifies the source wrapper by `is_function_try_block`, the implicit promise
+handler by descriptor expression identity, and the initial await by the exact
+retained expression. The view exposes the original factory initialization prefix,
+then emits the source body and handlers after initial suspension and inside the
+implicit promise catch. Original statements, expressions, try supplements, lifetime
+links and cleanup tables remain unchanged. Suspension dispatch traverses the same
+view, preserving legal CLR protected-region entry. Nontrivial cleanup regions
+remain explicitly diagnosed until their surviving lifetime boundaries are mapped.
+
+The bounded protocol passes 48 focused checks, indexed in
+`coroutine-function-try-cleanup-20261003-041006/acceptance.json`. Eleven exact
+native GCC/Clang O0/O2 traces match static/instance JIT and NativeAOT, covering
+return-object failure, initial-ready failure, initial-resume failure bypassing
+the source handler, initial/body suspension, body-handler rethrow, unmatched
+handler types, early suspended destruction and an exception escaping
+`unhandled_exception`. A source-valid nontrivial catch-parameter destructor
+passes the native oracles and is rejected in both translation ownership modes.
+The first attempted negative had an empty destructor which lowering eliminated;
+its successful translation is retained as a fixture correction, not a backend
+failure. Input/helper/compiler and generated runtime hashes accompany acceptance.
+
+The initial protocol's `co_return` inside a source handler is a separate frontend
+source-acceptance gate. Both EDG frontends reject the identical preprocessed input
+before backend entry with the same `context_for_lifetime` diagnostic. Evidence is
+in `coroutine-function-try-source-20261003-040416/{input.ii,original-c-frontend.log,oracle-commands.json}`.
+That valid native case remains pending; the accepted mode instead tests early
+destruction at initial suspension. Nontrivial body-local and promise initialization
+probes likewise retain their earlier `lower_dynamic_init` frontend gate. No EDG
+sources were changed.
+
+For ordinary counter and nontrivial value-lifetime coroutines, all emitted C#
+outside the separately modified default-terminate helper region remains byte
+identical in static and instance modes. The four comparisons and full unfiltered
+diffs are retained in
+`coroutine-function-try-view-candidate-20261003-070000/parity-coroutine-results.json`.
+This is a scoped parity check; the coordinated default-terminate change is
+intentionally excluded, not represented as unchanged output.

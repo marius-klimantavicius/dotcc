@@ -1062,3 +1062,11 @@ zero measured allocation, preserving nearest-even results and special cases.
 Eleven focused checks include native/reference products and composed translated
 logarithms (`evidence/milestone-float80-multiply.json`). Other arithmetic and
 conversion allocation paths remain an explicit efficiency gate.
+
+A backend-owned statement view now supports bounded coroutine function-try
+blocks: source handlers surround the body after initial suspension, inside
+the implicit promise handler. EDG IL and cleanup links remain unchanged.
+Sixty focused checks include eleven native-matched traces across JIT/AOT,
+precise unsupported cleanup guards, prior provider cases and scoped parity
+(`evidence/milestone-coroutine-function-try.json`). Nontrivial cleanup regions
+and retained original-frontend source gates remain open.

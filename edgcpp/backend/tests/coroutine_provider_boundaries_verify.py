@@ -1,4 +1,4 @@
-"""Fail closed for missing allocation providers and unmapped function-try scope."""
+"""Require allocation providers and preserve the minimal function-try trace."""
 from pathlib import Path
 import shutil
 import sys
@@ -20,7 +20,6 @@ def verify_coroutine_provider_boundaries(root, tests, out, nativeaot, run, acqui
                 run([executable])
         checks.append(fixture + ': native GCC/Clang O0/O2 agrees')
     cases = [
-        ('function-try', 'coroutine_function_try', '', 'coroutine function-try source-body boundary'),
         ('allocator', 'coroutine_allocator_provider', '#define OMIT_ALLOCATOR\n',
          'coroutine selected allocator requires source definition'),
         ('deallocator', 'coroutine_allocator_provider', '#define OMIT_DEALLOCATOR\n',
@@ -38,4 +37,14 @@ def verify_coroutine_provider_boundaries(root, tests, out, nativeaot, run, acqui
             assert diagnostic in result.stderr, result.stderr
             assert not list(directory.glob('Translated*.cs')), 'unsupported boundary published generated C#'
             checks.append(label + '-' + mode + ': precise prepublication diagnostic')
+    for instance in (False, True):
+        mode = 'instance' if instance else 'static'
+        directory = out / ('function-try-' + mode)
+        run([sys.executable, root / 'dotnet.py', out / 'coroutine_function_try.cpp',
+             '--std', 'c++20', '--libc', 'dotcc', '-I', acquisition / 'config',
+             '-I', acquisition / 'libcxx-18.1.8.src/include', '--output-dir', directory,
+             *(['--instance-methods'] if instance else [])])
+        run(['dotnet', 'build', directory / 'Generated.csproj', '-c', 'Release', '-p:TreatWarningsAsErrors=true'])
+        run(['dotnet', directory / 'bin/Release/net10.0/Generated.dll'])
+        checks.append(mode + '-jit: source handler precedes implicit promise handler, result103')
     return checks
