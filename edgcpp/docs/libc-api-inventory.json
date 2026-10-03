@@ -1,5 +1,5 @@
 {
-  "bindingCount": 164,
+  "bindingCount": 173,
   "bindings": {
     "_Exit": {
       "parameters": "int",
@@ -85,6 +85,12 @@
       "source": "libc-text-bindings.def",
       "target": "__edg_text.MbCurMax"
     },
+    "__edg_perror": {
+      "parameters": "FILE*,sbyte*,sbyte*",
+      "result": "void",
+      "source": "libc-files-management-bindings.def",
+      "target": "__edg_files.Perror"
+    },
     "__edg_scalbn_nearest": {
       "parameters": "double,int",
       "result": "double",
@@ -120,6 +126,12 @@
       "result": "int",
       "source": "libc-float-bindings.def",
       "target": "global::Edg.Runtime.LibcFloat.SignBit"
+    },
+    "__edg_system": {
+      "parameters": "sbyte*,sbyte**",
+      "result": "int",
+      "source": "libc-command-bindings.def",
+      "target": "__edg_command.System"
     },
     "__edg_timezone_enter": {
       "parameters": "",
@@ -396,6 +408,12 @@
       "result": "void",
       "source": "libc-locale-bindings.def",
       "target": "__edg_text.Locales.FreeLocale"
+    },
+    "freopen": {
+      "parameters": "sbyte*,sbyte*,FILE*",
+      "result": "FILE*",
+      "source": "libc-files-management-bindings.def",
+      "target": "__edg_files.Freopen"
     },
     "frexp": {
       "parameters": "double,int*",
@@ -739,11 +757,35 @@
       "source": "libc-files-bindings.def",
       "target": "__edg_files.Rename"
     },
+    "rewind": {
+      "parameters": "FILE*",
+      "result": "void",
+      "source": "libc-files-management-bindings.def",
+      "target": "__edg_files.Rewind"
+    },
+    "round": {
+      "parameters": "double",
+      "result": "double",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.Round"
+    },
+    "roundf": {
+      "parameters": "float",
+      "result": "float",
+      "source": "libc-math-bindings.def",
+      "target": "global::Edg.Runtime.LibcMath.Round"
+    },
     "roundl": {
       "parameters": "global::Edg.Runtime.Float80",
       "result": "global::Edg.Runtime.Float80",
       "source": "libc-math-bindings.def",
       "target": "global::Edg.Runtime.LibcMath.Round"
+    },
+    "setbuf": {
+      "parameters": "FILE*,sbyte*",
+      "result": "void",
+      "source": "libc-files-management-bindings.def",
+      "target": "__edg_files.Setbuf"
     },
     "setlocale": {
       "parameters": "int,sbyte*",
@@ -918,6 +960,18 @@
       "result": "int",
       "source": "libc-clock-bindings.def",
       "target": "__edg_clock.TimespecGet"
+    },
+    "tmpfile": {
+      "parameters": "",
+      "result": "FILE*",
+      "source": "libc-files-management-bindings.def",
+      "target": "__edg_files.Tmpfile"
+    },
+    "tmpnam": {
+      "parameters": "sbyte*",
+      "result": "sbyte*",
+      "source": "libc-files-management-bindings.def",
+      "target": "__edg_files.Tmpnam"
     },
     "tolower": {
       "parameters": "int",
@@ -1102,21 +1156,21 @@
       "fabs": "runtime-binding",
       "fabsf": "runtime-binding",
       "fabsl": "runtime-binding",
-      "fdim": "declaration-only",
-      "fdimf": "declaration-only",
-      "fdiml": "declaration-only",
+      "fdim": "selected-source",
+      "fdimf": "selected-source",
+      "fdiml": "selected-source",
       "floor": "runtime-binding",
       "floorf": "runtime-binding",
       "floorl": "runtime-binding",
       "fma": "declaration-only",
       "fmaf": "declaration-only",
       "fmal": "declaration-only",
-      "fmax": "declaration-only",
-      "fmaxf": "declaration-only",
-      "fmaxl": "declaration-only",
-      "fmin": "declaration-only",
-      "fminf": "declaration-only",
-      "fminl": "declaration-only",
+      "fmax": "selected-source",
+      "fmaxf": "selected-source",
+      "fmaxl": "selected-source",
+      "fmin": "selected-source",
+      "fminf": "selected-source",
+      "fminl": "selected-source",
       "fmod": "selected-source",
       "fmodf": "selected-source",
       "fmodl": "selected-source",
@@ -1141,21 +1195,21 @@
       "llround": "declaration-only",
       "llroundf": "declaration-only",
       "llroundl": "declaration-only",
-      "log": "declaration-only",
-      "log10": "declaration-only",
-      "log10f": "declaration-only",
-      "log10l": "declaration-only",
+      "log": "selected-source",
+      "log10": "selected-source",
+      "log10f": "selected-source",
+      "log10l": "selected-source",
       "log1p": "declaration-only",
       "log1pf": "declaration-only",
       "log1pl": "declaration-only",
-      "log2": "declaration-only",
-      "log2f": "declaration-only",
-      "log2l": "declaration-only",
+      "log2": "selected-source",
+      "log2f": "selected-source",
+      "log2l": "selected-source",
       "logb": "declaration-only",
       "logbf": "declaration-only",
       "logbl": "declaration-only",
-      "logf": "declaration-only",
-      "logl": "declaration-only",
+      "logf": "selected-source",
+      "logl": "selected-source",
       "lrint": "declaration-only",
       "lrintf": "declaration-only",
       "lrintl": "declaration-only",
@@ -1189,8 +1243,8 @@
       "rint": "declaration-only",
       "rintf": "declaration-only",
       "rintl": "declaration-only",
-      "round": "declaration-only",
-      "roundf": "declaration-only",
+      "round": "runtime-binding",
+      "roundf": "runtime-binding",
       "roundl": "runtime-binding",
       "scalbln": "declaration-only",
       "scalblnf": "declaration-only",
@@ -1247,7 +1301,7 @@
       "fputc": "runtime-binding",
       "fputs": "runtime-binding",
       "fread": "runtime-binding",
-      "freopen": "declaration-only",
+      "freopen": "runtime-binding",
       "fscanf": "selected-source",
       "fseek": "runtime-binding",
       "fsetpos": "runtime-binding",
@@ -1255,22 +1309,22 @@
       "fwrite": "runtime-binding",
       "getc": "runtime-binding",
       "getchar": "runtime-binding",
-      "perror": "declaration-only",
+      "perror": "selected-source",
       "printf": "selected-source",
       "putc": "runtime-binding",
       "putchar": "runtime-binding",
       "puts": "runtime-binding",
       "remove": "runtime-binding",
       "rename": "runtime-binding",
-      "rewind": "declaration-only",
+      "rewind": "runtime-binding",
       "scanf": "selected-source",
-      "setbuf": "declaration-only",
+      "setbuf": "runtime-binding",
       "setvbuf": "runtime-binding",
       "snprintf": "selected-source",
       "sprintf": "selected-source",
       "sscanf": "selected-source",
-      "tmpfile": "declaration-only",
-      "tmpnam": "declaration-only",
+      "tmpfile": "runtime-binding",
+      "tmpnam": "runtime-binding",
       "ungetc": "runtime-binding",
       "vasprintf": "selected-source",
       "vfprintf": "selected-source",
@@ -1782,13 +1836,57 @@
           "wformat_wrappers.c",
           "wcsnlen.c"
         ]
+      },
+      {
+        "directory": "math_extrema",
+        "translationUnits": [
+          "fmin.c",
+          "fminf.c",
+          "fminl.c",
+          "fmax.c",
+          "fmaxf.c",
+          "fmaxl.c",
+          "fdim.c",
+          "fdimf.c",
+          "fdiml.c"
+        ]
+      },
+      {
+        "directory": "stdio_management",
+        "sourceBase": "libc",
+        "translationUnits": [
+          "perror.c"
+        ]
+      },
+      {
+        "directory": "math_logs",
+        "translationUnits": [
+          "log.c",
+          "logf.c",
+          "logl.c",
+          "log2.c",
+          "log2f.c",
+          "log2l.c",
+          "log10.c",
+          "log10f.c",
+          "log10l.c",
+          "log_data.c",
+          "logf_data.c",
+          "log2_data.c",
+          "log2f_data.c",
+          "__math_invalid.c",
+          "__math_invalidf.c",
+          "__math_divzero.c",
+          "__math_divzerof.c",
+          "__polevll.c"
+        ]
       }
     ],
     "description": "Selected translated musl algorithms and authored C11 thread facade with audited BCL services; not complete libc coverage.",
     "id": "musl-selected-bcl-lp64-v1",
     "schema": 1
   },
-  "publicBindingCount": 140,
+  "publicBindingCount": 147,
   "schema": 1,
   "scope": "C17 header-category ledger plus explicit POSIX extensions; not an exhaustive POSIX API catalogue; regex declaration census excludes macros, data and compiler facilities",
   "selectedPublicDefinitions": [
@@ -2013,6 +2111,25 @@
     "modf",
     "modff",
     "modfl",
+    "perror",
+    "log",
+    "logf",
+    "logl",
+    "log2",
+    "log2f",
+    "log2l",
+    "log10",
+    "log10f",
+    "log10l",
+    "fmin",
+    "fminf",
+    "fminl",
+    "fmax",
+    "fmaxf",
+    "fmaxl",
+    "fdim",
+    "fdimf",
+    "fdiml",
     "wprintf",
     "fwprintf",
     "swprintf",

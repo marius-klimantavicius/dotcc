@@ -33,7 +33,7 @@ components can be newer than the last committed package milestone.
 | `stdatomic.h` | Public C11 generic APIs plus implicit qualified accesses, exact-width shared atomics, pointer scaling, aggregate/NaN CAS, contention, owner isolation and allocation checks under JIT/AOT | Broader architecture atomic_flag lock-free guarantees, native ABI interoperability and wider memory-model conformance. |
 | `threads.h` | Public worker APIs reuse owner-specific BCL service; result/exit/TSS/TLS, mutex/condition/once, native oracles, ABI13, JIT/AOT10 accepted; executable initial-thread join/exit, descendant lifetime and actual-last-thread status0 process finalization accepted10 | Foreign-host/managed Run thrd_exit and signal interruption remain explicit gates. Cancellation is not a C11 thread API. |
 | `stdalign.h`, `stdbool.h`, `stdnoreturn.h`, `iso646.h` | Pinned musl compatibility headers; bool, all alternative tokens, local/global alignment and noreturn pointer checks in native and all8 generated modes | Additional standards-version profiles beyond C11/C++17. |
-| Remaining `stdlib.h` | Heap, numeric conversion, full integer abs/div helpers, source-backed smoothsort qsort/qsort_r and bsearch with owner/context/exception callbacks; normal/quick/immediate process termination, unified atexit order and executable/managed entry distinction with native/JIT/AOT18 and ABI9 | owner termination, abort signal semantics, system/process model. Source-backed owner-local environment is accepted; BCL supplies only the initial pinned snapshot. Selected multibyte conversion algorithms have accepted synthetic coverage. |
+| Remaining `stdlib.h` | Heap, numeric conversion, full integer abs/div helpers, source-backed smoothsort qsort/qsort_r and bsearch with owner/context/exception callbacks; normal/quick/immediate process termination, unified atexit order and executable/managed entry distinction with native/JIT/AOT18 and ABI9 | owner termination, abort signal semantics, POSIX process and descriptor model. Source-backed owner-local environment is accepted; BCL supplies only the initial pinned snapshot. Selected multibyte conversion algorithms have accepted synthetic coverage. |
 | Filesystem / descriptors / process | BCL streams; runtime-selected append and remove/rename adapters | POSIX descriptor ownership, stat/directory/path/filesystem semantics, environment/process/execution; explicit unsupported platform capabilities rather than fake success. |
 | Networking, terminals, dynamic loading and other POSIX | No completion claim | Separate scope inventory and portable capability/error model; not covered by the C17 header census. |
 
@@ -87,3 +87,16 @@ Selected logarithm families add 18 source units (provider166). Native original/
 adapted results, all eight C/C++ JIT/NativeAOT modes, errno and owner/TLS checks,
 packaging and exact patch replay pass18 focused checks; see libc-math-logs.md.
 Dynamic floating environment support and remaining libm families remain open.
+
+The authored C17 `system` facade has 17 focused native/JIT/NativeAOT/ABI checks.
+Its BCL bridge uses owner `environ` and the FILE service’s captured working
+directory, returns explicit BCL exit codes and probes the actual processor.
+Child standard handles still belong to the host OS; source `freopen` propagation,
+POSIX signal/wait status and broader process integration remain open.
+See [libc-system-profile.md](libc-system-profile.md).
+
+The authored system facade brings the provider to167 source units. Its C17
+profile uses owner environment and captured working directory, raw BCL exit
+codes and host OS standard handles;25 focused checks pass. POSIX signal/wait
+semantics and owner FILE-to-child descriptor mapping remain open. See
+libc-system-profile.md and evidence/milestone-system.json.

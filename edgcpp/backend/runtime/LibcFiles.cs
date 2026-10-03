@@ -92,6 +92,8 @@ public sealed unsafe partial class LibcFiles : IDisposable
         if (entry is not null) { entry.Error = true; entry.FailureEpoch = unchecked(entry.FailureEpoch + 1); }
         setErrno(error); return Eof;
     }
+    public string WorkingDirectory => workingDirectory;
+
     private static int ErrorNumber(Exception error) => error switch
     {
         FileNotFoundException or DirectoryNotFoundException => 2,

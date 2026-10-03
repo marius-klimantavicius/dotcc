@@ -53,3 +53,5 @@ __pycache__/
 /upstream/src/dot_gen_coroutine_provenance.h
 
 /upstream/src/libc-files-management-bindings.def
+
+/upstream/src/libc-command-bindings.def

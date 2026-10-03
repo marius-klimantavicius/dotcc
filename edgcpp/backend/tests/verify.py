@@ -312,6 +312,12 @@ def main():
     checks.extend(verify_libc_math_parts(ROOT,TESTS,suite_output("libc_math_parts"),args.nativeaot,run))
     from branch_expect_verify import verify_branch_expect
     checks.extend(verify_branch_expect(ROOT, TESTS, suite_output("branch_expect"), args.nativeaot, run))
+    from libc_system_verify import verify_libc_system
+    checks.extend(verify_libc_system(ROOT, TESTS, suite_output("libc_system"), args.nativeaot, run))
+    from libc_system_runtime_verify import verify_libc_system_runtime
+    checks.extend(verify_libc_system_runtime(ROOT, TESTS, suite_output("libc_system_runtime"), args.nativeaot, run))
+    from libc_system_abi_verify import verify_libc_system_abi
+    checks.extend(verify_libc_system_abi(ROOT, TESTS, suite_output("libc_system_abi")))
     from libc_math_logs_verify import verify_libc_math_logs
     checks.extend(verify_libc_math_logs(ROOT, TESTS, suite_output("libc_math_logs"), args.nativeaot, run))
     from libc_math_extrema_verify import verify_libc_math_extrema

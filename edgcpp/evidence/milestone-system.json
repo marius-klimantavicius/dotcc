@@ -1,0 +1,28 @@
+{
+  "scope": "C17 host command profile using BCL Process and source-owner environment",
+  "checks": 25,
+  "providerTranslationUnits": 167,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/libc-system-translated-20261003-054400/results.json",
+      "sha256": "e0ffdb83eb0f51469d2b85f4452b18b0408c3d9e0c242370e65ffd4b3a103161"
+    },
+    {
+      "path": "artifacts/campaign/libc-system-abi-20261003-054400/results.json",
+      "sha256": "a88d16bdcb70ba419d172604f7e6d0d932a57bab4f8750eb2ece6386a1141302"
+    },
+    {
+      "path": "artifacts/campaign/libc-system-runtime-20261003-053900/results.json",
+      "sha256": "b1bbae6428b82733fbb6b3ec385a2f4839c970962055ac2b97f0a58cebd5d694"
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-system-001/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082"
+    }
+  ],
+  "limitations": [
+    "Raw BCL ExitCode, not POSIX wait status or signal policy",
+    "Children inherit host OS handles, not translated freopen FILE associations",
+    "Windows/macOS execution remains unverified"
+  ]
+}

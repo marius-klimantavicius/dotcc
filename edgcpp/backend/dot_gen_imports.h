@@ -1,6 +1,6 @@
 // Explicit import contracts for the portable LP64 libc bridge. Definitions in
 // translated input always win; an unknown symbol or mismatched ABI is an error.
-bool libc_enabled=false,libc_emitted=false,files_emitted=false,text_emitted=false,math_emitted=false,clock_emitted=false,environment_emitted=false,timezone_emitted=false;
+bool libc_enabled=false,libc_emitted=false,files_emitted=false,text_emitted=false,math_emitted=false,clock_emitted=false,environment_emitted=false,timezone_emitted=false,command_emitted=false;
 std::set<a_routine_ptr> libc_routines;
 std::map<string,a_routine_ptr> libc_binding_addresses;
 std::map<a_routine_ptr,a_routine_ptr> libc_address_aliases;
@@ -100,16 +100,17 @@ const libc_binding libc_bindings[]={
 #include "libc-process-bindings.def"
 #include "libc-assert-bindings.def"
 #include "libc-environment-bindings.def"
+#include "libc-command-bindings.def"
 #include "libc-timezone-bindings.def"
 #undef EDG_LIBC
 };
 void reset_libc_imports() {
-  libc_emitted=false;files_emitted=false;text_emitted=false;math_emitted=false;clock_emitted=false;environment_emitted=false;timezone_emitted=false;libc_routines.clear();
+  libc_emitted=false;files_emitted=false;text_emitted=false;math_emitted=false;clock_emitted=false;environment_emitted=false;timezone_emitted=false;command_emitted=false;libc_routines.clear();
   libc_binding_addresses.clear();libc_address_aliases.clear();
 }
 string libc_thread_release_code() {return string(text_emitted?"__edg_text_value?.ReleaseThread();":"")+(libc_emitted?"__edg_libc.ReleaseThread();":"");}
 string libc_disposal_code() {
-  return string(files_emitted?"__edg_files_value?.Dispose();":"")+
+  return string(command_emitted?"__edg_command_value?.Dispose();":"")+(files_emitted?"__edg_files_value?.Dispose();":"")+
     (text_emitted?"__edg_text_value?.Dispose();":"")+(environment_emitted?"__edg_environment_value?.Dispose();":"")+(timezone_emitted?"__edg_timezone_value?.Dispose();":"")+(libc_emitted?"__edg_libc.Dispose();":"");
 }
 void ensure_lifecycle();
@@ -197,6 +198,13 @@ void ensure_environment() {
   string mod=instance_mode?"":"static ";
   helper_output+="private "+mod+"global::Edg.Runtime.LibcEnvironment? __edg_environment_value;\n";
   helper_output+="private "+mod+"global::Edg.Runtime.LibcEnvironment __edg_environment { get { lock(__edg_libc) { if(__edg_environment_value==null)__edg_environment_value=new global::Edg.Runtime.LibcEnvironment(); return __edg_environment_value; } } }\n";
+}
+void ensure_command() {
+  if(command_emitted)return;
+  ensure_files();command_emitted=true;
+  string mod=instance_mode?"":"static ";
+  helper_output+="private "+mod+"global::Edg.Runtime.LibcCommand? __edg_command_value;\n";
+  helper_output+="private "+mod+"global::Edg.Runtime.LibcCommand __edg_command { get { lock(__edg_libc) { if(__edg_command_value==null)__edg_command_value=new global::Edg.Runtime.LibcCommand(__edg_libc.SetErrno,__edg_files.WorkingDirectory); return __edg_command_value; } } }\n";
 }
 void ensure_timezone() {
   if(timezone_emitted)return;
@@ -371,6 +379,7 @@ bool libc_routine(a_routine_ptr r) {
     if(string(binding.target).find("__edg_math.")==0)ensure_math();
     if(string(binding.target).find("__edg_clock.")==0)ensure_clock();
     if(string(binding.target).find("__edg_environment.")==0)ensure_environment();
+    if(string(binding.target).find("__edg_command.")==0)ensure_command();
     if(string(binding.target).find("__edg_timezone.")==0)ensure_timezone();
     libc_register_routine(r,binding.symbol);
     helper_output+="// dot-gen:import "+symbol+"\n// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+result+" "+name(r,"f")+"("+signature+") { "+

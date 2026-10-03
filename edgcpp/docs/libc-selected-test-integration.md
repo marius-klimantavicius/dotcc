@@ -150,3 +150,29 @@ hash-pinned authored adapter in source.json. No musl provenance is invented.
 The separate runtime hook copies the Management partial along with its FILE,
 wide-state, append and path dependencies and includes a subprocess status37
 check proving anonymous tmpfile lifetime across immediate Environment.Exit.
+
+
+The combined representable-width regression is
+`verify_libc_scanf_width(ROOT, TESTS, suite_output("libc_scanf_width"), args.nativeaot, run)`
+from `libc_scanf_width_verify`. It includes original UBSan failure retention,
+corrected native and both public scanf/swscanf families in one generated matrix.
+The additional246 wide-destination **byte**-field cases are included directly
+in `libc_scanf_verify.corpus()` (479 total); the separate audit script reuses
+hashed accepted generated binaries and need not create a second full-suite matrix.
+
+## C17 host-command facade
+
+The authored `libc/system/system.c` has `sourceBase: libc`, one translation unit,
+and an adapter-only source manifest. It has no musl-origin claim. The generated
+verifier detects provider registration and avoids passing a duplicate source.
+
+* `verify_libc_system(ROOT, TESTS, out, nativeaot, run)` — native normalized
+  command-status reference plus C/C++ static/instance JIT/AOT (9 with AOT).
+* `verify_libc_system_runtime(ROOT, TESTS, out, nativeaot, run)` — standalone
+  BCL command service, environment, FILE-anchored directory, UTF-8/error/lifetime
+  and explicit host OS standard-handle behavior (2 with AOT).
+* `verify_libc_system_abi(ROOT, TESTS, out)` — six rejected private import ABIs.
+
+Evidence and exact implementation profile: [libc-system-profile.md](libc-system-profile.md).
+Child stdio inheritance is still from host OS handles; owner `freopen` integration
+and POSIX signal/wait status semantics remain separate process-layer gates.

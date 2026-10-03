@@ -24,7 +24,7 @@ RUNTIME_DEPENDENCIES = {
     "LibcFilesScan": ("LibcFiles", "VaList"),
     "LibcFilesAssert": ("LibcFiles", "LibcProcess"), "LibcFilesWideScan": ("LibcFiles", "VaList"), "LibcFilesWideFormat": ("LibcFiles", "VaList"), "LibcEnvironment": (),
     "LibcText": ("LibcErrorMessages", "LibcLocale"), "LibcErrorMessages": (), "LibcLocale": (),
-    "LibcClock": (), "LibcCpuClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
+    "LibcCommand": ("LibcFiles",), "LibcClock": (), "LibcCpuClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
     "LibcxxThreads": ("LibcC11Threads", "LibcInitialThread"), "LibcInitialThread": (), "LibcC11Threads": (), "LibcCalendar": (), "LibcProcess": (), "LibcProcessExit": (),
 }
 
@@ -305,6 +305,9 @@ RESOURCE_ITEMS
         "libc": args.libc, "libcProvider": libc_provider, "imports": imports,
         "target": target_manifest,
         "termination": "owner-v1" if termination else None,
+        "hostCommand": {"version":1,"status":"bcl-exit-code","environment":"owner-source-environ",
+                        "workingDirectory":"owner-service-snapshot","standardIO":"host-os-handles","posixSignalPolicy":False}
+                       if "__edg_system" in imports else None,
         "processExit": {"mode":"process-wide", "entryPoint":"normal-exit" if args.emit=="exe" else "host-controlled",
                         "initialThread":"logical-completion-v1" if "// dot-gen:initial-thread initial-v1" in source else None}
                        if "// dot-gen:process-exit process-v1" in source else None,

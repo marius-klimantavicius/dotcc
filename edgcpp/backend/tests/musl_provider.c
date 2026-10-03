@@ -107,6 +107,7 @@ int main(void) {
  CHECK_LOG_ADDRESS(log10,double);CHECK_LOG_ADDRESS(log10f,float);CHECK_LOG_ADDRESS(log10l,long double);
 #undef CHECK_LOG_ADDRESS
  errno=0;if(log10l(0.0L)!=-HUGE_VALL || errno!=ERANGE)return 39;
+ if(!system(0) || system("exit 0")!=0 || system("exit 17")!=17)return 40;
  uselocale(previous);freelocale(locale);
  return 0;
 }

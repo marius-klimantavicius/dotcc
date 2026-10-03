@@ -275,6 +275,13 @@
         "__math_divzerof.c",
         "__polevll.c"
       ]
+    },
+    {
+      "sourceBase": "libc",
+      "directory": "system",
+      "translationUnits": [
+        "system.c"
+      ]
     }
   ]
 }

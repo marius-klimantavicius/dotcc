@@ -1,0 +1,2 @@
+// C17 host-command profile, strict source-owner UTF8 environment vector.
+EDG_LIBC("__edg_system", "int", "sbyte*,sbyte**", "__edg_command.System")

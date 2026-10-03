@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "version": "EDG authored C17 host-command facade v1",
+  "provenance": "Authored facade over BCL Process; no musl implementation source copied. C17 implementation-defined processor and return-status profile, not POSIX system.",
+  "abi": "portable-lp64-owner-environ-v1",
+  "scope": "Raw BCL ExitCode; source-owner environment; FILE-owner working-directory snapshot; child inherits host OS standard handles. Source FILE redirection and POSIX signal/wait semantics remain open.",
+  "sources": {},
+  "adapters": {
+    "system.c": "87e6bd583856ab51e4afb57bb31a1ff46cc8659f3d86cda18f9ccc08233241f2"
+  }
+}
