@@ -70,6 +70,7 @@ size_t wcsnrtombs(char *, const wchar_t **, size_t, size_t, mbstate_t *);
 size_t mbsrtowcs(wchar_t *, const char **, size_t, mbstate_t *);
 size_t wcsrtombs(char *, const wchar_t **, size_t, mbstate_t *);
 size_t wcslen(const wchar_t *);
+size_t wcsnlen(const wchar_t *, size_t);
 wchar_t *wcscpy(wchar_t *, const wchar_t *);
 wchar_t *wcsncpy(wchar_t *, const wchar_t *, size_t);
 wchar_t *wcscat(wchar_t *, const wchar_t *);

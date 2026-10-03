@@ -3,7 +3,8 @@
 Status: process-mode `exit`, `_Exit`, `quick_exit`, `atexit` and
 `at_quick_exit` are implemented and accepted in synthetic native C/C++,
 translated static/instance JIT and Linux NativeAOT tests. Executable main return
-uses normal process termination; managed `Run` returns to its host. Main-thread
+uses normal process termination; managed `Run` returns to its host. Executable initial-thread `thrd_exit` is now accepted with logical completion,
+join results and actual-last-thread status-zero termination. Foreign-host
 `thrd_exit` and isolated owner termination remain open and are not implied by
 per-instance resource isolation. The existing assertion/abort path is unchanged.
 
@@ -163,3 +164,10 @@ execution. These are Linux execution results; BCL-based implementation alone
 does not establish Windows/macOS acceptance. Registration allocation failure,
 concurrent exit behavior outside defined source contracts, signals and temporary
 file removal are not covered by this matrix.
+
+Initial-thread acceptance extends executable entry only. The runtime exposes
+logical completion before the physical initial CLR thread waits; the actual
+last source thread calls normal process exit after releasing its TLS and owner
+lease. The process helper skips repeated TLS draining. Exact C/source-policy C++
+evidence is described in `libc-c11-threads.md`; no host-controlled Run boundary
+or isolated owner cancellation is inferred from these results.

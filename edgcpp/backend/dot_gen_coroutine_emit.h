@@ -148,6 +148,7 @@ std::map<a_try_supplement_ptr,std::pair<unsigned long long,unsigned long long>> 
 a_coroutine_descr_ptr current_coroutine=nullptr;
 a_routine_ptr current_coroutine_routine=nullptr;
 a_statement_ptr coroutine_initial_try=nullptr;
+#include "dot_gen_coroutine_provenance.h"
 unsigned long long coroutine_storage(unsigned long long size,unsigned long long alignment) {
   if(!size || !alignment || alignment>4096 || (alignment&(alignment-1)))unsupported("coroutine frame storage layout");
   frame_alignment=std::max(frame_alignment,alignment);frame_size=(frame_size+alignment-1)&~(alignment-1);
@@ -156,7 +157,7 @@ unsigned long long coroutine_storage(unsigned long long size,unsigned long long 
   return result;
 }
 void coroutine_frame_variable(a_variable_ptr variable) {
-  if(!variable || local_offsets.count(variable) || global_offsets.count(variable) || tls_offsets.count(variable) ||
+  if(!variable || coroutine_descriptive_variables.count(variable) || local_offsets.count(variable) || global_offsets.count(variable) || tls_offsets.count(variable) ||
      variable==cleanup_region_var || variable==cleanup_array_var || exception_metadata.count(variable) ||
      constant_templates.count(variable) || variable->storage_class==sc_extern)return;
   auto storage=skip_typerefs(variable->type);(void)type(storage);
@@ -295,6 +296,7 @@ void coroutine_statement(a_statement_ptr node) {
   a_statement_ptr selected=nullptr;
   if(selected_runtime_branch(node,selected)){coroutine_statement(selected);return;}
   if(node->kind==stmk_coroutine)return;
+  if(node->kind==stmk_init && coroutine_descriptive_variables.count(node->variant.dynamic_init->variable))return;
   if(node->kind==stmk_coroutine_return){coroutine_effect(node->expr);return;}
   if(node->kind==stmk_block){for(auto child=node->variant.block.statements;child;child=child->next)coroutine_statement(child);return;}
   if(node->kind==stmk_try_block){coroutine_try(node);return;}
@@ -412,6 +414,7 @@ void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_pt
     unsupported("incomplete coroutine descriptor");
   if(scope->assoc_block->kind!=stmk_block)unsupported("coroutine function-try frame entry");
   current_coroutine=descriptor;current_coroutine_routine=routine;
+  coroutine_prepare_descriptive_operands(scope->assoc_block);
   coroutine_await_sites.clear();coroutine_try_offsets.clear();coroutine_initial_try=nullptr;
   local_offsets.clear();frame_size=0;frame_alignment=8;reset_materialization();
   coroutine_frame_variable(descriptor->promise);

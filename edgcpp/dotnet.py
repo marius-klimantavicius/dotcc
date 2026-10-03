@@ -22,7 +22,7 @@ RUNTIME_DEPENDENCIES = {
     "LibcFiles": ("LibcAppend", "LibcPaths", "LibcFilesWide"), "LibcFilesWide": (), "LibcAppend": (), "LibcPaths": (),
     "LibcFilesFormat": ("LibcFiles", "VaList"),
     "LibcFilesScan": ("LibcFiles", "VaList"),
-    "LibcFilesAssert": ("LibcFiles", "LibcProcess"), "LibcFilesWideScan": ("LibcFiles", "VaList"), "LibcEnvironment": (),
+    "LibcFilesAssert": ("LibcFiles", "LibcProcess"), "LibcFilesWideScan": ("LibcFiles", "VaList"), "LibcFilesWideFormat": ("LibcFiles", "VaList"), "LibcEnvironment": (),
     "LibcText": ("LibcErrorMessages", "LibcLocale"), "LibcErrorMessages": (), "LibcLocale": (),
     "LibcClock": (), "LibcCpuClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
     "LibcxxThreads": ("LibcC11Threads", "LibcInitialThread"), "LibcInitialThread": (), "LibcC11Threads": (), "LibcCalendar": (), "LibcProcess": (), "LibcProcessExit": (),
@@ -239,6 +239,8 @@ def main():
         runtime_helpers.add("LibcFilesScan")
     if "__edg_with_file_wide_read_lock" in imports:
         runtime_helpers.add("LibcFilesWideScan")
+    if "__edg_with_file_wide_lock" in imports:
+        runtime_helpers.add("LibcFilesWideFormat")
     if "__assert_fail" in imports:
         runtime_helpers.add("LibcFilesAssert")
     if "global::Edg.Runtime.CThreadExitTransfer" in source:

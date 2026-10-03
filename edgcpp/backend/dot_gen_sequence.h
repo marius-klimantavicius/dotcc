@@ -8,6 +8,7 @@ string expression_effect(an_expr_node_ptr e);
 void statement_expression_captures(an_expr_node_ptr e,std::vector<a_variable_ptr> &vars);
 void expression_captures(an_expr_node_ptr e, std::vector<a_variable_ptr> &vars) {
   if (!e) return;
+  if(coroutine_descriptive_effect(e))return;
   if(e->kind==enk_statement){statement_expression_captures(e,vars);return;}
   if (e->kind == enk_variable) {
     auto v=node_variable(e);
@@ -16,7 +17,7 @@ void expression_captures(an_expr_node_ptr e, std::vector<a_variable_ptr> &vars) 
   } else if(e->kind==enk_lowered_eh_construct && e->variant.lowered_eh.kind==leck_internal_try) {
     for(auto a=e->variant.lowered_eh.variant.try_and_catch_expr;a;a=a->next)expression_captures(a,vars);
     auto capture=[&](a_constant_ptr c){if(c && c->kind==ck_stack_offset){auto v=c->variant.stack_offset.variable;if(v && !global_offsets.count(v) && !tls_offsets.count(v) && std::find(vars.begin(),vars.end(),v)==vars.end())vars.push_back(v);}};
-    for(auto &entry:cleanup_regions){auto &r=entry.second;capture(r.handle);capture(r.condition);capture(r.vtt);}
+    for(auto &entry:cleanup_regions){auto &r=entry.second;if(coroutine_descriptive_region(entry.first))continue;capture(r.handle);capture(r.condition);capture(r.vtt);}
     for(auto &entry:cleanup_arrays)for(auto c:entry)capture(c);
     if(cleanup_this && std::find(vars.begin(),vars.end(),cleanup_this)==vars.end())vars.push_back(cleanup_this);
   } else if (e->kind == enk_operation) {
@@ -76,6 +77,7 @@ string sequence_expression(an_expr_node_ptr e) {
 }
 string expression_effect(an_expr_node_ptr e) {
   if(!e)return "";
+  if(coroutine_descriptive_effect(e))return "";
   // c_gen_be -> il_to_str::form_constant renders retained ck_void as (void)0.
   if(e->kind==enk_constant && node_constant(e)->kind==ck_void) {
     if(skip_typerefs(e->type)->kind!=tk_void)unsupported("void constant type");

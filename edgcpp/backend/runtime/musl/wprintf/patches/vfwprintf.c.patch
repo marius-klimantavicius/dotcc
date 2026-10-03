@@ -1,0 +1,179 @@
+--- a/vfwprintf.c
++++ b/vfwprintf.c
+@@ -1,4 +1,4 @@
+-#include "stdio_impl.h"
++#include "wformat_sink.h"
+ #include <errno.h>
+ #include <ctype.h>
+ #include <limits.h>
+@@ -123,15 +123,15 @@
+ 	}
+ }
+ 
+-static void out(FILE *f, const wchar_t *s, size_t l)
+-{
+-	while (l-- && !ferror(f)) fputwc(*s++, f);
+-}
+-
+-static void pad(FILE *f, int n, int fl)
+-{
+-	if ((fl & LEFT_ADJ) || !n || ferror(f)) return;
+-	fprintf(f, "%*s", n, "");
++static void out(struct edg_wformat_sink *f, const wchar_t *s, size_t l)
++{
++	(void)edg_wformat_write(f, s, l);
++}
++
++static void pad(struct edg_wformat_sink *f, int n, int fl)
++{
++	if ((fl & LEFT_ADJ) || !n || edg_wformat_error(f)) return;
++	edg_wformat_narrow(f, "%*s", n, "");
+ }
+ 
+ static int getint(wchar_t **s) {
+@@ -149,7 +149,7 @@
+ ['p'-'a']='j'
+ };
+ 
+-static int wprintf_core(FILE *f, const wchar_t *fmt, va_list *ap, union arg *nl_arg, int *nl_type)
++static int wprintf_core(struct edg_wformat_sink *f, const wchar_t *fmt, va_list *ap, union arg *nl_arg, int *nl_type)
+ {
+ 	wchar_t *a, *z, *s=(wchar_t *)fmt;
+ 	unsigned l10n=0, fl;
+@@ -250,7 +250,7 @@
+ 		if (!f) continue;
+ 
+ 		/* Do not process any new directives once in error state. */
+-		if (ferror(f)) return -1;
++		if (edg_wformat_error(f)) return -1;
+ 
+ 		t = s[-1];
+ 		if (ps && (t&15)==3) t&=~32;
+@@ -271,12 +271,13 @@
+ 		case 'C':
+ 			if (w<1) w=1;
+ 			pad(f, w-1, fl);
+-			out(f, &(wchar_t){t=='C' ? arg.i : btowc(arg.i)}, 1);
++			wc = (wchar_t)(t=='C' ? arg.i : btowc(arg.i));
++			out(f, &wc, 1);
+ 			pad(f, w-1, fl^LEFT_ADJ);
+ 			l = w;
+ 			continue;
+ 		case 'S':
+-			a = arg.p;
++			a = (wchar_t *)arg.p;
+ 			z = a + wcsnlen(a, p<0 ? INT_MAX : p);
+ 			if (p<0 && *z) goto overflow;
+ 			p = z-a;
+@@ -289,15 +290,15 @@
+ 		case 'm':
+ 			arg.p = strerror(errno);
+ 		case 's':
+-			if (!arg.p) arg.p = "(null)";
+-			bs = arg.p;
++			if (!arg.p) arg.p = (void *)"(null)";
++			bs = (char *)arg.p;
+ 			for (i=l=0; l<(p<0?INT_MAX:p) && (i=mbtowc(&wc, bs, MB_LEN_MAX))>0; bs+=i, l++);
+ 			if (i<0) return -1;
+ 			if (p<0 && *bs) goto overflow;
+ 			p=l;
+ 			if (w<p) w=p;
+ 			pad(f, w-p, fl);
+-			bs = arg.p;
++			bs = (char *)arg.p;
+ 			while (l--) {
+ 				i=mbtowc(&wc, bs, MB_LEN_MAX);
+ 				bs+=i;
+@@ -319,21 +320,29 @@
+ 
+ 		switch (t|32) {
+ 		case 'a': case 'e': case 'f': case 'g':
+-			l = fprintf(f, charfmt, w, p, arg.f);
++			l = edg_wformat_narrow(f, charfmt, w, p, arg.f);
+ 			break;
+-		case 'd': case 'i': case 'o': case 'u': case 'x': case 'p':
+-			l = fprintf(f, charfmt, w, p, arg.i);
++		case 'p': {
++			size_t length = strlen(charfmt);
++			charfmt[length-2] = 'p'; charfmt[length-1] = 0;
++			l = edg_wformat_narrow(f, charfmt, w, p, (void *)(uintptr_t)arg.i);
+ 			break;
+ 		}
++		case 'd': case 'i': case 'o': case 'u': case 'x':
++			l = edg_wformat_narrow(f, charfmt, w, p, arg.i);
++			break;
++		}
++		/* Do not feed a delegated error into signed count arithmetic. */
++		if (l < 0) return -1;
+ 	}
+ 
+ 	if (f) return cnt;
+ 	if (!l10n) return 0;
+ 
+-	for (i=1; i<=NL_ARGMAX && nl_type[i]; i++)
++	for (i=1; i<=EDG_WFORMAT_NL_ARGMAX && nl_type[i]; i++)
+ 		pop_arg(nl_arg+i, nl_type[i], ap);
+-	for (; i<=NL_ARGMAX && !nl_type[i]; i++);
+-	if (i<=NL_ARGMAX) return -1;
++	for (; i<=EDG_WFORMAT_NL_ARGMAX && !nl_type[i]; i++);
++	if (i<=EDG_WFORMAT_NL_ARGMAX) return -1;
+ 	return 1;
+ 
+ inval:
+@@ -344,29 +353,30 @@
+ 	return -1;
+ }
+ 
+-int vfwprintf(FILE *restrict f, const wchar_t *restrict fmt, va_list ap)
+-{
+-	va_list ap2;
+-	int nl_type[NL_ARGMAX+1] = {0};
+-	union arg nl_arg[NL_ARGMAX+1];
+-	int olderr;
+-	int ret;
+-
+-	/* the copy allows passing va_list* even if va_list is an array */
+-	va_copy(ap2, ap);
+-	if (wprintf_core(0, fmt, &ap2, nl_arg, nl_type) < 0) {
+-		va_end(ap2);
+-		return -1;
+-	}
+-
+-	FLOCK(f);
+-	fwide(f, 1);
+-	olderr = f->flags & F_ERR;
+-	f->flags &= ~F_ERR;
+-	ret = wprintf_core(f, fmt, &ap2, nl_arg, nl_type);
+-	if (ferror(f)) ret = -1;
+-	f->flags |= olderr;
+-	FUNLOCK(f);
+-	va_end(ap2);
+-	return ret;
+-}
++struct edg_wformat_context {
++ struct edg_wformat_sink *sink;
++ union arg *arguments;
++ int *types;
++};
++static int edg_wformat_body(void *context, const wchar_t *format, va_list arguments)
++{
++ struct edg_wformat_context *state = (struct edg_wformat_context *)context;
++ /* A local va_copy keeps both native array-va_list and EDG's typed cursor ABI. */
++ va_list copy; va_copy(copy, arguments);
++ int result = wprintf_core(state->sink, format, &copy, state->arguments, state->types);
++ va_end(copy);
++ return edg_wformat_error(state->sink) ? -1 : result;
++}
++int __edg_musl_vwformat(struct edg_wformat_sink *sink, FILE *file, const wchar_t *format, va_list arguments)
++{
++ va_list copy;
++ int types[EDG_WFORMAT_NL_ARGMAX+1] = {0};
++ union arg values[EDG_WFORMAT_NL_ARGMAX+1];
++ va_copy(copy, arguments);
++ if (wprintf_core(0, format, &copy, values, types) < 0) { va_end(copy); return -1; }
++ struct edg_wformat_context context = { sink, values, types };
++ int result = file ? __edg_with_file_wide_lock(file, edg_wformat_body, &context, format, copy)
++                   : edg_wformat_body(&context, format, copy);
++ va_end(copy);
++ return result;
++}

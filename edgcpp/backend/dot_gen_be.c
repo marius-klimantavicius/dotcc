@@ -535,6 +535,7 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c) {
 string expr(an_expr_node_ptr e);
 string coroutine_expression_override(an_expr_node_ptr e,bool location);
 bool coroutine_expression_captures(an_expr_node_ptr e);
+bool coroutine_descriptive_effect(an_expr_node_ptr e);
 string gnu_statement_expression(an_expr_node_ptr e);
 string statement_expression_result(an_expr_node_ptr e);
 void ensure_lifecycle();

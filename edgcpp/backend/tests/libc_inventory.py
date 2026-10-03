@@ -47,6 +47,8 @@ def inventory(root):
         selected += ['rand','srand','rand_r','random','srandom','initstate','setstate','drand48','erand48','lrand48','nrand48','mrand48','jrand48','srand48','seed48','lcong48']
     if any(component['directory']=='math_parts' for component in provider['components']):
         selected += ['fmod','fmodf','fmodl','modf','modff','modfl']
+    if any(component['directory']=='wprintf' for component in provider['components']):
+        selected += ['wprintf','fwprintf','swprintf','vwprintf','vfwprintf','vswprintf','wcsnlen']
     headers={}
     for path in sorted((runtime/'libc/include').glob('*.h')):
         text=re.sub(r'/\*.*?\*/','',path.read_text(),flags=re.S)

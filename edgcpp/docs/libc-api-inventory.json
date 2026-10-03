@@ -1446,7 +1446,7 @@
       "fputwc": "runtime-binding",
       "fputws": "runtime-binding",
       "fwide": "runtime-binding",
-      "fwprintf": "declaration-only",
+      "fwprintf": "selected-source",
       "fwscanf": "selected-source",
       "getwc": "runtime-binding",
       "getwchar": "runtime-binding",
@@ -1457,14 +1457,14 @@
       "mbsrtowcs": "selected-source",
       "putwc": "runtime-binding",
       "putwchar": "runtime-binding",
-      "swprintf": "declaration-only",
+      "swprintf": "selected-source",
       "swscanf": "selected-source",
       "ungetwc": "runtime-binding",
-      "vfwprintf": "declaration-only",
+      "vfwprintf": "selected-source",
       "vfwscanf": "selected-source",
-      "vswprintf": "declaration-only",
+      "vswprintf": "selected-source",
       "vswscanf": "selected-source",
-      "vwprintf": "declaration-only",
+      "vwprintf": "selected-source",
       "vwscanf": "selected-source",
       "wcrtomb": "selected-source",
       "wcscat": "selected-source",
@@ -1480,6 +1480,7 @@
       "wcsncat": "selected-source",
       "wcsncmp": "selected-source",
       "wcsncpy": "selected-source",
+      "wcsnlen": "selected-source",
       "wcsnrtombs": "selected-source",
       "wcspbrk": "selected-source",
       "wcsrchr": "selected-source",
@@ -1509,7 +1510,7 @@
       "wmemcpy": "selected-source",
       "wmemmove": "selected-source",
       "wmemset": "selected-source",
-      "wprintf": "declaration-only",
+      "wprintf": "selected-source",
       "wscanf": "selected-source"
     },
     "wctype.h": {
@@ -1773,6 +1774,14 @@
           "modff.c",
           "modfl.c"
         ]
+      },
+      {
+        "directory": "wprintf",
+        "translationUnits": [
+          "vfwprintf.c",
+          "wformat_wrappers.c",
+          "wcsnlen.c"
+        ]
       }
     ],
     "description": "Selected translated musl algorithms and authored C11 thread facade with audited BCL services; not complete libc coverage.",
@@ -2003,7 +2012,14 @@
     "fmodl",
     "modf",
     "modff",
-    "modfl"
+    "modfl",
+    "wprintf",
+    "fwprintf",
+    "swprintf",
+    "vwprintf",
+    "vfwprintf",
+    "vswprintf",
+    "wcsnlen"
   ],
   "standardHeadersAbsent": [
     "complex.h",

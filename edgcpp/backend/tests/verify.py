@@ -322,6 +322,12 @@ def main():
     checks.extend(verify_libc_timezone(ROOT, TESTS, suite_output("libc_timezone"), args.nativeaot, run))
     from libc_environment_verify import verify_libc_environment
     checks.extend(verify_libc_environment(ROOT, TESTS, suite_output("libc_environment"), args.nativeaot, run))
+    from libc_wprintf_verify import verify_libc_wprintf
+    checks.extend(verify_libc_wprintf(ROOT,TESTS,suite_output("libc_wprintf"),args.nativeaot,run))
+    from libc_wprintf_abi_verify import verify_libc_wprintf_abi
+    checks.extend(verify_libc_wprintf_abi(ROOT,TESTS,suite_output("libc_wprintf_abi")))
+    from libc_wprintf_runtime_verify import verify_libc_wprintf_runtime
+    checks.extend(verify_libc_wprintf_runtime(ROOT,TESTS,suite_output("libc_wprintf_runtime"),args.nativeaot,run))
     from libc_wscanf_verify import verify_libc_wscanf
     checks.extend(verify_libc_wscanf(ROOT, TESTS, suite_output("libc_wscanf"), args.nativeaot, run))
     from libc_wscanf_failure_verify import verify_libc_wscanf_failure
@@ -359,6 +365,10 @@ def main():
         checks.extend(verify_coroutine_value_await(ROOT, TESTS, suite_output("coroutine_value_await"), args.nativeaot, run, args.libcxx_acquisition))
         from coroutine_saved_value_verify import verify_coroutine_saved_value
         checks.extend(verify_coroutine_saved_value(ROOT, TESTS, suite_output("coroutine_saved_value"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_value_lifetime_verify import verify_coroutine_value_lifetime
+        checks.extend(verify_coroutine_value_lifetime(ROOT, TESTS, suite_output("coroutine_value_lifetime"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_value_construction_verify import verify_coroutine_value_construction
+        checks.extend(verify_coroutine_value_construction(ROOT, TESTS, suite_output("coroutine_value_construction"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_ptr_verify import verify_libcxx_exception_ptr
         checks.extend(verify_libcxx_exception_ptr(ROOT, TESTS, suite_output("libcxx_exception_ptr"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_owner_verify import verify_libcxx_exception_owner

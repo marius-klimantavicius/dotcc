@@ -223,6 +223,14 @@
         "modff.c",
         "modfl.c"
       ]
+    },
+    {
+      "directory": "wprintf",
+      "translationUnits": [
+        "vfwprintf.c",
+        "wformat_wrappers.c",
+        "wcsnlen.c"
+      ]
     }
   ]
 }

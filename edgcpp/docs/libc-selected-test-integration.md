@@ -111,3 +111,22 @@ separate provider snapshot. The native-only path can still inspect candidates.
 The two-file correction is independent of compiler/runtime changes; registration,
 candidate rejection and unregistered paths have retained harness checks in
 `libc-wscanf-harness-registration-20261003-030000/results.json`.
+
+Initial process threads: `libc_initial_thread_verify.verify_libc_initial_thread(root,
+tests, out, nativeaot, run)` returns six checks without AOT or ten with AOT;
+the native C++ check records host interop behavior separately from the exact C
+oracle and translated C++ cleanup policy. `libc_initial_thread_runtime_verify.verify_libc_initial_thread_runtime(root,
+tests, out, nativeaot, run)` returns four/eight standalone subprocess checks.
+The thread runtime now requires `LibcInitialThread.cs` along with the two existing
+shared files. Existing C11/C++ standalone verifiers copy all three dependencies.
+
+Wide printf: `libc_wprintf_verify.verify_libc_wprintf(root, tests, out, nativeaot,
+run, translate=True, library_source=None)` returns native plus four/eight
+generated checks. It detects component registration to avoid duplicate TUs and
+rejects differing source candidates once registered. The private ABI hook
+`libc_wprintf_abi_verify.verify_libc_wprintf_abi(root, tests, out)` returns eight
+rejections; `libc_wprintf_runtime_verify.verify_libc_wprintf_runtime(root, tests,
+out, nativeaot, run)` returns one/two standalone checks. Runtime dependency:
+LibcFilesWideFormat with LibcFiles/VaList. Component source list is exactly
+vfwprintf.c, wformat_wrappers.c and wcsnlen.c; private numeric dependency is the
+accepted printf component. Add wprintf to the patch verifier component list.

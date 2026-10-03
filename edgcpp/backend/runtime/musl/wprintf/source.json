@@ -1,0 +1,29 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "vfwprintf.c": {
+      "upstream": "src/stdio/vfwprintf.c",
+      "originalSha256": "cbd9abf5ac90ea9510250c925456a5aaf9c70fbb1f3e42d35ef462ee4fb1a641",
+      "adaptedSha256": "701cb1b5a24769cb2d22b81c5d4f230195fe8f2f93ba291b743b86bf83c06b22"
+    },
+    "wcsnlen.c": {
+      "upstream": "src/string/wcsnlen.c",
+      "originalSha256": "d566a44cd36402f1b0d04fcf33fed64fa84bb75c2ff5d80fb77da1b70f9589b7",
+      "adaptedSha256": "d566a44cd36402f1b0d04fcf33fed64fa84bb75c2ff5d80fb77da1b70f9589b7"
+    }
+  },
+  "adapters": {
+    "wformat_sink.h": "e2d2f39aaa84a192cd5e5dcb68d0b3cf426bd7a2e2131db28d34c4b1bf6e9fc3",
+    "wformat_wrappers.c": "ab1a7c84228d48c0575d3255381a2e245b39c92df3b495f5b75e985ca6d6e1df"
+  },
+  "changes": [
+    "Replace native FILE with an opaque wide sink and whole-format managed lock; preserve positional prepass before stream orientation.",
+    "Reuse accepted narrow musl numeric core with fixed 64-wchar stack chunks; batch literal spans without transient heap allocation.",
+    "Preserve memory-stream encoding validation under bounded C/POSIX/C.UTF-8 locale and terminate copied prefix on encoding error.",
+    "Correct upstream %p delegation: replace unsupported j-prefixed p with narrow p and forward an actual pointer; independent narrow-profile oracle replaces only affected pointer records.",
+    "Return negative numeric delegated results before signed output-count arithmetic.",
+    "C11/C++17 casts and compound-literal temporary; retain nine positional argument profile."
+  ],
+  "status": "Accepted synthetic native/ASan174, all8 generated C/C++ static/instance JIT/NativeAOT modes, private ABI8 and runtime2 on Linux; bounded C/POSIX/C.UTF-8 and existing nearest-mode numeric formatter profile"
+}

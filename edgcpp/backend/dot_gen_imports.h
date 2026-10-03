@@ -276,7 +276,7 @@ bool libc_format_callback(a_type_ptr t,bool wide=false) {
   return p && libc_va_pointer(p->type) && !p->next;
 }
 bool libc_format_lock_routine(a_routine_ptr r,bool reading=false,bool wide=false) {
-  string symbol=wide?"__edg_with_file_wide_read_lock":reading?"__edg_with_file_read_lock":"__edg_with_file_lock";
+  string symbol=wide?(reading?"__edg_with_file_wide_read_lock":"__edg_with_file_wide_lock"):reading?"__edg_with_file_read_lock":"__edg_with_file_lock";
   auto rt=skip_typerefs(r->type);auto extra=rt->variant.routine.extra_info;
   std::vector<a_type_ptr> parameters;
   for(auto p=extra->param_type_list;p;p=p->next)parameters.push_back(p->type);
@@ -294,7 +294,7 @@ bool libc_format_lock_routine(a_routine_ptr r,bool reading=false,bool wide=false
   // This is an ordinary routine wrapper: address-taking reuses the canonical
   // routine_address adapter, including its owner lifecycle lease and identity.
   helper_output+="// dot-gen:import "+symbol+"\n// dot-gen:member-begin\nprivate "+
-    string(instance_mode?"":"static ")+"int "+name(r,"f")+"("+signature+") { return __edg_files."+string(wide?"WithFileWideReadLock":reading?"WithFileReadLock":"WithFileLock")+"((void*)a0, a1, "+
+    string(instance_mode?"":"static ")+"int "+name(r,"f")+"("+signature+") { return __edg_files."+string(wide?(reading?"WithFileWideReadLock":"WithFileWideLock"):reading?"WithFileReadLock":"WithFileLock")+"((void*)a0, a1, "+
     string(instance_mode?"this, ":"")+"a2, a3, a4); }\n// dot-gen:member-end\n";
   return true;
 }
@@ -340,6 +340,7 @@ bool libc_routine(a_routine_ptr r) {
   if(symbol=="__edg_with_file_lock")return libc_format_lock_routine(r);
   if(symbol=="__edg_with_file_read_lock")return libc_format_lock_routine(r,true);
   if(symbol=="__edg_with_file_wide_read_lock")return libc_format_lock_routine(r,true,true);
+  if(symbol=="__edg_with_file_wide_lock")return libc_format_lock_routine(r,false,true);
   string builtin_symbol=libc_builtin_symbol(r),lookup_symbol=builtin_symbol.empty()?symbol:builtin_symbol;
   if(libc_builtin_definition(r,builtin_symbol))return true;
   for(const auto &binding:libc_bindings)if(lookup_symbol==binding.symbol) {

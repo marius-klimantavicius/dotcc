@@ -50,3 +50,4 @@ __pycache__/
 /upstream/src/dot_gen_process.h
 /upstream/src/libc-process-exit-bindings.def
 /upstream/src/dot_gen_coroutine_cps.h
+/upstream/src/dot_gen_coroutine_provenance.h

@@ -170,6 +170,7 @@ void ensure_cleanup_failure_filter() {
   helper_output+="// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+"bool "+name+
       "(global::System.Exception error) { if(!("+control_transfer_exclusion("error")+"))return false; __edg_terminate_runtime(error,\"Destructor threw during unwinding\"); return false; }\n// dot-gen:member-end\n";
 }
+bool coroutine_descriptive_region(unsigned long long region);
 string emit_cleanup() {
   ensure_cleanup_failure_filter();
   for(auto n:cleanup_references)
@@ -178,6 +179,10 @@ string emit_cleanup() {
   for(auto &entry:cleanup_regions) {
     auto &region=entry.second;
     auto r=region.destructor;
+    if(coroutine_descriptive_region(entry.first)) {
+      result+="case "+std::to_string(entry.first+1)+": __edg_cleanup_state = "+std::to_string(cleanup_state(region.next))+"; break;\n";
+      continue;
+    }
     if(region.flags & 0x80) {
       ensure_lifecycle();
       result+="case "+std::to_string(entry.first+1)+": __edg_cleanup_state = "+std::to_string(cleanup_state(region.next))+"; __edg_guard_finish("+cleanup_handle(region.handle,region.flags)+", false); break;\n";

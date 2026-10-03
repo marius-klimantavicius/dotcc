@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "scope": "Coroutine await-expression temporary provenance and selected source wide formatting",
+  "checkCount": 151,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/coroutine-provenance-final-20261003-053258/results.json",
+      "sha256": "b4a9d28c62810085a87b2faebd086a42702e59836325aaabd2be293a6cd01b12",
+      "checkCount": 74
+    },
+    {
+      "path": "artifacts/campaign/coroutine-provenance-regression-20261003-053342/results.json",
+      "sha256": "ea5e4617513f683d42c1e67303606c2e1d34b37d4037cf7b7b54e60d70e0e345",
+      "checkCount": 48
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-printf-translated-20261003-043000/results.json",
+      "sha256": "984f6fcf87284006c1444b0b88dd45318f0af21e02b58844eee8df0f042750f6",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-printf-translated-20261003-043000/asan-results.json",
+      "sha256": "d12bc7f7eb0ffc18a9d7a26c4803a9223cb9f8321588bb5b4900af505b34c5fe",
+      "checkCount": 1
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-printf-runtime-20261003-035100/results.json",
+      "sha256": "ff98b497f7eab9e5ccec6f8ab2367602802d4bad2d6f49e18bcd7ee24e55446a",
+      "checkCount": 2
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-printf-abi-20261003-040000/results.json",
+      "sha256": "1bf1b85560073b96c0458bc9f88d4d06f4a0047b6ab234a8ccc0b172362ebc16",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-printf-provenance-20261003-043100/results.json",
+      "sha256": "9ccd146b6f0618e92fb6d5a71e640a06ffea74bc8071a4ce2c912bb8155fc548",
+      "checkCount": 1
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-wprintf-001/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082",
+      "checkCount": 8
+    }
+  ],
+  "providerUnits": 138,
+  "snapshot": "artifacts/campaign/milestone-coroutine-lifetimes-wide-format-snapshot-001",
+  "limitations": [
+    "Reference-result coroutine configuration, protected expression suspension and allocator variants remain open.",
+    "Complete libc, libc++ and cross-platform execution remain open."
+  ]
+}

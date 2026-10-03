@@ -136,3 +136,57 @@ and FILE expectations after original EDG C11 and C++17 lowering. Evidence is
 Its native bridge is only a test adapter; managed provider integration and
 translated JIT/NativeAOT formatting subsequently pass in
 `artifacts/campaign/musl-printf-translated-20261002-235819/results.json`.
+
+
+## Wide formatter integration
+
+The `wprintf` component contributes `vfwprintf.c`, `wformat_wrappers.c`, and
+unchanged musl `wcsnlen.c`. It implements wprintf/fwprintf/swprintf and their
+three va_list forms, plus wcsnlen. Original musl 1.2.6 files, release hash,
+zero-fuzz replay patches, COPYRIGHT and authored-adapter hashes accompany it.
+The C++ adaptations preserve the parser/state tables, nine positional arguments,
+width/precision handling and `%n`; they replace native FILE access with an
+opaque wide sink. The positional prepass still occurs before FILE orientation.
+
+Numeric conversion uses the already accepted narrow musl formatter. ASCII
+numeric chunks widen through a fixed 64-wchar stack buffer; literal spans are
+batched into the wide sink. There are no temporary pinned arrays or numeric
+heap strings. The memory sink validates encoding with the selected wcrtomb
+algorithm and stores exact scalars directly, including a terminated valid prefix
+if a later scalar cannot be encoded. Its locale profile is C/POSIX/C.UTF-8;
+this is not support for arbitrary stateful encodings or directed fenv rounding.
+
+A whole-format managed monitor encloses FILE output. Its typed callback and
+VaList ABI are validated before emission; ordinary routine-address adapters
+preserve owner capture. The helper temporarily clears an existing FILE error,
+tracks new failures, and restores the prior error even across CLR exceptions.
+Captured stream encoding remains in force. Byte/wide mixing follows the existing
+explicit rejection contract. Managed runtime probes cover old/new errors,
+exceptional release, another thread reusing the stream, and zero steady-state
+allocation after initialization.
+
+The pinned wide core has a `%p` delegation defect: it constructs a j-prefixed
+pointer conversion that the pinned narrow parser rejects. Feeding the resulting
+negative count into later count arithmetic triggers signed overflow. The bounded
+source patch delegates `%p` without that unsupported prefix, passes an actual
+pointer, and returns any negative delegated result before count arithmetic.
+The original file is unchanged in originals/. Pointer records use an independent
+accepted narrow-%p oracle; every other record is compared against the original
+wide parser. This is a musl adaptation, not an EDG change.
+
+Final evidence is retained under `artifacts/campaign/`:
+
+* `libc-wide-printf-translated-20261003-043000/results.json`: native plus all eight
+  generated modes, 174 complete result/errno/%n/output/guard records per mode,
+  all six APIs, FILE output, stream projection and routine addresses.
+* The same directory's `asan-results.json`: ASan/UBSan for all records and the
+  six-API FILE fixture. The removed positional/nonpositional mixed `%n` fixture
+  was undefined; its original failure is preserved in the earlier 040000 run.
+* `libc-wide-printf-runtime-20261003-035100/results.json`: JIT/NativeAOT lock/error
+  and allocation checks; `libc-wide-printf-abi-20261003-040000/results.json`:
+  eight rejected malformed private declarations.
+* `libc-wide-printf-provenance-20261003-043100/results.json`: both original hashes,
+  exact patch replay and authored adapter hashes.
+
+These results are Linux execution evidence. Multi-platform execution, arbitrary
+locale data and full floating-environment behavior remain separate gates.

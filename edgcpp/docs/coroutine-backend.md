@@ -189,6 +189,37 @@ computed result differs, so that fixture uses Clang as its executable oracle.
 No EDG source or semantic rule was changed. Exact accepted input/helper/compiler
 hashes are in `coroutine-cps-checkpoint-20261003-045934/hashes.json`.
 
-Reference/aggregate await results and their full-expression cleanup, protected
-expression suspension, allocation-failure return hooks, placement allocators,
-exported factories and function-try coroutine factories remain open.
+Pointer and POD aggregate await results, nontrivial awaiter construction,
+full-expression cleanup, and early destruction now pass 74 additional checks in
+`coroutine-provenance-final-20261003-053258/results.json`. The eleven construction
+and seven lifetime traces agree with GCC/Clang, then pass static/instance
+JIT/NativeAOT with strict warnings. They include four constructor failures and
+destruction at each suspension point. The exact helper/input/compiler checkpoint
+is `coroutine-provenance-checkpoint-20261003-053314/hashes.json`.
+
+EDG retains both the original operand and ready/resume/suspend expressions:
+`expr.c::add_await_to_operand` copies the source expression, `lower_il.c:17293`
+lowers both representations, and `c_gen_be.c:7093` renders the original operand.
+Our resumable emitter executes the triples. Backend-owned provenance filtering
+therefore omits only original-operand cleanup lifetimes proven absent from those
+triples. It uses actual region identities, destructor routine/object identity,
+and the adjacent cleanup-state transition. This handles both comma expressions
+and adjacent statement pairs. A temporary variable may be reused by a later
+executed await, so variable identity alone is insufficient. Such storage is
+retained; only the descriptive lifetime's actions are omitted. Unshared unused
+storage and its capture arguments are omitted too. EDG trees, needed flags and
+region tables remain unchanged. Unrecognized references or cleanup forms are
+diagnosed rather than discarded speculatively.
+
+The initial failures and diagnosis remain in `coroutine-value-lifetime-*`,
+`coroutine-provenance-20261003-051616`, and
+`coroutine-provenance-trace-20261003-052823`. The latter records original and
+executed region identities for reused storage. The `int&`-returning awaiter
+assignment probe was rejected by both EDG frontends on identical preprocessed
+input before backend emission; its evidence is
+`coroutine-value-lifetime-20261003-050219/original-c-preprocessed2.log`. The
+accepted pointer-returning equivalent does not claim reference-result coverage.
+
+Reference-result source acceptance, protected-expression suspension, conditional
+or array descriptive cleanup forms, allocation-failure return hooks, placement
+allocators, exported factories and function-try coroutine factories remain open.

@@ -445,3 +445,12 @@ existing abs families. Nine native/generated static/instance JIT/AOT checks
 cover exact result/output pointers and errno; frexp demonstrates retained BCL
 fallback when no source definition is present. Name guessing is not used and
 function ABI/body availability is checked before emitting the adapter.
+
+Coroutine temporary provenance and wide formatting form the next151-check
+checkpoint. Coroutine122 checks cover construction failures, early destruction,
+POD/pointer await results and previous protocols; exact executable region
+identity distinguishes retained descriptive operand lifetimes, including reused
+storage. No EDG IL or flags are changed. Wide-format29 checks include native
+and generated formatting, sanitizers, strict ABI, runtime locking, patch replay
+and automatic packaging. Documented musl pointer-format/count adaptations avoid
+undefined native source behavior; selected provider count reaches138.

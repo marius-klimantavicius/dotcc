@@ -1,6 +1,7 @@
 #include <strings.h>
 #include <threads.h>
 #include <math.h>
+#include <wchar.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,6 +19,7 @@ static int compare_ints(const void* a,const void* b) {
  int x=*(const int*)a,y=*(const int*)b;return (x>y)-(x<y);
 }
 int main(void) {
+  wchar_t wide_output[8];if(swprintf(wide_output,8,L"%d",17)!=2 || wcsnlen(wide_output,8)!=2 || wide_output[0]!=L'1' || wide_output[1]!=L'7')return 85;
   long double integral_part; if(fmodl(7.5L,2.0L)!=1.5L || modfl(-3.25L,&integral_part)!=-0.25L || integral_part!=-3.0L)return 84;
   srand(17);int first_random=rand();srand(17);if(rand()!=first_random)return 81;
   srandom(19);long first_bsd=random();srandom(19);if(random()!=first_bsd)return 82;
