@@ -1,0 +1,25 @@
+{
+  "removedFiles": 116007,
+  "skippedChangedFiles": [],
+  "removedAllocatedBytes": 51772968960,
+  "availableBeforeBytes": 5343793152,
+  "availableAfterBytes": 57116258304,
+  "removedCategories": [
+    ".dbg",
+    ".dll",
+    ".o",
+    ".pdb",
+    ".so"
+  ],
+  "preserved": "generated sources/IL/projects, logs, provenance, current compiler, active/recent work, native oracle and NativeAOT executables",
+  "authorization": "User explicitly requested cleanup of temporaries because 5G was insufficient to continue work.",
+  "scope": "Seven completed early milestone directories only; compiled libraries, objects and debug outputs beneath bin/obj/aot. No canonical source or current/active artifacts removed.",
+  "inventoryDirectory": "artifacts/campaign/persistent-continuation/temporary-cleanup-001",
+  "persistentStorage": "/mnt/storage/dotcc-edg-campaign-20261003",
+  "inventoryHashes": {
+    "planned-removals.json": "e65bb8324248b38d77d1242163c2bcee3f31fb002fa6e1a30edb32d76e2e67d1",
+    "removed.jsonl": "8f065cbaecd0844394ea39e21b46b3e71a41f11bd53818532f8d113a5335fde0",
+    "results.json": "91be637bf24ba1aeab03360c0f769312ba128b7e1d436503e4feb4ace014a261"
+  },
+  "rebuildPolicy": "Removed compiled outputs can be regenerated from retained project/source inputs. Native oracle and NativeAOT executable artifacts remain retained."
+}

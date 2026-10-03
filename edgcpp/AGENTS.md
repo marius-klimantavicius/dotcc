@@ -19,8 +19,12 @@ task allocation, integration, build scheduling, acceptance evidence and commits.
 - Prefer musl over newlib if a manageable BCL-backed port is feasible. Audit
   dependencies; dotcc's libc remains an initial bridge/fallback. C++ standard
   library coverage is also part of the plan.
-- **Do not clean intermediate files until the entire plan is implemented.**
-  Preserve generated C/C#, IL, projects, build outputs, logs and failure evidence.
+- The user subsequently authorized temporary cleanup because disk space was
+  nearly exhausted. Root coordinates removal of disposable build outputs from
+  completed, inactive tests. Preserve generated C/C#, IL, projects, provenance,
+  verification logs and failure evidence, current compilers and active work.
+  Do not perform concurrent worker cleanup. New large test outputs may use
+  `artifacts/campaign/persistent-continuation`, a link to persistent storage.
 - **Only synthetic inputs and EDG tests may be used for verification until the
   entire plan is complete.** Do not run SQLite, Valkey, compiler self-translation
   or other real-world project acceptance before that point. Existing historical
