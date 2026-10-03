@@ -1,12 +1,13 @@
 """Synthetic injected malloc/realloc failures in selected musl scanf."""
 import argparse,json,shutil,subprocess,sys
 from pathlib import Path
+from libc_wscanf_verify import translated_wscanf_units
 
 def verify_libc_wscanf_failure(root,tests,out,nativeaot,run,library_source=None):
  out.mkdir(parents=True,exist_ok=True);source=library_source or root/'backend/runtime/musl';provider=out/'provider';provider.mkdir()
  for component in ['strto','wscanf']:shutil.copytree(source/component,provider/component)
  shutil.copytree(root/'backend/runtime/musl/multibyte',provider/'multibyte');fixture=out/'fixture.c';shutil.copy2(tests/'libc_wscanf_allocation_failure.c',fixture)
- units=[provider/'wscanf/vfwscanf.c',provider/'wscanf/wscan_wrappers.c'];checks=[]
+ units=translated_wscanf_units(root,provider);checks=[]
  for language in ['c','c++']:
   for instance in [False,True]:
    directory=out/f'{language.replace("+","x")}-{"instance" if instance else "static"}'

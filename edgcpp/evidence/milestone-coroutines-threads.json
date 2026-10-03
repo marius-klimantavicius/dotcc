@@ -2,7 +2,7 @@
   "schema": 1,
   "scope": "Initial source coroutines, C11 threads, assert, strptime and case-insensitive strings, selected libc++ owner isolation",
   "snapshot": "artifacts/campaign/milestone-coroutines-threads-snapshot-001",
-  "validation": "Synthetic and EDG differential checks; Linux-x64 JIT and NativeAOT. Complete regression continuation pending a duplicate-source harness correction.",
+  "validation": "125 focused synthetic and EDG differential checks, Linux-x64 JIT/NativeAOT. Frozen complete JIT regression:650 checks across original run and corrected-harness continuation; see full-jit-coroutines-threads.json.",
   "checkCount": 125,
   "evidence": [
     {

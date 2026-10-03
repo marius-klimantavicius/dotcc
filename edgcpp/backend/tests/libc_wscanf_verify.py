@@ -69,6 +69,23 @@ def native_oracle(root,tests,out,run,rows,source):
  (out/'native-differences.json').write_text(json.dumps(errors,indent=2));print('cases',len(rows),'diff',len(errors));assert not errors,errors[:2]
  return [f'{len(rows)} original/adapted musl wide scanf cases']
 
+def translated_wscanf_units(root, provider):
+ # The automatic package owns registered definitions. A candidate must never
+ # silently test canonical algorithms while its native oracle tests other bytes.
+ package = root / 'backend/runtime/musl'
+ selected = json.loads((package / 'provider.json').read_text())['components']
+ registered = any(c['directory'] == 'wscanf' and c.get('sourceBase', 'musl') == 'musl' for c in selected)
+ if not registered:
+  return [provider / 'wscanf/vfwscanf.c', provider / 'wscanf/wscan_wrappers.c']
+ for component in ['wscanf', 'strto']:
+  manifest = json.loads((provider / component / 'source.json').read_text())
+  for name in [*manifest['sources'], *manifest['adapters']]:
+   candidate = provider / component / name
+   canonical = package / component / name
+   if candidate.read_bytes() != canonical.read_bytes():
+    raise ValueError(f'{component}/{name}: candidate differs from registered musl provider; use a separate provider snapshot for translated acceptance')
+ return []
+
 def verify_libc_wscanf(root,tests,out,nativeaot,run,translate=True,library_source=None):
  out.mkdir(parents=True,exist_ok=True);source=library_source or root/'backend/runtime/musl';provider=out/'provider';provider.mkdir()
  for component in ['wscanf','strto']:shutil.copytree(source/component,provider/component)
@@ -80,7 +97,7 @@ def verify_libc_wscanf(root,tests,out,nativeaot,run,translate=True,library_sourc
  rows=corpus();checks=native_oracle(root,tests,out,run,rows,provider)
  if not translate:return checks
  cases=out/'cases.txt';fixture=out/'fixture.c';shutil.copy2(tests/'libc_wscanf.c',fixture)
- units=[provider/'wscanf/vfwscanf.c',provider/'wscanf/wscan_wrappers.c']
+ units=translated_wscanf_units(root,provider)
  for language in ['c','c++']:
   for instance in [False,True]:
    directory=out/f'{language.replace("+","x")}-{"instance" if instance else "static"}'

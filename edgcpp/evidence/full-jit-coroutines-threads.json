@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "snapshot": "artifacts/campaign/milestone-coroutines-threads-snapshot-001",
+  "status": "passed-with-harness-continuation",
+  "checkCount": 650,
+  "nativeaot": false,
+  "rid": "linux-x64",
+  "evidence": [
+    {
+      "path": "artifacts/campaign/full-jit-coroutines-threads-001/progress.json",
+      "sha256": "6f46252e9da64d5c81546c93af3c4501fd36bc0399e6224f419cc5503f903dcc",
+      "checkCount": 450
+    },
+    {
+      "path": "artifacts/campaign/full-jit-coroutines-threads-continuation-001/run/results.json",
+      "sha256": "e783dbe390349927dd79e7262e92d5f0b806dc1512eb27b0698c9c6e7826610b",
+      "checkCount": 200
+    }
+  ],
+  "notes": [
+    "First450 checks completed before duplicate registered wide-scanf source in verifier.",
+    "Continuation uses the same frozen compiler/runtime and two corrected verifier modules; no passing prefix checks were repeated.",
+    "Initial failure and exact overlay hashes retained in continuation.json."
+  ]
+}

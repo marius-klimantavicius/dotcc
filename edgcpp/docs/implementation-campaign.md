@@ -400,3 +400,9 @@ duplicate source: wscanf was supplied both explicitly and through its now
 registered provider. That failed run is retained; no runtime regression is
 inferred from that frontend duplicate-definition diagnostic. Value-producing
 co_await continuations and process/owner termination remain the next work.
+
+The frozen ninth regression now passes all650 JIT checks:450 before the harness
+duplicate-source interruption and200 in the recorded continuation with the same
+compiler/runtime. The two corrected wide-scanning verifiers compare source
+bytes and use the registered provider once. Evidence is indexed separately in
+`evidence/full-jit-coroutines-threads.json`; this is not an all-platform claim.
