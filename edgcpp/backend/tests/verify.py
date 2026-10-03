@@ -306,6 +306,8 @@ def main():
     checks.extend(verify_libc_initial_thread(ROOT, TESTS, suite_output("libc_initial_thread"), args.nativeaot, run))
     from libc_initial_thread_runtime_verify import verify_libc_initial_thread_runtime
     checks.extend(verify_libc_initial_thread_runtime(ROOT, TESTS, suite_output("libc_initial_thread_runtime"), args.nativeaot, run))
+    from libc_source_builtins_verify import verify_libc_source_builtins
+    checks.extend(verify_libc_source_builtins(ROOT,TESTS,suite_output("libc_source_builtins"),args.nativeaot,run))
     from libc_math_parts_verify import verify_libc_math_parts
     checks.extend(verify_libc_math_parts(ROOT,TESTS,suite_output("libc_math_parts"),args.nativeaot,run))
     from libc_prng_verify import verify_libc_prng

@@ -40,6 +40,15 @@ string libc_builtin_symbol(a_routine_ptr r) {
     case bfk_abs:return "abs";
     case bfk_labs:return "labs";
     case bfk_llabs:return "llabs";
+    case bfk_fmod:return "fmod";
+    case bfk_fmodf:return "fmodf";
+    case bfk_fmodl:return "fmodl";
+    case bfk_modf:return "modf";
+    case bfk_modff:return "modff";
+    case bfk_modfl:return "modfl";
+    case bfk_frexp:return "frexp";
+    case bfk_frexpf:return "frexpf";
+    case bfk_frexpl:return "frexpl";
     case bfk_fabs:return "fabs";
     case bfk_fabsf:return "fabsf";
     case bfk_fabsl:return "fabsl";
@@ -289,6 +298,41 @@ bool libc_format_lock_routine(a_routine_ptr r,bool reading=false,bool wide=false
     string(instance_mode?"this, ":"")+"a2, a3, a4); }\n// dot-gen:member-end\n";
   return true;
 }
+// C backend emits audited GNU builtins for the downstream C compiler, whose
+// library calls link to the translated definitions. Preserve that resolution
+// before falling back to a managed provider; never guess from source spelling.
+bool libc_builtin_definition(a_routine_ptr routine,const string &symbol) {
+  if(symbol.empty())return false;
+  a_routine_ptr definition=nullptr;
+  for(auto candidate=il_header.primary_scope->routines;candidate;candidate=candidate->next) {
+    if(!candidate->source_corresp.name || string(candidate->source_corresp.name)!=symbol ||
+       candidate->source_corresp.name_linkage!=nlk_external ||
+       candidate->function_def_number==NULL_function_def_number)continue;
+    if(definition && definition!=candidate)unsupported("multiple C definitions for libc builtin");
+    definition=candidate;
+  }
+  if(!definition)return false;
+  if(!routine_body_needed(definition) || !scope_for_routine_or_null(definition))
+    unsupported(("unavailable translated libc builtin body: "+symbol).c_str());
+  auto from=skip_typerefs(routine->type)->variant.routine.extra_info;
+  auto to=skip_typerefs(definition->type)->variant.routine.extra_info;
+  auto result=skip_typerefs(routine->type)->variant.routine.return_type;
+  if(!from->prototyped || !to->prototyped || from->has_ellipsis || to->has_ellipsis ||
+     type(result)!=type(skip_typerefs(definition->type)->variant.routine.return_type))
+    unsupported(("translated libc builtin ABI: "+symbol).c_str());
+  string signature,arguments;unsigned index=0;auto target=to->param_type_list;
+  for(auto parameter=from->param_type_list;parameter;parameter=parameter->next) {
+    if(!target || type(parameter->type)!=type(target->type))unsupported(("translated libc builtin parameter ABI: "+symbol).c_str());
+    if(index){signature+=", ";arguments+=", ";}
+    string arg="a"+std::to_string(index++);signature+=type(parameter->type)+" "+arg;arguments+=arg;target=target->next;
+  }
+  if(target)unsupported(("translated libc builtin parameter count: "+symbol).c_str());
+  libc_register_routine(routine,symbol);
+  libc_binding_addresses[symbol]=definition;libc_address_aliases[routine]=definition;
+  helper_output+="// dot-gen:source-builtin "+symbol+"\n// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+type(result)+" "+name(routine,"f")+"("+signature+") { "+
+    string(skip_typerefs(result)->kind==tk_void?"":"return ")+name(definition,"f")+"("+arguments+"); }\n// dot-gen:member-end\n";
+  return true;
+}
 bool libc_routine(a_routine_ptr r) {
   if(!libc_enabled || r->function_def_number!=NULL_function_def_number)return false;
   if(libc_routines.count(r))return true;
@@ -297,6 +341,7 @@ bool libc_routine(a_routine_ptr r) {
   if(symbol=="__edg_with_file_read_lock")return libc_format_lock_routine(r,true);
   if(symbol=="__edg_with_file_wide_read_lock")return libc_format_lock_routine(r,true,true);
   string builtin_symbol=libc_builtin_symbol(r),lookup_symbol=builtin_symbol.empty()?symbol:builtin_symbol;
+  if(libc_builtin_definition(r,builtin_symbol))return true;
   for(const auto &binding:libc_bindings)if(lookup_symbol==binding.symbol) {
     auto rt=skip_typerefs(r->type);auto extra=rt->variant.routine.extra_info;
     string parameters,signature,args;unsigned index=0;

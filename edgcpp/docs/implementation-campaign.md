@@ -438,3 +438,10 @@ Eighteen focused checks cover exact native/generated bits, signed zero, NaN
 classification, output pointers, owner/TLS errno, packaging and patch replay.
 Automatic source packaging reaches135 units; floating environment support and
 the remainder of libm remain open.
+
+Audited GNU libc builtins now bind matching translated C definitions before
+BCL fallback, preserving the source provider for remainder/decomposition and
+existing abs families. Nine native/generated static/instance JIT/AOT checks
+cover exact result/output pointers and errno; frexp demonstrates retained BCL
+fallback when no source definition is present. Name guessing is not used and
+function ABI/body availability is checked before emitting the adapter.

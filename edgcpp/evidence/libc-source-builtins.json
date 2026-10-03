@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "scope": "Audited GNU libc builtin calls prefer exact translated C definitions",
+  "checkCount": 9,
+  "evidence": {
+    "path": "artifacts/campaign/libc-source-builtins-001/results.json",
+    "sha256": "67d2693cad8f3f2720acd3f65d7969840671cda7390765eedc5b6fdb33263574"
+  },
+  "platform": "Linux-x64 native/JIT/NativeAOT",
+  "limitations": [
+    "Only explicit EDG builtin identities are admitted.",
+    "Absent or unavailable source definitions do not constitute a general program linker."
+  ]
+}
