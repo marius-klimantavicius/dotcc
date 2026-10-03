@@ -1,0 +1,24 @@
+{
+  "scope": "Exact allocation-free binary80 multiplication",
+  "checks": 11,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/float80-multiply-candidate-test-001/results.json",
+      "sha256": "acca7d08409bdbbb1fbd88afae0d88f749d5b519d15f321731fb9c67bac62635"
+    },
+    {
+      "path": "artifacts/campaign/float80-multiply-log-regression-001/results.json",
+      "sha256": "11bd1bb28d8d47260966d3aacc1bc3dcd205b1d2ceed7cca1281078951fc53b3"
+    }
+  ],
+  "runtimeSha256": "7066c0dee40d0f62cd6559635b7e423c0fa60b00197c95b0ef9d189245d5fa94",
+  "nativeVectors": 14738,
+  "independentReferenceCases": 100000,
+  "allocationTestOperations": 1000000,
+  "allocationBytes": 0,
+  "limitations": [
+    "Other arithmetic and conversions still contain BigInteger paths",
+    "Nearest-even only; dynamic floating environment remains open",
+    "Linux-x64 JIT/NativeAOT execution only"
+  ]
+}

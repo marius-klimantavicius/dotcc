@@ -1056,3 +1056,9 @@ allocation/deallocation routines lacking source definitions also fail before
 C# publication. Eleven focused checks are indexed in
 `evidence/milestone-coroutine-provider-boundaries.json`; this is a correctness
 boundary, not completed function-try coroutine support.
+
+Binary80 multiplication now uses exact UInt128 significand arithmetic with
+zero measured allocation, preserving nearest-even results and special cases.
+Eleven focused checks include native/reference products and composed translated
+logarithms (`evidence/milestone-float80-multiply.json`). Other arithmetic and
+conversion allocation paths remain an explicit efficiency gate.

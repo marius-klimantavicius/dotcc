@@ -35,6 +35,29 @@ public readonly struct Float80 : IEquatable<Float80> {
         int exp=mantissa<(BigInteger.One<<63)?0:quantum+63+16383;
         return new((ulong)mantissa,(ushort)(sign|exp));
     }
+    private static Float80 Pack128(UInt128 magnitude,int power,bool negative) {
+        ushort sign=(ushort)(negative?0x8000:0);
+        if(magnitude==0)return new(0,sign);
+        ulong upper=(ulong)(magnitude>>64);
+        int bits=upper!=0?128-BitOperations.LeadingZeroCount(upper):64-BitOperations.LeadingZeroCount((ulong)magnitude);
+        int high=bits-1+power;
+        if(high>16383)return Inf(negative);
+        int quantum=Math.Max(high-63,-16445),drop=quantum-power;
+        UInt128 mantissa;
+        if(drop<=0)mantissa=magnitude<<-drop;
+        else if(drop>128)mantissa=0;
+        else if(drop==128)mantissa=magnitude>((UInt128)1<<127)?(UInt128)1:0;
+        else {
+            mantissa=magnitude>>drop;
+            UInt128 remainder=magnitude- (mantissa<<drop),half=(UInt128)1<<(drop-1);
+            if(remainder>half || (remainder==half && (mantissa&1)!=0))++mantissa;
+        }
+        if(mantissa==0)return new(0,sign);
+        if(mantissa>((UInt128)ulong.MaxValue)){mantissa>>=1;++quantum;}
+        if(quantum>16320)return Inf(negative);
+        int exp=mantissa<((UInt128)1<<63)?0:quantum+63+16383;
+        return new((ulong)mantissa,(ushort)(sign|exp));
+    }
     public static Float80 operator +(Float80 a,Float80 b) {
         if(a.NaN || b.NaN)return QuietNaN;
         if(a.Infinity || b.Infinity)return a.Infinity && b.Infinity && a.Negative!=b.Negative?QuietNaN:a.Infinity?a:b;
@@ -49,7 +72,7 @@ public readonly struct Float80 : IEquatable<Float80> {
     public static Float80 operator *(Float80 a,Float80 b) {
         if(a.NaN || b.NaN || (a.Infinity && b.Zero) || (b.Infinity && a.Zero))return QuietNaN;
         if(a.Infinity || b.Infinity)return Inf(a.Negative!=b.Negative);
-        return Pack((BigInteger)a.Significand*b.Significand,a.Power+b.Power,a.Negative!=b.Negative);
+        return Pack128((UInt128)a.Significand*b.Significand,a.Power+b.Power,a.Negative!=b.Negative);
     }
     public static Float80 operator /(Float80 a,Float80 b) {
         bool negative=a.Negative!=b.Negative;
