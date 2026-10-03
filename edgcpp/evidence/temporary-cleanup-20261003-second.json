@@ -1,0 +1,17 @@
+{
+  "artifact": "artifacts/campaign/persistent-continuation/temporary-cleanup-002",
+  "removedFiles": 206662,
+  "allocatedBytesRemoved": 90295275520,
+  "skippedChangedFiles": [],
+  "availableBefore": {
+    "/home/marius/p/dotcc/edgcpp/artifacts/campaign": 56072089600,
+    "/mnt/storage/dotcc-edg-campaign-20261003": 763925094400
+  },
+  "availableAfter": {
+    "/home/marius/p/dotcc/edgcpp/artifacts/campaign": 134065078272,
+    "/mnt/storage/dotcc-edg-campaign-20261003": 776169762816
+  },
+  "preserved": "Generated C/C#/IL, projects, source maps, test logs/evidence, native executables, current compilers, active work",
+  "inventorySha256": "bd0c2290db3540397d5617b84be22e5142a7bfae1c3c8f7ae5175f21b8ea4019",
+  "removedLogSha256": "21c67737e7e7423a833b94bec53eaadc12f3670a52fa7ef6cd609b2eb0f292d1"
+}
