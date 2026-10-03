@@ -2,6 +2,36 @@
 // adds descriptor-only references; it never changes EDG needed flags or IL.
 std::set<a_routine_ptr> coroutine_required_routines;
 std::set<a_variable_ptr> coroutine_required_variables;
+a_variable_ptr coroutine_nothrow_object=nullptr;
+bool coroutine_global_nothrow_allocator(a_routine_ptr routine) {
+  // Canonical unversioned std ABI for the supported LP64 Itanium target.
+  if(!routine || !routine->source_corresp.name || string(routine->source_corresp.name)!="_ZnwmRKSt9nothrow_t")return false;
+  auto signature=skip_typerefs(routine->type);
+  auto parameters=signature->variant.routine.extra_info->param_type_list;
+  auto result=skip_typerefs(signature->variant.routine.return_type);
+  if(!parameters || !parameters->next || parameters->next->next ||
+     signature->variant.routine.extra_info->has_ellipsis ||
+     skip_typerefs(parameters->type)->kind!=tk_integer || skip_typerefs(parameters->type)->size!=8 ||
+     !is_new_nothrow_param(parameters->next) || result->kind!=tk_pointer ||
+     skip_typerefs(result->variant.pointer.type)->kind!=tk_void)
+    unsupported("canonical global coroutine nothrow allocator ABI");
+  return true;
+}
+void require_coroutine_nothrow_object(a_scope_ptr scope,a_routine_ptr allocator) {
+  if(!coroutine_global_nothrow_allocator(allocator))return;
+  auto parameter=skip_typerefs(allocator->type)->variant.routine.extra_info->param_type_list->next;
+  auto object_type=skip_typerefs(parameter->type)->variant.pointer.type;
+  for(auto variable=scope->variables;variable;variable=variable->next) {
+    if(!variable->source_corresp.name || string(variable->source_corresp.name)!="_ZSt7nothrow")continue;
+    if(variable->storage_class==sc_extern || ignore_variable_in_back_end(variable))continue;
+    if(variable->is_thread_local || !identical_types(variable->type,object_type))
+      unsupported("canonical std::nothrow source object type");
+    if(coroutine_nothrow_object && coroutine_nothrow_object!=variable)
+      unsupported("ambiguous canonical std::nothrow source object");
+    coroutine_nothrow_object=variable;coroutine_required_variables.insert(variable);
+  }
+  if(!coroutine_nothrow_object)unsupported("global coroutine nothrow allocation requires source definition of std::nothrow");
+}
 bool coroutine_required(a_routine_ptr routine) {return coroutine_required_routines.count(routine)!=0;}
 bool coroutine_required(a_variable_ptr variable) {return coroutine_required_variables.count(variable)!=0;}
 
@@ -45,7 +75,7 @@ template<class Visit> void coroutine_walk_statement(a_statement_ptr statement,co
   }
 }
 void collect_coroutine_requirements(a_scope_ptr scope) {
-  coroutine_required_routines.clear();coroutine_required_variables.clear();
+  coroutine_required_routines.clear();coroutine_required_variables.clear();coroutine_nothrow_object=nullptr;
   bool native_noop_frame=false;
   for(auto variable=scope->variables;variable;variable=variable->next) {
     if(!variable_needed(variable) || !variable->source_corresp.name)continue;
@@ -71,6 +101,7 @@ void collect_coroutine_requirements(a_scope_ptr scope) {
     auto body=scope_for_routine_or_null(routine);if(!body)continue;
     auto descriptor=coroutine_descriptor(body->assoc_block);if(!descriptor)continue;
     require(descriptor->new_routine);require(descriptor->delete_routine);
+    require_coroutine_nothrow_object(scope,descriptor->new_routine);
     coroutine_walk_expression(descriptor->get_return_object_call,expression);
     coroutine_walk_expression(descriptor->alloc_failure_gro_call,expression);
     coroutine_walk_statement(body->assoc_block,expression);
@@ -406,6 +437,10 @@ string coroutine_allocation_call(a_coroutine_descr_ptr descriptor,a_scope_ptr sc
   string call=name(allocator,"f")+"(("+type(allocation_parameters->type)+")__edg_size";
   auto target=allocation_parameters->next;
   if(!target)return call+")";
+  if(coroutine_global_nothrow_allocator(allocator)) {
+    if(!coroutine_nothrow_object)unsupported("missing canonical std::nothrow source storage");
+    return call+", ("+type(target->type)+")&("+variable(coroutine_nothrow_object)+"))";
+  }
   // select_coroutine_new uses extra arguments globally only for std::nothrow.
   // Class membership is flattened by lowering; use its semantic tag predicate.
   if(is_new_nothrow_param(target))

@@ -391,6 +391,8 @@ def main():
         checks.extend(verify_coroutine_placement_values(ROOT, TESTS, suite_output("coroutine_placement_values"), args.nativeaot, run, args.libcxx_acquisition))
         from coroutine_placement_conversion_verify import verify_coroutine_placement_conversion
         checks.extend(verify_coroutine_placement_conversion(ROOT, TESTS, suite_output("coroutine_placement_conversion"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_global_nothrow_verify import verify_coroutine_global_nothrow
+        checks.extend(verify_coroutine_global_nothrow(ROOT, TESTS, suite_output("coroutine_global_nothrow"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_ptr_verify import verify_libcxx_exception_ptr
         checks.extend(verify_libcxx_exception_ptr(ROOT, TESTS, suite_output("libcxx_exception_ptr"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_owner_verify import verify_libcxx_exception_owner

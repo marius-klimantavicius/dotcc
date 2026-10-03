@@ -1,0 +1,19 @@
+{
+  "scope": "Selected standard global nothrow allocation with exact source std::nothrow identity",
+  "checks": 10,
+  "evidence": {
+    "path": "artifacts/campaign/coroutine-global-nothrow-20261003-061733/results.json",
+    "sha256": "7df6805bfee3ed2ad791fab64ef09fa036f6261a2fbe169b28c4eaea6a58055f"
+  },
+  "checkpoint": "artifacts/campaign/coroutine-global-nothrow-20261003-061733/hashes.json",
+  "sources": {
+    "backend/dot_gen_coroutine_emit.h": "38a34eac43edb2a766242fb9477ba89ee3e22d84b6c886c3b369b3888d2c58cd",
+    "backend/tests/libcxx/coroutine_global_nothrow.cpp": "b58ef0e81faaa890dd40ef3c7ac79997a5cb417eca3ca7dad9f85f60faf50951",
+    "backend/tests/coroutine_global_nothrow_verify.py": "f6b1d1cd2ae9d9d05a3d96c2ebcb95a7a04d2d7c5965bb704381fb7ccdc0451a"
+  },
+  "limitations": [
+    "Fixed current Itanium ABI target, source-defined std::nothrow provider required",
+    "Implicit-object/member-nothrow placement and missing default-expression capture remain separate gates",
+    "Linux-x64 execution only"
+  ]
+}

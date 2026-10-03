@@ -222,7 +222,7 @@ accepted pointer-returning equivalent does not claim reference-result coverage.
 
 Reference-result source acceptance, protected-expression suspension, conditional
 or array descriptive cleanup forms, complex pre-frame allocation-failure expressions,
-default-argument descriptor calls, placement allocators, exported factories and
+default-argument descriptor calls, advanced placement conversions, exported factories and
 function-try coroutine factories remain open.
 
 
@@ -272,8 +272,8 @@ exact scalar/pointer values and directly bound explicit reference parameters.
 It uses the incoming factory parameters before copying them into the coroutine
 frame. Hidden result parameters are excluded. Matching uses retained C++ type
 identity and reference flags, not merely equal C# storage types. Class copies,
-user-defined conversions, extra defaults, variadics, implicit-object placement,
-and global `std::nothrow` allocation remain separately diagnosed.
+user-defined conversions, extra defaults, variadics and implicit-object placement
+remain separately diagnosed. Canonical global nothrow allocation is supported below.
 
 The reference and value fixtures pass ten native/static/instance JIT/NativeAOT
 checks in `coroutine-placement-20261003-060229/progress.json`. They cover reference
@@ -301,3 +301,24 @@ checks in `coroutine-placement-final-20261003-060706/results.json`; its
 modes still pass after making unsupported implicit-object placement explicit,
 and the class-conversion probe is rejected before C# publication. The earlier
 ten-check matrix provides the corresponding NativeAOT acceptance.
+
+
+Canonical global nothrow coroutine allocation now passes ten focused checks in
+`coroutine-global-nothrow-20261003-061733/results.json`. The emitter validates the
+fixed LP64 Itanium allocator ABI together with EDG's semantic nothrow-parameter
+predicate, locates the actual source-defined `std::nothrow` object with matching
+qualified type, and passes that object's address. The early backend-owned
+requirement set retains the object even when no ordinary source expression
+references it. EDG needed flags are not modified and no substitute tag object
+is synthesized. A missing provider definition is diagnosed before publication.
+
+The fixture uses pinned libc++18 `src/new_helpers.cpp`, the existing exception
+class provider, and original `src/typeinfo.cpp`. `provider.json` records their
+hashes. A synthetic replacement nothrow allocator checks pointer identity against
+`&std::nothrow`, failure without promise construction, and successful normal
+lifetime; a second variant omits the explicit source reference to exercise the
+requirement inventory. Both variants pass static/instance JIT and NativeAOT with
+strict warnings. Native GCC/Clang O0/O2 agree on the identity/lifetime trace.
+`hashes.json`, `checkpoint/`, and `runtime-hashes.json` retain the final compiler,
+helpers, inputs and generated runtime evidence. Custom member allocation taking
+a nothrow tag remains a placement-conversion gate.

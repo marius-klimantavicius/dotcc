@@ -502,3 +502,9 @@ arguments use incoming factory storage before frame copies. Class conversions,
 defaults and implicit-object forms are not approximated. Two native-valid
 source forms reproduce rejection in original EDG C processing, retained as
 frontend gates without changing EDG. Global nothrow allocation is next.
+
+Standard global nothrow coroutine allocation now passes the exact address of
+the source-defined std::nothrow object. A backend-owned requirement set retains
+that object even without an explicit source reference; missing providers reject
+before publication. Ten native/static/instance JIT/NativeAOT and diagnostic
+checks use pinned libc++ new_helpers.cpp and allocator identity probes.
