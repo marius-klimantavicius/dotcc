@@ -1,0 +1,47 @@
+{
+  "scope": "Representable field-width parsing and ISO byte-counted wide destinations",
+  "checks": 26,
+  "runs": [
+    {
+      "path": "artifacts/campaign/libc-scanf-width-translated-20261003-052800/results.json",
+      "sha256": "e4f3b7648c70a83af151009f4594915789efbc46b14e6b35b2bfcafd4e4f8fa2",
+      "checks": 12
+    },
+    {
+      "path": "artifacts/campaign/libc-scanf-width-replay-20261003-052600/results.json",
+      "sha256": "feafff9d551a51c0ba9f04942e89abd529dbf3e1303c3bb5432356ad922e96b7",
+      "checks": 2
+    },
+    {
+      "path": "artifacts/campaign/libc-scanf-width-narrow-regression-20261003-053000/results.json",
+      "sha256": "ab7188aaa5a92933dde692d39d58fe0414244c06dc3a6828b5a95ef2bd8c7a97",
+      "checks": 1
+    },
+    {
+      "path": "artifacts/campaign/libc-scanf-width-wide-regression-20261003-053000/results.json",
+      "sha256": "bff39c9ba7634ec6fa4dab623dcfb6b28ffd034bba68066dde2dfab86cbd0805",
+      "checks": 1
+    },
+    {
+      "path": "artifacts/campaign/libc-scanf-wide-fields-20261003-052000/results.json",
+      "sha256": "76d1b5de758ac33298a0baefa89e6dd69a8035f2f21ed783b118c20dda7fce5d",
+      "checks": 10
+    }
+  ],
+  "sources": {
+    "backend/runtime/musl/scanf/source.json": "efc7d097631523ae10a6238f3fd21f3dd9a2baf7888cb03fe38b357c84fc98b8",
+    "backend/runtime/musl/wscanf/source.json": "cb5c98031af82c37a38e2225951c839a37372182dc5d471140013eae56d249fe",
+    "backend/tests/libc_scanf_width.c": "edb4da22d0a7b2a278fcacfa65b55af3f36790bea80383cd4490733a789df103",
+    "backend/tests/libc_scanf_width_verify.py": "09bf62c6c41bc650ef31e2e05e6360608edadf5652584fc892ea1d0e28ee91d8",
+    "backend/tests/libc_scanf_verify.py": "d7c3313a6b302a4949a1076a942b1dc92762b46f237b19ce8f217780d047607d"
+  },
+  "notes": [
+    "Original UBSan failures are retained expected-negative evidence, not passing original-source behavior.",
+    "246 byte-field records matched all eight previously generated binaries after source hash validation;160 host-libc differences are observations, not a replacement oracle.",
+    "Final narrow479/wide271 source corpus comparisons are native original/adapted; combined focused width cases include all eight JIT/AOT generated modes."
+  ],
+  "limitations": [
+    "Widths beyond INT_MAX remain separate representation/semantics work",
+    "Floating flags, locales and full libc coverage are not established by this slice"
+  ]
+}

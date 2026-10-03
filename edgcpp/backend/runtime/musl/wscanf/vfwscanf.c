@@ -151,7 +151,7 @@ int __edg_musl_vwscan(struct edg_wscan_input *restrict f, const wchar_t *restric
 		}
 
 		for (width=0; iswdigit(*p); p++) {
-			width = 10*width + *p - '0';
+			width = 10*width + (*p - '0');
 		}
 
 		if (*p=='m') {

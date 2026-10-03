@@ -330,6 +330,8 @@ def main():
     checks.extend(verify_libc_wprintf(ROOT,TESTS,suite_output("libc_wprintf"),args.nativeaot,run))
     from libc_wprintf_abi_verify import verify_libc_wprintf_abi
     checks.extend(verify_libc_wprintf_abi(ROOT,TESTS,suite_output("libc_wprintf_abi")))
+    from libc_scanf_width_verify import verify_libc_scanf_width
+    checks.extend(verify_libc_scanf_width(ROOT,TESTS,suite_output("libc_scanf_width"),args.nativeaot,run))
     from libc_stdio_management_verify import verify_libc_stdio_management
     checks.extend(verify_libc_stdio_management(ROOT,TESTS,suite_output("libc_stdio_management"),args.nativeaot,run))
     from libc_stdio_management_runtime_verify import verify_libc_stdio_management_runtime

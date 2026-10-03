@@ -5,7 +5,7 @@
     "vfscanf.c": {
       "upstream": "src/stdio/vfscanf.c",
       "originalSha256": "d4940fce26d88baa8d0c0f84fb68230c93323f518d0153f0dd293b5c78113b0c",
-      "adaptedSha256": "29f524416a78c20985da2ce40dc0033c84f5de53d6c5be7858157c51e3f5008d"
+      "adaptedSha256": "5a91e73cc2b72cfc411d203b5129890cd5ea951c53b9f84213f70dc9115fcc7d"
     }
   },
   "adapters": {

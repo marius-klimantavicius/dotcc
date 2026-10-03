@@ -114,7 +114,7 @@ int __edg_musl_vscan(struct edg_string_scan *restrict f, const char *restrict fm
 		}
 
 		for (width=0; isdigit(*p); p++) {
-			width = 10*width + *p - '0';
+			width = 10*width + (*p - '0');
 		}
 
 		if (*p=='m') {

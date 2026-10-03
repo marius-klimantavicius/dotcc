@@ -5,7 +5,7 @@
     "vfwscanf.c": {
       "upstream": "src/stdio/vfwscanf.c",
       "originalSha256": "50d29e39b33125dfe03d048918bfde86f1169f6fbfc491986e649fe767cf4def",
-      "adaptedSha256": "e8355872bd582bd8353974b0621c452ae741a84f38ed9782d6b1af3fb42f3160"
+      "adaptedSha256": "5ea72c9d3e803f3b15e306e707f712d1e8fc8a21110b54d823372d8a476f8c51"
     }
   },
   "adapters": {

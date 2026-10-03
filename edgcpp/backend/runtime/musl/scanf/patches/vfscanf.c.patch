@@ -41,6 +41,15 @@
  
  	for (p=(const unsigned char *)fmt; *p; p++) {
  
+@@ -118,7 +114,7 @@
+ 		}
+ 
+ 		for (width=0; isdigit(*p); p++) {
+-			width = 10*width + *p - '0';
++			width = 10*width + (*p - '0');
+ 		}
+ 
+ 		if (*p=='m') {
 @@ -226,41 +222,42 @@
  			k = t=='c' ? width+1U : 31;
  			if (size == SIZE_l) {

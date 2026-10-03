@@ -508,3 +508,11 @@ the source-defined std::nothrow object. A backend-owned requirement set retains
 that object even without an explicit source reference; missing providers reject
 before publication. Ten native/static/instance JIT/NativeAOT and diagnostic
 checks use pinned libc++ new_helpers.cpp and allocator identity probes.
+
+Narrow/wide scanf now compute each decimal width digit before adding it,
+avoiding a proven intermediate signed overflow for valid widths through INT_MAX.
+Original UBSan failures, corrected native/source JIT/NativeAOT acceptance and
+patch replay are retained. A separate246-record audit confirms the selected
+ISO byte-counted wide-destination contract;160 glibc differences remain
+observations. Twenty-six checks are indexed, including expected negatives and
+native corpus regressions. Widths beyond INT_MAX remain explicit work.

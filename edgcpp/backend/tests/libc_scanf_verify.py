@@ -2,6 +2,18 @@
 import argparse,hashlib,json,shutil,struct,subprocess,sys
 from pathlib import Path
 
+def wide_field_corpus():
+ rows=[]
+ for text in [b'abc def!',b'\xc3\xa9x y!',b'\xe2\x82\xacx y!',b'\xf0\x9f\x99\x82x y!',b'a\xe2\x82\xac b!',b'\xe2\x82\xac',b'\xc3',b'\xe2\x82',b'\xf0\x9f\x99',b'A\xff!',b'\xc3\xa9\xc3\xa9 xyz!']:
+  for width in range(1,8):
+   for conversion in ['lc','ls','l[^ ]']:
+    rows.append((3,f'%{width}{conversion}%7ls%n%c',text))
+ for width in [1,2,3,4,7]:
+  for text in [b'\xe2\x82\xac abc def!',b'abc def!',b'\xf0\x9f\x99\x82x yz!']:
+   rows.append((3,f'%*{width}lc%7ls%7ls%n%c',text))
+ return rows
+
+
 def corpus():
  rows=[]
  for text in ['', ' ', 'x','12','-17 23!','0xff 077tail','0xg 5','+ 3','123abc','9223372036854775807 -9223372036854775808!', '18446744073709551615 0!', '12 34!', '12X34!', '12%34!']:
@@ -25,6 +37,7 @@ def corpus():
   rows.append((2,fmt,'abc'))
  rows.append((6,'%hhn%hn%n%ln%lln%jn%zn%tn%n',''))
  rows.append((6,'%*7c%hhn%hn%n%ln%lln%jn%zn%tn%n','1234567tail'))
+ rows.extend(wide_field_corpus())
  return rows
 
 def original_oracle(root,tests,out,run,cases,provider):
