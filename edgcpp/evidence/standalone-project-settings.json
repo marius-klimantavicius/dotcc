@@ -1,0 +1,19 @@
+{
+  "scope": "Generated projects declare C#14 and nullable annotations without repository props",
+  "checks": 2,
+  "evidencePath": "artifacts/campaign/persistent-continuation/standalone-project-001",
+  "checksPassed": [
+    "External-path strict Release build with TreatWarningsAsErrors=true",
+    "JIT malloc/free input returns0"
+  ],
+  "sha256": {
+    "generated/Generated.csproj": "7490d5c7138c63f17a8f2467c1f8c149d2472733e59b96b3f660667c37dcd7d7",
+    "build.log": "abaa307b41a5fb81f943c31e3f385c6034eacb4871dad4654f5859a640b81093",
+    "run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "translate.log": "b597a691e3d1c5c21d6ba15965be810e19e0aaed3eaf4c782f98f2b79729a2b8",
+    "input.c": "1ee45d025a4d995700c719c981426e839256205bad01d426ca02cc1f5db6d28b"
+  },
+  "limits": [
+    "Metadata-only change; no new NativeAOT execution claimed"
+  ]
+}

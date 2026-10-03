@@ -261,6 +261,8 @@ def main():
   <PropertyGroup>
     <OutputType>OUTPUT_TYPE</OutputType>
     <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>14</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <IsAotCompatible>true</IsAotCompatible>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
