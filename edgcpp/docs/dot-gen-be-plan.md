@@ -1038,3 +1038,8 @@ objects without constructing a promise/frame on the failure path. Throwing hooks
 preserve ordinary exception semantics. A hook requiring a discarded default
 argument remains diagnosed pending backend-owned prelower capture; this is not
 complete coroutine allocation coverage. Evidence: `evidence/milestone-coroutine-allocation-failure.json`.
+
+Managed-library coroutine factories now use the ordinary export lifecycle and EH
+wrappers, including owner admission and disposal checks. Five native/JIT/NativeAOT
+checks and four byte-identical ordinary-wrapper comparisons are recorded in
+`evidence/milestone-coroutine-library.json`. Remaining coroutine forms stay open.

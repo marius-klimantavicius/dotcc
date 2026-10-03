@@ -222,7 +222,7 @@ accepted pointer-returning equivalent does not claim reference-result coverage.
 
 Reference-result source acceptance, protected-expression suspension, conditional
 or array descriptive cleanup forms, complex pre-frame allocation-failure expressions,
-default-argument descriptor calls, advanced placement conversions, exported factories and
+default-argument descriptor calls, advanced placement conversions and
 function-try coroutine factories remain open.
 
 
@@ -322,3 +322,36 @@ strict warnings. Native GCC/Clang O0/O2 agree on the identity/lifetime trace.
 `hashes.json`, `checkpoint/`, and `runtime-hashes.json` retain the final compiler,
 helpers, inputs and generated runtime evidence. Custom member allocation taking
 a nothrow tag remains a placement-conversion gate.
+
+
+Managed library coroutine factories now use the same export wrapper emitter as
+ordinary translated routines, preserving owner entry/leave, exception-boundary
+bookkeeping, exported-symbol records and owner keepalive. A POD-return factory
+can be called directly from managed code; suspended frames continue to follow
+the documented raw-pointer owner lifetime contract.
+
+Five focused native/static/instance JIT/NativeAOT checks are indexed in
+`coroutine-library-instance-20261003-063141/acceptance.json`. They verify direct
+factory calls, suspension through GC, ordinary pointer observers, independent
+owners, early destruction, global owning-task destruction during Shutdown,
+reentrant managed callbacks during that destruction, and abandonment of a leaked
+raw frame without an invented promise destructor. Entry after disposal is
+rejected, and the disposed instance becomes collectible. Instance callbacks use
+the existing explicit-owner managed function-pointer ABI. The initial host's
+missing owner parameter is retained as a harness failure in
+`coroutine-library-20261003-063019`; that run's static JIT/NativeAOT checks passed
+and are referenced directly by the final acceptance index instead of republished.
+Final input/helper/compiler hashes are retained with the instance results.
+
+The entire raw generated output of an ordinary module containing EH, TLS and
+function pointers is byte-for-byte unchanged across the export-wrapper refactor
+in four static/instance and nested/top-level configurations:
+`coroutine-library-parity-20261003-063003/results.json`.
+
+The initial fixture's explicit promise constructor was accepted by the native
+oracles but rejected by both EDG frontends before backend emission. Identical
+preprocessed-input evidence is in
+`coroutine-library-20261003-062915/original-c-frontend.log`. The accepted fixture
+uses a non-explicit constructor with the same behavior; explicit-constructor
+source acceptance for that probe remains a separate gate. EDG sources were not
+changed.

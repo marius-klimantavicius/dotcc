@@ -1196,6 +1196,31 @@ void statement(a_statement_ptr s) {
 #include "dot_gen_statement_expression.h"
 #include "dot_gen_main.h"
 #include "dot_gen_coroutine.h"
+// Shared host boundary for ordinary routines and coroutine factories.
+void emit_library_export(a_routine_ptr r,a_variable_ptr params,const string &signature) {
+  auto rt=skip_typerefs(r->type);
+  string exported = "__edg_export_" + name(r, "f"), args;
+  for (auto p = params; p; p = p->next) {
+    if (p != params) args += ", ";
+    args += name(p, "v");
+  }
+  if(rt->variant.routine.extra_info->has_ellipsis)args+=string(args.empty()?"":", ")+"__edg_arguments";
+  // The driver consumes these protocol records into the symbol manifest.
+  string source = r->source_corresp.name ? r->source_corresp.name : "";
+  string hex;
+  const char *digits = "0123456789abcdef";
+  for (auto c : source) { hex += digits[(unsigned char)c >> 4]; hex += digits[(unsigned char)c & 15]; }
+  line("// dot-gen:export " + hex + " " + exported);
+  string api = signature;
+  api.replace(0, 8, "public ");
+  auto pos = api.find(" " + name(r, "f") + "(");
+  api.replace(pos + 1, name(r, "f").size(), exported);
+  line("// dot-gen:member-begin");
+  line(api + " { /*__EDG_ENTER__*/ try { " + (type(rt->variant.routine.return_type) == "void" ? "" : "return ") +
+       name(r, "f") + "(" + args + "); } /*__EDG_EXCEPTION_BOUNDARY__*/ finally { /*__EDG_LEAVE__*/ global::System.GC.KeepAlive(" +
+       string(instance_mode ? "this" : "__edg_storage") + "); } }");
+  line("// dot-gen:member-end");
+}
 #include "dot_gen_coroutine_emit.h"
 }
 
@@ -1354,29 +1379,7 @@ void back_end(void) {
     else if(dynamic_spec)line(dynamic_exception_boundary(r));
     line("}");
     line("// dot-gen:member-end");
-    if (library_mode) {
-      string exported = "__edg_export_" + name(r, "f"), args;
-      for (auto p = params; p; p = p->next) {
-        if (p != params) args += ", ";
-        args += name(p, "v");
-      }
-      if(rt->variant.routine.extra_info->has_ellipsis)args+=string(args.empty()?"":", ")+"__edg_arguments";
-      // The driver consumes these protocol records into the symbol manifest.
-      string source = r->source_corresp.name ? r->source_corresp.name : "";
-      string hex;
-      const char *digits = "0123456789abcdef";
-      for (auto c : source) { hex += digits[(unsigned char)c >> 4]; hex += digits[(unsigned char)c & 15]; }
-      line("// dot-gen:export " + hex + " " + exported);
-      string api = signature;
-      api.replace(0, 8, "public ");
-      auto pos = api.find(" " + name(r, "f") + "(");
-      api.replace(pos + 1, name(r, "f").size(), exported);
-      line("// dot-gen:member-begin");
-      line(api + ") { /*__EDG_ENTER__*/ try { " + (type(rt->variant.routine.return_type) == "void" ? "" : "return ") +
-           name(r, "f") + "(" + args + "); } /*__EDG_EXCEPTION_BOUNDARY__*/ finally { /*__EDG_LEAVE__*/ global::System.GC.KeepAlive(" +
-           string(instance_mode ? "this" : "__edg_storage") + "); } }");
-      line("// dot-gen:member-end");
-    }
+    if(library_mode)emit_library_export(r,params,signature+")");
   }
   ensure_initial_process_thread();
   output += (nested_types ? type_output : "") + helper_output + address_output;

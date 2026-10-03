@@ -1,0 +1,25 @@
+{
+  "scope": "Managed library coroutine factory exports reuse ordinary owner/lifecycle export wrappers",
+  "checks": 9,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/coroutine-library-instance-20261003-063141/acceptance.json",
+      "sha256": "0eeca3059f8a4ab2d53e6fbb6816c96d2611d6937452da82e20db7ca7f8bdee3"
+    },
+    {
+      "path": "artifacts/campaign/coroutine-library-parity-20261003-063003/results.json",
+      "sha256": "04e420359012630ebb9f54fee32f0432842a5c979cdb92f630804a96622b710f"
+    }
+  ],
+  "sources": {
+    "backend/dot_gen_be.c": "23ad6f9071aecc0956389581e7ff44d4d8d2048ab586da77344d439f54832f45",
+    "backend/dot_gen_coroutine_emit.h": "8ec56678a9f37281df42b80387a922c37ec55df8fb00831a26a6d6ff5a0f92a1",
+    "backend/tests/coroutine_library_verify.py": "4a8b2cb253b94bdd8b35280418612079742f39801dab3a7efe1358201131e7d3",
+    "backend/tests/libcxx/coroutine_library.cpp": "edbfc222e29d1f2ad3ee008fb1360e0c8d7d394effd4b4434785860a3646afe4"
+  },
+  "limitations": [
+    "Linux-x64 execution only",
+    "Function-try factories and remaining coroutine expression/control forms remain separate gates",
+    "Escaped raw coroutine frames require owner lifetime; shutdown abandonment does not invent C++ destruction"
+  ]
+}

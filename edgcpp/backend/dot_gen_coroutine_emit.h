@@ -649,6 +649,6 @@ void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_pt
   line("}finally{global::Edg.Runtime.Coroutine.Detach(__edg_coro);"+coroutine_delete_call(descriptor,"__edg_coro","__edg_size")+"}}");
   line("// dot-gen:member-end");emit_cleanup_helper();
   if(function_vla_used)unsupported("coroutine variable-length storage lifetime");
-  if(library_mode)unsupported("exported coroutine factory wrapper");
+  if(library_mode)emit_library_export(routine,scope->variant.routine.parameters,signature);
   current_coroutine=nullptr;current_coroutine_routine=nullptr;
 }
