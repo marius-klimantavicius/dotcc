@@ -685,7 +685,7 @@ string location(an_expr_node_ptr e) {
       // c_gen_be.c::dump_result_of_overriding_function forwards the wrapper's
       // parameters after EDG's this/covariant-result adjustments.
       auto r=current_function_scope->variant.routine.ptr->overriding_function_for_wrapper;
-      if(!r || r->function_def_number==NULL_function_def_number)unsupported("external virtual thunk target");
+      if(!r || (r->function_def_number==NULL_function_def_number && !unbound_routine(r)))unsupported("external virtual thunk target");
       string call=source_routine_reference(r)+"(";
       for(auto p=current_function_scope->variant.routine.parameters;p;p=p->next) {
         if(p!=current_function_scope->variant.routine.parameters)call+=", ";
@@ -960,6 +960,23 @@ string location(an_expr_node_ptr e) {
   return convert(e->type, value);
 }
 void line(string s) { output += s + "\n"; }
+void replace_output_marker(const string &marker, const string &replacement) {
+  auto position=output.find(marker);
+  if(position==string::npos)return;
+  // Replacing each occurrence in place shifts the rest of a large program
+  // repeatedly. Copy each unchanged span once, without rescanning inserted text.
+  string replaced;
+  replaced.reserve(output.size());
+  size_t begin=0;
+  do {
+    replaced.append(output,begin,position-begin);
+    replaced+=replacement;
+    begin=position+marker.size();
+    position=output.find(marker,begin);
+  } while(position!=string::npos);
+  replaced.append(output,begin,string::npos);
+  output.swap(replaced);
+}
 string expr(an_expr_node_ptr e) {
   string source=source_expression_override(e,false);if(!source.empty())return source;
   if (!e) unsupported("null expression");
@@ -988,6 +1005,7 @@ string expr(an_expr_node_ptr e) {
 void variables(a_variable_ptr v, bool global) {
   for (; v; v = v->next) {
     if(!variable_needed(v))continue;
+    if(v->storage_class==sc_extern && unbound_declarations){if(libc_variable(v).empty())(void)unbound_variable_address(v);continue;}
     if (v->is_thread_local) unsupported("thread-local storage");
     if (v->storage_class == sc_extern) unsupported(("external variable: "+string(v->source_corresp.name?v->source_corresp.name:"unnamed")).c_str());
     if (local_offsets.count(v) || (!global && source_lexical_variables.count(v))) continue;
@@ -1572,17 +1590,16 @@ void back_end(void) {
     string prefix=item.first=="THREAD" && instance_mode?"owner.":"";
     string code=terminate_helpers_emitted?prefix+"__edg_terminate_runtime(error,"+string("\"")+item.second+"\");":
         "global::System.Environment.FailFast(\""+item.second+"\",error);";
-    for(size_t pos=output.find(marker);pos!=string::npos;pos=output.find(marker,pos+code.size()))output.replace(pos,marker.size(),code);
+    replace_output_marker(marker,code);
   }
   const string exception_boundary="/*__EDG_EXCEPTION_BOUNDARY__*/";
   const string exception_boundary_code=exception_helpers_emitted?
       "catch (global::System.Exception __edg_boundary_error) { __edg_end_exception(__edg_boundary_error); throw; }":"";
-  for(size_t pos=output.find(exception_boundary);pos!=string::npos;pos=output.find(exception_boundary,pos+exception_boundary_code.size()))
-    output.replace(pos,exception_boundary.size(),exception_boundary_code);
+  replace_output_marker(exception_boundary,exception_boundary_code);
   for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_PROCESS_FLUSH__*/",files_emitted?"__edg_files_value?.Fflush(null);":""},{"/*__EDG_THREAD_EXIT_CATCH__*/",thread_finalizer_catch_code()},{"/*__EDG_LIBC_THREAD_KEYS_RELEASE__*/",thread_keys_release_code()},{"/*__EDG_LIBC_THREAD_RELEASE__*/",libc_thread_release_code()},{"/*__EDG_LIBC_DISPOSE__*/",coroutine_disposal_code()+thread_disposal_code()+libc_disposal_code()}})
-    for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);
+    replace_output_marker(replacement.first,replacement.second);
   for(auto replacement:std::vector<std::pair<string,string>>{{"/*__EDG_ENTER__*/",lifecycle_emitted?"__edg_enter();":""},{"/*__EDG_LEAVE__*/",lifecycle_emitted?"__edg_leave();":""}})
-    for(size_t pos=output.find(replacement.first);pos!=string::npos;pos=output.find(replacement.first,pos+replacement.second.size()))output.replace(pos,replacement.first.size(),replacement.second);
+    replace_output_marker(replacement.first,replacement.second);
   if (!literal_bytes.empty()) {
     line("private static readonly byte[] __edg_literals = __edg_make_literals();");
     line("private static byte* __edg_literal_base => (byte*)(((nuint)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref __edg_literals[0]) + 7) & ~(nuint)7);");

@@ -1,0 +1,30 @@
+{
+  "scope": "Review-only external destructor declarations and native EH/RTTI profile selection",
+  "artifact": "artifacts/campaign/persistent-continuation/edg-self-review-unbound-tests-005",
+  "checks": [
+    "default unknown external rejection",
+    "default EH enabled",
+    "explicit no-exceptions frontend rejection",
+    "default RTTI enabled",
+    "explicit no-rtti frontend rejection",
+    "static JIT",
+    "instance JIT",
+    "static NativeAOT",
+    "instance NativeAOT"
+  ],
+  "executionCoverage": [
+    "ordinary function",
+    "direct and indirect missing external call",
+    "missing external variable read/address/constant-address",
+    "missing external base destructor with noexcept(false)"
+  ],
+  "limitations": "Source noexcept behavior remains active; a missing destructor reached under noexcept can terminate, as confirmed by retained failed fixture004. Explicit review mode does not promise runnable semantics.",
+  "inputs": {
+    "backend/dot_gen_cleanup.h": "622400d77223160cfc657f7d58f41b45ab86f59c21604a0856e910e6cb69b8e1",
+    "backend/dot_gen_exceptions.h": "25ed2f46225f152fa7909290689bb2f5aa680e7340cbaf730ce48dcd45f6879b",
+    "backend/tests/unbound_externals.cpp": "2fbeffe1563cfe889cd9bc0cf189bf19a2959a4a8556b72e40c4728aaf4ccc8a",
+    "backend/tests/unbound_externals_verify.py": "64ed33aa4bc82dee9bbc2467cef64442e9a5387241ee7d06ee755baca7850ef2",
+    "dotnet.py": "3aea9dcbf1403886335520bd7e4978bb5bcd0242c9497cdcf6908c49602a3549",
+    "translate_self.py": "1a6ee65442b3370e6fba7c853a8175c192412511fc5cc333e1cd10bdcc9c1a71"
+  }
+}

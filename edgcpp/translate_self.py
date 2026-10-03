@@ -44,6 +44,13 @@ def main():
     if len(flag_sets) != 1:
         raise RuntimeError('Combined translation requires identical input flags')
     flags = list(next(iter(flag_sets)))
+    feature_sets = {('-fno-exceptions' not in shlex.split(entry['command']),
+                     '-fno-rtti' not in shlex.split(entry['command'])) for entry in entries}
+    if len(feature_sets) != 1:
+        raise RuntimeError('Combined translation requires identical EH/RTTI feature settings')
+    exceptions, rtti = next(iter(feature_sets))
+    feature_flags = ['--exceptions' if exceptions else '--no-exceptions',
+                     '--rtti' if rtti else '--no-rtti']
     sources = sorted((Path(entry['file']) for entry in entries),
                      key=lambda source: (source.name != 'cfe.c', str(source)))
     includes = []
@@ -55,6 +62,7 @@ def main():
                     .split('End of search list.')[0].splitlines() if line.strip()]
     command = [sys.executable, str(ROOT / 'dotnet.py'), *map(str, sources),
                '--language', 'c++', '--std', 'c++14', *flags,
+               *feature_flags,
                *[value for path in includes for value in ('-I', path)],
                '--target', 'legacy-linux-x64' if args.profile == 'host' else 'portable-lp64-binary80-v2',
                '--libc', 'none' if args.profile == 'host' else 'dotcc',
@@ -73,6 +81,7 @@ def main():
         'generatedConfigSha256': digest(ROOT / 'build/src/includes/cmake_defines.h'),
         'sources': [{'path': str(path.relative_to(ROOT)), 'sha256': digest(path)} for path in sources],
         'sourceCount': len(sources), 'definesAndIncludes': flags,
+        'languageFeatures': {'exceptions': exceptions, 'rtti': rtti},
         'hostIncludeDirectories': includes, 'commands': [],
     }
     def run(label, invocation):

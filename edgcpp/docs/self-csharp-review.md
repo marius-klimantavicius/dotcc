@@ -6,6 +6,9 @@ the C backend, with the all-extensions build's definitions. It does not translat
 the historical lowered C and does not substitute a small demonstration compiler.
 The generated project uses `Edg.Compiler.EdgCompiler` and source-oriented file
 grouping by default. `--split size` remains available.
+The runner also preserves native `-fno-exceptions` and `-fno-rtti` through the
+driver's explicit `--no-exceptions --no-rtti` flags. Ordinary driver invocations
+continue to enable both features by default.
 
 The portable-header attempt currently stops at the unconditional `sys/types.h`
 include in `host_envir.h`. The diagnostic `--profile host` uses the native Linux

@@ -105,6 +105,10 @@ def main():
                         help="use an explicitly selected dot_gen_be compiler (default: current workspace build)")
     parser.add_argument("--unbound-externals", choices=("reject", "declarations"), default="reject",
                         help="explicit review-only output with throwing declarations for unbound external symbols")
+    parser.add_argument("--exceptions", action=argparse.BooleanOptionalAction, default=True,
+                        help="enable C++ exception handling (default); --no-exceptions matches native -fno-exceptions")
+    parser.add_argument("--rtti", action=argparse.BooleanOptionalAction, default=True,
+                        help="enable C++ RTTI (default); --no-rtti matches native -fno-rtti")
     parser.add_argument("--namespace", default="Edg.Generated", type=namespace)
     parser.add_argument("--class-name", default="TranslatedProgram", type=identifier)
     parser.add_argument("--instance-methods", action="store_true",
@@ -145,11 +149,13 @@ def main():
                EDG_DOT_RUNTIME=args.runtime, EDG_DOT_LIBC="dotcc" if args.libc=="musl" else args.libc,
                EDG_DOT_TARGET=args.target, EDG_DOT_TYPE_IR="1" if args.type_ir else "0")
     # Never discover host system headers. The optional bootstrap exposes only
-    # the pinned EDG exception headers for the current LP64 target. Keep EH
-    # enabled so unsupported EH remains visible in the IL.
+    # the pinned EDG exception headers for the current LP64 target. EH stays
+    # enabled by default; explicit native-style feature flags can disable it.
     runtime_options = []
     if args.runtime == "edg-exceptions" and args.language == "c":
         parser.error("edg-exceptions requires C++ input")
+    if args.runtime == "edg-exceptions" and not args.exceptions:
+        parser.error("edg-exceptions requires --exceptions")
     sources = [p.resolve() for p in args.source]
     runtime_sources = []
     libc_provider = None
@@ -175,6 +181,10 @@ def main():
         # This driver emits a complete program, so referenced non-inline
         # templates need definitions rather than a later native link pass.
         frontend_options += ["--instantiate", "used"]
+        if not args.exceptions:
+            frontend_options += ["--no_exceptions"]
+        if not args.rtti:
+            frontend_options += ["--no_rtti"]
     target_manifest = {"id": args.target}
     if args.target != "legacy-linux-x64":
         frontend_options += ["--clear_flag", "use_predefined_macro_file"]
@@ -389,6 +399,8 @@ RESOURCE_ITEMS
         "sourceIndex": "source-index.md", "publicTypes": public_types, "formatter": formatter,
         "mainArguments": "utf8-owned-v1" if main_arguments else None,
         "language": args.language, "standard": standard, "includeDirectories": [str(p.resolve()) for p in args.include],
+        "exceptions": args.exceptions if args.language == "c++" else False,
+        "rtti": args.rtti if args.language == "c++" else False,
         "defines": args.define, "lifecycle": "explicit-shutdown-release-thread" if "void Shutdown()" in source else "process",
         "longDouble": "software-binary80" if "global::Edg.Runtime.Float80" in source else None,
         "extendedFloating": {"binary128": "software-ieee-v1" if "global::Edg.Runtime.Float128" in source else None,

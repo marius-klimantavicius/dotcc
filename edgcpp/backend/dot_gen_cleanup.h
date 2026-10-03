@@ -199,7 +199,7 @@ string emit_cleanup() {
     }
     bool vla_deallocation=r && r->compiler_generated && r->source_corresp.name &&
         string(r->source_corresp.name)=="__vla_dealloc_eh";
-    if(!r || (r->function_def_number==NULL_function_def_number && !vla_deallocation))unsupported("external cleanup destructor");
+    if(!r || (r->function_def_number==NULL_function_def_number && !vla_deallocation && !unbound_routine(r)))unsupported("external cleanup destructor");
     auto rt=skip_typerefs(r->type);
     auto params=rt->variant.routine.extra_info->param_type_list;
     bool sized_delete=(region.flags & 12)==12;

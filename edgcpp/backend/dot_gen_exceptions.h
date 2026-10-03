@@ -599,7 +599,7 @@ string exception_destructor(a_routine_ptr r) {
   }
   auto found=exception_destructors.find(r);
   if(found!=exception_destructors.end())return "&"+found->second;
-  if(r->function_def_number==NULL_function_def_number)unsupported("external exception destructor");
+  if(r->function_def_number==NULL_function_def_number && !unbound_routine(r))unsupported("external exception destructor");
   auto rt=skip_typerefs(r->type);
   auto p=rt->variant.routine.extra_info->param_type_list;
   if(!p || p->next || skip_typerefs(p->type)->kind!=tk_pointer ||
