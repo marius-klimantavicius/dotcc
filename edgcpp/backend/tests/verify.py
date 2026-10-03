@@ -50,6 +50,23 @@ def main():
         directory=out / "suites" / name
         directory.mkdir(parents=True,exist_ok=False)
         return directory
+    from source_names_verify import verify_source_names
+    from source_control_verify import verify_source_control
+    from source_expressions_verify import verify_source_expressions
+    from source_formatter_verify import verify_source_formatter
+    from source_layout_driver_verify import verify_source_layout_driver
+    for name, verify in (("source_names", verify_source_names),
+                         ("source_control", verify_source_control),
+                         ("source_expressions", verify_source_expressions),
+                         ("source_formatter", verify_source_formatter),
+                         ("source_layout_driver", verify_source_layout_driver)):
+        checks.extend(verify(ROOT, TESTS, suite_output(name), args.nativeaot, run))
+    run([sys.executable, TESTS / "source_layout_verify.py"])
+    checks.append("source layout: whole members, grouping, collisions and navigation")
+    correspondence = out / "suites" / "source_correspondence"
+    run([sys.executable, TESTS / "source_correspondence_verify.py", "--output-dir", correspondence,
+         *(["--nativeaot"] if args.nativeaot else [])])
+    checks.extend(json.loads((correspondence / "results.json").read_text())["checks"])
     run(["g++", "-std=c++17", "-O0", TESTS / "scalars.cpp", "-o", out / "native-scalars"])
     run([out / "native-scalars"])
     for mode in ("static", "instance"):

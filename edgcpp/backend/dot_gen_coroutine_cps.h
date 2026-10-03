@@ -178,7 +178,7 @@ string coroutine_schedule_expression(an_expr_node_ptr expression,coroutine_value
       for(auto child=a;child;child=child->next)coroutine_schedule_expression(child,cvm_value);
     }
   } else if(suspended)unsupported("coroutine suspension in protected or unnormalized expression");
-  string value=mode==cvm_effect?expression_effect(expression):mode==cvm_address?"&("+location(expression)+")":expr(expression);
+  string value=mode==cvm_effect?expression_effect(expression):mode==cvm_address?address(expression):expr(expression);
   return coroutine_save_expression(expression,mode,value);
 }
 string coroutine_expression_root(an_expr_node_ptr expression,coroutine_value_mode mode) {

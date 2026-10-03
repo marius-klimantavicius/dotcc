@@ -1,0 +1,1542 @@
+{
+  "schema": 1,
+  "status": "components-passed-project-regression-open",
+  "components": [
+    {
+      "name": "naming",
+      "status": "passed",
+      "artifact": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800",
+      "checkCount": 8,
+      "checks": [
+        "c: native source and original EDG C symbol/lifetime oracles",
+        "c-static: JIT source names, keywords, tag/function/owner collisions, shadowed locals, TLS/global addresses and enum cases",
+        "c-instance: JIT source names, keywords, tag/function/owner collisions, shadowed locals, TLS/global addresses and enum cases",
+        "c++: native source and original EDG C symbol/lifetime oracles",
+        "cpp-static: JIT source names, keywords, tag/function/owner collisions, shadowed locals, TLS/global addresses and enum cases",
+        "cpp-instance: JIT source names, keywords, tag/function/owner collisions, shadowed locals, TLS/global addresses and enum cases",
+        "library-static: direct source API/opaque type and deterministic lifecycle/class-name collision wrappers",
+        "library-instance: direct source API/opaque type and deterministic lifecycle/class-name collision wrappers"
+      ],
+      "resultsSha256": "9cf7bb80d3213a48665fdd1aeb595f121f1ac6523cc57a2e564277b1e830622e",
+      "sourceInputs": [
+        {
+          "path": "/home/marius/p/dotcc/edgcpp/backend/tests/source_names.c",
+          "sha256": "2c7819c308af7ea032b12b85e6b8af8d108a0062d2c9a94c68527240efe6e327"
+        }
+      ],
+      "manifests": [
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-instance/dot-gen.json",
+          "sha256": "0a8c33aaf16b0a455a9f5226d9ea843b1234ec86716512f7a2a20e46dfa589a7",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-instance/Translated.cs",
+              "sha256": "b3bbf8db0a54c4efc2fd207b5871dcd8327c3ea0edcc18daabca99789fedbd31"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-instance/Translated.part00000.cs",
+              "sha256": "417d4de92807a2b05dca2583ae7db1aec2728299c739b4d733fc6559b0490c4d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-instance/Translated.part00001.cs",
+              "sha256": "e3373222990be947c6a3309e76b0b36b6d2a1c58ca7bbfcfa1e5570f4205d6b3"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-instance/Translated.part00002.cs",
+              "sha256": "25a716bcd21060fedc9ad42c0f6aff90a90092d36a04bd5561ed4f6c78c5c130"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-instance/Translated.part00003.cs",
+              "sha256": "33e11d1402e4b12047b2b88422fa36a92932e0372e8bcf2e526f66280ef9f98a"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-instance/Translated.part00004.cs",
+              "sha256": "fd49ae17bbd0c17c5d432d8f09b0678d9fab521079e3052e9792ace4e990e222"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-instance/Translated.part00005.cs",
+              "sha256": "c275b103e10aa9fb076fe6c7238f734ecae6629266977d3c4bc3f96e89764560"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-instance/Translated.part00006.cs",
+              "sha256": "656af99eb35f4edf63fad8e0e4a9fa6f07570a730d8bc53162d1ffb0e11d638c"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-instance/Translated.part00007.cs",
+              "sha256": "d4469ebd272a1a703335fb159cc205c119a51bd2034d1d677b93053c3bb0ad49"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-instance/Translated.part00008.cs",
+              "sha256": "dc73a7e79ecb374f7eca34c2c0513826ebadeeec1d6a25accc649ed9f4a09207"
+            }
+          ]
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-static/dot-gen.json",
+          "sha256": "592c5eb4dffb76ce2dedaff212370b745b81cf02b1706d7f8c1ecac644881f9b",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-static/Translated.cs",
+              "sha256": "a30971027387bde1c750cf9a9283e9f2d39f75c536452824f3c74a154b603924"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-static/Translated.part00000.cs",
+              "sha256": "8e322e06926ee50e68dd5c89f618369b2e4410e68dfa82312f26a239c6f5a356"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-static/Translated.part00001.cs",
+              "sha256": "98f7006abafd05e004422b47440c6e247bf9f4d5dc5e8a58742a304031ef287a"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-static/Translated.part00002.cs",
+              "sha256": "f3934d989a4282d2049a319aa52840ee149cdc5706baf428b9ebd39baaddb3fe"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-static/Translated.part00003.cs",
+              "sha256": "394b59e0376734d514651ff19611c5c55e9ebf2daa16b0c26a48e0446ac376b9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-static/Translated.part00004.cs",
+              "sha256": "3ab272133a8ac66fccbf5b47aad1e30dd9a82d2037ace6efa00dd506c557af02"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-static/Translated.part00005.cs",
+              "sha256": "b093cc8dc9ff5b418f803511fe8bfffb83ef9e765f3f71b6503f548540ba3b3d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-static/Translated.part00006.cs",
+              "sha256": "59f28ea1cc95dcb608d84bcdd90f229028ce5d6c08360a38007307037fe320b9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-static/Translated.part00007.cs",
+              "sha256": "40403a6bb974689c0bc3551b685f796739bacca3d87dd3972e42e68b9727fc07"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/c-static/Translated.part00008.cs",
+              "sha256": "c00e2924bc13c0d5dd67ab3b0ca27ef574f4243dc2bce7354097b2d96c7aa95a"
+            }
+          ]
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-instance/dot-gen.json",
+          "sha256": "c80f69f393bca5a2fa6d3608616171adcef663b76effc66f396fea3ee6c8afc9",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-instance/Translated.cs",
+              "sha256": "f9c27650c119840a845ab92d7c4ff3e41ff20497dac804357bc53ed108b8ef61"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-instance/Translated.part00000.cs",
+              "sha256": "483fc9efc8bedd4a5258cfca509c9a3744ed42bf0cab35a449b1e9b021f986bc"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-instance/Translated.part00001.cs",
+              "sha256": "b8ab6066c7709e54bfc5c075070e4ebcc78d582e964b0e6e4289af00649874e8"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-instance/Translated.part00002.cs",
+              "sha256": "02d40d87c34ea43e6e6434957f0fa6ea1b1c18832dc1683f7dfa6ceb09b15889"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-instance/Translated.part00003.cs",
+              "sha256": "25a716bcd21060fedc9ad42c0f6aff90a90092d36a04bd5561ed4f6c78c5c130"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-instance/Translated.part00004.cs",
+              "sha256": "33e11d1402e4b12047b2b88422fa36a92932e0372e8bcf2e526f66280ef9f98a"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-instance/Translated.part00005.cs",
+              "sha256": "fd49ae17bbd0c17c5d432d8f09b0678d9fab521079e3052e9792ace4e990e222"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-instance/Translated.part00006.cs",
+              "sha256": "c275b103e10aa9fb076fe6c7238f734ecae6629266977d3c4bc3f96e89764560"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-instance/Translated.part00007.cs",
+              "sha256": "656af99eb35f4edf63fad8e0e4a9fa6f07570a730d8bc53162d1ffb0e11d638c"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-instance/Translated.part00008.cs",
+              "sha256": "d4469ebd272a1a703335fb159cc205c119a51bd2034d1d677b93053c3bb0ad49"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-instance/Translated.part00009.cs",
+              "sha256": "dc73a7e79ecb374f7eca34c2c0513826ebadeeec1d6a25accc649ed9f4a09207"
+            }
+          ]
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-static/dot-gen.json",
+          "sha256": "dc67b19f92a9c6d85c90aa8c9cd36275d3fb66b3feedf04acb209a18f6b86893",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-static/Translated.cs",
+              "sha256": "29b3c6c2f5377918cd041f0b7326bec981df31e9d9ba418852bf7f93cf272740"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-static/Translated.part00000.cs",
+              "sha256": "52d1667146714f3465e996b44ce15a1d30c54c2d25cc53e29c3a23a7596f26ab"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-static/Translated.part00001.cs",
+              "sha256": "02021b88c6f1232bdf1b20d5c5fb8d59e8a566f2d16d83c20c332f5ece483f82"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-static/Translated.part00002.cs",
+              "sha256": "bad9bcee8b08fca7169ced6cd9279841d7627d2bc5cdcefa818b31ed9af7e113"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-static/Translated.part00003.cs",
+              "sha256": "f3934d989a4282d2049a319aa52840ee149cdc5706baf428b9ebd39baaddb3fe"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-static/Translated.part00004.cs",
+              "sha256": "394b59e0376734d514651ff19611c5c55e9ebf2daa16b0c26a48e0446ac376b9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-static/Translated.part00005.cs",
+              "sha256": "3ab272133a8ac66fccbf5b47aad1e30dd9a82d2037ace6efa00dd506c557af02"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-static/Translated.part00006.cs",
+              "sha256": "b093cc8dc9ff5b418f803511fe8bfffb83ef9e765f3f71b6503f548540ba3b3d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-static/Translated.part00007.cs",
+              "sha256": "59f28ea1cc95dcb608d84bcdd90f229028ce5d6c08360a38007307037fe320b9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-static/Translated.part00008.cs",
+              "sha256": "40403a6bb974689c0bc3551b685f796739bacca3d87dd3972e42e68b9727fc07"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/cpp-static/Translated.part00009.cs",
+              "sha256": "c00e2924bc13c0d5dd67ab3b0ca27ef574f4243dc2bce7354097b2d96c7aa95a"
+            }
+          ]
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/library-instance/dot-gen.json",
+          "sha256": "537c70eb25cfe577bb4142edcb0e19d6d17e23a14fc563435e0ebd58f0d1cefa",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/library-instance/Translated.cs",
+              "sha256": "6f5cfa30c580db95cf0809bc281e289c96cf2f465f2e8b7ba6e3cee71b2c6b46"
+            }
+          ]
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/library-static/dot-gen.json",
+          "sha256": "7e39ea3d36d2f0eeab6f4231725d21dd45be112c95cbafcf4a5ce6e5d80003ae",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-008-20261003-100800/library-static/Translated.cs",
+              "sha256": "7831efe721a0fdde573229d29a6cc85a54ddf4a22d4efe5cd956297f69472366"
+            }
+          ]
+        }
+      ],
+      "execution": [
+        "original EDG C/native oracle",
+        "Linux x64 .NET 10 JIT static and instance"
+      ],
+      "compilerSha256": "af38a39c0f1026fd30d87e7b0516e4a82ea940f5c57c36f094cbb80c79025e1a",
+      "compilerEpoch": "source-readability build008"
+    },
+    {
+      "name": "multiTU",
+      "status": "passed",
+      "artifact": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800",
+      "checkCount": 6,
+      "checks": [
+        "multi-TU cxx: EDG C oracle agrees under GCC/Clang",
+        "multi-TU cxx static: JIT linkage/state/execution",
+        "multi-TU cxx instance: JIT linkage/state/execution",
+        "multi-TU c: EDG C oracle agrees under GCC/Clang",
+        "multi-TU c static: JIT linkage/state/execution",
+        "multi-TU c instance: JIT linkage/state/execution"
+      ],
+      "resultsSha256": "8f0767cb64ba270073bdfbe04ba132a4c0199afb931ac0502e148c5e4647d35c",
+      "sourceInputs": [
+        {
+          "path": "/home/marius/p/dotcc/edgcpp/backend/tests/multi_tu/complete.c",
+          "sha256": "b68e23d4c154bd949f93a0fa0bb4064b5b851ff17c2cdd54cf51ffa10d088e4c"
+        },
+        {
+          "path": "/home/marius/p/dotcc/edgcpp/backend/tests/multi_tu/main.cpp",
+          "sha256": "6645fec4d6f083d8c6dc08e29112a36bd971f50f7d003edcdcc9dbea04c077bc"
+        },
+        {
+          "path": "/home/marius/p/dotcc/edgcpp/backend/tests/multi_tu/opaque.c",
+          "sha256": "f34bdd5a0617855055fc2f13da5f8163e647a2032316c9a622c873b792aec2cf"
+        },
+        {
+          "path": "/home/marius/p/dotcc/edgcpp/backend/tests/multi_tu/other.cpp",
+          "sha256": "ad72a11da4657d81620908d7222b23b401324fe67a1853ba4283b97a66f96cbe"
+        }
+      ],
+      "manifests": [
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/dot-gen.json",
+          "sha256": "a6e250ba53f0af469d7e0575ca3969442cb69c8e5584afd23b544220b1991b10",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.cs",
+              "sha256": "c3e9c2f406b290a4fd1cb3f59dbea850c502085e8cde1c8e959d02106eb6ed23"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.06a40d9179fa.cs",
+              "sha256": "a75fad8db3c8435bb87f8676b8ab9908adcda39bfe06407292c7bd407bc4edf9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.3b3ee62bcba8.cs",
+              "sha256": "6092b4f2f71d4152a60082d1dfc67464b8ae6231dba46369801f2d8b3115d991"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.41ba9a61a702.cs",
+              "sha256": "c889d6c07e4f69825dab33207553faa563f9f2a44bf6f99b6c447f3c73f0e67d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.4cfbea32fa08.cs",
+              "sha256": "65c42c33da7a784f36a4bf9ab6789c57b66881539381079e4248ea30692a764d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.51a808e3afdc.cs",
+              "sha256": "a1a046a9a13f8d43f94301df493f4aa30f13ddc96955f97e6c4686e97d4e26cb"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.64b7d9d04c6d.cs",
+              "sha256": "8b6adcf204a9eb83fd40a3b9cd55a6a4761f69bcb40641b6f9e0524665c299f9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.685fca349db5.cs",
+              "sha256": "4fc2bd0e83fdb73777e860a422138769cc55f5400e7d4dc019e045f93e739d32"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.6e1a773d52b4.cs",
+              "sha256": "5a332036d3e00723077eb0da690dfe5208aafdec5fabc15a1eea77498a1688b6"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.72d82b1e975a.cs",
+              "sha256": "110d5bac5dc5c1b1c2837eb2f7a4af5a1f4c0e1dd5e86beff6d0641e0893f0fc"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.87d88d7b03b1.cs",
+              "sha256": "d7fed8b78689f3cc328920cb90b94f0c3627770f85b5fa0adc67e7413b8fac35"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.8bbdbd36a9e3.cs",
+              "sha256": "cca48a6055e9fe93ccb749df0be0a18094b10cccc6120f868a6e9fc593e7ffc8"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.90d08b6e09a9.cs",
+              "sha256": "706530597a8712a32439e97c061ff6df2fda8c772216afcef6c6868b715657a4"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.916536f934ad.cs",
+              "sha256": "8a9f1738b82569f62f72149d5d2101933e4c4a4cfccf0ad518b4b4816cc23bc2"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.936119be9f96.cs",
+              "sha256": "1b395cf1ecf9773a8af7365db070a100a3b19e130d00048fab7841da09b9fdea"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.98d724174d1d.cs",
+              "sha256": "3043961fb04a278650d8bf3c7592505fb357c6e3139e69d24457744f33d507ec"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.a4ad834327be.cs",
+              "sha256": "a4f3131849564d45b1d31266d270ce7cd85a63bab288b6ff25bbbc57627fd706"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.b7f070a4bc70.cs",
+              "sha256": "460c38b3160d1747a3e3d479f2df41ca1af0175665c623722c2af9e8692622cf"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.b8976ee630fe.cs",
+              "sha256": "143671b0d3e29f587fd6f164f0ca4660e7ff2c5a38abe50593b11eb553c71a03"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.c3a3da6413c0.cs",
+              "sha256": "1e12d026d09766ba47af89514fb200c756576df8edbf593bdd03ff58d626c6da"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.cs",
+              "sha256": "735b582453f0214419abd3ff91c5a27fb4cfc0d41353b3d324b6d7c865c396a2"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.dcd814735877.cs",
+              "sha256": "c1392bd1b31ebe639c77cd4ec8bfc6666f2e1f7f116aec01b3a7ec4f5896915f"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.f2a53c6a76d3.cs",
+              "sha256": "1e4d4c6c114eaeaf67d6ed132e5e036d5f8845cb51f3dec4fb06c5333020477b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.generated.f4950e092306.cs",
+              "sha256": "2935a38c3cd53f841a7d16858146b6d9c290122dc34ef514fab3c5bc461abd91"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.get_item.cs",
+              "sha256": "a2da557a31bd6e2400e7d663e467fadfc428034811c8f8b8222ef44641d935d3"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.internal_value.cs",
+              "sha256": "ded389a58dab4750c411c84cfbb46c37a533e282a26b72156a6f8bc10fdac33d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.internal_value.f68dea5e819c.cs",
+              "sha256": "62af43b174a89e4dd5c78caa7c5fd223b9b1f4a3eda6ef3d93a03aed73b284a9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.item.cs",
+              "sha256": "d64d4540fef40218eb54846be7f19abec2deb37e78f63f28762b3000c9c6f0cb"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.main.cs",
+              "sha256": "0e90ff2e87d7638bc0d705ad13c69c91a8c5a720ed1354dbe444818f8dfc66bc"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/instance/Translated.function.read_item.cs",
+              "sha256": "461c115409e700a6997ab45f2a9569ec05df13e13e56f51a72e3fdcb3c8f4ae1"
+            }
+          ]
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/static/dot-gen.json",
+          "sha256": "bdc0f2e342b2e386e4772c1198b2136ef27f05d27f2c0d14a315b35212d27df4",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-c/static/Translated.cs",
+              "sha256": "161bc8e9a82d5db5ce7a8d607289ebe5b401de7d4bc03671b7670d3bfa5581ed"
+            }
+          ]
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/dot-gen.json",
+          "sha256": "6277584e5ad4e586e85d0cc4b259cdcdcff84afbe994e7598e2c1b0d621201f5",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.cs",
+              "sha256": "1ba9de4089ee054110a36078bbd91c1010ed82813981dc591214a06037339fd3"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.Base.cs",
+              "sha256": "8a465083373f10ec2d282a39a6e253cd925b2305dc3b44e2e5e9a551cbe2d580"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.Derived.cs",
+              "sha256": "24e700c8d77e0e9a97b96d6caf90c1b484d507760c6fee5fddcb75ac90a74bff"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._Base.cs",
+              "sha256": "118747cd72d7a36922e77ef18746437b0b64b55b1f81b76925d58a09d6e2ef99"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._Derived.cs",
+              "sha256": "c78e4646ac66004824007336c57a04d94e5ad53d16a2b172bdc33e1c6aef7421"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZN4BaseC2Ei.cs",
+              "sha256": "e024acd6498faca9dd73f74a3ae5b8fd1f5bfccfff0d21e5534633fea39744b7"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZN4BaseD0Ev.cs",
+              "sha256": "a452b457e3c7dc8c13783a6fdd1f7bffefd20a24157fad3ea12f47df68ab0234"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZN4BaseD2Ev.cs",
+              "sha256": "5c92b95413690272279d00b73fc170ff5cf725c6c9125544a0405e9493b1de4a"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZN7DerivedC2Ei.cs",
+              "sha256": "a83a66236b6d1c7aa40f47e97f6560fa185a47d685ae94ea065cb89ff46e9f37"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZN7DerivedD0Ev.cs",
+              "sha256": "9ee95f9df39ca795bbb4be8fcaf538c64b0db1fdb6f6787deab5e1721e854cef"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZN7DerivedD2Ev.cs",
+              "sha256": "67e05e491870501615525bdc73f1bb0f00d2ae4a795cd3f4cec48a65d6ceec06"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt10bad_typeidC2ERKS_.cs",
+              "sha256": "de3bfe22b8a9cb155304b6250e3460b17c27e0940dbff1f0b5fba320c1094c95"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt10bad_typeidC2Ev.cs",
+              "sha256": "7a750c6eee85622eec01c966b47f4916cef32bf73b18a6e2df05a8d29570535d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt10bad_typeidD0Ev.cs",
+              "sha256": "add3be56c2ead87a874c3a8eafd3c63bf34813bb45ffed8ed80b0aa8c97bc9fa"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt10bad_typeidD2Ev.cs",
+              "sha256": "d81dd2b7501f033e7d7808b7fa86ff93ddc3f8ac9585388bf20d56aa59dd1b00"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt20bad_array_new_lengthC2Ev.cs",
+              "sha256": "d876e1ff30e6cdee93f6ff7308040164a8af360b13acb136051aa0839f9cbd24"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt20bad_array_new_lengthD0Ev.cs",
+              "sha256": "b083771cdb4710961474572b090cc5c2e72d9337e8ec0f9dc755140f97c937e9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt20bad_array_new_lengthD2Ev.cs",
+              "sha256": "cb6b4383132c59b76e90bbcc48ed67c3b3f6e4170e591b6f4b3bb55567f85744"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt8bad_castC2ERKS_.cs",
+              "sha256": "429e80ea9c6950edaaec0dd76f0c09eaea63453ed38f146a18f68b57c84c5d9e"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt8bad_castC2Ev.cs",
+              "sha256": "9338e83429d25264bba6582841b9c13fa45fbe60e1c129bfda3ab3bf3bc59639"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt8bad_castD0Ev.cs",
+              "sha256": "351b4dbba8362ad9cb64ba8eb124518b3280fc3caf541b3b6c71bc514c26faad"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt8bad_castD2Ev.cs",
+              "sha256": "8cc4774e4e52f2f0cd00d7340a27ffc414f71f5092a5f6d0a064f81ff120b3a4"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt9bad_allocC2ERKS_.cs",
+              "sha256": "7aaa136eecbdfd8de4f859a92a24b70dff5dea0a0614c39f2a142ad677a41545"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt9bad_allocC2Ev.cs",
+              "sha256": "1bcf5e36b27dcc4a0d7302ee37a316c2ac31988dd4e6692527ae98b10dc58717"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt9bad_allocD0Ev.cs",
+              "sha256": "0bb0fe5c25a3537a403d179cc146c75c9fe8a8ede919908b30bd8b725cdcdaf7"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt9bad_allocD2Ev.cs",
+              "sha256": "3e38e02d5b012981ddd9e5dd5b43c6bbe6fb0bec93be1aec4ef2e39605c67b19"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt9exceptionC2ERKS_.cs",
+              "sha256": "ea9ab69ea6afa434622d12041e9dfc2a6b624e6749d50fef202ea4f4d625856d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt9exceptionC2Ev.cs",
+              "sha256": "720e4738c49d154703660c127f9fa8def93dade645bc337801534e905eeed572"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt9exceptionD0Ev.cs",
+              "sha256": "b07af92075f6cf0c4a3de4847ce9260e4390bf7525577f733735eb7ad936359a"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZNSt9exceptionD2Ev.cs",
+              "sha256": "db67646490e70fc719c6c98803eed20f79b68acfff5c60ed5cdac76f351eaa7a"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZTV4Base.cs",
+              "sha256": "b2c27c4d4701a5870b9c478d55acbf615dd4284ca6f54e313a6e477e4a8171fa"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZTV7Derived.cs",
+              "sha256": "858993ee9b07d1226d30b1ae1dff7797edc2a203689b2716bce7a75c2ebf2d3a"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZTVSt10bad_typeid.cs",
+              "sha256": "284b33243c71491aa35d2092fc76414237f93850aa04dca610a38d1c0ecdc5e5"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZTVSt20bad_array_new_length.cs",
+              "sha256": "c770f96e97de9eb7029466c6e36f3c7db9890f1dd98ac12c7b19752b4ea8cf27"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZTVSt8bad_cast.cs",
+              "sha256": "e639126619c4748d542506f7f5b899a17986a88577b809a2881413b3d6262d8d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZTVSt9bad_alloc.cs",
+              "sha256": "ffd1a090215630db675fd7e2eeb7a84d6ccc36760ed4d6abc38b806a071d99ca"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._ZTVSt9exception.cs",
+              "sha256": "468d456426d77170f89c983e4de820dfae0aed428e716092ede8284c4f5ef409"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.__edg_dot_throw_bad_array_new_length.cs",
+              "sha256": "9ea1979c3ebadf73d730fff7674a4f02b69ebf31e50d77e3e6285803c6003cf8"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.__edg_dot_throw_bad_cast.cs",
+              "sha256": "b7fa2da56c5ef36a6d9fa39b39b6982c15fa918e753357c8d565c81a7a3b1cd6"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.__edg_dot_throw_bad_typeid.cs",
+              "sha256": "328964a7e4b85fe5d64f97c2d69d64889e4fe0da69f50cdf3d29f79960bc601e"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.__sti___8_main_cpp_main.cs",
+              "sha256": "7ce47025af47caab8c35210da16ad954d17656406c33f25977e2efac4a7ce892"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._bad_alloc.cs",
+              "sha256": "9766d813ecca9dcc6aa3d6b71f30bb36cecbd12d41f3d24291eab3c7df662146"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._bad_array_new_length.cs",
+              "sha256": "372e71e7d65379f58434189340d6507ab1d3d97375b0b540566095b5149f5abd"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._bad_cast.cs",
+              "sha256": "f054081495a123cd99f33893447720057d34d24c82bead8b33017fbd51fbb090"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._bad_typeid.cs",
+              "sha256": "3f37f80b85c546229aec97f091bee1f36fe4084f8fed24ce6d912a7a980fc986"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function._exception.cs",
+              "sha256": "ba6023870af988e95506380b6537e56c80643855f87b4858a8a5632dec933e28"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.address_other.cs",
+              "sha256": "f04146bf430f6f440e9a35054aad36141f5cf0c6fe63db0ac63858c4acddf1b7"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.allocate.cs",
+              "sha256": "32ca490828bab9442864184f06e6c62ea1040ff493ec1761eb160d039c1d5ee9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.bad_alloc.9c116ab285e0.cs",
+              "sha256": "aed3fed6e0d40d6f1114ee3cc2c1d9fe3f7d1f7e91f41566bbb83fb0463e9d26"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.bad_alloc.cs",
+              "sha256": "9d06e7cf25da4a5cd7e7d2c9c5f5ed3a8b4b7b50c86438551c8ef18bcc5e4c43"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.bad_array_new_length.cs",
+              "sha256": "476cfadb247f4b9f224692b56be2618bd4851a66893d9152ca28d876c1046259"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.bad_cast.a42b959f6edb.cs",
+              "sha256": "4e966174823319e673daeabd893f21576ac61c73e535149d33db09d06a44a62b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.bad_cast.cs",
+              "sha256": "21a6928849700f9781dd759009f489272b2ebbdc670662020bd70c56ece9fc1e"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.bad_typeid.cs",
+              "sha256": "16f6c44e8e472b8bec9f1866947a2f7ec6100a92e23609c073529e5d0709af16"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.bad_typeid.d83d3745b2de.cs",
+              "sha256": "925ab98bf96fd669956b3e8589e5a4b617c177b29cf45ba1068329a3c4640166"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.before.cs",
+              "sha256": "dc900829c9d57e346823c44b8475c6aef9e67d4a8708b051f469b891dc3300db"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.call_other.cs",
+              "sha256": "cda2bff758bd9294741c980a8cb560eafa183b50cbbec7b28e5c812dafabed34"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.counter.cs",
+              "sha256": "d03703a7928da13c10614d2ca1348364fe4a260016ccd1387e7db95404b17188"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.exception.505c28757eee.cs",
+              "sha256": "2dd70ef7401148a35becb4bd6f58ae9028cc5e43ec1911b0b97a7db892a2b517"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.exception.cs",
+              "sha256": "572d8c4238a6fb8ffce8cdbc3b6973676833cac5da09b9ff3bc6e832c0e5e924"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.009b68d76da3.cs",
+              "sha256": "34c57ee80600a5959ec637bc0ac6dcb6b600a07d9444f4b0890b23d1c5ef5ff4"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.04bdc82bef76.cs",
+              "sha256": "f8e7d394a1fa96b9632b0b6af1e69687595a85a894bc1eac53bca0d266723b88"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.05486f711aad.cs",
+              "sha256": "58e0935494caffbf8a55b57e2fecc63e76969b25f75b12a2d293694da80becd3"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.06a40d9179fa.cs",
+              "sha256": "a75fad8db3c8435bb87f8676b8ab9908adcda39bfe06407292c7bd407bc4edf9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.0e03c74c719e.cs",
+              "sha256": "5353e58ddc0ea1fd8032da53e686a7fb9991e222eba40e472fc68695549f8a06"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.0f6b472d2c1d.cs",
+              "sha256": "31ccd099c47d2260d062f68d999c07fea2f11343e20fbed1b1ea6b4e52f3c3ee"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.115fcdeda96d.cs",
+              "sha256": "954411f23bc288322f4d36d204153e918dce891c7675b9c9de494f395a39bb8f"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.15ee6d649f54.cs",
+              "sha256": "0f1f6856484f01b1d332b04819e589d50a32ed8f18f5cdbc36e58eac4a7f4f07"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.17ce5a18c4e3.cs",
+              "sha256": "ced67432c07d7abf69c770366eaac5f5bdaa45730be9f275562176d3e92efe16"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.17de1ed554cb.cs",
+              "sha256": "7afddfaa99e270aa2e8e348d1f55a7f0797256f288d954810d448da878ba11b0"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.1a73d68791b0.cs",
+              "sha256": "7f2421687d8c09eac04b782fced3b0e9c5baa003c1d7f6d563b62717f482ee67"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.22d8a5c1216a.cs",
+              "sha256": "c9c36f144f8d61819c66d7f69a9e1de284cb8f45e975c9cf00bd996eedc1b8bf"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.256fd102c81d.cs",
+              "sha256": "574b43474af224c10f89506e020bf22ac3f8079dda7f7ab729ca91328d597396"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.26142b407bd0.cs",
+              "sha256": "78ba388052f46bed0c94f24d1d81b9da3d2290834c51b8d7f04b85fd9ed9a7af"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.29a377500d86.cs",
+              "sha256": "b6d8f206a62f841b0cf3570cd9fb7fc857ed5a5173f4cc28fc5b851d93e93fa1"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.2bec12b4f606.cs",
+              "sha256": "28cd8d127f2c28849b1c8057e4fbdac80b93dc740e1cc1784fb3462c6f70389f"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.31b4d0d57309.cs",
+              "sha256": "ad1a3031f426bc79e6658c07944e9300dd29da18d123090fdb948941365178f9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.3376028b4caf.cs",
+              "sha256": "f6526c1d7c01cdc0311fae034d3ec51c3b3b2c1cc0febe7902a9b783cbfedfe4"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.33fe8dff6a2d.cs",
+              "sha256": "9cbe7bcd3eebd1a933012e42f336ee57fcc37d74516b37c529cd977c4b3103a0"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.355119b8666c.cs",
+              "sha256": "d3b5d4ad8a279f4eb25b353ae78a20b485556a84a35aae16d7daa79b6bec1a55"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.39c00506a7ec.cs",
+              "sha256": "735b582453f0214419abd3ff91c5a27fb4cfc0d41353b3d324b6d7c865c396a2"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.39f3351488e1.cs",
+              "sha256": "6f4f6cea2fff4dfe0eb3491c155dbebd39da2a25c79c0435d23cbac8000b5629"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.3b3ee62bcba8.cs",
+              "sha256": "6092b4f2f71d4152a60082d1dfc67464b8ae6231dba46369801f2d8b3115d991"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.3d6280dae0ac.cs",
+              "sha256": "bdfb19473d5fcb6955d6a7109915175461e988b9af2ea0b048e1dc17c97cf829"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.3e473762407a.cs",
+              "sha256": "94bc18b9b4cbb1308fbfc22d98c34080d4799aeb99060f5f3458006d0e4b6e5e"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.3eb884e91a89.cs",
+              "sha256": "934259975264cd55352567dbf325cdb85c45dd3fb95f0d156c1207bbdaf3eb19"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.3fd897953bb2.cs",
+              "sha256": "58882bd244cfbcde249991b0649a18f0198e67bb81a1fee3dbb1dc0c26016834"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.4333441c452d.cs",
+              "sha256": "389e21376d0410fa40d847c019cde964e9322e6ef2919a2489a8cdc1c3ed2463"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.45b37c495409.cs",
+              "sha256": "37e945a26aa65a62d5e6ea0d30f491567e9479b10abd1f0d86221725d34a0e86"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.472e6154ec1f.cs",
+              "sha256": "cd493e72005351d8619f05e2ef87501deb4d4eb2bd49e4bd78c227a2e742e853"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.4cfbea32fa08.cs",
+              "sha256": "65c42c33da7a784f36a4bf9ab6789c57b66881539381079e4248ea30692a764d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.4f8b11c0cdeb.cs",
+              "sha256": "0c2d21338a508b3c95763bf0a84da73b43bfb71da85e04afffae9de13a8f684c"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.50d42153f27c.cs",
+              "sha256": "da712a002e4ea42cadbeef9cdebffc93c32a89fbeb72fc0edf95acb09ba5575b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.516818837e8f.cs",
+              "sha256": "0ce6fe9669ca34157b910135d03c7e506ec9784af41fe7814d22d97fcda688c0"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.51a808e3afdc.cs",
+              "sha256": "a1a046a9a13f8d43f94301df493f4aa30f13ddc96955f97e6c4686e97d4e26cb"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.55ec760052db.cs",
+              "sha256": "d8fe1c0f48072155c6320f1ab3aa4ed3b9bb90fa649b00ba7ce729631789320b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.589c2f3d6a8a.cs",
+              "sha256": "f58bbab2ec91cf63aaa9b54f93d711bd25d664a6ac28e3f3d7f1241e1cf41be1"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.59a8cf90807c.cs",
+              "sha256": "b4b1212d92dfbaa7b10a33bb991b1404f9f1f919a4d2d4b01d11485eaeee882b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.59d71ab987c3.cs",
+              "sha256": "03a35df37ce0cf4305437d22797b1e0bec4bb09b64577185d14cf666e6248fda"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.5c74e6483e82.cs",
+              "sha256": "278cf81e972130de84ed500231abaf5eea619eac51362e93c619bcb2d443f043"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.5d2191776194.cs",
+              "sha256": "1a95a316429335d8863798bd5f065307c2c04873c1ae0bb583cb3d9150a917ee"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.620bb515ed33.cs",
+              "sha256": "d264d5923c79a7071a8d53aaea08ff517cb5932cf8d63f29086f2559cd8a0b4d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.629e7558f589.cs",
+              "sha256": "fa993343aa3cb303c75a2a90daba1b6cd3d5eb574ae6bc31f0e8e922e70c03f2"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.64b7d9d04c6d.cs",
+              "sha256": "8b6adcf204a9eb83fd40a3b9cd55a6a4761f69bcb40641b6f9e0524665c299f9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.65f38cc2da8d.cs",
+              "sha256": "97333f5b131210cbae3fbfe177f59f075bfb5d32797cc86eb81f184140825b43"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.6732bab0fef3.cs",
+              "sha256": "e51b705d045914b8e1d0c8fc479ee9d0021baf6011bd8865cbfecdec549c0a65"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.685fca349db5.cs",
+              "sha256": "4fc2bd0e83fdb73777e860a422138769cc55f5400e7d4dc019e045f93e739d32"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.6a2b23f12f2d.cs",
+              "sha256": "885ff203ad3427b61a11fd62b80128784804fe6077d361711f4c3bf0fce42315"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.6afd44008214.cs",
+              "sha256": "bcad27dfc4061746e58960aa31928d0765d29526e1cc5f909552b5eb00f2fd79"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.6cc526a3da05.cs",
+              "sha256": "abe25ea879e61ff077ed839ecac0c5ffe445ee37dae349a3d7a2f65bb87b1c54"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.6d9715cbe6a0.cs",
+              "sha256": "0ee1e2a95e78167f04191c3e0f5854e5e9c9632579baf48cb3f75dd9f915eb55"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.70c04ce37cac.cs",
+              "sha256": "954295ae5a8ce0de32e978c4f58de9b770908deb5cb6c8fdd49a6dc2871f776b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.71c9b9b8690b.cs",
+              "sha256": "3a96c5c7f8e81df8efa88070721fd306a4b0f5ea8fd542bd4c7ec52ab97953e2"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.72d82b1e975a.cs",
+              "sha256": "110d5bac5dc5c1b1c2837eb2f7a4af5a1f4c0e1dd5e86beff6d0641e0893f0fc"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.746ecabed0a4.cs",
+              "sha256": "1b6cd60c8e4e371d6cd55401042875095e3f307d7342ab638a8c395087c0fe01"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.768ca806047b.cs",
+              "sha256": "c2a7be075f1d856575f5292d334db481c5406ac5d52a211391facf9f02f750c5"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.76e1af2b81d0.cs",
+              "sha256": "344c3bc290cf2dc9aea5162a64a279eb240fa1d681886c81e8b56d4eb648227a"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.76fef6400f02.cs",
+              "sha256": "af98710c94f22e0114e8aebc7f08840484fe8252e31687be6d203c0b1bf214ba"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.7bbe582f54b4.cs",
+              "sha256": "2ab55c056520f7b0a62355b1a45aa32562cf13672b3331e811b692cfa9ccdd50"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.7c5dd594bd67.cs",
+              "sha256": "37e14cbd75364b857868f86892e57b32f070307d876e422a2ca55b8b3320c255"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.7f0f92855fc0.cs",
+              "sha256": "efc19029e29ab0d5bcad8eb7785dc463056b053cb4d8e6eba018828a10614e6f"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.7ff1285f2a82.cs",
+              "sha256": "34317126ae41f7a24d09a283eed8a28724756d3c3f34c9daccbdf82c96624513"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.82b52294a45a.cs",
+              "sha256": "c521b21ef0725d9faddf3109af6c551edbbd369dd14bfd7c4885729fee8da4c2"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.84aa78c9dd7d.cs",
+              "sha256": "8f1d4dd96ebca4549f2614c3285bcfbd30683a98727c3e21104625d674030a0d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.84ccc7d28574.cs",
+              "sha256": "707c2cddc6b6f96b3f785f5ec75c7495b7805900b7748fdd4f58fa6928ba27c2"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.84ff57f17af2.cs",
+              "sha256": "17c241eb88245672b83ae76611c174246b0565a2067b228d484d53861255b926"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.87d88d7b03b1.cs",
+              "sha256": "d7fed8b78689f3cc328920cb90b94f0c3627770f85b5fa0adc67e7413b8fac35"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.881ede84dee4.cs",
+              "sha256": "9d6d2ca1a95aa8522858c98ffe3a0571af28c2c630e7915e9a5f892b672c3a22"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.8bbdbd36a9e3.cs",
+              "sha256": "cca48a6055e9fe93ccb749df0be0a18094b10cccc6120f868a6e9fc593e7ffc8"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.8c087a3385a8.cs",
+              "sha256": "8ce060ae43b64062017001857c88dcf8e099cb109eb6d7913bd5bd6b18256b8f"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.90d08b6e09a9.cs",
+              "sha256": "706530597a8712a32439e97c061ff6df2fda8c772216afcef6c6868b715657a4"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.916536f934ad.cs",
+              "sha256": "8a9f1738b82569f62f72149d5d2101933e4c4a4cfccf0ad518b4b4816cc23bc2"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.924632a703a9.cs",
+              "sha256": "76016161341f58e0e36f3055e9e3fc2522c8af3bb21f5634eb2906154304875c"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.936119be9f96.cs",
+              "sha256": "1b395cf1ecf9773a8af7365db070a100a3b19e130d00048fab7841da09b9fdea"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.9492ab1db099.cs",
+              "sha256": "f156e8418c52cbe2f053f66618f95977d81f390cb03376748e892b7eddfa70e1"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.98d724174d1d.cs",
+              "sha256": "3043961fb04a278650d8bf3c7592505fb357c6e3139e69d24457744f33d507ec"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.99003a0291b3.cs",
+              "sha256": "d7c42b08e2d42f5793f115fd4cfe3bb40d1b88dffc81657363691551e3cc2e2d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.9a40f3086bf5.cs",
+              "sha256": "042e9e940f4b403bfd63f87ff4165b73479f9f13fef497859f5a360d9d886432"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.9bfeba059d61.cs",
+              "sha256": "bda769cd1f29dcffa01c8631df40d5ff36050447f839f498658973825dd2fe44"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.9e0b0214b5ac.cs",
+              "sha256": "13a3479330b1ccc66466eb61c692dcb9cb467bf1ee1d04d494609e22dad6f37f"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.a1655f9bc331.cs",
+              "sha256": "c0669014acf31a57be8eb4646c7a0563cb0eab039bc8ec7e5696abeda731063b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.a4ad834327be.cs",
+              "sha256": "a4f3131849564d45b1d31266d270ce7cd85a63bab288b6ff25bbbc57627fd706"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.a5654035984c.cs",
+              "sha256": "288053e6c0ecea4d9ed82936498643f12a8ebd291711c6557c5d8648d419cbf5"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.a714589027a0.cs",
+              "sha256": "1b250e050bba032942dc0dddf14a29e178b7ef51de0498ff97a23af6fbe714b5"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.ac1d5417d7b8.cs",
+              "sha256": "5d1cffd9f2691cb29c1d248b641fa455a3b2af9ee90d5d3399e8c81c13955074"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.ac94d1b6cd52.cs",
+              "sha256": "3a5c0780462f3316996d58b4bdfdab42be37cafdb701ee12ade9fc007ec3728b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.b28fa7f67193.cs",
+              "sha256": "fb6fa9635b3ead1751d518f76f32075baaf3d5c035e9e9e4f850f8c883521f64"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.b4c5c825414e.cs",
+              "sha256": "ea6cec2f9c4717ec96933e45bc0037a536b0dfbd5593c0185af3949cc1b245c3"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.b50e881f124f.cs",
+              "sha256": "ca5805262d6b78c1a6de482e2e9220d18bd6095b1cecc1e7649c7df85f2054b7"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.b5890262cd4b.cs",
+              "sha256": "1ce9fbd6a89219b386580f264d29d303d0ce042cec6f12775a26deff23852a94"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.b5e0d67c09af.cs",
+              "sha256": "8df188b69f08fc7cb956efb3abeeb6e21dba624bad3eaedec03700c742908d5f"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.b7f070a4bc70.cs",
+              "sha256": "460c38b3160d1747a3e3d479f2df41ca1af0175665c623722c2af9e8692622cf"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.b8976ee630fe.cs",
+              "sha256": "143671b0d3e29f587fd6f164f0ca4660e7ff2c5a38abe50593b11eb553c71a03"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.beac3ec760b8.cs",
+              "sha256": "d6f859a7d483266ce662984286782bc0559fa88e4fece697ff748a4e242a175c"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.c01f21e9e698.cs",
+              "sha256": "145f1f88b4ab8781b84e0879b457cc4dd291c27e88833bd2f1bf8f1494077d68"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.c27dd7703bef.cs",
+              "sha256": "3cb5da0dee3e1c08b542dd62d2780a46e7ddbfa8f5434eab5d027c9b2eec2e02"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.c2a52d334cdb.cs",
+              "sha256": "d85fb8acd412104c9e13a211ad31ffc86ff54ee180f465b6f4b744e5b6b77a17"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.c3a3da6413c0.cs",
+              "sha256": "1e12d026d09766ba47af89514fb200c756576df8edbf593bdd03ff58d626c6da"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.c6e1b61f3211.cs",
+              "sha256": "a45b80497b4dc3a363508f1f8388286ad21c6bbf828930447fcbc3d1e8419bba"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.c71cd799b110.cs",
+              "sha256": "1a5e3112c0afc962f4c7037d78c7e4c1ba6e937cbd1f92125e0844799377c75c"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.c74d72977f89.cs",
+              "sha256": "c00c5ea5f75bd80780a03fbbdcce44ecd61ff2b58d4019ac559b3a0c24c82ec6"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.c7561dceab53.cs",
+              "sha256": "50467bad49c0b7f4ab29c30ce00de03316e0625e88b70f1a6056785c565ff3c2"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.c7700cfe61ea.cs",
+              "sha256": "d799669c24a9e68e88a20549411d1fcc3d56c303ca34e821c1c6469e3eb0f688"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.cc6c3f0a0e1e.cs",
+              "sha256": "929a43da6feaf98712f27aaefe6bc1ba46e449c143002d1d146083774b947442"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.cc911dad2277.cs",
+              "sha256": "b48efffb4d0deb501549eb2eadf5747983bfd9b04cde808b6d29e912f1d95c05"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.cs",
+              "sha256": "e6c05e754d2910d31cafccb99b23994d0865211f5629ae0f6eb3206e0de1297f"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.d10a58e1ed4a.cs",
+              "sha256": "97404305a21c3db0f93d3f3de3cf7e6274dc0b7bc9572bc38b671495e8bdfec7"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.d19d719f5b96.cs",
+              "sha256": "7fc3f2f1afb6a2b52d8a26923025c776e0c80f4334a741e07af99fcc73d78870"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.d9a91c4c7351.cs",
+              "sha256": "8615115dbde932d666157f99d6ac4d0c8b12ff4b62f193db6d405e3d2df7f4e2"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.db288a0ab941.cs",
+              "sha256": "74359d5827afd1d255333e1a391767f966afd3752309e8adeba2ff97cabd1947"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.dcd814735877.cs",
+              "sha256": "c1392bd1b31ebe639c77cd4ec8bfc6666f2e1f7f116aec01b3a7ec4f5896915f"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.dd548bd7418c.cs",
+              "sha256": "dcc2914c4246fd38b3eac592015f3c7f002e9a5fb23fee0b26786def66c3163c"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.ddae43ddf0a7.cs",
+              "sha256": "ca8b5c3f5087217fb5d764cff60842223e6c8b4022f3fa2fcd8e62af53be817b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.df4e9813c35f.cs",
+              "sha256": "157a41d771356b75a4245ae4d5aa6a9b6ebab346160a15bec7ebe3d706f32f4b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.dfde4c4551d1.cs",
+              "sha256": "d1d2290f10bc7a6aef373b2ea834c97765706e1c89e70faa43f507d7a81c80ee"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.e0065349fc5a.cs",
+              "sha256": "77b3496a79e0cd5cb4edd5dc7d944d2cf01678705a327c1aaf14d774f80d30dc"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.e0419a086783.cs",
+              "sha256": "4229b67a9edf05554edd50af1e106629877d4fe9300b84564ce566a7c3e98871"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.e4aad716e3bc.cs",
+              "sha256": "a40e354185afc01ed5aeb3ba8a170c48fbd0f4cc7b049efa73a1c95e664c82af"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.e514008da30d.cs",
+              "sha256": "fcaba129106713478a5e3eb39a46fc52038e63a5224178e2d5f9a83ee3c19e5a"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.e6b2d9c0e7a2.cs",
+              "sha256": "ff6ca40f1b528797822e100ede88657cfd626d77991779c52a0031cd1fd50cb1"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.e6f5efea8ad6.cs",
+              "sha256": "8c5a353c0478b5dc92ec19ac61d787ec2d566d799abf696e9b4d06ce69b36993"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.e8b1183ad4a5.cs",
+              "sha256": "bb6807d753b34c11d0e0063db806f9053bcd766fde9ed826ce0f6ef538f703c4"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.ea912b9038b8.cs",
+              "sha256": "af4529744237baff947b26cbdae9b7d155b5e099137e2743092dcfee1e596e62"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.f0b5b396473b.cs",
+              "sha256": "676aa3344875cf1d589722141c87c9d371526012e91b4236fd1aef0d1989652e"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.f18969db8148.cs",
+              "sha256": "5e25cd51739429847ec8da27588bc894a52bcc5e2ff75bfb76d0b426f259fc6b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.f2a53c6a76d3.cs",
+              "sha256": "1e4d4c6c114eaeaf67d6ed132e5e036d5f8845cb51f3dec4fb06c5333020477b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.f370263b5b91.cs",
+              "sha256": "46aea4f8209b3695009994c073bc86e1992475f9cbed2289fd10b0257a5fdbcd"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.f48f9e951413.cs",
+              "sha256": "b6656d4365bbe4e10a415ac0a3cae15a7adc8c83fbfa21151608115c1261d88d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.f4950e092306.cs",
+              "sha256": "2935a38c3cd53f841a7d16858146b6d9c290122dc34ef514fab3c5bc461abd91"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.f524df26186d.cs",
+              "sha256": "e0493ca51d3ef8853e352a93512351752eb50d73b5648db7364b89897381be5e"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.f608e7438cad.cs",
+              "sha256": "3538c6a07b47d14795cc8d75d0d03e829bb5dae56eaf3c5236d5353de918ed82"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.fbfa0c818c44.cs",
+              "sha256": "ecc6c7ed07cbe895e8ceeb43ae203882787a35079a07295c47d6511b5dfebc9c"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.generated.fece78c54e78.cs",
+              "sha256": "a69c94a3b76b1f539fa24d4aea8c11b80d8fc1736fee41fc01abe3f723679079"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.get.cs",
+              "sha256": "bcf97e13c683ba8fc7ad587fe54951bc23b341388058cbdf7923b4f13c68834b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.get.f94a8a13fbcc.cs",
+              "sha256": "eb221cccf24c290136b3cf6217654cd5b1230187a84b5b57fd5d90bcc40d9e54"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.get_new_handler.cs",
+              "sha256": "5e167ac5540233ed59b27b6baeddfd4e6c96f2530a8a96bfca4157f764668062"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.initialize.cs",
+              "sha256": "fa18d6b8f9b3743634a9b0f0816e16ea22308bd15f3326fd5950d040154172e1"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.initialized.cs",
+              "sha256": "902ce4fcad2d88396b6a218d4b5e7c0a3d135915c55df09ccbd91a359cdf3a5c"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.main.cs",
+              "sha256": "9ccb3c7615d5ed7f8fad3558518dd75dc095417ec0ba3841b0d158cee3d278f5"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.name.cs",
+              "sha256": "1b52b52e4a82c00650d8bdb463913774a3c8a6f0e130f6f08bdc0289dfa26bd7"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_.0277e2f44f6b.cs",
+              "sha256": "620b790890669114ffff932c1fd0b08d19c06e07d2ecefdf612dfbdb01e35d95"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_.211f5a2bb377.cs",
+              "sha256": "18296ca6be4dd6cc9b479bbdd503fbc75dd3f2e9875b6364f5ad5f796228aabd"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_.4e974601ea9a.cs",
+              "sha256": "f439292a54eb1abee49569192b7e30c9c1817b7a1ece0226550f960db5aefaf8"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_.5ee3458ef66c.cs",
+              "sha256": "e7e4fa2a77e3b8d00d2c2b85c5e4fc668f270983c8296b3a9318a3a418167bd0"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_.a7b1f58cf1f1.cs",
+              "sha256": "838864cc4fd988bc90c290020b966f8fcd884b7b8d12c36acd9b0d58a95dd031"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_.cs",
+              "sha256": "6ce51b7db89543f698004c62a311977b7fc7509c13c86033a09cf8339bed4939"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete.046a6a711259.cs",
+              "sha256": "7e66698e72149eda60e66fb804f0aab8f41a3e4774c4efd8391980646a87e191"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete.0963c28f7851.cs",
+              "sha256": "6c8891f3108c3a80e7d655330722f164515c286dbd30fef302bc7e620b9d2f55"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete.16c0b6679809.cs",
+              "sha256": "ed083698504ca499fbd50f6e4143fc6778fa98d121557456dcf306fa0c1d6d36"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete.1f629609a1dc.cs",
+              "sha256": "937c3cab86f7a7f55e3a7b78f81d4035912cbe73a814915bcfe4cd2b2e64369b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete.58734e74326e.cs",
+              "sha256": "0f98761ea1476a3aab5d4fafed14fb47fd45d73823d2693a5c3454cd36cfb050"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete.a91172249f07.cs",
+              "sha256": "697c058ecb4667ab81b5a5809894f91b91ba8da562f89e6acd8c1c1d44745d18"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete.cs",
+              "sha256": "f9985c79388cbbc3584b144d0c1168a2e32862b3ba5c0e00c10b699fab9b75b8"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete_.04ee2a610377.cs",
+              "sha256": "4bc965760f234ec896b26c9503fd6efa929a14fc232bf001ea8a59ccb7fb4915"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete_.257a7e3ca8a3.cs",
+              "sha256": "7853e551367a9c5e6c86c0dfcb93eba4032f4f4f145e6507d5dbefd1ecf98cf0"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete_.9e3a461ba473.cs",
+              "sha256": "fd82292edef1686786eaef89c291f4b7ad989c35646c66415da5316506122c72"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete_.cbda5971ee12.cs",
+              "sha256": "fa93c37486274efd212e00ed7287adac9dc6210d75a3085491a8d8fd9a5704cd"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete_.cs",
+              "sha256": "6d93aa73d572ea2a7dab5914e9ce7184778759f1fcd5117b9db6feabdc6788bd"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete_.d53bd9772bdf.cs",
+              "sha256": "6d1b07e38fa0532d5092cbc777c7d4cd958a9752ef8f5b53272491f56e735827"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_delete_.e7630293a804.cs",
+              "sha256": "2bdfefa01c786e5cb8d6feff26d24022f0f568ace77d523abe565f88fbe33dad"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_new.27697f8670ee.cs",
+              "sha256": "df5804ab15c95366bf7b6e1c0d461fb27456dd85bdceacade08d017a26e64605"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_new.7654c7b63dd3.cs",
+              "sha256": "af5ebc1a5d4f7847a7ce980421e9e29eab3f354de802fb7b810dfebd268211c9"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_new.cs",
+              "sha256": "2e642c1c2cea6ca807ca84960144041f75eb3e4d7e6d9d29e61e56ca2000fbb0"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_new.df6b7bd8d00a.cs",
+              "sha256": "c3186d48c2c6c26d3237b522b41bb4800c72b463926b1a4d1b9293a3eff183b6"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_new.fe43b2dd5d33.cs",
+              "sha256": "5f4f4bcec51086b3e735ebea0a2ae85b5a4201b36287facd320aee9071e2cd98"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_new_.54c9ed2af9db.cs",
+              "sha256": "5329869a5235f22f1577390366a2c975330b4c75eb86b74901e27cc0d9377ade"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_new_.b71dcbe0b61e.cs",
+              "sha256": "7daeb8ac5d41813f063b1c1d819ae3e714a2ff1d0d5b5c73d13941c8d4f42778"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_new_.c4d54d49d88c.cs",
+              "sha256": "48efe8e3deb2116376c82d3ef23c6e8cc278f5e0095fa00409b46d68fc194a31"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_new_.ce7408cb1dca.cs",
+              "sha256": "59ec866ec5ec462ac2d2480fb546f5c2624828e8297f274d6965a6f52d120a0d"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.operator_new_.cs",
+              "sha256": "524c019821be9f3524f6224824272fefa776c69dafacdba3b8ec5fae2ca480a7"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.private_value.cs",
+              "sha256": "df3fe4289d77cefdc9cbea5fb9b2110c0cfc52e48deb3ecdda7b9ce57e6af405"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.private_value.ec36736af930.cs",
+              "sha256": "a68e1daa2981289835fe8d5d9638cc283afe4bb6878707d53cc566b84b7da9e6"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.set_new_handler.cs",
+              "sha256": "8dafc37e4b574db1442e41dece8b49e559e93112f0196e7cbea758403f6e888b"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.throw_other.cs",
+              "sha256": "1086d355408200b084df7e7b385dfe6dec4d3d1489451c2a0eda9835733049b1"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.twice.cs",
+              "sha256": "2834a1f3fb1107fc912b43d675e45e1ca3fc561556592fc5da22420117f1fa7c"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.value.cs",
+              "sha256": "24c1df9a502c41800b76ec64aa1c5c64b7f0df02337dec324388330907ebb43a"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.what.3e15f167b03f.cs",
+              "sha256": "507cd592f9c262a646f6eca36134c889ada30842d4259f6784c5de8107076c65"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.what.8ccdcc4216f1.cs",
+              "sha256": "29782a5ed22f41c03f05b06a64236729b14ddd7619cf1bedb23a24b1bf95b5ac"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.what.945533550272.cs",
+              "sha256": "7e86111ca1ab1a3acbf4cb0cb5490b0ed6b3773497b7ab5f73463c450aed3eb0"
+            },
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/instance/Translated.function.what.cs",
+              "sha256": "b75e5fe6125227ff51a23c84d114928ade2186f60f5e6c45d8940de2d8672c5a"
+            }
+          ]
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/static/dot-gen.json",
+          "sha256": "4922465d3a4d4b9de66a853c7a23fd74c9f079a1fec1441bda05fdfc2462f41f",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-multi-tu-008-20261003-100800/multi-tu-cxx/static/Translated.cs",
+              "sha256": "6e2569f62bea2f2d24e1f2fe5055c2b9117d5098d4ce40635f7a5a15a556ccfe"
+            }
+          ]
+        }
+      ],
+      "execution": [
+        "original EDG C/native oracle",
+        "Linux x64 .NET 10 JIT static and instance"
+      ],
+      "compilerSha256": "af38a39c0f1026fd30d87e7b0516e4a82ea940f5c57c36f094cbb80c79025e1a",
+      "compilerEpoch": "source-readability build008"
+    },
+    {
+      "name": "arrayPointers",
+      "status": "passed",
+      "artifact": "artifacts/campaign/persistent-continuation/source-names-array-005-20261003-094100",
+      "checkCount": 6,
+      "checks": [
+        "c: original EDG C array compatibility",
+        "c-static: JIT array pointer arguments/return/assignment/conditional/function pointers",
+        "c-instance: JIT array pointer arguments/return/assignment/conditional/function pointers",
+        "cxx: original EDG C array compatibility",
+        "cxx-static: JIT array pointer arguments/return/assignment/conditional/function pointers",
+        "cxx-instance: JIT array pointer arguments/return/assignment/conditional/function pointers"
+      ],
+      "resultsSha256": "12fae8762689638ef0e6c6a567a504f670a971dfaa15a7fe077fe2c57af38ceb",
+      "sourceInputs": [
+        {
+          "path": "/home/marius/p/dotcc/edgcpp/backend/tests/array_pointer_compat.c",
+          "sha256": "f621488cb070f0c99f4fbd59d25ebb323cd84c1f50041ecc744e628af976b125"
+        }
+      ],
+      "manifests": [
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-array-005-20261003-094100/c-instance/dot-gen.json",
+          "sha256": "efb2976ac75edcde62b2445c702d90a613bd403812f9ec1f447a9b211b575da4",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-array-005-20261003-094100/c-instance/Translated.cs",
+              "sha256": "3140933a50929e369d8f30a6f06317a8710d58fbe341f62882b12910d912b9d9"
+            }
+          ]
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-array-005-20261003-094100/c-static/dot-gen.json",
+          "sha256": "3f6038c7aff53cfcf641a232d6f5acab0db98188c7050d000e4f4d607daeb925",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-array-005-20261003-094100/c-static/Translated.cs",
+              "sha256": "0cdea873710db8a176c356c90f021652d515c6facce9380b4e369aa59935eb1d"
+            }
+          ]
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-array-005-20261003-094100/cxx-instance/dot-gen.json",
+          "sha256": "ad9090ba813320e8bbe07e532a47d25dd32f5593ce08ee487638b2f7e503633f",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-array-005-20261003-094100/cxx-instance/Translated.cs",
+              "sha256": "3140933a50929e369d8f30a6f06317a8710d58fbe341f62882b12910d912b9d9"
+            }
+          ]
+        },
+        {
+          "path": "artifacts/campaign/persistent-continuation/source-names-array-005-20261003-094100/cxx-static/dot-gen.json",
+          "sha256": "f5e778709f1fc7a300a3a383c338606e54dca178d9a674b229677b547423da9a",
+          "generatedFiles": [
+            {
+              "path": "artifacts/campaign/persistent-continuation/source-names-array-005-20261003-094100/cxx-static/Translated.cs",
+              "sha256": "0cdea873710db8a176c356c90f021652d515c6facce9380b4e369aa59935eb1d"
+            }
+          ]
+        }
+      ],
+      "execution": [
+        "original EDG C/native oracle",
+        "Linux x64 .NET 10 JIT static and instance"
+      ],
+      "compilerEpoch": "source-readability build005",
+      "compilerHashLimitation": "The old verifier did not record compiler binary hash; source input and complete generated output hashes are retained here. Do not substitute build008 compiler hash."
+    }
+  ],
+  "componentCheckCount": 20,
+  "namingRecordedInputs": {
+    "/home/marius/p/dotcc/edgcpp/backend/tests/source_names.c": "2c7819c308af7ea032b12b85e6b8af8d108a0062d2c9a94c68527240efe6e327",
+    "/home/marius/p/dotcc/edgcpp/backend/dot_gen_source_names.h": "33950a0a5248d3ba6800927b2229077ba1e826225d752b092fb1dc462fb01b4d",
+    "/home/marius/p/dotcc/edgcpp/backend/dot_gen_source_storage.h": "ff70240a85481de316b03b3145e773145bf71fc91a2f5799f007923ffa3ae181",
+    "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot": "af38a39c0f1026fd30d87e7b0516e4a82ea940f5c57c36f094cbb80c79025e1a"
+  },
+  "currentOwnedInputs": [
+    {
+      "path": "backend/dot_gen_source_names.h",
+      "sha256": "33950a0a5248d3ba6800927b2229077ba1e826225d752b092fb1dc462fb01b4d"
+    },
+    {
+      "path": "backend/dot_gen_source_storage.h",
+      "sha256": "ff70240a85481de316b03b3145e773145bf71fc91a2f5799f007923ffa3ae181"
+    },
+    {
+      "path": "backend/tests/source_names.c",
+      "sha256": "2c7819c308af7ea032b12b85e6b8af8d108a0062d2c9a94c68527240efe6e327"
+    },
+    {
+      "path": "backend/tests/source_names_verify.py",
+      "sha256": "0161445c5fac526d8db329bed143129f406d2818f99ae4179d0e3462716cf484"
+    },
+    {
+      "path": "backend/tests/multi_tu_verify.py",
+      "sha256": "d8dbee5cb4a71d6c9a180035b993b865713f6a6348c48bc97c77c9ecbb0d82a8"
+    },
+    {
+      "path": "backend/tests/multi_tu/shared.h",
+      "sha256": "eeb5e577f9b5f85757cea5e5f2148e7282bc2d7ee31b413bb5d755c41117a264"
+    },
+    {
+      "path": "backend/tests/array_pointer_compat.c",
+      "sha256": "f621488cb070f0c99f4fbd59d25ebb323cd84c1f50041ecc744e628af976b125"
+    },
+    {
+      "path": "backend/tests/array_pointer_compat_verify.py",
+      "sha256": "168db28a53c15bc172a9c56f8bee9af7c4c06ba7887e63d1bb16fa6f76642bbb"
+    },
+    {
+      "path": "docs/source-naming.md",
+      "sha256": "0199389b9611440ad995488bfa8fbc03f337664ce79499802adc82b6c667d56e"
+    }
+  ],
+  "limitations": [
+    "These are bounded component checks, not complete source correspondence or overall backend acceptance.",
+    "Focused acceptance listed here is JIT only; NativeAOT is available in the naming verifier but was not requested for these runs.",
+    "Source-typed enum signatures/locals/fields remain pending; current enum declarations use physical integral storage types.",
+    "Complex C++ decoded context can fall back to basename plus deterministic suffix; decoded text never controls identity or ABI.",
+    "Separate current SQLite named API runtime regression identified value-producing pointer compound assignment losing element stride; tracked with exact proof below and owned by expression integration."
+  ],
+  "sqliteDiagnostic": {
+    "artifact": "artifacts/campaign/persistent-continuation/sqlite-naming-crash-20261003-101500",
+    "fault": "sqlite3StartTable auth-code lookup received isTemp=8388607 from misaligned parser semantic stack.",
+    "cause": "yy_reduce value-producing yymsp += yysize+1 emitted ulong-address + unscaled count, instead of pointer arithmetic with sizeof(yyStackEntry)=24.",
+    "proofFiles": [
+      {
+        "path": "artifacts/campaign/persistent-continuation/sqlite-naming-crash-20261003-101500/gdb.stdout",
+        "sha256": "286e1211da0857381633983fcc1337ceb0a566a24a75d711f59c04f7a035984d"
+      },
+      {
+        "path": "artifacts/campaign/persistent-continuation/sqlite-readable-named-002/managed/Translated.part00024.cs",
+        "sha256": "daf63bf5926c0baa872f14a6a4f689e1742a3d61f06745b25466b2d6e28237bd"
+      },
+      {
+        "path": "artifacts/campaign/persistent-continuation/sqlite-owners-full-002/managed/Translated.part00035.cs",
+        "sha256": "15bdce5794aeb2015176352c9f7ee5f3eb92cf52321075d4479c07c2a7211145"
+      }
+    ]
+  }
+}

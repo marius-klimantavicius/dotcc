@@ -29,14 +29,14 @@ void expression_captures(an_expr_node_ptr e, std::vector<a_variable_ptr> &vars) 
       if(std::find(vars.begin(),vars.end(),p)==vars.end())vars.push_back(p);
   }
 }
-string sequence_result(an_expr_node_ptr e, bool address) {
-  if(e->kind==enk_object_lifetime) return sequence_result(e->variant.object_lifetime.expr,address);
+string sequence_result(an_expr_node_ptr e, bool address_result) {
+  if(e->kind==enk_object_lifetime) return sequence_result(e->variant.object_lifetime.expr,address_result);
   if(e->kind==enk_operation && e->variant.operation.kind==eok_comma) {
     auto a=e->variant.operation.operands;
-    return expression_effect(a)+sequence_result(a->next,address);
+    return expression_effect(a)+sequence_result(a->next,address_result);
   }
   if(skip_typerefs(e->type)->kind==tk_void) return expression_effect(e);
-  return "return " + (address ? "&("+location(e)+")" : expr(e)) + ";\n";
+  return "return " + (address_result ? address(e) : expr(e)) + ";\n";
 }
 string sequence_expression(an_expr_node_ptr e) {
   auto saved=expression_variables;
@@ -59,7 +59,7 @@ string sequence_expression(an_expr_node_ptr e) {
   }
   for(size_t i=0;i<vars.size();++i) {
     auto v=vars[i];
-    args+=", &("+variable(v)+")";
+    args+=", "+variable_address(v);
     string param="p"+std::to_string(i);
     parameters+=", "+type(v->type)+"* "+param;
     expression_variables[v]="(*"+param+")";

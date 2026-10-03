@@ -101,7 +101,7 @@ unsafe class EntryPoint {{
             checks.append(f'type_info/{mode}/{runtime}: 34 C traces, 24 names, ordering laws, GC/thread/owner identity, bad_typeid rethrow and foreign cleanup')
             fatal=subprocess.run([*map(str,command),'fatal'],capture_output=True,text=True,timeout=15,
                 preexec_fn=lambda:resource.setrlimit(resource.RLIMIT_CORE,(0,0)))
-            assert fatal.returncode<0 and 'noexcept' in fatal.stderr,(mode,runtime,fatal)
+            assert fatal.returncode<0 and 'C++ default terminate' in fatal.stderr,(mode,runtime,fatal)
             (host/f'{runtime}-termination.txt').write_text(fatal.stderr)
             checks.append(f'type_info/{mode}/{runtime}: expected bad_typeid noexcept termination')
     negatives={

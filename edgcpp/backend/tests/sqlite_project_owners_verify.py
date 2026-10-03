@@ -11,6 +11,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output-dir', type=Path, required=True)
     parser.add_argument('--nativeaot', action='store_true')
+    parser.add_argument('--named-api', action='store_true',
+                        help='compile the direct consumer of original SQLite function/type names')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
     sqlite = root.parent / 'sqlite'
@@ -22,7 +24,10 @@ def main():
                    if line.strip() and not line.lstrip().startswith('#')]
     sources = [amalgamation / 'sqlite3.c', Path(__file__).with_name('sqlite_project_owners.c'),
                sqlite / 'tests/memory_vfs.c']
+    if args.named_api:
+        sources.pop(1)
     report = {'status': 'running', 'checks': [], 'commands': [], 'definitions': definitions,
+              'namedApi': args.named_api,
               'profile': 'full configured SQLite, test-only memory VFS, independent owners; THREADSAFE=0',
               'sources': [{'path': str(p), 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()} for p in sources]}
 
@@ -103,18 +108,28 @@ unsafe class Program {
  }
 }
 '''
-        for symbol in ['project_execute', 'project_is_open', 'project_open', 'project_sum', 'project_close']:
-            code = code.replace(symbol.upper(), names[symbol])
+        if args.named_api:
+            consumer = Path(__file__).with_name('sqlite_named_api.cs')
+            code = consumer.read_text()
+            report['consumerSha256'] = hashlib.sha256(consumer.read_bytes()).hexdigest()
+            for symbol in ['sqlite3_open', 'sqlite3_prepare_v2', 'sqlite3_step', 'sqlite3_column_int64',
+                           'sqlite3_finalize', 'sqlite3_close', 'sqlite3_exec', 'sqlite3_changes',
+                           'sqlite3_libversion', 'sqlite3_libversion_number', 'sqlite3_shutdown']:
+                assert names[symbol].lstrip('@') == symbol, (symbol, names[symbol])
+        else:
+            for symbol in ['project_execute', 'project_is_open', 'project_open', 'project_sum', 'project_close']:
+                code = code.replace(symbol.upper(), names[symbol])
         (host / 'Program.cs').write_text(code)
         run('build', ['dotnet', 'build', host / 'Host.csproj', '-c', 'Release', '--nologo',
                       '-p:TreatWarningsAsErrors=true'])
         run('jit', ['dotnet', host / 'bin/Release/net10.0/Host.dll'])
-        report['checks'].append('SQLite independent owners: JIT')
+        label = 'SQLite original public API' if args.named_api else 'SQLite independent owners'
+        report['checks'].append(label + ': JIT')
         if args.nativeaot:
             run('publish', ['dotnet', 'publish', host / 'Host.csproj', '-c', 'Release', '-r', 'linux-x64',
                             '-p:PublishAot=true', '-p:IlcTreatWarningsAsErrors=true', '-o', host / 'aot'])
             run('nativeaot', [host / 'aot/Host'])
-            report['checks'].append('SQLite independent owners: NativeAOT')
+            report['checks'].append(label + ': NativeAOT')
         report['status'] = 'passed'
     except Exception as error:
         report['status'] = 'failed'

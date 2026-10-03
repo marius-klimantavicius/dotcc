@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "status": "accepted-increment",
+  "compilerBuild": "source-readability-build-009",
+  "accepted": [
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/source-correspondence-integrated-003",
+      "resultsSha256": "0545500daa8b609d4e3dd8893284e207e94631837cf713b227b354e2758c01f4",
+      "checks": [
+        "c: source and original EDG C semantics",
+        "c-static: named declarations and structured expression/control-flow review",
+        "c-static: JIT",
+        "c-static: NativeAOT",
+        "c-instance: named declarations and structured expression/control-flow review",
+        "c-instance: JIT",
+        "c-instance: NativeAOT",
+        "cxx: source and original EDG C semantics",
+        "cxx-static: named declarations and structured expression/control-flow review",
+        "cxx-static: JIT",
+        "cxx-static: NativeAOT",
+        "cxx-instance: named declarations and structured expression/control-flow review",
+        "cxx-instance: JIT",
+        "cxx-instance: NativeAOT"
+      ]
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/source-control-translated-003",
+      "resultsSha256": "7a83b5921606da2576f4ea29cb68f9d8d9a0b9d71326e36b3908e692266ab98e",
+      "checks": [
+        "c: original EDG C expression oracle",
+        "c-static: structured control, Duff dispatch and entered scopes JIT",
+        "c-static: Linux x64 NativeAOT",
+        "c-instance: structured control, Duff dispatch and entered scopes JIT",
+        "c-instance: Linux x64 NativeAOT",
+        "cxx: original EDG C expression oracle",
+        "cxx-static: structured control, Duff dispatch and entered scopes JIT",
+        "cxx-static: Linux x64 NativeAOT",
+        "cxx-instance: structured control, Duff dispatch and entered scopes JIT",
+        "cxx-instance: Linux x64 NativeAOT"
+      ]
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/source-layout-driver-004",
+      "resultsSha256": "f98f77136dfd09ec398bf5b0f7af1c40206ca7b772a4db0ee410a24c9c46bc33",
+      "checks": [
+        "none: formatted source names, exact navigation, strict JIT",
+        "function: formatted source names, exact navigation, strict JIT",
+        "size: formatted source names, exact navigation, strict JIT",
+        "source: formatted source names, exact navigation, strict JIT",
+        "source: instance namespace/keyword class Linux x64 NativeAOT",
+        "regeneration: prior generated source/index retained and authored file preserved"
+      ]
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/sqlite-readable-core-003",
+      "resultsSha256": "6edc23b1dcba6130da65ca41906141d55cd68c49de5dcd823d3aa16b87b8c9e7",
+      "checks": [
+        {
+          "label": "core-native-reference",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-jit-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-aot-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        }
+      ]
+    },
+    {
+      "artifact": "artifacts/campaign/persistent-continuation/sqlite-readable-named-003",
+      "resultsSha256": "1c7f3678a3d7176ad7210637882184e8172b72c84308f423cf74548b447bd6a5",
+      "checks": [
+        "SQLite original public API: JIT",
+        "SQLite original public API: NativeAOT"
+      ]
+    }
+  ],
+  "componentEvidence": [
+    "evidence/source-expression-components.json",
+    "evidence/source-naming-components.json"
+  ],
+  "inputSha256": {
+    "dotnet.py": "c5f82473f920d0fa8fa2d5a3ce9a68b7f34385995c9421504d9545d93bbd3900",
+    "build/bin/cpfe-dot": "1c6ba5ad5360d30290b6bb9598514b8f7c021cc6f1f0c552632261c8d242bfc5",
+    "backend/dot_gen_be.c": "6bc6a97314cdf4aac7c690dab939af59ca2ec2514be517a49d2a2ca039c1eab7",
+    "backend/dot_gen_source_control.h": "a0f388700ea82b00e993bdb16d37441439bf716fcdfaaa850f5f2e87496dd207",
+    "backend/source_layout.py": "a8d9bb54ba53ca1f943e910423144376d06236544ac94d7fb78c6c8da9d8401e",
+    "backend/source_format.py": "46f61bcb383a53fd60aca2c90ab33c7d4e67aabee0b6c579541107b7edb997bb",
+    "backend/tests/source_layout_driver_verify.py": "5de66fb161e4a46e35a369acfc575819fd2676ae8300ed55ad6b7cb9223efacc",
+    "backend/tests/source_correspondence.c": "26ab587a4882fee055731504482d542be193638624247e806db4c031db3e3ac7",
+    "backend/tests/source_correspondence_verify.py": "16242ee844e7a04be928af970b42a5db9bf65bd3f364f9abf545a9beed14361c",
+    "backend/tests/source_control.c": "a5821afdc716af27058f168598a7891f494f0c2c97304cb59d272014036e11c8",
+    "backend/tests/source_control_verify.py": "9495882be66f94d928944083e55e43de045dc78b320afb12879621db6d780291"
+  },
+  "scope": [
+    "Original names for functions, variables, aggregates/members and enum declarations; source-facing pinned storage views",
+    "Structured legal control flow and lexical declarations; localized expression sequencing and named bitfield properties",
+    "Whitespace-only Roslyn formatting; none/function/size/source splitting with exact source navigation",
+    "SQLite full configured core native/JIT/NativeAOT parity and direct original public function/type names with independent owners"
+  ],
+  "snapshotNotes": [
+    "Source-correspondence14/control10 passed compiler008. Compiler009 changes pointer compound arithmetic only; expanded expression10 covers this regression.",
+    "Core/named project outputs use009 before explicit #nullable enable was added to all split wrappers. Driver layout004 validates that directive with all split modes and instance NativeAOT.",
+    "Additional five SQLite corpora remain running and are not counted here."
+  ],
+  "remaining": [
+    "Retain source enum types in declarations/signatures instead of physical integers.",
+    "Reduce unnecessary local/parameter suffixes caused by unrelated owner member names.",
+    "Retain structured for loops with comma-separated increments where legal.",
+    "Complete representative SQLite side-by-side review and remaining five project corpora.",
+    "This milestone does not establish complete C++/libc/libc++ support or Windows/macOS/Arm64 execution."
+  ],
+  "retainedFailures": [
+    "sqlite-readable-core-002",
+    "sqlite-readable-named-002",
+    "source-layout-driver-001",
+    "source-layout-driver-002",
+    "source-layout-driver-003"
+  ]
+}

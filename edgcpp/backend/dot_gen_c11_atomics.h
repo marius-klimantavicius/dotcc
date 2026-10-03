@@ -58,5 +58,5 @@ string c11_atomic_mutation(an_expr_node_ptr e) {
     }
     helper_output+=code+"}\n// dot-gen:member-end\n";
   }
-  return id+"("+(unit?"1":expr(b))+", &("+location(a)+"))";
+  return id+"("+(unit?"1":expr(b))+", "+address(a)+")";
 }

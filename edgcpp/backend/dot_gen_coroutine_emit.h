@@ -265,7 +265,7 @@ string coroutine_schedule_await(an_expr_node_ptr expression,coroutine_value_mode
   } else unsupported("coroutine await_suspend result ABI");
   line("}");line(coroutine_resume_label(expression)+": ;");line("__edg_coro->State=0;");
   if(mode==cvm_effect){line(expression_effect(resume));return "";}
-  return coroutine_save_expression(expression,mode,mode==cvm_address?"&("+location(resume)+")":expr(resume));
+  return coroutine_save_expression(expression,mode,mode==cvm_address?address(resume):expr(resume));
 }
 void coroutine_effect(an_expr_node_ptr expression) {
   if(!expression)return;
@@ -442,7 +442,7 @@ string coroutine_allocation_call(a_coroutine_descr_ptr descriptor,a_scope_ptr sc
   if(!target)return call+")";
   if(coroutine_global_nothrow_allocator(allocator)) {
     if(!coroutine_nothrow_object)unsupported("missing canonical std::nothrow source storage");
-    return call+", ("+type(target->type)+")&("+variable(coroutine_nothrow_object)+"))";
+    return call+", ("+type(target->type)+")"+variable_address(coroutine_nothrow_object)+")";
   }
   // select_coroutine_new uses extra arguments globally only for std::nothrow.
   // Class membership is flattened by lowering; use its semantic tag predicate.
@@ -601,7 +601,7 @@ void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_pt
     result_storage=coroutine_return_storage(descriptor->get_return_object_call,result_type);
     if(!result_storage)unsupported("coroutine converted return-object destination");
   }
-  string id=name(routine,"f"),resume_id="__edg_coro_resume_"+id,destroy_id="__edg_coro_destroy_"+id;
+  string id=name(routine,"f"),resume_id="__edg_coro_resume_"+source_identifier_component(id),destroy_id="__edg_coro_destroy_"+source_identifier_component(id);
   string mod=instance_mode?"":"static ",owner=instance_mode?"owner.":"";
   string signature="private "+mod+type(rt->variant.routine.return_type)+" "+id+"(",arguments;
   for(auto parameter=parameters;parameter;parameter=parameter->next) {
@@ -624,7 +624,7 @@ void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_pt
   line("var __edg_coro=(global::Edg.Runtime.Coroutine.Frame*)__edg_allocation;bool __edg_registered=false,__edg_created=false,__edg_started=false,__edg_unwinding=false;int __edg_cleanup_state=0;");
   line("try {__edg_coroutines.Attach(__edg_coro,__edg_frame,__edg_size,&"+resume_id+",&"+destroy_id+");__edg_registered=true;");
   for(auto parameter=parameters;parameter;parameter=parameter->next)line(variable(parameter)+"="+name(parameter,"v")+";");
-  line("*(void**)&("+variable(descriptor->handle)+")=__edg_coro;");
+  line("*(void**)"+variable_address(descriptor->handle)+"=__edg_coro;");
   for(auto node:execution) {
     if(node==coroutine_initial_try)break;
     if(node->kind!=stmk_coroutine)statement(node);

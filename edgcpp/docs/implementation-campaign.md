@@ -12,10 +12,10 @@ clean inactive compiled temporaries under the later explicit user authorization.
 
 | Owner | Work | State |
 | --- | --- | --- |
-| Root | Source-correspondence fixtures/review, source grouping and navigation, direct named SQLite consumer | Native reference fixtures and layout helper accepted; revised emitter acceptance in progress |
-| Coordinator | Structured control/declarations, addressable source storage, integration, builds/commits and evidence | First compiler build passes control-flow differential matrix; broader integration under test |
-| Core language worker | Source identifier/type/member/enum preservation and deterministic collision mappings | Naming and storage-view helpers integrated; focused C/C++/multi-TU regressions in progress |
-| Expression worker | Direct expressions, localized evaluation adjustments and named bitfield properties | First expression matrix passes; adapter/address/cache regressions being corrected |
+| Root | User-facing review and source-correspondence acceptance assistance | Supplied readability fixtures, source layout helper and direct named SQLite consumer |
+| Coordinator | Control/declarations, integration, driver grouping/navigation, builds/commits and project evidence | Readability14, control10, layout6 and revised SQLite core3/named API2 accepted; five remaining corpora running |
+| Core language worker | Source identifiers/types and collision mappings | Naming8, multi-TU6 and array-pointer6 accepted; typed enums and unnecessary local suffixes remain |
+| Expression worker | Direct expressions, localized evaluation adjustments and named bitfield properties |52 unique focused checks accepted; SQLite pointer-stride regression fixed; comma-loop fidelity next |
 
 Compiler preparation/build and Git mutations are serialized through the
 coordinator. Canonical emitter sources stay in `backend/`. Workers use disjoint
@@ -581,7 +581,34 @@ matrix passed ten checks. Broader naming/multi-TU/packed/volatile regressions
 then exposed address-provenance, special RTTI-call operand handling, narrow
 compound conversions and a helper cache keyed by presentation field name.
 These are C# backend integration issues; fixes do not change EDG lowering.
-No revised-emitter SQLite acceptance or completed readability claim is made yet.
+At that point there was no revised-emitter SQLite acceptance or completed
+readability claim.
+
+The subsequent integrated milestone now passes14 source-correspondence checks,
+ten structured-control checks and six complete driver layout/navigation checks.
+The layout matrix covers all four split modes, keyword namespace/class names,
+instance NativeAOT, exact generated line mappings and preservation of superseded
+generation inputs. Source-less split helpers explicitly enable nullable context,
+which Roslyn otherwise suppresses for the `.generated.cs` filename convention.
+
+Revised SQLite core output matches all6337 native/reference bytes under JIT and
+NativeAOT. A separate consumer declares `SqliteCore.sqlite3*` and
+`SqliteCore.sqlite3_stmt*`, calls the original public API names directly, and
+passes independent-owner/transaction/GC checks in both runtimes. These five
+project checks are fresh evidence for the revised emitter. The other five
+corpora are running; their older passes are not substituted. A parser regression
+exposed by this rerun was fixed locally in the expression planner: pointer
+compound arithmetic now retains the element stride instead of adding raw bytes.
+Expanded C/C++ expression tests cover consumed/discarded pointer compounds,
+struct/array strides, negative displacements and single evaluation.
+
+See `evidence/source-correspondence-milestone.json`,
+`evidence/source-expression-components.json` and
+`evidence/source-naming-components.json` for exact results, hashes and snapshot
+distinctions. This is an accepted increment, not completion of source fidelity:
+enum types still use physical integers in declarations, some parameters/locals
+carry unnecessary collision suffixes, and comma-increment loops still fall back
+to labels. These are the next bounded source-correspondence tasks.
 
 The complete pre-readability SQLite baseline contains20 unique project checks:
 core/API/VFS/vtable/allocation/FTS5 each match fresh native and checked-in

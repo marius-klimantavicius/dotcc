@@ -255,8 +255,8 @@ string emit_cleanup() {
   return result;
 }
 string cleanup_unwind(const string &boundary,const string &slot="__edg_cleanup_state") {
-  string call="__edg_cleanup_"+name(cleanup_routine,"f")+"("+boundary+", &("+slot+")";
-  for(auto v:cleanup_capture_variables)call+=", &("+variable(v)+")";
+  string call="__edg_cleanup_"+source_identifier_component(name(cleanup_routine,"f"))+"("+boundary+", &("+slot+")";
+  for(auto v:cleanup_capture_variables)call+=", "+variable_address(v);
   return call+");\n";
 }
 void emit_cleanup_helper() {
@@ -277,7 +277,7 @@ void emit_cleanup_helper() {
   for(size_t pos=cases.find(marker);pos!=string::npos;pos=cases.find(marker,pos+replacement.size()))
     cases.replace(pos,marker.size(),replacement);
   helper_output+="// dot-gen:member-begin\n[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]\nprivate "+
-      string(instance_mode?"":"static ")+"void __edg_cleanup_"+name(cleanup_routine,"f")+"("+parameters+") {\n"
+      string(instance_mode?"":"static ")+"void __edg_cleanup_"+source_identifier_component(name(cleanup_routine,"f"))+"("+parameters+") {\n"
       "try { while (*state != boundary) { switch (*state) {\n"+cases+
       "default: global::System.Environment.FailFast(\"Invalid EDG cleanup boundary\"); break;\n"
       "} } } catch (global::System.Exception error) when (__edg_cleanup_failure(error)) { throw; }\n}\n// dot-gen:member-end\n";

@@ -23,8 +23,8 @@ string volatile_bitfield_value(a_field_ptr field,const string &bits) {
 }
 string volatile_bitfield_address(an_expr_node_ptr e) {
   auto field=bitfield(e);auto base=e->variant.operation.operands;
-  string address=e->variant.operation.kind==eok_points_to_field?expr(base):"&("+location(base)+")";
-  return "((byte*)("+address+") + "+std::to_string(field->offset)+")";
+  string storage_address=e->variant.operation.kind==eok_points_to_field?expr(base):address(base);
+  return "((byte*)("+storage_address+") + "+std::to_string(field->offset)+")";
 }
 string volatile_bitfield_access(an_expr_node_ptr e,an_expr_node_ptr rhs,
                                const string &op,bool post=false) {
@@ -34,7 +34,10 @@ string volatile_bitfield_access(an_expr_node_ptr e,an_expr_node_ptr rhs,
     unsupported("volatile bitfield representation");
   unsigned count=(remainder+width+7)/8;
   string ty=type(e->type),rt=rhs?type(rhs->type):ty;
-  string key="volatile-bits:"+name(field,"m")+":"+ty+":"+rt+":"+op+(post?":post":"");
+  // Source field names are scoped presentation, never a layout identity.
+  string key="volatile-bits:"+std::to_string(width)+":"+std::to_string(remainder)+":"+
+      std::to_string(field->bit_field_is_signed)+":"+std::to_string(is_bool_type(field->type))+":"+
+      type(field->type)+":"+ty+":"+rt+":"+op+(post?":post":"");
   string id;auto found=assignment_helpers.find(key);
   if(found!=assignment_helpers.end())id=found->second;
   else {

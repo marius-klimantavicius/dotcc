@@ -12,7 +12,7 @@ bool variadic_routine(a_type_ptr t) {
 }
 string va_list_address(an_expr_node_ptr e) {
   auto t=skip_typerefs(e->type);
-  return "("+va_list_type+"*)("+(t->kind==tk_pointer?expr(e):"&("+location(e)+")")+")";
+  return "("+va_list_type+"*)("+(t->kind==tk_pointer?expr(e):address(e))+")";
 }
 string va_operation(an_expr_node_ptr e) {
   auto op=e->variant.operation.kind;auto a=e->variant.operation.operands;

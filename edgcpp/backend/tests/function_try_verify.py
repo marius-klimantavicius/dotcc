@@ -92,7 +92,10 @@ unsafe class EntryPoint {{
             assert actual==expected,(mode,runtime,expected,actual)
             checks.append(f'function try blocks/{mode}/{runtime}: 32 C traces for subobject cleanup, implicit rethrow, delegation, virtual bases and handler returns')
             for i in range(3):
-                message='Destructor threw during unwinding' if i==2 else 'Exception escaped noexcept function'
+                # Default termination routes through the current C++ terminate handler.
+                # Its stable fatal text changed; exact native traces below still
+                # distinguish the noexcept and secondary-unwind boundaries.
+                message='C++ default terminate'
                 actual=terminated(command,i,message)
                 (host/f'{runtime}-termination-{i}.txt').write_text(actual)
                 assert actual==fatal_traces[0][str(i)],(mode,runtime,i,actual,fatal_traces[0])

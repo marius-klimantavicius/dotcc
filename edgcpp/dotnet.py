@@ -11,6 +11,8 @@ import subprocess
 import sys
 import tempfile
 import time
+from backend.source_layout import SourceMember, split_members, is_layout_filename
+from backend.source_format import format_sources
 
 ROOT = Path(__file__).resolve().parent
 RUNTIME_DEPENDENCIES = {
@@ -100,7 +102,9 @@ def main():
     parser.add_argument("--libc", choices=("none", "dotcc", "musl"), default="none",
                         help="select audited BCL imports, optionally adding pinned translated musl formatting/numeric sources")
     parser.add_argument("--nest-types", action=argparse.BooleanOptionalAction, default=True)
-    parser.add_argument("--split", choices=("none", "function", "size"), default="none")
+    parser.add_argument("--split", choices=("none", "function", "size", "source"), default="none")
+    parser.add_argument("--format", choices=("roslyn", "none"), default="roslyn",
+                        help="whitespace-only Roslyn formatting (default), or raw emitter output for diagnostics")
     parser.add_argument("--split-size", type=int, default=262144,
                         help="target UTF-8 bytes per member file in size mode; functions stay whole")
     args = parser.parse_args()
@@ -176,7 +180,29 @@ def main():
     def export_record(match):
         exports.append({"symbol": bytes.fromhex(match[1]).decode("utf-8"), "method": match[2]})
         return ""
-    source = re.sub(r"^// dot-gen:export ([0-9a-f]*) (\w+)\n", export_record, result.stdout, flags=re.M)
+    source = re.sub(r"^// dot-gen:export ([0-9a-f]*) (@?\w+)\n", export_record, result.stdout, flags=re.M)
+    def decode_source_hex(value):
+        return "" if value == "-" else bytes.fromhex(value).decode("utf-8")
+    source_symbols = []
+    def source_record(match):
+        source_symbols.append({"kind": match[1], "sourceFile": decode_source_hex(match[2]),
+                               "sourceLine": int(match[3]), "sourceColumn": int(match[4]),
+                               "sourceName": decode_source_hex(match[5]), "managedName": match[6],
+                               "scope": decode_source_hex(match[7])})
+        return ""
+    source = re.sub(r"^// dot-gen:source (\S+) ([0-9a-f]+|-) ([0-9]+) ([0-9]+) ([0-9a-f]+|-) (@?\w+) ([0-9a-f]+|-)\n",
+                    source_record, source, flags=re.M)
+    public_types = []
+    def public_type_record(match):
+        public_types.append({"sourceName": decode_source_hex(match[1]), "managedName": match[2], "opaque": match[3] == "1"})
+        return ""
+    source = re.sub(r"^// dot-gen:public-type ([0-9a-f]+|-) (@?\w+) ([01])\n", public_type_record, source, flags=re.M)
+    origins = {item["managedName"]: item for item in source_symbols
+               if item["kind"] in ("function", "global", "static-local", "export")}
+    for exported in exports:
+        body = next((item for item in source_symbols
+                     if item["kind"] == "function" and item["sourceName"] == exported["symbol"]), None)
+        origins[exported["method"]] = dict(body or {}, kind="export", sourceName=exported["symbol"], managedName=exported["method"])
     source = source.replace("// dot-gen:main-arguments utf8-owned-v1\n", "")
     type_ir_records = re.findall(r"^// dot-gen:type-ir (.*)\n", source, flags=re.M)
     if args.type_ir and len(type_ir_records) != 1:
@@ -187,8 +213,15 @@ def main():
     source = source.replace("// dot-gen:termination owner-v1\n", "")
     imports = sorted(set(re.findall(r"^// dot-gen:import (\w+)\n", source, flags=re.M)))
     source = re.sub(r"^// dot-gen:import \w+\n", "", source, flags=re.M)
+    formatter = {"mode": "none"}
+    if args.format == "roslyn":
+        try:
+            formatted, formatter = format_sources(ROOT, {"Translated.cs": source})
+            source = formatted["Translated.cs"]
+        except (OSError, RuntimeError, subprocess.CalledProcessError, ValueError) as error:
+            parser.error(str(error))
     # These are explicit backend protocol delimiters, not a C# source parser.
-    members = re.compile(r"^// dot-gen:member-begin\n(.*?)^// dot-gen:member-end\n", re.M | re.S)
+    members = re.compile(r"^[ \t]*// dot-gen:member-begin\n(.*?)^[ \t]*// dot-gen:member-end\n", re.M | re.S)
     chunks = members.findall(source)
     translated = members.sub(lambda m: m[1] if args.split == "none" else "", source)
     files = {
@@ -223,16 +256,42 @@ def main():
         else:
             files["EntryPoint.cs"] = f"internal static class EntryPoint {{ public static int Main() => {invocation}; }}\n"
     if args.split != "none":
-        wrapper = (f"namespace {ns};\n" if ns else "") + f"public {'sealed' if args.instance_methods else 'static'} unsafe partial class {cls} {{\n"
-        groups = []
+        # Roslyn treats *.generated.cs as generated code and ignores the
+        # project's implicit nullable context for it. Every split part carries
+        # the same explicit context, including source-less runtime helpers.
+        wrapper = "#nullable enable\n" + (f"namespace {ns};\n" if ns else "") + f"public {'sealed' if args.instance_methods else 'static'} unsafe partial class {cls} {{\n"
+        movable = []
         for chunk in chunks:
-            if (not groups or args.split == "function" or
-                    len((wrapper + groups[-1] + chunk + "}\n").encode("utf-8")) > args.split_size):
-                groups.append(chunk)
-            else:
-                groups[-1] += chunk
-        for index, group in enumerate(groups):
-            files[f"Translated.part{index:05d}.cs"] = wrapper + group + "}\n"
+            origin = re.search(r"^[ \t]*// dot-gen:origin (@?\w+)\n", chunk, re.M)
+            item = origins.get(origin[1], {}) if origin else {}
+            movable.append(SourceMember(chunk, item.get("sourceFile", ""), item.get("sourceLine", 0),
+                                        item.get("sourceColumn", 0), item.get("sourceName", ""),
+                                        origin[1] if origin else ""))
+        for part in split_members(movable, wrapper, args.split, args.split_size):
+            files[part.filename] = part.text
+    source_locations = []
+    for filename, text in files.items():
+        if not filename.startswith("Translated") or not filename.endswith(".cs"):
+            continue
+        for line_number, text_line in enumerate(text.splitlines(), 1):
+            marker = re.fullmatch(r"// dot-gen:origin (@?\w+)", text_line.strip())
+            if marker:
+                entry = dict(origins.get(marker[1], {}), managedName=marker[1],
+                             generatedFile=filename, generatedLine=line_number + 1)
+                source_locations.append(entry)
+    files["dot-gen.sources.json"] = json.dumps({"schema": 1, "symbols": source_symbols,
+                                               "members": source_locations, "publicTypes": public_types}, indent=2) + "\n"
+    index = ["# Generated source index", "", "Whole-function and member locations; original identifiers remain in the generated bodies.", "",
+             "| Source symbol | Original location | Generated declaration |", "| --- | --- | --- |"]
+    for entry in source_locations:
+        original = entry.get("sourceName") or entry["managedName"]
+        location = entry.get("sourceFile", "")
+        if location:
+            location += ":" + str(entry.get("sourceLine", 0))
+        generated = entry["generatedFile"] + "#L" + str(entry["generatedLine"])
+        index.append("| " + original.replace("|", "\\|") + " | " + location.replace("|", "\\|") + " | [" +
+                     entry["managedName"] + "](" + generated + ") |")
+    files["source-index.md"] = "\n".join(index) + "\n"
     runtime_helpers={name for name in RUNTIME_DEPENDENCIES if f"global::Edg.Runtime.{name}" in source}
     if "__edg_with_file_lock" in imports:
         runtime_helpers.add("LibcFilesFormat")
@@ -267,7 +326,7 @@ def main():
     <IsAotCompatible>true</IsAotCompatible>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <NoWarn>$(NoWarn);CS0162;CS0164;CS0219;CS0414;CS0675;CS1718</NoWarn>
+    <NoWarn>$(NoWarn);CS0162;CS0164;CS0219;CS0414;CS0675;CS1717;CS1718;CS8981</NoWarn>
   </PropertyGroup>
   <ItemGroup>
 COMPILE_ITEMS
@@ -280,9 +339,9 @@ RESOURCE_ITEMS
     owned = set()
     if manifest.exists():
         owned = set(json.loads(manifest.read_text())["files"])
-        allowed={"Translated.cs", "EntryPoint.cs", "Generated.csproj", "dot-gen.types.json", "Runtime.Tzdb.bin", "Runtime.Tzdb.source.json", "Runtime.Tzdb.bundle.json", "Runtime.Tzdb.LICENSE.txt"} | {f"Runtime.{name}.cs" for name in RUNTIME_DEPENDENCIES}
+        allowed={"dot-gen.sources.json", "source-index.md", "Translated.cs", "EntryPoint.cs", "Generated.csproj", "dot-gen.types.json", "Runtime.Tzdb.bin", "Runtime.Tzdb.source.json", "Runtime.Tzdb.bundle.json", "Runtime.Tzdb.LICENSE.txt"} | {f"Runtime.{name}.cs" for name in RUNTIME_DEPENDENCIES}
         if any(name not in allowed and
-               not re.fullmatch(r"Translated\.part[0-9]{5,}\.cs", name) for name in owned):
+               not is_layout_filename(name) for name in owned):
             parser.error("invalid generated-file ownership manifest")
     for filename in files:
         if (out / filename).exists() and filename not in owned:
@@ -297,6 +356,8 @@ RESOURCE_ITEMS
         "namespace": args.namespace, "class": args.class_name,
         "instanceMethods": args.instance_methods, "files": sorted(files),
         "split": args.split, "splitSize": args.split_size,
+        "sourceMap": {"file": "dot-gen.sources.json", "sha256": hashlib.sha256(files["dot-gen.sources.json"].encode()).hexdigest()},
+        "sourceIndex": "source-index.md", "publicTypes": public_types, "formatter": formatter,
         "mainArguments": "utf8-owned-v1" if main_arguments else None,
         "language": args.language, "standard": standard, "includeDirectories": [str(p.resolve()) for p in args.include],
         "defines": args.define, "lifecycle": "explicit-shutdown-release-thread" if "void Shutdown()" in source else "process",

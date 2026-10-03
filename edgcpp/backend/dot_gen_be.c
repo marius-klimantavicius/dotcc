@@ -17,6 +17,7 @@
 #include "decls.h"
 #include "exprutil.h"
 USING_NAMESPACE_EDG
+#include "../util/decode.h"
 
 namespace {
 using std::string;
@@ -47,7 +48,7 @@ std::map<a_constant_ptr, string> aggregate_constants;
 std::map<a_variable_ptr, unsigned long long> local_offsets;
 unsigned long long frame_size = 0, frame_alignment = 8;
 string type(a_type_ptr t);
-string initializer(string dst, a_type_ptr t, a_constant_ptr c);
+string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address="");
 string typeinfo_constant(a_constant_ptr c);
 bool aggregate(a_type_ptr t) {
   t = skip_typerefs(t);
@@ -107,7 +108,9 @@ bool routine_body_needed(a_routine_ptr r) {
 }
 bool selected_runtime_branch(a_statement_ptr s,a_statement_ptr &branch);
 #include "dot_gen_members.h"
+string source_entity_name(const void*,const char*);
 string name(const void *p, const char *prefix) {
+  string source=source_entity_name(p,prefix);if(!source.empty())return source;
   auto i = names.find(p);
   if (i != names.end()) return i->second;
   string result = string(prefix) + std::to_string(++serial);
@@ -115,6 +118,9 @@ string name(const void *p, const char *prefix) {
   if (cls && string(cls) == "@" + result) result += "_";
   return names[p] = result;
 }
+#include "dot_gen_source_names.h"
+#include "dot_gen_source_expression_api.h"
+#include "dot_gen_bitfield_properties.h"
 #include "dot_gen_trace.h"
 #include "dot_gen_order.h"
 #include "dot_gen_ir_adapter.h"
@@ -139,8 +145,7 @@ string aggregate_type(a_type_ptr t) {
     aggregate_types[t]=id;array_storage_types[array_key]=id;type_output+="public struct "+id+" {}\n";return id;
   }
   if (!layout_size || layout_size > 64*1024*1024) unsupported(("aggregate size "+std::to_string(layout_size)+" for "+string(t->source_corresp.name?t->source_corresp.name:"<anonymous>")+" (1..64 MiB bytes required)").c_str());
-  string id = name(t, "__edg_type");
-  if (!nested_types) id = string(getenv("EDG_DOT_CLASS") + 1) + "_" + id;
+  string id = source_record_name(t, "__edg_type");
   aggregate_types[t] = id; // Register before walking self-referential pointers.
   if(!array_key.empty())array_storage_types[array_key]=id;
   string fields;
@@ -165,40 +170,10 @@ string aggregate_type(a_type_ptr t) {
     type_output+="[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential, Pack=1)]\n[global::System.Runtime.CompilerServices.InlineArray("+std::to_string(count)+")]\npublic unsafe struct "+id+" { public "+element_type+" e0; }\n";
     return id;
   } else {
-    std::set<unsigned long long> bit_bytes;
+    fields=source_bitfield_members(t);
     for (auto f = t->variant.class_struct_union.field_list; f; f = f->next) {
       auto ft=skip_typerefs(f->type);
-      if(f->is_bit_field) {
-        if(!f->bit_size)continue;
-        if(ft->kind!=tk_integer || f->bit_size>64 || f->offset+((unsigned)f->offset_bit_remainder+(unsigned)f->bit_size+7U)/8U>t->size)
-          unsupported("bitfield representation");
-        unsigned count=((unsigned)f->offset_bit_remainder+(unsigned)f->bit_size+7U)/8U;
-        for(unsigned i=0;i<count;++i)if(bit_bytes.insert(f->offset+i).second)
-          fields+="[global::System.Runtime.InteropServices.FieldOffset("+std::to_string(f->offset+i)+")] private byte __edg_bits"+std::to_string(f->offset+i)+";\n";
-        string read="bits";
-        if(int_type_is_signed(ft))read="((long)(bits << "+std::to_string(64-f->bit_size)+") >> "+std::to_string(64-f->bit_size)+")";
-        // Byte operations avoid a 64-iteration loop while preserving adjacent
-        // packed fields. At most nine bytes cover a 64-bit unaligned field;
-        // no widened load/store may reach outside the declared object.
-        unsigned remainder=(unsigned)f->offset_bit_remainder;
-        if(remainder>7)unsupported("bitfield byte remainder");
-        string load="ulong bits=((ulong)p[0] >> "+std::to_string(remainder)+")";
-        for(unsigned i=1;i<count;++i)
-          load+=" | ((ulong)p["+std::to_string(i)+"] << "+std::to_string(i*8-remainder)+")";
-        load+=";";
-        if(f->bit_size<64)load+="bits &= "+std::to_string((1ULL<<f->bit_size)-1ULL)+"UL;";
-        string store="ulong bits=unchecked((ulong)value);";
-        for(unsigned i=0;i<count;++i) {
-          int shift=(int)(i*8)-(int)remainder;
-          unsigned low=shift<0?(unsigned)-shift:0;
-          unsigned high=std::min(8U,remainder+(unsigned)f->bit_size-i*8);
-          unsigned mask=((1U<<(high-low))-1U)<<low;
-          string fragment=shift<0?"(bits << "+std::to_string(-shift)+")":"(bits >> "+std::to_string(shift)+")";
-          store+="p["+std::to_string(i)+"]=(byte)(((ulong)p["+std::to_string(i)+"] & ~"+std::to_string(mask)+"UL) | ("+fragment+" & "+std::to_string(mask)+"UL));";
-        }
-        fields+="public "+type(f->type)+" "+name(f,"m")+" { get { fixed(byte* p=&__edg_bits"+std::to_string(f->offset)+") { "+load+"return unchecked(("+type(f->type)+")"+read+"); } } set { fixed(byte* p=&__edg_bits"+std::to_string(f->offset)+") { "+store+"} } }\n";
-        continue;
-      }
+      if(f->is_bit_field)continue;
       bool vptr=f->compiler_generated && f->source_corresp.name && string(f->source_corresp.name)=="__vptr" &&
           f->offset==class_type_supp(t)->virtual_function_info_offset && ft->kind==tk_pointer &&
           skip_typerefs(ft->variant.pointer.type)->kind==tk_integer && skip_typerefs(ft->variant.pointer.type)->size==8;
@@ -246,8 +221,7 @@ string type(a_type_ptr t) {
       // no value, size or member operation on this placeholder is emitted.
       auto found=aggregate_types.find(pointee);
       if(found==aggregate_types.end()) {
-        string id=name(pointee,"__edg_opaque");
-        if(!nested_types)id=string(getenv("EDG_DOT_CLASS")+1)+"_"+id;
+        string id=source_record_name(pointee,"__edg_opaque");
         aggregate_types[pointee]=id;
         type_output+="public struct "+id+" {}\n";
         return id+"*";
@@ -266,6 +240,7 @@ string type(a_type_ptr t) {
     unsupported("extended floating representation");
   }
   if (t->kind != tk_integer) unsupported("type", t->kind);
+  ensure_source_enum(t);
   switch (t->variant.integer.int_kind) {
     case ik_char: if (t->size == 1) return targ_has_signed_chars ? "sbyte" : "byte"; break;
     case ik_signed_char: if (t->size == 1) return "sbyte"; break;
@@ -300,7 +275,7 @@ string routine_address(a_routine_ptr r) {
   auto found = routine_addresses.find(r);
   if (found != routine_addresses.end()) return found->second + "()";
   auto rt = skip_typerefs(r->type);
-  string fp = function_pointer_type(rt), id = name(r, "f"), getter = "__edg_address_" + id;
+  string fp = function_pointer_type(rt), id = name(r, "f"), getter = "__edg_address_" + source_identifier_component(id);
   routine_addresses[r] = getter;
   if(pure) {
     if(skip_typerefs(rt->variant.routine.return_type)->kind!=tk_void || rt->variant.routine.extra_info->param_type_list)
@@ -310,7 +285,7 @@ string routine_address(a_routine_ptr r) {
   }
   string target = id;
   {
-    target = "__edg_adapter_" + id;
+    target = "__edg_adapter_" + source_identifier_component(id);
     string signature = "private static " + type(rt->variant.routine.return_type) + " " + target + "(" +
                        string(instance_mode ? string(getenv("EDG_DOT_CLASS")) + " owner" : "");
     string args;
@@ -357,11 +332,13 @@ bool function_pointer(a_type_ptr t) {
   return t->kind == tk_pointer && skip_typerefs(t->variant.pointer.type)->kind == tk_routine;
 }
 std::map<a_variable_ptr, string> expression_variables;
+#include "dot_gen_source_storage.h"
 string variable(a_variable_ptr v) {
   if(v->storage_class==sc_extern){string imported=libc_variable(v);if(!imported.empty())return imported;unsupported("reference to external variable");}
   if(exception_metadata.count(v))unsupported("native RTTI storage outside exception matching");
   auto captured=expression_variables.find(v);
   if(captured!=expression_variables.end())return captured->second;
+  string source=source_variable_override(v);if(!source.empty())return source;
   auto tls = tls_offsets.find(v);
   if (tls != tls_offsets.end())
     return "(*(" + type(v->type) + "*)(" + (emitting_tls_initializer ? "p" : "__edg_tls_base") + " + " + std::to_string(tls->second) + "))";
@@ -374,7 +351,14 @@ string variable(a_variable_ptr v) {
   }
   return "(*(" + type(v->type) + "*)(__edg_base + " + std::to_string(it->second) + "))";
 }
+string variable_address(a_variable_ptr v) {
+  auto captured=expression_variables.find(v);
+  if(captured!=expression_variables.end())return "&("+captured->second+")";
+  string stored=source_storage_address(v);if(!stored.empty())return stored;
+  return "&("+variable(v)+")";
+}
 string constant(a_constant_ptr c) {
+  string source=source_enum_constant(c);if(!source.empty())return source;
   auto token=virtual_type_tokens.find(c);
   if(token!=virtual_type_tokens.end())return "(("+type(c->type)+")(__edg_type_token_base + "+std::to_string(8*token->second)+"))";
   if (c->kind == ck_string) return "(*(" + type(c->type) + "*)" + literal_address(c) + ")";
@@ -405,7 +389,7 @@ string constant(a_constant_ptr c) {
       unsupported("address constant", c->variant.address.kind);
     auto v = c->variant.address.variant.variable;
     if (!global_offsets.count(v) && !tls_offsets.count(v) && libc_variable(v).empty()) unsupported(("address of unallocated global: "+string(v->source_corresp.name?v->source_corresp.name:"<unnamed>")).c_str());
-    return "((" + type(c->type) + ")((byte*)&" + variable(v) + " + (" +
+    return "((" + type(c->type) + ")((byte*)" + variable_address(v) + " + (" +
            std::to_string(c->variant.address.offset) + ")))";
   }
   if(c->kind==ck_float) {
@@ -437,16 +421,26 @@ string constant(a_constant_ptr c) {
     return "unchecked(("+ty+")"+text+")";
   }
   a_boolean overflow;
-  auto bits = unsigned_value_of_integer_constant(c, &overflow);
-  // Signed negatives are represented via their unsigned bits; avoid C#'s
-  // special treatment of decimal minimum signed literals.
-  if (overflow && !int_constant_is_signed(c)) unsupported("wide integer constant");
-  char text[64];
-  snprintf(text, sizeof(text), "0x%llxUL", (unsigned long long)bits);
-  return "unchecked((" + ty + ")" + text + ")";
+  string text;
+  if(int_constant_is_signed(c)) {
+    auto value=value_of_integer_constant(c,&overflow);
+    if(overflow)unsupported("wide signed integer constant");
+    text=std::to_string((long long)value);
+    if(ty=="long")return text+"L";
+  } else {
+    auto value=unsigned_value_of_integer_constant(c,&overflow);
+    if(overflow)unsupported("wide unsigned integer constant");
+    text=std::to_string((unsigned long long)value);
+    if(ty=="ulong")return text+"UL";
+    if(ty=="uint")return text+"U";
+  }
+  if(ty=="int")return text;
+  return "("+ty+")"+text;
+
 }
-string initializer(string dst, a_type_ptr t, a_constant_ptr c) {
+string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address) {
   t = skip_typerefs(t);
+  if(storage_address.empty())storage_address="&("+dst+")";
   if(t->kind==tk_array && !t->size) {
     // c_gen_be.c::dump_initializer_part accepts empty zero-bound and flexible
     // array initializers. These members have address-only views here,
@@ -462,7 +456,7 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c) {
     if (t->kind != tk_array || c->variant.string.length > t->size) unsupported("string initializer bounds");
     string result = dst + " = default;\n";
     for (unsigned long long i = 0; i < c->variant.string.length; ++i)
-      result += "((byte*)&(" + dst + "))[" + std::to_string(i) + "] = " +
+      result += "((byte*)(" + storage_address + "))[" + std::to_string(i) + "] = " +
                 std::to_string((unsigned char)c->variant.string.value[i]) + ";\n";
     return result;
   }
@@ -512,8 +506,10 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c) {
       bool zero=value->kind==ck_integer && unsigned_value_of_integer_constant(value,&overflow)==0 && !overflow;
       if(!zero) {
         string counter="__edg_repeat"+std::to_string(++serial);
-        result+="for(ulong "+counter+"=0; "+counter+"<"+std::to_string(count)+"; ++"+counter+") {\n";
-        result+=initializer("(("+type(element)+"*)&("+dst+"))["+std::to_string(index)+"+"+counter+"]",element,value);
+        result+="for(int "+counter+"=0; "+counter+"<"+std::to_string(count)+"; ++"+counter+") {\n";
+        string cell="("+dst+")["+std::to_string(index)+"+"+counter+"]";
+        if(skip_typerefs(element)->kind==tk_pointer)cell+=".Value";
+        result+=initializer(cell,element,value,"(("+type(element)+"*)("+storage_address+")) + "+std::to_string(index)+" + "+counter);
         result+="}\n";
       }
       index+=count;continue;
@@ -524,10 +520,14 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c) {
         if (index >= t->variant.array.variant.number_of_elements) unsupported("array initializer bounds");
         if (skip_typerefs(value->type)->size != skip_typerefs(element)->size)
           unsupported("flattened multidimensional initializer");
-        result += initializer("((" + type(element) + "*)&(" + dst + "))[" + std::to_string(index++) + "]", element, value);
+        string cell="("+dst+")["+std::to_string(index)+"]";
+        if(skip_typerefs(element)->kind==tk_pointer)cell+=".Value";
+        result += initializer(cell, element, value,"(("+type(element)+"*)("+storage_address+")) + "+std::to_string(index));
+        ++index;
       } else {
         if (!field || count != 1) unsupported("record initializer fields");
-        result += initializer("(" + dst + ")." + name(field, "m"), field->type, value);
+        result += initializer("(" + dst + ")." + name(field, "m"), field->type, value,
+                              "(("+type(field->type)+"*)((byte*)("+storage_address+") + "+std::to_string(field->offset)+"))");
         field = next_non_empty_initializable_field(field->next);
       }
     }
@@ -574,6 +574,30 @@ string location(an_expr_node_ptr e);
 #include "dot_gen_atomics.h"
 #include "dot_gen_intrinsics.h"
 
+string address(an_expr_node_ptr e) {
+  string planned=source_expression_address_override(e);
+  if(!planned.empty())return planned;
+  string captured=coroutine_expression_override(e,true);
+  if(!captured.empty())return "&("+captured+")";
+  if(e->kind==enk_variable)return variable_address(node_variable(e));
+  if(e->kind==enk_operation) {
+    auto op=e->variant.operation.kind;auto a=e->variant.operation.operands;auto b=a?a->next:nullptr;
+    if(op==eok_indirect || op==eok_ref_indirect)return expr(a);
+    if(op==eok_parens)return address(a);
+    if(op==eok_lvalue_adjust)return "(("+type(e->type)+"*)"+address(a)+")";
+    if(op==eok_dot_field || op==eok_points_to_field) {
+      auto field=node_field(b);auto object=skip_typerefs(a->type);
+      if(op==eok_points_to_field)object=skip_typerefs(object->variant.pointer.type);
+      string base=op==eok_dot_field?address(a):expr(a);
+      if(user_typeinfo(object))return "&("+typeinfo_field(field,base,a)+")";
+      auto field_type=skip_typerefs(field->type);
+      if(!(field_type->kind==tk_array && !field_type->size))return "&(("+base+")->"+name(field,"m")+")";
+      return "(("+type(field->type)+"*)((byte*)("+base+") + "+std::to_string(field->offset)+"))";
+    }
+    if(op==eok_subscript)return "("+expr(a)+" + "+expr(b)+")";
+  }
+  return "&("+location(e)+")";
+}
 string condition(an_expr_node_ptr e) {
   return "(" + expr(e) + (skip_typerefs(e->type)->kind == tk_pointer ? " != null)" : " != 0)");
 }
@@ -616,9 +640,10 @@ string bitfield_mutation(an_expr_node_ptr e,an_expr_node_ptr rhs,const string &o
       ((op=="<<"||op==">>")?"(int)rhs":"(("+calc+")rhs)");
   helper_output+="// dot-gen:member-begin\nprivate static "+ty+" "+id+"("+rt+" rhs, "+type(obj)+"* p) { "+
       (post?ty+" old="+field+"; ":"")+field+"=unchecked(("+type(f->type)+")("+value+")); return "+(post?"old":field)+"; }\n// dot-gen:member-end\n";
-  return id+"("+(rhs?expr(rhs):"1")+", "+(pointer?expr(base):"&("+location(base)+")")+")";
+  return id+"("+(rhs?expr(rhs):"1")+", "+(pointer?expr(base):address(base))+")";
 }
 string location(an_expr_node_ptr e) {
+  string source_override=source_expression_override(e,true);if(!source_override.empty())return source_override;
   if (!e) unsupported("null expression");
   string coroutine_value=coroutine_expression_override(e,true);
   if(!coroutine_value.empty())return coroutine_value;
@@ -662,7 +687,7 @@ string location(an_expr_node_ptr e) {
   string vararg_operation=va_operation(e);
   if(!vararg_operation.empty())return vararg_operation;
   if (op == eok_comma) return sequence_expression(e);
-  if (op == eok_lvalue_adjust) return "(*(" + type(e->type) + "*)&(" + location(a) + "))";
+  if (op == eok_lvalue_adjust) return "(*(" + type(e->type) + "*)" + address(a) + ")";
   if (op == eok_call) {
     string intrinsic=intrinsic_call(e);
     if(!intrinsic.empty())return intrinsic;
@@ -732,16 +757,16 @@ string location(an_expr_node_ptr e) {
     }
     return call + ")";
   }
-  if (op == eok_array_to_pointer) return "((" + type(e->type) + ")&(" + location(a) + "))";
+  if (op == eok_array_to_pointer) return "((" + type(e->type) + ")" + address(a) + ")";
   if (op == eok_dot_field || op == eok_points_to_field) {
     auto field = node_field(b);
     auto object=skip_typerefs(a->type);
     if(op==eok_points_to_field)object=skip_typerefs(object->variant.pointer.type);
     if(user_typeinfo(object))
-      return typeinfo_field(field,op==eok_dot_field?"&("+location(a)+")":expr(a),a);
+      return typeinfo_field(field,op==eok_dot_field?address(a):expr(a),a);
     auto ft=skip_typerefs(field->type);
     if(ft->kind==tk_array && !ft->size) {
-      string base=op==eok_dot_field?"&("+location(a)+")":expr(a);
+      string base=op==eok_dot_field?address(a):expr(a);
       return "(*("+type(field->type)+"*)((byte*)("+base+") + "+std::to_string(field->offset)+"))";
     }
     return "(" + (op==eok_dot_field?location(a):expr(a)) + (op == eok_dot_field ? ")." : ")->") + name(field, "m");
@@ -752,20 +777,21 @@ string location(an_expr_node_ptr e) {
     // EDG uses distinct, truncated subobject types for tail-padding reuse.
     // Pack=1 and the explicit EDG size keep these copies within that subobject.
     auto ty = type(a->type);
-    string id = "__edg_copy_" + ty;
+    string id = "__edg_copy_" + source_identifier_component(ty);
     if (!assignment_helpers.count(id)) {
       assignment_helpers[id] = id;
       helper_output += "// dot-gen:member-begin\nprivate static void " + id + "(" + ty +
                        " rhs, " + ty + "* lhs) { *lhs = rhs; }\n// dot-gen:member-end\n";
     }
-    return id + "(" + expr(b) + ", &(" + location(a) + "))";
+    return id + "(" + expr(b) + ", " + address(a) + ")";
   }
   if (op == eok_address_of && a->kind == enk_routine) return expr(a);
-  if (op == eok_address_of || op == eok_reference_to) return "(&" + location(a) + ")";
+  if (op == eok_address_of || op == eok_reference_to) return "(" + address(a) + ")";
   if (op == eok_indirect && function_pointer(a->type)) return expr(a);
   if (op == eok_indirect || op == eok_ref_indirect) return "(*(" + expr(a) + "))";
   if (op == eok_subscript) {
     // C++17 sequences the syntactic left operand first, even for index[p].
+    if(skip_typerefs(a->type)->kind==tk_pointer)return "("+expr(a)+")["+expr(b)+"]";
     return "(*(" + expr(a) + " + " + expr(b) + "))";
   }
   if (op == eok_cast) {
@@ -794,7 +820,7 @@ string location(an_expr_node_ptr e) {
     if(get_type_qualifiers(a->type)&TQ_VOLATILE) {
       string id="__edg_volatile_inc"+std::to_string(++serial),ty=type(a->type);
       helper_output+="// dot-gen:member-begin\nprivate static "+ty+" "+id+"("+ty+"* p) {global::System.Threading.Thread.MemoryBarrier(); "+ty+" old=*p; "+ty+" value=unchecked(("+ty+")(old "+(token=="++"?"+":"-")+" 1)); *p=value;global::System.Threading.Thread.MemoryBarrier();return "+(pre?"value":"old")+";}\n// dot-gen:member-end\n";
-      return id+"(&("+location(a)+"))";
+      return id+"("+address(a)+")";
     }
     return "unchecked(" + (pre ? token + location(a) : location(a) + token) + ")";
   }
@@ -854,7 +880,7 @@ string location(an_expr_node_ptr e) {
       helper_output += "// dot-gen:member-begin\nprivate static " + lhs_type + " " + helper +
         "(" + rhs_type + " rhs, " + lhs_type + "* lhs) { "+string(vol?"global::System.Threading.Thread.MemoryBarrier(); ":"")+"*lhs = unchecked(("+lhs_type+")("+value+")); "+string(vol?"global::System.Threading.Thread.MemoryBarrier(); ":"")+"return *lhs; }\n// dot-gen:member-end\n";
     }
-    return helper + "(" + rhs + ", &(" + location(a) + "))";
+    return helper + "(" + rhs + ", " + address(a) + ")";
   }
   if (op == eok_shiftl || op == eok_shiftr) rhs = "unchecked((int)(" + rhs + "))";
   string lhs = expr(a);
@@ -864,15 +890,22 @@ string location(an_expr_node_ptr e) {
   }
   string value = "(" + lhs + " " + token + " " + rhs + ")";
   if (comparison) return "(" + value + " ? 1 : 0)";
+  string result_type=type(e->type),left_type=type(a->type),right_type=type(b->type);
+  // The generated project explicitly uses unchecked arithmetic. Preserve a
+  // conversion only when C# operator promotion changes the physical type.
+  bool native_numeric=result_type=="int" || result_type=="uint" || result_type=="long" || result_type=="ulong" || result_type=="float" || result_type=="double";
+  if(native_numeric && result_type==left_type && (left_type==right_type || op==eok_shiftl || op==eok_shiftr))return value;
+  if((op==eok_padd || op==eok_psubtract) && result_type==left_type)return value;
   return convert(e->type, value);
 }
 void line(string s) { output += s + "\n"; }
 string expr(an_expr_node_ptr e) {
+  string source=source_expression_override(e,false);if(!source.empty())return source;
   if (!e) unsupported("null expression");
   string coroutine_value=coroutine_expression_override(e,false);
   if(!coroutine_value.empty())return coroutine_value;
   string value=location(e);
-  if(e->is_lvalue && c11_atomic_type(e->type))return c11_atomic_read(e,"&("+value+")");
+  if(e->is_lvalue && c11_atomic_type(e->type))return c11_atomic_read(e,address(e));
   if(volatile_bitfield(e))return volatile_bitfield_access(e,nullptr,"");
   if(!(get_type_qualifiers(e->type)&TQ_VOLATILE) || !e->is_lvalue)return value;
   if(bitfield(e))return volatile_bitfield_access(e,nullptr,"");
@@ -886,15 +919,17 @@ string expr(an_expr_node_ptr e) {
     // prevent an inliner from eliminating an ordinary unused load.
     helper_output+="// dot-gen:member-begin\n[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]\nprivate static "+ty+" "+id+"("+ty+"* p) {global::System.Threading.Thread.MemoryBarrier(); "+ty+" value=*p;global::System.Threading.Thread.MemoryBarrier();return value;}\n// dot-gen:member-end\n";
   }
-  return id+"(&("+value+"))";
+  return id+"("+address(e)+")";
 }
 
+#include "dot_gen_source_expressions.h"
+#include "dot_gen_source_control.h"
 void variables(a_variable_ptr v, bool global) {
   for (; v; v = v->next) {
     if(!variable_needed(v))continue;
     if (v->is_thread_local) unsupported("thread-local storage");
     if (v->storage_class == sc_extern) unsupported(("external variable: "+string(v->source_corresp.name?v->source_corresp.name:"unnamed")).c_str());
-    if (local_offsets.count(v)) continue;
+    if (local_offsets.count(v) || (!global && source_lexical_variables.count(v))) continue;
     if (v->alignment > 8 || alignment_of_type(v->type) > 8)
       unsupported("overaligned local");
     string init = "default";
@@ -1079,18 +1114,21 @@ void statement(a_statement_ptr s) {
           }
           default: unsupported("lowered EH statement", eh.kind);
         }
-      } else line(expression_effect(s->expr));
+      } else line(plan_source_effect(s->expr).statements);
       break;
-    case stmk_return:
+    case stmk_return: {
       if (s->variant.return_dynamic_init) unsupported("return initialization");
       // EDG's C backend emits a bare return for the unreachable/fall-through
       // path of a value-returning function. C# requires a typed return or throw.
-      line(s->expr ? "return " + expr(s->expr) + ";" : function_returns_void ? "return;" :
+      auto value=plan_source_value(s->expr);output+=value.prefix;
+      line(s->expr ? "return " + value.value + ";" : function_returns_void ? "return;" :
            "throw new global::System.InvalidProgramException(\"C++ function returned without a value\");"); break;
+    }
     case stmk_block:
-      // C++ permits jumping into ordinary nested blocks. Locals are already
-      // hoisted; retain EDG's initialization/cleanup statements, not C# braces.
+      // Preserve lexical blocks when no jump can enter their declaration scope.
+      if(source_lexical_safe && source_structured(s) && s!=current_function_scope->assoc_block && s->variant.block.extra_info->assoc_scope && !s->variant.block.extra_info->implicit_scope_not_allowed)line("{");
       for (auto child = s->variant.block.statements; child; child = child->next) statement(child);
+      if(source_lexical_safe && source_structured(s) && s!=current_function_scope->assoc_block && s->variant.block.extra_info->assoc_scope && !s->variant.block.extra_info->implicit_scope_not_allowed)line("}");
       break;
     case stmk_try_block: {
       ensure_exception_helpers();
@@ -1121,7 +1159,7 @@ void statement(a_statement_ptr s) {
         catch_frames[h]=frame;
         line("var "+frame+" = "+exception_catch_frame(id+"_error",h->parameter?catch_type(h):nullptr)+"; try {");
         statement(h->statement);
-        line("} catch (global::System.Exception handler_error) when (__edg_catch_filter("+frame+", handler_error)) { throw; } finally { if ("+frame+".Active) { "+cleanup_unwind(id+"_boundary")+" } "+frame+".Leave(); }");
+        line("} catch (global::System.Exception __edg_handler_error) when (__edg_catch_filter("+frame+", __edg_handler_error)) { throw; } finally { if ("+frame+".Active) { "+cleanup_unwind(id+"_boundary")+" } "+frame+".Leave(); }");
         catch_frames.erase(h);
         line("}");
       }
@@ -1130,6 +1168,12 @@ void statement(a_statement_ptr s) {
       break;
     }
     case stmk_if: {
+      if(source_structured(s)) {
+        auto test=plan_source_condition(s->expr);output+=test.prefix;line("if ("+test.value+") {");
+        statement(s->variant.if_stmt.then_statement);line("}");
+        if(s->variant.if_stmt.else_statement){line("else {");statement(s->variant.if_stmt.else_statement);line("}");}
+        break;
+      }
       string id=name(s,"__edg_if");
       output+=source_jump_prefix(s->expr);
       line("if (!"+condition(s->expr)+") goto "+id+"_else;");
@@ -1137,6 +1181,19 @@ void statement(a_statement_ptr s) {
       line(id+"_else: ;");statement(s->variant.if_stmt.else_statement);line(id+"_end: ;");break;
     }
     case stmk_while: case stmk_end_test_while: {
+      if(source_structured(s)) {
+        auto test=plan_source_condition(s->expr);
+        // Complex test prefixes must execute on every iteration. The trailing
+        // form retains its original lowering until continue can name the test.
+        if(test.prefix.empty() || s->kind==stmk_while) {
+          bool trailing=s->kind==stmk_end_test_while;
+          line(trailing?"do {":test.prefix.empty()?"while ("+test.value+") {":"while (true) {");
+          if(!test.prefix.empty()){output+=test.prefix;line("if (!("+test.value+")) break;");}
+          source_control_stack.push_back(source_context(s,s->variant.loop_statement,true));
+          statement(s->variant.loop_statement);source_control_stack.pop_back();
+          line(trailing?"} while ("+test.value+");":"}");break;
+        }
+      }
       string id=name(s,"__edg_loop");line(id+"_head: ;");
       if(s->kind==stmk_while)output+=source_jump_prefix(s->expr);
       if(s->kind==stmk_while)line("if (!"+condition(s->expr)+") goto "+id+"_end;");
@@ -1148,6 +1205,24 @@ void statement(a_statement_ptr s) {
     }
     case stmk_for: {
       auto f = s->variant.for_loop.extra_info;
+      if(source_structured(s)) {
+        auto test=plan_source_condition(s->expr);auto increment=plan_source_effect(f->increment);
+        if(test.prefix.empty() && (!f->increment || !increment.header.empty())) {
+          string init;
+          auto fused=source_for_initializers.find(s);
+          if(fused!=source_for_initializers.end()) {
+            auto d=fused->second;init=type(d->variable->type)+" "+variable(d->variable)+" = "+source_initializer_value(d);
+            source_declared_variables.insert(d->variable);
+          } else statement(f->initialization);
+          line("for ("+init+"; "+(s->expr?test.value:"")+"; "+increment.header+") {");
+          source_control_stack.push_back(source_context(s,s->variant.for_loop.statement,true));
+          statement(s->variant.for_loop.statement);source_control_stack.pop_back();line("}");break;
+        }
+      }
+      auto fused=source_for_initializers.find(s);
+      if(fused!=source_for_initializers.end()) {
+        auto d=fused->second;line(type(d->variable->type)+" "+variable(d->variable)+" = "+source_initializer_value(d)+";");source_declared_variables.insert(d->variable);
+      }
       statement(f->initialization);
       string id=name(s,"__edg_for");line(id+"_head: ;");
       output+=source_jump_prefix(s->expr);
@@ -1156,6 +1231,27 @@ void statement(a_statement_ptr s) {
       line("goto "+id+"_head;");if(s->expr)line(id+"_end: ;");break;
     }
     case stmk_switch: {
+      std::vector<a_statement_ptr> items;
+      if(source_structured(s) && source_switch_items(s->variant.switch_stmt.body_statement,items)) {
+        auto value=plan_source_value(s->expr);output+=value.prefix;line("switch ("+value.value+") {");
+        source_control_stack.push_back(source_context(s,s->variant.switch_stmt.body_statement,false));
+        bool section=false,terminal=false;
+        for(auto item:items) {
+          if(item->kind==stmk_switch_case) {
+            auto c=item->variant.switch_case.extra_info;
+            if(section && !terminal)line("goto "+name(c,"__edg_case")+";");
+            string case_value=source_enum_case(c->case_value,source_switch_enum_context(s->expr));
+            if(c->case_value && case_value.empty())case_value=constant(c->case_value);
+            line(!c->case_value?"default:":c->range_end?"case >= "+case_value+" and <= "+constant(c->range_end)+":":"case "+case_value+":");
+            line(name(c,"__edg_case")+": ;");section=true;terminal=false;
+          } else if(section){statement(item);terminal=source_statement_terminates(item);}
+          else if(item->kind!=stmk_decl && item->kind!=stmk_empty) {
+            // Statements before the first case are unreachable in C as well.
+          }
+        }
+        if(section && !terminal)line("break;");
+        source_control_stack.pop_back();line("}");break;
+      }
       string id=name(s,"__edg_switch");
       output+=source_jump_prefix(s->expr);
       line(type(s->expr->type)+" "+id+"_value = "+expr(s->expr)+";");
@@ -1173,7 +1269,7 @@ void statement(a_statement_ptr s) {
     }
     case stmk_switch_case:line(name(s->variant.switch_case.extra_info,"__edg_case")+": ;");break;
     case stmk_label: line(name(s->variant.label.ptr, "label") + ": ;"); break;
-    case stmk_goto: line("goto " + name(s->variant.label.ptr, "label") + ";"); break;
+    case stmk_goto: line(source_transfer(s->variant.label.ptr)); break;
     case stmk_init: {
       auto d = s->variant.dynamic_init;
       // Like c_gen_be's dump_whole_variable_dynamic_init, dik_none has
@@ -1184,10 +1280,15 @@ void statement(a_statement_ptr s) {
       // Destruction is emitted separately by EDG and the region-table walker,
       // as in c_gen_be; its presence does not change the initialization.
       if (!d->variable) unsupported("initialization without a variable");
+      if(source_lexical_variables.count(d->variable) && !source_declared_variables.count(d->variable)) {
+        if(s->next && source_for_initializers.count(s->next) && source_for_initializers.at(s->next)==d)break;
+        auto value=source_initializer_value(d);line(type(d->variable->type)+" "+variable(d->variable)+" = "+value+";");
+        source_declared_variables.insert(d->variable);break;
+      }
       string value;
-      if (d->kind == dik_expression) value = expr(d->variant.expression);
+      if (d->kind == dik_expression) {auto plan=plan_source_value(d->variant.expression);output+=plan.prefix;value=plan.value;}
       else if (d->kind == dik_constant) {
-        line(initializer(variable(d->variable), d->variable->type, d->variant.constant.ptr));
+        line(initializer(variable(d->variable), d->variable->type, d->variant.constant.ptr,variable_address(d->variable)));
         break;
       }
       else if (d->kind == dik_zero) value = "default";
@@ -1203,10 +1304,10 @@ void statement(a_statement_ptr s) {
 // Shared host boundary for ordinary routines and coroutine factories.
 void emit_library_export(a_routine_ptr r,a_variable_ptr params,const string &signature) {
   auto rt=skip_typerefs(r->type);
-  string exported = "__edg_export_" + name(r, "f"), args;
+  string exported = source_export_name(r), args;
   for (auto p = params; p; p = p->next) {
     if (p != params) args += ", ";
-    args += name(p, "v");
+    args += source_parameter_name(p);
   }
   if(rt->variant.routine.extra_info->has_ellipsis)args+=string(args.empty()?"":", ")+"__edg_arguments";
   // The driver consumes these protocol records into the symbol manifest.
@@ -1220,6 +1321,7 @@ void emit_library_export(a_routine_ptr r,a_variable_ptr params,const string &sig
   auto pos = api.find(" " + name(r, "f") + "(");
   api.replace(pos + 1, name(r, "f").size(), exported);
   line("// dot-gen:member-begin");
+  line("// dot-gen:origin "+exported);
   line(api + " { /*__EDG_ENTER__*/ try { " + (type(rt->variant.routine.return_type) == "void" ? "" : "return ") +
        name(r, "f") + "(" + args + "); } /*__EDG_EXCEPTION_BOUNDARY__*/ finally { /*__EDG_LEAVE__*/ global::System.GC.KeepAlive(" +
        string(instance_mode ? "this" : "__edg_storage") + "); } }");
@@ -1241,6 +1343,7 @@ void back_end(void) {
   address_output.clear(); routine_addresses.clear(); literal_bytes.clear(); literal_offsets.clear();
   local_offsets.clear(); serial = 0; output.clear();
   expression_variables.clear(); expression_serial=0; cleanup_slot="__edg_cleanup_state"; array_helpers_emitted=false; array_allocation_helpers.clear();
+  reset_source_names();reset_source_storage();
   context = "file scope";
   exception_helpers_emitted=false; pending_exception.clear(); exception_metadata.clear(); catch_frames.clear();
   terminate_helpers_emitted=false;
@@ -1267,6 +1370,7 @@ void back_end(void) {
   // Exception metadata visits aggregate types before ordinary emission.
   nested_types = !getenv("EDG_DOT_NEST") || string(getenv("EDG_DOT_NEST")) == "1";
   collect_coroutine_requirements(scope);
+  initialize_source_names(scope);
   collect_c11_thread_imports(scope);
   if (getenv("EDG_DOT_TRACE")) {trace_program(scope);trace_coroutines(scope);}
   for(auto r=scope->routines;r;r=r->next) {
@@ -1303,6 +1407,7 @@ void back_end(void) {
   line("public " + string(instance_mode ? "sealed" : "static") + " unsafe partial class " + cls + string(instance_mode?" : global::System.IDisposable":"")+" {");
   if(instance_mode)ensure_lifecycle();
   globals(scope->variables, cls);
+  emit_source_global_accessors();
   a_routine_ptr main_routine = nullptr;
   for (auto r = scope->routines; r; r = r->next) {
     if(!routine_body_needed(r))continue;
@@ -1313,6 +1418,7 @@ void back_end(void) {
     context = r->source_corresp.name ? r->source_corresp.name : "generated function";
     diagnostic_scope diagnostic(r->source_corresp.decl_position);
     current_function_scope=s;
+    reset_source_frame_aliases();
     function_vla_used=false;
     try_frames.clear(); exception_locals.clear();
     prepare_cleanup(s);
@@ -1339,11 +1445,12 @@ void back_end(void) {
         if(frame_size+frame_alignment>64*1024*1024)unsupported("local frame exceeds 64 MiB");
       }
       if (p != params) signature += ", ";
-      signature += type(p->type) + " " + name(p, "v");
+      signature += type(p->type) + " " + source_parameter_name(p);
     }
     if(rt->variant.routine.extra_info->has_ellipsis)
       signature+=string(params?", ":"")+"global::Edg.Runtime.VaList* __edg_arguments";
     line("// dot-gen:member-begin");
+    line(source_member_marker(r));
     line(signature + ") {");
     auto spec = rt->variant.routine.extra_info->exception_specification;
     bool no_throw = spec && !spec->throw_any && spec->is_noexcept;
@@ -1361,7 +1468,9 @@ void back_end(void) {
       line("byte* __edg_frame = (byte*)(((nuint)__edg_frame_raw + " + std::to_string(frame_alignment - 1) +
            ") & ~(nuint)" + std::to_string(frame_alignment - 1) + ");");
     }
-    for(auto p=params;p;p=p->next)if(local_offsets.count(p))line(variable(p)+" = "+name(p,"v")+";");
+    output+=source_frame_alias_declarations(s);
+    for(auto p=params;p;p=p->next)if(local_offsets.count(p))line(variable(p)+" = "+source_parameter_name(p)+";");
+    prepare_source_control(s->assoc_block);
     locals(s);
     size_t body_start = output.size();
     output+=source_jump_dispatch_prefix();
@@ -1379,14 +1488,14 @@ void back_end(void) {
       line("} finally { global::Edg.Runtime.Vla.Restore(__edg_vla_mark); }");
     }
     if (heap_frame) line("} finally { global::System.Runtime.InteropServices.NativeMemory.Free(__edg_frame_raw); }");
-    if (no_throw) line("} catch (global::System.Exception error) when ("+control_transfer_exclusion("error")+") { __edg_terminate_runtime(error, \"Exception escaped noexcept function\"); throw; }");
+    if (no_throw) line("} catch (global::System.Exception __edg_noexcept_error) when ("+control_transfer_exclusion("__edg_noexcept_error")+") { __edg_terminate_runtime(__edg_noexcept_error, \"Exception escaped noexcept function\"); throw; }");
     else if(dynamic_spec)line(dynamic_exception_boundary(r));
     line("}");
     line("// dot-gen:member-end");
     if(library_mode)emit_library_export(r,params,signature+")");
   }
   ensure_initial_process_thread();
-  output += (nested_types ? type_output : "") + helper_output + address_output;
+  output += (nested_types ? type_output : "") + helper_output + address_output + source_mapping_output;
   for(const auto &item:std::vector<std::pair<string,string>>{
       {"SHUTDOWN","Destructor threw during shutdown"},{"GLOBAL","Exception during global initialization"},{"THREAD","Exception escaped translated thread"}}) {
     string marker="/*__EDG_"+item.first+"_TERMINATE__*/";

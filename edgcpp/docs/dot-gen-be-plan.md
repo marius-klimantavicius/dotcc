@@ -1,9 +1,9 @@
 # Plan for the EDG C# backend dot_gen_be.c
 
-Status: after reviewing the SQLite output on 2026-10-03, the user stopped
-implementation and made source correspondence a primary requirement. The next
-implementation direction is recorded below; inspection and planning do not
-resume the stopped implementation campaign. Earlier that day the user
+Status: after reviewing the SQLite output on 2026-10-03, the user paused
+implementation, made source correspondence a primary requirement, then
+explicitly resumed implementation with coordinated workers. The revised
+emitter is under execution and source-review validation. Earlier that day the user
 redirected work to real-project translation and
 verification, beginning with the pinned SQLite amalgamation. Implement concrete
 project blockers and defer exhaustive C++/libc++ coverage. The broader design

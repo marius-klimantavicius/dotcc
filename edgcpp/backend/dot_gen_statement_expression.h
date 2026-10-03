@@ -67,7 +67,7 @@ void statement_expression_captures(an_expr_node_ptr e,std::vector<a_variable_ptr
 std::vector<bool> statement_expression_results;
 string statement_expression_result(an_expr_node_ptr e) {
   if(statement_expression_results.empty() || !e)unsupported("unclaimed GNU statement result");
-  return "return "+(statement_expression_results.back()?"&("+location(e)+")":expr(e))+";";
+  return "return "+(statement_expression_results.back()?address(e):expr(e))+";";
 }
 string gnu_statement_expression(an_expr_node_ptr e) {
   statement_expression_scan scan;scan_statement_expression_body(e->variant.statement,scan);
@@ -76,7 +76,7 @@ string gnu_statement_expression(an_expr_node_ptr e) {
   auto saved_variables=expression_variables;
   for(size_t i=0;i<scan.captures.size();++i) {
     auto v=scan.captures[i];if(i){args+=", ";params+=", ";}
-    args+="&("+variable(v)+")";
+    args+=variable_address(v);
     string p="p"+std::to_string(i);params+=type(v->type)+"* "+p;expression_variables[v]="(*"+p+")";
   }
   if(current_function_scope && variadic_routine(current_function_scope->variant.routine.ptr->type)) {
