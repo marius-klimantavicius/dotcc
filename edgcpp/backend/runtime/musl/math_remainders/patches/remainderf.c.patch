@@ -1,0 +1,21 @@
+--- a/remainderf.c
++++ b/remainderf.c
+@@ -1,9 +1,16 @@
++#include <errno.h>
+ #include <math.h>
+ 
+-float remainderf(float x, float y)
++float __edg_musl_remainderf(float x, float y)
+ {
+ 	int q;
+ 	return remquof(x, y, &q);
+ }
+ 
+-weak_alias(remainderf, dremf);
++/* Native legacy drem alias is outside this selected source component. */
++
++float remainderf(float x, float y)
++{
++ if (!isnan(x) && !isnan(y) && (isinf(x) || y == 0)) errno = EDOM;
++ return __edg_musl_remainderf(x, y);
++}

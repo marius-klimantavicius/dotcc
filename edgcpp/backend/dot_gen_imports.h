@@ -49,6 +49,12 @@ string libc_builtin_symbol(a_routine_ptr r) {
     case bfk_log10:return "log10";
     case bfk_log10f:return "log10f";
     case bfk_log10l:return "log10l";
+    case bfk_remainder:return "remainder";
+    case bfk_remainderf:return "remainderf";
+    case bfk_remainderl:return "remainderl";
+    case bfk_remquo:return "remquo";
+    case bfk_remquof:return "remquof";
+    case bfk_remquol:return "remquol";
     case bfk_fmod:return "fmod";
     case bfk_fmodf:return "fmodf";
     case bfk_fmodl:return "fmodl";

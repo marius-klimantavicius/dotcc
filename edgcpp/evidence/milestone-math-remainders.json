@@ -1,0 +1,26 @@
+{
+  "scope": "Selected musl remainder and quotient functions with GNU source aliases",
+  "checks": 18,
+  "providerTranslationUnits": 173,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/libc-math-remainders-translated-002/results.json",
+      "sha256": "1435eefaf595cd894264ae57d190fd68907e073f31899fc6ea89d6d6c6689ef5"
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-math-remainders-002/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082"
+    },
+    {
+      "path": "artifacts/campaign/libc-math-remainders-patch-001/results.json",
+      "sha256": "767cf9cff36e0c2b814a3d15714bd08036d6e16124cfbf1ed4e06db3faa7f636"
+    }
+  ],
+  "sourceManifestSha256": "fc36e8a0e70e2bcd4e5f181c9c804c62318b6fba6cd14ef4720cbe5706fbb5b9",
+  "limitations": [
+    "Legacy drem aliases omitted",
+    "No dynamic fenv or full libm claim",
+    "Binary80 arithmetic performance remains open",
+    "Linux-x64 execution only"
+  ]
+}

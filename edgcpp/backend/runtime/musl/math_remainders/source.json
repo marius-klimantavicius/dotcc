@@ -1,0 +1,58 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "remainder.c": {
+      "upstream": "src/math/remainder.c",
+      "originalSha256": "1996546b761c35236155ef3c4740ce6c108e83e26c2e610f46e0b78e689a12cb",
+      "adaptedSha256": "ef2b543436040d2017aae8404f521361470fec85a2947476491cf8b0e21c529c",
+      "patch": "patches/remainder.c.patch",
+      "patchSha256": "52f15df815cc04fe2d63484730ec8e2968728ceefac53e58ca9391bcff96c4d3"
+    },
+    "remainderf.c": {
+      "upstream": "src/math/remainderf.c",
+      "originalSha256": "c9706aa3f83efbf2fe4f00c688ec1cadbedcfb99ad538b97cddf4e74c8249756",
+      "adaptedSha256": "e82c28c5cdcf4532d88169956ffbc579ff03ad87dd716151387d06327f58a340",
+      "patch": "patches/remainderf.c.patch",
+      "patchSha256": "6bcf2c39902ea5861138f93466ec159df5623c75ceb0c10440b4e2d2c1ed5fa0"
+    },
+    "remainderl.c": {
+      "upstream": "src/math/remainderl.c",
+      "originalSha256": "f742d447e5d1cd513297c774d096bcf96d0d70dec0f6fbe1eac9315b5b2a61a5",
+      "adaptedSha256": "7c1aa2477038b0f456aae833c365287da9509a348d69290cbea61b96c4bf76bd",
+      "patch": "patches/remainderl.c.patch",
+      "patchSha256": "db6afdf27664c8ab3d875d67e8951c23d83121c30a979dc0c7d5221d450c8e51"
+    },
+    "remquo.c": {
+      "upstream": "src/math/remquo.c",
+      "originalSha256": "7ccf8f5c1376de85a8741dcbdcd9feb69fe8268ddd49aebc796036f80a9eaee9",
+      "adaptedSha256": "e1421d0a67b00d29d21a1ff4202b086081178be7a36235001f97a4a52e2261fe",
+      "patch": "patches/remquo.c.patch",
+      "patchSha256": "0837f0b8efb28cbfad862004f9b7d398429214dd812166dc88ab14cf89a6fa6c"
+    },
+    "remquof.c": {
+      "upstream": "src/math/remquof.c",
+      "originalSha256": "f40401d2bc1732932375a64590a6844229d566c1a6907a6aa6480a455284fcf9",
+      "adaptedSha256": "6808dd0993e904d85ce36cdfba2441a4e38be4e26e04d7949a79be5b64b4a28b",
+      "patch": "patches/remquof.c.patch",
+      "patchSha256": "bb48408c2011b04e08e18f59b253f37d75511f1a8ff4926659213efafa194c9a"
+    },
+    "remquol.c": {
+      "upstream": "src/math/remquol.c",
+      "originalSha256": "ce2ab067c4780ef11482b40c6e93d0ce27b5c5df4fdb117716243b533ee1a829",
+      "adaptedSha256": "d8aa04de2b40f07ced81f17943697e7ea906f1e7ec7e25a6fe06e836c1eeb83c",
+      "patch": "patches/remquol.c.patch",
+      "patchSha256": "6027e427206b3757d0bd05269bc2ad338096b41f96c096940ca9d883ed50fd9b"
+    },
+    "libm.h": {
+      "upstream": "src/internal/libm.h",
+      "originalSha256": "d5a11757541471030d8f4bf7a39a29de35732ecbb291b2f45bf03296be4f25a2",
+      "adaptedSha256": "d95ceab3f0ceddc3094ac1594921f4bae98abc3c698aa6e98ebdb88245fdf711",
+      "patch": "patches/libm.h.patch",
+      "patchSha256": "065f6dce6945fb3ee8e85b13dd7f0f2a290da3ab329a10ba8446ff76594d7af8"
+    }
+  },
+  "adapters": {
+    "portable_math_abi.h": "108a4dfda6f78e9adef220f4529684bf9d8d0fa22ea977b2fb44cdb46d4d3754"
+  }
+}

@@ -100,3 +100,8 @@ profile uses owner environment and captured working directory, raw BCL exit
 codes and host OS standard handles;25 focused checks pass. POSIX signal/wait
 semantics and owner FILE-to-child descriptor mapping remain open. See
 libc-system-profile.md and evidence/milestone-system.json.
+
+Selected remainder/remquo families add six musl source units (provider173).
+Eighteen focused checks cover original/adapted native bits and quotient outputs,
+all generated modes, errno, owner/TLS, packaging, GNU aliases and patch replay.
+No dynamic fenv or complete libm claim; see libc-math-remainders.md.

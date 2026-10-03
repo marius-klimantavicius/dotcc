@@ -282,6 +282,17 @@
       "translationUnits": [
         "system.c"
       ]
+    },
+    {
+      "directory": "math_remainders",
+      "translationUnits": [
+        "remainder.c",
+        "remainderf.c",
+        "remainderl.c",
+        "remquo.c",
+        "remquof.c",
+        "remquol.c"
+      ]
     }
   ]
 }

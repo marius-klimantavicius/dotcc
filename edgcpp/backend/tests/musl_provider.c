@@ -108,6 +108,15 @@ int main(void) {
 #undef CHECK_LOG_ADDRESS
  errno=0;if(log10l(0.0L)!=-HUGE_VALL || errno!=ERANGE)return 39;
  if(!system(0) || system("exit 0")!=0 || system("exit 17")!=17)return 40;
+ int remainder_quotient=0;volatile double remainder_input=7.0;
+ if(__builtin_remainder(remainder_input,2)!=-1 || __builtin_remquof(7,2,&remainder_quotient)!=-1 || remainder_quotient!=4)return 41;
+ if(remainderl(-7,2)!=1 || remquol(-7,2,&remainder_quotient)!=1 || remainder_quotient!=-4)return 42;
+#define CHECK_REMAINDER_ADDRESS(name,T) {T (*volatile ordinary)(T,T)=name; T (*volatile intrinsic)(T,T)=__builtin_##name; if(ordinary!=intrinsic)return 43;}
+ CHECK_REMAINDER_ADDRESS(remainder,double);CHECK_REMAINDER_ADDRESS(remainderf,float);CHECK_REMAINDER_ADDRESS(remainderl,long double);
+#undef CHECK_REMAINDER_ADDRESS
+#define CHECK_QUOTIENT_ADDRESS(name,T) {T (*volatile ordinary)(T,T,int*)=name; T (*volatile intrinsic)(T,T,int*)=__builtin_##name; if(ordinary!=intrinsic)return 44;}
+ CHECK_QUOTIENT_ADDRESS(remquo,double);CHECK_QUOTIENT_ADDRESS(remquof,float);CHECK_QUOTIENT_ADDRESS(remquol,long double);
+#undef CHECK_QUOTIENT_ADDRESS
  uselocale(previous);freelocale(locale);
  return 0;
 }

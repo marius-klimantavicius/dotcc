@@ -1,0 +1,28 @@
+--- a/remquol.c
++++ b/remquol.c
+@@ -1,12 +1,13 @@
++#include <errno.h>
+ #include "libm.h"
+ 
+ #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
+-long double remquol(long double x, long double y, int *quo)
++long double __edg_musl_remquol(long double x, long double y, int *quo)
+ {
+ 	return remquo(x, y, quo);
+ }
+ #elif (LDBL_MANT_DIG == 64 || LDBL_MANT_DIG == 113) && LDBL_MAX_EXP == 16384
+-long double remquol(long double x, long double y, int *quo)
++long double __edg_musl_remquol(long double x, long double y, int *quo)
+ {
+ 	union ldshape ux = {x}, uy = {y};
+ 	int ex = ux.i.se & 0x7fff;
+@@ -122,3 +123,9 @@
+ 	return sx ? -x : x;
+ }
+ #endif
++
++long double remquol(long double x, long double y, int *quo)
++{
++ if (!isnan(x) && !isnan(y) && (isinf(x) || y == 0)) errno = EDOM;
++ return __edg_musl_remquol(x, y, quo);
++}
