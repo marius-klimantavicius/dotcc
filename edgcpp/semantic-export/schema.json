@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "edg-semantic/1",
+  "title": "EDG semantic graph prototype envelope",
+  "description": "Envelope only. Typed node fields and referential integrity are checked by the versioned C# reader; generic edges do not imply emission completeness.",
+  "type": "object",
+  "required": ["schema", "lowered", "completeForEmission", "rootScope", "primarySource", "nodes", "macroInvocations", "diagnostics"],
+  "properties": {
+    "schema": {"const": "edg-semantic/1"},
+    "lowered": {"const": false},
+    "completeForEmission": {"type": "boolean"},
+    "rootScope": {"type": "integer", "minimum": 1},
+    "primarySource": {"type": "integer", "minimum": 1},
+    "nodes": {"type": "array", "items": {"type": "object", "required": ["id", "kind"], "properties": {"id": {"type": "integer", "minimum": 1}, "kind": {"type": "string"}}}},
+    "macroInvocations": {"type": "array", "items": {"type": "object", "required": ["index", "parentIndex", "definition"]}},
+    "diagnostics": {"type": "array", "items": {"type": "object", "required": ["node", "code", "message"]}}
+  }
+}

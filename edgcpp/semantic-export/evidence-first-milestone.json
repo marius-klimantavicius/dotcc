@@ -1,0 +1,123 @@
+{
+  "milestone": "Unlowered EDG semantic exporter and managed reader prototype",
+  "schema": "edg-semantic-evidence/1",
+  "status": "verified-first-checkpoint-not-emission-complete",
+  "nativeBuild": "artifacts/campaign/persistent-continuation/semantic-export-implementation-002/build/bin/cpfe-semantic",
+  "validation": {
+    "platform": "linux-x64",
+    "managedTarget": "net10.0",
+    "jitChecks": 20,
+    "nativeAotChecks": 20,
+    "cppAssertionsPerRun": 17,
+    "cAssertionsPerRun": 9
+  },
+  "artifacts": [
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-implementation-002/plain-003/package.json",
+      "sha256": "a5986833476a798ee3c53abc54b9a73822f108cc519b2bb88f322f0b4893d5ed",
+      "bytes": 2808
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-implementation-002/plain-003/graph.json",
+      "sha256": "8ac6343006bfea0ee2d07aed8274640254342998cf07a0410d0f8ef87021bc79",
+      "bytes": 188076
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-implementation-002/plain-003/producer.json",
+      "sha256": "dcd19a697282f1713c06e4e81c2829218251c1796d656072f7c10a9e83c7afa9",
+      "bytes": 31043
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-implementation-002/probe-003/package.json",
+      "sha256": "1efa4e6adb06f660f25f9476b175f2f23fbd5489542a8f8676f6e78483548360",
+      "bytes": 2847
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-implementation-002/probe-003/graph.json",
+      "sha256": "8009c638ae0c6d05c433d8d3ba6f9163824a4f921b5e6b21f67c96a898f2f4c9",
+      "bytes": 646099
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-implementation-002/probe-003/producer.json",
+      "sha256": "dcd19a697282f1713c06e4e81c2829218251c1796d656072f7c10a9e83c7afa9",
+      "bytes": 31043
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-implementation-managed-001/final-jit/results.json",
+      "sha256": "95345dbdc89dff40b52574e33e12cf68ae76ace6bcfe0c25834fd29e8f5fbe34",
+      "bytes": 3162
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-implementation-managed-001/final-nativeaot/results.json",
+      "sha256": "95345dbdc89dff40b52574e33e12cf68ae76ace6bcfe0c25834fd29e8f5fbe34",
+      "bytes": 3162
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-implementation-managed-001/managed-inputs.json",
+      "sha256": "3ddd9812b96b4133cb20695fd61d2172292051eb5952902db4eee11b7f92eb54",
+      "bytes": 1229
+    }
+  ],
+  "implementationInputs": [
+    {
+      "path": "semantic-export/README.md",
+      "sha256": "f7631482abe3a1b053810476fe6f9a58e3c80bb0dce61f63475f01c3818f9e22"
+    },
+    {
+      "path": "semantic-export/build.py",
+      "sha256": "198e1a351e30caefa4fd2f3c2fb76a54864ca207f99458eeda5add41238726c7"
+    },
+    {
+      "path": "semantic-export/export.py",
+      "sha256": "42da02baac54294ad4afae2469a4b0cdae4fbacc9f8a9c0a9f3a0de59804f1db"
+    },
+    {
+      "path": "semantic-export/managed/Edg.Semantic.csproj",
+      "sha256": "5b5ddcaba323a161627869784628ea86fa0f5c068cd2a5f492720f2f7fa7f55a"
+    },
+    {
+      "path": "semantic-export/managed/ProbeAssertions.cs",
+      "sha256": "6d0587aeb062d6d2917522e7a47caded25fe2c09637996e54cd296b0932f4c26"
+    },
+    {
+      "path": "semantic-export/managed/Program.cs",
+      "sha256": "30e40901163a35faccfa2f727e6568eb1d14226f9298b0cf65f6b84700c1d1e0"
+    },
+    {
+      "path": "semantic-export/managed/README.md",
+      "sha256": "3a4ff6f5eef8eb0699965f25ed4f6b6dc40ebb19a0b00de4a95b34d82da3945e"
+    },
+    {
+      "path": "semantic-export/managed/SemanticGraph.cs",
+      "sha256": "12626267d2955be79d00edc0b8d6edd09c6aa527002e1075c42fb76cc78214ac"
+    },
+    {
+      "path": "semantic-export/native/generate_names.py",
+      "sha256": "127d63318366cb383b6990949500abf0ba4c787ea88cc7cdac6e370986c58c2d"
+    },
+    {
+      "path": "semantic-export/native/semantic_export_be.c",
+      "sha256": "937476255099e6ba2b8116a826bc5a46dc1a6550aab5388cc78862cc8cb91f91"
+    },
+    {
+      "path": "semantic-export/schema.json",
+      "sha256": "bafd9452e072985df4828a0d5e780557b362e9c93d5696067ae1718dbf3a9ed7"
+    },
+    {
+      "path": "semantic-export/tests/api.h",
+      "sha256": "438e90b97deb21b09bc1573850cbf263329713c654d691ddd01c0a1d334b4c71"
+    },
+    {
+      "path": "semantic-export/tests/managed-tests/verify.py",
+      "sha256": "20ab240e7c6145fb1e43b4bf42ef7d7ae37741548c6400385b92dc527e429e07"
+    },
+    {
+      "path": "semantic-export/tests/plain.c",
+      "sha256": "c43fcbb938ddc51b9596ed6992c5a3c7cbf3d127f75425528569b1928889b2cb"
+    },
+    {
+      "path": "semantic-export/tests/probe.cpp",
+      "sha256": "5fcb0794132ab21bebd758eb14515b824a5d8db6cb7019057bc44ef3c533e832"
+    }
+  ]
+}
