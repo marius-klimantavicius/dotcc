@@ -1,0 +1,366 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "project": "SQLite",
+  "profile": "pinned feature definitions; deterministic test-only memory VFS; THREADSAFE=0",
+  "target": "portable-lp64-binary80-v2",
+  "libc": "musl",
+  "instanceMethods": false,
+  "definitions": [
+    "SQLITE_OS_OTHER=1",
+    "SQLITE_THREADSAFE=0",
+    "SQLITE_TEMP_STORE=3",
+    "SQLITE_MAX_MMAP_SIZE=0",
+    "SQLITE_OMIT_LOAD_EXTENSION",
+    "SQLITE_ENABLE_FTS5",
+    "SQLITE_ENABLE_MATH_FUNCTIONS",
+    "SQLITE_ENABLE_PERCENTILE",
+    "SQLITE_ENABLE_COLUMN_METADATA",
+    "SQLITE_ENABLE_PREUPDATE_HOOK"
+  ],
+  "archiveSha256": "1e71ddf93849c6a6ecf58b827c0692073d2dd7ee40196158068f7b29f422e87d",
+  "inputs": [
+    {
+      "path": "sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+      "sha256": "b1dd5d74ec7f29055a6684fa06fb3c2f6821c87dd38f9a458dfd2e8a1db28189"
+    },
+    {
+      "path": "sqlite/ref/sqlite-amalgamation-3530400/sqlite3.h",
+      "sha256": "919e7f2e8ed1d8f56ac17b412b8971c76aa5d1a879752cc6058f75e7d5910e1d"
+    },
+    {
+      "path": "sqlite/tests/memory_vfs.c",
+      "sha256": "1641658e862f2da5d77fbbeff8e92b2b20770f92509bab818e668080fe6ed83f"
+    },
+    {
+      "path": "sqlite/tests/memory_vfs.h",
+      "sha256": "4a004e9b089b7325faec65e89dda99de060dd4a7175badb8a1f80130b8edc90c"
+    },
+    {
+      "path": "sqlite/tests/optional_features.h",
+      "sha256": "c308b6ec77d36abd96992b9abae6ae4d20e1c85bd2a09e8d4daaba6b0ab6c0f7"
+    },
+    {
+      "path": "sqlite/config/sources.json",
+      "sha256": "78bfaac9642c85bce440ab889b681ea4155c0a6b644df48e1d6f578a8599dfd3"
+    },
+    {
+      "path": "sqlite/config/defines.txt",
+      "sha256": "14f1f3498f7c4d89244db1d57ee746be539f56f068bf577c2f18912ed3093fb5"
+    },
+    {
+      "path": "sqlite/tests/probe.c",
+      "sha256": "0efc5c82d0e7ec52b89b13592b49cc04e537163c129cb1256ed8e939f5ce9093"
+    },
+    {
+      "path": "sqlite/tests/native-corpus.expected",
+      "sha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6"
+    },
+    {
+      "path": "sqlite/tests/api_native.c",
+      "sha256": "cd878af45465ab8eac2ced8072816c3ebb592f071d2e3a5ab2298e50a01745db"
+    },
+    {
+      "path": "sqlite/tests/native-api.expected",
+      "sha256": "46e5ac79406351d9192ed6156de685dbb94f486e72b2671784171c3aab4d76cc"
+    },
+    {
+      "path": "sqlite/tests/vfs_native.c",
+      "sha256": "803f0e46915225b5c7b83b287f5596af85682f20dc6e8fdd88489fce807d91e8"
+    },
+    {
+      "path": "sqlite/tests/native-vfs.expected",
+      "sha256": "bc51dc5f4d25480c84ff833cfaa952437efc4041be65402abd2607684fec6456"
+    },
+    {
+      "path": "sqlite/tests/vtable_native.c",
+      "sha256": "ed40f9df44625c30670c408a890b77d86a511f58b9e179758488d1400319eb8e"
+    },
+    {
+      "path": "sqlite/tests/native-vtable.expected",
+      "sha256": "25c26d223ce4ed6de1ecda12729b78c3e1d62f3aa7d4d464a875e36a405678fa"
+    },
+    {
+      "path": "sqlite/tests/allocation_native.c",
+      "sha256": "6c5b5235cfc0298567fdabb60bbcda2fc50e66f4fc6d87e644e7a89ac13c5a4b"
+    },
+    {
+      "path": "sqlite/tests/native-allocation.expected",
+      "sha256": "d9231e65da3709da44242717ce8655c53b9f8009a095c81643075262a0f73000"
+    },
+    {
+      "path": "sqlite/tests/fts5_native.c",
+      "sha256": "0ce3a91d1d508db4a39f8a3c8cbf628838f3775dd9f74450bdc59c75efcb089f"
+    },
+    {
+      "path": "sqlite/tests/native-fts5.expected",
+      "sha256": "f053f02f2eb68bd08ebfbd86381971ae4873efe5d3f8f7b60e0154c1c958f0ab"
+    }
+  ],
+  "checks": [
+    {
+      "label": "core-native-reference",
+      "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+      "bytes": 6337
+    },
+    {
+      "label": "api-native-reference",
+      "stdoutSha256": "46e5ac79406351d9192ed6156de685dbb94f486e72b2671784171c3aab4d76cc",
+      "bytes": 1101
+    },
+    {
+      "label": "vfs-native-reference",
+      "stdoutSha256": "bc51dc5f4d25480c84ff833cfaa952437efc4041be65402abd2607684fec6456",
+      "bytes": 114
+    },
+    {
+      "label": "vtable-native-reference",
+      "stdoutSha256": "25c26d223ce4ed6de1ecda12729b78c3e1d62f3aa7d4d464a875e36a405678fa",
+      "bytes": 115
+    },
+    {
+      "label": "allocation-native-reference",
+      "stdoutSha256": "d9231e65da3709da44242717ce8655c53b9f8009a095c81643075262a0f73000",
+      "bytes": 107
+    },
+    {
+      "label": "fts5-native-reference",
+      "stdoutSha256": "f053f02f2eb68bd08ebfbd86381971ae4873efe5d3f8f7b60e0154c1c958f0ab",
+      "bytes": 417
+    }
+  ],
+  "artifact": "artifacts/campaign/persistent-continuation/sqlite-native-baseline-001",
+  "resultsSha256": "481a44220d53bcdecbdbbf9a2a914127d3eb5aa1079a11b519f2774a04d23095",
+  "scope": "Native GCC reference baselines only. No translated SQLite acceptance in this milestone.",
+  "runner": "sqlite_verify.py",
+  "commandsRetainedInArtifact": [
+    {
+      "label": "core-native-build",
+      "command": [
+        "gcc",
+        "-std=c17",
+        "-O2",
+        "-DSQLITE_OS_OTHER=1",
+        "-DSQLITE_THREADSAFE=0",
+        "-DSQLITE_TEMP_STORE=3",
+        "-DSQLITE_MAX_MMAP_SIZE=0",
+        "-DSQLITE_OMIT_LOAD_EXTENSION",
+        "-DSQLITE_ENABLE_FTS5",
+        "-DSQLITE_ENABLE_MATH_FUNCTIONS",
+        "-DSQLITE_ENABLE_PERCENTILE",
+        "-DSQLITE_ENABLE_COLUMN_METADATA",
+        "-DSQLITE_ENABLE_PREUPDATE_HOOK",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/tests",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+        "/home/marius/p/dotcc/sqlite/tests/probe.c",
+        "/home/marius/p/dotcc/sqlite/tests/memory_vfs.c",
+        "-lm",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-native-baseline-001/core-native"
+      ],
+      "exitCode": 0,
+      "seconds": 14.345
+    },
+    {
+      "label": "core-native-run",
+      "command": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-native-baseline-001/core-native"
+      ],
+      "exitCode": 0,
+      "seconds": 0.003
+    },
+    {
+      "label": "api-native-build",
+      "command": [
+        "gcc",
+        "-std=c17",
+        "-O2",
+        "-DSQLITE_OS_OTHER=1",
+        "-DSQLITE_THREADSAFE=0",
+        "-DSQLITE_TEMP_STORE=3",
+        "-DSQLITE_MAX_MMAP_SIZE=0",
+        "-DSQLITE_OMIT_LOAD_EXTENSION",
+        "-DSQLITE_ENABLE_FTS5",
+        "-DSQLITE_ENABLE_MATH_FUNCTIONS",
+        "-DSQLITE_ENABLE_PERCENTILE",
+        "-DSQLITE_ENABLE_COLUMN_METADATA",
+        "-DSQLITE_ENABLE_PREUPDATE_HOOK",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/tests",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+        "/home/marius/p/dotcc/sqlite/tests/api_native.c",
+        "/home/marius/p/dotcc/sqlite/tests/memory_vfs.c",
+        "-lm",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-native-baseline-001/api-native"
+      ],
+      "exitCode": 0,
+      "seconds": 14.923
+    },
+    {
+      "label": "api-native-run",
+      "command": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-native-baseline-001/api-native"
+      ],
+      "exitCode": 0,
+      "seconds": 0.003
+    },
+    {
+      "label": "vfs-native-build",
+      "command": [
+        "gcc",
+        "-std=c17",
+        "-O2",
+        "-DSQLITE_OS_OTHER=1",
+        "-DSQLITE_THREADSAFE=0",
+        "-DSQLITE_TEMP_STORE=3",
+        "-DSQLITE_MAX_MMAP_SIZE=0",
+        "-DSQLITE_OMIT_LOAD_EXTENSION",
+        "-DSQLITE_ENABLE_FTS5",
+        "-DSQLITE_ENABLE_MATH_FUNCTIONS",
+        "-DSQLITE_ENABLE_PERCENTILE",
+        "-DSQLITE_ENABLE_COLUMN_METADATA",
+        "-DSQLITE_ENABLE_PREUPDATE_HOOK",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/tests",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+        "/home/marius/p/dotcc/sqlite/tests/vfs_native.c",
+        "/home/marius/p/dotcc/sqlite/tests/memory_vfs.c",
+        "-lm",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-native-baseline-001/vfs-native"
+      ],
+      "exitCode": 0,
+      "seconds": 14.47
+    },
+    {
+      "label": "vfs-native-run",
+      "command": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-native-baseline-001/vfs-native"
+      ],
+      "exitCode": 0,
+      "seconds": 0.002
+    },
+    {
+      "label": "vtable-native-build",
+      "command": [
+        "gcc",
+        "-std=c17",
+        "-O2",
+        "-DSQLITE_OS_OTHER=1",
+        "-DSQLITE_THREADSAFE=0",
+        "-DSQLITE_TEMP_STORE=3",
+        "-DSQLITE_MAX_MMAP_SIZE=0",
+        "-DSQLITE_OMIT_LOAD_EXTENSION",
+        "-DSQLITE_ENABLE_FTS5",
+        "-DSQLITE_ENABLE_MATH_FUNCTIONS",
+        "-DSQLITE_ENABLE_PERCENTILE",
+        "-DSQLITE_ENABLE_COLUMN_METADATA",
+        "-DSQLITE_ENABLE_PREUPDATE_HOOK",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/tests",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+        "/home/marius/p/dotcc/sqlite/tests/vtable_native.c",
+        "/home/marius/p/dotcc/sqlite/tests/memory_vfs.c",
+        "-lm",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-native-baseline-001/vtable-native"
+      ],
+      "exitCode": 0,
+      "seconds": 14.82
+    },
+    {
+      "label": "vtable-native-run",
+      "command": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-native-baseline-001/vtable-native"
+      ],
+      "exitCode": 0,
+      "seconds": 0.003
+    },
+    {
+      "label": "allocation-native-build",
+      "command": [
+        "gcc",
+        "-std=c17",
+        "-O2",
+        "-DSQLITE_OS_OTHER=1",
+        "-DSQLITE_THREADSAFE=0",
+        "-DSQLITE_TEMP_STORE=3",
+        "-DSQLITE_MAX_MMAP_SIZE=0",
+        "-DSQLITE_OMIT_LOAD_EXTENSION",
+        "-DSQLITE_ENABLE_FTS5",
+        "-DSQLITE_ENABLE_MATH_FUNCTIONS",
+        "-DSQLITE_ENABLE_PERCENTILE",
+        "-DSQLITE_ENABLE_COLUMN_METADATA",
+        "-DSQLITE_ENABLE_PREUPDATE_HOOK",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/tests",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+        "/home/marius/p/dotcc/sqlite/tests/allocation_native.c",
+        "/home/marius/p/dotcc/sqlite/tests/memory_vfs.c",
+        "-lm",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-native-baseline-001/allocation-native"
+      ],
+      "exitCode": 0,
+      "seconds": 14.413
+    },
+    {
+      "label": "allocation-native-run",
+      "command": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-native-baseline-001/allocation-native"
+      ],
+      "exitCode": 0,
+      "seconds": 0.007
+    },
+    {
+      "label": "fts5-native-build",
+      "command": [
+        "gcc",
+        "-std=c17",
+        "-O2",
+        "-DSQLITE_OS_OTHER=1",
+        "-DSQLITE_THREADSAFE=0",
+        "-DSQLITE_TEMP_STORE=3",
+        "-DSQLITE_MAX_MMAP_SIZE=0",
+        "-DSQLITE_OMIT_LOAD_EXTENSION",
+        "-DSQLITE_ENABLE_FTS5",
+        "-DSQLITE_ENABLE_MATH_FUNCTIONS",
+        "-DSQLITE_ENABLE_PERCENTILE",
+        "-DSQLITE_ENABLE_COLUMN_METADATA",
+        "-DSQLITE_ENABLE_PREUPDATE_HOOK",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400",
+        "-I",
+        "/home/marius/p/dotcc/sqlite/tests",
+        "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+        "/home/marius/p/dotcc/sqlite/tests/fts5_native.c",
+        "/home/marius/p/dotcc/sqlite/tests/memory_vfs.c",
+        "-lm",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-native-baseline-001/fts5-native"
+      ],
+      "exitCode": 0,
+      "seconds": 14.407
+    },
+    {
+      "label": "fts5-native-run",
+      "command": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-native-baseline-001/fts5-native"
+      ],
+      "exitCode": 0,
+      "seconds": 0.005
+    }
+  ]
+}

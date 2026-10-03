@@ -12,10 +12,10 @@ clean inactive compiled temporaries under the later explicit user authorization.
 
 | Owner | Work | State |
 | --- | --- | --- |
-| Root | Embed upstream, portable target, multi-TU, atomics and libc++ audit | Embedding/portable ABI/atomics complete; libc++ thread integration in progress |
-| Coordinator | Integration, import ABI, driver, lifecycle/heap adapters, ledger, builds/commits | In progress |
-| Core language worker | Function-try-blocks, then member-pointer/full EH coverage | In progress |
-| Libc worker | Audited BCL libc bridge, portable header subset, synthetic conformance | In progress |
+| Root | SQLite acceptance runner/native references and bounded volatile-bitfield regression | Six native SQLite corpora accepted; translated runs await blockers |
+| Coordinator | SQLite translation, integration, driver, builds/commits and evidence | Portable SQLite parses; overflow/math gaps assigned |
+| Core language worker | GNU checked-overflow builtins required by SQLite | Implementing; local-promotion configuration candidate retained, unpromoted |
+| Libc worker | SQLite double math source dependencies | Implementing exact project imports; descriptor breadth frozen |
 
 Compiler preparation/build and Git mutations are serialized through the
 coordinator. Canonical emitter sources stay in `backend/`. Workers use disjoint
