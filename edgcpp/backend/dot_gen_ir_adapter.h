@@ -8,6 +8,7 @@ dot_ir::TypeId own_type(a_type_ptr source) {
   if(q&TQ_CONST)qualifiers|=1;
   if(q&TQ_VOLATILE)qualifiers|=2;
   if(q&TQ_RESTRICT)qualifiers|=4;
+  if(q&TQ_C11_ATOMIC)qualifiers|=8;
   auto t=skip_typerefs(source);auto key=std::make_pair(t,qualifiers);
   auto found=owned_type_ids.find(key);if(found!=owned_type_ids.end())return found->second;
   auto id=owned_ir.reserve();owned_type_ids[key]=id;

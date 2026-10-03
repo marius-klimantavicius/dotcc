@@ -1,10 +1,13 @@
 #ifndef __EDG_DOT_LIBC_SETJMP_H
 #define __EDG_DOT_LIBC_SETJMP_H
-/* Portable translated ABI, not a native operating-system jmp_buf. */
+/* Portable translated ABI v2, not a native operating-system jmp_buf. */
+#define __EDG_DOT_JMP_BUF_ABI_VERSION 2
 typedef struct {
   unsigned long long __activation;
   unsigned int __site;
-  unsigned int __reserved;
+  unsigned int __version;
+  void* __vla_head;
+  unsigned long long __vla_identity;
 } __edg_jump_buffer;
 typedef __edg_jump_buffer jmp_buf[1];
 #ifdef __cplusplus

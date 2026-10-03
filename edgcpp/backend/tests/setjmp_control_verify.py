@@ -35,10 +35,9 @@ def verify_setjmp_control(root,tests,out,nativeaot,run):
     for label,language,body,reason in (
         ('assignment','c','int f(void){jmp_buf b;int result=setjmp(b);return result;}','setjmp requires a supported controlling or standalone expression'),
         ('return','c','int f(void){jmp_buf b;return setjmp(b);}','setjmp requires a supported controlling or standalone expression'),
-        ('protected','c++','int f(){jmp_buf b;try{if(setjmp(b))return 1;}catch(...){}return 0;}','setjmp continuation through C++ protected/lifetime regions'),
-        ('vla','c','int f(int n){jmp_buf b;int a[n];a[0]=1;if(setjmp(b))return a[0];return 0;}','setjmp continuation with variable-length storage')):
+        ('protected','c++','int f(){jmp_buf b;try{if(setjmp(b))return 1;}catch(...){}return 0;}','setjmp continuation through C++ protected/lifetime regions')):
         directory=out/('reject-'+label);case=out/(label+('.c' if language=='c' else '.cpp'))
-        case.write_text('#include <setjmp.h>\n'+body+'\nint main(){return f('+('2' if label=='vla' else '')+');}\n')
+        case.write_text('#include <setjmp.h>\n'+body+'\nint main(){return f();}\n')
         result=run([sys.executable,root/'dotnet.py',case,'--language',language,'--libc','dotcc','--output-dir',directory],expected=1)
         assert reason in result.stderr+result.stdout,(label,reason,result.stderr,result.stdout)
         checks.append('source setjmp: explicit diagnostic for '+label+' continuation')

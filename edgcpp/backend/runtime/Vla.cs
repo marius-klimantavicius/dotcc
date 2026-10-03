@@ -14,8 +14,29 @@ public static unsafe class Vla
         public Allocation* Previous;
         public void* Base;
         public void* Data;
+        public ulong Identity;
     }
     [ThreadStatic] private static Allocation* head;
+    [ThreadStatic] private static ulong nextIdentity;
+    public readonly struct Checkpoint
+    {
+        internal readonly nint Head;
+        internal readonly ulong Identity;
+        internal Checkpoint(nint head, ulong identity) { Head = head; Identity = identity; }
+    }
+    public static Checkpoint Capture() => new((nint)head, head == null ? 0 : head->Identity);
+    public static void Validate(Checkpoint checkpoint)
+    {
+        if (checkpoint.Head == 0 && checkpoint.Identity == 0) return;
+        for (Allocation* node = head; node != null; node = node->Previous)
+            if ((nint)node == checkpoint.Head && node->Identity == checkpoint.Identity) return;
+        Environment.FailFast("Nonlocal jump VLA scope has ended");
+    }
+    public static void Restore(Checkpoint checkpoint)
+    {
+        Validate(checkpoint); // Validate without dereferencing a possibly freed saved address.
+        Restore(checkpoint.Head);
+    }
     public static nint Mark() => (nint)head;
     public static void Allocate(void* slot, long bytes, nuint alignment)
     {
@@ -36,6 +57,8 @@ public static unsafe class Vla
         if (storage == null) Environment.FailFast("Unable to allocate variable length array");
         var node = (Allocation*)storage;
         void* data = (void*)(((nuint)storage + (nuint)sizeof(Allocation) + alignment - 1) & ~(alignment - 1));
+        if (nextIdentity == ulong.MaxValue) Environment.FailFast("VLA checkpoint identities exhausted");
+        node->Identity = ++nextIdentity;
         node->Base = storage; node->Data = data; node->Previous = head;
         head = node;
         *(void**)slot = data;

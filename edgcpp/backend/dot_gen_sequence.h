@@ -5,8 +5,10 @@ unsigned expression_serial = 0;
 string expr(an_expr_node_ptr e);
 string condition(an_expr_node_ptr e);
 string expression_effect(an_expr_node_ptr e);
+void statement_expression_captures(an_expr_node_ptr e,std::vector<a_variable_ptr> &vars);
 void expression_captures(an_expr_node_ptr e, std::vector<a_variable_ptr> &vars) {
   if (!e) return;
+  if(e->kind==enk_statement){statement_expression_captures(e,vars);return;}
   if (e->kind == enk_variable) {
     auto v=node_variable(e);
     if (!virtual_types.count(v) && !global_offsets.count(v) && !tls_offsets.count(v) &&

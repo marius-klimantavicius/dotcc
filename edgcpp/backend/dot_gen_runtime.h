@@ -1,9 +1,32 @@
 // The optional bootstrap is C++ code, so EDG supplies its object and EH IL.
 // Raw allocation/free, RTTI names and compiler throw entries need bridges.
 string runtime_provider_call(a_routine_ptr r,an_expr_node_ptr args) {
-  if(!runtime_exceptions || r->function_def_number!=NULL_function_def_number)return "";
+  if(r->function_def_number!=NULL_function_def_number)return "";
   string source=r->source_corresp.name?r->source_corresp.name:"";
   auto rt=skip_typerefs(r->type);auto params=rt->variant.routine.extra_info->param_type_list;
+  if(r->compiler_generated && (source=="__cxa_bad_cast" || source=="__cxa_bad_typeid" ||
+      source=="__cxa_throw_bad_array_new_length")) {
+    // lower_il.c creates prototyped ABI calls after source declarations. The C
+    // backend leaves their external symbols for its linker; bind the exact
+    // translated C-linkage definition here before considering the bootstrap.
+    if(args || params || rt->variant.routine.extra_info->has_ellipsis ||
+       skip_typerefs(rt->variant.routine.return_type)->kind!=tk_void)
+      unsupported("compiler throw-entry ABI");
+    a_routine_ptr definition=nullptr;
+    for(auto p=il_header.primary_scope->routines;p;p=p->next) {
+      if(!p->source_corresp.name || string(p->source_corresp.name)!=source ||
+         p->source_corresp.name_linkage!=nlk_external ||
+         p->function_def_number==NULL_function_def_number || !scope_for_routine_or_null(p))continue;
+      auto pt=skip_typerefs(p->type);
+      if(pt->variant.routine.extra_info->param_type_list || pt->variant.routine.extra_info->has_ellipsis ||
+         skip_typerefs(pt->variant.routine.return_type)->kind!=tk_void || !routine_body_needed(p))
+        unsupported("translated compiler throw-entry ABI or unavailable body");
+      if(definition && definition!=p)unsupported("multiple translated compiler throw-entry definitions");
+      definition=p;
+    }
+    if(definition)return name(definition,"f")+"()";
+  }
+  if(!runtime_exceptions)return "";
   if((source=="__cxa_bad_cast" || source=="__cxa_bad_typeid" || source=="__cxa_throw_bad_array_new_length") && r->compiler_generated) {
     string provider=source=="__cxa_bad_cast"?"__edg_dot_throw_bad_cast":source=="__cxa_bad_typeid"?"__edg_dot_throw_bad_typeid":"__edg_dot_throw_bad_array_new_length";
     if(args || params || type(rt->variant.routine.return_type)!="void")unsupported("RTTI throw runtime ABI");

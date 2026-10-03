@@ -169,6 +169,13 @@
         "ctime.c",
         "timezone_wrappers.c"
       ]
+    },
+    {
+      "directory": "wscanf",
+      "translationUnits": [
+        "vfwscanf.c",
+        "wscan_wrappers.c"
+      ]
     }
   ]
 }

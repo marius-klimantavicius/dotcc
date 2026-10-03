@@ -56,3 +56,38 @@ checks. `libc_fpos_abi_verify.verify_libc_fpos_abi(root, out)` supplies sixteen
 strict malformed/obsolete position ABI rejection checks. Reuse existing
 `verify_libc_files`, `verify_musl_printf` and `verify_libc_scanf` hooks for the
 byte-stream regression; no duplicate suite wrapper is required.
+
+## Wide scanf
+
+`libc_wscanf_verify.verify_libc_wscanf(root, tests, out, nativeaot, run,
+translate=True, library_source=None)` supplies native plus eight generated
+configurations for 271 records and FILE/locale/varargs/address contracts.
+`libc_wscanf_failure_verify.verify_libc_wscanf_failure(root, tests, out,
+nativeaot, run, library_source=None)` supplies eight injected allocator-failure
+checks. `libc_wscanf_abi_verify.verify_libc_wscanf_abi(root, tests, out)` supplies
+eight strict private-import ABI negatives. The optional library source is a
+parent directory containing `wscanf/` and `strto/`. The selected C component is
+exactly `wscanf/vfwscanf.c` plus `wscanf/wscan_wrappers.c`; it depends on accepted
+numeric parsers, wide classification and multibyte services.
+
+## C compatibility headers
+
+`libc_c_compat_verify.verify_libc_c_compat(root, tests, out, nativeaot, run)`
+supplies one native portable-header and eight generated C/C++ static/instance
+checks. Pinned header adaptation provenance is the `c_headers` source component;
+it contributes no translation units to the musl source package.
+
+## C11 atomics
+
+`c11_implicit_atomic_verify.verify_c11_implicit_atomics(root, tests, out,
+nativeaot, run)` supplies one original EDG-C oracle plus C static/instance
+JIT/AOT: scalar/pointer/double/binary80/uint128/aggregate accesses, NaN and
+negative-zero CAS, concurrent increments, adjacent-byte guards, independent
+owners and zero steady-state integer allocation.
+
+The separately gated public-header matrix is
+`libc_stdatomic_verify.verify_libc_stdatomic(root, tests, out, nativeaot, run,
+include=None)`; optional include supplies the candidate header directory.
+It has two native oracles, four C runtime configurations and two C++17 include
+compatibility checks. The public matrix passed after contained GNU statement-expression emission
+was added; the canonical stdatomic header is now the default input.

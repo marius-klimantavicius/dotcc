@@ -31,6 +31,8 @@ def inventory(root):
         selected += ['wcsftime','wcsftime_l']
     if any(component['directory']=='scanf' for component in provider['components']):
         selected += ['scanf','fscanf','sscanf','vscanf','vfscanf','vsscanf']
+    if any(component['directory']=='wscanf' for component in provider['components']):
+        selected += ['wscanf','fwscanf','swscanf','vwscanf','vfwscanf','vswscanf']
     headers={}
     for path in sorted((runtime/'libc/include').glob('*.h')):
         text=re.sub(r'/\*.*?\*/','',path.read_text(),flags=re.S)

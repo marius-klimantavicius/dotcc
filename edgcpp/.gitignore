@@ -37,3 +37,7 @@ __pycache__/
 /upstream/src/libc-wide-files-bindings.def
 /upstream/src/libc-timezone-bindings.def
 /upstream/src/dot_gen_integer_intrinsics.h
+/upstream/src/libc-cpu-clock-bindings.def
+/upstream/src/dot_gen_c11_atomics.h
+/upstream/src/dot_gen_coroutine.h
+/upstream/src/dot_gen_statement_expression.h

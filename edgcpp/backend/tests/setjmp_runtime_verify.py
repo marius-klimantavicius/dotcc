@@ -6,7 +6,7 @@ import subprocess
 
 
 def verify_setjmp_runtime(root,tests,out,nativeaot,run):
-    for source in (root/'backend/runtime/NonlocalJump.cs',tests/'setjmp_runtime.cs'):
+    for source in (root/'backend/runtime/NonlocalJump.cs',root/'backend/runtime/Vla.cs',tests/'setjmp_runtime.cs'):
         shutil.copy2(source,out/source.name)
     project=out/'JumpProbe.csproj'
     project.write_text('''<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks><IsAotCompatible>true</IsAotCompatible><Nullable>enable</Nullable></PropertyGroup></Project>''')

@@ -1,0 +1,216 @@
+--- a/vfwscanf.c
++++ b/vfwscanf.c
+@@ -7,10 +7,10 @@
+ #include <limits.h>
+ #include <string.h>
+ 
+-#include "stdio_impl.h"
+-#include "shgetc.h"
+-#include "intscan.h"
+-#include "floatscan.h"
++#include "wscan_file.h"
++#include "../strto/scan_string.h"
++#include "../strto/intscan.h"
++#include "../strto/floatscan.h"
+ 
+ #define SIZE_hh -2
+ #define SIZE_h  -1
+@@ -73,17 +73,31 @@
+ 	return 0;
+ }
+ 
+-#if 1
+-#undef getwc
+-#define getwc(f) \
+-	((f)->rpos != (f)->rend && *(f)->rpos < 128 ? *(f)->rpos++ : (getwc)(f))
+-
+-#undef ungetwc
+-#define ungetwc(c,f) \
+-	((f)->rend && (c)<128U ? *--(f)->rpos : ungetwc((c),(f)))
+-#endif
+-
+-int vfwscanf(FILE *restrict f, const wchar_t *restrict fmt, va_list ap)
++struct edg_wscan_numeric {struct edg_wscan_input *input;int last;};
++static int edg_wscan_ascii(void *context)
++{
++ struct edg_wscan_numeric *source=(struct edg_wscan_numeric*)context;
++ source->last=edg_wget(source->input);
++ return source->last<0?-1:source->last<128?source->last:'@';
++}
++static int edg_wscan_number(struct edg_wscan_input *f,int conversion,int size,int width,void *destination,long *count)
++{
++ struct edg_wscan_numeric source={f,-1};
++ struct edg_scan_input input={0,0,0,0,0,edg_wscan_ascii,&source};
++ struct edg_string_scan cursor;sh_frominput(&cursor,&input);shlim(&cursor,width);
++ if(conversion=='d'||conversion=='i'||conversion=='o'||conversion=='u'||conversion=='x'||conversion=='X'||conversion=='p'){
++  unsigned base=conversion=='i'?0:conversion=='o'?8:(conversion=='x'||conversion=='X'||conversion=='p')?16:10;
++  unsigned long long value=__intscan(&cursor,base,0,ULLONG_MAX);
++  if(shcnt(&cursor)){if(conversion=='p' && destination)*(void**)destination=(void*)(uintptr_t)value;else store_int(destination,size,value);}
++ }else{
++  long double value=__floatscan(&cursor,size,0);
++  if(shcnt(&cursor)&&destination){if(size==SIZE_def)*(float*)destination=value;else if(size==SIZE_l)*(double*)destination=value;else if(size==SIZE_L)*(long double*)destination=value;}
++ }
++ *count=shcnt(&cursor);if(input.pending)edg_wunget(source.last,f);
++ return *count!=0;
++}
++
++int __edg_musl_vwscan(struct edg_wscan_input *restrict f, const wchar_t *restrict fmt, va_list ap)
+ {
+ 	int width;
+ 	int size;
+@@ -95,15 +109,11 @@
+ 	void *dest=NULL;
+ 	int invert;
+ 	int matches=0;
+-	off_t pos = 0, cnt;
+-	static const char size_pfx[][3] = { "hh", "h", "", "l", "L", "ll" };
++	long pos = 0, cnt;
+ 	char tmp[3*sizeof(int)+10];
+ 	const wchar_t *set;
+ 	size_t i, k;
+ 
+-	FLOCK(f);
+-
+-	fwide(f, 1);
+ 
+ 	for (p=fmt; *p; p++) {
+ 
+@@ -111,19 +121,19 @@
+ 
+ 		if (iswspace(*p)) {
+ 			while (iswspace(p[1])) p++;
+-			while (iswspace((c=getwc(f)))) pos++;
+-			ungetwc(c, f);
++			while (iswspace((c=edg_wget(f)))) pos++;
++			edg_wunget(c, f);
+ 			continue;
+ 		}
+ 		if (*p != '%' || p[1] == '%') {
+ 			if (*p == '%') {
+ 				p++;
+-				while (iswspace((c=getwc(f)))) pos++;
++				while (iswspace((c=edg_wget(f)))) pos++;
+ 			} else {
+-				c = getwc(f);
++				c = edg_wget(f);
+ 			}
+ 			if (c!=*p) {
+-				ungetwc(c, f);
++				edg_wunget(c, f);
+ 				if (c<0) goto input_fail;
+ 				goto match_fail;
+ 			}
+@@ -195,11 +205,11 @@
+ 
+ 		if (t != 'n') {
+ 			if (t != '[' && (t|32) != 'c')
+-				while (iswspace((c=getwc(f)))) pos++;
++				while (iswspace((c=edg_wget(f)))) pos++;
+ 			else
+-				c=getwc(f);
++				c=edg_wget(f);
+ 			if (c < 0) goto input_fail;
+-			ungetwc(c, f);
++			edg_wunget(c, f);
+ 		}
+ 
+ 		switch (t) {
+@@ -210,7 +220,7 @@
+ 
+ 		case 's':
+ 		case 'c':
+-		case '[':
++		case '[': {
+ 			if (t == 'c') {
+ 				if (width<1) width = 1;
+ 				invert = 1;
+@@ -234,8 +244,8 @@
+ 				}
+ 			}
+ 
+-			s = (size == SIZE_def) ? dest : 0;
+-			wcs = (size == SIZE_l) ? dest : 0;
++			s = (size == SIZE_def) ? (char *)dest : 0;
++			wcs = (size == SIZE_l) ? (wchar_t *)dest : 0;
+ 
+ 			int gotmatch = 0;
+ 
+@@ -244,23 +254,25 @@
+ 			i = 0;
+ 			if (alloc) {
+ 				k = t=='c' ? width+1U : 31;
++				/* C/UTF-8: reserve a complete scalar before the first wctomb. */
++				if (size != SIZE_l && k < 4) k = 4;
+ 				if (size == SIZE_l) {
+-					wcs = malloc(k*sizeof(wchar_t));
++					wcs = (wchar_t *)malloc(k*sizeof(wchar_t));
+ 					if (!wcs) goto alloc_fail;
+ 				} else {
+-					s = malloc(k);
++					s = (char *)malloc(k);
+ 					if (!s) goto alloc_fail;
+ 				}
+ 			}
+ 			while (width) {
+-				if ((c=getwc(f))<0) break;
++				if ((c=edg_wget(f))<0) break;
+ 				if (in_set(set, c) == invert)
+ 					break;
+ 				if (wcs) {
+ 					wcs[i++] = c;
+ 					if (alloc && i==k) {
+ 						k += k+1;
+-						wchar_t *tmp = realloc(wcs, k*sizeof(wchar_t));
++						wchar_t *tmp = (wchar_t *)realloc(wcs, k*sizeof(wchar_t));
+ 						if (!tmp) goto alloc_fail;
+ 						wcs = tmp;
+ 					}
+@@ -270,7 +282,7 @@
+ 					i += l;
+ 					if (alloc && i > k-4) {
+ 						k += k+1;
+-						char *tmp = realloc(s, k);
++						char *tmp = (char *)realloc(s, k);
+ 						if (!tmp) goto alloc_fail;
+ 						s = tmp;
+ 					}
+@@ -280,7 +292,7 @@
+ 				gotmatch=1;
+ 			}
+ 			if (width) {
+-				ungetwc(c, f);
++				edg_wunget(c, f);
+ 				if (t == 'c' || !gotmatch) goto match_fail;
+ 			}
+ 
+@@ -294,18 +306,13 @@
+ 			}
+ 			break;
+ 
++		}
+ 		case 'd': case 'i': case 'o': case 'u': case 'x':
+ 		case 'a': case 'e': case 'f': case 'g':
+ 		case 'A': case 'E': case 'F': case 'G': case 'X':
+ 		case 'p':
+ 			if (width < 1) width = 0;
+-			snprintf(tmp, sizeof tmp, "%.*s%.0d%s%c%%lln",
+-				1+!dest, "%*", width, size_pfx[size+2], t);
+-			cnt = 0;
+-			if (fscanf(f, tmp, dest?dest:&cnt, &cnt) == -1)
+-				goto input_fail;
+-			else if (!cnt)
+-				goto match_fail;
++			if (!edg_wscan_number(f,t,size,width,dest,&cnt)) goto match_fail;
+ 			pos += cnt;
+ 			break;
+ 		default:
+@@ -325,8 +332,7 @@
+ 			free(wcs);
+ 		}
+ 	}
+-	FUNLOCK(f);
+ 	return matches;
+ }
+ 
+-weak_alias(vfwscanf,__isoc99_vfwscanf);
++

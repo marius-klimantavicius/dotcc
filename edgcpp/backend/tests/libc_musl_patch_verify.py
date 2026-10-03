@@ -2,7 +2,7 @@
 import argparse,hashlib,json,shutil,subprocess
 from pathlib import Path
 
-def verify_musl_patches(root,out,components=('wide','multibyte','wide_numeric','stdlib_algorithms','scanf')):
+def verify_musl_patches(root,out,components=('wide','multibyte','wide_numeric','stdlib_algorithms','scanf','wscanf','c_headers')):
  out.mkdir(parents=True,exist_ok=True);checks=[]
  for component in components:
   source=root/'backend/runtime/musl'/component;destination=out/component
@@ -17,6 +17,7 @@ def verify_musl_patches(root,out,components=('wide','multibyte','wide_numeric','
     (destination/(name+'.command.json')).write_text(json.dumps(command,indent=2));(destination/(name+'.log')).write_text(result.stdout+result.stderr);result.check_returncode()
    assert hashlib.sha256((replay/name).read_bytes()).hexdigest()==metadata['adaptedSha256'],(component,name)
    assert (replay/name).read_bytes()==(source/name).read_bytes()
+   if component=='c_headers':assert (root/'backend/runtime/libc/include'/name).read_bytes()==(source/name).read_bytes()
   for name,item in manifest.get('referenceOnly',{}).items():assert hashlib.sha256((source/'reference'/name).read_bytes()).hexdigest()==item['sha256']
   for name,digest in manifest['adapters'].items():assert hashlib.sha256((source/name).read_bytes()).hexdigest()==digest
   checks.append(f'{component}: {len(manifest["sources"])} original hashes and patch replays plus adapter hashes matched')

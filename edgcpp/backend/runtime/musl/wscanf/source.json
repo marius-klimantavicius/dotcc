@@ -1,0 +1,15 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "vfwscanf.c": {
+      "upstream": "src/stdio/vfwscanf.c",
+      "originalSha256": "50d29e39b33125dfe03d048918bfde86f1169f6fbfc491986e649fe767cf4def",
+      "adaptedSha256": "e8355872bd582bd8353974b0621c452ae741a84f38ed9782d6b1af3fb42f3160"
+    }
+  },
+  "adapters": {
+    "wscan_file.h": "209b55f3b12f63b852aa5dc77bd30f4d54906263e779e2b6d5a399d03ca80bce",
+    "wscan_wrappers.c": "8a4412848c570e08c2c0b7200fb888850f4e6026106086f98ef74748b7e53747"
+  }
+}

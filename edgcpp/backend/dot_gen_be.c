@@ -218,7 +218,7 @@ string type(a_type_ptr t) {
   // Restrict constrains valid source aliases; omitting that optimization
   // promise in managed code preserves valid-program behavior. EDG itself has
   // SUPPRESS_RESTRICT_IN_GENERATED_CODE in il_to_str.c::form_type_qualifiers.
-  if ((get_type_qualifiers(t) & ~(TQ_CONST | TQ_VOLATILE | TQ_RESTRICT)) != 0) unsupported("qualified type");
+  if ((get_type_qualifiers(t) & ~(TQ_CONST | TQ_VOLATILE | TQ_RESTRICT | TQ_C11_ATOMIC)) != 0) unsupported("qualified type");
   t = skip_typerefs(t);
   if(va_tag_type(t)) {
     if(t->size!=24 || alignment_of_type(t)!=8)unsupported("builtin va_list tag layout");
@@ -441,6 +441,17 @@ string constant(a_constant_ptr c) {
 }
 string initializer(string dst, a_type_ptr t, a_constant_ptr c) {
   t = skip_typerefs(t);
+  if(t->kind==tk_array && !t->size) {
+    // c_gen_be.c::dump_initializer_part accepts empty zero-bound and flexible
+    // array initializers. These members have address-only views here,
+    // not CLR storage fields. Consume their empty initializer without naming
+    // or assigning a fictitious one-byte managed marker object.
+    if(t->variant.array.is_vla || t->variant.array.is_template_dependent_size_array ||
+       !((c->kind==ck_aggregate && !c->variant.aggregate.first_constant) ||
+         (c->kind==ck_string && !c->variant.string.length)))
+      unsupported("nonempty initializer for zero-storage array");
+    return "";
+  }
   if (c->kind == ck_string) {
     if (t->kind != tk_array || c->variant.string.length > t->size) unsupported("string initializer bounds");
     string result = dst + " = default;\n";
@@ -518,6 +529,8 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c) {
   return result;
 }
 string expr(an_expr_node_ptr e);
+string gnu_statement_expression(an_expr_node_ptr e);
+string statement_expression_result(an_expr_node_ptr e);
 void ensure_lifecycle();
 bool selected_runtime_branch(a_statement_ptr s,a_statement_ptr &branch) {
   // c_gen_be.c emits only the selected branch of constexpr/consteval forms.
@@ -569,6 +582,8 @@ string arithmetic_type(a_type_ptr a,a_type_ptr b) {
   if(size==16)return uns?"global::System.UInt128":"global::System.Int128";
   return size==8?(uns?"ulong":"long"):(uns?"uint":"int");
 }
+// Atomic qualification is retained by IL and consumed by the access adapters.
+#include "dot_gen_c11_atomics.h"
 // Bitfields are properties backed by the exact EDG byte/bit positions. Their
 // mutation helper takes the containing object's address, evaluating it once.
 a_field_ptr bitfield(an_expr_node_ptr e) {
@@ -604,6 +619,7 @@ string location(an_expr_node_ptr e) {
     case enk_constant: return constant(node_constant(e));
     case enk_routine: return routine_address(e->variant.routine.ptr);
     case enk_variable: return variable(node_variable(e));
+    case enk_statement: return gnu_statement_expression(e);
     case enk_object_lifetime: return sequence_expression(e);
     case enk_throw: return sequence_expression(e);
     case enk_lowered_eh_construct: return exception_address(e);
@@ -627,6 +643,8 @@ string location(an_expr_node_ptr e) {
   auto op = e->variant.operation.kind;
   auto a = e->variant.operation.operands;
   auto b = a ? a->next : nullptr;
+  string atomic_mutation=c11_atomic_mutation(e);
+  if(!atomic_mutation.empty())return atomic_mutation;
   string vararg_operation=va_operation(e);
   if(!vararg_operation.empty())return vararg_operation;
   if (op == eok_comma) return sequence_expression(e);
@@ -837,6 +855,7 @@ string location(an_expr_node_ptr e) {
 void line(string s) { output += s + "\n"; }
 string expr(an_expr_node_ptr e) {
   string value=location(e);
+  if(e->is_lvalue && c11_atomic_type(e->type))return c11_atomic_read(e,"&("+value+")");
   if(!(get_type_qualifiers(e->type)&TQ_VOLATILE) || !e->is_lvalue)return value;
   if(bitfield(e))unsupported("volatile bitfield access");
   string ty=type(e->type),key="volatile-read:"+ty,id;
@@ -1017,6 +1036,7 @@ void statement(a_statement_ptr s) {
   a_statement_ptr selected=nullptr;
   if(selected_runtime_branch(s,selected)){statement(selected);return;}
   switch (s->kind) {
+    case stmk_stmt_expr_result:line(statement_expression_result(s->expr));break;
     case stmk_decl: break; // Declarations are hoisted; stmk_init retains execution order.
     case stmk_empty: line(";"); break;
     case stmk_expr:
@@ -1159,7 +1179,9 @@ void statement(a_statement_ptr s) {
     default: unsupported("statement", s->kind);
   }
 }
+#include "dot_gen_statement_expression.h"
 #include "dot_gen_main.h"
+#include "dot_gen_coroutine.h"
 }
 
 // EDG's custom-backend entry point intentionally has global namespace linkage.
@@ -1198,7 +1220,7 @@ void back_end(void) {
   auto scope = il_header.primary_scope;
   // Exception metadata visits aggregate types before ordinary emission.
   nested_types = !getenv("EDG_DOT_NEST") || string(getenv("EDG_DOT_NEST")) == "1";
-  if (getenv("EDG_DOT_TRACE")) trace_program(scope);
+  if (getenv("EDG_DOT_TRACE")) {trace_program(scope);trace_coroutines(scope);}
   for(auto r=scope->routines;r;r=r->next) {
     if(!routine_body_needed(r) || r->function_def_number==NULL_function_def_number)continue;
     auto body=scope_for_routine_or_null(r);if(body)collect_source_jump_statements(body->assoc_block,false);

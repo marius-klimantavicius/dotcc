@@ -14,7 +14,9 @@ public static unsafe class NonlocalJump
     {
         internal ulong ActivationIdentity;
         internal uint Site;
-        internal uint Reserved;
+        internal uint Version;
+        internal nint VlaHead;
+        internal ulong VlaIdentity;
     }
 
     // Lives in the generated caller frame. Register/unregister in a try/finally
@@ -32,12 +34,14 @@ public static unsafe class NonlocalJump
         public ulong ActivationIdentity { get; }
         public uint Site { get; }
         public int Value { get; }
-        internal Transfer(ulong identity, uint site, int value)
+        internal Vla.Checkpoint Checkpoint { get; }
+        internal Transfer(ulong identity, uint site, int value, Vla.Checkpoint checkpoint)
             : base("Translated nonlocal jump")
         {
             ActivationIdentity = identity;
             Site = site;
             Value = value;
+            Checkpoint = checkpoint;
         }
     }
 
@@ -83,7 +87,10 @@ public static unsafe class NonlocalJump
         var buffer = (Buffer*)storage;
         buffer->ActivationIdentity = activation->Identity;
         buffer->Site = site;
-        buffer->Reserved = 0;
+        buffer->Version = 2;
+        var checkpoint = Vla.Capture();
+        buffer->VlaHead = checkpoint.Head;
+        buffer->VlaIdentity = checkpoint.Identity;
         return 0;
     }
 
@@ -91,12 +98,19 @@ public static unsafe class NonlocalJump
         => activation != null && activation->Identity != 0 &&
            transfer.ActivationIdentity == activation->Identity;
 
+    public static int Resume(Transfer transfer, Activation* activation)
+    {
+        if (!Matches(transfer, activation)) Environment.FailFast("Wrong nonlocal jump resume activation");
+        Vla.Restore(transfer.Checkpoint);
+        return transfer.Value;
+    }
+
     [DoesNotReturn]
     public static void LongJump(void* storage, int value)
     {
         if (storage == null) Environment.FailFast("Null longjmp buffer");
         Buffer target = *(Buffer*)storage;
-        if (target.ActivationIdentity == 0 || target.Site == 0 || target.Reserved != 0)
+        if (target.ActivationIdentity == 0 || target.Site == 0 || target.Version != 2)
             Environment.FailFast("Unarmed or corrupted longjmp buffer");
         Activation* destination = head;
         while (destination != null && destination->Identity != target.ActivationIdentity)
@@ -105,8 +119,10 @@ public static unsafe class NonlocalJump
             Environment.FailFast("longjmp target is inactive or belongs to another thread");
         if (target.Site > destination->SiteCount)
             Environment.FailFast("Invalid longjmp continuation site");
+        var checkpoint = new Vla.Checkpoint(target.VlaHead, target.VlaIdentity);
+        Vla.Validate(checkpoint);
         Transfer transfer;
-        try { transfer = new Transfer(target.ActivationIdentity, target.Site, value == 0 ? 1 : value); }
+        try { transfer = new Transfer(target.ActivationIdentity, target.Site, value == 0 ? 1 : value, checkpoint); }
         catch (OutOfMemoryException error)
         {
             Environment.FailFast("Unable to allocate nonlocal jump transport", error);

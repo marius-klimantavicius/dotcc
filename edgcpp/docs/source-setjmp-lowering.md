@@ -2,8 +2,9 @@
 
 Status: generated source translation passes the initial controlling/standalone
 continuation subset in C and C++, including C++ handler bypass and owner reentry.
-Protected-region targets, VLA-containing target functions and extension forms
-remain explicit follow-up gates. This is not full source nonlocal-jump coverage.
+The version 2 VLA checkpoint implementation passes translated C verification.
+Protected-region targets and extension forms remain explicit
+follow-up gates. This is not full source nonlocal-jump coverage.
 
 ## Existing implementations consulted
 
@@ -49,11 +50,13 @@ NonlocalJump.Leave(Activation* activation);
 int NonlocalJump.Arm(Activation* activation, void* buffer, uint site);
 NonlocalJump.LongJump(void* buffer, int value); // never returns
 bool NonlocalJump.Matches(Transfer error, Activation* activation);
+int NonlocalJump.Resume(Transfer error, Activation* activation);
 ```
 
-`Buffer` is 16 bytes: a 64-bit activation identity, a 32-bit positive site
-number and a reserved zero word. The future portable header exposes an array
-of one corresponding C structure as `jmp_buf`; it stores no CLR reference or
+`Buffer` is now 32 bytes: a 64-bit activation identity, a 32-bit positive site
+number, version word 2, a VLA allocation-head pointer and generation identity.
+The portable header exposes an array of one corresponding C structure as
+`jmp_buf`; it stores no CLR reference or
 native program counter. An activation record lives in the caller's existing
 unmanaged frame and links into a thread-local active-frame chain. A process-local
 monotonic identity distinguishes recursive calls and later reuse of the same
@@ -105,8 +108,8 @@ try {
             // Normal return exits this entire envelope.
         } catch (NonlocalJump.Transfer jump)
           when (NonlocalJump.Matches(jump, &activation)) {
+            setjmpResult = NonlocalJump.Resume(jump, &activation);
             pc = jump.Site;
-            setjmpResult = jump.Value;
         }
     }
 } finally {
@@ -145,9 +148,8 @@ lifetime regions require the following adapters before broader acceptance.
 4. VLA allocations in discarded activations retain the runtime's existing
    `Vla.Restore` reclamation. Resuming the same activation requires a saved VLA
    mark per armed environment if variable storage was created since setjmp.
-   That mark is not yet in the 16-byte core buffer: initial integration must
-   reject such regions or deliberately version/extend the buffer before
-   claiming support. Do not restore the routine-entry mark while surviving
+   Version 2 stores the mark and generation in its 32-byte descriptor and
+   restores it through `Resume`. Do not restore the routine-entry mark while surviving
    variables still refer to allocations made before the setjmp.
 5. Jumping out of an active C++ handler needs release of its catch-frame
    bookkeeping; jumping back into a handler must preserve its caught payload
@@ -192,7 +194,8 @@ The original generic C runtime has no persistent exception_ptr provider and a
 raw source jump bypasses restoration of its explicit EH stack entries. Its
 isolated oracle checks destination and handler bypass, without making
 post-jump library-EH queries. The oracle header uses its configured long[25]
-buffer spelling, separate from our portable 16-byte descriptor. A retained
+buffer spelling, separate from the initial portable 16-byte descriptor (now
+versioned to 32 bytes). A retained
 failed Clang attempt accidentally linked native libstdc++ through the clang++
 driver; exit-time stream flushing then queried interposed EDG EH state.
 `setjmp-cpp-20261003-025426/clang-exit-backtrace.txt` records that diagnosis.
@@ -209,16 +212,16 @@ unsupported lifetime regions. Finally extend VLA and C++ protected-region
 continuations with exact native differential traces. No real-world project
 acceptance is authorized at this stage.
 
-## Pending VLA continuation ABI version 2
+## VLA continuation ABI version 2
 
 The candidate in
 `artifacts/campaign/setjmp-vla-candidate-20261003-030003` extends the descriptor
 to 32 bytes: activation identity, site, version word 2, VLA allocation head and
 allocation generation. The public header advertises
-`__EDG_DOT_JMP_BUF_ABI_VERSION=2`. Promotion requires updating the driver's
-manifest to version 2/bufferSize 32 and making `NonlocalJump` depend on `Vla`.
-The accepted canonical compiler remains on version 1 until that promotion and
-translated verification finish.
+`__EDG_DOT_JMP_BUF_ABI_VERSION=2`. The promoted source requires the driver's
+manifest to report version 2/bufferSize 32 and `NonlocalJump` to depend on `Vla`.
+Runtime/helper/header/driver promotion and compiler rebuild are complete. The
+prior accepted compiler snapshot retains version 1.
 
 Arming captures the VLA allocation chain without allocating. Longjmp validates
 the saved head and generation by walking live allocations, without dereferencing
@@ -233,9 +236,19 @@ Ten standalone JIT/NativeAOT candidate checks pass in
 `artifacts/campaign/setjmp-vla-runtime-20261003-030221/results.json`. They cover
 before/after allocation, repeated jumps, caller/callee restoration, a jump buffer
 inside surviving VLA storage, allocation-free capture, and invalid checkpoint
-rejection at throw and resume. This is runtime proof, not yet translated-source
-acceptance. `backend/tests/setjmp_vla.c` and its verifier add source coverage,
+rejection at throw and resume. This was runtime proof before promotion.
+`backend/tests/setjmp_vla.c` and its verifier add source coverage,
 including a variably modified pointer that requires no VLA allocation.
+
+After promotion, the canonical runtime passes 22 JIT/NativeAOT checks in
+`artifacts/campaign/setjmp-v2-runtime-20261003-031620/results.json`: the original
+12 transport checks and all 10 VLA checkpoint checks. Translated source passes
+28 checks in `artifacts/campaign/setjmp-v2-source-20261003-031800/results.json`:
+nine VLA/native checks, 13 ordinary continuation checks and six mixed-C++/owner
+checks. The obsolete VLA rejection is removed from the ordinary negative
+matrix. Static/instance JIT/NativeAOT executions preserve surviving arrays and
+buffers, restore allocation marks after three consecutive Run calls, and
+diagnose an expired allocated-VLA scope before attempting to resume it.
 
 The C rule is broader than allocation liveness: jumping back after leaving the
 scope of an identifier with variably modified type is undefined, even if that

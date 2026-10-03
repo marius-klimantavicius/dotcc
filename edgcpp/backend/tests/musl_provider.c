@@ -71,6 +71,9 @@ int main(void) {
  if(setenv("TZ","UTC0",1))return 25;
  tzset();
  if(!localtime_r(&epoch,&civil) || civil.tm_year!=70 || civil.tm_hour!=0)return 26;
+ wchar_t wide_word[8];int wide_number=0;
+ if(swscanf(L"37 omega",L"%d %7ls",&wide_number,wide_word)!=2 ||
+    wide_number!=37 || wcscmp(wide_word,L"omega"))return 27;
  uselocale(previous);freelocale(locale);
  return 0;
 }

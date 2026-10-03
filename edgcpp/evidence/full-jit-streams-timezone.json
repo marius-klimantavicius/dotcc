@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "checkCount": 530,
+  "mode": "complete JIT suite; focused NativeAOT evidence is recorded separately",
+  "platform": "linux-x64",
+  "snapshot": "artifacts/campaign/milestone-streams-timezone-snapshot-001/source",
+  "snapshotManifestSha256": "e7954948d84e679a543e28ea10307078782138028e4fdeb78f406417ea4000c0",
+  "results": "artifacts/campaign/full-jit-streams-timezone-001/results.json",
+  "resultsSha256": "c5e1ebcccb6711ae773d25be68e86d2b80910460ec5f4351c5182f3e75656daa",
+  "commandsSha256": "707c8d3e8991e5dbcc6d2a7464a51174b20f7988e660b8140bf1f619068c511a",
+  "scope": "Source setjmp v1, extended floating types, selected musl112, strict wide FILE ABI and existing language/lifetime/runtime suites",
+  "qualification": "Frozen source precedes the independently verified DF80 wide FILE correction committed in6de065787. It also precedes source-jump v2, zero-bound padding, wide scanf, CPU clock and compiler throw-provider resolution; their focused evidence is separate. No application-level acceptance."
+}

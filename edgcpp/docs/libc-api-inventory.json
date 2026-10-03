@@ -1,5 +1,5 @@
 {
-  "bindingCount": 157,
+  "bindingCount": 158,
   "bindings": {
     "__edg_calendar_utc": {
       "parameters": "",
@@ -186,6 +186,12 @@
       "result": "void",
       "source": "libc-files-bindings.def",
       "target": "__edg_files.Clearerr"
+    },
+    "clock": {
+      "parameters": "",
+      "result": "long",
+      "source": "libc-cpu-clock-bindings.def",
+      "target": "global::Edg.Runtime.LibcCpuClock.Clock"
     },
     "clock_gettime": {
       "parameters": "int,TIMESPEC*",
@@ -988,6 +994,7 @@
       "wcstoimax": "selected-source",
       "wcstoumax": "selected-source"
     },
+    "iso646.h": {},
     "langinfo.h": {
       "nl_langinfo": "selected-source",
       "nl_langinfo_l": "selected-source"
@@ -1175,7 +1182,15 @@
       "truncl": "runtime-binding"
     },
     "setjmp.h": {},
+    "stdalign.h": {},
     "stdarg.h": {},
+    "stdatomic.h": {
+      "__atomic_compare_exchange": "declaration-only",
+      "__atomic_exchange": "declaration-only",
+      "__atomic_load": "declaration-only",
+      "__atomic_store": "declaration-only"
+    },
+    "stdbool.h": {},
     "stddef.h": {},
     "stdint.h": {},
     "stdio.h": {
@@ -1281,6 +1296,7 @@
       "wcstombs": "selected-source",
       "wctomb": "runtime-binding"
     },
+    "stdnoreturn.h": {},
     "string.h": {
       "memchr": "runtime-binding",
       "memcmp": "runtime-binding",
@@ -1313,7 +1329,7 @@
     "time.h": {
       "asctime": "selected-source",
       "asctime_r": "selected-source",
-      "clock": "declaration-only",
+      "clock": "runtime-binding",
       "clock_gettime": "runtime-binding",
       "ctime": "declaration-only",
       "ctime_r": "declaration-only",
@@ -1344,7 +1360,7 @@
       "fputws": "runtime-binding",
       "fwide": "runtime-binding",
       "fwprintf": "declaration-only",
-      "fwscanf": "declaration-only",
+      "fwscanf": "selected-source",
       "getwc": "runtime-binding",
       "getwchar": "runtime-binding",
       "mbrlen": "selected-source",
@@ -1355,14 +1371,14 @@
       "putwc": "runtime-binding",
       "putwchar": "runtime-binding",
       "swprintf": "declaration-only",
-      "swscanf": "declaration-only",
+      "swscanf": "selected-source",
       "ungetwc": "runtime-binding",
       "vfwprintf": "declaration-only",
-      "vfwscanf": "declaration-only",
+      "vfwscanf": "selected-source",
       "vswprintf": "declaration-only",
-      "vswscanf": "declaration-only",
+      "vswscanf": "selected-source",
       "vwprintf": "declaration-only",
-      "vwscanf": "declaration-only",
+      "vwscanf": "selected-source",
       "wcrtomb": "selected-source",
       "wcscat": "selected-source",
       "wcschr": "selected-source",
@@ -1407,7 +1423,7 @@
       "wmemmove": "selected-source",
       "wmemset": "selected-source",
       "wprintf": "declaration-only",
-      "wscanf": "declaration-only"
+      "wscanf": "selected-source"
     },
     "wctype.h": {
       "iswalnum": "selected-source",
@@ -1616,13 +1632,20 @@
           "ctime.c",
           "timezone_wrappers.c"
         ]
+      },
+      {
+        "directory": "wscanf",
+        "translationUnits": [
+          "vfwscanf.c",
+          "wscan_wrappers.c"
+        ]
       }
     ],
     "description": "Selected translated musl formatting, scanning, numeric, wide/multibyte, calendar/timezone, environment and standard utility algorithms with audited BCL services; not complete libc coverage.",
     "id": "musl-selected-bcl-lp64-v1",
     "schema": 1
   },
-  "publicBindingCount": 134,
+  "publicBindingCount": 135,
   "schema": 1,
   "scope": "C17 header-category ledger plus explicit POSIX extensions; not an exhaustive POSIX API catalogue; regex declaration census excludes macros, data and compiler facilities",
   "selectedPublicDefinitions": [
@@ -1777,18 +1800,19 @@
     "sscanf",
     "vscanf",
     "vfscanf",
-    "vsscanf"
+    "vsscanf",
+    "wscanf",
+    "fwscanf",
+    "swscanf",
+    "vwscanf",
+    "vfwscanf",
+    "vswscanf"
   ],
   "standardHeadersAbsent": [
     "assert.h",
     "complex.h",
     "fenv.h",
-    "iso646.h",
     "signal.h",
-    "stdalign.h",
-    "stdatomic.h",
-    "stdbool.h",
-    "stdnoreturn.h",
     "tgmath.h",
     "threads.h"
   ]

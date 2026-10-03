@@ -88,8 +88,8 @@ C++ exception ABI adapter, and `030/031` add original `thread.cpp`, `mutex.cpp`,
 and RTTI. Probe `032` adds `abi_mutex.cpp`: the original separate-TU destructor
 sources deliberately redeclare historical ABI classes, so the portable external
 thread ABI adapter includes the actual public headers and retains the original
-destructor bodies. `mutex-source.json` records provenance. This adapter remains
-unaccepted until generated library execution passes.
+destructor bodies. `mutex-source.json` records provenance. This adapter participates in the accepted single-TU synthetic source-closure
+runs038–040 below; separate-TU library assembly remains open.
 
 Probe `032` reaches `__builtin_unreachable`; the coordinator's exact intrinsic
 binding advances `033` to `__builtin_clz` in `__bit/countl.h`. These probes still
@@ -101,3 +101,35 @@ Probe `034` passes exact bit-count intrinsics and adds the real original
 `eok_class_rvalue_adjust` in `chrono::year_month_day_last::day`. The C backend's
 lowering configuration is the reference for that cv-adjusted class prvalue.
 No EDG behavior is changed to bypass the diagnostic.
+
+
+## Generated source-closure milestone
+
+`libcxx-core-seeds-038` successfully translates, builds and runs the synthetic
+array consumer under JIT and NativeAOT. The explicit source closure contains the
+original locale, thread, future, chrono and core implementations, plus the
+tracked managed ABI adapters. `zero-bound-padding-translated-001` separately
+passes the original EDG C oracle and static/instance JIT/AOT: zero-length array
+fields preserve address/layout but need no CLR storage assignment. Populated
+neighboring fields, zero/nonzero template padding, globals, TLS and copies are
+checked. The C backend explicitly handles empty zero-bound aggregate
+initializers in `dump_initializer_part`; the C# emitter now agrees.
+
+`libcxx-core-seeds-039` adds accepted vector and smart-pointer consumers in JIT
+and NativeAOT. They exercise growth/move/destruction, `out_of_range`, shared and
+weak ownership, and object lifetime counts. Other consumers remain incomplete:
+allocation reaches the generated `__cxa_bad_cast` helper despite a corresponding
+source definition; algorithms and hash containers request actual `algorithm.cpp`
+and `hash.cpp` providers; value types encounter a frontend/lowering configuration
+assertion at the variant destructor. EDG semantics remain unchanged. These are
+single-TU static-engine results, not full library, instance, or linker acceptance.
+
+
+`libcxx-core-seeds-040` resolves the exact translated C-linkage throw providers
+and adds original algorithm/hash source files. Allocation, algorithms and
+containers all pass translation, C# compilation, JIT and NativeAOT. The exact
+ordered source recipe and hashes are now retained canonically as
+`backend/runtime/libcxx/core-source-profile.json`, with its implementation-only
+feature preamble. This recipe explicitly describes the same one-TU bring-up
+configuration, including library feature flags visible to its synthetic consumer;
+it is not a production `--libcxx` backend or separate-TU conformance claim.

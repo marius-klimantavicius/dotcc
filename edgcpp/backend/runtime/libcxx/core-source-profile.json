@@ -1,0 +1,153 @@
+{
+  "schema": 1,
+  "purpose": "Explicit single-TU synthetic core-source bring-up only; not production separate-TU library assembly",
+  "release": "llvmorg-18.1.8",
+  "standard": "c++20",
+  "libc": "musl",
+  "orderedSources": [
+    {
+      "base": "adapter",
+      "path": "core-source-preamble.h",
+      "sha256": "3281116cf0026d013b7510aa6334d433e3e54f4cb9cbeace0903a4900929282a"
+    },
+    {
+      "base": "adapter",
+      "path": "abi_core.cpp",
+      "sha256": "34720044c31ac5cdf5bbc67fa5402ef5ece3a96bc2ea0365fc9c82a195603885"
+    },
+    {
+      "base": "adapter",
+      "path": "abi_exceptions.cpp",
+      "sha256": "3792c5de84269d51b1bc2286546cce86d2994353206e9048e0553f3c9286b817"
+    },
+    {
+      "base": "adapter",
+      "path": "abi_atomic.cpp",
+      "sha256": "462155d0e5f28ed4ddc060ffb1b93764b0433fb8e07f1d3bd20de2af018a34c6"
+    },
+    {
+      "base": "upstream",
+      "path": "src/new.cpp",
+      "sha256": "caf5f9f8ace82f9cef17455843b09b9fb77565a7aaa999f2c26f6bf6ed2db532"
+    },
+    {
+      "base": "upstream",
+      "path": "src/new_handler.cpp",
+      "sha256": "0b17697b569d4a4cc9b3c2f97ef69fdf8d6cac72de9871489456c5d9235b1bbf"
+    },
+    {
+      "base": "upstream",
+      "path": "src/new_helpers.cpp",
+      "sha256": "745bd190f8e82539b9896aef7f9a6a32948f2c5313bcbdc836a5f45b518a1399"
+    },
+    {
+      "base": "upstream",
+      "path": "src/typeinfo.cpp",
+      "sha256": "484f7fe899ac0c9101b0b9cc2d320030a4f72aa3ced68131071858722bdfd6c6"
+    },
+    {
+      "base": "upstream",
+      "path": "src/memory.cpp",
+      "sha256": "f5dd019603cdbe6a03c2caabad2a85a2ff6782f276f5c69ab1c523ab40fa1551"
+    },
+    {
+      "base": "upstream",
+      "path": "src/stdexcept.cpp",
+      "sha256": "3d4cdfcf736eb5cd67d0cb1c406caf8c7b831f7bfd80f13fcb19cb5df18fdaee"
+    },
+    {
+      "base": "upstream",
+      "path": "src/system_error.cpp",
+      "sha256": "fb570270dcc6749dd2d5bdd078d7b0f0576ffbc0afb2d2e6862a691f53f1c8ff"
+    },
+    {
+      "base": "upstream",
+      "path": "src/error_category.cpp",
+      "sha256": "236d878ed42578f1599dae12d0b7b5f44acc146f9f5af2b92f29c5b54008193a"
+    },
+    {
+      "base": "upstream",
+      "path": "src/ios.cpp",
+      "sha256": "69518fbe7cb151cd8477a2d14ed7e05958d6c7e69739134429d0e93fc866452d"
+    },
+    {
+      "base": "upstream",
+      "path": "src/variant.cpp",
+      "sha256": "1409f5559f84668a585b0cedb83d854dc3802dfeb03eefb184bf6f0735e19c90"
+    },
+    {
+      "base": "upstream",
+      "path": "src/optional.cpp",
+      "sha256": "55e0f33f4a6637ff14488270cbd20229f46f1fedcb4fc69cf0dda219a422d224"
+    },
+    {
+      "base": "upstream",
+      "path": "src/any.cpp",
+      "sha256": "45ae314245d092c78ef0d93af5a98c1c8bb5f66eafd000e0781132ce1da1b885"
+    },
+    {
+      "base": "upstream",
+      "path": "src/functional.cpp",
+      "sha256": "7c1515f350edd55eee59aa290d474eeaa1d8c66946b91401b2b3e5116de33a2c"
+    },
+    {
+      "base": "upstream",
+      "path": "src/locale.cpp",
+      "sha256": "5956d7c4082778415c3445c705f59b1fd1ffc649b226d2968cd7647ff56f8241"
+    },
+    {
+      "base": "upstream",
+      "path": "src/thread.cpp",
+      "sha256": "74acf68a6c8eb1701e166fc48b4c40a39cf09d29af95bee63d6bbd56401f6a45"
+    },
+    {
+      "base": "upstream",
+      "path": "src/mutex.cpp",
+      "sha256": "f562a2cda5b2fff8c592e94f225af080916a547cd4c144cba959e8e4e1326fbe"
+    },
+    {
+      "base": "upstream",
+      "path": "src/condition_variable.cpp",
+      "sha256": "2c2daa42f90592fcd085bec73a99b3db1d4dc0f228622401a25b630f4a2cf57d"
+    },
+    {
+      "base": "upstream",
+      "path": "src/future.cpp",
+      "sha256": "81d9672773eee216b5150cb6004c54a04c30d22c71a3402a25bb9eac1551f8e9"
+    },
+    {
+      "base": "adapter",
+      "path": "abi_mutex.cpp",
+      "sha256": "949da24f07034d8875e9f197aaf96e433923ace4c9e07e751ffb60e5b18ebdf4"
+    },
+    {
+      "base": "upstream",
+      "path": "src/call_once.cpp",
+      "sha256": "c89e008f00577b1f039aa31b2429b5546181f7366dfc7f583d90d7481fafa7c2"
+    },
+    {
+      "base": "upstream",
+      "path": "src/chrono.cpp",
+      "sha256": "979ae2379e45ce6d0cd001c1a12cef29cadcefe518a1dd17eab51bf0d1bb49a5"
+    },
+    {
+      "base": "upstream",
+      "path": "src/algorithm.cpp",
+      "sha256": "5965a2ccb91e21d3dbeaa659299e43566a8128d9648743395d1dd14d592ec8a7"
+    },
+    {
+      "base": "upstream",
+      "path": "src/hash.cpp",
+      "sha256": "63890063c9f5b28bdfe5168bc2777ccc19586d27a05465f25dfa04ef51e1a6e4"
+    }
+  ],
+  "acceptedStaticConsumers": [
+    "array",
+    "vector",
+    "memory",
+    "allocation",
+    "algorithms",
+    "containers"
+  ],
+  "remaining": "Value-type variant configuration, broader APIs, separate-TU ownership/linking, other platform execution and performance closure"
+}

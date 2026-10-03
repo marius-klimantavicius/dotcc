@@ -109,8 +109,6 @@ void prepare_source_jumps(a_statement_ptr body) {
   collect_source_jump_statements(body,true);
   if(!source_jump_sites.empty() && (source_jump_protected || !cleanup_regions.empty()))
     unsupported("setjmp continuation through C++ protected/lifetime regions");
-  if(!source_jump_sites.empty() && source_jump_variable_storage)
-    unsupported("setjmp continuation with variable-length storage");
 }
 string source_jump_prefix(an_expr_node_ptr root) {
   auto found=source_jump_contexts.find(root);
@@ -145,7 +143,7 @@ string source_jump_dispatch_suffix() {
   if(source_jump_emitted.size()!=source_jump_sites.size())unsupported("unemitted setjmp continuation");
   return string(function_returns_void?"return;\n":"throw new global::System.InvalidProgramException(\"Function fell through nonlocal continuation\");\n")+
     "} catch (global::Edg.Runtime.NonlocalJump.Transfer __edg_jump) when (global::Edg.Runtime.NonlocalJump.Matches(__edg_jump, &__edg_jump_activation)) {\n"
-    "__edg_jump_pc=(int)__edg_jump.Site;__edg_jump_result=__edg_jump.Value;\n"
+    "__edg_jump_result=global::Edg.Runtime.NonlocalJump.Resume(__edg_jump, &__edg_jump_activation);__edg_jump_pc=(int)__edg_jump.Site;\n"
     "} } } finally {global::Edg.Runtime.NonlocalJump.Leave(&__edg_jump_activation);}\n";
 }
 string source_jump_exclusion(const string &error) {

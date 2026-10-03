@@ -42,5 +42,8 @@ int main() {
   if (!(typeid(*base) == typeid(Derived)) || typeid(*base) == typeid(Base)) return 11;
   try { throw std::bad_alloc(); }
   catch (const std::exception& e) { if (std::strcmp(e.what(), "std::bad_alloc")) return 12; }
+  volatile unsigned long excessive = ~0UL;
+  try { int* impossible = new int[excessive]; delete[] impossible; return 13; }
+  catch (const std::bad_array_new_length&) { if (alive) return 14; }
   return 0;
 }

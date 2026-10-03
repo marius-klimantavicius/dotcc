@@ -1,0 +1,121 @@
+{
+  "schema": 1,
+  "scope": "Source jumps with VLA checkpoints, C11 atomics and contained GNU statement expressions, wide scanf, process CPU clock and selected libc++ source-provider consumers",
+  "snapshot": "artifacts/campaign/milestone-c11-library-snapshot-001",
+  "validation": "Focused synthetic and EDG differential checks, Linux-x64 JIT/NativeAOT; previous frozen 530-check full JIT suite has independent evidence and predates these changes",
+  "checkCount": 152,
+  "evidence": [
+    {
+      "path": "artifacts/campaign/setjmp-v2-runtime-20261003-031620/results.json",
+      "sha256": "7277fc129a148ea993ae9031c6e542dcb8e64821307a9463f6b962f1039bbd73",
+      "checkCount": 22
+    },
+    {
+      "path": "artifacts/campaign/setjmp-v2-source-20261003-031800/results.json",
+      "sha256": "6e878a271d0ba5595da5df5edcf04879c05d0597fce95ee64f8f7fdcb660bb3a",
+      "checkCount": 28
+    },
+    {
+      "path": "artifacts/campaign/zero-bound-padding-translated-001/results.json",
+      "sha256": "1bfda2a8eca73026a05c157c9f709576305c5c8d8436c72a4317b63de56d81f2",
+      "checkCount": 5
+    },
+    {
+      "path": "artifacts/campaign/compiler-throw-entries-translated-003/results.json",
+      "sha256": "967006bea5bde13030129247aec7782d5ac5009c64da90f8b3a783070e403101",
+      "checkCount": 5
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-scanf-translated-20261003-055500/results.json",
+      "sha256": "16852693d2c572cd95b6d33b5e91afc9e8f665e9fd5ec3d3b24b9cace8294830",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-scanf-failure-20261003-055200/results.json",
+      "sha256": "18d3a66e29f6be2e54639332c109aad00ecaf38a16e761763d24aebd0ec9c1f9",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/libc-wide-scanf-abi-20261003-055200/results.json",
+      "sha256": "1bf1b85560073b96c0458bc9f88d4d06f4a0047b6ab234a8ccc0b172362ebc16",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/musl-provider-wscanf-001/results.json",
+      "sha256": "55d2859d4f31d14af6f3131e06141eb43629172d11b61a91514615a23a414082",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/libc-cpu-clock-runtime-001/results.json",
+      "sha256": "aa78f7903f1b67debcb240f548876eb727cd6d75b50a46f1baabf5c6320defe6",
+      "checkCount": 2
+    },
+    {
+      "path": "artifacts/campaign/libc-cpu-clock-translated-001/results.json",
+      "sha256": "412720a914d17348078ddcb8b00be41f562678ef4a4f10e45d59caa32f162439",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-c-compat-20261003-060900/results.json",
+      "sha256": "7a971d87f45a8e3cb3a1270a0b9ef76fdb60d2d1d408892d1ba2636d624a0109",
+      "checkCount": 9
+    },
+    {
+      "path": "artifacts/campaign/libc-c11-implicit-20261003-062300/results.json",
+      "sha256": "c0ae9af131b19236bf4e0d3a149a07125ee8f64159669764a100e57cb2523a08",
+      "checkCount": 5
+    },
+    {
+      "path": "artifacts/campaign/libc-stdatomic-translated-20261003-063400/results.json",
+      "sha256": "63effe6dc1b26ea295a3a262caa34ce8a2209da24cb75f18e4918bbca97e09de",
+      "checkCount": 8
+    },
+    {
+      "path": "artifacts/campaign/statement-expressions-translated-003/results.json",
+      "sha256": "e05448f0cc7db2bc00d04e349fd14bb38263f9c98c4951958d3f199a16f29655",
+      "checkCount": 10
+    },
+    {
+      "path": "artifacts/campaign/statement-expressions-negative-002/results.json",
+      "sha256": "9871ca85ddede024b8604a7d87dd955ba3173988e5cb14ed489c5accf6364b46",
+      "checkCount": 4
+    },
+    {
+      "path": "artifacts/campaign/libcxx-core-seeds-038/results.json",
+      "sha256": "20fcb01e0b51ad820d4f13ca668629dab43f64a6b3134cfe16badcfae1d77773",
+      "checkCount": 2,
+      "acceptedFixtures": [
+        "array"
+      ],
+      "scope": "Single-TU static synthetic libc++ source-provider execution; stage successes are not counted separately"
+    },
+    {
+      "path": "artifacts/campaign/libcxx-core-seeds-039/results.json",
+      "sha256": "f7d8d5c588e98de47c2b502efff952872e05dc902206110728e01feeedd58044",
+      "checkCount": 4,
+      "acceptedFixtures": [
+        "vector",
+        "memory"
+      ],
+      "scope": "Single-TU static synthetic libc++ source-provider execution; stage successes are not counted separately"
+    },
+    {
+      "path": "artifacts/campaign/libcxx-core-seeds-040/results.json",
+      "sha256": "41cf9977a278455b9817f6b365e6613d0285211e537b4e6f5372db33f26a1371",
+      "checkCount": 6,
+      "acceptedFixtures": [
+        "allocation",
+        "algorithms",
+        "containers"
+      ],
+      "scope": "Single-TU static synthetic libc++ source-provider execution; stage successes are not counted separately"
+    }
+  ],
+  "remaining": [
+    "Full coroutines",
+    "Separate-TU libc++ assembly and full C++ standard library coverage",
+    "Remaining libc APIs and cross-platform execution matrix",
+    "Full lifetime-bearing GNU statement expressions",
+    "Full owned operation/lifetime IR"
+  ]
+}

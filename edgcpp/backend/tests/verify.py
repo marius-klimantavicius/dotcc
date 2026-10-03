@@ -234,10 +234,18 @@ def main():
     checks.extend(verify_extended_float(ROOT, TESTS, suite_output("extended_float"), args.nativeaot, run))
     from unreachable_builtin_verify import verify_unreachable_builtin
     checks.extend(verify_unreachable_builtin(ROOT, TESTS, suite_output("unreachable_builtin"), args.nativeaot, run))
+    from zero_bound_padding_verify import verify_zero_bound_padding
+    checks.extend(verify_zero_bound_padding(ROOT, TESTS, suite_output("zero_bound_padding"), args.nativeaot, run))
+    from compiler_throw_entries_verify import verify_compiler_throw_entries
+    checks.extend(verify_compiler_throw_entries(ROOT, TESTS, suite_output("compiler_throw_entries"), args.nativeaot, run))
+    from statement_expressions_verify import verify_statement_expressions
+    checks.extend(verify_statement_expressions(ROOT, TESTS, suite_output("statement_expressions"), args.nativeaot, run))
     from class_rvalue_adjust_verify import verify_class_rvalue_adjust
     checks.extend(verify_class_rvalue_adjust(ROOT, TESTS, suite_output("class_rvalue_adjust"), args.nativeaot, run))
     from integer_intrinsics_verify import verify_integer_intrinsics
     checks.extend(verify_integer_intrinsics(ROOT, TESTS, suite_output("integer_intrinsics"), args.nativeaot, run))
+    from setjmp_vla_verify import verify_setjmp_vla
+    checks.extend(verify_setjmp_vla(ROOT, TESTS, suite_output("setjmp_vla"), args.nativeaot, run))
     from setjmp_control_verify import verify_setjmp_control
     checks.extend(verify_setjmp_control(ROOT, TESTS, suite_output("setjmp_control"), args.nativeaot, run))
     from floating_intrinsics_verify import verify_floating_intrinsics
@@ -278,10 +286,24 @@ def main():
     checks.extend(verify_libc_wide_calendar(ROOT, TESTS, suite_output("libc_wide_calendar"), args.nativeaot, run))
     from libc_stdlib_algorithms_verify import verify_libc_stdlib_algorithms
     checks.extend(verify_libc_stdlib_algorithms(ROOT, TESTS, suite_output("libc_stdlib_algorithms"), args.nativeaot, run))
+    from libc_c_compat_verify import verify_libc_c_compat
+    checks.extend(verify_libc_c_compat(ROOT, TESTS, suite_output("libc_c_compat"), args.nativeaot, run))
+    from libc_cpu_clock_verify import verify_libc_cpu_clock
+    checks.extend(verify_libc_cpu_clock(ROOT, TESTS, suite_output("libc_cpu_clock"), args.nativeaot, run))
+    from c11_implicit_atomic_verify import verify_c11_implicit_atomics
+    checks.extend(verify_c11_implicit_atomics(ROOT, TESTS, suite_output("c11_implicit_atomics"), args.nativeaot, run))
+    from libc_stdatomic_verify import verify_libc_stdatomic
+    checks.extend(verify_libc_stdatomic(ROOT, TESTS, suite_output("libc_stdatomic"), args.nativeaot, run))
     from libc_timezone_verify import verify_libc_timezone
     checks.extend(verify_libc_timezone(ROOT, TESTS, suite_output("libc_timezone"), args.nativeaot, run))
     from libc_environment_verify import verify_libc_environment
     checks.extend(verify_libc_environment(ROOT, TESTS, suite_output("libc_environment"), args.nativeaot, run))
+    from libc_wscanf_verify import verify_libc_wscanf
+    checks.extend(verify_libc_wscanf(ROOT, TESTS, suite_output("libc_wscanf"), args.nativeaot, run))
+    from libc_wscanf_failure_verify import verify_libc_wscanf_failure
+    checks.extend(verify_libc_wscanf_failure(ROOT, TESTS, suite_output("libc_wscanf_failure"), args.nativeaot, run))
+    from libc_wscanf_abi_verify import verify_libc_wscanf_abi
+    checks.extend(verify_libc_wscanf_abi(ROOT, TESTS, suite_output("libc_wscanf_abi")))
     from libc_scanf_verify import verify_libc_scanf
     checks.extend(verify_libc_scanf(ROOT, TESTS, suite_output("libc_scanf"), args.nativeaot, run))
     from libc_scanf_failure_verify import verify_libc_scanf_failure

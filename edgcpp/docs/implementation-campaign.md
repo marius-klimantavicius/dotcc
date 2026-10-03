@@ -313,3 +313,48 @@ our emitter, addressing const aggregate copies and constexpr class arrays
 observed in the synthetic libc++ chrono source closure. No EDG semantic source
 was changed; five focused native/generated JIT/AOT checks pass at
 `artifacts/campaign/class-rvalue-adjust-translated-001/results.json`.
+
+
+The eighth working slice, outside the frozen seventh snapshot, has accepted
+VLA-aware source-jump ABI v2: 22 standalone transport/checkpoint checks and28
+translated/native checks at `setjmp-v2-runtime-20261003-031620` and
+`setjmp-v2-source-20261003-031800`. The32-byte buffer restores only post-setjmp
+allocations while preserving surviving arrays and rejects expired allocated
+checkpoints. Managed cleanup remains balanced; broader protected targets and
+undefined VM-only scope diagnostics remain explicit limits.
+
+Empty zero-bound aggregate members now consume their empty initializer without
+writing a nonexistent CLR field. Five differential checks pass at
+`zero-bound-padding-translated-001`, covering globals/TLS/local copies and adjacent
+storage. With this adaptation the explicit single-TU synthetic libc++ array
+consumer and original core/locale/thread/future/chrono source closure passes
+translation, strict C# build, JIT and NativeAOT in `libcxx-core-seeds-038`.
+This does not establish separate-TU library assembly or whole-library coverage.
+
+
+Commit `6de065787` records the seventh increment:154 files and202 focused checks.
+Its exact frozen snapshot has now completed the full JIT suite:530 checks at
+`artifacts/campaign/full-jit-streams-timezone-001/results.json`, indexed by
+`evidence/full-jit-streams-timezone.json`. The broad run intentionally uses its
+immutable pre-correction inputs; the committed DF80 byte-escape correction has
+four independent original-musl/runtime and nine translated focused checks.
+Subsequent VLA v2, zero-bound padding and wscanf changes are separately verified;
+this is not a broad-run claim for those later bytes. All intermediates remain.
+
+
+The eighth slice also has selected wide scanf (nine component, eight allocation
+failure and eight signature checks), standard CPU clock (nine native/generated
+checks), four C compatibility headers (nine), implicit C11 atomics (five),
+public stdatomic (eight), and contained GNU statement expressions (ten positive,
+four rejection checks). Selected musl packaging114 passes eight JIT/AOT checks.
+The atomic adapter uses existing shared synchronization for typed/raw accesses;
+bitwise compare-exchange preserves NaN payloads and signed zero, pointer updates
+scale correctly, and warmed integer operations allocate no managed memory.
+
+Actual C-linkage definitions for compiler-generated RTTI throw entries now bind
+before the optional bootstrap, matching the C backend's external linker model.
+Five focused differential checks pass at `compiler-throw-entries-translated-003`.
+The synthetic libc++ source040 allocation, algorithms and container consumers
+all pass translation, strict build, JIT and NativeAOT; their pinned single-TU
+source recipe is being made reproducible. This remains component acceptance,
+not full C++/libc++ completion or separate-TU library linking.

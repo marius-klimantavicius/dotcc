@@ -1,0 +1,10 @@
+{
+  "version": "LLVM libc++18.1.8",
+  "sources": {
+    "mutex_destructor.cpp": "73b5777c95765dbc758232985188b6b41c4f258997dcf9c06ced62cc0448d4bd",
+    "condition_variable_destructor.cpp": "3570823de77490443466dde80af0a5418302636d1ce617ccce294b8acc96a9cd"
+  },
+  "adapted": "abi_mutex.cpp",
+  "adaptedSha256": "949da24f07034d8875e9f197aaf96e433923ace4c9e07e751ffb60e5b18ebdf4",
+  "adaptation": "Keep destructor bodies, include actual public definitions instead of historical native class redeclarations; external-thread ABI requires nontrivial destruction."
+}

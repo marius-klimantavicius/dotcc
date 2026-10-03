@@ -15,15 +15,16 @@ import time
 ROOT = Path(__file__).resolve().parent
 RUNTIME_DEPENDENCIES = {
     "LibcTimezone": ("LibcTimezoneData",), "LibcTimezoneData": (),
-    "NonlocalJump": (),
+    "NonlocalJump": ("Vla",),
     "ExtendedFloat": ("Float128", "LibcFloat"),
     "Float128": ("Float128Conversions",), "Float128Conversions": ("Float80",),
     "Float80": (), "LibcContext": (), "AtomicOps": (), "VaList": (),
     "LibcFiles": ("LibcAppend", "LibcPaths", "LibcFilesWide"), "LibcFilesWide": (), "LibcAppend": (), "LibcPaths": (),
     "LibcFilesFormat": ("LibcFiles", "VaList"),
-    "LibcFilesScan": ("LibcFiles", "VaList"), "LibcEnvironment": (),
+    "LibcFilesScan": ("LibcFiles", "VaList"),
+    "LibcFilesWideScan": ("LibcFiles", "VaList"), "LibcEnvironment": (),
     "LibcText": ("LibcErrorMessages", "LibcLocale"), "LibcErrorMessages": (), "LibcLocale": (),
-    "LibcClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
+    "LibcClock": (), "LibcCpuClock": (), "Vla": (), "LibcxxAtomicWait": (), "LibcFloat": ("Float80",), "LibcMath": ("Float80",), "LibcScanMath": ("Float80",),
     "LibcxxThreads": (), "LibcCalendar": (), "LibcProcess": (),
 }
 
@@ -223,6 +224,8 @@ def main():
         runtime_helpers.add("LibcFilesFormat")
     if "__edg_with_file_read_lock" in imports:
         runtime_helpers.add("LibcFilesScan")
+    if "__edg_with_file_wide_read_lock" in imports:
+        runtime_helpers.add("LibcFilesWideScan")
     pending=list(runtime_helpers)
     while pending:
         for dependency in RUNTIME_DEPENDENCIES[pending.pop()]:
@@ -276,7 +279,7 @@ RESOURCE_ITEMS
         "longDouble": "software-binary80" if "global::Edg.Runtime.Float80" in source else None,
         "extendedFloating": {"binary128": "software-ieee-v1" if "global::Edg.Runtime.Float128" in source else None,
                              "binary16": "system-half-v1" if "global::System.Half" in source else None},
-        "nonlocalJump": {"version": 1, "bufferSize": 16, "bufferAlignment": 8, "continuation": "activation-site-dispatch"} if "NonlocalJump" in runtime_helpers else None,
+        "nonlocalJump": {"version": 2, "bufferSize": 32, "bufferAlignment": 8, "continuation": "activation-site-dispatch"} if "NonlocalJump" in runtime_helpers else None,
         "varargs": "portable-typed-pack-v1" if "global::Edg.Runtime.VaList" in source else None,
         "emit": args.emit, "runtime": args.runtime, "nestTypes": args.nest_types, "exports": exports,
         "filePositionABI": {"version": 2, "size": 16, "alignment": 8, "fields": {"offset": "i64@0", "state": "u32@8", "value": "u32@12"}} if "LibcFiles" in runtime_helpers else None,

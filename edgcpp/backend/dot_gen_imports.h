@@ -74,6 +74,7 @@ const libc_binding libc_bindings[]={
 #include "libc-numeric-bindings.def"
 #include "libc-locale-bindings.def"
 #include "libc-clock-bindings.def"
+#include "libc-cpu-clock-bindings.def"
 #include "libc-calendar-bindings.def"
 #include "libc-process-bindings.def"
 #include "libc-environment-bindings.def"
@@ -252,7 +253,7 @@ bool libc_va_pointer(a_type_ptr t) {
   t=skip_typerefs(t->variant.pointer.type);
   return va_tag_type(t) && t->size==24 && alignment_of_type(t)==8;
 }
-bool libc_format_callback(a_type_ptr t) {
+bool libc_format_callback(a_type_ptr t,bool wide=false) {
   t=skip_typerefs(t);if(t->kind!=tk_pointer || t->size!=8)return false;
   t=skip_typerefs(t->variant.pointer.type);if(t->kind!=tk_routine)return false;
   auto extra=t->variant.routine.extra_info;
@@ -260,20 +261,20 @@ bool libc_format_callback(a_type_ptr t) {
   auto p=extra->param_type_list;
   if(!p || type(p->type)!="void*")return false;
   p=p->next;
-  if(!p || type(p->type)!="sbyte*")return false;
+  if(!p || type(p->type)!=(wide?"int*":"sbyte*"))return false;
   p=p->next;
   return p && libc_va_pointer(p->type) && !p->next;
 }
-bool libc_format_lock_routine(a_routine_ptr r,bool reading=false) {
-  string symbol=reading?"__edg_with_file_read_lock":"__edg_with_file_lock";
+bool libc_format_lock_routine(a_routine_ptr r,bool reading=false,bool wide=false) {
+  string symbol=wide?"__edg_with_file_wide_read_lock":reading?"__edg_with_file_read_lock":"__edg_with_file_lock";
   auto rt=skip_typerefs(r->type);auto extra=rt->variant.routine.extra_info;
   std::vector<a_type_ptr> parameters;
   for(auto p=extra->param_type_list;p;p=p->next)parameters.push_back(p->type);
   if(extra->has_ellipsis || !extra->prototyped || type(rt->variant.routine.return_type)!="int" ||
      parameters.size()!=5 || !libc_file_pointer(parameters[0]) ||
-     !libc_format_callback(parameters[1]) || type(parameters[2])!="void*" ||
-     type(parameters[3])!="sbyte*" || !libc_va_pointer(parameters[4]))
-    unsupported(("libc import ABI for "+symbol+": expected int(FILE*, int(*)(void*,const char*,va_list),void*,const char*,va_list) with builtin va_list").c_str());
+     !libc_format_callback(parameters[1],wide) || type(parameters[2])!="void*" ||
+     type(parameters[3])!=(wide?"int*":"sbyte*") || !libc_va_pointer(parameters[4]))
+    unsupported(("libc import ABI for "+symbol+": expected int(FILE*, int(*)(void*,const "+string(wide?"wchar_t":"char")+"*,va_list),void*,const "+string(wide?"wchar_t":"char")+"*,va_list) with builtin va_list").c_str());
   ensure_files();libc_register_routine(r,symbol);
   string signature;
   for(unsigned i=0;i<parameters.size();++i) {
@@ -283,7 +284,7 @@ bool libc_format_lock_routine(a_routine_ptr r,bool reading=false) {
   // This is an ordinary routine wrapper: address-taking reuses the canonical
   // routine_address adapter, including its owner lifecycle lease and identity.
   helper_output+="// dot-gen:import "+symbol+"\n// dot-gen:member-begin\nprivate "+
-    string(instance_mode?"":"static ")+"int "+name(r,"f")+"("+signature+") { return __edg_files."+string(reading?"WithFileReadLock":"WithFileLock")+"((void*)a0, a1, "+
+    string(instance_mode?"":"static ")+"int "+name(r,"f")+"("+signature+") { return __edg_files."+string(wide?"WithFileWideReadLock":reading?"WithFileReadLock":"WithFileLock")+"((void*)a0, a1, "+
     string(instance_mode?"this, ":"")+"a2, a3, a4); }\n// dot-gen:member-end\n";
   return true;
 }
@@ -293,6 +294,7 @@ bool libc_routine(a_routine_ptr r) {
   string symbol=r->source_corresp.name?r->source_corresp.name:"";
   if(symbol=="__edg_with_file_lock")return libc_format_lock_routine(r);
   if(symbol=="__edg_with_file_read_lock")return libc_format_lock_routine(r,true);
+  if(symbol=="__edg_with_file_wide_read_lock")return libc_format_lock_routine(r,true,true);
   string builtin_symbol=libc_builtin_symbol(r),lookup_symbol=builtin_symbol.empty()?symbol:builtin_symbol;
   for(const auto &binding:libc_bindings)if(lookup_symbol==binding.symbol) {
     auto rt=skip_typerefs(r->type);auto extra=rt->variant.routine.extra_info;

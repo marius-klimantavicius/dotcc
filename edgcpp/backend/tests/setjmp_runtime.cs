@@ -43,7 +43,7 @@ unsafe class Program
                     throw new Exception("longjmp returned");
                 }
                 catch (NonlocalJump.Transfer error) when (NonlocalJump.Matches(error, &activation))
-                { pc = (int)error.Site; value = error.Value; }
+                { value = NonlocalJump.Resume(error, &activation); pc = (int)error.Site; }
             }
         }
         finally { NonlocalJump.Leave(&activation); }
