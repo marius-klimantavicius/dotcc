@@ -31,6 +31,8 @@ def main():
     parser.add_argument('--build', action='store_true')
     parser.add_argument('--compiler', type=Path, default=ROOT / 'build/bin/cpfe-dot')
     parser.add_argument('--unbound-externals', choices=('reject', 'declarations'), default='reject')
+    parser.add_argument('--exceptions', action=argparse.BooleanOptionalAction, default=None,
+                        help='override exception handling (default: match native compilation database)')
     args = parser.parse_args()
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -48,7 +50,8 @@ def main():
                      '-fno-rtti' not in shlex.split(entry['command'])) for entry in entries}
     if len(feature_sets) != 1:
         raise RuntimeError('Combined translation requires identical EH/RTTI feature settings')
-    exceptions, rtti = next(iter(feature_sets))
+    native_exceptions, rtti = next(iter(feature_sets))
+    exceptions = native_exceptions if args.exceptions is None else args.exceptions
     feature_flags = ['--exceptions' if exceptions else '--no-exceptions',
                      '--rtti' if rtti else '--no-rtti']
     sources = sorted((Path(entry['file']) for entry in entries),
@@ -83,6 +86,8 @@ def main():
         'sources': [{'path': str(path.relative_to(ROOT)), 'sha256': digest(path)} for path in sources],
         'sourceCount': len(sources), 'definesAndIncludes': flags,
         'languageFeatures': {'exceptions': exceptions, 'rtti': rtti},
+        'nativeLanguageFeatures': {'exceptions': native_exceptions, 'rtti': rtti},
+        'exceptionOverride': args.exceptions,
         'hostIncludeDirectories': includes, 'commands': [],
     }
     def run(label, invocation):

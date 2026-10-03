@@ -18,9 +18,11 @@ Roslyn reached 78.2 GiB resident memory, leaving 5.65 GiB available on the host.
 It had emitted neither compiler diagnostics nor an assembly. Full semantic
 compilation therefore remains unverified; the retained resource-limit record
 distinguishes this controlled stop from a passing build or a compiler error.
-The runner also preserves native `-fno-exceptions` and `-fno-rtti` through the
-driver's explicit `--no-exceptions --no-rtti` flags. Ordinary driver invocations
-continue to enable both features by default.
+By default, the runner preserves native `-fno-exceptions` and `-fno-rtti` through
+the driver's explicit `--no-exceptions --no-rtti` flags. `--exceptions` and
+`--no-exceptions` override exception handling for review; the report records both
+the native and effective feature settings. Ordinary driver invocations continue
+to enable both features by default.
 
 The portable-header attempt currently stops at the unconditional `sys/types.h`
 include in `host_envir.h`. The diagnostic `--profile host` uses the native Linux
@@ -50,6 +52,20 @@ python3 edgcpp/translate_self.py --profile host \
   --unbound-externals declarations \
   --output-dir /path/to/new-output
 ```
+
+Add `--exceptions` to generate stack-unwinding paths. The separate
+[`artifacts/review/edg-exceptions/README.md`](../artifacts/review/edg-exceptions/README.md)
+links the generated `token_to_string` function, its cleanup helper and the
+exception filter, alongside the original C++ and the previous no-exceptions
+translation. Construction advances a cleanup state; normal destruction clears
+it. A function-level `finally` invokes the cleanup helper during unwinding.
+The helper clears the state before calling the destructor and terminates if a
+destructor throws during cleanup. The exception filter marks unwinding but
+returns false, leaving exception propagation to the CLR.
+
+This variant retains the host-header review limitations and has 84 explicitly
+unbound external declarations. Translation and formatting are separate from a
+full C# build or runtime verification; those remain unverified for this variant.
 
 The driver records the selected compiler path and its SHA-256 captured before
 invocation. The self-translation report additionally records original source

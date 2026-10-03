@@ -721,3 +721,14 @@ source methods normally. Large formatter responses use Unicode-safe chunks.
 Bulk/token-identity and JIT/NativeAOT checks, chunk-boundary tests, and the six
 existing formatter checks pass. Native raw output is retained; explicit replay
 is marked packaging-only and never attributed to an unused compiler binary.
+
+The requested exception-enabled self-review is now separate at
+`artifacts/review/edg-exceptions/README.md`. All 75 original translation units
+emit and pass Roslyn syntax checking/formatting with `--exceptions --no-rtti`:
+155 C# files, 284,931,624 bytes and 84 explicitly unbound external symbols.
+`translate_self.py --exceptions` overrides the native database setting and
+records native/effective flags independently. Linked `token_to_string` excerpts
+show successful-construction state tracking, a false-returning exception filter,
+function-level `finally` and destructor cleanup helper. The previous review is
+retained. No full C# build, managed-compiler runtime or NativeAOT execution is
+claimed; see `evidence/self-review-exceptions-20261003.json`.
