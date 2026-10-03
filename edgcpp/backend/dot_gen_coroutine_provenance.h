@@ -31,13 +31,16 @@ void coroutine_match_descriptive_destructor(an_expr_node_ptr call,unsigned long 
   auto routine=call->variant.operation.operands;auto argument=routine?routine->next:nullptr;
   if(!routine || routine->kind!=enk_routine || !argument || argument->next)return;
   auto variable=coroutine_destructor_address(argument);if(!variable)return;
-  for(auto number:coroutine_descriptive_regions) {
-    auto &region=cleanup_regions.at(number);
+  bool descriptive=false,executable=false;
+  for(auto &entry:cleanup_regions) {
+    auto &region=entry.second;
     if(region.next==predecessor && region.destructor==routine->variant.routine.ptr && region.handle && region.handle->kind==ck_stack_offset &&
-       region.handle->variant.stack_offset.variable==variable && region.flags==0) {
-      coroutine_descriptive_destructors.insert(call);return;
+       region.handle->variant.stack_offset.variable==variable && region.handle->variant.stack_offset.offset==0 && region.flags==0) {
+      if(coroutine_descriptive_regions.count(entry.first))descriptive=true;else executable=true;
     }
   }
+  if(descriptive && executable)unsupported("ambiguous coroutine temporary destruction provenance");
+  if(descriptive)coroutine_descriptive_destructors.insert(call);
 }
 void coroutine_collect_descriptive_destructor(an_expr_node_ptr expression) {
   if(expression->kind!=enk_operation || expression->variant.operation.kind!=eok_comma)return;
@@ -124,6 +127,7 @@ void coroutine_prepare_descriptive_operands(a_statement_ptr body) {
     auto handle=found->second.handle;
     if(handle && handle->kind==ck_stack_offset && coroutine_descriptive_variables.count(handle->variant.stack_offset.variable)) {
       if(found->second.flags!=0)unsupported("descriptive coroutine cleanup region flags");
+      if(handle->variant.stack_offset.offset!=0)unsupported("descriptive coroutine cleanup subobject offset");
       coroutine_descriptive_regions.insert(number);
     }
   }

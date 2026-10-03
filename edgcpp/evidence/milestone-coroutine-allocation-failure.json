@@ -1,0 +1,42 @@
+{
+  "scope": "Coroutine allocation failure return paths and exact cleanup provenance guards",
+  "checks": 87,
+  "runs": [
+    {
+      "path": "artifacts/campaign/coroutine-allocation-failure-20261003-054438/progress.json",
+      "sha256": "4628582db12e9ec3b1c9690c05b5e00b74f3902e3360e8935e114fc706ae3980",
+      "checks": 5
+    },
+    {
+      "path": "artifacts/campaign/coroutine-allocation-pod-20261003-055107/results.json",
+      "sha256": "4f5f67cf6c521d8c3ef9301e66b76910b5846a16a689f2c5fbae7650e71a714c",
+      "checks": 5
+    },
+    {
+      "path": "artifacts/campaign/coroutine-allocation-default-guard-20261003-055413/results.json",
+      "sha256": "16bfd68354210de8891cfca7bea10daef321944d6e621e0c392844ea9d8dc77c",
+      "checks": 3
+    },
+    {
+      "path": "artifacts/campaign/coroutine-allocation-regression-20261003-054507/results.json",
+      "sha256": "b4a9d28c62810085a87b2faebd086a42702e59836325aaabd2be293a6cd01b12",
+      "checks": 74
+    }
+  ],
+  "finalGuardCheckpoint": "artifacts/campaign/coroutine-allocation-default-guard-20261003-055413/hashes.json",
+  "sources": {
+    "backend/dot_gen_coroutine_emit.h": "9f0785376d8cb6d2f95618a8f468cd4d4895d94616bd78daba43a5a129668adc",
+    "backend/dot_gen_coroutine_provenance.h": "ff465c016b6577b2b91b48aafcc7a451a1783be6ffb03ff1f6e9e27d1915f805",
+    "backend/tests/libcxx/coroutine_allocation_failure.cpp": "5d57ad7e345a5473cb88011b3215ec00c2b3009e679ab2988da9c0352b7e2321",
+    "backend/tests/libcxx/coroutine_allocation_failure_pod.cpp": "6ce09b622493f7aa90ce6cfa9a673318309a8767ef889421e831bc02dd4feaa7",
+    "backend/tests/libcxx/coroutine_allocation_failure_default.cpp": "69bc053b81de983f83dcead97e704e841eaa169ff44c987f189ef227bbc9e600",
+    "backend/tests/coroutine_allocation_failure_verify.py": "1eed3f9f75ec1ae715e9c88477a75ec9ff145ecf0fbfb27bce6fb3527f2d959c",
+    "backend/tests/coroutine_allocation_failure_pod_verify.py": "518b7cd6330a442bd0b3158a6a55ecd70d0006c6f8c334be490424e285a4b2e4",
+    "backend/tests/coroutine_allocation_failure_default_verify.py": "e71ddb35d89f0be7a25f8137aaafb9ec2b2610a30ef47fbabb5967d175cbd88b"
+  },
+  "limitations": [
+    "Default argument hook remains diagnosed, not supported",
+    "Placement allocation and arbitrary conversion expressions remain separate work",
+    "Execution tested on Linux-x64 only"
+  ]
+}

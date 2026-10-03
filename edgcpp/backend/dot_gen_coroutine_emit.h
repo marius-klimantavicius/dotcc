@@ -397,6 +397,48 @@ string coroutine_delete_call(a_coroutine_descr_ptr descriptor,const string &addr
   if(parameters->next)result+=", ("+type(parameters->next->type)+")"+size;
   return result+");";
 }
+void coroutine_emit_allocation_failure(an_expr_node_ptr expression,a_type_ptr return_type,a_variable_ptr result_parameter) {
+  // The allocation-failure hook runs before any promise or frame exists.
+  // Preserve mandatory return-object elision into the caller's destination.
+  auto saved_variables=expression_variables;
+  if(result_parameter) {
+    auto expected=skip_typerefs(result_parameter->type)->variant.pointer.type;
+    auto storage=coroutine_return_storage(expression,expected);
+    if(!storage)unsupported("coroutine allocation-failure return destination");
+    expression_variables[storage]="(*"+name(result_parameter,"v")+")";
+  }
+  coroutine_walk_expression(expression,[&](an_expr_node_ptr node) {
+    if(node->kind==enk_await || node->kind==enk_yield || node->kind==enk_lowered_eh_construct || materialization_offsets.count(node))
+      unsupported("coroutine allocation-failure expression storage/lifetime");
+    if(node->kind==enk_operation && node->variant.operation.kind==eok_call) {
+      auto callee=node->variant.operation.operands;
+      if(callee && callee->kind==enk_routine) {
+        auto parameters=skip_typerefs(callee->variant.routine.ptr->type)->variant.routine.extra_info->param_type_list;
+        auto argument=callee->next;
+        for(;parameters && argument;parameters=parameters->next,argument=argument->next){}
+        // The C backend leaves coroutine syntax for its C++ consumer. Its
+        // retained descriptor need not contain materialized default arguments;
+        // lowering has discarded their expressions, so never invent values.
+        if(parameters)unsupported("coroutine allocation-failure descriptor requires default-argument materialization");
+      }
+    }
+    a_variable_ptr variable=nullptr;
+    if(node->kind==enk_variable)variable=node_variable(node);
+    else if(node->kind==enk_constant) {
+      auto constant=node_constant(node);
+      if(constant->kind==ck_address && constant->variant.address.kind==abk_variable)variable=constant->variant.address.variant.variable;
+    }
+    if(variable && local_offsets.count(variable) && !expression_variables.count(variable))
+      unsupported("coroutine allocation-failure temporary requires pre-frame storage");
+  });
+  string saved_slot=cleanup_slot;bool saved_cursor=cleanup_cursor_used;
+  cleanup_slot="__edg_failure_cleanup";cleanup_cursor_used=false;
+  string action=skip_typerefs(return_type)->kind==tk_void?expression_effect(expression)+"return;":"return "+expr(expression)+";";
+  bool needs_cursor=cleanup_cursor_used;cleanup_cursor_used|=saved_cursor;
+  cleanup_slot=saved_slot;expression_variables=saved_variables;
+  if(needs_cursor)line("int __edg_failure_cleanup=0;");
+  line(action);
+}
 void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_ptr descriptor) {
   diagnostic_scope diagnostic(routine->source_corresp.decl_position);
   if(source_jumps_used)unsupported("coroutine/nonlocal-jump lifetime integration");
@@ -479,8 +521,11 @@ void emit_coroutine(a_routine_ptr routine,a_scope_ptr scope,a_coroutine_descr_pt
   line("// dot-gen:member-begin");line(signature+" {");
   if(no_throw)line("try {");
   line("nuint __edg_size="+bytes+";void* __edg_allocation="+name(allocator,"f")+"(("+type(allocation_parameters->type)+")__edg_size);");
-  if(descriptor->alloc_failure_gro_call)unsupported("coroutine allocation-failure return adapter");
-  line("if(__edg_allocation==null)global::System.Environment.FailFast(\"Throwing coroutine allocator returned null\");");
+  if(descriptor->alloc_failure_gro_call) {
+    line("if(__edg_allocation==null){");
+    coroutine_emit_allocation_failure(descriptor->alloc_failure_gro_call,rt->variant.routine.return_type,result_parameter);
+    line("}");
+  } else line("if(__edg_allocation==null)global::System.Environment.FailFast(\"Throwing coroutine allocator returned null\");");
   line("byte* __edg_frame=(byte*)(((nuint)__edg_allocation+(nuint)sizeof(global::Edg.Runtime.Coroutine.Frame)+"+std::to_string(8+frame_alignment-1)+"UL)&~(nuint)"+std::to_string(frame_alignment-1)+"UL);");
   line("global::System.Runtime.InteropServices.NativeMemory.Clear(__edg_frame,(nuint)"+std::to_string(frame_size)+"UL);");
   line("var __edg_coro=(global::Edg.Runtime.Coroutine.Frame*)__edg_allocation;bool __edg_registered=false,__edg_created=false,__edg_started=false,__edg_unwinding=false;int __edg_cleanup_state=0;");

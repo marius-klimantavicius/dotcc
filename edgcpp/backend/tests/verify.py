@@ -373,6 +373,12 @@ def main():
         checks.extend(verify_coroutine_value_lifetime(ROOT, TESTS, suite_output("coroutine_value_lifetime"), args.nativeaot, run, args.libcxx_acquisition))
         from coroutine_value_construction_verify import verify_coroutine_value_construction
         checks.extend(verify_coroutine_value_construction(ROOT, TESTS, suite_output("coroutine_value_construction"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_allocation_failure_verify import verify_coroutine_allocation_failure
+        checks.extend(verify_coroutine_allocation_failure(ROOT, TESTS, suite_output("coroutine_allocation_failure"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_allocation_failure_pod_verify import verify_coroutine_allocation_failure_pod
+        checks.extend(verify_coroutine_allocation_failure_pod(ROOT, TESTS, suite_output("coroutine_allocation_failure_pod"), args.nativeaot, run, args.libcxx_acquisition))
+        from coroutine_allocation_failure_default_verify import verify_coroutine_allocation_failure_default
+        checks.extend(verify_coroutine_allocation_failure_default(ROOT, TESTS, suite_output("coroutine_allocation_failure_default"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_ptr_verify import verify_libcxx_exception_ptr
         checks.extend(verify_libcxx_exception_ptr(ROOT, TESTS, suite_output("libcxx_exception_ptr"), args.nativeaot, run, args.libcxx_acquisition))
         from libcxx_exception_owner_verify import verify_libcxx_exception_owner

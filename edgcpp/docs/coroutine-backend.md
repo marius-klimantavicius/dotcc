@@ -221,5 +221,48 @@ input before backend emission; its evidence is
 accepted pointer-returning equivalent does not claim reference-result coverage.
 
 Reference-result source acceptance, protected-expression suspension, conditional
-or array descriptive cleanup forms, allocation-failure return hooks, placement
-allocators, exported factories and function-try coroutine factories remain open.
+or array descriptive cleanup forms, complex pre-frame allocation-failure expressions,
+default-argument descriptor calls, placement allocators, exported factories and
+function-try coroutine factories remain open.
+
+
+Selected size-only nothrow coroutine allocators now invoke the retained
+allocation-failure return hook before allocating frame metadata or constructing
+the promise. A noncopyable return object is initialized directly into the caller's
+hidden return destination; POD returns and exceptions thrown by the hook are also
+supported. Branch-local cleanup bookkeeping exists only when the emitted
+expression requires it. No per-failure heap or managed storage is introduced.
+
+The noncopyable fixture passes five native/static/instance JIT/NativeAOT checks in
+`coroutine-allocation-failure-20261003-054438/progress.json`; that run subsequently
+stopped on the separate default-argument probe below. The POD fixture passes five
+checks in `coroutine-allocation-pod-20261003-055107/results.json`, including a
+throwing hook. Both use native GCC/Clang O0/O2 event traces and strict C# warnings.
+Exact source/runtime/compiler hashes for the initial allocation implementation
+are in `coroutine-allocation-checkpoint-20261003-054439/hashes.json`.
+
+Provenance matching additionally requires zero offset for a direct local-object
+destructor and rejects any destructor/object/predecessor key shared between an
+executed and descriptive cleanup region. Construction/lifetime regression passes
+74 checks in `coroutine-allocation-regression-20261003-054507/results.json`.
+
+A valid hook with a default parameter remains an explicit unsupported gate.
+`symbol_tbl.c::select_coroutine_new_delete` selects such a routine, but the
+retained descriptor in this probe contains no actual argument. `lower_il.c`
+clears `a_param_type::default_arg_expr` (9539–9551 and 10328–10334). The original
+C backend preserves coroutine syntax for a downstream C++ compiler, which can
+supply the source default; our resumable backend cannot reconstruct its side
+effects from the lowered routine type. The original failing probe and generated
+C# remain in `coroutine-allocation-failure-20261003-054438/pod`. Its unchanged
+source is `tests/libcxx/coroutine_allocation_failure_default.cpp`; native
+GCC/Clang O0/O2 verify its default side effect and throwing-hook behavior.
+The emitter now diagnoses a missing required descriptor actual instead of
+publishing a C# call with missing arguments. Supporting this form requires a
+backend-owned prelower semantic capture path; EDG sources remain unchanged.
+
+The default-argument guard passes three focused checks in
+`coroutine-allocation-default-guard-20261003-055413/results.json`: the unchanged
+source passes native GCC/Clang O0/O2, and both generated ownership modes reject
+it before C# publication. That directory's `hashes.json` and `checkpoint/`
+retain the final guard helper, fixtures, verifiers and compiler. This diagnostic
+is remaining-feature evidence, not acceptance of default-argument translation.

@@ -467,3 +467,10 @@ automatic provider to 147. Eighteen checks cover original/adapted native
 semantics, all C/C++ static/instance JIT/NativeAOT modes, overflow errno,
 owner/TLS isolation, allocation-free binary80 extrema, packaging and exact
 patch replay. Full libm/fenv remains open; see libc-math-extrema.md.
+
+Coroutine allocation-failure return handling passes ten focused native/JIT/AOT
+checks for noncopyable and plain-value return objects, plus 74 cleanup-provenance
+regressions. Three additional checks preserve a valid default-argument fixture
+as an explicit early diagnostic: lowered metadata no longer contains the
+required source expression. This remaining feature needs prelower semantic
+capture; no EDG behavior is changed. See milestone-coroutine-allocation-failure.json.

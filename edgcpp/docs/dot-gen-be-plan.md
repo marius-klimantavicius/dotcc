@@ -1028,3 +1028,9 @@ This plan authorizes no claim of completed implementation or library support.
 SQLite 3.53.4 now exercises the new C11 driver mode, incomplete opaque handle pointers and flexible array tails. Original EDG C generation and native object compilation pass; generated C is 4.84 MB. Direct C# emission reaches the external address of `trunc` in the math-function table and deliberately stops. The complete commands/import inventory are in `artifacts/sqlite-edg/results.json` and `native-imports.json`, with a durable snapshot in `evidence/sqlite-edg.json`.
 
 The next work is runtime integration: bind the 39 observed libc/math imports and their managed callable addresses, lower SQLite's internal variadic calls to the planned argument-pack ABI, and supply the SQLite OS/VFS hooks. The diagnostic run used explicit host GCC headers; it does not freeze the final portable header profile. No SQLite C# executable has been produced yet. The first two requested workstreams are implemented for the documented basic single-TU subset; broader language extensions, full EH APIs, cross-module assembly and platform validation remain open.
+
+Coroutine selected-allocation failure hooks now return noncopyable or plain-value
+objects without constructing a promise/frame on the failure path. Throwing hooks
+preserve ordinary exception semantics. A hook requiring a discarded default
+argument remains diagnosed pending backend-owned prelower capture; this is not
+complete coroutine allocation coverage. Evidence: `evidence/milestone-coroutine-allocation-failure.json`.
