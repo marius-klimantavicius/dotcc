@@ -492,9 +492,14 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
       unsupported("nonempty initializer for zero-storage array");
     return "";
   }
+  // Pointer and function-pointer types cannot be generic Span<T> arguments.
+  // A byte view clears the full native array, including padding and omitted
+  // elements, while the named pointer retains the element type for stores.
+  string zero_initialization = array_pointer.empty()?dst + " = default;\n":
+    "new global::System.Span<byte>("+array_pointer+", "+std::to_string(t->size)+").Clear();\n";
   if (c->kind == ck_string) {
     if (t->kind != tk_array || c->variant.string.length > t->size) unsupported("string initializer bounds");
-    return dst + " = default;\n" + source_byte_copy(storage_address,
+    return zero_initialization + source_byte_copy(storage_address,
         string(c->variant.string.value,c->variant.string.length),
         skip_typerefs(t->variant.array.element_type)->size==1);
   }
@@ -502,9 +507,7 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
   if (!aggregate(t)) unsupported("aggregate initializer type");
   string record=source_record_initializer(t,c);
   if(!record.empty())return dst+" = "+record+";\n";
-  string result = array_pointer.empty()?dst + " = default;\n":
-    "new global::System.Span<"+type(t->variant.array.element_type)+">("+array_pointer+", "+
-    std::to_string(t->variant.array.variant.number_of_elements)+").Clear();\n";
+  string result = zero_initialization;
   if(primitive_array_copy(t,c,storage_address,result))return result;
   if(t->kind==tk_array && skip_typerefs(t->variant.array.element_type)->kind==tk_integer &&
      skip_typerefs(t->variant.array.element_type)->size==1) {
@@ -566,7 +569,7 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
         string counter="__edg_repeat"+std::to_string(++serial);
         result+="for(int "+counter+"=0; "+counter+"<"+std::to_string(count)+"; ++"+counter+") {\n";
         string cell=(array_pointer.empty()?"("+dst+")":array_pointer)+"["+std::to_string(index)+"+"+counter+"]";
-        if(skip_typerefs(element)->kind==tk_pointer)cell+=".Value";
+        if(array_pointer.empty() && skip_typerefs(element)->kind==tk_pointer)cell+=".Value";
         result+=initializer(cell,element,value,"(("+type(element)+"*)("+storage_address+")) + "+std::to_string(index)+" + "+counter);
         result+="}\n";
       }
@@ -579,7 +582,7 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
         if (skip_typerefs(value->type)->size != skip_typerefs(element)->size)
           unsupported("flattened multidimensional initializer");
         string cell=(array_pointer.empty()?"("+dst+")":array_pointer)+"["+std::to_string(index)+"]";
-        if(skip_typerefs(element)->kind==tk_pointer)cell+=".Value";
+        if(array_pointer.empty() && skip_typerefs(element)->kind==tk_pointer)cell+=".Value";
         result += initializer(cell, element, value,"(("+type(element)+"*)("+storage_address+")) + "+std::to_string(index));
         ++index;
       } else {

@@ -1,0 +1,213 @@
+{
+  "status": "passed",
+  "date": "2026-10-04",
+  "scope": "Single source-named element pointer per nonempty constant-initialized global/TLS array; direct pointer-cell stores",
+  "compiler": {
+    "path": "edgcpp/artifacts/campaign/persistent-continuation/table-alias-build-002/cpfe-dot",
+    "sha256": "387fd3a0a4570226291eeee44244a6cfbe7dc253e2ebd5dedcb986fedb86bcb2"
+  },
+  "canonicalCompiler": {
+    "path": "edgcpp/build/bin/cpfe-dot",
+    "sha256": "25264c19842db45efe8fcae8369ab3c680c144452639e366d5ba1ec4cc266cc2"
+  },
+  "inputs": {
+    "edgcpp/backend/dot_gen_be.c": "a7d4b8deac166e712c79ed96bde7f23ca70980cccb91aae5488516f0f7709b47",
+    "edgcpp/backend/dot_gen_record_data.h": "63a0742710399e1784b6fb99af7ccb4feb418622ce40cd7c0de0f9e9662b4da2",
+    "edgcpp/backend/tests/table_alias_readability.cpp": "e0b39f478d6d7f3535d1db6fb7757d45a95ff7f3d549b01bb92fe26460b80f35",
+    "edgcpp/backend/tests/table_alias_readability_verify.py": "03f9adc97c4285026145021883848e06230585f0c85850050c771da87c2bee1c"
+  },
+  "validation": {
+    "tableAliases": {
+      "artifact": "edgcpp/artifacts/campaign/persistent-continuation/table-alias-managed-002",
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/table-alias-managed-002/results.json",
+        "sha256": "872cdfd542b8b3f2dbcce8f1af606d713954856a5835629b0b407917387b9568"
+      },
+      "checks": [
+        "GCC and Clang agree on array contents, function pointers and relocations, local copies, independent arrays and per-thread storage",
+        "static/JIT: native table traces, forced GC, independent copies, owner and TLS isolation",
+        "static/NativeAOT: native table traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/JIT: native table traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/NativeAOT: native table traces, forced GC, independent copies, owner and TLS isolation"
+      ],
+      "audits": {
+        "static": {
+          "aliases": {
+            "names": "names",
+            "name_copies": "name_copies",
+            "addresses": "addresses",
+            "values": "values",
+            "cyclic": "cyclic",
+            "operations": "operations",
+            "words": "words",
+            "message": "message",
+            "matrix": "matrix",
+            "zeros": "zeros",
+            "error": "error__table",
+            "unions": "unions",
+            "bit_rows": "bit_rows",
+            "array_rows": "array_rows",
+            "p": "p__table",
+            "storage": "storage__table",
+            "tls_operations": "tls_operations"
+          },
+          "generated_bytes": 64597
+        },
+        "instance": {
+          "aliases": {
+            "names": "names",
+            "name_copies": "name_copies",
+            "addresses": "addresses",
+            "values": "values",
+            "cyclic": "cyclic",
+            "operations": "operations",
+            "words": "words",
+            "message": "message",
+            "matrix": "matrix",
+            "zeros": "zeros",
+            "error": "error__table",
+            "unions": "unions",
+            "bit_rows": "bit_rows",
+            "array_rows": "array_rows",
+            "p": "p__table",
+            "storage": "storage__table",
+            "tls_operations": "tls_operations"
+          },
+          "generated_bytes": 64089
+        }
+      }
+    },
+    "records": {
+      "artifact": "edgcpp/artifacts/campaign/persistent-continuation/table-alias-records-001",
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/table-alias-records-001/results.json",
+        "sha256": "93e54d149ba473a598523287a5be44926c932bd103961e55ed590cc73c40db18"
+      },
+      "checks": [
+        "GCC and Clang agree on record fields and relocations, local copies, independent arrays and per-thread storage",
+        "static/JIT: native record traces, forced GC, independent copies, owner and TLS isolation",
+        "static/NativeAOT: native record traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/JIT: native record traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/NativeAOT: native record traces, forced GC, independent copies, owner and TLS isolation"
+      ],
+      "audits": {
+        "static": {
+          "named_table_alias": "table",
+          "table_object_initializer_count": 4,
+          "literal_helper_calls": 24,
+          "generated_bytes": 56401
+        },
+        "instance": {
+          "named_table_alias": "table",
+          "table_object_initializer_count": 4,
+          "literal_helper_calls": 24,
+          "generated_bytes": 55811
+        }
+      }
+    },
+    "primitiveData": {
+      "artifact": "edgcpp/artifacts/campaign/persistent-continuation/table-alias-primitives-001",
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/table-alias-primitives-001/results.json",
+        "sha256": "712a879542fd1497fb91e544e223d8979068a2aa67fe34a53d0db53083c67919"
+      },
+      "checks": [
+        "GCC and Clang agree on primitive representations, local copies, independent arrays and per-thread storage",
+        "static/PE: all initializer getters are heap-free and transitively backed by FieldRVA data",
+        "static/JIT: native primitive traces, forced GC, independent copies, owner and TLS isolation",
+        "static/NativeAOT: native primitive traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/PE: all initializer getters are heap-free and transitively backed by FieldRVA data",
+        "instance/JIT: native primitive traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/NativeAOT: native primitive traces, forced GC, independent copies, owner and TLS isolation"
+      ],
+      "audits": {
+        "static": {
+          "property_count": 29,
+          "element_types": [
+            "Number",
+            "double",
+            "float",
+            "global::System.Half",
+            "int",
+            "long",
+            "short",
+            "uint",
+            "ulong",
+            "ushort"
+          ],
+          "generated_bytes": 111992,
+          "pe": {
+            "initializerGetterCount": 29,
+            "referencedRvaFieldCount": 24,
+            "exactUInt32DataFound": true,
+            "managedHeapAllocationOpcodes": 0,
+            "unauditedCalls": 0
+          }
+        },
+        "instance": {
+          "property_count": 29,
+          "element_types": [
+            "Number",
+            "double",
+            "float",
+            "global::System.Half",
+            "int",
+            "long",
+            "short",
+            "uint",
+            "ulong",
+            "ushort"
+          ],
+          "generated_bytes": 111365,
+          "pe": {
+            "initializerGetterCount": 29,
+            "referencedRvaFieldCount": 24,
+            "exactUInt32DataFound": true,
+            "managedHeapAllocationOpcodes": 0,
+            "unauditedCalls": 0
+          }
+        }
+      }
+    },
+    "sqliteCore": {
+      "artifact": "edgcpp/artifacts/campaign/persistent-continuation/table-alias-sqlite-core-001",
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/table-alias-sqlite-core-001/results.json",
+        "sha256": "b242d6d0c06ec08e008a2721958f76cd1ce1af78168a381c8ba98d7032b42253"
+      },
+      "checks": [
+        {
+          "label": "core-native-reference",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-jit-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-aot-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        }
+      ]
+    }
+  },
+  "coverage": [
+    "17 global/TLS table alias cases with source names",
+    "data and function pointer arrays; direct alias indexing omits inline-array cell .Value",
+    "repeated pointer entries, explicit nulls and omitted zero tails",
+    "primitive span properties and byte/UTF8 bulk copies retain efficient embedded data",
+    "multidimensional arrays and union/bitfield/array-member fallback record layouts",
+    "forward and cyclic global relocations, mutable per-owner copies and forced GC",
+    "TLS aliases p/storage, global error array with startup catch, thread and owner isolation",
+    "GCC/Clang oracle comparison and static/instance JIT plus linux-x64 NativeAOT",
+    "existing primitive PE getter audit and record regression",
+    "SQLite core native/JIT/NativeAOT parity with test memory VFS and THREADSAFE=0"
+  ],
+  "limitations": [
+    "Runtime tests were run on Linux x64.",
+    "Full translated EDG runtime remains unverified."
+  ]
+}

@@ -864,3 +864,32 @@ cleanup and required extern contracts. Emission, syntax validation and formattin
 pass. Full managed compiler compilation/runtime remain unverified; 84 external
 partial contracts still require implementations. Evidence:
 `evidence/edg-record-initializers-review-20261004.json`.
+
+### Named aliases for all initialized array tables (2026-10-04)
+
+Extended initializer pointer aliases from eligible plain-record arrays to all
+nonempty constant-initialized global/TLS arrays, including static-local backing
+arrays. Data and function-pointer tables now assign directly through the alias
+without inline-array cell `.Value` wrappers. Primitive/string bulk copies and
+nested/union/bitfield/array-member initialization retain their existing semantics
+while using the named destination. A byte-span clear handles native sizes,
+padding and omitted entries without invalid `Span<pointer>` type arguments.
+Constructor/TLS helper locals `error`, `p` and `storage` are reserved against
+alias collisions.
+
+The new fixture checks 17 alias cases, native GCC/Clang parity, pointer and
+function-pointer values, repeated/null tails, forward/cyclic relocations,
+dynamic startup, TLS, owner isolation and forced GC. Static/instance JIT and
+NativeAOT pass. Existing record and primitive-table suites also pass, including
+the primitive getter PE-data audit. SQLite core retains native parity under JIT
+and NativeAOT. The canonical compiler is rebuilt. Evidence:
+`evidence/table-aliases-20261004.json`.
+
+All three existing EDG review aliases now show the requested
+`builtin_type_strings[5924] = __edg_literal(...)` form beneath a single
+`sbyte**` table declaration. The refreshed 75-TU exception-enabled review has
+155 C# files, 188,334,585 bytes and 11,468 named array aliases: another 1,853,774
+bytes smaller than the prior record-table review. Emission, Roslyn syntax
+validation and formatting pass. Full compiler managed compilation/runtime
+remain unverified, with 84 external partial contracts still unimplemented.
+Evidence: `evidence/edg-table-aliases-review-20261004.json`.

@@ -1,0 +1,71 @@
+{
+  "status": "emission-syntax-formatting-passed",
+  "artifact": "artifacts/campaign/persistent-continuation/edg-self-table-aliases-20261004-001",
+  "reviewAlias": "artifacts/review/edg",
+  "sourceCount": 75,
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/table-alias-build-002/cpfe-dot",
+    "sha256": "387fd3a0a4570226291eeee44244a6cfbe7dc253e2ebd5dedcb986fedb86bcb2"
+  },
+  "rawOutput": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-table-aliases-20261004-001/raw.cs",
+    "sha256": "3e82da64c4cfc31c8b8ff796a06499ae7aefd30d775bb46742fec6c9628c5124"
+  },
+  "formatter": {
+    "mode": "roslyn-whitespace-v2",
+    "sdk": "10.0.111",
+    "sourceSha256": "c6307c46af3959caa2f85f9ffbc015027d245e632bc6698ec3df819b4acda48e",
+    "toolSha256": "4a122f3c9f42f814f9add36138d9a1dc1595d501e2dc9498afbac230dc7970bf"
+  },
+  "translationSeconds": 236.478,
+  "generated": {
+    "files": 155,
+    "bytes": 188334585,
+    "primitiveInitializerProperties": 3458,
+    "tableAliases": 11468,
+    "indexedObjectInitializers": 198167,
+    "partialContracts": 84,
+    "exports": 41900,
+    "prefixedExports": 0
+  },
+  "previousGeneratedBytes": 190188359,
+  "sourceSizeReductionPercent": 0.9747042404419703,
+  "examples": {
+    "recordAlias": {
+      "file": "Translated.cs",
+      "line": 565391
+    },
+    "recordRow": {
+      "file": "Translated.cs",
+      "line": 674894
+    },
+    "pointerTableAlias": {
+      "file": "Translated.cs",
+      "line": 94397
+    },
+    "pointerTableRow": {
+      "file": "Translated.cs",
+      "line": 100323
+    },
+    "emptyDestructor": {
+      "file": "Translated.source.lexical.h.cs",
+      "line": 1434
+    },
+    "cleanup": {
+      "file": "Translated.generated.cs",
+      "line": 1006873
+    },
+    "namedLocals": {
+      "file": "Translated.source.lexical.c.cs",
+      "line": 25416
+    },
+    "primitiveData": {
+      "file": "Translated.generated.cs",
+      "line": 881301,
+      "name": "__edg_initializer10396"
+    }
+  },
+  "managedCompilation": "not-run",
+  "runtime": "not-run",
+  "nativeAot": "not-run"
+}

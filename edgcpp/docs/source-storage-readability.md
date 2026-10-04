@@ -82,6 +82,35 @@ static/instance JIT and NativeAOT execution, including exact scalar bits,
 multidimensional arrays, independent copies, TLS, relocation fallbacks and
 compiled-data inspection.
 
+## Named table pointers
+
+All nonempty global and TLS arrays with constant initializers use one
+source-named pointer alias, including pointer/function-pointer tables, primitive
+and string arrays, multidimensional arrays and record layouts that need
+field-by-field initialization. Static-local backing arrays use the same path.
+For example:
+
+```csharp
+var builtin_type_strings = (sbyte**)(__edg_base + 3137408);
+builtin_type_strings[5924] = __edg_literal(869096 /* "int (int,...)" */);
+```
+
+Direct pointer-table stores no longer need the synthetic inline-array cell's
+`.Value` member. Primitive span and byte/UTF-8 bulk copies use the same alias as
+the destination. Nested array rows retain their managed inline-array layout;
+union and bitfield stores retain their existing initialization rules.
+
+A byte-span clear covers the full native array, including padding and omitted
+elements. It also works for pointer and function-pointer arrays, whose element
+types cannot be used as `Span<T>` type arguments. Aliases point into the existing
+pinned global/TLS arenas; they do not create copies. Alias allocation avoids
+collisions with constructor and TLS helper locals such as `error`, `p` and
+`storage`.
+
+`backend/tests/table_alias_readability_verify.py` checks source shape and native
+parity for these cases, including repeated/null pointer entries, function-pointer
+calls, forward/self relocations, dynamic startup, GC, TLS and independent owners.
+
 ## Record tables
 
 Ordinary record tables use a source-named pointer alias and one value assignment

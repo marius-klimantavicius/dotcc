@@ -59,17 +59,22 @@ string source_record_initializer(a_type_ptr original,a_constant_ptr value,const 
 }
 string source_global_initializer(a_variable_ptr variable_ptr,a_constant_ptr value) {
   auto t=skip_typerefs(variable_ptr->type);
-  if(t->kind!=tk_array || value->kind!=ck_aggregate ||
-     !source_plain_record(t->variant.array.element_type))
+  // Every nonempty stored array can use a source-named pointer to its actual
+  // elements. This also avoids the inline-array pointer-cell .Value wrapper
+  // for data/function pointer tables. Aggregate shape only decides how each
+  // element is initialized, not whether its containing table can be named.
+  if(t->kind!=tk_array || !t->size ||
+     (value->kind!=ck_aggregate && value->kind!=ck_string))
     return initializer(variable(variable_ptr),variable_ptr->type,value);
   auto element=t->variant.array.element_type;
   string domain=emitting_tls_initializer?"tls-initializer-locals":"global-initializer-locals";
   auto &reserved=source_name_used[domain];
-  reserved.insert("p");reserved.insert("storage");
+  // Constructor startup catches and TLS allocation already use these locals.
+  reserved.insert("error");reserved.insert("p");reserved.insert("storage");
   string alias=source_allocate(domain,source_identifier_component(name(variable_ptr,"v")),"table");
   auto &offsets=emitting_tls_initializer?tls_offsets:global_offsets;
   auto allocated=offsets.find(variable_ptr);
-  if(allocated==offsets.end())unsupported("record table without allocated storage");
+  if(allocated==offsets.end())unsupported("initializer table without allocated storage");
   string address=string(emitting_tls_initializer?"p":"__edg_base")+" + "+std::to_string(allocated->second);
   // The alias points to final storage, never an intermediate array. Pointer
   // relocations still resolve through the global/TLS arena maps.
