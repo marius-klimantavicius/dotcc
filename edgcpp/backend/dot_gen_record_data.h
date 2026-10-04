@@ -96,6 +96,9 @@ string source_global_initializer(a_variable_ptr variable_ptr,a_constant_ptr valu
   if(allocated==offsets.end())unsupported("initializer aggregate without allocated storage");
   string address=string(emitting_tls_initializer?"p":"__edg_base")+" + "+std::to_string(allocated->second);
   // Aliases never create copies. Relocations still use final global/TLS storage.
+  initializer_chunk_scope chunks(type(pointed_type)+"* "+alias+
+      (emitting_tls_initializer?", byte* p":""),
+      alias+(emitting_tls_initializer?", p":""),true);
   return "var "+alias+" = ("+type(pointed_type)+"*)("+address+");\n"+
     (array?initializer(variable(variable_ptr),variable_ptr->type,value,alias,alias):
            initializer("*"+alias,variable_ptr->type,value,alias,"",alias));

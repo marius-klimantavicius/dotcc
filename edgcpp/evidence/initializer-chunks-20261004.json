@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-04",
+  "scope": "Bounded static/TLS aggregate initialization helpers preserve order and storage; preparation for full EDG compilation",
+  "tests": {
+    "self-large-initializers-001": {
+      "status": "passed",
+      "checks": [
+        "static/JIT: chunked nested tables, relocations, startup ordering, GC and independent TLS/owners",
+        "static/NativeAOT: matches native trace",
+        "instance/JIT: chunked nested tables, relocations, startup ordering, GC and independent TLS/owners",
+        "instance/NativeAOT: matches native trace"
+      ],
+      "expected": "18637689,18637689,3767195\n18637735,18637689,3767226\n3767195,3767226\n"
+    },
+    "self-table-alias-regression-001": {
+      "status": "passed",
+      "checks": [
+        "GCC and Clang agree on array contents, function pointers and relocations, local copies, independent arrays and per-thread storage",
+        "static/JIT: native table traces, forced GC, independent copies, owner and TLS isolation",
+        "static/NativeAOT: native table traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/JIT: native table traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/NativeAOT: native table traces, forced GC, independent copies, owner and TLS isolation"
+      ],
+      "audits": {
+        "static": {
+          "aliases": {
+            "names": "names",
+            "name_copies": "name_copies",
+            "addresses": "addresses",
+            "values": "values",
+            "cyclic": "cyclic",
+            "operations": "operations",
+            "words": "words",
+            "message": "message",
+            "matrix": "matrix",
+            "zeros": "zeros",
+            "error": "error__table",
+            "unions": "unions",
+            "bit_rows": "bit_rows",
+            "array_rows": "array_rows",
+            "p": "p__table",
+            "storage": "storage__table",
+            "tls_operations": "tls_operations",
+            "log_data": "log_data",
+            "global_target": "global_target",
+            "union_float": "union_float",
+            "tls_log_data": "tls_log_data",
+            "tls_target": "tls_target"
+          },
+          "generated_bytes": 80443
+        },
+        "instance": {
+          "aliases": {
+            "names": "names",
+            "name_copies": "name_copies",
+            "addresses": "addresses",
+            "values": "values",
+            "cyclic": "cyclic",
+            "operations": "operations",
+            "words": "words",
+            "message": "message",
+            "matrix": "matrix",
+            "zeros": "zeros",
+            "error": "error__table",
+            "unions": "unions",
+            "bit_rows": "bit_rows",
+            "array_rows": "array_rows",
+            "p": "p__table",
+            "storage": "storage__table",
+            "tls_operations": "tls_operations",
+            "log_data": "log_data",
+            "global_target": "global_target",
+            "union_float": "union_float",
+            "tls_log_data": "tls_log_data",
+            "tls_target": "tls_target"
+          },
+          "generated_bytes": 79898
+        }
+      },
+      "source_sha256": "17ca4361e45ced9eadb0d21a3f867fcd83bb73eb4fb2f91a04f336f42c8fefc7"
+    }
+  },
+  "literalPoolCompilation": {
+    "command": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-edg-campaign-20261003/self-literal-compile-001/Literal.csproj",
+      "-c",
+      "Release",
+      "--nologo",
+      "-m:1",
+      "-p:BuildInParallel=false",
+      "-p:UseSharedCompilation=false",
+      "-p:RunAnalyzers=false",
+      "-p:TreatWarningsAsErrors=false"
+    ],
+    "environmentOverrides": {
+      "DOTNET_GCHeapHardLimit": "400000000",
+      "DOTNET_GCConserveMemory": "5",
+      "DOTNET_PROCESSOR_COUNT": "4",
+      "MSBUILDDISABLENODEREUSE": "1",
+      "DOTNET_CLI_TELEMETRY_OPTOUT": "1"
+    },
+    "startedUtc": "2026-10-04T17:28:57.374288+00:00",
+    "rssLimitBytes": 21474836480,
+    "timeoutSeconds": 300.0,
+    "analyzersEnabled": false,
+    "measurementsAvailable": true,
+    "exitCode": 0,
+    "terminationReason": null,
+    "elapsedSeconds": 23.059,
+    "peakTreeRssBytes": 6474731520,
+    "status": "passed"
+  },
+  "sourceHashes": {
+    "edgcpp/backend/dot_gen_be.c": "56f2f62f4d6c702fc5670d66ca23a18be2728b3a9aca1b7b7d5acc749f33e169",
+    "edgcpp/backend/dot_gen_record_data.h": "6ad3bb0f567725d39624437c92e1fd71756f1e7428d1ff257e4503a334a87630",
+    "edgcpp/backend/tests/large_initializers_verify.py": "7ffd55200613bdb422240929ab1042d7eeb22ee5ae396d404d9ed9d5a8bbbadd",
+    "edgcpp/build_managed.py": "d36706db1c782cb3fcb91b72dbfeb863600260701f91d67c01498af8fbd299ee"
+  }
+}

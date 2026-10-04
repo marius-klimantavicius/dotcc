@@ -57,6 +57,39 @@ bool aggregate(a_type_ptr t) {
 }
 unsigned serial = 0;
 bool instance_mode, nested_types, library_mode;
+// Large native tables must not become a single enormous CLR constructor.
+// Split only synthetic storage initialization, at complete constant-item
+// boundaries. Parameters retain the final storage address; no copies or
+// separately initialized static fields are introduced.
+const size_t initializer_chunk_limit = 16384;
+string initializer_chunk_parameters, initializer_chunk_arguments;
+bool initializer_chunks_enabled = false;
+struct initializer_chunk_scope {
+  string parameters, arguments;
+  bool enabled;
+  initializer_chunk_scope(string p="", string a="", bool allow=false):
+    parameters(initializer_chunk_parameters),arguments(initializer_chunk_arguments),
+    enabled(initializer_chunks_enabled) {
+    initializer_chunk_parameters=p;initializer_chunk_arguments=a;
+    initializer_chunks_enabled=allow;
+  }
+  ~initializer_chunk_scope() {
+    initializer_chunk_parameters=parameters;initializer_chunk_arguments=arguments;
+    initializer_chunks_enabled=enabled;
+  }
+};
+string initializer_chunk(string body, const string &parameters, const string &arguments) {
+  string id="__edg_initialize_storage_"+std::to_string(++serial);
+  helper_output+="// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+
+    "void "+id+"("+parameters+") {\n"+body+"}\n// dot-gen:member-end\n";
+  return id+"("+arguments+");\n";
+}
+void flush_initializer_chunk(string &prefix,string &body) {
+  if(initializer_chunks_enabled && body.size()>=initializer_chunk_limit) {
+    prefix+=initializer_chunk(body,initializer_chunk_parameters,initializer_chunk_arguments);
+    body.clear();
+  }
+}
 bool function_returns_void;
 string output;
 const char *context = "file scope";
@@ -404,6 +437,7 @@ string constant(a_constant_ptr c) {
     aggregate_constants[c] = id;
     // Aggregate constants have no runtime local captures; pointer relocations
     // may refer to the current owner's arena, hence an instance helper in that mode.
+    initializer_chunk_scope no_captured_storage;
     string body = initializer("result", c->type, c);
     helper_output += "// dot-gen:member-begin\nprivate " + string(instance_mode ? "" : "static ") +
                      ty + " " + id + "() {\n" + ty + " result = default;\n" + body +
@@ -507,7 +541,7 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
   if (!aggregate(t)) unsupported("aggregate initializer type");
   string record=source_record_initializer(t,c);
   if(!record.empty())return dst+" = "+record+";\n";
-  string result = zero_initialization;
+  string result = zero_initialization, prefix;
   if(primitive_array_copy(t,c,storage_address,result))return result;
   if(t->kind==tk_array && skip_typerefs(t->variant.array.element_type)->kind==tk_integer &&
      skip_typerefs(t->variant.array.element_type)->size==1) {
@@ -570,10 +604,13 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
         result+="for(int "+counter+"=0; "+counter+"<"+std::to_string(count)+"; ++"+counter+") {\n";
         string cell=(array_pointer.empty()?"("+dst+")":array_pointer)+"["+std::to_string(index)+"+"+counter+"]";
         if(array_pointer.empty() && skip_typerefs(element)->kind==tk_pointer)cell+=".Value";
-        result+=initializer(cell,element,value,"(("+type(element)+"*)("+storage_address+")) + "+std::to_string(index)+" + "+counter);
+        // A repeated item refers to this loop's counter. Keep that body in
+        // its loop instead of lifting it into a helper with a missing capture.
+        { initializer_chunk_scope no_loop_capture;
+          result+=initializer(cell,element,value,"(("+type(element)+"*)("+storage_address+")) + "+std::to_string(index)+" + "+counter); }
         result+="}\n";
       }
-      index+=count;continue;
+      index+=count;flush_initializer_chunk(prefix,result);continue;
     }
     for (unsigned long long repeat = 0; repeat < count; ++repeat) {
       if (t->kind == tk_array) {
@@ -593,9 +630,10 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
                               "(("+type(field->type)+"*)((byte*)("+storage_address+") + "+std::to_string(field->offset)+"))");
         field = next_non_empty_initializable_field(field->next);
       }
+      flush_initializer_chunk(prefix,result);
     }
   }
-  return result;
+  return prefix+result;
 }
 string expr(an_expr_node_ptr e);
 string coroutine_expression_override(an_expr_node_ptr e,bool location);
@@ -1162,13 +1200,22 @@ void globals(a_variable_ptr first, const char *cls) {
        "throw new global::System.PlatformNotSupportedException(\"EDG storage ABI requires little-endian 64-bit .NET\");");
   if(getenv("EDG_DOT_TARGET") && string(getenv("EDG_DOT_TARGET"))=="portable-lp64-binary80-v2")
     line("if(global::System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture is not (global::System.Runtime.InteropServices.Architecture.X64 or global::System.Runtime.InteropServices.Architecture.Arm64)) throw new global::System.PlatformNotSupportedException(\"EDG v2 target requires x64 or Arm64 .NET\");");
+  string initialization_batch;
+  auto append_initialization=[&](const string &text,bool tls) {
+    initialization_batch+=text;
+    if(initialization_batch.size()>=initializer_chunk_limit) {
+      line(initializer_chunk(initialization_batch,tls?"byte* p":"",tls?"p":""));
+      initialization_batch.clear();
+    }
+  };
   for (auto v : stored_variables) {
     if(exception_metadata.count(v))continue;
     if (v->is_thread_local) continue;
-    if (constant_templates.count(v)) line(source_global_initializer(v,constant_templates[v]));
-    else if (v->init_kind == initk_static) line(source_global_initializer(v,v->initializer.constant));
+    if (constant_templates.count(v)) append_initialization(source_global_initializer(v,constant_templates[v]),false);
+    else if (v->init_kind == initk_static) append_initialization(source_global_initializer(v,v->initializer.constant),false);
     else if (v->init_kind != initk_none && v->init_kind != initk_zero && v->init_kind!=initk_dynamic) unsupported("global initializer", v->init_kind);
   }
+  line(initialization_batch);initialization_batch.clear();
   if(!startup_routines.empty()) {
     line("try {");for(auto r:startup_routines)line(source_routine_reference(r,true)+"();");
     line("} catch(global::System.Exception error) {/*__EDG_GLOBAL_TERMINATE__*/}");
@@ -1182,10 +1229,11 @@ void globals(a_variable_ptr first, const char *cls) {
     emitting_tls_initializer = true;
     for (auto v : stored_variables) {
       if (!v->is_thread_local) continue;
-      if(constant_templates.count(v))line(source_global_initializer(v,constant_templates[v]));
-      else if (v->init_kind == initk_static) line(source_global_initializer(v,v->initializer.constant));
+      if(constant_templates.count(v))append_initialization(source_global_initializer(v,constant_templates[v]),true);
+      else if (v->init_kind == initk_static) append_initialization(source_global_initializer(v,v->initializer.constant),true);
       else if (v->init_kind != initk_none && v->init_kind != initk_zero && v->init_kind!=initk_dynamic) unsupported("dynamic TLS initializer", v->init_kind);
     }
+    line(initialization_batch);initialization_batch.clear();
     emitting_tls_initializer = false;
     line("return storage; }");
     line("// dot-gen:member-end");

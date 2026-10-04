@@ -1135,3 +1135,15 @@ Final Wine campaign `posix-wine-003` also validates a 5,015-frame WAL with two
 a snapshot and successful truncate checkpoint after release. Native Windows
 and Windows NativeAOT remain unverified. Reusable Wine runner and full commands,
 settings, runtime archive provenance and peer events are retained.
+
+### Bounded initialization for full compiler compilation (2026-10-04)
+
+Large static/TLS aggregate tables now initialize through ordered bounded helper
+methods, passing the original typed table pointers. Startup calls still follow
+all static stores. Native/static/instance JIT/NativeAOT tests validate complete
+tables, nested arrays, relocations, TLS, owner isolation and GC. Existing table
+alias readability tests pass. A full-size 7.7 MB embedded literal pool compiles
+within 6.03 GiB measured process-tree RSS; its representation stays unchanged.
+`build_managed.py` adds bounded compiler memory/time monitoring. This milestone
+does not yet establish full managed EDG compilation or execution.
+[Evidence](../evidence/initializer-chunks-20261004.json).
