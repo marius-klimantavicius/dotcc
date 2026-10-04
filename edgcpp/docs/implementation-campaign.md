@@ -1204,3 +1204,34 @@ profile. Full regeneration is required before claiming parser acceptance.
 The 18-case execution runner includes half/bfloat frontend coverage; both
 versions of the failing full output and all logs remain retained.
 [Evidence](../evidence/self-host-profile-20261004.json).
+
+### Runnable EDG self-translation (2026-10-04)
+
+`edg-self-runtime-006` translates all 75 original C++14 `cpfe` units, including
+the C backend, with selected musl and real minimal libc++ implementations.
+There are zero unresolved externs. Strict C# and Linux-x64 NativeAOT builds pass;
+the 38,391,792-byte native executable needs no .NET installation. Its 57,803
+owner methods fit the CLR limit. Build peaks stayed below 18 GiB measured RSS.
+SDK analyzers were disabled for the full builds; C# and ILCompiler warnings were
+errors. All intermediates and prior failures remain retained.
+
+Both JIT and NativeAOT pass 18 native-oracle cases covering parsing,
+preprocessing, diagnostics, dialects/extensions, templates, concepts, reflection,
+half/bfloat arithmetic and coroutine input. Both C11 and C++20 C-backend outputs
+are compiled and executed successfully. CLI/CX cases verify missing metadata
+diagnostics, not complete platform-metadata support. Three original compiler
+files (`cfe.c`, `types.c`, `ifc_modules_read.c`) parse with exact native parity
+under a common explicit portable input profile. Normal EDG_BASE macro-file
+preprocessing also matches native output in JIT and NativeAOT.
+
+Windows .NET under Wine passes 11 actual compiler checks, including generated
+C compilation/execution. Native Windows, Windows NativeAOT, macOS and ARM64
+execution remain unverified. The full SQLite Unix JIT/AOT regression also passes
+with the corrected backend configuration. EDG review aliases now point to the
+working project; `nativeaot/Generated` exposes the published executable.
+
+This completes the defined original-compiler self-translation acceptance. It
+does not translate the added C# backend itself or imply complete libc++/POSIX
+coverage. `Run` retains EDG's process-exit behavior; use a subprocess per compile.
+[Usage and source review](self-csharp-review.md),
+[evidence and measured timings](../evidence/self-execution-20261004.json).

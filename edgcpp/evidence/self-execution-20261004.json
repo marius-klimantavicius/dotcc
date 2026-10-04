@@ -1,0 +1,381 @@
+{
+  "date": "2026-10-04",
+  "status": "passed",
+  "scope": "Original 75-TU all-extensions cpfe compiler, directly translated as C++14; no lowered-C fallback",
+  "excludes": [
+    "The additional dot_gen_be backend is not part of the original cpfe target",
+    "Complete libc++/POSIX coverage is not implied",
+    "CLI/CX tests check missing platform metadata diagnostics; full metadata-based acceptance is not claimed"
+  ],
+  "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006",
+  "review": "edgcpp/artifacts/review/edg",
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/self-runtime-build-006/cpfe-dot",
+    "sha256": "f008bc46c673270fb7bc6c6a9aaf3c86df30aee25958c7afb4676ff65df2091d"
+  },
+  "sourceCount": 75,
+  "csharpFiles": 433,
+  "csharpBytes": 168448175,
+  "unresolvedExternals": 0,
+  "emit": "exe",
+  "profile": "musl",
+  "hostOverrides": [
+    "-DUSE_MMAP_FOR_MEMORY_REGIONS=0",
+    "-DTARG_SUPPORTS_X86_64=1",
+    "-DHOST_POINTER_ALIGNMENT=8",
+    "-DHOST_IL_ENTRY_PREFIX_ALIGNMENT=8",
+    "-DHOST_HAS_FLOAT16_TYPE=1",
+    "-DHOST_COMPILER_SUPPORTS_BFLOAT16=1",
+    "-DMAX_MULTIBYTE_CHAR_LENGTH=16"
+  ],
+  "buildSummary": {
+    "artifacts": {
+      "managed": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/managed/bin/Release/net10.0/Generated.dll",
+        "bytes": 43400192,
+        "sha256": "389a0aa11ab0ae0450af798d8c543feff4248064afbbd25d201faf26077df5cf",
+        "fileDescription": "PE32 executable (console) Intel 80386 Mono/.Net assembly, for MS Windows, 3 sections"
+      },
+      "nativeAot": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/build-aot/published/Generated",
+        "bytes": 38391792,
+        "sha256": "add9fe4aaf6fa013729100bda93674c8b6129bf0201c871dcef08b1c7b857bb9",
+        "fileDescription": "ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=8f6c4cfbd568bfeed17e0a03985dd8b970e7b813, for GNU/Linux 3.2.0, stripped"
+      }
+    },
+    "metadata": {
+      "assembly": "edgcpp/artifacts/campaign/persistent-continuation/edg-self-runtime-006/managed/bin/Release/net10.0/Generated.dll",
+      "typeCount": 6138,
+      "methodCount": 62315,
+      "largestTypes": [
+        {
+          "name": "Edg.Compiler.EdgCompiler",
+          "methods": 57803,
+          "fields": 665
+        },
+        {
+          "name": "Edg.Runtime.Float128",
+          "methods": 239,
+          "fields": 17
+        },
+        {
+          "name": ".edg_a_routine",
+          "methods": 236,
+          "fields": 31
+        },
+        {
+          "name": ".edg_a_decl_parse_state",
+          "methods": 208,
+          "fields": 57
+        },
+        {
+          "name": ".edg_a_scope_stack_entry",
+          "methods": 168,
+          "fields": 89
+        },
+        {
+          "name": ".edg_a_variable",
+          "methods": 148,
+          "fields": 25
+        },
+        {
+          "name": ".edg_a_class_symbol_supplement",
+          "methods": 146,
+          "fields": 33
+        },
+        {
+          "name": "Edg.Runtime.PosixContext",
+          "methods": 124,
+          "fields": 14
+        },
+        {
+          "name": "._ZN3edg6a_typeUt_Ut3_E",
+          "methods": 100,
+          "fields": 6
+        },
+        {
+          "name": "Edg.Runtime.LibcFiles",
+          "methods": 89,
+          "fields": 20
+        }
+      ]
+    },
+    "strictBuild": {
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/managed/Generated.csproj",
+        "-c",
+        "Release",
+        "--nologo",
+        "-m:1",
+        "-p:BuildInParallel=false",
+        "-p:UseSharedCompilation=false",
+        "-p:RunAnalyzers=false",
+        "-p:TreatWarningsAsErrors=true"
+      ],
+      "environmentOverrides": {
+        "DOTNET_GCHeapHardLimit": "a00000000",
+        "DOTNET_GCConserveMemory": "5",
+        "DOTNET_PROCESSOR_COUNT": "4",
+        "MSBUILDDISABLENODEREUSE": "1",
+        "DOTNET_CLI_TELEMETRY_OPTOUT": "1"
+      },
+      "startedUtc": "2026-10-04T18:26:01.511956+00:00",
+      "rssLimitBytes": 51539607552,
+      "timeoutSeconds": 1800.0,
+      "analyzersEnabled": false,
+      "measurementsAvailable": true,
+      "exitCode": 0,
+      "terminationReason": null,
+      "elapsedSeconds": 392.011,
+      "peakTreeRssBytes": 18477846528,
+      "status": "passed"
+    },
+    "strictNativeAotPublish": {
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/managed/Generated.csproj",
+        "-c",
+        "Release",
+        "--nologo",
+        "-m:1",
+        "-p:BuildInParallel=false",
+        "-p:UseSharedCompilation=false",
+        "-p:RunAnalyzers=false",
+        "-p:TreatWarningsAsErrors=true",
+        "-r",
+        "linux-x64",
+        "-p:PublishAot=true",
+        "-p:DebugType=None",
+        "-p:DebugSymbols=false",
+        "-p:IlcTreatWarningsAsErrors=true",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/build-aot/published"
+      ],
+      "environmentOverrides": {
+        "DOTNET_GCHeapHardLimit": "a00000000",
+        "DOTNET_GCConserveMemory": "5",
+        "DOTNET_PROCESSOR_COUNT": "4",
+        "MSBUILDDISABLENODEREUSE": "1",
+        "DOTNET_CLI_TELEMETRY_OPTOUT": "1"
+      },
+      "startedUtc": "2026-10-04T18:33:19.975696+00:00",
+      "rssLimitBytes": 51539607552,
+      "timeoutSeconds": 3600.0,
+      "analyzersEnabled": false,
+      "measurementsAvailable": true,
+      "exitCode": 0,
+      "terminationReason": null,
+      "elapsedSeconds": 424.167,
+      "peakTreeRssBytes": 19198341120,
+      "status": "passed"
+    },
+    "jitSmoke": [
+      {
+        "name": "version",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/managed/bin/Release/net10.0/Generated.dll",
+          "--version"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 1.5416437599342316
+      },
+      {
+        "name": "c11-parse",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/managed/bin/Release/net10.0/Generated.dll",
+          "--clear_flag",
+          "use_predefined_macro_file",
+          "--no_code_gen",
+          "--c11",
+          "/mnt/storage/dotcc-edg-campaign-20261003/self-execution-jit-001/inputs/c11-parse.cpp"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 1.8713639699853957
+      }
+    ],
+    "nativeAotSmoke": [
+      {
+        "name": "version",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/build-aot/published/Generated",
+          "--version"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 0.02030656300485134
+      },
+      {
+        "name": "c11-parse",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/build-aot/published/Generated",
+          "--clear_flag",
+          "use_predefined_macro_file",
+          "--no_code_gen",
+          "--c11",
+          "/mnt/storage/dotcc-edg-campaign-20261003/self-execution-jit-001/inputs/c11-parse.cpp"
+        ],
+        "exitCode": 0,
+        "elapsedSeconds": 0.02245972491800785
+      }
+    ],
+    "nativeVersion": "Edison Design Group C/C++ Front End, version 7.0 (Oct  4 2026 21:22:01)\nCopyright 1988-2026 Edison Design Group, Inc.\n\n"
+  },
+  "verification": [
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/results.json",
+      "sha256": "cd40e69c903595c55956c268db280cbc8f17683f522ad30402567851d6d26a7b"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/build-summary.json",
+      "sha256": "ec5894ab8f5786a3a3efffa8c4a24b434de3ac07f4dab28c9e4c8f750dd676ff"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/build-diagnostic/results.json",
+      "sha256": "6cc308979ccf7aa98f7032606bed59ab98b3222ddb204a73afdfce7fa80a989a"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/build-aot/results.json",
+      "sha256": "b3c400584451611d8592f14a90561a436755f0af84869509750821c06130700e"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/smoke/results.json",
+      "sha256": "ea9f270440499524ae12b831a5fd3e21e3e020b50e0676e1bcb21dd862e22069"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-runtime-006/smoke-aot/results.json",
+      "sha256": "b7ebe64cb5565666fbcbd16b3b90de29378d75f3878c032a0c66d84f18a7d1a5"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-execution-jit-002/results.json",
+      "sha256": "f71f5757c7fd2be98097bc7a4755bacf860d5feec1f27ee093a1f2d14eabf7fa"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-execution-aot-001/results.json",
+      "sha256": "7085e25c4d512b317b95a7ce95c86e2a5b68731dd976cda3686534e2325728c2"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-source-jit-001/results.json",
+      "sha256": "80ab7aca79aea296c209205f2cd5dc515b34c5d5216276ef73c87abe5307b0f0"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-source-aot-001/results.json",
+      "sha256": "b9bb12ae0c4cda4de4b4cf4991a70feced92a97fcfcc2281c9953ab6d56385e6"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-predefs-base-001/results.json",
+      "sha256": "97ecba22532156dd38ec4cc170da3ffb4d8f39637fbcc140bd418a52c6234113"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-predefs-base-aot-001/results.json",
+      "sha256": "1dcefc1fee3532e4d611712a7a06a22abb0925cfb840dc717ea27f9562716135"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-execution-wine-003/results.json",
+      "sha256": "8eda9f548d5792be9e187bae371022188e7174d6b2bc6a66ed6d607b278fab63"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-neededflags-001/results.json",
+      "sha256": "a6474ae387b13a6724b70b6521c8bc54358f30d798b2429fb1ce1de991a504bc"
+    }
+  ],
+  "acceptance": {
+    "languageAndBackendCases": 18,
+    "executionModes": [
+      "Linux x64 JIT",
+      "Linux x64 NativeAOT"
+    ],
+    "originalSourceParserCases": [
+      "cfe.c",
+      "types.c",
+      "ifc_modules_read.c"
+    ],
+    "predefinedMacros": "Native parity with supplied EDG_BASE and macro file enabled; portable real-source probes use explicit common input macros",
+    "wine": "11 checks on Windows .NET under Wine, including C-backend compile/run; native Windows and Windows NativeAOT unverified"
+  },
+  "limits": [
+    "Native macOS/ARM64 execution unverified",
+    "Full compiler export-everything managedlib mode exceeds the CLR method limit; executable mode is supported",
+    "Run terminates the process as original EDG does; use subprocesses",
+    "NativeAOT build disables SDK analyzers but treats C# and ILCompiler warnings as errors"
+  ],
+  "retainedFailures": [
+    "edg-self-runtime-001",
+    "edg-self-runtime-002",
+    "edg-self-runtime-003",
+    "edg-self-runtime-004",
+    "edg-self-runtime-005",
+    "self-execution-jit-001",
+    "self-execution-wine-001",
+    "self-execution-wine-002"
+  ],
+  "parserTimingSeconds": {
+    "JIT": [
+      {
+        "source": "cfe.c",
+        "compiler": "native",
+        "seconds": 0.155
+      },
+      {
+        "source": "cfe.c",
+        "compiler": "managed",
+        "seconds": 4.347
+      },
+      {
+        "source": "types.c",
+        "compiler": "native",
+        "seconds": 0.23
+      },
+      {
+        "source": "types.c",
+        "compiler": "managed",
+        "seconds": 5.245
+      },
+      {
+        "source": "ifc_modules_read.c",
+        "compiler": "native",
+        "seconds": 0.651
+      },
+      {
+        "source": "ifc_modules_read.c",
+        "compiler": "managed",
+        "seconds": 7.158
+      }
+    ],
+    "NativeAOT": [
+      {
+        "source": "cfe.c",
+        "compiler": "native",
+        "seconds": 0.166
+      },
+      {
+        "source": "cfe.c",
+        "compiler": "managed",
+        "seconds": 0.689
+      },
+      {
+        "source": "types.c",
+        "compiler": "native",
+        "seconds": 0.221
+      },
+      {
+        "source": "types.c",
+        "compiler": "managed",
+        "seconds": 0.975
+      },
+      {
+        "source": "ifc_modules_read.c",
+        "compiler": "native",
+        "seconds": 0.596
+      },
+      {
+        "source": "ifc_modules_read.c",
+        "compiler": "managed",
+        "seconds": 2.241
+      }
+    ]
+  }
+}

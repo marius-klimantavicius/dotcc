@@ -1,153 +1,156 @@
-# Direct C# review of the EDG compiler
+# EDG translated to C#
 
-The current exception-enabled review is at
-[`artifacts/review/edg/README.md`](../artifacts/review/edg/README.md).
-It uses named ordinary locals, bulk byte initialization, literal previews and
-omits empty noexcept guards. Primitive numeric tables use static typed span
-properties backed by assembly data. All constant-initialized global/TLS arrays use source-named pointer aliases,
-including pointer tables with direct indexed assignments. Plain records use
-named-field object initializers with trailing commas. Named export
-wrappers retain their source-resolved names; implementation bodies use `__body`.
-The existing EDG review aliases are refreshed in place; their README and manifest
-describe the current output.
+`translate_self.py` translates the **original `cpfe` target** from
+`build/compile_commands.json`: 75 C++14 translation units, including the original
+C backend, with the all-extensions build definitions. It does not translate the
+historical lowered C or include the additional `dot_gen_be` backend itself.
+The generated owner is `Edg.Compiler.EdgCompiler`; shared runtime sources use
+`Edg.Runtime`.
 
-Variadic calls now use ordinary named calls and shared `Edg.Runtime.VaArg`
-carriers. The current output has zero `__edg_varcall` references (previously
-2,500 generated helper definitions); only needed shared runtime modules are
-copied into the project. See [the span ABI](varargs-span.md) and the review's
-`varargs-examples.cs.txt`. No full managed compiler execution is implied.
+The current review emission builds with zero C# warnings/errors and passes all
+18 compiler acceptance cases plus three original EDG source-file parser checks
+under both JIT and Linux-x64 NativeAOT. Windows .NET/Wine passes 11 compiler
+checks; native Windows/macOS execution is unverified. The review aliases point
+to this working project and its 36.6 MiB NativeAOT executable. Earlier failed
+outputs and diagnostics are retained. [Full evidence](../evidence/self-execution-20261004.json).
 
-`translate_self.py` reads the **original `cpfe` target** from
-`build/compile_commands.json`: currently 75 C++14 translation units, including
-the C backend, with the all-extensions build's definitions. It does not translate
-the historical lowered C and does not substitute a small demonstration compiler.
-The generated project uses `Edg.Compiler.EdgCompiler` and source-oriented file
-grouping by default. `--split size` remains available.
+## Build and run
 
-The current refresh uses `--profile musl --exceptions --unbound-externals partial`
-with pinned libc++18.1.8 headers. It adds 213 selected musl/provider source units
-and binds 106 imports through the existing shared managed services. There are
-24 remaining external symbols: 9 C++ library/runtime symbols and 15 POSIX host
-services (metadata, directories, descriptors, resource limits and mappings).
-These host services also need implementations; implementing libc++ alone will
-not make the compiler runnable. Shared signatures still use `Managed.Runtime`
-in `Managed.Runtime.generated.cs`; signatures involving generated types remain
-on `Edg.Compiler.EdgCompiler` in `Translated.Runtime.generated.cs`. Portable FILE
-is opaque and the private host records do not claim native OS ABI compatibility.
-The discussed common `Edg.Runtime` namespace migration remains separate. See
-[`partial-externals.md`](partial-externals.md) for `--runtime-source` providers.
-These are required compile-time contracts, not throwing review stubs. Full
-managed compilation/runtime remain unverified. An earlier no-exceptions build
-was stopped when Roslyn reached 78.2 GiB resident memory without producing an
-assembly; that controlled stop was not a successful build. Some source loops
-still use `goto`, and some assignments retain helper calls.
-
-By default, the runner preserves native `-fno-exceptions` and `-fno-rtti` through
-the driver's explicit `--no-exceptions --no-rtti` flags. `--exceptions` and
-`--no-exceptions` override exception handling for review; the report records both
-the native and effective feature settings. Ordinary driver invocations continue
-to enable both features by default.
-
-The earlier portable-header attempt stopped at `sys/types.h`. The musl profile
-now supplies a private [host declaration overlay](../backend/self/README.md)
-without discovering system headers. It uses EDG's supported
-`USE_MMAP_FOR_MEMORY_REGIONS=0` allocation/read fallback while preserving
-language extensions and portable C++/CLI metadata mapping. Binary128 settings
-remain unchanged. Although a quadmath declaration header is needed for parsing,
-the original host-conversion and hexadecimal-output settings leave no emitted
-quadmath calls. The exact binary128 classification adapter uses an EDG builtin.
-
-The diagnostic `--profile host` remains available with the native Linux target
-and actual host headers. Neither profile establishes a runnable managed compiler
-or complete cross-platform host integration. Native configuration defaults,
-including target/predefined-macro-file policies, remain inputs to the port.
-
-For the full source set, the custom backend must enable the supported EDG
-configuration `PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE=1`, as the original C backend
-does. Without it, alternate-entry name generation asserts before our backend is
-called. A fresh original-C translation of the same 75 sources succeeds. An
-isolated current C# backend build with the promotion setting passes that stage;
-no EDG semantic source changes are needed.
-
-The current investigation's isolated binary is under:
-
-```
-artifacts/campaign/persistent-continuation/self-musl-build-001/cpfe-dot
-```
-
-To request a fresh review artifact using such a compiler:
+Build the canonical backend, then translate using the pinned libc++ acquisition:
 
 ```sh
-python3 edgcpp/translate_self.py --profile musl --exceptions \
+EDG_BUILD_TARGET=cpfe-dot bash edgcpp/build.sh
+python3 edgcpp/translate_self.py --profile musl \
   --libcxx-acquisition edgcpp/artifacts/campaign/libcxx-acquired-005 \
-  --compiler /path/to/promotion-enabled/cpfe-dot \
-  --unbound-externals partial \
-  --output-dir /path/to/new-output
+  --output-dir /path/to/new-self-output --build
 ```
 
-`--exceptions` generates stack-unwinding paths. The review guide
-[`artifacts/review/edg-exceptions/README.md`](../artifacts/review/edg-exceptions/README.md)
-links the generated `token_to_string` function, its cleanup helper and the
-exception filter, alongside the original C++. Construction advances a cleanup
-state; normal destruction clears
-it. A function-level `finally` invokes the cleanup helper during unwinding.
-The helper clears the state before calling the destructor and terminates if a
-destructor throws during cleanup. The exception filter marks unwinding but
-returns false, leaving exception propagation to the CLR.
+The default is an executable project with no unresolved externs. The musl profile
+requires exceptions for its actual libc++ allocation/exception implementation;
+the original compiler's no-RTTI setting is preserved. `--emit managedlib` remains
+an explicit export-everything review option, but the full compiler's extra export
+wrappers exceed the CLR's per-type method limit. Use the executable mode for the
+full running compiler. File splitting does not split the owner type.
 
-The current musl variant has 24 explicitly unbound external contracts. Its
-bounded executable probe passes strict JIT and Linux-x64 NativeAOT; the separate
-real-libc++ header probe verifies required missing bodies fail with CS8795.
-Full compiler translation and formatting remain separate from a full C# build
-or runtime verification, which have not been run for this variant.
+```sh
+dotnet /path/to/new-self-output/managed/bin/Release/net10.0/Generated.dll --version
+dotnet /path/to/new-self-output/managed/bin/Release/net10.0/Generated.dll \
+  --clear_flag use_predefined_macro_file --no_code_gen --c++20 example.cpp
+```
 
-The musl C++ probe also exposed unsafe adjacent-declaration fusion into for
-headers. The emitter now follows the C backend in retaining those declarations
-before the structured loop. C/C++ scope regressions and the ten-check existing
-structured-control suite pass; reconstructing true source for-init declarations
-requires retained source-scope provenance. See
-[milestone evidence](../evidence/self-musl-20261004.json).
+The second command is suitable for a standalone input with explicitly supplied
+include paths. Normal predefined-header operation requires `EDG_BASE` pointing
+to the matching EDG base directory, such as
+`edgcpp/upstream/bases/docker/dev-env/gcc`. Native target/predefined-header
+policies remain inputs to the compiler port. With that base and the macro file
+enabled, the Linux/x64/type/width/version macro probes match native EDG exactly.
+Disabling the file selects a different implicit macro environment because the
+portable host build omits native OS macros; supply explicit input target facts
+when parsing portable headers.
 
-The driver records the selected compiler path and its SHA-256 captured before
-invocation. The self-translation report additionally records original source
-hashes, native build definitions, generated configuration hash, header search
-paths, exact commands, exit codes, and logs. A nonzero translation exit means
-there is **no complete generated project** in that output directory.
-The runner retains `raw.cs` before formatting or packaging, using the driver's
-optional `--raw-output` argument. Raw files must be new; they are never silently
-overwritten. This preserves the full backend result even if later tooling fails.
-For such a retained result, `dotnet.py --raw-input /path/to/raw.cs` explicitly
-replays only packaging, with the same language, target, layout, and output options.
-Its manifest records the raw input path/hash and `packagingOnly: true`; `compiler`
-is null because replay does not invoke a compiler or independently verify the
-raw file's native provenance. Keep the original self-translation report beside
-the replayed project. `--raw-input` and `--raw-output` are mutually exclusive.
+The ready review executable is:
 
-The formatter keeps very large synthetic storage constructors and numeric
-literal collections compact internally, preserving their exact tokens and
-formatting source functions normally. This avoids quadratic Roslyn token
-navigation over millions of synthetic initializer siblings. Large formatted
-files travel through JSON as ordered string chunks; chunk boundaries preserve
-UTF-16 surrogate pairs, and the Python driver rejoins the exact text before
-source splitting and mapping.
+```sh
+edgcpp/artifacts/review/edg/nativeaot/Generated --version
+```
 
-## Explicit unbound declarations
+EDG exits through its normal `exit`/`abort` paths. Run compilations as separate
+processes: the public `Run(string[])` bridge is not a reusable in-process compiler
+service. Expected exit codes are success/warnings `0`, source errors `2`, and
+command-line or catastrophic errors `4`.
 
-Normal translation rejects external functions or variables that have no binding.
-`--unbound-externals declarations` is an explicit review option: typed external
-function bodies and external-storage accessors throw
-`PlatformNotSupportedException`. It records every such symbol in
-`dot-gen.json.unboundExternals`. Function pointer calls use the same throwing
-declaration. Reading, writing, or taking the address of missing storage cannot
-silently manufacture a zero-initialized object.
+For a bounded Linux-x64 NativeAOT build:
 
-This mode preserves reviewable function bodies while making the missing host
-boundary explicit. It does **not** implement those imports, mask unsupported
-language operations, or establish that the resulting program runs.
+```sh
+python3 edgcpp/build_managed.py /path/to/new-self-output/managed/Generated.csproj \
+  --output-dir /path/to/new-aot-build --publish-aot --warnings-as-errors
+```
 
-The focused `backend/tests/unbound_externals_verify.py` check verifies default
-rejection plus static/instance JIT and NativeAOT throwing behavior. A separate
-five-by-900-KiB string fixture verifies that lifting the old 4-MiB literal-pool
-limit to the existing 64-MiB arena budget preserves JIT and NativeAOT data reads.
-Literal bytes still live in their own pinned array, separate from global/TLS
-arenas; only the checked capacity limit changed.
+`build_managed.py` records commands, logs, elapsed time and sampled process-tree
+RSS. Its default limits are a 40 GiB managed heap, 48 GiB process-tree RSS, and
+four logical processors. Create `OUTPUT_DIR/cancel.txt` with a reason to stop an
+active build while retaining its diagnostics. SDK analyzers are off for these
+large initial builds; `--analyzers` enables them. NativeAOT compiler warnings are
+errors when `--warnings-as-errors` is selected.
+
+## Runtime and configuration
+
+The musl profile uses selected musl implementations plus the shared portable
+POSIX/BCL services. The [minimal libc++ provider](../backend/self/libcxx.md)
+supplies actual upstream allocation, new-handler, exception classes and RTTI
+support needed by this compiler. There are no throwing placeholders for missing
+EDG imports. This dependency closure does not constitute complete libc++.
+
+The self-specific [profile](../backend/self/profile.py) explicitly records the
+portable LP64 host's pointer/IL-prefix alignment and preserves the original
+compiler's x86-64 output target, half-precision support and multibyte buffer
+bound. It does not inject native OS/CPU macros into generic portable headers.
+The output target is distinct from the OS/CPU executing the managed compiler.
+
+`USE_MMAP_FOR_MEMORY_REGIONS=0` selects EDG's supported malloc/read fallback for
+compiler memory and module storage. Portable C++/CLI metadata mapping remains
+enabled and uses the shared POSIX provider. CLI/CX acceptance still needs their
+platform metadata; missing-metadata diagnostic tests do not establish complete
+CLI/CX program support. Windows finite CPU limits report `ENOTSUP`; Unix limits
+apply to the process. See [POSIX/stdio ownership](posix-stdio.md).
+
+The custom backend explicitly enables EDG's supported
+`PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE` and `MAINTAIN_NEEDED_FLAGS` settings, as
+needed for alternate-entry placement and merged inline definitions. It keeps
+unused IL available for source/lifetime provenance. No EDG semantic fix is
+involved in these configuration selections.
+
+## Review and verification
+
+The review entry point is
+[`artifacts/review/edg/README.md`](../artifacts/review/edg/README.md).
+Generated source retains ordinary names, locals, named record members and
+structured control flow where the languages permit it. Constant tables use
+source-named pointer aliases, object initializers and embedded typed spans;
+large initialization is split into bounded methods while preserving order.
+UTF-8 literals have previews. Variadic calls use ordinary named calls and shared
+`Edg.Runtime.VaArg` spans, with no `__edg_varcall` helpers.
+
+Exception-enabled output records construction progress and performs cleanup in
+`finally`; empty noexcept functions omit redundant catch guards. Some lowered
+control flow and expression helpers remain where required by C/C++ semantics.
+Source grouping is the default, with `--split size`, `function`, and `none`
+also available.
+
+Run the native-versus-translated execution corpus with:
+
+```sh
+python3 edgcpp/backend/tests/self_execution_verify.py \
+  --output-dir /path/to/new-verification \
+  --managed-command dotnet /path/to/new-self-output/managed/bin/Release/net10.0/Generated.dll
+```
+
+For NativeAOT, pass the published executable as `--managed-command`. The runner
+compares parsing, preprocessing, diagnostics and extension modes with native EDG,
+and compiles and executes generated C from both C11 and C++20 inputs. Generated
+C text equality is informational: EDG's temporary names can depend on IL
+addresses, even between two native runs. Diagnostics and executed program
+behavior must match. Real-header host-profile and merged-inline reductions
+remain separate permanent regression tests.
+
+`backend/tests/self_source_verify.py` additionally parses original `cfe.c`,
+`types.c`, and `ifc_modules_read.c` with the same explicit portable input macros
+and headers for both compilers. Pass `--profile-results` with the self report,
+`--output-dir` with a new directory, and `--managed-command` as above. All three
+match native diagnostics and exit codes in JIT and NativeAOT. In the recorded
+single-run AOT checks, they took 0.689/0.975/2.241 seconds, versus native EDG's
+0.166/0.221/0.596 seconds. These are observed timings, not a controlled benchmark.
+
+The full Release C# build took 392 seconds and NativeAOT publication 424 seconds
+(including its separate RID-specific C# compilation), with peak process-tree
+RSS below 18 GiB. SDK analyzers were disabled; C# and NativeAOT compiler warnings
+were errors. The emitted owner has 57,803 methods, below the CLR limit.
+
+The self report records original source hashes, native definitions, configuration,
+header search paths, exact commands, compiler hash and runtime/license provenance.
+`raw.cs` is retained before formatting and packaging. A failed translation has
+no complete generated project. `dotnet.py --raw-input PATH` can replay packaging
+of a retained raw file, but does not establish native translation provenance;
+keep its original report. The driver rejects unbound externs by default;
+`--unbound-externals partial` or `declarations` is an explicit diagnostic/review
+mode and does not supply working implementations.
