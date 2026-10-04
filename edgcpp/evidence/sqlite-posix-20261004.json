@@ -3,7 +3,7 @@
   "status": "passed",
   "scope": "SQLite configured upstream Unix VFS, musl algorithms, shared POSIX runtime; not complete POSIX or musl",
   "sqlite": {
-    "path": "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004",
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005",
     "results": {
       "schema": 1,
       "project": "EDG SQLite host",
@@ -13,7 +13,7 @@
           "command": [
             "/usr/bin/python3",
             "/home/marius/p/dotcc/edgcpp/dotnet.py",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/input/sqlite3.c",
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/input/sqlite3.c",
             "--compiler",
             "/mnt/storage/dotcc-edg-campaign-20261003/posix-build-003/cpfe-dot",
             "--language",
@@ -37,7 +37,7 @@
             "--unbound-externals",
             "partial",
             "-I",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/input",
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/input",
             "-DSQLITE_OMIT_LOAD_EXTENSION",
             "-DSQLITE_ENABLE_FTS5",
             "-DSQLITE_ENABLE_MATH_FUNCTIONS",
@@ -62,15 +62,15 @@
             "--export-macros",
             "SQLITE_ABORT|SQLITE_ABORT_ROLLBACK|SQLITE_ACCESS_EXISTS|SQLITE_ACCESS_READ|SQLITE_ACCESS_READWRITE|SQLITE_ALTER_TABLE|SQLITE_ANALYZE|SQLITE_ANY|SQLITE_ATTACH|SQLITE_AUTH|SQLITE_AUTH_USER|SQLITE_BLOB|SQLITE_BUSY|SQLITE_BUSY_RECOVERY|SQLITE_BUSY_SNAPSHOT|SQLITE_BUSY_TIMEOUT|SQLITE_CANTOPEN|SQLITE_CANTOPEN_CONVPATH|SQLITE_CANTOPEN_DIRTYWAL|SQLITE_CANTOPEN_FULLPATH|SQLITE_CANTOPEN_ISDIR|SQLITE_CANTOPEN_NOTEMPDIR|SQLITE_CANTOPEN_SYMLINK|SQLITE_CARRAY_BLOB|SQLITE_CARRAY_DOUBLE|SQLITE_CARRAY_INT32|SQLITE_CARRAY_INT64|SQLITE_CARRAY_TEXT|SQLITE_CHANGEGROUP_CONFIG_PATCHSET|SQLITE_CHANGESETAPPLY_FKNOACTION|SQLITE_CHANGESETAPPLY_IGNORENOOP|SQLITE_CHANGESETAPPLY_INVERT|SQLITE_CHANGESETAPPLY_NOSAVEPOINT|SQLITE_CHANGESETAPPLY_NOUPDATELOOP|SQLITE_CHANGESETSTART_INVERT|SQLITE_CHANGESET_ABORT|SQLITE_CHANGESET_CONFLICT|SQLITE_CHANGESET_CONSTRAINT|SQLITE_CHANGESET_DATA|SQLITE_CHANGESET_FOREIGN_KEY|SQLITE_CHANGESET_NOTFOUND|SQLITE_CHANGESET_OMIT|SQLITE_CHANGESET_REPLACE|SQLITE_CHECKPOINT_FULL|SQLITE_CHECKPOINT_PASSIVE|SQLITE_CHECKPOINT_RESTART|SQLITE_CHECKPOINT_TRUNCATE|SQLITE_CONFIG_COVERING_INDEX_SCAN|SQLITE_CONFIG_GETMALLOC|SQLITE_CONFIG_GETMUTEX|SQLITE_CONFIG_GETPCACHE|SQLITE_CONFIG_GETPCACHE2|SQLITE_CONFIG_HEAP|SQLITE_CONFIG_LOG|SQLITE_CONFIG_LOOKASIDE|SQLITE_CONFIG_MALLOC|SQLITE_CONFIG_MEMDB_MAXSIZE|SQLITE_CONFIG_MEMSTATUS|SQLITE_CONFIG_MMAP_SIZE|SQLITE_CONFIG_MULTITHREAD|SQLITE_CONFIG_MUTEX|SQLITE_CONFIG_PAGECACHE|SQLITE_CONFIG_PCACHE|SQLITE_CONFIG_PCACHE2|SQLITE_CONFIG_PCACHE_HDRSZ|SQLITE_CONFIG_PMASZ|SQLITE_CONFIG_ROWID_IN_VIEW|SQLITE_CONFIG_SCRATCH|SQLITE_CONFIG_SERIALIZED|SQLITE_CONFIG_SINGLETHREAD|SQLITE_CONFIG_SMALL_MALLOC|SQLITE_CONFIG_SORTERREF_SIZE|SQLITE_CONFIG_SQLLOG|SQLITE_CONFIG_STMTJRNL_SPILL|SQLITE_CONFIG_URI|SQLITE_CONFIG_WIN32_HEAPSIZE|SQLITE_CONSTRAINT|SQLITE_CONSTRAINT_CHECK|SQLITE_CONSTRAINT_COMMITHOOK|SQLITE_CONSTRAINT_DATATYPE|SQLITE_CONSTRAINT_FOREIGNKEY|SQLITE_CONSTRAINT_FUNCTION|SQLITE_CONSTRAINT_NOTNULL|SQLITE_CONSTRAINT_PINNED|SQLITE_CONSTRAINT_PRIMARYKEY|SQLITE_CONSTRAINT_ROWID|SQLITE_CONSTRAINT_TRIGGER|SQLITE_CONSTRAINT_UNIQUE|SQLITE_CONSTRAINT_VTAB|SQLITE_COPY|SQLITE_CORRUPT|SQLITE_CORRUPT_INDEX|SQLITE_CORRUPT_SEQUENCE|SQLITE_CORRUPT_VTAB|SQLITE_CREATE_INDEX|SQLITE_CREATE_TABLE|SQLITE_CREATE_TEMP_INDEX|SQLITE_CREATE_TEMP_TABLE|SQLITE_CREATE_TEMP_TRIGGER|SQLITE_CREATE_TEMP_VIEW|SQLITE_CREATE_TRIGGER|SQLITE_CREATE_VIEW|SQLITE_CREATE_VTABLE|SQLITE_DBCONFIG_DEFENSIVE|SQLITE_DBCONFIG_DQS_DDL|SQLITE_DBCONFIG_DQS_DML|SQLITE_DBCONFIG_ENABLE_ATTACH_CREATE|SQLITE_DBCONFIG_ENABLE_ATTACH_WRITE|SQLITE_DBCONFIG_ENABLE_COMMENTS|SQLITE_DBCONFIG_ENABLE_FKEY|SQLITE_DBCONFIG_ENABLE_FTS3_TOKENIZER|SQLITE_DBCONFIG_ENABLE_LOAD_EXTENSION|SQLITE_DBCONFIG_ENABLE_QPSG|SQLITE_DBCONFIG_ENABLE_TRIGGER|SQLITE_DBCONFIG_ENABLE_VIEW|SQLITE_DBCONFIG_FP_DIGITS|SQLITE_DBCONFIG_LEGACY_ALTER_TABLE|SQLITE_DBCONFIG_LEGACY_FILE_FORMAT|SQLITE_DBCONFIG_LOOKASIDE|SQLITE_DBCONFIG_MAINDBNAME|SQLITE_DBCONFIG_MAX|SQLITE_DBCONFIG_NO_CKPT_ON_CLOSE|SQLITE_DBCONFIG_RESET_DATABASE|SQLITE_DBCONFIG_REVERSE_SCANORDER|SQLITE_DBCONFIG_STMT_SCANSTATUS|SQLITE_DBCONFIG_TRIGGER_EQP|SQLITE_DBCONFIG_TRUSTED_SCHEMA|SQLITE_DBCONFIG_WRITABLE_SCHEMA|SQLITE_DBSTATUS_CACHE_HIT|SQLITE_DBSTATUS_CACHE_MISS|SQLITE_DBSTATUS_CACHE_SPILL|SQLITE_DBSTATUS_CACHE_USED|SQLITE_DBSTATUS_CACHE_USED_SHARED|SQLITE_DBSTATUS_CACHE_WRITE|SQLITE_DBSTATUS_DEFERRED_FKS|SQLITE_DBSTATUS_LOOKASIDE_HIT|SQLITE_DBSTATUS_LOOKASIDE_MISS_FULL|SQLITE_DBSTATUS_LOOKASIDE_MISS_SIZE|SQLITE_DBSTATUS_LOOKASIDE_USED|SQLITE_DBSTATUS_MAX|SQLITE_DBSTATUS_SCHEMA_USED|SQLITE_DBSTATUS_STMT_USED|SQLITE_DBSTATUS_TEMPBUF_SPILL|SQLITE_DELETE|SQLITE_DENY|SQLITE_DESERIALIZE_FREEONCLOSE|SQLITE_DESERIALIZE_READONLY|SQLITE_DESERIALIZE_RESIZEABLE|SQLITE_DETACH|SQLITE_DETERMINISTIC|SQLITE_DIRECTONLY|SQLITE_DONE|SQLITE_DROP_INDEX|SQLITE_DROP_TABLE|SQLITE_DROP_TEMP_INDEX|SQLITE_DROP_TEMP_TABLE|SQLITE_DROP_TEMP_TRIGGER|SQLITE_DROP_TEMP_VIEW|SQLITE_DROP_TRIGGER|SQLITE_DROP_VIEW|SQLITE_DROP_VTABLE|SQLITE_EMPTY|SQLITE_ERROR|SQLITE_ERROR_KEY|SQLITE_ERROR_MISSING_COLLSEQ|SQLITE_ERROR_RESERVESIZE|SQLITE_ERROR_RETRY|SQLITE_ERROR_SNAPSHOT|SQLITE_ERROR_UNABLE|SQLITE_FAIL|SQLITE_FCNTL_BEGIN_ATOMIC_WRITE|SQLITE_FCNTL_BLOCK_ON_CONNECT|SQLITE_FCNTL_BUSYHANDLER|SQLITE_FCNTL_CHUNK_SIZE|SQLITE_FCNTL_CKPT_DONE|SQLITE_FCNTL_CKPT_START|SQLITE_FCNTL_CKSM_FILE|SQLITE_FCNTL_COMMIT_ATOMIC_WRITE|SQLITE_FCNTL_COMMIT_PHASETWO|SQLITE_FCNTL_DATA_VERSION|SQLITE_FCNTL_EXTERNAL_READER|SQLITE_FCNTL_FILESTAT|SQLITE_FCNTL_FILE_POINTER|SQLITE_FCNTL_GET_LOCKPROXYFILE|SQLITE_FCNTL_HAS_MOVED|SQLITE_FCNTL_JOURNAL_POINTER|SQLITE_FCNTL_LAST_ERRNO|SQLITE_FCNTL_LOCKSTATE|SQLITE_FCNTL_LOCK_TIMEOUT|SQLITE_FCNTL_MMAP_SIZE|SQLITE_FCNTL_NULL_IO|SQLITE_FCNTL_OVERWRITE|SQLITE_FCNTL_PDB|SQLITE_FCNTL_PERSIST_WAL|SQLITE_FCNTL_POWERSAFE_OVERWRITE|SQLITE_FCNTL_PRAGMA|SQLITE_FCNTL_RBU|SQLITE_FCNTL_RESERVE_BYTES|SQLITE_FCNTL_RESET_CACHE|SQLITE_FCNTL_ROLLBACK_ATOMIC_WRITE|SQLITE_FCNTL_SET_LOCKPROXYFILE|SQLITE_FCNTL_SIZE_HINT|SQLITE_FCNTL_SIZE_LIMIT|SQLITE_FCNTL_SYNC|SQLITE_FCNTL_SYNC_OMITTED|SQLITE_FCNTL_TEMPFILENAME|SQLITE_FCNTL_TRACE|SQLITE_FCNTL_VFSNAME|SQLITE_FCNTL_VFS_POINTER|SQLITE_FCNTL_WAL_BLOCK|SQLITE_FCNTL_WIN32_AV_RETRY|SQLITE_FCNTL_WIN32_GET_HANDLE|SQLITE_FCNTL_WIN32_SET_HANDLE|SQLITE_FCNTL_ZIPVFS|SQLITE_FLOAT|SQLITE_FORMAT|SQLITE_FULL|SQLITE_FUNCTION|SQLITE_IGNORE|SQLITE_INDEX_CONSTRAINT_EQ|SQLITE_INDEX_CONSTRAINT_FUNCTION|SQLITE_INDEX_CONSTRAINT_GE|SQLITE_INDEX_CONSTRAINT_GLOB|SQLITE_INDEX_CONSTRAINT_GT|SQLITE_INDEX_CONSTRAINT_IS|SQLITE_INDEX_CONSTRAINT_ISNOT|SQLITE_INDEX_CONSTRAINT_ISNOTNULL|SQLITE_INDEX_CONSTRAINT_ISNULL|SQLITE_INDEX_CONSTRAINT_LE|SQLITE_INDEX_CONSTRAINT_LIKE|SQLITE_INDEX_CONSTRAINT_LIMIT|SQLITE_INDEX_CONSTRAINT_LT|SQLITE_INDEX_CONSTRAINT_MATCH|SQLITE_INDEX_CONSTRAINT_NE|SQLITE_INDEX_CONSTRAINT_OFFSET|SQLITE_INDEX_CONSTRAINT_REGEXP|SQLITE_INDEX_SCAN_HEX|SQLITE_INDEX_SCAN_UNIQUE|SQLITE_INNOCUOUS|SQLITE_INSERT|SQLITE_INTEGER|SQLITE_INTERNAL|SQLITE_INTERRUPT|SQLITE_IOCAP_ATOMIC|SQLITE_IOCAP_ATOMIC16K|SQLITE_IOCAP_ATOMIC1K|SQLITE_IOCAP_ATOMIC2K|SQLITE_IOCAP_ATOMIC32K|SQLITE_IOCAP_ATOMIC4K|SQLITE_IOCAP_ATOMIC512|SQLITE_IOCAP_ATOMIC64K|SQLITE_IOCAP_ATOMIC8K|SQLITE_IOCAP_BATCH_ATOMIC|SQLITE_IOCAP_IMMUTABLE|SQLITE_IOCAP_POWERSAFE_OVERWRITE|SQLITE_IOCAP_SAFE_APPEND|SQLITE_IOCAP_SEQUENTIAL|SQLITE_IOCAP_SUBPAGE_READ|SQLITE_IOCAP_UNDELETABLE_WHEN_OPEN|SQLITE_IOERR|SQLITE_IOERR_ACCESS|SQLITE_IOERR_AUTH|SQLITE_IOERR_BADKEY|SQLITE_IOERR_BEGIN_ATOMIC|SQLITE_IOERR_BLOCKED|SQLITE_IOERR_CHECKRESERVEDLOCK|SQLITE_IOERR_CLOSE|SQLITE_IOERR_CODEC|SQLITE_IOERR_COMMIT_ATOMIC|SQLITE_IOERR_CONVPATH|SQLITE_IOERR_CORRUPTFS|SQLITE_IOERR_DATA|SQLITE_IOERR_DELETE|SQLITE_IOERR_DELETE_NOENT|SQLITE_IOERR_DIR_CLOSE|SQLITE_IOERR_DIR_FSYNC|SQLITE_IOERR_FSTAT|SQLITE_IOERR_FSYNC|SQLITE_IOERR_GETTEMPPATH|SQLITE_IOERR_IN_PAGE|SQLITE_IOERR_LOCK|SQLITE_IOERR_MMAP|SQLITE_IOERR_NOMEM|SQLITE_IOERR_RDLOCK|SQLITE_IOERR_READ|SQLITE_IOERR_ROLLBACK_ATOMIC|SQLITE_IOERR_SEEK|SQLITE_IOERR_SHMLOCK|SQLITE_IOERR_SHMMAP|SQLITE_IOERR_SHMOPEN|SQLITE_IOERR_SHMSIZE|SQLITE_IOERR_SHORT_READ|SQLITE_IOERR_TRUNCATE|SQLITE_IOERR_UNLOCK|SQLITE_IOERR_VNODE|SQLITE_IOERR_WRITE|SQLITE_LIMIT_ATTACHED|SQLITE_LIMIT_COLUMN|SQLITE_LIMIT_COMPOUND_SELECT|SQLITE_LIMIT_EXPR_DEPTH|SQLITE_LIMIT_FUNCTION_ARG|SQLITE_LIMIT_LENGTH|SQLITE_LIMIT_LIKE_PATTERN_LENGTH|SQLITE_LIMIT_PARSER_DEPTH|SQLITE_LIMIT_SQL_LENGTH|SQLITE_LIMIT_TRIGGER_DEPTH|SQLITE_LIMIT_VARIABLE_NUMBER|SQLITE_LIMIT_VDBE_OP|SQLITE_LIMIT_WORKER_THREADS|SQLITE_LOCKED|SQLITE_LOCKED_SHAREDCACHE|SQLITE_LOCKED_VTAB|SQLITE_LOCK_EXCLUSIVE|SQLITE_LOCK_NONE|SQLITE_LOCK_PENDING|SQLITE_LOCK_RESERVED|SQLITE_LOCK_SHARED|SQLITE_MISMATCH|SQLITE_MISUSE|SQLITE_MUTEX_FAST|SQLITE_MUTEX_RECURSIVE|SQLITE_MUTEX_STATIC_APP1|SQLITE_MUTEX_STATIC_APP2|SQLITE_MUTEX_STATIC_APP3|SQLITE_MUTEX_STATIC_LRU|SQLITE_MUTEX_STATIC_LRU2|SQLITE_MUTEX_STATIC_MAIN|SQLITE_MUTEX_STATIC_MASTER|SQLITE_MUTEX_STATIC_MEM|SQLITE_MUTEX_STATIC_MEM2|SQLITE_MUTEX_STATIC_OPEN|SQLITE_MUTEX_STATIC_PMEM|SQLITE_MUTEX_STATIC_PRNG|SQLITE_MUTEX_STATIC_VFS1|SQLITE_MUTEX_STATIC_VFS2|SQLITE_MUTEX_STATIC_VFS3|SQLITE_NOLFS|SQLITE_NOMEM|SQLITE_NOTADB|SQLITE_NOTFOUND|SQLITE_NOTICE|SQLITE_NOTICE_RBU|SQLITE_NOTICE_RECOVER_ROLLBACK|SQLITE_NOTICE_RECOVER_WAL|SQLITE_NULL|SQLITE_OK|SQLITE_OK_LOAD_PERMANENTLY|SQLITE_OK_SYMLINK|SQLITE_OPEN_AUTOPROXY|SQLITE_OPEN_CREATE|SQLITE_OPEN_DELETEONCLOSE|SQLITE_OPEN_EXCLUSIVE|SQLITE_OPEN_EXRESCODE|SQLITE_OPEN_FULLMUTEX|SQLITE_OPEN_MAIN_DB|SQLITE_OPEN_MAIN_JOURNAL|SQLITE_OPEN_MASTER_JOURNAL|SQLITE_OPEN_MEMORY|SQLITE_OPEN_NOFOLLOW|SQLITE_OPEN_NOMUTEX|SQLITE_OPEN_PRIVATECACHE|SQLITE_OPEN_READONLY|SQLITE_OPEN_READWRITE|SQLITE_OPEN_SHAREDCACHE|SQLITE_OPEN_SUBJOURNAL|SQLITE_OPEN_SUPER_JOURNAL|SQLITE_OPEN_TEMP_DB|SQLITE_OPEN_TEMP_JOURNAL|SQLITE_OPEN_TRANSIENT_DB|SQLITE_OPEN_URI|SQLITE_OPEN_WAL|SQLITE_PERM|SQLITE_PRAGMA|SQLITE_PREPARE_DONT_LOG|SQLITE_PREPARE_FROM_DDL|SQLITE_PREPARE_NORMALIZE|SQLITE_PREPARE_NO_VTAB|SQLITE_PREPARE_PERSISTENT|SQLITE_PROTOCOL|SQLITE_RANGE|SQLITE_READ|SQLITE_READONLY|SQLITE_READONLY_CANTINIT|SQLITE_READONLY_CANTLOCK|SQLITE_READONLY_DBMOVED|SQLITE_READONLY_DIRECTORY|SQLITE_READONLY_RECOVERY|SQLITE_READONLY_ROLLBACK|SQLITE_RECURSIVE|SQLITE_REINDEX|SQLITE_REPLACE|SQLITE_RESULT_SUBTYPE|SQLITE_ROLLBACK|SQLITE_ROW|SQLITE_SAVEPOINT|SQLITE_SCANSTAT_COMPLEX|SQLITE_SCANSTAT_EST|SQLITE_SCANSTAT_EXPLAIN|SQLITE_SCANSTAT_NAME|SQLITE_SCANSTAT_NCYCLE|SQLITE_SCANSTAT_NLOOP|SQLITE_SCANSTAT_NVISIT|SQLITE_SCANSTAT_PARENTID|SQLITE_SCANSTAT_SELECTID|SQLITE_SCHEMA|SQLITE_SCM_BRANCH|SQLITE_SCM_DATETIME|SQLITE_SCM_TAGS|SQLITE_SELECT|SQLITE_SELFORDER1|SQLITE_SERIALIZE_NOCOPY|SQLITE_SESSION_CONFIG_STRMSIZE|SQLITE_SESSION_OBJCONFIG_ROWID|SQLITE_SESSION_OBJCONFIG_SIZE|SQLITE_SETLK_BLOCK_ON_CONNECT|SQLITE_SHM_EXCLUSIVE|SQLITE_SHM_LOCK|SQLITE_SHM_NLOCK|SQLITE_SHM_SHARED|SQLITE_SHM_UNLOCK|SQLITE_SOURCE_ID|SQLITE_STATUS_MALLOC_COUNT|SQLITE_STATUS_MALLOC_SIZE|SQLITE_STATUS_MEMORY_USED|SQLITE_STATUS_PAGECACHE_OVERFLOW|SQLITE_STATUS_PAGECACHE_SIZE|SQLITE_STATUS_PAGECACHE_USED|SQLITE_STATUS_PARSER_STACK|SQLITE_STATUS_SCRATCH_OVERFLOW|SQLITE_STATUS_SCRATCH_SIZE|SQLITE_STATUS_SCRATCH_USED|SQLITE_STMTSTATUS_AUTOINDEX|SQLITE_STMTSTATUS_FILTER_HIT|SQLITE_STMTSTATUS_FILTER_MISS|SQLITE_STMTSTATUS_FULLSCAN_STEP|SQLITE_STMTSTATUS_MEMUSED|SQLITE_STMTSTATUS_REPREPARE|SQLITE_STMTSTATUS_RUN|SQLITE_STMTSTATUS_SORT|SQLITE_STMTSTATUS_VM_STEP|SQLITE_SUBTYPE|SQLITE_SYNC_DATAONLY|SQLITE_SYNC_FULL|SQLITE_SYNC_NORMAL|SQLITE_TESTCTRL_ALWAYS|SQLITE_TESTCTRL_ASSERT|SQLITE_TESTCTRL_ATOF|SQLITE_TESTCTRL_BENIGN_MALLOC_HOOKS|SQLITE_TESTCTRL_BITVEC_TEST|SQLITE_TESTCTRL_BYTEORDER|SQLITE_TESTCTRL_EXPLAIN_STMT|SQLITE_TESTCTRL_EXTRA_SCHEMA_CHECKS|SQLITE_TESTCTRL_FAULT_INSTALL|SQLITE_TESTCTRL_FIRST|SQLITE_TESTCTRL_FK_NO_ACTION|SQLITE_TESTCTRL_GETOPT|SQLITE_TESTCTRL_IMPOSTER|SQLITE_TESTCTRL_INTERNAL_FUNCTIONS|SQLITE_TESTCTRL_ISINIT|SQLITE_TESTCTRL_ISKEYWORD|SQLITE_TESTCTRL_JSON_SELFCHECK|SQLITE_TESTCTRL_LAST|SQLITE_TESTCTRL_LOCALTIME_FAULT|SQLITE_TESTCTRL_LOGEST|SQLITE_TESTCTRL_NEVER_CORRUPT|SQLITE_TESTCTRL_ONCE_RESET_THRESHOLD|SQLITE_TESTCTRL_OPTIMIZATIONS|SQLITE_TESTCTRL_PARSER_COVERAGE|SQLITE_TESTCTRL_PENDING_BYTE|SQLITE_TESTCTRL_PRNG_RESET|SQLITE_TESTCTRL_PRNG_RESTORE|SQLITE_TESTCTRL_PRNG_SAVE|SQLITE_TESTCTRL_PRNG_SEED|SQLITE_TESTCTRL_RESERVE|SQLITE_TESTCTRL_RESULT_INTREAL|SQLITE_TESTCTRL_SCRATCHMALLOC|SQLITE_TESTCTRL_SEEK_COUNT|SQLITE_TESTCTRL_SORTER_MMAP|SQLITE_TESTCTRL_TRACEFLAGS|SQLITE_TESTCTRL_TUNE|SQLITE_TESTCTRL_USELONGDOUBLE|SQLITE_TESTCTRL_VDBE_COVERAGE|SQLITE_TOOBIG|SQLITE_TRACE_CLOSE|SQLITE_TRACE_PROFILE|SQLITE_TRACE_ROW|SQLITE_TRACE_STMT|SQLITE_TRANSACTION|SQLITE_TXN_NONE|SQLITE_TXN_READ|SQLITE_TXN_WRITE|SQLITE_UPDATE|SQLITE_UTF16|SQLITE_UTF16BE|SQLITE_UTF16LE|SQLITE_UTF16_ALIGNED|SQLITE_UTF8|SQLITE_UTF8_ZT|SQLITE_VERSION|SQLITE_VERSION_NUMBER|SQLITE_VTAB_CONSTRAINT_SUPPORT|SQLITE_VTAB_DIRECTONLY|SQLITE_VTAB_INNOCUOUS|SQLITE_VTAB_USES_ALL_SCHEMAS|SQLITE_WARNING|SQLITE_WARNING_AUTOINDEX|SQLITE_WIN32_DATA_DIRECTORY_TYPE|SQLITE_WIN32_TEMP_DIRECTORY_TYPE",
             "--macro-source",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/input/sqlite3.c",
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/input/sqlite3.c",
             "--output-dir",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/generated",
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/generated",
             "--raw-output",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/raw.cs"
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/raw.cs"
           ],
           "logPrefix": "translate",
           "exitCode": 0,
-          "seconds": 10.582
+          "seconds": 10.682
         },
         {
           "label": "adapter",
@@ -78,7 +78,7 @@
             "/usr/bin/python3",
             "/home/marius/p/dotcc/edgcpp/backend/sqlite/prepare.py",
             "--output-dir",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/generated",
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/generated",
             "--profile",
             "unix"
           ],
@@ -91,7 +91,7 @@
           "command": [
             "dotnet",
             "build",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/generated/Generated.csproj",
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/generated/Generated.csproj",
             "-c",
             "Release",
             "--nologo",
@@ -99,33 +99,33 @@
           ],
           "logPrefix": "library-build",
           "exitCode": 0,
-          "seconds": 12.551
+          "seconds": 12.642
         },
         {
           "label": "consumer-build",
           "command": [
             "dotnet",
             "build",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/consumer/SqliteHostTests.csproj",
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/consumer/SqliteHostTests.csproj",
             "-c",
             "Release",
             "--nologo",
-            "-p:TranslatedProject=/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/generated/Generated.csproj",
+            "-p:TranslatedProject=/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/generated/Generated.csproj",
             "-p:TreatWarningsAsErrors=true"
           ],
           "logPrefix": "consumer-build",
           "exitCode": 0,
-          "seconds": 1.316
+          "seconds": 1.065
         },
         {
           "label": "jit-run",
           "command": [
             "dotnet",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/consumer/bin/Release/net10.0/SqliteHostTests.dll"
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/consumer/bin/Release/net10.0/SqliteHostTests.dll"
           ],
           "logPrefix": "jit-run",
           "exitCode": 0,
-          "seconds": 7.276
+          "seconds": 7.226
         },
         {
           "label": "native-build",
@@ -143,11 +143,11 @@
             "-lm",
             "-pthread",
             "-o",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/native-oracle"
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/native-oracle"
           ],
           "logPrefix": "native-build",
           "exitCode": 0,
-          "seconds": 7.64
+          "seconds": 6.924
         },
         {
           "label": "jit-processes",
@@ -156,44 +156,44 @@
             "/home/marius/p/dotcc/sqlite/scripts/test-host-vfs-processes.py",
             "--managed",
             "dotnet",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/consumer/bin/Release/net10.0/SqliteHostTests.dll",
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/consumer/bin/Release/net10.0/SqliteHostTests.dll",
             "--native",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/native-oracle"
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/native-oracle"
           ],
           "logPrefix": "jit-processes",
           "exitCode": 0,
-          "seconds": 22.215
+          "seconds": 18.441
         },
         {
           "label": "aot-build",
           "command": [
             "dotnet",
             "publish",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/consumer/SqliteHostTests.csproj",
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/consumer/SqliteHostTests.csproj",
             "-c",
             "Release",
             "-r",
             "linux-x64",
-            "-p:TranslatedProject=/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/generated/Generated.csproj",
+            "-p:TranslatedProject=/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/generated/Generated.csproj",
             "-p:PublishAot=true",
             "-p:TreatWarningsAsErrors=true",
             "-p:IlcTreatWarningsAsErrors=true",
             "--nologo",
             "-o",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/aot"
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/aot"
           ],
           "logPrefix": "aot-build",
           "exitCode": 0,
-          "seconds": 17.384
+          "seconds": 15.198
         },
         {
           "label": "aot-run",
           "command": [
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/aot/SqliteHostTests"
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/aot/SqliteHostTests"
           ],
           "logPrefix": "aot-run",
           "exitCode": 0,
-          "seconds": 7.877
+          "seconds": 7.879
         },
         {
           "label": "aot-processes",
@@ -201,13 +201,13 @@
             "/usr/bin/python3",
             "/home/marius/p/dotcc/sqlite/scripts/test-host-vfs-processes.py",
             "--managed",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/aot/SqliteHostTests",
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/aot/SqliteHostTests",
             "--native",
-            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004/native-oracle"
+            "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-005/native-oracle"
           ],
           "logPrefix": "aot-processes",
           "exitCode": 0,
-          "seconds": 8.376
+          "seconds": 8.476
         }
       ],
       "profile": "musl; unix; APPDEF BCL mutexes; THREADSAFE=1; disk temp; WAL; mmap",
@@ -239,7 +239,7 @@
       ],
       "compiler": "/mnt/storage/dotcc-edg-campaign-20261003/posix-build-003/cpfe-dot",
       "compilerSha256": "903eecba2a15ea16c1cf7bba2ce4aa1910c2851fb4cb5bc8e318afd09661c666",
-      "sourceSha256": "5c727357e021091442e768b614fb899ee27cfcd317ac2162569bea26cac2bcdc"
+      "sourceSha256": "0a46eb1c55b1065e3779ad17e1b60b52f9ff4d5ffa0a0ecfa30d98aa71e62e7b"
     },
     "output": {
       "aot-processes.stdout": "PASS real-file persistence, JSONB/FTS5 and readonly: managed-managed\nPASS native-compatible shared/reserved/pending/exclusive locks: managed-managed\nPASS forced process death, hot-journal recovery and released OS locks: managed-managed\nPASS WAL native-compatible snapshots, locks, checkpoint modes, index growth and reopen: managed-managed\nPASS WAL forced-kill commit preservation, uncommitted-tail discard and stale/missing index recovery: managed-managed\nPASS WAL readonly-media live-index and crash-recovery reads: managed-managed\nPASS WAL overlapping writer/checkpointer stress and final integrity: managed-managed\nPASS real-file persistence, JSONB/FTS5 and readonly: native-managed\nPASS native-compatible shared/reserved/pending/exclusive locks: native-managed\nPASS forced process death, hot-journal recovery and released OS locks: native-managed\nPASS WAL native-compatible snapshots, locks, checkpoint modes, index growth and reopen: native-managed\nPASS WAL forced-kill commit preservation, uncommitted-tail discard and stale/missing index recovery: native-managed\nPASS WAL readonly-media live-index and crash-recovery reads: native-managed\nPASS WAL overlapping writer/checkpointer stress and final integrity: native-managed\nPASS real-file persistence, JSONB/FTS5 and readonly: managed-native\nPASS native-compatible shared/reserved/pending/exclusive locks: managed-native\nPASS forced process death, hot-journal recovery and released OS locks: managed-native\nPASS WAL native-compatible snapshots, locks, checkpoint modes, index growth and reopen: managed-native\nPASS WAL forced-kill commit preservation, uncommitted-tail discard and stale/missing index recovery: managed-native\nPASS WAL readonly-media live-index and crash-recovery reads: managed-native\nPASS WAL overlapping writer/checkpointer stress and final integrity: managed-native\nPASS inode alias locking and canonical symlink journal paths\nPASS host VFS independent-process campaign\n",
@@ -251,23 +251,23 @@
       "adapter.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "adapter.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "aot-build.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "aot-build.stdout": "595e3e658e9abcced5f1135a7e473a4974f2467c08853bee5cee55acbc53fc4a",
+      "aot-build.stdout": "fc950f4d222bded7a004a59d26ea3e815d83b676fad8a614ae6d61027499d507",
       "aot-processes.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "aot-processes.stdout": "494937ff12dcdcf9a21de433ef20458d46d42e6d3738582053f4031655eefedb",
       "aot-run.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "aot-run.stdout": "59965e52173dc680be44fd861e60ed35379b90de00c0bc38a29bcdc3b9fbdff1",
       "consumer-build.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "consumer-build.stdout": "8bd2fe140ae98e8edd861e6f6c8369e5dba39c07e6ee25660c3925260869fe7e",
+      "consumer-build.stdout": "23b11e0f6fadc15a75bf91a937295d9865d82691f0c2a13e6da58fdc3bd8632a",
       "jit-processes.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "jit-processes.stdout": "494937ff12dcdcf9a21de433ef20458d46d42e6d3738582053f4031655eefedb",
       "jit-run.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "jit-run.stdout": "59965e52173dc680be44fd861e60ed35379b90de00c0bc38a29bcdc3b9fbdff1",
       "library-build.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "library-build.stdout": "96e885eaca19ccbe03c49e1685b2b2f121f299e546ffc39592a8725570f455f9",
+      "library-build.stdout": "4273b2ff4f11762407a1d72008cabf87cb773785f8a42b39531f72213224f9be",
       "native-build.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "native-build.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "translate.stderr": "3c9f2d24a1854c33f9d38524d795efdc7db2a57c6f371167efba68c0bbf28045",
-      "translate.stdout": "302f552c7a51fde491b71b67591f8387b9e878d318b8a46b92d6891737691524"
+      "translate.stderr": "babd03ec603d1500266d03ccfecc1de6ba68083bd2652a7ece626a9ae66483eb",
+      "translate.stdout": "3030599b7eabc3b2fe2a798f085c57bd465de37d17a2fb7dac9dd0c0c7346e18"
     }
   },
   "runtime": {
@@ -614,7 +614,7 @@
   },
   "platforms": {
     "Linux x64": "JIT and NativeAOT verified, including native SQLite independent-process interoperability",
-    "Windows": "Implementation provided; Wine investigation pending; actual Windows hardware not verified; lock registry same-account translated peers only",
+    "Windows": "Windows .NET 10 JIT under Wine 11: 83 runtime checks, independent-process lock registry, all 11 SQLite groups, rollback/WAL peer contention, killed-writer recovery and reopen integrity passed. Native Windows and Windows NativeAOT not verified. Same-account translated peers; database mmap disabled at runtime, WAL mappings retained. Large WAL (5015 frames, two shared-memory regions) verified with independent peer and checkpoint contention.",
     "macOS": "Implementation provided, not executed; OFD commands require Darwin private API availability"
   },
   "sourceHashes": {
@@ -637,7 +637,10 @@
     "edgcpp/backend/runtime/posix/include/unistd.h": "13a0204a4c44bd26ee6852e673b87292333a9f17ab6dc66417cb27fa918ea91a",
     "edgcpp/backend/dot_gen_posix.h": "e6ad31dfce07f1b23ad3f7f50b88baf42348dc717a3e1f4f4bf221cc93d671b9",
     "edgcpp/dotnet.py": "808cdc3ce93e173e6fcf6f04d10f551bf0921d538ba1e57849b554455695cb5a",
-    "edgcpp/sqlite_host.py": "2a59e207363407a250961fad78f5c7e31be4b455561061bb0f0833a35f0dbcc8"
+    "edgcpp/sqlite_host.py": "bd72ac30cef9a4ba24913baba06bc945670feaffea8537d30158876dc207d11e",
+    "edgcpp/backend/sqlite/UnixBindings.cs": "bfb2445b83742e8b5ef3833afba5650c7ceb508f70125041e6802291ba406787",
+    "edgcpp/backend/tests/sqlite_host/Program.cs": "8d14bc0a97c26a4e224e7a51529d1a2703881990ba8dee8f062758fd507c6e54",
+    "edgcpp/backend/tests/posix_wine_verify.py": "25c07139ef1c3c9ff98053c5ee60fcd9d9c28cedad4ffa1fb160ef1b705ea36d"
   },
   "compilerBuild": {
     "workingDirectory": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/edg-self-review-promote-build-001/build",
@@ -887,6 +890,277 @@
   "retainedFailedInvestigations": [
     "sqlite-posix-001: native compiler trigraph corrupted C# null-coalescing assignment; emission changed to explicit if",
     "posix-edges-review-001: classic process locks invalidated by unrelated descriptor close; replaced with OFD owner anchors",
-    "posix-translated-003: bare C++ header missing extern C; added linkage guards"
-  ]
+    "posix-translated-003: bare C++ header missing extern C; added linkage guards",
+    "posix-wine-001: Windows ERROR_USER_MAPPED_FILE on VACUUM; standalone BCL repro; runtime Windows database mmap capability now disabled with read fallback; WAL mappings remain enabled"
+  ],
+  "previousVerifiedSQLiteCampaign": "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-posix-004",
+  "wineWindows": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/posix-wine-003",
+    "results": [
+      {
+        "label": "wine-version",
+        "command": [
+          "/home/marius/.steam/steam/steamapps/common/Proton - Experimental/files/bin/wine",
+          "--version"
+        ],
+        "exit": 0
+      },
+      {
+        "label": "windows-dotnet-info",
+        "command": [
+          "/home/marius/.steam/steam/steamapps/common/Proton - Experimental/files/bin/wine",
+          "edgcpp/artifacts/campaign/persistent-continuation/posix-wine-001/dotnet/dotnet.exe",
+          "--info"
+        ],
+        "exit": 0
+      },
+      {
+        "label": "posix-runtime",
+        "command": [
+          "/home/marius/.steam/steam/steamapps/common/Proton - Experimental/files/bin/wine",
+          "edgcpp/artifacts/campaign/persistent-continuation/posix-wine-001/dotnet/dotnet.exe",
+          "Z:\\mnt\\storage\\dotcc-edg-campaign-20261003\\posix-runtime-final-001\\bin\\Release\\net10.0\\PosixProbe.dll"
+        ],
+        "exit": 0
+      },
+      {
+        "label": "windows-registry",
+        "command": [
+          "/home/marius/.steam/steam/steamapps/common/Proton - Experimental/files/bin/wine",
+          "edgcpp/artifacts/campaign/persistent-continuation/posix-wine-001/dotnet/dotnet.exe",
+          "Z:\\mnt\\storage\\dotcc-edg-campaign-20261003\\posix-windows-registry-004\\bin\\Release\\net10.0\\RegistryProbe.dll"
+        ],
+        "exit": 0
+      },
+      {
+        "label": "sqlite-consumer",
+        "command": [
+          "/home/marius/.steam/steam/steamapps/common/Proton - Experimental/files/bin/wine",
+          "edgcpp/artifacts/campaign/persistent-continuation/posix-wine-001/dotnet/dotnet.exe",
+          "Z:\\mnt\\storage\\dotcc-edg-campaign-20261003\\sqlite-posix-005\\consumer\\bin\\Release\\net10.0\\SqliteHostTests.dll"
+        ],
+        "exit": 0
+      },
+      {
+        "label": "sqlite-windows-peers",
+        "exit": 0,
+        "checks": [
+          "rollback writer contention",
+          "WAL writer contention",
+          "multi-region WAL growth and peer snapshot/checkpoint contention",
+          "killed writer recovery",
+          "stale lock cleanup",
+          "reopen persistence and integrity"
+        ]
+      }
+    ],
+    "provenance": {
+      "scope": "Windows JIT branches under Wine, not native Windows or Windows NativeAOT",
+      "wine": "/home/marius/.steam/debian-installation/steamapps/common/Proton - Experimental/files/bin/wine",
+      "windows_dotnet": "/mnt/storage/dotcc-edg-campaign-20261003/posix-wine-001/dotnet/dotnet.exe",
+      "windows_dotnet_sha256": "21a46f1e5235cf4e844b9de5429f0e198b9c97a41f0503a66442f1d639ca3ee6",
+      "wine_environment": {
+        "WINEPREFIX": "/mnt/storage/dotcc-edg-campaign-20261003/posix-wine-001/prefix",
+        "WINEARCH": "win64",
+        "WINEDEBUG": "-all",
+        "WINEDLLOVERRIDES": "mscoree=b;mshtml=",
+        "DOTNET_SYSTEM_GLOBALIZATION_USENLS": "1"
+      },
+      "runtime_download": {
+        "name": "dotnet-runtime-win-x64.zip",
+        "rid": "win-x64",
+        "url": "https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.12/dotnet-runtime-10.0.12-win-x64.zip",
+        "hash": "844fa99e16fd6f44e0a7c29def7a82d7846902334d6a955248a9519a4dddb3f5acceb9c9223bef69f8c83b8ae2417537e5b76dddf79fb7117dc85b5039bc1297"
+      },
+      "verified_archive_sha512": "844fa99e16fd6f44e0a7c29def7a82d7846902334d6a955248a9519a4dddb3f5acceb9c9223bef69f8c83b8ae2417537e5b76dddf79fb7117dc85b5039bc1297"
+    },
+    "output": {
+      "posix-runtime.stdout": "POSIX runtime checks passed: 83\n",
+      "sqlite-consumer.stdout": "PASS concurrent cold initialization, stable static mutexes across shutdown/restart and threading configuration\nPASS static/dynamic mutex identity, recursion, contention and null API\nPASS shared FULLMUTEX connection, atomic updates and managed callback reentry\nPASS independent owners, globals, mutexes, transactions and GC\nPASS real-file persistence, Unicode, JSONB, FTS5, musl math and readonly access\nPASS separate NOMUTEX connections with rollback journal\nPASS separate NOMUTEX connections with WAL\nPASS incremental blobs, bounds errors, backup, serialization and resizable deserialization\nPASS file temporary storage, cache spill, sort and integrity\nPASS Windows Unix-VFS read fallback, rollback/WAL snapshots, checkpoint contention, growth and VACUUM\nPASS joined workers and final shutdown/restart\n",
+      "windows-dotnet-info.stdout": "\nHost:\n  Version:      10.0.12\n  Architecture: x64\n  Commit:       95017c711e\n  RID:          win-x64\n\n.NET SDKs installed:\n  No SDKs were found.\n\n.NET runtimes installed:\n  Microsoft.NETCore.App 10.0.12 [Z:\\home\\marius\\p\\dotcc\\edgcpp\\artifacts\\campaign\\persistent-continuation\\posix-wine-001\\dotnet\\shared\\Microsoft.NETCore.App]\n\nOther architectures found:\n  None\n\nEnvironment variables:\n  DOTNET_BUNDLE_EXTRACT_BASE_DIR           [/home/marius/.cache/dotnet_bundle_extract]\n  DOTNET_CLI_TELEMETRY_OPTOUT              [1]\n  DOTNET_SYSTEM_GLOBALIZATION_USENLS       [1]\n\nglobal.json file:\n  Not found\n\nLearn more:\n  https://aka.ms/dotnet/info\n\nDownload .NET:\n  https://aka.ms/dotnet/download\n",
+      "windows-registry.stdout": "Windows registry algorithm OK: ranges, close semantics, process conflict, crash cleanup, abandoned writer recovery, blocking\n",
+      "wine-version.stdout": "wine-11.0\n"
+    },
+    "peerEvents": [
+      {
+        "peer": "first",
+        "response": "READY"
+      },
+      {
+        "peer": "first",
+        "command": "E CREATE TABLE state(value INTEGER); INSERT INTO state VALUES(1)"
+      },
+      {
+        "peer": "first",
+        "response": "RC 0"
+      },
+      {
+        "peer": "second",
+        "response": "READY"
+      },
+      {
+        "peer": "first",
+        "command": "E BEGIN IMMEDIATE; UPDATE state SET value=2"
+      },
+      {
+        "peer": "first",
+        "response": "RC 0"
+      },
+      {
+        "peer": "second",
+        "command": "E UPDATE state SET value=3"
+      },
+      {
+        "peer": "second",
+        "response": "RC 5"
+      },
+      {
+        "peer": "first",
+        "command": "E ROLLBACK"
+      },
+      {
+        "peer": "first",
+        "response": "RC 0"
+      },
+      {
+        "peer": "first",
+        "command": "Q PRAGMA journal_mode=WAL"
+      },
+      {
+        "peer": "first",
+        "response": "ROW wal"
+      },
+      {
+        "peer": "second",
+        "command": "Q SELECT value FROM state"
+      },
+      {
+        "peer": "second",
+        "response": "ROW 1"
+      },
+      {
+        "peer": "first",
+        "command": "E PRAGMA wal_autocheckpoint=0; CREATE TABLE large(id INTEGER PRIMARY KEY,bytes BLOB)"
+      },
+      {
+        "peer": "first",
+        "response": "RC 0"
+      },
+      {
+        "peer": "first",
+        "command": "E WITH RECURSIVE rows(x) AS (VALUES(1) UNION ALL SELECT x+1 FROM rows WHERE x<5000) INSERT INTO large SELECT x,zeroblob(4000) FROM rows"
+      },
+      {
+        "peer": "first",
+        "response": "RC 0"
+      },
+      {
+        "wal_bytes": 20661832,
+        "shm_bytes": 65536,
+        "page_size": 4096
+      },
+      {
+        "peer": "second",
+        "command": "E BEGIN"
+      },
+      {
+        "peer": "second",
+        "response": "RC 0"
+      },
+      {
+        "peer": "second",
+        "command": "Q SELECT count(*) FROM large"
+      },
+      {
+        "peer": "second",
+        "response": "ROW 5000"
+      },
+      {
+        "peer": "first",
+        "command": "C 3"
+      },
+      {
+        "peer": "first",
+        "response": "CK 5 5015 5015"
+      },
+      {
+        "peer": "second",
+        "command": "E COMMIT"
+      },
+      {
+        "peer": "second",
+        "response": "RC 0"
+      },
+      {
+        "peer": "first",
+        "command": "C 3"
+      },
+      {
+        "peer": "first",
+        "response": "CK 0 0 0"
+      },
+      {
+        "peer": "first",
+        "command": "E BEGIN IMMEDIATE; UPDATE state SET value=99"
+      },
+      {
+        "peer": "first",
+        "response": "RC 0"
+      },
+      {
+        "peer": "second",
+        "command": "E UPDATE state SET value=3"
+      },
+      {
+        "peer": "second",
+        "response": "RC 5"
+      },
+      {
+        "peer": "second",
+        "command": "Q SELECT value FROM state"
+      },
+      {
+        "peer": "second",
+        "response": "ROW 1"
+      },
+      {
+        "peer": "second",
+        "command": "E UPDATE state SET value=7"
+      },
+      {
+        "peer": "second",
+        "response": "RC 0"
+      },
+      {
+        "peer": "second",
+        "command": "Q PRAGMA integrity_check"
+      },
+      {
+        "peer": "second",
+        "response": "ROW ok"
+      },
+      {
+        "peer": "reopened",
+        "response": "READY"
+      },
+      {
+        "peer": "reopened",
+        "command": "Q SELECT value FROM state"
+      },
+      {
+        "peer": "reopened",
+        "response": "ROW 7"
+      },
+      {
+        "peer": "reopened",
+        "command": "Q PRAGMA integrity_check"
+      },
+      {
+        "peer": "reopened",
+        "response": "ROW ok"
+      }
+    ],
+    "mappedTruncationProbe": "mapped truncate FAILURE HResult=0x800704c8 native=1224: File has a user-mapped section. : 'C:\\users\\steamuser\\AppData\\Local\\Temp\\edg-mapped-truncate-4363c680-32d4-49b9-8db6-eb7e70c213b3'.\nafter unmap truncate SUCCESS length=4096\n",
+    "mappedGrowthProbe": "mapped grow SetLength SUCCESS\nCreateFileMapping growth SUCCESS length=16384 existingview=23\nexisting view remains coherent=31\n"
+  }
 }

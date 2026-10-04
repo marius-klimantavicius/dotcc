@@ -14,13 +14,13 @@ python3 edgcpp/sqlite_host.py --profile unix \
   --nativeaot --process-tests
 ```
 
-The final `sqlite-posix-004` campaign passes strict builds, all 11 in-process
+The final `sqlite-posix-005` campaign passes strict builds, all 11 in-process
 SQLite groups and independent-process verification under JIT and Linux-x64
 NativeAOT. The native oracle remains a separate test process. The library uses
 `SQLITE_THREADSAFE=1`, APPDEF BCL mutexes, real disk temporary storage, WAL and
-64 MiB default/256 MiB maximum database mappings. FTS5, math, percentile, column
-metadata and preupdate hooks remain enabled. Only two SQLite-specific partial
-hooks remain: the mutex table and memory barrier. Both have implementations.
+64 MiB default/256 MiB maximum database mappings on Unix hosts. FTS5, math, percentile, column
+metadata and preupdate hooks remain enabled. Three SQLite-specific partial hooks provide the mutex table, memory barrier
+and runtime database-mapping capability. All have implementations.
 
 `artifacts/review/sqlite`, `sqlite-readable` and `sqlite-unix` point to the Unix
 emission. Start with `REVIEW.md` and `Generated.csproj`. `sqlite-host` retains
@@ -71,6 +71,15 @@ shared/private/readonly protections and outlive the original descriptor. Unix
 partial unmap is tracked precisely. Timestamp updates use one native operation,
 validate both times before mutation and avoid opening/closing Unix descriptors.
 
+Windows rejects shrinking files with live mapped views (`ERROR_USER_MAPPED_FILE`),
+while the upstream Unix VFS intentionally keeps its mappings across truncation.
+SQLite initialization therefore clamps database mmap sizes to zero on Windows,
+including later `PRAGMA mmap_size` requests. Ordinary positioned reads preserve
+SQL behavior; WAL shared-memory mappings remain enabled. This is selected at
+runtime, using the same generated assembly. General POSIX file mappings are still
+available, but cannot make Windows support shrinking a live mapped file. Growing a mapped
+file remains supported and is needed when the WAL index expands.
+
 ## Lock ownership and platforms
 
 An engine owner is a virtual POSIX process for record-lock ownership. Closing
@@ -100,7 +109,13 @@ file identities key the registry. Coordination covers translated peers under
 participate; do not concurrently mix them on the same database. This is an
 explicit protocol boundary, not a native interoperability claim. Registry
 algorithms pass cross-process JIT/AOT tests on Linux, including interrupted
-writers; Windows OS execution remains unverified. Direct `LockFileEx` cannot
+writers. Windows .NET 10 under Wine 11 also passes 83 Windows-path runtime
+checks, the independent-process registry suite and all 11 SQLite test groups.
+Translated Windows peers also pass rollback/WAL contention, killed-writer
+recovery and reopen integrity checks. A 5,015-frame WAL expands its index to
+two shared-memory regions; independent reads and checkpoint contention pass.
+Native Windows execution remains
+unverified. Direct `LockFileEx` cannot
 provide the needed atomic upgrades: [Microsoft's lock semantics](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-lockfileex).
 
 ## Verification and remaining scope
@@ -111,6 +126,12 @@ blobs/backup/serialization, confirmed file temp storage, mappings, snapshots,
 checkpoint contention and VACUUM. Translated/native process pairs exercise
 rollback/WAL locking, forced crashes, readonly recovery, checkpoint races,
 hardlinks and symlink paths. All pass JIT and Linux NativeAOT.
+
+The reusable `backend/tests/posix_wine_verify.py` runner takes explicit Wine,
+Windows .NET, prefix and compiled-fixture paths (`--help` lists the arguments).
+The final `posix-wine-003` run uses a dedicated prefix, the official Windows x64 .NET runtime,
+Windows NLS globalization and Wine's built-in `mscoree`. It executes the Win32
+branches; it is not a substitute for native Windows or Windows NativeAOT tests.
 
 Additional retained tests cover portable ABI/behavior parity, static/instance
 translation, lifecycle cleanup, readonly mappings, native lock observers,

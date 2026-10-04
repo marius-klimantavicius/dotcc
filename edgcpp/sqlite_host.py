@@ -40,7 +40,20 @@ def prepare(out, profile='host'):
     preparer = runpy.run_path(str(SQLITE / 'scripts/prepare-host-source.py'))
     source = preparer['prepare'](output=out / 'input', hash_mode='strict')
     engine = source / 'sqlite3.c'
-    engine.write_text(engine.read_text() + HOOKS)
+    code = engine.read_text()
+    if profile == 'unix':
+        marker = 'SQLITE_API int sqlite3_os_init(void){\n  /*\n  ** The following macro defines an initializer for an sqlite3_vfs object.'
+        if code.count(marker) != 1:
+            raise RuntimeError('Upstream Unix VFS initialization marker changed')
+        # Windows cannot shrink a file with live mapped views. Unix xTruncate
+        # intentionally retains those views, so select SQLite's read fallback.
+        code = 'extern int edg_sqlite_database_mmap_supported(void);\n' + code.replace(marker,
+            'SQLITE_API int sqlite3_os_init(void){\n'
+            '  if( !edg_sqlite_database_mmap_supported() ){\n'
+            '    sqlite3GlobalConfig.szMmap = 0;\n'
+            '    sqlite3GlobalConfig.mxMmap = 0;\n'
+            '  }\n  /*\n  ** The following macro defines an initializer for an sqlite3_vfs object.')
+    engine.write_text(code + HOOKS)
     definitions = [line.strip() for line in (SQLITE / 'config/defines.txt').read_text().splitlines()
                    if line.strip() and not line.lstrip().startswith('#')]
     overrides = {'SQLITE_THREADSAFE': '1', 'SQLITE_MUTEX_APPDEF': '1',
@@ -143,6 +156,9 @@ def main():
             code = code.replace(' && core.Host.MappedReferenceCount == 0', '')
             program.write_text(code)
         project = consumer / 'SqliteHostTests.csproj'
+        if args.profile == 'unix':
+            project.write_text(project.read_text().replace('<PropertyGroup>',
+                '<PropertyGroup><DefineConstants>$(DefineConstants);EDG_SQLITE_UNIX</DefineConstants>', 1))
         reference = '-p:TranslatedProject=' + str(generated / 'Generated.csproj')
         run('consumer-build', ['dotnet', 'build', project, '-c', 'Release', '--nologo', reference,
                               '-p:TreatWarningsAsErrors=true'])

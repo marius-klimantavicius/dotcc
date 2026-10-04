@@ -1098,7 +1098,7 @@ translation match native behavior and independent portable C layout oracles;
 JIT/AOT lifecycle checks verify descriptors/mappings are released.
 
 `sqlite_host.py --profile unix` retains SQLite's upstream Unix VFS and supplies
-only its BCL APPDEF mutex/barrier hooks. Final `sqlite-posix-004` strict builds,
+its BCL APPDEF mutex/barrier hooks and runtime database-mmap capability hook. Final `sqlite-posix-005` strict builds,
 all 11 in-process groups and native↔translated/translated↔translated process
 campaigns pass under JIT and Linux-x64 NativeAOT. This includes disk temp,
 WAL/mmap, readonly media/recovery, forced process termination, checkpoint races,
@@ -1113,10 +1113,25 @@ failure and passing JIT/AOT edge tests are retained. Darwin OFD APIs are private
 and fail explicitly if unavailable. Windows uses a same-account cross-session
 advisory registry with atomic range conversions and stale-owner recovery;
 registry algorithms pass independent-process JIT/AOT tests on Linux. Windows
-native SQLite/other-account interoperability is not provided; actual Windows/
-macOS execution remains unverified.
+native SQLite/other-account interoperability is not provided. Windows .NET 10
+under Wine 11 passes 83 Windows-path runtime checks, the cross-process registry
+suite, all 11 SQLite groups and translated peer contention/crash recovery.
+Actual Windows/macOS execution remains unverified.
 
 This is the configured SQLite POSIX surface, not complete POSIX/musl. General
 pthread/process/descriptor-stdio APIs and unsupported mapping cases remain
 explicit. [Runtime and platform contract](sqlite-posix.md),
 [evidence](../evidence/sqlite-posix-20261004.json).
+
+Wine exposed Windows `ERROR_USER_MAPPED_FILE` during Unix-VFS VACUUM. An
+independent BCL probe confirms that shrinking fails with a live mapping and
+succeeds after unmapping; growing remains supported. SQLite now selects ordinary database reads on Windows
+by clamping mmap limits during initialization; WAL shared-memory mappings remain
+active. The Unix mapping path remains enabled. Tests check the explicit Windows
+fallback and run the same snapshot, growth, checkpoint and VACUUM scenarios.
+
+Final Wine campaign `posix-wine-003` also validates a 5,015-frame WAL with two
+32 KiB shared-memory regions, an independent reader, blocked checkpoint during
+a snapshot and successful truncate checkpoint after release. Native Windows
+and Windows NativeAOT remain unverified. Reusable Wine runner and full commands,
+settings, runtime archive provenance and peer events are retained.

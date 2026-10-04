@@ -25,6 +25,13 @@ internal static unsafe class Program
 
     private static sqlite3* Open(SqliteCore core, string path, int flags = ReadWriteCreate | FullMutex)
     {
+#if EDG_SQLITE_UNIX
+        if (OperatingSystem.IsWindows() && Path.IsPathFullyQualified(path))
+        {
+            path = path.Replace('\\', '/');
+            path = path.StartsWith("//", StringComparison.Ordinal) ? "/unc/" + path[2..] : "/" + path;
+        }
+#endif
         sqlite3* db = null;
         fixed (byte* name = Utf8(path))
         {
@@ -395,6 +402,12 @@ internal static unsafe class Program
 
     private static void Mapping(SqliteCore core, string directory)
     {
+#if EDG_SQLITE_UNIX
+        bool mappingSupported = !OperatingSystem.IsWindows();
+#else
+        bool mappingSupported = true;
+#endif
+        string requestedSize = mappingSupported ? "1048576" : "0";
         foreach (string mode in new[] { "DELETE", "WAL" })
         {
             sqlite3* writer = Open(core, Path.Combine(directory, "mapped-" + mode + ".db"));
@@ -407,11 +420,12 @@ internal static unsafe class Program
                     " INSERT INTO mapped SELECT x,printf('%01000d',x) FROM t");
                 if (mode == "WAL") Require(core.sqlite3_wal_checkpoint_v2(writer, null, 3, null, null) == 0, "materialize WAL pages");
                 reader = Open(core, Path.Combine(directory, "mapped-" + mode + ".db"));
-                Require(Query(core, reader, "PRAGMA mmap_size=1048576") == "1048576", "enable mmap");
+                Require(Query(core, reader, "PRAGMA mmap_size=1048576") == requestedSize, "platform mmap limit");
                 ExecuteOk(core, reader, "PRAGMA cache_size=8; BEGIN");
                 long before = core.Host.MappedReadCount;
                 Require(Query(core, reader, "SELECT sum(length(body)) FROM mapped") == "512000", "mapped SQL bytes");
-                Require(core.Host.MappedReadCount > before, "SQL actually called xFetch");
+                Require(mappingSupported ? core.Host.MappedReadCount > before : core.Host.MappedReadCount == before,
+                    "SQL uses mappings when supported, ordinary reads otherwise");
                 if (mode == "WAL")
                 {
                     ExecuteOk(core, writer, "INSERT INTO mapped VALUES(513,printf('%01000d',513))");
@@ -431,7 +445,7 @@ internal static unsafe class Program
                 Require(Query(core, reader, "SELECT sum(length(body)) FROM mapped") == "513000", "unmapped fallback bytes");
                 Require(core.Host.MappedReadCount == before, "disabled mmap does not fetch");
                 ExecuteOk(core, writer, "DELETE FROM mapped WHERE id>4; VACUUM");
-                Require(Query(core, reader, "PRAGMA mmap_size=1048576") == "1048576", "reenable mmap");
+                Require(Query(core, reader, "PRAGMA mmap_size=1048576") == requestedSize, "platform limit retained after VACUUM");
                 Require(Query(core, reader, "SELECT sum(length(body)) FROM mapped") == "4000", "mapping after file shrink");
                 Require(Query(core, reader, "PRAGMA integrity_check") == "ok", "mapped integrity");
             }
@@ -442,7 +456,9 @@ internal static unsafe class Program
             }
             Require(core.Host.MappedViewCount == 0 && core.Host.MappedReferenceCount == 0, "mappings reclaimed");
         }
-        Console.WriteLine("PASS actual mmap reads, rollback/WAL snapshots, checkpoint contention, growth, fallback and VACUUM");
+        Console.WriteLine(mappingSupported
+            ? "PASS actual mmap reads, rollback/WAL snapshots, checkpoint contention, growth, fallback and VACUUM"
+            : "PASS Windows Unix-VFS read fallback, rollback/WAL snapshots, checkpoint contention, growth and VACUUM");
     }
 
     private static void Serve(string path, bool readOnly)

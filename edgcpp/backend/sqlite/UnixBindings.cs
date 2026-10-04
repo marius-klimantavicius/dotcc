@@ -28,5 +28,6 @@ namespace Managed
     public unsafe partial class Runtime
     {
         internal partial void edg_sqlite_memory_barrier() => Thread.MemoryBarrier();
+        internal partial int edg_sqlite_database_mmap_supported() => global::System.OperatingSystem.IsWindows() ? 0 : 1;
     }
 }

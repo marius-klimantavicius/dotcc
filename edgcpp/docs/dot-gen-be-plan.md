@@ -20,7 +20,8 @@ threading, WAL/mmap and independent native-process interoperability tests under
 JIT and Linux NativeAOT. The reusable `--posix` boundary implements the selected
 descriptor/metadata/locking/mapping/time surface, including automatic lifecycle
 cleanup and ABI checks. Windows/macOS have runtime-selected implementations;
-OS execution remains unverified and Windows locking has an explicit same-account
+Windows-path runtime/registry tests also pass under Windows .NET in Wine. Native
+Windows/macOS execution remains unverified; Windows locking uses a same-account
 translated-peer protocol. This does not complete POSIX, libc or broad C++ coverage.
 
 Introduce **`src/dot_gen_be.c`**, compiled as C++ like EDG's other `.c` files,
