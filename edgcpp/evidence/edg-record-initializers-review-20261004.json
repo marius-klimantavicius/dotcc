@@ -1,0 +1,63 @@
+{
+  "status": "emission-syntax-formatting-passed",
+  "artifact": "artifacts/campaign/persistent-continuation/edg-self-record-initializers-20261004-001",
+  "reviewAlias": "artifacts/review/edg",
+  "sourceCount": 75,
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/record-initializer-build-001/cpfe-dot",
+    "sha256": "a21a758700600799890c29886127f9bb12c7ca628dc73d600b4cf6f9d33c3657"
+  },
+  "rawOutput": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-record-initializers-20261004-001/raw.cs",
+    "sha256": "7105d2d39573a60689f6a9fc0f748e50b0c8341c8170300cb08d55b05b006c6d"
+  },
+  "formatter": {
+    "mode": "roslyn-whitespace-v2",
+    "sdk": "10.0.111",
+    "sourceSha256": "c6307c46af3959caa2f85f9ffbc015027d245e632bc6698ec3df819b4acda48e",
+    "toolSha256": "4a122f3c9f42f814f9add36138d9a1dc1595d501e2dc9498afbac230dc7970bf"
+  },
+  "translationSeconds": 212.643,
+  "generated": {
+    "files": 155,
+    "bytes": 190188359,
+    "primitiveInitializerProperties": 3458,
+    "recordTableAliases": 97,
+    "indexedObjectInitializers": 198167,
+    "partialContracts": 84,
+    "exports": 41900,
+    "prefixedExports": 0
+  },
+  "previousGeneratedBytes": 243496119,
+  "sourceSizeReductionPercent": 21.892652835259362,
+  "examples": {
+    "recordAlias": {
+      "file": "Translated.cs",
+      "line": 560883
+    },
+    "recordRow": {
+      "file": "Translated.cs",
+      "line": 670386
+    },
+    "emptyDestructor": {
+      "file": "Translated.source.lexical.h.cs",
+      "line": 1434
+    },
+    "cleanup": {
+      "file": "Translated.generated.cs",
+      "line": 1006873
+    },
+    "namedLocals": {
+      "file": "Translated.source.lexical.c.cs",
+      "line": 25416
+    },
+    "primitiveData": {
+      "file": "Translated.generated.cs",
+      "line": 881301,
+      "name": "__edg_initializer8628"
+    }
+  },
+  "managedCompilation": "not-run",
+  "runtime": "not-run",
+  "nativeAot": "not-run"
+}

@@ -4,8 +4,11 @@ The current exception-enabled review is at
 [`artifacts/review/edg/README.md`](../artifacts/review/edg/README.md).
 It uses named ordinary locals, bulk byte initialization, literal previews and
 omits empty noexcept guards. Primitive numeric tables use static typed span
-properties backed by assembly data. The existing EDG review aliases are refreshed in
-place; their README and manifest describe the current output.
+properties backed by assembly data. Plain record tables use source-named pointer
+aliases and named-field object initializers with trailing commas. Named export
+wrappers retain their source-resolved names; implementation bodies use `__body`.
+The existing EDG review aliases are refreshed in place; their README and manifest
+describe the current output.
 
 `translate_self.py` reads the **original `cpfe` target** from
 `build/compile_commands.json`: currently 75 C++14 translation units, including
@@ -47,7 +50,7 @@ no EDG semantic source changes are needed.
 The current investigation's isolated binary is under:
 
 ```
-artifacts/campaign/persistent-continuation/primitive-data-build-002/cpfe-dot
+artifacts/campaign/persistent-continuation/record-initializer-build-001/cpfe-dot
 ```
 
 To request a fresh review artifact using such a compiler:

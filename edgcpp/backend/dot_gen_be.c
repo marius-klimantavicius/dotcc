@@ -49,7 +49,7 @@ std::map<a_variable_ptr, unsigned long long> local_offsets;
 unsigned long long frame_size = 0, frame_alignment = 8;
 string type(a_type_ptr t);
 string enum_boundary_value(a_type_ptr target,a_type_ptr source,const string &value);
-string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address="");
+string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address="", string array_pointer="");
 string typeinfo_constant(a_constant_ptr c);
 bool aggregate(a_type_ptr t) {
   t = skip_typerefs(t);
@@ -359,7 +359,7 @@ string literal_address(a_constant_ptr c) {
     literal_bytes += bytes;
     literal_offsets[bytes] = offset;
   }
-  return "(__edg_literal_base + " + std::to_string(offset) + source_literal_preview(bytes) + ")";
+  return "__edg_literal(" + std::to_string(offset) + source_literal_preview(bytes) + ")";
 }
 bool function_pointer(a_type_ptr t) {
   t = skip_typerefs(t);
@@ -417,9 +417,11 @@ string constant(a_constant_ptr c) {
       if (c->variant.address.offset) unsupported("function address offset");
       return "((" + type(c->type) + ")" + routine_address(c->variant.address.variant.routine) + ")";
     }
-    if (c->variant.address.kind == abk_constant)
-      return "((" + type(c->type) + ")(" + literal_address(c->variant.address.variant.constant) + " + (" +
-             std::to_string(c->variant.address.offset) + ")))";
+    if (c->variant.address.kind == abk_constant) {
+      string address=literal_address(c->variant.address.variant.constant);
+      if(c->variant.address.offset)address="("+address+" + "+std::to_string(c->variant.address.offset)+")";
+      return type(c->type)=="sbyte*"?address:"(("+type(c->type)+")("+address+"))";
+    }
     if (c->variant.address.kind != abk_variable || !c->variant.address.variant.variable)
       unsupported("address constant", c->variant.address.kind);
     auto v = c->variant.address.variant.variable;
@@ -475,7 +477,8 @@ string constant(a_constant_ptr c) {
 
 }
 #include "dot_gen_primitive_data.h"
-string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address) {
+#include "dot_gen_record_data.h"
+string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address, string array_pointer) {
   t = skip_typerefs(t);
   if(storage_address.empty())storage_address="&("+dst+")";
   if(t->kind==tk_array && !t->size) {
@@ -497,7 +500,11 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
   }
   if (c->kind != ck_aggregate) return dst + " = " + enum_boundary_value(t,c->type,constant(c)) + ";\n";
   if (!aggregate(t)) unsupported("aggregate initializer type");
-  string result = dst + " = default;\n";
+  string record=source_record_initializer(t,c);
+  if(!record.empty())return dst+" = "+record+";\n";
+  string result = array_pointer.empty()?dst + " = default;\n":
+    "new global::System.Span<"+type(t->variant.array.element_type)+">("+array_pointer+", "+
+    std::to_string(t->variant.array.variant.number_of_elements)+").Clear();\n";
   if(primitive_array_copy(t,c,storage_address,result))return result;
   if(t->kind==tk_array && skip_typerefs(t->variant.array.element_type)->kind==tk_integer &&
      skip_typerefs(t->variant.array.element_type)->size==1) {
@@ -558,7 +565,7 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
       if(!zero) {
         string counter="__edg_repeat"+std::to_string(++serial);
         result+="for(int "+counter+"=0; "+counter+"<"+std::to_string(count)+"; ++"+counter+") {\n";
-        string cell="("+dst+")["+std::to_string(index)+"+"+counter+"]";
+        string cell=(array_pointer.empty()?"("+dst+")":array_pointer)+"["+std::to_string(index)+"+"+counter+"]";
         if(skip_typerefs(element)->kind==tk_pointer)cell+=".Value";
         result+=initializer(cell,element,value,"(("+type(element)+"*)("+storage_address+")) + "+std::to_string(index)+" + "+counter);
         result+="}\n";
@@ -571,7 +578,7 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
         if (index >= t->variant.array.variant.number_of_elements) unsupported("array initializer bounds");
         if (skip_typerefs(value->type)->size != skip_typerefs(element)->size)
           unsupported("flattened multidimensional initializer");
-        string cell="("+dst+")["+std::to_string(index)+"]";
+        string cell=(array_pointer.empty()?"("+dst+")":array_pointer)+"["+std::to_string(index)+"]";
         if(skip_typerefs(element)->kind==tk_pointer)cell+=".Value";
         result += initializer(cell, element, value,"(("+type(element)+"*)("+storage_address+")) + "+std::to_string(index));
         ++index;
@@ -1152,8 +1159,8 @@ void globals(a_variable_ptr first, const char *cls) {
   for (auto v : stored_variables) {
     if(exception_metadata.count(v))continue;
     if (v->is_thread_local) continue;
-    if (constant_templates.count(v)) line(initializer(variable(v),v->type,constant_templates[v]));
-    else if (v->init_kind == initk_static) line(initializer(variable(v), v->type, v->initializer.constant));
+    if (constant_templates.count(v)) line(source_global_initializer(v,constant_templates[v]));
+    else if (v->init_kind == initk_static) line(source_global_initializer(v,v->initializer.constant));
     else if (v->init_kind != initk_none && v->init_kind != initk_zero && v->init_kind!=initk_dynamic) unsupported("global initializer", v->init_kind);
   }
   if(!startup_routines.empty()) {
@@ -1169,8 +1176,8 @@ void globals(a_variable_ptr first, const char *cls) {
     emitting_tls_initializer = true;
     for (auto v : stored_variables) {
       if (!v->is_thread_local) continue;
-      if(constant_templates.count(v))line(initializer(variable(v),v->type,constant_templates[v]));
-      else if (v->init_kind == initk_static) line(initializer(variable(v), v->type, v->initializer.constant));
+      if(constant_templates.count(v))line(source_global_initializer(v,constant_templates[v]));
+      else if (v->init_kind == initk_static) line(source_global_initializer(v,v->initializer.constant));
       else if (v->init_kind != initk_none && v->init_kind != initk_zero && v->init_kind!=initk_dynamic) unsupported("dynamic TLS initializer", v->init_kind);
     }
     emitting_tls_initializer = false;
@@ -1691,6 +1698,10 @@ void back_end(void) {
   if (!literal_bytes.empty()) {
     line("private static readonly byte[] __edg_literals = __edg_make_literals();");
     line("private static byte* __edg_literal_base => (byte*)(((nuint)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref __edg_literals[0]) + 7) & ~(nuint)7);");
+    line("// dot-gen:member-begin");
+    line("[global::System.Runtime.CompilerServices.MethodImpl(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]");
+    line("private static sbyte* __edg_literal(int offset) => (sbyte*)(__edg_literal_base + offset);");
+    line("// dot-gen:member-end");
     line("// dot-gen:member-begin");
     line("private static byte[] __edg_make_literals() {");
     line("byte[] pool = global::System.GC.AllocateArray<byte>(" + std::to_string(literal_bytes.size() + 7) + ", pinned: true);");

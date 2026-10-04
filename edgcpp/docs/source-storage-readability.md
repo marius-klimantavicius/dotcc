@@ -1,4 +1,4 @@
-# Named locals and readable byte initialization
+# Named storage and readable initialization
 
 Ordinary aggregate and array locals use named C# storage when their managed
 layout supplies the native alignment. Constructor calls and cleanup helpers
@@ -72,31 +72,62 @@ runs use the destination's existing default initialization instead of embedding
 large zero tables. Tests cross chunk boundaries and zero ranges followed by
 nonzero suffixes.
 
-Pointer relocations, record fields and other constant representations continue
-through the existing initializer path; primitive array fields inside records
-can still use bulk copies. In particular, a struct table containing string
-pointers cannot be embedded as final absolute pointer values. The present
-typed-table path covers the widths above, not 128-bit integers or extended
-80-/128-bit floating types.
+Pointer relocations remain runtime expressions; a struct table containing string
+pointers cannot be embedded as final absolute pointer values. Primitive array
+fields inside records can still use bulk copies. The typed-table path covers
+the widths above, not 128-bit integers or extended 80-/128-bit floating types.
 
 `backend/tests/primitive_data_readability_verify.py` compares native traces with
 static/instance JIT and NativeAOT execution, including exact scalar bits,
 multidimensional arrays, independent copies, TLS, relocation fallbacks and
 compiled-data inspection.
 
+## Record tables
+
+Ordinary record tables use a source-named pointer alias and one value assignment
+per row, for example:
+
+```csharp
+var builtin_table = (a_builtin_descr*)(__edg_base + 4550168);
+builtin_table[15643] = new()
+{
+    name = __edg_literal(7343504 /* "#1_tum@43" */),
+    cond_index = 169,
+    type_index = 15029,
+    kind = 1852,
+};
+```
+
+The emitter retains a trailing comma after the last field. Plain nested records
+can use nested object initializers. Omitted fields remain zero, and representable
+narrow integer constants no longer need explicit casts in these assignments.
+The `new()` creates a value-type struct, not a managed heap object. This is a
+source-size/readability improvement; identical IL or native machine code is not
+promised.
+
+Union, bitfield, array-member and overlapping/lowered-base layouts retain the
+existing initialization path. Global and TLS destinations retain their backing
+arenas and isolation. Address constants refer to the final storage, including
+self references, rather than an object-initializer temporary.
+
 Literal-pool addresses retain pointer identity and offsets, with an added
 navigation comment for valid UTF-8, for example:
 
 ```csharp
-(__edg_literal_base + 128 /* "message" */)
+__edg_literal(128 /* "message" */)
 ```
+
+The aggressively inlined helper returns a pointer into the same pinned literal
+pool. Zero additional offsets are omitted; nonzero offsets retain byte units,
+including when the resulting pointer addresses wide characters.
 
 Previews stop after 80 Unicode scalars, omit one terminal NUL, escape embedded
 control characters and cannot terminate their surrounding comment. Binary
 literals receive no misleading textual preview. Comments do not affect bytes
 or runtime evaluation.
 
-Focused tests are `named_local_storage_verify.py` and
-`byte_data_readability_verify.py` in `backend/tests/`. They compare behavior
+Focused tests include `record_initializer_readability_verify.py`,
+`named_local_storage_verify.py` and `byte_data_readability_verify.py` in
+`backend/tests/`. They compare behavior
 with native fixtures and cover JIT/NativeAOT, static/instance modes, alignment,
 exception cleanup, large frames, byte preservation, mutable copies and TLS.

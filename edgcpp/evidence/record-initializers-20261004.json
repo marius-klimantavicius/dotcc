@@ -1,0 +1,138 @@
+{
+  "status": "passed",
+  "date": "2026-10-04",
+  "scope": "Source-named record table aliases, value-type object initializers and literal pointer helper",
+  "compiler": {
+    "path": "edgcpp/artifacts/campaign/persistent-continuation/record-initializer-build-001/cpfe-dot",
+    "sha256": "a21a758700600799890c29886127f9bb12c7ca628dc73d600b4cf6f9d33c3657"
+  },
+  "canonicalCompiler": {
+    "path": "edgcpp/build/bin/cpfe-dot",
+    "sha256": "0f8b63e77f0563780298d4eff5454768fc1cfb10854dec8aab8f5d46e470f1f8"
+  },
+  "inputs": {
+    "edgcpp/backend/dot_gen_be.c": "fb4d696e02f99a67efafdfdd8b714a9165f4de47934a3ea7b4cfdd02360ae44b",
+    "edgcpp/backend/dot_gen_record_data.h": "85e698f512739af6c9155f93790f9dfb8a025e1f57846daa7b25521cb61f2764",
+    "edgcpp/backend/tests/record_initializer_readability.cpp": "cde439f6ff50dc4af79b5bff05a7c8cebc166ed981ed0279b30a8f84c5369847",
+    "edgcpp/backend/tests/record_initializer_readability_verify.py": "b6b58fb2973d1b649add176a1abbda2d1a301122f81064f5a06a12102c80d777"
+  },
+  "validation": {
+    "records": {
+      "artifact": "edgcpp/artifacts/campaign/persistent-continuation/record-initializer-managed-001",
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/record-initializer-managed-001/results.json",
+        "sha256": "01c5d3388bdefe78bd46193f844964f9993633ee889267d2d9e2d7419fb21163"
+      },
+      "checks": [
+        "GCC and Clang agree on record fields and relocations, local copies, independent arrays and per-thread storage",
+        "static/JIT: native record traces, forced GC, independent copies, owner and TLS isolation",
+        "static/NativeAOT: native record traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/JIT: native record traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/NativeAOT: native record traces, forced GC, independent copies, owner and TLS isolation"
+      ],
+      "audits": {
+        "static": {
+          "named_table_alias": "table",
+          "table_object_initializer_count": 4,
+          "literal_helper_calls": 24,
+          "generated_bytes": 56880
+        },
+        "instance": {
+          "named_table_alias": "table",
+          "table_object_initializer_count": 4,
+          "literal_helper_calls": 24,
+          "generated_bytes": 56290
+        }
+      }
+    },
+    "bytes": {
+      "artifact": "edgcpp/artifacts/campaign/persistent-continuation/record-initializer-bytes-001",
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/record-initializer-bytes-001/results.json",
+        "sha256": "b8c492741cbc0aa134ccb3191ecb3063ed80dc754f6efbd1aafa99409674e21e"
+      },
+      "checks": [
+        "GCC and Clang agree on byte values, local copies, independent arrays and per-thread storage",
+        "static/JIT: native byte traces, forced GC, independent copies, owner and TLS isolation",
+        "static/NativeAOT: native byte traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/JIT: native byte traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/NativeAOT: native byte traces, forced GC, independent copies, owner and TLS isolation"
+      ],
+      "audits": {
+        "static": {
+          "literal_preview_count": 5,
+          "generated_bytes": 74430
+        },
+        "instance": {
+          "literal_preview_count": 5,
+          "generated_bytes": 73960
+        }
+      }
+    },
+    "sqliteCore": {
+      "artifact": "edgcpp/artifacts/campaign/persistent-continuation/record-initializer-sqlite-core-001",
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/record-initializer-sqlite-core-001/results.json",
+        "sha256": "ba029ffc26f91fb8ef0f20e0d17fbdd7f4ff69bfd60989cbdb0f19e251a74c2b"
+      },
+      "checks": [
+        {
+          "label": "core-native-reference",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-jit-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-aot-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        }
+      ]
+    },
+    "canonicalSourceNames": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/record-initializer-source-names-001/results.json",
+        "sha256": "2640d68d3be0cafe591f88a671e9a7f1ab50f1ac5419f458a63a75042fcc7d48"
+      },
+      "checks": {
+        "status": "passed",
+        "checks": [
+          "c: native source and original EDG C symbol/lifetime oracles",
+          "c-static: JIT source names, keywords, tag/function/owner collisions, shadowed locals, TLS/global addresses and enum cases",
+          "c-static: NativeAOT source correspondence semantics",
+          "c-instance: JIT source names, keywords, tag/function/owner collisions, shadowed locals, TLS/global addresses and enum cases",
+          "c-instance: NativeAOT source correspondence semantics",
+          "c++: native source and original EDG C symbol/lifetime oracles",
+          "cpp-static: JIT source names, keywords, tag/function/owner collisions, shadowed locals, TLS/global addresses and enum cases",
+          "cpp-static: NativeAOT source correspondence semantics",
+          "cpp-instance: JIT source names, keywords, tag/function/owner collisions, shadowed locals, TLS/global addresses and enum cases",
+          "cpp-instance: NativeAOT source correspondence semantics",
+          "library-static: direct source API/opaque type and deterministic lifecycle/class-name collision wrappers",
+          "library-static: NativeAOT direct source API",
+          "library-instance: direct source API/opaque type and deterministic lifecycle/class-name collision wrappers",
+          "library-instance: NativeAOT direct source API"
+        ]
+      }
+    }
+  },
+  "coverage": [
+    "safe ordinary and nested record fields with trailing commas",
+    "representable narrow integer constants without casts; enums and wide boundaries preserved",
+    "omitted fields/elements remain zero",
+    "union, bitfield and array-member fallback layouts",
+    "nonzero literal byte offsets; helper preserves pinned-pool identity",
+    "self-referencing global table and global pointer relocations",
+    "global and per-owner/per-thread TLS isolation; p/storage alias collisions",
+    "static/instance JIT and linux-x64 NativeAOT; forced GC",
+    "SQLite core native/JIT/NativeAOT differential parity with test memory VFS and THREADSAFE=0"
+  ],
+  "limitations": [
+    "No assertion of byte-identical IL or native code.",
+    "Full translated EDG compilation/runtime is a separate unverified task.",
+    "Runtime validation performed on Linux x64."
+  ]
+}

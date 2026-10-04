@@ -834,3 +834,33 @@ instance JIT/NativeAOT consumers, cross-TU priority, body-name collisions, sourc
 splitting, C++ overloads/synthesized members and executable naming. The canonical
 compiler also passes the existing 14 source-name checks. Details:
 `docs/export-names.md`; evidence: `evidence/export-names-20261004.json`.
+
+### Compact record tables and EDG review refresh (2026-10-04)
+
+Ordinary global/TLS record tables now use source-named typed pointer aliases and
+one target-typed object initializer per row. Named fields retain trailing commas,
+plain nested records can nest initializers, and representable narrow integer
+constants omit casts. Unions, bitfields, array members, lowered bases and
+potentially overlapping layouts retain the existing path. Omitted fields and
+elements remain zero; address relocations target final arena storage. Literal
+pointers use an aggressively inlined `__edg_literal` helper with the same pool,
+UTF-8 comments and byte-offset semantics; redundant zero offsets disappear.
+
+New record and existing byte fixtures both pass GCC/Clang comparison plus
+static/instance JIT and NativeAOT, including self-referencing table pointers,
+TLS aliases named p/storage, owner/thread isolation and forced GC. SQLite core
+also matches native output under JIT and NativeAOT. The canonical compiler is
+rebuilt and the existing 14 source-name checks pass. Evidence:
+`evidence/record-initializers-20261004.json`; implementation details:
+`docs/source-storage-readability.md`.
+
+All existing EDG review aliases now point to a fresh full exception-enabled
+75-TU translation: 155 C# files, 190,188,359 bytes, 21.89% smaller than the prior
+243,496,119-byte review. It includes 97 record-table aliases, 198,167 indexed
+object initializers and all 3,458 primitive initializer properties. All 41,900
+exports use source-resolved names rather than the __edg_export_ prefix. The
+README links the user's exact builtin_riscv_vector_table[15643] row, named-local
+cleanup and required extern contracts. Emission, syntax validation and formatting
+pass. Full managed compiler compilation/runtime remain unverified; 84 external
+partial contracts still require implementations. Evidence:
+`evidence/edg-record-initializers-review-20261004.json`.

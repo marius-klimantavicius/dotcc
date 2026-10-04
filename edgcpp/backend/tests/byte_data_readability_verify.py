@@ -16,7 +16,7 @@ def audit_generated(directory):
     assert 'ReadOnlySpan<byte>' in text or 'ReadOnlySpan<global::System.Byte>' in text
     assert re.search(r'ReadOnlySpan<byte>\s+\w+\s*=\s*\[\s*0\s*,\s*255\s*,\s*128', text), 'invalid UTF-8 must use numeric bytes'
     # Inspect only comments directly following an actual literal-pool address.
-    previews = re.findall(r'__edg_literal_base\s*\+\s*\d+\s*/\*\s*(.*?)\s*\*/', text)
+    previews = re.findall(r'(?:__edg_literal_base\s*\+|__edg_literal\s*\()\s*\d+\s*/\*\s*(.*?)\s*\*/', text)
     assert previews, 'literal pool references should carry readable previews'
     assert any('readable literal' in preview for preview in previews), previews
     assert any('comment' in preview and 'marker' in preview for preview in previews), previews
