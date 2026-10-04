@@ -777,3 +777,15 @@ Details: `docs/source-storage-readability.md`, `docs/macro-exports.md`,
 `docs/partial-externals.md`. Evidence: `evidence/source-storage-readability-20261003.json`,
 `evidence/macro-exports-20261003.json`, `evidence/sqlite-readable-macros-20261003.json`,
 and `evidence/edg-readable-exceptions-20261003.json`.
+
+### EDG review replacement (2026-10-04)
+
+Retranslated all 75 original TUs with the current backend, exceptions enabled
+and `--unbound-externals partial`. Native emission, Roslyn syntax validation and
+formatting pass. The 84 unresolved symbols are now required partial-method
+contracts, including external-storage address hooks. At the user's direction,
+the existing `artifacts/review/edg`, `edg-exceptions` and
+`edg-readable-exceptions` aliases all point to the refreshed output. The README
+links named-local unwinding, empty destructor and extern-contract excerpts.
+Full managed compilation/runtime remain unverified; no implementations of the
+84 contracts are implied. Evidence: `evidence/edg-self-refresh-20261004.json`.

@@ -1,12 +1,10 @@
 # Direct C# review of the EDG compiler
 
-The latest exception-enabled readability refresh is at
-[`artifacts/review/edg-readable-exceptions/README.md`](../artifacts/review/edg-readable-exceptions/README.md).
+The current exception-enabled review is at
+[`artifacts/review/edg/README.md`](../artifacts/review/edg/README.md).
 It uses named ordinary locals, bulk byte initialization, literal previews and
-omits empty noexcept guards. All 75 translation units emit and pass syntax/
-formatting checks; the 155-file package is 242,687,604 bytes. The previous
-checkpoints below remain available. Full managed compilation/runtime still
-remain unverified, and 84 external symbols still require implementations.
+omits empty noexcept guards. The existing EDG review aliases are refreshed in
+place; their README and manifest describe the current output.
 
 `translate_self.py` reads the **original `cpfe` target** from
 `build/compile_commands.json`: currently 75 C++14 translation units, including
@@ -14,18 +12,17 @@ the C backend, with the all-extensions build's definitions. It does not translat
 the historical lowered C and does not substitute a small demonstration compiler.
 The generated project uses `Edg.Compiler.EdgCompiler` and source-oriented file
 grouping by default. `--split size` remains available.
-The completed review checkpoint is available through
-[`artifacts/review/edg/README.md`](../artifacts/review/edg/README.md): 155 C# files,
-279,023,677 source bytes, 41,890 exported wrappers, and 82 explicitly unbound
-external declarations. All 75 original translation units were emitted and the
-complete output passed Roslyn syntax checking and formatting. This is review
-coverage, not a claim of a runnable managed compiler or finished readability:
-some source loops still use `goto`, and some assignments retain helper calls.
-The optional strict Release build was stopped after about 326 seconds when
-Roslyn reached 78.2 GiB resident memory, leaving 5.65 GiB available on the host.
-It had emitted neither compiler diagnostics nor an assembly. Full semantic
-compilation therefore remains unverified; the retained resource-limit record
-distinguishes this controlled stop from a passing build or a compiler error.
+
+The current refresh uses `--exceptions --unbound-externals partial`: 84 external
+symbols require runtime implementations through partial methods (including
+address-returning hooks for external storage). See
+[`partial-externals.md`](partial-externals.md) for `--runtime-source` providers.
+These are required compile-time contracts, not throwing review stubs. Full
+managed compilation/runtime remain unverified. An earlier no-exceptions build
+was stopped when Roslyn reached 78.2 GiB resident memory without producing an
+assembly; that controlled stop was not a successful build. Some source loops
+still use `goto`, and some assignments retain helper calls.
+
 By default, the runner preserves native `-fno-exceptions` and `-fno-rtti` through
 the driver's explicit `--no-exceptions --no-rtti` flags. `--exceptions` and
 `--no-exceptions` override exception handling for review; the report records both
@@ -49,23 +46,23 @@ no EDG semantic source changes are needed.
 The current investigation's isolated binary is under:
 
 ```
-artifacts/campaign/persistent-continuation/edg-self-review-linear-build-002/cpfe-dot
+artifacts/campaign/persistent-continuation/source-storage-readability-build-003/cpfe-dot
 ```
 
 To request a fresh review artifact using such a compiler:
 
 ```sh
-python3 edgcpp/translate_self.py --profile host \
+python3 edgcpp/translate_self.py --profile host --exceptions \
   --compiler /path/to/promotion-enabled/cpfe-dot \
-  --unbound-externals declarations \
+  --unbound-externals partial \
   --output-dir /path/to/new-output
 ```
 
-Add `--exceptions` to generate stack-unwinding paths. The separate
+`--exceptions` generates stack-unwinding paths. The review guide
 [`artifacts/review/edg-exceptions/README.md`](../artifacts/review/edg-exceptions/README.md)
 links the generated `token_to_string` function, its cleanup helper and the
-exception filter, alongside the original C++ and the previous no-exceptions
-translation. Construction advances a cleanup state; normal destruction clears
+exception filter, alongside the original C++. Construction advances a cleanup
+state; normal destruction clears
 it. A function-level `finally` invokes the cleanup helper during unwinding.
 The helper clears the state before calling the destructor and terminates if a
 destructor throws during cleanup. The exception filter marks unwinding but
