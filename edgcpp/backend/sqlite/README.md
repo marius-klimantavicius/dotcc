@@ -1,5 +1,11 @@
 # SQLite host adapter for the EDG backend
 
+For the upstream Unix VFS, select `sqlite_host.py --profile unix`. The adapter
+then supplies only APPDEF mutex/barrier hooks; all POSIX operations bind through
+the driver's reusable `--posix` runtime. See `edgcpp/docs/sqlite-posix.md` for
+that profile, platform contracts and verification. The remainder describes the
+alternative OS_OTHER host adapter.
+
 `prepare.py` prepares a filesystem-backed `SQLITE_OS_OTHER` host profile for an
 instance-mode `Edg.SQLite.SqliteCore`. The SQLite algorithms and selected musl
 algorithms are translated; the filesystem and mutex callbacks use authored C#.

@@ -1086,3 +1086,37 @@ metadata, fcntl and mapping services remain to be implemented for that route.
 Windows/macOS execution and native extension loading are not claimed.
 [Usage and limits](sqlite-host.md), [Unix analysis](sqlite-posix.md),
 [evidence](../evidence/sqlite-host-20261004.json).
+
+### Upstream Unix SQLite and reusable POSIX runtime (2026-10-04)
+
+`dotnet.py --posix` now adds the fixed portable Unix headers, checked import
+bindings, shared `Edg.Runtime.PosixContext` source closure and shutdown cleanup.
+The selected descriptor, path/metadata, locking, mapping and time surface is
+implemented. `open`/`fcntl` consume shared variadic spans without call helpers.
+Wrong record layouts are rejected before pointer conversion. Static and instance
+translation match native behavior and independent portable C layout oracles;
+JIT/AOT lifecycle checks verify descriptors/mappings are released.
+
+`sqlite_host.py --profile unix` retains SQLite's upstream Unix VFS and supplies
+only its BCL APPDEF mutex/barrier hooks. Final `sqlite-posix-004` strict builds,
+all 11 in-process groups and native↔translated/translated↔translated process
+campaigns pass under JIT and Linux-x64 NativeAOT. This includes disk temp,
+WAL/mmap, readonly media/recovery, forced process termination, checkpoint races,
+hardlinks and symlinks. Review aliases now point to the Unix emission; the prior
+OS_OTHER profile remains at `sqlite-host`.
+
+Review exposed a traditional-process-lock hazard: unrelated BCL closes or
+separately copied runtime assemblies could invalidate/bypass ownership. Unix
+now uses per-owner/inode OFD anchors with atomic kernel conversion, safe readonly
+anchor migration and POSIX close-any-owner-descriptor semantics. The reproduced
+failure and passing JIT/AOT edge tests are retained. Darwin OFD APIs are private
+and fail explicitly if unavailable. Windows uses a same-account cross-session
+advisory registry with atomic range conversions and stale-owner recovery;
+registry algorithms pass independent-process JIT/AOT tests on Linux. Windows
+native SQLite/other-account interoperability is not provided; actual Windows/
+macOS execution remains unverified.
+
+This is the configured SQLite POSIX surface, not complete POSIX/musl. General
+pthread/process/descriptor-stdio APIs and unsupported mapping cases remain
+explicit. [Runtime and platform contract](sqlite-posix.md),
+[evidence](../evidence/sqlite-posix-20261004.json).

@@ -1,65 +1,136 @@
-# SQLite against an emulated Unix platform
+# SQLite through the shared POSIX runtime
 
-`SQLITE_OS_UNIX=1` is compatible with a cross-platform managed runtime. It selects
-SQLite's source implementation of a Unix VFS; it does not require the eventual
-.NET host to be Unix. The target ABI and POSIX behavior must be supplied by the
-runtime, with BCL operations or runtime-selected platform APIs underneath.
+The `--posix` driver option supplies a portable Unix ABI and shared
+`Edg.Runtime.PosixContext`. SQLite now runs its upstream `SQLITE_OS_UNIX` VFS
+against that runtime. It does not require a Unix .NET host or a native SQLite
+library. Selected musl algorithms and the Unix VFS are translated into C#;
+platform operations use BCL services and runtime-selected OS APIs.
 
-The existing musl provider translates selected libc algorithms and supplies
-managed services. It does not yet implement a complete POSIX descriptor,
-mapping, locking or pthread layer. Therefore selecting the Unix VFS currently
-exposes missing runtime contracts. This is distinct from an EDG translation
-limitation.
+## Build and review
 
-## Translation probe
+```sh
+python3 edgcpp/sqlite_host.py --profile unix \
+  --output-dir edgcpp/artifacts/campaign/persistent-continuation/sqlite-posix-new \
+  --nativeaot --process-tests
+```
 
-The retained `artifacts/campaign/persistent-continuation/sqlite-unix-audit-001`
-probe translates the pinned amalgamation, including its upstream Unix VFS,
-with portable header declarations and the existing application-mutex guard
-adaptation. The baseline without the header overlay fails at missing pthread
-declarations. The successful overlay emission retains 29 POSIX externs and two
-application-mutex/barrier hooks. It is **not a runnable Unix-profile library**.
+The final `sqlite-posix-004` campaign passes strict builds, all 11 in-process
+SQLite groups and independent-process verification under JIT and Linux-x64
+NativeAOT. The native oracle remains a separate test process. The library uses
+`SQLITE_THREADSAFE=1`, APPDEF BCL mutexes, real disk temporary storage, WAL and
+64 MiB default/256 MiB maximum database mappings. FTS5, math, percentile, column
+metadata and preupdate hooks remain enabled. Only two SQLite-specific partial
+hooks remain: the mutex table and memory barrier. Both have implementations.
 
-| Boundary | Remaining external functions in this probe |
+`artifacts/review/sqlite`, `sqlite-readable` and `sqlite-unix` point to the Unix
+emission. Start with `REVIEW.md` and `Generated.csproj`. `sqlite-host` retains
+the earlier OS_OTHER VFS as a reference. Original SQLite API names, public object
+macro constants and size-split source remain available.
+
+For another project, use the ordinary driver:
+
+```sh
+python3 edgcpp/dotnet.py program.c --language c --std c17 \
+  --libc musl --posix --output-dir path/to/generated
+```
+
+`--libc dotcc` can also use `--posix`. Both static and instance modes are tested;
+instances remain opt-in through `--instance-methods`. No project-specific POSIX
+partial implementation is needed. The driver copies the same authored runtime
+sources, records the POSIX header hashes and ABI identity, and integrates
+service disposal into generated shutdown before errno/storage disposal.
+
+## Implemented boundary
+
+| Area | Bound functions |
 | --- | --- |
-| Descriptors and I/O | `open`, `close`, `read`, `write`, `pread`, `pwrite`, `ftruncate`, `fsync` |
-| Metadata and paths | `access`, `getcwd`, `stat`, `fstat`, `lstat`, `unlink`, `mkdir`, `rmdir`, `readlink`, `fchmod`, `fchown`, `utimes` |
-| Locks and mappings | `fcntl`, `mmap`, `munmap` |
-| Process and time | `geteuid`, `getpid`, `sysconf`, `sleep`, `usleep`, `gettimeofday` |
+| Descriptors/I/O | `open`, `close`, `read`, `write`, `pread`, `pwrite`, `lseek`, `ftruncate`, `fsync`, `fdatasync`, `fcntl` |
+| Paths/metadata | `access`, `getcwd`, `stat`, `fstat`, `lstat`, `unlink`, `mkdir`, `rmdir`, `readlink`, `fchmod`, `fchown`, `geteuid` |
+| Mapping | `mmap`, `munmap` |
+| Time/process | `gettimeofday`, `utimes`, `sysconf`, `getpid`, `sleep`, `usleep` |
 
-This inventory describes one configured SQLite build. It is not a complete
-POSIX or musl implementation requirement, nor an assertion that pthread APIs
-have been implemented: the probe uses APPDEF mutexes.
+The ABI uses fixed LP64 `stat`, `flock` and `timeval` records. OS-native records
+are converted, never directly exposed to generated code. `stat`/`timeval`
+imports are checked field-by-field before emission; incompatible records are
+rejected. Independent C layout and native behavior oracles validate the public
+boundary. Variadic `open`/`fcntl` consume the existing shared `VaArg` span without
+per-call helpers or a heap argument pack.
 
-## Implementation boundary
+Each owner has its own descriptor table and working-directory snapshot.
+`/dev/null`, `/dev/random` and `/dev/urandom` are host-independent services.
+Windows Unix paths use `/C:/...` or `/unc/server/share/...`; relative paths work
+normally, `/tmp` maps to the BCL temporary directory, and `getcwd` returns the
+Unix spelling. Managed callers of the upstream Unix VFS must supply Unix paths.
+Metadata/permission operations convert host errors into target errno. Windows
+projects permissions onto readonly attributes and uses virtual uid/gid zero;
+unsupported ownership changes fail explicitly.
 
-A reusable implementation belongs below SQLite, in a shared `Edg.Runtime` POSIX
-service. It needs a fixed portable `stat`, `flock`, time and descriptor ABI;
-integer descriptor ownership; shared file identity and lock coordination;
-mapping lifetime; and target errno translation. Native host structures must
-be converted at the platform boundary. The current `LibcFiles` abstraction is
-opaque `FILE*` tokens over streams, not an integer POSIX descriptor table, so
-descriptor support and `fdopen`/`fileno` integration are additional work.
+`RandomAccess` provides bulk positioned I/O. Ordinary allocations remain native;
+no pinned arrays are used as substitutes for file mappings. OS mappings provide
+shared/private/readonly protections and outlive the original descriptor. Unix
+partial unmap is tracked precisely. Timestamp updates use one native operation,
+validate both times before mutation and avoid opening/closing Unix descriptors.
 
-BCL `RandomAccess` and `MemoryMappedFile` can provide most I/O and mapping
-operations. Existing SQLite `HostPlatform` code is useful implementation
-evidence for file identity, durability and locks. It is not a drop-in `fcntl`
-implementation: it reports SQLite results, Linux uses OFD locks, and its current
-range-query path is Unix-only. POSIX process-scoped locks, conversions,
-`F_GETLK`/`F_SETLK`/`F_SETLKW`, descriptor-close effects and independent translated
-owners require explicit semantics. Windows has no direct equivalent of
-`F_GETLK`. Renaming an existing lock helper would not establish correctness.
+## Lock ownership and platforms
 
-The repository's experimental dotcc upstream Unix VFS uses a native Linux shim.
-It demonstrates another translation route, but its direct native forwarding is
-not the requested portable managed POSIX implementation.
+An engine owner is a virtual POSIX process for record-lock ownership. Closing
+any descriptor for an inode releases that owner's locks, as POSIX requires.
+It does not release another owner's locks. Queries, blocking/nonblocking
+acquisition, overlapping ranges, conversions and failed upgrades are tested.
 
-## Relationship to the current host profile
+Linux uses one canonical open-file-description lock anchor per owner/inode.
+The kernel performs atomic conversions, and unrelated BCL/native descriptor
+closes cannot invalidate protection. Independently copied runtime assemblies
+also conflict correctly. Readonly anchors migrate to read-write descriptors
+without a protection gap. Linux native POSIX processes interoperate with these
+locks; native SQLite contention/recovery campaigns pass.
 
-`sqlite_host.py` instead selects `SQLITE_OS_OTHER` and reuses the authored
-cross-platform VFS and BCL mutex implementation from `sqlite/src`. This provides
-a filesystem/threading profile and a reference for validating a future Unix
-profile. It bypasses SQLite's Unix VFS and does not close the POSIX gaps above.
-The broader musl direction remains compatible with implementing those gaps and
-then running the same SQL, threading and independent-process verification
-against `SQLITE_OS_UNIX`.
+macOS uses the corresponding Darwin OFD operations, including the ARM64 variadic
+calling convention. Apple's commands are private kernel interfaces, so their
+availability is a runtime requirement; unsupported operations fail instead of
+falling back to unsafe process-scoped locking. This path is implemented but not
+executed locally. Definitions: [Apple fcntl.h](https://github.com/apple/darwin-xnu/blob/main/bsd/sys/fcntl.h),
+[Linux fcntl.h](https://github.com/torvalds/linux/blob/master/include/uapi/asm-generic/fcntl.h).
+
+Windows uses a shared advisory registry with a user-only, cross-session named
+mutex and atomic record replacement. It supports atomic range conversions,
+queries, close semantics and stale-process cleanup after crashes. Full Windows
+file identities key the registry. Coordination covers translated peers under
+**the same Windows account**. Other accounts and native Windows SQLite do not
+participate; do not concurrently mix them on the same database. This is an
+explicit protocol boundary, not a native interoperability claim. Registry
+algorithms pass cross-process JIT/AOT tests on Linux, including interrupted
+writers; Windows OS execution remains unverified. Direct `LockFileEx` cannot
+provide the needed atomic upgrades: [Microsoft's lock semantics](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-lockfileex).
+
+## Verification and remaining scope
+
+The final SQLite campaign checks concurrent startup, shared/independent
+connections and owners, callback reentry, persistence, JSONB/FTS5/math,
+blobs/backup/serialization, confirmed file temp storage, mappings, snapshots,
+checkpoint contention and VACUUM. Translated/native process pairs exercise
+rollback/WAL locking, forced crashes, readonly recovery, checkpoint races,
+hardlinks and symlink paths. All pass JIT and Linux NativeAOT.
+
+Additional retained tests cover portable ABI/behavior parity, static/instance
+translation, lifecycle cleanup, readonly mappings, native lock observers,
+independently copied runtimes, unrelated descriptor closes and Windows registry
+crash recovery. [Evidence](../evidence/sqlite-posix-20261004.json).
+
+This implements the POSIX surface needed by the configured SQLite build, not
+all POSIX or musl. Standard integer descriptors 0/1/2, `dup`, `fdopen`/`fileno`,
+process creation, general pthread APIs and additional syscall families remain
+outside this slice. SQLite uses BCL APPDEF mutexes, not translated pthreads.
+Native loadable SQLite extensions remain disabled because their ABI is
+incompatible with owner-first managed callbacks.
+
+Mappings reject MAP_FIXED/executable requests; Windows also rejects partial
+unmap, PROT_NONE and address hints explicitly. A write-only OFD anchor holding
+exclusive locks cannot migrate to a different read-capable descriptor safely
+and returns ENOTSUP; SQLite's readonly/read-write descriptor patterns are
+supported. Linux needs filesystem/kernel OFD support. None of these unsupported
+cases silently substitutes weaker behavior.
+
+Join workers and release SQLite statements/blobs/backups/connections, then call
+`sqlite3_shutdown` before disposing the owner. Generated disposal releases POSIX
+resources but cannot repair application use of dangling SQLite pointers.

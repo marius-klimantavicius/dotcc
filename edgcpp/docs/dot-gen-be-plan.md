@@ -14,12 +14,14 @@ are indexed in the [campaign ledger](implementation-campaign.md). Neither these
 counts nor project acceptance imply complete standards coverage. Source
 inspection uses EDG7.0 revision `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`.
 
-The [SQLite host profile](sqlite-host.md) now passes filesystem, threading,
-WAL/mmap and independent native-process interoperability tests under JIT and
-Linux NativeAOT. It uses the shared authored OS_OTHER VFS. A separate
-[OS_UNIX translation probe](sqlite-posix.md) succeeds; its reusable POSIX
-descriptor/locking/mapping runtime remains to be implemented. Neither result
-completes libc or broad C++ coverage.
+Both the [SQLite OS_OTHER host profile](sqlite-host.md) and the upstream
+[OS_UNIX VFS with the shared POSIX runtime](sqlite-posix.md) now pass filesystem,
+threading, WAL/mmap and independent native-process interoperability tests under
+JIT and Linux NativeAOT. The reusable `--posix` boundary implements the selected
+descriptor/metadata/locking/mapping/time surface, including automatic lifecycle
+cleanup and ABI checks. Windows/macOS have runtime-selected implementations;
+OS execution remains unverified and Windows locking has an explicit same-account
+translated-peer protocol. This does not complete POSIX, libc or broad C++ coverage.
 
 Introduce **`src/dot_gen_be.c`**, compiled as C++ like EDG's other `.c` files,
 to emit C# that builds and runs under .NET and NativeAOT. Generated code may

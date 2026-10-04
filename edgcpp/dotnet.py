@@ -27,6 +27,10 @@ def generated_source(source):
 
 
 RUNTIME_DEPENDENCIES = {
+    "PosixContext": ("PosixTypes", "PosixFiles", "PosixPlatform", "PosixLocks", "PosixOfdLocks", "PosixWindowsLocks", "PosixMappings", "PosixTime", "PosixVariadic"),
+    "PosixTypes": (), "PosixFiles": (), "PosixPlatform": (), "PosixLocks": (),
+    "PosixMappings": (), "PosixTime": (), "PosixVariadic": ("VaArg",),
+    "PosixOfdLocks": (), "PosixWindowsLocks": (),
     "LibcTimezone": ("LibcTimezoneData",), "LibcTimezoneData": (),
     "NonlocalJump": ("Vla",), "Coroutine": (),
     "ExtendedFloat": ("Float128", "LibcFloat"),
@@ -126,6 +130,8 @@ def main():
                         help="opt in to the pinned EDG exception classes and allocation bootstrap")
     parser.add_argument("--libc", choices=("none", "dotcc", "musl"), default="none",
                         help="select audited BCL imports, optionally adding pinned translated musl formatting/numeric sources")
+    parser.add_argument("--posix", action="store_true",
+                        help="enable the portable managed POSIX descriptor/locking/mapping ABI (requires libc)")
     parser.add_argument("--nest-types", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--split", choices=("none", "function", "size", "source"), default="none")
     parser.add_argument("--format", choices=("roslyn", "none"), default="roslyn",
@@ -139,6 +145,8 @@ def main():
     parser.add_argument("--split-size", type=int, default=262144,
                         help="target UTF-8 bytes per member file in size mode; functions stay whole")
     args = parser.parse_args()
+    if args.posix and args.libc == "none":
+        parser.error("--posix requires --libc musl or --libc dotcc")
     standard=args.std or ("c11" if args.language=="c" else "c++17")
     if ("++" in standard) != (args.language=="c++"):
         parser.error("--std must match --language")
@@ -169,6 +177,7 @@ def main():
                EDG_DOT_EMIT=args.emit, EDG_DOT_NEST="1" if args.nest_types else "0",
                EDG_DOT_UNBOUND_EXTERNALS=args.unbound_externals,
                EDG_DOT_RUNTIME=args.runtime, EDG_DOT_LIBC="dotcc" if args.libc=="musl" else args.libc,
+               EDG_DOT_POSIX="1" if args.posix else "0",
                EDG_DOT_TARGET=args.target, EDG_DOT_TYPE_IR="1" if args.type_ir else "0")
     # Never discover host system headers. The optional bootstrap exposes only
     # the pinned EDG exception headers for the current LP64 target. EH stays
@@ -197,6 +206,8 @@ def main():
             runtime_sources.append(ROOT / "backend/runtime/exceptions.cpp")
     if args.libc in ("dotcc", "musl"):
         runtime_options = ["-I", str(ROOT / "backend/runtime/libc/include"), *runtime_options]
+    if args.posix:
+        runtime_options = ["-I", str(ROOT / "backend/runtime/posix/include"), *runtime_options]
     frontend_options = [flag for path in args.include for flag in ("-I", str(path.resolve()))]
     frontend_options += ["-D"+definition for definition in args.define]
     if args.language == "c++":
@@ -551,6 +562,9 @@ RESOURCE_ITEMS
         "emit": args.emit, "runtime": args.runtime, "nestTypes": args.nest_types, "exports": exports,
         "filePositionABI": {"version": 2, "size": 16, "alignment": 8, "fields": {"offset": "i64@0", "state": "u32@8", "value": "u32@12"}} if "LibcFiles" in runtime_helpers else None,
         "libc": args.libc, "libcProvider": libc_provider, "imports": imports,
+        "posix": {"enabled": args.posix, "abi": "edg-posix-lp64-v1" if args.posix else None,
+                  "headers": [{"path": str(p.relative_to(ROOT)), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+                              for p in sorted((ROOT / "backend/runtime/posix/include").rglob('*.h'))] if args.posix else []},
         "target": target_manifest,
         "termination": "owner-v1" if termination else None,
         "signals": {"version":1,"delivery":"source-raise-abort","state":"owner",

@@ -36,7 +36,7 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def prepare(out):
+def prepare(out, profile='host'):
     preparer = runpy.run_path(str(SQLITE / 'scripts/prepare-host-source.py'))
     source = preparer['prepare'](output=out / 'input', hash_mode='strict')
     engine = source / 'sqlite3.c'
@@ -48,6 +48,11 @@ def prepare(out):
                  'SQLITE_MAX_MMAP_SIZE': '268435456'}
     definitions = [value for value in definitions if value.split('=')[0] not in overrides]
     definitions += [name + '=' + value for name, value in overrides.items()]
+    if profile == 'unix':
+        definitions = [value for value in definitions if not value.startswith('SQLITE_OS_OTHER=')]
+        definitions += ['SQLITE_OS_OTHER=0', 'SQLITE_OS_UNIX=1', 'HAVE_MREMAP=0',
+                        'HAVE_PREAD=1', 'HAVE_PWRITE=1', 'HAVE_READLINK=1', 'HAVE_LSTAT=1',
+                        'HAVE_NANOSLEEP=0', 'HAVE_USLEEP=1', 'SQLITE_ENABLE_LOCKING_STYLE=0']
     # Public object constants only: exclude annotation/configuration macros and
     # function-pointer sentinels, whose C ABI differs from owner-aware callbacks.
     macros = []
@@ -62,6 +67,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output-dir', type=Path, required=True)
     parser.add_argument('--compiler', type=Path, default=ROOT / 'build/bin/cpfe-dot')
+    parser.add_argument('--profile', choices=('host', 'unix'), default='host')
     parser.add_argument('--translate-only', action='store_true')
     parser.add_argument('--resume', action='store_true', help='reuse retained successful translation')
     parser.add_argument('--nativeaot', action='store_true')
@@ -73,10 +79,13 @@ def main():
     report_path = out / 'results.json'
     report = json.loads(report_path.read_text()) if args.resume else {
         'schema': 1, 'project': 'EDG SQLite host', 'commands': [],
-        'profile': 'musl; OS_OTHER; APPDEF BCL mutexes; THREADSAFE=1; disk temp; WAL; mmap',
+        'profile': f'musl; {args.profile}; APPDEF BCL mutexes; THREADSAFE=1; disk temp; WAL; mmap',
+        'vfsProfile': args.profile,
         'nativeExtensionLoading': False,
     }
     report['status'] = 'running'
+    if args.resume and report.get('vfsProfile', 'host') != args.profile:
+        parser.error('--resume profile differs from the retained translation')
     report.pop('failure', None)
 
     def save():
@@ -103,12 +112,13 @@ def main():
     try:
         generated = out / 'generated'
         if not args.resume:
-            engine, definitions, macros = prepare(out)
+            engine, definitions, macros = prepare(out, args.profile)
             report.update(definitions=definitions, compiler=str(args.compiler.resolve()),
                           compilerSha256=digest(args.compiler.resolve()), sourceSha256=digest(engine))
             run('translate', [sys.executable, ROOT / 'dotnet.py', engine,
                 '--compiler', args.compiler.resolve(), '--language', 'c', '--std', 'c17',
-                '--libc', 'musl', '--emit', 'managedlib', '--namespace', 'Edg.SQLite',
+                '--libc', 'musl', *(['--posix'] if args.profile == 'unix' else []),
+                '--emit', 'managedlib', '--namespace', 'Edg.SQLite',
                 '--class-name', 'SqliteCore', '--instance-methods', '--split', 'size',
                 '--split-size', '262144', '--unbound-externals', 'partial',
                 '-I', engine.parent, *['-D' + value for value in definitions],
@@ -117,12 +127,21 @@ def main():
         if args.translate_only:
             report['status'] = 'translated'
             return
-        run('adapter', [sys.executable, ROOT / 'backend/sqlite/prepare.py', '--output-dir', generated])
+        run('adapter', [sys.executable, ROOT / 'backend/sqlite/prepare.py', '--output-dir', generated,
+                        '--profile', args.profile])
         run('library-build', ['dotnet', 'build', generated / 'Generated.csproj', '-c', 'Release',
                              '--nologo', '-p:TreatWarningsAsErrors=true'])
         consumer = out / 'consumer'
         shutil.copytree(ROOT / 'backend/tests/sqlite_host', consumer, dirs_exist_ok=True,
                         ignore=shutil.ignore_patterns('bin', 'obj'))
+        if args.profile == 'unix':
+            # The same API/process campaign, with Unix runtime observability.
+            program = consumer / 'Program.cs'
+            code = program.read_text().replace('core.Host.OpenHandleCount', 'core.Posix.OpenDescriptorCount')
+            code = code.replace('core.Host.MappedReadCount', 'core.Posix.MappingCreatedCount')
+            code = code.replace('core.Host.MappedViewCount', 'core.Posix.MappedViewCount')
+            code = code.replace(' && core.Host.MappedReferenceCount == 0', '')
+            program.write_text(code)
         project = consumer / 'SqliteHostTests.csproj'
         reference = '-p:TranslatedProject=' + str(generated / 'Generated.csproj')
         run('consumer-build', ['dotnet', 'build', project, '-c', 'Release', '--nologo', reference,

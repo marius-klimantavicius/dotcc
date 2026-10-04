@@ -1,6 +1,7 @@
 // Explicit import contracts for the portable LP64 libc bridge. Definitions in
 // translated input always win; an unknown symbol or mismatched ABI is an error.
 bool libc_enabled=false,libc_emitted=false,files_emitted=false,text_emitted=false,math_emitted=false,clock_emitted=false,environment_emitted=false,timezone_emitted=false,command_emitted=false;
+extern bool posix_enabled,posix_emitted;
 std::set<a_routine_ptr> libc_routines;
 std::map<string,a_routine_ptr> libc_binding_addresses;
 std::map<a_routine_ptr,a_routine_ptr> libc_address_aliases;
@@ -122,12 +123,12 @@ const libc_binding libc_bindings[]={
 #undef EDG_LIBC
 };
 void reset_libc_imports() {
-  libc_emitted=false;files_emitted=false;text_emitted=false;math_emitted=false;clock_emitted=false;environment_emitted=false;timezone_emitted=false;command_emitted=false;libc_routines.clear();
+  libc_emitted=false;files_emitted=false;text_emitted=false;math_emitted=false;clock_emitted=false;environment_emitted=false;timezone_emitted=false;command_emitted=false;posix_emitted=false;libc_routines.clear();
   libc_binding_addresses.clear();libc_address_aliases.clear();
 }
 string libc_thread_release_code() {return string(text_emitted?"__edg_text_value?.ReleaseThread();":"")+(libc_emitted?"__edg_libc.ReleaseThread();":"");}
 string libc_disposal_code() {
-  return string(command_emitted?"__edg_command_value?.Dispose();":"")+(files_emitted?"__edg_files_value?.Dispose();":"")+
+  return string(posix_emitted?"__edg_posix_value?.Dispose();":"")+(command_emitted?"__edg_command_value?.Dispose();":"")+(files_emitted?"__edg_files_value?.Dispose();":"")+
     (text_emitted?"__edg_text_value?.Dispose();":"")+(environment_emitted?"__edg_environment_value?.Dispose();":"")+(timezone_emitted?"__edg_timezone_value?.Dispose();":"")+(libc_emitted?"__edg_libc.Dispose();":"");
 }
 void ensure_lifecycle();
@@ -370,10 +371,12 @@ bool libc_builtin_definition(a_routine_ptr routine,const string &symbol) {
     string(skip_typerefs(result)->kind==tk_void?"":"return ")+source_routine_reference(definition,true)+"("+arguments+"); }\n// dot-gen:member-end\n";
   return true;
 }
+#include "dot_gen_posix.h"
 bool libc_routine(a_routine_ptr r) {
   if(!libc_enabled || r->function_def_number!=NULL_function_def_number)return false;
   if(libc_routines.count(r))return true;
   string symbol=r->source_corresp.name?r->source_corresp.name:"";
+  if(posix_routine(r,symbol))return true;
   if(symbol=="__edg_with_file_lock")return libc_format_lock_routine(r);
   if(symbol=="__edg_with_file_read_lock")return libc_format_lock_routine(r,true);
   if(symbol=="__edg_with_file_wide_read_lock")return libc_format_lock_routine(r,true,true);

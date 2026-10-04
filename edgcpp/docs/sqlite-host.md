@@ -53,8 +53,9 @@ returned pointer or callback can be used.
 
 ## Verification and review
 
-`artifacts/review/sqlite`, `sqlite-readable` and `sqlite-host` point to the
-latest verified host emission. Start with `REVIEW.md`, `Translated.cs`, the
+`artifacts/review/sqlite-host` retains this verified OS_OTHER host emission.
+The general `sqlite`/`sqlite-readable` aliases now use the upstream Unix VFS.
+Start with `REVIEW.md`, `Translated.cs`, the
 size-split `Translated.part*.cs` and `Runtime.Sqlite.HostBindings.cs`.
 The project is `Generated.csproj`; all four partial contracts are implemented.
 
@@ -82,6 +83,6 @@ extensions remain disabled because their ABI differs from the translated
 managed callback ABI; authored/translated managed extensions can use SQLite's
 registration APIs.
 
-`SQLITE_OS_UNIX` is also translatable: an emission probe succeeds and leaves
-29 POSIX functions plus two mutex/barrier hooks to implement. The current host
-profile does not supply that POSIX layer. See the [Unix route analysis](sqlite-posix.md).
+`SQLITE_OS_UNIX` now runs against the separately implemented shared POSIX layer
+and passes the same JIT/AOT and native-process campaigns. This OS_OTHER profile
+remains useful as a reference. See the [Unix runtime guide](sqlite-posix.md).

@@ -1538,6 +1538,7 @@ void back_end(void) {
   rtti_source_types.clear();rtti_lowered_types.clear(); rtti_user_prefix_types.clear(); typeinfo_helpers_emitted=false;
   lifecycle_emitted=false;local_static_storage.clear();startup_routines.clear();
   libc_enabled=getenv("EDG_DOT_LIBC") && string(getenv("EDG_DOT_LIBC"))=="dotcc";
+  posix_enabled=getenv("EDG_DOT_POSIX") && string(getenv("EDG_DOT_POSIX"))=="1";
   reset_libc_imports();
   reset_thread_imports();
   reset_process_exit_imports();
