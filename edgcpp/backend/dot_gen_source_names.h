@@ -309,12 +309,25 @@ void initialize_source_names(a_scope_ptr scope) {
     if(spelling.empty())continue;
     source_name_reserved["owner"].insert(source_identifier(spelling));
   }
+  // emit_library_export exposes every emitted body, including internal-linkage
+  // helpers and named synthesized routines. Reserve those wrappers before any
+  // implementation consumes the source name. Real external definitions win
+  // cross-TU collisions with a same-spelled static helper, regardless of TU
+  // traversal order; remaining collisions use the ordinary entity allocator.
+  if(source_library_names)for(unsigned priority=0;priority!=2;++priority) {
+    for(auto r=scope->routines;r;r=r->next) {
+      if(!routine_needed(r) || !routine_body_needed(r))continue;
+      bool public_definition=r->source_corresp.name_linkage==nlk_external && !r->compiler_generated;
+      if(public_definition!=(priority==0))continue;
+      string spelling=source_routine_spelling(r);
+      if(!spelling.empty())source_export_names[r]=source_allocate("owner",source_identifier(spelling),"export");
+    }
+  }
   for(auto r=scope->routines;r;r=r->next) {
     if(!routine_needed(r))continue;
     string spelling=source_routine_spelling(r);
     if(spelling.empty())continue;
-    if(source_library_names && routine_body_needed(r) && r->source_corresp.name_linkage==nlk_external && !r->compiler_generated) {
-      source_export_names[r]=source_allocate("owner",source_identifier(spelling),"export");
+    if(source_export_names.count(r)) {
       string base=spelling+"__body";spelling=base;unsigned suffix=2;
       while(source_name_reserved["owner"].count(source_identifier(spelling)))spelling=base+"_"+std::to_string(suffix++);
     }

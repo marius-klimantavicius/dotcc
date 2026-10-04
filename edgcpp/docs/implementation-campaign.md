@@ -818,3 +818,19 @@ The README links a real uint property and its copy site. Emission and syntax/
 format validation pass; full managed compiler build/runtime remain unverified,
 and its 84 extern partial contracts still need implementations. See
 `evidence/edg-primitive-data-review-20261004.json`.
+
+### Original managed export names (2026-10-04)
+
+Every named wrapper emitted by managed-library mode now receives its
+source-resolved name, including internal/static helpers and named synthesized
+C++ routines. The implementation receives a `__body` suffix. External APIs take
+priority over same-spelled internal functions from other translation units;
+keywords and unavoidable collisions retain the existing C# naming rules.
+Executable body names are unchanged. Lifetime and exception boundaries remain
+on public wrappers, and translated internal calls still target the bodies.
+
+Seven focused checks pass, including direct original-name calls in static and
+instance JIT/NativeAOT consumers, cross-TU priority, body-name collisions, source
+splitting, C++ overloads/synthesized members and executable naming. The canonical
+compiler also passes the existing 14 source-name checks. Details:
+`docs/export-names.md`; evidence: `evidence/export-names-20261004.json`.

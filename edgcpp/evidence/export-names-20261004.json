@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/export-names-001",
+  "results": {
+    "status": "passed",
+    "checks": [
+      "static-unsplit: JIT direct original APIs, external over earlier static TU, keyword escaping, body-name collisions and source navigation",
+      "static-unsplit: NativeAOT direct original APIs",
+      "instance-source: JIT direct original APIs, external over earlier static TU, keyword escaping, body-name collisions and source navigation",
+      "instance-source: NativeAOT direct original APIs",
+      "C++: JIT original extern-C API, namespace overload allocation and named synthesized owner constructors/destructors",
+      "C++: NativeAOT extern-C API and synthesized members",
+      "program mode: original implementation name remains unchanged; JIT behavior"
+    ],
+    "inputs": {
+      "/home/marius/p/dotcc/edgcpp/backend/dot_gen_source_names.h": "5330a4e267678148ccfb2ff808270028670d9ccf598c23fa4907e19f248701dd",
+      "/home/marius/p/dotcc/edgcpp/backend/tests/export_names_verify.py": "c6c201b689b8b225c0e47e73ea513a58190c4aebb0cce120d56fd54877ce2525",
+      "/home/marius/p/dotcc/edgcpp/backend/tests/export_names_internal.c": "ae1b60d9dfdcd49bce4df8950e4363f68de3b2a5f6e6077a389d2839feac4570",
+      "/home/marius/p/dotcc/edgcpp/backend/tests/export_names_public.c": "39171160a774f440b2bd0b23c0782cfc48a0a84a8f3d3663413c39eb097d5dc7",
+      "/home/marius/p/dotcc/edgcpp/backend/tests/export_names.cpp": "d5f67e84a0eaa225bee6dc08af7141b779589e5be9a5d1f7c28985e07ba4b221",
+      "/mnt/storage/dotcc-edg-campaign-20261003/record-initializer-build-001/cpfe-dot": "a21a758700600799890c29886127f9bb12c7ca628dc73d600b4cf6f9d33c3657"
+    }
+  },
+  "scope": "Original source-resolved names on all named emitted library wrappers; real external APIs prioritized over same-spelled static helpers; executable names unchanged."
+}
