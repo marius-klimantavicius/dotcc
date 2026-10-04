@@ -5,11 +5,11 @@ bool unbound_partial=false;
 std::set<a_routine_ptr> unbound_routines;
 std::set<a_variable_ptr> unbound_variables;
 std::map<const void*,string> unbound_runtime_names;
-string unbound_runtime_contracts;
+string unbound_runtime_contracts,unbound_local_runtime_contracts;
 bool unbound_runtime_field_emitted=false;
 
 void reset_unbound_runtime() {
-  unbound_runtime_names.clear();unbound_runtime_contracts.clear();unbound_runtime_field_emitted=false;
+  unbound_runtime_names.clear();unbound_runtime_contracts.clear();unbound_local_runtime_contracts.clear();unbound_runtime_field_emitted=false;
 }
 string unbound_runtime_name(const void *entity,const string &candidate,const string &kind) {
   auto found=unbound_runtime_names.find(entity);
@@ -77,12 +77,44 @@ string unbound_contract_type(a_type_ptr original) {
   }
   return rendered;
 }
+bool unbound_project_type(a_type_ptr original) {
+  // Classify the actual managed representation, not a native tag spelling or
+  // typedef. Pinned runtime ABI records such as va_list are shared even though
+  // their native IL is aggregate; generated records/enums remain project-local.
+  string rendered=type(original);
+  auto t=skip_typerefs(original);
+  if(t->kind==tk_pointer) {
+    auto pointee=skip_typerefs(t->variant.pointer.type);
+    if(pointee->kind==tk_routine) {
+      // Instance callbacks carry the translated owner as their hidden first
+      // argument. Keep that implementation on the owner so `this` is available.
+      if(instance_mode)return true;
+      auto extra=pointee->variant.routine.extra_info;
+      if(unbound_project_type(pointee->variant.routine.return_type))return true;
+      for(auto parameter=extra->param_type_list;parameter;parameter=parameter->next)
+        if(unbound_project_type(parameter->type))return true;
+      return false;
+    }
+    return unbound_project_type(t->variant.pointer.type);
+  }
+  if(rendered.compare(0,8,"global::")==0)return false;
+  return aggregate(t) || source_enum_nominal(t);
+}
+
 void emit_unbound_runtime_contracts() {
   if(!unbound_partial)return;
   output+="// dot-gen:runtime-begin\nnamespace Managed;\npublic unsafe partial class Runtime {\n";
   output+="internal object? Owner { get; }\ninternal Runtime(object? owner = null) { Owner = owner; }\n";
   output+=unbound_runtime_contracts;
   output+="}\n// dot-gen:runtime-end\n";
+  if(!unbound_local_runtime_contracts.empty()) {
+    output+="// dot-gen:local-runtime-begin\n";
+    const char *ns=getenv("EDG_DOT_NAMESPACE"),*owner=getenv("EDG_DOT_CLASS");
+    if(ns&&*ns)output+="namespace "+string(ns)+";\n";
+    output+="public "+string(instance_mode?"sealed":"static")+" unsafe partial class "+string(owner)+" {\n";
+    output+=unbound_local_runtime_contracts;
+    output+="}\n// dot-gen:local-runtime-end\n";
+  }
 }
 
 bool unbound_routine(a_routine_ptr routine) {
@@ -91,13 +123,16 @@ bool unbound_routine(a_routine_ptr routine) {
   source_register(routine,&routine->source_corresp,"function",
     source_scope_context(&routine->source_corresp),"owner",source_routine_spelling(routine));
   auto rt=skip_typerefs(routine->type);
+  bool local_contract=unbound_partial && unbound_project_type(rt->variant.routine.return_type);
+  if(unbound_partial)for(auto parameter=rt->variant.routine.extra_info->param_type_list;parameter;parameter=parameter->next)
+    local_contract|=unbound_project_type(parameter->type);
   string id=name(routine,"f"),parameters,contract_parameters,arguments;
   unsigned index=0;
   for(auto p=rt->variant.routine.extra_info->param_type_list;p;p=p->next) {
     if(!parameters.empty()){parameters+=", ";contract_parameters+=", ";arguments+=", ";}
     string argument="arg"+std::to_string(index++);
     parameters+=type(p->type)+" "+argument;
-    if(unbound_partial)contract_parameters+=unbound_contract_type(p->type)+" "+argument;
+    if(unbound_partial && !local_contract)contract_parameters+=unbound_contract_type(p->type)+" "+argument;
     arguments+=argument;
   }
   if(rt->variant.routine.extra_info->has_ellipsis) {
@@ -108,7 +143,12 @@ bool unbound_routine(a_routine_ptr routine) {
   }
   string symbol=routine->source_corresp.name?routine->source_corresp.name:"<unnamed>";
   string return_type=type(rt->variant.routine.return_type);
-  if(unbound_partial) {
+  if(local_contract) {
+    helper_output+="// dot-gen:unbound-local function "+source_hex(symbol)+" "+id+" "+id+"\n";
+    unbound_local_runtime_contracts+="// dot-gen:runtime-origin "+id+"\n"+
+      "// Project-specific signature; implement in another translated-owner partial file.\n"+
+      "private "+string(instance_mode?"":"static ")+"partial "+return_type+" "+id+"("+parameters+");\n";
+  } else if(unbound_partial) {
     ensure_unbound_runtime_field();
     string spelling=source_routine_spelling(routine);
     string runtime_id=unbound_runtime_name(routine,source_identifier(spelling.empty()?symbol:spelling),"external");
@@ -137,7 +177,12 @@ string unbound_variable_address(a_variable_ptr variable_ptr) {
   if(unbound_variables.insert(variable_ptr).second) {
     string ty=type(variable_ptr->type);
     string symbol=variable_ptr->source_corresp.name?variable_ptr->source_corresp.name:"<unnamed>";
-    if(unbound_partial) {
+    if(unbound_partial && unbound_project_type(variable_ptr->type)) {
+      helper_output+="// dot-gen:unbound-local variable "+source_hex(symbol)+" "+id+" "+getter+"\n";
+      unbound_local_runtime_contracts+="// dot-gen:runtime-origin "+id+"\n"+
+        "// Project-specific external storage; supply a stable address with source lifetime and alignment.\n"+
+        "private "+string(instance_mode?"":"static ")+"partial "+ty+"* "+getter+"();\n";
+    } else if(unbound_partial) {
       ensure_unbound_runtime_field();
       string runtime_getter=unbound_runtime_name(variable_ptr,"__edg_unbound_address_"+source_identifier(source_spelling(&variable_ptr->source_corresp)),"storage");
       helper_output+="// dot-gen:unbound variable "+source_hex(symbol)+" "+id+" "+runtime_getter+"\n";

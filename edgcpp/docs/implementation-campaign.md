@@ -923,3 +923,39 @@ The existing EDG review aliases now show all 75 original translation units with
 Native emission, syntax validation and formatting passed. Full managed EDG
 compilation/execution remain unverified and its required contracts are still
 unimplemented. [Review evidence](../evidence/edg-managed-runtime-review-20261004.json).
+
+### Shared versus translated-owner extern contracts (2026-10-04)
+
+Partial extern placement now follows the emitted signature recursively.
+Primitive/BCL/shared-runtime signatures remain in `Managed.Runtime.generated.cs`.
+Generated records, enums, opaque types and callbacks containing generated types
+use private partial methods on the original translated owner, in
+`Translated.Runtime.generated.cs`. Instance callbacks are owner-local because
+their hidden ABI parameter names the generated class. Local providers can use
+`this` and generated types directly. Manifest/source navigation identify both
+owners and files; all split modes and unformatted output retain this separation.
+
+The host EDG FILE is a complete 216-byte glibc record, so its externs remain local.
+No broad record-to-void-pointer mapping was added. The existing portable FILE ABI
+already uses typed local adapters around shared `LibcFiles` opaque handles;
+portable headers or an explicit compatible adapter are needed to reuse that
+approach with host-header translations. See [FILE policy](partial-externals.md#file-and-other-platform-records).
+
+Both native compiler builds passed. All 12 focused checks passed, with four JIT
+and NativeAOT hosts covering primitive provider reuse, records/enums, opaque
+handles, recursively typed callbacks, owner isolation and placement metadata.
+Default rejection/throwing stubs and strict `--format none` builds also passed.
+[Verification evidence](../evidence/contract-split-20261004.json).
+
+EDG was refreshed from all 75 original translation units: 52 shared contracts and
+32 owner-local contracts, including FILE, platform structures and C++ ABI types.
+The shared file contains no generated EdgCompiler types. There are 154 C# files
+(188,342,153 bytes). Full managed EDG compilation/execution remains unverified.
+[EDG review evidence](../evidence/edg-contract-split-review-20261004.json).
+
+SQLite was retranslated at the user's request; both existing SQLite review
+aliases now point to the new size-split instance library. It preserves 29 macro
+exports, 213 musl source units and the test memory VFS profile. Strict compilation
+and the existing macro/version/open-close consumer pass JIT and Linux-x64
+NativeAOT. This refresh does not rerun the broader SQL corpus or establish a
+production OS VFS/threading profile. [SQLite evidence](../evidence/sqlite-contract-split-review-20261004.json).

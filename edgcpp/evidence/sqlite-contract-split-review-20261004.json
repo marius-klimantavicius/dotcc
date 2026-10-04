@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "date": "2026-10-04",
+  "artifact": "artifacts/campaign/persistent-continuation/sqlite-contract-split-review-20261004-001",
+  "reviewAliases": [
+    "artifacts/review/sqlite",
+    "artifacts/review/sqlite-readable"
+  ],
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/contract-split-build-001/cpfe-dot",
+    "sha256": "d80bdb54f4a2d8a79e0ffe56c11a23e2b0997e67b1a466454fbd610de3180b8f"
+  },
+  "driver": {
+    "path": "edgcpp/dotnet.py",
+    "sha256": "4025b084c934b3170e45358cdceae2f7433ce9804829b6ceede815fe962477d0"
+  },
+  "results": {
+    "path": "edgcpp/artifacts/campaign/persistent-continuation/sqlite-contract-split-review-20261004-001/results.json",
+    "sha256": "b6ab149a8b4fd4f1e9c7a911ebb14f3d6671f716311ba95498cedcc1c46de309"
+  },
+  "review": {
+    "path": "edgcpp/artifacts/campaign/persistent-continuation/sqlite-contract-split-review-20261004-001/generated/REVIEW.md",
+    "sha256": "faf6033a9482fedc69c71d0a1d9315263d3cbaf2c360697285bb2284d6cfe8f8"
+  },
+  "generated": {
+    "csharpFiles": 75,
+    "translatedFiles": 43,
+    "translatedBytes": 11432323,
+    "macroExports": 29
+  },
+  "validation": [
+    "Generation passed",
+    "Strict Release build passed with zero warnings/errors",
+    "Library consumer JIT passed",
+    "Library consumer Linux-x64 NativeAOT passed"
+  ],
+  "profile": "Full pinned SQLite features; selected musl; portable LP64 binary80; test-only memory VFS; THREADSAFE=0",
+  "limitations": [
+    "Uses deterministic test-only memory VFS, SQLITE_THREADSAFE=0, mmap disabled, extensions omitted.",
+    "Consumer checks macros, version and memory-database open/close; broader SQL corpora were not rerun."
+  ]
+}

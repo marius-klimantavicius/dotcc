@@ -117,22 +117,6 @@ internal partial int host_unused(int value) => Owner is null ? value * 7 : value
         projects.append({'label': label, 'namespace': namespace, 'class': class_name,
                          'instance': instance, 'providerSha256': shared_digest})
 
-    typed_provider = out / 'typed-runtime.cs'
-    typed_provider.write_text('''namespace Managed;
-public unsafe partial class Runtime {
-private readonly RuntimePayload[] records = global::System.GC.AllocateArray<RuntimePayload>(1, pinned: true);
-internal partial RuntimePayload host_transform(RuntimePayload arg0, RuntimeFlavor arg1)
-    => new RuntimePayload { left = arg0.left + (int)arg0.right,
-                            right = arg0.right + ((uint)arg1 == 0xf1234567u ? 100u : 3u) };
-internal partial int host_inspect(RuntimePayload* arg0) {
-    global::System.GC.Collect(2, global::System.GCCollectionMode.Forced, true, true);
-    return arg0->left + (int)arg0->right;
-}
-internal partial RuntimeFlavor host_flavor(RuntimeFlavor arg0) => (RuntimeFlavor)0xf1234567u;
-internal partial RuntimePayload* __edg_unbound_address_host_record()
-    => (RuntimePayload*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref records[0]);
-}
-''')
     for instance in (False, True):
         label = 'typed-instance' if instance else 'typed-static'
         namespace = 'Contract.Flattened' if instance else 'Contract.Nested'
@@ -140,28 +124,72 @@ internal partial RuntimePayload* __edg_unbound_address_host_record()
         owner_type = namespace + '.' + class_name
         payload_type = namespace + '.' + class_name + '_Payload' if instance else owner_type + '.Payload'
         flavor_type = namespace + '.' + class_name + '_Flavor' if instance else owner_type + '.Flavor'
+        handle_type = namespace + '.' + class_name + '_Handle' if instance else owner_type + '.Handle'
         alias_file = out / (label + '-aliases.cs')
         alias_file.write_text(f'global using RuntimePayload = global::{payload_type};\n'
                               f'global using RuntimeFlavor = global::{flavor_type};\n'
+                              f'global using RuntimeHandle = global::{handle_type};\n'
                               f'global using RuntimeOwner = global::{owner_type};\n')
+        modifier = '' if instance else 'static '
+        owner_header = f'namespace {namespace}; public {("sealed" if instance else "static")} unsafe partial class {class_name} {{\n'
+        typed_provider = out / (label + '-owner-runtime.cs')
+        typed_provider.write_text(owner_header + '''
+private MODreadonly RuntimePayload[] records = global::System.GC.AllocateArray<RuntimePayload>(1, pinned: true);
+private MODpartial RuntimePayload host_transform(RuntimePayload arg0, RuntimeFlavor arg1)
+    => new RuntimePayload { left = arg0.left + (int)arg0.right,
+                            right = arg0.right + ((uint)arg1 == 0xf1234567u ? 100u : 3u) };
+private MODpartial int host_inspect(RuntimePayload* arg0) {
+    global::System.GC.Collect(2, global::System.GCCollectionMode.Forced, true, true);
+    return arg0->left + (int)arg0->right;
+}
+private MODpartial RuntimeFlavor host_flavor(RuntimeFlavor arg0) => (RuntimeFlavor)0xf1234567u;
+private MODpartial int host_opaque(RuntimeHandle* arg0) => arg0 == null ? 77 : 99;
+private MODpartial RuntimePayload* __edg_unbound_address_host_record()
+    => (RuntimePayload*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref records[0]);
+}
+'''.replace('MOD', modifier))
+        record_callback_signature = ('delegate* managed<RuntimeOwner, RuntimePayload*, int>' if instance
+                                     else 'delegate* managed<RuntimePayload*, int>')
+        record_callback_arguments = 'this, &payload' if instance else '&payload'
+        typed_provider.write_text(typed_provider.read_text().removesuffix('}\n') + f'''
+private {modifier}partial int host_record_callback({record_callback_signature} arg0) {{
+    RuntimePayload payload = new RuntimePayload {{ left = 4, right = 7 }};
+    return arg0({record_callback_arguments});
+}}
+}}
+''')
         callback_provider = out / (label + '-callback.cs')
         callback_signature = 'delegate* managed<RuntimeOwner, int, int>' if instance else 'delegate* managed<int, int>'
-        callback_body = ('arg0((RuntimeOwner)(Owner ?? throw new global::System.InvalidOperationException("missing owner")), arg1) + 5'
-                         if instance else '(Owner is null ? arg0(arg1) + 5 : throw new global::System.InvalidOperationException("unexpected owner"))')
-        callback_provider.write_text('namespace Managed; public unsafe partial class Runtime {\n'
-            f'internal partial int host_call({callback_signature} arg0, int arg1) => {callback_body};\n}}\n')
+        callback_body = 'arg0(this, arg1) + 5' if instance else 'arg0(arg1) + 5'
+        callback_header = owner_header if instance else 'namespace Managed; public unsafe partial class Runtime {\n'
+        callback_access = 'private' if instance else 'internal'
+        callback_provider.write_text(callback_header +
+            f'{callback_access} partial int host_call({callback_signature} arg0, int arg1) => {callback_body};\n}}\n')
         directory = out / label
         run(label + '-translate', [sys.executable, ROOT / 'dotnet.py',
             ROOT / 'backend/tests/partial_external_contract_types.cpp', '--compiler', args.compiler.resolve(),
             '--emit', 'managedlib', '--namespace', namespace, '--class-name', class_name,
             '--split', 'none' if instance else 'source', '--unbound-externals', 'partial',
-            '--runtime-source', typed_provider, '--runtime-source', alias_file,
+            '--runtime-source', provider, '--runtime-source', typed_provider, '--runtime-source', alias_file,
             '--runtime-source', callback_provider, '--output-dir', directory,
             *(['--instance-methods', '--no-nest-types'] if instance else [])])
-        contract = (directory / 'Managed.Runtime.generated.cs').read_text().replace('@', '')
-        assert 'global::' + payload_type in contract, contract
-        assert 'global::' + flavor_type in contract, contract
-        assert 'static partial' not in contract
+        shared_contract = (directory / 'Managed.Runtime.generated.cs').read_text().replace('@', '')
+        local_contract = (directory / 'Translated.Runtime.generated.cs').read_text().replace('@', '')
+        assert all(name not in shared_contract for name in ('Payload', 'Flavor', 'Handle', 'LibraryOne', 'LibraryTwo', 'Contract.')), shared_contract
+        assert 'partial int host_add' in shared_contract
+        assert payload_type.rsplit('.', 1)[1] in local_contract and flavor_type.rsplit('.', 1)[1] in local_contract
+        assert 'private ' + modifier + 'partial' in local_contract
+        assert 'host_transform' in local_contract and '__edg_unbound_address_host_record' in local_contract
+        assert ('host_call' in local_contract) == instance
+        assert ('host_call' in shared_contract) != instance
+        manifest = json.loads((directory / 'dot-gen.json').read_text())
+        locations = {item['symbol']: item for item in manifest['unboundExternals']['symbols']}
+        for name in ('host_transform', 'host_inspect', 'host_flavor', 'host_record', 'host_opaque', 'host_record_callback'):
+            assert locations[name]['placement'] == 'translated', locations[name]
+            assert locations[name]['runtimeOwner'].replace('@', '').removeprefix('global::') == owner_type, locations[name]
+            assert locations[name]['contractFile'] == 'Translated.Runtime.generated.cs', locations[name]
+        assert locations['host_add']['placement'] == 'shared', locations['host_add']
+        assert locations['host_call']['placement'] == ('translated' if instance else 'shared'), locations['host_call']
         build_host(label, directory, owner_type, 'check_external_contract_types', 20, 21, instance)
         projects.append({'label': label, 'namespace': namespace, 'class': class_name,
                          'instance': instance, 'nestedTypes': not instance,
@@ -188,8 +216,8 @@ internal partial RuntimePayload* __edg_unbound_address_host_record()
         'compiler': {'path': str(args.compiler.resolve()),
                      'sha256': hashlib.sha256(args.compiler.resolve().read_bytes()).hexdigest()},
         'sharedProvider': {'path': str(provider), 'sha256': shared_digest},
-        'reuseLimitations': ['Providers whose signatures contain translated records/enums need project-specific type aliases when their namespace/nesting changes.',
-                            'Incoming function-pointer parameters retain the mode-specific callback ABI; instance callback adapters use Runtime.Owner and a generated-owner alias.']}, indent=2) + '\n')
+        'reuseLimitations': ['Project-specific record/enum signatures are implemented on the translated owner, with matching namespace, type aliases and static/instance modifiers.',
+                            'Incoming callbacks with an instance-owner parameter stay on the translated owner and use this; primitive static callbacks remain shared.']}, indent=2) + '\n')
     print('PASS: required partial extern implementations, static/instance JIT' + (' and NativeAOT' if args.nativeaot else ''))
 
 

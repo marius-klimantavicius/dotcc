@@ -1,0 +1,73 @@
+{
+  "status": "emission-syntax-formatting-passed",
+  "artifact": "artifacts/campaign/persistent-continuation/edg-self-contract-split-20261004-001",
+  "reviewAlias": "artifacts/review/edg",
+  "sourceCount": 75,
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/contract-split-build-001/cpfe-dot",
+    "sha256": "d80bdb54f4a2d8a79e0ffe56c11a23e2b0997e67b1a466454fbd610de3180b8f"
+  },
+  "rawOutput": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-contract-split-20261004-001/raw.cs",
+    "sha256": "ded87938b6fadaae0b977a01b92739a06ad53e6d017fbd5cfe9bb06b133569b0"
+  },
+  "formatter": {
+    "mode": "roslyn-whitespace-v2",
+    "sdk": "10.0.111",
+    "sourceSha256": "9e0b7a7a3d98c375e90fe052735d9c3600dad73fca26ef098c95e644617f243a",
+    "toolSha256": "a4c163b672a58f1471880c5b9c3319d61b4705cbdcf6ebcf604a34af3b31038a"
+  },
+  "translationSeconds": 226.478,
+  "generated": {
+    "files": 154,
+    "bytes": 188342153,
+    "primitiveInitializerProperties": 3458,
+    "tableAliases": 11468,
+    "indexedObjectInitializers": 198167,
+    "partialContracts": 84,
+    "sharedContracts": 52,
+    "translatedContracts": 32,
+    "exports": 41900,
+    "prefixedExports": 0
+  },
+  "previousGeneratedBytes": 188347480,
+  "sourceSizeReductionPercent": 0.0028282831286086108,
+  "examples": {
+    "recordAlias": {
+      "file": "Translated.cs",
+      "line": 565391
+    },
+    "recordRow": {
+      "file": "Translated.cs",
+      "line": 674894
+    },
+    "pointerTableAlias": {
+      "file": "Translated.cs",
+      "line": 94397
+    },
+    "pointerTableRow": {
+      "file": "Translated.cs",
+      "line": 100323
+    },
+    "emptyDestructor": {
+      "file": "Translated.source.lexical.h.cs",
+      "line": 1434
+    },
+    "cleanup": {
+      "file": "Translated.generated.cs",
+      "line": 1006855
+    },
+    "namedLocals": {
+      "file": "Translated.source.lexical.c.cs",
+      "line": 25416
+    },
+    "primitiveData": {
+      "file": "Translated.generated.cs",
+      "line": 881301,
+      "name": "__edg_initializer10396"
+    }
+  },
+  "managedCompilation": "not-run",
+  "runtime": "not-run",
+  "nativeAot": "not-run"
+}

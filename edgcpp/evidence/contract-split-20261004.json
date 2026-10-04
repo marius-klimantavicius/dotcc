@@ -1,0 +1,110 @@
+{
+  "status": "passed",
+  "date": "2026-10-04",
+  "scope": "Separate shared primitive/runtime signatures from translated-owner partial contracts",
+  "compiler": {
+    "path": "edgcpp/artifacts/campaign/persistent-continuation/contract-split-build-001/cpfe-dot",
+    "sha256": "d80bdb54f4a2d8a79e0ffe56c11a23e2b0997e67b1a466454fbd610de3180b8f"
+  },
+  "canonicalCompiler": {
+    "path": "edgcpp/build/bin/cpfe-dot",
+    "sha256": "2f219e3f7822c00f39e18a9c7db721c05a62cbd8c32328bbe2a4d695559578d3"
+  },
+  "inputs": {
+    "edgcpp/backend/dot_gen_unbound.h": "097e1e01f98ca69f3edf15f4c8e4227a63d7038df82b25afb17fe392bcfb90b6",
+    "edgcpp/backend/tests/partial_externals_verify.py": "12269953625cb5d5ba7ff374f132055eed0657910e5fc9c88652ebe620b61ee8",
+    "edgcpp/backend/tests/partial_external_contract_types.cpp": "872bceccaf46f7acbed327c258959eaae940dbaafdf4735922afe52f27016452",
+    "edgcpp/dotnet.py": "4025b084c934b3170e45358cdceae2f7433ce9804829b6ceede815fe962477d0"
+  },
+  "validation": {
+    "partialExternals": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/contract-split-tests-001/results.json",
+        "sha256": "457c262ddca15806cc761d6fd97386b81aa63c794d7d548f220597692524566c"
+      },
+      "checks": [
+        "Managed.Runtime owner collision fails with an explicit reserved-name diagnostic",
+        "static: missing implementations fail with CS8795",
+        "static: strict JIT direct/indirect extern calls and stable independent runtime storage",
+        "static: NativeAOT execution",
+        "instance: missing implementations fail with CS8795",
+        "instance: strict JIT direct/indirect extern calls and stable independent runtime storage",
+        "instance: NativeAOT execution",
+        "typed-static: strict JIT direct/indirect extern calls and stable independent runtime storage",
+        "typed-static: NativeAOT execution",
+        "typed-instance: strict JIT direct/indirect extern calls and stable independent runtime storage",
+        "typed-instance: NativeAOT execution",
+        "no-imports: exact same common provider compiles and runs when all implementations are unused"
+      ],
+      "projects": [
+        {
+          "label": "static",
+          "namespace": "External.StaticAlpha",
+          "class": "host_add",
+          "instance": false,
+          "providerSha256": "793a4b175c851997288b1ef1077663084963d40a8f00e6441e4d549ecdae45b8"
+        },
+        {
+          "label": "instance",
+          "namespace": "Different.InstanceBeta",
+          "class": "Beta",
+          "instance": true,
+          "providerSha256": "793a4b175c851997288b1ef1077663084963d40a8f00e6441e4d549ecdae45b8"
+        },
+        {
+          "label": "typed-static",
+          "namespace": "Contract.Nested",
+          "class": "LibraryOne",
+          "instance": false,
+          "nestedTypes": true,
+          "providerSha256": "9eb6237580e2c340fc18ece69ba0dbfae0256bdd67b21c5d23c381cdded201a7",
+          "projectSpecificAliases": "typed-static-aliases.cs",
+          "modeSpecificCallbackProvider": "typed-static-callback.cs"
+        },
+        {
+          "label": "typed-instance",
+          "namespace": "Contract.Flattened",
+          "class": "LibraryTwo",
+          "instance": true,
+          "nestedTypes": false,
+          "providerSha256": "5107bdf22eaa7c7d05773b29105e1199b8a099eebd46388035455e5b85e35d43",
+          "projectSpecificAliases": "typed-instance-aliases.cs",
+          "modeSpecificCallbackProvider": "typed-instance-callback.cs"
+        }
+      ]
+    },
+    "rejectAndDeclarations": {
+      "path": "edgcpp/artifacts/campaign/persistent-continuation/contract-split-unbound-001/results.json",
+      "sha256": "bc1d5a4c06db519cc036bff0c20712d5d38195736cbc04b5252d80d98425ca59"
+    },
+    "formatNone": {
+      "manifest": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/contract-split-format-none-001/dot-gen.json",
+        "sha256": "23cc4fb4a6144543a6e7767e550e38a55072f6048aa4d6d642fe1fdcefb44280"
+      },
+      "strictBuildLog": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/contract-split-build-001/format-none-build.log",
+        "sha256": "6111f352e8647f984a6c3e3c5b446815961fa6e56442d70ed5adf4599411efa9"
+      }
+    },
+    "edgReview": {
+      "path": "edgcpp/evidence/edg-contract-split-review-20261004.json",
+      "sha256": "b73aad4cce95e939fa864ba19c4eafd7ea63e54ecdbcc1daa6a358b635b27340"
+    },
+    "sqliteReview": {
+      "path": "edgcpp/evidence/sqlite-contract-split-review-20261004.json",
+      "sha256": "3dafb44248556933631e79818f815bb9925733464c7f76dc0dceab3cd23fe610"
+    }
+  },
+  "filePolicy": {
+    "hostFILE": "Full 216-byte glibc layout remains local; no automatic opaque-handle substitution.",
+    "portableFILE": "Existing exact incomplete __edg_FILE ABI uses typed local adapters and shared BCL LibcFiles void* handles.",
+    "newPartialAdapters": "A project-specific typed adapter can call a common opaque-handle service when its FILE usage/ABI permits."
+  },
+  "limitations": [
+    "Shared-vs-local classification follows emitted signature types, not the semantic identity of a platform function.",
+    "Project-specific partial bodies must use the generated owner and exact private static/instance signature.",
+    "Full translated EDG compilation/execution/NativeAOT remain unverified; 84 contracts still need implementations.",
+    "Runtime tests performed on Linux x64."
+  ]
+}
