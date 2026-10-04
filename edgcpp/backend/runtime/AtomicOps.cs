@@ -8,9 +8,11 @@ using System.Threading;
 namespace Edg.Runtime;
 
 /// <summary>
-/// GNU/C atomic storage primitives. Orders currently use stronger sequentially
-/// consistent operations. Same-width Interlocked paths follow dotcc's
-/// AtomicLib/GnuAtomicLib; unaligned and larger objects use shared address locks.
+/// GNU/C atomic storage primitives. Stores and read/modify/write operations use
+/// stronger sequential consistency. Loads use read-only acquire operations
+/// (also for relaxed/consume), with full fences for sequential consistency.
+/// Same-width Interlocked paths follow dotcc's AtomicLib/GnuAtomicLib;
+/// unaligned and larger objects use shared address locks.
 /// This is managed ABI support, not an interoperation guarantee with native
 /// atomics or independently generated runtime assemblies.
 /// </summary>
@@ -91,7 +93,51 @@ public static unsafe class AtomicOps
     public static T Load<T>(ref T location, int order) where T : unmanaged
     {
         Order(order, load: true);
-        return ValueCompareExchange(ref location, default, default);
+        // A compare/exchange is a write even when the bits do not change. C
+        // atomic loads must also work on read-only mappings, including the WAL
+        // index that SQLite opens with PROT_READ for read-only connections.
+        fixed (T* address = &location)
+        {
+            if (!IsLockFree((nuint)sizeof(T), address))
+            {
+                lock (Gate(address))
+                {
+                    Interlocked.MemoryBarrier();
+                    T value = Unsafe.ReadUnaligned<T>(address);
+                    Interlocked.MemoryBarrier();
+                    return value;
+                }
+            }
+            // On the supported lock-free targets (x64/arm64), aligned native
+            // widths have atomic read instructions. Volatile.Read supplies
+            // acquire ordering without touching the storage. Full fences
+            // bracket seq_cst reads so surrounding loads/stores cannot cross
+            // them, matching the Interlocked stores and RMW operations.
+            if (order == 5) Interlocked.MemoryBarrier();
+            T observed;
+            if (sizeof(T) == 1)
+            {
+                byte value = Volatile.Read(ref Unsafe.As<T, byte>(ref location));
+                observed = Unsafe.As<byte, T>(ref value);
+            }
+            else if (sizeof(T) == 2)
+            {
+                short value = Volatile.Read(ref Unsafe.As<T, short>(ref location));
+                observed = Unsafe.As<short, T>(ref value);
+            }
+            else if (sizeof(T) == 4)
+            {
+                int value = Volatile.Read(ref Unsafe.As<T, int>(ref location));
+                observed = Unsafe.As<int, T>(ref value);
+            }
+            else
+            {
+                long value = Volatile.Read(ref Unsafe.As<T, long>(ref location));
+                observed = Unsafe.As<long, T>(ref value);
+            }
+            if (order == 5) Interlocked.MemoryBarrier();
+            return observed;
+        }
     }
 
     public static T Store<T>(ref T location, T value, int order) where T : unmanaged

@@ -1045,3 +1045,17 @@ ten-check structured-control suite also passes. Full self emission, Roslyn
 syntax validation, formatting and packaging pass; full managed compiler build
 and execution remain unverified. [Evidence](../evidence/self-musl-20261004.json)
 and [review guide](self-csharp-review.md).
+
+### Read-only atomic loads exposed by SQLite WAL (2026-10-04)
+
+The real-file SQLite process campaign found an access violation when loading a
+read-only WAL index: `AtomicOps.Load` used compare-exchange, which writes even
+when the stored bits are unchanged. Aligned 1/2/4/8-byte loads now use read-only
+acquire operations, with full fences for sequential consistency; the existing
+unaligned/larger address-lock fallback reads without writing. EDG was unchanged.
+
+The pre-fix failure is retained. OS-enforced read-only mapping tests pass strict
+JIT/Linux-x64 NativeAOT for every legal load order, zero/nonzero contents,
+aligned/unaligned typed and raw objects. Existing atomic conformance/contention
+and original-EDG-C versus static/instance C11 JIT/AOT checks also pass.
+[Evidence](../evidence/atomic-readonly-20261004.json).

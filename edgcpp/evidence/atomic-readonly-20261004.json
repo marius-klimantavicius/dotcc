@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-04",
+  "status": "passed",
+  "trigger": "Read-only SQLite WAL index crashed because atomic Load performed compare-exchange writes.",
+  "fix": "Read-only aligned acquire loads with seq_cst fences; locked read-only fallback for unaligned/larger storage.",
+  "readonly": {
+    "status": "passed",
+    "checks": [
+      "all legal atomic load orders on OS-enforced read-only mappings",
+      "typed and raw loads: 1/2/4/8/16 byte integer and float/double values; arbitrary 3/7/24 byte objects",
+      "zero and nonzero contents at aligned and unaligned addresses; backing file unchanged"
+    ],
+    "nativeaot": true,
+    "inputs": {
+      "AtomicOps.cs": "4ac9daa764836ae03916747e69cc5baf1349033e4534f01f00350f62744e458d",
+      "atomic_readonly.cs": "6a80e741c540d9e078ef0b1c53e4bc19db5aaab7b5b4c5eb090922314a8c1542",
+      "atomic_readonly_verify.py": "4e9d21450cd36495548af222103104bbe688a4c24352e2b15d2857e341825c0c"
+    }
+  },
+  "conformance": [
+    {
+      "label": "build",
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/dotcc-edg-campaign-20261003/atomic-load-conformance-001/AtomicProbe.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "exit": 0
+    },
+    {
+      "label": "jit",
+      "command": [
+        "dotnet",
+        "/mnt/storage/dotcc-edg-campaign-20261003/atomic-load-conformance-001/bin/Release/net10.0/AtomicProbe.dll"
+      ],
+      "exit": 0
+    },
+    {
+      "label": "publish",
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/dotcc-edg-campaign-20261003/atomic-load-conformance-001/AtomicProbe.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "-p:PublishAot=true",
+        "-p:IlcTreatWarningsAsErrors=true",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/atomic-load-conformance-001/aot"
+      ],
+      "exit": 0
+    },
+    {
+      "label": "aot",
+      "command": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/atomic-load-conformance-001/aot/AtomicProbe"
+      ],
+      "exit": 0
+    }
+  ],
+  "c11": [
+    "EDG C backend implicit atomic oracle",
+    "static: JIT implicit C11 contracts",
+    "static: NativeAOT implicit C11 contracts",
+    "instance: JIT implicit C11 contracts",
+    "instance: NativeAOT implicit C11 contracts"
+  ],
+  "retainedFailures": [
+    "atomic-readonly-before-001",
+    "sqlite-host-001/jit-processes.stderr"
+  ],
+  "limitations": [
+    "Execution verified on Linux x64 only.",
+    "Fallback address locks do not synchronize independent processes or separately generated runtime assemblies."
+  ]
+}
