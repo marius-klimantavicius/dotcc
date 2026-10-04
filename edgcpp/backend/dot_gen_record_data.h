@@ -1,18 +1,20 @@
 // C's aggregate initializer order is defined by EDG's lowered constants and
 // next_non_empty_initializable_field, as in c_gen_be::dump_initializer_part.
-// Use C# value-type initializers only where every field has an ordinary,
-// non-overlapping managed representation. Other layouts retain direct stores.
+// Use C# value-type initializers only where every field has an ordinary
+// managed representation. Struct fields must not overlap; a union initializer
+// selects exactly one member. Other layouts retain direct stores.
 bool source_plain_record(a_type_ptr original) {
   auto t=skip_typerefs(original);
-  if((t->kind!=tk_struct && t->kind!=tk_class) || !t->size)return false;
+  if((t->kind!=tk_struct && t->kind!=tk_class && t->kind!=tk_union) || !t->size)return false;
+  bool union_type=t->kind==tk_union;
   unsigned long long end=0;
   for(auto field=t->variant.class_struct_union.field_list;field;field=field->next) {
     auto ft=skip_typerefs(field->type);
     if(field->is_bit_field || field->is_lowered_base_class || field->compiler_generated ||
-       ft->kind==tk_array || ft->kind==tk_union || !ft->size || field->offset<end)return false;
-    if((ft->kind==tk_struct || ft->kind==tk_class) && !source_plain_record(ft))return false;
+       ft->kind==tk_array || !ft->size || (!union_type && field->offset<end))return false;
+    if((ft->kind==tk_struct || ft->kind==tk_class || ft->kind==tk_union) && !source_plain_record(ft))return false;
     if(ft->kind!=tk_integer && ft->kind!=tk_float && ft->kind!=tk_pointer &&
-       ft->kind!=tk_struct && ft->kind!=tk_class)return false;
+       ft->kind!=tk_struct && ft->kind!=tk_class && ft->kind!=tk_union)return false;
     if(field->offset>t->size || ft->size>t->size-field->offset)return false;
     end=field->offset+ft->size;
   }
@@ -42,10 +44,27 @@ string source_record_initializer(a_type_ptr original,a_constant_ptr value,const 
   string result="new()\n"+indent+"{\n";
   auto field=next_non_empty_initializable_field(t->variant.class_struct_union.field_list);
   for(auto item=value->variant.aggregate.first_constant;item;item=item->next) {
-    if(!field || item->kind==ck_designator || item->kind==ck_init_repeat)return "";
+    if(item->kind==ck_designator) {
+      // With LOWER_DESIGNATED_INITIALIZERS, the C backend retains designators
+      // only to choose a union member. The following constant supplies its
+      // value. Do not infer the member from constant type or overlapping offset.
+      if(t->kind!=tk_union || item->variant.designator.is_generic ||
+         !item->variant.designator.is_field_designator)return "";
+      auto selected=item->variant.designator.variant.field;
+      bool found=false;
+      for(auto candidate=t->variant.class_struct_union.field_list;candidate;candidate=candidate->next)
+        if(candidate==selected){found=true;break;}
+      if(!found || !item->next || item->next->kind==ck_designator)return "";
+      field=selected;item=item->next;
+    }
+    if(!field || item->kind==ck_init_repeat)return "";
+    // A single value-type construction must never overwrite another union
+    // member selected earlier in the initializer. Preserve the store fallback
+    // for any extended/multiple-designator representation.
+    if(t->kind==tk_union && item->next)return "";
     auto ft=skip_typerefs(field->type);
     string expression;
-    if(ft->kind==tk_struct || ft->kind==tk_class) {
+    if(ft->kind==tk_struct || ft->kind==tk_class || ft->kind==tk_union) {
       expression=source_record_initializer(ft,item,indent+"    ");
       if(expression.empty())return "";
     } else {
@@ -59,14 +78,14 @@ string source_record_initializer(a_type_ptr original,a_constant_ptr value,const 
 }
 string source_global_initializer(a_variable_ptr variable_ptr,a_constant_ptr value) {
   auto t=skip_typerefs(variable_ptr->type);
-  // Every nonempty stored array can use a source-named pointer to its actual
-  // elements. This also avoids the inline-array pointer-cell .Value wrapper
-  // for data/function pointer tables. Aggregate shape only decides how each
-  // element is initialized, not whether its containing table can be named.
-  if(t->kind!=tk_array || !t->size ||
+  // Name the final aggregate storage once, including structs that contain
+  // tables. Keep array element pointers so pointer-cell stores avoid .Value;
+  // records use a pointer to the original record and named member accesses.
+  if(!aggregate(t) || !t->size ||
      (value->kind!=ck_aggregate && value->kind!=ck_string))
     return initializer(variable(variable_ptr),variable_ptr->type,value);
-  auto element=t->variant.array.element_type;
+  bool array=t->kind==tk_array;
+  auto pointed_type=array?t->variant.array.element_type:variable_ptr->type;
   string domain=emitting_tls_initializer?"tls-initializer-locals":"global-initializer-locals";
   auto &reserved=source_name_used[domain];
   // Constructor startup catches and TLS allocation already use these locals.
@@ -74,10 +93,10 @@ string source_global_initializer(a_variable_ptr variable_ptr,a_constant_ptr valu
   string alias=source_allocate(domain,source_identifier_component(name(variable_ptr,"v")),"table");
   auto &offsets=emitting_tls_initializer?tls_offsets:global_offsets;
   auto allocated=offsets.find(variable_ptr);
-  if(allocated==offsets.end())unsupported("initializer table without allocated storage");
+  if(allocated==offsets.end())unsupported("initializer aggregate without allocated storage");
   string address=string(emitting_tls_initializer?"p":"__edg_base")+" + "+std::to_string(allocated->second);
-  // The alias points to final storage, never an intermediate array. Pointer
-  // relocations still resolve through the global/TLS arena maps.
-  return "var "+alias+" = ("+type(element)+"*)("+address+");\n"+
-    initializer(variable(variable_ptr),variable_ptr->type,value,alias,alias);
+  // Aliases never create copies. Relocations still use final global/TLS storage.
+  return "var "+alias+" = ("+type(pointed_type)+"*)("+address+");\n"+
+    (array?initializer(variable(variable_ptr),variable_ptr->type,value,alias,alias):
+           initializer("*"+alias,variable_ptr->type,value,alias,"",alias));
 }

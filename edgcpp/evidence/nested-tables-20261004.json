@@ -1,0 +1,123 @@
+{
+  "status": "passed",
+  "date": "2026-10-04",
+  "scope": "Named global/TLS record aliases for nested tables; selected union and containing-record object initializers",
+  "compiler": {
+    "path": "edgcpp/artifacts/campaign/persistent-continuation/nested-tables-build-001/cpfe-dot",
+    "sha256": "2aba7222a01e34c0b5c1057a38a3f96273f9bde5e37d0f8f7607814bf3dd46d9"
+  },
+  "canonicalCompiler": {
+    "path": "edgcpp/build/bin/cpfe-dot",
+    "sha256": "6ca352bfc806376e01628507df06ed009c4f59005fa3ab752520485e5c4a54ef"
+  },
+  "inputs": {
+    "edgcpp/backend/dot_gen_be.c": "2264686f0fe36874bb7bc8aae3dba2d823061e46a7fe57f648ea94aea40e8f02",
+    "edgcpp/backend/dot_gen_record_data.h": "2c8a6ef90a42be89f6343c3dceb3a8e94e135eebd06c5be53b995913d6d5b7b6",
+    "edgcpp/backend/tests/table_alias_readability.cpp": "17ca4361e45ced9eadb0d21a3f867fcd83bb73eb4fb2f91a04f336f42c8fefc7",
+    "edgcpp/backend/tests/table_alias_readability_verify.py": "4428b87bfe6647b43bfff9f9b6e46385fcc8825ff851088706accc56a6f79c0d",
+    "edgcpp/backend/tests/record_initializer_readability_verify.py": "b5d855064729ee738e9e7bfdd6acee116594bb243463e16011bdfe656ccf722b"
+  },
+  "validation": {
+    "nestedTables": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/nested-tables-tests-001/results.json",
+        "sha256": "796cd088220dc198266282403b11aa87f281fdf9276e0e11075f47688b1c0aca"
+      },
+      "checks": [
+        "GCC and Clang agree on array contents, function pointers and relocations, local copies, independent arrays and per-thread storage",
+        "static/JIT: native table traces, forced GC, independent copies, owner and TLS isolation",
+        "static/NativeAOT: native table traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/JIT: native table traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/NativeAOT: native table traces, forced GC, independent copies, owner and TLS isolation"
+      ]
+    },
+    "recordRegression": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/nested-tables-record-regression-001/results.json",
+        "sha256": "853280b4f8be98812b431704291effc5f48370d878db62e92a4c3f4b1419c1be"
+      },
+      "checks": [
+        "GCC and Clang agree on record fields and relocations, local copies, independent arrays and per-thread storage",
+        "static/JIT: native record traces, forced GC, independent copies, owner and TLS isolation",
+        "static/NativeAOT: native record traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/JIT: native record traces, forced GC, independent copies, owner and TLS isolation",
+        "instance/NativeAOT: native record traces, forced GC, independent copies, owner and TLS isolation"
+      ]
+    },
+    "sqliteCore": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/nested-tables-sqlite-core-001/results.json",
+        "sha256": "c454646cca64654739c8e9adfab2f195f6b5244dd85c1c163fefe2c9b7932a19"
+      },
+      "checks": [
+        {
+          "label": "core-native-reference",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-jit-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-aot-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        }
+      ]
+    },
+    "sqliteReview": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/sqlite-nested-tables-review-20261004-001/results.json",
+        "sha256": "22d60a0c33e4583f683b1bf2f3c651a45149ca362b52be13adb5b7c0eb48458e"
+      },
+      "checks": [
+        "generation",
+        "strict Release build",
+        "macro/version/open-close consumer JIT and Linux-x64 NativeAOT",
+        "ALTER TABLE RENAME COLUMN, renamed-column sum and log/ln CHECK consumer JIT and Linux-x64 NativeAOT"
+      ],
+      "review": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/sqlite-nested-tables-review-20261004-001/generated/REVIEW.md",
+        "sha256": "4c21d4b3489b5b8ba60a2bfdd50f8439b8e0dffcaf0b81bf3649c42c38e47015"
+      },
+      "examples": {
+        "recordAlias": {
+          "file": "Translated.cs",
+          "line": 2718
+        },
+        "nestedRow": {
+          "file": "Translated.cs",
+          "line": 3127
+        },
+        "funcDefRow": {
+          "file": "Translated.cs",
+          "line": 6404
+        }
+      },
+      "snippets": [
+        {
+          "path": "edgcpp/artifacts/campaign/persistent-continuation/sqlite-nested-tables-review-20261004-001/generated/named-record-table.cs.txt",
+          "sha256": "00298578040ab831799a6bc4818f8c18d52e527ee59d7d314bcae470c152347d"
+        },
+        {
+          "path": "edgcpp/artifacts/campaign/persistent-continuation/sqlite-nested-tables-review-20261004-001/generated/funcdef-union-row.cs.txt",
+          "sha256": "444a7496ac65d858ef8ca4d290787250d1044003ef0b07aafc0da3b38b0356a0"
+        }
+      ],
+      "translatedFiles": 43,
+      "translatedBytes": 11390947,
+      "priorTranslatedBytes": 11432323
+    }
+  },
+  "reviewAliases": [
+    "edgcpp/artifacts/review/sqlite",
+    "edgcpp/artifacts/review/sqlite-readable"
+  ],
+  "limitations": [
+    "Unsupported array-member/bitfield/compiler-generated/lowered-base object layouts and multiple union selections retain prior fallback.",
+    "SQLite profile uses test memory VFS, THREADSAFE=0 and selected musl provider.",
+    "Verification was on Linux x64; full translated EDG was not regenerated or executed."
+  ]
+}

@@ -959,3 +959,29 @@ exports, 213 musl source units and the test memory VFS profile. Strict compilati
 and the existing macro/version/open-close consumer pass JIT and Linux-x64
 NativeAOT. This refresh does not rerun the broader SQL corpus or establish a
 production OS VFS/threading profile. [SQLite evidence](../evidence/sqlite-contract-split-review-20261004.json).
+
+### Nested tables and selected-union initializers (2026-10-04)
+
+Named initializer aliases now cover nonempty struct/union globals and TLS, in
+addition to top-level arrays. A record containing tables receives one pointer to
+its final arena storage; initialization uses named member accesses such as
+`(__log_data->tab)[80]`, without repeating the arena cast. Bulk array data retains
+its existing destination/stride semantics and aliases do not create copies.
+
+The object-initializer eligibility check now permits ordinary union layouts when
+EDG identifies exactly one initialized member. It follows the first initializable
+field or a validated lowered union designator, as the C backend does. SQLite's
+`aAlterTableFuncs` rows therefore use one `new()` value with a nested
+`u = new() { pHash = ..., }`. Trailing commas, constant bit patterns, pointer
+relocations and omitted-field zero values are preserved. Bitfields, array-member
+layouts, lowered bases and unsupported multiple union selections retain their
+existing fallback. See [storage readability](source-storage-readability.md).
+
+The expanded table-alias and existing record-initializer suites pass against
+GCC/Clang under static/instance JIT and NativeAOT. Coverage includes nested tables,
+selected function/data-pointer union members, omitted fields, exact negative-zero
+bits, zero padding, owner/TLS isolation and forced GC. SQLite core output also
+matches its native reference under JIT and NativeAOT. Both native backend builds
+pass. SQLite's existing review aliases are refreshed with the requested examples;
+full translated EDG was not regenerated for this SQLite-focused change.
+[Verification and review evidence](../evidence/nested-tables-20261004.json).

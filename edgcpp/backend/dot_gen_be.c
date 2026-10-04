@@ -49,7 +49,7 @@ std::map<a_variable_ptr, unsigned long long> local_offsets;
 unsigned long long frame_size = 0, frame_alignment = 8;
 string type(a_type_ptr t);
 string enum_boundary_value(a_type_ptr target,a_type_ptr source,const string &value);
-string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address="", string array_pointer="");
+string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address="", string array_pointer="", string record_pointer="");
 string typeinfo_constant(a_constant_ptr c);
 bool aggregate(a_type_ptr t) {
   t = skip_typerefs(t);
@@ -478,7 +478,7 @@ string constant(a_constant_ptr c) {
 }
 #include "dot_gen_primitive_data.h"
 #include "dot_gen_record_data.h"
-string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address, string array_pointer) {
+string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address, string array_pointer, string record_pointer) {
   t = skip_typerefs(t);
   if(storage_address.empty())storage_address="&("+dst+")";
   if(t->kind==tk_array && !t->size) {
@@ -587,7 +587,9 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
         ++index;
       } else {
         if (!field || count != 1) unsupported("record initializer fields");
-        result += initializer("(" + dst + ")." + name(field, "m"), field->type, value,
+        string field_destination=record_pointer.empty()?"("+dst+")."+name(field,"m"):
+          record_pointer+"->"+name(field,"m");
+        result += initializer(field_destination, field->type, value,
                               "(("+type(field->type)+"*)((byte*)("+storage_address+") + "+std::to_string(field->offset)+"))");
         field = next_non_empty_initializable_field(field->next);
       }

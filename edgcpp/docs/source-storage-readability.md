@@ -98,7 +98,25 @@ builtin_type_strings[5924] = __edg_literal(869096 /* "int (int,...)" */);
 Direct pointer-table stores no longer need the synthetic inline-array cell's
 `.Value` member. Primitive span and byte/UTF-8 bulk copies use the same alias as
 the destination. Nested array rows retain their managed inline-array layout;
-union and bitfield stores retain their existing initialization rules.
+eligible union values use object initializers; bitfields retain their existing
+initialization rules.
+
+Struct and union globals/TLS receive a named pointer too. Tables inside a
+record reuse that pointer instead of repeating an arena cast for every row:
+
+```csharp
+var __log_data = (log_data*)(__edg_base + 48160);
+(__log_data->tab)[80] = new()
+{
+    invc = global::System.BitConverter.Int64BitsToDouble(unchecked((long)0x3fefe01ff726fa1aUL)),
+    logc = global::System.BitConverter.Int64BitsToDouble(unchecked((long)0x3f6feff384900000UL)),
+};
+```
+
+The pointer addresses the original record, so scalar header/footer members and
+all nested tables share the same alias. Records requiring field-by-field
+initialization keep named `alias->member` stores. Eligible complete record values
+can be assigned with `*alias = new() { ... };`.
 
 A byte-span clear covers the full native array, including padding and omitted
 elements. It also works for pointer and function-pointer arrays, whose element
@@ -134,8 +152,27 @@ The `new()` creates a value-type struct, not a managed heap object. This is a
 source-size/readability improvement; identical IL or native machine code is not
 promised.
 
-Union, bitfield, array-member and overlapping/lowered-base layouts retain the
-existing initialization path. Global and TLS destinations retain their backing
+Unions can use object initializers when their members have ordinary supported
+layouts and EDG selects exactly one member, either implicitly or through a
+lowered union designator. A containing record can then use a nested initializer,
+as with SQLite's `FuncDef`:
+
+```csharp
+aAlterTableFuncs[0] = new()
+{
+    nArg = 9,
+    // Other fields retain their original values and pointer expressions.
+    u = new()
+    {
+        pHash = (FuncDef*)0,
+    },
+};
+```
+
+The initializer does not guess an active member from its type or offset. Empty
+initializers remain zero-valued. Bitfields, array members, compiler-generated or
+lowered bases, non-union overlaps, and unsupported/repeated union selections
+retain the existing initialization path. Global and TLS destinations retain their backing
 arenas and isolation. Address constants refer to the final storage, including
 self references, rather than an object-initializer temporary.
 

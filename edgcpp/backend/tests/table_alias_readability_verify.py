@@ -15,7 +15,8 @@ def audit_generated(directory):
     aliases = {}
     expected = ('names', 'name_copies', 'addresses', 'values', 'cyclic', 'operations',
                 'words', 'message', 'matrix', 'zeros', 'error', 'unions', 'bit_rows',
-                'array_rows', 'p', 'storage', 'tls_operations')
+                'array_rows', 'p', 'storage', 'tls_operations', 'log_data',
+                'global_target', 'union_float', 'tls_log_data', 'tls_target')
     for name in expected:
         matches = re.findall(r'\bvar\s+(@?' + name + r'(?:__\w+)?)\s*=\s*\(', text)
         assert len(matches) == 1, (name, matches)
@@ -30,8 +31,14 @@ def audit_generated(directory):
     assert 'ReadOnlySpan<uint>' in text and '__edg_initializer' in text
     assert any('.CopyTo(' in line and 'words' in line for line in text.splitlines()), 'primitive table should retain bulk span copy'
     assert any('.CopyTo(' in line and 'message' in line for line in text.splitlines()), 'byte string table should retain bulk span copy'
-    for source in ('unions', 'bit_rows', 'array_rows'):
+    assert re.search(r'\bunions\s*\[\s*0\s*\]\s*=\s*new\s*\(\s*\)', text), 'selected union member should use an object initializer'
+    for source in ('bit_rows', 'array_rows'):
         assert not re.search(r'\b' + source + r'\s*\[\s*\d+\s*\]\s*=\s*new\s*\(\s*\)', text), source
+    for source in ('log_data', 'tls_log_data'):
+        assert re.search(r'\bvar\s+' + source + r'\s*=\s*\([^;]*\bLogData\s*\*\s*\)', text), source
+        assert re.search(r'\b' + source + r'\s*->\s*tab\s*\)*\s*\[\s*0\s*\]\s*=\s*new\s*\(\s*\)\s*\{.*?\bu\s*=\s*new\s*\(\s*\)', text, re.S), source
+    assert re.search(r'\*\s*global_target\s*\)*\s*=\s*new\s*\(\s*\)', text)
+    assert re.search(r'\*\s*union_float\s*\)*\s*=\s*new\s*\(\s*\)\s*\{\s*floating\s*=', text)
     assert aliases['p'] != 'p' and aliases['storage'] != 'storage' and aliases['error'] != 'error', aliases
     return {'aliases': aliases, 'generated_bytes': len(text.encode())}
 
@@ -63,7 +70,7 @@ int main() {
     traces = []
     for label, frontend in [('gcc', 'g++'), ('clang', clang)]:
         executable = out / ('oracle-' + label)
-        run([frontend, '-std=c++17', '-O2', '-pthread', oracle, '-o', executable])
+        run([frontend, '-std=c++20', '-O2', '-pthread', oracle, '-o', executable])
         traces.append(run([executable]).stdout)
     assert traces[0] == traces[1], traces
     expected = traces[0]
@@ -78,7 +85,7 @@ int main() {
     for instance in (False, True):
         mode = 'instance' if instance else 'static'
         directory = out / mode
-        run([sys.executable, root / 'dotnet.py', source, '--std', 'c++17', '--emit', 'managedlib',
+        run([sys.executable, root / 'dotnet.py', source, '--std', 'c++20', '--emit', 'managedlib',
              '--class-name', 'Core', '--namespace', 'Table.Aliases', '--split', 'function',
              '--output-dir', directory, *(['--compiler', compiler] if compiler else []),
              *(['--instance-methods'] if instance else [])])

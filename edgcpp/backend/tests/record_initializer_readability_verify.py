@@ -24,8 +24,9 @@ def audit_generated(directory):
     assert re.search(r'__edg_literal\s*\(\s*\d+\s*/\*\s*"alpha"', first), first
     assert '__edg_literal(' in text
     assert re.search(r'\bnested_rows\s*\[\s*0\s*\]\s*=\s*new\s*\(\s*\)\s*\{.*?\bpoint\s*=\s*new\s*\(\s*\)\s*\{', text, re.S), 'nested plain records should use nested object initializers'
-    # Only record tables without overlapping/bitfield/array layout are eligible.
-    assert not re.search(r'\b(?:union_rows|bit_rows|array_rows)\s*\[\s*\d+\s*\]\s*=\s*new\s*\(\s*\)', text)
+    # A union with one selected member is eligible; bitfields/array members retain fallback.
+    assert re.search(r'\bunion_rows\s*\[\s*0\s*\]\s*=\s*new\s*\(\s*\)\s*\{.*?\bword\s*=\s*new\s*\(\s*\)', text, re.S)
+    assert not re.search(r'\b(?:bit_rows|array_rows)\s*\[\s*\d+\s*\]\s*=\s*new\s*\(\s*\)', text)
     return {'named_table_alias': alias.group(1), 'table_object_initializer_count': len(rows),
             'literal_helper_calls': len(re.findall(r'__edg_literal\s*\(\s*\d+', text)),
             'generated_bytes': len(text.encode())}
