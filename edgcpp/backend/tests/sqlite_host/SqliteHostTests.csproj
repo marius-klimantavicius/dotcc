@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TranslatedProject Condition="'$(TranslatedProject)' == ''">../../../artifacts/review/sqlite/Generated.csproj</TranslatedProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(TranslatedProject)" />
+  </ItemGroup>
+</Project>

@@ -1059,3 +1059,30 @@ JIT/Linux-x64 NativeAOT for every legal load order, zero/nonzero contents,
 aligned/unaligned typed and raw objects. Existing atomic conformance/contention
 and original-EDG-C versus static/instance C11 JIT/AOT checks also pass.
 [Evidence](../evidence/atomic-readonly-20261004.json).
+
+### Filesystem-backed, threadsafe SQLite host (2026-10-04)
+
+`sqlite_host.py` now prepares the pinned SQLite APPDEF adaptation, translates
+SQLite plus 213 selected musl/provider units, supplies all four host partial
+contracts, and verifies the resulting reusable library. It preserves public
+API names, exports 490 object macros and retains size-split source. THREADSAFE=1
+uses real BCL mutexes; disk temp, WAL and database mmap are enabled. The adapter
+reuses the authored dotcc VFS/platform sources with owner-first callback thunks,
+owner-specific registration/mutex/TLS state and pinned callback-table storage.
+Static mutex identities survive shutdown/reinitialization.
+
+Strict JIT/Linux-x64 NativeAOT builds and all 11 in-process test groups pass.
+The full independent-process campaign passes under both execution modes with
+native↔translated and translated↔translated pairs: locks, forced-death recovery,
+WAL snapshots/checkpoints, readonly indexes/media, hardlinks and symlink paths.
+The first campaign's readonly atomic failure and its regression evidence are
+retained. A separate eight-caller heap/errno/TLS/shutdown fixture also passes
+JIT/AOT. Review aliases now point to the host profile.
+
+This is OS_OTHER host integration, not an implementation of the POSIX layer.
+The user's OS_UNIX suggestion was tested: portable declarations allow upstream
+Unix VFS emission, leaving 29 POSIX externs plus two APPDEF hooks. Descriptor,
+metadata, fcntl and mapping services remain to be implemented for that route.
+Windows/macOS execution and native extension loading are not claimed.
+[Usage and limits](sqlite-host.md), [Unix analysis](sqlite-posix.md),
+[evidence](../evidence/sqlite-host-20261004.json).
