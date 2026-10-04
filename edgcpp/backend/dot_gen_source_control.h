@@ -36,8 +36,11 @@ void source_control_scan(a_statement_ptr s,std::vector<source_control_region> re
          (d->kind==dik_expression || d->kind==dik_constant || d->kind==dik_zero) &&
          !(d->kind==dik_expression && source_initializer_mentions(d->variant.expression,v))) {
         source_lexical_variables.insert(v);
-        if(s->next && s->next->kind==stmk_for && !s->next->variant.for_loop.extra_info->initialization)
-          source_for_initializers[s->next]=d;
+        // Adjacency does not prove a for-init declaration. EDG also puts an
+        // ordinary preceding local here (e.g. "char *r = p; for (;...); use(r)").
+        // As in c_gen_be, retain the lowered declaration outside the loop;
+        // moving it into a C# for header would shorten its lexical scope.
+        // Header fusion needs original for-init provenance, not this heuristic.
       }
       break;
     }

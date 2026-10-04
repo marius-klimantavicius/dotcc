@@ -1011,3 +1011,37 @@ EDG emission has zero varcall helpers (previously 2,500); syntax, formatting and
 packaging pass. Full managed EDG build/execution remains unverified, as do other
 OS/architecture runs. No broad libc/C++ completeness claim follows from these
 checks. [Verification and review evidence](../evidence/varargs-span-20261004.json).
+
+### EDG self-translation with musl (2026-10-04)
+
+`translate_self.py --profile musl --libcxx-acquisition PATH` now translates all
+75 original compiler source units with 213 selected musl/provider units and
+the pinned libc++18 headers. The acquisition's header hashes are verified;
+no native system headers or native C++ implementation are supplied. A private
+portable declaration overlay covers host metadata, directories, descriptors,
+resource limits and mappings. EDG's supported allocation/read fallback replaces
+memory-region mmap; language extensions and C++/CLI metadata remain enabled.
+Binary128 classification uses an exact builtin adapter for libc++'s missing
+extended-type overload. Original conversion settings leave quadmath declarations
+unreferenced, so there is no quadmath runtime dependency in this output.
+
+The refreshed existing EDG review aliases and new `artifacts/review/edg-musl`
+contain 410 C# files (187,177,227 bytes), 106 managed libc bindings and no varcall
+helpers. Required external contracts drop from 84 to 24: 9 C++ library/runtime
+symbols and 15 POSIX host services. These remain real required partial bodies;
+the complete translated compiler is not yet runnable. The discussed common
+Edg.Runtime namespace migration remains separate from this provider change.
+
+The C++ musl probe exposed a source-control emitter bug: adjacency alone was
+used to move preceding local declarations into for headers, hiding variables
+used after the loop. Our emitter now retains those declarations before the
+structured loop, as the C backend does. No EDG source/semantic change was made.
+Safe restoration of true for-init headers needs original scope provenance.
+
+Seven bounded profile checks pass, including strict JIT/Linux-x64 NativeAOT,
+formatting/parsing, binary80/binary128, allocation, exceptions, real libc++
+required-contract diagnostics and native/C# C/C++ loop scope probes. The existing
+ten-check structured-control suite also passes. Full self emission, Roslyn
+syntax validation, formatting and packaging pass; full managed compiler build
+and execution remain unverified. [Evidence](../evidence/self-musl-20261004.json)
+and [review guide](self-csharp-review.md).

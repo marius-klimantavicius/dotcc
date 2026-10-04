@@ -24,11 +24,17 @@ the historical lowered C and does not substitute a small demonstration compiler.
 The generated project uses `Edg.Compiler.EdgCompiler` and source-oriented file
 grouping by default. `--split size` remains available.
 
-The current refresh uses `--exceptions --unbound-externals partial`: 84 external
-symbols require runtime implementations. Shared signatures use `Managed.Runtime`
+The current refresh uses `--profile musl --exceptions --unbound-externals partial`
+with pinned libc++18.1.8 headers. It adds 213 selected musl/provider source units
+and binds 106 imports through the existing shared managed services. There are
+24 remaining external symbols: 9 C++ library/runtime symbols and 15 POSIX host
+services (metadata, directories, descriptors, resource limits and mappings).
+These host services also need implementations; implementing libc++ alone will
+not make the compiler runnable. Shared signatures still use `Managed.Runtime`
 in `Managed.Runtime.generated.cs`; signatures involving generated types remain
-on `Edg.Compiler.EdgCompiler` in `Translated.Runtime.generated.cs`. This includes
-the host FILE and other platform record layouts. See
+on `Edg.Compiler.EdgCompiler` in `Translated.Runtime.generated.cs`. Portable FILE
+is opaque and the private host records do not claim native OS ABI compatibility.
+The discussed common `Edg.Runtime` namespace migration remains separate. See
 [`partial-externals.md`](partial-externals.md) for `--runtime-source` providers.
 These are required compile-time contracts, not throwing review stubs. Full
 managed compilation/runtime remain unverified. An earlier no-exceptions build
@@ -42,12 +48,19 @@ the driver's explicit `--no-exceptions --no-rtti` flags. `--exceptions` and
 the native and effective feature settings. Ordinary driver invocations continue
 to enable both features by default.
 
-The portable-header attempt currently stops at the unconditional `sys/types.h`
-include in `host_envir.h`. The diagnostic `--profile host` uses the native Linux
-LP64 target and actual host headers. This profile is for reviewing translated
-bodies; it does not establish portable libc/OS bindings or a runnable managed
-compiler. The native EDG configuration uses OS services such as memory mapping
-that still need a managed host implementation.
+The earlier portable-header attempt stopped at `sys/types.h`. The musl profile
+now supplies a private [host declaration overlay](../backend/self/README.md)
+without discovering system headers. It uses EDG's supported
+`USE_MMAP_FOR_MEMORY_REGIONS=0` allocation/read fallback while preserving
+language extensions and portable C++/CLI metadata mapping. Binary128 settings
+remain unchanged. Although a quadmath declaration header is needed for parsing,
+the original host-conversion and hexadecimal-output settings leave no emitted
+quadmath calls. The exact binary128 classification adapter uses an EDG builtin.
+
+The diagnostic `--profile host` remains available with the native Linux target
+and actual host headers. Neither profile establishes a runnable managed compiler
+or complete cross-platform host integration. Native configuration defaults,
+including target/predefined-macro-file policies, remain inputs to the port.
 
 For the full source set, the custom backend must enable the supported EDG
 configuration `PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE=1`, as the original C backend
@@ -59,13 +72,14 @@ no EDG semantic source changes are needed.
 The current investigation's isolated binary is under:
 
 ```
-artifacts/campaign/persistent-continuation/varargs-span-build-001/cpfe-dot
+artifacts/campaign/persistent-continuation/self-musl-build-001/cpfe-dot
 ```
 
 To request a fresh review artifact using such a compiler:
 
 ```sh
-python3 edgcpp/translate_self.py --profile host --exceptions \
+python3 edgcpp/translate_self.py --profile musl --exceptions \
+  --libcxx-acquisition edgcpp/artifacts/campaign/libcxx-acquired-005 \
   --compiler /path/to/promotion-enabled/cpfe-dot \
   --unbound-externals partial \
   --output-dir /path/to/new-output
@@ -81,9 +95,18 @@ The helper clears the state before calling the destructor and terminates if a
 destructor throws during cleanup. The exception filter marks unwinding but
 returns false, leaving exception propagation to the CLR.
 
-This variant retains the host-header review limitations and has 84 explicitly
-unbound external declarations. Translation and formatting are separate from a
-full C# build or runtime verification; those remain unverified for this variant.
+The current musl variant has 24 explicitly unbound external contracts. Its
+bounded executable probe passes strict JIT and Linux-x64 NativeAOT; the separate
+real-libc++ header probe verifies required missing bodies fail with CS8795.
+Full compiler translation and formatting remain separate from a full C# build
+or runtime verification, which have not been run for this variant.
+
+The musl C++ probe also exposed unsafe adjacent-declaration fusion into for
+headers. The emitter now follows the C backend in retaining those declarations
+before the structured loop. C/C++ scope regressions and the ten-check existing
+structured-control suite pass; reconstructing true source for-init declarations
+requires retained source-scope provenance. See
+[milestone evidence](../evidence/self-musl-20261004.json).
 
 The driver records the selected compiler path and its SHA-256 captured before
 invocation. The self-translation report additionally records original source

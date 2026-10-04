@@ -1,0 +1,383 @@
+{
+  "status": "passed-with-explicit-unimplemented-contracts",
+  "date": "2026-10-04",
+  "scope": "EDG self-translation with selected musl provider, portable headers and pinned libc++ header declarations",
+  "compiler": {
+    "path": "edgcpp/artifacts/campaign/persistent-continuation/self-musl-build-001/cpfe-dot",
+    "sha256": "8689d3d5e71b35c01046da311cdef8a082e955d59f5d348ef18683b77838e336"
+  },
+  "canonicalCompiler": {
+    "path": "edgcpp/build/bin/cpfe-dot",
+    "sha256": "959643909b925aa49efc59f637b78ad8b3f078d52734df576c3d68e9fa790867"
+  },
+  "inputs": {
+    "edgcpp/translate_self.py": "466e661f266a57687de53985c2839a2f551dc8a4953d30fc540c899633174918",
+    "edgcpp/backend/dot_gen_source_control.h": "b068b710b28481316150f2fc78b59bc72f6607ea7fd439a8f98ddf90e6c4f9cf",
+    "edgcpp/backend/tests/self_musl.cpp": "c710f53bd1ac4a8788f83cdbd30f6c5fd092aaed781a15de199215f4edb08d2a",
+    "edgcpp/backend/tests/self_musl_verify.py": "3ae6a2de4606e5ecced9b809eaf6982701c478a1052ad58d4d4d1caf69974d0d",
+    "edgcpp/backend/tests/for_local_scope.c": "a11a50949ef009b854e41f12bbc83e862e3ab3a2ecd979d33fe0bb1db6ee81b9",
+    "edgcpp/backend/self/README.md": "6cbcb020da2f8c565877de981b398e5c063dd5af3683c9379dafd95e207249fd",
+    "edgcpp/backend/self/include/memory.h": "6b5f0ae051101bc6d47f357994e88bde8170d33d5d240bd33605d635114113d6",
+    "edgcpp/backend/self/include/dirent.h": "1a88b4cb5c74cafb4fb68d089b0514ddf10e722f114d151d5fc02fcfbe921fcb",
+    "edgcpp/backend/self/include/unistd.h": "35b9a4c2d41acbeb54c8e96348909991938396ae925807b530c4ba1bb880af98",
+    "edgcpp/backend/self/include/stdio.h": "b0408c226fa9a6c08015e10a405170cebd9459720c347d145d215f3f98864e72",
+    "edgcpp/backend/self/include/quadmath.h": "94474b2bc2cd9d22898b481d3d7210b8b6a9bfdc08e7bd97491151f905058017",
+    "edgcpp/backend/self/include/sys/mman.h": "f5025ab593892e1bdd26c09a22bb6ad486cdbe3f57444ede7703fc271fd48a96",
+    "edgcpp/backend/self/include/sys/dirent.h": "5df6465a076939a0b80d5cbce1a1b1ab8241a455641c71b4d9c735019ad3c192",
+    "edgcpp/backend/self/include/sys/stat.h": "ebec0c3a8feb7fb98247bddfc1c5df7059c04eb961df3ab51dab722556fc87e6",
+    "edgcpp/backend/self/include/sys/types.h": "2d439cd247f6e9abca87eb06e298ba943b09d19d380df5d65466dd017878a6f2",
+    "edgcpp/backend/self/include/sys/resource.h": "34a93b0a132a2b747db156d0546a68e53ac79f50d9e526e96d59f55c27498d5d"
+  },
+  "review": {
+    "status": "emission-syntax-formatting-passed",
+    "artifact": "artifacts/campaign/persistent-continuation/edg-self-musl-004",
+    "reviewAlias": "artifacts/review/edg",
+    "sourceCount": 75,
+    "providerSourceCount": 213,
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/self-musl-build-001/cpfe-dot",
+      "sha256": "8689d3d5e71b35c01046da311cdef8a082e955d59f5d348ef18683b77838e336"
+    },
+    "rawOutput": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-musl-004/raw.cs",
+      "sha256": "fd6c8bb6a4410b5fcc36cef85851a72b93038a1ac66b81e2bf04e781b5b2ce6c"
+    },
+    "formatter": {
+      "mode": "roslyn-whitespace-v2",
+      "sdk": "10.0.111",
+      "sourceSha256": "9e0b7a7a3d98c375e90fe052735d9c3600dad73fca26ef098c95e644617f243a",
+      "toolSha256": "a4c163b672a58f1471880c5b9c3319d61b4705cbdcf6ebcf604a34af3b31038a"
+    },
+    "generated": {
+      "files": 410,
+      "bytes": 187177227,
+      "varcallReferences": 0,
+      "boundImports": 106,
+      "externalContracts": 24,
+      "cxxExternalContracts": 9,
+      "hostExternalContracts": 15,
+      "sharedContracts": 9,
+      "translatedContracts": 15,
+      "exports": 41389
+    },
+    "unresolvedCxx": [
+      {
+        "kind": "function",
+        "symbol": "_Znwm",
+        "managedName": "operator_u20_new__function",
+        "runtimeOwner": "Managed.Runtime",
+        "runtimeMethod": "operator_u20_new",
+        "placement": "shared",
+        "contractFile": "Managed.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "_ZdlPv",
+        "managedName": "operator_u20_delete__function",
+        "runtimeOwner": "Managed.Runtime",
+        "runtimeMethod": "operator_u20_delete",
+        "placement": "shared",
+        "contractFile": "Managed.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "_ZdlPvm",
+        "managedName": "operator_u20_delete__function_2",
+        "runtimeOwner": "Managed.Runtime",
+        "runtimeMethod": "operator_u20_delete__external",
+        "placement": "shared",
+        "contractFile": "Managed.Runtime.generated.cs"
+      },
+      {
+        "kind": "variable",
+        "symbol": "_ZTVSt9exception",
+        "managedName": "_ZTVSt9exception",
+        "runtimeMethod": "__edg_unbound_address__ZTVSt9exception",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "variable",
+        "symbol": "_ZTVSt13bad_exception",
+        "managedName": "_ZTVSt13bad_exception",
+        "runtimeMethod": "__edg_unbound_address__ZTVSt13bad_exception",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "_ZNSt9exceptionD2Ev",
+        "managedName": "_ZNSt9exceptionD2Ev__destroy",
+        "runtimeMethod": "_ZNSt9exceptionD2Ev__destroy",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "variable",
+        "symbol": "_ZTVSt9bad_alloc",
+        "managedName": "_ZTVSt9bad_alloc",
+        "runtimeMethod": "__edg_unbound_address__ZTVSt9bad_alloc",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "variable",
+        "symbol": "_ZTVSt20bad_array_new_length",
+        "managedName": "_ZTVSt20bad_array_new_length",
+        "runtimeMethod": "__edg_unbound_address__ZTVSt20bad_array_new_length",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "_ZNSt9bad_allocD2Ev",
+        "managedName": "_ZNSt9bad_allocD2Ev__destroy",
+        "runtimeMethod": "_ZNSt9bad_allocD2Ev__destroy",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      }
+    ],
+    "unresolvedHost": [
+      {
+        "kind": "function",
+        "symbol": "getcwd",
+        "managedName": "getcwd",
+        "runtimeOwner": "Managed.Runtime",
+        "runtimeMethod": "getcwd",
+        "placement": "shared",
+        "contractFile": "Managed.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "mkstemp",
+        "managedName": "mkstemp",
+        "runtimeOwner": "Managed.Runtime",
+        "runtimeMethod": "mkstemp",
+        "placement": "shared",
+        "contractFile": "Managed.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "unlink",
+        "managedName": "unlink",
+        "runtimeOwner": "Managed.Runtime",
+        "runtimeMethod": "unlink",
+        "placement": "shared",
+        "contractFile": "Managed.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "isatty",
+        "managedName": "isatty",
+        "runtimeOwner": "Managed.Runtime",
+        "runtimeMethod": "isatty",
+        "placement": "shared",
+        "contractFile": "Managed.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "mmap",
+        "managedName": "mmap",
+        "runtimeOwner": "Managed.Runtime",
+        "runtimeMethod": "mmap",
+        "placement": "shared",
+        "contractFile": "Managed.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "munmap",
+        "managedName": "munmap",
+        "runtimeOwner": "Managed.Runtime",
+        "runtimeMethod": "munmap",
+        "placement": "shared",
+        "contractFile": "Managed.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "stat",
+        "managedName": "stat__function",
+        "runtimeMethod": "stat__function",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "fdopen",
+        "managedName": "fdopen",
+        "runtimeMethod": "fdopen",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "opendir",
+        "managedName": "opendir",
+        "runtimeMethod": "opendir",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "readdir",
+        "managedName": "readdir",
+        "runtimeMethod": "readdir",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "closedir",
+        "managedName": "closedir",
+        "runtimeMethod": "closedir",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "fileno",
+        "managedName": "fileno",
+        "runtimeMethod": "fileno",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "getrlimit",
+        "managedName": "getrlimit",
+        "runtimeMethod": "getrlimit",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "setrlimit",
+        "managedName": "setrlimit",
+        "runtimeMethod": "setrlimit",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      },
+      {
+        "kind": "function",
+        "symbol": "fstat",
+        "managedName": "fstat",
+        "runtimeMethod": "fstat",
+        "runtimeOwner": "Edg.Compiler.EdgCompiler",
+        "placement": "translated",
+        "contractFile": "Translated.Runtime.generated.cs"
+      }
+    ],
+    "examples": {
+      "call": {
+        "file": "Translated.source.il.c.cs",
+        "line": 330
+      },
+      "muslCallee": {
+        "file": "Translated.source.format_wrappers.c.cs",
+        "line": 174
+      },
+      "memoryBinding": {
+        "file": "Translated.generated.cs",
+        "line": 867092
+      },
+      "fileBinding": {
+        "file": "Translated.generated.cs",
+        "line": 919895
+      },
+      "unwinding": {
+        "file": "Translated.source.lexical.c.cs",
+        "line": 25436
+      },
+      "cleanup": {
+        "file": "Translated.generated.cs",
+        "line": 970686
+      }
+    },
+    "managedCompilation": "not-run",
+    "runtime": "not-run",
+    "nativeAot": "not-run"
+  },
+  "fullInvocation": {
+    "path": "edgcpp/artifacts/campaign/persistent-continuation/edg-self-musl-004/results.json",
+    "sha256": "3c765dd0cda7c2f52ac01b684589909a7aba721a69a0372adf93f5c3e3117dc5"
+  },
+  "validation": {
+    "profileSmoke": {
+      "result": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/self-musl-smoke-003/results.json",
+        "sha256": "b1edc4c12365ae1eba995a055db38de1f3cfa37be937a0499449c53111141538"
+      },
+      "checks": [
+        "C++14 portable host headers and selected musl coexist without host ABI headers",
+        "strict JIT: musl formatting/parsing, binary80, binary128 NaN classification, native heap/memory and exceptions",
+        "Linux-x64 NativeAOT: same bounded executable",
+        "host stat/getcwd, quadmath and libc++ bad_alloc remain required partial bodies; no fabricated implementations",
+        "real pinned libc++ <new> coexists in contract-only library; C++ implementations remain unresolved",
+        "c: native/JIT adjacent declarations preserve scope beyond for loops",
+        "c++: native/JIT adjacent declarations preserve scope beyond for loops"
+      ]
+    },
+    "structuredControl": {
+      "result": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/self-musl-control-001/results.json",
+        "sha256": "7a83b5921606da2576f4ea29cb68f9d8d9a0b9d71326e36b3908e692266ab98e"
+      },
+      "checks": [
+        "c: original EDG C expression oracle",
+        "c-static: structured control, Duff dispatch and entered scopes JIT",
+        "c-static: Linux x64 NativeAOT",
+        "c-instance: structured control, Duff dispatch and entered scopes JIT",
+        "c-instance: Linux x64 NativeAOT",
+        "cxx: original EDG C expression oracle",
+        "cxx-static: structured control, Duff dispatch and entered scopes JIT",
+        "cxx-static: Linux x64 NativeAOT",
+        "cxx-instance: structured control, Duff dispatch and entered scopes JIT",
+        "cxx-instance: Linux x64 NativeAOT"
+      ]
+    }
+  },
+  "retainedFailedProbes": [
+    {
+      "artifact": "edgcpp/artifacts/campaign/persistent-continuation/edg-self-musl-001",
+      "finding": "Missing sys/types.h: private portable host declarations needed."
+    },
+    {
+      "artifact": "edgcpp/artifacts/campaign/persistent-continuation/edg-self-musl-002",
+      "finding": "Missing quadmath.h: parse-only binary128 service declarations needed."
+    },
+    {
+      "artifact": "edgcpp/artifacts/campaign/persistent-continuation/edg-self-musl-003",
+      "finding": "libc++ excludes __float128 from isnan overloads; fileno needs POSIX stdio declaration."
+    },
+    {
+      "artifact": "edgcpp/artifacts/campaign/persistent-continuation/self-musl-smoke-001",
+      "finding": "Real libc++ new header exposes required out-of-line C++ bodies; split executable and honest contract-only verification."
+    },
+    {
+      "artifact": "edgcpp/artifacts/campaign/persistent-continuation/self-musl-smoke-002",
+      "finding": "Adjacent declaration fused into for header narrowed scope; fixed only in our emitter."
+    }
+  ],
+  "limits": [
+    "Full translated EDG managed build, execution and NativeAOT not run.",
+    "15 POSIX host-service contracts and 9 C++ runtime/library contracts require implementation.",
+    "Shared partial packaging still uses Managed.Runtime; discussed Edg.Runtime namespace consolidation not implemented by this milestone.",
+    "Portable private host records are not native OS ABI layouts.",
+    "Native configuration defaults remain; complete cross-platform compiler hosting is not established.",
+    "Execution tests ran on Linux x64 only.",
+    "True source for-init declarations now remain before structured loops until original scope provenance is available."
+  ]
+}

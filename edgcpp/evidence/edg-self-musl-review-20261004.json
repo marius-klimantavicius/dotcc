@@ -1,0 +1,282 @@
+{
+  "status": "emission-syntax-formatting-passed",
+  "artifact": "artifacts/campaign/persistent-continuation/edg-self-musl-004",
+  "reviewAlias": "artifacts/review/edg",
+  "sourceCount": 75,
+  "providerSourceCount": 213,
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/self-musl-build-001/cpfe-dot",
+    "sha256": "8689d3d5e71b35c01046da311cdef8a082e955d59f5d348ef18683b77838e336"
+  },
+  "rawOutput": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-musl-004/raw.cs",
+    "sha256": "fd6c8bb6a4410b5fcc36cef85851a72b93038a1ac66b81e2bf04e781b5b2ce6c"
+  },
+  "formatter": {
+    "mode": "roslyn-whitespace-v2",
+    "sdk": "10.0.111",
+    "sourceSha256": "9e0b7a7a3d98c375e90fe052735d9c3600dad73fca26ef098c95e644617f243a",
+    "toolSha256": "a4c163b672a58f1471880c5b9c3319d61b4705cbdcf6ebcf604a34af3b31038a"
+  },
+  "generated": {
+    "files": 410,
+    "bytes": 187177227,
+    "varcallReferences": 0,
+    "boundImports": 106,
+    "externalContracts": 24,
+    "cxxExternalContracts": 9,
+    "hostExternalContracts": 15,
+    "sharedContracts": 9,
+    "translatedContracts": 15,
+    "exports": 41389
+  },
+  "unresolvedCxx": [
+    {
+      "kind": "function",
+      "symbol": "_Znwm",
+      "managedName": "operator_u20_new__function",
+      "runtimeOwner": "Managed.Runtime",
+      "runtimeMethod": "operator_u20_new",
+      "placement": "shared",
+      "contractFile": "Managed.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "_ZdlPv",
+      "managedName": "operator_u20_delete__function",
+      "runtimeOwner": "Managed.Runtime",
+      "runtimeMethod": "operator_u20_delete",
+      "placement": "shared",
+      "contractFile": "Managed.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "_ZdlPvm",
+      "managedName": "operator_u20_delete__function_2",
+      "runtimeOwner": "Managed.Runtime",
+      "runtimeMethod": "operator_u20_delete__external",
+      "placement": "shared",
+      "contractFile": "Managed.Runtime.generated.cs"
+    },
+    {
+      "kind": "variable",
+      "symbol": "_ZTVSt9exception",
+      "managedName": "_ZTVSt9exception",
+      "runtimeMethod": "__edg_unbound_address__ZTVSt9exception",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "variable",
+      "symbol": "_ZTVSt13bad_exception",
+      "managedName": "_ZTVSt13bad_exception",
+      "runtimeMethod": "__edg_unbound_address__ZTVSt13bad_exception",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "_ZNSt9exceptionD2Ev",
+      "managedName": "_ZNSt9exceptionD2Ev__destroy",
+      "runtimeMethod": "_ZNSt9exceptionD2Ev__destroy",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "variable",
+      "symbol": "_ZTVSt9bad_alloc",
+      "managedName": "_ZTVSt9bad_alloc",
+      "runtimeMethod": "__edg_unbound_address__ZTVSt9bad_alloc",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "variable",
+      "symbol": "_ZTVSt20bad_array_new_length",
+      "managedName": "_ZTVSt20bad_array_new_length",
+      "runtimeMethod": "__edg_unbound_address__ZTVSt20bad_array_new_length",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "_ZNSt9bad_allocD2Ev",
+      "managedName": "_ZNSt9bad_allocD2Ev__destroy",
+      "runtimeMethod": "_ZNSt9bad_allocD2Ev__destroy",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    }
+  ],
+  "unresolvedHost": [
+    {
+      "kind": "function",
+      "symbol": "getcwd",
+      "managedName": "getcwd",
+      "runtimeOwner": "Managed.Runtime",
+      "runtimeMethod": "getcwd",
+      "placement": "shared",
+      "contractFile": "Managed.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "mkstemp",
+      "managedName": "mkstemp",
+      "runtimeOwner": "Managed.Runtime",
+      "runtimeMethod": "mkstemp",
+      "placement": "shared",
+      "contractFile": "Managed.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "unlink",
+      "managedName": "unlink",
+      "runtimeOwner": "Managed.Runtime",
+      "runtimeMethod": "unlink",
+      "placement": "shared",
+      "contractFile": "Managed.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "isatty",
+      "managedName": "isatty",
+      "runtimeOwner": "Managed.Runtime",
+      "runtimeMethod": "isatty",
+      "placement": "shared",
+      "contractFile": "Managed.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "mmap",
+      "managedName": "mmap",
+      "runtimeOwner": "Managed.Runtime",
+      "runtimeMethod": "mmap",
+      "placement": "shared",
+      "contractFile": "Managed.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "munmap",
+      "managedName": "munmap",
+      "runtimeOwner": "Managed.Runtime",
+      "runtimeMethod": "munmap",
+      "placement": "shared",
+      "contractFile": "Managed.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "stat",
+      "managedName": "stat__function",
+      "runtimeMethod": "stat__function",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "fdopen",
+      "managedName": "fdopen",
+      "runtimeMethod": "fdopen",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "opendir",
+      "managedName": "opendir",
+      "runtimeMethod": "opendir",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "readdir",
+      "managedName": "readdir",
+      "runtimeMethod": "readdir",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "closedir",
+      "managedName": "closedir",
+      "runtimeMethod": "closedir",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "fileno",
+      "managedName": "fileno",
+      "runtimeMethod": "fileno",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "getrlimit",
+      "managedName": "getrlimit",
+      "runtimeMethod": "getrlimit",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "setrlimit",
+      "managedName": "setrlimit",
+      "runtimeMethod": "setrlimit",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    },
+    {
+      "kind": "function",
+      "symbol": "fstat",
+      "managedName": "fstat",
+      "runtimeMethod": "fstat",
+      "runtimeOwner": "Edg.Compiler.EdgCompiler",
+      "placement": "translated",
+      "contractFile": "Translated.Runtime.generated.cs"
+    }
+  ],
+  "examples": {
+    "call": {
+      "file": "Translated.source.il.c.cs",
+      "line": 330
+    },
+    "muslCallee": {
+      "file": "Translated.source.format_wrappers.c.cs",
+      "line": 174
+    },
+    "memoryBinding": {
+      "file": "Translated.generated.cs",
+      "line": 867092
+    },
+    "fileBinding": {
+      "file": "Translated.generated.cs",
+      "line": 919895
+    },
+    "unwinding": {
+      "file": "Translated.source.lexical.c.cs",
+      "line": 25436
+    },
+    "cleanup": {
+      "file": "Translated.generated.cs",
+      "line": 970686
+    }
+  },
+  "managedCompilation": "not-run",
+  "runtime": "not-run",
+  "nativeAot": "not-run"
+}
