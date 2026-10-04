@@ -1,0 +1,71 @@
+{
+  "status": "emission-syntax-formatting-passed",
+  "artifact": "artifacts/campaign/persistent-continuation/edg-self-managed-runtime-20261004-001",
+  "reviewAlias": "artifacts/review/edg",
+  "sourceCount": 75,
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/managed-runtime-build-001/cpfe-dot",
+    "sha256": "4b79114444fc7be4f2a202f112b0c2fc8805d5f49245d5911a1db832add07ef1"
+  },
+  "rawOutput": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-managed-runtime-20261004-001/raw.cs",
+    "sha256": "61217300b83d43078432b30ae6367bcb1434fc76da6f5ada9dec98c4e180b156"
+  },
+  "formatter": {
+    "mode": "roslyn-whitespace-v2",
+    "sdk": "10.0.111",
+    "sourceSha256": "29c9ac01400e7fd15c865bda039711f1c30c703588bb1287292d597a84f31a46",
+    "toolSha256": "920644ebd8d6954f3b7c8e0662823645fdc3cbec5117ab51d3e411cf479588f9"
+  },
+  "translationSeconds": 229.384,
+  "generated": {
+    "files": 156,
+    "bytes": 188347480,
+    "primitiveInitializerProperties": 3458,
+    "tableAliases": 11468,
+    "indexedObjectInitializers": 198167,
+    "partialContracts": 84,
+    "exports": 41900,
+    "prefixedExports": 0
+  },
+  "previousGeneratedBytes": 188334585,
+  "sourceSizeReductionPercent": -0.0068468571505331255,
+  "examples": {
+    "recordAlias": {
+      "file": "Translated.cs",
+      "line": 565391
+    },
+    "recordRow": {
+      "file": "Translated.cs",
+      "line": 674894
+    },
+    "pointerTableAlias": {
+      "file": "Translated.cs",
+      "line": 94397
+    },
+    "pointerTableRow": {
+      "file": "Translated.cs",
+      "line": 100323
+    },
+    "emptyDestructor": {
+      "file": "Translated.source.lexical.h.cs",
+      "line": 1434
+    },
+    "cleanup": {
+      "file": "Translated.generated.cs",
+      "line": 1006865
+    },
+    "namedLocals": {
+      "file": "Translated.source.lexical.c.cs",
+      "line": 25416
+    },
+    "primitiveData": {
+      "file": "Translated.generated.cs",
+      "line": 881301,
+      "name": "__edg_initializer10396"
+    }
+  },
+  "managedCompilation": "not-run",
+  "runtime": "not-run",
+  "nativeAot": "not-run"
+}

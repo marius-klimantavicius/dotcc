@@ -19,8 +19,9 @@ The generated project uses `Edg.Compiler.EdgCompiler` and source-oriented file
 grouping by default. `--split size` remains available.
 
 The current refresh uses `--exceptions --unbound-externals partial`: 84 external
-symbols require runtime implementations through partial methods (including
-address-returning hooks for external storage). See
+symbols require runtime implementations in fixed `Managed.Runtime`, in
+`Managed.Runtime.generated.cs` (including address-returning hooks for external
+storage). Source-named owner methods forward to that runtime. See
 [`partial-externals.md`](partial-externals.md) for `--runtime-source` providers.
 These are required compile-time contracts, not throwing review stubs. Full
 managed compilation/runtime remain unverified. An earlier no-exceptions build
@@ -51,7 +52,7 @@ no EDG semantic source changes are needed.
 The current investigation's isolated binary is under:
 
 ```
-artifacts/campaign/persistent-continuation/table-alias-build-002/cpfe-dot
+artifacts/campaign/persistent-continuation/managed-runtime-build-001/cpfe-dot
 ```
 
 To request a fresh review artifact using such a compiler:

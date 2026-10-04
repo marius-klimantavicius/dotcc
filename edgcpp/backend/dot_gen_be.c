@@ -1155,6 +1155,7 @@ void globals(a_variable_ptr first, const char *cls) {
     line("private " + mod + "byte* __edg_tls_base => " + aligned_pointer("(__edg_threads.Value!.Storage ?? (__edg_threads.Value!.Storage = __edg_create_tls()))", alignment[1]) + ";");
   }
   line(string(instance_mode ? "public " : "static ") + cls + "() {");
+  if(instance_mode)line("/*__EDG_EXTERNAL_RUNTIME_INIT__*/");
   line("if (sizeof(void*) != 8 || !global::System.BitConverter.IsLittleEndian) "
        "throw new global::System.PlatformNotSupportedException(\"EDG storage ABI requires little-endian 64-bit .NET\");");
   if(getenv("EDG_DOT_TARGET") && string(getenv("EDG_DOT_TARGET"))=="portable-lp64-binary80-v2")
@@ -1511,7 +1512,7 @@ void back_end(void) {
   primitive_data_properties.clear();
   unbound_partial=getenv("EDG_DOT_UNBOUND_EXTERNALS") && string(getenv("EDG_DOT_UNBOUND_EXTERNALS"))=="partial";
   unbound_declarations=unbound_partial || (getenv("EDG_DOT_UNBOUND_EXTERNALS") && string(getenv("EDG_DOT_UNBOUND_EXTERNALS"))=="declarations");
-  unbound_routines.clear();unbound_variables.clear();
+  unbound_routines.clear();unbound_variables.clear();reset_unbound_runtime();
   reset_owned_ir();
   coroutine_helpers_emitted=false;
   source_jumps_used=false;owned_ir_enabled=getenv("EDG_DOT_TYPE_IR") && string(getenv("EDG_DOT_TYPE_IR"))=="1";
@@ -1551,6 +1552,7 @@ void back_end(void) {
   nested_types = !getenv("EDG_DOT_NEST") || string(getenv("EDG_DOT_NEST")) == "1";
   collect_coroutine_requirements(scope);
   initialize_source_names(scope);
+  initialize_unbound_runtime_names(scope);
   collect_c11_thread_imports(scope);
   if (getenv("EDG_DOT_TRACE")) {trace_program(scope);trace_coroutines(scope);}
   for(auto r=scope->routines;r;r=r->next) {
@@ -1690,6 +1692,7 @@ void back_end(void) {
         "global::System.Environment.FailFast(\""+item.second+"\",error);";
     replace_output_marker(marker,code);
   }
+  replace_output_marker("/*__EDG_EXTERNAL_RUNTIME_INIT__*/",unbound_runtime_field_emitted && instance_mode?"__edg_runtime = new global::Managed.Runtime(this);":"");
   const string exception_boundary="/*__EDG_EXCEPTION_BOUNDARY__*/";
   const string exception_boundary_code=exception_helpers_emitted?
       "catch (global::System.Exception __edg_boundary_error) { __edg_end_exception(__edg_boundary_error); throw; }":"";
@@ -1718,6 +1721,7 @@ void back_end(void) {
   if (main_routine)emit_main(main_routine);
   line("}");
   if (!nested_types) output += type_output;
+  emit_unbound_runtime_contracts();
   if(owned_ir_enabled) {
     auto problem=owned_ir.verify();if(!problem.empty())unsupported(("owned physical type graph: "+problem).c_str());
     line("// dot-gen:type-ir "+dot_ir::serialize(owned_ir,getenv("EDG_DOT_TARGET")?getenv("EDG_DOT_TARGET"):"legacy-linux-x64"));

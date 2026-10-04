@@ -893,3 +893,33 @@ bytes smaller than the prior record-table review. Emission, Roslyn syntax
 validation and formatting pass. Full compiler managed compilation/runtime
 remain unverified, with 84 external partial contracts still unimplemented.
 Evidence: `evidence/edg-table-aliases-review-20261004.json`.
+
+### Fixed Managed.Runtime contracts (2026-10-04)
+
+Unbound partial functions/storage hooks now belong to fixed `Managed.Runtime`,
+independent of translated namespace, class and split mode. Source-named owner
+methods forward to a runtime instance: one for a static owner, one per object in
+instance mode. Contracts have fully qualified generated ABI types and a separate
+name-allocation domain. `Runtime.Owner` preserves context for incoming instance
+callbacks. Partial mode emits the runtime shell even when no imports are used.
+
+`--runtime-source` accepts reusable implementation supersets. A small Roslyn
+contract/provider pass adds missing defining declarations for unused methods;
+it supports aliases, escaped namespace identifiers and callback types, and keeps
+signature errors visible to the compiler. Provider code does not need namespace
+or class rewriting. Generated record/enum aliases and mode-specific callback
+adapters remain project-specific. See [provider documentation](partial-externals.md).
+
+Verification: 12 focused checks passed, including unchanged common provider
+bytes across different names/modes and no-import output, required-body failures,
+records/enums/pointers, native allocation, forced-GC stable storage and independent
+owner callbacks. Four hosts passed strict JIT and NativeAOT. Default rejection
+and throwing-declaration regression tests passed; unformatted emission also
+built strictly. Both the isolated and canonical native compilers built.
+[Evidence](../evidence/managed-runtime-20261004.json) records hashes and artifacts.
+
+The existing EDG review aliases now show all 75 original translation units with
+84 contracts in `Managed.Runtime.generated.cs`: 156 C# files, 188,347,480 bytes.
+Native emission, syntax validation and formatting passed. Full managed EDG
+compilation/execution remain unverified and its required contracts are still
+unimplemented. [Review evidence](../evidence/edg-managed-runtime-review-20261004.json).

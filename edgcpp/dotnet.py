@@ -110,7 +110,7 @@ def main():
     parser.add_argument("--unbound-externals", choices=("reject", "declarations", "partial"), default="reject",
                         help="reject unbound symbols, emit throwing review declarations, or require C# partial implementations")
     parser.add_argument("--runtime-source", action="append", type=Path, default=[],
-                        help="copy a C# runtime implementation file into the generated project (repeatable)")
+                        help="copy a C# runtime file (Managed.Runtime partial implementations) into the project (repeatable)")
     parser.add_argument("--exceptions", action=argparse.BooleanOptionalAction, default=True,
                         help="enable C++ exception handling (default); --no-exceptions matches native -fno-exceptions")
     parser.add_argument("--rtti", action=argparse.BooleanOptionalAction, default=True,
@@ -254,9 +254,12 @@ def main():
     exports = []
     unbound = []
     def unbound_record(match):
-        unbound.append({"kind": match[1], "symbol": bytes.fromhex(match[2]).decode("utf-8"), "managedName": match[3]})
+        item = {"kind": match[1], "symbol": bytes.fromhex(match[2]).decode("utf-8"), "managedName": match[3]}
+        if match[4]:
+            item.update(runtimeOwner="Managed.Runtime", runtimeMethod=match[4])
+        unbound.append(item)
         return ""
-    result.stdout = re.sub(r"^// dot-gen:unbound (function|variable) ([0-9a-f]+) (@?\w+)\n", unbound_record, result.stdout, flags=re.M)
+    result.stdout = re.sub(r"^// dot-gen:unbound (function|variable) ([0-9a-f]+) (@?\w+)(?: (@?\w+))?\n", unbound_record, result.stdout, flags=re.M)
     if unbound:
         if args.unbound_externals == "partial":
             print(f"Runtime implementations required: {len(unbound)} external symbols use C# partial method contracts.", file=sys.stderr)
@@ -311,11 +314,23 @@ def main():
     source = source.replace("// dot-gen:termination owner-v1\n", "")
     imports = sorted(set(re.findall(r"^// dot-gen:import (\w+)\n", source, flags=re.M)))
     source = re.sub(r"^// dot-gen:import \w+\n", "", source, flags=re.M)
+    runtime_blocks = re.findall(r"^// dot-gen:runtime-begin\n(.*?)^// dot-gen:runtime-end\n", source, re.M | re.S)
+    if len(runtime_blocks) > 1:
+        parser.error("backend emitted multiple Managed.Runtime contract blocks")
+    runtime_contract = runtime_blocks[0] if runtime_blocks else ""
+    source = re.sub(r"^// dot-gen:runtime-begin\n.*?^// dot-gen:runtime-end\n", "", source, flags=re.M | re.S)
+    if runtime_contract and ns.replace("@", "") == "Managed" and cls.lstrip("@") == "Runtime":
+        parser.error("Managed.Runtime is reserved for external partial implementations; choose another translated owner")
     formatter = {"mode": "none"}
     if args.format == "roslyn":
         try:
-            formatted, formatter = format_sources(ROOT, {"Translated.cs": source})
+            format_inputs = {"Translated.cs": source}
+            if runtime_contract:
+                format_inputs["Managed.Runtime.generated.cs"] = runtime_contract
+            formatted, formatter = format_sources(ROOT, format_inputs)
             source = formatted["Translated.cs"]
+            if runtime_contract:
+                runtime_contract = formatted["Managed.Runtime.generated.cs"]
         except (OSError, RuntimeError, subprocess.CalledProcessError, ValueError) as error:
             parser.error(str(error))
     # These are explicit backend protocol delimiters, not a C# source parser.
@@ -325,6 +340,8 @@ def main():
     files = {
         "Translated.cs": translated,
     }
+    if runtime_contract:
+        files["Managed.Runtime.generated.cs"] = runtime_contract
     if type_ir is not None:
         files["dot-gen.types.json"] = json.dumps(type_ir, indent=2) + "\n"
     if args.emit == "exe":
@@ -372,13 +389,15 @@ def main():
              for name, text in files.items()}
     source_locations = []
     for filename, text in files.items():
-        if not filename.startswith("Translated") or not filename.endswith(".cs"):
+        if not (filename.startswith("Translated") or filename == "Managed.Runtime.generated.cs") or not filename.endswith(".cs"):
             continue
         for line_number, text_line in enumerate(text.splitlines(), 1):
-            marker = re.fullmatch(r"// dot-gen:origin (@?\w+)", text_line.strip())
+            marker = re.fullmatch(r"// dot-gen:(?:origin|runtime-origin) (@?\w+)", text_line.strip())
             if marker:
                 entry = dict(origins.get(marker[1], {}), managedName=marker[1],
                              generatedFile=filename, generatedLine=line_number + 1)
+                if filename == "Managed.Runtime.generated.cs":
+                    entry["runtimeOwner"] = "Managed.Runtime"
                 source_locations.append(entry)
     files["dot-gen.sources.json"] = json.dumps({"schema": 1, "symbols": source_symbols,
                                                "members": source_locations, "publicTypes": public_types}, indent=2) + "\n"
@@ -393,7 +412,27 @@ def main():
         index.append("| " + original.replace("|", "\\|") + " | " + location.replace("|", "\\|") + " | [" +
                      entry["managedName"] + "](" + generated + ") |")
     files["source-index.md"] = "\n".join(index) + "\n"
-    runtime_helpers={name for name in RUNTIME_DEPENDENCIES if f"global::Edg.Runtime.{name}" in source}
+    provider_sources = {}
+    external_runtime_sources = []
+    for index, path in enumerate(args.runtime_source):
+        path = path.resolve()
+        if not path.is_file() or path.suffix.lower() != ".cs":
+            parser.error(f"runtime source must be an existing C# file: {path}")
+        raw = path.read_bytes()
+        filename = f"Runtime.External{index:03d}.cs"
+        provider_sources[filename] = raw.decode("utf-8-sig")
+        files[filename] = generated_source(provider_sources[filename])
+        external_runtime_sources.append({"path": str(path), "sha256": hashlib.sha256(raw).hexdigest(), "generatedFile": filename})
+    supplemental_partials = {}
+    if provider_sources:
+        from backend.partial_runtime import complete_runtime_partials
+        try:
+            supplemental_partials = complete_runtime_partials(ROOT, runtime_contract, provider_sources)
+            files.update({name: generated_source(text) for name, text in supplemental_partials.items()})
+        except (OSError, RuntimeError, subprocess.CalledProcessError, ValueError) as error:
+            parser.error(str(error))
+    runtime_texts = [source, runtime_contract, *provider_sources.values(), *supplemental_partials.values()]
+    runtime_helpers={name for name in RUNTIME_DEPENDENCIES if any(f"global::Edg.Runtime.{name}" in text for text in runtime_texts)}
     if "__edg_with_file_lock" in imports:
         runtime_helpers.add("LibcFilesFormat")
     if "__edg_with_file_read_lock" in imports:
@@ -415,15 +454,6 @@ def main():
                 runtime_helpers.add(dependency);pending.append(dependency)
     for helper in sorted(runtime_helpers):
         files[f"Runtime.{helper}.cs"] = generated_source((ROOT / f"backend/runtime/{helper}.cs").read_text())
-    external_runtime_sources = []
-    for index, path in enumerate(args.runtime_source):
-        path = path.resolve()
-        if not path.is_file() or path.suffix.lower() != ".cs":
-            parser.error(f"runtime source must be an existing C# file: {path}")
-        raw = path.read_bytes()
-        filename = f"Runtime.External{index:03d}.cs"
-        files[filename] = generated_source(raw.decode("utf-8-sig"))
-        external_runtime_sources.append({"path": str(path), "sha256": hashlib.sha256(raw).hexdigest(), "generatedFile": filename})
     asset_manifest, resource_items = runtime_assets(files, runtime_helpers)
     compile_items = "\n".join(f'    <Compile Include="{filename}" />' for filename in files if filename.endswith(".cs"))
     files["Generated.csproj"] = '''<Project Sdk="Microsoft.NET.Sdk">
@@ -449,8 +479,9 @@ RESOURCE_ITEMS
     owned = set()
     if manifest.exists():
         owned = set(json.loads(manifest.read_text())["files"])
-        allowed={"dot-gen.sources.json", "source-index.md", "Translated.cs", "EntryPoint.cs", "Generated.csproj", "dot-gen.types.json", "Runtime.Tzdb.bin", "Runtime.Tzdb.source.json", "Runtime.Tzdb.bundle.json", "Runtime.Tzdb.LICENSE.txt"} | {f"Runtime.{name}.cs" for name in RUNTIME_DEPENDENCIES}
+        allowed={"dot-gen.sources.json", "source-index.md", "Translated.cs", "EntryPoint.cs", "Generated.csproj", "dot-gen.types.json", "Managed.Runtime.generated.cs", "Runtime.Tzdb.bin", "Runtime.Tzdb.source.json", "Runtime.Tzdb.bundle.json", "Runtime.Tzdb.LICENSE.txt"} | {f"Runtime.{name}.cs" for name in RUNTIME_DEPENDENCIES}
         if any(name not in allowed and not re.fullmatch(r"Runtime\.External[0-9]+\.cs", name) and
+               not re.fullmatch(r"Managed\.Runtime\.Supplement[0-9]+\.cs", name) and
                not is_layout_filename(name) for name in owned):
             parser.error("invalid generated-file ownership manifest")
     for filename in files:
@@ -466,7 +497,11 @@ RESOURCE_ITEMS
         "macroExports": macro_manifest,
         "unboundExternals": {"mode": args.unbound_externals,
                              "reviewOnly": bool(unbound) and args.unbound_externals == "declarations",
-                             "requiresImplementation": bool(unbound) and args.unbound_externals == "partial", "symbols": unbound},
+                             "requiresImplementation": bool(unbound) and args.unbound_externals == "partial", "symbols": unbound,
+                             "runtimeOwner": "Managed.Runtime" if runtime_contract else None,
+                             "runtimeLifetime": ("per-owner" if args.instance_methods else "static-owner") if runtime_contract else None,
+                             "contractFile": "Managed.Runtime.generated.cs" if runtime_contract else None,
+                             "supplementalDeclarations": sorted(supplemental_partials)},
         "externalRuntimeSources": external_runtime_sources,
         "runtimeSources": [{"path": str(p), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()} for p in runtime_sources],
         "runtimeAssets": asset_manifest,

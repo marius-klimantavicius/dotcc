@@ -1,0 +1,132 @@
+{
+  "status": "passed",
+  "date": "2026-10-04",
+  "scope": "Fixed Managed.Runtime external partial contracts and reusable runtime provider sources",
+  "compiler": {
+    "path": "edgcpp/artifacts/campaign/persistent-continuation/managed-runtime-build-002/cpfe-dot",
+    "sha256": "5c34aae38c3fe07f74ffd8d39c12633998e6de0c33d2bade5c8e3319229d8471"
+  },
+  "canonicalCompiler": {
+    "path": "edgcpp/build/bin/cpfe-dot",
+    "sha256": "359c0ba9eea6fdf678c2a396b623c62d0a879990a2557cbd8023fc0e73fbc51f"
+  },
+  "inputs": {
+    "edgcpp/backend/dot_gen_be.c": "61d84632f2bebeff93d85a71f820ea1f3985b9015aa630c449a79e4d728f54a5",
+    "edgcpp/backend/dot_gen_unbound.h": "91b82810d703d26e198dd545173eaf93a6b3b0b2d5ea02f7df677048815a1cc8",
+    "edgcpp/backend/formatter/Program.cs": "79442ff564979a2391ff9f0347d5caf40abadf10a9d7a15966871027011c0fc9",
+    "edgcpp/backend/partial_runtime.py": "754c8fb8d3bae2e460bde92614f254ca98e8d2c721c907b66bfbc9d68e51dd9d",
+    "edgcpp/backend/tests/partial_externals_verify.py": "26d31becfddb60aa808d65f0e38fabd2aa236fde91bf16615bbade743091d1e2",
+    "edgcpp/backend/tests/partial_external_contract_types.cpp": "eb169c50ab722ea9bd2857fa0ee0fb790566deaa58aac20bc446a71741f59094",
+    "edgcpp/dotnet.py": "5f49afb0a0f76af9dcfcad3da79eb8c253a69fa085aaf6395970242029d15756"
+  },
+  "validation": {
+    "runtimeProviders": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/managed-runtime-tests-003/results.json",
+        "sha256": "45dc38991fa27d8d765d3b3befa4b3454ef9aac198616b4480334bdb12e46657"
+      },
+      "checks": {
+        "status": "passed",
+        "nativeAot": true,
+        "checks": [
+          "Managed.Runtime owner collision fails with an explicit reserved-name diagnostic",
+          "static: missing implementations fail with CS8795",
+          "static: strict JIT direct/indirect extern calls and stable independent runtime storage",
+          "static: NativeAOT execution",
+          "instance: missing implementations fail with CS8795",
+          "instance: strict JIT direct/indirect extern calls and stable independent runtime storage",
+          "instance: NativeAOT execution",
+          "typed-static: strict JIT direct/indirect extern calls and stable independent runtime storage",
+          "typed-static: NativeAOT execution",
+          "typed-instance: strict JIT direct/indirect extern calls and stable independent runtime storage",
+          "typed-instance: NativeAOT execution",
+          "no-imports: exact same common provider compiles and runs when all implementations are unused"
+        ],
+        "projects": [
+          {
+            "label": "static",
+            "namespace": "External.StaticAlpha",
+            "class": "host_add",
+            "instance": false,
+            "providerSha256": "793a4b175c851997288b1ef1077663084963d40a8f00e6441e4d549ecdae45b8"
+          },
+          {
+            "label": "instance",
+            "namespace": "Different.InstanceBeta",
+            "class": "Beta",
+            "instance": true,
+            "providerSha256": "793a4b175c851997288b1ef1077663084963d40a8f00e6441e4d549ecdae45b8"
+          },
+          {
+            "label": "typed-static",
+            "namespace": "Contract.Nested",
+            "class": "LibraryOne",
+            "instance": false,
+            "nestedTypes": true,
+            "providerSha256": "618a10a838dcd837f20cb739918cb2cea18776fb6cf093a873f2a821a75b8096",
+            "projectSpecificAliases": "typed-static-aliases.cs",
+            "modeSpecificCallbackProvider": "typed-static-callback.cs"
+          },
+          {
+            "label": "typed-instance",
+            "namespace": "Contract.Flattened",
+            "class": "LibraryTwo",
+            "instance": true,
+            "nestedTypes": false,
+            "providerSha256": "618a10a838dcd837f20cb739918cb2cea18776fb6cf093a873f2a821a75b8096",
+            "projectSpecificAliases": "typed-instance-aliases.cs",
+            "modeSpecificCallbackProvider": "typed-instance-callback.cs"
+          }
+        ],
+        "compiler": {
+          "path": "/mnt/storage/dotcc-edg-campaign-20261003/managed-runtime-build-002/cpfe-dot",
+          "sha256": "5c34aae38c3fe07f74ffd8d39c12633998e6de0c33d2bade5c8e3319229d8471"
+        },
+        "sharedProvider": {
+          "path": "/mnt/storage/dotcc-edg-campaign-20261003/managed-runtime-tests-003/shared-runtime.cs",
+          "sha256": "793a4b175c851997288b1ef1077663084963d40a8f00e6441e4d549ecdae45b8"
+        },
+        "reuseLimitations": [
+          "Providers whose signatures contain translated records/enums need project-specific type aliases when their namespace/nesting changes.",
+          "Incoming function-pointer parameters retain the mode-specific callback ABI; instance callback adapters use Runtime.Owner and a generated-owner alias."
+        ]
+      }
+    },
+    "rejectAndDeclarations": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/managed-runtime-unbound-001/results.json",
+        "sha256": "4d991ffbd9460315e48afc319ce1cce0eda9d1579b4696edab20f6d585bad8d3"
+      },
+      "scope": "Default rejection, explicit throwing stubs, static/instance JIT and NativeAOT; compiler001 before no-import Runtime-shell guard change"
+    },
+    "partialCompletion": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/runtime-partial-completion-probes-001/results.json",
+        "sha256": "95745199237045526c2d8c4855037f7b75a1c24884bf2d983696681fa98b2ee5"
+      },
+      "scope": "Superset/alias/generic/attribute compilation and mismatched required signature rejection"
+    },
+    "unformattedOutput": {
+      "manifest": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/managed-runtime-format-none-001/dot-gen.json",
+        "sha256": "896c3f5a584dadeb785508c709790fc1a0a8a9295ae6ba4c4e101ecd99f6b4b4"
+      },
+      "buildLog": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/managed-runtime-build-002/format-none-build.log",
+        "sha256": "e3f04326c7a88e4d942f07c862004a265f7f0fa1089746cf9b61ccfca9e90daa"
+      },
+      "scope": "--format none with shared provider: strict Release build"
+    },
+    "edgSelf": {
+      "path": "edgcpp/evidence/edg-managed-runtime-review-20261004.json",
+      "sha256": "d7ca5097384d97f465b16ee37f290c889bc5f4c0637271f1efbe1239071da445"
+    }
+  },
+  "limitations": [
+    "Generated record/enum types can require project-specific aliases.",
+    "Incoming function-pointer ABI differs between static and instance mode; typed instance callback adapters use Runtime.Owner.",
+    "Partial providers must be compiled in the same assembly as generated declarations.",
+    "Full translated EDG compilation/execution/NativeAOT remain unverified; 84 external symbols still require implementation.",
+    "JIT and NativeAOT runtime verification was on Linux x64."
+  ]
+}
