@@ -1167,3 +1167,21 @@ JIT and NativeAOT tests cover allocation failures, handlers, RAII and exceptions
 The full EDG translation/build is the next acceptance step, not implied by these
 component passes. [Evidence](../evidence/self-runtime-dependencies-20261004.json),
 [descriptor ownership](posix-stdio.md), [libc++ provider](../backend/self/libcxx.md).
+
+### Whole-program function retention and enum indexing (2026-10-04)
+
+The first full managed compiler build completed within 16.9 GiB measured RSS,
+revealing missing inline-member references and enum-index conversions. A two-TU
+reduction showed that the custom backend's default disabled needed-flag tracking:
+the source `referenced` bit alone did not retain every merged inline definition.
+The supported configuration now enables `MAINTAIN_NEEDED_FLAGS`, retains unused
+IL for source/lifetime provenance, and explicitly enables local-entity promotion
+as the C backend does. The canonical build now carries the promotion setting
+previously supplied only by the isolated self-review build.
+
+Named enum subscripts now use EDG's integral promotion in pointer indexing and
+address capture, including reversed subscripts. Native C/C++ and original EDG
+C-backend oracles, static/instance JIT/NativeAOT reductions, large initializer
+regressions and the minimal libc++ provider all pass with the rebuilt compiler.
+Full compiler regeneration and execution remain the next acceptance step.
+[Evidence](../evidence/self-emitter-reachability-20261004.json).

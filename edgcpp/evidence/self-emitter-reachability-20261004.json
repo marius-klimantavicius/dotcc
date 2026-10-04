@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-04",
+  "scope": "Whole-program routine retention and named enum subscript conversions; full compiler execution is a separate acceptance step",
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/self-runtime-build-006/cpfe-dot",
+    "sha256": "f008bc46c673270fb7bc6c6a9aaf3c86df30aee25958c7afb4676ff65df2091d"
+  },
+  "configuration": {
+    "MAINTAIN_NEEDED_FLAGS": 1,
+    "DEFAULT_REMOVE_UNNEEDED_ENTITIES": 0,
+    "PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE": 1
+  },
+  "consulted": [
+    "upstream/src/host_envir.h:1107-1138",
+    "upstream/src/c_gen_be.c:start_unreferenced_bracket",
+    "upstream/src/c_gen_be.c:dump_routine_decl",
+    "upstream/src/c_gen_be.c:eok_subscript"
+  ],
+  "failures": {
+    "fullCompiler": "edg-self-runtime-004/build-diagnostic/results.json",
+    "mergedInline": "merged-inline-members-before-001",
+    "enumIndex": "self-enum-subscript-before-002"
+  },
+  "verification": [
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/merged-inline-members-after-001/results.json",
+      "sha256": "101dbe4ee807a5f783d3356c790b524ef9d60f6a09ca5871c7cc2adebd390087",
+      "status": "passed"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-enum-neededflags-001/results.json",
+      "sha256": "b9db242893ad03752096672b1a15065815f3436ca9c30350c8ce03973481e386",
+      "status": "passed"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-large-neededflags-001/results.json",
+      "sha256": "7f46d82ac1a171394be5db3b07d08e282a01c336031b76ca93618bc7aaab5276",
+      "status": "passed"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-011/results.json",
+      "sha256": "f381eec9ffae7d44bb8fa75ef171c794b318ee171d0fc942b65832098798a0ad",
+      "status": "passed"
+    }
+  ],
+  "sources": {
+    "edgcpp/backend/dot_gen_arrays.h": "c8a4d72f24392114c555290214656d81b1a73292a0e6b70b86ca05cbba2a80f3",
+    "edgcpp/backend/dot_gen_atomics.h": "d4e0d376005410e1c0c18d8375e4259958094d82a4b99f7cf1de202ccbd44fe7",
+    "edgcpp/backend/dot_gen_be.c": "886aff1674db61de9d184cfa024dc09eeed31654d0d6c88d20ab259c4631f9bc",
+    "edgcpp/backend/dot_gen_bitfield_properties.h": "d54d95be21ec38237a5d5c3bc6fe63ad0658d0faf29a256cf49f2d5c4c52bf1d",
+    "edgcpp/backend/dot_gen_byte_data.h": "d52415c16b07977ae96b54bfefd18b900e37bd618fbb259efb42bfddb9f77856",
+    "edgcpp/backend/dot_gen_c11_atomics.h": "9838c35ad6b2c8a6f491ac4717af9f54615a2e2fb996f3ca964e21d2abcd24bf",
+    "edgcpp/backend/dot_gen_cleanup.h": "622400d77223160cfc657f7d58f41b45ab86f59c21604a0856e910e6cb69b8e1",
+    "edgcpp/backend/dot_gen_coroutine.h": "75aeb78a745ace606b11a7a8f541a458d78ef459805252528b3fc5aa26b5150a",
+    "edgcpp/backend/dot_gen_coroutine_cps.h": "9dbb77bd90b750107be137dfe9fc9990de197ce4626f337f2736a149a198d232",
+    "edgcpp/backend/dot_gen_coroutine_emit.h": "2eb149bd86e6882ebf4dce4e597312e906741e411d749fea6b93fd8401228bcc",
+    "edgcpp/backend/dot_gen_coroutine_provenance.h": "ff465c016b6577b2b91b48aafcc7a451a1783be6ffb03ff1f6e9e27d1915f805",
+    "edgcpp/backend/dot_gen_coroutine_view.h": "eb2e9011caa1f22334ba623abb178b09f512ddce6d5ab93644946317d9eaee10",
+    "edgcpp/backend/dot_gen_exception_identity.h": "5cd3c2f94cb7d7acc1b01cc1bf2146b8286567e4c0746899e8cd1c52cf43098c",
+    "edgcpp/backend/dot_gen_exception_ptr.h": "4fbea8a23015838c80c9b2691b12448fb862953b3c242a14a0e6827ddba30f74",
+    "edgcpp/backend/dot_gen_exceptions.h": "25ed2f46225f152fa7909290689bb2f5aa680e7340cbaf730ce48dcd45f6879b",
+    "edgcpp/backend/dot_gen_imports.h": "218f187852f8df3a5074d022a64d34e58079e453e21a5476a1b7a93fd36428da",
+    "edgcpp/backend/dot_gen_integer_intrinsics.h": "fdbc220b3063261ee284c998dd228c4bf97dad189600d1cb227a45fc740db105",
+    "edgcpp/backend/dot_gen_intrinsics.h": "e50cd0abe72bfbe5569495cfed994f7bf13b4015e12ef137b7029daff26b8f59",
+    "edgcpp/backend/dot_gen_ir.h": "7ae0c3ad0a61b8b73c5547be76ed638035dcfc8c35126f0422d2ef71feebd0a0",
+    "edgcpp/backend/dot_gen_ir_adapter.h": "be794ee783da3a978fa964e62372533e8a5cdedcc5e881a88d21ed7bfde71807",
+    "edgcpp/backend/dot_gen_lifecycle.h": "049a2abf210a6ccf28f2c44e735c83247292476ed0aa50f8b39241b13af3e6ed",
+    "edgcpp/backend/dot_gen_main.h": "e74edd890b5127929c0ae2c57792b5b25890f30b5d1f783c215e203f94fcd0eb",
+    "edgcpp/backend/dot_gen_materialize.h": "84358e13024064ea07ac1ffaa5d4c963d26826895ba16a440ec270889fddeacd",
+    "edgcpp/backend/dot_gen_members.h": "af86785cd4796df4f444f6b8122455c65e4e95ec810ead13c472aa564c764534",
+    "edgcpp/backend/dot_gen_order.h": "3bf958aee25ebf2c382be294002a6b1e594af9f08735450e79ccf43c06cfaa4b",
+    "edgcpp/backend/dot_gen_overflow.h": "7b688939a3a8916ccffee06b7420fc20bec729892238ca4e9111cab8b492ef0a",
+    "edgcpp/backend/dot_gen_posix.h": "5e068c64e6b34ea88609eb36b272fda9ae1acaa8b537e8d1b9123520451544b9",
+    "edgcpp/backend/dot_gen_primitive_data.h": "2e77d2a856676b3816e68c8d623232e158fb122e5afac8a3708197472e8505e8",
+    "edgcpp/backend/dot_gen_process.h": "48aca3607ca7a17d82d0c88702aa46473ae19f90d9326f25a83d68735d495a2e",
+    "edgcpp/backend/dot_gen_record_data.h": "6ad3bb0f567725d39624437c92e1fd71756f1e7428d1ff257e4503a334a87630",
+    "edgcpp/backend/dot_gen_rtti.h": "be20703665ad2704bba34cc42e4fa32131e572eb594f742fc9ce1fc888314f19",
+    "edgcpp/backend/dot_gen_runtime.h": "e36b881f5324e121791d8330f0f69a024652c88dfc17f548941685ab18614b32",
+    "edgcpp/backend/dot_gen_sequence.h": "8b3fc030254343f6a526fc76c01c0128ac3869bbace415eca756972c0283c2ad",
+    "edgcpp/backend/dot_gen_setjmp.h": "85d4de79e072456c38fea7cd7159577e96db8fb443194db14ee5a0ff80528203",
+    "edgcpp/backend/dot_gen_source_control.h": "b068b710b28481316150f2fc78b59bc72f6607ea7fd439a8f98ddf90e6c4f9cf",
+    "edgcpp/backend/dot_gen_source_expression_api.h": "ecfdc4975600b9723283d2930e8fc58851cdda635e6cb135cc139566332302f4",
+    "edgcpp/backend/dot_gen_source_expressions.h": "6d4ea58dfbd9da7560ed64a44a5260bf0126586058cb3544ceb7626993d9b1ff",
+    "edgcpp/backend/dot_gen_source_names.h": "5330a4e267678148ccfb2ff808270028670d9ccf598c23fa4907e19f248701dd",
+    "edgcpp/backend/dot_gen_source_storage.h": "16686c0a990bb2604ac8cc41e499b535b077d80b53b5c9fca5ba36817ac108d8",
+    "edgcpp/backend/dot_gen_statement_expression.h": "10a27f0adcda3db842bbdf71c1e688c7541814094a39301afc5b6c5f0e8d47df",
+    "edgcpp/backend/dot_gen_storage_types.h": "b8873b5e7faf68505167f3da122db45b1c00e84659088230a1aad6a04ce4a13c",
+    "edgcpp/backend/dot_gen_terminate.h": "fce846420d2d59f36ee727e960733195e5f489f9a49038bc67c8a7e5da6d8411",
+    "edgcpp/backend/dot_gen_threads.h": "38f80bab3848ecad5387d46ea07b80d65adc750f543e0c2bfacf4d6e555f087f",
+    "edgcpp/backend/dot_gen_trace.h": "86b4028d9a1c6ff81accad9ee9a27de9b664b1ddcc5e5d1b4653aecf2b72bf28",
+    "edgcpp/backend/dot_gen_typeinfo.h": "d94323bbc488d8340e22d746ddcc7ee81219819d9f7a5c9c59e423af62ec1d95",
+    "edgcpp/backend/dot_gen_unbound.h": "890ccc04ce79951db90a44e2777acaa42e6047521f0e7ea3b6cb0a250d9a86ce",
+    "edgcpp/backend/dot_gen_unexpected.h": "02ed9379b9c8054918821ebcf8ea063284e92d80f72e29df7e1058cc34a9d434",
+    "edgcpp/backend/dot_gen_varargs.h": "8cb45e338488e126f7601d6d14a8fbe290e1181446d94af1d7617a2fbebba68b",
+    "edgcpp/backend/dot_gen_virtual.h": "c65d36a51f6c534dbfacbed0a03d8f5e95f07e98442f07ed4fc61f6c50abf94f",
+    "edgcpp/backend/dot_gen_vla.h": "de2d176a01bf49f285f01e2a65bd88a431ed58aae0a35378e242cb690d293b33",
+    "edgcpp/backend/dot_gen_volatile_bits.h": "195c92017bfe0c033414bc50039b8693d6475484cb9b91e5d71d568e585fe2c4",
+    "edgcpp/config/base.cmakedef": "e3944295b342c75e2f7527668e689fa90a2e64b39a1ca5478ec63cfe9229cbf9",
+    "edgcpp/config/cdisp.cmakedef": "97365528015377e4a0ecc65228041417e608accd2c2c829d4807ba19d81bcaf8",
+    "edgcpp/config/cpfe-cp.cmakedef": "1db54b24b5db2be30179b97123f95bcd4a11c3476312f98df680bb6413538618",
+    "edgcpp/config/cpfe-dot-oracle.cmakedef": "39f4990612a8a63f63a29fbf04239adba864d07c203435e51b0a983313de63b0",
+    "edgcpp/config/cpfe-dot.cmakedef": "e95c94ba5cc9bcbf1af45ee8910b4bafc1c18267bf9df576065604e48dfa882b",
+    "edgcpp/config/cpfe.cmakedef": "e4ca5b2fdd46f826ebde5e2d10b5cdcbd8938a0e6df998fa43348424332af29b",
+    "edgcpp/config/cpprtlib.cmakedef": "a18e867e4c237761e521cec8aba3d220a01971e75231a4f0c57d4ffc4bafe2cf"
+  }
+}

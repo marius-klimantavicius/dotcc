@@ -3,6 +3,11 @@ BACK_END_IS_C_GEN_BE=0
 BACK_END_IS_CP_GEN_BE=0
 BACK_END_SHOULD_BE_CALLED=1
 DO_IL_LOWERING=1
+# Needed flags follow references across merged translation units; the raw
+# source "referenced" flag alone is not a whole-program liveness contract.
+# Keep retained source/lifetime IL available to the readable managed backend.
+MAINTAIN_NEEDED_FLAGS=1
+DEFAULT_REMOVE_UNNEEDED_ENTITIES=0
 DO_FULL_PORTABLE_EH_LOWERING=0
 GENERATE_EH_TABLES=1
 DO_UNORDERED_EH_PROCESSING=1
@@ -12,3 +17,6 @@ NO_USR_INCLUDE=1
 TARG_IA64_ABI_USE_VARIANT_PTR_TO_MEMBER_FUNCTION_REPR=1
 LOWER_VARIABLE_LENGTH_ARRAYS=1
 LOWER_CLASS_RVALUE_ADJUST=1
+# Match the C backend's lowered, whole-program entity placement. In particular,
+# alternate entries for local classes require promotion before name generation.
+PROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE=1

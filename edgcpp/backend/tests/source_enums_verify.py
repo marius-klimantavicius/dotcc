@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 
-def verify_source_enums(root, tests, out, nativeaot, run):
+def verify_source_enums(root, tests, out, nativeaot, run, backend=None):
     checks=[]
     source=tests/'source_enums.c'
     for language,standard,compiler in [('c','c17','gcc'),('c++','c++20','g++')]:
@@ -31,6 +31,7 @@ def verify_source_enums(root, tests, out, nativeaot, run):
             run([sys.executable,root/'dotnet.py',source,'--language',language,'--std',standard,
                  '--libc','dotcc','--output-dir',directory,'--namespace','Source.Identity','--class-name','Core',
                  '--split','size','--split-size','3500',
+                 *(['--compiler',backend] if backend else []),
                  *(['--instance-methods'] if instance else ['--no-nest-types'])])
             text='\n'.join(p.read_text() for p in directory.glob('Translated*.cs'))
             prefix='' if instance else 'Core_'
@@ -58,6 +59,7 @@ def verify_source_enums(root, tests, out, nativeaot, run):
         directory=out/('library-instance' if instance else 'library-static')
         run([sys.executable,root/'dotnet.py',source,'--language','c','--std','c17','--emit','managedlib',
              '--libc','dotcc','--output-dir',directory,'--namespace','Source.Identity','--class-name','Core',
+             *(['--compiler',backend] if backend else []),
              *(['--instance-methods'] if instance else [])])
         host=directory/'host';host.mkdir()
         (host/'Host.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>enable</Nullable><IsAotCompatible>true</IsAotCompatible></PropertyGroup><ItemGroup><ProjectReference Include="../Generated.csproj" /></ItemGroup></Project>')
@@ -67,12 +69,12 @@ def verify_source_enums(root, tests, out, nativeaot, run):
         run(['dotnet',host/'bin/Release/net10.0/Host.dll'])
         checks.append(directory.name+': direct typed public enum API')
     (out/'input-hashes.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in
-        [source,root/'backend/dot_gen_source_names.h',root/'backend/dot_gen_source_storage.h',root/'build/bin/cpfe-dot']},indent=2)+'\n')
+        [source,root/'backend/dot_gen_source_names.h',root/'backend/dot_gen_source_storage.h',backend or root/'build/bin/cpfe-dot']},indent=2)+'\n')
     return checks
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output-dir',required=True,type=Path);parser.add_argument('--nativeaot',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output-dir',required=True,type=Path);parser.add_argument('--nativeaot',action='store_true');parser.add_argument('--compiler',type=Path);args=parser.parse_args()
     output=args.output_dir.resolve();output.mkdir(parents=True,exist_ok=False);commands=[]
     def run(command,**kwargs):
         command=list(map(str,command));result=subprocess.run(command,capture_output=True,text=True,**kwargs);index=len(commands)
@@ -80,5 +82,5 @@ if __name__=='__main__':
         commands.append({'command':command,'exit':result.returncode});(output/'commands.json').write_text(json.dumps(commands,indent=2)+'\n')
         if result.returncode:raise RuntimeError(f'{command}: {result.returncode}\n{result.stdout}\n{result.stderr}')
         return result
-    checks=verify_source_enums(Path(__file__).resolve().parents[2],Path(__file__).resolve().parent,output,args.nativeaot,run)
+    checks=verify_source_enums(Path(__file__).resolve().parents[2],Path(__file__).resolve().parent,output,args.nativeaot,run,args.compiler.resolve() if args.compiler else None)
     (output/'results.json').write_text(json.dumps({'status':'passed','checks':checks},indent=2)+'\n');print(f'{len(checks)} source enum checks passed')

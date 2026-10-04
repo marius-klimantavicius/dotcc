@@ -36,6 +36,15 @@ int source_enum_cases(void) {
   if(*advanced!=2 || *walker!=2)return 14;
   distance=FlagRead;advanced=(walker-=distance);
   if(*advanced!=1 || *walker!=1)return 15;
+  /* Named enum subscripts require promotion in all three C# forms: pointer
+     indexing, reversed indexing and the pointer sum used for address capture. */
+  int *indexed=slots;enum Flag index=FlagWrite;
+  if(indexed[FlagRead]!=1 || indexed[index]!=2 || index[indexed]!=2)return 17;
+  int *selected_slot=&indexed[index],*reversed=&index[indexed];
+  if(selected_slot!=slots+2 || reversed!=selected_slot)return 18;
+  indexed[index]=(slots[7]=31);
+  indexed[FlagRead]+=5;
+  if(*selected_slot!=31 || slots[7]!=31 || indexed[FlagRead]!=6)return 19;
   const enum Mode fixed=ModeAdd;
   volatile enum Mode watched=ModeDouble;
   enum Mode values[2]={ModeAdd,ModeDouble};

@@ -675,6 +675,15 @@ string location(an_expr_node_ptr e);
 #include "dot_gen_atomics.h"
 #include "dot_gen_intrinsics.h"
 
+string source_subscript_operand(an_expr_node_ptr operand) {
+  string value=expr(operand);
+  // C and the C backend accept enum indices through integral promotion.
+  // Retained named C# enums need that conversion for both indexing and the
+  // pointer-addition form used when capturing an element's address.
+  if(source_enum_nominal(operand->type))
+    value="unchecked(("+source_enum_physical_type(node_type_after_integral_promotion(operand))+")("+value+"))";
+  return value;
+}
 string address(an_expr_node_ptr e) {
   string planned=source_expression_address_override(e);
   if(!planned.empty())return planned;
@@ -695,7 +704,7 @@ string address(an_expr_node_ptr e) {
       if(!(field_type->kind==tk_array && !field_type->size))return "&(("+base+")->"+name(field,"m")+")";
       return "(("+type(field->type)+"*)((byte*)("+base+") + "+std::to_string(field->offset)+"))";
     }
-    if(op==eok_subscript)return "("+expr(a)+" + "+expr(b)+")";
+    if(op==eok_subscript)return "("+source_subscript_operand(a)+" + "+source_subscript_operand(b)+")";
   }
   return "&("+location(e)+")";
 }
@@ -923,8 +932,8 @@ string location(an_expr_node_ptr e) {
       }
     }
     // C++17 sequences the syntactic left operand first, even for index[p].
-    if(skip_typerefs(a->type)->kind==tk_pointer)return "("+expr(a)+")["+expr(b)+"]";
-    return "(*(" + expr(a) + " + " + expr(b) + "))";
+    if(skip_typerefs(a->type)->kind==tk_pointer)return "("+expr(a)+")["+source_subscript_operand(b)+"]";
+    return "(*(" + source_subscript_operand(a) + " + " + source_subscript_operand(b) + "))";
   }
   if (op == eok_cast) {
     if (skip_typerefs(e->type)->kind == tk_void) unsupported("retained void cast");
