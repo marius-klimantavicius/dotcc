@@ -76,6 +76,7 @@ for source, target in [
     (root / "backend/dot_gen_cleanup.h", root / "upstream/src/dot_gen_cleanup.h"),
     (root / "backend/dot_gen_trace.h", root / "upstream/src/dot_gen_trace.h"),
     (root / "backend/dot_gen_byte_data.h", root / "upstream/src/dot_gen_byte_data.h"),
+    (root / "backend/dot_gen_primitive_data.h", root / "upstream/src/dot_gen_primitive_data.h"),
     (root / "backend/dot_gen_be.c", root / "upstream/src/dot_gen_be.c"),
     (root / "backend/cmake/CMakeLists.txt", root / "upstream/src/cmake/cpfe-dot/CMakeLists.txt"),
     (root / "backend/cmake/oracle/CMakeLists.txt", root / "upstream/src/cmake/cpfe-dot-oracle/CMakeLists.txt"),

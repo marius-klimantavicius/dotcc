@@ -3,7 +3,8 @@
 The current exception-enabled review is at
 [`artifacts/review/edg/README.md`](../artifacts/review/edg/README.md).
 It uses named ordinary locals, bulk byte initialization, literal previews and
-omits empty noexcept guards. The existing EDG review aliases are refreshed in
+omits empty noexcept guards. Primitive numeric tables use static typed span
+properties backed by assembly data. The existing EDG review aliases are refreshed in
 place; their README and manifest describe the current output.
 
 `translate_self.py` reads the **original `cpfe` target** from
@@ -46,7 +47,7 @@ no EDG semantic source changes are needed.
 The current investigation's isolated binary is under:
 
 ```
-artifacts/campaign/persistent-continuation/source-storage-readability-build-003/cpfe-dot
+artifacts/campaign/persistent-continuation/primitive-data-build-002/cpfe-dot
 ```
 
 To request a fresh review artifact using such a compiler:

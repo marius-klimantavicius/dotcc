@@ -1,0 +1,196 @@
+{
+  "status": "passed",
+  "date": "2026-10-04",
+  "scope": "Typed static ReadOnlySpan primitive initializer properties, exact data and independent destination copies",
+  "artifact": "edgcpp/artifacts/campaign/persistent-continuation/primitive-data-managed-004",
+  "command": [
+    "python3",
+    "edgcpp/backend/tests/primitive_data_readability_verify.py",
+    "--compiler",
+    "edgcpp/artifacts/campaign/persistent-continuation/primitive-data-build-002/cpfe-dot",
+    "--output-dir",
+    "edgcpp/artifacts/campaign/persistent-continuation/primitive-data-managed-004",
+    "--nativeaot"
+  ],
+  "inputs": {
+    "fixture": {
+      "path": "edgcpp/backend/tests/primitive_data_readability.cpp",
+      "sha256": "aa71aae0c6977ce6ed5693d367663a5df25bbb86908024772f2113dc2847218f"
+    },
+    "verifier": {
+      "path": "edgcpp/backend/tests/primitive_data_readability_verify.py",
+      "sha256": "1341de800f89650930e73cf63125e2c6bdd0223bc157f9d4792d67170af57ae4"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/primitive-data-build-002/cpfe-dot",
+      "sha256": "da07ff1bd0d42dc7e0b5d549f02294c0e839b3600488bfd1d9103ab9f3a9d201"
+    },
+    "backendPrimitiveHelper": {
+      "path": "edgcpp/backend/dot_gen_primitive_data.h",
+      "sha256": "2e77d2a856676b3816e68c8d623232e158fb122e5afac8a3708197472e8505e8"
+    },
+    "peInspectorSource": {
+      "path": "edgcpp/artifacts/campaign/persistent-continuation/primitive-data-managed-004/pe-inspector/Program.cs",
+      "sha256": "4394eb8063cd4e6a79175da32bef83ec63f625a202e37a9b692a4712689e8e96"
+    }
+  },
+  "checks": [
+    "GCC and Clang agree on primitive representations, local copies, independent arrays and per-thread storage",
+    "static/PE: all initializer getters are heap-free and transitively backed by FieldRVA data",
+    "static/JIT: native primitive traces, forced GC, independent copies, owner and TLS isolation",
+    "static/NativeAOT: native primitive traces, forced GC, independent copies, owner and TLS isolation",
+    "instance/PE: all initializer getters are heap-free and transitively backed by FieldRVA data",
+    "instance/JIT: native primitive traces, forced GC, independent copies, owner and TLS isolation",
+    "instance/NativeAOT: native primitive traces, forced GC, independent copies, owner and TLS isolation"
+  ],
+  "audits": {
+    "static": {
+      "property_count": 29,
+      "element_types": [
+        "Number",
+        "double",
+        "float",
+        "global::System.Half",
+        "int",
+        "long",
+        "short",
+        "uint",
+        "ulong",
+        "ushort"
+      ],
+      "generated_bytes": 111999,
+      "pe": {
+        "initializerGetterCount": 29,
+        "referencedRvaFieldCount": 24,
+        "exactUInt32DataFound": true,
+        "managedHeapAllocationOpcodes": 0,
+        "unauditedCalls": 0
+      }
+    },
+    "instance": {
+      "property_count": 29,
+      "element_types": [
+        "Number",
+        "double",
+        "float",
+        "global::System.Half",
+        "int",
+        "long",
+        "short",
+        "uint",
+        "ulong",
+        "ushort"
+      ],
+      "generated_bytes": 111372,
+      "pe": {
+        "initializerGetterCount": 29,
+        "referencedRvaFieldCount": 24,
+        "exactUInt32DataFound": true,
+        "managedHeapAllocationOpcodes": 0,
+        "unauditedCalls": 0
+      }
+    }
+  },
+  "coverage": [
+    "signed and unsigned 16/32/64-bit arrays",
+    "fixed-underlying enum view over primitive backing data",
+    "Half/float/double exact representation including signed zero, infinities and subnormals; float/double quiet NaN payload",
+    "multidimensional arrays, implicit zero tails and repeated constant data",
+    "4100 nonzero uints followed by 8192 explicit zeros, four nonzero suffix values and eight implicit zeros",
+    "8192-element sparse array; mutation across chunk boundary, skipped-zero region, suffix and final tail",
+    "global and local mutable independent copies, per-owner global and per-thread/per-owner TLS isolation, forced GC",
+    "pointer and struct relocation fallback values/identities"
+  ],
+  "peProof": {
+    "assemblies": [
+      "static/bin/Release/net10.0/Generated.dll",
+      "instance/bin/Release/net10.0/Generated.dll"
+    ],
+    "inspectedMethods": "Every get___edg_initializer* method, including backing and reinterpreted view getters",
+    "requirements": [
+      "static accessor",
+      "reject newarr and box",
+      "only allow value-type ReadOnlySpan construction; reject heap constructors",
+      "only allow calls to another audited initializer getter, RuntimeHelpers.CreateSpan, MemoryMarshal.Cast or ReadOnlySpan constructor",
+      "every getter transitively references an actual FieldRVA data field",
+      "exact 32-byte reference uint initializer located in referenced RVA storage"
+    ],
+    "limitation": "This proves embedded constant storage and absence of heap-allocating operations in the initializer getters for these generated assemblies; it does not claim the entire translated program is allocation-free.",
+    "reflectionLocation": "Standalone verification tool only; absent from generated library and JIT/NativeAOT host"
+  },
+  "validation": {
+    "nativeOracles": [
+      "GCC C++17 -O2",
+      "Clang C++17 -O2"
+    ],
+    "managed": [
+      "static JIT",
+      "static linux-x64 NativeAOT",
+      "instance JIT",
+      "instance linux-x64 NativeAOT"
+    ],
+    "checksCount": 7,
+    "strictBuildWarnings": true,
+    "commands": {
+      "path": "edgcpp/artifacts/campaign/persistent-continuation/primitive-data-managed-004/commands.json",
+      "sha256": "d66a0fe2ae5417011359c96f1d16c10af8c353a0cffc52fff73587f24a0047f4"
+    },
+    "results": {
+      "path": "edgcpp/artifacts/campaign/persistent-continuation/primitive-data-managed-004/results.json",
+      "sha256": "6d8d17642b42394aa7645b851897560cfe1d69e6c31db10a175087b5599d1f83"
+    },
+    "expectedNativeTrace": {
+      "path": "edgcpp/artifacts/campaign/persistent-continuation/primitive-data-managed-004/expected.txt",
+      "sha256": "d12818af3eb70cef0d1f22f4702b7aa3ab60e18d8ec86a9d6eaaeefaa6639658"
+    }
+  },
+  "generatedAssemblies": {
+    "static": {
+      "path": "edgcpp/artifacts/campaign/persistent-continuation/primitive-data-managed-004/static/bin/Release/net10.0/Generated.dll",
+      "sha256": "8bc4946e29450b90c8da731b079b35cdc2c27d1b0e799d6eb38610130533576c"
+    },
+    "instance": {
+      "path": "edgcpp/artifacts/campaign/persistent-continuation/primitive-data-managed-004/instance/bin/Release/net10.0/Generated.dll",
+      "sha256": "c49b237626237ca8e79793449e957296f598ca642546dcba93e0a7d5a8cdf3f9"
+    }
+  },
+  "canonicalVerification": {
+    "artifact": "edgcpp/artifacts/campaign/persistent-continuation/primitive-data-canonical-001",
+    "resultsSha256": "6d8d17642b42394aa7645b851897560cfe1d69e6c31db10a175087b5599d1f83",
+    "checks": [
+      "GCC and Clang agree on primitive representations, local copies, independent arrays and per-thread storage",
+      "static/PE: all initializer getters are heap-free and transitively backed by FieldRVA data",
+      "static/JIT: native primitive traces, forced GC, independent copies, owner and TLS isolation",
+      "static/NativeAOT: native primitive traces, forced GC, independent copies, owner and TLS isolation",
+      "instance/PE: all initializer getters are heap-free and transitively backed by FieldRVA data",
+      "instance/JIT: native primitive traces, forced GC, independent copies, owner and TLS isolation",
+      "instance/NativeAOT: native primitive traces, forced GC, independent copies, owner and TLS isolation"
+    ]
+  },
+  "sqliteCore": {
+    "artifact": "edgcpp/artifacts/campaign/persistent-continuation/primitive-data-sqlite-core-001",
+    "resultsSha256": "2c3018c960667caf7fcff012606f9c7fcb36265984aaf7f498250072cebca6fe",
+    "checks": [
+      {
+        "label": "core-native-reference",
+        "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+        "bytes": 6337
+      },
+      {
+        "label": "core-jit-native-parity",
+        "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+        "bytes": 6337
+      },
+      {
+        "label": "core-aot-native-parity",
+        "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+        "bytes": 6337
+      }
+    ]
+  },
+  "canonicalCompiler": {
+    "path": "edgcpp/build/bin/cpfe-dot",
+    "sha256": "db6906403643db61228fcbb75688531fecd2f6bc5bbb23a6e57608892c36e0a5",
+    "buildLog": "edgcpp/artifacts/campaign/persistent-continuation/primitive-data-build-002/canonical-build.log"
+  }
+}

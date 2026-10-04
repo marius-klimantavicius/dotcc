@@ -474,6 +474,7 @@ string constant(a_constant_ptr c) {
   return "("+ty+")"+text;
 
 }
+#include "dot_gen_primitive_data.h"
 string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address) {
   t = skip_typerefs(t);
   if(storage_address.empty())storage_address="&("+dst+")";
@@ -497,6 +498,7 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
   if (c->kind != ck_aggregate) return dst + " = " + enum_boundary_value(t,c->type,constant(c)) + ";\n";
   if (!aggregate(t)) unsupported("aggregate initializer type");
   string result = dst + " = default;\n";
+  if(primitive_array_copy(t,c,storage_address,result))return result;
   if(t->kind==tk_array && skip_typerefs(t->variant.array.element_type)->kind==tk_integer &&
      skip_typerefs(t->variant.array.element_type)->size==1) {
     string bytes;bool simple=true;
@@ -1496,6 +1498,7 @@ void emit_library_export(a_routine_ptr r,a_variable_ptr params,const string &sig
 
 // EDG's custom-backend entry point intentionally has global namespace linkage.
 void back_end(void) {
+  primitive_data_properties.clear();
   unbound_partial=getenv("EDG_DOT_UNBOUND_EXTERNALS") && string(getenv("EDG_DOT_UNBOUND_EXTERNALS"))=="partial";
   unbound_declarations=unbound_partial || (getenv("EDG_DOT_UNBOUND_EXTERNALS") && string(getenv("EDG_DOT_UNBOUND_EXTERNALS"))=="declarations");
   unbound_routines.clear();unbound_variables.clear();

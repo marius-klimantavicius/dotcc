@@ -39,6 +39,51 @@ signed byte patterns and independently mutable destinations retain their exact
 bytes. Individual chunks are bounded to 16 KiB and UTF-8 chunks never split a
 scalar. Constant spans avoid allocating a managed byte array for every copy.
 
+## Other primitive tables
+
+Arrays of signed/unsigned 16-, 32- and 64-bit integers now use static span
+properties and bulk copies, including nested array rows and array fields:
+
+```csharp
+private static global::System.ReadOnlySpan<uint> __edg_initializer123 =>
+    [1116352408U, 1899447441U, 3049323471U, 3921009573U];
+
+// In the destination's initializer:
+__edg_initializer123.CopyTo(new global::System.Span<uint>(destination,
+    __edg_initializer123.Length));
+```
+
+The properties contain primitive constant expressions that compile to assembly
+data. A property returning an arbitrary collection would not alone guarantee
+that behavior. The verification tool inspects the generated assembly's getter
+IL, checks that each property reaches a field with an RVA, verifies the exact
+uint table bytes, and rejects heap allocation or unaudited calls.
+
+Enum arrays use their underlying primitive data with a typed span view.
+`Half`, `float` and `double` arrays use ushort/uint/ulong bit-pattern properties
+and `MemoryMarshal.Cast` views, preserving negative zero, infinities,
+subnormals and NaN payloads without decimal conversion. No per-element
+`BitConverter` calls or temporary heap arrays are needed for these copies.
+
+Data is split into properties of at most 4,096 elements. Identical property
+data is shared, while each global/local/TLS/instance destination remains an
+independently mutable copy. Omitted elements remain zero; long explicit zero
+runs use the destination's existing default initialization instead of embedding
+large zero tables. Tests cross chunk boundaries and zero ranges followed by
+nonzero suffixes.
+
+Pointer relocations, record fields and other constant representations continue
+through the existing initializer path; primitive array fields inside records
+can still use bulk copies. In particular, a struct table containing string
+pointers cannot be embedded as final absolute pointer values. The present
+typed-table path covers the widths above, not 128-bit integers or extended
+80-/128-bit floating types.
+
+`backend/tests/primitive_data_readability_verify.py` compares native traces with
+static/instance JIT and NativeAOT execution, including exact scalar bits,
+multidimensional arrays, independent copies, TLS, relocation fallbacks and
+compiled-data inspection.
+
 Literal-pool addresses retain pointer identity and offsets, with an added
 navigation comment for valid UTF-8, for example:
 

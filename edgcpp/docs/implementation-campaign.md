@@ -789,3 +789,32 @@ the existing `artifacts/review/edg`, `edg-exceptions` and
 links named-local unwinding, empty destructor and extern-contract excerpts.
 Full managed compilation/runtime remain unverified; no implementations of the
 84 contracts are implied. Evidence: `evidence/edg-self-refresh-20261004.json`.
+
+### Embedded primitive initializer tables (2026-10-04)
+
+Numeric arrays now use private static `ReadOnlySpan<T>` properties and bulk
+`CopyTo` initialization. This covers signed/unsigned 16-, 32- and 64-bit data,
+nominal enums, Half, float and double, including multidimensional rows and
+primitive array fields. Floating values use primitive bit-pattern data and a
+typed `MemoryMarshal.Cast` view; no decimal round-trip or per-element floating
+conversion is introduced. Data properties are deduplicated and chunked at 4,096
+elements. Long zero runs retain default storage rather than embedded zero blobs.
+Pointer relocations, record initialization and extended 128-bit/80-bit scalar
+representations retain their existing paths.
+
+The new primitive fixture matches GCC/Clang under static and instance JIT and
+NativeAOT, including NaN payloads, signed zero, chunk boundaries, zero gaps with
+nonzero suffixes, TLS and owner isolation. PE inspection verifies 29 initializer
+getters backed by 24 RVA fields, exact uint payload bytes and no heap-allocation
+instructions or unaudited calls. The default compiler is rebuilt and passes the
+same checks. SQLite's full-feature core corpus still matches native under JIT
+and NativeAOT. See `evidence/primitive-data-20261004.json` and
+`docs/source-storage-readability.md`.
+
+The existing EDG review aliases now contain a fresh full exception-enabled
+translation with these properties: 155 C# files, 243,496,119 bytes and 3,458
+primitive initializer properties (including backing-data/typed-view pairs).
+The README links a real uint property and its copy site. Emission and syntax/
+format validation pass; full managed compiler build/runtime remain unverified,
+and its 84 extern partial contracts still need implementations. See
+`evidence/edg-primitive-data-review-20261004.json`.
