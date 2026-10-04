@@ -81,7 +81,7 @@ string gnu_statement_expression(an_expr_node_ptr e) {
   }
   if(current_function_scope && variadic_routine(current_function_scope->variant.routine.ptr->type)) {
     if(!params.empty()){params+=", ";args+=", ";}
-    params+="global::Edg.Runtime.VaList* __edg_arguments";args+="__edg_arguments";
+    params+="global::Edg.Runtime.VaList* __edg_arguments, global::System.ReadOnlySpan<global::Edg.Runtime.VaArg> __edg_varargs";args+="__edg_arguments, __edg_varargs";
   }
   bool address=e->is_lvalue;
   auto saved_output=std::move(output);output.clear();statement_expression_results.push_back(address);

@@ -999,11 +999,15 @@ The basic-language and initialization/allocation increment adds flattened ordina
 
 The optional bootstrap now provides all ordinary scalar/array, sized, aligned, placement and nothrow allocation signatures. Each owner has its own new handler and heap ledger. Generated library hosts call `ReleaseThread()` at translated thread exit and `Shutdown()`/`Dispose()` at owner end. Executable wrappers automatically shut down. Native callbacks, libc resources, dynamic libraries and cross-module lifetime still require their own contracts. Instance ownership remains selected solely by `--instance-methods`.
 
-The next runtime increment adds explicit portable variadic packs and opt-in
-byte-stream libc imports. Variadic signatures receive a hidden VaList pointer;
-callers evaluate arguments once, preserve EDG's default promotions and write
-aligned values to caller-owned storage. va_copy copies cursors, and packs above
-64 KiB use NativeMemory with finally-based release. The FILE bridge uses opaque
+The runtime provides portable variadic packs and opt-in byte-stream libc imports.
+The current variadic ABI uses a final `params ReadOnlySpan<Edg.Runtime.VaArg>`;
+callers evaluate arguments once and preserve EDG's default promotions. Defined
+callees build aligned storage using shared `VaPack`, with no per-call varcall
+helpers. `VaArg`, `VaPack` and `VaList` live in authored shared runtime sources.
+Explicit `va_list` forwarding retains the raw cursor ABI; va_copy copies cursors.
+Packs above 64 KiB use NativeMemory with using-based release. See
+[span varargs](varargs-span.md) for large-value snapshots and verification limits.
+The FILE bridge uses opaque
 native tokens, owner-specific pinned standard-stream cells and BCL streams,
 with runtime-selected append/path adapters where required for C semantics.
 Wide-oriented FILE behavior now has captured encoding and a strict version2

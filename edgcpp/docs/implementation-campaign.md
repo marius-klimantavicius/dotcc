@@ -985,3 +985,29 @@ matches its native reference under JIT and NativeAOT. Both native backend builds
 pass. SQLite's existing review aliases are refreshed with the requested examples;
 full translated EDG was not regenerated for this SQLite-focused change.
 [Verification and review evidence](../evidence/nested-tables-20261004.json).
+
+### Shared span varargs without per-call helpers (2026-10-04)
+
+Named variadic methods now take `params ReadOnlySpan<Edg.Runtime.VaArg>`.
+Direct calls retain the routine name and promoted scalar arguments; indirect
+calls pass an explicit span collection. The shared authored `VaArg`, `VaPack`
+and `VaList` modules contain the runtime implementation. Generated bodies pack
+once on entry, with stack storage up to 64 KiB and NativeMemory above that;
+using-based disposal covers return and unwinding. Explicit va_list forwarding
+keeps the existing cursor ABI. Values larger than 16 bytes use an unpinned
+snapshot at argument evaluation to preserve values and avoid leaks when later
+arguments throw. [ABI and provider migration](varargs-span.md).
+
+Both native compiler builds pass. Verification includes 25 shared runtime checks
+under JIT/NativeAOT (zero measured managed allocation for 10,000 scalar calls),
+C/C++ GCC/Clang/original-EDG oracles and static/instance JIT/NativeAOT, shared
+external partial providers, and a strict VaArg-only declarations-mode project.
+SQLite core again matches its native reference; the library consumer passes
+JIT/NativeAOT including exported macros, rename-column and math checks.
+
+Both existing review alias sets are refreshed. SQLite has zero varcall helpers
+(previously 699), and 408,611 fewer translated-source bytes. The complete 75-TU
+EDG emission has zero varcall helpers (previously 2,500); syntax, formatting and
+packaging pass. Full managed EDG build/execution remains unverified, as do other
+OS/architecture runs. No broad libc/C++ completeness claim follows from these
+checks. [Verification and review evidence](../evidence/varargs-span-20261004.json).

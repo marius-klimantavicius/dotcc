@@ -11,6 +11,12 @@ wrappers retain their source-resolved names; implementation bodies use `__body`.
 The existing EDG review aliases are refreshed in place; their README and manifest
 describe the current output.
 
+Variadic calls now use ordinary named calls and shared `Edg.Runtime.VaArg`
+carriers. The current output has zero `__edg_varcall` references (previously
+2,500 generated helper definitions); only needed shared runtime modules are
+copied into the project. See [the span ABI](varargs-span.md) and the review's
+`varargs-examples.cs.txt`. No full managed compiler execution is implied.
+
 `translate_self.py` reads the **original `cpfe` target** from
 `build/compile_commands.json`: currently 75 C++14 translation units, including
 the C backend, with the all-extensions build's definitions. It does not translate
@@ -53,7 +59,7 @@ no EDG semantic source changes are needed.
 The current investigation's isolated binary is under:
 
 ```
-artifacts/campaign/persistent-continuation/contract-split-build-001/cpfe-dot
+artifacts/campaign/persistent-continuation/varargs-span-build-001/cpfe-dot
 ```
 
 To request a fresh review artifact using such a compiler:

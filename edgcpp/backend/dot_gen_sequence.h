@@ -50,8 +50,8 @@ string sequence_expression(an_expr_node_ptr e) {
     parameters+=", byte* __edg_frame";
   }
   if(current_function_scope && variadic_routine(current_function_scope->variant.routine.ptr->type)) {
-    args+=", __edg_arguments";
-    parameters+=", global::Edg.Runtime.VaList* __edg_arguments";
+    args+=", __edg_arguments, __edg_varargs";
+    parameters+=", global::Edg.Runtime.VaList* __edg_arguments, global::System.ReadOnlySpan<global::Edg.Runtime.VaArg> __edg_varargs";
   }
   if(!pending_exception.empty()) {
     args+=", "+pending_exception;

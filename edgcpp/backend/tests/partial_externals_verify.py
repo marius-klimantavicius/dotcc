@@ -36,6 +36,17 @@ public unsafe partial class @Runtime {
 private readonly int[] host_storage = global::System.GC.AllocateArray<int>(1, pinned: true);
 private int* previous_address;
 internal partial int host_add(int arg0) => arg0 + 10;
+internal partial int host_variadic(int arg0, params global::System.ReadOnlySpan<global::Edg.Runtime.VaArg> __edg_varargs) {
+    int bytes = global::Edg.Runtime.VaPack.GetStackBytes(__edg_varargs);
+    byte* workspace = stackalloc byte[bytes];
+    using var pack = new global::Edg.Runtime.VaPack(__edg_varargs, workspace, bytes);
+    global::Edg.Runtime.VaList cursor = pack.Value;
+    int sum = 0;
+    for (int i = 0; i < arg0; ++i)
+        sum += *(int*)global::Edg.Runtime.VaList.Take(&cursor, 4, 4);
+    return sum;
+}
+
 internal partial void* host_allocate(ulong arg0) {
     void* value = global::System.Runtime.InteropServices.NativeMemory.Alloc((nuint)arg0);
     if(value == null) throw new global::System.OutOfMemoryException();
@@ -113,6 +124,8 @@ internal partial int host_unused(int value) => Owner is null ? value * 7 : value
         assert 'partial int host_unused' in supplements
         assert 'partial class Runtime' in contract and 'namespace Managed' in contract
         assert 'static partial' not in contract
+        assert 'params global::System.ReadOnlySpan<global::Edg.Runtime.VaArg>' in contract
+        assert '__edg_varcall' not in code
         build_host(label, directory, namespace + '.' + class_name, 'check_external_runtime', 27, 28, instance)
         projects.append({'label': label, 'namespace': namespace, 'class': class_name,
                          'instance': instance, 'providerSha256': shared_digest})

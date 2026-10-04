@@ -63,7 +63,7 @@ string unbound_contract_type(a_type_ptr original) {
       if(instance_mode)result+=source_qualified_owner()+", ";
       for(auto parameter=extra->param_type_list;parameter;parameter=parameter->next)
         result+=unbound_contract_type(parameter->type)+", ";
-      if(extra->has_ellipsis)result+="global::Edg.Runtime.VaList*, ";
+      if(extra->has_ellipsis)result+="global::System.ReadOnlySpan<global::Edg.Runtime.VaArg>, ";
       return result+unbound_contract_type(pointee->variant.routine.return_type)+">";
     }
     return unbound_contract_type(t->variant.pointer.type)+"*";
@@ -137,9 +137,9 @@ bool unbound_routine(a_routine_ptr routine) {
   }
   if(rt->variant.routine.extra_info->has_ellipsis) {
     string separator=parameters.empty()?"":", ";
-    parameters+=separator+"global::Edg.Runtime.VaList* __edg_arguments";
-    contract_parameters+=separator+"global::Edg.Runtime.VaList* __edg_arguments";
-    arguments+=separator+"__edg_arguments";
+    parameters+=separator+"params global::System.ReadOnlySpan<global::Edg.Runtime.VaArg> __edg_varargs";
+    contract_parameters+=separator+"params global::System.ReadOnlySpan<global::Edg.Runtime.VaArg> __edg_varargs";
+    arguments+=separator+"__edg_varargs";
   }
   string symbol=routine->source_corresp.name?routine->source_corresp.name:"<unnamed>";
   string return_type=type(rt->variant.routine.return_type);

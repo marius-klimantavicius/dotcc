@@ -291,7 +291,7 @@ string function_pointer_type(a_type_ptr t) {
   string result = "delegate* managed<";
   if (instance_mode) result += string(getenv("EDG_DOT_CLASS")) + ", ";
   for (auto p = extra->param_type_list; p; p = p->next) result += type(p->type) + ", ";
-  if(extra->has_ellipsis)result+="global::Edg.Runtime.VaList*, ";
+  if(extra->has_ellipsis)result+="global::System.ReadOnlySpan<global::Edg.Runtime.VaArg>, ";
   return result + type(t->variant.routine.return_type) + ">";
 }
 #include "dot_gen_imports.h"
@@ -327,8 +327,8 @@ string routine_address(a_routine_ptr r) {
       args += arg;
     }
     if(rt->variant.routine.extra_info->has_ellipsis) {
-      signature+=string(instance_mode || index?", ":"")+"global::Edg.Runtime.VaList* __edg_arguments";
-      args+=string(args.empty()?"":", ")+"__edg_arguments";
+      signature+=string(instance_mode || index?", ":"")+"global::System.ReadOnlySpan<global::Edg.Runtime.VaArg> __edg_varargs";
+      args+=string(args.empty()?"":", ")+"__edg_varargs";
     }
     address_output += "// dot-gen:member-begin\n" + signature + ") { "+string(instance_mode?"owner.__edg_enter();":"/*__EDG_ENTER__*/")+" try { " +
                       (type(rt->variant.routine.return_type) == "void" ? "" : "return ") +
@@ -747,7 +747,7 @@ string location(an_expr_node_ptr e) {
         call+=variable(p);
       }
       if(variadic_routine(current_function_scope->variant.routine.ptr->type))
-        call+=string(current_function_scope->variant.routine.parameters?", ":"")+"__edg_arguments";
+        call+=string(current_function_scope->variant.routine.parameters?", ":"")+"__edg_varargs";
       return call+")";
     }
     case enk_operation: break;
@@ -1488,7 +1488,7 @@ void emit_library_export(a_routine_ptr r,a_variable_ptr params,const string &sig
     if (p != params) args += ", ";
     args += source_parameter_name(p);
   }
-  if(rt->variant.routine.extra_info->has_ellipsis)args+=string(args.empty()?"":", ")+"__edg_arguments";
+  if(rt->variant.routine.extra_info->has_ellipsis)args+=string(args.empty()?"":", ")+"__edg_varargs";
   // The driver consumes these protocol records into the symbol manifest.
   string source = r->source_corresp.name ? r->source_corresp.name : "";
   string hex;
@@ -1635,7 +1635,7 @@ void back_end(void) {
     }
     prefer_named_frame_locals();
     if(rt->variant.routine.extra_info->has_ellipsis)
-      signature+=string(params?", ":"")+"global::Edg.Runtime.VaList* __edg_arguments";
+      signature+=string(params?", ":"")+"params global::System.ReadOnlySpan<global::Edg.Runtime.VaArg> __edg_varargs";
     line("// dot-gen:member-begin");
     line(source_member_marker(r));
     line(signature + ") {");
@@ -1645,6 +1645,7 @@ void back_end(void) {
     if (spec && spec->indeterminate) unsupported("indeterminate exception specification");
     size_t noexcept_body_start=output.size();
     if(!no_throw && dynamic_spec) {ensure_unexpected_helpers();line("try {");}
+    if(rt->variant.routine.extra_info->has_ellipsis)output+=variadic_entry_prologue();
     bool heap_frame = frame_size + frame_alignment > 65536;
     if (frame_size) {
       if (heap_frame) {

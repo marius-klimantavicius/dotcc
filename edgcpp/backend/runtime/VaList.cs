@@ -4,8 +4,9 @@ using System.Runtime.InteropServices;
 namespace Edg.Runtime;
 
 // Managed internal varargs ABI, independent of native register save areas.
-// The size also accommodates EDG's current builtin va_list tag. The caller
-// owns the pack until its variadic call returns; va_copy copies cursors only.
+// The size also accommodates EDG's current builtin va_list tag. The variadic
+// callee owns storage through VaPack; forwarded lists and va_copy cursors borrow
+// that activation's lifetime.
 [StructLayout(LayoutKind.Sequential, Size = 24)]
 public unsafe struct VaList
 {

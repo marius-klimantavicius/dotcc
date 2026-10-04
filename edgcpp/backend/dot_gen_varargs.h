@@ -34,32 +34,71 @@ string variadic_call(an_expr_node_ptr target,an_expr_node_ptr args) {
   auto rt=skip_typerefs(target->type);
   if(rt->kind==tk_pointer)rt=skip_typerefs(rt->variant.pointer.type);
   if(!variadic_routine(rt))return "";
-  string id="__edg_varcall"+std::to_string(++serial),parameters=function_pointer_type(rt)+" callback";
-  string invoke="callback("+string(instance_mode?"this, ":""),call=id+"("+expr(target);
+  bool direct=target->kind==enk_routine;
+  string call;
+  if(direct) {
+    auto routine=target->variant.routine.ptr;
+    if((routine->function_def_number==NULL_function_def_number || !scope_for_routine_or_null(routine)) &&
+       !libc_routine(routine) && !thread_routine(routine) && !process_routine(routine) && !unbound_routine(routine))
+      unsupported(("external variadic call: "+string(routine->source_corresp.name?routine->source_corresp.name:"<unnamed>")).c_str());
+    // The same audited import can have several native declarations. Reuse its
+    // canonical generated method just as routine_address does for callbacks.
+    routine=libc_address_routine(routine);
+    call=source_routine_reference(routine)+"(";
+  } else call=expr(target)+"(";
+  bool separator=!direct && instance_mode;
+  if(separator)call+="this";
   auto parameter=rt->variant.routine.extra_info->param_type_list;
-  unsigned index=0;unsigned long long bytes=0,alignment=8;
-  string writes;
-  for(auto a=args;a;a=a->next) {
-    string arg="a"+std::to_string(index++),ty=type(a->type);
-    parameters+=", "+ty+" "+arg;call+=", "+expr(a);
-    if(parameter) {invoke+=arg+", ";parameter=parameter->next;}
-    else {
-      auto t=skip_typerefs(a->type);unsigned long long align=alignment_of_type(t);
-      if(!t->size || !align || align>4096 || (align&(align-1)))unsupported("variadic argument layout");
-      alignment=std::max(alignment,align);bytes=(bytes+align-1)&~(align-1);
-      writes+="*("+ty+"*)(data+"+std::to_string(bytes)+") = "+arg+";\n";bytes+=t->size;
-      if(bytes>64*1024*1024)unsupported("variadic pack exceeds 64 MiB");
+  string carriers;
+  unsigned long long bytes=0;
+  for(auto argument=args;argument;argument=argument->next) {
+    if(parameter) {
+      if(separator)call+=", ";
+      call+=enum_boundary_value(parameter->type,argument->type,expr(argument));
+      separator=true;parameter=parameter->next;
+      continue;
     }
+    // c_gen_be::dump_call consumes EDG's argument types after the front end's
+    // default promotions. Do not infer promotions from C# literal syntax.
+    auto t=skip_typerefs(argument->type);
+    unsigned long long align=alignment_of_type(t);
+    if(!t->size || !align || align>4096 || (align&(align-1)))unsupported("variadic argument layout");
+    bytes=(bytes+align-1)&~(align-1);bytes+=t->size;
+    if(bytes>64*1024*1024)unsupported("variadic pack exceeds 64 MiB");
+    string value=expr(argument),carrier,ty=type(argument->type);
+    string physical=source_enum_nominal(argument->type)?source_enum_physical_type(argument->type):ty;
+    bool implicit_scalar=((physical=="int" || physical=="uint") && t->size==4 && align==4) ||
+      ((physical=="long" || physical=="ulong" || physical=="double") && t->size==8 && align==8);
+    if(t->kind==tk_pointer) {
+      if(t->size!=8 || align!=8)unsupported("variadic pointer layout");
+      carrier="((void*)("+value+"))";
+    } else if(implicit_scalar) {
+      // The carrier overload sees the same promoted scalar type as the native
+      // ABI. Named enums need an explicit physical conversion in C#.
+      carrier=physical==ty?value:"unchecked(("+physical+")("+value+"))";
+    } else {
+      value=enum_boundary_value(argument->type,argument->type,value);
+      carrier="global::Edg.Runtime.VaArg.From<"+ty+">("+value+", "+
+        std::to_string(t->size)+", "+std::to_string(align)+")";
+    }
+    // Factory calls snapshot each by-value operand at its evaluation point,
+    // before any later operand can mutate the original aggregate storage.
+    if(!carriers.empty())carriers+=", ";
+    carriers+=carrier;
   }
   if(parameter)unsupported("missing fixed variadic arguments");
-  bool heap=bytes+alignment>65536;
-  string result=type(rt->variant.routine.return_type);
-  string body="byte* raw="+(heap?"(byte*)global::System.Runtime.InteropServices.NativeMemory.Alloc("+std::to_string(bytes+alignment)+")":"stackalloc byte["+std::to_string(bytes+alignment)+"]")+";\n";
-  if(heap)body+="if(raw==null)throw new global::System.OutOfMemoryException();\ntry {\n";
-  body+="byte* data=(byte*)(((nuint)raw+"+std::to_string(alignment-1)+") & ~(nuint)"+std::to_string(alignment-1)+");\n"+writes;
-  body+=va_list_type+" pack=new "+va_list_type+" { Begin=data, Next=data, End=data+"+std::to_string(bytes)+" };\n";
-  body+=(result=="void"?"":"return ")+invoke+"&pack);\n";
-  if(heap)body+="} finally {global::System.Runtime.InteropServices.NativeMemory.Free(raw);}\n";
-  helper_output+="// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+result+" "+id+"("+parameters+") {\n"+body+"}\n// dot-gen:member-end\n";
+  if(direct) {
+    if(!carriers.empty())call+=string(separator?", ":"")+carriers;
+  } else {
+    // Function-pointer signatures cannot carry a params modifier.
+    call+=string(separator?", ":"")+"["+carriers+"]";
+  }
   return call+")";
+}
+string variadic_entry_prologue() {
+  return "int __edg_va_stack_bytes = global::Edg.Runtime.VaPack.GetStackBytes(__edg_varargs);\n"
+    "byte* __edg_va_stack = stackalloc byte[__edg_va_stack_bytes];\n"
+    "using var __edg_va_pack = new global::Edg.Runtime.VaPack(__edg_varargs, __edg_va_stack, __edg_va_stack_bytes);\n"
+    "global::Edg.Runtime.VaList __edg_arguments_value = __edg_va_pack.Value;\n"
+    "global::Edg.Runtime.VaList* __edg_arguments = &__edg_arguments_value;\n";
 }

@@ -70,8 +70,12 @@ also need defining declarations.
 Shared calls retain source-named forwarding methods in the translated owner, including
 routine-address adapters. `Managed.Runtime` names have their own allocation
 domain, so changing the owner's class name does not rename a runtime import.
-Signatures use the translated managed ABI, including `VaList*` for variadic
-functions. These are not automatic native P/Invoke declarations. The manifest
+Signatures use the translated managed ABI: C/C++ `...` becomes a final
+`params System.ReadOnlySpan<Edg.Runtime.VaArg>` parameter. An explicit C/C++
+`va_list` parameter retains the raw cursor ABI (normally `Edg.Runtime.VaList*`
+after parameter adjustment). These are distinct interfaces; see
+[variadic arguments](varargs-span.md) for provider migration and lifetime rules.
+These are not automatic native P/Invoke declarations. The manifest
 records each import's `runtimeOwner` and `runtimeMethod`.
 
 ## Project-specific contracts

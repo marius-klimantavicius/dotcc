@@ -1,0 +1,79 @@
+{
+  "status": "emission-syntax-formatting-passed",
+  "artifact": "artifacts/campaign/persistent-continuation/edg-self-varargs-span-20261004-001",
+  "reviewAlias": "artifacts/review/edg",
+  "sourceCount": 75,
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/varargs-span-build-001/cpfe-dot",
+    "sha256": "1ea5a33c88dd32e67c72c0926693712a820f9192042328216e7ac95b6696c013"
+  },
+  "rawOutput": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-varargs-span-20261004-001/raw.cs",
+    "sha256": "190d5ac1407aa99667c9ead12d12a98abb81bfc266e0abd24d653103ca7a86e3"
+  },
+  "formatter": {
+    "mode": "roslyn-whitespace-v2",
+    "sdk": "10.0.111",
+    "sourceSha256": "9e0b7a7a3d98c375e90fe052735d9c3600dad73fca26ef098c95e644617f243a",
+    "toolSha256": "a4c163b672a58f1471880c5b9c3319d61b4705cbdcf6ebcf604a34af3b31038a"
+  },
+  "translationSeconds": 226.919,
+  "generated": {
+    "files": 154,
+    "bytes": 186924509,
+    "primitiveInitializerProperties": 3458,
+    "tableAliases": 11560,
+    "indexedObjectInitializers": 198167,
+    "partialContracts": 84,
+    "sharedContracts": 52,
+    "translatedContracts": 32,
+    "exports": 41900,
+    "prefixedExports": 0,
+    "varcallReferences": 0
+  },
+  "previousGeneratedBytes": 188342153,
+  "sourceSizeReductionPercent": 0.7526960786096604,
+  "examples": {
+    "recordAlias": {
+      "file": "Translated.cs",
+      "line": 565402
+    },
+    "recordRow": {
+      "file": "Translated.cs",
+      "line": 674905
+    },
+    "pointerTableAlias": {
+      "file": "Translated.cs",
+      "line": 94408
+    },
+    "pointerTableRow": {
+      "file": "Translated.cs",
+      "line": 100334
+    },
+    "emptyDestructor": {
+      "file": "Translated.source.lexical.h.cs",
+      "line": 1434
+    },
+    "cleanup": {
+      "file": "Translated.generated.cs",
+      "line": 990108
+    },
+    "namedLocals": {
+      "file": "Translated.source.lexical.c.cs",
+      "line": 25416
+    },
+    "primitiveData": {
+      "file": "Translated.generated.cs",
+      "line": 881301,
+      "name": "__edg_initializer10396"
+    }
+  },
+  "managedCompilation": "not-run",
+  "runtime": "not-run",
+  "nativeAot": "not-run",
+  "previousVarcallDefinitions": 2500,
+  "varargs": "portable-span-pack-v2",
+  "runtimeModulesCopied": [
+    "VaArg"
+  ]
+}

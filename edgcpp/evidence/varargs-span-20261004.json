@@ -1,0 +1,580 @@
+{
+  "status": "passed",
+  "date": "2026-10-04",
+  "scope": "Remove generated per-call varcall helpers; shared span argument carriers and callee-owned portable packs",
+  "abi": "portable-span-pack-v2",
+  "compiler": {
+    "path": "edgcpp/artifacts/campaign/persistent-continuation/varargs-span-build-001/cpfe-dot",
+    "sha256": "1ea5a33c88dd32e67c72c0926693712a820f9192042328216e7ac95b6696c013"
+  },
+  "canonicalCompiler": {
+    "path": "edgcpp/build/bin/cpfe-dot",
+    "sha256": "8520f7349f22b9733394d318180704c882661bbfae8689bd41070bd3133a0cdd"
+  },
+  "inputs": {
+    "edgcpp/backend/dot_gen_be.c": "c9160a397e776692a54e046c308d7b0ea4ee06b2ddb6e09029217b7d27266d2e",
+    "edgcpp/backend/dot_gen_sequence.h": "8b3fc030254343f6a526fc76c01c0128ac3869bbace415eca756972c0283c2ad",
+    "edgcpp/backend/dot_gen_statement_expression.h": "10a27f0adcda3db842bbdf71c1e688c7541814094a39301afc5b6c5f0e8d47df",
+    "edgcpp/backend/dot_gen_unbound.h": "890ccc04ce79951db90a44e2777acaa42e6047521f0e7ea3b6cb0a250d9a86ce",
+    "edgcpp/backend/dot_gen_varargs.h": "8cb45e338488e126f7601d6d14a8fbe290e1181446d94af1d7617a2fbebba68b",
+    "edgcpp/backend/runtime/VaArg.cs": "090b8f4cdfa02568861ee34ded059cbdba7510e1df2b42230beff9bbdc2b099c",
+    "edgcpp/backend/runtime/VaList.cs": "7999b093f16d5b2ecd05bbd26a8fbd5189eea12aaddf1537e74396251c58c286",
+    "edgcpp/backend/runtime/VaPack.cs": "eae8b04e7d22f119edb6e306e88ffe807b51cf426c6a244d9310a20a35aa8411",
+    "edgcpp/backend/tests/partial_externals.cpp": "1a4de476f8c5e0b58d999ced39661b271bccb30699bed5089e34d3bc924e1001",
+    "edgcpp/backend/tests/partial_externals_verify.py": "6bf7ad4557695825d8b2285f1a265bfbca7f7639feca2aa4eff9ebdc640b832d",
+    "edgcpp/backend/tests/varargs.cpp": "518188187b4831b5ce21fc9789a4fb139bd16c0df80a714a7f202b2a5b0c523e",
+    "edgcpp/backend/tests/varargs_c.c": "41533c0bb2ae9380ee49989a413c2330fe9fb9b55bfa57f122cf0dbe5dbc64b9",
+    "edgcpp/backend/tests/varargs_verify.py": "be5ba99d338bca9c3a66b769c8085632278a77ab351b59bc7bffd73b045d1b02",
+    "edgcpp/backend/tests/varargs_span_runtime.cs": "df77d8e5ea4a385710ed703e54a6e396a864e5a6904471e38ba860206d2ecc15",
+    "edgcpp/backend/tests/varargs_span_runtime_verify.py": "068b897b617e80a1756c83b465c9657d6fd330c27aeea7ffcf42b49cc19fafc3",
+    "edgcpp/dotnet.py": "bf6341c8dbd52aa203efb6f9dc5c5383bd607921af82799e3186879fd4c49d8f"
+  },
+  "validation": {
+    "runtime": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/span-varargs-runtime-002/results.json",
+        "sha256": "b4c2cb2731fb2e7afe63b75d202315dd73843792312444d738848c5c9ba2f2c2"
+      },
+      "checks": []
+    },
+    "translated": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/varargs-span-tests-001/results.json",
+        "sha256": "e0d8a56492416480d6af65150cf7354dedafc7c282feaaa10d30992b861b7268"
+      },
+      "checks": [
+        "c: varargs: source GCC/Clang and original EDG C oracle",
+        "c: varargs instance=False: JIT direct/indirect span calls, promotions, aggregate/128/binary80, snapshots, copy/forwarding, >64KiB packs, void/empty calls, function pointers and EH; no varcall helpers",
+        "c: varargs instance=False: Linux x64 NativeAOT",
+        "c: varargs instance=True: JIT direct/indirect span calls, promotions, aggregate/128/binary80, snapshots, copy/forwarding, >64KiB packs, void/empty calls, function pointers and EH; no varcall helpers",
+        "c: varargs instance=True: Linux x64 NativeAOT",
+        "c++: varargs: source GCC/Clang and original EDG C oracle",
+        "c++: varargs instance=False: JIT direct/indirect span calls, promotions, aggregate/128/binary80, snapshots, copy/forwarding, >64KiB packs, void/empty calls, function pointers and EH; no varcall helpers",
+        "c++: varargs instance=False: Linux x64 NativeAOT",
+        "c++: varargs instance=True: JIT direct/indirect span calls, promotions, aggregate/128/binary80, snapshots, copy/forwarding, >64KiB packs, void/empty calls, function pointers and EH; no varcall helpers",
+        "c++: varargs instance=True: Linux x64 NativeAOT"
+      ]
+    },
+    "externContracts": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/varargs-span-partials-002/results.json",
+        "sha256": "ef5319f5abc967fc43b384f180b46627d41667ab2647f8b18505f57027d22627"
+      },
+      "checks": [
+        "Managed.Runtime owner collision fails with an explicit reserved-name diagnostic",
+        "static: missing implementations fail with CS8795",
+        "static: strict JIT direct/indirect extern calls and stable independent runtime storage",
+        "static: NativeAOT execution",
+        "instance: missing implementations fail with CS8795",
+        "instance: strict JIT direct/indirect extern calls and stable independent runtime storage",
+        "instance: NativeAOT execution",
+        "typed-static: strict JIT direct/indirect extern calls and stable independent runtime storage",
+        "typed-static: NativeAOT execution",
+        "typed-instance: strict JIT direct/indirect extern calls and stable independent runtime storage",
+        "typed-instance: NativeAOT execution",
+        "no-imports: exact same common provider compiles and runs when all implementations are unused"
+      ]
+    },
+    "declarations": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/varargs-span-declarations-001/results.json",
+        "sha256": "c4b50f6dc3a7637c287c8e1f9010aa264e459853be3b6f4666fb03db567745b7"
+      },
+      "checks": []
+    },
+    "sqliteCore": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/varargs-span-sqlite-core-001/results.json",
+        "sha256": "c4bee5f3bb677b7fd5af64714cdad20e0405e4c7e1c4f3e1f067cfc4e712fdfa"
+      },
+      "checks": [
+        {
+          "label": "core-native-reference",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-jit-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        },
+        {
+          "label": "core-aot-native-parity",
+          "stdoutSha256": "df98bb5a16935d527907dad5c0ee3c24b5ff22026f3ff34c6b8dbd9b185e21c6",
+          "bytes": 6337
+        }
+      ]
+    },
+    "sqliteLibrary": {
+      "results": {
+        "path": "edgcpp/artifacts/campaign/persistent-continuation/sqlite-varargs-span-review-20261004-001/results.json",
+        "sha256": "eca571d41707123e90672ed01659b6a21cec3345b41d5424bb55cbfa45a883a9"
+      },
+      "checks": []
+    }
+  },
+  "runtimeMeasurements": {
+    "jit": "25 shared span varargs runtime checks passed; scalar allocation bytes=0",
+    "nativeAot": "25 shared span varargs runtime checks passed; scalar allocation bytes=0",
+    "inputHashes": {
+      "path": "edgcpp/artifacts/campaign/persistent-continuation/span-varargs-runtime-002/input-sha256.json",
+      "sha256": "abd38ca37f56397f8fd115c14a4ff5445b942b86d2a3e9de4bc27060644fb91e"
+    }
+  },
+  "edgReview": {
+    "status": "emission-syntax-formatting-passed",
+    "artifact": "artifacts/campaign/persistent-continuation/edg-self-varargs-span-20261004-001",
+    "reviewAlias": "artifacts/review/edg",
+    "sourceCount": 75,
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/varargs-span-build-001/cpfe-dot",
+      "sha256": "1ea5a33c88dd32e67c72c0926693712a820f9192042328216e7ac95b6696c013"
+    },
+    "rawOutput": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-varargs-span-20261004-001/raw.cs",
+      "sha256": "190d5ac1407aa99667c9ead12d12a98abb81bfc266e0abd24d653103ca7a86e3"
+    },
+    "formatter": {
+      "mode": "roslyn-whitespace-v2",
+      "sdk": "10.0.111",
+      "sourceSha256": "9e0b7a7a3d98c375e90fe052735d9c3600dad73fca26ef098c95e644617f243a",
+      "toolSha256": "a4c163b672a58f1471880c5b9c3319d61b4705cbdcf6ebcf604a34af3b31038a"
+    },
+    "translationSeconds": 226.919,
+    "generated": {
+      "files": 154,
+      "bytes": 186924509,
+      "primitiveInitializerProperties": 3458,
+      "tableAliases": 11560,
+      "indexedObjectInitializers": 198167,
+      "partialContracts": 84,
+      "sharedContracts": 52,
+      "translatedContracts": 32,
+      "exports": 41900,
+      "prefixedExports": 0,
+      "varcallReferences": 0
+    },
+    "previousGeneratedBytes": 188342153,
+    "sourceSizeReductionPercent": 0.7526960786096604,
+    "examples": {
+      "recordAlias": {
+        "file": "Translated.cs",
+        "line": 565402
+      },
+      "recordRow": {
+        "file": "Translated.cs",
+        "line": 674905
+      },
+      "pointerTableAlias": {
+        "file": "Translated.cs",
+        "line": 94408
+      },
+      "pointerTableRow": {
+        "file": "Translated.cs",
+        "line": 100334
+      },
+      "emptyDestructor": {
+        "file": "Translated.source.lexical.h.cs",
+        "line": 1434
+      },
+      "cleanup": {
+        "file": "Translated.generated.cs",
+        "line": 990108
+      },
+      "namedLocals": {
+        "file": "Translated.source.lexical.c.cs",
+        "line": 25416
+      },
+      "primitiveData": {
+        "file": "Translated.generated.cs",
+        "line": 881301,
+        "name": "__edg_initializer10396"
+      }
+    },
+    "managedCompilation": "not-run",
+    "runtime": "not-run",
+    "nativeAot": "not-run",
+    "previousVarcallDefinitions": 2500,
+    "varargs": "portable-span-pack-v2",
+    "runtimeModulesCopied": [
+      "VaArg"
+    ]
+  },
+  "limits": [
+    "Execution tested on Linux x64; other OS/architectures not run.",
+    "Values larger than 16 bytes allocate unpinned managed snapshots before copying into callee storage.",
+    "No native platform va_list interoperability; explicit native adapters remain required.",
+    "SQLite uses deterministic test-only memory VFS and THREADSAFE=0.",
+    "EDG self translation passed emission/Roslyn syntax/formatting only; full managed build and execution not run."
+  ],
+  "sqliteReview": {
+    "schema": 1,
+    "status": "passed",
+    "varargs": "portable-span-pack-v2",
+    "current": {
+      "translatedFiles": 41,
+      "translatedBytes": 10982336,
+      "allCSharpFiles": 75,
+      "varcallTokenOccurrences": 0,
+      "variadicSpanParameters": 88,
+      "calleePackDeclarations": 44
+    },
+    "previous": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/sqlite-nested-tables-review-20261004-001/generated",
+      "translatedFiles": 43,
+      "translatedBytes": 11390947,
+      "varcallTokenOccurrences": 1398
+    },
+    "translatedByteReduction": 408611,
+    "runtimeTypesAudited": [
+      "AtomicOps",
+      "CThreadExitTransfer",
+      "Float80",
+      "LibcAppend",
+      "LibcCalendar",
+      "LibcCommand",
+      "LibcContext",
+      "LibcEnvironment",
+      "LibcErrorMessages",
+      "LibcFiles",
+      "LibcFloat",
+      "LibcLocale",
+      "LibcMath",
+      "LibcPaths",
+      "LibcProcess",
+      "LibcScanMath",
+      "LibcSignals",
+      "LibcText",
+      "LibcTimezone",
+      "LibcTimezoneData",
+      "LibcxxThreads",
+      "ThreadTokenSource",
+      "VaArg",
+      "VaList",
+      "VaPack"
+    ],
+    "runtimeTypeDeclarationsInTranslatedFiles": 0,
+    "authoredRuntimeCopies": [
+      {
+        "name": "AtomicOps",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/AtomicOps.cs",
+        "authoredSha256": "041217230e58ffa9585ed1057e5ff8b0c7ac7075176a57b0e6913011a0957adb",
+        "copySha256": "de6e426b46e5f32da7044c880ad18e44b37f4d3ec60e80f05827476d9b6181b6"
+      },
+      {
+        "name": "Float80",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/Float80.cs",
+        "authoredSha256": "d140bb1b3aac9c85eb0bec9bb67ff06c6bf9a993298bde64ea5387866eaa8bf7",
+        "copySha256": "1e82204968e56fb5e0cd55437c7c51749263ac19ca803556eab1374b1e3ea381"
+      },
+      {
+        "name": "LibcAppend",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcAppend.cs",
+        "authoredSha256": "e3b11596a2778f748dcc5ecbc0084acb824719118c998c1da9776528f1765492",
+        "copySha256": "09f7f8d9ec2bf5438d26ff5f9d5d29535559d639cb569fbdd4f8ce09163d2f0e"
+      },
+      {
+        "name": "LibcC11Threads",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcC11Threads.cs",
+        "authoredSha256": "7416d9d9f1ee3dfa741f1216ad8476949d0783f2f6bbedfc326fa7cea7767a08",
+        "copySha256": "a277d4941468e342527227a88e04e3fa3ac615d10bfe6cc7d6c3e670a2902433"
+      },
+      {
+        "name": "LibcCalendar",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcCalendar.cs",
+        "authoredSha256": "b42ffcd92d6fbaa27d08655abc7e022e68f7397d02af1b792e2ffd67d436443b",
+        "copySha256": "8700a5bde436c90e7efad4d6b9d331b7fe0fa181bc4886548a9fd770cf2956e0"
+      },
+      {
+        "name": "LibcCommand",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcCommand.cs",
+        "authoredSha256": "cc096680ad5e9e67a740ad822c5a3c17177e72ef9a81fbed43b09cee23e7759d",
+        "copySha256": "88327d0bf2c7f51aa48060c380cf1f55dff877da985402e4e0bab17766be6609"
+      },
+      {
+        "name": "LibcContext",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcContext.cs",
+        "authoredSha256": "d50a3f9906dfbd7a5f3e5d083cca038974f8f28c40759a6b1282eb4c83236502",
+        "copySha256": "8431f6e827caefd364812eac18b5bf02c4d61271e463e3133c189bee77af4222"
+      },
+      {
+        "name": "LibcEnvironment",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcEnvironment.cs",
+        "authoredSha256": "ab48de147c1345d9a77273efef346e2ee20010f64f08e0f39401aff605e5670c",
+        "copySha256": "c1ff5ef77a4cdfeffe957263c2f1934430383bfc6134d23c2ddf1565dd2aa959"
+      },
+      {
+        "name": "LibcErrorMessages",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcErrorMessages.cs",
+        "authoredSha256": "8f8bc6122350bd0f367a9aef09e2327e82c7c752ee41c9cfe9ba7ae1b08779e5",
+        "copySha256": "266fa2153def0a84a8e3e06188d67e322e0e176ad0bbd4e790cd27affec1b501"
+      },
+      {
+        "name": "LibcFiles",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcFiles.cs",
+        "authoredSha256": "06764c770e4727f470c33b994dc2e3d8ce7291e4751c9b70831c6b1ec726d9a6",
+        "copySha256": "fbc4e823af07399dd4561309459c82f0a7396772385a775aa7bb2931dcedce07"
+      },
+      {
+        "name": "LibcFilesAssert",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcFilesAssert.cs",
+        "authoredSha256": "9d9a1805d540ee82a6d11ddcdb752c7e9fa1f131af218a41197e9472af9ac087",
+        "copySha256": "798c9c116a82161b8af91639a28252d80a67976883502c581fb71ee75df55725"
+      },
+      {
+        "name": "LibcFilesFormat",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcFilesFormat.cs",
+        "authoredSha256": "29808bd0fd3da199d280f6694a8fd2dbedd1b27f2191ced0e1bb196e1f632975",
+        "copySha256": "81031664acfc22d8c24bc2cd973f19b03fa6a24a8d388a9594c4e81bbc944197"
+      },
+      {
+        "name": "LibcFilesManagement",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcFilesManagement.cs",
+        "authoredSha256": "cc50808e08f83978162b8a51a3cb3a3dd374f4dca78a4f7f106d7354e3230b7e",
+        "copySha256": "0674aa59b779fb3ade22024dd0ef38ff33dcf933c2db8b67dbad558c63ed1fd6"
+      },
+      {
+        "name": "LibcFilesScan",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcFilesScan.cs",
+        "authoredSha256": "18cde207bbdc9a094b6b3fe4af83c2a6655e172a242047e5bfce641f2a423e0c",
+        "copySha256": "2e2316de3a7ea2ef25e985dffcc8e40f991f68341b147b19071fb7a56ec40631"
+      },
+      {
+        "name": "LibcFilesSignalAssert",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcFilesSignalAssert.cs",
+        "authoredSha256": "b92d714c66475e26f4906d3ae5e0a79cf411f49a55af9c372ef1901de8c23487",
+        "copySha256": "3586ca288d2c5bfdb7ef7d2bc6549bbe7ac96e663e80c9b20ea4245d49b4d79c"
+      },
+      {
+        "name": "LibcFilesWide",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcFilesWide.cs",
+        "authoredSha256": "b574746eb10b079238df262ea570534847ee322ad8f36a22ca5804cdebfb0fa5",
+        "copySha256": "a534866ee4fd2e1b15d8d2d0f37233e16045378b7911b0ea4728faaa95f69bdb"
+      },
+      {
+        "name": "LibcFilesWideFormat",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcFilesWideFormat.cs",
+        "authoredSha256": "e7b2657ce847f48901ffe69c3a8a25e85285a10d86e1e56754a53f5e4abd1310",
+        "copySha256": "fe90cfa69b62cefc9831157f82d282a87e4be9128fea079ef79a697b83e22505"
+      },
+      {
+        "name": "LibcFilesWideScan",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcFilesWideScan.cs",
+        "authoredSha256": "2338ec872badc6df59f60e24c94402d6de5b7899a666d20dad85ba7cfe30d217",
+        "copySha256": "24627432960ff4be0004f09ace8618cf7b1aeca3f8070333642ac82e420862d7"
+      },
+      {
+        "name": "LibcFloat",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcFloat.cs",
+        "authoredSha256": "954afa0cee860241004fa081cda1db38a62fcf8db7319a4ef490f089aa68d0e3",
+        "copySha256": "0275d7f01f0f34ee691ee45632a688fb76cd4d91419f7be0da81c8e2d4a3269b"
+      },
+      {
+        "name": "LibcInitialThread",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcInitialThread.cs",
+        "authoredSha256": "ae8154a302e72cf70b1e192367f50af63b4a677c609bed59192cf5aaa10f4a21",
+        "copySha256": "a3f04494b1459a8036b82d514b8d6d2f4c0422f0493acd48b6a328aff1352f36"
+      },
+      {
+        "name": "LibcLocale",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcLocale.cs",
+        "authoredSha256": "3a10d99e9841e46dde934f9b78baef24fc801d1abfefaa1ed875246cbe2a5b28",
+        "copySha256": "33b703cdac6b98967af92faa3b871ac13e31753cc5d37ab4e4b65d0f4a786a5f"
+      },
+      {
+        "name": "LibcLocaleEnvironment",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcLocaleEnvironment.cs",
+        "authoredSha256": "24accff1e68d292674f0a535b133f79d1ebe3d0c67d681eb0aee802b46517230",
+        "copySha256": "ac0b05323ab8210ef3697469b038845a7b9271f27655fcaea9088c3f8d15208c"
+      },
+      {
+        "name": "LibcMath",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcMath.cs",
+        "authoredSha256": "8c0e347b639d4a4b6c8467e25265d9a17c8d9a1d0434e79c68ef4798fc57db7f",
+        "copySha256": "9246f0994896dc9affa6fb861ce8f6e0da6eb315254a6ac8e80aac3fb8630c7e"
+      },
+      {
+        "name": "LibcPaths",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcPaths.cs",
+        "authoredSha256": "1c03a56bf2f357a5ab37531cf1d4984a5802d1cb5074877fdab2de8042cc3037",
+        "copySha256": "10f6c380f2469290134f404144869cf921361ad183f5a6ed5abbcd9a23c4cd62"
+      },
+      {
+        "name": "LibcProcess",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcProcess.cs",
+        "authoredSha256": "0173da39b6095ec3099ab30de0c650cf892a05252fe02035053704f7d9040f8c",
+        "copySha256": "375ff9d6c0703a74da1eff08643e540042b23287f62be934363cc1b96afc5be5"
+      },
+      {
+        "name": "LibcScanMath",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcScanMath.cs",
+        "authoredSha256": "7308e211f7be8c9fab6e481162a6e278b2da275844b8e925a42c2451112bc8ed",
+        "copySha256": "047fbfaed2b79ca9add7d9321a9b723749a00f202b99d1afa090079a0ce42c01"
+      },
+      {
+        "name": "LibcSignals",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcSignals.cs",
+        "authoredSha256": "7fc5c25ed073d75bf09cad57983962c16678208093bf6c21cc8a3a9529203274",
+        "copySha256": "9936e0e57716b2971a8943bd6c37c3f0fd824f604b1b026c6cd076238beb0c66"
+      },
+      {
+        "name": "LibcText",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcText.cs",
+        "authoredSha256": "f10492858f80944b7f86230b6cf546e255e2074ce0eb9d8f2641c7b6c1bd4895",
+        "copySha256": "98e1dc8e61767fd12cf5fbfc73adf06ba40b9980c764c96dd2d2c51bdfa28a5c"
+      },
+      {
+        "name": "LibcTimezone",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcTimezone.cs",
+        "authoredSha256": "85d120bd0edb0d827175b2787abc99dc9e8f479a87279553f6cbf7251c937308",
+        "copySha256": "ecd6d404976aea53989b52070cdd24180c51385ee89a695131ff7944faefca4f"
+      },
+      {
+        "name": "LibcTimezoneData",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcTimezoneData.cs",
+        "authoredSha256": "d26112bca1ae279f97437b9a219b37a0f5289bad8f703db446d7d8566c739e7d",
+        "copySha256": "e49ac4c603c96a369740fc8dc4dbf738e79b2c3894570884d8d0f57b211b55ad"
+      },
+      {
+        "name": "LibcxxThreads",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/LibcxxThreads.cs",
+        "authoredSha256": "8234019730fde73623c17458c9693bf4b61616dcd88ad8b9804c1f0518843a29",
+        "copySha256": "3f5920956c86e65b0ba5e3d7d90ba83e2f1ccc8677948f92a53b6b73be4e9da4"
+      },
+      {
+        "name": "VaArg",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/VaArg.cs",
+        "authoredSha256": "090b8f4cdfa02568861ee34ded059cbdba7510e1df2b42230beff9bbdc2b099c",
+        "copySha256": "00760c6f1e2df0112e072ad9a109656b71691e30dd600be77dd5a22ba8a24cce"
+      },
+      {
+        "name": "VaList",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/VaList.cs",
+        "authoredSha256": "7999b093f16d5b2ecd05bbd26a8fbd5189eea12aaddf1537e74396251c58c286",
+        "copySha256": "a0d7d0bf36c3b8d9403d3305d3c406242292893bc041606a7f532e6fa90d9b72"
+      },
+      {
+        "name": "VaPack",
+        "authoredPath": "/home/marius/p/dotcc/edgcpp/backend/runtime/VaPack.cs",
+        "authoredSha256": "eae8b04e7d22f119edb6e306e88ffe807b51cf426c6a244d9310a20a35aa8411",
+        "copySha256": "27025674874979a2bfc7bbfce20913953925749b81b9b923f3304bea80b4c8bf"
+      }
+    ],
+    "anchors": {
+      "logAlias": {
+        "file": "Translated.cs",
+        "line": 2718,
+        "excerptStart": 2718,
+        "excerptEnd": 2719
+      },
+      "logRow": {
+        "file": "Translated.cs",
+        "line": 3127,
+        "excerptStart": 3127,
+        "excerptEnd": 3131
+      },
+      "unionRow": {
+        "file": "Translated.cs",
+        "line": 6404,
+        "excerptStart": 6402,
+        "excerptEnd": 6419
+      },
+      "variadicCall": {
+        "file": "Translated.part00018.cs",
+        "line": 1335,
+        "excerptStart": 1333,
+        "excerptEnd": 1336
+      },
+      "variadicCallee": {
+        "file": "Translated.part00001.cs",
+        "line": 2301,
+        "excerptStart": 2301,
+        "excerptEnd": 2315
+      },
+      "variadicPublicWrapper": {
+        "file": "Translated.part00001.cs",
+        "line": 2317,
+        "excerptStart": 2317,
+        "excerptEnd": 2334
+      }
+    },
+    "generatedInputs": {
+      "Runtime.AtomicOps.cs": "de6e426b46e5f32da7044c880ad18e44b37f4d3ec60e80f05827476d9b6181b6",
+      "Runtime.Float80.cs": "1e82204968e56fb5e0cd55437c7c51749263ac19ca803556eab1374b1e3ea381",
+      "Runtime.LibcAppend.cs": "09f7f8d9ec2bf5438d26ff5f9d5d29535559d639cb569fbdd4f8ce09163d2f0e",
+      "Runtime.LibcC11Threads.cs": "a277d4941468e342527227a88e04e3fa3ac615d10bfe6cc7d6c3e670a2902433",
+      "Runtime.LibcCalendar.cs": "8700a5bde436c90e7efad4d6b9d331b7fe0fa181bc4886548a9fd770cf2956e0",
+      "Runtime.LibcCommand.cs": "88327d0bf2c7f51aa48060c380cf1f55dff877da985402e4e0bab17766be6609",
+      "Runtime.LibcContext.cs": "8431f6e827caefd364812eac18b5bf02c4d61271e463e3133c189bee77af4222",
+      "Runtime.LibcEnvironment.cs": "c1ff5ef77a4cdfeffe957263c2f1934430383bfc6134d23c2ddf1565dd2aa959",
+      "Runtime.LibcErrorMessages.cs": "266fa2153def0a84a8e3e06188d67e322e0e176ad0bbd4e790cd27affec1b501",
+      "Runtime.LibcFiles.cs": "fbc4e823af07399dd4561309459c82f0a7396772385a775aa7bb2931dcedce07",
+      "Runtime.LibcFilesAssert.cs": "798c9c116a82161b8af91639a28252d80a67976883502c581fb71ee75df55725",
+      "Runtime.LibcFilesFormat.cs": "81031664acfc22d8c24bc2cd973f19b03fa6a24a8d388a9594c4e81bbc944197",
+      "Runtime.LibcFilesManagement.cs": "0674aa59b779fb3ade22024dd0ef38ff33dcf933c2db8b67dbad558c63ed1fd6",
+      "Runtime.LibcFilesScan.cs": "2e2316de3a7ea2ef25e985dffcc8e40f991f68341b147b19071fb7a56ec40631",
+      "Runtime.LibcFilesSignalAssert.cs": "3586ca288d2c5bfdb7ef7d2bc6549bbe7ac96e663e80c9b20ea4245d49b4d79c",
+      "Runtime.LibcFilesWide.cs": "a534866ee4fd2e1b15d8d2d0f37233e16045378b7911b0ea4728faaa95f69bdb",
+      "Runtime.LibcFilesWideFormat.cs": "fe90cfa69b62cefc9831157f82d282a87e4be9128fea079ef79a697b83e22505",
+      "Runtime.LibcFilesWideScan.cs": "24627432960ff4be0004f09ace8618cf7b1aeca3f8070333642ac82e420862d7",
+      "Runtime.LibcFloat.cs": "0275d7f01f0f34ee691ee45632a688fb76cd4d91419f7be0da81c8e2d4a3269b",
+      "Runtime.LibcInitialThread.cs": "a3f04494b1459a8036b82d514b8d6d2f4c0422f0493acd48b6a328aff1352f36",
+      "Runtime.LibcLocale.cs": "33b703cdac6b98967af92faa3b871ac13e31753cc5d37ab4e4b65d0f4a786a5f",
+      "Runtime.LibcLocaleEnvironment.cs": "ac0b05323ab8210ef3697469b038845a7b9271f27655fcaea9088c3f8d15208c",
+      "Runtime.LibcMath.cs": "9246f0994896dc9affa6fb861ce8f6e0da6eb315254a6ac8e80aac3fb8630c7e",
+      "Runtime.LibcPaths.cs": "10f6c380f2469290134f404144869cf921361ad183f5a6ed5abbcd9a23c4cd62",
+      "Runtime.LibcProcess.cs": "375ff9d6c0703a74da1eff08643e540042b23287f62be934363cc1b96afc5be5",
+      "Runtime.LibcScanMath.cs": "047fbfaed2b79ca9add7d9321a9b723749a00f202b99d1afa090079a0ce42c01",
+      "Runtime.LibcSignals.cs": "9936e0e57716b2971a8943bd6c37c3f0fd824f604b1b026c6cd076238beb0c66",
+      "Runtime.LibcText.cs": "98e1dc8e61767fd12cf5fbfc73adf06ba40b9980c764c96dd2d2c51bdfa28a5c",
+      "Runtime.LibcTimezone.cs": "ecd6d404976aea53989b52070cdd24180c51385ee89a695131ff7944faefca4f",
+      "Runtime.LibcTimezoneData.cs": "e49ac4c603c96a369740fc8dc4dbf738e79b2c3894570884d8d0f57b211b55ad",
+      "Runtime.LibcxxThreads.cs": "3f5920956c86e65b0ba5e3d7d90ba83e2f1ccc8677948f92a53b6b73be4e9da4",
+      "Runtime.VaArg.cs": "00760c6f1e2df0112e072ad9a109656b71691e30dd600be77dd5a22ba8a24cce",
+      "Runtime.VaList.cs": "a0d7d0bf36c3b8d9403d3305d3c406242292893bc041606a7f532e6fa90d9b72",
+      "Runtime.VaPack.cs": "27025674874979a2bfc7bbfce20913953925749b81b9b923f3304bea80b4c8bf",
+      "Translated.cs": "8e72b501cb3814dec10b2635ee57d4efb4d9354ac2bfb68d35ed6dd69f2c146e",
+      "Translated.part00000.cs": "5fdd262f6cc945bca838a72478f20c0791889bbfb594fbded281117236bc22c7",
+      "Translated.part00001.cs": "4594ddfd71b08b71dac619e6b68395c144872171014a999ab26b73d9d8adb944",
+      "Translated.part00002.cs": "7acb29194056e076242bc002dc7f44ac749ea587ed3c24620c146c34f30a4a2d",
+      "Translated.part00003.cs": "28fb62ddde55abb635f77108c5c6607b17a00e3baaff6b9e2e778190c400fedc",
+      "Translated.part00004.cs": "9477b99239f91a46ace856245a8b63cbbbc887b0e37fd31abf7a0c1d22d53bd1",
+      "Translated.part00005.cs": "f7d89d86c9de7f5a8ccce9869097f4ca19c543934257e2d50eed6fc05bd6af72",
+      "Translated.part00006.cs": "1111020a2553d8ec3ba9a741d913d4964be2cb717239eb6b7f6fc6afea8006a5",
+      "Translated.part00007.cs": "6f37c284c060048e3444c16302d05e46721702d9e01ace5d4febddd21f949ab5",
+      "Translated.part00008.cs": "0e2bee0761cf6a87f669aeb3875648df158888173d01724806c06a9729e295f5",
+      "Translated.part00009.cs": "38a2d52ab57a9b245c595dde87403aa35384694c7d33cce920e02f523235ebef",
+      "Translated.part00010.cs": "11eb0fcb33a6b080d0284eb248625d98845f9388b7912a2fb8644e0dd295b986",
+      "Translated.part00011.cs": "b0dd70bba710e21d5db11fb141f09f10658587773ba29f7bf6144c1533824f89",
+      "Translated.part00012.cs": "f135adc22b18f320302b93f5f4e4319052fb78b7f1f7d3d7f4ff8d224e4d1f82",
+      "Translated.part00013.cs": "74187c4441e8804349e64074636f72865a56489d17538b4bd0b13d80e92623dd",
+      "Translated.part00014.cs": "6f4125f03bd2f27d3eeae82b7de486eae9cfaba42eb3e851ae7886160b5c6896",
+      "Translated.part00015.cs": "cb465800370fba0ab7a9d169154cb1453d3b27909f6abaf7c77ff2e44984f4d7",
+      "Translated.part00016.cs": "19da236f55af6a91862272f1df1fba9078c336faae28ac738fe5643d22b6235a",
+      "Translated.part00017.cs": "c5efad9780e11f95821a805035f771e4d7f8e3a4a02110c7ceb581a01d0396c1",
+      "Translated.part00018.cs": "47fbc9eb8f93f324534ffaadf175eab314305dfe9969524e6fc97bd0cc4c00b1",
+      "Translated.part00019.cs": "110147636b95d5aa5f846550fc67d15c32d4e714c60b7eb84598f9381c54aa82",
+      "Translated.part00020.cs": "7b217dd0871b577a468f0e382662d722dbdd15989ce8876e67686a1b4c65a36c",
+      "Translated.part00021.cs": "7adf167056f6c628a66493eea64873ccdac98cab6fb22ec161dce1b42602ab2f",
+      "Translated.part00022.cs": "bdae84c7ac8e0384b48d0a439f31cb782bcfb5abae86947c4327f59cf1d21b34",
+      "Translated.part00023.cs": "4b7365c5019e1c988e2f487d35b0adf093ccd86c599903a1ffdc790f3dfbf3ca",
+      "Translated.part00024.cs": "bdbc230d6b2e90144de0fb53aa7e016bc557fbe6f667d6d8a12cb3b0d221ada8",
+      "Translated.part00025.cs": "e4334cf9041102953ef8866325e9b850b2caf6ac7257552bd14d4461bfb9f73d",
+      "Translated.part00026.cs": "e47ff00b2a2fa8637056868d98e9694180435a6db814e936adca3c0f80faf874",
+      "Translated.part00027.cs": "1606a9bb94b428e2aefbaaf0659856a0c6250628bbd268b9422e791d9ced0e16",
+      "Translated.part00028.cs": "0f0800fa76015571777a70e01ff7051b875b685cbf0882cbc72baf0b165d2e9d",
+      "Translated.part00029.cs": "5eef406674b45fc0d21c40b0c42f4d484fede090fc8c3e0d4f8009f04db7e271",
+      "Translated.part00030.cs": "c10ae0c82312a149cebabbe70a53ab64272b8872d0997566e6b03f12f9010901",
+      "Translated.part00031.cs": "bd672ab1852722cbe7956c58d600830fd8bc6a70c11f0c107f6582085144de79",
+      "Translated.part00032.cs": "91c5346dd050fe68022031ea15f45db145a72364fc53923b471b6291af393ac6",
+      "Translated.part00033.cs": "b88e227ffabfd81c759f1376d756c7ed4eba045919b5dbc1775373c9e08afb28",
+      "Translated.part00034.cs": "dcf1819501939f485fd78adeeadee98f554ff38838451e3c49f0431e3b82cb8d",
+      "Translated.part00035.cs": "603c39ffe186bbea57e04d51b9865b2fedc7d5b37c0a462726e342c130c9a1b1",
+      "Translated.part00036.cs": "44b07d66dbd4ca625278435dfbd1fac92374ab7914ee492215a2b53c143ce4e4",
+      "Translated.part00037.cs": "4581035d490eb6a5db7ec6209d87e335becaea7d5543155e1acd6bf66703196d",
+      "Translated.part00038.cs": "c554e10074ae2116ad4616e4fa5e4f775dcffe8afa73dd12ebdb6133c40d97cd",
+      "Translated.part00039.cs": "bb7b989a2c658d1de8f29055f984fdb0f6b000a7ff7128af835063fa9050c88c"
+    },
+    "rawSha256": "6a08cd67d1fa090e87168779d292bd699446603776d110d37f7c0f5936d31c36"
+  }
+}

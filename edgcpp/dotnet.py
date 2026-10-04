@@ -31,7 +31,7 @@ RUNTIME_DEPENDENCIES = {
     "NonlocalJump": ("Vla",), "Coroutine": (),
     "ExtendedFloat": ("Float128", "LibcFloat"),
     "Float128": ("Float128Conversions",), "Float128Conversions": ("Float80",),
-    "Float80": (), "LibcContext": (), "AtomicOps": (), "VaList": (),
+    "Float80": (), "LibcContext": (), "AtomicOps": (), "VaList": (), "VaArg": (), "VaPack": ("VaArg", "VaList"),
     "LibcFiles": ("LibcAppend", "LibcPaths", "LibcFilesWide", "LibcFilesManagement"), "LibcFilesManagement": (), "LibcFilesWide": (), "LibcAppend": (), "LibcPaths": (),
     "LibcFilesFormat": ("LibcFiles", "VaList"),
     "LibcFilesScan": ("LibcFiles", "VaList"),
@@ -546,7 +546,8 @@ RESOURCE_ITEMS
         "extendedFloating": {"binary128": "software-ieee-v1" if "global::Edg.Runtime.Float128" in source else None,
                              "binary16": "system-half-v1" if "global::System.Half" in source else None},
         "nonlocalJump": {"version": 2, "bufferSize": 32, "bufferAlignment": 8, "continuation": "activation-site-dispatch"} if "NonlocalJump" in runtime_helpers else None,
-        "varargs": "portable-typed-pack-v1" if "global::Edg.Runtime.VaList" in source else None,
+        "varargs": ("portable-span-pack-v2" if any("global::Edg.Runtime.VaArg" in text for text in runtime_texts) else
+                    "portable-typed-pack-v1" if "global::Edg.Runtime.VaList" in source else None),
         "emit": args.emit, "runtime": args.runtime, "nestTypes": args.nest_types, "exports": exports,
         "filePositionABI": {"version": 2, "size": 16, "alignment": 8, "fields": {"offset": "i64@0", "state": "u32@8", "value": "u32@12"}} if "LibcFiles" in runtime_helpers else None,
         "libc": args.libc, "libcProvider": libc_provider, "imports": imports,
