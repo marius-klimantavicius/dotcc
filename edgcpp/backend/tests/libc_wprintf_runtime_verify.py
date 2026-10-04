@@ -4,7 +4,7 @@ from pathlib import Path
 
 def verify_libc_wprintf_runtime(root,tests,out,nativeaot,run):
  out.mkdir(parents=True,exist_ok=True)
- for name in ['LibcFiles','LibcFilesWide','LibcFilesWideFormat','LibcAppend','LibcPaths','VaList','Float80']:shutil.copy2(root/'backend/runtime'/f'{name}.cs',out/f'{name}.cs')
+ for name in ['LibcFiles','LibcFileDescriptors','LibcFilesWide','LibcFilesWideFormat','LibcAppend','LibcPaths','VaList','Float80']:shutil.copy2(root/'backend/runtime'/f'{name}.cs',out/f'{name}.cs')
  shutil.copy2(tests/'libc_wprintf_runtime.cs',out/'Program.cs')
  (out/'Test.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks><IsAotCompatible>true</IsAotCompatible></PropertyGroup></Project>')
  run(['dotnet','build',out/'Test.csproj','-c','Release','--nologo','-p:TreatWarningsAsErrors=true']);run(['dotnet',out/'bin/Release/net10.0/Test.dll']);checks=['JIT wide formatter lock/error/exception/steady allocation']

@@ -13,7 +13,7 @@ args = parser.parse_args()
 root = Path(__file__).resolve().parents[2]
 out = args.output_dir.resolve()
 out.mkdir(parents=True, exist_ok=True)
-for source in sorted((root / "backend/runtime").glob("Posix*.cs")) + [root / "backend/runtime/VaArg.cs", root / "backend/tests/posix_runtime.cs"]:
+for source in sorted((root / "backend/runtime").glob("Posix*.cs")) + [root / "backend/runtime/LibcFileDescriptors.cs", root / "backend/runtime/VaArg.cs", root / "backend/tests/posix_runtime.cs"]:
     shutil.copy2(source, out / source.name)
 project = out / "PosixProbe.csproj"
 project.write_text('''<Project Sdk="Microsoft.NET.Sdk">

@@ -3,7 +3,7 @@ import argparse,json,shutil,subprocess
 from pathlib import Path
 from libc_c_locale_oracle import build_c_locale_oracle
 p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output-dir',type=Path,required=True);p.add_argument('--source-dir',type=Path);p.add_argument('--nativeaot',action='store_true');a=p.parse_args();root=Path(__file__).resolve().parents[2];out=a.output_dir.resolve();out.mkdir(parents=True,exist_ok=False);source=a.source_dir or root/'backend/runtime'
-for name in ['LibcFiles.cs','LibcFilesWide.cs']:shutil.copy2(source/name,out/name)
+for name in ['LibcFiles.cs','LibcFileDescriptors.cs','LibcFilesWide.cs']:shutil.copy2(source/name,out/name)
 for name in ['LibcAppend.cs','LibcPaths.cs']:shutil.copy2(root/'backend/runtime'/name,out/name)
 shutil.copy2(root/'backend/tests/libc_wide_files_runtime.cs',out/'Program.cs')
 (out/'WideFiles.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>enable</Nullable><IsAotCompatible>true</IsAotCompatible></PropertyGroup></Project>')

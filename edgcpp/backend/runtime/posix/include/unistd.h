@@ -19,6 +19,9 @@
 extern "C" {
 #endif
 int close(int);
+int chdir(const char *);
+int isatty(int);
+int mkstemp(char *);
 ssize_t read(int, void *, size_t);
 ssize_t write(int, const void *, size_t);
 ssize_t pread(int, void *, size_t, off_t);

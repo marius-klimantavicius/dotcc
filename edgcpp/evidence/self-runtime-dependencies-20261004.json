@@ -1,0 +1,732 @@
+{
+  "date": "2026-10-04",
+  "scope": "Real POSIX/stdio and pinned libc++ implementations for EDG self-translation; focused native/JIT/AOT/Wine verification, not yet full compiler execution",
+  "campaigns": {
+    "self-posix-runtime-003": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-runtime-003",
+      "results": [
+        {
+          "label": "build",
+          "command": [
+            "dotnet",
+            "build",
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-runtime-003/Probe.csproj",
+            "-c",
+            "Release",
+            "--nologo"
+          ],
+          "exit": 0
+        },
+        {
+          "label": "jit",
+          "command": [
+            "dotnet",
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-runtime-003/bin/Release/net10.0/Probe.dll"
+          ],
+          "exit": 0
+        },
+        {
+          "label": "publish",
+          "command": [
+            "dotnet",
+            "publish",
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-runtime-003/Probe.csproj",
+            "-c",
+            "Release",
+            "-r",
+            "linux-x64",
+            "-p:PublishAot=true",
+            "-p:IlcTreatWarningsAsErrors=true",
+            "-o",
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-runtime-003/aot"
+          ],
+          "exit": 0
+        },
+        {
+          "label": "aot",
+          "command": [
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-runtime-003/aot/Probe"
+          ],
+          "exit": 0
+        }
+      ],
+      "wine.json": {
+        "command": [
+          "/home/marius/.steam/debian-installation/steamapps/common/Proton - Experimental/files/bin/wine",
+          "/mnt/storage/dotcc-edg-campaign-20261003/posix-wine-001/dotnet/dotnet.exe",
+          "Z:\\mnt\\storage\\dotcc-edg-campaign-20261003\\self-posix-runtime-003\\bin\\Release\\net10.0\\Probe.dll"
+        ],
+        "exit": 0,
+        "environment": {
+          "WINEPREFIX": "/mnt/storage/dotcc-edg-campaign-20261003/posix-wine-001/prefix",
+          "WINEARCH": "win64",
+          "WINEDEBUG": "-all",
+          "WINEDLLOVERRIDES": "mscoree=b;mshtml=",
+          "DOTNET_SYSTEM_GLOBALIZATION_USENLS": "1"
+        }
+      },
+      "wine.stdout": "POSIX stdio host integration: 44 checks passed\n",
+      "jit.stdout": "POSIX stdio host integration: 47 checks passed\n",
+      "aot.stdout": "POSIX stdio host integration: 47 checks passed\n"
+    },
+    "self-posix-translated-002": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-translated-002",
+      "results": {
+        "status": "passed",
+        "compilerSha256": "89acfba7407d2c57eb6c9be543cabad426e1eb84fefa60f69970133ef851807b",
+        "sourceSha256": "83511c621590753d49f7f52de69909db4c82c1ef94e95d326201bd75b63e91cb",
+        "modes": [
+          "C/static",
+          "C/instance",
+          "C++14/static",
+          "C++14/instance"
+        ],
+        "nativeaot": true,
+        "expectedOutput": "POSIX translated stdio host services passed\n"
+      },
+      "wine.json": {
+        "results": [
+          {
+            "command": [
+              "/home/marius/.steam/debian-installation/steamapps/common/Proton - Experimental/files/bin/wine",
+              "/mnt/storage/dotcc-edg-campaign-20261003/posix-wine-001/dotnet/dotnet.exe",
+              "Z:\\mnt\\storage\\dotcc-edg-campaign-20261003\\self-posix-translated-002\\c-static\\bin\\Release\\net10.0\\Generated.dll"
+            ],
+            "exit": 0,
+            "mode": "c-static"
+          },
+          {
+            "command": [
+              "/home/marius/.steam/debian-installation/steamapps/common/Proton - Experimental/files/bin/wine",
+              "/mnt/storage/dotcc-edg-campaign-20261003/posix-wine-001/dotnet/dotnet.exe",
+              "Z:\\mnt\\storage\\dotcc-edg-campaign-20261003\\self-posix-translated-002\\c-instance\\bin\\Release\\net10.0\\Generated.dll"
+            ],
+            "exit": 0,
+            "mode": "c-instance"
+          },
+          {
+            "command": [
+              "/home/marius/.steam/debian-installation/steamapps/common/Proton - Experimental/files/bin/wine",
+              "/mnt/storage/dotcc-edg-campaign-20261003/posix-wine-001/dotnet/dotnet.exe",
+              "Z:\\mnt\\storage\\dotcc-edg-campaign-20261003\\self-posix-translated-002\\cpp-static\\bin\\Release\\net10.0\\Generated.dll"
+            ],
+            "exit": 0,
+            "mode": "cpp-static"
+          },
+          {
+            "command": [
+              "/home/marius/.steam/debian-installation/steamapps/common/Proton - Experimental/files/bin/wine",
+              "/mnt/storage/dotcc-edg-campaign-20261003/posix-wine-001/dotnet/dotnet.exe",
+              "Z:\\mnt\\storage\\dotcc-edg-campaign-20261003\\self-posix-translated-002\\cpp-instance\\bin\\Release\\net10.0\\Generated.dll"
+            ],
+            "exit": 0,
+            "mode": "cpp-instance"
+          }
+        ],
+        "environment": {
+          "WINEPREFIX": "/mnt/storage/dotcc-edg-campaign-20261003/posix-wine-001/prefix",
+          "WINEARCH": "win64",
+          "WINEDEBUG": "-all",
+          "WINEDLLOVERRIDES": "mscoree=b;mshtml=",
+          "DOTNET_SYSTEM_GLOBALIZATION_USENLS": "1"
+        }
+      }
+    },
+    "self-posix-nested-header-002": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-nested-header-002",
+      "results": {
+        "status": "passed",
+        "checks": [
+          "static/JIT: C linkage and namespaced directory records resolve to POSIX, listing agrees with native",
+          "static/NativeAOT: same directory listing",
+          "instance/JIT: C linkage and namespaced directory records resolve to POSIX, listing agrees with native",
+          "instance/NativeAOT: same directory listing"
+        ]
+      }
+    },
+    "self-posix-regression-001": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-regression-001",
+      "results": [
+        {
+          "label": "native-build",
+          "command": [
+            "cc",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-regression-001/posix_runtime_native.c",
+            "-o",
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-regression-001/posix-runtime-native"
+          ],
+          "exit": 0
+        },
+        {
+          "label": "build",
+          "command": [
+            "dotnet",
+            "build",
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-regression-001/PosixProbe.csproj",
+            "-c",
+            "Release",
+            "--nologo"
+          ],
+          "exit": 0
+        },
+        {
+          "label": "jit",
+          "command": [
+            "dotnet",
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-regression-001/bin/Release/net10.0/PosixProbe.dll",
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-regression-001/posix-runtime-native"
+          ],
+          "exit": 0
+        },
+        {
+          "label": "publish",
+          "command": [
+            "dotnet",
+            "publish",
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-regression-001/PosixProbe.csproj",
+            "-c",
+            "Release",
+            "-r",
+            "linux-x64",
+            "-p:PublishAot=true",
+            "-p:IlcTreatWarningsAsErrors=true",
+            "-o",
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-regression-001/aot"
+          ],
+          "exit": 0
+        },
+        {
+          "label": "aot",
+          "command": [
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-regression-001/aot/PosixProbe",
+            "/mnt/storage/dotcc-edg-campaign-20261003/self-posix-regression-001/posix-runtime-native"
+          ],
+          "exit": 0
+        }
+      ],
+      "jit.stdout": "POSIX runtime checks passed: 93\n",
+      "aot.stdout": "POSIX runtime checks passed: 93\n"
+    },
+    "self-sqlite-posix-001": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001",
+      "results": {
+        "schema": 1,
+        "project": "EDG SQLite host",
+        "commands": [
+          {
+            "label": "translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/input/sqlite3.c",
+              "--compiler",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-runtime-build-002/cpfe-dot",
+              "--language",
+              "c",
+              "--std",
+              "c17",
+              "--libc",
+              "musl",
+              "--posix",
+              "--emit",
+              "managedlib",
+              "--namespace",
+              "Edg.SQLite",
+              "--class-name",
+              "SqliteCore",
+              "--instance-methods",
+              "--split",
+              "size",
+              "--split-size",
+              "262144",
+              "--unbound-externals",
+              "partial",
+              "-I",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/input",
+              "-DSQLITE_OMIT_LOAD_EXTENSION",
+              "-DSQLITE_ENABLE_FTS5",
+              "-DSQLITE_ENABLE_MATH_FUNCTIONS",
+              "-DSQLITE_ENABLE_PERCENTILE",
+              "-DSQLITE_ENABLE_COLUMN_METADATA",
+              "-DSQLITE_ENABLE_PREUPDATE_HOOK",
+              "-DSQLITE_THREADSAFE=1",
+              "-DSQLITE_MUTEX_APPDEF=1",
+              "-DSQLITE_TEMP_STORE=1",
+              "-DSQLITE_DEFAULT_MMAP_SIZE=67108864",
+              "-DSQLITE_MAX_MMAP_SIZE=268435456",
+              "-DSQLITE_OS_OTHER=0",
+              "-DSQLITE_OS_UNIX=1",
+              "-DHAVE_MREMAP=0",
+              "-DHAVE_PREAD=1",
+              "-DHAVE_PWRITE=1",
+              "-DHAVE_READLINK=1",
+              "-DHAVE_LSTAT=1",
+              "-DHAVE_NANOSLEEP=0",
+              "-DHAVE_USLEEP=1",
+              "-DSQLITE_ENABLE_LOCKING_STYLE=0",
+              "--export-macros",
+              "SQLITE_ABORT|SQLITE_ABORT_ROLLBACK|SQLITE_ACCESS_EXISTS|SQLITE_ACCESS_READ|SQLITE_ACCESS_READWRITE|SQLITE_ALTER_TABLE|SQLITE_ANALYZE|SQLITE_ANY|SQLITE_ATTACH|SQLITE_AUTH|SQLITE_AUTH_USER|SQLITE_BLOB|SQLITE_BUSY|SQLITE_BUSY_RECOVERY|SQLITE_BUSY_SNAPSHOT|SQLITE_BUSY_TIMEOUT|SQLITE_CANTOPEN|SQLITE_CANTOPEN_CONVPATH|SQLITE_CANTOPEN_DIRTYWAL|SQLITE_CANTOPEN_FULLPATH|SQLITE_CANTOPEN_ISDIR|SQLITE_CANTOPEN_NOTEMPDIR|SQLITE_CANTOPEN_SYMLINK|SQLITE_CARRAY_BLOB|SQLITE_CARRAY_DOUBLE|SQLITE_CARRAY_INT32|SQLITE_CARRAY_INT64|SQLITE_CARRAY_TEXT|SQLITE_CHANGEGROUP_CONFIG_PATCHSET|SQLITE_CHANGESETAPPLY_FKNOACTION|SQLITE_CHANGESETAPPLY_IGNORENOOP|SQLITE_CHANGESETAPPLY_INVERT|SQLITE_CHANGESETAPPLY_NOSAVEPOINT|SQLITE_CHANGESETAPPLY_NOUPDATELOOP|SQLITE_CHANGESETSTART_INVERT|SQLITE_CHANGESET_ABORT|SQLITE_CHANGESET_CONFLICT|SQLITE_CHANGESET_CONSTRAINT|SQLITE_CHANGESET_DATA|SQLITE_CHANGESET_FOREIGN_KEY|SQLITE_CHANGESET_NOTFOUND|SQLITE_CHANGESET_OMIT|SQLITE_CHANGESET_REPLACE|SQLITE_CHECKPOINT_FULL|SQLITE_CHECKPOINT_PASSIVE|SQLITE_CHECKPOINT_RESTART|SQLITE_CHECKPOINT_TRUNCATE|SQLITE_CONFIG_COVERING_INDEX_SCAN|SQLITE_CONFIG_GETMALLOC|SQLITE_CONFIG_GETMUTEX|SQLITE_CONFIG_GETPCACHE|SQLITE_CONFIG_GETPCACHE2|SQLITE_CONFIG_HEAP|SQLITE_CONFIG_LOG|SQLITE_CONFIG_LOOKASIDE|SQLITE_CONFIG_MALLOC|SQLITE_CONFIG_MEMDB_MAXSIZE|SQLITE_CONFIG_MEMSTATUS|SQLITE_CONFIG_MMAP_SIZE|SQLITE_CONFIG_MULTITHREAD|SQLITE_CONFIG_MUTEX|SQLITE_CONFIG_PAGECACHE|SQLITE_CONFIG_PCACHE|SQLITE_CONFIG_PCACHE2|SQLITE_CONFIG_PCACHE_HDRSZ|SQLITE_CONFIG_PMASZ|SQLITE_CONFIG_ROWID_IN_VIEW|SQLITE_CONFIG_SCRATCH|SQLITE_CONFIG_SERIALIZED|SQLITE_CONFIG_SINGLETHREAD|SQLITE_CONFIG_SMALL_MALLOC|SQLITE_CONFIG_SORTERREF_SIZE|SQLITE_CONFIG_SQLLOG|SQLITE_CONFIG_STMTJRNL_SPILL|SQLITE_CONFIG_URI|SQLITE_CONFIG_WIN32_HEAPSIZE|SQLITE_CONSTRAINT|SQLITE_CONSTRAINT_CHECK|SQLITE_CONSTRAINT_COMMITHOOK|SQLITE_CONSTRAINT_DATATYPE|SQLITE_CONSTRAINT_FOREIGNKEY|SQLITE_CONSTRAINT_FUNCTION|SQLITE_CONSTRAINT_NOTNULL|SQLITE_CONSTRAINT_PINNED|SQLITE_CONSTRAINT_PRIMARYKEY|SQLITE_CONSTRAINT_ROWID|SQLITE_CONSTRAINT_TRIGGER|SQLITE_CONSTRAINT_UNIQUE|SQLITE_CONSTRAINT_VTAB|SQLITE_COPY|SQLITE_CORRUPT|SQLITE_CORRUPT_INDEX|SQLITE_CORRUPT_SEQUENCE|SQLITE_CORRUPT_VTAB|SQLITE_CREATE_INDEX|SQLITE_CREATE_TABLE|SQLITE_CREATE_TEMP_INDEX|SQLITE_CREATE_TEMP_TABLE|SQLITE_CREATE_TEMP_TRIGGER|SQLITE_CREATE_TEMP_VIEW|SQLITE_CREATE_TRIGGER|SQLITE_CREATE_VIEW|SQLITE_CREATE_VTABLE|SQLITE_DBCONFIG_DEFENSIVE|SQLITE_DBCONFIG_DQS_DDL|SQLITE_DBCONFIG_DQS_DML|SQLITE_DBCONFIG_ENABLE_ATTACH_CREATE|SQLITE_DBCONFIG_ENABLE_ATTACH_WRITE|SQLITE_DBCONFIG_ENABLE_COMMENTS|SQLITE_DBCONFIG_ENABLE_FKEY|SQLITE_DBCONFIG_ENABLE_FTS3_TOKENIZER|SQLITE_DBCONFIG_ENABLE_LOAD_EXTENSION|SQLITE_DBCONFIG_ENABLE_QPSG|SQLITE_DBCONFIG_ENABLE_TRIGGER|SQLITE_DBCONFIG_ENABLE_VIEW|SQLITE_DBCONFIG_FP_DIGITS|SQLITE_DBCONFIG_LEGACY_ALTER_TABLE|SQLITE_DBCONFIG_LEGACY_FILE_FORMAT|SQLITE_DBCONFIG_LOOKASIDE|SQLITE_DBCONFIG_MAINDBNAME|SQLITE_DBCONFIG_MAX|SQLITE_DBCONFIG_NO_CKPT_ON_CLOSE|SQLITE_DBCONFIG_RESET_DATABASE|SQLITE_DBCONFIG_REVERSE_SCANORDER|SQLITE_DBCONFIG_STMT_SCANSTATUS|SQLITE_DBCONFIG_TRIGGER_EQP|SQLITE_DBCONFIG_TRUSTED_SCHEMA|SQLITE_DBCONFIG_WRITABLE_SCHEMA|SQLITE_DBSTATUS_CACHE_HIT|SQLITE_DBSTATUS_CACHE_MISS|SQLITE_DBSTATUS_CACHE_SPILL|SQLITE_DBSTATUS_CACHE_USED|SQLITE_DBSTATUS_CACHE_USED_SHARED|SQLITE_DBSTATUS_CACHE_WRITE|SQLITE_DBSTATUS_DEFERRED_FKS|SQLITE_DBSTATUS_LOOKASIDE_HIT|SQLITE_DBSTATUS_LOOKASIDE_MISS_FULL|SQLITE_DBSTATUS_LOOKASIDE_MISS_SIZE|SQLITE_DBSTATUS_LOOKASIDE_USED|SQLITE_DBSTATUS_MAX|SQLITE_DBSTATUS_SCHEMA_USED|SQLITE_DBSTATUS_STMT_USED|SQLITE_DBSTATUS_TEMPBUF_SPILL|SQLITE_DELETE|SQLITE_DENY|SQLITE_DESERIALIZE_FREEONCLOSE|SQLITE_DESERIALIZE_READONLY|SQLITE_DESERIALIZE_RESIZEABLE|SQLITE_DETACH|SQLITE_DETERMINISTIC|SQLITE_DIRECTONLY|SQLITE_DONE|SQLITE_DROP_INDEX|SQLITE_DROP_TABLE|SQLITE_DROP_TEMP_INDEX|SQLITE_DROP_TEMP_TABLE|SQLITE_DROP_TEMP_TRIGGER|SQLITE_DROP_TEMP_VIEW|SQLITE_DROP_TRIGGER|SQLITE_DROP_VIEW|SQLITE_DROP_VTABLE|SQLITE_EMPTY|SQLITE_ERROR|SQLITE_ERROR_KEY|SQLITE_ERROR_MISSING_COLLSEQ|SQLITE_ERROR_RESERVESIZE|SQLITE_ERROR_RETRY|SQLITE_ERROR_SNAPSHOT|SQLITE_ERROR_UNABLE|SQLITE_FAIL|SQLITE_FCNTL_BEGIN_ATOMIC_WRITE|SQLITE_FCNTL_BLOCK_ON_CONNECT|SQLITE_FCNTL_BUSYHANDLER|SQLITE_FCNTL_CHUNK_SIZE|SQLITE_FCNTL_CKPT_DONE|SQLITE_FCNTL_CKPT_START|SQLITE_FCNTL_CKSM_FILE|SQLITE_FCNTL_COMMIT_ATOMIC_WRITE|SQLITE_FCNTL_COMMIT_PHASETWO|SQLITE_FCNTL_DATA_VERSION|SQLITE_FCNTL_EXTERNAL_READER|SQLITE_FCNTL_FILESTAT|SQLITE_FCNTL_FILE_POINTER|SQLITE_FCNTL_GET_LOCKPROXYFILE|SQLITE_FCNTL_HAS_MOVED|SQLITE_FCNTL_JOURNAL_POINTER|SQLITE_FCNTL_LAST_ERRNO|SQLITE_FCNTL_LOCKSTATE|SQLITE_FCNTL_LOCK_TIMEOUT|SQLITE_FCNTL_MMAP_SIZE|SQLITE_FCNTL_NULL_IO|SQLITE_FCNTL_OVERWRITE|SQLITE_FCNTL_PDB|SQLITE_FCNTL_PERSIST_WAL|SQLITE_FCNTL_POWERSAFE_OVERWRITE|SQLITE_FCNTL_PRAGMA|SQLITE_FCNTL_RBU|SQLITE_FCNTL_RESERVE_BYTES|SQLITE_FCNTL_RESET_CACHE|SQLITE_FCNTL_ROLLBACK_ATOMIC_WRITE|SQLITE_FCNTL_SET_LOCKPROXYFILE|SQLITE_FCNTL_SIZE_HINT|SQLITE_FCNTL_SIZE_LIMIT|SQLITE_FCNTL_SYNC|SQLITE_FCNTL_SYNC_OMITTED|SQLITE_FCNTL_TEMPFILENAME|SQLITE_FCNTL_TRACE|SQLITE_FCNTL_VFSNAME|SQLITE_FCNTL_VFS_POINTER|SQLITE_FCNTL_WAL_BLOCK|SQLITE_FCNTL_WIN32_AV_RETRY|SQLITE_FCNTL_WIN32_GET_HANDLE|SQLITE_FCNTL_WIN32_SET_HANDLE|SQLITE_FCNTL_ZIPVFS|SQLITE_FLOAT|SQLITE_FORMAT|SQLITE_FULL|SQLITE_FUNCTION|SQLITE_IGNORE|SQLITE_INDEX_CONSTRAINT_EQ|SQLITE_INDEX_CONSTRAINT_FUNCTION|SQLITE_INDEX_CONSTRAINT_GE|SQLITE_INDEX_CONSTRAINT_GLOB|SQLITE_INDEX_CONSTRAINT_GT|SQLITE_INDEX_CONSTRAINT_IS|SQLITE_INDEX_CONSTRAINT_ISNOT|SQLITE_INDEX_CONSTRAINT_ISNOTNULL|SQLITE_INDEX_CONSTRAINT_ISNULL|SQLITE_INDEX_CONSTRAINT_LE|SQLITE_INDEX_CONSTRAINT_LIKE|SQLITE_INDEX_CONSTRAINT_LIMIT|SQLITE_INDEX_CONSTRAINT_LT|SQLITE_INDEX_CONSTRAINT_MATCH|SQLITE_INDEX_CONSTRAINT_NE|SQLITE_INDEX_CONSTRAINT_OFFSET|SQLITE_INDEX_CONSTRAINT_REGEXP|SQLITE_INDEX_SCAN_HEX|SQLITE_INDEX_SCAN_UNIQUE|SQLITE_INNOCUOUS|SQLITE_INSERT|SQLITE_INTEGER|SQLITE_INTERNAL|SQLITE_INTERRUPT|SQLITE_IOCAP_ATOMIC|SQLITE_IOCAP_ATOMIC16K|SQLITE_IOCAP_ATOMIC1K|SQLITE_IOCAP_ATOMIC2K|SQLITE_IOCAP_ATOMIC32K|SQLITE_IOCAP_ATOMIC4K|SQLITE_IOCAP_ATOMIC512|SQLITE_IOCAP_ATOMIC64K|SQLITE_IOCAP_ATOMIC8K|SQLITE_IOCAP_BATCH_ATOMIC|SQLITE_IOCAP_IMMUTABLE|SQLITE_IOCAP_POWERSAFE_OVERWRITE|SQLITE_IOCAP_SAFE_APPEND|SQLITE_IOCAP_SEQUENTIAL|SQLITE_IOCAP_SUBPAGE_READ|SQLITE_IOCAP_UNDELETABLE_WHEN_OPEN|SQLITE_IOERR|SQLITE_IOERR_ACCESS|SQLITE_IOERR_AUTH|SQLITE_IOERR_BADKEY|SQLITE_IOERR_BEGIN_ATOMIC|SQLITE_IOERR_BLOCKED|SQLITE_IOERR_CHECKRESERVEDLOCK|SQLITE_IOERR_CLOSE|SQLITE_IOERR_CODEC|SQLITE_IOERR_COMMIT_ATOMIC|SQLITE_IOERR_CONVPATH|SQLITE_IOERR_CORRUPTFS|SQLITE_IOERR_DATA|SQLITE_IOERR_DELETE|SQLITE_IOERR_DELETE_NOENT|SQLITE_IOERR_DIR_CLOSE|SQLITE_IOERR_DIR_FSYNC|SQLITE_IOERR_FSTAT|SQLITE_IOERR_FSYNC|SQLITE_IOERR_GETTEMPPATH|SQLITE_IOERR_IN_PAGE|SQLITE_IOERR_LOCK|SQLITE_IOERR_MMAP|SQLITE_IOERR_NOMEM|SQLITE_IOERR_RDLOCK|SQLITE_IOERR_READ|SQLITE_IOERR_ROLLBACK_ATOMIC|SQLITE_IOERR_SEEK|SQLITE_IOERR_SHMLOCK|SQLITE_IOERR_SHMMAP|SQLITE_IOERR_SHMOPEN|SQLITE_IOERR_SHMSIZE|SQLITE_IOERR_SHORT_READ|SQLITE_IOERR_TRUNCATE|SQLITE_IOERR_UNLOCK|SQLITE_IOERR_VNODE|SQLITE_IOERR_WRITE|SQLITE_LIMIT_ATTACHED|SQLITE_LIMIT_COLUMN|SQLITE_LIMIT_COMPOUND_SELECT|SQLITE_LIMIT_EXPR_DEPTH|SQLITE_LIMIT_FUNCTION_ARG|SQLITE_LIMIT_LENGTH|SQLITE_LIMIT_LIKE_PATTERN_LENGTH|SQLITE_LIMIT_PARSER_DEPTH|SQLITE_LIMIT_SQL_LENGTH|SQLITE_LIMIT_TRIGGER_DEPTH|SQLITE_LIMIT_VARIABLE_NUMBER|SQLITE_LIMIT_VDBE_OP|SQLITE_LIMIT_WORKER_THREADS|SQLITE_LOCKED|SQLITE_LOCKED_SHAREDCACHE|SQLITE_LOCKED_VTAB|SQLITE_LOCK_EXCLUSIVE|SQLITE_LOCK_NONE|SQLITE_LOCK_PENDING|SQLITE_LOCK_RESERVED|SQLITE_LOCK_SHARED|SQLITE_MISMATCH|SQLITE_MISUSE|SQLITE_MUTEX_FAST|SQLITE_MUTEX_RECURSIVE|SQLITE_MUTEX_STATIC_APP1|SQLITE_MUTEX_STATIC_APP2|SQLITE_MUTEX_STATIC_APP3|SQLITE_MUTEX_STATIC_LRU|SQLITE_MUTEX_STATIC_LRU2|SQLITE_MUTEX_STATIC_MAIN|SQLITE_MUTEX_STATIC_MASTER|SQLITE_MUTEX_STATIC_MEM|SQLITE_MUTEX_STATIC_MEM2|SQLITE_MUTEX_STATIC_OPEN|SQLITE_MUTEX_STATIC_PMEM|SQLITE_MUTEX_STATIC_PRNG|SQLITE_MUTEX_STATIC_VFS1|SQLITE_MUTEX_STATIC_VFS2|SQLITE_MUTEX_STATIC_VFS3|SQLITE_NOLFS|SQLITE_NOMEM|SQLITE_NOTADB|SQLITE_NOTFOUND|SQLITE_NOTICE|SQLITE_NOTICE_RBU|SQLITE_NOTICE_RECOVER_ROLLBACK|SQLITE_NOTICE_RECOVER_WAL|SQLITE_NULL|SQLITE_OK|SQLITE_OK_LOAD_PERMANENTLY|SQLITE_OK_SYMLINK|SQLITE_OPEN_AUTOPROXY|SQLITE_OPEN_CREATE|SQLITE_OPEN_DELETEONCLOSE|SQLITE_OPEN_EXCLUSIVE|SQLITE_OPEN_EXRESCODE|SQLITE_OPEN_FULLMUTEX|SQLITE_OPEN_MAIN_DB|SQLITE_OPEN_MAIN_JOURNAL|SQLITE_OPEN_MASTER_JOURNAL|SQLITE_OPEN_MEMORY|SQLITE_OPEN_NOFOLLOW|SQLITE_OPEN_NOMUTEX|SQLITE_OPEN_PRIVATECACHE|SQLITE_OPEN_READONLY|SQLITE_OPEN_READWRITE|SQLITE_OPEN_SHAREDCACHE|SQLITE_OPEN_SUBJOURNAL|SQLITE_OPEN_SUPER_JOURNAL|SQLITE_OPEN_TEMP_DB|SQLITE_OPEN_TEMP_JOURNAL|SQLITE_OPEN_TRANSIENT_DB|SQLITE_OPEN_URI|SQLITE_OPEN_WAL|SQLITE_PERM|SQLITE_PRAGMA|SQLITE_PREPARE_DONT_LOG|SQLITE_PREPARE_FROM_DDL|SQLITE_PREPARE_NORMALIZE|SQLITE_PREPARE_NO_VTAB|SQLITE_PREPARE_PERSISTENT|SQLITE_PROTOCOL|SQLITE_RANGE|SQLITE_READ|SQLITE_READONLY|SQLITE_READONLY_CANTINIT|SQLITE_READONLY_CANTLOCK|SQLITE_READONLY_DBMOVED|SQLITE_READONLY_DIRECTORY|SQLITE_READONLY_RECOVERY|SQLITE_READONLY_ROLLBACK|SQLITE_RECURSIVE|SQLITE_REINDEX|SQLITE_REPLACE|SQLITE_RESULT_SUBTYPE|SQLITE_ROLLBACK|SQLITE_ROW|SQLITE_SAVEPOINT|SQLITE_SCANSTAT_COMPLEX|SQLITE_SCANSTAT_EST|SQLITE_SCANSTAT_EXPLAIN|SQLITE_SCANSTAT_NAME|SQLITE_SCANSTAT_NCYCLE|SQLITE_SCANSTAT_NLOOP|SQLITE_SCANSTAT_NVISIT|SQLITE_SCANSTAT_PARENTID|SQLITE_SCANSTAT_SELECTID|SQLITE_SCHEMA|SQLITE_SCM_BRANCH|SQLITE_SCM_DATETIME|SQLITE_SCM_TAGS|SQLITE_SELECT|SQLITE_SELFORDER1|SQLITE_SERIALIZE_NOCOPY|SQLITE_SESSION_CONFIG_STRMSIZE|SQLITE_SESSION_OBJCONFIG_ROWID|SQLITE_SESSION_OBJCONFIG_SIZE|SQLITE_SETLK_BLOCK_ON_CONNECT|SQLITE_SHM_EXCLUSIVE|SQLITE_SHM_LOCK|SQLITE_SHM_NLOCK|SQLITE_SHM_SHARED|SQLITE_SHM_UNLOCK|SQLITE_SOURCE_ID|SQLITE_STATUS_MALLOC_COUNT|SQLITE_STATUS_MALLOC_SIZE|SQLITE_STATUS_MEMORY_USED|SQLITE_STATUS_PAGECACHE_OVERFLOW|SQLITE_STATUS_PAGECACHE_SIZE|SQLITE_STATUS_PAGECACHE_USED|SQLITE_STATUS_PARSER_STACK|SQLITE_STATUS_SCRATCH_OVERFLOW|SQLITE_STATUS_SCRATCH_SIZE|SQLITE_STATUS_SCRATCH_USED|SQLITE_STMTSTATUS_AUTOINDEX|SQLITE_STMTSTATUS_FILTER_HIT|SQLITE_STMTSTATUS_FILTER_MISS|SQLITE_STMTSTATUS_FULLSCAN_STEP|SQLITE_STMTSTATUS_MEMUSED|SQLITE_STMTSTATUS_REPREPARE|SQLITE_STMTSTATUS_RUN|SQLITE_STMTSTATUS_SORT|SQLITE_STMTSTATUS_VM_STEP|SQLITE_SUBTYPE|SQLITE_SYNC_DATAONLY|SQLITE_SYNC_FULL|SQLITE_SYNC_NORMAL|SQLITE_TESTCTRL_ALWAYS|SQLITE_TESTCTRL_ASSERT|SQLITE_TESTCTRL_ATOF|SQLITE_TESTCTRL_BENIGN_MALLOC_HOOKS|SQLITE_TESTCTRL_BITVEC_TEST|SQLITE_TESTCTRL_BYTEORDER|SQLITE_TESTCTRL_EXPLAIN_STMT|SQLITE_TESTCTRL_EXTRA_SCHEMA_CHECKS|SQLITE_TESTCTRL_FAULT_INSTALL|SQLITE_TESTCTRL_FIRST|SQLITE_TESTCTRL_FK_NO_ACTION|SQLITE_TESTCTRL_GETOPT|SQLITE_TESTCTRL_IMPOSTER|SQLITE_TESTCTRL_INTERNAL_FUNCTIONS|SQLITE_TESTCTRL_ISINIT|SQLITE_TESTCTRL_ISKEYWORD|SQLITE_TESTCTRL_JSON_SELFCHECK|SQLITE_TESTCTRL_LAST|SQLITE_TESTCTRL_LOCALTIME_FAULT|SQLITE_TESTCTRL_LOGEST|SQLITE_TESTCTRL_NEVER_CORRUPT|SQLITE_TESTCTRL_ONCE_RESET_THRESHOLD|SQLITE_TESTCTRL_OPTIMIZATIONS|SQLITE_TESTCTRL_PARSER_COVERAGE|SQLITE_TESTCTRL_PENDING_BYTE|SQLITE_TESTCTRL_PRNG_RESET|SQLITE_TESTCTRL_PRNG_RESTORE|SQLITE_TESTCTRL_PRNG_SAVE|SQLITE_TESTCTRL_PRNG_SEED|SQLITE_TESTCTRL_RESERVE|SQLITE_TESTCTRL_RESULT_INTREAL|SQLITE_TESTCTRL_SCRATCHMALLOC|SQLITE_TESTCTRL_SEEK_COUNT|SQLITE_TESTCTRL_SORTER_MMAP|SQLITE_TESTCTRL_TRACEFLAGS|SQLITE_TESTCTRL_TUNE|SQLITE_TESTCTRL_USELONGDOUBLE|SQLITE_TESTCTRL_VDBE_COVERAGE|SQLITE_TOOBIG|SQLITE_TRACE_CLOSE|SQLITE_TRACE_PROFILE|SQLITE_TRACE_ROW|SQLITE_TRACE_STMT|SQLITE_TRANSACTION|SQLITE_TXN_NONE|SQLITE_TXN_READ|SQLITE_TXN_WRITE|SQLITE_UPDATE|SQLITE_UTF16|SQLITE_UTF16BE|SQLITE_UTF16LE|SQLITE_UTF16_ALIGNED|SQLITE_UTF8|SQLITE_UTF8_ZT|SQLITE_VERSION|SQLITE_VERSION_NUMBER|SQLITE_VTAB_CONSTRAINT_SUPPORT|SQLITE_VTAB_DIRECTONLY|SQLITE_VTAB_INNOCUOUS|SQLITE_VTAB_USES_ALL_SCHEMAS|SQLITE_WARNING|SQLITE_WARNING_AUTOINDEX|SQLITE_WIN32_DATA_DIRECTORY_TYPE|SQLITE_WIN32_TEMP_DIRECTORY_TYPE",
+              "--macro-source",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/input/sqlite3.c",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/generated",
+              "--raw-output",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/raw.cs"
+            ],
+            "logPrefix": "translate",
+            "exitCode": 0,
+            "seconds": 11.383
+          },
+          {
+            "label": "adapter",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/backend/sqlite/prepare.py",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/generated",
+              "--profile",
+              "unix"
+            ],
+            "logPrefix": "adapter",
+            "exitCode": 0,
+            "seconds": 0.032
+          },
+          {
+            "label": "library-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/generated/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "logPrefix": "library-build",
+            "exitCode": 0,
+            "seconds": 13.204
+          },
+          {
+            "label": "consumer-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/consumer/SqliteHostTests.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TranslatedProject=/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/generated/Generated.csproj",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "logPrefix": "consumer-build",
+            "exitCode": 0,
+            "seconds": 1.116
+          },
+          {
+            "label": "jit-run",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/consumer/bin/Release/net10.0/SqliteHostTests.dll"
+            ],
+            "logPrefix": "jit-run",
+            "exitCode": 0,
+            "seconds": 8.227
+          },
+          {
+            "label": "native-build",
+            "command": [
+              "gcc",
+              "-std=c17",
+              "-O1",
+              "-DSQLITE_THREADSAFE=1",
+              "-DSQLITE_OMIT_LOAD_EXTENSION",
+              "-DSQLITE_ENABLE_FTS5",
+              "-I",
+              "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400",
+              "/home/marius/p/dotcc/sqlite/ref/sqlite-amalgamation-3530400/sqlite3.c",
+              "/home/marius/p/dotcc/sqlite/tests/host_vfs_native.c",
+              "-lm",
+              "-pthread",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/native-oracle"
+            ],
+            "logPrefix": "native-build",
+            "exitCode": 0,
+            "seconds": 6.976
+          },
+          {
+            "label": "jit-processes",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/sqlite/scripts/test-host-vfs-processes.py",
+              "--managed",
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/consumer/bin/Release/net10.0/SqliteHostTests.dll",
+              "--native",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/native-oracle"
+            ],
+            "logPrefix": "jit-processes",
+            "exitCode": 0,
+            "seconds": 18.243
+          },
+          {
+            "label": "aot-build",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/consumer/SqliteHostTests.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:TranslatedProject=/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/generated/Generated.csproj",
+              "-p:PublishAot=true",
+              "-p:TreatWarningsAsErrors=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "--nologo",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/aot"
+            ],
+            "logPrefix": "aot-build",
+            "exitCode": 0,
+            "seconds": 15.404
+          },
+          {
+            "label": "aot-run",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/aot/SqliteHostTests"
+            ],
+            "logPrefix": "aot-run",
+            "exitCode": 0,
+            "seconds": 6.875
+          },
+          {
+            "label": "aot-processes",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/sqlite/scripts/test-host-vfs-processes.py",
+              "--managed",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/aot/SqliteHostTests",
+              "--native",
+              "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-posix-001/native-oracle"
+            ],
+            "logPrefix": "aot-processes",
+            "exitCode": 0,
+            "seconds": 8.577
+          }
+        ],
+        "profile": "musl; unix; APPDEF BCL mutexes; THREADSAFE=1; disk temp; WAL; mmap",
+        "vfsProfile": "unix",
+        "nativeExtensionLoading": false,
+        "status": "passed",
+        "definitions": [
+          "SQLITE_OMIT_LOAD_EXTENSION",
+          "SQLITE_ENABLE_FTS5",
+          "SQLITE_ENABLE_MATH_FUNCTIONS",
+          "SQLITE_ENABLE_PERCENTILE",
+          "SQLITE_ENABLE_COLUMN_METADATA",
+          "SQLITE_ENABLE_PREUPDATE_HOOK",
+          "SQLITE_THREADSAFE=1",
+          "SQLITE_MUTEX_APPDEF=1",
+          "SQLITE_TEMP_STORE=1",
+          "SQLITE_DEFAULT_MMAP_SIZE=67108864",
+          "SQLITE_MAX_MMAP_SIZE=268435456",
+          "SQLITE_OS_OTHER=0",
+          "SQLITE_OS_UNIX=1",
+          "HAVE_MREMAP=0",
+          "HAVE_PREAD=1",
+          "HAVE_PWRITE=1",
+          "HAVE_READLINK=1",
+          "HAVE_LSTAT=1",
+          "HAVE_NANOSLEEP=0",
+          "HAVE_USLEEP=1",
+          "SQLITE_ENABLE_LOCKING_STYLE=0"
+        ],
+        "compiler": "/mnt/storage/dotcc-edg-campaign-20261003/self-runtime-build-002/cpfe-dot",
+        "compilerSha256": "89acfba7407d2c57eb6c9be543cabad426e1eb84fefa60f69970133ef851807b",
+        "sourceSha256": "0a46eb1c55b1065e3779ad17e1b60b52f9ff4d5ffa0a0ecfa30d98aa71e62e7b"
+      }
+    },
+    "edg-self-libcxx-010": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-010",
+      "results": {
+        "provider": {
+          "kind": "translated-libcxx-allocation-and-managed-exception-abi",
+          "release": "llvmorg-18.1.8",
+          "translationUnit": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-010/provider.cpp",
+          "translationUnitSha256": "21ecfe9d1055a93abeee97e296c1d53477d2712030dc29e9795da2e870beab41",
+          "sources": [
+            {
+              "path": "/home/marius/p/dotcc/edgcpp/backend/runtime/libcxx/core-source-preamble.h",
+              "sha256": "3281116cf0026d013b7510aa6334d433e3e54f4cb9cbeace0903a4900929282a"
+            },
+            {
+              "path": "/home/marius/p/dotcc/edgcpp/backend/runtime/libcxx/abi_core.cpp",
+              "sha256": "34720044c31ac5cdf5bbc67fa5402ef5ece3a96bc2ea0365fc9c82a195603885"
+            },
+            {
+              "path": "/home/marius/p/dotcc/edgcpp/backend/runtime/libcxx/abi_exceptions.cpp",
+              "sha256": "3792c5de84269d51b1bc2286546cce86d2994353206e9048e0553f3c9286b817"
+            },
+            {
+              "path": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/libcxx-acquired-005/libcxx-18.1.8.src/src/new.cpp",
+              "sha256": "caf5f9f8ace82f9cef17455843b09b9fb77565a7aaa999f2c26f6bf6ed2db532"
+            },
+            {
+              "path": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/libcxx-acquired-005/libcxx-18.1.8.src/src/new_handler.cpp",
+              "sha256": "0b17697b569d4a4cc9b3c2f97ef69fdf8d6cac72de9871489456c5d9235b1bbf"
+            },
+            {
+              "path": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/libcxx-acquired-005/libcxx-18.1.8.src/src/new_helpers.cpp",
+              "sha256": "745bd190f8e82539b9896aef7f9a6a32948f2c5313bcbdc836a5f45b518a1399"
+            },
+            {
+              "path": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/libcxx-acquired-005/libcxx-18.1.8.src/src/typeinfo.cpp",
+              "sha256": "484f7fe899ac0c9101b0b9cc2d320030a4f72aa3ced68131071858722bdfd6c6"
+            }
+          ],
+          "implementationHashes": {
+            "libcxx-18.1.8.src/src/CMakeLists.txt": "6ef391bbfe44430c9dd3ffcec5aff2ac2b5188e2f2b4d2ad55c9a84e1902654a",
+            "libcxx-18.1.8.src/src/algorithm.cpp": "5965a2ccb91e21d3dbeaa659299e43566a8128d9648743395d1dd14d592ec8a7",
+            "libcxx-18.1.8.src/src/any.cpp": "45ae314245d092c78ef0d93af5a98c1c8bb5f66eafd000e0781132ce1da1b885",
+            "libcxx-18.1.8.src/src/atomic.cpp": "06a1f935a152f8dab4d65f3e286c546f73a61c8c12c956ac5ac9032f7e4887aa",
+            "libcxx-18.1.8.src/src/barrier.cpp": "fdf514a02f9ae841bee56dffe87a4b29d115524c47cbccb45296e2a7aaae3699",
+            "libcxx-18.1.8.src/src/bind.cpp": "caba738eeaa4d08d5db0372bea32133b1c02b307b7f9578b6b7ffa860b6a08f2",
+            "libcxx-18.1.8.src/src/call_once.cpp": "c89e008f00577b1f039aa31b2429b5546181f7366dfc7f583d90d7481fafa7c2",
+            "libcxx-18.1.8.src/src/charconv.cpp": "f11141aeaabfbf945505e7cf34719015753be93295e9d58e0bc52772c9c66f17",
+            "libcxx-18.1.8.src/src/chrono.cpp": "979ae2379e45ce6d0cd001c1a12cef29cadcefe518a1dd17eab51bf0d1bb49a5",
+            "libcxx-18.1.8.src/src/chrono_system_time_init.h": "03df5016aa771c0f0b18a749fd2b6d4414a815e296632b98a0c23bd31492160e",
+            "libcxx-18.1.8.src/src/condition_variable.cpp": "2c2daa42f90592fcd085bec73a99b3db1d4dc0f228622401a25b630f4a2cf57d",
+            "libcxx-18.1.8.src/src/condition_variable_destructor.cpp": "3570823de77490443466dde80af0a5418302636d1ce617ccce294b8acc96a9cd",
+            "libcxx-18.1.8.src/src/error_category.cpp": "236d878ed42578f1599dae12d0b7b5f44acc146f9f5af2b92f29c5b54008193a",
+            "libcxx-18.1.8.src/src/exception.cpp": "a7b7792329befed2fa15e31232329340ae36f4380c76348f895b9ad0e7975e66",
+            "libcxx-18.1.8.src/src/experimental/keep.cpp": "93ebc40a499a59116e30e93bedfad271ccd94189b225c4f1a6b73cc27c624990",
+            "libcxx-18.1.8.src/src/filesystem/directory_entry.cpp": "31d078ca4c1aa52cb2b7e62697db01658cd2d8273985930f898bfb71608f7194",
+            "libcxx-18.1.8.src/src/filesystem/directory_iterator.cpp": "c6ae3cbb77ca3a6afe0117ce43c87f86ec9855f5dde0e88e3d3b36419dfebc52",
+            "libcxx-18.1.8.src/src/filesystem/error.h": "f984300e1ceacb31546b208dadd6bb436ddf7d3d96f588e62e873868e15f0d1d",
+            "libcxx-18.1.8.src/src/filesystem/file_descriptor.h": "1757255d42127f8610ab38301eb7572de8a60906d305c827b7c50a7accce4577",
+            "libcxx-18.1.8.src/src/filesystem/filesystem_clock.cpp": "4cc8c0ab0fdbd4beb0af3d24fe703069afeb506a8d0ef8fabd96b1cce4d370e4",
+            "libcxx-18.1.8.src/src/filesystem/filesystem_error.cpp": "3e33692dbdba317553144222703db6e701138bd9d0148bc421ecf27bcd524381",
+            "libcxx-18.1.8.src/src/filesystem/format_string.h": "e27abc32ed3b8f9c57c4c381fef567f30fa3648838be1dcb0f54164ea0608073",
+            "libcxx-18.1.8.src/src/filesystem/int128_builtins.cpp": "ab6acc23bcbf08be6bfcb6916c130db2dcdf92ecb91bec234e4c76eb29ae6c49",
+            "libcxx-18.1.8.src/src/filesystem/operations.cpp": "2327e34150bbae3069268babecaf03b01bef195c7db728326e1b569aa7ab37c3",
+            "libcxx-18.1.8.src/src/filesystem/path.cpp": "17b89bcf9dd5973ed774fb8559c1f9b917f6b4d659650b482e1bd4f52744e200",
+            "libcxx-18.1.8.src/src/filesystem/path_parser.h": "46ae7ad3c6e488ad03db7ed779717d6c46fd5e9883bb83520035c326c196b51d",
+            "libcxx-18.1.8.src/src/filesystem/posix_compat.h": "5af42b6a3a601e4a4842f76ce8b336bedd8ebcafb351312d0d5a8db5c1f89bd2",
+            "libcxx-18.1.8.src/src/filesystem/time_utils.h": "5b6b93edfee95910e889046ec7c87fcacbc6117499ac5fdafa90bea9dae6fae3",
+            "libcxx-18.1.8.src/src/fstream.cpp": "a11eda3d54d0ac6a53c622b1164e1ff1b5369c9aa786bd54e6762082022259fb",
+            "libcxx-18.1.8.src/src/functional.cpp": "7c1515f350edd55eee59aa290d474eeaa1d8c66946b91401b2b3e5116de33a2c",
+            "libcxx-18.1.8.src/src/future.cpp": "81d9672773eee216b5150cb6004c54a04c30d22c71a3402a25bb9eac1551f8e9",
+            "libcxx-18.1.8.src/src/hash.cpp": "63890063c9f5b28bdfe5168bc2777ccc19586d27a05465f25dfa04ef51e1a6e4",
+            "libcxx-18.1.8.src/src/include/apple_availability.h": "5e4920e7d642b44c64c487c54e3ad71628cc5c59be5ab43043ba20c279ce6d97",
+            "libcxx-18.1.8.src/src/include/atomic_support.h": "7e5a7311db59bccc9e7dc3061c335605ebecfc12df3d4f5427f410c8f9bd34db",
+            "libcxx-18.1.8.src/src/include/config_elast.h": "119f313c1cc0896e4ed48e84a32aad7fca9227ab00e3b63415289e00da68e69a",
+            "libcxx-18.1.8.src/src/include/overridable_function.h": "d7cb7f625638b481eac246ef89db0e88787a4630a70d69bcabb7dd58ffb665fd",
+            "libcxx-18.1.8.src/src/include/refstring.h": "6dff5f458b127953bf7ca18ece2c3d1643b008a0e8b676d1cb1f7d1225715983",
+            "libcxx-18.1.8.src/src/include/ryu/common.h": "2da6fba68b22b90bae35b8e608be65f123b0363b0dbaa2f39c3e94033886fcbb",
+            "libcxx-18.1.8.src/src/include/ryu/d2fixed.h": "eb44884fccbbfc39e21d9744fae1edc7f2cd2f1a2c59dacf2ac81cf4d62f6a3f",
+            "libcxx-18.1.8.src/src/include/ryu/d2fixed_full_table.h": "b68007164e979c0cca68b19f52057065b412395d819c9900810e1729f1991726",
+            "libcxx-18.1.8.src/src/include/ryu/d2s.h": "46fad5fe88cd9a9986ed4a9c8bad0c302b4f3076cebd731bad14fa4a7714a566",
+            "libcxx-18.1.8.src/src/include/ryu/d2s_full_table.h": "50206d8a5d1d9f05f0041a79f450490e88251961dd8c0df93106cbf67f4fae96",
+            "libcxx-18.1.8.src/src/include/ryu/d2s_intrinsics.h": "5fdbfa56dfeb2fd5f445111bf6cb9cc5410e309220043fdc8c8f20450b27f3bb",
+            "libcxx-18.1.8.src/src/include/ryu/digit_table.h": "b9e50c0b5506de9d104fbae85272bf9e3b1987df840d3ece5d566c5921e76ec2",
+            "libcxx-18.1.8.src/src/include/ryu/f2s.h": "0685f0962c4121afa0f99603484d73dfccbadc54348fe8919d87f6242107471b",
+            "libcxx-18.1.8.src/src/include/ryu/ryu.h": "f2ee014117048b62d243898821b75d37f65a59688d3c929734632a147f2dba6f",
+            "libcxx-18.1.8.src/src/include/sso_allocator.h": "f529f1440e67b2ec9519ccc66f45f0efe445e880a34f95705e17ef731e0b6590",
+            "libcxx-18.1.8.src/src/include/to_chars_floating_point.h": "16b3b4882654a6f0ef6a450bd158eb32720b8586f1cbcaafa06e84765bbda601",
+            "libcxx-18.1.8.src/src/ios.cpp": "69518fbe7cb151cd8477a2d14ed7e05958d6c7e69739134429d0e93fc866452d",
+            "libcxx-18.1.8.src/src/ios.instantiations.cpp": "995a37e2e986af415dd95c5406daa73a7c4f847b16ecd06bd5c621e059096427",
+            "libcxx-18.1.8.src/src/iostream.cpp": "46fd4e857df14d84345710530128c904b027a947902c6317133e4640f1523f51",
+            "libcxx-18.1.8.src/src/iostream_init.h": "848284929a6b6d8ce59f5327965eeaf5c43211cc50d17c13c0754c171757ca3e",
+            "libcxx-18.1.8.src/src/legacy_pointer_safety.cpp": "160774024f85307e7ff4f6b24b8fb54f95a675b2b83887065b49bcf1c77d11f2",
+            "libcxx-18.1.8.src/src/locale.cpp": "5956d7c4082778415c3445c705f59b1fd1ffc649b226d2968cd7647ff56f8241",
+            "libcxx-18.1.8.src/src/memory.cpp": "f5dd019603cdbe6a03c2caabad2a85a2ff6782f276f5c69ab1c523ab40fa1551",
+            "libcxx-18.1.8.src/src/memory_resource.cpp": "5063b375fb87392028c6b05a3bec03e64e47c40285a510aae415f70cd959806a",
+            "libcxx-18.1.8.src/src/memory_resource_init_helper.h": "a6d0d9e2744da0cc8b8cfc53acd276a83a68ecf31e7871fb32b1dbd7df9cc082",
+            "libcxx-18.1.8.src/src/mutex.cpp": "f562a2cda5b2fff8c592e94f225af080916a547cd4c144cba959e8e4e1326fbe",
+            "libcxx-18.1.8.src/src/mutex_destructor.cpp": "73b5777c95765dbc758232985188b6b41c4f258997dcf9c06ced62cc0448d4bd",
+            "libcxx-18.1.8.src/src/new.cpp": "caf5f9f8ace82f9cef17455843b09b9fb77565a7aaa999f2c26f6bf6ed2db532",
+            "libcxx-18.1.8.src/src/new_handler.cpp": "0b17697b569d4a4cc9b3c2f97ef69fdf8d6cac72de9871489456c5d9235b1bbf",
+            "libcxx-18.1.8.src/src/new_helpers.cpp": "745bd190f8e82539b9896aef7f9a6a32948f2c5313bcbdc836a5f45b518a1399",
+            "libcxx-18.1.8.src/src/optional.cpp": "55e0f33f4a6637ff14488270cbd20229f46f1fedcb4fc69cf0dda219a422d224",
+            "libcxx-18.1.8.src/src/ostream.cpp": "7dbd3811418bec80bc26b769b47aaac4e1e6f9e89508280710d8937e29493d9c",
+            "libcxx-18.1.8.src/src/print.cpp": "6674bc577873dd66f28904bdc8c334181cb3d7cce4e45236fecabc52c3c11649",
+            "libcxx-18.1.8.src/src/pstl/libdispatch.cpp": "0f80bf698eebc353ff332c377de6a1eff8a6f9b1ed0c963d6325c46844c5c8c4",
+            "libcxx-18.1.8.src/src/random.cpp": "c288b5d9d4cdf253bd867a5572c7aca9a1c93398680b915518f4ae111d82bfed",
+            "libcxx-18.1.8.src/src/random_shuffle.cpp": "c3576fcef67c66cd177a0c542d8e4d6da536ba11c97ae1206686a1f8fd5bd05a",
+            "libcxx-18.1.8.src/src/regex.cpp": "87ce61e6756d2a07a5794ed44df844a4c3e02c5cf91cfcf0d3c6626f7e846643",
+            "libcxx-18.1.8.src/src/ryu/README.txt": "97e2ebbb73b855b1adc028f8904a671a9186f124ec6c1942a9d087a6adb82255",
+            "libcxx-18.1.8.src/src/ryu/d2fixed.cpp": "2cce59c494dd4ab78c80438a7a417f277cd5ab407a034ced39535b7a9b19b494",
+            "libcxx-18.1.8.src/src/ryu/d2s.cpp": "a737615bd17c85c2679e4fcfb2aee24ed0b8521db50ad4f64e459d40179b141c",
+            "libcxx-18.1.8.src/src/ryu/f2s.cpp": "427dc841a9bc603d1336d992d1275e33ad7b82c465f8bef2d69c96c6b944bca3",
+            "libcxx-18.1.8.src/src/shared_mutex.cpp": "05a75520dc245d84a1133e9d851c9cf53e81ee9ff803a999d2f0efe31f5eacb2",
+            "libcxx-18.1.8.src/src/std_stream.h": "0a6d0319a6af37ca05fb14dca8a3a40de35027125ff438ebf250ec4139c08cbf",
+            "libcxx-18.1.8.src/src/stdexcept.cpp": "3d4cdfcf736eb5cd67d0cb1c406caf8c7b831f7bfd80f13fcb19cb5df18fdaee",
+            "libcxx-18.1.8.src/src/string.cpp": "7fc174817784c4ebd597b5cb494a62c76098eb40aee0949ce22b8233e9476a01",
+            "libcxx-18.1.8.src/src/strstream.cpp": "ef1f0e29848addb728eb51d3866124929c6f445efb6f2bac723cff25ddd8385a",
+            "libcxx-18.1.8.src/src/support/ibm/mbsnrtowcs.cpp": "dcc4baf81385c683d4e18304db6e8d226e35b31366ae26e3d88d3d64019656de",
+            "libcxx-18.1.8.src/src/support/ibm/wcsnrtombs.cpp": "68a9361889bbec4aa98a09019def8e3bcfa44d0d086f775f97616e9a07da981f",
+            "libcxx-18.1.8.src/src/support/ibm/xlocale_zos.cpp": "91a360078a9adfb84235507daca21bc2acbf68a876eecd71366d37bbfdc8418a",
+            "libcxx-18.1.8.src/src/support/runtime/exception_fallback.ipp": "90c783b8d53e4b921ccc5d197ab92d9457d80115034202d3e37a3e4fbea9f5bb",
+            "libcxx-18.1.8.src/src/support/runtime/exception_glibcxx.ipp": "fe9e413244f70b1c615a231767db86e82228f0f7f624a917301712c61f46e3e2",
+            "libcxx-18.1.8.src/src/support/runtime/exception_libcxxabi.ipp": "867c3d824662c021ed0cd4e0b21e396b9a2e6ec77d58233ebff50a854262bb10",
+            "libcxx-18.1.8.src/src/support/runtime/exception_libcxxrt.ipp": "a40636406f983de0b1dc284177f88964440b046d2f318f636c92c64e7a8cd4c6",
+            "libcxx-18.1.8.src/src/support/runtime/exception_msvc.ipp": "2bd1e6556fa067fccf72f947db1bde3fcc12fb44421abedd8b7156eb91b3b2a7",
+            "libcxx-18.1.8.src/src/support/runtime/exception_pointer_cxxabi.ipp": "317106b8e130c337144b308fbc48c1c6c3b10eba02c09f42b260e59f67e30e49",
+            "libcxx-18.1.8.src/src/support/runtime/exception_pointer_glibcxx.ipp": "94da02b306080d905f33efa1844c9215b2d760e9214e0c7f267720c1dd570ca7",
+            "libcxx-18.1.8.src/src/support/runtime/exception_pointer_msvc.ipp": "0594a3dc411d32d756f354aa20e572bc51b53faa048ac5949aa4f889f15f4502",
+            "libcxx-18.1.8.src/src/support/runtime/exception_pointer_unimplemented.ipp": "a62332afa56f06723217f69a7534aa19cf9ef4e09b4c31620f380b19d90794a7",
+            "libcxx-18.1.8.src/src/support/runtime/stdexcept_default.ipp": "4f4a99af12f8a6c2d6eeb9894ebd9c4ee524feb3932766251ceced008d2eefc5",
+            "libcxx-18.1.8.src/src/support/runtime/stdexcept_vcruntime.ipp": "dacc2afe2df26d3f4d78ad7849c9817a8a41a05553d79665eae6de3e1d9dd1b4",
+            "libcxx-18.1.8.src/src/support/win32/locale_win32.cpp": "aad91a38f2cb0332e64e87a5db52c26a2f1a29a2b0445b55d37b6d9aad2ebedf",
+            "libcxx-18.1.8.src/src/support/win32/support.cpp": "8dcaefcc44aae79e1e109e698fa6535b8d6240a63ccc81b513f285bc9112ff34",
+            "libcxx-18.1.8.src/src/support/win32/thread_win32.cpp": "ae725e05c2698250c3584d8ebc8e8b7f086f2327c9c0c95e2255bf25fc492627",
+            "libcxx-18.1.8.src/src/system_error.cpp": "fb570270dcc6749dd2d5bdd078d7b0f0576ffbc0afb2d2e6862a691f53f1c8ff",
+            "libcxx-18.1.8.src/src/thread.cpp": "74acf68a6c8eb1701e166fc48b4c40a39cf09d29af95bee63d6bbd56401f6a45",
+            "libcxx-18.1.8.src/src/typeinfo.cpp": "484f7fe899ac0c9101b0b9cc2d320030a4f72aa3ced68131071858722bdfd6c6",
+            "libcxx-18.1.8.src/src/tz.cpp": "fd9b9876ca607d31df91e10511c55a7df62da0367a2328f79d76ce3032369fec",
+            "libcxx-18.1.8.src/src/tzdb_list.cpp": "74520459d5113fbd27da4abef4de13d8a18a284a71f285e87167ee87a981f3c1",
+            "libcxx-18.1.8.src/src/valarray.cpp": "f525bff94558b7ae0f7fd31bd101219e4485b12e8dbf5a79a3ddcda9d4ec35af",
+            "libcxx-18.1.8.src/src/variant.cpp": "1409f5559f84668a585b0cedb83d854dc3802dfeb03eefb184bf6f0735e19c90",
+            "libcxx-18.1.8.src/src/vector.cpp": "338d9f8e92157d6bac79d64c343a598bdf372f6ece03e583a04116acef03370f",
+            "libcxx-18.1.8.src/src/verbose_abort.cpp": "34e7953caafbf143b6f6be28c9ce4f0201164daf4e32d6b603b54168fb6bfcf7"
+          },
+          "adaptedPrivateHeader": {
+            "upstream": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/libcxx-acquired-005/libcxx-18.1.8.src/src/include/atomic_support.h",
+            "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-010/libcxx-self-atomic-support.h",
+            "sha256": "11cc8769c6403ff6b865351c21ec262fe818aae0960ebe7c5b402e4c912951d0"
+          },
+          "adaptations": [
+            "Remove unused <memory> include from private atomic_support.h; all atomic bodies/orderings unchanged",
+            "Map new_handler.cpp constinit to _LIBCPP_CONSTINIT for C++14; null pointer constant initialization is unchanged"
+          ],
+          "scope": "Allocation, exception class definitions and managed EH adapters required by EDG; not the entire libc++ library"
+        },
+        "checks": [
+          "Native C++14 allocation/EH behavior oracle",
+          "Separate C++14 provider/consumer TUs; strict unresolved rejection; no bootstrap std types",
+          "JIT: scalar/array/sized/nothrow allocation, failing new_handler, typed bad_alloc/bad_exception/bad_array_new_length, RAII unwinding and exception_ptr",
+          "NativeAOT: same allocation and exception behavior"
+        ],
+        "commands": [
+          {
+            "stage": "native-build",
+            "command": [
+              "g++",
+              "-std=c++14",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/self_libcxx.cpp",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-010/native"
+            ],
+            "exitCode": 0
+          },
+          {
+            "stage": "native-run",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-010/native"
+            ],
+            "exitCode": 0
+          },
+          {
+            "stage": "translate",
+            "command": [
+              "/usr/bin/python",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-010/provider.cpp",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/self_libcxx.cpp",
+              "--compiler",
+              "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+              "--language",
+              "c++",
+              "--std",
+              "c++14",
+              "--libc",
+              "musl",
+              "-I",
+              "/home/marius/p/dotcc/edgcpp/artifacts/campaign/libcxx-acquired-005/config",
+              "-I",
+              "/home/marius/p/dotcc/edgcpp/artifacts/campaign/libcxx-acquired-005/libcxx-18.1.8.src/include",
+              "--emit",
+              "exe",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-010/generated"
+            ],
+            "exitCode": 0
+          },
+          {
+            "stage": "build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-010/generated/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo"
+            ],
+            "exitCode": 0
+          },
+          {
+            "stage": "jit",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-010/generated/bin/Release/net10.0/Generated.dll"
+            ],
+            "exitCode": 0
+          },
+          {
+            "stage": "publish",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-010/generated/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-010/generated/aot"
+            ],
+            "exitCode": 0
+          },
+          {
+            "stage": "aot",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-010/generated/aot/Generated"
+            ],
+            "exitCode": 0
+          }
+        ]
+      },
+      "jit.stdout": "",
+      "aot.stdout": ""
+    }
+  },
+  "sourceHashes": {
+    "backend/runtime/PosixContext.cs": "9771b4314633868047b912aef86a7fbe9aadd54495eb16850b7b768f2a9a4073",
+    "backend/runtime/PosixDirectories.cs": "17d03677461f0941e179c7295a060b114a0566e7fafc0e98b40a3524ce30ddf8",
+    "backend/runtime/PosixFiles.cs": "41c525b21e9cccb19f6e7c77251dcbbc6dc977ef64c6548de354eb884728db67",
+    "backend/runtime/PosixLocks.cs": "9938f76e973fbf76aeb7efbc5d8563baf86912b519d6ef8b5633dd07b64e720e",
+    "backend/runtime/PosixMappings.cs": "8e0f862ef98de4f0d184fd879fdf849d6de3399561e165b61d223484b153e099",
+    "backend/runtime/PosixOfdLocks.cs": "50107daa45ac96f3368afce88ccab1d842433b0be4421faf5951ed2757a2c295",
+    "backend/runtime/PosixPlatform.cs": "9afd7412852e8910b60a50b7a0ab51e1971a163633d71cde203404fbb57d0a03",
+    "backend/runtime/PosixResources.cs": "d15c7ce44395bde9be803cc2e8fafa7bedcd9fce9531ba75dc372479689a8139",
+    "backend/runtime/PosixStreams.cs": "1e1c651a02947314b6971b8bfb9d3091a81583464bc2bce03614c4db3d3ee9a8",
+    "backend/runtime/PosixTime.cs": "5fb6eff28ecb3d9d425433f18358ade7251a2a9c48618a8c9d81ab489752c856",
+    "backend/runtime/PosixTypes.cs": "c5056517f62c4bd24fb9c473648feed65495b98c0e9fe303576acf3f979654bf",
+    "backend/runtime/PosixVariadic.cs": "bd2746c3300db71fb2fd754b770c81795600e939951128658e98b1ea228d7811",
+    "backend/runtime/PosixWindowsLocks.cs": "da22bbd240af9a7c831889e6c017231e32f69baa8707aab762dd875193b00e24",
+    "backend/runtime/LibcFileDescriptors.cs": "1d07b4a58e77002e9b3b6c9a84d789c2eae70f9af308d3134d1b59bc18316171",
+    "backend/runtime/LibcFilesDescriptors.cs": "5997abcca53b32eb82c354b0875b0fc1b8b32b87f001e5b040627adbebc5622d",
+    "backend/runtime/LibcFiles.cs": "b8cedb97dca5684af75ec5863e44c4574c449515d29111f9f2f235d2fd530bcf",
+    "backend/runtime/LibcFilesManagement.cs": "a33647736533f90ddbc5f889491154741243e7c0bb857f25733744a962aa2d75",
+    "backend/dot_gen_posix.h": "5e068c64e6b34ea88609eb36b272fda9ae1acaa8b537e8d1b9123520451544b9",
+    "backend/dot_gen_imports.h": "218f187852f8df3a5074d022a64d34e58079e453e21a5476a1b7a93fd36428da",
+    "backend/self/libcxx.py": "99065b529d98bc04ded2ec4b3638d9f1a52af4335c435af3c667beadc27ef1d9",
+    "dotnet.py": "9a7da0337d11a917a8be7e1d218055477298d9c3b930769b0be67e69e88fd4f5"
+  }
+}

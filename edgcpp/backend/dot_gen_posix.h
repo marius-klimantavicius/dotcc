@@ -9,11 +9,35 @@ void ensure_posix() {
   helper_output+="private "+mod+"global::Edg.Runtime.PosixContext __edg_posix { get { lock(__edg_libc) { if(__edg_posix_value==null)__edg_posix_value=new global::Edg.Runtime.PosixContext(__edg_libc.SetErrno); return __edg_posix_value; } } }\n";
 }
 string posix_type(a_type_ptr t) {
+  if(libc_file_pointer(t))return "FILE*";
   auto p=skip_typerefs(t);
   if(p->kind!=tk_pointer || p->size!=8)return type(t);
   p=skip_typerefs(p->variant.pointer.type);
-  if(p->kind!=tk_struct || p->incomplete || !p->source_corresp.name)return type(t);
-  string n=p->source_corresp.name;
+  // A C header may be included inside a C++ namespace (EDG does this for
+  // dirent.h). Its extern-C function still has the portable ABI. Validate the
+  // record itself rather than requiring its tag to live in the global scope.
+  if(p->kind!=tk_struct || !p->source_corresp.name)return type(t);
+  string n=source_spelling(&p->source_corresp);
+  if(n=="__edg_DIR" && p->incomplete)return "POSIX_DIR*";
+  if(p->incomplete)return type(t);
+  if(n=="rlimit") {
+    auto f=p->variant.class_struct_union.field_list;
+    if(p->size!=16 || alignment_of_type(p)!=8)return type(t);
+    for(unsigned i=0;i<2;++i) {
+      if(!f || f->is_bit_field || !f->source_corresp.name ||
+         string(f->source_corresp.name)!=(i==0?"rlim_cur":"rlim_max") ||
+         f->offset!=i*8 || type(f->type)!="ulong")return type(t);
+      f=f->next;
+    }
+    return f?type(t):"POSIX_RLIMIT*";
+  }
+  if(n=="dirent") {
+    auto f=p->variant.class_struct_union.field_list;
+    if(p->size!=4096 || alignment_of_type(p)!=1 || !f || f->next || f->is_bit_field ||
+       f->offset!=0 || !f->source_corresp.name || string(f->source_corresp.name)!="d_name")return type(t);
+    auto a=skip_typerefs(f->type);
+    return a->kind==tk_array && a->size==4096 && type(a->variant.array.element_type)=="sbyte"?"POSIX_DIRENT*":type(t);
+  }
   if(n!="stat" && n!="timeval")return type(t);
   const char* stat_names[]={"st_dev","st_ino","st_mode","st_nlink","st_uid","st_gid","st_size","st_atime","st_mtime","st_ctime","st_rdev","st_blksize","st_blocks"};
   const char* stat_types[]={"ulong","ulong","uint","ulong","uint","uint","long","long","long","long","ulong","long","long"};
@@ -61,6 +85,16 @@ const posix_binding posix_bindings[]={
   {"getpid","int","","Getpid",false},
   {"sleep","uint","uint","Sleep",false},
   {"usleep","int","uint","Usleep",false},
+  {"chdir","int","sbyte*","Chdir",false},
+  {"mkstemp","int","sbyte*","Mkstemp",false},
+  {"isatty","int","int","Isatty",false},
+  {"fdopen","FILE*","int,sbyte*","Fdopen",false},
+  {"fileno","int","FILE*","Fileno",false},
+  {"opendir","POSIX_DIR*","sbyte*","Opendir",false},
+  {"readdir","POSIX_DIRENT*","POSIX_DIR*","Readdir",false},
+  {"closedir","int","POSIX_DIR*","Closedir",false},
+  {"getrlimit","int","int,POSIX_RLIMIT*","Getrlimit",false},
+  {"setrlimit","int","int,POSIX_RLIMIT*","Setrlimit",false},
 };
 bool posix_routine(a_routine_ptr r,const string& symbol) {
   if(!posix_enabled)return false;
@@ -76,18 +110,22 @@ bool posix_routine(a_routine_ptr r,const string& symbol) {
       parameters+=abi;signature+=ty+" "+arg;
       if(abi=="POSIX_STAT*")args+="(global::Edg.Runtime.PosixStat*)";
       if(abi=="POSIX_TIMEVAL*")args+="(global::Edg.Runtime.PosixTimeval*)";
+      if(abi=="POSIX_RLIMIT*")args+="(global::Edg.Runtime.PosixRlimit*)";
       if((symbol=="mmap" || symbol=="munmap") && index==2)args+="(nuint)";
       args+=arg;
     }
-    string result=type(rt->variant.routine.return_type);
-    if(!extra->prototyped || extra->has_ellipsis!=binding.variadic || parameters!=binding.parameters || result!=binding.result)
+    string result=type(rt->variant.routine.return_type),result_abi=posix_type(rt->variant.routine.return_type);
+    if(!extra->prototyped || extra->has_ellipsis!=binding.variadic || parameters!=binding.parameters || result_abi!=binding.result)
       unsupported(("POSIX import ABI for "+symbol+": expected "+binding.result+"("+binding.parameters+") but got "+result+"("+parameters+")").c_str());
     if(binding.variadic) {
       signature+=", params global::System.ReadOnlySpan<global::Edg.Runtime.VaArg> __edg_varargs";
       args+=", __edg_varargs";
     }
     ensure_posix();libc_register_routine(r,binding.symbol);
-    helper_output+="// dot-gen:import "+symbol+"\n// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+result+" "+name(r,"f")+"("+signature+") { return __edg_posix."+binding.target+"("+args+"); }\n// dot-gen:member-end\n";
+    bool files=symbol=="fdopen" || symbol=="fileno";
+    if(files)ensure_files();
+    bool opaque_result=result_abi=="FILE*" || result_abi=="POSIX_DIR*" || result_abi=="POSIX_DIRENT*";
+    helper_output+="// dot-gen:import "+symbol+"\n// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+result+" "+name(r,"f")+"("+signature+") { return "+string(opaque_result?"("+result+")":"")+(files?"__edg_files.":"__edg_posix.")+binding.target+"("+args+"); }\n// dot-gen:member-end\n";
     return true;
   }
   return false;

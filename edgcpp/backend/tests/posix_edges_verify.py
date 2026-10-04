@@ -15,7 +15,7 @@ out = a.output_dir.resolve()
 out.mkdir(parents=True, exist_ok=True)
 if platform.system() not in ("Linux", "Darwin"):
     raise SystemExit("OFD edge fixture requires Linux or macOS")
-for source in sorted((root / "backend/runtime").glob("Posix*.cs")) + [root / "backend/runtime/VaArg.cs"]:
+for source in sorted((root / "backend/runtime").glob("Posix*.cs")) + [root / "backend/runtime/LibcFileDescriptors.cs", root / "backend/runtime/VaArg.cs"]:
     shutil.copy2(source, out / source.name)
     # Separate namespaces simulate independently copied runtime assemblies:
     # no lock registry, owner type or other managed state is shared.

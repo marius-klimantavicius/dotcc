@@ -128,7 +128,7 @@ void reset_libc_imports() {
 }
 string libc_thread_release_code() {return string(text_emitted?"__edg_text_value?.ReleaseThread();":"")+(libc_emitted?"__edg_libc.ReleaseThread();":"");}
 string libc_disposal_code() {
-  return string(posix_emitted?"__edg_posix_value?.Dispose();":"")+(command_emitted?"__edg_command_value?.Dispose();":"")+(files_emitted?"__edg_files_value?.Dispose();":"")+
+  return string(command_emitted?"__edg_command_value?.Dispose();":"")+(files_emitted?"__edg_files_value?.Dispose();":"")+(posix_emitted?"__edg_posix_value?.Dispose();":"")+
     (text_emitted?"__edg_text_value?.Dispose();":"")+(environment_emitted?"__edg_environment_value?.Dispose();":"")+(timezone_emitted?"__edg_timezone_value?.Dispose();":"")+(libc_emitted?"__edg_libc.Dispose();":"");
 }
 void ensure_lifecycle();
@@ -180,14 +180,16 @@ private @MOD@int __edg_posix_memalign(void** result,ulong alignment,ulong size) 
   helper_output+=code;
 }
 void ensure_text();
+void ensure_posix();
 void ensure_files() {
   if(files_emitted)return;
   ensure_libc();ensure_text();files_emitted=true;
+  if(posix_enabled)ensure_posix();
   // Instance field initializers cannot refer to other instance fields. A lazy
   // holder also avoids opening standard streams when only memory APIs are used.
   string mod=instance_mode?"":"static ";
   helper_output+="private "+mod+"global::Edg.Runtime.LibcFiles? __edg_files_value;\n";
-  helper_output+="private "+mod+"global::Edg.Runtime.LibcFiles __edg_files { get { lock(__edg_libc) { if(__edg_files_value==null)__edg_files_value=new global::Edg.Runtime.LibcFiles(__edg_libc.SetErrno,getEncoding:()=>__edg_text.MbCurMax()); return __edg_files_value; } } }\n";
+  helper_output+="private "+mod+"global::Edg.Runtime.LibcFiles __edg_files { get { lock(__edg_libc) { if(__edg_files_value==null)__edg_files_value=new global::Edg.Runtime.LibcFiles(__edg_libc.SetErrno,getEncoding:()=>__edg_text.MbCurMax()"+string(posix_enabled?",fileDescriptors:__edg_posix":"")+"); return __edg_files_value; } } }\n";
 }
 void ensure_text() {
   if(text_emitted)return;

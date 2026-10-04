@@ -101,6 +101,10 @@ internal static unsafe partial class PosixPlatform
         EnsureSupported();
         if (OperatingSystem.IsWindows())
         {
+            uint kind = GetFileType(handle);
+            if (kind == 0 && Marshal.GetLastPInvokeError() != 0) throw NativeError();
+            if (kind == 2 || kind == 3)
+                return new PosixStat { st_mode = (kind == 2 ? 0x2000U : 0x1000U) | 438, st_nlink = 1, st_blksize = 4096 };
             var info = WindowsInfo(handle);
             if (!GetBasicInformation(handle, 0, out var basic, 40) || !GetStandardInformation(handle, 1, out var standard, 24)) throw NativeError();
             return new PosixStat { st_dev = info.VolumeSerial, st_ino = ((ulong)info.IndexHigh << 32) | info.IndexLow, st_nlink = info.Links, st_mode = (uint)(((info.Attributes & 16) != 0 ? 0x4000 : ((info.Attributes & 0x400) != 0 ? 0xa000 : 0x8000)) | ((info.Attributes & 1) != 0 ? 0x124 : 0x1b6)), st_size = (long)(((ulong)info.SizeHigh << 32) | info.SizeLow), st_blksize = 4096, st_blocks = (standard.AllocationSize + 511) / 512, st_atime = WindowsTime(info.AccessLow, info.AccessHigh), st_mtime = WindowsTime(info.WriteLow, info.WriteHigh), st_ctime = (basic.ChangeTime - 116444736000000000L) / 10000000 };
@@ -215,5 +219,6 @@ internal static unsafe partial class PosixPlatform
     [LibraryImport("kernel32.dll", EntryPoint = "GetFileInformationByHandleEx", SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] private static partial bool GetStandardInformation(SafeFileHandle handle, int type, out WindowsStandardInformation info, uint size);
     [LibraryImport("kernel32.dll", EntryPoint = "SetFileInformationByHandle", SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] private static partial bool SetBasicInformation(SafeFileHandle handle, int type, ref WindowsBasicInformation info, uint size);
     [LibraryImport("kernel32.dll", EntryPoint = "GetFileInformationByHandle", SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] private static partial bool GetFileInformation(SafeFileHandle handle, out WindowsFileInformation info);
+    [LibraryImport("kernel32.dll", EntryPoint = "GetFileType", SetLastError = true)] private static partial uint GetFileType(SafeFileHandle handle);
     [LibraryImport("kernel32.dll", EntryPoint = "FlushFileBuffers", SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] private static partial bool FlushFileBuffers(SafeFileHandle handle);
 }

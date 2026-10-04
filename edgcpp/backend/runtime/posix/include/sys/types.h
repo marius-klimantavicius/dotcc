@@ -11,6 +11,8 @@ typedef long off_t;
 /* size_t / time_t are owned by <stddef.h> / <time.h> (same spellings);
    include those rather than redefining here. */
 #include <stddef.h>
+/* Historical BSD spelling used by mmap clients, including EDG. */
+typedef char *caddr_t;
 #include <time.h>
 
 typedef long  ssize_t;

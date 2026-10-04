@@ -24,6 +24,9 @@ extern "C" {
 extern FILE *stdin, *stdout, *stderr;
 FILE *fopen(const char *, const char *);
 int fclose(FILE *);
+/* POSIX descriptor integration is supplied by the optional --posix provider. */
+FILE *fdopen(int, const char *);
+int fileno(FILE *);
 size_t fread(void *, size_t, size_t, FILE *);
 size_t fwrite(const void *, size_t, size_t, FILE *);
 int fseek(FILE *, long, int);

@@ -1147,3 +1147,23 @@ within 6.03 GiB measured process-tree RSS; its representation stays unchanged.
 `build_managed.py` adds bounded compiler memory/time monitoring. This milestone
 does not yet establish full managed EDG compilation or execution.
 [Evidence](../evidence/initializer-chunks-20261004.json).
+
+### EDG self runtime dependencies (2026-10-04)
+
+The shared POSIX runtime now supplies directory enumeration, secure temporary
+creation, terminal detection, virtual cwd changes and CPU-limit operations.
+An optional descriptor provider unifies libc FILE and POSIX ownership: fopen,
+fdopen, fileno, mapping and close share one descriptor registry. Stream buffers
+flush before POSIX disposal. Portable records support C headers included inside
+a C++ namespace by inspecting their retained source names and actual layouts.
+Native/translated C/C++14 static/instance JIT/NativeAOT and Wine tests pass; the
+full SQLite Unix campaign remains green. Windows finite CPU limits return
+ENOTSUP; Unix limits apply to the host process.
+
+A minimal pinned libc++18.1.8 C++14 provider supplies real allocation, new-handler,
+exception classes, RTTI and managed exception ABI definitions. Audited private
+header/constinit adaptations avoid unused library dependencies. Focused native,
+JIT and NativeAOT tests cover allocation failures, handlers, RAII and exceptions.
+The full EDG translation/build is the next acceptance step, not implied by these
+component passes. [Evidence](../evidence/self-runtime-dependencies-20261004.json),
+[descriptor ownership](posix-stdio.md), [libc++ provider](../backend/self/libcxx.md).

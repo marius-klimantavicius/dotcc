@@ -9,13 +9,14 @@ namespace Edg.Runtime;
 
 /// <summary>Descriptor and working-directory state for one translated Unix process.
 /// The portable ABI is independent of the host's native POSIX structure layouts.</summary>
-public sealed unsafe partial class PosixContext : IDisposable
+public sealed unsafe partial class PosixContext : IDisposable, ILibcFileDescriptors
 {
     internal readonly Action<int> SetError;
     internal readonly object LockOwner = new();
     private readonly object descriptorsGate = new();
     private readonly Dictionary<int, Descriptor> descriptors = new();
-    private readonly string workingDirectory;
+    private string workingDirectory;
+    [ThreadStatic] private static int lastError;
     private bool disposed;
     internal static readonly UTF8Encoding Utf8 = new(false, true);
 
@@ -31,13 +32,16 @@ public sealed unsafe partial class PosixContext : IDisposable
         // Devices use no host file descriptor. This also makes /dev/urandom
         // usable on Windows without exposing a platform path to translated code.
         internal readonly int Device;
+        internal Stream? StandardStream;
+        internal bool Terminal, NativeStandard;
         internal Descriptor(SafeFileHandle handle, string path, int flags, int device = 0)
         { Handle = handle; Path = path; Flags = flags; Device = device; DescriptorFlags = (flags & 0x80000) != 0 ? 1 : 0; }
     }
 
     public PosixContext(Action<int> setErrno, string? workingDirectory = null)
     {
-        SetError = setErrno ?? throw new ArgumentNullException(nameof(setErrno));
+        ArgumentNullException.ThrowIfNull(setErrno);
+        SetError = error => { lastError = error; setErrno(error); };
         this.workingDirectory = System.IO.Path.GetFullPath(workingDirectory ?? Environment.CurrentDirectory);
     }
 
@@ -170,6 +174,7 @@ public sealed unsafe partial class PosixContext : IDisposable
             ids = new int[descriptors.Count]; descriptors.Keys.CopyTo(ids, 0);
         }
         CloseMappings();
+        CloseDirectories();
         foreach (int fd in ids) Close(fd);
     }
 }

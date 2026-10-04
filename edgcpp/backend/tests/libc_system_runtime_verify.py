@@ -4,7 +4,7 @@ from pathlib import Path
 
 def verify_libc_system_runtime(root,tests,out,nativeaot,run,runtime=None):
  out.mkdir(parents=True,exist_ok=True);runtime=runtime or root/'backend/runtime'
- for name in ['LibcCommand','LibcFiles','LibcFilesManagement','LibcFilesWide','LibcAppend','LibcPaths']:
+ for name in ['LibcCommand','LibcFiles','LibcFileDescriptors','LibcFilesManagement','LibcFilesWide','LibcAppend','LibcPaths']:
   source=runtime/f'{name}.cs'
   if not source.exists():source=root/'backend/runtime'/f'{name}.cs'
   shutil.copy2(source,out/f'{name}.cs')

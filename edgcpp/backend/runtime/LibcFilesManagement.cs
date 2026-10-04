@@ -68,6 +68,7 @@ public sealed unsafe partial class LibcFiles
         bool read=spelling[0]=='r'||update,write=spelling[0]!='r'||update,append=spelling[0]=='a';
         if((read&&!entry.Stream.CanRead)||(write&&!entry.Stream.CanWrite)){setErrno(Ebadf);return false;}
         if(entry.Stream is FileStream file)LibcAppend.SetAppend(file,append);
+        else if(fileDescriptors is not null)fileDescriptors.SetAppend(entry.Stream,append);
         else if(append){setErrno(95);return false;}
         entry.Readable=read;entry.Writable=write;entry.Append=append;
         // Musl's NULL-filename profile changes access/append state without
@@ -144,7 +145,8 @@ public sealed unsafe partial class LibcFiles
                     // including calls using the single reusable static buffer.
                     ulong value=unchecked(temporaryNameSeed+temporaryNameSequence++);
                     for(int i=0;i<16;++i){uint digit=(uint)(value&15);spelling[18-i]=(byte)(digit<10?'0'+digit:'a'+digit-10);value>>=4;}
-                    string path=Path.Combine(workingDirectory,System.Text.Encoding.ASCII.GetString(new ReadOnlySpan<byte>(spelling,19)));
+                    string relative=System.Text.Encoding.ASCII.GetString(new ReadOnlySpan<byte>(spelling,19));
+                    string path=fileDescriptors?.ResolvePath(relative) ?? Path.Combine(workingDirectory,relative);
                     try{File.GetAttributes(path);continue;}
                     catch(FileNotFoundException) { }
                     catch(DirectoryNotFoundException) { }
@@ -161,7 +163,7 @@ public sealed unsafe partial class LibcFiles
 
     public void* Tmpfile()
     {
-        FileStream? stream=null;
+        Stream? stream=null;
         try
         {
             for(int attempt=0;attempt<100;++attempt)
@@ -170,7 +172,7 @@ public sealed unsafe partial class LibcFiles
                 var options=new FileStreamOptions {Mode=FileMode.CreateNew,Access=FileAccess.ReadWrite,
                     Share=FileShare.ReadWrite|FileShare.Delete,BufferSize=1};
                 if(!OperatingSystem.IsWindows())options.UnixCreateMode=UnixFileMode.UserRead|UnixFileMode.UserWrite;
-                try {stream=new FileStream(path,options);}
+                try {stream=fileDescriptors is not null ? fileDescriptors.Open(path,"w+x") : new FileStream(path,options);}
                 catch(IOException error) when(ErrorNumber(error)==17){continue;}
                 // BCL DeleteOnClose on Unix runs only during managed release.
                 // Unlink now so process-wide Environment.Exit also reclaims it.

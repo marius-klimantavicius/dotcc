@@ -4,7 +4,7 @@ from pathlib import Path
 
 def verify_libc_assert_runtime(root,tests,out,nativeaot,run):
  out.mkdir(parents=True,exist_ok=True);checks=[]
- for name in ['LibcFiles.cs','LibcFilesWide.cs','LibcFilesAssert.cs','LibcAppend.cs','LibcPaths.cs','LibcProcess.cs']:
+ for name in ['LibcFiles.cs','LibcFileDescriptors.cs','LibcFilesWide.cs','LibcFilesAssert.cs','LibcAppend.cs','LibcPaths.cs','LibcProcess.cs']:
   shutil.copy2(root/'backend/runtime'/name,out/name)
  shutil.copy2(tests/'libc_assert_runtime.cs',out/'Program.cs')
  (out/'Assert.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>enable</Nullable><IsAotCompatible>true</IsAotCompatible></PropertyGroup></Project>')

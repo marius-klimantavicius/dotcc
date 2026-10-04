@@ -4,12 +4,12 @@ from pathlib import Path
 
 def verify_libc_stdio_management_runtime(root,tests,out,nativeaot,run,runtime=None):
  out.mkdir(parents=True,exist_ok=True);runtime=runtime or root/'backend/runtime'
- for name in ['LibcFiles','LibcFilesManagement','LibcFilesWide','LibcAppend','LibcPaths']:
+ for name in ['LibcFiles','LibcFileDescriptors','LibcFilesManagement','LibcFilesWide','LibcAppend','LibcPaths']:
   source=runtime/f'{name}.cs'
   if not source.exists():source=root/'backend/runtime'/f'{name}.cs'
   shutil.copy2(source,out/f'{name}.cs')
  shutil.copy2(tests/'libc_stdio_management_runtime.cs',out/'Program.cs')
- (out/'Test.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks><IsAotCompatible>true</IsAotCompatible></PropertyGroup></Project>')
+ (out/'Test.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>enable</Nullable><IsAotCompatible>true</IsAotCompatible></PropertyGroup></Project>')
  checks=[]
  def exercise(command,name):
   run([*command,out/(name+'-data')])

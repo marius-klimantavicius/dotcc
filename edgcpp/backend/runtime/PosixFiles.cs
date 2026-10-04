@@ -9,7 +9,7 @@ namespace Edg.Runtime;
 
 public sealed unsafe partial class PosixContext
 {
-    public int OpenDescriptorCount { get { lock (descriptorsGate) return descriptors.Count; } }
+    public int OpenDescriptorCount { get { lock (descriptorsGate) return descriptors.Count - (descriptors.ContainsKey(0) ? 1 : 0) - (descriptors.ContainsKey(1) ? 1 : 0) - (descriptors.ContainsKey(2) ? 1 : 0); } }
 
     public long Read(int fd, void* buffer, ulong count) => Transfer(fd, buffer, count, 0, false, false);
     public long Write(int fd, void* buffer, ulong count) => Transfer(fd, buffer, count, 0, true, false);
@@ -31,6 +31,11 @@ public sealed unsafe partial class PosixContext
                 if (descriptor.Device != 0)
                 {
                     if (positioned) { SetError(29); return -1; }
+                    if (descriptor.StandardStream is Stream standard)
+                    {
+                        if (writing) { standard.Write(new ReadOnlySpan<byte>(buffer, length)); return length; }
+                        return standard.Read(new Span<byte>(buffer, length));
+                    }
                     if (writing) return length;
                     if (descriptor.Device == 1) return 0;
                     RandomNumberGenerator.Fill(new Span<byte>(buffer, length)); return length;
@@ -124,7 +129,7 @@ public sealed unsafe partial class PosixContext
             if (descriptor.Closed) { SetError(9); return -1; }
             try
             {
-                *destination = descriptor.Device == 0 ? PosixPlatform.Fstat(descriptor.Handle, descriptor.Path) : new PosixStat { st_mode = 0x2000 | 438, st_nlink = 1, st_blksize = 4096 };
+                *destination = (descriptor.Device == 0 || descriptor.NativeStandard) ? PosixPlatform.Fstat(descriptor.Handle, descriptor.Path) : new PosixStat { st_mode = 0x2000 | 438, st_nlink = 1, st_blksize = 4096 };
                 return 0;
             }
             catch (Exception error) when (PlatformFailure(error)) { return Fail(error); }

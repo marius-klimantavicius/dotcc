@@ -27,16 +27,17 @@ def generated_source(source):
 
 
 RUNTIME_DEPENDENCIES = {
-    "PosixContext": ("PosixTypes", "PosixFiles", "PosixPlatform", "PosixLocks", "PosixOfdLocks", "PosixWindowsLocks", "PosixMappings", "PosixTime", "PosixVariadic"),
+    "PosixContext": ("PosixTypes", "PosixFiles", "PosixPlatform", "PosixLocks", "PosixOfdLocks", "PosixWindowsLocks", "PosixMappings", "PosixTime", "PosixVariadic", "PosixStreams", "PosixDirectories", "PosixResources", "LibcFileDescriptors"),
     "PosixTypes": (), "PosixFiles": (), "PosixPlatform": (), "PosixLocks": (),
     "PosixMappings": (), "PosixTime": (), "PosixVariadic": ("VaArg",),
-    "PosixOfdLocks": (), "PosixWindowsLocks": (),
+    "PosixOfdLocks": (), "PosixWindowsLocks": (), "PosixStreams": (), "PosixDirectories": (), "PosixResources": (),
+    "LibcFileDescriptors": (), "LibcFilesDescriptors": (),
     "LibcTimezone": ("LibcTimezoneData",), "LibcTimezoneData": (),
     "NonlocalJump": ("Vla",), "Coroutine": (),
     "ExtendedFloat": ("Float128", "LibcFloat"),
     "Float128": ("Float128Conversions",), "Float128Conversions": ("Float80",),
     "Float80": (), "LibcContext": (), "AtomicOps": (), "VaList": (), "VaArg": (), "VaPack": ("VaArg", "VaList"),
-    "LibcFiles": ("LibcAppend", "LibcPaths", "LibcFilesWide", "LibcFilesManagement"), "LibcFilesManagement": (), "LibcFilesWide": (), "LibcAppend": (), "LibcPaths": (),
+    "LibcFiles": ("LibcAppend", "LibcPaths", "LibcFilesWide", "LibcFilesManagement", "LibcFileDescriptors", "LibcFilesDescriptors"), "LibcFilesManagement": (), "LibcFilesWide": (), "LibcAppend": (), "LibcPaths": (),
     "LibcFilesFormat": ("LibcFiles", "VaList"),
     "LibcFilesScan": ("LibcFiles", "VaList"),
     "LibcSignals": (), "LibcFilesSignalAssert": ("LibcFilesAssert",),

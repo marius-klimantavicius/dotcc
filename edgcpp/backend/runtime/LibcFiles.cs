@@ -19,6 +19,7 @@ public sealed unsafe partial class LibcFiles : IDisposable
     // appropriate here. FILE tokens and short-lived I/O buffers use NativeMemory.
     private readonly nint[] standard = GC.AllocateArray<nint>(3, pinned: true);
     private readonly string workingDirectory;
+    private readonly ILibcFileDescriptors? fileDescriptors;
     private readonly Func<ulong> getEncoding;
     private bool disposed;
     private static readonly UTF8Encoding Utf8 = new(false, true);
@@ -42,20 +43,23 @@ public sealed unsafe partial class LibcFiles : IDisposable
     }
 
     public LibcFiles(Action<int> setErrno, Stream? input = null, Stream? output = null, Stream? error = null,
-        string? workingDirectory = null, Func<ulong>? getEncoding = null)
+        string? workingDirectory = null, Func<ulong>? getEncoding = null, ILibcFileDescriptors? fileDescriptors = null)
     {
         this.setErrno = setErrno;
+        this.fileDescriptors = fileDescriptors;
         this.getEncoding = getEncoding ?? (() => 1UL);
         this.workingDirectory = Path.GetFullPath(workingDirectory ?? Directory.GetCurrentDirectory());
         try
         {
-            standard[0] = (nint)Add(new Entry(input ?? Console.OpenStandardInput(), true, false, false, false));
-            standard[1] = (nint)Add(new Entry(output ?? Console.OpenStandardOutput(), false, true, false, false,
+            standard[0] = (nint)Add(new Entry(Standard(input ?? Console.OpenStandardInput(), 0, input is null && !Console.IsInputRedirected, input is null), true, false, false, fileDescriptors is not null));
+            standard[1] = (nint)Add(new Entry(Standard(output ?? Console.OpenStandardOutput(), 1, output is null && !Console.IsOutputRedirected, output is null), false, true, false, fileDescriptors is not null,
                 output is null && !Console.IsOutputRedirected ? 1 : 0));
-            standard[2] = (nint)Add(new Entry(error ?? Console.OpenStandardError(), false, true, false, false, 2));
+            standard[2] = (nint)Add(new Entry(Standard(error ?? Console.OpenStandardError(), 2, error is null && !Console.IsErrorRedirected, error is null), false, true, false, fileDescriptors is not null, 2));
         }
         catch { Dispose(); throw; }
     }
+
+    private Stream Standard(Stream stream, int fd, bool terminal, bool native) => fileDescriptors?.Standard(stream, fd, terminal, native) ?? stream;
 
     public void** StdinLocation { get { fixed (nint* p = standard) return (void**)p; } }
     public void** StdoutLocation { get { fixed (nint* p = standard) return (void**)(p + 1); } }
@@ -92,10 +96,11 @@ public sealed unsafe partial class LibcFiles : IDisposable
         if (entry is not null) { entry.Error = true; entry.FailureEpoch = unchecked(entry.FailureEpoch + 1); }
         setErrno(error); return Eof;
     }
-    public string WorkingDirectory => workingDirectory;
+    public string WorkingDirectory => fileDescriptors?.ResolvePath(".") ?? workingDirectory;
 
     private static int ErrorNumber(Exception error) => error switch
     {
+        LibcDescriptorException descriptor => descriptor.ErrorNumber,
         FileNotFoundException or DirectoryNotFoundException => 2,
         UnauthorizedAccessException => 13,
         PathTooLongException => 36,
@@ -145,7 +150,7 @@ public sealed unsafe partial class LibcFiles : IDisposable
 
     private Entry? OpenEntry(sbyte* path, sbyte* mode)
     {
-        FileStream? stream = null;
+        Stream? stream = null;
         try
         {
             string spelling = Decode(mode);
@@ -161,8 +166,8 @@ public sealed unsafe partial class LibcFiles : IDisposable
             bool read = spelling[0] == 'r' || update, write = spelling[0] != 'r' || update, append = spelling[0] == 'a';
             string decoded = Decode(path);
             if (decoded.Length == 0) { setErrno(2); return null; }
-            string filename = Path.GetFullPath(decoded, workingDirectory);
-            stream = append ? LibcAppend.Open(filename, read) : new FileStream(filename, new FileStreamOptions
+            string filename = fileDescriptors?.ResolvePath(decoded) ?? Path.GetFullPath(decoded, workingDirectory);
+            stream = fileDescriptors is not null ? fileDescriptors.Open(filename, spelling) : append ? LibcAppend.Open(filename, read) : new FileStream(filename, new FileStreamOptions
             {
                 Mode = spelling[0] == 'r' ? FileMode.Open : spelling[0] == 'w' ?
                     (exclusive ? FileMode.CreateNew : FileMode.Create) : FileMode.OpenOrCreate,
@@ -189,7 +194,7 @@ public sealed unsafe partial class LibcFiles : IDisposable
             {
                 int count = (int)Math.Min((ulong)(entry.Used - written), int.MaxValue);
                 var bytes = new ReadOnlySpan<byte>(entry.Buffer + written, count);
-                if (entry.Append) LibcAppend.Write((FileStream)entry.Stream, bytes);
+                if (entry.Append && entry.Stream is FileStream fileStream) LibcAppend.Write(fileStream, bytes);
                 else entry.Stream.Write(bytes);
                 written += (uint)count;
             }
@@ -226,7 +231,7 @@ public sealed unsafe partial class LibcFiles : IDisposable
     {
         string decoded = Decode(path);
         if (decoded.Length == 0) throw new FileNotFoundException("Empty filename.");
-        return Path.GetFullPath(decoded, workingDirectory);
+        return fileDescriptors?.ResolvePath(decoded) ?? Path.GetFullPath(decoded, workingDirectory);
     }
     public int Remove(sbyte* path)
     {
@@ -330,7 +335,7 @@ public sealed unsafe partial class LibcFiles : IDisposable
                 {
                     int length = (int)Math.Min(total - accepted, int.MaxValue);
                     var bytes = new ReadOnlySpan<byte>(input + accepted, length);
-                    if (entry.Append) LibcAppend.Write((FileStream)entry.Stream, bytes);
+                    if (entry.Append && entry.Stream is FileStream fileStream) LibcAppend.Write(fileStream, bytes);
                     else entry.Stream.Write(bytes);
                     accepted += (uint)length;
                 }
