@@ -41,6 +41,11 @@
       "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/edg-self-libcxx-011/results.json",
       "sha256": "f381eec9ffae7d44bb8fa75ef171c794b318ee171d0fc942b65832098798a0ad",
       "status": "passed"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-sqlite-neededflags-001/results.json",
+      "sha256": "a6474ae387b13a6724b70b6521c8bc54358f30d798b2429fb1ce1de991a504bc",
+      "status": "passed"
     }
   ],
   "sources": {

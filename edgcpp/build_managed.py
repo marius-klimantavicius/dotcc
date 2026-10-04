@@ -4,6 +4,7 @@
 The RSS limit is a process-tree safety bound, not an assertion about total host
 memory. The managed GC heap cap is lower so compilation can fail diagnostically
 before exhausting that bound. Logs and sampled measurements are always retained.
+To cancel a running build, create OUTPUT_DIR/cancel.txt containing the reason.
 """
 import argparse
 import datetime
@@ -88,7 +89,10 @@ def main():
                 elapsed = time.monotonic() - started
                 samples.write(json.dumps({'seconds': round(elapsed, 3), 'rssBytes': rss, 'processes': tree})+'\n')
                 samples.flush()
-                if rss > report['rssLimitBytes']:
+                cancellation = out/'cancel.txt'
+                if cancellation.exists():
+                    reason = 'cancelled: ' + cancellation.read_text().strip()
+                elif rss > report['rssLimitBytes']:
                     reason = 'rss-limit'
                 elif elapsed > args.timeout:
                     reason = 'timeout'

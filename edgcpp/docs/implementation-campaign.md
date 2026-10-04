@@ -1185,3 +1185,22 @@ C-backend oracles, static/instance JIT/NativeAOT reductions, large initializer
 regressions and the minimal libc++ provider all pass with the rebuilt compiler.
 Full compiler regeneration and execution remain the next acceptance step.
 [Evidence](../evidence/self-emitter-reachability-20261004.json).
+
+### Explicit portable EDG host configuration (2026-10-04)
+
+Full self emission `edg-self-runtime-005` has no unresolved externs and builds
+with zero warnings/errors in 397 seconds at 17.84 GiB measured RSS. Its 57,802
+owner methods fit the CLR limit, and `--version` runs successfully. Parsing then
+exposed EDG's host-alignment guard: absent native CPU macros had selected the
+four-byte pointer default despite the portable eight-byte representation.
+
+The self profile now sets six audited EDG configuration facts explicitly,
+preserving the original x86-64 output target without implying a native host OS.
+Comparing all configuration dumps found only these corrections, the intentional
+mmap/PCH fallback settings, and an equivalent integer expression. Real EDG
+headers reproduce the old failure and pass pointer/prefix/constant layouts,
+binary80/binary128 storage and Half arithmetic under JIT/NativeAOT with the new
+profile. Full regeneration is required before claiming parser acceptance.
+The 18-case execution runner includes half/bfloat frontend coverage; both
+versions of the failing full output and all logs remain retained.
+[Evidence](../evidence/self-host-profile-20261004.json).

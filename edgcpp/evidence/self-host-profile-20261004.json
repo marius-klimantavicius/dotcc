@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-04",
+  "scope": "Explicit portable EDG self-host configuration; full parser execution remains a separate acceptance step",
+  "failure": "self-execution-jit-001/results.json",
+  "workingVersion": "edg-self-runtime-005/version-results.json",
+  "build": "edg-self-runtime-005/build-diagnostic/results.json",
+  "configurationAudit": "self-config-audit-001/audit.json",
+  "sources": {
+    "edgcpp/backend/self/profile.py": "a2271a26911ec79090a7eb8a9b8d1f99206070f6c1ab9a5460e9d47f44c57882",
+    "edgcpp/translate_self.py": "8aba2d6d1650978f1f812398ef8f690c1f755d90f0491c4b88f98f5d55867f9c",
+    "edgcpp/backend/tests/self_profile_alignment.cpp": "40dc1124d6ad399a2cbedbbe06a808490ed411fbbaf6499c189c102df895db68",
+    "edgcpp/backend/tests/self_profile_alignment_verify.py": "b224ab911b75dc73baccde05e7a9918e59931be7ca46b0d63dca82d5af2f9cf4"
+  },
+  "verification": [
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-config-audit-001/audit.json",
+      "sha256": "ab8732ddb9fdb909828981d6be47ed563f64adb8ed1f9190f6260b33492eb11f"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-profile-alignment-003/results.json",
+      "sha256": "3f0d359ce41a30478e6086db02c5201a5b93edb158d5bff9a68461b95bcc34f2"
+    },
+    {
+      "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/self-execution-floating-native-001/results.json",
+      "sha256": "fa5b219e44ab6c45ae90059b8af1a03aa2eb76277c8403c987e41e9930b76b39"
+    }
+  ]
+}

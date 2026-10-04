@@ -6,23 +6,21 @@ for EDG self-translation, not a complete POSIX implementation or a replacement
 for public musl headers. All types use the portable LP64 translation profile.
 None of the records may be passed directly to native OS functions.
 
-The overlay supplies no implementations. With partial external contracts
-enabled, unresolved functions remain required partial methods. They must not
-be described as working libc services merely because translation succeeds.
+The overlay supplies declarations. The musl self profile now searches the
+shared POSIX headers first and uses the common `Edg.Runtime` implementations
+for file metadata, descriptor/stdio ownership, temporary files, cwd, directories,
+resource limits and mappings. See [the POSIX/stdio contract](../../docs/posix-stdio.md).
+The old private `sys/stat.h` declaration is not the shared POSIX ABI. Unbound
+externs are rejected by default; explicitly requesting partial contracts does
+not implement those contracts.
 
-The host adapter still needs to supply:
-
-- File metadata (`stat`, `fstat`), descriptor/stream bridging (`fileno`,
-  `fdopen`), secure temporary creation (`mkstemp`), unlinking, current-directory
-  operations, process ID and terminal detection.
-- Directory enumeration (`opendir`, `readdir`, `closedir`). `DIR` is opaque;
-  the adapter owns the returned `dirent` storage and must reject names that
-  cannot fit its 4096-byte UTF-8 buffer rather than truncate them.
-- CPU resource limits (`getrlimit`, `setrlimit`). These need actual platform
-  support or honest error returns, not successful no-op implementations.
-- Read-only private file mappings (`mmap`, `munmap`) for portable C++/CLI
-  assembly metadata. A provider must track ownership and honor offset/length
-  and lifetime semantics.
+`profile.py` records the translated host's pointer and IL-prefix alignment,
+half-precision support, multibyte buffer bound and EDG's original x86-64 output
+target. These are explicit EDG configuration definitions, not fabricated
+`__linux__` or `__x86_64__` macros. The managed compiler can execute on another
+supported runtime platform while retaining that output target. The real-header
+`self_profile_alignment_verify.py` test checks the same layouts as EDG startup,
+plus binary80/binary128 storage and Half arithmetic under JIT and NativeAOT.
 
 `quadmath.h` declares binary128 parsing and formatting (`strtoflt128`,
 `quadmath_snprintf`) without copying libquadmath code or native headers. The
@@ -38,7 +36,7 @@ this explicit unresolved boundary without pretending to implement it.
 Use EDG's supported `USE_MMAP_FOR_MEMORY_REGIONS=0` configuration to select
 its allocation/read fallback for compiler memory and module storage. This
 does not disable C++ modules. Keep `READ_CPPCLI_PORTABLE_ASSEMBLIES=1`; its
-separate metadata mapping calls remain explicit unresolved contracts.
+separate metadata mapping calls use the shared POSIX provider.
 
 The `stat` record contains only the fields consumed by this EDG configuration.
 In particular, device/inode values require real file identity semantics for
@@ -60,4 +58,5 @@ and does not alter EDG or libc++ sources.
 The original compiler sources require `<new>`, but do not use the C++ standard
 container/iostream headers. Their own utility templates are defined in EDG
 sources. C++ runtime/library declarations and any remaining required bodies
-are separate from this host-service overlay.
+are supplied by the minimal [libc++ implementation provider](libcxx.md),
+separately from this host declaration overlay.
