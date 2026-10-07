@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "status": "isolated-runner-preprocessing-and-native-reporting-profile-reviewed",
+  "canonicalProfileSelected": false,
+  "translatedRunnerSemanticallyCompiled": false,
+  "translatedRunnerExecuted": false,
+  "evidence": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-composition-prototype-005/results.json",
+      "sha256": "15eec10b163766751a185f8c9d0f240ec96582ce7875459c1dc98750ca70bf93"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-composition-prototype-005/summary.json",
+      "sha256": "04ddfb0b33271a505a1b91c4b13e44581178958e9b322ee6de7cca5611a0d723"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-termcolor-stage-001/stage-delta.json",
+      "sha256": "eebfa16910c9754a2cafff4d3c3fe6e943684221d3b4a3d0d600f988100beaa4"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-pp005-independent-review-001/review.json",
+      "sha256": "00e06c733cd95a28bf8b1b1a3f89cc687642e450c8af41e38159d62c6a137d5a"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-catch-managed-profile-native-002/acceptance.json",
+      "sha256": "37b365288ad665e2a45c283c943b334848f53daaeecedd866fed5795be6bb845"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-catch-managed-profile-native-002/results.json",
+      "sha256": "343c62be319d56d4bf841dff62f7f8cb694ef4c8e24c0991255f06336880d6d9"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-catch-managed-profile-independent-review-001/review.json",
+      "sha256": "6a86a2e8132c5fd7b01d0b77110c172988cc04445d35483c0ab9239d7c848057"
+    }
+  ],
+  "preprocessing": {
+    "inputsPassed": 67,
+    "upstreamWrappers": 26,
+    "standaloneInputs": 41,
+    "testSourceIdentitiesExactlyOnce": 148,
+    "catchConfigurationChanged": false,
+    "stageDelta": "Only test/sqlite/termcolor.hpp differs from prior staged source; every other file and symlink is preserved.",
+    "oldLibraryInputs": 129,
+    "oldLibraryMergeEligible": false,
+    "scope": "Old library inputs remain reference-only under different stage/header fingerprints. Complete program inputs require uniform fresh preprocessing before any merge claim."
+  },
+  "nativeReportingProfile": {
+    "definitions": [
+      "CATCH_CONFIG_NO_POSIX_SIGNALS",
+      "CATCH_CONFIG_NO_WINDOWS_SEH"
+    ],
+    "rebuiltTestTUs": 1,
+    "retainedTestObjects": 147,
+    "orderedTestRegistrationsIdentical": 5486,
+    "selectedCasesPassed": 5,
+    "assertionsEach": 797,
+    "skips": 0,
+    "expectedFailures": 0,
+    "scope": "Separate native configuration changes fatal-signal/SEH reporting only. Native paths/clock differ from portable epoch0. This does not establish fatal-handling equivalence, fork support, managed execution or Windows behavior."
+  },
+  "remaining": [
+    "Full library merge currently fails unchanged EDG correspondence validation; no usable checkpoint exists.",
+    "Fork, native-demo loading and fatal-signal policy/linkage are separate unresolved requirements; no test bodies were removed or placeholder services supplied.",
+    "Managed raw PTY output and interactive Windows VT remain explicitly unaccepted."
+  ]
+}

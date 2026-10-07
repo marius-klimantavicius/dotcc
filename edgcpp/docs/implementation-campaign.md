@@ -2130,3 +2130,16 @@ source/configuration reduction and original-C-backend comparison; EDG semantic
 changes or suppressing this assertion are excluded. Queued source/runtime
 bundles remain isolated while reproduction scheduling is established.
 [Full007 diagnostic evidence](../evidence/duckdb-checkpoint007-diagnostic-20261008.json).
+
+
+Isolated runner preprocessing005 now passes all 67 inputs (26 original
+wrappers and 41 standalone inputs), covering all 148 test source identities
+exactly once. Independent review verifies the sole termcolor header delta and
+all dependency/clock/compiler/source receipts. Catch configuration is unchanged
+in this preprocessing result. Old 129 library inputs remain reference-only and
+nonmergeable under the new stage/header fingerprint; no semantic or execution
+claim is made. Separately, a native Catch reporting profile disabling POSIX
+signal and Windows SEH handlers preserves all 5,486 ordered registrations and
+five selected cases with 797 assertions each. It is not canonically selected
+and does not resolve fork or native-demo loading.
+[Runner prerequisite evidence](../evidence/duckdb-runner-preprocessing-20261008.json).
