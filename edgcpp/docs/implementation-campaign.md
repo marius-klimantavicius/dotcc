@@ -1269,3 +1269,14 @@ without normalization and establishes native repeatability before comparing
 the translated compiler. Full generated-compiler build and execution remain
 pending at this emission milestone.
 [Translation evidence](../evidence/self-dot-translation-20261007.json).
+
+Three full native emissions are byte-identical (SHA-256
+`215ac18729872a0c3bc279aa13b5cc54f6f8e91e3f7d0793cc3cadc32e125c85`).
+The first C# build exposes 40 CS7013 diagnostics for oversized expanded template
+names. Names over 900 encoded bytes now retain a readable prefix/suffix and a
+stable full-spelling hash; the collision allocator and full source maps remain
+in use. Ordinary names are unchanged. Nine focused checks pass, including a
+native oracle, deliberate compact-name collisions, static/instance JIT and
+NativeAOT, and exact raw repeatability. The full compiler is being regenerated;
+its large owner's method-count limit is handled separately in packaging.
+[Name-limit evidence](../evidence/source-name-limits-20261007.json).

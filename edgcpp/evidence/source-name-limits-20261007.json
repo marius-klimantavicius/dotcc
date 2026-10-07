@@ -1,0 +1,212 @@
+{
+  "checks": [
+    "Native C++14 execution of nested templates and distinct colliding source functions",
+    "static: bounded expanded template names; distinct near-identical names and intentional hash-spelling collision; full original source and scope mapping",
+    "static: repeated raw output byte-identical",
+    "static: JIT direct original API and all collision paths execute correctly",
+    "static: NativeAOT direct original API",
+    "instance: bounded expanded template names; distinct near-identical names and intentional hash-spelling collision; full original source and scope mapping",
+    "instance: repeated raw output byte-identical",
+    "instance: JIT direct original API and all collision paths execute correctly",
+    "instance: NativeAOT direct original API"
+  ],
+  "commands": [
+    {
+      "command": [
+        "g++",
+        "-std=c++14",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/name-limits.cpp",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/native"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/native"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/dotnet.py",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/name-limits.cpp",
+        "--compiler",
+        "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-001/cpfe-dot",
+        "--std",
+        "c++14",
+        "--emit",
+        "managedlib",
+        "--namespace",
+        "Names.Limits",
+        "--class-name",
+        "Core",
+        "--output-dir",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/static",
+        "--raw-output",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/static.raw.cs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/dotnet.py",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/name-limits.cpp",
+        "--compiler",
+        "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-001/cpfe-dot",
+        "--std",
+        "c++14",
+        "--emit",
+        "managedlib",
+        "--namespace",
+        "Names.Limits",
+        "--class-name",
+        "Core",
+        "--output-dir",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/static-repeat",
+        "--raw-output",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/static-repeat.raw.cs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/static/host/Host.csproj",
+        "-c",
+        "Release",
+        "--nologo",
+        "-p:TreatWarningsAsErrors=true"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/static/host/bin/Release/net10.0/Host.dll"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/static/host/Host.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "-p:PublishAot=true",
+        "-p:IlcTreatWarningsAsErrors=true",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/static/host/aot"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/static/host/aot/Host"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/dotnet.py",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/name-limits.cpp",
+        "--compiler",
+        "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-001/cpfe-dot",
+        "--std",
+        "c++14",
+        "--emit",
+        "managedlib",
+        "--namespace",
+        "Names.Limits",
+        "--class-name",
+        "Core",
+        "--output-dir",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/instance",
+        "--raw-output",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/instance.raw.cs",
+        "--instance-methods",
+        "--no-nest-types"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/dotnet.py",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/name-limits.cpp",
+        "--compiler",
+        "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-001/cpfe-dot",
+        "--std",
+        "c++14",
+        "--emit",
+        "managedlib",
+        "--namespace",
+        "Names.Limits",
+        "--class-name",
+        "Core",
+        "--output-dir",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/instance-repeat",
+        "--raw-output",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/instance-repeat.raw.cs",
+        "--instance-methods",
+        "--no-nest-types"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/instance/host/Host.csproj",
+        "-c",
+        "Release",
+        "--nologo",
+        "-p:TreatWarningsAsErrors=true"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/instance/host/bin/Release/net10.0/Host.dll"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/instance/host/Host.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "-p:PublishAot=true",
+        "-p:IlcTreatWarningsAsErrors=true",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/instance/host/aot"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/instance/host/aot/Host"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "compiler": "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-001/cpfe-dot",
+  "compilerSha256": "43c9563502226699137a31f848b82cba22d8f6e85b9b72c1c582d8c2997bc0a7",
+  "fixtureSha256": "0be1a328af33b9cb2558eb09dff0e6e4444c8d92e5501f909c67de29516e95a1",
+  "passed": true,
+  "scope": "Bound CLR metadata identifiers while retaining full source mappings; regression acceptance",
+  "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/source-name-limits-001/results.json",
+  "artifactSha256": "51ba293c0778de5d72f48b0e71be292c523f1a430ef72b69e544ffbb104cc418"
+}

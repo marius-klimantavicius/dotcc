@@ -39,6 +39,19 @@ string source_escape_identifier(const string &value,const string &kind) {
   static const std::set<string> type_keywords={"var","dynamic","nint","nuint","record","file","required","scoped","unmanaged","notnull"};
   return keywords.count(value)||((kind=="type"||kind=="enum")&&type_keywords.count(value))?"@"+value:value;
 }
+string source_bounded_identifier(const string &identifier) {
+  // Expanded template qualifications can exceed the CLR metadata name limit.
+  // Leave room for owner qualification, accessors and our synthetic adapter
+  // prefixes. Ordinary source names stay unchanged. Hash the complete encoded
+  // spelling, never an address or std::hash (whose algorithm is host-specific).
+  // The source map retains the original spelling and full scope separately.
+  if(identifier.size()<=900)return identifier;
+  unsigned long long hash=14695981039346656037ULL;
+  for(unsigned char byte:identifier){hash^=byte;hash*=1099511628211ULL;}
+  const char *digits="0123456789abcdef";string digest(16,'0');
+  for(unsigned i=0;i<16;++i){digest[15-i]=digits[hash&15];hash>>=4;}
+  return identifier.substr(0,128)+"__h"+digest+"__"+identifier.substr(identifier.size()-48);
+}
 string source_identifier(const string &raw) {
   string result;const char *digits="0123456789abcdef";
   for(unsigned char c:raw) {
@@ -57,7 +70,7 @@ string source_identifier(const string &raw) {
     bool numbered=true;for(size_t i=1;i<result.size();++i)if(result[i]<'0'||result[i]>'9')numbered=false;
     if(numbered)result="source_"+result;
   }
-  return result;
+  return source_bounded_identifier(result);
 }
 string source_spelling(a_source_correspondence *source) {
   if(!source || !source->name)return "";
@@ -182,15 +195,15 @@ void source_register(const void *entity,a_source_correspondence *source,const st
   source_name_reserved[domain].insert(entry.candidate);
 }
 string source_allocate(const string &domain,const string &candidate,const string &kind,bool getter=false,bool setter=false) {
-  auto &used=source_name_used[domain];string result=candidate;
+  auto &used=source_name_used[domain];string result=source_bounded_identifier(candidate);
   auto occupied=[&](const string &identifier) {
     // C# locals may shadow owner members. References qualify only when needed;
     // unrelated owner declarations must not displace a source local name.
     return used.count(identifier) || (getter&&used.count("get_"+identifier)) || (setter&&used.count("set_"+identifier));
   };
   if(occupied(result)) {
-    string base=candidate+"__"+source_identifier(kind);result=base;unsigned suffix=2;
-    while(occupied(result)||source_name_reserved[domain].count(result))result=base+"_"+std::to_string(suffix++);
+    string base=candidate+"__"+source_identifier(kind);result=source_bounded_identifier(base);unsigned suffix=2;
+    while(occupied(result)||source_name_reserved[domain].count(result))result=source_bounded_identifier(base+"_"+std::to_string(suffix++));
   }
   used.insert(result);
   if(getter)used.insert("get_"+result);
