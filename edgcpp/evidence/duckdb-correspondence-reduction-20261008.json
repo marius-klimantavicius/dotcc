@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "status": "reduction-confirmed-diagnostic-full-run-active",
+  "fullFailureEntityIdentified": false,
+  "candidateAdopted": false,
+  "evidence": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-trans-copy-reduction-001/receipt.json",
+      "sha256": "bacf8ffd1805f7f8f82215a62c97a86e694297176df679f25244a267e7a664a4"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-correspondence-canonical-audit-001/review.json",
+      "sha256": "208335e81f2bbf4b59006274a9f302827624d33e0085c79016ba44216034f1d0"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-debug-writer-001/results.json",
+      "sha256": "588499dee518704b521e7eaab5c087dc9cde03cd6d92bfdd224c9caef4d08c8f"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-correspondence-debug-full-001/prepared.json",
+      "sha256": "d46bd75a9ecebef05eabcb69c9c7a74697035f91ebc1efa002bdd6bd627900c1"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-correspondence-debug-full-001/original-input-comparison.json",
+      "sha256": "64bf6cb92786caf539185e9fbd4a1ac9a2e11ab749c61c111004a675cb857a0a"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-integral-value-signature-003/decision.json",
+      "sha256": "6f094cada6c2afdec58ec81590b6d2f56b57e68ff9df965c12c74aececa88e11"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-integral-value-independent-review-001/review.json",
+      "sha256": "6bdd19ba8571263836addcafb1e45bad9071625e1acfbab0afc34690bd2979d5"
+    }
+  ],
+  "smallCase": "Two retained preprocessed inputs reproduce the exact962 assertion under stock C, tools002 writer and supported DEBUG1 writer. Diagnostic identifies integral_constant<size_t,2>::value (primary no definition; secondary definition).",
+  "rejectedGenericAdaptation": "Generic address retention is rejected: overloaded unary& and premature class-valued static initializer instantiation produce valid original/candidate semantic differences. No canonical vendor header changed.",
+  "diagnosticConfiguration": "Isolated uniformly rebuilt DEBUG1 writer uses identical frontend source and explicit max_depth_constexpr_call512 to preserve the original effective limit. It has separate debug representation; normal reader compatibility and project acceptance are not claimed.",
+  "next": "Identify the actual full007 entity using built-in debug diagnostics; test any restricted integral/enum source adaptation independently before considering adoption."
+}

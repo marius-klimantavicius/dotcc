@@ -2143,3 +2143,16 @@ signal and Windows SEH handlers preserves all 5,486 ordered registrations and
 five selected cases with 797 assertions each. It is not canonically selected
 and does not resolve fork or native-demo loading.
 [Runner prerequisite evidence](../evidence/duckdb-runner-preprocessing-20261008.json).
+
+
+An existing two-input case reproduces assertion962 under stock C and both
+normal/diagnostic writers in roughly six seconds. Built-in DEBUG output names
+`integral_constant<size_t, 2>::value`, whose primary entry lacks a definition.
+This does not yet identify the full007 entity. A separate diagnostic full run
+is active at `duckdb-correspondence-debug-full-001`, using unchanged source
+and supported DEBUG=1 with the original constexpr-depth limit preserved. No
+normal-reader compatibility or checkpoint acceptance is claimed. Generic
+header retention candidates were rejected after valid class-valued template
+uses exposed changed overload/initializer behavior. Only a restricted, isolated
+integral/enum candidate is under investigation; canonical inputs remain frozen.
+[Correspondence reduction evidence](../evidence/duckdb-correspondence-reduction-20261008.json).
