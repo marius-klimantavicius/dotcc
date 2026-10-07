@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "corrected-complete-inputs-verified",
+  "executionVerified": false,
+  "preprocessing": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-translate-006/results.json",
+    "sha256": "4c3249cafa0bfdf26b1e3dd0f735d72a23b4c57314d5370f5b1114ceb6f10508"
+  },
+  "coreComposition": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-composition-005/composition.json",
+    "sha256": "1882dc8a2a1e0d742d90054900e1d9ce7e6e47defa4e5fbc4720d3631b313897"
+  },
+  "unityComposition": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-unity-composition-002/composition.json",
+    "sha256": "d4c83f56c367c1fa9056e381a883a272cbcdf662a0497eecf249298d44dd4a13"
+  },
+  "beforeAfterVerification": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-unity-compose-launch-001/results.json",
+    "sha256": "8674ccb613f3328a263dd75bf15b9ea704e8cd98efdd2e8964ebfed9db96f0f7"
+  },
+  "realHeaderReplay": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-real-header-replay-002/results.json",
+    "sha256": "dba7792a8196c70ff5fa94ea8003579938b3d9c72b3733ba3bab9d7204e08980"
+  },
+  "configuredSources": 2207,
+  "finalInputs": 204,
+  "sourceAdaptations": [
+    "Unused private NumericCast struct rename",
+    "Unevaluated LogicalType child-pair copy-assignment signature selection"
+  ],
+  "staticExtensions": [
+    "core_functions",
+    "parquet",
+    "icu",
+    "json",
+    "autocomplete",
+    "tpcds",
+    "tpch"
+  ],
+  "claims": [
+    "Fresh preprocessing passes for all 2207 library TUs with strict unchanged-input provenance.",
+    "All original sources occur exactly once in corrected204 composition.",
+    "Real-header checkpoint emission passes and matches direct016 bytes; its two partial external contracts mean this is not execution evidence.",
+    "Full corrected checkpoint run is separate; this receipt claims neither full lowering nor DuckDB C# execution."
+  ]
+}

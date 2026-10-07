@@ -1750,3 +1750,14 @@ retained separately and is not described as a lowering pass. Earlier frozen
 source trees remain intact; fresh preprocessing uses a newly staged tree.
 
 [Source-adaptation evidence](../evidence/duckdb-correspondence-adaptations-20261007.json).
+
+Fresh preprocessing with both correspondence adaptations passes for every
+selected library TU, with strict unchanged-input verification. The tracked
+unity recipe produces the corrected 204-input composition, preserving exact
+2,207-source coverage and all seven static extensions. The real-header pair
+reduction also writes/replays successfully through our checkpoint tools, with
+raw output identical to direct emission; its partial extern contracts still
+make this emission-only evidence. The full corrected checkpoint attempt is
+recorded separately in `duckdb-complete-checkpoint-001`.
+
+[Corrected-input evidence](../evidence/duckdb-corrected-inputs-20261007.json).
