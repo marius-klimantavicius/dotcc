@@ -1,0 +1,61 @@
+{
+  "milestone": "Cross-namespace C-linkage routine definition resolution",
+  "fullDuckDbTranslated": false,
+  "duckDbExecutionVerified": false,
+  "compilerSha256": "33c8b352a1aa6716703dca9f670705dce727996db06c8013a21894b094f1d16e",
+  "trigger": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-amalgamation-004/translate.stderr",
+    "sha256": "5bb8e599b72ad3e83127a0589f1982747c3db5d61f0d49761b167068f612feea",
+    "diagnostic": "unsupported external call: duckdb_fsst_export in duckdb_fsst_decoder",
+    "definitionPresent": true
+  },
+  "receipts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-routine-linkage-003/results.json",
+      "sha256": "96ea79828d10d4843eeb91215dd7d4268cce1ead075276fca2556464f27a4d09",
+      "passed": true,
+      "checks": [
+        "Native and unchanged EDG C agree on cross-namespace calls, aggregate returns, variadics and function-address identity",
+        "static JIT: native observations match; exact-symbol provider bodies retained and unrelated provider body pruned",
+        "static NativeAOT: native observations match",
+        "instance JIT: native observations match; exact-symbol provider bodies retained and unrelated provider body pruned",
+        "instance NativeAOT: native observations match",
+        "Rejected abi symbol binding",
+        "Rejected ambiguous symbol binding",
+        "Rejected internal symbol binding",
+        "Rejected cpp_namespace symbol binding"
+      ]
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-libcxx-linkage-primary-001/results.json",
+      "sha256": "d585d5b0a31a477f5a3d3ebeab87c50d58fcf7383084655454dc6e0a70a1182a",
+      "passed": true,
+      "checks": [
+        "Real LLVM18 provider + separate musl TUs translated with strict extern rejection; libc++ and C++ consumer share primary TU",
+        "JIT: strings, streams, synchronized threads, regex, random device, vector exceptions, fifteen arithmetic sort instantiations, twenty floating formatting edge cases and short buffers",
+        "NativeAOT: identical native-oracle output and behavior"
+      ]
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-compiler-timing-001/results.json",
+      "sha256": "dff7e4844756ba3311969ba6cd2c64926ae4c1cf72c61e063abf9fc04bc20cc5",
+      "passed": true,
+      "checks": [
+        "Stock --timing accepted and recorded in frontend invocation",
+        "Timing-enabled and ordinary raw C# byte-identical"
+      ]
+    }
+  ],
+  "semantics": [
+    "Match exact lowered external linker symbols, with strict routine-type compatibility",
+    "Canonical calls, variadics and function addresses reference one source definition",
+    "Retain linked definitions during provider pruning and preserve original function names",
+    "Reject ambiguous/incompatible bindings; never infer identity from pretty C++ names",
+    "No EDG frontend or DuckDB source changes"
+  ],
+  "remaining": [
+    "Whole composition merge and C# emission",
+    "Generated library build and upstream JIT/NativeAOT tests"
+  ],
+  "platform": "Linux x64"
+}

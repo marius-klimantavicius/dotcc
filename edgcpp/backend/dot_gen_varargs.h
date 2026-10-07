@@ -37,7 +37,7 @@ string variadic_call(an_expr_node_ptr target,an_expr_node_ptr args) {
   bool direct=target->kind==enk_routine;
   string call;
   if(direct) {
-    auto routine=target->variant.routine.ptr;
+    auto routine=canonical_routine(target->variant.routine.ptr);
     if((routine->function_def_number==NULL_function_def_number || !scope_for_routine_or_null(routine)) &&
        !libc_routine(routine) && !thread_routine(routine) && !process_routine(routine) && !unbound_routine(routine))
       unsupported(("external variadic call: "+string(routine->source_corresp.name?routine->source_corresp.name:"<unnamed>")).c_str());

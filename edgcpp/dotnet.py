@@ -110,6 +110,8 @@ def main():
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--compiler", type=Path, default=ROOT / "build/bin/cpfe-dot",
                         help="use an explicitly selected dot_gen_be compiler (default: current workspace build)")
+    parser.add_argument("--compiler-timing", action="store_true",
+                        help="include stock EDG compilation timings in compiler diagnostics")
     parser.add_argument("--raw-output", type=Path,
                         help="retain successful raw backend C# before packaging (new file required)")
     parser.add_argument("--frontend-invocation", type=Path,
@@ -241,6 +243,8 @@ def main():
         runtime_options = ["-I", str(ROOT / "backend/runtime/posix/include"), *runtime_options]
     frontend_options = [flag for path in args.include for flag in ("-I", str(path.resolve()))]
     frontend_options += ["-D"+definition for definition in args.define]
+    if args.compiler_timing:
+        frontend_options += ["--timing"]
     if args.ms_extensions:
         frontend_options += ["--ms_extensions"]
     if args.language == "c++":

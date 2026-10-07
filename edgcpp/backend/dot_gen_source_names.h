@@ -337,7 +337,7 @@ void initialize_source_names(a_scope_ptr scope) {
     }
   }
   for(auto r=scope->routines;r;r=r->next) {
-    if(!routine_needed(r))continue;
+    if(!routine_needed(r) || canonical_routine(r)!=r)continue;
     string spelling=source_routine_spelling(r);
     if(spelling.empty())continue;
     if(source_export_names.count(r)) {
@@ -398,6 +398,7 @@ string source_owner_reference(const string &identifier,bool force_qualified=fals
   return (instance_mode?"this.":source_qualified_owner()+".")+identifier;
 }
 string source_routine_reference(a_routine_ptr routine,bool force_qualified=false) {
+  routine=canonical_routine(routine);
   return source_owner_reference(name(routine,"f"),force_qualified);
 }
 string source_type_reference(a_type_ptr source_type,bool force_qualified=false) {

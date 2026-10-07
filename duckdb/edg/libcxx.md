@@ -169,3 +169,24 @@ The broader primary-provider regression also passes with the stream storage
 overlay under native/JIT/NativeAOT (`duckdb-libcxx-asm-primary-001/results.json`),
 including arithmetic sort instantiations, floating formatting, string/stream
 operations, regex, synchronized threads, random-device access and exceptions.
+
+
+The first strict whole-core emission (`duckdb-amalgamation-004/`) reached our
+backend and rejected a call to `duckdb_fsst_export`, whose definition was
+already present. Its public declaration has C linkage in global scope; its
+implementation has the same C linkage inside `namespace libfsst`. The stock C
+backend emits the same linker symbol for both IL routines. The C# backend now
+resolves exact lowered external symbols to source definitions, with strict
+routine-type agreement and shared function-address identity; it also retains
+these edges during provider pruning. This is a backend association change,
+not a change to the DuckDB source or EDG frontend. The focused
+`edgcpp/backend/tests/routine_linkage_verify.py` covers the reduced shape,
+aggregate returns, variadics, identity and invalid binding rejection. Full
+composition acceptance still requires the next translation and project tests.
+
+The final linkage matrix passes native, unchanged EDG C, static/instance JIT
+and NativeAOT in `duckdb-routine-linkage-003/results.json`, including provider
+pruning and rejection of ABI mismatch, ambiguous definitions, internal-linkage
+substitution and unrelated C++ namespace names. The broader provider regression
+also passes native/JIT/NativeAOT in
+`duckdb-libcxx-linkage-primary-001/results.json`.

@@ -1667,3 +1667,20 @@ needed to match PCG's parsed constants. The helper is unused in pinned DuckDB;
 the existing native behavioral baseline retains its original clock provenance.
 
 [Complete composition evidence](../evidence/duckdb-composition-20261007.json).
+
+The first whole-core emission reached the C# backend after full template
+instantiation and lowering, then rejected `duckdb_fsst_export` despite its
+definition being present. A reduced case reproduced the difference from the
+stock C backend: separate namespace declarations with C linkage share one
+linker identity. Our backend now associates exact external symbols with their
+source definitions, checks routine-type compatibility, and uses the canonical
+definition for calls and function pointers. Pruning retains the linked body,
+and redundant declarations do not consume its original managed name.
+
+Native, stock-C, static/instance JIT/AOT linkage checks pass, including aggregate
+returns, variadics, pointer identity and invalid-binding rejection. The broader
+libc++ provider regression also passes. The driver can record stock compiler
+timing diagnostics; enabling them produces identical raw C# in its smoke check.
+Full DuckDB composition and execution still require the next attempt.
+
+[Routine-linkage evidence](../evidence/duckdb-routine-linkage-20261007.json).

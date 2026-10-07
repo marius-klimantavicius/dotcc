@@ -51,6 +51,8 @@ a_boolean provider_walk_stop(char *entry,an_il_entry_kind kind) {
   if(kind==iek_routine) {
     auto routine=(a_routine_ptr)entry;
     provider_live_routines.insert(routine);
+    auto definition=canonical_routine(routine);
+    if(definition!=routine)provider_queue((char*)definition,iek_routine);
     // GNU builtins can bind to a translated libc definition only during C#
     // emission (libc_builtin_definition), so that edge is absent from EDG IL.
     string builtin=libc_enabled?libc_builtin_symbol(routine):"";

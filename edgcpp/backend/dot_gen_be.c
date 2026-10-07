@@ -17,6 +17,7 @@
 #include "lower_eh.h"
 #include "decls.h"
 #include "exprutil.h"
+#include "types.h"
 USING_NAMESPACE_EDG
 #include "../util/decode.h"
 
@@ -39,6 +40,8 @@ bool emitting_tls_initializer = false;
 std::map<string, string> assignment_helpers;
 string helper_output, type_output, address_output, literal_bytes;
 std::map<a_routine_ptr, string> routine_addresses;
+std::set<a_routine_ptr> linked_routine_definitions;
+a_routine_ptr canonical_routine(a_routine_ptr routine);
 std::map<string, unsigned long long> literal_offsets;
 string routine_address(a_routine_ptr r);
 string function_pointer_type(a_type_ptr t);
@@ -135,15 +138,16 @@ bool variable_needed(a_variable_ptr v) {
   return magic || entity_needed(&source) || coroutine_required(v);
 }
 bool routine_needed(a_routine_ptr r) {
-  return provider_entity_kept(r) && !ignore_routine_in_back_end(r) && (entity_needed(&r->source_corresp) || coroutine_required(r));
+  return provider_entity_kept(r) && !ignore_routine_in_back_end(r) && (entity_needed(&r->source_corresp) || coroutine_required(r) || linked_routine_definitions.count(r));
 }
 bool routine_body_needed(a_routine_ptr r) {
   return routine_needed(r) && r->function_def_number!=NULL_function_def_number
 #if MAINTAIN_NEEDED_FLAGS
-    && (r->definition_needed || coroutine_required(r))
+    && (r->definition_needed || coroutine_required(r) || linked_routine_definitions.count(r))
 #endif
     ;
 }
+#include "dot_gen_routine_symbols.h"
 bool selected_runtime_branch(a_statement_ptr s,a_statement_ptr &branch);
 #include "dot_gen_members.h"
 string source_entity_name(const void*,const char*);
@@ -336,6 +340,7 @@ string function_pointer_type(a_type_ptr t) {
 #include "dot_gen_process.h"
 #include "dot_gen_unbound.h"
 string routine_address(a_routine_ptr r) {
+  r=canonical_routine(r);
   bool pure=r->compiler_generated && r->source_corresp.name && string(r->source_corresp.name)=="__cxa_pure_virtual";
   if (r->function_def_number == NULL_function_def_number && !pure && !libc_routine(r) && !thread_routine(r) && !process_routine(r) && !unbound_routine(r)) unsupported(("address of external function: "+string(r->source_corresp.name?r->source_corresp.name:"<unnamed>")).c_str());
   r=libc_address_routine(r);
@@ -844,7 +849,7 @@ string location(an_expr_node_ptr e) {
     if(!packed.empty())return packed;
     string call;
     if (a->kind == enk_routine) {
-      auto r = a->variant.routine.ptr;
+      auto r = canonical_routine(a->variant.routine.ptr);
       string source=r->source_corresp.name?r->source_corresp.name:"";
       string vla=vla_call(r,b);
       if(!vla.empty())return vla;
@@ -1631,6 +1636,7 @@ void back_end(void) {
   diagnostic_position={};
   names.clear(); global_offsets.clear(); tls_offsets.clear(); assignment_helpers.clear();
   reset_variable_aliases();
+  reset_routine_symbols();
   emitting_tls_initializer = false;
   helper_output.clear(); type_output.clear(); aggregate_types.clear(); aggregate_constants.clear();
   address_output.clear(); routine_addresses.clear(); literal_bytes.clear(); literal_offsets.clear();
@@ -1666,6 +1672,7 @@ void back_end(void) {
   reset_provider_pruning();
   collect_coroutine_requirements(scope);
   index_variable_symbols(scope->variables);
+  index_routine_symbols(scope);
   collect_provider_reachability(scope);
   initialize_source_names(scope);
   initialize_unbound_runtime_names(scope);
