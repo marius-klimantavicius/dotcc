@@ -23,6 +23,8 @@ EDG = SEMANTIC.parent
 REPOSITORY = EDG.parent
 SQLITE = REPOSITORY / "sqlite"
 AMALGAMATION = SQLITE / "ref/sqlite-amalgamation-3530400"
+sys.path.insert(0, str(SEMANTIC))
+from sqlite_store import SemanticPackage
 
 
 def write_json(path, value):
@@ -126,6 +128,15 @@ def main():
                 ("export-memory", wrapper, memory)]:
             run(name, [sys.executable, SEMANTIC / "export.py", "--compiler", compiler,
                        "--output", destination, source, "--", *flags], timeout=1800)
+        evidence['packages'] = []
+        for destination in (standalone, memory):
+            with SemanticPackage(destination) as package:
+                evidence['packages'].append({
+                    'directory': str(destination), 'graph': package.graph_path.name,
+                    'graphBytes': package.graph_path.stat().st_size,
+                    'sourceSnapshots': len(package.sources),
+                })
+        record()
         run("build-emitter", ["dotnet", "build", SEMANTIC / "managed/Edg.Semantic.csproj",
                               "-c", "Release", "-o", emitter], timeout=600)
         run("emit-project", ["dotnet", emitter / "Edg.Semantic.dll", "emit-project",

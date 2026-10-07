@@ -11,6 +11,7 @@
 #include "mem_manage.h"
 #include "const_ints.h"
 #include "float_pt.h"
+#include "semantic_sqlite.h"
 USING_NAMESPACE_EDG
 namespace {
 #include "semantic_enum_names.h"
@@ -19,32 +20,34 @@ std::vector<Node> nodes;
 std::map<const void*,unsigned> ids;
 std::set<const void*> visited;
 std::map<const void*,sizeof_t> strings;
-std::vector<std::pair<unsigned,std::string>> diagnostics;
-FILE *out; unsigned current;
+size_t diagnostic_count=0;
+semantic_storage::Database *database=nullptr;
+semantic_storage::JsonBuffer record_buffer;
+semantic_storage::JsonBuffer *out=&record_buffer; unsigned current;
 unsigned id(const void *p) {if(!p)return 0;auto q=ids.find(p);if(q!=ids.end())return q->second;unsigned n=(unsigned)ids.size()+1;ids[p]=n;return n;}
-void bytes(const char *s,size_t n) {fputc('"',out);for(size_t i=0;i<n;++i){unsigned char c=(unsigned char)s[i];if(c=='"'||c=='\\'){fputc('\\',out);fputc(c,out);}else if(c<32||c>=127)fprintf(out,"\\u%04x",c);else fputc(c,out);}fputc('"',out);}
+void bytes(const char *s,size_t n) {out->character('"');for(size_t i=0;i<n;++i){unsigned char c=(unsigned char)s[i];if(c=='"'||c=='\\'){out->character('\\');out->character(c);}else if(c<32||c>=127)out->format("\\u%04x",c);else out->character(c);}out->character('"');}
 void quote(const char *s) {bytes(s?s:"",s?strlen(s):0);}
-void key(const char *s){fputc(',',out);quote(s);fputc(':',out);}
+void key(const char *s){out->character(',');quote(s);out->character(':');}
 void txt(const char*k,const char*v){key(k);quote(v);}
-void num(const char*k,unsigned long long v){key(k);fprintf(out,"%llu",v);}
-void signednum(const char*k,long long v){key(k);fprintf(out,"%lld",v);}
-void boolean(const char*k,bool v){key(k);fputs(v?"true":"false",out);}
+void num(const char*k,unsigned long long v){key(k);out->format("%llu",v);}
+void signednum(const char*k,long long v){key(k);out->format("%lld",v);}
+void boolean(const char*k,bool v){key(k);out->text(v?"true":"false");}
 const char *storage_name(a_storage_class value){switch(value){case sc_unspecified:return "sc_unspecified";case sc_extern:return "sc_extern";case sc_static:return "sc_static";case sc_auto:return "sc_auto";case sc_typedef:return "sc_typedef";case sc_register:return "sc_register";case sc_asm:return "sc_asm";default:return "unknown";}}
-void ref(const char*k,const void*p){key(k);fprintf(out,"%u",id(p));}
-void loc_raw(a_seq_number seq,a_column_number column){const char *file=nullptr,*full=nullptr;a_line_number line=0;a_boolean end=FALSE;a_source_file_ptr sf=nullptr;if(seq)sf=conv_seq_to_file_and_line(seq,&file,&full,&line,&end);fprintf(out,"{\"sequence\":%lu,\"column\":%lu,\"line\":%lu,\"source\":%u,\"presumedFile\":",(unsigned long)seq,(unsigned long)column,(unsigned long)line,id(sf));quote(file);txt("physicalFile",full);fputc('}',out);}
-void pos(const char*k,const a_source_position&p){key(k);fputs("{\"expansion\":",out);loc_raw(p.seq,p.column);key("spelling");loc_raw(p.orig_seq,p.orig_column);num("macroContext",(unsigned long long)p.macro_context);fputc('}',out);}
+void ref(const char*k,const void*p){key(k);out->format("%u",id(p));}
+void loc_raw(a_seq_number seq,a_column_number column){const char *file=nullptr,*full=nullptr;a_line_number line=0;a_boolean end=FALSE;a_source_file_ptr sf=nullptr;if(seq)sf=conv_seq_to_file_and_line(seq,&file,&full,&line,&end);out->format("{\"sequence\":%lu,\"column\":%lu,\"line\":%lu,\"source\":%u,\"presumedFile\":",(unsigned long)seq,(unsigned long)column,(unsigned long)line,id(sf));quote(file);txt("physicalFile",full);out->character('}');}
+void pos(const char*k,const a_source_position&p){key(k);out->text("{\"expansion\":");loc_raw(p.seq,p.column);key("spelling");loc_raw(p.orig_seq,p.orig_column);num("macroContext",(unsigned long long)p.macro_context);out->character('}');}
 void simplepos(const char*k,const a_simple_source_position&p){key(k);loc_raw(p.seq,p.column);}
-void range(const char*k,const a_source_range&r){key(k);fputc('{',out);fputs("\"available\":",out);fputs(r.start.seq?"true":"false",out);pos("start",r.start);pos("end",r.end);fputc('}',out);}
+void range(const char*k,const a_source_range&r){key(k);out->character('{');out->text("\"available\":");out->text(r.start.seq?"true":"false");pos("start",r.start);pos("end",r.end);out->character('}');}
 void source(const a_source_correspondence&s){txt("name",s.name);ref("attributes",s.attributes);pos("location",s.decl_position);ref("parentScope",s.parent_scope);ref("enclosingRoutine",s.enclosing_routine);ref("declarationPositions",s.decl_pos_info);ref("sourceSequence",s.source_sequence_entry);txt("linkage",name_linkage_kind_names[s.name_linkage]);boolean("classMember",s.is_class_member);boolean("parentViaLocalScopeRef",s.parent_via_local_scope_ref);num("access",s.access);}
-void unsupported(const std::string &s){diagnostics.push_back({current,s});txt("coverage","unsupported");}
+void unsupported(const std::string &s){database->diagnostic(current,s);++diagnostic_count;txt("coverage","unsupported");}
 void visit(char*p,an_il_entry_kind k){id(p);if(visited.insert(p).second)nodes.push_back({p,k});}
 void strvisit(char*p,an_il_entry_kind k,sizeof_t n){visit(p,k);strings[p]=n;}
 void tagged(const char*k,const a_tagged_pointer&p){ref(k,p.ptr);}
 char *discover(char*p,an_il_entry_kind k){if(p&&!visited.count(p)){if(is_string_entry_kind(k))strvisit(p,k,strlen(p)+1);else visit(p,k);}return p;}
 bool edge_first;
-char *edge(char*p,an_il_entry_kind k){if(p){if(!edge_first)fputc(',',out);edge_first=false;fprintf(out,"{\"target\":%u,\"kind\":",id(p));quote(il_entry_kind_names[k]);fputc('}',out);}return p;}
-void emit(Node n){current=id(n.ptr);fprintf(out,"{\"id\":%u,\"kind\":",current);quote(il_entry_kind_names[n.kind]);
- auto st=strings.find(n.ptr);if(st!=strings.end()){key("bytesLatin1");bytes(n.ptr,(size_t)st->second);fputc('}',out);return;}
+char *edge(char*p,an_il_entry_kind k){if(p){if(!edge_first)out->character(',');edge_first=false;out->format("{\"target\":%u,\"kind\":",id(p));quote(il_entry_kind_names[k]);out->character('}');}return p;}
+void emit(Node n){current=id(n.ptr);out->format("{\"id\":%u,\"kind\":",current);quote(il_entry_kind_names[n.kind]);
+ auto st=strings.find(n.ptr);if(st!=strings.end()){key("bytesLatin1");bytes(n.ptr,(size_t)st->second);out->character('}');return;}
  switch(n.kind){
  case iek_type:{auto p=(a_type_ptr)n.ptr;source(p->source_corresp);txt("form",name_of(p->kind));ref("next",p->next);num("size",p->size);num("alignment",p->alignment);boolean("explicitAlignment",p->alignment_set_explicitly);boolean("incomplete",p->incomplete);boolean("dependent",p->is_instantiation_dependent);ref("canonicalType",skip_typerefs(p));switch(p->kind){
  case tk_integer:txt("integerKind",name_of(p->variant.integer.int_kind));boolean("signed",int_kind_is_signed[p->variant.integer.int_kind]);boolean("enum",p->variant.integer.enum_type);boolean("bool",p->variant.integer.bool_type);ref("integerInfo",p->variant.integer.extra_info);if(p->variant.integer.enum_type){boolean("scopedEnum",p->variant.integer.is_scoped_enum);if(p->variant.integer.is_scoped_enum)ref("enumScope",p->variant.integer.enum_info.assoc_scope);else ref("enumerators",p->variant.integer.enum_info.constant_list);}break;
@@ -127,8 +130,8 @@ void emit(Node n){current=id(n.ptr);fprintf(out,"{\"id\":%u,\"kind\":",current);
  case iek_block:{auto p=(a_block_ptr)n.ptr;ref("scope",p->assoc_scope);ref("lifetime",p->lifetime);pos("end",p->final_position);break;}
  case iek_label:{auto p=(a_label_ptr)n.ptr;source(p->source_corresp);boolean("break",p->break_label);boolean("continue",p->continue_label);ref("statement",p->exec_stmt);break;}
  case iek_constant:{auto p=(a_constant_ptr)n.ptr;source(p->source_corresp);txt("form",name_of(p->kind));ref("type",p->type);ref("originalType",p->orig_type);ref("backingExpression",p->expr);ref("next",p->next);switch(p->kind){
- case ck_integer:{a_boolean is_signed=int_constant_is_signed(p);a_host_large_integer v=0;a_boolean err=FALSE;conv_integer_value_to_host_large_integer(&p->variant.integer_value,is_signed,&v,&err);if(err)unsupported("Integer constant exceeds 64-bit value adapter");else{key("integerValue");if(is_signed)fprintf(out,"\"%lld\"",(long long)v);else fprintf(out,"\"%llu\"",(unsigned long long)(a_host_large_unsigned)v);}break;}
- case ck_address:ref("subobjectPath",p->variant.address.subobject_path);num("addressKind",p->variant.address.kind);switch(p->variant.address.kind){case abk_routine:ref("routine",p->variant.address.variant.routine);break;case abk_variable:ref("variable",p->variant.address.variant.variable);break;case abk_constant:ref("constant",p->variant.address.variant.constant);break;default:unsupported("Address constant base adapter");break;}key("offset");fprintf(out,"%lld",(long long)p->variant.address.offset);break;
+ case ck_integer:{a_boolean is_signed=int_constant_is_signed(p);a_host_large_integer v=0;a_boolean err=FALSE;conv_integer_value_to_host_large_integer(&p->variant.integer_value,is_signed,&v,&err);if(err)unsupported("Integer constant exceeds 64-bit value adapter");else{key("integerValue");if(is_signed)out->format("\"%lld\"",(long long)v);else out->format("\"%llu\"",(unsigned long long)(a_host_large_unsigned)v);}break;}
+ case ck_address:ref("subobjectPath",p->variant.address.subobject_path);num("addressKind",p->variant.address.kind);switch(p->variant.address.kind){case abk_routine:ref("routine",p->variant.address.variant.routine);break;case abk_variable:ref("variable",p->variant.address.variant.variable);break;case abk_constant:ref("constant",p->variant.address.variant.constant);break;default:unsupported("Address constant base adapter");break;}key("offset");out->format("%lld",(long long)p->variant.address.offset);break;
  case ck_string:key("bytesLatin1");bytes(p->variant.string.value,(size_t)p->variant.string.length);break;
  case ck_float:{auto type=skip_typerefs(p->type);if(type->kind!=tk_float){unsupported("Floating constant with nonfloating type");break;}a_boolean positive_infinity=FALSE,negative_infinity=FALSE,nan=FALSE;auto value=fp_to_string(type->variant.float_kind,&p->variant.float_value,&positive_infinity,&negative_infinity,&nan);txt("floatValue",value.as_temp_characters());boolean("positiveInfinity",positive_infinity);boolean("negativeInfinity",negative_infinity);boolean("notANumber",nan);
 #if USE_HEX_FP_CONSTANTS_IN_GENERATED_CODE
@@ -211,17 +214,20 @@ void emit(Node n){current=id(n.ptr);fprintf(out,"{\"id\":%u,\"kind\":",current);
  case iek_throw_supplement:{auto p=(a_throw_supplement_ptr)n.ptr;ref("type",p->type);ref("initialization",p->dynamic_init);ref("destructor",p->destructor);break;}
  default:unsupported(std::string("Metadata adapter: ")+il_entry_kind_names[n.kind]);break;
  }
- key("nativeEdges");fputc('[',out);edge_first=true;remap_pointers_in_il_entry(n.ptr,n.kind,edge,edge,FALSE);fputs("]}",out);
+ key("nativeEdges");out->character('[');edge_first=true;remap_pointers_in_il_entry(n.ptr,n.kind,edge,edge,FALSE);out->text("]}");
 }
 }
 void back_end(void){
- const char*path=getenv("EDG_SEMANTIC_OUTPUT");if(!path){fprintf(stderr,"EDG_SEMANTIC_OUTPUT must specify graph JSON output\n");exit(2);}out=fopen(path,"wb");if(!out){perror(path);exit(2);}nodes.clear();ids.clear();visited.clear();strings.clear();diagnostics.clear();
+ const char*path=getenv("EDG_SEMANTIC_OUTPUT");if(!path){fprintf(stderr,"EDG_SEMANTIC_OUTPUT must specify normalized SQLite output\n");exit(2);}
+ try {
+ semantic_storage::Database storage(path);database=&storage;nodes.clear();ids.clear();visited.clear();strings.clear();diagnostic_count=0;
  walk_file_scope_il(visit,strvisit,nullptr,nullptr,nullptr,FALSE);
  std::set<a_memory_region_number> regions;
  for(size_t i=0;i<nodes.size();++i)if(nodes[i].kind==iek_routine){auto r=(a_routine_ptr)nodes[i].ptr;if(r->memory_region&&il_header.region_scope_entry[r->memory_region]&&regions.insert(r->memory_region).second)walk_routine_scope_il(r->memory_region,visit,strvisit,nullptr,nullptr,nullptr,FALSE);}
  for(size_t i=0;i<nodes.size();++i)if(!is_string_entry_kind(nodes[i].kind))remap_pointers_in_il_entry(nodes[i].ptr,nodes[i].kind,discover,discover,FALSE);
- fprintf(out,"{\"schema\":\"edg-semantic/1\",\"lowered\":false,\"completeForEmission\":false");txt("producerVersion",il_header.compiler_version);txt("sourceLanguage",il_header.source_language==sl_C?"C":"C++");num("standardVersion",il_header.std_version);ref("mainRoutine",il_header.main_routine);ref("rootScope",il_header.primary_scope);ref("primarySource",il_header.primary_source_file);num("pointerBytes",targ_sizeof_pointer);num("intBytes",targ_sizeof_int);num("longBytes",targ_sizeof_long);num("longDoubleBytes",targ_sizeof_long_double);boolean("littleEndian",targ_little_endian);boolean("plainCharSigned",il_header.plain_chars_are_signed);key("configuration");fprintf(out,"{\"DO_IL_LOWERING\":%d,\"GENERATE_SOURCE_SEQUENCE_LISTS\":%d,\"EXTRA_SOURCE_POSITIONS_IN_IL\":%d,\"ALL_TEMPLATE_INFO_IN_IL\":%d,\"RECORD_MACROS_IN_IL\":%d,\"MACRO_INVOCATION_TREE_IN_IL\":%d,\"RECORD_MACRO_ARGS\":%d,\"DOING_SOURCE_ANALYSIS\":%d}",DO_IL_LOWERING,GENERATE_SOURCE_SEQUENCE_LISTS,EXTRA_SOURCE_POSITIONS_IN_IL,ALL_TEMPLATE_INFO_IN_IL,RECORD_MACROS_IN_IL,MACRO_INVOCATION_TREE_IN_IL,RECORD_MACRO_ARGS,DOING_SOURCE_ANALYSIS);key("nodes");fputc('[',out);
- for(size_t i=0;i<nodes.size();++i){if(i)fputc(',',out);emit(nodes[i]);}fputc(']',out);
- key("macroInvocations");fputc('[',out);bool first=true;for(a_macro_invocation_record_index i=1;i<il_header.num_macro_invocation_records;++i){a_macro_invocation_record_ptr p;set_macro_inv_record_ptr_to_index(il_header.root_macro_invocation_record_block,i,p);if(!p)continue;if(!first)fputc(',',out);first=false;fprintf(out,"{\"index\":%ld,\"parentIndex\":%ld",(long)i,(long)p->parent_macro_index);ref("definition",p->assoc_macro);simplepos("start",p->start);simplepos("end",p->end);txt("arguments",p->arguments);fputc('}',out);}fputc(']',out);
- key("diagnostics");fputc('[',out);for(size_t i=0;i<diagnostics.size();++i){if(i)fputc(',',out);fprintf(out,"{\"node\":%u,\"code\":\"SEM001\",\"message\":",diagnostics[i].first);quote(diagnostics[i].second.c_str());fputc('}',out);}fprintf(out,"]}\n");if(fclose(out)){perror(path);exit(2);}fprintf(stderr,"Semantic graph: %zu nodes, %zu explicitly reported adapter gaps\n",nodes.size(),diagnostics.size());
+ out->clear();out->format("{\"schema\":\"edg-semantic/1\",\"lowered\":false,\"completeForEmission\":false");txt("producerVersion",il_header.compiler_version);txt("sourceLanguage",il_header.source_language==sl_C?"C":"C++");num("standardVersion",il_header.std_version);ref("mainRoutine",il_header.main_routine);ref("rootScope",il_header.primary_scope);ref("primarySource",il_header.primary_source_file);num("pointerBytes",targ_sizeof_pointer);num("intBytes",targ_sizeof_int);num("longBytes",targ_sizeof_long);num("longDoubleBytes",targ_sizeof_long_double);boolean("littleEndian",targ_little_endian);boolean("plainCharSigned",il_header.plain_chars_are_signed);key("configuration");out->format("{\"DO_IL_LOWERING\":%d,\"GENERATE_SOURCE_SEQUENCE_LISTS\":%d,\"EXTRA_SOURCE_POSITIONS_IN_IL\":%d,\"ALL_TEMPLATE_INFO_IN_IL\":%d,\"RECORD_MACROS_IN_IL\":%d,\"MACRO_INVOCATION_TREE_IN_IL\":%d,\"RECORD_MACRO_ARGS\":%d,\"DOING_SOURCE_ANALYSIS\":%d}",DO_IL_LOWERING,GENERATE_SOURCE_SEQUENCE_LISTS,EXTRA_SOURCE_POSITIONS_IN_IL,ALL_TEMPLATE_INFO_IN_IL,RECORD_MACROS_IN_IL,MACRO_INVOCATION_TREE_IN_IL,RECORD_MACRO_ARGS,DOING_SOURCE_ANALYSIS);out->character('}');storage.metadata(out->value);
+ for(size_t i=0;i<nodes.size();++i){out->clear();emit(nodes[i]);storage.node(out->value);}
+ for(a_macro_invocation_record_index i=1;i<il_header.num_macro_invocation_records;++i){a_macro_invocation_record_ptr p;set_macro_inv_record_ptr_to_index(il_header.root_macro_invocation_record_block,i,p);if(!p)continue;out->clear();out->format("{\"index\":%ld,\"parentIndex\":%ld",(long)i,(long)p->parent_macro_index);ref("definition",p->assoc_macro);simplepos("start",p->start);simplepos("end",p->end);txt("arguments",p->arguments);out->character('}');storage.macro(out->value);}
+ storage.commit();database=nullptr;out->clear();fprintf(stderr,"Semantic SQLite graph: %zu nodes, %zu explicitly reported adapter gaps\n",nodes.size(),diagnostic_count);
+ } catch(const std::exception &error) { database=nullptr;fprintf(stderr,"Semantic SQLite export failed: %s\n",error.what());exit(2); }
 }

@@ -1,4 +1,4 @@
-# EDG semantic package prototype
+# EDG semantic packages
 
 This contains an **implemented, separately built exporter, managed reader and
 C# emitters, including a verified SQLite project path**. It keeps EDG's
@@ -32,8 +32,10 @@ its utility functions remain available to EDG's diagnostic formatter. Our
 
 Macro recording exposes an upstream local-variable shadow warning. The isolated
 target removes its promotion to an error; no parser/semantic source is fixed.
-The first build profile is Linux x64/GCC. The managed reader uses BCL APIs and is
-NativeAOT compatible; other native frontend build profiles remain to be tested.
+The first build profile is Linux x64/GCC. The managed reader uses a small NativeAOT-compatible binding to the platform
+SQLite library (`libsqlite3` on Linux/macOS, `winsqlite3` on Windows). The native
+writer embeds the pinned SQLite amalgamation in its isolated build. Linux x64
+is verified; other native frontend and managed platform profiles remain to be tested.
 
 The wrapper disables the default predefined-macro file, which is not present in
 an isolated tree. For real projects, pass the explicit include/define/preinclude
@@ -54,25 +56,39 @@ backend, and inventories missing named adapters and reference closure. See
 [the compiler self audit](../docs/semantic-export-self-audit.md). Export success
 is distinct from C++ managed code generation.
 
-A measured [SQLite storage proposal](../docs/semantic-export-storage.md) addresses
-large graphs and indexed, bounded-memory reads. Production packages still use
-JSON; the proposal does not change their format yet.
+Exports now use the normalized [SQLite storage format](../docs/semantic-export-storage.md).
+The managed reader uses indexed queries and bounded caches; it also accepts
+legacy JSON packages. `inspect PACKAGE --summary` validates the entire package
+and reports counts without enumerating direct calls.
 
 ## Package contract
 
-A package contains:
+The portable package is one `semantic.sqlite` database. Both a package directory
+and the database path itself are accepted by the C# reader and emitters.
+Invocation and native stdout/stderr logs remain alongside it for troubleshooting;
+they are not needed to read or emit from the database.
 
-- `package.json`: `edg-semantic-package/1`, capabilities, invocation, graph/source
-  hashes, source availability, and the exact producer manifest hash.
-- `graph.json`: `edg-semantic/1`, a versioned semantic graph with numeric
-  package-local identities. Zero denotes an absent edge. IDs are assigned by
-  traversal and never encode native addresses.
-- `producer.json`: executable SHA-256, compilation command/configuration, and
-  hashes of every native adapter/frontend source/header in the isolated build.
-- `sources/`: unchanged input/header bytes. File entries distinguish source-file
-  occurrences from their physical paths. Missing/virtual input paths produce
-  explicit availability diagnostics.
-- Invocation and native stdout/stderr logs.
+- `nodes` contains unit-qualified identity, kind and common fields; typed
+  `node_<kind>` tables contain kind-specific facts. IDs never encode native
+  addresses. Zero denotes an absent semantic reference.
+- `literals` shares text and nested payload bytes. A compact hash index finds
+  candidates; exact byte comparisons decide sharing. Separate semantic objects
+  retain separate IDs even when their payloads match.
+- Ordered `native_edges`, `macros` and `diagnostics` tables retain audit and
+  provenance facts. Integer payloads outside signed 64-bit use exact decimal
+  BLOBs, never lossy SQLite REAL values.
+- `source_files` records source/include occurrences; `source_blobs` holds original
+  bytes deduplicated by content hash, with explicit unavailable-source records.
+- `package_info` embeds the `edg-semantic-package/2` manifest and exact producer
+  manifest, including invocation, capabilities, compiler/source hashes and a
+  [logical-content checksum](storage/content-hash.md).
+
+The [storage schema](storage/schema.sql) is `edg-semantic-sqlite/1`; reconstructed
+semantic records retain `edg-semantic/1`. The writer inserts records directly into
+SQLite, then the wrapper snapshots sources, validates and seals the database
+before publishing it by rename. There is no intermediate whole-graph JSON file.
+The current reader requires exactly one translation unit; unit-qualified IDs do
+not imply cross-unit semantic linking.
 
 Inputs must remain immutable during export. The current wrapper copies source
 bytes after frontend completion and states this snapshot policy in the manifest.
@@ -115,7 +131,7 @@ The native adapter currently exports:
 The EDG file/routine walkers do not follow every reference into another region.
 After collecting their nodes, the adapter follows the supported identity
 remapper to a fixed point, retaining additional referenced nodes before writing
-JSON. No pointer is rewritten to a different value. `nativeEdges` retains all
+the database. No pointer is rewritten to a different value. `nativeEdges` retains all
 visited pointer references for auditing graph closure. Its ordinal traversal
 order is **not** the stable semantic schema; managed lowering must use named
 fields and reject missing adapters.

@@ -1,22 +1,70 @@
 # SQLite as the semantic package format
 
-Recommendation: adopt a versioned SQLite container with a base node table,
-node-kind/variant tables, shared literal payloads and a lazy managed reader.
-Keep JSON as an inspection/interchange export.
-This is a storage proposal with a measured prototype, not an implemented
-replacement for the current native writer or C# reader.
+SQLite is now the default native semantic-export format. The writer inserts
+normalized records directly into a temporary database; `export.py` adds source
+snapshots and producer metadata, validates the graph, computes its logical
+checksum and publishes `semantic.sqlite`. The closed database is the complete
+portable package; invocation logs are optional companions.
 
-The current dot-backend graph is 2,452,604,523 bytes. Native export succeeds and
-all reference IDs close, but the managed reader's `File.ReadAllBytes` fails above
-2 GB. Even smaller graphs require one whole `JsonDocument` and an in-memory node
-dictionary. A SQLite file can be queried page by page; the essential change is
-removing whole-graph materialization from `SemanticGraph`, not merely changing
-the file extension. One giant JSON/BLOB row would retain the problem.
+The C# reader accepts either that file or its containing directory. It validates
+integrity, schema, source hashes and graph references, then serves indexed node
+lookups through bounded caches. Legacy JSON packages remain readable. Use
+`inspect PACKAGE --summary` for a full validation and count summary without
+materializing a call inventory. Both C# emission commands accept the database.
 
-SQLite has a documented, versioned file format with page-based storage and file
-capacities well beyond this graph size. A completed package should contain one
-closed database file, with no required hot journal or WAL sidecar.
-[SQLite file format](https://www.sqlite.org/fileformat.html).
+The production schema has a base `nodes` table, dynamically discovered typed
+`node_<kind>` tables, shared `literals`, ordered `native_edges`, macros,
+diagnostics, metadata, source occurrences and deduplicated source BLOBs.
+[Authoritative DDL](../semantic-export/storage/schema.sql) and
+[content digest framing](../semantic-export/storage/content-hash.md) define the
+versioned contract. Nested positions/arrays retain pooled JSON payloads; whole
+nodes are not JSON blobs. Explicit null and absent fields remain distinct.
+Unsigned integers outside SQLite's signed range retain exact decimal bytes.
+
+Literal lookup uses a compact 64-bit FNV-1a hint plus exact byte comparison;
+collisions cannot merge unequal payloads. Indexing the entire payload proved
+expensive for long strings, so the payload itself is excluded from the lookup
+index. Literal IDs never replace semantic node identity.
+
+The isolated native build embeds the pinned SQLite amalgamation. The managed
+reader currently binds the platform's native SQLite library and supports
+NativeAOT; it does not use the translated C# SQLite engine as its storage driver.
+The reader requires exactly one translation unit, although IDs are unit-qualified.
+Changing storage does not complete missing C++ semantic adapters.
+
+The following measurements and proposals document the experiments that led to
+this implementation. Prototype sizes exclude embedded source snapshots and
+should not be confused with complete production-package sizes.
+
+## Production verification
+
+The final complete dot package contains 3,116,658 nodes across 72 node-kind
+tables and 710,636 shared literals in **779,280,384 bytes (779 MB)**, including
+source snapshots and producer metadata. The SQLite engine package is
+1,086,009,344 bytes; with the memory VFS it is 1,091,956,736 bytes. Different
+projects have different payload/position repetition, so size savings are not a
+fixed ratio.
+
+The direct database path reproduces all **3,171 C# and project files** from the
+previously verified SQLite + memory-VFS JSON export byte-for-byte. Generation
+from the 1.2-million-node database took 33.92 seconds with 311 MiB peak RSS.
+The complete configured SQLite engine and memory VFS retain all 43 native/JIT/
+NativeAOT observations, and the expression fixture retains all 67 observations.
+
+The final dot database passes complete managed integrity and semantic
+validation: 3,116,658 nodes, 14,580 macro invocations and 271,263 explicit adapter
+diagnostics. JIT and NativeAOT summaries are byte-identical. The concurrent
+validation runs took 35.21 and 36.45 seconds, with peak RSS of 78.5 and 43.4 MiB
+respectively. The [production evidence](../semantic-export/evidence-sqlite-storage.json)
+records file hashes, counts, commands and retained result paths. This source
+snapshot is newer than the earlier prototype below.
+
+The native storage fixture covers exact unsigned/signed 64-bit endpoints,
+embedded NULs, Unicode, null/absent fields, literal sharing without merging node
+identities, and deliberately colliding lookup candidates. Python and managed
+checks reject changed content and correctly rehashed malformed records: 33 Python
+checks and 58 checks each under JIT and NativeAOT pass. Legacy
+reader and C emission regressions remain covered.
 
 ## Measured experiment
 
@@ -93,7 +141,7 @@ building into the first production SQLite schema. The per-node JSON experiment
 is a useful reference implementation and comparison baseline, not the desired
 long-term representation.
 
-## Proposed package structure
+## Original package design considerations
 
 Use an application ID and storage schema version in the database header, plus a
 separate semantic schema version and explicit capabilities. Keep the existing
@@ -143,7 +191,7 @@ encodings; they must not pass through SQLite REAL. Also keep per-record sizes
 bounded: database file capacity and individual string/BLOB limits are different.
 [SQLite limits](https://www.sqlite.org/limits.html).
 
-## Reader and writer changes
+## Original reader and writer design considerations
 
 Introduce a storage interface supporting metadata, lookup by unit/ID, indexed
 kind enumeration and reference traversal. Keep the existing semantic validation
@@ -169,9 +217,9 @@ verified VFS stores test files in memory. Reading large real package files needs
 a suitable read-only file VFS and independent validation. Making the storage
 migration depend on that work would couple two distinct implementation risks.
 
-## Suggested next implementation
+## Original migration gates (now implemented)
 
-1. Add an optional SQLite package writer while retaining JSON output.
+1. Add a native SQLite package writer; retain legacy JSON input compatibility.
 2. Implement the managed store abstraction and SQLite-backed, bounded reader.
 3. Require identical generated SQLite C# from both package formats; preserve all
    source/provenance hashes, diagnostics and graph closure checks.

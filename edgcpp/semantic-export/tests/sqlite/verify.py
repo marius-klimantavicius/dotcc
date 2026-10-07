@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Compile and execute semantic-export SQLite against its native C snapshot."""
-import argparse, hashlib, json, pathlib, subprocess, time
+import argparse, hashlib, json, pathlib, subprocess, sys, time
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2]))
+from sqlite_store import SemanticPackage
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--package',type=pathlib.Path,required=True)
 p.add_argument('--generated',type=pathlib.Path,required=True)
@@ -16,12 +18,14 @@ def run(name,command,timeout=900):
  checks.append({'name':name,'exit':r.returncode,'seconds':round(time.monotonic()-start,3)})
  if r.returncode:raise RuntimeError(f'{name} failed: see {a.output}/{name}.stdout/.stderr')
  return (a.output/(name+'.stdout')).read_text()
-manifest=json.loads((a.package/'package.json').read_text())
+package=SemanticPackage(a.package)
+manifest=package.manifest
 native=a.output/'native';native.mkdir()
-for source in manifest['sources']:
+for source in package.sources:
  if source.get('available') and pathlib.Path(source['originalPath']).name in ['sqlite3.c','sqlite3.h','memory_vfs.c','memory_vfs.h']:
-  data=(a.package/source['path']).read_bytes();assert hashlib.sha256(data).hexdigest()==source['sha256']
+  data=package.source_bytes(source);assert hashlib.sha256(data).hexdigest()==source['sha256']
   (native/pathlib.Path(source['originalPath']).name).write_bytes(data)
+package.close()
 commands=[
 ('exec','CREATE TABLE items(id INTEGER PRIMARY KEY, value TEXT, amount REAL); INSERT INTO items VALUES(1,\'alpha\',1.25),(2,\'βeta\',-2.5),(3,NULL,0);'),
 ('query','SELECT id, quote(value), printf(\'%!.17g\',amount) FROM items ORDER BY id;'),

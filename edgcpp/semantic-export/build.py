@@ -13,6 +13,27 @@ if not src.exists():
 # This build retains the supported C++ regeneration configuration, replacing only
 # its emission callback. Parsing and semantic analysis are untouched.
 copy(root/'semantic-export/native/semantic_export_be.c',src/'src/semantic_export_be.c')
+copy(root/'semantic-export/native/semantic_sqlite.h',src/'src/semantic_sqlite.h')
+schema=(root/'semantic-export/storage/schema.sql').read_text()
+assert ')SEMANTIC_SQL"' not in schema
+write(src/'src/semantic_schema_sql.h','static const char semantic_schema_sql[] = R"SEMANTIC_SQL('+schema+')SEMANTIC_SQL";\n')
+# The storage engine is the pinned host SQLite amalgamation. It has its own
+# CMake directory so EDG's front-end configuration macros cannot leak into it.
+sqlite=src/'semantic-sqlite';sqlite.mkdir(exist_ok=True)
+for name in ['sqlite3.c','sqlite3.h']:
+    copy(root.parent/'sqlite/ref/sqlite-amalgamation-3530400'/name,sqlite/name)
+write(sqlite/'CMakeLists.txt','''find_package(Threads REQUIRED)
+add_library(semantic_sqlite STATIC sqlite3.c)
+set_source_files_properties(sqlite3.c PROPERTIES LANGUAGE C)
+target_include_directories(semantic_sqlite PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(semantic_sqlite PUBLIC Threads::Threads ${CMAKE_DL_LIBS})
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+  target_compile_options(semantic_sqlite PRIVATE -O2 -w)
+endif()
+''')
+f=src/'CMakeLists.txt';text=f.read_text()
+if 'add_subdirectory(semantic-sqlite)' not in text:
+    write(f,text+'\nadd_subdirectory(semantic-sqlite)\n')
 reference=(root/'upstream/src/cp_gen_be.c').read_text()
 assert reference.count('void back_end(void)')==1
 write(src/'src/cp_gen_be.c',reference.replace('void back_end(void)','void semantic_unused_regeneration_back_end(void)'))
@@ -30,6 +51,12 @@ if 'target_compile_options(cpfe-cp PRIVATE -Wno-error=shadow)' not in text:
 text=target.read_text()
 if 'target_sources(cpfe-cp PRIVATE' not in text:
     target.write_text(text+'\nset_source_files_properties(${PROJECT_SOURCE_DIR}/semantic_export_be.c PROPERTIES LANGUAGE CXX)\ntarget_sources(cpfe-cp PRIVATE ${PROJECT_SOURCE_DIR}/semantic_export_be.c)\ntarget_include_directories(cpfe-cp PRIVATE ${PROJECT_SOURCE_DIR})\n')
+text=target.read_text()
+if 'target_link_libraries(cpfe-cp PRIVATE semantic_sqlite)' not in text:
+    write(target,text+'\ntarget_link_libraries(cpfe-cp PRIVATE semantic_sqlite)\n')
+text=target.read_text()
+if 'COMPILE_OPTIONS "-fexceptions"' not in text:
+    write(target,text+'\nif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")\n  set_source_files_properties(${PROJECT_SOURCE_DIR}/semantic_export_be.c PROPERTIES COMPILE_OPTIONS "-fexceptions")\nendif()\n')
 commands=[['cmake','-S',str(src),'-B',str(build),'-G','Ninja','-DCMAKE_BUILD_TYPE=Debug','-DCMAKE_CXX_FLAGS_DEBUG=-O0 -g0','-DEDG_MACRO_CONF=semantic','-DEDG_BUILD_LIB=OFF','-DEDG_CPFE_USE_ASAN=OFF','-DEDG_ENABLE_CONVERSION_WARNINGS=OFF','-DCMAKE_EXPORT_COMPILE_COMMANDS=ON'],['cmake','--build',str(build),'--target','cpfe-cp','-j',str(a.j)]]
 for i,c in enumerate(commands):
     (work/f'build-command-{i}.json').write_text(json.dumps(c,indent=2))
@@ -40,6 +67,7 @@ shutil.copyfile(build/'bin/cpfe-cp',build/'bin/cpfe-semantic');(build/'bin/cpfe-
 binary=build/'bin/cpfe-semantic'
 sha=lambda b:hashlib.sha256(b).hexdigest()
 inputs=[{'path':str(p.relative_to(src)),'sha256':sha(p.read_bytes())} for p in sorted((src/'src').glob('*')) if p.is_file() and p.suffix in ['.c','.h']]
+inputs.extend({'path':str(p.relative_to(src)),'sha256':sha(p.read_bytes())} for p in [sqlite/'sqlite3.c',sqlite/'sqlite3.h',sqlite/'CMakeLists.txt'])
 commands=json.loads((build/'compile_commands.json').read_text())
 command=next(x for x in commands if x['file'].endswith('/semantic_export_be.c'))
 manifest={'schema':'edg-semantic-producer/1','binarySha256':sha(binary.read_bytes()),'compileCommand':command,'inputs':inputs,'configuration':(config/'base.cmakedef').read_text(),'sourceAdapter':'semantic_export_be.c','referenceCallbackRenamed':True}

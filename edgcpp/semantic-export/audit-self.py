@@ -21,6 +21,8 @@ import sys
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sqlite_store import SemanticPackage, SqliteStore
 sys.path.insert(0, str(ROOT))
 from backend.self.profile import portable_self_flags
 
@@ -70,6 +72,9 @@ class JsonStream:
 
 
 def inventory(path):
+    if Path(path).suffix in ('.sqlite', '.sqlite3', '.db'):
+        with SqliteStore(path) as store:
+            return store.inventory()
     fields_source = (ROOT / 'semantic-export/managed/SemanticGraph.cs').read_text()
     fields = set(re.findall(r'"([A-Za-z]+)"', fields_source.split('ReferenceFields =', 1)[1].split('};', 1)[0]))
     ids, references, kinds, forms, gaps = set(), set(), Counter(), Counter(), Counter()
@@ -243,14 +248,17 @@ def main():
         result['seconds'] = round(time.monotonic() - start, 3)
         if result['exitCode'] == 0:
             try:
-                result['inventory'] = inventory(package / 'graph.json')
-                result['graphBytes'] = (package / 'graph.json').stat().st_size
-                manifest = json.loads((package / 'package.json').read_text())
-                primary_id = result['inventory']['header']['primarySource']
-                primary = next((item for item in manifest['sources'] if item['node'] == primary_id), None)
-                if primary is None:
-                    raise ValueError('Primary source is missing from the package source manifest')
-                snapshot_hash = digest(package / primary['path'])
+                with SemanticPackage(package) as semantic:
+                    result['inventory'] = semantic.store.inventory(validate=False) if semantic.store else inventory(semantic.graph_path)
+                    result['graphBytes'] = semantic.graph_path.stat().st_size
+                    result['storageFormat'] = semantic.manifest.get('databaseFormat', 'edg-semantic-json/1')
+                    result['packageFile'] = str(semantic.path)
+                    primary_id = result['inventory']['header']['primarySource']
+                    primary = next((item for item in semantic.sources if item['node'] == primary_id), None)
+                    if primary is None:
+                        raise ValueError('Primary source is missing from the package source manifest')
+                    # SemanticPackage has just rehashed the snapshot bytes.
+                    snapshot_hash = primary['sha256']
                 result['primarySourceProvenance'] = {
                     'beforeSha256': result['sourceSha256'], 'snapshotSha256': snapshot_hash,
                     'manifestSha256': primary['sha256'],

@@ -5,9 +5,9 @@ try
 {
     if (args.Length < 2 || args[0] is not ("inspect" or "assert-probe" or "emit-csharp" or "emit-project"))
     {
-        Console.Error.WriteLine("Usage: Edg.Semantic inspect|assert-probe <package directory|package.json|graph.json> [--strict-emission]");
-        Console.Error.WriteLine("       Edg.Semantic emit-csharp <package directory|package.json> --output FILE [--class NAME]");
-        Console.Error.WriteLine("       Edg.Semantic emit-project <package directory|package.json> --output-directory DIRECTORY");
+        Console.Error.WriteLine("Usage: Edg.Semantic inspect|assert-probe <package directory|semantic.sqlite|package.json|graph.json> [--strict-emission] [--summary]");
+        Console.Error.WriteLine("       Edg.Semantic emit-csharp <package directory|semantic.sqlite|package.json> --output FILE [--class NAME]");
+        Console.Error.WriteLine("       Edg.Semantic emit-project <package directory|semantic.sqlite|package.json> --output-directory DIRECTORY");
         return 2;
     }
     if (args[0] == "emit-project")
@@ -42,7 +42,7 @@ try
         Console.WriteLine($"Emitted {destination} using bounded profile {CSharpEmitter.Profile}; completeForEmission remains {emissionGraph.CompleteForEmission.ToString().ToLowerInvariant()}.");
         return 0;
     }
-    if (args.Skip(2).Any(a => a != "--strict-emission")) throw new ArgumentException("Unknown argument");
+    if (args.Skip(2).Any(a => a != "--strict-emission" && a != "--summary")) throw new ArgumentException("Unknown argument");
     using var graph = SemanticGraph.Load(args[1], args.Contains("--strict-emission"));
     var assertions = args[0] == "assert-probe" ? ProbeAssertions.Verify(graph) : Array.Empty<string>();
     using var output = new Utf8JsonWriter(Console.OpenStandardOutput(), new JsonWriterOptions { Indented = true });
@@ -51,13 +51,13 @@ try
     output.WriteString("graph", graph.GraphPath);
     output.WriteBoolean("completeForEmission", graph.CompleteForEmission);
     output.WriteNumber("nodes", graph.Nodes.Count);
-    output.WriteNumber("diagnostics", graph.Diagnostics.Count());
-    output.WriteNumber("macroInvocations", graph.MacroInvocations.Count());
+    output.WriteNumber("diagnostics", graph.DiagnosticCount);
+    output.WriteNumber("macroInvocations", graph.MacroInvocationCount);
     output.WriteStartObject("nodeKinds");
-    foreach (var group in graph.Nodes.Values.GroupBy(n => n.Kind).OrderBy(g => g.Key)) output.WriteNumber(group.Key, group.Count());
+    foreach (var group in graph.KindCounts) output.WriteNumber(group.Key, group.Value);
     output.WriteEndObject();
     output.WriteStartArray("directCalls");
-    foreach (var call in graph.OfKind("expr-node"))
+    foreach (var call in args.Contains("--summary") ? Enumerable.Empty<SemanticNode>() : graph.OfKind("expr-node"))
     {
         var target = graph.DirectCallTarget(call);
         if (target == null) continue;
@@ -77,7 +77,7 @@ try
     Console.WriteLine();
     return 0;
 }
-catch (Exception error) when (error is InvalidDataException or IOException or JsonException or InvalidOperationException or KeyNotFoundException or FormatException or ArgumentException or OverflowException)
+catch (Exception error) when (error is InvalidDataException or IOException or JsonException or InvalidOperationException or KeyNotFoundException or FormatException or ArgumentException or OverflowException or DllNotFoundException or EntryPointNotFoundException)
 {
     Console.Error.WriteLine(error.GetType().Name + ": " + error.Message);
     return 1;

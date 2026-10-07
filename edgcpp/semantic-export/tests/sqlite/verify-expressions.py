@@ -6,6 +6,10 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from sqlite_store import SemanticPackage
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--package', type=Path, required=True)
@@ -31,9 +35,9 @@ def run(name, command):
     return result.stdout
 
 
-manifest = json.loads((args.package / 'package.json').read_text())
-source = next(s for s in manifest['sources'] if Path(s['originalPath']).name == 'expressions.c')
-data = (args.package / source['path']).read_bytes()
+with SemanticPackage(args.package) as package:
+    source = next(s for s in package.sources if Path(s['originalPath']).name == 'expressions.c')
+    data = package.source_bytes(source)
 assert hashlib.sha256(data).hexdigest() == source['sha256']
 (args.output / 'expressions.c').write_bytes(data)
 cases = []

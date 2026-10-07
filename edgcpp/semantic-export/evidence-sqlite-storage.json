@@ -1,0 +1,1084 @@
+{
+  "schema": "edg-semantic-storage-evidence/1",
+  "status": "verified",
+  "milestone": "Direct normalized SQLite export and indexed C# consumption",
+  "storageFormat": "edg-semantic-sqlite/1",
+  "packageFormat": "edg-semantic-package/2",
+  "platform": "Linux x64; JIT and NativeAOT",
+  "packages": {
+    "plain": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/plain/semantic.sqlite",
+      "bytes": 376832,
+      "sha256": "377d74363df01461378f307b7910a973c186f7fb72cd6a95b2a60e7f836129ac",
+      "contentSha256": "c6f9c6e959f840b726a0d9278e289b022de45ec34a0d3ca06b3dd860053b478d",
+      "producerSha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf",
+      "nodes": 289,
+      "edges": 538,
+      "literals": 308,
+      "nodeKinds": 29,
+      "sourceOccurrences": 2,
+      "diagnostics": 0
+    },
+    "probe": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/probe/semantic.sqlite",
+      "bytes": 679936,
+      "sha256": "6056d1cc16cc74a1ababfbfa59c5c29f34197ce04f33dd0f9975581a73a2cc09",
+      "contentSha256": "6b0f9104f60affd18f72b081e2ec2d86ecec8a402cfb0c6436313acb144c295e",
+      "producerSha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf",
+      "nodes": 1046,
+      "edges": 2008,
+      "literals": 823,
+      "nodeKinds": 44,
+      "sourceOccurrences": 2,
+      "diagnostics": 28
+    },
+    "expressions": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/expressions/semantic.sqlite",
+      "bytes": 823296,
+      "sha256": "49207c7e9f170768f10d7f1230a4de8bf293c9ec2fa2101bc2d6ef2cec2ba560",
+      "contentSha256": "66a07651a912e68e3657659c40f3c437b420d69ab93f6720326bf6a657ca5808",
+      "producerSha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf",
+      "nodes": 780,
+      "edges": 1839,
+      "literals": 764,
+      "nodeKinds": 26,
+      "sourceOccurrences": 1,
+      "diagnostics": 0
+    },
+    "package-sqlite": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/package-sqlite/semantic.sqlite",
+      "bytes": 1086009344,
+      "sha256": "a6fc704bb64c099fccb0510ee312712f4455ed291c6ea929525c8d567b7cdb7e",
+      "contentSha256": "1289def994ceca7f95776c13da762dfa9f90a9a938587cf53007e170841ca312",
+      "producerSha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf",
+      "nodes": 1196674,
+      "edges": 3198210,
+      "literals": 1062554,
+      "nodeKinds": 44,
+      "sourceOccurrences": 12,
+      "diagnostics": 0
+    },
+    "package-memory": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/package-memory/semantic.sqlite",
+      "bytes": 1091956736,
+      "sha256": "2f9ed1531bdaa634eb3a682578da4732201f136581c9e068a204ebc0241da794",
+      "contentSha256": "446fd7517f2b56ad94899932a0b4ed9ba2403469a15cebb4f67cf75dabf65314",
+      "producerSha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf",
+      "nodes": 1205132,
+      "edges": 3221348,
+      "literals": 1069326,
+      "nodeKinds": 44,
+      "sourceOccurrences": 16,
+      "diagnostics": 0
+    },
+    "package-dot": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/package-dot/semantic.sqlite",
+      "bytes": 779280384,
+      "sha256": "36af87e365b35c30c377e2293376f86140dcf4fbc4036aae0de72e30c22f8f80",
+      "contentSha256": "cf4e597ef26012b1a595deab02a60099336314b1e2d4f405f634021630b6456c",
+      "producerSha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf",
+      "nodes": 3116658,
+      "edges": 6804828,
+      "literals": 710636,
+      "nodeKinds": 72,
+      "sourceOccurrences": 358,
+      "diagnostics": 271263
+    }
+  },
+  "generatedParity": {
+    "status": "passed",
+    "filesCompared": 3171,
+    "sourceSetSha256": "7273b74b64141dc94e39a7f77f4428ddb5852ddf42e41306ffeb1976485679c9",
+    "baseline": "edgcpp/artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/generated",
+    "new": "edgcpp/artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/generated"
+  },
+  "tests": {
+    "sqlite": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/sqlite-verification/results.json",
+        "bytes": 562,
+        "sha256": "889d4fdf4bfd02ddae0ea1d096c1bb854168e96f1d20b2e9250a023418821be5"
+      },
+      "result": {
+        "checks": [
+          {
+            "name": "native-build",
+            "exit": 0,
+            "seconds": 14.487
+          },
+          {
+            "name": "native-run",
+            "exit": 0,
+            "seconds": 0.004
+          },
+          {
+            "name": "jit-build",
+            "exit": 0,
+            "seconds": 14.191
+          },
+          {
+            "name": "jit-run",
+            "exit": 0,
+            "seconds": 0.414
+          },
+          {
+            "name": "aot-build",
+            "exit": 0,
+            "seconds": 14.953
+          },
+          {
+            "name": "aot-run",
+            "exit": 0,
+            "seconds": 0.016
+          }
+        ],
+        "passed": 6,
+        "observations": 43,
+        "nativeAot": true
+      }
+    },
+    "expressions": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/expressions-verification/results.json",
+        "bytes": 197,
+        "sha256": "600b8644d6b31ec46125b3297514373c8467766a52761432a4f388f952845523"
+      },
+      "result": {
+        "checks": [
+          "volatile-helper-single-access",
+          "native-build",
+          "native-run",
+          "jit-build",
+          "jit-run",
+          "aot-build",
+          "aot-run"
+        ],
+        "passed": 7,
+        "observations": 67
+      }
+    },
+    "legacyReader": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/legacy-reader-tests/results.json",
+        "bytes": 3162,
+        "sha256": "95345dbdc89dff40b52574e33e12cf68ae76ace6bcfe0c25834fd29e8f5fbe34"
+      },
+      "result": {
+        "checks": [
+          {
+            "name": "cpp-probe",
+            "exit": 0,
+            "assertions": [
+              "Entry routine links to structured body",
+              "Parameters retain symbol and type identities",
+              "For and if statements survive without lowering",
+              "Typed expressions retain source locations",
+              "Function scope preserves source sequence",
+              "Public macro definition retained",
+              "Macro invocation records retained",
+              "Overload selection resolves choose(int), not choose(long)",
+              "Direct call binds instantiated twice<int>",
+              "Box<int*>::read resolves to the instantiated pointer partial specialization",
+              "RAII destructor and lifetime recorded for first",
+              "RAII destructor and lifetime recorded for inner",
+              "RAII destructor and lifetime recorded for conditional",
+              "Nested destruction boundaries retained",
+              "Structured exception handler retained",
+              "Nested macro expansion provenance retained",
+              "Macro undefinition retained"
+            ]
+          },
+          {
+            "name": "cpp-strict",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "c-probe",
+            "exit": 0,
+            "assertions": [
+              "Entry routine links to structured body",
+              "Parameters retain symbol and type identities",
+              "For and if statements survive without lowering",
+              "Typed expressions retain source locations",
+              "Function scope preserves source sequence",
+              "Public macro definition retained",
+              "Macro invocation records retained",
+              "C member name and type retained",
+              "Continue label origin retained"
+            ]
+          },
+          {
+            "name": "c-strict",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "unknown-schema",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "zero-root",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "lowered",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "duplicate-id",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "dangling-root",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "wrong-root-kind",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "dangling-field",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "nonnumeric-reference",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "unknown-macro-parent",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "unknown-macro-position",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "wrong-native-edge-kind",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "invalid-macro-placeholder",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "self-parent-macro",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "accept-macro-placeholder",
+            "exit": 0,
+            "assertions": []
+          },
+          {
+            "name": "changed-source-hash",
+            "exit": 1,
+            "assertions": []
+          },
+          {
+            "name": "escaping-package-path",
+            "exit": 1,
+            "assertions": []
+          }
+        ],
+        "passed": 20
+      }
+    },
+    "legacyEmission": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/legacy-emission-tests/results.json",
+        "bytes": 6385,
+        "sha256": "f9de7fbd7f95599c75320fb60af2b10a37f5ea8212f5be229409165e314becc0"
+      },
+      "result": {
+        "host": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+        "runtime": "linux-x64",
+        "checks": [
+          {
+            "name": "plain-emit",
+            "exit": 0,
+            "seconds": 0.066
+          },
+          {
+            "name": "plain-emit-deterministic",
+            "exit": 0,
+            "seconds": 0.067
+          },
+          {
+            "name": "plain-matches-verified-source",
+            "generatedSha256": "850d2cb78b0a2c00dd6a58fc63b4256e1ced2f86f34d168e640b290a4f2ecf1d"
+          },
+          {
+            "name": "scalars-emit",
+            "exit": 0,
+            "seconds": 0.127
+          },
+          {
+            "name": "scalars-emit-deterministic",
+            "exit": 0,
+            "seconds": 0.125
+          },
+          {
+            "name": "scalars-matches-verified-source",
+            "generatedSha256": "4da82b64f5045f62c4b7c44c078a3c92cdd97dde5610e2e5b7d7e58387ca9fa0"
+          },
+          {
+            "name": "pointers-emit",
+            "exit": 0,
+            "seconds": 0.066
+          },
+          {
+            "name": "pointers-emit-deterministic",
+            "exit": 0,
+            "seconds": 0.064
+          },
+          {
+            "name": "pointers-matches-verified-source",
+            "generatedSha256": "f047e15fb866c5ed5740845df7cf909ee2b301080192197bf1393bad66336d8f"
+          },
+          {
+            "name": "probe-reject",
+            "exit": 1,
+            "seconds": 0.1
+          },
+          {
+            "name": "probe-preserve",
+            "exit": 1,
+            "seconds": 0.1
+          },
+          {
+            "name": "global-reject",
+            "exit": 1,
+            "seconds": 0.052
+          },
+          {
+            "name": "global-preserve",
+            "exit": 1,
+            "seconds": 0.053
+          },
+          {
+            "name": "volatile-reject",
+            "exit": 1,
+            "seconds": 0.052
+          },
+          {
+            "name": "volatile-preserve",
+            "exit": 1,
+            "seconds": 0.053
+          },
+          {
+            "name": "static-local-reject",
+            "exit": 1,
+            "seconds": 0.053
+          },
+          {
+            "name": "static-local-preserve",
+            "exit": 1,
+            "seconds": 0.052
+          },
+          {
+            "name": "external-call-reject",
+            "exit": 1,
+            "seconds": 0.057
+          },
+          {
+            "name": "external-call-preserve",
+            "exit": 1,
+            "seconds": 0.056
+          },
+          {
+            "name": "mixed-compound-reject",
+            "exit": 1,
+            "seconds": 0.057
+          },
+          {
+            "name": "mixed-compound-preserve",
+            "exit": 1,
+            "seconds": 0.058
+          },
+          {
+            "name": "cleanup-reject",
+            "exit": 1,
+            "seconds": 0.056
+          },
+          {
+            "name": "cleanup-preserve",
+            "exit": 1,
+            "seconds": 0.055
+          },
+          {
+            "name": "unsigned-negate-reject",
+            "exit": 1,
+            "seconds": 0.058
+          },
+          {
+            "name": "unsigned-negate-preserve",
+            "exit": 1,
+            "seconds": 0.057
+          },
+          {
+            "name": "standalone-graph-reject",
+            "exit": 1,
+            "seconds": 0.027
+          },
+          {
+            "name": "standalone-graph-preserve",
+            "exit": 1,
+            "seconds": 0.025
+          },
+          {
+            "name": "duplicate-id-reject",
+            "exit": 1,
+            "seconds": 0.049
+          },
+          {
+            "name": "duplicate-id-preserve",
+            "exit": 1,
+            "seconds": 0.049
+          },
+          {
+            "name": "dangling-root-reject",
+            "exit": 1,
+            "seconds": 0.049
+          },
+          {
+            "name": "dangling-root-preserve",
+            "exit": 1,
+            "seconds": 0.051
+          },
+          {
+            "name": "wrong-root-kind-reject",
+            "exit": 1,
+            "seconds": 0.05
+          },
+          {
+            "name": "wrong-root-kind-preserve",
+            "exit": 1,
+            "seconds": 0.048
+          },
+          {
+            "name": "unknown-operator-reject",
+            "exit": 1,
+            "seconds": 0.118
+          },
+          {
+            "name": "unknown-operator-preserve",
+            "exit": 1,
+            "seconds": 0.118
+          },
+          {
+            "name": "missing-operands-reject",
+            "exit": 1,
+            "seconds": 0.117
+          },
+          {
+            "name": "missing-operands-preserve",
+            "exit": 1,
+            "seconds": 0.118
+          },
+          {
+            "name": "statement-cycle-reject",
+            "exit": 1,
+            "seconds": 0.119
+          },
+          {
+            "name": "statement-cycle-preserve",
+            "exit": 1,
+            "seconds": 0.119
+          },
+          {
+            "name": "boolean-expression-cycle-reject",
+            "exit": 1,
+            "seconds": 0.12
+          },
+          {
+            "name": "boolean-expression-cycle-preserve",
+            "exit": 1,
+            "seconds": 0.121
+          },
+          {
+            "name": "wrong-signedness-type-reject",
+            "exit": 1,
+            "seconds": 0.088
+          },
+          {
+            "name": "wrong-signedness-type-preserve",
+            "exit": 1,
+            "seconds": 0.088
+          },
+          {
+            "name": "changed-graph-hash-reject",
+            "exit": 1,
+            "seconds": 0.04
+          },
+          {
+            "name": "changed-graph-hash-preserve",
+            "exit": 1,
+            "seconds": 0.039
+          },
+          {
+            "name": "missing-graph-hash-reject",
+            "exit": 1,
+            "seconds": 0.031
+          },
+          {
+            "name": "missing-graph-hash-preserve",
+            "exit": 1,
+            "seconds": 0.032
+          },
+          {
+            "name": "missing-producer-reject",
+            "exit": 1,
+            "seconds": 0.031
+          },
+          {
+            "name": "missing-producer-preserve",
+            "exit": 1,
+            "seconds": 0.031
+          },
+          {
+            "name": "missing-producer-hash-reject",
+            "exit": 1,
+            "seconds": 0.031
+          },
+          {
+            "name": "missing-producer-hash-preserve",
+            "exit": 1,
+            "seconds": 0.032
+          },
+          {
+            "name": "missing-source-hash-reject",
+            "exit": 1,
+            "seconds": 0.032
+          },
+          {
+            "name": "missing-source-hash-preserve",
+            "exit": 1,
+            "seconds": 0.032
+          },
+          {
+            "name": "missing-source-size-reject",
+            "exit": 1,
+            "seconds": 0.032
+          },
+          {
+            "name": "missing-source-size-preserve",
+            "exit": 1,
+            "seconds": 0.032
+          },
+          {
+            "name": "missing-source-availability-reject",
+            "exit": 1,
+            "seconds": 0.031
+          },
+          {
+            "name": "missing-source-availability-preserve",
+            "exit": 1,
+            "seconds": 0.031
+          },
+          {
+            "name": "source-unavailable-reject",
+            "exit": 1,
+            "seconds": 0.031
+          },
+          {
+            "name": "source-unavailable-preserve",
+            "exit": 1,
+            "seconds": 0.032
+          },
+          {
+            "name": "missing-source-node-reject",
+            "exit": 1,
+            "seconds": 0.031
+          },
+          {
+            "name": "missing-source-node-preserve",
+            "exit": 1,
+            "seconds": 0.03
+          },
+          {
+            "name": "missing-package-diagnostics-reject",
+            "exit": 1,
+            "seconds": 0.031
+          },
+          {
+            "name": "missing-package-diagnostics-preserve",
+            "exit": 1,
+            "seconds": 0.029
+          }
+        ],
+        "passed": 63,
+        "emissionOnly": true,
+        "comparedGenerated": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-c-emission-001/emission-complete-final"
+      }
+    },
+    "storage-python": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final-storage-python-tests-002/results.json",
+        "bytes": 5680,
+        "sha256": "bbe670014485df04e6419044dacccaed401c03444601c740d1de177261233cf6"
+      },
+      "passed": 33
+    },
+    "storage-jit": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final-storage-jit-tests-003/results.json",
+        "bytes": 8390,
+        "sha256": "d1a55aef35f123ae6840f472dd974ae01d465d9b086945d0f6945bd9a3fe45e6"
+      },
+      "passed": 58
+    },
+    "storage-aot": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final-storage-aot-tests-002/results.json",
+        "bytes": 8390,
+        "sha256": "d1a55aef35f123ae6840f472dd974ae01d465d9b086945d0f6945bd9a3fe45e6"
+      },
+      "passed": 58
+    }
+  },
+  "measurements": {
+    "dot-managed-summary": {
+      "timing": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/dot-managed-summary.time",
+        "bytes": 922,
+        "sha256": "e2d236f383cdb06bc19ad1316fc4881c9025c1bf4e8bce7d57e43bcea7363e66"
+      },
+      "peakRssKiB": 80408,
+      "elapsed": "0:35.21",
+      "summary": {
+        "artifact": {
+          "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/dot-managed-summary.json",
+          "bytes": 2473,
+          "sha256": "8a5a997906adb3dbd2d7aed6296dfcf2b15b310b358fd494129f1080f59fadb2"
+        },
+        "result": {
+          "schema": "edg-semantic-inspection/1",
+          "graph": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/package-dot/semantic.sqlite",
+          "completeForEmission": false,
+          "nodes": 3116658,
+          "diagnostics": 271263,
+          "macroInvocations": 14580,
+          "nodeKinds": {
+            "attribute": 11397,
+            "attribute-arg": 937,
+            "attribute-group": 8485,
+            "base-class": 8492,
+            "base-class-derivation": 8451,
+            "based-type-list-member": 88614,
+            "block": 20666,
+            "class-list-entry": 37431,
+            "class-type-supplement": 43708,
+            "condition-supplement": 24,
+            "constant": 128361,
+            "constexpr-if": 165,
+            "constructor-init": 3015,
+            "decl-position-supplement": 328664,
+            "derivation-step": 8451,
+            "dynamic-init": 21402,
+            "element-position": 417,
+            "exception-specification": 13022,
+            "expr-node": 348615,
+            "field": 5676,
+            "for-loop": 575,
+            "gnu-routine-supplement": 71,
+            "hidden-name": 95257,
+            "id-name": 63104,
+            "il-entity-list-entry": 99244,
+            "instantiation-directive": 14,
+            "integer-type-supplement": 320,
+            "label": 172,
+            "lambda": 49,
+            "lambda-capture": 54,
+            "linkage-spec-block": 29,
+            "local-expr-node-ref": 273,
+            "local-scope-ref": 922,
+            "local-static-variable-init": 2,
+            "macro": 5664,
+            "macro-invocation-record-block": 114,
+            "name-qualifier": 20989,
+            "name-reference": 67087,
+            "namespace": 27,
+            "new-delete-supplement": 223,
+            "object-lifetime": 3035,
+            "other-text": 46351,
+            "overriding-virtual-function": 6,
+            "param-type": 105722,
+            "pragma": 399689,
+            "range-based-for-loop": 104,
+            "routine": 67500,
+            "routine-type-supplement": 84553,
+            "scope": 55574,
+            "scope-orphaned-list-header": 660,
+            "scoped-expression": 1,
+            "seq-number-lookup-entry": 703,
+            "source-file": 358,
+            "source-sequence-entry": 148019,
+            "src-seq-end-of-construct": 10496,
+            "src-seq-secondary-decl": 6152,
+            "src-seq-sublist": 366,
+            "statement": 64488,
+            "static-assertion": 1471,
+            "string-text": 2868,
+            "switch-case-entry": 677,
+            "switch-stmt-descr": 63,
+            "template": 18506,
+            "template-arg": 183578,
+            "template-decl": 14970,
+            "template-parameter": 27163,
+            "template_param_type_supplement": 28370,
+            "type": 301068,
+            "typeref-type-supplement": 73135,
+            "using-decl": 1248,
+            "variable": 29175,
+            "variable-template-info": 406
+          },
+          "directCalls": [],
+          "assertions": []
+        }
+      }
+    },
+    "dot-aot-summary": {
+      "timing": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/dot-aot-summary.time",
+        "bytes": 955,
+        "sha256": "63cf3d9e9002fe2307a0e7d168c87a5aed16172a13e8e87b23f1f6cae1d1ec53"
+      },
+      "peakRssKiB": 44476,
+      "elapsed": "0:36.45",
+      "summary": {
+        "artifact": {
+          "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/dot-aot-summary.json",
+          "bytes": 2473,
+          "sha256": "8a5a997906adb3dbd2d7aed6296dfcf2b15b310b358fd494129f1080f59fadb2"
+        },
+        "result": {
+          "schema": "edg-semantic-inspection/1",
+          "graph": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/package-dot/semantic.sqlite",
+          "completeForEmission": false,
+          "nodes": 3116658,
+          "diagnostics": 271263,
+          "macroInvocations": 14580,
+          "nodeKinds": {
+            "attribute": 11397,
+            "attribute-arg": 937,
+            "attribute-group": 8485,
+            "base-class": 8492,
+            "base-class-derivation": 8451,
+            "based-type-list-member": 88614,
+            "block": 20666,
+            "class-list-entry": 37431,
+            "class-type-supplement": 43708,
+            "condition-supplement": 24,
+            "constant": 128361,
+            "constexpr-if": 165,
+            "constructor-init": 3015,
+            "decl-position-supplement": 328664,
+            "derivation-step": 8451,
+            "dynamic-init": 21402,
+            "element-position": 417,
+            "exception-specification": 13022,
+            "expr-node": 348615,
+            "field": 5676,
+            "for-loop": 575,
+            "gnu-routine-supplement": 71,
+            "hidden-name": 95257,
+            "id-name": 63104,
+            "il-entity-list-entry": 99244,
+            "instantiation-directive": 14,
+            "integer-type-supplement": 320,
+            "label": 172,
+            "lambda": 49,
+            "lambda-capture": 54,
+            "linkage-spec-block": 29,
+            "local-expr-node-ref": 273,
+            "local-scope-ref": 922,
+            "local-static-variable-init": 2,
+            "macro": 5664,
+            "macro-invocation-record-block": 114,
+            "name-qualifier": 20989,
+            "name-reference": 67087,
+            "namespace": 27,
+            "new-delete-supplement": 223,
+            "object-lifetime": 3035,
+            "other-text": 46351,
+            "overriding-virtual-function": 6,
+            "param-type": 105722,
+            "pragma": 399689,
+            "range-based-for-loop": 104,
+            "routine": 67500,
+            "routine-type-supplement": 84553,
+            "scope": 55574,
+            "scope-orphaned-list-header": 660,
+            "scoped-expression": 1,
+            "seq-number-lookup-entry": 703,
+            "source-file": 358,
+            "source-sequence-entry": 148019,
+            "src-seq-end-of-construct": 10496,
+            "src-seq-secondary-decl": 6152,
+            "src-seq-sublist": 366,
+            "statement": 64488,
+            "static-assertion": 1471,
+            "string-text": 2868,
+            "switch-case-entry": 677,
+            "switch-stmt-descr": 63,
+            "template": 18506,
+            "template-arg": 183578,
+            "template-decl": 14970,
+            "template-parameter": 27163,
+            "template_param_type_supplement": 28370,
+            "type": 301068,
+            "typeref-type-supplement": 73135,
+            "using-decl": 1248,
+            "variable": 29175,
+            "variable-template-info": 406
+          },
+          "directCalls": [],
+          "assertions": []
+        }
+      }
+    },
+    "emit-project": {
+      "timing": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/emit-project.time",
+        "bytes": 1060,
+        "sha256": "7f0ead03669222b2632d5221745f1c8a38112a3062013a955b5257f8e2a2a9c9"
+      },
+      "peakRssKiB": 318560,
+      "elapsed": "0:33.92"
+    }
+  },
+  "nativeWriterRegression": {
+    "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/native-writer.log",
+    "bytes": 132,
+    "sha256": "1924948c87fa229bc5378acebedd542df448edb53ad478687d7f15b3132f419e"
+  },
+  "producer": {
+    "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/native-build/build/bin/cpfe-semantic.producer.json",
+    "bytes": 32767,
+    "sha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf"
+  },
+  "inputs": [
+    {
+      "path": "semantic-export/audit-self.py",
+      "bytes": 16725,
+      "sha256": "60db58394ad2e57cb7f6929e9360096933ec563bfb33ccea9319752164931bdf"
+    },
+    {
+      "path": "semantic-export/build.py",
+      "bytes": 6430,
+      "sha256": "8a125018a7a502f94f697328feb763a5e4846a964b6f95dad3f8a0be1544bbe2"
+    },
+    {
+      "path": "semantic-export/export.py",
+      "bytes": 6856,
+      "sha256": "7b533029df6fef1e48f245a2e58973531c3eb619b5eb22dad0814765d96fc183"
+    },
+    {
+      "path": "semantic-export/managed/CProjectEmitter.Expressions.cs",
+      "bytes": 35516,
+      "sha256": "5c6b23d8857b96b0a8d675ed14c1fcbab4e6f8dfccf586d73193ffb96186bcfd"
+    },
+    {
+      "path": "semantic-export/managed/CProjectEmitter.Runtime.cs",
+      "bytes": 9493,
+      "sha256": "4e7168259e8dcdb2e3c019b21b5f9d79998360d5ece049e983611a0e899c0677"
+    },
+    {
+      "path": "semantic-export/managed/CProjectEmitter.Types.cs",
+      "bytes": 22738,
+      "sha256": "20ef81d2799ca97cb06fb79f616ca321cf482efc0ba9e6f52ad90a737b1c3c7a"
+    },
+    {
+      "path": "semantic-export/managed/CProjectEmitter.cs",
+      "bytes": 21034,
+      "sha256": "2532307665977b2681537f671f01ce740f5d297395b4cab63af9050bc88794d8"
+    },
+    {
+      "path": "semantic-export/managed/CSharpEmitter.cs",
+      "bytes": 37035,
+      "sha256": "003db4962e049ff515262d765b622998369eaae1b4e957e9f65a9f90c087ebb3"
+    },
+    {
+      "path": "semantic-export/managed/Edg.Semantic.csproj",
+      "bytes": 620,
+      "sha256": "f59168cce5e12db05825ea337799fad99a15c3f8bb60d2cba883ca168e3aa2d1"
+    },
+    {
+      "path": "semantic-export/managed/ProbeAssertions.cs",
+      "bytes": 4748,
+      "sha256": "6d0587aeb062d6d2917522e7a47caded25fe2c09637996e54cd296b0932f4c26"
+    },
+    {
+      "path": "semantic-export/managed/Program.cs",
+      "bytes": 4502,
+      "sha256": "15d0e50d3161d4610d64a6c87364f9a320f639943eb4002a2132d261be0057ea"
+    },
+    {
+      "path": "semantic-export/managed/SemanticGraph.cs",
+      "bytes": 20220,
+      "sha256": "4f1d6af175ea80354ecd83363cc009fac0c061241dc8f5432cc01603b85624a2"
+    },
+    {
+      "path": "semantic-export/managed/SqliteDatabase.cs",
+      "bytes": 11369,
+      "sha256": "3f5dcc2573710924908744631e85186b255c36a404acc88a922b56cb332824fd"
+    },
+    {
+      "path": "semantic-export/managed/SqliteSemanticStore.cs",
+      "bytes": 30110,
+      "sha256": "7d6beae97ee711dc23ee1bf4573ff4bf358fd922edfe1183609ed8300b070990"
+    },
+    {
+      "path": "semantic-export/native/generate_names.py",
+      "bytes": 1002,
+      "sha256": "127d63318366cb383b6990949500abf0ba4c787ea88cc7cdac6e370986c58c2d"
+    },
+    {
+      "path": "semantic-export/native/semantic_export_be.c",
+      "bytes": 35490,
+      "sha256": "bb6e4d62fdeeebd61b3e4f878d38879814a032ff0044a08530fb3f2cc5195f8d"
+    },
+    {
+      "path": "semantic-export/native/semantic_sqlite.h",
+      "bytes": 18246,
+      "sha256": "74fbd38a3a93595b67e9986a8b01f48b3d67f393ab78f30b59b1bf01a28f0453"
+    },
+    {
+      "path": "semantic-export/sqlite_store.py",
+      "bytes": 30838,
+      "sha256": "c22c58df3098b41bf9243c0e6b378e7a666cc51a5e8a542f5f73b25c5aa00ffe"
+    },
+    {
+      "path": "semantic-export/storage/schema.sql",
+      "bytes": 3154,
+      "sha256": "cda158bb40f2b1088ce11f23eb763c4707d1ee9048b739859159d99d4a493672"
+    },
+    {
+      "path": "semantic-export/tests/api.h",
+      "bytes": 156,
+      "sha256": "438e90b97deb21b09bc1573850cbf263329713c654d691ddd01c0a1d334b4c71"
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/cleanup.c",
+      "bytes": 123,
+      "sha256": "0e33cc020e3e01097e8d721030bd455a5b7e2ee68a425c9874f75e9a5fbd09f1"
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/external-call.c",
+      "bytes": 89,
+      "sha256": "3b9d81c35e4d07c91d2f781a01627f785e07754d78280beabe3b614ccb3320d6"
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/global.c",
+      "bytes": 57,
+      "sha256": "8c13f7af6556fc80092308aef0c2aeb5f430c2c37ced4550732658d8239d8806"
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/mixed-compound.c",
+      "bytes": 135,
+      "sha256": "6ed8011e8fcb92dd527923ee51c39551acba59de73497374d523eb0b5ecb782c"
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/plain.golden.cs",
+      "bytes": 1129,
+      "sha256": "850d2cb78b0a2c00dd6a58fc63b4256e1ced2f86f34d168e640b290a4f2ecf1d"
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/pointers.c",
+      "bytes": 215,
+      "sha256": "5f6c0bde8b2bc50ee40a554230413444ab28d631fb2ee3e6d6588081c39ef33b"
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/scalars.c",
+      "bytes": 2109,
+      "sha256": "abfc60c4cda4f40606f6449724d73d6bd0d0bb50c24caa79b0974dc534646d29"
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/static-local.c",
+      "bytes": 62,
+      "sha256": "0a02677ffaf6729e8bd54849e7d66243ddcfb8a4c6fb5d4baf9177a6d7e315c9"
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/unsigned-negate.c",
+      "bytes": 152,
+      "sha256": "7a6550ae2135b4413885b7af2b215f6210d72247eba61a3251d54ea109a2a6a2"
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/verify.py",
+      "bytes": 15511,
+      "sha256": "c1e46bdd6b71107176081ad0ccb40d460a8a0a1c9e1f50b7d5d8614d372fe4f3"
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/volatile.c",
+      "bytes": 58,
+      "sha256": "8113453e6458d115f0bd16ad9d62f235ff60493e96235f9b4cbe9548e7898ea0"
+    },
+    {
+      "path": "semantic-export/tests/managed-tests/verify.py",
+      "bytes": 4797,
+      "sha256": "20ab240e7c6145fb1e43b4bf42ef7d7ae37741548c6400385b92dc527e429e07"
+    },
+    {
+      "path": "semantic-export/tests/plain.c",
+      "bytes": 270,
+      "sha256": "c43fcbb938ddc51b9596ed6992c5a3c7cbf3d127f75425528569b1928889b2cb"
+    },
+    {
+      "path": "semantic-export/tests/probe.cpp",
+      "bytes": 809,
+      "sha256": "5fcb0794132ab21bebd758eb14515b824a5d8db6cb7019057bc44ef3c533e832"
+    },
+    {
+      "path": "semantic-export/tests/sqlite/expressions.c",
+      "bytes": 1407,
+      "sha256": "8c1b492017d10c6418599110968cc03892b725992260101f27445eb1317f7bc0"
+    },
+    {
+      "path": "semantic-export/tests/sqlite/run.py",
+      "bytes": 7139,
+      "sha256": "6b78c6b518c2d219b4891cb2b61c676da19b1071076f7a126ec970a0bd35a667"
+    },
+    {
+      "path": "semantic-export/tests/sqlite/verify-expressions.py",
+      "bytes": 4823,
+      "sha256": "5f058f0d6bfe8f57e877f07ace0081cb562e2d5b88d159bd28e5e99406e1d80a"
+    },
+    {
+      "path": "semantic-export/tests/sqlite/verify.py",
+      "bytes": 10767,
+      "sha256": "374437d38a4a0e2c0a26ec1d83ad9c801351fc6181c3173983913a7fa9634914"
+    },
+    {
+      "path": "semantic-export/tests/storage/native-writer.cpp",
+      "bytes": 10045,
+      "sha256": "4a01a63531a4586f8b27e4f46a563c0fc3b45ecc6a719f294eab6641606b045a"
+    },
+    {
+      "path": "semantic-export/tests/storage/verify.py",
+      "bytes": 19375,
+      "sha256": "e855751ff178dd36643a20e86d61b02e25175798432a8a11e6d19e9a5f43b164"
+    }
+  ],
+  "limits": [
+    "Single translation unit per package; no semantic linking",
+    "C++ adapter gaps remain explicit; storage does not establish C++ emission completeness",
+    "Managed store binds platform native SQLite; only Linux x64 tested",
+    "Nested fields retain pooled JSON; whole nodes are typed table rows",
+    "Native EDG IL and emitter working sets are separate from bounded storage caches",
+    "Prior 77-translation-unit audit was JSON; current production format verified on SQLite and actual dot backend"
+  ]
+}

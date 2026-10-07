@@ -1436,3 +1436,27 @@ existing TLS 1.3 profile is verified on Linux x64; optional logging/DTrace,
 other platforms, TLS 1.2, 0-RTT and full QUIC transport are not covered by this
 acceptance. [Port/build instructions](../../picotls/edg/README.md) and
 [TLS acceptance evidence](../evidence/picotls-tls-20261007.json).
+
+
+## Semantic export: normalized SQLite packages (2026-10-07)
+
+The native semantic exporter now writes SQLite directly. Base nodes, typed
+node-kind tables, shared literal payloads and ordered audit edges replace the
+whole-graph JSON file. Source snapshots and exact producer metadata are embedded
+in the sealed database. Compact hash buckets compare exact bytes before
+interning, preserving distinct semantic identities and exact integer payloads.
+The C# consumer uses indexed access and bounded caches, with legacy JSON input
+compatibility and NativeAOT support through the platform SQLite library.
+
+The SQLite + memory-VFS package reproduces all 3,171 prior generated C#/project
+files byte-for-byte. Native/JIT/NativeAOT execution matches all 43 project and
+67 expression observations. The actual dot-backend graph is validated through
+the database reader without whole-file JSON materialization. Storage corruption,
+rehashed malformed records, exact payloads, hash collisions and legacy reader/
+emitter behavior are covered by retained regression results.
+
+This changes storage, not C++ semantic coverage or cross-unit linking. The prior
+77-unit EDG audit remains evidence for that prior producer; this migration's
+large production fixtures are SQLite and the actual dot backend.
+[Storage contract and measurements](semantic-export-storage.md),
+[tracked evidence](../semantic-export/evidence-sqlite-storage.json).
