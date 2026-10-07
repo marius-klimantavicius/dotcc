@@ -1,0 +1,267 @@
+{
+  "scope": "Runnable C# backend-inclusive EDG compiler; full self-bootstrap and NativeAOT pending",
+  "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002",
+  "build": {
+    "command": [
+      "dotnet",
+      "build",
+      "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/managed/Generated.csproj",
+      "-c",
+      "Release",
+      "--nologo",
+      "-m:1",
+      "-p:BuildInParallel=false",
+      "-p:UseSharedCompilation=false",
+      "-p:RunAnalyzers=false",
+      "-p:TreatWarningsAsErrors=true"
+    ],
+    "environmentOverrides": {
+      "DOTNET_GCHeapHardLimit": "a00000000",
+      "DOTNET_GCConserveMemory": "5",
+      "DOTNET_PROCESSOR_COUNT": "4",
+      "MSBUILDDISABLENODEREUSE": "1",
+      "DOTNET_CLI_TELEMETRY_OPTOUT": "1"
+    },
+    "startedUtc": "2026-10-07T04:25:40.384165+00:00",
+    "rssLimitBytes": 51539607552,
+    "timeoutSeconds": 1800,
+    "analyzersEnabled": false,
+    "measurementsAvailable": true,
+    "exitCode": 0,
+    "terminationReason": null,
+    "elapsedSeconds": 476.311,
+    "peakTreeRssBytes": 19536396288,
+    "status": "passed"
+  },
+  "version": {
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/managed/bin/Release/net10.0/Generated.dll",
+      "--version"
+    ],
+    "exitCode": 0,
+    "seconds": 1.5877255100058392
+  },
+  "smoke": {
+    "scope": "Raw dot backend output byte equivalence",
+    "normalization": [],
+    "invocation": {
+      "arguments": [
+        "--c++14",
+        "--gnu_version",
+        "130300",
+        "--clear_flag",
+        "use_predefined_macro_file",
+        "--instantiate",
+        "used",
+        "--",
+        "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-determinism-001/probe.cpp"
+      ],
+      "environment": {
+        "EDG_DOT_NAMESPACE": "@Probe",
+        "EDG_DOT_CLASS": "@Compiler",
+        "EDG_DOT_INSTANCE": "0",
+        "EDG_DOT_EMIT": "exe",
+        "EDG_DOT_NEST": "1",
+        "EDG_DOT_UNBOUND_EXTERNALS": "reject",
+        "EDG_DOT_RUNTIME": "none",
+        "EDG_DOT_LIBC": "dotcc",
+        "EDG_DOT_POSIX": "0",
+        "EDG_DOT_TARGET": "portable-lp64-binary80-v2",
+        "EDG_DOT_TYPE_IR": "0"
+      },
+      "cwd": "/home/marius/p/dotcc"
+    },
+    "effectiveEdgEnvironment": {
+      "LANG": "en_US.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "EDG_DOT_NAMESPACE": "@Probe",
+      "EDG_DOT_CLASS": "@Compiler",
+      "EDG_DOT_INSTANCE": "0",
+      "EDG_DOT_EMIT": "exe",
+      "EDG_DOT_NEST": "1",
+      "EDG_DOT_UNBOUND_EXTERNALS": "reject",
+      "EDG_DOT_RUNTIME": "none",
+      "EDG_DOT_LIBC": "dotcc",
+      "EDG_DOT_POSIX": "0",
+      "EDG_DOT_TARGET": "portable-lp64-binary80-v2",
+      "EDG_DOT_TYPE_IR": "0"
+    },
+    "nativeOnly": false,
+    "runs": [
+      {
+        "label": "native-1",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-001/cpfe-dot",
+          "--c++14",
+          "--gnu_version",
+          "130300",
+          "--clear_flag",
+          "use_predefined_macro_file",
+          "--instantiate",
+          "used",
+          "--",
+          "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-determinism-001/probe.cpp"
+        ],
+        "stdout": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/native-1.raw.cs",
+        "stderr": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/native-1.stderr",
+        "hostFiles": [
+          {
+            "path": "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-001/cpfe-dot",
+            "sha256": "43c9563502226699137a31f848b82cba22d8f6e85b9b72c1c582d8c2997bc0a7"
+          }
+        ],
+        "exitCode": 0,
+        "seconds": 0.007,
+        "stdoutBytes": 55870,
+        "stdoutSha256": "87b1ec82f8840ada6a62b57c6b0442bfa0c18c17002ba4493d6986a2ee502ee2",
+        "stderrBytes": 0,
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "emittedCSharp": true,
+        "passed": true
+      },
+      {
+        "label": "native-2",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-001/cpfe-dot",
+          "--c++14",
+          "--gnu_version",
+          "130300",
+          "--clear_flag",
+          "use_predefined_macro_file",
+          "--instantiate",
+          "used",
+          "--",
+          "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-determinism-001/probe.cpp"
+        ],
+        "stdout": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/native-2.raw.cs",
+        "stderr": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/native-2.stderr",
+        "hostFiles": [
+          {
+            "path": "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-001/cpfe-dot",
+            "sha256": "43c9563502226699137a31f848b82cba22d8f6e85b9b72c1c582d8c2997bc0a7"
+          }
+        ],
+        "exitCode": 0,
+        "seconds": 0.008,
+        "stdoutBytes": 55870,
+        "stdoutSha256": "87b1ec82f8840ada6a62b57c6b0442bfa0c18c17002ba4493d6986a2ee502ee2",
+        "stderrBytes": 0,
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "emittedCSharp": true,
+        "passed": true
+      },
+      {
+        "label": "translated",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/managed/bin/Release/net10.0/Generated.dll",
+          "--c++14",
+          "--gnu_version",
+          "130300",
+          "--clear_flag",
+          "use_predefined_macro_file",
+          "--instantiate",
+          "used",
+          "--",
+          "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-determinism-001/probe.cpp"
+        ],
+        "stdout": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/translated.raw.cs",
+        "stderr": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/translated.stderr",
+        "hostFiles": [
+          {
+            "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/managed/bin/Release/net10.0/Generated.dll",
+            "sha256": "7e179297fb89640c3585e2cdfc1a1f49b30719c9af786f670c96677362c9e4e3"
+          }
+        ],
+        "exitCode": 0,
+        "seconds": 2.267,
+        "stdoutBytes": 55870,
+        "stdoutSha256": "87b1ec82f8840ada6a62b57c6b0442bfa0c18c17002ba4493d6986a2ee502ee2",
+        "stderrBytes": 0,
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "emittedCSharp": true,
+        "passed": true
+      }
+    ],
+    "comparisons": [
+      {
+        "left": "native-1",
+        "right": "native-2",
+        "sameExitCode": true,
+        "stdout": {
+          "left": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/native-1.raw.cs",
+          "right": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/native-2.raw.cs",
+          "leftBytes": 55870,
+          "rightBytes": 55870,
+          "leftSha256": "87b1ec82f8840ada6a62b57c6b0442bfa0c18c17002ba4493d6986a2ee502ee2",
+          "rightSha256": "87b1ec82f8840ada6a62b57c6b0442bfa0c18c17002ba4493d6986a2ee502ee2",
+          "equal": true
+        },
+        "stderr": {
+          "left": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/native-1.stderr",
+          "right": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/native-2.stderr",
+          "leftBytes": 0,
+          "rightBytes": 0,
+          "leftSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "rightSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "equal": true
+        },
+        "passed": true
+      },
+      {
+        "left": "native-1",
+        "right": "translated",
+        "sameExitCode": true,
+        "stdout": {
+          "left": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/native-1.raw.cs",
+          "right": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/translated.raw.cs",
+          "leftBytes": 55870,
+          "rightBytes": 55870,
+          "leftSha256": "87b1ec82f8840ada6a62b57c6b0442bfa0c18c17002ba4493d6986a2ee502ee2",
+          "rightSha256": "87b1ec82f8840ada6a62b57c6b0442bfa0c18c17002ba4493d6986a2ee502ee2",
+          "equal": true
+        },
+        "stderr": {
+          "left": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/native-1.stderr",
+          "right": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/smoke-jit/translated.stderr",
+          "leftBytes": 0,
+          "rightBytes": 0,
+          "leftSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "rightSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "equal": true
+        },
+        "passed": true
+      }
+    ],
+    "inputAssumption": "Caller must keep all source and include contents unchanged between native and translated stages",
+    "nativeDeterministic": true,
+    "passed": true
+  },
+  "methodSharding": {
+    "mode": "static-synthetic-method-shards-v1",
+    "before": 74995,
+    "after": 61000,
+    "target": 61000,
+    "shards": [
+      {
+        "name": "__EdgMethodShard0",
+        "methods": 10000,
+        "methodBudget": 10000
+      },
+      {
+        "name": "__EdgMethodShard1",
+        "methods": 3995,
+        "methodBudget": 3995
+      }
+    ],
+    "sdk": "10.0.112",
+    "sourceSha256": "a700f8a6649c1981b7d4e585d643c1136c9be538df505ddba20af3ec008e3310",
+    "toolSha256": "c5fd1974fe00c9847ef9a0bce9990704a30b42461f4b90a236b6ab7d2bf87413"
+  },
+  "assembly": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/managed/bin/Release/net10.0/Generated.dll",
+    "bytes": 48992768,
+    "sha256": "7e179297fb89640c3585e2cdfc1a1f49b30719c9af786f670c96677362c9e4e3"
+  }
+}

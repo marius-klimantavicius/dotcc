@@ -1311,3 +1311,14 @@ output hashes, sizes and actual byte equality before starting the translated
 compiler. Eighteen acceptance/tamper-rejection checks pass. Source/include inputs
 must remain frozen between stages, as with the original sequential replay.
 [Baseline reuse evidence](../evidence/bootstrap-baseline-reuse-20261007.json).
+
+The backend-inclusive `edg-dot-bootstrap-002` compiler now builds with zero C#
+warnings/errors in 476.311 seconds (19,536,396,288-byte peak process-tree RSS).
+It loads and reports EDG 7.0 with the pinned build timestamp. Its first C++
+virtual/exception fixture emits exactly the native backend's 55,870 bytes,
+including identical stderr and exit status (SHA-256
+`87b1ec82f8840ada6a62b57c6b0442bfa0c18c17002ba4493d6986a2ee502ee2`).
+Frozen compiler/backend/header/original-source hashes were rechecked before
+starting the full 290-input bootstrap. Full bootstrap and NativeAOT acceptance
+remain pending at this runnable-compiler milestone.
+[Runnable compiler evidence](../evidence/self-dot-execution-20261007.json).
