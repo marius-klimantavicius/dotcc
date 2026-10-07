@@ -38,6 +38,16 @@ string posix_type(a_type_ptr t) {
     auto a=skip_typerefs(f->type);
     return a->kind==tk_array && a->size==4096 && type(a->variant.array.element_type)=="sbyte"?"POSIX_DIRENT*":type(t);
   }
+  if(n=="statvfs") {
+    const char* fields[]={"f_bsize","f_frsize","f_blocks","f_bfree","f_bavail","f_files","f_ffree","f_favail","f_fsid","f_flag","f_namemax"};
+    if(p->size!=88 || alignment_of_type(p)!=8)return type(t);
+    auto f=p->variant.class_struct_union.field_list;
+    for(unsigned i=0;i<11;++i) {
+      if(!f || f->is_bit_field || !f->source_corresp.name || string(f->source_corresp.name)!=fields[i] || f->offset!=i*8 || type(f->type)!="ulong")return type(t);
+      f=f->next;
+    }
+    return f?type(t):"POSIX_STATVFS*";
+  }
   if(n!="stat" && n!="timeval")return type(t);
   const char* stat_names[]={"st_dev","st_ino","st_mode","st_nlink","st_uid","st_gid","st_size","st_atime","st_mtime","st_ctime","st_rdev","st_blksize","st_blocks"};
   const char* stat_types[]={"ulong","ulong","uint","ulong","uint","uint","long","long","long","long","ulong","long","long"};
@@ -56,6 +66,7 @@ struct posix_binding { const char* symbol;const char* result;const char* paramet
 const posix_binding posix_bindings[]={
   {"open","int","sbyte*,int","OpenVariadic",true},
   {"fcntl","int","int,int","FcntlVariadic",true},
+  {"ioctl","int","int,ulong","IoctlVariadic",true},
   {"close","int","int","Close",false},
   {"read","long","int,void*,ulong","Read",false},
   {"write","long","int,void*,ulong","Write",false},
@@ -78,12 +89,18 @@ const posix_binding posix_bindings[]={
   {"stat","int","sbyte*,POSIX_STAT*","Stat",false},
   {"fstat","int","int,POSIX_STAT*","Fstat",false},
   {"lstat","int","sbyte*,POSIX_STAT*","Lstat",false},
+  {"statvfs","int","sbyte*,POSIX_STATVFS*","Statvfs",false},
   {"mmap","void*","void*,ulong,int,int,int,long","Mmap",false},
   {"munmap","int","void*,ulong","Munmap",false},
+  {"mlock","int","void*,ulong","Mlock",false},
+  {"munlock","int","void*,ulong","Munlock",false},
+  {"madvise","int","void*,ulong,int","Madvise",false},
   {"gettimeofday","int","POSIX_TIMEVAL*,void*","Gettimeofday",false},
   {"utimes","int","sbyte*,POSIX_TIMEVAL*","Utimes",false},
   {"sysconf","long","int","Sysconf",false},
   {"getpid","int","","Getpid",false},
+  {"sched_getcpu","int","","SchedulerGetCpu",false},
+  {"sched_yield","int","","SchedulerYield",false},
   {"sleep","uint","uint","Sleep",false},
   {"usleep","int","uint","Usleep",false},
   {"chdir","int","sbyte*","Chdir",false},
@@ -97,8 +114,10 @@ const posix_binding posix_bindings[]={
   {"getrlimit","int","int,POSIX_RLIMIT*","Getrlimit",false},
   {"setrlimit","int","int,POSIX_RLIMIT*","Setrlimit",false},
 };
+#include "dot_gen_semaphore.h"
 bool posix_routine(a_routine_ptr r,const string& symbol) {
   if(!posix_enabled)return false;
+  if(posix_semaphore_routine(r,symbol))return true;
   // A class/namespace method named open/getpid is not the global POSIX API.
   if(r->source_corresp.name_linkage!=nlk_external ||
      !r->source_corresp.parent_scope || r->source_corresp.parent_scope->kind!=sck_file)return false;
@@ -112,6 +131,7 @@ bool posix_routine(a_routine_ptr r,const string& symbol) {
       if(abi=="POSIX_STAT*")args+="(global::Edg.Runtime.PosixStat*)";
       if(abi=="POSIX_TIMEVAL*")args+="(global::Edg.Runtime.PosixTimeval*)";
       if(abi=="POSIX_RLIMIT*")args+="(global::Edg.Runtime.PosixRlimit*)";
+      if(abi=="POSIX_STATVFS*")args+="(global::Edg.Runtime.PosixStatvfs*)";
       if((symbol=="mmap" || symbol=="munmap") && index==2)args+="(nuint)";
       args+=arg;
     }
@@ -128,8 +148,9 @@ bool posix_routine(a_routine_ptr r,const string& symbol) {
     if(symbol=="realpath")args+=", size => (nint)__edg_malloc(size)";
     bool files=symbol=="fdopen" || symbol=="fileno";
     if(files)ensure_files();
+    if(symbol=="ioctl")ensure_files();
     bool opaque_result=result_abi=="FILE*" || result_abi=="POSIX_DIR*" || result_abi=="POSIX_DIRENT*";
-    helper_output+="// dot-gen:import "+symbol+"\n// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+result+" "+name(r,"f")+"("+signature+") { return "+string(opaque_result?"("+result+")":"")+(files?"__edg_files.":"__edg_posix.")+binding.target+"("+args+"); }\n// dot-gen:member-end\n";
+    helper_output+="// dot-gen:import "+symbol+"\n// dot-gen:member-begin\nprivate "+string(instance_mode?"":"static ")+result+" "+name(r,"f")+"("+signature+") { "+string(symbol=="ioctl"?"_ = __edg_files; ":"")+"return "+string(opaque_result?"("+result+")":"")+(files?"__edg_files.":"__edg_posix.")+binding.target+"("+args+"); }\n// dot-gen:member-end\n";
     return true;
   }
   return false;

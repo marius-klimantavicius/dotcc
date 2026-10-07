@@ -27,10 +27,10 @@ def generated_source(source):
 
 
 RUNTIME_DEPENDENCIES = {
-    "PosixContext": ("PosixTypes", "PosixFiles", "PosixPlatform", "PosixLocks", "PosixOfdLocks", "PosixWindowsLocks", "PosixMappings", "PosixTime", "PosixVariadic", "PosixStreams", "PosixDirectories", "PosixResources", "LibcFileDescriptors"),
+    "PosixContext": ("PosixTypes", "PosixFiles", "PosixPlatform", "PosixLocks", "PosixOfdLocks", "PosixWindowsLocks", "PosixMappings", "PosixTime", "PosixVariadic", "PosixStreams", "PosixDirectories", "PosixResources", "PosixSemaphores", "PosixMemoryServices", "PosixFilesystemInfo", "PosixScheduler", "LibcFileDescriptors"),
     "PosixTypes": (), "PosixFiles": (), "PosixPlatform": (), "PosixLocks": (),
     "PosixMappings": (), "PosixTime": (), "PosixVariadic": ("VaArg",),
-    "PosixOfdLocks": (), "PosixWindowsLocks": (), "PosixStreams": (), "PosixDirectories": (), "PosixResources": (),
+    "PosixOfdLocks": (), "PosixWindowsLocks": (), "PosixStreams": (), "PosixDirectories": (), "PosixResources": (), "PosixSemaphores": (), "PosixMemoryServices": (), "PosixFilesystemInfo": (), "PosixScheduler": (),
     "LibcFileDescriptors": (), "LibcFilesDescriptors": (),
     "LibcTimezone": ("LibcTimezoneData",), "LibcTimezoneData": (),
     "NonlocalJump": ("Vla",), "Coroutine": (),

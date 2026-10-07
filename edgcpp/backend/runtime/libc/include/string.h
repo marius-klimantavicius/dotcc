@@ -16,6 +16,8 @@ int memcmp(const void *, const void *, size_t);
 void *memchr(const void *, int, size_t);
 size_t strlen(const char *);
 size_t strnlen(const char *, size_t);
+char *strdup(const char *);
+char *strndup(const char *, size_t);
 int strcmp(const char *, const char *);
 int strcoll(const char *, const char *);
 int strcoll_l(const char *, const char *, locale_t);

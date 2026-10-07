@@ -12,8 +12,11 @@ public sealed unsafe partial class PosixContext
         internal nuint Address, Length;
         // Windows requires the original view address, including alignment padding.
         internal void* WindowsView;
-        internal Mapping(nuint address, nuint length, void* windowsView = null)
-        { Address = address; Length = length; WindowsView = windowsView; }
+        internal readonly bool PrivateAnonymous;
+        internal readonly int Protection;
+        internal Mapping(nuint address, nuint length, void* windowsView = null,
+                         bool privateAnonymous = false, int protection = 0)
+        { Address = address; Length = length; WindowsView = windowsView; PrivateAnonymous = privateAnonymous; Protection = protection; }
     }
 
     private readonly object mappingGate = new();
@@ -88,7 +91,7 @@ public sealed unsafe partial class PosixContext
                         (uint)(viewOffset >> 32), (uint)viewOffset, checked(length + delta));
                     if (view == null) return WindowsMapError();
                     nuint result = (nuint)view + delta;
-                    try { mappings.Add(new Mapping(result, rounded, view)); }
+                    try { mappings.Add(new Mapping(result, rounded, view, descriptor is null && (flags & 2) != 0, protection)); }
                     catch { UnmapViewOfFile(view); throw; }
                     mappingCreatedCount++;
                     return (void*)result;
@@ -102,7 +105,7 @@ public sealed unsafe partial class PosixContext
             void* resultUnix = MapUnix(address, length, protection, nativeFlags,
                 descriptor is null ? -1 : checked((int)descriptor.Handle.DangerousGetHandle()), offset);
             if (resultUnix == (void*)(-1)) return MapError(MappingUnixError());
-            try { mappings.Add(new Mapping((nuint)resultUnix, rounded)); }
+            try { mappings.Add(new Mapping((nuint)resultUnix, rounded, null, descriptor is null && (flags & 2) != 0, protection)); }
             catch { UnmapUnix(resultUnix, rounded); throw; }
             mappingCreatedCount++;
             return resultUnix;
@@ -149,8 +152,8 @@ public sealed unsafe partial class PosixContext
             foreach (Mapping item in overlaps)
             {
                 nuint itemEnd = item.Address + item.Length;
-                if (item.Address < start) remnants.Add(new Mapping(item.Address, start - item.Address));
-                if (itemEnd > end) remnants.Add(new Mapping(end, itemEnd - end));
+                if (item.Address < start) remnants.Add(new Mapping(item.Address, start - item.Address, null, item.PrivateAnonymous, item.Protection));
+                if (itemEnd > end) remnants.Add(new Mapping(end, itemEnd - end, null, item.PrivateAnonymous, item.Protection));
             }
             mappings.EnsureCapacity(checked(mappings.Count + remnants.Count));
             if (UnmapUnix(address, size) != 0) return MappingError(MappingUnixError());

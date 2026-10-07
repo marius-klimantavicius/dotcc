@@ -211,8 +211,9 @@ source_planned_node source_plan_node(an_expr_node_ptr e,bool discard,bool want_p
   if(e->kind!=enk_operation)return {"",expr(e),e->is_lvalue?location(e):"",e->is_lvalue?address(e):""};
   auto op=e->variant.operation.kind;auto a=e->variant.operation.operands;auto b=a?a->next:nullptr;
   if(source_assignment_token(op) || source_increment(op))return source_plan_mutation(e,discard,want_place);
-  if(e->variant.operation.eval_right_to_left && b)unsupported("right-to-left lowered operation",op);
-  if(op==eok_call && a && a->kind==enk_routine && a->variant.routine.ptr->compiler_generated)
+  bool reverse_call=op==eok_call && e->variant.operation.eval_right_to_left && b;
+  if(e->variant.operation.eval_right_to_left && b && !reverse_call)unsupported("right-to-left lowered operation",op);
+  if(op==eok_call && !reverse_call && a && a->kind==enk_routine && a->variant.routine.ptr->compiler_generated)
     return {"",expr(e),e->is_lvalue?location(e):"",e->is_lvalue?address(e):""};
   if(op==eok_comma) {
     auto effect=plan_source_effect(a);auto tail=source_plan_node(b,discard,want_place);tail.prefix=effect.statements+tail.prefix;return tail;
@@ -250,12 +251,19 @@ source_planned_node source_plan_node(an_expr_node_ptr e,bool discard,bool want_p
     bool place=child==a && (op==eok_address_of || op==eok_reference_to || op==eok_array_to_pointer || op==eok_dot_field || op==eok_lvalue_adjust || (op==eok_parens && want_place));
     children.push_back({child,source_plan_node(child,false,place)});
   }
+  // c_gen_be.c::check_expression_evaluation_order explicitly permits an
+  // operator-function call to retain RHS-before-LHS ordering (operator= in
+  // C++17). C# evaluates call operands left to right, so evaluate and capture
+  // their values first in EDG's recorded order. Only the final call keeps its
+  // original argument positions. Explicit .operator=(...) calls can carry
+  // the opposite order and continue through the ordinary plan above.
+  if(reverse_call)std::reverse(children.begin(),children.end());
   string prefix;
   for(size_t i=0;i<children.size();++i) {
     auto child=children[i].first;auto value=children[i].second;prefix+=value.prefix;
     bool later=false;for(size_t j=i+1;j<children.size();++j)later|=!children[j].second.prefix.empty();
     bool place=child==a && (op==eok_address_of || op==eok_reference_to || op==eok_array_to_pointer || op==eok_dot_field || op==eok_lvalue_adjust || (op==eok_parens && want_place));
-    if(later) {
+    if(later || (reverse_call && child->kind!=enk_constant)) {
       string temp=source_temporary(place?"operand_address":"operand_value");
       if(place){prefix+=type(child->type)+"* "+temp+" = "+source_planned_address(child,value)+";\n";value.place="(*"+temp+")";value.value=value.place;value.pointer=temp;}
       else {prefix+=type(child->type)+" "+temp+" = "+value.value+";\n";value.value=temp;value.place=temp;value.pointer="";}

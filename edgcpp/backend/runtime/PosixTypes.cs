@@ -30,3 +30,16 @@ public struct PosixTimeval
 {
     public long tv_sec, tv_usec;
 }
+
+[StructLayout(LayoutKind.Sequential)]
+public struct PosixStatvfs
+{
+    public ulong f_bsize, f_frsize, f_blocks, f_bfree, f_bavail;
+    public ulong f_files, f_ffree, f_favail, f_fsid, f_flag, f_namemax;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct PosixWinsize
+{
+    public ushort ws_row, ws_col, ws_xpixel, ws_ypixel;
+}

@@ -19,7 +19,10 @@ void check_operand_order(an_expr_node_ptr e) {
       case eok_or_assign: case eok_xor_assign: case eok_shiftl_assign: case eok_shiftr_assign: rhs_first=true; break;
       default: break;
     }
-    if(rhs_first)std::reverse(operands.begin(),operands.end());
+    // Operator-function calls can retain C++17 RHS-before-receiver ordering.
+    // The source planner snapshots operands in this order before emitting the
+    // ordinary C# call; explicit member-call syntax remains left-to-right.
+    if(rhs_first || (op==eok_call && e->variant.operation.eval_right_to_left))std::reverse(operands.begin(),operands.end());
     else if(e->variant.operation.eval_right_to_left && operands.size()>1)
       unsupported("right-to-left lowered operation",op);
     for(auto a:operands)check_operand_order(a);

@@ -1,0 +1,15 @@
+{
+  "description": "Initial upstream coverage, not the complete DuckDB suite. No copied or rewritten SQL.",
+  "groups": [
+    {"name": "c-api-basic", "selectors": ["Basic test of C API"]},
+    {"name": "c-api-types", "selectors": ["Test different types of C API"]},
+    {"name": "c-api-errors", "selectors": ["Test errors in C API"]},
+    {"name": "projection", "selectors": ["test/sql/select/test_projection_names.test"]},
+    {"name": "join", "selectors": ["test/sql/join/inner/test_join.test"]},
+    {"name": "aggregation", "selectors": ["test/sql/aggregate/group/test_group_by.test"]},
+    {"name": "ordering", "selectors": ["test/sql/order/test_order_by.test"]},
+    {"name": "prepared", "selectors": ["test/sql/prepared/test_basic_prepare.test"]},
+    {"name": "prepared-errors", "selectors": ["test/sql/prepared/test_prepare_error.test"]},
+    {"name": "transactions", "selectors": ["test/sql/transactions/test_transaction_local_data.test"]}
+  ]
+}

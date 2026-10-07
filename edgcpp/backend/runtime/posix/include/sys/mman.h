@@ -11,11 +11,19 @@
 #define MAP_ANONYMOUS 0x20
 #define MAP_ANON MAP_ANONYMOUS
 #define MAP_FAILED ((void *)-1)
+#define MADV_NORMAL 0
+#define MADV_RANDOM 1
+#define MADV_SEQUENTIAL 2
+#define MADV_WILLNEED 3
+#define MADV_DONTNEED 4
 #ifdef __cplusplus
 extern "C" {
 #endif
 void *mmap(void *, size_t, int, int, int, off_t);
 int munmap(void *, size_t);
+int mlock(const void *, size_t);
+int munlock(const void *, size_t);
+int madvise(void *, size_t, int);
 #ifdef __cplusplus
 }
 #endif

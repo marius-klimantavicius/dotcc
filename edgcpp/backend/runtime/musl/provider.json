@@ -367,6 +367,13 @@
         "in6addr_loopback.c",
         "inet_ntop.c"
       ]
+    },
+    {
+      "directory": "string_alloc",
+      "translationUnits": [
+        "strdup.c",
+        "strndup.c"
+      ]
     }
   ]
 }

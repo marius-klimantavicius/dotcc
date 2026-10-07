@@ -1,0 +1,21 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "strdup.c": {
+      "upstream": "src/string/strdup.c",
+      "originalSha256": "1d6181f9220e7189a48900e5f603f113e8e5c3cba2eeccbabf36cf9c4c54eeb1",
+      "adaptedSha256": "a06608ece6e28c97f1d64d40bdcd5da30729409412e4cefce62bd9b828e82ed2",
+      "patch": "patches/strdup.c.patch",
+      "patchSha256": "0d693dfa9db0ce4ab10abd4f8c69ef538238530c9a8e55c4d0f81fd42a988419"
+    },
+    "strndup.c": {
+      "upstream": "src/string/strndup.c",
+      "originalSha256": "4f3cf1652551ceef6ba415b7123f9de4ef5e39d8a007b7e4262f92249161f77d",
+      "adaptedSha256": "c735f251ea965a0d0e8c4bc0a40a0964162d032e5caa427e74d75b30a60bc0df",
+      "patch": "patches/strndup.c.patch",
+      "patchSha256": "01d2809b43ab6a0410ad8bcc68dd921fa8fd8e43dce576e0a606a41195ce0af5"
+    }
+  },
+  "adapters": {}
+}

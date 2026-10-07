@@ -1,0 +1,11 @@
+{
+  "project": "DuckDB",
+  "version": "1.5.6",
+  "tag": "v1.5.6",
+  "commit": "069cc9f9b5be802405797faecc284961b07c70ef",
+  "url": "https://codeload.github.com/duckdb/duckdb/tar.gz/069cc9f9b5be802405797faecc284961b07c70ef",
+  "archive": "duckdb-v1.5.6.tar.gz",
+  "sha256": "77cfc249ad652104b770fa7a8bb1d0119c3232e5dd03aadaaa1c9c7554fe7c05",
+  "release": "https://github.com/duckdb/duckdb/releases/tag/v1.5.6",
+  "publishedAt": "2026-09-28T13:35:11Z"
+}

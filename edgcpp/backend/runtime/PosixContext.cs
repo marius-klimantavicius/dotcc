@@ -175,6 +175,7 @@ public sealed unsafe partial class PosixContext : IDisposable, ILibcFileDescript
         }
         CloseMappings();
         CloseDirectories();
+        CloseSemaphores();
         foreach (int fd in ids) Close(fd);
     }
 }

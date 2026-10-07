@@ -1552,3 +1552,39 @@ qualification and other OS/architecture runs are not claimed.
 [final evidence](../evidence/msquic-20261007.json),
 [prerequisites](../evidence/msquic-prerequisites-20261007.json),
 [backend fixes](../evidence/msquic-backend-20261007.json).
+
+## DuckDB source and runtime bring-up (2026-10-07)
+
+Pinned DuckDB v1.5.6 with all seven bundled static extensions and their source
+dependencies. Dynamic extension loading, autoloading and installation are off;
+the optional native allocator uses the shared NativeMemory-backed allocation
+contract instead. The native C++20 reference builds and passes 17 selected
+upstream cases (2,848 assertions) covering C API/SQL and bundled extensions.
+The unchanged upstream SQLLogicTest runner and a small reporting adapter reject
+skips, empty runs and expected failures as acceptance results.
+
+Shared prerequisites now include pinned musl string duplication, realpath,
+64-bit stdio offsets, process-local unnamed semaphores, physical memory queries,
+memory locking/discard, filesystem statistics, terminal windows and scheduler
+queries. Focused native/JIT/NativeAOT checks pass on Linux x64, including instance
+ownership, real kernel locks and zero-fill discard. Other execution platforms
+remain unverified. Unsupported cross-process semaphore and nonportable discard
+cases return explicit errors.
+
+The generic source planner now honors EDG's right-to-left operator-function call
+ordering, following the stock C backend. Ten native/stock-C traces match static
+and instance JIT/AOT. A broad real libc++ implementation profile passes native,
+JIT and NativeAOT with streams, regex, threading, random generation, arithmetic
+sorts, floating charconv and typed exceptions, using a C++17 private-source
+compatibility overlay and one primary implementation/consumer TU.
+
+Full DuckDB C# execution is not yet established. Separately merged libc++
+consumers reach a correspondence assertion also reproduced by the stock C
+backend on identical preprocessed inputs. Assembly alternatives are being
+investigated without editing the frontend. The source-review link currently
+contains a partial Hugeint.cpp translation with five unresolved DuckDB contracts,
+not a runnable full database. Input preparation retains all source, C++/C#,
+commands, compiler snapshots and failure evidence.
+
+[DuckDB recipes](../../duckdb/README.md),
+[first runtime evidence](../evidence/duckdb-runtime-prerequisites-20261007.json).

@@ -1,0 +1,93 @@
+{
+  "milestone": "DuckDB native baseline and portable runtime/provider prerequisites",
+  "fullDuckDbTranslated": false,
+  "executionPlatform": "Linux x64",
+  "nativeReferenceStandard": "C++20 (configured bundled RE2 selects C++11)",
+  "portableStandard": "C++17",
+  "receipts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-001/native-results.json",
+      "sha256": "0273f2ab7d69da5956c0eda370f879b7e02ecd64afd7ea3df56558135c471c04",
+      "status": "built"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-baseline-003/results.json",
+      "sha256": "dee3b3df61d5d98973dd293a146c31c43eeb364a522d69633e7f7cb85fc5fa2b",
+      "status": "native-baseline-passed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-bundled-002/results.json",
+      "sha256": "81c3c1bcfcf5374647204f63c129a46160ce7f18ab339b14f21f258e8c3707c2",
+      "status": "native-baseline-passed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-reporter-controls-002/results.json",
+      "sha256": "9109fc90687999c7c652c1fcf70936e690175b4d3dbb733206b0d115c443e697",
+      "status": "harness-controls-passed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-strdup-001/results.json",
+      "sha256": "177fb3c6573747f516f378d7a5ddf3a74e66ee5c404347b7d5766b3376e32b06",
+      "status": true
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-posix-memory-002/results.json",
+      "sha256": "3d5d856be29c89fc1a1b0cc0232536554b286532fab1ad1b78fbe62ce5123468",
+      "status": true
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-semaphore-translated-001/results.json",
+      "sha256": "da0266eb2042602631f0a6432dfd9c6c298e8585687c0128dc571443668264d3",
+      "status": "passed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-scheduler-translated-001/results.json",
+      "sha256": "bf3e605a21da4ab1ff04605a6193c20238defe111ff07273763271784d7dfb24",
+      "status": "passed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-filesystem-001/results.json",
+      "sha256": "5c63776a8791697eb87dd576de0c28ec0d25c6a9e465d934b9bb310713471af9",
+      "status": "passed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-libcxx-verified-001/results.json",
+      "sha256": "08bab6c79a8f8a0195367428ed167c8d590b6180f3957e70d31823225986032f",
+      "status": true
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-operator-order-001/results.json",
+      "sha256": "9bcfe1f9738d41cdfced844043286aa3285e4915181fef84c6dd3c7b61ed3af7",
+      "status": true
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-preflight-library-004/results.json",
+      "sha256": "3d9d9cd0ab20dfeb07e2e306d3a8e1cd258e818520384fffe2e8dc3bae360a03",
+      "status": "passed",
+      "scope": "Individual semantic checks only"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-translate-002/results.json",
+      "sha256": "321067a118e06a48ab827d7091b208563c1b4614536c2c16b844d1b2a785d637",
+      "status": "failed",
+      "scope": "All2207 preprocessed; whole-program emission failed at libc++ correspondence"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-libcxx-merge-odrvalue-004/results.json",
+      "sha256": "b523c67540c7afc655bc5551908668b550eb201dc9e687887663554d99d9569a",
+      "status": "passed",
+      "scope": "Separate libc++ consumer, two targeted source-retention anchors; not full DuckDB"
+    }
+  ],
+  "remaining": [
+    "Whole-program library emission and execution",
+    "Separate-TU libc++ source assembly",
+    "Matched-standard full-project differential verification",
+    "Windows/macOS execution verification"
+  ],
+  "review": {
+    "path": "edgcpp/artifacts/review/duckdb",
+    "scope": "Hugeint.cpp partial translation; five unresolved DuckDB contracts; not built or run"
+  },
+  "individualLibrarySemanticChecks": 2207
+}

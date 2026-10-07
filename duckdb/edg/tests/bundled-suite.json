@@ -1,0 +1,12 @@
+{
+  "description": "Selected upstream tests of statically bundled extensions and their dependencies; not complete extension coverage.",
+  "groups": [
+    {"name": "json-extract", "selectors": ["test/sql/json/scalar/test_json_extract.test"]},
+    {"name": "icu-collation", "selectors": ["test/sql/collate/test_icu_collate.test"]},
+    {"name": "parquet-compression", "selectors": ["test/parquet/test_parquet_reader_compression.test"]},
+    {"name": "parquet-writer", "selectors": ["test/parquet/parquet_version.test"]},
+    {"name": "autocomplete", "selectors": ["test/sql/function/autocomplete/select.test"]},
+    {"name": "tpch-schema-and-queries", "selectors": ["test/sql/tpch/tpch_sf0.test"]},
+    {"name": "tpcds-schema-and-queries", "selectors": ["test/sql/tpcds/tpcds_sf0.test"]}
+  ]
+}

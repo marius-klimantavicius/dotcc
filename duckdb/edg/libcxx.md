@@ -1,0 +1,86 @@
+# DuckDB's translated libc++ source provider
+
+`libcxx.py:prepare_provider(edgcpp_root, acquisition, output)` assembles LLVM
+libc++ **18.1.8** from the existing pinned acquisition. It returns a manifest
+with ordered translation units, include directories, source hashes and the
+selected C++17 or C++20 language mode. Use those inputs with `--libc musl --posix`; retain
+exceptions and RTTI. The native comparison build must use the same language
+standard. Never add EDG's bootstrap `backend/runtime/include` headers alongside
+the real libc++ declarations.
+
+The current assembly includes 44 implementation inputs: the existing managed
+allocation, exception, atomic and thread ABI adapters; upstream allocation,
+shared ownership, locale, streams, containers' out-of-line definitions,
+synchronization, thread/future/chrono, string, regex, random, charconv and Ryu
+implementations. All acquisition headers, configuration and implementation
+files are verified before assembly. Configuration must also match the current
+managed ABI configuration in the repository. An older acquisition can be
+re-created with `backend/runtime/libcxx/acquire.py` using its retained archive.
+The acquisition and original LLVM sources are not changed.
+
+The implementation source directory follows the configuration and public
+include directories in the include search path: Ryu's private nested includes
+require it. The selected external threading ABI uses `LibcxxThreads.cs`, and
+`random_device`'s default `/dev/urandom` path reaches the existing BCL-backed
+POSIX virtual device. Neither selects the translation host's native C++ ABI or
+native libc. The portable FILE ABI uses 64-bit `long` and `off_t` on every host;
+`fseeko`/`ftello` share the existing managed `Fseek`/`Ftell` implementation.
+
+The existing core source profile, explicit string templates and explicit stream
+templates form the primary provider TU. Additional implementations preserve
+their upstream TU boundaries by default. `unity_provider=True` assembles all
+selected library implementations in the primary TU, including Ryu; the selected
+revision has no conflicting private definitions in that ordering. Private
+stringizing macros from `iostream.cpp` are cleared before subsequent headers.
+`primary_consumers` can include a targeted
+consumer after the implementation definitions when EDG ownership requires it;
+the implementation macros are cleared first. This option does not establish
+that arbitrary application TUs can be combined without symbol collisions.
+
+`duckdb-libcxx-003/syntax.json` in the retained campaign artifacts records
+successful individual EDG C++20 syntax checks for all 15 generated TUs. This is
+**not** merged-program translation or runtime acceptance. The module deliberately
+records this limit in its manifest. Full DuckDB translation and its upstream
+tests determine additional source and platform requirements; the source
+profile is not a claim of complete libc++ support. `sys/uio.h` now describes the
+portable `iovec` layout for bundled Snappy; merely declaring `readv`/`writev`
+does not provide implementations, and actual calls must fail unresolved-import
+validation until their shared runtime implementations exist.
+
+C++17 implementation compatibility is confined to generated, hashed copies and
+scoped macro spellings. Eight implementation files use `_LIBCPP_CONSTINIT` for
+objects whose initializers are already constant in C++17. The arithmetic-only
+sort instantiations use `less<>` and the same count-leading-zero expression
+instead of the C++20 `ranges::less`/`__bit_log2` wrappers; introsort and its
+partition policy are unchanged. Five private floating `to_chars` casts call
+the same `__builtin_bit_cast` intrinsic that the C++20 `std::bit_cast` wrapper
+calls. The original library sources and public declarations stay intact.
+
+The all-source provider with an included synthetic consumer translates,
+compiles and runs under JIT and NativeAOT in `duckdb-libcxx-probe-012/`. It
+exercises strings, stringstreams, synchronized threads, regex, a random device,
+floating formatting and vector bounds exceptions. The repeatable and expanded
+acceptance command is:
+
+```sh
+python3 duckdb/edg/tests/libcxx_provider_verify.py \
+  --acquisition PATH --output-dir NEW_PATH --nativeaot
+```
+
+Separate C++ consumer TUs remain a distinct unresolved assembly problem.
+`duckdb-libcxx-merge-oracle-001/` retains identical portable preprocessed inputs
+that cause both the unchanged EDG C backend and the C# backend to report the
+same correspondence assertion before backend emission. Reordering the consumer
+and suppressing explicit library template ownership in experimental overlays
+did not resolve it; those experiments are retained outside the source recipe.
+No EDG frontend semantics or correspondence checks were changed.
+
+A later isolated proof, `duckdb-libcxx-merge-odrvalue-004/results.json`, passes
+native, JIT and NativeAOT with a separate consumer and strict unresolved-symbol
+validation. Its normalized inputs additionally ODR-use
+`std::integral_constant<unsigned long, 2UL>::value` and explicitly instantiate
+`std::__compressed_pair<int*, std::allocator<int>>` in the primary provider.
+These retain definitions needed by that consumer; they are not a general
+DuckDB solution and are not included in the source recipe. Existing EDG
+configuration options for retaining template definitions are being investigated
+without frontend changes.

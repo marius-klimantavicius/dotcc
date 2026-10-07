@@ -1,0 +1,12 @@
+--- a/src/string/strdup.c
++++ b/strdup.c
+@@ -4,7 +4,7 @@
+ char *strdup(const char *s)
+ {
+ 	size_t l = strlen(s);
+-	char *d = malloc(l+1);
++	char *d = (char *)malloc(l+1);
+ 	if (!d) return NULL;
+-	return memcpy(d, s, l+1);
++	return (char *)memcpy(d, s, l+1);
+ }
