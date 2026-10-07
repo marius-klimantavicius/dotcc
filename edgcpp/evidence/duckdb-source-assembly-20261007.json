@@ -1,0 +1,25 @@
+{
+  "milestone": "Consistent libc++ header configuration and isolated C++/musl preprocessing",
+  "fullDuckDbTranslated": false,
+  "frontendChanged": false,
+  "receipts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-libcxx-uniform-primary-002/results.json",
+      "sha256": "b0b8fca9c02f4dbdfb880dd78d962e2aa5ef63b75bc073de988cbb833788cdb9",
+      "separateConsumer": false,
+      "passed": true
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-libcxx-uniform-separate-002/results.json",
+      "sha256": "59d888bb76acaec2d46be91498d8c9f9995ca1c50840bdd5246eae18a6af9042",
+      "separateConsumer": true,
+      "passed": true
+    }
+  ],
+  "fixtureScope": "Real LLVM libc++18 sources with synthetic C++17 consumer; separate mode has two explicit fixture-only definition-retention anchors",
+  "remaining": [
+    "General whole-program template ownership",
+    "Complete DuckDB translation and JIT/NativeAOT upstream tests"
+  ],
+  "notAdopted": "Deprecated SSI/template-retention compiler configuration: did not resolve the merge rejection in either C or C# backend"
+}

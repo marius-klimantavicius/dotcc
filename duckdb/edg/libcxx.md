@@ -2,7 +2,7 @@
 
 `libcxx.py:prepare_provider(edgcpp_root, acquisition, output)` assembles LLVM
 libc++ **18.1.8** from the existing pinned acquisition. It returns a manifest
-with ordered translation units, include directories, source hashes and the
+with ordered translation units, include directories, preinclude headers, source hashes and the
 selected C++17 or C++20 language mode. Use those inputs with `--libc musl --posix`; retain
 exceptions and RTTI. The native comparison build must use the same language
 standard. Never add EDG's bootstrap `backend/runtime/include` headers alongside
@@ -17,6 +17,18 @@ files are verified before assembly. Configuration must also match the current
 managed ABI configuration in the repository. An older acquisition can be
 re-created with `backend/runtime/libcxx/acquire.py` using its retained archive.
 The acquisition and original LLVM sources are not changed.
+
+Apply every `preincludeHeaders` entry to every C++ application and provider TU
+before its first libc++ include. The tracked `libcxx-preinclude.h` selects
+upstream's `_LIBCPP_NO_ABI_TAG` opt-out and clears `_LIBCPP_ALWAYS_INLINE` after
+loading `__config`. This gives implementation and consumer declarations the
+same managed ABI annotations; JIT/NativeAOT still choose whether to inline.
+Provider wrappers include this header before the implementation preamble.
+Preprocess those wrappers before the final whole-program invocation as well: do
+not forward the libc++ search path to the musl C inputs added by `dotnet.py`.
+The manifest records its hash, and the stable tracked path allows preprocessing
+cache identities to remain stable across provider staging directories. These
+are macro configuration changes; no preprocessed declarations are rewritten.
 
 The implementation source directory follows the configuration and public
 include directories in the include search path: Ryu's private nested includes
@@ -82,5 +94,23 @@ validation. Its normalized inputs additionally ODR-use
 `std::__compressed_pair<int*, std::allocator<int>>` in the primary provider.
 These retain definitions needed by that consumer; they are not a general
 DuckDB solution and are not included in the source recipe. Existing EDG
-configuration options for retaining template definitions are being investigated
-without frontend changes.
+configuration options for retaining template definitions were subsequently
+tested without frontend changes.
+
+`duckdb-uniform-headers-001/results.json` repeats the separate-TU proof with
+the uniform source-level header and the expanded acceptance fixture, passing
+native, JIT and NativeAOT. The two explicit retention anchors remain confined
+to the separate-consumer verification fixture. An isolated compiler configuration with source-sequence
+lists and non-class template-instantiation retention still rejects the
+anchorless provider/consumer and the five-TU DuckDB subset; the unchanged C
+backend gives the same result (`duckdb-template-retention-verify-001/`).
+That configuration also requires EDG's explicit deprecated-SSI opt-in and is
+not adopted. Removing the redundant pre-C++17 out-of-class `integral_constant`
+member definition alone did not resolve the correspondence rejection either.
+
+The repeatable verifier now supports `--separate-consumer`, with the two
+fixture-only anchors recorded in its input hashes. Both the default primary-TU
+mode and separate mode pass native/JIT/NativeAOT with the tracked header in
+`duckdb-libcxx-uniform-primary-002/` and `duckdb-libcxx-uniform-separate-002/`.
+Provider and consumer are preprocessed first; the final merge uses portable
+C headers for its separately added musl implementation.

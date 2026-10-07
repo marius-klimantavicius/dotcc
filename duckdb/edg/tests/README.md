@@ -105,3 +105,24 @@ fixtures. It checks acceptance of a normal case with sections and escaped
 names, and rejection of skipped, failed, expected-failure, empty, and unmatched
 cases. These are **harness controls only**, not DuckDB engine or translation
 verification. Their receipts explicitly distinguish that scope.
+
+## Focused libc++ provider verification
+
+```sh
+python3 duckdb/edg/tests/libcxx_provider_verify.py \
+  --acquisition /path/to/verified-libcxx-acquisition \
+  --output-dir /path/to/new-provider-test --nativeaot
+```
+
+This compares a synthetic C++17 consumer against a native executable, JIT and
+NativeAOT. It exercises strings, streams, threads, mutexes, regex, randomness,
+exceptions, arithmetic sorting and floating formatting. C++ inputs are
+preprocessed with libc++ headers; the final compilation adds musl with its own
+C headers, without leaking the libc++ search path into those sources.
+
+Add `--separate-consumer` to place the consumer in its own translation unit.
+That focused proof explicitly includes `libcxx_provider_retention.cpp` in the
+primary provider: an ODR-use of one constant and an explicit class instantiation
+retain definitions needed by this fixture. These anchors are not installed in
+the general provider and do not establish full DuckDB source merging. Both
+modes reject unresolved externs; neither substitutes partial implementations.

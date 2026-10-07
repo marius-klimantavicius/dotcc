@@ -82,6 +82,12 @@ def prepare_provider(root: Path, acquisition: Path, output: Path,
     consumers = [Path(path).resolve() for path in primary_consumers]
     output.mkdir(parents=True, exist_ok=False)
 
+    # Every TU belongs to one managed ABI. Native ABI tags and forced-inlining
+    # annotations must not vary between libc++ implementation and application
+    # declarations; the CLR chooses inlining after translation. Load __config
+    # before the implementation's _LIBCPP_BUILDING_LIBRARY preamble as well.
+    uniform_header = Path(__file__).resolve().with_name("libcxx-preinclude.h")
+
     adaptations = []
     adapted_sources = {}
     charconv_header = None
@@ -152,6 +158,7 @@ def prepare_provider(root: Path, acquisition: Path, output: Path,
         for entry in records:
             entry["unit"] = "primary"
     primary_path.write_text("// Pinned libc++ implementation and managed ABI.\n" +
+        "#include " + json.dumps(str(uniform_header)) + "\n" +
         "".join(map(include, primary)) +
         "#undef _LIBCPP_BUILDING_LIBRARY\n#undef _LIBCPP_REMOVE_TRANSITIVE_INCLUDES\n" +
         "".join(map(include, consumers)))
@@ -159,6 +166,7 @@ def prepare_provider(root: Path, acquisition: Path, output: Path,
     for name, path in separate:
         wrapper = output / name.removeprefix("src/").replace("/", "-")
         wrapper.write_text("// Preserve the upstream implementation TU boundary.\n" +
+                           "#include " + json.dumps(str(uniform_header)) + "\n" +
                            include(adapter / "core-source-preamble.h") + include(path))
         units.append(wrapper)
     manifest = {
@@ -167,6 +175,8 @@ def prepare_provider(root: Path, acquisition: Path, output: Path,
         "archiveSha256": pin["sha256"], "standard": standard, "adaptations": adaptations,
         "exceptions": True, "rtti": True, "threads": "managed-external-thread-api",
         "posix": True, "libc": "musl", "defines": [],
+        "preincludeHeaders": [str(uniform_header)],
+        "preincludeHeaderHashes": {str(uniform_header): _sha(uniform_header)},
         "includeDirectories": [str(acquisition / "config"), str(upstream / "include"), str(upstream / "src"), str(adapter / "include")],
         "translationUnits": [str(path) for path in units],
         "generatedInputs": [{"path": str(path), "sha256": _sha(path)} for path in units],

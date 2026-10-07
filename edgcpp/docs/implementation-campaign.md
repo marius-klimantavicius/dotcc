@@ -1588,3 +1588,20 @@ commands, compiler snapshots and failure evidence.
 
 [DuckDB recipes](../../duckdb/README.md),
 [first runtime evidence](../evidence/duckdb-runtime-prerequisites-20261007.json).
+
+### DuckDB source assembly follow-up
+
+The real libc++ provider now uses one tracked header configuration across its
+implementation and consumers. Native ABI tags are disabled through libc++'s
+provided opt-out, and .NET chooses inlining. Preprocessing C++ inputs before
+the final merge prevents libc++ C-header wrappers from leaking into the musl
+implementation. Repeatable primary-TU and separate-consumer checks pass native,
+JIT and NativeAOT. The separate fixture still requires two explicit definition
+retention anchors; these are not installed in the general DuckDB provider.
+
+An isolated build using EDG's existing source-sequence/template-retention
+configuration did not resolve the general correspondence failure, including
+with the stock C backend. That configuration is not adopted. Upstream DuckDB
+amalgamation is being tested as an alternative source assembly.
+
+[Source assembly evidence](../evidence/duckdb-source-assembly-20261007.json).
