@@ -2,9 +2,9 @@
 
 This build-time tool uses the compiler assemblies shipped with the selected
 .NET SDK. It adds no dependency to generated applications or NativeAOT outputs
-and restores no external NuGet package. It only calls Roslyn's
-`NormalizeWhitespace`; names, expressions, tokens and control flow are the
-backend's responsibility.
+and restores no external NuGet package. Its default mode only calls Roslyn's
+`NormalizeWhitespace`; the explicit method-sharding mode below additionally
+packages synthetic helpers to respect CLR type limits.
 
 Build `Edg.SourceFormatter.csproj`, then invoke its DLL using `dotnet`. Standard
 input is one JSON object mapping file names to complete C# source strings:
@@ -39,3 +39,30 @@ diagnostics. [The component evidence index](../../evidence/source-expression-com
 records exact SHA-256 hashes and excludes this supplemental batch from the
 52-check cross-component total. Execution evidence is Linux x64; no additional
 platform execution claim is implied.
+
+## Large translated owners
+
+`--shard-methods` accepts `{ "source": "...", "owner": "Namespace.Class" }`.
+`backend/source_format.py:shard_methods` invokes it before whitespace formatting
+and source-file splitting. The tool budgets methods, property/indexer/event
+accessors, possible implicit constructors, local functions and lambdas. Above
+62,000 slots it moves enough private static expression, cleanup, initialization
+and assignment helpers into nested `__EdgMethodShardN` classes to reach 61,000.
+Each shard holds at most 10,000 methods. Smaller owners are returned unchanged.
+
+Source function names, APIs, types, fields and state ownership remain in the
+original class. References to moved helpers are qualified structurally; no global
+imports can collide with another translated owner. Helpers with private types in
+their signatures or references from nested/other types stay in place, preserving
+accessibility and the original owner's initialization trigger. Instance methods
+also stay in place. If too few safe static helpers exist, packaging fails with
+the required counts rather than silently changing instance state or public APIs.
+No runtime reflection, allocation or per-call dispatch is added.
+
+One backend member delimiter surrounds each entire shard so every file-splitting
+mode retains valid nested classes. The response includes `metadata` with before
+and after budgets and shard sizes; `source` is transported as ordered string
+chunks to support compiler-sized output. `method_shards_verify.py --output-dir
+NEW_PATH --nativeaot` checks forced sharding, ordinary no-op behavior, two owners
+in one assembly, static and instance state, function-pointer/API access, private
+signature exclusions and split files under JIT and NativeAOT.

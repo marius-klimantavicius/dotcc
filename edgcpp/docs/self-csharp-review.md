@@ -54,7 +54,18 @@ requires exceptions for its actual libc++ allocation/exception implementation;
 the original compiler's no-RTTI setting is preserved. `--emit managedlib` remains
 an explicit export-everything review option, but the full compiler's extra export
 wrappers exceed the CLR's per-type method limit. Use the executable mode for the
-full running compiler. File splitting does not split the owner type.
+full running compiler. File splitting alone does not split the owner type.
+
+Packaging now budgets CLR methods and accessors. Above 62,000 slots,
+`--method-sharding auto` (the default) moves eligible static synthetic helpers
+into nested classes to bring the original owner below 61,001 slots. Source
+functions, APIs, storage and instance methods retain their owner. Calls remain
+direct, with qualified references that support multiple owners in one assembly.
+If too few safe helpers exist, packaging reports the limitation. The diagnostic
+option `--method-sharding none` retains the original layout even when it exceeds
+the CLR limit. This packaging step does not change raw bootstrap comparison
+bytes. Oversized expanded template identifiers are bounded in the backend;
+full original names and scopes remain in the source map.
 
 ```sh
 dotnet /path/to/new-self-output/managed/bin/Release/net10.0/Generated.dll --version

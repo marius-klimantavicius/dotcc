@@ -1280,3 +1280,15 @@ native oracle, deliberate compact-name collisions, static/instance JIT and
 NativeAOT, and exact raw repeatability. The full compiler is being regenerated;
 its large owner's method-count limit is handled separately in packaging.
 [Name-limit evidence](../evidence/source-name-limits-20261007.json).
+
+The Roslyn packaging tool now moves eligible static synthetic helpers to nested
+classes when an owner approaches the CLR method limit. The first full output's
+conservative budget falls from 74,990 to 61,000, with 10,000 and 3,990 helpers in
+two nested classes. Public/source methods and storage stay in their original
+owner; static initialization and instance ownership are preserved. Calls remain
+direct and structurally qualified, so separate translated owners do not import
+conflicting helper names. Focused split-file, static/instance, two-owner,
+function-pointer and initialization tests pass under JIT/NativeAOT; all six
+existing formatter regressions also pass. The driver enables this automatically
+and records counts/provenance in `methodSharding`.
+[Method-limit evidence](../evidence/method-shards-20261007.json).

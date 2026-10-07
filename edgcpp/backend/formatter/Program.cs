@@ -19,6 +19,7 @@ internal static class Program
 
     private static int Main(string[] args)
     {
+        if (args.SequenceEqual(new[] { "--shard-methods" })) return MethodShards.Run();
         if (args.SequenceEqual(new[] { "--complete-partials" })) return CompletePartials();
         if (args.Length != 0) throw new ArgumentException("Unknown formatter mode.");
         var files = new Dictionary<string, string>(StringComparer.Ordinal);

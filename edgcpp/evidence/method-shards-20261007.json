@@ -1,0 +1,184 @@
+{
+  "scope": "Packaging large generated owners below the CLR method limit; not yet full bootstrap runtime acceptance",
+  "artifacts": {
+    "dot-self-shards-004": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-004/results.json",
+      "sha256": "acb6174fbbd0a8894c5c7d8ec433ca3b1286ade0ef09cffb19a35402b4c2c215",
+      "results": {
+        "cases": [
+          {
+            "instance": false,
+            "sharding": {
+              "mode": "static-synthetic-method-shards-v1",
+              "before": 41,
+              "after": 22,
+              "target": 22,
+              "shards": [
+                {
+                  "name": "__EdgMethodShard0",
+                  "methods": 19,
+                  "methodBudget": 19
+                }
+              ],
+              "sdk": "10.0.112",
+              "sourceSha256": "733068fe58dd4af64b685e6de9714f518c589a843998bf97ffda6ea599da265f",
+              "toolSha256": "9e15f4e96bbc20e5a87bf86ad5dc306ddd6272be0111c362f1bf467ba515ba65"
+            },
+            "commands": [
+              {
+                "stage": "build",
+                "command": [
+                  "dotnet",
+                  "build",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-004/static/Test.csproj",
+                  "-c",
+                  "Release",
+                  "--nologo"
+                ],
+                "exitCode": 0
+              },
+              {
+                "stage": "jit",
+                "command": [
+                  "dotnet",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-004/static/bin/Release/net10.0/Test.dll"
+                ],
+                "exitCode": 0
+              },
+              {
+                "stage": "publish",
+                "command": [
+                  "dotnet",
+                  "publish",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-004/static/Test.csproj",
+                  "-c",
+                  "Release",
+                  "-r",
+                  "linux-x64",
+                  "-p:PublishAot=true",
+                  "-p:IlcTreatWarningsAsErrors=true",
+                  "-o",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-004/static/aot"
+                ],
+                "exitCode": 0
+              },
+              {
+                "stage": "aot",
+                "command": [
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-004/static/aot/Test"
+                ],
+                "exitCode": 0
+              }
+            ]
+          },
+          {
+            "instance": true,
+            "sharding": {
+              "mode": "static-synthetic-method-shards-v1",
+              "before": 43,
+              "after": 22,
+              "target": 22,
+              "shards": [
+                {
+                  "name": "__EdgMethodShard0",
+                  "methods": 21,
+                  "methodBudget": 21
+                }
+              ],
+              "sdk": "10.0.112",
+              "sourceSha256": "733068fe58dd4af64b685e6de9714f518c589a843998bf97ffda6ea599da265f",
+              "toolSha256": "9e15f4e96bbc20e5a87bf86ad5dc306ddd6272be0111c362f1bf467ba515ba65"
+            },
+            "commands": [
+              {
+                "stage": "build",
+                "command": [
+                  "dotnet",
+                  "build",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-004/instance/Test.csproj",
+                  "-c",
+                  "Release",
+                  "--nologo"
+                ],
+                "exitCode": 0
+              },
+              {
+                "stage": "jit",
+                "command": [
+                  "dotnet",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-004/instance/bin/Release/net10.0/Test.dll"
+                ],
+                "exitCode": 0
+              },
+              {
+                "stage": "publish",
+                "command": [
+                  "dotnet",
+                  "publish",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-004/instance/Test.csproj",
+                  "-c",
+                  "Release",
+                  "-r",
+                  "linux-x64",
+                  "-p:PublishAot=true",
+                  "-p:IlcTreatWarningsAsErrors=true",
+                  "-o",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-004/instance/aot"
+                ],
+                "exitCode": 0
+              },
+              {
+                "stage": "aot",
+                "command": [
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-004/instance/aot/Test"
+                ],
+                "exitCode": 0
+              }
+            ]
+          }
+        ],
+        "passed": true
+      }
+    },
+    "dot-self-shards-full-003": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-full-003/results.json",
+      "sha256": "40db251807fcaffd5499a60247905c116956ba22b2b904d38700be2ab5d48e47",
+      "results": {
+        "mode": "static-synthetic-method-shards-v1",
+        "before": 74990,
+        "after": 61000,
+        "target": 61000,
+        "shards": [
+          {
+            "name": "__EdgMethodShard0",
+            "methods": 10000,
+            "methodBudget": 10000
+          },
+          {
+            "name": "__EdgMethodShard1",
+            "methods": 3990,
+            "methodBudget": 3990
+          }
+        ],
+        "sdk": "10.0.112",
+        "sourceSha256": "733068fe58dd4af64b685e6de9714f518c589a843998bf97ffda6ea599da265f",
+        "toolSha256": "9e15f4e96bbc20e5a87bf86ad5dc306ddd6272be0111c362f1bf467ba515ba65",
+        "seconds": 48.97415366799396
+      }
+    },
+    "dot-self-shards-formatter-001": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-formatter-001/results.json",
+      "sha256": "9c532d04fab32c1cf354c21e22c3b830d2c665c155885da9e08eca2d4544e2da",
+      "results": {
+        "checks": [
+          "formatter: batch indentation, metadata/comments, raw/escaped Unicode literals and idempotence",
+          "formatter: syntax errors preserved and malformed request diagnostics",
+          "formatter original: JIT executable literals/directives/pointers",
+          "formatter original: Linux x64 NativeAOT",
+          "formatter formatted: JIT executable literals/directives/pointers",
+          "formatter formatted: Linux x64 NativeAOT"
+        ]
+      }
+    }
+  }
+}

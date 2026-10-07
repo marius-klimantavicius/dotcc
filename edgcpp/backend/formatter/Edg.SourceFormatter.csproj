@@ -12,6 +12,7 @@
        or formatter dependency in the generated application / NativeAOT image. -->
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="MethodShards.cs" />
     <Reference Include="Microsoft.CodeAnalysis">
       <HintPath>$(MSBuildSDKsPath)/../Roslyn/bincore/Microsoft.CodeAnalysis.dll</HintPath>
       <Private>true</Private>
