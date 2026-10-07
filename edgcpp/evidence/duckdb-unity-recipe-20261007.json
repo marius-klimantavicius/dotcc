@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "verified-unity-recipe",
+  "executionVerified": false,
+  "tests": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-unity-recipe-tests-002/results.json",
+    "sha256": "f285058415641f8271405541004f7a1f5ae6fa230d5c316de04d8ed8c2b1a7da"
+  },
+  "focusedChecks": 14,
+  "fullInventory": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-unity-recipe-inventory-001/composition.json",
+    "sha256": "205dc587614cb34952d06d4809167f8431c949306fcaa96341d18a90668ee790"
+  },
+  "nativeUnityConfigure": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-unity-configure-002/native-results.json",
+    "sha256": "bcec3dcbf2337d6950dcf56e2b1364f726b00eb3f5a1da624d5395527e97677c"
+  },
+  "nativeUnityManifest": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-unity-configure-002/sources.json",
+    "sha256": "77c885a988edc9c6305a008feb6e89a0641ccc0e39cd85572321f471b795ada0"
+  },
+  "claims": [
+    "Tracked native --unity --configure-only CLI succeeds with the same source counts and generated code inventory as the earlier verified configuration.",
+    "Tracked unity recipe verifies all 2207 configured sources represented once: 1476 core, 557 in 29 complete groups, 174 separate; 204 planned inputs.",
+    "Focused checks include real EDG preprocessing; full retained-composition run verifies inventory only.",
+    "No full DuckDB semantic merge or C# execution pass is claimed."
+  ]
+}

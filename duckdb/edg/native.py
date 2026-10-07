@@ -21,6 +21,8 @@ def main():
     parser.add_argument('--std', choices=['17', '20'], default='20',
                         help='C++ standard for this native baseline (match the translated profile when comparing)')
     parser.add_argument('--configure-only', action='store_true')
+    parser.add_argument('--unity', action='store_true',
+                        help='use upstream CMake unity groups (also for a configure-only unity inventory)')
     args = parser.parse_args()
     if args.jobs < 1:
         parser.error('--jobs must be positive')
@@ -32,7 +34,7 @@ def main():
     (query / 'codemodel-v2').touch()
     pin = json.loads(PIN.read_text())
     report = dict(pin=pin, source=str(source), build=str(build), standard='c++' + args.std,
-                  status='running', commands=[])
+                  unity=args.unity, status='running', commands=[])
     receipt = build / 'native-results.json'
 
     def save():
@@ -54,7 +56,7 @@ def main():
     try:
         run('configure', ['cmake', '-S', source, '-B', build, '-G', 'Ninja',
             '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_CXX_STANDARD=' + args.std,
-            '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '-DDISABLE_UNITY=ON',
+            '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '-DDISABLE_UNITY=' + ('OFF' if args.unity else 'ON'),
             '-DBUILD_UNITTESTS=ON', '-DENABLE_UNITTEST_CPP_TESTS=ON', '-DBUILD_SHELL=ON',
             '-DDISABLE_EXTENSION_LOAD=ON', '-DENABLE_EXTENSION_AUTOLOADING=OFF',
             '-DENABLE_EXTENSION_AUTOINSTALL=OFF', '-DENABLE_JEMALLOC=OFF',

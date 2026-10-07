@@ -124,9 +124,41 @@ The manifest records inventory differences and makes no fresh cache-hit claim;
 the stricter `translate.py --reuse-preprocessed` check remains unchanged.
 `--unity-inventory` can attach the recorded
 [`remaining-unity-recipes.json`](/mnt/storage/dotcc-edg-campaign-20261003/duckdb-amalgamation-002/remaining-unity-recipes.json)
-investigation as provenance. Those upstream per-target unity groups are an
-unvalidated fallback and are not selected automatically. Upstream `--extended`
+investigation as provenance. The later verified fallback uses the actual native
+CMake unity files: 29 complete groups cover 557 remaining TUs, with 174 kept
+separate. Together with the core, that is 204 inputs and 516 MiB of preprocessed
+source. A mixed group containing already-amalgamated core sources is excluded;
+all 2,207 original library TUs still occur exactly once. Upstream `--extended`
 adds public headers, not extension implementations.
+
+The tracked unity recipe derives complete groups from a fresh native CMake
+inventory and verifies them against the portable source graph. Keep the same
+acquired source directory used for the base composition:
+
+```sh
+python3 -B duckdb/edg/native.py --source-dir /path/duckdb-source \
+  --build-dir /path/duckdb-native-unity --std 17 --configure-only --unity
+python3 -B duckdb/edg/unity.py \
+  --composition /path/duckdb-composition/composition.json \
+  --unity-manifest /path/duckdb-native-unity/sources.json \
+  --output-dir /path/duckdb-unity-composition --preprocess
+```
+
+Without `--preprocess`, the unity tool emits an `inventory-only` receipt and
+planned inputs. Only `preprocessed-composition` receipts are ready for the
+merged translator. Fourteen focused checks cover coverage, input changes,
+flag/include-order mismatches, and real EDG preprocessing of a tiny group.
+
+The initial 732-input merge was stopped by the coordinator at about 64 GiB RSS,
+28 minutes into the run. It also reported two declaration-correspondence
+errors, which are being addressed through narrowly verified source adaptations.
+The unity fallback has passed preprocessing; full translation and execution
+remain outstanding. See the [input-scaling receipt](../edgcpp/evidence/duckdb-input-scaling-20261007.json).
+
+The [lowered-IL checkpoint workflow](../edgcpp/backend/README.md#optional-lowered-il-checkpoints)
+is available for the next full merge. It preserves a completed frontend result
+if later C# emission fails, allowing a compatible backend update to retry
+without repeating template instantiation.
 
 Both C++20 and matching C++17 native baselines have built and passed the same
 17 selected upstream cases (2,848 assertions). Some bundled RE2 targets retain

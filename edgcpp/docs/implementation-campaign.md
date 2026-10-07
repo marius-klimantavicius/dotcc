@@ -1724,3 +1724,13 @@ old and new compiler and remains a separate limitation. This milestone verifies
 checkpoint infrastructure and focused execution, not full DuckDB translation.
 
 [Checkpoint/replay evidence](../evidence/duckdb-il-replay-20261007.json).
+
+The verified unity fallback now has a tracked recipe, `duckdb/edg/unity.py`,
+with an explicit native `--unity --configure-only` inventory option. It checks
+the acquired/staged source mapping, exact group include order and frontend
+flags, generated code, source coverage and retained input hashes. Mixed core/
+remaining groups are kept separate. Fourteen focused checks pass, including
+real EDG preprocessing; a full retained-source inventory confirms the expected
+204 planned inputs. This does not claim a full semantic merge or execution.
+
+[Unity-recipe evidence](../evidence/duckdb-unity-recipe-20261007.json).
