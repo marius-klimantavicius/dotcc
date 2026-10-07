@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "verified-native-harness-fix",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-test-tempdir-fix-001/results.json",
+    "sha256": "fddcfc746819e52fbc10b378078da49bdfc9072ab7e5991acaaa44d83d72902b"
+  },
+  "historicalCorrection": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-extra-unity-002/temporary-directory-supplement.json",
+    "sha256": "b6a6c097cc2c2e77c2d68ac8d7c282c0f22dbaa8d0929af1357806aa04774037"
+  },
+  "change": "Launch each upstream runner from a distinct artifact working directory so upstream refreshes its cached TEMP_DIR after parsing --test-temp-dir; snapshot the full acquired source file/link inventory.",
+  "verification": {
+    "case": "test/sql/json/table/read_json_dates.test",
+    "assertions": 195,
+    "skips": 0,
+    "failures": 0,
+    "generatedFilesInArtifactDirectory": 8,
+    "pinnedAcquisitionEntriesUnchanged": 14536
+  },
+  "translatedExecutionVerified": false
+}

@@ -1857,3 +1857,13 @@ hashes remain unchanged. The next full frontend run will measure memory use.
 The unchanged stock C frontend also accepts the two newly grouped ICU/JSON
 inputs together with used-template instantiation enabled. This targeted
 semantic merge passed in 36.6 seconds; it does not claim lowering or execution.
+
+The native test harness now starts each runner in a separate artifact working
+directory. Upstream caches `TEMP_DIR` before argument parsing and refreshes it
+when switching to `--test-dir`; this ensures the requested artifact temporary
+path is used. Full source-file/link snapshots now detect additions anywhere
+in the acquisition. The actual JSON dates test passes 195 assertions without
+skips, writes all eight generated JSON files into artifacts, and leaves all
+14,536 pinned acquisition entries unchanged. No upstream code changed.
+
+[Test temporary-directory evidence](../evidence/duckdb-test-tempdir-20261007.json).

@@ -61,10 +61,8 @@ def observations(text):
 
 
 def snapshot(source):
-    """Retain hashes of runner sources and test data, without copying the corpus."""
-    paths = set()
-    for directory in ('test', 'data', 'third_party/catch', 'extension'):
-        paths.update(path for path in (source / directory).rglob('*') if path.is_file() or path.is_symlink())
+    """Detect all source-tree changes, including added root-level test outputs."""
+    paths = {path for path in source.rglob('*') if path.is_file() or path.is_symlink()}
     return [dict(path=str(path.relative_to(source)), **(
         {'target': str(path.readlink())} if path.is_symlink() else {'sha256': digest(path)}))
         for path in sorted(paths)]
@@ -145,17 +143,23 @@ def main():
             for mode in modes:
                 label = str(group_index).zfill(3) + '-' + mode
                 temp = output / (label + '-data')
+                # Upstream caches TEMP_DIR before parsing --test-temp-dir and
+                # refreshes it only when --test-dir changes the working dir.
+                # Start elsewhere so both its initial default directory and
+                # the configured test outputs stay outside the source tree.
+                workdir = output / (label + '-work')
+                workdir.mkdir()
                 command = [*runners[mode], *group['selectors'], '--reporter', 'edg-json',
                            '--use-colour', 'no', '--order', 'lex', '--rng-seed', '1729',
                            '--test-dir', str(source), '--test-temp-dir', str(temp)]
-                entry = {'group': group['name'], 'mode': mode, 'command': command,
+                entry = {'group': group['name'], 'mode': mode, 'command': command, 'cwd': str(workdir),
                          'stdout': label + '.stdout', 'stderr': label + '.stderr'}
                 report['commands'].append(entry)
                 save()
                 start = time.monotonic()
                 with (output / entry['stdout']).open('wb') as stdout, (output / entry['stderr']).open('wb') as stderr:
                     try:
-                        result = subprocess.run(command, cwd=source, env=env, stdout=stdout, stderr=stderr,
+                        result = subprocess.run(command, cwd=workdir, env=env, stdout=stdout, stderr=stderr,
                                                 timeout=args.timeout)
                     except subprocess.TimeoutExpired:
                         entry.update(timedOut=True, seconds=round(time.monotonic() - start, 3))
