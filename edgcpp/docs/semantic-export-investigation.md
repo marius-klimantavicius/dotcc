@@ -1,7 +1,10 @@
 # EDG semantic export for a C# implementation of the backend
 
-Investigation date: 2026-10-03. Status: feasible and recommended for a bounded
-prototype; **not implemented**. This is an alternative architecture, not an
+Investigation date: 2026-10-03. Historical finding: feasible and recommended for a
+bounded prototype. Implementation has since progressed; see the
+[export/reader checkpoint](semantic-export-implementation.md) and
+[managed C emission checkpoint](semantic-export-c-emission.md).
+This is an alternative architecture, not an
 authorization to replace the current emitter. Investigation changed no compiler
 source or build and used the existing `build/bin/cpfe-cp` only.
 

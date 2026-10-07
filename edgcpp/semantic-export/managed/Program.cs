@@ -3,10 +3,34 @@ using Edg.Semantic;
 
 try
 {
-    if (args.Length < 2 || args[0] is not ("inspect" or "assert-probe"))
+    if (args.Length < 2 || args[0] is not ("inspect" or "assert-probe" or "emit-csharp"))
     {
         Console.Error.WriteLine("Usage: Edg.Semantic inspect|assert-probe <package directory|package.json|graph.json> [--strict-emission]");
+        Console.Error.WriteLine("       Edg.Semantic emit-csharp <package directory|package.json> --output FILE [--class NAME]");
         return 2;
+    }
+    if (args[0] == "emit-csharp")
+    {
+        string? outputPath = null;
+        string className = "SemanticModule";
+        for (int i = 2; i < args.Length; i++)
+        {
+            if (i + 1 >= args.Length) throw new ArgumentException("Missing option value: " + args[i]);
+            switch (args[i])
+            {
+                case "--output" when outputPath == null: outputPath = args[++i]; break;
+                case "--class": className = args[++i]; break;
+                default: throw new ArgumentException("Unknown or duplicate option: " + args[i]);
+            }
+        }
+        if (outputPath == null) throw new ArgumentException("emit-csharp requires --output FILE");
+        using var emissionGraph = SemanticGraph.LoadForCEmission(args[1]);
+        var source = new CSharpEmitter(emissionGraph, className).Emit();
+        var destination = Path.GetFullPath(outputPath);
+        Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
+        File.WriteAllText(destination, source);
+        Console.WriteLine($"Emitted {destination} using bounded profile {CSharpEmitter.Profile}; completeForEmission remains {emissionGraph.CompleteForEmission.ToString().ToLowerInvariant()}.");
+        return 0;
     }
     if (args.Skip(2).Any(a => a != "--strict-emission")) throw new ArgumentException("Unknown argument");
     using var graph = SemanticGraph.Load(args[1], args.Contains("--strict-emission"));

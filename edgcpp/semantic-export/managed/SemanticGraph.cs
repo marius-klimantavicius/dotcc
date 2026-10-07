@@ -33,7 +33,8 @@ public sealed class SemanticGraph : IDisposable
         "handlers", "parameter", "canonicalTemplate", "definitionTemplate", "prototypeTemplate", "bases",
         "partialSpecializationArguments", "memberDeclarations", "defaultArgument", "firstChild",
         "thisClass", "exceptionSpecification", "initializationStatement", "declaration", "qualifier",
-        "writtenTemplateArguments", "namespace", "sourceExpression", "basedType", "field", "base", "overlappingTemporariesLifetime"
+        "writtenTemplateArguments", "namespace", "sourceExpression", "basedType", "field", "base", "overlappingTemporariesLifetime",
+        "integerInfo", "enumScope", "enumerators", "typerefInfo", "pragmas", "baseType", "proxyClass", "operatorTypeArgument", "mainRoutine", "cleanupRoutine"
     };
 
     private SemanticGraph(string path)
@@ -58,6 +59,44 @@ public sealed class SemanticGraph : IDisposable
             throw new InvalidDataException("Package is not emission-ready: completeForEmission must be true and diagnostics must be empty.");
         }
         return graph;
+    }
+
+    /// <summary>
+    /// Load the source snapshot for the bounded C emitter. Its capability checks
+    /// are independent of the graph-wide completeForEmission promise.
+    /// </summary>
+    public static SemanticGraph LoadForCEmission(string path)
+    {
+        if (Directory.Exists(path)) path = Path.Combine(path, "package.json");
+        if (Path.GetFileName(path) != "package.json")
+            throw new InvalidDataException("C emission requires a package.json with verified source snapshots");
+        using var package = JsonDocument.Parse(File.ReadAllBytes(path));
+        var root = package.RootElement;
+        if (!root.TryGetProperty("graph", out var member) || member.ValueKind != JsonValueKind.Object ||
+            !member.TryGetProperty("sha256", out _) ||
+            !root.TryGetProperty("producer", out var producer) || producer.ValueKind != JsonValueKind.Object ||
+            !producer.TryGetProperty("sha256", out _))
+            throw new InvalidDataException("C emission requires graph and producer integrity hashes");
+        if (!root.TryGetProperty("diagnostics", out var diagnostics) || diagnostics.ValueKind != JsonValueKind.Array ||
+            diagnostics.GetArrayLength() != 0)
+            throw new InvalidDataException("C emission requires an explicit empty package diagnostics array");
+        if (!root.TryGetProperty("sources", out var sources) || sources.ValueKind != JsonValueKind.Array ||
+            sources.GetArrayLength() == 0)
+            throw new InvalidDataException("C emission requires source snapshots");
+        foreach (var source in sources.EnumerateArray())
+        {
+            if (!source.TryGetProperty("available", out var available) || available.ValueKind != JsonValueKind.True ||
+                !source.TryGetProperty("sha256", out var hash) || hash.ValueKind != JsonValueKind.String ||
+                !source.TryGetProperty("byteLength", out var length) || !length.TryGetInt64(out var bytes) || bytes < 0)
+                throw new InvalidDataException("C emission requires available, hashed source snapshots with byte lengths");
+        }
+        var graph = Load(path);
+        try
+        {
+            graph.ValidatePackageSourceIds(path, strict: true);
+            return graph;
+        }
+        catch { graph.Dispose(); throw; }
     }
 
     private static string ResolvePackage(string path)
@@ -174,6 +213,7 @@ public sealed class SemanticGraph : IDisposable
         RequireReference(Raw.GetProperty("rootScope"), "rootScope", "scope");
         if (Raw.GetProperty("rootScope").GetUInt64() == 0) throw new InvalidDataException("Missing root scope");
         RequireReference(Raw.GetProperty("primarySource"), "primarySource", "source-file");
+        if (Raw.TryGetProperty("mainRoutine", out var mainRoutine)) RequireReference(mainRoutine, "mainRoutine", "routine");
         var macroIndices = new HashSet<ulong>();
         var realMacroIndices = new HashSet<ulong>();
         foreach (var macro in MacroInvocations)

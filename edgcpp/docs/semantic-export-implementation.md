@@ -1,6 +1,8 @@
 # Semantic exporter: first implemented checkpoint
 
 Status: **isolated native exporter and managed reader implemented and verified**.
+This document records the first checkpoint. Subsequent work is recorded in the
+[managed C emission checkpoint](semantic-export-c-emission.md).
 This checkpoint realizes the extraction boundary proposed in
 [the investigation](semantic-export-investigation.md). It does not replace the
 current C# emitter and does not claim a complete semantic adapter or codegen.

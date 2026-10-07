@@ -1,0 +1,373 @@
+{
+  "schema": "edg-semantic-evidence/1",
+  "milestone": "Managed C# emission from unlowered EDG semantic packages",
+  "status": "verified-bounded-C-emission-not-global-semantic-completeness",
+  "profile": "c-integer-structured/1",
+  "nativeBuild": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/native-build/build/bin/cpfe-semantic",
+  "validation": {
+    "platform": "linux-x64",
+    "managedTarget": "net10.0",
+    "nativeOracle": "GCC -std=c11 -O2 -Wall -Wextra -Werror",
+    "emissionJitChecks": 81,
+    "emissionAotChecks": 63,
+    "readerJitChecks": 20,
+    "readerAotChecks": 20,
+    "differentialObservationsPerExecutionMode": 226,
+    "generatedExecutionModes": [
+      "JIT",
+      "NativeAOT"
+    ],
+    "aotEmitterProducesIdenticalVerifiedSources": true,
+    "checkedConsumerArithmetic": true,
+    "generatedWarningsAsErrors": true
+  },
+  "artifacts": [
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/cleanup/package.json",
+      "sha256": "815f1600785561c75d94a17b4b2a5593440044bc93c4ce8c5bf4b63ec1742cab",
+      "bytes": 2562
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/cleanup/graph.json",
+      "sha256": "c9d88fbc612e8f0cb1219a28e547515fce468dc0f367f66ed112ed8edb7024bc",
+      "bytes": 142593
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/cleanup/producer.json",
+      "sha256": "83f4c02871135b515e48e8f36e0b1c87c3749c60a76b5243911ee133c280beef",
+      "bytes": 31774
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/external-call/package.json",
+      "sha256": "f0ce72f25bcc4b3bb6c2feeeae1b902bbafc193cd368131445dbf2a0ba120040",
+      "bytes": 2564
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/external-call/graph.json",
+      "sha256": "ee66ac4e5f34de83d8fe101f26d7fea6212b0aa43baacb49a7444e61e71cefce",
+      "bytes": 90623
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/external-call/producer.json",
+      "sha256": "83f4c02871135b515e48e8f36e0b1c87c3749c60a76b5243911ee133c280beef",
+      "bytes": 31774
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/global/package.json",
+      "sha256": "4261f6b3c3b8925d08b0ab3a41940d1cf47537e6da36cfb240697935ebcb69ee",
+      "bytes": 2543
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/global/graph.json",
+      "sha256": "4e68daf73bceac0803a6690059f5bb6ba2b428fd872ae8dd0bddbf61b650c19c",
+      "bytes": 67096
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/global/producer.json",
+      "sha256": "83f4c02871135b515e48e8f36e0b1c87c3749c60a76b5243911ee133c280beef",
+      "bytes": 31774
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/mixed-compound/package.json",
+      "sha256": "1675b59576c35975c3efe3b498a9b0eaab02e73f8dbdf4f7e557e7b960f65cd6",
+      "bytes": 2568
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/mixed-compound/graph.json",
+      "sha256": "1768071832d15e2faabd000c8b4e381ee0135ddf28b205fa34deb82c1ed71cc6",
+      "bytes": 91650
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/mixed-compound/producer.json",
+      "sha256": "83f4c02871135b515e48e8f36e0b1c87c3749c60a76b5243911ee133c280beef",
+      "bytes": 31774
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/plain/package.json",
+      "sha256": "8a7100f0b19d19eddf3a9647437fef666fcc6f75d01171232765cc9839c1fbff",
+      "bytes": 2817
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/plain/graph.json",
+      "sha256": "efe6aedcc1040a959d444cc698e639d07d017915f907d519df8797f2a893a30b",
+      "bytes": 195852
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/plain/producer.json",
+      "sha256": "83f4c02871135b515e48e8f36e0b1c87c3749c60a76b5243911ee133c280beef",
+      "bytes": 31774
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/pointers/package.json",
+      "sha256": "3ce715ddbecac68797e946a2b2e71b098b9d500d0264af53f21349e157d4dd32",
+      "bytes": 2550
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/pointers/graph.json",
+      "sha256": "e74697683f25cb0523d59675c60eee0d6d059500d90d5b426cdb588c202204af",
+      "bytes": 149296
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/pointers/producer.json",
+      "sha256": "83f4c02871135b515e48e8f36e0b1c87c3749c60a76b5243911ee133c280beef",
+      "bytes": 31774
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/probe/package.json",
+      "sha256": "3f64bb513b2700e890bbe659006b259c8d76660bfaadb9093ad2378c6dff5f48",
+      "bytes": 2856
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/probe/graph.json",
+      "sha256": "1ece12d7b78adacb1aab3689ba634af767188b8e2ca226ff5be832f625179cf8",
+      "bytes": 668044
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/probe/producer.json",
+      "sha256": "83f4c02871135b515e48e8f36e0b1c87c3749c60a76b5243911ee133c280beef",
+      "bytes": 31774
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/scalars/package.json",
+      "sha256": "b1feea603ecc98eed67bcb747b015463f4948dd0bb44b8a3c615a5d858981464",
+      "bytes": 2550
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/scalars/graph.json",
+      "sha256": "1ee8b7a7c5e7ebdce1f46d35f321e0b0d709b8d45b1a472713912d77c11f17bd",
+      "bytes": 1062645
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/scalars/producer.json",
+      "sha256": "83f4c02871135b515e48e8f36e0b1c87c3749c60a76b5243911ee133c280beef",
+      "bytes": 31774
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/static-local/package.json",
+      "sha256": "2d48d85955e99fbe27b78c7fcb1799064c5a35177f7dcc6cda47ce83158b975f",
+      "bytes": 2561
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/static-local/graph.json",
+      "sha256": "2da7c8464198225249fd1ca0873bdb7bad19585fce56b67be02846c5c3a0e11a",
+      "bytes": 72901
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/static-local/producer.json",
+      "sha256": "83f4c02871135b515e48e8f36e0b1c87c3749c60a76b5243911ee133c280beef",
+      "bytes": 31774
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/unsigned-negate/package.json",
+      "sha256": "2d288aeef91b01e625597433c97bc8683c43b1439d6e0a0d5a55a4952f81ede6",
+      "bytes": 2571
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/unsigned-negate/graph.json",
+      "sha256": "4d7e53149c34b62bebc8be5a0d88448b42a9833b2e1f64b96c01caaf4319f35f",
+      "bytes": 72472
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/unsigned-negate/producer.json",
+      "sha256": "83f4c02871135b515e48e8f36e0b1c87c3749c60a76b5243911ee133c280beef",
+      "bytes": 31774
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/volatile/package.json",
+      "sha256": "82f2fd6aa25d437db2964aa186a98e90fe25ddfcf24b4b4b3c9b907499fc5d44",
+      "bytes": 2549
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/volatile/graph.json",
+      "sha256": "cea2e163650ccde279ee56cb4f95bd2df0291c7b4aa18652b96ed5c875e4e337",
+      "bytes": 74038
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/packages-final/volatile/producer.json",
+      "sha256": "83f4c02871135b515e48e8f36e0b1c87c3749c60a76b5243911ee133c280beef",
+      "bytes": 31774
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/emission-complete-final/results.json",
+      "sha256": "56c91fbb43fe8d438b52276f70964e11af5f96ccfda6b955075ad94409e883f7",
+      "bytes": 7831
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/emission-aot-accepted/results.json",
+      "sha256": "79f8186b06c3aa169b479434e652eb3215aa0217fbf3a3c26280c5ff72da2dd2",
+      "bytes": 6388
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/reader-jit-final/results.json",
+      "sha256": "95345dbdc89dff40b52574e33e12cf68ae76ace6bcfe0c25834fd29e8f5fbe34",
+      "bytes": 3162
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/reader-aot-final/results.json",
+      "sha256": "95345dbdc89dff40b52574e33e12cf68ae76ace6bcfe0c25834fd29e8f5fbe34",
+      "bytes": 3162
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/emission-complete-final/plain/Generated.cs",
+      "sha256": "850d2cb78b0a2c00dd6a58fc63b4256e1ced2f86f34d168e640b290a4f2ecf1d",
+      "bytes": 1129
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/emission-complete-final/scalars/Generated.cs",
+      "sha256": "4da82b64f5045f62c4b7c44c078a3c92cdd97dde5610e2e5b7d7e58387ca9fa0",
+      "bytes": 5836
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/emission-complete-final/pointers/Generated.cs",
+      "sha256": "f047e15fb866c5ed5740845df7cf909ee2b301080192197bf1393bad66336d8f",
+      "bytes": 1148
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-c-emission-001/managed-aot-final/Edg.Semantic",
+      "sha256": "b43f45ea7c5be183dd35821b5066c00cb48613d9c3c4f7f5ecccf64d3694be1d",
+      "bytes": 2985144
+    }
+  ],
+  "implementationInputs": [
+    {
+      "path": "semantic-export/build.py",
+      "sha256": "198e1a351e30caefa4fd2f3c2fb76a54864ca207f99458eeda5add41238726c7",
+      "bytes": 4589
+    },
+    {
+      "path": "semantic-export/export.py",
+      "sha256": "42da02baac54294ad4afae2469a4b0cdae4fbacc9f8a9c0a9f3a0de59804f1db",
+      "bytes": 3910
+    },
+    {
+      "path": "semantic-export/schema.json",
+      "sha256": "70904f7b56dadecaba1118708f99b2e126113cddf1a7de6b815e9b26e132bb54",
+      "bytes": 1493
+    },
+    {
+      "path": "semantic-export/README.md",
+      "sha256": "3ed29355c8c1f737fdd7313856028f4eb5b157db26e64fd82419dc198cf89354",
+      "bytes": 8563
+    },
+    {
+      "path": "semantic-export/native/semantic_export_be.c",
+      "sha256": "6bba07927abb78999e28370b3726538de2e727e59830ca0802433a0cadd73f0d",
+      "bytes": 27968
+    },
+    {
+      "path": "semantic-export/native/generate_names.py",
+      "sha256": "127d63318366cb383b6990949500abf0ba4c787ea88cc7cdac6e370986c58c2d",
+      "bytes": 1002
+    },
+    {
+      "path": "semantic-export/managed/CSharpEmitter.cs",
+      "sha256": "003db4962e049ff515262d765b622998369eaae1b4e957e9f65a9f90c087ebb3",
+      "bytes": 37035
+    },
+    {
+      "path": "semantic-export/managed/SemanticGraph.cs",
+      "sha256": "661c5c0c28585480fd43f0fccdbe56686621724f1357fe5f647d5178097e4a86",
+      "bytes": 17477
+    },
+    {
+      "path": "semantic-export/managed/Program.cs",
+      "sha256": "145d35f3bfd8c0c51e0d06fc1cadf1dcee773ba9e26d1d9f297f5bfedb47d171",
+      "bytes": 3752
+    },
+    {
+      "path": "semantic-export/managed/ProbeAssertions.cs",
+      "sha256": "6d0587aeb062d6d2917522e7a47caded25fe2c09637996e54cd296b0932f4c26",
+      "bytes": 4748
+    },
+    {
+      "path": "semantic-export/managed/Edg.Semantic.csproj",
+      "sha256": "5b5ddcaba323a161627869784628ea86fa0f5c068cd2a5f492720f2f7fa7f55a",
+      "bytes": 437
+    },
+    {
+      "path": "semantic-export/managed/README.md",
+      "sha256": "41b0092f15569508f9bd60fb3d01373cc0100c9159f0527954e3f8dd55f75212",
+      "bytes": 2785
+    },
+    {
+      "path": "semantic-export/tests/plain.c",
+      "sha256": "c43fcbb938ddc51b9596ed6992c5a3c7cbf3d127f75425528569b1928889b2cb",
+      "bytes": 270
+    },
+    {
+      "path": "semantic-export/tests/probe.cpp",
+      "sha256": "5fcb0794132ab21bebd758eb14515b824a5d8db6cb7019057bc44ef3c533e832",
+      "bytes": 809
+    },
+    {
+      "path": "semantic-export/tests/api.h",
+      "sha256": "438e90b97deb21b09bc1573850cbf263329713c654d691ddd01c0a1d334b4c71",
+      "bytes": 156
+    },
+    {
+      "path": "semantic-export/tests/managed-tests/verify.py",
+      "sha256": "20ab240e7c6145fb1e43b4bf42ef7d7ae37741548c6400385b92dc527e429e07",
+      "bytes": 4797
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/README.md",
+      "sha256": "ddfc1157aaf02ff4cf4e85cdf8be98ee9cc24253231123cf4e65f24aa0f1ce44",
+      "bytes": 3579
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/cleanup.c",
+      "sha256": "0e33cc020e3e01097e8d721030bd455a5b7e2ee68a425c9874f75e9a5fbd09f1",
+      "bytes": 123
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/external-call.c",
+      "sha256": "3b9d81c35e4d07c91d2f781a01627f785e07754d78280beabe3b614ccb3320d6",
+      "bytes": 89
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/global.c",
+      "sha256": "8c13f7af6556fc80092308aef0c2aeb5f430c2c37ced4550732658d8239d8806",
+      "bytes": 57
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/mixed-compound.c",
+      "sha256": "6ed8011e8fcb92dd527923ee51c39551acba59de73497374d523eb0b5ecb782c",
+      "bytes": 135
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/plain.golden.cs",
+      "sha256": "850d2cb78b0a2c00dd6a58fc63b4256e1ced2f86f34d168e640b290a4f2ecf1d",
+      "bytes": 1129
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/pointers.c",
+      "sha256": "5f6c0bde8b2bc50ee40a554230413444ab28d631fb2ee3e6d6588081c39ef33b",
+      "bytes": 215
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/scalars.c",
+      "sha256": "abfc60c4cda4f40606f6449724d73d6bd0d0bb50c24caa79b0974dc534646d29",
+      "bytes": 2109
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/static-local.c",
+      "sha256": "0a02677ffaf6729e8bd54849e7d66243ddcfb8a4c6fb5d4baf9177a6d7e315c9",
+      "bytes": 62
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/unsigned-negate.c",
+      "sha256": "7a6550ae2135b4413885b7af2b215f6210d72247eba61a3251d54ea109a2a6a2",
+      "bytes": 152
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/verify.py",
+      "sha256": "c1e46bdd6b71107176081ad0ccb40d460a8a0a1c9e1f50b7d5d8614d372fe4f3",
+      "bytes": 15511
+    },
+    {
+      "path": "semantic-export/tests/emission-tests/volatile.c",
+      "sha256": "8113453e6458d115f0bd16ad9d62f235ff60493e96235f9b4cbe9548e7898ea0",
+      "bytes": 58
+    }
+  ]
+}

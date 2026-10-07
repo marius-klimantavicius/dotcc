@@ -698,6 +698,16 @@ and strict emission rejects the deliberately incomplete packages. Commands,
 evidence and remaining work are recorded in
 `docs/semantic-export-implementation.md` and `semantic-export/README.md`.
 
+The 2026-10-07 continuation adds an isolated managed C# emitter for the bounded
+`c-integer-structured/1` profile. Native adapters now close the metadata gaps in
+the positive C fixtures and expose qualifiers, cleanup/alignment facts and full
+64-bit constants. Generated source retains names and structured control flow;
+226 native-C observations match JIT and NativeAOT. Profile rejection remains
+independent of the deliberately false graph-wide completeness flag. This does
+not migrate SQLite or implement C++ lifetime lowering. The checkpoint, exact
+validation evidence and next project-driven steps are recorded in
+`docs/semantic-export-c-emission.md`.
+
 Direct C# emission of the original 75-TU EDG compiler has now succeeded, using
 the native C++14/no-exceptions/no-RTTI build profile and the C backend's supported
 local-entity promotion configuration in an isolated compiler. The formatted

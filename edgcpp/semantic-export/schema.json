@@ -8,7 +8,10 @@
   "properties": {
     "schema": {"const": "edg-semantic/1"},
     "lowered": {"const": false},
-    "completeForEmission": {"type": "boolean"},
+    "completeForEmission": {"type": "boolean", "description": "Global semantic completeness, not a claim about any bounded managed emission profile. Profile-specific consumers must independently check all required facts and reject unsupported semantics."},
+    "sourceLanguage": {"enum": ["C", "C++"]},
+    "standardVersion": {"type": "integer", "minimum": 1},
+    "mainRoutine": {"type": "integer", "minimum": 0},
     "rootScope": {"type": "integer", "minimum": 1},
     "primarySource": {"type": "integer", "minimum": 1},
     "nodes": {"type": "array", "items": {"type": "object", "required": ["id", "kind"], "properties": {"id": {"type": "integer", "minimum": 1}, "kind": {"type": "string"}}}},

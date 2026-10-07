@@ -1,0 +1,602 @@
+using System.Globalization;
+using System.Numerics;
+using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+
+namespace Edg.Semantic;
+
+/// <summary>A deliberately bounded consumer of named, unlowered C semantic facts.</summary>
+public sealed class CSharpEmitter
+{
+    public const string Profile = "c-integer-structured/1";
+    private readonly SemanticGraph graph;
+    private readonly string className;
+    private readonly Dictionary<ulong, string> names = new();
+    private readonly Dictionary<ulong, string> types = new();
+    private readonly HashSet<ulong> resolvingTypes = new();
+    private readonly HashSet<ulong> records = new();
+    private readonly HashSet<ulong> routines = new();
+    private readonly HashSet<ulong> declared = new();
+    private readonly HashSet<ulong> initialized = new();
+    private readonly HashSet<ulong> activeExpressions = new();
+    private readonly HashSet<ulong> activeStatements = new();
+    private readonly HashSet<string> memberNames = new(StringComparer.Ordinal);
+    private HashSet<string> localNames = new(StringComparer.Ordinal);
+    private readonly StringBuilder output = new();
+    private int indent;
+    private int loopDepth;
+    private SemanticNode? currentRoutine;
+
+    public CSharpEmitter(SemanticGraph graph, string className = "SemanticModule")
+    {
+        this.graph = graph;
+        if (!Regex.IsMatch(className, "^[A-Za-z_][A-Za-z0-9_]*$"))
+            throw new ArgumentException("Class name must be a simple C# identifier.");
+        this.className = className;
+        memberNames.Add(className);
+    }
+
+    private static readonly HashSet<string> SafetyFlags = new(("atomic bitfield bool break classMember compilerGenerated conditional constructorInitialization const continue defined dependent enum evaluateLeftToRight evaluateRightToLeft explicitAlignment extendsLifetime gnuTwoOperandConditional hasThis ignoreInBackend incomplete packed partialAggregate pointerOperandIsSecond prototyped reference restrict rvalueReference signed templateInstance threadLocal variadic virtual virtualCall volatile volatileFetch").Split(' '), StringComparer.Ordinal);
+
+    public string Emit()
+    {
+        foreach (var node in graph.Nodes.Values)
+            foreach (var property in node.Raw.EnumerateObject())
+                if ((SafetyFlags.Contains(property.Name) || node.Kind == "variable" && property.Name == "parameter") &&
+                    property.Value.ValueKind is not (JsonValueKind.True or JsonValueKind.False))
+                    Fail(node, "emission safety flag must be boolean: " + property.Name);
+        if (graph.Raw.GetProperty("sourceLanguage").GetString() != "C")
+            throw new InvalidDataException(Profile + " supports C translation units only.");
+        if (graph.Diagnostics.Any()) throw new InvalidDataException(Profile + " requires zero graph diagnostics.");
+        if (graph.Raw.GetProperty("mainRoutine").GetUInt64() != 0)
+            throw new InvalidDataException(Profile + " does not implement C main entry-point semantics.");
+        if (graph.Raw.GetProperty("pointerBytes").GetInt32() != 8 || !graph.Raw.GetProperty("littleEndian").GetBoolean())
+            throw new InvalidDataException(Profile + " currently requires a little-endian 64-bit target.");
+        foreach (var pragma in graph.OfKind("pragma"))
+        {
+            RequireProperties(pragma, "ignoreInBackend");
+            if (!pragma.Flag("ignoreInBackend")) Fail(pragma, "pragma is not explicitly safe for the backend to ignore");
+        }
+        var root = graph.Get(graph.Raw.GetProperty("rootScope").GetUInt64())!;
+        RequireProperties(root, "variables", "routines", "types");
+        if (root.Form != "sck_file") Fail(root, "expected a C file scope");
+        if (root.Reference("variables") != null || graph.OfKind("variable").Any(n => n.ReferenceId("enclosingRoutine") == 0))
+            Fail(root, "global variables are outside this profile");
+        var allRoutines = graph.Linked(root.ReferenceId("routines")).ToArray();
+        foreach (var routine in allRoutines)
+            RequireProperties(routine, "defined", "classMember", "templateInstance", "virtual", "specialKind", "bodyScope");
+        var functions = allRoutines.Where(n => n.Flag("defined")).ToArray();
+        if (functions.Length == 0) Fail(root, "no defined functions to emit");
+        foreach (var routine in functions)
+        {
+            routines.Add(routine.Id);
+            names.Add(routine.Id, Allocate(routine, memberNames));
+        }
+        // Validate and render everything in memory before the CLI writes any output.
+        var renderedFunctions = new List<string>();
+        foreach (var routine in functions)
+        {
+            output.Clear(); indent = 1;
+            EmitRoutine(routine);
+            renderedFunctions.Add(output.ToString());
+        }
+        output.Clear(); indent = 0;
+        Line("// <auto-generated/>");
+        Line("// Generated from EDG semantic graph; bounded profile: " + Profile + ".");
+        Line("// Compile with unsafe enabled. Requires the exported little-endian 64-bit ABI.");
+        Line("using System;");
+        Line("using System.Runtime.InteropServices;");
+        Line();
+        Line("public static unsafe class " + Identifier(className));
+        Line("{"); indent++;
+        Line("static " + Identifier(className) + "()");
+        Line("{"); indent++;
+        Line("if (IntPtr.Size != 8 || !BitConverter.IsLittleEndian)");
+        Line("    throw new PlatformNotSupportedException(\"Semantic export requires a little-endian 64-bit process.\");");
+        indent--; Line("}"); Line();
+        foreach (var id in records.Order()) EmitRecord(graph.Get(id)!);
+        foreach (var function in renderedFunctions) output.Append(function).AppendLine();
+        indent--; Line("}");
+        return output.ToString();
+    }
+
+    private void EmitRoutine(SemanticNode routine)
+    {
+        currentRoutine = routine;
+        declared.Clear(); initialized.Clear(); localNames = new(StringComparer.Ordinal);
+        if (routine.Kind != "routine" || routine.Flag("classMember") || routine.Flag("templateInstance") ||
+            routine.Flag("virtual") || routine.Text("specialKind") != "sfk_none") Fail(routine, "unsupported routine semantics");
+        var type = Canonical(Need(routine, "type"));
+        if (type.Form != "tk_routine") Fail(type, "expected routine type");
+        var signature = Need(type, "signature");
+        RequireProperties(signature, "prototyped", "variadic", "hasThis", "callingConvention");
+        if (!signature.Flag("prototyped") || signature.Flag("variadic") || signature.Flag("hasThis") || Number(signature, "callingConvention") != 0)
+            Fail(signature, "only prototyped, nonvariadic C routines are supported");
+        var returnType = Need(type, "returnType");
+        if (!IsScalar(returnType) && Canonical(returnType).Form != "tk_void") Fail(returnType, "aggregate return is unsupported");
+        var scope = Need(routine, "bodyScope");
+        NoLifetime(scope);
+        if (scope.Reference("constructorInitializers") != null) Fail(scope, "constructor initialization");
+        var parameters = graph.Linked(scope.ReferenceId("parameters")).ToArray();
+        var parameterTypes = graph.Linked(signature.ReferenceId("parameters")).ToArray();
+        if (parameters.Length != parameterTypes.Length) Fail(scope, "parameter/signature mismatch");
+        var args = new List<string>();
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            var parameter = parameters[i];
+            CheckVariable(parameter);
+            if (!parameter.Flag("parameter") || !IsScalar(Need(parameter, "type"))) Fail(parameter, "unsupported parameter");
+            if (Canonical(Need(parameter, "type")).Id != Canonical(Need(parameterTypes[i], "type")).Id)
+                Fail(parameter, "parameter type mismatch");
+            names[parameter.Id] = Allocate(parameter, localNames);
+            declared.Add(parameter.Id); initialized.Add(parameter.Id);
+            args.Add(TypeName(Need(parameter, "type")) + " " + names[parameter.Id]);
+        }
+        SourceComment(routine);
+        Line("public static " + TypeName(returnType) + " " + names[routine.Id] + "(" + string.Join(", ", args) + ")");
+        Line("{"); indent++;
+        Line("unchecked"); Line("{"); indent++;
+        var body = Need(scope, "body");
+        if (body.Form != "stmk_block") Fail(body, "routine body must be a block");
+        EmitBlockContents(body);
+        indent--; Line("}"); indent--; Line("}");
+    }
+
+    private string TypeName(SemanticNode type)
+    {
+        if (types.TryGetValue(type.Id, out var found)) return found;
+        RequireProperties(type, "explicitAlignment", "dependent", "incomplete");
+        if (!resolvingTypes.Add(type.Id)) Fail(type, "recursive nonrecord type");
+        if (type.Flag("dependent") || type.Flag("incomplete") || type.Flag("explicitAlignment")) Fail(type, "incomplete/dependent type");
+        string result;
+        switch (type.Form)
+        {
+            case "tk_typeref":
+                RequireProperties(type, "const", "volatile", "restrict", "atomic", "qualifiers", "typerefInfo");
+                if (type.Flag("volatile") || type.Flag("atomic") || type.Flag("explicitAlignment") || (Number(type, "qualifiers") & ~1UL) != 0)
+                    Fail(type, "volatile, atomic, or unknown qualifiers");
+                result = TypeName(Need(type, "underlyingType")); break;
+            case "tk_void": result = "void"; break;
+            case "tk_integer":
+                RequireProperties(type, "signed", "enum", "bool", "integerKind", "integerInfo");
+                if (type.Text("integerKind") is not ("ik_char" or "ik_signed_char" or "ik_unsigned_char" or "ik_short" or "ik_unsigned_short" or "ik_int" or "ik_unsigned_int" or "ik_long" or "ik_unsigned_long" or "ik_long_long" or "ik_unsigned_long_long")) Fail(type, "unsupported integer kind");
+                if (type.Flag("bool") || type.Flag("enum")) Fail(type, "bool and enum representation require a separate profile");
+                if (!type.Raw.TryGetProperty("signed", out _)) Fail(type, "missing integer signedness");
+                result = (Number(type, "size"), type.Flag("signed")) switch
+                {
+                    (1, true) => "sbyte", (1, false) => "byte", (2, true) => "short", (2, false) => "ushort",
+                    (4, true) => "int", (4, false) => "uint", (8, true) => "long", (8, false) => "ulong",
+                    _ => throw Unsupported(type, "unsupported integer width")
+                }; break;
+            case "tk_pointer":
+                RequireProperties(type, "reference", "rvalueReference");
+                if (type.Flag("reference") || type.Flag("rvalueReference") || Number(type, "size") != 8)
+                    Fail(type, "unsupported pointer representation");
+                result = TypeName(Need(type, "elementType")) + "*"; break;
+            case "tk_struct": case "tk_union":
+                RequireProperties(type, "packed", "maxMemberAlignment");
+                var info = Need(type, "recordInfo");
+                if (info.Reference("bases") != null || type.Flag("templateInstance") || type.Flag("packed") || Number(type, "maxMemberAlignment") != 0) Fail(type, "non-C record");
+                if (Number(type, "size") is 0 or > int.MaxValue || Number(type, "alignment") is not (1 or 2 or 4 or 8))
+                    Fail(type, "unsupported record layout");
+                names.TryAdd(type.Id, Allocate(type, memberNames));
+                result = names[type.Id];
+                types[type.Id] = result; // A pointer to this record can refer back to it.
+                records.Add(type.Id);
+                var fieldNames = new HashSet<string>(StringComparer.Ordinal);
+                fieldNames.Add(result.TrimStart('@'));
+                foreach (var field in graph.Linked(type.ReferenceId("fields")))
+                {
+                    RequireProperties(field, "packed", "alignment", "bitfield", "initializer");
+                    if (field.Kind != "field" || field.Flag("bitfield") || field.Reference("initializer") != null || field.Flag("packed") || Number(field, "alignment") != 0)
+                        Fail(field, "unsupported field");
+                    names[field.Id] = Allocate(field, fieldNames);
+                    var fieldType = Need(field, "type");
+                    _ = TypeName(fieldType);
+                    if (Canonical(fieldType).Form == "tk_void" || Number(field, "offset") + Number(Canonical(fieldType), "size") > Number(type, "size"))
+                        Fail(field, "field lies outside record storage");
+                }
+                break;
+            default: throw Unsupported(type, "unsupported type " + type.Form);
+        }
+        resolvingTypes.Remove(type.Id);
+        return types[type.Id] = result;
+    }
+
+    private SemanticNode Canonical(SemanticNode type)
+    {
+        var seen = new HashSet<ulong>();
+        while (type.Form == "tk_typeref")
+        {
+            if (!seen.Add(type.Id)) Fail(type, "cyclic typedef");
+            RequireProperties(type, "const", "volatile", "restrict", "atomic", "qualifiers", "explicitAlignment", "typerefInfo");
+            if (type.Flag("volatile") || type.Flag("atomic") || type.Flag("explicitAlignment") || (Number(type, "qualifiers") & ~1UL) != 0)
+                Fail(type, "unsupported type qualifiers");
+            type = Need(type, "underlyingType");
+        }
+        return type;
+    }
+
+    private bool IsScalar(SemanticNode type) => Canonical(type).Form is "tk_integer" or "tk_pointer";
+
+    private void EmitRecord(SemanticNode type)
+    {
+        Line($"[StructLayout(LayoutKind.Explicit, Size = {Number(type, "size")}, Pack = {Number(type, "alignment")})]");
+        Line("public struct " + names[type.Id]); Line("{"); indent++;
+        foreach (var field in graph.Linked(type.ReferenceId("fields")))
+        {
+            Line($"[FieldOffset({Number(field, "offset")})]");
+            Line("public " + TypeName(Need(field, "type")) + " " + names[field.Id] + ";");
+        }
+        indent--; Line("}"); Line();
+    }
+
+    private void CheckVariable(SemanticNode variable)
+    {
+        RequireProperties(variable, "alignment", "cleanupRoutine", "storageClassName", "threadLocal", "extendsLifetime");
+        if (variable.Kind != "variable" || variable.Flag("threadLocal") || variable.Flag("extendsLifetime") || Number(variable, "alignment") != 0 || variable.Reference("cleanupRoutine") != null ||
+            variable.ReferenceId("enclosingRoutine") != currentRoutine!.Id ||
+            variable.Text("storageClassName") is not ("sc_auto" or "sc_register"))
+            Fail(variable, "only ordinary automatic variables are supported");
+        _ = TypeName(Need(variable, "type"));
+    }
+
+    private string Declaration(SemanticNode declaration, SemanticNode? initStatement)
+    {
+        var entries = graph.Linked(declaration.ReferenceId("entities")).ToArray();
+        if (entries.Length != 1) Fail(declaration, "only single variable declarations are supported");
+        var variable = Need(entries[0], "entity");
+        CheckVariable(variable);
+        if (!IsScalar(Need(variable, "type"))) Fail(variable, "aggregate locals are unsupported");
+        if (!declared.Add(variable.Id)) Fail(variable, "duplicate declaration");
+        names[variable.Id] = Allocate(variable, localNames);
+        if (names[variable.Id].TrimStart('@') != variable.Name)
+            Line($"// C identifier {variable.Name} is {names[variable.Id]} (semantic node {variable.Id}).");
+        if (initStatement?.Form != "stmk_init") Fail(variable, "local must have adjacent explicit initialization");
+        var initialization = Need(initStatement!, "initialization");
+        if (initialization.ReferenceId("variable") != variable.Id || variable.ReferenceId("initializer") != initialization.Id)
+            Fail(initialization, "declaration/initialization mismatch");
+        var value = Initializer(initialization);
+        initialized.Add(variable.Id);
+        return TypeName(Need(variable, "type")) + " " + names[variable.Id] + " = " + value;
+    }
+
+    private string Initializer(SemanticNode initialization)
+    {
+        NoLifetime(initialization);
+        if (initialization.Reference("destructor") != null || initialization.Flag("conditional") || initialization.Flag("partialAggregate") ||
+            initialization.Flag("constructorInitialization") || initialization.Reference("next") != null)
+            Fail(initialization, "unsupported initialization semantics");
+        return initialization.Form switch
+        {
+            "dik_constant" => Constant(Need(initialization, "constant")),
+            "dik_expression" => Expression(Need(initialization, "expression")),
+            _ => throw Unsupported(initialization, "unsupported initialization " + initialization.Form)
+        };
+    }
+
+    private void EmitBlockContents(SemanticNode block)
+    {
+        if (block.Reference("blockInfo") is { } info) NoLifetime(info);
+        EmitList(graph.Linked(block.ReferenceId("statements")).ToArray());
+    }
+
+    private void EmitList(SemanticNode[] statements)
+    {
+        for (int i = 0; i < statements.Length; i++)
+        {
+            var statement = statements[i];
+            if (statement.Form == "stmk_decl")
+            {
+                Line(Declaration(statement, i + 1 < statements.Length ? statements[i + 1] : null) + ";"); i++;
+            }
+            else if (statement.Form == "stmk_block" && statement.Flag("compilerGenerated") &&
+                statement.Reference("blockInfo")?.Reference("scope") == null)
+            {
+                if (!activeStatements.Add(statement.Id)) Fail(statement, "cyclic statement tree");
+                EmitBlockContents(statement);
+                activeStatements.Remove(statement.Id);
+            }
+            else EmitStatement(statement);
+        }
+    }
+
+    private void EmitStatement(SemanticNode statement)
+    {
+        if (!activeStatements.Add(statement.Id)) Fail(statement, "cyclic statement tree");
+        NoLifetime(statement);
+        switch (statement.Form)
+        {
+            case "stmk_block":
+                Line("{"); indent++; EmitBlockContents(statement); indent--; Line("}"); break;
+            case "stmk_expr": Line(StatementExpression(Need(statement, "expression")) + ";"); break;
+            case "stmk_return":
+                if (statement.Reference("returnInitialization") != null) Fail(statement, "return initialization");
+                Line(statement.Reference("expression") is { } result ? "return " + Expression(result) + ";" : "return;"); break;
+            case "stmk_if":
+                Line("if (" + Condition(Need(statement, "expression")) + ")");
+                EmitControlled(Need(statement, "then"));
+                if (statement.Reference("else") is { } otherwise) { Line("else"); EmitControlled(otherwise); }
+                break;
+            case "stmk_for":
+                var loop = Need(statement, "loopInfo");
+                var initializer = "";
+                if (loop.Reference("initialization") is { } initial)
+                {
+                    NoLifetime(initial);
+                    if (initial.Reference("blockInfo") is { } initialBlock) NoLifetime(initialBlock);
+                    var parts = initial.Form == "stmk_block" ? graph.Linked(initial.ReferenceId("statements")).ToArray() : new[] { initial };
+                    if (parts.Length == 2 && parts[0].Form == "stmk_decl") initializer = Declaration(parts[0], parts[1]);
+                    else if (parts.Length == 1 && parts[0].Form == "stmk_expr") initializer = StatementExpression(Need(parts[0], "expression"));
+                    else Fail(initial, "unsupported for initialization");
+                }
+                var condition = statement.Reference("expression") is { } test ? Condition(test) : "";
+                var increment = loop.Reference("increment") is { } step ? StatementExpression(step) : "";
+                Line($"for ({initializer}; {condition}; {increment})");
+                loopDepth++; EmitControlled(Need(statement, "body")); loopDepth--; break;
+            case "stmk_while":
+                Line("while (" + Condition(Need(statement, "expression")) + ")");
+                loopDepth++; EmitControlled(Need(statement, "body")); loopDepth--; break;
+            case "stmk_end_test_while":
+                Line("do"); loopDepth++; EmitControlled(Need(statement, "body")); loopDepth--;
+                Line("while (" + Condition(Need(statement, "expression")) + ");"); break;
+            case "stmk_goto":
+                var label = Need(statement, "label");
+                var sourceForm = statement.Text("sourceForm");
+                if (loopDepth == 0 || sourceForm is not ("break" or "continue") || !label.Flag(sourceForm))
+                    Fail(statement, "only source break/continue jumps are supported");
+                Line(sourceForm + ";"); break;
+            case "stmk_label":
+                var target = Need(statement, "label");
+                if (!target.Flag("break") && !target.Flag("continue")) Fail(statement, "ordinary labels are unsupported");
+                break;
+            case "stmk_empty": Line(";"); break;
+            default: throw Unsupported(statement, "unsupported statement " + statement.Form);
+        }
+        activeStatements.Remove(statement.Id);
+    }
+
+    private void EmitControlled(SemanticNode statement)
+    {
+        if (statement.Form == "stmk_block") EmitStatement(statement);
+        else { Line("{"); indent++; EmitStatement(statement); indent--; Line("}"); }
+    }
+
+    private string Condition(SemanticNode expression)
+    {
+        var op = expression.Text("operator");
+        if (expression.Form == "operation" && (Comparisons.ContainsKey(op ?? "") || op is "eok_land" or "eok_lor" or "eok_not"))
+        {
+            if (!activeExpressions.Add(expression.Id)) Fail(expression, "cyclic condition tree");
+            var result = BooleanOperation(expression);
+            activeExpressions.Remove(expression.Id);
+            return result;
+        }
+        if (!IsScalar(Need(expression, "type"))) Fail(expression, "condition must be scalar");
+        var zero = Canonical(Need(expression, "type")).Form == "tk_pointer" ? "null" : "0";
+        return "(" + Expression(expression) + " != " + zero + ")";
+    }
+
+    private static readonly Dictionary<string, string> Comparisons = new()
+    {
+        ["eok_eq"] = "==", ["eok_ne"] = "!=", ["eok_lt"] = "<", ["eok_le"] = "<=", ["eok_gt"] = ">", ["eok_ge"] = ">="
+    };
+    private static readonly Dictionary<string, string> Binary = new()
+    {
+        ["eok_add"] = "+", ["eok_subtract"] = "-", ["eok_multiply"] = "*", ["eok_divide"] = "/", ["eok_remainder"] = "%",
+        ["eok_and"] = "&", ["eok_or"] = "|", ["eok_xor"] = "^", ["eok_shiftl"] = "<<", ["eok_shiftr"] = ">>",
+        ["eok_assign"] = "=", ["eok_add_assign"] = "+=", ["eok_subtract_assign"] = "-=", ["eok_multiply_assign"] = "*=",
+        ["eok_divide_assign"] = "/=", ["eok_remainder_assign"] = "%=", ["eok_and_assign"] = "&=", ["eok_or_assign"] = "|=", ["eok_xor_assign"] = "^="
+    };
+
+    private SemanticNode[] Operands(SemanticNode expression, int count)
+    {
+        var operands = graph.Linked(expression.ReferenceId("operands")).ToArray();
+        if (operands.Length != count) Fail(expression, "unexpected operand count");
+        return operands;
+    }
+
+    private string BooleanOperation(SemanticNode expression)
+    {
+        CheckExpression(expression);
+        var op = expression.Text("operator")!;
+        if (op == "eok_not") return "!(" + Condition(Operands(expression, 1)[0]) + ")";
+        var operands = Operands(expression, 2);
+        if (Comparisons.ContainsKey(op) && TypeName(Need(operands[0], "type")) != TypeName(Need(operands[1], "type")))
+            Fail(expression, "mixed comparison operands require an explicit conversion adapter");
+        return op switch
+        {
+            "eok_land" => "(" + Condition(operands[0]) + " && " + Condition(operands[1]) + ")",
+            "eok_lor" => "(" + Condition(operands[0]) + " || " + Condition(operands[1]) + ")",
+            _ => "(" + Expression(operands[0]) + " " + Comparisons[op] + " " + Expression(operands[1]) + ")"
+        };
+    }
+
+    private void CheckExpression(SemanticNode expression)
+    {
+        RequireProperties(expression, "volatileFetch");
+        if (expression.Form == "operation")
+            RequireProperties(expression, "virtualCall", "evaluateRightToLeft", "gnuTwoOperandConditional", "pointerOperandIsSecond", "operationTypeKind");
+        if (expression.Kind != "expr-node" || expression.Flag("volatileFetch") || expression.Flag("virtualCall") || expression.Flag("evaluateRightToLeft") || expression.Flag("gnuTwoOperandConditional") || expression.Flag("pointerOperandIsSecond"))
+            Fail(expression, "unsupported expression semantics");
+        _ = TypeName(Need(expression, "type"));
+        if (expression.Reference("originalLvalueType") is { } original) _ = TypeName(original);
+    }
+
+    private string Expression(SemanticNode expression)
+    {
+        if (!activeExpressions.Add(expression.Id)) Fail(expression, "cyclic expression tree");
+        CheckExpression(expression);
+        string result;
+        switch (expression.Form)
+        {
+            case "constant": result = Constant(Need(expression, "constant")); break;
+            case "variable":
+                var variable = Need(expression, "symbol");
+                CheckVariable(variable);
+                if (!declared.Contains(variable.Id) || !initialized.Contains(variable.Id)) Fail(variable, "use before initialization/declaration");
+                result = names[variable.Id]; break;
+            case "operation": result = Operation(expression); break;
+            default: throw Unsupported(expression, "unsupported expression " + expression.Form);
+        }
+        activeExpressions.Remove(expression.Id);
+        return result;
+    }
+
+    private string Operation(SemanticNode expression)
+    {
+        var op = expression.Text("operator") ?? "";
+        if (Comparisons.ContainsKey(op) || op is "eok_land" or "eok_lor" or "eok_not") return "(" + BooleanOperation(expression) + " ? 1 : 0)";
+        if (Binary.TryGetValue(op, out var token))
+        {
+            var args = Operands(expression, 2);
+            var leftType = Canonical(Need(args[0], "type"));
+            var rightType = Canonical(Need(args[1], "type"));
+            if (leftType.Form != "tk_integer" || rightType.Form != "tk_integer")
+                Fail(expression, "binary operation requires integer operands in this profile");
+            if (op is not ("eok_shiftl" or "eok_shiftr") && TypeName(leftType) != TypeName(rightType))
+                Fail(expression, "mixed integer operation requires a separate conversion adapter");
+            if (op is not "eok_assign" && !op.EndsWith("assign", StringComparison.Ordinal) && Number(leftType, "size") < 4)
+                Fail(expression, "arithmetic operands must already have C integer promotions");
+            var left = Expression(args[0]); var right = Expression(args[1]);
+            if (op is "eok_shiftl" or "eok_shiftr") right = "(int)(" + right + ")";
+            return "(" + left + " " + token + " " + right + ")";
+        }
+        switch (op)
+        {
+            case "eok_pre_incr": case "eok_pre_decr": case "eok_post_incr": case "eok_post_decr":
+                var incrementOperand = Operands(expression, 1)[0];
+                var incrementType = Canonical(Need(incrementOperand, "type"));
+                if (incrementOperand.Text("valueCategory") != "lvalue" ||
+                    incrementType.Form != "tk_integer" && !IsDataPointer(incrementType))
+                    Fail(expression, "increment/decrement requires an integer or non-void data-pointer lvalue");
+                var operand = Expression(incrementOperand);
+                var sign = op.EndsWith("incr", StringComparison.Ordinal) ? "++" : "--";
+                return op.Contains("pre", StringComparison.Ordinal) ? "(" + sign + operand + ")" : "(" + operand + sign + ")";
+            case "eok_negate": case "eok_complement": case "eok_unary_plus":
+                var unaryOperand = Operands(expression, 1)[0];
+                var unaryType = Canonical(Need(unaryOperand, "type"));
+                if (unaryType.Form != "tk_integer") Fail(expression, "unary arithmetic requires an integer operand");
+                if (op == "eok_negate" && !unaryType.Flag("signed") && Number(unaryType, "size") == 8)
+                    Fail(expression, "unsigned 64-bit negation requires a separate lowering adapter");
+                var unary = op == "eok_negate" ? "-" : op == "eok_complement" ? "~" : "+";
+                return "((" + TypeName(Need(expression, "type")) + ")(" + unary + Expression(unaryOperand) + "))";
+            case "eok_cast":
+                var castOperand = Operands(expression, 1)[0];
+                if (!IsScalar(Need(expression, "type")) || !IsScalar(Need(castOperand, "type")))
+                    Fail(expression, "cast requires scalar source and destination types");
+                return "((" + TypeName(Need(expression, "type")) + ")" + Expression(castOperand) + ")";
+            case "eok_question":
+                var choices = Operands(expression, 3);
+                return "(" + Condition(choices[0]) + " ? " + Expression(choices[1]) + " : " + Expression(choices[2]) + ")";
+            case "eok_subscript":
+                var subscript = Operands(expression, 2);
+                if (!IsDataPointer(Need(subscript[0], "type")) || Canonical(Need(subscript[1], "type")).Form != "tk_integer")
+                    Fail(expression, "subscript requires non-void data-pointer base and integer index");
+                return "(" + Expression(subscript[0]) + ")[" + Expression(subscript[1]) + "]";
+            case "eok_dot_field": case "eok_points_to_field":
+                var member = Operands(expression, 2);
+                if (member[1].Form != "field") Fail(expression, "expected field member");
+                var field = Need(member[1], "symbol");
+                if (!names.TryGetValue(field.Id, out var fieldName)) Fail(field, "field not in emitted record");
+                return "(" + Expression(member[0]) + ")" + (op == "eok_dot_field" ? "." : "->") + fieldName;
+            case "eok_indirect":
+                var indirectOperand = Operands(expression, 1)[0];
+                if (!IsDataPointer(Need(indirectOperand, "type"))) Fail(expression, "dereference requires non-void data pointer");
+                return "(*" + Expression(indirectOperand) + ")";
+            case "eok_address_of":
+                var addressOperand = Operands(expression, 1)[0];
+                if (addressOperand.Text("valueCategory") != "lvalue") Fail(expression, "address-of requires an lvalue");
+                return "(&" + Expression(addressOperand) + ")";
+            case "eok_call":
+                var target = graph.DirectCallTarget(expression);
+                if (target == null || !routines.Contains(target.Id)) Fail(expression, "only calls to defined functions in this module are supported");
+                var callOperands = graph.Linked(expression.ReferenceId("operands")).ToArray();
+                if (callOperands.Length == 0 || callOperands[0].Form != "routine" || callOperands[0].ReferenceId("symbol") != target!.Id || callOperands[0].Flag("volatileFetch"))
+                    Fail(expression, "call target must be an ordinary direct routine reference");
+                var signature = Need(Canonical(Need(target!, "type")), "signature");
+                if (callOperands.Length != graph.Linked(signature.ReferenceId("parameters")).Count() + 1) Fail(expression, "call argument mismatch");
+                return names[target!.Id] + "(" + string.Join(", ", callOperands.Skip(1).Select(Expression)) + ")";
+            default: throw Unsupported(expression, "unsupported operator " + op);
+        }
+    }
+
+    private bool IsDataPointer(SemanticNode type)
+    {
+        type = Canonical(type);
+        return type.Form == "tk_pointer" && Canonical(Need(type, "elementType")).Form is not ("tk_void" or "tk_routine");
+    }
+
+    private string StatementExpression(SemanticNode expression)
+    {
+        var op = expression.Text("operator") ?? "";
+        if (op != "eok_call" && !op.EndsWith("assign", StringComparison.Ordinal) && !op.EndsWith("incr", StringComparison.Ordinal) && !op.EndsWith("decr", StringComparison.Ordinal))
+            Fail(expression, "unsupported discarded expression");
+        var result = Expression(expression);
+        return result.StartsWith('(') && result.EndsWith(')') ? result[1..^1] : result;
+    }
+
+    private string Constant(SemanticNode constant)
+    {
+        if (constant.Form != "ck_integer") Fail(constant, "only integer constants are supported");
+        var type = Need(constant, "type");
+        var canonical = Canonical(type);
+        var typeName = TypeName(type);
+        if (canonical.Form != "tk_integer") Fail(constant, "integer constant has noninteger type");
+        if (!BigInteger.TryParse(constant.Text("integerValue"), NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var value))
+            Fail(constant, "invalid integer value");
+        int bits = checked((int)Number(canonical, "size") * 8);
+        var min = canonical.Flag("signed") ? -(BigInteger.One << (bits - 1)) : BigInteger.Zero;
+        var max = (BigInteger.One << (canonical.Flag("signed") ? bits - 1 : bits)) - 1;
+        if (value < min || value > max) Fail(constant, "integer constant outside type range");
+        var suffix = typeName switch { "uint" => "U", "long" => "L", "ulong" => "UL", _ => "" };
+        return value.ToString(CultureInfo.InvariantCulture) + suffix;
+    }
+
+    private static void NoLifetime(SemanticNode node)
+    {
+        foreach (var field in new[] { "lifetime", "commonLifetime", "initializationExpressionLifetime", "overlappingTemporariesLifetime" })
+            if (node.Reference(field) != null) Fail(node, "lifetime semantics are outside this profile");
+    }
+    private static void RequireProperties(SemanticNode node, params string[] fields)
+    {
+        foreach (var field in fields)
+            if (!node.Raw.TryGetProperty(field, out _)) Fail(node, "missing required emission fact " + field);
+    }
+    private static ulong Number(SemanticNode node, string field) => node.Raw.GetProperty(field).GetUInt64();
+    private static SemanticNode Need(SemanticNode node, string field) => node.Reference(field) ?? throw Unsupported(node, "missing " + field);
+    private static InvalidDataException Unsupported(SemanticNode node, string message)
+    {
+        var location = "";
+        if (node.Raw.TryGetProperty("location", out var source) && source.TryGetProperty("expansion", out var expansion))
+            location = $" {expansion.GetProperty("physicalFile").GetString()}:{expansion.GetProperty("line").GetUInt64()}";
+        return new($"{Profile}: node {node.Id} ({node.Kind}/{node.Form}){location}: {message}.");
+    }
+    private static void Fail(SemanticNode node, string message) => throw Unsupported(node, message);
+    private static string Allocate(SemanticNode node, HashSet<string> used)
+    {
+        var name = node.Name;
+        if (string.IsNullOrEmpty(name) || !Regex.IsMatch(name, "^[A-Za-z_][A-Za-z0-9_]*$")) name = "anonymous_" + node.Id;
+        var candidate = name;
+        if (!used.Add(candidate))
+        {
+            candidate = name + "_" + node.Id;
+            while (!used.Add(candidate)) candidate += "_";
+        }
+        return Identifier(candidate);
+    }
+    private static readonly HashSet<string> Keywords = new(("abstract as base bool break byte case catch char checked class const continue decimal default delegate do double else enum event explicit extern false finally fixed float for foreach goto if implicit in int interface internal is lock long namespace new null object operator out override params private protected public readonly ref return sbyte sealed short sizeof stackalloc static string struct switch this throw true try typeof uint ulong unchecked unsafe ushort using virtual void volatile while").Split(' '), StringComparer.Ordinal);
+    private static string Identifier(string name) => Keywords.Contains(name) ? "@" + name : name;
+    private void SourceComment(SemanticNode node)
+    {
+        var location = node.Raw.GetProperty("location").GetProperty("expansion");
+        var file = Path.GetFileName(location.GetProperty("physicalFile").GetString());
+        Line($"// {file?.Replace("\r", " ").Replace("\n", " ")}:{location.GetProperty("line").GetUInt64()} (semantic node {node.Id})");
+    }
+    private void Line(string text = "")
+    {
+        if (text.Length != 0) output.Append(' ', indent * 4).Append(text);
+        output.AppendLine();
+    }
+}

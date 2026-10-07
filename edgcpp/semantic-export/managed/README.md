@@ -2,11 +2,13 @@
 
 `Edg.Semantic` is a reflection-free .NET 10 reader for `edg-semantic/1`
 packages. It uses `JsonDocument` and explicit `Utf8JsonWriter` output, and
-supports NativeAOT. It does not emit C# yet.
+supports NativeAOT. Its separate bounded C emitter consumes the same named graph
+facts and emits source-oriented unsafe C#.
 
 ```sh
 dotnet run --project edgcpp/semantic-export/managed -c Release -- inspect PACKAGE_DIRECTORY
 dotnet run --project edgcpp/semantic-export/managed -c Release -- assert-probe PACKAGE_DIRECTORY
+dotnet run --project edgcpp/semantic-export/managed -c Release -- emit-csharp PACKAGE_DIRECTORY --output Generated.cs
 ```
 
 `inspect` accepts a package directory, `package.json`, or a standalone graph.
@@ -20,6 +22,14 @@ macro references. Unknown adapter fields remain accessible as JSON.
 packages, and unavailable source snapshots. The initial native exporter marks
 all graphs incomplete; successful inspection is not a declaration of complete
 semantic coverage.
+
+`emit-csharp` applies the independent `c-integer-structured/1` profile. It requires
+a full package, verified source/graph/producer hashes, explicit source availability,
+zero diagnostics and supported semantic facts. It renders before writing the
+output, preserving any existing file when validation rejects the input. The
+generated class defaults to `SemanticModule`; use `--class NAME` to change it.
+See the [managed C checkpoint](../../docs/semantic-export-c-emission.md) for tested
+coverage, evidence and remaining work.
 
 The public `SemanticGraph` API exposes ID-based `SemanticNode` objects, typed
 common accessors, linked lists, source declaration ordering and resolved direct

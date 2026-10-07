@@ -1,7 +1,7 @@
 # EDG semantic package prototype
 
-This is an **implemented, separately built export/reader prototype**, not a new
-production C# emitter. It keeps EDG's unlowered IL and source form available to
+This is an **implemented, separately built exporter, managed reader and bounded
+C# emitter prototype**. It keeps EDG's unlowered IL and source form available to
 managed passes. The existing `cpfe-dot` executable, preparation scripts, and
 upstream source checkout are not changed by these tools.
 
@@ -110,17 +110,24 @@ intentional even for simple probes. `--strict-emission` in the managed reader
 rejects such packages. A successfully parsed/validated package does not establish
 complete language coverage or mean it can already drive a C# emitter.
 
+The separate `emit-csharp` command validates the bounded
+`c-integer-structured/1` profile before producing C#. It requires a package with
+verified hashes and available source snapshots, zero adapter diagnostics, and
+only supported C semantics. It does not override the graph-wide completeness
+flag. See the [managed emission checkpoint](../docs/semantic-export-c-emission.md)
+for commands, accepted coverage and remaining work.
+
 Unimplemented node/variant adapters produce node-ID diagnostics (`SEM001`) and
 retain generic edges; they are not silently discarded. Current probes still
-report metadata adapters including pragmas, exception specifications, dependent
-template supplements, spelling supplements and hidden-name records. Integer
-constant values outside signed 64-bit and unimplemented expression/statement/
+report metadata adapters including exception specifications, dependent
+template supplements and hidden-name records. Integer
+constant values outside signed/unsigned 64-bit and unimplemented expression/statement/
 constant forms likewise require explicit adapters. Basic type records do not
 claim complete callable ABI or class-layout semantics on their own.
 
 The exported cleanup data are **primitive EDG facts**, not yet a managed
 exception/RAII lowering or a proof of all normal/exceptional execution paths.
-There is no semantic linker, code generator, macro-to-managed-API conversion,
+There is no semantic linker, C++ code generator, macro-to-managed-API conversion,
 lossless syntax tree, or complete module/vendor-extension serialization in this
 milestone. Dependent template prototypes remain dependent; concrete instance
 identity is relative to the invocation and its instantiation policy.
