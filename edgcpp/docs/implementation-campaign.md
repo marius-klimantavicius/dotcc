@@ -1958,3 +1958,20 @@ adds no stubs or test exclusions; these are explicit future runner gates.
 A library-only checkpoint cannot append the new test semantics through replay.
 
 [Upstream runner assembly audit](../evidence/duckdb-runner-assembly-audit-20261007.json).
+
+
+Full attempt004 stopped after 4,245 seconds on a frontend declaration-correspondence
+error for `std::pair<string, Value>::operator=`, triggered by map concatenation's
+converting `emplace_back`. Peak compiler RSS was 58.85 GiB; neither memory nor
+time stopped the run. Before/after input hashes match and no usable checkpoint
+exists. Prepared005 contains the same uncorrected headers and is explicitly
+superseded, not launched. Actual Value cases are being reduced against stock C;
+no EDG semantic change or diagnostic suppression is authorized.
+
+With the active run finished, the independently reviewed complete-group
+replacement recipe is now canonical. Its 27 focused controls and 14 original
+checks pass at canonical paths. The source-target/ordered receipt contract and
+physical-line parser correction are preserved; optional grouping never drops
+configured sources. A new stage is required before another full invocation.
+
+[Attempt004 diagnostic](../evidence/duckdb-checkpoint004-diagnostic-20261007.json).

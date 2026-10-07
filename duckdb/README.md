@@ -161,6 +161,12 @@ ordered membership, source hashes, compiler options and the native comparison
 observations. An inventory-only experimental plan cannot be preprocessed.
 The default remains the upstream groups only.
 
+An audited manifest can coalesce complete existing upstream groups only through
+`replacesUpstreamGroups` receipts and an exact `sourceTargets` map. Partial or
+duplicate replacement is rejected. Ordered prior receipts bind the cumulative
+native archives and actual link. Physical-line parsing preserves C++ comment
+semantics; the default upstream grouping remains unchanged.
+
 Additional manifests and their checksums may be repeated in order. A composed
 native comparison must bind the prior approval, unchanged archive members and
 actual link inputs. The verified Parquet follow-up combines 17 implementation
@@ -243,11 +249,15 @@ declaration correspondence in the separate-consumer assembly; the combined-core
 assembly has progressed beyond this limitation. Its latest 164-input full run
 stopped at the existing 72 GiB compiler RSS guard after 77 minutes, during
 deferred template instantiation, without frontend errors or a usable checkpoint.
-The 148-input Parquet composition is running under the same resource guard.
+The 148-input Parquet attempt stopped after 70.8 minutes on an explicit
+`pair<string, Value>` declaration-correspondence diagnostic, at 58.85 GiB peak
+compiler RSS, below the memory guard. No usable checkpoint was produced.
 A separately prepared 129-input core-functions fallback preserves all 2,207
 original TUs and all seven extensions. Its native comparison passes 215 fully
 executed upstream cases and 18,701 assertions; three matched partial/nonexecuting
-observations are excluded. It is not yet adopted or a translated execution pass.
+observations are excluded. The reviewed grouping recipe is now adopted, but the prepared fallback run is
+superseded until the source-signature issue is resolved in a fresh staging tree.
+It is not a translated execution pass.
 See [fallback evidence](../edgcpp/evidence/duckdb-core-unity-fallback-20261007.json).
 All dependency sources remain selected; no unresolved runtime placeholders were used to claim
 an execution pass.

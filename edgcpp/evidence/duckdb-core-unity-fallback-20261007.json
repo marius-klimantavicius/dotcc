@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "verified-fallback-not-adopted",
+  "status": "reviewed-grouping-recipe-adopted",
   "translatedExecutionVerified": false,
   "nativeScope": "215 fully executed unchanged upstream cases,18701 assertions per baseline/candidate; all218 observations match, three excluded observations do not count as acceptance.",
   "nativeApproval": {
@@ -274,11 +274,11 @@
     "frozenInputsUnchanged": true
   },
   "limitations": [
-    "The active148-input attempt004 remains unchanged; this129-input fallback has not been launched as a full frontend run.",
+    "Attempt004 ended on a Value pair assignment-signature diagnostic; the prepared129-input005contains the same headers and is superseded before launch. Fresh staged inputs are required.",
     "Preprocessed size decreases do not establish compiler-memory savings.",
     "Native source grouping can coalesce header-local constants; inspected source and selected tests do not prove universal equivalence.",
     "No full DuckDB C# build or JIT/NativeAOT execution has passed.",
-    "The corrected candidate recipe remains isolated and independently reviewed; attempt005 is prepared only, not launched."
+    "The reviewed grouping recipe is canonical, but it has not produced a completed full DuckDB frontend checkpoint or translated execution."
   ],
   "previousCandidate": {
     "recipe": {
@@ -304,5 +304,27 @@
   "preparedOnly": {
     "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-005/prepared.json",
     "sha256": "a1e184ae03e86a7bd1984a21031ec9ab312a74377ac729e4d22c8907d475bde3"
+  },
+  "canonicalRecipe": {
+    "path": "/home/marius/p/dotcc/duckdb/edg/unity.py",
+    "sha256": "08978969eaea138be1738a82ddd0c6af3fe3ec9b0518c4114e7941ff175e36eb"
+  },
+  "canonicalReplacementTests": {
+    "path": "/home/marius/p/dotcc/duckdb/edg/tests/replacement_unity_verify.py",
+    "sha256": "3ccab6b78b9083fc8767c8a2fa1af4f91f1bd959b86dc4ffae78657c00b8821b"
+  },
+  "canonicalControls": {
+    "focused": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-canonical-controls-001/results.json",
+      "sha256": "1b1a0cfb613b3540f6e10afb9087a775ea3c10e85f3fb0ea18ac063d25a13d9f"
+    },
+    "original": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-canonical-upstream-001/results.json",
+      "sha256": "854703511cd25b033a71c144b8edf1507f6297763fa464904a846c734ec8c8f5"
+    }
+  },
+  "supersededPreparedAttempt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-005/coordinator-stop.json",
+    "sha256": "6c820bbe6725c262abc1d3fbcca200120b6bc02b092b5491d80a987134cf7fc3"
   }
 }

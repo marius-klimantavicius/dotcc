@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "status": "frontend-diagnostic-stop",
+  "attempt": 4,
+  "results": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-004/results.json",
+    "sha256": "ecf49c3ffa3aaf0ec1f63e4c15fe72d426b40959dd030da279127fa82c895b10"
+  },
+  "prepared": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-004/prepared.json",
+    "sha256": "ce93dddda11f747b6c0bc9405b01a10aa88e600e0d68c8eb957e8d32265ec57f"
+  },
+  "errorNotification": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-004/frontend-error-notification.json",
+    "sha256": "a9b230b5a5de5626cac0b6666c8a65c2f197d48c88a871e44734317b8b116852"
+  },
+  "resources": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-004/resources.jsonl",
+    "sha256": "749021ca88267008b8210524c8ed7b9020807a7a1510c869bc3b790813e64555"
+  },
+  "elapsedSeconds": 4245.307939416001,
+  "peakCompilerRssBytes": 63186427904,
+  "stopReason": "Explicit cross-translation-unit declaration-correspondence error; not memory guard or timeout.",
+  "diagnostic": "libc++pair.h289: std::pair<std::string,duckdb::Value>::operator=(const conditional pair-or-__nat&) incompatible with a declaration in another TU, instantiated through map_concat.cpp29 vector.emplace_back(pair<const char*,Value>).",
+  "inputsVerifiedBeforeRun": true,
+  "inputsVerifiedAfterRun": true,
+  "changedInputs": [],
+  "checkpointUsable": false,
+  "translatedExecutionVerified": false,
+  "diagnostics": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-004/translate.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-004/translate.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-004/checkpoint/writer.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-004/checkpoint/writer.stderr",
+      "sha256": "d6aa691fa4215be18bf2e250d43e95c2546b217817fef7c90ab55f3b18c6765d"
+    }
+  ],
+  "supersededPreparedAttempt005": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-005/coordinator-stop.json",
+    "sha256": "6c820bbe6725c262abc1d3fbcca200120b6bc02b092b5491d80a987134cf7fc3"
+  },
+  "nextStep": "Reduce actualValue copy/size/default/converting-pair/emplace forms against stockC and prove a precise source-signature anchor before fresh staging/preprocessing. Never modify EDG semantics or suppress the diagnostic."
+}
