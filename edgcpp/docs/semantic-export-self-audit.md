@@ -1,5 +1,92 @@
 # EDG semantic-export self audit
 
+## Dot backend coverage review — 2026-10-07
+
+**Coverage is incomplete, including a confirmed silent C miscompilation.**
+This review compares canonical `backend/dot_gen_be.c` and its local dot
+includes with the typed SQLite exporter and `CProjectEmitter`. It checks both
+node variants and semantic fields inside variants that already have adapters.
+The earlier corpus campaigns below are historical; their JSON storage and
+managed whole-file size limitations were superseded by the SQLite writer and
+lazy reader. This review does not rerun the full 77-unit corpus.
+
+The retained typed-writer dot package has **3,144,305 nodes in 72 kinds,
+6,864,007 native edges, and 273,575 diagnostics across 35 categories**. A fresh
+SQL check finds zero missing native-edge sources or targets. This proves
+identity closure, not complete semantic information: generic edges neither
+name pointer roles nor preserve omitted scalar flags. Counts refer to the
+frozen `semantic-export-typed-writer-001/dot-input` snapshot; review source
+hashes separately identify the canonical backend inspected today.
+
+### Reproduced C failures
+
+| Priority | Gap | Evidence and consequence |
+| --- | --- | --- |
+| P1 | Bitfield-specific signedness is absent | `struct Bits { int value:3; };` with `--unsigned_bit_fields`, assigned `7`, exports with **zero diagnostics**. Native GCC with `-funsigned-bitfields` returns **7**; generated C# returns **-1**. The exporter saves `bitfield`, width and offset but omits EDG's `bit_field_is_signed`. `CProjectEmitter.Types.cs:131` substitutes the declared type's signedness. Dot correctly consults the field flag in `dot_gen_bitfield_properties.h:48`. |
+| P2 | GNU statement expression and result statement | `return ({ int y = x + 1; y * 2; });` produces `Expression adapter: statement` and `Statement adapter: stmk_stmt_expr_result`; managed emission rejects it. Dot handles both in `dot_gen_be.c:787` and `:1329`. Add the expression's body relation and result semantics together. |
+| P2 | VLA dimensions and execution points | `int a[n]; ... sizeof(a)` produces missing `vla-dimension`, `stmk_set_vla_size`, and `stmk_vla_decl` diagnostics. Export also lacks `scope.vla_dimensions`, dimension-expression/original-dimension relations and the type's VLA-specific flags. Preserve once-only bound evaluation, declaration and lifetime semantics; dot currently consumes lowered VLA allocation calls. |
+| P2 | Boolean conversion operator | `_Bool f(int x) { return (_Bool)x; }` exports with **zero diagnostics** but emission fails: `operator eok_bool_cast expects 2 operands, found 1`. The generic native operation adapter retains the operator; the managed operator switch omits this unary C99 form and defaults unknown operators to binary arity. |
+| P2 | GNU omitted-middle conditional | `return x ?: 3;` exports with **zero diagnostics** but managed emission rejects it because it needs an evaluation temporary. For forms containing `enk_reuse_value`, its `reused_value_init` relation also has no native adapter. Preserve once-only evaluation rather than duplicating the first operand. |
+
+All five inputs, SQLite exports, generated output where available, invocation
+logs and results are retained under
+`artifacts/campaign/persistent-continuation/semantic-export-node-review-001/`.
+The bitfield execution comparison used .NET 10 JIT; it was not rerun under
+NativeAOT. The four additional probes used `--c17 --gnu_version 130300`.
+
+### Further missing semantic contracts
+
+These are source-review findings, not newly reproduced execution failures:
+
+| Area | Missing information or handling |
+| --- | --- |
+| Floating/integer constants | `ck_float` exports text and special-value flags, but no exact payload bits. EDG's decimal and C99 hex-display helpers render NaNs as `NaN`; dot uses `fp_to_hex_string` raw bits. Managed emission explicitly rejects NaN without payload bits. Integer constants exceeding 64 bits report unsupported, while dot supports 128-bit constants. |
+| Compile-time branches | `stmk_constexpr_if`, `stmk_if_consteval`, `stmk_if_not_consteval` lack adapters preserving branches and resolved selection. Dot chooses their retained branch. Dependent selection must remain distinguishable from resolved selection. |
+| Coroutines | `enk_await`, `enk_yield`, `stmk_coroutine`, `stmk_coroutine_return` and coroutine descriptor metadata lack adapters. Dot's coroutine helpers consume promise/handle information and the await ready/resume/suspend triple. These are not all eliminated by EDG lowering. They are absent from the audited C++17 dot input, so its diagnostic inventory cannot reveal this gap. |
+| Construction and static initialization | `dik_constructor` retains constructor/arguments but omits implied-copy-source, value-initialization, sequenced-arguments and array-copy flags. Scope export omits the ordered file/namespace `dynamic_inits` root. Existing lifetime/destruction links do not replace these fields. |
+| Class layout and dispatch | Base-class/derivation records lack typed adapters; class supplements omit full/primary base information, nonvirtual size/alignment and virtual-table layout information; routines omit virtual slot information. `ck_ptr_to_member` has no adapter despite a pointer-to-member type adapter. |
+| Other C++ subgraphs | New/delete supplements, lambdas/captures, range-based loops, parameter references, pack expansion/`sizeof...`, folds, dependent initializers, exception specifications and several template/name-resolution records remain unsupported. See the complete diagnostic inventory instead of treating this as an exhaustive list of EDG forms. |
+
+The latest dot package alone contains 1,308 unsupported parameter-reference
+expressions, 246 `sizeof...` expressions, 229 new/delete expressions and 229
+matching supplements, 167 constexpr-if statements and 167 supplements,
+106 range-based-for statements and 106 supplements, 54 lambda captures and
+49 lambda records. The largest groups are hidden names (96,168), class-list
+entries (37,817), template-parameter type supplements (28,505), template
+parameters (27,279) and name qualifiers (21,156). Some are descriptive or
+dependent metadata; they are not all necessarily executable emission blockers.
+
+Two additional managed-consumer concerns need focused execution tests:
+exported evaluation-order flags are unused, and address-taken over-aligned
+locals do not have dot's aligned-frame allocation. Ordinary unsequenced C
+expressions alone do not prove an evaluation-order bug. These concerns are
+not included in the reproduced failures above.
+
+### Phase boundary and next work
+
+Semantic export builds with `DO_IL_LOWERING=0`; dot usually consumes lowered
+IL. Missing lowered EH expressions, covariant-return expressions, stack-offset
+constants and `throw_supplement.expr` are **not** missing unlowered adapters.
+Likewise, synthesized vtables, base fields, cleanup tables and startup routines
+need not be copied into the unlowered schema. Their original semantic inputs
+must be retained so the C# backend can perform equivalent lowering. `tk_enum`
+is an alias of `tk_integer`, whose enum information is already exported.
+Current project emission explicitly rejects C++; the C++ findings describe
+work needed to extend that boundary, not accepted C++ silently miscompiled.
+
+Prioritize bitfield signedness, the reproduced C operator/statement/VLA gaps,
+and exact floating payloads. Then implement C++ subgraphs with their fields,
+ordering and lifetime contracts together. A list of handled node kinds or zero
+adapter diagnostics is insufficient: capability checks must include operator
+subforms and required semantic fields. No production code was changed by
+this review, and it does not certify exhaustive EDG language coverage.
+
+Tracked evidence: [node coverage evidence](../semantic-export/evidence-node-coverage.json).
+Full inventory, source hashes and reproduction logs:
+`artifacts/review/semantic-export/node-coverage-review/`.
+
+## Historical self-export campaigns
+
 The audit uses the **77 actual `cpfe-dot` translation units** selected from
 `build/compile_commands.json`, including `upstream/src/dot_gen_be.c` and
 `dot_sys_predef.c`. The backend copy is checked against the canonical

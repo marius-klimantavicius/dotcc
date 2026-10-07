@@ -1,0 +1,1088 @@
+{
+  "schema": "edg-semantic-node-coverage-evidence/1",
+  "package": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-typed-writer-001/package-dot/semantic.sqlite",
+  "sha256": "d3c81ed6dcd2e0c11676339068c3e1137a3438ba3506666ecda5dd22c0230cd1",
+  "nodes": 3144305,
+  "nativeEdges": 6864007,
+  "diagnostics": 273575,
+  "diagnosticCategories": 35,
+  "missingNativeEdgeTargets": 0,
+  "missingNativeEdgeSources": 0,
+  "nodeKinds": [
+    {
+      "name": "attribute",
+      "count": 11506,
+      "table": "node_attribute"
+    },
+    {
+      "name": "attribute-arg",
+      "count": 937,
+      "table": "node_attribute_arg"
+    },
+    {
+      "name": "attribute-group",
+      "count": 8551,
+      "table": "node_attribute_group"
+    },
+    {
+      "name": "base-class",
+      "count": 8586,
+      "table": "node_base_class"
+    },
+    {
+      "name": "base-class-derivation",
+      "count": 8545,
+      "table": "node_base_class_derivation"
+    },
+    {
+      "name": "based-type-list-member",
+      "count": 89409,
+      "table": "node_based_type_list_member"
+    },
+    {
+      "name": "block",
+      "count": 20856,
+      "table": "node_block"
+    },
+    {
+      "name": "class-list-entry",
+      "count": 37817,
+      "table": "node_class_list_entry"
+    },
+    {
+      "name": "class-type-supplement",
+      "count": 43981,
+      "table": "node_class_type_supplement"
+    },
+    {
+      "name": "condition-supplement",
+      "count": 25,
+      "table": "node_condition_supplement"
+    },
+    {
+      "name": "constant",
+      "count": 128883,
+      "table": "node_constant"
+    },
+    {
+      "name": "constexpr-if",
+      "count": 167,
+      "table": "node_constexpr_if"
+    },
+    {
+      "name": "constructor-init",
+      "count": 3036,
+      "table": "node_constructor_init"
+    },
+    {
+      "name": "decl-position-supplement",
+      "count": 330637,
+      "table": "node_decl_position_supplement"
+    },
+    {
+      "name": "derivation-step",
+      "count": 8545,
+      "table": "node_derivation_step"
+    },
+    {
+      "name": "dynamic-init",
+      "count": 21581,
+      "table": "node_dynamic_init"
+    },
+    {
+      "name": "element-position",
+      "count": 417,
+      "table": "node_element_position"
+    },
+    {
+      "name": "exception-specification",
+      "count": 13141,
+      "table": "node_exception_specification"
+    },
+    {
+      "name": "expr-node",
+      "count": 351667,
+      "table": "node_expr_node"
+    },
+    {
+      "name": "field",
+      "count": 5725,
+      "table": "node_field"
+    },
+    {
+      "name": "for-loop",
+      "count": 581,
+      "table": "node_for_loop"
+    },
+    {
+      "name": "gnu-routine-supplement",
+      "count": 71,
+      "table": "node_gnu_routine_supplement"
+    },
+    {
+      "name": "hidden-name",
+      "count": 96168,
+      "table": "node_hidden_name"
+    },
+    {
+      "name": "id-name",
+      "count": 63217,
+      "table": "node_id_name"
+    },
+    {
+      "name": "il-entity-list-entry",
+      "count": 100083,
+      "table": "node_il_entity_list_entry"
+    },
+    {
+      "name": "instantiation-directive",
+      "count": 14,
+      "table": "node_instantiation_directive"
+    },
+    {
+      "name": "integer-type-supplement",
+      "count": 320,
+      "table": "node_integer_type_supplement"
+    },
+    {
+      "name": "label",
+      "count": 174,
+      "table": "node_label"
+    },
+    {
+      "name": "lambda",
+      "count": 49,
+      "table": "node_lambda"
+    },
+    {
+      "name": "lambda-capture",
+      "count": 54,
+      "table": "node_lambda_capture"
+    },
+    {
+      "name": "linkage-spec-block",
+      "count": 29,
+      "table": "node_linkage_spec_block"
+    },
+    {
+      "name": "local-expr-node-ref",
+      "count": 274,
+      "table": "node_local_expr_node_ref"
+    },
+    {
+      "name": "local-scope-ref",
+      "count": 930,
+      "table": "node_local_scope_ref"
+    },
+    {
+      "name": "local-static-variable-init",
+      "count": 2,
+      "table": "node_local_static_variable_init"
+    },
+    {
+      "name": "macro",
+      "count": 5666,
+      "table": "node_macro"
+    },
+    {
+      "name": "macro-invocation-record-block",
+      "count": 115,
+      "table": "node_macro_invocation_record_block"
+    },
+    {
+      "name": "name-qualifier",
+      "count": 21156,
+      "table": "node_name_qualifier"
+    },
+    {
+      "name": "name-reference",
+      "count": 67596,
+      "table": "node_name_reference"
+    },
+    {
+      "name": "namespace",
+      "count": 27,
+      "table": "node_namespace"
+    },
+    {
+      "name": "new-delete-supplement",
+      "count": 229,
+      "table": "node_new_delete_supplement"
+    },
+    {
+      "name": "object-lifetime",
+      "count": 3054,
+      "table": "node_object_lifetime"
+    },
+    {
+      "name": "other-text",
+      "count": 46593,
+      "table": "node_other_text"
+    },
+    {
+      "name": "overriding-virtual-function",
+      "count": 6,
+      "table": "node_overriding_virtual_function"
+    },
+    {
+      "name": "param-type",
+      "count": 106608,
+      "table": "node_param_type"
+    },
+    {
+      "name": "pragma",
+      "count": 407699,
+      "table": "node_pragma"
+    },
+    {
+      "name": "range-based-for-loop",
+      "count": 106,
+      "table": "node_range_based_for_loop"
+    },
+    {
+      "name": "routine",
+      "count": 68054,
+      "table": "node_routine"
+    },
+    {
+      "name": "routine-type-supplement",
+      "count": 85261,
+      "table": "node_routine_type_supplement"
+    },
+    {
+      "name": "scope",
+      "count": 55963,
+      "table": "node_scope"
+    },
+    {
+      "name": "scope-orphaned-list-header",
+      "count": 667,
+      "table": "node_scope_orphaned_list_header"
+    },
+    {
+      "name": "scoped-expression",
+      "count": 1,
+      "table": "node_scoped_expression"
+    },
+    {
+      "name": "seq-number-lookup-entry",
+      "count": 707,
+      "table": "node_seq_number_lookup_entry"
+    },
+    {
+      "name": "source-file",
+      "count": 360,
+      "table": "node_source_file"
+    },
+    {
+      "name": "source-sequence-entry",
+      "count": 148586,
+      "table": "node_source_sequence_entry"
+    },
+    {
+      "name": "src-seq-end-of-construct",
+      "count": 10551,
+      "table": "node_src_seq_end_of_construct"
+    },
+    {
+      "name": "src-seq-secondary-decl",
+      "count": 6183,
+      "table": "node_src_seq_secondary_decl"
+    },
+    {
+      "name": "src-seq-sublist",
+      "count": 366,
+      "table": "node_src_seq_sublist"
+    },
+    {
+      "name": "statement",
+      "count": 65074,
+      "table": "node_statement"
+    },
+    {
+      "name": "static-assertion",
+      "count": 1494,
+      "table": "node_static_assertion"
+    },
+    {
+      "name": "string-text",
+      "count": 2876,
+      "table": "node_string_text"
+    },
+    {
+      "name": "switch-case-entry",
+      "count": 677,
+      "table": "node_switch_case_entry"
+    },
+    {
+      "name": "switch-stmt-descr",
+      "count": 63,
+      "table": "node_switch_stmt_descr"
+    },
+    {
+      "name": "template",
+      "count": 18583,
+      "table": "node_template"
+    },
+    {
+      "name": "template-arg",
+      "count": 184820,
+      "table": "node_template_arg"
+    },
+    {
+      "name": "template-decl",
+      "count": 15038,
+      "table": "node_template_decl"
+    },
+    {
+      "name": "template-parameter",
+      "count": 27279,
+      "table": "node_template_parameter"
+    },
+    {
+      "name": "template_param_type_supplement",
+      "count": 28505,
+      "table": "node_template_param_type_supplement"
+    },
+    {
+      "name": "type",
+      "count": 303521,
+      "table": "node_type"
+    },
+    {
+      "name": "typeref-type-supplement",
+      "count": 73734,
+      "table": "node_typeref_type_supplement"
+    },
+    {
+      "name": "using-decl",
+      "count": 1260,
+      "table": "node_using_decl"
+    },
+    {
+      "name": "variable",
+      "count": 29443,
+      "table": "node_variable"
+    },
+    {
+      "name": "variable-template-info",
+      "count": 406,
+      "table": "node_variable_template_info"
+    }
+  ],
+  "diagnosticGroups": [
+    {
+      "message": "Metadata adapter: hidden-name",
+      "count": 96168,
+      "exampleNode": 1254
+    },
+    {
+      "message": "Metadata adapter: class-list-entry",
+      "count": 37817,
+      "exampleNode": 1665
+    },
+    {
+      "message": "Metadata adapter: template_param_type_supplement",
+      "count": 28505,
+      "exampleNode": 126
+    },
+    {
+      "message": "Metadata adapter: template-parameter",
+      "count": 27279,
+      "exampleNode": 128
+    },
+    {
+      "message": "Metadata adapter: name-qualifier",
+      "count": 21156,
+      "exampleNode": 1583
+    },
+    {
+      "message": "Template argument adapter: tak_start_of_pack_expansion",
+      "count": 17649,
+      "exampleNode": 671
+    },
+    {
+      "message": "Metadata adapter: exception-specification",
+      "count": 13141,
+      "exampleNode": 2017
+    },
+    {
+      "message": "Metadata adapter: base-class",
+      "count": 8586,
+      "exampleNode": 515
+    },
+    {
+      "message": "Metadata adapter: base-class-derivation",
+      "count": 8545,
+      "exampleNode": 514
+    },
+    {
+      "message": "Metadata adapter: derivation-step",
+      "count": 8545,
+      "exampleNode": 513
+    },
+    {
+      "message": "Metadata adapter: static-assertion",
+      "count": 1494,
+      "exampleNode": 6301
+    },
+    {
+      "message": "Expression adapter: param_ref",
+      "count": 1308,
+      "exampleNode": 258670
+    },
+    {
+      "message": "Metadata adapter: using-decl",
+      "count": 1260,
+      "exampleNode": 39788
+    },
+    {
+      "message": "Metadata adapter: variable-template-info",
+      "count": 406,
+      "exampleNode": 13032
+    },
+    {
+      "message": "Expression adapter: sizeof_pack",
+      "count": 246,
+      "exampleNode": 256820
+    },
+    {
+      "message": "Expression adapter: new_delete",
+      "count": 229,
+      "exampleNode": 2550728
+    },
+    {
+      "message": "Metadata adapter: new-delete-supplement",
+      "count": 229,
+      "exampleNode": 2550727
+    },
+    {
+      "message": "Pragma semantics adapter: GCC",
+      "count": 202,
+      "exampleNode": 887535
+    },
+    {
+      "message": "Statement adapter: stmk_constexpr_if",
+      "count": 167,
+      "exampleNode": 2565255
+    },
+    {
+      "message": "Metadata adapter: constexpr-if",
+      "count": 167,
+      "exampleNode": 2565254
+    },
+    {
+      "message": "Statement adapter: stmk_range_based_for",
+      "count": 106,
+      "exampleNode": 2536992
+    },
+    {
+      "message": "Metadata adapter: range-based-for-loop",
+      "count": 106,
+      "exampleNode": 2536879
+    },
+    {
+      "message": "Metadata adapter: lambda-capture",
+      "count": 54,
+      "exampleNode": 2548767
+    },
+    {
+      "message": "Metadata adapter: lambda",
+      "count": 49,
+      "exampleNode": 2548768
+    },
+    {
+      "message": "Initialization adapter: dik_lambda",
+      "count": 34,
+      "exampleNode": 2548773
+    },
+    {
+      "message": "Expression adapter: lambda",
+      "count": 30,
+      "exampleNode": 2548774
+    },
+    {
+      "message": "Metadata adapter: linkage-spec-block",
+      "count": 29,
+      "exampleNode": 2376062
+    },
+    {
+      "message": "Expression adapter: initializer",
+      "count": 27,
+      "exampleNode": 94033
+    },
+    {
+      "message": "Metadata adapter: instantiation-directive",
+      "count": 14,
+      "exampleNode": 2381043
+    },
+    {
+      "message": "Constant adapter: ck_void",
+      "count": 11,
+      "exampleNode": 2621208
+    },
+    {
+      "message": "Metadata adapter: overriding-virtual-function",
+      "count": 6,
+      "exampleNode": 1993259
+    },
+    {
+      "message": "Expression adapter: fold",
+      "count": 6,
+      "exampleNode": 73676
+    },
+    {
+      "message": "Expression adapter: braced_inint_list",
+      "count": 2,
+      "exampleNode": 93606
+    },
+    {
+      "message": "Attribute local expression resolution adapter",
+      "count": 1,
+      "exampleNode": 3137370
+    },
+    {
+      "message": "Metadata adapter: scoped-expression",
+      "count": 1,
+      "exampleNode": 3116504
+    }
+  ],
+  "sourceHashes": {
+    "backend/dot_gen_arrays.h": "c8a4d72f24392114c555290214656d81b1a73292a0e6b70b86ca05cbba2a80f3",
+    "backend/dot_gen_atomics.h": "ef6fd6f3108a56442987b5c996b4c1e4f0a8a419efa47e1aded705449cc47d45",
+    "backend/dot_gen_be.c": "98446844f410f536761a628fd45a04c0e901107e4022335e84133f5d036e6c68",
+    "backend/dot_gen_bitfield_properties.h": "d54d95be21ec38237a5d5c3bc6fe63ad0658d0faf29a256cf49f2d5c4c52bf1d",
+    "backend/dot_gen_byte_data.h": "d52415c16b07977ae96b54bfefd18b900e37bd618fbb259efb42bfddb9f77856",
+    "backend/dot_gen_c11_atomics.h": "9838c35ad6b2c8a6f491ac4717af9f54615a2e2fb996f3ca964e21d2abcd24bf",
+    "backend/dot_gen_cleanup.h": "622400d77223160cfc657f7d58f41b45ab86f59c21604a0856e910e6cb69b8e1",
+    "backend/dot_gen_coroutine.h": "75aeb78a745ace606b11a7a8f541a458d78ef459805252528b3fc5aa26b5150a",
+    "backend/dot_gen_coroutine_cps.h": "9dbb77bd90b750107be137dfe9fc9990de197ce4626f337f2736a149a198d232",
+    "backend/dot_gen_coroutine_emit.h": "2eb149bd86e6882ebf4dce4e597312e906741e411d749fea6b93fd8401228bcc",
+    "backend/dot_gen_coroutine_provenance.h": "ff465c016b6577b2b91b48aafcc7a451a1783be6ffb03ff1f6e9e27d1915f805",
+    "backend/dot_gen_coroutine_view.h": "eb2e9011caa1f22334ba623abb178b09f512ddce6d5ab93644946317d9eaee10",
+    "backend/dot_gen_exception_identity.h": "5cd3c2f94cb7d7acc1b01cc1bf2146b8286567e4c0746899e8cd1c52cf43098c",
+    "backend/dot_gen_exception_ptr.h": "4fbea8a23015838c80c9b2691b12448fb862953b3c242a14a0e6827ddba30f74",
+    "backend/dot_gen_exceptions.h": "25ed2f46225f152fa7909290689bb2f5aa680e7340cbaf730ce48dcd45f6879b",
+    "backend/dot_gen_imports.h": "2e58625dd298058f53ee6d179899da383256a2043bf2857e95f980a73eae42d7",
+    "backend/dot_gen_initializer_identity.h": "ca17c7104385ebb368eb473fa471a61177b7e83a89370150d799d3ea6d8b409c",
+    "backend/dot_gen_integer_intrinsics.h": "fdbc220b3063261ee284c998dd228c4bf97dad189600d1cb227a45fc740db105",
+    "backend/dot_gen_intrinsics.h": "e50cd0abe72bfbe5569495cfed994f7bf13b4015e12ef137b7029daff26b8f59",
+    "backend/dot_gen_ir.h": "7ae0c3ad0a61b8b73c5547be76ed638035dcfc8c35126f0422d2ef71feebd0a0",
+    "backend/dot_gen_ir_adapter.h": "be794ee783da3a978fa964e62372533e8a5cdedcc5e881a88d21ed7bfde71807",
+    "backend/dot_gen_lifecycle.h": "049a2abf210a6ccf28f2c44e735c83247292476ed0aa50f8b39241b13af3e6ed",
+    "backend/dot_gen_main.h": "e74edd890b5127929c0ae2c57792b5b25890f30b5d1f783c215e203f94fcd0eb",
+    "backend/dot_gen_materialize.h": "84358e13024064ea07ac1ffaa5d4c963d26826895ba16a440ec270889fddeacd",
+    "backend/dot_gen_members.h": "af86785cd4796df4f444f6b8122455c65e4e95ec810ead13c472aa564c764534",
+    "backend/dot_gen_order.h": "3bf958aee25ebf2c382be294002a6b1e594af9f08735450e79ccf43c06cfaa4b",
+    "backend/dot_gen_overflow.h": "7b688939a3a8916ccffee06b7420fc20bec729892238ca4e9111cab8b492ef0a",
+    "backend/dot_gen_posix.h": "5e068c64e6b34ea88609eb36b272fda9ae1acaa8b537e8d1b9123520451544b9",
+    "backend/dot_gen_primitive_data.h": "2e77d2a856676b3816e68c8d623232e158fb122e5afac8a3708197472e8505e8",
+    "backend/dot_gen_process.h": "48aca3607ca7a17d82d0c88702aa46473ae19f90d9326f25a83d68735d495a2e",
+    "backend/dot_gen_provider_pruning.h": "3f60bd758e16e43c6c4d26199cca189fc3497eb286b763a10a0fea003e6f313f",
+    "backend/dot_gen_record_data.h": "6ad3bb0f567725d39624437c92e1fd71756f1e7428d1ff257e4503a334a87630",
+    "backend/dot_gen_rtti.h": "be20703665ad2704bba34cc42e4fa32131e572eb594f742fc9ce1fc888314f19",
+    "backend/dot_gen_runtime.h": "e36b881f5324e121791d8330f0f69a024652c88dfc17f548941685ab18614b32",
+    "backend/dot_gen_sequence.h": "8b3fc030254343f6a526fc76c01c0128ac3869bbace415eca756972c0283c2ad",
+    "backend/dot_gen_setjmp.h": "85d4de79e072456c38fea7cd7159577e96db8fb443194db14ee5a0ff80528203",
+    "backend/dot_gen_source_control.h": "b068b710b28481316150f2fc78b59bc72f6607ea7fd439a8f98ddf90e6c4f9cf",
+    "backend/dot_gen_source_expression_api.h": "ecfdc4975600b9723283d2930e8fc58851cdda635e6cb135cc139566332302f4",
+    "backend/dot_gen_source_expressions.h": "6d4ea58dfbd9da7560ed64a44a5260bf0126586058cb3544ceb7626993d9b1ff",
+    "backend/dot_gen_source_names.h": "ee96208413c80f182d6ba38abfd8b4a5ccfc0d4effc5c798abebb9e6cfa2fbe8",
+    "backend/dot_gen_source_storage.h": "16686c0a990bb2604ac8cc41e499b535b077d80b53b5c9fca5ba36817ac108d8",
+    "backend/dot_gen_statement_expression.h": "10a27f0adcda3db842bbdf71c1e688c7541814094a39301afc5b6c5f0e8d47df",
+    "backend/dot_gen_storage_types.h": "b8873b5e7faf68505167f3da122db45b1c00e84659088230a1aad6a04ce4a13c",
+    "backend/dot_gen_terminate.h": "fce846420d2d59f36ee727e960733195e5f489f9a49038bc67c8a7e5da6d8411",
+    "backend/dot_gen_threads.h": "38f80bab3848ecad5387d46ea07b80d65adc750f543e0c2bfacf4d6e555f087f",
+    "backend/dot_gen_trace.h": "86b4028d9a1c6ff81accad9ee9a27de9b664b1ddcc5e5d1b4653aecf2b72bf28",
+    "backend/dot_gen_typeinfo.h": "d94323bbc488d8340e22d746ddcc7ee81219819d9f7a5c9c59e423af62ec1d95",
+    "backend/dot_gen_unbound.h": "890ccc04ce79951db90a44e2777acaa42e6047521f0e7ea3b6cb0a250d9a86ce",
+    "backend/dot_gen_unexpected.h": "02ed9379b9c8054918821ebcf8ea063284e92d80f72e29df7e1058cc34a9d434",
+    "backend/dot_gen_varargs.h": "8cb45e338488e126f7601d6d14a8fbe290e1181446d94af1d7617a2fbebba68b",
+    "backend/dot_gen_virtual.h": "c65d36a51f6c534dbfacbed0a03d8f5e95f07e98442f07ed4fc61f6c50abf94f",
+    "backend/dot_gen_vla.h": "de2d176a01bf49f285f01e2a65bd88a431ed58aae0a35378e242cb690d293b33",
+    "backend/dot_gen_volatile_bits.h": "195c92017bfe0c033414bc50039b8693d6475484cb9b91e5d71d568e585fe2c4",
+    "semantic-export/managed/CProjectEmitter.Expressions.cs": "5c6b23d8857b96b0a8d675ed14c1fcbab4e6f8dfccf586d73193ffb96186bcfd",
+    "semantic-export/managed/CProjectEmitter.Runtime.cs": "4e7168259e8dcdb2e3c019b21b5f9d79998360d5ece049e983611a0e899c0677",
+    "semantic-export/managed/CProjectEmitter.Types.cs": "20ef81d2799ca97cb06fb79f616ca321cf482efc0ba9e6f52ad90a737b1c3c7a",
+    "semantic-export/managed/CProjectEmitter.cs": "2532307665977b2681537f671f01ce740f5d297395b4cab63af9050bc88794d8",
+    "semantic-export/native/semantic_export_be.c": "053e5cada0a77c63bb6aa41c0ff08cb0f9cf1477c69acd827c4c956f4f0ada65",
+    "upstream/src/il_def.h": "5d2e1ee19def818fc0012c7a862072c2149f3dfc382b032647863a9b0bb43fa6"
+  },
+  "limitations": [
+    "Counts refer to the frozen dot input from typed-writer-001; source hashes refer to canonical sources at review time.",
+    "Local dot include closure is lexical; conditional includes may be inactive.",
+    "Native-edge identity closure does not establish named-field completeness or emission support.",
+    "Static mention differences are candidate review inputs, not missing-handler counts; exporter operators are serialized generically and lowered-only forms are intentionally absent."
+  ],
+  "staticMentionsAbsentFromExporter": {
+    "enk_": [
+      "enk_await",
+      "enk_lowered_eh_construct",
+      "enk_result_of_overriding_function",
+      "enk_statement",
+      "enk_yield"
+    ],
+    "stmk_": [
+      "stmk_constexpr_if",
+      "stmk_coroutine",
+      "stmk_coroutine_return",
+      "stmk_if_consteval",
+      "stmk_if_not_consteval",
+      "stmk_stmt_expr_result"
+    ],
+    "ck_": [
+      "ck_stack_offset",
+      "ck_void"
+    ],
+    "tk_": [
+      "tk_enum"
+    ],
+    "eok_": [
+      "eok_add",
+      "eok_add_assign",
+      "eok_address_of",
+      "eok_and",
+      "eok_and_assign",
+      "eok_array_to_pointer",
+      "eok_assign",
+      "eok_bassign",
+      "eok_call",
+      "eok_cast",
+      "eok_comma",
+      "eok_complement",
+      "eok_divide",
+      "eok_divide_assign",
+      "eok_dot_field",
+      "eok_eq",
+      "eok_ge",
+      "eok_gt",
+      "eok_indirect",
+      "eok_land",
+      "eok_le",
+      "eok_lor",
+      "eok_lt",
+      "eok_lvalue_adjust",
+      "eok_multiply",
+      "eok_multiply_assign",
+      "eok_ne",
+      "eok_negate",
+      "eok_not",
+      "eok_or",
+      "eok_or_assign",
+      "eok_padd",
+      "eok_padd_assign",
+      "eok_parens",
+      "eok_pdiff",
+      "eok_points_to_field",
+      "eok_post_decr",
+      "eok_post_incr",
+      "eok_pre_decr",
+      "eok_pre_incr",
+      "eok_psubtract",
+      "eok_psubtract_assign",
+      "eok_question",
+      "eok_ref_indirect",
+      "eok_reference_to",
+      "eok_remainder",
+      "eok_remainder_assign",
+      "eok_shiftl",
+      "eok_shiftl_assign",
+      "eok_shiftr",
+      "eok_shiftr_assign",
+      "eok_subscript",
+      "eok_subtract",
+      "eok_subtract_assign",
+      "eok_unary_plus",
+      "eok_va_arg",
+      "eok_va_copy",
+      "eok_va_end",
+      "eok_va_start",
+      "eok_va_start_single_operand",
+      "eok_xor",
+      "eok_xor_assign"
+    ]
+  },
+  "staticMentionCounts": {
+    "enk_": 12,
+    "stmk_": 21,
+    "ck_": 9,
+    "tk_": 12,
+    "eok_": 62
+  },
+  "status": "review-complete-coverage-incomplete",
+  "productionCodeChanged": false,
+  "report": "docs/semantic-export-self-audit.md",
+  "artifactRoot": "artifacts/campaign/persistent-continuation/semantic-export-node-review-001",
+  "bitfieldReproduction": {
+    "status": "confirmed-semantic-export-bug",
+    "source": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/bitfield.c",
+    "frontendFlags": [
+      "--c17",
+      "--unsigned_bit_fields"
+    ],
+    "nativeFlags": [
+      "-std=c17",
+      "-funsigned-bitfields"
+    ],
+    "native": "7\n",
+    "managed": "-1\n",
+    "adapterDiagnostics": 0,
+    "checks": [
+      {
+        "name": "bitfield-native-build",
+        "exit": 0
+      },
+      {
+        "name": "bitfield-native-run",
+        "exit": 0
+      },
+      {
+        "name": "bitfield-managed-build",
+        "exit": 0
+      },
+      {
+        "name": "bitfield-managed-run",
+        "exit": 0
+      }
+    ],
+    "sourceText": "struct Bits { int value:3; };\nint bitfield_read(void) { struct Bits bits; bits.value = 7; return bits.value; }\n"
+  },
+  "additionalReproductions": {
+    "gnu-statement": {
+      "source": "int f(int x) { return ({ int y = x + 1; y * 2; }); }\n",
+      "checks": [
+        {
+          "command": [
+            "python3",
+            "/home/marius/p/dotcc/edgcpp/semantic-export/export.py",
+            "--compiler",
+            "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/native-build/build/bin/cpfe-semantic",
+            "--output",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/gnu-statement-gcc-package",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/gnu-statement.c",
+            "--",
+            "--c17",
+            "--gnu_version",
+            "130300"
+          ],
+          "exit": 0,
+          "stdout": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/gnu-statement-gcc-package/semantic.sqlite (253 graph nodes, 1 source files, 2 adapter diagnostics)\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "dotnet",
+            "/home/marius/p/dotcc/edgcpp/semantic-export/managed/bin/Release/net10.0/Edg.Semantic.dll",
+            "emit-project",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/gnu-statement-gcc-package",
+            "--output-directory",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/gnu-statement-generated"
+          ],
+          "exit": 1,
+          "stdout": "",
+          "stderr": "InvalidDataException: C project export still has adapter diagnostics: Statement adapter: stmk_stmt_expr_result, Expression adapter: statement\n"
+        }
+      ],
+      "diagnostics": [
+        {
+          "message": "Statement adapter: stmk_stmt_expr_result",
+          "count": 1
+        },
+        {
+          "message": "Expression adapter: statement",
+          "count": 1
+        }
+      ]
+    },
+    "gnu-conditional": {
+      "source": "int f(int x) { return x ?: 3; }\n",
+      "checks": [
+        {
+          "command": [
+            "python3",
+            "/home/marius/p/dotcc/edgcpp/semantic-export/export.py",
+            "--compiler",
+            "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/native-build/build/bin/cpfe-semantic",
+            "--output",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/gnu-conditional-gcc-package",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/gnu-conditional.c",
+            "--",
+            "--c17",
+            "--gnu_version",
+            "130300"
+          ],
+          "exit": 0,
+          "stdout": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/gnu-conditional-gcc-package/semantic.sqlite (228 graph nodes, 1 source files, 0 adapter diagnostics)\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "dotnet",
+            "/home/marius/p/dotcc/edgcpp/semantic-export/managed/bin/Release/net10.0/Edg.Semantic.dll",
+            "emit-project",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/gnu-conditional-gcc-package",
+            "--output-directory",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/gnu-conditional-generated"
+          ],
+          "exit": 1,
+          "stdout": "",
+          "stderr": "InvalidDataException: C project expression node 219 (expr-node/operation): GNU omitted-middle conditional needs an evaluation temporary\n"
+        }
+      ],
+      "diagnostics": []
+    },
+    "vla": {
+      "source": "int f(int n) { int a[n]; a[0] = n; return sizeof(a) + a[0]; }\n",
+      "checks": [
+        {
+          "command": [
+            "python3",
+            "/home/marius/p/dotcc/edgcpp/semantic-export/export.py",
+            "--compiler",
+            "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/native-build/build/bin/cpfe-semantic",
+            "--output",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/vla-gcc-package",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/vla.c",
+            "--",
+            "--c17",
+            "--gnu_version",
+            "130300"
+          ],
+          "exit": 0,
+          "stdout": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/vla-gcc-package/semantic.sqlite (262 graph nodes, 1 source files, 3 adapter diagnostics)\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "dotnet",
+            "/home/marius/p/dotcc/edgcpp/semantic-export/managed/bin/Release/net10.0/Edg.Semantic.dll",
+            "emit-project",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/vla-gcc-package",
+            "--output-directory",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/vla-generated"
+          ],
+          "exit": 1,
+          "stdout": "",
+          "stderr": "InvalidDataException: C project export still has adapter diagnostics: Metadata adapter: vla-dimension, Statement adapter: stmk_set_vla_size, Statement adapter: stmk_vla_decl\n"
+        }
+      ],
+      "diagnostics": [
+        {
+          "message": "Metadata adapter: vla-dimension",
+          "count": 1
+        },
+        {
+          "message": "Statement adapter: stmk_set_vla_size",
+          "count": 1
+        },
+        {
+          "message": "Statement adapter: stmk_vla_decl",
+          "count": 1
+        }
+      ]
+    },
+    "bool-cast": {
+      "source": "_Bool f(int x) { return (_Bool)x; }\n",
+      "checks": [
+        {
+          "command": [
+            "python3",
+            "/home/marius/p/dotcc/edgcpp/semantic-export/export.py",
+            "--compiler",
+            "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/native-build/build/bin/cpfe-semantic",
+            "--output",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/bool-cast-gcc-package",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/bool-cast.c",
+            "--",
+            "--c17",
+            "--gnu_version",
+            "130300"
+          ],
+          "exit": 0,
+          "stdout": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/bool-cast-gcc-package/semantic.sqlite (227 graph nodes, 1 source files, 0 adapter diagnostics)\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "dotnet",
+            "/home/marius/p/dotcc/edgcpp/semantic-export/managed/bin/Release/net10.0/Edg.Semantic.dll",
+            "emit-project",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/bool-cast-gcc-package",
+            "--output-directory",
+            "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-node-review-001/bool-cast-generated"
+          ],
+          "exit": 1,
+          "stdout": "",
+          "stderr": "InvalidDataException: C project expression node 218 (expr-node/operation): operator eok_bool_cast expects 2 operands, found 1\n"
+        }
+      ],
+      "diagnostics": []
+    }
+  },
+  "reproductionArtifacts": {
+    "bitfield-consumer/Program.cs": {
+      "sha256": "b1d587cb621dd51e1a78f6bac7c9f8c175c9e12bc900a04feaa795f35e15eace",
+      "bytes": 91
+    },
+    "bitfield-generated/ExpressionHelpers.cs": {
+      "sha256": "80c4497a2481066d951620e93f7d40488454ea86e76b9e4bc0cf5415b2cd38b6",
+      "bytes": 415
+    },
+    "bitfield-generated/Functions/0000-bitfield_read.cs": {
+      "sha256": "7c05529c52239a8466ccfe246ac9cd7c20cbdee192bea1e182294f8f73df1b3b",
+      "bytes": 520
+    },
+    "bitfield-generated/Globals.cs": {
+      "sha256": "7d8347d18a84cdf5c732834d6f7c53d33aef259d3261fbbab0991d7de9692d88",
+      "bytes": 431
+    },
+    "bitfield-generated/Runtime.cs": {
+      "sha256": "36ec0de9b7f44ed32738c990c7581a37c8358ca3dd96addb6e11ea514839ad2e",
+      "bytes": 5941
+    },
+    "bitfield-generated/Types.cs": {
+      "sha256": "66af8734a855ec41ff3d4f9bdf5fec154bd2c9ec509acea1df2f45e54cf9ff45",
+      "bytes": 666
+    },
+    "bitfield-managed-build.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "bitfield-managed-build.stdout": {
+      "sha256": "8e265bc0f5c77767680ffaf8f49a4000060142c48d0ab08dc7b52326e40d31ec",
+      "bytes": 604
+    },
+    "bitfield-managed-run.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "bitfield-managed-run.stdout": {
+      "sha256": "ee3aa64bb94a50845d5024cd4bd20202a4567aed5cd5328c0d97e9920775fc28",
+      "bytes": 3
+    },
+    "bitfield-native-build.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "bitfield-native-build.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "bitfield-native-run.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "bitfield-native-run.stdout": {
+      "sha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+      "bytes": 2
+    },
+    "bitfield-oracle.c": {
+      "sha256": "bb54c3dd4e97dfbba2c15cab324cf2cd2db576bdcf1d9f95a8efb7c404f054df",
+      "bytes": 103
+    },
+    "bitfield-package/semantic.sqlite": {
+      "sha256": "11052bc7a916705e75019b409ab3557213de5faaef7b1fe342aa52dc26d855e0",
+      "bytes": 282624
+    },
+    "bitfield.c": {
+      "sha256": "7561d53f75071754f8579dac02d83eec3b1754b547ae5661a46c0c0cc5b3ad49",
+      "bytes": 111
+    },
+    "bool-cast-emit.stderr": {
+      "sha256": "e1d8cededbe4143ad3269f9b7c60c3a1bd4815a957b629e8a2bcc2d0a4fd8567",
+      "bytes": 126
+    },
+    "bool-cast-emit.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "bool-cast-export.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "bool-cast-export.stdout": {
+      "sha256": "bc693eda25617efd5bab1a29d8546dbcb1785426f321690cadbbbf522609649d",
+      "bytes": 168
+    },
+    "bool-cast-gcc-package/semantic.sqlite": {
+      "sha256": "a5e705e355049a5ab6a52d10e4d6e35f2b7145f102bc6a22790bf11c535b9b91",
+      "bytes": 270336
+    },
+    "bool-cast.c": {
+      "sha256": "fd5ba8c89ec55a034c529592615d74404b1f2ba18f1a43c7269ebe4720443608",
+      "bytes": 36
+    },
+    "gnu-conditional-emit.stderr": {
+      "sha256": "9d207196aa20e96eee960459706b2ab621cbc47b4ffb4a650eb98c7ada304861",
+      "bytes": 136
+    },
+    "gnu-conditional-emit.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "gnu-conditional-export.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "gnu-conditional-export.stdout": {
+      "sha256": "8f430820977911738aae695169791effa4f445fec4df6375ee2f0e0efb9adb91",
+      "bytes": 174
+    },
+    "gnu-conditional-gcc-package/semantic.sqlite": {
+      "sha256": "9ea5c8dd49110df113053c08b5c5bfe6533bc7627078e814a508041febcae29a",
+      "bytes": 278528
+    },
+    "gnu-conditional.c": {
+      "sha256": "7428c62d1afa99f265837afa9a746411607b11ca59322fa4812871fd81a44697",
+      "bytes": 32
+    },
+    "gnu-statement-emit.stderr": {
+      "sha256": "fe3b25d2df4310440cbeed0475ec97b7726f23b1c96a35a03bcd0a2983988462",
+      "bytes": 142
+    },
+    "gnu-statement-emit.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "gnu-statement-export.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "gnu-statement-export.stdout": {
+      "sha256": "b8527888be86b816c8d5112596a4379a0b1b751e64841ab7402eb83922e3f2a7",
+      "bytes": 172
+    },
+    "gnu-statement-gcc-package/semantic.sqlite": {
+      "sha256": "196ed405fca868fe0ae13e5acb56942a6950fd941a6c6271ecf3b88e6161c1ca",
+      "bytes": 319488
+    },
+    "gnu-statement.c": {
+      "sha256": "f887f1d4a4fe552a571603df13dd26141602ad59a014e361c1bd5c58d6001ec9",
+      "bytes": 53
+    },
+    "vla-emit.stderr": {
+      "sha256": "41107e72a4e899bc8982cd8bb7d2e9fc536858b9fc447b1d9cea3f8f5c66aa49",
+      "bytes": 174
+    },
+    "vla-emit.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "vla-export.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "vla-export.stdout": {
+      "sha256": "849ecf951b69f9d51dd00f75acfe67a652c8fa2262438c56d00b46342139f520",
+      "bytes": 162
+    },
+    "vla-gcc-package/semantic.sqlite": {
+      "sha256": "b7af65eacfe8dd1ee497c9927074c4fc16f83186cd6de2d4749fc25b6919a413",
+      "bytes": 319488
+    },
+    "vla.c": {
+      "sha256": "10f51201aaee0a50e352961f964c7e49957c8e0497156cbb47b5e098821100a3",
+      "bytes": 62
+    }
+  }
+}
