@@ -2005,3 +2005,7 @@ Value header change. Full attempt006 is running with the same 72-GiB guard;
 DuckDB execution is claimed.
 
 [Fresh complete preparation](../evidence/duckdb-value-full-preparation-20261007.json).
+
+Independent stage review verifies the complete normalized 2,355-unit/options/
+extension/dependency metadata and all 2,433 C/C++ source-file hashes unchanged.
+Only the expected Value header differs, matching the proved overlay exactly.

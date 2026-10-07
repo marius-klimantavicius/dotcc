@@ -34,5 +34,9 @@
   "stageByteComparison": {
     "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-006/coordinator-stage-check.json",
     "sha256": "cc3c43c3efcb02d82e54437080634929113787444baa42ff61dfaa6056485921"
+  },
+  "independentStageAudit": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-value-stage-independent-audit-001/results.json",
+    "sha256": "e9aefdb8c259997a22c8d6b74b7a7b74216cf2177c9a43410a20cfe93cf4c374"
   }
 }
