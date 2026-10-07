@@ -36,7 +36,7 @@ RUNTIME_DEPENDENCIES = {
     "NonlocalJump": ("Vla",), "Coroutine": (),
     "ExtendedFloat": ("Float128", "LibcFloat"),
     "Float128": ("Float128Conversions",), "Float128Conversions": ("Float80",),
-    "Float80": (), "LibcContext": (), "AtomicOps": (), "VaList": (), "VaArg": (), "VaPack": ("VaArg", "VaList"),
+    "Float80": (), "LibcContext": ("LibcInet",), "LibcInet": (), "AtomicOps": (), "VaList": (), "VaArg": (), "VaPack": ("VaArg", "VaList"),
     "LibcFiles": ("LibcAppend", "LibcPaths", "LibcFilesWide", "LibcFilesManagement", "LibcFileDescriptors", "LibcFilesDescriptors"), "LibcFilesManagement": (), "LibcFilesWide": (), "LibcAppend": (), "LibcPaths": (),
     "LibcFilesFormat": ("LibcFiles", "VaList"),
     "LibcFilesScan": ("LibcFiles", "VaList"),

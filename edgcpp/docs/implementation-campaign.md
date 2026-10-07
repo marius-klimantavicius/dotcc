@@ -1385,3 +1385,29 @@ Review aliases remain on the previously verified original compiler. A future
 byte-stable emitter needs explicit sequencing of stateful emission/discovery
 calls; that is separate from changing EDG language semantics or normalizing the
 comparison. [Full bootstrap evidence](../evidence/self-dot-bootstrap-20261007.json).
+
+## Picotls real-project translation (2026-10-07)
+
+The next target reuses the existing immutable picotls revision
+`3598470df01264da85157025ed10db0f7e103790` and BCL crypto provider from the dotcc
+campaign. `picotls/edg/translate.py` verifies every archived upstream file and
+translates the unchanged core with the existing authored host/QUIC boundaries,
+musl and portable POSIX, preserving `Managed.Security.PicoTls` and public API
+names. EDG output stays separate from the existing dotcc port.
+
+The first missing dependency was an unconditional pthread header include.
+Logging is disabled in the selected profile, so no pthread calls are required;
+the new header provides declarations and unresolved calls are explicitly
+rejected. Portable socket/address headers and a strict BCL-span `inet_pton`
+implementation support the core's actual IPv4/IPv6 name detection. The parser
+matches native libc for 1,186 inputs under JIT and NativeAOT, including malformed
+addresses, unchanged destination storage and owner/thread errno. Translated
+static/instance binding tests and unbound-pthread rejection also pass.
+
+All three original core C files pass a native/JIT/NativeAOT exact-output fixture
+covering aligned buffers, ASN.1 serialization, QUIC integer boundaries and
+truncations, base64, memory callbacks, escaping, IP recognition and real-file
+PEM decoding. The managed-library translation with host boundaries also builds
+with warnings treated as errors and no unbound externs. Provider integration,
+ABI and TLS handshake verification remain pending at this milestone.
+[Core evidence](../evidence/picotls-core-20261007.json).

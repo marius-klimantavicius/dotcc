@@ -29,6 +29,7 @@ for source, target in [
     (root / "backend/dot_gen_coroutine.h", root / "upstream/src/dot_gen_coroutine.h"),
     (root / "backend/dot_gen_integer_intrinsics.h", root / "upstream/src/dot_gen_integer_intrinsics.h"),
     (root / "backend/runtime/libc-timezone-bindings.def", root / "upstream/src/libc-timezone-bindings.def"),
+    (root / "backend/runtime/libc-inet-bindings.def", root / "upstream/src/libc-inet-bindings.def"),
     (root / "backend/runtime/libc-wide-files-bindings.def", root / "upstream/src/libc-wide-files-bindings.def"),
     (root / "backend/dot_gen_setjmp.h", root / "upstream/src/dot_gen_setjmp.h"),
     (root / "backend/runtime/libc-environment-bindings.def", root / "upstream/src/libc-environment-bindings.def"),

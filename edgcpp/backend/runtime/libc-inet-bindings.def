@@ -1,0 +1,2 @@
+// Portable LP64 socket family ABI; state is only the caller's owner/thread errno.
+EDG_LIBC("inet_pton", "int", "int,sbyte*,void*", "__edg_libc.InetPton")

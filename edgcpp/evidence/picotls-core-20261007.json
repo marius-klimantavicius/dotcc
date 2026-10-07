@@ -1,0 +1,436 @@
+{
+  "scope": "Picotls EDG initial core translation and shared POSIX inet_pton acceptance; TLS provider verification pending",
+  "coreTranslation": {
+    "project": "picotls",
+    "translator": "EDG dot_gen_be",
+    "status": "passed",
+    "commands": [
+      {
+        "label": "translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/home/marius/p/dotcc/picotls/src/Host/picotls-quic.c",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/hpke.c",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/pembase64.c",
+          "/home/marius/p/dotcc/picotls/src/Host/picotls-host.c",
+          "--language",
+          "c",
+          "--std",
+          "c11",
+          "-I",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790",
+          "-I",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include",
+          "-DPTLS_HAVE_LOG=0",
+          "-DPICOTLS_USE_DTRACE=0",
+          "--libc",
+          "musl",
+          "--posix",
+          "--emit",
+          "managedlib",
+          "--namespace",
+          "Managed.Security",
+          "--class-name",
+          "PicoTls",
+          "--split",
+          "source",
+          "--compiler",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-004/managed",
+          "--raw-output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-004/raw.cs",
+          "--frontend-invocation",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-004/invocation.json",
+          "--export-macros",
+          "^(PTLS_ALERT_BAD_CERTIFICATE|PTLS_ALERT_CERTIFICATE_EXPIRED|PTLS_ALERT_CERTIFICATE_REQUIRED|PTLS_ALERT_CERTIFICATE_REVOKED|PTLS_ALERT_DECRYPT_ERROR|PTLS_ALERT_HANDSHAKE_FAILURE|PTLS_ALERT_ILLEGAL_PARAMETER|PTLS_ALERT_NO_APPLICATION_PROTOCOL|PTLS_ALERT_UNKNOWN_CA|PTLS_ALERT_UNSUPPORTED_CERTIFICATE|PTLS_ERROR_LIBRARY|PTLS_ERROR_NO_MEMORY|PTLS_ERROR_REJECT_EARLY_DATA|PTLS_ERROR_SESSION_NOT_FOUND|PTLS_MAX_CERTS_IN_CONTEXT|PTLS_SIGNATURE_ECDSA_SECP256R1_SHA256|PTLS_SIGNATURE_RSA_PSS_RSAE_SHA256)$",
+          "--macro-source",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/pembase64.c"
+        ],
+        "exitCode": 0,
+        "seconds": 5.475
+      },
+      {
+        "label": "build",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/build_managed.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-004/managed/Generated.csproj",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-004/build",
+          "--warnings-as-errors"
+        ],
+        "exitCode": 0,
+        "seconds": 5.072
+      }
+    ],
+    "limitations": [
+      "Selected TLS profile; optional logging and DTrace disabled."
+    ],
+    "source": {
+      "revision": "3598470df01264da85157025ed10db0f7e103790",
+      "url": "https://codeload.github.com/h2o/picotls/tar.gz/3598470df01264da85157025ed10db0f7e103790",
+      "sha256": "735ac6f0f3823dd5d0210ccf3a367ed39edc6fe889214db0749670437f705d00",
+      "directory": "picotls-3598470df01264da85157025ed10db0f7e103790",
+      "license": "MIT (lib/picotls.c and include/picotls.h notices)",
+      "verifiedFiles": 1370
+    },
+    "definitions": [
+      "PTLS_HAVE_LOG=0",
+      "PICOTLS_USE_DTRACE=0"
+    ],
+    "exportedMacros": [
+      "PTLS_ALERT_BAD_CERTIFICATE",
+      "PTLS_ALERT_CERTIFICATE_EXPIRED",
+      "PTLS_ALERT_CERTIFICATE_REQUIRED",
+      "PTLS_ALERT_CERTIFICATE_REVOKED",
+      "PTLS_ALERT_DECRYPT_ERROR",
+      "PTLS_ALERT_HANDSHAKE_FAILURE",
+      "PTLS_ALERT_ILLEGAL_PARAMETER",
+      "PTLS_ALERT_NO_APPLICATION_PROTOCOL",
+      "PTLS_ALERT_UNKNOWN_CA",
+      "PTLS_ALERT_UNSUPPORTED_CERTIFICATE",
+      "PTLS_ERROR_LIBRARY",
+      "PTLS_ERROR_NO_MEMORY",
+      "PTLS_ERROR_REJECT_EARLY_DATA",
+      "PTLS_ERROR_SESSION_NOT_FOUND",
+      "PTLS_MAX_CERTS_IN_CONTEXT",
+      "PTLS_SIGNATURE_ECDSA_SECP256R1_SHA256",
+      "PTLS_SIGNATURE_RSA_PSS_RSAE_SHA256"
+    ],
+    "compiler": {
+      "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+      "sha256": "918c7eb2ad19feebe14e595493fb7a31d208daf8ff90f00e0cece17422a56c64"
+    },
+    "inputs": [
+      {
+        "path": "picotls/src/Host/picotls-quic.c",
+        "sha256": "85ce23e740d4043b450dac404fd5f4d357887620025c5ff0e05cb7059dc0ee98"
+      },
+      {
+        "path": "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/hpke.c",
+        "sha256": "df23d47f4134bc4ba3b28431773acb5ad5b87c6eab96a4e50c261758f631dd82"
+      },
+      {
+        "path": "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/pembase64.c",
+        "sha256": "b32bf3799740c49029efc7b114e9b6ae15c2dee394fd530106720af22bd0940e"
+      },
+      {
+        "path": "picotls/src/Host/picotls-host.c",
+        "sha256": "e8a712ca2dd0a5f78e7324eb62e3f81b3a5c28891d65930edac689be58647d40"
+      }
+    ],
+    "raw": {
+      "bytes": 4014784,
+      "sha256": "13ca4e6b4af872afe11733500a82b9102ebd2c925f5500658f5eb477e98aa965"
+    }
+  },
+  "coreDifferential": {
+    "passed": true,
+    "revision": "3598470df01264da85157025ed10db0f7e103790",
+    "archiveSha256": "735ac6f0f3823dd5d0210ccf3a367ed39edc6fe889214db0749670437f705d00",
+    "sources": {
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/picotls.c": "9d9aff825b6faf16b770028572fd28444ee1735c1904dc8dd83a770730b59a22",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/hpke.c": "df23d47f4134bc4ba3b28431773acb5ad5b87c6eab96a4e50c261758f631dd82",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/pembase64.c": "b32bf3799740c49029efc7b114e9b6ae15c2dee394fd530106720af22bd0940e",
+      "picotls/edg/tests/core.c": "4a04b21bf9cb068d8031faf9d5ed408d8f910649ecec2c8919f0f21887c916a2",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/asn1.h": "eafd74701c65df3cff09728630f6783b5a612a68427705324694017f74314e0d",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/certificate_compression.h": "4a6f7efa733ce1db694e49bb7f753023401669de8f309e19abb38d09998b801d",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/ffx.h": "f600be90d306f885a8e26e6136eff7e50c0922f2f6cfe48fdbc6ff0c77f81bc1",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/fusion.h": "11caac3486abb64771099c0cab540e72f2386e12b2cab24b0efdc5e498335009",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/mbedtls.h": "f98c0998b53d0ac1be50520384f0dcea0f5be5eac061c7bc9f7db60919946a5a",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/minicrypto.h": "30da53c7c6aaee1914ed0ee54cd862bd7b9d41896022258fcfda9cf2745ad516",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/openssl.h": "ecfe2a7fa30ce81275543c5ab8a8ea05250742b7f5a1c35cba788c80588a447f",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/pembase64.h": "098ce16bacf533326ccc1d5a7a52425d5bbc42074816b4f19f16681a9454dfa8",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/ptlsbcrypt.h": "03a765dc3a393db110725433c53ddf763644889935f76d25ac475e8ae8a492c9",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls.h": "41170e59f1573a58063107d4e054171c74a523ed41e48019df064e10ad4d0082",
+      "picotls/edg/tests/verify.py": "d9750bacd3e2ad723f79d798de88156ce79dd897c082c438eb932b5d32362e5b"
+    },
+    "compiler": {
+      "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+      "sha256": "918c7eb2ad19feebe14e595493fb7a31d208daf8ff90f00e0cece17422a56c64"
+    },
+    "checks": [
+      "native-run: exact expected bytes and zero exit status",
+      "all three unchanged core source files translated with no unbound externals",
+      "jit-run: exact expected bytes and zero exit status",
+      "aot-run: exact expected bytes and zero exit status"
+    ],
+    "commands": [
+      {
+        "label": "native-build",
+        "command": [
+          "cc",
+          "-std=c11",
+          "-D_GNU_SOURCE",
+          "-DPTLS_HAVE_LOG=0",
+          "-DPICOTLS_USE_DTRACE=0",
+          "-I",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/picotls.c",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/hpke.c",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/pembase64.c",
+          "/home/marius/p/dotcc/picotls/edg/tests/core.c",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/native"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.4145760569954291,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "native-run",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/native"
+        ],
+        "cwd": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/native-run-work",
+        "exitCode": 0,
+        "elapsedSeconds": 0.0014471210015472025,
+        "stdoutSha256": "d73c16b85790bfd25b66435db8d7b49f82d7a21996d8556e4cd413fc62bdeaed",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "--compiler",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+          "--language",
+          "c",
+          "--std",
+          "c11",
+          "--target",
+          "portable-lp64-binary80-v2",
+          "--libc",
+          "musl",
+          "--posix",
+          "--namespace",
+          "Picotls.Edg.Tests",
+          "--class-name",
+          "Core",
+          "--unbound-externals",
+          "reject",
+          "--split",
+          "source",
+          "-I",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include",
+          "-DPTLS_HAVE_LOG=0",
+          "-DPICOTLS_USE_DTRACE=0",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/managed",
+          "--raw-output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/raw.cs",
+          "--frontend-invocation",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/frontend-invocation.json",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/picotls.c",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/hpke.c",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/pembase64.c",
+          "/home/marius/p/dotcc/picotls/edg/tests/core.c"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 4.671330390003277,
+        "stdoutSha256": "62ed408da6c7503c6611c1898212dfe3fd4068e3194f41cfbca6077a3c6da893",
+        "stderrSha256": "4ef1efaa63f9555e2c4ad7e2c1ba2deec602add5934addbfb84c2e7eaa52a4d5"
+      },
+      {
+        "label": "jit-build",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/managed/Generated.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 5.172678917995654,
+        "stdoutSha256": "9bbe88948e22eabc0d2fb6d31aeda168c42a0b6229ce39f6d11612513a8361ac",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "jit-run",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/managed/bin/Release/net10.0/Generated.dll"
+        ],
+        "cwd": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/jit-run-work",
+        "exitCode": 0,
+        "elapsedSeconds": 0.06386052299058065,
+        "stdoutSha256": "d73c16b85790bfd25b66435db8d7b49f82d7a21996d8556e4cd413fc62bdeaed",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "aot-publish",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/managed/Generated.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-p:TreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/aot"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 6.124451986019267,
+        "stdoutSha256": "f12d1f6a50f56c08c378753f7fb901c71bc098bee4e6d3c8bc0672641690ebb5",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "aot-run",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/aot/Generated"
+        ],
+        "cwd": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/aot-run-work",
+        "exitCode": 0,
+        "elapsedSeconds": 0.007591083005536348,
+        "stdoutSha256": "d73c16b85790bfd25b66435db8d7b49f82d7a21996d8556e4cd413fc62bdeaed",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "comparison": "exact stdout bytes; no normalization",
+    "scope": "actual unchanged core APIs; no TLS handshake or cryptographic provider in this fixture"
+  },
+  "inetDifferential": {
+    "vectors": 1186,
+    "runs": [
+      {
+        "label": "native-build",
+        "command": [
+          "cc",
+          "-std=c11",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-inet-001/native.c",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-inet-001/native"
+        ],
+        "exit": 0
+      },
+      {
+        "label": "native",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-inet-001/native"
+        ],
+        "exit": 0
+      },
+      {
+        "label": "build",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-inet-001/InetProbe.csproj",
+          "-c",
+          "Release",
+          "--nologo"
+        ],
+        "exit": 0
+      },
+      {
+        "label": "jit",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-inet-001/bin/Release/net10.0/InetProbe.dll"
+        ],
+        "exit": 0
+      },
+      {
+        "label": "publish",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-inet-001/InetProbe.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-inet-001/aot"
+        ],
+        "exit": 0
+      },
+      {
+        "label": "aot",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-inet-001/aot/InetProbe"
+        ],
+        "exit": 0
+      }
+    ],
+    "passed": true,
+    "jitMatchesNative": true,
+    "aotMatchesNative": true
+  },
+  "inetTranslated": {
+    "passed": true,
+    "checks": [
+      "native oracle",
+      "static and instance strict C translation, no unbound imports, JIT execution",
+      "pthread calls rejected as unbound, declarations do not synthesize behavior"
+    ]
+  },
+  "limitations": [
+    "Linux x64 execution only",
+    "Optional picotls logging/DTrace disabled",
+    "pthread header only declares APIs; unbound calls rejected",
+    "No TLS handshake claim at this milestone"
+  ],
+  "existingRegressions": {
+    "libc-text-001": {
+      "checks": [
+        {
+          "name": "managed JIT UTF-8/owner text contracts",
+          "result": "3017 UTF-8 native vectors passed; C byte escapes, owner/errno isolation, pinned messages and allocation checks passed"
+        },
+        {
+          "name": "managed NativeAOT UTF-8/owner text contracts",
+          "result": "3017 UTF-8 native vectors passed; C byte escapes, owner/errno isolation, pinned messages and allocation checks passed"
+        }
+      ],
+      "scope": "bounded C/C.UTF-8 provider; not arbitrary locales or complete multibyte library"
+    },
+    "libc-locale-001": {
+      "checks": [
+        {
+          "name": "managed JIT locale/owner/TLS contracts",
+          "result": "locale names/categories, owner/thread handles, errno/lifetime, lconv and forced-GC pinning passed"
+        },
+        {
+          "name": "managed NativeAOT locale/owner/TLS contracts",
+          "result": "locale names/categories, owner/thread handles, errno/lifetime, lconv and forced-GC pinning passed"
+        }
+      ],
+      "scope": "bounded C/C.UTF-8 provider; not arbitrary locales or complete multibyte library"
+    }
+  },
+  "portableHeaders": {
+    "edgcpp/backend/runtime/posix/include/arpa/inet.h": "6d7f5a45ec7ee45f8c899acfb2afd7ccc39558d05c458039a59cff1c63355f02",
+    "edgcpp/backend/runtime/posix/include/dirent.h": "b7ecbef5cf1bd73a81c406e2993c606fbc0525bd4f54132a5dfca54500e31352",
+    "edgcpp/backend/runtime/posix/include/fcntl.h": "56b610159e22b910ee907e2d9d256298b37dd60b718898c769b8dac3cbac1549",
+    "edgcpp/backend/runtime/posix/include/netinet/in.h": "f632e75c0aef10cc578021dcd1c992e8113a5dbebb3388cd5d2049bb375fa1d3",
+    "edgcpp/backend/runtime/posix/include/pthread.h": "dea80f27dc4086f5a043e2c124260aeb39e5a1b411546b876340e2924050fad9",
+    "edgcpp/backend/runtime/posix/include/sys/ioctl.h": "ad3ef06fafa96387c5e3269ac445881e7ff43db16363ce8b19700e2343032006",
+    "edgcpp/backend/runtime/posix/include/sys/mman.h": "77d36f8b3571b2b96f965ea5a9a81c516b6da2c5b9114d25ae7b62c929e26e5c",
+    "edgcpp/backend/runtime/posix/include/sys/resource.h": "da7a82e41b84b6ed55e21da04f3e7731436b597a5a1bcc72dbe02b80c1d8cf3c",
+    "edgcpp/backend/runtime/posix/include/sys/socket.h": "b746c7c01ae01b95e275d13a02cc4918c4f3dc5581348df49b4662790e7ed769",
+    "edgcpp/backend/runtime/posix/include/sys/stat.h": "bf7c1899cb0486f6a48971d6ff432796497102b98393dd07dc83c2078283f4fa",
+    "edgcpp/backend/runtime/posix/include/sys/time.h": "27912e8c66771be7bdf1e2f88107db74d5d648c53fae2a2bcc8c96a4a5715222",
+    "edgcpp/backend/runtime/posix/include/sys/types.h": "1988e1347cb11437a41bfab8bb0445b4738c244d6815dce13eaa6746025faa04",
+    "edgcpp/backend/runtime/posix/include/unistd.h": "5ed97fb11795621ae6afbf40b1e605c6a099afacdba1dadf48221de649b919cc"
+  }
+}

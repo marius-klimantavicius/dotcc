@@ -26,6 +26,12 @@ public sealed unsafe class LibcContext : IDisposable
     }
     public int* ErrnoLocation() { fixed (int* p = Current.Error) return p; }
     public void SetErrno(int error) => Current.Error[0] = error;
+    public int InetPton(int family, sbyte* source, void* destination)
+    {
+        int result = LibcInet.InetPton(family, source, destination);
+        if (result < 0) SetErrno(LibcInet.Eafnosupport);
+        return result;
+    }
     // Generated lifecycle leases exclude simultaneous use/disposal. ReleaseThread
     // is called after translated TLS destructors, which may still use errno.
     public void ReleaseThread() { ObjectDisposedException.ThrowIf(Volatile.Read(ref disposed) != 0, this); threads.Value = null!; }
