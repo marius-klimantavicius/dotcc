@@ -2,6 +2,7 @@
 import hashlib
 import json
 from pathlib import Path
+import re
 import shutil
 
 
@@ -31,6 +32,84 @@ def verify_staged(report):
 def sha(path):
     with Path(path).open('rb') as stream:
         return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+def adapt_numeric_cast(source, staged):
+    """Disambiguate an unused private class tag from the public function template.
+
+    EDG's unchanged C backend rejects their correspondence across translation
+    units. Audit the complete pinned tree before applying this one-token rename;
+    an upstream use of the class requires a fresh review rather than a broad
+    substitution that could rename calls to the public function.
+    """
+    header = 'src/include/duckdb/common/operator/numeric_cast.hpp'
+    public_header = 'src/include/duckdb/common/numeric_utils.hpp'
+    files, counts = [], dict(templateCalls=0, functionDefinitions=0, comments=0, classDefinitions=0)
+    for path in sorted(Path(source).rglob('*')):
+        if not path.is_file():
+            continue
+        try:
+            text = path.read_text()
+        except UnicodeError:
+            continue
+        if re.search(r'\bNumericCastOperator\b', text):
+            raise ValueError('Private NumericCastOperator replacement name already exists: ' + str(path))
+        matches = list(re.finditer(r'\bNumericCast\b', text))
+        if not matches:
+            continue
+        relative = str(path.relative_to(source))
+        files.append(dict(path=relative, sha256=sha(path), occurrences=len(matches)))
+        for match in matches:
+            suffix = text[match.end():]
+            prefix = text[text.rfind('\n', 0, match.start()) + 1:match.start()]
+            if re.match(r'\s*<', suffix):
+                kind = 'templateCalls'
+            elif relative == public_header and prefix == 'TO ' and suffix.startswith('(FROM val) {'):
+                kind = 'functionDefinitions'
+            elif relative == public_header and prefix == '// ' and suffix.startswith('\n'):
+                kind = 'comments'
+            elif relative == header and prefix == 'struct ' and suffix.startswith(' {'):
+                kind = 'classDefinitions'
+            else:
+                raise ValueError('Unreviewed NumericCast class/name use: ' + relative + ':' +
+                                 str(text.count('\n', 0, match.start()) + 1))
+            counts[kind] += 1
+    if any(counts[kind] != 1 for kind in ('functionDefinitions', 'comments', 'classDefinitions')):
+        raise ValueError('Pinned NumericCast declarations changed')
+    path = Path(staged) / header
+    before, after = 'struct NumericCast {', 'struct NumericCastOperator {'
+    original = path.read_text()
+    if original.count(before) != 1:
+        raise ValueError('NumericCast operator declaration changed')
+    path.write_text(original.replace(before, after))
+    return dict(path=header, originalSha256=sha(Path(source) / header), stagedSha256=sha(path),
+                before=before, after=after, tokenAudit=dict(counts=counts, files=files, replacementIdentifierAbsent=True),
+                reason='Rename only the unused private operator class tag to avoid cross-TU name-kind correspondence rejection also reproduced by the unchanged EDG C backend. Preserve the public NumericCast function template and both implementations.')
+
+
+def adapt_logical_type_pair(source, staged):
+    """Resolve the child-pair copy signature without odr-use or runtime code."""
+    header = 'src/include/duckdb/common/types.hpp'
+    path = Path(staged) / header
+    original = path.read_text()
+    marker = '} // namespace duckdb'
+    anchor = '''// Resolve this public child-pair copy signature consistently in every TU.
+// sizeof is unevaluated: no assignment body, address, storage, or runtime code.
+static_assert(sizeof(static_cast<
+                  std::pair<string, LogicalType>& (std::pair<string, LogicalType>::*)(
+                      const std::pair<string, LogicalType>&)>(
+                  &std::pair<string, LogicalType>::operator=)) > 0,
+              "LogicalType child-pair copy assignment signature");
+
+'''
+    if original.count(marker) != 1 or original.count('struct LogicalType {') != 1:
+        raise ValueError('LogicalType declaration or namespace boundary changed')
+    if 'LogicalType child-pair copy assignment signature' in original:
+        raise ValueError('LogicalType pair signature anchor already exists')
+    path.write_text(original.replace(marker, anchor + marker))
+    return dict(path=header, originalSha256=sha(Path(source) / header), stagedSha256=sha(path),
+                before=marker, after=anchor + marker,
+                reason='Unevaluated selection resolves the existing pair<string, LogicalType> copy-assignment signature consistently when one TU calls it and another only instantiates the pair. The unchanged EDG C backend reproduces the original correspondence rejection; the anchor preserves libc++ declarations, algorithms, layout, copyability, and runtime behavior.')
 
 
 def prepare(manifest_path, output):
@@ -73,6 +152,9 @@ def prepare(manifest_path, output):
     changes.append(dict(path=header, originalSha256=sha(source / header), stagedSha256=sha(path),
                         replacements=[dict(before=before, after=after) for before, after in replacements],
                         reason='Select the existing POSIX semaphore algorithm on the portable EDG target; semaphore.h uses owner tokens and cross-platform BCL synchronization rather than native OS layouts.'))
+
+    changes.append(adapt_numeric_cast(source, staged))
+    changes.append(adapt_logical_type_pair(source, staged))
 
     # Generated CMake headers and the static extension loader are real inputs,
     # even though they are outside the upstream archive. Freeze them with the

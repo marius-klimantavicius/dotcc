@@ -42,8 +42,12 @@ extension are outside this static bundled profile.
 authored test reporter. Its narrow DuckDB-source adaptations recognize our
 portable binary64 arithmetic target in ICU double-conversion's architecture
 guard and select concurrentqueue's existing POSIX semaphore branch. They do
-not advertise a host CPU or change those algorithms. The original archive
-remains unchanged.
+not advertise a host CPU or change those algorithms. Two correspondence
+adaptations also rename the unused private `NumericCast` struct and select the
+existing `pair<string, LogicalType>` copy-assignment signature in an unevaluated
+expression. The public `NumericCast` function template and libc++ algorithms
+remain unchanged. The original archive and earlier frozen trees remain intact;
+[the source-assembly notes](edg/libcxx.md) record the reduced proofs and limits.
 
 `translate.py` preprocesses every CMake TU independently, preserving defines
 and header search order, then requests a complete EDG program with strict
@@ -151,7 +155,7 @@ flag/include-order mismatches, and real EDG preprocessing of a tiny group.
 
 The initial 732-input merge was stopped by the coordinator at about 64 GiB RSS,
 28 minutes into the run. It also reported two declaration-correspondence
-errors, which are being addressed through narrowly verified source adaptations.
+errors, now covered by narrowly verified source adaptations.
 The unity fallback has passed preprocessing; full translation and execution
 remain outstanding. See the [input-scaling receipt](../edgcpp/evidence/duckdb-input-scaling-20261007.json).
 

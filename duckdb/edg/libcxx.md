@@ -190,3 +190,53 @@ pruning and rejection of ABI mismatch, ambiguous definitions, internal-linkage
 substitution and unrelated C++ namespace names. The broader provider regression
 also passes native/JIT/NativeAOT in
 `duckdb-libcxx-linkage-primary-001/results.json`.
+
+The first full 732-input composition attempt was stopped by the coordinator
+at 28 minutes after retained frontend memory reached approximately 64 GiB and
+host swap usage reached 12.9 GiB, while processing source 96 of the remaining
+731. This was an observed source-assembly capacity decision; the original
+72 GiB automatic guard did not fire. All input hashes and diagnostics remain in
+`duckdb-complete-composition-001/`. The next composition uses the exact upstream
+CMake unity groups to reduce duplicated headers: 29 complete groups represent
+557 remaining original TUs, 174 stay separate, and the core/provider remains
+first. All 2,207 configured TUs are represented exactly once in 204 inputs.
+The incomplete `duckdb_common` group is excluded; its remaining `symbols.cpp`
+stays separate. This is source grouping, not dependency pruning or execution
+acceptance.
+
+The stopped attempt also exposed two independent source correspondence cases,
+reproduced with the unchanged EDG C backend. `portable.py` now records two narrow
+adaptations when staging a **new** tree; previous frozen sources remain intact:
+
+* `numeric_utils.hpp` defines the public `NumericCast` function template, while
+  `operator/numeric_cast.hpp` defines an unused operator struct with the same
+  name. The complete pinned-tree audit found 643 tokens: 640 template calls,
+  one function declaration/definition, one comment, and the struct declaration.
+  Only the struct tag becomes `NumericCastOperator`; its implementation and
+  every public function call remain unchanged. Staging rejects unreviewed uses
+  or any existing replacement identifier. The native/unchanged-C reduction,
+  audit and collision guard pass in
+  `duckdb-numeric-cast-adaptation-002/results.json` using current `build/bin/cpfe`, reproduced with
+  `tests/numeric_cast_correspondence_verify.py`.
+* A nontrivial `std::pair` copy assignment used in one TU, but only declared by
+  class instantiation in another, also produces a correspondence diagnostic.
+  After `LogicalType` is complete, `types.hpp` selects the existing
+  `pair<string, LogicalType>` copy-assignment signature inside unevaluated
+  `sizeof` in a `static_assert`. No address is odr-used, and no storage or runtime
+  code is added. The libc++ headers, algorithms, layout, traits, and copy/move
+  semantics remain unchanged. `tests/pair_correspondence_verify.py` verifies
+  native compilation/execution and actual unchanged-stock-C emission/build/run
+  for the self-contained nontrivial-pair reduction. It separately verifies
+  native syntax and stock-C semantic merge for actual DuckDB headers, with
+  sizeof-only and default-construction secondary TUs. These checks pass in
+  `duckdb-pair-adaptation-001/results.json` using `build/bin/cpfe`.
+
+The broader real-header reduction's historical `cpfe-dot-oracle` and current
+`cpfe` C-lowering attempts pass correspondence but later abort in
+`read_memory_region`; these are preserved separately in
+`duckdb-pair-correspondence-001/anchor-lowering-results.json` and
+`duckdb-pair-adaptation-001/real-stock-lowering.json`.
+The real-header semantic checks must not be described as completed C lowering
+or full DuckDB execution. The smaller exact correspondence reduction does emit,
+compile, and run through current stock C. Neither case changes EDG frontend
+semantics or suppresses its diagnostics.

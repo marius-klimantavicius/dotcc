@@ -1734,3 +1734,19 @@ real EDG preprocessing; a full retained-source inventory confirms the expected
 204 planned inputs. This does not claim a full semantic merge or execution.
 
 [Unity-recipe evidence](../evidence/duckdb-unity-recipe-20261007.json).
+
+### DuckDB source correspondence adaptations
+
+New portable trees now rename only the unused private `NumericCast` struct; a
+complete token audit preserves all 640 calls to the public function template
+and rejects replacement-name collisions. A second adaptation uses unevaluated
+`sizeof`/`static_assert` to select the existing `pair<string, LogicalType>` copy
+assignment consistently across TUs. It adds no runtime code and leaves libc++
+and EDG unchanged. Reduced native and current stock-C emission/build/run checks
+pass. Actual DuckDB headers pass native syntax and semantic-merge checks.
+
+The broader header reduction's later stock-C `read_memory_region` failure is
+retained separately and is not described as a lowering pass. Earlier frozen
+source trees remain intact; fresh preprocessing uses a newly staged tree.
+
+[Source-adaptation evidence](../evidence/duckdb-correspondence-adaptations-20261007.json).

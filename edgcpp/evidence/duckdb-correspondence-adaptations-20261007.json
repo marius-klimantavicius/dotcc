@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "verified-reduced-source-adaptations",
+  "duckdbExecutionVerified": false,
+  "numericCast": {
+    "receipt": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-numeric-cast-adaptation-002/results.json",
+      "sha256": "c877c1a727e110457c311fb179bbe199345ee5b9e8020f4538b7ed44da89717f"
+    },
+    "publicFunctionPreserved": true,
+    "privateUnusedStructRename": "NumericCast -> NumericCastOperator",
+    "replacementCollisionRejected": true,
+    "fullTreeTokenAudit": {
+      "templateCalls": 640,
+      "functionDefinition": 1,
+      "comment": 1,
+      "privateClassDefinition": 1
+    }
+  },
+  "logicalTypePair": {
+    "receipt": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-adaptation-001/results.json",
+      "sha256": "a1abe459c043d75d17d8f3d0a17b62c466355297e503d1e48450c9452b162d01"
+    },
+    "policy": "Select existing pair<string,LogicalType> copy assignment in unevaluated sizeof/static_assert after LogicalType is complete; no odr-use, runtime/storage code, or libc++ changes.",
+    "reducedNativeAndStockCExecution": true,
+    "realHeaderNativeSyntaxAndSemanticMerge": true,
+    "realHeaderStockLowering": {
+      "status": "later-read_memory_region-failure",
+      "receipt": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-adaptation-001/real-stock-lowering.json",
+        "sha256": "62c5ff7c143e09b726eee97a23b12f9be5f57f980ea3421d735de93925be945a"
+      }
+    }
+  },
+  "limitations": [
+    "Reduced proof does not establish completed DuckDB lowering or execution.",
+    "Full corrected preprocessing/composition and checkpoint merge remain pending.",
+    "EDG frontend semantics and diagnostics are unchanged."
+  ]
+}
