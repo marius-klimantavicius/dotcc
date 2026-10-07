@@ -1519,3 +1519,36 @@ validates the complete new dot package. The native regression adds exact signed/
 unsigned boundaries, duplicate field ordering and escaped typed positions.
 Review links now expose the new matching database and generated C# artifacts.
 [Typed writer evidence](../semantic-export/evidence-typed-writer.json).
+
+## MsQuic with translated picotls (2026-10-07)
+
+The EDG port translates the existing dotcc campaign's 43 unchanged upstream C
+units and four managed-host adapter/portable units, plus one explicit managed
+API root unit. It links unchanged generated C# to copies of the existing authored
+BCL host, packet crypto, picotls adapter and owning QUIC API, with recorded ABI
+spelling adaptations. Both MsQuic and picotls cores are EDG-generated. PAL buffers
+and objects use tracked 16-byte-aligned NativeMemory allocations; source globals
+and existing managed asynchronous buffer ownership keep their separate lifetimes.
+
+Prerequisites added Microsoft anonymous struct syntax selection, legacy GNU
+`__sync_*` atomics on the shared atomic runtime, and pinned musl byte-order/address
+formatting helpers. Backend fixes consume retained struct/array designators,
+preserve materialized aggregate slots when naming locals, and prevent repeated
+comma effects when planning aggregate addresses. Stock C-backend comparisons and
+native/JIT/AOT regression results are retained; no frontend changes were made.
+One broader const-folded designator discrepancy was observed identically in stock
+C and C# and is documented in the backend evidence without claiming resolution.
+
+Final MsQuic `011` and picotls `002` pass strict builds. Acceptance covers 65
+native ABI observations and 33 allocator checks per runtime, configuration,
+IPv4/IPv6 stream/lifetime, AES-128/256 key-update/DATAGRAM and resumption controls
+in JIT and NativeAOT. All 16 independent aioquic role/family/cipher/runtime cases
+pass with payload, FIN, authentication and ownership checks. The regenerated
+picotls passes its standalone ABI/upstream/provider/TLS JIT/AOT suites. Final
+provenance and dependency audits pass. Linux x64 is executed; broader dotcc
+qualification and other OS/architecture runs are not claimed.
+
+[Port recipes and review links](../../msquic/edg/README.md),
+[final evidence](../evidence/msquic-20261007.json),
+[prerequisites](../evidence/msquic-prerequisites-20261007.json),
+[backend fixes](../evidence/msquic-backend-20261007.json).

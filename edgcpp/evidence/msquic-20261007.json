@@ -1,0 +1,442 @@
+{
+  "date": "2026-10-07",
+  "status": "passed",
+  "target": "linux-x64",
+  "source": {
+    "repository": "https://github.com/microsoft/msquic",
+    "ref": "main",
+    "commit": "80a065112426bce68c1da42d026478d3e40fd45e",
+    "commit_date": "2026-09-09T14:02:37Z",
+    "subject": "Fix OpenSSL TLS handshake record processing (#6309)",
+    "downloaded_at": "2026-09-12T06:40:02.994663+00:00",
+    "url": "https://codeload.github.com/microsoft/msquic/tar.gz/80a065112426bce68c1da42d026478d3e40fd45e",
+    "archive": "msquic-80a065112426bce68c1da42d026478d3e40fd45e.tar.gz",
+    "sha256": "2daf1afdf1a3a4b5c8fdba882c2c702ba2a48ad2eaa0d9e50486340a89757e06",
+    "directory": "msquic-80a065112426bce68c1da42d026478d3e40fd45e"
+  },
+  "profile": {
+    "translationUnits": 48,
+    "unchangedUpstreamUnits": 43,
+    "existingHostUnits": 4,
+    "managedConsumerRootUnits": 1,
+    "tls": "EDG-translated picotls with existing BCL provider",
+    "quicVersion": 1,
+    "curves": [
+      "P-256"
+    ],
+    "ciphers": [
+      "AES-128-GCM/SHA-256",
+      "AES-256-GCM/SHA-384"
+    ],
+    "allocator": "NativeMemory.AlignedAlloc/AlignedFree for PAL objects and buffers"
+  },
+  "outputs": {
+    "msquic": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-edg-011/managed",
+      "manifestSha256": "90798fe33b296962cfa555cc40b4e785c749117937e6771e014b31d6fb52c80f",
+      "csFiles": 127,
+      "csBytes": 5054267,
+      "exportCount": 1576,
+      "macroCount": 102,
+      "pruning": {
+        "mode": "reachable",
+        "candidateRoutines": 454,
+        "retainedRoutines": 22,
+        "candidateVariables": 68,
+        "retainedVariables": 5
+      },
+      "generatedSources": {
+        "Runtime.AtomicOps.cs": "f90e8ea88bd0dea74a50b7cbc951399b1a0b093d80daabafbf2330e757f89d3d",
+        "Runtime.Float80.cs": "1e82204968e56fb5e0cd55437c7c51749263ac19ca803556eab1374b1e3ea381",
+        "Runtime.LibcC11Threads.cs": "a277d4941468e342527227a88e04e3fa3ac615d10bfe6cc7d6c3e670a2902433",
+        "Runtime.LibcContext.cs": "c05e4cb9fa5b8f871a587061e983808aaf5fca6e560474688572328fec62f8a6",
+        "Runtime.LibcEnvironment.cs": "c1ff5ef77a4cdfeffe957263c2f1934430383bfc6134d23c2ddf1565dd2aa959",
+        "Runtime.LibcErrorMessages.cs": "266fa2153def0a84a8e3e06188d67e322e0e176ad0bbd4e790cd27affec1b501",
+        "Runtime.LibcFloat.cs": "0275d7f01f0f34ee691ee45632a688fb76cd4d91419f7be0da81c8e2d4a3269b",
+        "Runtime.LibcInet.cs": "5dda11bfb4c45f9fa225f1e1ff0fe7153dbe0f9af4fe8308c5407cf134f80887",
+        "Runtime.LibcInitialThread.cs": "a3f04494b1459a8036b82d514b8d6d2f4c0422f0493acd48b6a328aff1352f36",
+        "Runtime.LibcLocale.cs": "33b703cdac6b98967af92faa3b871ac13e31753cc5d37ab4e4b65d0f4a786a5f",
+        "Runtime.LibcLocaleEnvironment.cs": "ac0b05323ab8210ef3697469b038845a7b9271f27655fcaea9088c3f8d15208c",
+        "Runtime.LibcSignals.cs": "9936e0e57716b2971a8943bd6c37c3f0fd824f604b1b026c6cd076238beb0c66",
+        "Runtime.LibcText.cs": "98e1dc8e61767fd12cf5fbfc73adf06ba40b9980c764c96dd2d2c51bdfa28a5c",
+        "Runtime.LibcxxThreads.cs": "3f5920956c86e65b0ba5e3d7d90ba83e2f1ccc8677948f92a53b6b73be4e9da4",
+        "Runtime.VaArg.cs": "00760c6f1e2df0112e072ad9a109656b71691e30dd600be77dd5a22ba8a24cce",
+        "Runtime.VaList.cs": "a0d7d0bf36c3b8d9403d3305d3c406242292893bc041606a7f532e6fa90d9b72",
+        "Runtime.VaPack.cs": "27025674874979a2bfc7bbfce20913953925749b81b9b923f3304bea80b4c8bf",
+        "Translated.cs": "555b96f39864cfcf99ddf313fcd83648f37fb2e3c5cbe9ea82445c2921615752",
+        "Translated.generated.cs": "ae02ef98680aae7f80f25e7e27c01a8c7a89058e065da4e3d3b9a27f35e0504a",
+        "Translated.source.ack_tracker.c.cs": "5ff725c6b826d3b4a0262d9428118eae8e889403b7975278e47f9cc3880807d4",
+        "Translated.source.ack_tracker.h.cs": "324cbf76f55f12899f9be58efc26e1a1e0ec3d3d332cf747c7da94936b067dcd",
+        "Translated.source.api.c.cs": "e06b0d3f853a0b1f28a31855e96b91761b336e643c8bb27084d09dbd3e35ce1c",
+        "Translated.source.atomic.h.cs": "90cc7b549cc8e4e1cfffe001a0efb65e8ccf548a6cdb33342dca2987dc908140",
+        "Translated.source.bbr.c.cs": "6d125f02f3d310a6d3a1c2842fd6351b0a1f372b8dbc5b7a1bad7a39cb545da2",
+        "Translated.source.binding.c.cs": "8a1bd098db95af1fb365e6751dc0db1247453624de9eae8c97a50451a2deedbd",
+        "Translated.source.binding.h.cs": "03c2c3fc9b215a987f06c5e2280dfe22d3605be22e90b70f9e5c63ee9b507467",
+        "Translated.source.byteswap.h.cs": "ebdc0138925249187d1487762270dd8adc4c72cc535aa49cc4d87d8cb278e6af",
+        "Translated.source.casemap.h.cs": "f6d2f213a3d2fe3a9debda9544e536ec731c6405268b29143d50453f1e200858",
+        "Translated.source.cid.h.cs": "0664f4924ad6ef354d5a606525f4f92a772480fde33a1a251f8094eeea260f59",
+        "Translated.source.configuration.c.cs": "6d666a2c637e63ead79ac4377e725fa4bbc26f9caeba271e38b1aceb1fe78f01",
+        "Translated.source.configuration.h.cs": "cab659fc2f62e9511e18aaeb7c010796d4952b37e705ac1afd26f33fcecdd5a8",
+        "Translated.source.congestion_control.c.cs": "690162e82ead6201846495b1e1e9c9d1df5632eddc2faeda9a3a6df3df3049b9",
+        "Translated.source.congestion_control.h.cs": "0b57247b4b1847fa5645735c1b24ce4b9f8823d4bec14e0e711b3158bc43198a",
+        "Translated.source.connection.c.cs": "6311da1a12fa59527ead5f62520c575c70d56b325b71e0c7fbd6aaf5c3b60648",
+        "Translated.source.connection.h.cs": "35e403548e69daa7bd09c57388a86d978f0071e89f8a6995d9f6cb5814b4b1a4",
+        "Translated.source.connection_pool.c.cs": "a064cb6f4d99ee11acc242099b45869e819ec7d883765eee97dbdcac01c269e7",
+        "Translated.source.crypt.c.cs": "203f296baf4922755978a84c0539e3dcac6b9c8a9bcf0d55422d2fdd720c46cd",
+        "Translated.source.crypto.c.cs": "78e69d0d3061c48ecfd39ee71610299dc974406a7aa0d6f45dd83f05a6b9294f",
+        "Translated.source.crypto.h.cs": "51d21d9244ecd877b8ef58f77d0cb69d14844e466ff08820332fb36ebb334918",
+        "Translated.source.crypto_tls.c.cs": "cf7c4c4727ad8b402bb94c3e613a3f9ac8762d35b0b8e92a8550882adb5137d7",
+        "Translated.source.cubic.c.cs": "9de064ee86684ada78bb53cd64377a00eca6521403e764fb02f72e1bc344ed6d",
+        "Translated.source.datagram.c.cs": "8418b04ad4b8761a2c263e84adf4dcd2dd62f05ac70e5554e3781ccf80d0ae80",
+        "Translated.source.edg_api_roots.c.cs": "4154d76d7138357ca2ab0f2ef73cb79ce073d0bccf0e01b1a81246b96ffc7845",
+        "Translated.source.environment_compat.h.cs": "e6dd5b219c7c748fc6d02c7e8fc4b04b6c5e905f33fb17cb2862343041abbafa",
+        "Translated.source.environment_startup.c.cs": "830f77b254b94ab8a327a9113c493511e621afeeafbcf8afc56653fe5e8f5b20",
+        "Translated.source.format_sink.h.cs": "aa0f56733e9352bc77faa51d76406d74b1584a6b5efd8c05cb7e4130ea8edaf6",
+        "Translated.source.format_wrappers.c.cs": "8b5c9964054d1335186861856b5e415292614db43e8bafb3f32347d1323a9a04",
+        "Translated.source.forwarders.c.cs": "c500c539a5d753c84defd0c7e44a088bd8c405c5204598b01f9f10672c011099",
+        "Translated.source.frame.c.cs": "476edb48b883ae1cf242a3bf292dab3dc3c60e0a957842a84fbfb384c16280bd",
+        "Translated.source.frame.h.cs": "194ed975a5e2a24286db9ba5dc2155aaf5ee668838fdf0b7310d62b58b44b5d5",
+        "Translated.source.hashtable.c.cs": "300d8f5e0aa74ad0c8b52d5f11e3f2805ec2795a33041f50936f20723402c26d",
+        "Translated.source.host.c.cs": "b7d078e7b98dceede2a2635a04c86fbbd7fa6618b268c4ab0007a3f5c2b987f5",
+        "Translated.source.htonl.c.cs": "50d11e4b1e1a465364ccabf6577aa09a5ca4f9577843703fb7a1fb6bc32d34c4",
+        "Translated.source.htons.c.cs": "e048a359cc073c86a420c0fd7ed7ab46a529dc643485e81c07344466bc528f43",
+        "Translated.source.in6addr_loopback.c.cs": "71de2e77a4c945c623a27b91ac89806f73345b113d48c8e0b1eb6b2121220b6c",
+        "Translated.source.inet_ntop.c.cs": "ca298d58e76a1965e88abd4947e7e57912f63d456304bfea0c212058a4b8fc30",
+        "Translated.source.libm.h.8b34ff279341.cs": "92108aa60e7a2588174d02d66da585f558e144421fcb9728c12808b334cffc4a",
+        "Translated.source.libm.h.cs": "7662a167966aaed5b41fa5ae1bd0cf13ef3ebfa211fd3fae9fd72f6983103946",
+        "Translated.source.library.c.cs": "f9b2aa5eefd9b17f8e886f01d521d84bb10a38535fe31647632ee0223b62c8c9",
+        "Translated.source.library.h.cs": "066a60ead8a766cd8cf48992fc1d1c8212afcfd25f4908bb4101994e0bfe388f",
+        "Translated.source.listener.c.cs": "d88c1c51722138c1cc31b7ed9864ae4e89aced817f6882ab62db6e2a5138782f",
+        "Translated.source.lookup.c.cs": "22545f23edaa45d7bfb70abe4cd120fa4975f7f7c1452e64ddb691fe5a5cdb7e",
+        "Translated.source.loss_detection.c.cs": "766281ea78f2870f40398302287fefbb75453b6124344aefd65443261d581bdf",
+        "Translated.source.msquic_posix.h.cs": "c6d717b266b9a5c92d820908bde37900c27bdee790ac75362e5cb69021a9257e",
+        "Translated.source.mtu_discovery.c.cs": "cfe24040bf1b0a1884df5141069fa836873fd462bfbea7ca753493d0ea9f67e8",
+        "Translated.source.ntohs.c.cs": "48e0af8ca6ecebae2560f4824baf4bdb25bdf01cf4f944bf61dfd2420fcea0e4",
+        "Translated.source.operation.c.cs": "44480f703359d528a2fc6a0c40063440f22479debc772b9f786e50e2b0063f0f",
+        "Translated.source.operation.h.cs": "c7cd04fff350ea0136a0a00ea4cb6168ee5e6840f7b4a79adab3dad3b15427be",
+        "Translated.source.packet.c.cs": "8bbce3f7c35d647ace8cbb7efc30f6d17b67ed0f13135fd8826b8688c05457ad",
+        "Translated.source.packet.h.cs": "625d1722853799f77a2fb29eeaddd47f2a31317772cf155045e3c911001c8b00",
+        "Translated.source.packet_builder.c.cs": "2c8b275acabc5762b44e7ef071d9a48f6f2da4b4ec7b32e67f4fa0d380633110",
+        "Translated.source.packet_builder.h.cs": "b4aa4a63deeab0c307a2cf2c124224911a6798c5f254d50bfee9b96d9857b649",
+        "Translated.source.packet_space.c.cs": "e6fd6eba0df43b2b47b7f80b7013faaeec7914957c454c69f0d3848fb00e9230",
+        "Translated.source.packet_space.h.cs": "b08bc1c2eb5e998f617714fa4c79455d6991caf79639fb5a8a29d7704349dadc",
+        "Translated.source.partition.c.cs": "e2db7609e41b3e3c2516925a68096b70fa85ded19f2d86bf3b1eb4fd71e65b1c",
+        "Translated.source.partition.h.cs": "c408f7c85c0411ce34f25e6bc7e6fc092ac87ba6464d6a35580ee47c2f6f8735",
+        "Translated.source.path.c.cs": "906ded3a81865cbf50e79999255f32602fa6478a993cac3b0a59ecf0ecc9757f",
+        "Translated.source.path.h.cs": "990d4b5a4a59f4b372a42edccf8c50dca9d384bf1fc17a168d54410982fc481c",
+        "Translated.source.platform_worker.c.cs": "1e7bbb0dcea1c72a8263a9fac4a5aef6c4a35cf192f703db8cd0dc050659bc1d",
+        "Translated.source.portable.c.cs": "3048e1ad4513a68e92eef43f78fc2ce4d9219cac7f3944c78b72ca7f344f7930",
+        "Translated.source.prng_lock.h.cs": "2cc02aed7cf3929aae38c4237f4776fe1e8e91456e25e74018399e0a945451b2",
+        "Translated.source.quic_crypt.h.cs": "c3b14e44d59c6414eb2deef6cf7a5e3797e4894e3d3cf768c2d056d29d87f691",
+        "Translated.source.quic_datapath.h.cs": "62413ecd363b965c0cbc9d3bea26174c4b4168519734305e714113125053d7d5",
+        "Translated.source.quic_hashtable.h.cs": "65f93ceae7edfb37edf264d0882e58a1d36df7f713603e4a606013d2b53133e6",
+        "Translated.source.quic_platform.h.cs": "a01c99f71ba500a5df70c1d057bf655d24b4c3f86d6e95941588fb30123312fa",
+        "Translated.source.quic_platform_posix.h.cs": "a18d211453fef50b97b4bf25bcd808e35967e421cd424b5a844fbd844a4656cf",
+        "Translated.source.quic_tls.h.cs": "37067792e318d4ebde975b8055ae6683bfc74e1a9856183fc244b79ac0790348",
+        "Translated.source.quic_toeplitz.h.cs": "38d6cffc1e4e2458f8d7d091b96643eff1a7e0318c22771137d4253d7ce180d6",
+        "Translated.source.quic_trace.h.cs": "06ecd7f8d9a783d8dea623fe2f09a979c2c6e484e95ec631a55e1bf0cd2baa5d",
+        "Translated.source.quic_var_int.h.cs": "9e0a5c60baf14f665af9e197c00aedc0eeea4b3fb5f4c8dfe74c259c985f50f4",
+        "Translated.source.quic_versions.h.cs": "f8b35347bc111a751b7b5eeccbd29f12035912518ace1fa1d0f080e2a768ab90",
+        "Translated.source.range.c.cs": "426cf44facddfacd3bd079bc88876589fa7d2b5ce27435d41bd37db9811e9fb3",
+        "Translated.source.range.h.cs": "1e753ade8a9474e34b23c39651d04ccf0a8f003777588e79ebe9bc0db624a970",
+        "Translated.source.recv_buffer.c.cs": "e36e5c6e523dfefdbfc64a410cc7d705dae520b82bfdef420cf375b7e557b318",
+        "Translated.source.registration.c.cs": "32a8f7690419f5403105fcf5b645eba3f13b4674c33ea5ad30d1c6e9a6ec964f",
+        "Translated.source.registration.h.cs": "7c84abe854ce1e13a161e330c7ebbf5cfc50e5dfcb6e19aa59541c1c79582fff",
+        "Translated.source.route.c.cs": "8efbf36530e07399ffd79c27858a4680d52ab4b428244dc39d2a2ac2f576c3fa",
+        "Translated.source.scan_ctype.h.cs": "9a863846d7d2d7c87f254816052a0a7c619ffa97ff4c8f48ab8c363f267030c6",
+        "Translated.source.scan_string.h.147dd48856a5.cs": "4760dd9ac2a6224aa446a4b8f094ff462df6fd77f87a0d7489f4fd92ce2aa3aa",
+        "Translated.source.scan_string.h.49408f62362c.cs": "2facc977c20925d78bb814eab612987f3d38d2d3adc66be3438f00b170620547",
+        "Translated.source.scan_string.h.744dcef3d823.cs": "6fd26b87b76a2d5f2aac27b23694d1fe8f443154aa01c24c6f5c905ada45d60d",
+        "Translated.source.scan_string.h.cs": "f1660e00fddc56dcfd01cae06ec7d772269c899efb1ed911d0de0ca577651467",
+        "Translated.source.send.c.cs": "b529fd805f4e176ab9c937f9964533b132d50eaa944908a1bf5a159c365ee243",
+        "Translated.source.send.h.cs": "8ddad8cb9eae3b7119dcaf1618a85e390a5094bead177382aedbd3cde3c09189",
+        "Translated.source.send_buffer.c.cs": "061d6936d9408b39d8893639422c07fabc3d6f25594eb5df7d1b74ad90bc364a",
+        "Translated.source.sent_packet_metadata.c.cs": "7d596c19e6bab9f8c271e233738984fb2129b09cdae3ccf3462cc747c3183779",
+        "Translated.source.sent_packet_metadata.h.cs": "d55f43cd7bc83e770bdbdb69b2ad2878cdbeed9285292c53b0e07cbb8e4c49e2",
+        "Translated.source.settings.c.cs": "6cee00b042e170a73c3df984b5f75e61ad232edc96cb5c62acb624aa0b0b3fe4",
+        "Translated.source.signals.c.cs": "d559fec495c3a9db0e4a6fe81e91b8d586407fc0b1bad5307ca6a53f994b9e15",
+        "Translated.source.sliding_window_extremum.c.cs": "d93595e2252b66b8bc3e47774d75b0d5b32e9a4c2c3bf6b1d090145aab35dfd3",
+        "Translated.source.stream.c.cs": "5f22acf631cbd13ea74de5e42af6b60d1993cb2d34765a9704b2ef41742c586e",
+        "Translated.source.stream.h.cs": "94137cb3ef637832f47d9a06333d7d0d5dd9a09236e783ab07719a376c29c020",
+        "Translated.source.stream_recv.c.cs": "4a4c0211c23a6586abb5aa3b09613d9f27b56c0fb113f1488cff12320938600a",
+        "Translated.source.stream_send.c.cs": "dd39fb1daa2476c4f5c629205d45aba22f86d85107c6d70b4633b99c93b5354e",
+        "Translated.source.stream_set.c.cs": "6519594b05e67506de5137dec10675c9dca872d6814f5227897aada8a545404e",
+        "Translated.source.threads.c.cs": "3f14017182bee171455eb58d940aaab9469bddce182b0f3c6a86e252538a58d1",
+        "Translated.source.timer_wheel.c.cs": "65c4094d6d31003973877157c9045d36fc74323325b09f2d7395e1a02d8feba8",
+        "Translated.source.toeplitz.c.cs": "ff6ad45806a6ae2d1dad6b0bb1bc1d7b8c856f227fe35f790bd9f3b44cb516b3",
+        "Translated.source.version_neg.c.cs": "1051bf85b1209523bc9b1a677aceac8f3ad52cc1b3f49fe532fd5c233446073b",
+        "Translated.source.vfprintf.c.cs": "8adaf71f7e4a1b898bd7fb8935f811d9d730e724c17b227b2d8ee660fd86c554",
+        "Translated.source.vsnprintf.c.cs": "c85f57b22bb99c8986996701afce7042f0c9210ed3a66be22dc66503c32875b7",
+        "Translated.source.wcrtomb.c.cs": "882bee245445032c5a6985f6c8a61c0bf1f606e285d0d45ce37684fa261c45dc",
+        "Translated.source.wctomb.c.cs": "eb655ad2206f5e76b1360783667c025d704160f43833ce279ba932bb19aca673",
+        "Translated.source.wformat_sink.h.cs": "4c0fe868352a5a5ea7fbacde0ce2e5a93a61df986bf50377a14828eb6fb9b18a",
+        "Translated.source.worker.c.cs": "3289ee432f1794d2ef10ecac82ff83c19d8807b2a2992abab157e074d3505bad",
+        "Translated.source.worker.h.cs": "5dfa65d2596d070f48f8931d06b849988034a54b13bebead07332d8bfdd10880",
+        "Translated.source.wscan_file.h.cs": "d38ba407a48e068bd8ae502998dda0f92612b206a755871392e955daede48f20"
+      }
+    },
+    "picotls": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-picotls-edg-002/managed",
+      "manifestSha256": "1da583a46f2823b438c5da4585a216bac633fdd0887711b9e18b85db70042986",
+      "csFiles": 72,
+      "csBytes": 3291485,
+      "exportCount": 361,
+      "macroCount": 21,
+      "pruning": {
+        "mode": "reachable",
+        "candidateRoutines": 454,
+        "retainedRoutines": 20,
+        "candidateVariables": 68,
+        "retainedVariables": 4
+      },
+      "generatedSources": {
+        "Runtime.AtomicOps.cs": "f90e8ea88bd0dea74a50b7cbc951399b1a0b093d80daabafbf2330e757f89d3d",
+        "Runtime.Float80.cs": "1e82204968e56fb5e0cd55437c7c51749263ac19ca803556eab1374b1e3ea381",
+        "Runtime.LibcAppend.cs": "09f7f8d9ec2bf5438d26ff5f9d5d29535559d639cb569fbdd4f8ce09163d2f0e",
+        "Runtime.LibcC11Threads.cs": "a277d4941468e342527227a88e04e3fa3ac615d10bfe6cc7d6c3e670a2902433",
+        "Runtime.LibcContext.cs": "c05e4cb9fa5b8f871a587061e983808aaf5fca6e560474688572328fec62f8a6",
+        "Runtime.LibcEnvironment.cs": "c1ff5ef77a4cdfeffe957263c2f1934430383bfc6134d23c2ddf1565dd2aa959",
+        "Runtime.LibcErrorMessages.cs": "266fa2153def0a84a8e3e06188d67e322e0e176ad0bbd4e790cd27affec1b501",
+        "Runtime.LibcFileDescriptors.cs": "e2d34dcde758700dcb6b95cc7566b271407b483e7c2cb745620a0e7490b091ac",
+        "Runtime.LibcFiles.cs": "e1ee97c7e8b23e80aa9a23ec4dd684c57c4058cf1434371f6442a570fb14124d",
+        "Runtime.LibcFilesAssert.cs": "798c9c116a82161b8af91639a28252d80a67976883502c581fb71ee75df55725",
+        "Runtime.LibcFilesDescriptors.cs": "8d30409a2ccf68dd82806544d7603f80bc155d65046a48961a669846e114feb8",
+        "Runtime.LibcFilesFormat.cs": "81031664acfc22d8c24bc2cd973f19b03fa6a24a8d388a9594c4e81bbc944197",
+        "Runtime.LibcFilesManagement.cs": "44eed7efec0d9ad4676b1bde87687d764afe615ee60654062a8a9c0f3f2126ac",
+        "Runtime.LibcFilesSignalAssert.cs": "3586ca288d2c5bfdb7ef7d2bc6549bbe7ac96e663e80c9b20ea4245d49b4d79c",
+        "Runtime.LibcFilesWide.cs": "a534866ee4fd2e1b15d8d2d0f37233e16045378b7911b0ea4728faaa95f69bdb",
+        "Runtime.LibcFloat.cs": "0275d7f01f0f34ee691ee45632a688fb76cd4d91419f7be0da81c8e2d4a3269b",
+        "Runtime.LibcInet.cs": "5dda11bfb4c45f9fa225f1e1ff0fe7153dbe0f9af4fe8308c5407cf134f80887",
+        "Runtime.LibcInitialThread.cs": "a3f04494b1459a8036b82d514b8d6d2f4c0422f0493acd48b6a328aff1352f36",
+        "Runtime.LibcLocale.cs": "33b703cdac6b98967af92faa3b871ac13e31753cc5d37ab4e4b65d0f4a786a5f",
+        "Runtime.LibcLocaleEnvironment.cs": "ac0b05323ab8210ef3697469b038845a7b9271f27655fcaea9088c3f8d15208c",
+        "Runtime.LibcPaths.cs": "10f6c380f2469290134f404144869cf921361ad183f5a6ed5abbcd9a23c4cd62",
+        "Runtime.LibcProcess.cs": "375ff9d6c0703a74da1eff08643e540042b23287f62be934363cc1b96afc5be5",
+        "Runtime.LibcSignals.cs": "9936e0e57716b2971a8943bd6c37c3f0fd824f604b1b026c6cd076238beb0c66",
+        "Runtime.LibcText.cs": "98e1dc8e61767fd12cf5fbfc73adf06ba40b9980c764c96dd2d2c51bdfa28a5c",
+        "Runtime.LibcxxThreads.cs": "3f5920956c86e65b0ba5e3d7d90ba83e2f1ccc8677948f92a53b6b73be4e9da4",
+        "Runtime.PosixContext.cs": "ed5e1f84740323edef67b7f118b7673fe4a6e1133e754143ed137b834430ed67",
+        "Runtime.PosixDirectories.cs": "9b4cd094e7f5ba3115668e29f8085f8afcd0d801a5cbc8405c1935626e4e98a1",
+        "Runtime.PosixFiles.cs": "c9e502255ddbbb29b7c99587f0d203cc6116d858914ea8b5242a70f93797fa72",
+        "Runtime.PosixLocks.cs": "98770515c037e1bfe80e741796eb624553b0420e20a0760f38ec6b7b5e8f6b55",
+        "Runtime.PosixMappings.cs": "29b66306e810f22da689c3fd70962a7761244912e6d5f04ef9110fd77f504828",
+        "Runtime.PosixOfdLocks.cs": "931958260e2d1e5d9d7ad3aa56e4bca9d3fe96e3d744b9588ecf36e02dc7dfd9",
+        "Runtime.PosixPlatform.cs": "18aecca1b1bda5198a913409f2201ab66e5769131010894cb1eed949e01912c7",
+        "Runtime.PosixResources.cs": "f602364135e92937bfd9a347f131d4d646219d963bfb3513892d25efa82890db",
+        "Runtime.PosixStreams.cs": "0a7140a8f5cffcf6e6cf98e288697b581e85ad23f9676f3a3ee048d1ad546566",
+        "Runtime.PosixTime.cs": "26af18a4c101b92f70db799e1f42fbf559bb6c203f8fe4af6c45c942814aa4ec",
+        "Runtime.PosixTypes.cs": "cb2d86e871bc2d1e4fab98d8dd9112626e4c6470ac305701004b137384407526",
+        "Runtime.PosixVariadic.cs": "2cddd64d91c54354d2f4717a19a8d50e97006931f947e69c570e26c756160854",
+        "Runtime.PosixWindowsLocks.cs": "d95c6e41813158e91b740b64b800205b300d768bb6172902ebd037286abe7e54",
+        "Runtime.VaArg.cs": "00760c6f1e2df0112e072ad9a109656b71691e30dd600be77dd5a22ba8a24cce",
+        "Runtime.VaList.cs": "a0d7d0bf36c3b8d9403d3305d3c406242292893bc041606a7f532e6fa90d9b72",
+        "Runtime.VaPack.cs": "27025674874979a2bfc7bbfce20913953925749b81b9b923f3304bea80b4c8bf",
+        "Translated.cs": "e3a2708ce0b3fef332d6393f8832579973ad74682e20c59356d82da0d284605f",
+        "Translated.generated.cs": "be3c9895b502ad216653d557d61041b7e1bb45fef0e52bbf815aa30ffa11f6ba",
+        "Translated.source.assert_fail.c.cs": "8871920de99b89455fe4a704c022578daa2697579ec97ac9a4d603d83cac6a1f",
+        "Translated.source.atomic.h.cs": "ae28002520a4c46cab58655cb7a7c0c8e62ec023c7586f00424bc5f20a07bb93",
+        "Translated.source.byteswap.h.cs": "05db2e347ae6f1074d09bdc0d9439da7f0c202f6e5ba1db3b7397b089efa9d6e",
+        "Translated.source.casemap.h.cs": "edc4aeecb74cd9de6a15ebda5169fe8f5256a51a8c4bbd2913bf1f71d41da593",
+        "Translated.source.environment_compat.h.cs": "72a7be45e7c1587427343d77a6d1b198b94eafab8080a5c7658238b06e4bfcd2",
+        "Translated.source.environment_startup.c.cs": "d43471179f3ec1b66dcf0c0dead83259eecb2f131e646190eac157154e5ad642",
+        "Translated.source.format_sink.h.cs": "7bba663ec7c8a532f43118cdec36226b3766efa6d8bdf77d969f7f4b0b7fbe78",
+        "Translated.source.format_wrappers.c.cs": "6f36f56b5c929e288ce909ced78690ad682312276c52126fe263de4151be35de",
+        "Translated.source.hpke.c.cs": "082689a031ebbb180db36494f6723b713023bc4f54ac92271107bb35c9799dfb",
+        "Translated.source.libm.h.b746dc532b72.cs": "b75e25bfc04f69298452e863ba8d26d2551f11267c855e7f4a9a6366c64d4554",
+        "Translated.source.libm.h.cs": "ecc4f014be1239223241908df2106d09c34301b4015776e7e3f0d10c4aae86ca",
+        "Translated.source.pembase64.c.cs": "552f8a414e82cb8558fc1539c64ae9dd93d389faa883bd5050ee8aa2321d4da9",
+        "Translated.source.picotls-host.c.cs": "401d16ecb2053300b8b9d40c8f6a22750f505face3afac5c7a9ce2c6023a1b6e",
+        "Translated.source.picotls-quic.c.cs": "1dfc350fc8f722612a4566688fbd00601e4fe703facd75d452998c7bbf416cdd",
+        "Translated.source.picotls.c.cs": "73000f71e2faf2efa3da3509dd2afda25c257ed4af8ba6665554057ea63606a8",
+        "Translated.source.picotls.h.cs": "4d2b639777fecbd77cc021bba176f7a8555c33afdc6c15eda9763eed603dd644",
+        "Translated.source.prng_lock.h.cs": "8513616bdcfe3c3101c6fa1c0728df2e6eb0f00c3d0440bb321e058e669b241c",
+        "Translated.source.scan_ctype.h.cs": "c6e2e7e1a87bab76c1d4a80ac439eef8861ca0fd27b0882fd65a717da65fd502",
+        "Translated.source.scan_string.h.c0485dc42078.cs": "04e5cf4ef642c69ef1f75045fa6b1385808a0ffe77dd8bb45d54190fda2c3db9",
+        "Translated.source.scan_string.h.cs": "61b9576c616859c2b05fff996d0f4d900785808003db67cbae2b14d2714298a0",
+        "Translated.source.scan_string.h.d1602991ff54.cs": "4896737fee792034d5671df4deb16748bebc1e573a724e5b70cdb3732b9b7ca6",
+        "Translated.source.scan_string.h.d8ce5f5da8b5.cs": "9a72d3ad85ab89e0c32eac7475bcfee8856006e7e3a99bd2245912f832e1c8a2",
+        "Translated.source.signals.c.cs": "0de95cf866ce1d707508f436ba628bf0c0587baa2764b4014636044a1c9887aa",
+        "Translated.source.threads.c.cs": "b8aa4812879edc3894e97ce4f2cef06fedd9a0a27711d050c766a93cff74c391",
+        "Translated.source.vfprintf.c.cs": "dfb4b9ee839edfda1ada938702591a3f28d050331758f85e409b3bc5aadea548",
+        "Translated.source.wcrtomb.c.cs": "007473564d188c1ff85dedfa524005aac8b8bb06844f852a3a52e7ea76e8cc40",
+        "Translated.source.wctomb.c.cs": "078c9f407ad904eea0e578560913c4b77d12433e171fd7e9a9a6c44c5f7c53b3",
+        "Translated.source.wformat_sink.h.cs": "7ee9e15e9cdf418d86bdf11b0818898efa04834f97d839c6d39d12dc2e33d00c",
+        "Translated.source.wscan_file.h.cs": "040fecf1785b3bc665d0af527bc610c02887b803499baae5530d2f98012d0d71"
+      }
+    }
+  },
+  "receipts": {
+    "msquicTranslation": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-edg-011/results.json",
+      "sha256": "b734f29d7354dd0ada1a5403555705668af34aaa6381fe1184ae03f4d1fed97e",
+      "status": "passed"
+    },
+    "picotlsTranslation": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-picotls-edg-002/results.json",
+      "sha256": "999403b2a7a261be0a87fc03f2d2998410cdefc3502bbb5bf3b57f148f724cdc",
+      "status": "passed"
+    },
+    "msquicVerification": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-edg-tests-004/results.json",
+      "sha256": "10324be0e43d541c400bd01e5a1f00d592187bb69f864844b21aa80faf6ee61d",
+      "status": "passed",
+      "checks": [
+        {
+          "name": "Abi-jit",
+          "records": 65
+        },
+        {
+          "name": "Abi-aot",
+          "records": 65
+        },
+        {
+          "name": "Memory-jit",
+          "output": "PASS EDG platform memory: 33 checks"
+        },
+        {
+          "name": "Memory-aot",
+          "output": "PASS EDG platform memory: 33 checks"
+        },
+        {
+          "name": "Facade-jit-configuration",
+          "output": "PASS managed runtime parameters: actual library/profile/counter queries; global setting atomicity; v1 policy; Retry/reset provisioning\nPASS managed API configuration control: global/configuration/connection QUIC v1; sync/async credentials; copied ALPN; settings; lease drain; rejection before dispatch"
+        },
+        {
+          "name": "Facade-jit-transport",
+          "output": "PASS canceled start wait: gated delivery of one actual START_COMPLETE callback; native scheduling is not simulated\nPASS facade stream/lifetime InterNetwork\nPASS canceled start wait: gated delivery of one actual START_COMPLETE callback; native scheduling is not simulated\nPASS facade stream/lifetime InterNetworkV6"
+        },
+        {
+          "name": "Facade-jit-packets",
+          "output": "PASS facade packet controls cipher=0x1301 family=InterNetwork\nPASS facade packet controls cipher=0x1301 family=InterNetworkV6\nPASS facade packet controls cipher=0x1302 family=InterNetwork\nPASS facade packet controls cipher=0x1302 family=InterNetworkV6"
+        },
+        {
+          "name": "Facade-jit-resumption",
+          "output": "PASS managed API configuration control: server resumption sync/async approve/reject, full-handshake fallback, copied appstate, fresh 1-RTT data, pending close/cancel"
+        },
+        {
+          "name": "Facade-aot-configuration",
+          "output": "PASS managed runtime parameters: actual library/profile/counter queries; global setting atomicity; v1 policy; Retry/reset provisioning\nPASS managed API configuration control: global/configuration/connection QUIC v1; sync/async credentials; copied ALPN; settings; lease drain; rejection before dispatch"
+        },
+        {
+          "name": "Facade-aot-transport",
+          "output": "PASS canceled start wait: gated delivery of one actual START_COMPLETE callback; native scheduling is not simulated\nPASS facade stream/lifetime InterNetwork\nPASS canceled start wait: gated delivery of one actual START_COMPLETE callback; native scheduling is not simulated\nPASS facade stream/lifetime InterNetworkV6"
+        },
+        {
+          "name": "Facade-aot-packets",
+          "output": "PASS facade packet controls cipher=0x1301 family=InterNetwork\nPASS facade packet controls cipher=0x1301 family=InterNetworkV6\nPASS facade packet controls cipher=0x1302 family=InterNetwork\nPASS facade packet controls cipher=0x1302 family=InterNetworkV6"
+        },
+        {
+          "name": "Facade-aot-resumption",
+          "output": "PASS managed API configuration control: server resumption sync/async approve/reject, full-handshake fallback, copied appstate, fresh 1-RTT data, pending close/cancel"
+        }
+      ]
+    },
+    "independentPeers": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-edg-independent-004/results.json",
+      "sha256": "77066a99b985f8e30525a8462e38db88efd55c72729fc7fc7944d778d9a4bc66",
+      "status": "passed",
+      "cases": [
+        {
+          "name": "jit-ipv4-128-client",
+          "passed": true
+        },
+        {
+          "name": "jit-ipv4-128-server",
+          "passed": true
+        },
+        {
+          "name": "jit-ipv4-256-client",
+          "passed": true
+        },
+        {
+          "name": "jit-ipv4-256-server",
+          "passed": true
+        },
+        {
+          "name": "jit-ipv6-128-client",
+          "passed": true
+        },
+        {
+          "name": "jit-ipv6-128-server",
+          "passed": true
+        },
+        {
+          "name": "jit-ipv6-256-client",
+          "passed": true
+        },
+        {
+          "name": "jit-ipv6-256-server",
+          "passed": true
+        },
+        {
+          "name": "aot-ipv4-128-client",
+          "passed": true
+        },
+        {
+          "name": "aot-ipv4-128-server",
+          "passed": true
+        },
+        {
+          "name": "aot-ipv4-256-client",
+          "passed": true
+        },
+        {
+          "name": "aot-ipv4-256-server",
+          "passed": true
+        },
+        {
+          "name": "aot-ipv6-128-client",
+          "passed": true
+        },
+        {
+          "name": "aot-ipv6-128-server",
+          "passed": true
+        },
+        {
+          "name": "aot-ipv6-256-client",
+          "passed": true
+        },
+        {
+          "name": "aot-ipv6-256-server",
+          "passed": true
+        }
+      ]
+    },
+    "picotlsVerification": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-picotls-verified-001/results.json",
+      "sha256": "27ffc8263a3bc0faad884e2ba0f0d6036568d07ee79d656ee6c80b44a4a8bd95",
+      "status": "passed",
+      "checks": [
+        "TranslatedAbi JIT",
+        "TranslatedAbi NativeAOT",
+        "UpstreamVectors JIT",
+        "UpstreamVectors NativeAOT",
+        "ProviderVectors JIT",
+        "ProviderVectors NativeAOT",
+        "TlsTests JIT",
+        "TlsTests NativeAOT"
+      ]
+    },
+    "dependencyAudit": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-edg-tests-004/provider-audit.json",
+      "sha256": "f90fed3b64e0fab01cc68e1721e402fcc3f2868c4aac4844bfa1ea670a03755c",
+      "status": "passed",
+      "projectCount": 5,
+      "sourceCount": 248,
+      "nativeImportDeclarationCount": 59,
+      "unexpectedDependencies": [],
+      "changedManifestInputs": []
+    }
+  },
+  "limits": [
+    "Linux x64 executed; Windows/macOS and other architectures not executed.",
+    "Focused EDG acceptance, not all legacy dotcc API/recovery/fault-injection campaigns.",
+    "Native QUIC/TLS libraries are not product backends; shared libc/POSIX support still contains runtime-selected OS imports.",
+    "Existing managed facade pins borrowed async buffers; the PAL malloc-style allocations use NativeMemory.",
+    "Broader C++/libc conformance is not claimed; retained backend discrepancy observations are documented separately."
+  ],
+  "prerequisites": [
+    "msquic-prerequisites-20261007.json",
+    "msquic-backend-20261007.json"
+  ]
+}

@@ -74,7 +74,7 @@ def main():
         # Export the object-like public constants actually referenced by the existing
         # provider/tests; function-like macros require separate typed C contracts.
         referenced = set()
-        for folder in [CAMPAIGN/'src/BclProvider', CAMPAIGN/'tests']:
+        for folder in [CAMPAIGN/'src/BclProvider', CAMPAIGN/'tests', ROOT/'msquic/src/BclHost']:
             for path in folder.rglob('*.cs'):
                 if 'obj' in path.parts or 'bin' in path.parts: continue
                 referenced.update(re.findall(r'\bPTLS_[A-Z0-9_]+\b', path.read_text()))

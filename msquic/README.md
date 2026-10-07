@@ -1,5 +1,9 @@
 # MsQuic translation campaign
 
+An [EDG C# backend port](edg/README.md) reuses this campaign's managed host and
+picotls TLS integration. Its generation recipes and verification receipts are
+separate from the dotcc pipeline described below.
+
 Build orchestration uses the [shared campaign helpers](../docs/campaigns.md).
 
 See the [2026-09-24 compiler refresh verification](docs/verification-20260924.md)
