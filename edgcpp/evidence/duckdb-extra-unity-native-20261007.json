@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "native-experiment-verified",
+  "translatedExecutionVerified": false,
+  "nativeEvidence": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-extra-unity-002/approval-evidence.json",
+    "sha256": "a718921de0e367a6d8d32fa37c1d78f10d85967d1faed142296dceeddf979ce7"
+  },
+  "rawNativeResults": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-extra-unity-002/results.json",
+    "sha256": "a07dad58a07f531a7d92951f21dce265a72960a6ecc9d183deb261ab4a6f4c25"
+  },
+  "review": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-extra-unity-002/review.md",
+    "sha256": "e53c36179386e76643b38825804df4424ac9aa4a05ae2138f2554be409c69c99"
+  },
+  "preprocessing": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-translate-008/results.json",
+    "sha256": "b3710de9ca7046b4c34dff20855a739ed87570eca36de0b1441a795609b1c5f3"
+  },
+  "baseComposition": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-composition-007/composition.json",
+    "sha256": "2a9c183688a031e97c1603bd5177311ecfbf517d3fd17c6044f0336b210c6d6a"
+  },
+  "candidateGroups": {
+    "icu": 13,
+    "json": 29
+  },
+  "acceptedCases": 115,
+  "acceptedAssertionsPerBinary": 12438,
+  "additionalPartialCases": [
+    {
+      "selector": "test/sql/json/table/read_json.test",
+      "assertionsBeforeSkip": 291,
+      "reason": "Matched require httpfs skip in both native binaries; httpfs is outside the selected seven static extensions.",
+      "countedAsFullyExecuted": false
+    }
+  ],
+  "all116ObservationsEqual": true,
+  "baselineInputsUnchanged": true,
+  "scope": "Rebuild only grouped ICU/JSON extension objects and relink the existing C++17 native upstream test runner. Other objects and bundled ICU objects retained.",
+  "limits": [
+    "An explicit experimental source grouping, not an upstream-selected CMake grouping.",
+    "Native execution and source/header audits support this experiment, not universal C++ unity equivalence.",
+    "Full EDG memory use, full C# generation and translated execution remain to be verified."
+  ],
+  "generatedTestFilesPreserved": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-extra-unity-002/preserved-test-files.json",
+    "sha256": "8df3bdf8f257f4a6331de1d67032d60ef31c9829d0f37d47c166f23ef08cd93c"
+  },
+  "sourceInventoryNote": "Native tests added32 temporary output files under the acquired source directory. No original files changed. Root preserved the generated directory outside the acquisition and reverified its full original inventory before composition retry.",
+  "composition": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-unity-composition-005/composition.json",
+    "sha256": "d08db6d833af94c955b81c022510dba79d65d1127eac9cdf459a8022767e6919"
+  },
+  "controls": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-extra-unity-controls-002/results.json",
+      "sha256": "3ccf5f4d72240609f8bc758c887e113a438acbaad431663a3639569a5d8f5a55"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-extra-unity-default-controls-001/results.json",
+      "sha256": "43e70c470fc3aac12b7cad3650645e22cc6ef960826abf5b1f8e568dba9ddb13"
+    }
+  ],
+  "realEvidenceSelection": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-extra-unity-controls-002/real-selection.json",
+    "sha256": "8662528184760ff9a61325ef2f94e8fa95adf5e2946db89a20d1000dc578dab7"
+  },
+  "headerStateAudit": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-heavy-unity-probe-001/header-state-report.txt",
+    "sha256": "39225d56d46600ab8499e74589190288d88509c3229b9753b6f5105d774faf4e"
+  },
+  "programInputCount": 164,
+  "configuredOriginalTUs": 2207,
+  "coverageExactlyOnce": true,
+  "preprocessedInputBytes": 358571518,
+  "newGroupsStockSemanticMerge": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-extra-unity-semantic-001/results.json",
+    "sha256": "77a7aac4e271e0ba89fcd1afba0d8f7fc694e81ce867e4d73657b2d3a8556906"
+  }
+}

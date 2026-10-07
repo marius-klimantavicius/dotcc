@@ -154,6 +154,25 @@ planned inputs. Only `preprocessed-composition` receipts are ready for the
 merged translator. Fourteen focused checks cover coverage, input changes,
 flag/include-order mismatches, and real EDG preprocessing of a tiny group.
 
+Additional source groups are an explicit option, separate from the upstream
+CMake groups. Pass `--extra-groups /path/approval-evidence.json` and
+`--extra-groups-sha256 SHA256` to the same command. The recipe checks exact
+ordered membership, source hashes, compiler options and the native comparison
+observations. An inventory-only experimental plan cannot be preprocessed.
+The default remains the upstream groups only.
+
+The current optional profile combines the 13 ICU extension implementations and
+29 JSON implementations into two groups, reducing the input count from 204 to
+164 with all 2,207 original library TUs still represented exactly once. Native
+comparison rebuilt only these extension objects, retained all other baseline
+objects, and passed 115 upstream cases with 12,438 assertions identically. One
+additional `read_json.test` case reached 291 assertions before a matching
+`require httpfs` skip in both binaries; it is excluded from the fully executed
+acceptance count. All seven selected static extensions remain linked. This
+supports the explicit grouping experiment; translated execution and its memory
+savings must still be measured. See the retained
+[native comparison evidence](/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-extra-unity-002/approval-evidence.json).
+
 The initial 732-input merge was stopped by the coordinator at about 64 GiB RSS,
 28 minutes into the run. It also reported two declaration-correspondence
 errors, now covered by narrowly verified source adaptations.

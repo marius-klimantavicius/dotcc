@@ -1817,3 +1817,43 @@ namespace/class-scope type names; headers and macro expansion are outside that
 audit's scope. Full translated DuckDB execution remains outstanding.
 
 [ICU adaptation evidence](../evidence/duckdb-icu-adaptation-20261007.json).
+
+Fresh preprocessing with the ICU adaptation passes all 2,207 selected TUs and
+strict unchanged-input checks. Core/provider composition 007 is ready. A
+bounded native experiment groups the 13 ICU extension sources and 29 JSON
+sources into two TUs, preserving source order and compiler flags. Only those
+extension objects are replaced in copies of the native archives; all other
+objects and the seven static extensions remain linked. The baseline inputs
+remain unchanged. Native symbol sets match except for the two expected private
+ICU specialization renames.
+
+The candidate and baseline match on 115 fully executed upstream cases and
+12,438 assertions each, with no failures or skips in that acceptance subset.
+One additional JSON reader test matches through 291 assertions, then skips its
+`require httpfs` suffix in both binaries; it remains explicitly partial and is
+excluded from acceptance counts. Header inspection found an internal constant
+null-string sentinel whose address can coalesce under unity; inspected uses
+consume its bytes, with no observed pointer-identity dependency. This remains
+a source-build experiment supported by native tests, not proof of universal
+unity equivalence, EDG memory savings or translated execution.
+
+[Additional unity native evidence](../evidence/duckdb-extra-unity-native-20261007.json).
+
+The first composition check after native tests correctly rejected 32 generated
+test-data files added under the acquired source directory. No original source
+changed. The complete generated directory was moved into retained test artifacts
+and its hashes verified; the acquisition once again matches its full manifest.
+The failed composition attempt and the preservation receipt remain available.
+
+The optional tracked recipe now requires a pinned additional-group manifest and
+validates native observations, actual compiler standard/options, exact tested
+wrapper include order, source hashes, successful command artifacts and input
+coverage. The upstream-only default is unchanged. Ten new controls and fourteen
+existing unity checks pass, as does independent review. The resulting corrected
+composition has 164 inputs (31 groups plus core and 132 separate TUs), exactly
+2,207 original TUs, and 358,571,518 preprocessed input bytes. All before/after
+hashes remain unchanged. The next full frontend run will measure memory use.
+
+The unchanged stock C frontend also accepts the two newly grouped ICU/JSON
+inputs together with used-template instantiation enabled. This targeted
+semantic merge passed in 36.6 seconds; it does not claim lowering or execution.
