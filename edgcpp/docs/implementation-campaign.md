@@ -2118,3 +2118,15 @@ initialization prefix on first write. This failure is retained; no filtering
 or successful interactive-Windows claim is made. No translated C++ termcolor
 or complete 67-input runner acceptance is claimed.
 [Termcolor source-adaptation evidence](../evidence/duckdb-termcolor-adaptation-20261008.json).
+
+
+Full checkpoint007 stopped after 4,489.8 seconds on the unchanged EDG
+`check_correspondences` assertion at trans_copy.c:962: "primary entry should
+not be canonical". Peak compiler RSS was 50.24 GiB; this was an explicit
+diagnostic stop, not a memory/time guard. All input hashes remain unchanged.
+The previous JSON pair correspondence diagnostic did not recur, but no usable
+checkpoint, full C# output or execution was produced. Next work is a bounded
+source/configuration reduction and original-C-backend comparison; EDG semantic
+changes or suppressing this assertion are excluded. Queued source/runtime
+bundles remain isolated while reproduction scheduling is established.
+[Full007 diagnostic evidence](../evidence/duckdb-checkpoint007-diagnostic-20261008.json).

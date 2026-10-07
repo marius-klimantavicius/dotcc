@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "status": "frontend-correspondence-assertion",
+  "attempt": 7,
+  "result": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-007/results.json",
+    "sha256": "f3bab0a4a450512b0ccd557c88ada71ac36a2c3d484b3f986f4788036e505402"
+  },
+  "prepared": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-007/prepared.json",
+    "sha256": "8ffccf5dde85d27327f34303c111e702c36d416fa441ac539e90d58cf2b2aea7"
+  },
+  "diagnostic": {
+    "elapsedSeconds": 4488.5804106120195,
+    "line": "Internal error: assertion failed: primary entry should not be canonical",
+    "file": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-007/checkpoint/writer.stderr",
+    "action": "stop isolated process group after explicit frontend diagnostic"
+  },
+  "elapsedSeconds": 4489.832518641022,
+  "peakCompilerRssBytes": 53941239808,
+  "memoryGuardStopped": false,
+  "inputsVerifiedAfterRun": true,
+  "changedInputs": [],
+  "checkpointUsable": false,
+  "executionVerified": false,
+  "classification": "The unchanged writer reports check_correspondences in trans_copy.c line962 after processing secondary source inputs. Prior pair-specific diagnostic did not recur. No EDG semantic modification or diagnostic suppression is authorized; next work is configuration/source reduction against the original C backend.",
+  "diagnostics": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-007/translate.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-007/translate.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-007/checkpoint/writer.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-007/checkpoint/writer.stderr",
+      "sha256": "43008901860b19d00cdd0ca1021fb419d4414a7edc3427bbf765f8e67d1fb1bb"
+    }
+  ]
+}
