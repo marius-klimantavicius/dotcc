@@ -512,6 +512,7 @@ string constant(a_constant_ptr c) {
 }
 #include "dot_gen_primitive_data.h"
 #include "dot_gen_record_data.h"
+#include "dot_gen_initializer_identity.h"
 string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_address, string array_pointer, string record_pointer) {
   t = skip_typerefs(t);
   if(storage_address.empty())storage_address="&("+dst+")";
@@ -584,10 +585,10 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
       value = item->variant.init_repeat.constant;
     } else if(t->kind==tk_array) {
       // EDG can expand repeated aggregate designators into adjacent equal
-      // constants rather than ck_init_repeat. Its strict representation-aware
-      // comparison preserves signed zero, pointer identity and relocations.
+      // constants rather than ck_init_repeat. Compare only surviving lowered
+      // representations; frontend correspondence records are no longer live.
       while(item->next && item->next->kind!=ck_init_repeat &&
-            compare_constants(value,item->next,CC_STRICTLY_IDENTICAL|CC_EXACT_EQUIVALENCE)) {
+            same_lowered_initializer(value,item->next)) {
         ++count;item=item->next;
       }
     }

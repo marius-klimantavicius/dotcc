@@ -708,6 +708,15 @@ not migrate SQLite or implement C++ lifetime lowering. The checkpoint, exact
 validation evidence and next project-driven steps are recorded in
 `docs/semantic-export-c-emission.md`.
 
+The next semantic-export milestone audits the actual 77-TU `cpfe-dot` source
+set, including its dot backend, and implements a separate C# project handler
+for the configured SQLite amalgamation. SQLite-driven native adapters eliminate
+its 7,906 baseline adapter diagnostics. All 3,165 engine/VFS routines compile;
+43 native-C observations match JIT and NativeAOT, with the C memory VFS itself
+translated. The process-static, THREADSAFE=0 memory-VFS scope and C++ adapter
+backlog remain explicit. See `docs/semantic-export-self-audit.md`,
+`docs/semantic-export-sqlite.md` and their semantic-export evidence indexes.
+
 Direct C# emission of the original 75-TU EDG compiler has now succeeded, using
 the native C++14/no-exceptions/no-RTTI build profile and the C backend's supported
 local-entity promotion configuration in an isolated compiler. The formatted
@@ -1322,3 +1331,22 @@ Frozen compiler/backend/header/original-source hashes were rechecked before
 starting the full 290-input bootstrap. Full bootstrap and NativeAOT acceptance
 remain pending at this runnable-compiler milestone.
 [Runnable compiler evidence](../evidence/self-dot-execution-20261007.json).
+
+The first full translated bootstrap completes in 317.259 seconds with identical
+178,058-byte diagnostics but non-identical C#: native 260,596,266 bytes versus
+translated 260,596,181 bytes. Investigation found a real backend bug: repetition
+compression called `compare_constants`, whose address comparison can follow
+frontend-only correspondence records after `fe_wrapup` frees that region. Two
+distinct relocation rows were incorrectly merged, shifting many generated IDs.
+The original EDG implementation and C backend confirm the lifetime contract;
+no EDG source change is needed.
+
+Compression now uses a backend-local comparison of surviving lowered types,
+representations and direct relocation identities. Six focused checks pass:
+native two-TU behavior, static/instance JIT and NativeAOT, valid same-entity
+compression, distinct globals/offsets/function addresses, signed zero/unions,
+and a direct comparator with poisoned correspondence pointers. Corrected full
+bootstrap is in progress. The earlier compiler also builds under NativeAOT and
+passes the small byte-identical emission fixture; this does not validate its
+known incorrect full initializer output.
+[Initializer identity evidence](../evidence/initializer-identity-20261007.json).

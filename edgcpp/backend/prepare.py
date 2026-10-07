@@ -12,6 +12,7 @@ for source, target in [
     (root / "backend/dot_gen_source_expression_api.h", root / "upstream/src/dot_gen_source_expression_api.h"),
     (root / "backend/dot_gen_bitfield_properties.h", root / "upstream/src/dot_gen_bitfield_properties.h"),
     (root / "backend/dot_gen_source_names.h", root / "upstream/src/dot_gen_source_names.h"),
+    (root / "backend/dot_gen_initializer_identity.h", root / "upstream/src/dot_gen_initializer_identity.h"),
     (root / "backend/dot_gen_source_storage.h", root / "upstream/src/dot_gen_source_storage.h"),
     (root / "backend/dot_gen_overflow.h", root / "upstream/src/dot_gen_overflow.h"),
     (root / "backend/dot_gen_volatile_bits.h", root / "upstream/src/dot_gen_volatile_bits.h"),

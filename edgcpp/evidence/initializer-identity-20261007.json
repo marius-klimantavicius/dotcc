@@ -1,0 +1,274 @@
+{
+  "scope": "Backend initializer compression must not inspect freed frontend correspondence data",
+  "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/results.json",
+  "sha256": "58030bd793681244478bd3e78a3f6b887a1a6ba6fd4470c13e71a5301df30411",
+  "verification": {
+    "passed": true,
+    "commands": [
+      {
+        "stage": "native-build",
+        "command": [
+          "g++",
+          "-std=c++17",
+          "-O2",
+          "-DIDENTITY_NATIVE_MAIN",
+          "/home/marius/p/dotcc/edgcpp/backend/tests/initializer_identity.cpp",
+          "/home/marius/p/dotcc/edgcpp/backend/tests/initializer_identity_data.cpp",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/native"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "native",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/native"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "static-translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/home/marius/p/dotcc/edgcpp/backend/tests/initializer_identity.cpp",
+          "/home/marius/p/dotcc/edgcpp/backend/tests/initializer_identity_data.cpp",
+          "--compiler",
+          "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-002/cpfe-dot",
+          "--std",
+          "c++17",
+          "--libc",
+          "dotcc",
+          "--emit",
+          "managedlib",
+          "--namespace",
+          "Identity",
+          "--class-name",
+          "Core",
+          "--split",
+          "source",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/static"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "static-build",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/host-static/Host.csproj",
+          "-c",
+          "Release",
+          "--nologo"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "static-jit",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/host-static/bin/Release/net10.0/Host.dll"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "static-publish",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/host-static/Host.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/host-static/aot"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "static-aot",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/host-static/aot/Host"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "instance-translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/home/marius/p/dotcc/edgcpp/backend/tests/initializer_identity.cpp",
+          "/home/marius/p/dotcc/edgcpp/backend/tests/initializer_identity_data.cpp",
+          "--compiler",
+          "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-002/cpfe-dot",
+          "--std",
+          "c++17",
+          "--libc",
+          "dotcc",
+          "--emit",
+          "managedlib",
+          "--namespace",
+          "Identity",
+          "--class-name",
+          "Core",
+          "--split",
+          "source",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/instance",
+          "--instance-methods"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "instance-build",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/host-instance/Host.csproj",
+          "-c",
+          "Release",
+          "--nologo"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "instance-jit",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/host-instance/bin/Release/net10.0/Host.dll"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "instance-publish",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/host-instance/Host.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/host-instance/aot"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "instance-aot",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/host-instance/aot/Host"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "poison-build",
+        "command": [
+          "g++",
+          "-std=c++14",
+          "-O2",
+          "-DBACK_END_IS_CP_GEN_BE=0",
+          "-DBACK_END_IS_C_GEN_BE=0",
+          "-DBACK_END_SHOULD_BE_CALLED=1",
+          "-DCOMPILE_MULTIPLE_TRANSLATION_UNITS=1",
+          "-DDEFAULT_REMOVE_UNNEEDED_ENTITIES=0",
+          "-DDO_FULL_PORTABLE_EH_LOWERING=0",
+          "-DDO_IL_LOWERING=1",
+          "-DDO_UNORDERED_EH_PROCESSING=1",
+          "-DEDG_DOT_BACKEND=1",
+          "-DGENERATE_EH_TABLES=1",
+          "-DIL_SHOULD_BE_WRITTEN_TO_FILE=0",
+          "-DKEEP_OBJECT_LIFETIME_INFO_IN_LOWERED_IL_WHEN_EH_ENABLED=1",
+          "-DLOWER_CLASS_RVALUE_ADJUST=1",
+          "-DLOWER_FIXED_POINT=1",
+          "-DLOWER_IFUNC=1",
+          "-DLOWER_VARIABLE_LENGTH_ARRAYS=1",
+          "-DMAINTAIN_NEEDED_FLAGS=1",
+          "-DNEED_IL_DISPLAY=1",
+          "-DNO_USR_INCLUDE=1",
+          "-DPROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE=1",
+          "-DRECORD_BACKING_EXPRS_WITH_IL_LOWERING=1",
+          "-DTARG_IA64_ABI_USE_VARIANT_PTR_TO_MEMBER_FUNCTION_REPR=1",
+          "-DUSE_CMAKE_DEFINES",
+          "-I/home/marius/p/dotcc/edgcpp/build/src/includes",
+          "-I/home/marius/p/dotcc/edgcpp/upstream/src",
+          "-DNDEBUG",
+          "/home/marius/p/dotcc/edgcpp/backend/tests/initializer_identity_unit.cpp",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/poison-unit"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "poison-unit",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/dot-initializer-identity-001/poison-unit"
+        ],
+        "exitCode": 0
+      }
+    ],
+    "checks": [
+      "Native two-TU relocation/representation oracle",
+      "static/JIT: distinct globals, subobject offsets, repeated aliases, function addresses, signed zero, nested unions and compacting GC",
+      "static/NativeAOT: same identity/representation checks",
+      "instance/JIT: distinct globals, subobject offsets, repeated aliases, function addresses, signed zero, nested unions and compacting GC",
+      "instance/NativeAOT: same identity/representation checks",
+      "Actual EDG relocation constants compare without reading poisoned frontend-only correspondence pointers"
+    ],
+    "contracts": [
+      {
+        "file": "upstream/src/il_def.h",
+        "line": 3283,
+        "contract": "trans_unit_corresp points to a front end data structure and is for front end use only"
+      },
+      {
+        "file": "upstream/src/trans_corresp.h",
+        "line": 164,
+        "contract": "EXPENSIVE_CHECKING asserts in_front_end before correspondence access"
+      },
+      {
+        "file": "upstream/src/fe_wrapup.c",
+        "line": 854,
+        "contract": "No-IL-file configuration frees FRONT_END_REGION_NUMBER before backend execution"
+      },
+      {
+        "file": "upstream/src/c_gen_be.c",
+        "contract": "Initializer emission uses lowered constants and explicit ck_init_repeat; no compare_constants call"
+      }
+    ],
+    "sources": [
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/backend/tests/initializer_identity.cpp",
+        "sha256": "fcdaa93757310d7b95cd0272e9f9b45a849049cf9ac0f539dbcb0974d8146201"
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/backend/tests/initializer_identity_data.cpp",
+        "sha256": "25d1876d8467f5aac57b8f0956d6a8e1607944d76a8468c13f8a84c5b38e35a1"
+      },
+      {
+        "path": "/home/marius/p/dotcc/edgcpp/backend/tests/initializer_identity.h",
+        "sha256": "1224319466e830178260fb394121d14b19c1200f3b0aca1536e968f996d1f2db"
+      }
+    ]
+  },
+  "fullBootstrapFailure": {
+    "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/bootstrap-jit/results.json",
+    "nativeBytes": 260596266,
+    "translatedBytes": 260596181,
+    "stderrIdentical": true,
+    "semanticDifference": "saved_vars__static_u2d_local_18[8].var_address was incorrectly repeated from row7 despite distinct lowered variable identities",
+    "status": "Corrected in backend; full corrected bootstrap pending"
+  },
+  "contracts": [
+    "upstream/src/il_def.h:3283 (frontend-only correspondence)",
+    "upstream/src/trans_corresp.h:164 (in_front_end assertion)",
+    "upstream/src/fe_wrapup.c:854 (frontend region freed before backend)",
+    "upstream/src/c_gen_be.c:8300 (explicit lowered repeats only)"
+  ]
+}
