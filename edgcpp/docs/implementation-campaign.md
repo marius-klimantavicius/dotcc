@@ -1867,3 +1867,17 @@ skips, writes all eight generated JSON files into artifacts, and leaves all
 14,536 pinned acquisition entries unchanged. No upstream code changed.
 
 [Test temporary-directory evidence](../evidence/duckdb-test-tempdir-20261007.json).
+
+While the 164-input full attempt continues unchanged, a Parquet fallback has
+been validated natively. Eighteen standalone files cannot all be combined:
+repeated inclusion of the bundled LZ4 header fails native and EDG syntax.
+Keeping `column_reader.cpp` separate permits a 17-file group with unchanged
+source-origin preprocessing. A native variant retaining all other Parquet
+archive members and the tested ICU/JSON groups has identical strong symbols
+and matches 179 fully executed upstream cases (14,615 assertions). Three
+additional observations match but are excluded: two require-httpfs partial/
+skipped cases and an upstream `mode skip` file with zero assertions, despite
+the runner reporting a passed case and zero skips. Exact acquisition and
+baseline inventories remain unchanged. This fallback is not yet adopted.
+
+[Parquet fallback evidence](../evidence/duckdb-parquet-unity-fallback-20261007.json).

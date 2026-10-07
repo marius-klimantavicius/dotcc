@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "native-fallback-verified-not-adopted",
+  "translatedExecutionVerified": false,
+  "approvalEvidence": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-parquet-unity-001/approval-evidence.json",
+    "sha256": "3fd13633ddad241aef3675d6caff7aecf12241fbec7bf4a2fadc5a2244ae88a0"
+  },
+  "rawResults": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-parquet-unity-001/results.json",
+    "sha256": "922bbaa15a78bcd7c8645fe480862cba7001d80a64a53537d57300b24c2b39e6"
+  },
+  "review": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-parquet-unity-001/review.md",
+    "sha256": "c432714915b02c8406837258f12e36625f5805d3e13dfb537de0bba7305a2b9d"
+  },
+  "sourceProbe": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-parquet-unity-probe-002/results.json",
+    "sha256": "1f9d81cb54ca6f769e89a41eb372f9824e1925f5d124c2d476723f9bdc6274f9"
+  },
+  "sourceAudit": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-parquet-unity-probe-002/report.txt",
+    "sha256": "3480d705c22dfab2f68ba3a4d34a221f607cdc5487ebae3a2c8d4259220d8da0"
+  },
+  "candidateGroup": {
+    "count": 17,
+    "sourceIndices": [
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134
+    ],
+    "retainedSeparate": "extension/parquet/column_reader.cpp"
+  },
+  "acceptedCases": 179,
+  "acceptedAssertionsPerBinary": 14615,
+  "all182ObservationsEqual": true,
+  "excludedObservations": [
+    "read_json.test:291 assertions then require httpfs skip",
+    "parquet_long_string_stats.test:require httpfs skip before assertions",
+    "encrypted_parquet.test:upstream mode skip, zero assertions despite casesPassed=1 and skipped=0"
+  ],
+  "baselineAndAcquisitionUnchanged": true,
+  "activeCheckpoint003Unchanged": true,
+  "limitations": [
+    "All18 standalone Parquet files cannot be combined: repeated inclusion of bundled LZ4 header fails native/EDG syntax. Keep the reader separate.",
+    "Additional recipe validation for the new honest receipt status/inventory fields and explicitly nonexecuting observations is deferred unless this fallback is used.",
+    "No full translated execution or compiler memory-saving claim."
+  ]
+}
