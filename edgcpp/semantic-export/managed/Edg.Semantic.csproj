@@ -8,4 +8,7 @@
     <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../backend/runtime/Float80.cs" LogicalName="Edg.Semantic.Float80.cs" />
+  </ItemGroup>
 </Project>

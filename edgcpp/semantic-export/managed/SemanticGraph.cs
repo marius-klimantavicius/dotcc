@@ -8,6 +8,7 @@ public sealed class SemanticGraph : IDisposable
 {
     private readonly JsonDocument document;
     private readonly Dictionary<ulong, SemanticNode> nodes = new();
+    private readonly Dictionary<string, List<SemanticNode>> nodesByKind = new(StringComparer.Ordinal);
     public JsonElement Raw => document.RootElement;
     public IReadOnlyDictionary<ulong, SemanticNode> Nodes => nodes;
     public string GraphPath { get; }
@@ -34,7 +35,10 @@ public sealed class SemanticGraph : IDisposable
         "partialSpecializationArguments", "memberDeclarations", "defaultArgument", "firstChild",
         "thisClass", "exceptionSpecification", "initializationStatement", "declaration", "qualifier",
         "writtenTemplateArguments", "namespace", "sourceExpression", "basedType", "field", "base", "overlappingTemporariesLifetime",
-        "integerInfo", "enumScope", "enumerators", "typerefInfo", "pragmas", "baseType", "proxyClass", "operatorTypeArgument", "mainRoutine", "cleanupRoutine"
+        "integerInfo", "enumScope", "enumerators", "typerefInfo", "pragmas", "baseType", "proxyClass", "operatorTypeArgument", "mainRoutine", "cleanupRoutine",
+        "cases", "defaultCase", "sortedCases", "caseValue", "nextSorted", "rangeEnd", "localStaticInitializers",
+        "localExpressionReferences", "localScopeReferences", "lastSourceSequence", "namespaces", "sourceSequenceSublists",
+        "attributes", "gnuRoutineInfo", "subobjectPath", "attributeGroup", "scopedExpression", "aliasedRoutine", "inlinePartner"
     };
 
     private SemanticGraph(string path)
@@ -158,7 +162,7 @@ public sealed class SemanticGraph : IDisposable
     }
 
     public SemanticNode? Get(ulong id) => id == 0 ? null : nodes.TryGetValue(id, out var node) ? node : throw new InvalidDataException("Unknown node ID " + id);
-    public IEnumerable<SemanticNode> OfKind(string kind) => nodes.Values.Where(n => n.Kind == kind);
+    public IEnumerable<SemanticNode> OfKind(string kind) => nodesByKind.TryGetValue(kind, out var list) ? list : Array.Empty<SemanticNode>();
 
     public IEnumerable<SemanticNode> Linked(ulong first, string nextField = "next")
     {
@@ -209,6 +213,8 @@ public sealed class SemanticGraph : IDisposable
             var kind = item.GetProperty("kind").GetString();
             if (id == 0 || string.IsNullOrWhiteSpace(kind) || !nodes.TryAdd(id, new SemanticNode(this, item)))
                 throw new InvalidDataException("Invalid or duplicate node identity: " + id);
+            if (!nodesByKind.TryGetValue(kind, out var list)) nodesByKind[kind] = list = new();
+            list.Add(nodes[id]);
         }
         RequireReference(Raw.GetProperty("rootScope"), "rootScope", "scope");
         if (Raw.GetProperty("rootScope").GetUInt64() == 0) throw new InvalidDataException("Missing root scope");

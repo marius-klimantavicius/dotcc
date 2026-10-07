@@ -1,0 +1,306 @@
+{
+  "schema": "edg-semantic-evidence/1",
+  "milestone": "SQLite C# project emitted by managed semantic-export handler",
+  "status": "verified-configured-SQLite-not-global-C-or-C++-completeness",
+  "profile": [
+    "SQLITE_OS_OTHER=1",
+    "SQLITE_THREADSAFE=0",
+    "SQLITE_TEMP_STORE=3",
+    "SQLITE_MAX_MMAP_SIZE=0",
+    "SQLITE_OMIT_LOAD_EXTENSION",
+    "SQLITE_ENABLE_FTS5",
+    "SQLITE_ENABLE_MATH_FUNCTIONS",
+    "SQLITE_ENABLE_PERCENTILE",
+    "SQLITE_ENABLE_COLUMN_METADATA",
+    "SQLITE_ENABLE_PREUPDATE_HOOK"
+  ],
+  "packageCounts": {
+    "sqlite": {
+      "nodes": 1196674,
+      "sourceFiles": 12,
+      "adapterDiagnostics": 0
+    },
+    "sqliteWithMemoryVfs": {
+      "nodes": 1205132,
+      "sourceFiles": 16,
+      "adapterDiagnostics": 0
+    }
+  },
+  "emission": {
+    "schema": "edg-c-project-emission/1",
+    "graph": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-sqlite-001/final-pipeline/package-memory/graph.json",
+    "routines": 3165,
+    "globals": 224,
+    "records": 361,
+    "arrays": 348,
+    "externalRoutines": [
+      "malloc",
+      "realloc",
+      "free",
+      "memcpy",
+      "memmove",
+      "memset",
+      "memcmp",
+      "memchr",
+      "strlen",
+      "strcmp",
+      "strncmp",
+      "strcpy",
+      "strchr",
+      "strrchr",
+      "strspn",
+      "strcspn",
+      "localtime",
+      "acos",
+      "acosh",
+      "asin",
+      "asinh",
+      "atan",
+      "atan2",
+      "atanh",
+      "ceil",
+      "cos",
+      "cosh",
+      "exp",
+      "fabs",
+      "floor",
+      "fmod",
+      "log",
+      "log10",
+      "log2",
+      "pow",
+      "sin",
+      "sinh",
+      "sqrt",
+      "tan",
+      "tanh",
+      "trunc"
+    ]
+  },
+  "validation": {
+    "platform": "linux-x64",
+    "targetFramework": "net10.0",
+    "sqliteChecks": 6,
+    "sqliteObservationsPerMode": 43,
+    "expressionChecks": 7,
+    "expressionObservationsPerMode": 67,
+    "generatedExecutionModes": [
+      "JIT",
+      "NativeAOT"
+    ],
+    "readerJitChecks": 20,
+    "readerAotChecks": 20,
+    "boundedEmitterRegressionChecks": 63,
+    "aotEmitterIdenticalFiles": 3171,
+    "nativeOracle": "GCC C17 from unchanged package source snapshots",
+    "nativeSqliteDependency": false,
+    "generatedSourceWarnings": [
+      "CS1718 source NaN self-comparisons",
+      "CS1717 source self-assignments",
+      "CS0675 source sign-extension in bitwise OR"
+    ]
+  },
+  "limits": [
+    "Graph completeForEmission remains false",
+    "Configured SQLITE_OS_OTHER=1 / SQLITE_THREADSAFE=0 with translated C test memory VFS",
+    "No filesystem persistence or concurrent SQLite verification",
+    "Process-static generated state",
+    "No semantic linker or C++ emitter",
+    "Linux x64 validation only; no native ABI callback adapters",
+    "Project differential corpus, not complete upstream SQLite tests"
+  ],
+  "generatedSourceSet": {
+    "files": 3171,
+    "bytes": 10553024,
+    "sha256PathAndFileHashLines": "1283bd394adffd959317ed9f41c02f275c76c70ec355ab9e85d812f7a1b14bb5"
+  },
+  "sourceInputs": [
+    {
+      "path": "semantic-export/managed/CProjectEmitter.Expressions.cs",
+      "sha256": "5c6b23d8857b96b0a8d675ed14c1fcbab4e6f8dfccf586d73193ffb96186bcfd",
+      "bytes": 35516
+    },
+    {
+      "path": "semantic-export/managed/CProjectEmitter.Runtime.cs",
+      "sha256": "4e7168259e8dcdb2e3c019b21b5f9d79998360d5ece049e983611a0e899c0677",
+      "bytes": 9493
+    },
+    {
+      "path": "semantic-export/managed/CProjectEmitter.Types.cs",
+      "sha256": "20ef81d2799ca97cb06fb79f616ca321cf482efc0ba9e6f52ad90a737b1c3c7a",
+      "bytes": 22738
+    },
+    {
+      "path": "semantic-export/managed/CProjectEmitter.cs",
+      "sha256": "2532307665977b2681537f671f01ce740f5d297395b4cab63af9050bc88794d8",
+      "bytes": 21034
+    },
+    {
+      "path": "semantic-export/managed/CSharpEmitter.cs",
+      "sha256": "003db4962e049ff515262d765b622998369eaae1b4e957e9f65a9f90c087ebb3",
+      "bytes": 37035
+    },
+    {
+      "path": "semantic-export/managed/ProbeAssertions.cs",
+      "sha256": "6d0587aeb062d6d2917522e7a47caded25fe2c09637996e54cd296b0932f4c26",
+      "bytes": 4748
+    },
+    {
+      "path": "semantic-export/managed/Program.cs",
+      "sha256": "8fbe1dec89ad8d97f2d379ec04d677d6786a73f3be2b153e52ca8d5067ae1bb3",
+      "bytes": 4356
+    },
+    {
+      "path": "semantic-export/managed/SemanticGraph.cs",
+      "sha256": "d0a8dd895ca4e4306bfe5516a4f309f170f8ed45fc257de4a7ce83565cf70900",
+      "bytes": 18116
+    },
+    {
+      "path": "semantic-export/managed/Edg.Semantic.csproj",
+      "sha256": "ea77b719f16a63db527d865e9f4ea2d2f54734558983d6514f8d49d7fbc6fa0b",
+      "bytes": 572
+    },
+    {
+      "path": "semantic-export/native/semantic_export_be.c",
+      "sha256": "68673f1d87c00fca47dbcdc70446914da21976609758a286593d09b7349271ae",
+      "bytes": 35377
+    },
+    {
+      "path": "semantic-export/tests/sqlite/run.py",
+      "sha256": "6b78b27ec5b59f44ec5ee58179637f9c7f28113f8ac8946aaff23cffec750f02",
+      "bytes": 6626
+    },
+    {
+      "path": "semantic-export/tests/sqlite/verify.py",
+      "sha256": "965d745888e66f666013a88ebf7920616b52b2782456e4af4d1ab3e7cf7ef183",
+      "bytes": 10650
+    },
+    {
+      "path": "semantic-export/tests/sqlite/expressions.c",
+      "sha256": "8c1b492017d10c6418599110968cc03892b725992260101f27445eb1317f7bc0",
+      "bytes": 1407
+    },
+    {
+      "path": "semantic-export/tests/sqlite/verify-expressions.py",
+      "sha256": "f57c75dbe285e6b85f2d9d5e8a4ca647d710e0b7ee022b013b4ec09e75c90d82",
+      "bytes": 4741
+    },
+    {
+      "path": "backend/runtime/Float80.cs",
+      "sha256": "d140bb1b3aac9c85eb0bec9bb67ff06c6bf9a993298bde64ea5387866eaa8bf7",
+      "bytes": 11366
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/package-sqlite/package.json",
+      "sha256": "3eb6e1638ba63ad939ed0f4213f4f333c7330be8f2d24c69d929ddb8a8720c0b",
+      "bytes": 6715
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/package-sqlite/graph.json",
+      "sha256": "4e7398eb0fa71bcc8947fbd3c8c9248acd5513e2b76bafc022bce127016c182d",
+      "bytes": 1383458554
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/package-sqlite/producer.json",
+      "sha256": "4840b3deb8f3ad29e7044fc3eb17de7ff1016dcceabe6e2ff766f0182f9f1a05",
+      "bytes": 31754
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/package-memory/package.json",
+      "sha256": "0140865fe0cc973a52e643fc7d27ac45707e4161e16758bd321c2101e7093c86",
+      "bytes": 8073
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/package-memory/graph.json",
+      "sha256": "408a7ec042d8e36ebd011577a424793f8e9f7345ca8a10ac609c966e7f4993fc",
+      "bytes": 1391652951
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/package-memory/producer.json",
+      "sha256": "4840b3deb8f3ad29e7044fc3eb17de7ff1016dcceabe6e2ff766f0182f9f1a05",
+      "bytes": 31754
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/pipeline.json",
+      "sha256": "8cf4735b50d899ba13b31db32caad068cf5659805da10fc67721909193b44602",
+      "bytes": 1909
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/profile.json",
+      "sha256": "f710413e0276aac839b54783a3c8ff5c0a5315a231c32199cf37551f9082f514",
+      "bytes": 2483
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/generated/semantic-emission.json",
+      "sha256": "0a8469bd3ba4c153920e5134f08b6d9d9557e9763aa51f3d81b80aba54d55c5d",
+      "bytes": 799
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/verification/results.json",
+      "sha256": "f1e7b332340e1e294c53296fa402289d96bbf9865fc29ff73821f6429bd6489b",
+      "bytes": 562
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/verification/native-run.stdout",
+      "sha256": "27d257959dc94b19c4ff2aa2a36fb6c23d3385a4aba6506c963bac3a0f674b14",
+      "bytes": 743
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/verification/jit-run.stdout",
+      "sha256": "27d257959dc94b19c4ff2aa2a36fb6c23d3385a4aba6506c963bac3a0f674b14",
+      "bytes": 743
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/final-pipeline/verification/aot-run.stdout",
+      "sha256": "27d257959dc94b19c4ff2aa2a36fb6c23d3385a4aba6506c963bac3a0f674b14",
+      "bytes": 743
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/emitter-final-parity.json",
+      "sha256": "8c96f2e9272f96170ff59125c5e07f547f6390c5f87be9184c4f3b1197c78774",
+      "bytes": 265
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/emitter-aot-final/Edg.Semantic",
+      "sha256": "fdca0ea073b1f2a3807698189e32d657f481b82dabf20bb604557beb82db09e3",
+      "bytes": 3372936
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/verify-expressions-final/results.json",
+      "sha256": "600b8644d6b31ec46125b3297514373c8467766a52761432a4f388f952845523",
+      "bytes": 197
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/verify-expressions-final/native-run.stdout",
+      "sha256": "bfbf8619e4f87b702dae3c38f23632d4d7b7cba6112dae4d629ab2d3f9198eb6",
+      "bytes": 1655
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/verify-expressions-final/jit-run.stdout",
+      "sha256": "bfbf8619e4f87b702dae3c38f23632d4d7b7cba6112dae4d629ab2d3f9198eb6",
+      "bytes": 1655
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/verify-expressions-final/aot-run.stdout",
+      "sha256": "bfbf8619e4f87b702dae3c38f23632d4d7b7cba6112dae4d629ab2d3f9198eb6",
+      "bytes": 1655
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/bounded-regression-003/results.json",
+      "sha256": "e9339359d26750c458b14de22fcc7c145eedc35234cb47be4eb5e9f8e9cd23e6",
+      "bytes": 6388
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/reader-regression/results.json",
+      "sha256": "95345dbdc89dff40b52574e33e12cf68ae76ace6bcfe0c25834fd29e8f5fbe34",
+      "bytes": 3162
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-001/reader-aot-regression/results.json",
+      "sha256": "95345dbdc89dff40b52574e33e12cf68ae76ace6bcfe0c25834fd29e8f5fbe34",
+      "bytes": 3162
+    }
+  ]
+}

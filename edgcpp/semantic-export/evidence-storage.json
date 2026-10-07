@@ -1,0 +1,109 @@
+{
+  "schema": "edg-semantic-storage-experiment/1",
+  "status": "prototype-only-no-production-format-change",
+  "result": {
+    "experiment": "graph records only; not production package format or C# reader",
+    "source": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/semantic-export-self-audit-001/current-producer-sample/dot_gen_be/graph.json",
+    "database": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-storage-001/dot-prototype.sqlite",
+    "sqliteVersion": "3.45.1",
+    "counts": {
+      "nodes": 3115613,
+      "macroInvocations": 14578,
+      "diagnostics": 271252
+    },
+    "jsonBytes": 2452604523,
+    "databaseBytes": 3198636032,
+    "maxRecordCharacters": 55272,
+    "writeAndIndexSeconds": 42.56233576600789,
+    "kindCountQuerySeconds": 0.11011222799425013,
+    "randomLookupAndJsonDecode10000Seconds": 0.12514388901763596,
+    "quickCheck": "ok",
+    "quickCheckSeconds": 1.7115107720019296,
+    "peakProcessRssKiB": 89124,
+    "logicalInputRecordHash": "136db98da881ec1871aa462d8ba250bb864705b86b56caeb984ce7b546985a88",
+    "notes": [
+      "Python streaming JSON decode/encode and SQLite insert costs are combined",
+      "Warm filesystem cache; not a cold-read or C# backend benchmark",
+      "No source snapshots or normalized edge table in this prototype",
+      "SQLite journal DELETE, synchronous FULL, one transaction, bounded page cache"
+    ]
+  },
+  "readback": {
+    "allRecordsRoundTrip": true,
+    "sha256": "136db98da881ec1871aa462d8ba250bb864705b86b56caeb984ce7b546985a88",
+    "seconds": 3.442109536001226
+  },
+  "artifacts": [
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-storage-001/experiment.py",
+      "sha256": "1d0746d70af43b3e6b817450859b465ae6bb34606cfb2ab76831ca60c967bb77"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-storage-001/results.json",
+      "sha256": "b2300e610c69c473003cc030fca6d7fc9db98a4cc23e68fb4aa5ae78b484bb7c"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-storage-001/verify-records.py",
+      "sha256": "02086c37eca986ebe21016ed6eced8973916b77bd771024db9635a0c8123ff08"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-storage-001/record-verification.json",
+      "sha256": "73a66caadad99c765f989dd4d3c8c506af171b0c30a014a613b69fb9abfd52ca"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-storage-001/normalize.py",
+      "sha256": "e58d8b7305a27d3815eed8d89e82b995dc2aff1cd45ba6462639d1c2682c2fdb"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-storage-001/normalized-schema.json",
+      "sha256": "3683de49855b811ed01ac5fbde29c407e3d4bddb3f844e9625505d61fc0b4a8b"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-storage-001/normalized-results.json",
+      "sha256": "551a815b10a0b25c363f8474b882802fd01d64c459457a3ac5b4d5308f35fc73"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-storage-001/verify-normalized.py",
+      "sha256": "662ae9851723800303168edaebcd324258a0847a3975ce13b0116b8af1036ae3"
+    },
+    {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-storage-001/normalized-verification.json",
+      "sha256": "e142395051b7c52511caabf39edf8b6f548191574bdf4b320dab7dd7673c50ed"
+    }
+  ],
+  "inputGraphSha256": "7e6c6d82f36df31d0da9a26b165834bc4d5c1fd2624aee2f88952a45ebe93a76",
+  "inputProducerSha256": "4840b3deb8f3ad29e7044fc3eb17de7ff1016dcceabe6e2ff766f0182f9f1a05",
+  "streamingParserSource": {
+    "path": "semantic-export/audit-self.py",
+    "sha256": "1d9a901a3b0eac0512f88cde12e09252b0abe68f0515c662406b143507eff7bf"
+  },
+  "normalizedResult": {
+    "prototype": "base node table, one typed scalar table per node kind, shared literal payloads, normalized native edges; metadata/macros/diagnostics unchanged",
+    "sqliteVersion": "3.45.1",
+    "nodeCount": 3115613,
+    "nodeKinds": 72,
+    "nativeEdges": 6801927,
+    "literalCount": 685691,
+    "databaseBytes": 794910720,
+    "jsonPerNodeDatabaseBytes": 3198636032,
+    "schemaDiscoveryAndCanonicalHashSeconds": 41.121433619002346,
+    "conversionAndIndexSeconds": 65.99721940499148,
+    "peakProcessRssKiB": 117192,
+    "quickCheck": "ok",
+    "expectedCanonicalNodeSha256": "e6c6fa2e2b987d8995f88353c9a8411f79bf5ca89c3fae0ea37be50be621aa6e",
+    "notes": [
+      "Literal pool holds text, exact wide integers, and nested JSON values such as positions",
+      "One kind-specific table per existing graph kind; not a finalized semantic schema",
+      "No source snapshots; not the native exporter or C# consumer",
+      "No whole node JSON stored; only unchanged non-node records and nested structured values use JSON",
+      "Bounded 65536-entry intern cache; literal digest collisions are checked against stored bytes"
+    ]
+  },
+  "normalizedReadback": {
+    "allNodesAndOtherRecordsRoundTrip": true,
+    "nodeCount": 3115613,
+    "canonicalNodeSha256": "e6c6fa2e2b987d8995f88353c9a8411f79bf5ca89c3fae0ea37be50be621aa6e",
+    "seconds": 43.72858120800811,
+    "peakProcessRssKiB": 231156
+  }
+}

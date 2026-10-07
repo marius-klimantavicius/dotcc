@@ -1,8 +1,8 @@
 # EDG semantic package prototype
 
-This is an **implemented, separately built exporter, managed reader and bounded
-C# emitter prototype**. It keeps EDG's unlowered IL and source form available to
-managed passes. The existing `cpfe-dot` executable, preparation scripts, and
+This contains an **implemented, separately built exporter, managed reader and
+C# emitters, including a verified SQLite project path**. It keeps EDG's
+unlowered IL and source form available to managed passes. The existing `cpfe-dot` executable, preparation scripts, and
 upstream source checkout are not changed by these tools.
 
 ## Build and export
@@ -40,6 +40,23 @@ an isolated tree. For real projects, pass the explicit include/define/preinclude
 and target options needed by their build. The package records the invocation;
 this self-contained probe profile is not a portable libc/header configuration.
 C++ exports use `--instantiate used`; C exports do not pass that C++-only switch.
+
+## SQLite and the compiler self audit
+
+`emit-project PACKAGE --output-directory DIRECTORY` emits the configured SQLite
+amalgamation as a C# project. The complete engine and its C memory VFS compile
+and execute under JIT and NativeAOT against a native-C oracle. Reproducible
+commands, the feature profile and limits are in
+[the SQLite checkpoint](../docs/semantic-export-sqlite.md).
+
+`audit-self.py` exports the actual compiler translation units, including the dot
+backend, and inventories missing named adapters and reference closure. See
+[the compiler self audit](../docs/semantic-export-self-audit.md). Export success
+is distinct from C++ managed code generation.
+
+A measured [SQLite storage proposal](../docs/semantic-export-storage.md) addresses
+large graphs and indexed, bounded-memory reads. Production packages still use
+JSON; the proposal does not change their format yet.
 
 ## Package contract
 

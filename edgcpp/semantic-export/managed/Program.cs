@@ -3,11 +3,21 @@ using Edg.Semantic;
 
 try
 {
-    if (args.Length < 2 || args[0] is not ("inspect" or "assert-probe" or "emit-csharp"))
+    if (args.Length < 2 || args[0] is not ("inspect" or "assert-probe" or "emit-csharp" or "emit-project"))
     {
         Console.Error.WriteLine("Usage: Edg.Semantic inspect|assert-probe <package directory|package.json|graph.json> [--strict-emission]");
         Console.Error.WriteLine("       Edg.Semantic emit-csharp <package directory|package.json> --output FILE [--class NAME]");
+        Console.Error.WriteLine("       Edg.Semantic emit-project <package directory|package.json> --output-directory DIRECTORY");
         return 2;
+    }
+    if (args[0] == "emit-project")
+    {
+        if (args.Length != 4 || args[2] != "--output-directory")
+            throw new ArgumentException("Usage: Edg.Semantic emit-project PACKAGE --output-directory DIRECTORY");
+        using var projectGraph = SemanticGraph.LoadForCEmission(args[1]);
+        new CProjectEmitter(projectGraph).Emit(args[3]);
+        Console.WriteLine("Emitted C project to " + Path.GetFullPath(args[3]));
+        return 0;
     }
     if (args[0] == "emit-csharp")
     {
