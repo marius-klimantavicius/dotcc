@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "status": "isolated-source-adaptation-reviewed-not-applied",
+  "fullDuckdbTranslationVerified": false,
+  "canonicalInputsChanged": false,
+  "evidence": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-termcolor-portable-proof-001/acceptance.json",
+      "sha256": "9a949d61d9eb5e1bc7d373a3e75daa68b1064a74d16f74e7c05cc63a55b13707"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-termcolor-portable-proof-001/report.md",
+      "sha256": "24bb0f3118ea2c7af57ff6bc030b8637ee0297c30c99053f3b3246e0facb3c12"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-termcolor-independent-review-001/review.json",
+      "sha256": "e33e2744f4481f5eaa2956203a74860be6427c89a45fdcf518282a164b69c757"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-termcolor-adaptation-bundle-001/receipt.json",
+      "sha256": "2f239cfd5c91e57623b10bcb632ec3b352ab73f2cb74f2ec053c1f3add992764"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-termcolor-adaptation-bundle-001/integration.patch",
+      "sha256": "a7b8f47c335f8039baffcc94266760017dbad43f96ff4df1f8e8744528cd0d33"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-termcolor-adaptation-independent-review-001/review.json",
+      "sha256": "b63a18bcc277def6234633328070c82624dedbabe4c53cc1511afc0ce5321607"
+    }
+  ],
+  "scope": {
+    "nativeHeaderPipeAndPtyBytesMatch": true,
+    "runtimeNativeJitAotPipeBytesMatch": true,
+    "runtimeRawPtyBytesMatch": false,
+    "runtimePtyExtraPrefixHex": "1b5b3f31681b3d",
+    "translatedCppTermcolorVerified": false,
+    "interactiveWindowsVerified": false,
+    "all67RunnerInputsPreprocessed": false,
+    "stagingAdapterControls": 14
+  },
+  "runtimeProvenanceQualification": "The compiled runtime probe uses all 65 copied sources from isolated socket bundle-validation001, not an entirely canonical runtime. Independent review binds every actual source and the four socket-file differences. Original proof receipts remain immutable.",
+  "implementation": "Private TERMCOLOR_OS_EDG selects the existing ANSI/stdio branch only for __EDG_DOT_TARGET__; all manipulators, stream identity, fileno/isatty and iword forcing remain. No global Unix/Linux macro. Exact pinned header hashes and idempotent staging adaptation are checked.",
+  "limitations": [
+    "The intended runner profile redirects standard streams. PTY raw output still differs: .NET Console initializes terminal keypad mode on first write. No filtering or lazy-stdin workaround was accepted.",
+    "Isatty remains terminal identity; Windows console VT enablement requires a separate implemented and verified policy.",
+    "No canonical source restaging or full runner translation occurred. Fork, fatal-signal and native-demo linkage requirements remain separate."
+  ]
+}

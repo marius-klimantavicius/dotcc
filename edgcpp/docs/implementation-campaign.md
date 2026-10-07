@@ -2106,3 +2106,15 @@ Reference library inputs are not claimed mergeable with changed header
 inventories. Fork, fatal signals and native-demo loading remain separate gaps;
 Catch's handler-disable configuration is reviewed only, not silently selected.
 [Isolated network implementation evidence](../evidence/duckdb-socket-candidate-20261008.json).
+
+
+The isolated termcolor managed-target source adapter now passes exact native
+pipe/PTY comparisons and 14 staging controls, with independent review. It
+preserves all manipulators and forcing and defines no global host-OS macro.
+It remains unapplied while full007 runs. The runtime supplementary probe uses
+the independently inventoried socket-bundle snapshot: native/JIT/AOT pipe
+bytes match, but raw PTY parity fails because .NET emits a seven-byte keypad
+initialization prefix on first write. This failure is retained; no filtering
+or successful interactive-Windows claim is made. No translated C++ termcolor
+or complete 67-input runner acceptance is claimed.
+[Termcolor source-adaptation evidence](../evidence/duckdb-termcolor-adaptation-20261008.json).
