@@ -2024,3 +2024,19 @@ native baseline path/clock differences stay explicit; no matched-profile or
 execution claim is implied. Real POSIX persistence/signal requirements remain.
 
 [Runner composition inventory](../evidence/duckdb-runner-composition-inventory-20261007.json).
+
+Runner preprocessing002 passes the first 60 inputs, then stops at the real
+remote-optimizer test's missing `netdb.h`; six later inputs remain unattempted.
+Post-failure full-stage, retained-library, dependency and fingerprint integrity
+checks pass. That test also requires socket I/O, process creation/signals and
+a native loadable optimizer demo. These remain explicit service/acceptance
+gaps; no empty headers, fake-success imports or test pruning are introduced.
+The active library checkpoint006 remains independent and unchanged.
+
+The read-only runner service audit confirms six fork sites, preprocessed Catch
+fatal-signal/alternate-stack handlers, and an unhidden remote-optimizer case
+loading the native demo disabled by the selected static-extension profile.
+BCL socket/resolver services are feasible; they cannot solve arbitrary managed
+fork or make that native-demo case eligible. Exact source locations and current
+service candidates are retained in the linked evidence. A bounded BCL socket
+prototype may proceed in isolated artifacts while full006 inputs stay frozen.

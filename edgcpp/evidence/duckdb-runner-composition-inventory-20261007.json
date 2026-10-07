@@ -40,7 +40,39 @@
     "nativeBaseline": "Retain native-cpp17-001 temporarily with explicit path/clock differences; this does not claim identical compile profile."
   },
   "limitations": [
-    "Inventory/controls only; no runner preprocessing, full frontend or translated execution yet.",
+    "Inventory/21 controls accepted; runner preprocessing stops on a real missing header. No full runner frontend or translated execution.",
     "POSIX persistence/signal operations remain real integration requirements; no dropped sources or stubs."
+  ],
+  "preprocessingAttempt": {
+    "status": "stopped-on-missing-header",
+    "passedInputs": 60,
+    "failedInput": 60,
+    "remainingUnattempted": 6,
+    "diagnostic": "test/extension/test_remote_optimizer.cpp:14: cannot open netdb.h",
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-composition-prototype-002/results.json",
+      "sha256": "1a8f24ba69df3f119d0c4319065078695f1e9ee2065a1034b65704aa052e3d65"
+    },
+    "integrity": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-composition-prototype-002/post-failure-integrity.json",
+      "sha256": "1596fd53644f4171fa67d58bb8df75987e6f4464e025385a7d0e4f94352bca40"
+    }
+  },
+  "serviceAudit": {
+    "inventory": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-service-audit-001/inventory.json",
+      "sha256": "c5d3d0d45c51f653240d777d6f46bfb87efdf8c273e9a2ed670634f095722d8d"
+    },
+    "report": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-service-audit-001/report.md",
+      "sha256": "ecae75407af554848a681c65dac1f9fb6552281f89451f255b9ef2e2c1a23d81"
+    }
+  },
+  "runnerAcceptanceLimits": [
+    "Real socket/resolver services require integration with owner descriptor and allocation state.",
+    "Six fork sites require live continuation/shared state, not merely Process.Start.",
+    "Catch requires real fatal-signal/alternate-stack handling; fake registration is not valid.",
+    "Unhidden remote optimizer explicitly loads a native demo disabled by the selected static-extension profile.",
+    "Hidden upstream persistence cases and host cp commands remain unexecuted portability requirements."
   ]
 }
