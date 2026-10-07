@@ -126,3 +126,20 @@ primary provider: an ODR-use of one constant and an explicit class instantiation
 retain definitions needed by this fixture. These anchors are not installed in
 the general provider and do not establish full DuckDB source merging. Both
 modes reject unresolved externs; neither substitutes partial implementations.
+
+## Pair signature correspondence regression
+
+```sh
+python3 duckdb/edg/tests/pair_signature_verify.py \
+  --acquisition /path/to/fresh-libcxx-pair-acquisition \
+  --composition /path/to/verified-library-composition/composition.json \
+  --output-dir /path/to/new-pair-test
+```
+
+This checks the pinned vendor assertion and its original-header patch, then
+preprocesses ten actual DuckDB pair types as copy-use and size-use translation
+units. The unchanged stock C frontend must accept all adapted pairs and report
+the expected correspondence diagnostic for the eight affected original pairs.
+Each input's header origin and before/after hashes are verified. This is a
+bounded semantic-merge regression; native and translated execution evidence is
+recorded separately in the campaign. It does not count as a full DuckDB build.

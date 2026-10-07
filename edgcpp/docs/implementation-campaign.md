@@ -2051,3 +2051,29 @@ this concrete signature and broadens bounded pair preflight without modifying
 EDG semantics or weakening diagnostics.
 
 [Attempt006 diagnostic](../evidence/duckdb-checkpoint006-diagnostic-20261007.json).
+
+
+The JSON pair reduction generalizes to eight nontrivial pairs in a ten-type
+stock-C preflight. A named-alias-only rewrite does not resolve it. A single
+unevaluated assertion selecting the existing copy-assignment signature resolves
+all ten while preserving the original declaration/body/noexcept/layout. This
+is a pinned libc++ vendor source adaptation; EDG remains unchanged.
+
+Independent safety review found no candidate-only difference in the targeted
+GCC/Clang C++17/20 matrix. Eight original/adapted native executable comparisons
+are byte-identical; stock-C C++17 emission and execution pass. Focused two-TU
+translated static/instance JIT and NativeAOT also pass. C++20's existing
+predefined-macro conflict is retained as an explicit pre-source limitation.
+Finite tests do not establish every possible template instantiation.
+
+Fresh vendor acquisition and complete library/provider preprocessing now use
+one identical adapted pair definition. No old preprocessed input is reused in
+this new full-program composition. Full DuckDB emission and execution remain
+unaccepted until the subsequent checkpoint/backend/project gates pass.
+
+The reusable canonical pair verifier passes all 60 commands against the fresh
+acquisition: two unaffected original passes, eight expected original
+correspondence diagnostics, and ten adapted passes. Exact patch, complete
+acquisition inventory, include order and per-input header origins are checked;
+mixed-header provenance is rejected and before/after inputs are unchanged.
+[Pair adaptation evidence](../evidence/duckdb-pair-signature-adaptation-20261007.json).

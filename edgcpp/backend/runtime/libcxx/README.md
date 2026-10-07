@@ -110,3 +110,30 @@ library acceptance.
 Do not select upstream `exception_pointer_unimplemented.ipp` as a working
 provider or silently remove exception/thread paths. Library breadth, platform
 execution and a newer revision/language compatibility audit remain required.
+
+## Pinned pair signature correspondence adaptation
+
+`config/__utility/pair.h` retains the pinned LLVM 18.1.8 header with one
+unevaluated assertion after the existing copy-assignment definition. It selects
+that exact conditional member-function signature before whole-program
+correspondence. The existing parameter, constraint, body, `noexcept`, overload
+set and object layout are unchanged. The original acquired header remains
+untouched; `edg-overlays.json` and `edg-patches/pair-copy-signature.patch` pin the
+original, adapted and patch bytes.
+
+This source-form adaptation addresses the concrete nontrivial pair signatures
+encountered while merging DuckDB inputs. Ten actual-type two-TU stock-C
+preflights pass with it; eight fail the same correspondence check without it.
+Independent native checks compare traits, references, nonassignable/move-only
+members, recursive contexts, constexpr operations, overload addresses and real
+string pairs. GCC 13 and Clang 18 C++17/20 tested executables are byte-identical
+between original and adapted headers. Stock-C C++17 emission/execution and
+focused translated JIT/NativeAOT checks pass. These are bounded checks, not a
+proof for every template instantiation. A separate C++20 predefined-macro
+profile conflict occurs before source parsing in both versions.
+
+Every input in a merged program, including providers, must use this same vendor
+configuration. Reusing preprocessed inputs containing the original pair class
+alongside adapted inputs is invalid. A vendor change therefore requires fresh
+complete preprocessing. Full DuckDB compilation and upstream translated test
+execution remain separate acceptance gates.

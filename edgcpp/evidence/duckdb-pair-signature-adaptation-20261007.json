@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "status": "bounded-adaptation-accepted-complete-preprocessing-in-progress",
+  "problem": "Whole-program conditional pair copy-assignment signature correspondence; stock C reproduces eight nontrivial cases.",
+  "adaptation": "Unevaluated selection of existing member signature after existing copy-assignment body; no declaration, body, noexcept, overload-set or layout change.",
+  "receipts": {
+    "originalPreflight": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-preflight-001/normalized-classification.json",
+      "sha256": "95e895bba902b801fe595aade5af86990a6a22776609033c25282c1eb081da5a"
+    },
+    "aliasOnlyPreflight": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-alias-preflight-001/results.json",
+      "sha256": "826bc3f31d6549439fc6a804accd2f9f7c58fc638df7f985396a994aac387e11"
+    },
+    "candidatePreflight": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-signature-preflight-001/results.json",
+      "sha256": "33191b5911678d5637702c1ea0f83109d9ceaa262d142629446c0ee9b038cf3e"
+    },
+    "safetyReview": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-signature-review-001/results.json",
+      "sha256": "ddfb035fb7e64e0428a756ef2a57f505359cc36f76dcfca4efbcee6415704599"
+    },
+    "independentReview": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-signature-independent-review-001/review.json",
+      "sha256": "960a38c008c5f499c441134c4eaff0a96e9900352941491306977a31702bf8f7"
+    },
+    "freshAcquisition": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/libcxx-pair-signature-001/acquisition.json",
+      "sha256": "394b147a05570037e1181a039d96e25e604c175199d2616f2178d1cbd0bcb53d"
+    },
+    "generatedExecution": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-signature-translated-003/results.json",
+      "sha256": "8cac7d9f7d4f3f7c814f11f7bfb9dde2f187bf9a5e5dce097874d3630e443adf"
+    },
+    "cpp20ProfileFailure": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-signature-translated-002/10.stderr",
+      "sha256": "64f526ae17f345e0ab01594665883c54e7a7a1a0d66b5012c5b802249e1f752d"
+    },
+    "canonicalVerifier": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-signature-canonical-002/results.json",
+      "sha256": "3af2243ab159c7d0a3679a2063c227876c5854a1a71933e3cf794fd275f67a37"
+    }
+  },
+  "canonicalInputs": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/runtime/libcxx/config/__utility/pair.h",
+      "sha256": "517ff7c6075b10e0f588d6978d17c6b318708ec69265995ba46d07b20896c71a"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/runtime/libcxx/config/edg-patches/pair-copy-signature.patch",
+      "sha256": "379812cde18248c7a9efab1cfef26dcce445a925c87c489c0046924fb9648082"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/runtime/libcxx/config/edg-overlays.json",
+      "sha256": "fc8e892181792ecca763a19d631eb156d4c7bf2936867d813d5f416837622f5b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/duckdb/edg/tests/pair_signature_verify.py",
+      "sha256": "8d750a7d5479055fa55ab8789dbec4e6c3e32cde2a7b2171ad223f85397e3250"
+    }
+  ],
+  "generatedInputs": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-signature-translated-003/model.hpp",
+      "sha256": "ea9e122b4f30a9f7b4020be5cae079a9214474817887232626026705492d33af"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-signature-translated-003/main.cpp",
+      "sha256": "4fb1806650258a05eefecf067becb73af7af73a132e11f1b58fefe2212607298"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-signature-translated-003/other.cpp",
+      "sha256": "d5ea7151668370ff9778a3e8605e5d10408155b069b126cdaa42ec3d5d7786ec"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-signature-translated-003/run.py",
+      "sha256": "1028960e4d94b54e354252441b659b0dee8d22bca3257074ed02827c23d75886"
+    }
+  ],
+  "checks": {
+    "actualTypeStockCPreflight": {
+      "originalPass": 2,
+      "aliasOnlyPass": 2,
+      "adaptedPass": 10,
+      "total": 10
+    },
+    "nativeOriginalAdaptedByteIdenticalExecutables": 8,
+    "generatedCxx17ExecutionModes": [
+      "static JIT",
+      "static Linux-x64 NativeAOT",
+      "instance JIT",
+      "instance Linux-x64 NativeAOT"
+    ],
+    "generatedCommandCount": 10,
+    "canonicalVerifierCommands": 60,
+    "mixedHeaderProvenanceRejected": true
+  },
+  "limitations": [
+    "Finite targeted checks, not proof for every template instantiation.",
+    "Native comparison uses pinned LLVM18 headers with installed LLVM22 runtime under native __1/pthread configuration.",
+    "Existing C++20 predefined macro conflict precedes source parsing in stock and generated checks.",
+    "Actual DuckDB-header C lowering separately hits retained read_memory_region failure; reduced stock-C execution is a separate scope.",
+    "No full DuckDB checkpoint, emitted complete library or translated upstream tests yet."
+  ],
+  "uniformDefinitionPolicy": "All source, unity and provider inputs must freshly preprocess against the same acquired vendor configuration; original/adapted preprocessed definitions must never be mixed."
+}

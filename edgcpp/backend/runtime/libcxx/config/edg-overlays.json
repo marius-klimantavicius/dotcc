@@ -11,6 +11,16 @@
       "purpose": "Replace native noop frame representation with private managed-ABI hook; preserve public one-pointer handle layout.",
       "patch": "edg-patches/noop-coroutine-managed-abi.patch",
       "patchSha256": "0907775c81a752afd5924976a169399680a1b44fdcc353c12686172282d0d13a"
+    },
+    {
+      "upstream": "include/__utility/pair.h",
+      "upstreamSha256": "833c64ed6631ba6c0cb2444c57d3499ea74101fb24b6ed0777c1b602e3d89699",
+      "configuration": "__utility/pair.h",
+      "sha256": "517ff7c6075b10e0f588d6978d17c6b318708ec69265995ba46d07b20896c71a",
+      "license": "Apache-2.0 WITH LLVM-exception",
+      "purpose": "Resolve the existing conditional copy-assignment signature consistently in every specialization before whole-program correspondence; unevaluated assertion only, existing declaration, body, noexcept and layout unchanged.",
+      "patch": "edg-patches/pair-copy-signature.patch",
+      "patchSha256": "379812cde18248c7a9efab1cfef26dcce445a925c87c489c0046924fb9648082"
     }
   ]
 }

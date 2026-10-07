@@ -1,0 +1,15 @@
+--- a/include/__utility/pair.h
++++ b/include/__utility/pair.h
+@@ -295,6 +295,12 @@
+     return *this;
+   }
+ 
++  static_assert(sizeof(static_cast<pair& (pair::*)(
++                    __conditional_t<is_copy_assignable<first_type>::value &&
++                                        is_copy_assignable<second_type>::value,
++                                    pair, __nat> const&)>(&pair::operator=)) > 0,
++                "pair copy-assignment signature");
++
+   _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 pair& operator=(
+       __conditional_t< is_move_assignable<first_type>::value && is_move_assignable<second_type>::value, pair, __nat>&&
+           __p)

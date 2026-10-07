@@ -244,9 +244,9 @@ explicit source-retention anchors. The general separate-consumer assembly still
 exposes an EDG correspondence assertion; identical preprocessed inputs reproduce
 it in the stock C backend.
 This is a source-assembly limitation, not evidence of completed DuckDB emission.
-The full-library attempt currently stops at libc++ implementation/consumer
-declaration correspondence in the separate-consumer assembly; the combined-core
-assembly has progressed beyond this limitation. Its latest 164-input full run
+The separate-consumer assembly encountered libc++ implementation/consumer
+declaration correspondence; the combined-core assembly progressed beyond that
+limitation. Its latest 164-input full run
 stopped at the existing 72 GiB compiler RSS guard after 77 minutes, during
 deferred template instantiation, without frontend errors or a usable checkpoint.
 The 148-input Parquet attempt stopped after 70.8 minutes on an explicit
@@ -255,8 +255,15 @@ compiler RSS, below the memory guard. No usable checkpoint was produced.
 A separately prepared 129-input core-functions fallback preserves all 2,207
 original TUs and all seven extensions. Its native comparison passes 215 fully
 executed upstream cases and 18,701 assertions; three matched partial/nonexecuting
-observations are excluded. The reviewed grouping recipe is now adopted, but the prepared fallback run is
-superseded until the source-signature issue is resolved in a fresh staging tree.
+observations are excluded. The reviewed grouping recipe is adopted. A fresh Value-adapted 129-input run
+then stopped after 64.5 minutes on `pair<string,string>` correspondence in JSON,
+at 46.33 GiB peak RSS, without a usable checkpoint. Bounded broader preflight
+identified the same conditional-copy-signature issue in eight nontrivial pair
+types. The pinned libc++ vendor configuration now makes that existing signature
+explicitly selected in an unevaluated assertion; native, stock-C and focused
+translated checks support this source-form adaptation. Fresh preprocessing of
+all library/provider inputs is underway; cached original/adapted pair definitions
+are never mixed.
 It is not a translated execution pass.
 See [fallback evidence](../edgcpp/evidence/duckdb-core-unity-fallback-20261007.json).
 All dependency sources remain selected; no unresolved runtime placeholders were used to claim
