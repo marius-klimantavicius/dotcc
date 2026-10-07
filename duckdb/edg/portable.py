@@ -112,6 +112,31 @@ static_assert(sizeof(static_cast<
                 reason='Unevaluated selection resolves the existing pair<string, LogicalType> copy-assignment signature consistently when one TU calls it and another only instantiates the pair. The unchanged EDG C backend reproduces the original correspondence rejection; the anchor preserves libc++ declarations, algorithms, layout, copyability, and runtime behavior.')
 
 
+def adapt_value_pair(source, staged):
+    """Resolve the child-pair copy signature without odr-use or runtime code."""
+    header = 'src/include/duckdb/common/types/value.hpp'
+    path = Path(staged) / header
+    original = path.read_text()
+    marker = '} // namespace duckdb'
+    anchor = '''// Resolve this public child-pair copy signature consistently in every TU.
+// sizeof is unevaluated: no assignment body, address, storage, or runtime code.
+static_assert(sizeof(static_cast<
+                  std::pair<string, Value>& (std::pair<string, Value>::*)(
+                      const std::pair<string, Value>&)>(
+                  &std::pair<string, Value>::operator=)) > 0,
+              "Value child-pair copy assignment signature");
+
+'''
+    if original.count(marker) != 1 or original.count('class Value {') != 1:
+        raise ValueError('Value declaration or namespace boundary changed')
+    if 'Value child-pair copy assignment signature' in original:
+        raise ValueError('Value pair signature anchor already exists')
+    path.write_text(original.replace(marker, anchor + marker))
+    return dict(path=header, originalSha256=sha(Path(source) / header), stagedSha256=sha(path),
+                before=marker, after=anchor + marker,
+                reason='Unevaluated selection resolves the existing pair<string, Value> copy-assignment signature consistently when one TU calls it and another instantiates sizeof, construction, or vector emplace from pair<const char*, Value>. The unchanged EDG C backend reproduces the original correspondence rejection; the anchor preserves libc++ declarations, algorithms, layout, copyability, and runtime behavior.')
+
+
 def adapt_fmt_arguments(source, staged):
     """Spell existing integral conversions in dependent fmt store constants."""
     header = 'third_party/fmt/include/fmt/core.h'
@@ -232,6 +257,7 @@ def prepare(manifest_path, output):
 
     changes.append(adapt_numeric_cast(source, staged))
     changes.append(adapt_logical_type_pair(source, staged))
+    changes.append(adapt_value_pair(source, staged))
     changes.append(adapt_fmt_arguments(source, staged))
     changes.append(adapt_icu_calendar_sub(source, staged))
 

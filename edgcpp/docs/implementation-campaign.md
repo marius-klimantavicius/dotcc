@@ -1975,3 +1975,22 @@ physical-line parser correction are preserved; optional grouping never drops
 configured sources. A new stage is required before another full invocation.
 
 [Attempt004 diagnostic](../evidence/duckdb-checkpoint004-diagnostic-20261007.json).
+
+
+The Value pair mismatch is reproduced in four actual-header two-TU cases using
+the unchanged stock C frontend: copy assignment paired with size-only use,
+default construction, converting construction, and vector emplace. Selecting
+the existing copy-assignment signature in an unevaluated expression after the
+complete Value declaration makes all four semantic merges pass. Original and
+anchored native Value copy/self-copy/default/converting/emplace/layout probes
+agree. A reduced nontrivial Value-like pair also emits, builds and runs through
+the stock C backend. Actual-header C lowering separately reaches the previously
+classified IL-read assertion; it is not counted as C execution acceptance.
+
+The narrow adaptation is integrated into portable source preparation without
+changing EDG or libc++. A fresh immutable stage and full preprocessing run are
+being prepared; old input sets and superseded005 remain preserved.
+
+Canonical pair verifier passes all 34 commands against the fresh stage,
+including the existing LogicalType and real stock-C execution control.
+[Value signature evidence](../evidence/duckdb-value-pair-adaptation-20261007.json).

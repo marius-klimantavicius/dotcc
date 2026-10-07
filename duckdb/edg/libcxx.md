@@ -231,6 +231,17 @@ adaptations when staging a **new** tree; previous frozen sources remain intact:
   sizeof-only and default-construction secondary TUs. These checks pass in
   `duckdb-pair-adaptation-001/results.json` using `build/bin/cpfe`.
 
+Full checkpoint004 exposed the same correspondence pattern for
+`pair<string, Value>`. The staged `value.hpp` now selects its existing copy
+signature after the complete Value definition with the same unevaluated anchor.
+Four actual-header two-TU cases (size, default/converting construction, and
+vector emplace paired with copy assignment) reproduce the original stock-C
+rejection and pass semantic merge after the anchor. Native original/anchored
+Value behavior, layout and self-copy agree. The separately retained small
+Value-like mechanism control emits/builds/runs C; actual-header lowering still
+reaches the independent IL-read assertion and is not counted as execution.
+Evidence: [Value adaptation](../../edgcpp/evidence/duckdb-value-pair-adaptation-20261007.json).
+
 The broader real-header reduction's historical `cpfe-dot-oracle` and current
 `cpfe` C-lowering attempts pass correspondence but later abort in
 `read_memory_region`; these are preserved separately in

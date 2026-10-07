@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "status": "source-adaptation-verified",
+  "scope": "Resolve existing Value child-pair copy assignment signature consistently across translation units without changing EDG or libc++ semantics.",
+  "attempt004": {
+    "path": "/home/marius/p/dotcc/edgcpp/evidence/duckdb-checkpoint004-diagnostic-20261007.json",
+    "sha256": "72d14c32728f01f341ca43e5db30b7f09760fc56ce6bc6d6f9e31a69fd1e696d"
+  },
+  "adaptation": {
+    "path": "/home/marius/p/dotcc/duckdb/edg/portable.py",
+    "sha256": "7fd10760ab8860102f48e05075a6501b77efa057e586a1384bd0303da07104a4"
+  },
+  "reduction": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-value-pair-reduction-001/results.json",
+    "sha256": "bb5a45e88e154c33c3b0a42b1fbb6c2b930c57e400956c9bfc36f5023e353ee2"
+  },
+  "native": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-value-pair-reduction-001/native-results.json",
+    "sha256": "ad3d8e728ccdfd12054cb4cd900740400a2586af53be11eec6268f6212b8268d"
+  },
+  "mechanismControl": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-value-pair-reduction-001/control-002/control-results.json",
+    "sha256": "3ebe917a84ff5fc5d1db056dff406830f6305a3b0f5774764b6ba3aeae2d74e0"
+  },
+  "draft": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-value-pair-reduction-001/portable-value-anchor.patch",
+    "sha256": "9d7e166735b9605f564abb4fa198fc9717a143838f78118dd710be1d6a0070ff"
+  },
+  "freshStage": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-value-001/portable.json",
+    "sha256": "e1ebff3318d47a60fddfe4fc5cc82e28d0f4fb0085fd0cfcc12320aa4c7a2598"
+  },
+  "verified": [
+    "Unchanged stock C frontend reproduces original signature mismatch in four actual Value two-TU cases.",
+    "Unevaluated existing copy-assignment signature selection passes all four semantic merges.",
+    "Original and anchored native Value copy/self-copy/default/converting/vector emplace/layout behavior matches.",
+    "Reduced nontrivial Value-like pair emits, builds and runs through unchanged stock C backend.",
+    "Canonical verifier against freshly prepared stage passes all 34 commands, retaining LogicalType and stock-C emission/execution controls."
+  ],
+  "limitations": [
+    "Actual-header C lowering reaches a separately classified IL-read assertion; no actual Value C execution acceptance.",
+    "Full DuckDB checkpoint, translated build and execution remain unverified."
+  ],
+  "canonicalVerifier": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-value-pair-canonical-001/results.json",
+    "sha256": "2e14c4da2e5cf7a3d83fd928843bda0b3657c96f51465d63ff805fc289fe15d4",
+    "completedCommands": 34
+  }
+}

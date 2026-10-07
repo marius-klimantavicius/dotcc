@@ -91,10 +91,38 @@ def main():
         run('real-' + name + '-semantic-merge', [args.oracle.resolve(), '--c++17', '--gnu_version', '130300', '--instantiate', 'used',
             '--clear_flag', 'use_predefined_macro_file', '--no_code_gen', out / 'real-copy.ii', out / ('real-' + name + '.ii')])
     report['checks'].append('Actual adapted DuckDB LogicalType headers pass native syntax and stock-C semantic merge for sizeof-only/default-construction secondary TUs. This check is not full DuckDB lowering or execution.')
+
+    real_value = ('#include "duckdb/common/types/value.hpp"\n'
+                  '#include "duckdb/common/pair.hpp"\n'
+                  'using P=std::pair<duckdb::string,duckdb::Value>;\n')
+    value_bodies = [
+        ('copy', 'void first(P*a,const P*b){*a=*b;}'),
+        ('size', 'unsigned long second(){return sizeof(P);}'),
+        ('ctor', 'void second(void*p){new(p)P();}'),
+        ('convert', 'void second(void*p,duckdb::Value v){new(p)P(std::make_pair("key",std::move(v)));}'),
+        ('emplace', 'void second(duckdb::child_list_t<duckdb::Value>&v,duckdb::Value x)'
+                    '{v.emplace_back(std::make_pair("key",std::move(x)));}'),
+    ]
+    for name, body in value_bodies:
+        path = out / ('real-value-' + name + '.cpp')
+        path.write_text(real_value + body + '\n')
+        run('real-value-' + name + '-native-syntax',
+            ['g++', '-std=c++17', '-nostdinc++', *native_includes, *flags, '-fsyntax-only', path])
+        run('real-value-' + name + '-preprocess', [*prefix, *flags, path], output=path.with_suffix('.ii'))
+    for name, _ in value_bodies[1:]:
+        run('real-value-' + name + '-semantic-merge',
+            [args.oracle.resolve(), '--c++17', '--gnu_version', '130300', '--instantiate', 'used',
+             '--clear_flag', 'use_predefined_macro_file', '--no_code_gen',
+             out / 'real-value-copy.ii', out / ('real-value-' + name + '.ii')])
+    report['checks'].append('Actual adapted DuckDB Value headers pass native syntax and stock-C semantic merge for '
+                            'sizeof-only/default/converting-pair/vector-emplace secondary TUs. '
+                            'These checks do not claim actual-header C lowering or execution.')
     verify_staged(portable)
     report['inputs'] = [dict(path=str(p.resolve()), sha256=hashlib.sha256(p.read_bytes()).hexdigest())
                        for p in (Path(__file__), args.portable_manifest, args.compiler, args.oracle,
-                                 upstream / '__utility/pair.h', Path(portable['stagedSource']) / 'src/include/duckdb/common/types.hpp')]
+                                 upstream / '__utility/pair.h',
+                                 Path(portable['stagedSource']) / 'src/include/duckdb/common/types.hpp',
+                                 Path(portable['stagedSource']) / 'src/include/duckdb/common/types/value.hpp')]
     report['passed'] = True
     save()
     print('Pair native/C emission/execution and real-header semantic correspondence checks passed')
