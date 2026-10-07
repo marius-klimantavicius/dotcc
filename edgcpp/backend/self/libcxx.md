@@ -40,3 +40,24 @@ executes JIT/NativeAOT checks for ordinary/array/sized/nothrow allocation,
 allocation failure and handlers, exception classes, RAII unwinding, and
 `exception_ptr`. This establishes the dependency closure needed by EDG; it does
 not claim complete libc++ library support.
+
+For the compiler **including `dot_gen_be.c`**, pass that source as the optional
+`dot_backend` argument. This adds the unchanged pinned `src/stdexcept.cpp` and
+`src/string.cpp` implementations, then includes the dot backend at the end of
+the primary provider TU. Omit its standalone TU from the remaining source list.
+The library implementation macros are undefined before the backend include.
+The returned provenance includes the backend source path/hash and specifies
+**C++17**: upstream `string.cpp` implements integer `to_string` using C++17
+`to_chars`. The original compiler-only provider remains C++14.
+
+The shared primary TU is deliberate. With libc++'s explicit string template
+definitions in one TU and the container/string consumer in another, EDG's
+whole-program merge reports a correspondence ownership assertion. Keeping the
+definitions and consumer together is a source-assembly choice; the EDG sources
+and library algorithms are unchanged. Other EDG compiler files remain separate.
+
+`backend/tests/self_dot_libcxx_verify.py --acquisition PATH --output-dir NEW_PATH
+--nativeaot` verifies this closure against a native C++17 behavior oracle. Its
+JIT and NativeAOT runs exercise static map/set/string construction and disposal,
+vector and stable sorting, allocated string edits/moves, integer formatting at
+the limits, and typed out-of-range/length-error exceptions.

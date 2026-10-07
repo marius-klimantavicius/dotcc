@@ -8,7 +8,8 @@ import json
 from pathlib import Path
 
 
-def prepare_provider(root: Path, acquisition: Path, output: Path):
+def prepare_provider(root: Path, acquisition: Path, output: Path,
+                     dot_backend: Path | None = None):
     root, acquisition, output = root.resolve(), acquisition.resolve(), output.resolve()
     adapter = root / 'backend/runtime/libcxx'
     pin = json.loads((adapter / 'source.json').read_text())
@@ -51,6 +52,18 @@ def prepare_provider(root: Path, acquisition: Path, output: Path):
         raise ValueError('libc++ acquisition has no recorded public headers/configuration')
     if not implementation_hashes:
         raise ValueError('libc++ acquisition has no recorded implementation sources')
+    if dot_backend is not None:
+        # The dot backend consumes std::string's out-of-line definitions and
+        # exception classes used by string/vector range and length checks.
+        # These are the actual pinned upstream implementations, including the
+        # string extern-template definitions; no replacement std declarations.
+        for name in ('src/stdexcept.cpp', 'src/string.cpp'):
+            path = (upstream / name).resolve()
+            manifest_name = pin['archiveRoot'] + '/' + name
+            if manifest_name not in implementation_hashes:
+                raise ValueError('libc++ acquisition does not record ' + name)
+            sources.append(path)
+            records.append({'path': str(path), 'sha256': implementation_hashes[manifest_name]})
     output.parent.mkdir(parents=True, exist_ok=True)
     atomic_source = upstream / 'src/include/atomic_support.h'
     atomic_original = atomic_source.read_text()
@@ -74,13 +87,30 @@ def prepare_provider(root: Path, acquisition: Path, output: Path):
         lines.append('#include ' + json.dumps(str(path)))
         if path.name == 'new_handler.cpp':
             lines += ['#if __cplusplus < 202002L', '#undef constinit', '#endif']
+    consumer = None
+    if dot_backend is not None:
+        dot_backend = dot_backend.resolve()
+        # EDG's whole-program merge requires the string consumer and explicit
+        # template definitions in the primary TU. Including the existing source
+        # here preserves its spelling/locations while giving it that ownership.
+        # Clear the implementation-only macros for the application source.
+        lines += ['#undef _LIBCPP_BUILDING_LIBRARY',
+                  '#undef _LIBCPP_REMOVE_TRANSITIVE_INCLUDES',
+                  '#include ' + json.dumps(str(dot_backend))]
+        consumer = {'path': str(dot_backend),
+                    'sha256': hashlib.sha256(dot_backend.read_bytes()).hexdigest(),
+                    'position': 'included-after-libcxx-provider'}
     output.write_text('\n'.join(lines) + '\n')
     return {'kind': 'translated-libcxx-allocation-and-managed-exception-abi',
-            'release': profile['release'], 'standard': 'c++14', 'position': 'primary',
+            'release': profile['release'],
+            'standard': 'c++17' if dot_backend is not None else 'c++14',
+            'position': 'primary', 'dotBackend': consumer,
             'publicHeaderCount': len(header_hashes), 'translationUnit': str(output.resolve()),
             'translationUnitSha256': hashlib.sha256(output.read_bytes()).hexdigest(),
             'sources': records, 'implementationHashes': implementation_hashes,
             'adaptedPrivateHeader': {'upstream': str(atomic_source), 'path': str(atomic_copy),
                 'sha256': hashlib.sha256(atomic_copy.read_bytes()).hexdigest()},
             'adaptations': ['Remove unused <memory> include from private atomic_support.h; all atomic bodies/orderings unchanged', 'Map new_handler.cpp constinit to _LIBCPP_CONSTINIT for C++14; null pointer constant initialization is unchanged'],
-            'scope': 'Allocation, exception class definitions and managed EH adapters required by EDG; not the entire libc++ library'}
+            'scope': ('Allocation, exceptions, string and its container consumers required by cpfe-dot; not the entire libc++ library'
+                      if dot_backend is not None else
+                      'Allocation, exception class definitions and managed EH adapters required by EDG; not the entire libc++ library')}

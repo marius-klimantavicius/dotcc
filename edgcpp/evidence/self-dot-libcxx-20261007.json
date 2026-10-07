@@ -1,0 +1,119 @@
+{
+  "scope": "Pinned libc++ dependency closure for translating EDG with dot_gen_be; not full compiler bootstrap acceptance",
+  "passed": true,
+  "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/results.json",
+  "artifactSha256": "919057dbd7752ab978de56c929ca25591fbdf0dcb62f77fe4f6b6be51dcaa762",
+  "checks": [
+    "Native C++17 behavior oracle",
+    "Unmodified pinned string.cpp/stdexcept.cpp; strict unresolved rejection",
+    "JIT: global map/set/string lifecycle, stable_sort/vector, string edits/move, integer limits, typed range/length exceptions",
+    "NativeAOT: same output and behavior"
+  ],
+  "commands": [
+    {
+      "stage": "native-build",
+      "command": [
+        "g++",
+        "-std=c++17",
+        "/home/marius/p/dotcc/edgcpp/backend/tests/self_dot_libcxx.cpp",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/native"
+      ],
+      "exitCode": 0
+    },
+    {
+      "stage": "native-run",
+      "command": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/native"
+      ],
+      "exitCode": 0
+    },
+    {
+      "stage": "translate",
+      "command": [
+        "/usr/bin/python3",
+        "/home/marius/p/dotcc/edgcpp/dotnet.py",
+        "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/provider.cpp",
+        "--compiler",
+        "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+        "--language",
+        "c++",
+        "--std",
+        "c++17",
+        "--libc",
+        "musl",
+        "-I",
+        "/home/marius/p/dotcc/edgcpp/artifacts/campaign/libcxx-acquired-005/config",
+        "-I",
+        "/home/marius/p/dotcc/edgcpp/artifacts/campaign/libcxx-acquired-005/libcxx-18.1.8.src/include",
+        "--emit",
+        "exe",
+        "--output-dir",
+        "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/generated"
+      ],
+      "exitCode": 0
+    },
+    {
+      "stage": "build",
+      "command": [
+        "dotnet",
+        "build",
+        "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/generated/Generated.csproj",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "exitCode": 0
+    },
+    {
+      "stage": "jit",
+      "command": [
+        "dotnet",
+        "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/generated/bin/Release/net10.0/Generated.dll"
+      ],
+      "exitCode": 0
+    },
+    {
+      "stage": "publish",
+      "command": [
+        "dotnet",
+        "publish",
+        "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/generated/Generated.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "linux-x64",
+        "-p:PublishAot=true",
+        "-p:IlcTreatWarningsAsErrors=true",
+        "-o",
+        "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/generated/aot"
+      ],
+      "exitCode": 0
+    },
+    {
+      "stage": "aot",
+      "command": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/generated/aot/Generated"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "cBackend": {
+    "passed": true,
+    "scope": "Original native EDG C backend accepted and lowered the same combined provider/consumer; generated C is not linked because provider imports managed exception ABI hooks",
+    "commandFile": "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/c-backend.command.json",
+    "environment": {
+      "USR_INCLUDE": "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/no-default-headers",
+      "EDG_BASE": "/home/marius/p/dotcc/edgcpp/upstream/bases/docker/dev-env/gcc"
+    },
+    "targetWrapper": "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/c-backend-provider.cpp",
+    "generatedC": "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-libcxx-005/c-backend.c",
+    "sha256": "281736848bd5e1219d20a28462e69906c40ec03377176d45191be1ac7fcc5c75"
+  },
+  "files": {
+    "backend/self/libcxx.py": "1a96511fcbf7a50a03200f0e2a2cb936a58b21203aa6d51c62dc41350e26916d",
+    "backend/self/libcxx.md": "97a145499e16e6416548784cea57b5b435b2b1c8a9d1fcdb694810e8fd900e5e",
+    "backend/tests/self_dot_libcxx.cpp": "ebb988bb2baafeb317ac6f9f1b0801470827b1836b63daff6a1ab2cc174c7231",
+    "backend/tests/self_dot_libcxx_verify.py": "e5a4f460f585dfc8a5348ace434ae48cc269cb5eff896e4848a907a4951cd4b2"
+  }
+}

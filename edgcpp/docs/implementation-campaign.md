@@ -1235,3 +1235,18 @@ does not translate the added C# backend itself or imply complete libc++/POSIX
 coverage. `Run` retains EDG's process-exit behavior; use a subprocess per compile.
 [Usage and source review](self-csharp-review.md),
 [evidence and measured timings](../evidence/self-execution-20261004.json).
+
+### C# backend bootstrap dependency closure (2026-10-07)
+
+The new self-host target includes `dot_gen_be`. Its libc++ provider adds pinned
+upstream `string.cpp` and `stdexcept.cpp`, with the backend included after those
+definitions in the primary translation unit. The other compiler files remain
+separate. C++17 satisfies upstream string's `to_chars` requirement.
+
+A focused real-provider fixture passes the native C++ oracle, strict translation
+with no unresolved imports, JIT and Linux-x64 NativeAOT. It covers static
+map/set/string lifetimes, vector/stable_sort, allocated string edits/moves,
+integer formatting limits and typed range/length exceptions. The original EDG
+C backend also accepts and lowers the combined provider/consumer. This is
+dependency verification, not yet full compiler bootstrap acceptance.
+[Evidence](../evidence/self-dot-libcxx-20261007.json).
