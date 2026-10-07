@@ -43,12 +43,12 @@ string source_record_initializer(a_type_ptr original,a_constant_ptr value,const 
   if(value->kind!=ck_aggregate || !source_plain_record(t))return "";
   string result="new()\n"+indent+"{\n";
   auto field=next_non_empty_initializable_field(t->variant.class_struct_union.field_list);
+  std::set<a_field_ptr> assigned;
   for(auto item=value->variant.aggregate.first_constant;item;item=item->next) {
     if(item->kind==ck_designator) {
-      // With LOWER_DESIGNATED_INITIALIZERS, the C backend retains designators
-      // only to choose a union member. The following constant supplies its
-      // value. Do not infer the member from constant type or overlapping offset.
-      if(t->kind!=tk_union || item->variant.designator.is_generic ||
+      // Follow the actual selected field, as c_gen_be::dump_initializer_part
+      // does; folded struct constants may still carry their designators.
+      if(item->variant.designator.is_generic ||
          !item->variant.designator.is_field_designator)return "";
       auto selected=item->variant.designator.variant.field;
       bool found=false;
@@ -58,6 +58,9 @@ string source_record_initializer(a_type_ptr original,a_constant_ptr value,const 
       field=selected;item=item->next;
     }
     if(!field || item->kind==ck_init_repeat)return "";
+    // C# object initializers cannot assign a member twice. The store fallback
+    // preserves the ordering of any surviving repeated designations.
+    if(!assigned.insert(field).second)return "";
     // A single value-type construction must never overwrite another union
     // member selected earlier in the initializer. Preserve the store fallback
     // for any extended/multiple-designator representation.

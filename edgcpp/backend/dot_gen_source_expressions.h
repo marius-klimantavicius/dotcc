@@ -198,6 +198,16 @@ source_planned_node source_plan_node(an_expr_node_ptr e,bool discard,bool want_p
   // their synthetic native RTTI variable, which is intentionally not storage.
   string metadata=typeinfo_expression(e);
   if(!metadata.empty())return {"",metadata,metadata,"&("+metadata+")"};
+  if(materialization_offsets.count(e) && !materialization_suppressed.count(e)) {
+    // The C backend evaluates a comma's left operand once before its result.
+    // Keep the source plan's prefix separate, then materialize only that result.
+    // Re-rendering e for its address would replay already lifted effects.
+    materialization_suppressed.insert(e);
+    auto value=source_plan_node(e,false,false);
+    materialization_suppressed.erase(e);
+    string place=materialized_value_location(e,value.value);
+    return {value.prefix,place,place,"&("+place+")"};
+  }
   if(e->kind!=enk_operation)return {"",expr(e),e->is_lvalue?location(e):"",e->is_lvalue?address(e):""};
   auto op=e->variant.operation.kind;auto a=e->variant.operation.operands;auto b=a?a->next:nullptr;
   if(source_assignment_token(op) || source_increment(op))return source_plan_mutation(e,discard,want_place);
@@ -252,7 +262,12 @@ source_planned_node source_plan_node(an_expr_node_ptr e,bool discard,bool want_p
     }
     source_expression_bindings[child]={value.value,value.place.empty()?value.value:value.place,value.pointer};
   }
-  return {prefix,expr(e),e->is_lvalue?location(e):"",e->is_lvalue && !bitfield(e)?address(e):""};
+  // An aggregate prvalue can have a planned address even though EDG does not
+  // mark it as an lvalue. Carry that address through parentheses/member views
+  // while child bindings are still active. Reconstructing it in the parent
+  // after this scope ends loses those bindings and replays lifted effects.
+  bool provide_place=e->is_lvalue || want_place;
+  return {prefix,expr(e),provide_place?location(e):"",provide_place && !bitfield(e)?address(e):""};
 }
 source_expression_plan plan_source_value(an_expr_node_ptr e) {auto p=source_plan_node(e);return {p.prefix,p.value};}
 source_expression_plan plan_source_condition(an_expr_node_ptr e) {

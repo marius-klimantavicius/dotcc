@@ -78,12 +78,11 @@ bool materialization_captures(an_expr_node_ptr e) {
   }
   return false;
 }
-string materialized_location(an_expr_node_ptr e) {
+// Accept an already planned value so callers that have lifted comma/branch
+// effects do not evaluate the original expression a second time for its address.
+string materialized_value_location(an_expr_node_ptr e,const string &value) {
   auto found=materialization_offsets.find(e);
-  if(found==materialization_offsets.end() || materialization_suppressed.count(e))return "";
-  materialization_suppressed.insert(e);
-  string value=location(e);
-  materialization_suppressed.erase(e);
+  if(found==materialization_offsets.end())unsupported("missing aggregate materialization slot");
   string ty=type(e->type),key="materialize:"+ty,id;
   auto helper=assignment_helpers.find(key);
   if(helper!=assignment_helpers.end())id=helper->second;
@@ -92,4 +91,12 @@ string materialized_location(an_expr_node_ptr e) {
     helper_output+="// dot-gen:member-begin\nprivate static "+ty+"* "+id+"("+ty+" value, "+ty+"* storage) { *storage=value;return storage; }\n// dot-gen:member-end\n";
   }
   return "(*("+id+"("+value+", ("+ty+"*)(__edg_frame + "+std::to_string(found->second)+"))))";
+}
+
+string materialized_location(an_expr_node_ptr e) {
+  if(!materialization_offsets.count(e) || materialization_suppressed.count(e))return "";
+  materialization_suppressed.insert(e);
+  string value=location(e);
+  materialization_suppressed.erase(e);
+  return materialized_value_location(e,value);
 }

@@ -1,0 +1,686 @@
+{
+  "date": "2026-10-07",
+  "scope": "Generic backend fixes exposed during MsQuic translation",
+  "target": "linux-x64",
+  "compilerSha256": "b73ebb9cc703783ad891666d5af5c15a4892f061c7a1ea65f1a9bb596d936dca",
+  "verification": {
+    "aggregateDesignators": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/results.json",
+      "result": {
+        "passed": true,
+        "runs": [
+          {
+            "label": "native-build",
+            "command": [
+              "cc",
+              "-std=c11",
+              "-Wall",
+              "-Wextra",
+              "-Werror",
+              "-Wno-override-init",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/folded_designated_initializers.c",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/native"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "native",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/native"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "gnu-static-translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "--compiler",
+              "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+              "--language",
+              "c",
+              "--std",
+              "c11",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/gnu-static",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/folded_designated_initializers.c"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "gnu-static-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/gnu-static/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "gnu-static-jit",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/gnu-static/bin/Release/net10.0/Generated.dll"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "gnu-static-publish",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/gnu-static/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/gnu-static/aot"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "gnu-static-aot",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/gnu-static/aot/Generated"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "gnu-instance-translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "--compiler",
+              "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+              "--language",
+              "c",
+              "--std",
+              "c11",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/gnu-instance",
+              "--instance-methods",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/folded_designated_initializers.c"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "gnu-instance-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/gnu-instance/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "gnu-instance-jit",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/gnu-instance/bin/Release/net10.0/Generated.dll"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "gnu-instance-publish",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/gnu-instance/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/gnu-instance/aot"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "gnu-instance-aot",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/gnu-instance/aot/Generated"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "ms-static-translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "--compiler",
+              "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+              "--language",
+              "c",
+              "--std",
+              "c11",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/ms-static",
+              "--ms-extensions",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/folded_designated_initializers.c"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "ms-static-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/ms-static/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "ms-static-jit",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/ms-static/bin/Release/net10.0/Generated.dll"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "ms-static-publish",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/ms-static/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/ms-static/aot"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "ms-static-aot",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/ms-static/aot/Generated"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "ms-instance-translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "--compiler",
+              "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+              "--language",
+              "c",
+              "--std",
+              "c11",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/ms-instance",
+              "--instance-methods",
+              "--ms-extensions",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/folded_designated_initializers.c"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "ms-instance-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/ms-instance/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "ms-instance-jit",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/ms-instance/bin/Release/net10.0/Generated.dll"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "ms-instance-publish",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/ms-instance/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/ms-instance/aot"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "ms-instance-aot",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/regression-002/ms-instance/aot/Generated"
+            ],
+            "exit": 0
+          }
+        ]
+      }
+    },
+    "sourceExpressions": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-source-expressions-002/results.json",
+      "result": {
+        "checks": [
+          "c: original EDG C expression oracle",
+          "c-static: readable mutations, truncation, sequencing, branches and split guards JIT",
+          "c-instance: readable mutations, truncation, sequencing, branches and split guards JIT",
+          "cxx: original EDG C expression oracle",
+          "cxx-static: readable mutations, truncation, sequencing, branches and split guards JIT",
+          "cxx-instance: readable mutations, truncation, sequencing, branches and split guards JIT"
+        ]
+      }
+    },
+    "materialization": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/results.json",
+      "result": {
+        "status": "passed",
+        "commands": [
+          {
+            "command": [
+              "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot-oracle",
+              "--c++17",
+              "--gnu_version",
+              "130300",
+              "-I",
+              "/home/marius/p/dotcc/edgcpp/backend/tests",
+              "--gen_c_file_name",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-oracle.c",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-oracle.il",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-oracle.cpp"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-x",
+              "c",
+              "-w",
+              "-std=gnu11",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-oracle.c",
+              "-x",
+              "none",
+              "/home/marius/p/dotcc/edgcpp/build/lib/libC.a",
+              "-lm",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-oracle-gcc"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-oracle-gcc"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/usr/lib/llvm-18/bin/clang++",
+              "-x",
+              "c",
+              "-w",
+              "-std=gnu11",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-oracle.c",
+              "-x",
+              "none",
+              "/home/marius/p/dotcc/edgcpp/build/lib/libC.a",
+              "-lm",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-oracle-clang"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-oracle-clang"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/materialize.cpp",
+              "--emit",
+              "managedlib",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-static",
+              "--namespace",
+              "",
+              "--class-name",
+              "Core",
+              "--split",
+              "size",
+              "--split-size",
+              "2400",
+              "--no-nest-types"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-static/host/Host.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-static/host/Host.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-static/host/aot"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-static/host/bin/Release/net10.0/Host.dll"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-static/host/aot/Host"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/materialize.cpp",
+              "--emit",
+              "managedlib",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-instance",
+              "--namespace",
+              "",
+              "--class-name",
+              "Core",
+              "--split",
+              "size",
+              "--split-size",
+              "2400",
+              "--instance-methods"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-instance/host/Host.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-instance/host/Host.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-instance/host/aot"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-instance/host/bin/Release/net10.0/Host.dll"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-instance/host/aot/Host"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/usr/bin/gcc",
+              "-std=gnu11",
+              "-O2",
+              "-I",
+              "/home/marius/p/dotcc/edgcpp/backend/tests",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-oracle.c",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-gcc"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-gcc"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/usr/lib/llvm-18/bin/clang",
+              "-std=gnu11",
+              "-O2",
+              "-I",
+              "/home/marius/p/dotcc/edgcpp/backend/tests",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-oracle.c",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-clang"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-clang"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/materialize.c",
+              "--language",
+              "c",
+              "--std",
+              "c11",
+              "--emit",
+              "managedlib",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-static",
+              "--namespace",
+              "",
+              "--class-name",
+              "Core"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-static/host/Host.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-static/host/Host.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-static/host/aot"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-static/host/bin/Release/net10.0/Host.dll"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-static/host/aot/Host"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/materialize.c",
+              "--language",
+              "c",
+              "--std",
+              "c11",
+              "--emit",
+              "managedlib",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-instance",
+              "--namespace",
+              "",
+              "--class-name",
+              "Core",
+              "--instance-methods"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-instance/host/Host.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-instance/host/Host.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-instance/host/aot"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-instance/host/bin/Release/net10.0/Host.dll"
+            ],
+            "exitCode": 0
+          },
+          {
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-materialize-003/materialize-c-instance/host/aot/Host"
+            ],
+            "exitCode": 0
+          }
+        ],
+        "checks": [
+          "aggregate materialization: 18 value/effect/lifetime traces match EDG C/GCC and Clang",
+          "aggregate materialization/static/JIT: 18 C traces, nested/conditional/comma returns, simultaneous temporaries, loop reuse, pointer callbacks, GC/stack churn and EH cleanup",
+          "aggregate materialization/static/NativeAOT: 18 C traces, nested/conditional/comma returns, simultaneous temporaries, loop reuse, pointer callbacks, GC/stack churn and EH cleanup",
+          "aggregate materialization/instance/JIT: 18 C traces, nested/conditional/comma returns, simultaneous temporaries, loop reuse, pointer callbacks, GC/stack churn and EH cleanup",
+          "aggregate materialization/instance/NativeAOT: 18 C traces, nested/conditional/comma returns, simultaneous temporaries, loop reuse, pointer callbacks, GC/stack churn and EH cleanup",
+          "C aggregate array-decay: GCC/Clang native oracles agree for no-local, ordinary-local and aligned-local cases",
+          "C aggregate array-decay/static/JIT: simultaneous returned arrays survive pointer callback, GC/stack churn and ordinary/aligned local sentinels",
+          "C aggregate array-decay/static/NativeAOT: simultaneous returned arrays survive pointer callback, GC/stack churn and ordinary/aligned local sentinels",
+          "C aggregate array-decay/instance/JIT: simultaneous returned arrays survive pointer callback, GC/stack churn and ordinary/aligned local sentinels",
+          "C aggregate array-decay/instance/NativeAOT: simultaneous returned arrays survive pointer callback, GC/stack churn and ordinary/aligned local sentinels"
+        ],
+        "inputSha256": {
+          "/home/marius/p/dotcc/edgcpp/backend/tests/materialize_verify.py": "bd76003c0c12f896a42d7716639249aa832b068a260d4e34d2b06ddaa206ddda",
+          "/home/marius/p/dotcc/edgcpp/backend/tests/materialize.cpp": "8878cf972e09af546b39bdd279ec7db61cf05a4d0ea1d761b8ea66cdf08d7473",
+          "/home/marius/p/dotcc/edgcpp/backend/tests/materialize.c": "322014a3b5a4afd0fc5eb020c1c732c256599813e771f5a15a735252cd89915b",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot": "b73ebb9cc703783ad891666d5af5c15a4892f061c7a1ea65f1a9bb596d936dca",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot-oracle": "384be5ccb0f0a330f635c029815db314cb58719a3999095bcd4f7291b19b6a8c"
+        }
+      }
+    }
+  },
+  "stockCObservation": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-designators-001/stock-c-comparison.json",
+    "description": "A separate out-of-order const-folded aggregate fixture differed from direct native execution identically in stock EDG C and C# output. Preserved evidence; no frontend changes or broad initializer conformance claim."
+  },
+  "changes": [
+    "Follow retained struct/array initializer designators like EDG C backend.",
+    "Relocate caller aggregate materialization slots when replacing frame locals with named C# variables.",
+    "Carry planned aggregate values and addresses through wrappers without replaying comma-expression side effects."
+  ]
+}

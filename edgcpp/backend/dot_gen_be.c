@@ -567,19 +567,30 @@ string initializer(string dst, a_type_ptr t, a_constant_ptr c, string storage_ad
   unsigned long long index = 0;
   for (auto item = c->variant.aggregate.first_constant; item; item = item->next) {
     if (item->kind == ck_designator) {
-      // c_gen_be.c::dump_initializer_part retains lowered designators only
-      // to select a union member; the following constant supplies its value.
-      if (t->kind != tk_union || item->variant.designator.is_generic ||
-          !item->variant.designator.is_field_designator)
-        unsupported("lowered aggregate designator");
-      auto selected = item->variant.designator.variant.field;
-      bool found = false;
-      for (auto candidate = t->variant.class_struct_union.field_list;
-           candidate; candidate = candidate->next)
-        if (candidate == selected) { found = true; break; }
-      if (!found || !item->next || item->next->kind == ck_designator)
-        unsupported("lowered union designator field or value");
-      field = selected;
+      // Like c_gen_be.c::dump_initializer_part, the designator selects the
+      // next destination, and its following constant supplies the value.
+      // Folded aggregate expressions may retain struct/array designators even
+      // when ordinary declaration initializers have already been lowered.
+      if (item->variant.designator.is_generic || !item->next ||
+          item->next->kind == ck_designator)
+        unsupported("aggregate designator field or value");
+      if (t->kind == tk_array) {
+        if (item->variant.designator.is_field_designator)
+          unsupported("field designator in array initializer");
+        index = item->variant.designator.variant.array_element;
+        if (index >= t->variant.array.variant.number_of_elements)
+          unsupported("array designator bounds");
+      } else {
+        if (!item->variant.designator.is_field_designator)
+          unsupported("array designator in record initializer");
+        auto selected = item->variant.designator.variant.field;
+        bool found = false;
+        for (auto candidate = t->variant.class_struct_union.field_list;
+             candidate; candidate = candidate->next)
+          if (candidate == selected) { found = true; break; }
+        if (!found) unsupported("aggregate designator field");
+        field = selected;
+      }
       item = item->next;
     }
     auto value = item;
@@ -1291,6 +1302,19 @@ void prefer_named_frame_locals() {
     frame_alignment=std::max<unsigned long long>(frame_alignment,alignment);
     frame_size=(frame_size+alignment-1)&~(alignment-1);
     local_offsets[v]=frame_size;frame_size+=skip_typerefs(v->type)->size;
+  }
+  // Materialized aggregate prvalues also occupy the caller's frame. Moving
+  // named locals out of that frame must relocate these slots, not discard
+  // their storage while leaving expressions that still address it.
+  std::vector<std::pair<unsigned long long,an_expr_node_ptr>> temporaries;
+  for(auto item:materialization_offsets)temporaries.push_back({item.second,item.first});
+  std::sort(temporaries.begin(),temporaries.end());
+  for(auto item:temporaries) {
+    auto t=skip_typerefs(item.second->type);
+    unsigned long long alignment=alignment_of_type(t);
+    frame_alignment=std::max(frame_alignment,alignment);
+    frame_size=(frame_size+alignment-1)&~(alignment-1);
+    materialization_offsets[item.second]=frame_size;frame_size+=t->size;
   }
 }
 bool inert_noexcept_body(size_t begin) {

@@ -36,6 +36,8 @@ int run_materialize(int test,void(*hook)()) {
   if(test==13){return make_nested(13).packet.values[(materialize_calls+=10,1)];}
   if(test==14){MaterializeGuard guard;return inspect_packet((make_packet(0),make_packet(14)).values,hook);}
   if(test==15){int sum=0;for(int i=0;i<3;++i){try{MaterializeGuard guard;throw make_nested(i).packet.values[2];}catch(int n){sum+=n;hook();}}return sum;}
+  if(test==16){MaterializeGuard guard;return inspect_packet((make_packet(0),make_packet(1),make_packet(16)).values,hook);}
+  if(test==17){MaterializeGuard guard;return inspect_packet((materialize_calls==0?(make_packet(0),make_packet(17)):make_packet(18)).values,hook);}
   return -1;
 }
 int read_materialize_calls(){return materialize_calls;}
