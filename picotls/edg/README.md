@@ -33,6 +33,40 @@ The generated core uses musl plus the shared `Edg.Runtime` implementation.
 Ordinary allocations use the native heap; immutable provider names use pinned
 managed storage. Sources, projects, commands and failure logs are retained.
 
+The picotls recipe defaults to `--libc-pruning reachable`: all project functions
+remain available, while only the musl definitions reachable from them are emitted.
+Use `--libc-pruning all` to retain the entire provider for comparison or to expose
+otherwise unused libc functions directly to managed callers. The generic
+`edgcpp/dotnet.py` driver also defaults to `reachable` for `--libc musl`.
+A source wrapper calling a desired libc function also keeps it.
+
+For this profile, pruning reduces generated C# from 286 to 72 files and from
+4,452,485 to 3,299,933 bytes. `c32rtomb` is absent; all 102 picotls API names and
+all 240 project function names remain. Twenty of 449 eligible provider routines
+and four of 66 eligible provider variables are retained. These figures include
+the copied runtime files. EDG still parses all provider inputs to resolve their
+dependencies; the optimization removes unused C# emission.
+
+The trimmed output passes the complete JIT/NativeAOT verification below, including
+both 56-case peer suites. A separate used-`c32rtomb` test confirms that it remains
+available when called. See [pruning evidence](../../edgcpp/evidence/picotls-pruning-20261007.json).
+
+## Sharing libc code between translated projects
+
+A referenced shared library is feasible but is not implemented by this pruning
+change. The authored `Edg.Runtime` helpers are already largely independent and
+could be built once and referenced, including shared `VaList`/`VaArg` types and
+timezone assets. Translated external partial implementations must stay with the
+translated project because C# partial classes cannot span assemblies.
+
+Translated musl currently shares the project's record types, globals, TLS,
+allocation registry and callback signatures. A separate musl assembly therefore
+needs a stable ABI with shared or opaque record types, an explicit owner context,
+allocation ownership and callback adapters. Sharing code need not share mutable
+state: separate contexts can preserve independent library instances. That design
+can use direct calls and remain NativeAOT-compatible, while also avoiding repeated
+musl parsing and translation.
+
 ## Verified results
 
 Each configuration—JIT and Linux-x64 NativeAOT—passes:
@@ -65,7 +99,7 @@ See [core test instructions](tests/README.md),
 ## Review artifacts
 
 Current generated source:
-`edgcpp/artifacts/review/picotls/` (links to the final `picotls-edg-004/managed`).
+`edgcpp/artifacts/review/picotls/` (links to `picotls-edg-pruned-001/managed`).
 The main protocol implementation is `Translated.source.picotls.c.cs`; public
 record declarations are in `Translated.cs`, and exported constants are grouped
 in `Translated.source.pembase64.c.cs`. The exact source index is
@@ -74,9 +108,10 @@ in `Translated.source.pembase64.c.cs`. The exact source index is
 Persistent evidence lives under
 `/mnt/storage/dotcc-edg-campaign-20261003/`:
 
-- `picotls-edg-004/`: final core translation and strict library build.
-- `picotls-edg-provider-002/`: provider projects, JIT/AOT tests and executables.
-- `picotls-edg-tests-002/`: native differential tests and both peer receipts.
+- `picotls-edg-pruned-001/`: trimmed core translation and strict library build.
+- `picotls-edg-pruned-provider-001/`: provider projects, JIT/AOT tests and executables.
+- `picotls-edg-pruned-tests-001/`: native differential tests and both peer receipts.
+- `picotls-edg-004/`: retained complete-provider baseline for comparison.
 - `picotls-inet-001/`: 1,186-case native/JIT/AOT `inet_pton` differential test.
 
 Earlier attempts remain available alongside these directories.

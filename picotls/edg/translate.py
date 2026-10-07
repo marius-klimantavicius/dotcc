@@ -44,6 +44,8 @@ def main():
     parser.add_argument('--output-dir', type=Path, required=True)
     parser.add_argument('--compiler', type=Path, default=EDG / 'build/bin/cpfe-dot')
     parser.add_argument('--build', action='store_true')
+    parser.add_argument('--libc-pruning', choices=('reachable', 'all'), default='reachable',
+                        help='trim unused provider definitions by default; all retains the complete provider for comparison')
     parser.add_argument('--timeout', type=int, default=900)
     args = parser.parse_args()
     out = args.output_dir.resolve()
@@ -82,12 +84,12 @@ def main():
         macro_text = (source/'include/picotls.h').read_text() + '\n' + macro_source.read_text()
         object_macros = set(re.findall(r'^\s*#\s*define\s+(PTLS_\w+)[ \t]+', macro_text, re.M))
         exported = sorted(referenced & object_macros)
-        report.update(source=pin, definitions=definitions, exportedMacros=exported,
+        report.update(source=pin, definitions=definitions, exportedMacros=exported, libcPruning=args.libc_pruning,
                       compiler={'path':str(args.compiler.resolve()), 'sha256':sha(args.compiler)},
                       inputs=[{'path':str(p.relative_to(ROOT)), 'sha256':sha(p)} for p in sources])
         command = [sys.executable, EDG/'dotnet.py', *sources, '--language','c','--std','c11',
                    '-I',source,'-I',source/'include', *['-D'+v for v in definitions],
-                   '--libc','musl','--posix','--emit','managedlib',
+                   '--libc','musl','--libc-pruning',args.libc_pruning,'--posix','--emit','managedlib',
                    '--namespace','Managed.Security','--class-name','PicoTls','--split','source',
                    '--compiler',args.compiler.resolve(), '--output-dir',out/'managed',
                    '--raw-output',out/'raw.cs','--frontend-invocation',out/'invocation.json']

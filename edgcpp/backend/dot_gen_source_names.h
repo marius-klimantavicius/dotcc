@@ -233,7 +233,7 @@ string source_member_marker(const void *entity) {
 void source_collect_type(a_type_ptr original);
 void source_collect_variables(a_variable_ptr variable,const string &kind,const string &scope,const string &domain) {
   for(auto v=variable;v;v=v->next) {
-    if(ignore_variable_in_back_end(v))continue;
+    if(ignore_variable_in_back_end(v) || !provider_entity_kept(v))continue;
     string spelling=source_spelling(&v->source_corresp);
     source_register(v,&v->source_corresp,kind,scope,domain,spelling);
     if((kind=="global"||kind=="static-local")&&source_name_entries.count(v))source_name_entries[v].has_getter=true;

@@ -79,6 +79,14 @@ EDG_BASE="$PWD/edgcpp/upstream/bases/docker/dev-env/gcc" \
   numeric conversion sources now pass generated JIT/NativeAOT tests; source
   inclusion is still explicit. See [numeric conversion](../docs/libc-numeric-conversion.md)
   and [formatting](../docs/printf-cpp-and-stream-integration.md).
+- `--libc musl` prunes unused provider definitions by default. All project APIs
+  remain roots, including those called only from managed code; semantic
+  references retain required callbacks, globals, TLS and initialization.
+  `--libc-pruning all` retains the complete provider if managed callers need
+  libc APIs not referenced by translated source. Pruning currently reduces C#
+  emission; the provider inputs are still parsed. `--raw-input` packages its
+  existing output without applying pruning again. See the
+  [picotls measurements and shared-runtime discussion](../../picotls/edg/README.md).
 - `void` returns and signed/unsigned 8-, 16-, 32-, 64- and 128-bit integers
   (including plain `char`, using the EDG target signedness). Integer casts
   and arithmetic use unchecked C# expressions; logical/comparison results use

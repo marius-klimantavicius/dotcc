@@ -1,0 +1,2695 @@
+{
+  "scope": "Provider-only lowered-IL reachability for selected musl; all original project APIs retained",
+  "before": {
+    "directory": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-004",
+    "csharpFiles": 286,
+    "csharpBytes": 4452485,
+    "raw": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-004/raw.cs",
+      "bytes": 4014784,
+      "sha256": "13ca4e6b4af872afe11733500a82b9102ebd2c925f5500658f5eb477e98aa965"
+    },
+    "providerPruning": null,
+    "c32rtombPresent": true,
+    "picotlsPublicNames": [
+      "dotcc_ptls_buffer_dispose",
+      "dotcc_ptls_buffer_push_block",
+      "dotcc_ptls_client_properties",
+      "dotcc_ptls_decode_block",
+      "dotcc_ptls_encode_quicint",
+      "dotcc_ptls_send_quic_ticket",
+      "dotcc_ptls_server_properties",
+      "ptls__key_schedule_update_hash",
+      "ptls_aead__build_iv",
+      "ptls_aead_decrypt",
+      "ptls_aead_encrypt",
+      "ptls_aead_encrypt_v",
+      "ptls_aead_free",
+      "ptls_aead_get_iv",
+      "ptls_aead_new",
+      "ptls_aead_new_direct",
+      "ptls_aead_set_iv",
+      "ptls_aead_xor_iv",
+      "ptls_base64_cell",
+      "ptls_base64_decode",
+      "ptls_base64_decode_init",
+      "ptls_base64_encode",
+      "ptls_base64_howlong",
+      "ptls_buffer__adjust_asn1_blocksize",
+      "ptls_buffer__adjust_quic_blocksize",
+      "ptls_buffer__do_pushv",
+      "ptls_buffer__release_memory",
+      "ptls_buffer_dispose",
+      "ptls_buffer_init",
+      "ptls_buffer_push_asn1_ubigint",
+      "ptls_buffer_reserve",
+      "ptls_buffer_reserve_aligned",
+      "ptls_build_certificate_message",
+      "ptls_build_tls12_export_params",
+      "ptls_build_v4_mapped_v6_address",
+      "ptls_calc_hash",
+      "ptls_cipher_free",
+      "ptls_cipher_new",
+      "ptls_client_handle_message",
+      "ptls_client_new",
+      "ptls_compare_separator_line",
+      "ptls_decode16",
+      "ptls_decode24",
+      "ptls_decode32",
+      "ptls_decode64",
+      "ptls_decode8",
+      "ptls_decode_quicint",
+      "ptls_ech_encode_config",
+      "ptls_encode_quicint",
+      "ptls_export",
+      "ptls_export_secret",
+      "ptls_find_cipher_suite",
+      "ptls_free",
+      "ptls_get_async_job",
+      "ptls_get_cipher",
+      "ptls_get_client_random",
+      "ptls_get_context",
+      "ptls_get_data_ptr",
+      "ptls_get_log_state",
+      "ptls_get_negotiated_protocol",
+      "ptls_get_pem_object",
+      "ptls_get_protocol_version",
+      "ptls_get_read_epoch",
+      "ptls_get_record_overhead",
+      "ptls_get_server_name",
+      "ptls_get_traffic_keys",
+      "ptls_handle_message",
+      "ptls_handshake",
+      "ptls_handshake_is_complete",
+      "ptls_hexdump",
+      "ptls_hkdf_expand",
+      "ptls_hkdf_expand_label",
+      "ptls_hkdf_extract",
+      "ptls_hmac_create",
+      "ptls_hpke_setup_base_r",
+      "ptls_hpke_setup_base_s",
+      "ptls_import",
+      "ptls_iovec_init",
+      "ptls_is_ech_handshake",
+      "ptls_is_psk_handshake",
+      "ptls_is_server",
+      "ptls_jsonescape",
+      "ptls_load_certificates",
+      "ptls_load_pem_objects",
+      "ptls_log_add_fd",
+      "ptls_log_conn_maybe_active",
+      "ptls_log_getsni_cb_ptls",
+      "ptls_log_getsni_ptls",
+      "ptls_log_init_conn_state",
+      "ptls_log_num_lost",
+      "ptls_log_point_maybe_active",
+      "ptls_receive",
+      "ptls_send",
+      "ptls_send_alert",
+      "ptls_server_handle_message",
+      "ptls_server_name_is_ipaddr",
+      "ptls_server_new",
+      "ptls_set_context",
+      "ptls_set_negotiated_protocol",
+      "ptls_set_server_name",
+      "ptls_tls12_phash",
+      "ptls_update_key"
+    ],
+    "projectFunctionNames": [
+      "aead_decrypt",
+      "aead_encrypt",
+      "begin_raw_message",
+      "begin_record_message",
+      "buffer_encrypt_record",
+      "buffer_push_encrypted_records",
+      "build_aad",
+      "build_certificate_verify_signdata",
+      "build_suite_id",
+      "build_tls12_aad",
+      "byte_to_hex",
+      "calc_cookie_signature",
+      "calc_verify_data",
+      "call_on_client_hello_cb",
+      "certificate_type_exists",
+      "check_client_hello_constraints",
+      "clear_ech",
+      "clear_memory",
+      "client_decode_ech_config_list",
+      "client_do_handle_certificate",
+      "client_ech_select_hello",
+      "client_handle_certificate",
+      "client_handle_certificate_request",
+      "client_handle_certificate_verify",
+      "client_handle_compressed_certificate",
+      "client_handle_encrypted_extensions",
+      "client_handle_finished",
+      "client_handle_hello",
+      "client_handle_new_session_ticket",
+      "client_hello_decode_server_name",
+      "client_setup_ech",
+      "client_setup_ech_grease",
+      "collect_unknown_extension",
+      "commission_handshake_secret",
+      "commit_raw_message",
+      "commit_record_message",
+      "decode_certificate_request",
+      "decode_client_hello",
+      "decode_key_share_entry",
+      "decode_new_session_ticket",
+      "decode_one_ech_config",
+      "decode_server_hello",
+      "decode_session_identifier",
+      "decode_signature_algorithms",
+      "decode_stored_session_ticket",
+      "default_emit_certificate_cb",
+      "derive_exporter_secret",
+      "derive_resumption_secret",
+      "derive_secret",
+      "derive_secret_with_empty_digest",
+      "derive_secret_with_hash",
+      "dh_decap",
+      "dh_derive",
+      "dh_encap",
+      "dotcc_ptls_buffer_dispose",
+      "dotcc_ptls_buffer_push_block",
+      "dotcc_ptls_client_properties",
+      "dotcc_ptls_decode_block",
+      "dotcc_ptls_encode_quicint",
+      "dotcc_ptls_send_quic_ticket",
+      "dotcc_ptls_server_properties",
+      "duplicate_as_str",
+      "ech_calc_confirmation",
+      "emit_server_name_extension",
+      "encode64",
+      "encode_client_hello",
+      "encode_session_identifier",
+      "export_tls12_params",
+      "extension_bitmap_testandset",
+      "extract_and_expand",
+      "free_exporter_master_secret",
+      "get_time",
+      "get_traffic_key",
+      "get_traffic_keys",
+      "handle_alert",
+      "handle_certificate",
+      "handle_certificate_verify",
+      "handle_client_handshake_message",
+      "handle_handshake_record",
+      "handle_hello_retry_request",
+      "handle_input",
+      "handle_input_tls12",
+      "handle_key_update",
+      "handle_server_handshake_message",
+      "hmac_apply_key",
+      "hmac_final",
+      "hmac_update",
+      "import_tls12_traffic_protection",
+      "import_tls13_traffic_protection",
+      "init_record_message_emitter",
+      "is_supported_version",
+      "key_schedule",
+      "key_schedule_extract",
+      "key_schedule_extract_ch1hash",
+      "key_schedule_free",
+      "key_schedule_new",
+      "key_schedule_select_cipher",
+      "key_schedule_select_outer",
+      "key_schedule_transform_post_ch1hash",
+      "key_schedule_update_ch1hash_prefix",
+      "labeled_expand",
+      "labeled_extract",
+      "log_client_random",
+      "log_secret",
+      "mem_equal",
+      "message_buffer_is_overflow",
+      "new_aead",
+      "new_instance",
+      "ntoh16",
+      "ntoh24",
+      "ntoh32",
+      "ntoh64",
+      "outer_ech_header_size",
+      "parse_record",
+      "parse_record_header",
+      "ptls__key_schedule_update_hash",
+      "ptls_aead__build_iv",
+      "ptls_aead_decrypt",
+      "ptls_aead_encrypt",
+      "ptls_aead_encrypt_v",
+      "ptls_aead_free",
+      "ptls_aead_get_iv",
+      "ptls_aead_new",
+      "ptls_aead_new_direct",
+      "ptls_aead_set_iv",
+      "ptls_aead_xor_iv",
+      "ptls_base64_cell",
+      "ptls_base64_decode",
+      "ptls_base64_decode_init",
+      "ptls_base64_encode",
+      "ptls_base64_howlong",
+      "ptls_buffer__adjust_asn1_blocksize",
+      "ptls_buffer__adjust_quic_blocksize",
+      "ptls_buffer__do_pushv",
+      "ptls_buffer__release_memory",
+      "ptls_buffer_dispose",
+      "ptls_buffer_init",
+      "ptls_buffer_push_asn1_ubigint",
+      "ptls_buffer_reserve",
+      "ptls_buffer_reserve_aligned",
+      "ptls_build_certificate_message",
+      "ptls_build_tls12_export_params",
+      "ptls_build_v4_mapped_v6_address",
+      "ptls_calc_hash",
+      "ptls_cipher_free",
+      "ptls_cipher_new",
+      "ptls_client_handle_message",
+      "ptls_client_new",
+      "ptls_compare_separator_line",
+      "ptls_decode16",
+      "ptls_decode24",
+      "ptls_decode32",
+      "ptls_decode64",
+      "ptls_decode8",
+      "ptls_decode_quicint",
+      "ptls_ech_encode_config",
+      "ptls_encode_quicint",
+      "ptls_export",
+      "ptls_export_secret",
+      "ptls_find_cipher_suite",
+      "ptls_free",
+      "ptls_get_async_job",
+      "ptls_get_cipher",
+      "ptls_get_client_random",
+      "ptls_get_context",
+      "ptls_get_data_ptr",
+      "ptls_get_log_state",
+      "ptls_get_negotiated_protocol",
+      "ptls_get_pem_object",
+      "ptls_get_protocol_version",
+      "ptls_get_read_epoch",
+      "ptls_get_record_overhead",
+      "ptls_get_server_name",
+      "ptls_get_traffic_keys",
+      "ptls_handle_message",
+      "ptls_handshake",
+      "ptls_handshake_is_complete",
+      "ptls_hexdump",
+      "ptls_hkdf_expand",
+      "ptls_hkdf_expand_label",
+      "ptls_hkdf_extract",
+      "ptls_hmac_create",
+      "ptls_hpke_setup_base_r",
+      "ptls_hpke_setup_base_s",
+      "ptls_import",
+      "ptls_iovec_init",
+      "ptls_is_ech_handshake",
+      "ptls_is_psk_handshake",
+      "ptls_is_server",
+      "ptls_jsonescape",
+      "ptls_load_certificates",
+      "ptls_load_pem_objects",
+      "ptls_log_add_fd",
+      "ptls_log_conn_maybe_active",
+      "ptls_log_getsni_cb_ptls",
+      "ptls_log_getsni_ptls",
+      "ptls_log_init_conn_state",
+      "ptls_log_num_lost",
+      "ptls_log_point_maybe_active",
+      "ptls_receive",
+      "ptls_send",
+      "ptls_send_alert",
+      "ptls_server_handle_message",
+      "ptls_server_name_is_ipaddr",
+      "ptls_server_new",
+      "ptls_set_context",
+      "ptls_set_negotiated_protocol",
+      "ptls_set_server_name",
+      "ptls_tls12_phash",
+      "ptls_update_key",
+      "push_additional_extensions",
+      "push_change_cipher_spec",
+      "push_key_share_entry",
+      "push_signature_algorithms",
+      "rebuild_ch_inner",
+      "rebuild_ch_inner_extensions",
+      "report_unknown_extensions",
+      "select_cipher",
+      "select_key_share",
+      "select_negotiated_group",
+      "send_certificate",
+      "send_certificate_verify",
+      "send_client_hello",
+      "send_finished",
+      "send_session_ticket",
+      "server_finish_handshake",
+      "server_handle_certificate",
+      "server_handle_certificate_verify",
+      "server_handle_end_of_early_data",
+      "server_handle_finished",
+      "server_handle_hello",
+      "setup_traffic_protection",
+      "should_collect_unknown_extension",
+      "try_psk_handshake",
+      "update_ch_hash_and_binder",
+      "update_open_count",
+      "update_send_key",
+      "update_traffic_key",
+      "vec_is_string",
+      "verify_finished"
+    ]
+  },
+  "after": {
+    "directory": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-001",
+    "csharpFiles": 72,
+    "csharpBytes": 3299933,
+    "raw": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-001/raw.cs",
+      "bytes": 2340753,
+      "sha256": "2163ef59259855d7781e71ca01049a4208f108e9072274ba0a84e0fc4deebffb"
+    },
+    "providerPruning": {
+      "mode": "reachable",
+      "candidateRoutines": 449,
+      "retainedRoutines": 20,
+      "candidateVariables": 66,
+      "retainedVariables": 4
+    },
+    "c32rtombPresent": false,
+    "picotlsPublicNames": [
+      "dotcc_ptls_buffer_dispose",
+      "dotcc_ptls_buffer_push_block",
+      "dotcc_ptls_client_properties",
+      "dotcc_ptls_decode_block",
+      "dotcc_ptls_encode_quicint",
+      "dotcc_ptls_send_quic_ticket",
+      "dotcc_ptls_server_properties",
+      "ptls__key_schedule_update_hash",
+      "ptls_aead__build_iv",
+      "ptls_aead_decrypt",
+      "ptls_aead_encrypt",
+      "ptls_aead_encrypt_v",
+      "ptls_aead_free",
+      "ptls_aead_get_iv",
+      "ptls_aead_new",
+      "ptls_aead_new_direct",
+      "ptls_aead_set_iv",
+      "ptls_aead_xor_iv",
+      "ptls_base64_cell",
+      "ptls_base64_decode",
+      "ptls_base64_decode_init",
+      "ptls_base64_encode",
+      "ptls_base64_howlong",
+      "ptls_buffer__adjust_asn1_blocksize",
+      "ptls_buffer__adjust_quic_blocksize",
+      "ptls_buffer__do_pushv",
+      "ptls_buffer__release_memory",
+      "ptls_buffer_dispose",
+      "ptls_buffer_init",
+      "ptls_buffer_push_asn1_ubigint",
+      "ptls_buffer_reserve",
+      "ptls_buffer_reserve_aligned",
+      "ptls_build_certificate_message",
+      "ptls_build_tls12_export_params",
+      "ptls_build_v4_mapped_v6_address",
+      "ptls_calc_hash",
+      "ptls_cipher_free",
+      "ptls_cipher_new",
+      "ptls_client_handle_message",
+      "ptls_client_new",
+      "ptls_compare_separator_line",
+      "ptls_decode16",
+      "ptls_decode24",
+      "ptls_decode32",
+      "ptls_decode64",
+      "ptls_decode8",
+      "ptls_decode_quicint",
+      "ptls_ech_encode_config",
+      "ptls_encode_quicint",
+      "ptls_export",
+      "ptls_export_secret",
+      "ptls_find_cipher_suite",
+      "ptls_free",
+      "ptls_get_async_job",
+      "ptls_get_cipher",
+      "ptls_get_client_random",
+      "ptls_get_context",
+      "ptls_get_data_ptr",
+      "ptls_get_log_state",
+      "ptls_get_negotiated_protocol",
+      "ptls_get_pem_object",
+      "ptls_get_protocol_version",
+      "ptls_get_read_epoch",
+      "ptls_get_record_overhead",
+      "ptls_get_server_name",
+      "ptls_get_traffic_keys",
+      "ptls_handle_message",
+      "ptls_handshake",
+      "ptls_handshake_is_complete",
+      "ptls_hexdump",
+      "ptls_hkdf_expand",
+      "ptls_hkdf_expand_label",
+      "ptls_hkdf_extract",
+      "ptls_hmac_create",
+      "ptls_hpke_setup_base_r",
+      "ptls_hpke_setup_base_s",
+      "ptls_import",
+      "ptls_iovec_init",
+      "ptls_is_ech_handshake",
+      "ptls_is_psk_handshake",
+      "ptls_is_server",
+      "ptls_jsonescape",
+      "ptls_load_certificates",
+      "ptls_load_pem_objects",
+      "ptls_log_add_fd",
+      "ptls_log_conn_maybe_active",
+      "ptls_log_getsni_cb_ptls",
+      "ptls_log_getsni_ptls",
+      "ptls_log_init_conn_state",
+      "ptls_log_num_lost",
+      "ptls_log_point_maybe_active",
+      "ptls_receive",
+      "ptls_send",
+      "ptls_send_alert",
+      "ptls_server_handle_message",
+      "ptls_server_name_is_ipaddr",
+      "ptls_server_new",
+      "ptls_set_context",
+      "ptls_set_negotiated_protocol",
+      "ptls_set_server_name",
+      "ptls_tls12_phash",
+      "ptls_update_key"
+    ],
+    "projectFunctionNames": [
+      "aead_decrypt",
+      "aead_encrypt",
+      "begin_raw_message",
+      "begin_record_message",
+      "buffer_encrypt_record",
+      "buffer_push_encrypted_records",
+      "build_aad",
+      "build_certificate_verify_signdata",
+      "build_suite_id",
+      "build_tls12_aad",
+      "byte_to_hex",
+      "calc_cookie_signature",
+      "calc_verify_data",
+      "call_on_client_hello_cb",
+      "certificate_type_exists",
+      "check_client_hello_constraints",
+      "clear_ech",
+      "clear_memory",
+      "client_decode_ech_config_list",
+      "client_do_handle_certificate",
+      "client_ech_select_hello",
+      "client_handle_certificate",
+      "client_handle_certificate_request",
+      "client_handle_certificate_verify",
+      "client_handle_compressed_certificate",
+      "client_handle_encrypted_extensions",
+      "client_handle_finished",
+      "client_handle_hello",
+      "client_handle_new_session_ticket",
+      "client_hello_decode_server_name",
+      "client_setup_ech",
+      "client_setup_ech_grease",
+      "collect_unknown_extension",
+      "commission_handshake_secret",
+      "commit_raw_message",
+      "commit_record_message",
+      "decode_certificate_request",
+      "decode_client_hello",
+      "decode_key_share_entry",
+      "decode_new_session_ticket",
+      "decode_one_ech_config",
+      "decode_server_hello",
+      "decode_session_identifier",
+      "decode_signature_algorithms",
+      "decode_stored_session_ticket",
+      "default_emit_certificate_cb",
+      "derive_exporter_secret",
+      "derive_resumption_secret",
+      "derive_secret",
+      "derive_secret_with_empty_digest",
+      "derive_secret_with_hash",
+      "dh_decap",
+      "dh_derive",
+      "dh_encap",
+      "dotcc_ptls_buffer_dispose",
+      "dotcc_ptls_buffer_push_block",
+      "dotcc_ptls_client_properties",
+      "dotcc_ptls_decode_block",
+      "dotcc_ptls_encode_quicint",
+      "dotcc_ptls_send_quic_ticket",
+      "dotcc_ptls_server_properties",
+      "duplicate_as_str",
+      "ech_calc_confirmation",
+      "emit_server_name_extension",
+      "encode64",
+      "encode_client_hello",
+      "encode_session_identifier",
+      "export_tls12_params",
+      "extension_bitmap_testandset",
+      "extract_and_expand",
+      "free_exporter_master_secret",
+      "get_time",
+      "get_traffic_key",
+      "get_traffic_keys",
+      "handle_alert",
+      "handle_certificate",
+      "handle_certificate_verify",
+      "handle_client_handshake_message",
+      "handle_handshake_record",
+      "handle_hello_retry_request",
+      "handle_input",
+      "handle_input_tls12",
+      "handle_key_update",
+      "handle_server_handshake_message",
+      "hmac_apply_key",
+      "hmac_final",
+      "hmac_update",
+      "import_tls12_traffic_protection",
+      "import_tls13_traffic_protection",
+      "init_record_message_emitter",
+      "is_supported_version",
+      "key_schedule",
+      "key_schedule_extract",
+      "key_schedule_extract_ch1hash",
+      "key_schedule_free",
+      "key_schedule_new",
+      "key_schedule_select_cipher",
+      "key_schedule_select_outer",
+      "key_schedule_transform_post_ch1hash",
+      "key_schedule_update_ch1hash_prefix",
+      "labeled_expand",
+      "labeled_extract",
+      "log_client_random",
+      "log_secret",
+      "mem_equal",
+      "message_buffer_is_overflow",
+      "new_aead",
+      "new_instance",
+      "ntoh16",
+      "ntoh24",
+      "ntoh32",
+      "ntoh64",
+      "outer_ech_header_size",
+      "parse_record",
+      "parse_record_header",
+      "ptls__key_schedule_update_hash",
+      "ptls_aead__build_iv",
+      "ptls_aead_decrypt",
+      "ptls_aead_encrypt",
+      "ptls_aead_encrypt_v",
+      "ptls_aead_free",
+      "ptls_aead_get_iv",
+      "ptls_aead_new",
+      "ptls_aead_new_direct",
+      "ptls_aead_set_iv",
+      "ptls_aead_xor_iv",
+      "ptls_base64_cell",
+      "ptls_base64_decode",
+      "ptls_base64_decode_init",
+      "ptls_base64_encode",
+      "ptls_base64_howlong",
+      "ptls_buffer__adjust_asn1_blocksize",
+      "ptls_buffer__adjust_quic_blocksize",
+      "ptls_buffer__do_pushv",
+      "ptls_buffer__release_memory",
+      "ptls_buffer_dispose",
+      "ptls_buffer_init",
+      "ptls_buffer_push_asn1_ubigint",
+      "ptls_buffer_reserve",
+      "ptls_buffer_reserve_aligned",
+      "ptls_build_certificate_message",
+      "ptls_build_tls12_export_params",
+      "ptls_build_v4_mapped_v6_address",
+      "ptls_calc_hash",
+      "ptls_cipher_free",
+      "ptls_cipher_new",
+      "ptls_client_handle_message",
+      "ptls_client_new",
+      "ptls_compare_separator_line",
+      "ptls_decode16",
+      "ptls_decode24",
+      "ptls_decode32",
+      "ptls_decode64",
+      "ptls_decode8",
+      "ptls_decode_quicint",
+      "ptls_ech_encode_config",
+      "ptls_encode_quicint",
+      "ptls_export",
+      "ptls_export_secret",
+      "ptls_find_cipher_suite",
+      "ptls_free",
+      "ptls_get_async_job",
+      "ptls_get_cipher",
+      "ptls_get_client_random",
+      "ptls_get_context",
+      "ptls_get_data_ptr",
+      "ptls_get_log_state",
+      "ptls_get_negotiated_protocol",
+      "ptls_get_pem_object",
+      "ptls_get_protocol_version",
+      "ptls_get_read_epoch",
+      "ptls_get_record_overhead",
+      "ptls_get_server_name",
+      "ptls_get_traffic_keys",
+      "ptls_handle_message",
+      "ptls_handshake",
+      "ptls_handshake_is_complete",
+      "ptls_hexdump",
+      "ptls_hkdf_expand",
+      "ptls_hkdf_expand_label",
+      "ptls_hkdf_extract",
+      "ptls_hmac_create",
+      "ptls_hpke_setup_base_r",
+      "ptls_hpke_setup_base_s",
+      "ptls_import",
+      "ptls_iovec_init",
+      "ptls_is_ech_handshake",
+      "ptls_is_psk_handshake",
+      "ptls_is_server",
+      "ptls_jsonescape",
+      "ptls_load_certificates",
+      "ptls_load_pem_objects",
+      "ptls_log_add_fd",
+      "ptls_log_conn_maybe_active",
+      "ptls_log_getsni_cb_ptls",
+      "ptls_log_getsni_ptls",
+      "ptls_log_init_conn_state",
+      "ptls_log_num_lost",
+      "ptls_log_point_maybe_active",
+      "ptls_receive",
+      "ptls_send",
+      "ptls_send_alert",
+      "ptls_server_handle_message",
+      "ptls_server_name_is_ipaddr",
+      "ptls_server_new",
+      "ptls_set_context",
+      "ptls_set_negotiated_protocol",
+      "ptls_set_server_name",
+      "ptls_tls12_phash",
+      "ptls_update_key",
+      "push_additional_extensions",
+      "push_change_cipher_spec",
+      "push_key_share_entry",
+      "push_signature_algorithms",
+      "rebuild_ch_inner",
+      "rebuild_ch_inner_extensions",
+      "report_unknown_extensions",
+      "select_cipher",
+      "select_key_share",
+      "select_negotiated_group",
+      "send_certificate",
+      "send_certificate_verify",
+      "send_client_hello",
+      "send_finished",
+      "send_session_ticket",
+      "server_finish_handshake",
+      "server_handle_certificate",
+      "server_handle_certificate_verify",
+      "server_handle_end_of_early_data",
+      "server_handle_finished",
+      "server_handle_hello",
+      "setup_traffic_protection",
+      "should_collect_unknown_extension",
+      "try_psk_handshake",
+      "update_ch_hash_and_binder",
+      "update_open_count",
+      "update_send_key",
+      "update_traffic_key",
+      "vec_is_string",
+      "verify_finished"
+    ]
+  },
+  "comparison": {
+    "all102PicotlsApiNamesPreserved": true,
+    "all240ProjectFunctionNamesPreserved": true,
+    "removedCsharpFiles": 214,
+    "removedCsharpBytes": 1152552
+  },
+  "focused": {
+    "passed": true,
+    "compiler": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "compilerSha256": "155670c45e5db9c601528e14502debce77c66ae95e3c0a47395bcdf8a0f09c73",
+    "commands": [
+      {
+        "stage": "c-native-build",
+        "command": [
+          "gcc",
+          "-std=c11",
+          "-DNATIVE_MAIN",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c/project.c",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c/provider.c",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c/native"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "c-native",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c/native"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "c-all-translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c/project.c",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c/provider.c",
+          "--compiler",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+          "--language",
+          "c",
+          "--libc",
+          "dotcc",
+          "--emit",
+          "managedlib",
+          "--namespace",
+          "ProviderReachability",
+          "--class-name",
+          "Core",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-all"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "c-static-translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c/project.c",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c/provider.c",
+          "--compiler",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c/compiler-wrapper",
+          "--language",
+          "c",
+          "--libc",
+          "dotcc",
+          "--emit",
+          "managedlib",
+          "--namespace",
+          "ProviderReachability",
+          "--class-name",
+          "Core",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-static",
+          "--raw-output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-static.raw.cs",
+          "--split",
+          "source"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "c-static-build",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-static-host/Host.csproj",
+          "-c",
+          "Release",
+          "--nologo"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "c-static-jit",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-static-host/bin/Release/net10.0/Host.dll"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "c-static-publish",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-static-host/Host.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-static-host/aot"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "c-static-aot",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-static-host/aot/Host"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "c-instance-translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c/project.c",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c/provider.c",
+          "--compiler",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c/compiler-wrapper",
+          "--language",
+          "c",
+          "--libc",
+          "dotcc",
+          "--emit",
+          "managedlib",
+          "--namespace",
+          "ProviderReachability",
+          "--class-name",
+          "Core",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-instance",
+          "--raw-output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-instance.raw.cs",
+          "--split",
+          "source",
+          "--instance-methods"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "c-instance-build",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-instance-host/Host.csproj",
+          "-c",
+          "Release",
+          "--nologo"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "c-instance-jit",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-instance-host/bin/Release/net10.0/Host.dll"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "c-instance-publish",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-instance-host/Host.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-instance-host/aot"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "c-instance-aot",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/c-instance-host/aot/Host"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-native-build",
+        "command": [
+          "g++",
+          "-std=c++17",
+          "-DNATIVE_MAIN",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp/project.cpp",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp/provider.cpp",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp/native"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-native",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp/native"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-all-translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp/project.cpp",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp/provider.cpp",
+          "--compiler",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+          "--language",
+          "c++",
+          "--libc",
+          "dotcc",
+          "--emit",
+          "managedlib",
+          "--namespace",
+          "ProviderReachability",
+          "--class-name",
+          "Core",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-all"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-static-translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp/project.cpp",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp/provider.cpp",
+          "--compiler",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp/compiler-wrapper",
+          "--language",
+          "c++",
+          "--libc",
+          "dotcc",
+          "--emit",
+          "managedlib",
+          "--namespace",
+          "ProviderReachability",
+          "--class-name",
+          "Core",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-static",
+          "--raw-output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-static.raw.cs",
+          "--split",
+          "source"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-static-build",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-static-host/Host.csproj",
+          "-c",
+          "Release",
+          "--nologo"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-static-jit",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-static-host/bin/Release/net10.0/Host.dll"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-static-publish",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-static-host/Host.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-static-host/aot"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-static-aot",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-static-host/aot/Host"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-instance-translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp/project.cpp",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp/provider.cpp",
+          "--compiler",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp/compiler-wrapper",
+          "--language",
+          "c++",
+          "--libc",
+          "dotcc",
+          "--emit",
+          "managedlib",
+          "--namespace",
+          "ProviderReachability",
+          "--class-name",
+          "Core",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-instance",
+          "--raw-output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-instance.raw.cs",
+          "--split",
+          "source",
+          "--instance-methods"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-instance-build",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-instance-host/Host.csproj",
+          "-c",
+          "Release",
+          "--nologo"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-instance-jit",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-instance-host/bin/Release/net10.0/Host.dll"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-instance-publish",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-instance-host/Host.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-instance-host/aot"
+        ],
+        "exitCode": 0
+      },
+      {
+        "stage": "cpp-instance-aot",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-002/cpp-instance-host/aot/Host"
+        ],
+        "exitCode": 0
+      }
+    ],
+    "checks": [
+      "c: default/all preserves provider exports",
+      "c-static: removes unreferenced provider function, callback table and global storage; preserves uncalled public API",
+      "c-static/JIT: direct calls, callback globals, static local callback, TLS, startup and compacting GC",
+      "c-static/NativeAOT: same lifecycle and dependency checks",
+      "c-instance: removes unreferenced provider function, callback table and global storage; preserves uncalled public API",
+      "c-instance/JIT: direct calls, callback globals, static local callback, TLS, startup and compacting GC",
+      "c-instance/NativeAOT: same lifecycle and dependency checks",
+      "cpp: default/all preserves provider exports",
+      "cpp-static: removes unreferenced provider function, callback table and global storage; preserves uncalled public API",
+      "cpp-static/JIT: direct calls, callback globals, static local callback, TLS, startup and compacting GC",
+      "cpp-static/NativeAOT: same lifecycle and dependency checks",
+      "cpp-instance: removes unreferenced provider function, callback table and global storage; preserves uncalled public API",
+      "cpp-instance/JIT: direct calls, callback globals, static local callback, TLS, startup and compacting GC",
+      "cpp-instance/NativeAOT: same lifecycle and dependency checks"
+    ],
+    "modes": [
+      {
+        "mode": "c-static",
+        "providerPruning": {
+          "mode": "reachable",
+          "candidateRoutines": 8,
+          "retainedRoutines": 7,
+          "candidateVariables": 6,
+          "retainedVariables": 4
+        }
+      },
+      {
+        "mode": "c-instance",
+        "providerPruning": {
+          "mode": "reachable",
+          "candidateRoutines": 8,
+          "retainedRoutines": 7,
+          "candidateVariables": 6,
+          "retainedVariables": 4
+        }
+      },
+      {
+        "mode": "cpp-static",
+        "providerPruning": {
+          "mode": "reachable",
+          "candidateRoutines": 10,
+          "retainedRoutines": 9,
+          "candidateVariables": 7,
+          "retainedVariables": 5
+        }
+      },
+      {
+        "mode": "cpp-instance",
+        "providerPruning": {
+          "mode": "reachable",
+          "candidateRoutines": 10,
+          "retainedRoutines": 9,
+          "candidateVariables": 7,
+          "retainedVariables": 5
+        }
+      }
+    ]
+  },
+  "actualMusl": {
+    "passed": true,
+    "commands": [
+      {
+        "label": "cpp-translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/home/marius/p/dotcc/edgcpp/backend/tests/musl_provider.c",
+          "--compiler",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+          "--language",
+          "c++",
+          "--libc",
+          "musl",
+          "--libc-pruning",
+          "reachable",
+          "--runtime",
+          "edg-exceptions",
+          "--instance-methods",
+          "--emit",
+          "managedlib",
+          "--namespace",
+          "PruningCoverage",
+          "--class-name",
+          "Core",
+          "--split",
+          "source",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-musl-001/cpp-instance",
+          "--raw-output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-musl-001/cpp-instance.raw.cs"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "cpp-build",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-musl-001/cpp-host/Host.csproj",
+          "-c",
+          "Release",
+          "--nologo"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "cpp-jit",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-musl-001/cpp-host/bin/Release/net10.0/Host.dll"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "cpp-publish",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-musl-001/cpp-host/Host.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-musl-001/cpp-host/aot"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "cpp-aot",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-musl-001/cpp-host/aot/Host"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "c32-translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-musl-001/c32-used.c",
+          "--compiler",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+          "--language",
+          "c",
+          "--libc",
+          "musl",
+          "--libc-pruning",
+          "reachable",
+          "--split",
+          "source",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-musl-001/c32-used",
+          "--raw-output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-musl-001/c32-used.raw.cs"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "c32-build",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-musl-001/c32-used/Generated.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "c32-jit",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/provider-pruning-musl-001/c32-used/bin/Release/net10.0/Generated.dll"
+        ],
+        "exitCode": 0
+      }
+    ],
+    "checks": [
+      "Pruned actual musl C++/instance two-owner JIT: formatting, locale, qsort callbacks, threads/TLS, builtin address identities and C++ exceptions",
+      "Same actual musl C++/instance two-owner checks under NativeAOT",
+      "Used actual musl c32rtomb definition retained and converts a non-BMP scalar and NUL under C.UTF-8"
+    ],
+    "compilerSha256": "155670c45e5db9c601528e14502debce77c66ae95e3c0a47395bcdf8a0f09c73",
+    "source": {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/tests/musl_provider.c",
+      "sha256": "92adce04db42efe3efad7652a5493a035dced5324567e955843dcf5d2ba90fdf"
+    },
+    "cppProviderPruning": {
+      "mode": "reachable",
+      "candidateRoutines": 449,
+      "retainedRoutines": 234,
+      "candidateVariables": 65,
+      "retainedVariables": 56
+    },
+    "c32ProviderPruning": {
+      "mode": "reachable",
+      "candidateRoutines": 449,
+      "retainedRoutines": 8,
+      "candidateVariables": 66,
+      "retainedVariables": 3
+    }
+  },
+  "providerValidation": {
+    "status": "passed",
+    "commands": [
+      {
+        "label": "prepare",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/picotls/edg/provider.py",
+          "--core",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-001/managed",
+          "--output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects"
+        ],
+        "exitCode": 0,
+        "seconds": 0.164
+      },
+      {
+        "label": "jit-build-TranslatedAbi",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/TranslatedAbi/TranslatedAbi.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "exitCode": 0,
+        "seconds": 3.522
+      },
+      {
+        "label": "jit-run-TranslatedAbi",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/TranslatedAbi/bin/Release/net10.0/TranslatedAbi.dll",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-001/native-layout.txt"
+        ],
+        "exitCode": 0,
+        "seconds": 0.032
+      },
+      {
+        "label": "aot-build-TranslatedAbi",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/TranslatedAbi/TranslatedAbi.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:TreatWarningsAsErrors=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/aot-TranslatedAbi"
+        ],
+        "exitCode": 0,
+        "seconds": 5.731
+      },
+      {
+        "label": "aot-run-TranslatedAbi",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/aot-TranslatedAbi/TranslatedAbi",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-001/native-layout.txt"
+        ],
+        "exitCode": 0,
+        "seconds": 0.008
+      },
+      {
+        "label": "jit-build-UpstreamVectors",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/UpstreamVectors/UpstreamVectors.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "exitCode": 0,
+        "seconds": 4.08
+      },
+      {
+        "label": "jit-run-UpstreamVectors",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/UpstreamVectors/bin/Release/net10.0/UpstreamVectors.dll"
+        ],
+        "exitCode": 0,
+        "seconds": 0.064
+      },
+      {
+        "label": "aot-build-UpstreamVectors",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/UpstreamVectors/UpstreamVectors.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:TreatWarningsAsErrors=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/aot-UpstreamVectors"
+        ],
+        "exitCode": 0,
+        "seconds": 9.785
+      },
+      {
+        "label": "aot-run-UpstreamVectors",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/aot-UpstreamVectors/UpstreamVectors"
+        ],
+        "exitCode": 0,
+        "seconds": 0.008
+      },
+      {
+        "label": "jit-build-ProviderVectors",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/ProviderVectors/ProviderVectors.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "exitCode": 0,
+        "seconds": 5.373
+      },
+      {
+        "label": "jit-run-ProviderVectors",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/ProviderVectors/bin/Release/net10.0/ProviderVectors.dll"
+        ],
+        "exitCode": 0,
+        "seconds": 1.065
+      },
+      {
+        "label": "aot-build-ProviderVectors",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/ProviderVectors/ProviderVectors.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:TreatWarningsAsErrors=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/aot-ProviderVectors"
+        ],
+        "exitCode": 0,
+        "seconds": 10.081
+      },
+      {
+        "label": "aot-run-ProviderVectors",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/aot-ProviderVectors/ProviderVectors"
+        ],
+        "exitCode": 0,
+        "seconds": 1.116
+      },
+      {
+        "label": "jit-build-TlsTests",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/TlsTests/TlsTests.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "exitCode": 0,
+        "seconds": 3.27
+      },
+      {
+        "label": "jit-run-TlsTests",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/TlsTests/bin/Release/net10.0/TlsTests.dll",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/tls-jit-credentials"
+        ],
+        "exitCode": 0,
+        "seconds": 2.768
+      },
+      {
+        "label": "aot-build-TlsTests",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/TlsTests/TlsTests.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:TreatWarningsAsErrors=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/aot-TlsTests"
+        ],
+        "exitCode": 0,
+        "seconds": 10.228
+      },
+      {
+        "label": "aot-run-TlsTests",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/aot-TlsTests/TlsTests",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/tls-aot-credentials"
+        ],
+        "exitCode": 0,
+        "seconds": 2.417
+      },
+      {
+        "label": "jit-build-ManagedConsumer",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/ManagedConsumer/ManagedConsumer.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "exitCode": 0,
+        "seconds": 3.619
+      },
+      {
+        "label": "aot-build-ManagedConsumer",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/ManagedConsumer/ManagedConsumer.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:TreatWarningsAsErrors=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/aot-ManagedConsumer"
+        ],
+        "exitCode": 0,
+        "seconds": 10.279
+      }
+    ],
+    "checks": [
+      "TranslatedAbi JIT",
+      "TranslatedAbi NativeAOT",
+      "UpstreamVectors JIT",
+      "UpstreamVectors NativeAOT",
+      "ProviderVectors JIT",
+      "ProviderVectors NativeAOT",
+      "TlsTests JIT",
+      "TlsTests NativeAOT"
+    ],
+    "runtime": "linux-x64"
+  },
+  "coreValidation": {
+    "passed": true,
+    "revision": "3598470df01264da85157025ed10db0f7e103790",
+    "archiveSha256": "735ac6f0f3823dd5d0210ccf3a367ed39edc6fe889214db0749670437f705d00",
+    "sources": {
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/picotls.c": "9d9aff825b6faf16b770028572fd28444ee1735c1904dc8dd83a770730b59a22",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/hpke.c": "df23d47f4134bc4ba3b28431773acb5ad5b87c6eab96a4e50c261758f631dd82",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/pembase64.c": "b32bf3799740c49029efc7b114e9b6ae15c2dee394fd530106720af22bd0940e",
+      "picotls/edg/tests/core.c": "4a04b21bf9cb068d8031faf9d5ed408d8f910649ecec2c8919f0f21887c916a2",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/asn1.h": "eafd74701c65df3cff09728630f6783b5a612a68427705324694017f74314e0d",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/certificate_compression.h": "4a6f7efa733ce1db694e49bb7f753023401669de8f309e19abb38d09998b801d",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/ffx.h": "f600be90d306f885a8e26e6136eff7e50c0922f2f6cfe48fdbc6ff0c77f81bc1",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/fusion.h": "11caac3486abb64771099c0cab540e72f2386e12b2cab24b0efdc5e498335009",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/mbedtls.h": "f98c0998b53d0ac1be50520384f0dcea0f5be5eac061c7bc9f7db60919946a5a",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/minicrypto.h": "30da53c7c6aaee1914ed0ee54cd862bd7b9d41896022258fcfda9cf2745ad516",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/openssl.h": "ecfe2a7fa30ce81275543c5ab8a8ea05250742b7f5a1c35cba788c80588a447f",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/pembase64.h": "098ce16bacf533326ccc1d5a7a52425d5bbc42074816b4f19f16681a9454dfa8",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls/ptlsbcrypt.h": "03a765dc3a393db110725433c53ddf763644889935f76d25ac475e8ae8a492c9",
+      "picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include/picotls.h": "41170e59f1573a58063107d4e054171c74a523ed41e48019df064e10ad4d0082",
+      "picotls/edg/tests/verify.py": "bf237f9be13cdddef98ef9ce7c618b6539bbfc1d0859f340187afb871aaf5448"
+    },
+    "compiler": {
+      "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+      "sha256": "155670c45e5db9c601528e14502debce77c66ae95e3c0a47395bcdf8a0f09c73"
+    },
+    "checks": [
+      "native-run: exact expected bytes and zero exit status",
+      "all three unchanged core source files translated with no unbound externals",
+      "jit-run: exact expected bytes and zero exit status",
+      "aot-run: exact expected bytes and zero exit status"
+    ],
+    "commands": [
+      {
+        "label": "native-build",
+        "command": [
+          "cc",
+          "-std=c11",
+          "-D_GNU_SOURCE",
+          "-DPTLS_HAVE_LOG=0",
+          "-DPICOTLS_USE_DTRACE=0",
+          "-I",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/picotls.c",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/hpke.c",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/pembase64.c",
+          "/home/marius/p/dotcc/picotls/edg/tests/core.c",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/native"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 0.414476014993852,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "native-run",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/native"
+        ],
+        "cwd": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/native-run-work",
+        "exitCode": 0,
+        "elapsedSeconds": 0.0014459849917329848,
+        "stdoutSha256": "d73c16b85790bfd25b66435db8d7b49f82d7a21996d8556e4cd413fc62bdeaed",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "translate",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "--compiler",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+          "--language",
+          "c",
+          "--std",
+          "c11",
+          "--target",
+          "portable-lp64-binary80-v2",
+          "--libc",
+          "musl",
+          "--libc-pruning",
+          "reachable",
+          "--posix",
+          "--namespace",
+          "Picotls.Edg.Tests",
+          "--class-name",
+          "Core",
+          "--unbound-externals",
+          "reject",
+          "--split",
+          "source",
+          "-I",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/include",
+          "-DPTLS_HAVE_LOG=0",
+          "-DPICOTLS_USE_DTRACE=0",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/managed",
+          "--raw-output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/raw.cs",
+          "--frontend-invocation",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/frontend-invocation.json",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/picotls.c",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/hpke.c",
+          "/home/marius/p/dotcc/picotls/ref/picotls-3598470df01264da85157025ed10db0f7e103790/lib/pembase64.c",
+          "/home/marius/p/dotcc/picotls/edg/tests/core.c"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 3.723075185000198,
+        "stdoutSha256": "7972e535257843f82e962e2f7d1901099b5695ee8cb109b6e96ff65278dd1ec4",
+        "stderrSha256": "c286c10e5e4ce3a44e860fdef252611ea67ca2a32c54f3e204c48eb2cc0b0423"
+      },
+      {
+        "label": "jit-build",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/managed/Generated.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 3.3837505299889017,
+        "stdoutSha256": "dc1b40db7925dcc09c094fd5efd00a7f4d44e4ff4b7bd1b3ea1075b0de93c051",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "jit-run",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/managed/bin/Release/net10.0/Generated.dll"
+        ],
+        "cwd": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/jit-run-work",
+        "exitCode": 0,
+        "elapsedSeconds": 0.06409598301979713,
+        "stdoutSha256": "d73c16b85790bfd25b66435db8d7b49f82d7a21996d8556e4cd413fc62bdeaed",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "aot-publish",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/managed/Generated.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-p:TreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/aot"
+        ],
+        "cwd": "/home/marius/p/dotcc",
+        "exitCode": 0,
+        "elapsedSeconds": 5.785671065998031,
+        "stdoutSha256": "9b94b390c5454072a60bdcc90dfc3432e75f55e85e55b2fde3e11f233da7c322",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "aot-run",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/aot/Generated"
+        ],
+        "cwd": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/aot-run-work",
+        "exitCode": 0,
+        "elapsedSeconds": 0.007649489998584613,
+        "stdoutSha256": "d73c16b85790bfd25b66435db8d7b49f82d7a21996d8556e4cd413fc62bdeaed",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "libcPruning": "reachable",
+    "comparison": "exact stdout bytes; no normalization",
+    "scope": "actual unchanged core APIs; no TLS handshake or cryptographic provider in this fixture"
+  },
+  "peers": {
+    "jit": {
+      "cases": [
+        {
+          "case": "native-managed-client-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "native-managed-client-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "native-managed-client-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-expired",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "native-managed-server-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "native-managed-server-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-expired",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "independent-managed-client-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "independent-managed-client-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-expired",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "independent-managed-server-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "independent-managed-server-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-expired",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "managed-both-TLS_AES_128_GCM_SHA256",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "managed-both-TLS_AES_256_GCM_SHA384",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "reject-server-selected-unoffered-alpn",
+          "accepted": false
+        },
+        {
+          "case": "reject-key-encipherment-only-leaf",
+          "accepted": false
+        }
+      ],
+      "aot": false,
+      "raw": false,
+      "runtime": "linux-x64",
+      "evidence": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/peers-jit",
+      "managedCommand": [
+        "dotnet",
+        "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/ManagedConsumer/bin/Release/net10.0/ManagedConsumer.dll"
+      ],
+      "managedCommandOverride": true
+    },
+    "aot": {
+      "cases": [
+        {
+          "case": "native-managed-client-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "native-managed-client-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "native-managed-client-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-expired",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "native-managed-server-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "native-managed-server-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-expired",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "independent-managed-client-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "independent-managed-client-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-expired",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "independent-managed-server-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "independent-managed-server-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-expired",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "managed-both-TLS_AES_128_GCM_SHA256",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "managed-both-TLS_AES_256_GCM_SHA384",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "reject-server-selected-unoffered-alpn",
+          "accepted": false
+        },
+        {
+          "case": "reject-key-encipherment-only-leaf",
+          "accepted": false
+        }
+      ],
+      "aot": true,
+      "raw": false,
+      "runtime": "linux-x64",
+      "evidence": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-tests-001/peers-aot",
+      "managedCommand": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/aot-ManagedConsumer/ManagedConsumer"
+      ],
+      "managedCommandOverride": true
+    }
+  },
+  "limitations": [
+    "All provider inputs are still parsed; pruning changes C# emission, not source loading.",
+    "Generic musl driver and picotls recipe default to reachable; all is an explicit opt-out.",
+    "This is selected-musl pruning, not a general C++ archive linker.",
+    "A referenced shared translated libc/runtime assembly is not implemented by this change.",
+    "Execution verified on Linux x64 only."
+  ],
+  "sourceIntegrity": {
+    "passed": true,
+    "filesChecked": 122,
+    "manifest": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-001/projects/provider-manifest.json",
+      "bytes": 42830,
+      "sha256": "bbd2aabeab8d44dd621fde91a0ac821cd4f3711e38cb4ca1ad0584fa1055a621"
+    }
+  },
+  "defaults": {
+    "passed": true,
+    "commands": [
+      {
+        "label": "default",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/libc-pruning-defaults-001/main.c",
+          "--language",
+          "c",
+          "--compiler",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/libc-pruning-defaults-001/default",
+          "--split",
+          "source",
+          "--libc",
+          "musl",
+          "--raw-output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/libc-pruning-defaults-001/default.raw.cs"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "all",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/libc-pruning-defaults-001/main.c",
+          "--language",
+          "c",
+          "--compiler",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/libc-pruning-defaults-001/all",
+          "--split",
+          "source",
+          "--libc",
+          "musl",
+          "--libc-pruning",
+          "all",
+          "--raw-output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/libc-pruning-defaults-001/all.raw.cs"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "plain",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/libc-pruning-defaults-001/main.c",
+          "--language",
+          "c",
+          "--compiler",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/libc-pruning-defaults-001/plain",
+          "--split",
+          "source",
+          "--raw-output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/libc-pruning-defaults-001/plain.raw.cs"
+        ],
+        "exitCode": 0
+      },
+      {
+        "label": "packaged",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/libc-pruning-defaults-001/main.c",
+          "--language",
+          "c",
+          "--compiler",
+          "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/libc-pruning-defaults-001/packaged",
+          "--split",
+          "source",
+          "--libc",
+          "musl",
+          "--raw-input",
+          "/mnt/storage/dotcc-edg-campaign-20261003/libc-pruning-defaults-001/default.raw.cs"
+        ],
+        "exitCode": 0
+      }
+    ],
+    "checks": [
+      "musl defaults to reachable and omits unused c32rtomb",
+      "explicit all retains complete-provider c32rtomb definition",
+      "ordinary translation without musl still works without extra options",
+      "raw packaging preserves original pruning metadata without applying it again"
+    ]
+  }
+}

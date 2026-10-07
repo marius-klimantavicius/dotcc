@@ -1437,6 +1437,29 @@ other platforms, TLS 1.2, 0-RTT and full QUIC transport are not covered by this
 acceptance. [Port/build instructions](../../picotls/edg/README.md) and
 [TLS acceptance evidence](../evidence/picotls-tls-20261007.json).
 
+Picotls and the generic musl driver now default to provider-only reachability
+pruning. `--libc-pruning all` explicitly retains the complete provider. An exact
+manifest of selected musl implementation files defines which
+entities are eligible; all emitted project definitions remain roots. EDG's IL
+walker follows direct references, function-pointer constants, variable/TLS
+initializers and cleanup metadata, with explicit edges for backend-resolved
+builtins and conservative startup/TLS/finalizer roots. EDG needed flags and
+upstream semantics are unchanged. This is not a general C++ archive linker.
+
+The picotls result shrinks from 286 to 72 generated C# files and 4,452,485 to
+3,299,933 bytes. It retains 20/449 provider routines and 4/66 provider variables;
+unused `c32rtomb` disappears, while all 102 public picotls names and 240 project
+function names remain. Fourteen C/C++ static/instance/default compatibility
+checks pass, along with an actual musl C++ two-owner JIT/AOT fixture and a used
+`c32rtomb` UTF-8 test. The trimmed picotls library passes the full ABI, upstream,
+provider and TLS JIT/AOT suites plus all 56 independent-peer cases per mode.
+
+`artifacts/review/picotls/` points to the trimmed output. Every provider input is
+still parsed; this change reduces generated output. A referenced authored runtime
+is a smaller next step than separately compiled musl, which needs a stable
+owner/allocation/TLS/callback/type ABI. Neither shared assembly is implemented
+here. [Pruning evidence](../evidence/picotls-pruning-20261007.json).
+
 
 ## Semantic export: normalized SQLite packages (2026-10-07)
 

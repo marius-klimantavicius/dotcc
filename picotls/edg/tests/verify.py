@@ -36,6 +36,7 @@ def main():
     parser.add_argument("--compiler", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--native-only", action="store_true")
+    parser.add_argument("--libc-pruning", choices=("reachable", "all"), default="reachable")
     args = parser.parse_args()
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -47,7 +48,8 @@ def main():
     report = {"passed": False, "revision": pin["revision"], "archiveSha256": pin["sha256"],
               "sources": {str(p.relative_to(ROOT)): digest(p) for p in inputs},
               "compiler": {"path": str(args.compiler.resolve()), "sha256": digest(args.compiler)},
-              "checks": [], "commands": [], "comparison": "exact stdout bytes; no normalization",
+              "checks": [], "commands": [], "libcPruning": args.libc_pruning,
+              "comparison": "exact stdout bytes; no normalization",
               "scope": "actual unchanged core APIs; no TLS handshake or cryptographic provider in this fixture"}
 
     def save():
@@ -89,7 +91,7 @@ def main():
             generated = out / "managed"
             run("translate", [sys.executable, ROOT / "edgcpp/dotnet.py", "--compiler", args.compiler.resolve(),
                               "--language", "c", "--std", "c11", "--target", "portable-lp64-binary80-v2",
-                              "--libc", "musl", "--posix", "--namespace", "Picotls.Edg.Tests", "--class-name", "Core",
+                              "--libc", "musl", "--libc-pruning", args.libc_pruning, "--posix", "--namespace", "Picotls.Edg.Tests", "--class-name", "Core",
                               "--unbound-externals", "reject", "--split", "source", "-I", upstream / "include",
                               *definitions, "--output-dir", generated, "--raw-output", out / "raw.cs",
                               "--frontend-invocation", out / "frontend-invocation.json", *sources])
