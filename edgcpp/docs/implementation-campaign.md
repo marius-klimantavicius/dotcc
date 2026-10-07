@@ -1605,3 +1605,13 @@ with the stock C backend. That configuration is not adopted. Upstream DuckDB
 amalgamation is being tested as an alternative source assembly.
 
 [Source assembly evidence](../evidence/duckdb-source-assembly-20261007.json).
+
+The C++17 native reference now passes the same 17 upstream cases and 2,848
+assertions as the earlier C++20 build (RE2 retains its explicit C++11 override).
+The translation driver supports verified reuse of completed application
+preprocessing, including source/flag/header/environment/compiler fingerprints
+and retained-input hashes. A later code-generation failure does not discard a
+valid preprocessing result. Provider inputs are preprocessed afresh, and the
+final invocation keeps libc++ include paths away from the musl C sources.
+Fresh/reuse CLI checks pass on a real DuckDB TU plus the real provider; this is
+input-pipeline evidence, not DuckDB execution.

@@ -21,5 +21,25 @@
     "General whole-program template ownership",
     "Complete DuckDB translation and JIT/NativeAOT upstream tests"
   ],
-  "notAdopted": "Deprecated SSI/template-retention compiler configuration: did not resolve the merge rejection in either C or C# backend"
+  "notAdopted": "Deprecated SSI/template-retention compiler configuration: did not resolve the merge rejection in either C or C# backend",
+  "nativeReference": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-cpp17-001/verification-summary.json",
+    "sha256": "21bfd15b1b50621ca2c317211f48ba4f20561532a723450a3066117f6d02cc23",
+    "cases": 17,
+    "assertions": 2848,
+    "configuredStandard": "c++17",
+    "upstreamRe2Override": "c++11"
+  },
+  "preprocessingReuse": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-preprocessing-driver-003/results.json",
+      "sha256": "6344adde0a1862b1da9a59efd272d6df4f8aa4a59516a0b87681cd0b93c0537e",
+      "scope": "One actual DuckDB TU plus fresh libc++ provider; fresh/reuse pipeline smoke, not generated C# execution"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-preprocessing-driver-004/results.json",
+      "sha256": "8534cfe91ed8974ad153e3e6a68a8bcb5b4c6930e17374eea1337b3be06c1bc6",
+      "scope": "One actual DuckDB TU plus fresh libc++ provider; fresh/reuse pipeline smoke, not generated C# execution"
+    }
+  ]
 }

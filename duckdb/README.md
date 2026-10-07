@@ -20,7 +20,7 @@ space for native objects and retained preprocessed C++.
 
 ```sh
 python3 duckdb/edg/native.py --source-dir /path/duckdb-source \
-  --build-dir /path/duckdb-native --std 20 --jobs 12
+  --build-dir /path/duckdb-native --std 17 --jobs 12
 python3 duckdb/edg/portable.py --manifest /path/duckdb-native/sources.json \
   --output-dir /path/duckdb-portable
 python3 duckdb/edg/translate.py \
@@ -53,11 +53,30 @@ preparation result. No preprocessing or frontend-only result is an execution
 pass. Private libc++ source adaptations and the source-assembly limitations are
 documented in [edg/libcxx.md](edg/libcxx.md).
 
-The initial native baseline uses C++20; some bundled RE2 targets select C++11.
+After a complete preprocessing run, add
+`--reuse-preprocessed /path/to/previous/results.json` to a new attempt with a
+new output directory. The driver verifies the ordered source list, compiler,
+portable-source manifest, preprocessing flags, environment, public headers,
+forced headers and every retained `.ii` hash. It also checks the files named by
+preprocessor line markers; time-dependent macros disable automatic reuse.
+Missing or changed inputs and older receipts without these fingerprints are
+rejected. A failed later translation can still supply a valid preprocessing
+cache. Changes to provider implementation assembly alone do not invalidate
+application preprocessing, while changes to its public header contract do.
+Provider TUs are always preprocessed afresh. The final translator receives only
+preprocessed provider/application inputs, so libc++ header search paths cannot
+affect its separately compiled musl sources. Reuse carries no previous
+translation or execution claim. Run the focused provenance checks with
+`python3 duckdb/edg/tests/check_preprocessing_cache.py`.
+
+Both C++20 and matching C++17 native baselines have built and passed the same
+17 selected upstream cases (2,848 assertions). Some bundled RE2 targets retain
+their upstream C++11 override.
 Portable whole-program input deliberately uses a uniform standard, currently
 C++17, to avoid unrelated C++20 constrained-template merge requirements. Original
-per-TU standards and the adaptation are recorded. A matching native C++17 build
-is required before final translated differential acceptance.
+per-TU standards and the adaptation are recorded. The C++17 reference records
+2,332 library/test TUs using C++17 and 23 RE2 TUs using C++11. Final acceptance still requires translated execution of those
+same upstream tests.
 
 ## Verification
 
