@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "status": "frontend-diagnostic-stop",
+  "results": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-006/results.json",
+    "sha256": "91499d628b46a6125a2a0e1f11ca7151b66d5c2fb261d24bd11a7b9fc2fdfd0a"
+  },
+  "prepared": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-006/prepared.json",
+    "sha256": "45ca86316b9ba45887a0d4ad50ac531cdacf96d0907ac9cab9aa315073e9709b"
+  },
+  "diagnostic": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-006/checkpoint/writer.stderr",
+    "sha256": "a182aa86781637f8e1ddf5f7c07733cf80a12f8b94bc0d255fb6df165493bf04"
+  },
+  "elapsedSeconds": 3867.502297580999,
+  "peakCompilerRssBytes": 49747513344,
+  "inputsVerifiedBeforeRun": true,
+  "inputsVerifiedAfterRun": true,
+  "changedInputs": [],
+  "checkpointUsable": false,
+  "error": "pair<string,string>::operator= declaration correspondence, JSON MultiFileFunction construction/read_json.cpp235",
+  "scope": "No memory or elapsed-time stop; no full C# checkpoint/build/execution."
+}

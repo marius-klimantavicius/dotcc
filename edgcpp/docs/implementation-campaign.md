@@ -2040,3 +2040,14 @@ BCL socket/resolver services are feasible; they cannot solve arbitrary managed
 fork or make that native-demo case eligible. Exact source locations and current
 service candidates are retained in the linked evidence. A bounded BCL socket
 prototype may proceed in isolated artifacts while full006 inputs stay frozen.
+
+
+Full006 stops after 3,867.5 seconds on another exact pair copy-signature
+correspondence diagnostic, now `pair<string,string>` in JSON MultiFileFunction
+construction. The Value case does not recur. Peak compiler RSS is 46.33 GiB;
+neither time nor memory stopped the run. All before/after input hashes match.
+No usable checkpoint or generated full library exists. The next work reduces
+this concrete signature and broadens bounded pair preflight without modifying
+EDG semantics or weakening diagnostics.
+
+[Attempt006 diagnostic](../evidence/duckdb-checkpoint006-diagnostic-20261007.json).

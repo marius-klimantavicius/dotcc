@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "full-attempt-running",
+  "status": "frontend-diagnostic-stop",
   "portableStage": {
     "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-value-001/portable.json",
     "sha256": "e1ebff3318d47a60fddfe4fc5cc82e28d0f4fb0085fd0cfcc12320aa4c7a2598"
@@ -38,5 +38,9 @@
   "independentStageAudit": {
     "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-value-stage-independent-audit-001/results.json",
     "sha256": "e9aefdb8c259997a22c8d6b74b7a7b74216cf2177c9a43410a20cfe93cf4c374"
+  },
+  "result": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-006/results.json",
+    "sha256": "91499d628b46a6125a2a0e1f11ca7151b66d5c2fb261d24bd11a7b9fc2fdfd0a"
   }
 }
