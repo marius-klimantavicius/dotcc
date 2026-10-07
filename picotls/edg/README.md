@@ -99,16 +99,20 @@ See [core test instructions](tests/README.md),
 ## Review artifacts
 
 Current generated source:
-`edgcpp/artifacts/review/picotls/` (links to `picotls-edg-pruned-001/managed`).
+`edgcpp/artifacts/review/picotls/` (links to `picotls-edg-pruned-002/managed`).
 The main protocol implementation is `Translated.source.picotls.c.cs`; public
 record declarations are in `Translated.cs`, and exported constants are grouped
 in `Translated.source.pembase64.c.cs`. The exact source index is
 `dot-gen.sources.json`.
+All 17 selected integral macros are public C# constants; their unused private
+probe bodies and lifecycle wrappers are removed from packaged C#.
 
 Persistent evidence lives under
 `/mnt/storage/dotcc-edg-campaign-20261003/`:
 
 - `picotls-edg-pruned-001/`: trimmed core translation and strict library build.
+- `picotls-edg-pruned-002/`: regenerated core with constant macro probes removed.
+- `picotls-edg-pruned-provider-002/`: provider JIT/AOT verification after probe removal.
 - `picotls-edg-pruned-provider-001/`: provider projects, JIT/AOT tests and executables.
 - `picotls-edg-pruned-tests-001/`: native differential tests and both peer receipts.
 - `picotls-edg-004/`: retained complete-provider baseline for comparison.

@@ -1460,6 +1460,22 @@ is a smaller next step than separately compiled musl, which needs a stable
 owner/allocation/TLS/callback/type ABI. Neither shared assembly is implemented
 here. [Pruning evidence](../evidence/picotls-pruning-20261007.json).
 
+### Constant macro probe cleanup (2026-10-07)
+
+Macro exports already promoted EDG-folded integral values to public C# constants,
+but retained the private probe body and its lifecycle boundary wrapper.
+Packaging now removes both when no other emitted member references them, and
+removes their source-navigation entries. Nonconstant properties and function
+macros retain their adapters; raw output and native probes remain inspectable.
+
+The refreshed picotls review has all 17 selected constants and removes 34 unused
+methods, reducing packaged C# from 3,299,933 bytes / 72 files to 3,288,178 bytes /
+71 files. Nine macro checks pass, including C/static and C++/instance JIT and
+NativeAOT consumers. The regenerated library passes strict compilation and the
+picotls ABI, upstream, provider and TLS suites in JIT and Linux-x64 NativeAOT.
+Independent peers were not rerun for this cleanup.
+[Evidence](../evidence/macro-probe-cleanup-20261007.json).
+
 
 ## Semantic export: normalized SQLite packages (2026-10-07)
 

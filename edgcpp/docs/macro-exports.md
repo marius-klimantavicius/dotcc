@@ -46,7 +46,12 @@ The public managed result is:
 For example, `#define API_INT (1 << 12)` produces
 `public const int API_INT = 4096;`. A string macro produces an `sbyte*` property
 pointing to the normal retained literal storage, not a managed string conversion.
-The private native adapter bodies remain inspectable in generated C#.
+For constants, packaging removes the unused private probe body and its lifecycle
+boundary wrapper, along with their source-navigation entries. If another emitted
+member references a probe, it is conservatively retained. Nonconstant properties
+and methods keep their private adapters. The raw backend output and native probe
+sources remain available for inspection; `adapterEliminated` in the macro
+manifest records constant-probe removal.
 The existing namespace, owner class, instance-globals, and file-splitting options
 apply. Constants remain C# static constants even in an instance owner; properties
 and methods belong to the instance when `--instance-methods` is selected.
@@ -117,7 +122,8 @@ This first stage requires `--emit managedlib` and native translation. It rejects
 ## Verification
 
 `backend/tests/macro_exports_verify.py` checks C/static and C++/instance outputs,
-source splitting and navigation, actual constants in `const`/`switch` contexts,
+source splitting and navigation, actual constants in `const`/`switch` contexts
+without leftover probe methods or navigation entries,
 unsigned limits, negative values, redefine/undef behavior, UTF-8/embedded-NUL
 string pointers, current-state properties, typed pointer/aggregate/function
 macros, lifecycle boundaries with exception catches, explicit argument-once

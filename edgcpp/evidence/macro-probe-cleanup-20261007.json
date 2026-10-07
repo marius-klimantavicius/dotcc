@@ -1,0 +1,231 @@
+{
+  "date": "2026-10-07",
+  "change": "Remove unused constant-macro probe bodies and lifecycle wrappers from packaged C#, retaining public const fields and raw provenance.",
+  "macroVerification": "/mnt/storage/dotcc-edg-campaign-20261003/macro-probe-cleanup-001/results.json",
+  "picotlsVerification": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-provider-002/results.json",
+  "target": "linux-x64",
+  "macros": [
+    {
+      "name": "PTLS_ALERT_BAD_CERTIFICATE",
+      "type": "int",
+      "value": "42",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ALERT_CERTIFICATE_EXPIRED",
+      "type": "int",
+      "value": "45",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ALERT_CERTIFICATE_REQUIRED",
+      "type": "int",
+      "value": "116",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ALERT_CERTIFICATE_REVOKED",
+      "type": "int",
+      "value": "44",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ALERT_DECRYPT_ERROR",
+      "type": "int",
+      "value": "51",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ALERT_HANDSHAKE_FAILURE",
+      "type": "int",
+      "value": "40",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ALERT_ILLEGAL_PARAMETER",
+      "type": "int",
+      "value": "47",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ALERT_NO_APPLICATION_PROTOCOL",
+      "type": "int",
+      "value": "120",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ALERT_UNKNOWN_CA",
+      "type": "int",
+      "value": "48",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ALERT_UNSUPPORTED_CERTIFICATE",
+      "type": "int",
+      "value": "43",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ERROR_LIBRARY",
+      "type": "int",
+      "value": "515",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ERROR_NO_MEMORY",
+      "type": "int",
+      "value": "513",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ERROR_REJECT_EARLY_DATA",
+      "type": "int",
+      "value": "521",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_ERROR_SESSION_NOT_FOUND",
+      "type": "int",
+      "value": "517",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_MAX_CERTS_IN_CONTEXT",
+      "type": "int",
+      "value": "16",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_SIGNATURE_ECDSA_SECP256R1_SHA256",
+      "type": "int",
+      "value": "1027",
+      "adapterEliminated": true
+    },
+    {
+      "name": "PTLS_SIGNATURE_RSA_PSS_RSAE_SHA256",
+      "type": "int",
+      "value": "2052",
+      "adapterEliminated": true
+    }
+  ],
+  "removedMethods": 34,
+  "generatedSources": {
+    "Runtime.AtomicOps.cs": "6b8fe145a9f4e7aba03bfb9c8791f7233411db09434025d6eaa73ea12b20618a",
+    "Runtime.Float80.cs": "1e82204968e56fb5e0cd55437c7c51749263ac19ca803556eab1374b1e3ea381",
+    "Runtime.LibcAppend.cs": "09f7f8d9ec2bf5438d26ff5f9d5d29535559d639cb569fbdd4f8ce09163d2f0e",
+    "Runtime.LibcC11Threads.cs": "a277d4941468e342527227a88e04e3fa3ac615d10bfe6cc7d6c3e670a2902433",
+    "Runtime.LibcContext.cs": "c05e4cb9fa5b8f871a587061e983808aaf5fca6e560474688572328fec62f8a6",
+    "Runtime.LibcEnvironment.cs": "c1ff5ef77a4cdfeffe957263c2f1934430383bfc6134d23c2ddf1565dd2aa959",
+    "Runtime.LibcErrorMessages.cs": "266fa2153def0a84a8e3e06188d67e322e0e176ad0bbd4e790cd27affec1b501",
+    "Runtime.LibcFileDescriptors.cs": "e2d34dcde758700dcb6b95cc7566b271407b483e7c2cb745620a0e7490b091ac",
+    "Runtime.LibcFiles.cs": "e1ee97c7e8b23e80aa9a23ec4dd684c57c4058cf1434371f6442a570fb14124d",
+    "Runtime.LibcFilesAssert.cs": "798c9c116a82161b8af91639a28252d80a67976883502c581fb71ee75df55725",
+    "Runtime.LibcFilesDescriptors.cs": "8d30409a2ccf68dd82806544d7603f80bc155d65046a48961a669846e114feb8",
+    "Runtime.LibcFilesFormat.cs": "81031664acfc22d8c24bc2cd973f19b03fa6a24a8d388a9594c4e81bbc944197",
+    "Runtime.LibcFilesManagement.cs": "44eed7efec0d9ad4676b1bde87687d764afe615ee60654062a8a9c0f3f2126ac",
+    "Runtime.LibcFilesSignalAssert.cs": "3586ca288d2c5bfdb7ef7d2bc6549bbe7ac96e663e80c9b20ea4245d49b4d79c",
+    "Runtime.LibcFilesWide.cs": "a534866ee4fd2e1b15d8d2d0f37233e16045378b7911b0ea4728faaa95f69bdb",
+    "Runtime.LibcFloat.cs": "0275d7f01f0f34ee691ee45632a688fb76cd4d91419f7be0da81c8e2d4a3269b",
+    "Runtime.LibcInet.cs": "5dda11bfb4c45f9fa225f1e1ff0fe7153dbe0f9af4fe8308c5407cf134f80887",
+    "Runtime.LibcInitialThread.cs": "a3f04494b1459a8036b82d514b8d6d2f4c0422f0493acd48b6a328aff1352f36",
+    "Runtime.LibcLocale.cs": "33b703cdac6b98967af92faa3b871ac13e31753cc5d37ab4e4b65d0f4a786a5f",
+    "Runtime.LibcLocaleEnvironment.cs": "ac0b05323ab8210ef3697469b038845a7b9271f27655fcaea9088c3f8d15208c",
+    "Runtime.LibcPaths.cs": "10f6c380f2469290134f404144869cf921361ad183f5a6ed5abbcd9a23c4cd62",
+    "Runtime.LibcProcess.cs": "375ff9d6c0703a74da1eff08643e540042b23287f62be934363cc1b96afc5be5",
+    "Runtime.LibcSignals.cs": "9936e0e57716b2971a8943bd6c37c3f0fd824f604b1b026c6cd076238beb0c66",
+    "Runtime.LibcText.cs": "98e1dc8e61767fd12cf5fbfc73adf06ba40b9980c764c96dd2d2c51bdfa28a5c",
+    "Runtime.LibcxxThreads.cs": "3f5920956c86e65b0ba5e3d7d90ba83e2f1ccc8677948f92a53b6b73be4e9da4",
+    "Runtime.PosixContext.cs": "ed5e1f84740323edef67b7f118b7673fe4a6e1133e754143ed137b834430ed67",
+    "Runtime.PosixDirectories.cs": "9b4cd094e7f5ba3115668e29f8085f8afcd0d801a5cbc8405c1935626e4e98a1",
+    "Runtime.PosixFiles.cs": "c9e502255ddbbb29b7c99587f0d203cc6116d858914ea8b5242a70f93797fa72",
+    "Runtime.PosixLocks.cs": "98770515c037e1bfe80e741796eb624553b0420e20a0760f38ec6b7b5e8f6b55",
+    "Runtime.PosixMappings.cs": "29b66306e810f22da689c3fd70962a7761244912e6d5f04ef9110fd77f504828",
+    "Runtime.PosixOfdLocks.cs": "931958260e2d1e5d9d7ad3aa56e4bca9d3fe96e3d744b9588ecf36e02dc7dfd9",
+    "Runtime.PosixPlatform.cs": "18aecca1b1bda5198a913409f2201ab66e5769131010894cb1eed949e01912c7",
+    "Runtime.PosixResources.cs": "f602364135e92937bfd9a347f131d4d646219d963bfb3513892d25efa82890db",
+    "Runtime.PosixStreams.cs": "0a7140a8f5cffcf6e6cf98e288697b581e85ad23f9676f3a3ee048d1ad546566",
+    "Runtime.PosixTime.cs": "26af18a4c101b92f70db799e1f42fbf559bb6c203f8fe4af6c45c942814aa4ec",
+    "Runtime.PosixTypes.cs": "cb2d86e871bc2d1e4fab98d8dd9112626e4c6470ac305701004b137384407526",
+    "Runtime.PosixVariadic.cs": "2cddd64d91c54354d2f4717a19a8d50e97006931f947e69c570e26c756160854",
+    "Runtime.PosixWindowsLocks.cs": "d95c6e41813158e91b740b64b800205b300d768bb6172902ebd037286abe7e54",
+    "Runtime.VaArg.cs": "00760c6f1e2df0112e072ad9a109656b71691e30dd600be77dd5a22ba8a24cce",
+    "Runtime.VaList.cs": "a0d7d0bf36c3b8d9403d3305d3c406242292893bc041606a7f532e6fa90d9b72",
+    "Runtime.VaPack.cs": "27025674874979a2bfc7bbfce20913953925749b81b9b923f3304bea80b4c8bf",
+    "Translated.cs": "e150713669fb2ee12bea5921b0d6b170c89838df997f64e1bba86e6c3668b0c6",
+    "Translated.generated.cs": "be3c9895b502ad216653d557d61041b7e1bb45fef0e52bbf815aa30ffa11f6ba",
+    "Translated.source.assert_fail.c.cs": "8871920de99b89455fe4a704c022578daa2697579ec97ac9a4d603d83cac6a1f",
+    "Translated.source.atomic.h.cs": "ae28002520a4c46cab58655cb7a7c0c8e62ec023c7586f00424bc5f20a07bb93",
+    "Translated.source.casemap.h.cs": "edc4aeecb74cd9de6a15ebda5169fe8f5256a51a8c4bbd2913bf1f71d41da593",
+    "Translated.source.environment_compat.h.cs": "72a7be45e7c1587427343d77a6d1b198b94eafab8080a5c7658238b06e4bfcd2",
+    "Translated.source.environment_startup.c.cs": "d43471179f3ec1b66dcf0c0dead83259eecb2f131e646190eac157154e5ad642",
+    "Translated.source.format_sink.h.cs": "7bba663ec7c8a532f43118cdec36226b3766efa6d8bdf77d969f7f4b0b7fbe78",
+    "Translated.source.format_wrappers.c.cs": "6f36f56b5c929e288ce909ced78690ad682312276c52126fe263de4151be35de",
+    "Translated.source.hpke.c.cs": "082689a031ebbb180db36494f6723b713023bc4f54ac92271107bb35c9799dfb",
+    "Translated.source.libm.h.3ca26cf2da37.cs": "b75e25bfc04f69298452e863ba8d26d2551f11267c855e7f4a9a6366c64d4554",
+    "Translated.source.libm.h.cs": "ecc4f014be1239223241908df2106d09c34301b4015776e7e3f0d10c4aae86ca",
+    "Translated.source.pembase64.c.cs": "69d6a753248825d44780e0c130ef5881f01885c63375be4193cf8f1223b021f9",
+    "Translated.source.picotls-host.c.cs": "401d16ecb2053300b8b9d40c8f6a22750f505face3afac5c7a9ce2c6023a1b6e",
+    "Translated.source.picotls-quic.c.cs": "1dfc350fc8f722612a4566688fbd00601e4fe703facd75d452998c7bbf416cdd",
+    "Translated.source.picotls.c.cs": "ad665e0d8e2001b8a68540df29e3c6e96059f6d6c8eb962d770342fecf7b2c16",
+    "Translated.source.picotls.h.cs": "4d2b639777fecbd77cc021bba176f7a8555c33afdc6c15eda9763eed603dd644",
+    "Translated.source.prng_lock.h.cs": "8513616bdcfe3c3101c6fa1c0728df2e6eb0f00c3d0440bb321e058e669b241c",
+    "Translated.source.scan_ctype.h.cs": "c6e2e7e1a87bab76c1d4a80ac439eef8861ca0fd27b0882fd65a717da65fd502",
+    "Translated.source.scan_string.h.0623305dd387.cs": "4896737fee792034d5671df4deb16748bebc1e573a724e5b70cdb3732b9b7ca6",
+    "Translated.source.scan_string.h.0a12eaa66251.cs": "04e5cf4ef642c69ef1f75045fa6b1385808a0ffe77dd8bb45d54190fda2c3db9",
+    "Translated.source.scan_string.h.cs": "61b9576c616859c2b05fff996d0f4d900785808003db67cbae2b14d2714298a0",
+    "Translated.source.scan_string.h.ec7276094efc.cs": "9a72d3ad85ab89e0c32eac7475bcfee8856006e7e3a99bd2245912f832e1c8a2",
+    "Translated.source.signals.c.cs": "0de95cf866ce1d707508f436ba628bf0c0587baa2764b4014636044a1c9887aa",
+    "Translated.source.threads.c.cs": "b8aa4812879edc3894e97ce4f2cef06fedd9a0a27711d050c766a93cff74c391",
+    "Translated.source.vfprintf.c.cs": "dfb4b9ee839edfda1ada938702591a3f28d050331758f85e409b3bc5aadea548",
+    "Translated.source.wcrtomb.c.cs": "007473564d188c1ff85dedfa524005aac8b8bb06844f852a3a52e7ea76e8cc40",
+    "Translated.source.wctomb.c.cs": "078c9f407ad904eea0e578560913c4b77d12433e171fd7e9a9a6c44c5f7c53b3",
+    "Translated.source.wformat_sink.h.cs": "7ee9e15e9cdf418d86bdf11b0818898efa04834f97d839c6d39d12dc2e33d00c",
+    "Translated.source.wscan_file.h.cs": "040fecf1785b3bc665d0af527bc610c02887b803499baae5530d2f98012d0d71"
+  },
+  "comparisons": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-001/managed",
+      "csFiles": 72,
+      "csBytes": 3299933
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-pruned-002/managed",
+      "csFiles": 71,
+      "csBytes": 3288178
+    }
+  ],
+  "limits": [
+    "Properties and function-like macros retain their callable adapters.",
+    "A constant probe referenced elsewhere is conservatively retained.",
+    "Raw backend output and native probe sources are preserved.",
+    "Existing peer-suite results apply to the prior pruning output; peers were not rerun for this probe-only cleanup."
+  ],
+  "macroVerificationSummary": {
+    "status": "passed",
+    "checks": [
+      "c-static: constants in switch/const contexts with no leftover probe/wrapper methods or navigation entries; u64, final redefinition, UTF-8 embedded NUL pointer, typed argument-once/aggregate/pointer macros, lifecycle exception boundaries and source navigation",
+      "c-static: NativeAOT direct macro APIs",
+      "cpp-instance: constants in switch/const contexts with no leftover probe/wrapper methods or navigation entries; u64, final redefinition, UTF-8 embedded NUL pointer, typed argument-once/aggregate/pointer macros, lifecycle exception boundaries and source navigation",
+      "cpp-instance: NativeAOT direct macro APIs",
+      "reject: empty/configuration",
+      "reject: requires a --macro-signatures",
+      "reject: matched no active macros",
+      "reject: invalid --export-macros",
+      "reject: include-sensitive original source"
+    ]
+  },
+  "picotlsVerificationSummary": {
+    "status": "passed",
+    "checks": [
+      "TranslatedAbi JIT",
+      "TranslatedAbi NativeAOT",
+      "UpstreamVectors JIT",
+      "UpstreamVectors NativeAOT",
+      "ProviderVectors JIT",
+      "ProviderVectors NativeAOT",
+      "TlsTests JIT",
+      "TlsTests NativeAOT"
+    ]
+  },
+  "status": "passed"
+}

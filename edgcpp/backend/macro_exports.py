@@ -216,6 +216,7 @@ def emit_macro_exports(source, manifest, exports, source_symbols, class_name, in
     used.update(item['method'].lstrip('@') for item in exports)
     used.update((class_name, 'Run', 'Dispose', 'Shutdown', 'ReleaseThread'))
     replacements, additions, records = {}, [], []
+    constant_adapters = []
     for item in manifest['macros']:
         name, bridge = item['name'], item['bridge']
         if name in used or name.startswith('__edg_'):
@@ -238,6 +239,7 @@ def emit_macro_exports(source, manifest, exports, source_symbols, class_name, in
             declaration = 'public const ' + return_type + ' @' + name + ' = ' + folded[1] + ';'
             item['managedKind'] = 'const'
             item['constantValue'] = folded[1]
+            constant_adapters.append((item, {managed, bodies[bridge]}))
         elif item['parameters'] is None:
             if return_type == 'void':
                 raise ValueError('object-like macro cannot export a void property: ' + name)
@@ -250,8 +252,25 @@ def emit_macro_exports(source, manifest, exports, source_symbols, class_name, in
         additions.append('// dot-gen:member-begin\n// dot-gen:origin @' + name + '\n' + declaration + '\n// dot-gen:member-end\n')
         records.append({'kind': 'macro', 'sourceFile': manifest['source'], 'sourceLine': 0, 'sourceColumn': 0,
                         'sourceName': name, 'managedName': '@' + name, 'scope': '', 'macroSnapshot': manifest['snapshot']})
+    removed = set()
+    if constant_adapters:
+        candidates = set().union(*(names for _, names in constant_adapters))
+        def omit_candidates(match):
+            origin = re.search(r'^// dot-gen:origin (@?\w+)\n', match[1], re.M)
+            return '' if origin and origin[1] in candidates else match[0]
+        remaining = member_pattern.sub(omit_candidates, source)
+        # Usually only a probe's boundary wrapper calls its literal-return body.
+        # Conservatively keep both if another emitted member references either
+        # name (for example an address adapter). No generated user call is lost.
+        references = set(re.findall(r'(?<!\w)(?:' + '|'.join(map(re.escape, sorted(candidates))) + r')(?!\w)', remaining))
+        for item, names in constant_adapters:
+            item['adapterEliminated'] = not bool(names & references)
+            if item['adapterEliminated']:
+                removed.update(names)
     def substitute(match):
         origin = re.search(r'^// dot-gen:origin (@?\w+)\n', match[1], re.M)
+        if origin and origin[1] in removed:
+            return ''
         content = replacements.get(origin[1], match[1]) if origin else match[1]
         return '// dot-gen:member-begin\n' + content + '// dot-gen:member-end\n'
     source = member_pattern.sub(substitute, source)
@@ -261,4 +280,5 @@ def emit_macro_exports(source, manifest, exports, source_symbols, class_name, in
     source = source[:header.end()] + ''.join(additions) + source[header.end():]
     bridge_names = {item['bridge'] for item in manifest['macros']}
     exports[:] = [item for item in exports if item['symbol'] not in bridge_names]
+    source_symbols[:] = [item for item in source_symbols if item['managedName'] not in removed]
     return source, records

@@ -48,11 +48,20 @@ for language, instance, split in [('c', False, 'none'), ('c++', True, 'source')]
     assert macros['API_TEXT']['managedKind'] == 'property' and macros['API_TWICE']['managedKind'] == 'method'
     assert not any(row['symbol'].startswith('dotgen_macro_') for row in manifest['exports'])
     generated = '\n'.join(path.read_text() for path in directory.glob('Translated*.cs'))
+    for macro in macros.values():
+        if macro['managedKind'] == 'const':
+            assert macro['adapterEliminated']
+            assert macro['bridge'] not in generated, macro['name']
+        else:
+            assert macro['bridge'] in generated, macro['name']
     if language == 'c++':
         assert 'catch (global::System.Exception __edg_boundary_error)' in generated
     assert 'API_TEXT(__edg_boundary_error)' not in generated
     source_index = json.loads((directory / 'dot-gen.sources.json').read_text())
     assert len([row for row in source_index['members'] if row.get('kind') == 'macro']) == 10
+    assert not any(row.get('sourceName') == macro['bridge']
+                   for row in source_index['members'] for macro in macros.values()
+                   if macro['managedKind'] == 'const')
     host = directory / 'host'
     host.mkdir()
     (host / 'Host.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><AllowUnsafeBlocks>true</AllowUnsafeBlocks><IsAotCompatible>true</IsAotCompatible></PropertyGroup><ItemGroup><ProjectReference Include="../Generated.csproj" /></ItemGroup></Project>')
@@ -81,7 +90,7 @@ unsafe class Program {
 }'''.replace('RECEIVER', receiver).replace('SETUP', setup))
     run(['dotnet', 'build', host / 'Host.csproj', '-c', 'Release', '--nologo', '-p:TreatWarningsAsErrors=true'])
     run(['dotnet', host / 'bin/Release/net10.0/Host.dll'])
-    checks.append(name + ': constants in switch/const contexts, u64, final redefinition, UTF-8 embedded NUL pointer, typed argument-once/aggregate/pointer macros, lifecycle exception boundaries and source navigation')
+    checks.append(name + ': constants in switch/const contexts with no leftover probe/wrapper methods or navigation entries; u64, final redefinition, UTF-8 embedded NUL pointer, typed argument-once/aggregate/pointer macros, lifecycle exception boundaries and source navigation')
     if args.nativeaot:
         run(['dotnet', 'publish', host / 'Host.csproj', '-c', 'Release', '-r', 'linux-x64',
              '-p:PublishAot=true', '-p:IlcTreatWarningsAsErrors=true', '-o', host / 'aot'])
