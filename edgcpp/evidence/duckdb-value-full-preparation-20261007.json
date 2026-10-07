@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "status": "full-attempt-running",
+  "portableStage": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-value-001/portable.json",
+    "sha256": "e1ebff3318d47a60fddfe4fc5cc82e28d0f4fb0085fd0cfcc12320aa4c7a2598"
+  },
+  "fullPreprocessing": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-translate-value-001/results.json",
+    "sha256": "7419d718114655e3e8490a10c676b03d3fd3cb5e1ded96cfa35a730cfc0986a8"
+  },
+  "baseComposition": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-composition-value-001/composition.json",
+    "sha256": "25609e92861e792828c0ed0affad87621863176527cb603790522a64f4b0d8dd"
+  },
+  "unityComposition": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-unity-composition-value-001/composition.json",
+    "sha256": "42caeb4cc82391c01eb3a451a7063137e9c6b76b28c8857aa8e0e904a0c7bf39"
+  },
+  "preparedAttempt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-006/prepared.json",
+    "sha256": "45ca86316b9ba45887a0d4ad50ac531cdacf96d0907ac9cab9aa315073e9709b"
+  },
+  "configuredSources": 2207,
+  "inputCount": 129,
+  "inputBytes": 215313546,
+  "configuredCoverageExactlyOnce": true,
+  "frozenInputsUnchanged": true,
+  "limitations": [
+    "No full semantic checkpoint or translated execution yet.",
+    "Input byte reduction is not a compiler-memory measurement."
+  ],
+  "driverPid": 1718152,
+  "stageByteComparison": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-006/coordinator-stage-check.json",
+    "sha256": "cc3c43c3efcb02d82e54437080634929113787444baa42ff61dfaa6056485921"
+  }
+}

@@ -1994,3 +1994,14 @@ being prepared; old input sets and superseded005 remain preserved.
 Canonical pair verifier passes all 34 commands against the fresh stage,
 including the existing LogicalType and real stock-C execution control.
 [Value signature evidence](../evidence/duckdb-value-pair-adaptation-20261007.json).
+
+
+Fresh Value-adapted preprocessing passes all 2,207 library sources and all
+13 selected unity groups. Complete coverage is unchanged: 129 program inputs,
+215,313,546 bytes, seven static extensions, every configured source exactly once.
+A byte-hash comparison of both 14,535-file staged trees finds only the expected
+Value header change. Full attempt006 is running with the same 72-GiB guard;
+005 remains superseded and unlaunched. No usable checkpoint or translated
+DuckDB execution is claimed.
+
+[Fresh complete preparation](../evidence/duckdb-value-full-preparation-20261007.json).
