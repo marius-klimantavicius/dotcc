@@ -114,3 +114,58 @@ mode and separate mode pass native/JIT/NativeAOT with the tracked header in
 `duckdb-libcxx-uniform-primary-002/` and `duckdb-libcxx-uniform-separate-002/`.
 Provider and consumer are preprocessed first; the final merge uses portable
 C headers for its separately added musl implementation.
+
+
+Standard streams need an additional source-assembly adaptation. Upstream
+`iostream.cpp` defines aligned byte storage while `<iostream>` declares typed
+objects in other translation units. Combining them directly gives conflicting
+C++ declarations. The generated private implementation copy keeps each raw
+buffer's exact size/alignment, gives it a private C-linkage name, and declares
+the public stream object with an explicit assembler label naming that buffer.
+Public headers and object types are unchanged; original placement construction,
+ties, initialization order and exit flushing remain in upstream code. This
+requires backend resolution of explicit assembler-labelled variable views onto
+the matching source-defined storage. The overlay is a translation input, not a
+recipe for optimized native unity compilation: GCC can assume distinct source
+objects despite equal assembler labels. The unchanged EDG C backend provides
+the storage-semantics comparison; native fixture expectations use the host's
+unmodified standard library.
+
+GNU `alias` attributes were also investigated, but unchanged EDG C rejects the
+real multi-TU provider's target lookup. Putting the alias TU last passes a
+minimal two-TU case but not three TUs; neither explicit zero initialization nor
+an explicit assembler label on the raw target fixed the broad case. Retained
+`duckdb-standard-streams-003/` artifacts distinguish those failures from the
+assembler-labelled-view probe, which reaches the C# backend with ordinary
+provider-first source order. Standard-stream verification now passes in both static and instance modes
+under JIT and NativeAOT (`duckdb-standard-streams-004/results.json`). The
+repeatable `tests/libcxx_standard_streams_verify.py` checks real stdin,
+stdout/stderr, all eight object types, early initialization and redirected
+wide-stream input/output against the native oracle. All externs resolve; no
+partial runtime implementations are used.
+
+The provider also scopes `locale.cpp`'s `<langinfo.h>` macros with push/pop,
+including the include guard. This prevents an implementation-only `ERA` macro
+from replacing DuckDB's `DatePartSpecifier::ERA`, while a later application
+`#include <langinfo.h>` still exposes the public constants. The header and
+macro list are recorded in the provider manifest.
+
+An isolated upstream DuckDB core amalgamation plus all provider implementation
+sources passes semantic preflight (`duckdb-amalgamation-002/`). Its inventory
+covers 1,476 of the configured 2,207 library translation units; 731 remain,
+including the static extensions, ICU, generated PEG transformer and generated
+extension loader. The upstream dummy extension loader is excluded so the
+configured seven-extension loader can supply the real implementation. Included
+`utf8proc_data.cpp` is a textual dependency of the selected `utf8proc.cpp`, and
+`allocator_jemalloc.cpp` is guarded by the disabled jemalloc option. This is an
+assembly investigation, not full DuckDB execution acceptance.
+
+The corrected `duckdb-amalgamation-004/` input preserves the native manifest's
+exact source ID (`069cc9f9b5`) and RE2_ON_VALGRIND setting. The latter controls
+sparse-table initialization and must not disappear when replacing individual
+RE2 compilation units with the upstream amalgamation.
+
+The broader primary-provider regression also passes with the stream storage
+overlay under native/JIT/NativeAOT (`duckdb-libcxx-asm-primary-001/results.json`),
+including arithmetic sort instantiations, floating formatting, string/stream
+operations, regex, synchronized threads, random-device access and exceptions.

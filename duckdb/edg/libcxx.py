@@ -6,6 +6,7 @@ that the provider or its consumers have translated or passed execution tests.
 import hashlib
 import json
 from pathlib import Path
+import re
 
 
 # The core profile already supplies allocation, managed EH/atomic/thread ABI,
@@ -91,9 +92,57 @@ def prepare_provider(root: Path, acquisition: Path, output: Path,
     adaptations = []
     adapted_sources = {}
     charconv_header = None
+    adapted = output / "adapted"
+    adapted.mkdir()
+
+    # Native libc++ links char-array definitions to typed declarations of the
+    # standard streams in other TUs. Give EDG a type-consistent public symbol
+    # and an explicit assembler label naming the same aligned raw storage.
+    # All placement construction, initialization order and flushing stay in
+    # the upstream implementation.
+    original = upstream / "src/iostream.cpp"
+    content = original.read_text()
+    streams = {"cin": "istream", "cout": "ostream", "cerr": "ostream", "clog": "ostream",
+               "wcin": "wistream", "wcout": "wostream", "wcerr": "wostream", "wclog": "wostream"}
+    for name, stream_type in streams.items():
+        pattern = re.compile(r"_ALIGNAS_TYPE\(" + stream_type + r"\)\n"
+                             r"_LIBCPP_EXPORTED_FROM_ABI char " + name +
+                             r"\[sizeof\(" + stream_type + r"\)\]\n.*?\n        ;", re.S)
+        matches = list(pattern.finditer(content))
+        if len(matches) != 1:
+            raise ValueError("Pinned iostream.cpp storage declaration no longer matches: " + name)
+        match = matches[0]
+        replacement = ('_LIBCPP_END_NAMESPACE_STD\nextern "C" {\n_ALIGNAS_TYPE(std::' + stream_type +
+                       ') _LIBCPP_EXPORTED_FROM_ABI char ' + name + '[sizeof(std::' + stream_type +
+                       ')];\n}\n_LIBCPP_BEGIN_NAMESPACE_STD')
+        replacement += "\n" * (match.group().count("\n") - replacement.count("\n"))
+        content = content[:match.start()] + replacement + content[match.end():]
+    for name in streams:
+        content = re.sub(r"\b" + name + r"\b", "__dotgen_stream_storage_" + name, content)
+    content = "#line 1 " + json.dumps(str(original)) + "\n" + content
+    content += '\n#line 1 "dotgen-standard-stream-storage-views"\n_LIBCPP_BEGIN_NAMESPACE_STD\n'
+    for name, stream_type in streams.items():
+        if name.startswith("w"):
+            content += "#ifndef _LIBCPP_HAS_NO_WIDE_CHARACTERS\n"
+        content += ('extern ' + stream_type + ' ' + name +
+                    ' __asm__("__dotgen_stream_storage_' + name + '");\n')
+        if name.startswith("w"):
+            content += "#endif\n"
+    content += "_LIBCPP_END_NAMESPACE_STD\n"
+    copy = adapted / "iostream.cpp"
+    copy.write_text(content)
+    adapted_sources[original] = copy
+    adaptations.append({"source": str(original), "path": str(copy), "sha256": _sha(copy),
+                        "kind": "standard-stream-storage-asm-labels", "streams": streams,
+                        "contract": "Public object types alias original-size/alignment raw storage; upstream placement construction, lifetime and flush algorithms unchanged"})
+
+    langinfo = root / "backend/runtime/libc/include/langinfo.h"
+    langinfo_macros = re.findall(r"^#define\s+(\w+)", langinfo.read_text(), re.M)
+    adaptations.append({"source": str(upstream / "src/locale.cpp"),
+                        "kind": "implementation-langinfo-macro-scope", "header": str(langinfo),
+                        "headerSha256": _sha(langinfo), "macros": langinfo_macros,
+                        "contract": "Restore preceding macro and header-guard state after locale.cpp; later application langinfo includes still expose all public constants"})
     if standard == "c++17":
-        adapted = output / "adapted"
-        adapted.mkdir()
         original = upstream / "src/algorithm.cpp"
         content = original.read_text()
         replacements = {
@@ -132,17 +181,19 @@ def prepare_provider(root: Path, acquisition: Path, output: Path,
         # pointers, constexpr category unions, locale storage/IDs and opaque
         # synchronization records. Preserve their definitions and use libc++'s own
         # compatibility spelling, scoped to the implementation that needs it.
+        prefix, suffix = "", ""
         if standard == "c++17" and path in [upstream / "src" / name for name in
                                             ("new_handler.cpp", "ios.cpp", "locale.cpp", "memory.cpp",
                                              "system_error.cpp", "future.cpp", "call_once.cpp", "random_shuffle.cpp")]:
             adaptations.append({"source": str(path), "kind": "scoped-constinit-compatibility",
                                 "replacement": "_LIBCPP_CONSTINIT"})
-            return ("#define constinit _LIBCPP_CONSTINIT\n#include " + json.dumps(str(path)) +
-                    "\n#undef constinit\n")
-        prefix = ""
+            prefix += "#define constinit _LIBCPP_CONSTINIT\n"
+            suffix = "#undef constinit\n" + suffix
+        if path == upstream / "src/locale.cpp":
+            prefix += "".join('#pragma push_macro("' + name + '")\n' for name in langinfo_macros)
+            suffix = "".join('#pragma pop_macro("' + name + '")\n' for name in reversed(langinfo_macros)) + suffix
         if path == upstream / "src/charconv.cpp" and charconv_header:
-            prefix = "#include " + json.dumps(str(charconv_header)) + "\n"
-        suffix = ""
+            prefix += "#include " + json.dumps(str(charconv_header)) + "\n"
         if path == upstream / "src/iostream.cpp":
             # Upstream ends its TU here. Its private stringizing helper would
             # otherwise rewrite subsequent regex/stream str() declarations.

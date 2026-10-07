@@ -1630,3 +1630,25 @@ that clock. Volatile inputs without a fixed clock remain ineligible for reuse.
 These receipts establish complete input preparation, not generated execution.
 
 [Complete preprocessing evidence](../evidence/duckdb-preprocessing-20261007.json).
+
+### DuckDB libc++ storage views
+
+Resolved GNU variable aliases and explicit assembler-labelled extern views now
+share the canonical object's global/TLS allocation and initialization. Provider
+pruning retains storage reached through an assembler symbol. GNU `__thread`
+storage follows the stock C backend's modifier handling. Unsupported hardware
+register bindings reject explicitly. Twenty-six focused verification groups
+pass, including native/stock-C comparisons, static/instance JIT and NativeAOT.
+
+The private libc++ stream implementation uses explicit storage views to retain
+upstream construction, initialization order and flushing when assembled with
+its consumers. All eight standard streams pass native comparisons in static
+and instance JIT/AOT; the broader provider regression also passes. The scoped
+locale implementation macros no longer replace DuckDB's `ERA` enum member.
+No frontend semantics changed. GNU alias multi-TU constraints and optimized
+native unity assumptions remain documented limitations, not resolved features.
+
+This milestone is verified on Linux x64. Full DuckDB C# build/execution remains
+outstanding; the core amalgamation emission is a separate investigation.
+
+[Storage-view and stream evidence](../evidence/duckdb-storage-views-20261007.json).

@@ -63,7 +63,13 @@ a_boolean provider_walk_stop(char *entry,an_il_entry_kind kind) {
       auto body=scope_for_routine_or_null(routine);
       if(body)provider_queue((char*)body,iek_scope);
     }
-  } else if(kind==iek_variable)provider_live_variables.insert((a_variable_ptr)entry);
+  } else if(kind==iek_variable) {
+    auto variable_ptr=(a_variable_ptr)entry;
+    provider_live_variables.insert(variable_ptr);
+    // Explicit asm declarations identify linker storage without an
+    // aliased_variable IL edge. Retain its definition and initializer.
+    if(auto target=variable_symbol_target(variable_ptr))provider_queue((char*)target,iek_variable);
+  }
   return FALSE;
 }
 void collect_provider_reachability(a_scope_ptr scope) {

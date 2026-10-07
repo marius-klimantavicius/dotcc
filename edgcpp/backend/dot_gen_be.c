@@ -404,8 +404,20 @@ bool function_pointer(a_type_ptr t) {
 }
 std::map<a_variable_ptr, string> expression_variables;
 #include "dot_gen_source_storage.h"
+// Follow c_gen_be.c: standard thread_local uses the flag, while GNU
+// __thread / Microsoft __declspec(thread) uses DM_THREAD.
+bool thread_storage(a_variable_ptr variable_ptr) {
+  if(variable_ptr->is_thread_local)return true;
+#if DECL_MODIFIERS_IN_USE && (MICROSOFT_EXTENSIONS_ALLOWED || THREAD_LOCAL_STORAGE_SPECIFIER_ALLOWED)
+  return (variable_ptr->decl_modifiers & DM_THREAD)!=0;
+#else
+  return false;
+#endif
+}
+#include "dot_gen_variable_aliases.h"
 string variable(a_variable_ptr v) {
-  if(v->storage_class==sc_extern){string imported=libc_variable(v);if(!imported.empty())return imported;if(!unbound_variable_address(v).empty())return source_owner_reference(name(v,"v"));unsupported("reference to external variable");}
+  if(register_bound_variable(v))unsupported("hardware-register global storage");
+  if(v->storage_class==sc_extern && !mapped_variable_alias(v)){string imported=libc_variable(v);if(!imported.empty())return imported;if(!unbound_variable_address(v).empty())return source_owner_reference(name(v,"v"));unsupported("reference to external variable");}
   if(exception_metadata.count(v))unsupported("native RTTI storage outside exception matching");
   auto captured=expression_variables.find(v);
   if(captured!=expression_variables.end())return captured->second;
@@ -423,7 +435,7 @@ string variable(a_variable_ptr v) {
   return "(*(" + type(v->type) + "*)(__edg_base + " + std::to_string(it->second) + "))";
 }
 string variable_address(a_variable_ptr v) {
-  if(v->storage_class==sc_extern && unbound_declarations && libc_variable(v).empty())return unbound_variable_address(v);
+  if(v->storage_class==sc_extern && !mapped_variable_alias(v) && unbound_declarations && libc_variable(v).empty())return unbound_variable_address(v);
   auto captured=expression_variables.find(v);
   if(captured!=expression_variables.end())return "&("+captured->second+")";
   string stored=source_storage_address(v);if(!stored.empty())return stored;
@@ -1123,8 +1135,9 @@ string expr(an_expr_node_ptr e) {
 void variables(a_variable_ptr v, bool global) {
   for (; v; v = v->next) {
     if(!variable_needed(v))continue;
+    if(mapped_variable_alias(v))continue;
     if(v->storage_class==sc_extern && unbound_declarations){if(libc_variable(v).empty())(void)unbound_variable_address(v);continue;}
-    if (v->is_thread_local) unsupported("thread-local storage");
+    if (thread_storage(v)) unsupported("thread-local storage");
     if (v->storage_class == sc_extern) unsupported(("external variable: "+string(v->source_corresp.name?v->source_corresp.name:"unnamed")).c_str());
     if (local_offsets.count(v) || (!global && source_lexical_variables.count(v))) continue;
     if (v->alignment > 8 || alignment_of_type(v->type) > 8)
@@ -1166,7 +1179,7 @@ void collect_local_static_storage(a_scope_ptr scope) {
     if(p->init_kind==initk_static)inits[p->variable]=p->initializer.constant;
   for(auto v=scope->variables;v;v=v->next) {
     if(!variable_needed(v))continue;
-    if(v==cleanup_region_var || v==cleanup_array_var || exception_metadata.count(v) || constant_templates.count(v) || v->storage_class==sc_extern)continue;
+    if(v==cleanup_region_var || v==cleanup_array_var || exception_metadata.count(v) || constant_templates.count(v) || v->storage_class==sc_extern || variable_alias(v))continue;
     if(inits.count(v))constant_templates[v]=inits[v];
     local_static_storage.push_back(v);
   }
@@ -1177,20 +1190,26 @@ void globals(a_variable_ptr first, const char *cls) {
   std::vector<a_variable_ptr> stored_variables;
   for(auto v=first;v;v=v->next) {
     if(!variable_needed(v))continue;
+    if(register_bound_variable(v)) {
+      diagnostic_scope diagnostic(v->source_corresp.decl_position);
+      unsupported("hardware-register global storage");
+    }
     // The C backend emits declarations, not storage, for extern variables.
     // Cast-only classes can leave unused vtables/RTTI declarations behind.
     // Actual references still reject in variable() and constant().
-    if(v->storage_class==sc_extern)continue;
+    if(v->storage_class==sc_extern || variable_alias(v))continue;
     stored_variables.push_back(v);
   }
   stored_variables.insert(stored_variables.end(),constant_template_variables.begin(),constant_template_variables.end());
   stored_variables.insert(stored_variables.end(),local_static_storage.begin(),local_static_storage.end());
+  collect_variable_aliases(first,stored_variables);
   unsigned long long size[2] = {0, 0}, alignment[2] = {8, 8};
   bool has_tls = false;
   for (auto v : stored_variables) {
     if(exception_metadata.count(v))continue;
     diagnostic_scope diagnostic(v->source_corresp.decl_position);
-    unsigned n = v->is_thread_local ? 1 : 0;
+    if(register_bound_variable(v))unsupported("hardware-register global storage");
+    unsigned n = thread_storage(v) ? 1 : 0;
     has_tls |= n != 0;
     if (v->storage_class == sc_extern) unsupported(("external variable: "+string(v->source_corresp.name?v->source_corresp.name:"unnamed")).c_str());
     if(!skip_typerefs(v->type)->size)unsupported("zero-sized standalone global storage");
@@ -1199,6 +1218,8 @@ void globals(a_variable_ptr first, const char *cls) {
     context=global_context.c_str();(void)type(v->type);context=saved_context;
     unsigned long long align = alignment_of_type(v->type);
     if (v->alignment > align) align = v->alignment;
+    auto alias_alignment=variable_alias_alignments.find(v);
+    if(alias_alignment!=variable_alias_alignments.end())align=std::max(align,alias_alignment->second);
     if (!align || (align & (align - 1)) || align > 4096) unsupported("global/TLS alignment");
     if (align > alignment[n]) alignment[n] = align;
     size[n] = (size[n] + align - 1) & ~(align - 1);
@@ -1206,6 +1227,7 @@ void globals(a_variable_ptr first, const char *cls) {
     size[n] += skip_typerefs(v->type)->size;
     if (size[n] > 64 * 1024 * 1024) unsupported("global/TLS arena exceeds 64 MiB");
   }
+  map_variable_alias_storage();
   string mod = instance_mode ? "" : "static ";
   auto aligned_pointer = [](string storage, unsigned long long align) {
     return "(byte*)(((nuint)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref "
@@ -1235,7 +1257,7 @@ void globals(a_variable_ptr first, const char *cls) {
   };
   for (auto v : stored_variables) {
     if(exception_metadata.count(v))continue;
-    if (v->is_thread_local) continue;
+    if (thread_storage(v)) continue;
     if (constant_templates.count(v)) append_initialization(source_global_initializer(v,constant_templates[v]),false);
     else if (v->init_kind == initk_static) append_initialization(source_global_initializer(v,v->initializer.constant),false);
     else if (v->init_kind != initk_none && v->init_kind != initk_zero && v->init_kind!=initk_dynamic) unsupported("global initializer", v->init_kind);
@@ -1253,7 +1275,7 @@ void globals(a_variable_ptr first, const char *cls) {
     line("byte* p = " + aligned_pointer("storage", alignment[1]) + ";");
     emitting_tls_initializer = true;
     for (auto v : stored_variables) {
-      if (!v->is_thread_local) continue;
+      if (!thread_storage(v)) continue;
       if(constant_templates.count(v))append_initialization(source_global_initializer(v,constant_templates[v]),true);
       else if (v->init_kind == initk_static) append_initialization(source_global_initializer(v,v->initializer.constant),true);
       else if (v->init_kind != initk_none && v->init_kind != initk_zero && v->init_kind!=initk_dynamic) unsupported("dynamic TLS initializer", v->init_kind);
@@ -1608,6 +1630,7 @@ void back_end(void) {
   storage_record_ids.clear();array_storage_types.clear();
   diagnostic_position={};
   names.clear(); global_offsets.clear(); tls_offsets.clear(); assignment_helpers.clear();
+  reset_variable_aliases();
   emitting_tls_initializer = false;
   helper_output.clear(); type_output.clear(); aggregate_types.clear(); aggregate_constants.clear();
   address_output.clear(); routine_addresses.clear(); literal_bytes.clear(); literal_offsets.clear();
@@ -1642,6 +1665,7 @@ void back_end(void) {
   nested_types = !getenv("EDG_DOT_NEST") || string(getenv("EDG_DOT_NEST")) == "1";
   reset_provider_pruning();
   collect_coroutine_requirements(scope);
+  index_variable_symbols(scope->variables);
   collect_provider_reachability(scope);
   initialize_source_names(scope);
   initialize_unbound_runtime_names(scope);

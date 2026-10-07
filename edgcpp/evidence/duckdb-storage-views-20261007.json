@@ -1,0 +1,87 @@
+{
+  "milestone": "Resolved variable storage views and real libc++ standard streams",
+  "fullDuckDbTranslated": false,
+  "duckDbExecutionVerified": false,
+  "backendCompiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-alias-compiler-010/cpfe-dot",
+    "sha256": "094cd0d0944a74ff0bf116c527f1d58a6635ffdcfddd70b7e8064e39f7712ceb"
+  },
+  "receipts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-alias-final-010/results.json",
+      "sha256": "c1f6f1ae2a53b055c4f34eb5f33a1c1aa00293afb7765fcb952717576886887b",
+      "passed": true,
+      "checks": [
+        "variable_alias_storage: native",
+        "variable_alias_storage: stock EDG C",
+        "variable_alias_storage-static: JIT",
+        "variable_alias_storage-static: NativeAOT",
+        "variable_alias_storage-instance: JIT",
+        "variable_alias_storage-instance: NativeAOT",
+        "variable_alias_typed: native",
+        "variable_alias_typed: stock EDG C",
+        "variable_alias_typed-static: JIT",
+        "variable_alias_typed-static: NativeAOT",
+        "variable_alias_typed-instance: JIT",
+        "variable_alias_typed-instance: NativeAOT",
+        "Unresolved weak variable alias rejected by backend"
+      ]
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-asm-final-010/results.json",
+      "sha256": "7d0a91c3aa333f49ba2c2551197b86dcae8e61faab8304134de25d6c2c78ed74",
+      "passed": true,
+      "checks": [
+        "Separate native TUs, GCC O2 without LTO",
+        "Stock EDG C with three TUs",
+        "static: asm-only definition retained; unrelated provider variable pruned",
+        "static: JIT",
+        "static: NativeAOT",
+        "instance: asm-only definition retained; unrelated provider variable pruned",
+        "instance: JIT",
+        "instance: NativeAOT",
+        "unresolved: backend rejection",
+        "duplicate: backend rejection",
+        "oversize: backend rejection",
+        "tls_mismatch: backend rejection",
+        "register: backend rejection"
+      ]
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-standard-streams-004/results.json",
+      "sha256": "40040c792796cca29e185a78ca19cc643264e6ead412a31b8aff4312b6009f91",
+      "passed": true,
+      "checks": [
+        "static JIT: all eight public stream object types/storage, initialization before user globals, ties/buffers, real stdin, cout/cerr/clog, redirected wide input/output and exit flushing",
+        "static NativeAOT: identical native-oracle stdout/stderr and successful execution",
+        "instance JIT: all eight public stream object types/storage, initialization before user globals, ties/buffers, real stdin, cout/cerr/clog, redirected wide input/output and exit flushing",
+        "instance NativeAOT: identical native-oracle stdout/stderr and successful execution"
+      ]
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-libcxx-asm-primary-001/results.json",
+      "sha256": "4bf0e12a2411b630e7da3037c6e027b323d8cec08d9dbdf61104f3ba7c70a014",
+      "passed": true,
+      "checks": [
+        "Real LLVM18 provider + separate musl TUs translated with strict extern rejection; libc++ and C++ consumer share primary TU",
+        "JIT: strings, streams, synchronized threads, regex, random device, vector exceptions, fifteen arithmetic sort instantiations, twenty floating formatting edge cases and short buffers",
+        "NativeAOT: identical native-oracle output and behavior"
+      ]
+    }
+  ],
+  "semantics": [
+    "Resolved GNU aliases and explicit asm-labelled extern views share canonical global/TLS storage, alignment and initialization",
+    "Provider pruning follows explicit asm-symbol storage edges",
+    "GNU __thread and standard thread_local storage follow stock C backend IL conventions",
+    "Hardware-register globals reject explicitly; no emulation as ordinary memory",
+    "Private libc++ iostream source adaptation preserves upstream object construction and lifetime"
+  ],
+  "limitations": [
+    "GNU alias attributes retain documented frontend multi-TU constraints, also present with stock C backend",
+    "Explicit asm storage views implement closed-program symbol identity, not native dynamic interposition",
+    "Native asm oracle compiles separate TUs; native optimized unity equivalence is not claimed",
+    "Executed on Linux x64; other execution platforms remain unverified",
+    "No independent simultaneous managed owner instance acceptance in alias fixtures",
+    "Core DuckDB emission is separate and not an execution pass"
+  ]
+}
