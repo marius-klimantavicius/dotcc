@@ -2089,3 +2089,20 @@ all 38 pair-containing inputs use only the same adapted vendor header.
 Full checkpoint007 is now running with tools002 and the unchanged 72-GiB
 compiler RSS guard. It has no elapsed-time cutoff. Driver/backend/provider
 inputs are frozen; no full checkpoint or translated execution is claimed yet.
+
+
+During frozen full007, isolated BCL socket imports and pinned musl address
+parsers pass native/JIT/NativeAOT checks and independent review. A minimal
+24-file bundle also passes registered-provider packaging tests in a separate
+repository snapshot (224 selected musl TUs), existing network checks and the
+93-check descriptor regression under both JIT and AOT. It remains unapplied
+to canonical files until the active writer releases its freeze. Linux x64 is
+the executed platform; parser weak-symbol/interposition scope stays explicit.
+
+The isolated upstream-runner retry now passes 65 of 67 preprocessing inputs,
+including the former netdb failure, then stops at termcolor's real host-platform
+guard. All 148 test sources remain present; the last input is unattempted.
+Reference library inputs are not claimed mergeable with changed header
+inventories. Fork, fatal signals and native-demo loading remain separate gaps;
+Catch's handler-disable configuration is reviewed only, not silently selected.
+[Isolated network implementation evidence](../evidence/duckdb-socket-candidate-20261008.json).

@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "status": "isolated-implementation-and-packaging-verified-canonical-integration-pending-active-writer",
+  "receipts": {
+    "socketRuntime": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-socket-candidate-006/results.json",
+      "sha256": "3fe9ab79740b252bedb853d50f818290ecab6c12092a3fb5474f511c75a701c7"
+    },
+    "socketPackage": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-socket-candidate-006/review-package.json",
+      "sha256": "8d712c16e1e1913f400391bd67705c5d8f04a069ac7dd27e0f596a72182a6cc6"
+    },
+    "nativeUnboundSupplement": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-socket-unbound-native-supplement-001/results.json",
+      "sha256": "be5c8a73fd8d60be1e5396b114a7ec086abf53cbacd910ad84d0d77f7c864efb"
+    },
+    "parserAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-musl-inet-component-002/acceptance.json",
+      "sha256": "3012058070b129f3c2eed0dfc7501ebab3be824e64b7e7262b8156fb8bdc680f"
+    },
+    "parserReview": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-musl-inet-independent-review-002/review.json",
+      "sha256": "2e186bfaffb0bd315e4c921f5efa1f668968af3246d86a0b6dca3fc116eed808"
+    },
+    "isolatedCompiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-socket-import-compiler-002/results.json",
+      "sha256": "f50e6326be4c232229f2b1e568ad1498a1f3baa1d5548db8151bdaaed63b26bf"
+    },
+    "translatedSocketAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-socket-translated-001/acceptance.json",
+      "sha256": "fefaef94e7de0e16d46e2b88dee06c2dbe3eac38de4dfe794e5a3f132614ac3d"
+    },
+    "translatedSocketReview": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-socket-translated-independent-review-001/review.json",
+      "sha256": "b821cd11c47205d69ecb9808557b51aab4e0bc4eeab9b0e37ea389b93a2d9163"
+    },
+    "integrationBundle": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-socket-integration-bundle-001/bundle.json",
+      "sha256": "a13ef08d50a48e74c06a253e48d549a40ca004afa1a1033034170a8ccb0eb4d7"
+    },
+    "bundleValidation": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-socket-bundle-validation-001/acceptance.json",
+      "sha256": "105488aed5750b5b6b3c03704a7ffb54b36fbace5857814c2522768a8d1b66e3"
+    },
+    "bundleReview": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-socket-bundle-independent-review-001/review.json",
+      "sha256": "b3c22ddb86e95cb690606753f8107e168675c3eed1f5c0f76bc18b97b0b5812f"
+    },
+    "runnerRetry": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-composition-prototype-004/results.json",
+      "sha256": "d94cd599ee78a138bcee93233ef3fa8453b7c39357b4290128b76e54577d1c30"
+    },
+    "runnerRetryAudit": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-composition-prototype-004/summary.json",
+      "sha256": "eefdb317e97b64ea059c5dd3df588325b5b45d1514c74b85fac3dfef0d8a2ae3"
+    },
+    "runnerSignalProposal": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-managed-runner-signal-audit-001/review.json",
+      "sha256": "807ad16a19f400b28e858411f2e4003ca0ce26d5726eddb1f1c2c5edc8210bf1"
+    }
+  },
+  "acceptedScope": {
+    "socketRuntime": "Real BCL TCP IPv4/IPv6 ownership, descriptor I/O/flags/lifetime and portable sockaddr conversion; native141 and managed225 assertions per JIT/AOT.",
+    "muslParser": "224 exact native-musl vectors for return values, errno and partial failure bytes; translated C/C++ static/instance JIT/AOT.",
+    "actualImports": "Seven exact socket signatures with complete sockaddr shape guard; native public loopback and all8 C/C++ static/instance JIT/AOT cells;7 intended ABI rejections.",
+    "packaging": "24-file bundle applied only to complete isolated repository snapshot; registered224-TU provider, parser/socket16 JIT/AOT cells, existing network and93descriptor checks per JIT/AOT; canonical baselines unchanged."
+  },
+  "canonicalApplied": false,
+  "integrationReasonPending": "Full DuckDB checkpoint007 freezes canonical driver/backend/runtime/provider inputs.",
+  "runnerPreprocessing": {
+    "passedInputs": 65,
+    "plannedInputs": 67,
+    "nextFailure": "test/sqlite/termcolor.hpp rejects portable target at its explicit host-platform guard.",
+    "libraryReferenceInputs": 129,
+    "referenceInputsAreMergeable": false,
+    "all148TestSourcesRetained": true,
+    "signalProfileChanged": false
+  },
+  "limits": [
+    "Linux x64 execution evidence; Windows/macOS/ARM64 not executed.",
+    "Closed-provider inet_aton symbol adaptation does not preserve generic ELF weak interposition; future lookup_ipliteral private call must be adapted deliberately.",
+    "No resolver implementation claim from complete netdb declarations.",
+    "No fork, fatal-signal/alternate-stack or native demo-loading implementation; no test source removal or placeholder imports.",
+    "Catch signal/SEH configuration remains a reviewed proposal only.",
+    "No full DuckDB checkpoint/build/JIT/NativeAOT claim."
+  ]
+}
