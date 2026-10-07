@@ -112,6 +112,37 @@ static_assert(sizeof(static_cast<
                 reason='Unevaluated selection resolves the existing pair<string, LogicalType> copy-assignment signature consistently when one TU calls it and another only instantiates the pair. The unchanged EDG C backend reproduces the original correspondence rejection; the anchor preserves libc++ declarations, algorithms, layout, copyability, and runtime behavior.')
 
 
+def adapt_fmt_arguments(source, staged):
+    """Spell existing integral conversions in dependent fmt store constants."""
+    header = 'third_party/fmt/include/fmt/core.h'
+    path = Path(staged) / header
+    original = path.read_text()
+    enum_declarations = [
+        'enum { packed_arg_bits = 5 };',
+        'enum { max_packed_args = 63 / packed_arg_bits };',
+        'enum : unsigned long long { is_unpacked_bit = 1ULL << 63 };',
+    ]
+    for declaration in enum_declarations:
+        if original.count(declaration) != 1:
+            raise ValueError('Pinned fmt packing constant changed: ' + declaration)
+    replacements = [
+        ('static const bool is_packed = num_args < internal::max_packed_args;',
+         'static const bool is_packed = num_args < static_cast<int>(internal::max_packed_args);'),
+        ('internal::is_unpacked_bit | num_args;',
+         'static_cast<unsigned long long>(internal::is_unpacked_bit) | num_args;'),
+    ]
+    updated = original
+    for before, after in replacements:
+        if updated.count(before) != 1:
+            raise ValueError('Pinned fmt dependent packing expression changed: ' + before)
+        updated = updated.replace(before, after)
+    path.write_text(updated)
+    return dict(path=header, originalSha256=sha(Path(source) / header), stagedSha256=sha(path),
+                replacements=[dict(before=before, after=after) for before, after in replacements],
+                unchangedEnumDeclarations=enum_declarations,
+                reason='Spell the existing int promotion of max_packed_args (12) and unsigned-long-long conversion of is_unpacked_bit before dependent arithmetic. Avoid unnamed-enum correspondence rejection reproduced by unchanged stock C without changing enum types, packing threshold, values, layouts, or formatting algorithms.')
+
+
 def prepare(manifest_path, output):
     manifest_path, output = Path(manifest_path).resolve(), Path(output).resolve()
     manifest = json.loads(manifest_path.read_text())
@@ -155,6 +186,7 @@ def prepare(manifest_path, output):
 
     changes.append(adapt_numeric_cast(source, staged))
     changes.append(adapt_logical_type_pair(source, staged))
+    changes.append(adapt_fmt_arguments(source, staged))
 
     # Generated CMake headers and the static extension loader are real inputs,
     # even though they are outside the upstream archive. Freeze them with the

@@ -1761,3 +1761,27 @@ make this emission-only evidence. The full corrected checkpoint attempt is
 recorded separately in `duckdb-complete-checkpoint-001`.
 
 [Corrected-input evidence](../evidence/duckdb-corrected-inputs-20261007.json).
+
+The first corrected checkpoint attempt was stopped after five bundled-fmt
+correspondence diagnostics in the first unity group. The first error appeared
+at about 220 seconds; the coordinator stopped the run at 285 seconds, with
+12.2 GiB peak compiler RSS. No memory guard fired. Earlier `NumericCast` and
+`LogicalType` pair diagnostics did not reappear before this stop. Inputs remain
+unchanged; the writer removed its incomplete IL on error, so no usable full
+checkpoint or generated DuckDB C# is claimed. The fmt source-assembly mismatch
+is the next reduced investigation.
+
+[Corrected checkpoint attempt](../evidence/duckdb-checkpoint-attempt-20261007.json).
+
+The fmt diagnostics reduce to unnamed-enum constants in dependent expressions.
+Portable staging now spells two existing integral conversions explicitly; enum
+declarations/types, packing boundary, values and layouts remain unchanged.
+Native original/adapted and actual fmt single-TU stock-C execution agree for
+0, 1, 11, 12 and 13 arguments. A tiny two-TU reduction emits, compiles and runs
+through stock C; actual fmt two-TU semantic merge passes. The later stock-C
+reader failure persists after rebuilding all stock compiler objects and remains
+a separate limitation. Our checkpoint writer/reader handles the same fmt
+inputs successfully and matches direct C# emission byte-for-byte (one partial
+provider symbol, so this is emission-only evidence).
+
+[Fmt adaptation evidence](../evidence/duckdb-fmt-adaptation-20261007.json).

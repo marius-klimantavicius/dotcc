@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "coordinator-stop",
+  "executionVerified": false,
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-001/results.json",
+    "sha256": "586feecb7d763f316f1a62daff95ed78510716b8c95449acbcabcaf13534d4eb"
+  },
+  "elapsedSeconds": 285.3675722819753,
+  "peakCompilerRssBytes": 13090447360,
+  "firstFrontendError": {
+    "elapsedSeconds": 219.7932846529875,
+    "line": "          urce/third_party/fmt/include/fmt/core.h\", line 1204: error:",
+    "file": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-001/checkpoint/writer.stderr",
+    "action": "notify-coordinator; no automatic semantic-error stop"
+  },
+  "inputsUnchanged": true,
+  "usableCheckpoint": false,
+  "diagnosticCount": 5,
+  "diagnosticSummary": "Bundled fmt format_arg_store is_packed/data_ and related function-template correspondence between core amalgamation and first unity group.",
+  "stopReason": "Coordinator stopped after explicit frontend errors; memory guard did not fire. Writer removed its incomplete IL on error.",
+  "claims": [
+    "All input hashes remained unchanged.",
+    "Earlier NumericCast and LogicalType pair diagnostics did not reappear before this stop.",
+    "No full lowered IL, C# output, or DuckDB C# execution pass."
+  ]
+}

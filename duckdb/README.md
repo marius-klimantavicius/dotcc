@@ -42,11 +42,12 @@ extension are outside this static bundled profile.
 authored test reporter. Its narrow DuckDB-source adaptations recognize our
 portable binary64 arithmetic target in ICU double-conversion's architecture
 guard and select concurrentqueue's existing POSIX semaphore branch. They do
-not advertise a host CPU or change those algorithms. Two correspondence
+not advertise a host CPU or change those algorithms. Correspondence
 adaptations also rename the unused private `NumericCast` struct and select the
 existing `pair<string, LogicalType>` copy-assignment signature in an unevaluated
-expression. The public `NumericCast` function template and libc++ algorithms
-remain unchanged. The original archive and earlier frozen trees remain intact;
+expression. Bundled fmt spells two existing enum-to-integer conversions
+explicitly in its argument-store constants. The public `NumericCast` function
+template, enum types, packing/layout and libc++ algorithms remain unchanged. The original archive and earlier frozen trees remain intact;
 [the source-assembly notes](edg/libcxx.md) record the reduced proofs and limits.
 
 `translate.py` preprocesses every CMake TU independently, preserving defines

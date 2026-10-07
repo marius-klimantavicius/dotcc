@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "verified-fmt-source-adaptation",
+  "duckdbExecutionVerified": false,
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-fmt-adaptation-002/results.json",
+    "sha256": "dc545aa83de91371725cc9f96287c337f2df2378bfdcedb1136b6b7198a85a5c"
+  },
+  "verificationGroups": 2,
+  "commandChecks": 27,
+  "changes": [
+    "Explicit int conversion of max_packed_args before dependent comparison",
+    "Explicit unsigned long long conversion of is_unpacked_bit before dependent bitwise expression"
+  ],
+  "preserved": [
+    "Anonymous enum declarations and types",
+    "Packing boundary and stored values",
+    "Argument-store layout",
+    "Formatting algorithms"
+  ],
+  "nativeAndSingleTuStockCExecution": true,
+  "minimalTwoTuStockCExecution": true,
+  "actualFmtTwoTuSemanticMerge": true,
+  "actualFmtTwoTuStockCLowering": [
+    {
+      "stage": "adapted-two-tu-emit",
+      "diagnostic": "read_memory_region: not all expected entries were read",
+      "exitCode": -6
+    }
+  ],
+  "actualFmtCheckpointReplay": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-fmt-header-replay-001/results.json",
+    "sha256": "98ab00e7aec39412a2d9f9f3c811c85c0c21ce5a271bcb41d9e351292693b988"
+  },
+  "checkpointReplayLimit": "Raw C# identical to direct016; one partial external contract; no execution claim.",
+  "inputs": [
+    {
+      "path": "/home/marius/p/dotcc/duckdb/edg/tests/fmt_correspondence_verify.py",
+      "sha256": "1df6d9ac75ad0be2f94a81080eec5fe4abc62932799bec55690decc7e6fc4112"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-fmt-001/portable.json",
+      "sha256": "9dcc6b974facc2841ea851713e0a5243e69e941eadb6bfbd6e9441a968ea38f0"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-composition-004/cpfe-dot-preprocess",
+      "sha256": "4d28d528905fa9a1dc4319829e7ed5cf84dde2544627ce8c88783bb2182eb141"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+      "sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-source-001/source/third_party/fmt/include/fmt/core.h",
+      "sha256": "7feeaa115b812ffaf1e37460b9c0b03c5e371ac5bdcf567e8e77619640940f36"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-fmt-001/source/third_party/fmt/include/fmt/core.h",
+      "sha256": "ef1d3b01cadb8757b62a03772509058a596c65aeab528351b10135cd04d36055"
+    }
+  ]
+}

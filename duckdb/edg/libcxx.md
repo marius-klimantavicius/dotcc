@@ -240,3 +240,41 @@ The real-header semantic checks must not be described as completed C lowering
 or full DuckDB execution. The smaller exact correspondence reduction does emit,
 compile, and run through current stock C. Neither case changes EDG frontend
 semantics or suppresses its diagnostics.
+
+Both adaptations are frozen in `duckdb-portable-correspondence-001/portable.json`.
+The fresh epoch-zero preprocessing receipt
+`duckdb-translate-006/results.json` covers all 2,207 library TUs and passes the
+strict before/after input-inventory and dependency checks. The corresponding
+`duckdb-composition-005/composition.json` preserves 1,476 core members plus all
+731 remaining TUs and the real libc++ provider. This prepares corrected inputs;
+it does not establish successful full C# translation or execution.
+
+The corrected 204-input checkpoint attempt subsequently reached five fmt
+correspondence diagnostics in its first unity group. The actual fmt declarations,
+constants and source version are identical in the core and unity inputs; the
+six-line diagnostic offset comes from upstream amalgamation license comments
+and is not causal. A small two-TU reduction reproduces the rejection with
+identical source positions when a dependent constant expression refers directly
+to an unnamed-enum value.
+
+The next portable source profile changes exactly two expressions in bundled
+`fmt/core.h`: `max_packed_args` is explicitly converted to `int`, and
+`is_unpacked_bit` to `unsigned long long`, before their existing arithmetic.
+These are the original promotion/result types. The enum declarations, packing
+threshold (12 arguments), storage layout and formatting algorithms stay intact.
+The staging recipe checks the exact original expressions and all three packing
+enum declarations, and records both replacements and source hashes.
+
+`tests/fmt_correspondence_verify.py` passes in
+`duckdb-fmt-adaptation-002/results.json`. Native original/adapted fmt and actual
+single-TU stock-C emission/build/run agree for zero, one, eleven, twelve and
+thirteen arguments, including stored values, the packed/unpacked boundary,
+out-of-range access and observed storage size. The reduced two-TU expression
+case also emits, builds and runs through current stock C; real fmt headers
+pass the two-TU semantic merge. Actual fmt two-TU stock-C lowering still reaches
+the separately recorded `read_memory_region` failure, including after a full
+stock-C rebuild. This limitation is explicitly present in the verifier receipt,
+not counted as successful lowering. The same corrected real-header inputs pass
+checkpoint write/replay with raw C# parity against direct translation in
+`duckdb-fmt-header-replay-001/results.json`; that diagnostic run uses one partial
+extern and is not execution acceptance.
