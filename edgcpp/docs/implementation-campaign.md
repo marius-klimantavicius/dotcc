@@ -1292,3 +1292,15 @@ function-pointer and initialization tests pass under JIT/NativeAOT; all six
 existing formatter regressions also pass. The driver enables this automatically
 and records counts/provenance in `methodSharding`.
 [Method-limit evidence](../evidence/method-shards-20261007.json).
+
+Full packaging exposed Roslyn parser list-builder reuse after the multi-million
+element literal pool: methods appended after it repeatedly cleared an array of
+5,382,648 references. Helper classes now precede the existing owner declarations,
+keeping literal construction last without reordering any storage/constructor.
+The focused static/instance JIT/NativeAOT checks pass again, and full packaging
+finishes in 170.968 seconds. The regenerated 260,596,266-byte raw output is
+identical across native repeats (SHA-256
+`d50d43f9835b962d665b27acc49297392cc582e52497cbc9af0195124bc4bff6`).
+Its main owner budgets 61,000 slots after moving 13,995 helpers. The first stuck
+formatter's heap/stack evidence and raw inputs remain retained.
+[Placement evidence](../evidence/method-shard-placement-20261007.json).

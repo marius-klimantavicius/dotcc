@@ -38,6 +38,7 @@ def fixture(instance):
         source += '// dot-gen:member-begin\nprivate static int __edg_assign' + str(i) + '(int value) => ' + rhs + ';\n// dot-gen:member-end\n'
     # A signature exposing a private type must stay in the owner.
     source += '// dot-gen:member-begin\nprivate static int __edg_expr_private(Hidden value) => value.Value;\n// dot-gen:member-end\n'
+    source += 'private static global::System.ReadOnlySpan<byte> __edg_literal_data => [1,2,3,4];\n'
     source += '}\n'
     call = 'new Engine(10).Run()' if instance else 'Engine.Run()'
     source += 'internal static class EntryPoint { public static int Main() { int answer = ' + call + '; global::System.Console.WriteLine(answer); return answer == 67 ? 0 : 1; } }\n'
@@ -63,6 +64,7 @@ def main():
         assert 'private static int __edg_expr_private' in rewritten
         assert 'private static int __edg_assign2' in rewritten
         assert 'global using static' not in rewritten
+        assert rewritten.rindex('internal static unsafe class __EdgMethodShard') < rewritten.index('__edg_literal_data')
         if instance:
             assert 'private int __edg_expr_instance' in rewritten
         assert 'public static int OriginalName' in rewritten

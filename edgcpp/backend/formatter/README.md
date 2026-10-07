@@ -49,6 +49,10 @@ accessors, possible implicit constructors, local functions and lambdas. Above
 62,000 slots it moves enough private static expression, cleanup, initialization
 and assignment helpers into nested `__EdgMethodShardN` classes to reach 61,000.
 Each shard holds at most 10,000 methods. Smaller owners are returned unchanged.
+Shards precede the owner's other declarations. Large literal collections stay
+after ordinary method bodies: otherwise Roslyn's parser can repeatedly clear a
+list-builder buffer enlarged by the collection while parsing later statements.
+Nested method declarations have no storage-initialization effects.
 
 Source function names, APIs, types, fields and state ownership remain in the
 original class. References to moved helpers are qualified structurally; no global

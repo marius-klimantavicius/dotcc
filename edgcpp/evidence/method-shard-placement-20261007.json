@@ -1,0 +1,325 @@
+{
+  "scope": "Avoid pathological Roslyn parsing after helper sharding by keeping large literal pools last",
+  "artifacts": {
+    "dot-self-shards-005/results.json": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-005/results.json",
+      "sha256": "66b06af164574b2aaf799efc552c53583fa66373a1f01fffd28824fd1c3ae0c4",
+      "results": {
+        "cases": [
+          {
+            "instance": false,
+            "sharding": {
+              "mode": "static-synthetic-method-shards-v1",
+              "before": 42,
+              "after": 22,
+              "target": 22,
+              "shards": [
+                {
+                  "name": "__EdgMethodShard0",
+                  "methods": 20,
+                  "methodBudget": 20
+                }
+              ],
+              "sdk": "10.0.112",
+              "sourceSha256": "a700f8a6649c1981b7d4e585d643c1136c9be538df505ddba20af3ec008e3310",
+              "toolSha256": "c5fd1974fe00c9847ef9a0bce9990704a30b42461f4b90a236b6ab7d2bf87413"
+            },
+            "commands": [
+              {
+                "stage": "build",
+                "command": [
+                  "dotnet",
+                  "build",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-005/static/Test.csproj",
+                  "-c",
+                  "Release",
+                  "--nologo"
+                ],
+                "exitCode": 0
+              },
+              {
+                "stage": "jit",
+                "command": [
+                  "dotnet",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-005/static/bin/Release/net10.0/Test.dll"
+                ],
+                "exitCode": 0
+              },
+              {
+                "stage": "publish",
+                "command": [
+                  "dotnet",
+                  "publish",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-005/static/Test.csproj",
+                  "-c",
+                  "Release",
+                  "-r",
+                  "linux-x64",
+                  "-p:PublishAot=true",
+                  "-p:IlcTreatWarningsAsErrors=true",
+                  "-o",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-005/static/aot"
+                ],
+                "exitCode": 0
+              },
+              {
+                "stage": "aot",
+                "command": [
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-005/static/aot/Test"
+                ],
+                "exitCode": 0
+              }
+            ]
+          },
+          {
+            "instance": true,
+            "sharding": {
+              "mode": "static-synthetic-method-shards-v1",
+              "before": 44,
+              "after": 22,
+              "target": 22,
+              "shards": [
+                {
+                  "name": "__EdgMethodShard0",
+                  "methods": 22,
+                  "methodBudget": 22
+                }
+              ],
+              "sdk": "10.0.112",
+              "sourceSha256": "a700f8a6649c1981b7d4e585d643c1136c9be538df505ddba20af3ec008e3310",
+              "toolSha256": "c5fd1974fe00c9847ef9a0bce9990704a30b42461f4b90a236b6ab7d2bf87413"
+            },
+            "commands": [
+              {
+                "stage": "build",
+                "command": [
+                  "dotnet",
+                  "build",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-005/instance/Test.csproj",
+                  "-c",
+                  "Release",
+                  "--nologo"
+                ],
+                "exitCode": 0
+              },
+              {
+                "stage": "jit",
+                "command": [
+                  "dotnet",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-005/instance/bin/Release/net10.0/Test.dll"
+                ],
+                "exitCode": 0
+              },
+              {
+                "stage": "publish",
+                "command": [
+                  "dotnet",
+                  "publish",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-005/instance/Test.csproj",
+                  "-c",
+                  "Release",
+                  "-r",
+                  "linux-x64",
+                  "-p:PublishAot=true",
+                  "-p:IlcTreatWarningsAsErrors=true",
+                  "-o",
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-005/instance/aot"
+                ],
+                "exitCode": 0
+              },
+              {
+                "stage": "aot",
+                "command": [
+                  "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-shards-005/instance/aot/Test"
+                ],
+                "exitCode": 0
+              }
+            ]
+          }
+        ],
+        "passed": true
+      }
+    },
+    "dot-self-format-diagnostic-001/diagnosis.json": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dot-self-format-diagnostic-001/diagnosis.json",
+      "sha256": "04a451260126425a31af10b2a3d08f6c767ed551e308750bd2fd7ca3fc54b212",
+      "results": {
+        "oldFormatterPid": 417851,
+        "diagnosis": "Roslyn parser reuses a list builder enlarged by the multi-million-element literal collection for following small statements; appending helper shards after literal construction causes repeated clearing of that oversized array.",
+        "stackEvidence": "heap-stack.txt",
+        "observedClearPointerSlots": 5382648,
+        "literalMethodOffset": 79901471,
+        "firstShardOffset": 106965437,
+        "inputSha256": "70a65faefbafe364cfb2c3b9027b3bb3ae4c99462ab056e80da92a22be9b329f",
+        "fix": "Insert method-only nested shard declarations immediately after the owner opening brace, preserving existing data/constructor declaration order and keeping giant literal construction last.",
+        "focusedVerification": "../dot-self-shards-005/results.json",
+        "note": "Root repackage measures full-source formatting after fix. Diagnostic preformatter capture ran to completion with old placement; no native compiler run was needed."
+      }
+    },
+    "edg-dot-bootstrap-002/repackage.results.json": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/repackage.results.json",
+      "sha256": "0eb41bea7bfce6d2285e08995eed100db8d4165f1dd90c6374ea4cf37407de9c",
+      "results": {
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/edgcpp/dotnet.py",
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/libcxx-provider.cpp",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/cfe.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/attribute.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/c_gen_be.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/cfe_daemon.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/class_decl.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/cmd_line.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/const_ints.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/cp_gen_be.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/debug.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/decl_inits.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/decl_spec.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/declarator.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/decls.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/def_arg.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/disambig.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/dot_sys_predef.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/error.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/expr.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/exprutil.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/extasm.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/fe_init.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/fe_wrapup.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/fixed_pt.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/float_pt.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/floating.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/folding.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/func_def.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/host_envir.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/ifc_map_functions.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/ifc_map_functions_acc.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/ifc_map_functions_dbg.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/ifc_map_functions_mut.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/ifc_map_functions_val.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/ifc_modules.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/ifc_modules_read.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/ifc_modules_templ.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/ifc_modules_write.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/il.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/il_alloc.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/il_display.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/il_read.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/il_to_str.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/il_walk.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/il_write.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/inline.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/interpret.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/layout.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/lexical.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/literals.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/lookup.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/lower_c99.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/lower_eh.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/lower_il.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/lower_init.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/lower_name.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/macro.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/mem_manage.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/modules.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/ms_attrib.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/overload.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/pch.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/pragma.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/preproc.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/scope_stk.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/src_seq.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/statements.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/symbol_ref.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/symbol_tbl.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/target.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/templates.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/trans_copy.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/trans_corresp.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/trans_unit.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/types.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/src/unicode_name_fsm.c",
+          "/home/marius/p/dotcc/edgcpp/upstream/util/decode.c",
+          "--language",
+          "c++",
+          "--std",
+          "c++17",
+          "-DBACK_END_IS_CP_GEN_BE=0",
+          "-DBACK_END_IS_C_GEN_BE=0",
+          "-DBACK_END_SHOULD_BE_CALLED=1",
+          "-DCOMPILE_MULTIPLE_TRANSLATION_UNITS=1",
+          "-DDEFAULT_REMOVE_UNNEEDED_ENTITIES=0",
+          "-DDO_FULL_PORTABLE_EH_LOWERING=0",
+          "-DDO_IL_LOWERING=1",
+          "-DDO_UNORDERED_EH_PROCESSING=1",
+          "-DEDG_DOT_BACKEND=1",
+          "-DGENERATE_EH_TABLES=1",
+          "-DIL_SHOULD_BE_WRITTEN_TO_FILE=0",
+          "-DKEEP_OBJECT_LIFETIME_INFO_IN_LOWERED_IL_WHEN_EH_ENABLED=1",
+          "-DLOWER_CLASS_RVALUE_ADJUST=1",
+          "-DLOWER_FIXED_POINT=1",
+          "-DLOWER_IFUNC=1",
+          "-DLOWER_VARIABLE_LENGTH_ARRAYS=1",
+          "-DMAINTAIN_NEEDED_FLAGS=1",
+          "-DNEED_IL_DISPLAY=1",
+          "-DNO_USR_INCLUDE=1",
+          "-DPROMOTE_LOCAL_ENTITIES_TO_FILE_SCOPE=1",
+          "-DRECORD_BACKING_EXPRS_WITH_IL_LOWERING=1",
+          "-DTARG_IA64_ABI_USE_VARIANT_PTR_TO_MEMBER_FUNCTION_REPR=1",
+          "-DUSE_CMAKE_DEFINES",
+          "-I/home/marius/p/dotcc/edgcpp/build/src/includes",
+          "-I/home/marius/p/dotcc/edgcpp/upstream/src",
+          "-DNDEBUG",
+          "-DUSE_MMAP_FOR_MEMORY_REGIONS=0",
+          "-DTARG_SUPPORTS_X86_64=1",
+          "-DHOST_POINTER_ALIGNMENT=8",
+          "-DHOST_IL_ENTRY_PREFIX_ALIGNMENT=8",
+          "-DHOST_HAS_FLOAT16_TYPE=1",
+          "-DHOST_COMPILER_SUPPORTS_BFLOAT16=1",
+          "-DMAX_MULTIBYTE_CHAR_LENGTH=16",
+          "-D__DATE__=\"Jan  1 1970\"",
+          "-D__TIME__=\"00:00:00\"",
+          "--exceptions",
+          "--no-rtti",
+          "-I",
+          "/home/marius/p/dotcc/edgcpp/backend/runtime/posix/include",
+          "-I",
+          "/home/marius/p/dotcc/edgcpp/backend/self/include",
+          "-I",
+          "/home/marius/p/dotcc/edgcpp/artifacts/campaign/libcxx-acquired-005/config",
+          "-I",
+          "/home/marius/p/dotcc/edgcpp/artifacts/campaign/libcxx-acquired-005/libcxx-18.1.8.src/include",
+          "--target",
+          "portable-lp64-binary80-v2",
+          "--libc",
+          "musl",
+          "--posix",
+          "--emit",
+          "exe",
+          "--namespace",
+          "Edg.Compiler",
+          "--class-name",
+          "EdgCompiler",
+          "--compiler",
+          "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-001/cpfe-dot",
+          "--unbound-externals",
+          "reject",
+          "--split",
+          "source",
+          "--output-dir",
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/managed",
+          "--raw-input",
+          "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/raw.cs"
+        ],
+        "exitCode": 0,
+        "seconds": 170.96772675198736,
+        "nativeRawInput": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/raw.cs",
+        "nativeProvenance": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/frontend-invocation.json",
+        "libcxxLicense": {
+          "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-002/managed/Runtime.Libcxx.LICENSE.txt",
+          "sha256": "539dd7aed86e8a4f12cbdd0e6c50c189c7d74847e4fecc64ce2c6ee3a01da38b"
+        }
+      }
+    }
+  }
+}

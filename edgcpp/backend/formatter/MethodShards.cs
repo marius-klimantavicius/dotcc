@@ -129,7 +129,12 @@ internal static class MethodShards
             }
             foreach (var reference in references)
                 if (!candidates.Any(c => reference.Start >= c.Start && reference.End <= c.End)) edits.Add(reference);
-            edits.Add(new(owner.CloseBraceToken.SpanStart, owner.CloseBraceToken.SpanStart, nested.ToString()));
+            // Keep enormous literal collections after ordinary method bodies.
+            // Roslyn pools parser list builders: parsing a multi-million-token
+            // collection first makes later small statements repeatedly clear its
+            // oversized pooled array. Nested method declarations have no runtime
+            // initialization effects, so placing shards first preserves ordering.
+            edits.Add(new(owner.OpenBraceToken.Span.End, owner.OpenBraceToken.Span.End, nested.ToString()));
             Write(Apply(source, edits, 0, source.Length), before, after, target, metadata);
             return 0;
         }
