@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "status": "inventory-and-controls-verified",
+  "prototype": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-composition-prototype-001/build_inventory.py",
+    "sha256": "9acf1afaf493ff2790f5c10f59bd965affd16e23c300b3d55f3932b07367493a"
+  },
+  "inventory": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-composition-prototype-001/inventory.json",
+    "sha256": "36ea28f789869e92cceb6686fdb3431299634aa123f25de286c19f1d3536bf32"
+  },
+  "controls": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-composition-prototype-001/controls.json",
+    "sha256": "1499b4ffbac2682b1491abededb893da0b05b99f27f15d354324768d2d5177ba"
+  },
+  "results": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-composition-prototype-001/results.json",
+    "sha256": "819e650350a7cf742e3bf4518afa2c0b021c6476a52d6db71922e7c1d4bbe4f0"
+  },
+  "report": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-composition-prototype-001/report.md",
+    "sha256": "5b41650d3798ee527dbfda41ac80c9a5f931661af6cb534a51e3ff1bfde02a67"
+  },
+  "counts": {
+    "librarySources": 2207,
+    "testSources": 148,
+    "totalSources": 2355,
+    "libraryInputs": 129,
+    "testGroups": 26,
+    "testStandalone": 41,
+    "totalInputs": 196,
+    "controls": 21
+  },
+  "policy": {
+    "standard": "c++17",
+    "epochSeconds": 0,
+    "sourceAndDataRoot": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-value-001/source",
+    "buildMacroDirectory": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-contract-001/build",
+    "writableTestDirectories": "Separate native/JIT/NativeAOT output directories; frozen data stays immutable.",
+    "nativeBaseline": "Retain native-cpp17-001 temporarily with explicit path/clock differences; this does not claim identical compile profile."
+  },
+  "limitations": [
+    "Inventory/controls only; no runner preprocessing, full frontend or translated execution yet.",
+    "POSIX persistence/signal operations remain real integration requirements; no dropped sources or stubs."
+  ]
+}

@@ -2009,3 +2009,18 @@ DuckDB execution is claimed.
 Independent stage review verifies the complete normalized 2,355-unit/options/
 extension/dependency metadata and all 2,433 C/C++ source-file hashes unchanged.
 Only the expected Value header differs, matching the proved overlay exactly.
+
+
+The isolated upstream-runner composition prototype passes 21 inventory and
+negative controls. It retains the 129 library inputs and adds all 148 selected
+test sources through 26 original upstream wrappers plus 41 standalone inputs:
+196 inputs covering 2,355 source identities exactly once, provider once. Catch
+implementation and reporter remain separate. This is inventory evidence only.
+
+The next isolated preprocessing phase uses C++17/epoch zero, the frozen staged
+source/data root and generated headers, an explicit runner build-directory
+macro, and future separate writable native/JIT/AOT test directories. Existing
+native baseline path/clock differences stay explicit; no matched-profile or
+execution claim is implied. Real POSIX persistence/signal requirements remain.
+
+[Runner composition inventory](../evidence/duckdb-runner-composition-inventory-20261007.json).
