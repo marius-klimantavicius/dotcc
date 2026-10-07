@@ -1652,3 +1652,18 @@ This milestone is verified on Linux x64. Full DuckDB C# build/execution remains
 outstanding; the core amalgamation emission is a separate investigation.
 
 [Storage-view and stream evidence](../evidence/duckdb-storage-views-20261007.json).
+
+The tracked DuckDB amalgamation recipe now records the full configured closure:
+1,476 core TUs represented by the upstream amalgamation, plus 731 retained
+preprocessed TUs, with all seven static extensions and their generated loader.
+Three independent assemblies produce identical raw and absolute-line C++/header
+bytes. Combined core/provider preprocessing succeeds with the fixed epoch and
+source paths matching the retained inputs. Macro visibility differences remain
+explicit in the composition receipt; no whole-program or execution pass is
+claimed by this input-only validation.
+
+A native macro probe establishes the fixed-clock and source-prefix mapping
+needed to match PCG's parsed constants. The helper is unused in pinned DuckDB;
+the existing native behavioral baseline retains its original clock provenance.
+
+[Complete composition evidence](../evidence/duckdb-composition-20261007.json).

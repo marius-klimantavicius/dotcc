@@ -88,6 +88,46 @@ are snapshotted and verified independently; changing the selected preprocessing
 compiler still invalidates reuse. Older complete receipts using one compiler
 retain that binary as their preprocessing identity.
 
+## Core amalgamation and full source composition
+
+`edg/amalgamate.py` invokes the pinned upstream amalgamation generator and
+records the exact configured partition: **1,476 core TUs plus 731 remaining
+TUs**. All seven static extensions, their dependencies and the real generated
+extension loader remain selected. The upstream dummy loader is excluded; the
+manifest explicitly classifies the two additional textual implementation
+inputs, records native macro differences by source index, and enables the
+native RE2 initialization flag `RE2_ON_VALGRIND`. It preserves the exact native
+source ID `069cc9f9b5` and release `v1.5.6`.
+
+```sh
+python3 -B duckdb/edg/amalgamate.py \
+  --portable-manifest /path/duckdb-portable/portable.json \
+  --preprocessed-receipt /path/verified-epoch-zero/results.json \
+  --acquisition /path/verified-libcxx-acquisition \
+  --output-dir /path/duckdb-composition \
+  --preprocessing-epoch 0 --preprocess
+```
+
+Raw upstream output remains in `upstream-raw/`. A recorded two-expression
+generator overlay gives newly emitted `#line` directives absolute staged
+source paths, matching the retained TUs' `__FILE__` values; existing source
+directives remain unchanged. This matters because PCG's seed includes the file
+name as well as the build date/time. The recipe preprocesses the real libc++
+provider and core together using the retained preprocessing compiler and the
+same explicit epoch. It produces `composition.json` with source/output hashes,
+line mappings, macro deviations and an ordered **732-input** program manifest.
+It performs no whole-program merge or execution verification.
+
+The remaining `.ii` files are verified as previously built program inputs,
+including their original receipt, dependency hashes and preprocessing flags.
+The manifest records inventory differences and makes no fresh cache-hit claim;
+the stricter `translate.py --reuse-preprocessed` check remains unchanged.
+`--unity-inventory` can attach the recorded
+[`remaining-unity-recipes.json`](/mnt/storage/dotcc-edg-campaign-20261003/duckdb-amalgamation-002/remaining-unity-recipes.json)
+investigation as provenance. Those upstream per-target unity groups are an
+unvalidated fallback and are not selected automatically. Upstream `--extended`
+adds public headers, not extension implementations.
+
 Both C++20 and matching C++17 native baselines have built and passed the same
 17 selected upstream cases (2,848 assertions). Some bundled RE2 targets retain
 their upstream C++11 override.

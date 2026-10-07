@@ -1,0 +1,52 @@
+{
+  "milestone": "Reproducible DuckDB core amalgamation and complete remaining source composition",
+  "fullDuckDbTranslated": false,
+  "executionVerified": false,
+  "receipts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-composition-004/composition.json",
+      "sha256": "9a3c40b7db555f31e79a14d64059567ce348622577cde6e9afc422f2dc8ecc75"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-composition-repeat-validation-001.json",
+      "sha256": "408a290e30c914fb03412dec8a42bc288a505a02302428ca9fca24ad2d6b9292"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-reproducibility-001/report.md",
+      "sha256": "757e4d39128ce9d0f58b06246ba47a12602fa358b5ac7d85b246fe9ea1678aa8"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-reproducibility-001/results.json",
+      "sha256": "500567d68d0cad6b9df120ae2820046e7e1dec62754e51377b17cacc4f895c02"
+    }
+  ],
+  "configuredLibraryTUs": 2207,
+  "amalgamatedTUs": 1476,
+  "remainingTUs": 731,
+  "orderedProgramInputs": 732,
+  "configuredOmissions": 0,
+  "staticExtensions": [
+    "core_functions",
+    "parquet",
+    "icu",
+    "json",
+    "autocomplete",
+    "tpcds",
+    "tpch"
+  ],
+  "sourceId": "069cc9f9b5",
+  "verification": [
+    "Combined core and real libc++ provider preprocessing succeeds with epoch zero",
+    "Raw and absolute-line source/header hashes match across three independent assemblies",
+    "Exact configured source partition and generated static extension loader retained",
+    "Frozen staged source inventory unchanged",
+    "Already-built remaining inputs verified against original preprocessing receipts and hashes; not a fresh-cache eligibility claim",
+    "Native macro probe matches EDG date/time/file expansion using fixed epoch and source prefix mapping"
+  ],
+  "limitations": [
+    "Full merge and C# build/execution remain unverified",
+    "Amalgamation macro visibility differences are enumerated in the receipt; source assembly alone does not establish execution equivalence",
+    "Upstream per-target unity groups are only an unselected fallback investigation",
+    "Existing native reference was not rebuilt with the fixed epoch/path policy; the PCG helper is unreferenced in pinned DuckDB"
+  ]
+}
