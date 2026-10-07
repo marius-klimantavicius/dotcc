@@ -1350,3 +1350,38 @@ bootstrap is in progress. The earlier compiler also builds under NativeAOT and
 passes the small byte-identical emission fixture; this does not validate its
 known incorrect full initializer output.
 [Initializer identity evidence](../evidence/initializer-identity-20261007.json).
+
+The corrected `edg-dot-bootstrap-003` completes the requested full experiment.
+Native EDG translates the 77-source backend-inclusive compiler plus its provider
+inputs; the resulting C# builds and publishes with Linux-x64 NativeAOT in
+537.398 seconds, with warnings treated as errors (analyzers disabled) and a
+19,242,668,032-byte peak process-tree RSS. Both JIT and NativeAOT versions emit
+byte-identical C# for the small virtual-function/exception fixture. The NativeAOT
+compiler then retranslates all 290 direct inputs in 310.941 seconds, exiting 0.
+Frozen source/include hashes are unchanged before and after the experiment.
+
+**The full raw output is not byte-identical.** Two native runs produce
+260,609,296 bytes (SHA-256
+`3a4328f7da3600d7eb410d609107aef9bb0d65cb712eaaff6175e341498defb4`);
+the translated compiler produces 260,609,297 bytes (SHA-256
+`94303be81bef61c8e2c687a1f8ee4d122f8191aca6b3a924769860fe50c9a5b0`).
+All 178,058 diagnostic bytes match. The one-byte length difference does not
+describe the number of changed bytes. The comparison harness correctly reports
+failure, with no normalization or packaging applied to either raw stream.
+
+Both full outputs now preserve the formerly incorrect `saved_vars` rows 7/8 as
+separate relocations to offsets 6690344/6690352. Both have 3,627,849 lines and
+identical multisets of source-map/public-type records. Remaining differences
+include synthetic helper/type discovery order, source-map ordering and literal
+packing. Independent small reductions demonstrate stateful emitter calls in
+C++ string-concatenation expressions with unspecified operand evaluation order;
+native and translated evaluation orders can legally produce different IDs and
+literal layouts. Both outputs of the temporary/conditional-string reduction
+build and execute. This explains demonstrated differences, not a proof that
+every remaining difference in the full program is semantically harmless.
+
+The second-generation full C# is retained but has not been built or executed.
+Review aliases remain on the previously verified original compiler. A future
+byte-stable emitter needs explicit sequencing of stateful emission/discovery
+calls; that is separate from changing EDG language semantics or normalizing the
+comparison. [Full bootstrap evidence](../evidence/self-dot-bootstrap-20261007.json).

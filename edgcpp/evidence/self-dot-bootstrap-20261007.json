@@ -1,0 +1,508 @@
+{
+  "scope": "EDG including dot_gen_be translated to C#, built with NativeAOT, and used to retranslate the same complete compiler inputs",
+  "artifactDirectory": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003",
+  "compilerProgram": "cpfe-dot",
+  "selectedSourceCount": 77,
+  "directFrontendInputCount": 290,
+  "platform": "Linux x64; no additional platform execution claim",
+  "nativeBuild": "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-native-build-002/results.json",
+  "frontendInvocation": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/frontend-invocation.json",
+    "bytes": 28602,
+    "sha256": "8930ac20259ed433c87e5811a76965e31f60b5bf2c98fdc4f781aa8d2adf6c9b"
+  },
+  "frozenInputs": {
+    "manifest": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/bootstrap-input-check.json",
+      "bytes": 110627,
+      "sha256": "e8fec33c91f3d49eb694c41adb47f2019f628be63e659d449decd0156877b031"
+    },
+    "beforePassed": true,
+    "after": {
+      "checks": 571,
+      "passed": true,
+      "changedPaths": []
+    }
+  },
+  "build": {
+    "command": [
+      "dotnet",
+      "publish",
+      "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/managed/Generated.csproj",
+      "-c",
+      "Release",
+      "--nologo",
+      "-m:1",
+      "-p:BuildInParallel=false",
+      "-p:UseSharedCompilation=false",
+      "-p:RunAnalyzers=false",
+      "-p:TreatWarningsAsErrors=true",
+      "-r",
+      "linux-x64",
+      "-p:PublishAot=true",
+      "-p:DebugType=None",
+      "-p:DebugSymbols=false",
+      "-p:IlcTreatWarningsAsErrors=true",
+      "-o",
+      "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/build-aot/published"
+    ],
+    "environmentOverrides": {
+      "DOTNET_GCHeapHardLimit": "a00000000",
+      "DOTNET_GCConserveMemory": "5",
+      "DOTNET_PROCESSOR_COUNT": "4",
+      "MSBUILDDISABLENODEREUSE": "1",
+      "DOTNET_CLI_TELEMETRY_OPTOUT": "1"
+    },
+    "startedUtc": "2026-10-07T04:59:28.343091+00:00",
+    "rssLimitBytes": 51539607552,
+    "timeoutSeconds": 3600.0,
+    "analyzersEnabled": false,
+    "measurementsAvailable": true,
+    "exitCode": 0,
+    "terminationReason": null,
+    "elapsedSeconds": 537.398,
+    "peakTreeRssBytes": 19242668032,
+    "status": "passed"
+  },
+  "managedAssembly": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/managed/bin/Release/net10.0/linux-x64/Generated.dll",
+    "bytes": 48993280,
+    "sha256": "0d97f53343a0c24c0fbc905e7dbcdce61632532ddc07cbc0714f82df0137c70d"
+  },
+  "nativeAotExecutable": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/build-aot/published/Generated",
+    "bytes": 43696480,
+    "sha256": "37e7cfcc70e7c59d12513f2db8d90db59bfd6e2784b1a2fad9371b6a196e3641"
+  },
+  "methodSharding": {
+    "mode": "static-synthetic-method-shards-v1",
+    "before": 74996,
+    "after": 61000,
+    "target": 61000,
+    "shards": [
+      {
+        "name": "__EdgMethodShard0",
+        "methods": 10000,
+        "methodBudget": 10000
+      },
+      {
+        "name": "__EdgMethodShard1",
+        "methods": 3996,
+        "methodBudget": 3996
+      }
+    ],
+    "sdk": "10.0.112",
+    "sourceSha256": "a700f8a6649c1981b7d4e585d643c1136c9be538df505ddba20af3ec008e3310",
+    "toolSha256": "c5fd1974fe00c9847ef9a0bce9990704a30b42461f4b90a236b6ab7d2bf87413"
+  },
+  "smoke": {
+    "jit": {
+      "passed": true,
+      "result": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/smoke-jit/results.json",
+        "bytes": 7426,
+        "sha256": "ea56b4c5b271d3b2cf26d15b3a613ad0f58e76038e9a8a2e5590d188acc5bbb1"
+      }
+    },
+    "aot": {
+      "passed": true,
+      "result": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/smoke-aot/results.json",
+        "bytes": 7364,
+        "sha256": "c885d64fff128877ca0c9fe1d7116989f4f03c891ca1c4e367cb433355f83a9d"
+      }
+    }
+  },
+  "fullRetranslation": {
+    "executionPassed": true,
+    "nativeDeterministic": true,
+    "byteEquivalent": false,
+    "normalization": [],
+    "runs": [
+      {
+        "label": "native-1",
+        "exitCode": 0,
+        "seconds": 148.219,
+        "stdoutBytes": 260609296,
+        "stdoutSha256": "3a4328f7da3600d7eb410d609107aef9bb0d65cb712eaaff6175e341498defb4",
+        "stderrBytes": 178058,
+        "stderrSha256": "fdfa9d0d12dc077d52185faa1a42ed0df863c202f1365fefe7affc7e8597c677"
+      },
+      {
+        "label": "native-2",
+        "exitCode": 0,
+        "seconds": 148.82,
+        "stdoutBytes": 260609296,
+        "stdoutSha256": "3a4328f7da3600d7eb410d609107aef9bb0d65cb712eaaff6175e341498defb4",
+        "stderrBytes": 178058,
+        "stderrSha256": "fdfa9d0d12dc077d52185faa1a42ed0df863c202f1365fefe7affc7e8597c677"
+      },
+      {
+        "label": "translated",
+        "exitCode": 0,
+        "seconds": 310.941,
+        "stdoutBytes": 260609297,
+        "stdoutSha256": "94303be81bef61c8e2c687a1f8ee4d122f8191aca6b3a924769860fe50c9a5b0",
+        "stderrBytes": 178058,
+        "stderrSha256": "fdfa9d0d12dc077d52185faa1a42ed0df863c202f1365fefe7affc7e8597c677"
+      }
+    ],
+    "comparisons": [
+      {
+        "left": "native-1",
+        "right": "native-2",
+        "sameExitCode": true,
+        "stdout": {
+          "left": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/native-baseline/native-1.raw.cs",
+          "right": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/native-baseline/native-2.raw.cs",
+          "leftBytes": 260609296,
+          "rightBytes": 260609296,
+          "leftSha256": "3a4328f7da3600d7eb410d609107aef9bb0d65cb712eaaff6175e341498defb4",
+          "rightSha256": "3a4328f7da3600d7eb410d609107aef9bb0d65cb712eaaff6175e341498defb4",
+          "equal": true
+        },
+        "stderr": {
+          "left": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/native-baseline/native-1.stderr",
+          "right": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/native-baseline/native-2.stderr",
+          "leftBytes": 178058,
+          "rightBytes": 178058,
+          "leftSha256": "fdfa9d0d12dc077d52185faa1a42ed0df863c202f1365fefe7affc7e8597c677",
+          "rightSha256": "fdfa9d0d12dc077d52185faa1a42ed0df863c202f1365fefe7affc7e8597c677",
+          "equal": true
+        },
+        "passed": true
+      },
+      {
+        "left": "native-1",
+        "right": "translated",
+        "sameExitCode": true,
+        "stdout": {
+          "left": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/native-baseline/native-1.raw.cs",
+          "right": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/bootstrap-aot/translated.raw.cs",
+          "leftBytes": 260609296,
+          "rightBytes": 260609297,
+          "leftSha256": "3a4328f7da3600d7eb410d609107aef9bb0d65cb712eaaff6175e341498defb4",
+          "rightSha256": "94303be81bef61c8e2c687a1f8ee4d122f8191aca6b3a924769860fe50c9a5b0",
+          "equal": false,
+          "firstDifferentByte": 98981,
+          "leftLine": 2272,
+          "contextStartByte": 98901,
+          "leftContext": "ar_u3e__u3e___destroy((&(v28354)));\n\nif ((library_mode != 0)) {\n_ = __edg_assign6(r__local_3, &(v28423));\n_ = __edg_assign5(@params, &(v28424));\n_ = __edg_assign2(__edg_expr77(&(__edg_cleanup_state), ",
+          "rightContext": "ar_u3e__u3e___destroy((&(v28354)));\n\nif ((library_mode != 0)) {\n_ = __edg_assign5(r__local_3, &(v28423));\n_ = __edg_assign6(@params, &(v28424));\n_ = __edg_assign2(__edg_expr77(&(__edg_cleanup_state), "
+        },
+        "stderr": {
+          "left": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/native-baseline/native-1.stderr",
+          "right": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/bootstrap-aot/translated.stderr",
+          "leftBytes": 178058,
+          "rightBytes": 178058,
+          "leftSha256": "fdfa9d0d12dc077d52185faa1a42ed0df863c202f1365fefe7affc7e8597c677",
+          "rightSha256": "fdfa9d0d12dc077d52185faa1a42ed0df863c202f1365fefe7affc7e8597c677",
+          "equal": true
+        },
+        "passed": false
+      }
+    ],
+    "result": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/bootstrap-aot/results.json",
+      "bytes": 124105,
+      "sha256": "80a50fa2e295a1327d4980cc141880c3fc80cbf43aa72333f623927d0432b367"
+    }
+  },
+  "diagnosis": {
+    "scope": "Read-only comparison diagnosis; original bytes unchanged, no normalized equality claim",
+    "files": {
+      "native": {
+        "file": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/native-baseline/native-1.raw.cs",
+        "bytes": 260609296,
+        "lines": 3627849,
+        "sha256": "3a4328f7da3600d7eb410d609107aef9bb0d65cb712eaaff6175e341498defb4",
+        "savedVariableRows": {
+          "7": {
+            "line": 3241879,
+            "source": [
+              "saved_vars__static_u2d_local_18[7] = new()",
+              "{",
+              "    var_address = ((void*)((byte*)((edg_a_constant**)(__edg_base+6690344)) + (0))),",
+              "    var_size = 8UL,",
+              "    indirect = 0,",
+              "};"
+            ],
+            "globalOffset": 6690344
+          },
+          "8": {
+            "line": 3241885,
+            "source": [
+              "saved_vars__static_u2d_local_18[8] = new()",
+              "{",
+              "    var_address = ((void*)((byte*)((edg_a_reusable_cache_entry**)(__edg_base+6690352)) + (0))),",
+              "    var_size = 8UL,",
+              "    indirect = 0,",
+              "};"
+            ],
+            "globalOffset": 6690352
+          }
+        },
+        "literalPool": {
+          "bytes": 7795493,
+          "sha256": "860ae28829bf8eb9d3c1f0e808b682a301c99d0becea3d04375d96f602057f2e"
+        },
+        "savedVariableRelocationsPreserved": true
+      },
+      "translated": {
+        "file": "/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003/bootstrap-aot/translated.raw.cs",
+        "bytes": 260609297,
+        "lines": 3627849,
+        "sha256": "94303be81bef61c8e2c687a1f8ee4d122f8191aca6b3a924769860fe50c9a5b0",
+        "savedVariableRows": {
+          "7": {
+            "line": 3241879,
+            "source": [
+              "saved_vars__static_u2d_local_18[7] = new()",
+              "{",
+              "    var_address = ((void*)((byte*)((edg_a_constant**)(__edg_base+6690344)) + (0))),",
+              "    var_size = 8UL,",
+              "    indirect = 0,",
+              "};"
+            ],
+            "globalOffset": 6690344
+          },
+          "8": {
+            "line": 3241885,
+            "source": [
+              "saved_vars__static_u2d_local_18[8] = new()",
+              "{",
+              "    var_address = ((void*)((byte*)((edg_a_reusable_cache_entry**)(__edg_base+6690352)) + (0))),",
+              "    var_size = 8UL,",
+              "    indirect = 0,",
+              "};"
+            ],
+            "globalOffset": 6690352
+          }
+        },
+        "literalPool": {
+          "bytes": 7795493,
+          "sha256": "f98b9fe8c2dc22ee0bf180b41175c360855d428416a5a6e6ab12f5fc34332934"
+        },
+        "savedVariableRelocationsPreserved": true
+      }
+    },
+    "rawBytesEqual": false,
+    "savedVariableRelocationsPreserved": true,
+    "sourceMappingMultisetsEqual": true,
+    "sourceMappingDifferences": [
+      {
+        "onlyIn": "native",
+        "count": 0,
+        "samples": []
+      },
+      {
+        "onlyIn": "translated",
+        "count": 0,
+        "samples": []
+      }
+    ],
+    "lineAlignedDifferenceCounts": {
+      "identifier discovery/order": 10913,
+      "literal references or associated expression changes": 1206,
+      "other declaration/helper order/content": 4884,
+      "source-map order/content": 7360,
+      "literal-pool packing": 1
+    },
+    "boundedSamples": {
+      "identifier discovery/order": [
+        {
+          "alignedLine": 2272,
+          "native": "_ = __edg_assign6(r__local_3, &(v28423));\n",
+          "translated": "_ = __edg_assign5(r__local_3, &(v28423));\n"
+        },
+        {
+          "alignedLine": 2273,
+          "native": "_ = __edg_assign5(@params, &(v28424));\n",
+          "translated": "_ = __edg_assign6(@params, &(v28424));\n"
+        },
+        {
+          "alignedLine": 2436,
+          "native": "_ = __edg_assign2(__edg_expr84(&(__edg_cleanup_state), &(v28324), &(v28323)), &(v28325));\n",
+          "translated": "_ = __edg_assign2(__edg_expr83(&(__edg_cleanup_state), &(v28324), &(v28323)), &(v28325));\n"
+        },
+        {
+          "alignedLine": 2437,
+          "native": "_ = __edg_assign2(__edg_expr83(&(__edg_cleanup_state), &(v28326), &(v28322)), &(v28327));\n",
+          "translated": "_ = __edg_assign2(__edg_expr84(&(__edg_cleanup_state), &(v28326), &(v28322)), &(v28327));\n"
+        },
+        {
+          "alignedLine": 28623,
+          "native": "private static edg_Dyn_array__type* source_1_u29__u5d__operator_u28__u29___function_2(_ZZN3edg16Allocated_stringINS_27Delegate_buffered_allocatorILj203ENS_17General_allocatorEE4MetaEEC1IJPKcS8_S8_EEERKNS4_IcEEDpT_EUlmE_* v31257, ulong total_size) {\n",
+          "translated": "private static edg_Dyn_array__type* source_1_u29__u5d__operator_u28__u29___function_2(_ZZN3edg16Allocated_stringINS_27Delegate_buffered_allocatorILj203ENS_17General_allocatorEE4MetaEEC1IJPKcS8_S8_EEERKNS4_IcEEDpT_EUlmE_* v31258, ulong total_size) {\n"
+        },
+        {
+          "alignedLine": 28624,
+          "native": "if (edg_Dyn_array_u3c_char_u2c__u20_edg_Delegate_buffered_allocator_u3c__u28_unsigned_u20_int_u29_203_u2c__u20_edg_General_allocator_u3e__Meta_u3e__capacity((((edg_Dyn_array__type*)&(((v31257)->m31258)->backing_array)))) >= total_size) {\n",
+          "translated": "if (edg_Dyn_array_u3c_char_u2c__u20_edg_Delegate_buffered_allocator_u3c__u28_unsigned_u20_int_u29_203_u2c__u20_edg_General_allocator_u3e__Meta_u3e__capacity((((edg_Dyn_array__type*)&(((v31258)->m31257)->backing_array)))) >= total_size) {\n"
+        },
+        {
+          "alignedLine": 28630,
+          "native": "return (&(((v31257)->m31258)->backing_array));\n",
+          "translated": "return (&(((v31258)->m31257)->backing_array));\n"
+        },
+        {
+          "alignedLine": 28635,
+          "native": "private static edg_Dyn_array__type_2* source_1_u29__u5d__operator_u28__u29___function_3(_ZZN3edg16Allocated_stringINS_27Delegate_buffered_allocatorILj120ENS_17General_allocatorEE4MetaEEC1IJPKcS8_S8_EEERKNS4_IcEEDpT_EUlmE_* v31262, ulong total_size) {\n",
+          "translated": "private static edg_Dyn_array__type_2* source_1_u29__u5d__operator_u28__u29___function_3(_ZZN3edg16Allocated_stringINS_27Delegate_buffered_allocatorILj120ENS_17General_allocatorEE4MetaEEC1IJPKcS8_S8_EEERKNS4_IcEEDpT_EUlmE_* v31263, ulong total_size) {\n"
+        }
+      ],
+      "literal references or associated expression changes": [
+        {
+          "alignedLine": 374660,
+          "native": "_ = fprintf(v91740, __edg_literal(7441480 /* \"%*slifetime %s kind=%d parent=%s\\n\" */), v91741, ((void*)(((sbyte*)&((*(__edg_type3*)__edg_literal(1304 /* \"\" */)))))), ((void*)(v91743)), v91744, ((void*)(v91746)));\n",
+          "translated": "_ = fprintf(v91740, __edg_literal(7441488 /* \"%*slifetime %s kind=%d parent=%s\\n\" */), v91741, ((void*)(((sbyte*)&((*(__edg_type3*)__edg_literal(1304 /* \"\" */)))))), ((void*)(v91743)), v91744, ((void*)(v91746)));\n"
+        },
+        {
+          "alignedLine": 374679,
+          "native": "_ = __edg_assign3((((d)->destructible_entity_descr != null) ? ((sbyte*)&((*(__edg_type16*)__edg_literal(7441648 /* \"present\" */)))) : ((sbyte*)&((*(__edg_type38*)__edg_literal(7441640 /* \"absent\" */))))), &(v91759));\n",
+          "translated": "_ = __edg_assign3((((d)->destructible_entity_descr != null) ? ((sbyte*)&((*(__edg_type16*)__edg_literal(7441544 /* \"present\" */)))) : ((sbyte*)&((*(__edg_type38*)__edg_literal(7441552 /* \"absent\" */))))), &(v91759));\n"
+        },
+        {
+          "alignedLine": 374684,
+          "native": "_ = fprintf(v91749, __edg_literal(7441528 /* \"%*s destruction %s kind=%d variable=%s destructor=%s partial=%d ctor=%d descript...\" */), v91750, ((void*)(((sbyte*)&((*(__edg_type3*)__edg_literal(1304 /* \"\" */)))))), ((void*)(v91752)), v91753, ((void*)(v91755)), ((void*)(v91756)), v91757, v91758, ((void*)(v91759)), v91760, v91761, v91762, v91763);\n",
+          "translated": "_ = fprintf(v91749, __edg_literal(7441560 /* \"%*s destruction %s kind=%d variable=%s destructor=%s partial=%d ctor=%d descript...\" */), v91750, ((void*)(((sbyte*)&((*(__edg_type3*)__edg_literal(1304 /* \"\" */)))))), ((void*)(v91752)), v91753, ((void*)(v91755)), ((void*)(v91756)), v91757, v91758, ((void*)(v91759)), v91760, v91761, v91762, v91763);\n"
+        },
+        {
+          "alignedLine": 376117,
+          "native": "basic_string__ctor__function_5((&(v92049)), ((((f)->source_corresp).name != null) ? ((f)->source_corresp).name : ((sbyte*)&((*(__edg_type85*)__edg_literal(7442144 /* \"<anonymous>\" */))))));\n",
+          "translated": "basic_string__ctor__function_5((&(v92049)), ((((f)->source_corresp).name != null) ? ((f)->source_corresp).name : ((sbyte*)&((*(__edg_type85*)__edg_literal(7442160 /* \"<anonymous>\" */))))));\n"
+        },
+        {
+          "alignedLine": 382638,
+          "native": "_u3c_unnamed_u3e__name((&(id)), unchecked((void*)(variable_ptr)), __edg_literal(7441656 /* \"v\" */));\n",
+          "translated": "_u3c_unnamed_u3e__name((&(id)), unchecked((void*)(variable_ptr)), __edg_literal(7441536 /* \"v\" */));\n"
+        },
+        {
+          "alignedLine": 384124,
+          "native": "_u3c_unnamed_u3e__name((&(v93575)), unchecked((void*)(variable_ptr)), __edg_literal(7441656 /* \"v\" */));\n",
+          "translated": "_u3c_unnamed_u3e__name((&(v93575)), unchecked((void*)(variable_ptr)), __edg_literal(7441536 /* \"v\" */));\n"
+        },
+        {
+          "alignedLine": 384253,
+          "native": "std___dotgen_v1_operator_u2b___function_5(__edg_operand_value93628, (&(v93599)), __edg_literal(7436400 /* \"*)(\" */));\n",
+          "translated": "std___dotgen_v1_operator_u2b___function_5(__edg_operand_value93628, (&(v93599)), __edg_literal(7436392 /* \"*)(\" */));\n"
+        },
+        {
+          "alignedLine": 384408,
+          "native": "_u3c_unnamed_u3e__name((&(v93636)), unchecked((void*)(variable_ptr)), __edg_literal(7441656 /* \"v\" */));\n",
+          "translated": "_u3c_unnamed_u3e__name((&(v93636)), unchecked((void*)(variable_ptr)), __edg_literal(7441536 /* \"v\" */));\n"
+        }
+      ],
+      "other declaration/helper order/content": [
+        {
+          "alignedLine": 1696060,
+          "native": "[global::System.Runtime.CompilerServices.InlineArray(141)]\n",
+          "translated": "[global::System.Runtime.CompilerServices.InlineArray(145)]\n"
+        },
+        {
+          "alignedLine": 1696063,
+          "native": "[global::System.Runtime.CompilerServices.InlineArray(145)]\n",
+          "translated": "[global::System.Runtime.CompilerServices.InlineArray(141)]\n"
+        },
+        {
+          "alignedLine": 1696090,
+          "native": "[global::System.Runtime.CompilerServices.InlineArray(112)]\n",
+          "translated": "[global::System.Runtime.CompilerServices.InlineArray(68)]\n"
+        },
+        {
+          "alignedLine": 1696093,
+          "native": "[global::System.Runtime.CompilerServices.InlineArray(68)]\n",
+          "translated": "[global::System.Runtime.CompilerServices.InlineArray(112)]\n"
+        },
+        {
+          "alignedLine": 3271360,
+          "native": "private static std___dotgen_v1_string* __edg_assign2(std___dotgen_v1_string* rhs, std___dotgen_v1_string** lhs) { *lhs = unchecked((std___dotgen_v1_string*)(rhs)); return *lhs; }\n",
+          "translated": "private static std___dotgen_v1_string* __edg_expr22(int* __edg_state, std___dotgen_v1_string* p0, std___dotgen_v1_string* p1, int* p2, int* p3) {\n"
+        },
+        {
+          "alignedLine": 3271362,
+          "native": "// dot-gen:member-begin\n",
+          "translated": "_ = __edg_assign0(1, &((*p3)));\n"
+        },
+        {
+          "alignedLine": 3271363,
+          "native": "private static sbyte* __edg_assign3(sbyte* rhs, sbyte** lhs) { *lhs = unchecked((sbyte*)(rhs)); return *lhs; }\n",
+          "translated": "(*__edg_state) = 27;\n"
+        },
+        {
+          "alignedLine": 3271364,
+          "native": "// dot-gen:member-end\n",
+          "translated": "return (&((*p0)));\n"
+        }
+      ],
+      "source-map order/content": [
+        {
+          "alignedLine": 3411109,
+          "native": "// dot-gen:source parameter 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f6172746966616374732f63616d706169676e2f6c69626378782d61637175697265642d3030352f6c69626378782d31382e312e382e7372632f7372632f6e65772e637070 118 75 616c69676e6d656e74 alignment 66756e6374696f6e3a37323a5f5a4e34315f494e5445524e414c5f31395f6c69626378785f70726f76696465725f6370705f653663373262356632356f70657261746f725f6e65775f616c69676e65645f696d706c456d53743131616c69676e5",
+          "translated": "// dot-gen:source enum 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f6172746966616374732f63616d706169676e2f6c69626378782d61637175697265642d3030352f6c69626378782d31382e312e382e7372632f696e636c7564652f6e6577 182 12 616c69676e5f76616c5f74 std_align_val_t 656e756d3a7374643a3a616c69676e5f76616c5f74\n"
+        },
+        {
+          "alignedLine": 3411110,
+          "native": "// dot-gen:source enum 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f6172746966616374732f63616d706169676e2f6c69626378782d61637175697265642d3030352f6c69626378782d31382e312e382e7372632f696e636c7564652f6e6577 182 12 616c69676e5f76616c5f74 std_align_val_t 656e756d3a7374643a3a616c69676e5f76616c5f74\n",
+          "translated": "// dot-gen:public-type 616c69676e5f76616c5f74 std_align_val_t 0\n"
+        },
+        {
+          "alignedLine": 3411111,
+          "native": "// dot-gen:public-type 616c69676e5f76616c5f74 std_align_val_t 0\n",
+          "translated": "// dot-gen:source parameter 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f6172746966616374732f63616d706169676e2f6c69626378782d61637175697265642d3030352f6c69626378782d31382e312e382e7372632f7372632f6e65772e637070 118 75 616c69676e6d656e74 alignment 66756e6374696f6e3a37323a5f5a4e34315f494e5445524e414c5f31395f6c69626378785f70726f76696465725f6370705f653663373262356632356f70657261746f725f6e65775f616c69676e65645f696d706c456d53743131616c69676e5"
+        },
+        {
+          "alignedLine": 3411208,
+          "native": "// dot-gen:source function 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f6172746966616374732f63616d706169676e2f6c69626378782d61637175697265642d3030352f6c69626378782d31382e312e382e7372632f696e636c7564652f737472696e67 1102 40 7e62617369635f737472696e67 std___dotgen_v1_basic_string_u3c_char_u2c__u20_std___dotgen_v1_char_traits_u3c_char_u3e__u2c__u20_std___dotgen_v1_allocator_u3c_char_u3e__u3e___destroy 7374645f5f5f646f7467656e5f76315f62617",
+          "translated": "// dot-gen:source function 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f6172746966616374732f6d75736c2d70726f76696465722f313739313334383730333832343637353530302f656e7669726f6e6d656e742f676574656e762e63 5 7 676574656e76 getenv -\n"
+        },
+        {
+          "alignedLine": 3411211,
+          "native": "// dot-gen:source function 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f6172746966616374732f6d75736c2d70726f76696465722f313739313334383730333832343637353530302f656e7669726f6e6d656e742f676574656e762e63 5 7 676574656e76 getenv -\n",
+          "translated": "// dot-gen:source function 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f6172746966616374732f63616d706169676e2f6c69626378782d61637175697265642d3030352f6c69626378782d31382e312e382e7372632f696e636c7564652f737472696e67 1102 40 7e62617369635f737472696e67 std___dotgen_v1_basic_string_u3c_char_u2c__u20_std___dotgen_v1_char_traits_u3c_char_u3e__u2c__u20_std___dotgen_v1_allocator_u3c_char_u3e__u3e___destroy 7374645f5f5f646f7467656e5f76315f62617"
+        },
+        {
+          "alignedLine": 3411322,
+          "native": "// dot-gen:source function 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f6172746966616374732f63616d706169676e2f6c69626378782d61637175697265642d3030352f6c69626378782d31382e312e382e7372632f696e636c7564652f737472696e67 3946 1 6f70657261746f722b std___dotgen_v1_operator_u2b___function_6 7374645f5f5f646f7467656e5f7631\n",
+          "translated": "// dot-gen:source function 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f6172746966616374732f63616d706169676e2f6c69626378782d61637175697265642d3030352f6c69626378782d31382e312e382e7372632f696e636c7564652f737472696e67 896 71 62617369635f737472696e67 std___dotgen_v1_basic_string_u3c_char_u2c__u20_std___dotgen_v1_char_traits_u3c_char_u3e__u2c__u20_std___dotgen_v1_allocator_u3c_char_u3e__u3e___ctor 7374645f5f5f646f7467656e5f76315f62617369635"
+        },
+        {
+          "alignedLine": 3411323,
+          "native": "// dot-gen:source function 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f6172746966616374732f63616d706169676e2f6c69626378782d61637175697265642d3030352f6c69626378782d31382e312e382e7372632f696e636c7564652f737472696e67 896 71 62617369635f737472696e67 std___dotgen_v1_basic_string_u3c_char_u2c__u20_std___dotgen_v1_char_traits_u3c_char_u3e__u2c__u20_std___dotgen_v1_allocator_u3c_char_u3e__u3e___ctor 7374645f5f5f646f7467656e5f76315f62617369635",
+          "translated": "// dot-gen:source function 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f6172746966616374732f63616d706169676e2f6c69626378782d61637175697265642d3030352f6c69626378782d31382e312e382e7372632f696e636c7564652f737472696e67 3946 1 6f70657261746f722b std___dotgen_v1_operator_u2b___function_6 7374645f5f5f646f7467656e5f7631\n"
+        },
+        {
+          "alignedLine": 3411406,
+          "native": "// dot-gen:source parameter 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f757073747265616d2f7574696c2f6465636f64652e63 151 60 6463746c dctl 66756e6374696f6e3a313938353a5f5a4e32395f494e5445524e414c5f385f6465636f64655f635f66373838393064333139636c6561725f636f6e74726f6c5f626c6f636b45503232615f6465636f64655f636f6e74726f6c5f626c6f636b2f73636f70653a31373836343436\n",
+          "translated": "// dot-gen:source type 2f686f6d652f6d61726975732f702f646f7463632f6564676370702f757073747265616d2f7574696c2f6465636f64652e63 93 16 615f6465636f64655f636f6e74726f6c5f626c6f636b a_decode_control_block 7265636f72643a615f6465636f64655f636f6e74726f6c5f626c6f636b\n"
+        }
+      ],
+      "literal-pool packing": [
+        {
+          "alignedLine": 3627827,
+          "native": "global::System.ReadOnlySpan<byte> data = [76,67,95,67,84,89,80,69,0,0,0,0,0,0,0,0,76,67,95,78,85,77,69,82,73,67,0,0,0,0,0,0,76,67,95,84,73,77,69,0,76,67,95,67,79,76,76,65,84,69,0,0,0,0,0,0,76,67,95,77,79,78,69,84,65,82,89,0,0,0,0,0,76,67,95,77,69,83,83,65,71,69,83,0,0,0,0,0,102,105,108,101,32,115,99,111,112,101,0,0,0,0,0,0,109,101,109,99,112,121,0,0,118,111,105,100,42,0,0,0,118,111,105,100,42,44,118,111,105,100,42,44,117,108,111,110,103,0,0,0,0,0",
+          "translated": "global::System.ReadOnlySpan<byte> data = [76,67,95,67,84,89,80,69,0,0,0,0,0,0,0,0,76,67,95,78,85,77,69,82,73,67,0,0,0,0,0,0,76,67,95,84,73,77,69,0,76,67,95,67,79,76,76,65,84,69,0,0,0,0,0,0,76,67,95,77,79,78,69,84,65,82,89,0,0,0,0,0,76,67,95,77,69,83,83,65,71,69,83,0,0,0,0,0,102,105,108,101,32,115,99,111,112,101,0,0,0,0,0,0,109,101,109,99,112,121,0,0,118,111,105,100,42,0,0,0,118,111,105,100,42,44,118,111,105,100,42,44,117,108,111,110,103,0,0,0,0,0"
+        }
+      ]
+    },
+    "classificationLimit": "Categories describe syntax/order differences; they do not prove semantic equivalence of the entire generated program."
+  },
+  "independentEmissionOrderReductions": [
+    {
+      "description": "Enum parameter source-map ordering from type(...) + source_parameter_name(...) evaluation order",
+      "results": "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-emitter-order-002/results/results.json"
+    },
+    {
+      "description": "Temporary cleanup plus conditional string argument: anonymous type IDs and literal-pool discovery order; both generated programs build and execute",
+      "results": "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-emitter-order-005/results/results.json",
+      "execution": "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-emitter-order-005/execution.json"
+    }
+  ],
+  "limitations": [
+    "Full raw output is not byte-equivalent; the harness correctly reports comparison failure.",
+    "The repaired distinct-relocation initializer case is verified in both complete outputs.",
+    "Source-map multiset equality and bounded difference classification do not prove semantic equivalence of all second-generation code.",
+    "The second-generation full C# output was retained but not built or executed in this comparison.",
+    "No upstream EDG semantics were changed and no raw comparison bytes were normalized."
+  ]
+}

@@ -44,6 +44,19 @@ the exact invocation/environment, native compiler identity, and every retained
 output's size/hash and byte equality. Keep the input sources and includes frozen
 between stages; arguments alone cannot verify included-file contents.
 
+The completed backend-inclusive experiment is retained at
+`/mnt/storage/dotcc-edg-campaign-20261003/edg-dot-bootstrap-003`.
+`managed/Generated.csproj` contains the first-generation C# and
+`build-aot/published/Generated` is its runnable Linux-x64 NativeAOT executable.
+That executable successfully retranslates the complete compiler, including the
+C# backend, into `bootstrap-aot/translated.raw.cs`. Compare it with
+`native-baseline/native-1.raw.cs`: the files are **not byte-identical**, although
+the diagnostics match exactly. The known incorrect initializer merge is fixed
+in both outputs; generated-ID/source-map/literal discovery-order differences
+remain. The second-generation full C# has not been built, so this experiment
+does not establish full semantic equivalence. See the
+[result and bounded diagnosis](../evidence/self-dot-bootstrap-20261007.json).
+
 ## Build and run
 
 Build the canonical backend, then translate using the pinned libc++ acquisition:
