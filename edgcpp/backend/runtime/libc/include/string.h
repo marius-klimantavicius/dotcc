@@ -6,6 +6,9 @@ extern "C" {
 #endif
 #include <stddef.h>
 #include <locale.h>
+/* The provider exposes the BSD/POSIX extensions alongside its other
+   unconditional POSIX declarations, as musl's default feature profile does. */
+#include <strings.h>
 void *memcpy(void *, const void *, size_t);
 void *memmove(void *, const void *, size_t);
 void *memset(void *, int, size_t);

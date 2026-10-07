@@ -67,6 +67,7 @@ const posix_binding posix_bindings[]={
   {"fdatasync","int","int","Fdatasync",false},
   {"access","int","sbyte*,int","Access",false},
   {"getcwd","sbyte*","sbyte*,ulong","Getcwd",false},
+  {"realpath","sbyte*","sbyte*,sbyte*","Realpath",false},
   {"unlink","int","sbyte*","Unlink",false},
   {"mkdir","int","sbyte*,uint","Mkdir",false},
   {"rmdir","int","sbyte*","Rmdir",false},
@@ -122,6 +123,9 @@ bool posix_routine(a_routine_ptr r,const string& symbol) {
       args+=", __edg_varargs";
     }
     ensure_posix();libc_register_routine(r,binding.symbol);
+    // realpath(NULL destination) must allocate from the translated heap so
+    // ordinary translated free() retains its ownership and alignment rules.
+    if(symbol=="realpath")args+=", size => (nint)__edg_malloc(size)";
     bool files=symbol=="fdopen" || symbol=="fileno";
     if(files)ensure_files();
     bool opaque_result=result_abi=="FILE*" || result_abi=="POSIX_DIR*" || result_abi=="POSIX_DIRENT*";

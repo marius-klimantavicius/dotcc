@@ -41,6 +41,33 @@ internal static unsafe partial class PosixPlatform
         if ((!OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS() && !OperatingSystem.IsWindows()) || RuntimeInformation.ProcessArchitecture is not (Architecture.X64 or Architecture.Arm64))
             throw new PlatformNotSupportedException("POSIX platform supports Linux, macOS and Windows x64/arm64.");
     }
+    internal static string CanonicalPath(string path)
+    {
+        EnsureSupported();
+        if (!OperatingSystem.IsWindows())
+        {
+            // Path.GetFullPath is lexical: it would collapse link/.. before
+            // following the symlink and would accept nonexistent components.
+            nint resolved = RealpathUnix(path, 0);
+            if (resolved == 0) throw NativeError();
+            try { return Marshal.PtrToStringUTF8(resolved)!; }
+            finally { FreeCanonicalPath(resolved); }
+        }
+        SafeFileHandle handle;
+        fixed (char* name = path)
+            handle = CreateFile(name, 0, 7, 0, 3, 0x02000000, 0); // OPEN_EXISTING, BACKUP_SEMANTICS (directories)
+        using (handle)
+        {
+            if (handle.IsInvalid) throw NativeError();
+            char* buffer = stackalloc char[4096];
+            uint length = GetFinalPathName(handle, buffer, 4096, 0);
+            if (length == 0) throw NativeError();
+            if (length >= 4096) throw Failure(36);
+            string result = new(buffer, 0, (int)length);
+            if (result.StartsWith(@"\\?\UNC\", StringComparison.OrdinalIgnoreCase)) return @"\\" + result[8..];
+            return result.StartsWith(@"\\?\", StringComparison.Ordinal) ? result[4..] : result;
+        }
+    }
     internal static SafeFileHandle Open(string path, int flags, int mode)
     {
         EnsureSupported();
@@ -196,6 +223,9 @@ internal static unsafe partial class PosixPlatform
     [StructLayout(LayoutKind.Sequential)] private struct WindowsStandardInformation { internal long AllocationSize, EndOfFile; internal uint NumberOfLinks; internal byte DeletePending, Directory; }
     [StructLayout(LayoutKind.Sequential)] private struct WindowsFileInformation { internal uint Attributes, CreationLow, CreationHigh, AccessLow, AccessHigh, WriteLow, WriteHigh, VolumeSerial, SizeHigh, SizeLow, Links, IndexHigh, IndexLow; }
     [LibraryImport("libc", EntryPoint = "open", SetLastError = true)] private static partial int OpenUnix(byte* path, int flags, uint mode);
+    [LibraryImport("libc", EntryPoint = "realpath", StringMarshalling = StringMarshalling.Utf8, SetLastError = true)] private static partial nint RealpathUnix(string path, nint destination);
+    [LibraryImport("libc", EntryPoint = "free")] private static partial void FreeCanonicalPath(nint path);
+    [LibraryImport("kernel32.dll", EntryPoint = "GetFinalPathNameByHandleW", SetLastError = true)] private static partial uint GetFinalPathName(SafeFileHandle handle, char* buffer, uint length, uint flags);
     [LibraryImport("libc", EntryPoint = "open", SetLastError = true)] private static partial int OpenDarwin(byte* path, int flags, nint a, nint b, nint c, nint d, nint e, nint f, uint mode);
     [LibraryImport("libc", EntryPoint = "stat", SetLastError = true)] private static partial int StatUnix(byte* path, byte* data);
     [LibraryImport("libc", EntryPoint = "lstat", SetLastError = true)] private static partial int LstatUnix(byte* path, byte* data);

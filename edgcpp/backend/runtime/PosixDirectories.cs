@@ -9,6 +9,27 @@ namespace Edg.Runtime;
 
 public sealed unsafe partial class PosixContext
 {
+    public sbyte* Realpath(sbyte* path, sbyte* destination, Func<ulong, nint> allocate)
+    {
+        if (path == null) { SetError(22); return null; }
+        try
+        {
+            string resolved = PortablePath(PosixPlatform.CanonicalPath(Resolve(path)));
+            int length = Utf8.GetByteCount(resolved);
+            // The translated ABI uses the same PATH_MAX on every host.
+            if (length >= 4096) { SetError(36); return null; }
+            if (destination == null)
+            {
+                destination = (sbyte*)allocate((ulong)length + 1);
+                if (destination == null) { SetError(12); return null; }
+            }
+            Utf8.GetBytes(resolved, new Span<byte>(destination, length));
+            destination[length] = 0;
+            return destination;
+        }
+        catch (Exception error) when (PlatformFailure(error)) { Fail(error); return null; }
+    }
+
     private readonly object directoriesGate = new();
     private readonly Dictionary<nint, DirectoryOwner> directories = new();
     private sealed class DirectoryOwner

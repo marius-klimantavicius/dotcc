@@ -66,6 +66,7 @@ int setenv(const char *, const char *, int);
 int unsetenv(const char *);
 int putenv(char *);
 int clearenv(void);
+char *realpath(const char *, char *);
 extern char **environ;
 int system(const char *);
 void *bsearch(const void *, const void *, size_t, size_t, int (*)(const void *, const void *));

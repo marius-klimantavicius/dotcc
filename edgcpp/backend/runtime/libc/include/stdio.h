@@ -3,6 +3,10 @@
 #define __EDG_DOT_LIBC_STDIO_H
 #include <stddef.h>
 #include <stdarg.h>
+#ifndef _OFF_T_DEFINED
+#define _OFF_T_DEFINED
+typedef long off_t;
+#endif
 typedef struct __edg_FILE FILE;
 #define __EDG_FPOS_ABI_VERSION 2
 typedef struct __edg_fpos { long offset; unsigned int state, value; } fpos_t;
@@ -31,6 +35,9 @@ size_t fread(void *, size_t, size_t, FILE *);
 size_t fwrite(const void *, size_t, size_t, FILE *);
 int fseek(FILE *, long, int);
 long ftell(FILE *);
+/* The portable LP64 ABI uses 64-bit long and off_t on every host. */
+int fseeko(FILE *, off_t, int);
+off_t ftello(FILE *);
 int fgetpos(FILE *, fpos_t *);
 int fsetpos(FILE *, const fpos_t *);
 int feof(FILE *);

@@ -1,0 +1,333 @@
+{
+  "milestone": "DuckDB portable path and large-file prerequisites",
+  "status": "passed",
+  "checks": [
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/results.json",
+      "sha256": "8e2c491b0dcf540c91e7dcfb964726b5c76f2856c3284d3642a189b78d7d0874",
+      "results": {
+        "status": "passed",
+        "commands": [
+          {
+            "label": "native-build",
+            "command": [
+              "cc",
+              "-std=c11",
+              "-D_XOPEN_SOURCE=700",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/posix_realpath.c",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/native"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "native-run",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/native",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/tree"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "static-translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/posix_realpath.c",
+              "--language",
+              "c",
+              "--libc",
+              "musl",
+              "--posix",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/static"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "static-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/static/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "static-jit",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/static/bin/Release/net10.0/Generated.dll",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/tree"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "static-publish",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/static/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/static/aot"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "static-aot",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/static/aot/Generated",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/tree"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "instance-translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/posix_realpath.c",
+              "--language",
+              "c",
+              "--libc",
+              "musl",
+              "--posix",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/instance",
+              "--instance-methods"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "instance-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/instance/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "instance-jit",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/instance/bin/Release/net10.0/Generated.dll",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/tree"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "instance-publish",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/instance/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/instance/aot"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "instance-aot",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/instance/aot/Generated",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-realpath-001/tree"
+            ],
+            "exitCode": 0
+          }
+        ],
+        "checks": [
+          "static JIT matches native (14 assertions)",
+          "static NativeAOT matches native (14 assertions)",
+          "instance JIT matches native (14 assertions)",
+          "instance NativeAOT matches native (14 assertions)"
+        ]
+      }
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/results.json",
+      "sha256": "726c5bb361d2b83a4f093842f778b66bed95eacde7d1202c3f51df76bbc9a7d9",
+      "results": {
+        "passed": true,
+        "commands": [
+          {
+            "stage": "native-build",
+            "command": [
+              "gcc",
+              "-std=c11",
+              "-D_POSIX_C_SOURCE=200809L",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/libc_file_offsets.c",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/native"
+            ],
+            "exit": 0
+          },
+          {
+            "stage": "native-run",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/native"
+            ],
+            "exit": 0
+          },
+          {
+            "stage": "static-translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/libc_file_offsets.c",
+              "--language",
+              "c",
+              "--std",
+              "c11",
+              "--libc",
+              "musl",
+              "--posix",
+              "--emit",
+              "exe",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/static"
+            ],
+            "exit": 0
+          },
+          {
+            "stage": "static-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/static/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo"
+            ],
+            "exit": 0
+          },
+          {
+            "stage": "static-jit",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/static/bin/Release/net10.0/Generated.dll"
+            ],
+            "exit": 0
+          },
+          {
+            "stage": "static-publish",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/static/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/static/aot"
+            ],
+            "exit": 0
+          },
+          {
+            "stage": "static-aot",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/static/aot/Generated"
+            ],
+            "exit": 0
+          },
+          {
+            "stage": "instance-translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/libc_file_offsets.c",
+              "--language",
+              "c",
+              "--std",
+              "c11",
+              "--libc",
+              "musl",
+              "--posix",
+              "--emit",
+              "exe",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/instance",
+              "--instance-methods"
+            ],
+            "exit": 0
+          },
+          {
+            "stage": "instance-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/instance/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo"
+            ],
+            "exit": 0
+          },
+          {
+            "stage": "instance-jit",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/instance/bin/Release/net10.0/Generated.dll"
+            ],
+            "exit": 0
+          },
+          {
+            "stage": "instance-publish",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/instance/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/instance/aot"
+            ],
+            "exit": 0
+          },
+          {
+            "stage": "instance-aot",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-file-offsets-001/instance/aot/Generated"
+            ],
+            "exit": 0
+          }
+        ],
+        "checks": [
+          "static JIT: sparse >8 GiB file, signed seeks, errors, EOF, mixed API spelling",
+          "static NativeAOT: same native-oracle behavior",
+          "instance JIT: sparse >8 GiB file, signed seeks, errors, EOF, mixed API spelling",
+          "instance NativeAOT: same native-oracle behavior"
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Execution verified on Linux x64 only. Windows/macOS dispatch is implemented but not executed in this milestone.",
+    "This does not establish DuckDB translation or execution."
+  ]
+}

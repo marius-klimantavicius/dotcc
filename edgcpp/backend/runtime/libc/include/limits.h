@@ -4,6 +4,8 @@
 #define CHAR_BIT 8
 /* Selected UTF-8 conversion profile; locale implementation remains separate. */
 #define MB_LEN_MAX 4
+/* Portable POSIX path-buffer contract, including the terminating zero. */
+#define PATH_MAX 4096
 #define SCHAR_MIN (-127-1)
 #define SCHAR_MAX 127
 #define UCHAR_MAX 255
