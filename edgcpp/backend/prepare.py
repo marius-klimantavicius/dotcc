@@ -5,6 +5,7 @@ import shutil
 
 root = Path(__file__).resolve().parents[1]
 for source, target in [
+    (root / "backend/dot_gen_primitive_views.h", root / "upstream/src/dot_gen_primitive_views.h"),
     (root / "backend/dot_gen_variable_aliases.h", root / "upstream/src/dot_gen_variable_aliases.h"),
     (root / "backend/dot_gen_routine_symbols.h", root / "upstream/src/dot_gen_routine_symbols.h"),
     (root / "backend/dot_gen_semaphore.h", root / "upstream/src/dot_gen_semaphore.h"),

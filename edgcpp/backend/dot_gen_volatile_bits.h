@@ -55,7 +55,7 @@ string volatile_bitfield_access(an_expr_node_ptr e,an_expr_node_ptr rhs,
       // Use EDG's configured bit-field promotion rules, including narrow
       // unsigned fields that promote to signed int. Shift counts do not take
       // part in the left operand's arithmetic conversion.
-      auto promoted=node_type_after_integral_promotion(e);
+      auto promoted=source_promoted_type(e);
       string calc=(op=="<<" || op==">>")?type(promoted):
           arithmetic_type(promoted,rhs?rhs->type:promoted);
       string value=op=="="?"rhs":"(("+calc+")old) "+op+" "+

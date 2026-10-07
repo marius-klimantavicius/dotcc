@@ -96,8 +96,8 @@ def namespace(value):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("source", type=Path, nargs="+")
+    parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
+    parser.add_argument("source", type=Path, nargs="*")
     parser.add_argument("--language", choices=("c", "c++"), default="c++")
     parser.add_argument("--std", choices=("c89", "c99", "c11", "c17", "c23", "c++11", "c++14", "c++17", "c++20", "c++23", "c++26"),
                         help="select EDG language mode (default C11 or C++17)")
@@ -112,6 +112,13 @@ def main():
                         help="use an explicitly selected dot_gen_be compiler (default: current workspace build)")
     parser.add_argument("--compiler-timing", action="store_true",
                         help="include stock EDG compilation timings in compiler diagnostics")
+    parser.add_argument("--il-tools", type=Path,
+                        help="optional isolated writer/reader tools.json for lowered-IL checkpoints")
+    checkpoint_mode = parser.add_mutually_exclusive_group()
+    checkpoint_mode.add_argument("--il-checkpoint", type=Path,
+                                 help="write a verified lowered-IL checkpoint in a new directory, then emit C#")
+    checkpoint_mode.add_argument("--il-replay", type=Path,
+                                 help="emit C# from a verified checkpoint, restoring its recorded semantic options")
     parser.add_argument("--raw-output", type=Path,
                         help="retain successful raw backend C# before packaging (new file required)")
     parser.add_argument("--frontend-invocation", type=Path,
@@ -156,6 +163,25 @@ def main():
     parser.add_argument("--split-size", type=int, default=262144,
                         help="target UTF-8 bytes per member file in size mode; functions stay whole")
     args = parser.parse_args()
+    il_tools = None
+    il_checkpoint = None
+    if args.il_tools or args.il_checkpoint or args.il_replay:
+        if not args.il_tools or not (args.il_checkpoint or args.il_replay):
+            parser.error("--il-tools requires --il-checkpoint or --il-replay (and vice versa)")
+        if args.raw_input:
+            parser.error("--raw-input cannot be combined with lowered-IL checkpoint/replay")
+        if any(token == "--compiler" or token.startswith("--compiler=") for token in sys.argv[1:]):
+            parser.error("--il-tools supplies the writer/reader; do not also specify --compiler")
+        from backend import il_replay
+        try:
+            il_tools = il_replay.load_tools(args.il_tools)
+            if args.il_replay:
+                il_checkpoint = il_replay.load_checkpoint(args.il_replay, il_tools)
+                il_replay.restore_options(parser, args, il_checkpoint, sys.argv[1:])
+        except (OSError, ValueError, KeyError) as error:
+            parser.error(str(error))
+    if not args.source:
+        parser.error("at least one source is required unless --il-replay supplies it")
     if args.libc_pruning is None:
         # Raw-input mode only packages already generated code; its actual
         # pruning metadata is read from that input rather than applied again.
@@ -183,7 +209,7 @@ def main():
         parser.error("--raw-input and --raw-output are mutually exclusive")
     if args.class_name in ("Run", "Dispose", "Shutdown", "ReleaseThread") or args.class_name.startswith("__edg_"):
         parser.error("class name conflicts with a reserved backend member")
-    compiler = args.compiler.resolve()
+    compiler = Path(il_tools["reader" if args.il_replay else "writer"]["path"]) if il_tools else args.compiler.resolve()
     if not args.raw_input and not compiler.is_file():
         parser.error("build the backend first: EDG_BUILD_TARGET=cpfe-dot edgcpp/build.sh")
     compiler_sha256 = None if args.raw_input else hashlib.sha256(compiler.read_bytes()).hexdigest()
@@ -212,7 +238,7 @@ def main():
     sources = [p.resolve() for p in args.source]
     runtime_sources = []
     libc_provider = None
-    if args.libc == "musl":
+    if args.libc == "musl" and not args.il_replay:
         from backend.musl_provider import prepare_musl_provider
         try:
             runtime_sources,libc_provider = prepare_musl_provider(ROOT)
@@ -263,7 +289,7 @@ def main():
                                                ROOT / "backend/target" / (args.target+".def"))]
     macro_manifest = None
     translation_sources = sources
-    if args.export_macros:
+    if args.export_macros and not args.il_replay:
         from backend.macro_exports import prepare_macro_exports
         try:
             translation_sources, macro_manifest = prepare_macro_exports(
@@ -274,7 +300,25 @@ def main():
         except (OSError, ValueError) as error:
             parser.error(str(error))
     raw_input_manifest = None
-    if args.raw_input:
+    if args.il_replay:
+        metadata = il_checkpoint["metadata"]
+        runtime_sources = [Path(path) for path in metadata["runtimeSources"]]
+        libc_provider = metadata["libcProvider"]
+        macro_manifest = metadata["macroExports"]
+        target_manifest = metadata["target"]
+        if args.frontend_invocation:
+            args.frontend_invocation.parent.mkdir(parents=True, exist_ok=True)
+            with args.frontend_invocation.open("x") as handle:
+                json.dump({"mode": "lowered-il-replay", "checkpoint": il_checkpoint["receipt"],
+                           "arguments": [il_checkpoint["il"]["path"]], "cwd": il_checkpoint["cwd"],
+                           "environment": il_checkpoint["environment"], "compiler": il_tools["reader"]},
+                          handle, indent=2)
+                handle.write("\n")
+        try:
+            result = il_replay.replay(il_checkpoint, il_tools)
+        except (OSError, ValueError) as error:
+            parser.error(str(error))
+    elif args.raw_input:
         raw = args.raw_input.read_bytes()
         result = subprocess.CompletedProcess([], 0, raw.decode("utf-8"), "")
         raw_input_manifest = {"path": str(args.raw_input.resolve()), "sha256": hashlib.sha256(raw).hexdigest(),
@@ -284,13 +328,35 @@ def main():
         if args.frontend_invocation:
             args.frontend_invocation.parent.mkdir(parents=True, exist_ok=True)
             with args.frontend_invocation.open("x") as handle:
-                json.dump({"arguments": frontend_arguments, "cwd": str(Path.cwd()),
+                json.dump({"arguments": (["--trace_includes", "--output", str(args.il_checkpoint.resolve() / "program.cil"), *frontend_arguments]
+                                         if args.il_checkpoint else frontend_arguments), "cwd": str(Path.cwd()),
                            "environment": {k: v for k, v in env.items()
                                            if k.startswith("EDG_") or k in ("LANG", "LC_ALL", "TZ", "SOURCE_DATE_EPOCH")},
                            "compiler": {"path": str(compiler), "sha256": compiler_sha256}}, handle, indent=2)
                 handle.write("\n")
-        result = subprocess.run([str(compiler), *frontend_arguments],
-                                env=env, capture_output=True, text=True)
+        if args.il_checkpoint:
+            try:
+                il_checkpoint = il_replay.create_checkpoint(
+                    args.il_checkpoint, il_tools, frontend_arguments, env,
+                    translation_sources + runtime_sources, il_replay.serialized_options(args),
+                    {"runtimeSources": [str(path) for path in runtime_sources],
+                     "libcProvider": libc_provider, "macroExports": macro_manifest, "target": target_manifest},
+                    extra_inputs=[*sources, args.macro_source, args.macro_signatures,
+                                  *args.runtime_source,
+                                  *([ROOT / "backend/target" / (args.target + suffix)
+                                     for suffix in (".json", ".def")]
+                                    if args.target != "legacy-linux-x64" else [])])
+                diagnostics = (args.il_checkpoint / "writer.stderr").read_text()
+                if diagnostics:
+                    print(diagnostics, end="", file=sys.stderr)
+                result = il_replay.replay(il_checkpoint, il_tools)
+                compiler = Path(il_tools["reader"]["path"])
+                compiler_sha256 = il_tools["reader"]["sha256"]
+            except (OSError, ValueError, KeyError) as error:
+                parser.error(str(error))
+        else:
+            result = subprocess.run([str(compiler), *frontend_arguments],
+                                    env=env, capture_output=True, text=True)
     if result.stderr:
         print(result.stderr, end="", file=sys.stderr)
     if result.returncode:
@@ -586,6 +652,11 @@ RESOURCE_ITEMS
         "compiler": {"path": str(compiler), "sha256": compiler_sha256} if not args.raw_input else None,
         "rawOutput": raw_manifest,
         "rawInput": raw_input_manifest,
+        "ilCheckpoint": {"receipt": il_checkpoint["receipt"],
+                         "compatibilityId": il_tools["compatibilityId"],
+                         "backendId": il_tools["backendId"], "reader": il_tools["reader"],
+                         "emission": result.il_attempt,
+                         "replayed": bool(args.il_replay)} if il_checkpoint else None,
         "macroExports": macro_manifest,
         "unboundExternals": {"mode": args.unbound_externals,
                              "reviewOnly": bool(unbound) and args.unbound_externals == "declarations",

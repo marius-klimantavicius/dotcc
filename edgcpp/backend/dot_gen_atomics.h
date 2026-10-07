@@ -14,7 +14,7 @@ string atomic_call(a_routine_ptr routine, an_expr_node_ptr first) {
   for(auto p=extra->param_type_list;p;p=p->next)parameters.push_back(type(p->type));
   string result=type(rt->variant.routine.return_type);
   // EDG lowers C++ bool to target char, while C _Bool uses unsigned char.
-  string boolean_type=type(bool_type());
+  string boolean_type=type(source_integer_view(BOOL_INT_KIND));
   auto signature=[&](string expected_result,std::vector<string> expected) {
     if(extra->has_ellipsis || result!=expected_result || parameters!=expected || arguments.size()!=expected.size())
       unsupported(("atomic builtin ABI: "+source).c_str());

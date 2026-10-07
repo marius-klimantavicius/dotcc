@@ -49,7 +49,7 @@ string c11_atomic_mutation(an_expr_node_ptr e) {
       string calculation;
       if(skip_typerefs(a->type)->kind==tk_pointer)calculation="old "+operation+" rhs";
       else {
-        string promoted=arithmetic_type(a->type,unit?integer_type(ik_int):b->type);
+        string promoted=arithmetic_type(a->type,unit?a->type:b->type);
         calculation="(("+promoted+")old) "+operation+" "+((operation=="<<"||operation==">>")?"(int)rhs":"(("+promoted+")rhs)");
       }
       code+=ty+" old=default;global::Edg.Runtime.AtomicOps.LoadBytes("+bytes+",p,&old,5);for(;;){ "+ty+

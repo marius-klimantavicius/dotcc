@@ -147,6 +147,7 @@ bool routine_body_needed(a_routine_ptr r) {
 #endif
     ;
 }
+#include "dot_gen_primitive_views.h"
 #include "dot_gen_routine_symbols.h"
 bool selected_runtime_branch(a_statement_ptr s,a_statement_ptr &branch);
 #include "dot_gen_members.h"
@@ -714,7 +715,7 @@ string source_subscript_operand(an_expr_node_ptr operand) {
   // Retained named C# enums need that conversion for both indexing and the
   // pointer-addition form used when capturing an element's address.
   if(source_enum_nominal(operand->type))
-    value="unchecked(("+source_enum_physical_type(node_type_after_integral_promotion(operand))+")("+value+"))";
+    value="unchecked(("+source_enum_physical_type(source_promoted_type(operand))+")("+value+"))";
   return value;
 }
 string address(an_expr_node_ptr e) {
@@ -990,7 +991,7 @@ string location(an_expr_node_ptr e) {
   }
   if (op == eok_negate || op == eok_unary_plus || op == eok_complement) {
     string operand=expr(a);
-    if(source_enum_nominal(a->type))operand="("+source_enum_physical_type(node_type_after_integral_promotion(a))+")("+operand+")";
+    if(source_enum_nominal(a->type))operand="("+source_enum_physical_type(source_promoted_type(a))+")("+operand+")";
     return convert(e->type, string(op == eok_negate ? "-" : op == eok_unary_plus ? "+" : "~") + operand);
   }
   if (op == eok_pre_incr || op == eok_pre_decr || op == eok_post_incr || op == eok_post_decr) {
@@ -1067,7 +1068,7 @@ string location(an_expr_node_ptr e) {
   string lhs = expr(a);
   if(source_enum_nominal(a->type) || source_enum_nominal(b->type)) {
     auto promoted=[](an_expr_node_ptr operand) {
-      return skip_typerefs(operand->type)->kind==tk_integer?node_type_after_integral_promotion(operand):operand->type;
+      return skip_typerefs(operand->type)->kind==tk_integer?source_promoted_type(operand):operand->type;
     };
     bool pointer=skip_typerefs(a->type)->kind==tk_pointer || skip_typerefs(b->type)->kind==tk_pointer;
     bool shift=op==eok_shiftl || op==eok_shiftr;
@@ -1630,6 +1631,7 @@ void back_end(void) {
   unbound_declarations=unbound_partial || (getenv("EDG_DOT_UNBOUND_EXTERNALS") && string(getenv("EDG_DOT_UNBOUND_EXTERNALS"))=="declarations");
   unbound_routines.clear();unbound_variables.clear();reset_unbound_runtime();
   reset_owned_ir();
+  reset_source_primitive_views();
   coroutine_helpers_emitted=false;
   source_jumps_used=false;owned_ir_enabled=getenv("EDG_DOT_TYPE_IR") && string(getenv("EDG_DOT_TYPE_IR"))=="1";
   storage_record_ids.clear();array_storage_types.clear();

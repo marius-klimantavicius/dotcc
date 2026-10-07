@@ -49,6 +49,41 @@ EDG_BASE="$PWD/edgcpp/upstream/bases/docker/dev-env/gcc" \
   cmake --build edgcpp/build --target cpfe-dot --parallel 12
 ```
 
+## Optional lowered-IL checkpoints
+
+For expensive merged C++ programs, the driver can save EDG's stock lowered IL
+before C# emission. A compatible backend can replay it without repeating parsing,
+template instantiation or lowering. This is a host/configuration-specific cache,
+not the portable semantic-tree exporter.
+
+Build the optional tools into a new directory using the current `cpfe-dot`
+configuration (the ordinary compiler build is left unchanged):
+
+```sh
+python3 edgcpp/backend/il_replay.py build \
+  --output-dir edgcpp/artifacts/il-tools
+python3 edgcpp/dotnet.py edgcpp/backend/tests/scalars.cpp \
+  --il-tools edgcpp/artifacts/il-tools/tools.json \
+  --il-checkpoint edgcpp/artifacts/scalars-il \
+  --output-dir edgcpp/artifacts/scalars-first
+python3 edgcpp/dotnet.py \
+  --il-tools edgcpp/artifacts/il-tools/tools.json \
+  --il-replay edgcpp/artifacts/scalars-il \
+  --split source --output-dir edgcpp/artifacts/scalars-replay
+```
+
+The checkpoint records source/header and IL hashes, compiler configuration,
+semantic options and the emission environment. Replay restores those options;
+conflicting explicit semantic options are rejected. Packaging options such as
+file splitting can change. Musl provider paths, pruning and macro-export
+metadata are retained, without creating another provider snapshot.
+
+A completed checkpoint survives a later backend failure. Writer diagnostics and
+each emission attempt are retained beside it. After changing backend-only code,
+build tools into another new directory and replay with its `tools.json`;
+frontend/configuration/host incompatibilities reject. Keep the original input
+files, dependency files and directories available: replay verifies their hashes.
+
 ## Current contract: experimental-runtime-v3
 
 - One or more C++17 translation units (default) or C11 with `--language c`, parsed in explicit GCC 13.3 compatibility

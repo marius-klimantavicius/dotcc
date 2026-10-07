@@ -159,7 +159,7 @@ source_planned_node source_plan_mutation(an_expr_node_ptr e,bool discard,bool wa
       else exact_compound=false;
     }
   }
-  if(field && (token=="/=" || token=="%="))exact_compound=exact_compound && (type(node_type_after_integral_promotion(lhs))==type(field->type) || type(field->type)=="int");
+  if(field && (token=="/=" || token=="%="))exact_compound=exact_compound && (type(source_promoted_type(lhs))==type(field->type) || type(field->type)=="int");
   if(discard && !want_place && (token=="=" || exact_compound)) {
     string value=increment?(post?place+(token=="+="?"++":"--"):(token=="+="?"++":"--")+place):place+" "+token+" "+right.value;
     return {prefix,value,place,pointer};
@@ -175,13 +175,13 @@ source_planned_node source_plan_mutation(an_expr_node_ptr e,bool discard,bool wa
     string operation=token.substr(0,token.size()-1);
     if(skip_typerefs(lhs->type)->kind==tk_pointer) {
       if(!increment && source_enum_nominal(rhs->type))
-        right.value="unchecked(("+source_enum_physical_type(node_type_after_integral_promotion(rhs))+")("+right.value+"))";
+        right.value="unchecked(("+source_enum_physical_type(source_promoted_type(rhs))+")("+right.value+"))";
       value=place+" "+operation+" ("+right.value+")";
     } else {
-      auto promoted=(field || enum_target)?node_type_after_integral_promotion(lhs):lhs->type;
+      auto promoted=(field || enum_target)?source_promoted_type(lhs):lhs->type;
       auto right_type=increment?promoted:rhs->type;
       if(!increment && skip_typerefs(right_type)->kind==tk_integer)
-        right_type=node_type_after_integral_promotion(rhs);
+        right_type=source_promoted_type(rhs);
       string calc=(operation=="<<" || operation==">>")?source_enum_physical_type(promoted):arithmetic_type(promoted,right_type);
       value="(("+calc+")("+place+")) "+operation+" (("+((operation=="<<" || operation==">>")?"int":calc)+")("+right.value+"))";
     }
@@ -298,8 +298,8 @@ source_expression_plan plan_source_condition(an_expr_node_ptr e) {
       if(!right.prefix.empty()){string temp=source_temporary("comparison_left");prefix+=type(a->type)+" "+temp+" = "+left.value+";\n";left.value=temp;}
       auto at=skip_typerefs(a->type),bt=skip_typerefs(b->type);
       if((at->kind==tk_integer || at->kind==tk_float) && (bt->kind==tk_integer || bt->kind==tk_float)) {
-        auto promoted_a=at->kind==tk_integer?node_type_after_integral_promotion(a):a->type;
-        auto promoted_b=bt->kind==tk_integer?node_type_after_integral_promotion(b):b->type;
+        auto promoted_a=at->kind==tk_integer?source_promoted_type(a):a->type;
+        auto promoted_b=bt->kind==tk_integer?source_promoted_type(b):b->type;
         string common=arithmetic_type(promoted_a,promoted_b);
         if(type(a->type)!=common)left.value="unchecked(("+common+")("+left.value+"))";
         if(type(b->type)!=common)right.value="unchecked(("+common+")("+right.value+"))";

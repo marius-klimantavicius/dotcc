@@ -1700,3 +1700,27 @@ extensions remain included. Preprocessing passes, but the full merge has not
 run and no full DuckDB C# execution is claimed.
 
 [Input-scaling evidence](../evidence/duckdb-input-scaling-20261007.json).
+
+### Lowered-IL checkpoint and replay for DuckDB retries
+
+The driver now supports optional stock-IL writer/reader tools and verified
+checkpoints. A completed frontend/lowering result survives backend failure;
+compatible backend-only updates can emit again without parsing or instantiating
+the program. Source/header hashes, target/configuration, semantic options,
+emission environment, provider/pruning and macro-export metadata are verified.
+This binary cache is host/configuration-specific, not the semantic-tree export.
+
+Our emitter's primitive factories depended on frontend-only caches. Read-only
+backend primitive views now preserve the stock promotion rules without those
+allocations; alignment and target/emulation context are retained. No frontend
+semantics changed. Twenty-five replay checks pass, including 16 old-compiler
+raw-output parity pairs and C/C++ primitive JIT/AOT execution. The rebuilt main
+compiler matches 22 retained raw outputs. Existing C11, GNU atomic and source
+expression suites pass. A real 223-TU musl/macro checkpoint that failed emission
+now succeeds through a corrected compatible reader without reparsing.
+
+The existing C++20 enum-suite predefined-macro failure reproduces with both the
+old and new compiler and remains a separate limitation. This milestone verifies
+checkpoint infrastructure and focused execution, not full DuckDB translation.
+
+[Checkpoint/replay evidence](../evidence/duckdb-il-replay-20261007.json).

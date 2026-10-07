@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "verified-checkpoint-replay",
+  "duckdbExecutionVerified": false,
+  "milestone": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-integration-milestone.json",
+    "sha256": "115b8bae5c576a5dbbdf288ebc6e9aa1aa7b90227062e353d558d81ecb495a10"
+  },
+  "validation": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-integrated-tests-005/results.json",
+      "sha256": "205e77ce237ca963d45b1dec643e5a3039c1907e13597f3b339cc676a490d138"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-main016-parity-001/results.json",
+      "sha256": "0b4b04350aa4555c5c17de4962d33e5cb0d9630cdeb3ba19f677a4bff358160a"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-primitive-typeir-002/results.json",
+      "sha256": "0704f9baa03aaef6e41bf42d3a4436e71ec84f428bc2f0561834de9b3c4525ab"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-c11-001/results.json",
+      "sha256": "c0ae9af131b19236bf4e0d3a149a07125ee8f64159669764a100e57cb2523a08"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-expressions-001/results.json",
+      "sha256": "5d852dd80b56e3bbe7287c73cf008bc862fc0a1a728e371fb6efe636ac548e05"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-atomics-001/results.json",
+      "sha256": "8fa9c3f1f0b86711c436fb5f7c7326bb4d5d947ed2544114070771c193a9db30"
+    }
+  ],
+  "claims": [
+    "25 replay checks, including 16 old012 raw parity pairs and 4 primitive execution modes JIT/Linux NativeAOT",
+    "22 main016 raw outputs identical to replayed counterparts",
+    "4 C/C++ static/instance physical type IR primitive alignment checks",
+    "5 existing C11 implicit atomic checks; 10 source expression checks; 12 GNU atomic checks",
+    "Real 223-TU musl+macro checkpoint originally failed; corrected compatible reader succeeds without reparsing",
+    "Small-fixture validation only, no DuckDB replay acceptance claim"
+  ],
+  "mainCompilerSha256": "c90cbac541d01bf8d0137d716028e973b161177b447fe035b3278c3d54c8477b",
+  "correctedTools": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-integrated-tools-002/tools.json",
+    "sha256": "3e38fc3e83814c259332eedc09ee6fba6735359d316bd294de7137a19fdec13c"
+  },
+  "recoveredCheckpoint": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-provider-replay-001/checkpoint/checkpoint.json",
+    "sha256": "6db95d76b6ceb0ee6237795e2e75c5820b5de31c21a74380cc7d2ffbaf7a63cd"
+  },
+  "limitation": {
+    "message": "Existing source_enums_verify C++20 phase rejects predefined __GCC_ATOMIC_CHAR8_T_LOCK_FREE before lowering, reproduced with frozen012 and016. C/C++17 narrow enums and bitfield promotions passed parity/JIT/AOT.",
+    "originalLog": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-enums-012-probe.log",
+      "sha256": "c3911c2917658e828f00a2ef318b835faf26eec0d7b53d18d8051379e563cf0d"
+    },
+    "newLog": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-enums-001.log",
+      "sha256": "e1dbbb604f304ca6f6bb9e0ad6625c15d3831c25ebc66a138e91a9386001687d"
+    }
+  },
+  "independentReview": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-review-001/results.json",
+    "sha256": "7acaeb0243c79749ca58f0aae9fa6e89f5f89bb17fe425456cad85900b678f55"
+  }
+}
