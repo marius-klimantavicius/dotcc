@@ -38,6 +38,12 @@ first-difference context. No identifiers, paths, timestamps or whitespace are
 normalized. `--native-only` runs just the baseline. The existing review aliases
 remain on the verified original `cpfe` build until the new bootstrap passes.
 
+When a verified native baseline already exists, pass its `results.json` through
+`--native-baseline` to execute only the translated compiler. The harness checks
+the exact invocation/environment, native compiler identity, and every retained
+output's size/hash and byte equality. Keep the input sources and includes frozen
+between stages; arguments alone cannot verify included-file contents.
+
 ## Build and run
 
 Build the canonical backend, then translate using the pinned libc++ acquisition:

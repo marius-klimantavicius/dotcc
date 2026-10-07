@@ -1,0 +1,80 @@
+{
+  "scope": "Reuse unmodified verified native bootstrap output with strict provenance checks",
+  "passed": true,
+  "artifact": "/mnt/storage/dotcc-edg-campaign-20261003/bootstrap-baseline-reuse-checks-001/results.json",
+  "sha256": "ae46a1e9c20852be071ae76ec8c3d03d7cadc975705b340604583d0eca8bac50",
+  "checks": [
+    {
+      "name": "valid-reuse",
+      "passed": true
+    },
+    {
+      "name": "failed-baseline",
+      "passed": true
+    },
+    {
+      "name": "not-deterministic",
+      "passed": true
+    },
+    {
+      "name": "normalized-baseline",
+      "passed": true
+    },
+    {
+      "name": "different-arguments",
+      "passed": true
+    },
+    {
+      "name": "different-environment",
+      "passed": true
+    },
+    {
+      "name": "different-cwd",
+      "passed": true
+    },
+    {
+      "name": "different-inherited-env",
+      "passed": true
+    },
+    {
+      "name": "one-native-run",
+      "passed": true
+    },
+    {
+      "name": "different-command",
+      "passed": true
+    },
+    {
+      "name": "compiler-hash",
+      "passed": true
+    },
+    {
+      "name": "stdout-hash",
+      "passed": true
+    },
+    {
+      "name": "stdout-size",
+      "passed": true
+    },
+    {
+      "name": "stderr-hash",
+      "passed": true
+    },
+    {
+      "name": "stderr-size",
+      "passed": true
+    },
+    {
+      "name": "failed-native-run",
+      "passed": true
+    },
+    {
+      "name": "retained-bytes-changed",
+      "passed": true
+    },
+    {
+      "name": "retained-runs-disagree",
+      "passed": true
+    }
+  ]
+}

@@ -1304,3 +1304,10 @@ identical across native repeats (SHA-256
 Its main owner budgets 61,000 slots after moving 13,995 helpers. The first stuck
 formatter's heap/stack evidence and raw inputs remain retained.
 [Placement evidence](../evidence/method-shard-placement-20261007.json).
+
+The bootstrap harness can reuse a verified native-only baseline, checking exact
+arguments/environment/cwd, current native executable hash, and all retained
+output hashes, sizes and actual byte equality before starting the translated
+compiler. Eighteen acceptance/tamper-rejection checks pass. Source/include inputs
+must remain frozen between stages, as with the original sequential replay.
+[Baseline reuse evidence](../evidence/bootstrap-baseline-reuse-20261007.json).
