@@ -1881,3 +1881,28 @@ the runner reporting a passed case and zero skips. Exact acquisition and
 baseline inventories remain unchanged. This fallback is not yet adopted.
 
 [Parquet fallback evidence](../evidence/duckdb-parquet-unity-fallback-20261007.json).
+
+The 164-input attempt subsequently reached its unchanged 72 GiB RSS guard after
+4,631 seconds. It had read all inputs and reached deferred storage-compression
+template instantiation without frontend errors. It did not finish a usable IL
+checkpoint or generate the full C# library. A separate core-only diagnostic had
+already stopped at its own host-available-memory guard after 3,344 seconds; its
+partial IL also remains unusable. All artifacts are retained. These are process
+memory measurements, not an allocation-category profile.
+
+[Resource-stop evidence](../evidence/duckdb-memory-stops-20261007.json).
+
+The verified Parquet fallback is now adopted through ordered additional-group
+receipts. Validation binds the reused ICU/JSON archives and their exact members,
+baseline and actual link command. An explicitly excluded `mode skip` observation
+requires pinned source and initial directive evidence, both matching raw modes,
+and zero assertions; it never contributes accepted coverage. Seventeen focused
+checks and fourteen original checks pass. Root reviewed the isolated recipe;
+an additional agent review could not run because its model was at capacity.
+
+Composition006 passes all 32 group preprocessings and preserves all 2,207 source
+TUs exactly once as 148 inputs: combined core, 32 groups and 115 separate TUs.
+Frozen inputs remain unchanged. Preprocessed input bytes fall from 358,571,518
+to 287,907,570; this is not a measured compiler-memory saving. Full checkpoint
+attempt004 is running with the same compiler, feature profile and memory guard.
+No translated DuckDB build or execution is claimed.

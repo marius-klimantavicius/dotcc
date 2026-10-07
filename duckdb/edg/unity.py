@@ -200,7 +200,8 @@ def native_compile_flags(unit):
 
 def validate_native_observations(comparison, acceptance):
     """Check actual reporter observations, not only a success summary."""
-    if comparison.get('status') not in ('native-comparison-passed', 'native-comparison-has-failures-or-skips'):
+    if comparison.get('status') not in ('native-comparison-passed', 'native-comparison-has-failures-or-skips',
+                                         'native-comparison-complete'):
         raise ValueError('Additional unity groups require a completed native comparison')
     selectors = comparison.get('selectedCases', [])
     tests = comparison.get('tests', [])
@@ -208,14 +209,32 @@ def validate_native_observations(comparison, acceptance):
         raise ValueError('Native comparison has empty, duplicate or omitted selected cases')
     accepted = acceptance.get('acceptedCaseSelectors', [])
     partials = acceptance.get('additionalPartialObservations', [])
+    nonexecuting = acceptance.get('additionalNonExecutingObservations', [])
+    excluded = partials + nonexecuting
     partial_names = [item['selector'] for item in partials]
-    if not accepted or len(set(accepted)) != len(accepted) or len(set(partial_names)) != len(partial_names):
+    nonexecuting_names = [item['selector'] for item in nonexecuting]
+    excluded_names = partial_names + nonexecuting_names
+    if not accepted or len(set(accepted)) != len(accepted) or len(set(excluded_names)) != len(excluded_names):
         raise ValueError('Native acceptance subset is empty or duplicated')
-    if set(accepted) & set(partial_names) or set(accepted) | set(partial_names) != set(selectors):
+    if set(accepted) & set(excluded_names) or set(accepted) | set(excluded_names) != set(selectors):
         raise ValueError('Native acceptance subset omits or overlaps observations')
-    if any(not item.get('reason') for item in partials):
+    if any(not item.get('reason') for item in excluded):
         raise ValueError('Additional partial observations require explicit reasons')
-    counters = ('assertionsPassed', 'assertionsFailed', 'assertionsExpectedFailure',
+    for item in nonexecuting:
+        source = item.get('source')
+        expected = (Path(acceptance['sourceRoot']) / item['selector']).resolve()
+        if (not source or Path(source['path']).resolve() != expected or
+                not expected.is_relative_to(Path(acceptance['sourceRoot']).resolve()) or
+                item.get('acceptedCoverage') is not False):
+            raise ValueError('Nonexecuting observation requires exact source identity and no accepted coverage')
+        verify_dependencies([source])
+        lines = expected.read_text().splitlines()
+        line = item.get('directiveLine')
+        if (item.get('directive') != 'mode skip' or type(line) is not int or not 1 <= line <= len(lines) or
+                lines[line - 1].strip() != 'mode skip' or
+                any(text.strip() and not text.lstrip().startswith('#') for text in lines[:line - 1])):
+            raise ValueError('Nonexecuting observation requires an initial upstream mode skip directive')
+    counters = ('assertionsPassed' , 'assertionsFailed', 'assertionsExpectedFailure',
                 'casesPassed', 'casesFailed', 'casesExpectedFailure', 'skipped')
     totals = {mode: dict.fromkeys(counters, 0) for mode in ('baseline', 'candidate')}
     accepted_totals = {mode: dict.fromkeys(counters, 0) for mode in totals}
@@ -236,7 +255,7 @@ def validate_native_observations(comparison, acceptance):
                     raise ValueError('Native comparison contains failures or expected failures')
                 if test['selector'] in accepted and event['skipped']:
                     raise ValueError('Native accepted case contains skips')
-                if event['casesPassed'] < 1 or event['assertionsPassed'] < 1:
+                if event['casesPassed'] < 1 or (test['selector'] in accepted and event['assertionsPassed'] < 1):
                     raise ValueError('Native comparison contains empty cases or assertions')
             if any(e.get('kind') != 'case' or not e.get('name') for e in cases):
                 raise ValueError('Invalid native comparison case event')
@@ -248,12 +267,22 @@ def validate_native_observations(comparison, acceptance):
                     accepted_totals[mode][key] += events[-1][key]
             if test['selector'] in partial_names and events[-1]['skipped'] < 1:
                 raise ValueError('Excluded partial observation is not a matched skip')
+            if test['selector'] in nonexecuting_names and any(event['assertionsPassed'] or event['skipped'] for event in events):
+                raise ValueError('Nonexecuting observation contains executed assertions or a skip counter')
+        for item in excluded:
+            if item['selector'] == test['selector']:
+                for mode in ('baseline', 'candidate'):
+                    if mode in item and item[mode] != modes[mode]:
+                        raise ValueError('Excluded observation differs from raw native events')
+                if item in nonexecuting and any(mode not in item for mode in ('baseline', 'candidate')):
+                    raise ValueError('Nonexecuting observation must record both native modes')
         if modes['baseline'] != modes['candidate'] or test.get('observationsEqual') is not True:
             raise ValueError('Native baseline/candidate observations differ')
     if comparison.get('totals') != totals:
         raise ValueError('Native comparison aggregate totals disagree')
     return dict(selectedCases=selectors, totals=totals, acceptedCaseSelectors=accepted,
-                acceptedTotals=accepted_totals, additionalPartialObservations=partials, observationsEqual=True)
+                acceptedTotals=accepted_totals, additionalPartialObservations=partials,
+                additionalNonExecutingObservations=nonexecuting, observationsEqual=True)
 
 
 def native_evidence_inputs(comparison):
@@ -266,7 +295,14 @@ def native_evidence_inputs(comparison):
     if not commands or any(command.get('exitCode') != 0 for command in commands):
         raise ValueError('Native comparison has missing or failed commands')
     inputs = [comparison[key] for key in ('baseline', 'baselineRunner', 'candidateRunner',
-              'sourceManifest', 'sourceInventoryReceipt', 'recipe')]
+              'sourceManifest', 'recipe')]
+    if 'acquisitionBefore' in comparison:
+        before, after = comparison['acquisitionBefore'], comparison['acquisitionAfter']
+        if comparison.get('fullAcquisitionUnchanged') is not True or before['sha256'] != after['sha256']:
+            raise ValueError('Native full acquisition inventory changed')
+        inputs.extend([before, after])
+    else:
+        inputs.append(comparison['sourceInventoryReceipt'])
     inputs.extend(comparison['baselineInputsBefore'])
     for command in commands:
         inputs.extend([command['stdout'], command['stderr']])
@@ -288,8 +324,60 @@ def native_evidence_inputs(comparison):
     return result
 
 
+def validate_prior_groups(manifest, comparison, prior_results):
+    required = manifest.get('composedWithPriorGroups', [])
+    if required != [item['receipt'] for item in prior_results]:
+        raise ValueError('Combined native evidence does not bind exactly the prior selected receipts')
+    if not required:
+        return
+    # Current receipt protocol has one predecessor containing ICU+JSON. Require
+    # that explicit link rather than pretending those objects were recompiled.
+    if len(required) != 1 or comparison.get('priorIcuJsonAcceptance') != required[0]:
+        raise ValueError('Raw native comparison prior receipt differs')
+    previous = prior_results[0]['comparison']
+    if previous is None or comparison['baseline'] != previous['baseline']:
+        raise ValueError('Combined native comparison baseline differs')
+    reused = previous['archives']
+    for name, archive in reused.items():
+        if comparison['archives'].get(name) != archive:
+            raise ValueError('Reused native archive receipt or ordered members differ')
+    if set(comparison['profiles']) != {group['id'] for group in manifest['groups']}:
+        raise ValueError('Native profiles do not describe exactly the newly compiled groups')
+    if set(comparison['archives']) != set(reused) | set(comparison['profiles']):
+        raise ValueError('Combined native archives omit or add groups')
+    runner = comparison['candidateRunner']['path']
+    links = [command for command in comparison['commands'] if '-o' in command['argv'] and
+             command['argv'][command['argv'].index('-o') + 1] == runner]
+    if len(links) != 1:
+        raise ValueError('Combined native evidence requires one candidate link command')
+    link = links[0]
+    linked = [str((Path(link['cwd']) / value).resolve()) for value in link['argv'] if value.endswith('.a')]
+    for archive in comparison['archives'].values():
+        if linked.count(str(Path(archive['candidate']['path']).resolve())) != 1:
+            raise ValueError('Candidate link does not use the exact tested/reused archive once')
+        if str(Path(archive['original']['path']).resolve()) in linked:
+            raise ValueError('Candidate link retains an original replaced archive')
+
+
+def select_extra_manifests(paths, checksums, portable, remaining, upstream_groups, standard, preprocess=False):
+    paths = list(paths) if isinstance(paths, (list, tuple)) else [paths]
+    checksums = list(checksums) if isinstance(checksums, (list, tuple)) else [checksums]
+    if not paths or len(paths) != len(checksums) or any(path is None for path in paths):
+        raise ValueError('Every additional unity manifest requires one checksum')
+    results, selected, ids = [], list(upstream_groups), set()
+    for path, checksum in zip(paths, checksums):
+        extra = select_extra_groups(path, checksum, portable, remaining, selected, standard, preprocess, results)
+        for group in extra['groups']:
+            if group['additionalGroupId'] in ids:
+                raise ValueError('Duplicate additional unity id across manifests')
+            ids.add(group['additionalGroupId'])
+        results.append(extra)
+        selected.extend(extra['groups'])
+    return results
+
+
 def select_extra_groups(path, expected_sha256, portable, remaining, upstream_groups,
-                        standard, preprocess=False):
+                        standard, preprocess=False, prior_results=()):
     """Explicit, separately labelled experiments; never infer new groups."""
     receipt = record(path)
     if receipt['sha256'] != expected_sha256:
@@ -308,6 +396,8 @@ def select_extra_groups(path, expected_sha256, portable, remaining, upstream_gro
         dependencies.append(manifest['comparison'])
         comparison = json.loads(Path(manifest['comparison']['path']).read_text())
         observations = validate_native_observations(comparison, manifest)
+        dependencies.extend(item['source'] for item in manifest.get('additionalNonExecutingObservations', []))
+        validate_prior_groups(manifest, comparison, prior_results)
         dependencies.extend(native_evidence_inputs(comparison))
         if comparison['sourceManifest']['sha256'] != portable['sourceManifestSha256']:
             raise ValueError('Native comparison acquisition checksum differs')
@@ -387,7 +477,7 @@ def select_extra_groups(path, expected_sha256, portable, remaining, upstream_gro
         occupied.update(members)
         groups.append(group)
     return dict(groups=groups, receipt=receipt, approved=approved, observations=observations,
-                dependencies=dependencies)
+                dependencies=dependencies, comparison=comparison)
 
 
 def verify_contract(previous, current):
@@ -441,15 +531,18 @@ def prepare(composition_path, unity_path, output, preprocess=False, timeout=600,
         verify_dependencies(source_inputs)
         selected = select_groups(native, portable, remaining)
         if extra_groups is not None:
-            extra = select_extra_groups(extra_groups, extra_groups_sha256, portable, remaining,
-                                        selected['groups'], composition['standard'], preprocess)
+            extras = select_extra_manifests(extra_groups, extra_groups_sha256, portable, remaining,
+                                            selected['groups'], composition['standard'], preprocess)
             report['upstreamGroupCount'] = selected['groupCount']
-            report['additionalUnity'] = dict(manifest=extra['receipt'], approved=extra['approved'],
+            descriptions = [dict(manifest=extra['receipt'], approved=extra['approved'],
                 groupIds=[g['additionalGroupId'] for g in extra['groups']],
-                nativeComparisonObservations=extra['observations'],
-                policy='Explicit additional groups, separately validated against pinned native comparison evidence; not upstream CMake unity groups.')
-            source_inputs.extend(extra['dependencies'])
-            selected['groups'].extend(extra['groups'])
+                nativeComparisonObservations=extra['observations']) for extra in extras]
+            report['additionalUnity'] = descriptions[0] if len(descriptions) == 1 else dict(manifests=descriptions)
+            report['additionalUnity']['policy'] = ('Explicit additional groups, separately validated against pinned '
+                'native comparison evidence; not upstream CMake unity groups.')
+            for extra in extras:
+                source_inputs.extend(extra['dependencies'])
+                selected['groups'].extend(extra['groups'])
             grouped = {source for group in selected['groups'] for source in group['orderedMembers']}
             selected.update(groupCount=len(selected['groups']), representedRemainingTUs=len(grouped),
                             ungroupedRemainingTUs=sorted(set(remaining) - grouped))
@@ -552,14 +645,16 @@ def main():
     parser.add_argument('--output-dir', required=True, type=Path)
     parser.add_argument('--preprocess', action='store_true')
     parser.add_argument('--timeout', type=int, default=600)
-    parser.add_argument('--extra-groups', type=Path,
+    parser.add_argument('--extra-groups', type=Path, action='append',
                         help='explicit audited additional-group evidence, or inventory-only experimental plan')
-    parser.add_argument('--extra-groups-sha256', help='required SHA256 of the explicit additional-group manifest')
+    parser.add_argument('--extra-groups-sha256', action='append', help='required SHA256 of the explicit additional-group manifest')
     args = parser.parse_args()
     if args.timeout <= 0:
         parser.error('--timeout must be positive')
     if bool(args.extra_groups) != bool(args.extra_groups_sha256):
         parser.error('--extra-groups and --extra-groups-sha256 must be supplied together')
+    if args.extra_groups and len(args.extra_groups) != len(args.extra_groups_sha256):
+        parser.error('Each --extra-groups requires one --extra-groups-sha256 in matching order')
     result = prepare(args.composition.resolve(), args.unity_manifest.resolve(), args.output_dir,
                      args.preprocess, args.timeout, args.extra_groups, args.extra_groups_sha256)
     print(json.dumps({key: result[key] for key in ('status', 'groupCount', 'configuredOriginalTUs',

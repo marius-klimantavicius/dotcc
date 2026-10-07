@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "resource-stopped-incomplete",
+  "translatedExecutionVerified": false,
+  "fullAttempt": {
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-003/results.json",
+      "sha256": "894795a9c7d07b7a7ecd42d210ae4ef3a0b97aa1616beacc39fd324096d3c544"
+    },
+    "prepared": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-003/prepared.json",
+      "sha256": "35116043bf93dc5c8879881db306d7987bd8f93c2bed1fc485643579b4fff875"
+    },
+    "inputCount": 164,
+    "elapsedSeconds": 4631.120531028981,
+    "peakCompilerRssBytes": 77319700480,
+    "stopEvent": {
+      "classification": "memory-guard-stop",
+      "reason": "compiler-rss-limit",
+      "sample": {
+        "processes": [
+          {
+            "pid": 1453689,
+            "executable": "/usr/bin/python3.12",
+            "name": "python3",
+            "rssBytes": 25296896,
+            "peakRssBytes": 50290688,
+            "compiler": false
+          },
+          {
+            "pid": 1453982,
+            "executable": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-integrated-tools-002/build/writer",
+            "name": "writer",
+            "rssBytes": 77319700480,
+            "peakRssBytes": 77319700480,
+            "compiler": true
+          }
+        ],
+        "compilerRssBytes": 77319700480,
+        "availableBytes": 35677995008,
+        "elapsedSeconds": 4629.554208667978
+      }
+    },
+    "exitCode": -15,
+    "inputsVerifiedAfterRun": true,
+    "checkpointUsableClaim": false,
+    "diagnostics": [
+      {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-003/translate.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-003/translate.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-003/checkpoint/writer.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-003/checkpoint/writer.stderr",
+        "sha256": "edbefd0b932f1f0eb6102e9c05ea9ed2eb57bf3c025bd859a6ab7ced615873ab"
+      }
+    ]
+  },
+  "coreDiagnostic": {
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-review-002/results.json",
+      "sha256": "3a323116c757fe242bfcb30348adf61b785df7875919c21ec84e152040ef5e1d"
+    },
+    "elapsedSeconds": 3343.563,
+    "peakDescendantRssBytes": 18047221760,
+    "minimumHostAvailableBytes": 21465079808,
+    "stopReason": "resource limit: host available memory fell below20GiB",
+    "exitCode": -15,
+    "checkpointUsableClaim": false
+  },
+  "interpretation": [
+    "The full native EDG process reached its existing 72 GiB RSS guard during deferred template instantiation; no completed checkpoint or generated full C# is claimed.",
+    "The separate core-only diagnostic stopped at its existing host-available-memory guard. Its partial IL is not a usable checkpoint.",
+    "No frontend semantics, resource policies or active input files were changed to complete these runs. Intermediates remain preserved.",
+    "Process RSS measurements do not identify individual allocation categories."
+  ],
+  "nextStep": "Adopt verified 17-file Parquet grouping and retry all selected sources as 148 inputs."
+}

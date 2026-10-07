@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "preprocessed-composition-full-attempt-running",
+  "translatedExecutionVerified": false,
+  "composition": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-unity-composition-006/composition.json",
+    "sha256": "cd2fc9c33a3622b095679d59294f6ada1c9ea8963c9446bf8fb942bb2025e4c4"
+  },
+  "preparedFullAttempt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-004/prepared.json",
+    "sha256": "ce93dddda11f747b6c0bc9405b01a10aa88e600e0d68c8eb957e8d32265ec57f"
+  },
+  "recipe": {
+    "path": "/home/marius/p/dotcc/duckdb/edg/unity.py",
+    "sha256": "a2ff62161d1929f7405a58ce0faf31e0f169db54a50b8538dbe811aaeff991d5"
+  },
+  "tests": {
+    "path": "/home/marius/p/dotcc/duckdb/edg/tests/extra_unity_verify.py",
+    "sha256": "be3f41feffa64f58997a86b8f0e6c0d3916ea1f764cc5774d820385a255b25bb"
+  },
+  "focusedControls": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-parquet-fallback-canonical-controls-002/results.json",
+    "sha256": "321a6f32c178e490850cf8b832740892287ce3194552b1b730b2c30fe054b9ec"
+  },
+  "originalControls": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-parquet-fallback-default-controls-001/results.json",
+    "sha256": "7cd3996778675e5afa58d726df75d96b8ffa3fb1d105f9af83981dbf06d6a528"
+  },
+  "realReceiptValidation": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-parquet-fallback-canonical-controls-002/real-selection.json",
+    "sha256": "ce8dcd2808a4c54242527f0a809673801b8f77edabf837619787d14cc7601ef0"
+  },
+  "sourceCoverage": {
+    "configuredTUs": 2207,
+    "exactlyOnce": true,
+    "inputCount": 148,
+    "groupCount": 32,
+    "separateTUs": 115,
+    "inputBytes": 287907570,
+    "frozenInputsUnchanged": true
+  },
+  "review": "Root reviewed isolated recipe. Additional independent agent review was unavailable due to model capacity.",
+  "limitations": [
+    "Full checkpoint004 is still running; no full C# build, JIT or NativeAOT execution claim.",
+    "Reduced preprocessed bytes do not establish a compiler memory saving.",
+    "Native acceptance excludes two dependency-skipped observations and one upstream mode-skip file."
+  ]
+}

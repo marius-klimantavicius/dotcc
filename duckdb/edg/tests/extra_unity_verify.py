@@ -187,6 +187,120 @@ class ExtraUnityTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'skips'):
             self.select(True)
 
+    def add_nonexecuting(self):
+        self.approve()
+        path = self.source / 'mode.test'
+        path.write_text('# preserved test\n\nmode skip\nstatement ok\nselect 1;\n')
+        test = copy.deepcopy(self.comparison['tests'][0]); test['selector'] = 'mode.test'
+        for mode in test['modes'].values():
+            mode['events'][0]['name'] = 'mode.test'
+            for event in mode['events']:event['assertionsPassed'] = 0
+        self.comparison['tests'].append(test);self.comparison['selectedCases'].append('mode.test')
+        for total in self.comparison['totals'].values():total['casesPassed'] += 1
+        item = dict(selector='mode.test', reason='upstream mode skip', acceptedCoverage=False,
+                    directive='mode skip', directiveLine=3, source=unity.record(path), **copy.deepcopy(test['modes']))
+        self.manifest['additionalNonExecutingObservations'] = [item]
+        self.save_comparison()
+        return item
+
+    def test_explicit_mode_skip_excluded_from_coverage(self):
+        self.add_nonexecuting()
+        result = self.select(True)
+        self.assertEqual(result['observations']['acceptedTotals']['candidate']['assertionsPassed'],3)
+        self.assertEqual(result['observations']['acceptedTotals']['candidate']['casesPassed'],1)
+        self.assertEqual(result['observations']['totals']['candidate']['casesPassed'],2)
+
+    def test_mode_skip_requires_pinned_initial_directive_and_both_modes(self):
+        item = self.add_nonexecuting();original=copy.deepcopy(item)
+        for key,value in [('directiveLine',4),('directive','mode unskip'),('acceptedCoverage',True),('candidate',None)]:
+            item.clear();item.update(copy.deepcopy(original));item[key]=value
+            with self.subTest(key=key),self.assertRaises(ValueError):self.select(True)
+        item.clear();item.update(original)
+        path=Path(item['source']['path']);path.write_text('statement ok\nselect 1;\nmode skip\n')
+        item['source']=unity.record(path)
+        with self.assertRaisesRegex(ValueError,'initial upstream'):self.select(True)
+
+    def test_mode_skip_rejects_source_tamper_failed_and_executed_assertions(self):
+        item=self.add_nonexecuting();original=copy.deepcopy(self.comparison)
+        for key,value in [('assertionsPassed',1),('assertionsFailed',1),('assertionsExpectedFailure',1),('skipped',1)]:
+            self.comparison=copy.deepcopy(original)
+            self.comparison['tests'][-1]['modes']['candidate']['events'][0][key]=value
+            self.save_comparison()
+            with self.subTest(key=key),self.assertRaises(ValueError):self.select(True)
+        self.comparison=original;self.save_comparison()
+        Path(item['source']['path']).write_text('changed')
+        with self.assertRaisesRegex(ValueError,'dependency changed'):self.select(True)
+
+    def test_zero_assert_matched_skip_can_only_be_explicit_exclusion(self):
+        self.add_nonexecuting()
+        item=self.manifest.pop('additionalNonExecutingObservations')[0]
+        for observation in self.comparison['tests'][-1]['modes'].values():
+            for event in observation['events']:event['skipped']=1
+        for total in self.comparison['totals'].values():total['skipped']=1
+        item.update(copy.deepcopy(self.comparison['tests'][-1]['modes']))
+        self.manifest['additionalPartialObservations']=[item];self.save_comparison()
+        self.select(True)
+        self.manifest['acceptedCaseSelectors'].append('mode.test');self.manifest['additionalPartialObservations']=[]
+        with self.assertRaises(ValueError):self.select(True)
+
+    def test_repeated_manifest_count_and_prior_binding(self):
+        self.approve();self.select(True)
+        with self.assertRaisesRegex(ValueError,'one checksum'):
+            unity.select_extra_manifests([self.evidence],[],self.portable,self.remaining_map,self.upstream,'c++17')
+        self.manifest['composedWithPriorGroups']=[dict(path='missing',sha256='bad')]
+        with self.assertRaisesRegex(ValueError,'prior selected'):self.select(True)
+
+
+    def test_reused_archive_receipts_members_and_actual_link_are_bound(self):
+        self.approve()
+        prior = dict(receipt=unity.record(self.comparison_path), comparison=copy.deepcopy(self.comparison))
+        manifest = dict(composedWithPriorGroups=[prior['receipt']], groups=[dict(id='next')])
+        current = copy.deepcopy(self.comparison)
+        current['priorIcuJsonAcceptance'] = prior['receipt']
+        current['candidateRunner'] = dict(path='/synthetic/runner', sha256='runner')
+        current['profiles'] = dict(next=copy.deepcopy(current['profiles']['extra']))
+        current['archives']['next'] = dict(original=dict(path='/synthetic/original-next.a', sha256='original'),
+                                          candidate=dict(path='/synthetic/next.a', sha256='candidate'))
+        old_archive = current['archives']['extra']
+        old_archive.update(original=dict(path='/synthetic/original-extra.a', sha256='original-extra'),
+                           candidate=dict(path='/synthetic/extra.a', sha256='candidate-extra'),
+                           afterMembers=[dict(name='one.o', sha256='one'), dict(name='two.o', sha256='two')])
+        prior['comparison']['archives']['extra'] = copy.deepcopy(old_archive)
+        current['commands'].append(dict(argv=['c++', '/synthetic/extra.a', '/synthetic/next.a', '-o',
+                                             current['candidateRunner']['path']], cwd=str(self.root), exitCode=0))
+        unity.validate_prior_groups(manifest, current, [prior])
+        for mutation in ('archive', 'members', 'link', 'prior', 'fakecompile', 'baseline'):
+            changed = copy.deepcopy(current)
+            if mutation == 'archive':
+                changed['archives']['extra']['candidate']['sha256'] = 'tampered'
+            elif mutation == 'members':
+                changed['archives']['extra']['afterMembers'].reverse()
+            elif mutation == 'link':
+                changed['commands'][-1]['argv'].remove('/synthetic/extra.a')
+            elif mutation == 'prior':
+                changed['priorIcuJsonAcceptance']['sha256'] = 'tampered'
+            elif mutation == 'baseline':
+                changed['baseline']['sha256'] = 'tampered'
+            else:
+                changed['profiles']['extra'] = copy.deepcopy(changed['profiles']['next'])
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                unity.validate_prior_groups(manifest, changed, [prior])
+
+    def test_acquisition_before_after_evidence_must_be_unchanged(self):
+        self.approve()
+        current = copy.deepcopy(self.comparison)
+        original_inventory = current.pop('sourceInventoryReceipt')
+        current.update(acquisitionBefore=original_inventory, acquisitionAfter=copy.deepcopy(original_inventory),
+                       fullAcquisitionUnchanged=True)
+        unity.native_evidence_inputs(current)
+        current['fullAcquisitionUnchanged'] = False
+        with self.assertRaisesRegex(ValueError, 'acquisition inventory'):
+            unity.native_evidence_inputs(current)
+        current['fullAcquisitionUnchanged'] = True
+        current['acquisitionAfter']['sha256'] = 'changed'
+        with self.assertRaisesRegex(ValueError, 'acquisition inventory'):
+            unity.native_evidence_inputs(current)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)

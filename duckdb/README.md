@@ -161,6 +161,15 @@ ordered membership, source hashes, compiler options and the native comparison
 observations. An inventory-only experimental plan cannot be preprocessed.
 The default remains the upstream groups only.
 
+Additional manifests and their checksums may be repeated in order. A composed
+native comparison must bind the prior approval, unchanged archive members and
+actual link inputs. The verified Parquet follow-up combines 17 implementation
+files while keeping `column_reader.cpp` separate. Together with ICU and JSON,
+this produces 148 inputs covering all 2,207 selected TUs exactly once. Native
+comparison matches 179 fully executed cases and 14,615 assertions per binary.
+Two dependency skips and one upstream `mode skip` file remain explicitly outside
+acceptance; a reported passed case with zero assertions is not coverage.
+
 The current optional profile combines the 13 ICU extension implementations and
 29 JSON implementations into two groups, reducing the input count from 204 to
 164 with all 2,207 original library TUs still represented exactly once. Native
@@ -230,8 +239,13 @@ exposes an EDG correspondence assertion; identical preprocessed inputs reproduce
 it in the stock C backend.
 This is a source-assembly limitation, not evidence of completed DuckDB emission.
 The full-library attempt currently stops at libc++ implementation/consumer
-declaration correspondence, before C# emission. All dependency sources remain
-selected; no unresolved runtime placeholders were used to claim an execution pass.
+declaration correspondence in the separate-consumer assembly; the combined-core
+assembly has progressed beyond this limitation. Its latest 164-input full run
+stopped at the existing 72 GiB compiler RSS guard after 77 minutes, during
+deferred template instantiation, without frontend errors or a usable checkpoint.
+The 148-input Parquet composition is the next full attempt. All dependency
+sources remain selected; no unresolved runtime placeholders were used to claim
+an execution pass.
 
 The [review directory](../edgcpp/artifacts/review/duckdb/README.md) currently
 contains a partial `hugeint.cpp` translation for inspection, including its exact
