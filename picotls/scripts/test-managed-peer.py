@@ -21,7 +21,17 @@ parser.add_argument("--raw", action="store_true")
 parser.add_argument("--no-prepare", action="store_true", help="Require existing pinned source and native oracle; never fetch or run oracle preparation")
 parser.add_argument("--runtime", default="linux-x64", choices=("linux-x64", "linux-arm64"))
 parser.add_argument("--receipt", type=Path, help="Write public case results after complete success")
+parser.add_argument("--managed-command-json", type=Path,
+                    help="JSON argv prefix for an already built managed peer; bypass the default translated-project build")
+parser.add_argument("--output-dir", type=Path, help="New directory for all evidence instead of an automatically named run")
 args = parser.parse_args()
+managed_override = None
+if args.managed_command_json:
+    managed_override = json.loads(args.managed_command_json.read_text())
+    if not isinstance(managed_override, list) or not managed_override or any(not isinstance(s, str) or not s for s in managed_override):
+        parser.error("--managed-command-json must contain a nonempty array of nonempty argv strings")
+    if args.raw:
+        parser.error("--raw cannot select an already built --managed-command-json peer")
 if args.receipt:
     args.receipt.unlink(missing_ok=True)
 host_arch = {"x86_64": "x64", "aarch64": "arm64"}.get(platform.machine())
@@ -29,7 +39,11 @@ if platform.system() != "Linux" or (args.aot and args.runtime != "linux-" + str(
     raise SystemExit("This native-peer runner requires Linux; NativeAOT execution requires a RID matching the host architecture")
 artifacts = root / "artifacts/managed-peer"
 artifacts.mkdir(parents=True, exist_ok=True)
-run = Path(tempfile.mkdtemp(prefix="run-", dir=artifacts))
+if args.output_dir:
+    run = args.output_dir.resolve()
+    run.mkdir(parents=True, exist_ok=False)
+else:
+    run = Path(tempfile.mkdtemp(prefix="run-", dir=artifacts))
 temporary = root / "artifacts/tmp/managed-peer"
 temporary.mkdir(parents=True, exist_ok=True)
 env = dict(os.environ, TMPDIR=str(temporary))
@@ -62,18 +76,22 @@ execute("build-native", ["cc", "-std=c17", "-O2", "-g", "-Wall", "-Wextra", "-We
 project = root / "tests/IndependentPeer/IndependentPeer.csproj"
 execute("build-independent", ["dotnet", "build", str(project), "-c", "Release"], 600)
 independent = ["dotnet", str(project.parent / "bin/Release/net10.0/IndependentPeer.dll")]
-managed_project = root / "samples/ManagedConsumer/ManagedConsumer.csproj"
-translated_project = root / ("generated/TranslatedPicotls.Raw/TranslatedPicotls.csproj" if args.raw else "generated/TranslatedPicotls/TranslatedPicotls.csproj")
-if not translated_project.exists():
-    raise SystemExit("Run scripts/translate.sh before managed TLS validation")
-properties = ["-p:PicotlsProject=" + str(translated_project)]
-execute("build-managed", ["dotnet", "build", str(managed_project), "-c", "Release", *properties], 600)
-managed = ["dotnet", str(managed_project.parent / "bin/Release/net10.0/ManagedConsumer.dll")]
-if args.aot:
-    publish = root / ("build/managed-peer-aot-raw" if args.raw else "build/managed-peer-aot")
-    execute("publish-managed", ["dotnet", "publish", str(managed_project), "-c", "Release", "-r", args.runtime,
-                               "-p:PublishAot=true", *properties, "-o", str(publish)], 900)
-    managed = [str(publish / "ManagedConsumer")]
+if managed_override is not None:
+    managed = managed_override
+else:
+    managed_project = root / "samples/ManagedConsumer/ManagedConsumer.csproj"
+    translated_project = root / ("generated/TranslatedPicotls.Raw/TranslatedPicotls.csproj" if args.raw else "generated/TranslatedPicotls/TranslatedPicotls.csproj")
+    if not translated_project.exists():
+        raise SystemExit("Run scripts/translate.sh before managed TLS validation")
+    properties = ["-p:PicotlsProject=" + str(translated_project)]
+    execute("build-managed", ["dotnet", "build", str(managed_project), "-c", "Release", *properties], 600)
+    managed = ["dotnet", str(managed_project.parent / "bin/Release/net10.0/ManagedConsumer.dll")]
+    if args.aot:
+        publish = root / ("build/managed-peer-aot-raw" if args.raw else "build/managed-peer-aot")
+        execute("publish-managed", ["dotnet", "publish", str(managed_project), "-c", "Release", "-r", args.runtime,
+                                   "-p:PublishAot=true", *properties, "-o", str(publish)], 900)
+        managed = [str(publish / "ManagedConsumer")]
+(run / "managed-command.json").write_text(json.dumps(managed, indent=2) + "\n")
 credentials = run / "credentials"
 untrusted = run / "untrusted"
 execute("credentials", [*independent, "credentials", str(credentials)])
@@ -180,7 +198,8 @@ for cipher in ("TLS_AES_128_GCM_SHA256", "TLS_AES_256_GCM_SHA384"):
     pair("managed-both-" + cipher, True, "managed", cipher=cipher, update_key=True)
 pair("reject-server-selected-unoffered-alpn", False, "native", expected_success=False, force_unoffered_alpn=True)
 pair("reject-key-encipherment-only-leaf", False, "native", identity="server-key-encipherment-rsa", expected_success=False)
-receipt = {"cases": results, "aot": args.aot, "raw": args.raw, "runtime": args.runtime, "evidence": str(run)}
+receipt = {"cases": results, "aot": args.aot, "raw": args.raw, "runtime": args.runtime, "evidence": str(run),
+           "managedCommand": managed, "managedCommandOverride": managed_override is not None}
 (run / "PASS.json").write_text(json.dumps(receipt, indent=2) + "\n")
 if args.receipt:
     args.receipt.parent.mkdir(parents=True, exist_ok=True)

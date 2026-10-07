@@ -1,0 +1,1196 @@
+{
+  "scope": "Pinned actual picotls TLS 1.3 core translated by EDG; shared BCL crypto provider; Linux x64 JIT and NativeAOT",
+  "revision": "3598470df01264da85157025ed10db0f7e103790",
+  "core": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-004/results.json",
+    "bytes": 4884,
+    "sha256": "38d37caf2ddecb6b04bcea42ed38f2bd4f7a58ea7f896a8c98f5103e6a0b1988"
+  },
+  "rawCSharp": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-004/raw.cs",
+    "bytes": 4014784,
+    "sha256": "13ca4e6b4af872afe11733500a82b9102ebd2c925f5500658f5eb477e98aa965"
+  },
+  "reviewDirectory": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-004/managed",
+  "provider": {
+    "status": "passed",
+    "commands": [
+      {
+        "label": "prepare",
+        "command": [
+          "/usr/bin/python3",
+          "/home/marius/p/dotcc/picotls/edg/provider.py",
+          "--core",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-004/managed",
+          "--output",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects"
+        ],
+        "exitCode": 0,
+        "seconds": 0.164
+      },
+      {
+        "label": "jit-build-TranslatedAbi",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/TranslatedAbi/TranslatedAbi.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "exitCode": 0,
+        "seconds": 5.723
+      },
+      {
+        "label": "jit-run-TranslatedAbi",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/TranslatedAbi/bin/Release/net10.0/TranslatedAbi.dll",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-001/native-layout.txt"
+        ],
+        "exitCode": 0,
+        "seconds": 0.032
+      },
+      {
+        "label": "aot-build-TranslatedAbi",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/TranslatedAbi/TranslatedAbi.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:TreatWarningsAsErrors=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-TranslatedAbi"
+        ],
+        "exitCode": 0,
+        "seconds": 6.425
+      },
+      {
+        "label": "aot-run-TranslatedAbi",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-TranslatedAbi/TranslatedAbi",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-001/native-layout.txt"
+        ],
+        "exitCode": 0,
+        "seconds": 0.008
+      },
+      {
+        "label": "jit-build-UpstreamVectors",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/UpstreamVectors/UpstreamVectors.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "exitCode": 0,
+        "seconds": 4.321
+      },
+      {
+        "label": "jit-run-UpstreamVectors",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/UpstreamVectors/bin/Release/net10.0/UpstreamVectors.dll"
+        ],
+        "exitCode": 0,
+        "seconds": 0.064
+      },
+      {
+        "label": "aot-build-UpstreamVectors",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/UpstreamVectors/UpstreamVectors.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:TreatWarningsAsErrors=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-UpstreamVectors"
+        ],
+        "exitCode": 0,
+        "seconds": 10.483
+      },
+      {
+        "label": "aot-run-UpstreamVectors",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-UpstreamVectors/UpstreamVectors"
+        ],
+        "exitCode": 0,
+        "seconds": 0.008
+      },
+      {
+        "label": "jit-build-ProviderVectors",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/ProviderVectors/ProviderVectors.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "exitCode": 0,
+        "seconds": 4.322
+      },
+      {
+        "label": "jit-run-ProviderVectors",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/ProviderVectors/bin/Release/net10.0/ProviderVectors.dll"
+        ],
+        "exitCode": 0,
+        "seconds": 1.366
+      },
+      {
+        "label": "aot-build-ProviderVectors",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/ProviderVectors/ProviderVectors.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:TreatWarningsAsErrors=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-ProviderVectors"
+        ],
+        "exitCode": 0,
+        "seconds": 10.784
+      },
+      {
+        "label": "aot-run-ProviderVectors",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-ProviderVectors/ProviderVectors"
+        ],
+        "exitCode": 0,
+        "seconds": 1.066
+      },
+      {
+        "label": "jit-build-TlsTests",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/TlsTests/TlsTests.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "exitCode": 0,
+        "seconds": 4.422
+      },
+      {
+        "label": "jit-run-TlsTests",
+        "command": [
+          "dotnet",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/TlsTests/bin/Release/net10.0/TlsTests.dll",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/tls-jit-credentials"
+        ],
+        "exitCode": 0,
+        "seconds": 2.518
+      },
+      {
+        "label": "aot-build-TlsTests",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/TlsTests/TlsTests.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:TreatWarningsAsErrors=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-TlsTests"
+        ],
+        "exitCode": 0,
+        "seconds": 10.633
+      },
+      {
+        "label": "aot-run-TlsTests",
+        "command": [
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-TlsTests/TlsTests",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/tls-aot-credentials"
+        ],
+        "exitCode": 0,
+        "seconds": 3.47
+      },
+      {
+        "label": "jit-build-ManagedConsumer",
+        "command": [
+          "dotnet",
+          "build",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/ManagedConsumer/ManagedConsumer.csproj",
+          "-c",
+          "Release",
+          "--nologo",
+          "-p:TreatWarningsAsErrors=true"
+        ],
+        "exitCode": 0,
+        "seconds": 6.025
+      },
+      {
+        "label": "aot-build-ManagedConsumer",
+        "command": [
+          "dotnet",
+          "publish",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/ManagedConsumer/ManagedConsumer.csproj",
+          "-c",
+          "Release",
+          "-r",
+          "linux-x64",
+          "-p:PublishAot=true",
+          "-p:TreatWarningsAsErrors=true",
+          "-p:IlcTreatWarningsAsErrors=true",
+          "-o",
+          "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-ManagedConsumer"
+        ],
+        "exitCode": 0,
+        "seconds": 12.937
+      }
+    ],
+    "checks": [
+      "TranslatedAbi JIT",
+      "TranslatedAbi NativeAOT",
+      "UpstreamVectors JIT",
+      "UpstreamVectors NativeAOT",
+      "ProviderVectors JIT",
+      "ProviderVectors NativeAOT",
+      "TlsTests JIT",
+      "TlsTests NativeAOT"
+    ],
+    "runtime": "linux-x64"
+  },
+  "sourceIntegrity": {
+    "status": "passed",
+    "sourcesChecked": 312,
+    "generatedSources": 286,
+    "authoredSources": 26,
+    "nativeLayoutSha256": "4ae8848b18cf2f9b4bc7841679038fb56adf70cd56ba6d755bc6fd69e53bafaa"
+  },
+  "providerManifest": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/provider-manifest.json",
+    "bytes": 86863,
+    "sha256": "41adb8d4e2c2ade42c02f65f4920b37c43c30d0df599222f728c4cf7613da19c"
+  },
+  "perExecutionCounts": {
+    "nativeAbi": 92,
+    "upstreamUtilityCases": 8,
+    "upstreamUtilityChecks": 232,
+    "providerChecks": 2962,
+    "allocationFailureBoundaries": 124,
+    "ticketCloneFailureCases": 2,
+    "tlsAssertions": 9963
+  },
+  "coreDifferential": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/results.json",
+    "bytes": 8760,
+    "sha256": "5b4d284b0227f1355835abe820d3bd8d0699cc3658622fca35fc87fd632cb085"
+  },
+  "peerResults": {
+    "jit": {
+      "cases": [
+        {
+          "case": "native-managed-client-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "native-managed-client-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "native-managed-client-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-expired",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "native-managed-server-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "native-managed-server-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-expired",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "independent-managed-client-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "independent-managed-client-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-expired",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "independent-managed-server-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "independent-managed-server-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-expired",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "managed-both-TLS_AES_128_GCM_SHA256",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "managed-both-TLS_AES_256_GCM_SHA384",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "reject-server-selected-unoffered-alpn",
+          "accepted": false
+        },
+        {
+          "case": "reject-key-encipherment-only-leaf",
+          "accepted": false
+        }
+      ],
+      "aot": false,
+      "raw": false,
+      "runtime": "linux-x64",
+      "evidence": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/peers-jit",
+      "managedCommand": [
+        "dotnet",
+        "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/ManagedConsumer/bin/Release/net10.0/ManagedConsumer.dll"
+      ],
+      "managedCommandOverride": true
+    },
+    "aot": {
+      "cases": [
+        {
+          "case": "native-managed-client-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "native-managed-client-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "native-managed-client-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-client-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-expired",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-client-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "native-managed-server-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "native-managed-server-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "native-managed-server-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-expired",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "native-managed-server-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "independent-managed-client-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "independent-managed-client-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-client-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-expired",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-client-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_128_GCM_SHA256-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_128_GCM_SHA256-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_256_GCM_SHA384-server-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-TLS_AES_256_GCM_SHA384-server-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-empty",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "case": "independent-managed-server-large-key-update",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 262145,
+          "sha256": "0C81A8A82C35279D837212A74D02631253AD986389CD257F6840A909F9E5C969"
+        },
+        {
+          "case": "independent-managed-server-mutual-rsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-mutual-ecdsa",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "independent-managed-server-wrong-name",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-expired",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-untrusted",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-missing-client",
+          "accepted": false
+        },
+        {
+          "case": "independent-managed-server-untrusted-client",
+          "accepted": false
+        },
+        {
+          "case": "managed-both-TLS_AES_128_GCM_SHA256",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_128_GCM_SHA256",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "managed-both-TLS_AES_256_GCM_SHA384",
+          "accepted": true,
+          "protocol": "Tls13",
+          "cipher": "TLS_AES_256_GCM_SHA384",
+          "alpn": "dotcc-picotls",
+          "bytes": 65537,
+          "sha256": "74F3260F4A9ADAF7271C910BA2D111DBAE7A176AFB487E1B7F655897EADF1093"
+        },
+        {
+          "case": "reject-server-selected-unoffered-alpn",
+          "accepted": false
+        },
+        {
+          "case": "reject-key-encipherment-only-leaf",
+          "accepted": false
+        }
+      ],
+      "aot": true,
+      "raw": false,
+      "runtime": "linux-x64",
+      "evidence": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-tests-002/peers-aot",
+      "managedCommand": [
+        "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-ManagedConsumer/ManagedConsumer"
+      ],
+      "managedCommandOverride": true
+    }
+  },
+  "executionArtifacts": {
+    "jit": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/projects/ManagedConsumer/bin/Release/net10.0/ManagedConsumer.dll",
+      "bytes": 40960,
+      "sha256": "bd74ad421e19f2a47bc688b59712f10e75914c773bdb2cead9b0ab5d77dc6aac"
+    },
+    "aot": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-ManagedConsumer/ManagedConsumer",
+      "bytes": 6941976,
+      "sha256": "242e8ce07a9ca083a135d2fc7b2872c9341cbcea580a74f2489111c48c58cfff"
+    }
+  },
+  "limitations": [
+    "Execution verified on Linux x64; Windows/macOS/other architectures not run.",
+    "Selected existing provider profile: P-256, AES-128/256-GCM, SHA-256/384, RSA-PSS/ECDSA authentication; broader optional algorithms not claimed.",
+    "Optional picotls logging and DTrace disabled; new pthread header declares APIs but does not implement pthread calls.",
+    "TLS 1.2, 0-RTT and complete QUIC transport are outside this acceptance profile.",
+    "Functional/ABI/interoperability verification is not a formal cryptographic or constant-time audit."
+  ],
+  "suiteOutputs": {
+    "jit-TranslatedAbi": {
+      "text": "PASS actual translated product ABI: 92 size/alignment/member-address checks\n",
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/jit-run-TranslatedAbi.stdout",
+      "bytes": 76,
+      "sha256": "5dd250fed1afd080903bec735aae0f2c6b8d31ea4ace0006c364f22af22b1de0"
+    },
+    "aot-TranslatedAbi": {
+      "text": "PASS actual translated product ABI: 92 size/alignment/member-address checks\n",
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-run-TranslatedAbi.stdout",
+      "bytes": 76,
+      "sha256": "5dd250fed1afd080903bec735aae0f2c6b8d31ea4ace0006c364f22af22b1de0"
+    },
+    "jit-UpstreamVectors": {
+      "text": "PASS upstream ports: 8 cases, 232 checks\n",
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/jit-run-UpstreamVectors.stdout",
+      "bytes": 41,
+      "sha256": "5e60929de0e8f6bc829dc47b396805d61742c8c6ca062be577da12a22cc0b105"
+    },
+    "aot-UpstreamVectors": {
+      "text": "PASS upstream ports: 8 cases, 232 checks\n",
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-run-UpstreamVectors.stdout",
+      "bytes": 41,
+      "sha256": "5e60929de0e8f6bc829dc47b396805d61742c8c6ca062be577da12a22cc0b105"
+    },
+    "jit-ProviderVectors": {
+      "text": "PASS handshake allocation sweep: 124 provider boundaries, 2 ticket clone failure cases\nPASS BCL provider: 2962 checks over actual translated core; SHA256/SHA384, RFC5869 HKDF, AES128/256 ECB/CTR/GCM, overlap/vector/IV/supplementary, negatives, lifetime and asymmetric callbacks\n",
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/jit-run-ProviderVectors.stdout",
+      "bytes": 278,
+      "sha256": "29e8ec0607c1e5b141f8a3021871d5c83868c68593f1011db629f609c5d8938c"
+    },
+    "aot-ProviderVectors": {
+      "text": "PASS handshake allocation sweep: 124 provider boundaries, 2 ticket clone failure cases\nPASS BCL provider: 2962 checks over actual translated core; SHA256/SHA384, RFC5869 HKDF, AES128/256 ECB/CTR/GCM, overlap/vector/IV/supplementary, negatives, lifetime and asymmetric callbacks\n",
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-run-ProviderVectors.stdout",
+      "bytes": 278,
+      "sha256": "29e8ec0607c1e5b141f8a3021871d5c83868c68593f1011db629f609c5d8938c"
+    },
+    "jit-TlsTests": {
+      "text": "PASS: 9963 TLS assertions; full handshakes, authentication, records, HRR, exporter, key update, close, concurrency.\n",
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/jit-run-TlsTests.stdout",
+      "bytes": 116,
+      "sha256": "05e1437e3115b11d5eb5ae7fa4d2b5d1d8bb1b40ebd9bac23517998b16455292"
+    },
+    "aot-TlsTests": {
+      "text": "PASS: 9963 TLS assertions; full handshakes, authentication, records, HRR, exporter, key update, close, concurrency.\n",
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/picotls-edg-provider-002/aot-run-TlsTests.stdout",
+      "bytes": 116,
+      "sha256": "05e1437e3115b11d5eb5ae7fa4d2b5d1d8bb1b40ebd9bac23517998b16455292"
+    }
+  },
+  "postPeerIntegrity": {
+    "passed": true,
+    "filesChecked": 336,
+    "scope": "All generated inputs, original authored inputs and adapted authored source outputs compared with provider manifest SHA-256 after both peer suites"
+  }
+}

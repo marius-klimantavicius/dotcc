@@ -1411,3 +1411,28 @@ PEM decoding. The managed-library translation with host boundaries also builds
 with warnings treated as errors and no unbound externs. Provider integration,
 ABI and TLS handshake verification remain pending at this milestone.
 [Core evidence](../evidence/picotls-core-20261007.json).
+
+The final picotls library (`picotls-edg-004`) and shared BCL provider now pass
+JIT and Linux-x64 NativeAOT acceptance. Each mode passes 92 native ABI checks,
+232 upstream vector checks, 2,962 provider checks (including 124 allocation-failure
+boundaries and two ticket-clone failures), and 9,963 TLS assertions. Both modes
+also pass all 56 independent-peer cases against native picotls/OpenSSL and
+.NET SslStream: 112 final peer executions total. These include both client/server
+roles, RSA/ECDSA authentication, AES-128/256-GCM, mutual authentication, large
+records, key updates and certificate/name/ALPN rejection. Generated and authored
+source integrity checks cover 312 files after execution.
+
+Provider integration retains the existing implementation as its single source:
+an auditable recipe adapts C tag/typedef spellings, signed-char boundary casts,
+inline-array addresses and one anonymous-union field reference in authored
+callers. Generated C# is linked unchanged. A partial owner bridge uses the
+translated allocation registry for exchanged buffers; process-lifetime names
+use pinned arrays. The peer runner accepts explicit JIT/AOT command prefixes
+without rebuilding or replacing the existing dotcc port. No additional backend
+language fix was needed for this target.
+
+Review sources are available through `artifacts/review/picotls/`. The selected
+existing TLS 1.3 profile is verified on Linux x64; optional logging/DTrace,
+other platforms, TLS 1.2, 0-RTT and full QUIC transport are not covered by this
+acceptance. [Port/build instructions](../../picotls/edg/README.md) and
+[TLS acceptance evidence](../evidence/picotls-tls-20261007.json).

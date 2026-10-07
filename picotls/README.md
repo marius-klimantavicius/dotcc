@@ -1,5 +1,9 @@
 # picotls with dotcc
 
+An independent [EDG C# backend port](edg/README.md) now also passes the shared
+BCL-provider, ABI, TLS and independent-peer suites under JIT and Linux-x64
+NativeAOT. Its generated sources and build recipes are separate from this port.
+
 Build orchestration uses the [shared campaign helpers](../docs/campaigns.md).
 
 [Translation plan](docs/PLAN.md) · [Pinned upstream source](docs/source.md) ·
