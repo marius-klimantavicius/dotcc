@@ -1,0 +1,10 @@
+--- src/network/ntohs.c
++++ ntohs.c
+@@ -1,5 +1,5 @@
+-#include <netinet/in.h>
+-#include <byteswap.h>
++#include "network_abi.h"
++#include "byteswap.h"
+ 
+ uint16_t ntohs(uint16_t n)
+ {

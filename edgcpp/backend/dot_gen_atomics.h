@@ -5,7 +5,8 @@ string atomic_call(a_routine_ptr routine, an_expr_node_ptr first) {
   if(routine->function_def_number!=NULL_function_def_number || !routine->compiler_generated ||
      !routine->source_corresp.name)return "";
   string source=routine->source_corresp.name;
-  if(source.compare(0,9,"__atomic_")!=0 && source!="__sync_synchronize")return "";
+  bool legacy=source.compare(0,7,"__sync_")==0;
+  if(source.compare(0,9,"__atomic_")!=0 && !legacy)return "";
   auto rt=skip_typerefs(routine->type);
   auto extra=rt->variant.routine.extra_info;
   std::vector<string> arguments,parameters;
@@ -63,8 +64,41 @@ string atomic_call(a_routine_ptr routine, an_expr_node_ptr first) {
   else if(width=="8")value_type="ulong";
   else if(width=="16")value_type="global::System.UInt128";
   else return "";
-  string operation=source.substr(9,split-9);
+  size_t prefix_size=legacy?7:9;
+  string operation=source.substr(prefix_size,split-prefix_size);
   string address=arguments.empty()?"":"ref *("+value_type+"*)("+arguments[0]+")";
+  if(legacy) {
+    // Like c_gen_be, consume EDG's concrete size-suffixed GNU builtins.
+    // Reuse the same storage primitives as __atomic so both families share
+    // synchronization, including the unaligned/128-bit lock fallback.
+    if(operation=="val_compare_and_swap" || operation=="bool_compare_and_swap") {
+      bool returns_bool=operation=="bool_compare_and_swap";
+      signature(returns_bool?boolean_type:value_type,{"void*",value_type,value_type});
+      string call=prefix+(returns_bool?"CompareExchangeMatches(":"CompareExchangeValue(")+
+          address+", "+arguments[1]+", "+arguments[2]+")";
+      return returns_bool?boolean(call):call;
+    }
+    if(operation=="lock_test_and_set") {
+      signature(value_type,{"void*",value_type});
+      return prefix+"Exchange("+address+", "+arguments[1]+", 5)";
+    }
+    if(operation=="lock_release") {
+      signature("void",{"void*"});
+      return prefix+"Store("+address+", ("+value_type+")0, 5)";
+    }
+    const std::map<string,string> legacy_operations={
+      {"fetch_and_add","FetchAdd"},{"add_and_fetch","AddFetch"},
+      {"fetch_and_sub","FetchSub"},{"sub_and_fetch","SubFetch"},
+      {"fetch_and_and","FetchAnd"},{"and_and_fetch","AndFetch"},
+      {"fetch_and_or","FetchOr"},{"or_and_fetch","OrFetch"},
+      {"fetch_and_xor","FetchXor"},{"xor_and_fetch","XorFetch"},
+      {"fetch_and_nand","FetchNand"},{"nand_and_fetch","NandFetch"},
+    };
+    auto method=legacy_operations.find(operation);
+    if(method==legacy_operations.end())return "";
+    signature(value_type,{"void*",value_type});
+    return prefix+method->second+"("+address+", "+arguments[1]+", 5)";
+  }
   if(operation=="load") {
     signature(value_type,{"void*","int"});
     return prefix+"Load("+address+", "+arguments[1]+")";

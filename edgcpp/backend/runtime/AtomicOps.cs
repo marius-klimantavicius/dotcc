@@ -185,6 +185,14 @@ public static unsafe class AtomicOps
     public static T Exchange<T>(ref T location, T value, int order) where T : unmanaged
     { Order(order); return ExchangeCore(ref location, value); }
 
+    // GNU legacy __sync CAS receives the comparand by value and returns either
+    // the observed value or success. It must not overwrite the caller's value.
+    public static T CompareExchangeValue<T>(ref T location, T comparand, T desired) where T : unmanaged =>
+        ValueCompareExchange(ref location, desired, comparand);
+
+    public static bool CompareExchangeMatches<T>(ref T location, T comparand, T desired) where T : unmanaged =>
+        BitsEqual(ValueCompareExchange(ref location, desired, comparand), comparand);
+
     public static bool CompareExchange<T>(ref T location, ref T expected, T desired,
         bool weak, int success, int failure) where T : unmanaged
     {

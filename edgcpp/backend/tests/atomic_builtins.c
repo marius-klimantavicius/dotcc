@@ -3,7 +3,7 @@
 extern "C" {
 #endif
 static unsigned long counter;
-void atomic_increment(void) { __atomic_fetch_add(&counter, 1UL, __ATOMIC_RELAXED); }
+void atomic_increment(void) { __sync_fetch_and_add(&counter, 1UL); }
 unsigned long atomic_counter(void) { return __atomic_load_n(&counter, __ATOMIC_SEQ_CST); }
 
 #define CHECK_WIDTH(T) do { \
@@ -28,6 +28,31 @@ unsigned long atomic_counter(void) { return __atomic_load_n(&counter, __ATOMIC_S
   n = (T)-1; if (__atomic_add_fetch(&n, (T)1, __ATOMIC_SEQ_CST) != 0) return __LINE__; \
 } while (0)
 
+/* Legacy __sync and modern __atomic must synchronize the same storage. */
+#define CHECK_SYNC(T) do { \
+  T n = 7; \
+  if (__sync_fetch_and_add(&n, (T)3) != 7 || n != 10) return __LINE__; \
+  if (__sync_add_and_fetch(&n, (T)4) != 14) return __LINE__; \
+  if (__sync_fetch_and_sub(&n, (T)2) != 14 || n != 12) return __LINE__; \
+  if (__sync_sub_and_fetch(&n, (T)3) != 9) return __LINE__; \
+  if (__sync_fetch_and_or(&n, (T)6) != 9 || n != 15) return __LINE__; \
+  if (__sync_or_and_fetch(&n, (T)16) != 31) return __LINE__; \
+  if (__sync_fetch_and_and(&n, (T)23) != 31 || n != 23) return __LINE__; \
+  if (__sync_and_and_fetch(&n, (T)15) != 7) return __LINE__; \
+  if (__sync_fetch_and_xor(&n, (T)12) != 7 || n != 11) return __LINE__; \
+  if (__sync_xor_and_fetch(&n, (T)15) != 4) return __LINE__; \
+  if (__sync_fetch_and_nand(&n, (T)7) != 4 || n != (T)~(T)4) return __LINE__; \
+  if (__sync_nand_and_fetch(&n, (T)255) != (T)~(T)((T)~(T)4 & (T)255)) return __LINE__; \
+  n = 5; \
+  if (__sync_val_compare_and_swap(&n, (T)7, (T)9) != 5 || n != 5) return __LINE__; \
+  if (__sync_val_compare_and_swap(&n, (T)5, (T)9) != 5 || n != 9) return __LINE__; \
+  if (__sync_bool_compare_and_swap(&n, (T)5, (T)12) || n != 9) return __LINE__; \
+  if (!__sync_bool_compare_and_swap(&n, (T)9, (T)12) || n != 12) return __LINE__; \
+  if (__sync_lock_test_and_set(&n, (T)1) != 12 || n != 1) return __LINE__; \
+  __sync_lock_release(&n); if (__atomic_load_n(&n, __ATOMIC_SEQ_CST) != 0) return __LINE__; \
+  n = (T)-1; if (__sync_add_and_fetch(&n, (T)1) != 0) return __LINE__; \
+} while (0)
+
 #define CHECK_OBJECT(N) do { \
   struct Obj { unsigned char bytes[N]; }; \
   struct Obj n, desired, expected, result; \
@@ -50,6 +75,16 @@ int atomic_cases(void) {
   CHECK_WIDTH(unsigned int);
   CHECK_WIDTH(unsigned long);
   CHECK_WIDTH(unsigned __int128);
+  CHECK_SYNC(unsigned char);
+  CHECK_SYNC(unsigned short);
+  CHECK_SYNC(unsigned int);
+  CHECK_SYNC(unsigned long);
+  CHECK_SYNC(long);
+  int first = 1, second = 2;
+  int *pointer = &first;
+  if (__sync_val_compare_and_swap(&pointer, &first, &second) != &first || pointer != &second) return __LINE__;
+  if (__sync_bool_compare_and_swap(&pointer, &first, &second)) return __LINE__;
+  if (__sync_lock_test_and_set(&pointer, &first) != &second || pointer != &first) return __LINE__;
   CHECK_OBJECT(3);
   CHECK_OBJECT(16);
   CHECK_OBJECT(600);

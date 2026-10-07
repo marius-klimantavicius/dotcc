@@ -105,6 +105,8 @@ def main():
                         default="portable-lp64-binary80-v2", help="select the translated program's target ABI and predefined macros")
     parser.add_argument("-I", "--include", action="append", type=Path, default=[])
     parser.add_argument("-D", "--define", action="append", default=[])
+    parser.add_argument("--ms-extensions", action="store_true",
+                        help="enable Microsoft syntax extensions in the selected GNU language mode (for example anonymous named structs)")
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--compiler", type=Path, default=ROOT / "build/bin/cpfe-dot",
                         help="use an explicitly selected dot_gen_be compiler (default: current workspace build)")
@@ -239,6 +241,8 @@ def main():
         runtime_options = ["-I", str(ROOT / "backend/runtime/posix/include"), *runtime_options]
     frontend_options = [flag for path in args.include for flag in ("-I", str(path.resolve()))]
     frontend_options += ["-D"+definition for definition in args.define]
+    if args.ms_extensions:
+        frontend_options += ["--ms_extensions"]
     if args.language == "c++":
         # This driver emits a complete program, so referenced non-inline
         # templates need definitions rather than a later native link pass.
@@ -604,7 +608,8 @@ RESOURCE_ITEMS
         "language": args.language, "standard": standard, "includeDirectories": [str(p.resolve()) for p in args.include],
         "exceptions": args.exceptions if args.language == "c++" else False,
         "rtti": args.rtti if args.language == "c++" else False,
-        "defines": args.define, "lifecycle": "explicit-shutdown-release-thread" if "void Shutdown()" in source else "process",
+        "defines": args.define, "msExtensions": args.ms_extensions,
+        "lifecycle": "explicit-shutdown-release-thread" if "void Shutdown()" in source else "process",
         "longDouble": "software-binary80" if "global::Edg.Runtime.Float80" in source else None,
         "extendedFloating": {"binary128": "software-ieee-v1" if "global::Edg.Runtime.Float128" in source else None,
                              "binary16": "system-half-v1" if "global::System.Half" in source else None},

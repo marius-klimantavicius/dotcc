@@ -1,0 +1,18 @@
+--- src/network/inet_ntop.c
++++ inet_ntop.c
+@@ -1,12 +1,11 @@
+-#include <sys/socket.h>
+-#include <arpa/inet.h>
++#include "network_abi.h"
+ #include <errno.h>
+ #include <stdio.h>
+ #include <string.h>
+ 
+-const char *inet_ntop(int af, const void *restrict a0, char *restrict s, socklen_t l)
++const char *inet_ntop(int af, const void *a0, char *s, socklen_t l)
+ {
+-	const unsigned char *a = a0;
++	const unsigned char *a = (const unsigned char *)a0;
+ 	int i, j, max, best;
+ 	char buf[100];
+ 

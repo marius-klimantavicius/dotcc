@@ -1,0 +1,65 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "sources": {
+    "htons.c": {
+      "upstream": "src/network/htons.c",
+      "originalSha256": "3fbbb56bad58de916d95dacf94ff875cdba2961a95d1aa99128820c351b3c530",
+      "adaptedSha256": "a4c0846aa2d12102a7126d7928e76d164a1ace5ea0807b5a230f8dfe2723a8b6",
+      "patch": "patches/htons.c.patch",
+      "patchSha256": "fae1d0842ea10b4a4e443b6a5f5fe85f0f910892f01d429717761957bb686f8b"
+    },
+    "ntohs.c": {
+      "upstream": "src/network/ntohs.c",
+      "originalSha256": "5aae3832b9ebc0325243b49bed2b9ddc5aba3f901d2a5fbdc844e7cdf5fb79fd",
+      "adaptedSha256": "d444b5cd1ca6499fa1abd00918dd12d1a747546d6cece6fb9061182451f18bcb",
+      "patch": "patches/ntohs.c.patch",
+      "patchSha256": "de248d848fe1d99fada3d8c059f524c1f4cdfe9c39013ef5d7bf3ce02cd33380"
+    },
+    "htonl.c": {
+      "upstream": "src/network/htonl.c",
+      "originalSha256": "9a86ae2f1b88f76831d02da672f686a349ff9cde2d62ad4c20774a8823e1f76f",
+      "adaptedSha256": "d2098b0959ce05f0d94fccb05d0d608809d106e355a9206ea232515abe58cba4",
+      "patch": "patches/htonl.c.patch",
+      "patchSha256": "6654b5c444a6550e798283e3b96bb8e8fae88221d1ce06c7a2ccbb2db6986506"
+    },
+    "ntohl.c": {
+      "upstream": "src/network/ntohl.c",
+      "originalSha256": "065f939c41333d967ed11b9e7511065a526bbaba2a64cbe957c85e8d4e1a392d",
+      "adaptedSha256": "84c1b5950884cb5b2b3fbbcf8d99aff2b8c976503c75d0342da18b2431029251",
+      "patch": "patches/ntohl.c.patch",
+      "patchSha256": "651f20ab04610181ba40229f499b025c327654efc202d367e0f96b57b46c6fd8"
+    },
+    "in6addr_any.c": {
+      "upstream": "src/network/in6addr_any.c",
+      "originalSha256": "115cda902dca8c9717007dbf8559ffe3d23d2c3225823997208c8487bee6a621",
+      "adaptedSha256": "6906feeaa2766d5aaad16c83adf6656b4268f18773ca6db6f94d982580e907be",
+      "patch": "patches/in6addr_any.c.patch",
+      "patchSha256": "0154ff9a1799203aedd322b31857e640822ea1d8f78f67f3f047df21eb6a2e98"
+    },
+    "in6addr_loopback.c": {
+      "upstream": "src/network/in6addr_loopback.c",
+      "originalSha256": "5b956b3ae18f74c83c72e8f10e95e5cd707baddfc0c81a57997d671e8e533828",
+      "adaptedSha256": "bf6a8b6bb7dab4348e717b0fd933d64777b275d5f9a50d4e0105d41148183928",
+      "patch": "patches/in6addr_loopback.c.patch",
+      "patchSha256": "5349d753327ab89f3de303070e653d72c8855186f3c82aeccc20df9f37b41863"
+    },
+    "inet_ntop.c": {
+      "upstream": "src/network/inet_ntop.c",
+      "originalSha256": "3e5ebbbb8f4bbd2e113c3eb23d6cbb1c5b7f0d9036c1aa5d182322cc9a5b68f7",
+      "adaptedSha256": "bcb4222ec9e47ed0298f242655e252b85f6b410ecb650e6e362287994f5639eb",
+      "patch": "patches/inet_ntop.c.patch",
+      "patchSha256": "0ed049d6a6cbe2cb9cbc9070aaa488be0eac1cbd824d6970f414dddbfc617666"
+    },
+    "byteswap.h": {
+      "upstream": "include/byteswap.h",
+      "originalSha256": "e51244bc6433d77aba368aa53863850d6d06890c3d8691b27619a737401ec1e5",
+      "adaptedSha256": "dc2bb0b67217be086e360e92cecb8f6a3761183de33470e760b478b92f4a9f1b",
+      "patch": "patches/byteswap.h.patch",
+      "patchSha256": "3c384f31a23d21f8cd33f4eef7ef9aa80bf696c18d5bcfe2350afc32bbf5fcb4"
+    }
+  },
+  "adapters": {
+    "network_abi.h": "7fd70ef2b69bec74292fc17fe95c3f53a799938cfe2d4875d26b4ec97856ad42"
+  }
+}

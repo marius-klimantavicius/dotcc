@@ -355,6 +355,18 @@
         "__math_oflow.c",
         "__math_uflow.c"
       ]
+    },
+    {
+      "directory": "network",
+      "translationUnits": [
+        "htons.c",
+        "ntohs.c",
+        "htonl.c",
+        "ntohl.c",
+        "in6addr_any.c",
+        "in6addr_loopback.c",
+        "inet_ntop.c"
+      ]
     }
   ]
 }

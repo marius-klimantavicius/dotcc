@@ -1,0 +1,10 @@
+--- src/network/ntohl.c
++++ ntohl.c
+@@ -1,5 +1,5 @@
+-#include <netinet/in.h>
+-#include <byteswap.h>
++#include "network_abi.h"
++#include "byteswap.h"
+ 
+ uint32_t ntohl(uint32_t n)
+ {

@@ -63,6 +63,9 @@ EDG_BASE="$PWD/edgcpp/upstream/bases/docker/dev-env/gcc" \
   call `core.sqlite3_open(...)` with `SqliteCore.sqlite3*` directly. Internal
   functions, parameters, locals and fields also retain source names; C# keywords
   are escaped and genuine identifier conflicts use deterministic suffixes.
+- `--ms-extensions` enables EDG's Microsoft syntax extensions alongside GNU
+  language mode, including named anonymous struct members used by MsQuic.
+  It does not select the Windows target ABI; the choice is recorded in the manifest.
 - Multiple positional source paths use EDG's semantic merge, preserving
   internal linkage, shared inline/template definitions and program type identity.
   The exception bootstrap is supplied once for merged programs. Manifests record

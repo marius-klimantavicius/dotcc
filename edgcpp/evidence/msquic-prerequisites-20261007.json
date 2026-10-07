@@ -1,0 +1,361 @@
+{
+  "date": "2026-10-07",
+  "scope": "MsQuic translation prerequisites; does not establish MsQuic integration success",
+  "target": "linux-x64",
+  "checks": {
+    "anonymousMembers": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/ms-extensions-002/results.json",
+      "result": {
+        "status": "passed",
+        "checks": [
+          {
+            "label": "native-build",
+            "command": [
+              "gcc",
+              "-std=c11",
+              "-fms-extensions",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/ms_extensions.c",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/ms-extensions-002/native"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "native-run",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/ms-extensions-002/native"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/ms_extensions.c",
+              "--language",
+              "c",
+              "--ms-extensions",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/ms-extensions-002/managed"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "jit-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/ms-extensions-002/managed/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "jit-run",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/ms-extensions-002/managed/bin/Release/net10.0/Generated.dll"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "aot-build",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/ms-extensions-002/managed/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:TreatWarningsAsErrors=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/ms-extensions-002/aot"
+            ],
+            "exitCode": 0
+          },
+          {
+            "label": "aot-run",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/ms-extensions-002/aot/Generated"
+            ],
+            "exitCode": 0
+          }
+        ]
+      }
+    },
+    "gnuAtomics": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-sync-001/results.json",
+      "result": {
+        "checks": [
+          "c: original EDG C + GCC atomic oracle",
+          "c: Clang source atomic oracle",
+          "c/static: translated JIT scalar/generic atomics and concurrent storage",
+          "c/static: translated NativeAOT scalar/generic atomics and concurrent storage",
+          "c/instance: translated JIT scalar/generic atomics and concurrent storage",
+          "c/instance: translated NativeAOT scalar/generic atomics and concurrent storage",
+          "c++: original EDG C + GCC atomic oracle",
+          "c++: Clang source atomic oracle",
+          "c++/static: translated JIT scalar/generic atomics and concurrent storage",
+          "c++/static: translated NativeAOT scalar/generic atomics and concurrent storage",
+          "c++/instance: translated JIT scalar/generic atomics and concurrent storage",
+          "c++/instance: translated NativeAOT scalar/generic atomics and concurrent storage"
+        ]
+      }
+    },
+    "muslNetwork": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/results.json",
+      "result": {
+        "passed": true,
+        "runs": [
+          {
+            "label": "native-build",
+            "command": [
+              "cc",
+              "-std=c11",
+              "-Wall",
+              "-Wextra",
+              "-Werror",
+              "-Wno-sign-compare",
+              "-Wno-parentheses",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/libc_network.c",
+              "/home/marius/p/dotcc/edgcpp/backend/runtime/musl/network/htonl.c",
+              "/home/marius/p/dotcc/edgcpp/backend/runtime/musl/network/htons.c",
+              "/home/marius/p/dotcc/edgcpp/backend/runtime/musl/network/in6addr_any.c",
+              "/home/marius/p/dotcc/edgcpp/backend/runtime/musl/network/in6addr_loopback.c",
+              "/home/marius/p/dotcc/edgcpp/backend/runtime/musl/network/inet_ntop.c",
+              "/home/marius/p/dotcc/edgcpp/backend/runtime/musl/network/ntohl.c",
+              "/home/marius/p/dotcc/edgcpp/backend/runtime/musl/network/ntohs.c",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/native"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "native",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/native"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "c-static-translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "--compiler",
+              "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+              "--language",
+              "c",
+              "--std",
+              "c11",
+              "--target",
+              "portable-lp64-binary80-v2",
+              "--libc",
+              "musl",
+              "--posix",
+              "--unbound-externals",
+              "reject",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/libc_network.c",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/c-static"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "c-static-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/c-static/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "c-static-jit",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/c-static/bin/Release/net10.0/Generated.dll"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "c-static-publish",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/c-static/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/c-static/aot"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "c-static-aot",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/c-static/aot/Generated"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "c-instance-translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "--compiler",
+              "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+              "--language",
+              "c",
+              "--std",
+              "c11",
+              "--target",
+              "portable-lp64-binary80-v2",
+              "--libc",
+              "musl",
+              "--posix",
+              "--unbound-externals",
+              "reject",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/libc_network.c",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/c-instance",
+              "--instance-methods"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "c-instance-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/c-instance/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "c-instance-jit",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/c-instance/bin/Release/net10.0/Generated.dll"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "c-instance-publish",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/c-instance/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/c-instance/aot"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "c-instance-aot",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/c-instance/aot/Generated"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "cxx-instance-translate",
+            "command": [
+              "/usr/bin/python3",
+              "/home/marius/p/dotcc/edgcpp/dotnet.py",
+              "--compiler",
+              "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+              "--language",
+              "c++",
+              "--std",
+              "c++17",
+              "--target",
+              "portable-lp64-binary80-v2",
+              "--libc",
+              "musl",
+              "--posix",
+              "--unbound-externals",
+              "reject",
+              "/home/marius/p/dotcc/edgcpp/backend/tests/libc_network.c",
+              "--output-dir",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/cxx-instance",
+              "--instance-methods"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "cxx-instance-build",
+            "command": [
+              "dotnet",
+              "build",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/cxx-instance/Generated.csproj",
+              "-c",
+              "Release",
+              "--nologo",
+              "-p:TreatWarningsAsErrors=true"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "cxx-instance-jit",
+            "command": [
+              "dotnet",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/cxx-instance/bin/Release/net10.0/Generated.dll"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "cxx-instance-publish",
+            "command": [
+              "dotnet",
+              "publish",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/cxx-instance/Generated.csproj",
+              "-c",
+              "Release",
+              "-r",
+              "linux-x64",
+              "-p:PublishAot=true",
+              "-p:IlcTreatWarningsAsErrors=true",
+              "-o",
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/cxx-instance/aot"
+            ],
+            "exit": 0
+          },
+          {
+            "label": "cxx-instance-aot",
+            "command": [
+              "/mnt/storage/dotcc-edg-campaign-20261003/msquic-network-001/differential-003/cxx-instance/aot/Generated"
+            ],
+            "exit": 0
+          }
+        ],
+        "nativeOutput": "network: 29328 formatting/buffer cases, 65536 uint16 and 10000 uint32 roundtrips; 12240351350943728676\n"
+      }
+    }
+  }
+}
