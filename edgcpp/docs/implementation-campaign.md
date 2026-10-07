@@ -1931,3 +1931,15 @@ fall to 215,232,430; this is not yet a compiler-memory measurement. The candidat
 remains isolated and unadopted while full attempt 004 runs unchanged.
 
 [Core-functions fallback evidence](../evidence/duckdb-core-unity-fallback-20261007.json).
+
+
+Independent review found and corrected a wrapper-parser edge case: Python's
+`splitlines()` treats VT/FF and Unicode separators as new lines, although those
+characters do not end C++ `//` comments. The native candidate uses ordinary LF,
+so its compiled bytes and native observations are unaffected. Candidate002
+uses physical newlines and passes 27 focused controls (including hidden-include
+rejection and CRLF acceptance), 14 existing controls, actual evidence validation
+and fresh 129-input preprocessing. The reviewer approved the corrected recipe
+with no remaining concrete findings. Candidate001 and its artifacts remain
+intact. Attempt 005 is prepared against the reviewed composition but has not
+been launched; attempt 004 continues unchanged.

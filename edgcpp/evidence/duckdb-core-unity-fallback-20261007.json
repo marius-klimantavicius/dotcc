@@ -244,28 +244,28 @@
     ]
   },
   "isolatedRecipe": {
-    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-001/edg/unity.py",
-    "sha256": "5978eb537022953df2e9ba92439b33319728fa481f6626cf98749e5fe175cdc0"
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-002/edg/unity.py",
+    "sha256": "08978969eaea138be1738a82ddd0c6af3fe3ec9b0518c4114e7941ff175e36eb"
   },
   "validation": {
-    "focusedControls": 26,
+    "focusedControls": 27,
     "focusedResults": {
-      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-001/replacement-controls-002/results.json",
-      "sha256": "c6c311566786274e3154ccb2466d8b1ef299b66b070eb0f88f28bd470a70cca6"
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-002/replacement-controls-001/results.json",
+      "sha256": "1b1a0cfb613b3540f6e10afb9087a775ea3c10e85f3fb0ea18ac063d25a13d9f"
     },
     "originalControls": 14,
     "originalResults": {
-      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-001/upstream-controls-003/results.json",
-      "sha256": "acad81d4b9c44c90d722fe86030a57e09bde095a7f0ea40b333a76a152e1b1aa"
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-002/upstream-controls-001/results.json",
+      "sha256": "206e10eb306ae1e09cc8407409a8af1c0809d8ff10c1aa870387eae182f6a039"
     },
     "actualReceipts": {
-      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-001/actual-validation.json",
-      "sha256": "d221c8b53f7b4268916464733b6d2b6d21b39e2f26c73c1fa742e667ee0e438d"
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-002/actual-validation.json",
+      "sha256": "a6c649d68b26b9da35a0c94e802222ae8d3e8bcd7269ad993aba6cc01128bfb4"
     }
   },
   "composition": {
-    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-composition-candidate-001/composition.json",
-    "sha256": "688678610b91b741eca5a4e36dfd54ce35b300c13750459ea99ecacd121fdd62",
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-composition-candidate-002/composition.json",
+    "sha256": "462c312096a423e7f81740d18ddea54750f3490e43dd50ffa5b2b7133c447e4f",
     "inputCount": 129,
     "groupCount": 13,
     "originalSourceCount": 2207,
@@ -278,6 +278,31 @@
     "Preprocessed size decreases do not establish compiler-memory savings.",
     "Native source grouping can coalesce header-local constants; inspected source and selected tests do not prove universal equivalence.",
     "No full DuckDB C# build or JIT/NativeAOT execution has passed.",
-    "The candidate recipe remains isolated; independent code review is pending."
-  ]
+    "The corrected candidate recipe remains isolated and independently reviewed; attempt005 is prepared only, not launched."
+  ],
+  "previousCandidate": {
+    "recipe": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-001/edg/unity.py",
+      "sha256": "5978eb537022953df2e9ba92439b33319728fa481f6626cf98749e5fe175cdc0"
+    },
+    "composition": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-composition-candidate-001/composition.json",
+      "sha256": "688678610b91b741eca5a4e36dfd54ce35b300c13750459ea99ecacd121fdd62",
+      "inputCount": 129,
+      "groupCount": 13,
+      "originalSourceCount": 2207,
+      "inputBytes": 215232430,
+      "configuredCoverageExactlyOnce": true,
+      "frozenInputsUnchanged": true
+    },
+    "finding": "str.splitlines incorrectly recognizes VT/FF and Unicode separators as C++ physical newlines inside line comments; actual LF wrapper is unaffected; prior artifacts retained."
+  },
+  "independentReview": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-investigation-001/review-candidate-002.json",
+    "sha256": "cafb04b0c3ae870328173d9c4f0073a557b43ce396b9e22d6a6eee5ca6c8e5c5"
+  },
+  "preparedOnly": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-005/prepared.json",
+    "sha256": "a1e184ae03e86a7bd1984a21031ec9ab312a74377ac729e4d22c8907d475bde3"
+  }
 }
