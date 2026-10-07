@@ -2077,3 +2077,15 @@ correspondence diagnostics, and ten adapted passes. Exact patch, complete
 acquisition inventory, include order and per-input header origins are checked;
 mixed-header provenance is rejected and before/after inputs are unchanged.
 [Pair adaptation evidence](../evidence/duckdb-pair-signature-adaptation-20261007.json).
+
+Fresh pipeline002 passes all 2,207 sources, provider and unity preprocessing
+with unchanged fingerprints. The first preparation is retained as a provenance
+rejection: the new verifier filename appeared in an inventoried directory during
+that run, despite all source preprocessing succeeding. No rejected cache was
+reused and no check was weakened. Final composition has 129 inputs, all seven
+extensions and exact source coverage. An independent line-marker audit verifies
+all 38 pair-containing inputs use only the same adapted vendor header.
+
+Full checkpoint007 is now running with tools002 and the unchanged 72-GiB
+compiler RSS guard. It has no elapsed-time cutoff. Driver/backend/provider
+inputs are frozen; no full checkpoint or translated execution is claimed yet.

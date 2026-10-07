@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "bounded-adaptation-accepted-complete-preprocessing-in-progress",
+  "status": "bounded-adaptation-accepted-fresh-full-attempt007-running",
   "problem": "Whole-program conditional pair copy-assignment signature correspondence; stock C reproduces eight nontrivial cases.",
   "adaptation": "Unevaluated selection of existing member signature after existing copy-assignment body; no declaration, body, noexcept, overload-set or layout change.",
   "receipts": {
@@ -39,6 +39,26 @@
     "canonicalVerifier": {
       "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-signature-canonical-002/results.json",
       "sha256": "3af2243ab159c7d0a3679a2063c227876c5854a1a71933e3cf794fd275f67a37"
+    },
+    "freshPipeline": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-fresh-pipeline-002/results.json",
+      "sha256": "de58e4062554e5fc5b122527ca37f7a16e79287947fc7bf37245e2a847b5220e"
+    },
+    "uniformHeaderAudit": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-fresh-pipeline-002/uniform-pair-audit.json",
+      "sha256": "5be727bee112119c201d5534c8b52f6b24f44d093b9f1293f216c7c26c19e96d"
+    },
+    "freshComposition": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-unity-composition-pair-002/composition.json",
+      "sha256": "c9accb7b28b89f932f9667685dee1806f27fb6272bfde77204466bb1acf0111a"
+    },
+    "attempt007Prepared": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-007/prepared.json",
+      "sha256": "8ffccf5dde85d27327f34303c111e702c36d416fa441ac539e90d58cf2b2aea7"
+    },
+    "rejectedFirstPreprocessing": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-pair-fresh-pipeline-001/provenance-diagnostic.json",
+      "sha256": "aeecdf12bcdf587315f4eab104f803e9534cc44209b40dc6666dc097d8a8d42a"
     }
   },
   "canonicalInputs": [
@@ -102,5 +122,16 @@
     "Actual DuckDB-header C lowering separately hits retained read_memory_region failure; reduced stock-C execution is a separate scope.",
     "No full DuckDB checkpoint, emitted complete library or translated upstream tests yet."
   ],
-  "uniformDefinitionPolicy": "All source, unity and provider inputs must freshly preprocess against the same acquired vendor configuration; original/adapted preprocessed definitions must never be mixed."
+  "uniformDefinitionPolicy": "All source, unity and provider inputs must freshly preprocess against the same acquired vendor configuration; original/adapted preprocessed definitions must never be mixed.",
+  "fullPreparation": {
+    "configuredSources": 2207,
+    "programInputs": 129,
+    "programInputBytes": 212853736,
+    "pairContainingInputs": 38,
+    "uniformAdaptedHeader": true,
+    "allStaticExtensions": 7,
+    "checkpointAttempt": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-007",
+    "statusAtRecording": "running-no-checkpoint-or-execution-claim",
+    "firstPreparationRejection": "All sources preprocessed, but newly created canonical verifier filename changed external directory inventory; rejected receipt retained, complete fresh preparation repeated without weakening checks."
+  }
 }
