@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "status": "read-only-assembly-audit",
+  "translatedExecutionVerified": false,
+  "libraryTranslationUnits": 2207,
+  "additionalTestTranslationUnits": 148,
+  "totalConfiguredTranslationUnits": 2355,
+  "testSourceKinds": {
+    "pinnedUpstreamCpp": 147,
+    "authoredReporterCpp": 1
+  },
+  "upstreamTestUnity": {
+    "groups": 26,
+    "coveredSources": 107,
+    "remainingSeparateSources": 41
+  },
+  "plannedInputCounts": {
+    "currentLibrary148PlusTests67": 215,
+    "fallbackLibrary129PlusTests67": 196
+  },
+  "nativeTestStandard": "c++17",
+  "artifacts": {
+    "report.md": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-assembly-audit-001/report.md",
+      "sha256": "4f6bd34ee66439ed92216730b87ecc3bd00921bece0b80c4f25b19c72656151a"
+    },
+    "inventory.json": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-assembly-audit-001/inventory.json",
+      "sha256": "e0ba7357f53a3ffc20245497831d9edb52c8082ec5af4b624f61a06fb94ced75"
+    },
+    "profile-deltas.json": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-assembly-audit-001/profile-deltas.json",
+      "sha256": "54634e42771e15f44bf70013a59db1305407ade5398f94321078ab67a5238c97"
+    },
+    "reviewed-inputs.json": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-runner-assembly-audit-001/reviewed-inputs.json",
+      "sha256": "7ec6f1e4621964a1cd53168020aa59a644b2e13dc44f375f68d3f3551f4aeebc"
+    }
+  },
+  "requiredBeforeRunnerTranslation": [
+    "Explicitly select C++17 and intended source/build/data roots; current portable metadata records older C++20/build-root strings.",
+    "Preserve all148test sources, six option profiles, original include order and generated loader/header identity.",
+    "Preprocess Catch unity wrappers from original sources; never concatenate already-preprocessed per-file counter sequences.",
+    "Validate all2355configured source identities exactly once; existing unity recipe validates library-only closure.",
+    "Create a new full library-plus-runner checkpoint; replay of library-only IL cannot append unresolved test semantics.",
+    "Handle actual signal/fork/kill dependencies deliberately; no stubs, disabled tests or native runtime fallback authorized by this audit."
+  ],
+  "limitations": [
+    "Inventory and read-only source inspection only; no new preprocessing, frontend, code generation or runner execution.",
+    "No universal unity-equivalence or full upstream suite coverage claim."
+  ]
+}

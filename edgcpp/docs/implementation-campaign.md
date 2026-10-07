@@ -1943,3 +1943,18 @@ and fresh 129-input preprocessing. The reviewer approved the corrected recipe
 with no remaining concrete findings. Candidate001 and its artifacts remain
 intact. Attempt 005 is prepared against the reviewed composition but has not
 been launched; attempt 004 continues unchanged.
+
+
+A read-only upstream-runner audit identifies 148 additional C++17 translation
+units (147 upstream sources and the reporter), making 2,355 configured sources
+with the library. Upstream CMake groups 107 test sources into 26 wrappers and
+keeps 41 separate. Preserve those wrappers and Catch counter/registration
+boundaries; do not concatenate separately preprocessed test inputs. The current
+portable test metadata retains an older standard/build-directory profile, so
+future runner preparation must explicitly bind its C++17 and test/build/data
+roots. The native-selected persistence/Catch sources also expose real
+`fork`/`kill` and POSIX signal requirements. This audit changes no source and
+adds no stubs or test exclusions; these are explicit future runner gates.
+A library-only checkpoint cannot append the new test semantics through replay.
+
+[Upstream runner assembly audit](../evidence/duckdb-runner-assembly-audit-20261007.json).
