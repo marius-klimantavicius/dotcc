@@ -1615,3 +1615,18 @@ valid preprocessing result. Provider inputs are preprocessed afresh, and the
 final invocation keeps libc++ include paths away from the musl C sources.
 Fresh/reuse CLI checks pass on a real DuckDB TU plus the real provider; this is
 input-pipeline evidence, not DuckDB execution.
+
+Full-library preprocessing and cache reuse now pass for all 2,207 selected
+library TUs plus the freshly staged libc++ provider. The cache verifies 5,333
+application dependencies and 972 provider dependencies. Eighteen focused
+provenance checks pass. An explicit preprocessing compiler can remain frozen
+while the separately recorded code-generation compiler changes, so backend
+iterations need not repeat preprocessing.
+
+PCG consumes compiler date/time macros; reproducible preprocessing therefore
+uses an explicit epoch (the verified run uses epoch zero). This is a build
+policy, not DuckDB's release date, and the existing native baseline did not use
+that clock. Volatile inputs without a fixed clock remain ineligible for reuse.
+These receipts establish complete input preparation, not generated execution.
+
+[Complete preprocessing evidence](../evidence/duckdb-preprocessing-20261007.json).

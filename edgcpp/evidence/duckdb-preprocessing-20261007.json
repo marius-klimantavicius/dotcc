@@ -1,0 +1,39 @@
+{
+  "milestone": "Complete DuckDB input preprocessing and verified cross-backend-build reuse",
+  "fullDuckDbTranslated": false,
+  "executionVerified": false,
+  "receipts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-translate-004/results.json",
+      "sha256": "83a5a4bcb845c0b2970d1fee409415e224b7a70e514068a7ea2d5d6194938c63",
+      "status": "preprocessed",
+      "selectedUnits": 2207,
+      "preprocessingCompilerSha256": "4d28d528905fa9a1dc4319829e7ed5cf84dde2544627ce8c88783bb2182eb141",
+      "codegenCompilerSha256": "4d28d528905fa9a1dc4319829e7ed5cf84dde2544627ce8c88783bb2182eb141"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-cache-reuse-001/results.json",
+      "sha256": "9f4e88f155c63db48a6b8c0e5a0b502fa94be3cfb26a8745b56de46558545e38",
+      "status": "preprocessed",
+      "selectedUnits": 2207,
+      "preprocessingCompilerSha256": "4d28d528905fa9a1dc4319829e7ed5cf84dde2544627ce8c88783bb2182eb141",
+      "codegenCompilerSha256": "d58014327798f8b9c423000dc21211a361613f7469c484e948a542607c770ed4"
+    }
+  ],
+  "focusedTests": {
+    "count": 18,
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-preprocessing-driver-checks-final.log",
+    "sha256": "b728c204d7897eff9d8878a9e84989d738601a804bdbfbdde81e6f4f9bfd509f"
+  },
+  "clockPolicy": {
+    "preprocessingEpoch": 0,
+    "meaning": "1970-01-01 UTC; explicit reproducible __DATE__/__TIME__ overrides, not release date",
+    "nativeBaselineUsesSameClock": false
+  },
+  "scope": "2207 configured library TUs and fresh real libc++ provider; all7 bundled extensions remain selected",
+  "reusePolicy": "Independent explicit preprocessing/compiler snapshots; no relaxed preprocessing compiler/source/header/flag/output hash validation",
+  "remaining": [
+    "Whole-program source assembly",
+    "Generated C# build and upstream JIT/NativeAOT tests"
+  ]
+}

@@ -124,6 +124,16 @@ class CacheTests(unittest.TestCase):
         header.write_text('int changed;')
         self.assertNotEqual(self.inputs()[0], first)
 
+    def test_relative_runtime_abi_header_is_tracked_before_preprocessing(self):
+        abi = self.edg / 'backend/runtime/musl/network/network_abi.h'
+        abi.parent.mkdir(parents=True)
+        abi.write_text('struct network_abi { int value; };')
+        first, initial = self.inputs()
+        self.assertEqual(initial[str(abi)], translate.sha(abi))
+        translate.dependency_receipt([str(abi)], initial)
+        abi.write_text('struct network_abi { long value; };')
+        self.assertNotEqual(self.inputs()[0], first)
+
     def test_changed_source_compiler_standard_environment_and_order_rejected(self):
         self.reject(self.inputs(standard='c++20')[0])
         self.reject(self.inputs(units=list(reversed(self.units)))[0])
@@ -179,6 +189,37 @@ class CacheTests(unittest.TestCase):
         self.assertEqual(current, self.fingerprint)
         translate.reuse_preprocessed(self.receipt, current)
 
+    def test_explicit_preprocessing_compiler_is_independent_of_codegen(self):
+        # First prove the prior single-compiler receipt remains valid.
+        translate.reuse_preprocessed(self.receipt, self.fingerprint)
+        codegen = self.root / 'new-codegen'
+        codegen.write_bytes(b'new backend binary')
+        self.report['preprocessingCompiler'] = dict(self.report['compiler'])
+        self.report['compiler'] = dict(path=str(codegen), sha256=translate.sha(codegen))
+        self.save()
+        translate.reuse_preprocessed(self.receipt, self.fingerprint)
+        self.reject(self.inputs(compiler=codegen)[0])
+
+    def test_fixed_clock_is_explicit_and_part_of_compatibility(self):
+        clock = translate.preprocessing_clock(0)
+        self.assertEqual(clock, dict(epochSeconds=0, timezone='UTC', date='Jan  1 1970', time='00:00:00'))
+        command, _ = translate.preprocessing_command(self.compiler, 'c++17', [self.headers],
+                                                     [self.forced], self.units[0], epoch=0)
+        self.assertIn('-D__DATE__="Jan  1 1970"', command)
+        self.assertIn('-D__TIME__="00:00:00"', command)
+        self.reject(self.inputs(epoch=0)[0])
+        self.assertNotEqual(self.inputs(epoch=0)[0], self.inputs(epoch=1)[0])
+
+    def test_fixed_clock_still_rejects_timestamp_and_embed(self):
+        self.header.write_text('const char seed[] = __DATE__ __TIME__;')
+        initial = {str(self.header): translate.sha(self.header)}
+        self.assertEqual(translate.dependency_receipt([str(self.header)], initial)[1], [str(self.header)])
+        self.assertEqual(translate.dependency_receipt([str(self.header)], initial, epoch=0)[1], [])
+        for contents in ('const char stamp[] = __TIMESTAMP__;', '#embed "blob.bin"'):
+            self.header.write_text(contents)
+            initial[str(self.header)] = translate.sha(self.header)
+            self.assertEqual(translate.dependency_receipt([str(self.header)], initial, epoch=0)[1], [str(self.header)])
+
     def test_untracked_or_changed_consumed_input_rejected(self):
         self.header.write_text('changed during preprocessing')
         with self.assertRaises(ValueError):
@@ -214,11 +255,16 @@ class CacheTests(unittest.TestCase):
              patch.object(translate.subprocess, 'run', side_effect=invoke):
             for index in range(2):
                 out = self.root / ('attempt-' + str(index))
+                codegen = self.compiler
+                if index:
+                    codegen = self.root / 'new-codegen'
+                    codegen.write_bytes(b'new backend binary')
                 args = ['translate.py', '--portable-manifest', str(self.portable_path),
-                        '--acquisition', str(self.root), '--compiler', str(self.compiler),
+                        '--acquisition', str(self.root), '--compiler', str(codegen),
                         '--output-dir', str(out), '--jobs', '1']
                 if index:
-                    args += ['--reuse-preprocessed', str(self.root / 'attempt-0/results.json')]
+                    args += ['--reuse-preprocessed', str(self.root / 'attempt-0/results.json'),
+                             '--preprocessing-compiler', str(self.compiler)]
                 with patch.object(sys, 'argv', args):
                     translate.main()
                 reports.append(json.loads((out / 'results.json').read_text()))
@@ -233,6 +279,8 @@ class CacheTests(unittest.TestCase):
         a, b = reports
         self.assertEqual(a['preprocessing'][0]['path'], b['preprocessing'][0]['path'])
         self.assertNotEqual(a['providerPreprocessing'][0]['path'], b['providerPreprocessing'][0]['path'])
+        self.assertNotEqual(a['compiler']['sha256'], b['compiler']['sha256'])
+        self.assertEqual(a['preprocessingCompiler']['sha256'], b['preprocessingCompiler']['sha256'])
         self.assertFalse(b['executionVerified'])
 
 

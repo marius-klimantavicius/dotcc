@@ -6,6 +6,7 @@ not leak into other sources. Keep those files and the exact command receipts.
 """
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timezone
 import hashlib
 import json
 import os
@@ -24,12 +25,26 @@ from portable import verify_staged
 HEADER_SUFFIXES = {'', '.h', '.hh', '.hpp', '.hxx', '.inc', '.inl', '.ipp', '.tcc', '.def'}
 LINE_MARKER = re.compile(rb'^#\s*(?:line\s+)?\d+\s+("(?:\\.|[^"\\])*")', re.M)
 VOLATILE_MACRO = re.compile(rb'\b__(?:DATE|TIME|TIMESTAMP)__\b|^\s*#\s*embed\b', re.M)
+UNFIXED_VOLATILE_MACRO = re.compile(rb'\b__TIMESTAMP__\b|^\s*#\s*embed\b', re.M)
 
 
-def preprocessing_command(compiler, standard, includes, preincludes, unit):
+def preprocessing_clock(epoch):
+    if epoch is None:
+        return None
+    value = datetime.fromtimestamp(epoch, timezone.utc)
+    month = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')[value.month - 1]
+    return dict(epochSeconds=epoch, timezone='UTC',
+                date=f'{month} {value.day:2d} {value.year:04d}',
+                time=f'{value.hour:02d}:{value.minute:02d}:{value.second:02d}')
+
+
+def preprocessing_command(compiler, standard, includes, preincludes, unit, epoch=None):
     if unit['language'] != 'c++':
         raise ValueError('Mixed-language whole-program input needs an explicit bridge: ' + unit['file'])
     flags, recorded = frontend_flags(unit)
+    clock = preprocessing_clock(epoch)
+    if clock is not None:
+        flags += ['-D__DATE__=' + json.dumps(clock['date']), '-D__TIME__=' + json.dumps(clock['time'])]
     return ([str(compiler), '--' + standard, '--gnu_version', '130300',
              '--clear_flag', 'use_predefined_macro_file', '--preprocess',
              *[v for inc in includes for v in ('-I', str(inc))],
@@ -38,7 +53,7 @@ def preprocessing_command(compiler, standard, includes, preincludes, unit):
 
 
 def preprocessing_inputs(portable, portable_path, compiler, standard, includes,
-                         preincludes, units, env, target):
+                         preincludes, units, env, target, epoch=None):
     """Fingerprint preprocessing inputs independently of provider source assembly.
 
     All external search-directory entries are inventoried: adding a file can
@@ -54,7 +69,7 @@ def preprocessing_inputs(portable, portable_path, compiler, standard, includes,
     selected, roots = [], set(map(lambda p: Path(p).resolve(), includes))
     roots.update(Path(p).resolve().parent for p in preincludes)
     for index, unit in enumerate(units):
-        command, recorded = preprocessing_command(compiler, standard, includes, preincludes, unit)
+        command, recorded = preprocessing_command(compiler, standard, includes, preincludes, unit, epoch)
         source = Path(unit['file']).resolve()
         selected.append(dict(index=index, source=str(source), sourceSha256=sha(source),
                              language=unit['language'], role=unit['role'], arguments=command[1:]))
@@ -65,6 +80,11 @@ def preprocessing_inputs(portable, portable_path, compiler, standard, includes,
             elif argument == '--preinclude':
                 roots.add(Path(command[i + 1]).resolve().parent)
     roots.add(Path(env['EDG_BASE']).resolve())
+    # Public libc/POSIX headers also use relative includes into sibling musl
+    # ABI directories. They are preprocessing inputs despite not being -I
+    # search roots themselves; record the shared runtime tree before reading
+    # any TU so discovered dependencies can be checked against initial hashes.
+    roots.add((EDG / 'backend/runtime').resolve())
     external = sorted(root for root in roots if not root.is_relative_to(staged))
     # Nested search roots remain in the commands; inventory each physical tree
     # once to avoid repeatedly hashing the same libc++ or adapter headers.
@@ -117,6 +137,7 @@ def preprocessing_inputs(portable, portable_path, compiler, standard, includes,
     target_files = [EDG / 'backend/target/portable-lp64-binary80-v2.def',
                     EDG / 'backend/target/portable-lp64-binary80-v2.json']
     fingerprint = dict(schema=1, target=target, standard=standard, compilerSha256=sha(compiler),
+        preprocessingClock=preprocessing_clock(epoch),
         portableManifestSha256=sha(portable_path), selected=selected,
         environmentValueHashes=relevant_env, headerInventory=sorted(inventory, key=lambda item: item['path']), preincludeHeaders=forced,
         targetInputs=[dict(path=str(path), sha256=sha(path)) for path in target_files])
@@ -127,8 +148,10 @@ def included_files(path):
     """Read EDG line markers, without modifying the preprocessed program."""
     data = Path(path).read_bytes()
     files = set()
-    for match in LINE_MARKER.finditer(data):
-        name = json.loads(match.group(1).decode())
+    # EDG repeats a header's line marker many times. Resolve each distinct
+    # spelling once per TU instead of doing filesystem lookups for every line.
+    for spelling in {match.group(1) for match in LINE_MARKER.finditer(data)}:
+        name = json.loads(spelling.decode())
         candidate = Path(name)
         # #line can name a virtual source. Actual absolute file paths are the
         # dependencies; synthetic <built-in> and diagnostic-only labels are not.
@@ -137,7 +160,7 @@ def included_files(path):
     return files
 
 
-def dependency_receipt(paths, initial_hashes):
+def dependency_receipt(paths, initial_hashes, epoch=None):
     records, volatile = [], []
     for name in sorted(paths):
         path = Path(name)
@@ -146,7 +169,8 @@ def dependency_receipt(paths, initial_hashes):
         if initial_hashes.get(name) != digest:
             raise ValueError('Preprocessing read an untracked or changed input: ' + name)
         records.append(dict(path=name, sha256=digest))
-        if VOLATILE_MACRO.search(data):
+        volatile_pattern = VOLATILE_MACRO if epoch is None else UNFIXED_VOLATILE_MACRO
+        if volatile_pattern.search(data):
             volatile.append(name)
     return records, volatile
 
@@ -183,9 +207,12 @@ def reuse_preprocessed(receipt_path, fingerprint):
         raise ValueError('Reuse receipt does not establish completed preprocessing with unchanged inputs')
     if previous.get('preprocessingVolatileInputs'):
         raise ValueError('Preprocessing uses time-dependent macros or embedded input; automatic reuse is disabled')
-    if previous.get('compiler', {}).get('sha256') != fingerprint['compilerSha256']:
+    # Earlier schema-1 receipts used a single compiler for both stages. The
+    # fallback preserves their exact preprocessing compiler identity.
+    prior_preprocessor = previous.get('preprocessingCompiler', previous.get('compiler', {}))
+    if prior_preprocessor.get('sha256') != fingerprint['compilerSha256']:
         raise ValueError('Reuse compiler provenance does not match')
-    if sha(previous['compiler']['path']) != fingerprint['compilerSha256']:
+    if sha(prior_preprocessor['path']) != fingerprint['compilerSha256']:
         raise ValueError('Retained preprocessing compiler changed')
     if previous.get('portableManifest', {}).get('sha256') != fingerprint['portableManifestSha256']:
         raise ValueError('Reuse portable source manifest does not match')
@@ -217,6 +244,8 @@ def main():
     parser.add_argument('--acquisition', type=Path, required=True)
     parser.add_argument('--output-dir', type=Path, required=True)
     parser.add_argument('--compiler', type=Path, default=EDG / 'build/bin/cpfe-dot')
+    parser.add_argument('--preprocessing-compiler', type=Path,
+                        help='explicit compiler for retained .ii inputs; defaults to --compiler, independently verified from final codegen')
     parser.add_argument('--target', choices=['library', 'tests'], default='library')
     parser.add_argument('--std', choices=['c++17', 'c++20'], default='c++17')
     parser.add_argument('--libcxx-layout', choices=['unity', 'separate'], default='unity',
@@ -224,11 +253,15 @@ def main():
     parser.add_argument('--jobs', type=int, default=4)
     parser.add_argument('--timeout', type=int, default=3600)
     parser.add_argument('--preprocess-only', action='store_true')
+    parser.add_argument('--preprocessing-epoch', type=int,
+                        help='explicit UNIX seconds for UTC __DATE__/__TIME__; unset uses the compiler clock and rejects time-dependent cache reuse')
     parser.add_argument('--reuse-preprocessed', type=Path,
                         help='reuse verified application .ii inputs from a compatible results.json; provider preprocessing and codegen are fresh')
     args = parser.parse_args()
     if args.jobs < 1 or args.timeout < 1:
         parser.error('--jobs and --timeout must be positive')
+    if args.preprocessing_epoch is not None and not 0 <= args.preprocessing_epoch <= 253402300799:
+        parser.error('--preprocessing-epoch must be between 0 and 253402300799 (UTC years 1970 through 9999)')
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
     portable = json.loads(args.portable_manifest.read_text())
@@ -237,9 +270,14 @@ def main():
     compiler_input = args.compiler.resolve()
     compiler = out / 'cpfe-dot'
     shutil.copy2(compiler_input, compiler)
+    preprocessing_compiler_input = (args.preprocessing_compiler or compiler_input).resolve()
+    preprocessor = out / 'cpfe-dot-preprocess'
+    shutil.copy2(preprocessing_compiler_input, preprocessor)
     report = dict(status='running', target=args.target, selectedUnits=len(units),
                   portableManifest=dict(path=str(args.portable_manifest.resolve()), sha256=sha(args.portable_manifest)),
                   compiler=dict(path=str(compiler), originalPath=str(compiler_input), sha256=sha(compiler)),
+                  preprocessingCompiler=dict(path=str(preprocessor), originalPath=str(preprocessing_compiler_input),
+                                             sha256=sha(preprocessor)),
                   preprocessing=[], providerPreprocessing=[], commands=[], executionVerified=False,
                   preprocessingComplete=False, preprocessingInputsUnchanged=False)
     def save():
@@ -259,7 +297,8 @@ def main():
         path = pp / f'{prefix}{index:05d}-{source.stem}.ii'
         work = pp / f'{prefix}{index:05d}'
         work.mkdir()
-        command, recorded = preprocessing_command(compiler, provider['standard'], includes, preincludes, unit)
+        command, recorded = preprocessing_command(preprocessor, provider['standard'], includes, preincludes, unit,
+                                                  args.preprocessing_epoch)
         entry = dict(index=index, source=str(source), sourceSha256=sha(source), command=command,
                      path=str(path), nativeFlagsNotForwarded=recorded)
         start = time.monotonic()
@@ -293,8 +332,8 @@ def main():
         includes = [*map(Path, provider['includeDirectories']), EDG / 'backend/runtime/libcxx/include',
                     EDG / 'backend/runtime/posix/include', EDG / 'backend/runtime/libc/include']
         preincludes = list(map(Path, provider.get('preincludeHeaders', [])))
-        fingerprint, initial_hashes = preprocessing_inputs(portable, args.portable_manifest, compiler,
-            provider['standard'], includes, preincludes, units, env, args.target)
+        fingerprint, initial_hashes = preprocessing_inputs(portable, args.portable_manifest, preprocessor,
+            provider['standard'], includes, preincludes, units, env, args.target, args.preprocessing_epoch)
         report['preprocessingInputs'] = fingerprint
         save()
         if args.reuse_preprocessed:
@@ -319,7 +358,8 @@ def main():
         if failed:
             raise RuntimeError(str(len(failed)) + ' preprocessing failures; all source logs retained')
         if not args.reuse_preprocessed:
-            report['preprocessingDependencies'], report['preprocessingVolatileInputs'] = dependency_receipt(dependency_paths, initial_hashes)
+            report['preprocessingDependencies'], report['preprocessingVolatileInputs'] = dependency_receipt(
+                dependency_paths, initial_hashes, args.preprocessing_epoch)
         report['preprocessingComplete'] = True
         save()
         # The real implementation provider is always freshly preprocessed with
@@ -335,7 +375,8 @@ def main():
             entry, dependencies = preprocess(index, unit, prefix='provider-')
             report['providerPreprocessing'].append(entry)
             provider_dependencies.update(dependencies)
-            report['providerPreprocessingDependencies'], _ = dependency_receipt(provider_dependencies, provider_initial_hashes)
+            report['providerPreprocessingDependencies'], _ = dependency_receipt(
+                provider_dependencies, provider_initial_hashes, args.preprocessing_epoch)
             save()
             if not entry['passed']:
                 raise RuntimeError('libc++ provider preprocessing failed; application cache and provider logs retained')
@@ -358,10 +399,12 @@ def main():
         try:
             verify_staged(portable)
             if sha(compiler) != report['compiler']['sha256']:
-                raise ValueError('EDG compiler changed during translation')
+                raise ValueError('EDG codegen compiler changed during translation')
+            if sha(preprocessor) != report['preprocessingCompiler']['sha256']:
+                raise ValueError('EDG preprocessing compiler changed during translation')
             if fingerprint is not None:
-                current, _ = preprocessing_inputs(portable, args.portable_manifest, compiler,
-                    provider['standard'], includes, preincludes, units, env, args.target)
+                current, _ = preprocessing_inputs(portable, args.portable_manifest, preprocessor,
+                    provider['standard'], includes, preincludes, units, env, args.target, args.preprocessing_epoch)
                 if current != fingerprint:
                     raise ValueError('Preprocessing inputs changed during translation')
                 verify_dependencies(report.get('preprocessingDependencies', []))

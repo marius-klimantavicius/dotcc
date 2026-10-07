@@ -69,6 +69,25 @@ affect its separately compiled musl sources. Reuse carries no previous
 translation or execution claim. Run the focused provenance checks with
 `python3 duckdb/edg/tests/check_preprocessing_cache.py`.
 
+Bundled PCG uses `__DATE__` and `__TIME__` for a compile-time seed. For a
+reusable, reproducible cache, explicitly pass `--preprocessing-epoch 0` on both
+the preparation and reuse commands. This selects **January 1, 1970 00:00:00
+UTC**, a chosen reproducibility epoch, not the release timestamp. The driver
+records GNU-mode macro overrides in every preprocessing command and checks
+the clock policy as part of compatibility. The default leaves the compiler
+clock unchanged and refuses reuse when these macros occur. `__TIMESTAMP__`
+and embedded-file directives still disable automatic reuse. The existing
+native baseline was compiled without this fixed-clock policy; matching clock
+configuration remains part of eventual differential verification.
+
+`--compiler` selects final code generation. By default it also preprocesses
+the inputs. To reuse a cache while testing a newer backend, explicitly select
+the cache's retained binary with `--preprocessing-compiler /path/to/cpfe-dot`
+and select the new backend with `--compiler /path/to/new/cpfe-dot`. Both binaries
+are snapshotted and verified independently; changing the selected preprocessing
+compiler still invalidates reuse. Older complete receipts using one compiler
+retain that binary as their preprocessing identity.
+
 Both C++20 and matching C++17 native baselines have built and passed the same
 17 selected upstream cases (2,848 assertions). Some bundled RE2 targets retain
 their upstream C++11 override.
