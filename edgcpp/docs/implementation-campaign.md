@@ -1499,3 +1499,23 @@ This changes storage, not C++ semantic coverage or cross-unit linking. The prior
 large production fixtures are SQLite and the actual dot backend.
 [Storage contract and measurements](semantic-export-storage.md),
 [tracked evidence](../semantic-export/evidence-sqlite-storage.json).
+
+
+## Semantic export: typed native SQLite writer (2026-10-07)
+
+Removed the native per-record JSON serialization/parser bridge. Typed values
+now carry scalar fields into SQLite bindings, with typed position/range and
+macro records and explicit ordered edges. Final structured literal/metadata
+JSON encoding remains in storage schema v1; no native record parsing remains.
+The schema, semantic facts and C# consumer API remain compatible.
+
+Full streaming comparisons preserve all 1,205,132 SQLite + memory-VFS nodes and
+3,144,305 dot nodes, plus macros, diagnostics, metadata and source snapshots.
+Only the three explicitly identified frontend clock records differ per package.
+The dot baseline and typed export use the same frozen current source tree.
+All 3,171 generated SQLite C#/project files match the earlier native/JIT/NativeAOT
+execution baseline. Both reader modes pass 58 storage checks, and NativeAOT
+validates the complete new dot package. The native regression adds exact signed/
+unsigned boundaries, duplicate field ordering and escaped typed positions.
+Review links now expose the new matching database and generated C# artifacts.
+[Typed writer evidence](../semantic-export/evidence-typed-writer.json).

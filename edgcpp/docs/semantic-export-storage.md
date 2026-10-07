@@ -19,7 +19,13 @@ diagnostics, metadata, source occurrences and deduplicated source BLOBs.
 [content digest framing](../semantic-export/storage/content-hash.md) define the
 versioned contract. Nested positions/arrays retain pooled JSON payloads; whole
 nodes are not JSON blobs. Explicit null and absent fields remain distinct.
-Unsigned integers outside SQLite's signed range retain exact decimal bytes.
+Unsigned integers outside SQLite's signed range retain exact decimal bytes. The
+native adapter now passes enum-tagged typed values to the writer: scalar numbers
+bind directly, and references/edges remain numeric identities. Source locations,
+positions, ranges and macro records have typed APIs. The previous per-record
+JSON serialization/parser bridge has been removed. JSON encoding remains only
+for final structured literal and metadata columns required by this schema;
+those values are never parsed again by the native writer.
 
 Literal lookup uses a compact 64-bit FNV-1a hint plus exact byte comparison;
 collisions cannot merge unequal payloads. Indexing the entire payload proved
@@ -65,6 +71,32 @@ identities, and deliberately colliding lookup candidates. Python and managed
 checks reject changed content and correctly rehashed malformed records: 33 Python
 checks and 58 checks each under JIT and NativeAOT pass. Legacy
 reader and C emission regressions remain covered.
+
+## Typed writer follow-up
+
+The native API now carries typed node properties, ordered edges, metadata and
+macro records. SQLite binds scalar values directly; unsigned values above
+`INT64_MAX` use the existing exact decimal BLOB representation. Source
+locations, positions and ranges are constructed as typed structures. Their final
+pooled JSON representation remains part of storage schema v1, but there is no
+JSON record parser or node/macro JSON serialization step in the native path.
+
+The native writer regression covers signed/unsigned boundary transitions,
+last-write behavior with stable field order, absent/null distinctions, escaped
+positions, literal sharing and hash collisions. A streaming package comparator
+checks every semantic record and source snapshot between producers, reporting
+only explicitly identified frontend clock differences. The
+[typed writer evidence](../semantic-export/evidence-typed-writer.json) records
+those comparisons and generated-source parity. The dot comparison uses one
+frozen source tree for both producers, since compiler development continued
+after the earlier storage milestone.
+
+The typed writer matches all 1,205,132 SQLite + memory-VFS nodes and all
+3,144,305 nodes in the frozen dot snapshot, including edges, macros, diagnostics,
+metadata and original source bytes. Each comparison reports exactly three
+frontend clock differences. All 3,171 generated SQLite C#/project files remain
+byte-identical to the previously executed JIT/NativeAOT baseline. The new
+packages pass all 58 storage checks under both managed execution modes.
 
 ## Measured experiment
 

@@ -22,32 +22,30 @@ std::set<const void*> visited;
 std::map<const void*,sizeof_t> strings;
 size_t diagnostic_count=0;
 semantic_storage::Database *database=nullptr;
-semantic_storage::JsonBuffer record_buffer;
-semantic_storage::JsonBuffer *out=&record_buffer; unsigned current;
+semantic_storage::Properties *properties=nullptr;
+semantic_storage::NodeRecord *active_node=nullptr;
+unsigned current;
 unsigned id(const void *p) {if(!p)return 0;auto q=ids.find(p);if(q!=ids.end())return q->second;unsigned n=(unsigned)ids.size()+1;ids[p]=n;return n;}
-void bytes(const char *s,size_t n) {out->character('"');for(size_t i=0;i<n;++i){unsigned char c=(unsigned char)s[i];if(c=='"'||c=='\\'){out->character('\\');out->character(c);}else if(c<32||c>=127)out->format("\\u%04x",c);else out->character(c);}out->character('"');}
-void quote(const char *s) {bytes(s?s:"",s?strlen(s):0);}
-void key(const char *s){out->character(',');quote(s);out->character(':');}
-void txt(const char*k,const char*v){key(k);quote(v);}
-void num(const char*k,unsigned long long v){key(k);out->format("%llu",v);}
-void signednum(const char*k,long long v){key(k);out->format("%lld",v);}
-void boolean(const char*k,bool v){key(k);out->text(v?"true":"false");}
+void txt(const char*k,const char*v){properties->set(k,semantic_storage::Value::latin1(v));}
+void txt_bytes(const char*k,const char*v,size_t length){properties->set(k,semantic_storage::Value::latin1(v,length));}
+void num(const char*k,unsigned long long v){properties->set(k,semantic_storage::Value::unsigned_integer(v));}
+void signednum(const char*k,long long v){properties->set(k,semantic_storage::Value::signed_integer(v));}
+void boolean(const char*k,bool v){properties->set(k,semantic_storage::Value::boolean(v));}
 const char *storage_name(a_storage_class value){switch(value){case sc_unspecified:return "sc_unspecified";case sc_extern:return "sc_extern";case sc_static:return "sc_static";case sc_auto:return "sc_auto";case sc_typedef:return "sc_typedef";case sc_register:return "sc_register";case sc_asm:return "sc_asm";default:return "unknown";}}
-void ref(const char*k,const void*p){key(k);out->format("%u",id(p));}
-void loc_raw(a_seq_number seq,a_column_number column){const char *file=nullptr,*full=nullptr;a_line_number line=0;a_boolean end=FALSE;a_source_file_ptr sf=nullptr;if(seq)sf=conv_seq_to_file_and_line(seq,&file,&full,&line,&end);out->format("{\"sequence\":%lu,\"column\":%lu,\"line\":%lu,\"source\":%u,\"presumedFile\":",(unsigned long)seq,(unsigned long)column,(unsigned long)line,id(sf));quote(file);txt("physicalFile",full);out->character('}');}
-void pos(const char*k,const a_source_position&p){key(k);out->text("{\"expansion\":");loc_raw(p.seq,p.column);key("spelling");loc_raw(p.orig_seq,p.orig_column);num("macroContext",(unsigned long long)p.macro_context);out->character('}');}
-void simplepos(const char*k,const a_simple_source_position&p){key(k);loc_raw(p.seq,p.column);}
-void range(const char*k,const a_source_range&r){key(k);out->character('{');out->text("\"available\":");out->text(r.start.seq?"true":"false");pos("start",r.start);pos("end",r.end);out->character('}');}
+void ref(const char*k,const void*p){num(k,id(p));}
+semantic_storage::SourceLocation loc_raw(a_seq_number seq,a_column_number column){const char *file=nullptr,*full=nullptr;a_line_number line=0;a_boolean end=FALSE;a_source_file_ptr sf=nullptr;if(seq)sf=conv_seq_to_file_and_line(seq,&file,&full,&line,&end);return {(std::uint64_t)seq,(std::uint64_t)column,(std::uint64_t)line,id(sf),semantic_storage::latin1_to_utf8(file),semantic_storage::latin1_to_utf8(full)};}
+semantic_storage::SourcePosition source_position(const a_source_position&p){return {loc_raw(p.seq,p.column),loc_raw(p.orig_seq,p.orig_column),(std::uint64_t)p.macro_context};}
+void pos(const char*k,const a_source_position&p){properties->set(k,semantic_storage::position_value(source_position(p)));}
+void range(const char*k,const a_source_range&r){properties->set(k,semantic_storage::range_value({r.start.seq!=0,source_position(r.start),source_position(r.end)}));}
 void source(const a_source_correspondence&s){txt("name",s.name);ref("attributes",s.attributes);pos("location",s.decl_position);ref("parentScope",s.parent_scope);ref("enclosingRoutine",s.enclosing_routine);ref("declarationPositions",s.decl_pos_info);ref("sourceSequence",s.source_sequence_entry);txt("linkage",name_linkage_kind_names[s.name_linkage]);boolean("classMember",s.is_class_member);boolean("parentViaLocalScopeRef",s.parent_via_local_scope_ref);num("access",s.access);}
 void unsupported(const std::string &s){database->diagnostic(current,s);++diagnostic_count;txt("coverage","unsupported");}
 void visit(char*p,an_il_entry_kind k){id(p);if(visited.insert(p).second)nodes.push_back({p,k});}
 void strvisit(char*p,an_il_entry_kind k,sizeof_t n){visit(p,k);strings[p]=n;}
 void tagged(const char*k,const a_tagged_pointer&p){ref(k,p.ptr);}
 char *discover(char*p,an_il_entry_kind k){if(p&&!visited.count(p)){if(is_string_entry_kind(k))strvisit(p,k,strlen(p)+1);else visit(p,k);}return p;}
-bool edge_first;
-char *edge(char*p,an_il_entry_kind k){if(p){if(!edge_first)out->character(',');edge_first=false;out->format("{\"target\":%u,\"kind\":",id(p));quote(il_entry_kind_names[k]);out->character('}');}return p;}
-void emit(Node n){current=id(n.ptr);out->format("{\"id\":%u,\"kind\":",current);quote(il_entry_kind_names[n.kind]);
- auto st=strings.find(n.ptr);if(st!=strings.end()){key("bytesLatin1");bytes(n.ptr,(size_t)st->second);out->character('}');return;}
+char *edge(char*p,an_il_entry_kind k){if(p)active_node->edge(id(p),il_entry_kind_names[k]);return p;}
+void emit(Node n){current=id(n.ptr);semantic_storage::NodeRecord record(current,il_entry_kind_names[n.kind]);properties=&record;active_node=&record;
+ auto st=strings.find(n.ptr);if(st!=strings.end()){txt_bytes("bytesLatin1",n.ptr,(size_t)st->second);database->node(record);properties=nullptr;active_node=nullptr;return;}
  switch(n.kind){
  case iek_type:{auto p=(a_type_ptr)n.ptr;source(p->source_corresp);txt("form",name_of(p->kind));ref("next",p->next);num("size",p->size);num("alignment",p->alignment);boolean("explicitAlignment",p->alignment_set_explicitly);boolean("incomplete",p->incomplete);boolean("dependent",p->is_instantiation_dependent);ref("canonicalType",skip_typerefs(p));switch(p->kind){
  case tk_integer:txt("integerKind",name_of(p->variant.integer.int_kind));boolean("signed",int_kind_is_signed[p->variant.integer.int_kind]);boolean("enum",p->variant.integer.enum_type);boolean("bool",p->variant.integer.bool_type);ref("integerInfo",p->variant.integer.extra_info);if(p->variant.integer.enum_type){boolean("scopedEnum",p->variant.integer.is_scoped_enum);if(p->variant.integer.is_scoped_enum)ref("enumScope",p->variant.integer.enum_info.assoc_scope);else ref("enumerators",p->variant.integer.enum_info.constant_list);}break;
@@ -130,9 +128,9 @@ void emit(Node n){current=id(n.ptr);out->format("{\"id\":%u,\"kind\":",current);
  case iek_block:{auto p=(a_block_ptr)n.ptr;ref("scope",p->assoc_scope);ref("lifetime",p->lifetime);pos("end",p->final_position);break;}
  case iek_label:{auto p=(a_label_ptr)n.ptr;source(p->source_corresp);boolean("break",p->break_label);boolean("continue",p->continue_label);ref("statement",p->exec_stmt);break;}
  case iek_constant:{auto p=(a_constant_ptr)n.ptr;source(p->source_corresp);txt("form",name_of(p->kind));ref("type",p->type);ref("originalType",p->orig_type);ref("backingExpression",p->expr);ref("next",p->next);switch(p->kind){
- case ck_integer:{a_boolean is_signed=int_constant_is_signed(p);a_host_large_integer v=0;a_boolean err=FALSE;conv_integer_value_to_host_large_integer(&p->variant.integer_value,is_signed,&v,&err);if(err)unsupported("Integer constant exceeds 64-bit value adapter");else{key("integerValue");if(is_signed)out->format("\"%lld\"",(long long)v);else out->format("\"%llu\"",(unsigned long long)(a_host_large_unsigned)v);}break;}
- case ck_address:ref("subobjectPath",p->variant.address.subobject_path);num("addressKind",p->variant.address.kind);switch(p->variant.address.kind){case abk_routine:ref("routine",p->variant.address.variant.routine);break;case abk_variable:ref("variable",p->variant.address.variant.variable);break;case abk_constant:ref("constant",p->variant.address.variant.constant);break;default:unsupported("Address constant base adapter");break;}key("offset");out->format("%lld",(long long)p->variant.address.offset);break;
- case ck_string:key("bytesLatin1");bytes(p->variant.string.value,(size_t)p->variant.string.length);break;
+ case ck_integer:{a_boolean is_signed=int_constant_is_signed(p);a_host_large_integer v=0;a_boolean err=FALSE;conv_integer_value_to_host_large_integer(&p->variant.integer_value,is_signed,&v,&err);if(err)unsupported("Integer constant exceeds 64-bit value adapter");else{std::string value=is_signed?std::to_string((long long)v):std::to_string((unsigned long long)(a_host_large_unsigned)v);txt("integerValue",value.c_str());}break;}
+ case ck_address:ref("subobjectPath",p->variant.address.subobject_path);num("addressKind",p->variant.address.kind);switch(p->variant.address.kind){case abk_routine:ref("routine",p->variant.address.variant.routine);break;case abk_variable:ref("variable",p->variant.address.variant.variable);break;case abk_constant:ref("constant",p->variant.address.variant.constant);break;default:unsupported("Address constant base adapter");break;}signednum("offset",(long long)p->variant.address.offset);break;
+ case ck_string:txt_bytes("bytesLatin1",p->variant.string.value,(size_t)p->variant.string.length);break;
  case ck_float:{auto type=skip_typerefs(p->type);if(type->kind!=tk_float){unsupported("Floating constant with nonfloating type");break;}a_boolean positive_infinity=FALSE,negative_infinity=FALSE,nan=FALSE;auto value=fp_to_string(type->variant.float_kind,&p->variant.float_value,&positive_infinity,&negative_infinity,&nan);txt("floatValue",value.as_temp_characters());boolean("positiveInfinity",positive_infinity);boolean("negativeInfinity",negative_infinity);boolean("notANumber",nan);
 #if USE_HEX_FP_CONSTANTS_IN_GENERATED_CODE
  auto exact=fp_to_hex_constant_string(type->variant.float_kind,&p->variant.float_value,nullptr,nullptr,nullptr);txt("floatHexValue",exact.as_temp_characters());
@@ -214,7 +212,7 @@ void emit(Node n){current=id(n.ptr);out->format("{\"id\":%u,\"kind\":",current);
  case iek_throw_supplement:{auto p=(a_throw_supplement_ptr)n.ptr;ref("type",p->type);ref("initialization",p->dynamic_init);ref("destructor",p->destructor);break;}
  default:unsupported(std::string("Metadata adapter: ")+il_entry_kind_names[n.kind]);break;
  }
- key("nativeEdges");out->character('[');edge_first=true;remap_pointers_in_il_entry(n.ptr,n.kind,edge,edge,FALSE);out->text("]}");
+ record.begin_edges();remap_pointers_in_il_entry(n.ptr,n.kind,edge,edge,FALSE);database->node(record);properties=nullptr;active_node=nullptr;
 }
 }
 void back_end(void){
@@ -225,9 +223,14 @@ void back_end(void){
  std::set<a_memory_region_number> regions;
  for(size_t i=0;i<nodes.size();++i)if(nodes[i].kind==iek_routine){auto r=(a_routine_ptr)nodes[i].ptr;if(r->memory_region&&il_header.region_scope_entry[r->memory_region]&&regions.insert(r->memory_region).second)walk_routine_scope_il(r->memory_region,visit,strvisit,nullptr,nullptr,nullptr,FALSE);}
  for(size_t i=0;i<nodes.size();++i)if(!is_string_entry_kind(nodes[i].kind))remap_pointers_in_il_entry(nodes[i].ptr,nodes[i].kind,discover,discover,FALSE);
- out->clear();out->format("{\"schema\":\"edg-semantic/1\",\"lowered\":false,\"completeForEmission\":false");txt("producerVersion",il_header.compiler_version);txt("sourceLanguage",il_header.source_language==sl_C?"C":"C++");num("standardVersion",il_header.std_version);ref("mainRoutine",il_header.main_routine);ref("rootScope",il_header.primary_scope);ref("primarySource",il_header.primary_source_file);num("pointerBytes",targ_sizeof_pointer);num("intBytes",targ_sizeof_int);num("longBytes",targ_sizeof_long);num("longDoubleBytes",targ_sizeof_long_double);boolean("littleEndian",targ_little_endian);boolean("plainCharSigned",il_header.plain_chars_are_signed);key("configuration");out->format("{\"DO_IL_LOWERING\":%d,\"GENERATE_SOURCE_SEQUENCE_LISTS\":%d,\"EXTRA_SOURCE_POSITIONS_IN_IL\":%d,\"ALL_TEMPLATE_INFO_IN_IL\":%d,\"RECORD_MACROS_IN_IL\":%d,\"MACRO_INVOCATION_TREE_IN_IL\":%d,\"RECORD_MACRO_ARGS\":%d,\"DOING_SOURCE_ANALYSIS\":%d}",DO_IL_LOWERING,GENERATE_SOURCE_SEQUENCE_LISTS,EXTRA_SOURCE_POSITIONS_IN_IL,ALL_TEMPLATE_INFO_IN_IL,RECORD_MACROS_IN_IL,MACRO_INVOCATION_TREE_IN_IL,RECORD_MACRO_ARGS,DOING_SOURCE_ANALYSIS);out->character('}');storage.metadata(out->value);
- for(size_t i=0;i<nodes.size();++i){out->clear();emit(nodes[i]);storage.node(out->value);}
- for(a_macro_invocation_record_index i=1;i<il_header.num_macro_invocation_records;++i){a_macro_invocation_record_ptr p;set_macro_inv_record_ptr_to_index(il_header.root_macro_invocation_record_block,i,p);if(!p)continue;out->clear();out->format("{\"index\":%ld,\"parentIndex\":%ld",(long)i,(long)p->parent_macro_index);ref("definition",p->assoc_macro);simplepos("start",p->start);simplepos("end",p->end);txt("arguments",p->arguments);out->character('}');storage.macro(out->value);}
- storage.commit();database=nullptr;out->clear();fprintf(stderr,"Semantic SQLite graph: %zu nodes, %zu explicitly reported adapter gaps\n",nodes.size(),diagnostic_count);
- } catch(const std::exception &error) { database=nullptr;fprintf(stderr,"Semantic SQLite export failed: %s\n",error.what());exit(2); }
+ semantic_storage::Properties metadata;properties=&metadata;
+ txt("schema","edg-semantic/1");boolean("lowered",false);boolean("completeForEmission",false);txt("producerVersion",il_header.compiler_version);txt("sourceLanguage",il_header.source_language==sl_C?"C":"C++");num("standardVersion",il_header.std_version);ref("mainRoutine",il_header.main_routine);ref("rootScope",il_header.primary_scope);ref("primarySource",il_header.primary_source_file);num("pointerBytes",targ_sizeof_pointer);num("intBytes",targ_sizeof_int);num("longBytes",targ_sizeof_long);num("longDoubleBytes",targ_sizeof_long_double);boolean("littleEndian",targ_little_endian);boolean("plainCharSigned",il_header.plain_chars_are_signed);
+ using semantic_storage::Value;
+ metadata.set("configuration",Value::object({{"DO_IL_LOWERING",Value::signed_integer(DO_IL_LOWERING)}, {"GENERATE_SOURCE_SEQUENCE_LISTS",Value::signed_integer(GENERATE_SOURCE_SEQUENCE_LISTS)}, {"EXTRA_SOURCE_POSITIONS_IN_IL",Value::signed_integer(EXTRA_SOURCE_POSITIONS_IN_IL)}, {"ALL_TEMPLATE_INFO_IN_IL",Value::signed_integer(ALL_TEMPLATE_INFO_IN_IL)}, {"RECORD_MACROS_IN_IL",Value::signed_integer(RECORD_MACROS_IN_IL)}, {"MACRO_INVOCATION_TREE_IN_IL",Value::signed_integer(MACRO_INVOCATION_TREE_IN_IL)}, {"RECORD_MACRO_ARGS",Value::signed_integer(RECORD_MACRO_ARGS)}, {"DOING_SOURCE_ANALYSIS",Value::signed_integer(DOING_SOURCE_ANALYSIS)}}));
+ storage.metadata(metadata);properties=nullptr;
+ for(size_t i=0;i<nodes.size();++i)emit(nodes[i]);
+ for(a_macro_invocation_record_index i=1;i<il_header.num_macro_invocation_records;++i){a_macro_invocation_record_ptr p;set_macro_inv_record_ptr_to_index(il_header.root_macro_invocation_record_block,i,p);if(!p)continue;storage.macro({(std::int64_t)i,(std::int64_t)p->parent_macro_index,id(p->assoc_macro),loc_raw(p->start.seq,p->start.column),loc_raw(p->end.seq,p->end.column),semantic_storage::latin1_to_utf8(p->arguments)});}
+ storage.commit();database=nullptr;fprintf(stderr,"Semantic SQLite graph: %zu nodes, %zu explicitly reported adapter gaps\n",nodes.size(),diagnostic_count);
+
+ } catch(const std::exception &error) { database=nullptr;properties=nullptr;active_node=nullptr;fprintf(stderr,"Semantic SQLite export failed: %s\n",error.what());exit(2); }
 }

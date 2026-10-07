@@ -84,9 +84,11 @@ they are not needed to read or emit from the database.
   [logical-content checksum](storage/content-hash.md).
 
 The [storage schema](storage/schema.sql) is `edg-semantic-sqlite/1`; reconstructed
-semantic records retain `edg-semantic/1`. The writer inserts records directly into
-SQLite, then the wrapper snapshots sources, validates and seals the database
-before publishing it by rename. There is no intermediate whole-graph JSON file.
+semantic records retain `edg-semantic/1`. The native adapter supplies typed node fields, source positions, macros and
+ordered references to SQLite bindings. No node or macro is serialized to JSON
+and parsed back. Structured payloads and metadata are encoded once only where
+the storage schema requires a final JSON value. The wrapper snapshots sources,
+validates and seals the database before publishing it by rename.
 The current reader requires exactly one translation unit; unit-qualified IDs do
 not imply cross-unit semantic linking.
 

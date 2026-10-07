@@ -42,20 +42,93 @@ int main(int argc, char **argv) {
   try {
     require(argc == 2, "Usage: native-writer FRESH.sqlite");
     {
-      semantic_storage::Database database(argv[1]);
-      database.metadata(R"JSON({"schema":"edg-semantic/1","lowered":false,"completeForEmission":false,"producerVersion":"native-writer-regression","sourceLanguage":"C","standardVersion":2017,"rootScope":1,"primarySource":2,"mainRoutine":0,"pointerBytes":8,"intBytes":4,"longBytes":8,"longDoubleBytes":16,"littleEndian":true,"plainCharSigned":true,"configuration":{"DO_IL_LOWERING":0}})JSON");
-      database.node(R"JSON({"id":1,"kind":"scope","form":"sck_file","next":0,"parent":0,"children":0,"variables":0,"types":5,"routines":0,"nativeEdges":[{"target":5,"kind":"type"}]})JSON");
-      database.node(R"JSON({"id":2,"kind":"source-file","path":"native-writer-fixture.c","fullPath":"native-writer-fixture.c","nameAsWritten":"native-writer-fixture.c","next":0,"firstChild":0,"nativeEdges":[]})JSON");
-      database.node(R"JSON({"id":3,"kind":"constant","form":"ck_integer","type":5,"integerValue":"18446744073709551615","probeUnsigned":18446744073709551615,"probeSigned":-9223372036854775808,"probeFlag":false,"probeNull":null,"payload":"same\u0000\u00e9","supplement":{"nested":[false,null,18446744073709551615]},"nativeEdges":[]})JSON");
-      database.node(R"JSON({"id":4,"kind":"constant","form":"ck_integer","type":5,"integerValue":"0","payload":"same\u0000\u00e9"})JSON");
-      database.node(R"JSON({"id":5,"kind":"type","form":"tk_integer","name":"unsigned long long","size":8,"alignment":8,"integerKind":"ik_unsigned_long_long","signed":false,"enum":false,"bool":false,"canonicalType":5,"parentScope":1,"nativeEdges":[{"target":1,"kind":"scope"}]})JSON");
-      database.node(R"JSON({"id":6,"kind":"expr-node","form":"constant","type":5,"constant":3,"valueCategory":"prvalue","nativeEdges":[{"target":3,"kind":"constant"},{"target":5,"kind":"type"}]})JSON");
+      using namespace semantic_storage;
+      Database database(argv[1]);
+      Properties metadata;
+      metadata.set("schema",Value::text("edg-semantic/1"));
+      metadata.set("lowered",Value::boolean(false));
+      metadata.set("completeForEmission",Value::boolean(false));
+      metadata.set("producerVersion",Value::text("native-writer-regression"));
+      metadata.set("sourceLanguage",Value::text("C"));
+      for(const auto &fact:std::vector<std::pair<std::string,std::uint64_t>>{
+          {"standardVersion",2017},{"rootScope",1},{"primarySource",2},{"mainRoutine",0},
+          {"pointerBytes",8},{"intBytes",4},{"longBytes",8},{"longDoubleBytes",16}})
+        metadata.set(fact.first,Value::unsigned_integer(fact.second));
+      metadata.set("littleEndian",Value::boolean(true));
+      metadata.set("plainCharSigned",Value::boolean(true));
+      metadata.set("configuration",Value::object({{"DO_IL_LOWERING",Value::signed_integer(0)}}));
+      database.metadata(metadata);
+
+      NodeRecord scope(1,"scope");
+      scope.set("form",Value::text("sck_file"));
+      for(const auto &fact:std::vector<std::pair<std::string,std::uint64_t>>{
+          {"next",0},{"parent",0},{"children",0},{"variables",0},{"types",5},{"routines",0}})
+        scope.set(fact.first,Value::unsigned_integer(fact.second));
+      scope.edge(5,"type"); database.node(scope);
+      NodeRecord source(2,"source-file");
+      for(const char *key:{"path","fullPath","nameAsWritten"})
+        source.set(key,Value::text("native-writer-fixture.c"));
+      source.set("next",Value::unsigned_integer(0));
+      source.set("firstChild",Value::unsigned_integer(0));
+      source.begin_edges(); database.node(source);
+
+      const std::uint64_t max_signed=static_cast<std::uint64_t>(std::numeric_limits<std::int64_t>::max());
+      const std::uint64_t max_unsigned=std::numeric_limits<std::uint64_t>::max();
+      const auto supplement=Value::object({{"nested",Value::array({
+          Value::boolean(false),Value::null(),Value::unsigned_integer(max_unsigned)})}});
+      const auto constant=[](std::uint64_t id,const char *digits) {
+        NodeRecord n(id,"constant"); n.set("form",Value::text("ck_integer"));
+        n.set("type",Value::unsigned_integer(5)); n.set("integerValue",Value::text(digits)); return n;
+      };
+      NodeRecord n3=constant(3,"18446744073709551615");
+      n3.set("probeUnsigned",Value::unsigned_integer(max_unsigned));
+      n3.set("probeSigned",Value::signed_integer(std::numeric_limits<std::int64_t>::min()));
+      n3.set("probeFlag",Value::boolean(true));
+      n3.set("probeNull",Value::null());
+      // Native bytes are Latin1; a separately supplied UTF-8 value must pool
+      // identically after conversion, including the embedded NUL.
+      n3.set("payload",Value::latin1("same\0\xe9",6));
+      n3.set("supplement",supplement);
+      n3.set("probeFlag",Value::boolean(false)); // Last value, first field order.
+      n3.set("signedBoundary",Value::signed_integer(std::numeric_limits<std::int64_t>::max()));
+      n3.set("unsignedBoundary",Value::unsigned_integer(max_signed));
+      n3.set("wideBoundary",Value::unsigned_integer(max_signed+1));
+      n3.begin_edges(); database.node(n3);
+      NodeRecord n4=constant(4,"0");
+      n4.set("payload",Value::text(std::string("same\0\xc3\xa9",7))); database.node(n4);
+
+      NodeRecord type(5,"type");
+      type.set("form",Value::text("tk_integer"));
+      type.set("name",Value::text("unsigned long long"));
+      type.set("size",Value::unsigned_integer(8)); type.set("alignment",Value::unsigned_integer(8));
+      type.set("integerKind",Value::text("ik_unsigned_long_long"));
+      for(const char *key:{"signed","enum","bool"}) type.set(key,Value::boolean(false));
+      type.set("canonicalType",Value::unsigned_integer(5)); type.set("parentScope",Value::unsigned_integer(1));
+      type.edge(1,"scope"); database.node(type);
+
+      NodeRecord expr(6,"expr-node");
+      expr.set("form",Value::text("constant")); expr.set("type",Value::unsigned_integer(5));
+      expr.set("constant",Value::unsigned_integer(3)); expr.set("valueCategory",Value::text("prvalue"));
+      const SourceLocation escaped_location={10,1,1,2,
+          latin1_to_utf8("p\0\xe9\n\"\\",6),"native-writer-fixture.c"};
+      const SourcePosition position={escaped_location,escaped_location,0};
+      expr.set("position",position_value(position));
+      expr.set("range",range_value({true,position,position}));
+      expr.edge(3,"constant"); expr.edge(5,"type"); database.node(expr);
       // Add a new column after earlier rows, then reuse an already-prepared
       // insertion shape to verify schema changes do not disturb old bindings.
-      database.node(R"JSON({"id":7,"kind":"constant","form":"ck_integer","type":5,"integerValue":"1","probeFlag":true,"lateField":29,"payload":"same\u0000\u00e9","supplement":{"nested":[false,null,18446744073709551615]}})JSON");
-      database.node(R"JSON({"id":8,"kind":"constant","form":"ck_integer","type":5,"integerValue":"0","payload":"same\u0000\u00e9"})JSON");
-      database.node(R"JSON({"id":9,"kind":"macro","name":"CHECK","next":0,"text":"x","objectLike":false,"nativeEdges":[]})JSON");
-      database.macro(R"JSON({"index":1,"parentIndex":0,"definition":9,"start":{"sequence":10,"column":1,"line":1,"source":2,"presumedFile":"native-writer-fixture.c","physicalFile":"native-writer-fixture.c"},"end":{"sequence":10,"column":6,"line":1,"source":2,"presumedFile":"native-writer-fixture.c","physicalFile":"native-writer-fixture.c"},"arguments":"same\u0000\u00e9"})JSON");
+      NodeRecord n7=constant(7,"1");
+      n7.set("probeFlag",Value::boolean(true)); n7.set("lateField",Value::unsigned_integer(29));
+      n7.set("payload",Value::latin1("same\0\xe9",6)); n7.set("supplement",supplement);
+      // Signed and unsigned inputs share one integer column kind.
+      n7.set("unsignedBoundary",Value::signed_integer(42)); database.node(n7);
+      NodeRecord n8=constant(8,"0"); n8.set("payload",Value::latin1("same\0\xe9",6)); database.node(n8);
+      NodeRecord macro(9,"macro"); macro.set("name",Value::text("CHECK"));
+      macro.set("next",Value::unsigned_integer(0)); macro.set("text",Value::text("x"));
+      macro.set("objectLike",Value::boolean(false)); macro.begin_edges(); database.node(macro);
+      database.macro({1,0,9,
+          {10,1,1,2,"native-writer-fixture.c","native-writer-fixture.c"},
+          {10,6,1,2,"native-writer-fixture.c","native-writer-fixture.c"},latin1_to_utf8("same\0\xe9",6)});
       database.diagnostic(3, "retained diagnostic");
       database.diagnostic(6, "retained diagnostic");
       database.commit();
@@ -87,6 +160,32 @@ int main(int argc, char **argv) {
     {
       Query query(reader.db, "SELECT value_kind FROM node_fields f JOIN node_kinds k USING(kind_id) WHERE k.name='constant' AND f.name='probeNull'");
       require(query.row() && query.bytes() == "null", "Explicit null field category missing");
+    }
+    {
+      Query query(reader.db,"SELECT signedBoundary,unsignedBoundary,wideBoundary FROM node_constant WHERE node_id=3");
+      require(query.row() && query.type(0)==SQLITE_INTEGER && query.type(1)==SQLITE_INTEGER &&
+              query.integer(0)==std::numeric_limits<std::int64_t>::max() && query.integer(1)==query.integer(0),
+              "INT64_MAX signed/unsigned typed binding changed");
+      require(query.type(2)==SQLITE_BLOB && query.bytes(2)=="9223372036854775808",
+              "INT64_MAX+1 did not use exact decimal BLOB storage");
+    }
+    equals(reader.db,"SELECT unsignedBoundary FROM node_constant WHERE node_id=7",42,
+           "Signed/unsigned integer values acquired incompatible field kinds");
+    equals(reader.db,"SELECT ordinal FROM node_fields f JOIN node_kinds k USING(kind_id) WHERE k.name='constant' AND f.name='probeFlag'",4,
+           "Duplicate field overwrite changed discovery order");
+    {
+      const std::string expected_location=R"JSON({"sequence":10,"column":1,"line":1,"source":2,"presumedFile":"p\u0000\u00e9\u000a\"\\","physicalFile":"native-writer-fixture.c"})JSON";
+      const std::string expected_position="{\"expansion\":"+expected_location+",\"spelling\":"+expected_location+",\"macroContext\":0}";
+      Query query(reader.db,"SELECT p.payload,r.payload FROM node_expr_node n JOIN literals p ON p.literal_id=n.position JOIN literals r ON r.literal_id=n.range WHERE n.node_id=6");
+      require(query.row() && query.bytes(0)==expected_position,
+              "Typed source position escaped non-ASCII/control text differently");
+      require(query.bytes(1)=="{\"available\":true,\"start\":"+expected_position+",\"end\":"+expected_position+"}",
+              "Typed source range structure changed");
+      require(semantic_storage::json_value(semantic_storage::Value::object({
+          {"first",semantic_storage::Value::signed_integer(1)},
+          {"second",semantic_storage::Value::boolean(false)},
+          {"first",semantic_storage::Value::signed_integer(2)}}))=="{\"first\":2,\"second\":false}",
+          "Structured property overwrite changed value or member order");
     }
     equals(reader.db, "SELECT edge_count FROM nodes WHERE node_id=3", 0, "Empty native edge list changed");
     {

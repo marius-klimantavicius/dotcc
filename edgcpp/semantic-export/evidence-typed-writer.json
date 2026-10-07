@@ -1,0 +1,1409 @@
+{
+  "schema": "edg-semantic-typed-writer-evidence/1",
+  "status": "verified",
+  "milestone": "Native typed SQLite writer with no per-record JSON serialization/parser bridge",
+  "storageSchemaUnchanged": "edg-semantic-sqlite/1",
+  "packageSchemaUnchanged": "edg-semantic-package/2",
+  "remainingJsonEncoding": "Final pooled structured position/range/array values and graph metadata only; no native parsing",
+  "packages": {
+    "plain": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/plain/semantic.sqlite",
+      "sha256": "1f7a064c08acabd933ef7c1b655474727d7ce652fcfb2e5e91939def626f9322",
+      "bytes": 376832,
+      "contentSha256": "0ef52d09b79fceff97715cb69c6cfc6a7444f75b7572c807404e4b20e6b545b2",
+      "nodes": 289,
+      "edges": 538,
+      "diagnostics": 0,
+      "sources": 2,
+      "producerSha256": "d5c2cc1197887d5508e53adacbd5a53568f3f00628d6e3f7682657ebc56ad73c"
+    },
+    "probe": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/probe/semantic.sqlite",
+      "sha256": "428995810327999b37019c17e12b557fd48e24cc36e7e58c0cf2b3c9ea01083e",
+      "bytes": 679936,
+      "contentSha256": "f410763ef681b13ff0d1d36d82dd0179760c1a2b0e84b60d6b01c851769d682a",
+      "nodes": 1046,
+      "edges": 2008,
+      "diagnostics": 28,
+      "sources": 2,
+      "producerSha256": "d5c2cc1197887d5508e53adacbd5a53568f3f00628d6e3f7682657ebc56ad73c"
+    },
+    "expressions": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/expressions/semantic.sqlite",
+      "sha256": "5ccb62a7b6e73256442bd439bc4f185e97b86ff5621153efb459fce81d4ff5d3",
+      "bytes": 823296,
+      "contentSha256": "cf442fb7143a08400d4a53916cda9d35fcc143ebb1d921630531089496260474",
+      "nodes": 780,
+      "edges": 1839,
+      "diagnostics": 0,
+      "sources": 1,
+      "producerSha256": "d5c2cc1197887d5508e53adacbd5a53568f3f00628d6e3f7682657ebc56ad73c"
+    },
+    "package-memory": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/package-memory/semantic.sqlite",
+      "sha256": "2a92f86fe1bd656672cff6b9b833ad426a0ef29bad18fadffb156fe81136b729",
+      "bytes": 1092014080,
+      "contentSha256": "23a163504da844eabba42b0e1842b96ce2f43ab53ff3fedf2e84d11cb94630b2",
+      "nodes": 1205132,
+      "edges": 3221348,
+      "diagnostics": 0,
+      "sources": 16,
+      "producerSha256": "d5c2cc1197887d5508e53adacbd5a53568f3f00628d6e3f7682657ebc56ad73c"
+    },
+    "baseline-dot": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/baseline-dot/semantic.sqlite",
+      "sha256": "e2d097c98821ca6821bf744061d9deadd13fee5b74dbb0e56a160d6c49543455",
+      "bytes": 900370432,
+      "contentSha256": "3662c2ae066d8922575edeca3ad0a2be75c834329c703ab6ceb97c0d2f749e93",
+      "nodes": 3144305,
+      "edges": 6864007,
+      "diagnostics": 273575,
+      "sources": 360,
+      "producerSha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf"
+    },
+    "package-dot": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/package-dot/semantic.sqlite",
+      "sha256": "d3c81ed6dcd2e0c11676339068c3e1137a3438ba3506666ecda5dd22c0230cd1",
+      "bytes": 900366336,
+      "contentSha256": "e5ce5671cb1536f7266b240ea6497b165029434a547e61b8e661626b95e6e350",
+      "nodes": 3144305,
+      "edges": 6864007,
+      "diagnostics": 273575,
+      "sources": 360,
+      "producerSha256": "d5c2cc1197887d5508e53adacbd5a53568f3f00628d6e3f7682657ebc56ad73c"
+    }
+  },
+  "fullRecordComparisons": {
+    "plain": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/compare-plain.json",
+        "sha256": "e55f6486d0b50c4641facedcc4c8a01f8cedff8cfa9132a93406fe880bdb9cfc",
+        "bytes": 2069
+      },
+      "result": {
+        "schema": "edg-semantic-package-comparison/1",
+        "status": "passed",
+        "before": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-sqlite-storage-001/final/plain",
+        "after": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-typed-writer-001/plain",
+        "allowedClockDifferences": [
+          {
+            "node": 69,
+            "kind": "other-text",
+            "field": "bytesLatin1",
+            "category": "unreferenced EDG ctime payload",
+            "before": "Wed Oct  7 08:37:24 2026\n\u0000",
+            "after": "Wed Oct  7 09:21:59 2026\n\u0000"
+          },
+          {
+            "node": 84,
+            "kind": "other-text",
+            "field": "bytesLatin1",
+            "category": "linked __TIME__ macro text payload",
+            "before": "#define __TIME__ \"08:37:24\"\u0000",
+            "after": "#define __TIME__ \"09:21:59\"\u0000"
+          },
+          {
+            "node": 85,
+            "kind": "macro",
+            "field": "text",
+            "category": "predefined __TIME__ macro",
+            "before": "#define __TIME__ \"08:37:24\"",
+            "after": "#define __TIME__ \"09:21:59\""
+          }
+        ],
+        "scope": "metadata, ID-ordered nodes with exact JSON value types, macros, diagnostics, source descriptors and bytes; producer identity intentionally excluded",
+        "producerIdentities": {
+          "before": {
+            "binarySha256": "7904bc3b8581df855682881e2bee87093520cee99798cab27b958e9555382f73",
+            "producerSha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf"
+          },
+          "after": {
+            "binarySha256": "297c506d4cddd6bc5a90b849500a30f7b1b908e0dad200f5195ecb27250b5294",
+            "producerSha256": "d5c2cc1197887d5508e53adacbd5a53568f3f00628d6e3f7682657ebc56ad73c"
+          }
+        },
+        "nodeCount": 289,
+        "macroCount": 1,
+        "diagnosticCount": 0,
+        "sourceCount": 2,
+        "sourceBytesCompared": 426,
+        "beforeLogicalSha256": "bbc39dda3604f1778f5ec03af192376ff06fd15da0e802e34a6803ecf29f05a6",
+        "afterLogicalSha256": "1a8040a3d37223cef1c45ce2584cca3fc8e46cb27294f774601d57a0d165c4d2",
+        "afterClockNormalizedSha256": "bbc39dda3604f1778f5ec03af192376ff06fd15da0e802e34a6803ecf29f05a6",
+        "seconds": 0.038,
+        "peakProcessRssKiB": 23296
+      }
+    },
+    "probe": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/compare-probe.json",
+        "sha256": "9023bf70201e67cdbd3246a3f0f51d7a8bcf2a3dfd0a94e4a96c2866d5df8bbd",
+        "bytes": 2074
+      },
+      "result": {
+        "schema": "edg-semantic-package-comparison/1",
+        "status": "passed",
+        "before": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-sqlite-storage-001/final/probe",
+        "after": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-typed-writer-001/probe",
+        "allowedClockDifferences": [
+          {
+            "node": 407,
+            "kind": "other-text",
+            "field": "bytesLatin1",
+            "category": "unreferenced EDG ctime payload",
+            "before": "Wed Oct  7 08:37:25 2026\n\u0000",
+            "after": "Wed Oct  7 09:22:00 2026\n\u0000"
+          },
+          {
+            "node": 427,
+            "kind": "other-text",
+            "field": "bytesLatin1",
+            "category": "linked __TIME__ macro text payload",
+            "before": "#define __TIME__ \"08:37:25\"\u0000",
+            "after": "#define __TIME__ \"09:22:00\"\u0000"
+          },
+          {
+            "node": 428,
+            "kind": "macro",
+            "field": "text",
+            "category": "predefined __TIME__ macro",
+            "before": "#define __TIME__ \"08:37:25\"",
+            "after": "#define __TIME__ \"09:22:00\""
+          }
+        ],
+        "scope": "metadata, ID-ordered nodes with exact JSON value types, macros, diagnostics, source descriptors and bytes; producer identity intentionally excluded",
+        "producerIdentities": {
+          "before": {
+            "binarySha256": "7904bc3b8581df855682881e2bee87093520cee99798cab27b958e9555382f73",
+            "producerSha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf"
+          },
+          "after": {
+            "binarySha256": "297c506d4cddd6bc5a90b849500a30f7b1b908e0dad200f5195ecb27250b5294",
+            "producerSha256": "d5c2cc1197887d5508e53adacbd5a53568f3f00628d6e3f7682657ebc56ad73c"
+          }
+        },
+        "nodeCount": 1046,
+        "macroCount": 3,
+        "diagnosticCount": 28,
+        "sourceCount": 2,
+        "sourceBytesCompared": 965,
+        "beforeLogicalSha256": "baebaf97e6d48305a79b6f5cc850701812467b56a6bef9e8ee6ac2852f9f0bdf",
+        "afterLogicalSha256": "fe9b4c53231a34782342c48330576d7d00e64d8f25ce5e8f992ceb8271ecf026",
+        "afterClockNormalizedSha256": "baebaf97e6d48305a79b6f5cc850701812467b56a6bef9e8ee6ac2852f9f0bdf",
+        "seconds": 0.082,
+        "peakProcessRssKiB": 23808
+      }
+    },
+    "expressions": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/compare-expressions.json",
+        "sha256": "ac0204c7bdbcdd6d94833ffb11e6969284f3cdbbab68313a34160f310ecdbff3",
+        "bytes": 2085
+      },
+      "result": {
+        "schema": "edg-semantic-package-comparison/1",
+        "status": "passed",
+        "before": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-sqlite-storage-001/final/expressions",
+        "after": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-typed-writer-001/expressions",
+        "allowedClockDifferences": [
+          {
+            "node": 212,
+            "kind": "other-text",
+            "field": "bytesLatin1",
+            "category": "unreferenced EDG ctime payload",
+            "before": "Wed Oct  7 08:39:14 2026\n\u0000",
+            "after": "Wed Oct  7 09:22:01 2026\n\u0000"
+          },
+          {
+            "node": 227,
+            "kind": "other-text",
+            "field": "bytesLatin1",
+            "category": "linked __TIME__ macro text payload",
+            "before": "#define __TIME__ \"08:39:14\"\u0000",
+            "after": "#define __TIME__ \"09:22:01\"\u0000"
+          },
+          {
+            "node": 228,
+            "kind": "macro",
+            "field": "text",
+            "category": "predefined __TIME__ macro",
+            "before": "#define __TIME__ \"08:39:14\"",
+            "after": "#define __TIME__ \"09:22:01\""
+          }
+        ],
+        "scope": "metadata, ID-ordered nodes with exact JSON value types, macros, diagnostics, source descriptors and bytes; producer identity intentionally excluded",
+        "producerIdentities": {
+          "before": {
+            "binarySha256": "7904bc3b8581df855682881e2bee87093520cee99798cab27b958e9555382f73",
+            "producerSha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf"
+          },
+          "after": {
+            "binarySha256": "297c506d4cddd6bc5a90b849500a30f7b1b908e0dad200f5195ecb27250b5294",
+            "producerSha256": "d5c2cc1197887d5508e53adacbd5a53568f3f00628d6e3f7682657ebc56ad73c"
+          }
+        },
+        "nodeCount": 780,
+        "macroCount": 0,
+        "diagnosticCount": 0,
+        "sourceCount": 1,
+        "sourceBytesCompared": 1407,
+        "beforeLogicalSha256": "fa97820e2790866e328ab2571cf9deabb047fa98dffff13ab71141530292cbc2",
+        "afterLogicalSha256": "2d439a3aea0e0b9c96239b688988914a2632024156d93eb9979a985bda63da71",
+        "afterClockNormalizedSha256": "fa97820e2790866e328ab2571cf9deabb047fa98dffff13ab71141530292cbc2",
+        "seconds": 0.074,
+        "peakProcessRssKiB": 24320
+      }
+    },
+    "sqlite": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/compare-sqlite.json",
+        "sha256": "0853ff2737353fd26023c537c48c66cbf91423216dea4093a2cccaa8100b6365",
+        "bytes": 2115
+      },
+      "result": {
+        "schema": "edg-semantic-package-comparison/1",
+        "status": "passed",
+        "before": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-sqlite-storage-001/final/package-memory",
+        "after": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-typed-writer-001/package-memory",
+        "allowedClockDifferences": [
+          {
+            "node": 165252,
+            "kind": "other-text",
+            "field": "bytesLatin1",
+            "category": "unreferenced EDG ctime payload",
+            "before": "Wed Oct  7 08:38:48 2026\n\u0000",
+            "after": "Wed Oct  7 09:22:01 2026\n\u0000"
+          },
+          {
+            "node": 167031,
+            "kind": "other-text",
+            "field": "bytesLatin1",
+            "category": "linked __TIME__ macro text payload",
+            "before": "#define __TIME__ \"08:38:48\"\u0000",
+            "after": "#define __TIME__ \"09:22:01\"\u0000"
+          },
+          {
+            "node": 167032,
+            "kind": "macro",
+            "field": "text",
+            "category": "predefined __TIME__ macro",
+            "before": "#define __TIME__ \"08:38:48\"",
+            "after": "#define __TIME__ \"09:22:01\""
+          }
+        ],
+        "scope": "metadata, ID-ordered nodes with exact JSON value types, macros, diagnostics, source descriptors and bytes; producer identity intentionally excluded",
+        "producerIdentities": {
+          "before": {
+            "binarySha256": "7904bc3b8581df855682881e2bee87093520cee99798cab27b958e9555382f73",
+            "producerSha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf"
+          },
+          "after": {
+            "binarySha256": "297c506d4cddd6bc5a90b849500a30f7b1b908e0dad200f5195ecb27250b5294",
+            "producerSha256": "d5c2cc1197887d5508e53adacbd5a53568f3f00628d6e3f7682657ebc56ad73c"
+          }
+        },
+        "nodeCount": 1205132,
+        "macroCount": 31153,
+        "diagnosticCount": 0,
+        "sourceCount": 16,
+        "sourceBytesCompared": 10257120,
+        "beforeLogicalSha256": "9f613d513fe76e4d79faa2f21c60d1919ba877e3ddecc93c3d6403d4f3f407ca",
+        "afterLogicalSha256": "8243c741b9f3e970e328b180033d309810923d7c758751c3c3186272c580cf1a",
+        "afterClockNormalizedSha256": "9f613d513fe76e4d79faa2f21c60d1919ba877e3ddecc93c3d6403d4f3f407ca",
+        "seconds": 97.259,
+        "peakProcessRssKiB": 340556
+      }
+    },
+    "dot": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/compare-dot.json",
+        "sha256": "5c2676024676f0bd021417b98be9b8641f9976f081b7cf709483c4dae50bf6ce",
+        "bytes": 2111
+      },
+      "result": {
+        "schema": "edg-semantic-package-comparison/1",
+        "status": "passed",
+        "before": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-typed-writer-001/baseline-dot",
+        "after": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-typed-writer-001/package-dot",
+        "allowedClockDifferences": [
+          {
+            "node": 2497010,
+            "kind": "other-text",
+            "field": "bytesLatin1",
+            "category": "unreferenced EDG ctime payload",
+            "before": "Wed Oct  7 09:16:35 2026\n\u0000",
+            "after": "Wed Oct  7 09:23:46 2026\n\u0000"
+          },
+          {
+            "node": 2505047,
+            "kind": "other-text",
+            "field": "bytesLatin1",
+            "category": "linked __TIME__ macro text payload",
+            "before": "#define __TIME__ \"09:16:35\"\u0000",
+            "after": "#define __TIME__ \"09:23:46\"\u0000"
+          },
+          {
+            "node": 2505048,
+            "kind": "macro",
+            "field": "text",
+            "category": "predefined __TIME__ macro",
+            "before": "#define __TIME__ \"09:16:35\"",
+            "after": "#define __TIME__ \"09:23:46\""
+          }
+        ],
+        "scope": "metadata, ID-ordered nodes with exact JSON value types, macros, diagnostics, source descriptors and bytes; producer identity intentionally excluded",
+        "producerIdentities": {
+          "before": {
+            "binarySha256": "7904bc3b8581df855682881e2bee87093520cee99798cab27b958e9555382f73",
+            "producerSha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf"
+          },
+          "after": {
+            "binarySha256": "297c506d4cddd6bc5a90b849500a30f7b1b908e0dad200f5195ecb27250b5294",
+            "producerSha256": "d5c2cc1197887d5508e53adacbd5a53568f3f00628d6e3f7682657ebc56ad73c"
+          }
+        },
+        "nodeCount": 3144305,
+        "macroCount": 14617,
+        "diagnosticCount": 273575,
+        "sourceCount": 360,
+        "sourceBytesCompared": 8561562,
+        "beforeLogicalSha256": "4376074405a30291b23dc163e496b53a820fbda18ecf47e180874f4b0b03248c",
+        "afterLogicalSha256": "9ba3e02da7a40b544187cbccfabd457d284becb02480d2568e146a29a2f11f28",
+        "afterClockNormalizedSha256": "4376074405a30291b23dc163e496b53a820fbda18ecf47e180874f4b0b03248c",
+        "seconds": 195.069,
+        "peakProcessRssKiB": 340556
+      }
+    }
+  },
+  "generatedParity": {
+    "artifact": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/generated-parity.json",
+      "sha256": "c778cc044320d5c06e82d73b012e44e0d71c7d6c35d5d36cf9bf519c4e0b9153",
+      "bytes": 357813
+    },
+    "result": {
+      "status": "passed",
+      "filesCompared": 3171,
+      "sourceSetSha256": "7273b74b64141dc94e39a7f77f4428ddb5852ddf42e41306ffeb1976485679c9",
+      "before": "edgcpp/artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/generated",
+      "after": "edgcpp/artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/generated",
+      "executionBasis": "Byte-identical sources to storage001/final/sqlite-verification (native/JIT/NativeAOT,43 observations); no rebuild of identical generated sources needed"
+    }
+  },
+  "smallGeneratedParity": {
+    "artifact": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/small-generated-parity.json",
+      "sha256": "4465bde2f4b678868694cf7971f2feb971826982e2e4b2c86dc9cf351962764c",
+      "bytes": 1560
+    },
+    "result": {
+      "status": "passed",
+      "plain": {
+        "bytes": 1129,
+        "sha256": "850d2cb78b0a2c00dd6a58fc63b4256e1ced2f86f34d168e640b290a4f2ecf1d"
+      },
+      "expressions": {
+        "filesCompared": 13,
+        "files": {
+          "ExpressionHelpers.cs": "faa0955c2dee1681a32e453398a7725565c735c3d3cc9f34d1225966a6d5c0da",
+          "Runtime.cs": "36ec0de9b7f44ed32738c990c7581a37c8358ca3dd96addb6e11ea514839ad2e",
+          "Generated.csproj": "bfae9d26856a42049cf5db6e5d4d214afc4c41676026665aa7aafe9e9213b4be",
+          "Types.cs": "c16e5da33db4402beb54b9277b71c52f27daa146b0d8aa443e4c5c5a2e4a665e",
+          "Globals.cs": "7d8347d18a84cdf5c732834d6f7c53d33aef259d3261fbbab0991d7de9692d88",
+          "Functions/0000-volatile_operations.cs": "9b4d39b9ef773f8ce311f13bec0685b405e7343ed797529186ec226d63fe3fe3",
+          "Functions/0006-twice.cs": "0e0f58dfb2af027421dd6ebd59d74d4715ef8a526325f520b0be1c1aadad6f44",
+          "Functions/0005-bitfield_evaluate_once.cs": "7d6bc526cb1b0cc9337b22eb713c84a5c8e9f13cf47d62ea11e221dcf3bf5236",
+          "Functions/0001-narrow_division.cs": "a72102ffaf46b010f68b1b817594991a2eeb9ae33936de23538168d8f5db2469",
+          "Functions/0007-callback_comma.cs": "f6fac35f644c5bd19a7cd8a4ba68f784ee617c033be6b89d43608ccd6130ae1b",
+          "Functions/0003-signed_bitfield_shift.cs": "6e958ea579afb3063986fb9682957881dc05b4e41af5d2308fc74f5cccb89d3e",
+          "Functions/0002-wide_bitfield_division.cs": "33dd713eec33ad3c8f04d120ce412fe2ea60e1e14dc34df75acea2cbb31434d6",
+          "Functions/0004-receiver.cs": "ca461eada31b224fa8e0f02bdd984a5b394f9c4c3e3fdf04edd32aabdd7447c5"
+        }
+      }
+    }
+  },
+  "storageTests": {
+    "jit": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/storage-jit-tests/results.json",
+        "sha256": "92132276f01621fdfa6b91d1371f82a93004f9700ee9e9bd4e4642131a22d4fb",
+        "bytes": 8382
+      },
+      "result": {
+        "schema": "edg-semantic-storage-tests/1",
+        "passed": 58,
+        "managedReaderTested": true,
+        "nativeFixtureTested": true,
+        "checks": [
+          {
+            "name": "plain-validated-and-random-access",
+            "nodes": 289,
+            "contentSha256": "0ef52d09b79fceff97715cb69c6cfc6a7444f75b7572c807404e4b20e6b545b2"
+          },
+          {
+            "name": "plain-legacy-roundtrip",
+            "nodes": 289,
+            "clockOnlyDifferences": [
+              {
+                "node": 69,
+                "fields": [
+                  "bytesLatin1"
+                ],
+                "category": "unreferenced EDG ctime payload",
+                "before": "Wed Oct  7 07:43:01 2026\n\u0000",
+                "after": "Wed Oct  7 09:21:59 2026\n\u0000"
+              },
+              {
+                "node": 84,
+                "fields": [
+                  "bytesLatin1"
+                ],
+                "category": "__TIME__ macro text payload",
+                "before": "#define __TIME__ \"07:43:01\"\u0000",
+                "after": "#define __TIME__ \"09:21:59\"\u0000"
+              },
+              {
+                "node": 85,
+                "fields": [
+                  "text"
+                ],
+                "category": "predefined __TIME__ macro",
+                "before": "#define __TIME__ \"07:43:01\"",
+                "after": "#define __TIME__ \"09:21:59\""
+              }
+            ],
+            "macros": 1,
+            "diagnostics": 0,
+            "sources": 2
+          },
+          {
+            "name": "plain-literal-sharing-preserves-identities",
+            "nodeIds": [
+              2,
+              6
+            ]
+          },
+          {
+            "name": "plain-managed-inspect",
+            "exitCode": 0,
+            "outputWritten": false
+          },
+          {
+            "name": "probe-validated-and-random-access",
+            "nodes": 1046,
+            "contentSha256": "f410763ef681b13ff0d1d36d82dd0179760c1a2b0e84b60d6b01c851769d682a"
+          },
+          {
+            "name": "probe-legacy-roundtrip",
+            "nodes": 1046,
+            "clockOnlyDifferences": [
+              {
+                "node": 407,
+                "fields": [
+                  "bytesLatin1"
+                ],
+                "category": "unreferenced EDG ctime payload",
+                "before": "Wed Oct  7 07:43:01 2026\n\u0000",
+                "after": "Wed Oct  7 09:22:00 2026\n\u0000"
+              },
+              {
+                "node": 427,
+                "fields": [
+                  "bytesLatin1"
+                ],
+                "category": "__TIME__ macro text payload",
+                "before": "#define __TIME__ \"07:43:01\"\u0000",
+                "after": "#define __TIME__ \"09:22:00\"\u0000"
+              },
+              {
+                "node": 428,
+                "fields": [
+                  "text"
+                ],
+                "category": "predefined __TIME__ macro",
+                "before": "#define __TIME__ \"07:43:01\"",
+                "after": "#define __TIME__ \"09:22:00\""
+              }
+            ],
+            "macros": 3,
+            "diagnostics": 28,
+            "sources": 2
+          },
+          {
+            "name": "probe-literal-sharing-preserves-identities",
+            "nodeIds": [
+              3,
+              7
+            ]
+          },
+          {
+            "name": "probe-managed-inspect",
+            "exitCode": 0,
+            "outputWritten": false
+          },
+          {
+            "name": "native-writer-exact-values",
+            "nodes": 9,
+            "contentSha256": "a07571da15197289f706f1f682c1acc6835509cdcfbe88bb88e62917c64cfea6"
+          },
+          {
+            "name": "incomplete-native-package-rejected"
+          },
+          {
+            "name": "native-writer-regression-log",
+            "path": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-typed-writer-001/native-writer.log",
+            "sha256": "1924948c87fa229bc5378acebedd542df448edb53ad478687d7f15b3132f419e",
+            "hashCollisionRegression": true
+          },
+          {
+            "name": "unknown-application-id",
+            "rejected": "Unsupported semantic SQLite application ID"
+          },
+          {
+            "name": "unknown-application-id-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "unknown-storage-version",
+            "rejected": "Unsupported semantic SQLite storage schema version"
+          },
+          {
+            "name": "unknown-storage-version-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "unknown-graph-schema",
+            "rejected": "Unsupported semantic graph schema"
+          },
+          {
+            "name": "unknown-graph-schema-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "missing-graph-metadata",
+            "rejected": "Missing or invalid required graph metadata"
+          },
+          {
+            "name": "missing-graph-metadata-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "dangling-form-literal",
+            "rejected": "Dangling or wrong-kind form literal"
+          },
+          {
+            "name": "dangling-form-literal-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "wrong-form-literal-kind",
+            "rejected": "Dangling or wrong-kind form literal"
+          },
+          {
+            "name": "wrong-form-literal-kind-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "dangling-native-edge",
+            "rejected": "Dangling or wrong-kind native edge"
+          },
+          {
+            "name": "dangling-native-edge-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "wrong-edge-count",
+            "rejected": "Native edge count/ordinal mismatch"
+          },
+          {
+            "name": "wrong-edge-count-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "missing-subtype",
+            "rejected": "Missing node subtype row"
+          },
+          {
+            "name": "missing-subtype-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "unknown-field-kind",
+            "rejected": "Unsupported node field value kind"
+          },
+          {
+            "name": "unknown-field-kind-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "invalid-macro-parent",
+            "rejected": "Unknown macro parent or invalid parent order"
+          },
+          {
+            "name": "invalid-macro-parent-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "invalid-typed-flag",
+            "rejected": "Invalid boolean field atomic"
+          },
+          {
+            "name": "invalid-typed-flag-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "dangling-source-position",
+            "rejected": "Dangling or wrong-kind node reference 999999999"
+          },
+          {
+            "name": "dangling-source-position-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "dangling-named-reference",
+            "rejected": "Dangling named reference attributes"
+          },
+          {
+            "name": "dangling-named-reference-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "producer-hash",
+            "rejected": "Producer SHA256 mismatch"
+          },
+          {
+            "name": "producer-hash-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "unknown-producer-schema",
+            "rejected": "Unsupported semantic producer schema"
+          },
+          {
+            "name": "unknown-producer-schema-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "producer-invocation-mismatch",
+            "rejected": "Producer/invocation binary SHA256 mismatch"
+          },
+          {
+            "name": "producer-invocation-mismatch-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "content-hash",
+            "rejected": "Content SHA256 mismatch"
+          },
+          {
+            "name": "content-hash-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "source-blob-hash",
+            "rejected": "Source SHA256 or byte-length mismatch"
+          },
+          {
+            "name": "source-blob-hash-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "source-blob-missing",
+            "rejected": "Missing source BLOB"
+          },
+          {
+            "name": "source-blob-missing-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "source-table-mismatch",
+            "rejected": "Source manifest/table mismatch"
+          },
+          {
+            "name": "source-table-mismatch-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "source-node-path-mismatch",
+            "rejected": "Source path disagrees with semantic source-file node"
+          },
+          {
+            "name": "source-node-path-mismatch-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "diagnostics-survive-storage"
+          },
+          {
+            "name": "diagnostics-stop-emission",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "stable-read-snapshot"
+          }
+        ]
+      }
+    },
+    "aot": {
+      "artifact": {
+        "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/storage-aot-tests/results.json",
+        "sha256": "92132276f01621fdfa6b91d1371f82a93004f9700ee9e9bd4e4642131a22d4fb",
+        "bytes": 8382
+      },
+      "result": {
+        "schema": "edg-semantic-storage-tests/1",
+        "passed": 58,
+        "managedReaderTested": true,
+        "nativeFixtureTested": true,
+        "checks": [
+          {
+            "name": "plain-validated-and-random-access",
+            "nodes": 289,
+            "contentSha256": "0ef52d09b79fceff97715cb69c6cfc6a7444f75b7572c807404e4b20e6b545b2"
+          },
+          {
+            "name": "plain-legacy-roundtrip",
+            "nodes": 289,
+            "clockOnlyDifferences": [
+              {
+                "node": 69,
+                "fields": [
+                  "bytesLatin1"
+                ],
+                "category": "unreferenced EDG ctime payload",
+                "before": "Wed Oct  7 07:43:01 2026\n\u0000",
+                "after": "Wed Oct  7 09:21:59 2026\n\u0000"
+              },
+              {
+                "node": 84,
+                "fields": [
+                  "bytesLatin1"
+                ],
+                "category": "__TIME__ macro text payload",
+                "before": "#define __TIME__ \"07:43:01\"\u0000",
+                "after": "#define __TIME__ \"09:21:59\"\u0000"
+              },
+              {
+                "node": 85,
+                "fields": [
+                  "text"
+                ],
+                "category": "predefined __TIME__ macro",
+                "before": "#define __TIME__ \"07:43:01\"",
+                "after": "#define __TIME__ \"09:21:59\""
+              }
+            ],
+            "macros": 1,
+            "diagnostics": 0,
+            "sources": 2
+          },
+          {
+            "name": "plain-literal-sharing-preserves-identities",
+            "nodeIds": [
+              2,
+              6
+            ]
+          },
+          {
+            "name": "plain-managed-inspect",
+            "exitCode": 0,
+            "outputWritten": false
+          },
+          {
+            "name": "probe-validated-and-random-access",
+            "nodes": 1046,
+            "contentSha256": "f410763ef681b13ff0d1d36d82dd0179760c1a2b0e84b60d6b01c851769d682a"
+          },
+          {
+            "name": "probe-legacy-roundtrip",
+            "nodes": 1046,
+            "clockOnlyDifferences": [
+              {
+                "node": 407,
+                "fields": [
+                  "bytesLatin1"
+                ],
+                "category": "unreferenced EDG ctime payload",
+                "before": "Wed Oct  7 07:43:01 2026\n\u0000",
+                "after": "Wed Oct  7 09:22:00 2026\n\u0000"
+              },
+              {
+                "node": 427,
+                "fields": [
+                  "bytesLatin1"
+                ],
+                "category": "__TIME__ macro text payload",
+                "before": "#define __TIME__ \"07:43:01\"\u0000",
+                "after": "#define __TIME__ \"09:22:00\"\u0000"
+              },
+              {
+                "node": 428,
+                "fields": [
+                  "text"
+                ],
+                "category": "predefined __TIME__ macro",
+                "before": "#define __TIME__ \"07:43:01\"",
+                "after": "#define __TIME__ \"09:22:00\""
+              }
+            ],
+            "macros": 3,
+            "diagnostics": 28,
+            "sources": 2
+          },
+          {
+            "name": "probe-literal-sharing-preserves-identities",
+            "nodeIds": [
+              3,
+              7
+            ]
+          },
+          {
+            "name": "probe-managed-inspect",
+            "exitCode": 0,
+            "outputWritten": false
+          },
+          {
+            "name": "native-writer-exact-values",
+            "nodes": 9,
+            "contentSha256": "a07571da15197289f706f1f682c1acc6835509cdcfbe88bb88e62917c64cfea6"
+          },
+          {
+            "name": "incomplete-native-package-rejected"
+          },
+          {
+            "name": "native-writer-regression-log",
+            "path": "/mnt/storage/dotcc-edg-campaign-20261003/semantic-export-typed-writer-001/native-writer.log",
+            "sha256": "1924948c87fa229bc5378acebedd542df448edb53ad478687d7f15b3132f419e",
+            "hashCollisionRegression": true
+          },
+          {
+            "name": "unknown-application-id",
+            "rejected": "Unsupported semantic SQLite application ID"
+          },
+          {
+            "name": "unknown-application-id-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "unknown-storage-version",
+            "rejected": "Unsupported semantic SQLite storage schema version"
+          },
+          {
+            "name": "unknown-storage-version-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "unknown-graph-schema",
+            "rejected": "Unsupported semantic graph schema"
+          },
+          {
+            "name": "unknown-graph-schema-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "missing-graph-metadata",
+            "rejected": "Missing or invalid required graph metadata"
+          },
+          {
+            "name": "missing-graph-metadata-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "dangling-form-literal",
+            "rejected": "Dangling or wrong-kind form literal"
+          },
+          {
+            "name": "dangling-form-literal-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "wrong-form-literal-kind",
+            "rejected": "Dangling or wrong-kind form literal"
+          },
+          {
+            "name": "wrong-form-literal-kind-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "dangling-native-edge",
+            "rejected": "Dangling or wrong-kind native edge"
+          },
+          {
+            "name": "dangling-native-edge-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "wrong-edge-count",
+            "rejected": "Native edge count/ordinal mismatch"
+          },
+          {
+            "name": "wrong-edge-count-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "missing-subtype",
+            "rejected": "Missing node subtype row"
+          },
+          {
+            "name": "missing-subtype-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "unknown-field-kind",
+            "rejected": "Unsupported node field value kind"
+          },
+          {
+            "name": "unknown-field-kind-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "invalid-macro-parent",
+            "rejected": "Unknown macro parent or invalid parent order"
+          },
+          {
+            "name": "invalid-macro-parent-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "invalid-typed-flag",
+            "rejected": "Invalid boolean field atomic"
+          },
+          {
+            "name": "invalid-typed-flag-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "dangling-source-position",
+            "rejected": "Dangling or wrong-kind node reference 999999999"
+          },
+          {
+            "name": "dangling-source-position-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "dangling-named-reference",
+            "rejected": "Dangling named reference attributes"
+          },
+          {
+            "name": "dangling-named-reference-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "producer-hash",
+            "rejected": "Producer SHA256 mismatch"
+          },
+          {
+            "name": "producer-hash-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "unknown-producer-schema",
+            "rejected": "Unsupported semantic producer schema"
+          },
+          {
+            "name": "unknown-producer-schema-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "producer-invocation-mismatch",
+            "rejected": "Producer/invocation binary SHA256 mismatch"
+          },
+          {
+            "name": "producer-invocation-mismatch-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "content-hash",
+            "rejected": "Content SHA256 mismatch"
+          },
+          {
+            "name": "content-hash-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "source-blob-hash",
+            "rejected": "Source SHA256 or byte-length mismatch"
+          },
+          {
+            "name": "source-blob-hash-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "source-blob-missing",
+            "rejected": "Missing source BLOB"
+          },
+          {
+            "name": "source-blob-missing-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "source-table-mismatch",
+            "rejected": "Source manifest/table mismatch"
+          },
+          {
+            "name": "source-table-mismatch-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "source-node-path-mismatch",
+            "rejected": "Source path disagrees with semantic source-file node"
+          },
+          {
+            "name": "source-node-path-mismatch-managed",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "diagnostics-survive-storage"
+          },
+          {
+            "name": "diagnostics-stop-emission",
+            "exitCode": 1,
+            "outputWritten": false
+          },
+          {
+            "name": "stable-read-snapshot"
+          }
+        ]
+      }
+    }
+  },
+  "comparisonSelfTests": {
+    "artifact": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/comparison-self-tests/selftest-results.json",
+      "sha256": "da82d701fe263aad9b61015297c0242d40fc52f908af69b42c524a9754df5079",
+      "bytes": 478
+    },
+    "result": {
+      "status": "passed",
+      "checks": [
+        {
+          "case": "ctime-independent",
+          "expectedStatus": "passed",
+          "observedStatus": "passed",
+          "allowedClockRecords": 1
+        },
+        {
+          "case": "all-clocks",
+          "expectedStatus": "passed",
+          "observedStatus": "passed",
+          "allowedClockRecords": 3
+        },
+        {
+          "case": "semantic-type-size",
+          "expectedStatus": "failed",
+          "observedStatus": "failed",
+          "allowedClockRecords": 0
+        }
+      ]
+    }
+  },
+  "comparisonSelfTestSource": {
+    "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/comparison-self-tests/run.py",
+    "sha256": "4520400ec68887b0a7179544eef9c0cc12d2bb678b68199bc63d60733a3e85bb",
+    "bytes": 3830
+  },
+  "nativeRegression": {
+    "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/native-writer.log",
+    "sha256": "1924948c87fa229bc5378acebedd542df448edb53ad478687d7f15b3132f419e",
+    "bytes": 132
+  },
+  "nativeRegressionSource": {
+    "path": "semantic-export/tests/storage/native-writer.cpp",
+    "sha256": "9fd749273080ce5a3a44b881a95bb1739040307fb7ade2799f4c729e30d95e48",
+    "bytes": 14946
+  },
+  "exports": {
+    "artifact": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/export-results.json",
+      "sha256": "8c97338cf308d8141632a0e3584dc42b0e1560620ab380a545892f24b02a748a",
+      "bytes": 375
+    },
+    "result": [
+      {
+        "name": "plain",
+        "exitCode": 0,
+        "seconds": 1.135
+      },
+      {
+        "name": "probe",
+        "exitCode": 0,
+        "seconds": 0.28
+      },
+      {
+        "name": "expressions",
+        "exitCode": 0,
+        "seconds": 0.23
+      },
+      {
+        "name": "package-memory",
+        "exitCode": 0,
+        "seconds": 104.829
+      },
+      {
+        "name": "package-dot",
+        "exitCode": 0,
+        "seconds": 278.45
+      }
+    ]
+  },
+  "dotAotSummary": {
+    "artifact": {
+      "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/dot-aot-summary.json",
+      "sha256": "7dad61c64999bcf1741dc3bb4e53489d1d30c151c5591c3ff0a2deb1283ca89e",
+      "bytes": 2466
+    },
+    "result": {
+      "schema": "edg-semantic-inspection/1",
+      "graph": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/package-dot/semantic.sqlite",
+      "completeForEmission": false,
+      "nodes": 3144305,
+      "diagnostics": 273575,
+      "macroInvocations": 14617,
+      "nodeKinds": {
+        "attribute": 11506,
+        "attribute-arg": 937,
+        "attribute-group": 8551,
+        "base-class": 8586,
+        "base-class-derivation": 8545,
+        "based-type-list-member": 89409,
+        "block": 20856,
+        "class-list-entry": 37817,
+        "class-type-supplement": 43981,
+        "condition-supplement": 25,
+        "constant": 128883,
+        "constexpr-if": 167,
+        "constructor-init": 3036,
+        "decl-position-supplement": 330637,
+        "derivation-step": 8545,
+        "dynamic-init": 21581,
+        "element-position": 417,
+        "exception-specification": 13141,
+        "expr-node": 351667,
+        "field": 5725,
+        "for-loop": 581,
+        "gnu-routine-supplement": 71,
+        "hidden-name": 96168,
+        "id-name": 63217,
+        "il-entity-list-entry": 100083,
+        "instantiation-directive": 14,
+        "integer-type-supplement": 320,
+        "label": 174,
+        "lambda": 49,
+        "lambda-capture": 54,
+        "linkage-spec-block": 29,
+        "local-expr-node-ref": 274,
+        "local-scope-ref": 930,
+        "local-static-variable-init": 2,
+        "macro": 5666,
+        "macro-invocation-record-block": 115,
+        "name-qualifier": 21156,
+        "name-reference": 67596,
+        "namespace": 27,
+        "new-delete-supplement": 229,
+        "object-lifetime": 3054,
+        "other-text": 46593,
+        "overriding-virtual-function": 6,
+        "param-type": 106608,
+        "pragma": 407699,
+        "range-based-for-loop": 106,
+        "routine": 68054,
+        "routine-type-supplement": 85261,
+        "scope": 55963,
+        "scope-orphaned-list-header": 667,
+        "scoped-expression": 1,
+        "seq-number-lookup-entry": 707,
+        "source-file": 360,
+        "source-sequence-entry": 148586,
+        "src-seq-end-of-construct": 10551,
+        "src-seq-secondary-decl": 6183,
+        "src-seq-sublist": 366,
+        "statement": 65074,
+        "static-assertion": 1494,
+        "string-text": 2876,
+        "switch-case-entry": 677,
+        "switch-stmt-descr": 63,
+        "template": 18583,
+        "template-arg": 184820,
+        "template-decl": 15038,
+        "template-parameter": 27279,
+        "template_param_type_supplement": 28505,
+        "type": 303521,
+        "typeref-type-supplement": 73734,
+        "using-decl": 1260,
+        "variable": 29443,
+        "variable-template-info": 406
+      },
+      "directCalls": [],
+      "assertions": []
+    }
+  },
+  "dotAotTiming": {
+    "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/dot-aot-summary.time",
+    "sha256": "75d62f14163866848f65fee32232683c0c051ee0c73e7bdfd050a058107774e0",
+    "bytes": 961
+  },
+  "emissionTiming": {
+    "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/emit-project.time",
+    "sha256": "9020e26e7da2bccee5a25e294af0f84adc32fe81c58e46e33fb360a49a3ca238",
+    "bytes": 1043
+  },
+  "producer": {
+    "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/native-build/build/bin/cpfe-semantic.producer.json",
+    "sha256": "d5c2cc1197887d5508e53adacbd5a53568f3f00628d6e3f7682657ebc56ad73c",
+    "bytes": 32899
+  },
+  "baselineProducer": {
+    "path": "artifacts/campaign/persistent-continuation/semantic-export-typed-writer-001/baseline-producer/cpfe-semantic.producer.json",
+    "sha256": "edd9426a0ade1ea614a849fae3e39654fb5c4cdc081a8ba675c6a8cde80a0daf",
+    "bytes": 32767
+  },
+  "priorExecutionEvidence": {
+    "path": "artifacts/campaign/persistent-continuation/semantic-export-sqlite-storage-001/final/sqlite-verification/results.json",
+    "sha256": "889d4fdf4bfd02ddae0ea1d096c1bb854168e96f1d20b2e9250a023418821be5",
+    "bytes": 562
+  },
+  "scope": [
+    "EDG frontend semantics and SQLite schema unchanged",
+    "Unchanged C# reader/emitter consumes new databases under JIT/NativeAOT",
+    "Full SQLite generated source identical to prior native/JIT/NativeAOT-verified output; no redundant generated-code rebuild",
+    "Dot uses a frozen copy of current compiler sources for both producers; C++ adapter gaps remain explicit",
+    "Per-record typed buffers remain bounded to one node; native EDG IL remains separately resident"
+  ],
+  "inputs": [
+    {
+      "path": "semantic-export/build.py",
+      "sha256": "8a125018a7a502f94f697328feb763a5e4846a964b6f95dad3f8a0be1544bbe2",
+      "bytes": 6430
+    },
+    {
+      "path": "semantic-export/export.py",
+      "sha256": "7b533029df6fef1e48f245a2e58973531c3eb619b5eb22dad0814765d96fc183",
+      "bytes": 6856
+    },
+    {
+      "path": "semantic-export/managed/CProjectEmitter.Expressions.cs",
+      "sha256": "5c6b23d8857b96b0a8d675ed14c1fcbab4e6f8dfccf586d73193ffb96186bcfd",
+      "bytes": 35516
+    },
+    {
+      "path": "semantic-export/managed/CProjectEmitter.Runtime.cs",
+      "sha256": "4e7168259e8dcdb2e3c019b21b5f9d79998360d5ece049e983611a0e899c0677",
+      "bytes": 9493
+    },
+    {
+      "path": "semantic-export/managed/CProjectEmitter.Types.cs",
+      "sha256": "20ef81d2799ca97cb06fb79f616ca321cf482efc0ba9e6f52ad90a737b1c3c7a",
+      "bytes": 22738
+    },
+    {
+      "path": "semantic-export/managed/CProjectEmitter.cs",
+      "sha256": "2532307665977b2681537f671f01ce740f5d297395b4cab63af9050bc88794d8",
+      "bytes": 21034
+    },
+    {
+      "path": "semantic-export/managed/CSharpEmitter.cs",
+      "sha256": "003db4962e049ff515262d765b622998369eaae1b4e957e9f65a9f90c087ebb3",
+      "bytes": 37035
+    },
+    {
+      "path": "semantic-export/managed/ProbeAssertions.cs",
+      "sha256": "6d0587aeb062d6d2917522e7a47caded25fe2c09637996e54cd296b0932f4c26",
+      "bytes": 4748
+    },
+    {
+      "path": "semantic-export/managed/Program.cs",
+      "sha256": "15d0e50d3161d4610d64a6c87364f9a320f639943eb4002a2132d261be0057ea",
+      "bytes": 4502
+    },
+    {
+      "path": "semantic-export/managed/SemanticGraph.cs",
+      "sha256": "4f1d6af175ea80354ecd83363cc009fac0c061241dc8f5432cc01603b85624a2",
+      "bytes": 20220
+    },
+    {
+      "path": "semantic-export/managed/SqliteDatabase.cs",
+      "sha256": "3f5dcc2573710924908744631e85186b255c36a404acc88a922b56cb332824fd",
+      "bytes": 11369
+    },
+    {
+      "path": "semantic-export/managed/SqliteSemanticStore.cs",
+      "sha256": "7d6beae97ee711dc23ee1bf4573ff4bf358fd922edfe1183609ed8300b070990",
+      "bytes": 30110
+    },
+    {
+      "path": "semantic-export/native/semantic_export_be.c",
+      "sha256": "053e5cada0a77c63bb6aa41c0ff08cb0f9cf1477c69acd827c4c956f4f0ada65",
+      "bytes": 35370
+    },
+    {
+      "path": "semantic-export/native/semantic_sqlite.h",
+      "sha256": "5b032292773855e4ca782f39adc114b28b9052bca7e83037da6fc28c578263ab",
+      "bytes": 19278
+    },
+    {
+      "path": "semantic-export/storage/schema.sql",
+      "sha256": "cda158bb40f2b1088ce11f23eb763c4707d1ee9048b739859159d99d4a493672",
+      "bytes": 3154
+    },
+    {
+      "path": "semantic-export/tests/storage/compare.py",
+      "sha256": "01ff0736866ad251d943ae9eb9d48d9e22cf4bcc38e3a6998dc7d81e9902e286",
+      "bytes": 12418
+    },
+    {
+      "path": "semantic-export/tests/storage/native-writer.cpp",
+      "sha256": "9fd749273080ce5a3a44b881a95bb1739040307fb7ade2799f4c729e30d95e48",
+      "bytes": 14946
+    },
+    {
+      "path": "semantic-export/tests/storage/verify.py",
+      "sha256": "e855751ff178dd36643a20e86d61b02e25175798432a8a11e6d19e9a5f43b164",
+      "bytes": 19375
+    }
+  ]
+}

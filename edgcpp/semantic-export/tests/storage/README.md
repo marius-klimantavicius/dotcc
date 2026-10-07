@@ -39,3 +39,21 @@ failure. Rejected emission must not create generated output.
 For the real SQLite C project, `../sqlite/run.py --compiler COMPILER --output
 FRESH_DIRECTORY --nativeaot` runs database export, managed C# generation and
 native/JIT/NativeAOT differential execution.
+
+Compare two sealed SQLite exports of the same sources with:
+
+```sh
+python3 edgcpp/semantic-export/tests/storage/compare.py \
+  --before ARTIFACTS/baseline --after ARTIFACTS/new \
+  --output ARTIFACTS/comparison.json
+```
+
+The comparator streams nodes, macros and diagnostics, preserving node IDs,
+field value types and edge order. It also checks metadata and exact source
+descriptors and bytes. Producer identity may change. The only permitted graph
+differences are the identified predefined `__TIME__` macro and its linked text,
+and an unreferenced EDG ctime payload. Their actual values and node IDs appear in
+the report; ctime remains independent when the invocation overrides `__TIME__`.
+Any other difference fails the command. Both packages must pass integrity and
+semantic validation first. The fresh JSON report includes logical record hashes,
+counts, elapsed time and peak process RSS, and is written on rejection too.

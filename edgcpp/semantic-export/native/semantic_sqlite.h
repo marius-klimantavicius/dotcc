@@ -1,11 +1,10 @@
 // Normalized, transactional storage for one unlowered EDG translation unit.
-// Serialization is bounded to one node or macro record. No graph JSON is stored.
+// Facts reach SQLite through typed records. JSON is only a final encoding for
+// nested position/range payloads and graph_metadata values required by schema.
 #ifndef EDG_SEMANTIC_SQLITE_H
 #define EDG_SEMANTIC_SQLITE_H
 #include <sqlite3.h>
-#include <cstdarg>
 #include <cstdio>
-#include <cstdlib>
 #include <cstring>
 #include <cstdint>
 #include <limits>
@@ -17,121 +16,162 @@
 #include "semantic_schema_sql.h"
 
 namespace semantic_storage {
-class JsonBuffer {
-public:
-  std::string value;
-  void clear() { value.clear(); }
-  void character(int c) { value.push_back(static_cast<char>(c)); }
-  void text(const char *s) { value.append(s); }
-  void format(const char *fmt, ...) {
-    char small[1024]; va_list args; va_start(args, fmt);
-    va_list copy; va_copy(copy, args);
-    int length = std::vsnprintf(small, sizeof(small), fmt, args); va_end(args);
-    if (length < 0) { va_end(copy); throw std::runtime_error("Semantic JSON formatting failed"); }
-    if (static_cast<size_t>(length) < sizeof(small)) value.append(small, static_cast<size_t>(length));
-    else {
-      std::vector<char> large(static_cast<size_t>(length) + 1);
-      std::vsnprintf(large.data(), large.size(), fmt, copy);
-      value.append(large.data(), static_cast<size_t>(length));
+
+// The old semantic contract maps each EDG byte to the same Latin1 code point.
+// Retain that mapping explicitly; do not mistake EDG byte strings for UTF-8.
+inline std::string latin1_to_utf8(const char *bytes,size_t length) {
+  std::string result; result.reserve(length);
+  for(size_t n=0;n<length;++n) {
+    unsigned char c=static_cast<unsigned char>(bytes[n]);
+    if(c<128) result.push_back(static_cast<char>(c));
+    else { result.push_back(static_cast<char>(0xc0|(c>>6))); result.push_back(static_cast<char>(0x80|(c&63))); }
+  }
+  return result;
+}
+inline std::string latin1_to_utf8(const char *text) {
+  return text?latin1_to_utf8(text,std::strlen(text)):std::string();
+}
+
+enum class ValueKind { SignedInteger, UnsignedInteger, Boolean, Text, Object, Array, Null };
+enum class StoredKind { Integer, Boolean, Text, Json, Null };
+
+struct Value {
+  ValueKind kind=ValueKind::Null;
+  std::int64_t signed_value=0;
+  std::uint64_t unsigned_value=0;
+  std::string text_value;
+  std::vector<std::pair<std::string,Value>> members;
+  std::vector<Value> elements;
+  static Value signed_integer(std::int64_t n) { Value v; v.kind=ValueKind::SignedInteger; v.signed_value=n; return v; }
+  static Value unsigned_integer(std::uint64_t n) { Value v; v.kind=ValueKind::UnsignedInteger; v.unsigned_value=n; return v; }
+  static Value boolean(bool b) { Value v; v.kind=ValueKind::Boolean; v.unsigned_value=b?1:0; return v; }
+  static Value text(std::string utf8) { Value v; v.kind=ValueKind::Text; v.text_value=std::move(utf8); return v; }
+  static Value latin1(const char *bytes,size_t length) { return text(latin1_to_utf8(bytes,length)); }
+  static Value latin1(const char *bytes) { return text(latin1_to_utf8(bytes)); }
+  static Value null() { return Value(); }
+  static Value object(std::vector<std::pair<std::string,Value>> fields) {
+    Value v; v.kind=ValueKind::Object; std::map<std::string,size_t> positions;
+    for(auto &field:fields) {
+      auto found=positions.find(field.first);
+      if(found==positions.end()) { positions[field.first]=v.members.size(); v.members.push_back(std::move(field)); }
+      else v.members[found->second].second=std::move(field.second);
     }
-    va_end(copy);
+    return v;
+  }
+  static Value array(std::vector<Value> items) { Value v; v.kind=ValueKind::Array; v.elements=std::move(items); return v; }
+  StoredKind stored_kind() const {
+    switch(kind) {
+    case ValueKind::SignedInteger: case ValueKind::UnsignedInteger: return StoredKind::Integer;
+    case ValueKind::Boolean: return StoredKind::Boolean;
+    case ValueKind::Text: return StoredKind::Text;
+    case ValueKind::Object: case ValueKind::Array: return StoredKind::Json;
+    case ValueKind::Null: return StoredKind::Null;
+    }
+    throw std::runtime_error("Unknown typed semantic value");
   }
 };
 
-// These tokens preserve the exact integer spelling. In particular, parsing a
-// UINT64 value through SQLite JSON1's numeric atom would round it to double.
-struct JsonValue {
+struct Properties {
+  std::vector<std::pair<std::string,Value>> fields;
+  std::map<std::string,size_t> positions;
+  void set(const std::string &name,Value value) {
+    auto found=positions.find(name);
+    if(found==positions.end()) { positions[name]=fields.size(); fields.push_back({name,std::move(value)}); }
+    else fields[found->second].second=std::move(value);
+  }
+};
+struct NativeEdge { std::uint64_t target; std::string kind; };
+struct NodeRecord:Properties {
+  std::uint64_t id;
   std::string kind;
-  std::string value;
+  bool has_native_edges=false;
+  std::vector<NativeEdge> edges;
+  NodeRecord(std::uint64_t identity,std::string node_kind):id(identity),kind(std::move(node_kind)) {}
+  void begin_edges() { has_native_edges=true; edges.clear(); }
+  void edge(std::uint64_t target,std::string target_kind) { has_native_edges=true; edges.push_back({target,std::move(target_kind)}); }
 };
-class JsonParser {
-  const std::string &input;
-  size_t cursor = 0;
-  void space() { while (cursor < input.size() && (input[cursor]==' ' || input[cursor]=='\n' || input[cursor]=='\r' || input[cursor]=='\t')) ++cursor; }
-  void expect(char c) { space(); if (cursor >= input.size() || input[cursor++] != c) throw std::runtime_error("Malformed semantic record"); }
-  unsigned hex4() {
-    unsigned result = 0;
-    for (int n=0;n<4;++n) {
-      if (cursor == input.size()) throw std::runtime_error("Truncated semantic string escape");
-      char c=input[cursor++]; result <<= 4;
-      if (c>='0'&&c<='9') result += static_cast<unsigned>(c-'0');
-      else if (c>='a'&&c<='f') result += static_cast<unsigned>(c-'a'+10);
-      else if (c>='A'&&c<='F') result += static_cast<unsigned>(c-'A'+10);
-      else throw std::runtime_error("Invalid semantic string escape");
-    }
-    return result;
-  }
-  static void utf8(std::string &out, unsigned code) {
-    if (code < 0x80) out.push_back(static_cast<char>(code));
-    else if (code < 0x800) { out.push_back(static_cast<char>(0xc0|(code>>6))); out.push_back(static_cast<char>(0x80|(code&63))); }
-    else if (code < 0x10000) { out.push_back(static_cast<char>(0xe0|(code>>12))); out.push_back(static_cast<char>(0x80|((code>>6)&63))); out.push_back(static_cast<char>(0x80|(code&63))); }
-    else { out.push_back(static_cast<char>(0xf0|(code>>18))); out.push_back(static_cast<char>(0x80|((code>>12)&63))); out.push_back(static_cast<char>(0x80|((code>>6)&63))); out.push_back(static_cast<char>(0x80|(code&63))); }
-  }
-  std::string string() {
-    expect('"'); std::string result;
-    while (cursor < input.size()) {
-      char c=input[cursor++]; if (c=='"') return result;
-      if (c!='\\') { result.push_back(c); continue; }
-      if (cursor == input.size()) throw std::runtime_error("Truncated semantic string");
-      c=input[cursor++];
-      switch(c) {
-      case '"': case '\\': case '/': result.push_back(c); break;
-      case 'b': result.push_back('\b'); break; case 'f': result.push_back('\f'); break;
-      case 'n': result.push_back('\n'); break; case 'r': result.push_back('\r'); break; case 't': result.push_back('\t'); break;
-      case 'u': { unsigned code=hex4();
-        if (code>=0xd800 && code<=0xdbff) { expect('\\'); expect('u'); unsigned low=hex4(); if(low<0xdc00 || low>0xdfff) throw std::runtime_error("Invalid semantic surrogate"); code=0x10000+((code-0xd800)<<10)+(low-0xdc00); }
-        else if (code>=0xdc00 && code<=0xdfff) throw std::runtime_error("Unpaired semantic surrogate");
-        utf8(result,code); break; }
-      default: throw std::runtime_error("Unknown semantic string escape");
-      }
-    }
-    throw std::runtime_error("Unterminated semantic string");
-  }
-  void compound() {
-    char first=input[cursor++]; char close=first=='{'?'}':']';
-    while (cursor < input.size()) {
-      char c=input[cursor];
-      if (c=='"') { string(); continue; }
-      if (c=='{' || c=='[') { compound(); continue; }
-      ++cursor; if(c==close) return;
-    }
-    throw std::runtime_error("Unterminated semantic JSON object/array");
-  }
-public:
-  explicit JsonParser(const std::string &text):input(text) {}
-  JsonValue value() {
-    space(); if (cursor == input.size()) throw std::runtime_error("Missing semantic value");
-    size_t start=cursor; char c=input[cursor];
-    if(c=='"') return {"text",string()};
-    if(c=='{' || c=='[') { compound(); return {"json",input.substr(start,cursor-start)}; }
-    while(cursor<input.size() && input[cursor]!=',' && input[cursor]!=']' && input[cursor]!='}' && input[cursor]!=' ' && input[cursor]!='\n' && input[cursor]!='\r' && input[cursor]!='\t') ++cursor;
-    std::string token=input.substr(start,cursor-start);
-    if(token=="true" || token=="false") return {"boolean",token};
-    if(token=="null") return {"null",token};
-    if(token.empty()) throw std::runtime_error("Empty semantic integer");
-    size_t digit=token[0]=='-'?1:0;
-    if(digit==token.size()) throw std::runtime_error("Invalid semantic integer");
-    for(;digit<token.size();++digit) if(token[digit]<'0'||token[digit]>'9') throw std::runtime_error("Noninteger semantic numeric value");
-    return {"integer",token};
-  }
-  std::vector<std::pair<std::string,JsonValue>> object() {
-    expect('{'); std::vector<std::pair<std::string,JsonValue>> result;
-    std::map<std::string,size_t> seen; space();
-    if(cursor<input.size() && input[cursor]=='}') { ++cursor; return result; }
-    while(true) {
-      std::string name=string(); expect(':'); JsonValue item=value();
-      auto found=seen.find(name);
-      if(found==seen.end()) { seen[name]=result.size(); result.push_back({std::move(name),std::move(item)}); }
-      else result[found->second].second=std::move(item);
-      space(); if(cursor<input.size() && input[cursor]=='}') { ++cursor; return result; } expect(',');
-    }
-  }
-  std::vector<JsonValue> array() {
-    expect('['); std::vector<JsonValue> result; space();
-    if(cursor<input.size() && input[cursor]==']') { ++cursor; return result; }
-    while(true) { result.push_back(value()); space(); if(cursor<input.size() && input[cursor]==']') { ++cursor; return result; } expect(','); }
-  }
+struct SourceLocation {
+  std::uint64_t sequence,column,line,source;
+  std::string presumed_file,physical_file;
 };
+struct SourcePosition { SourceLocation expansion,spelling; std::uint64_t macro_context; };
+struct SourceRange { bool available; SourcePosition start,end; };
+struct MacroRecord {
+  std::int64_t invocation_id,parent_index;
+  std::uint64_t definition_id;
+  SourceLocation start,end;
+  std::string arguments;
+};
+inline Value location_value(const SourceLocation &p) {
+  return Value::object({{"sequence",Value::unsigned_integer(p.sequence)}, {"column",Value::unsigned_integer(p.column)},
+    {"line",Value::unsigned_integer(p.line)}, {"source",Value::unsigned_integer(p.source)},
+    {"presumedFile",Value::text(p.presumed_file)}, {"physicalFile",Value::text(p.physical_file)}});
+}
+inline Value position_value(const SourcePosition &p) {
+  return Value::object({{"expansion",location_value(p.expansion)}, {"spelling",location_value(p.spelling)},
+    {"macroContext",Value::unsigned_integer(p.macro_context)}});
+}
+inline Value range_value(const SourceRange &p) {
+  return Value::object({{"available",Value::boolean(p.available)}, {"start",position_value(p.start)}, {"end",position_value(p.end)}});
+}
+
+inline void json_hex_escape(std::string &out,unsigned code) {
+  static const char hex[]="0123456789abcdef";
+  out+="\\u";
+  for(int shift=12;shift>=0;shift-=4) out.push_back(hex[(code>>shift)&15]);
+}
+inline void json_string(std::string &out,const std::string &utf8) {
+  out.push_back('"');
+  for(size_t n=0;n<utf8.size();) {
+    unsigned char c=static_cast<unsigned char>(utf8[n++]);
+    if(c<128) {
+      if(c=='"'||c=='\\') { out.push_back('\\'); out.push_back(static_cast<char>(c)); }
+      else if(c<32 || c==127) json_hex_escape(out,c);
+      else out.push_back(static_cast<char>(c));
+      continue;
+    }
+    unsigned code,continuations,minimum;
+    if(c>=0xc2 && c<=0xdf) { code=c&31; continuations=1; minimum=0x80; }
+    else if(c>=0xe0 && c<=0xef) { code=c&15; continuations=2; minimum=0x800; }
+    else if(c>=0xf0 && c<=0xf4) { code=c&7; continuations=3; minimum=0x10000; }
+    else throw std::runtime_error("Invalid UTF-8 semantic text");
+    for(unsigned k=0;k<continuations;++k) {
+      if(n==utf8.size()) throw std::runtime_error("Truncated UTF-8 semantic text");
+      unsigned char next=static_cast<unsigned char>(utf8[n++]);
+      if((next&0xc0)!=0x80) throw std::runtime_error("Invalid UTF-8 semantic continuation");
+      code=(code<<6)|(next&63);
+    }
+    if(code<minimum || code>0x10ffff || (code>=0xd800 && code<=0xdfff)) throw std::runtime_error("Invalid Unicode semantic value");
+    if(code<0x10000) json_hex_escape(out,code);
+    else { code-=0x10000; json_hex_escape(out,0xd800+(code>>10)); json_hex_escape(out,0xdc00+(code&1023)); }
+  }
+  out.push_back('"');
+}
+inline void append_json(std::string &out,const Value &value) {
+  switch(value.kind) {
+  case ValueKind::SignedInteger: out+=std::to_string(value.signed_value); break;
+  case ValueKind::UnsignedInteger: out+=std::to_string(value.unsigned_value); break;
+  case ValueKind::Boolean: out+=value.unsigned_value?"true":"false"; break;
+  case ValueKind::Text: json_string(out,value.text_value); break;
+  case ValueKind::Null: out+="null"; break;
+  case ValueKind::Object:
+    out.push_back('{');
+    for(size_t n=0;n<value.members.size();++n) { if(n) out.push_back(','); json_string(out,value.members[n].first); out.push_back(':'); append_json(out,value.members[n].second); }
+    out.push_back('}'); break;
+  case ValueKind::Array:
+    out.push_back('[');
+    for(size_t n=0;n<value.elements.size();++n) { if(n) out.push_back(','); append_json(out,value.elements[n]); }
+    out.push_back(']'); break;
+  }
+}
+inline std::string json_value(const Value &value) { std::string out; append_json(out,value); return out; }
+inline const char *stored_kind_name(StoredKind kind) {
+  switch(kind) {
+  case StoredKind::Integer: return "integer"; case StoredKind::Boolean: return "boolean";
+  case StoredKind::Text: return "text"; case StoredKind::Json: return "json"; case StoredKind::Null: return "null";
+  }
+  throw std::runtime_error("Unknown semantic storage kind");
+}
 
 // The query is already bound to the encoding/hash bucket. Exposed separately
 // so regression tests can exercise deliberately colliding candidates without
@@ -148,7 +188,7 @@ inline sqlite3_int64 find_exact_literal(sqlite3_stmt *query,const std::string &p
 }
 
 class Database {
-  struct Kind { sqlite3_int64 id; std::string table; std::map<std::string,std::string> fields; };
+  struct Kind { sqlite3_int64 id; std::string table; std::map<std::string,StoredKind> fields; };
   sqlite3 *db=nullptr;
   std::map<std::string,sqlite3_stmt*> statements;
   std::map<std::string,Kind> kinds;
@@ -194,26 +234,31 @@ class Database {
     exec("CREATE TABLE "+quoted(table)+"(unit_id INTEGER NOT NULL,node_id INTEGER NOT NULL,PRIMARY KEY(unit_id,node_id)) WITHOUT ROWID");
     return kinds.emplace(name,std::move(entry)).first->second;
   }
-  void field(Kind &owner,const std::string &name,const std::string &value_kind) {
+  void field(Kind &owner,const std::string &name,StoredKind value_kind) {
     auto found=owner.fields.find(name);
     if(found!=owner.fields.end()) { if(found->second!=value_kind) throw std::runtime_error("Semantic field changes type: "+owner.table+"."+name); return; }
     exec("ALTER TABLE "+quoted(owner.table)+" ADD COLUMN "+quoted(name)+" INTEGER");
-    sqlite3_stmt *insert=prepare("INSERT INTO node_fields(kind_id,ordinal,name,value_kind) VALUES(?1,?2,?3,?4)"); integer(insert,1,owner.id); integer(insert,2,static_cast<sqlite3_int64>(owner.fields.size())); text(insert,3,name); text(insert,4,value_kind); finish(insert);
+    sqlite3_stmt *insert=prepare("INSERT INTO node_fields(kind_id,ordinal,name,value_kind) VALUES(?1,?2,?3,?4)"); integer(insert,1,owner.id); integer(insert,2,static_cast<sqlite3_int64>(owner.fields.size())); text(insert,3,name); text(insert,4,stored_kind_name(value_kind)); finish(insert);
     owner.fields.emplace(name,value_kind);
   }
-  void scalar(sqlite3_stmt *s,int index,const JsonValue &value) {
-    if(value.kind=="text" || value.kind=="json") integer(s,index,literal(value.kind,value.value));
-    else if(value.kind=="boolean") integer(s,index,value.value=="true"?1:0);
-    else if(value.kind=="null") integer(s,index,0);
-    else if(value.kind=="integer") {
-      try { size_t consumed=0; long long n=std::stoll(value.value,&consumed,10); if(consumed!=value.value.size()) throw std::runtime_error("Invalid integer"); integer(s,index,static_cast<sqlite3_int64>(n)); }
-      catch(const std::out_of_range&) { blob(s,index,value.value); }
-    } else throw std::runtime_error("Unknown semantic scalar category");
+  void identity(sqlite3_stmt *s,int index,std::uint64_t value) {
+    if(value>static_cast<std::uint64_t>(std::numeric_limits<sqlite3_int64>::max())) throw std::runtime_error("Semantic identity exceeds SQLite integer range");
+    integer(s,index,static_cast<sqlite3_int64>(value));
   }
-  static const JsonValue &get(const std::vector<std::pair<std::string,JsonValue>> &record,const char *name) {
-    for(const auto &member:record) if(member.first==name) return member.second;
-    throw std::runtime_error(std::string("Semantic record missing ")+name);
+  void scalar(sqlite3_stmt *s,int index,const Value &value) {
+    switch(value.kind) {
+    case ValueKind::SignedInteger: integer(s,index,value.signed_value); break;
+    case ValueKind::UnsignedInteger:
+      if(value.unsigned_value>static_cast<std::uint64_t>(std::numeric_limits<sqlite3_int64>::max())) blob(s,index,std::to_string(value.unsigned_value));
+      else integer(s,index,static_cast<sqlite3_int64>(value.unsigned_value));
+      break;
+    case ValueKind::Boolean: integer(s,index,value.unsigned_value?1:0); break;
+    case ValueKind::Text: integer(s,index,literal("text",value.text_value)); break;
+    case ValueKind::Object: case ValueKind::Array: integer(s,index,literal("json",json_value(value))); break;
+    case ValueKind::Null: integer(s,index,0); break;
+    }
   }
+
 public:
   explicit Database(const char *path) {
     FILE *existing=std::fopen(path,"rb"); if(existing) { std::fclose(existing); throw std::runtime_error("Semantic SQLite output must be a fresh file"); }
@@ -226,50 +271,39 @@ public:
     for(const auto &entry:statements) sqlite3_finalize(entry.second);
     if(db) { if(!committed) sqlite3_exec(db,"ROLLBACK",nullptr,nullptr,nullptr); sqlite3_close(db); }
   }
-  void metadata(const std::string &json) {
-    auto record=JsonParser(json).object();
+  void metadata(const Properties &record) {
     sqlite3_stmt *insert=prepare("INSERT INTO graph_metadata(unit_id,key,value_json) VALUES(1,?1,?2)");
-    for(const auto &entry:record) {
-      // Preserve the original JSON value, including quoted scalar strings.
-      std::string encoded;
-      if(entry.second.kind=="text") {
-        JsonBuffer buffer; buffer.character('"');
-        for(unsigned char c:entry.second.value) { if(c=='"'||c=='\\') { buffer.character('\\'); buffer.character(c); } else if(c<32) buffer.format("\\u%04x",c); else buffer.character(c); }
-        buffer.character('"'); encoded=std::move(buffer.value);
-      } else encoded=entry.second.value;
-      text(insert,1,entry.first); text(insert,2,encoded); finish(insert);
-    }
+    for(const auto &entry:record.fields) { text(insert,1,entry.first); text(insert,2,json_value(entry.second)); finish(insert); }
   }
-  void node(const std::string &json) {
-    auto record=JsonParser(json).object(); sqlite3_int64 node_id=std::stoll(get(record,"id").value); Kind &owner=kind(get(record,"kind").value);
-    const JsonValue *form=nullptr,*edges=nullptr;
-    std::vector<const std::pair<std::string,JsonValue>*> fields;
+  void node(const NodeRecord &record) {
+    Kind &owner=kind(record.kind);
+    const Value *form=nullptr;
+    std::vector<const std::pair<std::string,Value>*> fields;
     std::string sql="INSERT INTO "+quoted(owner.table)+"(unit_id,node_id";
-    for(const auto &entry:record) {
-      if(entry.first=="id" || entry.first=="kind") continue;
+    for(const auto &entry:record.fields) {
       if(entry.first=="form") { form=&entry.second; continue; }
-      if(entry.first=="nativeEdges") { edges=&entry.second; continue; }
-      field(owner,entry.first,entry.second.kind); fields.push_back(&entry); sql+=","+quoted(entry.first);
+      if(entry.first=="id" || entry.first=="kind" || entry.first=="nativeEdges") throw std::runtime_error("Reserved semantic field must use its typed record member");
+      field(owner,entry.first,entry.second.stored_kind()); fields.push_back(&entry); sql+=","+quoted(entry.first);
     }
     sql+=") VALUES(1,?1"; for(size_t n=0;n<fields.size();++n) sql+=",?"+std::to_string(n+2); sql+=")";
-    sqlite3_stmt *typed=prepare(sql); integer(typed,1,node_id);
+    sqlite3_stmt *typed=prepare(sql); identity(typed,1,record.id);
     for(size_t n=0;n<fields.size();++n) scalar(typed,static_cast<int>(n+2),fields[n]->second);
     finish(typed);
-    std::vector<JsonValue> edge_records; if(edges) edge_records=JsonParser(edges->value).array();
-    sqlite3_stmt *base=prepare("INSERT INTO nodes(unit_id,node_id,kind_id,form_literal_id,edge_count) VALUES(1,?1,?2,?3,?4)"); integer(base,1,node_id); integer(base,2,owner.id);
-    if(form) { if(form->kind!="text") throw std::runtime_error("Semantic form is not text"); integer(base,3,literal("text",form->value)); }
-    if(edges) integer(base,4,static_cast<sqlite3_int64>(edge_records.size()));
+    sqlite3_stmt *base=prepare("INSERT INTO nodes(unit_id,node_id,kind_id,form_literal_id,edge_count) VALUES(1,?1,?2,?3,?4)"); identity(base,1,record.id); integer(base,2,owner.id);
+    if(form) { if(form->kind!=ValueKind::Text) throw std::runtime_error("Semantic form is not text"); integer(base,3,literal("text",form->text_value)); }
+    if(record.has_native_edges) integer(base,4,static_cast<sqlite3_int64>(record.edges.size()));
+    else if(!record.edges.empty()) throw std::runtime_error("Absent semantic edge list has entries");
     finish(base);
     sqlite3_stmt *edge_insert=prepare("INSERT INTO native_edges(unit_id,source_id,ordinal,target_id,target_kind_id) VALUES(1,?1,?2,?3,?4)");
-    for(size_t n=0;n<edge_records.size();++n) {
-      auto edge=JsonParser(edge_records[n].value).object(); auto &target_kind=kind(get(edge,"kind").value);
-      integer(edge_insert,1,node_id); integer(edge_insert,2,static_cast<sqlite3_int64>(n)); integer(edge_insert,3,std::stoll(get(edge,"target").value)); integer(edge_insert,4,target_kind.id); finish(edge_insert);
+    for(size_t n=0;n<record.edges.size();++n) {
+      const auto &edge=record.edges[n]; auto &target_kind=kind(edge.kind);
+      identity(edge_insert,1,record.id); integer(edge_insert,2,static_cast<sqlite3_int64>(n)); identity(edge_insert,3,edge.target); integer(edge_insert,4,target_kind.id); finish(edge_insert);
     }
   }
-  void macro(const std::string &json) {
-    auto record=JsonParser(json).object(); sqlite3_stmt *insert=prepare("INSERT INTO macros(unit_id,invocation_id,parent_index,definition_id,start_literal_id,end_literal_id,arguments_literal_id) VALUES(1,?1,?2,?3,?4,?5,?6)");
-    integer(insert,1,std::stoll(get(record,"index").value)); integer(insert,2,std::stoll(get(record,"parentIndex").value)); integer(insert,3,std::stoll(get(record,"definition").value));
-    integer(insert,4,literal("json",get(record,"start").value)); integer(insert,5,literal("json",get(record,"end").value)); integer(insert,6,literal("text",get(record,"arguments").value)); finish(insert);
+  void macro(const MacroRecord &record) {
+    sqlite3_stmt *insert=prepare("INSERT INTO macros(unit_id,invocation_id,parent_index,definition_id,start_literal_id,end_literal_id,arguments_literal_id) VALUES(1,?1,?2,?3,?4,?5,?6)");
+    integer(insert,1,record.invocation_id); integer(insert,2,record.parent_index); identity(insert,3,record.definition_id);
+    integer(insert,4,literal("json",json_value(location_value(record.start)))); integer(insert,5,literal("json",json_value(location_value(record.end)))); integer(insert,6,literal("text",record.arguments)); finish(insert);
   }
   void diagnostic(unsigned node_id,const std::string &message) {
     sqlite3_stmt *insert=prepare("INSERT INTO diagnostics(unit_id,ordinal,node_id,code_literal_id,message_literal_id) VALUES(1,?1,?2,?3,?4)");
