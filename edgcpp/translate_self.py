@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Translate the original all-extensions cpfe C++ sources into C#.
+"""Translate the all-extensions cpfe or cpfe-dot C++ sources into C#.
 
 This intentionally uses the cpfe compilation database, not the compiler's
 previously lowered C output. Host-header mode is diagnostic: it does not claim
@@ -8,6 +8,7 @@ Musl mode uses the portable POSIX provider and pinned libc++ implementation.
 Unresolved runtime contracts are rejected by default.
 """
 import argparse
+from datetime import datetime, timezone
 import hashlib
 import json
 import resource
@@ -28,6 +29,10 @@ def main():
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output-dir', type=Path, required=True)
+    parser.add_argument('--program', choices=('cpfe', 'cpfe-dot'), default='cpfe',
+                        help='include the C backend (cpfe) or our C# backend (cpfe-dot)')
+    parser.add_argument('--source-date-epoch', type=int, default=0,
+                        help='fixed UTC build timestamp for reproducible self-translation (default Unix epoch)')
     parser.add_argument('--profile', choices=('portable', 'host', 'musl'), default='portable')
     parser.add_argument('--libcxx-acquisition', type=Path,
                         help='pinned libc++ acquisition directory, required for the musl profile')
@@ -50,9 +55,9 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     database = ROOT / 'build/compile_commands.json'
     entries = [entry for entry in json.loads(database.read_text())
-               if '/cpfe.dir/' in entry['command']]
+               if '/' + args.program + '.dir/' in entry['command']]
     if not entries:
-        raise RuntimeError('No original cpfe target in compilation database')
+        raise RuntimeError('No ' + args.program + ' target in compilation database')
     flag_sets = {tuple(flag for flag in shlex.split(entry['command'])
                        if flag.startswith(('-D', '-I'))) for entry in entries}
     if len(flag_sets) != 1:
@@ -74,6 +79,12 @@ def main():
     profile_flags = []
     libcxx = None
     translation_sources = sources
+    standard = 'c++17' if args.program == 'cpfe-dot' else 'c++14'
+    stamp = datetime.fromtimestamp(args.source_date_epoch, timezone.utc)
+    month = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')[stamp.month - 1]
+    build_date = f'{month} {stamp.day:2d} {stamp.year:04d}'
+    build_time = stamp.strftime('%H:%M:%S')
+    timestamp_flags = [f'-D__DATE__="{build_date}"', f'-D__TIME__="{build_time}"']
     if args.profile == 'host':
         compiler = shlex.split(entries[0]['command'])[0]
         search = subprocess.run([compiler, '-E', '-x', 'c++', '-', '-v'], input='',
@@ -105,11 +116,12 @@ def main():
         profile_flags = ['-DUSE_MMAP_FOR_MEMORY_REGIONS=0']
         from backend.self.libcxx import prepare_provider
         provider = out / 'libcxx-provider.cpp'
-        implementation = prepare_provider(ROOT, acquisition, provider)
+        dot_backend = next((p for p in sources if p.name == 'dot_gen_be.c'), None)
+        implementation = prepare_provider(ROOT, acquisition, provider, dot_backend=dot_backend)
         # EDG's whole-program primary TU must own the implementation classes.
         # Keep the original compiler files separate; do not construct a unity
         # build with colliding file-local compiler declarations.
-        translation_sources = [provider, *sources]
+        translation_sources = [provider, *(p for p in sources if p != dot_backend)]
         libcxx = {'acquisition': str(manifest_path), 'sha256': digest(manifest_path),
                   'source': manifest['source'], 'headerHashes': header_hashes,
                   'implementation': implementation}
@@ -117,7 +129,7 @@ def main():
         from backend.self.profile import portable_self_flags
         profile_flags += portable_self_flags()
     command = [sys.executable, str(ROOT / 'dotnet.py'), *map(str, translation_sources),
-               '--language', 'c++', '--std', 'c++14', *flags, *profile_flags,
+               '--language', 'c++', '--std', standard, *flags, *profile_flags, *timestamp_flags,
                *feature_flags,
                *[value for path in includes for value in ('-I', path)],
                '--target', 'legacy-linux-x64' if args.profile == 'host' else 'portable-lp64-binary80-v2',
@@ -128,9 +140,13 @@ def main():
                '--unbound-externals', args.unbound_externals,
                *[value for path in args.runtime_source for value in ('--runtime-source', str(path.resolve()))],
                '--raw-output', str(out / 'raw.cs'),
+               '--frontend-invocation', str(out / 'frontend-invocation.json'),
                '--split', args.split, '--output-dir', str(out / 'managed')]
     report = {
-        'scope': f'Original {len(sources)}-TU all-extensions cpfe compiler, directly translated as C++14; no lowered-C fallback',
+        'scope': f'{len(sources)}-source all-extensions {args.program} compiler, directly translated as {standard}; no lowered-C fallback',
+        'program': args.program, 'standard': standard,
+        'buildTimestamp': {'sourceDateEpoch': args.source_date_epoch, 'date': build_date, 'time': build_time,
+                           'definitions': timestamp_flags},
         'profile': args.profile, 'emit': args.emit,
         'profileLimitations': ('Native Linux host headers and target; external ABI/runtime portability is unverified'
                               if args.profile == 'host' else 'Portable managed runtime; cross-platform execution is validated separately'),

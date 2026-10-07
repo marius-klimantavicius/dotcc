@@ -1,9 +1,10 @@
 # EDG translated to C#
 
-`translate_self.py` translates the **original `cpfe` target** from
+`translate_self.py` defaults to the **original `cpfe` target** from
 `build/compile_commands.json`: 75 C++14 translation units, including the original
-C backend, with the all-extensions build definitions. It does not translate the
-historical lowered C or include the additional `dot_gen_be` backend itself.
+C backend, with the all-extensions build definitions. `--program cpfe-dot`
+selects the 77-source compiler with our C# backend instead, using C++17 for its
+pinned libc++ string implementation. Neither mode uses the historical lowered C.
 The generated owner is `Edg.Compiler.EdgCompiler`; shared runtime sources use
 `Edg.Runtime`.
 
@@ -13,6 +14,29 @@ under both JIT and Linux-x64 NativeAOT. Windows .NET/Wine passes 11 compiler
 checks; native Windows/macOS execution is unverified. The review aliases point
 to this working project and its 36.6 MiB NativeAOT executable. Earlier failed
 outputs and diagnostics are retained. [Full evidence](../evidence/self-execution-20261004.json).
+
+## C# backend bootstrap
+
+To include `dot_gen_be` itself, add `--program cpfe-dot --profile musl` to the
+translation command below. This dependency closure additionally uses actual
+pinned libc++ `string.cpp` and `stdexcept.cpp`. The provider includes the backend
+as its final source so the primary translation unit owns the explicit string
+template definitions and their consumer; the remaining compiler files retain
+their separate translation units and file-local names.
+
+Self-translation pins `__DATE__` and `__TIME__` from `--source-date-epoch`
+(default `0`, UTC). `frontend-invocation.json` records the exact frontend
+arguments, working directory, and EDG environment before execution. Reuse this
+invocation for the bootstrap comparison: creating a fresh musl/provider snapshot
+would change source paths in the emitted C#.
+
+`backend/tests/self_bootstrap_verify.py` takes that invocation, a native compiler,
+and `--translated-command-json` containing a command-prefix array such as
+`["/absolute/published/Generated"]`. It executes two native baselines and the
+translated compiler, retaining binary stdout/stderr, hashes, exit status and
+first-difference context. No identifiers, paths, timestamps or whitespace are
+normalized. `--native-only` runs just the baseline. The existing review aliases
+remain on the verified original `cpfe` build until the new bootstrap passes.
 
 ## Build and run
 

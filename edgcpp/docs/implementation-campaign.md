@@ -1250,3 +1250,12 @@ integer formatting limits and typed range/length exceptions. The original EDG
 C backend also accepts and lowers the combined provider/consumer. This is
 dependency verification, not yet full compiler bootstrap acceptance.
 [Evidence](../evidence/self-dot-libcxx-20261007.json).
+
+`translate_self.py --program cpfe-dot` now selects the 77-source target and
+records a fixed UTC build timestamp and exact frontend invocation. Its first
+full native emission succeeds with no unresolved imports: 263,127,055 raw bytes
+packaged into 576 C# files. `self_bootstrap_verify.py` compares raw binary output
+without normalization and establishes native repeatability before comparing
+the translated compiler. Full generated-compiler build and execution remain
+pending at this emission milestone.
+[Translation evidence](../evidence/self-dot-translation-20261007.json).

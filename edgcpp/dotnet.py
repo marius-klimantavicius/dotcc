@@ -110,6 +110,8 @@ def main():
                         help="use an explicitly selected dot_gen_be compiler (default: current workspace build)")
     parser.add_argument("--raw-output", type=Path,
                         help="retain successful raw backend C# before packaging (new file required)")
+    parser.add_argument("--frontend-invocation", type=Path,
+                        help="record exact frontend arguments/environment for byte-for-byte bootstrap replay")
     parser.add_argument("--raw-input", type=Path,
                         help="package retained backend C# without invoking EDG; native provenance is not verified")
     parser.add_argument("--unbound-externals", choices=("reject", "declarations", "partial"), default="reject",
@@ -244,7 +246,16 @@ def main():
         raw_input_manifest = {"path": str(args.raw_input.resolve()), "sha256": hashlib.sha256(raw).hexdigest(),
                               "packagingOnly": True, "nativeProvenanceVerified": False}
     else:
-        result = subprocess.run([str(compiler), "--"+standard, "--gnu_version", "130300", *frontend_options, *runtime_options, "--", *map(str,translation_sources+runtime_sources)],
+        frontend_arguments = ["--"+standard, "--gnu_version", "130300", *frontend_options, *runtime_options, "--", *map(str,translation_sources+runtime_sources)]
+        if args.frontend_invocation:
+            args.frontend_invocation.parent.mkdir(parents=True, exist_ok=True)
+            with args.frontend_invocation.open("x") as handle:
+                json.dump({"arguments": frontend_arguments, "cwd": str(Path.cwd()),
+                           "environment": {k: v for k, v in env.items()
+                                           if k.startswith("EDG_") or k in ("LANG", "LC_ALL", "TZ", "SOURCE_DATE_EPOCH")},
+                           "compiler": {"path": str(compiler), "sha256": compiler_sha256}}, handle, indent=2)
+                handle.write("\n")
+        result = subprocess.run([str(compiler), *frontend_arguments],
                                 env=env, capture_output=True, text=True)
     if result.stderr:
         print(result.stderr, end="", file=sys.stderr)

@@ -1,0 +1,170 @@
+#!/usr/bin/env python3
+"""Compare native and self-translated dot backends without rewriting their output.
+
+The invocation JSON supplies {"arguments": [...], "environment": {...}, "cwd":
+"..."}. Arguments exclude the compiler executable and must name the SAME source
+files for every stage, including generated libc++ provider files. Pin __DATE__
+and __TIME__ with frontend definitions when translating EDG's version.h. The
+harness does not normalize whitespace, generated identifiers, paths, or dates.
+Use --native-only to establish a two-process native determinism baseline.
+"""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import signal
+import subprocess
+import time
+
+ROOT = Path(__file__).resolve().parents[2]
+BLOCK_SIZE = 1024 * 1024
+
+
+def sha256(path):
+    digest = hashlib.sha256()
+    with path.open('rb') as handle:
+        for block in iter(lambda: handle.read(BLOCK_SIZE), b''):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def compare_files(left, right):
+    """Report byte equality and a bounded first-difference diagnostic."""
+    result = {'left': str(left), 'right': str(right), 'leftBytes': left.stat().st_size,
+              'rightBytes': right.stat().st_size, 'leftSha256': sha256(left),
+              'rightSha256': sha256(right)}
+    offset = 0
+    line = 1
+    with left.open('rb') as a, right.open('rb') as b:
+        while True:
+            first, second = a.read(BLOCK_SIZE), b.read(BLOCK_SIZE)
+            if first != second:
+                common = min(len(first), len(second))
+                index = next((i for i in range(common) if first[i] != second[i]), common)
+                position = offset + index
+                result.update(equal=False, firstDifferentByte=position,
+                              leftLine=line + first[:index].count(b'\n'))
+                context_start = max(0, position - 80)
+                a.seek(context_start); b.seek(context_start)
+                result['contextStartByte'] = context_start
+                result['leftContext'] = a.read(200).decode('utf-8', errors='backslashreplace')
+                result['rightContext'] = b.read(200).decode('utf-8', errors='backslashreplace')
+                return result
+            if not first:
+                result['equal'] = True
+                return result
+            offset += len(first)
+            line += first.count(b'\n')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--invocation-json', type=Path, required=True)
+    parser.add_argument('--output-dir', type=Path, required=True)
+    parser.add_argument('--native-compiler', type=Path, default=ROOT / 'build/bin/cpfe-dot')
+    parser.add_argument('--translated-command-json', type=Path,
+                        help='JSON array, e.g. ["dotnet", "/absolute/Generated.dll"]')
+    parser.add_argument('--native-only', action='store_true')
+    parser.add_argument('--native-runs', type=int, default=2)
+    parser.add_argument('--timeout', type=int, default=3600, help='Per-process seconds')
+    args = parser.parse_args()
+    if args.native_runs < 2:
+        parser.error('--native-runs must be at least two for the determinism baseline')
+    if not args.native_only and args.translated_command_json is None:
+        parser.error('--translated-command-json is required unless --native-only is set')
+    invocation = json.loads(args.invocation_json.read_text())
+    arguments = invocation['arguments']
+    environment = invocation.get('environment', {})
+    cwd = Path(invocation['cwd']).resolve()
+    if not isinstance(arguments, list) or not all(isinstance(v, str) for v in arguments):
+        parser.error('invocation.arguments must be an array of strings')
+    if not isinstance(environment, dict) or not all(isinstance(k, str) and isinstance(v, str)
+                                                   for k, v in environment.items()):
+        parser.error('invocation.environment must be a string-to-string object')
+    if not cwd.is_dir():
+        parser.error('invocation.cwd does not exist')
+    out = args.output_dir.resolve()
+    out.mkdir(parents=True, exist_ok=False)
+    # Preserve the exact effective frontend invocation once. Every process gets
+    # this same dictionary; only its host executable and stdout/stderr differ.
+    effective_environment = dict(os.environ)
+    effective_environment.update(environment)
+    # Keep inherited EDG controls visible, without recording unrelated secrets.
+    edg_environment = {k: v for k, v in effective_environment.items()
+                       if k.startswith('EDG_') or k in ('LANG', 'LC_ALL', 'TZ', 'SOURCE_DATE_EPOCH')}
+    preserved = dict(invocation, cwd=str(cwd), environment=environment)
+    (out / 'invocation.json').write_text(json.dumps(preserved, indent=2) + '\n')
+    report = {'scope': 'Raw dot backend output byte equivalence', 'normalization': [],
+              'invocation': preserved, 'effectiveEdgEnvironment': edg_environment,
+              'nativeOnly': args.native_only, 'runs': [], 'comparisons': []}
+
+    def save():
+        (out / 'results.json').write_text(json.dumps(report, indent=2) + '\n')
+
+    def run(label, prefix):
+        command = [*prefix, *arguments]
+        stdout = out / (label + '.raw.cs')
+        stderr = out / (label + '.stderr')
+        entry = {'label': label, 'command': command, 'stdout': str(stdout),
+                 'stderr': str(stderr), 'hostFiles': []}
+        for argument in prefix:
+            path = Path(argument)
+            if path.is_file():
+                entry['hostFiles'].append({'path': str(path.resolve()), 'sha256': sha256(path)})
+        report['runs'].append(entry)
+        save()
+        start = time.monotonic()
+        with stdout.open('xb') as output, stderr.open('xb') as errors:
+            process = subprocess.Popen(command, cwd=cwd, env=effective_environment,
+                                       stdout=output, stderr=errors, start_new_session=True)
+            try:
+                exit_code = process.wait(timeout=args.timeout)
+            except subprocess.TimeoutExpired:
+                os.killpg(process.pid, signal.SIGKILL)
+                process.wait()
+                entry['timedOut'] = True
+                exit_code = -signal.SIGKILL
+        entry.update(exitCode=exit_code, seconds=round(time.monotonic() - start, 3),
+                     stdoutBytes=stdout.stat().st_size, stdoutSha256=sha256(stdout),
+                     stderrBytes=stderr.stat().st_size, stderrSha256=sha256(stderr))
+        with stdout.open('rb') as handle:
+            marker = handle.read(128)
+        entry['emittedCSharp'] = marker.startswith(b'// <auto-generated />\n// Generated by dot_gen_be.c;')
+        entry['passed'] = exit_code == 0 and entry['emittedCSharp']
+        save()
+        print(f"{label}: exit {exit_code}, {entry['stdoutBytes']} bytes, "
+              f"SHA-256 {entry['stdoutSha256']}", flush=True)
+        return entry
+
+    native = []
+    for index in range(args.native_runs):
+        native.append(run('native-' + str(index + 1), [str(args.native_compiler.resolve())]))
+    translated = None
+    if not args.native_only:
+        prefix = json.loads(args.translated_command_json.read_text())
+        if not isinstance(prefix, list) or not prefix or not all(isinstance(v, str) for v in prefix):
+            parser.error('translated command must be a nonempty JSON array of strings')
+        translated = run('translated', prefix)
+    reference = native[0]
+    for other in [*native[1:], *([translated] if translated else [])]:
+        comparison = {'left': reference['label'], 'right': other['label'],
+                      'sameExitCode': reference['exitCode'] == other['exitCode'],
+                      'stdout': compare_files(Path(reference['stdout']), Path(other['stdout'])),
+                      'stderr': compare_files(Path(reference['stderr']), Path(other['stderr']))}
+        comparison['passed'] = (reference['passed'] and other['passed'] and
+                                comparison['sameExitCode'] and comparison['stdout']['equal'] and
+                                comparison['stderr']['equal'])
+        report['comparisons'].append(comparison)
+        print(f"{comparison['left']} vs {comparison['right']}: "
+              f"{'IDENTICAL' if comparison['passed'] else 'DIFFERENT or FAILED'}", flush=True)
+    report['nativeDeterministic'] = all(c['passed'] for c in report['comparisons']
+                                       if c['right'].startswith('native-'))
+    report['passed'] = all(r['passed'] for r in report['runs']) and all(
+        c['passed'] for c in report['comparisons'])
+    save()
+    return 0 if report['passed'] else 1
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
