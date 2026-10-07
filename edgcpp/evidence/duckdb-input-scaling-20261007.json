@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "project": "DuckDB",
+  "date": "2026-10-07",
+  "status": "input-scaling-verified-full-translation-incomplete",
+  "executionVerified": false,
+  "stoppedAttempt": {
+    "receipt": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-composition-001/results.json",
+      "sha256": "1128dc8a8c611c12a2f7156fa3250456b317d62cd9bf0e60002771ce464955f7"
+    },
+    "status": "coordinator-stop",
+    "elapsedSeconds": 1688.9845998510136,
+    "maxRssKiB": 67130252,
+    "inputCount": 732,
+    "inputBytes": 1628602023,
+    "reason": "Coordinator stopped observed memory growth early in remaining inputs; automatic memory guard did not trigger. Two separate declaration-correspondence diagnostics require source/configuration investigation.",
+    "inputsUnchanged": true,
+    "driverUnchanged": false,
+    "driverNote": "Driver was already loaded by the process; subsequent replay integration changed the on-disk driver. Initial driver hash is retained in the run receipt."
+  },
+  "unityFallback": {
+    "receipt": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-unity-composition-001/composition.json",
+      "sha256": "52e8479755aac0dfcd5a213baa9627fcfecd830690adae8415831c228c1f5847"
+    },
+    "nativeUnityClosure": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-unity-configure-001/remaining-unity-verified.json",
+      "sha256": "a310481bbcb808c224b2a2f750cc03b14a0e2250742596646179687be9a000b3"
+    },
+    "programInputs": 204,
+    "inputBytes": 541125367,
+    "originalLibraryTUs": 2207,
+    "coreTUs": 1476,
+    "unityGroups": 29,
+    "groupedTUs": 557,
+    "separateTUs": 174,
+    "allSourcesExactlyOnce": true,
+    "staticExtensions": [
+      "core_functions",
+      "parquet",
+      "icu",
+      "json",
+      "autocomplete",
+      "tpcds",
+      "tpch"
+    ],
+    "preprocessingPassed": true,
+    "fullMergeAttempted": false
+  },
+  "limitations": [
+    "No full DuckDB C# output, build or execution pass.",
+    "Unity composition has not resolved the two reported correspondence diagnostics.",
+    "Existing review remains the earlier partial Hugeint translation."
+  ]
+}

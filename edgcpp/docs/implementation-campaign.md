@@ -1684,3 +1684,19 @@ timing diagnostics; enabling them produces identical raw C# in its smoke check.
 Full DuckDB composition and execution still require the next attempt.
 
 [Routine-linkage evidence](../evidence/duckdb-routine-linkage-20261007.json).
+
+The 732-input full composition was stopped by the coordinator after 28 minutes
+at about 64 GiB resident memory, still early in the remaining input list. The
+automatic memory guard did not trigger. Inputs, resource samples and diagnostics
+are retained. Two declaration-correspondence diagnostics (`NumericCast` and a
+libc++ `pair` assignment) require separate source/configuration investigation;
+the resource stop does not establish an EDG correctness failure.
+
+An exact upstream-unity fallback is prepared: 29 complete native unity groups
+cover 557 remaining TUs, with 174 kept separate and the original 1,476-TU core.
+This reduces the final input count to 204 and preprocessed bytes from 1.52 GiB
+to 516 MiB. All 2,207 original library TUs occur exactly once; all seven static
+extensions remain included. Preprocessing passes, but the full merge has not
+run and no full DuckDB C# execution is claimed.
+
+[Input-scaling evidence](../evidence/duckdb-input-scaling-20261007.json).
