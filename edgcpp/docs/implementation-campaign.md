@@ -1906,3 +1906,28 @@ Frozen inputs remain unchanged. Preprocessed input bytes fall from 358,571,518
 to 287,907,570; this is not a measured compiler-memory saving. Full checkpoint
 attempt004 is running with the same compiler, feature profile and memory guard.
 No translated DuckDB build or execution is claimed.
+
+
+A further fallback combines 114 core-functions sources currently represented by
+20 upstream groups. Native and stock-EDG syntax probes pass; optimized native
+code generation completes in 112.4 seconds below 3.5 GiB sampled process-group
+RSS. Every source-origin token sequence and original source hash matches. The
+native archive replacement removes exactly 114 members, retains the three
+standalone extension objects and adds one tested combined object, while reusing
+the exact accepted ICU/JSON/Parquet archives and all seven static extensions.
+Strong global symbols are unchanged. Baseline and candidate match on 215 fully
+executed upstream cases and 18,701 assertions each. The same three explicit
+partial/nonexecuting observations remain outside acceptance counts.
+
+The isolated recipe permits only explicitly pinned complete upstream-group
+replacement and exact per-source target mappings. It binds the ordered prior
+native receipts and their cumulative archive/link evidence. 26 focused controls
+and 14 original recipe checks pass. Safe standalone line comments are accepted
+only for audited native wrappers; line-splicing hazards remain rejected and
+the upstream CMake wrapper parser stays strict. Actual receipt validation and
+fresh preprocessing produce 129 inputs (core, 13 groups and 115 separate TUs),
+covering all 2,207 sources exactly once with unchanged frozen inputs. Input bytes
+fall to 215,232,430; this is not yet a compiler-memory measurement. The candidate
+remains isolated and unadopted while full attempt 004 runs unchanged.
+
+[Core-functions fallback evidence](../evidence/duckdb-core-unity-fallback-20261007.json).

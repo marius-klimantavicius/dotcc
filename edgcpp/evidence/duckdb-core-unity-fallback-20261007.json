@@ -1,0 +1,283 @@
+{
+  "schema": 1,
+  "status": "verified-fallback-not-adopted",
+  "translatedExecutionVerified": false,
+  "nativeScope": "215 fully executed unchanged upstream cases,18701 assertions per baseline/candidate; all218 observations match, three excluded observations do not count as acceptance.",
+  "nativeApproval": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-core-unity-001/approval-evidence.json",
+    "sha256": "20183340997ded50902b7a6cfe2f7b077761ae266c9eff8418314187a4d30eb9"
+  },
+  "nativeComparison": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-native-core-unity-001/results.json",
+    "sha256": "aec6cd4a7be0da12b755dd90e152717f91f31c40b8e4bbd16c479900228e0386"
+  },
+  "nativeCodegen": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-investigation-001/codegen.json",
+    "sha256": "2f31f6bc4218509044bb7b0300c1f31b71c5c40cd842b552c7c9b3da7c559bd5"
+  },
+  "sourceMapping": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-investigation-001/candidate-mapping.json",
+    "sha256": "f59798382c2f95161ee1ab94bd1cd92640c0d560b8c8512a2d42ff4becf6ba17"
+  },
+  "sourceAudit": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-investigation-001/report.txt",
+    "sha256": "3c091c3f62262f2436e7a3a4cfb3952bf2a56f8da7a7536f52d74059edea7120"
+  },
+  "replacement": {
+    "sourceFiles": 114,
+    "upstreamGroups": 20,
+    "removedNativeArchiveMembers": 114,
+    "retainedNativeArchiveMembers": 3,
+    "newNativeObjectMembers": 1,
+    "staticExtensions": [
+      "core_functions",
+      "parquet",
+      "icu",
+      "json",
+      "autocomplete",
+      "tpcds",
+      "tpch"
+    ],
+    "strongGlobalSymbolsUnchanged": true
+  },
+  "excludedObservations": {
+    "partial": [
+      {
+        "selector": "test/parquet/parquet_long_string_stats.test",
+        "reason": "Requires unbundled httpfs before any assertions",
+        "baseline": {
+          "exitCode": 0,
+          "events": [
+            {
+              "kind": "case",
+              "name": "test/parquet/parquet_long_string_stats.test",
+              "assertionsPassed": 0,
+              "assertionsFailed": 0,
+              "assertionsExpectedFailure": 0,
+              "casesPassed": 1,
+              "casesFailed": 0,
+              "casesExpectedFailure": 0,
+              "skipped": 1,
+              "aborting": false
+            },
+            {
+              "kind": "run",
+              "assertionsPassed": 0,
+              "assertionsFailed": 0,
+              "assertionsExpectedFailure": 0,
+              "casesPassed": 1,
+              "casesFailed": 0,
+              "casesExpectedFailure": 0,
+              "skipped": 1,
+              "aborting": false
+            }
+          ]
+        },
+        "candidate": {
+          "exitCode": 0,
+          "events": [
+            {
+              "kind": "case",
+              "name": "test/parquet/parquet_long_string_stats.test",
+              "assertionsPassed": 0,
+              "assertionsFailed": 0,
+              "assertionsExpectedFailure": 0,
+              "casesPassed": 1,
+              "casesFailed": 0,
+              "casesExpectedFailure": 0,
+              "skipped": 1,
+              "aborting": false
+            },
+            {
+              "kind": "run",
+              "assertionsPassed": 0,
+              "assertionsFailed": 0,
+              "assertionsExpectedFailure": 0,
+              "casesPassed": 1,
+              "casesFailed": 0,
+              "casesExpectedFailure": 0,
+              "skipped": 1,
+              "aborting": false
+            }
+          ]
+        },
+        "acceptedCoverage": false,
+        "source": {
+          "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-source-001/source/test/parquet/parquet_long_string_stats.test",
+          "sha256": "4afa773a5dedf51396c53b118d2837fa8f87058a69f76c22115bc0630c0ad325"
+        }
+      },
+      {
+        "selector": "test/sql/json/table/read_json.test",
+        "reason": "Requires unbundled httpfs after 291 assertions",
+        "baseline": {
+          "exitCode": 0,
+          "events": [
+            {
+              "kind": "case",
+              "name": "test/sql/json/table/read_json.test",
+              "assertionsPassed": 291,
+              "assertionsFailed": 0,
+              "assertionsExpectedFailure": 0,
+              "casesPassed": 1,
+              "casesFailed": 0,
+              "casesExpectedFailure": 0,
+              "skipped": 1,
+              "aborting": false
+            },
+            {
+              "kind": "run",
+              "assertionsPassed": 291,
+              "assertionsFailed": 0,
+              "assertionsExpectedFailure": 0,
+              "casesPassed": 1,
+              "casesFailed": 0,
+              "casesExpectedFailure": 0,
+              "skipped": 1,
+              "aborting": false
+            }
+          ]
+        },
+        "candidate": {
+          "exitCode": 0,
+          "events": [
+            {
+              "kind": "case",
+              "name": "test/sql/json/table/read_json.test",
+              "assertionsPassed": 291,
+              "assertionsFailed": 0,
+              "assertionsExpectedFailure": 0,
+              "casesPassed": 1,
+              "casesFailed": 0,
+              "casesExpectedFailure": 0,
+              "skipped": 1,
+              "aborting": false
+            },
+            {
+              "kind": "run",
+              "assertionsPassed": 291,
+              "assertionsFailed": 0,
+              "assertionsExpectedFailure": 0,
+              "casesPassed": 1,
+              "casesFailed": 0,
+              "casesExpectedFailure": 0,
+              "skipped": 1,
+              "aborting": false
+            }
+          ]
+        },
+        "acceptedCoverage": false,
+        "source": {
+          "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-source-001/source/test/sql/json/table/read_json.test",
+          "sha256": "524c75165b019a6e6ecac9c963c811f7cbdfc8818145cd1edde5f7d0ebeb0555"
+        }
+      }
+    ],
+    "nonExecuting": [
+      {
+        "selector": "test/parquet/encrypted_parquet.test",
+        "reason": "Upstream file explicitly sets mode skip; runner reports zero assertions and zero skip counter",
+        "directive": "mode skip",
+        "directiveLine": 7,
+        "baseline": {
+          "exitCode": 0,
+          "events": [
+            {
+              "kind": "case",
+              "name": "test/parquet/encrypted_parquet.test",
+              "assertionsPassed": 0,
+              "assertionsFailed": 0,
+              "assertionsExpectedFailure": 0,
+              "casesPassed": 1,
+              "casesFailed": 0,
+              "casesExpectedFailure": 0,
+              "skipped": 0,
+              "aborting": false
+            },
+            {
+              "kind": "run",
+              "assertionsPassed": 0,
+              "assertionsFailed": 0,
+              "assertionsExpectedFailure": 0,
+              "casesPassed": 1,
+              "casesFailed": 0,
+              "casesExpectedFailure": 0,
+              "skipped": 0,
+              "aborting": false
+            }
+          ]
+        },
+        "candidate": {
+          "exitCode": 0,
+          "events": [
+            {
+              "kind": "case",
+              "name": "test/parquet/encrypted_parquet.test",
+              "assertionsPassed": 0,
+              "assertionsFailed": 0,
+              "assertionsExpectedFailure": 0,
+              "casesPassed": 1,
+              "casesFailed": 0,
+              "casesExpectedFailure": 0,
+              "skipped": 0,
+              "aborting": false
+            },
+            {
+              "kind": "run",
+              "assertionsPassed": 0,
+              "assertionsFailed": 0,
+              "assertionsExpectedFailure": 0,
+              "casesPassed": 1,
+              "casesFailed": 0,
+              "casesExpectedFailure": 0,
+              "skipped": 0,
+              "aborting": false
+            }
+          ]
+        },
+        "acceptedCoverage": false,
+        "source": {
+          "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-source-001/source/test/parquet/encrypted_parquet.test",
+          "sha256": "c0c11631d11f36d3908e60dd6d1a86a876225d3582de9766ebebf3ee8cbf7810"
+        }
+      }
+    ]
+  },
+  "isolatedRecipe": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-001/edg/unity.py",
+    "sha256": "5978eb537022953df2e9ba92439b33319728fa481f6626cf98749e5fe175cdc0"
+  },
+  "validation": {
+    "focusedControls": 26,
+    "focusedResults": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-001/replacement-controls-002/results.json",
+      "sha256": "c6c311566786274e3154ccb2466d8b1ef299b66b070eb0f88f28bd470a70cca6"
+    },
+    "originalControls": 14,
+    "originalResults": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-001/upstream-controls-003/results.json",
+      "sha256": "acad81d4b9c44c90d722fe86030a57e09bde095a7f0ea40b333a76a152e1b1aa"
+    },
+    "actualReceipts": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-recipe-candidate-001/actual-validation.json",
+      "sha256": "d221c8b53f7b4268916464733b6d2b6d21b39e2f26c73c1fa742e667ee0e438d"
+    }
+  },
+  "composition": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-core-unity-composition-candidate-001/composition.json",
+    "sha256": "688678610b91b741eca5a4e36dfd54ce35b300c13750459ea99ecacd121fdd62",
+    "inputCount": 129,
+    "groupCount": 13,
+    "originalSourceCount": 2207,
+    "inputBytes": 215232430,
+    "configuredCoverageExactlyOnce": true,
+    "frozenInputsUnchanged": true
+  },
+  "limitations": [
+    "The active148-input attempt004 remains unchanged; this129-input fallback has not been launched as a full frontend run.",
+    "Preprocessed size decreases do not establish compiler-memory savings.",
+    "Native source grouping can coalesce header-local constants; inspected source and selected tests do not prove universal equivalence.",
+    "No full DuckDB C# build or JIT/NativeAOT execution has passed.",
+    "The candidate recipe remains isolated; independent code review is pending."
+  ]
+}

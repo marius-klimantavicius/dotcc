@@ -243,8 +243,13 @@ declaration correspondence in the separate-consumer assembly; the combined-core
 assembly has progressed beyond this limitation. Its latest 164-input full run
 stopped at the existing 72 GiB compiler RSS guard after 77 minutes, during
 deferred template instantiation, without frontend errors or a usable checkpoint.
-The 148-input Parquet composition is the next full attempt. All dependency
-sources remain selected; no unresolved runtime placeholders were used to claim
+The 148-input Parquet composition is running under the same resource guard.
+A separately prepared 129-input core-functions fallback preserves all 2,207
+original TUs and all seven extensions. Its native comparison passes 215 fully
+executed upstream cases and 18,701 assertions; three matched partial/nonexecuting
+observations are excluded. It is not yet adopted or a translated execution pass.
+See [fallback evidence](../edgcpp/evidence/duckdb-core-unity-fallback-20261007.json).
+All dependency sources remain selected; no unresolved runtime placeholders were used to claim
 an execution pass.
 
 The [review directory](../edgcpp/artifacts/review/duckdb/README.md) currently
