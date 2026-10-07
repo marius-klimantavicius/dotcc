@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "investigated-not-enabled",
+  "option": "--remove_unneeded_entities",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-needed-investigation-001/results.json",
+    "sha256": "b9124bbb032f9414f09c5e99732473bee4d8a867495c131f049990a0ec452bda"
+  },
+  "report": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-needed-investigation-001/report.txt",
+    "sha256": "468fcb4fc3713236640648b22828c188a7c442741b5e5fed9cf7eb3ca2db7039"
+  },
+  "findings": [
+    "Secondary translation unit pruning occurs after all translation units have parsed, so it cannot remove their accumulated parsing state early.",
+    "A public pointer-only struct whose original layout has size16 becomes an incomplete IL type and an empty generated C# public struct.",
+    "A focused fixture still executes in native/JIT builds, demonstrating why execution-only checks are insufficient for this option."
+  ],
+  "decision": "Do not enable this as a transparent DuckDB memory fallback. Public layout preservation and parsing memory remain unresolved."
+}

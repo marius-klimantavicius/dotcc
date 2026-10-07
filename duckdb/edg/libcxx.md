@@ -278,3 +278,26 @@ not counted as successful lowering. The same corrected real-header inputs pass
 checkpoint write/replay with raw C# parity against direct translation in
 `duckdb-fmt-header-replay-001/results.json`; that diagnostic run uses one partial
 extern and is not execution acceptance.
+
+The next full checkpoint attempt passed the preceding correspondence cases and
+reached the ICU extension. Two different source-local helper implementations
+were both declared as namespace-level `duckdb::ICUCalendarSub`: interval/age
+subtraction in `icu-dateadd.cpp`, and date-part subtraction in `icu-datesub.cpp`.
+The portable staging recipe now calls the former `ICUCalendarIntervalSub`.
+A complete pinned-tree audit finds eight tokens in dateadd (seven code
+identifiers plus one diagnostic string) and eighteen in datesub, with no uses
+in public headers or elsewhere. Only the seven dateadd identifiers change;
+algorithms, public functions and SQL registration names, datesub's helper, and
+the original diagnostic string remain unchanged. The recipe rejects unexpected
+references or a replacement-name collision and records source hashes and exact
+replacement counts.
+
+`tests/icu_correspondence_verify.py` passes in
+`duckdb-icu-adaptation-001/results.json`: native original/adapted behavior and
+adapted multi-TU stock-C emission/build/run agree in the reduction; stock C
+rejects the original conflicting class definitions. The actual ICU dateadd and
+datesub sources pass native syntax checks, and their stock-C semantic merge
+accepts the adapted sources after rejecting the originals. Reversing only the
+replacement identifier reproduces the original dateadd file byte-for-byte.
+These are focused source/correspondence checks, not full translated ICU or
+DuckDB execution acceptance.

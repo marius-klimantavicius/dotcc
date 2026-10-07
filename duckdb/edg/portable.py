@@ -143,6 +143,52 @@ def adapt_fmt_arguments(source, staged):
                 reason='Spell the existing int promotion of max_packed_args (12) and unsigned-long-long conversion of is_unpacked_bit before dependent arithmetic. Avoid unnamed-enum correspondence rejection reproduced by unchanged stock C without changing enum types, packing threshold, values, layouts, or formatting algorithms.')
 
 
+def adapt_icu_calendar_sub(source, staged):
+    """Give the interval operator its own name, preserving date_sub's helper."""
+    source = Path(source)
+    relative = 'extension/icu/icu-dateadd.cpp'
+    expected_counts = {relative: 8, 'extension/icu/icu-datesub.cpp': 18}
+    counts, references = {}, []
+    for path in sorted(source.rglob('*')):
+        if not path.is_file():
+            continue
+        try:
+            text = path.read_text()
+        except UnicodeError:
+            continue
+        if re.search(r'\bICUCalendarIntervalSub\b', text):
+            raise ValueError('Private ICUCalendarIntervalSub replacement name already exists: ' + str(path))
+        matches = list(re.finditer(r'\bICUCalendarSub\b', text))
+        if matches:
+            name = str(path.relative_to(source))
+            counts[name] = len(matches)
+            references.append(dict(path=name, sha256=sha(path), occurrences=len(matches),
+                                   lines=[text.count('\n', 0, match.start()) + 1 for match in matches]))
+    if counts != expected_counts:
+        raise ValueError('Pinned ICUCalendarSub source references changed: ' + str(counts))
+    path = Path(staged) / relative
+    original = path.read_text()
+    replacements = [
+        ('struct ICUCalendarSub : public ICUDateFunc {', 'struct ICUCalendarIntervalSub : public ICUDateFunc {', 1),
+        ('ICUCalendarSub::Operation', 'ICUCalendarIntervalSub::Operation', 4),
+        (', ICUCalendarSub>(', ', ICUCalendarIntervalSub>(', 2),
+    ]
+    updated = original
+    for before, after, count in replacements:
+        if updated.count(before) != count:
+            raise ValueError('Pinned ICU interval-subtraction reference changed: ' + before)
+        updated = updated.replace(before, after)
+    diagnostic = '"Unimplemented type for ICUCalendarSub"'
+    if updated.count(diagnostic) != 1 or len(re.findall(r'\bICUCalendarSub\b', updated)) != 1:
+        raise ValueError('ICU interval-subtraction diagnostic or references changed')
+    path.write_text(updated)
+    return dict(path=relative, originalSha256=sha(source / relative), stagedSha256=sha(path),
+                replacements=[dict(before=before, after=after, occurrences=count) for before, after, count in replacements],
+                tokenAudit=dict(counts=counts, files=references, replacementIdentifierAbsent=True),
+                preservedDiagnostic=diagnostic,
+                reason='Disambiguate dateadd.cpp\'s private interval-subtraction operator from datesub.cpp\'s different namespace-level date-part helper. Rename seven code identifiers only; preserve algorithms, public functions/SQL registrations, datesub.cpp, and the existing diagnostic string. The unchanged stock C backend rejects the original conflicting class definitions across TUs.')
+
+
 def prepare(manifest_path, output):
     manifest_path, output = Path(manifest_path).resolve(), Path(output).resolve()
     manifest = json.loads(manifest_path.read_text())
@@ -187,6 +233,7 @@ def prepare(manifest_path, output):
     changes.append(adapt_numeric_cast(source, staged))
     changes.append(adapt_logical_type_pair(source, staged))
     changes.append(adapt_fmt_arguments(source, staged))
+    changes.append(adapt_icu_calendar_sub(source, staged))
 
     # Generated CMake headers and the static extension loader are real inputs,
     # even though they are outside the upstream archive. Freeze them with the

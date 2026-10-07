@@ -1785,3 +1785,35 @@ inputs successfully and matches direct C# emission byte-for-byte (one partial
 provider symbol, so this is emission-only evidence).
 
 [Fmt adaptation evidence](../evidence/duckdb-fmt-adaptation-20261007.json).
+
+The next full attempt passed core-functions and Parquet, then stopped on two
+different implementation-only `duckdb::ICUCalendarSub` class definitions in the
+ICU date-add and date-subtract source files. The first diagnostic appeared at
+46.5 minutes; peak compiler RSS was 54.8 GiB. The new launcher automatically
+stopped its isolated process group on that explicit error; the memory guard
+did not fire. All corrected input hashes remained unchanged and all 2,207 TUs
+remain selected. No usable full checkpoint or full generated C# resulted.
+The next source adaptation will disambiguate the private class names while
+preserving the public ICU registrations and algorithms.
+
+[ICU checkpoint attempt](../evidence/duckdb-icu-checkpoint-attempt-20261007.json).
+
+A separate stock `--remove_unneeded_entities` investigation rules it out as a
+transparent memory fallback. It runs after all input parsing and can discard
+the layout of a public type used only behind a pointer. The reduced program
+still executes, but its generated public struct becomes empty. The option
+remains disabled; passing execution alone would miss this API regression.
+
+[Memory-pruning investigation](../evidence/duckdb-memory-pruning-20261007.json).
+
+Portable staging now renames the interval-subtraction helper to
+`ICUCalendarIntervalSub`, changing exactly seven code identifiers. The original
+diagnostic literal, `date_sub` helper, public entry points and algorithms are
+unchanged. Eighteen command checks reproduce the original rejection with the
+stock C backend and verify the corrected actual-source semantic merge. Reduced
+native and stock-C programs execute both distinct helper operations. A lexical
+audit of 317 extension C++ files found no other conflicting source-defined
+namespace/class-scope type names; headers and macro expansion are outside that
+audit's scope. Full translated DuckDB execution remains outstanding.
+
+[ICU adaptation evidence](../evidence/duckdb-icu-adaptation-20261007.json).

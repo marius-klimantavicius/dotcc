@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "frontend-diagnostic-stop",
+  "executionVerified": false,
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-002/results.json",
+    "sha256": "9e0ae3fc806a9cd8e6dcb58dac78e31c0abf2e46040b88620a279a06b8d62aef"
+  },
+  "composition": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-unity-composition-003/composition.json",
+    "sha256": "1835bc840684f9e60e9162355959f53455e3f645824922bac97a26edc8413c15"
+  },
+  "preprocessing": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-translate-007/results.json",
+    "sha256": "379af3eef76021be0ac6df3dd853f519813e4b2591cd28ddec625f85b00c2d0e"
+  },
+  "elapsedSeconds": 2793.146961052,
+  "peakCompilerRssBytes": 58805448704,
+  "firstFrontendError": {
+    "elapsedSeconds": 2791.6016286549857,
+    "line": "          ion/icu/icu-datesub.cpp\", line 11: error: declaration of class",
+    "file": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-complete-checkpoint-002/checkpoint/writer.stderr",
+    "action": "stop isolated process group after explicit frontend diagnostic"
+  },
+  "inputsUnchanged": true,
+  "usableCheckpoint": false,
+  "diagnosticCount": 1,
+  "diagnosticSummary": "Different duckdb::ICUCalendarSub definitions in extension/icu/icu-dateadd.cpp and icu-datesub.cpp rejected during cross-TU correspondence.",
+  "stopReason": "Launcher stopped the isolated process group on the first explicit frontend error; the memory guard did not fire.",
+  "claims": [
+    "All 2,207 original library translation units remain selected exactly once, including all seven static extensions.",
+    "The merge passed the core-functions and Parquet inputs without the earlier NumericCast, pair or fmt diagnostics.",
+    "No usable full-program checkpoint, full C# output or DuckDB C# execution pass."
+  ]
+}

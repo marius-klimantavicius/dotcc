@@ -160,6 +160,18 @@ errors, now covered by narrowly verified source adaptations.
 The unity fallback has passed preprocessing; full translation and execution
 remain outstanding. See the [input-scaling receipt](../edgcpp/evidence/duckdb-input-scaling-20261007.json).
 
+The full merge's memory use belongs to the native EDG frontend, before C#
+emission or .NET compilation. EDG keeps separate IL trees and symbol-table
+state for the input translation units until final instantiation/merging; it
+then removes duplicate entities. Repeated DuckDB/libc++ headers therefore
+contribute repeated semantic state even after preprocessing. The corrected
+204-input attempt reached 54.8 GiB compiler RSS at ICU before a private-class
+correspondence error stopped it. This is a process measurement, not an
+allocation-category profile. Further unity grouping must check C++ lookup,
+internal storage and initialization behavior, not just preprocessing size.
+The stock `--remove_unneeded_entities` option is not a transparent remedy:
+it prunes after parsing and can remove public pointer-only type layouts.
+
 The [lowered-IL checkpoint workflow](../edgcpp/backend/README.md#optional-lowered-il-checkpoints)
 is available for the next full merge. It preserves a completed frontend result
 if later C# emission fails, allowing a compatible backend update to retry

@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "date": "2026-10-07",
+  "status": "focused-verification-passed",
+  "executionVerified": "reduced native and stock-C programs only",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-icu-adaptation-001/results.json",
+    "sha256": "d50a21883c10c0c4a61d17fea5a5e73cda77b6ea9314d05f17c14e753964c00c"
+  },
+  "commands": 18,
+  "change": "Rename seven private ICU interval-subtraction class identifiers in icu-dateadd.cpp; keep datesub.cpp, algorithms, public names, registrations and diagnostic literal unchanged.",
+  "verification": [
+    "Native original/adapted and adapted two-TU stock-C emission/build/run preserve both distinct helpers; original stock C rejects conflicting class definitions.",
+    "Actual ICU dateadd/datesub implementations pass native syntax; stock-C semantic merge rejects original helper collision and accepts the adapted sources. No full ICU/DuckDB execution claim."
+  ],
+  "privateTypeAudit": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-private-type-audit-001/results.json",
+    "sha256": "7fd97a6bebdc4e60f8773ab6b221dfde7c379cc40b2ad9a042b5619d8048025f"
+  },
+  "limits": [
+    "Actual ICU source pair passes stock-C semantic merging; this is not full DuckDB emission or translated execution.",
+    "The lexical private-type audit covers317 extension C++ source files, excludes headers/bundled third_party and is not a complete semantic ODR proof."
+  ]
+}
