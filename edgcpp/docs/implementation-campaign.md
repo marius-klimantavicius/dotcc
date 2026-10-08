@@ -2156,3 +2156,19 @@ header retention candidates were rejected after valid class-valued template
 uses exposed changed overload/initializer behavior. Only a restricted, isolated
 integral/enum candidate is under investigation; canonical inputs remain frozen.
 [Correspondence reduction evidence](../evidence/duckdb-correspondence-reduction-20261008.json).
+
+
+The completed diagnostic compiler log identifies the full007 correspondence
+entity as `pcg_detail::no_stream<uint64_t>::is_mcg`: the primary TU has no
+definition, while secondary `unity-0012.ii` has a definition. This is distinct
+from the earlier `integral_constant` small reduction. The compiler log ends
+with assertion962 and compilation aborted. No compiler process remains.
+
+The launcher did not finalize its original receipt; that receipt is preserved
+and recovery records the exit code, exact finish time and launcher interruption
+cause as unknown. All inventoried inputs are unchanged. No checkpoint or full
+C# output is accepted. The next step is an exact PCG stock-C reduction, before
+another full attempt. The isolated integral overlay remains unapplied, and
+the compressed-pair address-retention experiment is explicitly rejected after
+changing the validity of ordinary Clang18-valid source.
+[Exact PCG diagnostic evidence](../evidence/duckdb-pcg-correspondence-20261008.json).

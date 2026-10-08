@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "status": "full-diagnostic-entity-identified",
+  "entity": "pcg_detail::no_stream<uint64_t>::is_mcg",
+  "originalFullAttempt": "duckdb-complete-checkpoint-007",
+  "diagnosticAttempt": "duckdb-correspondence-debug-full-001",
+  "compilerChanges": "Supported DEBUG=1 build, original frontend unchanged, original effective constexpr call depth512 preserved.",
+  "primary": "no definition; incorrectly canonical under stock correspondence invariant",
+  "secondary": "has definition in unity-0012.ii",
+  "diagnostic": "trans_copy.c:962: primary entry should not be canonical",
+  "inputsUnchanged": true,
+  "exitCodeKnown": false,
+  "launcherFinalizationMissing": true,
+  "checkpointAccepted": false,
+  "translatedExecution": false,
+  "evidence": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-correspondence-debug-full-001/results.json",
+      "sha256": "501bd390ecb9d1399b75b44518432cc613b0bd7ec3f230d028afd6ae1b282253"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-correspondence-debug-full-001/results.unfinalized.json",
+      "sha256": "c53829d1cc3b0fdffe28799c78c80da0506a72d5f651e8089aa652e2ce8a0fe5"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-correspondence-debug-full-001/prepared.json",
+      "sha256": "d46bd75a9ecebef05eabcb69c9c7a74697035f91ebc1efa002bdd6bd627900c1"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-correspondence-debug-full-001/stderr",
+      "sha256": "bb432a43f96a2ca7664b9f687e28d48addeece768243edcb2864485c73065a01"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-correspondence-debug-full-001/resources.jsonl",
+      "sha256": "e201057252a028c8a94da07c30b5eb769060a218ea77c6cea7359c5df98d77bb"
+    }
+  ],
+  "next": "Reduce this exact PCG entity against stock C and diagnostic writer; source/configuration adaptation only after semantic review. Prior integral_constant reduction is distinct; compressed-pair address retention was rejected and is not adopted."
+}
