@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-08",
+  "status": "native-oracles-passed-export-pending",
+  "checks": 10,
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-cpp-acceptance-oracles-003/results.json",
+    "sha256": "1ec6e2b1d9583fb1f1a3aa27aa7b74d4f6c402d7aba411de765721b3677864ff"
+  },
+  "scope": "No-STL C++ layout and lifetime acceptance gates, native O0/O2 and stock EDG C references only",
+  "managedExecutionVerified": false,
+  "nativeAotVerified": false,
+  "pending": [
+    {
+      "gate": "cpp_object_layout-owned-export",
+      "diagnostic": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-cpp-acceptance-oracles-003/cpp_object_layout/cpp_object_layout.cpp:19:17: dot_gen_be: unsupported dotobj scalar-v13: record:TailDerived: record field outside plain layout profile (kind -1) in dotobj function tail_layout\n"
+    },
+    {
+      "gate": "cpp_lifetime_unwind-owned-export",
+      "diagnostic": "dot_gen_be: unsupported dotobj scalar-v13: destruction obligations (kind -1) in dotobj function main\n"
+    }
+  ],
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-compiler-015/cpfe-dot",
+    "sha256": "bb5b8f85b7da076628e51aecea6e1cad10dcd84e8b6918904f122d634b08655a"
+  },
+  "stockCompiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3"
+  },
+  "checksDescription": [
+    "Complete/base extent and base tail reuse (8-byte stride, 5-byte assignment), multiple/virtual inheritance pointer adjustment, virtual dispatch",
+    "Construction/destruction order and shared virtual-base identity",
+    "Return, break/continue/goto scope exits, full-expression and conditional reference-extended temporary",
+    "Partial member construction, nested catch/rethrow and partial array-new unwinding"
+  ]
+}
