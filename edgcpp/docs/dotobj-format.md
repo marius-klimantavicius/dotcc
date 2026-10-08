@@ -13,7 +13,8 @@ adds structured for/do loops, integer mutations and explicitly targeted loop
 exits. The v3 profile extends integer widths to signed/unsigned 8/16/32/64 bits
 and adds conditional expressions, bitwise operators and shifts. The v4 profile
 adds original declaration/type snapshots at pre-lowering hooks and a source map,
-with `sourceDeclarations=true`. Full source-tree/macro
+with `sourceDeclarations=true`. V5 adds effective macro definition/undefinition provenance and a macro map.
+Full source-tree/macro-expansion
 and lifetime capture, broad C++ coverage and the full graph design below remain
 unfinished; the initial profile explicitly records those missing capabilities.
 

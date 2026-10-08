@@ -24,7 +24,8 @@ internal sealed partial class ObjectFile : IDisposable
         ["functions"] = "entity_id", ["bindings"] = "id", ["nodes"] = "id",
         ["edges"] = "parent_id,role,ordinal", ["content_digest"] = "singleton",
         ["source_types"] = "id", ["source_declarations"] = "id",
-        ["source_functions"] = "entity_id", ["source_parameters"] = "entity_id,ordinal"
+        ["source_functions"] = "entity_id", ["source_parameters"] = "entity_id,ordinal",
+        ["macro_definitions"] = "id", ["macro_parameters"] = "definition_id,ordinal", ["macro_events"] = "id"
     };
     private static readonly Dictionary<string, (string Kind, string Sql)> ExpectedSchema = LoadSchema();
 
@@ -54,11 +55,11 @@ internal sealed partial class ObjectFile : IDisposable
             using (var check = database.Prepare("PRAGMA foreign_key_check"))
                 if (check.Read()) throw new InvalidDataException("Object contains broken foreign keys");
             VerifyDigest();
-            using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations FROM object_info"))
+            using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v4" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v5" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
-                    info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1)
+                    info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
                 UnitId = info.Text(4); PrimarySource = info.Text(5);
                 if (UnitId.Length == 0 || info.Read()) throw new InvalidDataException("Invalid object identity");
@@ -70,6 +71,7 @@ internal sealed partial class ObjectFile : IDisposable
                     throw new InvalidDataException("Primary source identity does not match exactly one available root snapshot");
             ReadSummaries();
             ReadAndVerifySourceProvenance();
+            ReadAndVerifyMacroProvenance();
         }
         catch { database.Dispose(); throw; }
     }

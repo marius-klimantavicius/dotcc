@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v4'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v5'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -15,7 +15,8 @@ CREATE TABLE object_info (
  prelower_source INTEGER NOT NULL CHECK(prelower_source=0),
  macros INTEGER NOT NULL CHECK(macros=0),
  lifetimes INTEGER NOT NULL CHECK(lifetimes=0),
- source_declarations INTEGER NOT NULL CHECK(source_declarations=1)
+ source_declarations INTEGER NOT NULL CHECK(source_declarations=1),
+ macro_definitions INTEGER NOT NULL CHECK(macro_definitions=1)
 ) STRICT;
 CREATE TABLE provenance (
  ordinal INTEGER PRIMARY KEY,
@@ -130,6 +131,36 @@ CREATE TABLE source_declarations (
  column INTEGER NOT NULL CHECK(column>=0),
  CHECK((kind='function' AND entity_id IS NOT NULL AND binding_id IS NULL AND function_entity_id IS NULL) OR
        (kind IN ('parameter','local') AND entity_id IS NULL AND binding_id IS NOT NULL AND function_entity_id IS NOT NULL))
+) STRICT;
+CREATE TABLE macro_definitions (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ name TEXT NOT NULL,
+ form TEXT NOT NULL CHECK(form IN ('object','function')),
+ variadic INTEGER NOT NULL CHECK(variadic IN (0,1)),
+ dynamic INTEGER NOT NULL CHECK(dynamic IN (0,1)),
+ definition_text TEXT NOT NULL,
+ origin TEXT NOT NULL CHECK(origin IN ('source','command-line','predefined')),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0)
+) STRICT;
+CREATE TABLE macro_parameters (
+ definition_id INTEGER NOT NULL REFERENCES macro_definitions(id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ name TEXT NOT NULL,
+ PRIMARY KEY(definition_id,ordinal)
+) STRICT;
+CREATE TABLE macro_events (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ kind TEXT NOT NULL CHECK(kind IN ('define','undef')),
+ name TEXT NOT NULL,
+ definition_id INTEGER REFERENCES macro_definitions(id),
+ origin TEXT NOT NULL CHECK(origin IN ('source','command-line','predefined')),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ CHECK((kind='define' AND definition_id IS NOT NULL) OR
+       (kind='undef' AND definition_id IS NULL))
 ) STRICT;
 CREATE TABLE content_digest (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),

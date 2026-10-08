@@ -46,7 +46,7 @@ verification.
 
 ## Current acceptance and boundaries
 
-`scalar-control-v4` supports defined/declaration function identities with strong
+`scalar-control-v5` supports defined/declaration function identities with strong
 external or TU-private linkage, signed/unsigned 8/16/32/64-bit integer operations,
 parameters and block locals, direct calls, conversions, initialization,
 short-circuit and conditional expressions, bitwise operators and shifts,
@@ -73,9 +73,20 @@ reopening the original files. Code generation still uses the execution graph.
 This is selected declaration/type provenance, not a complete source syntax tree
 or all redeclarations, scopes, expressions and lifetime boundaries. The profile
 still explicitly records `prelowerSource=false`, `macros=false` and
-`lifetimes=false`. Source/header bytes are retained, but macro definitions and
-expansion history are **not** semantically captured yet. This is an execution
-graph slice, not the complete two-view source/execution graph in the design.
+`lifetimes=false`. Effective macro definition capture is separately marked
+`macroDefinitions=true`: EDG's preprocessor records installed object/function
+macros, parameter names, canonical definition text, accepted undef events,
+origin (source/command-line/predefined) and source locations. Linking writes
+`macro-map.json` without executing or translating that metadata into C# APIs.
+The wrapper accepts `-D` and `-U` and uses EDG's definition/undefinition handling.
+
+This is effective definition provenance, not complete directive/expansion
+history. Original trivia, identical discarded redefinitions, replacement-token
+identity graphs and expansion/argument-use records are not retained. Dynamic
+builtins are flagged with empty definition text. Active push_macro/pop_macro,
+PCH/module macro imports and non-UTF8/NUL metadata are explicitly rejected.
+Source/header bytes remain retained separately. This is still a partial source
+and execution graph, not the complete design.
 
 Globals/TLS, pointers/records, volatile/atomic behavior, inline/template/COMDAT,
 RAII/EH/noexcept, switch/goto and provider runtime linkage are rejected. These are
@@ -95,7 +106,7 @@ python3 -B edgcpp/object-linker/tests/verify.py \
   --output-dir /path/fresh/dotobj-acceptance --nativeaot
 ```
 
-The 157-check acceptance run covers actual independent EDG compilation, native
+The 212-check acceptance run covers actual independent EDG compilation, native
 reference execution, managed JIT/NativeAOT, private name isolation, scope
 shadowing, loop-local reinitialization, short-circuit effects, bool/byte
 conversions, namespace collisions and implicit main return. Loop fixtures cover
@@ -113,6 +124,10 @@ unsupported ABI/node/edge forms, altered schema or snapshots, hash mismatches
 and unsupported source features. Source tests cover alias chains, const and
 bool capture, differing prototype/definition spelling, same-named block typedefs,
 complete binding links, invalid source cycles/mappings and capture-phase checks.
+Macro tests cover active/inactive directives, effective redefinition order,
+empty/object/function/variadic macros, stringizing/pasting, command-line -D/-U,
+source locations and malformed event/parameter records. Unsupported active
+push/pop pragmas fail before object publication.
 The existing normal dot-backend scalar test
 also still executes successfully after the opt-in hook.
 
@@ -122,8 +137,14 @@ digest, snapshots, references, scope/type/operation contracts and required
 indexes. A hash demonstrates content integrity, not semantic correctness.
 
 Full logs/objects/generated projects remain under
-`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-acceptance-002/`.
+`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-macro-acceptance-002/`.
 
-The current schema requires `scalar-control-v4`. Earlier v1/v2/v3 objects and tools
+The current schema requires `scalar-control-v5`. Earlier v1/v2/v3/v4 objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
+
+The definition-text capture profile rejects actual `__VA_OPT__` replacement
+operators: the stock inspection formatter is not a complete round-trip format
+for trailing optional text. Quoted occurrences remain ordinary macro text.
+EDG preprocessing semantics are unchanged; a future token-based macro graph can
+represent this construct without relying on inspection formatting.

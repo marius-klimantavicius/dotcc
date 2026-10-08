@@ -13,6 +13,9 @@ symbol_tbl.c - Symbol table management routines.
 
 /* Header files common to all files. */
 #include "fe_common.h"
+#if defined(EDG_DOT_BACKEND)
+#include "dot_gen_object_macros.h"
+#endif
 /* Although symbol_tbl.c is not really a "declaration processing file",
    it turns out that most of the header files it needs are in decl_hdrs.h. */
 #include "decl_hdrs.h"
@@ -18336,6 +18339,9 @@ preprocessing only.
     smsp->next = sym_hdr->saved_macro_stack;
     sym_hdr->saved_macro_stack = smsp;
   }  /* if */
+#if defined(EDG_DOT_BACKEND)
+  dot_object_macros::reject_feature("push_macro pragma");
+#endif
 }  /* push_macro_pragma */
 
 
@@ -18388,6 +18394,9 @@ preprocessing only.
       free_saved_macro_state(smsp);
     }  /* if */
   }  /* if */
+#if defined(EDG_DOT_BACKEND)
+  dot_object_macros::reject_feature("pop_macro pragma");
+#endif
 }  /* pop_macro_pragma */
 
 

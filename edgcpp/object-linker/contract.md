@@ -8,8 +8,11 @@ Native stdout wire is one JSON object (transient packaging protocol only):
 ```
 {
   "formatVersion": 1,
-  "profile": "scalar-control-v4",
+  "profile": "scalar-control-v5",
   "sourceFiles": [{"id":1,"path":"/absolute/main.cpp","parentId":null}],
+  "macroDefinitions": [{"id":1,"name":"LIMIT","form":"object","variadic":false,"dynamic":false,"definitionText":"#define LIMIT 4","origin":"source","sourceFileId":1,"line":1,"column":9}],
+  "macroParameters": [],
+  "macroEvents": [{"id":1,"kind":"define","name":"LIMIT","definitionId":1,"origin":"source","sourceFileId":1,"line":1,"column":9}],
   "types": [{"id":1,"kind":"void"},{"id":2,"kind":"i32"},{"id":3,"kind":"bool"},{"id":4,"kind":"u8"}],
   "sourceTypes": [{"id":1,"kind":"int","sourceName":"","underlyingTypeId":null,"executionTypeId":2,"isConst":false,"isVolatile":false,"sourceFileId":null,"line":0,"column":0}],
   "sourceFunctions": [{"entityId":1,"returnSourceTypeId":1,"capturePhase":"before-lowering"}],
@@ -102,7 +105,8 @@ providers. Unsupported constructs fail export rather than emit partial output.
 Packager stores typed rows using schema.sql, including producer compiler/config,
 original source/include bytes and exact arguments. Only one original TU is sent
 to EDG; no .ii preprocessing subprocess or semantic merge. Objects advertise
-sourceDeclarations=true, prelowerSource=false, macros=false, lifetimes=false.
+sourceDeclarations=true, macroDefinitions=true, prelowerSource=false,
+macros=false, lifetimes=false.
 The first flag covers only the scalar declaration/type provenance below; a full
 source expression/statement view is still absent.
 These explicit limitations must survive the link report; fixtures do not claim
@@ -111,8 +115,8 @@ The initial target is portable-lp64-binary80-v2; callable ABI dotobj-scalar-v1.
 The scalar-control-v3 object profile adds 8/16/32/64-bit signed/unsigned
 integers, bitwise/shift expressions and conditional values to v2's structured
 loops and explicit loop exit identities. It does not change the callable ABI.
-The current canonical schema reader requires scalar-control-v4 and rejects
-v1/v2/v3 objects; preserve their respective earlier tool build to read them,
+The current canonical schema reader requires scalar-control-v5 and rejects
+v1/v2/v3/v4 objects; preserve their respective earlier tool build to read them,
 or recompile with this producer.
 The profile uses EDG's fixed portable LP64 target: long and long long share the
 64-bit physical representation, while exact external keys retain C++ overload
@@ -165,7 +169,7 @@ the corresponding IL during lowering, including signatures lowered early
 through references from another function. Private EDG pointers are lookup keys
 only and never appear in the object. Source positions denote EDG declaration
 positions; these are not token ranges or a reconstruction of every syntactic
-spelling. Unreferenced typedef declarations, macros, statement/expression
+spelling. Unreferenced typedef declarations, statement/expression
 provenance, initializer structure, and destruction boundaries are not captured
 by this slice. Source snapshots alone do not imply those capabilities.
 
@@ -173,6 +177,53 @@ The linker validates source-to-execution mappings but uses the authoritative
 execution graph for C# semantics. It also emits `source-map.json` for inspection
 and navigation, retaining type/declaration IDs and source-file references. This
 artifact is derived from the object tables and requires no original files.
+
+The scalar-control-v5 profile adds **effective macro definition provenance**
+captured from EDG's actual preprocessor. The executable graph and callable ABI
+remain unchanged. Three additional required wire arrays map to normalized tables:
+
+- `macroDefinitions`: contiguous positive `id` in installation order; nonempty
+  `name`; `form` equal to `object` or `function`; boolean `variadic` and
+  `dynamic`; `definitionText`; `origin` equal to `source`, `command-line`, or
+  `predefined`; nullable `sourceFileId`; `line` and `column`. Ordinary definitions
+  preserve EDG's canonical decoded complete `#define NAME...` text. Comments and
+  whitespace may be normalized, so this is not a raw source token range. Dynamic
+  predefined macros have `dynamic=true` and empty `definitionText`; the object
+  does not invent a fixed value for `__LINE__`, `__FILE__`, or similar builtins.
+  Only function macros can be variadic. Source-origin definitions require a
+  source-file occurrence and positive line/column; other origins use null file
+  and zero line/column. A redefinition that installs a new effective definition
+  gets a new identity. A benign identical redefinition discarded by EDG does
+  not receive a new installation event.
+- `macroParameters`: `definitionId`, contiguous zero-based `ordinal`, and `name`.
+  Only function definitions have parameters. Nonempty names are unique per definition;
+  the final variadic parameter is included, retaining `__VA_ARGS__` or its GNU
+  named spelling without an ellipsis. EDG dynamic predefined function macros
+  may have an unnamed argument, represented by an empty name only for those
+  predefined dynamic definitions. Zero-parameter function macros are distinct
+  from object macros. Variadic functions must have a final parameter.
+- `macroEvents`: contiguous positive chronological `id`; `kind` equal to
+  `define` or `undef`; `name`; nullable `definitionId`; `origin` and source
+  position in the same form as definitions. A `define` owns exactly one
+  definition and must agree with its name, origin and position; definition IDs
+  follow their define-event order. An `undef` has null definitionId. Undefining
+  an already undefined name is valid and remains an event. Source directives in
+  inactive conditional branches are not events. These identities are local to
+  each translation unit and do not merge across separately compiled objects.
+
+This is an effective definition history, **not** a replacement-token semantic
+IR, complete directive history, or expansion/argument history. Parameter names
+and canonical definitions support inspection of stringizing, token pasting,
+variadic and function macros but are not linked renamable execution references.
+The reader does not interpret the replacement text or infer exported C# APIs.
+Source snapshots retain original text where available; the canonical definition
+alone does not preserve every original token's location. Macro push/pop and
+precompiled/module macro import paths are rejected until their state transitions
+can be captured faithfully. Non-UTF-8 decoded macro text is rejected by this
+profile. The `macros` capability remains false; the new narrower
+`macroDefinitions` capability is true. Linking emits `macro-map.json` as inert
+inspection metadata, separately from `source-map.json`, and does not add macro
+wrappers, constants, initialization code, or runtime dependencies to generated C#.
 
 Expression valueCategory is place for binding and value otherwise; statements
 use null. evaluationOrder is null for statements, none for constant/binding,
@@ -211,3 +262,9 @@ and source_declarations_by_function(function_entity_id,id) indexes support
 per-function graph/provenance loading; index definitions are validated
 separately from the logical table-content digest. Changing physical indexes must
 not change program identity, but an unsupported schema object is rejected.
+
+The definition-text capture profile rejects actual `__VA_OPT__` replacement
+operators: the stock inspection formatter is not a complete round-trip format
+for trailing optional text. Quoted occurrences remain ordinary macro text.
+EDG preprocessing semantics are unchanged; a future token-based macro graph can
+represent this construct without relying on inspection formatting.

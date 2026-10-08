@@ -5,6 +5,7 @@ import shutil
 
 root = Path(__file__).resolve().parents[1]
 for source, target in [
+    (root / "backend/dot_gen_object_macros.h", root / "upstream/src/dot_gen_object_macros.h"),
     (root / "backend/dot_gen_object_source.h", root / "upstream/src/dot_gen_object_source.h"),
     (root / "backend/dot_gen_object.h", root / "upstream/src/dot_gen_object.h"),
     (root / "backend/dot_gen_primitive_views.h", root / "upstream/src/dot_gen_primitive_views.h"),
@@ -131,6 +132,143 @@ def object_source_overlay(path, original, patched):
     if source.count(original) != 1:
         raise RuntimeError(f"EDG object source overlay does not match pinned {path.name}")
     path.write_text(source.replace(original, patched))
+
+# Observe accepted macro changes without depending on optional EDG IL macro
+# capture. The stock decoder owns preprocessing semantics and token spelling.
+for filename in ("macro.c", "preproc.c", "symbol_tbl.c"):
+    object_source_overlay(root / "upstream/src" / filename,
+        '#include "fe_common.h"',
+        '#include "fe_common.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_macros.h"\n#endif')
+macro = root / "upstream/src/macro.c"
+macro_observer = r'''
+#if defined(EDG_DOT_BACKEND)
+static void dot_object_observe_macro(a_symbol_ptr symbol,
+                                     const a_source_position &position,
+                                     const char *origin)
+{
+  if (!dot_object_macros::enabled()) return;
+  auto definition = symbol->variant.macro_def;
+  // Bound the canonical-text export to replacement sections supported by this
+  // profile. Inspect EDG's encoded section kinds, never matching source text:
+  // a quoted "__VA_OPT__" is ordinary text and remains supported. Optional
+  // replacement groups need a richer representation before we can export them.
+  for (char *cursor = definition->repl_text; cursor && *cursor != (int)rt_end;) {
+    a_repl_text_seq_kind kind = (a_repl_text_seq_kind)*(cursor++);
+    sizeof_t number;
+    get_macro_repl_text_number(number, cursor);
+    switch (kind) {
+      case rt_text:
+        cursor += number;
+        break;
+      case rt_optional_text:
+        dot_object_macros::reject_feature("__VA_OPT__ macro replacement groups");
+        return;
+      case rt_stringized_raw_argument:
+      case rt_charized_raw_argument:
+        if (number == MAX_REPL_TEXT_NUMBER) {
+          dot_object_macros::reject_feature("__VA_OPT__ macro replacement groups");
+          return;
+        }
+        break;
+      case rt_raw_argument:
+      case rt_microsoft_maybe_raw_argument:
+      case rt_paste:
+      case rt_argument:
+      case rt_microsoft_magic_arg_marker:
+        break;
+      default:
+        dot_object_macros::reject_feature("unknown macro replacement section");
+        return;
+    }
+  }
+  // Stock EDG guard restores the exact prior scratch pointer, capacity and
+  // cursor, including any live pointers into that buffer.
+  a_temp_text_buffer_swap scratch;
+  make_definition_string(symbol);
+  dot_object_macros::Definition value;
+  value.name = symbol->header->identifier;
+  value.text.assign(temp_text_buffer, pos_in_temp_text_buffer - 1);
+  value.origin = origin;
+  value.position = position;
+  value.object_like = definition->object_like;
+  value.variadic = definition->variadic;
+  value.dynamic = definition->repl_text == NULL;
+  for (auto parameter = definition->param_list; parameter; parameter = parameter->next)
+    value.parameters.emplace_back(parameter->name);
+  dot_object_macros::define(value);
+}
+#endif
+'''
+# Upgrade an already prepared observer in place. Anchoring only the preceding
+# upstream function would append a second helper after a local overlay edit.
+observer_start = '\n#if defined(EDG_DOT_BACKEND)\nstatic void dot_object_observe_macro('
+macro_source = macro.read_text()
+if observer_start in macro_source:
+    if macro_source.count(observer_start) != 1:
+        raise RuntimeError("Duplicate EDG macro object observer")
+    start = macro_source.index(observer_start)
+    end = macro_source.index('}\n#endif\n', start) + len('}\n#endif\n')
+    if macro_source[start:end] != macro_observer:
+        macro.write_text(macro_source[:start] + macro_observer + macro_source[end:])
+else:
+    object_source_overlay(macro,
+        '}  /* make_definition_string */',
+        '}  /* make_definition_string */\n' + macro_observer)
+object_source_overlay(macro,
+    'def_done:;\n    if (assoc_symbol != NULL && !discard_new_definition) {',
+    'def_done:;\n    if (assoc_symbol != NULL && !discard_new_definition) {\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_observe_macro(assoc_symbol, start_pos, processing_predefined_macro ? "predefined" :\n'
+    '          curr_cmd_line_or_predef_macro_def != NULL ? "command-line" : "source");\n'
+    '#endif')
+object_source_overlay(macro,
+    '    mdp->repl_text   = repl_text;\n#if RECORD_MACROS_IN_IL',
+    '    mdp->repl_text   = repl_text;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_observe_macro(sym_ptr, null_source_position, "predefined");\n'
+    '#endif\n#if RECORD_MACROS_IN_IL')
+object_source_overlay(macro,
+    '      if (err && !suppress_error) {\n        str_command_line_error(ec_cl_invalid_macro_undefinition, du_str);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      if (!err) dot_object_macros::undef(du_str, strlen(du_str), null_source_position, "command-line");\n'
+    '#endif\n'
+    '      if (err && !suppress_error) {\n        str_command_line_error(ec_cl_invalid_macro_undefinition, du_str);')
+object_source_overlay(macro,
+    '  if (scanning_module_macro) {\n',
+    '  if (scanning_module_macro) {\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_macros::reject_feature("module macro imports");\n'
+    '#endif\n')
+object_source_overlay(macro,
+    '  /* Reset the replacement text for the __DATE__ and __TIME__ macro symbols. */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_macros::reject_feature("precompiled header macro imports");\n'
+    '#endif\n'
+    '  /* Reset the replacement text for the __DATE__ and __TIME__ macro symbols. */')
+preproc = root / "upstream/src/preproc.c"
+object_source_overlay(preproc,
+    '      /* No such macro, so #undef is ignored. */',
+    '      /* No such macro, so #undef is ignored. */\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_macros::undef(id_ptr, id_len, pos_curr_token, "source");\n'
+    '#endif')
+object_source_overlay(preproc,
+    '      /* Remove the macro\'s definition.  The a_macro_def entry pointed to\n'
+    '         by the symbol is not freed, and is therefore just lost.  */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_macros::undef(id_ptr, id_len, pos_curr_token, "source");\n'
+    '#endif\n'
+    '      /* Remove the macro\'s definition.  The a_macro_def entry pointed to\n'
+    '         by the symbol is not freed, and is therefore just lost.  */')
+symbols = root / "upstream/src/symbol_tbl.c"
+for kind in ("push", "pop"):
+    # Anchor the final assignment in each function, so ordinary pragma parsing
+    # remains untouched and an inactive conditional branch never triggers it.
+    ending = '}  /* ' + kind + '_macro_pragma */'
+    object_source_overlay(symbols, ending,
+        '#if defined(EDG_DOT_BACKEND)\n'
+        '  dot_object_macros::reject_feature("' + kind + '_macro pragma");\n'
+        '#endif\n' + ending)
 
 for filename in ("lower_il.c", "lower_c99.c"):
     object_source_overlay(root / "upstream/src" / filename,

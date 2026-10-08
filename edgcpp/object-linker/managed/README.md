@@ -1,6 +1,6 @@
 # Managed semantic object linker
 
-This is the executable `scalar-control-v4` implementation of the fresh
+This is the executable `scalar-control-v5` implementation of the fresh
 `.dotobj` semantic graph. It does not read the previous semantic-export format
 or an emission-command stream.
 
@@ -82,14 +82,28 @@ missing declaration capture, type-reference cycles and inconsistent mappings.
 Source declarations stream through validation and map output; local provenance
 does not remain resident for the whole program.
 
+The separate `macro-map.json` records `macroDefinitions=true`: canonical macro
+text decoded by EDG's preprocessor, definition identities, function parameter
+names, effective define/undef events, source locations and command-line versus
+predefined origins. Dynamic builtins have an empty definition text and an
+explicit dynamic flag. The reader verifies chronological installation identity,
+matching event/definition origins and names, parameter ownership and ordinals.
+Undefined-name `#undef` is allowed. Definitions and events stream through
+validation and map output without retaining replacement text for the program.
+This is inspection metadata, never executable code. It does not provide a
+replacement-token IR, expansion/argument history, or automatic C# macro APIs.
+Discarded identical redefinitions and inactive directives do not appear;
+comments and whitespace in definition text can be canonicalized by EDG.
+Push/pop and precompiled/module macro import are rejected for this profile.
+
 The link report still preserves the missing capability flags: `prelowerSource`,
 `macros`, and `lifetimes` are false. A complete source expression/statement view,
-all redeclarations and macro/lifetime capture remain absent. Globals/TLS, pointers, records, function
+all redeclarations, macro expansion history and lifetime capture remain absent. Globals/TLS, pointers, records, function
 addresses, exceptions/RAII, inline/COMDAT, templates and runtime providers are
 not implemented in this profile. Unsupported input is rejected; scalar fixtures
 do not demonstrate DuckDB readiness or full C++ coverage.
 
-The current schema requires scalar-control-v4 objects. Earlier v1/v2/v3 objects
+The current schema requires scalar-control-v5 objects. Earlier v1/v2/v3/v4 objects
 remain usable with their retained earlier tool build, or can be regenerated.
 
 The integer profile supports signed/unsigned 8/16/32/64-bit values, exact decimal
@@ -101,3 +115,9 @@ conflict with source unsigned wraparound. Unsigned negation emits typed zero
 minus the operand. Shifts convert non-int counts explicitly to int. Conditional
 expressions and short-circuit operators evaluate only their selected operands.
 This does not add floating point, pointers, compound assignment or comma nodes.
+
+The definition-text capture profile rejects actual `__VA_OPT__` replacement
+operators: the stock inspection formatter is not a complete round-trip format
+for trailing optional text. Quoted occurrences remain ordinary macro text.
+EDG preprocessing semantics are unchanged; a future token-based macro graph can
+represent this construct without relying on inspection formatting.

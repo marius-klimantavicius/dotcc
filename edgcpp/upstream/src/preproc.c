@@ -14,6 +14,9 @@ preproc.c -- Preprocessing directives.
 
 /* Header files common to all files. */
 #include "fe_common.h"
+#if defined(EDG_DOT_BACKEND)
+#include "dot_gen_object_macros.h"
+#endif
 /* Header files used by files involved in declaration processing. */
 #include "decl_hdrs.h"
 
@@ -1046,6 +1049,9 @@ Scan and process an #undef directive.
 	                                     &locator_for_curr_id);
     if (assoc_symbol == NULL) {
       /* No such macro, so #undef is ignored. */
+#if defined(EDG_DOT_BACKEND)
+      dot_object_macros::undef(id_ptr, id_len, pos_curr_token, "source");
+#endif
     } else if (assoc_symbol->variant.macro_def->cannot_be_redefined &&
                !microsoft_mode && !gnu_mode) {
       /* The macro is predefined. */
@@ -1061,6 +1067,9 @@ Scan and process an #undef directive.
       /* Make an IL entry for the #undef. */
       make_il_undef_entry(assoc_symbol, &pos_curr_token);
 #endif /* RECORD_MACROS_IN_IL */
+#if defined(EDG_DOT_BACKEND)
+      dot_object_macros::undef(id_ptr, id_len, pos_curr_token, "source");
+#endif
       /* Remove the macro's definition.  The a_macro_def entry pointed to
          by the symbol is not freed, and is therefore just lost.  */
       mark_referenced(assoc_symbol, &pos_curr_token);

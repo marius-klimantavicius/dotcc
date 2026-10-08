@@ -19,6 +19,7 @@
 #include "exprutil.h"
 #include "types.h"
 #include "dot_gen_object_source.h"
+#include "dot_gen_object_macros.h"
 USING_NAMESPACE_EDG
 #include "../util/decode.h"
 

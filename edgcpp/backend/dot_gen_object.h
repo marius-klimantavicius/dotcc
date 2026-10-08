@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v4: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v5: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -37,6 +37,7 @@ struct Writer {
   std::vector<a_routine_ptr> routines;
   std::vector<string> files,entities,parameters,functions,bindings,nodes,edges;
   std::vector<string> source_types,source_declarations,source_functions,source_parameters;
+  std::vector<string> macro_definitions,macro_parameters,macro_events;
   std::map<unsigned,unsigned> source_type_ids;
   std::set<a_scope_ptr> bound_scopes;
   std::set<unsigned> declared_bindings;
@@ -94,6 +95,34 @@ struct Writer {
       conv_seq_to_file_and_line(pos.seq,&display,&full,&line,&at_end);
     }
     return ",\"sourceFileId\":"+number(id)+",\"line\":"+std::to_string((unsigned long long)line)+",\"column\":"+std::to_string((unsigned)pos.column);
+  }
+  string macro_position(const a_source_position &pos,const string &origin) {
+    if(origin!="source")return ",\"sourceFileId\":null,\"line\":0,\"column\":0";
+    if(!pos.seq || !pos.column || !source_file(il_header.primary_source_file,pos.seq))
+      reject("macro position outside captured source files");
+    return position(pos);
+  }
+  void capture_macros() {
+    const auto &captured=dot_object_macros::state();
+    if(!captured.unsupported.empty())reject(captured.unsupported.c_str());
+    for(size_t i=0;i<captured.definitions.size();++i) {
+      const auto &value=captured.definitions[i];unsigned id=(unsigned)i+1;
+      macro_definitions.push_back("{\"id\":"+number(id)+",\"name\":"+quote(value.name)+
+        ",\"form\":"+quote(value.object_like?"object":"function")+
+        ",\"variadic\":"+(value.variadic?"true":"false")+
+        ",\"dynamic\":"+(value.dynamic?"true":"false")+
+        ",\"definitionText\":"+quote(value.text)+",\"origin\":"+quote(value.origin)+
+        macro_position(value.position,value.origin)+"}");
+      for(size_t p=0;p<value.parameters.size();++p)
+        macro_parameters.push_back("{\"definitionId\":"+number(id)+",\"ordinal\":"+std::to_string(p)+
+          ",\"name\":"+quote(value.parameters[p])+"}");
+    }
+    for(size_t i=0;i<captured.events.size();++i) {
+      const auto &value=captured.events[i];
+      macro_events.push_back("{\"id\":"+number((unsigned)i+1)+",\"kind\":"+quote(value.kind)+
+        ",\"name\":"+quote(value.name)+",\"definitionId\":"+number(value.definition)+
+        ",\"origin\":"+quote(value.origin)+macro_position(value.position,value.origin)+"}");
+    }
   }
   unsigned source_type(unsigned captured) {
     if(!captured)reject("missing pre-lowering scalar type");
@@ -395,6 +424,7 @@ struct Writer {
   void run() {
     if(targ_sizeof_pointer!=8)reject("non64-bit target");
     source_files(il_header.primary_source_file,0);
+    capture_macros();
     auto file_scope=il_header.primary_scope;
     if(file_scope->variables || file_scope->dynamic_inits || file_scope->asm_entries)reject("global storage/initialization/asm");
     for(auto r=file_scope->routines;r;r=r->next) {
@@ -413,7 +443,9 @@ struct Writer {
       functions.push_back("{\"entityId\":"+number(function)+",\"bodyNodeId\":"+number(root)+"}");
       context="file scope";
     }
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v4\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v5\",\"sourceFiles\":"+array(files)+
+      ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
+      ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
       ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
       ",\"types\":[{\"id\":1,\"kind\":\"void\"},{\"id\":2,\"kind\":\"i32\"},{\"id\":3,\"kind\":\"u8\"},"

@@ -14,6 +14,9 @@ macro.c -- Macro definition and expansion routines.
 
 /* Header files common to all files. */
 #include "fe_common.h"
+#if defined(EDG_DOT_BACKEND)
+#include "dot_gen_object_macros.h"
+#endif
 
 #ifdef PCH_PRAGMA_GUARD
 /* Mark the end of the sequence of headers subject to precompiled header
@@ -8889,6 +8892,65 @@ macro described by macro_sym, i.e., "#define <name> <replacement>".
   put_ch_to_temp_text_buffer('\0');
 }  /* make_definition_string */
 
+#if defined(EDG_DOT_BACKEND)
+static void dot_object_observe_macro(a_symbol_ptr symbol,
+                                     const a_source_position &position,
+                                     const char *origin)
+{
+  if (!dot_object_macros::enabled()) return;
+  auto definition = symbol->variant.macro_def;
+  // Bound the canonical-text export to replacement sections supported by this
+  // profile. Inspect EDG's encoded section kinds, never matching source text:
+  // a quoted "__VA_OPT__" is ordinary text and remains supported. Optional
+  // replacement groups need a richer representation before we can export them.
+  for (char *cursor = definition->repl_text; cursor && *cursor != (int)rt_end;) {
+    a_repl_text_seq_kind kind = (a_repl_text_seq_kind)*(cursor++);
+    sizeof_t number;
+    get_macro_repl_text_number(number, cursor);
+    switch (kind) {
+      case rt_text:
+        cursor += number;
+        break;
+      case rt_optional_text:
+        dot_object_macros::reject_feature("__VA_OPT__ macro replacement groups");
+        return;
+      case rt_stringized_raw_argument:
+      case rt_charized_raw_argument:
+        if (number == MAX_REPL_TEXT_NUMBER) {
+          dot_object_macros::reject_feature("__VA_OPT__ macro replacement groups");
+          return;
+        }
+        break;
+      case rt_raw_argument:
+      case rt_microsoft_maybe_raw_argument:
+      case rt_paste:
+      case rt_argument:
+      case rt_microsoft_magic_arg_marker:
+        break;
+      default:
+        dot_object_macros::reject_feature("unknown macro replacement section");
+        return;
+    }
+  }
+  // Stock EDG guard restores the exact prior scratch pointer, capacity and
+  // cursor, including any live pointers into that buffer.
+  a_temp_text_buffer_swap scratch;
+  make_definition_string(symbol);
+  dot_object_macros::Definition value;
+  value.name = symbol->header->identifier;
+  value.text.assign(temp_text_buffer, pos_in_temp_text_buffer - 1);
+  value.origin = origin;
+  value.position = position;
+  value.object_like = definition->object_like;
+  value.variadic = definition->variadic;
+  value.dynamic = definition->repl_text == NULL;
+  for (auto parameter = definition->param_list; parameter; parameter = parameter->next)
+    value.parameters.emplace_back(parameter->name);
+  dot_object_macros::define(value);
+}
+#endif
+
+
 
 void gen_pp_output_for_macro_definitions(void)
 /*
@@ -9251,6 +9313,9 @@ Scan and process a #define directive.
 
   db_enter(3, "proc_define");
   if (scanning_module_macro) {
+#if defined(EDG_DOT_BACKEND)
+    dot_object_macros::reject_feature("module macro imports");
+#endif
     /* The call to get_token() below will overwrite the module position,
        assumed to be stored in pos_curr_token.  Save this in start_pos now. */
     copy_source_position(pos_curr_token, start_pos);
@@ -10095,6 +10160,10 @@ process_ordinary_token:
     }  /* if */
 def_done:;
     if (assoc_symbol != NULL && !discard_new_definition) {
+#if defined(EDG_DOT_BACKEND)
+      dot_object_observe_macro(assoc_symbol, start_pos, processing_predefined_macro ? "predefined" :
+          curr_cmd_line_or_predef_macro_def != NULL ? "command-line" : "source");
+#endif
 #if RECORD_MACROS_IN_IL
 #if EXTRA_SOURCE_POSITIONS_IN_IL
       /* Make an IL entry for the macro and record the start and end
@@ -10770,6 +10839,9 @@ pointer to the symbol entry is returned.
     mdp->is_predefined = TRUE;
     mdp->ref_suppresses_pch_file = ref_suppresses_pch_file;
     mdp->repl_text   = repl_text;
+#if defined(EDG_DOT_BACKEND)
+    dot_object_observe_macro(sym_ptr, null_source_position, "predefined");
+#endif
 #if RECORD_MACROS_IN_IL
     /* Insert predefined macros into the macro list.  Predefined macros that
        have a varying replacement list (like __LINE__ and __FILE__) will have
@@ -10924,6 +10996,9 @@ The symbol table for this compilation has been read in from a precompiled
 header file, so some of the predefined macros need to be altered.
 */
 {
+#if defined(EDG_DOT_BACKEND)
+  dot_object_macros::reject_feature("precompiled header macro imports");
+#endif
   /* Reset the replacement text for the __DATE__ and __TIME__ macro symbols. */
   init_date_and_time_macros(curr_date_time);
 }  /* fixup_predefined_macros */
@@ -11100,6 +11175,9 @@ TRUE) and "-U" (when process_undefs is TRUE) options on the command line.
           }  /* if */
         }  /* if */
       }  /* if */
+#if defined(EDG_DOT_BACKEND)
+      if (!err) dot_object_macros::undef(du_str, strlen(du_str), null_source_position, "command-line");
+#endif
       if (err && !suppress_error) {
         str_command_line_error(ec_cl_invalid_macro_undefinition, du_str);
       }  /* if */

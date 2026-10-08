@@ -51,7 +51,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v4");
+            writer.WriteString("profile", "scalar-control-v5");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -59,13 +59,27 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
             writer.WriteEndArray();
             writer.WriteEndObject();
         }
+        using (var stream = File.Create(Path.Combine(output, "macro-map.json")))
+        using (var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true }))
+        {
+            writer.WriteStartObject();
+            writer.WriteNumber("formatVersion", 1);
+            writer.WriteString("profile", "scalar-control-v5");
+            writer.WriteString("capture", "preprocessor-definition-events");
+            writer.WriteBoolean("macroDefinitions", true);
+            writer.WriteBoolean("macros", false);
+            writer.WriteStartArray("objects");
+            foreach (ObjectFile obj in linker.Objects) obj.WriteMacroMap(writer);
+            writer.WriteEndArray();
+            writer.WriteEndObject();
+        }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v4", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v5", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
-            capabilities = new { sourceDeclarations = true, prelowerSource = false, macros = false, lifetimes = false },
-            limitations = new[] { "Scalar/control profile only; no globals, records, pointers, EH, RAII, templates/COMDAT or runtime providers", "Pre-lowering scalar declaration/type provenance only; no complete source expression/statement view, macro capture or lifetime capture" },
-            @namespace = namespaceOption, @class = classOption, sourceMap = "source-map.json",
+            capabilities = new { sourceDeclarations = true, macroDefinitions = true, prelowerSource = false, macros = false, lifetimes = false },
+            limitations = new[] { "Scalar/control profile only; no globals, records, pointers, EH, RAII, templates/COMDAT or runtime providers", "Pre-lowering scalar declaration/type provenance only; no complete source expression/statement view, macro expansion history or lifetime capture" },
+            @namespace = namespaceOption, @class = classOption, sourceMap = "source-map.json", macroMap = "macro-map.json",
             objects = linker.Objects.Select(obj => new { path = obj.Path, unitId = obj.UnitId, primarySource = obj.PrimarySource, semanticDigest = obj.Digest }),
             symbols = linker.Definitions.Select(symbol => new { unitId = symbol.Object.UnitId, entityId = symbol.Entity.Id,
                 externalKey = symbol.Entity.ExternalKey, sourceName = symbol.Entity.SourceName, generatedName = linker.Names[symbol.Key], signature = symbol.Signature })

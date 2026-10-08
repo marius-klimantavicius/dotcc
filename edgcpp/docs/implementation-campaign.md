@@ -2329,3 +2329,31 @@ full source scopes, expression trees, all redeclarations, macro history and
 lifetimes remain unfinished. V4 objects require the matching reader; earlier
 objects/tools, all test intermediates and the unsuccessful first rejection-test
 run remain preserved. Broader types/storage and DuckDB remain future work.
+
+The `scalar-control-v5` milestone captures effective macro definitions and
+undefinition events from EDG's preprocessor during the original single-TU
+invocation. Read-only hooks record installed object/function definitions,
+parameter names, canonical inspection text, dynamic builtin flags, origins and
+locations. Discarded identical redefinitions and inactive branches produce no
+installation event. The wrapper accepts `-D` and `-U`. Linking writes inert
+`macro-map.json`; C# execution generation is unchanged.
+
+All 212 checks pass on Linux x64 with C11/C++17 native references, JIT and
+NativeAOT. Coverage includes unused API macros, empty and variadic macros,
+stringizing/pasting, redefinition order, unknown undef, command-line options,
+source locations, malformed metadata and unsupported active push/pop pragmas.
+The ordinary scalar regression passes and its generated C# matches the earlier
+baseline byte for byte. Independent review identified a stock inspection-text
+limitation for trailing `__VA_OPT__`; a retained probe confirmed incomplete
+closing punctuation. The exporter now detects and rejects actual optional
+replacement sections before formatting, while quoted occurrences are accepted.
+EDG preprocessing semantics were not modified. [Hashed macro milestone
+evidence](../evidence/dotobj-macro-definitions-20261008.json).
+
+`macroDefinitions=true` remains separate from `macros=false`: full directive and
+expansion/argument history, replacement-token identities, and C# macro API
+generation are not implemented. Push/pop, PCH/module macro imports and optional
+replacement groups are explicit profile exclusions. Current readers require v5
+objects; earlier tools/objects and all probes/intermediates remain preserved.
+Original source expression trees, lifetimes, records/storage and DuckDB remain
+unfinished.

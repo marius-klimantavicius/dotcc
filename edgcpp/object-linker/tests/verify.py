@@ -26,18 +26,19 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     inputs = out / 'inputs'
     inputs.mkdir()
-    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'integers.cpp', 'source_types.h', 'source_types.cpp']:
+    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'integers.cpp', 'source_types.h', 'source_types.cpp', 'macros.h', 'macros.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
     shutil.copy2(ROOT / 'tests/loops.cpp', inputs / 'loops-c.c')
     shutil.copy2(ROOT / 'tests/integers.cpp', inputs / 'integers-c.c')
     shutil.copy2(ROOT / 'tests/source_types.cpp', inputs / 'source-types-c.c')
+    shutil.copy2(ROOT / 'tests/macros.cpp', inputs / 'macros-c.c')
     checks = []
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v4', nativeAotRequested=args.nativeaot,
+            profile='scalar-control-v5', nativeAotRequested=args.nativeaot,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
-            limitations=['No prelower source view, macro history, lifetime/EH or globals yet.',
+            limitations=['No full prelower source view, macro expansion history, lifetime/EH or globals yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
 
     def run(label, command, expected=0, contains=None):
@@ -61,10 +62,10 @@ def main():
         if not condition:
             raise RuntimeError(label)
 
-    def compile_source(name, source, output=None, expected=0, unit_id=None, std='c++17'):
+    def compile_source(name, source, output=None, expected=0, unit_id=None, std='c++17', extra=()):
         output = output or out / (name + '.dotobj')
         run('compile-' + name, [sys.executable, '-B', ROOT / 'compile.py', source,
-            '--output', output, '--work-dir', out / (name + '-compile'), '--unit-id', unit_id or name, '--std', std], expected)
+            '--output', output, '--work-dir', out / (name + '-compile'), '--unit-id', unit_id or name, '--std', std, *extra], expected)
         return output
 
     try:
@@ -109,7 +110,7 @@ def main():
         execute('linked', linked)
         scoped = link('link-scopes', [scopes])
         execute('scopes', scoped)
-        for name in ['conversions', 'empty', 'loops', 'integers', 'source_types']:
+        for name in ['conversions', 'empty', 'loops', 'integers', 'source_types', 'macros']:
             obj = compile_source(name, inputs / (name + '.cpp'))
             run('native-' + name + '-build', ['c++', '-std=c++17', inputs / (name + '.cpp'), '-o', out / ('native-' + name)])
             run('native-' + name + '-run', [out / ('native-' + name)])
@@ -142,6 +143,33 @@ def main():
                 check('distinct-shadowed-source-types-' + language, db.execute("SELECT count(DISTINCT execution_type_id) FROM source_types WHERE kind='typedef' AND source_name='Choice'").fetchone()[0] == 2)
                 check('source-binding-coverage-' + language, db.execute("SELECT count(*) FROM source_declarations WHERE kind IN ('local','parameter')").fetchone()[0] == db.execute('SELECT count(*) FROM bindings').fetchone()[0])
         check('source-map-published', (out / 'link-source_types/source-map.json').is_file())
+        macros_c = compile_source('macros-c', inputs / 'macros-c.c', std='c11')
+        run('native-macros-c-build', ['cc', '-std=c11', inputs / 'macros-c.c', '-o', out / 'native-macros-c'])
+        run('native-macros-c-run', [out / 'native-macros-c'])
+        execute('macros-c', link('link-macros-c', [macros_c]))
+        for language, obj in [('c++', out / 'macros.dotobj'), ('c', macros_c)]:
+            with sqlite3.connect(obj) as db:
+                names = {row[0] for row in db.execute('SELECT name FROM macro_definitions')}
+                check('active-macro-definitions-' + language, {'API_VALUE','API_ADD','API_STRING','API_CAT','API_VARIADIC','API_EMPTY','API_MULTI','API_UTF8','API_OPTIONAL_TEXT'} <= names and 'API_INACTIVE' not in names)
+                events = db.execute("SELECT e.kind,d.definition_text FROM macro_events e LEFT JOIN macro_definitions d ON d.id=e.definition_id WHERE e.name='API_VALUE' ORDER BY e.id").fetchall()
+                check('macro-redefinition-order-' + language, [x[0] for x in events] == ['define','undef','define'] and '17' in events[0][1] and '23' in events[2][1])
+                check('macro-unknown-undef-' + language, db.execute("SELECT count(*) FROM macro_events WHERE name='API_NEVER_DEFINED' AND kind='undef'").fetchone()[0] == 1)
+                check('macro-identical-redefinition-' + language, db.execute("SELECT count(*) FROM macro_definitions WHERE name='API_SAME'").fetchone()[0] == 1)
+                check('macro-parameters-' + language, [x[0] for x in db.execute("SELECT p.name FROM macro_parameters p JOIN macro_definitions d ON d.id=p.definition_id WHERE d.name='API_ADD' ORDER BY p.ordinal")] == ['a','b'])
+                check('macro-paste-stringize-' + language, '##' in db.execute("SELECT definition_text FROM macro_definitions WHERE name='API_CAT'").fetchone()[0] and '#' in db.execute("SELECT definition_text FROM macro_definitions WHERE name='API_STRING'").fetchone()[0].split(')',1)[1])
+                check('macro-variadic-' + language, db.execute("SELECT variadic FROM macro_definitions WHERE name='API_VARIADIC'").fetchone()[0] == 1 and db.execute("SELECT count(*) FROM macro_parameters p JOIN macro_definitions d ON d.id=p.definition_id WHERE d.name='API_VARIADIC' AND p.name='__VA_ARGS__'").fetchone()[0] == 1)
+                check('macro-source-locations-' + language, db.execute("SELECT count(*) FROM macro_definitions WHERE name LIKE 'API_%' AND (origin<>'source' OR source_file_id IS NULL OR line=0 OR column=0)").fetchone()[0] == 0)
+        check('macro-map-published', (out / 'link-macros/macro-map.json').is_file())
+        commandline_source = inputs / 'macro-commandline.cpp'
+        commandline_source.write_text('#ifdef API_REMOVED\n#error removal failed\n#endif\nint main(void){return API_COMMAND - 41;}\n#undef API_COMMAND\n')
+        command_flags = ['-DAPI_COMMAND=41', '-DAPI_REMOVED=9', '-UAPI_REMOVED']
+        command_obj = compile_source('macro-commandline', commandline_source, extra=command_flags)
+        run('native-macro-commandline-build', ['c++', '-std=c++17', *command_flags, commandline_source, '-o', out / 'native-macro-commandline'])
+        run('native-macro-commandline-run', [out / 'native-macro-commandline'])
+        execute('macro-commandline', link('link-macro-commandline', [command_obj]))
+        with sqlite3.connect(command_obj) as db:
+            check('macro-commandline-origin', db.execute("SELECT origin FROM macro_definitions WHERE name='API_COMMAND'").fetchone()[0] == 'command-line')
+            check('macro-commandline-undef', db.execute("SELECT count(*) FROM macro_events WHERE name='API_REMOVED' AND kind='undef' AND origin='command-line'").fetchone()[0] == 1)
         integer_cs = '\n'.join(p.read_text() for p in (out / 'link-integers').glob('*.cs'))
         check('direct-integer-operators', all(token in integer_cs for token in [' ? ', ' : ', ' << ', ' >> ', ' & ', ' | ', ' ^ ', '~']))
         reverse = link('link-reversed', [consumer, provider])
@@ -230,7 +258,27 @@ def main():
             "UPDATE source_functions SET capture_phase='after-lowering'", ())])
         run('source-capture-phase', ['dotnet', tool, 'verify', wrong_phase], None)
 
+        macros_object = out / 'macros.dotobj'
+        wrong_macro_event = mutate('macro-event-name', macros_object, [(
+            "UPDATE macro_events SET name='DIFFERENT' WHERE id=(SELECT min(id) FROM macro_events WHERE kind='define')", ())])
+        run('macro-event-name-mismatch', ['dotnet', tool, 'verify', wrong_macro_event], None)
+        orphan_macro = mutate('macro-orphan', macros_object, [(
+            "DELETE FROM macro_events WHERE definition_id=(SELECT id FROM macro_definitions WHERE name='API_EMPTY')", ())])
+        run('macro-definition-event-missing', ['dotnet', tool, 'verify', orphan_macro], None)
+        wrong_macro_origin = mutate('macro-origin', macros_object, [(
+            "UPDATE macro_definitions SET origin='predefined' WHERE name='API_VALUE'", ())])
+        run('macro-origin-location-mismatch', ['dotnet', tool, 'verify', wrong_macro_origin], None)
+        wrong_macro_form = mutate('macro-object-params', macros_object, [(
+            "UPDATE macro_definitions SET form='object' WHERE name='API_ADD'", ())])
+        run('macro-object-parameter-mismatch', ['dotnet', tool, 'verify', wrong_macro_form], None)
+        wrong_macro_ordinal = mutate('macro-param-ordinal', macros_object, [(
+            "UPDATE macro_parameters SET ordinal=10 WHERE definition_id=(SELECT id FROM macro_definitions WHERE name='API_ADD') AND ordinal=1", ())])
+        run('macro-parameter-order', ['dotnet', tool, 'verify', wrong_macro_ordinal], None)
+
         negatives = {
+            'va-opt': '#define API_OPT(...) __VA_OPT__(17)\nint f(){return API_OPT(1); }\n',
+            'push-macro': '#define VALUE 1\n#pragma push_macro("VALUE")\nint f(){return VALUE;}\n',
+            'pop-macro': '#pragma pop_macro("VALUE")\nint f(){return 1;}\n',
             'global': 'int storage=1; int f(){return storage;}\n',
             'pointer': 'int f(int* value){return *value;}\n',
             'volatile': 'int f(){volatile int value=1; return value;}\n',
@@ -244,6 +292,8 @@ def main():
             source.write_text(code)
             obj = compile_source('unsupported-' + name, source, expected=None)
             check('not-published-' + name, not obj.exists())
+            if name == 'va-opt':
+                check('unsupported-va-opt-provenance', '__VA_OPT__' in (out / ('unsupported-' + name + '-compile/stderr')).read_text())
 
         # One changed TU can be recompiled and relinked with the unchanged other object.
         shutil.copytree(out / 'inputs-preserved', inputs)

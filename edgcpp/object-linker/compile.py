@@ -24,6 +24,10 @@ ARRAYS = {
                         'operator', 'constantText', 'valueCategory', 'evaluationOrder',
                         'sourceFileId', 'line', 'column']),
     'edges': ('edges', ['parentId', 'role', 'ordinal', 'childId']),
+    'macroDefinitions': ('macro_definitions', ['id', 'name', 'form', 'variadic', 'dynamic',
+                        'definitionText', 'origin', 'sourceFileId', 'line', 'column']),
+    'macroParameters': ('macro_parameters', ['definitionId', 'ordinal', 'name']),
+    'macroEvents': ('macro_events', ['id', 'kind', 'name', 'definitionId', 'origin', 'sourceFileId', 'line', 'column']),
     'sourceTypes': ('source_types', ['id', 'kind', 'sourceName', 'underlyingTypeId',
                                    'executionTypeId', 'isConst', 'isVolatile', 'sourceFileId', 'line', 'column']),
     'sourceFunctions': ('source_functions', ['entityId', 'returnSourceTypeId', 'capturePhase']),
@@ -85,15 +89,15 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v4':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v5':
         raise ValueError('Unsupported semantic wire version/profile')
     source_hashes = {}
     with sqlite3.connect(path) as db:
         db.executescript(SCHEMA.read_text())
         db.execute('BEGIN IMMEDIATE')
         db.execute('PRAGMA defer_foreign_keys=ON')
-        db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1)',
-                   ('scalar-control-v4', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+        db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1)',
+                   ('scalar-control-v5', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source)))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))
@@ -143,6 +147,7 @@ def main():
     parser.add_argument('--unit-id')
     parser.add_argument('-I', dest='includes', action='append', type=Path, default=[])
     parser.add_argument('-D', dest='defines', action='append', default=[])
+    parser.add_argument('-U', dest='undefines', action='append', default=[])
     args = parser.parse_args()
     source, output, work, compiler = (p.resolve() for p in (args.source, args.output, args.work_dir, args.compiler))
     if output.suffix != '.dotobj' or output.exists():
@@ -158,6 +163,7 @@ def main():
         command += ['--instantiate', 'used', '--no_exceptions', '--no_rtti']
     command += [arg for path in args.includes for arg in ('-I', str(path.resolve()))]
     command += ['-D' + value for value in args.defines]
+    command += ['-U' + value for value in args.undefines]
     command += ['--', str(source)]
     env = dict(os.environ, EDG_BASE=str(ROOT / 'upstream/bases/docker/dev-env/gcc'),
                EDG_DOT_OBJECT='1', EDG_DOT_TARGET='portable-lp64-binary80-v2',
@@ -193,7 +199,7 @@ def main():
     os.link(pending, output)
     report = dict(status='packaged-semantic-object', object=str(output), sha256=sha(output),
                   profile=wire['profile'], frontendInvocations=1, executionVerified=False,
-                  capabilities=dict(prelowerSource=False, macros=False, lifetimes=False, sourceDeclarations=True),
+                  capabilities=dict(prelowerSource=False, macros=False, lifetimes=False, sourceDeclarations=True, macroDefinitions=True),
                   counts={name: len(wire[name]) for name in ARRAYS})
     (work / 'results.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report))
