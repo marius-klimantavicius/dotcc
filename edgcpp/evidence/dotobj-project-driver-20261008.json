@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "milestoneCommit": "dd0e39a6c",
+  "scope": "Independent original-TU project scheduling, owned SQLite packaging and resumability; not SQLite/DuckDB C# execution",
+  "checks": 24,
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-driver-verify-001/results.json",
+    "sha256": "bb850ce242d58f4e03ee9d3cb6e3fed871c51d910b5de240de6d4f3063899b5d",
+    "bytes": 3887
+  },
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-compiler-002/cpfe-dot",
+    "sha256": "e88854fb3aaa2373814926e5493c765f1aeb8c44bc7b8479acaa0d43cea57a51",
+    "bytes": 24749208
+  },
+  "files": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/project.py",
+      "sha256": "d40444d01277464537e83fe94fec2094f675244d5410a0c9a6daddbcee75f824",
+      "bytes": 15014
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/project_manifest.py",
+      "sha256": "a80c33ed5f31624b442429092376c79fe2658331c00af82ec490f76720a7ad2c",
+      "bytes": 6033
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/project-driver.md",
+      "sha256": "dee584b9ccf3cef0591e041f3cb7dd9a9325e322b74ff7655c59e6bcd89f7c81",
+      "bytes": 4345
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/project_verify.py",
+      "sha256": "72d68a8f5b57255dbf36f2241e77f4ddab68e6fbbaa8bf5720f26ab0c0b5bd7b",
+      "bytes": 6543
+    }
+  ],
+  "manifests": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-manifest-001/project.json",
+      "sha256": "7b09ad877cd24152df94499182f8c3dcbc5dec76e5004338a39047b240baf8cc",
+      "bytes": 13521
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-manifest-001/project.json",
+      "sha256": "85f5eebe3cea05200b87eccc97c05d886385a20fc322b609e455636398acdc7a",
+      "bytes": 9234771
+    }
+  ],
+  "projectProbes": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-project-002/results.json",
+      "sha256": "086266229b6a48d572b1fdd97d09c1bf8769b5cfd5fb432cfcb5d5ed6ee72650",
+      "bytes": 3381
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-project-002/results.json",
+      "sha256": "b602c6e825e9e2cc36ef4fb3d6f4f64a6f341648cebbb9fcead8780024fee1f5",
+      "bytes": 875
+    }
+  ],
+  "executionVerified": false,
+  "nativeAotVerified": false,
+  "notes": [
+    "Driver verification packaged two independent original C translation units with retained header source and macro definitions.",
+    "24 checks include successful resume, object-corruption retry, header-shadow inventory invalidation, option validation, and timed-out compiler process-group termination.",
+    "SQLite THREADSAFE=1 Unix-profile source parses; current v12 project probe rejects nested record layout.",
+    "DuckDB exception.cpp original TU advances beyond macro push/pop and rejects incomplete storage layout.",
+    "DuckDB manifest lists 2355 configured library/test units. Full manifest not compiled; libc++ implementation provider not yet included."
+  ]
+}
