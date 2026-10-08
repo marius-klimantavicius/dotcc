@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-08",
+  "status": "native-oracles-passed-export-pending",
+  "scope": "Independent-TU exception and RTTI oracle for owned-object implementation",
+  "checks": 7,
+  "managedExecutionVerified": false,
+  "nativeAotVerified": false,
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-eh-acceptance-001/results.json",
+    "sha256": "c4b617891a8fdb05580270a8268366c36e3413d282424160cceddf18c57f6e56"
+  },
+  "pending": [
+    {
+      "gate": "provider-owned-export",
+      "diagnostic": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-eh-acceptance-001/inputs/cpp_linked_exceptions_provider.cpp:10:10: dot_gen_be: unsupported dotobj scalar-v17: base/subobject execution layout is not represented (kind -1) in file scope\n"
+    },
+    {
+      "gate": "bridge-owned-export",
+      "diagnostic": "dot_gen_be: unsupported dotobj scalar-v17: destruction obligations (kind -1) in dotobj function bridge_raise\n"
+    },
+    {
+      "gate": "main-owned-export",
+      "diagnostic": "dot_gen_be: unsupported dotobj scalar-v17: destruction obligations (kind -1) in dotobj function main\n"
+    }
+  ],
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "limitations": [
+    "Native O0/O2 execution and stock C generation only; owned exports reject unrepresented layout/lifetime requirements",
+    "No libc++ exception_ptr execution claimed"
+  ]
+}
