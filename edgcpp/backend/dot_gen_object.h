@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v13: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v14: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -41,6 +41,8 @@ struct Writer {
   std::vector<string> files,entities,parameters,functions,bindings,nodes,edges;
   std::vector<string> source_types,source_declarations,source_functions,source_parameters;
   std::vector<string> macro_definitions,macro_parameters,macro_events;
+  // Action order is independent of executable reachability/entity numbering.
+  std::vector<string> initialization_actions;
   std::map<unsigned,unsigned> source_type_ids;
   std::map<unsigned,unsigned> pointer_types;
   std::map<std::pair<unsigned,unsigned long long>,unsigned> array_types;
@@ -560,6 +562,29 @@ struct Writer {
     }
     return true;
   }
+  void startup_action(a_routine_ptr r,unsigned ordinal) {
+#if GNU_EXTENSIONS_ALLOWED
+    if(!r->is_initialization_routine)return;
+    diagnostic_scope diagnostic(r->source_corresp.decl_position);
+    auto type=skip_typerefs(r->type);
+    if(type->kind!=tk_routine || r->function_def_number==NULL_function_def_number)
+      reject("startup action without a defined routine");
+    auto extra=type->variant.routine.extra_info;
+    // GNU platform-specific argc/argv/environment entry conventions are not
+    // ordinary calls to void(void), and need their own explicit ABI contract.
+    if(skip_typerefs(type->variant.routine.return_type)->kind!=tk_void ||
+       extra->param_type_list || extra->has_ellipsis)
+      reject("startup action outside void(void) calling contract");
+    unsigned long priority=r->has_ctor_priority?gnu_routine_supp(r)->ctor_priority:65535;
+    if(priority>65535)reject("startup action priority outside GNU range");
+    unsigned entity=routine(r);
+    initialization_actions.push_back("{\"id\":"+number(unsigned(initialization_actions.size()+1))+",\"entityId\":"+number(entity)+
+      ",\"phase\":\"startup\",\"priority\":"+std::to_string(priority)+
+      ",\"ordinal\":"+std::to_string(ordinal)+position(r->source_corresp.decl_position)+"}");
+#else
+    (void)r;(void)ordinal;
+#endif
+  }
   unsigned routine(a_routine_ptr r) {
     auto found=routine_ids.find(r);if(found!=routine_ids.end())return found->second;
     diagnostic_scope diagnostic(r->source_corresp.decl_position);
@@ -569,8 +594,9 @@ struct Writer {
     if(r->fenv_access==stdc_pv_on)reject("floating environment access");
 
 #if GNU_EXTENSIONS_ALLOWED
-    if(r->is_weak || r->is_weakref || r->is_gnu_alias || r->is_ifunc || r->is_initialization_routine || r->is_finalization_routine)
-      reject("special routine linkage/startup policy");
+    if(r->is_finalization_routine)reject("shutdown actions require an owned atexit/finalization ordering contract");
+    if(r->is_weak || r->is_weakref || r->is_gnu_alias || r->is_ifunc)
+      reject("special routine linkage");
 #endif
     auto t=skip_typerefs(r->type);
     if(t->kind!=tk_routine)reject("nonroutine function type");
@@ -1649,9 +1675,17 @@ struct Writer {
     auto file_scope=il_header.primary_scope;
     if(file_scope->dynamic_inits || file_scope->asm_entries)reject("global dynamic initialization/asm");
     collect_storage(file_scope);
+#if GNU_EXTENSIONS_ALLOWED
+    unsigned startup_ordinal=0;
+#endif
     for(auto r=file_scope->routines;r;r=r->next) {
       if(ignore_routine_in_back_end(r))continue;
       if(r->function_def_number==NULL_function_def_number)continue;
+#if GNU_EXTENSIONS_ALLOWED
+      // Follow stock C dump_scope_routines order, not reachability or first
+      // declaration position. Equal-priority ties are defined by this order.
+      if(r->is_initialization_routine)startup_action(r,startup_ordinal++);
+#endif
       bool root=r->source_corresp.name_linkage==nlk_external || r->source_corresp.name_linkage==nlk_cplusplus_external;
       bool coalescible=r->is_inline || (r->is_template_function && !r->is_specialized);
 #if DO_IL_LOWERING && IA64_ABI
@@ -1697,7 +1731,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v13\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v14\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -1706,6 +1740,7 @@ struct Writer {
       ",\"storages\":"+array(storages)+",\"storageData\":"+array(storage_data)+",\"relocations\":"+array(relocations)+
       ",\"routineTypes\":"+array(routine_types)+",\"routineParameters\":"+array(routine_parameters)+
       ",\"sourceRoutineTypes\":"+array(source_routine_types)+",\"sourceRoutineParameters\":"+array(source_routine_parameters)+
+      ",\"initializationActions\":"+array(initialization_actions)+
       ",\"types\":"+array(types)+",\"entities\":"+array(entities)+
       ",\"parameters\":"+array(parameters)+",\"functions\":"+array(functions)+",\"bindings\":"+array(bindings)+",\"nodes\":"+array(nodes)+",\"edges\":"+array(edges)+"}\n";
     if(fwrite(result.data(),1,result.size(),stdout)!=result.size() || fflush(stdout))reject("wire output failure");

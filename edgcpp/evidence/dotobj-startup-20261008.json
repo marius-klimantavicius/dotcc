@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "profile": "scalar-control-v14",
+  "scope": "Owned source startup, explicit managed initialization and provider root correctness",
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "artifacts": {
+    "startupHost": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-startup-managed-015-002/results.json",
+      "sha256": "f10ece0f321ca4fa163d5b0576fb1e702608f372e1b566d13b0989c5ecf35c0f"
+    },
+    "startupActions": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-startup-actions-acceptance-002/results.json",
+      "sha256": "9a606abff106e55238fa4d6aae4ae391fd951ebea9d291056ee16ad82549935a"
+    },
+    "compiler": {
+      "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+      "sha256": "2c97a5b5d9b03993c2f802661354611390718ddbe6483588ff5a932a4d1561fb"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-016/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "bfe7b12c8010e5b619301cd90243a3622d56b4b6715bbe8acf9e1e788c948484"
+    }
+  },
+  "coverage": [
+    "GNU priority including zero, stock EDG within-TU ordering and original cross-TU input order",
+    "Cross-TU inline body coalescing retains distinct primary action registrations",
+    "Provider extraction retains internal startup actions and their dependencies",
+    "Primary inline definitions are preferred to provider copies; strong providers still implement primary roots",
+    "Unused providers do not run startup actions",
+    "Explicit library initialization, same-thread reentry and concurrent host waiting",
+    "Constructor-created workers may call ordinary exports without initializer-lock deadlock",
+    "Failure cached once across callers, main skipped, executable leave hook runs",
+    "Malformed nonvoid action targets and unsupported shutdown attributes reject"
+  ],
+  "limitations": [
+    "Only GNU routine constructor attributes; C++ dynamic global initialization remains separate",
+    "Shutdown/atexit/static destructor semantics remain unsupported",
+    "Static per-assembly state only; independent owners remain pending"
+  ]
+}

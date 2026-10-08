@@ -31,6 +31,14 @@ internal sealed partial class Linker
         {
             if (storages.Add(symbol.Key)) pending.Enqueue((true, symbol.Key));
         }
+        void ActivateObject(ObjectFile obj)
+        {
+            if (!providerObjects.Contains(obj) || !selectedProviderObjects.Add(obj)) return;
+            // Extraction of a provider translation unit also retains its source
+            // startup obligations, even when their functions have internal linkage.
+            foreach (InitializationAction action in obj.InitializationActions)
+                ReferenceFunction(obj, action.EntityId);
+        }
         void ReferenceFunction(ObjectFile obj, long id)
         {
             string key = new Symbol(obj, obj.Entities[id]).Key;
@@ -41,16 +49,21 @@ internal sealed partial class Linker
             string key = new StorageSymbol(obj, obj.Storages[id]).Key;
             if (storageDefinitions.TryGetValue(key, out StorageSymbol? symbol)) Storage(symbol);
         }
-        foreach (Symbol symbol in definitions.Values)
-            if (!providerObjects.Contains(symbol.Object)) Function(symbol);
-        foreach (StorageSymbol symbol in storageDefinitions.Values)
-            if (!providerObjects.Contains(symbol.Object)) Storage(symbol);
+        // Root identity belongs to each primary definition even when a stronger
+        // provider definition supplies its canonical implementation/storage.
+        foreach (ObjectFile obj in Objects.Where(obj => !providerObjects.Contains(obj)))
+        {
+            foreach (Entity entity in obj.Entities.Values)
+                if (entity.Definition != "declaration") ReferenceFunction(obj, entity.Id);
+            foreach (Storage storage in obj.Storages.Values)
+                if (storage.Definition != "declaration") ReferenceStorage(obj, storage.Id);
+        }
         while (pending.TryDequeue(out var item))
         {
             if (item.Storage)
             {
                 StorageSymbol symbol = storageDefinitions[item.Key];
-                if (providerObjects.Contains(symbol.Object)) selectedProviderObjects.Add(symbol.Object);
+                ActivateObject(symbol.Object);
                 foreach (Relocation relocation in symbol.Object.Relocations.GetValueOrDefault(symbol.Storage.Id, []))
                     if (relocation.TargetEntityId is long entity) ReferenceFunction(symbol.Object, entity);
                     else ReferenceStorage(symbol.Object, relocation.TargetStorageId!.Value);
@@ -58,7 +71,7 @@ internal sealed partial class Linker
             else
             {
                 Symbol symbol = definitions[item.Key];
-                if (providerObjects.Contains(symbol.Object)) selectedProviderObjects.Add(symbol.Object);
+                ActivateObject(symbol.Object);
                 FunctionBody body = symbol.Object.ReadBody(symbol.Entity.Id);
                 foreach (Node node in body.Nodes.Values)
                 {
@@ -81,6 +94,7 @@ internal sealed partial class Linker
             selectedFunctions = Definitions.Count,
             candidateStorages,
             selectedStorages = StorageDefinitions.Count,
+            startupActions = InitializationActions.Count,
             objects = Objects.Select(obj => new
             {
                 unitId = obj.UnitId,

@@ -36,6 +36,7 @@ internal sealed partial class Emitter
                     {
                         try
                         {
+                            InitializeLibrary();
                             int result = entry();
                             NormalExit(result);
                             return result;

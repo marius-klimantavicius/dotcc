@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v13'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v14'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -125,6 +125,18 @@ CREATE TABLE parameters (
 CREATE TABLE functions (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
  body_node_id INTEGER NOT NULL REFERENCES nodes(id)
+) STRICT;
+CREATE TABLE initialization_actions (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ entity_id INTEGER NOT NULL REFERENCES entities(id),
+ phase TEXT NOT NULL CHECK(phase='startup'),
+ priority INTEGER NOT NULL CHECK(priority>=0 AND priority<=65535),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ UNIQUE(phase,entity_id),
+ UNIQUE(phase,ordinal)
 ) STRICT;
 CREATE TABLE bindings (
  id INTEGER PRIMARY KEY CHECK(id>0),

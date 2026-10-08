@@ -300,6 +300,8 @@ internal sealed partial class ObjectFile
             }
             writer.WriteEndArray();
         }
+        Table("initializationActions", "SELECT id,entity_id,phase,priority,ordinal,source_file_id,line,column FROM initialization_actions ORDER BY ordinal",
+            "id", "entityId", "phase", "priority", "ordinal", "sourceFileId", "line", "column");
         Table("sourceFiles", "SELECT id,path,parent_id FROM source_files ORDER BY id", "id", "path", "parentId");
         Table("executionTypes", "SELECT id,kind,pointee_type_id,element_type_id,element_count FROM types ORDER BY id", "id", "kind", "pointeeTypeId", "elementTypeId", "elementCount");
         Table("recordTypes", "SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column,layout_kind FROM record_types ORDER BY type_id",

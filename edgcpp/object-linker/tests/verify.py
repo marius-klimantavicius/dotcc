@@ -15,6 +15,7 @@ import records_verify
 import storage_verify
 import project_c_verify
 import provider_verify
+import startup_actions_verify
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('dotobj_compile', ROOT / 'compile.py')
@@ -31,6 +32,7 @@ def main():
     parser.add_argument('--lifetimes-only', action='store_true', help='Run the focused lexical cleanup acceptance')
     parser.add_argument('--project-c-only', action='store_true', help='Run C runtime and value-semantics acceptance')
     parser.add_argument('--storage-only', action='store_true', help='Run the linked storage/project-C acceptance')
+    parser.add_argument('--startup-only', action='store_true', help='Run startup ordering, provider extraction and rejection checks')
     parser.add_argument('--records-only', action='store_true', help='Run the focused record/layout acceptance')
     args = parser.parse_args()
     out = args.output_dir.resolve()
@@ -63,10 +65,14 @@ def main():
     for name in ['storage_fixture.h', 'storage_provider.c', 'storages.c', 'project_c_runtime.c', 'project_c_intrinsics.c', 'project_c_record_values.c', 'project_c_record_array_values.c', 'project_c_aggregate_initializers.c', 'project_c_function_designators.c', 'project_c_bitfield_values.c', 'goto_entries.c', 'project_c_nested_switch.c', 'project_c_synthetic_bindings.c', 'project_c_binary80.c', 'project_c_folded_records.c', 'project_c_unspecified_definitions.c', 'project_c_volatile_binary80.c', 'project_c_void_sequences.c', 'project_c_macro_record_identity.c', 'provider_root.c', 'provider_library.c', 'provider_support.c']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
     checks = []
+    for name in ['project_c_startup_order.c', 'project_c_lifecycle_actions.c',
+                 'project_cpp_startup_first.cpp', 'project_cpp_startup_second.cpp',
+                 'project_cpp_startup_shared.h']:
+        shutil.copy2(ROOT / 'tests' / name, inputs / name)
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v13', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v14', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -150,6 +156,10 @@ def main():
                     db.execute('UPDATE content_digest SET sha256=?', (MODULE.logical_hash(db),))
             return path
 
+        if args.startup_only:
+            startup_actions_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+            save('passed')
+            return
         if args.project_c_only:
             project_objects = project_c_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
             project_c_verify.malformed(project_objects, tool, run, mutate)
@@ -270,6 +280,7 @@ def main():
         project_objects = project_c_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
         project_c_verify.malformed(project_objects, tool, run, mutate)
         provider_verify.verify(inputs, out, tool, run, check, compile_source, execute)
+        startup_actions_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
         loops_object = out / 'loops.dotobj'
         loops_cs = '\n'.join(p.read_text() for p in (out / 'link-loops').glob('*.cs'))
         check('structured-loop-source', all(token in loops_cs for token in ['for (', 'do', 'while (', 'break;', 'continue;']) and 'goto ' not in loops_cs)

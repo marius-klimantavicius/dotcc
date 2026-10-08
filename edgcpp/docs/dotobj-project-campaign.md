@@ -144,3 +144,33 @@ full regression and project probes. Five original DuckDB units parse in roughly
 one second each, then stop explicitly on hidden-vptr record layout or C++ dynamic
 global initialization. [The next C++ layout contract](dotobj-cpp-layout.md) and
 native/stock-C lifetime oracles make those remaining gates concrete.
+
+## SQLite engine execution through v14 objects (2026-10-08)
+
+All **225 original translation units** now package independently: SQLite and all
+224 musl provider candidates. Native016 captures GNU startup actions, including
+the environment snapshot constructor. The managed linker selects 45 provider
+units, emits 3,340 function definitions and binds 70 real shared runtime imports
+with **zero unresolved requirements**. No fake runtime bodies or translated-source
+patches were used for execution.
+
+The complete prepared THREADSAFE=1 Unix/APPDEF SQLite engine passes the same eight
+integration suites under **JIT and NativeAOT on Linux x64**, with identical output.
+They cover concurrent cold initialization and restart, mutex identity/recursion/
+contention, FULLMUTEX connection sharing and managed callback reentry, Unicode
+real-file persistence, JSONB, FTS5, translated musl math, read-only errors,
+independent NOMUTEX rollback/WAL connections, blob/backup/serialization and
+deserialization, timezone/environment startup and forced GC.
+
+Source startup runs through explicit `ObjectProgram.InitializeLibrary()` for
+library hosts and automatically through executable `Run`. The implementation
+permits same-thread reentry, waits for concurrent hosts, caches failures and runs
+constructors outside CLR type-initialization/state locks. Independent JIT/AOT
+tests cover constructor-created worker threads calling translated exports,
+failure propagation and preserved duplicate registrations after body coalescing.
+
+[Hashed engine evidence](../evidence/dotobj-sqlite-engine-20261008.json) records
+all inputs, tools, provider selection, runtime bindings and execution output.
+This establishes SQLite project integration, not exhaustive upstream conformance.
+Instance-owned storage, other platform execution, complete source indexing,
+general C++ layout/lifetime/EH and DuckDB execution remain required work.

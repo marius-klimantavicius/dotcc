@@ -28,6 +28,12 @@ unfinished; the narrower capability is `lexicalCleanups=true`.
 V11 adds owned nominal struct/field identities, natural layouts, named member
 access and cross-object definition checks, including mixed C/C++ objects.
 Record constructors/destructors and nontrivial object actions remain pending.
+V12/v13 extend the C execution graph through global/TLS storage, relocation,
+function pointers, varargs, unions/bitfields, complete record values, observable
+volatile access, binary80 and typed provider selection. V14 adds explicit GNU
+startup actions and library initialization. The complete prepared thread-safe
+SQLite engine now runs through independent objects under JIT and NativeAOT;
+the [campaign ledger](dotobj-project-campaign.md) links exact acceptance evidence.
 Full source-tree/macro-expansion
 and lifetime capture, broad C++ coverage and the full graph design below remain
 unfinished; the initial profile explicitly records those missing capabilities.

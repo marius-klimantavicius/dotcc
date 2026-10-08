@@ -5,6 +5,7 @@ internal sealed partial class Linker
     public IReadOnlyList<ObjectFile> Objects { get; }
     public IReadOnlyList<ObjectFile> EmissionObjects { get; }
     public IReadOnlyList<Symbol> Definitions { get; }
+    public IReadOnlyList<Symbol> InitializationActions { get; }
     public IReadOnlyList<StorageSymbol> StorageDefinitions { get; }
     public Dictionary<string, Symbol> Externs { get; } = new(StringComparer.Ordinal);
     public Dictionary<string, StorageSymbol> ExternStorages { get; } = new(StringComparer.Ordinal);
@@ -23,7 +24,11 @@ internal sealed partial class Linker
         Objects = objects.OrderBy(obj => obj.UnitId, StringComparer.Ordinal).ToArray();
         if (Objects.Select(obj => obj.UnitId).Distinct(StringComparer.Ordinal).Count() != Objects.Count)
             throw new InvalidDataException("The same translation unit was supplied more than once");
-        foreach (ObjectFile obj in Objects)
+        // A provider's coalescible copy must not force archive extraction when
+        // the primary inputs already supply that body. Strong definitions still
+        // take precedence below, independently of this stable preference.
+        var resolutionOrder = Objects.OrderBy(obj => providers?.Contains(obj) == true).ToArray();
+        foreach (ObjectFile obj in resolutionOrder)
             foreach (Entity entity in obj.Entities.Values)
             {
                 var symbol = new Symbol(obj, entity);
@@ -39,7 +44,7 @@ internal sealed partial class Linker
                 }
             }
         var storageSignatures = new Dictionary<string, string>(StringComparer.Ordinal);
-        foreach (ObjectFile obj in Objects)
+        foreach (ObjectFile obj in resolutionOrder)
             foreach (Storage storage in obj.Storages.Values)
             {
                 var symbol = new StorageSymbol(obj, storage);
@@ -55,6 +60,14 @@ internal sealed partial class Linker
             }
         SelectProviderClosure(providers);
         EmissionObjects = Objects.Where(obj => !providerObjects.Contains(obj) || selectedProviderObjects.Contains(obj)).ToArray();
+        // Equal-priority GNU actions follow original link input order and the
+        // EDG routine-discovery ordinal within that translation unit.
+        InitializationActions = objects.Select((obj, index) => (Object: obj, InputIndex: index))
+            .Where(item => EmissionObjects.Contains(item.Object))
+            .SelectMany(item => item.Object.InitializationActions.Select(action =>
+                (item.Object, item.InputIndex, Action: action)))
+            .OrderBy(item => item.Action.Priority).ThenBy(item => item.InputIndex).ThenBy(item => item.Action.Ordinal)
+            .Select(item => definitions[new Symbol(item.Object, item.Object.Entities[item.Action.EntityId]).Key]).ToArray();
         foreach (ObjectFile obj in EmissionObjects)
             foreach (RecordType record in obj.Records.Values)
             {

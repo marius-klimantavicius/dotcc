@@ -729,3 +729,35 @@ selected providers and before/after definition counts. Without provider options,
 linking retains the previous all-primary behavior. Complete-object verification
 continues to inspect every body. Startup actions require separate owned metadata;
 the current provider profile still rejects unrepresented constructor attributes.
+
+## Startup profile: scalar-control-v14
+
+Required wire `initializationActions` rows map to SQL `initialization_actions`:
+`id`, `entity_id`, `phase`, `priority`, `ordinal`, optional `source_file_id`,
+`line`, and `column`. The only phase is `startup`; each target is a defined,
+nonvariadic `void(void)` routine. Priority is an unsigned 16-bit value (including
+zero), defaulting to 65535. Ordinals and targets are unique per phase within one
+object. Ordinals need not be dense. Source locations retain the constructor
+declaration provenance. Duplicate cross-object registrations remain distinct
+even when linking coalesces their function bodies.
+
+Actions are ordered by priority, original linker input index, then the captured
+EDG routine-list ordinal. Equal-priority source declaration order is not portable;
+the fixture with a prior prototype follows stock EDG C output rather than GCC's
+different order for that source. Selecting a provider translation unit retains
+its startup actions as execution roots and follows their typed dependencies.
+Unselected providers contribute no actions.
+
+`Edg.Runtime.ObjectProgram.InitializeLibrary()` is an explicit hosting boundary.
+It first completes physical translated storage setup, then invokes source actions
+outside CLR type-initialization and state locks. Same-thread reentry returns;
+concurrent initializing hosts wait; completed initialization is idempotent.
+An escaping host/provider exception is cached with its dispatch information and
+rethrown to later callers without rerunning actions. Executable `Run` initializes
+after its entry hook and before invoking source `main`; its leave hook still runs
+if initialization fails. Library initialization does not impersonate process entry.
+
+This profile captures GNU routine constructor attributes only. GNU shutdown
+attributes, C++ namespace-scope dynamic initialization and atexit/static destructor
+ordering remain unsupported. In particular, cached host failure is not a proposed
+substitute for C++ dynamic-global initialization's termination semantics.

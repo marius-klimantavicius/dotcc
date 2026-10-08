@@ -1,8 +1,16 @@
 # Owned semantic `.dotobj` compilation and linking
 
-This is a working first slice of the [new design](../docs/dotobj-format.md).
+This implements the owned object path of the [new design](../docs/dotobj-format.md).
 It uses a fresh SQLite schema and C# reader/linker/emitter, without the prior
 semantic-export experiment or C# text/command objects.
+
+The current profile is `scalar-control-v14`. It supports independently produced
+SQLite and musl objects, typed provider selection, shared BCL runtime bindings,
+and explicit source startup actions. The [campaign ledger](../docs/dotobj-project-campaign.md)
+distinguishes project generation, compilation and execution evidence. Full C++
+object layout, lifetime and exception support required by DuckDB remains in progress.
+The earlier milestone descriptions below record their original bounded scope;
+the [current contract](contract.md) supersedes those historical exclusions.
 
 Each original source goes through one EDG invocation. The new dot-backend
 adapter produces typed entities, bindings, expressions, statements and edges;
@@ -211,7 +219,7 @@ indexes. A hash demonstrates content integrity, not semantic correctness.
 Full logs/objects/generated projects remain under
 `/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/`.
 
-The current schema requires `scalar-control-v11`. Earlier v1/v2/v3/v4/v5/v6/v7/v8/v9/v10 objects and tools
+The current schema requires `scalar-control-v14`. Earlier-profile objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 
@@ -258,3 +266,24 @@ bitfields, packing, over-alignment, inheritance and user/nontrivial member
 functions. These are explicit errors. Constructors/destructors and full C++
 lifetimes remain the next work; the existing lexical cleanup capability is
 unchanged. Focused acceptance is available with `tests/verify.py --records-only`.
+
+## Source startup actions
+
+Library hosts call `Edg.Runtime.ObjectProgram.InitializeLibrary()` before
+publishing translated APIs. Executables initialize automatically through
+`ObjectProgram.Run`. Physical global images and relocations are ready before
+source constructors execute. Constructors run outside CLR type initialization
+and outside the initialization lock; same-thread initialization reentry returns,
+other initializing hosts wait, and failures are cached without rerunning actions.
+Ordinary exports do not implicitly initialize the library.
+
+GNU constructor priorities include zero. Equal-priority actions use EDG routine
+order within each object and original linker input order across objects. Two
+registrations of a coalesced inline body remain two invocations. Extracting a
+provider object retains its startup actions and their dependencies; an unused
+provider does not run constructors. Shutdown attributes and C++ dynamic-global
+initialization remain explicit errors pending their distinct lifetime policies.
+
+`tests/verify.py --startup-only` tests registration, ordering and provider closure;
+`tests/startup_verify.py` tests concurrent initialization, reentry, constructor
+worker calls and cached failure using JIT and optional NativeAOT execution.

@@ -51,7 +51,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v13");
+        lifetimeWriter.WriteString("profile", "scalar-control-v14");
         lifetimeWriter.WriteString("capture", "lexical-cleanup-activations");
         lifetimeWriter.WriteBoolean("lexicalCleanups", true);
         lifetimeWriter.WriteBoolean("lifetimes", false);
@@ -124,6 +124,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         lifetimeWriter.WriteEndObject();
         WriteRuntimeSupport(output);
         WriteProgramHooks(output);
+        WriteStartup(output, linker.InitializationActions);
         if (entry is not null)
         {
             string call = $"global::{namespaceName}.{className}.{linker.Names[entry.Key]}()";
@@ -149,7 +150,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v13");
+            writer.WriteString("profile", "scalar-control-v14");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -162,7 +163,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v13");
+            writer.WriteString("profile", "scalar-control-v14");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -173,15 +174,18 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v13", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v14", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; variable-length arrays, source EH and C++ RAII are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance and explicit lexical cleanup activations only; no complete source expression/statement view, macro expansion history or general C++ lifetime capture" },
             @namespace = namespaceOption, @class = classOption, sourceMap = "source-map.json", macroMap = "macro-map.json", lifetimeMap = "lifetime-map.json",
             runtimeHooks = new
             {
-                model = "object-program-v1", container = "global::Edg.Runtime.ObjectProgram",
+                model = "object-program-v2", container = "global::Edg.Runtime.ObjectProgram",
                 entryWrapper = "Run(delegate* managed<int>)", automaticLibraryEntry = false,
+                libraryInitialization = "global::Edg.Runtime.ObjectProgram.InitializeLibrary",
+                executableInitializesLibrary = true, startupActionsRunOutsideTypeInitializer = true,
+                startupFailureCached = true, shutdownActionsSupported = false,
                 optionalHooks = new[] { "Enter", "Leave", "NormalExit", "TryHandleTransfer", "ClassifyTransfer" },
                 transferClassifier = "global::Edg.Runtime.ObjectProgram.IsRuntimeTransfer",
             },

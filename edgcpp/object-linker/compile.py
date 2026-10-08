@@ -25,6 +25,7 @@ ARRAYS = {
                               'returnTypeId', 'sourceFileId', 'line', 'column', 'routineTypeId']),
     'parameters': ('parameters', ['entityId', 'ordinal', 'typeId']),
     'functions': ('functions', ['entityId', 'bodyNodeId']),
+    'initializationActions': ('initialization_actions', ['id', 'entityId', 'phase', 'priority', 'ordinal', 'sourceFileId', 'line', 'column']),
     'bindings': ('bindings', ['id', 'functionId', 'kind', 'ordinal', 'typeId', 'sourceName',
                               'scopeNodeId', 'sourceFileId', 'line', 'column', 'isSynthetic']),
     'nodes': ('nodes', ['id', 'functionId', 'kind', 'typeId', 'entityId', 'bindingId',
@@ -106,7 +107,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v13':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v14':
         raise ValueError('Unsupported semantic wire version/profile')
     source_hashes = {}
     with sqlite3.connect(path) as db:
@@ -119,7 +120,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1)',
-                   ('scalar-control-v13', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v14', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source)))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))
