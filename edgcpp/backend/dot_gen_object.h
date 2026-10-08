@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v16: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v17: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -32,6 +32,7 @@ struct Writer {
   unsigned next_entity=1,next_binding=1,next_node=1,next_file=1,next_source_type=1,next_source_declaration=1;
   unsigned function=0,next_execution_type=12,va_list_id=0,f80_id=0,i128_id=0,u128_id=0;
   a_statement_ptr function_block=nullptr;
+  a_routine_ptr current_routine=nullptr;
   std::map<a_routine_ptr,unsigned> routine_ids;
   std::map<a_variable_ptr,unsigned> binding_ids;
   std::map<a_variable_ptr,unsigned> binding_scopes;
@@ -116,6 +117,9 @@ struct Writer {
   }
   unsigned routine_type(a_type_ptr t,bool known_empty_definition=false) {
     auto extra=t->variant.routine.extra_info;
+    if(extra->value_returned_as_parameter)reject("hidden result-buffer routine ABI");
+    for(auto p=extra->param_type_list;p;p=p->next)
+      if(p->passed_via_copy_constructor)reject("nontrivial indirect-value parameter ABI");
     if((!extra->prototyped && !known_empty_definition) || extra->explicit_calling_convention)
       reject("unprototyped/foreign-convention function type");
     if(known_empty_definition && (extra->param_type_list || extra->has_ellipsis))reject("nonempty old-style execution signature");
@@ -142,7 +146,8 @@ struct Writer {
       for(size_t i=0;i<source->fields.size();++i) {
         const auto &field=source->fields[i];const auto &observed=pre->second.fields[i];
         if(field.il!=observed.il || field.original_name!=observed.name || field.source_type!=observed.source_type_snapshot ||
-           field.offset!=observed.byte_offset || field.is_bit_field!=observed.is_bit_field || field.bit_width!=observed.bit_width)
+           field.offset!=observed.byte_offset || field.is_bit_field!=observed.is_bit_field || field.bit_width!=observed.bit_width ||
+           field.has_initializer!=observed.has_initializer)
           reject("original field identity/type differs at prelowering boundary");
       }
     }
@@ -194,7 +199,7 @@ struct Writer {
           ",\"sourceName\":"+quote(field.original_name)+
           ",\"isMutable\":"+(field.is_mutable?"true":"false")+",\"hasNoUniqueAddress\":"+
           (field.no_unique_address?"true":"false")+",\"bitWidth\":"+
-          (field.is_bit_field?std::to_string(field.bit_width):"null")+position(field.position)+"}");
+          (field.is_bit_field?std::to_string(field.bit_width):"null")+position(field.position)+",\"hasInitializer\":"+(field.has_initializer?"true":"false")+"}");
       }
     }
     record_types.push_back("{\"typeId\":"+number(id)+",\"identityKey\":"+quote(identity)+",\"sourceName\":"+quote(name)+
@@ -518,7 +523,6 @@ struct Writer {
       return record_type(t);
     }
     if(t->kind==tk_pointer) {
-      if(t->variant.pointer.is_reference)reject("C++ reference type");
       return pointer_type(type_id(t->variant.pointer.type));
     }
     if(t->kind==tk_array) {
@@ -625,7 +629,9 @@ struct Writer {
     if(type.kind=="va-list")return va_list_type();
     if(type.kind=="long-double" || type.kind=="float80" || type.kind=="float64x")return f80_type();
     if(type.kind=="routine") {
-      std::vector<unsigned> args;for(auto parameter:type.parameters) {
+      std::vector<unsigned> args;
+      if(type.object_type)args.push_back(pointer_type(source_execution_type(type.object_type)));
+      for(auto parameter:type.parameters) {
         unsigned unqualified=parameter;
         while(dot_object_source::state().types.at(unqualified-1).kind=="typedef" ||
               dot_object_source::state().types.at(unqualified-1).kind=="qualified")
@@ -636,7 +642,8 @@ struct Writer {
       }
       return signature_type(source_execution_type(type.result),args,type.variadic,type.exception_policy);
     }
-    if(type.kind=="pointer")return pointer_type(source_execution_type(type.underlying));
+    if(type.kind=="pointer" || type.kind=="lvalue-reference" || type.kind=="rvalue-reference")
+      return pointer_type(source_execution_type(type.underlying));
     if(type.kind=="array")return array_type(source_execution_type(type.underlying),type.element_count);
     if(type.kind=="qualified" || type.kind=="typedef")return source_execution_type(type.underlying);
     reject("source type outside scalar/data-pointer declaration profile");
@@ -649,7 +656,9 @@ struct Writer {
     unsigned execution=source_execution_type(captured);
     unsigned underlying=type.underlying?source_type(type.underlying):0;
     if(type.kind=="routine") {
-      source_routine_types.push_back("{\"typeId\":"+number(id)+",\"returnTypeId\":"+number(source_type(type.result))+",\"variadic\":"+(type.variadic?"true":"false")+",\"exceptionPolicy\":"+quote(type.exception_policy)+",\"parameterMode\":"+quote(type.parameter_mode)+"}");
+      source_routine_types.push_back("{\"typeId\":"+number(id)+",\"returnTypeId\":"+number(source_type(type.result))+",\"variadic\":"+(type.variadic?"true":"false")+",\"exceptionPolicy\":"+quote(type.exception_policy)+",\"parameterMode\":"+quote(type.parameter_mode)+",\"objectTypeId\":"+number(type.object_type?source_type(type.object_type):0)+
+        ",\"objectIsConst\":"+(type.object_is_const?"true":"false")+",\"objectIsVolatile\":"+(type.object_is_volatile?"true":"false")+
+        ",\"objectRefQualifier\":"+quote(type.object_ref_qualifier)+"}");
       unsigned ordinal=0;for(auto parameter:type.parameters)source_routine_parameters.push_back("{\"typeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+",\"parameterTypeId\":"+number(source_type(parameter))+"}");
     }
     source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.kind)+",\"sourceName\":"+quote(type.name)+
@@ -732,6 +741,18 @@ struct Writer {
   unsigned routine(a_routine_ptr r) {
     auto found=routine_ids.find(r);if(found!=routine_ids.end())return found->second;
     diagnostic_scope diagnostic(r->source_corresp.decl_position);
+#if DO_IL_LOWERING && IA64_ABI
+    if(r->compiler_generated && r->primary_ctor_or_dtor) {
+      // alternate_entry_point copies an already lowered signature. It is an
+      // ABI entry for the original constructor/destructor, not a new written
+      // declaration. Do not export that late snapshot as original semantics.
+      auto primary=r->primary_ctor_or_dtor;
+      string role=r->ctor_dtor_kind==cdk_deleting?"deleting":r->ctor_dtor_kind==cdk_subobject?"subobject":
+        r->ctor_dtor_kind==cdk_complete?"complete":r->ctor_dtor_kind==cdk_delegation?"delegation":"unknown";
+      reject((string("generated ctor/dtor alternate requires owned ABI origin: ")+routine_linker_symbol(r)+
+        " primary="+routine_linker_symbol(primary)+" kind="+role).c_str());
+    }
+#endif
     // The C backend preserves this per-function pragma. The owned graph
     // currently uses the default .NET IEEE environment and cannot represent
     // observed exception flags or a dynamically changed rounding direction.
@@ -770,8 +791,39 @@ struct Writer {
       ",\"definition\":"+quote(body?(coalescible?"linkonce":"strong"):"declaration")+",\"returnTypeId\":"+number(type_id(t->variant.routine.return_type))+position(r->source_corresp.decl_position)+",\"routineTypeId\":"+number(routine_type(t,known_empty_definition))+"}");
     source_function(r,id);
     unsigned ordinal=0;
-    for(auto p=extra->param_type_list;p;p=p->next)
-      parameters.push_back("{\"entityId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+",\"typeId\":"+number(type_id(p->type))+"}");
+    auto source_function_it=dot_object_source::state().functions.find(r);
+    if(source_function_it==dot_object_source::state().functions.end())reject("missing routine ABI source snapshot");
+    const auto &source_function_value=source_function_it->second;
+    const auto &source_signature=dot_object_source::state().types.at(source_function_value.signature_type-1);
+    bool has_this=source_signature.object_type!=0;
+    if(has_this!=(extra->this_class!=nullptr))reject("source/execution receiver disagreement");
+    if(extra->value_returned_as_parameter)reject("hidden result-buffer routine ABI");
+    for(auto p=extra->param_type_list;p;p=p->next,++ordinal) {
+      if(p->passed_via_copy_constructor)reject("nontrivial indirect-value parameter ABI");
+      bool receiver=has_this && ordinal==0;
+      unsigned source_ordinal=ordinal-(has_this?1:0);
+      if(!receiver && source_ordinal>=source_function_value.parameters.size())reject((string("unclassified extra ABI parameter in ")+source_spelling(&r->source_corresp)+" ["+key+"]").c_str());
+      unsigned expected=receiver?pointer_type(source_execution_type(source_signature.object_type)):
+        source_execution_type(source_function_value.parameters[source_ordinal]);
+      // Written array/function parameters are adjusted in the ABI, while
+      // their original declared type remains intact in sourceParameters.
+      if(!receiver) {
+        unsigned source_id=source_function_value.parameters[source_ordinal];
+        while(dot_object_source::state().types.at(source_id-1).underlying &&
+              (dot_object_source::state().types.at(source_id-1).kind=="qualified" ||
+               dot_object_source::state().types.at(source_id-1).kind=="typedef"))
+          source_id=dot_object_source::state().types.at(source_id-1).underlying;
+        const auto &original=dot_object_source::state().types.at(source_id-1);
+        if(original.kind=="array")expected=pointer_type(source_execution_type(original.underlying));
+        if(original.kind=="routine")expected=pointer_type(source_execution_type(source_id));
+      }
+      if(type_id(p->type)!=expected)reject("source/execution parameter ABI representation mismatch");
+      parameters.push_back("{\"entityId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal)+",\"typeId\":"+number(type_id(p->type))+
+        ",\"parameterRole\":"+quote(receiver?"this":"source")+",\"sourceOrdinal\":"+(receiver?"null":std::to_string(source_ordinal))+"}");
+    }
+    if(ordinal!=source_function_value.parameters.size()+(has_this?1:0))
+      reject((string("missing source/receiver ABI parameters in ")+source_spelling(&r->source_corresp)+" ["+key+"] execution="+
+        std::to_string(ordinal)+" source="+std::to_string(source_function_value.parameters.size())+" receiver="+(has_this?"1":"0")).c_str());
     return id;
   }
   unsigned binding(a_variable_ptr v,unsigned scope,bool parameter=false,unsigned ordinal=0) {
@@ -783,8 +835,27 @@ struct Writer {
       reject("nonexecutably placed local initializer",v->init_kind);
     unsigned id=next_binding++;binding_ids[v]=id;binding_scopes[v]=scope;
     auto source=dot_object_source::state().variables.find(v);
-    bool synthetic=false;
-    if(source!=dot_object_source::state().variables.end()) {
+    bool synthetic=false,receiver=false;
+    if(parameter) {
+      if(!current_routine)reject("parameter outside current routine");
+      const auto &original=dot_object_source::state().functions.at(current_routine);
+      auto function_scope=scope_for_routine_or_null(current_routine);
+      receiver=v->is_this_parameter;
+      if(receiver) {
+        if(ordinal || !original.scope_captured || original.implicit_this!=v ||
+           !function_scope || function_scope->variant.routine.this_param_variable!=v || source!=dot_object_source::state().variables.end())
+          reject("implicit receiver lacks original scope identity proof");
+        synthetic=true;
+      } else {
+        unsigned source_ordinal=ordinal-(original.implicit_this?1:0);
+        if(!original.scope_captured || source_ordinal>=original.parameter_variables.size() ||
+           original.parameter_variables[source_ordinal]!=v)
+          reject("original parameter identity/order changed during lowering");
+      }
+    }
+    if(receiver) {
+      // The implicit object is an explicit ABI parameter, not a source declaration.
+    } else if(source!=dot_object_source::state().variables.end()) {
       source_declaration(source->second,parameter?"parameter":"local",0,id,function);
       if(source->second.cleanup) {
         if(parameter)reject("parameter cleanup attribute");
@@ -927,7 +998,7 @@ struct Writer {
   bool place(an_expr_node_ptr e) {
     return e && (e->kind==enk_variable ||
       (e->kind==enk_constant && node_constant(e)->kind==ck_string) ||
-      (e->kind==enk_operation && (e->variant.operation.kind==eok_indirect ||
+      (e->kind==enk_operation && (e->variant.operation.kind==eok_indirect || e->variant.operation.kind==eok_ref_indirect ||
                                  e->variant.operation.kind==eok_subscript || e->variant.operation.kind==eok_lvalue_adjust ||
                                  e->variant.operation.kind==eok_dot_field || e->variant.operation.kind==eok_points_to_field)));
   }
@@ -967,7 +1038,7 @@ struct Writer {
           for(const auto &captured:record->second.fields)if(captured.il==field && source_volatile(captured.source_type))return true;
         return e->variant.operation.kind==eok_dot_field?volatile_place(a):pointee_volatile(a);
       }
-      case eok_indirect:return pointee_volatile(a);
+      case eok_indirect:case eok_ref_indirect:return pointee_volatile(a);
       case eok_subscript:return pointee_volatile(a) || pointee_volatile(b);
       default:return false;
     }
@@ -1188,7 +1259,7 @@ struct Writer {
       unsigned result=node("dereference",ty,e->position,0,0,"","","place","none");
       edge(result,"operand",0,cast);return result;
     }
-    if(operation.kind==eok_indirect && a && !b && function_pointer(a->type)) {
+    if((operation.kind==eok_indirect || operation.kind==eok_ref_indirect) && a && !b && function_pointer(a->type)) {
       // C's *function_pointer designates that same function. EDG can retain
       // its decayed pointer result, so inspect the operand as the existing dot
       // backend does, not only whether the result still has tk_routine kind.
@@ -1196,9 +1267,9 @@ struct Writer {
       if(ty!=source && pointer_type(ty)!=source)reject("function designator representation mismatch");
       return expression(a);
     }
-    if(operation.kind==eok_address_of && a && !b && a->kind==enk_routine)
+    if((operation.kind==eok_address_of || operation.kind==eok_reference_to) && a && !b && a->kind==enk_routine)
       return node("function-address",ty,e->position,routine(a->variant.routine.ptr),0,"","","value","none");
-    if(operation.kind==eok_address_of && a && !b && skip_typerefs(a->type)->kind==tk_routine)
+    if((operation.kind==eok_address_of || operation.kind==eok_reference_to) && a && !b && skip_typerefs(a->type)->kind==tk_routine)
       return expression(a);
     if(operation.kind==eok_array_to_pointer) {
       if(!a || b || !place(a))reject("array decay outside supported places");
@@ -1209,11 +1280,12 @@ struct Writer {
       unsigned id=node("array-decay",ty,e->position,0,0,"","","value",order);
       edge(id,"operand",0,expression(a));return id;
     }
-    if(operation.kind==eok_address_of || operation.kind==eok_indirect) {
+    if(operation.kind==eok_address_of || operation.kind==eok_reference_to ||
+       operation.kind==eok_indirect || operation.kind==eok_ref_indirect) {
       if(!a || b)reject("memory-place operator arity");
-      bool address=operation.kind==eok_address_of;
+      bool address=operation.kind==eok_address_of || operation.kind==eok_reference_to;
       auto pointer=skip_typerefs(address?e->type:a->type);
-      if(pointer->kind!=tk_pointer || pointer->variant.pointer.is_reference ||
+      if(pointer->kind!=tk_pointer ||
          skip_typerefs(pointer->variant.pointer.type)->kind==tk_void)
         reject("memory-place operator outside typed data pointers");
       if(address && !place(a))reject("address outside supported memory places");
@@ -1810,7 +1882,7 @@ struct Writer {
     }
     for(size_t i=0;i<routines.size();++i) {
       auto r=routines[i];if(r->function_def_number==NULL_function_def_number)continue;
-      function=routine_ids.at(r);auto scope=scope_for_routine_or_null(r);
+      function=routine_ids.at(r);current_routine=r;auto scope=scope_for_routine_or_null(r);
       string label="dotobj function "+source_spelling(&r->source_corresp);context=label.c_str();
       binding_ids.clear();binding_scopes.clear();cleanup_variables.clear();registered_cleanups.clear();
       bound_scopes.clear();declared_bindings.clear();controls.clear();switch_cases.clear();control_labels.clear();source_labels.clear();emitted_source_labels.clear();
@@ -1839,7 +1911,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v16\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v17\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

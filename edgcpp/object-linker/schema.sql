@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v16'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v17'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -61,7 +61,13 @@ CREATE TABLE source_routine_types (
  return_type_id INTEGER NOT NULL REFERENCES source_types(id),
  variadic INTEGER NOT NULL CHECK(variadic IN (0,1)),
  exception_policy TEXT NOT NULL CHECK(exception_policy IN ('unwind','terminate')),
- parameter_mode TEXT NOT NULL CHECK(parameter_mode IN ('prototype','unspecified'))
+ parameter_mode TEXT NOT NULL CHECK(parameter_mode IN ('prototype','unspecified')),
+ object_type_id INTEGER REFERENCES source_types(id),
+ object_is_const INTEGER NOT NULL CHECK(object_is_const IN (0,1)),
+ object_is_volatile INTEGER NOT NULL CHECK(object_is_volatile IN (0,1)),
+ object_ref_qualifier TEXT NOT NULL CHECK(object_ref_qualifier IN ('none','lvalue','rvalue')),
+ CHECK(object_type_id IS NOT NULL OR
+       (object_is_const=0 AND object_is_volatile=0 AND object_ref_qualifier='none'))
 ) STRICT;
 CREATE TABLE source_routine_parameters (
  type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),
@@ -120,6 +126,11 @@ CREATE TABLE parameters (
  entity_id INTEGER NOT NULL REFERENCES entities(id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  type_id INTEGER NOT NULL REFERENCES types(id),
+ parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','this')),
+ source_ordinal INTEGER CHECK(source_ordinal>=0),
+ CHECK((parameter_role='source' AND source_ordinal IS NOT NULL) OR
+       (parameter_role='this' AND source_ordinal IS NULL AND ordinal=0)),
+ UNIQUE(entity_id,source_ordinal),
  PRIMARY KEY(entity_id,ordinal)
 ) STRICT;
 CREATE TABLE functions (
@@ -150,7 +161,7 @@ CREATE TABLE bindings (
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  is_synthetic INTEGER NOT NULL CHECK(is_synthetic IN (0,1)),
- CHECK(is_synthetic=0 OR kind='local'),
+ CHECK(is_synthetic=0 OR kind IN ('local','parameter')),
  CHECK((kind='parameter' AND ordinal>=0) OR (kind='local' AND ordinal IS NULL))
 ) STRICT;
 CREATE TABLE nodes (
@@ -219,6 +230,7 @@ CREATE TABLE source_record_fields (
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
+ has_initializer INTEGER NOT NULL CHECK(has_initializer IN (0,1)),
  UNIQUE(source_record_id,ordinal)
 ) STRICT;
 CREATE TABLE record_types (

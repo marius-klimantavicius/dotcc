@@ -5,7 +5,7 @@ internal sealed record SourceRecord(long Id, long SourceTypeId, string IdentityK
     string CapturePhase, long? SourceFileId, long Line, long Column);
 internal sealed record SourceRecordField(long Id, long SourceRecordId, long Ordinal, long SourceTypeId,
     string SourceName, bool IsMutable, bool HasNoUniqueAddress, long? BitWidth,
-    long? SourceFileId, long Line, long Column);
+    long? SourceFileId, long Line, long Column, bool HasInitializer);
 
 internal sealed partial class ObjectFile
 {
@@ -30,13 +30,13 @@ internal sealed partial class ObjectFile
                     throw new InvalidDataException("Invalid original record identity, completeness or capture metadata");
                 if (!SourceRecords.TryAdd(record.Id, record)) throw new InvalidDataException("Duplicate original record ID");
             }
-        using (var query = database.Prepare("SELECT id,source_record_id,ordinal,source_type_id,source_name,is_mutable,has_no_unique_address,bit_width,source_file_id,line,column FROM source_record_fields ORDER BY source_record_id,ordinal"))
+        using (var query = database.Prepare("SELECT id,source_record_id,ordinal,source_type_id,source_name,is_mutable,has_no_unique_address,bit_width,source_file_id,line,column,has_initializer FROM source_record_fields ORDER BY source_record_id,ordinal"))
             while (query.Read())
             {
                 var field = new SourceRecordField(query.Integer(0), query.Integer(1), query.Integer(2), query.Integer(3), query.Text(4),
-                    query.Integer(5) == 1, query.Integer(6) == 1, query.OptionalInteger(7), query.OptionalInteger(8), query.Integer(9), query.Integer(10));
+                    query.Integer(5) == 1, query.Integer(6) == 1, query.OptionalInteger(7), query.OptionalInteger(8), query.Integer(9), query.Integer(10), query.Integer(11) == 1);
                 if (field.Id <= 0 || !SourceRecords.ContainsKey(field.SourceRecordId) || field.Ordinal < 0 || field.SourceTypeId <= 0 ||
-                    query.Integer(5) is not (0 or 1) || query.Integer(6) is not (0 or 1) || field.BitWidth is < 0 || field.Line < 0 || field.Column < 0)
+                    query.Integer(5) is not (0 or 1) || query.Integer(6) is not (0 or 1) || query.Integer(11) is not (0 or 1) || field.BitWidth is < 0 || field.Line < 0 || field.Column < 0)
                     throw new InvalidDataException("Invalid original record field metadata");
                 if (!SourceFields.TryAdd(field.Id, field)) throw new InvalidDataException("Duplicate original record field ID");
             }

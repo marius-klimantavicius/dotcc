@@ -12,6 +12,7 @@ import subprocess
 import sys
 import lifetimes_verify
 import records_verify
+import references_verify
 import storage_verify
 import project_c_verify
 import provider_verify
@@ -36,6 +37,7 @@ def main():
     parser.add_argument('--startup-only', action='store_true', help='Run startup ordering, provider extraction and rejection checks')
     parser.add_argument('--assignment-only', action='store_true', help='Run C++17 RHS-first assignment acceptance')
     parser.add_argument('--records-only', action='store_true', help='Run the focused record/layout acceptance')
+    parser.add_argument('--references-only', action='store_true', help='Run C++ references, receiver ABI and source-signature checks')
     args = parser.parse_args()
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -73,12 +75,12 @@ def main():
                  'project_cpp_vptr_layout.cpp', 'project_cpp_constant_storage.cpp',
                  'cpp_assignment_order.cpp', 'project_cpp_assignment_lifting.cpp',
                  'project_c_integer128.c', 'project_c_integer128_boundaries.c',
-                 'project_cpp_integer128_enum.cpp']:
+                 'project_cpp_integer128_enum.cpp', 'project_cpp_references_members.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v16', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v17', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -162,6 +164,10 @@ def main():
                     db.execute('UPDATE content_digest SET sha256=?', (MODULE.logical_hash(db),))
             return path
 
+        if args.references_only:
+            references_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+            save('passed')
+            return
         if args.assignment_only:
             assignment_verify.verify(inputs, out, run, check, compile_source, link, execute)
             save('passed')
@@ -287,6 +293,7 @@ def main():
         record_provider, record_consumer = records_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
         records_verify.malformed(record_provider, record_consumer, tool, run, link, mutate)
         storage_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
+        references_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
         project_objects = project_c_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
         project_c_verify.malformed(project_objects, tool, run, mutate)
         provider_verify.verify(inputs, out, tool, run, check, compile_source, execute)
@@ -385,7 +392,7 @@ def main():
             ("INSERT INTO source_types SELECT max(id)+1,'unsigned-char','',NULL,3,0,0,NULL,0,0,NULL FROM source_types", ()),
             ("UPDATE source_parameters SET source_type_id=(SELECT max(id) FROM source_types) WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ()),
             ("INSERT INTO source_types SELECT (SELECT max(id)+1 FROM source_types),kind,source_name,underlying_type_id,(SELECT max(id) FROM types),is_const,is_volatile,source_file_id,line,column,element_count FROM source_types WHERE id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
-            ("INSERT INTO source_routine_types SELECT (SELECT max(id) FROM source_types),return_type_id,variadic,exception_policy,parameter_mode FROM source_routine_types WHERE type_id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
+            ("INSERT INTO source_routine_types SELECT (SELECT max(id) FROM source_types),return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier FROM source_routine_types WHERE type_id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
             ("INSERT INTO source_routine_parameters SELECT (SELECT max(id) FROM source_types),ordinal,source_type_id FROM source_parameters WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ()),
             ("UPDATE source_functions SET routine_source_type_id=(SELECT max(id) FROM source_types) WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ())])
         run('signature-mismatch', ['dotnet', tool, 'link', '--out', out / 'bad-signature', provider, mismatch], None, 'Signature mismatch')
@@ -619,7 +626,6 @@ def main():
         negatives = {
             'va-opt': '#define API_OPT(...) __VA_OPT__(17)\nint f(){return API_OPT(1); }\n',
             'variable-array': 'int f(int n){int values[n]; values[0]=2;return values[0];}\n',
-            'reference': 'int f(int& value){return value;}\n',
             'switch-range': 'int f(int n){switch(n){case 1 ... 3:return 2;default:return 3;}}\n',
         }
         for name, code in negatives.items():

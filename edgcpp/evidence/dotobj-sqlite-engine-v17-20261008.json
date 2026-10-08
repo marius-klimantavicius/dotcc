@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "scope": "Full prepared THREADSAFE=1 Unix/APPDEF SQLite engine using independent original-source dotobj units, managed linker, translated musl and shared BCL runtime",
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "translationUnits": 225,
+  "selectedFunctionDefinitions": 3340,
+  "boundRuntimeFunctions": 70,
+  "unresolvedRuntimeRequirements": 0,
+  "selectedProviderUnits": 45,
+  "projectReceipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-musl-project-023/results.json",
+    "sha256": "d3d155bb645b6c1c2122952922cba3c19b95891e5875e5d6fddf40ea7fa5f38b"
+  },
+  "linkCommand": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-musl-link-020.command.json",
+    "sha256": "205df4e540f2b779c9383a2be59dcbf12b22e0ab13310cfc6c17be07780af256"
+  },
+  "selectionReceipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-musl-link-020/link-selection.json",
+    "sha256": "a47404605ecbcc1c1cc26eaa5686fbed1dce8742567c4b14fe9bc2f54ab74c22"
+  },
+  "runtimeReceipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-musl-link-020/runtime-bindings.json",
+    "sha256": "bcdb09e6efa02c05259f8024965b68a1fd85213bd8968646049bb145366b389e"
+  },
+  "sqliteRuntimeReceipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-musl-link-020/runtime-sqlite.json",
+    "sha256": "f6fb30dcff16783f9d6cd7117bea49bfdcc81a06457e8f3fcace659deb8eb63e"
+  },
+  "executionReceipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-engine-acceptance-002/results.json",
+    "sha256": "9ecff08eaaecf5566943d2a802acddd16c70e55b8a9b77fe1abd445a492e2ce3"
+  },
+  "executedConsumer": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-engine-acceptance-002/Program.cs",
+    "sha256": "21014af1bdb84e62774fa69ec7080306dd14b757103441a610d28798b7d7309b"
+  },
+  "jitOutput": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-engine-acceptance-002/jit.log",
+    "sha256": "334bad9b12f77aa55eeb75afc578ca71d23d32a58e76891a84dd0e317cfb3fbd"
+  },
+  "nativeAotOutput": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-engine-acceptance-002/nativeaot.log",
+    "sha256": "334bad9b12f77aa55eeb75afc578ca71d23d32a58e76891a84dd0e317cfb3fbd"
+  },
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native023-verified-snapshot/cpfe-dot",
+    "sha256": "bc20b70b4b9e7e207476b2c0bcf8d96d8d19f3507a9643ff6d98da8c4c4337a5"
+  },
+  "linker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-020/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "7cde152ca39c08bbe5a78c7061334b3e5bd6ed08d08ddd20c55dcb94e508038a"
+  },
+  "checksDescription": [
+    "All 225 original translation units packaged independently with owned source/macros",
+    "All SQLite primary definitions preserved; musl provider functions/storage selected by dependency closure",
+    "Environment constructor retained and executed once before library use",
+    "Concurrent cold initialization, stable static mutex identities, shutdown/restart and threading configuration",
+    "Mutex recursion/contention and shared FULLMUTEX connection with managed callback reentry",
+    "Real-file persistence, Unicode, JSONB, FTS5, translated musl math and read-only errors",
+    "Concurrent independent NOMUTEX connections using rollback journal and WAL",
+    "Incremental blob read/write/bounds, backup, serialization and resizable deserialization",
+    "Translated timezone/environment initialization, full GC and engine restart",
+    "JIT and NativeAOT output parity"
+  ],
+  "limitations": [
+    "Static per-assembly runtime; independent engine-owner mode not yet supported",
+    "Project integration suites, not exhaustive upstream SQLite conformance",
+    "Only linux-x64 execution verified; runtime sources use BCL or runtime platform selection",
+    "DuckDB C++ translation remains incomplete"
+  ],
+  "objectFormatVersion": 17,
+  "previousEvidence": "dotobj-sqlite-engine-20261008.json"
+}

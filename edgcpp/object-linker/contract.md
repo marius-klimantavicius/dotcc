@@ -837,3 +837,34 @@ runtime has invoked C++ TLS finalizers, C11 TSS callbacks and libc TLS cleanup.
 The next source TLS access creates its initial image again. Global state is
 unaffected. The shared runtime validates this explicit bridge before enabling
 thread services; a stale linker contract cannot silently omit owned TLS release.
+
+## C++ source references and receiver ABI: scalar-control-v17
+
+Original lvalue/rvalue reference kinds remain distinct source types, with their
+referent's CV qualifiers and source identity preserved. Their execution type is
+a pointer to the referent; that lowering is not permission to equate a reference
+with a pointer in cross-unit source signature matching. Original routine types
+recursively retain written return/parameter types. Function parameter matching
+removes top-level CV and applies only the language's outer array/function decay;
+references to arrays/functions do not decay. The currently admitted unspecified
+C definition has no parameters and can match a prototype with no parameters.
+The original parameter-mode fact remains in the object.
+
+`source_routine_types` append `object_type_id`, `object_is_const`,
+`object_is_volatile` and `object_ref_qualifier` (`none`, `lvalue`, `rvalue`). The
+object type is the unqualified original nominal record, not a fabricated pointer
+parameter declaration. Execution `parameters` append `parameter_role`
+(`source` or `this`) and nullable `source_ordinal`. An instance routine has one
+proved `this` parameter at execution ordinal zero, then a bijection between
+written parameters and remaining execution positions. Static members and free
+functions have no receiver. Source declarations for written parameters join
+through `source_ordinal`; compiler-owned `this` has an explicitly synthetic
+binding and no invented original declaration. Receiver ownership is observed
+through EDG's actual receiver variable/flags, not the spelling of a variable.
+
+Original record fields append `has_initializer`. This fact survives original
+capture even when a particular object uses explicit aggregate initialization.
+It does not by itself imply a nontrivial copy operation or authorize discarding
+constructor, dynamic initialization or lifetime obligations. True member-pointer
+values, hidden result buffers and parameters passed through copy constructors
+remain separate ABI contracts and must reject until represented.

@@ -2,7 +2,9 @@ using System.Globalization;
 
 namespace DotObj;
 
-internal sealed record RoutineType(long TypeId, long ReturnTypeId, bool Variadic, long[] Parameters, string ExceptionPolicy, string ParameterMode = "prototype");
+internal sealed record RoutineType(long TypeId, long ReturnTypeId, bool Variadic, long[] Parameters, string ExceptionPolicy, string ParameterMode = "prototype",
+    long? ObjectTypeId = null, bool ObjectIsConst = false, bool ObjectIsVolatile = false, string ObjectRefQualifier = "none");
+internal sealed record ParameterSemantics(long EntityId, long Ordinal, string Role, long? SourceOrdinal);
 
 internal static class RoutineTypes
 {
@@ -36,6 +38,8 @@ internal sealed partial class ObjectFile
 {
     public Dictionary<long, RoutineType> Routines { get; } = [];
     public Dictionary<long, RoutineType> SourceRoutines { get; } = [];
+    public Dictionary<long, RoutineType> EntitySourceRoutines { get; } = [];
+    public Dictionary<(long EntityId, long Ordinal), ParameterSemantics> ParameterRoles { get; } = [];
 
     private void ReadRoutineMetadata(bool source)
     {
@@ -51,7 +55,7 @@ internal sealed partial class ObjectFile
                 if (query.Integer(1) != list.Count || query.Integer(2) <= 0) throw new InvalidDataException("Invalid routine parameter identity/order");
                 list.Add(query.Integer(2));
             }
-        using (var query = database.Prepare($"SELECT type_id,return_type_id,variadic,exception_policy" + (source ? ",parameter_mode" : "") + $" FROM {table} ORDER BY type_id"))
+        using (var query = database.Prepare($"SELECT type_id,return_type_id,variadic,exception_policy" + (source ? ",parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier" : "") + $" FROM {table} ORDER BY type_id"))
             while (query.Read())
             {
                 long id = query.Integer(0), result = query.Integer(1), variadic = query.Integer(2);
@@ -61,7 +65,14 @@ internal sealed partial class ObjectFile
                 string mode = source ? query.Text(4) : "prototype";
                 if (mode is not ("prototype" or "unspecified") || mode == "unspecified" && (variadic != 0 || parameters.GetValueOrDefault(id, []).Count != 0))
                     throw new InvalidDataException("Unsupported original unspecified parameter signature");
-                target.Add(id, new(id, result, variadic != 0, parameters.GetValueOrDefault(id, []).ToArray(), policy, mode));
+                long? objectType = source ? query.OptionalInteger(5) : null;
+                bool objectConst = source && query.Integer(6) == 1, objectVolatile = source && query.Integer(7) == 1;
+                string objectRef = source ? query.Text(8) : "none";
+                if (source && (query.Integer(6) is not (0 or 1) || query.Integer(7) is not (0 or 1)) ||
+                    objectRef is not ("none" or "lvalue" or "rvalue") ||
+                    (objectType is null ? objectConst || objectVolatile || objectRef != "none" : objectType <= 0 || mode != "prototype"))
+                    throw new InvalidDataException("Invalid original member receiver metadata");
+                target.Add(id, new(id, result, variadic != 0, parameters.GetValueOrDefault(id, []).ToArray(), policy, mode, objectType, objectConst, objectVolatile, objectRef));
             }
         if (parameters.Keys.Any(id => !target.ContainsKey(id))) throw new InvalidDataException("Routine parameters have no signature");
     }

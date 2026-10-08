@@ -29,7 +29,9 @@ struct Type {
   bool is_int128=false,is_unsigned_int128=false;
   a_source_position position={};
   // Routine types are private signature snapshots, not scalar sourceTypes.
-  unsigned result=0;
+  unsigned result=0,object_type=0;
+  bool object_is_const=false,object_is_volatile=false;
+  std::string object_ref_qualifier="none";
   bool variadic=false;
   std::string exception_policy="unwind",parameter_mode="prototype";
   std::vector<unsigned> parameters;
@@ -47,6 +49,9 @@ struct Function {
   Declaration declaration;
   unsigned signature_type=0;
   std::vector<unsigned> parameters;
+  bool scope_captured=false;
+  a_variable_ptr implicit_this=nullptr;
+  std::vector<a_variable_ptr> parameter_variables;
 };
 struct RecordField {
   a_field_ptr il=nullptr;
@@ -54,7 +59,7 @@ struct RecordField {
   std::string name,original_name;
   unsigned long long offset=0;
   unsigned bit_offset=0,bit_width=0;
-  bool bit_signed=false,is_mutable=false,no_unique_address=false,is_bit_field=false;
+  bool bit_signed=false,is_mutable=false,no_unique_address=false,is_bit_field=false,has_initializer=false;
   a_source_position position={};
 };
 struct Record {
@@ -76,7 +81,7 @@ struct PrelowerField {
   a_source_position position={};
   unsigned long long byte_offset=0;
   unsigned bit_offset=0,bit_width=0;
-  bool is_bit_field=false,is_mutable=false,no_unique_address=false;
+  bool is_bit_field=false,is_mutable=false,no_unique_address=false,has_initializer=false;
 };
 struct PrelowerBase {
   a_base_class_ptr il=nullptr;
@@ -175,13 +180,12 @@ inline void capture_record(a_type_ptr t) {
   if(c.is_packed)value.error="packed record layout";
 #endif
   if(c.max_member_alignment)value.error="packed record alignment";
-  if(extra && extra->has_field_initializer)value.error="record default member initializer";
   // Unsupported execution layout does not erase the original member index.
   // Keep its typed source declarations for the independent semantic index;
   // the execution writer still rejects value.error before publishing layouts.
   for(auto f=c.field_list;f;f=f->next) {
     RecordField field;field.il=f;field.name=spelling(f->source_corresp);field.original_name=field.name;field.offset=f->offset;
-    field.is_mutable=f->is_mutable;field.no_unique_address=f->has_no_unique_address_attribute;field.is_bit_field=f->is_bit_field;
+    field.has_initializer=f->has_initializer;field.is_mutable=f->is_mutable;field.no_unique_address=f->has_no_unique_address_attribute;field.is_bit_field=f->is_bit_field;
     field.position=f->source_corresp.decl_position;
     if(field.name.empty())field.name="__anonymous_member_"+std::to_string(value.fields.size());
     if(f->has_no_unique_address_attribute || f->is_lowered_base_class || f->class_subobject_with_tail_padding ||
@@ -251,8 +255,8 @@ inline unsigned capture_type(a_type_ptr t) {
       else if(t->variant.float_kind==fk_float80)value.kind="float80";
       else if(t->variant.float_kind==fk_float64x)value.kind="float64x";
     }
-  } else if(t->kind==tk_pointer && !t->variant.pointer.is_reference) {
-    value.kind="pointer";
+  } else if(t->kind==tk_pointer) {
+    value.kind=t->variant.pointer.is_reference?(t->variant.pointer.is_rvalue_reference?"rvalue-reference":"lvalue-reference"):"pointer";
     value.underlying=capture_type(t->variant.pointer.type);
     // Execution pointer IDs are interned by the object writer, independently
     // of EDG addresses and of the source typedef/qualification structure.
@@ -269,6 +273,14 @@ inline unsigned capture_type(a_type_ptr t) {
   } else if(t->kind==tk_routine) {
     value.kind="routine";
     value.result=capture_type(t->variant.routine.return_type);
+    auto extra=t->variant.routine.extra_info;
+    if(extra->this_class) {
+      value.object_type=capture_type(extra->this_class);
+      value.object_is_const=(extra->qualifiers&TQ_CONST)!=0;
+      value.object_is_volatile=(extra->qualifiers&TQ_VOLATILE)!=0;
+      value.object_ref_qualifier=extra->ref_qualifiers==rqk_lvalue?"lvalue":
+        extra->ref_qualifiers==rqk_rvalue?"rvalue":"none";
+    }
     value.variadic=t->variant.routine.extra_info->has_ellipsis;
     value.parameter_mode=t->variant.routine.extra_info->prototyped?"prototype":"unspecified";
     auto specification=t->variant.routine.extra_info->exception_specification;
@@ -307,7 +319,7 @@ inline bool abi_storage_type(a_type_ptr type) {
   return state().abi_records.count(type)!=0;
 }
 inline void capture_variable(a_variable_ptr v) {
-  auto &s=state();if(s.variables.count(v) || v->compiler_generated || abi_storage_type(v->type))return;
+  auto &s=state();if(s.variables.count(v) || v->is_this_parameter || v->compiler_generated || abi_storage_type(v->type))return;
   a_type_ptr type=v->type;
 #if GENERATE_SOURCE_SEQUENCE_LISTS
   if(v->declared_type)type=v->declared_type;
@@ -323,6 +335,13 @@ inline void capture_scope(a_scope_ptr scope) {
   if(!scope)return;
   if(scope->kind==sck_function) {
     capture_routine(scope->variant.routine.ptr);
+    auto &function=state().functions.at(scope->variant.routine.ptr);
+    if(!function.scope_captured) {
+      function.scope_captured=true;function.implicit_this=scope->variant.routine.this_param_variable;
+      for(auto v=scope->variant.routine.parameters;v;v=v->next) {
+        if(v!=function.implicit_this)function.parameter_variables.push_back(v);
+      }
+    }
     for(auto v=scope->variant.routine.parameters;v;v=v->next)capture_variable(v);
   }
   for(auto t=scope->types;t;t=t->next)capture_type(t);
@@ -356,7 +375,7 @@ inline void observe_record_before_prelowering(a_type_ptr type) {
     item.id=s.next_original_field++;s.original_field_ids[field]=item.id;
     item.name=spelling(field->source_corresp);item.position=field->source_corresp.decl_position;
     item.byte_offset=field->offset;item.is_bit_field=field->is_bit_field;
-    item.is_mutable=field->is_mutable;item.no_unique_address=field->has_no_unique_address_attribute;
+    item.has_initializer=field->has_initializer;item.is_mutable=field->is_mutable;item.no_unique_address=field->has_no_unique_address_attribute;
     if(field->is_bit_field){item.bit_offset=field->offset_bit_remainder;item.bit_width=field->bit_size;}
     auto captured=s.type_ids.find(field->type);
     if(captured!=s.type_ids.end())item.source_type_snapshot=captured->second;

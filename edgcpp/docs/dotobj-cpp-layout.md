@@ -277,3 +277,40 @@ copies that must preserve derived tail members.
 Re-run the original DuckDB `exception.cpp` after each coherent gate. It must
 progress because represented semantics expanded, not because constructors,
 RTTI, unsupported source metadata or destruction obligations were discarded.
+
+## Alternative: exact-sized CLR subobject records
+
+The stock C backend flattens tail-reusing base fields because an ordinary C
+struct's extent is rounded to its alignment. The owned representation need not
+inherit that emission constraint. A separate managed subobject type can retain
+its exact physical extent with explicit field offsets and an appropriate CLR
+pack, while its complete nominal type retains the complete-object extent.
+For the measured examples, a five-byte subobject can use pack 1 and a twelve-byte
+subobject can use pack 4. Both continue to carry native alignment 4 and 8,
+respectively, in the owned object. A containing derived record can embed the
+exact-sized subobject field without overwriting its own tail-reusing member.
+
+This alternative can preserve named `base.member` access and avoids flattening
+all nested field paths. It must not silently equate CLR alignment with native
+alignment: subobject locals, temporaries, arena addresses and native allocations
+must satisfy the recorded native alignment independently. A pointer converted
+to the complete base retains that complete type's pointer stride, as in C++.
+Subobject copies remain explicit-only and use the actual lowered copy extent;
+an ordinary complete-record assignment is not interchangeable with that copy.
+The existing source field-copy observer supplies the original field identities
+for both physical representations.
+
+A zero-extent optimized empty base cannot be an ordinary CLR field, since an
+empty CLR value type still has a nonzero extent. It remains an addressable
+logical view with its recorded offset, with no extra physical storage. Overlap,
+virtual base placement and `no_unique_address` still require explicit owned
+relationships; a choice of packing does not establish those relationships.
+This option is under assessment, not an implemented layout guarantee.
+
+The detached managed experiment at
+`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-subobject-view-managed-research-001/results.json`
+passes JIT and NativeAOT checks for exact five-byte/pack-1 and twelve-byte/pack-4
+subobject structs. This establishes the bounded CLR layout technique; the
+native exporter and owned layout verifier still reject base/subobject layouts.
+It does not establish empty-base views, virtual inheritance, copy lifetimes,
+or the full cross-platform execution contract.

@@ -88,7 +88,8 @@ only process/destructor callbacks are needed. It does not require linking the
 C11 or libc++ thread services. Destructors run before storage is cleared, so
 they can still access the current source TLS and errno; the next access starts
 with their declared initial values. Recursive release during a destructor is
-ignored while the outer release drains all registrations.
+rejected while the outer release owns cleanup; registrations added by callbacks
+are still drained in reverse order.
 
 `tests/runtime_threads_verify.py` packages the existing EDG C11 fixtures and
 the portable thread provider as independent original-source objects. It checks

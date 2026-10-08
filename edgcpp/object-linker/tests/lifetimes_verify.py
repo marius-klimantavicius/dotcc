@@ -86,11 +86,30 @@ internal static unsafe class __DotObjEntry
                     'left(&trace);right(&trace);return trace==12?0:1;}\n')
     internal_objects.append(compile_source('cleanup-internal-main', main))
     execute('cleanup-internal', link('link-cleanup-internal', internal_objects))
+
+    # With source exceptions disabled EDG has already materialized this normal
+    # destructor call. Receiver support now lets us preserve and execute it;
+    # this is not a claim that unrepresented unwinding obligations are accepted.
+    normal_destructor = inputs / 'cleanup-cpp-normal-destructor.cpp'
+    normal_destructor.write_text('struct Guard{int* p;~Guard(){++*p;}}; '
+        'int f(){int value=0;{Guard g{&value};}return value;} '
+        'int main(){return f()==1?0:1;}\n')
+    normal_object = compile_source('cleanup-cpp-normal-destructor', normal_destructor)
+    run('cleanup-cpp-normal-destructor-native-build', ['c++', '-std=c++17', '-fno-exceptions',
+        normal_destructor, '-o', out / 'cleanup-cpp-normal-destructor-native'])
+    run('cleanup-cpp-normal-destructor-native', [out / 'cleanup-cpp-normal-destructor-native'])
+    execute('cleanup-cpp-normal-destructor', link('link-cleanup-cpp-normal-destructor', [normal_object]))
+
+    exceptional_destructor = inputs / 'cleanup-cpp-exceptional-destructor.cpp'
+    exceptional_destructor.write_text('extern void may_throw(); struct Guard{int* p;~Guard(){++*p;}}; '
+        'int f(){int value=0;{Guard g{&value};may_throw();}return value;}\n')
+    unsupported = compile_source('cleanup-cpp-exceptional-destructor', exceptional_destructor,
+                                 extra=['--exceptions', '--rtti'], expected=None)
+    check('cleanup-exceptional-destructor-not-published', not unsupported.exists())
     for name, standard, code in [
         ('mixed-uninitialized', 'c++17', 'void drop(int*); int f(){int guard __attribute__((cleanup(drop))), value=1;return value;}'),
         ('split-array-initialization', 'c++17', 'void drop(int (*)[3]); int next(); int f(){int values[3] __attribute__((cleanup(drop)))={next(),next()};return values[0];}'),
         ('switch-dispatch', 'c11', 'void drop(int**); int f(int choice,int* p){switch(choice){case 1:; int* guard __attribute__((cleanup(drop)))=p;return 1;default:return 0;}}'),
-        ('cpp-destructor', 'c++17', 'struct Guard{int* p;~Guard(){++*p;}}; int f(){int value=0;{Guard g{&value};}return value;}'),
     ]:
         source = inputs / ('cleanup-unsupported-' + name + ('.c' if standard == 'c11' else '.cpp'))
         source.write_text(code + '\n')

@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "profile": "scalar-control-v17",
+  "scope": "Original lvalue/rvalue references, implicit receiver provenance, source signature compatibility and normal-exit lowered destructor calls",
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "fullRegressionChecks": 909,
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-v17-acceptance-002/results.json",
+      "sha256": "ba298f323b0313376b0a27cead5405685b22dabaed5a3b5f7dc2dfe8b0901f9c"
+    },
+    "focusedReferences": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-reference-acceptance-001/results.json",
+      "sha256": "611960516d6699959182073e142ba4eaf0aa7318809452cee5ae1d7b01e6a522"
+    },
+    "receiverAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-references-managed020-002/results.json",
+      "sha256": "f36f2cfa74d4288c3791c61ec847adfb2f1e928321c6b18a79a3623e70cdb564"
+    },
+    "sqliteEngine": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-engine-acceptance-002/results.json",
+      "sha256": "9ecff08eaaecf5566943d2a802acddd16c70e55b8a9b77fe1abd445a492e2ce3"
+    },
+    "duckdbProbe": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-sample-023/summary.json",
+      "sha256": "584790fea021053d14bbde5d7228bebcc329a0a2834d54321f61ac8b45ae2814"
+    },
+    "libcxxProbe": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-libcxx-project-025/results.json",
+      "sha256": "375e3f267a897d48e6c24b95bd77e7ba1476b6c624fc3f55258f57ac0204907f"
+    },
+    "actualTypeinfo": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-typeinfo-native024-001/unit.dotobj",
+      "sha256": "7e3e23f2aac139df4004c607370c337b58cd3fa53e637095fde4be89efed6ced"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native025-verified-snapshot/cpfe-dot",
+      "sha256": "94ac9a129480ba81aae31f7a8172ab46a0992e2881bf39fd29be2fc6bef5abd1"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-020/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "7cde152ca39c08bbe5a78c7061334b3e5bd6ed08d08ddd20c55dcb94e508038a"
+    }
+  },
+  "limitations": [
+    "No general C++ inheritance, generated ctor/dtor ABI origins, hidden result buffers or unwinding lifetimes",
+    "Simple normal-exit destructor acceptance uses source exceptions disabled; active destruction obligations remain rejected",
+    "Default member initializer presence is captured; no complete original initializer-expression tree claim",
+    "Real typeinfo reduction packages and verifies, but unresolved RTTI storage prevents its execution",
+    "DuckDB full execution and complete independent source semantic indexing remain unfinished"
+  ]
+}

@@ -63,7 +63,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v16" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v17" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -221,7 +221,7 @@ internal sealed partial class ObjectFile : IDisposable
                 if (ScalarTypes.IsArray(Type(entity.ReturnTypeId)) || !CanCopyRecord(Type(entity.ReturnTypeId))) throw new InvalidDataException("Function cannot return an aggregate by value");
                 Entities.Add(entity.Id, entity);
             }
-        using (var query = database.Prepare("SELECT entity_id,ordinal,type_id FROM parameters ORDER BY entity_id,ordinal"))
+        using (var query = database.Prepare("SELECT entity_id,ordinal,type_id,parameter_role,source_ordinal FROM parameters ORDER BY entity_id,ordinal"))
             while (query.Read())
             {
                 long entity = query.Integer(0);
@@ -229,6 +229,11 @@ internal sealed partial class ObjectFile : IDisposable
                 if (!Parameters.TryGetValue(entity, out var parameters)) Parameters.Add(entity, parameters = []);
                 string type = Type(query.Integer(2));
                 if (query.Integer(1) != parameters.Count || (type == "void" || ScalarTypes.IsArray(type) || !CanCopyRecord(type))) throw new InvalidDataException("Invalid parameter ordinal/type");
+                string role = query.Text(3); long? sourceOrdinal = query.OptionalInteger(4);
+                long ordinal = query.Integer(1);
+                if (role is not ("source" or "this") || (role == "this" ? ordinal != 0 || sourceOrdinal is not null : sourceOrdinal is null or < 0))
+                    throw new InvalidDataException("Invalid execution parameter source role");
+                ParameterRoles.Add((entity, ordinal), new(entity, ordinal, role, sourceOrdinal));
                 parameters.Add(type);
             }
         foreach (Entity entity in Entities.Values)
@@ -260,7 +265,10 @@ internal sealed partial class ObjectFile : IDisposable
             while (query.Read())
             {
                 var binding = new Binding(query.Integer(0), query.Integer(1), query.Text(2), query.OptionalInteger(3), query.Integer(4), query.Text(5), query.Integer(6), query.Integer(7) == 1);
-                if (query.Integer(7) is not (0 or 1) || binding.IsSynthetic && binding.Kind != "local") throw new InvalidDataException("Invalid synthetic binding marker");
+                bool isThis = binding.Kind == "parameter" && binding.Ordinal is long ordinal &&
+                    ParameterRoles.TryGetValue((functionId, ordinal), out ParameterSemantics? parameter) && parameter.Role == "this";
+                if (query.Integer(7) is not (0 or 1) || binding.Kind == "parameter" && binding.IsSynthetic != isThis || binding.IsSynthetic && binding.Kind is not ("local" or "parameter"))
+                    throw new InvalidDataException("Synthetic parameter requires a proven implicit-this role");
                 bindings.Add(binding.Id, binding);
             }
         var edges = new Dictionary<long, List<Edge>>();

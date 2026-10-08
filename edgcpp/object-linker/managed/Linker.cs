@@ -15,6 +15,7 @@ internal sealed partial class Linker
     private readonly bool allowExterns;
     private readonly Dictionary<string, Symbol> definitions = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> signatures = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, string> sourceSignatures = new(StringComparer.Ordinal);
     private readonly Dictionary<ObjectFile, Dictionary<long, SourceRecordField[]>> sourceFieldIndex = [];
     public Dictionary<string, string> Names { get; } = new(StringComparer.Ordinal);
     public Dictionary<string, (ObjectFile Object, RecordType Record)> Records { get; } = new(StringComparer.Ordinal);
@@ -36,6 +37,10 @@ internal sealed partial class Linker
                 if (signatures.TryGetValue(symbol.Key, out string? prior) && prior != symbol.Signature)
                     throw new InvalidDataException($"Signature mismatch for {entity.ExternalKey ?? entity.SourceName}: {prior} versus {symbol.Signature}");
                 signatures[symbol.Key] = symbol.Signature;
+                string sourceSignature = obj.FunctionSourceSignature(entity.Id);
+                if (sourceSignatures.TryGetValue(symbol.Key, out string? priorSource) && priorSource != sourceSignature)
+                    throw new InvalidDataException($"Source signature mismatch for {entity.ExternalKey ?? entity.SourceName}: {priorSource} versus {sourceSignature}");
+                sourceSignatures[symbol.Key] = sourceSignature;
                 if (entity.Definition != "declaration")
                 {
                     if (!definitions.TryGetValue(symbol.Key, out Symbol? existing)) definitions.Add(symbol.Key, symbol);
@@ -125,6 +130,7 @@ internal sealed partial class Linker
         var actual = OriginalFields(rightObject, rightId);
         return expected.Length == actual.Length && !actual.Where((field, index) =>
             field.SourceName != expected[index].SourceName || field.IsMutable != expected[index].IsMutable ||
+            field.HasInitializer != expected[index].HasInitializer ||
             field.HasNoUniqueAddress != expected[index].HasNoUniqueAddress || field.BitWidth != expected[index].BitWidth ||
             rightObject.SourceTypeSignature(field.SourceTypeId) != leftObject.SourceTypeSignature(expected[index].SourceTypeId)).Any();
     }

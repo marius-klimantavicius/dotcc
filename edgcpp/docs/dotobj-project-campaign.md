@@ -241,3 +241,41 @@ The full v16 regression passes **871 checks including NativeAOT** with native022
 and managed019. [Hashed integer128 evidence](../evidence/dotobj-integer128-20261008.json)
 records that run, focused integer/enum and malformed-object checks, current
 DuckDB probes and the exact immutable tools.
+
+## Original references and instance receiver ABI, v17 (2026-10-08)
+
+The object now distinguishes original lvalue/rvalue references from their
+pointer execution representations. Instance routines retain original receiver
+record identity, CV/ref qualifiers and written parameter ordinals; the hidden
+receiver has an explicit synthetic binding with no invented source declaration.
+Static members remain ordinary functions. Default member initializer presence
+is preserved independently of physical layout and trivial-copyability facts.
+
+Managed source signature matching is recursive: equal pointer ABIs cannot hide
+reference/pointer mismatches, including callback signatures. Legal top-level
+parameter CV differences, function decay, array references and reference
+collapsing remain compatible. The focused suite passes 45 checks including
+NativeAOT. A real libc++ typeinfo reduction now packages and verifies the
+`std::type_info::name() const noexcept` call; external RTTI storage means this
+reduction is not yet an execution claim.
+
+Normal-exit destructor calls already materialized by EDG with source exceptions
+disabled can now execute through the receiver ABI. The regression distinguishes
+that case from active unwinding obligations: a throwing call within the same
+RAII scope with exceptions enabled still rejects explicitly. Generated deleting,
+complete and subobject ctor/dtor entries also remain explicit origin boundaries;
+copying a late lowered signature is not original source provenance.
+
+All 225 original SQLite/musl units repackage with native023 and link through
+managed020 to 3340 functions and 70 real runtime imports, with zero unresolved
+bindings. The same eight engine suites pass under JIT and NativeAOT.
+[SQLite v17 evidence](../evidence/dotobj-sqlite-engine-v17-20261008.json) records the
+fresh run. DuckDB probes move past the reference and default member initializer
+gates to aggregate copy ABI, inheritance and generated ctor/dtor origins.
+
+The full v17 regression passes **909 checks including NativeAOT** with native025
+and managed020. [Hashed reference evidence](../evidence/dotobj-reference-20261008.json)
+includes the focused source-signature checks, fresh SQLite execution, real
+libc++/DuckDB probes and immutable tool snapshots. The initial v17 run is retained
+with its stale negative expectation; the stock C backend confirmed that EDG had
+already materialized normal-exit destruction when source exceptions are disabled.

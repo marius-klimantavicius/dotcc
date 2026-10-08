@@ -51,7 +51,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v16");
+        lifetimeWriter.WriteString("profile", "scalar-control-v17");
         lifetimeWriter.WriteString("capture", "lexical-cleanup-activations");
         lifetimeWriter.WriteBoolean("lexicalCleanups", true);
         lifetimeWriter.WriteBoolean("lifetimes", false);
@@ -150,7 +150,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v16");
+            writer.WriteString("profile", "scalar-control-v17");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -163,7 +163,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v16");
+            writer.WriteString("profile", "scalar-control-v17");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -174,7 +174,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v16", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v17", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; variable-length arrays, source EH and C++ RAII are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance and explicit lexical cleanup activations only; no complete source expression/statement view, macro expansion history or general C++ lifetime capture" },
@@ -263,7 +263,9 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         allocator.Reserve("_"); // Keep discard assignments distinct from source bindings named _.
         var bindingNames = body.Bindings.Values.OrderBy(binding => binding.Kind == "parameter" ? 0 : 1)
             .ThenBy(binding => binding.Ordinal ?? binding.Id)
-            .ToDictionary(binding => binding.Id, binding => allocator.Allocate(binding.SourceName, "local_" + binding.Id));
+            .ToDictionary(binding => binding.Id, binding => allocator.Allocate(
+                binding.Kind == "parameter" && binding.Ordinal is long ordinal && obj.ParameterRoles[(function.Id, ordinal)].Role == "this" ? "this" : binding.SourceName,
+                "local_" + binding.Id));
         var addressTaken = new HashSet<long>();
         void AddressRoot(Node place)
         {
