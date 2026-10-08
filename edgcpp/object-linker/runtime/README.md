@@ -30,6 +30,10 @@ are evaluated on the accessing thread. A static pointer relocation to one of
 the standard stream cells therefore aliases the same cell as later loads and
 stores. The `LibcFiles` and POSIX services share descriptor state.
 
+Locale handles and `lconv` use validated portable layouts. Narrow and wide
+FILE formatting/scanning callbacks use the canonical `LibcFiles` session
+methods, so callback execution shares the stream lock and `VaList` ABI.
+
 The current provider owns static per-assembly state. Independent engine
 instances and explicit owner disposal are not implemented by this binder yet.
 The binder is intentionally incomplete: unsupported imports remain unresolved

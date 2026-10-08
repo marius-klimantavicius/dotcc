@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 47,
+  "scope": "Canonical locale ABI and four FILE callback sessions; native/JIT/NativeAOT",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-runtime-acceptance-003/results.json",
+    "sha256": "04e414a5b8a883e5bd1f30d932bff4a3f6a441c6bfabb55615a421ed42d4f937"
+  },
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "checksDescription": [
+    "Exact owned lconv and locale handle ABI mapping",
+    "Narrow and wide FILE read/write callbacks share canonical locking and VaList",
+    "Native/JIT/NativeAOT parity including locale and byte/wide stream behavior",
+    "Existing memory, POSIX descriptor, layout rejection and TLS GC isolation coverage retained"
+  ]
+}

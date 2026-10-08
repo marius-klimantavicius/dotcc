@@ -5,6 +5,13 @@ import json
 PROFILES = {
     '__edg_FILE': ('FILE', 0, 0, [], 'void'),
     '__edg_DIR': ('POSIX_DIR', 0, 0, [], 'void'),
+    '__edg_locale': ('LOCALE', 0, 0, [], 'void'),
+    'lconv': ('LCONV', 96, 8,
+        [(name, 'ptr(i8)', index * 8) for index, name in enumerate(('decimal_point', 'thousands_sep', 'grouping',
+          'int_curr_symbol', 'currency_symbol', 'mon_decimal_point', 'mon_thousands_sep', 'mon_grouping', 'positive_sign', 'negative_sign'))] +
+        [(name, 'i8', 80 + index) for index, name in enumerate(('int_frac_digits', 'frac_digits', 'p_cs_precedes', 'p_sep_by_space',
+          'n_cs_precedes', 'n_sep_by_space', 'p_sign_posn', 'n_sign_posn', 'int_p_cs_precedes', 'int_p_sep_by_space',
+          'int_n_cs_precedes', 'int_n_sep_by_space', 'int_p_sign_posn', 'int_n_sign_posn'))], 'void'),
     '__edg_fpos': ('FPOS', 16, 8, [('offset', 'i64', 0), ('state', 'u32', 8), ('value', 'u32', 12)], 'void'),
     'timespec': ('TIMESPEC', 16, 8, [('tv_sec', 'i64', 0), ('tv_nsec', 'i64', 8)], 'void'),
     'timeval': ('POSIX_TIMEVAL', 16, 8, [('tv_sec', 'i64', 0), ('tv_usec', 'i64', 8)], 'global::Edg.Runtime.PosixTimeval'),
@@ -39,6 +46,8 @@ class Boundaries:
                 node = types[identifier]
                 if node['kind'] == 'array':
                     return 'array(' + str(node['elementCount']) + ',' + kind(node['elementTypeId']) + ')'
+                if node['kind'] == 'pointer':
+                    return 'ptr(' + kind(node['pointeeTypeId']) + ')'
                 return node['kind']
 
             fields = sorted((f for f in obj['recordFields'] if f['recordTypeId'] == record['typeId']), key=lambda f: f['ordinal'])

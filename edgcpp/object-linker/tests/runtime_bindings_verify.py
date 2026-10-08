@@ -59,6 +59,7 @@ def main():
     parser.add_argument('--output-dir', type=Path, required=True)
     parser.add_argument('--compiler', type=Path, required=True)
     parser.add_argument('--linker', type=Path, required=True)
+    parser.add_argument('--packager', type=Path, default=ROOT / 'compile.py')
     parser.add_argument('--nativeaot', action='store_true')
     parser.add_argument('--rid', default='linux-x64')
     args = parser.parse_args()
@@ -84,7 +85,7 @@ def main():
 
     def compile_source(name, source):
         obj = out / (name + '.dotobj')
-        run(name + '-compile', [sys.executable, '-B', ROOT / 'compile.py', source,
+        run(name + '-compile', [sys.executable, '-B', args.packager.resolve(), source,
             '--output', obj, '--work-dir', out / (name + '-work'), '--compiler', args.compiler.resolve(), '--std', 'c11',
             '-I', EDG / 'backend/runtime/posix/include', '-I', EDG / 'backend/runtime/libc/include'])
         return obj
@@ -96,11 +97,11 @@ def main():
 
     failure = None
     try:
-        for name in ('runtime_memory', 'runtime_stdio_posix'):
+        for name in ('runtime_memory', 'runtime_stdio_posix', 'runtime_sessions'):
             source = out / (name + '.c')
             shutil.copy2(ROOT / 'tests' / source.name, source)
             fixtures.append(dict(path=str(source), sha256=sha(source)))
-            run(name + '-native-build', ['cc', '-std=c11', '-D_POSIX_C_SOURCE=200809L', '-O2', source, '-o', out / (name + '-native')])
+            run(name + '-native-build', ['cc', '-std=c11', '-D_POSIX_C_SOURCE=200809L', '-DNATIVE_ORACLE', '-O2', source, '-o', out / (name + '-native')])
             run(name + '-native-run', [out / (name + '-native')])
             obj = compile_source(name, source)
             project = link(name, obj)
@@ -111,12 +112,18 @@ def main():
             if name == 'runtime_stdio_posix':
                 check(name + '-three-shared-cells', {item['name'] for item in bindings['bound'] if item.get('storage')} == {'stdin', 'stdout', 'stderr'})
                 check(name + '-va-source-reused', any(item['path'].endswith('Runtime.VaArg.cs') for item in bindings['reusedFiles']))
-            (project / 'RuntimeCheckRunner.cs').write_text(HOST)
             project_file = project / 'Translated.csproj'
-            project_file.write_text(project_file.read_text().replace('<StartupObject>__DotObjEntry</StartupObject>', '<StartupObject>RuntimeCheckRunner</StartupObject>'))
+            if name != 'runtime_sessions':
+                (project / 'RuntimeCheckRunner.cs').write_text(HOST)
+                project_file.write_text(project_file.read_text().replace('<StartupObject>__DotObjEntry</StartupObject>', '<StartupObject>RuntimeCheckRunner</StartupObject>'))
+            else:
+                names = {item['name'] for item in bindings['bound']}
+                check('all-file-sessions-bound', {'__edg_with_file_lock', '__edg_with_file_read_lock', '__edg_with_file_wide_lock', '__edg_with_file_wide_read_lock'} <= names)
+                check('locale-record-boundaries', {'newlocale', 'duplocale', 'uselocale', 'freelocale', 'localeconv'} <= names)
             run(name + '-build', ['dotnet', 'build', project_file, '--nologo', '-v:q'])
             output = run(name + '-jit', ['dotnet', project / 'bin/Debug/net10.0/Translated.dll'])
-            check(name + '-tls-and-gc', 'canonical libc binding + TLS + GC OK' in output)
+            if name != 'runtime_sessions':
+                check(name + '-tls-and-gc', 'canonical libc binding + TLS + GC OK' in output)
             if args.nativeaot:
                 aot = out / (name + '-aot')
                 run(name + '-publish', ['dotnet', 'publish', project_file, '-r', args.rid, '-p:PublishAot=true', '-o', aot, '--nologo', '-v:q'])
