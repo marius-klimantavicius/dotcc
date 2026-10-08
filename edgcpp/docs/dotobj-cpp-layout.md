@@ -314,3 +314,96 @@ subobject structs. This establishes the bounded CLR layout technique; the
 native exporter and owned layout verifier still reject base/subobject layouts.
 It does not establish empty-base views, virtual inheritance, copy lifetimes,
 or the full cross-platform execution contract.
+
+## Profile 18 implementation candidate
+
+The profile 18 candidate represents direct nonvirtual bases with two separate
+relations. `sourceBases` preserves the original base spelling, access, source
+position and declaration order. `recordBaseSubobjects` records the complete
+base type, actual physical view and extent, offset, and physical field identity.
+An optimized empty base has no physical view or field; its complete type still
+has the ordinary C++ pointer stride. Subobject records reference their complete
+record, retain its original source-record identity, and are explicit-only values.
+
+The producer observes the exact base descriptor passed to the stock lowering's
+`add_base_class_dummy_field`, and observes `make_subobject_class_type` after its
+partner relation is established. The existing field-copy observer carries source
+field and generated base origins into the copied view. These hooks record
+metadata; they do not change layout or execution. There is no interpretation of
+`__b_` spelling as semantic evidence.
+
+`abiRoutineOrigins` identifies generated complete, subobject and deleting
+constructor/destructor entries using EDG's primary-routine relation. Original
+source signatures belong to the primary routine. Generated receiver and
+forwarded parameters are verified physical ABI parameters, not fabricated
+written declarations. Nonvariadic generated bodies remain executable even when
+EDG marks an entry as an alias; deleting destructor bodies must retain deletion.
+Variadic forwarding, delegation, returns-this variants, hidden result buffers,
+and virtual-base/VTT interfaces remain explicit unsupported cases.
+
+The `block-copy` node retains the stock C backend's `eok_bassign` contract:
+void result, exact positive source byte extent, and two addressable operands
+with their recorded evaluation order. It emits a byte copy of that extent,
+not an assignment of the destination's complete nominal type. Ordinary complete
+trivially-copyable derived values may contain validated physical base views;
+this does not authorize standalone value copies of those views.
+
+At the first native026 freeze this is an implementation candidate awaiting
+producer/consumer and native/JIT/NativeAOT acceptance. The permanent
+`project_cpp_base_subobjects.cpp` fixture exercises empty and multiple bases,
+reused tail padding, complete derived copies through parameters and returns,
+and generated deleting destructor behavior. Its original GCC execution passes.
+
+The first producer/consumer checks now pass for the nonvirtual subset:
+`dotobj-base-values-managed021-002/results.json` records GCC O0/O2, managed JIT
+and NativeAOT agreement for the actual exported five-byte Tail view, empty base,
+multiple bases, constructor forwarding entries and complete Derived value copies.
+`dotobj-block-copy-managed021-001` records native/JIT/NativeAOT agreement for a
+seven-byte `block-copy` retained from a character-array constructor initializer.
+The virtual deleting-destructor fixture is still pending full acceptance; its
+reachable RTTI descriptors reference external ABI vtables even with `--no_rtti`.
+Those external objects must be provided or correctly removed under a supported
+target contract, not replaced with invented storage definitions.
+
+## Next origin: constructor adapters for default arguments
+
+A root cross-TU inheritance test exposed a separate generated routine family.
+`Value(int n = 7); Value values[2];` enters stock
+`lower_init::default_version_of_routine`: an anonymous receiver-only callback
+calls the original constructor with copied default-argument expressions. It has
+no `primary_ctor_or_dtor` relation. Treating its receiver as a written parameter,
+or calling it a complete/subobject alternate, would fabricate source metadata.
+The retained minimal failure is `dotobj-default-ctor-adapter-native027-001`.
+
+The agreed next proposal, not enabled in profile 18, is:
+
+- Append required `hasDefaultArgument` to `sourceParameters`. This is a source
+  function parameter declaration fact. Do not place it on source routine types
+  or include it in callable ABI/signature equality; defaults are not part of a
+  C++ function type.
+- Add `constructor-default-adapter` to `abiRoutineOrigins.entryKind` and
+  `observed-default-wrapper-creation` to its proof enum. Its primary must be an
+  original constructor, and `isAliasEntry` must be false. Record a separate
+  `targetEntityId`: it resolves to that original constructor or an observed
+  complete/subobject alternate tied directly to the same original constructor.
+  Do not follow arbitrary adapter chains. It has no fabricated
+  `sourceFunctions` row or original parameter declarations.
+- Observe the exact wrapper and original routine immediately before the call to
+  `define_default_version_of_routine` in `default_version_of_routine`, after its
+  physical parameter list has been constructed. Keep the actual lowered body,
+  including all default-expression evaluation and calls.
+- Physical forwarded-source parameters map an original prefix. Every omitted
+  original suffix parameter must have an owned default-presence fact. The first
+  implementation can require a receiver-only adapter, no implied/VTT arguments,
+  no initializer-list special case, no copy-constructor adaptation, an original
+  primary with no arbitrary generated origin chain, and ordinary void return.
+  Preserve the adapter's own execution exception policy: default expressions
+  can throw before control enters a noexcept constructor.
+- Prove its receiver from the observed generated function scope and exact
+  `this_param_variable` identity, plus the physical pointer type. Its explicit
+  ABI need not retain `this_class`, so a generated-origin check replaces that
+  one original-source comparison; it does not relax ordinary receiver proof.
+
+`project_cpp_default_ctor_adapter.cpp` is the pending native oracle. Its default
+expression increments a counter, so an array of three objects must evaluate it
+three times. This detects moving evaluation outside the generated callback.

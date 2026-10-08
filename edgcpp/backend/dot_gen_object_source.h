@@ -48,6 +48,7 @@ struct Declaration {
 struct Function {
   Declaration declaration;
   unsigned signature_type=0;
+  std::string function_kind="ordinary";
   std::vector<unsigned> parameters;
   bool scope_captured=false;
   a_variable_ptr implicit_this=nullptr;
@@ -114,6 +115,8 @@ struct State {
   std::map<a_field_ptr,unsigned> original_field_ids;
   std::map<a_field_ptr,a_field_ptr> copied_fields;
   std::map<a_field_ptr,std::string> generated_field_roles;
+  std::map<a_field_ptr,a_base_class_ptr> generated_base_fields;
+  std::map<a_type_ptr,a_type_ptr> observed_subobjects;
   unsigned next_original_field=1;
 };
 inline State &state(){static State value;return value;}
@@ -295,8 +298,15 @@ inline unsigned capture_type(a_type_ptr t) {
   s.types[id-1]=value;return id;
 }
 inline void observe_type(a_type_ptr type){if(enabled())capture_type(type);}
+inline a_routine_ptr abi_primary(a_routine_ptr r) {
+#if DO_IL_LOWERING && IA64_ABI
+  return r && r->compiler_generated ? r->primary_ctor_or_dtor : nullptr;
+#else
+  (void)r;return nullptr;
+#endif
+}
 inline void capture_routine(a_routine_ptr r) {
-  if(!r)return;
+  if(!r || abi_primary(r))return;
   auto &s=state();if(s.functions.count(r))return;
   a_type_ptr type=r->type;
 #if GENERATE_SOURCE_SEQUENCE_LISTS
@@ -305,7 +315,7 @@ inline void capture_routine(a_routine_ptr r) {
   auto id=capture_type(type);
   while(s.types.at(id-1).underlying)id=s.types.at(id-1).underlying;
   const auto signature=s.types.at(id-1);
-  Function function;function.declaration.type=signature.result;function.signature_type=id;
+  Function function;function.function_kind=r->special_kind==sfk_constructor?"constructor":r->special_kind==sfk_destructor?"destructor":"ordinary";function.declaration.type=signature.result;function.signature_type=id;
   function.declaration.name=spelling(r->source_corresp);
   function.declaration.position=r->source_corresp.decl_position;
   function.parameters=signature.parameters;s.functions[r]=function;
@@ -319,7 +329,7 @@ inline bool abi_storage_type(a_type_ptr type) {
   return state().abi_records.count(type)!=0;
 }
 inline void capture_variable(a_variable_ptr v) {
-  auto &s=state();if(s.variables.count(v) || v->is_this_parameter || v->compiler_generated || abi_storage_type(v->type))return;
+  auto &s=state();if(s.variables.count(v) || v->is_this_parameter || v->compiler_generated || v->lowering_generated || abi_storage_type(v->type))return;
   a_type_ptr type=v->type;
 #if GENERATE_SOURCE_SEQUENCE_LISTS
   if(v->declared_type)type=v->declared_type;
@@ -333,6 +343,8 @@ inline void capture_variable(a_variable_ptr v) {
 }
 inline void capture_scope(a_scope_ptr scope) {
   if(!scope)return;
+  // Alternate ABI bodies contain generated forwarding declarations only.
+  if(scope->kind==sck_function && abi_primary(scope->variant.routine.ptr))return;
   if(scope->kind==sck_function) {
     capture_routine(scope->variant.routine.ptr);
     auto &function=state().functions.at(scope->variant.routine.ptr);
@@ -410,11 +422,19 @@ inline void observe_typeinfo_record(a_type_ptr type,a_type_info_kind kind,unsign
   if((unsigned)kind>=(unsigned)tik_last || !type_info_names[(int)kind])return;
   state().abi_record_keys[type]=std::string("abi:rtti:")+type_info_names[(int)kind]+":bases:"+std::to_string(base_count);
 }
+inline void observe_base_field(a_field_ptr field,a_base_class_ptr base) {
+  if(enabled())state().generated_base_fields[field]=base;
+}
+inline void observe_subobject_type(a_type_ptr complete,a_type_ptr view) {
+  if(enabled() && complete!=view)state().observed_subobjects[view]=complete;
+}
 inline void observe_field_copy(a_field_ptr original,a_field_ptr copy) {
   if(!enabled())return;
   auto &s=state();s.copied_fields[copy]=original;
   auto source=s.original_field_ids.find(original);
   if(source!=s.original_field_ids.end())s.original_field_ids[copy]=source->second;
+  auto base=s.generated_base_fields.find(original);
+  if(base!=s.generated_base_fields.end())s.generated_base_fields[copy]=base->second;
   auto generated=s.generated_field_roles.find(original);
   if(generated!=s.generated_field_roles.end())s.generated_field_roles[copy]=generated->second;
 }

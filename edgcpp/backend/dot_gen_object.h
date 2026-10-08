@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v17: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v18: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -48,7 +48,9 @@ struct Writer {
   std::map<unsigned,unsigned> pointer_types;
   std::map<std::pair<unsigned,unsigned long long>,unsigned> array_types;
   std::vector<string> execution_types,record_types,record_fields;
-  std::vector<string> source_records,source_fields;
+  std::vector<string> source_records,source_fields,source_bases,record_base_subobjects,abi_routine_origins;
+  std::map<a_base_class_ptr,unsigned> source_base_ids;
+  unsigned next_source_base=1;
   std::map<a_type_ptr,unsigned> source_record_ids;
   std::map<a_field_ptr,unsigned> source_field_ids;
   unsigned next_source_record=1,next_source_field=1;
@@ -131,13 +133,20 @@ struct Writer {
   unsigned record_type(a_type_ptr t) {
     auto prior=record_ids.find(t);if(prior!=record_ids.end())return prior->second;
     auto &captured=dot_object_source::state();
-    bool abi=captured.abi_records.count(t)!=0;
-    auto found=captured.records.find(t);
+    auto view=captured.observed_subobjects.find(t);
+    bool subobject=view!=captured.observed_subobjects.end();
+    a_type_ptr complete=subobject?view->second:t;
+    unsigned reserved=0,complete_id=0;
+    if(subobject){reserved=next_execution_type++;record_ids[t]=reserved;complete_id=record_type(complete);}
+    bool abi=!subobject && captured.abi_records.count(t)!=0;
+    auto found=captured.records.find(complete);
     if(!abi && found==captured.records.end())reject("incomplete or uncaptured record definition");
-    auto pre=captured.prelower_records.find(t);
+    auto pre=captured.prelower_records.find(complete);
     const dot_object_source::Record *source=abi?nullptr:&found->second;
     if(source && !source->error.empty())reject((source->identity+": "+source->error).c_str());
-    if(source && source->has_bases)reject("base/subobject execution layout is not represented");
+    if(source && source->has_bases && pre==captured.prelower_records.end())reject("base layout lacks prelowering provenance");
+    if(pre!=captured.prelower_records.end())for(const auto &base:pre->second.bases)
+      if(base.is_virtual)reject("virtual base/VTT execution layout is not represented");
     if(source && source->has_virtual_functions && pre==captured.prelower_records.end())
       reject("virtual record lacks an observed prelowering boundary");
     if(pre!=captured.prelower_records.end() && !pre->second.error.empty())reject(pre->second.error.c_str());
@@ -151,7 +160,7 @@ struct Writer {
           reject("original field identity/type differs at prelowering boundary");
       }
     }
-    if(source && ((!t->incomplete && t->size!=source->size) || (!t->incomplete && t->alignment!=source->alignment)))
+    if(source && !subobject && ((!t->incomplete && t->size!=source->size) || (!t->incomplete && t->alignment!=source->alignment)))
       reject("record complete-object extent changed during lowering");
     if(!t->incomplete && (!t->size || t->size>2147483647ULL || !t->alignment || t->alignment>16))
       reject("record native extent/alignment outside execution profile");
@@ -163,7 +172,7 @@ struct Writer {
       identity=key->second;name=source_spelling(&t->source_corresp);
     } else {
       identity=source->identity;name=source->name;layout=source->layout_kind;pos=source->position;
-      if(source->template_identity)identity="record-abi:"+string(mangled_class_name(t));
+      if(source->template_identity)identity="record-abi:"+string(mangled_class_name(complete));
       if(identity.find("local-record:")==0) {
         a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
         conv_seq_to_file_and_line(source->position.seq,&display,&full,&line,&at_end);
@@ -171,7 +180,8 @@ struct Writer {
           std::to_string(source->position.column)+":occurrence:"+std::to_string(source->source_occurrence);
       }
     }
-    unsigned id=next_execution_type++;record_ids[t]=id;
+    if(subobject)identity+="/subobject";
+    unsigned id=reserved?reserved:next_execution_type++;record_ids[t]=id;
     execution_types.push_back("{\"id\":"+number(id)+",\"kind\":\"record\",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     bool trivial=!abi && !t->incomplete && C_mode();
     if(!abi && !t->incomplete && !C_mode()) {
@@ -182,6 +192,9 @@ struct Writer {
     unsigned source_record=0;
     std::map<a_field_ptr,const dot_object_source::RecordField*> originals;
     if(source) {
+      for(const auto &field:source->fields)originals[field.il]=&field;
+      if(subobject)source_record=source_record_ids.at(complete);
+      else {
       source_record=next_source_record++;source_record_ids[t]=source_record;
       auto source_type_it=captured.type_ids.find(t);
       if(source_type_it==captured.type_ids.end())reject("record source type was not captured before lowering");
@@ -201,23 +214,40 @@ struct Writer {
           (field.no_unique_address?"true":"false")+",\"bitWidth\":"+
           (field.is_bit_field?std::to_string(field.bit_width):"null")+position(field.position)+",\"hasInitializer\":"+(field.has_initializer?"true":"false")+"}");
       }
+      if(pre!=captured.prelower_records.end()) {
+        unsigned base_ordinal=0;
+        for(const auto &base:pre->second.bases) {
+          unsigned base_id=next_source_base++;source_base_ids[base.il]=base_id;
+          source_bases.push_back("{\"id\":"+number(base_id)+",\"sourceRecordId\":"+number(source_record)+
+            ",\"ordinal\":"+std::to_string(base_ordinal++)+",\"baseSourceTypeId\":"+number(source_type(base.source_type_snapshot))+
+            ",\"accessKind\":"+quote(base.access)+",\"isVirtual\":"+(base.is_virtual?"true":"false")+position(base.position)+"}");
+        }
+      }
+      }
     }
     record_types.push_back("{\"typeId\":"+number(id)+",\"identityKey\":"+quote(identity)+",\"sourceName\":"+quote(name)+
       ",\"size\":"+std::to_string(t->incomplete?0:t->size)+",\"alignment\":"+std::to_string(t->incomplete?0:t->alignment)+
       position(pos)+",\"layoutKind\":"+quote(layout)+",\"sourceRecordId\":"+number(source_record)+
-      ",\"representationKind\":"+quote(abi?"abi":"complete")+",\"valueCopyKind\":"+quote(trivial?"ordinary":"explicit-only")+
-      ",\"captureProof\":"+quote(abi?"observed-abi-creation":pre==captured.prelower_records.end()?"source-snapshot":"observed-class-lowering")+"}");
+      ",\"representationKind\":"+quote(subobject?"subobject":abi?"abi":"complete")+",\"valueCopyKind\":"+quote(trivial && !subobject?"ordinary":"explicit-only")+
+      ",\"captureProof\":"+quote(subobject?"observed-subobject-creation":abi?"observed-abi-creation":pre==captured.prelower_records.end()?"source-snapshot":"observed-class-lowering")+",\"completeTypeId\":"+number(complete_id)+"}");
     unsigned ordinal=0;std::set<string> names;
     for(auto f=t->variant.class_struct_union.field_list;f;f=f->next) {
       if(f->is_bit_field && !f->bit_size)continue;
       auto child=skip_typerefs(f->type);
       if(f->is_bit_field && integer128(child))reject("integer128 bitfield representation");
-      auto original=originals.find(f);
-      string role,field_name;unsigned source_type_id=0,source_field=0;a_source_position field_pos={};
+      auto original_field=f;
+      while(captured.copied_fields.count(original_field))original_field=captured.copied_fields.at(original_field);
+      auto original=originals.find(original_field);
+      auto base_field=captured.generated_base_fields.find(f);
+      string role,field_name;unsigned source_type_id=0,source_field=0,source_base=0;a_source_position field_pos={};
       if(original!=originals.end()) {
         const auto &field=*original->second;role="source";field_name=field.name;field_pos=field.position;
-        source_type_id=source_type(field.source_type);source_field=source_field_ids.at(f);
+        source_type_id=source_type(field.source_type);source_field=source_field_ids.at(original_field);
         if(f->offset!=field.offset)reject("original field offset changed during lowering");
+      } else if(base_field!=captured.generated_base_fields.end()) {
+        auto mapped=source_base_ids.find(base_field->second);
+        if(mapped==source_base_ids.end())reject("physical base lacks direct original declaration");
+        source_base=mapped->second;role="base";field_name=source_spelling(&f->source_corresp);
       } else if(abi) {role="abi";field_name=source_spelling(&f->source_corresp);}
       else {
         auto generated=captured.generated_field_roles.find(f);
@@ -239,7 +269,24 @@ struct Writer {
         ",\"bitOffset\":"+(f->is_bit_field?std::to_string(f->offset_bit_remainder):"null")+
         ",\"bitWidth\":"+(f->is_bit_field?std::to_string(f->bit_size):"null")+
         ",\"bitSigned\":"+(f->is_bit_field?(f->bit_field_is_signed?"true":"false"):"null")+
-        ",\"sourceFieldId\":"+number(source_field)+",\"fieldRole\":"+quote(role)+"}");
+        ",\"sourceFieldId\":"+number(source_field)+",\"fieldRole\":"+quote(role)+",\"sourceBaseId\":"+number(source_base)+"}");
+    }
+    if(source && pre!=captured.prelower_records.end())for(const auto &base:pre->second.bases) {
+      a_field_ptr physical=nullptr;
+      for(auto f=t->variant.class_struct_union.field_list;f;f=f->next) {
+        auto entry=captured.generated_base_fields.find(f);
+        if(entry!=captured.generated_base_fields.end() && entry->second==base.il) {
+          if(physical)reject("duplicate physical direct base");
+          physical=f;
+        }
+      }
+      if(!physical && !base.il->is_optimized_empty_base)reject("missing physical nonempty direct base");
+      if(physical && physical->offset!=base.il->offset)reject("base placement differs from original descriptor");
+      unsigned base_complete=record_type(skip_typerefs(base.il->type));
+      record_base_subobjects.push_back("{\"recordTypeId\":"+number(id)+",\"sourceBaseId\":"+number(source_base_ids.at(base.il))+
+        ",\"completeBaseTypeId\":"+number(base_complete)+",\"physicalViewTypeId\":"+number(physical?type_id(physical->type):0)+
+        ",\"byteOffset\":"+std::to_string(base.il->offset)+",\"extent\":"+std::to_string(physical?skip_typerefs(physical->type)->size:0)+
+        ",\"fieldId\":"+number(physical?field_ids.at(physical):0)+"}");
     }
     return id;
   }
@@ -422,6 +469,14 @@ struct Writer {
 #endif
     auto t=skip_typerefs(v->type);unsigned alignment=v->alignment>t->alignment?v->alignment:t->alignment;
     bool declaration=v->storage_class==sc_extern || v->suppress_inline_definition;
+    // Match c_gen_be::dump_variable_decl: a COMDAT group is an explicit
+    // definition property, not a guess based on inline spelling or names.
+    bool coalescible=false;
+#if DO_IL_LOWERING
+    coalescible=v->comdat_group!=nullptr;
+    if(coalescible && (declaration || (v->storage_class!=sc_unspecified && !v->is_inline)))
+      reject("COMDAT storage lacks the stock C definition contract");
+#endif
     if((!t->size && !declaration) || (!alignment && !declaration) || (alignment && (alignment&(alignment-1))))
       reject((string("incomplete storage layout: ")+source_spelling(&v->source_corresp)+" kind="+std::to_string(t->kind)+" storage="+std::to_string(v->storage_class)).c_str());
     bool external=v->source_corresp.name_linkage==nlk_external || v->source_corresp.name_linkage==nlk_cplusplus_external;
@@ -435,7 +490,7 @@ struct Writer {
     unsigned source=captured==dot_object_source::state().variables.end() || dot_object_source::abi_storage_type(v->type)?0:source_type(captured->second.type);
     storages.push_back("{\"id\":"+number(id)+",\"sourceName\":"+quote(source_spelling(&v->source_corresp))+
       ",\"linkage\":"+quote(external?"external":"internal")+",\"externalKey\":"+(external?quote(key):"null")+
-      ",\"definition\":"+quote(declaration?"declaration":"strong")+",\"typeId\":"+number(type_id(t))+
+      ",\"definition\":"+quote(declaration?"declaration":coalescible?"linkonce":"strong")+",\"typeId\":"+number(type_id(t))+
       ",\"sourceTypeId\":"+number(source)+",\"isThreadLocal\":"+(thread_storage(v)?"true":"false")+
       ",\"isConst\":"+((get_type_qualifiers(v->type)&TQ_CONST)?"true":"false")+",\"alignment\":"+std::to_string(alignment)+position(v->source_corresp.decl_position)+"}");
     if(!declaration) {
@@ -679,7 +734,7 @@ struct Writer {
     const auto &captured=found->second;
     source_declaration(captured.declaration,"function",entity,0,0);
     source_functions.push_back("{\"entityId\":"+number(entity)+",\"returnSourceTypeId\":"+number(source_type(captured.declaration.type))+
-      ",\"capturePhase\":\"before-lowering\",\"routineSourceTypeId\":"+number(source_type(captured.signature_type))+"}");
+      ",\"capturePhase\":\"before-lowering\",\"routineSourceTypeId\":"+number(source_type(captured.signature_type))+",\"functionKind\":"+quote(captured.function_kind)+"}");
     unsigned ordinal=0;
     for(auto parameter:captured.parameters)
       source_parameters.push_back("{\"entityId\":"+number(entity)+",\"ordinal\":"+std::to_string(ordinal++)+",\"sourceTypeId\":"+number(source_type(parameter))+"}");
@@ -698,20 +753,20 @@ struct Writer {
     if(!child)reject("missing child node");
     edges.push_back("{\"parentId\":"+number(parent)+",\"role\":"+quote(role)+",\"ordinal\":"+std::to_string(ordinal)+",\"childId\":"+number(child)+"}");
   }
-  bool copyable_value(a_type_ptr type) {
+  bool copyable_value(a_type_ptr type,bool base_payload=false) {
     if(get_type_qualifiers(type)&(TQ_VOLATILE|TQ_C11_ATOMIC))return false;
     auto t=skip_typerefs(type);
     if(t->kind==tk_array)return t->size && t->variant.array.variant.number_of_elements && copyable_value(t->variant.array.element_type);
     if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
       if(t->incomplete || t->variant.class_struct_union.any_volatile_member)return false;
       auto &source=dot_object_source::state();
-      if(source.abi_records.count(t))return false;
-      if(!C_mode()) {
+      if(source.abi_records.count(t) && !(base_payload && source.observed_subobjects.count(t)))return false;
+      if(!C_mode() && !base_payload) {
         auto original=source.prelower_records.find(t);
         if(original==source.prelower_records.end() || !original->second.trivial_copy_known || !original->second.trivial_copy)return false;
       }
       for(auto field=t->variant.class_struct_union.field_list;field;field=field->next)
-        if(!copyable_value(field->type))return false;
+        if(!copyable_value(field->type,source.generated_base_fields.count(field)!=0))return false;
     }
     return true;
   }
@@ -741,16 +796,24 @@ struct Writer {
   unsigned routine(a_routine_ptr r) {
     auto found=routine_ids.find(r);if(found!=routine_ids.end())return found->second;
     diagnostic_scope diagnostic(r->source_corresp.decl_position);
+    auto primary=dot_object_source::abi_primary(r);
+    string entry_kind;
 #if DO_IL_LOWERING && IA64_ABI
-    if(r->compiler_generated && r->primary_ctor_or_dtor) {
-      // alternate_entry_point copies an already lowered signature. It is an
-      // ABI entry for the original constructor/destructor, not a new written
-      // declaration. Do not export that late snapshot as original semantics.
-      auto primary=r->primary_ctor_or_dtor;
-      string role=r->ctor_dtor_kind==cdk_deleting?"deleting":r->ctor_dtor_kind==cdk_subobject?"subobject":
-        r->ctor_dtor_kind==cdk_complete?"complete":r->ctor_dtor_kind==cdk_delegation?"delegation":"unknown";
-      reject((string("generated ctor/dtor alternate requires owned ABI origin: ")+routine_linker_symbol(r)+
-        " primary="+routine_linker_symbol(primary)+" kind="+role).c_str());
+    if(primary) {
+      if(dot_object_source::abi_primary(primary) || primary==r)reject("cyclic/generated primary ABI origin");
+      entry_kind=r->ctor_dtor_kind==cdk_deleting?"deleting":r->ctor_dtor_kind==cdk_subobject?"subobject":
+        r->ctor_dtor_kind==cdk_complete?"complete":"unsupported";
+      if(entry_kind=="unsupported" || ctors_return_this || dtors_return_this || targ_ia64_abi_variant_ctors_and_dtors_return_this)
+        reject("alternate entry outside ordinary nondelegating void-return ABI");
+      auto original=dot_object_source::state().functions.find(primary);
+      if(original==dot_object_source::state().functions.end() || original->second.function_kind=="ordinary" ||
+         (entry_kind=="deleting" && original->second.function_kind!="destructor"))reject("alternate lacks original constructor/destructor proof");
+      const auto &signature=dot_object_source::state().types.at(original->second.signature_type-1);
+      if(signature.variadic || !signature.object_type)reject("variadic/receiverless alternate entry");
+      if(skip_typerefs(r->type)->variant.routine.extra_info->has_ellipsis ||
+         skip_typerefs(skip_typerefs(r->type)->variant.routine.return_type)->kind!=tk_void ||
+         skip_typerefs(skip_typerefs(primary->type)->variant.routine.return_type)->kind!=tk_void)
+        reject("alternate entry return/variadic ABI");
     }
 #endif
     // The C backend preserves this per-function pragma. The owned graph
@@ -789,9 +852,16 @@ struct Writer {
     entities.push_back("{\"id\":"+number(id)+",\"sourceName\":"+quote(source_spelling(&r->source_corresp))+
       ",\"linkage\":"+quote(external?"external":"internal")+",\"externalKey\":"+(external?quote(key):"null")+
       ",\"definition\":"+quote(body?(coalescible?"linkonce":"strong"):"declaration")+",\"returnTypeId\":"+number(type_id(t->variant.routine.return_type))+position(r->source_corresp.decl_position)+",\"routineTypeId\":"+number(routine_type(t,known_empty_definition))+"}");
-    source_function(r,id);
+    if(primary) {
+#if DO_IL_LOWERING && IA64_ABI
+      unsigned primary_id=routine(primary);
+      abi_routine_origins.push_back("{\"entityId\":"+number(id)+",\"primaryEntityId\":"+number(primary_id)+
+        ",\"entryKind\":"+quote(entry_kind)+",\"isAliasEntry\":"+(r->is_alias_entry?"true":"false")+
+        ",\"captureProof\":\"primary-ctor-dtor-link\"}");
+#endif
+    } else source_function(r,id);
     unsigned ordinal=0;
-    auto source_function_it=dot_object_source::state().functions.find(r);
+    auto source_function_it=dot_object_source::state().functions.find(primary?primary:r);
     if(source_function_it==dot_object_source::state().functions.end())reject("missing routine ABI source snapshot");
     const auto &source_function_value=source_function_it->second;
     const auto &source_signature=dot_object_source::state().types.at(source_function_value.signature_type-1);
@@ -819,7 +889,7 @@ struct Writer {
       }
       if(type_id(p->type)!=expected)reject("source/execution parameter ABI representation mismatch");
       parameters.push_back("{\"entityId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal)+",\"typeId\":"+number(type_id(p->type))+
-        ",\"parameterRole\":"+quote(receiver?"this":"source")+",\"sourceOrdinal\":"+(receiver?"null":std::to_string(source_ordinal))+"}");
+        ",\"parameterRole\":"+quote(receiver?"this":primary?"forwarded-source":"source")+",\"sourceOrdinal\":"+(receiver?"null":std::to_string(source_ordinal))+"}");
     }
     if(ordinal!=source_function_value.parameters.size()+(has_this?1:0))
       reject((string("missing source/receiver ABI parameters in ")+source_spelling(&r->source_corresp)+" ["+key+"] execution="+
@@ -836,7 +906,20 @@ struct Writer {
     unsigned id=next_binding++;binding_ids[v]=id;binding_scopes[v]=scope;
     auto source=dot_object_source::state().variables.find(v);
     bool synthetic=false,receiver=false;
-    if(parameter) {
+    auto primary=dot_object_source::abi_primary(current_routine);
+    if(parameter && primary) {
+      auto function_scope=scope_for_routine_or_null(current_routine);
+      if(!function_scope || source!=dot_object_source::state().variables.end())reject("generated alternate parameter has false source declaration");
+      auto formal=skip_typerefs(current_routine->type)->variant.routine.extra_info->param_type_list;
+      auto actual=function_scope->variant.routine.parameters;
+      for(unsigned i=0;i<ordinal && formal && actual;++i){formal=formal->next;actual=actual->next;}
+      receiver=v->is_this_parameter;
+      if(actual!=v || !formal || (!receiver && v->variant.assoc_param_type!=formal) ||
+         type_id(v->type)!=type_id(formal->type) ||
+         (receiver?(ordinal!=0 || function_scope->variant.routine.this_param_variable!=v):ordinal==0))
+        reject("generated alternate parameter lacks exact forwarding/receiver proof");
+      synthetic=true;
+    } else if(parameter) {
       if(!current_routine)reject("parameter outside current routine");
       const auto &original=dot_object_source::state().functions.at(current_routine);
       auto function_scope=scope_for_routine_or_null(current_routine);
@@ -853,7 +936,12 @@ struct Writer {
           reject("original parameter identity/order changed during lowering");
       }
     }
-    if(receiver) {
+    if(primary && !parameter) {
+      if(source!=dot_object_source::state().variables.end() || !(v->compiler_generated || v->lowering_generated))
+        reject("alternate local lacks generated provenance");
+      synthetic=true;
+    }
+    if(synthetic) {
       // The implicit object is an explicit ABI parameter, not a source declaration.
     } else if(source!=dot_object_source::state().variables.end()) {
       source_declaration(source->second,parameter?"parameter":"local",0,id,function);
@@ -1199,20 +1287,22 @@ struct Writer {
       bool builtin=direct && is_gnu_builtin_function(a->variant.routine.ptr);
       for(auto arg=b;arg;arg=arg->next) {
         unsigned argument=expression(arg);
-        if(builtin && formal) {
-          // Some polymorphic GNU atomics retain their argument types. The C
-          // backend emits the call against its typed builtin prototype, which
-          // supplies these standard conversions. Own them explicitly rather
-          // than weakening the managed call signature verifier.
+        if(formal) {
+          // Lowered runtime calls can retain a typed data pointer for a void*
+          // formal. Stock C supplies this standard conversion at the call.
+          // Polymorphic GNU atomics additionally retain scalar bool arguments.
+          // Own these conversions; never weaken the typed call verifier.
           auto target=skip_typerefs(formal->type),source=skip_typerefs(arg->type);
-          if(target->kind==tk_integer && target->variant.integer.bool_type &&
+          if(builtin && target->kind==tk_integer && target->variant.integer.bool_type &&
              !(source->kind==tk_integer && source->variant.integer.bool_type)) {
             if(source->kind!=tk_integer && source->kind!=tk_float && source->kind!=tk_pointer)
               reject("builtin bool argument outside scalar domain");
             unsigned converted=node("binary",type_id(formal->type),arg->position,0,0,"ne","","value","left-to-right");
             edge(converted,"left",0,argument);edge(converted,"right",0,zero_node(type_id(arg->type),arg->position));argument=converted;
           } else if(target->kind==tk_pointer && source->kind==tk_pointer &&
-                    skip_typerefs(target->variant.pointer.type)->kind==tk_void && type_id(formal->type)!=type_id(arg->type)) {
+                    skip_typerefs(target->variant.pointer.type)->kind==tk_void &&
+                    skip_typerefs(source->variant.pointer.type)->kind!=tk_routine &&
+                    type_id(formal->type)!=type_id(arg->type)) {
             unsigned converted=node("convert",type_id(formal->type),arg->position,0,0,"","","value","left-to-right");
             edge(converted,"operand",0,argument);argument=converted;
           }
@@ -1238,6 +1328,14 @@ struct Writer {
       // assignment order would differ, including x += (x = value).
       unsigned id=node("compound-assign",ty,e->position,0,0,compound,"","value",order);
       edge(id,"target",0,expression(a));edge(id,"value",0,expression(b));return id;
+    }
+    if(operation.kind==eok_bassign) {
+      if(!a || !b || b->next || !place(a) || !place(b) || ty!=1 || volatile_place(a) || volatile_place(b))
+        reject("block copy outside nonvolatile addressable places");
+      auto source=skip_typerefs(b->type),target=skip_typerefs(a->type);
+      if(!source->size || source->size>target->size)reject("block copy extent outside destination");
+      unsigned id=node("block-copy",1,e->position,0,0,"",std::to_string(source->size),"value",order);
+      edge(id,"target",0,expression(a));edge(id,"source",0,expression(b));return id;
     }
     if(operation.kind==eok_assign) {
       if((skip_typerefs(e->type)->kind==tk_struct || skip_typerefs(e->type)->kind==tk_class || skip_typerefs(e->type)->kind==tk_union) &&
@@ -1322,9 +1420,10 @@ struct Writer {
       // Preserve lazy branch selection. The stock C backend requires both
       // lowered arm types to match the result; do not recreate promotions.
       // A scalar lvalue conditional is consumed here as the selected value.
+      // Void arms preserve the same lazy selection and become structured if/else.
       // Selected conditional places remain outside this bounded profile.
-      if(!a || !b || !b->next || b->next->next || ty==1)
-        reject("conditional outside scalar value profile");
+      if(!a || !b || !b->next || b->next->next)
+        reject("conditional outside scalar/void value profile");
 #if GNU_EXTENSIONS_ALLOWED
       if(operation.is_gnu_two_operand_question_mark)
         reject("GNU omitted-middle conditional");
@@ -1911,12 +2010,14 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v17\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v18\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
       ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
       ",\"sourceRecords\":"+array(source_records)+",\"sourceFields\":"+array(source_fields)+
+      ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+
+      ",\"abiRoutineOrigins\":"+array(abi_routine_origins)+
       ",\"recordTypes\":"+array(record_types)+",\"recordFields\":"+array(record_fields)+
       ",\"storages\":"+array(storages)+",\"storageData\":"+array(storage_data)+",\"relocations\":"+array(relocations)+
       ",\"routineTypes\":"+array(routine_types)+",\"routineParameters\":"+array(routine_parameters)+

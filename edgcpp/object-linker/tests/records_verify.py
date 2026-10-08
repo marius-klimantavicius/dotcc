@@ -42,7 +42,7 @@ def verify(inputs, out, tool, run, check, compile_source, link, execute):
     execute('records-owner-collision', link('link-records-owner-collision', [provider, consumer], cls='RecordNode'))
 
     for name in ['project_cpp_record_origins', 'project_cpp_vptr_layout', 'project_cpp_constant_storage',
-                 'project_cpp_integer128_enum']:
+                 'project_cpp_integer128_enum', 'project_cpp_block_copy', 'project_cpp_void_conditionals']:
         source = inputs / (name + '.cpp')
         obj = compile_source(name, source, extra=['--exceptions', '--rtti'])
         run(name + '-native-build', ['c++', '-std=c++17', '-O2', source, '-o', out / (name + '-native')])
@@ -101,7 +101,7 @@ int main(){North::Token a={17};South::Token b={2.5};return a.event==17 && b.even
         ('inheritance', 'struct Base{int n;};struct X:Base{int v;};int f(X* p){return p->n;}'),
     ]:
         source = inputs / ('record-unsupported-' + name + '.cpp');source.write_text(code + '\n')
-        supported = name in {'byvalue-parameter', 'copy', 'array', 'sized-array-parameter', 'incomplete', 'bits', 'empty', 'local', 'raised-alignment'}
+        supported = name in {'byvalue-parameter', 'copy', 'array', 'sized-array-parameter', 'incomplete', 'bits', 'empty', 'local', 'raised-alignment', 'inheritance'}
         obj = compile_source(('record-supported-' if supported else 'record-unsupported-') + name,
                              source, expected=0 if supported else None)
         if supported:

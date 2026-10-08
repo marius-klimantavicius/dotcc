@@ -25,16 +25,19 @@ ARRAYS = {
                               'returnTypeId', 'sourceFileId', 'line', 'column', 'routineTypeId']),
     'parameters': ('parameters', ['entityId', 'ordinal', 'typeId', 'parameterRole', 'sourceOrdinal']),
     'functions': ('functions', ['entityId', 'bodyNodeId']),
+    'abiRoutineOrigins': ('abi_routine_origins', ['entityId', 'primaryEntityId', 'entryKind', 'isAliasEntry', 'captureProof']),
     'initializationActions': ('initialization_actions', ['id', 'entityId', 'phase', 'priority', 'ordinal', 'sourceFileId', 'line', 'column']),
     'bindings': ('bindings', ['id', 'functionId', 'kind', 'ordinal', 'typeId', 'sourceName',
                               'scopeNodeId', 'sourceFileId', 'line', 'column', 'isSynthetic']),
     'nodes': ('nodes', ['id', 'functionId', 'kind', 'typeId', 'entityId', 'bindingId',
                         'operator', 'constantText', 'valueCategory', 'evaluationOrder',
                         'sourceFileId', 'line', 'column', 'fieldId', 'storageId']),
-    'recordTypes': ('record_types', ['typeId', 'identityKey', 'sourceName', 'size', 'alignment', 'sourceFileId', 'line', 'column', 'layoutKind', 'sourceRecordId', 'representationKind', 'valueCopyKind', 'captureProof']),
-    'recordFields': ('record_fields', ['id', 'recordTypeId', 'ordinal', 'typeId', 'sourceName', 'byteOffset', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'bitOffset', 'bitWidth', 'bitSigned', 'sourceFieldId', 'fieldRole']),
+    'recordTypes': ('record_types', ['typeId', 'identityKey', 'sourceName', 'size', 'alignment', 'sourceFileId', 'line', 'column', 'layoutKind', 'sourceRecordId', 'representationKind', 'valueCopyKind', 'captureProof', 'completeTypeId']),
+    'recordFields': ('record_fields', ['id', 'recordTypeId', 'ordinal', 'typeId', 'sourceName', 'byteOffset', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'bitOffset', 'bitWidth', 'bitSigned', 'sourceFieldId', 'fieldRole', 'sourceBaseId']),
     'sourceRecords': ('source_record_types', ['id', 'sourceTypeId', 'identityKey', 'sourceName', 'recordKind', 'isComplete', 'nativeSize', 'nativeAlignment', 'isTriviallyCopyable', 'capturePhase', 'sourceFileId', 'line', 'column']),
     'sourceFields': ('source_record_fields', ['id', 'sourceRecordId', 'ordinal', 'sourceTypeId', 'sourceName', 'isMutable', 'hasNoUniqueAddress', 'bitWidth', 'sourceFileId', 'line', 'column', 'hasInitializer']),
+    'sourceBases': ('source_record_bases', ['id', 'sourceRecordId', 'ordinal', 'baseSourceTypeId', 'accessKind', 'isVirtual', 'sourceFileId', 'line', 'column']),
+    'recordBaseSubobjects': ('record_base_subobjects', ['recordTypeId', 'sourceBaseId', 'completeBaseTypeId', 'physicalViewTypeId', 'byteOffset', 'extent', 'fieldId']),
     'edges': ('edges', ['parentId', 'role', 'ordinal', 'childId']),
     'macroDefinitions': ('macro_definitions', ['id', 'name', 'form', 'variadic', 'dynamic',
                         'definitionText', 'origin', 'sourceFileId', 'line', 'column']),
@@ -42,7 +45,7 @@ ARRAYS = {
     'macroEvents': ('macro_events', ['id', 'kind', 'name', 'definitionId', 'origin', 'sourceFileId', 'line', 'column']),
     'sourceTypes': ('source_types', ['id', 'kind', 'sourceName', 'underlyingTypeId',
                                    'executionTypeId', 'isConst', 'isVolatile', 'sourceFileId', 'line', 'column', 'elementCount']),
-    'sourceFunctions': ('source_functions', ['entityId', 'returnSourceTypeId', 'capturePhase', 'routineSourceTypeId']),
+    'sourceFunctions': ('source_functions', ['entityId', 'returnSourceTypeId', 'capturePhase', 'routineSourceTypeId', 'functionKind']),
     'sourceParameters': ('source_parameters', ['entityId', 'ordinal', 'sourceTypeId']),
     'sourceDeclarations': ('source_declarations', ['id', 'kind', 'sourceName', 'sourceTypeId',
                           'entityId', 'bindingId', 'functionEntityId', 'sourceFileId', 'line', 'column']),
@@ -109,7 +112,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v17':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v18':
         raise ValueError('Unsupported semantic wire version/profile')
     source_hashes = {}
     with sqlite3.connect(path) as db:
@@ -122,7 +125,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1)',
-                   ('scalar-control-v17', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v18', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source)))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

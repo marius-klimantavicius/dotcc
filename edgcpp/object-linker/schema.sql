@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v17'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v18'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -126,12 +126,20 @@ CREATE TABLE parameters (
  entity_id INTEGER NOT NULL REFERENCES entities(id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  type_id INTEGER NOT NULL REFERENCES types(id),
- parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','this')),
+ parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','this','forwarded-source')),
  source_ordinal INTEGER CHECK(source_ordinal>=0),
- CHECK((parameter_role='source' AND source_ordinal IS NOT NULL) OR
+ CHECK((parameter_role IN ('source','forwarded-source') AND source_ordinal IS NOT NULL) OR
        (parameter_role='this' AND source_ordinal IS NULL AND ordinal=0)),
  UNIQUE(entity_id,source_ordinal),
  PRIMARY KEY(entity_id,ordinal)
+) STRICT;
+CREATE TABLE abi_routine_origins (
+ entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
+ primary_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ entry_kind TEXT NOT NULL CHECK(entry_kind IN ('complete','subobject','deleting')),
+ is_alias_entry INTEGER NOT NULL CHECK(is_alias_entry IN (0,1)),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='primary-ctor-dtor-link'),
+ CHECK(entity_id<>primary_entity_id)
 ) STRICT;
 CREATE TABLE functions (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
@@ -233,6 +241,18 @@ CREATE TABLE source_record_fields (
  has_initializer INTEGER NOT NULL CHECK(has_initializer IN (0,1)),
  UNIQUE(source_record_id,ordinal)
 ) STRICT;
+CREATE TABLE source_record_bases (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ source_record_id INTEGER NOT NULL REFERENCES source_record_types(id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ base_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ access_kind TEXT NOT NULL CHECK(access_kind IN ('public','protected','private')),
+ is_virtual INTEGER NOT NULL CHECK(is_virtual IN (0,1)),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ UNIQUE(source_record_id,ordinal)
+) STRICT;
 CREATE TABLE record_types (
  type_id INTEGER PRIMARY KEY REFERENCES types(id),
  identity_key TEXT NOT NULL,
@@ -244,11 +264,15 @@ CREATE TABLE record_types (
  column INTEGER NOT NULL CHECK(column>=0),
  layout_kind TEXT NOT NULL CHECK(layout_kind IN ('struct','union','class')),
  source_record_id INTEGER REFERENCES source_record_types(id),
- representation_kind TEXT NOT NULL CHECK(representation_kind IN ('complete','abi')),
+ representation_kind TEXT NOT NULL CHECK(representation_kind IN ('complete','abi','subobject')),
  value_copy_kind TEXT NOT NULL CHECK(value_copy_kind IN ('ordinary','explicit-only')),
- capture_proof TEXT NOT NULL CHECK(capture_proof IN ('source-snapshot','observed-class-lowering','observed-abi-creation')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN ('source-snapshot','observed-class-lowering','observed-abi-creation','observed-subobject-creation')),
+ complete_type_id INTEGER REFERENCES record_types(type_id),
  CHECK((representation_kind='complete' AND source_record_id IS NOT NULL AND capture_proof IN ('source-snapshot','observed-class-lowering')) OR
-       (representation_kind='abi' AND source_record_id IS NULL AND capture_proof='observed-abi-creation')),
+       (representation_kind='abi' AND source_record_id IS NULL AND capture_proof='observed-abi-creation') OR
+       (representation_kind='subobject' AND source_record_id IS NOT NULL AND capture_proof='observed-subobject-creation' AND value_copy_kind='explicit-only')),
+ CHECK((representation_kind='subobject' AND complete_type_id IS NOT NULL AND complete_type_id<>type_id AND size>0) OR
+       (representation_kind<>'subobject' AND complete_type_id IS NULL)),
  CHECK((size=0 AND alignment=0) OR (size>0 AND alignment>0))
 ) STRICT;
 CREATE TABLE record_fields (
@@ -266,17 +290,34 @@ CREATE TABLE record_fields (
  bit_width INTEGER CHECK(bit_width>0 AND bit_width<=64),
  bit_signed INTEGER CHECK(bit_signed IN (0,1)),
  source_field_id INTEGER REFERENCES source_record_fields(id),
- field_role TEXT NOT NULL CHECK(field_role IN ('source','vptr','abi')),
+ field_role TEXT NOT NULL CHECK(field_role IN ('source','vptr','abi','base')),
+ source_base_id INTEGER REFERENCES source_record_bases(id),
  CHECK((field_role='source' AND source_field_id IS NOT NULL AND source_type_id IS NOT NULL) OR
-       (field_role IN ('vptr','abi') AND source_field_id IS NULL AND source_type_id IS NULL)),
+       (field_role IN ('vptr','abi','base') AND source_field_id IS NULL AND source_type_id IS NULL)),
+ CHECK((field_role='base' AND source_base_id IS NOT NULL AND bit_offset IS NULL) OR
+       (field_role<>'base' AND source_base_id IS NULL)),
  CHECK((bit_offset IS NULL AND bit_width IS NULL AND bit_signed IS NULL) OR
        (bit_offset IS NOT NULL AND bit_width IS NOT NULL AND bit_signed IS NOT NULL))
+) STRICT;
+CREATE TABLE record_base_subobjects (
+ record_type_id INTEGER NOT NULL REFERENCES record_types(type_id),
+ source_base_id INTEGER NOT NULL REFERENCES source_record_bases(id),
+ complete_base_type_id INTEGER NOT NULL REFERENCES record_types(type_id),
+ physical_view_type_id INTEGER REFERENCES record_types(type_id),
+ byte_offset INTEGER NOT NULL CHECK(byte_offset>=0),
+ extent INTEGER NOT NULL CHECK(extent>=0),
+ field_id INTEGER REFERENCES record_fields(id),
+ PRIMARY KEY(record_type_id,source_base_id),
+ UNIQUE(field_id),
+ CHECK((extent=0 AND physical_view_type_id IS NULL AND field_id IS NULL) OR
+       (extent>0 AND physical_view_type_id IS NOT NULL AND field_id IS NOT NULL))
 ) STRICT;
 CREATE TABLE source_functions (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
  return_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
  capture_phase TEXT NOT NULL,
- routine_source_type_id INTEGER NOT NULL REFERENCES source_types(id)
+ routine_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ function_kind TEXT NOT NULL CHECK(function_kind IN ('ordinary','constructor','destructor'))
 ) STRICT;
 CREATE TABLE source_parameters (
  entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),

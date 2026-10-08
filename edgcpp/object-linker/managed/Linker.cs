@@ -9,6 +9,7 @@ internal sealed partial class Linker
     public IReadOnlyList<StorageSymbol> StorageDefinitions { get; }
     public Dictionary<string, Symbol> Externs { get; } = new(StringComparer.Ordinal);
     public Dictionary<string, StorageSymbol> ExternStorages { get; } = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, long> requiredStorageExtents = new(StringComparer.Ordinal);
     public Dictionary<string, string> StorageNames { get; } = new(StringComparer.Ordinal);
     private readonly Dictionary<string, StorageSymbol> storageDefinitions = new(StringComparer.Ordinal);
     private readonly Names names = new();
@@ -90,10 +91,14 @@ internal sealed partial class Linker
                     RecordField[] expected = prior.Object.RecordFields(prior.Record.TypeId), actual = obj.RecordFields(record.TypeId);
                     if (record.SourceName != prior.Record.SourceName || record.Size != prior.Record.Size || record.Alignment != prior.Record.Alignment || record.LayoutKind != prior.Record.LayoutKind ||
                         record.RepresentationKind != prior.Record.RepresentationKind || record.ValueCopyKind != prior.Record.ValueCopyKind ||
+                        CompleteRecordSignature(obj, record) != CompleteRecordSignature(prior.Object, prior.Record) ||
                         !CompatibleOriginalRecord(prior.Object, prior.Record, obj, record) ||
+                        !CompatibleBaseSubobjects(prior.Object, prior.Record, obj, record) ||
                         expected.Length != actual.Length || actual.Where((field, index) => field.SourceName != expected[index].SourceName ||
                             field.ByteOffset != expected[index].ByteOffset || field.BitOffset != expected[index].BitOffset || field.BitWidth != expected[index].BitWidth || field.BitSigned != expected[index].BitSigned || obj.Type(field.TypeId) != prior.Object.Type(expected[index].TypeId) ||
-                            field.FieldRole != expected[index].FieldRole || FieldSourceSignature(obj, field) != FieldSourceSignature(prior.Object, expected[index])).Any())
+                            field.FieldRole != expected[index].FieldRole ||
+                            FieldBaseOrdinal(obj, field) != FieldBaseOrdinal(prior.Object, expected[index]) ||
+                            FieldSourceSignature(obj, field) != FieldSourceSignature(prior.Object, expected[index])).Any())
                         throw new InvalidDataException($"Record layout mismatch for {record.IdentityKey}");
                 }
                 else Records.Add(record.Key, (obj, record));
@@ -109,6 +114,27 @@ internal sealed partial class Linker
 
     private static string? FieldSourceSignature(ObjectFile obj, RecordField field) =>
         field.SourceTypeId is long id ? obj.SourceTypeSignature(id) : null;
+
+    private static string? CompleteRecordSignature(ObjectFile obj, RecordType record) =>
+        record.CompleteTypeId is long id ? obj.Type(id) : null;
+
+    private static long? FieldBaseOrdinal(ObjectFile obj, RecordField field) =>
+        field.SourceBaseId is long id ? obj.SourceBases[id].Ordinal : null;
+
+    private static bool CompatibleBaseSubobjects(ObjectFile leftObject, RecordType left,
+        ObjectFile rightObject, RecordType right)
+    {
+        var expected = leftObject.RecordBases(left.TypeId);
+        var actual = rightObject.RecordBases(right.TypeId);
+        return expected.Length == actual.Length && !actual.Where((item, index) =>
+            rightObject.SourceBases[item.SourceBaseId].Ordinal != leftObject.SourceBases[expected[index].SourceBaseId].Ordinal ||
+            rightObject.Type(item.CompleteBaseTypeId) != leftObject.Type(expected[index].CompleteBaseTypeId) ||
+            (item.PhysicalViewTypeId is long rightView ? rightObject.Type(rightView) : null) !=
+                (expected[index].PhysicalViewTypeId is long leftView ? leftObject.Type(leftView) : null) ||
+            item.ByteOffset != expected[index].ByteOffset || item.Extent != expected[index].Extent ||
+            (item.FieldId is long rightField ? rightObject.Fields[rightField].Ordinal : (long?)null) !=
+                (expected[index].FieldId is long leftField ? leftObject.Fields[leftField].Ordinal : (long?)null)).Any();
+    }
 
     private SourceRecordField[] OriginalFields(ObjectFile obj, long id)
     {
@@ -126,6 +152,13 @@ internal sealed partial class Linker
         SourceRecord a = leftObject.SourceRecords[leftId], b = rightObject.SourceRecords[rightId];
         if (a.IdentityKey != b.IdentityKey || a.SourceName != b.SourceName || a.RecordKind != b.RecordKind ||
             a.IsTriviallyCopyable != b.IsTriviallyCopyable) return false;
+        var expectedBases = leftObject.OriginalBases(leftId);
+        var actualBases = rightObject.OriginalBases(rightId);
+        if (expectedBases.Length != actualBases.Length || actualBases.Where((item, index) =>
+            item.Ordinal != expectedBases[index].Ordinal || item.AccessKind != expectedBases[index].AccessKind ||
+            item.IsVirtual != expectedBases[index].IsVirtual ||
+            rightObject.SourceTypeSignature(item.BaseSourceTypeId) !=
+                leftObject.SourceTypeSignature(expectedBases[index].BaseSourceTypeId)).Any()) return false;
         var expected = OriginalFields(leftObject, leftId);
         var actual = OriginalFields(rightObject, rightId);
         return expected.Length == actual.Length && !actual.Where((field, index) =>
@@ -166,6 +199,23 @@ internal sealed partial class Linker
         return ExternStorages[declaration.Key];
     }
 
+    public long StorageMinimumSize(StorageSymbol symbol) => Math.Max(
+        symbol.Object.StorageSize(symbol.Object.Type(symbol.Storage.TypeId)),
+        requiredStorageExtents.GetValueOrDefault(symbol.Key));
+
+    private void RequireStorageExtent(ObjectFile obj, long id, long displacement)
+    {
+        StorageSymbol target = ResolveStorage(obj, id);
+        long size = target.Object.StorageSize(target.Object.Type(target.Storage.TypeId));
+        // A one-past address is permitted. Unknown declaration extents are
+        // obligations on a resolved definition or on the external provider,
+        // rather than evidence that a valid object occupies zero bytes.
+        if (displacement < 0 ||
+            (target.Storage.Definition != "declaration" || size != 0) && displacement > size)
+            throw new InvalidDataException($"Storage address exceeds resolved extent: {target.Storage.SourceName}");
+        requiredStorageExtents[target.Key] = Math.Max(requiredStorageExtents.GetValueOrDefault(target.Key), displacement);
+    }
+
     public Symbol Entry(string key)
     {
         var matches = Definitions.Where(symbol => symbol.Entity.Linkage == "external" &&
@@ -186,12 +236,14 @@ internal sealed partial class Linker
             foreach (Node node in body.Nodes.Values)
             {
                 if (node.Kind is "call" or "register-cleanup" or "function-address") _ = Resolve(symbol.Object, node.EntityId!.Value);
-                if (node.Kind is "storage" or "storage-address") _ = ResolveStorage(symbol.Object, node.StorageId!.Value);
+                if (node.Kind == "storage") _ = ResolveStorage(symbol.Object, node.StorageId!.Value);
+                if (node.Kind == "storage-address") RequireStorageExtent(symbol.Object, node.StorageId!.Value,
+                    long.Parse(node.ConstantText!, System.Globalization.CultureInfo.InvariantCulture));
             }
         }
         foreach (StorageSymbol symbol in StorageDefinitions)
             foreach (Relocation relocation in symbol.Object.Relocations.GetValueOrDefault(symbol.Storage.Id, []))
                 if (relocation.TargetEntityId is long entity) _ = Resolve(symbol.Object, entity);
-                else _ = ResolveStorage(symbol.Object, relocation.TargetStorageId!.Value);
+                else RequireStorageExtent(symbol.Object, relocation.TargetStorageId!.Value, relocation.Addend);
     }
 }

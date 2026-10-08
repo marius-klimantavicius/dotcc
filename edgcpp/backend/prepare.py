@@ -320,6 +320,28 @@ object_source_overlay(lower,
     '#if defined(EDG_DOT_BACKEND)\n'
     '  dot_object_source::observe_vptr_field(observed_field);\n'
     '#else\n  (void)observed_field;\n#endif\n}  /* add_dummy_field */')
+# Preserve exact base-descriptor correspondence at the physical insertion.
+object_source_overlay(lower,
+    '                                       a_type_ptr    struct_type)\n/*\nMake a dummy field for a base class',
+    '                                       a_type_ptr    struct_type,\n'
+    '                                       a_base_class_ptr observed_base)\n/*\nMake a dummy field for a base class')
+object_source_overlay(lower,
+    '  field_ptr->is_lowered_base_class = TRUE;\n}  /* add_base_class_dummy_field */',
+    '  field_ptr->is_lowered_base_class = TRUE;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_base_field(field_ptr, observed_base);\n'
+    '#else\n  (void)observed_base;\n#endif\n}  /* add_base_class_dummy_field */')
+for before, after in (
+    ('base_class_type, bcp->offset, \n                                 class_type);', 'base_class_type, bcp->offset, \n                                 class_type, bcp);'),
+    ('base_class_type, bcp->offset,\n                                     class_type);', 'base_class_type, bcp->offset,\n                                     class_type, bcp);'),
+    ('bcp->pointer_offset, class_type);', 'bcp->pointer_offset, class_type, bcp);'),
+    ('base_class_type, bcp->offset,\n                                       class_type);', 'base_class_type, bcp->offset,\n                                       class_type, bcp);')):
+    object_source_overlay(lower, before, after)
+object_source_overlay(lower,
+    '  ctsp->subobject_partner = subobject_type;\n',
+    '  ctsp->subobject_partner = subobject_type;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_subobject_type(class_type, subobject_type);\n#endif\n')
 object_source_overlay(eh_lower,
     '    finish_class_type(typeinfo_types[(int)tik_user]);\n',
     '    finish_class_type(typeinfo_types[(int)tik_user]);\n'

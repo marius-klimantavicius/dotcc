@@ -55,7 +55,7 @@ internal sealed partial class Emitter
                 foreach (StorageSymbol symbol in linker.ExternStorages.Values.OrderBy(symbol => symbol.Key, StringComparer.Ordinal))
                     code.Append("    // Provider owns this ").Append(symbol.Storage.IsThreadLocal ? "thread-local" : "global")
                         .Append(" cell: ").Append(symbol.Storage.SourceName).Append("; minimum size ")
-                        .Append(symbol.Object.StorageSize(symbol.Object.Type(symbol.Storage.TypeId))).Append(", alignment ").Append(symbol.Storage.Alignment)
+                        .Append(linker.StorageMinimumSize(symbol)).Append(", alignment ").Append(symbol.Storage.Alignment)
                         .Append(". Address remains stable for its lifetime.\n    public static partial void* ")
                         .Append(ExternStorageName(symbol)).Append("();\n");
             code.Append("}\n");

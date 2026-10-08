@@ -21,6 +21,7 @@ internal sealed partial class ObjectFile : IDisposable
     {
         ["source_record_types"] = "id", ["source_record_fields"] = "id",
         ["initialization_actions"] = "id",
+        ["abi_routine_origins"] = "entity_id", ["source_record_bases"] = "id", ["record_base_subobjects"] = "record_type_id,source_base_id",
         ["object_info"] = "singleton", ["provenance"] = "ordinal", ["source_files"] = "id",
         ["record_types"] = "type_id", ["record_fields"] = "id",
         ["routine_types"] = "type_id", ["routine_parameters"] = "type_id,ordinal",
@@ -63,7 +64,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v17" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v18" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -208,6 +209,8 @@ internal sealed partial class ObjectFile : IDisposable
         foreach (long id in rawTypes.Keys) ResolveType(id, 0);
         VerifyRecordLayouts();
         foreach (string array in Types.Values.Where(ScalarTypes.IsArray))
+            if (ScalarTypes.IsRecord(ScalarTypes.Leaf(array)) && RecordsByKey[ScalarTypes.Leaf(array)].RepresentationKind == "subobject") throw new InvalidDataException("Array elements must use complete nominal records");
+        foreach (string array in Types.Values.Where(ScalarTypes.IsArray))
             if (StorageSize(array) < 0 || StorageSize(array) > int.MaxValue) throw new InvalidDataException("Array extent exceeds supported storage");
         if (Routines.Keys.Any(id => !RoutineTypes.IsRoutine(Type(id)))) throw new InvalidDataException("Routine metadata describes a non-routine type");
         ReadStorages();
@@ -231,7 +234,7 @@ internal sealed partial class ObjectFile : IDisposable
                 if (query.Integer(1) != parameters.Count || (type == "void" || ScalarTypes.IsArray(type) || !CanCopyRecord(type))) throw new InvalidDataException("Invalid parameter ordinal/type");
                 string role = query.Text(3); long? sourceOrdinal = query.OptionalInteger(4);
                 long ordinal = query.Integer(1);
-                if (role is not ("source" or "this") || (role == "this" ? ordinal != 0 || sourceOrdinal is not null : sourceOrdinal is null or < 0))
+                if (role is not ("source" or "this" or "forwarded-source") || (role == "this" ? ordinal != 0 || sourceOrdinal is not null : sourceOrdinal is null or < 0))
                     throw new InvalidDataException("Invalid execution parameter source role");
                 ParameterRoles.Add((entity, ordinal), new(entity, ordinal, role, sourceOrdinal));
                 parameters.Add(type);
@@ -265,10 +268,10 @@ internal sealed partial class ObjectFile : IDisposable
             while (query.Read())
             {
                 var binding = new Binding(query.Integer(0), query.Integer(1), query.Text(2), query.OptionalInteger(3), query.Integer(4), query.Text(5), query.Integer(6), query.Integer(7) == 1);
-                bool isThis = binding.Kind == "parameter" && binding.Ordinal is long ordinal &&
-                    ParameterRoles.TryGetValue((functionId, ordinal), out ParameterSemantics? parameter) && parameter.Role == "this";
-                if (query.Integer(7) is not (0 or 1) || binding.Kind == "parameter" && binding.IsSynthetic != isThis || binding.IsSynthetic && binding.Kind is not ("local" or "parameter"))
-                    throw new InvalidDataException("Synthetic parameter requires a proven implicit-this role");
+                bool syntheticParameter = binding.Kind == "parameter" && binding.Ordinal is long ordinal &&
+                    ParameterRoles.TryGetValue((functionId, ordinal), out ParameterSemantics? parameter) && parameter.Role is "this" or "forwarded-source";
+                if (query.Integer(7) is not (0 or 1) || binding.Kind == "parameter" && binding.IsSynthetic != syntheticParameter || binding.IsSynthetic && binding.Kind is not ("local" or "parameter"))
+                    throw new InvalidDataException("Synthetic parameter requires a proven generated ABI role");
                 bindings.Add(binding.Id, binding);
             }
         var edges = new Dictionary<long, List<Edge>>();

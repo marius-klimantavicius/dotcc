@@ -46,6 +46,7 @@ internal sealed partial class ObjectFile
 
     private void VerifySourceRecords()
     {
+        VerifyBaseMetadata();
         foreach (SourceRecord source in SourceRecords.Values)
         {
             SourceType type = SourceTypeById(source.SourceTypeId);
@@ -82,16 +83,17 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Complete record is missing original source capture");
             if (record.ValueCopyKind == "ordinary" && (!source.IsComplete || source.IsTriviallyCopyable != true))
                 throw new InvalidDataException("Ordinary record values require a completed trivially-copyable source record");
-            if (record.CaptureProof == "observed-class-lowering" && (!source.IsComplete || source.CapturePhase != "before-class-prelowering"))
+            if (record.CaptureProof is "observed-class-lowering" or "observed-subobject-creation" && (!source.IsComplete || source.CapturePhase != "before-class-prelowering"))
                 throw new InvalidDataException("Observed class lowering requires an original complete prelowering snapshot");
             var mapped = new HashSet<long>();
             int vptrs = 0;
             foreach (RecordField field in fields)
             {
+                if (field.FieldRole == "base") continue;
                 if (field.FieldRole == "vptr")
                 {
                     ++vptrs;
-                    if (record.CaptureProof != "observed-class-lowering" || record.ValueCopyKind != "explicit-only" || source.IsTriviallyCopyable != false ||
+                    if (record.CaptureProof is not ("observed-class-lowering" or "observed-subobject-creation") || record.ValueCopyKind != "explicit-only" || source.IsTriviallyCopyable != false ||
                         field.ByteOffset != 0 || !ScalarTypes.IsPointer(Type(field.TypeId)) || field.BitWidth is not null)
                         throw new InvalidDataException("Own vptr requires observed nontrivial class lowering at pointer offset zero");
                     continue;

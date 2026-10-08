@@ -75,12 +75,13 @@ def main():
                  'project_cpp_vptr_layout.cpp', 'project_cpp_constant_storage.cpp',
                  'cpp_assignment_order.cpp', 'project_cpp_assignment_lifting.cpp',
                  'project_c_integer128.c', 'project_c_integer128_boundaries.c',
-                 'project_cpp_integer128_enum.cpp', 'project_cpp_references_members.cpp']:
+                 'project_cpp_integer128_enum.cpp', 'project_cpp_references_members.cpp',
+                 'project_cpp_block_copy.cpp', 'project_cpp_void_conditionals.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v17', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v18', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')

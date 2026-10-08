@@ -14,6 +14,7 @@ internal sealed partial class ObjectFile
     private void ReadAndVerifySourceProvenance()
     {
         ReadRoutineMetadata(true);
+        ReadAbiRoutineOrigins();
         using (var query = database.Prepare("SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count FROM source_types ORDER BY id"))
             while (query.Read())
             {
@@ -142,7 +143,7 @@ internal sealed partial class ObjectFile
             }
         }
         var functions = new HashSet<long>();
-        using (var query = database.Prepare("SELECT entity_id,return_source_type_id,capture_phase,routine_source_type_id FROM source_functions ORDER BY entity_id"))
+        using (var query = database.Prepare("SELECT entity_id,return_source_type_id,capture_phase,routine_source_type_id,function_kind FROM source_functions ORDER BY entity_id"))
             while (query.Read())
             {
                 long entity = query.Integer(0);
@@ -153,6 +154,11 @@ internal sealed partial class ObjectFile
                 if (signatureType.Kind != "routine" || !SourceRoutines.TryGetValue(signatureType.Id, out RoutineType? sourceSignature) ||
                     Type(signatureType.ExecutionTypeId) != EntityRoutine(entity) || sourceSignature.ReturnTypeId != query.Integer(1))
                     throw new InvalidDataException("Original full function signature disagrees with function summary");
+                string functionKind = query.Text(4);
+                if (functionKind is not ("ordinary" or "constructor" or "destructor") ||
+                    functionKind != "ordinary" && (sourceSignature.ObjectTypeId is null || Type(function.ReturnTypeId) != "void"))
+                    throw new InvalidDataException("Invalid original special member function kind");
+                SourceFunctionKinds.Add(entity, functionKind);
                 EntitySourceRoutines.Add(entity, sourceSignature);
                 int receiverCount = sourceSignature.ObjectTypeId is null ? 0 : 1;
                 var executionParameters = Parameters.GetValueOrDefault(entity, []);
@@ -169,7 +175,8 @@ internal sealed partial class ObjectFile
                 if (sourceSignature.ParameterMode == "unspecified" && (function!.Definition == "declaration" || Parameters.GetValueOrDefault(entity, []).Count != 0))
                     throw new InvalidDataException("Unspecified source parameter mode requires a known zero-parameter definition");
             }
-        if (functions.Count != Entities.Count) throw new InvalidDataException("Missing original function signature capture");
+        VerifyAbiRoutineOrigins();
+        if (functions.Count + AbiRoutineOrigins.Count != Entities.Count) throw new InvalidDataException("Missing original or ABI function origin");
         var parameterCounts = new Dictionary<long, int>();
         using (var query = database.Prepare("SELECT entity_id,ordinal,source_type_id FROM source_parameters ORDER BY entity_id,ordinal"))
             while (query.Read())
@@ -184,8 +191,8 @@ internal sealed partial class ObjectFile
                     throw new InvalidDataException("Source parameter signature mismatch");
                 parameterCounts[entity] = count + 1;
             }
-        foreach (Entity entity in Entities.Values)
-            if (parameterCounts.GetValueOrDefault(entity.Id) != EntitySourceRoutines[entity.Id].Parameters.Length)
+        foreach (var (entityId, sourceRoutine) in EntitySourceRoutines)
+            if (parameterCounts.GetValueOrDefault(entityId) != sourceRoutine.Parameters.Length)
                 throw new InvalidDataException("Missing original parameter signature capture");
 
         // Join declarations to their owned execution counterpart while streaming
@@ -236,8 +243,8 @@ internal sealed partial class ObjectFile
             }
         RejectRows("SELECT entity_id FROM source_declarations WHERE entity_id IS NOT NULL GROUP BY entity_id HAVING count(*)<>1", "Duplicate source function declaration identity");
         RejectRows("SELECT binding_id FROM source_declarations WHERE binding_id IS NOT NULL GROUP BY binding_id HAVING count(*)<>1", "Duplicate source binding declaration identity");
-        RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL", "Missing original function declaration capture");
-        RejectRows("SELECT b.id FROM bindings b LEFT JOIN parameters p ON p.entity_id=b.function_id AND p.ordinal=b.ordinal WHERE b.kind='parameter' AND (p.parameter_role IS NULL OR b.is_synthetic <> (p.parameter_role='this'))", "Implicit this must be synthetic and source parameters must be original");
+        RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL AND e.id NOT IN (SELECT entity_id FROM abi_routine_origins)", "Missing original function declaration capture");
+        RejectRows("SELECT b.id FROM bindings b LEFT JOIN parameters p ON p.entity_id=b.function_id AND p.ordinal=b.ordinal WHERE b.kind='parameter' AND (p.parameter_role IS NULL OR b.is_synthetic <> (p.parameter_role IN ('this','forwarded-source')))", "Implicit this must be synthetic and source parameters must be original");
         RejectRows("SELECT b.id FROM bindings b JOIN source_declarations d ON d.binding_id=b.id WHERE b.is_synthetic=1", "Synthetic execution binding must not have fabricated source capture");
         RejectRows("SELECT b.id FROM bindings b LEFT JOIN source_declarations d ON d.binding_id=b.id WHERE d.id IS NULL AND b.is_synthetic=0", "Missing original binding declaration capture");
     }
@@ -265,7 +272,9 @@ internal sealed partial class ObjectFile
 
     public string SourceTypeSignature(long id) => SourceTypeSignature(id, 0, false, false);
 
-    public string FunctionSourceSignature(long entityId) => SourceRoutineSignature(EntitySourceRoutines[entityId], 0);
+    public string FunctionSourceSignature(long entityId) => AbiRoutineOrigins.TryGetValue(entityId, out AbiRoutineOrigin? origin)
+        ? "abi-entry(" + origin.EntryKind + ";" + SourceFunctionKinds[origin.PrimaryEntityId] + ";" + SourceRoutineSignature(EntitySourceRoutines[origin.PrimaryEntityId], 0) + ")"
+        : SourceRoutineSignature(EntitySourceRoutines[entityId], 0);
 
     private string SourceRoutineSignature(RoutineType routine, int depth)
     {
@@ -350,7 +359,7 @@ internal sealed partial class ObjectFile
                     switch (query.ColumnType(index))
                     {
                         case 1:
-                            if (column is "isConst" or "isVolatile" or "isSynthetic" or "isComplete" or "isTriviallyCopyable" or "isMutable" or "hasNoUniqueAddress" or "hasInitializer" or "objectIsConst" or "objectIsVolatile") writer.WriteBoolean(column, query.Integer(index) == 1);
+                            if (column is "isAliasEntry" or "isVirtual" or "isConst" or "isVolatile" or "isSynthetic" or "isComplete" or "isTriviallyCopyable" or "isMutable" or "hasNoUniqueAddress" or "hasInitializer" or "objectIsConst" or "objectIsVolatile") writer.WriteBoolean(column, query.Integer(index) == 1);
                             else writer.WriteNumber(column, query.Integer(index));
                             break;
                         case 3: writer.WriteString(column, query.Text(index)); break;
@@ -366,14 +375,20 @@ internal sealed partial class ObjectFile
             "id", "entityId", "phase", "priority", "ordinal", "sourceFileId", "line", "column");
         Table("sourceFiles", "SELECT id,path,parent_id FROM source_files ORDER BY id", "id", "path", "parentId");
         Table("executionTypes", "SELECT id,kind,pointee_type_id,element_type_id,element_count FROM types ORDER BY id", "id", "kind", "pointeeTypeId", "elementTypeId", "elementCount");
-        Table("recordTypes", "SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column,layout_kind,source_record_id,representation_kind,value_copy_kind,capture_proof FROM record_types ORDER BY type_id",
-            "typeId", "identityKey", "sourceName", "size", "alignment", "sourceFileId", "line", "column", "layoutKind", "sourceRecordId", "representationKind", "valueCopyKind", "captureProof");
-        Table("recordFields", "SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed,source_field_id,field_role FROM record_fields ORDER BY id",
-            "id", "recordTypeId", "ordinal", "typeId", "sourceName", "byteOffset", "sourceTypeId", "sourceFileId", "line", "column", "bitOffset", "bitWidth", "bitSigned", "sourceFieldId", "fieldRole");
+        Table("recordTypes", "SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column,layout_kind,source_record_id,representation_kind,value_copy_kind,capture_proof,complete_type_id FROM record_types ORDER BY type_id",
+            "typeId", "identityKey", "sourceName", "size", "alignment", "sourceFileId", "line", "column", "layoutKind", "sourceRecordId", "representationKind", "valueCopyKind", "captureProof", "completeTypeId");
+        Table("recordFields", "SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed,source_field_id,field_role,source_base_id FROM record_fields ORDER BY id",
+            "id", "recordTypeId", "ordinal", "typeId", "sourceName", "byteOffset", "sourceTypeId", "sourceFileId", "line", "column", "bitOffset", "bitWidth", "bitSigned", "sourceFieldId", "fieldRole", "sourceBaseId");
         Table("sourceRecords", "SELECT id,source_type_id,identity_key,source_name,record_kind,is_complete,native_size,native_alignment,is_trivially_copyable,capture_phase,source_file_id,line,column FROM source_record_types ORDER BY id",
             "id", "sourceTypeId", "identityKey", "sourceName", "recordKind", "isComplete", "nativeSize", "nativeAlignment", "isTriviallyCopyable", "capturePhase", "sourceFileId", "line", "column");
         Table("sourceFields", "SELECT id,source_record_id,ordinal,source_type_id,source_name,is_mutable,has_no_unique_address,bit_width,source_file_id,line,column,has_initializer FROM source_record_fields ORDER BY id",
             "id", "sourceRecordId", "ordinal", "sourceTypeId", "sourceName", "isMutable", "hasNoUniqueAddress", "bitWidth", "sourceFileId", "line", "column", "hasInitializer");
+        Table("sourceBases", "SELECT id,source_record_id,ordinal,base_source_type_id,access_kind,is_virtual,source_file_id,line,column FROM source_record_bases ORDER BY id",
+            "id", "sourceRecordId", "ordinal", "baseSourceTypeId", "accessKind", "isVirtual", "sourceFileId", "line", "column");
+        Table("recordBaseSubobjects", "SELECT record_type_id,source_base_id,complete_base_type_id,physical_view_type_id,byte_offset,extent,field_id FROM record_base_subobjects ORDER BY record_type_id,source_base_id",
+            "recordTypeId", "sourceBaseId", "completeBaseTypeId", "physicalViewTypeId", "byteOffset", "extent", "fieldId");
+        Table("abiRoutineOrigins", "SELECT entity_id,primary_entity_id,entry_kind,is_alias_entry,capture_proof FROM abi_routine_origins ORDER BY entity_id",
+            "entityId", "primaryEntityId", "entryKind", "isAliasEntry", "captureProof");
         Table("sourceTypes", "SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count FROM source_types ORDER BY id",
             "id", "kind", "sourceName", "underlyingTypeId", "executionTypeId", "isConst", "isVolatile", "sourceFileId", "line", "column", "elementCount");
         Table("storages", "SELECT id,source_name,linkage,external_key,definition,type_id,source_type_id,is_thread_local,is_const,alignment,source_file_id,line,column FROM storages ORDER BY id",
@@ -382,7 +397,7 @@ internal sealed partial class ObjectFile
         Table("routineParameters", "SELECT type_id,ordinal,parameter_type_id FROM routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");
         Table("sourceRoutineTypes", "SELECT type_id,return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier FROM source_routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy", "parameterMode", "objectTypeId", "objectIsConst", "objectIsVolatile", "objectRefQualifier");
         Table("sourceRoutineParameters", "SELECT type_id,ordinal,parameter_type_id FROM source_routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");
-        Table("sourceFunctions", "SELECT entity_id,return_source_type_id,capture_phase,routine_source_type_id FROM source_functions ORDER BY entity_id", "entityId", "returnSourceTypeId", "capturePhase", "routineSourceTypeId");
+        Table("sourceFunctions", "SELECT entity_id,return_source_type_id,capture_phase,routine_source_type_id,function_kind FROM source_functions ORDER BY entity_id", "entityId", "returnSourceTypeId", "capturePhase", "routineSourceTypeId", "functionKind");
         Table("executionParameters", "SELECT entity_id,ordinal,type_id,parameter_role,source_ordinal FROM parameters ORDER BY entity_id,ordinal", "entityId", "ordinal", "typeId", "parameterRole", "sourceOrdinal");
         Table("sourceParameters", "SELECT entity_id,ordinal,source_type_id FROM source_parameters ORDER BY entity_id,ordinal", "entityId", "ordinal", "sourceTypeId");
         Table("executionBindings", "SELECT id,function_id,kind,type_id,source_name,source_file_id,line,column,is_synthetic FROM bindings ORDER BY id",

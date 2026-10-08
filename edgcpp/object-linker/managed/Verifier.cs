@@ -3,7 +3,7 @@ namespace DotObj;
 internal static class Verifier
 {
     private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
-    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic"];
+    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -101,10 +101,10 @@ internal static class Verifier
             else
             {
                 string type = Type(node);
-                if (type == "void" && node.Kind is not ("call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic")) Fail("Only calls and explicit void operations can have void type");
+                if (type == "void" && node.Kind is not ("call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional")) Fail("Only calls and explicit void operations can have void type");
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
                 string[] orders = node.Kind is "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
-                if (node.Kind is "assign" or "compound-assign") orders = ["left-to-right", "right-to-left", "unspecified"];
+                if (node.Kind is "assign" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
                 if (node.Kind is "address" or "dereference" or "array-decay" or "member" or "va-start" or "va-copy" or "va-end" or "va-arg") orders = ["none", "left-to-right", "unspecified"];
                 if (!orders.Contains(node.EvaluationOrder)) Fail($"Unsupported evaluation order at {node.Id}");
             }
@@ -113,7 +113,7 @@ internal static class Verifier
                 (node.FieldId != null) != (node.Kind == "member") ||
                 (node.StorageId != null) != (node.Kind is "storage" or "storage-address") ||
                 (node.Operator != null) != (node.Kind is "binary" or "unary" or "mutate" or "compound-assign" or "intrinsic") ||
-                (node.ConstantText != null) != (node.Kind is "constant" or "array-element" or "storage-address" or "label")) Fail("Unexpected or missing typed payload");
+                (node.ConstantText != null) != (node.Kind is "constant" or "array-element" or "storage-address" or "label" or "block-copy")) Fail("Unexpected or missing typed payload");
 
             if (IsExpression(node) && ScalarTypes.IsArray(Type(node)) && !Place(node)) Fail("Array value must be a place");
             foreach (Edge edge in body.Edges.GetValueOrDefault(node.Id, []))
@@ -124,11 +124,11 @@ internal static class Verifier
                     Fail("Declared volatile place requires an explicit volatile access wrapper");
                 if (child.TypeId is long childType && ScalarTypes.IsArray(obj.Type(childType)) &&
                     !(node.Kind is "address" or "array-decay" && edge.Role == "operand") &&
-                    !(node.Kind == "array-init" && edge.Role == "target"))
+                    !(node.Kind == "array-init" && edge.Role == "target") && node.Kind != "block-copy")
                     Fail("Array place requires explicit address, decay or initialization");
                 if (child.TypeId is long recordType && ScalarTypes.IsRecord(obj.Type(recordType)))
                 {
-                    bool allowed = node.Kind is "member" or "address" && edge.Role == "operand" ||
+                    bool allowed = node.Kind == "block-copy" || node.Kind is "member" or "address" && edge.Role == "operand" ||
                         node.Kind == "assign" && (edge.Role == "target" || edge.Role == "value" && child.Kind == "default-value") ||
                         node.Kind == "declare" && edge.Role == "initializer" && child.Kind == "default-value" ||
                         node.Kind == "expr-stmt" && edge.Role == "value" && child.Kind == "assign";
@@ -343,7 +343,7 @@ internal static class Verifier
                     if (!obj.Storages.TryGetValue(node.StorageId!.Value, out Storage? addressStorage) || !ScalarTypes.IsPointer(Type(node)) ||
                         RoutineTypes.IsFunctionPointer(Type(node)) || !ScalarTypes.IsConstant("i64", node.ConstantText) ||
                         !long.TryParse(node.ConstantText, out long displacement) || displacement < 0 ||
-                        displacement > obj.StorageSize(obj.Type(addressStorage.TypeId)))
+                        (displacement > obj.StorageSize(obj.Type(addressStorage.TypeId)) && !(addressStorage.Definition == "declaration" && obj.StorageSize(obj.Type(addressStorage.TypeId)) == 0)))
                         Fail("Storage address requires a data pointer and bounded byte displacement");
                     break;
                 case "function-address":
@@ -431,7 +431,7 @@ internal static class Verifier
                     if ((variadic ? args.Length < expected.Count : args.Length != expected.Count) ||
                         args.Take(expected.Count).Where((arg, i) => !IsExpression(arg) || Type(arg) != expected[i]).Any() ||
                         args.Skip(expected.Count).Any(arg => !IsExpression(arg) || !(ScalarTypes.IsPromotedInteger(Type(arg)) || Type(arg) is "f64" or "f80" || ScalarTypes.IsPointer(Type(arg)))))
-                        Fail("Call argument signature or default variadic promotion mismatch");
+                        Fail("Call argument signature or default variadic promotion mismatch at node " + node.Id + " calling " + target.SourceName + " (" + (target.ExternalKey ?? "internal:" + target.Id) + "): expected [" + string.Join(", ", expected) + (variadic ? "; ..." : "") + "], actual [" + string.Join(", ", args.Select(arg => arg.TypeId is null ? "<statement:" + arg.Kind + ">" : Type(arg))) + "]");
                     break;
                 case "binary":
                     EdgeShape(node, ("left", 1, 1), ("right", 1, 1)); Expr(node, "left"); Expr(node, "right");
@@ -494,9 +494,20 @@ internal static class Verifier
                     break;
                 case "conditional":
                     EdgeShape(node, ("condition", 1, 1), ("then", 1, 1), ("else", 1, 1));
-                    Condition(node, "condition"); Expr(node, "then"); Expr(node, "else");
-                    if (!ScalarTypes.IsScalar(Type(node)) && !(ScalarTypes.IsRecord(Type(node)) && obj.CanCopyRecord(Type(node)))) Fail("Conditional requires a scalar or copyable record result");
+                    Condition(node, "condition"); Expr(node, "then", Type(node) == "void"); Expr(node, "else", Type(node) == "void");
+                    if (Type(node) != "void" && !ScalarTypes.IsScalar(Type(node)) && !(ScalarTypes.IsRecord(Type(node)) && obj.CanCopyRecord(Type(node)))) Fail("Conditional requires void, scalar or copyable record result");
                     SameType(node, Child(node, "then")); SameType(node, Child(node, "else"));
+                    break;
+                case "block-copy":
+                    EdgeShape(node, ("target", 1, 1), ("source", 1, 1)); Expr(node, "target"); Expr(node, "source");
+                    if (Type(node) != "void" || !Place(Child(node, "target")) || !Place(Child(node, "source")) ||
+                        Child(node, "target").Kind == "volatile-place" || Child(node, "source").Kind == "volatile-place" ||
+                        DeclaredVolatile(Child(node, "target")) || DeclaredVolatile(Child(node, "source")) ||
+                        !obj.CanCopyPayload(Type(Child(node, "source"))) || !obj.CanCopyPayload(Type(Child(node, "target"))) ||
+                        !long.TryParse(node.ConstantText, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out long extent) ||
+                        extent <= 0 || node.ConstantText != extent.ToString(System.Globalization.CultureInfo.InvariantCulture) ||
+                        extent != obj.StorageSize(Type(Child(node, "source"))) || extent > obj.StorageSize(Type(Child(node, "target"))))
+                        Fail("Block copy requires nonvolatile places and the exact bounded source extent");
                     break;
                 case "compound-assign":
                     EdgeShape(node, ("target", 1, 1), ("value", 1, 1)); Expr(node, "target"); Expr(node, "value");

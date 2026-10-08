@@ -84,7 +84,7 @@ internal sealed partial class ObjectFile
                     throw new InvalidDataException("128-bit address initializers require an explicit relocation width and extension contract");
                 if (value.TargetStorageId is long targetId)
                 {
-                    if (!Storages.TryGetValue(targetId, out Storage? target) || value.Addend < 0 || value.Addend > StorageSize(Type(target.TypeId)) ||
+                    if (!Storages.TryGetValue(targetId, out Storage? target) || value.Addend < 0 || (value.Addend > StorageSize(Type(target.TypeId)) && !(target.Definition == "declaration" && StorageSize(Type(target.TypeId)) == 0)) ||
                         !owner.IsThreadLocal && target.IsThreadLocal)
                         throw new InvalidDataException("Invalid storage relocation target, displacement or TLS domain");
                 }

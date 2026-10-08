@@ -4,7 +4,7 @@ namespace DotObj;
 
 internal sealed record RecordType(long TypeId, string IdentityKey, string SourceName,
     long Size, long Alignment, long? SourceFileId, long Line, long Column, string LayoutKind,
-    long? SourceRecordId, string RepresentationKind, string ValueCopyKind, string CaptureProof)
+    long? SourceRecordId, string RepresentationKind, string ValueCopyKind, string CaptureProof, long? CompleteTypeId)
 {
     // A nominal terminal permits recursive pointer graphs without recursively
     // incorporating the record's layout into every pointer signature.
@@ -14,7 +14,7 @@ internal sealed record RecordType(long TypeId, string IdentityKey, string Source
 internal sealed record RecordField(long Id, long RecordTypeId, long Ordinal,
     long TypeId, string SourceName, long ByteOffset, long? SourceTypeId,
     long? SourceFileId, long Line, long Column, long? BitOffset, long? BitWidth, bool? BitSigned,
-    long? SourceFieldId, string FieldRole);
+    long? SourceFieldId, string FieldRole, long? SourceBaseId);
 
 internal sealed partial class ObjectFile
 {
@@ -26,31 +26,34 @@ internal sealed partial class ObjectFile
     private void ReadRecordMetadata()
     {
         var groupedFields = new Dictionary<long, List<RecordField>>();
-        using (var query = database.Prepare("SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column,layout_kind,source_record_id,representation_kind,value_copy_kind,capture_proof FROM record_types ORDER BY type_id"))
+        using (var query = database.Prepare("SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column,layout_kind,source_record_id,representation_kind,value_copy_kind,capture_proof,complete_type_id FROM record_types ORDER BY type_id"))
             while (query.Read())
             {
                 var record = new RecordType(query.Integer(0), query.Text(1), query.Text(2), query.Integer(3), query.Integer(4),
-                    query.OptionalInteger(5), query.Integer(6), query.Integer(7), query.Text(8), query.OptionalInteger(9), query.Text(10), query.Text(11), query.Text(12));
+                    query.OptionalInteger(5), query.Integer(6), query.Integer(7), query.Text(8), query.OptionalInteger(9), query.Text(10), query.Text(11), query.Text(12), query.OptionalInteger(13));
                 if (record.TypeId <= 0 || record.IdentityKey.Length == 0 || record.Size < 0 || record.Size > int.MaxValue ||
                     (record.Size == 0 ? record.Alignment != 0 : record.Alignment is not (1 or 2 or 4 or 8 or 16)) ||
                     record.LayoutKind is not ("struct" or "class" or "union") || record.Line < 0 || record.Column < 0 ||
-                    record.RepresentationKind is not ("complete" or "abi") || record.ValueCopyKind is not ("ordinary" or "explicit-only") ||
+                    record.RepresentationKind is not ("complete" or "abi" or "subobject") || record.ValueCopyKind is not ("ordinary" or "explicit-only") ||
                     (record.RepresentationKind == "complete" ? record.SourceRecordId is null || record.CaptureProof is not ("source-snapshot" or "observed-class-lowering")
-                        : record.SourceRecordId is not null || record.CaptureProof != "observed-abi-creation"))
+                        : record.RepresentationKind == "subobject" ? record.SourceRecordId is null || record.CompleteTypeId is null || record.Size == 0 || record.ValueCopyKind != "explicit-only" || record.CaptureProof != "observed-subobject-creation"
+                        : record.SourceRecordId is not null || record.CaptureProof != "observed-abi-creation") ||
+                    (record.RepresentationKind != "subobject" && record.CompleteTypeId is not null))
                     throw new InvalidDataException("Invalid record identity or layout metadata");
                 if (!Records.TryAdd(record.TypeId, record) || !RecordsByKey.TryAdd(record.Key, record))
                     throw new InvalidDataException("Duplicate nominal record identity");
                 groupedFields.Add(record.TypeId, []);
             }
-        using (var query = database.Prepare("SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed,source_field_id,field_role FROM record_fields ORDER BY id"))
+        using (var query = database.Prepare("SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed,source_field_id,field_role,source_base_id FROM record_fields ORDER BY id"))
             while (query.Read())
             {
                 var field = new RecordField(query.Integer(0), query.Integer(1), query.Integer(2), query.Integer(3), query.Text(4),
-                    query.Integer(5), query.OptionalInteger(6), query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.OptionalInteger(10), query.OptionalInteger(11), query.OptionalInteger(12) is long signed ? signed == 1 : null, query.OptionalInteger(13), query.Text(14));
+                    query.Integer(5), query.OptionalInteger(6), query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.OptionalInteger(10), query.OptionalInteger(11), query.OptionalInteger(12) is long signed ? signed == 1 : null, query.OptionalInteger(13), query.Text(14), query.OptionalInteger(15));
                 if (field.Id <= 0 || !Records.ContainsKey(field.RecordTypeId) || field.Ordinal < 0 ||
-                    field.ByteOffset < 0 || field.Line < 0 || field.Column < 0 || field.FieldRole is not ("source" or "vptr" or "abi") ||
+                    field.ByteOffset < 0 || field.Line < 0 || field.Column < 0 || field.FieldRole is not ("source" or "vptr" or "abi" or "base") ||
                     (field.FieldRole == "source" ? field.SourceTypeId is null or <= 0 || field.SourceFieldId is null or <= 0
-                        : field.SourceTypeId is not null || field.SourceFieldId is not null))
+                        : field.SourceTypeId is not null || field.SourceFieldId is not null) ||
+                    (field.FieldRole == "base") != (field.SourceBaseId is not null))
                     throw new InvalidDataException("Invalid record field metadata");
                 if ((field.BitOffset is null) != (field.BitWidth is null) || (field.BitOffset is null) != (field.BitSigned is null) ||
                     field.BitOffset is < 0 or > 7 || field.BitWidth is < 1 or > 64 || query.OptionalInteger(12) is < 0 or > 1)
@@ -58,6 +61,7 @@ internal sealed partial class ObjectFile
                 if (!Fields.TryAdd(field.Id, field)) throw new InvalidDataException("Duplicate record field identity");
                 groupedFields[field.RecordTypeId].Add(field);
             }
+        ReadBaseMetadata();
         foreach (var (typeId, fields) in groupedFields) fieldsByRecord.Add(typeId, fields.OrderBy(field => field.Ordinal).ToArray());
     }
 
@@ -67,12 +71,19 @@ internal sealed partial class ObjectFile
     {
         if (ScalarTypes.IsArray(type)) return ScalarTypes.ElementCount(type) > 0 && CanCopyRecord(ScalarTypes.Element(type));
         if (!ScalarTypes.IsRecord(type)) return true;
-        var record = RecordsByKey[type];
-        if (record.Size == 0 || record.ValueCopyKind != "ordinary") return false;
+        RecordType record = RecordsByKey[type];
+        return record.Size > 0 && record.ValueCopyKind == "ordinary" && CanCopyPayload(type);
+    }
+
+    public bool CanCopyPayload(string type)
+    {
+        if (ScalarTypes.IsArray(type)) return ScalarTypes.ElementCount(type) > 0 && CanCopyPayload(ScalarTypes.Element(type));
+        if (!ScalarTypes.IsRecord(type)) return true;
+        RecordType record = RecordsByKey[type];
+        if (record.Size == 0) return false;
         foreach (RecordField field in RecordFields(record.TypeId))
         {
-            string fieldType = Type(field.TypeId);
-            if (!CanCopyRecord(fieldType)) return false;
+            if (!CanCopyPayload(Type(field.TypeId))) return false;
             if (field.SourceTypeId is long sourceTypeId && SourceTypes.TryGetValue(sourceTypeId, out SourceType? source))
                 while (true)
                 {
@@ -82,6 +93,14 @@ internal sealed partial class ObjectFile
                 }
         }
         return true;
+    }
+
+    public static long ClrRecordPack(RecordType record)
+    {
+        long pack = Math.Max(1, record.Alignment);
+        if (record.RepresentationKind == "subobject")
+            while (record.Size % pack != 0) pack /= 2;
+        return pack;
     }
 
     public long StorageSize(string type) => ScalarTypes.IsRecord(type) ? RecordsByKey[type].Size
@@ -106,7 +125,7 @@ internal sealed partial class ObjectFile
                 if (fields.Length != 0) throw new InvalidDataException("Incomplete record has fields");
                 active.Remove(record.TypeId); layoutDepths.Add(record.TypeId, 0); complete.Add(record.TypeId); return;
             }
-            if (record.Size % record.Alignment != 0) throw new InvalidDataException("Complete record size must be a multiple of its alignment");
+            if (record.RepresentationKind != "subobject" && record.Size % record.Alignment != 0) throw new InvalidDataException("Complete record size must be a multiple of its alignment");
             int layoutDepth = 0;
             var names = new HashSet<string>(StringComparer.Ordinal);
             var occupied = new List<(long Begin, long End)>();
@@ -121,6 +140,7 @@ internal sealed partial class ObjectFile
                 if (ScalarTypes.IsRecord(leaf))
                 {
                     RecordType nested = RecordsByKey[leaf]; Verify(nested, depth + 1);
+                    if (nested.RepresentationKind == "subobject" && (field.FieldRole != "base" || ScalarTypes.IsArray(type))) throw new InvalidDataException("Subobject representation must be an owned base view");
                     if (nested.Size == 0) throw new InvalidDataException("Incomplete record field by value");
                     layoutDepth = Math.Max(layoutDepth, layoutDepths[nested.TypeId] + 1);
                     if (layoutDepth > 128) throw new InvalidDataException("By-value record layout nesting exceeds supported limit");

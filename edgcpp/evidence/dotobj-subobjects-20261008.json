@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "profile": "scalar-control-v18",
+  "scope": "Observed generated ctor/dtor origins, exact nonvirtual base subobjects, source extent copies, COMDAT storage and deferred incomplete external storage bounds",
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "fullRegressionChecks": 925,
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-v18-acceptance-002/results.json",
+      "sha256": "ca2a701f3eae8408e2e530fbb15095a6f2ac7e6c023e4030644c1a05a7828924"
+    },
+    "baseValues": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-base-values-managed022-001/results.json",
+      "sha256": "2ec1989b1fc4b0e3631dbb347e1e253f686207c11f9776b1bae428adcdcb475b"
+    },
+    "blockCopy": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-block-copy-managed021-001/results.json",
+      "sha256": "2ec1989b1fc4b0e3631dbb347e1e253f686207c11f9776b1bae428adcdcb475b"
+    },
+    "voidConditional": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-void-conditionals-managed021-001/results.json",
+      "sha256": "2ec1989b1fc4b0e3631dbb347e1e253f686207c11f9776b1bae428adcdcb475b"
+    },
+    "externalStorageExtents": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-storage-extents-managed021-001/results.json",
+      "sha256": "07401505e0794a5eec94b56b645f7f865a229f09c0932fda7bdb449595407a89"
+    },
+    "invalidOrigins": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v18-malformed-managed021-001/results.json",
+      "sha256": "a3644bd0f032c3d7715a8f02dc77fad5f87994127d19820b054db7f969a234dd"
+    },
+    "comdatStorage": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-comdat-storage-managed021-001/results.json",
+      "sha256": "f977a8e3fa0c070822803ce6ddf12c9685e9edc6a6766426cd38ce9bcfd43dd8"
+    },
+    "virtualGenerationOnly": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-base-virtual-managed021-001/results.json",
+      "sha256": "bf7a6280aef18d494a2f7418af4219213c9aa9423bdda01176382bc04b9eb02a"
+    },
+    "crossUnitRuntimeBlocked": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-nonvirtual-acceptance-006/results.json",
+      "sha256": "71332cbdf6b9110cde04c201b3a02a7a9fd20cdd6fc83722ca9267d067136dbf"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native030-verified-snapshot/cpfe-dot",
+      "sha256": "0040237a99469f61f3aca89de33219cb54f8574dd9d9bab4e49f107192fdcf27"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-022/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "b97cbad76ca353deb71d1e04533c00e4496a05919d5efd19690e5ea4e63cf4b3"
+    },
+    "fullRegressionCompiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native029-verified-snapshot/cpfe-dot",
+      "sha256": "e330ad0736a2b24e495b6a287f23a27ffecd821f2b2bff974e95c0f15778b5bd"
+    },
+    "fullRegressionLinker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-021/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "07dfcbd7db113c0495f7e11fa34c41dcbcc8edf7b976163fd44b476aee2bf4b4"
+    }
+  },
+  "limitations": [
+    "Full virtual/delete graph verifies and generates, but real RTTI ABI vtable providers remain unresolved; no virtual fixture execution claim",
+    "Cross-TU nonvirtual explicit-constructor variant links source-free, but __cxa_vec_ctor runtime binding remains required",
+    "Default-argument constructor adapters require separate observed origin/default facts in the next profile",
+    "Virtual bases, hidden result buffers, broader construction/copy ABI and C++ unwinding remain unfinished",
+    "Full DuckDB execution and complete independent source semantic indexing remain unfinished"
+  ]
+}

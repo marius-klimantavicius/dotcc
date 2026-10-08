@@ -868,3 +868,68 @@ It does not by itself imply a nontrivial copy operation or authorize discarding
 constructor, dynamic initialization or lifetime obligations. True member-pointer
 values, hidden result buffers and parameters passed through copy constructors
 remain separate ABI contracts and must reject until represented.
+
+## Generated entry origins and nonvirtual subobjects: scalar-control-v18
+
+An entity is either an original source routine or an explicitly owned generated
+ctor/dtor entry. `abi_routine_origins` relates the generated entity directly to
+its original primary entity, records complete/subobject/deleting entry kind,
+alias evidence and the observed `primary-ctor-dtor-link` proof. Generated entries
+have no fabricated `source_functions` or source declarations. Original routines
+append `function_kind` (`ordinary`, `constructor`, `destructor`). A generated
+receiver is proved by its generated scope; `forwarded-source` parameters map to
+primary written ordinals. Those parameters and generated locals are synthetic.
+Execution routine types and bodies remain authoritative, including deleting
+entry bodies even when alias evidence is present. The initial portable ABI
+admits only void-return primary/alternate pairs, without variadic forwarding,
+hidden result buffers, VTT or delegation/returns-this variants.
+
+`source_record_bases` retains original direct base ordinals, complete source
+types, access and virtual facts. `record_types.complete_type_id` distinguishes
+observed exact-sized subobject representations from their complete nominal type.
+Subobject views have explicit-only standalone copy policy and retain native
+alignment independently of the CLR packing needed for their exact extent.
+Original source sizeof/alignment facts always describe the complete type.
+Physical `base` fields refer to original base IDs instead of fabricated source
+fields. `record_base_subobjects` connects each owner and original base to its
+complete base type, offset, exact extent and optional physical view/field.
+An optimized empty base has zero extent and no physical view or field: its
+complete empty class still has its normal nonzero sizeof and pointer stride.
+
+Complete-object copy permission still requires the original trivial-copy fact.
+Physical payload recursion may enter a validated base view without thereby
+making standalone view assignment or parameter/return passing valid. A typed
+`block-copy` node expresses EDG's lowered memcpy-like operation: void result,
+positive exact source byte extent, source/target place edges, sufficient target
+extent and retained evaluation order. It never substitutes a whole complete
+record assignment for a partial base copy. Source and destination addresses
+are evaluated once; volatile/VLA/array-rvalue cases remain explicit boundaries.
+
+This tranche represents direct nonvirtual base relationships first. Virtual
+bases, ambiguous runtime casts, broader copy-construction/return ABI, unwinding
+and complete independent source semantic indexing remain required follow-on
+work rather than inferred properties of these physical representations.
+
+
+Void conditional expressions retain two void branches and lazy evaluation.
+The managed emitter expands only these incompatible expression forms to local
+structured `if`/`else`, preserving their execution position and loop behavior.
+
+Address constants may name a declaration of an incomplete external array.
+Object verification retains the nonnegative displacement without pretending
+that a zero declared size is a definition. Linking checks the displacement
+against the selected complete definition, or records a minimum required extent
+for an explicitly allowed external storage provider. Runtime requirements expose
+`size` (minimum required extent), `declaredSize` and `extentKnown`; a provider
+must own the actual aligned addressable cell. This does not synthesize missing
+RTTI vtables or permit out-of-range displacements into known definitions.
+
+Storage with EDG's authoritative COMDAT group is represented as `linkonce`,
+following the stock C backend. Independent object selection must preserve one
+canonical cell and its address; duplicate initializers do not create per-unit
+copies. Source-only metadata remains independent of this execution linkage fact.
+
+Generated constructor wrappers that supply default arguments remain a separate
+origin boundary in v18. They are not mislabeled as complete/subobject aliases.
+Their future contract must retain the exact selected call target, written
+parameter default-presence facts and the helper's own execution exception policy.

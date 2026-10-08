@@ -279,3 +279,37 @@ includes the focused source-signature checks, fresh SQLite execution, real
 libc++/DuckDB probes and immutable tool snapshots. The initial v17 run is retained
 with its stale negative expectation; the stock C backend confirmed that EDG had
 already materialized normal-exit destruction when source exceptions are disabled.
+
+
+## Generated entries and nonvirtual subobjects, v18 (2026-10-08)
+
+The owned graph distinguishes original constructors/destructors from observed
+complete, subobject and deleting entries. Generated parameters and bodies retain
+explicit origins without inventing source declarations. Original direct base
+relationships connect complete nominal classes to exact physical subobject
+views; optimized empty bases have logical relationships and no zero-size CLR
+record. Complete-object copies retain original trivial-copyability constraints.
+Partial base copies preserve reused derived tail bytes instead of copying the
+complete base sizeof. Retained block-copy nodes use their exact source extent.
+
+Focused native O0/O2, JIT and NativeAOT tests execute tail reuse, empty and
+multiple bases, complete derived copies, constructor entries and actual block
+copies. COMDAT data from two independent objects retains shared addresses and
+mutations, and relinking after removing source inputs produces identical C#.
+Unknown external-array address displacements defer extent checks to the selected
+definition or to an explicit minimum-extent runtime provider contract.
+
+The full regression passes **925 checks including NativeAOT** with native029 and
+managed021. Native030 additionally makes implicit fixed data-pointer-to-void
+argument conversions explicit in the graph, and managed022 improves mismatch
+diagnostics. A real cross-TU nonvirtual fixture then verifies and links without
+its source files; it truthfully awaits the shared vector-construction runtime.
+[Hashed subobject evidence](../evidence/dotobj-subobjects-20261008.json) records
+these distinct tool snapshots and acceptance scopes.
+
+A full virtual/delete fixture now verifies and emits exact 5/12-byte views and
+real deleting bodies. Its two external RTTI vtable providers remain unresolved,
+so this is generation evidence, not execution acceptance. Default-argument
+constructor adapters are a distinct next origin contract: their default
+expressions, selected target and exception policy must remain owned. Virtual
+bases, hidden-result/copy ABIs, unwinding and full DuckDB execution remain open.
