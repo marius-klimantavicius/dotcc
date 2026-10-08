@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "status": "fresh-socket-backend-checkpoint-tools-verified",
+  "tools": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-integrated-tools-003/tools.json",
+    "sha256": "c46045de81674e47ff879072519bb6a4aa4d1a095178fd47d142b62468c5eafc"
+  },
+  "verification": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-il-replay-integrated-003/results.json",
+    "sha256": "932c8456db2713c1d8568d456e72a9fbce4ffee2eff5f6eca04ffc7af8d739bc"
+  },
+  "checks": 25,
+  "nativeaot": true,
+  "fullDuckdbCheckpoint": false
+}

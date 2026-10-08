@@ -2195,3 +2195,8 @@ A fresh adoption audit checked all 24 baseline/payload files and 2,484 retained
 evidence hashes. These header/runtime changes require new preprocessing and
 checkpoint provenance; no previous DuckDB .ii is relabeled or reused as current.
 [Canonical socket integration](../evidence/duckdb-socket-integration-20261008.json).
+
+Fresh checkpoint writer/reader tools003 are built from the integrated backend.
+All 25 replay checks pass, including NativeAOT. These establish tool
+compatibility for the next attempt; no full DuckDB checkpoint yet exists.
+[Fresh checkpoint tools](../evidence/duckdb-checkpoint-tools003-20261008.json).
