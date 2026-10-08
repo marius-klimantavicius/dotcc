@@ -180,3 +180,31 @@ managed015. The expanded 70-check startup suite additionally verifies managed016
 primary/provider coalescing and strong-definition root retention; 14 host startup
 safety checks cover concurrency and failure. [Startup evidence](../evidence/dotobj-startup-20261008.json)
 keeps these tool snapshots and coverage scopes explicit.
+
+## C++ record origins and assignment order, v15 (2026-10-08)
+
+Native020 and managed018 pass 144 focused record checks including NativeAOT.
+Objects separate original record/member declarations from physical fields,
+retain unnamed zero-width bitfields and mutable members, and identify hidden
+vptr/ABI storage through read-only lowering observations. Originally nontrivial
+records cannot acquire ordinary POD copies merely because their physical fields
+are simple. Incomplete declarations do not fabricate completed-class lowering
+proof. Existing C/C++ shared-header compatibility and readable member accesses
+remain verified.
+
+C++17 assignment sequencing independently passes 20 native O0/O2, JIT and
+NativeAOT checks. Owned right-to-left evaluation order drives local expression
+lifting for destination side effects, compound updates and lazy/loop contexts.
+Constant static storage follows the stock C backend's initializer classification,
+including constant payloads under a dynamic marker; actual dynamic actions and
+destruction obligations continue to require explicit representation.
+
+Actual DuckDB/provider probes advance beyond std::type_info: miniz, xxhash,
+zstd_common and libc++ new_handler now package independently. Remaining observed
+frontiers include 128-bit charconv tables, C++ reference/hidden-this ABI, packed
+mbedtls records, base/subobject layouts and true dynamic initialization. These
+are translation probes, not DuckDB execution acceptance.
+
+The complete v15 regression passes **843 checks including NativeAOT** with
+native020 and managed018. [Hashed v15 evidence](../evidence/dotobj-record-origin-20261008.json)
+records the full run, focused record/assignment checks and exact tool snapshots.

@@ -16,6 +16,7 @@ import storage_verify
 import project_c_verify
 import provider_verify
 import startup_actions_verify
+import assignment_verify
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('dotobj_compile', ROOT / 'compile.py')
@@ -33,6 +34,7 @@ def main():
     parser.add_argument('--project-c-only', action='store_true', help='Run C runtime and value-semantics acceptance')
     parser.add_argument('--storage-only', action='store_true', help='Run the linked storage/project-C acceptance')
     parser.add_argument('--startup-only', action='store_true', help='Run startup ordering, provider extraction and rejection checks')
+    parser.add_argument('--assignment-only', action='store_true', help='Run C++17 RHS-first assignment acceptance')
     parser.add_argument('--records-only', action='store_true', help='Run the focused record/layout acceptance')
     args = parser.parse_args()
     out = args.output_dir.resolve()
@@ -67,12 +69,14 @@ def main():
     checks = []
     for name in ['project_c_startup_order.c', 'project_c_lifecycle_actions.c',
                  'project_cpp_startup_first.cpp', 'project_cpp_startup_second.cpp',
-                 'project_cpp_startup_shared.h']:
+                 'project_cpp_startup_shared.h', 'project_cpp_record_origins.cpp',
+                 'project_cpp_vptr_layout.cpp', 'project_cpp_constant_storage.cpp',
+                 'cpp_assignment_order.cpp', 'project_cpp_assignment_lifting.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v14', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v15', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -156,6 +160,10 @@ def main():
                     db.execute('UPDATE content_digest SET sha256=?', (MODULE.logical_hash(db),))
             return path
 
+        if args.assignment_only:
+            assignment_verify.verify(inputs, out, run, check, compile_source, link, execute)
+            save('passed')
+            return
         if args.startup_only:
             startup_actions_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
             save('passed')
@@ -281,6 +289,7 @@ def main():
         project_c_verify.malformed(project_objects, tool, run, mutate)
         provider_verify.verify(inputs, out, tool, run, check, compile_source, execute)
         startup_actions_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+        assignment_verify.verify(inputs, out, run, check, compile_source, link, execute)
         loops_object = out / 'loops.dotobj'
         loops_cs = '\n'.join(p.read_text() for p in (out / 'link-loops').glob('*.cs'))
         check('structured-loop-source', all(token in loops_cs for token in ['for (', 'do', 'while (', 'break;', 'continue;']) and 'goto ' not in loops_cs)
@@ -609,7 +618,6 @@ def main():
             'va-opt': '#define API_OPT(...) __VA_OPT__(17)\nint f(){return API_OPT(1); }\n',
             'variable-array': 'int f(int n){int values[n]; values[0]=2;return values[0];}\n',
             'reference': 'int f(int& value){return value;}\n',
-            'ordered-pointer-store': 'int next(int** slot,int* value){*slot=value;return 7;} int f(){int a=1,b=2;int* p=&a; *p=next(&p,&b);return b;}\n',
             'switch-range': 'int f(int n){switch(n){case 1 ... 3:return 2;default:return 3;}}\n',
         }
         for name, code in negatives.items():

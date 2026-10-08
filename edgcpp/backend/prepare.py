@@ -287,10 +287,52 @@ for filename in ("lower_il.c", "lower_c99.c"):
     object_source_overlay(root / "upstream/src" / filename,
         '#include "exprutil.h"',
         '#include "exprutil.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
+eh_lower = root / "upstream/src/lower_eh.c"
+object_source_overlay(eh_lower,
+    '#include "lower_hdrs.h"',
+    '#include "lower_hdrs.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
 object_source_overlay(lower,
     '  a_type_ptr ptr_return_type, new_type, member_type;\n',
     '  a_type_ptr ptr_return_type, new_type, member_type;\n'
     '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_type(type);\n#endif\n')
+object_source_overlay(lower,
+    '  if (!class_has_been_prelowered(class_type)) {\n',
+    '  if (!class_has_been_prelowered(class_type)) {\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_record_before_prelowering(class_type);\n'
+    '#endif\n')
+object_source_overlay(lower,
+    '  add_scope_to_class_type(type);\n  return type;\n}  /* make_lowered_class_type */',
+    '  add_scope_to_class_type(type);\n'
+    '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_abi_record(type);\n#endif\n'
+    '  return type;\n}  /* make_lowered_class_type */')
+object_source_overlay(lower,
+    '  *last_field = field_ptr;\n}  /* copy_field */',
+    '  *last_field = field_ptr;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_field_copy(old_field_ptr, field_ptr);\n'
+    '#endif\n}  /* copy_field */')
+object_source_overlay(lower,
+    '  (void)add_field(name_ptr, field_type, field_offset, struct_type,\n'
+    '                  /*for_base_class=*/FALSE);\n}  /* add_dummy_field */',
+    '  a_field_ptr observed_field = add_field(name_ptr, field_type, field_offset, struct_type,\n'
+    '                  /*for_base_class=*/FALSE);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_vptr_field(observed_field);\n'
+    '#else\n  (void)observed_field;\n#endif\n}  /* add_dummy_field */')
+object_source_overlay(eh_lower,
+    '    finish_class_type(typeinfo_types[(int)tik_user]);\n',
+    '    finish_class_type(typeinfo_types[(int)tik_user]);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_typeinfo_record(typeinfo_types[(int)tik_user], tik_user, 0);\n'
+    '#endif\n')
+object_source_overlay(eh_lower,
+    '    finish_class_type(*type_ptr);\n',
+    '    finish_class_type(*type_ptr);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_typeinfo_record(*type_ptr, kind,\n'
+    '#if IA64_ABI\n      kind == tik_vmi_class ? array_num_bases : 0\n'
+    '#else\n      0\n#endif\n    );\n#endif\n')
 object_source_overlay(lower,
     '  db_enter(1, "lower_il_memory_region");',
     '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_scope(scope);\n#endif\n'

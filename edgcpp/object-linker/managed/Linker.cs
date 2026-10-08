@@ -15,6 +15,7 @@ internal sealed partial class Linker
     private readonly bool allowExterns;
     private readonly Dictionary<string, Symbol> definitions = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> signatures = new(StringComparer.Ordinal);
+    private readonly Dictionary<ObjectFile, Dictionary<long, SourceRecordField[]>> sourceFieldIndex = [];
     public Dictionary<string, string> Names { get; } = new(StringComparer.Ordinal);
     public Dictionary<string, (ObjectFile Object, RecordType Record)> Records { get; } = new(StringComparer.Ordinal);
 
@@ -75,16 +76,19 @@ internal sealed partial class Linker
                 {
                     if (prior.Record.Size == 0 || record.Size == 0)
                     {
-                        if (prior.Record.LayoutKind != record.LayoutKind || prior.Record.SourceName != record.SourceName)
+                        if (prior.Record.LayoutKind != record.LayoutKind || prior.Record.SourceName != record.SourceName ||
+                            prior.Record.RepresentationKind != record.RepresentationKind)
                             throw new InvalidDataException("Incomplete record identity mismatch");
                         if (prior.Record.Size == 0 && record.Size != 0) Records[record.Key] = (obj, record);
                         continue;
                     }
                     RecordField[] expected = prior.Object.RecordFields(prior.Record.TypeId), actual = obj.RecordFields(record.TypeId);
                     if (record.SourceName != prior.Record.SourceName || record.Size != prior.Record.Size || record.Alignment != prior.Record.Alignment || record.LayoutKind != prior.Record.LayoutKind ||
+                        record.RepresentationKind != prior.Record.RepresentationKind || record.ValueCopyKind != prior.Record.ValueCopyKind ||
+                        !CompatibleOriginalRecord(prior.Object, prior.Record, obj, record) ||
                         expected.Length != actual.Length || actual.Where((field, index) => field.SourceName != expected[index].SourceName ||
                             field.ByteOffset != expected[index].ByteOffset || field.BitOffset != expected[index].BitOffset || field.BitWidth != expected[index].BitWidth || field.BitSigned != expected[index].BitSigned || obj.Type(field.TypeId) != prior.Object.Type(expected[index].TypeId) ||
-                            obj.SourceTypeSignature(field.SourceTypeId) != prior.Object.SourceTypeSignature(expected[index].SourceTypeId)).Any())
+                            field.FieldRole != expected[index].FieldRole || FieldSourceSignature(obj, field) != FieldSourceSignature(prior.Object, expected[index])).Any())
                         throw new InvalidDataException($"Record layout mismatch for {record.IdentityKey}");
                 }
                 else Records.Add(record.Key, (obj, record));
@@ -96,6 +100,33 @@ internal sealed partial class Linker
             Names.Add(symbol.Key, names.Allocate(symbol.Entity.SourceName, "function_" + symbol.Entity.Id));
         foreach (StorageSymbol symbol in StorageDefinitions)
             StorageNames.Add(symbol.Key, names.Allocate(symbol.Storage.SourceName, "__literal_" + symbol.Storage.Id));
+    }
+
+    private static string? FieldSourceSignature(ObjectFile obj, RecordField field) =>
+        field.SourceTypeId is long id ? obj.SourceTypeSignature(id) : null;
+
+    private SourceRecordField[] OriginalFields(ObjectFile obj, long id)
+    {
+        if (!sourceFieldIndex.TryGetValue(obj, out var index))
+            sourceFieldIndex.Add(obj, index = obj.SourceFields.Values.GroupBy(field => field.SourceRecordId)
+                .ToDictionary(group => group.Key, group => group.OrderBy(field => field.Ordinal).ToArray()));
+        return index.GetValueOrDefault(id, []);
+    }
+
+    private bool CompatibleOriginalRecord(ObjectFile leftObject, RecordType left,
+        ObjectFile rightObject, RecordType right)
+    {
+        if (left.SourceRecordId is not long leftId || right.SourceRecordId is not long rightId)
+            return left.SourceRecordId is null && right.SourceRecordId is null;
+        SourceRecord a = leftObject.SourceRecords[leftId], b = rightObject.SourceRecords[rightId];
+        if (a.IdentityKey != b.IdentityKey || a.SourceName != b.SourceName || a.RecordKind != b.RecordKind ||
+            a.IsTriviallyCopyable != b.IsTriviallyCopyable) return false;
+        var expected = OriginalFields(leftObject, leftId);
+        var actual = OriginalFields(rightObject, rightId);
+        return expected.Length == actual.Length && !actual.Where((field, index) =>
+            field.SourceName != expected[index].SourceName || field.IsMutable != expected[index].IsMutable ||
+            field.HasNoUniqueAddress != expected[index].HasNoUniqueAddress || field.BitWidth != expected[index].BitWidth ||
+            rightObject.SourceTypeSignature(field.SourceTypeId) != leftObject.SourceTypeSignature(expected[index].SourceTypeId)).Any();
     }
 
     public Symbol Resolve(ObjectFile obj, long id)

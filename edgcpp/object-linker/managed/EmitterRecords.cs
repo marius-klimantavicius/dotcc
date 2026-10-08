@@ -7,11 +7,11 @@ internal sealed partial class Emitter
 {
     private static bool IsVolatileField(ObjectFile obj, RecordField field)
     {
-        if (field.BitWidth is not null) return false;
+        if (field.BitWidth is not null || field.SourceTypeId is null) return false;
         string type = obj.Type(field.TypeId);
         if (type is not ("i8" or "u8" or "i16" or "u16" or "i32" or "u32" or "f32" or "bool") &&
             (!ScalarTypes.IsPointer(type) || RoutineTypes.IsFunctionPointer(type))) return false;
-        SourceType source = obj.SourceTypes[field.SourceTypeId];
+        SourceType source = obj.SourceTypes[field.SourceTypeId.Value];
         while (true)
         {
             if (source.IsVolatile) return true;

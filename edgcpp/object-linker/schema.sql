@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v14'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v15'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -190,6 +190,37 @@ CREATE TABLE source_types (
  column INTEGER NOT NULL CHECK(column>=0),
  element_count INTEGER CHECK(element_count>=0)
 ) STRICT;
+CREATE TABLE source_record_types (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ source_type_id INTEGER NOT NULL UNIQUE REFERENCES source_types(id),
+ identity_key TEXT NOT NULL,
+ source_name TEXT NOT NULL,
+ record_kind TEXT NOT NULL CHECK(record_kind IN ('struct','union','class')),
+ is_complete INTEGER NOT NULL CHECK(is_complete IN (0,1)),
+ native_size INTEGER NOT NULL CHECK(native_size>=0),
+ native_alignment INTEGER NOT NULL CHECK(native_alignment>=0),
+ is_trivially_copyable INTEGER CHECK(is_trivially_copyable IN (0,1)),
+ capture_phase TEXT NOT NULL CHECK(capture_phase IN ('before-lowering','before-class-prelowering')),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ CHECK((is_complete=0 AND native_size=0 AND native_alignment=0 AND is_trivially_copyable IS NULL) OR
+       (is_complete=1 AND native_alignment>0 AND is_trivially_copyable IS NOT NULL))
+) STRICT;
+CREATE TABLE source_record_fields (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ source_record_id INTEGER NOT NULL REFERENCES source_record_types(id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ source_name TEXT NOT NULL,
+ is_mutable INTEGER NOT NULL CHECK(is_mutable IN (0,1)),
+ has_no_unique_address INTEGER NOT NULL CHECK(has_no_unique_address IN (0,1)),
+ bit_width INTEGER CHECK(bit_width>=0),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ UNIQUE(source_record_id,ordinal)
+) STRICT;
 CREATE TABLE record_types (
  type_id INTEGER PRIMARY KEY REFERENCES types(id),
  identity_key TEXT NOT NULL,
@@ -200,6 +231,12 @@ CREATE TABLE record_types (
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  layout_kind TEXT NOT NULL CHECK(layout_kind IN ('struct','union','class')),
+ source_record_id INTEGER REFERENCES source_record_types(id),
+ representation_kind TEXT NOT NULL CHECK(representation_kind IN ('complete','abi')),
+ value_copy_kind TEXT NOT NULL CHECK(value_copy_kind IN ('ordinary','explicit-only')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN ('source-snapshot','observed-class-lowering','observed-abi-creation')),
+ CHECK((representation_kind='complete' AND source_record_id IS NOT NULL AND capture_proof IN ('source-snapshot','observed-class-lowering')) OR
+       (representation_kind='abi' AND source_record_id IS NULL AND capture_proof='observed-abi-creation')),
  CHECK((size=0 AND alignment=0) OR (size>0 AND alignment>0))
 ) STRICT;
 CREATE TABLE record_fields (
@@ -209,13 +246,17 @@ CREATE TABLE record_fields (
  type_id INTEGER NOT NULL REFERENCES types(id),
  source_name TEXT NOT NULL,
  byte_offset INTEGER NOT NULL CHECK(byte_offset>=0),
- source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ source_type_id INTEGER REFERENCES source_types(id),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  bit_offset INTEGER CHECK(bit_offset>=0 AND bit_offset<8),
  bit_width INTEGER CHECK(bit_width>0 AND bit_width<=64),
  bit_signed INTEGER CHECK(bit_signed IN (0,1)),
+ source_field_id INTEGER REFERENCES source_record_fields(id),
+ field_role TEXT NOT NULL CHECK(field_role IN ('source','vptr','abi')),
+ CHECK((field_role='source' AND source_field_id IS NOT NULL AND source_type_id IS NOT NULL) OR
+       (field_role IN ('vptr','abi') AND source_field_id IS NULL AND source_type_id IS NULL)),
  CHECK((bit_offset IS NULL AND bit_width IS NULL AND bit_signed IS NULL) OR
        (bit_offset IS NOT NULL AND bit_width IS NOT NULL AND bit_signed IS NOT NULL))
 ) STRICT;

@@ -23,6 +23,13 @@ def verify(inputs, out, tool, run, check, compile_source, link, execute):
             check('record-self-pointer-' + language, db.execute("SELECT count(*) FROM record_fields f JOIN types t ON t.id=f.type_id WHERE t.kind='pointer' AND t.pointee_type_id=f.record_type_id").fetchone()[0] == 1)
             check('record-field-typed-references-' + language, db.execute("SELECT count(*) FROM nodes WHERE kind='member' AND field_id IS NOT NULL").fetchone()[0] > 20)
             check('record-field-source-types-' + language, db.execute('SELECT count(*) FROM record_fields f JOIN source_types s ON s.id=f.source_type_id WHERE f.type_id=s.execution_type_id').fetchone()[0] == 10)
+            check('record-owned-original-declarations-' + language,
+                  db.execute('SELECT count(*) FROM source_record_types').fetchone()[0] == 3 and
+                  db.execute('SELECT count(*) FROM source_record_fields').fetchone()[0] == 10)
+            check('record-original-physical-correspondence-' + language, db.execute(
+                "SELECT count(*) FROM record_fields f JOIN source_record_fields s ON s.id=f.source_field_id "
+                "JOIN record_types r ON r.type_id=f.record_type_id WHERE f.field_role='source' "
+                "AND f.source_type_id=s.source_type_id AND r.source_record_id=s.source_record_id").fetchone()[0] == 10)
             check('record-cleanup-' + language, db.execute("SELECT count(*) FROM nodes n JOIN bindings b ON b.id=n.binding_id JOIN types t ON t.id=b.type_id WHERE n.kind='register-cleanup' AND t.kind='record'").fetchone()[0] == 2)
         cs = '\n'.join(p.read_text() for p in directory.glob('Translated.*.cs'))
         check('record-readable-fields-' + language, all(token in cs for token in ['->next', '->data', '.count', '.values', 'FieldOffset(', 'LayoutKind.Explicit']))
@@ -33,6 +40,26 @@ def verify(inputs, out, tool, run, check, compile_source, link, execute):
     provider, consumer = objects[0]
     execute('records-mixed-language', link('link-records-mixed-language', [objects[1][0], consumer]))
     execute('records-owner-collision', link('link-records-owner-collision', [provider, consumer], cls='RecordNode'))
+
+    for name in ['project_cpp_record_origins', 'project_cpp_vptr_layout', 'project_cpp_constant_storage']:
+        source = inputs / (name + '.cpp')
+        obj = compile_source(name, source, extra=['--exceptions', '--rtti'])
+        run(name + '-native-build', ['c++', '-std=c++17', '-O2', source, '-o', out / (name + '-native')])
+        run(name + '-native', [out / (name + '-native')])
+        execute(name, link('link-' + name, [obj]))
+        with sqlite3.connect(obj) as db:
+            if name == 'project_cpp_record_origins':
+                check('record-original-zero-width-preserved', db.execute(
+                    "SELECT count(*) FROM source_record_fields WHERE source_name='' AND bit_width=0").fetchone()[0] == 1)
+                check('record-original-mutable-preserved', db.execute(
+                    "SELECT is_mutable FROM source_record_fields WHERE source_name='value'").fetchone()[0] == 1)
+                check('record-zero-width-has-no-physical-field', db.execute(
+                    "SELECT count(*) FROM record_fields f JOIN source_record_fields s ON s.id=f.source_field_id WHERE s.bit_width=0").fetchone()[0] == 0)
+            elif name == 'project_cpp_vptr_layout':
+                check('record-vptr-origin-is-hidden', db.execute(
+                    "SELECT count(*) FROM record_fields WHERE field_role='vptr' AND source_type_id IS NULL AND source_field_id IS NULL AND byte_offset=0").fetchone()[0] == 1)
+                check('record-vptr-copy-not-ordinary', db.execute(
+                    "SELECT count(*) FROM record_types WHERE capture_proof='observed-class-lowering' AND value_copy_kind='explicit-only'").fetchone()[0] == 1)
 
     namespaces = inputs / 'record-namespaces.cpp'
     namespaces.write_text('''namespace North { struct Token { int event; }; }
@@ -99,14 +126,20 @@ def malformed(provider, consumer, tool, run, link, mutate):
         ('record-wrong-member-owner', [("UPDATE nodes SET field_id=? WHERE id=?", (pair_field, member))]),
         ('record-extra-field-payload', [("UPDATE nodes SET field_id=? WHERE id=(SELECT min(id) FROM nodes WHERE kind='constant')", (pair_field,))]),
         ('record-source-type', [("UPDATE record_fields SET source_type_id=(SELECT id FROM source_types WHERE kind='unsigned-char' LIMIT 1) WHERE id=?", (pair_field,))]),
+        ('record-original-identity', [("UPDATE source_record_types SET identity_key=identity_key||':forged' WHERE id=(SELECT source_record_id FROM record_types WHERE type_id=?)", (pair,))]),
+        ('record-nontrivial-ordinary-copy', [("UPDATE source_record_types SET is_trivially_copyable=0 WHERE id=(SELECT source_record_id FROM record_types WHERE type_id=?)", (pair,))]),
+        ('record-fabricated-hidden-field', [("UPDATE record_fields SET field_role='abi',source_type_id=NULL,source_field_id=NULL WHERE id=?", (pair_field,))]),
     ]:
         obj = mutate(name, consumer, statements)
         run('reject-' + name, ['dotnet', tool, 'verify', obj], None)
-    wrong_name = mutate('record-cross-unit-name', provider, [("UPDATE record_fields SET source_name='different_count' WHERE source_name='count'", ())])
+    wrong_name = mutate('record-cross-unit-name', provider, [
+        ("UPDATE source_record_fields SET source_name='different_count' WHERE id IN (SELECT source_field_id FROM record_fields WHERE source_name='count')", ()),
+        ("UPDATE record_fields SET source_name='different_count' WHERE source_name='count'", ())])
     run('verify-record-conflicting-name-object', ['dotnet', tool, 'verify', wrong_name])
     link('reject-record-cross-unit-name', [wrong_name, consumer], expected=None, contains='record')
     wrong_source = mutate('record-cross-unit-source', provider, [
         ("INSERT INTO source_types SELECT max(id)+1,'long','',NULL,8,0,0,NULL,0,0,NULL FROM source_types", ()),
+        ("UPDATE source_record_fields SET source_type_id=(SELECT max(id) FROM source_types) WHERE id IN (SELECT source_field_id FROM record_fields WHERE source_name='total')", ()),
         ("UPDATE record_fields SET source_type_id=(SELECT max(id) FROM source_types) WHERE source_name='total'", ())])
     run('verify-record-conflicting-source-object', ['dotnet', tool, 'verify', wrong_source])
     link('reject-record-cross-unit-source', [wrong_source, consumer], expected=None, contains='record')

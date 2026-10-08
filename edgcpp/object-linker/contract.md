@@ -761,3 +761,45 @@ This profile captures GNU routine constructor attributes only. GNU shutdown
 attributes, C++ namespace-scope dynamic initialization and atexit/static destructor
 ordering remain unsupported. In particular, cached host failure is not a proposed
 substitute for C++ dynamic-global initialization's termination semantics.
+
+## Record-origin profile: scalar-control-v15
+
+The required `sourceRecords` and `sourceFields` arrays populate independent
+`source_record_types` and `source_record_fields` tables. A source record has a
+unique source-type reference, stable nominal identity, original spelling/kind,
+completion state, native size/alignment, nullable trivial-copyability fact,
+capture phase and location. Incomplete declarations have no completed layout or
+copyability fact. Original fields retain declaration ordinal, original type and
+spelling (including unnamed fields), mutable/no-unique-address facts, optional
+bit width (including zero) and location. A zero-width bitfield can therefore
+remain a declaration without becoming physical storage.
+
+Execution records append `sourceRecordId`, `representationKind`,
+`valueCopyKind` and `captureProof`. Complete representations refer to an original
+record. ABI-created representations explicitly have no source declaration and
+require observed ABI-creation provenance. Ordinary source snapshots and observed
+class prelowering are distinguished; a lowered field list is not evidence that
+its fields were source declarations. Physical fields append `sourceFieldId` and
+`fieldRole`; original fields require original type/declaration links, while true
+hidden vptr/ABI fields have neither.
+
+The `ordinary` versus `explicit-only` value-copy policy prevents a class with
+simple physical fields from accidentally gaining POD assignment or parameter/
+return semantics. Static image population is physical initialization, not a
+source C++ copy operation. Source metadata and physical layout are independently
+validated and compared when linking complete definitions. Source capture phase
+need not match between C and C++ compilations of a compatible shared C header.
+
+This tranche initially admits complete own-vptr layouts and explicitly observed
+ABI records. Base/subobject views, tail-padding reuse, hidden function parameters,
+constructors/destructors and general C++ lifetime/exception semantics remain
+separate required work. The new rows describe records materialized by this graph;
+they do not imply that the complete independent source semantic index is finished.
+
+The v15 emitter also honors C++17 right-to-left assignment evaluation using owned
+`evaluationOrder`. When required, it captures the right value before evaluating
+the destination and, for compound assignment, before reading its old value.
+Expression lifting retains lazy branches and loop continuation targets. The
+execution oracles use original C++17 compiled at O0/O2 plus JIT/NativeAOT; stock
+EDG C output that retains ordinary C assignment expressions is not claimed to
+provide a deterministic operand-order execution oracle.

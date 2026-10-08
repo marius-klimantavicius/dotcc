@@ -66,19 +66,6 @@ internal static class Verifier
         {
             if (!StatementKinds.Contains(node.Kind)) Fail($"Expected statement, found {node.Kind}");
         }
-        bool Pure(Node node)
-        {
-            var pending = new Stack<(Node Node, int Depth)>();
-            var seen = new HashSet<long>();
-            pending.Push((node, 0));
-            while (pending.TryPop(out var item))
-            {
-                if (item.Depth > 1024 || !seen.Add(item.Node.Id) || item.Node.Kind is "call" or "indirect-call" or "assign" or "compound-assign" or "mutate" or "volatile-place" or "va-start" or "va-copy" or "va-end" or "va-arg" || item.Node.Kind == "intrinsic" && (item.Node.Operator == "unreachable" || item.Node.Operator!.Contains("overflow", StringComparison.Ordinal))) return false;
-                foreach (Edge edge in body.Edges.GetValueOrDefault(item.Node.Id, []))
-                    pending.Push((body.Nodes[edge.ChildId], item.Depth + 1));
-            }
-            return true;
-        }
         bool VolatileSource(long? id)
         {
             if (id is null) return false;
@@ -102,26 +89,6 @@ internal static class Verifier
         bool LocalPlace(Node node, int depth = 0) => depth <= 1024 && (node.Kind == "binding" &&
             body.Bindings.TryGetValue(node.BindingId!.Value, out Binding? local) && local.Kind == "local" ||
             node.Kind == "member" && LocalPlace(Child(node, "operand"), depth + 1));
-        // An address rooted in owned stack storage with constant offsets cannot
-        // change while the RHS runs, even if the RHS calls or mutates values.
-        bool StablePlace(Node node, int depth = 0) => depth <= 1024 &&
-            (node.Kind is "binding" or "storage" || node.Kind is "member" or "volatile-place" && StablePlace(Child(node, "operand"), depth + 1) ||
-                node.Kind == "dereference" && StablePointer(Child(node, "operand"), depth + 1));
-        bool StablePointer(Node node, int depth = 0)
-        {
-            if (depth > 1024) return false;
-            if (node.Kind is "storage-address" or "function-address" || node.Kind == "constant" && ScalarTypes.IsPointer(Type(node))) return true;
-            if (node.Kind is "address" or "array-decay") return StablePlace(Child(node, "operand"), depth + 1);
-            if (node.Kind == "convert" && ScalarTypes.IsPointer(Type(node)) && ScalarTypes.IsPointer(Type(Child(node, "operand"))))
-                return StablePointer(Child(node, "operand"), depth + 1);
-            if (node.Kind == "binary" && node.Operator is "pointer-add" or "pointer-subtract")
-            {
-                Node left = Child(node, "left"), right = Child(node, "right");
-                return right.Kind == "constant" && ScalarTypes.IsInteger(Type(right)) && StablePointer(left, depth + 1) ||
-                    node.Operator == "pointer-add" && left.Kind == "constant" && ScalarTypes.IsInteger(Type(left)) && StablePointer(right, depth + 1);
-            }
-            return false;
-        }
         void Visit(Node node, List<long> scopes, HashSet<long> visible, List<long> controls, int depth)
         {
             if (depth > 1024) Fail("Graph nesting exceeds supported limit");
@@ -396,7 +363,7 @@ internal static class Verifier
                     break;
                 case "default-value":
                     EdgeShape(node);
-                    if (!ScalarTypes.IsRecord(Type(node))) Fail("Default value requires a record type");
+                    if (!ScalarTypes.IsRecord(Type(node)) || obj.RecordsByKey[Type(node)].ValueCopyKind != "ordinary") Fail("Default value requires an ordinary-copy record type");
                     break;
                 case "member":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
@@ -540,17 +507,12 @@ internal static class Verifier
                     else if (!ScalarTypes.IsNumeric(Type(node)) || !ScalarTypes.IsNumeric(Type(Child(node, "value")))) Fail("Compound arithmetic requires numeric operands");
                     if (node.Operator is "rem" or "bit-and" or "bit-or" or "bit-xor" or "shl" or "shr" &&
                         (!ScalarTypes.IsInteger(Type(node)) || !ScalarTypes.IsInteger(Type(Child(node, "value"))))) Fail("Compound integer operator requires integer operands");
-                    if (node.EvaluationOrder == "right-to-left" && !StablePlace(Child(node, "target")) && (!Pure(Child(node, "target")) || !Pure(Child(node, "value"))))
-                        Fail("Compound assignment requires stable address for RHS-before-LHS evaluation");
                     break;
                 case "assign":
                     EdgeShape(node, ("target", 1, 1), ("value", 1, 1)); Expr(node, "target"); Expr(node, "value");
                     if (!Place(Child(node, "target"))) Fail("Assignment target must be a typed place");
                     if (ScalarTypes.IsRecord(Type(node)) && Child(node, "value").Kind != "default-value" && !obj.CanCopyRecord(Type(node)))
                         Fail("Record assignment requires a complete record without incomplete arrays or volatile fields");
-                    if (node.EvaluationOrder == "right-to-left" && !StablePlace(Child(node, "target")) &&
-                        (!Pure(Child(node, "target")) || !Pure(Child(node, "value"))))
-                        Fail("Indirect RHS-before-LHS assignment requires a stable address or effect-free operands in this profile");
                     SameType(node, Child(node, "target")); SameType(node, Child(node, "value")); break;
                 case "mutate":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");

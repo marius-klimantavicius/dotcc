@@ -19,6 +19,7 @@ internal sealed partial class ObjectFile : IDisposable
 
     private static readonly Dictionary<string, string> Tables = new(StringComparer.Ordinal)
     {
+        ["source_record_types"] = "id", ["source_record_fields"] = "id",
         ["initialization_actions"] = "id",
         ["object_info"] = "singleton", ["provenance"] = "ordinal", ["source_files"] = "id",
         ["record_types"] = "type_id", ["record_fields"] = "id",
@@ -62,7 +63,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v14" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v15" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -149,6 +150,7 @@ internal sealed partial class ObjectFile : IDisposable
 
     private void ReadSummaries()
     {
+        ReadSourceRecordMetadata();
         ReadRecordMetadata();
         ReadRoutineMetadata(false);
         var rawTypes = new Dictionary<long, (string Kind, long? Pointee, long? Element, long? Count)>();

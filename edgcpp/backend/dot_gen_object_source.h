@@ -49,19 +49,48 @@ struct Function {
 struct RecordField {
   a_field_ptr il=nullptr;
   unsigned source_type=0;
-  std::string name;
+  std::string name,original_name;
   unsigned long long offset=0;
   unsigned bit_offset=0,bit_width=0;
-  bool bit_signed=false;
+  bool bit_signed=false,is_mutable=false,no_unique_address=false,is_bit_field=false;
   a_source_position position={};
 };
 struct Record {
   std::string name,identity,error,layout_kind;
   bool template_identity=false;
+  bool has_virtual_functions=false,has_bases=false;
   unsigned source_occurrence=0;
   unsigned long long size=0,alignment=0;
   a_source_position position={};
   std::vector<RecordField> fields;
+};
+// Independent provenance for the next record-layout profile. These snapshots
+// do not participate in v14 emission or change its capture/type numbering.
+struct PrelowerField {
+  unsigned id=0,source_type_snapshot=0;
+  a_field_ptr il=nullptr;
+  a_type_ptr original_type=nullptr; // Private correspondence key, never wire.
+  std::string name;
+  a_source_position position={};
+  unsigned long long byte_offset=0;
+  unsigned bit_offset=0,bit_width=0;
+  bool is_bit_field=false,is_mutable=false,no_unique_address=false;
+};
+struct PrelowerBase {
+  a_base_class_ptr il=nullptr;
+  a_type_ptr original_type=nullptr;
+  unsigned source_type_snapshot=0;
+  a_source_position position={};
+  bool is_virtual=false;
+  std::string access;
+};
+struct PrelowerRecord {
+  a_source_position position={};
+  std::string name,error;
+  bool complete=false,trivial_copy_known=false,trivial_copy=false;
+  unsigned long long size=0,alignment=0;
+  std::vector<PrelowerField> fields;
+  std::vector<PrelowerBase> bases;
 };
 struct State {
   std::map<a_type_ptr,unsigned> type_ids;
@@ -72,6 +101,13 @@ struct State {
   std::set<a_type_ptr> capturing_records;
   std::map<std::pair<a_seq_number,a_column_number>,unsigned> record_occurrence_counts;
   std::map<a_type_ptr,unsigned> record_occurrences;
+  std::map<a_type_ptr,PrelowerRecord> prelower_records;
+  std::set<a_type_ptr> abi_records;
+  std::map<a_type_ptr,std::string> abi_record_keys;
+  std::map<a_field_ptr,unsigned> original_field_ids;
+  std::map<a_field_ptr,a_field_ptr> copied_fields;
+  std::map<a_field_ptr,std::string> generated_field_roles;
+  unsigned next_original_field=1;
 };
 inline State &state(){static State value;return value;}
 inline std::string spelling(const a_source_correspondence &source) {
@@ -129,8 +165,9 @@ inline void capture_record(a_type_ptr t) {
   }
   value.identity=(local?"local-record:":"record:")+qualified;
   if(t->incomplete){s.records[t]=value;return;}
-  if(!value.size || value.size>2147483647ULL || !value.alignment || value.alignment>16 ||
-     c.any_virtual_functions_including_in_base_classes || (extra && extra->base_classes))
+  value.has_virtual_functions=c.any_virtual_functions_including_in_base_classes;
+  value.has_bases=extra && extra->base_classes;
+  if(!value.size || value.size>2147483647ULL || !value.alignment || value.alignment>16)
     value.error="record outside complete plain layout profile";
 #if GNU_EXTENSIONS_ALLOWED
   if(c.is_packed)value.error="packed record layout";
@@ -141,9 +178,9 @@ inline void capture_record(a_type_ptr t) {
   // Keep its typed source declarations for the independent semantic index;
   // the execution writer still rejects value.error before publishing layouts.
   for(auto f=c.field_list;f;f=f->next) {
-    RecordField field;field.il=f;field.name=spelling(f->source_corresp);field.offset=f->offset;
+    RecordField field;field.il=f;field.name=spelling(f->source_corresp);field.original_name=field.name;field.offset=f->offset;
+    field.is_mutable=f->is_mutable;field.no_unique_address=f->has_no_unique_address_attribute;field.is_bit_field=f->is_bit_field;
     field.position=f->source_corresp.decl_position;
-    if(f->is_bit_field && !f->bit_size)continue;
     if(field.name.empty())field.name="__anonymous_member_"+std::to_string(value.fields.size());
     if(f->has_no_unique_address_attribute || f->is_lowered_base_class || f->class_subobject_with_tail_padding ||
        f->alignment>skip_typerefs(f->type)->alignment)
@@ -257,8 +294,15 @@ inline void capture_routine(a_routine_ptr r) {
   function.parameters=signature.parameters;s.functions[r]=function;
 }
 inline void observe_routine(a_routine_ptr routine){if(enabled())capture_routine(routine);}
+inline bool abi_storage_type(a_type_ptr type) {
+  type=skip_typerefs(type);
+  while(type->kind==tk_array || type->kind==tk_pointer) {
+    type=skip_typerefs(type->kind==tk_array?type->variant.array.element_type:type->variant.pointer.type);
+  }
+  return state().abi_records.count(type)!=0;
+}
 inline void capture_variable(a_variable_ptr v) {
-  auto &s=state();if(s.variables.count(v) || v->compiler_generated)return;
+  auto &s=state();if(s.variables.count(v) || v->compiler_generated || abi_storage_type(v->type))return;
   a_type_ptr type=v->type;
 #if GENERATE_SOURCE_SEQUENCE_LISTS
   if(v->declared_type)type=v->declared_type;
@@ -285,6 +329,74 @@ inline void capture_scope(a_scope_ptr scope) {
     if(!ns->is_namespace_alias)capture_scope(ns->variant.assoc_scope);
 }
 inline void observe_scope(a_scope_ptr scope){if(enabled())capture_scope(scope);}
+inline void observe_record_before_prelowering(a_type_ptr type) {
+  if(!enabled())return;
+  // Forward declarations have an ordinary source snapshot, but cannot prove
+  // the boundary at which a complete object's ABI fields are introduced.
+  // Do not cache them here and block a later completed-class observation.
+  if(type->incomplete)return;
+  auto &s=state();
+  if(s.abi_records.count(type) || s.prelower_records.count(type))return;
+  capture_record(type);
+  PrelowerRecord value;value.name=spelling(type->source_corresp);
+  value.position=type->source_corresp.decl_position;value.complete=!type->incomplete;
+  value.size=type->size;value.alignment=type->alignment;
+  // Observe only an already-completed semantic fact. Incomplete and generated
+  // types never gain permission to copy merely because their fields fit.
+  if(value.complete && type->source_corresp.assoc_info) {
+    value.trivial_copy_known=true;value.trivial_copy=is_trivially_copyable_type(type);
+  }
+  for(auto field=type->variant.class_struct_union.field_list;field;field=field->next) {
+    PrelowerField item;item.il=field;item.original_type=field->type;
+    item.id=s.next_original_field++;s.original_field_ids[field]=item.id;
+    item.name=spelling(field->source_corresp);item.position=field->source_corresp.decl_position;
+    item.byte_offset=field->offset;item.is_bit_field=field->is_bit_field;
+    item.is_mutable=field->is_mutable;item.no_unique_address=field->has_no_unique_address_attribute;
+    if(field->is_bit_field){item.bit_offset=field->offset_bit_remainder;item.bit_width=field->bit_size;}
+    auto captured=s.type_ids.find(field->type);
+    if(captured!=s.type_ids.end())item.source_type_snapshot=captured->second;
+    else item.source_type_snapshot=capture_type(field->type);
+    if(field->is_lowered_base_class || s.generated_field_roles.count(field))
+      value.error="original record observed after ABI field insertion";
+    value.fields.push_back(item);
+  }
+  auto supplement=type->variant.class_struct_union.extra_info;
+  if(supplement)for(auto base=supplement->direct_base_classes;base;base=base->next_direct) {
+    PrelowerBase item;item.il=base;item.original_type=base->orig_type?base->orig_type:base->type;
+    item.position=base->decl_position;item.is_virtual=base->is_virtual;
+    auto captured=s.type_ids.find(item.original_type);
+    if(captured!=s.type_ids.end())item.source_type_snapshot=captured->second;
+    else item.source_type_snapshot=capture_type(item.original_type);
+    for(auto derivation=base->derivation;derivation;derivation=derivation->next)if(derivation->direct) {
+      item.access=derivation->access==as_public?"public":derivation->access==as_protected?"protected":
+        derivation->access==as_private?"private":"unknown";break;
+    }
+    if(item.access.empty())item.access="unknown";
+    value.bases.push_back(item);
+  }
+  s.prelower_records.emplace(type,value);
+}
+inline void observe_abi_record(a_type_ptr type) {
+  if(enabled())state().abi_records.insert(type);
+}
+inline void observe_typeinfo_record(a_type_ptr type,a_type_info_kind kind,unsigned long long base_count) {
+  if(!enabled())return;
+  // The kind comes from the actual RTTI construction operation. The ABI's
+  // canonical kind name is not guessed from a generated record spelling.
+  if((unsigned)kind>=(unsigned)tik_last || !type_info_names[(int)kind])return;
+  state().abi_record_keys[type]=std::string("abi:rtti:")+type_info_names[(int)kind]+":bases:"+std::to_string(base_count);
+}
+inline void observe_field_copy(a_field_ptr original,a_field_ptr copy) {
+  if(!enabled())return;
+  auto &s=state();s.copied_fields[copy]=original;
+  auto source=s.original_field_ids.find(original);
+  if(source!=s.original_field_ids.end())s.original_field_ids[copy]=source->second;
+  auto generated=s.generated_field_roles.find(original);
+  if(generated!=s.generated_field_roles.end())s.generated_field_roles[copy]=generated->second;
+}
+inline void observe_vptr_field(a_field_ptr field) {
+  if(enabled())state().generated_field_roles[field]="vptr";
+}
 }
 END_EDG_NAMESPACE
 #endif

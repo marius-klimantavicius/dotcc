@@ -54,7 +54,8 @@ internal sealed partial class ObjectFile
                 }
                 else if (type.Kind == "record")
                 {
-                    if (!Records.TryGetValue(type.ExecutionTypeId, out RecordType? record) || type.SourceName != record.SourceName ||
+                    if (!Records.TryGetValue(type.ExecutionTypeId, out RecordType? record) || record.SourceRecordId is not long sourceRecordId ||
+                        !SourceRecords.TryGetValue(sourceRecordId, out SourceRecord? original) || original.SourceTypeId != type.Id || type.SourceName != record.SourceName ||
                         type.UnderlyingTypeId is not null || type.IsConst || type.IsVolatile)
                         throw new InvalidDataException("Source record disagrees with its execution representation");
                 }
@@ -118,9 +119,11 @@ internal sealed partial class ObjectFile
             if (!CanCopyRecord(Type(routine.ReturnTypeId)) || routine.Parameters.Any(parameter => !CanCopyRecord(Type(parameter))))
                 throw new InvalidDataException("Record value ABI cannot contain incomplete arrays or volatile fields in this profile");
         VerifyStorageSourceTypes();
+        VerifySourceRecords();
         foreach (RecordField field in Fields.Values)
         {
-            SourceType source = SourceTypeById(field.SourceTypeId);
+            if (field.SourceTypeId is not long originalTypeId) continue;
+            SourceType source = SourceTypeById(originalTypeId);
             if (source.ExecutionTypeId != field.TypeId)
                 throw new InvalidDataException("Record field source type disagrees with execution representation");
             // Volatile reads/writes are represented by explicit volatile-place nodes.
@@ -288,7 +291,7 @@ internal sealed partial class ObjectFile
                     switch (query.ColumnType(index))
                     {
                         case 1:
-                            if (column is "isConst" or "isVolatile" or "isSynthetic") writer.WriteBoolean(column, query.Integer(index) == 1);
+                            if (column is "isConst" or "isVolatile" or "isSynthetic" or "isComplete" or "isTriviallyCopyable" or "isMutable" or "hasNoUniqueAddress") writer.WriteBoolean(column, query.Integer(index) == 1);
                             else writer.WriteNumber(column, query.Integer(index));
                             break;
                         case 3: writer.WriteString(column, query.Text(index)); break;
@@ -304,10 +307,14 @@ internal sealed partial class ObjectFile
             "id", "entityId", "phase", "priority", "ordinal", "sourceFileId", "line", "column");
         Table("sourceFiles", "SELECT id,path,parent_id FROM source_files ORDER BY id", "id", "path", "parentId");
         Table("executionTypes", "SELECT id,kind,pointee_type_id,element_type_id,element_count FROM types ORDER BY id", "id", "kind", "pointeeTypeId", "elementTypeId", "elementCount");
-        Table("recordTypes", "SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column,layout_kind FROM record_types ORDER BY type_id",
-            "typeId", "identityKey", "sourceName", "size", "alignment", "sourceFileId", "line", "column", "layoutKind");
-        Table("recordFields", "SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed FROM record_fields ORDER BY id",
-            "id", "recordTypeId", "ordinal", "typeId", "sourceName", "byteOffset", "sourceTypeId", "sourceFileId", "line", "column", "bitOffset", "bitWidth", "bitSigned");
+        Table("recordTypes", "SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column,layout_kind,source_record_id,representation_kind,value_copy_kind,capture_proof FROM record_types ORDER BY type_id",
+            "typeId", "identityKey", "sourceName", "size", "alignment", "sourceFileId", "line", "column", "layoutKind", "sourceRecordId", "representationKind", "valueCopyKind", "captureProof");
+        Table("recordFields", "SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed,source_field_id,field_role FROM record_fields ORDER BY id",
+            "id", "recordTypeId", "ordinal", "typeId", "sourceName", "byteOffset", "sourceTypeId", "sourceFileId", "line", "column", "bitOffset", "bitWidth", "bitSigned", "sourceFieldId", "fieldRole");
+        Table("sourceRecords", "SELECT id,source_type_id,identity_key,source_name,record_kind,is_complete,native_size,native_alignment,is_trivially_copyable,capture_phase,source_file_id,line,column FROM source_record_types ORDER BY id",
+            "id", "sourceTypeId", "identityKey", "sourceName", "recordKind", "isComplete", "nativeSize", "nativeAlignment", "isTriviallyCopyable", "capturePhase", "sourceFileId", "line", "column");
+        Table("sourceFields", "SELECT id,source_record_id,ordinal,source_type_id,source_name,is_mutable,has_no_unique_address,bit_width,source_file_id,line,column FROM source_record_fields ORDER BY id",
+            "id", "sourceRecordId", "ordinal", "sourceTypeId", "sourceName", "isMutable", "hasNoUniqueAddress", "bitWidth", "sourceFileId", "line", "column");
         Table("sourceTypes", "SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count FROM source_types ORDER BY id",
             "id", "kind", "sourceName", "underlyingTypeId", "executionTypeId", "isConst", "isVolatile", "sourceFileId", "line", "column", "elementCount");
         Table("storages", "SELECT id,source_name,linkage,external_key,definition,type_id,source_type_id,is_thread_local,is_const,alignment,source_file_id,line,column FROM storages ORDER BY id",

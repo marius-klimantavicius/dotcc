@@ -1,9 +1,8 @@
 # Owned C++ record layout proposal
 
-Status: design and retained stock-C evidence, not implemented coverage. The
-current v13 producer still rejects virtual/inherited execution records. The
-schema version will be assigned after the separate startup-action tranche. This
-proposal changes neither EDG layout nor its lowering decisions. It separates
+Status: the first complete own-vptr/ABI-record subset is implemented in v15;
+base/subobject views and the remaining broader design below are pending. This
+work changes neither EDG layout nor its lowering decisions. It separates
 original declarations from the physical records that EDG already constructs.
 
 ## Actual DuckDB failure and its reduction
@@ -88,7 +87,7 @@ Execution table extensions:
 
 | Table | Added/changed columns |
 |---|---|
-| `record_types` | `representation_kind` (complete/subobject/abi), `source_record_type_id nullable`, `complete_type_id nullable`, `physical_extent`, `native_alignment`; existing nominal `identity_key` and layout kind retained |
+| `record_types` | `representation_kind` (complete/subobject/abi), `source_record_type_id nullable`, `complete_type_id nullable`, `physical_extent`, `native_alignment`, `value_copy_kind` (ordinary/explicit-only); existing nominal `identity_key` and layout kind retained |
 | `record_fields` | `field_role` (source/base/vptr/abi), `source_field_id nullable`, `source_base_id nullable`, `storage_extent`, `storage_kind` (physical/view); existing execution `type_id`, offset and bit metadata retained; `source_type_id` nullable for true hidden fields |
 | `source_types` | execution correspondence nullable for source-only unsupported/uninstantiated descriptions; add lvalue-reference/rvalue-reference kinds when their lowering is implemented |
 
@@ -152,6 +151,24 @@ base type and offset: those facts alone do not identify a path through repeated
 or shared bases. Observation code must preserve the helper's existing return
 behavior and all layout decisions.
 
+Capture proof requires an observation at the start of the
+`!class_has_been_prelowered(class_type)` branch of `prelower_class_type`, before
+`compute_vbase_and_vcall_offset_indices` and every synthetic field insertion.
+The existing `lower_top_level_scope` snapshot is useful, but the existing
+`lower_type` entry hook alone cannot establish this boundary: class prelowering
+can already have happened. Reuse an earlier snapshot only after checking its
+original field identities against this boundary, then seal that origin map.
+
+Observe `make_lowered_class_type` as a separate creation boundary. In
+`lower_eh.c`, both the `__EDG_type_info` record (near line 350) and RTTI-derived
+ABI records (near line 561) come through it. They have real execution fields but
+no invented original class declaration. Subobject records also pass through
+this helper; their later explicit complete/subobject partner relationship
+refines the role to subobject. Generated ABI identities need a stable purpose
+and representation key, rather than traversal-dependent emitted names such as
+`__C1`. The first type-info reduction therefore exercises original own-vptr
+layout **and** separately classified RTTI ABI records.
+
 For the later function ABI tranche, `a_variable::is_this_parameter` identifies
 the implicit object parameter. Routine-extra flags
 `value_returned_as_parameter` and `return_value_parameter_follows_this` identify
@@ -194,6 +211,51 @@ POD assignment can continue using the already-tested InlineArray-backed CLR
 value copies. Nontrivial constructors/destructors and exception exits still
 require their lifetime protocol; admitting their layouts does not admit
 unrepresented cleanup semantics.
+
+Both current native `copyable_value` and managed `CanCopyRecord` recursively
+inspect fields. That predicate was bounded by the earlier plain-layout
+rejection and must not become permission to copy a class merely because its
+newly admitted vptr and data fields are individually copyable. Preserve an
+explicit `value_copy_kind`: ordinary complete, trivially copyable source
+records may use existing value operations; nontrivial records and subobject
+views require explicit lowered operations. Capture the frontend's completed
+copyability fact before lowering (the existing `is_trivially_copyable_type`
+classification is authoritative), and preserve the separate restriction
+against volatile/flexible-array aggregate copies. Merely adding a vptr must
+not silently enable source assignment, a by-value ABI, or object destruction.
+
+## Concrete first patch boundary
+
+The first enabled subset is complete, non-packed records with their own vptr
+and no bases or overlapping fields. It exports the general source/execution
+correspondence rather than a `std::type_info` special case. Do not enable base
+or subobject layouts until their physical-view emitter is implemented.
+
+1. In `dot_gen_object_source.h`, give original captured fields stable owned
+   IDs and keep source-field declarations separate from physical layout data.
+   Add backend-private maps for copied-field origins and generated field roles.
+   Snapshot completed source copyability. Preserve source bases for the broader
+   semantic index even while their execution layout remains unsupported.
+2. Coordinator observation hooks retain the exact field returned by the
+   own-vptr `add_field` call and report its role. The `copy_field` hook reports
+   original and copy identities after linking the new field. No guessed names
+   or frontend layout changes are required.
+3. In `Writer::record_type`, register the record identity before visiting its
+   recursive field types, emit the original source declarations once, then
+   traverse the actual lowered `field_list`. Original fields resolve to their
+   source IDs; observed generated vptrs have no invented source declaration.
+   Reject any remaining unclassified hidden field. Check actual offsets,
+   native extent/alignment, and source-member correspondence independently.
+4. Managed `Records.cs` reads roles and origins, and `SourceProvenance.cs`
+   validates original source fields separately from hidden ABI fields. Existing
+   CLR explicit-layout fields suffice for this first subset. `Linker.cs`
+   compares the full physical layout and original-source correspondence across
+   TUs, including roles and copy policy. No semantic behavior follows from the
+   generated field spelling.
+5. Verify the actual libc++ reduction, an independent virtual class with named
+   data members, cross-TU pointers to that class, and rejection of a forged
+   ordinary-value copy of the nontrivial class. Re-probe original DuckDB and
+   record its next genuine ABI/lifetime requirement.
 
 ## Implementation split and acceptance gate
 

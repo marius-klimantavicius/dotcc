@@ -3,7 +3,8 @@ using System.Text;
 namespace DotObj;
 
 internal sealed record RecordType(long TypeId, string IdentityKey, string SourceName,
-    long Size, long Alignment, long? SourceFileId, long Line, long Column, string LayoutKind)
+    long Size, long Alignment, long? SourceFileId, long Line, long Column, string LayoutKind,
+    long? SourceRecordId, string RepresentationKind, string ValueCopyKind, string CaptureProof)
 {
     // A nominal terminal permits recursive pointer graphs without recursively
     // incorporating the record's layout into every pointer signature.
@@ -11,8 +12,9 @@ internal sealed record RecordType(long TypeId, string IdentityKey, string Source
 }
 
 internal sealed record RecordField(long Id, long RecordTypeId, long Ordinal,
-    long TypeId, string SourceName, long ByteOffset, long SourceTypeId,
-    long? SourceFileId, long Line, long Column, long? BitOffset, long? BitWidth, bool? BitSigned);
+    long TypeId, string SourceName, long ByteOffset, long? SourceTypeId,
+    long? SourceFileId, long Line, long Column, long? BitOffset, long? BitWidth, bool? BitSigned,
+    long? SourceFieldId, string FieldRole);
 
 internal sealed partial class ObjectFile
 {
@@ -24,26 +26,31 @@ internal sealed partial class ObjectFile
     private void ReadRecordMetadata()
     {
         var groupedFields = new Dictionary<long, List<RecordField>>();
-        using (var query = database.Prepare("SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column,layout_kind FROM record_types ORDER BY type_id"))
+        using (var query = database.Prepare("SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column,layout_kind,source_record_id,representation_kind,value_copy_kind,capture_proof FROM record_types ORDER BY type_id"))
             while (query.Read())
             {
                 var record = new RecordType(query.Integer(0), query.Text(1), query.Text(2), query.Integer(3), query.Integer(4),
-                    query.OptionalInteger(5), query.Integer(6), query.Integer(7), query.Text(8));
+                    query.OptionalInteger(5), query.Integer(6), query.Integer(7), query.Text(8), query.OptionalInteger(9), query.Text(10), query.Text(11), query.Text(12));
                 if (record.TypeId <= 0 || record.IdentityKey.Length == 0 || record.Size < 0 || record.Size > int.MaxValue ||
                     (record.Size == 0 ? record.Alignment != 0 : record.Alignment is not (1 or 2 or 4 or 8 or 16)) ||
-                    record.LayoutKind is not ("struct" or "class" or "union") || record.Line < 0 || record.Column < 0)
+                    record.LayoutKind is not ("struct" or "class" or "union") || record.Line < 0 || record.Column < 0 ||
+                    record.RepresentationKind is not ("complete" or "abi") || record.ValueCopyKind is not ("ordinary" or "explicit-only") ||
+                    (record.RepresentationKind == "complete" ? record.SourceRecordId is null || record.CaptureProof is not ("source-snapshot" or "observed-class-lowering")
+                        : record.SourceRecordId is not null || record.CaptureProof != "observed-abi-creation"))
                     throw new InvalidDataException("Invalid record identity or layout metadata");
                 if (!Records.TryAdd(record.TypeId, record) || !RecordsByKey.TryAdd(record.Key, record))
                     throw new InvalidDataException("Duplicate nominal record identity");
                 groupedFields.Add(record.TypeId, []);
             }
-        using (var query = database.Prepare("SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed FROM record_fields ORDER BY id"))
+        using (var query = database.Prepare("SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed,source_field_id,field_role FROM record_fields ORDER BY id"))
             while (query.Read())
             {
                 var field = new RecordField(query.Integer(0), query.Integer(1), query.Integer(2), query.Integer(3), query.Text(4),
-                    query.Integer(5), query.Integer(6), query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.OptionalInteger(10), query.OptionalInteger(11), query.OptionalInteger(12) is long signed ? signed == 1 : null);
+                    query.Integer(5), query.OptionalInteger(6), query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.OptionalInteger(10), query.OptionalInteger(11), query.OptionalInteger(12) is long signed ? signed == 1 : null, query.OptionalInteger(13), query.Text(14));
                 if (field.Id <= 0 || !Records.ContainsKey(field.RecordTypeId) || field.Ordinal < 0 ||
-                    field.ByteOffset < 0 || field.SourceTypeId <= 0 || field.Line < 0 || field.Column < 0)
+                    field.ByteOffset < 0 || field.Line < 0 || field.Column < 0 || field.FieldRole is not ("source" or "vptr" or "abi") ||
+                    (field.FieldRole == "source" ? field.SourceTypeId is null or <= 0 || field.SourceFieldId is null or <= 0
+                        : field.SourceTypeId is not null || field.SourceFieldId is not null))
                     throw new InvalidDataException("Invalid record field metadata");
                 if ((field.BitOffset is null) != (field.BitWidth is null) || (field.BitOffset is null) != (field.BitSigned is null) ||
                     field.BitOffset is < 0 or > 7 || field.BitWidth is < 1 or > 64 || query.OptionalInteger(12) is < 0 or > 1)
@@ -61,12 +68,12 @@ internal sealed partial class ObjectFile
         if (ScalarTypes.IsArray(type)) return ScalarTypes.ElementCount(type) > 0 && CanCopyRecord(ScalarTypes.Element(type));
         if (!ScalarTypes.IsRecord(type)) return true;
         var record = RecordsByKey[type];
-        if (record.Size == 0) return false;
+        if (record.Size == 0 || record.ValueCopyKind != "ordinary") return false;
         foreach (RecordField field in RecordFields(record.TypeId))
         {
             string fieldType = Type(field.TypeId);
             if (!CanCopyRecord(fieldType)) return false;
-            if (SourceTypes.TryGetValue(field.SourceTypeId, out SourceType? source))
+            if (field.SourceTypeId is long sourceTypeId && SourceTypes.TryGetValue(sourceTypeId, out SourceType? source))
                 while (true)
                 {
                     if (source.IsVolatile) return false;

@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v14: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v15: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -47,6 +47,10 @@ struct Writer {
   std::map<unsigned,unsigned> pointer_types;
   std::map<std::pair<unsigned,unsigned long long>,unsigned> array_types;
   std::vector<string> execution_types,record_types,record_fields;
+  std::vector<string> source_records,source_fields;
+  std::map<a_type_ptr,unsigned> source_record_ids;
+  std::map<a_field_ptr,unsigned> source_field_ids;
+  unsigned next_source_record=1,next_source_field=1;
   std::map<a_type_ptr,unsigned> record_ids;
   std::map<a_field_ptr,unsigned> field_ids;
   unsigned next_field=1,next_storage=1;
@@ -109,43 +113,114 @@ struct Writer {
   }
   unsigned record_type(a_type_ptr t) {
     auto prior=record_ids.find(t);if(prior!=record_ids.end())return prior->second;
-    auto found=dot_object_source::state().records.find(t);
-    if(found==dot_object_source::state().records.end())reject("incomplete or uncaptured record definition");
-    const auto &record=found->second;
-    if(!record.error.empty())reject((record.identity+": "+record.error).c_str());
-    if((!t->incomplete && t->size!=record.size) || (!t->incomplete && t->alignment!=record.alignment))reject("record layout changed during lowering");
+    auto &captured=dot_object_source::state();
+    bool abi=captured.abi_records.count(t)!=0;
+    auto found=captured.records.find(t);
+    if(!abi && found==captured.records.end())reject("incomplete or uncaptured record definition");
+    auto pre=captured.prelower_records.find(t);
+    const dot_object_source::Record *source=abi?nullptr:&found->second;
+    if(source && !source->error.empty())reject((source->identity+": "+source->error).c_str());
+    if(source && source->has_bases)reject("base/subobject execution layout is not represented");
+    if(source && source->has_virtual_functions && pre==captured.prelower_records.end())
+      reject("virtual record lacks an observed prelowering boundary");
+    if(pre!=captured.prelower_records.end() && !pre->second.error.empty())reject(pre->second.error.c_str());
+    if(source && pre!=captured.prelower_records.end()) {
+      if(source->fields.size()!=pre->second.fields.size())reject("source field snapshot disagrees with prelowering boundary");
+      for(size_t i=0;i<source->fields.size();++i) {
+        const auto &field=source->fields[i];const auto &observed=pre->second.fields[i];
+        if(field.il!=observed.il || field.original_name!=observed.name || field.source_type!=observed.source_type_snapshot ||
+           field.offset!=observed.byte_offset || field.is_bit_field!=observed.is_bit_field || field.bit_width!=observed.bit_width)
+          reject("original field identity/type differs at prelowering boundary");
+      }
+    }
+    if(source && ((!t->incomplete && t->size!=source->size) || (!t->incomplete && t->alignment!=source->alignment)))
+      reject("record complete-object extent changed during lowering");
+    if(!t->incomplete && (!t->size || t->size>2147483647ULL || !t->alignment || t->alignment>16))
+      reject("record native extent/alignment outside execution profile");
+    string identity,name,layout=t->kind==tk_union?"union":t->kind==tk_class?"class":"struct";
+    a_source_position pos={};
+    if(abi) {
+      auto key=captured.abi_record_keys.find(t);
+      if(key==captured.abi_record_keys.end())reject("unclassified compiler ABI record creation");
+      identity=key->second;name=source_spelling(&t->source_corresp);
+    } else {
+      identity=source->identity;name=source->name;layout=source->layout_kind;pos=source->position;
+      if(source->template_identity)identity="record-abi:"+string(mangled_class_name(t));
+      if(identity.find("local-record:")==0) {
+        a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
+        conv_seq_to_file_and_line(source->position.seq,&display,&full,&line,&at_end);
+        identity+=":"+string(full?full:display?display:"")+":"+std::to_string((unsigned long long)line)+":"+
+          std::to_string(source->position.column)+":occurrence:"+std::to_string(source->source_occurrence);
+      }
+    }
     unsigned id=next_execution_type++;record_ids[t]=id;
     execution_types.push_back("{\"id\":"+number(id)+",\"kind\":\"record\",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
-    string identity=record.identity;
-    // EDG's ABI encoder owns template argument identity, including nontype,
-    // pack and nested template arguments. A display basename is insufficient.
-    if(record.template_identity)identity="record-abi:"+string(mangled_class_name(t));
-    if(identity.find("local-record:")==0) {
-      a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
-      conv_seq_to_file_and_line(record.position.seq,&display,&full,&line,&at_end);
-      identity+=":"+string(full?full:display?display:"")+":"+std::to_string((unsigned long long)line)+":"+std::to_string(record.position.column)+":occurrence:"+std::to_string(record.source_occurrence);
+    bool trivial=!abi && !t->incomplete && C_mode();
+    if(!abi && !t->incomplete && !C_mode()) {
+      if(pre==captured.prelower_records.end() || !pre->second.trivial_copy_known)
+        reject("complete C++ source record lacks original copyability fact");
+      trivial=pre->second.trivial_copy;
     }
-    record_types.push_back("{\"typeId\":"+number(id)+",\"identityKey\":"+quote(identity)+",\"sourceName\":"+quote(record.name)+
-      ",\"size\":"+std::to_string(record.size)+",\"alignment\":"+std::to_string(record.alignment)+position(record.position)+",\"layoutKind\":"+quote(record.layout_kind)+"}");
+    unsigned source_record=0;
+    std::map<a_field_ptr,const dot_object_source::RecordField*> originals;
+    if(source) {
+      source_record=next_source_record++;source_record_ids[t]=source_record;
+      auto source_type_it=captured.type_ids.find(t);
+      if(source_type_it==captured.type_ids.end())reject("record source type was not captured before lowering");
+      source_records.push_back("{\"id\":"+number(source_record)+",\"sourceTypeId\":"+number(source_type(source_type_it->second))+
+        ",\"identityKey\":"+quote(identity)+",\"sourceName\":"+quote(name)+",\"recordKind\":"+quote(layout)+
+        ",\"isComplete\":"+(t->incomplete?"false":"true")+",\"nativeSize\":"+std::to_string(source->size)+
+        ",\"nativeAlignment\":"+std::to_string(source->alignment)+",\"isTriviallyCopyable\":"+
+        (t->incomplete?"null":trivial?"true":"false")+",\"capturePhase\":"+
+        quote(pre==captured.prelower_records.end()?"before-lowering":"before-class-prelowering")+position(pos)+"}");
+      unsigned source_ordinal=0;
+      for(const auto &field:source->fields) {
+        unsigned original_id=next_source_field++;source_field_ids[field.il]=original_id;originals[field.il]=&field;
+        source_fields.push_back("{\"id\":"+number(original_id)+",\"sourceRecordId\":"+number(source_record)+
+          ",\"ordinal\":"+std::to_string(source_ordinal++)+",\"sourceTypeId\":"+number(source_type(field.source_type))+
+          ",\"sourceName\":"+quote(field.original_name)+
+          ",\"isMutable\":"+(field.is_mutable?"true":"false")+",\"hasNoUniqueAddress\":"+
+          (field.no_unique_address?"true":"false")+",\"bitWidth\":"+
+          (field.is_bit_field?std::to_string(field.bit_width):"null")+position(field.position)+"}");
+      }
+    }
+    record_types.push_back("{\"typeId\":"+number(id)+",\"identityKey\":"+quote(identity)+",\"sourceName\":"+quote(name)+
+      ",\"size\":"+std::to_string(t->incomplete?0:t->size)+",\"alignment\":"+std::to_string(t->incomplete?0:t->alignment)+
+      position(pos)+",\"layoutKind\":"+quote(layout)+",\"sourceRecordId\":"+number(source_record)+
+      ",\"representationKind\":"+quote(abi?"abi":"complete")+",\"valueCopyKind\":"+quote(trivial?"ordinary":"explicit-only")+
+      ",\"captureProof\":"+quote(abi?"observed-abi-creation":pre==captured.prelower_records.end()?"source-snapshot":"observed-class-lowering")+"}");
     unsigned ordinal=0;std::set<string> names;
-    for(const auto &field:record.fields) {
-      auto f=field.il;auto child=skip_typerefs(f->type);
+    for(auto f=t->variant.class_struct_union.field_list;f;f=f->next) {
+      if(f->is_bit_field && !f->bit_size)continue;
+      auto child=skip_typerefs(f->type);
+      auto original=originals.find(f);
+      string role,field_name;unsigned source_type_id=0,source_field=0;a_source_position field_pos={};
+      if(original!=originals.end()) {
+        const auto &field=*original->second;role="source";field_name=field.name;field_pos=field.position;
+        source_type_id=source_type(field.source_type);source_field=source_field_ids.at(f);
+        if(f->offset!=field.offset)reject("original field offset changed during lowering");
+      } else if(abi) {role="abi";field_name=source_spelling(&f->source_corresp);}
+      else {
+        auto generated=captured.generated_field_roles.find(f);
+        if(generated==captured.generated_field_roles.end() || generated->second!="vptr")reject("unclassified lowered physical field");
+        role="vptr";field_name="__edg_vptr";
+      }
+      if(field_name.empty())field_name="__edg_abi_field_"+std::to_string(ordinal);
       bool flexible=child->kind==tk_array && !child->size && !child->variant.array.variant.number_of_elements;
-      if(flexible && (f->next || record.layout_kind=="union"))reject("flexible array outside final struct/class member");
-      if(!names.insert(field.name).second || f->offset!=field.offset || (!child->size && !flexible) || !child->alignment)
-        reject("record field identity/layout changed during lowering");
-      unsigned long long extent=field.bit_width?(field.bit_offset+field.bit_width+7)/8:child->size;
-      if(field.offset>record.size || child->alignment>16 || extent>record.size-field.offset)
-        reject("record field outside containing storage");
-      if(record.layout_kind=="union" && field.offset)reject("union field nonzero storage offset");
+      if(flexible && (f->next || layout=="union"))reject("flexible array outside final struct/class member");
+      if(!names.insert(field_name).second || (!child->size && !flexible) || !child->alignment)
+        reject("record physical field identity/extent");
+      unsigned long long extent=f->is_bit_field?(f->offset_bit_remainder+f->bit_size+7)/8:child->size;
+      if(f->offset>t->size || child->alignment>16 || extent>t->size-f->offset)reject("record field outside containing storage");
+      if(layout=="union" && f->offset)reject("union field nonzero storage offset");
       unsigned field_id=next_field++;field_ids[f]=field_id;
-      unsigned field_type=type_id(f->type),source=source_type(field.source_type);
       record_fields.push_back("{\"id\":"+number(field_id)+",\"recordTypeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+
-        ",\"typeId\":"+number(field_type)+",\"sourceName\":"+quote(field.name)+",\"byteOffset\":"+std::to_string(field.offset)+
-        ",\"sourceTypeId\":"+number(source)+position(field.position)+
-        ",\"bitOffset\":"+(field.bit_width?std::to_string(field.bit_offset):"null")+
-        ",\"bitWidth\":"+(field.bit_width?std::to_string(field.bit_width):"null")+
-        ",\"bitSigned\":"+(field.bit_width?(field.bit_signed?"true":"false"):"null")+"}");
+        ",\"typeId\":"+number(type_id(f->type))+",\"sourceName\":"+quote(field_name)+",\"byteOffset\":"+std::to_string(f->offset)+
+        ",\"sourceTypeId\":"+number(source_type_id)+position(field_pos)+
+        ",\"bitOffset\":"+(f->is_bit_field?std::to_string(f->offset_bit_remainder):"null")+
+        ",\"bitWidth\":"+(f->is_bit_field?std::to_string(f->bit_size):"null")+
+        ",\"bitSigned\":"+(f->is_bit_field?(f->bit_field_is_signed?"true":"false"):"null")+
+        ",\"sourceFieldId\":"+number(source_field)+",\"fieldRole\":"+quote(role)+"}");
     }
     return id;
   }
@@ -292,6 +367,20 @@ struct Writer {
       }
     }
   }
+  a_constant_ptr storage_constant(an_init_kind kind,an_initializer_ptr initializer) {
+    // Stock c_gen_be::constant_initializer distinguishes the representation
+    // marker initk_dynamic from actual executable initialization. Retain the
+    // same constant/non-delayed test, with destruction still fail-closed.
+    if(kind==initk_static)return initializer->constant;
+    if(kind==initk_dynamic) {
+      auto init=initializer->dynamic;
+      if(init && init->kind==dik_constant && !init->follows_an_exec_statement && !init->destructor) {
+        check_lifetime(init->init_expr_lifetime);
+        return init->variant.constant.ptr;
+      }
+    }
+    return nullptr;
+  }
   unsigned storage(a_variable_ptr v) {
     if(!v)reject("missing storage variable");
     auto prior=storage_ids.find(v);if(prior!=storage_ids.end())return prior->second;
@@ -301,45 +390,63 @@ struct Writer {
     if(v->is_weak || v->is_weakref || v->is_gnu_alias)reject("weak/aliased storage linkage");
 #endif
     auto t=skip_typerefs(v->type);unsigned alignment=v->alignment>t->alignment?v->alignment:t->alignment;
-    bool declaration=v->storage_class==sc_extern;
+    bool declaration=v->storage_class==sc_extern || v->suppress_inline_definition;
     if((!t->size && !declaration) || (!alignment && !declaration) || (alignment && (alignment&(alignment-1))))
       reject((string("incomplete storage layout: ")+source_spelling(&v->source_corresp)+" kind="+std::to_string(t->kind)+" storage="+std::to_string(v->storage_class)).c_str());
     bool external=v->source_corresp.name_linkage==nlk_external || v->source_corresp.name_linkage==nlk_cplusplus_external;
     string key=variable_linker_symbol(v);if(external && key.empty())reject("missing external storage identity");
-    if(v->init_kind==initk_dynamic)reject("dynamic static/TLS initialization");
+    auto replacement=static_initializers.find(v);
+    a_constant_ptr initializer=declaration?nullptr:replacement==static_initializers.end()?storage_constant(v->init_kind,&v->initializer):replacement->second;
+    if(!declaration && v->init_kind==initk_dynamic && !initializer)
+      reject((string("dynamic static/TLS initialization: ")+source_spelling(&v->source_corresp)+" ["+key+"]").c_str());
     unsigned id=next_storage++;storage_ids[v]=id;
     auto captured=dot_object_source::state().variables.find(v);
-    unsigned source=captured==dot_object_source::state().variables.end()?0:source_type(captured->second.type);
+    unsigned source=captured==dot_object_source::state().variables.end() || dot_object_source::abi_storage_type(v->type)?0:source_type(captured->second.type);
     storages.push_back("{\"id\":"+number(id)+",\"sourceName\":"+quote(source_spelling(&v->source_corresp))+
       ",\"linkage\":"+quote(external?"external":"internal")+",\"externalKey\":"+(external?quote(key):"null")+
       ",\"definition\":"+quote(declaration?"declaration":"strong")+",\"typeId\":"+number(type_id(t))+
       ",\"sourceTypeId\":"+number(source)+",\"isThreadLocal\":"+(thread_storage(v)?"true":"false")+
       ",\"isConst\":"+((get_type_qualifiers(v->type)&TQ_CONST)?"true":"false")+",\"alignment\":"+std::to_string(alignment)+position(v->source_corresp.decl_position)+"}");
     if(!declaration) {
-      auto override=static_initializers.find(v);
-      if(override!=static_initializers.end())initialize_storage(id,t,override->second,0);
-      else if(v->init_kind==initk_static)initialize_storage(id,t,v->initializer.constant,0);
+      if(initializer)initialize_storage(id,t,initializer,0);
       else if(v->init_kind!=initk_none && v->init_kind!=initk_zero)reject("static storage initializer",v->init_kind);
     }
     return id;
   }
   void collect_storage(a_scope_ptr scope) {
     for(auto init=scope->local_static_variable_inits;init;init=init->next) {
-      if(init->init_kind==initk_static)static_initializers[init->variable]=init->initializer.constant;
-      else if(init->init_kind!=initk_none && init->init_kind!=initk_zero)reject("local static initialization schedule");
+      diagnostic_scope diagnostic(init->variable->source_corresp.decl_position);
+      if(ignore_variable_in_back_end(init->variable))continue;
+      an_init_kind kind;an_initializer_ptr initializer;
+      get_variable_initializer(init->variable,scope,&kind,&initializer);
+      auto constant=storage_constant(kind,initializer);
+      if(constant)static_initializers[init->variable]=constant;
+      else if(kind!=initk_none && kind!=initk_zero)
+        reject((string("local static initialization schedule: ")+source_spelling(&init->variable->source_corresp)+
+          " ["+variable_linker_symbol(init->variable)+"]").c_str());
     }
     // Definitions retain library-visible storage even without a use in this
     // unit. Extern declarations enter the execution graph when referenced;
     // their pre-lowering source snapshots remain available independently.
     for(auto v=scope->variables;v;v=v->next) {
-      if(v->init_kind==initk_dynamic)reject("dynamic static/TLS initialization schedule");
+      diagnostic_scope diagnostic(v->source_corresp.decl_position);
+      // Match stock C dump_scope_variables: dependent/nonreal declarations
+      // and extern declarations do not contribute initialization definitions.
+      if(ignore_variable_in_back_end(v) || v->storage_class==sc_extern || v->suppress_inline_definition)continue;
+      an_init_kind kind;an_initializer_ptr initializer;
+      get_variable_initializer(v,scope,&kind,&initializer);
+      auto constant=storage_constant(kind,initializer);
+      if(constant)static_initializers[v]=constant;
+      if(kind==initk_dynamic && !constant)
+        reject((string("dynamic static/TLS initialization schedule: ")+source_spelling(&v->source_corresp)+
+          " ["+variable_linker_symbol(v)+"]").c_str());
       bool root=v->source_corresp.name_linkage==nlk_external || v->source_corresp.name_linkage==nlk_cplusplus_external;
       if(v->compiler_generated || v->lowering_generated || (v->is_template_variable && !v->is_specialized))root=false;
       if(v->explicit_instantiation && !v->explicit_do_not_instantiate)root=true;
 #if GNU_EXTENSIONS_ALLOWED
       root=root || v->has_gnu_used_attribute;
 #endif
-      if(root && v->storage_class!=sc_extern && !ignore_variable_in_back_end(v))storage(v);
+      if(root)storage(v);
     }
   }
   std::set<a_scope_ptr> bound_scopes;
@@ -482,6 +589,8 @@ struct Writer {
   }
   unsigned source_execution_type(unsigned captured) {
     const auto &type=dot_object_source::state().types.at(captured-1);
+    if(type.kind=="record" && dot_object_source::state().abi_records.count(type.record_type))
+      reject("compiler ABI record cannot masquerade as an original source type");
     if(type.execution)return type.execution;
     if(type.kind=="record")return record_type(type.record_type);
     if(type.kind=="va-list")return va_list_type();
@@ -557,6 +666,12 @@ struct Writer {
     if(t->kind==tk_array)return t->size && t->variant.array.variant.number_of_elements && copyable_value(t->variant.array.element_type);
     if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
       if(t->incomplete || t->variant.class_struct_union.any_volatile_member)return false;
+      auto &source=dot_object_source::state();
+      if(source.abi_records.count(t))return false;
+      if(!C_mode()) {
+        auto original=source.prelower_records.find(t);
+        if(original==source.prelower_records.end() || !original->second.trivial_copy_known || !original->second.trivial_copy)return false;
+      }
       for(auto field=t->variant.class_struct_union.field_list;field;field=field->next)
         if(!copyable_value(field->type))return false;
     }
@@ -772,59 +887,6 @@ struct Writer {
       (e->kind==enk_operation && (e->variant.operation.kind==eok_indirect ||
                                  e->variant.operation.kind==eok_subscript || e->variant.operation.kind==eok_lvalue_adjust ||
                                  e->variant.operation.kind==eok_dot_field || e->variant.operation.kind==eok_points_to_field)));
-  }
-  bool effect_free(an_expr_node_ptr e) {
-    if(!e)return false;
-    if(place(e) && volatile_place(e))return false;
-    if(e->kind==enk_variable || e->kind==enk_constant || e->kind==enk_field)return true;
-    if(e->kind!=enk_operation)return false;
-    switch(e->variant.operation.kind) {
-      case eok_dot_field:case eok_points_to_field:
-      case eok_address_of:case eok_indirect:case eok_subscript:case eok_array_to_pointer:case eok_cast:case eok_lvalue_adjust:case eok_question:
-      case eok_add:case eok_subtract:case eok_multiply:case eok_divide:case eok_remainder:
-      case eok_and:case eok_or:case eok_xor:case eok_shiftl:case eok_shiftr:
-      case eok_eq:case eok_ne:case eok_lt:case eok_le:case eok_gt:case eok_ge:
-      case eok_land:case eok_lor:case eok_negate:case eok_not:case eok_unary_plus:
-      case eok_complement:case eok_padd:case eok_psubtract:case eok_pdiff:break;
-      default:return false;
-    }
-    for(auto child=e->variant.operation.operands;child;child=child->next)
-      if(!effect_free(child))return false;
-    return true;
-  }
-  bool stable_place(an_expr_node_ptr e) {
-    if(!e)return false;
-    if(e->kind==enk_variable || (e->kind==enk_constant && node_constant(e)->kind==ck_string))return true;
-    if(e->kind!=enk_operation)return false;
-    auto a=e->variant.operation.operands;auto b=a?a->next:nullptr;
-    if(e->variant.operation.kind==eok_lvalue_adjust)return a && !b && stable_place(a);
-    if(e->variant.operation.kind==eok_dot_field)return a && b && b->kind==enk_field && !b->next && stable_place(a);
-    if(e->variant.operation.kind==eok_points_to_field)return a && b && b->kind==enk_field && !b->next && stable_pointer(a);
-    if(e->variant.operation.kind==eok_indirect)return a && !b && stable_pointer(a);
-    if(e->variant.operation.kind==eok_subscript && a && b && !b->next)
-      return (stable_pointer(a) && integral_constant(b)) ||
-             (integral_constant(a) && stable_pointer(b));
-    return false;
-  }
-  bool integral_constant(an_expr_node_ptr e) {
-    return e && e->kind==enk_constant && node_constant(e)->kind==ck_integer &&
-      skip_typerefs(e->type)->kind==tk_integer;
-  }
-  bool stable_pointer(an_expr_node_ptr e) {
-    if(!e || skip_typerefs(e->type)->kind!=tk_pointer)return false;
-    if(e->kind==enk_constant)return node_constant(e)->kind==ck_integer;
-    if(e->kind!=enk_operation)return false;
-    auto a=e->variant.operation.operands;auto b=a?a->next:nullptr;
-    switch(e->variant.operation.kind) {
-      case eok_address_of:case eok_array_to_pointer:return a && !b && stable_place(a);
-      case eok_cast:return a && !b && stable_pointer(a);
-      case eok_padd:
-        return a && b && !b->next && ((stable_pointer(a) && integral_constant(b)) ||
-                                                     (integral_constant(a) && stable_pointer(b)));
-      case eok_psubtract:
-        return a && b && !b->next && stable_pointer(a) && integral_constant(b);
-      default:return false;
-    }
   }
   bool source_volatile(unsigned captured) {
     while(captured) {
@@ -1052,8 +1114,9 @@ struct Writer {
     }
     if(compound) {
       if(!a || !b || b->next || !place(a) || type_id(a->type)!=ty)reject("malformed compound assignment");
-      if(operation.eval_right_to_left && !stable_place(a) && (!effect_free(a) || !effect_free(b)))
-        reject("effectful right-to-left compound assignment");
+      // Preserve EDG's sequenced operand order. The managed consumer lifts
+      // RHS evaluation before the target address/read when C#'s compound
+      // assignment order would differ, including x += (x = value).
       unsigned id=node("compound-assign",ty,e->position,0,0,compound,"","value",order);
       edge(id,"target",0,expression(a));edge(id,"value",0,expression(b));return id;
     }
@@ -1061,13 +1124,9 @@ struct Writer {
       if((skip_typerefs(e->type)->kind==tk_struct || skip_typerefs(e->type)->kind==tk_class || skip_typerefs(e->type)->kind==tk_union) &&
          (!copyable_value(e->type) || volatile_place(a) || volatile_place(b)))reject("record copy with array/volatile storage");
       if(!a || !b || b->next || !place(a))reject("assignment outside supported memory places");
-      // C++17 evaluates the RHS before the LHS, unlike C#. In this bounded
-      // graph, fixed local storage and constant offsets have stable addresses.
-      // Other indirect places require both sides to be effect-free: even a
-      // pure pointer load may change when the RHS mutates that pointer via an
-      // alias. EDG lowers dynamic array initialization into such stable stores.
-      if(operation.eval_right_to_left && !stable_place(a) &&
-         (!effect_free(a) || !effect_free(b)))reject("effectful right-to-left indirect assignment");
+      // C++17 evaluates the RHS before the LHS. Keep that owned order rather
+      // than rewriting/revisiting source operands here. The managed emitter
+      // captures the RHS then the target address exactly once when required.
       unsigned id=node("assign",ty,e->position,0,0,"","","value",order);
       edge(id,"target",0,expression(a));edge(id,"value",0,expression(b));return id;
     }
@@ -1731,11 +1790,12 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v14\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v15\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
       ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
+      ",\"sourceRecords\":"+array(source_records)+",\"sourceFields\":"+array(source_fields)+
       ",\"recordTypes\":"+array(record_types)+",\"recordFields\":"+array(record_fields)+
       ",\"storages\":"+array(storages)+",\"storageData\":"+array(storage_data)+",\"relocations\":"+array(relocations)+
       ",\"routineTypes\":"+array(routine_types)+",\"routineParameters\":"+array(routine_parameters)+

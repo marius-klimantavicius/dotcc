@@ -51,7 +51,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v14");
+        lifetimeWriter.WriteString("profile", "scalar-control-v15");
         lifetimeWriter.WriteString("capture", "lexical-cleanup-activations");
         lifetimeWriter.WriteBoolean("lexicalCleanups", true);
         lifetimeWriter.WriteBoolean("lifetimes", false);
@@ -107,7 +107,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                         if (ScalarTypes.IsArray(definition.Object.Type(field.TypeId)) && ScalarTypes.ElementCount(definition.Object.Type(field.TypeId)) == 0)
                             builder.Append("        // Flexible tail: ").Append(Type(ScalarTypes.Element(definition.Object.Type(field.TypeId)))).Append(' ').Append(fieldNames[(key, field.Ordinal)]).Append("[] at byte offset ").Append(field.ByteOffset).Append(".\n");
                         else if (field.BitWidth is not null) WriteBitfield(builder, definition.Object, field, fieldNames[(key, field.Ordinal)], backingNames);
-                        else builder.Append("        [global::System.Runtime.InteropServices.FieldOffset(").Append(field.ByteOffset).Append(")]\n        public ")
+                        else builder.Append(field.FieldRole == "source" ? "" : "        // Compiler-generated " + field.FieldRole + " field.\n").Append("        [global::System.Runtime.InteropServices.FieldOffset(").Append(field.ByteOffset).Append(")]\n        public ")
                             .Append(IsVolatileField(definition.Object, field) ? "volatile " : "").Append(Type(definition.Object.Type(field.TypeId))).Append(' ').Append(fieldNames[(key, field.Ordinal)]).Append(";\n");
                     builder.Append("    }\n\n");
                 }
@@ -150,7 +150,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v14");
+            writer.WriteString("profile", "scalar-control-v15");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -163,7 +163,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v14");
+            writer.WriteString("profile", "scalar-control-v15");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -174,7 +174,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v14", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v15", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; variable-length arrays, source EH and C++ RAII are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance and explicit lexical cleanup activations only; no complete source expression/statement view, macro expansion history or general C++ lifetime capture" },
@@ -289,6 +289,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         string vaPack = allocator.Allocate("__va_pack", "va_pack"), vaBytes = allocator.Allocate("__va_bytes", "va_bytes"), vaWorkspace = allocator.Allocate("__va_workspace", "va_workspace");
         var liftedExpressions = new Dictionary<long, string>();
         var expansionCache = new Dictionary<long, bool>();
+        var purityCache = new Dictionary<long, bool>();
         var continueLabels = new Dictionary<long, string>();
         string NodeType(Node node) => obj.Type(node.TypeId!.Value);
         string Truth(Node node)
@@ -618,8 +619,37 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 Line(indent + 1, pointer + "[" + item.ConstantText + "] = " + ExpandedValue(body.Child(item.Id, "value"), indent + 1) + ";");
             Line(indent, "}");
         }
-        // C comma expressions can contain void operations; C# expressions cannot.
-        // Lift only affected expressions, retaining lazy branches and evaluating
+        bool Pure(Node node)
+        {
+            if (purityCache.TryGetValue(node.Id, out bool cached)) return cached;
+            bool result = node.Kind is not ("call" or "indirect-call" or "assign" or "compound-assign" or "mutate" or "volatile-place" or "va-start" or "va-copy" or "va-end" or "va-arg") &&
+                !(node.Kind == "intrinsic" && (node.Operator == "unreachable" || node.Operator!.Contains("overflow", StringComparison.Ordinal))) &&
+                body.Edges.GetValueOrDefault(node.Id, []).All(edge => Pure(body.Nodes[edge.ChildId]));
+            purityCache[node.Id] = result;
+            return result;
+        }
+        // An address rooted in owned stack storage with constant offsets cannot
+        // change while the RHS runs, even if the RHS calls or mutates values.
+        bool StablePlace(Node node, int depth = 0) => depth <= 1024 &&
+            (node.Kind is "binding" or "storage" || node.Kind is "member" or "volatile-place" && StablePlace(body.Child(node.Id, "operand"), depth + 1) ||
+                node.Kind == "dereference" && StablePointer(body.Child(node.Id, "operand"), depth + 1));
+        bool StablePointer(Node node, int depth = 0)
+        {
+            if (depth > 1024) return false;
+            if (node.Kind is "storage-address" or "function-address" || node.Kind == "constant" && ScalarTypes.IsPointer(NodeType(node))) return true;
+            if (node.Kind is "address" or "array-decay") return StablePlace(body.Child(node.Id, "operand"), depth + 1);
+            if (node.Kind == "convert" && ScalarTypes.IsPointer(NodeType(node)) && ScalarTypes.IsPointer(NodeType(body.Child(node.Id, "operand"))))
+                return StablePointer(body.Child(node.Id, "operand"), depth + 1);
+            if (node.Kind == "binary" && node.Operator is "pointer-add" or "pointer-subtract")
+            {
+                Node left = body.Child(node.Id, "left"), right = body.Child(node.Id, "right");
+                return right.Kind == "constant" && ScalarTypes.IsInteger(NodeType(right)) && StablePointer(left, depth + 1) ||
+                    node.Operator == "pointer-add" && left.Kind == "constant" && ScalarTypes.IsInteger(NodeType(left)) && StablePointer(right, depth + 1);
+            }
+            return false;
+        }
+        // Expand only operations whose evaluation order or void operands cannot
+        // be expressed directly in C#. Preserve lazy branches and evaluate
         // earlier operands before the lifted statements of later operands.
         bool NeedsExpansion(Node node)
         {
@@ -627,6 +657,13 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             if (expansionCache.TryGetValue(node.Id, out bool cached)) return cached;
             bool result = node.Kind == "sequence" && body.Children(node.Id, "item").SkipLast(1)
                 .Any(edge => NodeType(body.Nodes[edge.ChildId]) == "void");
+            if (node.Kind is "assign" or "compound-assign" && node.EvaluationOrder == "right-to-left")
+            {
+                Node target = body.Child(node.Id, "target"), value = body.Child(node.Id, "value");
+                // C# compound assignment reads the old destination before its
+                // RHS; C++17 reads it afterwards, even for a simple local.
+                result |= (node.Kind == "compound-assign" || !StablePlace(target)) && (!Pure(target) || !Pure(value));
+            }
             result |= body.Edges.GetValueOrDefault(node.Id, []).Any(edge =>
                 (edge.Role != "target" || node.Kind is "assign" or "compound-assign") &&
                 body.Nodes[edge.ChildId].TypeId != null && NeedsExpansion(body.Nodes[edge.ChildId]));

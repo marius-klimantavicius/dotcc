@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "profile": "scalar-control-v15",
+  "scope": "Original record/member provenance, complete own-vptr/observed ABI layouts, C++17 RHS-first assignments",
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "artifacts": {
+    "recordAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-origin-acceptance-002/results.json",
+      "sha256": "2b555fcea2cde14c5b2772f84a737f061e496d021aa3299f57acae698e0d07c4"
+    },
+    "assignmentAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-assignment-managed018-002/results.json",
+      "sha256": "051989471b98125256a1a21ac17732ee6daf99ea6cc64aff2df39012c8cb6802"
+    },
+    "vptrOriginAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-vptr-managed017-001/results.json",
+      "sha256": "6efb6c253bc400ef4377c1d7b62b565eba2a156ad8e5ec18ac5358486f5d416a"
+    },
+    "originalMemberAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-origins-managed017-001/results.json",
+      "sha256": "82f5ac5fcee949b5b7a9bdaf997255ea9828f76132a08fa32f00872edba050f2"
+    },
+    "typeinfoReduction": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-typeinfo-layout-native018-001/unit.dotobj",
+      "sha256": "2aab0f0ce611453040f09626865421c08b4f2314d728695a39e6785ac5b51d51"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native020-verified-snapshot/cpfe-dot",
+      "sha256": "fd609597114499e790aabeebe69eb24b860d68caf5d7e47ed04198ab299ced1e"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-018/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "c09158947053efc0750fb06361c0c390582d2781df51435eede87ec28ae7d71b"
+    }
+  },
+  "limitations": [
+    "No general inheritance/subobject/tail-padding support",
+    "No hidden-this/result-buffer ABI yet",
+    "No general C++ lifetime/EH or dynamic-global schedule",
+    "Original record rows do not establish complete independent source indexing",
+    "Stock EDG C expression order is not a deterministic oracle for C++17 assignment sequencing",
+    "DuckDB execution remains incomplete"
+  ],
+  "fullRegression": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-v15-acceptance-001/results.json",
+    "sha256": "a64599669c8c5f44287c0cbd2f3a5ac846b5ad0cd2cdaead48807f5e70eff5da",
+    "checks": 843,
+    "nativeAotVerified": true
+  }
+}
