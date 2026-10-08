@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 63,
+  "scope": "Canonical portable online-processor sysconf query used by libc++ hardware_concurrency",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-runtime-acceptance-005/results.json",
+    "sha256": "21c82fd36dce7b91b695b85a0a42ebaf3811d81246466480a6becb4097cde422"
+  },
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "checksDescription": [
+    "Portable _SC_NPROCESSORS_ONLN macro is84 and visible to translated source",
+    "Native/JIT/NativeAOT positive online-CPU query",
+    "Managed result equals BCL Environment.ProcessorCount (includes process affinity/container limits)",
+    "Existing allocation, FILE/POSIX, locale/session, timezone, TLS and GC checks retained"
+  ],
+  "limitations": [
+    "Full libc++ thread.cpp owned translation still blocked on C++ lifetime support"
+  ]
+}

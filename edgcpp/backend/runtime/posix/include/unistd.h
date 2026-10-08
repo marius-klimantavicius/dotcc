@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #define _SC_PAGESIZE 30
 #define _SC_PAGE_SIZE _SC_PAGESIZE
+#define _SC_NPROCESSORS_ONLN 84
 #define _SC_PHYS_PAGES 85
 #define STDIN_FILENO 0
 #define STDOUT_FILENO 1

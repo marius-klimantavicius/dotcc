@@ -114,7 +114,11 @@ def main():
                 check(name + '-va-source-reused', any(item['path'].endswith('Runtime.VaArg.cs') for item in bindings['reusedFiles']))
             project_file = project / 'Translated.csproj'
             if name in ('runtime_memory', 'runtime_stdio_posix'):
-                (project / 'RuntimeCheckRunner.cs').write_text(HOST)
+                host = HOST
+                if name == 'runtime_stdio_posix':
+                    host = host.replace('int* mainError =', 'if (global::Edg.Runtime.LibC.sysconf(84) != Environment.ProcessorCount) return 101;\n        int* mainError =')
+                    check('online-processor-query-bound', any(row['name'] == 'sysconf' for row in bindings['bound']))
+                (project / 'RuntimeCheckRunner.cs').write_text(host)
                 project_file.write_text(project_file.read_text().replace('<StartupObject>__DotObjEntry</StartupObject>', '<StartupObject>RuntimeCheckRunner</StartupObject>'))
             elif name == 'runtime_sessions':
                 names = {item['name'] for item in bindings['bound']}

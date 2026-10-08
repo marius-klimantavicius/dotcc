@@ -46,5 +46,6 @@ int main(void) {
     if (stat(path, &info) || info.st_size != (long)strlen(payload) || unlink(path)) return 18;
     errno = 0;
     if (open(path, O_RDONLY) != -1 || errno != ENOENT) return 19;
+    if (sysconf(_SC_NPROCESSORS_ONLN) < 1) return 20;
     return 0;
 }

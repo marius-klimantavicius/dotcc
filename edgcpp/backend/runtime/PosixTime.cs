@@ -119,6 +119,9 @@ public sealed unsafe partial class PosixContext
     public long Sysconf(int name)
     {
         if (name == 30) return Environment.SystemPageSize; // portable _SC_PAGESIZE
+        // Online CPUs available to this managed process, including the BCL's
+        // affinity/container limits; also used by libc++ hardware_concurrency.
+        if (name == 84) return Environment.ProcessorCount;
         if (name == 85) return PhysicalPages(); // portable _SC_PHYS_PAGES
         SetError(22);
         return -1;
