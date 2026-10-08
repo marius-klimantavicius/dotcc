@@ -2254,3 +2254,28 @@ This is the `scalar-control-v1` execution slice, not completion of the semantic
 design. Prelower source/macro capture, lifetimes/EH, globals/TLS, records and
 general C++ remain open. The native transport buffers its intermediate JSON;
 large-input memory scaling is not yet established. DuckDB work remains paused.
+
+The next object milestone, `scalar-control-v2`, adds structured for/do loops,
+explicit break/continue target identities and scalar pre/post increment and
+decrement. Generated C# retains those constructs directly. The verifier treats
+exit targets as non-owning references and requires the nearest lexical loop;
+invalid, missing and nonloop targets fail verification.
+
+All 102 acceptance checks pass on Linux x64, including native reference,
+managed JIT and NativeAOT for C++17 and C11 loop fixtures. Coverage includes
+nested and unbraced exits, omitted for clauses, shadowed loop locals, continue
+executing a for step or do condition, prefix/postfix values and byte wrapping.
+The prior separate-TU, incremental rebuild and integrity checks were rerun.
+
+C11 verification exposed a legitimate EDG lowering difference: C99 for-init
+declarations introduce a synthetic block whose break label remains outside it.
+The object adapter now follows trailing synthetic block parents to that exact
+marked target, following the stock lowering layout; no frontend semantics were
+changed. Independent review found no blocking issue. Earlier failed probes and
+all successful artifacts remain preserved. [Hashed loop milestone
+evidence](../evidence/dotobj-structured-loops-20261008.json).
+
+The current exact-schema reader requires v2 objects; retained v1 tool builds
+remain usable with their original objects. The callable ABI is unchanged.
+Prelower source/macro capture, broader types/storage and C++ lifetimes remain
+unfinished. Switch, arbitrary goto and comma-expression headers remain rejected.

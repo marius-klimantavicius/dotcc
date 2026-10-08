@@ -54,7 +54,7 @@ internal sealed class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v1" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v2" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");

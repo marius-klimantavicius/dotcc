@@ -1,6 +1,6 @@
 # Managed semantic object linker
 
-This is the first executable `scalar-control-v1` implementation of the fresh
+This is the executable `scalar-control-v2` implementation of the fresh
 `.dotobj` semantic graph. It does not read the previous semantic-export format
 or an emission-command stream.
 
@@ -53,7 +53,14 @@ uses entity identities for every reference, and deterministically disambiguates
 collisions. Reserved keywords use C# `@` escaping; ordinary names retain their
 spelling without an escape prefix. Original files each get a generated
 C# file; all files share one configurable partial class. Structured blocks,
-`if`, `while`, returns and ordinary scalar expressions remain structured.
+`if`, `while`, `for`, `do`/`while`, `break`, `continue`, returns and ordinary
+scalar expressions remain structured. Integer pre/post increment/decrement use
+C# operators directly, including unchecked unsigned-byte wraparound. Loop exits
+carry explicit target identities in the object and must address the nearest
+lexically enclosing loop; malformed or cross-loop targets are rejected.
+For-header declarations are currently normalized to declarations in an enclosing
+block; the initializer expression, condition and step retain their execution
+positions. Missing for conditions remain infinite-loop syntax.
 Locals without explicit initializers receive `default` for C# definite assignment;
 this does not model defined behavior for source reads of indeterminate values.
 Non-void fallthrough receives a failure guard when needed for C# compilation;
@@ -68,3 +75,6 @@ view, macro capture or lifetime capture. Globals/TLS, pointers, records, functio
 addresses, exceptions/RAII, inline/COMDAT, templates and runtime providers are
 not implemented in this profile. Unsupported input is rejected; scalar fixtures
 do not demonstrate DuckDB readiness or full C++ coverage.
+
+The current schema requires scalar-control-v2 objects. Earlier v1 objects remain
+usable with their retained earlier tool build, or can be regenerated from source.

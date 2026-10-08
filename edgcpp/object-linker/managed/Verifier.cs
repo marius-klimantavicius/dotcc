@@ -4,8 +4,8 @@ namespace DotObj;
 
 internal static class Verifier
 {
-    private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "if", "while"];
-    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert"];
+    private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "if", "while", "for", "do-while", "break", "continue"];
+    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -57,7 +57,7 @@ internal static class Verifier
         {
             if (!StatementKinds.Contains(node.Kind)) Fail($"Expected statement, found {node.Kind}");
         }
-        void Visit(Node node, List<long> scopes, HashSet<long> visible, int depth)
+        void Visit(Node node, List<long> scopes, HashSet<long> visible, List<long> loops, int depth)
         {
             if (depth > 1024) Fail("Graph nesting exceeds supported limit");
             if (!visited.Add(node.Id)) Fail($"Shared or cyclic executable node {node.Id}");
@@ -77,7 +77,7 @@ internal static class Verifier
             }
             if ((node.EntityId != null) != (node.Kind == "call") ||
                 (node.BindingId != null) != (node.Kind is "binding" or "declare") ||
-                (node.Operator != null) != (node.Kind is "binary" or "unary") ||
+                (node.Operator != null) != (node.Kind is "binary" or "unary" or "mutate") ||
                 (node.ConstantText != null) != (node.Kind == "constant")) Fail("Unexpected or missing typed payload");
 
             if (node.Kind == "block")
@@ -89,7 +89,7 @@ internal static class Verifier
                 {
                     Node child = body.Nodes[edge.ChildId];
                     Statement(child);
-                    Visit(child, nestedScopes, nestedVisible, depth + 1);
+                    Visit(child, nestedScopes, nestedVisible, loops, depth + 1);
                     if (child.Kind == "declare") nestedVisible.Add(child.BindingId!.Value);
                 }
                 return;
@@ -123,8 +123,21 @@ internal static class Verifier
                     if (body.Children(node.Id, "else").Any()) Statement(Child(node, "else"));
                     break;
                 case "while":
+                case "do-while":
                     EdgeShape(node, ("condition", 1, 1), ("body", 1, 1));
                     Expr(node, "condition"); Statement(Child(node, "body")); break;
+                case "for":
+                    EdgeShape(node, ("initializer", 0, 1), ("condition", 0, 1), ("step", 0, 1), ("body", 1, 1));
+                    foreach (string role in new[] { "initializer", "condition", "step" })
+                        if (body.Children(node.Id, role).Any()) Expr(node, role, role != "condition");
+                    Statement(Child(node, "body"));
+                    break;
+                case "break":
+                case "continue":
+                    EdgeShape(node, ("target", 1, 1));
+                    if (loops.Count == 0 || Child(node, "target").Id != loops[^1])
+                        Fail("Loop exit target must be the nearest enclosing loop");
+                    return; // target is an identity reference, not another executable occurrence.
                 case "constant":
                     EdgeShape(node);
                     if (!int.TryParse(node.ConstantText, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out int value) ||
@@ -169,15 +182,23 @@ internal static class Verifier
                     EdgeShape(node, ("target", 1, 1), ("value", 1, 1)); Expr(node, "target"); Expr(node, "value");
                     if (Child(node, "target").Kind != "binding") Fail("Initial profile assignment target must be a binding");
                     SameType(node, Child(node, "target")); SameType(node, Child(node, "value")); break;
+                case "mutate":
+                    EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
+                    if (node.Operator is not ("pre-inc" or "post-inc" or "pre-dec" or "post-dec") ||
+                        Child(node, "operand").Kind != "binding" || Type(node) is not ("i32" or "u8"))
+                        Fail("Increment/decrement requires a supported operator and an integer binding");
+                    SameType(node, Child(node, "operand"));
+                    break;
                 case "convert": EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand"); break;
             }
+            var nestedLoops = node.Kind is "while" or "for" or "do-while" ? new List<long>(loops) { node.Id } : loops;
             foreach (Edge edge in body.Edges.GetValueOrDefault(node.Id, []).OrderBy(e => e.Ordinal))
-                Visit(body.Nodes[edge.ChildId], scopes, visible, depth + 1);
+                Visit(body.Nodes[edge.ChildId], scopes, visible, nestedLoops, depth + 1);
         }
         foreach (var edges in body.Edges.Values)
             foreach (Edge edge in edges)
                 if (!body.Nodes.ContainsKey(edge.ParentId) || !body.Nodes.ContainsKey(edge.ChildId)) Fail("Edge leaves function body");
-        Visit(root!, [], parameters.Select(parameter => parameter.Id).ToHashSet(), 0);
+        Visit(root!, [], parameters.Select(parameter => parameter.Id).ToHashSet(), [], 0);
         if (visited.Count != body.Nodes.Count) Fail("Orphan executable nodes");
         if (declarations.Count != body.Bindings.Values.Count(binding => binding.Kind == "local")) Fail("Local has no declaration");
     }

@@ -8,7 +8,7 @@ Native stdout wire is one JSON object (transient packaging protocol only):
 ```
 {
   "formatVersion": 1,
-  "profile": "scalar-control-v1",
+  "profile": "scalar-control-v2",
   "sourceFiles": [{"id":1,"path":"/absolute/main.cpp","parentId":null}],
   "types": [{"id":1,"kind":"void"},{"id":2,"kind":"i32"},{"id":3,"kind":"bool"},{"id":4,"kind":"u8"}],
   "entities": [{"id":1,"sourceName":"add","linkage":"external","externalKey":"exact EDG linker symbol","definition":"strong","returnTypeId":2,"sourceFileId":1,"line":1,"column":1}],
@@ -38,22 +38,42 @@ Supported node kinds and ordered edge roles:
 - `declare`: bindingId + initializer[0] optional.
 - `if`: condition[0], then[0], else[0] optional.
 - `while`: condition[0], body[0].
-- `constant`: type i32/bool + constantText (bool 0/1).
+- `for`: initializer[0], condition[0], step[0] each optional expressions;
+  body[0] required statement. Missing condition means true. Header declarations
+  use an enclosing block binding and declaration; initializer remains an
+  expression. Step executes after normal body completion and `continue`, never
+  after `break` or `return`.
+- `do-while`: body[0], condition[0]; body executes before the condition, including
+  the first iteration. `continue` evaluates the condition before repeating.
+- `break`, `continue`: target[0] is a non-owning metadata reference to the nearest
+  lexically enclosing while/for/do-while node. The verifier requires that exact
+  identity; an exit outside a loop or targeting another loop is invalid. No
+  arbitrary jumps or switch exits are supported.
+- `constant`: type i32/u8/bool + constantText (u8 0..255, bool 0/1).
 - `binding`: bindingId and matching type. Denotes scalar place; consuming
-  expression operations read its current value; assignment alone writes it.
+  expression operations read its current value; assignment and mutation write it.
 - `call`: entityId + argument[0..n), type matches target return.
 - `binary`: operator add/sub/mul/div/rem/eq/ne/lt/le/gt/ge/and/or;
   left[0],right[0]. and/or are short-circuit boolean operations.
 - `unary`: operator neg/not/plus, operand[0].
 - `assign`: target[0] (binding node), value[0], result type target type.
-- `convert`: operand[0], destination type i32/bool; nonzero truth conversion.
+- `mutate`: operator pre-inc/post-inc/pre-dec/post-dec, operand[0] (i32/u8
+  binding), result type equals operand type. Prefix returns the new value;
+  postfix returns the previous value. Unsigned byte mutation wraps at 8 bits.
+  Source bool mutation is rejected by the producer before physical u8 lowering
+  loses its distinction; graph bool mutation is rejected by the verifier.
+- `convert`: operand[0], destination type i32/u8/bool; width conversion or nonzero truth conversion.
 
 Statements have typeId=null; expression nodes must name a type. Only `call`
-may have void type and only in expr-stmt/void-return-as-allowed contexts.
+may have void type and only in expression statements, for initializer/step,
+or void-return-as-allowed contexts.
 No payload for an unrelated kind; no extra edges/fields silently ignored.
 Expression occurrences are not shared: each executable node has one parent,
 except a function root. Scope/target edges are metadata, not evaluation edges.
-Initial structured scope profile excludes declarations in for headers, jumps,
+Loop condition/body/step roles encode execution and sequencing; database edge
+ordering is not itself an execution schedule. Initializer executes once, a for
+condition precedes each body iteration, and step follows each completed body.
+The structured scope profile excludes arbitrary jumps,
 references, globals/TLS, records, pointers, EH/RAII, inline/COMDAT and runtime
 providers. Unsupported constructs fail export rather than emit partial output.
 
@@ -64,6 +84,10 @@ prelowerSource=false, macros=false, lifetimes=false until those captures exist.
 These explicit limitations must survive the link report; fixtures do not claim
 full source-faithful C++ graph or DuckDB readiness. Namespace/class are link args.
 The initial target is portable-lp64-binary80-v2; callable ABI dotobj-scalar-v1.
+The scalar-control-v2 object profile adds structured loops and explicit loop
+exit identities; it does not change the callable ABI. The current canonical
+schema reader rejects scalar-control-v1 objects; preserve their earlier tool
+build to read them, or recompile from source with the current producer.
 
 Expression valueCategory is place for binding and value otherwise; statements
 use null. evaluationOrder is null for statements, none for constant/binding,

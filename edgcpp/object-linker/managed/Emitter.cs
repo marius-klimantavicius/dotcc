@@ -50,7 +50,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         File.WriteAllText(Path.Combine(output, "Translated.csproj"), project);
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v1", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v2", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Scalar/control profile only; no globals, records, pointers, EH, RAII, templates/COMDAT or runtime providers", "No pre-lowering source view, macro capture or lifetime capture" },
@@ -104,6 +104,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
                     Symbol target = linker.Resolve(obj, node.EntityId!.Value);
                     return "global::" + namespaceName + "." + className + "." + linker.Names[target.Key] + "(" + string.Join(", ", body.Children(node.Id, "argument").Select(edge => Expression(body.Nodes[edge.ChildId]))) + ")";
                 case "assign": return "(" + Operand("target") + " = " + Operand("value") + ")";
+                case "mutate": return "(" + Mutation(node) + ")";
                 case "convert":
                     if (NodeType(node) == NodeType(Child("operand"))) return Operand("operand");
                     if (NodeType(node) == "bool") return Truth(Child("operand"));
@@ -122,6 +123,19 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
                 default: throw new InvalidDataException("Unsupported expression " + node.Kind);
             }
         }
+        string Mutation(Node node)
+        {
+            string operand = Expression(body.Child(node.Id, "operand"));
+            string operation = node.Operator is "pre-inc" or "post-inc" ? "++" : "--";
+            return node.Operator is "pre-inc" or "pre-dec" ? operation + operand : operand + operation;
+        }
+        string StatementExpression(Node node) => node.Kind switch
+        {
+            "assign" => Expression(body.Child(node.Id, "target")) + " = " + Expression(body.Child(node.Id, "value")),
+            "mutate" => Mutation(node),
+            "call" => Expression(node),
+            _ => "_ = " + Expression(node)
+        };
         void Line(int indent, string text) => output.Append(' ', indent * 4).Append(text).Append('\n');
         void ControlBody(Node node, int indent)
         {
@@ -143,11 +157,8 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
                     else Line(indent, "return " + Expression(Child("value")) + ";");
                     break;
                 case "expr-stmt":
-                    Node value = Child("value");
-                    string expression = Expression(value);
                     // C# only allows a subset of expressions as statement expressions.
-                    if (value.Kind == "assign") Line(indent, Expression(body.Child(value.Id, "target")) + " = " + Expression(body.Child(value.Id, "value")) + ";");
-                    else Line(indent, value.Kind == "call" ? expression + ";" : "_ = " + expression + ";");
+                    Line(indent, StatementExpression(Child("value")) + ";");
                     break;
                 case "declare":
                     Binding binding = body.Bindings[node.BindingId!.Value];
@@ -158,6 +169,18 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
                     if (body.Children(node.Id, "else").Any()) { Line(indent, "else"); ControlBody(Child("else"), indent); }
                     break;
                 case "while": Line(indent, "while (" + Truth(Child("condition")) + ")"); ControlBody(Child("body"), indent); break;
+                case "for":
+                    string Header(string role) => body.Children(node.Id, role).Any()
+                        ? role == "condition" ? Truth(Child(role)) : StatementExpression(Child(role)) : "";
+                    Line(indent, "for (" + Header("initializer") + "; " + Header("condition") + "; " + Header("step") + ")");
+                    ControlBody(Child("body"), indent);
+                    break;
+                case "do-while":
+                    Line(indent, "do"); ControlBody(Child("body"), indent);
+                    Line(indent, "while (" + Truth(Child("condition")) + ");");
+                    break;
+                case "break": Line(indent, "break;"); break;
+                case "continue": Line(indent, "continue;"); break;
                 default: throw new InvalidDataException("Unsupported statement " + node.Kind);
             }
         }

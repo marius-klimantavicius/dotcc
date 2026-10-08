@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v1: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v2: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -38,6 +38,9 @@ struct Writer {
   std::vector<string> files,entities,parameters,functions,bindings,nodes,edges;
   std::set<a_scope_ptr> bound_scopes;
   std::set<unsigned> declared_bindings;
+  struct Loop { unsigned node; source_control_context labels; };
+  std::vector<Loop> loops;
+  std::set<a_label_ptr> loop_labels;
   string number(unsigned value){return value?std::to_string(value):"null";}
   unsigned type_id(a_type_ptr type) {
     unsigned q=get_type_qualifiers(type);
@@ -181,6 +184,17 @@ struct Writer {
       unsigned id=node("convert",ty,e->position,0,0,"","","value",order);
       edge(id,"operand",0,expression(a));return id;
     }
+    if(operation.kind==eok_pre_incr || operation.kind==eok_post_incr ||
+       operation.kind==eok_pre_decr || operation.kind==eok_post_decr) {
+      if(!a || b || a->kind!=enk_variable)reject("nonbinding scalar mutation");
+      auto operand_type=skip_typerefs(a->type);
+      if(operand_type->kind!=tk_integer || operand_type->variant.integer.bool_type || type_id(a->type)!=ty)
+        reject("mutation outside integer binding profile");
+      string op=operation.kind==eok_pre_incr?"pre-inc":operation.kind==eok_post_incr?"post-inc":
+                operation.kind==eok_pre_decr?"pre-dec":"post-dec";
+      unsigned id=node("mutate",ty,e->position,0,0,op,"","value",order);
+      edge(id,"operand",0,expression(a));return id;
+    }
     const char *op=nullptr;bool unary=false;
     switch(operation.kind) {
       case eok_add:op="add";break;case eok_subtract:op="sub";break;case eok_multiply:op="mul";break;
@@ -195,6 +209,30 @@ struct Writer {
     if(!a || (unary?(b!=nullptr):(!b || b->next)))reject("operator arity");
     unsigned id=node(unary?"unary":"binary",ty,e->position,0,0,op,"","value",order);
     edge(id,unary?"operand":"left",0,expression(a));if(!unary)edge(id,"right",0,expression(b));return id;
+  }
+  void loop_body(unsigned id,a_statement_ptr s,a_statement_ptr body) {
+    // The stock C backend emits these compiler-generated targets as gotos.
+    // Recover only EDG's marked break/continue targets, using the same label
+    // mapping as the existing dot backend. User labels/gotos remain unsupported.
+    auto labels=source_context(s,body,true);
+    if(!labels.break_target) {
+      // lower_c99_for_statement puts declaration initialization and the loop
+      // in a synthetic block, retaining the break label after that block.
+      // Unlike C++ lower_for_statement, it does not move the label inside.
+      // Follow only empty tails of those wrappers, never another construct.
+      auto tail=s;
+      while(!tail->next && tail->parent && tail->parent->kind==stmk_block &&
+            !tail->parent->position.seq)tail=tail->parent;
+      if(tail->next && tail->next->kind==stmk_label && tail->next->variant.label.ptr->break_label)
+        labels.break_target=tail->next->variant.label.ptr;
+    }
+    for(auto label:{labels.break_target,labels.continue_target})if(label) {
+      if(label->source_corresp.name || label->switch_break_label)reject("nonloop control target");
+      loop_labels.insert(label);
+    }
+    loops.push_back({id,labels});
+    edge(id,"body",0,statement(body));
+    loops.pop_back();
   }
   unsigned statement(a_statement_ptr s,a_scope_ptr root_scope=nullptr) {
     if(!s)reject("missing statement");
@@ -213,6 +251,7 @@ struct Writer {
         scope_bindings(scope,id,ordinal);
         for(auto child=s->variant.block.statements;child;child=child->next) {
           if(child->kind==stmk_decl || child->kind==stmk_empty)continue;
+          if(child->kind==stmk_label && loop_labels.count(child->variant.label.ptr))continue;
           edge(id,"statement",ordinal++,statement(child));
         }
         return id;
@@ -231,9 +270,38 @@ struct Writer {
         if(s->variant.if_stmt.else_statement)edge(id,"else",0,statement(s->variant.if_stmt.else_statement));
         return id;
       }
-      case stmk_while: {
-        unsigned id=node("while",0,s->position);edge(id,"condition",0,expression(s->expr));
-        edge(id,"body",0,statement(s->variant.loop_statement));return id;
+      case stmk_while: case stmk_end_test_while: {
+        unsigned id=node(s->kind==stmk_while?"while":"do-while",0,s->position);
+        edge(id,"condition",0,expression(s->expr));
+        loop_body(id,s,s->variant.loop_statement);return id;
+      }
+      case stmk_for: {
+        unsigned id=node("for",0,s->position);
+        auto f=s->variant.for_loop.extra_info;
+        // As in c_gen_be, lowering moves declaration initializers into the
+        // enclosing scope. The retained for initializer is one expression.
+        if(f->initialization) {
+          auto init=f->initialization;
+          if(init->kind!=stmk_expr || init->next)reject("nonexpression lowered for initializer");
+          edge(id,"initializer",0,expression(init->expr));
+        }
+        if(s->expr)edge(id,"condition",0,expression(s->expr));
+        if(f->increment)edge(id,"step",0,expression(f->increment));
+        loop_body(id,s,s->variant.for_loop.statement);return id;
+      }
+      case stmk_goto: {
+        auto target=s->variant.label.ptr;
+        if(loops.empty() || target->source_corresp.name)reject("goto outside structured loop transfer");
+        const auto &loop=loops.back();
+        string kind=target==loop.labels.break_target?"break":target==loop.labels.continue_target?"continue":"";
+        if(kind.empty())reject("nonlocal loop transfer");
+        unsigned id=node(kind,0,s->position);
+        // This is a non-owning control reference, not an evaluation child.
+        edge(id,"target",0,loop.node);return id;
+      }
+      case stmk_label: {
+        if(!loop_labels.count(s->variant.label.ptr))reject("label outside structured loop transfer");
+        return node("block",0,s->position);
       }
       case stmk_empty:return node("block",0,s->position);
       case stmk_init: {
@@ -267,14 +335,14 @@ struct Writer {
       auto r=routines[i];if(r->function_def_number==NULL_function_def_number)continue;
       function=routine_ids.at(r);auto scope=scope_for_routine_or_null(r);
       string label="dotobj function "+source_spelling(&r->source_corresp);context=label.c_str();
-      binding_ids.clear();bound_scopes.clear();declared_bindings.clear();
+      binding_ids.clear();bound_scopes.clear();declared_bindings.clear();loops.clear();loop_labels.clear();
       check_lifetime(scope->lifetime);
       if(!scope->assoc_block || scope->assoc_block->kind!=stmk_block)reject("nonblock function root");
       unsigned root=statement(scope->assoc_block,scope);
       functions.push_back("{\"entityId\":"+number(function)+",\"bodyNodeId\":"+number(root)+"}");
       context="file scope";
     }
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v1\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v2\",\"sourceFiles\":"+array(files)+
       ",\"types\":[{\"id\":1,\"kind\":\"void\"},{\"id\":2,\"kind\":\"i32\"},{\"id\":3,\"kind\":\"u8\"}],\"entities\":"+array(entities)+
       ",\"parameters\":"+array(parameters)+",\"functions\":"+array(functions)+",\"bindings\":"+array(bindings)+",\"nodes\":"+array(nodes)+",\"edges\":"+array(edges)+"}\n";
     if(fwrite(result.data(),1,result.size(),stdout)!=result.size() || fflush(stdout))reject("wire output failure");

@@ -26,13 +26,14 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     inputs = out / 'inputs'
     inputs.mkdir()
-    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp']:
+    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
+    shutil.copy2(ROOT / 'tests/loops.cpp', inputs / 'loops-c.c')
     checks = []
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v1', nativeAotRequested=args.nativeaot,
+            profile='scalar-control-v2', nativeAotRequested=args.nativeaot,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No prelower source view, macro history, lifetime/EH or globals yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -58,10 +59,10 @@ def main():
         if not condition:
             raise RuntimeError(label)
 
-    def compile_source(name, source, output=None, expected=0, unit_id=None):
+    def compile_source(name, source, output=None, expected=0, unit_id=None, std='c++17'):
         output = output or out / (name + '.dotobj')
         run('compile-' + name, [sys.executable, '-B', ROOT / 'compile.py', source,
-            '--output', output, '--work-dir', out / (name + '-compile'), '--unit-id', unit_id or name], expected)
+            '--output', output, '--work-dir', out / (name + '-compile'), '--unit-id', unit_id or name, '--std', std], expected)
         return output
 
     try:
@@ -106,11 +107,20 @@ def main():
         execute('linked', linked)
         scoped = link('link-scopes', [scopes])
         execute('scopes', scoped)
-        for name in ['conversions', 'empty']:
+        for name in ['conversions', 'empty', 'loops']:
             obj = compile_source(name, inputs / (name + '.cpp'))
             run('native-' + name + '-build', ['c++', '-std=c++17', inputs / (name + '.cpp'), '-o', out / ('native-' + name)])
             run('native-' + name + '-run', [out / ('native-' + name)])
             execute(name, link('link-' + name, [obj]))
+        loops_object = out / 'loops.dotobj'
+        loops_cs = '\n'.join(p.read_text() for p in (out / 'link-loops').glob('*.cs'))
+        check('structured-loop-source', all(token in loops_cs for token in ['for (', 'do', 'while (', 'break;', 'continue;']) and 'goto ' not in loops_cs)
+        with sqlite3.connect(loops_object) as db:
+            check('explicit-loop-targets', db.execute("SELECT count(*) FROM nodes WHERE kind IN ('break','continue')").fetchone()[0] > 0 and db.execute("SELECT count(*) FROM nodes n LEFT JOIN edges e ON e.parent_id=n.id AND e.role='target' LEFT JOIN nodes t ON t.id=e.child_id WHERE n.kind IN ('break','continue') AND (t.id IS NULL OR t.kind NOT IN ('for','while','do-while'))").fetchone()[0] == 0)
+        loops_c = compile_source('loops-c', inputs / 'loops-c.c', std='c11')
+        run('native-loops-c-build', ['cc', '-std=c11', inputs / 'loops-c.c', '-o', out / 'native-loops-c'])
+        run('native-loops-c-run', [out / 'native-loops-c'])
+        execute('loops-c', link('link-loops-c', [loops_c]))
         reverse = link('link-reversed', [consumer, provider])
         cs = lambda path: {p.name: p.read_bytes() for p in path.glob('*.cs')}
         check('stable-output-input-order', cs(linked) == cs(reverse))
@@ -153,13 +163,24 @@ def main():
         bad_schema = mutate('schema', provider, [('ALTER TABLE nodes ADD COLUMN hidden_behavior TEXT', ())])
         run('extra-schema-payload', ['dotnet', tool, 'verify', bad_schema], None)
 
+        wrong_target = mutate('loop-target', loops_object, [(
+            "UPDATE edges SET child_id=(SELECT body_node_id FROM functions WHERE entity_id=(SELECT function_id FROM nodes WHERE id=edges.parent_id)) WHERE role='target' AND parent_id IN (SELECT id FROM nodes WHERE kind IN ('break','continue'))", ())])
+        run('nonloop-exit-target', ['dotnet', tool, 'verify', wrong_target], None)
+        missing_target = mutate('loop-missing-target', loops_object, [(
+            "DELETE FROM edges WHERE role='target' AND parent_id=(SELECT min(id) FROM nodes WHERE kind IN ('break','continue'))", ())])
+        run('missing-loop-exit-target', ['dotnet', tool, 'verify', missing_target], None)
+        outer_target = mutate('loop-outer-target', loops_object, [(
+            "UPDATE edges SET child_id=(SELECT min(id) FROM nodes WHERE kind='for' AND function_id=(SELECT function_id FROM nodes WHERE id=edges.parent_id)) WHERE role='target' AND parent_id IN (SELECT id FROM nodes WHERE kind IN ('break','continue')) AND child_id IN (SELECT id FROM nodes WHERE kind='for')", ())])
+        run('wrong-lexical-loop-target', ['dotnet', tool, 'verify', outer_target], None)
+
         negatives = {
             'global': 'int storage=1; int f(){return storage;}\n',
             'pointer': 'int f(int* value){return *value;}\n',
             'volatile': 'int f(){volatile int value=1; return value;}\n',
             'inline': 'inline int f(){return 1;} int g(){return f();}\n',
             'noexcept': 'int f() noexcept {return 1;}\n',
-            'for': 'int f(){int n=0; for(int i=0;i<3;i=i+1)n=n+i; return n;}\n',
+            'switch': 'int f(int n){switch(n){case 1:return 2;default:return 3;}}\n',
+            'goto': 'int f(){int n=0; again: ++n; if(n<3)goto again; return n;}\n',
         }
         for name, code in negatives.items():
             source = out / ('unsupported-' + name + '.cpp')

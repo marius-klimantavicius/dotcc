@@ -1,0 +1,150 @@
+{
+  "milestone": "Structured loop semantic objects and managed emission",
+  "date": "2026-10-08",
+  "profile": "scalar-control-v2",
+  "status": "passed-with-explicit-coverage-boundaries",
+  "acceptance": {
+    "checkCount": 102,
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-loops-acceptance-002/results.json",
+      "sha256": "61c53e0e8ac09e84cda0aed8e5089f8e1e5836d37a823c16a425c0fe7aae2b49"
+    },
+    "log": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-loops-acceptance-002.log",
+      "sha256": "b734e0819472e91d754aa0034089da73992f61fb4eae0896bf2e75fcdcfad2bc"
+    },
+    "languages": [
+      "C++17",
+      "C11"
+    ],
+    "nativeReference": true,
+    "managedJit": true,
+    "nativeAot": true,
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39"
+  },
+  "compiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "sha256": "7d836a7e5a7475eb58963b2e595dbd4e6853de79c45652130da3c8669f919215"
+  },
+  "nativeBuildLog": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-loops-native-build-002.log",
+    "sha256": "be51d7ccf35d6cac547e9dda40389d65bafc5a88c8ed8cdaac88039daa7b8da2"
+  },
+  "implementationFiles": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/dot_gen_object.h",
+      "sha256": "cb0160bda37be7e9ba1bbce990ee397e887b5ba2a55bb4bb866d61cb399980a9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/README.md",
+      "sha256": "44066e0237827f5dfc14eef1a63d47d8d40c28c6e75d48b4f1ebf52a0d103bbc"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/compile.py",
+      "sha256": "1196935fe48fa441e8ad5d4e3e508d8bd621a3db66479a5da0bd2abc6131b752"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/contract.md",
+      "sha256": "32f2bf4e699c3bea24b5cdfacd31a6f492daa4afd88128cb7605e24d12173606"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/DotObj.Linker.csproj",
+      "sha256": "871e2077cbb761b5e4bca455d228fb1e0be8f88cd3fa077a8bc9744a9b25b482"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Emitter.cs",
+      "sha256": "f6ad90091853fc3d58f64d479c1fb529af7d1e95329ecbaf5baeab348a936160"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Linker.cs",
+      "sha256": "c2454a937194a53f4413f2c5da479702f38473b4d18180ca38a5b439a12e95b9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Model.cs",
+      "sha256": "d317762dfe0d1a7310148128220e7285df99a57fd6f75a938d86ec714948c6f9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Names.cs",
+      "sha256": "516baf0dcd9de98549c84a94d322e83bb998f9a2ac4da09052a0f21d16d18647"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/ObjectFile.cs",
+      "sha256": "cc3cf4e50cf107c7746f7b0709572957b4037829535339b04b89c71d152baf9d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Program.cs",
+      "sha256": "36863b181711a71845558ee2afd8746ff7825acf024a5654410d6d812feadfcc"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/README.md",
+      "sha256": "103f3ffea7db377aad19857ba36087484a3a4f1316e179194cfee2a6e7a6e4a8"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Sqlite.cs",
+      "sha256": "6d22aa68495b6625448b6dc460108a5f9020ba5c62ecc67da1553f31d5b78230"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Verifier.cs",
+      "sha256": "1332bfd66edb8171b6106cc1d45ecba5ea2f015a8d2468d15d537b280a16b09e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/schema.sql",
+      "sha256": "f903443b41a7f1aad4ebdd95fdc8feef590f04130e3bba759471e0cecb109862"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/consumer.cpp",
+      "sha256": "0404b5b68346b5f74a8e2fdf8d20a547d9f18bc4c81aa53531f0bb9d11f22e57"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/conversions.cpp",
+      "sha256": "b0976d08adb543a280daab0e1c7cf52c5ebf91f8912c7b15466814ab57cdadcd"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/empty.cpp",
+      "sha256": "bc8bb8e433bf65214540115414c821c904b2a30d60a3ac0424bf9b77a00024b7"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/fixture.h",
+      "sha256": "5ea4acd1b81469749ec441e67fb0cd39ae700744e0486afcb7a4c0a56a66492e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/loops.cpp",
+      "sha256": "04b0f4086d0464ba96b41d0a997081f8104454e1cf14a36eef5d325a2ebbb13d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/provider.cpp",
+      "sha256": "d536a7b9d30188ad4ecd8a116bab45dc7e4a16c85d1862958fcba62113a7be51"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/scopes.cpp",
+      "sha256": "48e8c05643a690a0ae2b30948a5f73c7366f4f9f050a24e58fba23e584461b79"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/verify.py",
+      "sha256": "77fd955d0f9f59a6de8ba16f061fe6a49c712054bd03562e3071e74c3cfa2533"
+    }
+  ],
+  "properties": [
+    "Structured for and do/while nodes; explicit non-owning loop target identities for break/continue.",
+    "Pre/post integer increment/decrement preserve result values and unsigned-byte wraparound.",
+    "Nested, unbraced and declaration-initialized loops preserve exit, step, condition and scope behavior.",
+    "Verifier rejects missing targets, nonloop targets and a different lexical loop target.",
+    "Existing separate-TU linking, snapshot/hash/schema integrity, incremental rebuild and JIT/AOT acceptance rerun."
+  ],
+  "c11Adaptation": "Owned adapter follows only trailing synthetic block parents to the marked break label outside a lowered C99 for wrapper; no EDG frontend changes.",
+  "review": "Independent read-only review found no blocking issue, including the C99 synthetic-block target recovery.",
+  "compatibility": "Current reader requires v2 objects; preserved v1 objects retain their old reader builds. Callable ABI remains dotobj-scalar-v1.",
+  "limitations": [
+    "No prelower source graph or semantic macro history capture.",
+    "No globals/TLS, pointers/records, RAII/EH, inline/template/COMDAT or general C++ coverage.",
+    "Switch, user goto, comma-expression headers and nonbinding mutations remain unsupported.",
+    "For declaration placement still follows normalized EDG scopes.",
+    "Linux x64 executed; Windows/macOS and DuckDB remain unverified.",
+    "Native transport still buffers intermediate JSON."
+  ],
+  "artifactsPreserved": true,
+  "earlierFailedProbes": [
+    "dotobj-loops-acceptance-001",
+    "dotobj-loops-c-probe-001"
+  ]
+}
