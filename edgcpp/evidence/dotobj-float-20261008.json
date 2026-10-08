@@ -1,0 +1,186 @@
+{
+  "milestone": "IEEE binary32/binary64 types and operations in semantic objects",
+  "date": "2026-10-08",
+  "profile": "scalar-control-v9",
+  "status": "passed-with-explicit-coverage-boundaries",
+  "acceptance": {
+    "checkCount": 374,
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/results.json",
+      "sha256": "fcff5b563992e560580bd81c0b567e21d9ac79985e3edac182822773bcbb53ac"
+    },
+    "log": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002.log",
+      "sha256": "5356a0b16cc43aa0ab2d7a9bc33b282f39beaa66d63d7f0e70ddeb6222dcef55"
+    },
+    "languages": [
+      "C++17",
+      "C11"
+    ],
+    "nativeReference": true,
+    "managedJit": true,
+    "nativeAot": true,
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39"
+  },
+  "compiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "sha256": "d18d544670a99a1f28eeaf60b033c3102bff82fc025144202e4869679b94bd32"
+  },
+  "nativeBuildLog": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-native-build-001.log",
+    "sha256": "d522cfc5d2b9525922d7e29a5c2a8dc78695b026ba1e01c7ec98ee4b5b3e9b35"
+  },
+  "managedTool": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/tool/bin/DotObj.Linker/release/dotobj-link.dll",
+    "sha256": "67388819d841933befaea216125c806c6fbdc15be9aad69aa63325be2261a221"
+  },
+  "generatedReview": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/link-floats-cpp/Translated.0000.float_provider_u002e_cpp.cs",
+      "sha256": "ee0754b81ef140589821334b261dc7a737f38d62c3581152ef3ec467a593323a"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/link-floats-cpp/Translated.0001.floats_u002e_cpp.cs",
+      "sha256": "79f0b0131bd9196f26823381868be6e6ab35c0b372eba39d475c85c40c475e53"
+    }
+  ],
+  "objects": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/float_provider.dotobj",
+      "sha256": "2a8f7f116e6291f6d0807e8d82467b6901630eaf9c5829ed1e7a6530ede71f95"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/floats.dotobj",
+      "sha256": "7ab82b606e9354bc2563f212e18dcb015c0b62e73e54e66a30c88c7f2e4da3c6"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/float-provider-c.dotobj",
+      "sha256": "0c797762ff65de7c1ea6b14d18b62ef843bec870ee7bf93f1a84f6186a353dd6"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/floats-c.dotobj",
+      "sha256": "ae159e5ee9c48f29c1a9f33e5c21ff4331b6ad79d41417c935fea6e999cd3d54"
+    }
+  ],
+  "constantContract": {
+    "f32": "Exactly eight lowercase hexadecimal IEEE bit digits",
+    "f64": "Exactly sixteen lowercase hexadecimal IEEE bit digits",
+    "nativeSource": "EDG fp_to_hex_string, as used by the existing dot backend",
+    "emission": "Finite round-trip literals, signed zero retained; nonfinite scalar BitConverter and integer bit-pattern array spans"
+  },
+  "coverage": [
+    "Independent scalar and array APIs with f32/f64 signatures",
+    "Exact zero/subnormal/max-finite/NaN/infinity constants in scalar calls and array storage",
+    "Runtime float/integer conversion within defined range, width promotion/narrowing and precision boundaries",
+    "Floating arithmetic, comparison/truth/conditionals, direct and indirect increment/decrement",
+    "Quiet NaN payload transport without arithmetic-payload assumptions",
+    "Malformed bit encoding, floating bitwise/shift/remainder/pointer conversion and source/signature mismatches",
+    "FENV_ACCESS ON and long double rejection; all previous pipeline regressions"
+  ],
+  "review": {
+    "independentReview": "No blocking defect; runtime conversion, precision-boundary mutation, nonfinite scalar/array and rejection recommendations incorporated",
+    "fixtureNote": "NaN builtin string payload interpretation differs for a large payload between EDG and GCC. Constant comparison uses a shared small payload; runtime byte construction still verifies a full quiet-NaN payload."
+  },
+  "integrationProbes": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-consumer-probe-001/stderr",
+      "sha256": "403fd915f6adb1664d1b997387582b5129be652d4ca2df1d67b3e8ff7e16c638"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-consumer-probe-002.dotobj",
+      "sha256": "8e51503cf135beb74bcac258ae159ee9b9bd4c28ed4554d1de7fe3efb05d588a"
+    }
+  ],
+  "limitations": [
+    "Ordinary default floating environment only; no dynamic rounding/exception-flag semantics",
+    "long double and extended floating types rejected",
+    "Arithmetic NaN payload propagation and source-undefined float-to-integer conversions not promised",
+    "Records, globals/TLS, function pointers, references and C++ lifetimes remain unfinished",
+    "Full source expression tree and macro expansion history remain unfinished",
+    "Linux x64 executed; Windows/macOS not executed; DuckDB whole-program retry remains paused"
+  ],
+  "frontendSemanticsModified": false,
+  "intermediatesPreserved": true,
+  "implementation": [
+    {
+      "path": "edgcpp/backend/dot_gen_object.h",
+      "sha256": "7c98334a6f8d8d5649e32842a4ba52e7d6c5fcf6a2fd65c295872952648d17fc"
+    },
+    {
+      "path": "edgcpp/backend/dot_gen_object_source.h",
+      "sha256": "e28d287e3bf8d30b436fd207d059238d3dc844b630661b8df0cd97a260a73672"
+    },
+    {
+      "path": "edgcpp/docs/dot-gen-be-plan.md",
+      "sha256": "413842ecdf1bf719c5909639feaf5c9b5b666e871f92c0967f8a6dd6e48e31ee"
+    },
+    {
+      "path": "edgcpp/docs/dotobj-format.md",
+      "sha256": "4f4f1e0f2b1be156323b9c95111d2b4a402ae8998299a0e181c5087d1b183c86"
+    },
+    {
+      "path": "edgcpp/docs/implementation-campaign.md",
+      "sha256": "862325a3b5ef2feaf6b3ca2aebb598e2880604d28d29a6ed55d44cd951144dde"
+    },
+    {
+      "path": "edgcpp/object-linker/README.md",
+      "sha256": "9a3480ca03e6f2c7d52252643d90fee35555ce521ed0f800b77f0fe72fd41377"
+    },
+    {
+      "path": "edgcpp/object-linker/compile.py",
+      "sha256": "bb72e0d49dd94f4aad7277aa273b127da13f920d8dec27678fa69defce00a497"
+    },
+    {
+      "path": "edgcpp/object-linker/contract.md",
+      "sha256": "ef285a878b9f88bbbc6298fb4a5464ab669d7dd56e665086cd9db45445a9c2ab"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/Emitter.cs",
+      "sha256": "6178a36bb3fca5804c4ee9e2202516da289230773737d26f7f378aa2e7442836"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/ObjectFile.cs",
+      "sha256": "e5610adf2cb298d1f1f58940f3285eaedcab8f1ef874e73c27083733e3117bef"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/Program.cs",
+      "sha256": "1f9c73f9c7bcc92dc87df6b7f27c800b145b0c88be610a94e7a37d36f600ed19"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/README.md",
+      "sha256": "1f5727426c5c7fdbd0581ae64b179db006c36f4f40bf89a6211c2dbd2e34cda7"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/ScalarTypes.cs",
+      "sha256": "47f03b7b9507df13601551248bd4ec73d8110658645f44b824260a0d01940e22"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/SourceProvenance.cs",
+      "sha256": "46c35546526f49491baf148c1a6cdc49e54590635eb047df78e42a461c42d048"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/Verifier.cs",
+      "sha256": "bb49d45c721820655df788cbcadcdbe0eb19d9bff507cb3afbafaff930b26f8d"
+    },
+    {
+      "path": "edgcpp/object-linker/schema.sql",
+      "sha256": "e05192b0501ecb5d21e736abf080a64cd17a3e67e4661fb5db1912e7b4424aca"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/verify.py",
+      "sha256": "64a2da025eafecb5a4f523969b5babed19ecc9489557931f8b534de671448b75"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/float_fixture.h",
+      "sha256": "167c6e628c736d8617a6efe088c8508018cabd68427917d25e212360574219bd"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/float_provider.cpp",
+      "sha256": "b6e0d29cd03623cb99e9de30b7104727119e2fc49f3220f706871dd1dcd4bed0"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/floats.cpp",
+      "sha256": "23b9bd82426a5b96b7e64ee110e2826aa9826d6e27798312120427ddf3b111dd"
+    }
+  ]
+}

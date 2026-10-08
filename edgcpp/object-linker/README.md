@@ -46,10 +46,11 @@ verification.
 
 ## Current acceptance and boundaries
 
-`scalar-control-v8` supports defined/declaration function identities with strong
+`scalar-control-v9` supports defined/declaration function identities with strong
 external or TU-private linkage, signed/unsigned 8/16/32/64-bit integer operations,
+IEEE binary32/binary64 (`float`/`double`) operations,
 typed data pointers (including void pointers and pointer-to-pointer),
-fixed local arrays of integers/pointers (including multidimensional arrays),
+fixed local arrays of integers/floating values/pointers (including multidimensional arrays),
 parameters and block locals, direct calls, conversions, initialization,
 short-circuit and conditional expressions, bitwise operators and shifts,
 assignments, pre/post increment/decrement, return,
@@ -67,6 +68,16 @@ Integer constants retain exact decimal text, including the full unsigned
 uses the selected widths and unsigned wraparound. Conditional expressions
 evaluate only the selected branch. Source bool can have its
 lowered byte representation in emitted signatures.
+
+Floating constants contain exact 8/16-digit hexadecimal bit patterns in the
+object. Finite C# literals use round-trip decimal spellings; negative zero is
+retained, and nonfinite scalar values use `BitConverter` with their exact bits.
+Arithmetic, comparisons, truth tests, numeric conversions and increment/decrement
+use the selected float/double representation. Tests distinguish payload transport
+from arithmetic NaN propagation, which need not retain a specific payload.
+Only ordinary operations in the default floating environment are covered;
+`long double`, floating environment control and `FENV_ACCESS ON` are rejected.
+Floating-to-integer conversion promises apply to the source-defined input range.
 
 Pointer types use explicit pointee IDs in each object and structural signatures
 across translation units. Address-taking, dereferencing, indexing, null values,
@@ -90,12 +101,14 @@ where possible. The first array slice caps each complete array at 65,536 bytes;
 variable-length arrays and incomplete array objects remain unsupported.
 
 Initializers clear storage and execute ordered element writes at the captured
-initialization point. Constant integer data uses `ReadOnlySpan<T>` properties
-and `CopyTo`, trimming trailing zeros; sparse, pointer or dynamic data uses one
+initialization point. Constant numeric data uses `ReadOnlySpan<T>` properties
+and `CopyTo`, trimming trailing positive zeros; sparse, pointer or dynamic data uses one
 local pointer alias and indexed writes. Repeated block/loop entry resets local
 initializers. Source metadata retains array bounds and parameter adjustments;
 unknown-bound parameter arrays use a documented source-only adjustment marker.
-Byte-array string initialization includes embedded NULs. General string literal
+Floating initializers preserve negative zero; nonfinite constants use integer
+bit-pattern spans reinterpreted through `MemoryMarshal.Cast`, avoiding a runtime
+array allocation. Byte-array string initialization includes embedded NULs. General string literal
 storage and arrays as globals are still unfinished.
 
 The profile records `sourceDeclarations=true`: read-only hooks before EDG's
@@ -146,7 +159,7 @@ python3 -B edgcpp/object-linker/tests/verify.py \
   --output-dir /path/fresh/dotobj-acceptance --nativeaot
 ```
 
-The 336-check acceptance run covers actual independent EDG compilation, native
+The 374-check acceptance run covers actual independent EDG compilation, native
 reference execution, managed JIT/NativeAOT, private name isolation, scope
 shadowing, loop-local reinitialization, short-circuit effects, bool/byte
 conversions, namespace collisions and implicit main return. Loop fixtures cover
@@ -166,6 +179,11 @@ loop resets, pointer-to-array stride, inferred bounds, qualifiers, array paramet
 adjustments, byte strings, and 65,536-byte storage. Generated type names avoid
 source method and configured owner-class collisions. Malformed array bounds,
 indices, layouts, decay and signatures are rejected.
+Floating fixtures verify C11/C++17 cross-unit calls, exact finite/signed-zero/
+subnormal/nonfinite constants, embedded array data, runtime truncating numeric
+conversions, precision boundaries, mutation, NaN truth/comparisons and payload
+transport. Malformed constant encodings, invalid operators and incompatible
+floating signatures are rejected.
 Integer fixtures verify width boundaries,
 signed extension, narrowing, unsigned arithmetic/negation, bitwise/shift behavior
 and conditional branch side effects. Cross-unit tests distinguish long and
@@ -191,9 +209,9 @@ digest, snapshots, references, scope/type/operation contracts and required
 indexes. A hash demonstrates content integrity, not semantic correctness.
 
 Full logs/objects/generated projects remain under
-`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-acceptance-002/`.
+`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/`.
 
-The current schema requires `scalar-control-v8`. Earlier v1/v2/v3/v4/v5/v6/v7 objects and tools
+The current schema requires `scalar-control-v9`. Earlier v1/v2/v3/v4/v5/v6/v7/v8 objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 

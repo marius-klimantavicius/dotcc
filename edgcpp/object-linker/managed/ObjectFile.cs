@@ -57,7 +57,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v8" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v9" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -150,7 +150,7 @@ internal sealed partial class ObjectFile : IDisposable
                 long id = query.Integer(0);
                 string kind = query.Text(1);
                 long? pointee = query.OptionalInteger(2), element = query.OptionalInteger(3), count = query.OptionalInteger(4);
-                if (id <= 0 || (kind is not ("void" or "bool" or "pointer" or "array") && !ScalarTypes.IsInteger(kind)) ||
+                if (id <= 0 || (kind is not ("void" or "bool" or "pointer" or "array") && !ScalarTypes.IsNumeric(kind)) ||
                     (kind == "pointer") != (pointee is not null) || (kind == "array") != (element is not null && count is > 0) ||
                     kind != "array" && (element is not null || count is not null))
                     throw new InvalidDataException("Unsupported execution type or pointer shape");

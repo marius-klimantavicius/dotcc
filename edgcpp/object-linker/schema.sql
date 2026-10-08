@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v8'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v9'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE source_files (
 ) STRICT;
 CREATE TABLE types (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind IN ('void','i8','u8','i16','u16','i32','u32','i64','u64','bool','pointer','array')),
+ kind TEXT NOT NULL CHECK(kind IN ('void','i8','u8','i16','u16','i32','u32','i64','u64','f32','f64','bool','pointer','array')),
  pointee_type_id INTEGER REFERENCES types(id),
  element_type_id INTEGER REFERENCES types(id),
  element_count INTEGER,

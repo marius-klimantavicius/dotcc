@@ -8,12 +8,12 @@ Native stdout wire is one JSON object (transient packaging protocol only):
 ```
 {
   "formatVersion": 1,
-  "profile": "scalar-control-v8",
+  "profile": "scalar-control-v9",
   "sourceFiles": [{"id":1,"path":"/absolute/main.cpp","parentId":null}],
   "macroDefinitions": [{"id":1,"name":"LIMIT","form":"object","variadic":false,"dynamic":false,"definitionText":"#define LIMIT 4","origin":"source","sourceFileId":1,"line":1,"column":9}],
   "macroParameters": [],
   "macroEvents": [{"id":1,"kind":"define","name":"LIMIT","definitionId":1,"origin":"source","sourceFileId":1,"line":1,"column":9}],
-  "types": [{"id":1,"kind":"void","pointeeTypeId":null,"elementTypeId":null,"elementCount":null},{"id":2,"kind":"i32","pointeeTypeId":null,"elementTypeId":null,"elementCount":null},{"id":3,"kind":"u8","pointeeTypeId":null,"elementTypeId":null,"elementCount":null},{"id":10,"kind":"pointer","pointeeTypeId":2,"elementTypeId":null,"elementCount":null}],
+  "types": [{"id":1,"kind":"void","pointeeTypeId":null,"elementTypeId":null,"elementCount":null},{"id":2,"kind":"i32","pointeeTypeId":null,"elementTypeId":null,"elementCount":null},{"id":3,"kind":"u8","pointeeTypeId":null,"elementTypeId":null,"elementCount":null},{"id":12,"kind":"pointer","pointeeTypeId":2,"elementTypeId":null,"elementCount":null}],
   "sourceTypes": [{"id":1,"kind":"int","sourceName":"","underlyingTypeId":null,"executionTypeId":2,"isConst":false,"isVolatile":false,"sourceFileId":null,"line":0,"column":0,"elementCount":null}],
   "sourceFunctions": [{"entityId":1,"returnSourceTypeId":1,"capturePhase":"before-lowering"}],
   "sourceParameters": [{"entityId":1,"ordinal":0,"sourceTypeId":1}],
@@ -34,7 +34,8 @@ IDs positive signed int64; ordinals/line/column nonnegative. Entity definition i
 `strong` or `declaration`; linkage external (nonempty exact externalKey) or
 internal (externalKey=null). Unique local entity/binding/node IDs; no serialized EDG memory addresses.
 sourceFiles contains include occurrences; parentId nullable root; sourceFileId
-nullable only for synthetic/unknown origins. Constants are exact decimal text.
+nullable only for synthetic/unknown origins. Integer constants are exact decimal text;
+floating constants are exact fixed-width hexadecimal target bits.
 Function bindings exist only for defined functions, parameters describe all
 signatures. `scopeNodeId` references the declaring block (parameters root block).
 Function body must be block. Locals use ordinal=null; parameters zero-based.
@@ -74,6 +75,8 @@ Supported node kinds and ordered edge roles:
   `goto default` only where needed for C fallthrough, and a final `break` when
   the last section can complete normally.
 - `constant`: integer or bool type + canonical exact decimal constantText.
+  Floating types f32/f64 use exactly 8/16 lowercase hexadecimal digits, without
+  a prefix, representing IEEE binary32/binary64 bits including sign and payload.
   A pointer constant must have text `0`, representing a typed null pointer.
   Integer types i8/u8/i16/u16/i32/u32/i64/u64 have their corresponding signed
   or unsigned width ranges; bool permits only 0/1. No leading plus, leading
@@ -90,12 +93,15 @@ Supported node kinds and ordered edge roles:
 - `call`: entityId + argument[0..n), type matches target return.
 - `binary`: operator add/sub/mul/div/rem/eq/ne/lt/le/gt/ge/and/or/bit-and/
   bit-or/bit-xor/shl/shr; left[0],right[0]. Arithmetic and bitwise operations
-  require matching promoted i32/u32/i64/u64 operand/result types. Shifts have
+  require matching promoted i32/u32/i64/u64 operand/result types; add/sub/mul/div
+  additionally accept matching f32/f64 operands/results. Remainder and bitwise
+  operations remain integer-only. Shifts have
   matching promoted left/result types and any promoted integer right type.
   Comparison operands have matching types (bool only allows eq/ne); comparison
   and logical results are bool/i32/u8. and/or short-circuit their right operand.
 - `unary`: operator neg/not/plus/bit-not, operand[0]. Negation, unary plus and
-  complement require matching promoted integer operand/result types. Logical
+  complement require matching promoted integer operand/result types; negation
+  and unary plus additionally accept matching f32/f64 types. Logical
   not returns bool/i32/u8 from a scalar truth test.
 - `conditional`: condition[0], then[0], else[0], scalar value result. Arms have
   exactly the result type. Evaluate condition first, then only the selected arm.
@@ -107,14 +113,16 @@ Supported node kinds and ordered edge roles:
   target type. For right-to-left indirect assignments both operands must be
   recursively effect-free: no call, assignment or mutation. This bounded profile
   rejects effectful cases until an explicit sequencing representation is added.
-- `mutate`: operator pre-inc/post-inc/pre-dec/post-dec, operand[0] (integer
+- `mutate`: operator pre-inc/post-inc/pre-dec/post-dec, operand[0] (numeric
   or nonvoid pointer place), result type equals operand type. Prefix returns the new value;
   postfix returns the previous value. Unsigned mutation wraps at its width.
   Source bool mutation is rejected by the producer before physical u8 lowering
   loses its distinction; graph bool mutation is rejected by the verifier.
-- `convert`: operand[0], destination integer/bool/pointer type; explicit
-  width/sign conversion, nonzero truth conversion, pointer-to-pointer cast,
-  or integer/pointer conversion. A graph bool-to-pointer conversion requires
+- `convert`: operand[0], destination numeric/bool/pointer type; explicit
+  width/sign or floating conversion, nonzero truth conversion, pointer-to-pointer
+  cast, or integer/pointer conversion. Floating/pointer conversions require an
+  explicit intermediate integer conversion. Floating-to-integer conversion is
+  supported only for source-defined values within the destination range. A graph bool-to-pointer conversion requires
   an intermediate integer conversion. Source target pointer width is 64 bits.
 - Pointer binary operators are `pointer-add`, `pointer-subtract` and
   `pointer-difference`. Addition has one nonvoid pointer and one promoted integer
@@ -154,8 +162,8 @@ The initial target is portable-lp64-binary80-v2; callable ABI dotobj-scalar-v1.
 The scalar-control-v3 object profile adds 8/16/32/64-bit signed/unsigned
 integers, bitwise/shift expressions and conditional values to v2's structured
 loops and explicit loop exit identities. It does not change the callable ABI.
-The current canonical schema reader requires scalar-control-v8 and rejects
-v1/v2/v3/v4/v5/v6/v7 objects; preserve their respective earlier tool build to read them,
+The current canonical schema reader requires scalar-control-v9 and rejects
+v1/v2/v3/v4/v5/v6/v7/v8 objects; preserve their respective earlier tool build to read them,
 or recompile with this producer.
 The profile uses EDG's fixed portable LP64 target: long and long long share the
 64-bit physical representation, while exact external keys retain C++ overload
@@ -397,3 +405,35 @@ zero-filled property. Dynamic and pointer elements use a local typed pointer ali
 ordered index assignments after a clear. This is stack storage, so ordinary
 source stack consumption still applies. Generated code remains NativeAOT
 compatible within the existing fixed 64-bit target ABI.
+
+
+The scalar-control-v9 profile adds **binary32 and binary64 floating point**.
+The native producer reserves type IDs 10/11 for f32/f64, with constructed
+pointer/array types starting at 12; consumers resolve object-local type IDs and
+compare structural types independently of those numeric identities. Original
+source `float` and `double` types are preserved distinctly and map to f32/f64.
+Typedef, cv, pointer and array wrappers compose with these types as before.
+Both execution constants and array leaf initializers retain exact target bits;
+SQLite REAL and JSON numeric floating payloads are deliberately not used.
+
+C# signatures, locals, pointers and fixed array storage use ordinary `float`
+and `double`. Finite constants use invariant round-trip decimal literals with
+explicit F/D suffixes; negative zero is retained as `-0.0F` or `-0.0D`.
+Nonfinite scalar constants use `BitConverter.Int32BitsToSingle` or
+`Int64BitsToDouble` to retain NaN payloads and signs. All-finite constant arrays
+use typed `ReadOnlySpan<float/double>` properties. Arrays containing any
+nonfinite constant instead embed `ReadOnlySpan<uint/ulong>` exact bit patterns
+and reinterpret that data with `MemoryMarshal.Cast` before the bulk copy.
+Neither path creates a managed array. Only positive-zero suffixes may be
+omitted by the sparse initializer optimization; negative zero is data.
+
+Floating arithmetic, comparison and truth tests use ordinary managed operators.
+NaNs compare unordered, signed zeros compare equal and convert to false, and
+all other floating values (including NaN) convert to true. Source-defined
+floating/integer conversion and f32/f64 widening/narrowing are supported;
+NaN/infinite/out-of-range float-to-integer casts have no portable guarantee.
+No long double/extended precision, complex arithmetic, fenv/rounding-mode
+control, floating exception flags or traps are implemented. Arithmetic NaN
+payload propagation and cross-architecture bit-identical arithmetic are not
+promised; exact constant and memory bit preservation is distinct from those
+execution behaviors. Existing scalar-profile limitations remain in force.

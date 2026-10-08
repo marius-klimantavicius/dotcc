@@ -2463,3 +2463,42 @@ references and C++ lifetimes remain unfinished in the object pipeline. New
 readers require v8 objects; earlier matching tools/objects and all probes,
 including unsuccessful integration probes, remain preserved. DuckDB's old
 whole-program retry remains paused.
+
+
+The `scalar-control-v9` milestone adds IEEE binary32/binary64 scalar types and
+operations. Native capture assigns f32/f64 execution identities, records original
+float/double source types, and stores each constant as exactly 8/16 lowercase
+hexadecimal digits from EDG's bit formatter. This follows the existing dot
+backend and preserves EDG's selected value without lossy decimal transport.
+Source-defined arithmetic, comparisons, truth, numeric conversions, mutations,
+pointers and arrays now use the selected floating representation.
+
+Generated finite scalar constants use readable round-trip literals, including
+negative zero. Nonfinite scalar constants use BitConverter with their exact
+bits. Finite constant arrays use typed static span data; arrays with nonfinite
+values use integer bit-pattern spans and MemoryMarshal.Cast before CopyTo.
+Trailing positive zeros can be omitted after destination zero initialization;
+negative zero is retained. No temporary managed array is allocated for those
+initializer properties.
+
+All 374 checks pass on Linux x64. Acceptance covers independently compiled
+C11/C++17 APIs with native references,
+managed JIT and NativeAOT, exact zero/subnormal/max-finite/NaN/infinity constants,
+array storage, runtime numeric truncation, integer/float precision boundaries,
+increment/decrement, NaN truth/ordered comparisons, and payload transport.
+Malformed hexadecimal encodings, invalid floating bitwise/shift/remainder or
+pointer conversions, source mappings and cross-unit signatures are rejected.
+Extended long double and FENV_ACCESS ON are explicit exclusions. Runtime NaN
+arithmetic payload propagation and non-default floating environments are not
+promised. [Hashed floating milestone evidence](../evidence/dotobj-float-20261008.json).
+
+The first probe hit the existing effectful indirect assignment exclusion in a
+test byte-copy helper; hoisting its endian query out of the store keeps that
+fixture within the existing sequencing contract. A source builtin NaN payload
+string's interpretation differs between the two native compilers for a large
+payload; constant comparison therefore uses a common small payload, while a
+runtime bit-created NaN verifies transport of a full payload. EDG semantics were
+not changed. All probes/intermediates remain preserved; current readers require
+v9 objects and DuckDB's whole-program retry stays paused. Records, globals/TLS,
+function pointers, C++ references/lifetimes and the complete source graph remain
+unfinished in the new object pipeline.

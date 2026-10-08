@@ -75,7 +75,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v8");
+            writer.WriteString("profile", "scalar-control-v9");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -88,7 +88,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v8");
+            writer.WriteString("profile", "scalar-control-v9");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -99,7 +99,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v8", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v9", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Scalar/control profile only; no globals, records, variable/incomplete execution arrays, function pointers, EH, RAII, templates/COMDAT or runtime providers", "Pre-lowering scalar/pointer/array declaration/type provenance only; no complete source expression/statement view, macro expansion history or lifetime capture" },
@@ -258,12 +258,12 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
             string array = NodeType(target), leaf = ScalarTypes.Leaf(array);
             string name = Expression(target);
             Node[] elements = body.Children(node.Id, "element").Select(edge => body.Nodes[edge.ChildId]).ToArray();
-            bool constants = ScalarTypes.IsInteger(leaf) && elements.Length > 0 && elements.All(item => body.Child(item.Id, "value").Kind == "constant");
+            bool constants = ScalarTypes.IsNumeric(leaf) && elements.Length > 0 && elements.All(item => body.Child(item.Id, "value").Kind == "constant");
             if (constants)
             {
-                var values = Enumerable.Repeat("0", checked((int)ScalarTypes.FlatCount(array))).ToArray();
+                var values = Enumerable.Repeat(ScalarTypes.Zero(leaf), checked((int)ScalarTypes.FlatCount(array))).ToArray();
                 foreach (Node item in elements) values[int.Parse(item.ConstantText!, System.Globalization.CultureInfo.InvariantCulture)] = body.Child(item.Id, "value").ConstantText!;
-                int prefix = Array.FindLastIndex(values, value => value != "0") + 1;
+                int prefix = Array.FindLastIndex(values, value => value != ScalarTypes.Zero(leaf)) + 1;
                 if (prefix == 0) { Line(indent, name + " = default;"); return; }
                 if (prefix <= Math.Max(64, elements.Length * 4))
                 {
@@ -271,11 +271,18 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
                     // Collection-expression span properties embed blittable constants
                     // in assembly data; no managed array allocation or per-byte writes.
                     string property = generatedMembers.Allocate("__DotObjInitializer_" + linker.Objects.ToList().IndexOf(obj) + "_" + function.Id + "_" + node.Id, "__DotObjInitializer");
-                    initializers.Append("    private static global::System.ReadOnlySpan<").Append(Type(leaf)).Append("> ").Append(property).Append(" => [\n");
+                    // Nonfinite values need exact payloads, so embed their integer
+                    // representations and reinterpret the read-only data once.
+                    bool bitPattern = ScalarTypes.IsFloating(leaf) && values.Take(prefix).Any(value => !ScalarTypes.IsFiniteConstant(leaf, value));
+                    string dataType = bitPattern ? leaf == "f32" ? "uint" : "ulong" : Type(leaf);
+                    string DataLiteral(string value) => bitPattern ? "0x" + value + (leaf == "f32" ? "U" : "UL") : ScalarTypes.Literal(leaf, value);
+                    initializers.Append("    private static global::System.ReadOnlySpan<").Append(dataType).Append("> ").Append(property).Append(" => [\n");
                     for (int index = 0; index < prefix; index += 12)
-                        initializers.Append("        ").Append(string.Join(", ", values.Skip(index).Take(Math.Min(12, prefix - index)).Select(value => ScalarTypes.Literal(leaf, value)))).Append(",\n");
+                        initializers.Append("        ").Append(string.Join(", ", values.Skip(index).Take(Math.Min(12, prefix - index)).Select(DataLiteral))).Append(",\n");
                     initializers.Append("    ];\n\n");
-                    Line(indent, "global::" + namespaceName + "." + className + "." + property + ".CopyTo(new global::System.Span<" + Type(leaf) + ">(&" + name + ", " + prefix + "));");
+                    string data = "global::" + namespaceName + "." + className + "." + property;
+                    if (bitPattern) data = "global::System.Runtime.InteropServices.MemoryMarshal.Cast<" + dataType + ", " + Type(leaf) + ">(" + data + ")";
+                    Line(indent, data + ".CopyTo(new global::System.Span<" + Type(leaf) + ">(&" + name + ", " + prefix + "));");
                     return;
                 }
                 // A sparse high-index initializer should not expand into thousands

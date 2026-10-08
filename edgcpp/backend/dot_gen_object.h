@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v8: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v9: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -30,7 +30,7 @@ void check_lifetime(an_object_lifetime_ptr lifetime) {
 namespace dot_object {
 struct Writer {
   unsigned next_entity=1,next_binding=1,next_node=1,next_file=1,next_source_type=1,next_source_declaration=1;
-  unsigned function=0,next_execution_type=10;
+  unsigned function=0,next_execution_type=12;
   std::map<a_routine_ptr,unsigned> routine_ids;
   std::map<a_variable_ptr,unsigned> binding_ids;
   std::map<a_source_file_ptr,unsigned> file_ids;
@@ -82,6 +82,11 @@ struct Writer {
       if(!element->size || !count || t->size/element->size!=count || t->size%element->size)
         reject("array size/stride mismatch");
       return array_type(type_id(t->variant.array.element_type),count);
+    }
+    if(t->kind==tk_float) {
+      if(t->variant.float_kind==fk_float && t->size==4)return 10;
+      if(t->variant.float_kind==fk_double && t->size==8)return 11;
+      reject("floating type outside IEEE binary32/binary64 profile",t->variant.float_kind);
     }
     // EDG retains the bool marker alongside enum bookkeeping after lowering;
     // unlike a user enum, its executable representation is the lowered byte.
@@ -213,6 +218,10 @@ struct Writer {
   unsigned routine(a_routine_ptr r) {
     auto found=routine_ids.find(r);if(found!=routine_ids.end())return found->second;
     diagnostic_scope diagnostic(r->source_corresp.decl_position);
+    // The C backend preserves this per-function pragma. The owned graph
+    // currently uses the default .NET IEEE environment and cannot represent
+    // observed exception flags or a dynamically changed rounding direction.
+    if(r->fenv_access==stdc_pv_on)reject("floating environment access");
     if(r->is_inline || r->is_template_function)reject("inline/template definition policy");
 #if GNU_EXTENSIONS_ALLOWED
     if(r->is_weak || r->is_weakref || r->is_gnu_alias || r->is_ifunc || r->is_initialization_routine || r->is_finalization_routine)
@@ -274,9 +283,24 @@ struct Writer {
         edge(block,"statement",ordinal++,initialize_array(v,nullptr,v->source_corresp.decl_position));
     }
   }
+  unsigned zero_node(unsigned type,const a_source_position &pos) {
+    return node("constant",type,pos,0,0,"",type==10?"00000000":type==11?"0000000000000000":"0","value","none");
+  }
   unsigned constant_node(a_constant_ptr c,const a_source_position &pos) {
-    if(c->kind!=ck_integer)reject("noninteger constant",c->kind);
-    unsigned ty=type_id(c->type);a_boolean overflow=FALSE;
+    unsigned ty=type_id(c->type);
+    if(c->kind==ck_float) {
+      auto t=skip_typerefs(c->type);
+      if(t->kind!=tk_float || (ty!=10 && ty!=11))reject("floating constant type mismatch");
+      // The regular dot backend uses the same EDG bit formatter. Unlike a
+      // decimal conversion, it preserves signed zero and NaN payloads. The
+      // formatter returns most-significant-byte first, lowercase hex digits.
+      string bits=fp_to_hex_string(t->variant.float_kind,&c->variant.float_value).as_temp_characters();
+      if(bits.size()!=(ty==10?8U:16U) || bits.find_first_not_of("0123456789abcdef")!=string::npos)
+        reject("floating constant target encoding");
+      return node("constant",ty,pos,0,0,"",bits,"value","none");
+    }
+    if(c->kind!=ck_integer || ty==10 || ty==11)reject("noninteger/nonfloating constant",c->kind);
+    a_boolean overflow=FALSE;
     string text;
     if(int_constant_is_signed(c))text=std::to_string((long long)value_of_integer_constant(c,&overflow));
     else text=std::to_string((unsigned long long)unsigned_value_of_integer_constant(c,&overflow));
@@ -430,10 +454,11 @@ struct Writer {
       if(!a || b || !place(a))reject("mutation outside supported memory places");
       auto operand_type=skip_typerefs(a->type);
       bool integer=operand_type->kind==tk_integer && !operand_type->variant.integer.bool_type;
+      bool floating=operand_type->kind==tk_float;
       bool pointer=operand_type->kind==tk_pointer && !operand_type->variant.pointer.is_reference &&
         skip_typerefs(operand_type->variant.pointer.type)->kind!=tk_void;
-      if((!integer && !pointer) || type_id(a->type)!=ty)
-        reject("mutation outside integer/data-pointer profile");
+      if((!integer && !floating && !pointer) || type_id(a->type)!=ty)
+        reject("mutation outside numeric/data-pointer profile");
       string op=operation.kind==eok_pre_incr?"pre-inc":operation.kind==eok_post_incr?"post-inc":
                 operation.kind==eok_pre_decr?"pre-dec":"post-dec";
       unsigned id=node("mutate",ty,e->position,0,0,op,"","value",order);
@@ -500,7 +525,7 @@ struct Writer {
         if(d->destructor)reject("array element destruction");
         if(d->kind==dik_expression)expr=expression(d->variant.expression);
         else if(d->kind==dik_constant)expr=constant_node(d->variant.constant.ptr,position);
-        else if(d->kind==dik_zero)expr=node("constant",type_id(type),position,0,0,"","0","value","none");
+        else if(d->kind==dik_zero)expr=zero_node(type_id(type),position);
         else reject("array element dynamic initializer",d->kind);
       } else expr=constant_node(value,position);
       array_element(parent,ordinal,type,offset,expr,position);return;
@@ -717,7 +742,7 @@ struct Writer {
         unsigned value=0;
         if(d->kind==dik_expression)value=expression(d->variant.expression);
         else if(d->kind==dik_constant)value=constant_node(d->variant.constant.ptr,s->position);
-        else if(d->kind==dik_zero)value=node("constant",ty,s->position,0,0,"","0","value","none");
+        else if(d->kind==dik_zero)value=zero_node(ty,s->position);
         else reject("dynamic initializer",d->kind);
         unsigned assign=node("assign",ty,s->position,0,0,"","","value","right-to-left");
         edge(assign,"target",0,node("binding",ty,s->position,0,binding,"","","place","none"));edge(assign,"value",0,value);
@@ -728,6 +753,13 @@ struct Writer {
   }
   void run() {
     if(targ_sizeof_pointer!=8)reject("non64-bit target");
+    // EDG stores float/double constants in host format. Its configured target
+    // and host representation must agree with the managed binary32/64 ABI.
+    if(!TARG_HAS_IEEE_FLOATING_POINT || sizeof(float)!=4 || sizeof(double)!=8 ||
+       targ_sizeof_float!=4 || targ_sizeof_double!=8 ||
+       targ_flt_mant_dig!=24 || targ_flt_min_exp!=-125 || targ_flt_max_exp!=128 ||
+       targ_dbl_mant_dig!=53 || targ_dbl_min_exp!=-1021 || targ_dbl_max_exp!=1024)
+      reject("target outside IEEE binary32/binary64 profile");
     source_files(il_header.primary_source_file,0);
     capture_macros();
     auto file_scope=il_header.primary_scope;
@@ -749,10 +781,10 @@ struct Writer {
       context="file scope";
     }
     std::vector<string> types;
-    const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64"};
-    for(unsigned i=0;i<9;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
+    const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
+    for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v8\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v9\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

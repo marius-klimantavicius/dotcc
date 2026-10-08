@@ -26,7 +26,7 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     inputs = out / 'inputs'
     inputs.mkdir()
-    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'switches.cpp', 'integers.cpp', 'source_types.h', 'source_types.cpp', 'macros.h', 'macros.cpp', 'pointer_fixture.h', 'pointer_provider.cpp', 'pointers.cpp', 'array_fixture.h', 'array_provider.cpp', 'arrays.cpp']:
+    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'switches.cpp', 'integers.cpp', 'source_types.h', 'source_types.cpp', 'macros.h', 'macros.cpp', 'pointer_fixture.h', 'pointer_provider.cpp', 'pointers.cpp', 'array_fixture.h', 'array_provider.cpp', 'arrays.cpp', 'float_fixture.h', 'float_provider.cpp', 'floats.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
     shutil.copy2(ROOT / 'tests/loops.cpp', inputs / 'loops-c.c')
     shutil.copy2(ROOT / 'tests/switches.cpp', inputs / 'switches-c.c')
@@ -37,11 +37,13 @@ def main():
     shutil.copy2(ROOT / 'tests/pointer_provider.cpp', inputs / 'pointer-provider-c.c')
     shutil.copy2(ROOT / 'tests/arrays.cpp', inputs / 'arrays-c.c')
     shutil.copy2(ROOT / 'tests/array_provider.cpp', inputs / 'array-provider-c.c')
+    shutil.copy2(ROOT / 'tests/floats.cpp', inputs / 'floats-c.c')
+    shutil.copy2(ROOT / 'tests/float_provider.cpp', inputs / 'float-provider-c.c')
     checks = []
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v8', nativeAotRequested=args.nativeaot,
+            profile='scalar-control-v9', nativeAotRequested=args.nativeaot,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, lifetime/EH or globals yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -165,6 +167,25 @@ def main():
         check('array-storage-no-managed-heap', 'NativeMemory.' not in array_cs and 'GC.Allocate' not in array_cs and 'new int[' not in array_cs)
         array_collision = link('link-arrays-name-collision', [array_provider, array_consumer], cls='__DotObjArray_A3_i32')
         execute('arrays-name-collision', array_collision)
+        float_objects = []
+        for language, standard, consumer_name, provider_name, extension, native in [
+            ('cpp', 'c++17', 'floats', 'float_provider', '.cpp', 'c++'),
+            ('c', 'c11', 'floats-c', 'float-provider-c', '.c', 'cc')]:
+            float_provider = compile_source(provider_name, inputs / (provider_name + extension), std=standard)
+            float_consumer = compile_source(consumer_name, inputs / (consumer_name + extension), std=standard)
+            run('native-floats-' + language + '-build', [native, '-std=' + standard, inputs / (provider_name + extension), inputs / (consumer_name + extension), '-o', out / ('native-floats-' + language)])
+            run('native-floats-' + language + '-run', [out / ('native-floats-' + language)])
+            execute('floats-' + language, link('link-floats-' + language, [float_provider, float_consumer]))
+            float_objects.append((float_provider, float_consumer))
+            with sqlite3.connect(float_consumer) as db:
+                check('floating-source-types-' + language, {'float','double'} <= {row[0] for row in db.execute('SELECT kind FROM source_types')})
+                f32_constants = {row[0] for row in db.execute("SELECT constant_text FROM nodes WHERE kind='constant' AND type_id=10")}
+                f64_constants = {row[0] for row in db.execute("SELECT constant_text FROM nodes WHERE kind='constant' AND type_id=11")}
+                check('exact-f32-constant-bits-' + language, {'80000000','00000001','3dcccccd','7fc12345'} <= f32_constants)
+                check('exact-f64-constant-bits-' + language, {'8000000000000000','0000000000000001','3fb999999999999a','7ff8000000012345'} <= f64_constants)
+        float_provider, float_consumer = float_objects[0]
+        float_cs = '\n'.join(p.read_text() for p in (out / 'link-floats-cpp').glob('*.cs'))
+        check('floating-array-static-data', 'ReadOnlySpan<' in float_cs and '.CopyTo(' in float_cs and 'new float[' not in float_cs and 'new double[' not in float_cs)
         loops_object = out / 'loops.dotobj'
         loops_cs = '\n'.join(p.read_text() for p in (out / 'link-loops').glob('*.cs'))
         check('structured-loop-source', all(token in loops_cs for token in ['for (', 'do', 'while (', 'break;', 'continue;']) and 'goto ' not in loops_cs)
@@ -415,6 +436,39 @@ def main():
         mismatch_array_object = compile_source('array-signature-mismatch', array_mismatch_source)
         link('array-signature-rejected', [array_consumer, mismatch_array_object], entry='main', expected=None, contains='Signature mismatch')
 
+        with sqlite3.connect(float_consumer) as db:
+            f32_node = db.execute("SELECT min(id) FROM nodes WHERE kind='constant' AND type_id=10").fetchone()[0]
+            f64_node = db.execute("SELECT min(id) FROM nodes WHERE kind='constant' AND type_id=11").fetchone()[0]
+        malformed_f32 = mutate('float-hex-width', float_consumer, [(
+            "UPDATE nodes SET constant_text='0000000' WHERE id=?", (f32_node,))])
+        run('float-constant-width', ['dotnet', tool, 'verify', malformed_f32], None)
+        malformed_f64 = mutate('double-hex-canonical', float_consumer, [(
+            "UPDATE nodes SET constant_text='3FF0000000000000' WHERE id=?", (f64_node,))])
+        run('double-constant-canonical-case', ['dotnet', tool, 'verify', malformed_f64], None)
+        float_bitwise = mutate('float-bitwise', float_provider, [(
+            "UPDATE nodes SET operator='bit-and' WHERE kind='binary' AND operator='add' AND type_id=10", ())])
+        run('float-bitwise-rejected', ['dotnet', tool, 'verify', float_bitwise], None)
+        float_remainder = mutate('float-remainder', float_provider, [(
+            "UPDATE nodes SET operator='rem' WHERE kind='binary' AND operator='add' AND type_id=11", ())])
+        run('float-remainder-rejected', ['dotnet', tool, 'verify', float_remainder], None)
+        float_shift = mutate('float-shift', float_provider, [(
+            "UPDATE nodes SET operator='shl' WHERE kind='binary' AND operator='add' AND type_id=10", ())])
+        run('float-shift-rejected', ['dotnet', tool, 'verify', float_shift], None)
+        float_pointer_cast = mutate('float-pointer-cast', float_consumer, [(
+            "UPDATE nodes SET type_id=11 WHERE kind='convert' AND type_id=(SELECT id FROM types WHERE kind='pointer' AND pointee_type_id=3) AND id=(SELECT min(id) FROM nodes WHERE kind='convert' AND type_id=(SELECT id FROM types WHERE kind='pointer' AND pointee_type_id=3))", ())])
+        run('pointer-to-floating-conversion-rejected', ['dotnet', tool, 'verify', float_pointer_cast], None)
+        float_source_mismatch = mutate('float-source-representation', float_consumer, [(
+            "UPDATE source_types SET execution_type_id=11 WHERE kind='float'", ())])
+        run('float-source-type-mismatch', ['dotnet', tool, 'verify', float_source_mismatch], None)
+        float_mismatch_source = out / 'float-mismatch.cpp'
+        float_mismatch_source.write_text('extern "C" double float_identity(double value){return value;}\n')
+        mismatch_float_object = compile_source('float-signature-mismatch', float_mismatch_source)
+        link('float-signature-rejected', [float_consumer, mismatch_float_object], entry='main', expected=None, contains='Signature mismatch')
+        fenv_source = out / 'unsupported-fenv.c'
+        fenv_source.write_text('#pragma STDC FENV_ACCESS ON\ndouble f(double x){return x+1.0;}\n')
+        fenv_object = compile_source('unsupported-fenv', fenv_source, std='c11', expected=None)
+        check('not-published-fenv', not fenv_object.exists())
+
         macros_object = out / 'macros.dotobj'
         wrong_macro_event = mutate('macro-event-name', macros_object, [(
             "UPDATE macro_events SET name='DIFFERENT' WHERE id=(SELECT min(id) FROM macro_events WHERE kind='define')", ())])
@@ -437,6 +491,7 @@ def main():
             'push-macro': '#define VALUE 1\n#pragma push_macro("VALUE")\nint f(){return VALUE;}\n',
             'pop-macro': '#pragma pop_macro("VALUE")\nint f(){return 1;}\n',
             'global': 'int storage=1; int f(){return storage;}\n',
+            'long-double': 'long double f(long double x){return x+1.0L;}\n',
             'variable-array': 'int f(int n){int values[n]; values[0]=2;return values[0];}\n',
             'oversized-array': 'int f(){unsigned char values[65537];values[0]=1;return values[0];}\n',
             'record-pointer': 'struct X { int value; }; int f(X* p){return p->value;}\n',

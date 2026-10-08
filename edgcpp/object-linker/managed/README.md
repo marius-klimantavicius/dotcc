@@ -1,6 +1,6 @@
 # Managed semantic object linker
 
-This is the executable `scalar-control-v8` implementation of the fresh
+This is the executable `scalar-control-v9` implementation of the fresh
 `.dotobj` semantic graph. It does not read the previous semantic-export format
 or an emission-command stream.
 
@@ -109,7 +109,7 @@ addresses, exceptions/RAII, inline/COMDAT, templates and runtime providers are
 not implemented in this profile. Unsupported input is rejected; scalar fixtures
 do not demonstrate DuckDB readiness or full C++ coverage.
 
-The current schema requires scalar-control-v8 objects. Earlier v1/v2/v3/v4/v5/v6/v7 objects
+The current schema requires scalar-control-v9 objects. Earlier v1/v2/v3/v4/v5/v6/v7/v8 objects
 remain usable with their retained earlier tool build, or can be regenerated.
 
 The integer profile supports signed/unsigned 8/16/32/64-bit values, exact decimal
@@ -120,7 +120,8 @@ unchecked expressions where constant or runtime overflow would otherwise
 conflict with source unsigned wraparound. Unsigned negation emits typed zero
 minus the operand. Shifts convert non-int counts explicitly to int. Conditional
 expressions and short-circuit operators evaluate only their selected operands.
-This does not add floating point, compound assignment or comma nodes.
+Compound assignment and comma nodes remain unsupported; floating support is
+described below for v9.
 
 The definition-text capture profile rejects actual `__VA_OPT__` replacement
 operators: the stock inspection formatter is not a complete round-trip format
@@ -158,3 +159,15 @@ execute at their lexical position, including repeated loop iterations. No heap
 allocation or pinning is introduced. Original array parameter declarations are
 retained in provenance and explicitly checked against the adjusted pointer ABI.
 Variable-length, global and incomplete execution arrays remain unsupported.
+
+
+Binary32/binary64 (`float`/`double`) values are supported in independent object
+signatures, arithmetic/comparison/truth/conversion, typed memory operations,
+mutation and local arrays. Constants are exact hexadecimal target bits in the
+object and readable round-trip C# literals for finite values. Negative zero
+retains its sign; nonfinite scalar values use BitConverter to preserve payloads.
+Floating constant arrays use embedded typed span data; when a nonfinite value
+is present, embedded uint/ulong data is reinterpreted before the bulk copy.
+Both paths avoid managed array allocation. Source float/double declaration
+provenance is retained. Long double, fenv, FP trap/rounding-mode control and
+out-of-range floating-to-integer conversions are outside this profile.

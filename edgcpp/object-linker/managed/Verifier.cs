@@ -302,7 +302,9 @@ internal static class Verifier
                     }
                     else if (operation is "add" or "sub" or "mul" or "div" or "rem" or "bit-and" or "bit-or" or "bit-xor")
                     {
-                        if (!ScalarTypes.IsPromotedInteger(Type(node))) Fail("Arithmetic requires promoted integer operands and result");
+                        bool integerOnly = operation is "rem" or "bit-and" or "bit-or" or "bit-xor";
+                        if (integerOnly ? !ScalarTypes.IsPromotedInteger(Type(node)) : !ScalarTypes.IsPromotedNumeric(Type(node)))
+                            Fail(integerOnly ? "Integer operation requires promoted integer operands and result" : "Arithmetic requires promoted numeric operands and result");
                         SameType(node, Child(node, "left")); SameType(node, Child(node, "right"));
                     }
                     else if (operation is "shl" or "shr")
@@ -327,7 +329,8 @@ internal static class Verifier
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
                     if (node.Operator is "neg" or "plus" or "bit-not")
                     {
-                        if (!ScalarTypes.IsPromotedInteger(Type(node))) Fail("Unary arithmetic requires a promoted integer");
+                        if (node.Operator == "bit-not" ? !ScalarTypes.IsPromotedInteger(Type(node)) : !ScalarTypes.IsPromotedNumeric(Type(node)))
+                            Fail("Unary arithmetic requires a promoted numeric type; bit-not requires integer");
                         SameType(node, Child(node, "operand"));
                     }
                     else if (node.Operator == "not")
@@ -352,12 +355,15 @@ internal static class Verifier
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
                     if (node.Operator is not ("pre-inc" or "post-inc" or "pre-dec" or "post-dec") ||
                         !Place(Child(node, "operand")) ||
-                        !(ScalarTypes.IsInteger(Type(node)) || ScalarTypes.IsPointer(Type(node)) && ScalarTypes.Pointee(Type(node)) != "void"))
-                        Fail("Increment/decrement requires an integer or nonvoid pointer place");
+                        !(ScalarTypes.IsNumeric(Type(node)) || ScalarTypes.IsPointer(Type(node)) && ScalarTypes.Pointee(Type(node)) != "void"))
+                        Fail("Increment/decrement requires a numeric or nonvoid pointer place");
                     SameType(node, Child(node, "operand"));
                     break;
                 case "convert":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
+                    if (ScalarTypes.IsPointer(Type(node)) && ScalarTypes.IsFloating(Type(Child(node, "operand"))) ||
+                        ScalarTypes.IsFloating(Type(node)) && ScalarTypes.IsPointer(Type(Child(node, "operand"))))
+                        Fail("Pointer and floating-point conversion requires an explicit integer intermediate");
                     if (ScalarTypes.IsPointer(Type(node)) && Type(Child(node, "operand")) == "bool")
                         Fail("Boolean-to-pointer conversion requires an explicit integer conversion");
                     break;

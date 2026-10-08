@@ -43,7 +43,7 @@ internal sealed partial class ObjectFile
                 {
                     string expected = type.Kind switch
                     {
-                        "void" => "void", "bool" => "u8", "signed-char" => "i8", "unsigned-char" => "u8",
+                        "void" => "void", "bool" => "u8", "float" => "f32", "double" => "f64", "signed-char" => "i8", "unsigned-char" => "u8",
                         "short" => "i16", "unsigned-short" => "u16", "int" => "i32", "unsigned-int" => "u32",
                         "long" or "long-long" => "i64", "unsigned-long" or "unsigned-long-long" => "u64",
                         "char" when executionType is "i8" or "u8" => executionType,

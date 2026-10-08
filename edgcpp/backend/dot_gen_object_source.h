@@ -89,6 +89,9 @@ inline unsigned capture_type(a_type_ptr t) {
       case ik_unsigned_long_long:value.kind="unsigned-long-long";value.execution=9;break;
       default:break;
     }
+  } else if(t->kind==tk_float) {
+    if(t->variant.float_kind==fk_float && t->size==4){value.kind="float";value.execution=10;}
+    else if(t->variant.float_kind==fk_double && t->size==8){value.kind="double";value.execution=11;}
   } else if(t->kind==tk_pointer && !t->variant.pointer.is_reference) {
     value.kind="pointer";
     value.underlying=capture_type(t->variant.pointer.type);
