@@ -51,7 +51,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v15");
+        lifetimeWriter.WriteString("profile", "scalar-control-v16");
         lifetimeWriter.WriteString("capture", "lexical-cleanup-activations");
         lifetimeWriter.WriteBoolean("lexicalCleanups", true);
         lifetimeWriter.WriteBoolean("lifetimes", false);
@@ -150,7 +150,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v15");
+            writer.WriteString("profile", "scalar-control-v16");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -163,7 +163,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v15");
+            writer.WriteString("profile", "scalar-control-v16");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -174,7 +174,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v15", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v16", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; variable-length arrays, source EH and C++ RAII are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance and explicit lexical cleanup activations only; no complete source expression/statement view, macro expansion history or general C++ lifetime capture" },
@@ -188,6 +188,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 startupFailureCached = true, shutdownActionsSupported = false,
                 optionalHooks = new[] { "Enter", "Leave", "NormalExit", "TryHandleTransfer", "ClassifyTransfer" },
                 transferClassifier = "global::Edg.Runtime.ObjectProgram.IsRuntimeTransfer",
+                ownedThreadStorageRelease = "global::Edg.Runtime.ObjectProgram.ReleaseThreadStorage",
+                ownedThreadStorageReleaseOrder = "after-thread-finalizers-and-tss-destructors",
             },
             runtimeRequirements = linker.Externs.Values.OrderBy(symbol => symbol.Key, StringComparer.Ordinal).Select(symbol => new
             {
@@ -292,6 +294,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         var purityCache = new Dictionary<long, bool>();
         var continueLabels = new Dictionary<long, string>();
         string NodeType(Node node) => obj.Type(node.TypeId!.Value);
+        string PointerIndex(Node node) => ScalarTypes.IsWideInteger(NodeType(node)) ? "unchecked((long)(" + Expression(node) + "))" : Expression(node);
         string Truth(Node node)
         {
             if (liftedExpressions.TryGetValue(node.Id, out string? liftedTruth)) return TruthText(liftedTruth, node);
@@ -361,7 +364,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     Node pointer = Child("operand");
                     if (pointer.Kind == "binary" && pointer.Operator == "pointer-add" && !liftedExpressions.ContainsKey(pointer.Id) &&
                         ScalarTypes.IsPointer(NodeType(body.Child(pointer.Id, "left"))))
-                        return "(" + Expression(body.Child(pointer.Id, "left")) + ")[" + Expression(body.Child(pointer.Id, "right")) + "]";
+                        return "(" + Expression(body.Child(pointer.Id, "left")) + ")[" + PointerIndex(body.Child(pointer.Id, "right")) + "]";
                     return "(*" + Operand("operand") + ")";
                 case "call":
                     Symbol target = linker.Resolve(obj, node.EntityId!.Value);
@@ -377,12 +380,18 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     if (NodeType(node) == NodeType(Child("operand"))) return Operand("operand");
                     if (NodeType(node) == "bool") return Truth(Child("operand"));
                     if (NodeType(Child("operand")) == "bool") return FromBoolean(Operand("operand"), NodeType(node));
+                    // The selected LP64 target sign-extends pointers when converting
+                    // to 128-bit integers; the reverse conversion keeps low pointer bits.
+                    if (ScalarTypes.IsWideInteger(NodeType(node)) && ScalarTypes.IsPointer(NodeType(Child("operand"))))
+                        return "unchecked((" + Type(NodeType(node)) + ")(nint)(" + Operand("operand") + "))";
+                    if (ScalarTypes.IsPointer(NodeType(node)) && ScalarTypes.IsWideInteger(NodeType(Child("operand"))))
+                        return "unchecked((" + Type(NodeType(node)) + ")(nuint)(" + Operand("operand") + "))";
                     return "unchecked((" + Type(NodeType(node)) + ")(" + Operand("operand") + "))";
                 case "unary":
                     if (node.Operator == "not") return Boolean("!(" + Truth(Child("operand")) + ")", node);
                     if (node.Operator == "neg")
-                        return NodeType(node) is "u32" or "u64"
-                            ? "unchecked(" + (NodeType(node) == "u32" ? "0U" : "0UL") + " - " + Operand("operand") + ")"
+                        return NodeType(node) is "u32" or "u64" or "u128"
+                            ? "unchecked(" + (NodeType(node) == "u32" ? "0U" : NodeType(node) == "u64" ? "0UL" : "global::System.UInt128.Zero") + " - " + Operand("operand") + ")"
                             : "unchecked(-" + Operand("operand") + ")";
                     return "(" + (node.Operator == "bit-not" ? "~" : "+") + Operand("operand") + ")";
                 case "conditional":
@@ -394,7 +403,13 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     { "add" or "pointer-add" => "+", "sub" or "pointer-subtract" or "pointer-difference" => "-", "mul" => "*", "div" => "/", "rem" => "%", "eq" => "==", "ne" => "!=", "lt" => "<", "le" => "<=", "gt" => ">", "ge" => ">=", "bit-and" => "&", "bit-or" => "|", "bit-xor" => "^", "shl" => "<<", "shr" => ">>", _ => throw new InvalidDataException("Unsupported operator") };
                     string right = node.Operator is "shl" or "shr" && NodeType(Child("right")) != "i32"
                         ? "unchecked((int)(" + Operand("right") + "))" : Operand("right");
-                    string expression = "(" + Operand("left") + " " + op + " " + right + ")";
+                    string left = Operand("left");
+                    if (node.Operator is "pointer-add" or "pointer-subtract")
+                    {
+                        if (ScalarTypes.IsWideInteger(NodeType(Child("left")))) left = PointerIndex(Child("left"));
+                        if (ScalarTypes.IsWideInteger(NodeType(Child("right")))) right = PointerIndex(Child("right"));
+                    }
+                    string expression = "(" + left + " " + op + " " + right + ")";
                     if (node.Operator is "eq" or "ne" or "lt" or "le" or "gt" or "ge") return Boolean(expression, node);
                     return node.Operator is "add" or "sub" or "mul" ? "unchecked" + expression : expression;
                 default: throw new InvalidDataException("Unsupported expression " + node.Kind);
@@ -447,6 +462,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             string op = node.Operator switch { "add" or "pointer-add" => "+", "sub" or "pointer-subtract" => "-", "mul" => "*", "div" => "/", "rem" => "%", "bit-and" => "&", "bit-or" => "|", "bit-xor" => "^", "shl" => "<<", "shr" => ">>", _ => throw new InvalidDataException("Invalid compound operator") };
             string value = Expression(body.Child(node.Id, "value")), valueType = NodeType(body.Child(node.Id, "value"));
             if (node.Operator is "shl" or "shr") { value = "unchecked((int)(" + value + "))"; valueType = "i32"; }
+            if (node.Operator is "pointer-add" or "pointer-subtract" && ScalarTypes.IsWideInteger(valueType))
+            { value = "unchecked((long)(" + value + "))"; valueType = "i64"; }
             // Integer modular operations depend only on the stored low bits.
             // Narrowing the RHS lets C# retain the original compound assignment
             // without evaluating its receiver twice or introducing a helper.
@@ -557,29 +574,33 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             string array = NodeType(target), leaf = ScalarTypes.Leaf(array);
             string name = Expression(target);
             Node[] elements = body.Children(node.Id, "element").Select(edge => body.Nodes[edge.ChildId]).ToArray();
-            if (leaf == "f80" && elements.Length > 0 && elements.All(item => body.Child(item.Id, "value").Kind == "constant"))
+            if ((leaf == "f80" || ScalarTypes.IsWideInteger(leaf)) && elements.Length > 0 && elements.All(item => body.Child(item.Id, "value").Kind == "constant"))
             {
-                int prefix = elements.Where(item => body.Child(item.Id, "value").ConstantText != ScalarTypes.Zero("f80"))
+                int prefix = elements.Where(item => body.Child(item.Id, "value").ConstantText != ScalarTypes.Zero(leaf))
                     .Select(item => checked(int.Parse(item.ConstantText!, System.Globalization.CultureInfo.InvariantCulture) + 1)).DefaultIfEmpty(0).Max();
                 if (prefix <= Math.Max(64, elements.Length * 4))
                 {
                     Line(indent, name + " = default;");
                     if (prefix == 0) return;
-                    string[] values = Enumerable.Repeat(ScalarTypes.Zero("f80"), prefix).ToArray();
+                    string[] values = Enumerable.Repeat(ScalarTypes.Zero(leaf), prefix).ToArray();
                     foreach (Node item in elements)
                     {
                         int index = int.Parse(item.ConstantText!, System.Globalization.CultureInfo.InvariantCulture);
                         if (index < prefix) values[index] = body.Child(item.Id, "value").ConstantText!;
                     }
-                    string property = generatedMembers.Allocate("__DotObjBinary80Initializer_" + function.Id + "_" + node.Id, "binary80_initializer");
+                    string property = generatedMembers.Allocate("__DotObjWideInitializer_" + linker.Objects.ToList().IndexOf(obj) + "_" + function.Id + "_" + node.Id, "wide_initializer");
                     initializers.Append("    private static global::System.ReadOnlySpan<ulong> ").Append(property).Append(" => [\n");
-                    foreach (string bits in values) initializers.Append("        0x").Append(bits[4..]).Append("UL, 0x").Append(bits[..4]).Append("UL,\n");
+                    foreach (string bits in values)
+                    {
+                        if (leaf == "f80") initializers.Append("        0x").Append(bits[4..]).Append("UL, 0x").Append(bits[..4]).Append("UL,\n");
+                        else initializers.Append("        ").Append(Integer128Words(leaf, bits)).Append(", // ").Append(bits).Append('\n');
+                    }
                     initializers.Append("    ];\n\n");
                     Line(indent, Owner + "." + property + ".CopyTo(new global::System.Span<ulong>(" + Address(target) + ", " + checked(prefix * 2) + "));");
                     return;
                 }
             }
-            bool constants = leaf != "f80" && ScalarTypes.IsNumeric(leaf) && elements.Length > 0 && elements.All(item => body.Child(item.Id, "value").Kind == "constant");
+            bool constants = leaf != "f80" && !ScalarTypes.IsWideInteger(leaf) && ScalarTypes.IsNumeric(leaf) && elements.Length > 0 && elements.All(item => body.Child(item.Id, "value").Kind == "constant");
             if (constants)
             {
                 var values = Enumerable.Repeat(ScalarTypes.Zero(leaf), checked((int)ScalarTypes.FlatCount(array))).ToArray();

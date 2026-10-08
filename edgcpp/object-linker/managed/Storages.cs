@@ -46,6 +46,29 @@ internal sealed partial class ObjectFile
             }
     }
 
+    private (bool Wide, bool PointerSlot) RelocationStorageShape(string type, long offset, int depth = 0)
+    {
+        if (depth > 128 || offset < 0 || offset >= StorageSize(type)) return (false, false);
+        if (ScalarTypes.IsWideInteger(type)) return (true, false);
+        if (ScalarTypes.IsArray(type))
+        {
+            string element = ScalarTypes.Element(type);
+            long size = StorageSize(element);
+            return size == 0 ? (false, false) : RelocationStorageShape(element, offset % size, depth + 1);
+        }
+        if (ScalarTypes.IsRecord(type))
+        {
+            bool wide = false, pointerSlot = false;
+            foreach (RecordField field in RecordFields(RecordsByKey[type].TypeId))
+            {
+                if (field.BitWidth is not null) continue;
+                var shape = RelocationStorageShape(Type(field.TypeId), offset - field.ByteOffset, depth + 1);
+                wide |= shape.Wide; pointerSlot |= shape.PointerSlot;
+            }
+            return (wide, pointerSlot);
+        }
+        return (false, offset == 0 && (ScalarTypes.IsPointer(type) || type is "i64" or "u64"));
+    }
     private void VerifyStorageRelocations()
     {
         using (var query = database.Prepare("SELECT storage_id,byte_offset,target_storage_id,target_entity_id,addend FROM relocations ORDER BY storage_id,byte_offset"))
@@ -56,6 +79,9 @@ internal sealed partial class ObjectFile
                     value.ByteOffset < 0 || value.ByteOffset > StorageSize(Type(owner.TypeId)) - 8 ||
                     (value.TargetStorageId is null) == (value.TargetEntityId is null))
                     throw new InvalidDataException("Invalid storage relocation extent or target");
+                var shape = RelocationStorageShape(Type(owner.TypeId), value.ByteOffset);
+                if (shape.Wide && !shape.PointerSlot)
+                    throw new InvalidDataException("128-bit address initializers require an explicit relocation width and extension contract");
                 if (value.TargetStorageId is long targetId)
                 {
                     if (!Storages.TryGetValue(targetId, out Storage? target) || value.Addend < 0 || value.Addend > StorageSize(Type(target.TypeId)) ||

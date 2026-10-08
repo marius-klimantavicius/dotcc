@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "profile": "scalar-control-v16",
+  "scope": "Exact signed/unsigned integer128 arithmetic, storage, source enums, ABI conversions and owned thread storage release",
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "fullRegressionChecks": 871,
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-v16-acceptance-001/results.json",
+      "sha256": "36c9b3bfef3699b0fdf41df1f8560a19e9d27bd9c561fd940e156caa9fb7f6d9"
+    },
+    "integerAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-integer128-managed019-003/results.json",
+      "sha256": "aef37e8c840f7874846c8281c5540d4ad65fd5737ac2a324043a7f8a6cb17db8"
+    },
+    "enumAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-integer128-enum-managed019-001/results.json",
+      "sha256": "53485fac96189c0828d9387e773a53cf0d199906b475e0213b6bf2a0ab6a74ee"
+    },
+    "malformedAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-integer128-malformed-managed019-001/results.json",
+      "sha256": "9d853c25ed95b3bc77208d9a0f45b6c6ef75c966056d749b9947a57fe959860b"
+    },
+    "boundaryAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-integer128-boundaries-native021-001/results.json",
+      "sha256": "0d7bf94529ad6509adce8ac2f19d6358709b095b32039893ecff5c61e371ad5c"
+    },
+    "threadAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-threads-acceptance-004/results.json",
+      "sha256": "760a304baefb71ddeab934255e1727e8e084a51f33aaccf319eb2d5de1c85566"
+    },
+    "duckdbProbe": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-sample-021/summary.json",
+      "sha256": "bfa7216100ed7a1f3900de15dc51a1d51d304565642a705131729b16e6493b97"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native022-verified-snapshot/cpfe-dot",
+      "sha256": "27e3902820b472e5fe081867a3a4da347ec099d6217819b65af7fed1ec3a2a90"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-019/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "a2f976af08e1aba4ac2c11601f08a222b5ea8e5a4d71253ceda9df7ddd81856c"
+    }
+  },
+  "limitations": [
+    "Integer128 switch selectors, volatile operations, bitfields and arithmetic intrinsics remain explicit rejections",
+    "Integer128 static address relocation is unsupported; retained source case is rejected earlier by EDG static-initialization rules",
+    "Pointer-to-integer128 signextension is an observed LP64 target policy, not a universal C rule",
+    "No general C++ references/receiver, inheritance, lifetime/EH or dynamic-global initialization yet",
+    "DuckDB full execution remains incomplete; current actual charconv128 probes advance to later C++ boundaries",
+    "Complete independent source semantic indexing remains unfinished"
+  ]
+}

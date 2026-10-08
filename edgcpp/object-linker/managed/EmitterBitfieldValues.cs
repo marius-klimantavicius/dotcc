@@ -48,10 +48,12 @@ internal sealed partial class Emitter
         "u16" => source == "u8",
         "i32" => source is "i8" or "u8" or "i16" or "u16",
         "u32" => source is "u8" or "u16",
-        "i64" => ScalarTypes.IsInteger(source) && source != "u64",
+        "i64" => source is "i8" or "u8" or "i16" or "u16" or "i32" or "u32",
         "u64" => source is "u8" or "u16" or "u32",
-        "f32" => ScalarTypes.IsInteger(source),
-        "f64" => ScalarTypes.IsInteger(source) || source == "f32",
+        "i128" => ScalarTypes.IsInteger(source) && source != "u128",
+        "u128" => source is "u8" or "u16" or "u32" or "u64",
+        "f32" => ScalarTypes.IsInteger(source) && !ScalarTypes.IsWideInteger(source),
+        "f64" => ScalarTypes.IsInteger(source) && !ScalarTypes.IsWideInteger(source) || source == "f32",
         _ => false
     };
     private static bool CompoundPromotionDiffers(string target, string argument, string op) =>

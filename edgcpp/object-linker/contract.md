@@ -803,3 +803,37 @@ Expression lifting retains lazy branches and loop continuation targets. The
 execution oracles use original C++17 compiled at O0/O2 plus JIT/NativeAOT; stock
 EDG C output that retains ordinary C assignment expressions is not claimed to
 provide a deterministic operand-order execution oracle.
+
+## Integer128 profile: scalar-control-v16
+
+The execution kinds `i128` and `u128` have 16-byte size and native alignment;
+original source kinds remain `int128` and `unsigned-int128`. Integer constants
+use exact canonical decimal text, including the full signed/unsigned ranges.
+Generated code uses `System.Int128`/`System.UInt128` values and exact two-word
+construction, not narrowed 64-bit intermediates. Static arrays use embedded
+constant ulong-pair spans reinterpreted as the target values, because nonconstant
+Int128 constructor expressions in a span collection would allocate an array.
+
+Address-exposed locals/parameters use the existing explicit aligned storage;
+CLR natural alignment alone is insufficient. Globals/TLS retain aligned pinned
+arenas. Shared `VaArg`/`VaList` packing preserves all 16 bytes without introducing
+a second runtime. Integer-to-pointer conversion truncates at the native pointer
+width; pointer-to-integer128 follows this EDG LP64 target's observed signextension
+policy. The latter is an implementation-defined target fact, not a universal C
+rule. In-bounds pointer arithmetic with integer128 indices bridges through the
+native-size displacement type.
+
+The first tranche deliberately rejects integer128 switch selectors, volatile
+accesses, bitfields and arithmetic intrinsics until each has a correct lowering.
+Address relocation into an integer128 slot also rejects because the current
+relocation contract describes an eight-byte pointer patch, not its required
+128-bit extension. Ordinary pointer fields in records containing integer128
+remain eight-byte slots. General C++ reference/object/lifetime support remains
+independent of this arithmetic extension.
+
+The runtime hook report also publishes `ObjectProgram.ReleaseThreadStorage`.
+This internal bridge clears only the calling thread's owned TLS arena, after the
+runtime has invoked C++ TLS finalizers, C11 TSS callbacks and libc TLS cleanup.
+The next source TLS access creates its initial image again. Global state is
+unaffected. The shared runtime validates this explicit bridge before enabling
+thread services; a stale linker contract cannot silently omit owned TLS release.

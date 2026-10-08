@@ -1,5 +1,6 @@
 """Runtime C semantics required by real project bodies."""
 import sqlite3
+from pathlib import Path
 
 
 def verify(inputs, out, tool, run, check, compile_source, link, execute):
@@ -10,9 +11,10 @@ def verify(inputs, out, tool, run, check, compile_source, link, execute):
                  'project_c_bitfield_values', 'goto_entries', 'project_c_nested_switch',
                  'project_c_synthetic_bindings', 'project_c_binary80', 'project_c_folded_records',
                  'project_c_unspecified_definitions', 'project_c_volatile_binary80',
-                 'project_c_void_sequences', 'project_c_macro_record_identity']:
+                 'project_c_void_sequences', 'project_c_macro_record_identity', 'project_c_integer128']:
         source = inputs / (name + '.c')
-        obj = compile_source(name, source, std='c11')
+        extra = ['-I', str(Path(__file__).resolve().parents[2] / 'backend/runtime/libc/include')] if name == 'project_c_integer128' else []
+        obj = compile_source(name, source, std='c11', extra=extra)
         run(name + '-native-build', ['cc', '-std=c11', '-O2', source, '-o', out / (name + '-native')])
         run(name + '-native-run', [out / (name + '-native')])
         run(name + '-verify', ['dotnet', tool, 'verify', obj])
@@ -42,6 +44,20 @@ def verify(inputs, out, tool, run, check, compile_source, link, execute):
             with sqlite3.connect(obj) as db:
                 operators = {row[0] for row in db.execute("SELECT operator FROM nodes WHERE kind='intrinsic'")}
                 check('runtime-intrinsic-overflow-graph', any('overflow' in value for value in operators))
+        elif name == 'project_c_integer128':
+            with sqlite3.connect(obj) as db:
+                check('integer128-owned-signed-unsigned-types', {row[0] for row in db.execute(
+                    "SELECT kind FROM types WHERE kind IN ('i128','u128')")} == {'i128', 'u128'})
+                check('integer128-original-source-kinds', {row[0] for row in db.execute(
+                    "SELECT kind FROM source_types WHERE kind IN ('int128','unsigned-int128')")} == {'int128', 'unsigned-int128'})
+                check('integer128-record-alignment', db.execute(
+                    "SELECT alignment FROM record_types WHERE source_name='WideRecord'").fetchone()[0] == 16)
+            code = '\n'.join(path.read_text() for path in directory.glob('*.cs'))
+            check('integer128-native-managed-values', 'System.Int128' in code and 'System.UInt128' in code)
+    for boundary in ['SWITCH', 'VOLATILE', 'BITFIELD', 'INTRINSIC_ARGUMENT', 'INTRINSIC_DESTINATION']:
+        compile_source('integer128-boundary-' + boundary.lower(),
+                       inputs / 'project_c_integer128_boundaries.c', std='c11',
+                       extra=['-D', 'TEST_' + boundary], expected=None)
     return objects
 
 
@@ -57,3 +73,10 @@ def malformed(objects, tool, run, mutate):
     bad_alignment = mutate('binary80-invalid-record-alignment', binary80, [(
         'UPDATE record_types SET alignment=8 WHERE type_id=(SELECT min(type_id) FROM record_types WHERE alignment=16)', ())])
     run('binary80-invalid-record-alignment', ['dotnet', tool, 'verify', bad_alignment], None)
+    integer128 = objects['project_c_integer128']
+    for kind, value in [('u128', '340282366920938463463374607431768211456'),
+                        ('i128', '-170141183460469231731687303715884105729')]:
+        bad = mutate('integer128-out-of-range-' + kind, integer128, [(
+            "UPDATE nodes SET constant_text=? WHERE id=(SELECT min(n.id) FROM nodes n JOIN types t ON t.id=n.type_id WHERE n.kind='constant' AND t.kind=?)",
+            (value, kind))])
+        run('integer128-reject-out-of-range-' + kind, ['dotnet', tool, 'verify', bad], None)

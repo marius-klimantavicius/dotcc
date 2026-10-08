@@ -208,6 +208,7 @@ internal static class Verifier
                     EdgeShape(node, ("condition", 1, 1), ("body", 1, 1));
                     Expr(node, "condition");
                     string selectorType = Type(Child(node, "condition"));
+                    if (ScalarTypes.IsWideInteger(selectorType)) Fail("128-bit switch dispatch is not yet supported");
                     if (!ScalarTypes.IsPromotedInteger(selectorType)) Fail("Switch selector must be a promoted integer");
                     Node switchBody = Child(node, "body");
                     if (switchBody.Kind != "block") Fail("Switch body must be a block");
@@ -277,6 +278,8 @@ internal static class Verifier
                     EdgeShape(node, ("argument", 0, int.MaxValue));
                     var intrinsicArgs = body.Children(node.Id, "argument").Select(edge => body.Nodes[edge.ChildId]).ToArray();
                     if (intrinsicArgs.Any(argument => !IsExpression(argument) || Type(argument) == "void")) Fail("Intrinsic argument must be a value");
+                    if (ScalarTypes.IsWideInteger(Type(node)) || intrinsicArgs.Any(argument => ScalarTypes.IsWideInteger(Type(argument)) || ScalarTypes.IsPointer(Type(argument)) && ScalarTypes.IsWideInteger(ScalarTypes.Pointee(Type(argument)))))
+                        Fail("128-bit intrinsics require an explicit wide operation contract");
                     string intrinsic = node.Operator!;
                     if (intrinsic == "unreachable") { if (intrinsicArgs.Length != 0 || Type(node) != "void") Fail("Invalid unreachable intrinsic"); }
                     else if (intrinsic == "expect")
@@ -304,6 +307,7 @@ internal static class Verifier
                         Fail("Volatile place requires a scalar addressable location");
                     if (Child(node, "operand").Kind == "member" && obj.Fields[Child(node, "operand").FieldId!.Value].BitWidth is not null)
                         Fail("Volatile bitfield access requires a storage-unit contract");
+                    if (ScalarTypes.IsWideInteger(Type(node))) Fail("Volatile 128-bit access requires an explicit access contract");
                     SameType(node, Child(node, "operand"));
                     break;
                 case "va-start":

@@ -4,7 +4,7 @@ namespace DotObj;
 
 internal sealed partial class Emitter
 {
-    private static void WriteProgramHooks(string output)
+    private void WriteProgramHooks(string output)
     {
         // Optional partial hooks disappear entirely when no runtime provider is
         // linked. Providers own their real process/thread lifecycle and identify
@@ -21,6 +21,13 @@ internal sealed partial class Emitter
                 static partial void NormalExit(int status);
                 static partial void TryHandleTransfer(global::System.Exception error, ref bool handled, ref int result);
                 static partial void ClassifyTransfer(global::System.Exception error, ref bool isRuntimeTransfer);
+
+                // The runtime calls this only after thread finalizers and TSS
+                // destructors have finished using the translated TLS storage.
+                internal static void ReleaseThreadStorage()
+                {
+                    __OWNED_TLS_RELEASE__
+                }
 
                 public static bool IsRuntimeTransfer(global::System.Exception error)
                 {
@@ -57,6 +64,6 @@ internal sealed partial class Emitter
                 }
             }
             """;
-        File.WriteAllText(Path.Combine(output, "Runtime.ObjectProgram.generated.cs"), source + "\n", new UTF8Encoding(false));
+        File.WriteAllText(Path.Combine(output, "Runtime.ObjectProgram.generated.cs"), source.Replace("__OWNED_TLS_RELEASE__", tlsRelease.Length == 0 ? "" : Owner + "." + tlsRelease + "();", StringComparison.Ordinal) + "\n", new UTF8Encoding(false));
     }
 }

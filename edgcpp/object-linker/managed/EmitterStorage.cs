@@ -7,7 +7,7 @@ namespace DotObj;
 internal sealed partial class Emitter
 {
     private readonly Dictionary<string, long> storageOffsets = new(StringComparer.Ordinal);
-    private string storageBytes = "", storageBase = "", tlsBytes = "", tlsBase = "", tlsAccessor = "";
+    private string storageBytes = "", storageBase = "", tlsBytes = "", tlsBase = "", tlsAccessor = "", tlsRelease = "";
     private string Owner => "global::" + namespaceName + "." + className;
     private string StorageReference(StorageSymbol symbol) => Owner + "." + linker.StorageNames[symbol.Key];
     private string ExternStorageName(StorageSymbol symbol) => "__dot_storage_address_" + Names.Identifier(symbol.Storage.SourceName) + "_" +
@@ -126,6 +126,9 @@ internal sealed partial class Emitter
             Allocate(code, tlsBytes, tlsBase, tlsSize, tlsAlignment, 12);
             Initialize(code, true, tlsBase, 12);
             code.Append("        }\n        return ").Append(tlsBase).Append(";\n    }\n");
+            tlsRelease = generatedMembers.Allocate("__dot_release_tls_storage", "release_tls_storage");
+            code.Append("\n    internal static void ").Append(tlsRelease).Append("()\n    {\n        ").Append(tlsBase).Append(" = null;\n        ")
+                .Append(tlsBytes).Append(" = null;\n    }\n");
         }
         foreach (string declaration in storageDataDeclarations) code.Append(declaration);
         code.Append("}\n"); File.WriteAllText(Path.Combine(output, "Translated.Storage.generated.cs"), code.ToString(), new UTF8Encoding(false));

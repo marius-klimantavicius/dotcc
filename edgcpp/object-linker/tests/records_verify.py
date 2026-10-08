@@ -41,7 +41,8 @@ def verify(inputs, out, tool, run, check, compile_source, link, execute):
     execute('records-mixed-language', link('link-records-mixed-language', [objects[1][0], consumer]))
     execute('records-owner-collision', link('link-records-owner-collision', [provider, consumer], cls='RecordNode'))
 
-    for name in ['project_cpp_record_origins', 'project_cpp_vptr_layout', 'project_cpp_constant_storage']:
+    for name in ['project_cpp_record_origins', 'project_cpp_vptr_layout', 'project_cpp_constant_storage',
+                 'project_cpp_integer128_enum']:
         source = inputs / (name + '.cpp')
         obj = compile_source(name, source, extra=['--exceptions', '--rtti'])
         run(name + '-native-build', ['c++', '-std=c++17', '-O2', source, '-o', out / (name + '-native')])

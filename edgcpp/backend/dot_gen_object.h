@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v15: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v16: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -30,7 +30,7 @@ void check_lifetime(an_object_lifetime_ptr lifetime) {
 namespace dot_object {
 struct Writer {
   unsigned next_entity=1,next_binding=1,next_node=1,next_file=1,next_source_type=1,next_source_declaration=1;
-  unsigned function=0,next_execution_type=12,va_list_id=0,f80_id=0;
+  unsigned function=0,next_execution_type=12,va_list_id=0,f80_id=0,i128_id=0,u128_id=0;
   a_statement_ptr function_block=nullptr;
   std::map<a_routine_ptr,unsigned> routine_ids;
   std::map<a_variable_ptr,unsigned> binding_ids;
@@ -86,6 +86,19 @@ struct Writer {
     f80_id=next_execution_type++;
     execution_types.push_back("{\"id\":"+number(f80_id)+",\"kind\":\"f80\",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     return f80_id;
+  }
+  unsigned integer128_type(bool is_unsigned) {
+    if(targ_sizeof_int128!=16 || targ_alignof_int128!=16)
+      reject("integer128 target outside 16-byte aligned LP64 ABI");
+    unsigned &id=is_unsigned?u128_id:i128_id;
+    if(id)return id;
+    id=next_execution_type++;
+    execution_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(is_unsigned?"u128":"i128")+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
+    return id;
+  }
+  bool integer128(a_type_ptr type) {
+    auto t=skip_typerefs(type);
+    return t->kind==tk_integer && t->size==16;
   }
   string floating_bits(a_constant_ptr constant) {
     auto type=skip_typerefs(constant->type);unsigned execution=type_id(type);
@@ -193,6 +206,7 @@ struct Writer {
     for(auto f=t->variant.class_struct_union.field_list;f;f=f->next) {
       if(f->is_bit_field && !f->bit_size)continue;
       auto child=skip_typerefs(f->type);
+      if(f->is_bit_field && integer128(child))reject("integer128 bitfield representation");
       auto original=originals.find(f);
       string role,field_name;unsigned source_type_id=0,source_field=0;a_source_position field_pos={};
       if(original!=originals.end()) {
@@ -299,6 +313,18 @@ struct Writer {
         ",\"targetStorageId\":"+number(target_storage)+",\"targetEntityId\":"+number(target_entity)+",\"addend\":"+std::to_string(address.offset)+"}");return;
     }
     if(c->kind==ck_integer) {
+      if(integer128(t)) {
+        // Follow the stock integer-value helpers and legacy backend: extract
+        // exact two's-complement halves without narrowing through host ints.
+        auto high=c->variant.integer_value;a_boolean ignored_overflow=FALSE;
+        auto low=unsigned_value_of_integer_value(&high,FALSE,&ignored_overflow);
+        shift_right_integer_value(&high,64,FALSE,FALSE);
+        auto upper=unsigned_value_of_integer_value(&high,FALSE,&ignored_overflow);
+        string bytes;
+        for(unsigned i=0;i<8;++i)bytes+=char(((unsigned long long)low>>(8*i))&255);
+        for(unsigned i=0;i<8;++i)bytes+=char(((unsigned long long)upper>>(8*i))&255);
+        data_chunk(id,offset,bytes);return;
+      }
       if(t->size>8 || (t->kind!=tk_integer && t->kind!=tk_pointer))reject("static integer encoding type");
       a_boolean overflow=FALSE;
       unsigned long long bits=int_constant_is_signed(c)?(unsigned long long)value_of_integer_constant(c,&overflow):
@@ -530,6 +556,8 @@ struct Writer {
         case ik_unsigned_int:if(t->size==4)return 7;break;
         case ik_long:case ik_long_long:if(t->size==8)return 8;break;
         case ik_unsigned_long:case ik_unsigned_long_long:if(t->size==8)return 9;break;
+        case ik_int128:if(t->size==16 && t->alignment==16)return integer128_type(false);break;
+        case ik_unsigned_int128:if(t->size==16 && t->alignment==16)return integer128_type(true);break;
         default:break;
       }
     }
@@ -592,6 +620,7 @@ struct Writer {
     if(type.kind=="record" && dot_object_source::state().abi_records.count(type.record_type))
       reject("compiler ABI record cannot masquerade as an original source type");
     if(type.execution)return type.execution;
+    if(type.is_int128)return integer128_type(type.is_unsigned_int128);
     if(type.kind=="record")return record_type(type.record_type);
     if(type.kind=="va-list")return va_list_type();
     if(type.kind=="long-double" || type.kind=="float80" || type.kind=="float64x")return f80_type();
@@ -785,6 +814,7 @@ struct Writer {
       auto t=skip_typerefs(variable->type);
       if(t->kind!=tk_integer && t->kind!=tk_float && t->kind!=tk_pointer)
         reject("volatile aggregate initialization");
+      if(integer128(t))reject("volatile integer128 access");
       unsigned wrapper=node("volatile-place",ty,pos,0,0,"","","place","none");
       edge(wrapper,"operand",0,result);return wrapper;
     }
@@ -850,15 +880,27 @@ struct Writer {
     if(c->kind==ck_string)
       return node("storage",ty,pos,0,0,"","","place","none",0,literal(c));
     if(c->kind==ck_address) {
-      auto &address=c->variant.address;
+      auto &address=c->variant.address;unsigned address_type=ty,result=0;
       if(address.kind==abk_routine) {
         if(address.offset)reject("function address offset");
-        return node("function-address",ty,pos,routine(address.variant.routine),0,"","","value","none");
+        address_type=pointer_type(routine_type(skip_typerefs(address.variant.routine->type)));
+        result=node("function-address",address_type,pos,routine(address.variant.routine),0,"","","value","none");
+      } else {
+        unsigned target=address.kind==abk_variable?storage(address.variant.variable):
+          address.kind==abk_constant?literal(address.variant.constant):0;
+        if(!target)reject("constant address base",address.kind);
+        // EDG folds pointer-to-integer casts into ck_address constants. Keep
+        // the owned address pointer-typed and represent that cast explicitly;
+        // storage-address must never masquerade as an integer value node.
+        if(skip_typerefs(c->type)->kind!=tk_pointer) {
+          auto target_type=address.kind==abk_variable?address.variant.variable->type:address.variant.constant->type;
+          address_type=pointer_type(type_id(target_type));
+        }
+        result=node("storage-address",address_type,pos,0,0,"",std::to_string(address.offset),"value","none",0,target);
       }
-      unsigned target=address.kind==abk_variable?storage(address.variant.variable):
-        address.kind==abk_constant?literal(address.variant.constant):0;
-      if(!target)reject("constant address base",address.kind);
-      return node("storage-address",ty,pos,0,0,"",std::to_string(address.offset),"value","none",0,target);
+      if(address_type==ty)return result;
+      unsigned converted=node("convert",ty,pos,0,0,"","","value","left-to-right");
+      edge(converted,"operand",0,result);return converted;
     }
     if(c->kind==ck_float)return node("constant",ty,pos,0,0,"",floating_bits(c),"value","none");
     if(c->kind==ck_aggregate) {
@@ -871,7 +913,8 @@ struct Writer {
     if(c->kind!=ck_integer || ty==10 || ty==11 || (f80_id && ty==f80_id))reject("noninteger/nonfloating constant",c->kind);
     a_boolean overflow=FALSE;
     string text;
-    if(int_constant_is_signed(c))text=std::to_string((long long)value_of_integer_constant(c,&overflow));
+    if(integer128(c->type))text=decimal_str_for_integer_constant(c).as_temp_characters();
+    else if(int_constant_is_signed(c))text=std::to_string((long long)value_of_integer_constant(c,&overflow));
     else text=std::to_string((unsigned long long)unsigned_value_of_integer_constant(c,&overflow));
     if(overflow)reject("out of range scalar constant");
     if(skip_typerefs(c->type)->kind==tk_pointer && text!="0") {
@@ -963,11 +1006,15 @@ struct Writer {
       default:return 0;
     }
     string operation=op;
+    if(integer128(call->type))reject("integer128 intrinsic result");
+    for(auto arg=first;arg;arg=arg->next)
+      if(integer128(arg->type))reject("integer128 intrinsic operand");
     if(operation=="add-overflow" || operation=="sub-overflow" || operation=="mul-overflow") {
       if(!first || !first->next || !first->next->next || first->next->next->next)reject("overflow intrinsic arity");
       auto target=skip_typerefs(first->next->next->type);
       if(target->kind!=tk_pointer || skip_typerefs(target->variant.pointer.type)->kind!=tk_integer)
         reject("overflow intrinsic destination");
+      if(integer128(target->variant.pointer.type))reject("integer128 overflow intrinsic destination");
       auto qualifiers=get_type_qualifiers(target->variant.pointer.type);
       if(qualifiers&(TQ_CONST|TQ_C11_ATOMIC))reject("overflow intrinsic destination qualifiers");
       if(qualifiers&TQ_VOLATILE)operation+="-volatile";
@@ -981,6 +1028,7 @@ struct Writer {
     if(e && place(e) && volatile_place(e)) {
       auto t=skip_typerefs(e->type);
       if(t->kind==tk_integer || t->kind==tk_float || t->kind==tk_pointer) {
+        if(integer128(t))reject("volatile integer128 access");
         if(e->kind==enk_operation && (e->variant.operation.kind==eok_dot_field || e->variant.operation.kind==eok_points_to_field)) {
           auto field=e->variant.operation.operands->next;
           if(field && field->kind==enk_field && node_field(field)->is_bit_field)reject("volatile bitfield access");
@@ -1630,6 +1678,7 @@ struct Writer {
         loop_body(id,s,s->variant.for_loop.statement);return id;
       }
       case stmk_switch: {
+        if(integer128(s->expr->type))reject("integer128 switch selector");
         auto body=s->variant.switch_stmt.body_statement;
         if(!body || body->kind!=stmk_block)reject("switch body outside block profile");
         auto descriptor=s->variant.switch_stmt.extra_info;
@@ -1790,7 +1839,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v15\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v16\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

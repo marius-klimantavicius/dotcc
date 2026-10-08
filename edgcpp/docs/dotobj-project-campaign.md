@@ -208,3 +208,36 @@ are translation probes, not DuckDB execution acceptance.
 The complete v15 regression passes **843 checks including NativeAOT** with
 native020 and managed018. [Hashed v15 evidence](../evidence/dotobj-record-origin-20261008.json)
 records the full run, focused record/assignment checks and exact tool snapshots.
+
+
+## Native-width integer128 and thread lifecycle, v16 (2026-10-08)
+
+Native022 and managed019 support signed and unsigned 128-bit source values,
+including enum representations, arithmetic, exact constants, records, arrays,
+function calls and shared variadic packing. Source-exposed storage retains
+16-byte alignment through explicit local storage and pinned global/TLS arenas.
+Numeric tables use embedded ulong-pair spans rather than allocated UInt128
+collections. Pointer conversions preserve the observed LP64 target policy.
+Unsupported wide switch, volatile, bitfield, intrinsic and address-relocation
+forms remain explicit boundaries. The folded-address producer correction emits
+a typed address followed by conversion; it does not change EDG semantics.
+
+Focused native O0/O2, JIT and NativeAOT probes cover full-width extrema, float80
+conversions, exact arrays, pointer round trips and alignment. Independent corrupt
+objects test canonical range and alignment validation. Actual DuckDB/libc++
+probes now pass the charconv integer128 tables and reach the next C++ layout and
+initialization boundaries; this is not DuckDB execution acceptance.
+
+The shared C11/libc++ thread runtime passes 94 native/JIT/NativeAOT checks and
+86 process compatibility checks. It uses canonical BCL services for mutexes,
+conditions, once, threads and TSS, including initial-thread exits, descendants,
+last-thread process finalization and four-pass TSS cleanup. Managed019 supplies
+the source-owned TLS release bridge, verified after C++ TLS, TSS and libc TLS
+callbacks; the next source TLS access restores its initial values while globals
+persist. [Thread evidence](../evidence/dotobj-runtime-threads-20261008.json)
+records the exact tools and tests. Linux x64 is the executed platform.
+
+The full v16 regression passes **871 checks including NativeAOT** with native022
+and managed019. [Hashed integer128 evidence](../evidence/dotobj-integer128-20261008.json)
+records that run, focused integer/enum and malformed-object checks, current
+DuckDB probes and the exact immutable tools.

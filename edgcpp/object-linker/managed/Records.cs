@@ -113,6 +113,8 @@ internal sealed partial class ObjectFile
             for (int index = 0; index < fields.Length; index++)
             {
                 RecordField field = fields[index];
+                if (field.BitWidth is not null && ScalarTypes.IsWideInteger(Type(field.TypeId)))
+                    throw new InvalidDataException("128-bit bitfields require an explicit bit storage contract");
                 if (field.Ordinal != index || field.SourceName.Length != 0 && !names.Add(field.SourceName)) throw new InvalidDataException("Invalid field order or duplicate field name");
                 string type = Type(field.TypeId), leaf = ScalarTypes.Leaf(type);
                 if (type == "void" || RoutineTypes.IsRoutine(type)) throw new InvalidDataException("Record field must have a storage type");

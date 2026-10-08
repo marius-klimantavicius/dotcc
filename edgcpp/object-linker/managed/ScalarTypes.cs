@@ -13,24 +13,25 @@ internal static class ScalarTypes
     public static string Leaf(string kind) => IsArray(kind) ? Leaf(Element(kind)) : kind;
     public static long FlatCount(string kind) => IsArray(kind) ? checked(ElementCount(kind) * FlatCount(Element(kind))) : 1;
     public static long Size(string kind) => IsArray(kind) ? checked(ElementCount(kind) * Size(Element(kind))) : IsPointer(kind) ? 8 : kind switch
-    { "f80" => 16, "va-list" => 24, "bool" or "i8" or "u8" => 1, "i16" or "u16" => 2, "i32" or "u32" or "f32" => 4, "i64" or "u64" or "f64" => 8, _ => throw new InvalidDataException("Type has no storage size") };
+    { "f80" or "i128" or "u128" => 16, "va-list" => 24, "bool" or "i8" or "u8" => 1, "i16" or "u16" => 2, "i32" or "u32" or "f32" => 4, "i64" or "u64" or "f64" => 8, _ => throw new InvalidDataException("Type has no storage size") };
     public static string ArrayName(string kind) => "__DotObjArray_" + Mangle(kind);
     private static string Mangle(string kind) => IsArray(kind) ? "A" + ElementCount(kind) + "_" + Mangle(Element(kind)) : IsPointer(kind) ? "P_" + Mangle(Pointee(kind)) : kind;
     public static bool IsPointer(string kind) => kind.StartsWith("ptr(", StringComparison.Ordinal) && kind.EndsWith(')');
     public static string Pointee(string kind) => IsPointer(kind) ? kind[4..^1]
         : throw new InvalidDataException("Expected pointer type");
-    public static bool IsInteger(string kind) => kind is "i8" or "u8" or "i16" or "u16" or "i32" or "u32" or "i64" or "u64";
+    public static bool IsWideInteger(string kind) => kind is "i128" or "u128";
+    public static bool IsInteger(string kind) => kind is "i8" or "u8" or "i16" or "u16" or "i32" or "u32" or "i64" or "u64" or "i128" or "u128";
     public static bool IsFloating(string kind) => kind is "f32" or "f64" or "f80";
     public static bool IsNumeric(string kind) => IsInteger(kind) || IsFloating(kind);
     public static bool IsPromotedNumeric(string kind) => IsPromotedInteger(kind) || IsFloating(kind);
     public static string Zero(string kind) => kind switch { "f32" => "00000000", "f64" => "0000000000000000", "f80" => "00000000000000000000", _ => "0" };
-    public static bool IsPromotedInteger(string kind) => kind is "i32" or "u32" or "i64" or "u64";
+    public static bool IsPromotedInteger(string kind) => kind is "i32" or "u32" or "i64" or "u64" or "i128" or "u128";
     public static bool IsBooleanResult(string kind) => kind is "bool" or "i32" or "u8";
     public static string CSharp(string kind) => IsArray(kind) ? ArrayName(kind) : IsPointer(kind) ? CSharp(Pointee(kind)) + "*" : kind switch
     {
         "f80" => "global::Edg.Runtime.Float80", "va-list" => "global::Edg.Runtime.VaList", "void" => "void", "bool" => "bool", "i8" => "sbyte", "u8" => "byte",
         "i16" => "short", "u16" => "ushort", "i32" => "int", "u32" => "uint",
-        "i64" => "long", "u64" => "ulong", "f32" => "float", "f64" => "double", _ => throw new InvalidDataException("Unsupported C# type")
+        "i64" => "long", "u64" => "ulong", "i128" => "global::System.Int128", "u128" => "global::System.UInt128", "f32" => "float", "f64" => "double", _ => throw new InvalidDataException("Unsupported C# type")
     };
 
     // Decimal text is exact even where the unsigned value does not fit a SQLite
@@ -40,6 +41,13 @@ internal static class ScalarTypes
         if (IsPointer(kind)) return text == "0";
         if (IsFloating(kind)) return text is not null && text.Length == (kind == "f32" ? 8 : kind == "f80" ? 20 : 16) &&
             text.All(ch => ch is >= '0' and <= '9' or >= 'a' and <= 'f');
+        if (IsWideInteger(kind))
+        {
+            if (text is null || text.Length == 0 || text.Length > 40) return false;
+            return kind == "i128"
+                ? Int128.TryParse(text, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out Int128 signed128) && text == signed128.ToString(CultureInfo.InvariantCulture)
+                : UInt128.TryParse(text, NumberStyles.None, CultureInfo.InvariantCulture, out UInt128 unsigned128) && text == unsigned128.ToString(CultureInfo.InvariantCulture);
+        }
         if (text is null || text.Length == 0 || text.Length > 20) return false;
         if (kind is "bool" or "u8" or "u16" or "u32" or "u64")
         {
@@ -59,7 +67,7 @@ internal static class ScalarTypes
     // selector type. Keep the exact converted value for validation and C# labels.
     public static string SwitchConstant(string sourceKind, string text, string selectorKind)
     {
-        if (!IsInteger(sourceKind) || !IsConstant(sourceKind, text) || !IsPromotedInteger(selectorKind))
+        if (!IsInteger(sourceKind) || !IsConstant(sourceKind, text) || (!IsPromotedInteger(selectorKind) || IsWideInteger(selectorKind)))
             throw new InvalidDataException("Invalid switch case conversion");
         int width = selectorKind is "i32" or "u32" ? 32 : 64;
         BigInteger modulus = BigInteger.One << width;
@@ -99,6 +107,15 @@ internal static class ScalarTypes
         if (!IsConstant(kind, text)) throw new InvalidDataException("Invalid scalar constant");
         if (IsPointer(kind)) return "((" + CSharp(kind) + ")null)";
         if (IsFloating(kind)) return FloatingLiteral(kind, text);
+        if (IsWideInteger(kind))
+        {
+            if (long.TryParse(text, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out long small) && (kind == "i128" || small >= 0))
+                return "((" + CSharp(kind) + ")" + Literal("i64", text) + ")";
+            UInt128 bits = kind == "u128" ? UInt128.Parse(text, CultureInfo.InvariantCulture) : unchecked((UInt128)Int128.Parse(text, CultureInfo.InvariantCulture));
+            string literal = "new global::System.UInt128(0x" + ((ulong)(bits >> 64)).ToString("x", CultureInfo.InvariantCulture) + "UL, 0x" + unchecked((ulong)bits).ToString("x", CultureInfo.InvariantCulture) + "UL)";
+            if (kind == "i128") literal = "unchecked((global::System.Int128)" + literal + ")";
+            return literal + " /* " + text + " */";
+        }
         return kind switch
         {
             "bool" => text == "0" ? "false" : "true",

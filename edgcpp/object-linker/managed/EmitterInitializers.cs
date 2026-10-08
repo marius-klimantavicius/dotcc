@@ -45,6 +45,11 @@ internal sealed partial class Emitter
                 .Append(offset + start).Append(", ").Append(bytes.Length).Append("));\n");
         }
     }
+    private static string Integer128Words(string type, string text)
+    {
+        UInt128 bits = type == "i128" ? unchecked((UInt128)Int128.Parse(text, CultureInfo.InvariantCulture)) : UInt128.Parse(text, CultureInfo.InvariantCulture);
+        return "0x" + unchecked((ulong)bits).ToString("x", CultureInfo.InvariantCulture) + "UL, 0x" + ((ulong)(bits >> 64)).ToString("x", CultureInfo.InvariantCulture) + "UL";
+    }
     private string PhysicalConstant(string type, ReadOnlySpan<byte> bytes)
     {
         string text = type switch
@@ -54,6 +59,8 @@ internal sealed partial class Emitter
             "u16" => BinaryPrimitives.ReadUInt16LittleEndian(bytes).ToString(CultureInfo.InvariantCulture),
             "i32" => BinaryPrimitives.ReadInt32LittleEndian(bytes).ToString(CultureInfo.InvariantCulture),
             "u32" => BinaryPrimitives.ReadUInt32LittleEndian(bytes).ToString(CultureInfo.InvariantCulture),
+            "i128" => BinaryPrimitives.ReadInt128LittleEndian(bytes).ToString(CultureInfo.InvariantCulture),
+            "u128" => BinaryPrimitives.ReadUInt128LittleEndian(bytes).ToString(CultureInfo.InvariantCulture),
             "i64" => BinaryPrimitives.ReadInt64LittleEndian(bytes).ToString(CultureInfo.InvariantCulture),
             "u64" => BinaryPrimitives.ReadUInt64LittleEndian(bytes).ToString(CultureInfo.InvariantCulture),
             "f32" => BinaryPrimitives.ReadUInt32LittleEndian(bytes).ToString("x8", CultureInfo.InvariantCulture),
@@ -138,6 +145,26 @@ internal sealed partial class Emitter
         string leaf = ScalarTypes.Leaf(type); long count = ScalarTypes.FlatCount(type), stride = obj.StorageSize(leaf);
         if (leaf is "i8" or "u8") { if (relocations.Count != 0) return false; EmitByteData(code, bytes, pointer, storageOffsets[symbol.Key], indent); return true; }
         if (leaf == "f80") return false; // Exact bytes retain binary80 payload/padding without allocating managed literal arrays.
+        if (ScalarTypes.IsWideInteger(leaf) && relocations.Count == 0)
+        {
+            for (long first = 0; first < count; first += 4096)
+            {
+                int length = (int)Math.Min(4096, count - first);
+                if (!AnyData(first * stride, length * stride)) continue;
+                string name = generatedMembers.Allocate("__dot_initializer_" + storageDataDeclarations.Count, "initializer");
+                var declaration = new StringBuilder("\n    private static global::System.ReadOnlySpan<ulong> " + name + " => [\n");
+                for (int index = 0; index < length; index++)
+                {
+                    ReadOnlySpan<byte> value = bytes.AsSpan((int)((first + index) * stride), 16);
+                    string text = leaf == "i128" ? BinaryPrimitives.ReadInt128LittleEndian(value).ToString(CultureInfo.InvariantCulture) : BinaryPrimitives.ReadUInt128LittleEndian(value).ToString(CultureInfo.InvariantCulture);
+                    declaration.Append("        ").Append(Integer128Words(leaf, text)).Append(", // ").Append(text).Append('\n');
+                }
+                storageDataDeclarations.Add(declaration.Append("    ];\n").ToString());
+                code.Append(' ', indent).Append(name).Append(".CopyTo(new global::System.Span<ulong>(").Append(pointer).Append(" + ")
+                    .Append(storageOffsets[symbol.Key] + first * stride).Append(", ").Append(length * 2).Append("));\n");
+            }
+            return true;
+        }
         if (ScalarTypes.IsNumeric(leaf) && relocations.Count == 0)
         {
             // Preserve exact floating payloads in integer RVA data; finite values

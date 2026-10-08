@@ -65,7 +65,7 @@ internal sealed partial class ObjectFile
                     {
                         "long-double" or "float80" or "float64x" => "f80", "va-list" => "va-list", "void" => "void", "bool" => "u8", "float" => "f32", "double" => "f64", "signed-char" => "i8", "unsigned-char" => "u8",
                         "short" => "i16", "unsigned-short" => "u16", "int" => "i32", "unsigned-int" => "u32",
-                        "long" or "long-long" => "i64", "unsigned-long" or "unsigned-long-long" => "u64",
+                        "int128" => "i128", "unsigned-int128" => "u128", "long" or "long-long" => "i64", "unsigned-long" or "unsigned-long-long" => "u64",
                         "char" when executionType is "i8" or "u8" => executionType,
                         _ => throw new InvalidDataException("Unsupported original source scalar type")
                     };

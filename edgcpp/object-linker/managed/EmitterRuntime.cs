@@ -38,8 +38,9 @@ internal sealed partial class Emitter
         }
         return Owner + "." + helper.Name + "(" + address + (value is null ? "" : ", " + value) + ")";
     }
-    private static string PromotedType(string left, string right) => left == "f64" || right == "f64" ? "f64"
-        : left == "f32" || right == "f32" ? "f32" : left == "u64" || right == "u64" ? "u64"
+    private static string PromotedType(string left, string right) => left == "f80" || right == "f80" ? "f80"
+        : left == "f64" || right == "f64" ? "f64" : left == "f32" || right == "f32" ? "f32"
+        : left == "u128" || right == "u128" ? "u128" : left == "i128" || right == "i128" ? "i128" : left == "u64" || right == "u64" ? "u64"
         : left == "i64" || right == "i64" ? "i64" : left == "u32" || right == "u32" ? "u32" : "i32";
     private string CompoundValue(string type, string valueType, string op, string left, string right)
     {

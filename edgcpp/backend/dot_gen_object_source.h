@@ -25,6 +25,8 @@ struct Type {
   std::string kind,name;
   a_type_ptr record_type=nullptr;
   bool is_const=false,is_volatile=false;
+  // Private physical representation fact also retained for 128-bit enums.
+  bool is_int128=false,is_unsigned_int128=false;
   a_source_position position={};
   // Routine types are private signature snapshots, not scalar sourceTypes.
   unsigned result=0;
@@ -187,7 +189,8 @@ inline void capture_record(a_type_ptr t) {
       value.error="record field outside plain layout profile";
     if(f->is_bit_field) {
       field.bit_offset=f->offset_bit_remainder;field.bit_width=f->bit_size;field.bit_signed=f->bit_field_is_signed;
-      if(field.bit_offset>7 || field.bit_width>64 || skip_typerefs(f->type)->kind!=tk_integer)
+      if(field.bit_offset>7 || field.bit_width>64 || skip_typerefs(f->type)->kind!=tk_integer ||
+         (field.bit_width && skip_typerefs(f->type)->size>8))
         value.error="bitfield outside fixed integer layout";
     }
 #if GNU_EXTENSIONS_ALLOWED
@@ -235,6 +238,8 @@ inline unsigned capture_type(a_type_ptr t) {
       case ik_unsigned_long:value.kind="unsigned-long";value.execution=9;break;
       case ik_long_long:value.kind="long-long";value.execution=8;break;
       case ik_unsigned_long_long:value.kind="unsigned-long-long";value.execution=9;break;
+      case ik_int128:value.kind="int128";value.is_int128=true;break;
+      case ik_unsigned_int128:value.kind="unsigned-int128";value.is_int128=true;value.is_unsigned_int128=true;break;
       default:break;
     }
     if(t->variant.integer.enum_type && !t->variant.integer.bool_type)value.kind="enum";
