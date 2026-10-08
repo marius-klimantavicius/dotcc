@@ -34,6 +34,55 @@ def sha(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
+def adapt_termcolor(source, staged):
+    """Select the existing ANSI/stdio branch for the portable runner profile.
+
+    This preserves isatty as terminal identity, not ANSI capability. Redirected
+    runner streams are the approved profile; general Windows VT and the .NET
+    Unix Console first-write prologue remain separate runtime limitations.
+    """
+    relative = 'test/sqlite/termcolor.hpp'
+    original_path, path = Path(source) / relative, Path(staged) / relative
+    if original_path.is_symlink() or path.is_symlink() or original_path.samefile(path):
+        raise ValueError('Termcolor adaptation requires distinct regular source and staged files')
+    expected_original = 'b8c83e67c4662278108109922f3ef4d41fc01353bf9cc72207ed87b235b55783'
+    expected_adapted = 'af447ee81a8d4e63bddc7641ca4ce1c7b95e496fcaf34654c347dd5b3093b839'
+    if sha(original_path) != expected_original:
+        raise ValueError('Pinned termcolor original header changed')
+    replacements = [{'before': '#if defined(_WIN32) || defined(_WIN64)\n',
+      'after': '#if defined(__EDG_DOT_TARGET__)\n'
+               '#define TERMCOLOR_OS_EDG\n'
+               '#elif defined(_WIN32) || defined(_WIN64)\n',
+      'count': 1},
+     {'before': 'defined(TERMCOLOR_OS_MACOS) || defined(TERMCOLOR_OS_LINUX)',
+      'after': 'defined(TERMCOLOR_OS_MACOS) || defined(TERMCOLOR_OS_LINUX) || '
+               'defined(TERMCOLOR_OS_EDG)',
+      'count': 31},
+     {'before': '#undef TERMCOLOR_OS_LINUX\n',
+      'after': '#undef TERMCOLOR_OS_LINUX\n#undef TERMCOLOR_OS_EDG\n',
+      'count': 1}]
+    original = original_path.read_bytes()
+    updated = original
+    for replacement in replacements:
+        before, after = replacement['before'].encode(), replacement['after'].encode()
+        if updated.count(before) != replacement['count']:
+            raise ValueError('Pinned termcolor platform marker changed')
+        updated = updated.replace(before, after)
+    if hashlib.sha256(updated).hexdigest() != expected_adapted:
+        raise ValueError('Termcolor adaptation differs from the reviewed header')
+    current = path.read_bytes()
+    if current not in (original, updated):
+        raise ValueError('Staged termcolor header is neither pinned original nor reviewed adaptation')
+    if current != updated:
+        path.write_bytes(updated)
+    return dict(path=relative, originalSha256=expected_original, stagedSha256=expected_adapted,
+                replacements=replacements,
+                profile='redirected-upstream-runner',
+                limitations=['isatty does not establish Windows VT capability',
+                             '.NET Unix Console first-write terminal prefix is a separate runtime mismatch'],
+                reason='Recognize only the private EDG target selector and preserve all existing ANSI manipulators, stream identity, fileno/isatty and iword forcing. No global host-OS macro, terminal-capability reinterpretation, or disabled color function.')
+
+
 def adapt_numeric_cast(source, staged):
     """Disambiguate an unused private class tag from the public function template.
 
@@ -260,6 +309,7 @@ def prepare(manifest_path, output):
     changes.append(adapt_value_pair(source, staged))
     changes.append(adapt_fmt_arguments(source, staged))
     changes.append(adapt_icu_calendar_sub(source, staged))
+    changes.append(adapt_termcolor(source, staged))
 
     # Generated CMake headers and the static extension loader are real inputs,
     # even though they are outside the upstream archive. Freeze them with the

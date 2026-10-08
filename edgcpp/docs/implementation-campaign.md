@@ -2172,3 +2172,12 @@ another full attempt. The isolated integral overlay remains unapplied, and
 the compressed-pair address-retention experiment is explicitly rejected after
 changing the validity of ordinary Clang18-valid source.
 [Exact PCG diagnostic evidence](../evidence/duckdb-pcg-correspondence-20261008.json).
+
+
+With full007 and its diagnostic writer terminal, the previously reviewed
+termcolor staging adapter is now canonical. Thirteen canonical controls pass
+against the exact pinned header, including drift and alias rejection. Existing
+staged trees and preprocessed inputs are preserved; a fresh complete stage is
+required for the next composition. This does not resolve interactive terminal
+output differences or count as translated runner execution.
+[Termcolor integration](../evidence/duckdb-termcolor-integration-20261008.json).

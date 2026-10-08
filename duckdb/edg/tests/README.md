@@ -143,3 +143,17 @@ the expected correspondence diagnostic for the eight affected original pairs.
 Each input's header origin and before/after hashes are verified. This is a
 bounded semantic-merge regression; native and translated execution evidence is
 recorded separately in the campaign. It does not count as a full DuckDB build.
+
+## Termcolor staging adapter
+
+```sh
+python3 -B duckdb/edg/tests/termcolor_adaptation_verify.py \
+  --source /path/to/pinned-duckdb-source \
+  --output-dir /path/to/new-termcolor-test
+```
+
+The adapter selects termcolor's existing ANSI/stdio branch with a private EDG
+target macro. Thirteen controls verify exact reviewed bytes, immutable source,
+idempotence and rejection of aliases or changed inputs. This is source staging
+verification for redirected runner streams; translated interactive terminal
+behavior, Windows VT and the .NET terminal initialization prefix are separate.

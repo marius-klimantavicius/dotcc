@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "status": "canonical-staging-adapter-integrated",
+  "canonicalApplied": true,
+  "fullRestage": false,
+  "fullRunnerTranslation": false,
+  "translatedExecution": false,
+  "checks": 13,
+  "evidence": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-termcolor-canonical-001/results.json",
+      "sha256": "1a98892acedc3676eac181187599a8f778bb1fd95eb94e9bece66e9fbf0010fa"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-termcolor-adaptation-independent-review-001/review.json",
+      "sha256": "b63a18bcc277def6234633328070c82624dedbabe4c53cc1511afc0ce5321607"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-termcolor-adaptation-bundle-001/manifest.json",
+      "sha256": "9e8f41253ab9bc493867dfcdaa5c2d95d669bad607183c3bcdaa856d03038cc2"
+    }
+  ],
+  "limitations": [
+    "Fresh full source staging and preprocessing required before new composition; old input receipts remain immutable.",
+    "Redirected runner profile; raw managed PTY prefix and Windows VT remain unresolved.",
+    "No changes to Catch signals, fork or native demo loading."
+  ]
+}
