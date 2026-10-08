@@ -1,0 +1,154 @@
+{
+  "milestone": "Fixed-width integer and conditional semantic objects",
+  "date": "2026-10-08",
+  "profile": "scalar-control-v3",
+  "status": "passed-with-explicit-coverage-boundaries",
+  "acceptance": {
+    "checkCount": 124,
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-integer-acceptance-002/results.json",
+      "sha256": "6dbe0420541508b249427e6a9fd31ef92d0a0725c3cd0c5a2cdd6ed3314476f3"
+    },
+    "log": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-integer-acceptance-002.log",
+      "sha256": "2ac7900b661ab3003009c7c39e35cd3ad4c61ec1023fa2eeef94c874b2811462"
+    },
+    "languages": [
+      "C++17",
+      "C11"
+    ],
+    "nativeReference": true,
+    "managedJit": true,
+    "nativeAot": true,
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39"
+  },
+  "compiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "sha256": "ff5c367ebf645a06e940f2ea9c33d62ccde3a57c2f21a2a7b5e58a7f3d7c0d98"
+  },
+  "nativeBuildLog": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-integer-native-build-001.log",
+    "sha256": "be51d7ccf35d6cac547e9dda40389d65bafc5a88c8ed8cdaac88039daa7b8da2"
+  },
+  "implementationFiles": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/dot_gen_object.h",
+      "sha256": "e2b24d49adf9a12c79c654972eece124daee8209f9f3f2baf04075a1f353d592"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/README.md",
+      "sha256": "8ed717ef1e914a61c6a488a617650dd60da9df0769f179d40d376a71dc74c222"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/compile.py",
+      "sha256": "d256f181c43b41fcb4a892854ca002eb897115672a4e5e9b40859a3b86162db6"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/contract.md",
+      "sha256": "e827651ee734adbf681d976b5833df853757ad010e69fdcf6eeea64b517c49e9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/DotObj.Linker.csproj",
+      "sha256": "871e2077cbb761b5e4bca455d228fb1e0be8f88cd3fa077a8bc9744a9b25b482"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Emitter.cs",
+      "sha256": "292c5958742779b7466212487214892222155899b7131bbe755ddbc954d8a322"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Linker.cs",
+      "sha256": "c2454a937194a53f4413f2c5da479702f38473b4d18180ca38a5b439a12e95b9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Model.cs",
+      "sha256": "d317762dfe0d1a7310148128220e7285df99a57fd6f75a938d86ec714948c6f9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Names.cs",
+      "sha256": "516baf0dcd9de98549c84a94d322e83bb998f9a2ac4da09052a0f21d16d18647"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/ObjectFile.cs",
+      "sha256": "77cfb69859cb9fe231ba192bfb6aa51b3554dc892b58decb5f489540fa26e958"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Program.cs",
+      "sha256": "1f60d4390cb0fe517e6a7cb9fd7cb8d9c934e2fd2446c86a13b9f9fa9aab6abd"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/README.md",
+      "sha256": "4941f868965b8e927e799104edbd8aa3190669146acf0569bee917b785c9cb02"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/ScalarTypes.cs",
+      "sha256": "d834e436d3efab20bb1ba50cd03c47e019d2e5704f91ce9fa8b6ac8dd53c6d54"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Sqlite.cs",
+      "sha256": "6d22aa68495b6625448b6dc460108a5f9020ba5c62ecc67da1553f31d5b78230"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Verifier.cs",
+      "sha256": "ce79bc369b21e56949c8cefd670a95479d786bb768d291d57d6ff5a2d246f074"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/schema.sql",
+      "sha256": "164710ed1013e7537d2c31f8a1e9fe537dccfc0a878b3eaa5a3732ba74bd1bac"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/consumer.cpp",
+      "sha256": "e96aa86970963fb6ccb1fb1952147d2323048a9c6ba6c86884ef4632c0f48982"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/conversions.cpp",
+      "sha256": "b0976d08adb543a280daab0e1c7cf52c5ebf91f8912c7b15466814ab57cdadcd"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/empty.cpp",
+      "sha256": "bc8bb8e433bf65214540115414c821c904b2a30d60a3ac0424bf9b77a00024b7"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/fixture.h",
+      "sha256": "b0f295771d265b4c244f285a3ab4142db0386fc685d0bed5ab0e473f55f8f3f1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/integers.cpp",
+      "sha256": "d4e85d31d56742f4c0373303010a3c87d1628dcb6eb770db19ed8a4e4b46bdaa"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/loops.cpp",
+      "sha256": "04b0f4086d0464ba96b41d0a997081f8104454e1cf14a36eef5d325a2ebbb13d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/provider.cpp",
+      "sha256": "b3a6b71b4450b95a86d625b39d103fd3900d0ceb7aece65f164a7c31e933abd9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/scopes.cpp",
+      "sha256": "48e8c05643a690a0ae2b30948a5f73c7366f4f9f050a24e58fba23e584461b79"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/verify.py",
+      "sha256": "94093ebc5ee2813dd08947a508ba208a45aae0dd9f84998c4798f3230e58169d"
+    }
+  ],
+  "properties": [
+    "Signed and unsigned 8/16/32/64-bit physical representations with exact decimal constants.",
+    "EDG-selected promotions/conversions, bitwise operations, shifts and lazy conditional value expressions.",
+    "Tests cover min/max constants, sign extension, narrowing, unsigned wraparound/negation and selected-arm side effects.",
+    "Cross-unit mixed-width calls and long/long long overloads retain distinct exact C++ identities despite common i64 physical representation.",
+    "Rejection tests include out-of-range signed-byte/unsigned64 constants, invalid comparison result types and malformed conditional nodes.",
+    "Prior loop, independent linking, integrity, source-unavailable linking and incremental rebuild acceptance rerun."
+  ],
+  "review": "Independent read-only review found no blocking issue; recommended cross-unit integer/overload coverage was included in final acceptance.",
+  "compatibility": "Current exact-schema reader requires v3. Earlier profiles retain their previous tool builds. Callable ABI remains dotobj-scalar-v1.",
+  "limitations": [
+    "No prelower source graph or semantic macro history capture.",
+    "Source type spellings/distinctions such as long versus long long are not yet owned source-facing types; exact symbol identities remain distinct.",
+    "No globals/TLS, pointers/records, RAII/EH, inline/template/COMDAT or general C++ coverage.",
+    "Comma expressions, compound assignments, void/GNU omitted-middle conditionals and conditional assignment places remain unsupported.",
+    "Linux x64 executed; no Windows/macOS or DuckDB acceptance.",
+    "Native transport still buffers intermediate JSON."
+  ],
+  "artifactsPreserved": true
+}

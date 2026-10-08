@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Text;
 using System.Text.Json;
 
@@ -8,8 +7,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
 {
     private readonly string namespaceName = Names.Namespace(namespaceOption);
     private readonly string className = Names.OptionIdentifier(classOption);
-    private static string Type(string kind) => kind switch
-    { "void" => "void", "i32" => "int", "bool" => "bool", "u8" => "byte", _ => throw new InvalidDataException("Unsupported C# type") };
+    private static string Type(string kind) => ScalarTypes.CSharp(kind);
 
     public void Write(string output, string? entryKey)
     {
@@ -50,7 +48,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         File.WriteAllText(Path.Combine(output, "Translated.csproj"), project);
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v2", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v3", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Scalar/control profile only; no globals, records, pointers, EH, RAII, templates/COMDAT or runtime providers", "No pre-lowering source view, macro capture or lifetime capture" },
@@ -89,6 +87,8 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         }
         string Boolean(string expression, Node node) => NodeType(node) switch
         { "bool" => expression, "i32" => "(" + expression + " ? 1 : 0)", "u8" => "((byte)(" + expression + " ? 1 : 0))", _ => throw new InvalidDataException("Invalid boolean result") };
+        string FromBoolean(string expression, string type) => type == "i32"
+            ? "(" + expression + " ? 1 : 0)" : "((" + Type(type) + ")(" + expression + " ? 1 : 0))";
         string Expression(Node node)
         {
             Node Child(string role) => body.Child(node.Id, role);
@@ -96,9 +96,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
             switch (node.Kind)
             {
                 case "constant":
-                    if (NodeType(node) == "bool") return node.ConstantText == "0" ? "false" : "true";
-                    string value = int.Parse(node.ConstantText!, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
-                    return NodeType(node) == "u8" ? "((byte)" + value + ")" : value;
+                    return ScalarTypes.Literal(NodeType(node), node.ConstantText!);
                 case "binding": return bindingNames[node.BindingId!.Value];
                 case "call":
                     Symbol target = linker.Resolve(obj, node.EntityId!.Value);
@@ -108,18 +106,27 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
                 case "convert":
                     if (NodeType(node) == NodeType(Child("operand"))) return Operand("operand");
                     if (NodeType(node) == "bool") return Truth(Child("operand"));
-                    if (NodeType(Child("operand")) == "bool") return NodeType(node) == "u8" ? "((byte)(" + Operand("operand") + " ? 1 : 0))" : "(" + Operand("operand") + " ? 1 : 0)";
+                    if (NodeType(Child("operand")) == "bool") return FromBoolean(Operand("operand"), NodeType(node));
                     return "unchecked((" + Type(NodeType(node)) + ")(" + Operand("operand") + "))";
                 case "unary":
                     if (node.Operator == "not") return Boolean("!(" + Truth(Child("operand")) + ")", node);
-                    return "(" + (node.Operator == "neg" ? "-" : "+") + Operand("operand") + ")";
+                    if (node.Operator == "neg")
+                        return NodeType(node) is "u32" or "u64"
+                            ? "unchecked(" + (NodeType(node) == "u32" ? "0U" : "0UL") + " - " + Operand("operand") + ")"
+                            : "unchecked(-" + Operand("operand") + ")";
+                    return "(" + (node.Operator == "bit-not" ? "~" : "+") + Operand("operand") + ")";
+                case "conditional":
+                    return "(" + Truth(Child("condition")) + " ? " + Operand("then") + " : " + Operand("else") + ")";
                 case "binary":
                     if (node.Operator is "and" or "or")
                         return Boolean("(" + Truth(Child("left")) + (node.Operator == "and" ? " && " : " || ") + Truth(Child("right")) + ")", node);
                     string op = node.Operator switch
-                    { "add" => "+", "sub" => "-", "mul" => "*", "div" => "/", "rem" => "%", "eq" => "==", "ne" => "!=", "lt" => "<", "le" => "<=", "gt" => ">", "ge" => ">=", _ => throw new InvalidDataException("Unsupported operator") };
-                    string expression = "(" + Operand("left") + " " + op + " " + Operand("right") + ")";
-                    return node.Operator is "eq" or "ne" or "lt" or "le" or "gt" or "ge" ? Boolean(expression, node) : expression;
+                    { "add" => "+", "sub" => "-", "mul" => "*", "div" => "/", "rem" => "%", "eq" => "==", "ne" => "!=", "lt" => "<", "le" => "<=", "gt" => ">", "ge" => ">=", "bit-and" => "&", "bit-or" => "|", "bit-xor" => "^", "shl" => "<<", "shr" => ">>", _ => throw new InvalidDataException("Unsupported operator") };
+                    string right = node.Operator is "shl" or "shr" && NodeType(Child("right")) != "i32"
+                        ? "unchecked((int)(" + Operand("right") + "))" : Operand("right");
+                    string expression = "(" + Operand("left") + " " + op + " " + right + ")";
+                    if (node.Operator is "eq" or "ne" or "lt" or "le" or "gt" or "ge") return Boolean(expression, node);
+                    return node.Operator is "add" or "sub" or "mul" ? "unchecked" + expression : expression;
                 default: throw new InvalidDataException("Unsupported expression " + node.Kind);
             }
         }

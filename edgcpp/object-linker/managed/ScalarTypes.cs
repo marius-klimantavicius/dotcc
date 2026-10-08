@@ -1,0 +1,48 @@
+using System.Globalization;
+
+namespace DotObj;
+
+internal static class ScalarTypes
+{
+    public static bool IsInteger(string kind) => kind is "i8" or "u8" or "i16" or "u16" or "i32" or "u32" or "i64" or "u64";
+    public static bool IsPromotedInteger(string kind) => kind is "i32" or "u32" or "i64" or "u64";
+    public static bool IsBooleanResult(string kind) => kind is "bool" or "i32" or "u8";
+    public static string CSharp(string kind) => kind switch
+    {
+        "void" => "void", "bool" => "bool", "i8" => "sbyte", "u8" => "byte",
+        "i16" => "short", "u16" => "ushort", "i32" => "int", "u32" => "uint",
+        "i64" => "long", "u64" => "ulong", _ => throw new InvalidDataException("Unsupported C# type")
+    };
+
+    // Decimal text is exact even where the unsigned value does not fit a SQLite
+    // signed INTEGER. Reject whitespace, plus signs and non-canonical spellings.
+    public static bool IsConstant(string kind, string? text)
+    {
+        if (text is null || text.Length == 0 || text.Length > 20) return false;
+        if (kind is "bool" or "u8" or "u16" or "u32" or "u64")
+        {
+            if (!ulong.TryParse(text, NumberStyles.None, CultureInfo.InvariantCulture, out ulong value) ||
+                text != value.ToString(CultureInfo.InvariantCulture)) return false;
+            return kind switch { "bool" => value <= 1, "u8" => value <= byte.MaxValue,
+                "u16" => value <= ushort.MaxValue, "u32" => value <= uint.MaxValue, _ => true };
+        }
+        if (!long.TryParse(text, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out long signed) ||
+            text != signed.ToString(CultureInfo.InvariantCulture)) return false;
+        return kind switch { "i8" => signed is >= sbyte.MinValue and <= sbyte.MaxValue,
+            "i16" => signed is >= short.MinValue and <= short.MaxValue,
+            "i32" => signed is >= int.MinValue and <= int.MaxValue, "i64" => true, _ => false };
+    }
+
+    public static string Literal(string kind, string text)
+    {
+        if (!IsConstant(kind, text)) throw new InvalidDataException("Invalid scalar constant");
+        return kind switch
+        {
+            "bool" => text == "0" ? "false" : "true",
+            "i8" or "u8" or "i16" or "u16" => "((" + CSharp(kind) + ")" + text + ")",
+            "u32" => text + "U", "u64" => text + "UL",
+            "i64" => text.StartsWith('-') ? "(" + text + "L)" : text + "L",
+            _ => text.StartsWith('-') ? "(" + text + ")" : text
+        };
+    }
+}

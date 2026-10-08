@@ -1,11 +1,9 @@
-using System.Globalization;
-
 namespace DotObj;
 
 internal static class Verifier
 {
     private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "if", "while", "for", "do-while", "break", "continue"];
-    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate"];
+    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -140,8 +138,7 @@ internal static class Verifier
                     return; // target is an identity reference, not another executable occurrence.
                 case "constant":
                     EdgeShape(node);
-                    if (!int.TryParse(node.ConstantText, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out int value) ||
-                        (Type(node) == "bool" && value is not (0 or 1)) || (Type(node) == "u8" && value is < 0 or > 255)) Fail("Invalid scalar constant");
+                    if (!ScalarTypes.IsConstant(Type(node), node.ConstantText)) Fail("Invalid scalar constant");
                     break;
                 case "binding":
                     EdgeShape(node);
@@ -159,24 +156,46 @@ internal static class Verifier
                 case "binary":
                     EdgeShape(node, ("left", 1, 1), ("right", 1, 1)); Expr(node, "left"); Expr(node, "right");
                     string operation = node.Operator!;
-                    if (operation is "add" or "sub" or "mul" or "div" or "rem")
+                    if (operation is "add" or "sub" or "mul" or "div" or "rem" or "bit-and" or "bit-or" or "bit-xor")
                     {
-                        if (Type(node) != "i32" || Type(Child(node, "left")) != "i32" || Type(Child(node, "right")) != "i32") Fail("Arithmetic requires promoted i32 operands and result");
+                        if (!ScalarTypes.IsPromotedInteger(Type(node))) Fail("Arithmetic requires promoted integer operands and result");
+                        SameType(node, Child(node, "left")); SameType(node, Child(node, "right"));
+                    }
+                    else if (operation is "shl" or "shr")
+                    {
+                        if (!ScalarTypes.IsPromotedInteger(Type(node)) || !ScalarTypes.IsPromotedInteger(Type(Child(node, "right"))))
+                            Fail("Shift requires promoted integer operands");
+                        SameType(node, Child(node, "left"));
                     }
                     else if (operation is "eq" or "ne" or "lt" or "le" or "gt" or "ge")
                     {
                         SameType(Child(node, "left"), Child(node, "right"));
                         if (Type(Child(node, "left")) == "bool" && operation is not ("eq" or "ne")) Fail("Relational bool operands require explicit promotion");
+                        if (!ScalarTypes.IsBooleanResult(Type(node))) Fail("Invalid comparison result type");
                     }
-                    else if (operation is not ("and" or "or")) Fail($"Unsupported binary operator {operation}");
+                    else if (operation is "and" or "or")
+                    {
+                        if (!ScalarTypes.IsBooleanResult(Type(node))) Fail("Invalid logical result type");
+                    }
+                    else Fail($"Unsupported binary operator {operation}");
                     break;
                 case "unary":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
-                    if (node.Operator is "neg" or "plus")
+                    if (node.Operator is "neg" or "plus" or "bit-not")
                     {
-                        if (Type(node) != "i32" || Type(Child(node, "operand")) != "i32") Fail("Unary arithmetic requires promoted i32");
+                        if (!ScalarTypes.IsPromotedInteger(Type(node))) Fail("Unary arithmetic requires a promoted integer");
+                        SameType(node, Child(node, "operand"));
                     }
-                    else if (node.Operator != "not") Fail("Unsupported unary operator");
+                    else if (node.Operator == "not")
+                    {
+                        if (!ScalarTypes.IsBooleanResult(Type(node))) Fail("Invalid logical result type");
+                    }
+                    else Fail("Unsupported unary operator");
+                    break;
+                case "conditional":
+                    EdgeShape(node, ("condition", 1, 1), ("then", 1, 1), ("else", 1, 1));
+                    Expr(node, "condition"); Expr(node, "then"); Expr(node, "else");
+                    SameType(node, Child(node, "then")); SameType(node, Child(node, "else"));
                     break;
                 case "assign":
                     EdgeShape(node, ("target", 1, 1), ("value", 1, 1)); Expr(node, "target"); Expr(node, "value");
@@ -185,7 +204,7 @@ internal static class Verifier
                 case "mutate":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
                     if (node.Operator is not ("pre-inc" or "post-inc" or "pre-dec" or "post-dec") ||
-                        Child(node, "operand").Kind != "binding" || Type(node) is not ("i32" or "u8"))
+                        Child(node, "operand").Kind != "binding" || !ScalarTypes.IsInteger(Type(node)))
                         Fail("Increment/decrement requires a supported operator and an integer binding");
                     SameType(node, Child(node, "operand"));
                     break;

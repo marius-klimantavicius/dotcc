@@ -1,6 +1,6 @@
 # Managed semantic object linker
 
-This is the executable `scalar-control-v2` implementation of the fresh
+This is the executable `scalar-control-v3` implementation of the fresh
 `.dotobj` semantic graph. It does not read the previous semantic-export format
 or an emission-command stream.
 
@@ -55,7 +55,7 @@ spelling without an escape prefix. Original files each get a generated
 C# file; all files share one configurable partial class. Structured blocks,
 `if`, `while`, `for`, `do`/`while`, `break`, `continue`, returns and ordinary
 scalar expressions remain structured. Integer pre/post increment/decrement use
-C# operators directly, including unchecked unsigned-byte wraparound. Loop exits
+C# operators directly, including unchecked unsigned wraparound. Loop exits
 carry explicit target identities in the object and must address the nearest
 lexically enclosing loop; malformed or cross-loop targets are rejected.
 For-header declarations are currently normalized to declarations in an enclosing
@@ -76,5 +76,15 @@ addresses, exceptions/RAII, inline/COMDAT, templates and runtime providers are
 not implemented in this profile. Unsupported input is rejected; scalar fixtures
 do not demonstrate DuckDB readiness or full C++ coverage.
 
-The current schema requires scalar-control-v2 objects. Earlier v1 objects remain
-usable with their retained earlier tool build, or can be regenerated from source.
+The current schema requires scalar-control-v3 objects. Earlier v1/v2 objects
+remain usable with their retained earlier tool build, or can be regenerated.
+
+The integer profile supports signed/unsigned 8/16/32/64-bit values, exact decimal
+constants (including ulong maximum and long minimum), typed conversions and
+calls, bitwise operators, shifts and value conditionals. EDG performs integer
+promotions; the graph records them explicitly. Arithmetic emission uses
+unchecked expressions where constant or runtime overflow would otherwise
+conflict with source unsigned wraparound. Unsigned negation emits typed zero
+minus the operand. Shifts convert non-int counts explicitly to int. Conditional
+expressions and short-circuit operators evaluate only their selected operands.
+This does not add floating point, pointers, compound assignment or comma nodes.

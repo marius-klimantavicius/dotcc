@@ -54,7 +54,7 @@ internal sealed class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v2" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v3" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -142,7 +142,7 @@ internal sealed class ObjectFile : IDisposable
             while (query.Read())
             {
                 string type = query.Text(1);
-                if (query.Integer(0) <= 0 || type is not ("void" or "i32" or "bool" or "u8")) throw new InvalidDataException("Unsupported scalar type");
+                if (query.Integer(0) <= 0 || (type is not ("void" or "bool") && !ScalarTypes.IsInteger(type))) throw new InvalidDataException("Unsupported scalar type");
                 Types.Add(query.Integer(0), type);
             }
         using (var query = database.Prepare("SELECT id,source_name,linkage,external_key,definition,return_type_id,source_file_id,line,column FROM entities ORDER BY id"))

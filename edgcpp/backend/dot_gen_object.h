@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v2: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v3: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -51,10 +51,23 @@ struct Writer {
     // unlike a user enum, its executable representation is the lowered byte.
     if(t->kind==tk_integer && t->variant.integer.bool_type && t->size==1)return 3;
     if(t->kind==tk_integer && !t->variant.integer.enum_type) {
-      if(t->variant.integer.int_kind==ik_int && t->size==4)return 2;
-      if(t->variant.integer.int_kind==ik_unsigned_char && t->size==1)return 3;
+      // Match the existing dot backend's physical LP64 integer mapping.
+      // In particular, plain char follows EDG's configured signedness;
+      // long and long long share a representation, not a source type identity.
+      switch(t->variant.integer.int_kind) {
+        case ik_char:if(t->size==1)return targ_has_signed_chars?4:3;break;
+        case ik_signed_char:if(t->size==1)return 4;break;
+        case ik_unsigned_char:if(t->size==1)return 3;break;
+        case ik_short:if(t->size==2)return 5;break;
+        case ik_unsigned_short:if(t->size==2)return 6;break;
+        case ik_int:if(t->size==4)return 2;break;
+        case ik_unsigned_int:if(t->size==4)return 7;break;
+        case ik_long:case ik_long_long:if(t->size==8)return 8;break;
+        case ik_unsigned_long:case ik_unsigned_long_long:if(t->size==8)return 9;break;
+        default:break;
+      }
     }
-    reject("type outside void/i32/u8 profile",t->kind);
+    reject("type outside void/fixed-width-integer profile",t->kind);
   }
   void source_files(a_source_file_ptr file,unsigned parent) {
     for(;file;file=file->next) {
@@ -184,6 +197,24 @@ struct Writer {
       unsigned id=node("convert",ty,e->position,0,0,"","","value",order);
       edge(id,"operand",0,expression(a));return id;
     }
+    if(operation.kind==eok_question) {
+      // Preserve lazy branch selection. The stock C backend requires both
+      // lowered arm types to match the result; do not recreate promotions.
+      // A scalar lvalue conditional is consumed here as the selected value.
+      // Assignment/mutation targets require a direct variable above/below;
+      // no address or reference operation can export its selected place.
+      if(!a || !b || !b->next || b->next->next || ty==1)
+        reject("conditional outside scalar value profile");
+#if GNU_EXTENSIONS_ALLOWED
+      if(operation.is_gnu_two_operand_question_mark)
+        reject("GNU omitted-middle conditional");
+#endif
+      if(type_id(b->type)!=ty || type_id(b->next->type)!=ty)
+        reject("conditional arm representation mismatch");
+      unsigned id=node("conditional",ty,e->position,0,0,"","","value",order);
+      edge(id,"condition",0,expression(a));edge(id,"then",0,expression(b));
+      edge(id,"else",0,expression(b->next));return id;
+    }
     if(operation.kind==eok_pre_incr || operation.kind==eok_post_incr ||
        operation.kind==eok_pre_decr || operation.kind==eok_post_decr) {
       if(!a || b || a->kind!=enk_variable)reject("nonbinding scalar mutation");
@@ -199,11 +230,14 @@ struct Writer {
     switch(operation.kind) {
       case eok_add:op="add";break;case eok_subtract:op="sub";break;case eok_multiply:op="mul";break;
       case eok_divide:op="div";break;case eok_remainder:op="rem";break;
+      case eok_and:op="bit-and";break;case eok_or:op="bit-or";break;case eok_xor:op="bit-xor";break;
+      case eok_shiftl:op="shl";break;case eok_shiftr:op="shr";break;
       case eok_eq:op="eq";break;case eok_ne:op="ne";break;case eok_lt:op="lt";break;
       case eok_le:op="le";break;case eok_gt:op="gt";break;case eok_ge:op="ge";break;
       case eok_land:op="and";break;case eok_lor:op="or";break;
       case eok_negate:op="neg";unary=true;break;case eok_not:op="not";unary=true;break;
       case eok_unary_plus:op="plus";unary=true;break;
+      case eok_complement:op="bit-not";unary=true;break;
       default:reject("operator",operation.kind);
     }
     if(!a || (unary?(b!=nullptr):(!b || b->next)))reject("operator arity");
@@ -342,8 +376,10 @@ struct Writer {
       functions.push_back("{\"entityId\":"+number(function)+",\"bodyNodeId\":"+number(root)+"}");
       context="file scope";
     }
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v2\",\"sourceFiles\":"+array(files)+
-      ",\"types\":[{\"id\":1,\"kind\":\"void\"},{\"id\":2,\"kind\":\"i32\"},{\"id\":3,\"kind\":\"u8\"}],\"entities\":"+array(entities)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v3\",\"sourceFiles\":"+array(files)+
+      ",\"types\":[{\"id\":1,\"kind\":\"void\"},{\"id\":2,\"kind\":\"i32\"},{\"id\":3,\"kind\":\"u8\"},"
+      "{\"id\":4,\"kind\":\"i8\"},{\"id\":5,\"kind\":\"i16\"},{\"id\":6,\"kind\":\"u16\"},"
+      "{\"id\":7,\"kind\":\"u32\"},{\"id\":8,\"kind\":\"i64\"},{\"id\":9,\"kind\":\"u64\"}],\"entities\":"+array(entities)+
       ",\"parameters\":"+array(parameters)+",\"functions\":"+array(functions)+",\"bindings\":"+array(bindings)+",\"nodes\":"+array(nodes)+",\"edges\":"+array(edges)+"}\n";
     if(fwrite(result.data(),1,result.size(),stdout)!=result.size() || fflush(stdout))reject("wire output failure");
   }

@@ -941,7 +941,9 @@ link-time choices. The linker is a build tool, not a runtime interpreter. The
 new producer/linker now has a verified scalar/control-flow execution slice with
 independent real TUs, SQLite semantic graphs and native/JIT/NativeAOT comparisons.
 The scalar-control-v2 profile also represents structured for/do loops, integer
-mutations and explicit break/continue targets.
+mutations and explicit break/continue targets. The v3 profile adds signed and
+unsigned integer widths through 64 bits, conditional expressions, bitwise
+operators and shifts.
 Prelower source/macro and lifetime capture and broad C++ coverage remain open.
 The superseded command-stream prototype is preserved as unvalidated artifacts.
 See [semantic object design and implementation gates](dotobj-format.md) and

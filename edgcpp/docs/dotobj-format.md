@@ -10,7 +10,8 @@ artifacts and is not a usable linker. A fresh scalar/control-flow execution
 slice is now implemented in [object-linker](../object-linker/README.md), with
 real per-TU compilation/linking and native/JIT/AOT checks. The v2 scalar profile
 adds structured for/do loops, integer mutations and explicitly targeted loop
-exits. Prelower source/macro
+exits. The v3 profile extends integer widths to signed/unsigned 8/16/32/64 bits
+and adds conditional expressions, bitwise operators and shifts. Prelower source/macro
 and lifetime capture, broad C++ coverage and the full graph design below remain
 unfinished; the initial profile explicitly records those missing capabilities.
 

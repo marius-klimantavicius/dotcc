@@ -2279,3 +2279,27 @@ The current exact-schema reader requires v2 objects; retained v1 tool builds
 remain usable with their original objects. The callable ABI is unchanged.
 Prelower source/macro capture, broader types/storage and C++ lifetimes remain
 unfinished. Switch, arbitrary goto and comma-expression headers remain rejected.
+
+The `scalar-control-v3` object milestone extends integer values to signed and
+unsigned 8/16/32/64-bit representations, bitwise operators, shifts and lazy
+conditional expressions. Constants remain exact decimal text through SQLite,
+including the full unsigned 64-bit range. Managed validation checks promotion,
+operand/result types and ranges; C# generation preserves selected widths,
+unsigned wrapping and branch-only side effects using direct operators.
+
+All 124 checks pass on Linux x64 with C++17/C11 native references, managed JIT
+and NativeAOT. New coverage includes signed extension/narrowing, boundary
+constants, wide arithmetic/negation, shift count types, conditional branch side
+effects, and mixed-width cross-unit calls. Long and long long overloads remain
+distinct through their exact C++ identities despite sharing the physical i64
+representation. Malformed constants, comparison result types and conditional
+edges/results are rejected. Existing loop, deterministic linking, integrity and
+incremental rebuild checks were rerun. Independent review found no blocking
+issue; its suggested cross-unit overload test was included. [Hashed integer
+milestone evidence](../evidence/dotobj-integer-expressions-20261008.json).
+
+The current reader requires v3 objects, with prior objects/tool builds retained
+together. This does not complete source-facing type identity, prelower source
+or macro capture, records/storage, or C++ lifetime handling. Compound assignment,
+comma expressions and conditional places remain unsupported. All intermediates
+remain preserved and DuckDB work remains paused.

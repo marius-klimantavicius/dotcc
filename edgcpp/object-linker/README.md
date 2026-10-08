@@ -46,16 +46,20 @@ verification.
 
 ## Current acceptance and boundaries
 
-`scalar-control-v2` supports defined/declaration function identities with strong
-external or TU-private linkage, integer/byte/boolean scalar operations,
+`scalar-control-v3` supports defined/declaration function identities with strong
+external or TU-private linkage, signed/unsigned 8/16/32/64-bit integer operations,
 parameters and block locals, direct calls, conversions, initialization,
-short-circuit expressions, assignments, pre/post increment/decrement, return,
+short-circuit and conditional expressions, bitwise operators and shifts,
+assignments, pre/post increment/decrement, return,
 if/else, while, for, do/while, break and continue.
 The backend preserves ordinary executable initialization order but currently
 normalizes declaration placement to block entry, including for-init declarations
 in an enclosing block. Loop exits carry explicit references to their owning loop;
 the linker validates these before emitting ordinary C# break/continue statements.
-Source bool can have its
+Integer constants retain exact decimal text, including the full unsigned
+64-bit range. Arithmetic promotions and conversions come from EDG; C# emission
+uses the selected widths and unsigned wraparound. Conditional expressions
+evaluate only the selected branch. Source bool can have its
 lowered byte representation in emitted signatures.
 
 The profile explicitly records `prelowerSource=false`, `macros=false` and
@@ -81,13 +85,17 @@ python3 -B edgcpp/object-linker/tests/verify.py \
   --output-dir /path/fresh/dotobj-acceptance --nativeaot
 ```
 
-The 102-check acceptance run covers actual independent EDG compilation, native
+The 124-check acceptance run covers actual independent EDG compilation, native
 reference execution, managed JIT/NativeAOT, private name isolation, scope
 shadowing, loop-local reinitialization, short-circuit effects, bool/byte
 conversions, namespace collisions and implicit main return. Loop fixtures cover
 C++17 and C11, nested exits, omitted for clauses, continue reaching for-step and
 do-condition expressions, unbraced bodies, shadowed loop locals and byte
-wraparound with prefix/postfix values. Invalid loop target references are rejected. It also verifies
+wraparound with prefix/postfix values. Integer fixtures verify width boundaries,
+signed extension, narrowing, unsigned arithmetic/negation, bitwise/shift behavior
+and conditional branch side effects. Cross-unit tests distinguish long and
+long long overloads despite their common 64-bit representation. Invalid loop
+target references, constants and conditional graph shapes are rejected. It also verifies
 input-order-stable source output, relinking with source files unavailable and
 recompiling one changed unit while keeping the other's object unchanged.
 Rejection tests cover duplicate/unresolved symbols, incompatible signatures,
@@ -101,8 +109,8 @@ digest, snapshots, references, scope/type/operation contracts and required
 indexes. A hash demonstrates content integrity, not semantic correctness.
 
 Full logs/objects/generated projects remain under
-`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-loops-acceptance-002/`.
+`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-integer-acceptance-002/`.
 
-The current schema requires `scalar-control-v2`. Earlier v1 objects and tools
+The current schema requires `scalar-control-v3`. Earlier v1/v2 objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.

@@ -8,7 +8,7 @@ Native stdout wire is one JSON object (transient packaging protocol only):
 ```
 {
   "formatVersion": 1,
-  "profile": "scalar-control-v2",
+  "profile": "scalar-control-v3",
   "sourceFiles": [{"id":1,"path":"/absolute/main.cpp","parentId":null}],
   "types": [{"id":1,"kind":"void"},{"id":2,"kind":"i32"},{"id":3,"kind":"bool"},{"id":4,"kind":"u8"}],
   "entities": [{"id":1,"sourceName":"add","linkage":"external","externalKey":"exact EDG linker symbol","definition":"strong","returnTypeId":2,"sourceFileId":1,"line":1,"column":1}],
@@ -49,20 +49,36 @@ Supported node kinds and ordered edge roles:
   lexically enclosing while/for/do-while node. The verifier requires that exact
   identity; an exit outside a loop or targeting another loop is invalid. No
   arbitrary jumps or switch exits are supported.
-- `constant`: type i32/u8/bool + constantText (u8 0..255, bool 0/1).
+- `constant`: integer or bool type + canonical exact decimal constantText.
+  Integer types i8/u8/i16/u16/i32/u32/i64/u64 have their corresponding signed
+  or unsigned width ranges; bool permits only 0/1. No leading plus, leading
+  zeroes (except zero itself), whitespace or negative zero. Unsigned 64-bit
+  values remain text, including values beyond SQLite's signed INTEGER range.
 - `binding`: bindingId and matching type. Denotes scalar place; consuming
   expression operations read its current value; assignment and mutation write it.
 - `call`: entityId + argument[0..n), type matches target return.
-- `binary`: operator add/sub/mul/div/rem/eq/ne/lt/le/gt/ge/and/or;
-  left[0],right[0]. and/or are short-circuit boolean operations.
-- `unary`: operator neg/not/plus, operand[0].
+- `binary`: operator add/sub/mul/div/rem/eq/ne/lt/le/gt/ge/and/or/bit-and/
+  bit-or/bit-xor/shl/shr; left[0],right[0]. Arithmetic and bitwise operations
+  require matching promoted i32/u32/i64/u64 operand/result types. Shifts have
+  matching promoted left/result types and any promoted integer right type.
+  Comparison operands have matching types (bool only allows eq/ne); comparison
+  and logical results are bool/i32/u8. and/or short-circuit their right operand.
+- `unary`: operator neg/not/plus/bit-not, operand[0]. Negation, unary plus and
+  complement require matching promoted integer operand/result types. Logical
+  not returns bool/i32/u8 from a scalar truth test.
+- `conditional`: condition[0], then[0], else[0], scalar value result. Arms have
+  exactly the result type. Evaluate condition first, then only the selected arm.
+  A source scalar lvalue conditional consumed as a value selects and reads one
+  arm; its place identity does not escape this value-only profile. Void arms,
+  GNU omitted-middle conditionals, and conditional places used as assignment
+  or mutation targets are not supported.
 - `assign`: target[0] (binding node), value[0], result type target type.
-- `mutate`: operator pre-inc/post-inc/pre-dec/post-dec, operand[0] (i32/u8
+- `mutate`: operator pre-inc/post-inc/pre-dec/post-dec, operand[0] (integer
   binding), result type equals operand type. Prefix returns the new value;
-  postfix returns the previous value. Unsigned byte mutation wraps at 8 bits.
+  postfix returns the previous value. Unsigned mutation wraps at its width.
   Source bool mutation is rejected by the producer before physical u8 lowering
   loses its distinction; graph bool mutation is rejected by the verifier.
-- `convert`: operand[0], destination type i32/u8/bool; width conversion or nonzero truth conversion.
+- `convert`: operand[0], destination integer/bool type; explicit width/sign conversion or nonzero truth conversion.
 
 Statements have typeId=null; expression nodes must name a type. Only `call`
 may have void type and only in expression statements, for initializer/step,
@@ -84,10 +100,14 @@ prelowerSource=false, macros=false, lifetimes=false until those captures exist.
 These explicit limitations must survive the link report; fixtures do not claim
 full source-faithful C++ graph or DuckDB readiness. Namespace/class are link args.
 The initial target is portable-lp64-binary80-v2; callable ABI dotobj-scalar-v1.
-The scalar-control-v2 object profile adds structured loops and explicit loop
-exit identities; it does not change the callable ABI. The current canonical
-schema reader rejects scalar-control-v1 objects; preserve their earlier tool
-build to read them, or recompile from source with the current producer.
+The scalar-control-v3 object profile adds 8/16/32/64-bit signed/unsigned
+integers, bitwise/shift expressions and conditional values to v2's structured
+loops and explicit loop exit identities. It does not change the callable ABI.
+The current canonical schema reader rejects v1/v2 objects; preserve their
+respective earlier tool build to read them, or recompile with this producer.
+The profile uses EDG's fixed portable LP64 target: long and long long share the
+64-bit physical representation, while exact external keys retain C++ overload
+identity. Source enum/typedef spellings are not yet captured as owned types.
 
 Expression valueCategory is place for binding and value otherwise; statements
 use null. evaluationOrder is null for statements, none for constant/binding,
@@ -97,7 +117,16 @@ initial assignment destination is a plain binding, so RHS-before-write honors
 right-to-left. Unsupported ordered expressions fail explicitly. u8 represents
 EDG's lowered unsigned-byte bool and requires numeric 0/1 comparison results
 unless expression result type is bool. Explicit conversions encode truth and
-width behavior. Parameters/locals/signatures may use i32/u8/bool, never void.
+width behavior. Parameters/locals/signatures may use any supported integer or
+bool type, never void. C# integer literals preserve signedness and width;
+unsigned arithmetic and negation wrap with explicit unchecked expressions,
+including compile-time constant expressions. C# shift counts explicitly convert
+to int where needed. Only source-defined shifts are promised: negative or
+width-exceeding C/C++ counts remain outside that language's defined behavior.
+Logical and conditional edges encode lazy execution independently of the
+physical order of their rows. Integer promotions and usual arithmetic
+conversions are performed by EDG and represented as explicit convert nodes;
+the managed verifier does not infer C/C++ type conversion decisions.
 
 SQLite names use snake_case counterparts of wire fields. functions, bindings,
 nodes form deferred graph relationships: package using defer_foreign_keys=ON
