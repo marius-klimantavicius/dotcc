@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v9: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v10: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -33,6 +33,8 @@ struct Writer {
   unsigned function=0,next_execution_type=12;
   std::map<a_routine_ptr,unsigned> routine_ids;
   std::map<a_variable_ptr,unsigned> binding_ids;
+  std::map<a_variable_ptr,unsigned> binding_scopes;
+  std::set<a_variable_ptr> cleanup_variables,registered_cleanups;
   std::map<a_source_file_ptr,unsigned> file_ids;
   std::vector<a_routine_ptr> routines;
   std::vector<string> files,entities,parameters,functions,bindings,nodes,edges;
@@ -258,15 +260,55 @@ struct Writer {
     if(v->init_kind!=initk_none && v->init_kind!=initk_dynamic &&
        !(v->init_kind==initk_zero && skip_typerefs(v->type)->kind==tk_array))
       reject("nonexecutably placed local initializer",v->init_kind);
-    unsigned id=next_binding++;binding_ids[v]=id;
+    unsigned id=next_binding++;binding_ids[v]=id;binding_scopes[v]=scope;
     auto source=dot_object_source::state().variables.find(v);
-    if(source!=dot_object_source::state().variables.end())
+    if(source!=dot_object_source::state().variables.end()) {
       source_declaration(source->second,parameter?"parameter":"local",0,id,function);
-    else reject("missing pre-lowering variable capture (including synthetic binding)");
+      if(source->second.cleanup) {
+        if(parameter)reject("parameter cleanup attribute");
+        // Partially dynamic arrays can become initk_zero plus separate stores.
+        // Their original completion boundary is not represented by stmk_init.
+        if(v->init_kind==initk_zero)reject("cleanup with split lowered initialization");
+        cleanup_variables.insert(v);
+      }
+    } else reject("missing pre-lowering variable capture (including synthetic binding)");
     bindings.push_back("{\"id\":"+number(id)+",\"functionId\":"+number(function)+",\"kind\":"+quote(parameter?"parameter":"local")+
       ",\"ordinal\":"+(parameter?std::to_string(ordinal):"null")+",\"typeId\":"+number(type_id(v->type))+
       ",\"sourceName\":"+quote(source_spelling(&v->source_corresp))+",\"scopeNodeId\":"+number(scope)+position(v->source_corresp.decl_position)+"}");
     return id;
+  }
+  unsigned register_cleanup(a_variable_ptr v,unsigned block,const a_source_position &pos) {
+    if(!cleanup_variables.count(v) || binding_scopes.at(v)!=block)
+      reject("cleanup activation outside owning lexical block");
+    if(!registered_cleanups.insert(v).second)reject("duplicate cleanup activation");
+    auto callback=dot_object_source::state().variables.at(v).cleanup;
+    auto signature=skip_typerefs(callback->type);
+    if(signature->kind!=tk_routine)reject("nonroutine cleanup callback");
+    auto parameter=signature->variant.routine.extra_info->param_type_list;
+    if(!parameter || parameter->next)reject("cleanup callback arity");
+    auto pointer=skip_typerefs(parameter->type);
+    if(pointer->kind!=tk_pointer || pointer->variant.pointer.is_reference)
+      reject("nonpointer cleanup callback parameter");
+    unsigned pointee=type_id(pointer->variant.pointer.type);
+    if(pointee!=1 && pointee!=type_id(v->type))reject("cleanup callback pointer conversion");
+    return node("register-cleanup",0,pos,routine(callback),binding_ids.at(v));
+  }
+  void declaration_cleanups(a_statement_ptr s,unsigned block,unsigned &ordinal) {
+    unsigned variable_count=0;
+    for(auto e=s->variant.decl.entities;e;e=e->next)
+      if(e->entity.kind==iek_variable)++variable_count;
+    for(auto e=s->variant.decl.entities;e;e=e->next) {
+      if(e->entity.kind!=iek_variable)continue;
+      auto v=reinterpret_cast<a_variable_ptr>(e->entity.ptr);
+      if(!cleanup_variables.count(v))continue;
+      const auto &source=dot_object_source::state().variables.at(v);
+      if(source.has_initializer)continue;
+      // A declaration can contain interleaved initialized/uninitialized
+      // declarators; the single stmk_decl precedes all their stmk_init nodes.
+      // Reject this case until each individual completion is retained.
+      if(variable_count!=1)reject("uninitialized cleanup in multi-declarator declaration");
+      edge(block,"statement",ordinal++,register_cleanup(v,block,s->position));
+    }
   }
   void scope_bindings(a_scope_ptr scope,unsigned block,unsigned &ordinal) {
     if(!scope || !bound_scopes.insert(scope).second)return;
@@ -607,6 +649,50 @@ struct Writer {
     edge(id,"body",0,statement(body));
     controls.pop_back();
   }
+  bool c99_cleanup_initializer_wrapper(a_statement_ptr s,unsigned block) {
+    // lower_c99_for_statement::turn_statement_into_block wraps a declaration
+    // initializer plus the loop in a scopeless block. Its *parent* still owns
+    // the original for-init scope, variables, and trailing break label. Keep
+    // that lexical ownership when normalizing an activated cleanup; the extra
+    // lowering wrapper does not introduce another object lifetime.
+    if(!C_mode() || s->kind!=stmk_block || s->position.seq ||
+       s->variant.block.extra_info->assoc_scope || s->variant.block.extra_info->lifetime)
+      return false;
+    bool own_cleanup=false;
+    auto child=s->variant.block.statements;
+    if(!child)return false;
+    for(;child->next;child=child->next) {
+      if(child->kind!=stmk_decl && child->kind!=stmk_init && child->kind!=stmk_empty)
+        return false;
+      if(child->kind==stmk_decl)for(auto e=child->variant.decl.entities;e;e=e->next) {
+        if(e->entity.kind!=iek_variable)continue;
+        auto v=reinterpret_cast<a_variable_ptr>(e->entity.ptr);
+        if(cleanup_variables.count(v) && binding_scopes.at(v)==block)own_cleanup=true;
+      }
+    }
+    return own_cleanup && child->kind==stmk_for && child->lowering_generated &&
+           child->variant.for_loop.extra_info->initialization==nullptr;
+  }
+  void append_block_statement(a_statement_ptr child,unsigned block,unsigned &ordinal,bool switch_body) {
+    if(c99_cleanup_initializer_wrapper(child,block)) {
+      for(auto nested=child->variant.block.statements;nested;nested=nested->next)
+        append_block_statement(nested,block,ordinal,switch_body);
+      return;
+    }
+    if(child->kind==stmk_decl) {
+      unsigned prior=ordinal;declaration_cleanups(child,block,ordinal);
+      if(switch_body && prior!=ordinal)reject("cleanup activation directly in switch body");
+      return;
+    }
+    if(child->kind==stmk_empty)return;
+    if(child->kind==stmk_label && control_labels.count(child->variant.label.ptr))return;
+    edge(block,"statement",ordinal++,statement(child));
+    if(child->kind==stmk_init && cleanup_variables.count(child->variant.dynamic_init->variable)) {
+      if(switch_body)reject("cleanup activation directly in switch body");
+      auto v=child->variant.dynamic_init->variable;
+      edge(block,"statement",ordinal++,register_cleanup(v,block,child->position));
+    }
+  }
   unsigned statement(a_statement_ptr s,a_scope_ptr root_scope=nullptr) {
     if(!s)reject("missing statement");
     diagnostic_scope diagnostic(s->position);
@@ -622,11 +708,11 @@ struct Writer {
           }
         }
         scope_bindings(scope,id,ordinal);
-        for(auto child=s->variant.block.statements;child;child=child->next) {
-          if(child->kind==stmk_decl || child->kind==stmk_empty)continue;
-          if(child->kind==stmk_label && control_labels.count(child->variant.label.ptr))continue;
-          edge(id,"statement",ordinal++,statement(child));
-        }
+        bool switch_body=false;
+        for(auto child=s->variant.block.statements;child;child=child->next)
+          if(child->kind==stmk_switch_case)switch_body=true;
+        for(auto child=s->variant.block.statements;child;child=child->next)
+          append_block_statement(child,id,ordinal,switch_body);
         return id;
       }
       case stmk_return: {
@@ -773,10 +859,12 @@ struct Writer {
       auto r=routines[i];if(r->function_def_number==NULL_function_def_number)continue;
       function=routine_ids.at(r);auto scope=scope_for_routine_or_null(r);
       string label="dotobj function "+source_spelling(&r->source_corresp);context=label.c_str();
-      binding_ids.clear();bound_scopes.clear();declared_bindings.clear();controls.clear();switch_cases.clear();control_labels.clear();
+      binding_ids.clear();binding_scopes.clear();cleanup_variables.clear();registered_cleanups.clear();
+      bound_scopes.clear();declared_bindings.clear();controls.clear();switch_cases.clear();control_labels.clear();
       check_lifetime(scope->lifetime);
       if(!scope->assoc_block || scope->assoc_block->kind!=stmk_block)reject("nonblock function root");
       unsigned root=statement(scope->assoc_block,scope);
+      if(cleanup_variables!=registered_cleanups)reject("missing cleanup declaration/initialization completion anchor");
       functions.push_back("{\"entityId\":"+number(function)+",\"bodyNodeId\":"+number(root)+"}");
       context="file scope";
     }
@@ -784,7 +872,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v9\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v10\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

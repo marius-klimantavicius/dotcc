@@ -46,7 +46,7 @@ verification.
 
 ## Current acceptance and boundaries
 
-`scalar-control-v9` supports defined/declaration function identities with strong
+`scalar-control-v10` supports defined/declaration function identities with strong
 external or TU-private linkage, signed/unsigned 8/16/32/64-bit integer operations,
 IEEE binary32/binary64 (`float`/`double`) operations,
 typed data pointers (including void pointers and pointer-to-pointer),
@@ -211,7 +211,7 @@ indexes. A hash demonstrates content integrity, not semantic correctness.
 Full logs/objects/generated projects remain under
 `/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/`.
 
-The current schema requires `scalar-control-v9`. Earlier v1/v2/v3/v4/v5/v6/v7/v8 objects and tools
+The current schema requires `scalar-control-v10`. Earlier v1/v2/v3/v4/v5/v6/v7/v8/v9 objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 
@@ -220,3 +220,20 @@ operators: the stock inspection formatter is not a complete round-trip format
 for trailing optional text. Quoted occurrences remain ordinary macro text.
 EDG preprocessing semantics are unchanged; a future token-based macro graph can
 represent this construct without relying on inspection formatting.
+
+
+The v10 profile adds GNU local cleanup callbacks as explicit `register-cleanup`
+statements, retaining the selected callback and local binding IDs. Managed
+emission uses nested `try/finally` with direct calls, preserving reverse order,
+return-value evaluation, loop exits and successful-initialization boundaries.
+No cleanup runtime stack, heap allocation or pinning is added. Callback-only
+references resolve across objects; `void*` parameters and discarded nonvoid
+results are supported, and fixed arrays pass their whole-object address.
+`lifetime-map.json` records activation nodes and protected block suffixes.
+
+Reports distinguish `lexicalCleanups=true` from still-false general `lifetimes`.
+C++ destructors, temporary lifetime extension, partial construction and source
+exception handling remain unfinished. Ambiguous split array initialization,
+uninitialized cleanup in multi-declarator statements and registrations directly
+in switch bodies fail explicitly; scoped case blocks work. See the
+[v10 contract](contract.md) for precise activation and exclusion rules.

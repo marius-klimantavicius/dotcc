@@ -1,0 +1,202 @@
+{
+  "milestone": "Owned lexical cleanup activation and managed try/finally execution",
+  "date": "2026-10-08",
+  "profile": "scalar-control-v10",
+  "status": "passed-with-explicit-coverage-boundaries",
+  "acceptance": {
+    "checkCount": 432,
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-acceptance-003/results.json",
+      "sha256": "4a2511edd5c5299b9b630d2d7958906d9f713340108241f0e29ced761c81d9eb"
+    },
+    "log": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-acceptance-003.log",
+      "sha256": "4e80b5663ed5ddc9432e3531e9e25e5bc422abec5e96ad350ff413a8e9bd9426"
+    },
+    "languages": [
+      "C++17",
+      "C11"
+    ],
+    "nativeReference": "Original C/C++ sources compiled with GCC; stock EDG C backend consulted for representation",
+    "managedJit": true,
+    "nativeAot": true,
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+    "managedFailureInjection": "Zero-divisor CLR exceptions exercise initialization/cleanup boundaries only; no native undefined-behavior comparison"
+  },
+  "compiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "sha256": "595f74a2f4b7eff729fb22fe4305e58196d81dc68333f90684df2b4f99d54a30"
+  },
+  "nativeBuildLog": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-native-build-003.log",
+    "sha256": "ccf6d49a98afafc222dc4dd84e297a9081f10e0b024d9bcc2f8d0a2524117839"
+  },
+  "managedTool": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-acceptance-003/tool/bin/DotObj.Linker/release/dotobj-link.dll",
+    "sha256": "5e1fc6485b1bdb3c9e28f1c81485e00d0a4be5eff979f7e96f70ba893223cf34"
+  },
+  "generatedReview": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-acceptance-003/link-lifetimes-cpp/Translated.0000.lifetime_u002d_provider_u002e_cpp.cs",
+      "sha256": "9e0acda625bd3a319d6f86c92d5678eccbf14ac37b21e1b532aa1e4077ef697b"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-acceptance-003/link-lifetimes-cpp/Translated.0001.lifetimes_u002e_cpp.cs",
+      "sha256": "cd81fbe6f7af518c2078fac5270ed736a8dbfa41c174d702d8dbfe6da2471766"
+    }
+  ],
+  "lifetimeMap": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-acceptance-003/link-lifetimes-cpp/lifetime-map.json",
+    "sha256": "2700c69a60b73b44a6bcb45cce195de991d001504aa60370d95a5ddbead9b429"
+  },
+  "objects": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-acceptance-003/lifetime-provider.dotobj",
+      "sha256": "f97663982dcd9ffb4a29a267877e077ccc0ed92b34d7208a7365e15d2eccbde1"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-acceptance-003/lifetimes.dotobj",
+      "sha256": "79b5309848491f27e49279031ab7d6e65363fe4e4cbc720971129122bffbb82c"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-acceptance-003/lifetime-provider-c.dotobj",
+      "sha256": "606f5a40627d47cd39d667ddebc854f1d36ca8a367ed72015a61caad1d71bdd5"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-acceptance-003/lifetimes-c.dotobj",
+      "sha256": "28fb8e9de21a03e230ea317445b65e9aab227b43f54151e86ca98a3c5bc4d3a0"
+    }
+  ],
+  "capabilities": {
+    "lexicalCleanups": true,
+    "lifetimes": false,
+    "sourceExceptions": false,
+    "cppRaii": false
+  },
+  "coverage": [
+    "Successful-initialization activation and uninitialized declaration activation",
+    "Reverse and nested cleanup order, return operand before cleanup, early return before declaration",
+    "Loop break/continue and C/C++ initialized/uninitialized for scopes",
+    "Whole-array address, scalar/pointer locals, void* callback, discarded nonvoid result",
+    "Independent callback providers, internal symbol identity, unresolved cleanup-only reference",
+    "Managed JIT/NativeAOT unwind and initializer failure",
+    "Repaired-digest malformed graph rejection"
+  ],
+  "limitations": [
+    "No general C++ object lifetime or temporary/full-expression capture",
+    "No records/constructors/destructors, partial construction, source EH or double-exception termination protocol",
+    "Split lowered initialization, uninitialized cleanup in multi-declarator statements, direct switch-body activation rejected",
+    "Prior synthetic temporary/comma sequencing limitation remains",
+    "Execution verified on Linux x64 only"
+  ],
+  "retainedProbes": [
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-acceptance-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-acceptance-002",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-array-isolation-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-cmain-confirm",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-consumer-probe-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-fixture-isolation-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-focused-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-focused-002",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-focused-003",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-link-probe-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-probe-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-lifetime-provider-probe-001"
+  ],
+  "referenceImplementation": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/upstream/src/il_def.h",
+      "sha256": "5d2e1ee19def818fc0012c7a862072c2149f3dfc382b032647863a9b0bb43fa6"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/upstream/src/il_to_str.c",
+      "sha256": "fc8fea0be06ba51e02e7c84a5e06c36634c4dafe151400d1822e97b19ccf5f5f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/upstream/src/lower_c99.c",
+      "sha256": "16d019ac40f09178ab313c247fb6d376bda21cab69cd8a38d7c3b5c4aa8149f0"
+    }
+  ],
+  "implementation": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/dot_gen_object.h",
+      "sha256": "016cc7e9ebefc27df411e956fb53f7d8fd56499d80b1eb63d454432ffd10b0ac"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/dot_gen_object_source.h",
+      "sha256": "8fbcbacc4e00a4278dd5037fedad107e59e66798ce17dfd531abdcafdb567313"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/docs/dot-gen-be-plan.md",
+      "sha256": "1842d9f0bdb6cd03cb27c8c2a99b5859ca19de8c8a87214d4c5a5a40faa0d79c"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/docs/dotobj-format.md",
+      "sha256": "138006ff273a0a9097e544b2bb491b960cc81bac352f3bc8e9c862946f41d4c7"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/docs/implementation-campaign.md",
+      "sha256": "f8d4b733ed8a83ca71fd100c28efd412903fed749dadd0aaef5ed5adeed0eb6d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/README.md",
+      "sha256": "3ba8b82483c79821dd28092f1e374b6b59cb87918ac8bf48660fbe2260f7292f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/compile.py",
+      "sha256": "3d0cf1caf32a6d2468097e48bdf45e76a3c160955410e92aaa1cb1ba9789df28"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/contract.md",
+      "sha256": "f6be0c48c8c1a80d1d98903efdc1436698812e0e198d482ac1c297ec5ef3c46e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/schema.sql",
+      "sha256": "0c6ef1e7412091b776105445daa31c13b6361074962d4491be57d558859cd0de"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Emitter.cs",
+      "sha256": "acf7e34ab757b52e87785ae0b6ac53397b53ef1370f0bc14c2a0966fd38b6982"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Linker.cs",
+      "sha256": "e9f0eeec99b2ed74163953cbf431d633cfa9e6b0f00859b5d15dfe231cccb0fd"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/ObjectFile.cs",
+      "sha256": "2c88d869d01aa83f1ca9e9661284d4e726997419430954d72ad160e520b33e05"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Program.cs",
+      "sha256": "68554bdff5b290b2fb45c4a61c89588e3c013893db3c7e2bc1f16caedc26d30d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/README.md",
+      "sha256": "7d05dff98d7a6b1380164149b11184f60af2b513e74ce4ea4c948143a8572bf2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Verifier.cs",
+      "sha256": "81ecd7313855c486a37b225a04ede43f04fc99a1427743501e9faf1ba882f36d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/verify.py",
+      "sha256": "f9a8d4308c2ca7dbf1cbb06c55ac00a9f2d5d2d19cebd317e22ff6865165f95d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/lifetime_fixture.h",
+      "sha256": "72baca68d370f9b08e72b5bdf2b61b23cc505fd505e9f79de9d1884420f1ae41"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/lifetime_provider.cpp",
+      "sha256": "64a6ceab96239d6f2bb95448a799a520aa5a0785acaddaa982a1cc75efb03796"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/lifetimes.cpp",
+      "sha256": "a3322c79020c422842828cc0b2948809eeecc28e6e9c365d9ae9ecf65dfc67e6"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/lifetimes_verify.py",
+      "sha256": "f030ba28601fb9b317724f0a0b7385f739c0603e3f4ce71c1b5f3385c3457e5e"
+    }
+  ]
+}

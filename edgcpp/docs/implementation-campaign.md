@@ -2502,3 +2502,52 @@ not changed. All probes/intermediates remain preserved; current readers require
 v9 objects and DuckDB's whole-program retry stays paused. Records, globals/TLS,
 function pointers, C++ references/lifetimes and the complete source graph remain
 unfinished in the new object pipeline.
+
+
+The `scalar-control-v10` milestone adds the first executable lifetime slice:
+GNU local cleanup callbacks on automatic scalar, pointer and fixed-array storage.
+EDG records these implicitly in `a_variable.cleanup_routine`; its C backend
+preserves the cleanup attribute through `form_variable_attributes`. The owned
+adapter now captures the selected callback before lowering and emits explicit
+`register-cleanup` statements at successful initialization completion, or at the
+original declaration for an uninitialized local. This closes the previous
+object exporter's omission of GNU cleanup attributes without changing EDG.
+
+The managed verifier checks local/scope ownership, single activation and callback
+signatures; the linker resolves cleanup-only callback references across objects.
+The emitter protects each remaining block suffix with nested try/finally and
+calls the callback directly with the local's address. Reverse cleanup order,
+return-expression evaluation and break/continue boundaries follow naturally,
+with no runtime cleanup frames, activation flags, heap allocation or pinning.
+The derived lifetime map records activation and protected-region identities.
+Reports advertise `lexicalCleanups=true`, while complete `lifetimes` stays false.
+
+All **432 checks pass** on Linux x64, including the existing regression suite,
+independent C11/C++17 cleanup providers and consumers, native source execution,
+JIT and NativeAOT. Lifetime cases cover early returns before declarations,
+reverse/nested order, loop exits, initialized and uninitialized for declarations,
+braced switch cases, scalar/pointer/whole-array addresses, void-pointer callbacks,
+ignored callback return values and same-spelled internal callbacks in two units.
+Managed-only division-by-zero injection confirms earlier active cleanup executes
+and a failed initializer does not activate its own callback; these injections
+are deliberately not compared with undefined native zero-divisor execution.
+Malformed ownership, duplicate activation, callback signatures and payloads are
+rejected, as are unresolved cleanup-only imports.
+[Hashed lifetime milestone evidence](../evidence/dotobj-lifetime-20261008.json).
+
+C99 lowering puts a for initializer in a scopeless synthetic wrapper inside the
+actual lexical scope. The adapter removes only that proven wrapper when needed
+to keep the activation with its owning scope; it does not flatten source scopes.
+An integration fixture's multi-argument pointer-return call introduced EDG
+sequencing temporaries outside the existing object profile. Passing a single
+pointer-array argument kept the lifetime test within that profile. All probes,
+including failed attempts and C-backend inspection output, remain preserved.
+
+Ambiguous split array initialization and mixed uninitialized multi-declarator
+cleanup are explicit exclusions until their precise completion points are
+represented. Switch dispatch into an already-started cleanup region is also
+rejected. This does not complete C++ RAII: records and selected constructor/
+destructor calls are the next prerequisites, followed by temporary/full-expression
+boundaries, lifetime extension, partial construction and EH cleanup state.
+Readers require v10 objects; earlier tools/objects remain retained. DuckDB's
+whole-program retry is still paused.

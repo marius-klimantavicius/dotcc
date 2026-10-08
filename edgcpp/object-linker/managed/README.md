@@ -1,6 +1,6 @@
 # Managed semantic object linker
 
-This is the executable `scalar-control-v9` implementation of the fresh
+This is the executable `scalar-control-v10` implementation of the fresh
 `.dotobj` semantic graph. It does not read the previous semantic-export format
 or an emission-command stream.
 
@@ -104,12 +104,12 @@ Push/pop and precompiled/module macro import are rejected for this profile.
 
 The link report still preserves the missing capability flags: `prelowerSource`,
 `macros`, and `lifetimes` are false. A complete source expression/statement view,
-all redeclarations, macro expansion history and lifetime capture remain absent. Globals/TLS, variable/incomplete execution arrays, records, function
+all redeclarations, macro expansion history and general C++ lifetime capture remain absent. Globals/TLS, variable/incomplete execution arrays, records, function
 addresses, exceptions/RAII, inline/COMDAT, templates and runtime providers are
 not implemented in this profile. Unsupported input is rejected; scalar fixtures
 do not demonstrate DuckDB readiness or full C++ coverage.
 
-The current schema requires scalar-control-v9 objects. Earlier v1/v2/v3/v4/v5/v6/v7/v8 objects
+The current schema requires scalar-control-v10 objects. Earlier v1/v2/v3/v4/v5/v6/v7/v8/v9 objects
 remain usable with their retained earlier tool build, or can be regenerated.
 
 The integer profile supports signed/unsigned 8/16/32/64-bit values, exact decimal
@@ -171,3 +171,20 @@ is present, embedded uint/ulong data is reinterpreted before the bulk copy.
 Both paths avoid managed array allocation. Source float/double declaration
 provenance is retained. Long double, fenv, FP trap/rounding-mode control and
 out-of-range floating-to-integer conversions are outside this profile.
+
+
+The v10 profile adds GNU local cleanup callbacks as explicit `register-cleanup`
+statements, retaining the selected callback and local binding IDs. Managed
+emission uses nested `try/finally` with direct calls, preserving reverse order,
+return-value evaluation, loop exits and successful-initialization boundaries.
+No cleanup runtime stack, heap allocation or pinning is added. Callback-only
+references resolve across objects; `void*` parameters and discarded nonvoid
+results are supported, and fixed arrays pass their whole-object address.
+`lifetime-map.json` records activation nodes and protected block suffixes.
+
+Reports distinguish `lexicalCleanups=true` from still-false general `lifetimes`.
+C++ destructors, temporary lifetime extension, partial construction and source
+exception handling remain unfinished. Ambiguous split array initialization,
+uninitialized cleanup in multi-declarator statements and registrations directly
+in switch bodies fail explicitly; scoped case blocks work. See the
+[v10 contract](../contract.md) for precise activation and exclusion rules.

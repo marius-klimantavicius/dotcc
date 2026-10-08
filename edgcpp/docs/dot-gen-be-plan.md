@@ -954,6 +954,11 @@ V8 adds fixed local arrays, multidimensional layout, array decay and ordered
 initialization, with typed span copies for constant integer data.
 V9 adds binary32/binary64 types and arithmetic, exact floating constant bits,
 and static floating initializer data.
+The v10 owned-object profile now records GNU local cleanup activation and emits
+nested managed try/finally, with a lifetime map. This establishes bounded lexical
+cleanup, not general C++ RAII. Next lifetime dependencies are record layouts and
+selected constructor/destructor calls, followed by temporary/full-expression
+boundaries, partial-construction progress and EH cleanup state.
 Full source-tree/macro-expansion and lifetime capture and broad C++ coverage remain open.
 The superseded command-stream prototype is preserved as unvalidated artifacts.
 See [semantic object design and implementation gates](dotobj-format.md) and

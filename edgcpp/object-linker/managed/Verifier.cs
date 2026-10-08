@@ -2,7 +2,7 @@ namespace DotObj;
 
 internal static class Verifier
 {
-    private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element"];
+    private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element"];
     private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
@@ -11,6 +11,8 @@ internal static class Verifier
         if (!body.Nodes.TryGetValue(body.RootId, out Node? root) || root.Kind != "block") Fail("Function root must be a block");
         var visited = new HashSet<long>();
         var declarations = new HashSet<long>();
+        var cleanupBindings = new HashSet<long>();
+        var cleanupRegistrations = new HashSet<long>();
         var switchCases = new HashSet<long>();
         var arrayElements = new HashSet<long>();
         var parameters = body.Bindings.Values.Where(b => b.Kind == "parameter").OrderBy(b => b.Ordinal).ToArray();
@@ -109,8 +111,8 @@ internal static class Verifier
                 if (node.Kind is "address" or "dereference" or "array-decay") orders = ["none", "left-to-right", "unspecified"];
                 if (!orders.Contains(node.EvaluationOrder)) Fail($"Unsupported evaluation order at {node.Id}");
             }
-            if ((node.EntityId != null) != (node.Kind == "call") ||
-                (node.BindingId != null) != (node.Kind is "binding" or "declare") ||
+            if ((node.EntityId != null) != (node.Kind is "call" or "register-cleanup") ||
+                (node.BindingId != null) != (node.Kind is "binding" or "declare" or "register-cleanup") ||
                 (node.Operator != null) != (node.Kind is "binary" or "unary" or "mutate") ||
                 (node.ConstantText != null) != (node.Kind is "constant" or "array-element")) Fail("Unexpected or missing typed payload");
 
@@ -133,6 +135,7 @@ internal static class Verifier
                 {
                     Node child = body.Nodes[edge.ChildId];
                     Statement(child);
+                    if (child.Kind == "register-cleanup") cleanupRegistrations.Add(child.Id);
                     Visit(child, nestedScopes, nestedVisible, controls, depth + 1);
                     if (child.Kind == "declare") nestedVisible.Add(child.BindingId!.Value);
                 }
@@ -161,6 +164,20 @@ internal static class Verifier
                         if (Type(Child(node, "initializer")) != obj.Type(declared!.TypeId)) Fail("Initializer type mismatch");
                     }
                     break;
+                case "register-cleanup":
+                    EdgeShape(node);
+                    if (!cleanupRegistrations.Contains(node.Id)) Fail("Cleanup registration must be an immediate block child");
+                    if (!body.Bindings.TryGetValue(node.BindingId!.Value, out Binding? cleanupBinding) ||
+                        cleanupBinding.Kind != "local" || cleanupBinding.ScopeNodeId != scopes.LastOrDefault() ||
+                        !visible.Contains(cleanupBinding.Id))
+                        Fail("Cleanup registration requires a declared local in its owning block");
+                    if (!cleanupBindings.Add(node.BindingId!.Value)) Fail("Duplicate cleanup registration for local binding");
+                    if (!obj.Entities.ContainsKey(node.EntityId!.Value)) Fail("Unknown cleanup callback");
+                    var cleanupParameters = obj.Parameters.GetValueOrDefault(node.EntityId!.Value, []);
+                    if (cleanupParameters.Count != 1 ||
+                        cleanupParameters[0] != "ptr(" + obj.Type(cleanupBinding!.TypeId) + ")" && cleanupParameters[0] != "ptr(void)")
+                        Fail("Cleanup callback must accept a pointer to its local binding type or void");
+                    break;
                 case "if":
                     EdgeShape(node, ("condition", 1, 1), ("then", 1, 1), ("else", 0, 1));
                     Expr(node, "condition"); Statement(Child(node, "then"));
@@ -188,6 +205,7 @@ internal static class Verifier
                     foreach (Edge edge in body.Children(switchBody.Id, "statement"))
                     {
                         Node item = body.Nodes[edge.ChildId];
+                        if (item.Kind == "register-cleanup") Fail("Cleanup registration cannot be bypassed by switch dispatch");
                         if (item.Kind == "case")
                         {
                             labeled = true;

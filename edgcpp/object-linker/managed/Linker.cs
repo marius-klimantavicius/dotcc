@@ -56,7 +56,7 @@ internal sealed class Linker
         {
             FunctionBody body = symbol.Object.ReadBody(symbol.Entity.Id);
             foreach (Node node in body.Nodes.Values)
-                if (node.Kind == "call") _ = Resolve(symbol.Object, node.EntityId!.Value);
+                if (node.Kind is "call" or "register-cleanup") _ = Resolve(symbol.Object, node.EntityId!.Value);
         }
     }
 }

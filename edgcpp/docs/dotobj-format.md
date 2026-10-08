@@ -22,6 +22,9 @@ V8 adds fixed local arrays, multidimensional layout, array decay and ordered
 initialization, with typed span copies for constant integer data.
 V9 adds binary32/binary64 types and arithmetic, exact floating constant bits,
 and static floating initializer data.
+V10 adds explicit GNU lexical cleanup activation and direct managed try/finally
+execution, with a derived lifetime map. General C++ lifetime/RAII capture remains
+unfinished; the narrower capability is `lexicalCleanups=true`.
 Full source-tree/macro-expansion
 and lifetime capture, broad C++ coverage and the full graph design below remain
 unfinished; the initial profile explicitly records those missing capabilities.

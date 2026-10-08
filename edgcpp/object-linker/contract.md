@@ -8,7 +8,7 @@ Native stdout wire is one JSON object (transient packaging protocol only):
 ```
 {
   "formatVersion": 1,
-  "profile": "scalar-control-v9",
+  "profile": "scalar-control-v10",
   "sourceFiles": [{"id":1,"path":"/absolute/main.cpp","parentId":null}],
   "macroDefinitions": [{"id":1,"name":"LIMIT","form":"object","variadic":false,"dynamic":false,"definitionText":"#define LIMIT 4","origin":"source","sourceFileId":1,"line":1,"column":9}],
   "macroParameters": [],
@@ -46,6 +46,9 @@ Supported node kinds and ordered edge roles:
 - `return`: value[0] optional for void only.
 - `expr-stmt`: value[0].
 - `declare`: bindingId + initializer[0] optional.
+- `register-cleanup`: bindingId + entityId, no children or other payload.
+  Activates one callback for a declared local in the immediately owning block.
+  The remaining block suffix is its protected region; see the v10 contract below.
 - `if`: condition[0], then[0], else[0] optional.
 - `while`: condition[0], body[0].
 - `for`: initializer[0], condition[0], step[0] each optional expressions;
@@ -153,7 +156,9 @@ Packager stores typed rows using schema.sql, including producer compiler/config,
 original source/include bytes and exact arguments. Only one original TU is sent
 to EDG; no .ii preprocessing subprocess or semantic merge. Objects advertise
 sourceDeclarations=true, macroDefinitions=true, prelowerSource=false,
-macros=false, lifetimes=false.
+macros=false, lifetimes=false. V10 reports additionally advertise
+lexicalCleanups=true; this narrower capability is fixed by the profile, not a
+new object_info column.
 The first flag covers only the scalar declaration/type provenance below; a full
 source expression/statement view is still absent.
 These explicit limitations must survive the link report; fixtures do not claim
@@ -162,8 +167,8 @@ The initial target is portable-lp64-binary80-v2; callable ABI dotobj-scalar-v1.
 The scalar-control-v3 object profile adds 8/16/32/64-bit signed/unsigned
 integers, bitwise/shift expressions and conditional values to v2's structured
 loops and explicit loop exit identities. It does not change the callable ABI.
-The current canonical schema reader requires scalar-control-v9 and rejects
-v1/v2/v3/v4/v5/v6/v7/v8 objects; preserve their respective earlier tool build to read them,
+The current canonical schema reader requires scalar-control-v10 and rejects
+v1/v2/v3/v4/v5/v6/v7/v8/v9 objects; preserve their respective earlier tool build to read them,
 or recompile with this producer.
 The profile uses EDG's fixed portable LP64 target: long and long long share the
 64-bit physical representation, while exact external keys retain C++ overload
@@ -437,3 +442,63 @@ control, floating exception flags or traps are implemented. Arithmetic NaN
 payload propagation and cross-architecture bit-identical arithmetic are not
 promised; exact constant and memory bit preservation is distinct from those
 execution behaviors. Existing scalar-profile limitations remain in force.
+
+
+The scalar-control-v10 profile adds **lexical cleanup activation**, initially
+for GNU `__attribute__((cleanup(callback)))` on automatic scalar, pointer and
+fixed-array locals. The attribute is semantically resolved by EDG; the object
+contains the selected callback entity and local binding identities, never an
+attribute string to reparse or C# text. EDG's `a_variable.cleanup_routine` is
+implicit metadata: the frontend does not emit its calls. The stock C backend
+preserves the GNU attribute through `form_variable_attributes`. This adapter
+captures the callback and original initialization presence before lowering.
+
+A `register-cleanup` statement has null typeId, operator, constantText,
+valueCategory and evaluationOrder, and no edges. Its nonnull bindingId names
+a local, previously declared in the same immediately enclosing block; entityId
+names a callable entity with exactly one pointer parameter. The parameter must
+point to the local's execution type, or be void*. Nonvoid callback results are
+discarded. Array callbacks receive the address of the whole array, not decay
+to an element pointer. Callback signatures and linkage are checked like other
+calls, including references that occur only in cleanup registrations. A local
+has at most one registration node, even in mutually exclusive subtrees.
+
+Executing registration starts protection of the following statements through
+the end of that block. This is a semantic region, independent of the selected
+managed emission. The callback runs once on leaving that region by normal
+completion, return, break, continue or supported managed exception propagation.
+Later registrations nest inside earlier ones, so cleanup order is reversed.
+A return operand is evaluated before cleanup; a for-initializer registration
+protects the whole loop, whereas a loop-body registration is entered and left
+once per executed iteration. Reaching an earlier return does not activate a
+later cleanup merely because its variable's storage declaration was hoisted.
+
+Initialized variables register immediately after their own retained `stmk_init`
+completes successfully. Uninitialized variables register at their retained
+`stmk_decl`. The producer verifies every captured cleanup variable receives
+exactly one activation anchor. Partially dynamic arrays with split zeroing and
+separate initializer stores are rejected until an exact initialization-completion
+anchor is represented. Uninitialized cleanup variables in multi-declarator
+declarations are likewise rejected because one declaration marker can precede
+several interleaved initialization points. Immediate switch-body registrations
+are rejected: dispatch could enter after registration. Braced case blocks with
+their own locals and activation nodes are supported. Arbitrary jumps remain
+unsupported; no control-flow path may jump into a protected suffix.
+
+The C# emitter opens nested `try/finally` regions at registration and emits a
+direct `callback(&local)` in each finally. It adds no heap allocation, pinning,
+setjmp, runtime cleanup stack or activation flags. Storage declarations can
+still be normalized to block entry; cleanup lifetime cannot. The derived
+`lifetime-map.json` identifies each activation node, owning block, binding,
+callback and protected statement-ordinal suffix. It streams alongside body
+emission and is inspection metadata, never a second cleanup schedule.
+
+Reports advertise `lexicalCleanups=true` for this bounded capability. The
+existing database `lifetimes` flag remains zero: complete C++ object lifetime
+capture and RAII are **not** implemented by this increment. Records and selected
+constructors/destructors, temporary/full-expression boundaries, lifetime
+extension, partial construction, source exceptions and termination on a second
+exception still require their own representations. Existing C++ destruction
+obligations remain explicit export failures, not omitted callbacks. Source
+reads of indeterminate/dead storage remain invalid; this is not a liveness
+optimizer or a promise to diagnose every pointer lifetime violation.

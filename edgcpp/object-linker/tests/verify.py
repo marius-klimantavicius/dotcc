@@ -10,6 +10,7 @@ import shutil
 import sqlite3
 import subprocess
 import sys
+import lifetimes_verify
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('dotobj_compile', ROOT / 'compile.py')
@@ -21,6 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output-dir', required=True, type=Path)
     parser.add_argument('--nativeaot', action='store_true')
+    parser.add_argument('--lifetimes-only', action='store_true', help='Run the focused lexical cleanup acceptance')
     args = parser.parse_args()
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -39,13 +41,17 @@ def main():
     shutil.copy2(ROOT / 'tests/array_provider.cpp', inputs / 'array-provider-c.c')
     shutil.copy2(ROOT / 'tests/floats.cpp', inputs / 'floats-c.c')
     shutil.copy2(ROOT / 'tests/float_provider.cpp', inputs / 'float-provider-c.c')
+    for extension in ['.cpp', '.c']:
+        shutil.copy2(ROOT / 'tests/lifetimes.cpp', inputs / ('lifetimes' + ('-c' if extension == '.c' else '') + extension))
+        shutil.copy2(ROOT / 'tests/lifetime_provider.cpp', inputs / ('lifetime-provider' + ('-c' if extension == '.c' else '') + extension))
+    shutil.copy2(ROOT / 'tests/lifetime_fixture.h', inputs / 'lifetime_fixture.h')
     checks = []
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v9', nativeAotRequested=args.nativeaot,
+            profile='scalar-control-v10', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
-            limitations=['No full prelower source view, macro expansion history, lifetime/EH or globals yet.',
+            limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH or globals yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
 
     def run(label, command, expected=0, contains=None):
@@ -112,6 +118,23 @@ def main():
                 run(label + '-publish', ['dotnet', 'publish', directory / 'Translated.csproj',
                     '-c', 'Release', '-r', system + '-' + machine, '-p:PublishAot=true', '-o', publish])
                 run(label + '-aot-run', [publish / ('Translated.exe' if system == 'win' else 'Translated')], expected)
+
+        def mutate(name, original, sql, repair=True):
+            path = out / (name + '.dotobj')
+            shutil.copy2(original, path)
+            with sqlite3.connect(path) as db:
+                for query, params in sql:
+                    db.execute(query, params)
+                if repair:
+                    db.execute('UPDATE content_digest SET sha256=?', (MODULE.logical_hash(db),))
+            return path
+
+        if args.lifetimes_only:
+            lifetime_consumer = lifetimes_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
+            lifetimes_verify.malformed(lifetime_consumer, tool, run, mutate)
+            save('passed')
+            print(json.dumps(dict(status='passed', checks=len(checks), output=str(out))))
+            return
 
         linked = link('link', [provider, consumer])
         execute('linked', linked)
@@ -186,6 +209,7 @@ def main():
         float_provider, float_consumer = float_objects[0]
         float_cs = '\n'.join(p.read_text() for p in (out / 'link-floats-cpp').glob('*.cs'))
         check('floating-array-static-data', 'ReadOnlySpan<' in float_cs and '.CopyTo(' in float_cs and 'new float[' not in float_cs and 'new double[' not in float_cs)
+        lifetime_consumer = lifetimes_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
         loops_object = out / 'loops.dotobj'
         loops_cs = '\n'.join(p.read_text() for p in (out / 'link-loops').glob('*.cs'))
         check('structured-loop-source', all(token in loops_cs for token in ['for (', 'do', 'while (', 'break;', 'continue;']) and 'goto ' not in loops_cs)
@@ -266,15 +290,7 @@ def main():
         run('unresolved-import', ['dotnet', tool, 'link', '--out', out / 'bad-unresolved', consumer], None, 'Unresolved')
         run('duplicate-unit', ['dotnet', tool, 'link', '--out', out / 'bad-unit', provider, provider], None, 'translation unit')
 
-        def mutate(name, original, sql, repair=True):
-            path = out / (name + '.dotobj')
-            shutil.copy2(original, path)
-            with sqlite3.connect(path) as db:
-                for query, params in sql:
-                    db.execute(query, params)
-                if repair:
-                    db.execute('UPDATE content_digest SET sha256=?', (MODULE.logical_hash(db),))
-            return path
+        lifetimes_verify.malformed(lifetime_consumer, tool, run, mutate)
 
         duplicate = mutate('duplicate', provider, [('UPDATE object_info SET unit_id=?', ('duplicate',))])
         run('duplicate-strong', ['dotnet', tool, 'link', '--out', out / 'bad-strong', provider, duplicate], None, 'Duplicate strong')

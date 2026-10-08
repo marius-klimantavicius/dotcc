@@ -31,6 +31,10 @@ struct Declaration {
   unsigned type=0;
   std::string name;
   a_source_position position={};
+  // Private IL lookup keys only. The writer publishes a routine entity ID and
+  // an explicit activation statement, never an EDG address or attribute text.
+  a_routine_ptr cleanup=nullptr;
+  bool has_initializer=false;
 };
 struct Function {
   Declaration declaration;
@@ -138,6 +142,10 @@ inline void capture_variable(a_variable_ptr v) {
   if(v->declared_type)type=v->declared_type;
 #endif
   Declaration value;value.type=capture_type(type);value.name=spelling(v->source_corresp);
+  value.has_initializer=v->init_kind!=initk_none;
+#if GNU_EXTENSIONS_ALLOWED
+  value.cleanup=v->cleanup_routine;
+#endif
   value.position=v->source_corresp.decl_position;s.variables[v]=value;
 }
 inline void capture_scope(a_scope_ptr scope) {
