@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "date": "2026-10-08",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-arguments-acceptance-001/results.json",
+    "sha256": "90748b902b616cea9e6bb0547a87172837e55ec78171e2b7da20e852695382fa"
+  },
+  "checks": 30,
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native036-verified-snapshot/cpfe-dot",
+    "sha256": "abe05685ffedc65d1bd11284c86135d4653a485c6c52762fd84b4d911e029c25"
+  },
+  "linker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-024/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "f19063a456c3c657e820525fd456e8432e05b42b7be2a85c7895a53feb06988d"
+  },
+  "verified": [
+    "Original C main(int,char**) independently packaged, source removed before managed link",
+    "Native, JIT and Linux NativeAOT preserve exit17 and exact atexit output",
+    "Empty, Lithuanian, supplementary-plane Unicode arguments and writable argv contents",
+    "Native UTF-8 ownership, alignment, null sentinel, GC stability, double disposal and invalid managed inputs",
+    "argc/argv storage remains alive through source normal-exit callbacks",
+    "Wrong count, pointer, result and variadic entry signatures rejected"
+  ],
+  "limitations": [
+    "No envp extension",
+    "No native Windows/macOS execution in this receipt",
+    "Process invocation storage; independent library-owner globals are a separate feature"
+  ]
+}

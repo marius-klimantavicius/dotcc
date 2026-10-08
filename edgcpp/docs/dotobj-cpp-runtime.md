@@ -150,6 +150,23 @@ interface, overridden const calls, normal derived/base destruction and isolated
 pure/deleted ABI abort paths in JIT and NativeAOT. Both callbacks have checked
 zero-argument `void` signatures and never return a placeholder value.
 
+## Executable arguments and shutdown lifetime
+
+The owned executable entry accepts `int main(int, char**)` in addition to
+zero-argument `int`/`void` entries. The shared `Edg.Runtime.ProgramArguments`
+owner supplies writable UTF-8 argument strings and a null-terminated pointer
+table in one native allocation. Generated entry code retains the owner around
+the entire `ObjectProgram.Run`, including normal-exit callbacks and thread
+cleanup, then releases the original allocation even if source code has changed
+individual argument pointers. There is no mutable global argument cache.
+
+`tests/runtime_arguments_verify.py` compares native, JIT and NativeAOT execution
+with empty and Unicode arguments, a nonzero successful return value, and an
+`atexit` callback that reads the modified arguments after `main` returns. It
+also checks the storage owner separately and rejects nonstandard entry
+signatures. This does not add the optional `envp` argument or establish native
+Windows/macOS execution coverage.
+
 ## Independent-TU acceptance
 
 `object-linker/tests/cpp_cross_unit_verify.py --fixture exceptions` compiles provider, bridge
