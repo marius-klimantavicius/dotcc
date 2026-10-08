@@ -1,8 +1,9 @@
 namespace DotObj;
 
-internal sealed class Linker
+internal sealed partial class Linker
 {
     public IReadOnlyList<ObjectFile> Objects { get; }
+    public IReadOnlyList<ObjectFile> EmissionObjects { get; }
     public IReadOnlyList<Symbol> Definitions { get; }
     public IReadOnlyList<StorageSymbol> StorageDefinitions { get; }
     public Dictionary<string, Symbol> Externs { get; } = new(StringComparer.Ordinal);
@@ -16,13 +17,45 @@ internal sealed class Linker
     public Dictionary<string, string> Names { get; } = new(StringComparer.Ordinal);
     public Dictionary<string, (ObjectFile Object, RecordType Record)> Records { get; } = new(StringComparer.Ordinal);
 
-    public Linker(IReadOnlyList<ObjectFile> objects, string className, bool allowExterns = false)
+    public Linker(IReadOnlyList<ObjectFile> objects, string className, bool allowExterns = false, IReadOnlySet<ObjectFile>? providers = null)
     {
         this.allowExterns = allowExterns;
         Objects = objects.OrderBy(obj => obj.UnitId, StringComparer.Ordinal).ToArray();
         if (Objects.Select(obj => obj.UnitId).Distinct(StringComparer.Ordinal).Count() != Objects.Count)
             throw new InvalidDataException("The same translation unit was supplied more than once");
         foreach (ObjectFile obj in Objects)
+            foreach (Entity entity in obj.Entities.Values)
+            {
+                var symbol = new Symbol(obj, entity);
+                if (signatures.TryGetValue(symbol.Key, out string? prior) && prior != symbol.Signature)
+                    throw new InvalidDataException($"Signature mismatch for {entity.ExternalKey ?? entity.SourceName}: {prior} versus {symbol.Signature}");
+                signatures[symbol.Key] = symbol.Signature;
+                if (entity.Definition != "declaration")
+                {
+                    if (!definitions.TryGetValue(symbol.Key, out Symbol? existing)) definitions.Add(symbol.Key, symbol);
+                    else if (existing.Entity.Definition == "strong" && entity.Definition == "strong")
+                        throw new InvalidDataException($"Duplicate strong definition: {entity.ExternalKey ?? entity.SourceName}");
+                    else if (entity.Definition == "strong") definitions[symbol.Key] = symbol;
+                }
+            }
+        var storageSignatures = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (ObjectFile obj in Objects)
+            foreach (Storage storage in obj.Storages.Values)
+            {
+                var symbol = new StorageSymbol(obj, storage);
+                if (storageSignatures.TryGetValue(symbol.Key, out string? prior) && !CompatibleStorage(prior, symbol.Signature))
+                    throw new InvalidDataException($"Storage type/TLS mismatch: {storage.ExternalKey ?? storage.SourceName}");
+                storageSignatures[symbol.Key] = symbol.Signature;
+                if (storage.Definition == "declaration") continue;
+                if (!storageDefinitions.TryGetValue(symbol.Key, out StorageSymbol? existing)) storageDefinitions.Add(symbol.Key, symbol);
+                else if (existing.Storage.Definition == "strong" && storage.Definition == "strong")
+                    throw new InvalidDataException($"Duplicate strong storage definition: {storage.ExternalKey ?? storage.SourceName}");
+                else if (storage.Definition == "strong" || existing.Storage.Definition == "tentative" && storage.Definition == "linkonce")
+                    storageDefinitions[symbol.Key] = symbol;
+            }
+        SelectProviderClosure(providers);
+        EmissionObjects = Objects.Where(obj => !providerObjects.Contains(obj) || selectedProviderObjects.Contains(obj)).ToArray();
+        foreach (ObjectFile obj in EmissionObjects)
             foreach (RecordType record in obj.Records.Values)
             {
                 if (Records.TryGetValue(record.Key, out var prior))
@@ -43,37 +76,7 @@ internal sealed class Linker
                 }
                 else Records.Add(record.Key, (obj, record));
             }
-        foreach (ObjectFile obj in Objects)
-            foreach (Entity entity in obj.Entities.Values)
-            {
-                var symbol = new Symbol(obj, entity);
-                if (signatures.TryGetValue(symbol.Key, out string? prior) && prior != symbol.Signature)
-                    throw new InvalidDataException($"Signature mismatch for {entity.ExternalKey ?? entity.SourceName}: {prior} versus {symbol.Signature}");
-                signatures[symbol.Key] = symbol.Signature;
-                if (entity.Definition != "declaration")
-                {
-                    if (!definitions.TryGetValue(symbol.Key, out Symbol? existing)) definitions.Add(symbol.Key, symbol);
-                    else if (existing.Entity.Definition == "strong" && entity.Definition == "strong")
-                        throw new InvalidDataException($"Duplicate strong definition: {entity.ExternalKey ?? entity.SourceName}");
-                    else if (entity.Definition == "strong") definitions[symbol.Key] = symbol;
-                }
-            }
         Definitions = definitions.Values.OrderBy(symbol => symbol.Key, StringComparer.Ordinal).ToArray();
-        var storageSignatures = new Dictionary<string, string>(StringComparer.Ordinal);
-        foreach (ObjectFile obj in Objects)
-            foreach (Storage storage in obj.Storages.Values)
-            {
-                var symbol = new StorageSymbol(obj, storage);
-                if (storageSignatures.TryGetValue(symbol.Key, out string? prior) && !CompatibleStorage(prior, symbol.Signature))
-                    throw new InvalidDataException($"Storage type/TLS mismatch: {storage.ExternalKey ?? storage.SourceName}");
-                storageSignatures[symbol.Key] = symbol.Signature;
-                if (storage.Definition == "declaration") continue;
-                if (!storageDefinitions.TryGetValue(symbol.Key, out StorageSymbol? existing)) storageDefinitions.Add(symbol.Key, symbol);
-                else if (existing.Storage.Definition == "strong" && storage.Definition == "strong")
-                    throw new InvalidDataException($"Duplicate strong storage definition: {storage.ExternalKey ?? storage.SourceName}");
-                else if (storage.Definition == "strong" || existing.Storage.Definition == "tentative" && storage.Definition == "linkonce")
-                    storageDefinitions[symbol.Key] = symbol;
-            }
         StorageDefinitions = storageDefinitions.Values.OrderBy(symbol => symbol.Key, StringComparer.Ordinal).ToArray();
         names.Reserve(className);
         foreach (Symbol symbol in Definitions)

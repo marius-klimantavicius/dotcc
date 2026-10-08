@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v12: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v13: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -30,7 +30,7 @@ void check_lifetime(an_object_lifetime_ptr lifetime) {
 namespace dot_object {
 struct Writer {
   unsigned next_entity=1,next_binding=1,next_node=1,next_file=1,next_source_type=1,next_source_declaration=1;
-  unsigned function=0,next_execution_type=12,va_list_id=0;
+  unsigned function=0,next_execution_type=12,va_list_id=0,f80_id=0;
   a_statement_ptr function_block=nullptr;
   std::map<a_routine_ptr,unsigned> routine_ids;
   std::map<a_variable_ptr,unsigned> binding_ids;
@@ -72,9 +72,34 @@ struct Writer {
     execution_types.push_back("{\"id\":"+number(va_list_id)+",\"kind\":\"va-list\",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     return va_list_id;
   }
-  unsigned routine_type(a_type_ptr t) {
+  unsigned f80_type() {
+    if(targ_sizeof_long_double!=16 || targ_alignof_long_double!=16 ||
+       targ_ldbl_mant_dig!=64 || targ_ldbl_min_exp!=-16381 || targ_ldbl_max_exp!=16384)
+      reject("long double target outside 16-byte x87 binary80 ABI");
+    if(f80_id)return f80_id;
+    f80_id=next_execution_type++;
+    execution_types.push_back("{\"id\":"+number(f80_id)+",\"kind\":\"f80\",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
+    return f80_id;
+  }
+  string floating_bits(a_constant_ptr constant) {
+    auto type=skip_typerefs(constant->type);unsigned execution=type_id(type);
+    string bits=fp_to_hex_string(type->variant.float_kind,&constant->variant.float_value).as_temp_characters();
+    if(execution==f80_id && f80_id) {
+      // Match the legacy backend: zero storage padding is not value payload.
+      if(bits.size()<20 || (bits.size()>20 && bits.substr(0,bits.size()-20).find_first_not_of('0')!=string::npos))
+        reject("binary80 constant encoding");
+      bits=bits.substr(bits.size()-20);
+    }
+    size_t digits=execution==10?8:execution==11?16:execution==f80_id && f80_id?20:0;
+    if(!digits || bits.size()!=digits || bits.find_first_not_of("0123456789abcdef")!=string::npos)
+      reject("floating constant encoding");
+    return bits;
+  }
+  unsigned routine_type(a_type_ptr t,bool known_empty_definition=false) {
     auto extra=t->variant.routine.extra_info;
-    if(!extra->prototyped || extra->explicit_calling_convention)reject("unprototyped/foreign-convention function type");
+    if((!extra->prototyped && !known_empty_definition) || extra->explicit_calling_convention)
+      reject("unprototyped/foreign-convention function type");
+    if(known_empty_definition && (extra->param_type_list || extra->has_ellipsis))reject("nonempty old-style execution signature");
     std::vector<unsigned> args;for(auto p=extra->param_type_list;p;p=p->next)args.push_back(type_id(p->type));
     auto specification=extra->exception_specification;
     string policy=specification && !specification->throw_any?(specification->is_noexcept?"terminate":"unsupported-dynamic"):"unwind";
@@ -96,7 +121,7 @@ struct Writer {
     if(identity.find("local-record:")==0) {
       a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
       conv_seq_to_file_and_line(record.position.seq,&display,&full,&line,&at_end);
-      identity+=":"+string(full?full:display?display:"")+":"+std::to_string((unsigned long long)line)+":"+std::to_string(record.position.column);
+      identity+=":"+string(full?full:display?display:"")+":"+std::to_string((unsigned long long)line)+":"+std::to_string(record.position.column)+":occurrence:"+std::to_string(record.source_occurrence);
     }
     record_types.push_back("{\"typeId\":"+number(id)+",\"identityKey\":"+quote(identity)+",\"sourceName\":"+quote(record.name)+
       ",\"size\":"+std::to_string(record.size)+",\"alignment\":"+std::to_string(record.alignment)+position(record.position)+",\"layoutKind\":"+quote(record.layout_kind)+"}");
@@ -108,7 +133,7 @@ struct Writer {
       if(!names.insert(field.name).second || f->offset!=field.offset || (!child->size && !flexible) || !child->alignment)
         reject("record field identity/layout changed during lowering");
       unsigned long long extent=field.bit_width?(field.bit_offset+field.bit_width+7)/8:child->size;
-      if(field.offset>record.size || child->alignment>8 || extent>record.size-field.offset)
+      if(field.offset>record.size || child->alignment>16 || extent>record.size-field.offset)
         reject("record field outside containing storage");
       if(record.layout_kind=="union" && field.offset)reject("union field nonzero storage offset");
       unsigned field_id=next_field++;field_ids[f]=field_id;
@@ -159,6 +184,24 @@ struct Writer {
       ",\"sourceTypeId\":null,\"isThreadLocal\":false,\"isConst\":true,\"alignment\":"+std::to_string(t->alignment)+position(pos)+"}");
     data_chunk(id,0,string(c->variant.string.value,c->variant.string.length));return id;
   }
+  bool zero_constant_bits(a_constant_ptr value) {
+    if(!value)return true;
+    if(value->kind==ck_integer)return is_zero_constant(value);
+    if(value->kind==ck_float)return floating_bits(value).find_first_not_of('0')==string::npos;
+    if(value->kind==ck_string)return string(value->variant.string.value,value->variant.string.length).find_first_not_of('\0')==string::npos;
+    if(value->kind==ck_init_repeat)return zero_constant_bits(value->variant.init_repeat.constant);
+    if(value->kind!=ck_aggregate || value->variant.aggregate.has_dynamic_init_component)return false;
+    for(auto item=value->variant.aggregate.first_constant;item;item=item->next)
+      if(item->kind!=ck_designator && !zero_constant_bits(item))return false;
+    return true;
+  }
+  unsigned aggregate_literal(a_constant_ptr value,const a_source_position &pos) {
+    auto found=literal_ids.find(value);if(found!=literal_ids.end())return found->second;
+    auto type=skip_typerefs(value->type);unsigned id=next_storage++;literal_ids[value]=id;
+    storages.push_back("{\"id\":"+number(id)+",\"sourceName\":\"\",\"linkage\":\"internal\",\"externalKey\":null,\"definition\":\"strong\",\"typeId\":"+number(type_id(type))+
+      ",\"sourceTypeId\":null,\"isThreadLocal\":false,\"isConst\":true,\"alignment\":"+std::to_string(type->alignment)+position(pos)+"}");
+    initialize_storage(id,type,value,0);return id;
+  }
   void initialize_storage(unsigned id,a_type_ptr type,a_constant_ptr c,unsigned long long offset) {
     auto t=skip_typerefs(type);if(!c)return;
     if(c->kind==ck_string) {
@@ -188,12 +231,11 @@ struct Writer {
       data_chunk(id,offset,bytes);return;
     }
     if(c->kind==ck_float) {
-      auto ct=skip_typerefs(c->type);if(t->kind!=tk_float || ct->size!=t->size || (t->size!=4 && t->size!=8))reject("static floating encoding type");
-      string hex=fp_to_hex_string(ct->variant.float_kind,&c->variant.float_value).as_temp_characters();
-      if(hex.size()!=2*t->size || hex.find_first_not_of("0123456789abcdef")!=string::npos)reject("static floating encoding bits");
+      auto ct=skip_typerefs(c->type);if(t->kind!=tk_float || type_id(ct)!=type_id(t))reject("static floating encoding type");
+      string hex=floating_bits(c);
       string bytes;auto digit=[](char digit_char){return digit_char<='9'?digit_char-'0':digit_char-'a'+10;};
       for(size_t i=hex.size();i;i-=2)bytes+=char((digit(hex[i-2])<<4)|digit(hex[i-1]));
-      data_chunk(id,offset,bytes);return;
+      bytes.resize((size_t)t->size,'\0');data_chunk(id,offset,bytes);return;
     }
     if(c->kind!=ck_aggregate || (t->kind!=tk_array && t->kind!=tk_struct && t->kind!=tk_union))reject("static initializer constant kind",c->kind);
     auto field=t->kind==tk_array?nullptr:next_non_empty_initializable_field(t->variant.class_struct_union.field_list);
@@ -358,7 +400,9 @@ struct Writer {
     if(t->kind==tk_float) {
       if(t->variant.float_kind==fk_float && t->size==4)return 10;
       if(t->variant.float_kind==fk_double && t->size==8)return 11;
-      reject("floating type outside IEEE binary32/binary64 profile",t->variant.float_kind);
+      if((t->variant.float_kind==fk_long_double || t->variant.float_kind==fk_float80 || t->variant.float_kind==fk_float64x) &&
+         t->size==16 && t->alignment==16)return f80_type();
+      reject("floating type outside IEEE binary32/binary64/x87-binary80 profile",t->variant.float_kind);
     }
     // EDG retains the bool marker alongside enum bookkeeping after lowering;
     // unlike a user enum, its executable representation is the lowered byte.
@@ -439,6 +483,7 @@ struct Writer {
     if(type.execution)return type.execution;
     if(type.kind=="record")return record_type(type.record_type);
     if(type.kind=="va-list")return va_list_type();
+    if(type.kind=="long-double" || type.kind=="float80" || type.kind=="float64x")return f80_type();
     if(type.kind=="routine") {
       std::vector<unsigned> args;for(auto parameter:type.parameters) {
         unsigned unqualified=parameter;
@@ -464,7 +509,7 @@ struct Writer {
     unsigned execution=source_execution_type(captured);
     unsigned underlying=type.underlying?source_type(type.underlying):0;
     if(type.kind=="routine") {
-      source_routine_types.push_back("{\"typeId\":"+number(id)+",\"returnTypeId\":"+number(source_type(type.result))+",\"variadic\":"+(type.variadic?"true":"false")+",\"exceptionPolicy\":"+quote(type.exception_policy)+"}");
+      source_routine_types.push_back("{\"typeId\":"+number(id)+",\"returnTypeId\":"+number(source_type(type.result))+",\"variadic\":"+(type.variadic?"true":"false")+",\"exceptionPolicy\":"+quote(type.exception_policy)+",\"parameterMode\":"+quote(type.parameter_mode)+"}");
       unsigned ordinal=0;for(auto parameter:type.parameters)source_routine_parameters.push_back("{\"typeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+",\"parameterTypeId\":"+number(source_type(parameter))+"}");
     }
     source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.kind)+",\"sourceName\":"+quote(type.name)+
@@ -485,7 +530,7 @@ struct Writer {
     const auto &captured=found->second;
     source_declaration(captured.declaration,"function",entity,0,0);
     source_functions.push_back("{\"entityId\":"+number(entity)+",\"returnSourceTypeId\":"+number(source_type(captured.declaration.type))+
-      ",\"capturePhase\":\"before-lowering\"}");
+      ",\"capturePhase\":\"before-lowering\",\"routineSourceTypeId\":"+number(source_type(captured.signature_type))+"}");
     unsigned ordinal=0;
     for(auto parameter:captured.parameters)
       source_parameters.push_back("{\"entityId\":"+number(entity)+",\"ordinal\":"+std::to_string(ordinal++)+",\"sourceTypeId\":"+number(source_type(parameter))+"}");
@@ -530,7 +575,11 @@ struct Writer {
     auto t=skip_typerefs(r->type);
     if(t->kind!=tk_routine)reject("nonroutine function type");
     auto extra=t->variant.routine.extra_info;
-    if(!extra->prototyped)reject("unprototyped function");
+    auto body=r->function_def_number==NULL_function_def_number?nullptr:scope_for_routine_or_null(r);
+    if(r->function_def_number!=NULL_function_def_number && !body)reject("unavailable function body");
+    bool known_empty_definition=!extra->prototyped && C_mode() && body &&
+      !extra->param_type_list && !extra->has_ellipsis && !body->variant.routine.parameters;
+    if(!extra->prototyped && !known_empty_definition)reject("unresolved/nonempty unprototyped function");
     if(extra->explicit_calling_convention)reject("explicit calling convention");
 
 
@@ -542,15 +591,13 @@ struct Writer {
     auto key=routine_linker_symbol(r);
     bool external=r->source_corresp.name_linkage==nlk_external || r->source_corresp.name_linkage==nlk_cplusplus_external;
     if(external && key.empty())reject("missing exact external identity");
-    auto body=r->function_def_number==NULL_function_def_number?nullptr:scope_for_routine_or_null(r);
-    if(r->function_def_number!=NULL_function_def_number && !body)reject("unavailable function body");
     bool coalescible=r->is_inline || (r->is_template_function && !r->is_specialized);
 #if DO_IL_LOWERING && IA64_ABI
     coalescible=coalescible || r->use_comdat;
 #endif
     entities.push_back("{\"id\":"+number(id)+",\"sourceName\":"+quote(source_spelling(&r->source_corresp))+
       ",\"linkage\":"+quote(external?"external":"internal")+",\"externalKey\":"+(external?quote(key):"null")+
-      ",\"definition\":"+quote(body?(coalescible?"linkonce":"strong"):"declaration")+",\"returnTypeId\":"+number(type_id(t->variant.routine.return_type))+position(r->source_corresp.decl_position)+",\"routineTypeId\":"+number(routine_type(t))+"}");
+      ",\"definition\":"+quote(body?(coalescible?"linkonce":"strong"):"declaration")+",\"returnTypeId\":"+number(type_id(t->variant.routine.return_type))+position(r->source_corresp.decl_position)+",\"routineTypeId\":"+number(routine_type(t,known_empty_definition))+"}");
     source_function(r,id);
     unsigned ordinal=0;
     for(auto p=extra->param_type_list;p;p=p->next)
@@ -566,6 +613,7 @@ struct Writer {
       reject("nonexecutably placed local initializer",v->init_kind);
     unsigned id=next_binding++;binding_ids[v]=id;binding_scopes[v]=scope;
     auto source=dot_object_source::state().variables.find(v);
+    bool synthetic=false;
     if(source!=dot_object_source::state().variables.end()) {
       source_declaration(source->second,parameter?"parameter":"local",0,id,function);
       if(source->second.cleanup) {
@@ -575,10 +623,16 @@ struct Writer {
         if(v->init_kind==initk_zero)reject("cleanup with split lowered initialization");
         cleanup_variables.insert(v);
       }
-    } else reject("missing pre-lowering variable capture (including synthetic binding)");
+    } else {
+      // EDG frontend and lowering temporaries have distinct positive flags.
+      // A missing capture alone never licenses inventing source provenance.
+      if(parameter || !(v->compiler_generated || v->lowering_generated))
+        reject("missing pre-lowering original variable capture");
+      synthetic=true;
+    }
     bindings.push_back("{\"id\":"+number(id)+",\"functionId\":"+number(function)+",\"kind\":"+quote(parameter?"parameter":"local")+
       ",\"ordinal\":"+(parameter?std::to_string(ordinal):"null")+",\"typeId\":"+number(type_id(v->type))+
-      ",\"sourceName\":"+quote(source_spelling(&v->source_corresp))+",\"scopeNodeId\":"+number(scope)+position(v->source_corresp.decl_position)+"}");
+      ",\"sourceName\":"+quote(source_spelling(&v->source_corresp))+",\"scopeNodeId\":"+number(scope)+position(v->source_corresp.decl_position)+",\"isSynthetic\":"+(synthetic?"true":"false")+"}");
     return id;
   }
   unsigned local_place(a_variable_ptr variable,const a_source_position &pos) {
@@ -646,6 +700,7 @@ struct Writer {
   }
   unsigned zero_node(unsigned type,const a_source_position &pos) {
     if(type==va_list_id && va_list_id)return node("default-value",type,pos,0,0,"","","value","none");
+    if(type==f80_id && f80_id)return node("constant",type,pos,0,0,"",string(20,'0'),"value","none");
     for(const auto &record:record_ids)if(record.second==type)return node("default-value",type,pos,0,0,"","","value","none");
     return node("constant",type,pos,0,0,"",type==10?"00000000":type==11?"0000000000000000":"0","value","none");
   }
@@ -664,18 +719,15 @@ struct Writer {
       if(!target)reject("constant address base",address.kind);
       return node("storage-address",ty,pos,0,0,"",std::to_string(address.offset),"value","none",0,target);
     }
-    if(c->kind==ck_float) {
-      auto t=skip_typerefs(c->type);
-      if(t->kind!=tk_float || (ty!=10 && ty!=11))reject("floating constant type mismatch");
-      // The regular dot backend uses the same EDG bit formatter. Unlike a
-      // decimal conversion, it preserves signed zero and NaN payloads. The
-      // formatter returns most-significant-byte first, lowercase hex digits.
-      string bits=fp_to_hex_string(t->variant.float_kind,&c->variant.float_value).as_temp_characters();
-      if(bits.size()!=(ty==10?8U:16U) || bits.find_first_not_of("0123456789abcdef")!=string::npos)
-        reject("floating constant target encoding");
-      return node("constant",ty,pos,0,0,"",bits,"value","none");
+    if(c->kind==ck_float)return node("constant",ty,pos,0,0,"",floating_bits(c),"value","none");
+    if(c->kind==ck_aggregate) {
+      auto type=skip_typerefs(c->type);
+      if((type->kind!=tk_struct && type->kind!=tk_class && type->kind!=tk_union) || !copyable_value(type))
+        reject("folded aggregate constant outside complete copyable record");
+      if(zero_constant_bits(c))return zero_node(ty,pos);
+      return node("storage",ty,pos,0,0,"","","place","none",0,aggregate_literal(c,pos));
     }
-    if(c->kind!=ck_integer || ty==10 || ty==11)reject("noninteger/nonfloating constant",c->kind);
+    if(c->kind!=ck_integer || ty==10 || ty==11 || (f80_id && ty==f80_id))reject("noninteger/nonfloating constant",c->kind);
     a_boolean overflow=FALSE;
     string text;
     if(int_constant_is_signed(c))text=std::to_string((long long)value_of_integer_constant(c,&overflow));
@@ -928,6 +980,9 @@ struct Writer {
       bool direct=a->kind==enk_routine;
       if(direct) {
         unsigned builtin=intrinsic(e,a->variant.routine.ptr,b,order);if(builtin)return builtin;
+        auto signature=skip_typerefs(a->variant.routine.ptr->type);
+        if(!signature->variant.routine.extra_info->prototyped && b)
+          reject("actual arguments to an unspecified-parameter function");
       }
       unsigned id=node(direct?"call":"indirect-call",ty,e->position,direct?routine(a->variant.routine.ptr):0,0,"","","value",order),ordinal=0;
       if(!direct)edge(id,"operand",0,expression(a));
@@ -1642,7 +1697,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v12\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v13\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

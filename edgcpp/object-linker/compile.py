@@ -19,14 +19,14 @@ ARRAYS = {
     'relocations': ('relocations', ['storageId', 'byteOffset', 'targetStorageId', 'targetEntityId', 'addend']),
     'routineTypes': ('routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy']),
     'routineParameters': ('routine_parameters', ['typeId', 'ordinal', 'parameterTypeId']),
-    'sourceRoutineTypes': ('source_routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy']),
+    'sourceRoutineTypes': ('source_routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy', 'parameterMode']),
     'sourceRoutineParameters': ('source_routine_parameters', ['typeId', 'ordinal', 'parameterTypeId']),
     'entities': ('entities', ['id', 'sourceName', 'linkage', 'externalKey', 'definition',
                               'returnTypeId', 'sourceFileId', 'line', 'column', 'routineTypeId']),
     'parameters': ('parameters', ['entityId', 'ordinal', 'typeId']),
     'functions': ('functions', ['entityId', 'bodyNodeId']),
     'bindings': ('bindings', ['id', 'functionId', 'kind', 'ordinal', 'typeId', 'sourceName',
-                              'scopeNodeId', 'sourceFileId', 'line', 'column']),
+                              'scopeNodeId', 'sourceFileId', 'line', 'column', 'isSynthetic']),
     'nodes': ('nodes', ['id', 'functionId', 'kind', 'typeId', 'entityId', 'bindingId',
                         'operator', 'constantText', 'valueCategory', 'evaluationOrder',
                         'sourceFileId', 'line', 'column', 'fieldId', 'storageId']),
@@ -39,7 +39,7 @@ ARRAYS = {
     'macroEvents': ('macro_events', ['id', 'kind', 'name', 'definitionId', 'origin', 'sourceFileId', 'line', 'column']),
     'sourceTypes': ('source_types', ['id', 'kind', 'sourceName', 'underlyingTypeId',
                                    'executionTypeId', 'isConst', 'isVolatile', 'sourceFileId', 'line', 'column', 'elementCount']),
-    'sourceFunctions': ('source_functions', ['entityId', 'returnSourceTypeId', 'capturePhase']),
+    'sourceFunctions': ('source_functions', ['entityId', 'returnSourceTypeId', 'capturePhase', 'routineSourceTypeId']),
     'sourceParameters': ('source_parameters', ['entityId', 'ordinal', 'sourceTypeId']),
     'sourceDeclarations': ('source_declarations', ['id', 'kind', 'sourceName', 'sourceTypeId',
                           'entityId', 'bindingId', 'functionEntityId', 'sourceFileId', 'line', 'column']),
@@ -106,15 +106,20 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v12':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v13':
         raise ValueError('Unsupported semantic wire version/profile')
     source_hashes = {}
     with sqlite3.connect(path) as db:
         db.executescript(SCHEMA.read_text())
+        # This is an unpublished staging database. Forward references and
+        # cycles are expected; incremental deferred-FK bookkeeping scans child
+        # tables whenever a missing parent arrives and becomes quadratic on
+        # project-sized graphs. Validate all references once after the load.
+        # CHECK/UNIQUE/NOT NULL constraints remain enforced on every insertion.
+        db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
-        db.execute('PRAGMA defer_foreign_keys=ON')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1)',
-                   ('scalar-control-v12', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v13', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source)))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))
@@ -153,6 +158,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         digest = logical_hash(db)
         db.execute('INSERT INTO content_digest VALUES(1,?,?)', ('dotobj-semantic-sha256-v1', digest))
         db.commit()
+        db.execute('PRAGMA foreign_keys=ON')
         if db.execute('PRAGMA integrity_check').fetchone() != ('ok',):
             raise ValueError('SQLite integrity failure')
     for file, digest in source_hashes.items():

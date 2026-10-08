@@ -80,7 +80,7 @@ internal sealed partial class Emitter
                 .AppendJoin(", ", parameters.Select((type, ordinal) => Type(type) + " argument" + ordinal).Concat(variadic ? ["params global::System.ReadOnlySpan<global::Edg.Runtime.VaArg> arguments"] : []))
                 .Append(")\n    {\n        try\n        {\n            ").Append(result == "void" ? "" : "return ")
                 .Append(ExternProviderReference(symbol)).Append('(').AppendJoin(", ", parameters.Select((_, ordinal) => "argument" + ordinal).Concat(variadic ? ["arguments"] : []))
-                .Append(");\n        }\n        catch (global::System.Exception error)\n        {\n")
+                .Append(");\n        }\n        catch (global::System.Exception error) when (!global::Edg.Runtime.ObjectProgram.IsRuntimeTransfer(error))\n        {\n")
                 .Append("            global::System.Environment.FailFast(\"Exception escaped noexcept external function\", error);\n            throw;\n        }\n    }\n\n");
         }
         code.Append("}\n");

@@ -40,10 +40,24 @@ internal sealed partial class Emitter
         }
         return Owner + "." + helper.Name + "(" + address + (value is null ? "" : ", " + value) + ")";
     }
+    private static bool ModularIntegerOperation(string type, string argument, string op) =>
+        ScalarTypes.IsInteger(type) && ScalarTypes.IsInteger(argument) && op is "+" or "-" or "*" or "&" or "|" or "^";
+    private static bool ImplicitNumericConversion(string source, string target) => source == target || target switch
+    {
+        "i16" => source is "i8" or "u8",
+        "u16" => source == "u8",
+        "i32" => source is "i8" or "u8" or "i16" or "u16",
+        "u32" => source is "u8" or "u16",
+        "i64" => ScalarTypes.IsInteger(source) && source != "u64",
+        "u64" => source is "u8" or "u16" or "u32",
+        "f32" => ScalarTypes.IsInteger(source),
+        "f64" => ScalarTypes.IsInteger(source) || source == "f32",
+        _ => false
+    };
     private static bool CompoundPromotionDiffers(string target, string argument, string op) =>
-        target == "u64" && argument is "i8" or "i16" or "i32" or "i64" && op is not ("<<" or ">>") ||
-        target is "i8" or "i16" or "i32" or "i64" && argument == "u64" ||
-        op is "/" or "%" && target is "i8" or "i16" or "i32" && argument == "u32";
+        !ScalarTypes.IsPointer(target) && op is not ("<<" or ">>") && !ModularIntegerOperation(target, argument, op) &&
+        (!ImplicitNumericConversion(argument, target) ||
+         op is "/" or "%" && target is "i8" or "i16" or "i32" && argument == "u32");
     private string CompoundOperation(string type, string valueType, string op, string address, string value)
     {
         string key = "compound:" + type + ":" + valueType + ":" + op;

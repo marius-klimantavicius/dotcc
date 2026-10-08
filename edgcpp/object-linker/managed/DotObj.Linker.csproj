@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="../schema.sql" LogicalName="DotObj.Schema.sql" />
+    <EmbeddedResource Include="../../backend/runtime/Float80.cs" LogicalName="DotObj.Runtime.Float80.cs" />
     <EmbeddedResource Include="../../backend/runtime/VaList.cs" LogicalName="DotObj.Runtime.VaList.cs" />
     <EmbeddedResource Include="../../backend/runtime/VaArg.cs" LogicalName="DotObj.Runtime.VaArg.cs" />
     <EmbeddedResource Include="../../backend/runtime/VaPack.cs" LogicalName="DotObj.Runtime.VaPack.cs" />

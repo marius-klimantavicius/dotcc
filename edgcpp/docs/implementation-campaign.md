@@ -2642,3 +2642,11 @@ See [the campaign status](dotobj-project-campaign.md) and the
 [hashed C/runtime evidence](../evidence/dotobj-project-c-20261008.json).
 SQLite still needs the next function-designator fix and remaining libc providers;
 DuckDB needs C++ inherited/vptr object representation and subsequent lifetimes/EH.
+
+
+The v13 provider milestone passes **730 native/JIT/NativeAOT checks**, completes
+original-source SQLite object generation, and links 223 candidate musl objects
+with 44 selected provider units into 3,339 C# function definitions. Generated
+bodies compile with actual runtime providers; environ/startup actions remain the
+last known barrier before engine execution. See [v13 evidence](../evidence/dotobj-provider-v13-20261008.json).
+The campaign remains active for full SQLite tests and DuckDB layout/lifetimes.

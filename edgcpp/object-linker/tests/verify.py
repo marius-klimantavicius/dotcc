@@ -14,6 +14,7 @@ import lifetimes_verify
 import records_verify
 import storage_verify
 import project_c_verify
+import provider_verify
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('dotobj_compile', ROOT / 'compile.py')
@@ -59,13 +60,13 @@ def main():
         shutil.copy2(ROOT / 'tests/records.cpp', inputs / ('records' + ('-c' if extension == '.c' else '') + extension))
         shutil.copy2(ROOT / 'tests/record_provider.cpp', inputs / ('record-provider' + ('-c' if extension == '.c' else '') + extension))
     shutil.copy2(ROOT / 'tests/record_fixture.h', inputs / 'record_fixture.h')
-    for name in ['storage_fixture.h', 'storage_provider.c', 'storages.c', 'project_c_runtime.c', 'project_c_intrinsics.c', 'project_c_record_values.c', 'project_c_record_array_values.c', 'project_c_aggregate_initializers.c', 'project_c_function_designators.c', 'project_c_bitfield_values.c', 'goto_entries.c', 'project_c_nested_switch.c']:
+    for name in ['storage_fixture.h', 'storage_provider.c', 'storages.c', 'project_c_runtime.c', 'project_c_intrinsics.c', 'project_c_record_values.c', 'project_c_record_array_values.c', 'project_c_aggregate_initializers.c', 'project_c_function_designators.c', 'project_c_bitfield_values.c', 'goto_entries.c', 'project_c_nested_switch.c', 'project_c_synthetic_bindings.c', 'project_c_binary80.c', 'project_c_folded_records.c', 'project_c_unspecified_definitions.c', 'project_c_volatile_binary80.c', 'project_c_void_sequences.c', 'project_c_macro_record_identity.c', 'provider_root.c', 'provider_library.c', 'provider_support.c']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
     checks = []
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v12', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v13', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -150,7 +151,8 @@ def main():
             return path
 
         if args.project_c_only:
-            project_c_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
+            project_objects = project_c_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
+            project_c_verify.malformed(project_objects, tool, run, mutate)
             save('passed')
             return
         if args.storage_only:
@@ -265,7 +267,9 @@ def main():
         record_provider, record_consumer = records_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
         records_verify.malformed(record_provider, record_consumer, tool, run, link, mutate)
         storage_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
-        project_c_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
+        project_objects = project_c_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
+        project_c_verify.malformed(project_objects, tool, run, mutate)
+        provider_verify.verify(inputs, out, tool, run, check, compile_source, execute)
         loops_object = out / 'loops.dotobj'
         loops_cs = '\n'.join(p.read_text() for p in (out / 'link-loops').glob('*.cs'))
         check('structured-loop-source', all(token in loops_cs for token in ['for (', 'do', 'while (', 'break;', 'continue;']) and 'goto ' not in loops_cs)
@@ -302,7 +306,7 @@ def main():
                 check('source-const-' + language, db.execute('SELECT count(*) FROM source_types WHERE is_const=1').fetchone()[0] > 0)
                 check('source-bool-before-lowering-' + language, db.execute("SELECT count(*) FROM source_types s JOIN types t ON t.id=s.execution_type_id WHERE s.kind='bool' AND t.kind='u8'").fetchone()[0] > 0)
                 check('distinct-shadowed-source-types-' + language, db.execute("SELECT count(DISTINCT execution_type_id) FROM source_types WHERE kind='typedef' AND source_name='Choice'").fetchone()[0] == 2)
-                check('source-binding-coverage-' + language, db.execute("SELECT count(*) FROM source_declarations WHERE kind IN ('local','parameter')").fetchone()[0] == db.execute('SELECT count(*) FROM bindings').fetchone()[0])
+                check('source-binding-coverage-' + language, db.execute("SELECT count(*) FROM source_declarations WHERE kind IN ('local','parameter')").fetchone()[0] == db.execute('SELECT count(*) FROM bindings WHERE is_synthetic=0').fetchone()[0])
         check('source-map-published', (out / 'link-source_types/source-map.json').is_file())
         macros_c = compile_source('macros-c', inputs / 'macros-c.c', std='c11')
         run('native-macros-c-build', ['cc', '-std=c11', inputs / 'macros-c.c', '-o', out / 'native-macros-c'])
@@ -357,7 +361,11 @@ def main():
             ("INSERT INTO routine_parameters VALUES((SELECT max(id) FROM types),0,3)", ()),
             ("UPDATE entities SET routine_type_id=(SELECT max(id) FROM types) WHERE source_name='from_a'", ()),
             ("INSERT INTO source_types SELECT max(id)+1,'unsigned-char','',NULL,3,0,0,NULL,0,0,NULL FROM source_types", ()),
-            ("UPDATE source_parameters SET source_type_id=(SELECT max(id) FROM source_types) WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ())])
+            ("UPDATE source_parameters SET source_type_id=(SELECT max(id) FROM source_types) WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ()),
+            ("INSERT INTO source_types SELECT (SELECT max(id)+1 FROM source_types),kind,source_name,underlying_type_id,(SELECT max(id) FROM types),is_const,is_volatile,source_file_id,line,column,element_count FROM source_types WHERE id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
+            ("INSERT INTO source_routine_types SELECT (SELECT max(id) FROM source_types),return_type_id,variadic,exception_policy,parameter_mode FROM source_routine_types WHERE type_id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
+            ("INSERT INTO source_routine_parameters SELECT (SELECT max(id) FROM source_types),ordinal,source_type_id FROM source_parameters WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ()),
+            ("UPDATE source_functions SET routine_source_type_id=(SELECT max(id) FROM source_types) WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ())])
         run('signature-mismatch', ['dotnet', tool, 'link', '--out', out / 'bad-signature', provider, mismatch], None, 'Signature mismatch')
         damaged = mutate('damaged', provider, [('UPDATE entities SET source_name=? WHERE id=1', ('tampered',))], False)
         run('digest-mismatch', ['dotnet', tool, 'verify', damaged], None, 'digest')
@@ -412,7 +420,7 @@ def main():
         run('break-cannot-skip-switch', ['dotnet', tool, 'verify', bad_break_outer], None)
         bad_case_scope = mutate('switch-case-outside', switches_object, [(
             "UPDATE nodes SET kind='case' WHERE id=(SELECT max(id) FROM nodes WHERE kind='return' AND function_id=(SELECT id FROM entities WHERE source_name='main'))", ())])
-        run('case-outside-switch', ['dotnet', tool, 'verify', bad_case_scope], None, 'immediate switch body child')
+        run('case-outside-switch', ['dotnet', tool, 'verify', bad_case_scope], None, 'Case label is not owned by a switch')
 
         integers_object = out / 'integers.dotobj'
         invalid_integer = mutate('wide-constant', integers_object, [(
@@ -441,6 +449,9 @@ def main():
         missing_source = mutate('source-binding-missing', source_object, [(
             "DELETE FROM source_declarations WHERE id=(SELECT min(id) FROM source_declarations WHERE kind='local')", ())])
         run('source-binding-missing', ['dotnet', tool, 'verify', missing_source], None)
+        fabricated_source = mutate('synthetic-fabricated-source', source_object, [(
+            "UPDATE bindings SET is_synthetic=1 WHERE id=(SELECT binding_id FROM source_declarations WHERE kind='local' LIMIT 1)", ())])
+        run('synthetic-fabricated-source', ['dotnet', tool, 'verify', fabricated_source], None)
         wrong_phase = mutate('source-capture-phase', source_object, [(
             "UPDATE source_functions SET capture_phase='after-lowering'", ())])
         run('source-capture-phase', ['dotnet', tool, 'verify', wrong_phase], None)
@@ -563,6 +574,8 @@ def main():
         run('macro-parameter-order', ['dotnet', tool, 'verify', wrong_macro_ordinal], None)
 
         project_c_forms = {
+            'precase-execution': 'int f(int n){switch(n){n=4;case 1:return 2;default:return 3;}}\n',
+            'nested-switch-case': 'int f(int n){switch(n){{case 1:return 2;}default:return 3;}}\n',
             'volatile-pointer': 'int f(volatile int* value){return *value;}\n',
             'volatile': 'int f(){volatile int value=1; return value;}\n',
             'noexcept': 'int f() noexcept {return 1;}\n',
@@ -583,12 +596,9 @@ def main():
 
         negatives = {
             'va-opt': '#define API_OPT(...) __VA_OPT__(17)\nint f(){return API_OPT(1); }\n',
-            'long-double': 'long double f(long double x){return x+1.0L;}\n',
             'variable-array': 'int f(int n){int values[n]; values[0]=2;return values[0];}\n',
             'reference': 'int f(int& value){return value;}\n',
             'ordered-pointer-store': 'int next(int** slot,int* value){*slot=value;return 7;} int f(){int a=1,b=2;int* p=&a; *p=next(&p,&b);return b;}\n',
-            'nested-switch-case': 'int f(int n){switch(n){{case 1:return 2;}default:return 3;}}\n',
-            'precase-execution': 'int f(int n){switch(n){n=4;case 1:return 2;default:return 3;}}\n',
             'switch-range': 'int f(int n){switch(n){case 1 ... 3:return 2;default:return 3;}}\n',
         }
         for name, code in negatives.items():

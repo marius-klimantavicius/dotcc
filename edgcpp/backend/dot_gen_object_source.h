@@ -29,7 +29,7 @@ struct Type {
   // Routine types are private signature snapshots, not scalar sourceTypes.
   unsigned result=0;
   bool variadic=false;
-  std::string exception_policy="unwind";
+  std::string exception_policy="unwind",parameter_mode="prototype";
   std::vector<unsigned> parameters;
 };
 struct Declaration {
@@ -43,6 +43,7 @@ struct Declaration {
 };
 struct Function {
   Declaration declaration;
+  unsigned signature_type=0;
   std::vector<unsigned> parameters;
 };
 struct RecordField {
@@ -57,6 +58,7 @@ struct RecordField {
 struct Record {
   std::string name,identity,error,layout_kind;
   bool template_identity=false;
+  unsigned source_occurrence=0;
   unsigned long long size=0,alignment=0;
   a_source_position position={};
   std::vector<RecordField> fields;
@@ -68,6 +70,8 @@ struct State {
   std::map<a_variable_ptr,Declaration> variables;
   std::map<a_type_ptr,Record> records;
   std::set<a_type_ptr> capturing_records;
+  std::map<std::pair<a_seq_number,a_column_number>,unsigned> record_occurrence_counts;
+  std::map<a_type_ptr,unsigned> record_occurrences;
 };
 inline State &state(){static State value;return value;}
 inline std::string spelling(const a_source_correspondence &source) {
@@ -92,6 +96,16 @@ inline void capture_record(a_type_ptr t) {
   // ordinary nominal record references, not infinitely expanded structures.
   s.records[t]=Record{};
   Record value;value.name=spelling(t->source_corresp);value.position=t->source_corresp.decl_position;
+  auto occurrence=s.record_occurrences.find(t);
+  if(occurrence==s.record_occurrences.end()) {
+    // Several distinct anonymous declarations can come from one top-level
+    // macro invocation and share seq/column. Capture occurrence identity
+    // before execution reachability changes traversal; never deduplicate by
+    // layout or export EDG addresses. Re-capture of this type reuses its ID.
+    auto key=std::make_pair(value.position.seq,value.position.column);
+    occurrence=s.record_occurrences.emplace(t,s.record_occurrence_counts[key]++).first;
+  }
+  value.source_occurrence=occurrence->second;
   value.size=t->incomplete?0:t->size;value.alignment=t->incomplete?0:t->alignment;
   value.layout_kind=t->kind==tk_union?"union":t->kind==tk_class?"class":"struct";
   auto &c=t->variant.class_struct_union;auto extra=c.extra_info;
@@ -115,7 +129,7 @@ inline void capture_record(a_type_ptr t) {
   }
   value.identity=(local?"local-record:":"record:")+qualified;
   if(t->incomplete){s.records[t]=value;return;}
-  if(!value.size || value.size>2147483647ULL || !value.alignment || value.alignment>8 ||
+  if(!value.size || value.size>2147483647ULL || !value.alignment || value.alignment>16 ||
      c.any_virtual_functions_including_in_base_classes || (extra && extra->base_classes))
     value.error="record outside complete plain layout profile";
 #if GNU_EXTENSIONS_ALLOWED
@@ -190,6 +204,11 @@ inline unsigned capture_type(a_type_ptr t) {
   } else if(t->kind==tk_float) {
     if(t->variant.float_kind==fk_float && t->size==4){value.kind="float";value.execution=10;}
     else if(t->variant.float_kind==fk_double && t->size==8){value.kind="double";value.execution=11;}
+    else if(t->size==16 && t->alignment==16) {
+      if(t->variant.float_kind==fk_long_double)value.kind="long-double";
+      else if(t->variant.float_kind==fk_float80)value.kind="float80";
+      else if(t->variant.float_kind==fk_float64x)value.kind="float64x";
+    }
   } else if(t->kind==tk_pointer && !t->variant.pointer.is_reference) {
     value.kind="pointer";
     value.underlying=capture_type(t->variant.pointer.type);
@@ -209,6 +228,7 @@ inline unsigned capture_type(a_type_ptr t) {
     value.kind="routine";
     value.result=capture_type(t->variant.routine.return_type);
     value.variadic=t->variant.routine.extra_info->has_ellipsis;
+    value.parameter_mode=t->variant.routine.extra_info->prototyped?"prototype":"unspecified";
     auto specification=t->variant.routine.extra_info->exception_specification;
     if(specification && !specification->throw_any)
       value.exception_policy=specification->is_noexcept?"terminate":"unsupported-dynamic";
@@ -231,7 +251,7 @@ inline void capture_routine(a_routine_ptr r) {
   auto id=capture_type(type);
   while(s.types.at(id-1).underlying)id=s.types.at(id-1).underlying;
   const auto signature=s.types.at(id-1);
-  Function function;function.declaration.type=signature.result;
+  Function function;function.declaration.type=signature.result;function.signature_type=id;
   function.declaration.name=spelling(r->source_corresp);
   function.declaration.position=r->source_corresp.decl_position;
   function.parameters=signature.parameters;s.functions[r]=function;

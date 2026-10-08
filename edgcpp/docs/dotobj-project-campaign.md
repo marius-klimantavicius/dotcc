@@ -113,3 +113,34 @@ source switch labels nested in lexical blocks/loops, bitfield arithmetic and
 scope-entering C gotos. Ordinary source switches remain structured. SQLite now
 passes the large VDBE switch and reaches a folded aggregate constant in
 sqlite3ExprListAppend. [Hashed evidence](../evidence/dotobj-c-control-20261008.json).
+
+
+## Verified provider profile v13 (2026-10-08)
+
+Native015 and managed014 pass **730 checks including NativeAOT**. The profile
+adds exact binary80 arithmetic/storage with explicit aligned addressable locals
+and parameters, observable non-atomic volatile payload accesses, synthesized-local
+provenance, original routine signatures (including bounded unspecified C forms),
+folded record constants and source expression lifting with lazy branches.
+
+The complete original SQLite translation unit now packages independently. Its
+450,137-node object and 223 musl provider objects link through explicit provider
+selection: all primary library APIs remain roots, 44 provider units contribute,
+and 3,339 function definitions compile as C#. Shared BCL providers implement all
+69 required external functions. The sole remaining environment storage belongs
+to the GNU constructor-bearing environment_startup unit, which still rejects
+until owned startup actions and explicit library initialization are implemented.
+This is generation/compile evidence, not SQLite engine execution acceptance.
+
+The packager now bulk-loads unpublished staging databases and performs complete
+foreign-key validation before publication. Ten tests include byte-identical
+repackaging of the full SQLite wire with fixed provenance and malformed-reference
+rollback; the candidate packaging phase takes 6.02 seconds against the original
+265.929-second attempt. Complete native014 SQLite translation/package takes
+9.375 seconds. All earlier slow attempts remain retained.
+
+[Hashed v13 evidence](../evidence/dotobj-provider-v13-20261008.json) records tools,
+full regression and project probes. Five original DuckDB units parse in roughly
+one second each, then stop explicitly on hidden-vptr record layout or C++ dynamic
+global initialization. [The next C++ layout contract](dotobj-cpp-layout.md) and
+native/stock-C lifetime oracles make those remaining gates concrete.

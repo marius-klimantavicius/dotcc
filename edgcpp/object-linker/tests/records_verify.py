@@ -66,7 +66,7 @@ int main(){North::Token a={17};South::Token b={2.5};return a.event==17 && b.even
         ('incomplete', 'struct X;int f(X* p){return p!=0;}'),
         ('bits', 'struct X{unsigned n:3;};int f(X* p){return p->n;}'),
         ('packed', 'struct __attribute__((packed)) X{char c;int n;};int f(X* p){return p->n;}'),
-        ('overaligned', 'struct alignas(16) X{int n;};int f(X* p){return p->n;}'),
+        ('overaligned', 'struct alignas(32) X{int n;};int f(X* p){return p->n;}'),
         ('raised-alignment', 'struct alignas(8) X{char n;};int f(X* p){return p->n;}'),
         ('empty', 'struct X{};int f(X* p){return p!=0;}'),
         ('local', 'int f(){struct X{int n;};X a={2};return a.n;}'),

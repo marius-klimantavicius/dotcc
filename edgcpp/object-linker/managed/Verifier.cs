@@ -387,7 +387,7 @@ internal static class Verifier
                     var indirectArgs = body.Children(node.Id, "argument").Select(edge => body.Nodes[edge.ChildId]).ToArray();
                     if (Type(node) != indirectSignature.Result || (indirectSignature.Variadic ? indirectArgs.Length < indirectSignature.Parameters.Length : indirectArgs.Length != indirectSignature.Parameters.Length) ||
                         indirectArgs.Take(indirectSignature.Parameters.Length).Where((arg, index) => !IsExpression(arg) || Type(arg) != indirectSignature.Parameters[index]).Any() ||
-                        indirectArgs.Skip(indirectSignature.Parameters.Length).Any(arg => !IsExpression(arg) || !(ScalarTypes.IsPromotedInteger(Type(arg)) || Type(arg) == "f64" || ScalarTypes.IsPointer(Type(arg)))))
+                        indirectArgs.Skip(indirectSignature.Parameters.Length).Any(arg => !IsExpression(arg) || !(ScalarTypes.IsPromotedInteger(Type(arg)) || Type(arg) is "f64" or "f80" || ScalarTypes.IsPointer(Type(arg)))))
                         Fail("Indirect call result or arguments disagree with the callable signature");
                     break;
                 case "constant":
@@ -459,7 +459,7 @@ internal static class Verifier
                     bool variadic = obj.Routines[target.RoutineTypeId].Variadic;
                     if ((variadic ? args.Length < expected.Count : args.Length != expected.Count) ||
                         args.Take(expected.Count).Where((arg, i) => !IsExpression(arg) || Type(arg) != expected[i]).Any() ||
-                        args.Skip(expected.Count).Any(arg => !IsExpression(arg) || !(ScalarTypes.IsPromotedInteger(Type(arg)) || Type(arg) == "f64" || ScalarTypes.IsPointer(Type(arg)))))
+                        args.Skip(expected.Count).Any(arg => !IsExpression(arg) || !(ScalarTypes.IsPromotedInteger(Type(arg)) || Type(arg) is "f64" or "f80" || ScalarTypes.IsPointer(Type(arg)))))
                         Fail("Call argument signature or default variadic promotion mismatch");
                     break;
                 case "binary":

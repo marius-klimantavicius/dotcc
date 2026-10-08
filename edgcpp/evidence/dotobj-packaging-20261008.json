@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 10,
+  "scope": "Full SQLite object bulk packaging; no generated SQLite execution claim",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-packaging-acceptance-003/results.json",
+    "sha256": "6135d36e00f2708af795f1a7205b0d67c72eab572b496e4e911fae52c4a9da55"
+  },
+  "nativeUnits": 1,
+  "semanticNodes": 450137,
+  "baselineTotalSeconds": 265.929,
+  "fastRepackageIncludingJsonSeconds": 8.189529816998402,
+  "byteParityPackageSeconds": 6.023965598025825,
+  "byteIdentical": true,
+  "checksDescription": [
+    "Same450137-node SQLite graph creates byte-identical SQLite database with identical provenance",
+    "Foreign references validated before content digest/commit",
+    "Dangling type and node references reject and roll back staged data",
+    "Schema CHECK constraints stay enabled and reject invalid execution kind",
+    "Unpublished stage only; published source hashes/integrity checks retained"
+  ]
+}

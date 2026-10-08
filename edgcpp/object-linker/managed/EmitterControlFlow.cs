@@ -8,7 +8,7 @@ internal sealed partial class Emitter
     // such jumps use this representation. Hoisted storage keeps its source
     // identifier, while initialization stays exactly at its original position.
     private void FlatControl(ObjectFile obj, FunctionBody body, int indent, Names allocator,
-        Dictionary<long, string> bindings, Func<Node, string> expression, Func<Node, string> truth,
+        Dictionary<long, string> bindings, Func<Binding, string> declaration, Func<Node, string> expression, Func<Node, string> truth,
         Action<int, string> line, Action<Node, int> statement, Action<Node, int> discard)
     {
         var exits = new Dictionary<long, string>();
@@ -16,7 +16,7 @@ internal sealed partial class Emitter
         var cases = new Dictionary<long, string>();
         string Label(string name) => allocator.Allocate("__dot_" + name, "flow");
         foreach (Binding binding in body.Bindings.Values.Where(value => value.Kind == "local").OrderBy(value => value.Id))
-            line(indent, Type(obj.Type(binding.TypeId)) + " " + bindings[binding.Id] + " = default;");
+            line(indent, declaration(binding));
         line(indent, "// Source jumps enter lexical regions; initialization remains at each source declaration.");
         void Emit(Node node)
         {

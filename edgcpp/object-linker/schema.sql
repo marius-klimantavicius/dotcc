@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v12'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v13'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE source_files (
 ) STRICT;
 CREATE TABLE types (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind IN ('void','i8','u8','i16','u16','i32','u32','i64','u64','f32','f64','bool','pointer','array','record','routine','va-list')),
+ kind TEXT NOT NULL CHECK(kind IN ('void','i8','u8','i16','u16','i32','u32','i64','u64','f32','f64','f80','bool','pointer','array','record','routine','va-list')),
  pointee_type_id INTEGER REFERENCES types(id),
  element_type_id INTEGER REFERENCES types(id),
  element_count INTEGER,
@@ -60,7 +60,8 @@ CREATE TABLE source_routine_types (
  type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
  return_type_id INTEGER NOT NULL REFERENCES source_types(id),
  variadic INTEGER NOT NULL CHECK(variadic IN (0,1)),
- exception_policy TEXT NOT NULL CHECK(exception_policy IN ('unwind','terminate'))
+ exception_policy TEXT NOT NULL CHECK(exception_policy IN ('unwind','terminate')),
+ parameter_mode TEXT NOT NULL CHECK(parameter_mode IN ('prototype','unspecified'))
 ) STRICT;
 CREATE TABLE source_routine_parameters (
  type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),
@@ -136,6 +137,8 @@ CREATE TABLE bindings (
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
+ is_synthetic INTEGER NOT NULL CHECK(is_synthetic IN (0,1)),
+ CHECK(is_synthetic=0 OR kind='local'),
  CHECK((kind='parameter' AND ordinal>=0) OR (kind='local' AND ordinal IS NULL))
 ) STRICT;
 CREATE TABLE nodes (
@@ -180,7 +183,7 @@ CREATE TABLE record_types (
  identity_key TEXT NOT NULL,
  source_name TEXT NOT NULL,
  size INTEGER NOT NULL CHECK(size>=0 AND size<=2147483647),
- alignment INTEGER NOT NULL CHECK(alignment IN (0,1,2,4,8)),
+ alignment INTEGER NOT NULL CHECK(alignment IN (0,1,2,4,8,16)),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
@@ -207,7 +210,8 @@ CREATE TABLE record_fields (
 CREATE TABLE source_functions (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
  return_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
- capture_phase TEXT NOT NULL
+ capture_phase TEXT NOT NULL,
+ routine_source_type_id INTEGER NOT NULL REFERENCES source_types(id)
 ) STRICT;
 CREATE TABLE source_parameters (
  entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),

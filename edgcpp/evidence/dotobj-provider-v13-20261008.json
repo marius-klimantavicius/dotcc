@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-08",
+  "profile": "scalar-control-v13",
+  "platform": "linux-x64",
+  "status": "730 regression checks including NativeAOT passed; actual SQLite C# generated/compile checked, startup pending",
+  "artifacts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-v13-acceptance-003/results.json",
+      "sha256": "4985c4ac0589e10c7b6debda7b763eb71f245aaa17c4a7b6c408ac1ee6d1c4e0"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-packaging-acceptance-003/results.json",
+      "sha256": "6135d36e00f2708af795f1a7205b0d67c72eab572b496e4e911fae52c4a9da55"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native015-verified-snapshot/cpfe-dot",
+      "sha256": "bb5b8f85b7da076628e51aecea6e1cad10dcd84e8b6918904f122d634b08655a"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native015-verified-snapshot/dot_gen_object.h",
+      "sha256": "e1aefb3104c69985a83c52617e9bcfa6f2133c6da3d9262df8d5327e4c468cb4"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-014/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "1b31291a9de4f325ccd3ff207fc2d0d4417ee705b21b37c9517c8ca0cee42c99"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-provider-closure-014.json",
+      "sha256": "6760db29344160f5da17f605e60c4757a7ae0743ff5b7b4571073f072960c1bf"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-sample-015/results.json",
+      "sha256": "37ff1d1e9ccb2d070b00c9d7fd82ae48dc88c92a106ca6f2dcf7e1cda600f0e0"
+    }
+  ],
+  "capabilities": [
+    "Exact binary80 with aligned addressable local/parameter storage and ordered non-atomic volatile payload accesses",
+    "Explicit synthetic binding provenance and complete original routine signatures",
+    "Source sequencing with lazy expression lifting",
+    "Original-source SQLite semantic object and 223 of 224 musl providers",
+    "Provider closure preserves primary APIs and selects 44 provider units",
+    "Typed runtime hooks and shared BCL services",
+    "Bulk SQLite packaging with complete FK validation before publication"
+  ],
+  "remaining": [
+    "Owned startup actions for environment_startup; no full SQLite execution claim yet",
+    "DuckDB hidden vptr/subobject layout and dynamic global initialization",
+    "C++ lifetime/exception graph and complete independent source index",
+    "Runtime scope currently static per assembly; opt-in instance globals pending"
+  ]
+}

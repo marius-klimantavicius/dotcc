@@ -61,7 +61,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v12" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v13" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -252,10 +252,11 @@ internal sealed partial class ObjectFile : IDisposable
                 nodes.Add(node.Id, node);
             }
         var bindings = new Dictionary<long, Binding>();
-        using (var query = database.Prepare($"SELECT id,function_id,kind,ordinal,type_id,source_name,scope_node_id FROM bindings WHERE function_id={id} ORDER BY id"))
+        using (var query = database.Prepare($"SELECT id,function_id,kind,ordinal,type_id,source_name,scope_node_id,is_synthetic FROM bindings WHERE function_id={id} ORDER BY id"))
             while (query.Read())
             {
-                var binding = new Binding(query.Integer(0), query.Integer(1), query.Text(2), query.OptionalInteger(3), query.Integer(4), query.Text(5), query.Integer(6));
+                var binding = new Binding(query.Integer(0), query.Integer(1), query.Text(2), query.OptionalInteger(3), query.Integer(4), query.Text(5), query.Integer(6), query.Integer(7) == 1);
+                if (query.Integer(7) is not (0 or 1) || binding.IsSynthetic && binding.Kind != "local") throw new InvalidDataException("Invalid synthetic binding marker");
                 bindings.Add(binding.Id, binding);
             }
         var edges = new Dictionary<long, List<Edge>>();

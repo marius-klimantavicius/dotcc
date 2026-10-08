@@ -57,6 +57,7 @@ internal sealed partial class Emitter
             "i64" => BinaryPrimitives.ReadInt64LittleEndian(bytes).ToString(CultureInfo.InvariantCulture),
             "u64" => BinaryPrimitives.ReadUInt64LittleEndian(bytes).ToString(CultureInfo.InvariantCulture),
             "f32" => BinaryPrimitives.ReadUInt32LittleEndian(bytes).ToString("x8", CultureInfo.InvariantCulture),
+            "f80" => BinaryPrimitives.ReadUInt16LittleEndian(bytes[8..]).ToString("x4", CultureInfo.InvariantCulture) + BinaryPrimitives.ReadUInt64LittleEndian(bytes).ToString("x16", CultureInfo.InvariantCulture),
             "f64" => BinaryPrimitives.ReadUInt64LittleEndian(bytes).ToString("x16", CultureInfo.InvariantCulture),
             _ => throw new InvalidDataException("Static initializer is not a numeric representation")
         };
@@ -65,6 +66,7 @@ internal sealed partial class Emitter
     private bool TryReadableInitialization(StringBuilder code, StorageSymbol symbol, string pointer, int indent, Names locals)
     {
         ObjectFile obj = symbol.Object; Storage storage = symbol.Storage; string type = obj.Type(storage.TypeId);
+        if (type == "f80") return false; // Preserve the exact static ten-byte value and six zero padding bytes.
         long size = obj.StorageSize(type);
         if (size > 64 * 1024 * 1024) return false;
         byte[] bytes = new byte[(int)size];
@@ -75,6 +77,7 @@ internal sealed partial class Emitter
         bool CanConstruct(string current, int depth = 0)
         {
             if (depth > 128) return false;
+            if (current == "f80") return false;
             if (ScalarTypes.IsScalar(current)) return true;
             if (!ScalarTypes.IsRecord(current)) return false;
             RecordType record = obj.RecordsByKey[current];
@@ -88,7 +91,8 @@ internal sealed partial class Emitter
                 if (relocations.TryGetValue(offset, out Relocation? relocation))
                 {
                     if (relocation.TargetStorageId is long target) return "(" + Type(current) + ")" + StorageAddress(linker.ResolveStorage(obj, target), relocation.Addend);
-                    return "(" + Type(current) + ")&" + FunctionReference(linker.Resolve(obj, relocation.TargetEntityId!.Value));
+                    Symbol function = linker.Resolve(obj, relocation.TargetEntityId!.Value);
+                    return "(" + Type(current) + ")(" + FunctionPointerType(function.Object.EntityRoutine(function.Entity.Id)) + ")&" + FunctionReference(function);
                 }
                 ulong value = BinaryPrimitives.ReadUInt64LittleEndian(bytes.AsSpan((int)offset, 8));
                 return value == 0 ? "null" : "(" + Type(current) + ")(nuint)0x" + value.ToString("x", CultureInfo.InvariantCulture) + "UL";
@@ -133,6 +137,7 @@ internal sealed partial class Emitter
         if (!ScalarTypes.IsArray(type)) return false;
         string leaf = ScalarTypes.Leaf(type); long count = ScalarTypes.FlatCount(type), stride = obj.StorageSize(leaf);
         if (leaf is "i8" or "u8") { if (relocations.Count != 0) return false; EmitByteData(code, bytes, pointer, storageOffsets[symbol.Key], indent); return true; }
+        if (leaf == "f80") return false; // Exact bytes retain binary80 payload/padding without allocating managed literal arrays.
         if (ScalarTypes.IsNumeric(leaf) && relocations.Count == 0)
         {
             // Preserve exact floating payloads in integer RVA data; finite values

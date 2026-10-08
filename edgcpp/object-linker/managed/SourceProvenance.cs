@@ -62,7 +62,7 @@ internal sealed partial class ObjectFile
                 {
                     string expected = type.Kind switch
                     {
-                        "va-list" => "va-list", "void" => "void", "bool" => "u8", "float" => "f32", "double" => "f64", "signed-char" => "i8", "unsigned-char" => "u8",
+                        "long-double" or "float80" or "float64x" => "f80", "va-list" => "va-list", "void" => "void", "bool" => "u8", "float" => "f32", "double" => "f64", "signed-char" => "i8", "unsigned-char" => "u8",
                         "short" => "i16", "unsigned-short" => "u16", "int" => "i32", "unsigned-int" => "u32",
                         "long" or "long-long" => "i64", "unsigned-long" or "unsigned-long-long" => "u64",
                         "char" when executionType is "i8" or "u8" => executionType,
@@ -130,13 +130,19 @@ internal sealed partial class ObjectFile
             }
         }
         var functions = new HashSet<long>();
-        using (var query = database.Prepare("SELECT entity_id,return_source_type_id,capture_phase FROM source_functions ORDER BY entity_id"))
+        using (var query = database.Prepare("SELECT entity_id,return_source_type_id,capture_phase,routine_source_type_id FROM source_functions ORDER BY entity_id"))
             while (query.Read())
             {
                 long entity = query.Integer(0);
                 if (!Entities.TryGetValue(entity, out Entity? function) || query.Text(2) != "before-lowering" ||
                     SourceTypeById(query.Integer(1)).ExecutionTypeId != function.ReturnTypeId || Original(SourceTypeById(query.Integer(1))).Kind == "array" || !functions.Add(entity))
                     throw new InvalidDataException("Source function signature or capture phase mismatch");
+                SourceType signatureType = Original(SourceTypeById(query.Integer(3)));
+                if (signatureType.Kind != "routine" || !SourceRoutines.TryGetValue(signatureType.Id, out RoutineType? sourceSignature) ||
+                    Type(signatureType.ExecutionTypeId) != EntityRoutine(entity) || sourceSignature.ReturnTypeId != query.Integer(1))
+                    throw new InvalidDataException("Original full function signature disagrees with function summary");
+                if (sourceSignature.ParameterMode == "unspecified" && (function!.Definition == "declaration" || Parameters.GetValueOrDefault(entity, []).Count != 0))
+                    throw new InvalidDataException("Unspecified source parameter mode requires a known zero-parameter definition");
             }
         if (functions.Count != Entities.Count) throw new InvalidDataException("Missing original function signature capture");
         var parameterCounts = new Dictionary<long, int>();
@@ -203,7 +209,8 @@ internal sealed partial class ObjectFile
         RejectRows("SELECT entity_id FROM source_declarations WHERE entity_id IS NOT NULL GROUP BY entity_id HAVING count(*)<>1", "Duplicate source function declaration identity");
         RejectRows("SELECT binding_id FROM source_declarations WHERE binding_id IS NOT NULL GROUP BY binding_id HAVING count(*)<>1", "Duplicate source binding declaration identity");
         RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL", "Missing original function declaration capture");
-        RejectRows("SELECT b.id FROM bindings b LEFT JOIN source_declarations d ON d.binding_id=b.id WHERE d.id IS NULL", "Missing original binding declaration capture");
+        RejectRows("SELECT b.id FROM bindings b JOIN source_declarations d ON d.binding_id=b.id WHERE b.is_synthetic=1", "Synthetic execution binding must not have fabricated source capture");
+        RejectRows("SELECT b.id FROM bindings b LEFT JOIN source_declarations d ON d.binding_id=b.id WHERE d.id IS NULL AND b.is_synthetic=0", "Missing original binding declaration capture");
     }
 
     private SourceType Original(SourceType type)
@@ -281,7 +288,7 @@ internal sealed partial class ObjectFile
                     switch (query.ColumnType(index))
                     {
                         case 1:
-                            if (column is "isConst" or "isVolatile") writer.WriteBoolean(column, query.Integer(index) == 1);
+                            if (column is "isConst" or "isVolatile" or "isSynthetic") writer.WriteBoolean(column, query.Integer(index) == 1);
                             else writer.WriteNumber(column, query.Integer(index));
                             break;
                         case 3: writer.WriteString(column, query.Text(index)); break;
@@ -305,10 +312,12 @@ internal sealed partial class ObjectFile
             "id", "sourceName", "linkage", "externalKey", "definition", "typeId", "sourceTypeId", "isThreadLocal", "isConst", "alignment", "sourceFileId", "line", "column");
         Table("routineTypes", "SELECT type_id,return_type_id,variadic,exception_policy FROM routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy");
         Table("routineParameters", "SELECT type_id,ordinal,parameter_type_id FROM routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");
-        Table("sourceRoutineTypes", "SELECT type_id,return_type_id,variadic,exception_policy FROM source_routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy");
+        Table("sourceRoutineTypes", "SELECT type_id,return_type_id,variadic,exception_policy,parameter_mode FROM source_routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy", "parameterMode");
         Table("sourceRoutineParameters", "SELECT type_id,ordinal,parameter_type_id FROM source_routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");
-        Table("sourceFunctions", "SELECT entity_id,return_source_type_id,capture_phase FROM source_functions ORDER BY entity_id", "entityId", "returnSourceTypeId", "capturePhase");
+        Table("sourceFunctions", "SELECT entity_id,return_source_type_id,capture_phase,routine_source_type_id FROM source_functions ORDER BY entity_id", "entityId", "returnSourceTypeId", "capturePhase", "routineSourceTypeId");
         Table("sourceParameters", "SELECT entity_id,ordinal,source_type_id FROM source_parameters ORDER BY entity_id,ordinal", "entityId", "ordinal", "sourceTypeId");
+        Table("executionBindings", "SELECT id,function_id,kind,type_id,source_name,source_file_id,line,column,is_synthetic FROM bindings ORDER BY id",
+            "id", "functionId", "kind", "typeId", "sourceName", "sourceFileId", "line", "column", "isSynthetic");
         Table("sourceDeclarations", "SELECT id,kind,source_name,source_type_id,entity_id,binding_id,function_entity_id,source_file_id,line,column FROM source_declarations ORDER BY id",
             "id", "kind", "sourceName", "sourceTypeId", "entityId", "bindingId", "functionEntityId", "sourceFileId", "line", "column");
         writer.WriteEndObject();

@@ -679,3 +679,53 @@ header bodies, but strong externally defined library APIs remain roots. A full
 independent source semantic index, C++ lifetimes/EH, binary80, instance-owned
 storage and actual SQLite/DuckDB execution remain outstanding gates. The current
 execution target is 64-bit little-endian; Linux x64 is the tested platform.
+
+
+## Provider profile: scalar-control-v13
+
+Objects and readers explicitly change profile rather than silently reinterpreting
+v12 artifacts. Bindings append required wire `isSynthetic` / SQL `is_synthetic`.
+Original bindings retain exactly one original source declaration. A synthesized
+local has no fabricated source declaration and is accepted only when EDG marks it
+compiler-generated or lowering-generated; a missing capture alone is insufficient.
+Parameters cannot use this escape. Execution type, identity, ownership and source
+location remain recorded for synthesized locals.
+
+The execution primitive `f80` carries x87 binary80 values in 16-byte storage with
+16-byte native alignment. Constants use exactly 20 lowercase hexadecimal digits:
+four sign/exponent digits followed by sixteen significand digits. Static storage
+uses the ten little-endian payload bytes and zero padding. Source floating-kind
+distinctions remain separate. The authoritative shared Float80 implementation
+supplies arithmetic; CLR layout packing does not establish stack alignment, so
+addressable locals/parameters require explicit aligned storage. Layouts containing
+binary80 must retain native field offsets and stride. Volatile binary80 uses ordered non-atomic payload accesses as specified below.
+These capabilities pass native/JIT/NativeAOT fixtures and real-provider probes;
+complete project execution remains a separate gate.
+
+
+The v13 source signature extension appends `parameterMode` to source routine
+rows (`prototype` or `unspecified`) and required `routineSourceTypeId` to source
+function rows. The latter references the actual signature captured before
+lowering, including direct-only routines. Initially, unspecified C execution is
+limited to real zero-parameter definitions and zero-argument calls; unresolved
+unspecified externs, old-style parameter declarations and extra arguments remain
+unsupported. This does not silently convert the original declaration into a
+prototype.
+
+Provider integration retains explicit volatile places for binary80.
+Ordered BCL volatile accesses read/write the 64-bit significand and 16-bit
+sign/exponent payload separately, leaving padding unspecified. This establishes
+observable accesses without claiming atomic 16-byte operations. Floating-point
+exception environment behavior remains a separate runtime capability.
+
+
+Provider objects are explicit linker inputs (`--provider path.dotobj`, repeatable).
+Positional objects remain primary libraries: all their materialized function and
+storage definitions are roots, including exported APIs unused by an executable
+entry. Providers contribute only definitions reached through typed entity/storage
+references and storage relocations. Unselected provider contents remain in the
+independent object and source index. `link-selection.json` records object roles,
+selected providers and before/after definition counts. Without provider options,
+linking retains the previous all-primary behavior. Complete-object verification
+continues to inspect every body. Startup actions require separate owned metadata;
+the current provider profile still rejects unrepresented constructor attributes.

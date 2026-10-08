@@ -30,7 +30,7 @@ internal sealed partial class ObjectFile
                 var record = new RecordType(query.Integer(0), query.Text(1), query.Text(2), query.Integer(3), query.Integer(4),
                     query.OptionalInteger(5), query.Integer(6), query.Integer(7), query.Text(8));
                 if (record.TypeId <= 0 || record.IdentityKey.Length == 0 || record.Size < 0 || record.Size > int.MaxValue ||
-                    (record.Size == 0 ? record.Alignment != 0 : record.Alignment is not (1 or 2 or 4 or 8)) ||
+                    (record.Size == 0 ? record.Alignment != 0 : record.Alignment is not (1 or 2 or 4 or 8 or 16)) ||
                     record.LayoutKind is not ("struct" or "class" or "union") || record.Line < 0 || record.Column < 0)
                     throw new InvalidDataException("Invalid record identity or layout metadata");
                 if (!Records.TryAdd(record.TypeId, record) || !RecordsByKey.TryAdd(record.Key, record))
