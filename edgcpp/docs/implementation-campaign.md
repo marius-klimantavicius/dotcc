@@ -2551,3 +2551,50 @@ destructor calls are the next prerequisites, followed by temporary/full-expressi
 boundaries, lifetime extension, partial construction and EH cleanup state.
 Readers require v10 objects; earlier tools/objects remain retained. DuckDB's
 whole-program retry is still paused.
+
+
+The `scalar-control-v11` milestone completes the next layout prerequisite for
+C++ lifetimes: owned named struct definitions and field identities. The native
+adapter captures names, namespace identity, field source types and layout before
+lowering, then publishes normalized record/field rows and typed member places.
+Named global structs share nominal keys across C and C++ objects, while named
+namespaces distinguish otherwise equal basenames. Forward definitions within a
+TU and self/mutually recursive pointer relationships are retained.
+
+The managed linker merges matching layouts and rejects conflicting field names,
+physical types or original qualified type signatures. Emission uses public
+explicit-layout structs with checked size, field offsets and natural alignment,
+and readable `first.data.count` / `first.next->data.count` expressions. Field
+arrays reuse the existing unmanaged fixed storage and initializer support. Zero,
+aggregate and nested-record initialization preserve ordered writes. Whole-record
+GNU cleanup uses the previous explicit activation/finally contract. No record
+heap storage, pinning or raw local frame offsets are introduced.
+
+All **527 checks pass** on Linux x64 with native source references, .NET JIT and
+NativeAOT. New acceptance covers scalar/nested/array fields, pointer recursion,
+actual pointer stride and field offsets, storage alignment, aggregate/zero
+initializers, whole-record cleanup, independent providers, mixed C/C++ linking,
+namespace and type/function/owner naming collisions. Malformed field payloads,
+ownership, source types, layout and direct by-value cycles fail verification.
+Cross-object field name and long-versus-long-long conflicts fail linking even
+when each object is valid independently. A 130-level leaf-first declaration
+fixture checks the cached layout-depth limit identified during independent
+review; intrinsic subtree depths now enforce the 128-level bound regardless
+of metadata order. Field groups are cached to avoid repeatedly scanning every
+record's fields for each layout or emission operation.
+[Hashed record milestone evidence](../evidence/dotobj-record-20261008.json).
+
+The C backend's field selection and initializer walkers were consulted; no EDG
+semantic changes were made. Probes additionally inspect forward/mutual pointer
+records, designated initialization, dynamic/nested initialization and initialized
+record cleanup. All intermediates and earlier tools remain retained.
+
+This increment deliberately rejects empty/incomplete/local/anonymous/nested-class/
+template records, the class keyword, unions, bitfields, inheritance, packing,
+over-alignment, user/nontrivial member functions and default member initializers.
+Record copies, by-value call/return ABI and arrays of records remain outside the
+profile; compiling a C# value assignment alone is not proof that array-wrapper
+storage copies correctly. The next C++ lifetime work is selected constructor and
+destructor calls, then temporary/full-expression boundaries, partial construction
+and EH cleanup state. General lifetimes stays false and DuckDB's old whole-program
+retry remains paused. Current readers require v11 objects.

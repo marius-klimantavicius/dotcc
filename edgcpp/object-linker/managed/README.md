@@ -1,6 +1,6 @@
 # Managed semantic object linker
 
-This is the executable `scalar-control-v10` implementation of the fresh
+This is the executable `scalar-control-v11` implementation of the fresh
 `.dotobj` semantic graph. It does not read the previous semantic-export format
 or an emission-command stream.
 
@@ -104,12 +104,12 @@ Push/pop and precompiled/module macro import are rejected for this profile.
 
 The link report still preserves the missing capability flags: `prelowerSource`,
 `macros`, and `lifetimes` are false. A complete source expression/statement view,
-all redeclarations, macro expansion history and general C++ lifetime capture remain absent. Globals/TLS, variable/incomplete execution arrays, records, function
+all redeclarations, macro expansion history and general C++ lifetime capture remain absent. Globals/TLS, variable/incomplete execution arrays, nontrivial record operations, function
 addresses, exceptions/RAII, inline/COMDAT, templates and runtime providers are
 not implemented in this profile. Unsupported input is rejected; scalar fixtures
 do not demonstrate DuckDB readiness or full C++ coverage.
 
-The current schema requires scalar-control-v10 objects. Earlier v1/v2/v3/v4/v5/v6/v7/v8/v9 objects
+The current schema requires scalar-control-v11 objects. Earlier v1/v2/v3/v4/v5/v6/v7/v8/v9/v10 objects
 remain usable with their retained earlier tool build, or can be regenerated.
 
 The integer profile supports signed/unsigned 8/16/32/64-bit values, exact decimal
@@ -188,3 +188,24 @@ exception handling remain unfinished. Ambiguous split array initialization,
 uninitialized cleanup in multi-declarator statements and registrations directly
 in switch bodies fail explicitly; scoped case blocks work. See the
 [v10 contract](../contract.md) for precise activation and exclusion rules.
+
+
+The v11 profile adds complete named structs in global/named-namespace scope.
+Record and field identities, exact natural layouts and original field types are
+owned SQLite rows. Nested records, scalar/pointer array fields, recursive data
+pointers, member addressing and zero/aggregate initialization are supported.
+Record locals also work with GNU cleanup callbacks. C# uses explicit-layout
+structs and ordinary named `value.member` / `pointer->member` expressions.
+
+Matching records merge across independent objects, including C/C++ objects from
+a common header. Conflicting layouts or field types fail linking. Original
+function names remain unchanged when a source type shares their spelling; only
+the colliding generated type is renamed. The source map includes record/field
+metadata. No heap allocation or pinning is introduced for these locals.
+
+This increment excludes record copies/by-value calls, arrays of records,
+incomplete/empty/local/anonymous/nested-class/template records, unions,
+bitfields, packing, over-alignment, inheritance and user/nontrivial member
+functions. These are explicit errors. Constructors/destructors and full C++
+lifetimes remain the next work; the existing lexical cleanup capability is
+unchanged. Focused acceptance is available with `tests/verify.py --records-only`.

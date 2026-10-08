@@ -8,13 +8,15 @@ Native stdout wire is one JSON object (transient packaging protocol only):
 ```
 {
   "formatVersion": 1,
-  "profile": "scalar-control-v10",
+  "profile": "scalar-control-v11",
   "sourceFiles": [{"id":1,"path":"/absolute/main.cpp","parentId":null}],
   "macroDefinitions": [{"id":1,"name":"LIMIT","form":"object","variadic":false,"dynamic":false,"definitionText":"#define LIMIT 4","origin":"source","sourceFileId":1,"line":1,"column":9}],
   "macroParameters": [],
   "macroEvents": [{"id":1,"kind":"define","name":"LIMIT","definitionId":1,"origin":"source","sourceFileId":1,"line":1,"column":9}],
   "types": [{"id":1,"kind":"void","pointeeTypeId":null,"elementTypeId":null,"elementCount":null},{"id":2,"kind":"i32","pointeeTypeId":null,"elementTypeId":null,"elementCount":null},{"id":3,"kind":"u8","pointeeTypeId":null,"elementTypeId":null,"elementCount":null},{"id":12,"kind":"pointer","pointeeTypeId":2,"elementTypeId":null,"elementCount":null}],
   "sourceTypes": [{"id":1,"kind":"int","sourceName":"","underlyingTypeId":null,"executionTypeId":2,"isConst":false,"isVolatile":false,"sourceFileId":null,"line":0,"column":0,"elementCount":null}],
+  "recordTypes": [],
+  "recordFields": [],
   "sourceFunctions": [{"entityId":1,"returnSourceTypeId":1,"capturePhase":"before-lowering"}],
   "sourceParameters": [{"entityId":1,"ordinal":0,"sourceTypeId":1}],
   "sourceDeclarations": [
@@ -24,7 +26,7 @@ Native stdout wire is one JSON object (transient packaging protocol only):
   "parameters": [{"entityId":1,"ordinal":0,"typeId":2}],
   "functions": [{"entityId":1,"bodyNodeId":10}],
   "bindings": [{"id":1,"functionId":1,"kind":"parameter","ordinal":0,"typeId":2,"sourceName":"x","scopeNodeId":10,"sourceFileId":1,"line":1,"column":1}],
-  "nodes": [{"id":10,"functionId":1,"kind":"block","typeId":null,"entityId":null,"bindingId":null,"operator":null,"constantText":null,"valueCategory":null,"evaluationOrder":null,"sourceFileId":1,"line":1,"column":1}],
+  "nodes": [{"id":10,"functionId":1,"kind":"block","typeId":null,"entityId":null,"bindingId":null,"operator":null,"constantText":null,"valueCategory":null,"evaluationOrder":null,"sourceFileId":1,"line":1,"column":1,"fieldId":null}],
   "edges": [{"parentId":10,"role":"statement","ordinal":0,"childId":11}]
 }
 ```
@@ -148,7 +150,7 @@ Loop condition/body/step roles encode execution and sequencing; database edge
 ordering is not itself an execution schedule. Initializer executes once, a for
 condition precedes each body iteration, and step follows each completed body.
 The structured scope profile excludes arbitrary jumps,
-references, globals/TLS, records, variable/incomplete execution arrays, function
+references, globals/TLS, nontrivial record operations, variable/incomplete execution arrays, function
 pointers, EH/RAII, inline/COMDAT and runtime
 providers. Unsupported constructs fail export rather than emit partial output.
 
@@ -167,8 +169,8 @@ The initial target is portable-lp64-binary80-v2; callable ABI dotobj-scalar-v1.
 The scalar-control-v3 object profile adds 8/16/32/64-bit signed/unsigned
 integers, bitwise/shift expressions and conditional values to v2's structured
 loops and explicit loop exit identities. It does not change the callable ABI.
-The current canonical schema reader requires scalar-control-v10 and rejects
-v1/v2/v3/v4/v5/v6/v7/v8/v9 objects; preserve their respective earlier tool build to read them,
+The current canonical schema reader requires scalar-control-v11 and rejects
+v1/v2/v3/v4/v5/v6/v7/v8/v9/v10 objects; preserve their respective earlier tool build to read them,
 or recompile with this producer.
 The profile uses EDG's fixed portable LP64 target: long and long long share the
 64-bit physical representation, while exact external keys retain C++ overload
@@ -502,3 +504,89 @@ exception still require their own representations. Existing C++ destruction
 obligations remain explicit export failures, not omitted callbacks. Source
 reads of indeterminate/dead storage remain invalid; this is not a liveness
 optimizer or a promise to diagnose every pointer lifetime violation.
+
+
+The scalar-control-v11 profile adds **named structs, layout and member places**.
+Two normalized wire arrays/tables retain definitions and fields:
+
+- `recordTypes` / `record_types`: `typeId` references an execution type of kind
+  `record`; `identityKey`, `sourceName`, positive `size` up to 65,536 bytes,
+  `alignment` in 1/2/4/8, and sourceFileId/line/column. Pointer/array child columns
+  in the execution type are null. Exactly one definition describes each record
+  execution type. Empty and incomplete records are rejected.
+- `recordFields` / `record_fields`: positive `id`, `recordTypeId`, contiguous
+  zero-based `ordinal`, `typeId`, nonempty `sourceName`, nonnegative `byteOffset`,
+  `sourceTypeId`, and sourceFileId/line/column. Field IDs are object-local
+  identities, not names or offsets masquerading as references. Original field
+  types preserve typedefs and qualifiers and must map to the execution type.
+  Every node now has a nullable `fieldId`, appended after location fields in
+  the wire/schema; only a `member` node may use it.
+
+Nominal keys use `record:` followed by the qualified source name. Named namespace
+segments distinguish C++ records with equal basenames. Global tags shared by C
+and C++ use the same identity, allowing mixed-language objects from a common
+header to link. Names and keys are captured before lowering moves or renames
+entities. Local, anonymous, nested-class and template record identities are
+outside this increment. Forward declarations may precede complete definitions
+in the same TU; an object containing only an incomplete record is rejected.
+Deferred completion from another object remains future work.
+
+Record identities are terminals in structural pointer signatures. A record may
+therefore contain pointers to itself or mutually recursive records; its layout
+is checked separately. By-value layout cycles are rejected, as is containment
+nesting beyond 128 even when records arrive child-first. Field offsets must
+follow natural nonoverlapping layout, record alignment must equal the maximum
+field alignment, and size must include the corresponding tail padding. Packing,
+over-alignment, unions, bitfields, inheritance, empty/flexible array members,
+no_unique_address and synthetic subobject layouts are not supported. The native
+producer also rejects user/nontrivial member functions and member initializers.
+Field arrays of supported scalar/pointer elements and nested records work;
+arrays of records remain excluded, including sized source array parameters.
+
+The linker compares the complete ordered layout for each nominal key across
+objects: source name, size, alignment, field names, offsets, execution types
+and normalized original field-type signatures. Typedef spelling is not nominal
+field identity; equivalent qualifiers through typedef/array layers compare
+equally. Original distinctions such as long versus long long remain significant
+even when both lower to i64. This is a supported-layout compatibility check,
+not a complete C++ ODR token/body equivalence proof.
+
+Two executable node forms are added:
+
+- `member`: typed place with fieldId and one `operand[0]` record place whose
+  type owns that field. Result type equals the field type. Other entity/binding/
+  operator/constant payload is null. Value category is place; operand evaluation
+  order is retained. Pointer selection uses a typed dereference operand, not a
+  byte offset. Named fields work as loads, stores, addressable places, array
+  decay targets and numeric mutation targets.
+- `default-value`: record-typed value, evaluationOrder none, no operands or
+  other payload. It denotes zero initialization of supported record storage.
+  It is valid in a record declaration initializer or a record-place assignment.
+  Ordinary record-valued copies, call arguments, returns, conditional arms and
+  other scalar operations remain rejected.
+
+Record aggregate initialization normalizes into a block containing a default
+assignment followed by ordered field stores. Nested aggregates recursively use
+named member places, and array fields reuse `array-init`. The latter now accepts
+a local binding or a chain of member places rooted in local owned storage;
+it does not accept an effectful or arbitrary indirect destination. This keeps
+initialization at the original execution point and avoids reevaluating a target.
+GNU cleanup may register a whole record after successful initialization or at
+an uninitialized declaration, using the existing lexical-cleanup contract.
+Ambiguous split initialization with cleanup still fails closed.
+
+C# emits one public unmanaged explicit-layout struct per merged nominal record,
+with Size, Pack and FieldOffset metadata matching the checked source layout.
+Pack is not treated as a way to increase CLR alignment above its fields; the
+natural-layout checks enforce that requirement. Source field names, ordinary
+`value.member` and `pointer->member` access remain visible. Generated type/field
+names are allocated by identity; existing function names win unavoidable C#
+type/function collisions. No record heap storage, pinning, raw frame offsets or
+per-member access helpers are introduced. Record definitions and original field
+type references appear in `source-map.json`.
+
+This completes a layout prerequisite for C++ lifetimes, not constructors or
+destructors. Aggregate copies and by-value calling conventions remain excluded:
+C# assignment alone does not prove correct copying of array-wrapper storage.
+Next steps require selected constructor/destructor calls, nontrivial object
+actions and their activation/cleanup semantics. General lifetimes remains false.

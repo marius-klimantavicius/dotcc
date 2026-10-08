@@ -46,7 +46,7 @@ verification.
 
 ## Current acceptance and boundaries
 
-`scalar-control-v10` supports defined/declaration function identities with strong
+`scalar-control-v11` supports defined/declaration function identities with strong
 external or TU-private linkage, signed/unsigned 8/16/32/64-bit integer operations,
 IEEE binary32/binary64 (`float`/`double`) operations,
 typed data pointers (including void pointers and pointer-to-pointer),
@@ -137,7 +137,7 @@ PCH/module macro imports and non-UTF8/NUL metadata are explicitly rejected.
 Source/header bytes remain retained separately. This is still a partial source
 and execution graph, not the complete design.
 
-Globals/TLS, records, C++ references, function pointers, volatile/atomic
+Globals/TLS, nontrivial record operations, C++ references, function pointers, volatile/atomic
 behavior, inline/template/COMDAT,
 RAII/EH/noexcept, arbitrary goto and provider runtime linkage are rejected.
 Nonzero folded pointer constants are also outside this profile.
@@ -211,7 +211,7 @@ indexes. A hash demonstrates content integrity, not semantic correctness.
 Full logs/objects/generated projects remain under
 `/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/`.
 
-The current schema requires `scalar-control-v10`. Earlier v1/v2/v3/v4/v5/v6/v7/v8/v9 objects and tools
+The current schema requires `scalar-control-v11`. Earlier v1/v2/v3/v4/v5/v6/v7/v8/v9/v10 objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 
@@ -237,3 +237,24 @@ exception handling remain unfinished. Ambiguous split array initialization,
 uninitialized cleanup in multi-declarator statements and registrations directly
 in switch bodies fail explicitly; scoped case blocks work. See the
 [v10 contract](contract.md) for precise activation and exclusion rules.
+
+
+The v11 profile adds complete named structs in global/named-namespace scope.
+Record and field identities, exact natural layouts and original field types are
+owned SQLite rows. Nested records, scalar/pointer array fields, recursive data
+pointers, member addressing and zero/aggregate initialization are supported.
+Record locals also work with GNU cleanup callbacks. C# uses explicit-layout
+structs and ordinary named `value.member` / `pointer->member` expressions.
+
+Matching records merge across independent objects, including C/C++ objects from
+a common header. Conflicting layouts or field types fail linking. Original
+function names remain unchanged when a source type shares their spelling; only
+the colliding generated type is renamed. The source map includes record/field
+metadata. No heap allocation or pinning is introduced for these locals.
+
+This increment excludes record copies/by-value calls, arrays of records,
+incomplete/empty/local/anonymous/nested-class/template records, unions,
+bitfields, packing, over-alignment, inheritance and user/nontrivial member
+functions. These are explicit errors. Constructors/destructors and full C++
+lifetimes remain the next work; the existing lexical cleanup capability is
+unchanged. Focused acceptance is available with `tests/verify.py --records-only`.

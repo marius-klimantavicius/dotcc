@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v10: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v11: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -43,7 +43,41 @@ struct Writer {
   std::map<unsigned,unsigned> source_type_ids;
   std::map<unsigned,unsigned> pointer_types;
   std::map<std::pair<unsigned,unsigned long long>,unsigned> array_types;
-  std::vector<string> execution_types;
+  std::vector<string> execution_types,record_types,record_fields;
+  std::map<a_type_ptr,unsigned> record_ids;
+  std::map<a_field_ptr,unsigned> field_ids;
+  unsigned next_field=1;
+  unsigned record_type(a_type_ptr t) {
+    auto prior=record_ids.find(t);if(prior!=record_ids.end())return prior->second;
+    auto found=dot_object_source::state().records.find(t);
+    if(found==dot_object_source::state().records.end())reject("incomplete or uncaptured record definition");
+    const auto &record=found->second;
+    if(!record.error.empty())reject(record.error.c_str());
+    if(t->size!=record.size || t->alignment!=record.alignment)reject("record layout changed during lowering");
+    unsigned id=next_execution_type++;record_ids[t]=id;
+    execution_types.push_back("{\"id\":"+number(id)+",\"kind\":\"record\",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
+    record_types.push_back("{\"typeId\":"+number(id)+",\"identityKey\":"+quote(record.identity)+",\"sourceName\":"+quote(record.name)+
+      ",\"size\":"+std::to_string(record.size)+",\"alignment\":"+std::to_string(record.alignment)+position(record.position)+"}");
+    unsigned ordinal=0;unsigned long long cursor=0,alignment=1;
+    std::set<string> names;
+    for(const auto &field:record.fields) {
+      auto f=field.il;auto child=skip_typerefs(f->type);
+      if(!names.insert(field.name).second || f->offset!=field.offset || !child->size || !child->alignment)
+        reject("record field identity/layout changed during lowering");
+      cursor=(cursor+child->alignment-1)/child->alignment*child->alignment;
+      if(cursor!=field.offset || cursor>record.size || child->alignment>8 || child->size>record.size-cursor)
+        reject("record field outside natural nonoverlapping layout");
+      cursor+=child->size;if(child->alignment>alignment)alignment=child->alignment;
+      unsigned field_id=next_field++;field_ids[f]=field_id;
+      unsigned field_type=type_id(f->type),source=source_type(field.source_type);
+      record_fields.push_back("{\"id\":"+number(field_id)+",\"recordTypeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+
+        ",\"typeId\":"+number(field_type)+",\"sourceName\":"+quote(field.name)+",\"byteOffset\":"+std::to_string(field.offset)+
+        ",\"sourceTypeId\":"+number(source)+position(field.position)+"}");
+    }
+    if(!ordinal || alignment!=record.alignment || (cursor+alignment-1)/alignment*alignment!=record.size)
+      reject("record outside natural complete layout");
+    return id;
+  }
   std::set<a_scope_ptr> bound_scopes;
   std::set<unsigned> declared_bindings;
   struct Control { unsigned node; source_control_context labels; };
@@ -58,6 +92,7 @@ struct Writer {
     return id;
   }
   unsigned array_type(unsigned element,unsigned long long count) {
+    for(const auto &record:record_ids)if(record.second==element)reject("array of records");
     auto key=std::make_pair(element,count);
     auto prior=array_types.find(key);if(prior!=array_types.end())return prior->second;
     if(!count || count>65536)reject("array count outside bounded fixed storage profile");
@@ -71,6 +106,7 @@ struct Writer {
     if(q & (TQ_VOLATILE|TQ_C11_ATOMIC))reject("volatile/atomic type");
     auto t=skip_typerefs(type);
     if(t->kind==tk_void)return 1;
+    if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union)return record_type(t);
     if(t->kind==tk_pointer) {
       if(t->variant.pointer.is_reference)reject("C++ reference type");
       return pointer_type(type_id(t->variant.pointer.type));
@@ -80,6 +116,8 @@ struct Writer {
          t->variant.array.is_template_dependent_size_array || !t->size || t->size>65536)
         reject("array outside bounded fixed storage profile");
       auto element=skip_typerefs(t->variant.array.element_type);
+      auto leaf=element;while(leaf->kind==tk_array)leaf=skip_typerefs(leaf->variant.array.element_type);
+      if(leaf->kind==tk_struct || leaf->kind==tk_class || leaf->kind==tk_union)reject("array of records");
       auto count=t->variant.array.variant.number_of_elements;
       if(!element->size || !count || t->size/element->size!=count || t->size%element->size)
         reject("array size/stride mismatch");
@@ -167,6 +205,7 @@ struct Writer {
   unsigned source_execution_type(unsigned captured) {
     const auto &type=dot_object_source::state().types.at(captured-1);
     if(type.execution)return type.execution;
+    if(type.kind=="record")return record_type(type.record_type);
     if(type.kind=="pointer")return pointer_type(source_execution_type(type.underlying));
     if(type.kind=="array")return type.element_count?array_type(source_execution_type(type.underlying),type.element_count):
       pointer_type(source_execution_type(type.underlying));
@@ -177,8 +216,8 @@ struct Writer {
     if(!captured)reject("missing pre-lowering scalar type");
     auto prior=source_type_ids.find(captured);if(prior!=source_type_ids.end())return prior->second;
     const auto &type=dot_object_source::state().types.at(captured-1);
-    unsigned execution=source_execution_type(captured);
     unsigned id=next_source_type++;source_type_ids[captured]=id;
+    unsigned execution=source_execution_type(captured);
     unsigned underlying=type.underlying?source_type(type.underlying):0;
     source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.kind)+",\"sourceName\":"+quote(type.name)+
       ",\"underlyingTypeId\":"+number(underlying)+",\"executionTypeId\":"+number(execution)+
@@ -205,12 +244,12 @@ struct Writer {
   }
   unsigned node(const string &kind,unsigned ty,const a_source_position &pos,
                 unsigned entity=0,unsigned binding=0,const string &op="",
-                const string &value="",const string &category="",const string &order="") {
+                const string &value="",const string &category="",const string &order="",unsigned field=0) {
     unsigned id=next_node++;
     nodes.push_back("{\"id\":"+number(id)+",\"functionId\":"+number(function)+",\"kind\":"+quote(kind)+",\"typeId\":"+number(ty)+
       ",\"entityId\":"+number(entity)+",\"bindingId\":"+number(binding)+",\"operator\":"+(op.empty()?"null":quote(op))+
       ",\"constantText\":"+(value.empty()?"null":quote(value))+",\"valueCategory\":"+(category.empty()?"null":quote(category))+
-      ",\"evaluationOrder\":"+(order.empty()?"null":quote(order))+position(pos)+"}");
+      ",\"evaluationOrder\":"+(order.empty()?"null":quote(order))+position(pos)+",\"fieldId\":"+number(field)+"}");
     return id;
   }
   void edge(unsigned parent,const string &role,unsigned ordinal,unsigned child) {
@@ -238,6 +277,9 @@ struct Writer {
     if(!extra->prototyped || extra->has_ellipsis)reject("unprototyped/variadic function");
     if(extra->explicit_calling_convention)reject("explicit calling convention");
     if(extra->exception_specification)reject("exception specification/noexcept");
+    auto record_value=[](a_type_ptr type){type=skip_typerefs(type);return type->kind==tk_struct || type->kind==tk_class || type->kind==tk_union;};
+    if(record_value(t->variant.routine.return_type))reject("record by-value return");
+    for(auto p=extra->param_type_list;p;p=p->next)if(record_value(p->type))reject("record by-value parameter");
     unsigned id=next_entity++;routine_ids[r]=id;routines.push_back(r);
     auto key=routine_linker_symbol(r);
     bool external=r->source_corresp.name_linkage==nlk_external || r->source_corresp.name_linkage==nlk_cplusplus_external;
@@ -258,7 +300,7 @@ struct Writer {
     diagnostic_scope diagnostic(v->source_corresp.decl_position);
     if(thread_storage(v) || v->storage_class==sc_static || v->storage_class==sc_extern)reject("nonautomatic storage");
     if(v->init_kind!=initk_none && v->init_kind!=initk_dynamic &&
-       !(v->init_kind==initk_zero && skip_typerefs(v->type)->kind==tk_array))
+       !(v->init_kind==initk_zero && (skip_typerefs(v->type)->kind==tk_array || skip_typerefs(v->type)->kind==tk_struct)))
       reject("nonexecutably placed local initializer",v->init_kind);
     unsigned id=next_binding++;binding_ids[v]=id;binding_scopes[v]=scope;
     auto source=dot_object_source::state().variables.find(v);
@@ -322,10 +364,11 @@ struct Writer {
       // explicit element stores in the statement stream. As c_gen_be's
       // dump_variable_decl does, zero this storage at lexical scope entry.
       if(v->init_kind==initk_zero)
-        edge(block,"statement",ordinal++,initialize_array(v,nullptr,v->source_corresp.decl_position));
+        edge(block,"statement",ordinal++,initialize_aggregate(v,nullptr,v->source_corresp.decl_position));
     }
   }
   unsigned zero_node(unsigned type,const a_source_position &pos) {
+    for(const auto &record:record_ids)if(record.second==type)return node("default-value",type,pos,0,0,"","","value","none");
     return node("constant",type,pos,0,0,"",type==10?"00000000":type==11?"0000000000000000":"0","value","none");
   }
   unsigned constant_node(a_constant_ptr c,const a_source_position &pos) {
@@ -353,13 +396,15 @@ struct Writer {
   bool place(an_expr_node_ptr e) {
     return e && (e->kind==enk_variable ||
       (e->kind==enk_operation && (e->variant.operation.kind==eok_indirect ||
-                                 e->variant.operation.kind==eok_subscript)));
+                                 e->variant.operation.kind==eok_subscript ||
+                                 e->variant.operation.kind==eok_dot_field || e->variant.operation.kind==eok_points_to_field)));
   }
   bool effect_free(an_expr_node_ptr e) {
     if(!e)return false;
-    if(e->kind==enk_variable || e->kind==enk_constant)return true;
+    if(e->kind==enk_variable || e->kind==enk_constant || e->kind==enk_field)return true;
     if(e->kind!=enk_operation)return false;
     switch(e->variant.operation.kind) {
+      case eok_dot_field:case eok_points_to_field:
       case eok_address_of:case eok_indirect:case eok_subscript:case eok_array_to_pointer:case eok_cast:case eok_question:
       case eok_add:case eok_subtract:case eok_multiply:case eok_divide:case eok_remainder:
       case eok_and:case eok_or:case eok_xor:case eok_shiftl:case eok_shiftr:
@@ -377,6 +422,8 @@ struct Writer {
     if(e->kind==enk_variable)return binding_ids.count(node_variable(e))!=0;
     if(e->kind!=enk_operation)return false;
     auto a=e->variant.operation.operands;auto b=a?a->next:nullptr;
+    if(e->variant.operation.kind==eok_dot_field)return a && b && b->kind==enk_field && !b->next && stable_place(a);
+    if(e->variant.operation.kind==eok_points_to_field)return a && b && b->kind==enk_field && !b->next && stable_pointer(a);
     if(e->variant.operation.kind==eok_indirect)return a && !b && stable_pointer(a);
     if(e->variant.operation.kind==eok_subscript && a && b && !b->next)
       return (stable_pointer(a) && integral_constant(b)) ||
@@ -416,6 +463,24 @@ struct Writer {
     auto &operation=e->variant.operation;
     auto a=operation.operands;auto b=a?a->next:nullptr;
     string order=operation.eval_right_to_left?"right-to-left":operation.eval_left_to_right?"left-to-right":"unspecified";
+    if(operation.kind==eok_dot_field || operation.kind==eok_points_to_field) {
+      if(!a || !b || b->next || b->kind!=enk_field)reject("malformed record member selection");
+      auto base=skip_typerefs(a->type);
+      if(operation.kind==eok_points_to_field) {
+        if(base->kind!=tk_pointer)reject("member arrow without pointer");
+        base=skip_typerefs(base->variant.pointer.type);
+      } else if(!place(a))reject("record member of nonplace value");
+      unsigned owner=type_id(base);auto field=node_field(b);
+      if(!field_ids.count(field) || parent_class_of(field)!=base || type_id(field->type)!=ty)
+        reject("record member identity mismatch");
+      unsigned operand=expression(a);
+      if(operation.kind==eok_points_to_field) {
+        unsigned indirect=node("dereference",owner,a->position,0,0,"","","place","none");
+        edge(indirect,"operand",0,operand);operand=indirect;
+      }
+      unsigned id=node("member",ty,e->position,0,0,"","","place",order,field_ids.at(field));
+      edge(id,"operand",0,operand);return id;
+    }
     if(operation.kind==eok_call) {
       if(!a || a->kind!=enk_routine)reject("indirect function call");
       unsigned id=node("call",ty,e->position,routine(a->variant.routine.ptr),0,"","","value",order),ordinal=0;
@@ -423,6 +488,7 @@ struct Writer {
       return id;
     }
     if(operation.kind==eok_assign) {
+      if(skip_typerefs(e->type)->kind==tk_struct)reject("record copy assignment");
       if(!a || !b || b->next || !place(a))reject("assignment outside supported memory places");
       // C++17 evaluates the RHS before the LHS, unlike C#. In this bounded
       // graph, fixed local storage and constant offsets have stable addresses.
@@ -625,6 +691,65 @@ struct Writer {
     edge(id,"target",0,node("binding",type_id(variable->type),position,0,binding_ids.at(variable),"","","place","none"));
     array_initializer(id,ordinal,variable->type,value,0,position);return id;
   }
+  unsigned record_place(a_variable_ptr variable,const std::vector<a_field_ptr> &path,const a_source_position &pos) {
+    unsigned target=node("binding",type_id(variable->type),pos,0,binding_ids.at(variable),"","","place","none");
+    for(auto field:path) {
+      unsigned member=node("member",type_id(field->type),pos,0,0,"","","place","none",field_ids.at(field));
+      edge(member,"operand",0,target);target=member;
+    }
+    return target;
+  }
+  void record_store(unsigned block,unsigned &ordinal,a_variable_ptr variable,
+                    const std::vector<a_field_ptr> &path,unsigned value,const a_source_position &pos) {
+    auto type=path.empty()?variable->type:path.back()->type;
+    unsigned assign=node("assign",type_id(type),pos,0,0,"","","value","right-to-left");
+    edge(assign,"target",0,record_place(variable,path,pos));edge(assign,"value",0,value);
+    unsigned statement=node("expr-stmt",0,pos);edge(statement,"value",0,assign);
+    edge(block,"statement",ordinal++,statement);
+  }
+  void record_initializer(unsigned block,unsigned &ordinal,a_variable_ptr variable,a_type_ptr type,
+                          a_constant_ptr value,std::vector<a_field_ptr> &path,const a_source_position &pos) {
+    type=skip_typerefs(type);
+    if(value && value->kind==ck_dynamic_init) {
+      auto d=value->variant.dynamic_init.ptr;if(d->destructor)reject("record member destruction");
+      if(d->kind==dik_constant || d->kind==dik_nonconstant_aggregate)value=d->variant.constant.ptr;
+      else if(d->kind==dik_zero)value=nullptr;
+      else if(d->kind==dik_expression && type->kind!=tk_struct && type->kind!=tk_array) {
+        record_store(block,ordinal,variable,path,expression(d->variant.expression),pos);return;
+      } else reject("record member dynamic initializer",d->kind);
+    }
+    if(type->kind==tk_array) {
+      unsigned id=node("array-init",0,pos),element=0;
+      edge(id,"target",0,record_place(variable,path,pos));
+      array_initializer(id,element,type,value,0,pos);edge(block,"statement",ordinal++,id);return;
+    }
+    if(type->kind!=tk_struct) {
+      if(value)record_store(block,ordinal,variable,path,constant_node(value,pos),pos);
+      return;
+    }
+    // Like c_gen_be::dump_initializer_part, iterate the actual fields and
+    // apply field designators before consuming the corresponding initializer.
+    // A zero aggregate supplies omitted members, independently of later stores.
+    record_store(block,ordinal,variable,path,zero_node(type_id(type),pos),pos);
+    if(!value)return;
+    if(value->kind!=ck_aggregate)reject("record initializer outside aggregate",value->kind);
+    auto field=type->variant.class_struct_union.field_list;
+    for(auto item=value->variant.aggregate.first_constant;item;item=item->next) {
+      if(item->kind==ck_designator) {
+        if(item->variant.designator.is_generic || !item->variant.designator.is_field_designator ||
+           !item->next || item->next->kind==ck_designator)reject("record initializer designator");
+        field=item->variant.designator.variant.field;item=item->next;
+      }
+      if(!field || !field_ids.count(field) || parent_class_of(field)!=type)reject("record initializer field");
+      path.push_back(field);record_initializer(block,ordinal,variable,field->type,item,path,pos);path.pop_back();
+      field=field->next;
+    }
+  }
+  unsigned initialize_aggregate(a_variable_ptr variable,a_constant_ptr value,const a_source_position &pos) {
+    if(skip_typerefs(variable->type)->kind==tk_array)return initialize_array(variable,value,pos);
+    unsigned block=node("block",0,pos),ordinal=0;std::vector<a_field_ptr> path;
+    record_initializer(block,ordinal,variable,variable->type,value,path,pos);return block;
+  }
   void loop_body(unsigned id,a_statement_ptr s,a_statement_ptr body) {
     // The stock C backend emits these compiler-generated targets as gotos.
     // Recover only EDG's marked break/continue targets, using the same label
@@ -819,10 +944,10 @@ struct Writer {
         if(d->destructor)reject("initialization with destructor");
         if(!d->variable || !binding_ids.count(d->variable))reject("initialization without local binding");
         unsigned binding=binding_ids.at(d->variable),ty=type_id(d->variable->type);
-        if(skip_typerefs(d->variable->type)->kind==tk_array) {
+        if(skip_typerefs(d->variable->type)->kind==tk_array || skip_typerefs(d->variable->type)->kind==tk_struct) {
           if(d->kind==dik_constant || d->kind==dik_nonconstant_aggregate)
-            return initialize_array(d->variable,d->variant.constant.ptr,s->position);
-          if(d->kind==dik_zero)return initialize_array(d->variable,nullptr,s->position);
+            return initialize_aggregate(d->variable,d->variant.constant.ptr,s->position);
+          if(d->kind==dik_zero)return initialize_aggregate(d->variable,nullptr,s->position);
           reject("array dynamic initialization",d->kind);
         }
         unsigned value=0;
@@ -872,11 +997,12 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v10\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v11\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
       ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
+      ",\"recordTypes\":"+array(record_types)+",\"recordFields\":"+array(record_fields)+
       ",\"types\":"+array(types)+",\"entities\":"+array(entities)+
       ",\"parameters\":"+array(parameters)+",\"functions\":"+array(functions)+",\"bindings\":"+array(bindings)+",\"nodes\":"+array(nodes)+",\"edges\":"+array(edges)+"}\n";
     if(fwrite(result.data(),1,result.size(),stdout)!=result.size() || fflush(stdout))reject("wire output failure");

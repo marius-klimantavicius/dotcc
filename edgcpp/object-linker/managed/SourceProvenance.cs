@@ -39,6 +39,12 @@ internal sealed partial class ObjectFile
                         type.SourceName.Length != 0 || type.IsConst || type.IsVolatile)
                         throw new InvalidDataException("Invalid source pointer type");
                 }
+                else if (type.Kind == "record")
+                {
+                    if (!Records.TryGetValue(type.ExecutionTypeId, out RecordType? record) || type.SourceName != record.SourceName ||
+                        type.UnderlyingTypeId is not null || type.IsConst || type.IsVolatile)
+                        throw new InvalidDataException("Source record disagrees with its execution representation");
+                }
                 else
                 {
                     string expected = type.Kind switch
@@ -86,6 +92,18 @@ internal sealed partial class ObjectFile
                 current = target;
             }
             visited.UnionWith(chain);
+        }
+        foreach (RecordField field in Fields.Values)
+        {
+            SourceType source = SourceTypeById(field.SourceTypeId);
+            if (source.ExecutionTypeId != field.TypeId)
+                throw new InvalidDataException("Record field source type disagrees with execution representation");
+            // Volatile reads/writes and atomics require explicit semantic nodes.
+            while (source.Kind is "typedef" or "qualified" or "array")
+            {
+                if (source.IsVolatile) throw new InvalidDataException("Volatile record fields are not supported");
+                source = SourceTypeById(source.UnderlyingTypeId!.Value);
+            }
         }
         var functions = new HashSet<long>();
         using (var query = database.Prepare("SELECT entity_id,return_source_type_id,capture_phase FROM source_functions ORDER BY entity_id"))
@@ -183,6 +201,33 @@ internal sealed partial class ObjectFile
     private SourceType SourceTypeById(long id) => SourceTypes.TryGetValue(id, out SourceType? type)
         ? type : throw new InvalidDataException("Unknown original source type identity");
 
+    public string SourceTypeSignature(long id) => SourceTypeSignature(id, 0, false, false);
+
+    private string SourceTypeSignature(long id, int depth, bool inheritedConst, bool inheritedVolatile)
+    {
+        if (depth > 128) throw new InvalidDataException("Source field type nesting exceeds supported limit");
+        SourceType type = SourceTypeById(id);
+        bool isConst = type.IsConst || inheritedConst, isVolatile = type.IsVolatile || inheritedVolatile;
+        while (type.Kind is "typedef" or "qualified")
+        {
+            if (++depth > 128) throw new InvalidDataException("Source field type nesting exceeds supported limit");
+            type = SourceTypeById(type.UnderlyingTypeId!.Value);
+            isConst |= type.IsConst;
+            isVolatile |= type.IsVolatile;
+        }
+        // C's qualified array typedef and a directly qualified array element
+        // describe the same field type. Move array qualification to its element.
+        if (type.Kind == "array") return "array(" + type.ElementCount + "," +
+            SourceTypeSignature(type.UnderlyingTypeId!.Value, depth + 1, isConst, isVolatile) + ")";
+        string qualifiers = (isConst ? "const:" : "") + (isVolatile ? "volatile:" : "");
+        return qualifiers + (type.Kind switch
+        {
+            "pointer" => "ptr(" + SourceTypeSignature(type.UnderlyingTypeId!.Value, depth + 1, false, false) + ")",
+            "record" => Type(type.ExecutionTypeId),
+            _ => type.Kind
+        });
+    }
+
     private void RejectRows(string sql, string message)
     {
         using var query = database.Prepare(sql);
@@ -222,6 +267,10 @@ internal sealed partial class ObjectFile
         }
         Table("sourceFiles", "SELECT id,path,parent_id FROM source_files ORDER BY id", "id", "path", "parentId");
         Table("executionTypes", "SELECT id,kind,pointee_type_id,element_type_id,element_count FROM types ORDER BY id", "id", "kind", "pointeeTypeId", "elementTypeId", "elementCount");
+        Table("recordTypes", "SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column FROM record_types ORDER BY type_id",
+            "typeId", "identityKey", "sourceName", "size", "alignment", "sourceFileId", "line", "column");
+        Table("recordFields", "SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column FROM record_fields ORDER BY id",
+            "id", "recordTypeId", "ordinal", "typeId", "sourceName", "byteOffset", "sourceTypeId", "sourceFileId", "line", "column");
         Table("sourceTypes", "SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count FROM source_types ORDER BY id",
             "id", "kind", "sourceName", "underlyingTypeId", "executionTypeId", "isConst", "isVolatile", "sourceFileId", "line", "column", "elementCount");
         Table("sourceFunctions", "SELECT entity_id,return_source_type_id,capture_phase FROM source_functions ORDER BY entity_id", "entityId", "returnSourceTypeId", "capturePhase");

@@ -9,8 +9,11 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
     private readonly string className = Names.OptionIdentifier(classOption);
     private readonly Names generatedMembers = new();
     private readonly Dictionary<string, string> arrayNames = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, string> recordNames = new(StringComparer.Ordinal);
+    private readonly Dictionary<(string Record, long Ordinal), string> fieldNames = [];
     private string Type(string kind) => ScalarTypes.IsArray(kind)
         ? "global::" + namespaceName + "." + className + "." + arrayNames[kind]
+        : ScalarTypes.IsRecord(kind) ? "global::" + namespaceName + "." + className + "." + recordNames[kind]
         : ScalarTypes.IsPointer(kind) ? Type(ScalarTypes.Pointee(kind)) + "*" : ScalarTypes.CSharp(kind);
 
     public void Write(string output, string? entryKey)
@@ -21,13 +24,24 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         Directory.CreateDirectory(output);
         generatedMembers.Reserve(className);
         foreach (string name in linker.Names.Values) generatedMembers.Reserve(name);
+        foreach (var (key, definition) in linker.Records.OrderBy(pair => pair.Key, StringComparer.Ordinal))
+        {
+            string name = generatedMembers.Allocate(definition.Record.SourceName, "Record");
+            // Contextual words may be ordinary method names, but record type
+            // declarations need an escaped identifier in every C# context.
+            recordNames.Add(key, Names.OptionIdentifier(name.TrimStart('@')));
+            var fields = new Names();
+            fields.Reserve(name);
+            foreach (RecordField field in definition.Object.RecordFields(definition.Record.TypeId))
+                fieldNames.Add((key, field.Ordinal), fields.Allocate(field.SourceName, "field_" + field.Ordinal));
+        }
         foreach (string array in linker.Objects.SelectMany(obj => obj.Types.Values).Where(ScalarTypes.IsArray).Distinct().Order(StringComparer.Ordinal))
             arrayNames.Add(array, generatedMembers.Allocate(ScalarTypes.ArrayName(array), "__DotObjArray"));
         using var lifetimeStream = File.Create(Path.Combine(output, "lifetime-map.json"));
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v10");
+        lifetimeWriter.WriteString("profile", "scalar-control-v11");
         lifetimeWriter.WriteString("capture", "lexical-cleanup-activations");
         lifetimeWriter.WriteBoolean("lexicalCleanups", true);
         lifetimeWriter.WriteBoolean("lifetimes", false);
@@ -50,12 +64,24 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
                     .Append("    }\n\n");
             }
             if (ReferenceEquals(obj, linker.Objects[0]))
+            {
                 foreach (string array in linker.Objects.SelectMany(input => input.Types.Values).Where(ScalarTypes.IsArray).Distinct().Order(StringComparer.Ordinal))
                 {
                     builder.Append("    [global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential, Size = ")
                         .Append(ScalarTypes.Size(array)).Append(")]\n    public struct ").Append(arrayNames[array])
                         .Append("\n    {\n        public ").Append(Type(ScalarTypes.Leaf(array))).Append(" First;\n    }\n\n");
                 }
+                foreach (var (key, definition) in linker.Records.OrderBy(pair => pair.Key, StringComparer.Ordinal))
+                {
+                    RecordType record = definition.Record;
+                    builder.Append("    [global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = ")
+                        .Append(record.Size).Append(", Pack = ").Append(record.Alignment).Append(")]\n    public struct ").Append(recordNames[key]).Append("\n    {\n");
+                    foreach (RecordField field in definition.Object.RecordFields(record.TypeId))
+                        builder.Append("        [global::System.Runtime.InteropServices.FieldOffset(").Append(field.ByteOffset).Append(")]\n        public ")
+                            .Append(Type(definition.Object.Type(field.TypeId))).Append(' ').Append(fieldNames[(key, field.Ordinal)]).Append(";\n");
+                    builder.Append("    }\n\n");
+                }
+            }
             foreach (Symbol symbol in linker.Definitions.Where(symbol => ReferenceEquals(symbol.Object, obj)))
                 Function(builder, symbol, lifetimeWriter);
             lifetimeWriter.WriteEndArray();
@@ -91,7 +117,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v10");
+            writer.WriteString("profile", "scalar-control-v11");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -104,7 +130,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v10");
+            writer.WriteString("profile", "scalar-control-v11");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -115,10 +141,10 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v10", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v11", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, prelowerSource = false, macros = false, lifetimes = false },
-            limitations = new[] { "Scalar/control profile with GNU lexical cleanup; no globals, records, variable/incomplete execution arrays, function pointers, source EH, C++ RAII, templates/COMDAT or runtime providers", "Pre-lowering scalar/pointer/array declaration/type provenance and explicit lexical cleanup activations only; no complete source expression/statement view, macro expansion history or general C++ lifetime capture" },
+            limitations = new[] { "Scalar/control profile with GNU lexical cleanup and plain natural-layout records; no globals, aggregate by-value ABI/copies, record arrays, variable/incomplete execution arrays, function pointers, source EH, C++ RAII, templates/COMDAT or runtime providers", "Pre-lowering scalar/pointer/array/record declaration/type provenance and explicit lexical cleanup activations only; no complete source expression/statement view, macro expansion history or general C++ lifetime capture" },
             @namespace = namespaceOption, @class = classOption, sourceMap = "source-map.json", macroMap = "macro-map.json", lifetimeMap = "lifetime-map.json",
             objects = linker.Objects.Select(obj => new { path = obj.Path, unitId = obj.UnitId, primarySource = obj.PrimarySource, semanticDigest = obj.Digest }),
             symbols = linker.Definitions.Select(symbol => new { unitId = symbol.Object.UnitId, entityId = symbol.Entity.Id,
@@ -192,6 +218,13 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
                 case "constant":
                     return ScalarTypes.IsPointer(NodeType(node)) ? "((" + Type(NodeType(node)) + ")null)" : ScalarTypes.Literal(NodeType(node), node.ConstantText!);
                 case "binding": return bindingNames[node.BindingId!.Value];
+                case "default-value": return "default(" + Type(NodeType(node)) + ")";
+                case "member":
+                    RecordField field = obj.Fields[node.FieldId!.Value];
+                    string fieldName = fieldNames[(obj.Type(field.RecordTypeId), field.Ordinal)];
+                    Node owner = Child("operand");
+                    if (owner.Kind == "dereference") return Expression(body.Child(owner.Id, "operand")) + "->" + fieldName;
+                    return Expression(owner) + "." + fieldName;
                 case "array-decay": return "((" + Type(NodeType(node)) + ")&" + Operand("operand") + ")";
                 case "address": return "(&" + Operand("operand") + ")";
                 case "dereference":
@@ -359,7 +392,8 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
             }
             Line(indent, name + " = default;");
             if (elements.Length == 0) return;
-            string pointer = allocator.Allocate("__dotobj_" + body.Bindings[target.BindingId!.Value].SourceName + "_elements", "__dotobj_elements");
+            string targetName = target.Kind == "binding" ? body.Bindings[target.BindingId!.Value].SourceName : obj.Fields[target.FieldId!.Value].SourceName;
+            string pointer = allocator.Allocate("__dotobj_" + targetName + "_elements", "__dotobj_elements");
             Line(indent, "{");
             Line(indent + 1, Type(leaf) + "* " + pointer + " = (" + Type(leaf) + "*)&" + name + ";");
             foreach (Node item in elements)

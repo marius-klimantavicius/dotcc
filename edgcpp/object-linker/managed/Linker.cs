@@ -7,12 +7,27 @@ internal sealed class Linker
     private readonly Dictionary<string, Symbol> definitions = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> signatures = new(StringComparer.Ordinal);
     public Dictionary<string, string> Names { get; } = new(StringComparer.Ordinal);
+    public Dictionary<string, (ObjectFile Object, RecordType Record)> Records { get; } = new(StringComparer.Ordinal);
 
     public Linker(IReadOnlyList<ObjectFile> objects, string className)
     {
         Objects = objects.OrderBy(obj => obj.UnitId, StringComparer.Ordinal).ToArray();
         if (Objects.Select(obj => obj.UnitId).Distinct(StringComparer.Ordinal).Count() != Objects.Count)
             throw new InvalidDataException("The same translation unit was supplied more than once");
+        foreach (ObjectFile obj in Objects)
+            foreach (RecordType record in obj.Records.Values)
+            {
+                if (Records.TryGetValue(record.Key, out var prior))
+                {
+                    RecordField[] expected = prior.Object.RecordFields(prior.Record.TypeId), actual = obj.RecordFields(record.TypeId);
+                    if (record.SourceName != prior.Record.SourceName || record.Size != prior.Record.Size || record.Alignment != prior.Record.Alignment ||
+                        expected.Length != actual.Length || actual.Where((field, index) => field.SourceName != expected[index].SourceName ||
+                            field.ByteOffset != expected[index].ByteOffset || obj.Type(field.TypeId) != prior.Object.Type(expected[index].TypeId) ||
+                            obj.SourceTypeSignature(field.SourceTypeId) != prior.Object.SourceTypeSignature(expected[index].SourceTypeId)).Any())
+                        throw new InvalidDataException($"Record layout mismatch for {record.IdentityKey}");
+                }
+                else Records.Add(record.Key, (obj, record));
+            }
         foreach (ObjectFile obj in Objects)
             foreach (Entity entity in obj.Entities.Values)
             {

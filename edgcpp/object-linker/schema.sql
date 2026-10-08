@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v10'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v11'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE source_files (
 ) STRICT;
 CREATE TABLE types (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind IN ('void','i8','u8','i16','u16','i32','u32','i64','u64','f32','f64','bool','pointer','array')),
+ kind TEXT NOT NULL CHECK(kind IN ('void','i8','u8','i16','u16','i32','u32','i64','u64','f32','f64','bool','pointer','array','record')),
  pointee_type_id INTEGER REFERENCES types(id),
  element_type_id INTEGER REFERENCES types(id),
  element_count INTEGER,
@@ -93,7 +93,8 @@ CREATE TABLE nodes (
  evaluation_order TEXT,
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
- column INTEGER NOT NULL CHECK(column>=0)
+ column INTEGER NOT NULL CHECK(column>=0),
+ field_id INTEGER REFERENCES record_fields(id)
 ) STRICT;
 CREATE TABLE edges (
  parent_id INTEGER NOT NULL REFERENCES nodes(id),
@@ -114,6 +115,28 @@ CREATE TABLE source_types (
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  element_count INTEGER CHECK(element_count>=0)
+) STRICT;
+CREATE TABLE record_types (
+ type_id INTEGER PRIMARY KEY REFERENCES types(id),
+ identity_key TEXT NOT NULL,
+ source_name TEXT NOT NULL,
+ size INTEGER NOT NULL CHECK(size>0 AND size<=65536),
+ alignment INTEGER NOT NULL CHECK(alignment IN (1,2,4,8)),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0)
+) STRICT;
+CREATE TABLE record_fields (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ record_type_id INTEGER NOT NULL REFERENCES record_types(type_id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ type_id INTEGER NOT NULL REFERENCES types(id),
+ source_name TEXT NOT NULL,
+ byte_offset INTEGER NOT NULL CHECK(byte_offset>=0),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0)
 ) STRICT;
 CREATE TABLE source_functions (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),

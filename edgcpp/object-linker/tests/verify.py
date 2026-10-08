@@ -11,6 +11,7 @@ import sqlite3
 import subprocess
 import sys
 import lifetimes_verify
+import records_verify
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('dotobj_compile', ROOT / 'compile.py')
@@ -23,6 +24,7 @@ def main():
     parser.add_argument('--output-dir', required=True, type=Path)
     parser.add_argument('--nativeaot', action='store_true')
     parser.add_argument('--lifetimes-only', action='store_true', help='Run the focused lexical cleanup acceptance')
+    parser.add_argument('--records-only', action='store_true', help='Run the focused record/layout acceptance')
     args = parser.parse_args()
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -45,11 +47,15 @@ def main():
         shutil.copy2(ROOT / 'tests/lifetimes.cpp', inputs / ('lifetimes' + ('-c' if extension == '.c' else '') + extension))
         shutil.copy2(ROOT / 'tests/lifetime_provider.cpp', inputs / ('lifetime-provider' + ('-c' if extension == '.c' else '') + extension))
     shutil.copy2(ROOT / 'tests/lifetime_fixture.h', inputs / 'lifetime_fixture.h')
+    for extension in ['.cpp', '.c']:
+        shutil.copy2(ROOT / 'tests/records.cpp', inputs / ('records' + ('-c' if extension == '.c' else '') + extension))
+        shutil.copy2(ROOT / 'tests/record_provider.cpp', inputs / ('record-provider' + ('-c' if extension == '.c' else '') + extension))
+    shutil.copy2(ROOT / 'tests/record_fixture.h', inputs / 'record_fixture.h')
     checks = []
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v10', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only,
+            profile='scalar-control-v11', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH or globals yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -128,6 +134,13 @@ def main():
                 if repair:
                     db.execute('UPDATE content_digest SET sha256=?', (MODULE.logical_hash(db),))
             return path
+
+        if args.records_only:
+            record_provider, record_consumer = records_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
+            records_verify.malformed(record_provider, record_consumer, tool, run, link, mutate)
+            save('passed')
+            print(json.dumps(dict(status='passed', checks=len(checks), output=str(out))))
+            return
 
         if args.lifetimes_only:
             lifetime_consumer = lifetimes_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
@@ -210,6 +223,8 @@ def main():
         float_cs = '\n'.join(p.read_text() for p in (out / 'link-floats-cpp').glob('*.cs'))
         check('floating-array-static-data', 'ReadOnlySpan<' in float_cs and '.CopyTo(' in float_cs and 'new float[' not in float_cs and 'new double[' not in float_cs)
         lifetime_consumer = lifetimes_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
+        record_provider, record_consumer = records_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
+        records_verify.malformed(record_provider, record_consumer, tool, run, link, mutate)
         loops_object = out / 'loops.dotobj'
         loops_cs = '\n'.join(p.read_text() for p in (out / 'link-loops').glob('*.cs'))
         check('structured-loop-source', all(token in loops_cs for token in ['for (', 'do', 'while (', 'break;', 'continue;']) and 'goto ' not in loops_cs)
@@ -510,7 +525,7 @@ def main():
             'long-double': 'long double f(long double x){return x+1.0L;}\n',
             'variable-array': 'int f(int n){int values[n]; values[0]=2;return values[0];}\n',
             'oversized-array': 'int f(){unsigned char values[65537];values[0]=1;return values[0];}\n',
-            'record-pointer': 'struct X { int value; }; int f(X* p){return p->value;}\n',
+            'union-pointer': 'union X { int value; }; int f(X* p){return p->value;}\n',
             'function-pointer': 'int f(int (*call)(int)){return call(3);}\n',
             'reference': 'int f(int& value){return value;}\n',
             'volatile-pointer': 'int f(volatile int* value){return *value;}\n',

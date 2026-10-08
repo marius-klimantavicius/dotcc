@@ -21,6 +21,7 @@ struct Type {
   unsigned id=0,underlying=0,execution=0;
   unsigned long long element_count=0;
   std::string kind,name;
+  a_type_ptr record_type=nullptr;
   bool is_const=false,is_volatile=false;
   a_source_position position={};
   // Routine types are private signature snapshots, not scalar sourceTypes.
@@ -40,11 +41,25 @@ struct Function {
   Declaration declaration;
   std::vector<unsigned> parameters;
 };
+struct RecordField {
+  a_field_ptr il=nullptr;
+  unsigned source_type=0;
+  std::string name;
+  unsigned long long offset=0;
+  a_source_position position={};
+};
+struct Record {
+  std::string name,identity,error;
+  unsigned long long size=0,alignment=0;
+  a_source_position position={};
+  std::vector<RecordField> fields;
+};
 struct State {
   std::map<a_type_ptr,unsigned> type_ids;
   std::vector<Type> types;
   std::map<a_routine_ptr,Function> functions;
   std::map<a_variable_ptr,Declaration> variables;
+  std::map<a_type_ptr,Record> records;
 };
 inline State &state(){static State value;return value;}
 inline std::string spelling(const a_source_correspondence &source) {
@@ -56,10 +71,65 @@ inline std::string spelling(const a_source_correspondence &source) {
 #endif
   return source.name;
 }
+inline unsigned capture_type(a_type_ptr t);
+inline void capture_record(a_type_ptr t) {
+  auto &s=state();if(s.records.count(t) || t->incomplete)return;
+  // Reserve first: self pointers and mutually recursive pointer fields are
+  // ordinary nominal record references, not infinitely expanded structures.
+  s.records[t]=Record{};
+  Record value;value.name=spelling(t->source_corresp);value.position=t->source_corresp.decl_position;
+  value.size=t->size;value.alignment=t->alignment;
+  auto &c=t->variant.class_struct_union;auto extra=c.extra_info;
+  if(t->kind!=tk_struct || value.name.empty() || c.originally_unnamed ||
+     t->source_corresp.is_local_to_function || t->source_corresp.is_class_member ||
+     t->source_corresp.enclosing_routine || t->declared_in_function_prototype || c.is_template_class)
+    value.error="record outside named global/namespace struct profile";
+  std::string qualified=value.name;
+  for(auto scope=t->source_corresp.parent_scope;scope;scope=scope->parent) {
+    if(scope->kind==sck_namespace) {
+      auto ns=scope->variant.assoc_namespace;
+      auto part=ns?spelling(ns->source_corresp):std::string{};
+      if(!ns || ns->has_internal_linkage || part.empty())value.error="anonymous namespace record identity";
+      qualified=part+"::"+qualified;
+    } else if(scope->kind!=sck_file)value.error="record outside global/namespace scope";
+  }
+  value.identity="record:"+qualified;
+  if(!value.size || value.size>65536 || !value.alignment || value.alignment>8 ||
+     c.is_empty_class || c.contains_flexible_array_member || c.any_volatile_member ||
+     c.any_virtual_functions_including_in_base_classes || (extra && extra->base_classes))
+    value.error="record outside bounded plain layout profile";
+#if GNU_EXTENSIONS_ALLOWED
+  if(c.is_packed)value.error="packed record layout";
+#endif
+  if(c.max_member_alignment)value.error="packed record alignment";
+  if(extra && extra->has_field_initializer)value.error="record default member initializer";
+  if(extra && extra->assoc_scope)for(auto r=extra->assoc_scope->routines;r;r=r->next) {
+    if((r->special_kind==sfk_constructor && !r->is_trivial_default_constructor && !r->is_trivial_copy_function) ||
+       (r->special_kind==sfk_destructor && !r->is_trivial_destructor) || !r->compiler_generated)
+      value.error="record with user/nontrivial member functions";
+  }
+  if(!value.error.empty()){s.records[t]=value;return;}
+  for(auto f=c.field_list;f;f=f->next) {
+    RecordField field;field.il=f;field.name=spelling(f->source_corresp);field.offset=f->offset;
+    field.position=f->source_corresp.decl_position;
+    if(field.name.empty() || f->is_bit_field || f->compiler_generated || f->is_anonymous_parent_object ||
+       f->has_no_unique_address_attribute || f->is_lowered_base_class || f->class_subobject_with_tail_padding ||
+       f->alignment>skip_typerefs(f->type)->alignment)
+      value.error="record field outside named natural layout profile";
+#if GNU_EXTENSIONS_ALLOWED
+    if(f->is_packed)value.error="packed record field";
+#endif
+    field.source_type=capture_type(f->type);value.fields.push_back(field);
+  }
+  s.records[t]=value;
+}
 inline unsigned capture_type(a_type_ptr t) {
   if(!t)return 0;
   auto &s=state();auto prior=s.type_ids.find(t);
-  if(prior!=s.type_ids.end())return prior->second;
+  if(prior!=s.type_ids.end()) {
+    if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union)capture_record(t);
+    return prior->second;
+  }
   unsigned id=(unsigned)s.types.size()+1;s.type_ids[t]=id;s.types.emplace_back();
   Type value;value.id=id;value.name=spelling(t->source_corresp);value.position=t->source_corresp.decl_position;
   if(t->kind==tk_typeref) {
@@ -107,6 +177,8 @@ inline unsigned capture_type(a_type_ptr t) {
     value.kind="array";
     value.underlying=capture_type(t->variant.array.element_type);
     value.element_count=t->variant.array.variant.number_of_elements;
+  } else if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
+    value.kind="record";value.record_type=t;capture_record(t);
   } else if(t->kind==tk_routine) {
     value.kind="routine";
     value.result=capture_type(t->variant.routine.return_type);
@@ -115,7 +187,7 @@ inline unsigned capture_type(a_type_ptr t) {
   }
   // Unknown entries are retained privately as unavailable, never exported as
   // opaque payloads. An unused unsupported declaration cannot block the TU.
-  if(t->kind!=tk_typeref)value.name.clear();
+  if(t->kind!=tk_typeref && value.kind!="record")value.name.clear();
   s.types[id-1]=value;return id;
 }
 inline void observe_type(a_type_ptr type){if(enabled())capture_type(type);}
@@ -154,6 +226,7 @@ inline void capture_scope(a_scope_ptr scope) {
     capture_routine(scope->variant.routine.ptr);
     for(auto v=scope->variant.routine.parameters;v;v=v->next)capture_variable(v);
   }
+  for(auto t=scope->types;t;t=t->next)capture_type(t);
   for(auto v=scope->nonstatic_variables;v;v=v->next)capture_variable(v);
   for(auto r=scope->routines;r;r=r->next)capture_routine(r);
   for(auto child=scope->scopes;child;child=child->next)capture_scope(child);

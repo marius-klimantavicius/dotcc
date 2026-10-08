@@ -5,6 +5,8 @@ namespace DotObj;
 
 internal static class ScalarTypes
 {
+    public static bool IsRecord(string kind) => kind.StartsWith("record(", StringComparison.Ordinal) && kind.EndsWith(')');
+    public static bool IsScalar(string kind) => IsNumeric(kind) || IsPointer(kind) || kind == "bool";
     public static bool IsArray(string kind) => kind.StartsWith("array(", StringComparison.Ordinal) && kind.EndsWith(')');
     public static long ElementCount(string kind) => long.Parse(kind.AsSpan(6, kind.IndexOf(',') - 6), CultureInfo.InvariantCulture);
     public static string Element(string kind) => kind[(kind.IndexOf(',') + 1)..^1];

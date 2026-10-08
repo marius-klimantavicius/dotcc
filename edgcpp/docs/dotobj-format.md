@@ -25,6 +25,9 @@ and static floating initializer data.
 V10 adds explicit GNU lexical cleanup activation and direct managed try/finally
 execution, with a derived lifetime map. General C++ lifetime/RAII capture remains
 unfinished; the narrower capability is `lexicalCleanups=true`.
+V11 adds owned nominal struct/field identities, natural layouts, named member
+access and cross-object definition checks, including mixed C/C++ objects.
+Record constructors/destructors and nontrivial object actions remain pending.
 Full source-tree/macro-expansion
 and lifetime capture, broad C++ coverage and the full graph design below remain
 unfinished; the initial profile explicitly records those missing capabilities.

@@ -3,7 +3,7 @@ namespace DotObj;
 internal static class Verifier
 {
     private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element"];
-    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay"];
+    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -51,6 +51,11 @@ internal static class Verifier
             Node child = Child(parent, role);
             if (!IsExpression(child) || (!allowVoid && Type(child) == "void")) Fail($"Expected scalar expression at {parent.Kind}.{role}");
         }
+        void Condition(Node parent, string role)
+        {
+            Expr(parent, role);
+            if (!ScalarTypes.IsScalar(Type(Child(parent, role)))) Fail("Condition requires a scalar value");
+        }
         void SameType(Node node, Node other)
         {
             if (Type(node) != Type(other)) Fail($"Type mismatch at node {node.Id}");
@@ -72,11 +77,15 @@ internal static class Verifier
             }
             return true;
         }
-        bool Place(Node node) => node.Kind is "binding" or "dereference";
+        bool Place(Node node) => node.Kind is "binding" or "dereference" or "member";
+        bool LocalPlace(Node node, int depth = 0) => depth <= 1024 && (node.Kind == "binding" &&
+            body.Bindings.TryGetValue(node.BindingId!.Value, out Binding? local) && local.Kind == "local" ||
+            node.Kind == "member" && LocalPlace(Child(node, "operand"), depth + 1));
         // An address rooted in owned stack storage with constant offsets cannot
         // change while the RHS runs, even if the RHS calls or mutates values.
         bool StablePlace(Node node, int depth = 0) => depth <= 1024 &&
-            (node.Kind == "binding" || node.Kind == "dereference" && StablePointer(Child(node, "operand"), depth + 1));
+            (node.Kind == "binding" || node.Kind == "member" && StablePlace(Child(node, "operand"), depth + 1) ||
+                node.Kind == "dereference" && StablePointer(Child(node, "operand"), depth + 1));
         bool StablePointer(Node node, int depth = 0)
         {
             if (depth > 1024) return false;
@@ -106,13 +115,14 @@ internal static class Verifier
                 string type = Type(node);
                 if (type == "void" && node.Kind != "call") Fail("Only calls can have void type");
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
-                string[] orders = node.Kind is "constant" or "binding" ? ["none"] : ["left-to-right", "unspecified"];
+                string[] orders = node.Kind is "constant" or "binding" or "default-value" ? ["none"] : ["left-to-right", "unspecified"];
                 if (node.Kind == "assign") orders = ["left-to-right", "right-to-left", "unspecified"];
-                if (node.Kind is "address" or "dereference" or "array-decay") orders = ["none", "left-to-right", "unspecified"];
+                if (node.Kind is "address" or "dereference" or "array-decay" or "member") orders = ["none", "left-to-right", "unspecified"];
                 if (!orders.Contains(node.EvaluationOrder)) Fail($"Unsupported evaluation order at {node.Id}");
             }
             if ((node.EntityId != null) != (node.Kind is "call" or "register-cleanup") ||
                 (node.BindingId != null) != (node.Kind is "binding" or "declare" or "register-cleanup") ||
+                (node.FieldId != null) != (node.Kind == "member") ||
                 (node.Operator != null) != (node.Kind is "binary" or "unary" or "mutate") ||
                 (node.ConstantText != null) != (node.Kind is "constant" or "array-element")) Fail("Unexpected or missing typed payload");
 
@@ -124,6 +134,14 @@ internal static class Verifier
                     !(node.Kind is "address" or "array-decay" && edge.Role == "operand") &&
                     !(node.Kind == "array-init" && edge.Role == "target"))
                     Fail("Array place requires explicit address, decay or initialization");
+                if (child.TypeId is long recordType && ScalarTypes.IsRecord(obj.Type(recordType)))
+                {
+                    bool allowed = node.Kind is "member" or "address" && edge.Role == "operand" ||
+                        node.Kind == "assign" && (edge.Role == "target" || edge.Role == "value" && child.Kind == "default-value") ||
+                        node.Kind == "declare" && edge.Role == "initializer" && child.Kind == "default-value" ||
+                        node.Kind == "expr-stmt" && edge.Role == "value" && child.Kind == "assign";
+                    if (!allowed) Fail("Record value requires named member access, address, or explicit zero initialization; aggregate copies are unsupported");
+                }
             }
 
             if (node.Kind == "block")
@@ -180,17 +198,18 @@ internal static class Verifier
                     break;
                 case "if":
                     EdgeShape(node, ("condition", 1, 1), ("then", 1, 1), ("else", 0, 1));
-                    Expr(node, "condition"); Statement(Child(node, "then"));
+                    Condition(node, "condition"); Statement(Child(node, "then"));
                     if (body.Children(node.Id, "else").Any()) Statement(Child(node, "else"));
                     break;
                 case "while":
                 case "do-while":
                     EdgeShape(node, ("condition", 1, 1), ("body", 1, 1));
-                    Expr(node, "condition"); Statement(Child(node, "body")); break;
+                    Condition(node, "condition"); Statement(Child(node, "body")); break;
                 case "for":
                     EdgeShape(node, ("initializer", 0, 1), ("condition", 0, 1), ("step", 0, 1), ("body", 1, 1));
                     foreach (string role in new[] { "initializer", "condition", "step" })
                         if (body.Children(node.Id, role).Any()) Expr(node, role, role != "condition");
+                    if (body.Children(node.Id, "condition").Any()) Condition(node, "condition");
                     Statement(Child(node, "body"));
                     break;
                 case "switch":
@@ -247,6 +266,17 @@ internal static class Verifier
                     EdgeShape(node);
                     if (!ScalarTypes.IsConstant(Type(node), node.ConstantText)) Fail("Invalid scalar constant");
                     break;
+                case "default-value":
+                    EdgeShape(node);
+                    if (!ScalarTypes.IsRecord(Type(node))) Fail("Default value requires a record type");
+                    break;
+                case "member":
+                    EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
+                    if (!obj.Fields.TryGetValue(node.FieldId!.Value, out RecordField? field) ||
+                        !Place(Child(node, "operand")) || Type(Child(node, "operand")) != obj.Type(field.RecordTypeId) ||
+                        Type(node) != obj.Type(field.TypeId))
+                        Fail("Member requires a field owned by its record place and matching field result type");
+                    break;
                 case "binding":
                     EdgeShape(node);
                     if (!body.Bindings.TryGetValue(node.BindingId!.Value, out Binding? binding) || !scopes.Contains(binding.ScopeNodeId) || !visible.Contains(binding.Id)) Fail("Binding used outside scope or before declaration");
@@ -256,9 +286,8 @@ internal static class Verifier
                     EdgeShape(node, ("target", 1, 1), ("element", 0, int.MaxValue));
                     Expr(node, "target");
                     Node arrayTarget = Child(node, "target");
-                    if (arrayTarget.Kind != "binding" || !ScalarTypes.IsArray(Type(arrayTarget)) ||
-                        !body.Bindings.TryGetValue(arrayTarget.BindingId!.Value, out Binding? arrayBinding) || arrayBinding.Kind != "local")
-                        Fail("Array initialization requires a local array binding");
+                    if (!LocalPlace(arrayTarget) || !ScalarTypes.IsArray(Type(arrayTarget)))
+                        Fail("Array initialization requires a local array binding or its named member");
                     string leaf = ScalarTypes.Leaf(Type(arrayTarget));
                     long count = ScalarTypes.FlatCount(Type(arrayTarget));
                     foreach (Edge edge in body.Children(node.Id, "element"))
@@ -334,11 +363,13 @@ internal static class Verifier
                     else if (operation is "eq" or "ne" or "lt" or "le" or "gt" or "ge")
                     {
                         SameType(Child(node, "left"), Child(node, "right"));
+                        if (!ScalarTypes.IsScalar(Type(Child(node, "left")))) Fail("Comparison requires scalar operands");
                         if (Type(Child(node, "left")) == "bool" && operation is not ("eq" or "ne")) Fail("Relational bool operands require explicit promotion");
                         if (!ScalarTypes.IsBooleanResult(Type(node))) Fail("Invalid comparison result type");
                     }
                     else if (operation is "and" or "or")
                     {
+                        Condition(node, "left"); Condition(node, "right");
                         if (!ScalarTypes.IsBooleanResult(Type(node))) Fail("Invalid logical result type");
                     }
                     else Fail($"Unsupported binary operator {operation}");
@@ -353,18 +384,22 @@ internal static class Verifier
                     }
                     else if (node.Operator == "not")
                     {
+                        Condition(node, "operand");
                         if (!ScalarTypes.IsBooleanResult(Type(node))) Fail("Invalid logical result type");
                     }
                     else Fail("Unsupported unary operator");
                     break;
                 case "conditional":
                     EdgeShape(node, ("condition", 1, 1), ("then", 1, 1), ("else", 1, 1));
-                    Expr(node, "condition"); Expr(node, "then"); Expr(node, "else");
+                    Condition(node, "condition"); Expr(node, "then"); Expr(node, "else");
+                    if (!ScalarTypes.IsScalar(Type(node))) Fail("Conditional requires a scalar result");
                     SameType(node, Child(node, "then")); SameType(node, Child(node, "else"));
                     break;
                 case "assign":
                     EdgeShape(node, ("target", 1, 1), ("value", 1, 1)); Expr(node, "target"); Expr(node, "value");
                     if (!Place(Child(node, "target"))) Fail("Assignment target must be a typed place");
+                    if (ScalarTypes.IsRecord(Type(node)) && Child(node, "value").Kind != "default-value")
+                        Fail("Record assignment only supports explicit zero initialization");
                     if (node.EvaluationOrder == "right-to-left" && !StablePlace(Child(node, "target")) &&
                         (!Pure(Child(node, "target")) || !Pure(Child(node, "value"))))
                         Fail("Indirect RHS-before-LHS assignment requires a stable address or effect-free operands in this profile");
@@ -379,6 +414,8 @@ internal static class Verifier
                     break;
                 case "convert":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
+                    if (!ScalarTypes.IsScalar(Type(node)) || !ScalarTypes.IsScalar(Type(Child(node, "operand"))))
+                        Fail("Conversion requires scalar types");
                     if (ScalarTypes.IsPointer(Type(node)) && ScalarTypes.IsFloating(Type(Child(node, "operand"))) ||
                         ScalarTypes.IsFloating(Type(node)) && ScalarTypes.IsPointer(Type(Child(node, "operand"))))
                         Fail("Pointer and floating-point conversion requires an explicit integer intermediate");

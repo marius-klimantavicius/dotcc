@@ -1,0 +1,212 @@
+{
+  "milestone": "Owned nominal struct layouts and named member access, prerequisite to C++ lifetimes",
+  "date": "2026-10-08",
+  "profile": "scalar-control-v11",
+  "status": "passed-with-explicit-coverage-boundaries",
+  "acceptance": {
+    "checkCount": 527,
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-acceptance-001/results.json",
+      "sha256": "bba5035622ca697af436bde32d00c4b32f86b10af9f70b879e296cb018956b39"
+    },
+    "log": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-acceptance-001.log",
+      "sha256": "eeffb22791f0b51108f11585da0c3770922dbd13756ca34326eb5ea16568de2a"
+    },
+    "languages": [
+      "C++17",
+      "C11",
+      "C provider with C++ consumer"
+    ],
+    "nativeReference": true,
+    "managedJit": true,
+    "nativeAot": true,
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39"
+  },
+  "compiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "sha256": "5d864d6450a1b7f96b2361ec21067c532d59f45264cd53fa8af24d43b5aa8055"
+  },
+  "nativeBuildLog": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-native-build-003.log",
+    "sha256": "ccf6d49a98afafc222dc4dd84e297a9081f10e0b024d9bcc2f8d0a2524117839"
+  },
+  "managedTool": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-acceptance-001/tool/bin/DotObj.Linker/release/dotobj-link.dll",
+    "sha256": "cd69644eeb6d9e43596e4499ad906c50b3ae74d3138663c2215b00b5829bb851"
+  },
+  "generatedReview": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-acceptance-001/link-records-cpp/Translated.0000.record_u002d_provider_u002e_cpp.cs",
+      "sha256": "f99ac03d9602e06330a2076507716924ef1da59307fd7f1de8e31fcd3fa07734"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-acceptance-001/link-records-cpp/Translated.0001.records_u002e_cpp.cs",
+      "sha256": "92da61293362039035a16950f9210c649f39e6046b243bbcf13a28dd72ddddae"
+    }
+  ],
+  "sourceMap": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-acceptance-001/link-records-cpp/source-map.json",
+    "sha256": "2e0a3646e0f302cba48b24d2de097b2cf9d4114f49048942452b7f9e54d6bbe3"
+  },
+  "objects": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-acceptance-001/record-provider.dotobj",
+      "sha256": "0bd51c16ec9d1df10d4a55a0547a7915837e3a872767873fb995e744bdbc4bc4"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-acceptance-001/records.dotobj",
+      "sha256": "717701110c5cdd43cfc7d765dc2c73c96ab0402e2f40651b07ef3b1180337849"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-acceptance-001/record-provider-c.dotobj",
+      "sha256": "a0c3e94bdd8e06f718ed75c68c48c6a25e04485dc96dd7a496664ef99484a486"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-acceptance-001/records-c.dotobj",
+      "sha256": "c1018e44ae7666ddc1e7a2ce325e1b9164a3e49c82f236980707fc093ab4f64d"
+    }
+  ],
+  "coverage": [
+    "Nonempty named natural-layout structs, nested records and scalar/pointer array fields",
+    "Self-recursive pointers and nominal identities across objects",
+    "Native field offsets, alignment and actual managed pointer stride",
+    "Named member reads/writes/address/array decay and aggregate initialization",
+    "Whole-record lexical cleanup with early return and nesting",
+    "Mixed C/C++ linking and namespace/type/function/owner naming collisions",
+    "Cross-unit layout and original field-type conflicts",
+    "Malformed member references, offsets, sizes, source mappings, cycles and cached-depth bypass rejection"
+  ],
+  "limitations": [
+    "No constructors/destructors or full C++ lifetime/temporary capture",
+    "No aggregate copy/by-value ABI or arrays of records",
+    "No empty/incomplete/local/anonymous/nested-class/template records or class-keyword records",
+    "No unions, bitfields, inheritance, packing, over-alignment or user/nontrivial members",
+    "NativeAOT/JIT execution tested on Linux x64 only"
+  ],
+  "reviewCorrection": "Cached intrinsic record-containment depths prevent child-first metadata from bypassing nesting128 limit",
+  "retainedProbes": [
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-focused-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-managed-extra-cleanup-init-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-managed-extra-designated-002-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-managed-extra-dynamic-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-managed-extra-forward-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-managed-extra-namespace-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-managed-extra-nested-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-managed-probe-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-managed-probe-002",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-native-consumer-c-probe-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-native-extra-probes-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-native-probe-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-native-provider-c-probe-001",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-native-provider-cpp-probe-001"
+  ],
+  "referenceImplementation": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/upstream/src/c_gen_be.c",
+      "sha256": "eb5e4da875ee4db1376dddb75dbee1f8b04cef328d265c08454e35746f493d29"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/dot_gen_be.c",
+      "sha256": "baa9e5ddafd4284c8409a0c011735e6b0142eee6534cf1a941e7add335a85f0b"
+    }
+  ],
+  "implementation": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/dot_gen_object.h",
+      "sha256": "a4dcf9ac0737e61487600ea80ee38eb9818cf99ef1ce449468ef21a258ddf4d0"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/dot_gen_object_source.h",
+      "sha256": "b1516247b4d0427a7b5ba0e475ca5afc15fba109c2ac4a923b49875e08c3e7c7"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/docs/dot-gen-be-plan.md",
+      "sha256": "50f747d1f9809c664c308f58e9b24cbc1ebd7f8b9ef0d4d94479a5525eb4b843"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/docs/dotobj-format.md",
+      "sha256": "22b8cb36ee0fa583bd3a9a90d667a07620ea06288b6c1db805ae8b202683c239"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/docs/implementation-campaign.md",
+      "sha256": "8ecb9f7445247b25089014126e6fd98d4893d186933b81ec1c33afe6decd6d01"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/README.md",
+      "sha256": "d9f4c801ce61751c7793da092aab3fe085039f5cd365aefd2e9dd62d7a0737f1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/compile.py",
+      "sha256": "cd8296432ce0611b0f959e5ee2a7ede417af39bfe681cc81848eede665bfdf84"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/contract.md",
+      "sha256": "109566b8eb48a6f2228dabce280600842f26e348982d28206cfcb123cd8ef962"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/schema.sql",
+      "sha256": "86173ed9f45d5c00d4c20d975f2256efdce13b365923f06fff9b15d999aa1041"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Emitter.cs",
+      "sha256": "cdef518ebc64051cc91e862f98395257b65f8ff0b34e2ba79c073911412da1bc"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Linker.cs",
+      "sha256": "b23564c826395c1cca78b4981c96172436b444d7aee1c56c7a2f7ec41abbe2b1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Model.cs",
+      "sha256": "eb3f03894c93fdc4828b0914593b59797b302c00438336ab1ce6c079be51324e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/ObjectFile.cs",
+      "sha256": "4ff562fc154550f69c149f8022ed22238159aaa46e01c96325933f6ed023a5e9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Program.cs",
+      "sha256": "c64fc414488eb886df540c435f7b2ec4d16cc76d2c2030a1413da6f8191e5963"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Records.cs",
+      "sha256": "3ae25a2163503ded5788be558d3d42d837970dbd59fe32e4a08882e970925ba2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/ScalarTypes.cs",
+      "sha256": "272c7d896b584b6e74f8dd780072ae2469c88343b7ed3203fe16b10e662dbc63"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/SourceProvenance.cs",
+      "sha256": "9ced8e4b42f4983b12a58d9fa48b21c1e5e6e5b2f2c453bbe1e309aba3a35195"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/README.md",
+      "sha256": "8bcd471723feec5711dd6cf8eb2d4af59876ee42ea73952122b89732f2cb8672"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Verifier.cs",
+      "sha256": "f13619f5d30808a306ecc2dcb6ed03504dc8170b48c27d0252f8c9f667d3dbf4"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/verify.py",
+      "sha256": "d90e9780e4316f583e9a9a25f99443bdc3482d4c57ebe6768ae8c8e03e297900"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/record_fixture.h",
+      "sha256": "3064f917214a93f71de5e59d4a3f9d5159b6ceff40393ff9b2df8792c9ecdda4"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/record_provider.cpp",
+      "sha256": "081f5cd6d4e429e41a087e297f5bd4914bb9396361cb053c9a71c391e550bba0"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/records.cpp",
+      "sha256": "7b48a8b238a8b91d9c3e27aadbcc7011a2a66f1f401cec9dfab63b01c79c2527"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/records_verify.py",
+      "sha256": "d1a66ae6668e63963508c5b8b06c16dba3070804ba758249ac5af86701c3b971"
+    }
+  ]
+}

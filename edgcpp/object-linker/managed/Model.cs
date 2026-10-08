@@ -6,7 +6,7 @@ internal sealed record Binding(long Id, long FunctionId, string Kind, long? Ordi
     long TypeId, string SourceName, long ScopeNodeId);
 internal sealed record Node(long Id, long FunctionId, string Kind, long? TypeId,
     long? EntityId, long? BindingId, string? Operator, string? ConstantText,
-    string? ValueCategory, string? EvaluationOrder);
+    string? ValueCategory, string? EvaluationOrder, long? FieldId = null);
 internal sealed record Edge(long ParentId, string Role, long Ordinal, long ChildId);
 
 internal sealed class FunctionBody
