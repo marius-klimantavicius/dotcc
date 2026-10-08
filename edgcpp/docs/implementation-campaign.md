@@ -2303,3 +2303,29 @@ together. This does not complete source-facing type identity, prelower source
 or macro capture, records/storage, or C++ lifetime handling. Compound assignment,
 comma expressions and conditional places remain unsupported. All intermediates
 remain preserved and DuckDB work remains paused.
+
+The `scalar-control-v4` milestone adds source declaration/type provenance before
+lowering. Read-only, opt-in hooks precede central C++ type/routine changes and
+C++/C99 incremental region lowering, including signatures lowered before their
+own bodies. The collector copies original scalar kinds, typedef chains,
+qualifiers, names and positions into owned snapshots; published rows link these
+to execution entities and bindings. There are no EDG semantic fixes. Pinned
+preparation overlays are idempotent and ordinary/backend-oracle builds remain
+outside the enabled capture path.
+
+All 157 checks pass on Linux x64 with C11/C++17 native, JIT and NativeAOT runs.
+Source tests cover bool versus lowered byte, const/typedef chains, forward callee
+signatures, different prototype/definition spellings, distinct same-named block
+typedefs, complete execution binding links and malformed alias/mapping/phase
+rejection. Independent review found no blocking issue and its suggested cases
+were added. The ordinary scalar backend regression passes and both generated
+C# files are byte-identical to the retained earlier baseline. [Hashed source
+provenance evidence](../evidence/dotobj-source-provenance-20261008.json).
+
+Linking writes `source-map.json` for inspecting the verified rows without the
+original input files; the execution graph still determines C# behavior.
+`sourceDeclarations=true` is deliberately separate from `prelowerSource=false`:
+full source scopes, expression trees, all redeclarations, macro history and
+lifetimes remain unfinished. V4 objects require the matching reader; earlier
+objects/tools, all test intermediates and the unsuccessful first rejection-test
+run remain preserved. Broader types/storage and DuckDB remain future work.

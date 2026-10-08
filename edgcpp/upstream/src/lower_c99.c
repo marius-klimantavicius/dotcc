@@ -30,6 +30,9 @@ lower_c99.c -- Routines to transform C99 IL constructs into constructs
 #include "lower_hdrs.h"
 /* Additional header files. */
 #include "exprutil.h"
+#if defined(EDG_DOT_BACKEND)
+#include "dot_gen_object_source.h"
+#endif
 #if MAINTAIN_NEEDED_FLAGS
 #include "il_walk.h"
 #endif /* MAINTAIN_NEEDED_FLAGS */
@@ -5194,6 +5197,9 @@ Do C99 lowering for a memory region (for the file scope or a function scope).
   a_memory_region_number
               saved_region_number = curr_il_region_number;
 
+#if defined(EDG_DOT_BACKEND)
+  dot_object_source::observe_scope(scope);
+#endif
   il_lowering_underway = TRUE;
   curr_context = NULL;
   innermost_function_scope = NULL;

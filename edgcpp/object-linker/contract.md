@@ -8,9 +8,15 @@ Native stdout wire is one JSON object (transient packaging protocol only):
 ```
 {
   "formatVersion": 1,
-  "profile": "scalar-control-v3",
+  "profile": "scalar-control-v4",
   "sourceFiles": [{"id":1,"path":"/absolute/main.cpp","parentId":null}],
   "types": [{"id":1,"kind":"void"},{"id":2,"kind":"i32"},{"id":3,"kind":"bool"},{"id":4,"kind":"u8"}],
+  "sourceTypes": [{"id":1,"kind":"int","sourceName":"","underlyingTypeId":null,"executionTypeId":2,"isConst":false,"isVolatile":false,"sourceFileId":null,"line":0,"column":0}],
+  "sourceFunctions": [{"entityId":1,"returnSourceTypeId":1,"capturePhase":"before-lowering"}],
+  "sourceParameters": [{"entityId":1,"ordinal":0,"sourceTypeId":1}],
+  "sourceDeclarations": [
+    {"id":1,"kind":"function","sourceName":"add","sourceTypeId":1,"entityId":1,"bindingId":null,"functionEntityId":null,"sourceFileId":1,"line":1,"column":1},
+    {"id":2,"kind":"parameter","sourceName":"x","sourceTypeId":1,"entityId":null,"bindingId":1,"functionEntityId":1,"sourceFileId":1,"line":1,"column":1}],
   "entities": [{"id":1,"sourceName":"add","linkage":"external","externalKey":"exact EDG linker symbol","definition":"strong","returnTypeId":2,"sourceFileId":1,"line":1,"column":1}],
   "parameters": [{"entityId":1,"ordinal":0,"typeId":2}],
   "functions": [{"entityId":1,"bodyNodeId":10}],
@@ -96,18 +102,77 @@ providers. Unsupported constructs fail export rather than emit partial output.
 Packager stores typed rows using schema.sql, including producer compiler/config,
 original source/include bytes and exact arguments. Only one original TU is sent
 to EDG; no .ii preprocessing subprocess or semantic merge. Objects advertise
-prelowerSource=false, macros=false, lifetimes=false until those captures exist.
+sourceDeclarations=true, prelowerSource=false, macros=false, lifetimes=false.
+The first flag covers only the scalar declaration/type provenance below; a full
+source expression/statement view is still absent.
 These explicit limitations must survive the link report; fixtures do not claim
 full source-faithful C++ graph or DuckDB readiness. Namespace/class are link args.
 The initial target is portable-lp64-binary80-v2; callable ABI dotobj-scalar-v1.
 The scalar-control-v3 object profile adds 8/16/32/64-bit signed/unsigned
 integers, bitwise/shift expressions and conditional values to v2's structured
 loops and explicit loop exit identities. It does not change the callable ABI.
-The current canonical schema reader rejects v1/v2 objects; preserve their
-respective earlier tool build to read them, or recompile with this producer.
+The current canonical schema reader requires scalar-control-v4 and rejects
+v1/v2/v3 objects; preserve their respective earlier tool build to read them,
+or recompile with this producer.
 The profile uses EDG's fixed portable LP64 target: long and long long share the
 64-bit physical representation, while exact external keys retain C++ overload
-identity. Source enum/typedef spellings are not yet captured as owned types.
+identity. The v4 source declaration/type layer preserves the distinct original
+integer type kinds and typedef names. Source enums remain unsupported.
+
+The scalar-control-v4 profile adds **pre-lowering scalar declaration/type
+provenance**, without changing the executable node set or callable ABI. This is
+not yet the complete source view from the design. Four required wire arrays map
+to four normalized tables:
+
+- `sourceTypes`: positive `id`; `kind`; `sourceName`; nullable
+  `underlyingTypeId`; `executionTypeId`; boolean `isConst` and `isVolatile`;
+  nullable `sourceFileId`; nonnegative `line` and `column`. Builtin kinds are
+  `void`, `bool`, `char`, `signed-char`, `unsigned-char`, `short`,
+  `unsigned-short`, `int`, `unsigned-int`, `long`, `unsigned-long`, `long-long`,
+  `unsigned-long-long`. Builtins have empty sourceName, no underlying type and
+  no direct qualifier bits. `typedef` has a nonempty alias name and an
+  underlying source type; `qualified` has an empty name, an underlying source
+  type, and at least one cv qualifier. Each layer retains its direct qualifier
+  bits. Alias/qualification references must be acyclic and preserve the exact
+  executionTypeId. Builtin execution mapping follows the fixed LP64 profile;
+  original `bool` maps to `u8`, and both `long` and `long-long` map to `i64`
+  while remaining different source kinds. Plain `char` retains EDG's selected
+  signed/unsigned byte representation. Source aliases are scoped by identity,
+  not by spelling; same-named aliases in different scopes need not merge.
+- `sourceFunctions`: one row per execution entity, including declaration-only
+  functions; `entityId`, `returnSourceTypeId`, and
+  `capturePhase="before-lowering"`. The source return type must map to the
+  entity's execution return type. The canonical routine signature can originate
+  from an earlier declaration; this slice does not enumerate redeclarations.
+- `sourceParameters`: `entityId`, contiguous zero-based `ordinal`,
+  `sourceTypeId`. Every execution parameter has a corresponding original
+  signature type with the same execution representation. Unnamed and
+  declaration-only prototype parameters are represented here.
+- `sourceDeclarations`: positive `id`, `kind`, `sourceName`, `sourceTypeId`,
+  nullable `entityId`, `bindingId`, `functionEntityId`, and source position.
+  A `function` row has entityId only and sourceTypeId denotes its **return
+  type**; exactly one such row must match each sourceFunctions row. A
+  `parameter` or `local` row has bindingId plus functionEntityId and no
+  entityId; exactly one row must match each execution binding's kind, source
+  name, function owner and execution type. Prototype-only parameters do not
+  have declaration rows. A definition's declared parameter source type may
+  differ from its canonical signature source type in typedef or top-level cv
+  spelling; their execution representations must agree. Bindings lacking a
+  pre-lowering snapshot are rejected in this profile.
+
+The producer copies these scalar type and declaration facts before EDG mutates
+the corresponding IL during lowering, including signatures lowered early
+through references from another function. Private EDG pointers are lookup keys
+only and never appear in the object. Source positions denote EDG declaration
+positions; these are not token ranges or a reconstruction of every syntactic
+spelling. Unreferenced typedef declarations, macros, statement/expression
+provenance, initializer structure, and destruction boundaries are not captured
+by this slice. Source snapshots alone do not imply those capabilities.
+
+The linker validates source-to-execution mappings but uses the authoritative
+execution graph for C# semantics. It also emits `source-map.json` for inspection
+and navigation, retaining type/declaration IDs and source-file references. This
+artifact is derived from the object tables and requires no original files.
 
 Expression valueCategory is place for binding and value otherwise; statements
 use null. evaluationOrder is null for statements, none for constant/binding,
@@ -141,7 +206,8 @@ code as one ASCII digit followed by frame of value (integer invariant decimal,
 text UTF8, blob raw bytes, null empty); LF after row. LF after each table. REAL
 cells unsupported. source snapshots SHA256 additionally verified independently.
 
-Required nodes_by_function(function_id,id) and bindings_by_function(function_id,id)
-indexes make per-function graph loading indexed; index definitions are validated
+Required nodes_by_function(function_id,id), bindings_by_function(function_id,id),
+and source_declarations_by_function(function_entity_id,id) indexes support
+per-function graph/provenance loading; index definitions are validated
 separately from the logical table-content digest. Changing physical indexes must
 not change program identity, but an unsupported schema object is rejected.

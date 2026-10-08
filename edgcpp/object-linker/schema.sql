@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v3'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v4'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -14,7 +14,8 @@ CREATE TABLE object_info (
  source_sha256 TEXT NOT NULL,
  prelower_source INTEGER NOT NULL CHECK(prelower_source=0),
  macros INTEGER NOT NULL CHECK(macros=0),
- lifetimes INTEGER NOT NULL CHECK(lifetimes=0)
+ lifetimes INTEGER NOT NULL CHECK(lifetimes=0),
+ source_declarations INTEGER NOT NULL CHECK(source_declarations=1)
 ) STRICT;
 CREATE TABLE provenance (
  ordinal INTEGER PRIMARY KEY,
@@ -93,11 +94,49 @@ CREATE TABLE edges (
  child_id INTEGER NOT NULL REFERENCES nodes(id),
  PRIMARY KEY(parent_id,role,ordinal)
 ) STRICT;
+CREATE TABLE source_types (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ kind TEXT NOT NULL,
+ source_name TEXT NOT NULL,
+ underlying_type_id INTEGER REFERENCES source_types(id),
+ execution_type_id INTEGER NOT NULL REFERENCES types(id),
+ is_const INTEGER NOT NULL CHECK(is_const IN (0,1)),
+ is_volatile INTEGER NOT NULL CHECK(is_volatile IN (0,1)),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0)
+) STRICT;
+CREATE TABLE source_functions (
+ entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
+ return_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ capture_phase TEXT NOT NULL
+) STRICT;
+CREATE TABLE source_parameters (
+ entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ PRIMARY KEY(entity_id,ordinal)
+) STRICT;
+CREATE TABLE source_declarations (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ kind TEXT NOT NULL CHECK(kind IN ('function','parameter','local')),
+ source_name TEXT NOT NULL,
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ entity_id INTEGER REFERENCES entities(id),
+ binding_id INTEGER REFERENCES bindings(id),
+ function_entity_id INTEGER REFERENCES source_functions(entity_id),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ CHECK((kind='function' AND entity_id IS NOT NULL AND binding_id IS NULL AND function_entity_id IS NULL) OR
+       (kind IN ('parameter','local') AND entity_id IS NULL AND binding_id IS NOT NULL AND function_entity_id IS NOT NULL))
+) STRICT;
 CREATE TABLE content_digest (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  algorithm TEXT NOT NULL CHECK(algorithm='dotobj-semantic-sha256-v1'),
  sha256 TEXT NOT NULL
 ) STRICT;
+CREATE INDEX source_declarations_by_function ON source_declarations(function_entity_id,id);
 CREATE INDEX nodes_by_function ON nodes(function_id,id);
 CREATE INDEX bindings_by_function ON bindings(function_id,id);
 COMMIT;

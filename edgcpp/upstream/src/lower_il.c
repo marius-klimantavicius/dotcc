@@ -28,6 +28,9 @@ lower_il.c -- Lower C++ intermediate language to C intermediate language.
 #if DO_IL_LOWERING
 /* Additional header files. */
 #include "exprutil.h"
+#if defined(EDG_DOT_BACKEND)
+#include "dot_gen_object_source.h"
+#endif
 #include "class_decl.h"
 #include "layout.h"
 #include "il_walk.h"
@@ -9356,6 +9359,9 @@ Do IL lowering of the indicated type and everything under it.
 */
 {
   a_type_ptr ptr_return_type, new_type, member_type;
+#if defined(EDG_DOT_BACKEND)
+  dot_object_source::observe_type(type);
+#endif
 
   /* Note that within this routine "lower_os_type" need not be used.
      The fact that we are lowering a type means we are lowering the
@@ -10290,6 +10296,9 @@ Do IL lowering of the indicated routine and everything under it.  This does
 not include the function scope memory region, if any.
 */
 {
+#if defined(EDG_DOT_BACKEND)
+  dot_object_source::observe_routine(routine);
+#endif
   if (!visited_yet(routine)) {
     check_assertion(!ignore_routine_in_back_end(routine));
     mark_as_visited(routine);
@@ -22739,6 +22748,9 @@ terms into C ones, so that a C back end can handle it without change.
               saved_curr_object_lifetime = curr_object_lifetime;
   a_scope_ptr saved_innermost_function_scope = innermost_function_scope;
 
+#if defined(EDG_DOT_BACKEND)
+  dot_object_source::observe_scope(scope);
+#endif
   db_enter(1, "lower_il_memory_region");
   /* The lowering is only needed if the source language is C++, if the
      lowering phase is to be run, and if there have been no errors. */

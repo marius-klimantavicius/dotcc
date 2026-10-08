@@ -1,6 +1,6 @@
 # Managed semantic object linker
 
-This is the executable `scalar-control-v3` implementation of the fresh
+This is the executable `scalar-control-v4` implementation of the fresh
 `.dotobj` semantic graph. It does not read the previous semantic-export format
 or an emission-command stream.
 
@@ -70,13 +70,26 @@ Generated code has no reflection, dynamic-code generation, SQLite dependency or
 native runtime import. It is suitable for JIT and NativeAOT compilation for this
 limited scalar profile. This does not establish cross-platform execution tests.
 
-The link report preserves the missing capability flags: no pre-lowering source
-view, macro capture or lifetime capture. Globals/TLS, pointers, records, function
+The link report records `sourceDeclarations=true` for pre-lowering scalar type
+and declaration provenance. `source-map.json` records original builtin type
+kinds (including bool, long and long long), typedef/qualification chains,
+function signatures, parameter/local identities and source positions, connected
+to execution identities. These facts are checked against execution signatures
+and bindings; they do not replace the authoritative executable graph. Original
+parameter spelling can differ from the canonical routine signature when a
+prototype used a different typedef or top-level qualifier. The reader rejects
+missing declaration capture, type-reference cycles and inconsistent mappings.
+Source declarations stream through validation and map output; local provenance
+does not remain resident for the whole program.
+
+The link report still preserves the missing capability flags: `prelowerSource`,
+`macros`, and `lifetimes` are false. A complete source expression/statement view,
+all redeclarations and macro/lifetime capture remain absent. Globals/TLS, pointers, records, function
 addresses, exceptions/RAII, inline/COMDAT, templates and runtime providers are
 not implemented in this profile. Unsupported input is rejected; scalar fixtures
 do not demonstrate DuckDB readiness or full C++ coverage.
 
-The current schema requires scalar-control-v3 objects. Earlier v1/v2 objects
+The current schema requires scalar-control-v4 objects. Earlier v1/v2/v3 objects
 remain usable with their retained earlier tool build, or can be regenerated.
 
 The integer profile supports signed/unsigned 8/16/32/64-bit values, exact decimal

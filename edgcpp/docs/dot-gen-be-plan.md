@@ -943,8 +943,9 @@ independent real TUs, SQLite semantic graphs and native/JIT/NativeAOT comparison
 The scalar-control-v2 profile also represents structured for/do loops, integer
 mutations and explicit break/continue targets. The v3 profile adds signed and
 unsigned integer widths through 64 bits, conditional expressions, bitwise
-operators and shifts.
-Prelower source/macro and lifetime capture and broad C++ coverage remain open.
+operators and shifts. The v4 profile now captures original scalar declarations,
+typedef chains, qualifiers and signatures before lowering, linked to execution
+identities and exported in a source map. Full source-tree/macro and lifetime capture and broad C++ coverage remain open.
 The superseded command-stream prototype is preserved as unvalidated artifacts.
 See [semantic object design and implementation gates](dotobj-format.md) and
 [implementation/acceptance scope](../object-linker/README.md).

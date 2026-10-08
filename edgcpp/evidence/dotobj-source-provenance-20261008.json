@@ -1,0 +1,200 @@
+{
+  "milestone": "Pre-lowering source declaration and type provenance",
+  "date": "2026-10-08",
+  "profile": "scalar-control-v4",
+  "status": "passed-with-explicit-coverage-boundaries",
+  "acceptance": {
+    "checkCount": 157,
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-acceptance-002/results.json",
+      "sha256": "1a8717385ee22ad000da2f5f0707df9b9b911718dcc2ab95e93fb82734bd9d77"
+    },
+    "log": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-acceptance-002.log",
+      "sha256": "ff2217259acd58b15b055bd42b145fad739dc7b3863c2f6cb965d53107b6d26a"
+    },
+    "languages": [
+      "C++17",
+      "C11"
+    ],
+    "nativeReference": true,
+    "managedJit": true,
+    "nativeAot": true,
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39"
+  },
+  "compiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "sha256": "3ff3f31f4383b2c932d5f43308cbd8a645b0562035d390996909a298638423d5"
+  },
+  "nativeBuildLog": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-native-build-002.log",
+    "sha256": "18489444751cb9346d82e9d8e2a31d47c8f5f9bfaf3d8168aeb1eab428d275f2"
+  },
+  "normalBackend": {
+    "source": "edgcpp/backend/tests/scalars.cpp",
+    "jitExitCode": 0,
+    "log": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-normal-smoke-001.log",
+      "sha256": "9fe9645b16863a392f009355ef6684395e70db1ef75e43a7854e5f794d4edc8b"
+    },
+    "generatedSourceComparison": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-normal-smoke-comparison.json",
+      "sha256": "c3ab9bb9174a73e59e3401a1ba1f88ee5f980b6027cfb72668dd74052f36b48f"
+    },
+    "generatedCSharpMatchesPriorBaseline": true
+  },
+  "implementationFiles": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/dot_gen_object_source.h",
+      "sha256": "d7de69ac0d967889d490e1eb72718087cdf1d4d6a6c08d7ae66cf9d6a8d3edcf"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/dot_gen_object.h",
+      "sha256": "a0cded403161176d712d976d65e9c9dc5f6acea820e0277fba3964f453596295"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/dot_gen_be.c",
+      "sha256": "6dc6659f03603a7cbd6e44a9dadf003c6915c0ed0cf868b2fdbce5ac1caa9a92"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/prepare.py",
+      "sha256": "51aacbd827a7ff769e539da314a2bde0f587f1bb14088b017adb890b59282d79"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/upstream/src/lower_il.c",
+      "sha256": "851af24fe0d33bc8a714e9882635a0f701e643333a32939c70a4a515215b10fb"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/upstream/src/lower_c99.c",
+      "sha256": "16d019ac40f09178ab313c247fb6d376bda21cab69cd8a38d7c3b5c4aa8149f0"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/README.md",
+      "sha256": "aa4961bd608bfb536e72ec668b274812401186e1b490eb5b21c0814d78d77ce2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/compile.py",
+      "sha256": "12e3ca0338b78bdedc5abd176241f36bae08e2d92163b78ca8f1caf63a633b0c"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/contract.md",
+      "sha256": "66c7f0af662fbdb1d1fe9a05f86fb52705f53b8654346815641a0dc837e9815b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/DotObj.Linker.csproj",
+      "sha256": "871e2077cbb761b5e4bca455d228fb1e0be8f88cd3fa077a8bc9744a9b25b482"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Emitter.cs",
+      "sha256": "259db84ecd647813f569413b81d9193ba893fe3fac2e348f9a4e07ca9d830c5a"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Linker.cs",
+      "sha256": "c2454a937194a53f4413f2c5da479702f38473b4d18180ca38a5b439a12e95b9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Model.cs",
+      "sha256": "d317762dfe0d1a7310148128220e7285df99a57fd6f75a938d86ec714948c6f9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Names.cs",
+      "sha256": "516baf0dcd9de98549c84a94d322e83bb998f9a2ac4da09052a0f21d16d18647"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/ObjectFile.cs",
+      "sha256": "54ba2b767afed10862353d5799752e838603d59a3d5e2220c5a70db5277477d5"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Program.cs",
+      "sha256": "0a46ecb29e52dd5239a3167e7d9bcdac3e435705fbb8f2361361e1499b0252d2"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/README.md",
+      "sha256": "80fe0b2ef55f249fd76a95759064b5fa395fc1ab20417e4f031116125b63dcc5"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/ScalarTypes.cs",
+      "sha256": "d834e436d3efab20bb1ba50cd03c47e019d2e5704f91ce9fa8b6ac8dd53c6d54"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/SourceProvenance.cs",
+      "sha256": "343fda8aa7c9861376b420d9629a5f8e18ae07b085481fbfa1f3f1d84c488525"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Sqlite.cs",
+      "sha256": "6d22aa68495b6625448b6dc460108a5f9020ba5c62ecc67da1553f31d5b78230"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Verifier.cs",
+      "sha256": "ce79bc369b21e56949c8cefd670a95479d786bb768d291d57d6ff5a2d246f074"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/schema.sql",
+      "sha256": "5096b6aca97c627a34bf0df4bcf769c9148644807bf8bc8cb7e97480f6d8887b"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/consumer.cpp",
+      "sha256": "e96aa86970963fb6ccb1fb1952147d2323048a9c6ba6c86884ef4632c0f48982"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/conversions.cpp",
+      "sha256": "b0976d08adb543a280daab0e1c7cf52c5ebf91f8912c7b15466814ab57cdadcd"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/empty.cpp",
+      "sha256": "bc8bb8e433bf65214540115414c821c904b2a30d60a3ac0424bf9b77a00024b7"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/fixture.h",
+      "sha256": "b0f295771d265b4c244f285a3ab4142db0386fc685d0bed5ab0e473f55f8f3f1"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/integers.cpp",
+      "sha256": "d4e85d31d56742f4c0373303010a3c87d1628dcb6eb770db19ed8a4e4b46bdaa"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/loops.cpp",
+      "sha256": "04b0f4086d0464ba96b41d0a997081f8104454e1cf14a36eef5d325a2ebbb13d"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/provider.cpp",
+      "sha256": "b3a6b71b4450b95a86d625b39d103fd3900d0ceb7aece65f164a7c31e933abd9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/scopes.cpp",
+      "sha256": "48e8c05643a690a0ae2b30948a5f73c7366f4f9f050a24e58fba23e584461b79"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/source_types.cpp",
+      "sha256": "e48e10cbebac7d8718601d69f73efe1eaa2941eed952fba7ae0103858848e31e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/source_types.h",
+      "sha256": "68473029ed2233b161ae1c772b2b4c04f89381d695ff628b017a19fc38db5117"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/verify.py",
+      "sha256": "88d3a4acb5284d01429ae573a8c793196a9e8cd01df80b00f3c9cfbc00f0a5de"
+    }
+  ],
+  "properties": [
+    "Read-only opt-in capture before central C++ type/routine mutation and C++/C99 incremental region lowering.",
+    "Owned original scalar types, typedef chains, qualifiers, signatures, declaration positions and execution ID references.",
+    "sourceDeclarations=true; full prelowerSource/macros/lifetimes flags remain false.",
+    "One source declaration mapping for every accepted execution entity/binding; uncaptured bindings rejected.",
+    "Managed reader verifies source type cycles, physical mapping, signature/ownership/coverage and capture phase.",
+    "Streaming source-map.json output for inspection; execution graph still controls C# generation.",
+    "C++ and C tests include forward bool callee, const typedef chains, prototype/definition spelling differences and distinct same-name block typedefs."
+  ],
+  "review": "Independent read-only review found no blocking issue; suggested prototype and scoped-typedef cases included in final acceptance.",
+  "compatibility": "Current reader requires v4 objects; prior objects retain their corresponding tools. Callable ABI remains dotobj-scalar-v1.",
+  "limitations": [
+    "Selected declaration/type snapshots are not a complete source syntax/semantic tree or all redeclarations/scopes.",
+    "Original expression trees, macro definition/expansion history and lifetime capture remain unfinished.",
+    "No globals/TLS, pointers/records, full RAII/EH, inline/template/COMDAT or general C++ coverage.",
+    "Compiler-private lookup keys are EDG identities; only owned IDs/strings/positions are exported. Native transport still buffers JSON.",
+    "Linux x64 only executed; no Windows/macOS or DuckDB acceptance."
+  ],
+  "artifactsPreserved": true,
+  "earlierIncompleteRun": "dotobj-source-acceptance-001 stopped at a rejection-fixture metadata inconsistency; canonical builtin source spelling was corrected and the complete suite rerun."
+}

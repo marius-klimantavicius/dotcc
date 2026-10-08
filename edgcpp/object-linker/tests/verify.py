@@ -26,15 +26,16 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     inputs = out / 'inputs'
     inputs.mkdir()
-    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'integers.cpp']:
+    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'integers.cpp', 'source_types.h', 'source_types.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
     shutil.copy2(ROOT / 'tests/loops.cpp', inputs / 'loops-c.c')
     shutil.copy2(ROOT / 'tests/integers.cpp', inputs / 'integers-c.c')
+    shutil.copy2(ROOT / 'tests/source_types.cpp', inputs / 'source-types-c.c')
     checks = []
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v3', nativeAotRequested=args.nativeaot,
+            profile='scalar-control-v4', nativeAotRequested=args.nativeaot,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No prelower source view, macro history, lifetime/EH or globals yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -108,7 +109,7 @@ def main():
         execute('linked', linked)
         scoped = link('link-scopes', [scopes])
         execute('scopes', scoped)
-        for name in ['conversions', 'empty', 'loops', 'integers']:
+        for name in ['conversions', 'empty', 'loops', 'integers', 'source_types']:
             obj = compile_source(name, inputs / (name + '.cpp'))
             run('native-' + name + '-build', ['c++', '-std=c++17', inputs / (name + '.cpp'), '-o', out / ('native-' + name)])
             run('native-' + name + '-run', [out / ('native-' + name)])
@@ -126,6 +127,21 @@ def main():
         run('native-integers-c-build', ['cc', '-std=c11', inputs / 'integers-c.c', '-o', out / 'native-integers-c'])
         run('native-integers-c-run', [out / 'native-integers-c'])
         execute('integers-c', link('link-integers-c', [integers_c]))
+        source_c = compile_source('source-types-c', inputs / 'source-types-c.c', std='c11')
+        run('native-source-types-c-build', ['cc', '-std=c11', inputs / 'source-types-c.c', '-o', out / 'native-source-types-c'])
+        run('native-source-types-c-run', [out / 'native-source-types-c'])
+        execute('source-types-c', link('link-source-types-c', [source_c]))
+        for language, obj in [('c++', out / 'source_types.dotobj'), ('c', source_c)]:
+            with sqlite3.connect(obj) as db:
+                kinds = {row[0] for row in db.execute('SELECT kind FROM source_types')}
+                aliases = {row[0] for row in db.execute("SELECT source_name FROM source_types WHERE kind='typedef'")}
+                check('source-type-kinds-' + language, {'long','unsigned-long-long','bool','typedef'} <= kinds)
+                check('source-typedef-chain-' + language, {'Count','ItemCount','Mask','Toggle'} <= aliases)
+                check('source-const-' + language, db.execute('SELECT count(*) FROM source_types WHERE is_const=1').fetchone()[0] > 0)
+                check('source-bool-before-lowering-' + language, db.execute("SELECT count(*) FROM source_types s JOIN types t ON t.id=s.execution_type_id WHERE s.kind='bool' AND t.kind='u8'").fetchone()[0] > 0)
+                check('distinct-shadowed-source-types-' + language, db.execute("SELECT count(DISTINCT execution_type_id) FROM source_types WHERE kind='typedef' AND source_name='Choice'").fetchone()[0] == 2)
+                check('source-binding-coverage-' + language, db.execute("SELECT count(*) FROM source_declarations WHERE kind IN ('local','parameter')").fetchone()[0] == db.execute('SELECT count(*) FROM bindings').fetchone()[0])
+        check('source-map-published', (out / 'link-source_types/source-map.json').is_file())
         integer_cs = '\n'.join(p.read_text() for p in (out / 'link-integers').glob('*.cs'))
         check('direct-integer-operators', all(token in integer_cs for token in [' ? ', ' : ', ' << ', ' >> ', ' & ', ' | ', ' ^ ', '~']))
         reverse = link('link-reversed', [consumer, provider])
@@ -153,7 +169,10 @@ def main():
 
         duplicate = mutate('duplicate', provider, [('UPDATE object_info SET unit_id=?', ('duplicate',))])
         run('duplicate-strong', ['dotnet', tool, 'link', '--out', out / 'bad-strong', provider, duplicate], None, 'Duplicate strong')
-        mismatch = mutate('signature', consumer, [('UPDATE parameters SET type_id=3 WHERE entity_id=(SELECT id FROM entities WHERE source_name=?)', ('from_a',))])
+        mismatch = mutate('signature', consumer, [
+            ('UPDATE parameters SET type_id=3 WHERE entity_id=(SELECT id FROM entities WHERE source_name=?)', ('from_a',)),
+            ("INSERT INTO source_types SELECT max(id)+1,'unsigned-char','',NULL,3,0,0,NULL,0,0 FROM source_types", ()),
+            ("UPDATE source_parameters SET source_type_id=(SELECT max(id) FROM source_types) WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ())])
         run('signature-mismatch', ['dotnet', tool, 'link', '--out', out / 'bad-signature', provider, mismatch], None, 'Signature mismatch')
         damaged = mutate('damaged', provider, [('UPDATE entities SET source_name=? WHERE id=1', ('tampered',))], False)
         run('digest-mismatch', ['dotnet', tool, 'verify', damaged], None, 'digest')
@@ -196,6 +215,20 @@ def main():
         bad_result = mutate('conditional-type', integers_object, [(
             "UPDATE nodes SET type_id=(SELECT id FROM types WHERE kind='void') WHERE id=(SELECT min(id) FROM nodes WHERE kind='conditional')", ())])
         run('conditional-invalid-result', ['dotnet', tool, 'verify', bad_result], None)
+
+        source_object = out / 'source_types.dotobj'
+        wrong_source_type = mutate('source-physical-type', source_object, [(
+            "UPDATE source_types SET execution_type_id=(SELECT id FROM types WHERE kind='i64') WHERE kind='bool'", ())])
+        run('source-physical-mismatch', ['dotnet', tool, 'verify', wrong_source_type], None)
+        cyclic_source = mutate('source-alias-cycle', source_object, [(
+            "UPDATE source_types SET underlying_type_id=id WHERE kind='typedef'", ())])
+        run('source-type-cycle', ['dotnet', tool, 'verify', cyclic_source], None)
+        missing_source = mutate('source-binding-missing', source_object, [(
+            "DELETE FROM source_declarations WHERE id=(SELECT min(id) FROM source_declarations WHERE kind='local')", ())])
+        run('source-binding-missing', ['dotnet', tool, 'verify', missing_source], None)
+        wrong_phase = mutate('source-capture-phase', source_object, [(
+            "UPDATE source_functions SET capture_phase='after-lowering'", ())])
+        run('source-capture-phase', ['dotnet', tool, 'verify', wrong_phase], None)
 
         negatives = {
             'global': 'int storage=1; int f(){return storage;}\n',

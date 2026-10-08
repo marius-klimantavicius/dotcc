@@ -5,6 +5,7 @@ import shutil
 
 root = Path(__file__).resolve().parents[1]
 for source, target in [
+    (root / "backend/dot_gen_object_source.h", root / "upstream/src/dot_gen_object_source.h"),
     (root / "backend/dot_gen_object.h", root / "upstream/src/dot_gen_object.h"),
     (root / "backend/dot_gen_primitive_views.h", root / "upstream/src/dot_gen_primitive_views.h"),
     (root / "backend/dot_gen_variable_aliases.h", root / "upstream/src/dot_gen_variable_aliases.h"),
@@ -118,3 +119,37 @@ if patched not in source:
     if source.count(original) != 1:
         raise RuntimeError("EDG lifetime retention overlay does not match pinned source")
     lower.write_text(source.replace(original, patched))
+
+# Read-only source declaration/type snapshots precede incremental lowering.
+# These hooks are compiled only into cpfe-dot and active only in .dotobj mode.
+# The pinned replacement guards make preparation idempotent and fail closed if
+# a future upstream update moves the semantic boundary.
+def object_source_overlay(path, original, patched):
+    source = path.read_text()
+    if patched in source:
+        return
+    if source.count(original) != 1:
+        raise RuntimeError(f"EDG object source overlay does not match pinned {path.name}")
+    path.write_text(source.replace(original, patched))
+
+for filename in ("lower_il.c", "lower_c99.c"):
+    object_source_overlay(root / "upstream/src" / filename,
+        '#include "exprutil.h"',
+        '#include "exprutil.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
+object_source_overlay(lower,
+    '  a_type_ptr ptr_return_type, new_type, member_type;\n',
+    '  a_type_ptr ptr_return_type, new_type, member_type;\n'
+    '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_type(type);\n#endif\n')
+object_source_overlay(lower,
+    '  db_enter(1, "lower_il_memory_region");',
+    '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_scope(scope);\n#endif\n'
+    '  db_enter(1, "lower_il_memory_region");')
+object_source_overlay(lower,
+    '  if (!visited_yet(routine)) {\n    check_assertion(!ignore_routine_in_back_end(routine));',
+    '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_routine(routine);\n#endif\n'
+    '  if (!visited_yet(routine)) {\n    check_assertion(!ignore_routine_in_back_end(routine));')
+c99 = root / "upstream/src/lower_c99.c"
+object_source_overlay(c99,
+    '  il_lowering_underway = TRUE;\n  curr_context = NULL;',
+    '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_scope(scope);\n#endif\n'
+    '  il_lowering_underway = TRUE;\n  curr_context = NULL;')

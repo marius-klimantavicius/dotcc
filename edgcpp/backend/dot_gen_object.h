@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v3: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v4: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -29,13 +29,15 @@ void check_lifetime(an_object_lifetime_ptr lifetime) {
 }
 namespace dot_object {
 struct Writer {
-  unsigned next_entity=1,next_binding=1,next_node=1,next_file=1;
+  unsigned next_entity=1,next_binding=1,next_node=1,next_file=1,next_source_type=1,next_source_declaration=1;
   unsigned function=0;
   std::map<a_routine_ptr,unsigned> routine_ids;
   std::map<a_variable_ptr,unsigned> binding_ids;
   std::map<a_source_file_ptr,unsigned> file_ids;
   std::vector<a_routine_ptr> routines;
   std::vector<string> files,entities,parameters,functions,bindings,nodes,edges;
+  std::vector<string> source_types,source_declarations,source_functions,source_parameters;
+  std::map<unsigned,unsigned> source_type_ids;
   std::set<a_scope_ptr> bound_scopes;
   std::set<unsigned> declared_bindings;
   struct Loop { unsigned node; source_control_context labels; };
@@ -93,6 +95,36 @@ struct Writer {
     }
     return ",\"sourceFileId\":"+number(id)+",\"line\":"+std::to_string((unsigned long long)line)+",\"column\":"+std::to_string((unsigned)pos.column);
   }
+  unsigned source_type(unsigned captured) {
+    if(!captured)reject("missing pre-lowering scalar type");
+    auto prior=source_type_ids.find(captured);if(prior!=source_type_ids.end())return prior->second;
+    const auto &type=dot_object_source::state().types.at(captured-1);
+    if(!type.execution)reject("source type outside scalar declaration profile");
+    unsigned id=next_source_type++;source_type_ids[captured]=id;
+    unsigned underlying=type.underlying?source_type(type.underlying):0;
+    source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.kind)+",\"sourceName\":"+quote(type.name)+
+      ",\"underlyingTypeId\":"+number(underlying)+",\"executionTypeId\":"+number(type.execution)+
+      ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+position(type.position)+"}");
+    return id;
+  }
+  void source_declaration(const dot_object_source::Declaration &declaration,
+                          const string &kind,unsigned entity,unsigned binding,unsigned owner) {
+    unsigned id=next_source_declaration++;
+    source_declarations.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(kind)+",\"sourceName\":"+quote(declaration.name)+
+      ",\"sourceTypeId\":"+number(source_type(declaration.type))+",\"entityId\":"+number(entity)+",\"bindingId\":"+number(binding)+
+      ",\"functionEntityId\":"+number(owner)+position(declaration.position)+"}");
+  }
+  void source_function(a_routine_ptr r,unsigned entity) {
+    auto found=dot_object_source::state().functions.find(r);
+    if(found==dot_object_source::state().functions.end())reject("missing pre-lowering routine capture");
+    const auto &captured=found->second;
+    source_declaration(captured.declaration,"function",entity,0,0);
+    source_functions.push_back("{\"entityId\":"+number(entity)+",\"returnSourceTypeId\":"+number(source_type(captured.declaration.type))+
+      ",\"capturePhase\":\"before-lowering\"}");
+    unsigned ordinal=0;
+    for(auto parameter:captured.parameters)
+      source_parameters.push_back("{\"entityId\":"+number(entity)+",\"ordinal\":"+std::to_string(ordinal++)+",\"sourceTypeId\":"+number(source_type(parameter))+"}");
+  }
   unsigned node(const string &kind,unsigned ty,const a_source_position &pos,
                 unsigned entity=0,unsigned binding=0,const string &op="",
                 const string &value="",const string &category="",const string &order="") {
@@ -133,6 +165,7 @@ struct Writer {
     entities.push_back("{\"id\":"+number(id)+",\"sourceName\":"+quote(source_spelling(&r->source_corresp))+
       ",\"linkage\":"+quote(external?"external":"internal")+",\"externalKey\":"+(external?quote(key):"null")+
       ",\"definition\":"+quote(body?"strong":"declaration")+",\"returnTypeId\":"+number(type_id(t->variant.routine.return_type))+position(r->source_corresp.decl_position)+"}");
+    source_function(r,id);
     unsigned ordinal=0;
     for(auto p=extra->param_type_list;p;p=p->next)
       parameters.push_back("{\"entityId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+",\"typeId\":"+number(type_id(p->type))+"}");
@@ -144,6 +177,10 @@ struct Writer {
     if(thread_storage(v) || v->storage_class==sc_static || v->storage_class==sc_extern)reject("nonautomatic storage");
     if(v->init_kind!=initk_none && v->init_kind!=initk_dynamic)reject("nonexecutably placed local initializer",v->init_kind);
     unsigned id=next_binding++;binding_ids[v]=id;
+    auto source=dot_object_source::state().variables.find(v);
+    if(source!=dot_object_source::state().variables.end())
+      source_declaration(source->second,parameter?"parameter":"local",0,id,function);
+    else reject("missing pre-lowering variable capture (including synthetic binding)");
     bindings.push_back("{\"id\":"+number(id)+",\"functionId\":"+number(function)+",\"kind\":"+quote(parameter?"parameter":"local")+
       ",\"ordinal\":"+(parameter?std::to_string(ordinal):"null")+",\"typeId\":"+number(type_id(v->type))+
       ",\"sourceName\":"+quote(source_spelling(&v->source_corresp))+",\"scopeNodeId\":"+number(scope)+position(v->source_corresp.decl_position)+"}");
@@ -376,7 +413,9 @@ struct Writer {
       functions.push_back("{\"entityId\":"+number(function)+",\"bodyNodeId\":"+number(root)+"}");
       context="file scope";
     }
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v3\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v4\",\"sourceFiles\":"+array(files)+
+      ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
+      ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
       ",\"types\":[{\"id\":1,\"kind\":\"void\"},{\"id\":2,\"kind\":\"i32\"},{\"id\":3,\"kind\":\"u8\"},"
       "{\"id\":4,\"kind\":\"i8\"},{\"id\":5,\"kind\":\"i16\"},{\"id\":6,\"kind\":\"u16\"},"
       "{\"id\":7,\"kind\":\"u32\"},{\"id\":8,\"kind\":\"i64\"},{\"id\":9,\"kind\":\"u64\"}],\"entities\":"+array(entities)+

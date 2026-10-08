@@ -46,13 +46,26 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
             """ + "\n    <OutputType>" + (entry is null ? "Library" : "Exe") + "</OutputType>\n" +
             (entry is null ? "" : "    <StartupObject>__DotObjEntry</StartupObject>\n") + "  </PropertyGroup>\n</Project>\n";
         File.WriteAllText(Path.Combine(output, "Translated.csproj"), project);
+        using (var stream = File.Create(Path.Combine(output, "source-map.json")))
+        using (var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true }))
+        {
+            writer.WriteStartObject();
+            writer.WriteNumber("formatVersion", 1);
+            writer.WriteString("profile", "scalar-control-v4");
+            writer.WriteString("capture", "scalar-declarations-before-lowering");
+            writer.WriteBoolean("prelowerSource", false);
+            writer.WriteStartArray("objects");
+            foreach (ObjectFile obj in linker.Objects) obj.WriteSourceMap(writer);
+            writer.WriteEndArray();
+            writer.WriteEndObject();
+        }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v3", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v4", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
-            capabilities = new { prelowerSource = false, macros = false, lifetimes = false },
-            limitations = new[] { "Scalar/control profile only; no globals, records, pointers, EH, RAII, templates/COMDAT or runtime providers", "No pre-lowering source view, macro capture or lifetime capture" },
-            @namespace = namespaceOption, @class = classOption,
+            capabilities = new { sourceDeclarations = true, prelowerSource = false, macros = false, lifetimes = false },
+            limitations = new[] { "Scalar/control profile only; no globals, records, pointers, EH, RAII, templates/COMDAT or runtime providers", "Pre-lowering scalar declaration/type provenance only; no complete source expression/statement view, macro capture or lifetime capture" },
+            @namespace = namespaceOption, @class = classOption, sourceMap = "source-map.json",
             objects = linker.Objects.Select(obj => new { path = obj.Path, unitId = obj.UnitId, primarySource = obj.PrimarySource, semanticDigest = obj.Digest }),
             symbols = linker.Definitions.Select(symbol => new { unitId = symbol.Object.UnitId, entityId = symbol.Entity.Id,
                 externalKey = symbol.Entity.ExternalKey, sourceName = symbol.Entity.SourceName, generatedName = linker.Names[symbol.Key], signature = symbol.Signature })

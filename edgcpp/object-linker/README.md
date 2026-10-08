@@ -46,7 +46,7 @@ verification.
 
 ## Current acceptance and boundaries
 
-`scalar-control-v3` supports defined/declaration function identities with strong
+`scalar-control-v4` supports defined/declaration function identities with strong
 external or TU-private linkage, signed/unsigned 8/16/32/64-bit integer operations,
 parameters and block locals, direct calls, conversions, initialization,
 short-circuit and conditional expressions, bitwise operators and shifts,
@@ -62,7 +62,17 @@ uses the selected widths and unsigned wraparound. Conditional expressions
 evaluate only the selected branch. Source bool can have its
 lowered byte representation in emitted signatures.
 
-The profile explicitly records `prelowerSource=false`, `macros=false` and
+The profile records `sourceDeclarations=true`: read-only hooks before EDG's
+incremental/type lowering snapshot original scalar types, typedef chains,
+qualifiers, function signatures and parameter/local declarations. These typed
+rows link to their execution counterparts. Source `long` and `long long`, and
+source `bool` versus its physical byte representation, remain distinguishable.
+Linking also writes `source-map.json` for inspecting this provenance without
+reopening the original files. Code generation still uses the execution graph.
+
+This is selected declaration/type provenance, not a complete source syntax tree
+or all redeclarations, scopes, expressions and lifetime boundaries. The profile
+still explicitly records `prelowerSource=false`, `macros=false` and
 `lifetimes=false`. Source/header bytes are retained, but macro definitions and
 expansion history are **not** semantically captured yet. This is an execution
 graph slice, not the complete two-view source/execution graph in the design.
@@ -85,7 +95,7 @@ python3 -B edgcpp/object-linker/tests/verify.py \
   --output-dir /path/fresh/dotobj-acceptance --nativeaot
 ```
 
-The 124-check acceptance run covers actual independent EDG compilation, native
+The 157-check acceptance run covers actual independent EDG compilation, native
 reference execution, managed JIT/NativeAOT, private name isolation, scope
 shadowing, loop-local reinitialization, short-circuit effects, bool/byte
 conversions, namespace collisions and implicit main return. Loop fixtures cover
@@ -100,7 +110,10 @@ input-order-stable source output, relinking with source files unavailable and
 recompiling one changed unit while keeping the other's object unchanged.
 Rejection tests cover duplicate/unresolved symbols, incompatible signatures,
 unsupported ABI/node/edge forms, altered schema or snapshots, hash mismatches
-and unsupported source features. The existing normal dot-backend scalar test
+and unsupported source features. Source tests cover alias chains, const and
+bool capture, differing prototype/definition spelling, same-named block typedefs,
+complete binding links, invalid source cycles/mappings and capture-phase checks.
+The existing normal dot-backend scalar test
 also still executes successfully after the opt-in hook.
 
 `schema.sql` is the canonical database shape; `contract.md` documents the typed
@@ -109,8 +122,8 @@ digest, snapshots, references, scope/type/operation contracts and required
 indexes. A hash demonstrates content integrity, not semantic correctness.
 
 Full logs/objects/generated projects remain under
-`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-integer-acceptance-002/`.
+`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-acceptance-002/`.
 
-The current schema requires `scalar-control-v3`. Earlier v1/v2 objects and tools
+The current schema requires `scalar-control-v4`. Earlier v1/v2/v3 objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.

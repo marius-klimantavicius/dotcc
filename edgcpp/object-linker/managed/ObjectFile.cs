@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace DotObj;
 
-internal sealed class ObjectFile : IDisposable
+internal sealed partial class ObjectFile : IDisposable
 {
     private readonly Sqlite database;
     public string Path { get; }
@@ -22,7 +22,9 @@ internal sealed class ObjectFile : IDisposable
         ["object_info"] = "singleton", ["provenance"] = "ordinal", ["source_files"] = "id",
         ["types"] = "id", ["entities"] = "id", ["parameters"] = "entity_id,ordinal",
         ["functions"] = "entity_id", ["bindings"] = "id", ["nodes"] = "id",
-        ["edges"] = "parent_id,role,ordinal", ["content_digest"] = "singleton"
+        ["edges"] = "parent_id,role,ordinal", ["content_digest"] = "singleton",
+        ["source_types"] = "id", ["source_declarations"] = "id",
+        ["source_functions"] = "entity_id", ["source_parameters"] = "entity_id,ordinal"
     };
     private static readonly Dictionary<string, (string Kind, string Sql)> ExpectedSchema = LoadSchema();
 
@@ -35,7 +37,7 @@ internal sealed class ObjectFile : IDisposable
         var result = new Dictionary<string, (string Kind, string Sql)>(StringComparer.Ordinal);
         foreach (Match match in Regex.Matches(schema, @"CREATE (TABLE|INDEX) ([a-z_]+)\b[^;]*;", RegexOptions.CultureInvariant))
             result.Add(match.Groups[2].Value, (match.Groups[1].Value.ToLowerInvariant(), match.Value[..^1]));
-        if (result.Count != Tables.Count + 2) throw new InvalidOperationException("Unexpected canonical object schema");
+        if (result.Count != Tables.Count + 3) throw new InvalidOperationException("Unexpected canonical object schema");
         return result;
     }
 
@@ -52,11 +54,11 @@ internal sealed class ObjectFile : IDisposable
             using (var check = database.Prepare("PRAGMA foreign_key_check"))
                 if (check.Read()) throw new InvalidDataException("Object contains broken foreign keys");
             VerifyDigest();
-            using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes FROM object_info"))
+            using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v3" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v4" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
-                    info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0)
+                    info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
                 UnitId = info.Text(4); PrimarySource = info.Text(5);
                 if (UnitId.Length == 0 || info.Read()) throw new InvalidDataException("Invalid object identity");
@@ -67,6 +69,7 @@ internal sealed class ObjectFile : IDisposable
                 if (!primary.Read() || primary.Integer(0) != 1 || primary.Text(1) != primary.Text(2) || primary.Read())
                     throw new InvalidDataException("Primary source identity does not match exactly one available root snapshot");
             ReadSummaries();
+            ReadAndVerifySourceProvenance();
         }
         catch { database.Dispose(); throw; }
     }
