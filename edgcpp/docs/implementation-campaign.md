@@ -2200,3 +2200,12 @@ Fresh checkpoint writer/reader tools003 are built from the integrated backend.
 All 25 replay checks pass, including NativeAOT. These establish tool
 compatibility for the next attempt; no full DuckDB checkpoint yet exists.
 [Fresh checkpoint tools](../evidence/duckdb-checkpoint-tools003-20261008.json).
+
+
+Work stopped at the user's requested restartable point. All active compiler
+and test work is stopped; intermediates are preserved. The reviewed isolated
+PCG assertion candidate is present as an uncommitted portable.py adapter, with
+reusable integration validation and fresh staging still pending. Its larger
+two-input diagnostic was explicitly stopped by request, not by a compiler
+error or memory guard; partial output is unaccepted.
+[Exact restart handoff](duckdb-restart-20261008.md).
