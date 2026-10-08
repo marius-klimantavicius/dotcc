@@ -159,6 +159,7 @@ def compile_unit(request_path):
     # A single reproducible clock applies to all TUs and resumed attempts.
     command += ['-D__DATE__="Jan  1 1970"', '-D__TIME__="00:00:00"', *unit['arguments'], '--', str(source)]
     env = environment()
+    env['EDG_DOT_OBJECT_UNIT_ID'] = unit['id']
     started_ns = time.time_ns()
     before = sha(source)
     invocation = dict(command=command, sourceSha256=before, compilerSha256=sha(compiler),

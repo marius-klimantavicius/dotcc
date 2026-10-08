@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v18'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v19'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -136,10 +136,13 @@ CREATE TABLE parameters (
 CREATE TABLE abi_routine_origins (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
  primary_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
- entry_kind TEXT NOT NULL CHECK(entry_kind IN ('complete','subobject','deleting')),
+ entry_kind TEXT NOT NULL CHECK(entry_kind IN ('complete','subobject','deleting','constructor-default-adapter')),
  is_alias_entry INTEGER NOT NULL CHECK(is_alias_entry IN (0,1)),
- capture_proof TEXT NOT NULL CHECK(capture_proof='primary-ctor-dtor-link'),
- CHECK(entity_id<>primary_entity_id)
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN ('primary-ctor-dtor-link','observed-default-wrapper-creation')),
+ target_entity_id INTEGER REFERENCES entities(id),
+ CHECK(entity_id<>primary_entity_id),
+ CHECK((entry_kind='constructor-default-adapter' AND capture_proof='observed-default-wrapper-creation' AND is_alias_entry=0 AND target_entity_id IS NOT NULL AND target_entity_id<>entity_id) OR
+       (entry_kind<>'constructor-default-adapter' AND capture_proof='primary-ctor-dtor-link' AND target_entity_id IS NULL))
 ) STRICT;
 CREATE TABLE functions (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
@@ -323,6 +326,7 @@ CREATE TABLE source_parameters (
  entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ has_default_argument INTEGER NOT NULL CHECK(has_default_argument IN (0,1)),
  PRIMARY KEY(entity_id,ordinal)
 ) STRICT;
 CREATE TABLE source_declarations (

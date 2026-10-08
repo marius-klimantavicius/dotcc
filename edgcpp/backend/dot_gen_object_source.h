@@ -13,6 +13,7 @@
 #include "il.h"
 #include "types.h"
 #include "lower_name.h"
+#include "symbol_tbl.h"
 BEGIN_EDG_NAMESPACE
 namespace dot_object_source {
 inline bool enabled() {
@@ -35,6 +36,8 @@ struct Type {
   bool variadic=false;
   std::string exception_policy="unwind",parameter_mode="prototype";
   std::vector<unsigned> parameters;
+  // Private prelowering parameter-declaration facts, never type identity/wire.
+  std::vector<bool> declaration_defaults;
 };
 struct Declaration {
   unsigned type=0;
@@ -53,6 +56,7 @@ struct Function {
   bool scope_captured=false;
   a_variable_ptr implicit_this=nullptr;
   std::vector<a_variable_ptr> parameter_variables;
+  std::vector<bool> parameter_defaults;
 };
 struct RecordField {
   a_field_ptr il=nullptr;
@@ -68,6 +72,11 @@ struct Record {
   bool template_identity=false;
   bool has_virtual_functions=false,has_bases=false;
   unsigned source_occurrence=0;
+  // Private original declaration ownership. Unlike the C backend, dot retains
+  // function-local types and therefore need not give them promoted C names.
+  a_routine_ptr local_owner=nullptr;
+  unsigned long long local_discriminator=0;
+  bool local_owner_external=false,local_owner_c_linkage=false,local_identity_observed=false;
   unsigned long long size=0,alignment=0;
   a_source_position position={};
   std::vector<RecordField> fields;
@@ -100,12 +109,19 @@ struct PrelowerRecord {
   std::vector<PrelowerField> fields;
   std::vector<PrelowerBase> bases;
 };
+struct DefaultAdapter {
+  a_routine_ptr target=nullptr,primary=nullptr;
+  bool implied_arguments=false,copy_constructor=false,has_arguments=false;
+};
 struct State {
   std::map<a_type_ptr,unsigned> type_ids;
   std::vector<Type> types;
   std::map<a_routine_ptr,Function> functions;
+  std::map<a_routine_ptr,DefaultAdapter> default_adapters;
   std::map<a_variable_ptr,Declaration> variables;
   std::map<a_type_ptr,Record> records;
+  std::map<a_type_ptr,std::string> finalized_record_identities;
+  std::map<a_type_ptr,std::string> owned_local_record_identities;
   std::set<a_type_ptr> capturing_records;
   std::map<std::pair<a_seq_number,a_column_number>,unsigned> record_occurrence_counts;
   std::map<a_type_ptr,unsigned> record_occurrences;
@@ -156,6 +172,9 @@ inline void capture_record(a_type_ptr t) {
   value.layout_kind=t->kind==tk_union?"union":t->kind==tk_class?"class":"struct";
   auto &c=t->variant.class_struct_union;auto extra=c.extra_info;
   value.template_identity=c.is_template_class;
+  // File-scope allocated local type entries cannot point into a function's
+  // scope region; EDG retains enclosing_routine precisely for that case.
+  value.local_owner=t->source_corresp.enclosing_routine;
   std::string qualified=value.name;
   bool local=value.name.empty() || c.originally_unnamed || t->source_corresp.is_local_to_function ||
     t->source_corresp.enclosing_routine || t->declared_in_function_prototype;
@@ -167,11 +186,30 @@ inline void capture_record(a_type_ptr t) {
       qualified=part+"::"+qualified;
     } else if(scope->kind==sck_class_struct_union) {
       auto owner=scope->variant.assoc_type;
+      if(owner && !value.local_owner)value.local_owner=owner->source_corresp.enclosing_routine;
       if(owner && owner->variant.class_struct_union.is_template_class)value.template_identity=true;
       auto part=owner?spelling(owner->source_corresp):std::string{};
       if(part.empty())local=true;
       qualified=part+"::"+qualified;
-    } else if(scope->kind!=sck_file)local=true;
+    } else if(scope->kind!=sck_file) {
+      local=true;
+      if(scope->kind==sck_function && !value.local_owner)
+        value.local_owner=scope->variant.routine.ptr;
+    }
+  }
+  if(!C_mode() && value.local_owner && t->source_corresp.assoc_info && !is_proxy_class(t)) {
+    auto supplement=symbol_supplement_for_class(t);
+    // Lambda discriminators are partitioned by call-operator signature, not
+    // solely by source spelling. Until that signature is owned in this key,
+    // only an already-finalized stock name can identify a closure type.
+    if(supplement && !extra->is_lambda_closure_class &&
+       (supplement->discriminator || !value.name.empty())) {
+      value.local_discriminator=supplement->discriminator;
+      auto linkage=value.local_owner->source_corresp.name_linkage;
+      value.local_owner_external=linkage==nlk_external || linkage==nlk_cplusplus_external;
+      value.local_owner_c_linkage=linkage==nlk_external;
+      value.local_identity_observed=true;
+    }
   }
   value.identity=(local?"local-record:":"record:")+qualified;
   if(t->incomplete){s.records[t]=value;return;}
@@ -289,8 +327,10 @@ inline unsigned capture_type(a_type_ptr t) {
     auto specification=t->variant.routine.extra_info->exception_specification;
     if(specification && !specification->throw_any)
       value.exception_policy=specification->is_noexcept?"terminate":"unsupported-dynamic";
-    for(auto p=t->variant.routine.extra_info->param_type_list;p;p=p->next)
+    for(auto p=t->variant.routine.extra_info->param_type_list;p;p=p->next) {
       value.parameters.push_back(capture_type(p->declared_type?p->declared_type:p->type));
+      value.declaration_defaults.push_back(p->has_default_arg);
+    }
   }
   // Unknown entries are retained privately as unavailable, never exported as
   // opaque payloads. An unused unsupported declaration cannot block the TU.
@@ -299,6 +339,8 @@ inline unsigned capture_type(a_type_ptr t) {
 }
 inline void observe_type(a_type_ptr type){if(enabled())capture_type(type);}
 inline a_routine_ptr abi_primary(a_routine_ptr r) {
+  auto adapter=state().default_adapters.find(r);
+  if(adapter!=state().default_adapters.end())return adapter->second.primary;
 #if DO_IL_LOWERING && IA64_ABI
   return r && r->compiler_generated ? r->primary_ctor_or_dtor : nullptr;
 #else
@@ -318,9 +360,23 @@ inline void capture_routine(a_routine_ptr r) {
   Function function;function.function_kind=r->special_kind==sfk_constructor?"constructor":r->special_kind==sfk_destructor?"destructor":"ordinary";function.declaration.type=signature.result;function.signature_type=id;
   function.declaration.name=spelling(r->source_corresp);
   function.declaration.position=r->source_corresp.decl_position;
-  function.parameters=signature.parameters;s.functions[r]=function;
+  function.parameters=signature.parameters;
+  // Use the immutable list: the physical type may already have an inserted
+  // receiver by the time another declaration sharing it is observed.
+  function.parameter_defaults=signature.declaration_defaults;
+  s.functions[r]=function;
 }
 inline void observe_routine(a_routine_ptr routine){if(enabled())capture_routine(routine);}
+inline void observe_default_adapter(a_routine_ptr target,a_routine_ptr adapter,
+                                    a_boolean implied,a_boolean copy,a_boolean has_arguments) {
+  if(!enabled())return;
+  DefaultAdapter origin;origin.target=target;
+  // Retain both the exact callable entry and its original declaration owner.
+  // A target that is itself an adapter is rejected by the execution writer.
+  auto primary=abi_primary(target);origin.primary=primary?primary:target;
+  origin.implied_arguments=implied;origin.copy_constructor=copy;origin.has_arguments=has_arguments;
+  state().default_adapters.emplace(adapter,origin);
+}
 inline bool abi_storage_type(a_type_ptr type) {
   type=skip_typerefs(type);
   while(type->kind==tk_array || type->kind==tk_pointer) {
@@ -365,6 +421,39 @@ inline void capture_scope(a_scope_ptr scope) {
     if(!ns->is_namespace_alias)capture_scope(ns->variant.assoc_scope);
 }
 inline void observe_scope(a_scope_ptr scope){if(enabled())capture_scope(scope);}
+inline void observe_frontend_identity_boundary() {
+  if(!enabled() || C_mode())return;
+  // fe_wrapup invokes this after normal file-scope name finalization. Copy
+  // the exact name already emitted by EDG's mangling pass, like c_gen_be's
+  // dump_type_name/dump_name. Never re-enter the mangler here: template
+  // arguments may already be lowered and namespace ancestry may be erased.
+  // Pointer-derived names in the optional fast-mangling configuration are
+  // deliberately not acceptable persistent identities.
+  auto &s=state();
+  for(const auto &entry:s.records) {
+    auto type=entry.first;
+    if(type->variant.class_struct_union.is_nonreal_class ||
+       type->variant.class_struct_union.is_prototype_instantiation)continue;
+#if !ONLY_MANGLE_TYPES_NEEDED_FOR_EXTERNAL_NAMES
+    const auto &source=type->source_corresp;
+    if(source.name && source.name_has_been_mangled && !source.final_name_mangling_pending) {
+      s.finalized_record_identities[type]=source.name;
+    } else if(entry.second.local_identity_observed) {
+      const auto &record=entry.second;
+      const auto &owner=record.local_owner->source_corresp;
+      const char *unit=std::getenv("EDG_DOT_OBJECT_UNIT_ID");
+      if(owner.name && !owner.final_name_mangling_pending &&
+         (owner.name_has_been_mangled || record.local_owner_c_linkage) &&
+         (record.local_owner_external || (unit && *unit))) {
+        // Length-delimit arbitrary unit IDs and original source spellings.
+        auto part=[](const std::string &text){return std::to_string(text.size())+":"+text;};
+        s.owned_local_record_identities[type]=(record.local_owner_external?"external:":"private:"+part(unit))+
+          part(owner.name)+part(record.identity)+std::to_string(record.local_discriminator);
+      }
+    }
+#endif
+  }
+}
 inline void observe_record_before_prelowering(a_type_ptr type) {
   if(!enabled())return;
   // Forward declarations have an ordinary source snapshot, but cannot prove

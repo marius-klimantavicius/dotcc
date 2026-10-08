@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "profile": "scalar-control-v19",
+  "scope": "Constructor default adapters, source nominal identity across translation units and writable program arguments",
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "fullRegressionChecks": 1001,
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-v19-acceptance-002/results.json",
+      "sha256": "1c9e759577d7ec0c06039fff4906d8170343f02a442cfcce6085d736b86c974b"
+    },
+    "defaults": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-default-adapters-managed023-001/results.json",
+      "sha256": "9b3bdd33e6474c1ed800bfede5996c938ef493f2df7fed59fbd2d35ce4ee39c2"
+    },
+    "nominalIdentity": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-template-identity-managed024-004/results.json",
+      "sha256": "d97087dd5432a4ce11c08f644ab44c91e9aee1c37f9afa71432a4257f9c8f9a0"
+    },
+    "arguments": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-arguments-acceptance-001/results.json",
+      "sha256": "90748b902b616cea9e6bb0547a87172837e55ec78171e2b7da20e852695382fa"
+    },
+    "crossUnit": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-nonvirtual-acceptance-008/results.json",
+      "sha256": "e24d1ab7e943f137fc2861711f0c160a4c32168a3ce18354b2b7c0bbe8010a91"
+    },
+    "frontier": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-034/results.json",
+      "sha256": "f7bf061b8cf54d05f912d8f98110bc7becc7240dea84dca18db4e11b50a5959f"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native036-verified-snapshot/cpfe-dot",
+      "sha256": "abe05685ffedc65d1bd11284c86135d4653a485c6c52762fd84b4d911e029c25"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-024/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "f19063a456c3c657e820525fd456e8432e05b42b7be2a85c7895a53feb06988d"
+    }
+  },
+  "limitations": [
+    "Hidden result buffers and nontrivial indirect value ABI remain pending",
+    "Packed layouts, virtual bases, general dynamic initialization and C++ unwinding remain incomplete",
+    "Full DuckDB execution and complete independent source semantic indexing remain unfinished"
+  ]
+}

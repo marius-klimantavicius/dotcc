@@ -4,11 +4,15 @@ This implements the owned object path of the [new design](../docs/dotobj-format.
 It uses a fresh SQLite schema and C# reader/linker/emitter, without the prior
 semantic-export experiment or C# text/command objects.
 
-The current profile is `scalar-control-v18`. It supports independently produced
+The current profile is `scalar-control-v19`. It supports independently produced
 SQLite and musl objects, typed provider selection, shared BCL runtime bindings,
 and explicit source startup actions. Original base declarations and generated
 ctor/dtor entries retain separate provenance from exact physical subobject views.
-COMDAT storage links to one canonical cell across translation units. The [campaign ledger](../docs/dotobj-project-campaign.md)
+COMDAT storage links to one canonical cell across translation units. Constructor
+default adapters retain their original defaults and exact generated targets.
+Template and local class identities preserve both shared inline and private
+translation-unit ownership. Executable entries also support writable UTF-8
+`main(int, char**)` arguments through source shutdown. The [campaign ledger](../docs/dotobj-project-campaign.md)
 distinguishes project generation, compilation and execution evidence. Full C++
 object layout, lifetime and exception support required by DuckDB remains in progress.
 The earlier milestone descriptions below record their original bounded scope;
@@ -221,7 +225,7 @@ indexes. A hash demonstrates content integrity, not semantic correctness.
 Full logs/objects/generated projects remain under
 `/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/`.
 
-The current schema requires `scalar-control-v18`. Earlier-profile objects and tools
+The current schema requires `scalar-control-v19`. Earlier-profile objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 

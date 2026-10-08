@@ -222,9 +222,12 @@ internal sealed partial class Linker
             (symbol.Entity.ExternalKey == key || symbol.Entity.SourceName == key)).ToArray();
         if (matches.Length != 1) throw new InvalidDataException($"Entry must identify one externally defined function: {key}");
         Symbol entry = matches[0];
-        if (entry.Object.Parameters.GetValueOrDefault(entry.Entity.Id, []).Count != 0 ||
-            entry.Object.Type(entry.Entity.ReturnTypeId) is not ("i32" or "void"))
-            throw new InvalidDataException("Initial executable entry must be void() or i32()");
+        var parameters = entry.Object.Parameters.GetValueOrDefault(entry.Entity.Id, []);
+        string result = entry.Object.Type(entry.Entity.ReturnTypeId);
+        bool noArguments = parameters.Count == 0 && result is "i32" or "void";
+        bool commandLine = result == "i32" && parameters.SequenceEqual(["i32", "ptr(ptr(i8))"]);
+        if (entry.Object.Routines[entry.Entity.RoutineTypeId].Variadic || !(noArguments || commandLine))
+            throw new InvalidDataException("Executable entry must be void(), i32(), or i32(i32, ptr(ptr(i8)))");
         return entry;
     }
 

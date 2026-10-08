@@ -933,3 +933,52 @@ Generated constructor wrappers that supply default arguments remain a separate
 origin boundary in v18. They are not mislabeled as complete/subobject aliases.
 Their future contract must retain the exact selected call target, written
 parameter default-presence facts and the helper's own execution exception policy.
+
+## Default-argument constructor adapters: scalar-control-v19
+
+`source_parameters.has_default_argument` retains an original parameter's default
+presence as a declaration fact. It is not part of source routine type identity
+or cross-unit callable signature equality. Original default-expression trees
+are not claimed by this boolean; the executed default expressions remain in the
+owned generated helper body.
+
+`abi_routine_origins` adds `constructor-default-adapter` with
+`observed-default-wrapper-creation` proof and a required `target_entity_id`.
+The target is the original constructor or a directly observed nondeleting
+alternate of that same primary. Older complete/subobject/deleting entries have
+no target column value. An adapter is a distinct private entity, never merged
+solely by primary and entry kind, and has an owned body without fabricated
+source declarations. Its actual receiver representation is proved at creation.
+Any forwarded explicit parameters map a source prefix; omitted parameters must
+have recorded defaults. The initial producer supports receiver-only adapters
+and rejects implied/VTT, initializer-list and copy adaptation forms.
+
+The helper's execution exception policy remains independent of its target:
+default expressions may throw before entering a noexcept constructor. Inlining
+may remove the direct target call from its body, so verification relies on the
+observed creation relationship and typed body rather than demanding a particular
+syntactic call. Runtime array construction still requires real callback and
+partial-construction cleanup implementations.
+
+
+### Nominal identity and entry arguments
+
+C++ specialization identity copies the frontend's finalized mangled name at the
+final frontend boundary. It never invokes name mangling against mixed lowered
+IL. Original namespace and template arguments remain part of this identity.
+Unpromoted function-local classes use the retained original owning routine,
+frontend declaration discriminator and named ancestry. External inline owners
+share their types across units; private owners additionally carry the explicit
+object unit identity. Anonymous namespace classes remain private even when the
+same header location and layout occur in multiple units. Unsupported unnamed
+or closure identities fail explicitly. Original C record identity is unchanged.
+
+The frontend invocation receives `EDG_DOT_OBJECT_UNIT_ID`, captured in provenance
+and checked against the packaging unit ID. This is an owned compilation identity,
+not a guessed current directory or source-header path.
+
+Executable entry accepts nonvariadic `void()`, `int()`, or exactly
+`int(int, char**)`. The latter uses the shared `ProgramArguments` implementation:
+one owned native allocation holds writable UTF-8 strings and the null-terminated
+pointer table. Its lifetime encloses `ObjectProgram.Run`, including source normal
+exit callbacks. It is disposed only after that boundary returns to the host.

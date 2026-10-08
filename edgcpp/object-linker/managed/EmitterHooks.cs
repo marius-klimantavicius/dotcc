@@ -37,6 +37,13 @@ internal sealed partial class Emitter
                 }
 
                 public static int Run(delegate* managed<int> entry)
+                    => RunCore(entry, null, 0, null);
+
+                public static int Run(delegate* managed<int, sbyte**, int> entry, int argc, sbyte** argv)
+                    => RunCore(null, entry, argc, argv);
+
+                private static int RunCore(delegate* managed<int> entry,
+                    delegate* managed<int, sbyte**, int> argumentEntry, int argc, sbyte** argv)
                 {
                     Enter();
                     try
@@ -44,7 +51,7 @@ internal sealed partial class Emitter
                         try
                         {
                             InitializeLibrary();
-                            int result = entry();
+                            int result = argumentEntry == null ? entry() : argumentEntry(argc, argv);
                             NormalExit(result);
                             return result;
                         }

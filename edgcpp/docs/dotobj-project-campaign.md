@@ -313,3 +313,32 @@ so this is generation evidence, not execution acceptance. Default-argument
 constructor adapters are a distinct next origin contract: their default
 expressions, selected target and exception policy must remain owned. Virtual
 bases, hidden-result/copy ABIs, unwinding and full DuckDB execution remain open.
+
+
+## Defaults, nominal identity and program arguments, v19 (2026-10-08)
+
+Observed constructor default adapters now retain their private identity, original
+parameter defaults, exact selected target and independent exception policy.
+Their real bodies evaluate defaults once per constructed element. The unchanged
+independent-TU nonvirtual fixture now runs under JIT and NativeAOT with the shared
+vector runtime. Genuine EDG/LLVM typeinfo source providers additionally enable
+virtual dispatch and deleting destructors without fabricated vtable storage.
+
+Template specializations preserve finalized frontend names. Cross-unit tests
+prove shared external-inline local types and COMDAT state remain shared, while
+anonymous-namespace and private-function local types remain distinct even when
+header locations and layouts match. The exporter only reads finalized names;
+it does not remangle lowered IL or change frontend semantics. Writable UTF-8
+argc/argv storage now remains alive through source shutdown and atexit callbacks.
+
+The complete regression passes **1001 checks including NativeAOT** with native036
+and managed024. Focused defaults, nominal identity and argument suites pass 35,
+57 and 30 checks respectively. [Hashed v19 evidence](../evidence/dotobj-default-adapters-20261008.json)
+records the exact tools, source-free relinking and project frontier. All failed
+intermediate reductions remain retained.
+
+The actual DuckDB frontier has advanced to packed records, hidden result and
+indirect-value ABI, dynamic initialization and lifetime/exception obligations.
+No full DuckDB execution is claimed. The next implementation contract owns source
+routine ABI mappings rather than inferring original semantics from lowered
+pointer signatures.

@@ -13,6 +13,8 @@ import sys
 import lifetimes_verify
 import records_verify
 import references_verify
+import default_adapters_verify
+import template_identity_verify
 import storage_verify
 import project_c_verify
 import provider_verify
@@ -38,6 +40,8 @@ def main():
     parser.add_argument('--assignment-only', action='store_true', help='Run C++17 RHS-first assignment acceptance')
     parser.add_argument('--records-only', action='store_true', help='Run the focused record/layout acceptance')
     parser.add_argument('--references-only', action='store_true', help='Run C++ references, receiver ABI and source-signature checks')
+    parser.add_argument('--default-adapters-only', action='store_true', help='Run observed constructor defaults and real array runtime acceptance')
+    parser.add_argument('--template-identity-only', action='store_true', help='Run owned public/private template specialization identity acceptance')
     args = parser.parse_args()
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -76,12 +80,14 @@ def main():
                  'cpp_assignment_order.cpp', 'project_cpp_assignment_lifting.cpp',
                  'project_c_integer128.c', 'project_c_integer128_boundaries.c',
                  'project_cpp_integer128_enum.cpp', 'project_cpp_references_members.cpp',
-                 'project_cpp_block_copy.cpp', 'project_cpp_void_conditionals.cpp']:
+                 'project_cpp_block_copy.cpp', 'project_cpp_void_conditionals.cpp',
+                 'project_cpp_default_ctor_adapter.cpp', 'project_cpp_base_values.cpp',
+                 'template_identity_shared.h', 'template_identity_provider.cpp', 'template_identity_main.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v18', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v19', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -165,6 +171,14 @@ def main():
                     db.execute('UPDATE content_digest SET sha256=?', (MODULE.logical_hash(db),))
             return path
 
+        if args.template_identity_only:
+            template_identity_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+            save('passed')
+            return
+        if args.default_adapters_only:
+            default_adapters_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+            save('passed')
+            return
         if args.references_only:
             references_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
             save('passed')
@@ -295,6 +309,8 @@ def main():
         records_verify.malformed(record_provider, record_consumer, tool, run, link, mutate)
         storage_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
         references_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+        default_adapters_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+        template_identity_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
         project_objects = project_c_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
         project_c_verify.malformed(project_objects, tool, run, mutate)
         provider_verify.verify(inputs, out, tool, run, check, compile_source, execute)

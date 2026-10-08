@@ -13,5 +13,6 @@
     <EmbeddedResource Include="../../backend/runtime/VaList.cs" LogicalName="DotObj.Runtime.VaList.cs" />
     <EmbeddedResource Include="../../backend/runtime/VaArg.cs" LogicalName="DotObj.Runtime.VaArg.cs" />
     <EmbeddedResource Include="../../backend/runtime/VaPack.cs" LogicalName="DotObj.Runtime.VaPack.cs" />
+    <EmbeddedResource Include="../../backend/runtime/ProgramArguments.cs" LogicalName="DotObj.Runtime.ProgramArguments.cs" />
   </ItemGroup>
 </Project>

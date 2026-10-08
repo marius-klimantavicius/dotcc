@@ -1,7 +1,11 @@
 # Owned C++ record layout proposal
 
-Status: the first complete own-vptr/ABI-record subset is implemented in v15;
-base/subobject views and the remaining broader design below are pending. This
+Status: own-vptr/ABI records are implemented in v15; direct nonvirtual
+base/subobject views, alternate ABI entries and bounded block copies in v18;
+default-constructor adapters and the nominal identity correction below in v19.
+The early sections retain the original design and stock-backend evidence; the
+later milestone sections identify implemented boundaries. Packed access,
+indirect-value ABI and broader dynamic initialization/EH remain pending. This
 work changes neither EDG layout nor its lowering decisions. It separates
 original declarations from the physical records that EDG already constructs.
 
@@ -15,8 +19,8 @@ enabled, `&typeid(void)`.
 
 The immediate `std::type_info` blocker has a virtual destructor; it does **not**
 itself inherit from another class. Its original source declaration has one
-`__type_name` member. Rejecting it as “outside complete plain layout” currently
-prevents even retaining a pointer to that otherwise ordinary 16-byte layout.
+`__type_name` member. At native010, rejecting it as “outside complete plain layout”
+prevented even retaining a pointer to that otherwise ordinary 16-byte layout.
 
 Evidence lives under `/mnt/storage/dotcc-edg-campaign-20261003`:
 
@@ -404,6 +408,172 @@ The agreed next proposal, not enabled in profile 18, is:
   ABI need not retain `this_class`, so a generated-origin check replaces that
   one original-source comparison; it does not relax ordinary receiver proof.
 
-`project_cpp_default_ctor_adapter.cpp` is the pending native oracle. Its default
+`project_cpp_default_ctor_adapter.cpp` is the native oracle. Its default
 expression increments a counter, so an array of three objects must evaluate it
-three times. This detects moving evaluation outside the generated callback.
+three times. Native031/managed023 focused acceptance passes native, JIT and
+NativeAOT execution, source-free relinking and malformed-origin rejection
+(`dotobj-default-adapters-managed023-001/results.json`). This does not claim
+general initializer-list or indirect-value adapter coverage.
+
+## Packed mbedTLS wrapper assessment
+
+The actual DuckDB mbedTLS header chooses a packed one-field wrapper for each of
+`uint16_t`, `uint32_t` and `uint64_t`, then deliberately loads/stores `p->x` at
+possibly unaligned addresses. These helpers do not use volatile. The retained
+`dotobj-packed-record-research-001` reduction passes EDG assertions that its
+32-bit wrapper has size 4, alignment 1 and member offset 0. Stock C preserves
+`__attribute__((__packed__))` and ordinary member syntax; compiled stock C passes
+reads/writes at byte offsets 1 and 3 without touching adjacent sentinels.
+
+The authoritative EDG query for effective field alignment is
+`alignment_of_field_full(field, FALSE)` in `layout.c`. It accounts for explicit
+field alignment, field/class packing, pragma maximum alignment, and ABI cases
+where a packed attribute is ignored for non-POD members. Using only the scalar
+member type's natural alignment would reject valid source layouts or silently
+create invalid access assumptions.
+
+A future owned contract should preserve original record `isPacked` and
+`maxMemberAlignment`, original field `isPacked` and `explicitAlignment`, and the
+physical field's effective alignment. Managed explicit-layout records must retain
+exact size and offsets. Guaranteed unaligned reads/writes should use BCL
+`Unsafe.ReadUnaligned`/`Unsafe.WriteUnaligned` (pointer values through a native
+integer representation), unless a stronger CLR/target proof is established.
+This cannot be implemented by only removing the existing alignment check.
+
+Alignment belongs to the actual place as well as its nominal type. For nested
+packed members, a containing record can reduce the alignment of an otherwise
+ordinary nested record; access planning must carry that reduction through member
+chains. Address expressions must still designate the actual bytes, and compound
+assignment must evaluate the owner once. Volatile/atomic underaligned access
+needs its own contract and should remain rejected in the initial packed tranche.
+The existing natural-layout and packed-source guards remain active today.
+
+
+## Proposed source-to-execution routine ABI mapping
+
+This is a design for the next tranche, not enabled by profile 19. Actual DuckDB
+now reaches hidden result buffers and nontrivial parameters passed indirectly.
+These are distinct from C++ references: a written class value parameter remains
+an owned source class value declaration even when EDG's execution ABI passes a
+pointer to an already-constructed object.
+
+The mapping must be keyed by the original **source routine type**, not solely by
+its physical execution routine type. Two physical signatures `void(T*, T*)` can
+mean result-buffer then receiver, receiver then result-buffer, or two written
+pointer parameters. Proposed rows are:
+
+- `sourceRoutineAbis(sourceRoutineTypeId, returnPassing, captureProof)`, where
+  `returnPassing` is `direct` or `result-buffer`. A header is required even for a
+  zero-argument routine, making a missing result role detectable.
+- `sourceRoutineAbiParameters(sourceRoutineTypeId, executionOrdinal,
+  parameterRole, sourceOrdinal)`, where roles are `source`, `indirect-source`,
+  `this` and `result-buffer`. Each original source ordinal occurs exactly once;
+  hidden parameters have no source ordinal.
+
+`lower_il.c` first calls `set_lowered_routine_calling_method_flag` and then
+inserts physical result/receiver formal parameters. The observation belongs
+between those operations, using the already-retained original source return
+and parameter types. The routine return type may already have been visited by
+lowering at this point; recapturing it would lose original type information.
+Record the actual `value_returned_as_parameter`,
+`return_value_parameter_follows_this` and original
+`passed_via_copy_constructor` facts. On the current IA64 ABI, the hidden result
+precedes the receiver; the owned map still records order explicitly.
+
+`lower_scope` creates an exact `return_value_pointer_variable`, inserts the
+receiver in the selected position, and adds an indirection to the **existing**
+original parameter variables. Observe the created result variable itself.
+`scope.return_value_variable` is an NRVO local and is not this hidden parameter.
+Result/receiver bindings are synthetic only through their exact observed
+identities; indirect original parameters remain nonsynthetic, with their source
+declarations and source names. Entity parameter rows must agree with the source
+routine ABI map. Generated `forwarded-source` parameters should be checked
+against their primary's physical slot by source ordinal, preserving both their
+forwarding origin and indirect passing mode.
+
+The original parameter use rewrite already exists in stock lowering:
+`lower_il.c` turns uses of parameters marked `passed_via_copy_constructor` into
+pointer binding loads and indirections, preserving source lvalueness. The owned
+backend should emit those typed operations without inserting a second layer of
+copies or changing construction/destruction. A result-buffer signature has a
+physical void return and one pointer to the original result representation.
+Calls retain the actual destination pointer and all lowered construction actions.
+
+C++ proof should come from an observed routine-lowering boundary. Ordinary C
+needs a separate direct-signature proof because it does not run that C++ path;
+a typed translation-unit source-language fact would let the verifier constrain
+that proof. Callback signatures reachable only through record fields must also
+be covered. An original type without a proven relationship to an observed
+physical signature must not silently gain an invented lowering proof.
+
+Existing rejection of unrepresented destruction, EH, VTT, variadic adaptation
+and returned-this ABI forms remains in force. Supporting a physical pointer ABI
+alone does not discharge the source object's construction/lifetime obligations.
+
+## Next dynamic initialization and cleanup boundary
+
+Global dynamic initialization cannot be modeled as only a static byte image.
+Stock `b_lower_file_scope_dynamic_inits` builds ordered initialization routines,
+with separate handling for priorities, TLS and guarded inline/template objects.
+The owned exporter needs observed origins for these generated routines and
+storage-to-action correspondence, then must root observable initialization even
+when the initialized variable has no ordinary read. All backing storage must
+exist before the action runs. The existing explicit `InitializeLibrary` boundary
+is the appropriate hosting entry; arbitrary source constructors must not execute
+under a CLR type-initializer lock.
+
+Destructor registration is an executed action after successful construction.
+Stock `record_needed_destruction` emits `__cxa_atexit` or `__cxa_thread_atexit`
+with an object pointer and real destructor callback (or a generated termination
+helper). Retaining those calls permits completion-order registration, reverse
+shutdown order and per-thread destruction. They must not be replaced by an
+unconditional static list of destructors.
+
+Local static initialization has a published fast path as well as the runtime
+guard calls. Stock lowering marks the outer guard-byte condition and inner
+acquisition condition with `is_initialization_guard`; the guard-byte load needs
+acquire/volatile semantics in managed execution. Exact guard/load provenance must
+be retained, and ordinary unrelated conditions must remain ordinary reads.
+Successful initialization releases the guard; failed initialization runs the
+owned guard-abort cleanup so later calls can retry. Shared runtime guard helpers
+alone do not establish these control-flow and publication semantics.
+
+For throwing scopes, original lifetime lists and lowered EH cleanup regions
+provide complementary facts. Source lifetimes describe destruction boundaries;
+`a_destructible_entity_descr` retains the actual initialization location,
+conditional activation, partial-array state and cleanup transition. Its region
+chain can differ from the original source list after cloning and lowering.
+The owned format should identify typed binding/storage places and exact routines,
+not preserve raw frame offsets or serialize legacy C# cleanup text. Scope exit,
+exception escape, partial construction and a second exception during unwinding
+must all follow the selected cleanup schedule.
+
+
+## Verified C++ nominal identity boundary
+
+Native036 copies already-finalized stock names for template specializations and
+namespace-private C++ records; it never calls the mangler during backend
+serialization. Re-entering the mangler after lowering lost namespace ancestry
+and could query frontend-only ownership or already-lowered function types. The
+failed 031–035 probes remain retained as evidence for those boundaries.
+
+The dot backend intentionally keeps function-local classes in their scopes, so
+it cannot require the promoted names that the stock C backend gives such types.
+For those records, the exporter retains the exact original enclosing routine,
+its linkage, and the frontend's per-function declaration discriminator. It then
+combines the finalized owner routine symbol with that declaration identity.
+Only a private owner adds the explicit object unit ID supplied by the driver;
+local classes of an external inline function retain one cross-TU identity.
+No identity derives solely from a shared header's filename and line. C record
+identity behavior is unchanged by this C++ correction.
+
+The fallback does not guess closure identity: lambda discriminator sequences
+can depend on call-operator signatures. A closure without an exact finalized
+stock name remains rejected until its full distinguishing signature is owned.
+
+`dotobj-template-identity-managed024-004/results.json` records 57 passing checks
+with native O0/O2, JIT, NativeAOT and source-free linking. The fixture covers
+namespace/type/non-type template distinctions, identical-header anonymous types
+with equal and unequal layouts, private-function local types, and shared
+external-inline local classes and their template specializations. Shared inline
+storage addresses and mutations are checked across translation units.

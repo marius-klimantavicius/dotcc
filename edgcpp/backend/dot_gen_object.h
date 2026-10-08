@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v18: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v19: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -172,7 +172,23 @@ struct Writer {
       identity=key->second;name=source_spelling(&t->source_corresp);
     } else {
       identity=source->identity;name=source->name;layout=source->layout_kind;pos=source->position;
-      if(source->template_identity)identity="record-abi:"+string(mangled_class_name(complete));
+      if(source->template_identity || (!C_mode() && identity.find("local-record:")==0)) {
+        // The stock name retains actual namespace/function ownership: private
+        // namespace types are TU-specific even at a shared header position,
+        // while external inline-function local types retain their ODR identity.
+        auto finalized=captured.finalized_record_identities.find(complete);
+        auto local=captured.owned_local_record_identities.find(complete);
+        if(finalized==captured.finalized_record_identities.end() && local==captured.owned_local_record_identities.end()) {
+          const auto &actual=complete->source_corresp;
+          reject((string("template/local C++ record lacks finalized frontend identity: ")+source->identity+
+            " actual-name="+(actual.name?actual.name:"<null>")+
+            " mangled="+(actual.name_has_been_mangled?"true":"false")+
+            " pending="+(actual.final_name_mangling_pending?"true":"false")+
+            " template="+(source->template_identity?"true":"false")).c_str());
+        }
+        identity=finalized!=captured.finalized_record_identities.end()?
+          "record-abi:"+finalized->second:"record-local-owner:"+local->second;
+      }
       if(identity.find("local-record:")==0) {
         a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
         conv_seq_to_file_and_line(source->position.seq,&display,&full,&line,&at_end);
@@ -735,9 +751,13 @@ struct Writer {
     source_declaration(captured.declaration,"function",entity,0,0);
     source_functions.push_back("{\"entityId\":"+number(entity)+",\"returnSourceTypeId\":"+number(source_type(captured.declaration.type))+
       ",\"capturePhase\":\"before-lowering\",\"routineSourceTypeId\":"+number(source_type(captured.signature_type))+",\"functionKind\":"+quote(captured.function_kind)+"}");
+    if(captured.parameter_defaults.size()!=captured.parameters.size())reject("source default-argument snapshot arity mismatch");
     unsigned ordinal=0;
-    for(auto parameter:captured.parameters)
-      source_parameters.push_back("{\"entityId\":"+number(entity)+",\"ordinal\":"+std::to_string(ordinal++)+",\"sourceTypeId\":"+number(source_type(parameter))+"}");
+    for(auto parameter:captured.parameters) {
+      unsigned parameter_ordinal=ordinal++;
+      source_parameters.push_back("{\"entityId\":"+number(entity)+",\"ordinal\":"+std::to_string(parameter_ordinal)+",\"sourceTypeId\":"+number(source_type(parameter))+
+        ",\"hasDefaultArgument\":"+(captured.parameter_defaults.at(parameter_ordinal)?"true":"false")+"}");
+    }
   }
   unsigned node(const string &kind,unsigned ty,const a_source_position &pos,
                 unsigned entity=0,unsigned binding=0,const string &op="",
@@ -797,11 +817,13 @@ struct Writer {
     auto found=routine_ids.find(r);if(found!=routine_ids.end())return found->second;
     diagnostic_scope diagnostic(r->source_corresp.decl_position);
     auto primary=dot_object_source::abi_primary(r);
+    auto adapter_it=dot_object_source::state().default_adapters.find(r);
+    const dot_object_source::DefaultAdapter *adapter=adapter_it==dot_object_source::state().default_adapters.end()?nullptr:&adapter_it->second;
     string entry_kind;
 #if DO_IL_LOWERING && IA64_ABI
     if(primary) {
       if(dot_object_source::abi_primary(primary) || primary==r)reject("cyclic/generated primary ABI origin");
-      entry_kind=r->ctor_dtor_kind==cdk_deleting?"deleting":r->ctor_dtor_kind==cdk_subobject?"subobject":
+      entry_kind=adapter?"constructor-default-adapter":r->ctor_dtor_kind==cdk_deleting?"deleting":r->ctor_dtor_kind==cdk_subobject?"subobject":
         r->ctor_dtor_kind==cdk_complete?"complete":"unsupported";
       if(entry_kind=="unsupported" || ctors_return_this || dtors_return_this || targ_ia64_abi_variant_ctors_and_dtors_return_this)
         reject("alternate entry outside ordinary nondelegating void-return ABI");
@@ -810,6 +832,22 @@ struct Writer {
          (entry_kind=="deleting" && original->second.function_kind!="destructor"))reject("alternate lacks original constructor/destructor proof");
       const auto &signature=dot_object_source::state().types.at(original->second.signature_type-1);
       if(signature.variadic || !signature.object_type)reject("variadic/receiverless alternate entry");
+      if(adapter) {
+        if(original->second.function_kind!="constructor" || adapter->implied_arguments || adapter->copy_constructor ||
+           !adapter->has_arguments || primary->is_initializer_list_ctor || r->storage_class!=sc_static || r->is_alias_entry)
+          reject("default constructor adapter outside ordinary receiver-only contract");
+        if(dot_object_source::state().default_adapters.count(adapter->target))reject("recursive default constructor adapter target");
+        if(adapter->target!=primary &&
+           (dot_object_source::abi_primary(adapter->target)!=primary ||
+            (adapter->target->ctor_dtor_kind!=cdk_complete && adapter->target->ctor_dtor_kind!=cdk_subobject)))
+          reject("default constructor adapter target lacks direct original entry proof");
+        if(original->second.parameters.empty() || original->second.parameter_defaults.size()!=original->second.parameters.size())
+          reject("default constructor adapter lacks original default-parameter facts");
+        for(bool has_default:original->second.parameter_defaults)
+          if(!has_default)reject("receiver-only adapter omits a nondefault original parameter");
+        auto formal=skip_typerefs(r->type)->variant.routine.extra_info->param_type_list;
+        if(!formal || formal->next)reject("default constructor adapter has additional execution parameters");
+      }
       if(skip_typerefs(r->type)->variant.routine.extra_info->has_ellipsis ||
          skip_typerefs(skip_typerefs(r->type)->variant.routine.return_type)->kind!=tk_void ||
          skip_typerefs(skip_typerefs(primary->type)->variant.routine.return_type)->kind!=tk_void)
@@ -831,6 +869,7 @@ struct Writer {
     auto extra=t->variant.routine.extra_info;
     auto body=r->function_def_number==NULL_function_def_number?nullptr:scope_for_routine_or_null(r);
     if(r->function_def_number!=NULL_function_def_number && !body)reject("unavailable function body");
+    if(adapter && !body)reject("observed default constructor adapter lacks its executable body");
     bool known_empty_definition=!extra->prototyped && C_mode() && body &&
       !extra->param_type_list && !extra->has_ellipsis && !body->variant.routine.parameters;
     if(!extra->prototyped && !known_empty_definition)reject("unresolved/nonempty unprototyped function");
@@ -845,6 +884,7 @@ struct Writer {
     auto key=routine_linker_symbol(r);
     bool external=r->source_corresp.name_linkage==nlk_external || r->source_corresp.name_linkage==nlk_cplusplus_external;
     if(external && key.empty())reject("missing exact external identity");
+    if(adapter && external)reject("default constructor adapter is not TU-private");
     bool coalescible=r->is_inline || (r->is_template_function && !r->is_specialized);
 #if DO_IL_LOWERING && IA64_ABI
     coalescible=coalescible || r->use_comdat;
@@ -855,9 +895,11 @@ struct Writer {
     if(primary) {
 #if DO_IL_LOWERING && IA64_ABI
       unsigned primary_id=routine(primary);
+      unsigned target_id=adapter?routine(adapter->target):0;
       abi_routine_origins.push_back("{\"entityId\":"+number(id)+",\"primaryEntityId\":"+number(primary_id)+
         ",\"entryKind\":"+quote(entry_kind)+",\"isAliasEntry\":"+(r->is_alias_entry?"true":"false")+
-        ",\"captureProof\":\"primary-ctor-dtor-link\"}");
+        ",\"captureProof\":"+quote(adapter?"observed-default-wrapper-creation":"primary-ctor-dtor-link")+
+        ",\"targetEntityId\":"+number(target_id)+"}");
 #endif
     } else source_function(r,id);
     unsigned ordinal=0;
@@ -866,7 +908,7 @@ struct Writer {
     const auto &source_function_value=source_function_it->second;
     const auto &source_signature=dot_object_source::state().types.at(source_function_value.signature_type-1);
     bool has_this=source_signature.object_type!=0;
-    if(has_this!=(extra->this_class!=nullptr))reject("source/execution receiver disagreement");
+    if(!adapter && has_this!=(extra->this_class!=nullptr))reject("source/execution receiver disagreement");
     if(extra->value_returned_as_parameter)reject("hidden result-buffer routine ABI");
     for(auto p=extra->param_type_list;p;p=p->next,++ordinal) {
       if(p->passed_via_copy_constructor)reject("nontrivial indirect-value parameter ABI");
@@ -891,7 +933,7 @@ struct Writer {
       parameters.push_back("{\"entityId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal)+",\"typeId\":"+number(type_id(p->type))+
         ",\"parameterRole\":"+quote(receiver?"this":primary?"forwarded-source":"source")+",\"sourceOrdinal\":"+(receiver?"null":std::to_string(source_ordinal))+"}");
     }
-    if(ordinal!=source_function_value.parameters.size()+(has_this?1:0))
+    if(ordinal!=(adapter?1:source_function_value.parameters.size()+(has_this?1:0)))
       reject((string("missing source/receiver ABI parameters in ")+source_spelling(&r->source_corresp)+" ["+key+"] execution="+
         std::to_string(ordinal)+" source="+std::to_string(source_function_value.parameters.size())+" receiver="+(has_this?"1":"0")).c_str());
     return id;
@@ -2010,7 +2052,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v18\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v19\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

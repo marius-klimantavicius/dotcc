@@ -25,7 +25,7 @@ ARRAYS = {
                               'returnTypeId', 'sourceFileId', 'line', 'column', 'routineTypeId']),
     'parameters': ('parameters', ['entityId', 'ordinal', 'typeId', 'parameterRole', 'sourceOrdinal']),
     'functions': ('functions', ['entityId', 'bodyNodeId']),
-    'abiRoutineOrigins': ('abi_routine_origins', ['entityId', 'primaryEntityId', 'entryKind', 'isAliasEntry', 'captureProof']),
+    'abiRoutineOrigins': ('abi_routine_origins', ['entityId', 'primaryEntityId', 'entryKind', 'isAliasEntry', 'captureProof', 'targetEntityId']),
     'initializationActions': ('initialization_actions', ['id', 'entityId', 'phase', 'priority', 'ordinal', 'sourceFileId', 'line', 'column']),
     'bindings': ('bindings', ['id', 'functionId', 'kind', 'ordinal', 'typeId', 'sourceName',
                               'scopeNodeId', 'sourceFileId', 'line', 'column', 'isSynthetic']),
@@ -46,7 +46,7 @@ ARRAYS = {
     'sourceTypes': ('source_types', ['id', 'kind', 'sourceName', 'underlyingTypeId',
                                    'executionTypeId', 'isConst', 'isVolatile', 'sourceFileId', 'line', 'column', 'elementCount']),
     'sourceFunctions': ('source_functions', ['entityId', 'returnSourceTypeId', 'capturePhase', 'routineSourceTypeId', 'functionKind']),
-    'sourceParameters': ('source_parameters', ['entityId', 'ordinal', 'sourceTypeId']),
+    'sourceParameters': ('source_parameters', ['entityId', 'ordinal', 'sourceTypeId', 'hasDefaultArgument']),
     'sourceDeclarations': ('source_declarations', ['id', 'kind', 'sourceName', 'sourceTypeId',
                           'entityId', 'bindingId', 'functionEntityId', 'sourceFileId', 'line', 'column']),
 }
@@ -112,8 +112,13 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v18':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v19':
         raise ValueError('Unsupported semantic wire version/profile')
+    for kind, value in provenance:
+        if kind == 'environment':
+            captured_unit = json.loads(value).get('EDG_DOT_OBJECT_UNIT_ID')
+            if captured_unit is not None and captured_unit != unit_id:
+                raise ValueError('Owned translation unit identity differs from producer environment')
     source_hashes = {}
     with sqlite3.connect(path) as db:
         db.executescript(SCHEMA.read_text())
@@ -125,7 +130,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1)',
-                   ('scalar-control-v18', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v19', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source)))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))
@@ -210,7 +215,7 @@ def main():
             command += [option + value]
     command += ['--', str(source)]
     env = dict(os.environ, EDG_BASE=str(ROOT / 'upstream/bases/docker/dev-env/gcc'),
-               EDG_DOT_OBJECT='1', EDG_DOT_TARGET='portable-lp64-binary80-v2',
+               EDG_DOT_OBJECT='1', EDG_DOT_OBJECT_UNIT_ID=unit_id, EDG_DOT_TARGET='portable-lp64-binary80-v2',
                EDG_DOT_NAMESPACE='@DotObject', EDG_DOT_CLASS='@Unit',
                EDG_DOT_EMIT='managedlib', EDG_DOT_INSTANCE='0', EDG_DOT_NEST='1',
                EDG_DOT_LIBC='none', EDG_DOT_RUNTIME='none', EDG_DOT_POSIX='0')

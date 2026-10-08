@@ -283,10 +283,31 @@ object_source_overlay(symbols,
     '#endif\n'
     '      free_saved_macro_state(smsp);\n')
 
-for filename in ("lower_il.c", "lower_c99.c"):
+wrapup = root / "upstream/src/fe_wrapup.c"
+object_source_overlay(wrapup,
+    '#include "fe_wrapup.h"',
+    '#include "fe_wrapup.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
+object_source_overlay(wrapup,
+    '  wrap_up_file_scopes();\n\n  in_front_end = FALSE;',
+    '  wrap_up_file_scopes();\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_frontend_identity_boundary();\n'
+    '#endif\n\n  in_front_end = FALSE;')
+
+for filename in ("lower_il.c", "lower_c99.c", "lower_init.c"):
     object_source_overlay(root / "upstream/src" / filename,
         '#include "exprutil.h"',
         '#include "exprutil.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
+init_lower = root / "upstream/src/lower_init.c"
+object_source_overlay(init_lower,
+    '    define_default_version_of_routine(routine, new_routine, \n'
+    '                                      default_arg_list);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_default_adapter(routine, new_routine,\n'
+    '        any_implied_args, cctor_case, default_arg_list != NULL);\n'
+    '#endif\n'
+    '    define_default_version_of_routine(routine, new_routine, \n'
+    '                                      default_arg_list);')
 eh_lower = root / "upstream/src/lower_eh.c"
 object_source_overlay(eh_lower,
     '#include "lower_hdrs.h"',

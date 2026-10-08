@@ -1,6 +1,8 @@
 """Plain record/layout acceptance for the owned object pipeline."""
 import json
 import sqlite3
+import sys
+from pathlib import Path
 
 
 def verify(inputs, out, tool, run, check, compile_source, link, execute):
@@ -42,12 +44,19 @@ def verify(inputs, out, tool, run, check, compile_source, link, execute):
     execute('records-owner-collision', link('link-records-owner-collision', [provider, consumer], cls='RecordNode'))
 
     for name in ['project_cpp_record_origins', 'project_cpp_vptr_layout', 'project_cpp_constant_storage',
-                 'project_cpp_integer128_enum', 'project_cpp_block_copy', 'project_cpp_void_conditionals']:
+                 'project_cpp_integer128_enum', 'project_cpp_block_copy', 'project_cpp_void_conditionals',
+                 'project_cpp_base_values']:
         source = inputs / (name + '.cpp')
         obj = compile_source(name, source, extra=['--exceptions', '--rtti'])
         run(name + '-native-build', ['c++', '-std=c++17', '-O2', source, '-o', out / (name + '-native')])
         run(name + '-native', [out / (name + '-native')])
-        execute(name, link('link-' + name, [obj]))
+        if name == 'project_cpp_base_values':
+            directory = out / ('link-' + name)
+            run('link-' + name, ['dotnet', tool, 'link', '--allow-externs', '--out', directory, '--entry', 'main', obj])
+            run('bind-' + name, [sys.executable, Path(__file__).resolve().parents[1] / 'runtime/bind.py', '--project', directory])
+            execute(name, directory)
+        else:
+            execute(name, link('link-' + name, [obj]))
         with sqlite3.connect(obj) as db:
             if name == 'project_cpp_record_origins':
                 check('record-original-zero-width-preserved', db.execute(
