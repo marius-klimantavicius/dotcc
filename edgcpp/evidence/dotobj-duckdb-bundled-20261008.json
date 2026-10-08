@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 16,
+  "scope": "Original DuckDB bundled miniz.cpp and xxhash.cpp independently exported to .dotobj and linked together",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-bundled-acceptance-003/results.json",
+    "sha256": "1ad33595275f35927c5e80d57dd2bbf9f5113d2244bc3a1e06135a4973238af1"
+  },
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "linkedFunctions": 185,
+  "runtimeImports": 7,
+  "unresolvedImports": 0,
+  "inputCases": 72,
+  "checksDescription": [
+    "Unmodified original bundled source built natively for oracle; independent source objects used for managedlink",
+    "Compression levels0/1/9; random, repeating and uniform inputs of0..65536bytes",
+    "Exact byte-for-byte compressed output across native/JIT/NativeAOT",
+    "Decompression roundtrip and truncatedinputrejection",
+    "CRC32/Adler32 parity plus xxHash32/64 one-shot, incremental streaming and canonical conversion",
+    "Forced GC between datasets"
+  ],
+  "limitations": [
+    "DuckDB bundled dependencies only; full DuckDB C++ engine remains under implementation",
+    "No whole-engine SQL/test-suite acceptance yet"
+  ]
+}
