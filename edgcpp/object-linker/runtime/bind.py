@@ -145,17 +145,46 @@ def service_sources(groups, allocation):
     return code + '}\n', helpers
 
 
-def bind(project, allow_unresolved=False):
+def provided_methods(project, requirements, paths):
+    """Accept separately authored providers only for this exact linked contract."""
+    keys = ('ExternalKey', 'Signature', 'container', 'generatedName')
+    expected = {tuple(row[key] for key in keys) for row in requirements}
+    provided, receipts = {}, []
+    for path in paths:
+        path = Path(path).resolve()
+        receipt = json.loads(path.read_text())
+        if receipt.get('schema') != 1 or receipt.get('status') != 'provided' or receipt.get('linkReportSha256') != sha(project / 'link-report.json'):
+            raise ValueError('Provider receipt belongs to a different linked contract: ' + str(path))
+        if not receipt.get('files'):
+            raise ValueError('Provider receipt has no implementation files: ' + str(path))
+        for name, digest in receipt['files'].items():
+            if Path(name).name != name or not name.endswith('.cs') or sha(project / name) != digest:
+                raise ValueError('Provider implementation changed or has an invalid path: ' + name)
+        for method in receipt['methods']:
+            key = tuple(method[column] for column in keys)
+            if key not in expected or key in provided:
+                raise ValueError('Provider requirement is absent or provided twice: ' + method['ExternalKey'])
+            provided[key] = str(path)
+        receipts.append(dict(path=str(path), sha256=sha(path)))
+    return provided, receipts
+
+
+def bind(project, allow_unresolved=False, provider_receipts=()):
     link = json.loads((project / 'link-report.json').read_text())
+    provided, receipts = provided_methods(project, link['runtimeRequirements'], provider_receipts)
     boundaries = Boundaries(project, link)
     definitions, binding_inputs = mappings()
-    methods = []
+    methods, provider_bound = [], []
     for requirement in link['runtimeRequirements']:
+        key = tuple(requirement[column] for column in ('ExternalKey', 'Signature', 'container', 'generatedName'))
+        if key in provided:
+            provider_bound.append(dict(name=requirement['ExternalKey'], providerReceipt=provided[key]))
+            continue
         arguments = [(p['type'], p['name']) for p in requirement['parameters']]
         methods.append(dict(result=requirement['returnType'], name=requirement['generatedName'],
                             symbol=requirement['ExternalKey'], container=requirement['container'], arguments=arguments,
                             variadic=requirement['variadic'], variadicParameter=requirement['variadicParameter']))
-    bound, unresolved, bodies, helpers, allocation, groups = [], [], {}, set(), set(), set()
+    bound, unresolved, bodies, helpers, allocation, groups = provider_bound, [], {}, set(), set(), set()
     services = 'global::Edg.Runtime.DotObjServices.'
     for method in methods:
         signature = (method['symbol'], boundaries.classify(method['result'])[0], tuple(boundaries.classify(t)[0] for t, _ in method['arguments']))
@@ -236,7 +265,7 @@ def bind(project, allow_unresolved=False):
     report = dict(schema=1, status='bound' if not unresolved else 'unresolved', linkReport=dict(path=str(project / 'link-report.json'), sha256=sha(project / 'link-report.json')),
                   sourceMap=dict(path=str(project / link['sourceMap']), sha256=sha(project / link['sourceMap'])),
                   bindingInputs=binding_inputs, implementationInputs=sources, sourceDependencyGraph=dict(path=str(EDG / 'dotnet.py'), sha256=sha(EDG / 'dotnet.py')),
-                  bound=bound, unresolved=unresolved, reusedFiles=reused,
+                  bound=bound, unresolved=unresolved, reusedFiles=reused, providerReceipts=receipts,
                   runtimeMode='static translation; per-assembly libc state', executionVerified=False)
     report_path = project / 'runtime-bindings.json'
     if report_path.exists():
@@ -258,8 +287,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--project', type=Path, required=True)
     parser.add_argument('--allow-unresolved', action='store_true', help='stage known bindings for review; unresolved partials still fail C# compilation')
+    parser.add_argument('--provider-receipt', action='append', type=Path, default=[], help='validated receipt for project-specific partial implementations in this linked project')
     args = parser.parse_args()
-    report = bind(args.project.resolve(), args.allow_unresolved)
+    report = bind(args.project.resolve(), args.allow_unresolved, args.provider_receipt)
     print(json.dumps(dict(status=report['status'], bound=len(report['bound']), unresolved=len(report['unresolved']))))
 
 

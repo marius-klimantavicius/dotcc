@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 21,
+  "scope": "SQLite public header/APPDEF platform boundary; full SQLite engine is not executed by this test",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-runtime-acceptance-002/results.json",
+    "sha256": "dcd83e93df480cc3d6a24302edb0b2e636dbcdb3e402cbd679827f32ec3b6072"
+  },
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-compiler-010/cpfe-dot",
+    "sha256": "d276f11c6173592ca11563a86df3cd96f0f79a98cea6afb738ea154c21eac14f"
+  },
+  "linker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-008/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "37bd4a7ebef27db029aba4113e04f2fc07e431d8d893c0877a07a0c5ed47d159"
+  },
+  "sqliteHeader": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-manifest-001/input/sqlite3.h",
+    "sha256": "919e7f2e8ed1d8f56ac17b412b8971c76aa5d1a879752cc6058f75e7d5910e1d"
+  },
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "sourceProvider": {
+    "path": "sqlite/src/HostVfs.Mutex.cs",
+    "sha256": "d73b217c6c240053fcfbf6bbdd3a00601cb95cf596023d400e683fd472629528"
+  },
+  "checksDescription": [
+    "Actual SQLite public mutex record/callback ABI",
+    "Canonical dotcc BCL mutex implementation reused without algorithm changes",
+    "Binding after original translation input paths disappear",
+    "Recursive enter/try/leave, held/not-held assertions and static identities across restart",
+    "Cross-thread contention followed by acquire; callback table survives forced full GC",
+    "Project provider receipts reject changed C# source, wrong signature and duplicate provider",
+    "JIT and NativeAOT exit/output parity"
+  ]
+}

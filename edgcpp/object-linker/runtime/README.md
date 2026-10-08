@@ -34,6 +34,23 @@ methods still fail compilation. In strict mode a failed binding attempt writes
 only its diagnostic receipt. Use a fresh linked output for each attempt; existing
 outputs are retained rather than overwritten.
 
+Project-specific providers can be supplied with repeated
+`--provider-receipt RECEIPT.json`. The binder checks the exact link-report hash,
+external identity, semantic signature, generated owner/name, and every supplied
+implementation file hash. Missing requirements, duplicate providers, changed
+implementation files, and stale contracts fail before runtime emission.
+
+For the prepared SQLite Unix/APPDEF profile, first run
+`sqlite.py --project OUTPUT`, then pass its `runtime-sqlite.json` receipt to
+`bind.py`. This reuses `sqlite/src/HostVfs.Mutex.cs`, validates the nine typed
+SQLite mutex callbacks, and reads the needed integer constants from the owned
+macro map. It supplies the mutex table, memory barrier, and runtime-selected
+database mmap support hook. No original SQLite headers are needed at binding
+time. The current adapter uses assembly-lifetime static mutex identities.
+`tests/sqlite_runtime_verify.py` verifies this boundary against the actual public
+SQLite header, contention, GC, source-free binding, and NativeAOT; it does not
+establish full engine execution.
+
 `runtime-bindings.json` records the exact canonical source hashes, import-table
 hashes, reused runtime files, generated files, and unresolved requirements.
 This is binding evidence, not execution evidence. Run
