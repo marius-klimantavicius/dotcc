@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v11'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v12'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -35,25 +35,83 @@ CREATE TABLE source_files (
 ) STRICT;
 CREATE TABLE types (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind IN ('void','i8','u8','i16','u16','i32','u32','i64','u64','f32','f64','bool','pointer','array','record')),
+ kind TEXT NOT NULL CHECK(kind IN ('void','i8','u8','i16','u16','i32','u32','i64','u64','f32','f64','bool','pointer','array','record','routine','va-list')),
  pointee_type_id INTEGER REFERENCES types(id),
  element_type_id INTEGER REFERENCES types(id),
  element_count INTEGER,
  CHECK((kind='pointer' AND pointee_type_id IS NOT NULL) OR
        (kind<>'pointer' AND pointee_type_id IS NULL)),
- CHECK((kind='array' AND element_type_id IS NOT NULL AND element_count IS NOT NULL AND element_count>0) OR
+ CHECK((kind='array' AND element_type_id IS NOT NULL AND element_count IS NOT NULL AND element_count>=0) OR
        (kind<>'array' AND element_type_id IS NULL AND element_count IS NULL))
+) STRICT;
+CREATE TABLE routine_types (
+ type_id INTEGER PRIMARY KEY REFERENCES types(id),
+ return_type_id INTEGER NOT NULL REFERENCES types(id),
+ variadic INTEGER NOT NULL CHECK(variadic IN (0,1)),
+ exception_policy TEXT NOT NULL CHECK(exception_policy IN ('unwind','terminate'))
+) STRICT;
+CREATE TABLE routine_parameters (
+ type_id INTEGER NOT NULL REFERENCES routine_types(type_id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ parameter_type_id INTEGER NOT NULL REFERENCES types(id),
+ PRIMARY KEY(type_id,ordinal)
+) STRICT;
+CREATE TABLE source_routine_types (
+ type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
+ return_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ variadic INTEGER NOT NULL CHECK(variadic IN (0,1)),
+ exception_policy TEXT NOT NULL CHECK(exception_policy IN ('unwind','terminate'))
+) STRICT;
+CREATE TABLE source_routine_parameters (
+ type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ parameter_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ PRIMARY KEY(type_id,ordinal)
+) STRICT;
+CREATE TABLE storages (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ source_name TEXT NOT NULL,
+ linkage TEXT NOT NULL CHECK(linkage IN ('external','internal')),
+ external_key TEXT,
+ definition TEXT NOT NULL CHECK(definition IN ('declaration','strong','linkonce')),
+ type_id INTEGER NOT NULL REFERENCES types(id),
+ source_type_id INTEGER REFERENCES source_types(id),
+ is_thread_local INTEGER NOT NULL CHECK(is_thread_local IN (0,1)),
+ is_const INTEGER NOT NULL CHECK(is_const IN (0,1)),
+ alignment INTEGER NOT NULL CHECK((alignment>0 AND (alignment & (alignment-1))=0) OR (alignment=0 AND definition='declaration')),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ CHECK((linkage='external' AND external_key IS NOT NULL) OR
+       (linkage='internal' AND external_key IS NULL))
+) STRICT;
+CREATE TABLE storage_data (
+ storage_id INTEGER NOT NULL REFERENCES storages(id),
+ byte_offset INTEGER NOT NULL CHECK(byte_offset>=0),
+ bytes BLOB NOT NULL CHECK(length(bytes)>0),
+ PRIMARY KEY(storage_id,byte_offset)
+) STRICT;
+CREATE TABLE relocations (
+ storage_id INTEGER NOT NULL REFERENCES storages(id),
+ byte_offset INTEGER NOT NULL CHECK(byte_offset>=0),
+ target_storage_id INTEGER REFERENCES storages(id),
+ target_entity_id INTEGER REFERENCES entities(id),
+ addend INTEGER NOT NULL,
+ PRIMARY KEY(storage_id,byte_offset),
+ CHECK((target_storage_id IS NOT NULL AND target_entity_id IS NULL) OR
+       (target_storage_id IS NULL AND target_entity_id IS NOT NULL))
 ) STRICT;
 CREATE TABLE entities (
  id INTEGER PRIMARY KEY CHECK(id>0),
  source_name TEXT NOT NULL,
  linkage TEXT NOT NULL CHECK(linkage IN ('external','internal')),
  external_key TEXT,
- definition TEXT NOT NULL CHECK(definition IN ('declaration','strong')),
+ definition TEXT NOT NULL CHECK(definition IN ('declaration','strong','linkonce')),
  return_type_id INTEGER NOT NULL REFERENCES types(id),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
+ routine_type_id INTEGER NOT NULL REFERENCES routine_types(type_id),
  CHECK((linkage='external' AND external_key IS NOT NULL) OR
        (linkage='internal' AND external_key IS NULL))
 ) STRICT;
@@ -94,7 +152,8 @@ CREATE TABLE nodes (
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
- field_id INTEGER REFERENCES record_fields(id)
+ field_id INTEGER REFERENCES record_fields(id),
+ storage_id INTEGER REFERENCES storages(id)
 ) STRICT;
 CREATE TABLE edges (
  parent_id INTEGER NOT NULL REFERENCES nodes(id),
@@ -120,11 +179,13 @@ CREATE TABLE record_types (
  type_id INTEGER PRIMARY KEY REFERENCES types(id),
  identity_key TEXT NOT NULL,
  source_name TEXT NOT NULL,
- size INTEGER NOT NULL CHECK(size>0 AND size<=65536),
- alignment INTEGER NOT NULL CHECK(alignment IN (1,2,4,8)),
+ size INTEGER NOT NULL CHECK(size>=0 AND size<=2147483647),
+ alignment INTEGER NOT NULL CHECK(alignment IN (0,1,2,4,8)),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
- column INTEGER NOT NULL CHECK(column>=0)
+ column INTEGER NOT NULL CHECK(column>=0),
+ layout_kind TEXT NOT NULL CHECK(layout_kind IN ('struct','union','class')),
+ CHECK((size=0 AND alignment=0) OR (size>0 AND alignment>0))
 ) STRICT;
 CREATE TABLE record_fields (
  id INTEGER PRIMARY KEY CHECK(id>0),
@@ -136,7 +197,12 @@ CREATE TABLE record_fields (
  source_type_id INTEGER NOT NULL REFERENCES source_types(id),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
- column INTEGER NOT NULL CHECK(column>=0)
+ column INTEGER NOT NULL CHECK(column>=0),
+ bit_offset INTEGER CHECK(bit_offset>=0 AND bit_offset<8),
+ bit_width INTEGER CHECK(bit_width>0 AND bit_width<=64),
+ bit_signed INTEGER CHECK(bit_signed IN (0,1)),
+ CHECK((bit_offset IS NULL AND bit_width IS NULL AND bit_signed IS NULL) OR
+       (bit_offset IS NOT NULL AND bit_width IS NOT NULL AND bit_signed IS NOT NULL))
 ) STRICT;
 CREATE TABLE source_functions (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
@@ -183,7 +249,7 @@ CREATE TABLE macro_parameters (
 ) STRICT;
 CREATE TABLE macro_events (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind IN ('define','undef')),
+ kind TEXT NOT NULL CHECK(kind IN ('define','undef','push','pop')),
  name TEXT NOT NULL,
  definition_id INTEGER REFERENCES macro_definitions(id),
  origin TEXT NOT NULL CHECK(origin IN ('source','command-line','predefined')),
@@ -191,7 +257,7 @@ CREATE TABLE macro_events (
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  CHECK((kind='define' AND definition_id IS NOT NULL) OR
-       (kind='undef' AND definition_id IS NULL))
+       (kind='undef' AND definition_id IS NULL) OR kind IN ('push','pop'))
 ) STRICT;
 CREATE TABLE content_digest (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),

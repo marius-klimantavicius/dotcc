@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v11: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v12: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -30,7 +30,8 @@ void check_lifetime(an_object_lifetime_ptr lifetime) {
 namespace dot_object {
 struct Writer {
   unsigned next_entity=1,next_binding=1,next_node=1,next_file=1,next_source_type=1,next_source_declaration=1;
-  unsigned function=0,next_execution_type=12;
+  unsigned function=0,next_execution_type=12,va_list_id=0;
+  a_statement_ptr function_block=nullptr;
   std::map<a_routine_ptr,unsigned> routine_ids;
   std::map<a_variable_ptr,unsigned> binding_ids;
   std::map<a_variable_ptr,unsigned> binding_scopes;
@@ -46,43 +47,268 @@ struct Writer {
   std::vector<string> execution_types,record_types,record_fields;
   std::map<a_type_ptr,unsigned> record_ids;
   std::map<a_field_ptr,unsigned> field_ids;
-  unsigned next_field=1;
+  unsigned next_field=1,next_storage=1;
+  std::map<a_variable_ptr,unsigned> storage_ids;
+  std::map<a_constant_ptr,unsigned> literal_ids;
+  std::map<a_variable_ptr,a_constant_ptr> static_initializers;
+  std::vector<string> storages,storage_data,relocations;
+  std::map<unsigned,std::map<unsigned long long,string>> storage_chunks;
+  std::map<unsigned,std::map<unsigned long long,unsigned char>> bitfield_data;
+  std::vector<string> routine_types,routine_parameters,source_routine_types,source_routine_parameters;
+  std::map<string,unsigned> signature_ids;
+  unsigned signature_type(unsigned result,const std::vector<unsigned> &args,bool variadic,const string &exception_policy) {
+    if(exception_policy!="unwind" && exception_policy!="terminate")reject("dynamic typed exception specification");
+    string key=number(result)+(variadic?"v:":"f:")+exception_policy+":";for(auto arg:args)key+=number(arg)+",";
+    auto prior=signature_ids.find(key);if(prior!=signature_ids.end())return prior->second;
+    unsigned id=next_execution_type++;signature_ids[key]=id;
+    execution_types.push_back("{\"id\":"+number(id)+",\"kind\":\"routine\",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
+    routine_types.push_back("{\"typeId\":"+number(id)+",\"returnTypeId\":"+number(result)+",\"variadic\":"+(variadic?"true":"false")+",\"exceptionPolicy\":"+quote(exception_policy)+"}");
+    unsigned ordinal=0;for(auto arg:args)routine_parameters.push_back("{\"typeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+",\"parameterTypeId\":"+number(arg)+"}");
+    return id;
+  }
+  unsigned va_list_type() {
+    if(va_list_id)return va_list_id;
+    va_list_id=next_execution_type++;
+    execution_types.push_back("{\"id\":"+number(va_list_id)+",\"kind\":\"va-list\",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
+    return va_list_id;
+  }
+  unsigned routine_type(a_type_ptr t) {
+    auto extra=t->variant.routine.extra_info;
+    if(!extra->prototyped || extra->explicit_calling_convention)reject("unprototyped/foreign-convention function type");
+    std::vector<unsigned> args;for(auto p=extra->param_type_list;p;p=p->next)args.push_back(type_id(p->type));
+    auto specification=extra->exception_specification;
+    string policy=specification && !specification->throw_any?(specification->is_noexcept?"terminate":"unsupported-dynamic"):"unwind";
+    return signature_type(type_id(t->variant.routine.return_type),args,extra->has_ellipsis,policy);
+  }
   unsigned record_type(a_type_ptr t) {
     auto prior=record_ids.find(t);if(prior!=record_ids.end())return prior->second;
     auto found=dot_object_source::state().records.find(t);
     if(found==dot_object_source::state().records.end())reject("incomplete or uncaptured record definition");
     const auto &record=found->second;
-    if(!record.error.empty())reject(record.error.c_str());
-    if(t->size!=record.size || t->alignment!=record.alignment)reject("record layout changed during lowering");
+    if(!record.error.empty())reject((record.identity+": "+record.error).c_str());
+    if((!t->incomplete && t->size!=record.size) || (!t->incomplete && t->alignment!=record.alignment))reject("record layout changed during lowering");
     unsigned id=next_execution_type++;record_ids[t]=id;
     execution_types.push_back("{\"id\":"+number(id)+",\"kind\":\"record\",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
-    record_types.push_back("{\"typeId\":"+number(id)+",\"identityKey\":"+quote(record.identity)+",\"sourceName\":"+quote(record.name)+
-      ",\"size\":"+std::to_string(record.size)+",\"alignment\":"+std::to_string(record.alignment)+position(record.position)+"}");
-    unsigned ordinal=0;unsigned long long cursor=0,alignment=1;
-    std::set<string> names;
+    string identity=record.identity;
+    // EDG's ABI encoder owns template argument identity, including nontype,
+    // pack and nested template arguments. A display basename is insufficient.
+    if(record.template_identity)identity="record-abi:"+string(mangled_class_name(t));
+    if(identity.find("local-record:")==0) {
+      a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
+      conv_seq_to_file_and_line(record.position.seq,&display,&full,&line,&at_end);
+      identity+=":"+string(full?full:display?display:"")+":"+std::to_string((unsigned long long)line)+":"+std::to_string(record.position.column);
+    }
+    record_types.push_back("{\"typeId\":"+number(id)+",\"identityKey\":"+quote(identity)+",\"sourceName\":"+quote(record.name)+
+      ",\"size\":"+std::to_string(record.size)+",\"alignment\":"+std::to_string(record.alignment)+position(record.position)+",\"layoutKind\":"+quote(record.layout_kind)+"}");
+    unsigned ordinal=0;std::set<string> names;
     for(const auto &field:record.fields) {
       auto f=field.il;auto child=skip_typerefs(f->type);
-      if(!names.insert(field.name).second || f->offset!=field.offset || !child->size || !child->alignment)
+      bool flexible=child->kind==tk_array && !child->size && !child->variant.array.variant.number_of_elements;
+      if(flexible && (f->next || record.layout_kind=="union"))reject("flexible array outside final struct/class member");
+      if(!names.insert(field.name).second || f->offset!=field.offset || (!child->size && !flexible) || !child->alignment)
         reject("record field identity/layout changed during lowering");
-      cursor=(cursor+child->alignment-1)/child->alignment*child->alignment;
-      if(cursor!=field.offset || cursor>record.size || child->alignment>8 || child->size>record.size-cursor)
-        reject("record field outside natural nonoverlapping layout");
-      cursor+=child->size;if(child->alignment>alignment)alignment=child->alignment;
+      unsigned long long extent=field.bit_width?(field.bit_offset+field.bit_width+7)/8:child->size;
+      if(field.offset>record.size || child->alignment>8 || extent>record.size-field.offset)
+        reject("record field outside containing storage");
+      if(record.layout_kind=="union" && field.offset)reject("union field nonzero storage offset");
       unsigned field_id=next_field++;field_ids[f]=field_id;
       unsigned field_type=type_id(f->type),source=source_type(field.source_type);
       record_fields.push_back("{\"id\":"+number(field_id)+",\"recordTypeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+
         ",\"typeId\":"+number(field_type)+",\"sourceName\":"+quote(field.name)+",\"byteOffset\":"+std::to_string(field.offset)+
-        ",\"sourceTypeId\":"+number(source)+position(field.position)+"}");
+        ",\"sourceTypeId\":"+number(source)+position(field.position)+
+        ",\"bitOffset\":"+(field.bit_width?std::to_string(field.bit_offset):"null")+
+        ",\"bitWidth\":"+(field.bit_width?std::to_string(field.bit_width):"null")+
+        ",\"bitSigned\":"+(field.bit_width?(field.bit_signed?"true":"false"):"null")+"}");
     }
-    if(!ordinal || alignment!=record.alignment || (cursor+alignment-1)/alignment*alignment!=record.size)
-      reject("record outside natural complete layout");
     return id;
+  }
+  string bytes_hex(const string &bytes) {
+    const char *hex="0123456789abcdef";string result;result.reserve(bytes.size()*2);
+    for(unsigned char c:bytes){result+=hex[c>>4];result+=hex[c&15];}return result;
+  }
+  void data_chunk(unsigned id,unsigned long long offset,const string &bytes) {
+    if(bytes.empty())return;
+    auto &chunks=storage_chunks[id];
+    auto following=chunks.lower_bound(offset);
+    if(following!=chunks.end() && bytes.size()>following->first-offset)reject("overlapping static data initializers");
+    if(following!=chunks.begin()) {
+      auto previous=following;--previous;
+      if(previous->second.size()>offset-previous->first)reject("overlapping static data initializers");
+      if(previous->second.size()==offset-previous->first) {
+        previous->second+=bytes;
+        if(following!=chunks.end() && previous->first+previous->second.size()==following->first) {
+          previous->second+=following->second;chunks.erase(following);
+        }
+        return;
+      }
+    }
+    string combined=bytes;
+    if(following!=chunks.end() && offset+bytes.size()==following->first) {
+      combined+=following->second;chunks.erase(following);
+    }
+    chunks.emplace(offset,std::move(combined));
+  }
+  unsigned literal(a_constant_ptr c) {
+    auto found=literal_ids.find(c);if(found!=literal_ids.end())return found->second;
+    if(c->kind!=ck_string)reject("literal storage outside string constants",c->kind);
+    auto t=skip_typerefs(c->type);
+    if(t->kind!=tk_array || !t->size || c->variant.string.length>t->size)reject("string literal storage bounds");
+    unsigned id=next_storage++;literal_ids[c]=id;
+    a_source_position pos={};
+    storages.push_back("{\"id\":"+number(id)+",\"sourceName\":\"\",\"linkage\":\"internal\",\"externalKey\":null,\"definition\":\"strong\",\"typeId\":"+number(type_id(t))+
+      ",\"sourceTypeId\":null,\"isThreadLocal\":false,\"isConst\":true,\"alignment\":"+std::to_string(t->alignment)+position(pos)+"}");
+    data_chunk(id,0,string(c->variant.string.value,c->variant.string.length));return id;
+  }
+  void initialize_storage(unsigned id,a_type_ptr type,a_constant_ptr c,unsigned long long offset) {
+    auto t=skip_typerefs(type);if(!c)return;
+    if(c->kind==ck_string) {
+      if(t->kind!=tk_array || c->variant.string.length>t->size)reject("static string initializer bounds");
+      data_chunk(id,offset,string(c->variant.string.value,c->variant.string.length));return;
+    }
+    if(c->kind==ck_address) {
+      if((t->kind!=tk_pointer && t->kind!=tk_integer) || t->size!=8)reject((string("address relocation destination kind=")+std::to_string(t->kind)+" size="+std::to_string(t->size)).c_str());
+      unsigned target_storage=0,target_entity=0;
+      auto &address=c->variant.address;
+      if(address.kind==abk_variable)target_storage=storage(address.variant.variable);
+      else if(address.kind==abk_constant)target_storage=literal(address.variant.constant);
+      else if(address.kind==abk_routine) {
+        if(address.offset)reject("function address relocation addend");
+        target_entity=routine(address.variant.routine);
+      } else reject("unsupported static address relocation",address.kind);
+      relocations.push_back("{\"storageId\":"+number(id)+",\"byteOffset\":"+std::to_string(offset)+
+        ",\"targetStorageId\":"+number(target_storage)+",\"targetEntityId\":"+number(target_entity)+",\"addend\":"+std::to_string(address.offset)+"}");return;
+    }
+    if(c->kind==ck_integer) {
+      if(t->size>8 || (t->kind!=tk_integer && t->kind!=tk_pointer))reject("static integer encoding type");
+      a_boolean overflow=FALSE;
+      unsigned long long bits=int_constant_is_signed(c)?(unsigned long long)value_of_integer_constant(c,&overflow):
+        (unsigned long long)unsigned_value_of_integer_constant(c,&overflow);
+      if(overflow)reject("static integer out of range");
+      string bytes;for(unsigned i=0;i<t->size;++i)bytes+=char((bits>>(8*i))&255);
+      data_chunk(id,offset,bytes);return;
+    }
+    if(c->kind==ck_float) {
+      auto ct=skip_typerefs(c->type);if(t->kind!=tk_float || ct->size!=t->size || (t->size!=4 && t->size!=8))reject("static floating encoding type");
+      string hex=fp_to_hex_string(ct->variant.float_kind,&c->variant.float_value).as_temp_characters();
+      if(hex.size()!=2*t->size || hex.find_first_not_of("0123456789abcdef")!=string::npos)reject("static floating encoding bits");
+      string bytes;auto digit=[](char digit_char){return digit_char<='9'?digit_char-'0':digit_char-'a'+10;};
+      for(size_t i=hex.size();i;i-=2)bytes+=char((digit(hex[i-2])<<4)|digit(hex[i-1]));
+      data_chunk(id,offset,bytes);return;
+    }
+    if(c->kind!=ck_aggregate || (t->kind!=tk_array && t->kind!=tk_struct && t->kind!=tk_union))reject("static initializer constant kind",c->kind);
+    auto field=t->kind==tk_array?nullptr:next_non_empty_initializable_field(t->variant.class_struct_union.field_list);
+    unsigned long long index=0;
+    for(auto item=c->variant.aggregate.first_constant;item;item=item->next) {
+      if(item->kind==ck_designator) {
+        if(item->variant.designator.is_generic || !item->next || item->next->kind==ck_designator)reject("static aggregate designator");
+        if(t->kind==tk_array) {
+          if(item->variant.designator.is_field_designator)reject("field designator in static array");
+          index=item->variant.designator.variant.array_element;
+        } else {
+          if(!item->variant.designator.is_field_designator)reject("array designator in static record");
+          auto selected=item->variant.designator.variant.field;bool found=false;
+          for(auto f=t->variant.class_struct_union.field_list;f;f=f->next)if(f==selected)found=true;
+          if(!found)reject("static record designator ownership");field=selected;
+        }
+        item=item->next;
+      }
+      auto value=item;unsigned long long count=1;
+      if(item->kind==ck_init_repeat){value=item->variant.init_repeat.constant;count=item->variant.init_repeat.count;}
+      if(!count)reject("empty static initializer repetition");
+      if(t->kind==tk_array) {
+        auto element=skip_typerefs(t->variant.array.element_type);unsigned long long extent=t->variant.array.variant.number_of_elements;
+        if(index>extent || count>extent-index)reject("static array initializer bounds");
+        // The C backend permits flattened scalar repetition across nested rows.
+        // Handle that representation at its physical element stride.
+        if(item->kind==ck_init_repeat && value->type && skip_typerefs(value->type)->size!=element->size) {
+          auto leaf=element;while(leaf->kind==tk_array)leaf=skip_typerefs(leaf->variant.array.element_type);
+          if(skip_typerefs(value->type)->size!=leaf->size || !leaf->size)reject("static flattened initializer stride");
+          auto begin=index*element->size;
+          if(begin>t->size || count>(t->size-begin)/leaf->size)reject("static flattened initializer bounds");
+          for(unsigned long long n=0;n<count;++n)initialize_storage(id,leaf,value,offset+begin+n*leaf->size);
+          if((begin+count*leaf->size)%element->size)reject("static flattened initializer partial row");
+          index=(begin+count*leaf->size)/element->size;
+        } else for(unsigned long long n=0;n<count;++n,++index)initialize_storage(id,element,value,offset+index*element->size);
+      } else {
+        if(count!=1 || !field)reject("static record initializer field");
+        if(field->is_bit_field) {
+          if(value->kind!=ck_integer || field->bit_size>64 || field->offset_bit_remainder>7)reject("static bitfield initializer");
+          a_boolean overflow=FALSE;
+          unsigned long long bits=int_constant_is_signed(value)?(unsigned long long)value_of_integer_constant(value,&overflow):
+            (unsigned long long)unsigned_value_of_integer_constant(value,&overflow);
+          if(overflow)reject("static bitfield integer range");
+          auto &bytes=bitfield_data[id];
+          for(unsigned bit=0;bit<field->bit_size;++bit) {
+            unsigned position=field->offset_bit_remainder+bit;
+            auto &byte=bytes[offset+field->offset+position/8];unsigned char mask=(unsigned char)(1U<<(position%8));
+            byte=(unsigned char)((byte&~mask)|((bits>>bit&1U)?mask:0));
+          }
+        } else initialize_storage(id,field->type,value,offset+field->offset);
+        field=next_non_empty_initializable_field(field->next);
+      }
+    }
+  }
+  unsigned storage(a_variable_ptr v) {
+    if(!v)reject("missing storage variable");
+    auto prior=storage_ids.find(v);if(prior!=storage_ids.end())return prior->second;
+    diagnostic_scope diagnostic(v->source_corresp.decl_position);
+    if(register_bound_variable(v))reject("register-bound storage");
+#if GNU_EXTENSIONS_ALLOWED
+    if(v->is_weak || v->is_weakref || v->is_gnu_alias)reject("weak/aliased storage linkage");
+#endif
+    auto t=skip_typerefs(v->type);unsigned alignment=v->alignment>t->alignment?v->alignment:t->alignment;
+    bool declaration=v->storage_class==sc_extern;
+    if((!t->size && !declaration) || (!alignment && !declaration) || (alignment && (alignment&(alignment-1))))
+      reject((string("incomplete storage layout: ")+source_spelling(&v->source_corresp)+" kind="+std::to_string(t->kind)+" storage="+std::to_string(v->storage_class)).c_str());
+    bool external=v->source_corresp.name_linkage==nlk_external || v->source_corresp.name_linkage==nlk_cplusplus_external;
+    string key=variable_linker_symbol(v);if(external && key.empty())reject("missing external storage identity");
+    if(v->init_kind==initk_dynamic)reject("dynamic static/TLS initialization");
+    unsigned id=next_storage++;storage_ids[v]=id;
+    auto captured=dot_object_source::state().variables.find(v);
+    unsigned source=captured==dot_object_source::state().variables.end()?0:source_type(captured->second.type);
+    storages.push_back("{\"id\":"+number(id)+",\"sourceName\":"+quote(source_spelling(&v->source_corresp))+
+      ",\"linkage\":"+quote(external?"external":"internal")+",\"externalKey\":"+(external?quote(key):"null")+
+      ",\"definition\":"+quote(declaration?"declaration":"strong")+",\"typeId\":"+number(type_id(t))+
+      ",\"sourceTypeId\":"+number(source)+",\"isThreadLocal\":"+(thread_storage(v)?"true":"false")+
+      ",\"isConst\":"+((get_type_qualifiers(v->type)&TQ_CONST)?"true":"false")+",\"alignment\":"+std::to_string(alignment)+position(v->source_corresp.decl_position)+"}");
+    if(!declaration) {
+      auto override=static_initializers.find(v);
+      if(override!=static_initializers.end())initialize_storage(id,t,override->second,0);
+      else if(v->init_kind==initk_static)initialize_storage(id,t,v->initializer.constant,0);
+      else if(v->init_kind!=initk_none && v->init_kind!=initk_zero)reject("static storage initializer",v->init_kind);
+    }
+    return id;
+  }
+  void collect_storage(a_scope_ptr scope) {
+    for(auto init=scope->local_static_variable_inits;init;init=init->next) {
+      if(init->init_kind==initk_static)static_initializers[init->variable]=init->initializer.constant;
+      else if(init->init_kind!=initk_none && init->init_kind!=initk_zero)reject("local static initialization schedule");
+    }
+    // Definitions retain library-visible storage even without a use in this
+    // unit. Extern declarations enter the execution graph when referenced;
+    // their pre-lowering source snapshots remain available independently.
+    for(auto v=scope->variables;v;v=v->next) {
+      if(v->init_kind==initk_dynamic)reject("dynamic static/TLS initialization schedule");
+      bool root=v->source_corresp.name_linkage==nlk_external || v->source_corresp.name_linkage==nlk_cplusplus_external;
+      if(v->compiler_generated || v->lowering_generated || (v->is_template_variable && !v->is_specialized))root=false;
+      if(v->explicit_instantiation && !v->explicit_do_not_instantiate)root=true;
+#if GNU_EXTENSIONS_ALLOWED
+      root=root || v->has_gnu_used_attribute;
+#endif
+      if(root && v->storage_class!=sc_extern && !ignore_variable_in_back_end(v))storage(v);
+    }
   }
   std::set<a_scope_ptr> bound_scopes;
   std::set<unsigned> declared_bindings;
   struct Control { unsigned node; source_control_context labels; };
   std::vector<Control> controls;
   std::set<a_label_ptr> control_labels;
+  std::map<a_label_ptr,unsigned> source_labels;
+  std::set<a_label_ptr> emitted_source_labels;
+  unsigned label_id(a_label_ptr label) {
+    auto prior=source_labels.find(label);if(prior!=source_labels.end())return prior->second;
+    unsigned id=next_node++;source_labels[label]=id;return id;
+  }
   std::map<a_statement_ptr,a_statement_ptr> switch_cases;
   string number(unsigned value){return value?std::to_string(value):"null";}
   unsigned pointer_type(unsigned pointee) {
@@ -92,10 +318,10 @@ struct Writer {
     return id;
   }
   unsigned array_type(unsigned element,unsigned long long count) {
-    for(const auto &record:record_ids)if(record.second==element)reject("array of records");
+
     auto key=std::make_pair(element,count);
     auto prior=array_types.find(key);if(prior!=array_types.end())return prior->second;
-    if(!count || count>65536)reject("array count outside bounded fixed storage profile");
+    if(count>2147483647ULL)reject("array count outside bounded fixed storage profile");
     unsigned id=next_execution_type++;array_types[key]=id;
     execution_types.push_back("{\"id\":"+number(id)+",\"kind\":\"array\",\"pointeeTypeId\":null,\"elementTypeId\":"+
       number(element)+",\"elementCount\":"+std::to_string(count)+"}");
@@ -103,23 +329,29 @@ struct Writer {
   }
   unsigned type_id(a_type_ptr type) {
     unsigned q=get_type_qualifiers(type);
-    if(q & (TQ_VOLATILE|TQ_C11_ATOMIC))reject("volatile/atomic type");
+    if(q & TQ_C11_ATOMIC)reject("atomic type");
     auto t=skip_typerefs(type);
     if(t->kind==tk_void)return 1;
-    if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union)return record_type(t);
+    if(t->kind==tk_routine)return routine_type(t);
+    if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
+      if(t->variant.class_struct_union.extra_info && t->variant.class_struct_union.extra_info->is_va_list_tag) {
+        if(t->size!=24 || t->alignment!=8)reject("va_list target layout mismatch");
+        return va_list_type();
+      }
+      return record_type(t);
+    }
     if(t->kind==tk_pointer) {
       if(t->variant.pointer.is_reference)reject("C++ reference type");
       return pointer_type(type_id(t->variant.pointer.type));
     }
     if(t->kind==tk_array) {
       if(t->variant.array.is_variable_size_array || t->variant.array.is_vla ||
-         t->variant.array.is_template_dependent_size_array || !t->size || t->size>65536)
+         t->variant.array.is_template_dependent_size_array || t->size>2147483647ULL)
         reject("array outside bounded fixed storage profile");
       auto element=skip_typerefs(t->variant.array.element_type);
-      auto leaf=element;while(leaf->kind==tk_array)leaf=skip_typerefs(leaf->variant.array.element_type);
-      if(leaf->kind==tk_struct || leaf->kind==tk_class || leaf->kind==tk_union)reject("array of records");
+
       auto count=t->variant.array.variant.number_of_elements;
-      if(!element->size || !count || t->size/element->size!=count || t->size%element->size)
+      if(!element->size || (count && (t->size/element->size!=count || t->size%element->size)) || (!count && t->size))
         reject("array size/stride mismatch");
       return array_type(type_id(t->variant.array.element_type),count);
     }
@@ -131,7 +363,7 @@ struct Writer {
     // EDG retains the bool marker alongside enum bookkeeping after lowering;
     // unlike a user enum, its executable representation is the lowered byte.
     if(t->kind==tk_integer && t->variant.integer.bool_type && t->size==1)return 3;
-    if(t->kind==tk_integer && !t->variant.integer.enum_type) {
+    if(t->kind==tk_integer) {
       // Match the existing dot backend's physical LP64 integer mapping.
       // In particular, plain char follows EDG's configured signedness;
       // long and long long share a representation, not a source type identity.
@@ -206,9 +438,21 @@ struct Writer {
     const auto &type=dot_object_source::state().types.at(captured-1);
     if(type.execution)return type.execution;
     if(type.kind=="record")return record_type(type.record_type);
+    if(type.kind=="va-list")return va_list_type();
+    if(type.kind=="routine") {
+      std::vector<unsigned> args;for(auto parameter:type.parameters) {
+        unsigned unqualified=parameter;
+        while(dot_object_source::state().types.at(unqualified-1).kind=="typedef" ||
+              dot_object_source::state().types.at(unqualified-1).kind=="qualified")
+          unqualified=dot_object_source::state().types.at(unqualified-1).underlying;
+        const auto &argument=dot_object_source::state().types.at(unqualified-1);
+        args.push_back(argument.kind=="array"?pointer_type(source_execution_type(argument.underlying)):
+          argument.kind=="routine"?pointer_type(source_execution_type(unqualified)):source_execution_type(parameter));
+      }
+      return signature_type(source_execution_type(type.result),args,type.variadic,type.exception_policy);
+    }
     if(type.kind=="pointer")return pointer_type(source_execution_type(type.underlying));
-    if(type.kind=="array")return type.element_count?array_type(source_execution_type(type.underlying),type.element_count):
-      pointer_type(source_execution_type(type.underlying));
+    if(type.kind=="array")return array_type(source_execution_type(type.underlying),type.element_count);
     if(type.kind=="qualified" || type.kind=="typedef")return source_execution_type(type.underlying);
     reject("source type outside scalar/data-pointer declaration profile");
   }
@@ -219,6 +463,10 @@ struct Writer {
     unsigned id=next_source_type++;source_type_ids[captured]=id;
     unsigned execution=source_execution_type(captured);
     unsigned underlying=type.underlying?source_type(type.underlying):0;
+    if(type.kind=="routine") {
+      source_routine_types.push_back("{\"typeId\":"+number(id)+",\"returnTypeId\":"+number(source_type(type.result))+",\"variadic\":"+(type.variadic?"true":"false")+",\"exceptionPolicy\":"+quote(type.exception_policy)+"}");
+      unsigned ordinal=0;for(auto parameter:type.parameters)source_routine_parameters.push_back("{\"typeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+",\"parameterTypeId\":"+number(source_type(parameter))+"}");
+    }
     source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.kind)+",\"sourceName\":"+quote(type.name)+
       ",\"underlyingTypeId\":"+number(underlying)+",\"executionTypeId\":"+number(execution)+
       ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+",\"elementCount\":"+(type.kind=="array"?std::to_string(type.element_count):"null")+position(type.position)+"}");
@@ -244,17 +492,28 @@ struct Writer {
   }
   unsigned node(const string &kind,unsigned ty,const a_source_position &pos,
                 unsigned entity=0,unsigned binding=0,const string &op="",
-                const string &value="",const string &category="",const string &order="",unsigned field=0) {
-    unsigned id=next_node++;
+                const string &value="",const string &category="",const string &order="",unsigned field=0,unsigned storage=0,unsigned reserved_id=0) {
+    unsigned id=reserved_id?reserved_id:next_node++;
     nodes.push_back("{\"id\":"+number(id)+",\"functionId\":"+number(function)+",\"kind\":"+quote(kind)+",\"typeId\":"+number(ty)+
       ",\"entityId\":"+number(entity)+",\"bindingId\":"+number(binding)+",\"operator\":"+(op.empty()?"null":quote(op))+
       ",\"constantText\":"+(value.empty()?"null":quote(value))+",\"valueCategory\":"+(category.empty()?"null":quote(category))+
-      ",\"evaluationOrder\":"+(order.empty()?"null":quote(order))+position(pos)+",\"fieldId\":"+number(field)+"}");
+      ",\"evaluationOrder\":"+(order.empty()?"null":quote(order))+position(pos)+",\"fieldId\":"+number(field)+",\"storageId\":"+number(storage)+"}");
     return id;
   }
   void edge(unsigned parent,const string &role,unsigned ordinal,unsigned child) {
     if(!child)reject("missing child node");
     edges.push_back("{\"parentId\":"+number(parent)+",\"role\":"+quote(role)+",\"ordinal\":"+std::to_string(ordinal)+",\"childId\":"+number(child)+"}");
+  }
+  bool copyable_value(a_type_ptr type) {
+    if(get_type_qualifiers(type)&(TQ_VOLATILE|TQ_C11_ATOMIC))return false;
+    auto t=skip_typerefs(type);
+    if(t->kind==tk_array)return t->size && t->variant.array.variant.number_of_elements && copyable_value(t->variant.array.element_type);
+    if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
+      if(t->incomplete || t->variant.class_struct_union.any_volatile_member)return false;
+      for(auto field=t->variant.class_struct_union.field_list;field;field=field->next)
+        if(!copyable_value(field->type))return false;
+    }
+    return true;
   }
   unsigned routine(a_routine_ptr r) {
     auto found=routine_ids.find(r);if(found!=routine_ids.end())return found->second;
@@ -263,32 +522,35 @@ struct Writer {
     // currently uses the default .NET IEEE environment and cannot represent
     // observed exception flags or a dynamically changed rounding direction.
     if(r->fenv_access==stdc_pv_on)reject("floating environment access");
-    if(r->is_inline || r->is_template_function)reject("inline/template definition policy");
+
 #if GNU_EXTENSIONS_ALLOWED
     if(r->is_weak || r->is_weakref || r->is_gnu_alias || r->is_ifunc || r->is_initialization_routine || r->is_finalization_routine)
       reject("special routine linkage/startup policy");
 #endif
-#if DO_IL_LOWERING && IA64_ABI
-    if(r->use_comdat)reject("COMDAT definition policy");
-#endif
     auto t=skip_typerefs(r->type);
     if(t->kind!=tk_routine)reject("nonroutine function type");
     auto extra=t->variant.routine.extra_info;
-    if(!extra->prototyped || extra->has_ellipsis)reject("unprototyped/variadic function");
+    if(!extra->prototyped)reject("unprototyped function");
     if(extra->explicit_calling_convention)reject("explicit calling convention");
-    if(extra->exception_specification)reject("exception specification/noexcept");
+
+
     auto record_value=[](a_type_ptr type){type=skip_typerefs(type);return type->kind==tk_struct || type->kind==tk_class || type->kind==tk_union;};
-    if(record_value(t->variant.routine.return_type))reject("record by-value return");
-    for(auto p=extra->param_type_list;p;p=p->next)if(record_value(p->type))reject("record by-value parameter");
+    if(record_value(t->variant.routine.return_type) && !copyable_value(t->variant.routine.return_type))reject("by-value return with array/volatile storage");
+    for(auto p=extra->param_type_list;p;p=p->next)
+      if(record_value(p->type) && !copyable_value(p->type))reject("by-value parameter with array/volatile storage");
     unsigned id=next_entity++;routine_ids[r]=id;routines.push_back(r);
     auto key=routine_linker_symbol(r);
     bool external=r->source_corresp.name_linkage==nlk_external || r->source_corresp.name_linkage==nlk_cplusplus_external;
     if(external && key.empty())reject("missing exact external identity");
     auto body=r->function_def_number==NULL_function_def_number?nullptr:scope_for_routine_or_null(r);
     if(r->function_def_number!=NULL_function_def_number && !body)reject("unavailable function body");
+    bool coalescible=r->is_inline || (r->is_template_function && !r->is_specialized);
+#if DO_IL_LOWERING && IA64_ABI
+    coalescible=coalescible || r->use_comdat;
+#endif
     entities.push_back("{\"id\":"+number(id)+",\"sourceName\":"+quote(source_spelling(&r->source_corresp))+
       ",\"linkage\":"+quote(external?"external":"internal")+",\"externalKey\":"+(external?quote(key):"null")+
-      ",\"definition\":"+quote(body?"strong":"declaration")+",\"returnTypeId\":"+number(type_id(t->variant.routine.return_type))+position(r->source_corresp.decl_position)+"}");
+      ",\"definition\":"+quote(body?(coalescible?"linkonce":"strong"):"declaration")+",\"returnTypeId\":"+number(type_id(t->variant.routine.return_type))+position(r->source_corresp.decl_position)+",\"routineTypeId\":"+number(routine_type(t))+"}");
     source_function(r,id);
     unsigned ordinal=0;
     for(auto p=extra->param_type_list;p;p=p->next)
@@ -318,6 +580,20 @@ struct Writer {
       ",\"ordinal\":"+(parameter?std::to_string(ordinal):"null")+",\"typeId\":"+number(type_id(v->type))+
       ",\"sourceName\":"+quote(source_spelling(&v->source_corresp))+",\"scopeNodeId\":"+number(scope)+position(v->source_corresp.decl_position)+"}");
     return id;
+  }
+  unsigned local_place(a_variable_ptr variable,const a_source_position &pos) {
+    unsigned ty=type_id(variable->type);
+    unsigned result=node("binding",ty,pos,0,binding_ids.at(variable),"","","place","none");
+    auto captured=dot_object_source::state().variables.find(variable);
+    if((get_type_qualifiers(variable->type)&TQ_VOLATILE) ||
+       (captured!=dot_object_source::state().variables.end() && source_volatile(captured->second.type))) {
+      auto t=skip_typerefs(variable->type);
+      if(t->kind!=tk_integer && t->kind!=tk_float && t->kind!=tk_pointer)
+        reject("volatile aggregate initialization");
+      unsigned wrapper=node("volatile-place",ty,pos,0,0,"","","place","none");
+      edge(wrapper,"operand",0,result);return wrapper;
+    }
+    return result;
   }
   unsigned register_cleanup(a_variable_ptr v,unsigned block,const a_source_position &pos) {
     if(!cleanup_variables.count(v) || binding_scopes.at(v)!=block)
@@ -355,7 +631,8 @@ struct Writer {
   void scope_bindings(a_scope_ptr scope,unsigned block,unsigned &ordinal) {
     if(!scope || !bound_scopes.insert(scope).second)return;
     check_lifetime(scope->lifetime);
-    if(scope->variables || scope->local_static_variable_inits || scope->vla_dimensions)reject("scope static/TLS/VLA storage");
+    if(scope->vla_dimensions)reject("scope VLA storage");
+    collect_storage(scope);
     for(auto v=scope->nonstatic_variables;v;v=v->next) {
       unsigned id=binding(v,block);
       if(!declared_bindings.insert(id).second)continue;
@@ -368,11 +645,25 @@ struct Writer {
     }
   }
   unsigned zero_node(unsigned type,const a_source_position &pos) {
+    if(type==va_list_id && va_list_id)return node("default-value",type,pos,0,0,"","","value","none");
     for(const auto &record:record_ids)if(record.second==type)return node("default-value",type,pos,0,0,"","","value","none");
     return node("constant",type,pos,0,0,"",type==10?"00000000":type==11?"0000000000000000":"0","value","none");
   }
   unsigned constant_node(a_constant_ptr c,const a_source_position &pos) {
     unsigned ty=type_id(c->type);
+    if(c->kind==ck_string)
+      return node("storage",ty,pos,0,0,"","","place","none",0,literal(c));
+    if(c->kind==ck_address) {
+      auto &address=c->variant.address;
+      if(address.kind==abk_routine) {
+        if(address.offset)reject("function address offset");
+        return node("function-address",ty,pos,routine(address.variant.routine),0,"","","value","none");
+      }
+      unsigned target=address.kind==abk_variable?storage(address.variant.variable):
+        address.kind==abk_constant?literal(address.variant.constant):0;
+      if(!target)reject("constant address base",address.kind);
+      return node("storage-address",ty,pos,0,0,"",std::to_string(address.offset),"value","none",0,target);
+    }
     if(c->kind==ck_float) {
       auto t=skip_typerefs(c->type);
       if(t->kind!=tk_float || (ty!=10 && ty!=11))reject("floating constant type mismatch");
@@ -390,22 +681,28 @@ struct Writer {
     if(int_constant_is_signed(c))text=std::to_string((long long)value_of_integer_constant(c,&overflow));
     else text=std::to_string((unsigned long long)unsigned_value_of_integer_constant(c,&overflow));
     if(overflow)reject("out of range scalar constant");
-    if(skip_typerefs(c->type)->kind==tk_pointer && text!="0")reject("non-null pointer constant");
+    if(skip_typerefs(c->type)->kind==tk_pointer && text!="0") {
+      unsigned bits=node("constant",9,pos,0,0,"",text,"value","none");
+      unsigned pointer=node("convert",ty,pos,0,0,"","","value","left-to-right");
+      edge(pointer,"operand",0,bits);return pointer;
+    }
     return node("constant",ty,pos,0,0,"",text,"value","none");
   }
   bool place(an_expr_node_ptr e) {
     return e && (e->kind==enk_variable ||
+      (e->kind==enk_constant && node_constant(e)->kind==ck_string) ||
       (e->kind==enk_operation && (e->variant.operation.kind==eok_indirect ||
-                                 e->variant.operation.kind==eok_subscript ||
+                                 e->variant.operation.kind==eok_subscript || e->variant.operation.kind==eok_lvalue_adjust ||
                                  e->variant.operation.kind==eok_dot_field || e->variant.operation.kind==eok_points_to_field)));
   }
   bool effect_free(an_expr_node_ptr e) {
     if(!e)return false;
+    if(place(e) && volatile_place(e))return false;
     if(e->kind==enk_variable || e->kind==enk_constant || e->kind==enk_field)return true;
     if(e->kind!=enk_operation)return false;
     switch(e->variant.operation.kind) {
       case eok_dot_field:case eok_points_to_field:
-      case eok_address_of:case eok_indirect:case eok_subscript:case eok_array_to_pointer:case eok_cast:case eok_question:
+      case eok_address_of:case eok_indirect:case eok_subscript:case eok_array_to_pointer:case eok_cast:case eok_lvalue_adjust:case eok_question:
       case eok_add:case eok_subtract:case eok_multiply:case eok_divide:case eok_remainder:
       case eok_and:case eok_or:case eok_xor:case eok_shiftl:case eok_shiftr:
       case eok_eq:case eok_ne:case eok_lt:case eok_le:case eok_gt:case eok_ge:
@@ -419,9 +716,10 @@ struct Writer {
   }
   bool stable_place(an_expr_node_ptr e) {
     if(!e)return false;
-    if(e->kind==enk_variable)return binding_ids.count(node_variable(e))!=0;
+    if(e->kind==enk_variable || (e->kind==enk_constant && node_constant(e)->kind==ck_string))return true;
     if(e->kind!=enk_operation)return false;
     auto a=e->variant.operation.operands;auto b=a?a->next:nullptr;
+    if(e->variant.operation.kind==eok_lvalue_adjust)return a && !b && stable_place(a);
     if(e->variant.operation.kind==eok_dot_field)return a && b && b->kind==enk_field && !b->next && stable_place(a);
     if(e->variant.operation.kind==eok_points_to_field)return a && b && b->kind==enk_field && !b->next && stable_pointer(a);
     if(e->variant.operation.kind==eok_indirect)return a && !b && stable_pointer(a);
@@ -450,19 +748,157 @@ struct Writer {
       default:return false;
     }
   }
+  bool source_volatile(unsigned captured) {
+    while(captured) {
+      const auto &type=dot_object_source::state().types.at(captured-1);
+      if(type.is_volatile)return true;
+      if(type.kind!="typedef" && type.kind!="qualified")return false;
+      captured=type.underlying;
+    }
+    return false;
+  }
+  bool volatile_place(an_expr_node_ptr e) {
+    if(!e)return false;
+    if(e->volatile_fetch || (get_type_qualifiers(e->type)&TQ_VOLATILE) ||
+       (e->orig_lvalue_type && (get_type_qualifiers(e->orig_lvalue_type)&TQ_VOLATILE)))return true;
+    if(e->kind==enk_variable) {
+      auto v=node_variable(e);
+      if(get_type_qualifiers(v->type)&TQ_VOLATILE)return true;
+      auto found=dot_object_source::state().variables.find(v);
+      return found!=dot_object_source::state().variables.end() && source_volatile(found->second.type);
+    }
+    if(e->kind!=enk_operation)return false;
+    auto a=e->variant.operation.operands;auto b=a?a->next:nullptr;
+    auto pointee_volatile=[](an_expr_node_ptr pointer) {
+      if(!pointer)return false;
+      auto t=skip_typerefs(pointer->type);
+      return t->kind==tk_pointer && (get_type_qualifiers(t->variant.pointer.type)&TQ_VOLATILE);
+    };
+    switch(e->variant.operation.kind) {
+      case eok_dot_field:case eok_points_to_field: {
+        if(!a || !b || b->kind!=enk_field)return false;
+        auto field=node_field(b);
+        if(get_type_qualifiers(field->type)&TQ_VOLATILE)return true;
+        auto record=dot_object_source::state().records.find(parent_class_of(field));
+        if(record!=dot_object_source::state().records.end())
+          for(const auto &captured:record->second.fields)if(captured.il==field && source_volatile(captured.source_type))return true;
+        return e->variant.operation.kind==eok_dot_field?volatile_place(a):pointee_volatile(a);
+      }
+      case eok_indirect:return pointee_volatile(a);
+      case eok_subscript:return pointee_volatile(a) || pointee_volatile(b);
+      default:return false;
+    }
+  }
+  unsigned intrinsic(an_expr_node_ptr call,a_routine_ptr r,an_expr_node_ptr first,const string &order) {
+    if(!special_kind_is(r,sfk_none))return 0;
+    const char *op=nullptr;
+    switch(r->variant.builtin_function_kind) {
+      case bfk_clz:case bfk_clzl:case bfk_clzll:op="clz";break;
+      case bfk_ctz:case bfk_ctzl:case bfk_ctzll:op="ctz";break;
+      case bfk_popcount:case bfk_popcountl:case bfk_popcountll:op="popcount";break;
+      case bfk_parity:case bfk_parityl:case bfk_parityll:op="parity";break;
+      case bfk_ffs:case bfk_ffsl:case bfk_ffsll:op="ffs";break;
+      case bfk_clrsb:case bfk_clrsbl:case bfk_clrsbll:op="clrsb";break;
+      case bfk_bswap16:case bfk_bswap32:case bfk_bswap64:op="bswap";break;
+      case bfk_add_overflow:case bfk_sadd_overflow:case bfk_saddl_overflow:case bfk_saddll_overflow:
+      case bfk_uadd_overflow:case bfk_uaddl_overflow:case bfk_uaddll_overflow:op="add-overflow";break;
+      case bfk_sub_overflow:case bfk_ssub_overflow:case bfk_ssubl_overflow:case bfk_ssubll_overflow:
+      case bfk_usub_overflow:case bfk_usubl_overflow:case bfk_usubll_overflow:op="sub-overflow";break;
+      case bfk_mul_overflow:case bfk_smul_overflow:case bfk_smull_overflow:case bfk_smulll_overflow:
+      case bfk_umul_overflow:case bfk_umull_overflow:case bfk_umulll_overflow:op="mul-overflow";break;
+      case bfk_expect:op="expect";break;
+      case bfk_unreachable:op="unreachable";break;
+      case bfk_constant_p:
+        if(!first || first->next)reject("constant-p intrinsic arity");
+        // The C backend delegates this non-evaluating optimization query.
+        // A residual query conservatively returns false, without evaluating
+        // its argument or introducing a spurious reference to its entities.
+        return zero_node(type_id(call->type),call->position);
+      case bfk_is_constant_evaluated:
+        if(first)reject("constant-evaluation intrinsic arity");
+        return zero_node(type_id(call->type),call->position);
+      case bufk_launder:
+        if(!first || first->next)reject("launder intrinsic arity");
+        return expression(first);
+      default:return 0;
+    }
+    string operation=op;
+    if(operation=="add-overflow" || operation=="sub-overflow" || operation=="mul-overflow") {
+      if(!first || !first->next || !first->next->next || first->next->next->next)reject("overflow intrinsic arity");
+      auto target=skip_typerefs(first->next->next->type);
+      if(target->kind!=tk_pointer || skip_typerefs(target->variant.pointer.type)->kind!=tk_integer)
+        reject("overflow intrinsic destination");
+      auto qualifiers=get_type_qualifiers(target->variant.pointer.type);
+      if(qualifiers&(TQ_CONST|TQ_C11_ATOMIC))reject("overflow intrinsic destination qualifiers");
+      if(qualifiers&TQ_VOLATILE)operation+="-volatile";
+    }
+    unsigned id=node("intrinsic",type_id(call->type),call->position,0,0,operation,"","value",order),ordinal=0;
+    for(auto arg=first;arg;arg=arg->next)edge(id,"argument",ordinal++,expression(arg));
+    return id;
+  }
   unsigned expression(an_expr_node_ptr e) {
+    unsigned result=expression_core(e);
+    if(e && place(e) && volatile_place(e)) {
+      auto t=skip_typerefs(e->type);
+      if(t->kind==tk_integer || t->kind==tk_float || t->kind==tk_pointer) {
+        if(e->kind==enk_operation && (e->variant.operation.kind==eok_dot_field || e->variant.operation.kind==eok_points_to_field)) {
+          auto field=e->variant.operation.operands->next;
+          if(field && field->kind==enk_field && node_field(field)->is_bit_field)reject("volatile bitfield access");
+        }
+        unsigned wrapper=node("volatile-place",type_id(e->type),e->position,0,0,"","","place","none");
+        edge(wrapper,"operand",0,result);return wrapper;
+      }
+    }
+    return result;
+  }
+  unsigned expression_core(an_expr_node_ptr e) {
     if(!e)reject("null expression");
     diagnostic_scope diagnostic(e->position);
     unsigned ty=type_id(e->type);
     if(e->kind==enk_constant)return constant_node(node_constant(e),e->position);
     if(e->kind==enk_variable) {
-      auto it=binding_ids.find(node_variable(e));if(it==binding_ids.end())reject("unbound/global variable expression");
+      auto it=binding_ids.find(node_variable(e));if(it==binding_ids.end())
+        return node("storage",ty,e->position,0,0,"","","place","none",0,storage(node_variable(e)));
       return node("binding",ty,e->position,0,it->second,"","","place","none");
+    }
+    if(e->kind==enk_routine) {
+      unsigned pointer=pointer_type(ty);
+      return node("function-address",pointer,e->position,routine(e->variant.routine.ptr),0,"","","value","none");
     }
     if(e->kind!=enk_operation)reject("expression",e->kind);
     auto &operation=e->variant.operation;
     auto a=operation.operands;auto b=a?a->next:nullptr;
     string order=operation.eval_right_to_left?"right-to-left":operation.eval_left_to_right?"left-to-right":"unspecified";
+    if(operation.kind==eok_va_start || operation.kind==eok_va_start_single_operand ||
+       operation.kind==eok_va_copy || operation.kind==eok_va_end || operation.kind==eok_va_arg) {
+      if(!a)reject("missing va_list operand");
+      const char *kind=operation.kind==eok_va_start || operation.kind==eok_va_start_single_operand?"va-start":
+        operation.kind==eok_va_copy?"va-copy":operation.kind==eok_va_end?"va-end":"va-arg";
+      unsigned id=node(kind,ty,e->position,0,0,"","","value",order);
+      auto list_pointer=[&](an_expr_node_ptr list) {
+        auto t=skip_typerefs(list->type);
+        unsigned value=expression(list);
+        if(t->kind==tk_pointer)return value;
+        if(!place(list) || type_id(t)!=va_list_type())reject("va_list operand outside list/pointer");
+        unsigned address=node("address",pointer_type(va_list_type()),list->position,0,0,"","","value","none");
+        edge(address,"operand",0,value);return address;
+      };
+      edge(id,"operand",0,list_pointer(a));
+      if(operation.kind==eok_va_copy) {
+        if(!b || b->next)reject("va_copy arity");
+        edge(id,"source",0,list_pointer(b));
+      } else if(operation.kind==eok_va_start || operation.kind==eok_va_start_single_operand) {
+        a_routine_ptr current=nullptr;for(const auto &entry:routine_ids)if(entry.second==function){current=entry.first;break;}
+        if(!current || !skip_typerefs(current->type)->variant.routine.extra_info->has_ellipsis)
+          reject("va_start outside variadic function");
+        // The second token names the last fixed parameter; like C's builtin,
+        // it is a semantic anchor rather than an evaluated argument.
+        if(operation.kind==eok_va_start && (!b || b->next || b->kind!=enk_variable))
+          reject("va_start last parameter anchor");
+        if(operation.kind==eok_va_start_single_operand && b)reject("va_start arity");
+      } else if(b)reject("va_list operator arity");
+      return id;
+    }
     if(operation.kind==eok_dot_field || operation.kind==eok_points_to_field) {
       if(!a || !b || b->next || b->kind!=enk_field)reject("malformed record member selection");
       auto base=skip_typerefs(a->type);
@@ -482,13 +918,36 @@ struct Writer {
       edge(id,"operand",0,operand);return id;
     }
     if(operation.kind==eok_call) {
-      if(!a || a->kind!=enk_routine)reject("indirect function call");
-      unsigned id=node("call",ty,e->position,routine(a->variant.routine.ptr),0,"","","value",order),ordinal=0;
+      if(!a)reject("missing call target");
+      bool direct=a->kind==enk_routine;
+      if(direct) {
+        unsigned builtin=intrinsic(e,a->variant.routine.ptr,b,order);if(builtin)return builtin;
+      }
+      unsigned id=node(direct?"call":"indirect-call",ty,e->position,direct?routine(a->variant.routine.ptr):0,0,"","","value",order),ordinal=0;
+      if(!direct)edge(id,"operand",0,expression(a));
       for(auto arg=b;arg;arg=arg->next)edge(id,"argument",ordinal++,expression(arg));
       return id;
     }
+    const char *compound=nullptr;
+    switch(operation.kind) {
+      case eok_add_assign:compound="add";break;case eok_subtract_assign:compound="sub";break;
+      case eok_multiply_assign:compound="mul";break;case eok_divide_assign:compound="div";break;
+      case eok_remainder_assign:compound="rem";break;case eok_and_assign:compound="bit-and";break;
+      case eok_or_assign:compound="bit-or";break;case eok_xor_assign:compound="bit-xor";break;
+      case eok_shiftl_assign:compound="shl";break;case eok_shiftr_assign:compound="shr";break;
+      case eok_padd_assign:compound="pointer-add";break;case eok_psubtract_assign:compound="pointer-subtract";break;
+      default:break;
+    }
+    if(compound) {
+      if(!a || !b || b->next || !place(a) || type_id(a->type)!=ty)reject("malformed compound assignment");
+      if(operation.eval_right_to_left && !stable_place(a) && (!effect_free(a) || !effect_free(b)))
+        reject("effectful right-to-left compound assignment");
+      unsigned id=node("compound-assign",ty,e->position,0,0,compound,"","value",order);
+      edge(id,"target",0,expression(a));edge(id,"value",0,expression(b));return id;
+    }
     if(operation.kind==eok_assign) {
-      if(skip_typerefs(e->type)->kind==tk_struct)reject("record copy assignment");
+      if((skip_typerefs(e->type)->kind==tk_struct || skip_typerefs(e->type)->kind==tk_class || skip_typerefs(e->type)->kind==tk_union) &&
+         (!copyable_value(e->type) || volatile_place(a) || volatile_place(b)))reject("record copy with array/volatile storage");
       if(!a || !b || b->next || !place(a))reject("assignment outside supported memory places");
       // C++17 evaluates the RHS before the LHS, unlike C#. In this bounded
       // graph, fixed local storage and constant offsets have stable addresses.
@@ -500,6 +959,22 @@ struct Writer {
       unsigned id=node("assign",ty,e->position,0,0,"","","value",order);
       edge(id,"target",0,expression(a));edge(id,"value",0,expression(b));return id;
     }
+    if(operation.kind==eok_lvalue_adjust) {
+      if(!a || b || !place(a))reject("lvalue adjustment outside places");
+      unsigned original=type_id(a->type);
+      unsigned address=node("address",pointer_type(original),e->position,0,0,"","","value","none");
+      edge(address,"operand",0,expression(a));
+      unsigned cast=node("convert",pointer_type(ty),e->position,0,0,"","","value","left-to-right");
+      edge(cast,"operand",0,address);
+      unsigned result=node("dereference",ty,e->position,0,0,"","","place","none");
+      edge(result,"operand",0,cast);return result;
+    }
+    if(operation.kind==eok_indirect && a && !b && skip_typerefs(e->type)->kind==tk_routine)
+      return expression(a); // A function designator is not a data-memory load.
+    if(operation.kind==eok_address_of && a && !b && a->kind==enk_routine)
+      return node("function-address",ty,e->position,routine(a->variant.routine.ptr),0,"","","value","none");
+    if(operation.kind==eok_address_of && a && !b && skip_typerefs(a->type)->kind==tk_routine)
+      return expression(a);
     if(operation.kind==eok_array_to_pointer) {
       if(!a || b || !place(a))reject("array decay outside supported places");
       auto source=skip_typerefs(a->type),target=skip_typerefs(e->type);
@@ -535,8 +1010,14 @@ struct Writer {
       unsigned id=node("dereference",ty,e->position,0,0,"","","place","none");
       edge(id,"operand",0,add);return id;
     }
+    if(operation.kind==eok_comma) {
+      if(!a || !b)reject("sequence expression arity");
+      unsigned id=node("sequence",ty,e->position,0,0,"","","value","left-to-right"),ordinal=0;
+      for(auto item=a;item;item=item->next)edge(id,"item",ordinal++,expression(item));
+      return id;
+    }
     if(operation.kind==eok_cast) {
-      if(!a || b || ty==1)reject("unsupported scalar conversion");
+      if(!a || b)reject("unsupported scalar conversion");
       unsigned id=node("convert",ty,e->position,0,0,"","","value",order);
       edge(id,"operand",0,expression(a));return id;
     }
@@ -798,6 +1279,18 @@ struct Writer {
     return own_cleanup && child->kind==stmk_for && child->lowering_generated &&
            child->variant.for_loop.extra_info->initialization==nullptr;
   }
+  bool implicit_return(a_statement_ptr statement) {
+    // Match c_gen_be.c::is_implicit_return exactly: lowering's terminal
+    // valueless marker is not a source return and must not become one.
+    if(statement->kind!=stmk_return || statement->expr || statement->position.seq || statement->next)return false;
+    auto terminal=function_block;
+    while(terminal && terminal->kind==stmk_block) {
+      terminal=terminal->variant.block.statements;
+      if(!terminal)break;
+      while(terminal->next)terminal=terminal->next;
+    }
+    return terminal==statement;
+  }
   void append_block_statement(a_statement_ptr child,unsigned block,unsigned &ordinal,bool switch_body) {
     if(c99_cleanup_initializer_wrapper(child,block)) {
       for(auto nested=child->variant.block.statements;nested;nested=nested->next)
@@ -809,7 +1302,7 @@ struct Writer {
       if(switch_body && prior!=ordinal)reject("cleanup activation directly in switch body");
       return;
     }
-    if(child->kind==stmk_empty)return;
+    if(child->kind==stmk_empty || implicit_return(child))return;
     if(child->kind==stmk_label && control_labels.count(child->variant.label.ptr))return;
     edge(block,"statement",ordinal++,statement(child));
     if(child->kind==stmk_init && cleanup_variables.count(child->variant.dynamic_init->variable)) {
@@ -918,33 +1411,38 @@ struct Writer {
       }
       case stmk_goto: {
         auto target=s->variant.label.ptr;
-        if(controls.empty() || target->source_corresp.name)reject("goto outside structured control transfer");
         unsigned owner=0;string kind;
-        // A break always belongs to the nearest loop or switch. A continue
-        // skips intervening switches, but never an intervening loop.
-        if(target==controls.back().labels.break_target) {
-          owner=controls.back().node;kind="break";
-        } else for(auto it=controls.rbegin();it!=controls.rend();++it) {
-          if(!it->labels.loop)continue;
-          if(target==it->labels.continue_target){owner=it->node;kind="continue";}
-          break;
+        if(!target->source_corresp.name && !controls.empty()) {
+          // Keep original structured exits wherever EDG identifies them.
+          if(target==controls.back().labels.break_target) {
+            owner=controls.back().node;kind="break";
+          } else for(auto it=controls.rbegin();it!=controls.rend();++it) {
+            if(!it->labels.loop)continue;
+            if(target==it->labels.continue_target){owner=it->node;kind="continue";}
+            break;
+          }
         }
-        if(!owner)reject("nonlocal structured control transfer");
-        unsigned id=node(kind,0,s->position);
-        // This is a non-owning control reference, not an evaluation child.
-        edge(id,"target",0,owner);return id;
+        if(!owner){kind="goto";owner=label_id(target);}
+        unsigned id=node(kind,0,s->position);edge(id,"target",0,owner);return id;
       }
       case stmk_label: {
-        if(!control_labels.count(s->variant.label.ptr))reject("label outside structured control transfer");
-        return node("block",0,s->position);
+        auto label=s->variant.label.ptr;
+        if(control_labels.count(label) && !source_labels.count(label))return node("block",0,s->position);
+        if(!emitted_source_labels.insert(label).second)reject("duplicate source label");
+        unsigned id=label_id(label);
+        string name=source_spelling(&label->source_corresp);if(name.empty())name="__label"+number(id);
+        return node("label",0,s->position,0,0,"",name,"","",0,0,id);
       }
       case stmk_empty:return node("block",0,s->position);
       case stmk_init: {
         auto d=s->variant.dynamic_init;
         if(d->destructor)reject("initialization with destructor");
         if(!d->variable || !binding_ids.count(d->variable))reject("initialization without local binding");
-        unsigned binding=binding_ids.at(d->variable),ty=type_id(d->variable->type);
-        if(skip_typerefs(d->variable->type)->kind==tk_array || skip_typerefs(d->variable->type)->kind==tk_struct) {
+        unsigned ty=type_id(d->variable->type);
+        auto initialized_type=skip_typerefs(d->variable->type);
+        bool initialized_record=initialized_type->kind==tk_struct || initialized_type->kind==tk_class || initialized_type->kind==tk_union;
+        if(initialized_record && d->kind==dik_expression && !copyable_value(d->variable->type))reject("record initialization copy with array/volatile storage");
+        if(initialized_type->kind==tk_array || (initialized_record && d->kind!=dik_expression)) {
           if(d->kind==dik_constant || d->kind==dik_nonconstant_aggregate)
             return initialize_aggregate(d->variable,d->variant.constant.ptr,s->position);
           if(d->kind==dik_zero)return initialize_aggregate(d->variable,nullptr,s->position);
@@ -956,14 +1454,14 @@ struct Writer {
         else if(d->kind==dik_zero)value=zero_node(ty,s->position);
         else reject("dynamic initializer",d->kind);
         unsigned assign=node("assign",ty,s->position,0,0,"","","value","right-to-left");
-        edge(assign,"target",0,node("binding",ty,s->position,0,binding,"","","place","none"));edge(assign,"value",0,value);
+        edge(assign,"target",0,local_place(d->variable,s->position));edge(assign,"value",0,value);
         unsigned id=node("expr-stmt",0,s->position);edge(id,"value",0,assign);return id;
       }
       default:reject("statement",s->kind);
     }
   }
   void run() {
-    if(targ_sizeof_pointer!=8)reject("non64-bit target");
+    if(targ_sizeof_pointer!=8 || !targ_little_endian)reject("non64-bit/little-endian target");
     // EDG stores float/double constants in host format. Its configured target
     // and host representation must agree with the managed binary32/64 ABI.
     if(!TARG_HAS_IEEE_FLOATING_POINT || sizeof(float)!=4 || sizeof(double)!=8 ||
@@ -974,35 +1472,65 @@ struct Writer {
     source_files(il_header.primary_source_file,0);
     capture_macros();
     auto file_scope=il_header.primary_scope;
-    if(file_scope->variables || file_scope->dynamic_inits || file_scope->asm_entries)reject("global storage/initialization/asm");
+    if(file_scope->dynamic_inits || file_scope->asm_entries)reject("global dynamic initialization/asm");
+    collect_storage(file_scope);
     for(auto r=file_scope->routines;r;r=r->next) {
       if(ignore_routine_in_back_end(r))continue;
-      if(r->compiler_generated && r->function_def_number==NULL_function_def_number)continue;
-      routine(r);
+      if(r->function_def_number==NULL_function_def_number)continue;
+      bool root=r->source_corresp.name_linkage==nlk_external || r->source_corresp.name_linkage==nlk_cplusplus_external;
+      bool coalescible=r->is_inline || (r->is_template_function && !r->is_specialized);
+#if DO_IL_LOWERING && IA64_ABI
+      coalescible=coalescible || r->use_comdat;
+#endif
+      // Like c_gen_be::dump_routine_decl, parsed-only header definitions
+      // do not force emitted bodies. Actual uses recursively register them.
+      if(coalescible)root=false;
+      if(r->explicit_instantiation && !r->explicit_do_not_instantiate)root=true;
+#if GNU_EXTENSIONS_ALLOWED
+      root=root || r->has_gnu_used_attribute || r->is_initialization_routine || r->is_finalization_routine;
+#endif
+      if(root)routine(r);
     }
     for(size_t i=0;i<routines.size();++i) {
       auto r=routines[i];if(r->function_def_number==NULL_function_def_number)continue;
       function=routine_ids.at(r);auto scope=scope_for_routine_or_null(r);
       string label="dotobj function "+source_spelling(&r->source_corresp);context=label.c_str();
       binding_ids.clear();binding_scopes.clear();cleanup_variables.clear();registered_cleanups.clear();
-      bound_scopes.clear();declared_bindings.clear();controls.clear();switch_cases.clear();control_labels.clear();
+      bound_scopes.clear();declared_bindings.clear();controls.clear();switch_cases.clear();control_labels.clear();source_labels.clear();emitted_source_labels.clear();
       check_lifetime(scope->lifetime);
       if(!scope->assoc_block || scope->assoc_block->kind!=stmk_block)reject("nonblock function root");
+      function_block=scope->assoc_block;
       unsigned root=statement(scope->assoc_block,scope);
+      if(source_labels.size()!=emitted_source_labels.size())reject("goto target missing from function body");
+      if(!source_labels.empty() && !cleanup_variables.empty())reject("goto with lexical cleanup obligations");
       if(cleanup_variables!=registered_cleanups)reject("missing cleanup declaration/initialization completion anchor");
       functions.push_back("{\"entityId\":"+number(function)+",\"bodyNodeId\":"+number(root)+"}");
       context="file scope";
     }
+    for(const auto &storage_bytes:bitfield_data) {
+      string bytes;unsigned long long begin=0,previous=0;
+      for(const auto &byte:storage_bytes.second) {
+        if(!bytes.empty() && byte.first!=previous+1){data_chunk(storage_bytes.first,begin,bytes);bytes.clear();}
+        if(bytes.empty())begin=byte.first;
+        bytes+=char(byte.second);previous=byte.first;
+      }
+      data_chunk(storage_bytes.first,begin,bytes);
+    }
+    for(const auto &storage:storage_chunks)for(const auto &chunk:storage.second)
+      storage_data.push_back("{\"storageId\":"+number(storage.first)+",\"byteOffset\":"+std::to_string(chunk.first)+",\"dataHex\":"+quote(bytes_hex(chunk.second))+"}");
     std::vector<string> types;
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v11\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v12\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
       ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
       ",\"recordTypes\":"+array(record_types)+",\"recordFields\":"+array(record_fields)+
+      ",\"storages\":"+array(storages)+",\"storageData\":"+array(storage_data)+",\"relocations\":"+array(relocations)+
+      ",\"routineTypes\":"+array(routine_types)+",\"routineParameters\":"+array(routine_parameters)+
+      ",\"sourceRoutineTypes\":"+array(source_routine_types)+",\"sourceRoutineParameters\":"+array(source_routine_parameters)+
       ",\"types\":"+array(types)+",\"entities\":"+array(entities)+
       ",\"parameters\":"+array(parameters)+",\"functions\":"+array(functions)+",\"bindings\":"+array(bindings)+",\"nodes\":"+array(nodes)+",\"edges\":"+array(edges)+"}\n";
     if(fwrite(result.data(),1,result.size(),stdout)!=result.size() || fflush(stdout))reject("wire output failure");

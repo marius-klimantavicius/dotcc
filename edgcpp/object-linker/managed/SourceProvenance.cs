@@ -9,9 +9,11 @@ internal sealed record SourceType(long Id, string Kind, string SourceName,
 internal sealed partial class ObjectFile
 {
     public Dictionary<long, SourceType> SourceTypes { get; } = [];
+    public Dictionary<long, long> BindingSourceTypes { get; } = [];
 
     private void ReadAndVerifySourceProvenance()
     {
+        ReadRoutineMetadata(true);
         using (var query = database.Prepare("SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count FROM source_types ORDER BY id"))
             while (query.Read())
             {
@@ -30,7 +32,7 @@ internal sealed partial class ObjectFile
                 else if (type.Kind == "array")
                 {
                     if (type.UnderlyingTypeId is null || type.SourceName.Length != 0 || type.IsConst || type.IsVolatile ||
-                        (type.ElementCount == 0 ? !ScalarTypes.IsPointer(executionType) : !ScalarTypes.IsArray(executionType) || ScalarTypes.ElementCount(executionType) != type.ElementCount))
+                        (!ScalarTypes.IsArray(executionType) || ScalarTypes.ElementCount(executionType) != type.ElementCount))
                         throw new InvalidDataException("Invalid source array type or execution extent");
                 }
                 else if (type.Kind == "pointer")
@@ -38,6 +40,17 @@ internal sealed partial class ObjectFile
                     if (type.UnderlyingTypeId is null || !ScalarTypes.IsPointer(executionType) ||
                         type.SourceName.Length != 0 || type.IsConst || type.IsVolatile)
                         throw new InvalidDataException("Invalid source pointer type");
+                }
+                else if (type.Kind == "routine")
+                {
+                    if (!SourceRoutines.ContainsKey(type.Id) || !RoutineTypes.IsRoutine(executionType) || type.SourceName.Length != 0 ||
+                        type.UnderlyingTypeId is not null || type.IsConst || type.IsVolatile)
+                        throw new InvalidDataException("Invalid source routine type");
+                }
+                else if (type.Kind == "enum")
+                {
+                    if (!ScalarTypes.IsInteger(executionType) || type.UnderlyingTypeId is not null || type.IsConst || type.IsVolatile)
+                        throw new InvalidDataException("Invalid source enum representation");
                 }
                 else if (type.Kind == "record")
                 {
@@ -49,7 +62,7 @@ internal sealed partial class ObjectFile
                 {
                     string expected = type.Kind switch
                     {
-                        "void" => "void", "bool" => "u8", "float" => "f32", "double" => "f64", "signed-char" => "i8", "unsigned-char" => "u8",
+                        "va-list" => "va-list", "void" => "void", "bool" => "u8", "float" => "f32", "double" => "f64", "signed-char" => "i8", "unsigned-char" => "u8",
                         "short" => "i16", "unsigned-short" => "u16", "int" => "i32", "unsigned-int" => "u32",
                         "long" or "long-long" => "i64", "unsigned-long" or "unsigned-long-long" => "u64",
                         "char" when executionType is "i8" or "u8" => executionType,
@@ -82,7 +95,7 @@ internal sealed partial class ObjectFile
                 else if (current.Kind == "array")
                 {
                     string representation = Type(current.ExecutionTypeId);
-                    string element = current.ElementCount == 0 ? ScalarTypes.Pointee(representation) : ScalarTypes.Element(representation);
+                    string element = ScalarTypes.Element(representation);
                     if (element != Type(target.ExecutionTypeId)) throw new InvalidDataException("Source array element disagrees with execution representation");
                     if (Original(target).Kind == "array" && Original(target).ElementCount == 0)
                         throw new InvalidDataException("Array element cannot be incomplete");
@@ -93,15 +106,26 @@ internal sealed partial class ObjectFile
             }
             visited.UnionWith(chain);
         }
+        foreach (RoutineType routine in SourceRoutines.Values)
+        {
+            SourceType type = SourceTypeById(routine.TypeId);
+            string signature = RoutineTypes.Key(Type(SourceTypeById(routine.ReturnTypeId).ExecutionTypeId),
+                routine.Parameters.Select(parameter => ParameterType(SourceTypeById(parameter))), routine.Variadic, routine.ExceptionPolicy);
+            if (type.Kind != "routine" || Type(type.ExecutionTypeId) != signature)
+                throw new InvalidDataException("Source routine signature disagrees with execution signature");
+        }
+        foreach (RoutineType routine in Routines.Values)
+            if (!CanCopyRecord(Type(routine.ReturnTypeId)) || routine.Parameters.Any(parameter => !CanCopyRecord(Type(parameter))))
+                throw new InvalidDataException("Record value ABI cannot contain incomplete arrays or volatile fields in this profile");
+        VerifyStorageSourceTypes();
         foreach (RecordField field in Fields.Values)
         {
             SourceType source = SourceTypeById(field.SourceTypeId);
             if (source.ExecutionTypeId != field.TypeId)
                 throw new InvalidDataException("Record field source type disagrees with execution representation");
-            // Volatile reads/writes and atomics require explicit semantic nodes.
+            // Volatile reads/writes are represented by explicit volatile-place nodes.
             while (source.Kind is "typedef" or "qualified" or "array")
             {
-                if (source.IsVolatile) throw new InvalidDataException("Volatile record fields are not supported");
                 source = SourceTypeById(source.UnderlyingTypeId!.Value);
             }
         }
@@ -133,7 +157,7 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Missing original parameter signature capture");
 
         // Join declarations to their owned execution counterpart while streaming
-        // rows: local declaration metadata need not stay resident after checking.
+        // rows. Retain the type IDs to verify declared volatile access sites.
         using (var query = database.Prepare("""
             SELECT d.id,d.kind,d.source_name,d.source_type_id,d.entity_id,d.binding_id,d.function_entity_id,d.line,d.column,
                    b.function_id,b.kind,b.ordinal,b.type_id,b.source_name,
@@ -164,6 +188,7 @@ internal sealed partial class ObjectFile
                         !Functions.ContainsKey(function) || query.OptionalInteger(9) != function || query.OptionalText(10) != kind ||
                         (kind == "parameter" ? ParameterType(type) != Type(query.Integer(12)) : type.ExecutionTypeId != query.OptionalInteger(12)) || query.OptionalText(13) != name)
                         throw new InvalidDataException("Source binding declaration does not match its execution binding");
+                    if (!BindingSourceTypes.TryAdd(query.Integer(5), sourceTypeId)) throw new InvalidDataException("Duplicate source binding declaration identity");
                     if (kind == "local" && Original(type).Kind == "array" && Original(type).ElementCount == 0)
                         throw new InvalidDataException("Incomplete array is only supported as original parameter provenance");
                     // A canonical routine signature can come from an earlier
@@ -194,7 +219,8 @@ internal sealed partial class ObjectFile
     private string ParameterType(SourceType type)
     {
         SourceType original = Original(type);
-        return original.Kind == "array" && original.ElementCount > 0
+        if (original.Kind == "routine") return "ptr(" + Type(original.ExecutionTypeId) + ")";
+        return original.Kind == "array"
             ? "ptr(" + ScalarTypes.Element(Type(original.ExecutionTypeId)) + ")" : Type(type.ExecutionTypeId);
     }
 
@@ -224,6 +250,8 @@ internal sealed partial class ObjectFile
         {
             "pointer" => "ptr(" + SourceTypeSignature(type.UnderlyingTypeId!.Value, depth + 1, false, false) + ")",
             "record" => Type(type.ExecutionTypeId),
+            "routine" => Type(type.ExecutionTypeId),
+            "enum" => "enum(" + type.SourceName + "," + Type(type.ExecutionTypeId) + ")",
             _ => type.Kind
         });
     }
@@ -267,12 +295,18 @@ internal sealed partial class ObjectFile
         }
         Table("sourceFiles", "SELECT id,path,parent_id FROM source_files ORDER BY id", "id", "path", "parentId");
         Table("executionTypes", "SELECT id,kind,pointee_type_id,element_type_id,element_count FROM types ORDER BY id", "id", "kind", "pointeeTypeId", "elementTypeId", "elementCount");
-        Table("recordTypes", "SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column FROM record_types ORDER BY type_id",
-            "typeId", "identityKey", "sourceName", "size", "alignment", "sourceFileId", "line", "column");
-        Table("recordFields", "SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column FROM record_fields ORDER BY id",
-            "id", "recordTypeId", "ordinal", "typeId", "sourceName", "byteOffset", "sourceTypeId", "sourceFileId", "line", "column");
+        Table("recordTypes", "SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column,layout_kind FROM record_types ORDER BY type_id",
+            "typeId", "identityKey", "sourceName", "size", "alignment", "sourceFileId", "line", "column", "layoutKind");
+        Table("recordFields", "SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed FROM record_fields ORDER BY id",
+            "id", "recordTypeId", "ordinal", "typeId", "sourceName", "byteOffset", "sourceTypeId", "sourceFileId", "line", "column", "bitOffset", "bitWidth", "bitSigned");
         Table("sourceTypes", "SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count FROM source_types ORDER BY id",
             "id", "kind", "sourceName", "underlyingTypeId", "executionTypeId", "isConst", "isVolatile", "sourceFileId", "line", "column", "elementCount");
+        Table("storages", "SELECT id,source_name,linkage,external_key,definition,type_id,source_type_id,is_thread_local,is_const,alignment,source_file_id,line,column FROM storages ORDER BY id",
+            "id", "sourceName", "linkage", "externalKey", "definition", "typeId", "sourceTypeId", "isThreadLocal", "isConst", "alignment", "sourceFileId", "line", "column");
+        Table("routineTypes", "SELECT type_id,return_type_id,variadic,exception_policy FROM routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy");
+        Table("routineParameters", "SELECT type_id,ordinal,parameter_type_id FROM routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");
+        Table("sourceRoutineTypes", "SELECT type_id,return_type_id,variadic,exception_policy FROM source_routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy");
+        Table("sourceRoutineParameters", "SELECT type_id,ordinal,parameter_type_id FROM source_routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");
         Table("sourceFunctions", "SELECT entity_id,return_source_type_id,capture_phase FROM source_functions ORDER BY entity_id", "entityId", "returnSourceTypeId", "capturePhase");
         Table("sourceParameters", "SELECT entity_id,ordinal,source_type_id FROM source_parameters ORDER BY entity_id,ordinal", "entityId", "ordinal", "sourceTypeId");
         Table("sourceDeclarations", "SELECT id,kind,source_name,source_type_id,entity_id,binding_id,function_entity_id,source_file_id,line,column FROM source_declarations ORDER BY id",

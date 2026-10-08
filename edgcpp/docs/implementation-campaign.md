@@ -2598,3 +2598,47 @@ storage copies correctly. The next C++ lifetime work is selected constructor and
 destructor calls, then temporary/full-expression boundaries, partial construction
 and EH cleanup state. General lifetimes stays false and DuckDB's old whole-program
 retry remains paused. Current readers require v11 objects.
+
+### Coordinated object-pipeline project campaign (2026-10-08, ongoing)
+
+The user replaced narrow feature increments with a supervisor-led implementation
+campaign whose acceptance targets are SQLite and DuckDB through independent
+owned `.dotobj` translation units. The supervisor coordinates native and managed
+workers; root owns project orchestration probes and independent correctness
+review. See [the campaign contract](dotobj-project-campaign.md). This resumes
+DuckDB through per-unit objects, while the old whole-program merge stays unused.
+
+Committed orchestration milestone `dd0e39a6c` adds restartable, bounded per-source
+frontend jobs, manifests and isolated packaging. `95bb32092` records the 24-check
+driver acceptance: independent original units, resume, changed/shadowing header
+invalidation, corrupted object retry and subprocess-group timeout handling.
+SQLite's existing full thread-safe Unix source configuration parses; DuckDB's
+first original C++ unit parses without a whole-program merge. Both currently
+stop on explicitly reported execution-graph gaps, not frontend parse failures.
+
+The in-progress v12 tranche covers global/static/TLS storage, exact constant data
+and symbolic relocations, function pointers, unions/bitfields, broader records,
+macro push/pop, sequencing and runtime C operations. Initial linked storage
+acceptance passes 36 checks including native comparison, JIT and NativeAOT at
+`dotobj-storage-acceptance-001`. Independent cross-unit tests pass 12 checks at
+`dotobj-storage-crossunit-002`, including cyclic/interior data pointers, function
+callbacks, thread-local relocation/state, forced GC, source-free relinking and
+NativeAOT. Paths are beneath `/mnt/storage/dotcc-edg-campaign-20261003`.
+
+These results do not claim complete v12 coverage or project translation. The
+full regression, source-readable initializer output, runtime binding, precise
+C++ lifetimes/EH, full owned source index and SQLite/DuckDB project acceptance
+remain campaign gates. All intermediate compiler snapshots, objects, emitted
+C#, failures and receipts are retained.
+
+
+The coordinated v12 C/runtime milestone now passes **597 checks including
+NativeAOT** (`dotobj-project-acceptance-001`, native010/managed006). Shared BCL
+runtime binding passes 33 independent checks and is committed as `de2f8fa69`.
+Managed007's unsigned-bitfield promotion fix also passes native/JIT/NativeAOT;
+managed008 accepts valid narrow integer pointer displacements found in musl.
+This supersedes the in-progress status above, without claiming project success.
+See [the campaign status](dotobj-project-campaign.md) and the
+[hashed C/runtime evidence](../evidence/dotobj-project-c-20261008.json).
+SQLite still needs the next function-designator fix and remaining libc providers;
+DuckDB needs C++ inherited/vptr object representation and subsequent lifetimes/EH.

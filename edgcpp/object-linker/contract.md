@@ -590,3 +590,92 @@ destructors. Aggregate copies and by-value calling conventions remain excluded:
 C# assignment alone does not prove correct copying of array-wrapper storage.
 Next steps require selected constructor/destructor calls, nontrivial object
 actions and their activation/cleanup semantics. General lifetimes remains false.
+
+## Project C profile: scalar-control-v12
+
+This coordinated C/runtime tranche passes 597 regression checks, including
+NativeAOT. It does not yet satisfy SQLite or DuckDB project acceptance.
+The campaign and acceptance gates are in
+[`dotobj-project-campaign.md`](../docs/dotobj-project-campaign.md).
+
+Additional normalized wire arrays (SQL names use snake_case):
+
+- `routineTypes`: typeId, returnTypeId, variadic, exceptionPolicy. Each typeId owns an execution
+  type of kind `routine`; `routineParameters` contains typeId, ordinal,
+  parameterTypeId. A function pointer is an ordinary pointer to a routine type.
+- `sourceRoutineTypes` and `sourceRoutineParameters` retain equivalent original
+  source signature references, including source typedef/qualifier structure.
+- `storages`: id, sourceName, linkage, externalKey, definition, typeId,
+  sourceTypeId, isThreadLocal, isConst, alignment, sourceFileId, line, column.
+  Source type is nullable for synthetic literal storage. Internal storage
+  identity is local to its object; external identity uses the exact linker key.
+- `storageData`: storageId, byteOffset, dataHex. The transient wire spelling is
+  nonempty even-length lowercase hexadecimal; the database stores exact bytes
+  in `storage_data.bytes` as a BLOB. Unspecified bytes start as zero. These are
+  target-representation constants, not host-endian values or C# text.
+- `relocations`: storageId, byteOffset, targetStorageId, targetEntityId, addend.
+  Exactly one target is present. Address identity is resolved during linking;
+  address values are installed after allocation, without embedded native process
+  pointers. Addends are signed byte displacements.
+
+Entities append required `routineTypeId`; return type and parameter rows must
+agree with that signature. Definitions admit `linkonce` in addition to strong
+definitions and declarations; link selection must not mistake duplicate strong
+definitions for mergeable inline definitions.
+
+Nodes append nullable `storageId`. `storage` is a typed storage place.
+`storage-address` is a pointer value with a storage identity and canonical signed
+byte addend in constantText. `function-address` references an entity and has its
+routine pointer type. `indirect-call` owns one operand callee and ordered argument
+edges; its signature is determined by the callee type. Other node payload rules
+remain explicit and unrelated fields must stay null.
+
+Record definitions append `layoutKind` (`struct`, `union`, `class`); fields append
+nullable `bitOffset`, `bitWidth`, `bitSigned`. Ordinary fields have all three
+null. Bitfields describe the exact starting byte/bit and signed value width,
+allowing named C# properties without widening stores into adjacent fields.
+Incomplete record rows have size/alignment zero and no fields; their nominal
+identity may resolve to a compatible complete definition in another object.
+Incomplete records cannot provide by-value storage. Record arrays and unions
+retain their owned element/field types and target layouts. Representation bounds
+and CLR storage constraints are verified rather than assumed from SQL validity.
+
+Macro events now admit `push` and `pop`. Their definitionId is the saved/restored
+previous installation, or null for an undefined macro. Push observes the current
+definition without changing it. Pop must match the top saved definition for that
+name and restores effective state. Definition rows still belong to exactly one
+original define event. Stack events carry the pragma location, not the original
+definition location. Only accepted frontend operations are observed; a pop with
+no saved state remains the frontend's warning/no-op and creates no event.
+
+The routine exception policy is `unwind` or `terminate`; it participates in
+signature compatibility. Nonempty noexcept definitions and external forwarding
+boundaries terminate when an exception escapes. Empty or single-void-return
+bodies need no boundary. General C++ throwing and destructor lifetimes remain
+outside this profile.
+
+The v12 executable graph additionally owns volatile places, varargs operations,
+intrinsics, labels/gotos and ordered sequence expressions. Shared authoritative
+`Edg.Runtime` VaList/VaArg/VaPack sources implement variadic calls using
+`params ReadOnlySpan<VaArg>` and callee-owned packing. Generated runtime imports
+use `Edg.Runtime.LibC`; imports mentioning translated record types remain in the
+translated owner. Imports reject unless explicitly allowed, and implementations
+must satisfy checked signatures and layout metadata. External storage providers
+return the stable address of their own cell; TLS accessors run on each access.
+
+Complete nonvolatile POD records may be copied, passed and returned, including
+array payloads represented by physical InlineArray fields. Incomplete and
+flexible-tail by-value records, alignment above eight, nontrivial C++ records and
+volatile aggregate copies still reject. Source bitfields remain named properties;
+value truncation and arithmetic promotions follow the owned computation types.
+Globals/TLS use pinned arenas; static data emits typed constant spans, UTF8
+literals/comments and named object/table initializers when representable.
+
+Ordinary source control flow stays structured. Legal C goto entries that C#
+forbids trigger local-variable hoisting and control-flow adaptation only in the
+affected function. Gotos with lexical cleanup and void-prefix comma expressions
+inside value contexts still reject. Execution reachability skips unused inline
+header bodies, but strong externally defined library APIs remain roots. A full
+independent source semantic index, C++ lifetimes/EH, binary80, instance-owned
+storage and actual SQLite/DuckDB execution remain outstanding gates. The current
+execution target is 64-bit little-endian; Linux x64 is the tested platform.

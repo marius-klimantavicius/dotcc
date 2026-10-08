@@ -3,6 +3,7 @@
 // Owned observations of accepted preprocessor state changes. This deliberately
 // does not model expansion occurrences or preserve original directive trivia.
 #include <cstdlib>
+#include <map>
 #include <string>
 #include <vector>
 #include "fe_common.h"
@@ -28,6 +29,8 @@ struct State {
   std::vector<Definition> definitions;
   std::vector<Event> events;
   std::string unsupported;
+  std::map<std::string,unsigned> installed;
+  std::map<std::string,std::vector<unsigned>> saved;
 };
 inline State &state(){static State value;return value;}
 inline void reject_feature(const char *name) {
@@ -53,12 +56,29 @@ inline void define(const Definition &value) {
   auto &s=state();s.definitions.push_back(value);
   Event event;event.kind="define";event.name=value.name;event.origin=value.origin;
   event.position=value.position;event.definition=(unsigned)s.definitions.size();s.events.push_back(event);
+  s.installed[value.name]=event.definition;
 }
 inline void undef(const char *name,size_t length,const a_source_position &position,const char *origin) {
   if(!enabled())return;
   Event event;event.kind="undef";event.name.assign(name,length);event.origin=origin;event.position=position;
   if(!valid_text(event.name))reject_feature("non-UTF8 or NUL macro name");
   state().events.push_back(event);
+  state().installed.erase(event.name);
+}
+inline void push(const char *name,const a_source_position &position) {
+  if(!enabled())return;
+  auto &s=state();unsigned definition=s.installed[name];
+  s.saved[name].push_back(definition);
+  Event event;event.kind="push";event.name=name;event.origin="source";
+  event.position=position;event.definition=definition;s.events.push_back(event);
+}
+inline void pop(const char *name,const a_source_position &position) {
+  if(!enabled())return;
+  auto &s=state();auto &saved=s.saved[name];
+  if(saved.empty()){reject_feature("macro stack observation mismatch");return;}
+  unsigned definition=saved.back();saved.pop_back();s.installed[name]=definition;
+  Event event;event.kind="pop";event.name=name;event.origin="source";
+  event.position=position;event.definition=definition;s.events.push_back(event);
 }
 }
 END_EDG_NAMESPACE

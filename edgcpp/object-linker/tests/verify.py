@@ -12,6 +12,8 @@ import subprocess
 import sys
 import lifetimes_verify
 import records_verify
+import storage_verify
+import project_c_verify
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('dotobj_compile', ROOT / 'compile.py')
@@ -23,11 +25,17 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output-dir', required=True, type=Path)
     parser.add_argument('--nativeaot', action='store_true')
+    parser.add_argument('--linker', type=Path, help='Use an already built immutable linker DLL')
+    parser.add_argument('--compiler', type=Path, default=ROOT.parent / 'build/bin/cpfe-dot')
     parser.add_argument('--lifetimes-only', action='store_true', help='Run the focused lexical cleanup acceptance')
+    parser.add_argument('--project-c-only', action='store_true', help='Run C runtime and value-semantics acceptance')
+    parser.add_argument('--storage-only', action='store_true', help='Run the linked storage/project-C acceptance')
     parser.add_argument('--records-only', action='store_true', help='Run the focused record/layout acceptance')
     args = parser.parse_args()
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
+    compiler = out / 'cpfe-dot'
+    shutil.copy2(args.compiler, compiler)
     inputs = out / 'inputs'
     inputs.mkdir()
     for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'switches.cpp', 'integers.cpp', 'source_types.h', 'source_types.cpp', 'macros.h', 'macros.cpp', 'pointer_fixture.h', 'pointer_provider.cpp', 'pointers.cpp', 'array_fixture.h', 'array_provider.cpp', 'arrays.cpp', 'float_fixture.h', 'float_provider.cpp', 'floats.cpp']:
@@ -51,13 +59,15 @@ def main():
         shutil.copy2(ROOT / 'tests/records.cpp', inputs / ('records' + ('-c' if extension == '.c' else '') + extension))
         shutil.copy2(ROOT / 'tests/record_provider.cpp', inputs / ('record-provider' + ('-c' if extension == '.c' else '') + extension))
     shutil.copy2(ROOT / 'tests/record_fixture.h', inputs / 'record_fixture.h')
+    for name in ['storage_fixture.h', 'storage_provider.c', 'storages.c', 'project_c_runtime.c', 'project_c_intrinsics.c', 'project_c_record_values.c', 'project_c_record_array_values.c']:
+        shutil.copy2(ROOT / 'tests' / name, inputs / name)
     checks = []
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v11', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v12', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
-            limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH or globals yet.',
+            limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
 
     def run(label, command, expected=0, contains=None):
@@ -84,13 +94,17 @@ def main():
     def compile_source(name, source, output=None, expected=0, unit_id=None, std='c++17', extra=()):
         output = output or out / (name + '.dotobj')
         run('compile-' + name, [sys.executable, '-B', ROOT / 'compile.py', source,
-            '--output', output, '--work-dir', out / (name + '-compile'), '--unit-id', unit_id or name, '--std', std, *extra], expected)
+            '--output', output, '--work-dir', out / (name + '-compile'), '--compiler', compiler,
+            '--unit-id', unit_id or name, '--std', std, *extra], expected)
         return output
 
     try:
-        run('tool-build', ['dotnet', 'build', ROOT / 'managed/DotObj.Linker.csproj',
-            '-c', 'Release', '--artifacts-path', out / 'tool'])
-        tool = out / 'tool/bin/DotObj.Linker/release/dotobj-link.dll'
+        if args.linker:
+            tool = args.linker.resolve()
+        else:
+            run('tool-build', ['dotnet', 'build', ROOT / 'managed/DotObj.Linker.csproj',
+                '-c', 'Release', '--artifacts-path', out / 'tool'])
+            tool = out / 'tool/bin/DotObj.Linker/release/dotobj-link.dll'
         if not tool.exists():
             raise RuntimeError('Expected linker build output missing')
         provider = compile_source('provider', inputs / 'provider.cpp')
@@ -135,6 +149,14 @@ def main():
                     db.execute('UPDATE content_digest SET sha256=?', (MODULE.logical_hash(db),))
             return path
 
+        if args.project_c_only:
+            project_c_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
+            save('passed')
+            return
+        if args.storage_only:
+            storage_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
+            save('passed')
+            return
         if args.records_only:
             record_provider, record_consumer = records_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
             records_verify.malformed(record_provider, record_consumer, tool, run, link, mutate)
@@ -173,7 +195,24 @@ def main():
                 check('pointer-source-provenance-' + language, db.execute("SELECT count(*) FROM source_types WHERE kind='pointer' AND underlying_type_id IS NOT NULL").fetchone()[0] >= 5)
                 check('pointer-places-' + language, db.execute("SELECT count(*) FROM nodes WHERE kind='dereference' AND value_category='place'").fetchone()[0] > 0)
         pointer_provider, pointer_consumer = pointer_objects[0]
-        with sqlite3.connect(pointer_provider) as db:
+        # Make object-local identity independence deliberate, not dependent on
+        # which unrelated signatures happened to allocate IDs first.
+        renumbered = out / 'pointer-provider-renumbered.dotobj'
+        shutil.copy2(pointer_provider, renumbered)
+        with sqlite3.connect(renumbered) as db:
+            tables = [row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")]
+            for table in tables:
+                columns = {'id'} if table == 'types' else set()
+                for row in db.execute('PRAGMA foreign_key_list(' + MODULE.quote(table) + ')'):
+                    if row[2] in {'types', 'routine_types', 'record_types'}:
+                        columns.add(row[3])
+                if columns:
+                    db.execute('UPDATE ' + MODULE.quote(table) + ' SET ' + ','.join(
+                        MODULE.quote(column) + '=' + MODULE.quote(column) + '+1000000'
+                        for column in sorted(columns)))
+            db.execute('UPDATE content_digest SET sha256=?', (MODULE.logical_hash(db),))
+        execute('pointers-renumbered', link('link-pointers-renumbered', [renumbered, pointer_consumer]))
+        with sqlite3.connect(renumbered) as db:
             provider_int_pointer = db.execute("SELECT t.id FROM types t JOIN types p ON p.id=t.pointee_type_id WHERE t.kind='pointer' AND p.kind='i32'").fetchone()[0]
         with sqlite3.connect(pointer_consumer) as db:
             consumer_int_pointer = db.execute("SELECT t.id FROM types t JOIN types p ON p.id=t.pointee_type_id WHERE t.kind='pointer' AND p.kind='i32'").fetchone()[0]
@@ -225,6 +264,8 @@ def main():
         lifetime_consumer = lifetimes_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
         record_provider, record_consumer = records_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
         records_verify.malformed(record_provider, record_consumer, tool, run, link, mutate)
+        storage_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
+        project_c_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
         loops_object = out / 'loops.dotobj'
         loops_cs = '\n'.join(p.read_text() for p in (out / 'link-loops').glob('*.cs'))
         check('structured-loop-source', all(token in loops_cs for token in ['for (', 'do', 'while (', 'break;', 'continue;']) and 'goto ' not in loops_cs)
@@ -311,6 +352,10 @@ def main():
         run('duplicate-strong', ['dotnet', tool, 'link', '--out', out / 'bad-strong', provider, duplicate], None, 'Duplicate strong')
         mismatch = mutate('signature', consumer, [
             ('UPDATE parameters SET type_id=3 WHERE entity_id=(SELECT id FROM entities WHERE source_name=?)', ('from_a',)),
+            ("INSERT INTO types SELECT max(id)+1,'routine',NULL,NULL,NULL FROM types", ()),
+            ("INSERT INTO routine_types SELECT (SELECT max(id) FROM types),return_type_id,variadic,exception_policy FROM routine_types WHERE type_id=(SELECT routine_type_id FROM entities WHERE source_name='from_a')", ()),
+            ("INSERT INTO routine_parameters VALUES((SELECT max(id) FROM types),0,3)", ()),
+            ("UPDATE entities SET routine_type_id=(SELECT max(id) FROM types) WHERE source_name='from_a'", ()),
             ("INSERT INTO source_types SELECT max(id)+1,'unsigned-char','',NULL,3,0,0,NULL,0,0,NULL FROM source_types", ()),
             ("UPDATE source_parameters SET source_type_id=(SELECT max(id) FROM source_types) WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ())])
         run('signature-mismatch', ['dotnet', tool, 'link', '--out', out / 'bad-signature', provider, mismatch], None, 'Signature mismatch')
@@ -517,26 +562,34 @@ def main():
             "UPDATE macro_parameters SET ordinal=10 WHERE definition_id=(SELECT id FROM macro_definitions WHERE name='API_ADD') AND ordinal=1", ())])
         run('macro-parameter-order', ['dotnet', tool, 'verify', wrong_macro_ordinal], None)
 
-        negatives = {
-            'va-opt': '#define API_OPT(...) __VA_OPT__(17)\nint f(){return API_OPT(1); }\n',
+        project_c_forms = {
+            'volatile-pointer': 'int f(volatile int* value){return *value;}\n',
+            'volatile': 'int f(){volatile int value=1; return value;}\n',
+            'noexcept': 'int f() noexcept {return 1;}\n',
             'push-macro': '#define VALUE 1\n#pragma push_macro("VALUE")\nint f(){return VALUE;}\n',
             'pop-macro': '#pragma pop_macro("VALUE")\nint f(){return 1;}\n',
             'global': 'int storage=1; int f(){return storage;}\n',
-            'long-double': 'long double f(long double x){return x+1.0L;}\n',
-            'variable-array': 'int f(int n){int values[n]; values[0]=2;return values[0];}\n',
             'oversized-array': 'int f(){unsigned char values[65537];values[0]=1;return values[0];}\n',
             'union-pointer': 'union X { int value; }; int f(X* p){return p->value;}\n',
             'function-pointer': 'int f(int (*call)(int)){return call(3);}\n',
-            'reference': 'int f(int& value){return value;}\n',
-            'volatile-pointer': 'int f(volatile int* value){return *value;}\n',
-            'ordered-pointer-store': 'int next(int** slot,int* value){*slot=value;return 7;} int f(){int a=1,b=2;int* p=&a; *p=next(&p,&b);return b;}\n',
-            'volatile': 'int f(){volatile int value=1; return value;}\n',
             'inline': 'inline int f(){return 1;} int g(){return f();}\n',
-            'noexcept': 'int f() noexcept {return 1;}\n',
+            'goto': 'int f(){int n=0; again: ++n; if(n<3)goto again; return n;}\n',
+        }
+        for name, code in project_c_forms.items():
+            source = out / ('supported-' + name + '.cpp')
+            source.write_text(code)
+            obj = compile_source('supported-' + name, source)
+            run('verify-supported-' + name, ['dotnet', tool, 'verify', obj])
+
+        negatives = {
+            'va-opt': '#define API_OPT(...) __VA_OPT__(17)\nint f(){return API_OPT(1); }\n',
+            'long-double': 'long double f(long double x){return x+1.0L;}\n',
+            'variable-array': 'int f(int n){int values[n]; values[0]=2;return values[0];}\n',
+            'reference': 'int f(int& value){return value;}\n',
+            'ordered-pointer-store': 'int next(int** slot,int* value){*slot=value;return 7;} int f(){int a=1,b=2;int* p=&a; *p=next(&p,&b);return b;}\n',
             'nested-switch-case': 'int f(int n){switch(n){{case 1:return 2;}default:return 3;}}\n',
             'precase-execution': 'int f(int n){switch(n){n=4;case 1:return 2;default:return 3;}}\n',
             'switch-range': 'int f(int n){switch(n){case 1 ... 3:return 2;default:return 3;}}\n',
-            'goto': 'int f(){int n=0; again: ++n; if(n<3)goto again; return n;}\n',
         }
         for name, code in negatives.items():
             source = out / ('unsupported-' + name + '.cpp')

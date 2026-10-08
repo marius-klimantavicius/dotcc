@@ -11,6 +11,7 @@
 #include "fe_common.h"
 #include "il.h"
 #include "types.h"
+#include "lower_name.h"
 BEGIN_EDG_NAMESPACE
 namespace dot_object_source {
 inline bool enabled() {
@@ -26,6 +27,8 @@ struct Type {
   a_source_position position={};
   // Routine types are private signature snapshots, not scalar sourceTypes.
   unsigned result=0;
+  bool variadic=false;
+  std::string exception_policy="unwind";
   std::vector<unsigned> parameters;
 };
 struct Declaration {
@@ -46,10 +49,13 @@ struct RecordField {
   unsigned source_type=0;
   std::string name;
   unsigned long long offset=0;
+  unsigned bit_offset=0,bit_width=0;
+  bool bit_signed=false;
   a_source_position position={};
 };
 struct Record {
-  std::string name,identity,error;
+  std::string name,identity,error,layout_kind;
+  bool template_identity=false;
   unsigned long long size=0,alignment=0;
   a_source_position position={};
   std::vector<RecordField> fields;
@@ -73,49 +79,57 @@ inline std::string spelling(const a_source_correspondence &source) {
 }
 inline unsigned capture_type(a_type_ptr t);
 inline void capture_record(a_type_ptr t) {
-  auto &s=state();if(s.records.count(t) || t->incomplete)return;
+  auto &s=state();auto old=s.records.find(t);
+  if(old!=s.records.end() && (old->second.size || t->incomplete))return;
   // Reserve first: self pointers and mutually recursive pointer fields are
   // ordinary nominal record references, not infinitely expanded structures.
   s.records[t]=Record{};
   Record value;value.name=spelling(t->source_corresp);value.position=t->source_corresp.decl_position;
-  value.size=t->size;value.alignment=t->alignment;
+  value.size=t->incomplete?0:t->size;value.alignment=t->incomplete?0:t->alignment;
+  value.layout_kind=t->kind==tk_union?"union":t->kind==tk_class?"class":"struct";
   auto &c=t->variant.class_struct_union;auto extra=c.extra_info;
-  if(t->kind!=tk_struct || value.name.empty() || c.originally_unnamed ||
-     t->source_corresp.is_local_to_function || t->source_corresp.is_class_member ||
-     t->source_corresp.enclosing_routine || t->declared_in_function_prototype || c.is_template_class)
-    value.error="record outside named global/namespace struct profile";
+  value.template_identity=c.is_template_class;
   std::string qualified=value.name;
+  bool local=value.name.empty() || c.originally_unnamed || t->source_corresp.is_local_to_function ||
+    t->source_corresp.enclosing_routine || t->declared_in_function_prototype;
   for(auto scope=t->source_corresp.parent_scope;scope;scope=scope->parent) {
     if(scope->kind==sck_namespace) {
       auto ns=scope->variant.assoc_namespace;
       auto part=ns?spelling(ns->source_corresp):std::string{};
-      if(!ns || ns->has_internal_linkage || part.empty())value.error="anonymous namespace record identity";
+      if(!ns || ns->has_internal_linkage || part.empty())local=true;
       qualified=part+"::"+qualified;
-    } else if(scope->kind!=sck_file)value.error="record outside global/namespace scope";
+    } else if(scope->kind==sck_class_struct_union) {
+      auto owner=scope->variant.assoc_type;
+      if(owner && owner->variant.class_struct_union.is_template_class)value.template_identity=true;
+      auto part=owner?spelling(owner->source_corresp):std::string{};
+      if(part.empty())local=true;
+      qualified=part+"::"+qualified;
+    } else if(scope->kind!=sck_file)local=true;
   }
-  value.identity="record:"+qualified;
-  if(!value.size || value.size>65536 || !value.alignment || value.alignment>8 ||
-     c.is_empty_class || c.contains_flexible_array_member || c.any_volatile_member ||
+  value.identity=(local?"local-record:":"record:")+qualified;
+  if(t->incomplete){s.records[t]=value;return;}
+  if(!value.size || value.size>2147483647ULL || !value.alignment || value.alignment>8 ||
      c.any_virtual_functions_including_in_base_classes || (extra && extra->base_classes))
-    value.error="record outside bounded plain layout profile";
+    value.error="record outside complete plain layout profile";
 #if GNU_EXTENSIONS_ALLOWED
   if(c.is_packed)value.error="packed record layout";
 #endif
   if(c.max_member_alignment)value.error="packed record alignment";
   if(extra && extra->has_field_initializer)value.error="record default member initializer";
-  if(extra && extra->assoc_scope)for(auto r=extra->assoc_scope->routines;r;r=r->next) {
-    if((r->special_kind==sfk_constructor && !r->is_trivial_default_constructor && !r->is_trivial_copy_function) ||
-       (r->special_kind==sfk_destructor && !r->is_trivial_destructor) || !r->compiler_generated)
-      value.error="record with user/nontrivial member functions";
-  }
   if(!value.error.empty()){s.records[t]=value;return;}
   for(auto f=c.field_list;f;f=f->next) {
     RecordField field;field.il=f;field.name=spelling(f->source_corresp);field.offset=f->offset;
     field.position=f->source_corresp.decl_position;
-    if(field.name.empty() || f->is_bit_field || f->compiler_generated || f->is_anonymous_parent_object ||
-       f->has_no_unique_address_attribute || f->is_lowered_base_class || f->class_subobject_with_tail_padding ||
+    if(f->is_bit_field && !f->bit_size)continue;
+    if(field.name.empty())field.name="__anonymous_member_"+std::to_string(value.fields.size());
+    if(f->has_no_unique_address_attribute || f->is_lowered_base_class || f->class_subobject_with_tail_padding ||
        f->alignment>skip_typerefs(f->type)->alignment)
-      value.error="record field outside named natural layout profile";
+      value.error="record field outside plain layout profile";
+    if(f->is_bit_field) {
+      field.bit_offset=f->offset_bit_remainder;field.bit_width=f->bit_size;field.bit_signed=f->bit_field_is_signed;
+      if(field.bit_offset>7 || field.bit_width>64 || skip_typerefs(f->type)->kind!=tk_integer)
+        value.error="bitfield outside fixed integer layout";
+    }
 #if GNU_EXTENSIONS_ALLOWED
     if(f->is_packed)value.error="packed record field";
 #endif
@@ -149,7 +163,7 @@ inline unsigned capture_type(a_type_ptr t) {
   } else if(t->kind==tk_void){value.kind="void";value.execution=1;}
   else if(t->kind==tk_integer) {
     if(t->variant.integer.bool_type){value.kind="bool";value.execution=3;}
-    else if(!t->variant.integer.enum_type)switch(t->variant.integer.int_kind) {
+    else switch(t->variant.integer.int_kind) {
       case ik_char:value.kind="char";value.execution=targ_has_signed_chars?4:3;break;
       case ik_signed_char:value.kind="signed-char";value.execution=4;break;
       case ik_unsigned_char:value.kind="unsigned-char";value.execution=3;break;
@@ -163,6 +177,7 @@ inline unsigned capture_type(a_type_ptr t) {
       case ik_unsigned_long_long:value.kind="unsigned-long-long";value.execution=9;break;
       default:break;
     }
+    if(t->variant.integer.enum_type && !t->variant.integer.bool_type)value.kind="enum";
   } else if(t->kind==tk_float) {
     if(t->variant.float_kind==fk_float && t->size==4){value.kind="float";value.execution=10;}
     else if(t->variant.float_kind==fk_double && t->size==8){value.kind="double";value.execution=11;}
@@ -173,21 +188,27 @@ inline unsigned capture_type(a_type_ptr t) {
     // of EDG addresses and of the source typedef/qualification structure.
   } else if(t->kind==tk_array && !t->variant.array.is_variable_size_array &&
             !t->variant.array.is_vla && !t->variant.array.is_template_dependent_size_array &&
-            !t->variant.array.bound_is_zero) {
+            true) {
     value.kind="array";
     value.underlying=capture_type(t->variant.array.element_type);
     value.element_count=t->variant.array.variant.number_of_elements;
   } else if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
-    value.kind="record";value.record_type=t;capture_record(t);
+    if(t->variant.class_struct_union.extra_info && t->variant.class_struct_union.extra_info->is_va_list_tag)
+      value.kind="va-list";
+    else {value.kind="record";value.record_type=t;capture_record(t);}
   } else if(t->kind==tk_routine) {
     value.kind="routine";
     value.result=capture_type(t->variant.routine.return_type);
+    value.variadic=t->variant.routine.extra_info->has_ellipsis;
+    auto specification=t->variant.routine.extra_info->exception_specification;
+    if(specification && !specification->throw_any)
+      value.exception_policy=specification->is_noexcept?"terminate":"unsupported-dynamic";
     for(auto p=t->variant.routine.extra_info->param_type_list;p;p=p->next)
       value.parameters.push_back(capture_type(p->declared_type?p->declared_type:p->type));
   }
   // Unknown entries are retained privately as unavailable, never exported as
   // opaque payloads. An unused unsupported declaration cannot block the TU.
-  if(t->kind!=tk_typeref && value.kind!="record")value.name.clear();
+  if(t->kind!=tk_typeref && value.kind!="record" && value.kind!="enum")value.name.clear();
   s.types[id-1]=value;return id;
 }
 inline void observe_type(a_type_ptr type){if(enabled())capture_type(type);}
@@ -228,6 +249,7 @@ inline void capture_scope(a_scope_ptr scope) {
   }
   for(auto t=scope->types;t;t=t->next)capture_type(t);
   for(auto v=scope->nonstatic_variables;v;v=v->next)capture_variable(v);
+  for(auto v=scope->variables;v;v=v->next)capture_variable(v);
   for(auto r=scope->routines;r;r=r->next)capture_routine(r);
   for(auto child=scope->scopes;child;child=child->next)capture_scope(child);
   for(auto ns=scope->namespaces;ns;ns=ns->next)

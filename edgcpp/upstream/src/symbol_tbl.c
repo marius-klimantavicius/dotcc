@@ -18338,10 +18338,10 @@ preprocessing only.
     /* Put this entry on the front of the stack of saved macros. */
     smsp->next = sym_hdr->saved_macro_stack;
     sym_hdr->saved_macro_stack = smsp;
-  }  /* if */
 #if defined(EDG_DOT_BACKEND)
-  dot_object_macros::reject_feature("push_macro pragma");
+    dot_object_macros::push(sym_hdr->identifier, name_pos);
 #endif
+  }  /* if */
 }  /* push_macro_pragma */
 
 
@@ -18391,12 +18391,12 @@ preprocessing only.
                          /*suppress_error=*/TRUE);
         }  /* if */
       }  /* if */
+#if defined(EDG_DOT_BACKEND)
+      dot_object_macros::pop(sym_hdr->identifier, name_pos);
+#endif
       free_saved_macro_state(smsp);
     }  /* if */
   }  /* if */
-#if defined(EDG_DOT_BACKEND)
-  dot_object_macros::reject_feature("pop_macro pragma");
-#endif
 }  /* pop_macro_pragma */
 
 

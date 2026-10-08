@@ -21,6 +21,9 @@ internal sealed partial class ObjectFile : IDisposable
     {
         ["object_info"] = "singleton", ["provenance"] = "ordinal", ["source_files"] = "id",
         ["record_types"] = "type_id", ["record_fields"] = "id",
+        ["routine_types"] = "type_id", ["routine_parameters"] = "type_id,ordinal",
+        ["source_routine_types"] = "type_id", ["source_routine_parameters"] = "type_id,ordinal",
+        ["storages"] = "id", ["storage_data"] = "storage_id,byte_offset", ["relocations"] = "storage_id,byte_offset",
         ["types"] = "id", ["entities"] = "id", ["parameters"] = "entity_id,ordinal",
         ["functions"] = "entity_id", ["bindings"] = "id", ["nodes"] = "id",
         ["edges"] = "parent_id,role,ordinal", ["content_digest"] = "singleton",
@@ -58,7 +61,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v11" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v12" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -145,6 +148,7 @@ internal sealed partial class ObjectFile : IDisposable
     private void ReadSummaries()
     {
         ReadRecordMetadata();
+        ReadRoutineMetadata(false);
         var rawTypes = new Dictionary<long, (string Kind, long? Pointee, long? Element, long? Count)>();
         using (var query = database.Prepare("SELECT id,kind,pointee_type_id,element_type_id,element_count FROM types ORDER BY id"))
             while (query.Read())
@@ -152,8 +156,8 @@ internal sealed partial class ObjectFile : IDisposable
                 long id = query.Integer(0);
                 string kind = query.Text(1);
                 long? pointee = query.OptionalInteger(2), element = query.OptionalInteger(3), count = query.OptionalInteger(4);
-                if (id <= 0 || (kind is not ("void" or "bool" or "pointer" or "array" or "record") && !ScalarTypes.IsNumeric(kind)) ||
-                    (kind == "pointer") != (pointee is not null) || (kind == "array") != (element is not null && count is > 0) ||
+                if (id <= 0 || (kind is not ("void" or "bool" or "pointer" or "array" or "record" or "routine" or "va-list") && !ScalarTypes.IsNumeric(kind)) ||
+                    (kind == "pointer") != (pointee is not null) || (kind == "array") != (element is not null && count is >= 0) ||
                     kind != "array" && (element is not null || count is not null))
                     throw new InvalidDataException("Unsupported execution type or pointer shape");
                 rawTypes.Add(id, (kind, pointee, element, count));
@@ -169,6 +173,9 @@ internal sealed partial class ObjectFile : IDisposable
             if (!active.Add(id)) throw new InvalidDataException("Cycle in execution pointer types");
             string key = raw.Kind switch
             {
+                "routine" => Routines.TryGetValue(id, out RoutineType? routine)
+                    ? RoutineTypes.Key(ResolveType(routine.ReturnTypeId, depth + 1), routine.Parameters.Select(parameter => ResolveType(parameter, depth + 1)), routine.Variadic, routine.ExceptionPolicy)
+                    : throw new InvalidDataException("Routine execution type has no signature"),
                 "record" => Records.TryGetValue(id, out RecordType? record) ? record.Key : throw new InvalidDataException("Record type has no layout metadata"),
                 "pointer" => "ptr(" + ResolveType(raw.Pointee!.Value, depth + 1) + ")",
                 "array" => "array(" + raw.Count!.Value.ToString(CultureInfo.InvariantCulture) + "," + ResolveType(raw.Element!.Value, depth + 1) + ")",
@@ -177,13 +184,16 @@ internal sealed partial class ObjectFile : IDisposable
             if (raw.Kind == "array")
             {
                 if (ScalarTypes.Element(key) == "void") throw new InvalidDataException("Array element cannot be void");
-                long size;
-                if (ScalarTypes.IsRecord(ScalarTypes.Leaf(key))) throw new InvalidDataException("Arrays of records are not supported in this profile");
-                try { size = ScalarTypes.Size(key); }
-                catch (OverflowException) { throw new InvalidDataException("Array layout overflows supported size"); }
-                if (size > 65_536) throw new InvalidDataException("Array storage exceeds the supported 64 KiB value type limit");
+                if (RoutineTypes.IsRoutine(ScalarTypes.Element(key))) throw new InvalidDataException("Array element cannot be routine type");
             }
-            int nesting = (raw.Pointee ?? raw.Element) is long child ? typeDepths[child] + 1 : 0;
+            if (raw.Kind == "routine")
+            {
+                var signature = RoutineTypes.Signature(key);
+                if (RoutineTypes.IsRoutine(signature.Result) || ScalarTypes.IsArray(signature.Result) ||
+                    signature.Parameters.Any(parameter => parameter == "void" || RoutineTypes.IsRoutine(parameter) || ScalarTypes.IsArray(parameter)))
+                    throw new InvalidDataException("Invalid routine result or parameter type");
+            }
+            int nesting = raw.Kind == "routine" ? new[] { Routines[id].ReturnTypeId }.Concat(Routines[id].Parameters).Max(child => typeDepths[child]) + 1 : (raw.Pointee ?? raw.Element) is long child ? typeDepths[child] + 1 : 0;
             if (nesting > 128) throw new InvalidDataException("Pointer type nesting exceeds supported limit");
             typeDepths.Add(id, nesting);
             active.Remove(id);
@@ -193,14 +203,18 @@ internal sealed partial class ObjectFile : IDisposable
         }
         foreach (long id in rawTypes.Keys) ResolveType(id, 0);
         VerifyRecordLayouts();
-        using (var query = database.Prepare("SELECT id,source_name,linkage,external_key,definition,return_type_id,source_file_id,line,column FROM entities ORDER BY id"))
+        foreach (string array in Types.Values.Where(ScalarTypes.IsArray))
+            if (StorageSize(array) < 0 || StorageSize(array) > int.MaxValue) throw new InvalidDataException("Array extent exceeds supported storage");
+        if (Routines.Keys.Any(id => !RoutineTypes.IsRoutine(Type(id)))) throw new InvalidDataException("Routine metadata describes a non-routine type");
+        ReadStorages();
+        using (var query = database.Prepare("SELECT id,source_name,linkage,external_key,definition,return_type_id,source_file_id,line,column,routine_type_id FROM entities ORDER BY id"))
             while (query.Read())
             {
-                var entity = new Entity(query.Integer(0), query.Text(1), query.Text(2), query.OptionalText(3), query.Text(4), query.Integer(5), query.OptionalInteger(6), query.Integer(7), query.Integer(8));
-                if (entity.Id <= 0 || entity.Linkage is not ("external" or "internal") || entity.Definition is not ("strong" or "declaration") ||
+                var entity = new Entity(query.Integer(0), query.Text(1), query.Text(2), query.OptionalText(3), query.Text(4), query.Integer(5), query.OptionalInteger(6), query.Integer(7), query.Integer(8), query.Integer(9));
+                if (entity.Id <= 0 || entity.Linkage is not ("external" or "internal") || entity.Definition is not ("strong" or "linkonce" or "declaration") ||
                     (entity.Linkage == "external" ? string.IsNullOrEmpty(entity.ExternalKey) : entity.ExternalKey != null) || entity.Line < 0 || entity.Column < 0)
                     throw new InvalidDataException("Invalid entity summary");
-                if (ScalarTypes.IsArray(Type(entity.ReturnTypeId)) || ScalarTypes.IsRecord(Type(entity.ReturnTypeId))) throw new InvalidDataException("Function cannot return an aggregate by value");
+                if (ScalarTypes.IsArray(Type(entity.ReturnTypeId)) || !CanCopyRecord(Type(entity.ReturnTypeId))) throw new InvalidDataException("Function cannot return an aggregate by value");
                 Entities.Add(entity.Id, entity);
             }
         using (var query = database.Prepare("SELECT entity_id,ordinal,type_id FROM parameters ORDER BY entity_id,ordinal"))
@@ -210,13 +224,17 @@ internal sealed partial class ObjectFile : IDisposable
                 if (!Entities.ContainsKey(entity)) throw new InvalidDataException("Parameter references unknown entity");
                 if (!Parameters.TryGetValue(entity, out var parameters)) Parameters.Add(entity, parameters = []);
                 string type = Type(query.Integer(2));
-                if (query.Integer(1) != parameters.Count || (type == "void" || ScalarTypes.IsArray(type) || ScalarTypes.IsRecord(type))) throw new InvalidDataException("Invalid parameter ordinal/type");
+                if (query.Integer(1) != parameters.Count || (type == "void" || ScalarTypes.IsArray(type) || !CanCopyRecord(type))) throw new InvalidDataException("Invalid parameter ordinal/type");
                 parameters.Add(type);
             }
+        foreach (Entity entity in Entities.Values)
+            if (!Routines.ContainsKey(entity.RoutineTypeId) || Type(entity.RoutineTypeId) != RoutineTypes.Key(Type(entity.ReturnTypeId), Parameters.GetValueOrDefault(entity.Id, []), Routines[entity.RoutineTypeId].Variadic, Routines[entity.RoutineTypeId].ExceptionPolicy))
+                throw new InvalidDataException("Entity summary disagrees with its canonical routine type");
         using (var query = database.Prepare("SELECT entity_id,body_node_id FROM functions ORDER BY entity_id"))
             while (query.Read()) Functions.Add(query.Integer(0), query.Integer(1));
         foreach (Entity entity in Entities.Values)
-            if (Functions.ContainsKey(entity.Id) != (entity.Definition == "strong")) throw new InvalidDataException("Definition/body summary mismatch");
+            if (Functions.ContainsKey(entity.Id) != (entity.Definition is "strong" or "linkonce")) throw new InvalidDataException("Definition/body summary mismatch");
+        VerifyStorageRelocations();
         if (Functions.Keys.Any(id => !Entities.ContainsKey(id))) throw new InvalidDataException("Function has no entity summary");
     }
 
@@ -227,10 +245,10 @@ internal sealed partial class ObjectFile : IDisposable
         // IDs are validated integers, never source-controlled SQL fragments.
         string id = functionId.ToString(CultureInfo.InvariantCulture);
         var nodes = new Dictionary<long, Node>();
-        using (var query = database.Prepare($"SELECT id,function_id,kind,type_id,entity_id,binding_id,operator,constant_text,value_category,evaluation_order,field_id FROM nodes WHERE function_id={id} ORDER BY id"))
+        using (var query = database.Prepare($"SELECT id,function_id,kind,type_id,entity_id,binding_id,operator,constant_text,value_category,evaluation_order,field_id,storage_id FROM nodes WHERE function_id={id} ORDER BY id"))
             while (query.Read())
             {
-                var node = new Node(query.Integer(0), query.Integer(1), query.Text(2), query.OptionalInteger(3), query.OptionalInteger(4), query.OptionalInteger(5), query.OptionalText(6), query.OptionalText(7), query.OptionalText(8), query.OptionalText(9), query.OptionalInteger(10));
+                var node = new Node(query.Integer(0), query.Integer(1), query.Text(2), query.OptionalInteger(3), query.OptionalInteger(4), query.OptionalInteger(5), query.OptionalText(6), query.OptionalText(7), query.OptionalText(8), query.OptionalText(9), query.OptionalInteger(10), query.OptionalInteger(11));
                 nodes.Add(node.Id, node);
             }
         var bindings = new Dictionary<long, Binding>();

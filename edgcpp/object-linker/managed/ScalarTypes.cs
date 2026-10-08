@@ -13,7 +13,7 @@ internal static class ScalarTypes
     public static string Leaf(string kind) => IsArray(kind) ? Leaf(Element(kind)) : kind;
     public static long FlatCount(string kind) => IsArray(kind) ? checked(ElementCount(kind) * FlatCount(Element(kind))) : 1;
     public static long Size(string kind) => IsArray(kind) ? checked(ElementCount(kind) * Size(Element(kind))) : IsPointer(kind) ? 8 : kind switch
-    { "bool" or "i8" or "u8" => 1, "i16" or "u16" => 2, "i32" or "u32" or "f32" => 4, "i64" or "u64" or "f64" => 8, _ => throw new InvalidDataException("Type has no storage size") };
+    { "va-list" => 24, "bool" or "i8" or "u8" => 1, "i16" or "u16" => 2, "i32" or "u32" or "f32" => 4, "i64" or "u64" or "f64" => 8, _ => throw new InvalidDataException("Type has no storage size") };
     public static string ArrayName(string kind) => "__DotObjArray_" + Mangle(kind);
     private static string Mangle(string kind) => IsArray(kind) ? "A" + ElementCount(kind) + "_" + Mangle(Element(kind)) : IsPointer(kind) ? "P_" + Mangle(Pointee(kind)) : kind;
     public static bool IsPointer(string kind) => kind.StartsWith("ptr(", StringComparison.Ordinal) && kind.EndsWith(')');
@@ -28,7 +28,7 @@ internal static class ScalarTypes
     public static bool IsBooleanResult(string kind) => kind is "bool" or "i32" or "u8";
     public static string CSharp(string kind) => IsArray(kind) ? ArrayName(kind) : IsPointer(kind) ? CSharp(Pointee(kind)) + "*" : kind switch
     {
-        "void" => "void", "bool" => "bool", "i8" => "sbyte", "u8" => "byte",
+        "va-list" => "global::Edg.Runtime.VaList", "void" => "void", "bool" => "bool", "i8" => "sbyte", "u8" => "byte",
         "i16" => "short", "u16" => "ushort", "i32" => "int", "u32" => "uint",
         "i64" => "long", "u64" => "ulong", "f32" => "float", "f64" => "double", _ => throw new InvalidDataException("Unsupported C# type")
     };

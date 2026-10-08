@@ -14,17 +14,24 @@ SCHEMA = Path(__file__).with_name('schema.sql')
 ARRAYS = {
     'sourceFiles': ('source_files', ['id', 'path', 'parentId']),
     'types': ('types', ['id', 'kind', 'pointeeTypeId', 'elementTypeId', 'elementCount']),
+    'storages': ('storages', ['id', 'sourceName', 'linkage', 'externalKey', 'definition', 'typeId', 'sourceTypeId', 'isThreadLocal', 'isConst', 'alignment', 'sourceFileId', 'line', 'column']),
+    'storageData': ('storage_data', ['storageId', 'byteOffset', 'dataHex']),
+    'relocations': ('relocations', ['storageId', 'byteOffset', 'targetStorageId', 'targetEntityId', 'addend']),
+    'routineTypes': ('routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy']),
+    'routineParameters': ('routine_parameters', ['typeId', 'ordinal', 'parameterTypeId']),
+    'sourceRoutineTypes': ('source_routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy']),
+    'sourceRoutineParameters': ('source_routine_parameters', ['typeId', 'ordinal', 'parameterTypeId']),
     'entities': ('entities', ['id', 'sourceName', 'linkage', 'externalKey', 'definition',
-                              'returnTypeId', 'sourceFileId', 'line', 'column']),
+                              'returnTypeId', 'sourceFileId', 'line', 'column', 'routineTypeId']),
     'parameters': ('parameters', ['entityId', 'ordinal', 'typeId']),
     'functions': ('functions', ['entityId', 'bodyNodeId']),
     'bindings': ('bindings', ['id', 'functionId', 'kind', 'ordinal', 'typeId', 'sourceName',
                               'scopeNodeId', 'sourceFileId', 'line', 'column']),
     'nodes': ('nodes', ['id', 'functionId', 'kind', 'typeId', 'entityId', 'bindingId',
                         'operator', 'constantText', 'valueCategory', 'evaluationOrder',
-                        'sourceFileId', 'line', 'column', 'fieldId']),
-    'recordTypes': ('record_types', ['typeId', 'identityKey', 'sourceName', 'size', 'alignment', 'sourceFileId', 'line', 'column']),
-    'recordFields': ('record_fields', ['id', 'recordTypeId', 'ordinal', 'typeId', 'sourceName', 'byteOffset', 'sourceTypeId', 'sourceFileId', 'line', 'column']),
+                        'sourceFileId', 'line', 'column', 'fieldId', 'storageId']),
+    'recordTypes': ('record_types', ['typeId', 'identityKey', 'sourceName', 'size', 'alignment', 'sourceFileId', 'line', 'column', 'layoutKind']),
+    'recordFields': ('record_fields', ['id', 'recordTypeId', 'ordinal', 'typeId', 'sourceName', 'byteOffset', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'bitOffset', 'bitWidth', 'bitSigned']),
     'edges': ('edges', ['parentId', 'role', 'ordinal', 'childId']),
     'macroDefinitions': ('macro_definitions', ['id', 'name', 'form', 'variadic', 'dynamic',
                         'definitionText', 'origin', 'sourceFileId', 'line', 'column']),
@@ -37,6 +44,14 @@ ARRAYS = {
     'sourceDeclarations': ('source_declarations', ['id', 'kind', 'sourceName', 'sourceTypeId',
                           'entityId', 'bindingId', 'functionEntityId', 'sourceFileId', 'line', 'column']),
 }
+
+
+class FrontendOption(argparse.Action):
+    """Retain preprocessing option order, including interleaved -D and -U."""
+    def __call__(self, parser, namespace, values, option_string=None):
+        options = list(getattr(namespace, self.dest, None) or [])
+        options.append((option_string, values))
+        setattr(namespace, self.dest, options)
 
 
 def sha(path):
@@ -91,7 +106,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v11':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v12':
         raise ValueError('Unsupported semantic wire version/profile')
     source_hashes = {}
     with sqlite3.connect(path) as db:
@@ -99,7 +114,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('BEGIN IMMEDIATE')
         db.execute('PRAGMA defer_foreign_keys=ON')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1)',
-                   ('scalar-control-v11', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v12', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source)))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))
@@ -110,6 +125,12 @@ def package(wire, path, source, unit_id, provenance, started_ns):
                 if not isinstance(record, dict) or set(record) != set(fields):
                     raise ValueError('Invalid fields in ' + name + ': ' + str(record))
                 values = [record[key] for key in fields]
+                if name == 'storageData':
+                    data = record['dataHex']
+                    if (not isinstance(data, str) or not data or len(data) % 2
+                            or any(c not in '0123456789abcdef' for c in data)):
+                        raise ValueError('Noncanonical storage data hex')
+                    values[-1] = bytes.fromhex(data)
                 if name == 'sourceFiles':
                     file = Path(record['path'])
                     if file.is_file():
@@ -145,11 +166,14 @@ def main():
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--work-dir', required=True, type=Path)
     parser.add_argument('--compiler', type=Path, default=ROOT / 'build/bin/cpfe-dot')
-    parser.add_argument('--std', choices=['c11', 'c++17'], default='c++17')
+    parser.add_argument('--std', choices=['c11', 'c++17', 'c++20'], default='c++17')
     parser.add_argument('--unit-id')
-    parser.add_argument('-I', dest='includes', action='append', type=Path, default=[])
-    parser.add_argument('-D', dest='defines', action='append', default=[])
-    parser.add_argument('-U', dest='undefines', action='append', default=[])
+    parser.add_argument('-I', dest='frontend_options', action=FrontendOption)
+    parser.add_argument('-D', dest='frontend_options', action=FrontendOption)
+    parser.add_argument('-U', dest='frontend_options', action=FrontendOption)
+    parser.add_argument('--preinclude', dest='frontend_options', action=FrontendOption)
+    parser.add_argument('--exceptions', action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument('--rtti', action=argparse.BooleanOptionalAction, default=False)
     args = parser.parse_args()
     source, output, work, compiler = (p.resolve() for p in (args.source, args.output, args.work_dir, args.compiler))
     if output.suffix != '.dotobj' or output.exists():
@@ -161,11 +185,17 @@ def main():
     unit_id = args.unit_id or hashlib.sha256(str(source).encode('utf-8')).hexdigest()
     command = [str(compiler), '--' + args.std, '--gnu_version', '130300',
                '--clear_flag', 'use_predefined_macro_file']
-    if args.std == 'c++17':
-        command += ['--instantiate', 'used', '--no_exceptions', '--no_rtti']
-    command += [arg for path in args.includes for arg in ('-I', str(path.resolve()))]
-    command += ['-D' + value for value in args.defines]
-    command += ['-U' + value for value in args.undefines]
+    if args.std.startswith('c++'):
+        command += ['--instantiate', 'used',
+                    '--exceptions' if args.exceptions else '--no_exceptions',
+                    '--rtti' if args.rtti else '--no_rtti']
+    elif args.exceptions or args.rtti:
+        parser.error('--exceptions and --rtti require C++')
+    for option, value in args.frontend_options or []:
+        if option in ('-I', '--preinclude'):
+            command += [option, str(Path(value).resolve())]
+        else:
+            command += [option + value]
     command += ['--', str(source)]
     env = dict(os.environ, EDG_BASE=str(ROOT / 'upstream/bases/docker/dev-env/gcc'),
                EDG_DOT_OBJECT='1', EDG_DOT_TARGET='portable-lp64-binary80-v2',

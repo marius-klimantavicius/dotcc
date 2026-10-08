@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "scope": "Independent two-TU C global/function-pointer storage and per-thread initialization; no SQLite/DuckDB execution claim",
+  "checks": 12,
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-storage-crossunit-002/results.json",
+    "sha256": "2ba153d02ea36d4715155f76c7b843f951b4cdb8a341d03861cf40bb2c663f90"
+  },
+  "test": {
+    "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/storage_crossunit_verify.py",
+    "sha256": "4b4c9198c2bb415d20b4c406d273c3beb485635ad828c8605a4435ca5108f4f5"
+  },
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-compiler-004/cpfe-dot",
+    "sha256": "32604f4c718591e790608ac5929cb255467eb534369cd33a50d332f4b9bd890b"
+  },
+  "linker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-002/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "7c39babcbd5749350a0e328618d72374f730cf338c5ca735a8c25bb5d8cd68c9"
+  },
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "checksDescription": [
+    "Circular data-pointer relocations across TUs and source-named globals",
+    "Function-pointer fields in globals invoke correctly (regresses qualified-name cast ambiguity)",
+    "Interior-array pointer relocation and cross-TU writes",
+    "Internal static storage counter",
+    "Per-thread initial scalar data and pointer relocation to shared global storage",
+    "Native pthread/BCL thread isolation with main-thread value preserved",
+    "Pinned global/TLS storage survives forced full garbage collections",
+    "Relinking after original source removal emits identical C#",
+    "Native GCC, .NET JIT and NativeAOT output/exit parity"
+  ]
+}

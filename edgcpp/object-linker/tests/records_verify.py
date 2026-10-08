@@ -48,9 +48,9 @@ int main(){North::Token a={17};South::Token b={2.5};return a.event==17 && b.even
         check('record-qualified-identities', {row[0] for row in db.execute('SELECT identity_key FROM record_types')} == {'record:North::Token', 'record:South::Token'})
 
     depth_source = inputs / 'record-depth.cpp'
-    declarations = ['struct Depth0 { int value; };', 'void depth0(Depth0*);']
+    declarations = ['struct Depth0 { int value; };', 'void depth0(Depth0*){}']
     for depth in range(1, 130):
-        declarations += [f'struct Depth{depth} {{ Depth{depth-1} value; }};', f'void depth{depth}(Depth{depth}*);']
+        declarations += [f'struct Depth{depth} {{ Depth{depth-1} value; }};', f'void depth{depth}(Depth{depth}*){{}}']
     depth_source.write_text('\n'.join(declarations) + '\nint main(){return 0;}\n')
     depth_object = compile_source('record-depth', depth_source)
     with sqlite3.connect(depth_object) as db:
@@ -73,8 +73,13 @@ int main(){North::Token a={17};South::Token b={2.5};return a.event==17 && b.even
         ('inheritance', 'struct Base{int n;};struct X:Base{int v;};int f(X* p){return p->n;}'),
     ]:
         source = inputs / ('record-unsupported-' + name + '.cpp');source.write_text(code + '\n')
-        obj = compile_source('record-unsupported-' + name, source, expected=None)
-        check('record-not-published-' + name, not obj.exists())
+        supported = name in {'byvalue-parameter', 'copy', 'array', 'sized-array-parameter', 'incomplete', 'bits', 'empty', 'local', 'raised-alignment'}
+        obj = compile_source(('record-supported-' if supported else 'record-unsupported-') + name,
+                             source, expected=0 if supported else None)
+        if supported:
+            run('verify-record-supported-' + name, ['dotnet', tool, 'verify', obj])
+        else:
+            check('record-not-published-' + name, not obj.exists())
     return provider, consumer
 
 
@@ -88,7 +93,7 @@ def malformed(provider, consumer, tool, run, link, mutate):
     for name, statements in [
         ('record-field-offset', [("UPDATE record_fields SET byte_offset=byte_offset+1 WHERE id=?", (pair_field,))]),
         ('record-wrong-size', [("UPDATE record_types SET size=size+1 WHERE type_id=?", (pair,))]),
-        ('record-wrong-alignment', [("UPDATE record_types SET alignment=8 WHERE type_id=?", (pair,))]),
+        ('record-wrong-alignment', [("UPDATE record_types SET alignment=1 WHERE type_id=?", (pair,))]),
         ('record-field-order', [("UPDATE record_fields SET ordinal=10 WHERE id=?", (pair_field,))]),
         ('record-cycle', [("UPDATE record_fields SET type_id=?,source_type_id=? WHERE id=?", (pair, pair_source, pair_field))]),
         ('record-wrong-member-owner', [("UPDATE nodes SET field_id=? WHERE id=?", (pair_field, member))]),

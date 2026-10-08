@@ -261,14 +261,27 @@ object_source_overlay(preproc,
     '      /* Remove the macro\'s definition.  The a_macro_def entry pointed to\n'
     '         by the symbol is not freed, and is therefore just lost.  */')
 symbols = root / "upstream/src/symbol_tbl.c"
+# Upgrade the former fail-closed push/pop hooks. Observations occur only after
+# the stock frontend accepted and performed the actual stack operation.
 for kind in ("push", "pop"):
-    # Anchor the final assignment in each function, so ordinary pragma parsing
-    # remains untouched and an inactive conditional branch never triggers it.
-    ending = '}  /* ' + kind + '_macro_pragma */'
-    object_source_overlay(symbols, ending,
-        '#if defined(EDG_DOT_BACKEND)\n'
+    obsolete = ('#if defined(EDG_DOT_BACKEND)\n'
         '  dot_object_macros::reject_feature("' + kind + '_macro pragma");\n'
-        '#endif\n' + ending)
+        '#endif\n')
+    source = symbols.read_text()
+    if obsolete in source:
+        symbols.write_text(source.replace(obsolete, ""))
+object_source_overlay(symbols,
+    '    sym_hdr->saved_macro_stack = smsp;\n',
+    '    sym_hdr->saved_macro_stack = smsp;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_macros::push(sym_hdr->identifier, name_pos);\n'
+    '#endif\n')
+object_source_overlay(symbols,
+    '      free_saved_macro_state(smsp);\n',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_macros::pop(sym_hdr->identifier, name_pos);\n'
+    '#endif\n'
+    '      free_saved_macro_state(smsp);\n')
 
 for filename in ("lower_il.c", "lower_c99.c"):
     object_source_overlay(root / "upstream/src" / filename,

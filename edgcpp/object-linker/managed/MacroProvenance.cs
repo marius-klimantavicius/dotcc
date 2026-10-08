@@ -56,6 +56,8 @@ internal sealed partial class ObjectFile
         // Identical discarded redefinitions have no installation event, so this
         // is not a complete directive or expansion history.
         long nextEvent = 1, nextInstalledDefinition = 1;
+        var installed = new Dictionary<string, long?>(StringComparer.Ordinal);
+        var saved = new Dictionary<string, Stack<long?>>(StringComparer.Ordinal);
         using (var query = database.Prepare("""
             SELECT e.id,e.kind,e.name,e.definition_id,e.origin,e.source_file_id,e.line,e.column,
                    d.name,d.origin,d.source_file_id,d.line,d.column
@@ -75,8 +77,34 @@ internal sealed partial class ObjectFile
                         query.OptionalText(9) != origin || query.OptionalInteger(10) != file ||
                         query.OptionalInteger(11) != line || query.OptionalInteger(12) != column)
                         throw new InvalidDataException("Macro installation event does not match its definition");
+                    installed[name] = query.OptionalInteger(3);
                 }
-                else if (kind != "undef" || !query.IsNull(3)) throw new InvalidDataException("Invalid macro event kind or definition reference");
+                else if (kind == "undef")
+                {
+                    if (!query.IsNull(3)) throw new InvalidDataException("Macro undefinition references a definition");
+                    installed.Remove(name);
+                }
+                else if (kind is "push" or "pop")
+                {
+                    long? definition = query.OptionalInteger(3);
+                    if (origin != "source" || definition is not null &&
+                        (definition >= nextInstalledDefinition || query.OptionalText(8) != name))
+                        throw new InvalidDataException("Macro stack event references an unavailable definition");
+                    if (!saved.TryGetValue(name, out var stack)) saved[name] = stack = new();
+                    if (kind == "push")
+                    {
+                        if (definition != installed.GetValueOrDefault(name))
+                            throw new InvalidDataException("Macro push does not save its current definition");
+                        stack.Push(definition);
+                    }
+                    else
+                    {
+                        if (stack.Count == 0 || stack.Pop() != definition)
+                            throw new InvalidDataException("Macro pop does not restore the saved definition");
+                        installed[name] = definition;
+                    }
+                }
+                else throw new InvalidDataException("Invalid macro event kind or definition reference");
             }
         if (nextInstalledDefinition != nextDefinition) throw new InvalidDataException("Macro definition has no installation event");
     }

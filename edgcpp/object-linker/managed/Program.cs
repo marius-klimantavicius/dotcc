@@ -10,10 +10,12 @@ internal static class Program
             if (args.Length == 0 || args[0] is not ("link" or "verify")) throw new ArgumentException("Usage: dotobj-link link --out DIRECTORY [--namespace NAME] [--class NAME] [--entry SYMBOL] OBJECT.dotobj... | verify OBJECT.dotobj...");
             string command = args[0], namespaceName = "Translated", className = "Program";
             string? output = null, entry = null;
+            bool allowExterns = false;
             var paths = new List<string>();
             for (int index = 1; index < args.Length; index++)
             {
                 string argument = args[index];
+                if (argument == "--allow-externs") { allowExterns = true; continue; }
                 if (argument.StartsWith("--", StringComparison.Ordinal))
                 {
                     if (index + 1 == args.Length) throw new ArgumentException("Missing value for " + argument);
@@ -37,11 +39,11 @@ internal static class Program
             {
                 foreach (ObjectFile obj in objects)
                     foreach (long function in obj.Functions.Keys) _ = obj.ReadBody(function);
-                Console.WriteLine($"Verified {objects.Count} scalar-control-v11 semantic object(s).");
+                Console.WriteLine($"Verified {objects.Count} scalar-control-v12 semantic object(s).");
             }
             else
             {
-                var linker = new Linker(objects, className);
+                var linker = new Linker(objects, className, allowExterns);
                 linker.VerifyBodies();
                 new Emitter(linker, namespaceName, className).Write(Path.GetFullPath(output!), entry);
                 Console.WriteLine($"Linked {objects.Count} object(s), {linker.Definitions.Count} function definition(s) into {Path.GetFullPath(output!)}");

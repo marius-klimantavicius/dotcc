@@ -1,16 +1,17 @@
 namespace DotObj;
 
 internal sealed record Entity(long Id, string SourceName, string Linkage, string? ExternalKey,
-    string Definition, long ReturnTypeId, long? SourceFileId, long Line, long Column);
+    string Definition, long ReturnTypeId, long? SourceFileId, long Line, long Column, long RoutineTypeId);
 internal sealed record Binding(long Id, long FunctionId, string Kind, long? Ordinal,
     long TypeId, string SourceName, long ScopeNodeId);
 internal sealed record Node(long Id, long FunctionId, string Kind, long? TypeId,
     long? EntityId, long? BindingId, string? Operator, string? ConstantText,
-    string? ValueCategory, string? EvaluationOrder, long? FieldId = null);
+    string? ValueCategory, string? EvaluationOrder, long? FieldId = null, long? StorageId = null);
 internal sealed record Edge(long ParentId, string Role, long Ordinal, long ChildId);
 
 internal sealed class FunctionBody
 {
+    public bool RequiresFlatControl { get; set; }
     public required long RootId { get; init; }
     public required Dictionary<long, Node> Nodes { get; init; }
     public required Dictionary<long, Binding> Bindings { get; init; }
@@ -24,6 +25,5 @@ internal sealed record Symbol(ObjectFile Object, Entity Entity)
 {
     public string Key => Entity.Linkage == "external" ? "external:" + Entity.ExternalKey
         : "internal:" + Object.UnitId + ":" + Entity.Id;
-    public string Signature => Object.Type(Entity.ReturnTypeId) + "(" +
-        string.Join(',', Object.Parameters.GetValueOrDefault(Entity.Id, [])) + ")";
+    public string Signature => Object.EntityRoutine(Entity.Id);
 }

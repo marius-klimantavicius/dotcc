@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-08",
+  "profile": "scalar-control-v12",
+  "platform": "linux-x64",
+  "status": "bounded C/runtime milestone passed; project acceptance ongoing",
+  "artifacts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-acceptance-001/results.json",
+      "sha256": "cc19c86c2bee104061f40881db509f6dab9c9aacc7b817b8ee4456cbc3f7a19d",
+      "status": "passed",
+      "checks": 597
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-c-acceptance-001/results.json",
+      "sha256": "dbe2060b425e3827830df03c200020ea48e8a6581cc1ee952efcf520be67aadf",
+      "status": "passed",
+      "checks": 56
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-storage-crossunit-002/results.json",
+      "sha256": "2ba153d02ea36d4715155f76c7b843f951b4cdb8a341d03861cf40bb2c663f90",
+      "status": "passed",
+      "checks": 12
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-runtime-acceptance-002/results.json",
+      "sha256": "188760c90903ba14ab8466fc14ab192fa64a78d5cb050fdda5d5aa512fb7700c",
+      "status": "passed",
+      "checks": 33
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native010-verified-snapshot/cpfe-dot",
+      "sha256": "d276f11c6173592ca11563a86df3cd96f0f79a98cea6afb738ea154c21eac14f"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native010-verified-snapshot/dot_gen_object.h",
+      "sha256": "dd594e543a89ac59c0dada2c94da8ea6fe1c6b6c3b6f1d3d15dd78c262264890"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-006/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "1de9bf93d99b931f6a6a1eb9e14385609f1664a17d37fa668ce1dc0dbdef2081"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-008/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "37bd4a7ebef27db029aba4113e04f2fc07e431d8d893c0877a07a0c5ed47d159"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-bitfield-promotions-probe-001/generated007/aot/Translated",
+      "sha256": "bdd3bbce4435426fed17e142d41d5ff648b06dbe70da1cb979e9b9c7b35136d3"
+    }
+  ],
+  "limitations": [
+    "SQLite and DuckDB do not yet translate/run through dotobj",
+    "Binary80 and remaining musl provider gaps",
+    "C++ inheritance, object lifetime, exceptions and full source semantic index incomplete",
+    "No cross-platform execution claim beyond Linux x64"
+  ]
+}

@@ -3,7 +3,7 @@ using System.Text;
 namespace DotObj;
 
 internal sealed record RecordType(long TypeId, string IdentityKey, string SourceName,
-    long Size, long Alignment, long? SourceFileId, long Line, long Column)
+    long Size, long Alignment, long? SourceFileId, long Line, long Column, string LayoutKind)
 {
     // A nominal terminal permits recursive pointer graphs without recursively
     // incorporating the record's layout into every pointer signature.
@@ -12,7 +12,7 @@ internal sealed record RecordType(long TypeId, string IdentityKey, string Source
 
 internal sealed record RecordField(long Id, long RecordTypeId, long Ordinal,
     long TypeId, string SourceName, long ByteOffset, long SourceTypeId,
-    long? SourceFileId, long Line, long Column);
+    long? SourceFileId, long Line, long Column, long? BitOffset, long? BitWidth, bool? BitSigned);
 
 internal sealed partial class ObjectFile
 {
@@ -24,31 +24,30 @@ internal sealed partial class ObjectFile
     private void ReadRecordMetadata()
     {
         var groupedFields = new Dictionary<long, List<RecordField>>();
-        using (var query = database.Prepare("SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column FROM record_types ORDER BY type_id"))
+        using (var query = database.Prepare("SELECT type_id,identity_key,source_name,size,alignment,source_file_id,line,column,layout_kind FROM record_types ORDER BY type_id"))
             while (query.Read())
             {
                 var record = new RecordType(query.Integer(0), query.Text(1), query.Text(2), query.Integer(3), query.Integer(4),
-                    query.OptionalInteger(5), query.Integer(6), query.Integer(7));
-                if (record.TypeId <= 0 || !record.IdentityKey.StartsWith("record:", StringComparison.Ordinal) ||
-                    record.IdentityKey.Length <= 7 || record.SourceName.Length == 0 || record.Size is < 1 or > 65_536 ||
-                    record.Alignment is not (1 or 2 or 4 or 8) || record.Line < 0 || record.Column < 0)
-                    throw new InvalidDataException("Invalid record identity or natural layout metadata");
-                string[] segments = record.IdentityKey[7..].Split("::", StringSplitOptions.None);
-                if (segments[^1] != record.SourceName || segments.Any(segment => segment.Length == 0 ||
-                    segment.Any(character => character == ':' || char.IsWhiteSpace(character) || char.IsControl(character))))
-                    throw new InvalidDataException("Record identity must be its canonical qualified source name");
+                    query.OptionalInteger(5), query.Integer(6), query.Integer(7), query.Text(8));
+                if (record.TypeId <= 0 || record.IdentityKey.Length == 0 || record.Size < 0 || record.Size > int.MaxValue ||
+                    (record.Size == 0 ? record.Alignment != 0 : record.Alignment is not (1 or 2 or 4 or 8)) ||
+                    record.LayoutKind is not ("struct" or "class" or "union") || record.Line < 0 || record.Column < 0)
+                    throw new InvalidDataException("Invalid record identity or layout metadata");
                 if (!Records.TryAdd(record.TypeId, record) || !RecordsByKey.TryAdd(record.Key, record))
                     throw new InvalidDataException("Duplicate nominal record identity");
                 groupedFields.Add(record.TypeId, []);
             }
-        using (var query = database.Prepare("SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column FROM record_fields ORDER BY id"))
+        using (var query = database.Prepare("SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed FROM record_fields ORDER BY id"))
             while (query.Read())
             {
                 var field = new RecordField(query.Integer(0), query.Integer(1), query.Integer(2), query.Integer(3), query.Text(4),
-                    query.Integer(5), query.Integer(6), query.OptionalInteger(7), query.Integer(8), query.Integer(9));
+                    query.Integer(5), query.Integer(6), query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.OptionalInteger(10), query.OptionalInteger(11), query.OptionalInteger(12) is long signed ? signed == 1 : null);
                 if (field.Id <= 0 || !Records.ContainsKey(field.RecordTypeId) || field.Ordinal < 0 ||
-                    field.SourceName.Length == 0 || field.ByteOffset < 0 || field.SourceTypeId <= 0 || field.Line < 0 || field.Column < 0)
+                    field.ByteOffset < 0 || field.SourceTypeId <= 0 || field.Line < 0 || field.Column < 0)
                     throw new InvalidDataException("Invalid record field metadata");
+                if ((field.BitOffset is null) != (field.BitWidth is null) || (field.BitOffset is null) != (field.BitSigned is null) ||
+                    field.BitOffset is < 0 or > 7 || field.BitWidth is < 1 or > 64 || query.OptionalInteger(12) is < 0 or > 1)
+                    throw new InvalidDataException("Invalid bitfield metadata");
                 if (!Fields.TryAdd(field.Id, field)) throw new InvalidDataException("Duplicate record field identity");
                 groupedFields[field.RecordTypeId].Add(field);
             }
@@ -57,10 +56,31 @@ internal sealed partial class ObjectFile
 
     public RecordField[] RecordFields(long typeId) => fieldsByRecord[typeId];
 
+    public bool CanCopyRecord(string type)
+    {
+        if (ScalarTypes.IsArray(type)) return ScalarTypes.ElementCount(type) > 0 && CanCopyRecord(ScalarTypes.Element(type));
+        if (!ScalarTypes.IsRecord(type)) return true;
+        var record = RecordsByKey[type];
+        if (record.Size == 0) return false;
+        foreach (RecordField field in RecordFields(record.TypeId))
+        {
+            string fieldType = Type(field.TypeId);
+            if (!CanCopyRecord(fieldType)) return false;
+            if (SourceTypes.TryGetValue(field.SourceTypeId, out SourceType? source))
+                while (true)
+                {
+                    if (source.IsVolatile) return false;
+                    if (source.Kind is not ("typedef" or "qualified" or "array")) break;
+                    source = SourceTypes[source.UnderlyingTypeId!.Value];
+                }
+        }
+        return true;
+    }
+
     public long StorageSize(string type) => ScalarTypes.IsRecord(type) ? RecordsByKey[type].Size
         : ScalarTypes.IsArray(type) ? checked(ScalarTypes.ElementCount(type) * StorageSize(ScalarTypes.Element(type))) : ScalarTypes.Size(type);
 
-    public long StorageAlignment(string type) => ScalarTypes.IsRecord(type) ? RecordsByKey[type].Alignment
+    public long StorageAlignment(string type) => type == "va-list" ? 8 : ScalarTypes.IsRecord(type) ? RecordsByKey[type].Alignment
         : ScalarTypes.IsArray(type) ? StorageAlignment(ScalarTypes.Element(type)) : ScalarTypes.Size(type);
 
     private void VerifyRecordLayouts()
@@ -74,32 +94,48 @@ internal sealed partial class ObjectFile
             if (depth > 128 || !active.Add(record.TypeId)) throw new InvalidDataException("Cyclic or excessively nested by-value record layout");
             if (Type(record.TypeId) != record.Key) throw new InvalidDataException("Record layout does not describe a record execution type");
             RecordField[] fields = RecordFields(record.TypeId);
-            if (fields.Length == 0) throw new InvalidDataException("Empty records are not supported in this profile");
-            long end = 0, alignment = 1;
+            if (record.Size == 0)
+            {
+                if (fields.Length != 0) throw new InvalidDataException("Incomplete record has fields");
+                active.Remove(record.TypeId); layoutDepths.Add(record.TypeId, 0); complete.Add(record.TypeId); return;
+            }
+            if (record.Size % record.Alignment != 0) throw new InvalidDataException("Complete record size must be a multiple of its alignment");
             int layoutDepth = 0;
             var names = new HashSet<string>(StringComparer.Ordinal);
+            var occupied = new List<(long Begin, long End)>();
             for (int index = 0; index < fields.Length; index++)
             {
                 RecordField field = fields[index];
-                if (field.Ordinal != index || !names.Add(field.SourceName)) throw new InvalidDataException("Invalid field order or duplicate field name");
-                string type = Type(field.TypeId);
-                if (type == "void") throw new InvalidDataException("Record field cannot have void type");
-                if (ScalarTypes.IsRecord(type))
+                if (field.Ordinal != index || field.SourceName.Length != 0 && !names.Add(field.SourceName)) throw new InvalidDataException("Invalid field order or duplicate field name");
+                string type = Type(field.TypeId), leaf = ScalarTypes.Leaf(type);
+                if (type == "void" || RoutineTypes.IsRoutine(type)) throw new InvalidDataException("Record field must have a storage type");
+                if (ScalarTypes.IsRecord(leaf))
                 {
-                    RecordType nested = RecordsByKey[type];
-                    Verify(nested, depth + 1);
+                    RecordType nested = RecordsByKey[leaf]; Verify(nested, depth + 1);
+                    if (nested.Size == 0) throw new InvalidDataException("Incomplete record field by value");
                     layoutDepth = Math.Max(layoutDepth, layoutDepths[nested.TypeId] + 1);
                     if (layoutDepth > 128) throw new InvalidDataException("By-value record layout nesting exceeds supported limit");
                 }
-                long fieldSize = StorageSize(type), fieldAlignment = StorageAlignment(type);
-                alignment = Math.Max(alignment, fieldAlignment);
-                long offset = checked((end + fieldAlignment - 1) / fieldAlignment * fieldAlignment);
-                if (field.ByteOffset != offset) throw new InvalidDataException("Record field offset differs from supported natural layout");
-                end = checked(offset + fieldSize);
+                if (field.BitWidth is null && (StorageAlignment(type) > record.Alignment || field.ByteOffset % StorageAlignment(type) != 0))
+                    throw new InvalidDataException("Ordinary field does not satisfy its natural alignment");
+                long begin = checked(field.ByteOffset * 8), end;
+                if (field.BitWidth is long width)
+                {
+                    if (!ScalarTypes.IsInteger(type) || width > ScalarTypes.Size(type) * 8) throw new InvalidDataException("Invalid bitfield integer representation");
+                    begin = checked(begin + field.BitOffset!.Value); end = checked(begin + width);
+                }
+                else end = checked(begin + StorageSize(type) * 8);
+                if (ScalarTypes.IsArray(type) && ScalarTypes.ElementCount(type) == 0)
+                {
+                    if (index != fields.Length - 1 || record.LayoutKind == "union" || field.ByteOffset > record.Size)
+                        throw new InvalidDataException("Incomplete array field must be a flexible tail member");
+                    continue;
+                }
+                if (end > record.Size * 8 || begin >= end) throw new InvalidDataException("Field extent lies outside complete record storage");
+                if (record.LayoutKind != "union" && occupied.Any(other => begin < other.End && other.Begin < end))
+                    throw new InvalidDataException("Overlapping non-union fields");
+                occupied.Add((begin, end));
             }
-            long size = Math.Max(1, checked((end + alignment - 1) / alignment * alignment));
-            if (record.Size != size || record.Alignment != alignment)
-                throw new InvalidDataException("Record size or alignment differs from supported natural layout");
             active.Remove(record.TypeId);
             layoutDepths.Add(record.TypeId, layoutDepth);
             complete.Add(record.TypeId);

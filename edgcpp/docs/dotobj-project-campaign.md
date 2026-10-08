@@ -50,6 +50,13 @@ satisfy the object-pipeline acceptance target.
 - Objects contain owned typed semantic identities, expressions, statements,
   layouts, lifetime information, source snapshots/locations and captured macros.
   They do not contain opaque C# bodies or depend on the rejected old exporter.
+- The executable graph may materialize external declarations only when used;
+  all externally defined library APIs remain roots by default. Independently,
+  the final owned source index must retain every parsed declaration and type
+  with stable identities, locations and semantic type information. Raw header
+  snapshots do not replace that index. Unsupported descriptions must carry an
+  explicit incomplete-coverage record until implemented, even when their unused
+  execution forms do not prevent translating the program.
 - Renamable objects use identities throughout. Linking resolves cross-unit names
   and compatible definitions without retaining EDG addresses or frontend state.
 - Internal preprocessing happens once per original source translation unit.
@@ -72,3 +79,29 @@ source/EDG, compiled generated C#, native-result correspondence and NativeAOT
 execution. Cross-platform design is not reported as cross-platform execution
 unless that platform was actually tested. The broader C++ and libc language plan
 remains explicit even where project acceptance does not exercise every feature.
+
+## Verified C/runtime milestone (2026-10-08)
+
+Native snapshot010 and managed snapshot006 pass 597 regression checks including
+NativeAOT. Shared runtime binding independently passes 33 checks and cross-unit
+storage passes 12, with native references, thread-local state, forced GC and
+source-free relinking. Managed007 additionally fixes unsigned bitfield promotion
+against signed operands (native/JIT/NativeAOT pass); managed008 accepts valid
+narrow integer pointer displacement, verified against actual musl casemap.
+
+The tranche includes globals/TLS, relocations, function pointers, unions and
+bitfields, complete POD record/array values, varargs, volatile operations,
+intrinsics, macro stack history, supported goto entries and noexcept boundaries.
+Static initialization retains readable names, aggregate rows and constant spans.
+The BCL runtime binder checks signatures/layouts and reuses authoritative shared
+runtime sources, including provider-owned standard-stream cells.
+
+Project acceptance remains incomplete. SQLite reaches a function-designator
+shape in fillInUnixFile; its next native fix is retained separately. Of 224 musl
+provider units, 168 package; remaining categories include binary80, synthesized
+local provenance, builtin formal conversions and constructor policy. DuckDB's
+first unit reaches C++ inherited/vptr record representation. Full independent
+source semantic indexing, C++ object/lifetime/EH semantics and project execution
+remain required. All artifacts are retained beneath
+`/mnt/storage/dotcc-edg-campaign-20261003`; the hashed milestone receipt links
+exact tools and results.

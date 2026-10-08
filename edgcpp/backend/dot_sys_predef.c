@@ -5,6 +5,7 @@
         edg_host_system_predefined_macros_and_assertions
 #include "sys_predef.c"
 #undef enter_system_specific_predefined_macros_and_assertions
+#include "symbol_tbl.h"
 
 BEGIN_EDG_NAMESPACE
 
@@ -49,6 +50,17 @@ void enter_system_specific_predefined_macros_and_assertions(void) {
   // macro.c reads the host file after this hook. Never allow it to reintroduce
   // OS/CPU macros, including when cpfe-dot is invoked outside dotnet.py.
   use_predefined_macro_file = FALSE;
+  // GNU/Clang dialect setup installs a host atomic fact for char8_t before
+  // invoking the system-target hook. Replace that one target fact here: the
+  // managed runtime deliberately promises only sometimes-lock-free atomics.
+  // Leave the frontend's char8_t language/type feature macros untouched.
+  {
+    const char *name = "__GCC_ATOMIC_CHAR8_T_LOCK_FREE";
+    a_symbol_locator locator;
+    clear_locator(&locator, &null_source_position);
+    a_symbol_ptr previous = find_macro_symbol_by_name(name, strlen(name), &locator);
+    if (previous != NULL) remove_symbol(previous);
+  }
 #define DOT_TARGET_MACRO(name, value) \
   (void)enter_predef_macro(value, #name, TRUE, FALSE);
   if(variant_profile) {
