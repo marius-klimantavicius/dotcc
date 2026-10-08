@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "profile": "scalar-control-v20",
+  "scope": "Owned original routine ABI maps for hidden result buffers and nontrivial indirect value parameters, with observed generated runtime signatures",
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "fullRegressionChecks": 1044,
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-v20-acceptance-002/results.json",
+      "sha256": "f28a493a875552aba4c5c6cd049ed5bc0a09cc299f05e3d54409b3bd61c08cde"
+    },
+    "initialRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-v20-acceptance-001/results.json",
+      "sha256": "8dec370716ec0e100a66e04f24250d74194e089763c3981c20b701ac416f8665"
+    },
+    "indirectValues": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-indirect-values-managed026-002/results.json",
+      "sha256": "81c2f7d5a8a372005a5f0e4bfce38cb5968a40efbf7a05f09426f743ad0d2b4c"
+    },
+    "defaultAdapters": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-default-adapters-managed026-002/results.json",
+      "sha256": "189e0bc80de54cd78c272e234964c1514c3a3feb3971cf14c6b33d2d0b8cc257"
+    },
+    "crossLanguageSignatures": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-references-v20-acceptance-001/results.json",
+      "sha256": "8a14eb4644c2745fd18b14520bfb8b74d1ac7de9ee05a6539e4d60914a55d35a"
+    },
+    "crossUnit": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-indirect-acceptance-007/results.json",
+      "sha256": "784e7e5ca28befd768ee74107ecb2b575a584a1d0d712d9723e7dda03821c982"
+    },
+    "sqlitePipeline": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-pipeline-002/results.json",
+      "sha256": "01a0f4f99fc0308987bca0a1953cfa53abfd376e3687b91bee71d72720ff8434"
+    },
+    "duckdbFrontier": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-038/results.json",
+      "sha256": "0df5f0bc088aead89279378d32d8ceb90cf10b47f144576b0964c22144aad62b"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native038-verified-snapshot/cpfe-dot",
+      "sha256": "8b33b041e3c9216253f58e69338cc2cd2d63a4c8657cfb18b30a4fe9c054b0bc"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-026/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "01183da5e1635fec8d438b2f437c40b531340049ca15bce9083ee053fe6dcaef"
+    },
+    "abstractRuntime": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-abstract-runtime-acceptance-003/results.json",
+      "sha256": "3cc558287c71f6f31addc94ccd5811e9044554e670914c7d9a18df5594eb086e"
+    }
+  },
+  "initialRegressionFailure": "Old signature-mismatch corruption fixture cloned a source routine without its newly mandatory ABI header. Verifier correctly rejected the missing proof before link mismatch. Fixture now retains all required metadata; corrected focused rejection and full1044-check replay pass. No accepted-input implementation failure.",
+  "limitations": [
+    "Packed record accesses, virtual bases and general dynamic initialization remain pending",
+    "Indirect passing does not infer destructor ownership or implement missing lifetime/EH obligations",
+    "Full DuckDB execution and complete independent original semantic indexing remain unfinished"
+  ]
+}

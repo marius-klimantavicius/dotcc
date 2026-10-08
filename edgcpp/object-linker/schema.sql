@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v19'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v20'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -16,7 +16,8 @@ CREATE TABLE object_info (
  macros INTEGER NOT NULL CHECK(macros=0),
  lifetimes INTEGER NOT NULL CHECK(lifetimes=0),
  source_declarations INTEGER NOT NULL CHECK(source_declarations=1),
- macro_definitions INTEGER NOT NULL CHECK(macro_definitions=1)
+ macro_definitions INTEGER NOT NULL CHECK(macro_definitions=1),
+ source_language TEXT NOT NULL CHECK(source_language IN ('c','c++'))
 ) STRICT;
 CREATE TABLE provenance (
  ordinal INTEGER PRIMARY KEY,
@@ -75,6 +76,21 @@ CREATE TABLE source_routine_parameters (
  parameter_type_id INTEGER NOT NULL REFERENCES source_types(id),
  PRIMARY KEY(type_id,ordinal)
 ) STRICT;
+CREATE TABLE source_routine_abis (
+ source_routine_type_id INTEGER PRIMARY KEY REFERENCES source_routine_types(type_id),
+ return_passing TEXT NOT NULL CHECK(return_passing IN ('direct','result-buffer')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN ('source-c-signature','observed-routine-lowering','observed-runtime-signature'))
+) STRICT;
+CREATE TABLE source_routine_abi_parameters (
+ source_routine_type_id INTEGER NOT NULL REFERENCES source_routine_abis(source_routine_type_id),
+ execution_ordinal INTEGER NOT NULL CHECK(execution_ordinal>=0),
+ parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','indirect-source','this','result-buffer')),
+ source_ordinal INTEGER CHECK(source_ordinal>=0),
+ CHECK((parameter_role IN ('source','indirect-source') AND source_ordinal IS NOT NULL) OR
+       (parameter_role IN ('this','result-buffer') AND source_ordinal IS NULL)),
+ UNIQUE(source_routine_type_id,source_ordinal),
+ PRIMARY KEY(source_routine_type_id,execution_ordinal)
+) STRICT;
 CREATE TABLE storages (
  id INTEGER PRIMARY KEY CHECK(id>0),
  source_name TEXT NOT NULL,
@@ -126,10 +142,10 @@ CREATE TABLE parameters (
  entity_id INTEGER NOT NULL REFERENCES entities(id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  type_id INTEGER NOT NULL REFERENCES types(id),
- parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','this','forwarded-source')),
+ parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','indirect-source','this','result-buffer','forwarded-source')),
  source_ordinal INTEGER CHECK(source_ordinal>=0),
- CHECK((parameter_role IN ('source','forwarded-source') AND source_ordinal IS NOT NULL) OR
-       (parameter_role='this' AND source_ordinal IS NULL AND ordinal=0)),
+ CHECK((parameter_role IN ('source','indirect-source','forwarded-source') AND source_ordinal IS NOT NULL) OR
+       (parameter_role IN ('this','result-buffer') AND source_ordinal IS NULL)),
  UNIQUE(entity_id,source_ordinal),
  PRIMARY KEY(entity_id,ordinal)
 ) STRICT;
@@ -320,7 +336,7 @@ CREATE TABLE source_functions (
  return_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
  capture_phase TEXT NOT NULL,
  routine_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
- function_kind TEXT NOT NULL CHECK(function_kind IN ('ordinary','constructor','destructor'))
+ function_kind TEXT NOT NULL CHECK(function_kind IN ('ordinary','constructor','destructor','runtime'))
 ) STRICT;
 CREATE TABLE source_parameters (
  entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),

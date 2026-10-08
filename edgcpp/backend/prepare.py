@@ -308,6 +308,20 @@ object_source_overlay(init_lower,
     '#endif\n'
     '    define_default_version_of_routine(routine, new_routine, \n'
     '                                      default_arg_list);')
+object_source_overlay(init_lower,
+    '    }  /* if */\n  }  /* if */\n  return *routine;\n}  /* make_prototyped_runtime_routine */',
+    '    }  /* if */\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_runtime_declaration(*routine);\n'
+    '#endif\n'
+    '  }  /* if */\n  return *routine;\n}  /* make_prototyped_runtime_routine */')
+for runtime_callback in ("ctor", "dtor"):
+    object_source_overlay(init_lower,
+        f'    {runtime_callback}_ptr_type = make_pointer_type(function_type);',
+        f'    {runtime_callback}_ptr_type = make_pointer_type(function_type);\n'
+        '#if defined(EDG_DOT_BACKEND)\n'
+        '    dot_object_source::observe_runtime_signature(function_type);\n'
+        '#endif')
 eh_lower = root / "upstream/src/lower_eh.c"
 object_source_overlay(eh_lower,
     '#include "lower_hdrs.h"',
@@ -316,6 +330,20 @@ object_source_overlay(lower,
     '  a_type_ptr ptr_return_type, new_type, member_type;\n',
     '  a_type_ptr ptr_return_type, new_type, member_type;\n'
     '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_type(type);\n#endif\n')
+object_source_overlay(lower,
+    '          set_lowered_routine_calling_method_flag(type);\n'
+    '          if (rtsp->value_returned_as_parameter) {',
+    '          set_lowered_routine_calling_method_flag(type);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '          dot_object_source::observe_routine_abi(type);\n'
+    '#endif\n'
+    '          if (rtsp->value_returned_as_parameter) {')
+object_source_overlay(lower,
+    '      return_value_pointer_variable->next = scope->variant.routine.parameters;',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_source::observe_result_parameter(routine, return_value_pointer_variable);\n'
+    '#endif\n'
+    '      return_value_pointer_variable->next = scope->variant.routine.parameters;')
 object_source_overlay(lower,
     '  if (!class_has_been_prelowered(class_type)) {\n',
     '  if (!class_has_been_prelowered(class_type)) {\n'

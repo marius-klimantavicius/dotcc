@@ -111,21 +111,7 @@ internal sealed partial class ObjectFile
             }
             visited.UnionWith(chain);
         }
-        foreach (RoutineType routine in SourceRoutines.Values)
-        {
-            SourceType type = SourceTypeById(routine.TypeId);
-            IEnumerable<string> parameters = routine.Parameters.Select(parameter => ParameterType(SourceTypeById(parameter)));
-            if (routine.ObjectTypeId is long objectType)
-            {
-                SourceType receiver = SourceTypeById(objectType);
-                if (receiver.Kind != "record" || !ScalarTypes.IsRecord(Type(receiver.ExecutionTypeId)))
-                    throw new InvalidDataException("Member receiver requires its original unqualified record type");
-                parameters = parameters.Prepend("ptr(" + Type(receiver.ExecutionTypeId) + ")");
-            }
-            string signature = RoutineTypes.Key(Type(SourceTypeById(routine.ReturnTypeId).ExecutionTypeId), parameters, routine.Variadic, routine.ExceptionPolicy);
-            if (type.Kind != "routine" || Type(type.ExecutionTypeId) != signature)
-                throw new InvalidDataException("Source routine signature disagrees with execution signature");
-        }
+        ReadAndVerifySourceRoutineAbis();
         foreach (RoutineType routine in Routines.Values)
             if (!CanCopyRecord(Type(routine.ReturnTypeId)) || routine.Parameters.Any(parameter => !CanCopyRecord(Type(parameter))))
                 throw new InvalidDataException("Record value ABI cannot contain incomplete arrays or volatile fields in this profile");
@@ -148,29 +134,33 @@ internal sealed partial class ObjectFile
             while (query.Read())
             {
                 long entity = query.Integer(0);
-                if (!Entities.TryGetValue(entity, out Entity? function) || query.Text(2) != "before-lowering" ||
-                    SourceTypeById(query.Integer(1)).ExecutionTypeId != function.ReturnTypeId || Original(SourceTypeById(query.Integer(1))).Kind == "array" || !functions.Add(entity))
+                string functionKind = query.Text(4);
+                if (!Entities.TryGetValue(entity, out Entity? function) || query.Text(2) != (functionKind == "runtime" ? "runtime-declaration" : "before-lowering") ||
+                    Original(SourceTypeById(query.Integer(1))).Kind == "array" || !functions.Add(entity))
                     throw new InvalidDataException("Source function signature or capture phase mismatch");
                 SourceType signatureType = Original(SourceTypeById(query.Integer(3)));
                 if (signatureType.Kind != "routine" || !SourceRoutines.TryGetValue(signatureType.Id, out RoutineType? sourceSignature) ||
-                    Type(signatureType.ExecutionTypeId) != EntityRoutine(entity) || sourceSignature.ReturnTypeId != query.Integer(1))
+                    Type(signatureType.ExecutionTypeId) != EntityRoutine(entity) || sourceSignature.ReturnTypeId != query.Integer(1) ||
+                    RoutineAbiReturnType(sourceSignature) != Type(function.ReturnTypeId))
                     throw new InvalidDataException("Original full function signature disagrees with function summary");
-                string functionKind = query.Text(4);
-                if (functionKind is not ("ordinary" or "constructor" or "destructor") ||
-                    functionKind != "ordinary" && (sourceSignature.ObjectTypeId is null || Type(function.ReturnTypeId) != "void"))
+                if (functionKind is not ("ordinary" or "constructor" or "destructor" or "runtime") ||
+                    functionKind is "constructor" or "destructor" && (sourceSignature.ObjectTypeId is null || Type(function.ReturnTypeId) != "void"))
                     throw new InvalidDataException("Invalid original special member function kind");
+                if (functionKind == "runtime" && (function.Linkage != "external" || function.Definition != "declaration" || Functions.ContainsKey(entity) ||
+                    SourceRoutineAbis[sourceSignature.TypeId].CaptureProof != "observed-runtime-signature"))
+                    throw new InvalidDataException("Observed runtime function must be an external generated declaration with its own signature proof");
+                if (functionKind != "runtime" && SourceRoutineAbis[sourceSignature.TypeId].CaptureProof == "observed-runtime-signature")
+                    throw new InvalidDataException("Generated runtime signature cannot fabricate an original source function");
                 SourceFunctionKinds.Add(entity, functionKind);
                 EntitySourceRoutines.Add(entity, sourceSignature);
-                int receiverCount = sourceSignature.ObjectTypeId is null ? 0 : 1;
+                var slots = RoutineAbiParameters(sourceSignature.TypeId);
                 var executionParameters = Parameters.GetValueOrDefault(entity, []);
-                if (executionParameters.Count != sourceSignature.Parameters.Length + receiverCount)
+                if (executionParameters.Count != slots.Count)
                     throw new InvalidDataException("Execution parameters do not map to original explicit parameters and receiver");
                 for (int ordinal = 0; ordinal < executionParameters.Count; ordinal++)
                 {
                     ParameterSemantics role = ParameterRoles[(entity, ordinal)];
-                    bool isThis = receiverCount == 1 && ordinal == 0;
-                    if (isThis ? role.Role != "this" || role.SourceOrdinal is not null
-                        : role.Role != "source" || role.SourceOrdinal != ordinal - receiverCount)
+                    if (role.Role != slots[ordinal].ParameterRole || role.SourceOrdinal != slots[ordinal].SourceOrdinal)
                         throw new InvalidDataException("Execution parameter role disagrees with original routine signature");
                 }
                 if (sourceSignature.ParameterMode == "unspecified" && (function!.Definition == "declaration" || Parameters.GetValueOrDefault(entity, []).Count != 0))
@@ -186,7 +176,7 @@ internal sealed partial class ObjectFile
                 SourceType sourceType = SourceTypeById(query.Integer(2));
                 if (!EntitySourceRoutines.TryGetValue(entity, out RoutineType? routine) || ordinal != count ||
                     count >= routine.Parameters.Length || !Parameters.TryGetValue(entity, out var parameters) ||
-                    ParameterType(sourceType) != parameters[count + (routine.ObjectTypeId is null ? 0 : 1)] ||
+                    RoutineAbiParameterType(routine, SourceParameterSlot(routine, count)) != parameters[(int)SourceParameterSlot(routine, count).ExecutionOrdinal] ||
                     SourceParameterSignature(sourceType.Id, 0) != SourceParameterSignature(routine.Parameters[count], 0))
                     throw new InvalidDataException("Source parameter signature mismatch");
                 if (query.Integer(3) is not (0 or 1)) throw new InvalidDataException("Invalid original parameter default argument fact");
@@ -204,7 +194,7 @@ internal sealed partial class ObjectFile
         using (var query = database.Prepare("""
             SELECT d.id,d.kind,d.source_name,d.source_type_id,d.entity_id,d.binding_id,d.function_entity_id,d.line,d.column,
                    b.function_id,b.kind,b.ordinal,b.type_id,b.source_name,
-                   f.return_source_type_id,p.source_type_id
+                   f.return_source_type_id,p.source_type_id,b.ordinal
             FROM source_declarations d
             LEFT JOIN bindings b ON b.id=d.binding_id
             LEFT JOIN source_functions f ON f.entity_id=d.entity_id
@@ -223,14 +213,14 @@ internal sealed partial class ObjectFile
                 {
                     if (query.OptionalInteger(4) is not long entity || !query.IsNull(5) || !query.IsNull(6) ||
                         !Entities.TryGetValue(entity, out Entity? function) || name != function.SourceName ||
-                        query.OptionalInteger(14) != sourceTypeId || type.ExecutionTypeId != function.ReturnTypeId)
+                        query.OptionalInteger(14) != sourceTypeId || RoutineAbiReturnType(EntitySourceRoutines[entity]) != Type(function.ReturnTypeId))
                         throw new InvalidDataException("Source function declaration does not match its execution entity");
                 }
                 else if (kind is "parameter" or "local")
                 {
                     if (!query.IsNull(4) || query.IsNull(5) || query.OptionalInteger(6) is not long function ||
                         !Functions.ContainsKey(function) || query.OptionalInteger(9) != function || query.OptionalText(10) != kind ||
-                        (kind == "parameter" ? ParameterType(type) != Type(query.Integer(12)) : type.ExecutionTypeId != query.OptionalInteger(12)) || query.OptionalText(13) != name)
+                        (kind == "parameter" ? ParameterBindingType(function, query.Integer(16), type) != Type(query.Integer(12)) : type.ExecutionTypeId != query.OptionalInteger(12)) || query.OptionalText(13) != name)
                         throw new InvalidDataException("Source binding declaration does not match its execution binding");
                     if (!BindingSourceTypes.TryAdd(query.Integer(5), sourceTypeId)) throw new InvalidDataException("Duplicate source binding declaration identity");
                     if (kind == "local" && Original(type).Kind == "array" && Original(type).ElementCount == 0)
@@ -248,7 +238,7 @@ internal sealed partial class ObjectFile
         RejectRows("SELECT entity_id FROM source_declarations WHERE entity_id IS NOT NULL GROUP BY entity_id HAVING count(*)<>1", "Duplicate source function declaration identity");
         RejectRows("SELECT binding_id FROM source_declarations WHERE binding_id IS NOT NULL GROUP BY binding_id HAVING count(*)<>1", "Duplicate source binding declaration identity");
         RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL AND e.id NOT IN (SELECT entity_id FROM abi_routine_origins)", "Missing original function declaration capture");
-        RejectRows("SELECT b.id FROM bindings b LEFT JOIN parameters p ON p.entity_id=b.function_id AND p.ordinal=b.ordinal WHERE b.kind='parameter' AND (p.parameter_role IS NULL OR b.is_synthetic <> (p.parameter_role IN ('this','forwarded-source')))", "Implicit this must be synthetic and source parameters must be original");
+        RejectRows("SELECT b.id FROM bindings b LEFT JOIN parameters p ON p.entity_id=b.function_id AND p.ordinal=b.ordinal WHERE b.kind='parameter' AND (p.parameter_role IS NULL OR b.is_synthetic <> (p.parameter_role IN ('this','result-buffer','forwarded-source')))", "Implicit ABI parameters must be synthetic and source parameters must be original");
         RejectRows("SELECT b.id FROM bindings b JOIN source_declarations d ON d.binding_id=b.id WHERE b.is_synthetic=1", "Synthetic execution binding must not have fabricated source capture");
         RejectRows("SELECT b.id FROM bindings b LEFT JOIN source_declarations d ON d.binding_id=b.id WHERE d.id IS NULL AND b.is_synthetic=0", "Missing original binding declaration capture");
     }
@@ -289,7 +279,9 @@ internal sealed partial class ObjectFile
             ? SourceTypeSignature(objectType, depth + 1, routine.ObjectIsConst, routine.ObjectIsVolatile) + ":" + routine.ObjectRefQualifier : "none";
         return "source-routine(" + SourceTypeSignature(routine.ReturnTypeId, depth + 1, false, false) + ";" +
             string.Join(',', routine.Parameters.Select(parameter => SourceParameterSignature(parameter, depth + 1))) + ";" +
-            (routine.Variadic ? "1" : "0") + ";" + routine.ExceptionPolicy + ";" + receiver + ")";
+            (routine.Variadic ? "1" : "0") + ";" + routine.ExceptionPolicy + ";" + receiver + ";abi=" +
+            SourceRoutineAbis[routine.TypeId].ReturnPassing + ":" + string.Join(',', RoutineAbiParameters(routine.TypeId).Select(slot =>
+                slot.ParameterRole + (slot.SourceOrdinal is long ordinal ? "#" + ordinal : ""))) + ")";
     }
 
     private string SourceParameterSignature(long id, int depth)
@@ -349,6 +341,7 @@ internal sealed partial class ObjectFile
         writer.WriteStartObject();
         writer.WriteString("unitId", UnitId);
         writer.WriteString("primarySource", PrimarySource);
+        writer.WriteString("sourceLanguage", SourceLanguage);
         writer.WriteString("semanticDigest", Digest);
         void Table(string name, string sql, params string[] columns)
         {
@@ -401,6 +394,8 @@ internal sealed partial class ObjectFile
         Table("routineParameters", "SELECT type_id,ordinal,parameter_type_id FROM routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");
         Table("sourceRoutineTypes", "SELECT type_id,return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier FROM source_routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy", "parameterMode", "objectTypeId", "objectIsConst", "objectIsVolatile", "objectRefQualifier");
         Table("sourceRoutineParameters", "SELECT type_id,ordinal,parameter_type_id FROM source_routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");
+        Table("sourceRoutineAbis", "SELECT source_routine_type_id,return_passing,capture_proof FROM source_routine_abis ORDER BY source_routine_type_id", "sourceRoutineTypeId", "returnPassing", "captureProof");
+        Table("sourceRoutineAbiParameters", "SELECT source_routine_type_id,execution_ordinal,parameter_role,source_ordinal FROM source_routine_abi_parameters ORDER BY source_routine_type_id,execution_ordinal", "sourceRoutineTypeId", "executionOrdinal", "parameterRole", "sourceOrdinal");
         Table("sourceFunctions", "SELECT entity_id,return_source_type_id,capture_phase,routine_source_type_id,function_kind FROM source_functions ORDER BY entity_id", "entityId", "returnSourceTypeId", "capturePhase", "routineSourceTypeId", "functionKind");
         Table("executionParameters", "SELECT entity_id,ordinal,type_id,parameter_role,source_ordinal FROM parameters ORDER BY entity_id,ordinal", "entityId", "ordinal", "typeId", "parameterRole", "sourceOrdinal");
         Table("sourceParameters", "SELECT entity_id,ordinal,source_type_id,has_default_argument FROM source_parameters ORDER BY entity_id,ordinal", "entityId", "ordinal", "sourceTypeId", "hasDefaultArgument");

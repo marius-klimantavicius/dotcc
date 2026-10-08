@@ -80,3 +80,28 @@ compatible_alias(x)==8 && x==8 ? 0:1;}
                                              '-o', out / 'reference-compatible-native'])
     run('reference-compatible-native', [out / 'reference-compatible-native'])
     execute('reference-compatible', link('link-reference-compatible', pair))
+
+
+    # Observation provenance differs across source languages; compatible direct
+    # callable semantics must still link, including nested callback signatures.
+    c_source = inputs / 'source-abi-c-provider.c'
+    c_source.write_text('int mixed_apply(int (*fn)(int), int value) { return fn(value) + 1; }\n')
+    cpp_source = inputs / 'source-abi-cpp-consumer.cpp'
+    cpp_source.write_text('extern "C" int mixed_apply(int (*)(int), int);\n'
+                          'int twice_mixed(int x) { return x * 2; }\n'
+                          'int main() { return mixed_apply(twice_mixed, 8) == 17 ? 0 : 1; }\n')
+    c_object = compile_source('source-abi-c-provider', c_source, std='c11')
+    cpp_object = compile_source('source-abi-cpp-consumer', cpp_source)
+    for role, object_path, language, proof in [
+            ('c', c_object, 'c', 'source-c-signature'),
+            ('cpp', cpp_object, 'c++', 'observed-routine-lowering')]:
+        with sqlite3.connect(object_path) as db:
+            check('source-abi-' + role + '-language-proof',
+                  db.execute('SELECT source_language FROM object_info').fetchone() == (language,)
+                  and {row[0] for row in db.execute('SELECT DISTINCT capture_proof FROM source_routine_abis')} == {proof})
+    run('source-abi-mixed-native-c', ['cc', '-std=c11', '-O2', '-c', c_source,
+                                     '-o', out / 'source-abi-c-provider.o'])
+    run('source-abi-mixed-native-link', ['c++', '-std=c++17', '-O2', cpp_source,
+          out / 'source-abi-c-provider.o', '-o', out / 'source-abi-mixed-native'])
+    run('source-abi-mixed-native', [out / 'source-abi-mixed-native'])
+    execute('source-abi-mixed', link('link-source-abi-mixed', [c_object, cpp_object]))

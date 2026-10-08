@@ -430,7 +430,21 @@ The authoritative EDG query for effective field alignment is
 field alignment, field/class packing, pragma maximum alignment, and ABI cases
 where a packed attribute is ignored for non-POD members. Using only the scalar
 member type's natural alignment would reject valid source layouts or silently
-create invalid access assumptions.
+create invalid access assumptions. The observer should record the result at
+this helper's actual layout-time return when `for_alignof` is false. Calling it
+again from the exporter is not a read-only operation: its nested explicit
+alignment handler may warn or update a directive, and its non-POD packing
+branches can also issue diagnostics. Capture the accepted layout decision
+without re-running those frontend decisions. Packed bitfields deliberately
+bypass this helper in `set_field_size_and_offset`; they must not acquire a
+fabricated scalar alignment observation. Their existing byte-backed managed
+properties already operate at alignment one.
+
+Requested alignment also differs from final alignment. `do_class_layout` saves
+the requested class alignment and resets the type before layout; capture that
+input before the reset if exporting an original explicit-alignment directive.
+Capture a field's input directive before its layout normalization. The final
+record size/alignment and field placement remain separate accepted layout facts.
 
 A future owned contract should preserve original record `isPacked` and
 `maxMemberAlignment`, original field `isPacked` and `explicitAlignment`, and the
@@ -449,10 +463,11 @@ needs its own contract and should remain rejected in the initial packed tranche.
 The existing natural-layout and packed-source guards remain active today.
 
 
-## Proposed source-to-execution routine ABI mapping
+## Source-to-execution routine ABI mapping (profile 20 acceptance in progress)
 
-This is a design for the next tranche, not enabled by profile 19. Actual DuckDB
-now reaches hidden result buffers and nontrivial parameters passed indirectly.
+Producer 037 implements this mapping in profile 20; focused and cross-unit
+acceptance is in progress. Profile 19 does not enable it. Actual DuckDB
+reaches hidden result buffers and nontrivial parameters passed indirectly.
 These are distinct from C++ references: a written class value parameter remains
 an owned source class value declaration even when EDG's execution ABI passes a
 pointer to an already-constructed object.
@@ -460,7 +475,7 @@ pointer to an already-constructed object.
 The mapping must be keyed by the original **source routine type**, not solely by
 its physical execution routine type. Two physical signatures `void(T*, T*)` can
 mean result-buffer then receiver, receiver then result-buffer, or two written
-pointer parameters. Proposed rows are:
+pointer parameters. The owned rows are:
 
 - `sourceRoutineAbis(sourceRoutineTypeId, returnPassing, captureProof)`, where
   `returnPassing` is `direct` or `result-buffer`. A header is required even for a
@@ -505,6 +520,27 @@ a typed translation-unit source-language fact would let the verifier constrain
 that proof. Callback signatures reachable only through record fields must also
 be covered. An original type without a proven relationship to an observed
 physical signature must not silently gain an invented lowering proof.
+
+Producer 038 adds a separately observed runtime-signature path. Stock
+`make_prototyped_runtime_routine` builds generated external declarations already
+lowered, while `make_ctor_type` and `make_dtor_type` build direct callback types.
+The observation occurs after each complete signature has been assembled;
+observing the initial empty routine factory would capture the wrong arity.
+These headers use `observed-runtime-signature`, never a fabricated C-source or
+routine-lowering proof. The exact newly-created runtime declaration branch is
+recorded, excluding reused original declarations. Owned function rows use
+`functionKind=runtime` and `capturePhase=runtime-declaration`; they must be
+external declarations without a body. Their parameter rows describe generated
+prototype types, not original written parameter variables. Runtime direct
+signatures cannot introduce implicit receivers, result buffers, or indirect
+source-value arguments.
+
+Stock alternate entry creation copies an exception specification only in the
+special complete-entry case requiring virtual-base initialization/destruction.
+A subobject alias can consequently have an unwind policy while its primary
+constructor is noexcept. Both actual bodies and their own policies remain
+owned: the generated wrapper calls the original noexcept boundary. Alias origin
+metadata never licenses deleting the body or inventing matching policies.
 
 Existing rejection of unrepresented destruction, EH, VTT, variadic adaptation
 and returned-this ABI forms remains in force. Supporting a physical pointer ABI

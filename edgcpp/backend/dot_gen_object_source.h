@@ -109,6 +109,12 @@ struct PrelowerRecord {
   std::vector<PrelowerField> fields;
   std::vector<PrelowerBase> bases;
 };
+struct RoutineAbi {
+  std::string proof,error;
+  bool result_buffer=false,result_follows_this=false;
+  std::vector<bool> indirect_parameters;
+  std::vector<a_param_type_ptr> original_parameters;
+};
 struct DefaultAdapter {
   a_routine_ptr target=nullptr,primary=nullptr;
   bool implied_arguments=false,copy_constructor=false,has_arguments=false;
@@ -117,6 +123,9 @@ struct State {
   std::map<a_type_ptr,unsigned> type_ids;
   std::vector<Type> types;
   std::map<a_routine_ptr,Function> functions;
+  std::map<unsigned,RoutineAbi> routine_abis;
+  std::map<a_routine_ptr,a_variable_ptr> result_parameters;
+  std::set<a_routine_ptr> runtime_declarations;
   std::map<a_routine_ptr,DefaultAdapter> default_adapters;
   std::map<a_variable_ptr,Declaration> variables;
   std::map<a_type_ptr,Record> records;
@@ -331,6 +340,13 @@ inline unsigned capture_type(a_type_ptr t) {
       value.parameters.push_back(capture_type(p->declared_type?p->declared_type:p->type));
       value.declaration_defaults.push_back(p->has_default_arg);
     }
+    if(C_mode()) {
+      RoutineAbi abi;abi.proof="source-c-signature";
+      for(auto p=extra->param_type_list;p;p=p->next) {
+        abi.original_parameters.push_back(p);abi.indirect_parameters.push_back(false);
+      }
+      s.routine_abis[id]=abi;
+    }
   }
   // Unknown entries are retained privately as unavailable, never exported as
   // opaque payloads. An unused unsupported declaration cannot block the TU.
@@ -338,6 +354,49 @@ inline unsigned capture_type(a_type_ptr t) {
   s.types[id-1]=value;return id;
 }
 inline void observe_type(a_type_ptr type){if(enabled())capture_type(type);}
+inline void observe_routine_abi(a_type_ptr type) {
+  if(!enabled())return;
+  auto &s=state();unsigned id=capture_type(type);
+  const auto &source=s.types.at(id-1);
+  RoutineAbi abi;abi.proof="observed-routine-lowering";
+  auto extra=type->variant.routine.extra_info;
+  abi.result_buffer=extra->value_returned_as_parameter;
+  abi.result_follows_this=extra->return_value_parameter_follows_this;
+  for(auto parameter=extra->param_type_list;parameter;parameter=parameter->next) {
+    abi.original_parameters.push_back(parameter);
+    abi.indirect_parameters.push_back(parameter->passed_via_copy_constructor);
+  }
+  if(source.kind!="routine" || source.parameters.size()!=abi.original_parameters.size() ||
+     (source.object_type!=0)!=(extra->this_class!=nullptr))
+    abi.error="routine ABI observation does not match original source signature";
+  s.routine_abis[id]=abi;
+}
+inline void observe_runtime_signature(a_type_ptr type) {
+  if(!enabled())return;
+  type=skip_typerefs(type);
+  if(type->kind==tk_pointer)type=skip_typerefs(type->variant.pointer.type);
+  auto &s=state();unsigned id=capture_type(type);
+  RoutineAbi abi;abi.proof="observed-runtime-signature";
+  if(type->kind!=tk_routine){abi.error="runtime signature creation is not routine";s.routine_abis[id]=abi;return;}
+  auto extra=type->variant.routine.extra_info;
+  if(extra->this_class || extra->value_returned_as_parameter || extra->value_returned_by_cctor)
+    abi.error="runtime signature outside direct explicit ABI";
+  for(auto parameter=extra->param_type_list;parameter;parameter=parameter->next) {
+    abi.original_parameters.push_back(parameter);abi.indirect_parameters.push_back(false);
+    if(parameter->passed_via_copy_constructor)abi.error="runtime signature has indirect original argument";
+  }
+  if(s.types.at(id-1).parameters.size()!=abi.original_parameters.size())
+    abi.error="runtime signature was captured before final formal assembly";
+  s.routine_abis[id]=abi;
+}
+inline void observe_runtime_declaration(a_routine_ptr routine) {
+  if(!enabled())return;
+  state().runtime_declarations.insert(routine);
+  observe_runtime_signature(routine->type);
+}
+inline void observe_result_parameter(a_routine_ptr routine,a_variable_ptr parameter) {
+  if(enabled())state().result_parameters[routine]=parameter;
+}
 inline a_routine_ptr abi_primary(a_routine_ptr r) {
   auto adapter=state().default_adapters.find(r);
   if(adapter!=state().default_adapters.end())return adapter->second.primary;
@@ -357,7 +416,7 @@ inline void capture_routine(a_routine_ptr r) {
   auto id=capture_type(type);
   while(s.types.at(id-1).underlying)id=s.types.at(id-1).underlying;
   const auto signature=s.types.at(id-1);
-  Function function;function.function_kind=r->special_kind==sfk_constructor?"constructor":r->special_kind==sfk_destructor?"destructor":"ordinary";function.declaration.type=signature.result;function.signature_type=id;
+  Function function;function.function_kind=s.runtime_declarations.count(r)?"runtime":r->special_kind==sfk_constructor?"constructor":r->special_kind==sfk_destructor?"destructor":"ordinary";function.declaration.type=signature.result;function.signature_type=id;
   function.declaration.name=spelling(r->source_corresp);
   function.declaration.position=r->source_corresp.decl_position;
   function.parameters=signature.parameters;

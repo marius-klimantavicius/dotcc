@@ -982,3 +982,57 @@ Executable entry accepts nonvariadic `void()`, `int()`, or exactly
 one owned native allocation holds writable UTF-8 strings and the null-terminated
 pointer table. Its lifetime encloses `ObjectProgram.Run`, including source normal
 exit callbacks. It is disposed only after that boundary returns to the host.
+
+
+## Original routine ABI mappings: scalar-control-v20
+
+`object_info.source_language` owns the translation-unit language (`c` or `c++`),
+also required as top-level `sourceLanguage` in the producer wire. Every original
+source routine type, including callback-only and zero-parameter types, has one
+`source_routine_abis` header. The header records `return_passing` (`direct` or
+`result-buffer`) and `capture_proof` (`source-c-signature` or
+`observed-routine-lowering` or `observed-runtime-signature`). The first proof is valid only for original C direct
+signatures. C++ uses observed routine-lowering facts; an unobserved signature does
+not receive an inferred observation merely because its physical types look simple.
+
+`source_routine_abi_parameters` records each physical execution ordinal, role
+(`source`, `indirect-source`, `this`, `result-buffer`) and original source ordinal
+where applicable. This map is keyed by original source routine type. It cannot
+be keyed only by the canonical physical routine type: a source class return with
+a result buffer can have the same physical signature as an unrelated ordinary
+pointer-taking function. The exact observed receiver/result order is retained;
+a same-class receiver and result pointer cannot be distinguished by type alone.
+
+Original indirect-value parameters keep nonsynthetic source class declarations
+and their original names. Only the execution binding gains a pointer layer.
+The result buffer and receiver are synthetic only through their exact observed
+creation identities. An NRVO local is not proof of an ABI result parameter.
+Entity parameter rows must match the verified source routine map. Generated
+forwarded-source entries map their primary's verified physical slot by original
+source ordinal; default-argument declaration facts remain separate.
+
+A result-buffer return has a physical void result and exactly one pointer slot
+to the original class result representation. Initial support does not permit
+arbitrary scalar or reference values to masquerade as indirect class values.
+Source signature compatibility includes return passing and ordered roles while
+excluding observation proof and TU language, so compatible direct C/C++ header
+declarations remain linkable. Original source qualifiers and nominal identity
+retain their existing compatibility rules.
+
+The mapping does not create extra object copies, infer destructor ownership, or
+discharge cleanup obligations. Existing typed lowered calls and construction
+operations target actual owned destinations. Unrepresented destruction, EH, VTT,
+returned-this and variadic adaptation remain explicit boundaries until separately
+implemented. Full DuckDB execution is not an acceptance claim of this contract.
+
+
+Compiler-created external runtime declarations use `function_kind=runtime` and
+`capture_phase=runtime-declaration`, distinguished from original before-lowering
+source functions. This requires observation of the new runtime routine after its
+prototype is complete, with external linkage and no owned definition. A reused
+original source prototype retains its original classification. Callback types
+created by the runtime-helper factories have their own finalized creation proof.
+`observed-runtime-signature` permits only direct return/source-only parameter
+slots, with no invented receiver, result buffer or copy indirection. The source
+index records this as a generated declaration, never as an original user function
+or fabricated parameter variable declaration.

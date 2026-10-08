@@ -342,3 +342,35 @@ indirect-value ABI, dynamic initialization and lifetime/exception obligations.
 No full DuckDB execution is claimed. The next implementation contract owns source
 routine ABI mappings rather than inferring original semantics from lowered
 pointer signatures.
+
+
+## Original and physical routine ABI, v20 (2026-10-08)
+
+Every retained original routine type now owns its lowering map, including
+callback-only signatures. Original class returns and by-value parameters remain
+class values in the semantic source index; hidden result, receiver and indirect
+execution slots have explicit identities and order. Generated runtime imports
+and callback prototypes use exact creation proofs and an explicit generated
+declaration origin rather than pretending to be original user functions.
+
+Native O0/O2, JIT and NativeAOT tests execute result buffers, same-class
+receiver/result pointers, nontrivial copies, callback fields, nested prvalues
+and default-argument array adapters. Two independent objects relink and run after
+their source directory is hidden. Compatible C/C++ callback declarations link
+despite different observation provenance. Malformed source/ABI proof variants
+are rejected. Generated aliases retain their own exception policy and real body;
+only their physical parameter/return contract must match the original entry.
+
+The complete regression passes **1044 checks including NativeAOT** with native038
+and managed026. A fresh end-to-end SQLite run packages all 225 original units,
+resolves 70 real runtime imports and passes the same eight engine suites under
+JIT and NativeAOT. [Hashed v20 evidence](../evidence/dotobj-indirect-values-20261008.json)
+records focused, cross-unit, project and full-regression receipts. The first
+regression's obsolete corruption fixture is retained: it lacked the newly
+required ABI metadata and was rejected earlier than the intended mismatch.
+
+Actual DuckDB allocator and libc++ thread units now reach destruction obligations
+instead of the indirect-value ABI boundary. The latest 15-unit frontier still
+packages four units; packed libc++ string layouts, dynamic initialization,
+assembly barriers and lifetime/exception operations remain explicit blockers.
+Indirect passing alone does not discharge those obligations.

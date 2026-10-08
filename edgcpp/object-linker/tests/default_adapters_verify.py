@@ -35,6 +35,12 @@ def verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
             """).fetchone()[0] == 0)
         adapter, primary = adapters[0][:2]
         main = db.execute("SELECT id FROM entities WHERE source_name='main'").fetchone()[0]
+        runtime = db.execute('''SELECT f.entity_id,f.routine_source_type_id FROM source_functions f
+            JOIN entities e ON e.id=f.entity_id JOIN source_routine_abis a ON a.source_routine_type_id=f.routine_source_type_id
+            WHERE f.function_kind='runtime' AND f.capture_phase='runtime-declaration'
+            AND e.linkage='external' AND e.definition='declaration' AND a.capture_proof='observed-runtime-signature' ''').fetchall()
+        check('default-adapter-observed-generated-runtime-declarations', len(runtime) > 0)
+        runtime_entity, runtime_routine = runtime[0]
 
     for optimization in ['0', '2']:
         native = out / ('default-adapters-native-' + optimization)
@@ -67,6 +73,15 @@ def verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
         ('default-adapter-forged-receiver-source',
          [("UPDATE bindings SET is_synthetic=0 WHERE function_id=? AND kind='parameter' AND ordinal=0", (adapter,))],
          'bindings must be synthetic'),
+        ('default-adapter-runtime-disguised-as-original',
+         [("UPDATE source_functions SET function_kind='ordinary',capture_phase='before-lowering' WHERE entity_id=?", (runtime_entity,))],
+         'Generated runtime signature cannot fabricate'),
+        ('default-adapter-runtime-missing-observation',
+         [("UPDATE source_routine_abis SET capture_proof='observed-routine-lowering' WHERE source_routine_type_id=?", (runtime_routine,))],
+         'external generated declaration with its own signature proof'),
+        ('default-adapter-runtime-cannot-own-body',
+         [("UPDATE source_functions SET function_kind='runtime',capture_phase='runtime-declaration' WHERE entity_id=?", (main,))],
+         'external generated declaration with its own signature proof'),
     ]
     for name, sql, diagnostic in mutations:
         bad = mutate(name, obj, sql)

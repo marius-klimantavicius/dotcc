@@ -28,7 +28,7 @@ internal sealed partial class ObjectFile
         foreach (AbiRoutineOrigin origin in AbiRoutineOrigins.Values)
         {
             if (EntitySourceRoutines.ContainsKey(origin.EntityId) || !EntitySourceRoutines.TryGetValue(origin.PrimaryEntityId, out RoutineType? primary) ||
-                !SourceFunctionKinds.TryGetValue(origin.PrimaryEntityId, out string? kind) || kind == "ordinary" ||
+                !SourceFunctionKinds.TryGetValue(origin.PrimaryEntityId, out string? kind) || kind is not ("constructor" or "destructor") ||
                 origin.EntryKind == "deleting" && kind != "destructor" || primary.ObjectTypeId is null || primary.Variadic)
                 throw new InvalidDataException("Generated entry requires a direct original constructor/destructor origin");
             Entity entity = Entities[origin.EntityId];
@@ -37,6 +37,7 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Generated constructor/destructor entry requires the supported void-return ABI");
             var parameters = Parameters.GetValueOrDefault(entity.Id, []);
             var originalParameters = Parameters.GetValueOrDefault(origin.PrimaryEntityId, []);
+            var originalSlots = RoutineAbiParameters(primary.TypeId);
             if (origin.EntryKind == "constructor-default-adapter")
             {
                 if (kind != "constructor" || entity.Linkage != "internal" || !Functions.ContainsKey(entity.Id) ||
@@ -47,20 +48,24 @@ internal sealed partial class ObjectFile
                 if (targetId != origin.PrimaryEntityId && (!AbiRoutineOrigins.TryGetValue(targetId, out AbiRoutineOrigin? target) ||
                     target.PrimaryEntityId != origin.PrimaryEntityId || target.EntryKind is not ("complete" or "subobject")))
                     throw new InvalidDataException("Default constructor adapter target must be its primary or direct nondeleting entry");
-                for (int ordinal = parameters.Count - 1; ordinal < primary.Parameters.Length; ordinal++)
+                int forwardedCount = originalSlots.Take(parameters.Count).Count(slot => slot.SourceOrdinal is not null);
+                for (int ordinal = forwardedCount; ordinal < primary.Parameters.Length; ordinal++)
                     if (!SourceParameterDefaults.GetValueOrDefault((origin.PrimaryEntityId, ordinal)))
                         throw new InvalidDataException("Default constructor adapter omitted parameter has no original default argument");
                 // The defaults execute in this body before the selected ctor is
                 // entered. Its exception boundary need not match that ctor's.
             }
-            else if (!parameters.SequenceEqual(originalParameters) || parameters.Count != primary.Parameters.Length + 1 ||
-                origin.IsAliasEntry && EntityRoutine(entity.Id) != EntityRoutine(origin.PrimaryEntityId))
+            // Alias provenance does not replace the owned lowered body. Stock
+            // EDG may give a forwarding entry its own exception policy; its
+            // explicit call still crosses the primary's noexcept boundary.
+            else if (!parameters.SequenceEqual(originalParameters) || parameters.Count != originalSlots.Count)
                 throw new InvalidDataException("Generated entry parameter ABI differs from its primary routine");
             for (int ordinal = 0; ordinal < parameters.Count; ordinal++)
             {
                 ParameterSemantics role = ParameterRoles[(entity.Id, ordinal)];
-                if (ordinal == 0 ? role.Role != "this" || role.SourceOrdinal is not null
-                    : role.Role != "forwarded-source" || role.SourceOrdinal != ordinal - 1)
+                SourceRoutineAbiParameter original = originalSlots[ordinal];
+                if (original.ParameterRole == "this" ? role.Role != "this" || role.SourceOrdinal is not null
+                    : original.ParameterRole is not ("source" or "indirect-source") || role.Role != "forwarded-source" || role.SourceOrdinal != original.SourceOrdinal)
                     throw new InvalidDataException("Generated entry parameter lacks its proven primary source role");
             }
         }

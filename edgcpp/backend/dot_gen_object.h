@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v19: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v20: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -41,6 +41,9 @@ struct Writer {
   std::vector<a_routine_ptr> routines;
   std::vector<string> files,entities,parameters,functions,bindings,nodes,edges;
   std::vector<string> source_types,source_declarations,source_functions,source_parameters;
+  std::vector<string> source_routine_abis,source_routine_abi_parameters;
+  struct AbiSlot {string role;unsigned source_ordinal,type;};
+  std::map<a_routine_ptr,std::vector<AbiSlot>> routine_abi_slots;
   std::vector<string> macro_definitions,macro_parameters,macro_events;
   // Action order is independent of executable reachability/entity numbering.
   std::vector<string> initialization_actions;
@@ -119,9 +122,7 @@ struct Writer {
   }
   unsigned routine_type(a_type_ptr t,bool known_empty_definition=false) {
     auto extra=t->variant.routine.extra_info;
-    if(extra->value_returned_as_parameter)reject("hidden result-buffer routine ABI");
-    for(auto p=extra->param_type_list;p;p=p->next)
-      if(p->passed_via_copy_constructor)reject("nontrivial indirect-value parameter ABI");
+
     if((!extra->prototyped && !known_empty_definition) || extra->explicit_calling_convention)
       reject("unprototyped/foreign-convention function type");
     if(known_empty_definition && (extra->param_type_list || extra->has_ellipsis))reject("nonempty old-style execution signature");
@@ -690,6 +691,44 @@ struct Writer {
         ",\"origin\":"+quote(value.origin)+macro_position(value.position,value.origin)+"}");
     }
   }
+  const dot_object_source::RoutineAbi &source_abi(unsigned captured) {
+    const auto &state=dot_object_source::state();
+    auto found=state.routine_abis.find(captured);
+    if(found==state.routine_abis.end())reject("source routine has no observed calling-method ABI");
+    const auto &abi=found->second;
+    const auto &source=state.types.at(captured-1);
+    if(!abi.error.empty())reject(abi.error.c_str());
+    if(source.kind!="routine" || abi.indirect_parameters.size()!=source.parameters.size())
+      reject("source routine ABI original parameter count mismatch");
+    if(source.variadic && (abi.result_buffer ||
+       std::find(abi.indirect_parameters.begin(),abi.indirect_parameters.end(),true)!=abi.indirect_parameters.end()))
+      reject("variadic indirect-value/result-buffer ABI");
+    return abi;
+  }
+  unsigned adjusted_source_parameter(unsigned parameter) {
+    auto &types=dot_object_source::state().types;
+    unsigned unqualified=parameter;
+    while(types.at(unqualified-1).kind=="typedef" || types.at(unqualified-1).kind=="qualified")
+      unqualified=types.at(unqualified-1).underlying;
+    const auto &argument=types.at(unqualified-1);
+    return argument.kind=="array"?pointer_type(source_execution_type(argument.underlying)):
+      argument.kind=="routine"?pointer_type(source_execution_type(unqualified)):source_execution_type(parameter);
+  }
+  std::vector<AbiSlot> source_abi_slots(unsigned captured) {
+    const auto &source=dot_object_source::state().types.at(captured-1);
+    const auto &abi=source_abi(captured);
+    std::vector<AbiSlot> result;
+    auto result_slot=[&](){result.push_back({"result-buffer",0,pointer_type(source_execution_type(source.result))});};
+    if(abi.result_buffer && (!source.object_type || !abi.result_follows_this))result_slot();
+    if(source.object_type)result.push_back({"this",0,pointer_type(source_execution_type(source.object_type))});
+    if(abi.result_buffer && source.object_type && abi.result_follows_this)result_slot();
+    for(unsigned i=0;i<source.parameters.size();++i) {
+      unsigned type=adjusted_source_parameter(source.parameters[i]);
+      result.push_back({abi.indirect_parameters[i]?"indirect-source":"source",i,
+        abi.indirect_parameters[i]?pointer_type(type):type});
+    }
+    return result;
+  }
   unsigned source_execution_type(unsigned captured) {
     const auto &type=dot_object_source::state().types.at(captured-1);
     if(type.kind=="record" && dot_object_source::state().abi_records.count(type.record_type))
@@ -701,17 +740,8 @@ struct Writer {
     if(type.kind=="long-double" || type.kind=="float80" || type.kind=="float64x")return f80_type();
     if(type.kind=="routine") {
       std::vector<unsigned> args;
-      if(type.object_type)args.push_back(pointer_type(source_execution_type(type.object_type)));
-      for(auto parameter:type.parameters) {
-        unsigned unqualified=parameter;
-        while(dot_object_source::state().types.at(unqualified-1).kind=="typedef" ||
-              dot_object_source::state().types.at(unqualified-1).kind=="qualified")
-          unqualified=dot_object_source::state().types.at(unqualified-1).underlying;
-        const auto &argument=dot_object_source::state().types.at(unqualified-1);
-        args.push_back(argument.kind=="array"?pointer_type(source_execution_type(argument.underlying)):
-          argument.kind=="routine"?pointer_type(source_execution_type(unqualified)):source_execution_type(parameter));
-      }
-      return signature_type(source_execution_type(type.result),args,type.variadic,type.exception_policy);
+      for(const auto &slot:source_abi_slots(captured))args.push_back(slot.type);
+      return signature_type(source_abi(captured).result_buffer?1:source_execution_type(type.result),args,type.variadic,type.exception_policy);
     }
     if(type.kind=="pointer" || type.kind=="lvalue-reference" || type.kind=="rvalue-reference")
       return pointer_type(source_execution_type(type.underlying));
@@ -727,6 +757,15 @@ struct Writer {
     unsigned execution=source_execution_type(captured);
     unsigned underlying=type.underlying?source_type(type.underlying):0;
     if(type.kind=="routine") {
+      const auto &abi=source_abi(captured);
+      source_routine_abis.push_back("{\"sourceRoutineTypeId\":"+number(id)+",\"returnPassing\":"+
+        quote(abi.result_buffer?"result-buffer":"direct")+",\"captureProof\":"+quote(abi.proof)+"}");
+      unsigned execution_ordinal=0;
+      for(const auto &slot:source_abi_slots(captured)) {
+        source_routine_abi_parameters.push_back("{\"sourceRoutineTypeId\":"+number(id)+",\"executionOrdinal\":"+
+          std::to_string(execution_ordinal++)+",\"parameterRole\":"+quote(slot.role)+",\"sourceOrdinal\":"+
+          (slot.role=="source" || slot.role=="indirect-source"?std::to_string(slot.source_ordinal):"null")+"}");
+      }
       source_routine_types.push_back("{\"typeId\":"+number(id)+",\"returnTypeId\":"+number(source_type(type.result))+",\"variadic\":"+(type.variadic?"true":"false")+",\"exceptionPolicy\":"+quote(type.exception_policy)+",\"parameterMode\":"+quote(type.parameter_mode)+",\"objectTypeId\":"+number(type.object_type?source_type(type.object_type):0)+
         ",\"objectIsConst\":"+(type.object_is_const?"true":"false")+",\"objectIsVolatile\":"+(type.object_is_volatile?"true":"false")+
         ",\"objectRefQualifier\":"+quote(type.object_ref_qualifier)+"}");
@@ -748,9 +787,14 @@ struct Writer {
     auto found=dot_object_source::state().functions.find(r);
     if(found==dot_object_source::state().functions.end())reject("missing pre-lowering routine capture");
     const auto &captured=found->second;
+    if(captured.function_kind=="runtime" &&
+       (!dot_object_source::state().runtime_declarations.count(r) || !r->compiler_generated ||
+        r->function_def_number!=NULL_function_def_number ||
+        (r->source_corresp.name_linkage!=nlk_external && r->source_corresp.name_linkage!=nlk_cplusplus_external)))
+      reject("runtime declaration lacks exact generated external origin");
     source_declaration(captured.declaration,"function",entity,0,0);
     source_functions.push_back("{\"entityId\":"+number(entity)+",\"returnSourceTypeId\":"+number(source_type(captured.declaration.type))+
-      ",\"capturePhase\":\"before-lowering\",\"routineSourceTypeId\":"+number(source_type(captured.signature_type))+",\"functionKind\":"+quote(captured.function_kind)+"}");
+      ",\"capturePhase\":"+quote(captured.function_kind=="runtime"?"runtime-declaration":"before-lowering")+",\"routineSourceTypeId\":"+number(source_type(captured.signature_type))+",\"functionKind\":"+quote(captured.function_kind)+"}");
     if(captured.parameter_defaults.size()!=captured.parameters.size())reject("source default-argument snapshot arity mismatch");
     unsigned ordinal=0;
     for(auto parameter:captured.parameters) {
@@ -909,33 +953,28 @@ struct Writer {
     const auto &source_signature=dot_object_source::state().types.at(source_function_value.signature_type-1);
     bool has_this=source_signature.object_type!=0;
     if(!adapter && has_this!=(extra->this_class!=nullptr))reject("source/execution receiver disagreement");
-    if(extra->value_returned_as_parameter)reject("hidden result-buffer routine ABI");
-    for(auto p=extra->param_type_list;p;p=p->next,++ordinal) {
-      if(p->passed_via_copy_constructor)reject("nontrivial indirect-value parameter ABI");
-      bool receiver=has_this && ordinal==0;
-      unsigned source_ordinal=ordinal-(has_this?1:0);
-      if(!receiver && source_ordinal>=source_function_value.parameters.size())reject((string("unclassified extra ABI parameter in ")+source_spelling(&r->source_corresp)+" ["+key+"]").c_str());
-      unsigned expected=receiver?pointer_type(source_execution_type(source_signature.object_type)):
-        source_execution_type(source_function_value.parameters[source_ordinal]);
-      // Written array/function parameters are adjusted in the ABI, while
-      // their original declared type remains intact in sourceParameters.
-      if(!receiver) {
-        unsigned source_id=source_function_value.parameters[source_ordinal];
-        while(dot_object_source::state().types.at(source_id-1).underlying &&
-              (dot_object_source::state().types.at(source_id-1).kind=="qualified" ||
-               dot_object_source::state().types.at(source_id-1).kind=="typedef"))
-          source_id=dot_object_source::state().types.at(source_id-1).underlying;
-        const auto &original=dot_object_source::state().types.at(source_id-1);
-        if(original.kind=="array")expected=pointer_type(source_execution_type(original.underlying));
-        if(original.kind=="routine")expected=pointer_type(source_execution_type(source_id));
-      }
-      if(type_id(p->type)!=expected)reject("source/execution parameter ABI representation mismatch");
-      parameters.push_back("{\"entityId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal)+",\"typeId\":"+number(type_id(p->type))+
-        ",\"parameterRole\":"+quote(receiver?"this":primary?"forwarded-source":"source")+",\"sourceOrdinal\":"+(receiver?"null":std::to_string(source_ordinal))+"}");
+    auto slots=source_abi_slots(source_function_value.signature_type);
+    if(adapter) {
+      slots.erase(std::remove_if(slots.begin(),slots.end(),[](const AbiSlot &slot){return slot.role!="this";}),slots.end());
+      if(slots.size()!=1)reject("default adapter lacks its original receiver ABI");
     }
-    if(ordinal!=(adapter?1:source_function_value.parameters.size()+(has_this?1:0)))
+    const auto &abi=source_abi(source_function_value.signature_type);
+    unsigned expected_return=abi.result_buffer?1:source_execution_type(source_signature.result);
+    if(type_id(t->variant.routine.return_type)!=expected_return)
+      reject("source/execution return ABI representation mismatch");
+    routine_abi_slots[r]=slots;
+    for(auto p=extra->param_type_list;p;p=p->next,++ordinal) {
+      if(ordinal>=slots.size())reject("unclassified extra execution ABI parameter");
+      const auto &slot=slots[ordinal];
+      if(type_id(p->type)!=slot.type)reject("source/execution parameter ABI representation mismatch");
+      bool explicit_source=slot.role=="source" || slot.role=="indirect-source";
+      parameters.push_back("{\"entityId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal)+",\"typeId\":"+number(type_id(p->type))+
+        ",\"parameterRole\":"+quote(primary && explicit_source?"forwarded-source":slot.role)+",\"sourceOrdinal\":"+
+        (explicit_source?std::to_string(slot.source_ordinal):"null")+"}");
+    }
+    if(ordinal!=slots.size())
       reject((string("missing source/receiver ABI parameters in ")+source_spelling(&r->source_corresp)+" ["+key+"] execution="+
-        std::to_string(ordinal)+" source="+std::to_string(source_function_value.parameters.size())+" receiver="+(has_this?"1":"0")).c_str());
+        std::to_string(ordinal)+" expected="+std::to_string(slots.size())).c_str());
     return id;
   }
   unsigned binding(a_variable_ptr v,unsigned scope,bool parameter=false,unsigned ordinal=0) {
@@ -947,35 +986,43 @@ struct Writer {
       reject("nonexecutably placed local initializer",v->init_kind);
     unsigned id=next_binding++;binding_ids[v]=id;binding_scopes[v]=scope;
     auto source=dot_object_source::state().variables.find(v);
-    bool synthetic=false,receiver=false;
+    bool synthetic=false;
     auto primary=dot_object_source::abi_primary(current_routine);
-    if(parameter && primary) {
+    if(parameter) {
+      if(!current_routine || !routine_abi_slots.count(current_routine) || ordinal>=routine_abi_slots.at(current_routine).size())
+        reject("parameter outside observed routine ABI");
+      const auto &slot=routine_abi_slots.at(current_routine)[ordinal];
       auto function_scope=scope_for_routine_or_null(current_routine);
-      if(!function_scope || source!=dot_object_source::state().variables.end())reject("generated alternate parameter has false source declaration");
+      if(!function_scope)reject("parameter lacks its execution function scope");
       auto formal=skip_typerefs(current_routine->type)->variant.routine.extra_info->param_type_list;
       auto actual=function_scope->variant.routine.parameters;
       for(unsigned i=0;i<ordinal && formal && actual;++i){formal=formal->next;actual=actual->next;}
-      receiver=v->is_this_parameter;
-      if(actual!=v || !formal || (!receiver && v->variant.assoc_param_type!=formal) ||
-         type_id(v->type)!=type_id(formal->type) ||
-         (receiver?(ordinal!=0 || function_scope->variant.routine.this_param_variable!=v):ordinal==0))
-        reject("generated alternate parameter lacks exact forwarding/receiver proof");
-      synthetic=true;
-    } else if(parameter) {
-      if(!current_routine)reject("parameter outside current routine");
-      const auto &original=dot_object_source::state().functions.at(current_routine);
-      auto function_scope=scope_for_routine_or_null(current_routine);
-      receiver=v->is_this_parameter;
-      if(receiver) {
-        if(ordinal || !original.scope_captured || original.implicit_this!=v ||
-           !function_scope || function_scope->variant.routine.this_param_variable!=v || source!=dot_object_source::state().variables.end())
-          reject("implicit receiver lacks original scope identity proof");
+      if(actual!=v || !formal || type_id(v->type)!=slot.type || type_id(formal->type)!=slot.type)
+        reject("execution parameter identity/type disagrees with observed ABI slot");
+      if(primary) {
+        if(source!=dot_object_source::state().variables.end() || slot.role=="result-buffer")
+          reject("generated alternate parameter has unproved source/result origin");
+        if(slot.role=="this" ? (!v->is_this_parameter || function_scope->variant.routine.this_param_variable!=v) :
+           (v->is_this_parameter || v->variant.assoc_param_type!=formal))
+          reject("generated alternate parameter lacks exact forwarding/receiver proof");
         synthetic=true;
       } else {
-        unsigned source_ordinal=ordinal-(original.implicit_this?1:0);
-        if(!original.scope_captured || source_ordinal>=original.parameter_variables.size() ||
-           original.parameter_variables[source_ordinal]!=v)
+        const auto &original=dot_object_source::state().functions.at(current_routine);
+        if(slot.role=="this") {
+          if(!v->is_this_parameter || !original.scope_captured || original.implicit_this!=v ||
+             function_scope->variant.routine.this_param_variable!=v || source!=dot_object_source::state().variables.end())
+            reject("implicit receiver lacks original scope identity proof");
+          synthetic=true;
+        } else if(slot.role=="result-buffer") {
+          auto result=dot_object_source::state().result_parameters.find(current_routine);
+          if(result==dot_object_source::state().result_parameters.end() || result->second!=v ||
+             source!=dot_object_source::state().variables.end() || !(v->compiler_generated || v->lowering_generated))
+            reject("result buffer lacks observed lowering variable identity");
+          synthetic=true;
+        } else if(!original.scope_captured || slot.source_ordinal>=original.parameter_variables.size() ||
+                  original.parameter_variables[slot.source_ordinal]!=v || v->is_this_parameter) {
           reject("original parameter identity/order changed during lowering");
+        }
       }
     }
     if(primary && !parameter) {
@@ -2052,7 +2099,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v19\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v20\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -2064,6 +2111,7 @@ struct Writer {
       ",\"storages\":"+array(storages)+",\"storageData\":"+array(storage_data)+",\"relocations\":"+array(relocations)+
       ",\"routineTypes\":"+array(routine_types)+",\"routineParameters\":"+array(routine_parameters)+
       ",\"sourceRoutineTypes\":"+array(source_routine_types)+",\"sourceRoutineParameters\":"+array(source_routine_parameters)+
+      ",\"sourceRoutineAbis\":"+array(source_routine_abis)+",\"sourceRoutineAbiParameters\":"+array(source_routine_abi_parameters)+
       ",\"initializationActions\":"+array(initialization_actions)+
       ",\"types\":"+array(types)+",\"entities\":"+array(entities)+
       ",\"parameters\":"+array(parameters)+",\"functions\":"+array(functions)+",\"bindings\":"+array(bindings)+",\"nodes\":"+array(nodes)+",\"edges\":"+array(edges)+"}\n";

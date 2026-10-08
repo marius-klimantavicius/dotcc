@@ -15,6 +15,7 @@ import records_verify
 import references_verify
 import default_adapters_verify
 import template_identity_verify
+import indirect_values_verify
 import storage_verify
 import project_c_verify
 import provider_verify
@@ -42,6 +43,7 @@ def main():
     parser.add_argument('--references-only', action='store_true', help='Run C++ references, receiver ABI and source-signature checks')
     parser.add_argument('--default-adapters-only', action='store_true', help='Run observed constructor defaults and real array runtime acceptance')
     parser.add_argument('--template-identity-only', action='store_true', help='Run owned public/private template specialization identity acceptance')
+    parser.add_argument('--indirect-values-only', action='store_true', help='Run original class value and physical indirect ABI acceptance')
     args = parser.parse_args()
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -82,12 +84,13 @@ def main():
                  'project_cpp_integer128_enum.cpp', 'project_cpp_references_members.cpp',
                  'project_cpp_block_copy.cpp', 'project_cpp_void_conditionals.cpp',
                  'project_cpp_default_ctor_adapter.cpp', 'project_cpp_base_values.cpp',
-                 'template_identity_shared.h', 'template_identity_provider.cpp', 'template_identity_main.cpp']:
+                 'template_identity_shared.h', 'template_identity_provider.cpp', 'template_identity_main.cpp',
+                 'project_cpp_indirect_value_abi.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v19', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v20', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -171,6 +174,10 @@ def main():
                     db.execute('UPDATE content_digest SET sha256=?', (MODULE.logical_hash(db),))
             return path
 
+        if args.indirect_values_only:
+            indirect_values_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+            save('passed')
+            return
         if args.template_identity_only:
             template_identity_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
             save('passed')
@@ -311,6 +318,7 @@ def main():
         references_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
         default_adapters_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
         template_identity_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+        indirect_values_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
         project_objects = project_c_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
         project_c_verify.malformed(project_objects, tool, run, mutate)
         provider_verify.verify(inputs, out, tool, run, check, compile_source, execute)
@@ -411,6 +419,8 @@ def main():
             ("INSERT INTO source_types SELECT (SELECT max(id)+1 FROM source_types),kind,source_name,underlying_type_id,(SELECT max(id) FROM types),is_const,is_volatile,source_file_id,line,column,element_count FROM source_types WHERE id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
             ("INSERT INTO source_routine_types SELECT (SELECT max(id) FROM source_types),return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier FROM source_routine_types WHERE type_id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
             ("INSERT INTO source_routine_parameters SELECT (SELECT max(id) FROM source_types),ordinal,source_type_id FROM source_parameters WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ()),
+            ("INSERT INTO source_routine_abis SELECT (SELECT max(id) FROM source_types),return_passing,capture_proof FROM source_routine_abis WHERE source_routine_type_id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
+            ("INSERT INTO source_routine_abi_parameters SELECT (SELECT max(id) FROM source_types),execution_ordinal,parameter_role,source_ordinal FROM source_routine_abi_parameters WHERE source_routine_type_id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
             ("UPDATE source_functions SET routine_source_type_id=(SELECT max(id) FROM source_types) WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ())])
         run('signature-mismatch', ['dotnet', tool, 'link', '--out', out / 'bad-signature', provider, mismatch], None, 'Signature mismatch')
         damaged = mutate('damaged', provider, [('UPDATE entities SET source_name=? WHERE id=1', ('tampered',))], False)
