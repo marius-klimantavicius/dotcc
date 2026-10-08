@@ -41,6 +41,30 @@ zones in the pinned bundle.
 
 The current provider owns static per-assembly state. Independent engine
 instances and explicit owner disposal are not implemented by this binder yet.
+`process.py` supplies `atexit`, `at_quick_exit`, `exit`, `quick_exit`, `_Exit`,
+and the exact `__cxa_atexit`/`__cxa_thread_atexit` callback ABIs. It extracts the
+canonical registration, reverse-order drain, and termination bodies from
+`dot_gen_lifecycle.h` and `dot_gen_process.h`; callback algorithms are not forked.
+Registrations during a drain are included, callbacks run outside the registry
+lock, and thread finalizers remain local to the registering thread. The static
+assembly profile does not unload DSOs; `__cxa_finalize` remains unsupported.
+
+The source executable boundary (`ObjectProgram.Run`) performs normal process
+termination after main returns. If FILE services are selected, this hook also
+flushes buffered output when no explicit exit function was imported. Quick exit
+drains only quick-exit callbacks; `_Exit` skips callbacks and stream flushing.
+`InitializeLibrary` and ordinary library exports do not terminate the host or
+implicitly drain global callbacks. `ObjectProgram.ReleaseThread`, when process
+support is present, explicitly drains this assembly's registered C++ thread
+destructors on the calling thread. It is currently only the finalizer boundary;
+automatic translated worker/TSS teardown is a separate integration step. No CLR
+finalizer or host `ProcessExit` event is used. Source C++ lifetime scheduling and
+instance-owned disposal still require their corresponding backend support.
+
+`tests/runtime_process_verify.py` checks native/JIT/NativeAOT termination order,
+status codes, callback re-registration, buffered flush, explicit TLS release,
+concurrent registration, library hosting and malformed callback-ABI rejection.
+The native destructor-registration oracle currently uses the Linux C++ ABI.
 The binder is intentionally incomplete: unsupported imports remain unresolved
 partial methods. No native fallback or fabricated success body is generated.
 `--allow-unresolved` can stage the known bindings for review, but unresolved

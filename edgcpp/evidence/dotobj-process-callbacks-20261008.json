@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 86,
+  "scope": "Static assembly process exit and C++ destructor-registration runtime boundaries",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-process-acceptance-004/results.json",
+    "sha256": "a2ec0242def7a5343cfcb3e8f7318575f9d397c348926d8897d8a994b94d6fd1"
+  },
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "checksDescription": [
+    "Native/JIT/NativeAOT mixed atexit, C++ global and TLS destructor LIFO order",
+    "Registration while draining, including new TLS destructors",
+    "Normal return, explicit exit, quick_exit and _Exit statuses and buffered stream behavior",
+    "Normal source main return flushes FILE streams without explicit exit imports",
+    "Hosted library initialization does not terminate or install host process-exit callbacks",
+    "Concurrent per-thread destructor registration, explicit release, reentrant release and callback-created registration threads",
+    "Malformed callback signatures fail closed before provider emission"
+  ],
+  "limitations": [
+    "Static per-assembly mode only; independent owner disposal not implemented",
+    "No DSO unloading or __cxa_finalize",
+    "Source C++ RAII/global lifetime scheduling remains separate backend work",
+    "Automatic C11/libc++ worker/TSS lifecycle integration pending"
+  ]
+}
