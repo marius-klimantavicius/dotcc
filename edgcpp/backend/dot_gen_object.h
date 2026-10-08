@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v5: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v6: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -41,9 +41,10 @@ struct Writer {
   std::map<unsigned,unsigned> source_type_ids;
   std::set<a_scope_ptr> bound_scopes;
   std::set<unsigned> declared_bindings;
-  struct Loop { unsigned node; source_control_context labels; };
-  std::vector<Loop> loops;
-  std::set<a_label_ptr> loop_labels;
+  struct Control { unsigned node; source_control_context labels; };
+  std::vector<Control> controls;
+  std::set<a_label_ptr> control_labels;
+  std::map<a_statement_ptr,a_statement_ptr> switch_cases;
   string number(unsigned value){return value?std::to_string(value):"null";}
   unsigned type_id(a_type_ptr type) {
     unsigned q=get_type_qualifiers(type);
@@ -328,11 +329,11 @@ struct Writer {
     }
     for(auto label:{labels.break_target,labels.continue_target})if(label) {
       if(label->source_corresp.name || label->switch_break_label)reject("nonloop control target");
-      loop_labels.insert(label);
+      control_labels.insert(label);
     }
-    loops.push_back({id,labels});
+    controls.push_back({id,labels});
     edge(id,"body",0,statement(body));
-    loops.pop_back();
+    controls.pop_back();
   }
   unsigned statement(a_statement_ptr s,a_scope_ptr root_scope=nullptr) {
     if(!s)reject("missing statement");
@@ -351,7 +352,7 @@ struct Writer {
         scope_bindings(scope,id,ordinal);
         for(auto child=s->variant.block.statements;child;child=child->next) {
           if(child->kind==stmk_decl || child->kind==stmk_empty)continue;
-          if(child->kind==stmk_label && loop_labels.count(child->variant.label.ptr))continue;
+          if(child->kind==stmk_label && control_labels.count(child->variant.label.ptr))continue;
           edge(id,"statement",ordinal++,statement(child));
         }
         return id;
@@ -389,18 +390,69 @@ struct Writer {
         if(f->increment)edge(id,"step",0,expression(f->increment));
         loop_body(id,s,s->variant.for_loop.statement);return id;
       }
+      case stmk_switch: {
+        auto body=s->variant.switch_stmt.body_statement;
+        if(!body || body->kind!=stmk_block)reject("switch body outside block profile");
+        auto descriptor=s->variant.switch_stmt.extra_info;
+        auto expected=descriptor->cases;
+        bool labeled=false;
+        // Keep the lexical switch body instead of the legacy emitter's
+        // source_switch_items flattening. Flattening nested blocks would lose
+        // binding scopes. Case labels inside blocks/control statements require
+        // additional dispatch semantics and are deliberately rejected below.
+        for(auto child=body->variant.block.statements;child;child=child->next) {
+          if(child->kind==stmk_switch_case) {
+            auto c=child->variant.switch_case.extra_info;
+            if(child->variant.switch_case.switch_statement!=s || c!=expected || c->stmt!=child)
+              reject("switch case descriptor ownership/order");
+#if GNU_EXTENSIONS_ALLOWED
+            if(c->range_end)reject("GNU switch case range");
+#endif
+            if(!c->case_value && descriptor->default_case!=c)reject("switch default descriptor");
+            switch_cases[child]=s;expected=expected->next;labeled=true;
+          } else if(!labeled && child->kind!=stmk_decl && child->kind!=stmk_empty)
+            reject("executable statement before first switch case");
+        }
+        if(expected)reject("switch case nested below switch body");
+        unsigned id=node("switch",0,s->position);
+        edge(id,"condition",0,expression(s->expr));
+        auto labels=source_context(s,body,false);
+        if(labels.break_target) {
+          if(labels.break_target->source_corresp.name || !labels.break_target->switch_break_label)
+            reject("invalid switch break target");
+          control_labels.insert(labels.break_target);
+        }
+        controls.push_back({id,labels});
+        edge(id,"body",0,statement(body));
+        controls.pop_back();return id;
+      }
+      case stmk_switch_case: {
+        if(!switch_cases.count(s))reject("switch case outside immediate switch body");
+        unsigned id=node("case",0,s->position);
+        auto c=s->variant.switch_case.extra_info;
+        if(c->case_value)edge(id,"value",0,constant_node(c->case_value,c->position));
+        return id;
+      }
       case stmk_goto: {
         auto target=s->variant.label.ptr;
-        if(loops.empty() || target->source_corresp.name)reject("goto outside structured loop transfer");
-        const auto &loop=loops.back();
-        string kind=target==loop.labels.break_target?"break":target==loop.labels.continue_target?"continue":"";
-        if(kind.empty())reject("nonlocal loop transfer");
+        if(controls.empty() || target->source_corresp.name)reject("goto outside structured control transfer");
+        unsigned owner=0;string kind;
+        // A break always belongs to the nearest loop or switch. A continue
+        // skips intervening switches, but never an intervening loop.
+        if(target==controls.back().labels.break_target) {
+          owner=controls.back().node;kind="break";
+        } else for(auto it=controls.rbegin();it!=controls.rend();++it) {
+          if(!it->labels.loop)continue;
+          if(target==it->labels.continue_target){owner=it->node;kind="continue";}
+          break;
+        }
+        if(!owner)reject("nonlocal structured control transfer");
         unsigned id=node(kind,0,s->position);
         // This is a non-owning control reference, not an evaluation child.
-        edge(id,"target",0,loop.node);return id;
+        edge(id,"target",0,owner);return id;
       }
       case stmk_label: {
-        if(!loop_labels.count(s->variant.label.ptr))reject("label outside structured loop transfer");
+        if(!control_labels.count(s->variant.label.ptr))reject("label outside structured control transfer");
         return node("block",0,s->position);
       }
       case stmk_empty:return node("block",0,s->position);
@@ -436,14 +488,14 @@ struct Writer {
       auto r=routines[i];if(r->function_def_number==NULL_function_def_number)continue;
       function=routine_ids.at(r);auto scope=scope_for_routine_or_null(r);
       string label="dotobj function "+source_spelling(&r->source_corresp);context=label.c_str();
-      binding_ids.clear();bound_scopes.clear();declared_bindings.clear();loops.clear();loop_labels.clear();
+      binding_ids.clear();bound_scopes.clear();declared_bindings.clear();controls.clear();switch_cases.clear();control_labels.clear();
       check_lifetime(scope->lifetime);
       if(!scope->assoc_block || scope->assoc_block->kind!=stmk_block)reject("nonblock function root");
       unsigned root=statement(scope->assoc_block,scope);
       functions.push_back("{\"entityId\":"+number(function)+",\"bodyNodeId\":"+number(root)+"}");
       context="file scope";
     }
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v5\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v6\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

@@ -51,7 +51,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v5");
+            writer.WriteString("profile", "scalar-control-v6");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -64,7 +64,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v5");
+            writer.WriteString("profile", "scalar-control-v6");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -75,7 +75,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v5", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v6", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Scalar/control profile only; no globals, records, pointers, EH, RAII, templates/COMDAT or runtime providers", "Pre-lowering scalar declaration/type provenance only; no complete source expression/statement view, macro expansion history or lifetime capture" },
@@ -176,6 +176,49 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
             if (node.Kind == "block") Statement(node, indent);
             else { Line(indent, "{"); Statement(node, indent + 1); Line(indent, "}"); }
         }
+        void Switch(Node node, int indent)
+        {
+            Node selector = body.Child(node.Id, "condition");
+            Node switchBody = body.Child(node.Id, "body");
+            Node[] items = body.Children(switchBody.Id, "statement").Select(edge => body.Nodes[edge.ChildId]).ToArray();
+            Node[] declarations = items.TakeWhile(item => item.Kind == "declare").ToArray();
+            // The object block owns locals across case sections. C# cannot put
+            // declarations before its first case, so retain that scope outside
+            // the switch; source initializer assignments stay at their positions.
+            if (declarations.Length != 0)
+            {
+                Line(indent, "{");
+                indent++;
+                foreach (Node declaration in declarations) Statement(declaration, indent);
+            }
+            string Label(Node label)
+            {
+                if (!body.Children(label.Id, "value").Any()) return "default";
+                Node value = body.Child(label.Id, "value");
+                return "case " + ScalarTypes.Literal(NodeType(selector),
+                    ScalarTypes.SwitchConstant(NodeType(value), value.ConstantText!, NodeType(selector)));
+            }
+            Line(indent, "switch (" + Expression(selector) + ")");
+            Line(indent, "{");
+            int index = declarations.Length;
+            while (index < items.Length)
+            {
+                // Adjacent labels share a section, preserving source grouping.
+                do { Line(indent + 1, Label(items[index++]) + ":"); }
+                while (index < items.Length && items[index].Kind == "case");
+                bool fallsThrough = true;
+                while (index < items.Length && items[index].Kind != "case")
+                {
+                    Node statement = items[index++];
+                    Statement(statement, indent + 2);
+                    fallsThrough &= FallsThrough(statement);
+                }
+                if (fallsThrough)
+                    Line(indent + 2, index < items.Length ? "goto " + Label(items[index]) + ";" : "break;");
+            }
+            Line(indent, "}");
+            if (declarations.Length != 0) Line(indent - 1, "}");
+        }
         void Statement(Node node, int indent)
         {
             Node Child(string role) => body.Child(node.Id, role);
@@ -213,6 +256,7 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
                     Line(indent, "do"); ControlBody(Child("body"), indent);
                     Line(indent, "while (" + Truth(Child("condition")) + ");");
                     break;
+                case "switch": Switch(node, indent); break;
                 case "break": Line(indent, "break;"); break;
                 case "continue": Line(indent, "continue;"); break;
                 default: throw new InvalidDataException("Unsupported statement " + node.Kind);
@@ -223,9 +267,21 @@ internal sealed class Emitter(Linker linker, string namespaceOption, string clas
             string.Join(", ", parameters.Select(binding => Type(obj.Type(binding.TypeId)) + " " + bindingNames[binding.Id])) + ")");
         Line(1, "{");
         foreach (Edge edge in body.Children(body.RootId, "statement")) Statement(body.Nodes[edge.ChildId], 2);
+        bool SwitchFallsThrough(Node node)
+        {
+            Node[] items = body.Children(body.Child(node.Id, "body").Id, "statement")
+                .Select(edge => body.Nodes[edge.ChildId]).ToArray();
+            if (!items.Any(item => item.Kind == "case" && !body.Children(item.Id, "value").Any())) return true;
+            // Explicit break paths can complete the switch. Without those,
+            // every normal fallthrough ultimately enters the final section.
+            if (body.Nodes.Values.Any(item => item.Kind == "break" && body.Child(item.Id, "target").Id == node.Id)) return true;
+            int lastLabel = Array.FindLastIndex(items, item => item.Kind == "case");
+            return items.Skip(lastLabel + 1).All(FallsThrough);
+        }
         bool FallsThrough(Node node) => node.Kind switch
         {
-            "return" => false,
+            "return" or "break" or "continue" => false,
+            "switch" => SwitchFallsThrough(node),
             "block" => body.Children(node.Id, "statement").All(edge => FallsThrough(body.Nodes[edge.ChildId])),
             "if" => !body.Children(node.Id, "else").Any() || FallsThrough(body.Child(node.Id, "then")) || FallsThrough(body.Child(node.Id, "else")),
             _ => true

@@ -2,7 +2,7 @@ namespace DotObj;
 
 internal static class Verifier
 {
-    private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "if", "while", "for", "do-while", "break", "continue"];
+    private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "if", "while", "for", "do-while", "switch", "case", "break", "continue"];
     private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
@@ -11,6 +11,7 @@ internal static class Verifier
         if (!body.Nodes.TryGetValue(body.RootId, out Node? root) || root.Kind != "block") Fail("Function root must be a block");
         var visited = new HashSet<long>();
         var declarations = new HashSet<long>();
+        var switchCases = new HashSet<long>();
         var parameters = body.Bindings.Values.Where(b => b.Kind == "parameter").OrderBy(b => b.Ordinal).ToArray();
         var signature = obj.Parameters.GetValueOrDefault(function.Id, []);
         if (parameters.Length != signature.Count) Fail("Parameter binding count differs from signature");
@@ -55,7 +56,7 @@ internal static class Verifier
         {
             if (!StatementKinds.Contains(node.Kind)) Fail($"Expected statement, found {node.Kind}");
         }
-        void Visit(Node node, List<long> scopes, HashSet<long> visible, List<long> loops, int depth)
+        void Visit(Node node, List<long> scopes, HashSet<long> visible, List<long> controls, int depth)
         {
             if (depth > 1024) Fail("Graph nesting exceeds supported limit");
             if (!visited.Add(node.Id)) Fail($"Shared or cyclic executable node {node.Id}");
@@ -87,7 +88,7 @@ internal static class Verifier
                 {
                     Node child = body.Nodes[edge.ChildId];
                     Statement(child);
-                    Visit(child, nestedScopes, nestedVisible, loops, depth + 1);
+                    Visit(child, nestedScopes, nestedVisible, controls, depth + 1);
                     if (child.Kind == "declare") nestedVisible.Add(child.BindingId!.Value);
                 }
                 return;
@@ -130,11 +131,54 @@ internal static class Verifier
                         if (body.Children(node.Id, role).Any()) Expr(node, role, role != "condition");
                     Statement(Child(node, "body"));
                     break;
+                case "switch":
+                    EdgeShape(node, ("condition", 1, 1), ("body", 1, 1));
+                    Expr(node, "condition");
+                    string selectorType = Type(Child(node, "condition"));
+                    if (!ScalarTypes.IsPromotedInteger(selectorType)) Fail("Switch selector must be a promoted integer");
+                    Node switchBody = Child(node, "body");
+                    if (switchBody.Kind != "block") Fail("Switch body must be a block");
+                    bool labeled = false, hasDefault = false;
+                    var caseValues = new HashSet<string>();
+                    foreach (Edge edge in body.Children(switchBody.Id, "statement"))
+                    {
+                        Node item = body.Nodes[edge.ChildId];
+                        if (item.Kind == "case")
+                        {
+                            labeled = true;
+                            switchCases.Add(item.Id);
+                            EdgeShape(item, ("value", 0, 1));
+                            if (body.Children(item.Id, "value").Any())
+                            {
+                                Node value = body.Child(item.Id, "value");
+                                if (value.Kind != "constant" || !ScalarTypes.IsInteger(Type(value)) ||
+                                    !ScalarTypes.IsConstant(Type(value), value.ConstantText)) Fail("Case value must be an integer constant");
+                                string converted = ScalarTypes.SwitchConstant(Type(value), value.ConstantText!, selectorType);
+                                if (!caseValues.Add(converted)) Fail("Duplicate converted switch case value");
+                            }
+                            else if (hasDefault) Fail("Duplicate default label");
+                            else hasDefault = true;
+                        }
+                        else if (item.Kind == "declare")
+                        {
+                            if (labeled || body.Children(item.Id, "initializer").Any())
+                                Fail("Switch declarations must precede labels and have no initializer");
+                        }
+                        else if (!labeled) Fail("Executable statement before first switch case");
+                    }
+                    break;
+                case "case":
+                    if (!switchCases.Contains(node.Id)) Fail("Case label is not an immediate switch body child");
+                    EdgeShape(node, ("value", 0, 1));
+                    break;
                 case "break":
                 case "continue":
                     EdgeShape(node, ("target", 1, 1));
-                    if (loops.Count == 0 || Child(node, "target").Id != loops[^1])
-                        Fail("Loop exit target must be the nearest enclosing loop");
+                    long nearest = node.Kind == "break" ? controls.LastOrDefault()
+                        : controls.LastOrDefault(id => body.Nodes[id].Kind != "switch");
+                    if (nearest == 0 || Child(node, "target").Id != nearest)
+                        Fail(node.Kind == "break" ? "Break target must be the nearest enclosing loop or switch"
+                            : "Continue target must be the nearest enclosing loop");
                     return; // target is an identity reference, not another executable occurrence.
                 case "constant":
                     EdgeShape(node);
@@ -210,9 +254,9 @@ internal static class Verifier
                     break;
                 case "convert": EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand"); break;
             }
-            var nestedLoops = node.Kind is "while" or "for" or "do-while" ? new List<long>(loops) { node.Id } : loops;
+            var nestedControls = node.Kind is "while" or "for" or "do-while" or "switch" ? new List<long>(controls) { node.Id } : controls;
             foreach (Edge edge in body.Edges.GetValueOrDefault(node.Id, []).OrderBy(e => e.Ordinal))
-                Visit(body.Nodes[edge.ChildId], scopes, visible, nestedLoops, depth + 1);
+                Visit(body.Nodes[edge.ChildId], scopes, visible, nestedControls, depth + 1);
         }
         foreach (var edges in body.Edges.Values)
             foreach (Edge edge in edges)

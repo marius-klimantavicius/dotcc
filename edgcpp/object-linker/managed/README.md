@@ -1,6 +1,6 @@
 # Managed semantic object linker
 
-This is the executable `scalar-control-v5` implementation of the fresh
+This is the executable `scalar-control-v6` implementation of the fresh
 `.dotobj` semantic graph. It does not read the previous semantic-export format
 or an emission-command stream.
 
@@ -53,11 +53,17 @@ uses entity identities for every reference, and deterministically disambiguates
 collisions. Reserved keywords use C# `@` escaping; ordinary names retain their
 spelling without an escape prefix. Original files each get a generated
 C# file; all files share one configurable partial class. Structured blocks,
-`if`, `while`, `for`, `do`/`while`, `break`, `continue`, returns and ordinary
+`if`, `while`, `for`, `do`/`while`, `switch`, `break`, `continue`, returns and ordinary
 scalar expressions remain structured. Integer pre/post increment/decrement use
-C# operators directly, including unchecked unsigned wraparound. Loop exits
-carry explicit target identities in the object and must address the nearest
-lexically enclosing loop; malformed or cross-loop targets are rejected.
+C# operators directly, including unchecked unsigned wraparound. Control exits
+carry explicit target identities: break addresses the nearest loop or switch,
+while continue addresses the nearest loop even across switches. Malformed or
+nonlocal targets are rejected. Switch labels preserve lexical grouping; C
+fallthrough becomes `goto case`/`goto default`, and a trailing reachable section
+receives `break`. Case constants are converted to the promoted selector type;
+duplicate converted values and default labels are rejected. Direct switch-body
+locals use a surrounding scope so their names remain available across sections.
+Nested case labels, GNU case ranges and arbitrary source jumps remain unsupported.
 For-header declarations are currently normalized to declarations in an enclosing
 block; the initializer expression, condition and step retain their execution
 positions. Missing for conditions remain infinite-loop syntax.
@@ -103,7 +109,7 @@ addresses, exceptions/RAII, inline/COMDAT, templates and runtime providers are
 not implemented in this profile. Unsupported input is rejected; scalar fixtures
 do not demonstrate DuckDB readiness or full C++ coverage.
 
-The current schema requires scalar-control-v5 objects. Earlier v1/v2/v3/v4 objects
+The current schema requires scalar-control-v6 objects. Earlier v1/v2/v3/v4/v5 objects
 remain usable with their retained earlier tool build, or can be regenerated.
 
 The integer profile supports signed/unsigned 8/16/32/64-bit values, exact decimal

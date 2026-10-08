@@ -1,0 +1,144 @@
+{
+  "milestone": "Structured switches in owned semantic objects and managed code generation",
+  "date": "2026-10-08",
+  "profile": "scalar-control-v6",
+  "status": "passed-with-explicit-coverage-boundaries",
+  "acceptance": {
+    "checkCount": 242,
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-switch-acceptance-001/results.json",
+      "sha256": "94e08852e84dda29455c2024a07df3c9c1c6cbad0f0230f144537de2830d4520"
+    },
+    "log": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-switch-acceptance-001.log",
+      "sha256": "180ba758968b3d89824f232f06b022e171875535e7cba234678d178943fea874"
+    },
+    "languages": [
+      "C++17",
+      "C11"
+    ],
+    "nativeReference": true,
+    "managedJit": true,
+    "nativeAot": true,
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39"
+  },
+  "compiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "sha256": "9c77032a2dd8fd52244bc2c5627ebe1a1505e7324d8914d72afdf232ed84eba8"
+  },
+  "nativeBuildLog": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-switch-native-build-001.log",
+    "sha256": "ccf6d49a98afafc222dc4dd84e297a9081f10e0b024d9bcc2f8d0a2524117839"
+  },
+  "managedTool": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-switch-acceptance-001/tool/bin/DotObj.Linker/release/dotobj-link.dll",
+    "sha256": "2861e0019e695037f1b6516264786879a604dd3514e17478a430bdce02d7e127"
+  },
+  "generatedReview": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-switch-acceptance-001/link-switches/Translated.0000.switches_u002e_cpp.cs",
+      "sha256": "5dd40b266efce0a47b0738343073d6c6fe464b98fce3370d35daf2f7141a20e8"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-switch-acceptance-001/link-switches-c/Translated.0000.switches_u002d_c_u002e_c.cs",
+      "sha256": "38e5b5b8da63d76dfbd1867eba4998ddda24dc261cfce12b70ccde6e93090592"
+    }
+  ],
+  "objects": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-switch-acceptance-001/switches.dotobj",
+      "sha256": "3205eab4670d4af157f6b254362e8674f211ebf8a2d1249d8e875df394c666ba"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-switch-acceptance-001/switches-c.dotobj",
+      "sha256": "a42f8466c017ba3e7e8fd18693160f19e26b24fbb7c570601eae18fcf0edae8b"
+    }
+  ],
+  "coverage": [
+    "Grouped and trailing case labels, default in the middle, C fallthrough",
+    "Nested switches/loops, nearest break and nearest-loop continue",
+    "64-bit signed/unsigned cases and 32-bit unsigned case conversion",
+    "Empty switch, selector side effects, scoped storage and skipped C initializer",
+    "Duplicate converted cases/default and invalid label/target rejection",
+    "All prior scalar, loop, integer, source provenance, macro and independent-TU checks"
+  ],
+  "review": {
+    "independentReview": "No blocking findings; added uint32 and initialized-local coverage and isolated invalid case-placement test",
+    "fallthroughProof": "Default coverage plus no break to this switch and final-section noncompletion; reviewed for nested switch breaks and outer-loop continues"
+  },
+  "limitations": [
+    "Nonblock switch bodies, nested case labels/Duff device, GNU case ranges and executable precase statements rejected",
+    "No full original source expression tree, expansion history or lifetime graph",
+    "No globals/TLS, pointers/records, templates/COMDAT, EH/RAII/noexcept or runtime providers in this profile",
+    "Verified on Linux x64; Windows/macOS not executed",
+    "DuckDB whole-program work remains paused; no large-project memory claim"
+  ],
+  "frontendSemanticsModified": false,
+  "intermediatesPreserved": true,
+  "implementation": [
+    {
+      "path": "edgcpp/backend/dot_gen_object.h",
+      "sha256": "aa91f913b96f610695a449b8e56fbbbfac86fc113837f2857db802ec25e06964"
+    },
+    {
+      "path": "edgcpp/docs/dot-gen-be-plan.md",
+      "sha256": "8c0282b7be718fab9dd58893055dd30672874bec4742595c5bdac8f6d3794da1"
+    },
+    {
+      "path": "edgcpp/docs/dotobj-format.md",
+      "sha256": "e331b7632b67e3dbe7f51d247d157b8b7663af1478a9531812a36cc06f2761fd"
+    },
+    {
+      "path": "edgcpp/docs/implementation-campaign.md",
+      "sha256": "7f494d95f4170c6d7479a66fa1d03f6f4205f63d0a9dfd3ebd173f052015e636"
+    },
+    {
+      "path": "edgcpp/object-linker/README.md",
+      "sha256": "fb938d4f32c8c5f8ba52ba4709f3da03bb3bb46c1380f9775346d816bd3e4725"
+    },
+    {
+      "path": "edgcpp/object-linker/compile.py",
+      "sha256": "c73a0c39375433f1183eb8feeccebffba622d8e0250be3e30224f432440642b1"
+    },
+    {
+      "path": "edgcpp/object-linker/contract.md",
+      "sha256": "345ab7747782ae5f122f036e2854b5c3802779da99dfbd0a0e1ed410d04dd038"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/Emitter.cs",
+      "sha256": "a5d2597597da087423d9265457008f41a12cf1305ee8827cfa9e77bb124b4a98"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/ObjectFile.cs",
+      "sha256": "4c16941383a550de481c4f58bd1788a92cef8b5b34d938c1542dab07103c9d90"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/Program.cs",
+      "sha256": "84cd5e9de51c05c57aa729cc88978cb085bafe3f989eb254af35f701247f6b69"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/README.md",
+      "sha256": "f39b4924a2b8b560c8e1cef09577b44f19a457c527330fb20aedca861e3c851c"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/ScalarTypes.cs",
+      "sha256": "4f74b1cf612bb4a59f0e0b6cf2c982850e34307decfa9b67d294f41b835f52e8"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/Verifier.cs",
+      "sha256": "6871572d03ae62e907038ca46fc075e284bc4ff16d4968b829a482f3fc142e08"
+    },
+    {
+      "path": "edgcpp/object-linker/schema.sql",
+      "sha256": "a1bba572cddd058f680a7cbfb451b4a03c02ec101085e4362badaba09c94b6ab"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/verify.py",
+      "sha256": "555f7a9c6379e65e3ee84b46c73ea03b483b6e9d56ea101dc09d0e71dca645ea"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/switches.cpp",
+      "sha256": "cffff67fec07eb45cb9d363e7053d9923ee255350e00e5564835bd4f0484d702"
+    }
+  ]
+}

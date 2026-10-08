@@ -2357,3 +2357,34 @@ replacement groups are explicit profile exclusions. Current readers require v5
 objects; earlier tools/objects and all probes/intermediates remain preserved.
 Original source expression trees, lifetimes, records/storage and DuckDB remain
 unfinished.
+
+
+The `scalar-control-v6` milestone adds structured switch execution nodes with
+ordered case/default markers and explicit break/continue target identities.
+Native capture follows EDG's case descriptors and the stock C backend's case
+constant handling. Managed verification checks label placement, duplicate values
+after conversion to the selector type, and nearest enclosing transfer targets.
+C# emission preserves grouped sections, translates C fallthrough to local
+`goto case`/`goto default` transfers, and keeps initializer assignments at their
+original execution positions. Switch-scope storage is declared in a surrounding
+block when necessary for C# syntax. No frontend semantics were changed.
+
+All 242 acceptance checks pass on Linux x64, including native references,
+managed JIT and NativeAOT execution. [Hashed switch milestone
+evidence](../evidence/dotobj-switch-20261008.json).
+
+Acceptance includes independent C11/C++17 sources, signed/unsigned 64-bit case
+values, uint32 conversion, empty switches and selector side effects, grouped and
+trailing labels, default in the middle, scoped/initialized locals, and nested
+loop/switch exits. The C-only fixture dispatches past an initializer to verify
+that the skipped initializer does not execute. Corrupted objects test duplicate
+converted labels, duplicate default, case placement, nonconstant cases and
+invalid transfer targets. Independent review found no blocking issue and its
+fixture/rejection-test suggestions were incorporated.
+
+Nonblock switch bodies, nested case labels/Duff's device, GNU case ranges and
+executable precase statements remain explicit exclusions. Records, storage,
+pointers, full prelower source trees and C++ lifetimes remain unfinished.
+Current readers require v6 objects; runtime ABI and capability flags are
+unchanged. All prior tools/objects and current intermediates remain preserved;
+DuckDB's whole-program retry remains paused.

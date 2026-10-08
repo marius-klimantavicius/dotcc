@@ -946,6 +946,8 @@ unsigned integer widths through 64 bits, conditional expressions, bitwise
 operators and shifts. The v4 profile now captures original scalar declarations,
 typedef chains, qualifiers and signatures before lowering, linked to execution
 identities and exported in a source map. V5 adds effective macro definition/undefinition provenance and a macro map.
+V6 adds structured switches, case labels and explicit switch/loop transfer targets,
+including C fallthrough represented by local C# `goto case`/`goto default` transfers.
 Full source-tree/macro-expansion and lifetime capture and broad C++ coverage remain open.
 The superseded command-stream prototype is preserved as unvalidated artifacts.
 See [semantic object design and implementation gates](dotobj-format.md) and

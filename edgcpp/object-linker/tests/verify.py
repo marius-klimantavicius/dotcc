@@ -26,9 +26,10 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     inputs = out / 'inputs'
     inputs.mkdir()
-    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'integers.cpp', 'source_types.h', 'source_types.cpp', 'macros.h', 'macros.cpp']:
+    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'switches.cpp', 'integers.cpp', 'source_types.h', 'source_types.cpp', 'macros.h', 'macros.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
     shutil.copy2(ROOT / 'tests/loops.cpp', inputs / 'loops-c.c')
+    shutil.copy2(ROOT / 'tests/switches.cpp', inputs / 'switches-c.c')
     shutil.copy2(ROOT / 'tests/integers.cpp', inputs / 'integers-c.c')
     shutil.copy2(ROOT / 'tests/source_types.cpp', inputs / 'source-types-c.c')
     shutil.copy2(ROOT / 'tests/macros.cpp', inputs / 'macros-c.c')
@@ -36,7 +37,7 @@ def main():
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v5', nativeAotRequested=args.nativeaot,
+            profile='scalar-control-v6', nativeAotRequested=args.nativeaot,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, lifetime/EH or globals yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -110,7 +111,7 @@ def main():
         execute('linked', linked)
         scoped = link('link-scopes', [scopes])
         execute('scopes', scoped)
-        for name in ['conversions', 'empty', 'loops', 'integers', 'source_types', 'macros']:
+        for name in ['conversions', 'empty', 'loops', 'switches', 'integers', 'source_types', 'macros']:
             obj = compile_source(name, inputs / (name + '.cpp'))
             run('native-' + name + '-build', ['c++', '-std=c++17', inputs / (name + '.cpp'), '-o', out / ('native-' + name)])
             run('native-' + name + '-run', [out / ('native-' + name)])
@@ -124,6 +125,16 @@ def main():
         run('native-loops-c-build', ['cc', '-std=c11', inputs / 'loops-c.c', '-o', out / 'native-loops-c'])
         run('native-loops-c-run', [out / 'native-loops-c'])
         execute('loops-c', link('link-loops-c', [loops_c]))
+        switches_object = out / 'switches.dotobj'
+        switches_cs = '\n'.join(p.read_text() for p in (out / 'link-switches').glob('*.cs'))
+        check('structured-switch-source', all(token in switches_cs for token in ['switch (', 'case ', 'default:', 'goto case ', 'goto default;']))
+        with sqlite3.connect(switches_object) as db:
+            check('explicit-switch-break-targets', db.execute("SELECT count(*) FROM edges e JOIN nodes n ON n.id=e.parent_id JOIN nodes t ON t.id=e.child_id WHERE e.role='target' AND n.kind='break' AND t.kind='switch'").fetchone()[0] > 0)
+            check('switch-continue-loop-targets', db.execute("SELECT count(*) FROM edges e JOIN nodes n ON n.id=e.parent_id JOIN nodes t ON t.id=e.child_id WHERE e.role='target' AND n.kind='continue' AND t.kind='for'").fetchone()[0] >= 2)
+        switches_c = compile_source('switches-c', inputs / 'switches-c.c', std='c11')
+        run('native-switches-c-build', ['cc', '-std=c11', inputs / 'switches-c.c', '-o', out / 'native-switches-c'])
+        run('native-switches-c-run', [out / 'native-switches-c'])
+        execute('switches-c', link('link-switches-c', [switches_c]))
         integers_c = compile_source('integers-c', inputs / 'integers-c.c', std='c11')
         run('native-integers-c-build', ['cc', '-std=c11', inputs / 'integers-c.c', '-o', out / 'native-integers-c'])
         run('native-integers-c-run', [out / 'native-integers-c'])
@@ -227,6 +238,36 @@ def main():
             "UPDATE edges SET child_id=(SELECT min(id) FROM nodes WHERE kind='for' AND function_id=(SELECT function_id FROM nodes WHERE id=edges.parent_id)) WHERE role='target' AND parent_id IN (SELECT id FROM nodes WHERE kind IN ('break','continue')) AND child_id IN (SELECT id FROM nodes WHERE kind='for')", ())])
         run('wrong-lexical-loop-target', ['dotnet', tool, 'verify', outer_target], None)
 
+        # Corrupt semantic shapes while recomputing the digest: verifier must
+        # reject bad switch ownership, duplicate labels and nonlocal exits.
+        with sqlite3.connect(switches_object) as db:
+            grouped_id = db.execute("SELECT id FROM entities WHERE source_name='grouped'").fetchone()[0]
+            valued_cases = db.execute("SELECT c.id, v.id FROM nodes c JOIN edges e ON e.parent_id=c.id AND e.role='value' JOIN nodes v ON v.id=e.child_id WHERE c.kind='case' AND c.function_id=? ORDER BY c.id", (grouped_id,)).fetchall()
+            first_case, first_value = valued_cases[0]
+            second_case, second_value = valued_cases[1]
+        bad_duplicate_case = mutate('switch-duplicate-case', switches_object, [(
+            "UPDATE nodes SET constant_text=(SELECT constant_text FROM nodes WHERE id=?) WHERE id=?", (first_value, second_value))])
+        run('duplicate-switch-case', ['dotnet', tool, 'verify', bad_duplicate_case], None)
+        converted_duplicate = mutate('switch-converted-duplicate', switches_object, [(
+            "UPDATE nodes SET type_id=7,constant_text='4294967294' WHERE id=?", (second_value,))])
+        run('converted-duplicate-switch-case', ['dotnet', tool, 'verify', converted_duplicate], None)
+        bad_default = mutate('switch-duplicate-default', switches_object, [
+            ("DELETE FROM edges WHERE parent_id=? AND role='value'", (first_case,)),
+            ("DELETE FROM nodes WHERE id=?", (first_value,))])
+        run('duplicate-switch-default', ['dotnet', tool, 'verify', bad_default], None)
+        bad_case_value = mutate('switch-case-expression', switches_object, [(
+            "UPDATE nodes SET kind='unary',operator='neg' WHERE id=?", (first_value,))])
+        run('nonconstant-switch-case', ['dotnet', tool, 'verify', bad_case_value], None)
+        bad_continue_switch = mutate('switch-continue-target', switches_object, [(
+            "UPDATE edges SET child_id=(SELECT min(id) FROM nodes WHERE kind='switch' AND function_id=(SELECT function_id FROM nodes WHERE id=edges.parent_id)) WHERE role='target' AND parent_id IN (SELECT id FROM nodes WHERE kind='continue')", ())])
+        run('continue-cannot-target-switch', ['dotnet', tool, 'verify', bad_continue_switch], None)
+        bad_break_outer = mutate('switch-break-outer', switches_object, [(
+            "UPDATE edges SET child_id=(SELECT min(id) FROM nodes WHERE kind='for' AND function_id=(SELECT function_id FROM nodes WHERE id=edges.parent_id)) WHERE role='target' AND parent_id IN (SELECT id FROM nodes WHERE kind='break') AND child_id IN (SELECT id FROM nodes WHERE kind='switch' AND function_id=(SELECT id FROM entities WHERE source_name='nested'))", ())])
+        run('break-cannot-skip-switch', ['dotnet', tool, 'verify', bad_break_outer], None)
+        bad_case_scope = mutate('switch-case-outside', switches_object, [(
+            "UPDATE nodes SET kind='case' WHERE id=(SELECT max(id) FROM nodes WHERE kind='return' AND function_id=(SELECT id FROM entities WHERE source_name='main'))", ())])
+        run('case-outside-switch', ['dotnet', tool, 'verify', bad_case_scope], None, 'immediate switch body child')
+
         integers_object = out / 'integers.dotobj'
         invalid_integer = mutate('wide-constant', integers_object, [(
             "UPDATE nodes SET constant_text='18446744073709551616' WHERE id=(SELECT min(id) FROM nodes WHERE kind='constant' AND type_id=(SELECT id FROM types WHERE kind='u64'))", ())])
@@ -284,7 +325,9 @@ def main():
             'volatile': 'int f(){volatile int value=1; return value;}\n',
             'inline': 'inline int f(){return 1;} int g(){return f();}\n',
             'noexcept': 'int f() noexcept {return 1;}\n',
-            'switch': 'int f(int n){switch(n){case 1:return 2;default:return 3;}}\n',
+            'nested-switch-case': 'int f(int n){switch(n){{case 1:return 2;}default:return 3;}}\n',
+            'precase-execution': 'int f(int n){switch(n){n=4;case 1:return 2;default:return 3;}}\n',
+            'switch-range': 'int f(int n){switch(n){case 1 ... 3:return 2;default:return 3;}}\n',
             'goto': 'int f(){int n=0; again: ++n; if(n<3)goto again; return n;}\n',
         }
         for name, code in negatives.items():

@@ -8,7 +8,7 @@ Native stdout wire is one JSON object (transient packaging protocol only):
 ```
 {
   "formatVersion": 1,
-  "profile": "scalar-control-v5",
+  "profile": "scalar-control-v6",
   "sourceFiles": [{"id":1,"path":"/absolute/main.cpp","parentId":null}],
   "macroDefinitions": [{"id":1,"name":"LIMIT","form":"object","variadic":false,"dynamic":false,"definitionText":"#define LIMIT 4","origin":"source","sourceFileId":1,"line":1,"column":9}],
   "macroParameters": [],
@@ -54,10 +54,25 @@ Supported node kinds and ordered edge roles:
   after `break` or `return`.
 - `do-while`: body[0], condition[0]; body executes before the condition, including
   the first iteration. `continue` evaluates the condition before repeating.
-- `break`, `continue`: target[0] is a non-owning metadata reference to the nearest
-  lexically enclosing while/for/do-while node. The verifier requires that exact
-  identity; an exit outside a loop or targeting another loop is invalid. No
-  arbitrary jumps or switch exits are supported.
+- `switch`: condition[0] is a promoted i32/u32/i64/u64 expression; body[0]
+  is a block. Evaluate the selector once and dispatch to the matching case, or
+  default when present, otherwise exit. Body declarations precede every label
+  and have no initializer; source initialization remains ordinary assignments
+  at its execution position. Other statements must follow the first label.
+- `case`: value[0] is an optional integer constant; absent means default. Cases
+  are immediate children of a switch body block, in lexical order. Adjacent
+  cases share the following statements; reaching the next label falls through
+  without evaluating the selector again. Case constants convert to the promoted
+  selector's width/sign representation before comparison. Duplicate converted
+  values or default labels are invalid. Nested case labels, GNU ranges and
+  arbitrary jumps into cases are unsupported.
+- `break`, `continue`: target[0] is a non-owning metadata identity reference.
+  Break targets the nearest lexically enclosing switch/while/for/do-while;
+  continue targets the nearest while/for/do-while, skipping intervening switches.
+  Missing or nonlocal targets are invalid. Arbitrary source jumps remain
+  unsupported. C# emission retains switch sections, inserting `goto case` or
+  `goto default` only where needed for C fallthrough, and a final `break` when
+  the last section can complete normally.
 - `constant`: integer or bool type + canonical exact decimal constantText.
   Integer types i8/u8/i16/u16/i32/u32/i64/u64 have their corresponding signed
   or unsigned width ranges; bool permits only 0/1. No leading plus, leading
@@ -115,8 +130,8 @@ The initial target is portable-lp64-binary80-v2; callable ABI dotobj-scalar-v1.
 The scalar-control-v3 object profile adds 8/16/32/64-bit signed/unsigned
 integers, bitwise/shift expressions and conditional values to v2's structured
 loops and explicit loop exit identities. It does not change the callable ABI.
-The current canonical schema reader requires scalar-control-v5 and rejects
-v1/v2/v3/v4 objects; preserve their respective earlier tool build to read them,
+The current canonical schema reader requires scalar-control-v6 and rejects
+v1/v2/v3/v4/v5 objects; preserve their respective earlier tool build to read them,
 or recompile with this producer.
 The profile uses EDG's fixed portable LP64 target: long and long long share the
 64-bit physical representation, while exact external keys retain C++ overload
@@ -268,3 +283,10 @@ operators: the stock inspection formatter is not a complete round-trip format
 for trailing optional text. Quoted occurrences remain ordinary macro text.
 EDG preprocessing semantics are unchanged; a future token-based macro graph can
 represent this construct without relying on inspection formatting.
+
+The scalar-control-v6 profile adds structured switch dispatch and case markers
+to the owned execution graph without changing the callable ABI or source/macro
+capabilities. A switch block's declarations are emitted in a surrounding C#
+block to preserve scope across sections. Their default initialization only
+satisfies C# definite assignment; it does not define source indeterminate reads.
+The normal executable occurrence/ownership rules also apply to case constants.

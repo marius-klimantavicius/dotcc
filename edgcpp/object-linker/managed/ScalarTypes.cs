@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Numerics;
 
 namespace DotObj;
 
@@ -31,6 +32,20 @@ internal static class ScalarTypes
         return kind switch { "i8" => signed is >= sbyte.MinValue and <= sbyte.MaxValue,
             "i16" => signed is >= short.MinValue and <= short.MaxValue,
             "i32" => signed is >= int.MinValue and <= int.MaxValue, "i64" => true, _ => false };
+    }
+
+    // Switch dispatch compares case values after conversion to the promoted
+    // selector type. Keep the exact converted value for validation and C# labels.
+    public static string SwitchConstant(string sourceKind, string text, string selectorKind)
+    {
+        if (!IsInteger(sourceKind) || !IsConstant(sourceKind, text) || !IsPromotedInteger(selectorKind))
+            throw new InvalidDataException("Invalid switch case conversion");
+        int width = selectorKind is "i32" or "u32" ? 32 : 64;
+        BigInteger modulus = BigInteger.One << width;
+        BigInteger value = BigInteger.Parse(text, CultureInfo.InvariantCulture) % modulus;
+        if (value.Sign < 0) value += modulus;
+        if (selectorKind is "i32" or "i64" && value >= (modulus >> 1)) value -= modulus;
+        return value.ToString(CultureInfo.InvariantCulture);
     }
 
     public static string Literal(string kind, string text)
