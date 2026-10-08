@@ -13,6 +13,7 @@ from pathlib import Path
 import re
 import sys
 from abi import Boundaries
+from atomics import expression as atomic_expression
 
 EDG = Path(__file__).resolve().parents[2]
 BACKEND = EDG / 'backend'
@@ -187,6 +188,15 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
     bound, unresolved, bodies, helpers, allocation, groups = provider_bound, [], {}, set(), set(), set()
     services = 'global::Edg.Runtime.DotObjServices.'
     for method in methods:
+        atomic = atomic_expression(method)
+        if atomic is not None:
+            helpers.add('AtomicOps')
+            bound.append(dict(name=method['symbol'], result=method['result'], parameters=[kind for kind, _ in method['arguments']],
+                              target='global::Edg.Runtime.AtomicOps'))
+            parameters = ', '.join(kind + ' ' + name for kind, name in method['arguments'])
+            statement = ('' if method['result'] == 'void' else 'return ') + atomic + ';'
+            bodies.setdefault(method['container'], []).append('public static partial ' + method['result'] + ' ' + method['name'] + '(' + parameters + ')\n    {\n        ' + statement + '\n    }\n')
+            continue
         signature = (method['symbol'], boundaries.classify(method['result'])[0], tuple(boundaries.classify(t)[0] for t, _ in method['arguments']))
         target = definitions.get(signature)
         supported = target is not None and (target.startswith(('global::System.', 'global::Edg.Runtime.',
@@ -262,10 +272,14 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
     if groups or allocation:
         for path in (BACKEND / 'dot_gen_imports.h', BACKEND / 'dot_gen_lifecycle.h'):
             sources.append(dict(path=str(path), sha256=sha(path)))
+    if 'AtomicOps' in helpers:
+        path = BACKEND / 'dot_gen_atomics.h'
+        binding_inputs.append(dict(path=str(path), sha256=sha(path)))
     report = dict(schema=1, status='bound' if not unresolved else 'unresolved', linkReport=dict(path=str(project / 'link-report.json'), sha256=sha(project / 'link-report.json')),
                   sourceMap=dict(path=str(project / link['sourceMap']), sha256=sha(project / link['sourceMap'])),
                   bindingInputs=binding_inputs, implementationInputs=sources, sourceDependencyGraph=dict(path=str(EDG / 'dotnet.py'), sha256=sha(EDG / 'dotnet.py')),
                   bound=bound, unresolved=unresolved, reusedFiles=reused, providerReceipts=receipts,
+                  adapterInputs=[dict(path=str(path), sha256=sha(path)) for path in (Path(__file__), Path(__file__).with_name('abi.py'), Path(__file__).with_name('atomics.py'))],
                   runtimeMode='static translation; per-assembly libc state', executionVerified=False)
     report_path = project / 'runtime-bindings.json'
     if report_path.exists():

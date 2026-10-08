@@ -10,6 +10,11 @@ the direct backend's maintained import tables and helper dependency graph.
 Allocation helpers are selected from their existing canonical definitions in
 `dot_gen_imports.h` and `dot_gen_lifecycle.h`; allocation algorithms are not
 forked here. Heap allocations use the same `NativeMemory` implementation.
+GNU atomic imports follow the concrete EDG ABI documented in
+`dot_gen_atomics.h` and call the existing shared `AtomicOps` implementation.
+This includes size-leading generic operations, memory orders, weak compare
+exchange, and the older `__sync` operations; no separate synchronization
+algorithm is introduced.
 
 Platform imports live in `Edg.Runtime.LibC`. Imports whose signatures mention
 translated records stay in their translated owner. Adapters bridge opaque

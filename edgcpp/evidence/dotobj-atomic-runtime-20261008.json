@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 12,
+  "scope": "Owned-object GNU atomic ABI adapters; scalar128 graph still pending",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-atomic-acceptance-002/results.json",
+    "sha256": "bce708e9d9f6b5e4e4744b53b060b41227da532918e03034ffb8c4ceda91d865"
+  },
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-compiler-012/cpfe-dot",
+    "sha256": "91905055a1c61c56db9f0a6407ef6b9cc1e77b1f82c2c4ba1122aeddb037ef29"
+  },
+  "linker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-008/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "37bd4a7ebef27db029aba4113e04f2fc07e431d8d893c0877a07a0c5ed47d159"
+  },
+  "nativeAotVerified": true,
+  "scalar128Tested": false,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "checksDescription": [
+    "137 GNU atomic and legacy __sync imports matched to canonical AtomicOps",
+    "Scalar 8/16/32/64-bit store/load/exchange/CAS/fetch operations including signed/pointer legacy operations",
+    "Generic 3/16/600-byte aggregate atomics and failure expected-value update",
+    "Weak/strong compare-exchange and memory-order forwarding",
+    "Native pthread and managed Thread concurrent shared counter parity",
+    "Native/JIT/NativeAOT output parity",
+    "Scalar128 excluded explicitly by test option; original full fixture failure retained"
+  ]
+}
