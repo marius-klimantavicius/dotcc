@@ -33,6 +33,11 @@ stores. The `LibcFiles` and POSIX services share descriptor state.
 Locale handles and `lconv` use validated portable layouts. Narrow and wide
 FILE formatting/scanning callbacks use the canonical `LibcFiles` session
 methods, so callback execution shares the stream lock and `VaList` ABI.
+Timezone primitives use `LibcTimezone`; musl retains calendar and timezone rule
+algorithms. The binder reuses `dotnet.py`'s hash-checked timezone bundle and
+embeds it through a generated `Directory.Build.targets`. The receipt includes
+asset hashes and version. No system timezone database is required for named
+zones in the pinned bundle.
 
 The current provider owns static per-assembly state. Independent engine
 instances and explicit owner disposal are not implemented by this binder yet.

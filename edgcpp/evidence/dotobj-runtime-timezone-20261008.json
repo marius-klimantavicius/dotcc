@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 62,
+  "scope": "Canonical timezone service and embedded pinned timezone assets through owned-object binding",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-runtime-acceptance-004/results.json",
+    "sha256": "54aba45033f8cf9402e1cc0c902cf96798b299816fd79a7a19e1c63fa769984b"
+  },
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-compiler-015/cpfe-dot",
+    "sha256": "bb5b8f85b7da076628e51aecea6e1cad10dcd84e8b6918904f122d634b08655a"
+  },
+  "linker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-012/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "77f43c70c9e82e38581888be0fd2788c2ae65bedf2ef7f0b2d12777e61d232e2"
+  },
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "checksDescription": [
+    "Four timezone boundary imports resolved to existing LibcTimezone",
+    "Hash-checked canonical TZif bundle and metadata embedded with stable logical resource name",
+    "Native/JIT/NativeAOT UTC mapping, TZif header, unmapping and missing-file errno parity",
+    "Existing libc memory, descriptors, locale, FILE callback sessions and TLS/GC checks retained"
+  ]
+}

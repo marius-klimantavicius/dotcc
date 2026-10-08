@@ -97,7 +97,7 @@ def main():
 
     failure = None
     try:
-        for name in ('runtime_memory', 'runtime_stdio_posix', 'runtime_sessions'):
+        for name in ('runtime_memory', 'runtime_stdio_posix', 'runtime_sessions', 'runtime_timezone'):
             source = out / (name + '.c')
             shutil.copy2(ROOT / 'tests' / source.name, source)
             fixtures.append(dict(path=str(source), sha256=sha(source)))
@@ -113,16 +113,21 @@ def main():
                 check(name + '-three-shared-cells', {item['name'] for item in bindings['bound'] if item.get('storage')} == {'stdin', 'stdout', 'stderr'})
                 check(name + '-va-source-reused', any(item['path'].endswith('Runtime.VaArg.cs') for item in bindings['reusedFiles']))
             project_file = project / 'Translated.csproj'
-            if name != 'runtime_sessions':
+            if name in ('runtime_memory', 'runtime_stdio_posix'):
                 (project / 'RuntimeCheckRunner.cs').write_text(HOST)
                 project_file.write_text(project_file.read_text().replace('<StartupObject>__DotObjEntry</StartupObject>', '<StartupObject>RuntimeCheckRunner</StartupObject>'))
-            else:
+            elif name == 'runtime_sessions':
                 names = {item['name'] for item in bindings['bound']}
                 check('all-file-sessions-bound', {'__edg_with_file_lock', '__edg_with_file_read_lock', '__edg_with_file_wide_lock', '__edg_with_file_wide_read_lock'} <= names)
                 check('locale-record-boundaries', {'newlocale', 'duplocale', 'uselocale', 'freelocale', 'localeconv'} <= names)
+            else:
+                names = {item['name'] for item in bindings['bound']}
+                check('timezone-boundaries', {'__edg_timezone_enter', '__edg_timezone_exit', '__edg_timezone_map', '__edg_timezone_unmap'} <= names)
+                check('timezone-hashed-assets', len(bindings['runtimeAssets']) == 4 and all(sha(project / key) == value['sha256'] for key, value in bindings['runtimeAssets'].items()))
+                check('timezone-embedded-resource', 'Edg.Runtime.Tzdb.bin' in (project / 'Directory.Build.targets').read_text())
             run(name + '-build', ['dotnet', 'build', project_file, '--nologo', '-v:q'])
             output = run(name + '-jit', ['dotnet', project / 'bin/Debug/net10.0/Translated.dll'])
-            if name != 'runtime_sessions':
+            if name in ('runtime_memory', 'runtime_stdio_posix'):
                 check(name + '-tls-and-gc', 'canonical libc binding + TLS + GC OK' in output)
             if args.nativeaot:
                 aot = out / (name + '-aot')
