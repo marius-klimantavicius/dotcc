@@ -7,24 +7,46 @@ void ensure_array_helpers() {
   if(array_helpers_emitted)return;
   array_helpers_emitted=true;
   ensure_terminate_helpers();
-  string mod=instance_mode?"":"static ", fp=array_callback_type();
-  string owner=instance_mode?"this, ":"";
-  string common="(void* data, ulong count, ulong stride, "+fp+" dtor)";
-  // throw.c's processing marker stops pass 1 when a remaining element throws
-  // during array unwinding. Do not unwind that element's locals first.
-  helper_output+="// dot-gen:member-begin\nprivate "+mod+"bool __edg_array_cleanup_failure(global::System.Exception error) { if(!("+control_transfer_exclusion("error")+"))return false; __edg_terminate_runtime(error,\"Array destructor threw during unwinding\");return false; }\n// dot-gen:member-end\n";
-  helper_output+="// dot-gen:member-begin\nprivate "+mod+"void __edg_vec_cleanup"+common+" {\n"
-    "try { if (dtor != null) while (count != 0) { --count; dtor("+owner+"(byte*)data + count * stride); } }\n"
-    "catch (global::System.Exception error) when (__edg_array_cleanup_failure(error)) { throw; }\n"
-    "}\n// dot-gen:member-end\n";
-  helper_output+="// dot-gen:member-begin\nprivate "+mod+"void __edg_vec_dtor"+common+" {\n"
-    "try { if (dtor != null) while (count != 0) { --count; dtor("+owner+"(byte*)data + count * stride); } }\n"
-    "catch (global::System.Exception jump_check) when ("+source_jump_exclusion("jump_check")+") { __edg_vec_cleanup(data, count, stride, dtor); throw; }\n"
-    "}\n// dot-gen:member-end\n";
-  helper_output+="// dot-gen:member-begin\nprivate "+mod+"void __edg_vec_ctor(void* data, ulong count, ulong stride, "+fp+" ctor, "+fp+" dtor) {\n"
-    "ulong done = 0; try { if (ctor != null) for (; done < count; ++done) ctor("+owner+"(byte*)data + done * stride); }\n"
-    "catch (global::System.Exception jump_check) when ("+source_jump_exclusion("jump_check")+") { __edg_vec_cleanup(data, done, stride, dtor); throw; }\n"
-    "}\n// dot-gen:member-end\n";
+  // One canonical C# template is also consumed by the owned-object runtime
+  // binder. Only callback owner/signature and transfer policies are substituted.
+  string code=R"CS(
+// dot-gen:member-begin
+private @MOD@bool __edg_array_cleanup_failure(global::System.Exception error) {
+  if(!(@CONTROL_TRANSFER_EXCLUSION@))return false;
+  __edg_terminate_runtime(error,"Array destructor threw during unwinding");
+  return false;
+}
+// dot-gen:member-end
+// dot-gen:member-begin
+private @MOD@void __edg_vec_cleanup(void* data, ulong count, ulong stride, @CALLBACK@ dtor) {
+  try { if (dtor != null) while (count != 0) { --count; dtor(@OWNER@(byte*)data + count * stride); } }
+  catch (global::System.Exception error) when (__edg_array_cleanup_failure(error)) { throw; }
+}
+// dot-gen:member-end
+// dot-gen:member-begin
+private @MOD@void __edg_vec_dtor(void* data, ulong count, ulong stride, @CALLBACK@ dtor) {
+  try { if (dtor != null) while (count != 0) { --count; dtor(@OWNER@(byte*)data + count * stride); } }
+  catch (global::System.Exception jump_check) when (@SOURCE_JUMP_EXCLUSION@) { __edg_vec_cleanup(data, count, stride, dtor); throw; }
+}
+// dot-gen:member-end
+// dot-gen:member-begin
+private @MOD@void __edg_vec_ctor(void* data, ulong count, ulong stride, @CALLBACK@ ctor, @CALLBACK@ dtor) {
+  ulong done = 0;
+  try { if (ctor != null) for (; done < count; ++done) ctor(@OWNER@(byte*)data + done * stride); }
+  catch (global::System.Exception jump_check) when (@SOURCE_JUMP_EXCLUSION@) { __edg_vec_cleanup(data, done, stride, dtor); throw; }
+}
+// dot-gen:member-end
+)CS";
+  auto substitute=[&](const string &token,const string &value) {
+    size_t at=0;
+    while((at=code.find(token,at))!=string::npos) {code.replace(at,token.size(),value);at+=value.size();}
+  };
+  substitute("@MOD@",instance_mode?"":"static ");
+  substitute("@CALLBACK@",array_callback_type());
+  substitute("@OWNER@",instance_mode?"this, ":"");
+  substitute("@CONTROL_TRANSFER_EXCLUSION@",control_transfer_exclusion("error"));
+  substitute("@SOURCE_JUMP_EXCLUSION@",source_jump_exclusion("jump_check"));
+  helper_output+=code;
 }
 // Match lib_src/vec_newdel.c: cookie immediately before data, reverse
 // destruction, completed-prefix cleanup and deallocation on exceptions.

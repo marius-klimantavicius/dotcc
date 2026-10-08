@@ -105,6 +105,13 @@ unsafe class EntryPoint {{
             for argument in ('98','26'):
                 result=subprocess.run([*map(str,command),argument],capture_output=True,text=True,
                     preexec_fn=lambda:resource.setrlimit(resource.RLIMIT_CORE,(0,0)))
-                assert result.returncode not in (0,90,91) and 'Array destructor threw during unwinding' in result.stderr,result.stderr
+                (host/f'{runtime}-terminate-{argument}.stdout').write_text(result.stdout)
+                (host/f'{runtime}-terminate-{argument}.stderr').write_text(result.stderr)
+                # With no installed terminate handler the canonical runtime
+                # terminates inside __edg_default_terminate, before the fallback
+                # FailFast carrying the array-specific reason can execute.
+                reason = any(text in result.stderr for text in
+                    ('C++ default terminate', 'Array destructor threw during unwinding'))
+                assert result.returncode not in (0,90,91) and reason,result.stderr
             checks.append(f'arrays/{mode}/{runtime}: partial/full array double-exception termination')
     return checks

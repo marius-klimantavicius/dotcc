@@ -17,6 +17,7 @@ from atomics import expression as atomic_expression
 from process import expression as process_expression, sources as process_sources
 from threads import definitions as thread_definitions, expression as thread_expression, sources as thread_sources
 from guards import expression as guard_expression, source as guard_source
+from arrays import expression as array_expression, source as array_source
 
 EDG = Path(__file__).resolve().parents[2]
 BACKEND = EDG / 'backend'
@@ -214,8 +215,18 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
     thread_services = False
     threads_used = False
     guards_used = False
+    arrays_used = False
     services = 'global::Edg.Runtime.DotObjServices.'
     for method in methods:
+        array = array_expression(method)
+        if array is not None:
+            arrays_used = True
+            helpers.add('NonlocalJump')
+            bound.append(dict(name=method['symbol'], result=method['result'], parameters=[kind for kind, _ in method['arguments']],
+                              target='global::Edg.Runtime.DotObjArrays'))
+            parameters = ', '.join(kind + ' ' + name for kind, name in method['arguments'])
+            bodies.setdefault(method['container'], []).append('public static partial void ' + method['name'] + '(' + parameters + ')\n    {\n        ' + array + ';\n    }\n')
+            continue
         guard = guard_expression(method)
         if guard is not None:
             guards_used = True
@@ -312,6 +323,8 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
             bound.append(dict(name=symbol, storage=True, target=expression))
             bodies.setdefault(storage['container'], []).append('public static partial void* ' + storage['accessorName'] + '() => ' + expression + ';\n')
     files = {}
+    if arrays_used:
+        files['Runtime.Arrays.generated.cs'] = array_source(BACKEND, thread_services)
     if guards_used:
         files['Runtime.Guards.generated.cs'] = guard_source(BACKEND)
     # Returning from source main has normal exit semantics even when no explicit
@@ -359,6 +372,9 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
     if 'AtomicOps' in helpers:
         path = BACKEND / 'dot_gen_atomics.h'
         binding_inputs.append(dict(path=str(path), sha256=sha(path)))
+    if arrays_used:
+        for path in (BACKEND / 'dot_gen_arrays.h', EDG / 'upstream/lib_src/vec_newdel.c'):
+            binding_inputs.append(dict(path=str(path), sha256=sha(path)))
     if process_callbacks:
         for path in (BACKEND / 'dot_gen_lifecycle.h', BACKEND / 'dot_gen_process.h', RUNTIME / 'libc-process-exit-bindings.def'):
             binding_inputs.append(dict(path=str(path), sha256=sha(path)))

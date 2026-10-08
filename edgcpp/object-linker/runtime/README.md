@@ -142,3 +142,19 @@ standard stream address aliases, descriptor interoperability, typed layout
 rejection, allocation semantics, and errno thread/GC isolation. The native
 oracle currently requires a POSIX host; verified platform coverage is recorded
 separately from the runtime's cross-platform design.
+
+`__cxa_vec_ctor` and `__cxa_vec_dtor` bind to the same C# template as the direct
+backend's `dot_gen_arrays.h`. Signatures require the portable Itanium count,
+stride and managed callback ABI. Construction tracks only completed elements;
+cleanup and destruction run in reverse order. A constructor failure destroys
+the completed prefix, while a destructor failure destroys the remaining prefix
+before rethrowing. A second destructor exception terminates during CLR first-pass
+search, before unwinding that destructor's locals. C longjmp bypasses C++ cleanup;
+C11 thread exit cleans completed construction and bypasses fatal boundaries.
+
+`tests/runtime_arrays_verify.py` compares failure/success traces with the native
+Itanium runtime and checks JIT/NativeAOT transfer and fatal cases. The independent
+TU nonvirtual test also executes real compiler-emitted array-helper calls. These
+checks do not establish source C++ EH coverage. The future owned EH provider must
+connect `DotObjArrays.Terminate` to the translated terminate handler; currently
+that handler ABI remains unresolved and the default action is `FailFast`.

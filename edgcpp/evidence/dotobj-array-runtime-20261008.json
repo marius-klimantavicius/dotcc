@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-08",
+  "status": "owned-runtime-and-cross-tu-execution-passed",
+  "scope": "Canonical Itanium array helper bindings and real nonvirtual original-TU execution",
+  "checks": {
+    "runtimeNativeJitAot": 19,
+    "independentTranslationUnitsNativeJitAot": 16,
+    "directBackendStaticInstanceJitAot": 9,
+    "unchangedDefaultArgumentCrossTuNativeJitAot": 16
+  },
+  "receipts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-runtime-acceptance-001/results.json",
+      "sha256": "5f9393c7e86902095910919bb8ffba9f8b226940d65d135e1ad58b822bb0a785"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-nonvirtual-acceptance-007/results.json",
+      "sha256": "7ea5215f793c09d975b010be63a44e35f9883de1fb1d5912862f87d8126113ed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-nonvirtual-acceptance-008/results.json",
+      "sha256": "e24d1ab7e943f137fc2861711f0c160a4c32168a3ce18354b2b7c0bbe8010a91"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-direct-array-template-002/results.json",
+      "sha256": "f3c5e32c986cea6c67fec899a4523ab89747c7e05736175a30af18c009404951"
+    }
+  ],
+  "limitations": [
+    "Managed callback failure tests establish the runtime algorithm, not complete source C++ EH/lifetime lowering.",
+    "Custom C++ terminate handler imports remain unresolved until the owned EH provider wires its termination hook."
+  ],
+  "directTestCorrection": {
+    "reason": "Existing array termination test expected the fallback array-specific FailFast reason, but the default C++ terminate handler exits first. Baseline030 reproduces same old assertion failure before template extraction; corrected test accepts both legitimate fatal reasons and retains fatal transcripts.",
+    "baselineReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-direct-array-template-baseline030/results.json"
+  }
+}
