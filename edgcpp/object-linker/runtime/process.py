@@ -28,27 +28,29 @@ def expression(method):
     return 'global::Edg.Runtime.DotObjServices.' + invocation.format(*(name for _, name in method['arguments']))
 
 
-def sources(backend, groups):
+def member(text, name):
+    candidates = [part for part in re.findall(r'// dot-gen:member-begin\n(.*?)// dot-gen:member-end', text, re.S)
+                  if re.search(r'\b' + re.escape(name) + r'(?:\(| \{)', part.split('\n', 1)[0])]
+    # The process-exit method has an attribute before its signature.
+    if not candidates:
+        candidates = [part for part in re.findall(r'// dot-gen:member-begin\n(.*?)// dot-gen:member-end', text, re.S)
+                      if re.search(r'private @MOD@void ' + re.escape(name) + r'\(', part)]
+    if len(candidates) != 1:
+        raise ValueError('Canonical lifecycle member changed: ' + name)
+    return candidates[0]
+
+
+def sources(backend, groups, threads=False):
     lifecycle = (backend / 'dot_gen_lifecycle.h').read_text()
     process = (backend / 'dot_gen_process.h').read_text()
-
-    def member(text, name):
-        candidates = [part for part in re.findall(r'// dot-gen:member-begin\n(.*?)// dot-gen:member-end', text, re.S)
-                      if re.search(r'\b' + re.escape(name) + r'(?:\(| \{)', part.split('\n', 1)[0])]
-        # The process-exit method has an attribute before its signature.
-        if not candidates:
-            candidates = [part for part in re.findall(r'// dot-gen:member-begin\n(.*?)// dot-gen:member-end', text, re.S)
-                          if re.search(r'private @MOD@void ' + re.escape(name) + r'\(', part)]
-        if len(candidates) != 1:
-            raise ValueError('Canonical lifecycle member changed: ' + name)
-        return candidates[0]
 
     names = ('__edg_finalizer', '__edg_register', '__edg_drain')
     code = '\n'.join(member(lifecycle, name) for name in names)
     code += '\n' + '\n'.join(member(process, name) for name in ('__edg_register_exit', '__edg_process_exit'))
     code = code.replace('@MOD@', 'static ').replace(
         '@INVOKE@', 'if(entry.NoArguments)((delegate* managed<void>)entry.Function)();else ((delegate* managed<void*, void>)entry.Function)((void*)entry.Argument);')
-    code = code.replace('/*__EDG_THREAD_EXIT_CATCH__*/', '')
+    code = code.replace('/*__EDG_THREAD_EXIT_CATCH__*/',
+        'catch(global::Edg.Runtime.CThreadExitTransfer exit) when(__edg_thread_services_value.IsValueCreated && __edg_thread_services.AcceptExitResult(exit)) {}' if threads else '')
     code = code.replace('/*__EDG_SHUTDOWN_TERMINATE__*/', 'global::System.Environment.FailFast("Exception escaped translated finalizer", error);')
     flush = 'if(__edg_files_value.IsValueCreated)__edg_files.Fflush(null);' if 'files' in groups or 'command' in groups else ''
     code = code.replace('/*__EDG_PROCESS_FLUSH__*/', flush)
@@ -97,4 +99,8 @@ public static unsafe partial class ObjectProgram
     public static void ReleaseThread() => DotObjServices.ReleaseThreadFinalizers();
 }
 '''
+    if threads:
+        support = support.replace('internal readonly global::System.Collections.Generic.List<__edg_finalizer> Finalizers',
+                                  'internal int Depth;\n        internal readonly global::System.Collections.Generic.List<__edg_finalizer> Finalizers')
+        hooks = hooks.replace('DotObjServices.ReleaseThreadFinalizers()', 'DotObjServices.ReleaseRuntimeThread()')
     return {'Runtime.Process.generated.cs': support + code + '}\n', 'Runtime.ProcessHooks.generated.cs': hooks}

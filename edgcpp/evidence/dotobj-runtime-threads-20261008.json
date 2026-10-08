@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 94,
+  "scope": "Shared C11/libc++ external thread runtime and owned source TLS cleanup",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-threads-acceptance-004/results.json",
+    "sha256": "760a304baefb71ddeab934255e1727e8e084a51f33aaccf319eb2d5de1c85566"
+  },
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "checksDescription": [
+    "Independent original C11 test/provider translation units; no merged or native pthread runtime in translated output",
+    "Native/JIT/NativeAOT mutex contention, recursive/timed mutexes, conditions, once, callback thread results and source TLS isolation",
+    "Four-pass TSS destruction and thrd_exit called inside a destructor",
+    "Six native/JIT/NativeAOT initial-thread exit cases: joins, descendants, detach and final-thread atexit identity/order",
+    "Hosted library explicitly releases C++ TLS callbacks, then TSS, libc TLS and owned source TLS; subsequent access reinitializes source TLS",
+    "Stale linker TLS release contracts and incorrect callback ABI are rejected",
+    "Portable libc++ fixed external thread ABI checked against existing native pthread oracle and JIT/NativeAOT; synchronization, TSS, errno, threads, ids, joins, detach, sleep and yield"
+  ],
+  "limitations": [
+    "Static per-assembly runtime only; independent owner disposal remains unimplemented",
+    "Source C++ RAII/EH lifetime scheduling and full libc++/DuckDB execution are not established by these boundary tests",
+    "Stateless libc++ atomic wait bindings reuse canonical implementation; no new owned-object wait test in this receipt"
+  ]
+}

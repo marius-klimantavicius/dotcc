@@ -56,15 +56,39 @@ drains only quick-exit callbacks; `_Exit` skips callbacks and stream flushing.
 `InitializeLibrary` and ordinary library exports do not terminate the host or
 implicitly drain global callbacks. `ObjectProgram.ReleaseThread`, when process
 support is present, explicitly drains this assembly's registered C++ thread
-destructors on the calling thread. It is currently only the finalizer boundary;
-automatic translated worker/TSS teardown is a separate integration step. No CLR
-finalizer or host `ProcessExit` event is used. Source C++ lifetime scheduling and
-instance-owned disposal still require their corresponding backend support.
+destructors on the calling thread. No CLR finalizer or host `ProcessExit` event
+is used. Source C++ lifetime scheduling and instance-owned disposal still
+require their corresponding backend support.
 
 `tests/runtime_process_verify.py` checks native/JIT/NativeAOT termination order,
 status codes, callback re-registration, buffered flush, explicit TLS release,
 concurrent registration, library hosting and malformed callback-ABI rejection.
 The native destructor-registration oracle currently uses the Linux C++ ABI.
+
+`threads.py` checks the maintained C11 and libc++ external thread tables and
+connects them to `LibcxxThreads`, `LibcC11Threads` and `LibcInitialThread`.
+Synchronization, thread creation, TSS, and retained-worker algorithms remain in
+the canonical BCL runtime. The object adapter reuses the direct backend's thread
+lease bodies and supplies the concrete static assembly owner. Portable tokens
+and validated `timespec` layouts cross this boundary; native pthread layouts do
+not. Stateless libc++ atomic waits use the existing `LibcxxAtomicWait` service.
+
+Worker completion and explicit hosted `ReleaseThread` run C++ TLS finalizers,
+then TSS destructors, release libc TLS, and finally clear owned source TLS.
+The binder requires the linker's `ownedThreadStorageRelease` bridge contract
+and refuses older outputs that cannot reset source storage correctly. An
+executable establishes the initial source thread before initialization; a
+`thrd_exit` transfer completes that logical thread, allows workers to join it,
+and leaves the last remaining source thread responsible for normal status-zero
+process termination. Runtime thread-exit transfers bypass source C++ handlers.
+Library initialization does not establish process-entry semantics.
+
+`tests/runtime_threads_verify.py` packages the existing EDG C11 fixtures and
+the portable thread provider as independent original-source objects. It checks
+contention, recursive/timed mutexes, conditions, once flags, TLS/TSS cleanup,
+integer thread results, initial-thread join/detach/descendants, and hosted source
+TLS reset in JIT and NativeAOT. These runtime boundaries do not establish full
+source C++ RAII or exception lowering.
 The binder is intentionally incomplete: unsupported imports remain unresolved
 partial methods. No native fallback or fabricated success body is generated.
 `--allow-unresolved` can stage the known bindings for review, but unresolved
