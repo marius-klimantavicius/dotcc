@@ -42,11 +42,16 @@ def main():
     error = None
     try:
         units, receipt = provider.prepare_libcxx_units(EDG, acquisition, manifest.libc_arguments())
-        check('one-original-cpp-per-unit', len(units) == 55 and all(Path(u['source']).is_file() and Path(u['source']).suffix == '.cpp' for u in units))
+        check('one-original-cpp-per-unit', len(units) == 56 and all(Path(u['source']).is_file() and Path(u['source']).suffix == '.cpp' for u in units))
         check('unique-unit-identities', len({u['id'] for u in units}) == len(units))
         check('independent-implementation-standard', all(u['standard'] == 'c++20' and u['role'] == 'libcxx' for u in units))
         check('no-preprocessing-or-amalgamation-command', all(not any('preprocess' in a or a.endswith(('.ii', '.i')) for a in u['arguments']) for u in units))
-        check('existing-managed-abi-replacements-only', {u['id'] for u in units if ':adapter/' in u['id']} == {'libcxx:adapter/' + x for x in ('abi_core.cpp', 'abi_exceptions.cpp', 'abi_atomic.cpp', 'abi_mutex.cpp')})
+        check('existing-managed-abi-and-real-rtti-providers', {u['id'] for u in units if ':adapter/' in u['id']} == {'libcxx:adapter/' + x for x in ('abi_core.cpp', 'abi_exceptions.cpp', 'abi_atomic.cpp', 'abi_mutex.cpp', 'abi_typeinfo.cpp')})
+        rtti = [u for u in units if u['id'] in ('libcxx:adapter/abi_typeinfo.cpp', 'libcxx:src/typeinfo.cpp')]
+        check('explicit-rtti-noexcept-profile', len(rtti) == 2 and all('--no_exceptions' in u['arguments'] and '--exceptions' not in u['arguments'] for u in rtti))
+        check('other-provider-exception-policy-preserved', all('--exceptions' in u['arguments'] for u in units if u not in rtti))
+        check('standard-deallocator-declarations-present', all(str(acquisition / 'libcxx-18.1.8.src/include/new') in u['arguments'] for u in rtti))
+        check('real-rtti-authoritative-source-hashes', len(receipt['rttiProvider']['sourceInputs']) == 3 and all(sha(row['path']) == row['sha256'] for row in receipt['rttiProvider']['sourceInputs']))
         check('replacement-originals-not-duplicated', not ({'libcxx:src/' + x for x in provider.REPLACEMENTS} & {u['id'] for u in units}))
         check('complete-pinned-source-hashes', all(sha(row['path']) == row['sha256'] for row in receipt['sourceInputs']))
         check('header-and-private-source-closure-owned', len(receipt['inputHashes']) > 1000)

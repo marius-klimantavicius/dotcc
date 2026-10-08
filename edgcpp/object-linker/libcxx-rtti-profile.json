@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "purpose": "Real EDG Itanium RTTI implementation classes compiled with LLVM libc++ typeinfo declarations",
+  "license": "Apache-2.0 WITH LLVM-exception",
+  "inputs": {
+    "backend/runtime/libcxx/abi_typeinfo.cpp": "0900618cad4af957550cd87a6956997c0bdc657d909dd70408d678ddaaf6fe8e",
+    "upstream/include_c++/cxxabi.h": "f925cc89b07421997bccb2edf8bdf8a98d3bc6326a65a444c11dad0bb1bd2f3a",
+    "upstream/lib_src/typeinfo.c": "1435a021a81c857e6bbad7fefb08b9493db723bb66a00753061aec7045208f33"
+  }
+}

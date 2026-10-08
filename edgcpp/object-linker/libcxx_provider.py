@@ -80,6 +80,18 @@ def prepare_libcxx_units(edg, acquisition, libc_arguments):
     for name in ['core-source-preamble.h', *adapter_names]:
         if name not in adapter_pins or sha(adapter / name) != adapter_pins[name]:
             raise ValueError('Canonical libc++ ABI adapter changed: ' + name)
+    rtti_path = edg / 'object-linker/libcxx-rtti-profile.json'
+    rtti = json.loads(rtti_path.read_text())
+    required_rtti = {'backend/runtime/libcxx/abi_typeinfo.cpp',
+                     'upstream/include_c++/cxxabi.h', 'upstream/lib_src/typeinfo.c'}
+    if set(rtti['inputs']) != required_rtti:
+        raise ValueError('RTTI source provider inventory changed')
+    rtti_inputs = []
+    for name, expected in sorted(rtti['inputs'].items()):
+        path = edg / name
+        if sha(path) != expected:
+            raise ValueError('Canonical RTTI source provider changed: ' + name)
+        rtti_inputs.append(dict(path=str(path), sha256=expected))
     config = (acquisition / 'config/__config_site').read_text()
     for declaration in ('_LIBCPP_HAS_THREAD_API_EXTERNAL', '_LIBCPP_ABI_FORCE_ITANIUM'):
         if not re.search(r'^#define\s+' + declaration + r'\s*$', config, re.M):
@@ -95,11 +107,19 @@ def prepare_libcxx_units(edg, acquisition, libc_arguments):
     units, inputs = [], []
     selected = [(upstream / 'src' / name, 'src/' + name) for name in UPSTREAM_SOURCES]
     selected += [(adapter / name, 'adapter/' + name) for name in adapter_names]
+    selected.append((adapter / 'abi_typeinfo.cpp', 'adapter/abi_typeinfo.cpp'))
     for source, key in selected:
         if key.startswith('src/') and pin['archiveRoot'] + '/' + key not in verified:
             raise ValueError('Selected libc++ source is not recorded: ' + key)
+        unit_arguments = list(arguments)
+        if key in ('adapter/abi_typeinfo.cpp', 'src/typeinfo.cpp'):
+            # Actual empty/noexcept key destructors need no source unwind
+            # machinery. Declare standard delete before lowering those bodies,
+            # avoiding an implicit declaration with an unknown throw policy.
+            unit_arguments = ['--no_exceptions' if item == '--exceptions' else item for item in unit_arguments]
+            unit_arguments += ['--preinclude', str(upstream / 'include/new')]
         units.append(dict(id='libcxx:' + key, source=str(source), standard='c++20',
-                          arguments=list(arguments), role='libcxx'))
+                          arguments=unit_arguments, role='libcxx'))
         inputs.append(dict(path=str(source), sha256=sha(source)))
     receipt = dict(schema=1, kind='independent-original-source-libcxx-provider',
                    release=pin['release'], standard='c++20',
@@ -109,6 +129,10 @@ def prepare_libcxx_units(edg, acquisition, libc_arguments):
                    acquisition=dict(path=str(acquired_path), sha256=sha(acquired_path)),
                    cmake=dict(path=str(cmake_path), sha256=sha(cmake_path)),
                    adapterPins=dict(path=str(core_path), sha256=sha(core_path)),
+                   rttiProvider=dict(profile=dict(path=str(rtti_path), sha256=sha(rtti_path)),
+                                     sourceInputs=rtti_inputs,
+                                     exceptionMode='explicit --no_exceptions for RTTI key destructors only',
+                                     deallocatorDeclarations=str(upstream / 'include/new')),
                    preinclude=dict(path=str(adapter / 'core-source-preamble.h'), sha256=adapter_pins['core-source-preamble.h']),
                    sourceInputs=inputs, inputHashes=verified,
                    replacements=REPLACEMENTS,

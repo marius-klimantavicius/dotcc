@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-08",
+  "status": "real-rtti-provider-virtual-execution-passed",
+  "checks": {
+    "providerSelectionAndProvenance": 18,
+    "nativeJitNativeAotVirtualAndLayout": 15
+  },
+  "receipts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-libcxx-provider-acceptance-003/results.json",
+      "sha256": "721176593f9f8eed8399dc4c188875cc421221cb3d0b6fe5c868724a51618093"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-rtti-virtual-acceptance-006/results.json",
+      "sha256": "16c08c42018fca5fd8ce17579355e1f670d6a40d0bdcfd064713b1f3058482a4"
+    }
+  ],
+  "sourceProvider": "Actual EDG ABI RTTI classes/key destructors plus LLVM original typeinfo.cpp; no fabricated storage or native ABI runtime",
+  "exceptionMode": "Explicit --no_exceptions for the two destructor-only providers; other libc++ sources retain exception support",
+  "limitations": [
+    "Does not establish dynamic_cast, public typeid/fundamental RTTI objects, source EH or exception matching.",
+    "Windows/macOS runtime execution is unverified.",
+    "Runtime/typeinfo provider contains no native function-pointer ABI compatibility promise."
+  ]
+}

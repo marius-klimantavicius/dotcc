@@ -119,6 +119,29 @@ An unresolved arbitrary class RTTI symbol must remain a link error. Vtable
 RTTI relocations, public type-info references and EH matchers must all refer to
 the same linker-owned identity.
 
+The owned-object pipeline now supplies real class RTTI vtables by translating
+`backend/runtime/libcxx/abi_typeinfo.cpp`: EDG's existing `cxxabi.h` implementation
+classes and the actual key destructor definitions from `lib_src/typeinfo.c`.
+LLVM's original `src/typeinfo.cpp` supplies the base `std::type_info` destructor.
+These are ordinary source-provider objects with real function relocations and
+storage; no placeholder vtable cells or native ABI library are supplied.
+
+`object-linker/libcxx-rtti-profile.json` pins the adapter and its authoritative
+EDG source/header. The libc++ manifest now selects 56 original/provider units.
+Only the two RTTI destructor providers use explicit `--no_exceptions`; their
+empty/nonthrowing bodies need no source exception implementation. They preinclude
+LLVM `<new>` so generated deleting destructors bind against declared standard
+deallocator signatures. All other libc++ units retain their exception policy.
+
+`tests/rtti_provider_verify.py` verifies actual virtual dispatch, derived/base
+destruction, null/non-null delete, ordinary derived copies, multiple and empty
+base layouts with native, JIT and NativeAOT execution. It requires the real class
+and single-inheritance RTTI key functions to be selected and rejects unresolved
+storage providers. This does not establish `dynamic_cast`, public `typeid`,
+fundamental RTTI definitions or EH matching. Those still require their own owned
+identity and lifetime tests; the direct backend's opaque-token scheme is not
+automatically applied to these real RTTI objects.
+
 ## Independent-TU acceptance
 
 `object-linker/tests/cpp_cross_unit_verify.py --fixture exceptions` compiles provider, bridge
