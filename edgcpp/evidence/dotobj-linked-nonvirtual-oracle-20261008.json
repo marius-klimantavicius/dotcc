@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-08",
+  "status": "native-oracles-passed-export-pending",
+  "scope": "Independent-TU nonvirtual subobject layout, complete/base copies and normal destruction oracle",
+  "checks": 6,
+  "managedExecutionVerified": false,
+  "nativeAotVerified": false,
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-nonvirtual-acceptance-002/results.json",
+    "sha256": "83a2a2bafec25b23ef8078971ed34405fad977521e7f25df0490d2bf4018b785"
+  },
+  "pending": [
+    {
+      "gate": "provider-owned-export",
+      "diagnostic": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-nonvirtual-acceptance-002/inputs/cpp_linked_nonvirtual_provider.cpp:14:6: dot_gen_be: unsupported dotobj scalar-v17: base/subobject execution layout is not represented (kind -1) in file scope\n"
+    },
+    {
+      "gate": "main-owned-export",
+      "diagnostic": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-nonvirtual-acceptance-002/inputs/cpp_linked_nonvirtual_main.cpp:4:17: dot_gen_be: unsupported dotobj scalar-v17: base/subobject execution layout is not represented (kind -1) in dotobj function main\n"
+    }
+  ],
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "limitations": [
+    "Native O0/O2 execution and stock C generation only; owned exports reject unrepresented layout/lifetime requirements"
+  ]
+}

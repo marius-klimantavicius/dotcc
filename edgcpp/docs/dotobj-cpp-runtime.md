@@ -121,7 +121,7 @@ the same linker-owned identity.
 
 ## Independent-TU acceptance
 
-`object-linker/tests/cpp_linked_exceptions_verify.py` compiles provider, bridge
+`object-linker/tests/cpp_cross_unit_verify.py --fixture exceptions` compiles provider, bridge
 and consumer separately, retains stock-C lowering for each, and then attempts
 owned packaging/linking. Normal mode requires runnable managed output;
 `--allow-export-rejection` only records the current implementation gates.
@@ -132,7 +132,7 @@ destruction, multiple-inheritance dynamic casts, null pointer conversion,
 function-pointer noexcept conversion and multi-level pointer qualification.
 Native O0/O2 pass. Native025/managed020 rejects provider base/subobject layout
 and bridge/consumer destruction obligations. The retained receipt is
-`dotobj-linked-eh-acceptance-001/results.json` in the campaign directory; there
+`dotobj-linked-eh-acceptance-002/results.json` in the campaign directory; there
 is no managed execution claim for this fixture yet.
 
 After these operations execute, reuse the existing libc++ exception-pointer,

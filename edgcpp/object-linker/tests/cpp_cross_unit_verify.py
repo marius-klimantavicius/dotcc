@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cross-TU C++ exception/RTTI oracle and owned-object acceptance.
+"""Cross-TU C++ layout/exception oracles and owned-object acceptance.
 
 Research mode retains export gates without claiming managed execution. Normal
 mode requires the independently packaged objects to link and execute together.
@@ -21,15 +21,20 @@ def sha(path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--fixture', choices=('exceptions', 'nonvirtual'), default='exceptions')
     parser.add_argument('--output-dir', type=Path, required=True)
     parser.add_argument('--compiler', type=Path, required=True)
     parser.add_argument('--stock-compiler', type=Path, required=True)
     parser.add_argument('--linker', type=Path, required=True)
     parser.add_argument('--packager', type=Path, default=ROOT / 'compile.py')
     parser.add_argument('--allow-export-rejection', action='store_true')
+    parser.add_argument('--explicit-constructor-arguments', action='store_true',
+                        help='Nonvirtual layout variant without array default-argument adapters')
     parser.add_argument('--nativeaot', action='store_true')
     parser.add_argument('--rid', default='linux-x64')
     args = parser.parse_args()
+    if args.explicit_constructor_arguments and args.fixture != 'nonvirtual':
+        parser.error('--explicit-constructor-arguments requires --fixture nonvirtual')
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
     inputs = out / 'inputs'
@@ -39,13 +44,20 @@ def main():
     tools.mkdir()
     for name in ('compile.py', 'schema.sql'):
         shutil.copy2(args.packager.resolve().parent / name, tools / name)
-    for suffix in ('h', 'provider.cpp', 'bridge.cpp', 'main.cpp'):
-        name = 'cpp_linked_exceptions' + ('.' if suffix == 'h' else '_') + suffix
+    prefix = 'cpp_linked_' + args.fixture
+    roles = ('provider', 'bridge', 'main') if args.fixture == 'exceptions' else ('provider', 'main')
+    for suffix in ('h', *(role + '.cpp' for role in roles)):
+        name = prefix + ('.' if suffix == 'h' else '_') + suffix
         path = inputs / name
         shutil.copy2(ROOT / 'tests' / name, path)
+        if args.explicit_constructor_arguments:
+            source = path.read_text()
+            source = source.replace("TailDerived() : tail('d')", "TailDerived() : TailBase(11, 'b'), tail('d')")
+            source = source.replace('TailBase complete[2];', "TailBase complete[2] = {TailBase(11, 'b'), TailBase(11, 'b')};")
+            path.write_text(source)
         fixtures.append(dict(path=str(path), sha256=sha(path)))
-    sources = [inputs / ('cpp_linked_exceptions_' + name + '.cpp')
-               for name in ('provider', 'bridge', 'main')]
+    sources = [inputs / (prefix + '_' + name + '.cpp')
+               for name in roles]
 
     def run(name, command, cwd=out, may_reject=False):
         command = [str(item) for item in command]
@@ -68,16 +80,19 @@ def main():
         for optimization in ('0', '2'):
             binary = out / ('native-O' + optimization)
             run('native-build-O' + optimization,
-                ['c++', '-std=c++17', '-O' + optimization, *sources, '-o', binary])
+                ['c++', '-std=c++17', '-O' + optimization,
+                 *(['-fno-exceptions', '-fno-rtti'] if args.fixture == 'nonvirtual' else []),
+                 *sources, '-o', binary])
             run('native-run-O' + optimization, [binary])
         objects = []
+        exception_args = ['--exceptions', '--rtti'] if args.fixture == 'exceptions' else ['--no_exceptions', '--no_rtti']
         for source in sources:
-            name = source.stem.removeprefix('cpp_linked_exceptions_')
+            name = source.stem.removeprefix(prefix + '_')
             directory = out / name
             directory.mkdir()
             run(name + '-stock-c', [args.stock_compiler.resolve(), '--c++17',
                 '--gnu_version', '130300', '--clear_flag', 'use_predefined_macro_file',
-                '--instantiate', 'used', source], cwd=directory)
+                '--instantiate', 'used', *exception_args, source], cwd=directory)
             c_file = source.with_suffix('.int.c')
             if not c_file.is_file():
                 c_file = directory / source.with_suffix('.int.c').name
@@ -88,7 +103,7 @@ def main():
             obj = directory / 'unit.dotobj'
             if not run(name + '-owned-export', [sys.executable, '-B', tools / 'compile.py',
                 source, '--output', obj, '--work-dir', directory / 'work',
-                '--compiler', args.compiler.resolve(), '--std', 'c++17', '--exceptions', '--rtti'],
+                '--compiler', args.compiler.resolve(), '--std', 'c++17', *(['--exceptions', '--rtti'] if args.fixture == 'exceptions' else [])],
                 may_reject=args.allow_export_rejection):
                 diagnostic = directory / 'work/stderr'
                 if diagnostic.is_file():
@@ -98,6 +113,14 @@ def main():
             run(name + '-verify', ['dotnet', args.linker.resolve(), 'verify', obj])
             objects.append(obj)
         if not pending:
+            # Keep the source for review, but make every recorded original input path
+            # unavailable before linking. The linker must use the objects alone.
+            inputs.rename(out / 'retained-source')
+            for fixture in fixtures:
+                original = Path(fixture['path'])
+                if original.is_relative_to(inputs):
+                    fixture['originalPath'] = str(original)
+                    fixture['path'] = str(out / 'retained-source' / original.relative_to(inputs))
             generated = out / 'generated'
             run('link', ['dotnet', args.linker.resolve(), 'link', '--out', generated,
                         '--entry', 'main', '--allow-externs', *objects])
@@ -112,7 +135,9 @@ def main():
         error = str(failure)
     status = 'failed' if error else 'native-oracles-passed-export-pending' if pending else 'passed'
     result = dict(schema=1, status=status, error=error, checks=checks, commands=commands,
-                  fixtures=fixtures, pending=pending, managedExecutionVerified=status == 'passed',
+                  fixtures=fixtures, fixture=args.fixture,
+                  explicitConstructorArguments=args.explicit_constructor_arguments,
+                  pending=pending, managedExecutionVerified=status == 'passed',
                   nativeAotVerified=args.nativeaot and status == 'passed',
                   compiler=dict(path=str(args.compiler.resolve()), sha256=sha(args.compiler)),
                   stockCompiler=dict(path=str(args.stock_compiler.resolve()), sha256=sha(args.stock_compiler)),

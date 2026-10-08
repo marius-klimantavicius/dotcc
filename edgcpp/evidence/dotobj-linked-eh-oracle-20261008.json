@@ -6,13 +6,13 @@
   "managedExecutionVerified": false,
   "nativeAotVerified": false,
   "receipt": {
-    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-eh-acceptance-001/results.json",
-    "sha256": "c4b617891a8fdb05580270a8268366c36e3413d282424160cceddf18c57f6e56"
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-eh-acceptance-002/results.json",
+    "sha256": "97d942dfdc75107e5687f652d7a9f4d7983bc7d67db685e5c6c3ccf3e83fa459"
   },
   "pending": [
     {
       "gate": "provider-owned-export",
-      "diagnostic": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-eh-acceptance-001/inputs/cpp_linked_exceptions_provider.cpp:10:10: dot_gen_be: unsupported dotobj scalar-v17: base/subobject execution layout is not represented (kind -1) in file scope\n"
+      "diagnostic": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-eh-acceptance-002/inputs/cpp_linked_exceptions_provider.cpp:10:10: dot_gen_be: unsupported dotobj scalar-v17: base/subobject execution layout is not represented (kind -1) in file scope\n"
     },
     {
       "gate": "bridge-owned-export",
@@ -27,7 +27,6 @@
     "linux-x64"
   ],
   "limitations": [
-    "Native O0/O2 execution and stock C generation only; owned exports reject unrepresented layout/lifetime requirements",
-    "No libc++ exception_ptr execution claimed"
+    "Native O0/O2 execution and stock C generation only; owned exports reject unrepresented layout/lifetime requirements"
   ]
 }
