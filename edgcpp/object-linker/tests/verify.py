@@ -59,7 +59,7 @@ def main():
         shutil.copy2(ROOT / 'tests/records.cpp', inputs / ('records' + ('-c' if extension == '.c' else '') + extension))
         shutil.copy2(ROOT / 'tests/record_provider.cpp', inputs / ('record-provider' + ('-c' if extension == '.c' else '') + extension))
     shutil.copy2(ROOT / 'tests/record_fixture.h', inputs / 'record_fixture.h')
-    for name in ['storage_fixture.h', 'storage_provider.c', 'storages.c', 'project_c_runtime.c', 'project_c_intrinsics.c', 'project_c_record_values.c', 'project_c_record_array_values.c']:
+    for name in ['storage_fixture.h', 'storage_provider.c', 'storages.c', 'project_c_runtime.c', 'project_c_intrinsics.c', 'project_c_record_values.c', 'project_c_record_array_values.c', 'project_c_aggregate_initializers.c', 'project_c_function_designators.c', 'project_c_bitfield_values.c', 'goto_entries.c', 'project_c_nested_switch.c']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
     checks = []
 

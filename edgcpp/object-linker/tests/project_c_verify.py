@@ -5,7 +5,9 @@ import sqlite3
 def verify(inputs, out, tool, run, check, compile_source, link, execute):
     objects = {}
     for name in ['project_c_runtime', 'project_c_intrinsics',
-                 'project_c_record_values', 'project_c_record_array_values']:
+                 'project_c_record_values', 'project_c_record_array_values',
+                 'project_c_aggregate_initializers', 'project_c_function_designators',
+                 'project_c_bitfield_values', 'goto_entries', 'project_c_nested_switch']:
         source = inputs / (name + '.c')
         obj = compile_source(name, source, std='c11')
         run(name + '-native-build', ['cc', '-std=c11', '-O2', source, '-o', out / (name + '-native')])

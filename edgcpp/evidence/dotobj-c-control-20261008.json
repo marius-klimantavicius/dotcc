@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-08",
+  "profile": "scalar-control-v12",
+  "platform": "linux-x64",
+  "checks": 40,
+  "status": "passed",
+  "scope": [
+    "Nested automatic aggregate initialization",
+    "Function designators and callback returns",
+    "Nested source switch labels with explicit owner",
+    "Bitfield value/promoted arithmetic",
+    "C lexical goto entries"
+  ],
+  "artifacts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native012-fixtures/acceptance.json",
+      "sha256": "e414e9304195680ec578f20e832a38b4611cf6f330e92e1f2776f919c2c01a57"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native012-fixtures/cpfe-dot",
+      "sha256": "91905055a1c61c56db9f0a6407ef6b9cc1e77b1f82c2c4ba1122aeddb037ef29"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-009/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "5f5d88d08d0a0f25dab5e5a71dfd9bfe3163c1ad43f1602795c3d1a233ddbc59"
+    }
+  ],
+  "limitations": [
+    "Full SQLite still blocked on folded aggregate constants",
+    "DuckDB C++ records/lifetimes incomplete",
+    "v13 synthetic locals and binary80 in progress separately"
+  ]
+}

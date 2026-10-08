@@ -105,3 +105,11 @@ source semantic indexing, C++ object/lifetime/EH semantics and project execution
 remain required. All artifacts are retained beneath
 `/mnt/storage/dotcc-edg-campaign-20261003`; the hashed milestone receipt links
 exact tools and results.
+
+
+Native012 and managed009 subsequently pass 40 focused native/JIT/NativeAOT
+checks covering nested automatic aggregates, callback return/designator shapes,
+source switch labels nested in lexical blocks/loops, bitfield arithmetic and
+scope-entering C gotos. Ordinary source switches remain structured. SQLite now
+passes the large VDBE switch and reaches a folded aggregate constant in
+sqlite3ExprListAppend. [Hashed evidence](../evidence/dotobj-c-control-20261008.json).

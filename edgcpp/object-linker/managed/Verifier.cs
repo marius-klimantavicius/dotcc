@@ -246,37 +246,56 @@ internal static class Verifier
                     if (switchBody.Kind != "block") Fail("Switch body must be a block");
                     bool labeled = false, hasDefault = false;
                     var caseValues = new HashSet<string>();
+                    var discovered = new List<Node>();
+                    var scanned = new HashSet<long>();
+                    void FindCases(Node current, int scanDepth)
+                    {
+                        if (scanDepth > 1024 || !scanned.Add(current.Id)) Fail("Cyclic or excessively nested switch body");
+                        if (current.Kind == "switch") return;
+                        if (current.Kind == "case") { discovered.Add(current); return; }
+                        foreach (Edge childEdge in body.Edges.GetValueOrDefault(current.Id, []))
+                            if (childEdge.Role != "target" && StatementKinds.Contains(body.Nodes[childEdge.ChildId].Kind))
+                                FindCases(body.Nodes[childEdge.ChildId], scanDepth + 1);
+                    }
+                    FindCases(switchBody, 0);
+                    HashSet<long> immediateCases = body.Children(switchBody.Id, "statement").Select(edge => body.Nodes[edge.ChildId])
+                        .Where(item => item.Kind == "case").Select(item => item.Id).ToHashSet();
+                    foreach (Node item in discovered)
+                    {
+                        switchCases.Add(item.Id);
+                        EdgeShape(item, ("value", 0, 1), ("target", 0, 1));
+                        if (body.Children(item.Id, "target").Any() && body.Child(item.Id, "target").Id != node.Id)
+                            Fail("Case target is not its enclosing switch");
+                        if (!immediateCases.Contains(item.Id)) body.RequiresFlatControl = true;
+                        if (body.Children(item.Id, "value").Any())
+                        {
+                            Node value = body.Child(item.Id, "value");
+                            if (value.Kind != "constant" || !ScalarTypes.IsInteger(Type(value)) ||
+                                !ScalarTypes.IsConstant(Type(value), value.ConstantText)) Fail("Case value must be an integer constant");
+                            string converted = ScalarTypes.SwitchConstant(Type(value), value.ConstantText!, selectorType);
+                            if (!caseValues.Add(converted)) Fail("Duplicate converted switch case value");
+                        }
+                        else if (hasDefault) Fail("Duplicate default label");
+                        else hasDefault = true;
+                    }
                     foreach (Edge edge in body.Children(switchBody.Id, "statement"))
                     {
                         Node item = body.Nodes[edge.ChildId];
                         if (item.Kind == "register-cleanup") Fail("Cleanup registration cannot be bypassed by switch dispatch");
-                        if (item.Kind == "case")
-                        {
-                            labeled = true;
-                            switchCases.Add(item.Id);
-                            EdgeShape(item, ("value", 0, 1));
-                            if (body.Children(item.Id, "value").Any())
-                            {
-                                Node value = body.Child(item.Id, "value");
-                                if (value.Kind != "constant" || !ScalarTypes.IsInteger(Type(value)) ||
-                                    !ScalarTypes.IsConstant(Type(value), value.ConstantText)) Fail("Case value must be an integer constant");
-                                string converted = ScalarTypes.SwitchConstant(Type(value), value.ConstantText!, selectorType);
-                                if (!caseValues.Add(converted)) Fail("Duplicate converted switch case value");
-                            }
-                            else if (hasDefault) Fail("Duplicate default label");
-                            else hasDefault = true;
-                        }
+                        if (item.Kind == "case") labeled = true;
                         else if (item.Kind == "declare")
                         {
-                            if (labeled || body.Children(item.Id, "initializer").Any())
-                                Fail("Switch declarations must precede labels and have no initializer");
+                            if (labeled || body.Children(item.Id, "initializer").Any()) body.RequiresFlatControl = true;
                         }
-                        else if (!labeled) Fail("Executable statement before first switch case");
+                        else if (!labeled) body.RequiresFlatControl = true;
                     }
                     break;
                 case "case":
-                    if (!switchCases.Contains(node.Id)) Fail("Case label is not an immediate switch body child");
-                    EdgeShape(node, ("value", 0, 1));
+                    if (!switchCases.Contains(node.Id)) Fail("Case label is not owned by a switch");
+                    EdgeShape(node, ("value", 0, 1), ("target", 0, 1));
+                    long nearestSwitch = controls.LastOrDefault(id => body.Nodes[id].Kind == "switch");
+                    if (nearestSwitch == 0 || body.Children(node.Id, "target").Any() && Child(node, "target").Id != nearestSwitch)
+                        Fail("Case ownership does not match its enclosing switch");
                     break;
                 case "break":
                 case "continue":
@@ -554,7 +573,7 @@ internal static class Verifier
                     break;
             }
             var nestedControls = node.Kind is "while" or "for" or "do-while" or "switch" ? new List<long>(controls) { node.Id } : controls;
-            foreach (Edge edge in body.Edges.GetValueOrDefault(node.Id, []).OrderBy(e => e.Ordinal))
+            foreach (Edge edge in body.Edges.GetValueOrDefault(node.Id, []).Where(edge => node.Kind != "case" || edge.Role != "target").OrderBy(e => e.Ordinal))
                 Visit(body.Nodes[edge.ChildId], scopes, visible, nestedControls, depth + 1);
         }
         foreach (var edges in body.Edges.Values)
@@ -569,6 +588,7 @@ internal static class Verifier
             if (targetScopes!.Length > scopes.Length || !targetScopes.SequenceEqual(scopes.Take(targetScopes.Length)))
                 body.RequiresFlatControl = true;
         }
+        if (body.RequiresFlatControl && cleanupBindings.Count != 0) Fail("Entries into source regions with lexical cleanup require explicit lifetime exits");
         if (visited.Count != body.Nodes.Count) Fail("Orphan executable nodes");
         if (declarations.Count != body.Bindings.Values.Count(binding => binding.Kind == "local")) Fail("Local has no declaration");
     }

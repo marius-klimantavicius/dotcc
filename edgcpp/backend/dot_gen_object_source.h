@@ -6,6 +6,7 @@
 // the published object contains IDs, owned strings and copied positions.
 #include <cstdlib>
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 #include "fe_common.h"
@@ -66,6 +67,7 @@ struct State {
   std::map<a_routine_ptr,Function> functions;
   std::map<a_variable_ptr,Declaration> variables;
   std::map<a_type_ptr,Record> records;
+  std::set<a_type_ptr> capturing_records;
 };
 inline State &state(){static State value;return value;}
 inline std::string spelling(const a_source_correspondence &source) {
@@ -81,6 +83,11 @@ inline unsigned capture_type(a_type_ptr t);
 inline void capture_record(a_type_ptr t) {
   auto &s=state();auto old=s.records.find(t);
   if(old!=s.records.end() && (old->second.size || t->incomplete))return;
+  if(!s.capturing_records.insert(t).second)return;
+  struct CaptureGuard {
+    State &state; a_type_ptr type;
+    ~CaptureGuard(){state.capturing_records.erase(type);}
+  } guard{s,t};
   // Reserve first: self pointers and mutually recursive pointer fields are
   // ordinary nominal record references, not infinitely expanded structures.
   s.records[t]=Record{};
@@ -116,7 +123,9 @@ inline void capture_record(a_type_ptr t) {
 #endif
   if(c.max_member_alignment)value.error="packed record alignment";
   if(extra && extra->has_field_initializer)value.error="record default member initializer";
-  if(!value.error.empty()){s.records[t]=value;return;}
+  // Unsupported execution layout does not erase the original member index.
+  // Keep its typed source declarations for the independent semantic index;
+  // the execution writer still rejects value.error before publishing layouts.
   for(auto f=c.field_list;f;f=f->next) {
     RecordField field;field.il=f;field.name=spelling(f->source_corresp);field.offset=f->offset;
     field.position=f->source_corresp.decl_position;

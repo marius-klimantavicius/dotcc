@@ -309,7 +309,7 @@ struct Writer {
     auto prior=source_labels.find(label);if(prior!=source_labels.end())return prior->second;
     unsigned id=next_node++;source_labels[label]=id;return id;
   }
-  std::map<a_statement_ptr,a_statement_ptr> switch_cases;
+  std::map<a_statement_ptr,unsigned> switch_cases;
   string number(unsigned value){return value?std::to_string(value):"null";}
   unsigned pointer_type(unsigned pointee) {
     auto prior=pointer_types.find(pointee);if(prior!=pointer_types.end())return prior->second;
@@ -862,8 +862,14 @@ struct Writer {
       return node("binding",ty,e->position,0,it->second,"","","place","none");
     }
     if(e->kind==enk_routine) {
-      unsigned pointer=pointer_type(ty);
-      return node("function-address",pointer,e->position,routine(e->variant.routine.ptr),0,"","","value","none");
+      auto target=e->variant.routine.ptr;
+      unsigned signature=routine_type(skip_typerefs(target->type));
+      unsigned pointer=pointer_type(signature);
+      // A routine expression can already include function-to-pointer decay
+      // (e.g. return callback_name). Its entity signature owns exactly one
+      // pointer layer independently of that contextual expression type.
+      if(ty!=signature && ty!=pointer)reject("routine designator signature mismatch");
+      return node("function-address",pointer,e->position,routine(target),0,"","","value","none");
     }
     if(e->kind!=enk_operation)reject("expression",e->kind);
     auto &operation=e->variant.operation;
@@ -925,7 +931,32 @@ struct Writer {
       }
       unsigned id=node(direct?"call":"indirect-call",ty,e->position,direct?routine(a->variant.routine.ptr):0,0,"","","value",order),ordinal=0;
       if(!direct)edge(id,"operand",0,expression(a));
-      for(auto arg=b;arg;arg=arg->next)edge(id,"argument",ordinal++,expression(arg));
+      auto callee_type=skip_typerefs(a->type);
+      if(callee_type->kind==tk_pointer)callee_type=skip_typerefs(callee_type->variant.pointer.type);
+      auto formal=callee_type->kind==tk_routine?callee_type->variant.routine.extra_info->param_type_list:nullptr;
+      bool builtin=direct && is_gnu_builtin_function(a->variant.routine.ptr);
+      for(auto arg=b;arg;arg=arg->next) {
+        unsigned argument=expression(arg);
+        if(builtin && formal) {
+          // Some polymorphic GNU atomics retain their argument types. The C
+          // backend emits the call against its typed builtin prototype, which
+          // supplies these standard conversions. Own them explicitly rather
+          // than weakening the managed call signature verifier.
+          auto target=skip_typerefs(formal->type),source=skip_typerefs(arg->type);
+          if(target->kind==tk_integer && target->variant.integer.bool_type &&
+             !(source->kind==tk_integer && source->variant.integer.bool_type)) {
+            if(source->kind!=tk_integer && source->kind!=tk_float && source->kind!=tk_pointer)
+              reject("builtin bool argument outside scalar domain");
+            unsigned converted=node("binary",type_id(formal->type),arg->position,0,0,"ne","","value","left-to-right");
+            edge(converted,"left",0,argument);edge(converted,"right",0,zero_node(type_id(arg->type),arg->position));argument=converted;
+          } else if(target->kind==tk_pointer && source->kind==tk_pointer &&
+                    skip_typerefs(target->variant.pointer.type)->kind==tk_void && type_id(formal->type)!=type_id(arg->type)) {
+            unsigned converted=node("convert",type_id(formal->type),arg->position,0,0,"","","value","left-to-right");
+            edge(converted,"operand",0,argument);argument=converted;
+          }
+        }
+        edge(id,"argument",ordinal++,argument);if(formal)formal=formal->next;
+      }
       return id;
     }
     const char *compound=nullptr;
@@ -969,8 +1000,14 @@ struct Writer {
       unsigned result=node("dereference",ty,e->position,0,0,"","","place","none");
       edge(result,"operand",0,cast);return result;
     }
-    if(operation.kind==eok_indirect && a && !b && skip_typerefs(e->type)->kind==tk_routine)
-      return expression(a); // A function designator is not a data-memory load.
+    if(operation.kind==eok_indirect && a && !b && function_pointer(a->type)) {
+      // C's *function_pointer designates that same function. EDG can retain
+      // its decayed pointer result, so inspect the operand as the existing dot
+      // backend does, not only whether the result still has tk_routine kind.
+      unsigned source=type_id(a->type);
+      if(ty!=source && pointer_type(ty)!=source)reject("function designator representation mismatch");
+      return expression(a);
+    }
     if(operation.kind==eok_address_of && a && !b && a->kind==enk_routine)
       return node("function-address",ty,e->position,routine(a->variant.routine.ptr),0,"","","value","none");
     if(operation.kind==eok_address_of && a && !b && skip_typerefs(a->type)->kind==tk_routine)
@@ -1172,49 +1209,115 @@ struct Writer {
     edge(id,"target",0,node("binding",type_id(variable->type),position,0,binding_ids.at(variable),"","","place","none"));
     array_initializer(id,ordinal,variable->type,value,0,position);return id;
   }
-  unsigned record_place(a_variable_ptr variable,const std::vector<a_field_ptr> &path,const a_source_position &pos) {
+  struct initializer_step {
+    a_field_ptr field;
+    a_type_ptr type;
+    unsigned long long index;
+  };
+  using initializer_path=std::vector<initializer_step>;
+  unsigned record_place(a_variable_ptr variable,const initializer_path &path,const a_source_position &pos) {
     unsigned target=node("binding",type_id(variable->type),pos,0,binding_ids.at(variable),"","","place","none");
-    for(auto field:path) {
-      unsigned member=node("member",type_id(field->type),pos,0,0,"","","place","none",field_ids.at(field));
-      edge(member,"operand",0,target);target=member;
+    for(const auto &step:path) {
+      if(step.field) {
+        unsigned member=node("member",type_id(step.type),pos,0,0,"","","place","none",field_ids.at(step.field));
+        edge(member,"operand",0,target);target=member;
+      } else {
+        unsigned pointer=pointer_type(type_id(step.type));
+        unsigned decay=node("array-decay",pointer,pos,0,0,"","","value","none");edge(decay,"operand",0,target);
+        unsigned index=node("constant",9,pos,0,0,"",std::to_string(step.index),"value","none");
+        unsigned add=node("binary",pointer,pos,0,0,"pointer-add","","value","left-to-right");
+        edge(add,"left",0,decay);edge(add,"right",0,index);
+        target=node("dereference",type_id(step.type),pos,0,0,"","","place","none");edge(target,"operand",0,add);
+      }
     }
     return target;
   }
   void record_store(unsigned block,unsigned &ordinal,a_variable_ptr variable,
-                    const std::vector<a_field_ptr> &path,unsigned value,const a_source_position &pos) {
-    auto type=path.empty()?variable->type:path.back()->type;
+                    const initializer_path &path,unsigned value,const a_source_position &pos) {
+    auto type=path.empty()?variable->type:path.back().type;
     unsigned assign=node("assign",type_id(type),pos,0,0,"","","value","right-to-left");
     edge(assign,"target",0,record_place(variable,path,pos));edge(assign,"value",0,value);
     unsigned statement=node("expr-stmt",0,pos);edge(statement,"value",0,assign);
     edge(block,"statement",ordinal++,statement);
   }
   void record_initializer(unsigned block,unsigned &ordinal,a_variable_ptr variable,a_type_ptr type,
-                          a_constant_ptr value,std::vector<a_field_ptr> &path,const a_source_position &pos) {
+                          a_constant_ptr value,initializer_path &path,const a_source_position &pos) {
     type=skip_typerefs(type);
     if(value && value->kind==ck_dynamic_init) {
       auto d=value->variant.dynamic_init.ptr;if(d->destructor)reject("record member destruction");
       if(d->kind==dik_constant || d->kind==dik_nonconstant_aggregate)value=d->variant.constant.ptr;
       else if(d->kind==dik_zero)value=nullptr;
-      else if(d->kind==dik_expression && type->kind!=tk_struct && type->kind!=tk_array) {
+      else if(d->kind==dik_expression && type->kind!=tk_array && copyable_value(type)) {
         record_store(block,ordinal,variable,path,expression(d->variant.expression),pos);return;
       } else reject("record member dynamic initializer",d->kind);
     }
     if(type->kind==tk_array) {
-      unsigned id=node("array-init",0,pos),element=0;
-      edge(id,"target",0,record_place(variable,path,pos));
-      array_initializer(id,element,type,value,0,pos);edge(block,"statement",ordinal++,id);return;
+      // The complete local was zeroed first. Keep compact array-init payloads
+      // for scalar arrays reached exclusively through named record fields.
+      bool indexed=false;for(const auto &step:path)if(!step.field)indexed=true;
+      auto leaf=array_leaf(type);
+      if(!indexed && leaf->kind!=tk_struct && leaf->kind!=tk_union && leaf->kind!=tk_class) {
+        unsigned id=node("array-init",0,pos),element=0;
+        edge(id,"target",0,record_place(variable,path,pos));
+        array_initializer(id,element,type,value,0,pos);edge(block,"statement",ordinal++,id);return;
+      }
+      if(!value)return;
+      auto element=skip_typerefs(type->variant.array.element_type);
+      auto stride=leaf_count(element),total=leaf_count(type);
+      if(value->kind==ck_string) {
+        if(element->kind!=tk_integer || element->size!=1 || value->variant.string.length>total)
+          reject("nested string initializer outside bounded byte array");
+        for(unsigned long long index=0;index<value->variant.string.length;++index) {
+          unsigned char byte=(unsigned char)value->variant.string.value[index];
+          int numeric=type_id(element)==4 && byte>=128?(int)byte-256:byte;
+          path.push_back({nullptr,element,index});
+          record_store(block,ordinal,variable,path,node("constant",type_id(element),pos,0,0,"",std::to_string(numeric),"value","none"),pos);
+          path.pop_back();
+        }
+        return;
+      }
+      if(value->kind!=ck_aggregate)reject("record array initializer outside aggregate",value->kind);
+      unsigned long long cursor=0;
+      for(auto item=value->variant.aggregate.first_constant;item;item=item->next) {
+        if(item->kind==ck_designator) {
+          if(item->variant.designator.is_generic || item->variant.designator.is_field_designator ||
+             !item->next || item->next->kind==ck_designator)reject("record array initializer designator");
+          auto index=item->variant.designator.variant.array_element;
+          if(index>=type->variant.array.variant.number_of_elements)reject("record array initializer designator bounds");
+          cursor=index*stride;item=item->next;
+        }
+        auto part=item;unsigned long long repetitions=1;
+        if(item->kind==ck_init_repeat) {
+          part=item->variant.init_repeat.constant;repetitions=item->variant.init_repeat.count;
+          if(!repetitions || dynamic_constant(part))reject("effectful/empty repeated record array initializer");
+        }
+        a_type_ptr item_type=element;unsigned long long width=stride;
+        if(item->kind==ck_init_repeat && part->type && skip_typerefs(part->type)->size!=element->size) {
+          item_type=leaf;width=1;
+          if(skip_typerefs(part->type)->size!=leaf->size)reject("record array repetition representation mismatch");
+        }
+        if(cursor>total || repetitions>(total-cursor)/width || cursor%width)reject("record array initializer bounds/alignment");
+        for(unsigned long long repeat=0;repeat<repetitions;++repeat) {
+          size_t depth=path.size();auto current=type;auto offset=cursor;
+          do {
+            auto child=skip_typerefs(current->variant.array.element_type);auto child_width=leaf_count(child);
+            path.push_back({nullptr,child,offset/child_width});offset%=child_width;current=child;
+          } while(current->kind==tk_array && current!=item_type);
+          if(current!=item_type || offset)reject("record array initializer element depth");
+          record_initializer(block,ordinal,variable,item_type,part,path,pos);path.resize(depth);cursor+=width;
+        }
+      }
+      return;
     }
-    if(type->kind!=tk_struct) {
+    if(type->kind!=tk_struct && type->kind!=tk_union && type->kind!=tk_class) {
       if(value)record_store(block,ordinal,variable,path,constant_node(value,pos),pos);
       return;
     }
-    // Like c_gen_be::dump_initializer_part, iterate the actual fields and
-    // apply field designators before consuming the corresponding initializer.
-    // A zero aggregate supplies omitted members, independently of later stores.
-    record_store(block,ordinal,variable,path,zero_node(type_id(type),pos),pos);
+    // Match c_gen_be::dump_initializer_part: unnamed bit fields and empty
+    // subobjects consume no initializer. A union initializes one active field.
     if(!value)return;
     if(value->kind!=ck_aggregate)reject("record initializer outside aggregate",value->kind);
-    auto field=type->variant.class_struct_union.field_list;
+    auto field=next_non_empty_initializable_field(type->variant.class_struct_union.field_list);
     for(auto item=value->variant.aggregate.first_constant;item;item=item->next) {
       if(item->kind==ck_designator) {
         if(item->variant.designator.is_generic || !item->variant.designator.is_field_designator ||
@@ -1222,14 +1325,34 @@ struct Writer {
         field=item->variant.designator.variant.field;item=item->next;
       }
       if(!field || !field_ids.count(field) || parent_class_of(field)!=type)reject("record initializer field");
-      path.push_back(field);record_initializer(block,ordinal,variable,field->type,item,path,pos);path.pop_back();
-      field=field->next;
+      path.push_back({field,field->type,0});record_initializer(block,ordinal,variable,field->type,item,path,pos);path.pop_back();
+      field=type->kind==tk_union?nullptr:next_non_empty_initializable_field(field->next);
     }
   }
+  bool contains_volatile_storage(a_type_ptr type) {
+    if(get_type_qualifiers(type)&TQ_VOLATILE)return true;
+    auto t=skip_typerefs(type);
+    if(t->kind==tk_array)return contains_volatile_storage(t->variant.array.element_type);
+    if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
+      if(t->variant.class_struct_union.any_volatile_member)return true;
+      for(auto field=t->variant.class_struct_union.field_list;field;field=field->next)
+        if(contains_volatile_storage(field->type))return true;
+    }
+    return false;
+  }
   unsigned initialize_aggregate(a_variable_ptr variable,a_constant_ptr value,const a_source_position &pos) {
-    if(skip_typerefs(variable->type)->kind==tk_array)return initialize_array(variable,value,pos);
-    unsigned block=node("block",0,pos),ordinal=0;std::vector<a_field_ptr> path;
-    record_initializer(block,ordinal,variable,variable->type,value,path,pos);return block;
+    // Source volatile accesses already have explicit volatile-place nodes.
+    // Bulk default/array initialization cannot substitute for the observable
+    // stores required by volatile subobjects; reject until those are owned.
+    if(contains_volatile_storage(variable->type))reject("automatic aggregate initialization with volatile subobjects");
+    auto type=skip_typerefs(variable->type),leaf=array_leaf(type);
+    if(type->kind==tk_array && leaf->kind!=tk_struct && leaf->kind!=tk_class && leaf->kind!=tk_union)
+      return initialize_array(variable,value,pos);
+    unsigned block=node("block",0,pos),ordinal=0;initializer_path path;
+    if(type->kind==tk_array) {
+      unsigned zero=node("array-init",0,pos);edge(zero,"target",0,record_place(variable,path,pos));edge(block,"statement",ordinal++,zero);
+    } else record_store(block,ordinal,variable,path,zero_node(type_id(type),pos),pos);
+    record_initializer(block,ordinal,variable,type,value,path,pos);return block;
   }
   void loop_body(unsigned id,a_statement_ptr s,a_statement_ptr body) {
     // The stock C backend emits these compiler-generated targets as gotos.
@@ -1370,27 +1493,23 @@ struct Writer {
         auto body=s->variant.switch_stmt.body_statement;
         if(!body || body->kind!=stmk_block)reject("switch body outside block profile");
         auto descriptor=s->variant.switch_stmt.extra_info;
-        auto expected=descriptor->cases;
-        bool labeled=false;
-        // Keep the lexical switch body instead of the legacy emitter's
-        // source_switch_items flattening. Flattening nested blocks would lose
-        // binding scopes. Case labels inside blocks/control statements require
-        // additional dispatch semantics and are deliberately rejected below.
-        for(auto child=body->variant.block.statements;child;child=child->next) {
-          if(child->kind==stmk_switch_case) {
-            auto c=child->variant.switch_case.extra_info;
-            if(child->variant.switch_case.switch_statement!=s || c!=expected || c->stmt!=child)
-              reject("switch case descriptor ownership/order");
-#if GNU_EXTENSIONS_ALLOWED
-            if(c->range_end)reject("GNU switch case range");
-#endif
-            if(!c->case_value && descriptor->default_case!=c)reject("switch default descriptor");
-            switch_cases[child]=s;expected=expected->next;labeled=true;
-          } else if(!labeled && child->kind!=stmk_decl && child->kind!=stmk_empty)
-            reject("executable statement before first switch case");
-        }
-        if(expected)reject("switch case nested below switch body");
         unsigned id=node("switch",0,s->position);
+        // Match c_gen_be::dump_switch_case: each descriptor owns its actual
+        // lexical statement. C permits cases inside nested blocks/loops, so
+        // the immediate body list need not match descriptor source order.
+        // Keep lexical scopes; the managed emitter owns required dispatch.
+        std::set<a_switch_case_entry_ptr> seen;
+        for(auto entry=descriptor->cases;entry;entry=entry->next) {
+          auto child=entry->stmt;
+          if(!seen.insert(entry).second || !child || child->kind!=stmk_switch_case ||
+             child->variant.switch_case.switch_statement!=s || child->variant.switch_case.extra_info!=entry ||
+             switch_cases.count(child))reject("switch case descriptor ownership");
+#if GNU_EXTENSIONS_ALLOWED
+          if(entry->range_end)reject("GNU switch case range");
+#endif
+          if(!entry->case_value && descriptor->default_case!=entry)reject("switch default descriptor");
+          switch_cases[child]=id;
+        }
         edge(id,"condition",0,expression(s->expr));
         auto labels=source_context(s,body,false);
         if(labels.break_target) {
@@ -1403,8 +1522,9 @@ struct Writer {
         controls.pop_back();return id;
       }
       case stmk_switch_case: {
-        if(!switch_cases.count(s))reject("switch case outside immediate switch body");
+        if(!switch_cases.count(s))reject("switch case outside owning switch");
         unsigned id=node("case",0,s->position);
+        edge(id,"target",0,switch_cases.at(s));
         auto c=s->variant.switch_case.extra_info;
         if(c->case_value)edge(id,"value",0,constant_node(c->case_value,c->position));
         return id;

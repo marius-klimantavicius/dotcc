@@ -67,7 +67,16 @@ internal sealed partial class Emitter
                 case "switch":
                     string switchEnd = Label("end_switch"); exits.Add(node.Id, switchEnd);
                     Node selector = Child("condition");
-                    Node[] labels = body.Children(Child("body").Id, "statement").Select(edge => body.Nodes[edge.ChildId]).Where(value => value.Kind == "case").ToArray();
+                    var found = new List<Node>();
+                    void FindLabels(Node item)
+                    {
+                        if (item.Kind == "switch") return;
+                        if (item.Kind == "case") { found.Add(item); return; }
+                        foreach (Edge edge in body.Edges.GetValueOrDefault(item.Id, []))
+                            if (edge.Role != "target") FindLabels(body.Nodes[edge.ChildId]);
+                    }
+                    FindLabels(Child("body"));
+                    Node[] labels = found.ToArray();
                     foreach (Node item in labels) cases.Add(item.Id, Label("case"));
                     line(indent, "switch (" + expression(selector) + ")"); line(indent, "{");
                     foreach (Node item in labels)
