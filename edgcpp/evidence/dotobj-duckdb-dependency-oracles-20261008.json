@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "date": "2026-10-08",
+  "status": "native-oracles-passed-export-pending",
+  "records": [
+    {
+      "fixture": "yyjson",
+      "status": "native-oracles-passed-export-pending",
+      "receipt": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-yyjson-acceptance-001/results.json",
+        "sha256": "6d5a4cb00f0b6b0230af8dbb0b7867a7d6d5f74e255a8f9bd72ec62071f17030"
+      },
+      "nativeChecks": 8,
+      "pending": [
+        {
+          "id": "duckdb:third_party/yyjson/yyjson.cpp:11da1b490dd37c2e",
+          "diagnostic": "orage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 44: warning: unrecognized\n          GCC pragma\n  #   pragma GCC diagnostic ignored \"-Wunused-function\"\n                 ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 45: warning: unrecognized\n          GCC pragma\n  #   pragma GCC diagnostic ignored \"-Wunused-parameter\"\n                 ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 46: warning: unrecognized\n          GCC pragma\n  #   pragma GCC diagnostic ignored \"-Wunused-label\"\n                 ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 47: warning: unrecognized\n          GCC pragma\n  #   pragma GCC diagnostic ignored \"-Wunused-macros\"\n                 ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 1219: warning: variable\n          \"next\" was declared but never referenced\n      dyn_chunk *chunk, *prev, *next;\n                                ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 1258: warning: variable\n          \"prev\" was declared but never referenced\n      dyn_chunk *prev, *next, *new_chunk;\n                 ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 1258: warning: variable\n          \"next\" was declared but never referenced\n      dyn_chunk *prev, *next, *new_chunk;\n                        ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 5388: warning: label\n          \"skip_utf8\" was declared but never referenced\n  skip_utf8:\n  ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 8459: warning: label\n          \"doc_begin\" was declared but never referenced\n  doc_begin:\n  ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 8644: warning: label\n          \"doc_begin\" was declared but never referenced\n  doc_begin:\n  ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 9010: warning: label\n          \"doc_begin\" was declared but never referenced\n  doc_begin:\n  ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 9201: warning: label\n          \"doc_begin\" was declared but never referenced\n  doc_begin:\n  ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 9482: warning: unrecognized\n          GCC pragma\n  #   pragma GCC diagnostic pop\n                 ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 695: warning: function\n          \"duckdb_yyjson::f64_from_raw\" was declared but never referenced\n  static_inline f64 f64_from_raw(u64 u) {\n                    ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/yyjson/yyjson.cpp\", line 703: warning: function\n          \"duckdb_yyjson::f64_to_raw\" was declared but never referenced\n  static_inline u64 f64_to_raw(f64 f) {\n                    ^\n\n/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/third_party/yyjson/yyjson.cpp:5377:5: dot_gen_be: unsupported dotobj scalar-v19: statement (kind 19) in dotobj function read_string\n"
+        }
+      ],
+      "compiler": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native036-verified-snapshot/cpfe-dot",
+        "sha256": "abe05685ffedc65d1bd11284c86135d4653a485c6c52762fd84b4d911e029c25"
+      },
+      "linker": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-024/bin/DotObj.Linker/debug/dotobj-link.dll",
+        "sha256": "f19063a456c3c657e820525fd456e8432e05b42b7be2a85c7895a53feb06988d"
+      }
+    },
+    {
+      "fixture": "mbedtls",
+      "status": "native-oracles-passed-export-pending",
+      "receipt": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-mbedtls-acceptance-001/results.json",
+        "sha256": "321becc08d71858b16c28c42869c2a035c0afce9a52d7e14d073b2de7c5f8710"
+      },
+      "nativeChecks": 9,
+      "pending": [
+        {
+          "id": "duckdb:third_party/mbedtls/library/sha256.cpp:11da1b490dd37c2e",
+          "diagnostic": "Warning: predefined meaning of \"__DATE__\" discarded\n\nWarning: predefined meaning of \"__TIME__\" discarded\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/mbedtls/include/mbedtls/mbedtls_config.h\", line 29:\n          warning: last line of file ends without a newline\n  #define MBEDTLS_CIPHER_PADDING_PKCS7\n                                      ^\n\n/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/third_party/mbedtls/library/alignment.h:174:33: dot_gen_be: unsupported dotobj scalar-v19: local-record:mbedtls_uint32_unaligned_t: packed record alignment (kind -1) in dotobj function mbedtls_get_unaligned_uint32\n"
+        },
+        {
+          "id": "duckdb:third_party/mbedtls/library/platform_util.cpp:11da1b490dd37c2e",
+          "diagnostic": "Warning: predefined meaning of \"__DATE__\" discarded\n\nWarning: predefined meaning of \"__TIME__\" discarded\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/mbedtls/include/mbedtls/mbedtls_config.h\", line 29:\n          warning: last line of file ends without a newline\n  #define MBEDTLS_CIPHER_PADDING_PKCS7\n                                      ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/mbedtls/library/platform_util.cpp\", line 124:\n          warning: unrecognized GCC pragma\n  #pragma GCC diagnostic push\n              ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/mbedtls/library/platform_util.cpp\", line 125:\n          warning: unrecognized GCC pragma\n  #pragma GCC diagnostic ignored \"-Wvla\"\n              ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/third_party/mbedtls/library/platform_util.cpp\", line 131:\n          warning: unrecognized GCC pragma\n  #pragma GCC diagnostic pop\n              ^\n\n/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/third_party/mbedtls/library/platform_util.cpp:127:9: dot_gen_be: unsupported dotobj scalar-v19: statement (kind 19) in dotobj function mbedtls_platform_zeroize\n"
+        }
+      ],
+      "compiler": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native036-verified-snapshot/cpfe-dot",
+        "sha256": "abe05685ffedc65d1bd11284c86135d4653a485c6c52762fd84b4d911e029c25"
+      },
+      "linker": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-024/bin/DotObj.Linker/debug/dotobj-link.dll",
+        "sha256": "f19063a456c3c657e820525fd456e8432e05b42b7be2a85c7895a53feb06988d"
+      }
+    }
+  ],
+  "scope": "Unmodified DuckDB dependency sources plus public-header consumers, native O0/O2 with independent reference checks. Managed execution remains blocked by recorded exporter gates.",
+  "managedExecutionVerified": false,
+  "nativeAotVerified": false
+}

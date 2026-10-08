@@ -186,3 +186,25 @@ is no managed execution claim for this fixture yet.
 After these operations execute, reuse the existing libc++ exception-pointer,
 uncaught-count, foreign-exception and owner-lifetime fixtures. Their successful
 direct-backend runs are not evidence for the owned-object pipeline.
+
+## DuckDB dependency acceptance
+
+`tests/duckdb_dependencies_verify.py --fixture yyjson|mbedtls` selects original
+units from the pinned DuckDB project manifest and adds a public-header consumer
+as a separate translation unit. It compares native O0/O2 output with managed
+JIT/NativeAOT output once packaging succeeds. Normal invocation fails on an
+export rejection; `--allow-export-rejection` records the pending gate without
+claiming managed execution.
+
+The JSON corpus covers ordinary/in-situ reads, round trips, malformed UTF-8 and
+escapes, integer limits, extension policy and a mutable document with 1,024
+array elements. The SHA-256 corpus checks 36 pattern/length combinations against
+Python `hashlib`, plus streaming, context cloning, unaligned input/output,
+sentinels and context/buffer zeroization. SHA-256 includes the original
+`platform_util.cpp` provider, preserving its secure-zeroization implementation.
+
+Native036/managed024 receipts show both native oracles pass and both consumers
+package. Original `sha256.cpp` still rejects packed-record alignment; yyjson
+and `platform_util.cpp` reject their empty inline-assembly compiler barriers.
+The tests retain these failures and do not patch source or generated code to
+get around them. See `evidence/dotobj-duckdb-dependency-oracles-20261008.json`.
