@@ -918,10 +918,29 @@ documented in its [limitations](https://learn.microsoft.com/en-us/dotnet/core/de
 
 ## Program assembly and large inputs
 
-Use EDG's semantic multi-translation-unit merge as the first whole-program
-path, with one program manifest and multiple emitted `.cs` files. Physical
-source splitting is independent of semantic merging. Do not require a single
-enormous C# file or lose internal-linkage identities when splitting.
+The existing whole-program path uses EDG's semantic multi-translation-unit
+merge, with one program manifest and multiple emitted `.cs` files. Physical
+source splitting is independent of semantic merging. Keep this path available
+for existing targets, but prioritize independent translation units for large
+projects following the user's 2026-10-08 direction.
+
+Compile each original source directly in one EDG invocation, including internal
+preprocessing, and package a SQLite `.dotobj`. The user's subsequent direction
+replaces text-emission commands with a fresh owned semantic graph. The old
+semantic-export experiment is explicitly excluded as a foundation. Capture
+resolved source identity/structure before destructive lowering and normalize
+the same structural/partial-EH execution representation used by dot_gen_be.
+Keep both views linked by owned IDs; C# does not redo C++ template/overload or
+ABI decisions. Every renamable entity has an identity, including parameters,
+locals and generated helpers. Preserve source/include/macro provenance and
+object lifetime obligations; derive optimization liveness separately.
+
+A C#/.NET linker resolves objects and produces one managed project through
+managed-specific lowering and emission. Namespace/class and file splitting are
+link-time choices. The linker is a build tool, not a runtime interpreter. The
+new producer/linker is not implemented yet; the superseded command-stream
+prototype is preserved as unvalidated artifacts. See [semantic object design
+and implementation gates](dotobj-format.md).
 
 Verify this path before depending on it for libc++. Our full EDG self-merge
 produced [110.1 MiB of C](../artifacts/self-lowered-combined/README.md), but GCC
@@ -929,8 +948,8 @@ found missing generated type/helper names; the 75 separate C outputs passed
 syntax checks. Determine whether each defect is in merged IL, lowering or C
 emission. A new emitter does not automatically fix upstream merge defects.
 
-Add a per-translation-unit object-manifest mode if needed for scalability or
-to isolate such defects. Its linker must resolve externals, forward types,
+Implement the per-translation-unit object mode for scalability and independent
+frontend processing. Its linker must resolve externals, forward types,
 templates, inline/COMDAT identities, static storage, relocations and startup
 order. It must verify compatible complete definitions and preserve independent
 internal symbols. Never merge types by spelling alone or silently select an

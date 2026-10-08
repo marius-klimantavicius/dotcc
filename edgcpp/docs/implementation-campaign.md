@@ -2209,3 +2209,24 @@ reusable integration validation and fresh staging still pending. Its larger
 two-input diagnostic was explicitly stopped by request, not by a compiler
 error or memory guard; partial output is unaccepted.
 [Exact restart handoff](duckdb-restart-20261008.md).
+
+The user resumed work on independent translation units and object linking,
+without restarting the old DuckDB merge attempts. The selected `.dotobj`
+container is SQLite. Subsequent direction superseded the initial C# text-command
+prototype with a fresh owned semantic graph, explicitly excluding the prior
+semantic-export experiment as its foundation. The incomplete three-file
+prototype is preserved in `object-linker-foundation-001/` under campaign storage;
+it was never built or tested and is not a usable implementation.
+
+[The new design](dotobj-format.md) uses source-facing identity/structure and an
+authoritative normalized execution view based on dot_gen_be's structural and
+partial-EH lowering. A read-only backend/stock-EDG audit established that some
+function lowering and lifetime cleanup happen before the final backend callback;
+capture must account for those earlier phases. Every renamable entity has an
+ID. Lifetime obligations are mandatory semantics; liveness is derived analysis.
+An independent design review found no blocking semantic issues and its source
+correspondence, reverse-array-cleanup and descriptive-node clarifications were
+incorporated. This is a design milestone, not a new exporter, linker or DuckDB
+execution pass. Next is the typed contract and capture-point inventory against
+existing dot-backend coverage, followed by implementation and native/JIT/AOT
+comparison. No new compiler builds or execution tests ran for this design.
