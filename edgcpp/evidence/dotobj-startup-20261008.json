@@ -40,5 +40,13 @@
     "Only GNU routine constructor attributes; C++ dynamic global initialization remains separate",
     "Shutdown/atexit/static destructor semantics remain unsupported",
     "Static per-assembly state only; independent owners remain pending"
-  ]
+  ],
+  "fullRegression": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-v14-acceptance-001/results.json",
+    "sha256": "cb4ccbf5dd8595fe8db951760f0b9f119de62466873d226349369c2eb011ccf2",
+    "checks": 771,
+    "nativeAotVerified": true,
+    "linkerSnapshot": "015",
+    "note": "Full regression uses immutable015; focused startupActions receipt additionally verifies016 coalescing/root fix."
+  }
 }

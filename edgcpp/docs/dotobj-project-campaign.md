@@ -174,3 +174,9 @@ all inputs, tools, provider selection, runtime bindings and execution output.
 This establishes SQLite project integration, not exhaustive upstream conformance.
 Instance-owned storage, other platform execution, complete source indexing,
 general C++ layout/lifetime/EH and DuckDB execution remain required work.
+
+The v14 full regression passes **771 checks including NativeAOT** with immutable
+managed015. The expanded 70-check startup suite additionally verifies managed016
+primary/provider coalescing and strong-definition root retention; 14 host startup
+safety checks cover concurrency and failure. [Startup evidence](../evidence/dotobj-startup-20261008.json)
+keeps these tool snapshots and coverage scopes explicit.
