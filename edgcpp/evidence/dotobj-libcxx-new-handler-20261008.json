@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 8,
+  "scope": "Unmodified pinned LLVM libc++18 new_handler.cpp emitted through independent owned .dotobj",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-libcxx-new-handler-acceptance-002/results.json",
+    "sha256": "ed6f3f9f7b727fd2c055ab7b486726adb381962c06a9f5ebf40495dd1ee874e2"
+  },
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "checksDescription": [
+    "Actual LLVM implementation provides set_new_handler/get_new_handler; only two concrete atomic runtime imports supplied",
+    "Null initialization, previous-handler return value and callback invocation",
+    "Eight workers execute80000 atomic exchanges/loads and callbacks while forcing collections",
+    "Same output from JIT and NativeAOT"
+  ],
+  "limitations": [
+    "No complete libc++ or DuckDB claim",
+    "Source object created with native019v15; canonical new v16 campaign tested separately"
+  ]
+}
