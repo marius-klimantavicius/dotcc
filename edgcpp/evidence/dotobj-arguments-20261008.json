@@ -27,5 +27,17 @@
     "No envp extension",
     "No native Windows/macOS execution in this receipt",
     "Process invocation storage; independent library-owner globals are a separate feature"
-  ]
+  ],
+  "windowsWine": {
+    "status": "passed",
+    "receipt": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-arguments-wine-001/results.json",
+      "sha256": "919e78d1a7bc52bd1c28253d592ac655f276aa5df78f62227a760f84b7a71d16"
+    },
+    "scope": "Windows .NET JIT under Wine, not native Windows or Windows NativeAOT",
+    "verified": [
+      "All11 canonical ProgramArguments storage checks",
+      "Original translated C argc/argv Unicode/empty/mutable data and normal-exit callback, exit17"
+    ]
+  }
 }

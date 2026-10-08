@@ -2,8 +2,8 @@
 
 This is the implementation contract for the object pipeline, not a statement
 that C++ exception translation is complete. SQLite already executes through
-the object pipeline. DuckDB still needs class subobjects, generated ABI entry
-points, construction/destruction scheduling and C++ EH. Runtime functions alone
+the object pipeline. DuckDB still needs packed-record access, dynamic
+initialization, construction/destruction scheduling and C++ EH. Runtime functions alone
 cannot supply those missing semantic facts.
 
 ## Canonical implementation to reuse
@@ -166,8 +166,26 @@ with empty and Unicode arguments, a nonzero successful return value, and an
 also checks the storage owner separately and rejects nonstandard entry
 signatures. This does not add the optional `envp` argument or establish native
 Windows/macOS execution coverage.
+The same helper and translated C executable also pass on Windows .NET JIT
+under Wine, including empty/Unicode arguments and the callback after `main`.
+That additional receipt is not native Windows or Windows NativeAOT validation.
 
 ## Independent-TU acceptance
+
+`tests/cpp_cross_unit_verify.py --fixture indirect` now verifies nontrivial
+class value calls across independently packaged provider/consumer units.
+Factories, by-value parameters, callbacks and member functions retain the
+source-to-execution ABI mapping, including the order of hidden result buffers
+and receivers. A factory and an ordinary pointer function can share a physical
+signature without sharing their source contract. The test checks required
+copy-constructor side effects and caller isolation, nested prvalues, array
+destinations and a constructor default adapter forwarding an indirect value.
+
+Native038/managed026 passes native C++ O0/O2, compiled stock EDG C lowering,
+source-hidden managed linking, JIT and NativeAOT. The stock C executable uses
+the host Itanium array helper; translated execution uses the canonical managed
+array runtime. Cleanup is deliberately trivial here; this does not establish
+general C++ unwinding. See `evidence/dotobj-indirect-cross-unit-20261008.json`.
 
 `object-linker/tests/cpp_cross_unit_verify.py --fixture exceptions` compiles provider, bridge
 and consumer separately, retains stock-C lowering for each, and then attempts

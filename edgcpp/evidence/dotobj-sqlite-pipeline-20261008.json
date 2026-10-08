@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "date": "2026-10-08",
+  "status": "passed",
+  "runs": [
+    {
+      "receipt": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-pipeline-001/results.json",
+        "sha256": "6ae89637d37fe1ab8bb03bcc2e3b05b021c6240de646b2424523553baa15a32b"
+      },
+      "status": "passed",
+      "compiler": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native037-verified-snapshot/cpfe-dot",
+        "sha256": "21b07e1d52a62dc1cf8ca60851b298a226a2eb3d86d13f2b1eaa785bcca2e7b1"
+      },
+      "linker": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-025/bin/DotObj.Linker/debug/dotobj-link.dll",
+        "sha256": "cba15d318769edbdb74e084a70badc6a6b0a60440845ca61dcacb2e827c31c58"
+      },
+      "packagedUnits": 225,
+      "boundRuntimeImports": 70,
+      "nativeAotVerified": true
+    },
+    {
+      "receipt": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-pipeline-002/results.json",
+        "sha256": "01a0f4f99fc0308987bca0a1953cfa53abfd376e3687b91bee71d72720ff8434"
+      },
+      "status": "passed",
+      "compiler": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native038-verified-snapshot/cpfe-dot",
+        "sha256": "8b33b041e3c9216253f58e69338cc2cd2d63a4c8657cfb18b30a4fe9c054b0bc"
+      },
+      "linker": {
+        "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-026/bin/DotObj.Linker/debug/dotobj-link.dll",
+        "sha256": "01183da5e1635fec8d438b2f437c40b531340049ca15bce9083ee053fe6dcaef"
+      },
+      "packagedUnits": 225,
+      "boundRuntimeImports": 70,
+      "nativeAotVerified": true
+    }
+  ],
+  "verified": [
+    "Fresh225 original translation units including224 musl providers",
+    "Managed semantic linking and strict canonical SQLite/sharedruntime imports",
+    "Eight canonical threadsafe SQLite engine suites in JIT and Linux NativeAOT",
+    "Exact JIT/NativeAOT test output parity"
+  ],
+  "scope": "Static assembly mode; no independent-owner or full DuckDB claim"
+}

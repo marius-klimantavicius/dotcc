@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "date": "2026-10-08",
+  "status": "passed",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-linked-indirect-acceptance-007/results.json",
+    "sha256": "784e7e5ca28befd768ee74107ecb2b575a584a1d0d712d9723e7dda03821c982"
+  },
+  "checks": 18,
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native038-verified-snapshot/cpfe-dot",
+    "sha256": "8b33b041e3c9216253f58e69338cc2cd2d63a4c8657cfb18b30a4fe9c054b0bc"
+  },
+  "linker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-026/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "01183da5e1635fec8d438b2f437c40b531340049ca15bce9083ee053fe6dcaef"
+  },
+  "stockCompiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe",
+    "sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3"
+  },
+  "nativeAotVerified": true,
+  "verified": [
+    "Native C++ O0/O2 and stock EDG C output compiled with host Itanium array ABI",
+    "Independent provider/consumer .dotobj files; source inputs hidden before managed link",
+    "Same physical pointer signature with distinct source factory versus ordinary pointer-call contract",
+    "Hidden result buffers, method receivers and nontrivial class values through callback fields",
+    "Exactly seven source copy-constructor effects, no caller-value aliasing or extra copies",
+    "Nested prvalues, array result destinations and constructor default adapter forwarding an indirect class parameter",
+    "JIT and Linux NativeAOT execution"
+  ],
+  "scope": "Nontrivial class call ABI with trivial cleanup; not general C++ EH or dynamic initialization"
+}

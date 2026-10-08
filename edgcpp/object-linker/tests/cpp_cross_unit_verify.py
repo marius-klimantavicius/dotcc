@@ -21,7 +21,7 @@ def sha(path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--fixture', choices=('exceptions', 'nonvirtual'), default='exceptions')
+    parser.add_argument('--fixture', choices=('exceptions', 'nonvirtual', 'indirect'), default='exceptions')
     parser.add_argument('--output-dir', type=Path, required=True)
     parser.add_argument('--compiler', type=Path, required=True)
     parser.add_argument('--stock-compiler', type=Path, required=True)
@@ -81,10 +81,10 @@ def main():
             binary = out / ('native-O' + optimization)
             run('native-build-O' + optimization,
                 ['c++', '-std=c++17', '-O' + optimization,
-                 *(['-fno-exceptions', '-fno-rtti'] if args.fixture == 'nonvirtual' else []),
+                 *(['-fno-exceptions', '-fno-rtti'] if args.fixture != 'exceptions' else []),
                  *sources, '-o', binary])
             run('native-run-O' + optimization, [binary])
-        objects = []
+        objects, stock_sources = [], []
         exception_args = ['--exceptions', '--rtti'] if args.fixture == 'exceptions' else ['--no_exceptions', '--no_rtti']
         for source in sources:
             name = source.stem.removeprefix(prefix + '_')
@@ -100,6 +100,7 @@ def main():
                 raise ValueError('Missing stock C lowering for ' + name)
             fixtures.append(dict(path=str(c_file), sha256=sha(c_file),
                                  purpose='Stock C lowering reference; not managed execution'))
+            stock_sources.append(c_file)
             obj = directory / 'unit.dotobj'
             if not run(name + '-owned-export', [sys.executable, '-B', tools / 'compile.py',
                 source, '--output', obj, '--work-dir', directory / 'work',
@@ -112,6 +113,11 @@ def main():
                 continue
             run(name + '-verify', ['dotnet', args.linker.resolve(), 'verify', obj])
             objects.append(obj)
+        if args.fixture == 'indirect':
+            # The stock C output calls the standard Itanium array helper for
+            # constructor default adapters; link the host C++ ABI provider.
+            run('stock-c-build', ['cc', '-O2', *stock_sources, '-lstdc++', '-o', out / 'stock-c-native'])
+            run('stock-c-run', [out / 'stock-c-native'])
         if not pending:
             # Keep the source for review, but make every recorded original input path
             # unavailable before linking. The linker must use the objects alone.
