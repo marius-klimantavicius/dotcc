@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 extern int __cxa_atexit(void (*)(void *), void *, void *);
 #ifdef NATIVE_ORACLE
@@ -10,6 +11,23 @@ extern int __cxa_thread_atexit_impl(void (*)(void *), void *, void *);
 extern int __cxa_thread_atexit(void (*)(void *), void *, void *);
 #define register_thread(f, p) __cxa_thread_atexit(f, p, 0)
 #endif
+
+/* Hosted source TLS must reset even when no translated thread API is linked. */
+static _Thread_local int host_tls = 17;
+static int host_trace;
+static void host_destructor(void *unused) {
+    (void)unused;
+    if (host_tls != 99 || errno != 41) { host_trace = -1; return; }
+    host_tls = 77;
+    host_trace = 1;
+}
+int host_tls_setup(void) {
+    if (host_tls != 17) return 1;
+    host_tls = 99;
+    errno = 41;
+    return register_thread(host_destructor, 0);
+}
+int host_tls_after_release(void) { return host_trace != 1 || host_tls != 17 || errno != 0; }
 
 static FILE *output;
 static int mode;

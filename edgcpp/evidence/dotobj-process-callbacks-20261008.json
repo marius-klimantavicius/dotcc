@@ -1,11 +1,11 @@
 {
   "date": "2026-10-08",
   "status": "passed",
-  "checks": 86,
+  "checks": 87,
   "scope": "Static assembly process exit and C++ destructor-registration runtime boundaries",
   "receipt": {
-    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-process-acceptance-004/results.json",
-    "sha256": "a2ec0242def7a5343cfcb3e8f7318575f9d397c348926d8897d8a994b94d6fd1"
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-process-acceptance-006/results.json",
+    "sha256": "18cc4a3657bf7d140466f1dde842f1d8b9f5a730f2784965fc86e9a439ad4622"
   },
   "nativeAotVerified": true,
   "verifiedPlatforms": [
@@ -18,12 +18,13 @@
     "Normal source main return flushes FILE streams without explicit exit imports",
     "Hosted library initialization does not terminate or install host process-exit callbacks",
     "Concurrent per-thread destructor registration, explicit release, reentrant release and callback-created registration threads",
-    "Malformed callback signatures fail closed before provider emission"
+    "Malformed callback signatures fail closed before provider emission",
+    "Process-only hosted release drains destructors before resetting actual translated source TLS and libc errno, without selecting C11/libc++ thread services"
   ],
   "limitations": [
     "Static per-assembly mode only; independent owner disposal not implemented",
     "No DSO unloading or __cxa_finalize",
-    "Source C++ RAII/global lifetime scheduling remains separate backend work",
-    "Automatic C11/libc++ worker/TSS lifecycle integration pending"
-  ]
+    "Source C++ RAII/global lifetime scheduling remains separate backend work"
+  ],
+  "relatedEvidence": "dotobj-runtime-threads-20261008.json"
 }

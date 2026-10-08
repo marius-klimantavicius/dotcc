@@ -135,7 +135,7 @@ internal static class Host {
         report['runtimeHooks'].pop('ownedThreadStorageRelease')
         (stale / 'link-report.json').write_text(json.dumps(report, indent=2) + '\n')
         rejected = run('stale-bind', [sys.executable, '-B', ROOT / 'runtime/bind.py', '--project', stale], expected=1)
-        check('stale-no-silent-tls-leak', b'require the owned source TLS release contract' in rejected.stderr and not list(stale.glob('Runtime.Threads*.cs')))
+        check('stale-no-silent-tls-leak', b'requires the owned source TLS release contract' in rejected.stderr and not list(stale.glob('Runtime.Threads*.cs')))
 
         # Only the test entry's argument transport changes. The thread joins,
         # TSS destructors and six last-source-thread cases remain the EDG fixture.

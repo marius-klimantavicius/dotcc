@@ -40,7 +40,7 @@ def member(text, name):
     return candidates[0]
 
 
-def sources(backend, groups, threads=False):
+def sources(backend, groups, threads=False, has_libc=False):
     lifecycle = (backend / 'dot_gen_lifecycle.h').read_text()
     process = (backend / 'dot_gen_process.h').read_text()
 
@@ -96,11 +96,29 @@ public static unsafe partial class ObjectProgram
     // Run is the source executable boundary. InitializeLibrary/ordinary exports
     // retain host-controlled lifetime and never implicitly terminate the host.
     static partial void NormalExit(int status) => DotObjServices.__edg_process_exit(status, false);
-    public static void ReleaseThread() => DotObjServices.ReleaseThreadFinalizers();
+    public static void ReleaseThread() => DotObjServices.ReleaseRuntimeThread();
 }
 '''
     if threads:
         support = support.replace('internal readonly global::System.Collections.Generic.List<__edg_finalizer> Finalizers',
                                   'internal int Depth;\n        internal readonly global::System.Collections.Generic.List<__edg_finalizer> Finalizers')
-        hooks = hooks.replace('DotObjServices.ReleaseThreadFinalizers()', 'DotObjServices.ReleaseRuntimeThread()')
+    else:
+        code += '''
+    [global::System.ThreadStatic] private static bool __edg_releasing_thread;
+    internal static void ReleaseRuntimeThread()
+    {
+        if (__edg_releasing_thread) throw new global::System.InvalidOperationException("Cannot release a thread during its cleanup");
+        __edg_releasing_thread = true;
+        try
+        {
+            ReleaseThreadFinalizers();
+            @TEXT_RELEASE@
+            @LIBC_RELEASE@
+            ObjectProgram.ReleaseThreadStorage();
+            __edg_threads.Value = new ThreadFinalizers();
+        }
+        finally { __edg_releasing_thread = false; }
+    }
+'''.replace('@TEXT_RELEASE@', 'if (__edg_text_value.IsValueCreated) __edg_text.ReleaseThread();' if groups & {'text', 'files', 'command'} else '').replace(
+            '@LIBC_RELEASE@', '__edg_libc.ReleaseThread();' if has_libc else '')
     return {'Runtime.Process.generated.cs': support + code + '}\n', 'Runtime.ProcessHooks.generated.cs': hooks}

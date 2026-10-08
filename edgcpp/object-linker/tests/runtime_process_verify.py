@@ -54,6 +54,7 @@ internal static unsafe class Host
     {
         ProgramLifetime.InitializeLibrary();
         if (Runtime.__cxa_atexit(&Global, null, null) != 0 || Runtime.__cxa_thread_atexit(&Record, (void*)5, null) != 0) return 1;
+        if (Translated.Program.host_tls_setup() != 0) return 5;
         Exception? failure = null;
         var workers = new Thread[4];
         for (int i = 0; i < workers.Length; ++i) {
@@ -65,6 +66,7 @@ internal static unsafe class Host
         if (events != null) return 3;
         ProgramLifetime.ReleaseThread();
         if (string.Join(",", events!) != "5" || globalCalls != 0) return 4;
+        if (Translated.Program.host_tls_after_release() != 0) return 6;
         Console.WriteLine("library host retained; TLS callbacks isolated, reentrant and outside locks");
         return 0;
     }
@@ -146,6 +148,9 @@ def main():
         library = out / 'library'
         run('library-link', ['dotnet', args.linker.resolve(), 'link', '--out', library, '--allow-externs', obj])
         run('library-bind', [sys.executable, '-B', ROOT / 'runtime/bind.py', '--project', library])
+        library_receipt = json.loads((library / 'runtime-bindings.json').read_text())
+        check('host-source-tls-without-thread-provider', not any('LibcxxThreads' in row.get('target', '') for row in library_receipt['bound'])
+              and not (library / 'Runtime.Threads.generated.cs').exists())
         host = out / 'host'
         host.mkdir()
         (host / 'Host.cs').write_text(LIBRARY_HOST)
