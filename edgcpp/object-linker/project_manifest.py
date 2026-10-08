@@ -60,7 +60,7 @@ def sqlite(out, with_musl):
     return result
 
 
-def duckdb(portable_path, acquisition, with_musl, include_tests):
+def duckdb(portable_path, acquisition, with_musl, include_tests, with_libcxx=False):
     portable = json.loads(portable_path.read_text())
     module(REPO / 'duckdb/edg/portable.py', 'dotobj_portable').verify_staged(portable)
     acquired = json.loads((acquisition / 'acquisition.json').read_text())
@@ -101,6 +101,11 @@ def duckdb(portable_path, acquisition, with_musl, include_tests):
         extra, receipt = musl_units()
         result['units'] += extra
         result['libcProvider'] = receipt
+    if with_libcxx:
+        extra, receipt = module(HERE / 'libcxx_provider.py', 'dotobj_libcxx_provider').prepare_libcxx_units(EDG, acquisition, libc_arguments())
+        result['units'] += extra
+        result['libcxxProviderIncluded'] = True
+        result['libcxxProvider'] = receipt
     return result
 
 
@@ -111,16 +116,19 @@ def main():
     parser.add_argument('--portable-manifest', type=Path)
     parser.add_argument('--libcxx-acquisition', type=Path)
     parser.add_argument('--with-musl', action='store_true')
+    parser.add_argument('--with-libcxx', action='store_true', help='add pinned libc++ implementation sources as separate provider TUs (DuckDB only)')
     parser.add_argument('--include-tests', action='store_true')
     args = parser.parse_args()
     out = args.output_dir.resolve()
     if args.project == 'duckdb' and (not args.portable_manifest or not args.libcxx_acquisition):
         parser.error('DuckDB requires --portable-manifest and --libcxx-acquisition')
+    if args.with_libcxx and args.project != 'duckdb':
+        parser.error('--with-libcxx is a DuckDB provider option')
     out.mkdir(parents=True, exist_ok=False)
     if args.project == 'sqlite':
         report = sqlite(out, args.with_musl)
     else:
-        report = duckdb(args.portable_manifest.resolve(), args.libcxx_acquisition.resolve(), args.with_musl, args.include_tests)
+        report = duckdb(args.portable_manifest.resolve(), args.libcxx_acquisition.resolve(), args.with_musl, args.include_tests, args.with_libcxx)
     (out / 'project.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(dict(manifest=str(out / 'project.json'), units=len(report['units']))))
 

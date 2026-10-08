@@ -24,13 +24,29 @@ dependencies. `--include-tests` includes the upstream test-runner units.
 python3 -B edgcpp/object-linker/project_manifest.py duckdb \
   --portable-manifest /absolute/portable/portable.json \
   --libcxx-acquisition /absolute/libcxx-acquisition \
-  --include-tests --with-musl --output-dir /absolute/new/duckdb-inputs
+  --include-tests --with-musl --with-libcxx --output-dir /absolute/new/duckdb-inputs
 ```
 
-The DuckDB manifest currently includes libc++ headers, **not** its implementation
-provider. It explicitly records `libcxxProviderIncluded: false`. Shared runtime
-binding and complete libc++ provider composition are subsequent integration
-work; this command does not silently substitute native DuckDB or native libc++.
+`--with-libcxx` adds 55 independent C++20 implementation units from the pinned
+LLVM 18.1.8 source and existing shared managed ABI adapters. Every `.cpp` remains
+its own original translation unit. The shared preinclude configures the library;
+it does not include or merge implementation files. DuckDB itself retains its
+C++17 configuration and the same public headers and ABI namespace.
+
+The provider selects the portable source branches for threads, localization,
+random devices, filesystem and allocation. Its managed exception, atomic wait
+and synchronization-destructor adapters replace the corresponding upstream
+native ABI definitions. Sources, private includes, public headers and generated
+configuration are checked against acquisition hashes; the selected source list
+is checked against the pinned upstream CMake inventory. This preserves a single
+runtime implementation source and avoids a native libc++ dependency.
+
+The manifest records these substitutions and hashes. Source assembly does not
+claim completed C++ translation or runtime binding: those remain explicit
+acceptance gates. Without `--with-libcxx`, only libc++ headers are included and
+`libcxxProviderIncluded` stays false. `--with-musl` separately adds the C provider.
+`tests/libcxx_provider_verify.py --acquisition PATH --output-dir FRESH` checks
+the independent source manifest and rejects modified or unrecorded inputs.
 
 Build a project or probe a selected source:
 

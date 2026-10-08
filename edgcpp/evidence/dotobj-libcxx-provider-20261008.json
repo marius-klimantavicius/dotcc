@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "scope": "Pinned independent-original-TU libc++ source provider assembly; C++ execution remains pending",
+  "checks": 14,
+  "providerUnits": 55,
+  "verifiedInputHashes": 1128,
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-libcxx-provider-acceptance-001/results.json",
+    "sha256": "895d121c3cac929ad61fd9f4e76753715f8008469113cdfbbb22cb25a8d00f7a"
+  },
+  "combinedDuckdbManifest": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-runtime-manifest-002/project.json",
+    "sha256": "19103031228f2ce3e72b5b934e1c39b6ae101646375cbef5941ce644e3b538e1"
+  },
+  "boundedProviderProbe": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-libcxx-project-016/results.json",
+    "sha256": "26df0ec4906ea2f7dd6d5a9d54f0b0efe7f57aed227d683746633961ddc01bf7"
+  },
+  "compiledProviderUnits": 0,
+  "managedExecutionVerified": false,
+  "limitations": [
+    "Five original-source probes reach explicit C++ record or static-lifetime exporter gates",
+    "No native libc++ substitute; managed ABI runtime bindings still require implementation coverage"
+  ]
+}
