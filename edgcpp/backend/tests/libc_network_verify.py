@@ -30,7 +30,7 @@ source = Path(__file__).with_name('libc_network.c')
 network = root / 'backend/runtime/musl/network'
 network_sources = sorted(network.glob('*.c'))
 run('native-build', ['cc', '-std=c11', '-Wall', '-Wextra', '-Werror',
-                    '-Wno-sign-compare', '-Wno-parentheses', source, *network_sources, '-o', out / 'native'])
+                    '-Wno-sign-compare', '-Wno-parentheses', '-Wno-implicit-fallthrough', source, *network_sources, '-o', out / 'native'])
 expected = run('native', [out / 'native'])
 for language, mode in (('c', 'static'), ('c', 'instance'), ('c++', 'instance')):
     label = language.replace('++', 'xx') + '-' + mode

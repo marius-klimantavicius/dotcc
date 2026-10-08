@@ -57,9 +57,23 @@
       "adaptedSha256": "dc2bb0b67217be086e360e92cecb8f6a3761183de33470e760b478b92f4a9f1b",
       "patch": "patches/byteswap.h.patch",
       "patchSha256": "3c384f31a23d21f8cd33f4eef7ef9aa80bf696c18d5bcfe2350afc32bbf5fcb4"
+    },
+    "inet_aton.c": {
+      "upstream": "src/network/inet_aton.c",
+      "originalSha256": "b2c4bb22f74da864412a12b8c6c702d62a5789255f698aba18146cb9233a75ee",
+      "adaptedSha256": "652ab39c63c75f45a08d2de16e6c69746a32be959e6f26b3514b611e870bc558",
+      "patch": "patches/inet_aton.c.patch",
+      "patchSha256": "d918e33ad4e50175dfef19ab6120c993512714d3234da223d5bb02eb9ed11d37"
+    },
+    "inet_addr.c": {
+      "upstream": "src/network/inet_addr.c",
+      "originalSha256": "a2cd5075c6fbbc834e90bcfb7cce9d7bf1654636603197e6bf304c40e5e8eb59",
+      "adaptedSha256": "395848d8e9b74595b6bcb84eb06ffe0b915e2c2b8b09f4842039aad966776155",
+      "patch": "patches/inet_addr.c.patch",
+      "patchSha256": "790c14a6d770cc1a223b2c2cb971f0a86325abf0f99ac35bc6f4c6479ef345c1"
     }
   },
   "adapters": {
-    "network_abi.h": "7fd70ef2b69bec74292fc17fe95c3f53a799938cfe2d4875d26b4ec97856ad42"
+    "network_abi.h": "990e81ee00306971178aeb6e9b053c2e9c1f4f17d99e6b276974a0cfe9414851"
   }
 }

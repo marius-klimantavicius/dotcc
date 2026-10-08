@@ -1,0 +1,1 @@
+namespace Local { int socket(int v){return v+1;} int bind(int v){return v+2;} } struct X {static int listen(int v){return v+3;}};int main(){return Local::socket(1)+Local::bind(1)+X::listen(1)==9?0:1;}

@@ -1,0 +1,25 @@
+--- src/network/inet_aton.c
++++ inet_aton.c
+@@ -1,13 +1,11 @@
+ #include <ctype.h>
+-#include <sys/socket.h>
+-#include <netinet/in.h>
+-#include <arpa/inet.h>
++#include "network_abi.h"
+ #include <stdlib.h>
+ 
+-int __inet_aton(const char *s0, struct in_addr *dest)
++int inet_aton(const char *s0, struct in_addr *dest)
+ {
+ 	const char *s = s0;
+-	unsigned char *d = (void *)dest;
++	unsigned char *d = (unsigned char *)dest;
+ 	unsigned long a[4] = { 0 };
+ 	char *z;
+ 	int i;
+@@ -38,4 +36,4 @@
+ 	return 1;
+ }
+ 
+-weak_alias(__inet_aton, inet_aton);
++

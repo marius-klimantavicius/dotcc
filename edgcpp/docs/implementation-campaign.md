@@ -2181,3 +2181,17 @@ staged trees and preprocessed inputs are preserved; a fresh complete stage is
 required for the next composition. This does not resolve interactive terminal
 output differences or count as translated runner execution.
 [Termcolor integration](../evidence/duckdb-termcolor-integration-20261008.json).
+
+
+The reviewed 24-file socket/parser bundle is now integrated after the writer
+freeze ended. The canonical compiler rebuild and all three focused suites pass:
+55 registered socket/parser commands with C/C++ static/instance JIT and AOT,
+existing native-differential network checks, and 93 descriptor checks under
+each managed execution mode. The selected musl provider now contains 224 TUs.
+The Linux x64 evidence does not establish other-platform execution, DNS
+resolution, fork or fatal-signal support.
+
+A fresh adoption audit checked all 24 baseline/payload files and 2,484 retained
+evidence hashes. These header/runtime changes require new preprocessing and
+checkpoint provenance; no previous DuckDB .ii is relabeled or reused as current.
+[Canonical socket integration](../evidence/duckdb-socket-integration-20261008.json).

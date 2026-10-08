@@ -1,0 +1,11 @@
+{
+  "version": "musl 1.2.6",
+  "releaseSha256": "d585fd3b613c66151fc3249e8ed44f77020cb5e6c1e635a616d3f9f82460512a",
+  "upstream": "include/netdb.h",
+  "originalSha256": "6f069a2a0a72a1e03866f426cc6a03990e6bfe3b601215e7b7780b6536c8f50b",
+  "adapted": "include/netdb.h",
+  "adaptedSha256": "3a56edc29302bc8616069387d767636c27bd329b509435a298bc55e7a5974649",
+  "patch": "netdb.h.patch",
+  "patchSha256": "37ae6abb7aa010ab749856008dac550a5e5eb70560a5be374e1112899e86c10a",
+  "adaptation": "Replace generated bits/alltypes.h size_t request with portable stddef.h, preserving the complete declarations and feature gates. Declarations do not imply resolver implementations."
+}

@@ -1,0 +1,15 @@
+--- src/network/inet_addr.c
++++ inet_addr.c
+@@ -1,10 +1,8 @@
+-#include <sys/socket.h>
+-#include <netinet/in.h>
+-#include <arpa/inet.h>
++#include "network_abi.h"
+ 
+ in_addr_t inet_addr(const char *p)
+ {
+ 	struct in_addr a;
+-	if (!__inet_aton(p, &a)) return -1;
++	if (!inet_aton(p, &a)) return -1;
+ 	return a.s_addr;
+ }

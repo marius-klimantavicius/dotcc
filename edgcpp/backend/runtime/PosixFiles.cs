@@ -21,6 +21,7 @@ public sealed unsafe partial class PosixContext
         Descriptor? descriptor = Find(fd); if (descriptor is null) return -1;
         if (count > long.MaxValue || (positioned && offset < 0)) { SetError(22); return -1; }
         if (buffer == null && count != 0) { SetError(14); return -1; }
+        if (descriptor.Socket is not null) return SocketTransfer(descriptor, buffer, count, writing, positioned);
         lock (descriptor.Gate)
         {
             if (descriptor.Closed || (writing ? (descriptor.Flags & 3) == 0 : (descriptor.Flags & 3) == 1))
@@ -73,7 +74,7 @@ public sealed unsafe partial class PosixContext
         lock (descriptor.Gate)
         {
             if (descriptor.Closed) { SetError(9); return -1; }
-            if (descriptor.Device != 0) { SetError(29); return -1; }
+            if (descriptor.Device != 0 || descriptor.Socket is not null) { SetError(29); return -1; }
             try
             {
                 long origin;
@@ -92,7 +93,7 @@ public sealed unsafe partial class PosixContext
         lock (descriptor.Gate)
         {
             if (descriptor.Closed || (descriptor.Flags & 3) == 0) { SetError(9); return -1; }
-            if (length < 0 || descriptor.Device != 0) { SetError(22); return -1; }
+            if (length < 0 || (descriptor.Device != 0 || descriptor.Socket is not null)) { SetError(22); return -1; }
             try { RandomAccess.SetLength(descriptor.Handle, length); return 0; }
             catch (Exception error) when (PlatformFailure(error)) { return Fail(error); }
         }
@@ -106,7 +107,7 @@ public sealed unsafe partial class PosixContext
         lock (descriptor.Gate)
         {
             if (descriptor.Closed) { SetError(9); return -1; }
-            if (descriptor.Device != 0) { SetError(22); return -1; }
+            if ((descriptor.Device != 0 || descriptor.Socket is not null)) { SetError(22); return -1; }
             try { PosixPlatform.Sync(descriptor.Handle, dataOnly); return 0; }
             catch (Exception error) when (PlatformFailure(error)) { return Fail(error); }
         }
@@ -127,6 +128,7 @@ public sealed unsafe partial class PosixContext
         lock (descriptor.Gate)
         {
             if (descriptor.Closed) { SetError(9); return -1; }
+            if (descriptor.Socket is not null) { SetError(95); return -1; }
             try
             {
                 *destination = (descriptor.Device == 0 || descriptor.NativeStandard) ? PosixPlatform.Fstat(descriptor.Handle, descriptor.Path) : new PosixStat { st_mode = 0x2000 | 438, st_nlink = 1, st_blksize = 4096 };
@@ -141,6 +143,7 @@ public sealed unsafe partial class PosixContext
         lock (descriptor.Gate)
         {
             if (descriptor.Closed) { SetError(9); return -1; }
+            if (descriptor.Socket is not null) { SetError(95); return -1; }
             try { PosixPlatform.Chmod(descriptor.Handle, descriptor.Path, mode); return 0; }
             catch (Exception error) when (PlatformFailure(error)) { return Fail(error); }
         }
@@ -151,6 +154,7 @@ public sealed unsafe partial class PosixContext
         lock (descriptor.Gate)
         {
             if (descriptor.Closed) { SetError(9); return -1; }
+            if (descriptor.Socket is not null) { SetError(95); return -1; }
             try { PosixPlatform.Chown(descriptor.Handle, owner, group); return 0; }
             catch (Exception error) when (PlatformFailure(error)) { return Fail(error); }
         }

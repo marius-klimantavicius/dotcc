@@ -3,8 +3,6 @@
 #include <stdint.h>
 #include <sys/socket.h>
 typedef uint16_t in_port_t;
-typedef uint32_t in_addr_t;
-struct in_addr { in_addr_t s_addr; };
 #include "../../../musl/network/network_abi.h"
 struct sockaddr_in {
     sa_family_t sin_family;
@@ -19,6 +17,7 @@ struct sockaddr_in6 {
     struct in6_addr sin6_addr;
     uint32_t sin6_scope_id;
 };
+#define IPPROTO_TCP 6
 #define INET_ADDRSTRLEN 16
 #define INET6_ADDRSTRLEN 46
 #define INADDR_LOOPBACK ((in_addr_t)0x7f000001)

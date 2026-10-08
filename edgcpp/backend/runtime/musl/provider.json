@@ -365,7 +365,9 @@
         "ntohl.c",
         "in6addr_any.c",
         "in6addr_loopback.c",
-        "inet_ntop.c"
+        "inet_ntop.c",
+        "inet_aton.c",
+        "inet_addr.c"
       ]
     },
     {

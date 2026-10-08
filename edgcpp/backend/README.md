@@ -538,3 +538,20 @@ The original EDG C backend succeeds. Its 4,840,704-byte [generated C](../artifac
 The C# run first exposed opaque `sqlite3_mutex` and flexible `ExprList.a` layouts; both now have emitter support and C11 native/JIT/NativeAOT tests. The current first rejection is `address of external function: trunc`, referenced by SQLite's math-function table. No C# project was published, so no SQLite C# build, query execution or NativeAOT claim is made. External managed adapters, the libc binding layer, internal variadic functions and the SQLite OS/VFS provider are the next integration work.
 
 [Detailed results and exact commands](../artifacts/sqlite-edg/results.json), [C# diagnostics](../artifacts/sqlite-edg/csharp.stderr.log) and [compact saved evidence](../evidence/sqlite-edg.json) remain available. Latest backend validation: 175 full-suite checks and a final 10-check focused rerun, across 54 distinct successful Linux x64 NativeAOT fixture configurations.
+
+
+## Portable socket and IPv4 parser verification
+
+The shared POSIX runtime implements TCP IPv4/IPv6 socket descriptors with BCL
+sockets, preserving descriptor ownership, flags and byte-oriented address
+conversion. The registered musl provider includes `inet_aton` and `inet_addr`;
+complete `netdb.h` declarations do not imply resolver implementation. The parser
+adaptation uses a closed provider and does not preserve generic ELF weak-symbol
+interposition.
+
+Run `backend/tests/posix_socket_network_verify.py --compiler build/bin/cpfe-dot
+--output-dir <new-artifact> --nativeaot` from `edgcpp` to compare native and
+translated C/C++ static/instance behavior, reject incompatible socket ABIs, and
+verify provider selection. Existing `libc_network_verify.py` and
+`posix_runtime_verify.py` cover network and descriptor regressions. Executed
+acceptance is Linux x64 JIT and NativeAOT; other platforms remain unverified.

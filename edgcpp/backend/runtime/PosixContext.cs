@@ -26,7 +26,9 @@ public sealed unsafe partial class PosixContext : IDisposable, ILibcFileDescript
         internal readonly string Path;
         internal readonly object Gate = new();
         internal long Position;
-        internal int Flags;
+        private int fileFlags;
+        internal SocketState? Socket;
+        internal int Flags { get => Socket is { } s ? s.Flags : fileFlags; set { if (Socket is { } s) s.Flags = value; else fileFlags = value; } }
         internal int DescriptorFlags;
         internal bool Closed;
         // Devices use no host file descriptor. This also makes /dev/urandom
@@ -134,7 +136,8 @@ public sealed unsafe partial class PosixContext : IDisposable, ILibcFileDescript
             descriptor.Closed = true;
             try
             {
-                if (descriptor.Device == 0) PosixLocks.Close(LockOwner, descriptor.Handle, descriptor.Path);
+                if (descriptor.Socket is { } socket) socket.Release();
+                else if (descriptor.Device == 0) PosixLocks.Close(LockOwner, descriptor.Handle, descriptor.Path);
                 else descriptor.Handle.Dispose();
                 return 0;
             }
@@ -148,6 +151,7 @@ public sealed unsafe partial class PosixContext : IDisposable, ILibcFileDescript
         lock (descriptor.Gate)
         {
             if (descriptor.Closed) { SetError(9); return -1; }
+            if (descriptor.Socket is not null) return SocketFcntl(descriptor, command, value);
             switch (command)
             {
                 case 1: return descriptor.DescriptorFlags;

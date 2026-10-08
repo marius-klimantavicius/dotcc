@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "status": "canonical-build-and-focused-execution-verified",
+  "acceptance": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-socket-canonical-001/acceptance.json",
+    "sha256": "dcbf9c61c88eff5e749a9a57b174c7e30d65d42db72e2e7fc427f9ef6e3a23af"
+  },
+  "compiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "sha256": "bf64d3f5342e7adee865b2085d126b4c91944e2b7bd529b6de36b867e857008b"
+  },
+  "canonicalApplied": true,
+  "fullDuckdbVerified": false,
+  "executedPlatform": "Linux x64",
+  "limitations": [
+    "Fresh source/header preprocessing and complete composition required before full DuckDB retry.",
+    "Pinned closed-provider inet_aton adaptation does not promise ELF weak interposition.",
+    "Complete netdb declarations do not implement resolver imports.",
+    "No fork, fatal signals, alternate stack or native extension demo implementation.",
+    "Windows/macOS/ARM64 execution not verified."
+  ]
+}

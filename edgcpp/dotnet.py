@@ -27,7 +27,8 @@ def generated_source(source):
 
 
 RUNTIME_DEPENDENCIES = {
-    "PosixContext": ("PosixTypes", "PosixFiles", "PosixPlatform", "PosixLocks", "PosixOfdLocks", "PosixWindowsLocks", "PosixMappings", "PosixTime", "PosixVariadic", "PosixStreams", "PosixDirectories", "PosixResources", "PosixSemaphores", "PosixMemoryServices", "PosixFilesystemInfo", "PosixScheduler", "LibcFileDescriptors"),
+    "PosixContext": ("PosixSockets", "PosixTypes", "PosixFiles", "PosixPlatform", "PosixLocks", "PosixOfdLocks", "PosixWindowsLocks", "PosixMappings", "PosixTime", "PosixVariadic", "PosixStreams", "PosixDirectories", "PosixResources", "PosixSemaphores", "PosixMemoryServices", "PosixFilesystemInfo", "PosixScheduler", "LibcFileDescriptors"),
+    "PosixSockets": (),
     "PosixTypes": (), "PosixFiles": (), "PosixPlatform": (), "PosixLocks": (),
     "PosixMappings": (), "PosixTime": (), "PosixVariadic": ("VaArg",),
     "PosixOfdLocks": (), "PosixWindowsLocks": (), "PosixStreams": (), "PosixDirectories": (), "PosixResources": (), "PosixSemaphores": (), "PosixMemoryServices": (), "PosixFilesystemInfo": (), "PosixScheduler": (),

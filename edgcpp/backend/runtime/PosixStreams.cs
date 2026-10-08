@@ -92,7 +92,7 @@ public sealed unsafe partial class PosixContext
         { Owner = owner; Fd = fd; this.read = read; this.write = write; }
         public override bool CanRead => !closed && read;
         public override bool CanWrite => !closed && write;
-        public override bool CanSeek => !closed && Owner.Find(Fd)?.Device == 0;
+        public override bool CanSeek => !closed && Owner.Find(Fd) is { Device: 0, Socket: null };
         public override long Length
         {
             get { PosixStat stat; if (Owner.Fstat(Fd, &stat) != 0) throw new LibcDescriptorException(lastError); return stat.st_size; }

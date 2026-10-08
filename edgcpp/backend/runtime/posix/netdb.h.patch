@@ -1,0 +1,12 @@
+--- musl-1.2.6/include/netdb.h
++++ include/netdb.h
+@@ -9,8 +9,7 @@
+ #include <netinet/in.h>
+ 
+ #if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
+-#define __NEED_size_t
+-#include <bits/alltypes.h>
++#include <stddef.h>
+ #endif
+ 
+ struct addrinfo {

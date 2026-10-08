@@ -20,6 +20,19 @@ string posix_type(a_type_ptr t) {
   string n=source_spelling(&p->source_corresp);
   if(n=="__edg_DIR" && p->incomplete)return "POSIX_DIR*";
   if(p->incomplete)return type(t);
+  if(n=="sockaddr") {
+    auto family=p->variant.class_struct_union.field_list;
+    if(p->size!=16 || alignment_of_type(p)!=2 || !family || family->is_bit_field ||
+       !family->source_corresp.name || string(family->source_corresp.name)!="sa_family" ||
+       family->offset!=0 || type(family->type)!="ushort")return type(t);
+    auto data=family->next;
+    if(!data || data->next || data->is_bit_field || !data->source_corresp.name ||
+       string(data->source_corresp.name)!="sa_data" || data->offset!=2)return type(t);
+    auto array=skip_typerefs(data->type);
+    if(array->kind!=tk_array || array->size!=14 ||
+       type(array->variant.array.element_type)!="sbyte")return type(t);
+    return "POSIX_SOCKADDR*";
+  }
   if(n=="rlimit") {
     auto f=p->variant.class_struct_union.field_list;
     if(p->size!=16 || alignment_of_type(p)!=8)return type(t);
@@ -64,6 +77,13 @@ string posix_type(a_type_ptr t) {
 }
 struct posix_binding { const char* symbol;const char* result;const char* parameters;const char* target;bool variadic; };
 const posix_binding posix_bindings[]={
+  {"socket","int","int,int,int","Socket",false},
+  {"bind","int","int,POSIX_SOCKADDR*,uint","Bind",false},
+  {"listen","int","int,int","Listen",false},
+  {"accept","int","int,POSIX_SOCKADDR*,uint*","Accept",false},
+  {"connect","int","int,POSIX_SOCKADDR*,uint","Connect",false},
+  {"getsockname","int","int,POSIX_SOCKADDR*,uint*","Getsockname",false},
+  {"shutdown","int","int,int","Shutdown",false},
   {"open","int","sbyte*,int","OpenVariadic",true},
   {"fcntl","int","int,int","FcntlVariadic",true},
   {"ioctl","int","int,ulong","IoctlVariadic",true},
@@ -128,6 +148,7 @@ bool posix_routine(a_routine_ptr r,const string& symbol) {
       string ty=type(p->type),abi=posix_type(p->type),arg="a"+std::to_string(index++);
       if(p!=extra->param_type_list){parameters+=",";signature+=", ";args+=", ";}
       parameters+=abi;signature+=ty+" "+arg;
+      if(abi=="POSIX_SOCKADDR*")args+="(void*)";
       if(abi=="POSIX_STAT*")args+="(global::Edg.Runtime.PosixStat*)";
       if(abi=="POSIX_TIMEVAL*")args+="(global::Edg.Runtime.PosixTimeval*)";
       if(abi=="POSIX_RLIMIT*")args+="(global::Edg.Runtime.PosixRlimit*)";

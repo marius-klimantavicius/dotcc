@@ -3,6 +3,8 @@
 #define EDG_NETWORK_ABI_H
 #include <stdint.h>
 typedef unsigned int socklen_t;
+typedef uint32_t in_addr_t;
+struct in_addr { in_addr_t s_addr; };
 #ifndef AF_INET
 #define AF_INET 2
 #define AF_INET6 10
@@ -24,6 +26,8 @@ extern "C" {
 #endif
 extern const struct in6_addr in6addr_any;
 extern const struct in6_addr in6addr_loopback;
+in_addr_t inet_addr(const char *);
+int inet_aton(const char *, struct in_addr *);
 uint16_t htons(uint16_t);
 uint16_t ntohs(uint16_t);
 uint32_t htonl(uint32_t);
