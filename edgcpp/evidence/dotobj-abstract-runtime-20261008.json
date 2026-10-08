@@ -14,5 +14,22 @@
   ],
   "limitations": [
     "Does not establish source EH, dynamic_cast, or Windows/macOS execution."
-  ]
+  ],
+  "profile20Replay": {
+    "receipt": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-abstract-runtime-acceptance-003/results.json",
+      "sha256": "3cc558287c71f6f31addc94ccd5811e9044554e670914c7d9a18df5594eb086e"
+    },
+    "status": "passed",
+    "checks": 19,
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native038-verified-snapshot/cpfe-dot",
+      "sha256": "8b33b041e3c9216253f58e69338cc2cd2d63a4c8657cfb18b30a4fe9c054b0bc"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-026/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "01183da5e1635fec8d438b2f437c40b531340049ca15bce9083ee053fe6dcaef"
+    },
+    "nativeAotVerified": true
+  }
 }

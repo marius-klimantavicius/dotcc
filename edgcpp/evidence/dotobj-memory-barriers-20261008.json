@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 25,
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-barrier-audit-005/results.json",
+    "sha256": "269e70f8dcb42058fe17ea9b446960a66900b1f6a44abf2ab3c01a8f1fff476b"
+  },
+  "selectedDisassembly": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-barrier-audit-005/selected-disassembly.txt",
+    "sha256": "80dbe0a8d9e2dbd5217e5bbc40e20b2b0c4f4690450716893df94ddbc4b7d952"
+  },
+  "verified": [
+    "Native GCC empty output memory constraint retains a second load without a hardware fence",
+    "Optimized .NET JIT and NativeAOT retain two loads across Thread.MemoryBarrier; the no-barrier control coalesces them",
+    "NativeMemory.Clear and volatile function-pointer zeroization precede the fence in optimized code",
+    "The barrier-only helper never accesses operand addresses",
+    "Operand address and extent side effects occur once; zeroization respects unaligned buffers and sentinels"
+  ],
+  "limitations": [
+    "Detached probe, not owned .dotobj assembly support",
+    "Linux x64 disassembly and execution only",
+    "Hardware fence is stronger than the native compiler hint; no measured throughput claim",
+    "Ordering alone is not a universal dead-store security guarantee for arbitrary private buffers"
+  ],
+  "sources": [
+    "https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.memorybarrier?view=net-10.0",
+    "https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.cryptographicoperations.zeromemory?view=net-10.0"
+  ]
+}

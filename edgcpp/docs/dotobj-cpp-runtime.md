@@ -226,3 +226,33 @@ package. Original `sha256.cpp` still rejects packed-record alignment; yyjson
 and `platform_util.cpp` reject their empty inline-assembly compiler barriers.
 The tests retain these failures and do not patch source or generated code to
 get around them. See `evidence/dotobj-duckdb-dependency-oracles-20261008.json`.
+
+## Empty assembly memory barriers
+
+The detached `tests/runtime_barriers_verify.py` audit checks native GNU empty
+memory constraints against a proposed BCL lowering. It does not enable owned
+inline-assembly support. On the recorded Linux x64 JIT and NativeAOT builds,
+`Thread.MemoryBarrier` preserves a second pointer load that the no-barrier
+control merges with the first. Both direct clearing and a volatile function
+pointer call complete before the fence. Seven runtime assertions also check
+operand evaluation, unchanged operand memory and unaligned zeroization with
+sentinels. The retained disassembly and 25 checks are recorded in
+`evidence/dotobj-memory-barriers-20261008.json`.
+
+The emitted `lock or [rsp],0` is a hardware fence; native empty assembly needs
+no such instruction. This is a conservative correctness starting point with
+additional cost, not a performance equivalence claim. The fence touches its
+own stack slot and does not read or write through assembly operand addresses.
+An owned barrier must separately retain input/output direction, evaluated
+addresses and extents, including side effects of VLA-shaped operands. It must
+not introduce memory accesses merely to model a constraint.
+
+[Thread.MemoryBarrier](https://learn.microsoft.com/en-us/dotnet/api/system.threading.thread.memorybarrier?view=net-10.0)
+specifies ordering; that contract alone is not a universal guarantee against
+eliminating unused private stores. Mbed TLS's actual source already makes an
+opaque call through a volatile `memset` pointer. Preserve that operation and
+verify the resulting project code. Dedicated secure-zero APIs can instead use
+the BCL's [CryptographicOperations.ZeroMemory](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.cryptographicoperations.zeromemory?view=net-10.0),
+which specifically addresses write-elimination concerns. Arbitrary assembly,
+other architectures and general private-buffer dead-store guarantees remain
+outside this detached audit.
