@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v7: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v8: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -30,7 +30,7 @@ void check_lifetime(an_object_lifetime_ptr lifetime) {
 namespace dot_object {
 struct Writer {
   unsigned next_entity=1,next_binding=1,next_node=1,next_file=1,next_source_type=1,next_source_declaration=1;
-  unsigned function=0;
+  unsigned function=0,next_execution_type=10;
   std::map<a_routine_ptr,unsigned> routine_ids;
   std::map<a_variable_ptr,unsigned> binding_ids;
   std::map<a_source_file_ptr,unsigned> file_ids;
@@ -40,6 +40,7 @@ struct Writer {
   std::vector<string> macro_definitions,macro_parameters,macro_events;
   std::map<unsigned,unsigned> source_type_ids;
   std::map<unsigned,unsigned> pointer_types;
+  std::map<std::pair<unsigned,unsigned long long>,unsigned> array_types;
   std::vector<string> execution_types;
   std::set<a_scope_ptr> bound_scopes;
   std::set<unsigned> declared_bindings;
@@ -50,8 +51,17 @@ struct Writer {
   string number(unsigned value){return value?std::to_string(value):"null";}
   unsigned pointer_type(unsigned pointee) {
     auto prior=pointer_types.find(pointee);if(prior!=pointer_types.end())return prior->second;
-    unsigned id=10+(unsigned)pointer_types.size();pointer_types[pointee]=id;
-    execution_types.push_back("{\"id\":"+number(id)+",\"kind\":\"pointer\",\"pointeeTypeId\":"+number(pointee)+"}");
+    unsigned id=next_execution_type++;pointer_types[pointee]=id;
+    execution_types.push_back("{\"id\":"+number(id)+",\"kind\":\"pointer\",\"pointeeTypeId\":"+number(pointee)+",\"elementTypeId\":null,\"elementCount\":null}");
+    return id;
+  }
+  unsigned array_type(unsigned element,unsigned long long count) {
+    auto key=std::make_pair(element,count);
+    auto prior=array_types.find(key);if(prior!=array_types.end())return prior->second;
+    if(!count || count>65536)reject("array count outside bounded fixed storage profile");
+    unsigned id=next_execution_type++;array_types[key]=id;
+    execution_types.push_back("{\"id\":"+number(id)+",\"kind\":\"array\",\"pointeeTypeId\":null,\"elementTypeId\":"+
+      number(element)+",\"elementCount\":"+std::to_string(count)+"}");
     return id;
   }
   unsigned type_id(a_type_ptr type) {
@@ -62,6 +72,16 @@ struct Writer {
     if(t->kind==tk_pointer) {
       if(t->variant.pointer.is_reference)reject("C++ reference type");
       return pointer_type(type_id(t->variant.pointer.type));
+    }
+    if(t->kind==tk_array) {
+      if(t->variant.array.is_variable_size_array || t->variant.array.is_vla ||
+         t->variant.array.is_template_dependent_size_array || !t->size || t->size>65536)
+        reject("array outside bounded fixed storage profile");
+      auto element=skip_typerefs(t->variant.array.element_type);
+      auto count=t->variant.array.variant.number_of_elements;
+      if(!element->size || !count || t->size/element->size!=count || t->size%element->size)
+        reject("array size/stride mismatch");
+      return array_type(type_id(t->variant.array.element_type),count);
     }
     // EDG retains the bool marker alongside enum bookkeeping after lowering;
     // unlike a user enum, its executable representation is the lowered byte.
@@ -141,6 +161,8 @@ struct Writer {
     const auto &type=dot_object_source::state().types.at(captured-1);
     if(type.execution)return type.execution;
     if(type.kind=="pointer")return pointer_type(source_execution_type(type.underlying));
+    if(type.kind=="array")return type.element_count?array_type(source_execution_type(type.underlying),type.element_count):
+      pointer_type(source_execution_type(type.underlying));
     if(type.kind=="qualified" || type.kind=="typedef")return source_execution_type(type.underlying);
     reject("source type outside scalar/data-pointer declaration profile");
   }
@@ -153,7 +175,7 @@ struct Writer {
     unsigned underlying=type.underlying?source_type(type.underlying):0;
     source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.kind)+",\"sourceName\":"+quote(type.name)+
       ",\"underlyingTypeId\":"+number(underlying)+",\"executionTypeId\":"+number(execution)+
-      ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+position(type.position)+"}");
+      ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+",\"elementCount\":"+(type.kind=="array"?std::to_string(type.element_count):"null")+position(type.position)+"}");
     return id;
   }
   void source_declaration(const dot_object_source::Declaration &declaration,
@@ -224,7 +246,9 @@ struct Writer {
     auto prior=binding_ids.find(v);if(prior!=binding_ids.end())return prior->second;
     diagnostic_scope diagnostic(v->source_corresp.decl_position);
     if(thread_storage(v) || v->storage_class==sc_static || v->storage_class==sc_extern)reject("nonautomatic storage");
-    if(v->init_kind!=initk_none && v->init_kind!=initk_dynamic)reject("nonexecutably placed local initializer",v->init_kind);
+    if(v->init_kind!=initk_none && v->init_kind!=initk_dynamic &&
+       !(v->init_kind==initk_zero && skip_typerefs(v->type)->kind==tk_array))
+      reject("nonexecutably placed local initializer",v->init_kind);
     unsigned id=next_binding++;binding_ids[v]=id;
     auto source=dot_object_source::state().variables.find(v);
     if(source!=dot_object_source::state().variables.end())
@@ -243,6 +267,11 @@ struct Writer {
       unsigned id=binding(v,block);
       if(!declared_bindings.insert(id).second)continue;
       edge(block,"statement",ordinal++,node("declare",0,v->source_corresp.decl_position,0,id));
+      // lower_init marks partially dynamic aggregates initk_zero, leaving
+      // explicit element stores in the statement stream. As c_gen_be's
+      // dump_variable_decl does, zero this storage at lexical scope entry.
+      if(v->init_kind==initk_zero)
+        edge(block,"statement",ordinal++,initialize_array(v,nullptr,v->source_corresp.decl_position));
     }
   }
   unsigned constant_node(a_constant_ptr c,const a_source_position &pos) {
@@ -265,7 +294,7 @@ struct Writer {
     if(e->kind==enk_variable || e->kind==enk_constant)return true;
     if(e->kind!=enk_operation)return false;
     switch(e->variant.operation.kind) {
-      case eok_address_of:case eok_indirect:case eok_subscript:case eok_cast:case eok_question:
+      case eok_address_of:case eok_indirect:case eok_subscript:case eok_array_to_pointer:case eok_cast:case eok_question:
       case eok_add:case eok_subtract:case eok_multiply:case eok_divide:case eok_remainder:
       case eok_and:case eok_or:case eok_xor:case eok_shiftl:case eok_shiftr:
       case eok_eq:case eok_ne:case eok_lt:case eok_le:case eok_gt:case eok_ge:
@@ -276,6 +305,37 @@ struct Writer {
     for(auto child=e->variant.operation.operands;child;child=child->next)
       if(!effect_free(child))return false;
     return true;
+  }
+  bool stable_place(an_expr_node_ptr e) {
+    if(!e)return false;
+    if(e->kind==enk_variable)return binding_ids.count(node_variable(e))!=0;
+    if(e->kind!=enk_operation)return false;
+    auto a=e->variant.operation.operands;auto b=a?a->next:nullptr;
+    if(e->variant.operation.kind==eok_indirect)return a && !b && stable_pointer(a);
+    if(e->variant.operation.kind==eok_subscript && a && b && !b->next)
+      return (stable_pointer(a) && integral_constant(b)) ||
+             (integral_constant(a) && stable_pointer(b));
+    return false;
+  }
+  bool integral_constant(an_expr_node_ptr e) {
+    return e && e->kind==enk_constant && node_constant(e)->kind==ck_integer &&
+      skip_typerefs(e->type)->kind==tk_integer;
+  }
+  bool stable_pointer(an_expr_node_ptr e) {
+    if(!e || skip_typerefs(e->type)->kind!=tk_pointer)return false;
+    if(e->kind==enk_constant)return node_constant(e)->kind==ck_integer;
+    if(e->kind!=enk_operation)return false;
+    auto a=e->variant.operation.operands;auto b=a?a->next:nullptr;
+    switch(e->variant.operation.kind) {
+      case eok_address_of:case eok_array_to_pointer:return a && !b && stable_place(a);
+      case eok_cast:return a && !b && stable_pointer(a);
+      case eok_padd:
+        return a && b && !b->next && ((stable_pointer(a) && integral_constant(b)) ||
+                                                     (integral_constant(a) && stable_pointer(b)));
+      case eok_psubtract:
+        return a && b && !b->next && stable_pointer(a) && integral_constant(b);
+      default:return false;
+    }
   }
   unsigned expression(an_expr_node_ptr e) {
     if(!e)reject("null expression");
@@ -299,12 +359,23 @@ struct Writer {
     if(operation.kind==eok_assign) {
       if(!a || !b || b->next || !place(a))reject("assignment outside supported memory places");
       // C++17 evaluates the RHS before the LHS, unlike C#. In this bounded
-      // graph, direct bindings need no address evaluation; indirect places
-      // can be emitted directly only if neither side can change that address.
-      if(operation.eval_right_to_left && a->kind!=enk_variable &&
+      // graph, fixed local storage and constant offsets have stable addresses.
+      // Other indirect places require both sides to be effect-free: even a
+      // pure pointer load may change when the RHS mutates that pointer via an
+      // alias. EDG lowers dynamic array initialization into such stable stores.
+      if(operation.eval_right_to_left && !stable_place(a) &&
          (!effect_free(a) || !effect_free(b)))reject("effectful right-to-left indirect assignment");
       unsigned id=node("assign",ty,e->position,0,0,"","","value",order);
       edge(id,"target",0,expression(a));edge(id,"value",0,expression(b));return id;
+    }
+    if(operation.kind==eok_array_to_pointer) {
+      if(!a || b || !place(a))reject("array decay outside supported places");
+      auto source=skip_typerefs(a->type),target=skip_typerefs(e->type);
+      if(source->kind!=tk_array || target->kind!=tk_pointer ||
+         type_id(source->variant.array.element_type)!=type_id(target->variant.pointer.type))
+        reject("array decay element representation mismatch");
+      unsigned id=node("array-decay",ty,e->position,0,0,"","","value",order);
+      edge(id,"operand",0,expression(a));return id;
     }
     if(operation.kind==eok_address_of || operation.kind==eok_indirect) {
       if(!a || b)reject("memory-place operator arity");
@@ -396,6 +467,96 @@ struct Writer {
     }
     unsigned id=node(unary?"unary":"binary",ty,e->position,0,0,op,"","value",order);
     edge(id,unary?"operand":"left",0,expression(a));if(!unary)edge(id,"right",0,expression(b));return id;
+  }
+  a_type_ptr array_leaf(a_type_ptr type) {
+    type=skip_typerefs(type);
+    while(type->kind==tk_array)type=skip_typerefs(type->variant.array.element_type);
+    return type;
+  }
+  unsigned long long leaf_count(a_type_ptr type) {
+    type=skip_typerefs(type);auto leaf=array_leaf(type);
+    if(!leaf->size || type->size%leaf->size)reject("array initializer leaf stride");
+    return (unsigned long long)(type->size/leaf->size);
+  }
+  void array_element(unsigned parent,unsigned &ordinal,a_type_ptr type,
+                     unsigned long long index,unsigned value,const a_source_position &position) {
+    unsigned id=node("array-element",type_id(type),position,0,0,"",std::to_string(index));
+    edge(parent,"element",ordinal++,id);edge(id,"value",0,value);
+  }
+  bool dynamic_constant(a_constant_ptr value) {
+    if(value->kind==ck_dynamic_init)return true;
+    if(value->kind==ck_aggregate)return value->variant.aggregate.has_dynamic_init_component;
+    if(value->kind==ck_init_repeat)return dynamic_constant(value->variant.init_repeat.constant);
+    return false;
+  }
+  void array_initializer(unsigned parent,unsigned &ordinal,a_type_ptr type,a_constant_ptr value,
+                         unsigned long long offset,const a_source_position &position) {
+    type=skip_typerefs(type);
+    if(!value)return; // The array-init operation supplies omitted zero elements.
+    if(type->kind!=tk_array) {
+      unsigned expr=0;
+      if(value->kind==ck_dynamic_init) {
+        auto d=value->variant.dynamic_init.ptr;
+        if(d->destructor)reject("array element destruction");
+        if(d->kind==dik_expression)expr=expression(d->variant.expression);
+        else if(d->kind==dik_constant)expr=constant_node(d->variant.constant.ptr,position);
+        else if(d->kind==dik_zero)expr=node("constant",type_id(type),position,0,0,"","0","value","none");
+        else reject("array element dynamic initializer",d->kind);
+      } else expr=constant_node(value,position);
+      array_element(parent,ordinal,type,offset,expr,position);return;
+    }
+    unsigned long long count=type->variant.array.variant.number_of_elements;
+    auto element=skip_typerefs(type->variant.array.element_type);
+    auto stride=leaf_count(element),total=leaf_count(type);
+    if(value->kind==ck_string) {
+      if(element->kind!=tk_integer || element->size!=1 || value->variant.string.length>count)
+        reject("string initializer outside bounded byte array");
+      bool is_signed=type_id(element)==4;
+      for(unsigned long long i=0;i<value->variant.string.length;++i) {
+        unsigned char byte=(unsigned char)value->variant.string.value[i];
+        int number=is_signed && byte>=128?(int)byte-256:byte;
+        unsigned expr=node("constant",type_id(element),position,0,0,"",std::to_string(number),"value","none");
+        array_element(parent,ordinal,element,offset+i,expr,position);
+      }
+      return;
+    }
+    if(value->kind!=ck_aggregate)reject("array initializer outside aggregate/string",value->kind);
+    unsigned long long cursor=0;
+    for(auto item=value->variant.aggregate.first_constant;item;item=item->next) {
+      if(item->kind==ck_designator) {
+        if(item->variant.designator.is_generic || item->variant.designator.is_field_designator ||
+           !item->next || item->next->kind==ck_designator)
+          reject("array initializer designator");
+        auto index=item->variant.designator.variant.array_element;
+        if(index>=count)reject("array initializer designator bounds");
+        cursor=index*stride;item=item->next;
+      }
+      auto part=item;unsigned long long repetitions=1;
+      if(item->kind==ck_init_repeat) {
+        part=item->variant.init_repeat.constant;repetitions=item->variant.init_repeat.count;
+        if(!repetitions || dynamic_constant(part))reject("effectful/empty repeated array initializer");
+      }
+      a_type_ptr item_type=element;unsigned long long width=stride;
+      // Like c_gen_be::dump_initializer_part, a repeated constant can cover
+      // leaf elements across multidimensional array rows rather than whole
+      // elements at this level. Preserve the count at its actual type depth.
+      if(item->kind==ck_init_repeat && part->type &&
+         skip_typerefs(part->type)->size!=element->size) {
+        item_type=array_leaf(element);width=1;
+        if(skip_typerefs(part->type)->size!=item_type->size)
+          reject("array repetition representation mismatch");
+      }
+      if(cursor>total || repetitions>(total-cursor)/width || cursor%width)
+        reject("array initializer bounds/alignment");
+      for(unsigned long long repeat=0;repeat<repetitions;++repeat) {
+        array_initializer(parent,ordinal,item_type,part,offset+cursor,position);cursor+=width;
+      }
+    }
+  }
+  unsigned initialize_array(a_variable_ptr variable,a_constant_ptr value,const a_source_position &position) {
+    unsigned id=node("array-init",0,position),ordinal=0;
+    edge(id,"target",0,node("binding",type_id(variable->type),position,0,binding_ids.at(variable),"","","place","none"));
+    array_initializer(id,ordinal,variable->type,value,0,position);return id;
   }
   void loop_body(unsigned id,a_statement_ptr s,a_statement_ptr body) {
     // The stock C backend emits these compiler-generated targets as gotos.
@@ -547,6 +708,12 @@ struct Writer {
         if(d->destructor)reject("initialization with destructor");
         if(!d->variable || !binding_ids.count(d->variable))reject("initialization without local binding");
         unsigned binding=binding_ids.at(d->variable),ty=type_id(d->variable->type);
+        if(skip_typerefs(d->variable->type)->kind==tk_array) {
+          if(d->kind==dik_constant || d->kind==dik_nonconstant_aggregate)
+            return initialize_array(d->variable,d->variant.constant.ptr,s->position);
+          if(d->kind==dik_zero)return initialize_array(d->variable,nullptr,s->position);
+          reject("array dynamic initialization",d->kind);
+        }
         unsigned value=0;
         if(d->kind==dik_expression)value=expression(d->variant.expression);
         else if(d->kind==dik_constant)value=constant_node(d->variant.constant.ptr,s->position);
@@ -583,9 +750,9 @@ struct Writer {
     }
     std::vector<string> types;
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64"};
-    for(unsigned i=0;i<9;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null}");
+    for(unsigned i=0;i<9;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v7\",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v8\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

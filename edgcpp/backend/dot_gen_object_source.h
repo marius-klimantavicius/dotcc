@@ -19,6 +19,7 @@ inline bool enabled() {
 }
 struct Type {
   unsigned id=0,underlying=0,execution=0;
+  unsigned long long element_count=0;
   std::string kind,name;
   bool is_const=false,is_volatile=false;
   a_source_position position={};
@@ -93,6 +94,12 @@ inline unsigned capture_type(a_type_ptr t) {
     value.underlying=capture_type(t->variant.pointer.type);
     // Execution pointer IDs are interned by the object writer, independently
     // of EDG addresses and of the source typedef/qualification structure.
+  } else if(t->kind==tk_array && !t->variant.array.is_variable_size_array &&
+            !t->variant.array.is_vla && !t->variant.array.is_template_dependent_size_array &&
+            !t->variant.array.bound_is_zero) {
+    value.kind="array";
+    value.underlying=capture_type(t->variant.array.element_type);
+    value.element_count=t->variant.array.variant.number_of_elements;
   } else if(t->kind==tk_routine) {
     value.kind="routine";
     value.result=capture_type(t->variant.routine.return_type);

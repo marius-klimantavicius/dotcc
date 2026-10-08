@@ -26,7 +26,7 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     inputs = out / 'inputs'
     inputs.mkdir()
-    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'switches.cpp', 'integers.cpp', 'source_types.h', 'source_types.cpp', 'macros.h', 'macros.cpp', 'pointer_fixture.h', 'pointer_provider.cpp', 'pointers.cpp']:
+    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'switches.cpp', 'integers.cpp', 'source_types.h', 'source_types.cpp', 'macros.h', 'macros.cpp', 'pointer_fixture.h', 'pointer_provider.cpp', 'pointers.cpp', 'array_fixture.h', 'array_provider.cpp', 'arrays.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
     shutil.copy2(ROOT / 'tests/loops.cpp', inputs / 'loops-c.c')
     shutil.copy2(ROOT / 'tests/switches.cpp', inputs / 'switches-c.c')
@@ -35,11 +35,13 @@ def main():
     shutil.copy2(ROOT / 'tests/macros.cpp', inputs / 'macros-c.c')
     shutil.copy2(ROOT / 'tests/pointers.cpp', inputs / 'pointers-c.c')
     shutil.copy2(ROOT / 'tests/pointer_provider.cpp', inputs / 'pointer-provider-c.c')
+    shutil.copy2(ROOT / 'tests/arrays.cpp', inputs / 'arrays-c.c')
+    shutil.copy2(ROOT / 'tests/array_provider.cpp', inputs / 'array-provider-c.c')
     checks = []
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v7', nativeAotRequested=args.nativeaot,
+            profile='scalar-control-v8', nativeAotRequested=args.nativeaot,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, lifetime/EH or globals yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -140,6 +142,29 @@ def main():
         check('pointer-link-uses-structural-types', provider_int_pointer != consumer_int_pointer)
         pointer_cs = '\n'.join(p.read_text() for p in (out / 'link-pointers-cpp').glob('*.cs'))
         check('direct-pointer-source', 'unsafe' in pointer_cs and 'int*' in pointer_cs and '__edg_' not in pointer_cs)
+        array_objects = []
+        for language, standard, consumer_name, provider_name, extension, native in [
+            ('cpp', 'c++17', 'arrays', 'array_provider', '.cpp', 'c++'),
+            ('c', 'c11', 'arrays-c', 'array-provider-c', '.c', 'cc')]:
+            array_provider = compile_source(provider_name, inputs / (provider_name + extension), std=standard)
+            array_consumer = compile_source(consumer_name, inputs / (consumer_name + extension), std=standard)
+            run('native-arrays-' + language + '-build', [native, '-std=' + standard, inputs / (provider_name + extension), inputs / (consumer_name + extension), '-o', out / ('native-arrays-' + language)])
+            run('native-arrays-' + language + '-run', [out / ('native-arrays-' + language)])
+            execute('arrays-' + language, link('link-arrays-' + language, [array_provider, array_consumer]))
+            array_objects.append((array_provider, array_consumer))
+            with sqlite3.connect(array_consumer) as db:
+                check('fixed-array-type-shape-' + language, db.execute("SELECT count(*) FROM types WHERE kind='array' AND element_type_id IS NOT NULL AND element_count>0").fetchone()[0] >= 6)
+                check('multidimensional-array-type-' + language, db.execute("SELECT count(*) FROM types t JOIN types e ON e.id=t.element_type_id WHERE t.kind='array' AND e.kind='array'").fetchone()[0] > 0)
+                check('array-source-provenance-' + language, db.execute("SELECT count(*) FROM source_types WHERE kind='array' AND element_count>0").fetchone()[0] > 0)
+                check('explicit-array-decay-' + language, db.execute("SELECT count(*) FROM nodes WHERE kind='array-decay'").fetchone()[0] > 0)
+                check('lexical-array-initializers-' + language, db.execute("SELECT count(*) FROM nodes WHERE kind='array-init'").fetchone()[0] > 0)
+        array_provider, array_consumer = array_objects[0]
+        array_cs = '\n'.join(p.read_text() for p in (out / 'link-arrays-cpp').glob('*.cs'))
+        check('array-type-keeps-source-function-name', 'public static int __DotObjArray_A3_i32()' in array_cs)
+        check('constant-array-span-copy', 'ReadOnlySpan<' in array_cs and '.CopyTo(' in array_cs)
+        check('array-storage-no-managed-heap', 'NativeMemory.' not in array_cs and 'GC.Allocate' not in array_cs and 'new int[' not in array_cs)
+        array_collision = link('link-arrays-name-collision', [array_provider, array_consumer], cls='__DotObjArray_A3_i32')
+        execute('arrays-name-collision', array_collision)
         loops_object = out / 'loops.dotobj'
         loops_cs = '\n'.join(p.read_text() for p in (out / 'link-loops').glob('*.cs'))
         check('structured-loop-source', all(token in loops_cs for token in ['for (', 'do', 'while (', 'break;', 'continue;']) and 'goto ' not in loops_cs)
@@ -234,7 +259,7 @@ def main():
         run('duplicate-strong', ['dotnet', tool, 'link', '--out', out / 'bad-strong', provider, duplicate], None, 'Duplicate strong')
         mismatch = mutate('signature', consumer, [
             ('UPDATE parameters SET type_id=3 WHERE entity_id=(SELECT id FROM entities WHERE source_name=?)', ('from_a',)),
-            ("INSERT INTO source_types SELECT max(id)+1,'unsigned-char','',NULL,3,0,0,NULL,0,0 FROM source_types", ()),
+            ("INSERT INTO source_types SELECT max(id)+1,'unsigned-char','',NULL,3,0,0,NULL,0,0,NULL FROM source_types", ()),
             ("UPDATE source_parameters SET source_type_id=(SELECT max(id) FROM source_types) WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ())])
         run('signature-mismatch', ['dotnet', tool, 'link', '--out', out / 'bad-signature', provider, mismatch], None, 'Signature mismatch')
         damaged = mutate('damaged', provider, [('UPDATE entities SET source_name=? WHERE id=1', ('tampered',))], False)
@@ -331,10 +356,10 @@ def main():
             "UPDATE types SET pointee_type_id=id WHERE id=?", (pointer_type,))])
         run('pointer-type-cycle', ['dotnet', tool, 'verify', pointer_cycle], None)
         duplicate_pointer = mutate('pointer-duplicate', pointer_consumer, [(
-            "INSERT INTO types SELECT 10000,kind,pointee_type_id FROM types WHERE id=?", (pointer_type,))])
+            "INSERT INTO types SELECT 10000,kind,pointee_type_id,element_type_id,element_count FROM types WHERE id=?", (pointer_type,))])
         run('duplicate-structural-pointer', ['dotnet', tool, 'verify', duplicate_pointer], None, 'Duplicate')
         deep_pointer = mutate('pointer-depth', pointer_consumer, [(
-            "WITH RECURSIVE chain(n) AS (SELECT 1 UNION ALL SELECT n+1 FROM chain WHERE n<129) INSERT INTO types SELECT 10000+n,'pointer',CASE WHEN n=1 THEN (SELECT min(id) FROM types WHERE kind='pointer' AND id NOT IN (SELECT pointee_type_id FROM types WHERE kind='pointer')) ELSE 9999+n END FROM chain", ())])
+            "WITH RECURSIVE chain(n) AS (SELECT 1 UNION ALL SELECT n+1 FROM chain WHERE n<129) INSERT INTO types SELECT 10000+n,'pointer',CASE WHEN n=1 THEN (SELECT min(id) FROM types WHERE kind='pointer' AND id NOT IN (SELECT pointee_type_id FROM types WHERE kind='pointer')) ELSE 9999+n END,NULL,NULL FROM chain", ())])
         run('pointer-depth-limit', ['dotnet', tool, 'verify', deep_pointer], None, 'nesting')
         pointer_unknown = mutate('pointer-unknown', pointer_consumer, [(
             "UPDATE types SET pointee_type_id=999999 WHERE id=?", (pointer_type,))])
@@ -359,6 +384,37 @@ def main():
         mismatch_pointer_object = compile_source('pointer-signature-mismatch', mismatch_source)
         link('pointer-signature-rejected', [pointer_consumer, mismatch_pointer_object], entry='main', expected=None, contains='Signature mismatch')
 
+        with sqlite3.connect(array_consumer) as db:
+            array_type = db.execute("SELECT min(id) FROM types WHERE kind='array'").fetchone()[0]
+            array_init = db.execute("SELECT min(id) FROM nodes WHERE kind='array-init'").fetchone()[0]
+            array_element = db.execute("SELECT min(id) FROM nodes WHERE kind='array-element'").fetchone()[0]
+            array_decay = db.execute("SELECT min(id) FROM nodes WHERE kind='array-decay'").fetchone()[0]
+        cyclic_array = mutate('array-type-cycle', array_consumer, [(
+            "UPDATE types SET element_type_id=id WHERE id=?", (array_type,))])
+        run('array-element-type-cycle', ['dotnet', tool, 'verify', cyclic_array], None)
+        huge_array = mutate('array-too-large', array_consumer, [(
+            "UPDATE types SET element_count=2147483647 WHERE id=?", (array_type,))])
+        run('array-size-limit', ['dotnet', tool, 'verify', huge_array], None)
+        invalid_index = mutate('array-element-index', array_consumer, [(
+            "UPDATE nodes SET constant_text='99999999' WHERE id=?", (array_element,))])
+        run('array-initializer-index-limit', ['dotnet', tool, 'verify', invalid_index], None)
+        invalid_element_type = mutate('array-element-value-type', array_consumer, [(
+            "UPDATE nodes SET type_id=9 WHERE id=?", (array_element,))])
+        run('array-initializer-type-mismatch', ['dotnet', tool, 'verify', invalid_element_type], None)
+        invalid_decay = mutate('array-decay-type', array_consumer, [(
+            "UPDATE nodes SET type_id=2 WHERE id=?", (array_decay,))])
+        run('array-decay-requires-element-pointer', ['dotnet', tool, 'verify', invalid_decay], None)
+        missing_array_target = mutate('array-missing-target', array_consumer, [(
+            "DELETE FROM edges WHERE parent_id=? AND role='target'", (array_init,))])
+        run('array-initializer-missing-target', ['dotnet', tool, 'verify', missing_array_target], None)
+        wrong_source_bound = mutate('array-source-bound', array_consumer, [(
+            "UPDATE source_types SET element_count=element_count+1 WHERE kind='array' AND element_count>0", ())])
+        run('array-source-bound-mismatch', ['dotnet', tool, 'verify', wrong_source_bound], None)
+        array_mismatch_source = out / 'array-mismatch.cpp'
+        array_mismatch_source.write_text('extern "C" void array_bump_row(int (*row)[4]){(*row)[1]=3;}\n')
+        mismatch_array_object = compile_source('array-signature-mismatch', array_mismatch_source)
+        link('array-signature-rejected', [array_consumer, mismatch_array_object], entry='main', expected=None, contains='Signature mismatch')
+
         macros_object = out / 'macros.dotobj'
         wrong_macro_event = mutate('macro-event-name', macros_object, [(
             "UPDATE macro_events SET name='DIFFERENT' WHERE id=(SELECT min(id) FROM macro_events WHERE kind='define')", ())])
@@ -381,6 +437,8 @@ def main():
             'push-macro': '#define VALUE 1\n#pragma push_macro("VALUE")\nint f(){return VALUE;}\n',
             'pop-macro': '#pragma pop_macro("VALUE")\nint f(){return 1;}\n',
             'global': 'int storage=1; int f(){return storage;}\n',
+            'variable-array': 'int f(int n){int values[n]; values[0]=2;return values[0];}\n',
+            'oversized-array': 'int f(){unsigned char values[65537];values[0]=1;return values[0];}\n',
             'record-pointer': 'struct X { int value; }; int f(X* p){return p->value;}\n',
             'function-pointer': 'int f(int (*call)(int)){return call(3);}\n',
             'reference': 'int f(int& value){return value;}\n',

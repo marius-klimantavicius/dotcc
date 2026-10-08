@@ -2,8 +2,8 @@ namespace DotObj;
 
 internal static class Verifier
 {
-    private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "if", "while", "for", "do-while", "switch", "case", "break", "continue"];
-    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference"];
+    private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element"];
+    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -12,6 +12,7 @@ internal static class Verifier
         var visited = new HashSet<long>();
         var declarations = new HashSet<long>();
         var switchCases = new HashSet<long>();
+        var arrayElements = new HashSet<long>();
         var parameters = body.Bindings.Values.Where(b => b.Kind == "parameter").OrderBy(b => b.Ordinal).ToArray();
         var signature = obj.Parameters.GetValueOrDefault(function.Id, []);
         if (parameters.Length != signature.Count) Fail("Parameter binding count differs from signature");
@@ -70,6 +71,25 @@ internal static class Verifier
             return true;
         }
         bool Place(Node node) => node.Kind is "binding" or "dereference";
+        // An address rooted in owned stack storage with constant offsets cannot
+        // change while the RHS runs, even if the RHS calls or mutates values.
+        bool StablePlace(Node node, int depth = 0) => depth <= 1024 &&
+            (node.Kind == "binding" || node.Kind == "dereference" && StablePointer(Child(node, "operand"), depth + 1));
+        bool StablePointer(Node node, int depth = 0)
+        {
+            if (depth > 1024) return false;
+            if (node.Kind == "constant" && ScalarTypes.IsPointer(Type(node))) return true;
+            if (node.Kind is "address" or "array-decay") return StablePlace(Child(node, "operand"), depth + 1);
+            if (node.Kind == "convert" && ScalarTypes.IsPointer(Type(node)) && ScalarTypes.IsPointer(Type(Child(node, "operand"))))
+                return StablePointer(Child(node, "operand"), depth + 1);
+            if (node.Kind == "binary" && node.Operator is "pointer-add" or "pointer-subtract")
+            {
+                Node left = Child(node, "left"), right = Child(node, "right");
+                return right.Kind == "constant" && ScalarTypes.IsInteger(Type(right)) && StablePointer(left, depth + 1) ||
+                    node.Operator == "pointer-add" && left.Kind == "constant" && ScalarTypes.IsInteger(Type(left)) && StablePointer(right, depth + 1);
+            }
+            return false;
+        }
         void Visit(Node node, List<long> scopes, HashSet<long> visible, List<long> controls, int depth)
         {
             if (depth > 1024) Fail("Graph nesting exceeds supported limit");
@@ -77,7 +97,7 @@ internal static class Verifier
             if (node.FunctionId != function.Id || (!StatementKinds.Contains(node.Kind) && !IsExpression(node))) Fail($"Unsupported node {node.Kind}");
             if (StatementKinds.Contains(node.Kind))
             {
-                if (node.TypeId != null || node.ValueCategory != null || node.EvaluationOrder != null) Fail("Statement carries expression metadata");
+                if ((node.TypeId != null) != (node.Kind == "array-element") || node.ValueCategory != null || node.EvaluationOrder != null) Fail("Statement carries expression metadata");
             }
             else
             {
@@ -86,13 +106,23 @@ internal static class Verifier
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
                 string[] orders = node.Kind is "constant" or "binding" ? ["none"] : ["left-to-right", "unspecified"];
                 if (node.Kind == "assign") orders = ["left-to-right", "right-to-left", "unspecified"];
-                if (node.Kind is "address" or "dereference") orders = ["none", "left-to-right", "unspecified"];
+                if (node.Kind is "address" or "dereference" or "array-decay") orders = ["none", "left-to-right", "unspecified"];
                 if (!orders.Contains(node.EvaluationOrder)) Fail($"Unsupported evaluation order at {node.Id}");
             }
             if ((node.EntityId != null) != (node.Kind == "call") ||
                 (node.BindingId != null) != (node.Kind is "binding" or "declare") ||
                 (node.Operator != null) != (node.Kind is "binary" or "unary" or "mutate") ||
-                (node.ConstantText != null) != (node.Kind == "constant")) Fail("Unexpected or missing typed payload");
+                (node.ConstantText != null) != (node.Kind is "constant" or "array-element")) Fail("Unexpected or missing typed payload");
+
+            if (IsExpression(node) && ScalarTypes.IsArray(Type(node)) && !Place(node)) Fail("Array value must be a place");
+            foreach (Edge edge in body.Edges.GetValueOrDefault(node.Id, []))
+            {
+                Node child = body.Nodes[edge.ChildId];
+                if (child.TypeId is long childType && ScalarTypes.IsArray(obj.Type(childType)) &&
+                    !(node.Kind is "address" or "array-decay" && edge.Role == "operand") &&
+                    !(node.Kind == "array-init" && edge.Role == "target"))
+                    Fail("Array place requires explicit address, decay or initialization");
+            }
 
             if (node.Kind == "block")
             {
@@ -204,6 +234,36 @@ internal static class Verifier
                     if (!body.Bindings.TryGetValue(node.BindingId!.Value, out Binding? binding) || !scopes.Contains(binding.ScopeNodeId) || !visible.Contains(binding.Id)) Fail("Binding used outside scope or before declaration");
                     if (obj.Type(binding!.TypeId) != Type(node)) Fail("Binding reference type mismatch");
                     break;
+                case "array-init":
+                    EdgeShape(node, ("target", 1, 1), ("element", 0, int.MaxValue));
+                    Expr(node, "target");
+                    Node arrayTarget = Child(node, "target");
+                    if (arrayTarget.Kind != "binding" || !ScalarTypes.IsArray(Type(arrayTarget)) ||
+                        !body.Bindings.TryGetValue(arrayTarget.BindingId!.Value, out Binding? arrayBinding) || arrayBinding.Kind != "local")
+                        Fail("Array initialization requires a local array binding");
+                    string leaf = ScalarTypes.Leaf(Type(arrayTarget));
+                    long count = ScalarTypes.FlatCount(Type(arrayTarget));
+                    foreach (Edge edge in body.Children(node.Id, "element"))
+                    {
+                        Node item = body.Nodes[edge.ChildId];
+                        if (item.Kind != "array-element" || Type(item) != leaf ||
+                            !ScalarTypes.IsConstant("u64", item.ConstantText) ||
+                            !long.TryParse(item.ConstantText, out long index) || index >= count)
+                            Fail("Array initializer element type or index is invalid");
+                        arrayElements.Add(item.Id);
+                    }
+                    break;
+                case "array-element":
+                    if (!arrayElements.Contains(node.Id)) Fail("Array element must be an array initialization child");
+                    EdgeShape(node, ("value", 1, 1)); Expr(node, "value");
+                    SameType(node, Child(node, "value"));
+                    break;
+                case "array-decay":
+                    EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
+                    if (!Place(Child(node, "operand")) || !ScalarTypes.IsArray(Type(Child(node, "operand"))) ||
+                        Type(node) != "ptr(" + ScalarTypes.Element(Type(Child(node, "operand"))) + ")")
+                        Fail("Array decay requires an array place and pointer to its element");
+                    break;
                 case "address":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
                     if (!Place(Child(node, "operand")) || Type(node) != "ptr(" + Type(Child(node, "operand")) + ")")
@@ -284,9 +344,9 @@ internal static class Verifier
                 case "assign":
                     EdgeShape(node, ("target", 1, 1), ("value", 1, 1)); Expr(node, "target"); Expr(node, "value");
                     if (!Place(Child(node, "target"))) Fail("Assignment target must be a typed place");
-                    if (node.EvaluationOrder == "right-to-left" && Child(node, "target").Kind != "binding" &&
+                    if (node.EvaluationOrder == "right-to-left" && !StablePlace(Child(node, "target")) &&
                         (!Pure(Child(node, "target")) || !Pure(Child(node, "value"))))
-                        Fail("Indirect RHS-before-LHS assignment requires effect-free operands in this profile");
+                        Fail("Indirect RHS-before-LHS assignment requires a stable address or effect-free operands in this profile");
                     SameType(node, Child(node, "target")); SameType(node, Child(node, "value")); break;
                 case "mutate":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");

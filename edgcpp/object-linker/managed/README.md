@@ -1,6 +1,6 @@
 # Managed semantic object linker
 
-This is the executable `scalar-control-v7` implementation of the fresh
+This is the executable `scalar-control-v8` implementation of the fresh
 `.dotobj` semantic graph. It does not read the previous semantic-export format
 or an emission-command stream.
 
@@ -104,12 +104,12 @@ Push/pop and precompiled/module macro import are rejected for this profile.
 
 The link report still preserves the missing capability flags: `prelowerSource`,
 `macros`, and `lifetimes` are false. A complete source expression/statement view,
-all redeclarations, macro expansion history and lifetime capture remain absent. Globals/TLS, arrays, records, function
+all redeclarations, macro expansion history and lifetime capture remain absent. Globals/TLS, variable/incomplete execution arrays, records, function
 addresses, exceptions/RAII, inline/COMDAT, templates and runtime providers are
 not implemented in this profile. Unsupported input is rejected; scalar fixtures
 do not demonstrate DuckDB readiness or full C++ coverage.
 
-The current schema requires scalar-control-v7 objects. Earlier v1/v2/v3/v4/v5/v6 objects
+The current schema requires scalar-control-v8 objects. Earlier v1/v2/v3/v4/v5/v6/v7 objects
 remain usable with their retained earlier tool build, or can be regenerated.
 
 The integer profile supports signed/unsigned 8/16/32/64-bit values, exact decimal
@@ -135,12 +135,26 @@ ordinary `&`, `*`, pointer casts, comparisons, element arithmetic and mutation.
 Cross-object signatures compare structural pointee types, independent of local
 IDs. Null constants stay typed. Execution/source pointer cycles and inconsistent
 pointee mappings are rejected. `source-map.json` includes execution type rows.
-For specified RHS-before-LHS assignment, an indirect place and its RHS must both
-be free of calls, assignment and mutation; more complex sequencing remains
-unsupported. Address-taking does not add heap allocation or pinning for these
+For specified RHS-before-LHS assignment, an indirect place must have an
+invariant address rooted in owned storage with constant offsets, or both the
+place and RHS must be free of calls, assignment and mutation. Other effectful
+sequencing remains unsupported. Address-taking does not add heap allocation or pinning for these
 unmanaged stack locals. Source bounds and lifetimes still determine validity.
 
 When any input object uses pointer types, the first generated partial class
 contains one owner static constructor checking `IntPtr.Size == 8`. An incompatible
 32-bit process fails explicitly before translated functions execute. This
 enforces the fixed target ABI while allowing any supported 64-bit OS/runtime.
+
+
+The v8 profile adds fixed local arrays, including multidimensional storage,
+array-to-pointer decay, address-of-array, partial/sparse initialization and
+character data. Structural array types cross object boundaries without local ID
+coupling. Array storage is limited to 64 KiB per array and represented by an
+unmanaged sized value struct with the source local name. Integer constant
+initializers use embedded `ReadOnlySpan<T>` properties and bulk copy; other
+initializers use one local pointer alias and ordered element stores. Initializers
+execute at their lexical position, including repeated loop iterations. No heap
+allocation or pinning is introduced. Original array parameter declarations are
+retained in provenance and explicitly checked against the adjusted pointer ABI.
+Variable-length, global and incomplete execution arrays remain unsupported.

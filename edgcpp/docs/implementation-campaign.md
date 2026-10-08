@@ -2424,3 +2424,42 @@ expression trees and lifetimes remain unfinished in the new object pipeline.
 Nonzero folded pointer constants remain outside this bounded profile. Current
 readers require v7 objects; earlier matching readers/objects and all current
 intermediates remain preserved. DuckDB whole-program work remains paused.
+
+
+The `scalar-control-v8` milestone adds fixed local arrays, with explicit element
+types/extents and preserved multidimensional layout. Complete array storage is
+bounded to 65,536 bytes in this slice. Source metadata retains array dimensions
+and parameter adjustment; an unknown-bound source parameter array has count zero
+and the documented adjusted element-pointer execution representation. Array
+objects with unknown bounds and variable-length arrays remain unsupported.
+
+The execution graph distinguishes array places, explicit decay, address-taking
+and ordered initialization. Storage uses unmanaged value structs with explicit
+size and leaf alignment. Constant integer initializers become embedded
+`ReadOnlySpan<T>` properties with `CopyTo`; trailing zero data is omitted because
+initialization clears the destination. Sparse/pointer/dynamic initializer lists
+use indexed writes through one alias. Array indexing emits square brackets when
+its pointer operation admits that equivalent spelling. Generated type names are
+allocated after source function names, avoiding method/owner collisions.
+
+Native probes exposed lowered dynamic initializer stores and `initk_zero` on
+partially dynamic nested aggregates. The adapter now recognizes a fixed local
+address with constant offsets as invariant across RHS calls, and emits the zero
+initialization required by the stock C backend's declaration handling. Loaded
+pointer addresses still require the earlier conservative sequencing proof.
+These changes adapt the backend to EDG output; no frontend semantics were fixed.
+
+All 336 acceptance checks pass on Linux x64. Coverage includes C11/C++17
+independently compiled array APIs, native references,
+JIT and NativeAOT, inferred bounds, const/typedef and adjusted parameters,
+multidimensional/brace-elided and dynamic initializers, loop reinitialization,
+byte/bool/pointer storage, exact-bound/embedded-NUL strings, pointer-to-array
+stride, storage limits and generated-name collisions. Corrupted objects check
+layout/bounds/index errors, initializer and decay contracts, cycles and
+cross-unit array signatures. [Hashed array milestone evidence](../evidence/dotobj-array-20261008.json).
+
+Records, globals/TLS, general string-literal storage, function pointers,
+references and C++ lifetimes remain unfinished in the object pipeline. New
+readers require v8 objects; earlier matching tools/objects and all probes,
+including unsuccessful integration probes, remain preserved. DuckDB's old
+whole-program retry remains paused.

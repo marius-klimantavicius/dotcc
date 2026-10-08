@@ -18,6 +18,8 @@ V6 adds structured switches, case labels and explicit switch/loop transfer targe
 including C fallthrough represented by local C# `goto case`/`goto default` transfers.
 V7 adds structural data-pointer types and typed address/dereference places,
 with pointer arithmetic, cross-unit pointer signatures and ordinary unsafe C# output.
+V8 adds fixed local arrays, multidimensional layout, array decay and ordered
+initialization, with typed span copies for constant integer data.
 Full source-tree/macro-expansion
 and lifetime capture, broad C++ coverage and the full graph design below remain
 unfinished; the initial profile explicitly records those missing capabilities.

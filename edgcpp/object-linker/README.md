@@ -46,9 +46,10 @@ verification.
 
 ## Current acceptance and boundaries
 
-`scalar-control-v7` supports defined/declaration function identities with strong
+`scalar-control-v8` supports defined/declaration function identities with strong
 external or TU-private linkage, signed/unsigned 8/16/32/64-bit integer operations,
 typed data pointers (including void pointers and pointer-to-pointer),
+fixed local arrays of integers/pointers (including multidimensional arrays),
 parameters and block locals, direct calls, conversions, initialization,
 short-circuit and conditional expressions, bitwise operators and shifts,
 assignments, pre/post increment/decrement, return,
@@ -75,11 +76,27 @@ pointer elements; pointer difference uses the target's 64-bit signed result.
 Original pointer/typedef/const chains remain in source provenance. The generated
 owner checks that the runtime has 64-bit pointers when pointer types are used.
 
-C++ right-before-left indirect assignment currently requires both the target
-address expression and the assigned value to be free of calls and mutations;
-other cases fail explicitly pending expression sequencing support. Address and
+C++ right-before-left indirect assignment accepts a provably fixed local storage
+address with constant offsets, or operands both free of calls and mutations.
+Other cases fail explicitly pending expression sequencing support. Address and
 load/store nodes retain their distinct type and place contracts. Object lifetime
 and bounds rules remain the source program's responsibility.
+
+Fixed arrays retain their element type, extent and complete dimensions. Their
+unmanaged storage uses generated value structs with explicit size and natural
+leaf alignment. Explicit array decay yields an element pointer; taking the
+array address yields a pointer to the whole array. Ordinary indexing is emitted
+where possible. The first array slice caps each complete array at 65,536 bytes;
+variable-length arrays and incomplete array objects remain unsupported.
+
+Initializers clear storage and execute ordered element writes at the captured
+initialization point. Constant integer data uses `ReadOnlySpan<T>` properties
+and `CopyTo`, trimming trailing zeros; sparse, pointer or dynamic data uses one
+local pointer alias and indexed writes. Repeated block/loop entry resets local
+initializers. Source metadata retains array bounds and parameter adjustments;
+unknown-bound parameter arrays use a documented source-only adjustment marker.
+Byte-array string initialization includes embedded NULs. General string literal
+storage and arrays as globals are still unfinished.
 
 The profile records `sourceDeclarations=true`: read-only hooks before EDG's
 incremental/type lowering snapshot original scalar types, typedef chains,
@@ -107,7 +124,7 @@ PCH/module macro imports and non-UTF8/NUL metadata are explicitly rejected.
 Source/header bytes remain retained separately. This is still a partial source
 and execution graph, not the complete design.
 
-Globals/TLS, arrays/records, C++ references, function pointers, volatile/atomic
+Globals/TLS, records, C++ references, function pointers, volatile/atomic
 behavior, inline/template/COMDAT,
 RAII/EH/noexcept, arbitrary goto and provider runtime linkage are rejected.
 Nonzero folded pointer constants are also outside this profile.
@@ -129,7 +146,7 @@ python3 -B edgcpp/object-linker/tests/verify.py \
   --output-dir /path/fresh/dotobj-acceptance --nativeaot
 ```
 
-The 287-check acceptance run covers actual independent EDG compilation, native
+The 336-check acceptance run covers actual independent EDG compilation, native
 reference execution, managed JIT/NativeAOT, private name isolation, scope
 shadowing, loop-local reinitialization, short-circuit effects, bool/byte
 conversions, namespace collisions and implicit main return. Loop fixtures cover
@@ -144,6 +161,11 @@ differ, with native/JIT/AOT execution in C11 and C++17. They cover aliasing,
 indirect stores/mutation, pointer-to-pointer arithmetic, source qualifiers,
 null/casts/truth tests, 64-bit values and byte/bool storage. Malformed pointer
 types, source mappings, operands and signatures are rejected.
+Array fixtures add partial zero-fill, dynamic and nested initializer order,
+loop resets, pointer-to-array stride, inferred bounds, qualifiers, array parameter
+adjustments, byte strings, and 65,536-byte storage. Generated type names avoid
+source method and configured owner-class collisions. Malformed array bounds,
+indices, layouts, decay and signatures are rejected.
 Integer fixtures verify width boundaries,
 signed extension, narrowing, unsigned arithmetic/negation, bitwise/shift behavior
 and conditional branch side effects. Cross-unit tests distinguish long and
@@ -169,9 +191,9 @@ digest, snapshots, references, scope/type/operation contracts and required
 indexes. A hash demonstrates content integrity, not semantic correctness.
 
 Full logs/objects/generated projects remain under
-`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-pointer-acceptance-001/`.
+`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-acceptance-002/`.
 
-The current schema requires `scalar-control-v7`. Earlier v1/v2/v3/v4/v5/v6 objects and tools
+The current schema requires `scalar-control-v8`. Earlier v1/v2/v3/v4/v5/v6/v7 objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 

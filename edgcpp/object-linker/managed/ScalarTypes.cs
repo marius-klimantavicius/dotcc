@@ -5,13 +5,22 @@ namespace DotObj;
 
 internal static class ScalarTypes
 {
+    public static bool IsArray(string kind) => kind.StartsWith("array(", StringComparison.Ordinal) && kind.EndsWith(')');
+    public static long ElementCount(string kind) => long.Parse(kind.AsSpan(6, kind.IndexOf(',') - 6), CultureInfo.InvariantCulture);
+    public static string Element(string kind) => kind[(kind.IndexOf(',') + 1)..^1];
+    public static string Leaf(string kind) => IsArray(kind) ? Leaf(Element(kind)) : kind;
+    public static long FlatCount(string kind) => IsArray(kind) ? checked(ElementCount(kind) * FlatCount(Element(kind))) : 1;
+    public static long Size(string kind) => IsArray(kind) ? checked(ElementCount(kind) * Size(Element(kind))) : IsPointer(kind) ? 8 : kind switch
+    { "bool" or "i8" or "u8" => 1, "i16" or "u16" => 2, "i32" or "u32" => 4, "i64" or "u64" => 8, _ => throw new InvalidDataException("Type has no storage size") };
+    public static string ArrayName(string kind) => "__DotObjArray_" + Mangle(kind);
+    private static string Mangle(string kind) => IsArray(kind) ? "A" + ElementCount(kind) + "_" + Mangle(Element(kind)) : IsPointer(kind) ? "P_" + Mangle(Pointee(kind)) : kind;
     public static bool IsPointer(string kind) => kind.StartsWith("ptr(", StringComparison.Ordinal) && kind.EndsWith(')');
     public static string Pointee(string kind) => IsPointer(kind) ? kind[4..^1]
         : throw new InvalidDataException("Expected pointer type");
     public static bool IsInteger(string kind) => kind is "i8" or "u8" or "i16" or "u16" or "i32" or "u32" or "i64" or "u64";
     public static bool IsPromotedInteger(string kind) => kind is "i32" or "u32" or "i64" or "u64";
     public static bool IsBooleanResult(string kind) => kind is "bool" or "i32" or "u8";
-    public static string CSharp(string kind) => IsPointer(kind) ? CSharp(Pointee(kind)) + "*" : kind switch
+    public static string CSharp(string kind) => IsArray(kind) ? ArrayName(kind) : IsPointer(kind) ? CSharp(Pointee(kind)) + "*" : kind switch
     {
         "void" => "void", "bool" => "bool", "i8" => "sbyte", "u8" => "byte",
         "i16" => "short", "u16" => "ushort", "i32" => "int", "u32" => "uint",

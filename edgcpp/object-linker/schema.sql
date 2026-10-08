@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v7'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v8'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -35,10 +35,14 @@ CREATE TABLE source_files (
 ) STRICT;
 CREATE TABLE types (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind IN ('void','i8','u8','i16','u16','i32','u32','i64','u64','bool','pointer')),
+ kind TEXT NOT NULL CHECK(kind IN ('void','i8','u8','i16','u16','i32','u32','i64','u64','bool','pointer','array')),
  pointee_type_id INTEGER REFERENCES types(id),
+ element_type_id INTEGER REFERENCES types(id),
+ element_count INTEGER,
  CHECK((kind='pointer' AND pointee_type_id IS NOT NULL) OR
-       (kind<>'pointer' AND pointee_type_id IS NULL))
+       (kind<>'pointer' AND pointee_type_id IS NULL)),
+ CHECK((kind='array' AND element_type_id IS NOT NULL AND element_count IS NOT NULL AND element_count>0) OR
+       (kind<>'array' AND element_type_id IS NULL AND element_count IS NULL))
 ) STRICT;
 CREATE TABLE entities (
  id INTEGER PRIMARY KEY CHECK(id>0),
@@ -108,7 +112,8 @@ CREATE TABLE source_types (
  is_volatile INTEGER NOT NULL CHECK(is_volatile IN (0,1)),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
- column INTEGER NOT NULL CHECK(column>=0)
+ column INTEGER NOT NULL CHECK(column>=0),
+ element_count INTEGER CHECK(element_count>=0)
 ) STRICT;
 CREATE TABLE source_functions (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),

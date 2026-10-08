@@ -1,0 +1,195 @@
+{
+  "milestone": "Fixed local arrays, typed layout, decay and initialization in semantic objects",
+  "date": "2026-10-08",
+  "profile": "scalar-control-v8",
+  "status": "passed-with-explicit-coverage-boundaries",
+  "acceptance": {
+    "checkCount": 336,
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-acceptance-002/results.json",
+      "sha256": "cbcd83f3f86d587740eca56fe6b9e25a3e97ad76a17325b7c62c7617e9c0d82e"
+    },
+    "log": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-acceptance-002.log",
+      "sha256": "c1173400bd30e2af536d1111dd16f55f25fa351ad56e79dd20e99500e290fec6"
+    },
+    "languages": [
+      "C++17",
+      "C11"
+    ],
+    "nativeReference": true,
+    "managedJit": true,
+    "nativeAot": true,
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39"
+  },
+  "compiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "sha256": "74b008b9b91ad5c4dbd9f57f898e37b81122de4cfc6815f8197e65231fe812c6"
+  },
+  "nativeBuildLog": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-native-build-003.log",
+    "sha256": "ccf6d49a98afafc222dc4dd84e297a9081f10e0b024d9bcc2f8d0a2524117839"
+  },
+  "managedTool": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-acceptance-002/tool/bin/DotObj.Linker/release/dotobj-link.dll",
+    "sha256": "dd6191620d633d0872fb5a73aa600f9bdd39a6c5148dd7fa03a4759ddbbc11b5"
+  },
+  "generatedReview": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-acceptance-002/link-arrays-cpp/Translated.0000.array_provider_u002e_cpp.cs",
+      "sha256": "712ffd60f9ad70d5030c23a472727f7c5c4a11e02f6657f43bc851b94b8848fa"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-acceptance-002/link-arrays-cpp/Translated.0001.arrays_u002e_cpp.cs",
+      "sha256": "7b387f9945832ffa54e755179f95eca1172e1fa842b8437fd04db9b6fc0d4ff6"
+    }
+  ],
+  "objects": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-acceptance-002/array_provider.dotobj",
+      "sha256": "e73f7b9fba3dbd081b36281d95262ab0e99d1502aafda65b05f77ebebdbf02bc"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-acceptance-002/arrays.dotobj",
+      "sha256": "24be748931202921a840d2d9a850067f587af15aa48b4c0473abe0b8bca8d7b7"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-acceptance-002/array-provider-c.dotobj",
+      "sha256": "fd9d755cf3661209ea1e11e7160123356c93324c6368c28ea5bb0ba988827461"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-acceptance-002/arrays-c.dotobj",
+      "sha256": "4dd34aea5cd399d707f02d4f09fc1ab804dbe0487a2a99915e33f92bc771b15f"
+    }
+  ],
+  "coverage": [
+    "Structural multidimensional array types and pointer-to-array element stride",
+    "Fixed, inferred, const/typedef and adjusted array parameter declarations",
+    "Partial, sparse, brace-elided and dynamic initialization with loop reinitialization",
+    "Integer, byte, bool and pointer arrays; embedded-NUL and exact-bound C strings",
+    "64KiB local storage with short span initializer rather than explicit trailing zero data",
+    "Source function names retained under generated type collisions; configured owner collision tested",
+    "Malformed array graph cycles, sizes, indices, types, decay, target edges and source bounds rejected",
+    "Cross-unit array signature mismatch rejected; all earlier semantic-object acceptance retained"
+  ],
+  "storageContract": {
+    "maximumArrayBytes": 65536,
+    "representation": "Unmanaged value structs with explicit total size and leaf alignment",
+    "constantInitialization": "Typed static ReadOnlySpan collection expressions copied at initialization; trailing zeros omitted",
+    "dynamicInitialization": "Ordered indexed writes, with source/EDG-required zero initialization"
+  },
+  "review": {
+    "independentReview": "Array owner/type collision found and fixed; suggested multidimensional/dynamic/bool/typedef/string cases included",
+    "finalCoordinatorReview": "Removed obsolete generated type reservation from function name allocation; added explicit preservation assertion and reran acceptance"
+  },
+  "integrationProbes": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-consumer-probe-001/stderr",
+      "sha256": "eabefb0bae2626ba966ebcb90b9e1c00671c57154e306bf22aaaad80daab2917"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-consumer-probe-002/stderr",
+      "sha256": "fb6532a6460b8c5a646662069c838b84279c98e44181abfe7c72acaab29f6565"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-consumer-probe-003.dotobj",
+      "sha256": "d40bf89f101998d477efd1d414f8bbcb878a87c5f33489499416ad4f196f36db"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-boundary-probe-001.dotobj",
+      "sha256": "b691f22c74539a575fe0ce1a854f87a2fdc7f6e2a8790d615a5acd5c86fc49c0"
+    }
+  ],
+  "limitations": [
+    "Per-array storage is limited to 65,536 bytes; VLA/global/incomplete execution arrays rejected",
+    "Records, function pointers, references, globals/TLS and C++ lifetimes remain unfinished",
+    "General string literal storage, complete prelower expression trees and macro expansion histories remain unfinished",
+    "Effectful RHS-before-LHS indirect stores require invariant target address or conservative effect-free operands",
+    "Linux x64 executed; Windows/macOS not executed",
+    "DuckDB whole-program retry remains paused"
+  ],
+  "frontendSemanticsModified": false,
+  "intermediatesPreserved": true,
+  "implementation": [
+    {
+      "path": "edgcpp/backend/dot_gen_object.h",
+      "sha256": "34e43a82a57df01eceff90cc981794504f7eb02c890e6a723022fdf5ad7cee87"
+    },
+    {
+      "path": "edgcpp/backend/dot_gen_object_source.h",
+      "sha256": "8dee3616663c5b3750ed90b5938ce06b174966240722d82a82bae6cedf82f8f3"
+    },
+    {
+      "path": "edgcpp/docs/dot-gen-be-plan.md",
+      "sha256": "a75f97590f4e65841ab48ccf908967cbdd5f14416228006e77f7ec02552e1ad7"
+    },
+    {
+      "path": "edgcpp/docs/dotobj-format.md",
+      "sha256": "e837a3ba32d3d2990f53be62401a2714b0bfdc9de8988354138592f7b0575bf2"
+    },
+    {
+      "path": "edgcpp/docs/implementation-campaign.md",
+      "sha256": "3cbd5dbdfd19f8e219c5819267012864106d857086019c992766192911cefefe"
+    },
+    {
+      "path": "edgcpp/object-linker/README.md",
+      "sha256": "32cf40d57b11a1967ab6b4ccabb906a30521f6ea634c865599111cc552b92f6c"
+    },
+    {
+      "path": "edgcpp/object-linker/compile.py",
+      "sha256": "04c99b6623c624339cb4ef7ab956a41b30fbdf6b6bd317c82205712cf1792570"
+    },
+    {
+      "path": "edgcpp/object-linker/contract.md",
+      "sha256": "10ed9f1e7467b8e3ce12e5af1e413574c3a401b41dcd43079384f6f14d0a9a64"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/Emitter.cs",
+      "sha256": "c5f231c09a4da7d2170cc977a785d8ee8b851ed727c8e1f22be29bf5b28e518f"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/ObjectFile.cs",
+      "sha256": "b984283b95194bb33ac4f375b3f44f2ed1b3f10001c40fdc0b868c0fbe77f669"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/Program.cs",
+      "sha256": "d81ce713140fecb0854fc065ae51cd4d5b0f17c060c9aac7b3d69ddc2686c932"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/README.md",
+      "sha256": "6d9978d538603764406663c3a39c4cb2e16d080ae98b4fcf0cce1910c9188fa8"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/ScalarTypes.cs",
+      "sha256": "4554ce8b33073d6a2c304a3a4c05cc5bc6c20ccd7d93efb3c70dc749b43309cf"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/SourceProvenance.cs",
+      "sha256": "9314a6c23d6ef9cd3aad393b5645c3d24e1c044fb679a12da931e430c96b9a3b"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/Verifier.cs",
+      "sha256": "2c71e4d68df1104392a89c70a7498d5be2277947e40e7ffb9aa446a8677e49b2"
+    },
+    {
+      "path": "edgcpp/object-linker/schema.sql",
+      "sha256": "b6d354d343d44e97f59bfee2dfac61594bb952a23c9d6bac98743d8da12dc260"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/verify.py",
+      "sha256": "d641b812946d4416b59e7f370cf18ca96ef666674e3eedb5abed218ca4dff3a1"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/array_fixture.h",
+      "sha256": "aaec5c359afb6472a6fc4ffeaa40475ed6abedbeb7cecba40bea6f3e5c82130b"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/array_provider.cpp",
+      "sha256": "8c8643be3580e63134e6d7503e4854c682b6eedda65a7708243f773a98be1479"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/arrays.cpp",
+      "sha256": "a3316afcbfbfbba5cdac8479bb52647daa26564bed84934f7150454f95b21d5c"
+    }
+  ]
+}

@@ -4,7 +4,7 @@ namespace DotObj;
 
 internal sealed record SourceType(long Id, string Kind, string SourceName,
     long? UnderlyingTypeId, long ExecutionTypeId, bool IsConst, bool IsVolatile,
-    long? SourceFileId, long Line, long Column);
+    long? SourceFileId, long Line, long Column, long? ElementCount);
 
 internal sealed partial class ObjectFile
 {
@@ -12,18 +12,26 @@ internal sealed partial class ObjectFile
 
     private void ReadAndVerifySourceProvenance()
     {
-        using (var query = database.Prepare("SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column FROM source_types ORDER BY id"))
+        using (var query = database.Prepare("SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count FROM source_types ORDER BY id"))
             while (query.Read())
             {
                 var type = new SourceType(query.Integer(0), query.Text(1), query.Text(2), query.OptionalInteger(3), query.Integer(4),
-                    query.Integer(5) == 1, query.Integer(6) == 1, query.OptionalInteger(7), query.Integer(8), query.Integer(9));
+                    query.Integer(5) == 1, query.Integer(6) == 1, query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.OptionalInteger(10));
                 if (type.Id <= 0 || type.Line < 0 || type.Column < 0 || query.Integer(5) is not (0 or 1) || query.Integer(6) is not (0 or 1))
                     throw new InvalidDataException("Invalid source type identity, qualifiers or location");
                 string executionType = Type(type.ExecutionTypeId);
+                if ((type.Kind == "array" ? type.ElementCount is null or < 0 : type.ElementCount is not null))
+                    throw new InvalidDataException("Source array requires a nonnegative element count");
                 if (type.Kind is "typedef" or "qualified")
                 {
                     if (type.UnderlyingTypeId is null || (type.Kind == "typedef" ? type.SourceName.Length == 0 : type.SourceName.Length != 0 || !type.IsConst && !type.IsVolatile))
                         throw new InvalidDataException("Invalid source typedef or qualified type");
+                }
+                else if (type.Kind == "array")
+                {
+                    if (type.UnderlyingTypeId is null || type.SourceName.Length != 0 || type.IsConst || type.IsVolatile ||
+                        (type.ElementCount == 0 ? !ScalarTypes.IsPointer(executionType) : !ScalarTypes.IsArray(executionType) || ScalarTypes.ElementCount(executionType) != type.ElementCount))
+                        throw new InvalidDataException("Invalid source array type or execution extent");
                 }
                 else if (type.Kind == "pointer")
                 {
@@ -61,8 +69,17 @@ internal sealed partial class ObjectFile
                 if (!SourceTypes.TryGetValue(underlying, out SourceType? target)) throw new InvalidDataException("Unknown underlying source type");
                 if (current.Kind == "pointer")
                 {
-                    if (ScalarTypes.Pointee(Type(current.ExecutionTypeId)) != Type(target.ExecutionTypeId))
+                    if (Original(target).Kind == "array" && Original(target).ElementCount == 0 ||
+                        ScalarTypes.Pointee(Type(current.ExecutionTypeId)) != Type(target.ExecutionTypeId))
                         throw new InvalidDataException("Source pointer pointee disagrees with execution representation");
+                }
+                else if (current.Kind == "array")
+                {
+                    string representation = Type(current.ExecutionTypeId);
+                    string element = current.ElementCount == 0 ? ScalarTypes.Pointee(representation) : ScalarTypes.Element(representation);
+                    if (element != Type(target.ExecutionTypeId)) throw new InvalidDataException("Source array element disagrees with execution representation");
+                    if (Original(target).Kind == "array" && Original(target).ElementCount == 0)
+                        throw new InvalidDataException("Array element cannot be incomplete");
                 }
                 else if (current.ExecutionTypeId != target.ExecutionTypeId)
                     throw new InvalidDataException("Source typedef/qualification changes the execution representation");
@@ -76,7 +93,7 @@ internal sealed partial class ObjectFile
             {
                 long entity = query.Integer(0);
                 if (!Entities.TryGetValue(entity, out Entity? function) || query.Text(2) != "before-lowering" ||
-                    SourceTypeById(query.Integer(1)).ExecutionTypeId != function.ReturnTypeId || !functions.Add(entity))
+                    SourceTypeById(query.Integer(1)).ExecutionTypeId != function.ReturnTypeId || Original(SourceTypeById(query.Integer(1))).Kind == "array" || !functions.Add(entity))
                     throw new InvalidDataException("Source function signature or capture phase mismatch");
             }
         if (functions.Count != Entities.Count) throw new InvalidDataException("Missing original function signature capture");
@@ -89,7 +106,7 @@ internal sealed partial class ObjectFile
                 SourceType sourceType = SourceTypeById(query.Integer(2));
                 if (!Entities.ContainsKey(entity) || ordinal != count ||
                     !Parameters.TryGetValue(entity, out var parameters) || count >= parameters.Count ||
-                    Type(sourceType.ExecutionTypeId) != parameters[count])
+                    ParameterType(sourceType) != parameters[count])
                     throw new InvalidDataException("Source parameter signature mismatch");
                 parameterCounts[entity] = count + 1;
             }
@@ -127,13 +144,15 @@ internal sealed partial class ObjectFile
                 {
                     if (!query.IsNull(4) || query.IsNull(5) || query.OptionalInteger(6) is not long function ||
                         !Functions.ContainsKey(function) || query.OptionalInteger(9) != function || query.OptionalText(10) != kind ||
-                        query.OptionalInteger(12) != type.ExecutionTypeId || query.OptionalText(13) != name)
+                        (kind == "parameter" ? ParameterType(type) != Type(query.Integer(12)) : type.ExecutionTypeId != query.OptionalInteger(12)) || query.OptionalText(13) != name)
                         throw new InvalidDataException("Source binding declaration does not match its execution binding");
+                    if (kind == "local" && Original(type).Kind == "array" && Original(type).ElementCount == 0)
+                        throw new InvalidDataException("Incomplete array is only supported as original parameter provenance");
                     // A canonical routine signature can come from an earlier
                     // prototype using a different typedef or top-level cv spelling.
                     // The definition's declared parameter keeps its own source type.
                     if (kind == "parameter" && (query.OptionalInteger(15) is not long signatureType ||
-                        SourceTypeById(signatureType).ExecutionTypeId != type.ExecutionTypeId))
+                        ParameterType(SourceTypeById(signatureType)) != ParameterType(type)))
                         throw new InvalidDataException("Source parameter declaration does not match its signature representation");
                 }
                 else throw new InvalidDataException("Unsupported source declaration kind");
@@ -142,6 +161,23 @@ internal sealed partial class ObjectFile
         RejectRows("SELECT binding_id FROM source_declarations WHERE binding_id IS NOT NULL GROUP BY binding_id HAVING count(*)<>1", "Duplicate source binding declaration identity");
         RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL", "Missing original function declaration capture");
         RejectRows("SELECT b.id FROM bindings b LEFT JOIN source_declarations d ON d.binding_id=b.id WHERE d.id IS NULL", "Missing original binding declaration capture");
+    }
+
+    private SourceType Original(SourceType type)
+    {
+        var seen = new HashSet<long>();
+        while (type.Kind is "typedef" or "qualified")
+        {
+            if (!seen.Add(type.Id)) throw new InvalidDataException("Cycle in source type references");
+            type = SourceTypeById(type.UnderlyingTypeId!.Value);
+        }
+        return type;
+    }
+    private string ParameterType(SourceType type)
+    {
+        SourceType original = Original(type);
+        return original.Kind == "array" && original.ElementCount > 0
+            ? "ptr(" + ScalarTypes.Element(Type(original.ExecutionTypeId)) + ")" : Type(type.ExecutionTypeId);
     }
 
     private SourceType SourceTypeById(long id) => SourceTypes.TryGetValue(id, out SourceType? type)
@@ -185,9 +221,9 @@ internal sealed partial class ObjectFile
             writer.WriteEndArray();
         }
         Table("sourceFiles", "SELECT id,path,parent_id FROM source_files ORDER BY id", "id", "path", "parentId");
-        Table("executionTypes", "SELECT id,kind,pointee_type_id FROM types ORDER BY id", "id", "kind", "pointeeTypeId");
-        Table("sourceTypes", "SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column FROM source_types ORDER BY id",
-            "id", "kind", "sourceName", "underlyingTypeId", "executionTypeId", "isConst", "isVolatile", "sourceFileId", "line", "column");
+        Table("executionTypes", "SELECT id,kind,pointee_type_id,element_type_id,element_count FROM types ORDER BY id", "id", "kind", "pointeeTypeId", "elementTypeId", "elementCount");
+        Table("sourceTypes", "SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count FROM source_types ORDER BY id",
+            "id", "kind", "sourceName", "underlyingTypeId", "executionTypeId", "isConst", "isVolatile", "sourceFileId", "line", "column", "elementCount");
         Table("sourceFunctions", "SELECT entity_id,return_source_type_id,capture_phase FROM source_functions ORDER BY entity_id", "entityId", "returnSourceTypeId", "capturePhase");
         Table("sourceParameters", "SELECT entity_id,ordinal,source_type_id FROM source_parameters ORDER BY entity_id,ordinal", "entityId", "ordinal", "sourceTypeId");
         Table("sourceDeclarations", "SELECT id,kind,source_name,source_type_id,entity_id,binding_id,function_entity_id,source_file_id,line,column FROM source_declarations ORDER BY id",

@@ -8,13 +8,13 @@ Native stdout wire is one JSON object (transient packaging protocol only):
 ```
 {
   "formatVersion": 1,
-  "profile": "scalar-control-v7",
+  "profile": "scalar-control-v8",
   "sourceFiles": [{"id":1,"path":"/absolute/main.cpp","parentId":null}],
   "macroDefinitions": [{"id":1,"name":"LIMIT","form":"object","variadic":false,"dynamic":false,"definitionText":"#define LIMIT 4","origin":"source","sourceFileId":1,"line":1,"column":9}],
   "macroParameters": [],
   "macroEvents": [{"id":1,"kind":"define","name":"LIMIT","definitionId":1,"origin":"source","sourceFileId":1,"line":1,"column":9}],
-  "types": [{"id":1,"kind":"void","pointeeTypeId":null},{"id":2,"kind":"i32","pointeeTypeId":null},{"id":3,"kind":"u8","pointeeTypeId":null},{"id":10,"kind":"pointer","pointeeTypeId":2}],
-  "sourceTypes": [{"id":1,"kind":"int","sourceName":"","underlyingTypeId":null,"executionTypeId":2,"isConst":false,"isVolatile":false,"sourceFileId":null,"line":0,"column":0}],
+  "types": [{"id":1,"kind":"void","pointeeTypeId":null,"elementTypeId":null,"elementCount":null},{"id":2,"kind":"i32","pointeeTypeId":null,"elementTypeId":null,"elementCount":null},{"id":3,"kind":"u8","pointeeTypeId":null,"elementTypeId":null,"elementCount":null},{"id":10,"kind":"pointer","pointeeTypeId":2,"elementTypeId":null,"elementCount":null}],
+  "sourceTypes": [{"id":1,"kind":"int","sourceName":"","underlyingTypeId":null,"executionTypeId":2,"isConst":false,"isVolatile":false,"sourceFileId":null,"line":0,"column":0,"elementCount":null}],
   "sourceFunctions": [{"entityId":1,"returnSourceTypeId":1,"capturePhase":"before-lowering"}],
   "sourceParameters": [{"entityId":1,"ordinal":0,"sourceTypeId":1}],
   "sourceDeclarations": [
@@ -125,7 +125,9 @@ Supported node kinds and ordered edge roles:
   Source object bounds and related-pointer rules still apply. Pointer comparison
   operands have matching execution types after EDG's explicit conversions.
 
-Statements have typeId=null; expression nodes must name a type. Only `call`
+Statements have typeId=null; expression nodes and array-element descriptors
+must name a type. Array-element is an initializer descriptor, not a statement
+or independently evaluable expression. Only `call`
 may have void type and only in expression statements, for initializer/step,
 or void-return-as-allowed contexts.
 No payload for an unrelated kind; no extra edges/fields silently ignored.
@@ -135,7 +137,8 @@ Loop condition/body/step roles encode execution and sequencing; database edge
 ordering is not itself an execution schedule. Initializer executes once, a for
 condition precedes each body iteration, and step follows each completed body.
 The structured scope profile excludes arbitrary jumps,
-references, globals/TLS, records, arrays, function pointers, EH/RAII, inline/COMDAT and runtime
+references, globals/TLS, records, variable/incomplete execution arrays, function
+pointers, EH/RAII, inline/COMDAT and runtime
 providers. Unsupported constructs fail export rather than emit partial output.
 
 Packager stores typed rows using schema.sql, including producer compiler/config,
@@ -151,8 +154,8 @@ The initial target is portable-lp64-binary80-v2; callable ABI dotobj-scalar-v1.
 The scalar-control-v3 object profile adds 8/16/32/64-bit signed/unsigned
 integers, bitwise/shift expressions and conditional values to v2's structured
 loops and explicit loop exit identities. It does not change the callable ABI.
-The current canonical schema reader requires scalar-control-v7 and rejects
-v1/v2/v3/v4/v5/v6 objects; preserve their respective earlier tool build to read them,
+The current canonical schema reader requires scalar-control-v8 and rejects
+v1/v2/v3/v4/v5/v6/v7 objects; preserve their respective earlier tool build to read them,
 or recompile with this producer.
 The profile uses EDG's fixed portable LP64 target: long and long long share the
 64-bit physical representation, while exact external keys retain C++ overload
@@ -266,8 +269,9 @@ use null. evaluationOrder is null for statements, none for constant/binding,
 and left-to-right/right-to-left/unspecified for operations. Single-operand address
 and dereference nodes also permit none; their sole operand is evaluated once. Unspecified permits
 the emitter to choose left-to-right; do not change a specified order. A
-plain binding assignment needs only RHS-before-write; effectful indirect
-right-to-left assignments are rejected by this profile. Unsupported ordered expressions fail explicitly. u8 represents
+plain binding assignment needs only RHS-before-write. An indirect target rooted
+in an owned binding address with constant offsets also remains invariant while
+the RHS runs; other effectful indirect right-to-left assignments are rejected. Unsupported ordered expressions fail explicitly. u8 represents
 EDG's lowered unsigned-byte bool and requires numeric 0/1 comparison results
 unless expression result type is bool. Explicit conversions encode truth and
 width behavior. Parameters/locals may use any supported integer, bool or pointer type, never
@@ -320,7 +324,7 @@ valid child execution type, and primitive rows require null. Execution types
 are canonical structural identities within an object; duplicates, cycles and
 nesting beyond 128 are rejected. Across objects the linker compares recursively
 resolved type shapes rather than object-local numeric type IDs. Primitive IDs
-1 through 9 retain the producer's prior meanings; pointer IDs begin at 10.
+1 through 9 retain the producer's prior meanings; structural type IDs begin at 10.
 `void*`, scalar pointers and nested pointers are accepted. Pointer-to-array,
 record, function and reference types remain outside this profile.
 
@@ -342,3 +346,54 @@ When any input object uses pointer types, the first generated partial class
 contains one owner static constructor checking `IntPtr.Size == 8`. An incompatible
 32-bit process fails explicitly before translated functions execute. This
 enforces the fixed target ABI while allowing any supported 64-bit OS/runtime.
+
+
+The scalar-control-v8 profile adds **fixed local arrays**. All execution types
+carry nullable `elementTypeId` and `elementCount`; only `array` uses them, with
+positive extent and a nonvoid element type. Array `pointeeTypeId` is null.
+Arrays and pointers compose recursively and participate in structural signature
+matching. Checked recursive layout must fit 65,536 bytes per array; VLA,
+incomplete execution arrays, array-valued parameters/returns and globals remain
+unsupported. Original source array types carry the element source type as
+`underlyingTypeId` and a nonnegative `elementCount`; other source kinds require
+null extent. A sized source array maps to its execution array. Original array
+parameters adjust to pointer-to-element for callable ABI matching. Unsized
+source array parameters have extent zero and use that adjusted pointer as their
+execution representation; this is provenance only, never an incomplete storage
+layout. Nested incomplete elements, pointer-to-incomplete-array and incomplete
+locals are rejected.
+
+- `array-decay`: expression with `operand[0]` an array place; its result type is
+  pointer-to-element and value category is value. Normal `address` instead
+  produces pointer-to-the-whole-array, preserving pointer arithmetic scaling.
+- `array-init`: statement with `target[0]` a local array binding place and
+  ordered `element[0..n)` descriptors. Initialization clears all storage then
+  evaluates and writes elements in descriptor order. It runs at the original
+  declaration execution position, including each loop iteration.
+- `array-element`: descriptor, allowed only as an immediate `array-init`
+  element child; carries leaf scalar/pointer `typeId`, flattened element index
+  as canonical unsigned decimal `constantText`, and one `value[0]` scalar
+  expression of that type. Other payload, valueCategory and evaluationOrder
+  are null. Index must be within the recursively flattened array extent.
+  Sparse and repeated indices retain ordered write semantics.
+
+Array expressions are places only and cannot be copied or implicitly converted;
+address/decay/init explicitly identify allowed uses. Nested array initialization
+is flattened while preserving structural array types. String initialization
+records exact character bytes, including interior NULs. Source bounds/lifetimes
+remain the caller's responsibility; this profile does not add bounds checks.
+
+C# stores each structural array in one unmanaged sequential-layout value struct,
+with exact byte size and a scalar/pointer leaf field preserving natural
+alignment. Deterministic names (for example `__DotObjArray_A3_i32`) are shared
+across translation units. Locals retain their source names; addresses and decay
+use ordinary unsafe pointers. No heap allocation, managed pinning or dynamic
+code is involved. Dense or sparse all-constant integer initialization is emitted
+as one static `ReadOnlySpan<T>` property backed by a collection expression and
+copied into the destination. Trailing zeros are represented by a destination
+clear and a short prefix copy; densely populated full arrays need no separate
+clear. Very sparse high-index initializers use ordered stores instead of a long
+zero-filled property. Dynamic and pointer elements use a local typed pointer alias and
+ordered index assignments after a clear. This is stack storage, so ordinary
+source stack consumption still applies. Generated code remains NativeAOT
+compatible within the existing fixed 64-bit target ABI.
