@@ -1,0 +1,148 @@
+{
+  "milestone": "Owned semantic SQLite objects and managed scalar/control-flow linking",
+  "date": "2026-10-08",
+  "profile": "scalar-control-v1",
+  "status": "passed-with-explicit-coverage-boundaries",
+  "acceptance": {
+    "checkCount": 79,
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-acceptance-002/results.json",
+      "sha256": "8cb310befbbed7c0615b0a0e115c4a68f8f5d4a05b58d61438a49f065780afcc"
+    },
+    "nativeReference": true,
+    "managedJit": true,
+    "nativeAot": true,
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39"
+  },
+  "compiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "sha256": "af7a7106d2c3807ad952716b0a130f2384e4bbf65a50fb1e8ca7cd2bb539eb7a"
+  },
+  "nativeBuildLog": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native-build-003.log",
+    "sha256": "be51d7ccf35d6cac547e9dda40389d65bafc5a88c8ed8cdaac88039daa7b8da2"
+  },
+  "ordinaryBackendRegression": {
+    "source": "edgcpp/backend/tests/scalars.cpp",
+    "exitCode": 0,
+    "log": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-normal-smoke-001.log",
+      "sha256": "1fdb4e24ebe96ecd1eb1801fc9cb2f8034e84b44d8125a01f9cfc710f22a7629"
+    },
+    "note": "Passed with build002; subsequent build003 changes only object-profile bool recognition."
+  },
+  "implementationFiles": [
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/dot_gen_object.h",
+      "sha256": "85ac1979c8c405e76bc1b3d3b4be1620208d1a34e6ec5ebbdf6ae960a5086171"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/dot_gen_be.c",
+      "sha256": "d0704e001b5744149e32997978ed5e57eb4c1a67521df921eb257f15a7bf8c78"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/backend/prepare.py",
+      "sha256": "5b9feae871e3607b42074b9d913722b05a85559d52fa32b3d52df7f1bb48d297"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/README.md",
+      "sha256": "4e3336818286f02c3131997060c861e1d0c2561f4487973d40ff70a57b46aa23"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/compile.py",
+      "sha256": "6da0fc83d654ac745ae9080ff290e7ebde0cf3d4c47d40a0558db6ed0bec1535"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/contract.md",
+      "sha256": "b17c497a247debdfd232b883f1510e2c4350b15fbff42220737fb3d39a9d4e6f"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/DotObj.Linker.csproj",
+      "sha256": "871e2077cbb761b5e4bca455d228fb1e0be8f88cd3fa077a8bc9744a9b25b482"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Emitter.cs",
+      "sha256": "ce2300552c452ef2b4d2eafb87f111afaf53679ba6bd3eabcff185e1da2e4891"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Linker.cs",
+      "sha256": "c2454a937194a53f4413f2c5da479702f38473b4d18180ca38a5b439a12e95b9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Model.cs",
+      "sha256": "d317762dfe0d1a7310148128220e7285df99a57fd6f75a938d86ec714948c6f9"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Names.cs",
+      "sha256": "516baf0dcd9de98549c84a94d322e83bb998f9a2ac4da09052a0f21d16d18647"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/ObjectFile.cs",
+      "sha256": "13536d328cea7e99e87459eedc550ba10f20f29145642ed0502d171158f959e5"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Program.cs",
+      "sha256": "ba4032e1078ea413480590231c59a87ce69896d62c374cfecc46849776573b3c"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/README.md",
+      "sha256": "81bbe94ea3d8ce0b8bc07cf42fc575966b1ef8baa6529e421fecfc2ae93d01df"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Sqlite.cs",
+      "sha256": "6d22aa68495b6625448b6dc460108a5f9020ba5c62ecc67da1553f31d5b78230"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/managed/Verifier.cs",
+      "sha256": "84f3aab85ecbf1ebb5146b01a0860ed521812abfd8b5a51b4138c88ca0572a63"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/schema.sql",
+      "sha256": "ba13ce4f2c7ed16551a6d1740f641727f6a30e21287f21d921771bd11413c367"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/consumer.cpp",
+      "sha256": "0404b5b68346b5f74a8e2fdf8d20a547d9f18bc4c81aa53531f0bb9d11f22e57"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/conversions.cpp",
+      "sha256": "b0976d08adb543a280daab0e1c7cf52c5ebf91f8912c7b15466814ab57cdadcd"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/empty.cpp",
+      "sha256": "bc8bb8e433bf65214540115414c821c904b2a30d60a3ac0424bf9b77a00024b7"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/fixture.h",
+      "sha256": "5ea4acd1b81469749ec441e67fb0cd39ae700744e0486afcb7a4c0a56a66492e"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/provider.cpp",
+      "sha256": "d536a7b9d30188ad4ecd8a116bab45dc7e4a16c85d1862958fcba62113a7be51"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/scopes.cpp",
+      "sha256": "48e8c05643a690a0ae2b30948a5f73c7366f4f9f050a24e58fba23e584461b79"
+    },
+    {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/verify.py",
+      "sha256": "c20d06afc935933cbd56d6fa11db6aefad74ecfe232a8bd43f80823f972facfa"
+    }
+  ],
+  "properties": [
+    "One EDG invocation per original translation unit, including internal preprocessing.",
+    "Typed entities, bindings, expression/statement nodes and edges stored in SQLite; no C# command stream.",
+    "Source/header snapshots and execution-node locations; deterministic linking without original sources.",
+    "Incremental one-unit rebuild reuses the unchanged other object.",
+    "Fresh implementation independent of the old semantic-export experiment."
+  ],
+  "limitations": [
+    "No prelower source graph or semantic macro history capture.",
+    "No globals/TLS, pointers/records, RAII/EH, inline/template/COMDAT or general C++ coverage.",
+    "Native transport currently buffers JSON; large-input memory scaling is unverified.",
+    "Linux x64 execution only; no Windows/macOS execution claim.",
+    "No DuckDB translation or execution acceptance."
+  ],
+  "artifactsPreserved": true,
+  "review": "Independent read-only review findings on function query indexes, schema shape and primary-source hash reconciliation were fixed and included in acceptance."
+}

@@ -1,0 +1,197 @@
+#!/usr/bin/env python3
+"""Compile one original source into a fresh owned SQLite semantic .dotobj."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import sqlite3
+import subprocess
+import time
+
+ROOT = Path(__file__).resolve().parents[1]
+SCHEMA = Path(__file__).with_name('schema.sql')
+ARRAYS = {
+    'sourceFiles': ('source_files', ['id', 'path', 'parentId']),
+    'types': ('types', ['id', 'kind']),
+    'entities': ('entities', ['id', 'sourceName', 'linkage', 'externalKey', 'definition',
+                              'returnTypeId', 'sourceFileId', 'line', 'column']),
+    'parameters': ('parameters', ['entityId', 'ordinal', 'typeId']),
+    'functions': ('functions', ['entityId', 'bodyNodeId']),
+    'bindings': ('bindings', ['id', 'functionId', 'kind', 'ordinal', 'typeId', 'sourceName',
+                              'scopeNodeId', 'sourceFileId', 'line', 'column']),
+    'nodes': ('nodes', ['id', 'functionId', 'kind', 'typeId', 'entityId', 'bindingId',
+                        'operator', 'constantText', 'valueCategory', 'evaluationOrder',
+                        'sourceFileId', 'line', 'column']),
+    'edges': ('edges', ['parentId', 'role', 'ordinal', 'childId']),
+}
+
+
+def sha(path):
+    with Path(path).open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+def unique_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError('Duplicate wire key: ' + key)
+        result[key] = value
+    return result
+
+
+def quote(value):
+    return '"' + value.replace('"', '""') + '"'
+
+
+def logical_hash(db):
+    digest = hashlib.sha256(b'dotobj-semantic/1\n')
+
+    def frame(value):
+        digest.update(str(len(value)).encode('ascii') + b':' + value)
+
+    for name, sql in db.execute("SELECT name,sql FROM sqlite_master WHERE type='table' AND name<>'content_digest' ORDER BY name"):
+        digest.update(b'T'); frame(name.encode('utf-8'))
+        digest.update(b'S'); frame(sql.encode('utf-8'))
+        keys = sorted((row[5], row[1]) for row in db.execute('PRAGMA table_info(' + quote(name) + ')') if row[5])
+        if not keys:
+            raise ValueError('No primary key: ' + name)
+        for row in db.execute('SELECT * FROM ' + quote(name) + ' ORDER BY ' + ','.join(quote(k) for _, k in keys)):
+            digest.update(b'R')
+            for value in row:
+                if value is None:
+                    kind, data = b'5', b''
+                elif isinstance(value, int):
+                    kind, data = b'1', str(value).encode('ascii')
+                elif isinstance(value, str):
+                    kind, data = b'3', value.encode('utf-8')
+                elif isinstance(value, bytes):
+                    kind, data = b'4', value
+                else:
+                    raise ValueError('Unsupported SQLite cell')
+                digest.update(kind); frame(data)
+            digest.update(b'\n')
+        digest.update(b'\n')
+    return digest.hexdigest()
+
+
+def package(wire, path, source, unit_id, provenance, started_ns):
+    if set(wire) != {'formatVersion', 'profile', *ARRAYS}:
+        raise ValueError('Unexpected semantic wire fields')
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v1':
+        raise ValueError('Unsupported semantic wire version/profile')
+    source_hashes = {}
+    with sqlite3.connect(path) as db:
+        db.executescript(SCHEMA.read_text())
+        db.execute('BEGIN IMMEDIATE')
+        db.execute('PRAGMA defer_foreign_keys=ON')
+        db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0)',
+                   ('scalar-control-v1', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                    unit_id, str(source), sha(source)))
+        for index, (kind, value) in enumerate(provenance):
+            db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))
+        for name, (table, fields) in ARRAYS.items():
+            if not isinstance(wire[name], list):
+                raise ValueError('Expected array: ' + name)
+            for record in wire[name]:
+                if not isinstance(record, dict) or set(record) != set(fields):
+                    raise ValueError('Invalid fields in ' + name + ': ' + str(record))
+                values = [record[key] for key in fields]
+                if name == 'sourceFiles':
+                    file = Path(record['path'])
+                    if file.is_file():
+                        before = file.stat()
+                        data = file.read_bytes()
+                        after = file.stat()
+                        if (before.st_mtime_ns, before.st_ctime_ns, before.st_size) != (after.st_mtime_ns, after.st_ctime_ns, after.st_size):
+                            raise ValueError('Source changed during snapshot: ' + str(file))
+                        if max(after.st_mtime_ns, after.st_ctime_ns) > started_ns:
+                            raise ValueError('Source changed during compilation: ' + str(file))
+                        digest = hashlib.sha256(data).hexdigest()
+                        source_hashes[str(file)] = digest
+                        values += [1, digest, data]
+                    else:
+                        values += [0, None, None]
+                db.execute('INSERT INTO ' + quote(table) + ' VALUES(' + ','.join('?' for _ in values) + ')', values)
+        errors = list(db.execute('PRAGMA foreign_key_check'))
+        if errors:
+            raise ValueError('Invalid semantic references: ' + str(errors[:10]))
+        digest = logical_hash(db)
+        db.execute('INSERT INTO content_digest VALUES(1,?,?)', ('dotobj-semantic-sha256-v1', digest))
+        db.commit()
+        if db.execute('PRAGMA integrity_check').fetchone() != ('ok',):
+            raise ValueError('SQLite integrity failure')
+    for file, digest in source_hashes.items():
+        if sha(file) != digest:
+            raise ValueError('Source changed after snapshot: ' + file)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('source', type=Path)
+    parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--work-dir', required=True, type=Path)
+    parser.add_argument('--compiler', type=Path, default=ROOT / 'build/bin/cpfe-dot')
+    parser.add_argument('--std', choices=['c11', 'c++17'], default='c++17')
+    parser.add_argument('--unit-id')
+    parser.add_argument('-I', dest='includes', action='append', type=Path, default=[])
+    parser.add_argument('-D', dest='defines', action='append', default=[])
+    args = parser.parse_args()
+    source, output, work, compiler = (p.resolve() for p in (args.source, args.output, args.work_dir, args.compiler))
+    if output.suffix != '.dotobj' or output.exists():
+        parser.error('--output must be a new .dotobj file')
+    if not source.is_file():
+        parser.error('Source does not exist')
+    work.mkdir(parents=True, exist_ok=False)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    unit_id = args.unit_id or hashlib.sha256(str(source).encode('utf-8')).hexdigest()
+    command = [str(compiler), '--' + args.std, '--gnu_version', '130300',
+               '--clear_flag', 'use_predefined_macro_file']
+    if args.std == 'c++17':
+        command += ['--instantiate', 'used', '--no_exceptions', '--no_rtti']
+    command += [arg for path in args.includes for arg in ('-I', str(path.resolve()))]
+    command += ['-D' + value for value in args.defines]
+    command += ['--', str(source)]
+    env = dict(os.environ, EDG_BASE=str(ROOT / 'upstream/bases/docker/dev-env/gcc'),
+               EDG_DOT_OBJECT='1', EDG_DOT_TARGET='portable-lp64-binary80-v2',
+               EDG_DOT_NAMESPACE='@DotObject', EDG_DOT_CLASS='@Unit',
+               EDG_DOT_EMIT='managedlib', EDG_DOT_INSTANCE='0', EDG_DOT_NEST='1',
+               EDG_DOT_LIBC='none', EDG_DOT_RUNTIME='none', EDG_DOT_POSIX='0')
+    before, compiler_hash = sha(source), sha(compiler)
+    started_ns = time.time_ns()
+    invocation = dict(compiler=str(compiler), compilerSha256=compiler_hash, arguments=command[1:],
+                      source=str(source), sourceSha256=before, unitId=unit_id,
+                      environment={key: value for key, value in env.items() if key.startswith('EDG_')})
+    (work / 'invocation.json').write_text(json.dumps(invocation, indent=2) + '\n')
+    with (work / 'wire.json').open('wb') as stdout, (work / 'stderr').open('wb') as stderr:
+        result = subprocess.run(command, cwd=work, env=env, stdout=stdout, stderr=stderr)
+    if result.returncode:
+        raise RuntimeError('Frontend failed; preserved diagnostic: ' + str(work / 'stderr'))
+    if sha(source) != before or sha(compiler) != compiler_hash:
+        raise ValueError('Source/compiler changed during compilation')
+    wire = json.loads((work / 'wire.json').read_text(), object_pairs_hook=unique_object)
+    partial = work / 'object.partial.sqlite'
+    provenance = [('producer', 'dot-gen-owned-semantic-v1'), ('compiler-sha256', compiler_hash),
+                  ('arguments', json.dumps(command[1:])), ('packager-sha256', sha(__file__)),
+                  ('schema-sha256', sha(SCHEMA)), ('environment', json.dumps(invocation['environment'], sort_keys=True))]
+    package(wire, partial, source, unit_id, provenance, started_ns)
+    # Stage on the destination filesystem, then publish atomically without
+    # overwriting another build. Retain both staged copies as campaign evidence.
+    pending = output.with_name(output.name + '.pending')
+    with partial.open('rb') as incoming, pending.open('xb') as outgoing:
+        import shutil
+        shutil.copyfileobj(incoming, outgoing)
+        outgoing.flush()
+        os.fsync(outgoing.fileno())
+    os.link(pending, output)
+    report = dict(status='packaged-semantic-object', object=str(output), sha256=sha(output),
+                  profile=wire['profile'], frontendInvocations=1, executionVerified=False,
+                  capabilities=dict(prelowerSource=False, macros=False, lifetimes=False),
+                  counts={name: len(wire[name]) for name in ARRAYS})
+    (work / 'results.json').write_text(json.dumps(report, indent=2) + '\n')
+    print(json.dumps(report))
+
+
+if __name__ == '__main__':
+    main()

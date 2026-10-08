@@ -938,9 +938,12 @@ object lifetime obligations; derive optimization liveness separately.
 A C#/.NET linker resolves objects and produces one managed project through
 managed-specific lowering and emission. Namespace/class and file splitting are
 link-time choices. The linker is a build tool, not a runtime interpreter. The
-new producer/linker is not implemented yet; the superseded command-stream
-prototype is preserved as unvalidated artifacts. See [semantic object design
-and implementation gates](dotobj-format.md).
+new producer/linker now has a verified scalar/control-flow execution slice with
+independent real TUs, SQLite semantic graphs and native/JIT/NativeAOT comparisons.
+Prelower source/macro and lifetime capture and broad C++ coverage remain open.
+The superseded command-stream prototype is preserved as unvalidated artifacts.
+See [semantic object design and implementation gates](dotobj-format.md) and
+[implementation/acceptance scope](../object-linker/README.md).
 
 Verify this path before depending on it for libc++. Our full EDG self-merge
 produced [110.1 MiB of C](../artifacts/self-lowered-combined/README.md), but GCC

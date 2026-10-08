@@ -2230,3 +2230,27 @@ incorporated. This is a design milestone, not a new exporter, linker or DuckDB
 execution pass. Next is the typed contract and capture-point inventory against
 existing dot-backend coverage, followed by implementation and native/JIT/AOT
 comparison. No new compiler builds or execution tests ran for this design.
+
+The first owned semantic object implementation now passes 79 acceptance checks
+on Linux x64, including native reference, managed JIT and NativeAOT execution.
+Each original TU is processed by one EDG invocation with internal preprocessing;
+the opt-in dot-backend adapter emits typed scalar/control-flow semantics which
+are packaged into a standalone SQLite `.dotobj`. The fresh C# reader/linker and
+emitter resolve external and TU-private symbols without EDG or original input
+files. The old semantic-export experiment is not reused.
+
+Acceptance covers source/header snapshots, scope/name collisions, conversions,
+short-circuit effects, deterministic input-order-independent C# output and
+recompiling one changed unit while reusing the other object. Corrupt schema,
+hashes, references and incompatible/unsupported semantics are rejected. An
+independent review identified missing function indexes, strict schema checks
+and primary-source hash reconciliation; all were fixed before final acceptance.
+The ordinary dot-backend scalar regression also passes. All intermediates,
+including failed probes, remain preserved. See [usage and exact supported
+profile](../object-linker/README.md) and [hashed milestone
+evidence](../evidence/dotobj-scalar-linking-20261008.json).
+
+This is the `scalar-control-v1` execution slice, not completion of the semantic
+design. Prelower source/macro capture, lifetimes/EH, globals/TLS, records and
+general C++ remain open. The native transport buffers its intermediate JSON;
+large-input memory scaling is not yet established. DuckDB work remains paused.

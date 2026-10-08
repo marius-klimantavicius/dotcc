@@ -6,8 +6,11 @@ The user selected one SQLite `.dotobj` per original C/C++ translation unit,
 containing an owned semantic graph instead of C# text or emission commands.
 The old semantic-export experiment is explicitly not the implementation
 foundation. The incomplete text-command prototype is preserved under campaign
-artifacts and is not a usable linker. This document is the new design; no
-semantic object producer/linker implementation is claimed yet.
+artifacts and is not a usable linker. A fresh scalar/control-flow execution
+slice is now implemented in [object-linker](../object-linker/README.md), with
+real per-TU compilation/linking and native/JIT/AOT checks. Prelower source/macro
+and lifetime capture, broad C++ coverage and the full graph design below remain
+unfinished; the initial profile explicitly records those missing capabilities.
 
 Build the graph contract around semantics already handled by `dot_gen_be.c`,
 then implement an independent C#/.NET linker, IR passes and C# generator.
