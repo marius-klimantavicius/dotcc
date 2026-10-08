@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "scope": "Shared libc provider boundary only; no full SQLite/DuckDB claim",
+  "checks": 33,
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-runtime-acceptance-002/results.json",
+    "sha256": "188760c90903ba14ab8466fc14ab192fa64a78d5cb050fdda5d5aa512fb7700c"
+  },
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-compiler-010/cpfe-dot",
+    "sha256": "d276f11c6173592ca11563a86df3cd96f0f79a98cea6afb738ea154c21eac14f"
+  },
+  "linker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-006/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "1de9bf93d99b931f6a6a1eb9e14385609f1664a17d37fa668ce1dc0dbdef2081"
+  },
+  "binder": {
+    "path": "/home/marius/p/dotcc/edgcpp/object-linker/runtime/bind.py",
+    "sha256": "9f735a3e965c6496c837412804a227345dddf6618d01c3f4fa2c95212c6af228"
+  },
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "checksDescription": [
+    "Canonical NativeMemory heap allocation, zero/overflow/alignment and content preservation",
+    "Typed FILE/FPOS/POSIX boundary validation without host structure casts",
+    "Actual stdin/stdout/stderr cell addresses, mutation, and static data relocation alias",
+    "BCL stream/POSIX descriptor interoperability and stat fields",
+    "Portable open variadic shared VaArg source reuse",
+    "Pinned errno cells remain isolated on BCL threads during forced full GC",
+    "Incompatible same-name struct ABI rejected before provider emission",
+    "Native GCC, .NET JIT, NativeAOT execution"
+  ]
+}
