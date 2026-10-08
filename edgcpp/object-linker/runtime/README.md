@@ -89,6 +89,18 @@ contention, recursive/timed mutexes, conditions, once flags, TLS/TSS cleanup,
 integer thread results, initial-thread join/detach/descendants, and hosted source
 TLS reset in JIT and NativeAOT. These runtime boundaries do not establish full
 source C++ RAII or exception lowering.
+
+`guards.py` binds the portable target's 64-bit Itanium `__cxa_guard_acquire`,
+`__cxa_guard_release` and `__cxa_guard_abort` signatures. The registry, per-guard
+monitor and volatile publication operations come from the canonical managed
+lifecycle implementation. `tests/runtime_guards_verify.py` compares contention,
+single initialization, abort/retry and independent-guard progress against native
+Itanium guards, JIT and NativeAOT. It validates the runtime ABI only: the owned
+source graph must also preserve EDG's initialization-guard markers so the outer
+fast-path read has acquire semantics, and source exception lowering must invoke
+abort when construction fails. True dynamic-static initialization remains gated
+until those source semantics are represented.
+
 The binder is intentionally incomplete: unsupported imports remain unresolved
 partial methods. No native fallback or fabricated success body is generated.
 `--allow-unresolved` can stage the known bindings for review, but unresolved

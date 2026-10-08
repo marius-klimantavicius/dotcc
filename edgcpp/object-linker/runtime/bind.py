@@ -16,6 +16,7 @@ from abi import Boundaries
 from atomics import expression as atomic_expression
 from process import expression as process_expression, sources as process_sources
 from threads import definitions as thread_definitions, expression as thread_expression, sources as thread_sources
+from guards import expression as guard_expression, source as guard_source
 
 EDG = Path(__file__).resolve().parents[2]
 BACKEND = EDG / 'backend'
@@ -212,8 +213,18 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
     process_callbacks = False
     thread_services = False
     threads_used = False
+    guards_used = False
     services = 'global::Edg.Runtime.DotObjServices.'
     for method in methods:
+        guard = guard_expression(method)
+        if guard is not None:
+            guards_used = True
+            bound.append(dict(name=method['symbol'], result=method['result'], parameters=[kind for kind, _ in method['arguments']],
+                              target='global::Edg.Runtime.DotObjGuards'))
+            parameters = ', '.join(kind + ' ' + name for kind, name in method['arguments'])
+            statement = ('' if method['result'] == 'void' else 'return ') + guard + ';'
+            bodies.setdefault(method['container'], []).append('public static partial ' + method['result'] + ' ' + method['name'] + '(' + parameters + ')\n    {\n        ' + statement + '\n    }\n')
+            continue
         thread = thread_expression(method, boundaries, thread_bindings)
         if thread is not None:
             invocation, stateless = thread
@@ -301,6 +312,8 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
             bound.append(dict(name=symbol, storage=True, target=expression))
             bodies.setdefault(storage['container'], []).append('public static partial void* ' + storage['accessorName'] + '() => ' + expression + ';\n')
     files = {}
+    if guards_used:
+        files['Runtime.Guards.generated.cs'] = guard_source(BACKEND)
     # Returning from source main has normal exit semantics even when no explicit
     # exit/atexit symbol is referenced. Flush existing buffered FILE streams.
     # Library initialization and ordinary managed exports never call this hook.
@@ -350,11 +363,14 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
             binding_inputs.append(dict(path=str(path), sha256=sha(path)))
     if threads_used:
         binding_inputs.extend(dict(path=str(path), sha256=sha(path)) for path in thread_inputs)
+    if guards_used:
+        for path in (BACKEND / 'dot_gen_lifecycle.h', EDG / 'upstream/lib_src/runtime.h', EDG / 'upstream/src/lower_init.c'):
+            binding_inputs.append(dict(path=str(path), sha256=sha(path)))
     report = dict(schema=1, status='bound' if not unresolved else 'unresolved', linkReport=dict(path=str(project / 'link-report.json'), sha256=sha(project / 'link-report.json')),
                   sourceMap=dict(path=str(project / link['sourceMap']), sha256=sha(project / link['sourceMap'])),
                   bindingInputs=binding_inputs, implementationInputs=sources, sourceDependencyGraph=dict(path=str(EDG / 'dotnet.py'), sha256=sha(EDG / 'dotnet.py')),
                   bound=bound, unresolved=unresolved, reusedFiles=reused, providerReceipts=receipts, runtimeAssets=asset_manifest,
-                  adapterInputs=[dict(path=str(path), sha256=sha(path)) for path in (Path(__file__), Path(__file__).with_name('abi.py'), Path(__file__).with_name('atomics.py'), Path(__file__).with_name('process.py'), Path(__file__).with_name('threads.py'))],
+                  adapterInputs=[dict(path=str(path), sha256=sha(path)) for path in (Path(__file__), Path(__file__).with_name('abi.py'), Path(__file__).with_name('atomics.py'), Path(__file__).with_name('process.py'), Path(__file__).with_name('threads.py'), Path(__file__).with_name('guards.py'))],
                   runtimeMode='static translation; per-assembly libc state', executionVerified=False)
     report_path = project / 'runtime-bindings.json'
     if report_path.exists():

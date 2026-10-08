@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 16,
+  "scope": "Portable 64-bit Itanium local-static guard runtime ABI",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-guards-acceptance-001/results.json",
+    "sha256": "3683e3106c39c18c65b70780a19d6b693dba72c5e4069e6bfc9f5714aad3ca51"
+  },
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "checksDescription": [
+    "Exact canonical guard registry/monitor/volatile publication bodies",
+    "Eight source workers contend for one initializer; one construction and published data visible",
+    "Aborted construction retries, then initializes exactly once",
+    "Initializer of one guard starts/joins initializer of another; no global registry lock across initialization",
+    "Wrong-width callback ABI rejected before runtime emission"
+  ],
+  "limitations": [
+    "ABI boundary only; source dynamic-static initialization remains gated pending initialization-guard fastpath/acquire provenance and exception-abort scheduling",
+    "Static per-assembly lifetime; no independent owner disposal"
+  ]
+}
