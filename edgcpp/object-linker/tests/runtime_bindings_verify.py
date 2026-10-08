@@ -97,7 +97,7 @@ def main():
 
     failure = None
     try:
-        for name in ('runtime_memory', 'runtime_stdio_posix', 'runtime_sessions', 'runtime_timezone'):
+        for name in ('runtime_memory', 'runtime_stdio_posix', 'runtime_sessions', 'runtime_timezone', 'runtime_relative_posix'):
             source = out / (name + '.c')
             shutil.copy2(ROOT / 'tests' / source.name, source)
             fixtures.append(dict(path=str(source), sha256=sha(source)))
@@ -124,11 +124,14 @@ def main():
                 names = {item['name'] for item in bindings['bound']}
                 check('all-file-sessions-bound', {'__edg_with_file_lock', '__edg_with_file_read_lock', '__edg_with_file_wide_lock', '__edg_with_file_wide_read_lock'} <= names)
                 check('locale-record-boundaries', {'newlocale', 'duplocale', 'uselocale', 'freelocale', 'localeconv'} <= names)
-            else:
+            elif name == 'runtime_timezone':
                 names = {item['name'] for item in bindings['bound']}
                 check('timezone-boundaries', {'__edg_timezone_enter', '__edg_timezone_exit', '__edg_timezone_map', '__edg_timezone_unmap'} <= names)
                 check('timezone-hashed-assets', len(bindings['runtimeAssets']) == 4 and all(sha(project / key) == value['sha256'] for key, value in bindings['runtimeAssets'].items()))
                 check('timezone-embedded-resource', 'Edg.Runtime.Tzdb.bin' in (project / 'Directory.Build.targets').read_text())
+            elif name == 'runtime_relative_posix':
+                names = {item['name'] for item in bindings['bound']}
+                check('relative-filesystem-boundaries', {'openat', 'unlinkat', 'fdopendir', 'link', 'symlink', 'truncate', 'pathconf'} <= names)
             run(name + '-build', ['dotnet', 'build', project_file, '--nologo', '-v:q'])
             output = run(name + '-jit', ['dotnet', project / 'bin/Debug/net10.0/Translated.dll'])
             if name in ('runtime_memory', 'runtime_stdio_posix'):
@@ -148,6 +151,19 @@ def main():
         receipt = json.loads((project / 'runtime-bindings.json').read_text())
         check('foreign-abi-explicit-unresolved', receipt['status'] == 'unresolved' and receipt['unresolved'][0]['name'] == 'fstat')
         check('foreign-abi-no-provider-body', not list(project.glob('Runtime.Bindings.*.cs')))
+        bad_nested = out / 'foreign_nested_abi.c'
+        bad_nested.write_text('''struct timespec { unsigned long tv_sec; long tv_nsec; };
+struct stat { unsigned long st_dev,st_ino; unsigned int st_mode; unsigned long st_nlink;
+unsigned int st_uid,st_gid; long st_size; struct timespec st_atim,st_mtim,st_ctim;
+unsigned long st_rdev; long st_blksize,st_blocks; };
+int fstat(int,struct stat*); int main(void){struct stat value;return fstat(0,&value);}
+''')
+        obj = compile_source('foreign-nested-abi', bad_nested)
+        project = link('foreign-nested-abi', obj)
+        run('foreign-nested-abi-rejected', [sys.executable, '-B', ROOT / 'runtime/bind.py', '--project', project], expected=1)
+        receipt = json.loads((project / 'runtime-bindings.json').read_text())
+        check('foreign-nested-abi-explicit-unresolved', receipt['status'] == 'unresolved' and receipt['unresolved'][0]['name'] == 'fstat')
+        check('foreign-nested-abi-no-provider-body', not list(project.glob('Runtime.Bindings.*.cs')))
     except Exception as error:
         failure = str(error)
     result = dict(schema=1, status='failed' if failure else 'passed', error=failure,

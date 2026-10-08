@@ -12,9 +12,19 @@ public struct PosixStat
     public uint st_mode;
     public ulong st_nlink;
     public uint st_uid, st_gid;
-    public long st_size, st_atime, st_mtime, st_ctime;
+    public long st_size;
+    public PosixTimespec st_atim, st_mtim, st_ctim;
     public ulong st_rdev;
     public long st_blksize, st_blocks;
+    public long st_atime { readonly get => st_atim.tv_sec; set => st_atim.tv_sec = value; }
+    public long st_mtime { readonly get => st_mtim.tv_sec; set => st_mtim.tv_sec = value; }
+    public long st_ctime { readonly get => st_ctim.tv_sec; set => st_ctim.tv_sec = value; }
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct PosixTimespec
+{
+    public long tv_sec, tv_nsec;
 }
 
 [StructLayout(LayoutKind.Sequential)]

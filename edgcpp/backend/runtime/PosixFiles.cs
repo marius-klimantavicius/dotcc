@@ -201,7 +201,7 @@ public sealed unsafe partial class PosixContext
         try
         {
             string name = Resolve(path);
-            if (OperatingSystem.IsWindows()) { if (DeleteFileWindows(name) == 0) throw new Win32Exception(Marshal.GetLastPInvokeError()); }
+            if (OperatingSystem.IsWindows()) PosixPlatform.UnlinkWindows(name, false);
             else NativePathResult(UnlinkUnix(name));
             return 0;
         }
@@ -223,7 +223,7 @@ public sealed unsafe partial class PosixContext
         try
         {
             string name = Resolve(path);
-            if (OperatingSystem.IsWindows()) { if (RemoveDirectoryWindows(name) == 0) throw new Win32Exception(Marshal.GetLastPInvokeError()); }
+            if (OperatingSystem.IsWindows()) PosixPlatform.UnlinkWindows(name, true);
             else NativePathResult(RmdirUnix(name));
             return 0;
         }

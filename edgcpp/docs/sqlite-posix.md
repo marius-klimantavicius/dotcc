@@ -44,17 +44,42 @@ service disposal into generated shutdown before errno/storage disposal.
 
 | Area | Bound functions |
 | --- | --- |
-| Descriptors/I/O | `open`, `close`, `read`, `write`, `pread`, `pwrite`, `lseek`, `ftruncate`, `fsync`, `fdatasync`, `fcntl` |
-| Paths/metadata | `access`, `getcwd`, `stat`, `fstat`, `lstat`, `unlink`, `mkdir`, `rmdir`, `readlink`, `fchmod`, `fchown`, `geteuid` |
+| Descriptors/I/O | `open`, `openat`, `close`, `read`, `write`, `pread`, `pwrite`, `lseek`, `ftruncate`, `truncate`, `fsync`, `fdatasync`, `fcntl` |
+| Paths/metadata | `access`, `getcwd`, `stat`, `fstat`, `lstat`, `unlink`, `unlinkat`, `link`, `symlink`, `mkdir`, `rmdir`, `readlink`, `pathconf(_PC_PATH_MAX)`, `fchmod`, `fchown`, `geteuid` |
+| Directories | `opendir`, `fdopendir`, `readdir`, `closedir` |
 | Mapping | `mmap`, `munmap` |
 | Time/process | `gettimeofday`, `utimes`, `sysconf`, `getpid`, `sleep`, `usleep` |
 
-The ABI uses fixed LP64 `stat`, `flock` and `timeval` records. OS-native records
+The ABI uses fixed LP64 `stat`, `flock` and `timeval` records. The current `stat`
+is 120 bytes and contains three 16-byte `timespec` fields, preserving nanoseconds;
+`st_atime`, `st_mtime` and `st_ctime` are C aliases for their seconds fields.
+Previously generated 96-byte records must be retranslated. OS-native records
 are converted, never directly exposed to generated code. `stat`/`timeval`
 imports are checked field-by-field before emission; incompatible records are
 rejected. Independent C layout and native behavior oracles validate the public
 boundary. Variadic `open`/`fcntl` consume the existing shared `VaArg` span without
 per-call helpers or a heap argument pack.
+
+Directory-relative operations resolve against retained handles, including after
+a directory rename. `fdopendir` takes ownership without invalidating the original
+fd: recursive `openat`/`unlinkat` calls remain possible until `closedir`. Directory
+enumeration uses an owned duplicate and a finalizable native stream handle.
+Normal end-of-directory preserves errno; closing a stream cannot accidentally
+close a subsequently reused portable descriptor.
+
+Windows uses `NtCreateFile` with `RootDirectory` and runtime-selected Win32
+deletion/link APIs. Dot components are walked separately; parent lookup checks
+the directory's file identity to reject stale paths. Windows requires a known
+file/directory kind for symlink creation, so a missing target currently returns
+`ENOTSUP`. Linux NativeAOT and native-C parity tests cover these operations.
+Wine passes the standalone metadata/time suite, but the directory-relative suite
+currently stops at parent lookup after rename; native Windows/macOS execution
+and this Wine failure remain explicit validation gaps.
+
+The updated ABI also passes the complete `.dotobj` SQLite engine suite under
+JIT and Linux NativeAOT: 225 original translation units, 70 canonical runtime
+imports and no unresolved imports. Retained results and limitations are recorded
+in [the object filesystem evidence](../evidence/dotobj-posix-relative-20261008.json).
 
 Each owner has its own descriptor table and working-directory snapshot.
 `/dev/null`, `/dev/random` and `/dev/urandom` are host-independent services.

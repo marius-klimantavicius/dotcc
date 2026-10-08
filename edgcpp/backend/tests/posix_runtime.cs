@@ -212,6 +212,11 @@ internal static unsafe class Program
         fixed (byte* p = path)
         {
             Check(context.Utimes((sbyte*)p, times) == 0, "utimes");
+            PosixStat stat;
+            Check(context.Stat((sbyte*)p, &stat) == 0 && stat.st_atim.tv_sec == 1700000000 &&
+                stat.st_atim.tv_nsec == 123456000 && stat.st_mtim.tv_sec == 1700001000 &&
+                stat.st_mtim.tv_nsec == 654321000,
+                $"portable stat preserves timestamp fractions: {stat.st_atim.tv_sec}/{stat.st_atim.tv_nsec}, {stat.st_mtim.tv_sec}/{stat.st_mtim.tv_nsec}");
             string name = Path.Combine(directory, "mapped.bin");
             Check(Math.Abs((File.GetLastWriteTimeUtc(name) - DateTime.UnixEpoch).TotalSeconds - 1700001000.654321) < .00001, "utimes write microsecond precision");
             Check(Math.Abs((File.GetLastAccessTimeUtc(name) - DateTime.UnixEpoch).TotalSeconds - 1700000000.123456) < .00001, "utimes access microsecond precision");
@@ -225,6 +230,9 @@ internal static unsafe class Program
 
     public static int Main(string[] args)
     {
+        Check(sizeof(PosixStat) == 120 && sizeof(PosixTimespec) == 16, "portable stat/timespec layout");
+        var beforeEpoch = PosixPlatform.WindowsTimespec(116444736000000000L - 1);
+        Check(beforeEpoch.tv_sec == -1 && beforeEpoch.tv_nsec == 999999900, "Windows pre-epoch timestamp normalization");
         string directory = Path.Combine(Path.GetTempPath(), "edg-posix-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(directory);
         try { DescriptorsAndMappings(directory); PathsAndAppend(directory); Locks(directory, args.Length == 0 ? null : args[0]); Time(directory); }

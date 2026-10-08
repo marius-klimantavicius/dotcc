@@ -8,6 +8,7 @@ struct dirent { char d_name[4096]; };
 extern "C" {
 #endif
 DIR *opendir(const char *);
+DIR *fdopendir(int);
 struct dirent *readdir(DIR *);
 int closedir(DIR *);
 #ifdef __cplusplus

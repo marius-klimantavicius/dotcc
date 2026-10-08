@@ -4,6 +4,7 @@
 /* Portable EDG LP64 ABI. Host records are converted by Edg.Runtime. */
 
 #include <sys/types.h>
+#include <time.h>
 
 struct stat {
     unsigned long st_dev;
@@ -13,14 +14,18 @@ struct stat {
     unsigned int  st_uid;
     unsigned int  st_gid;
     off_t         st_size;
-    long          st_atime;
-    long          st_mtime;
-    long          st_ctime;
+    struct timespec st_atim;
+    struct timespec st_mtim;
+    struct timespec st_ctim;
     /* Host metadata is converted into these fixed portable fields. */
     unsigned long st_rdev;
     long          st_blksize;
     long          st_blocks;
 };
+
+#define st_atime st_atim.tv_sec
+#define st_mtime st_mtim.tv_sec
+#define st_ctime st_ctim.tv_sec
 
 #define S_IFMT   0170000
 #define S_IFSOCK 0140000

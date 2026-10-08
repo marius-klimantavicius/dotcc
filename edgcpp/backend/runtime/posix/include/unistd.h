@@ -5,6 +5,7 @@
 #define _SC_PAGE_SIZE _SC_PAGESIZE
 #define _SC_NPROCESSORS_ONLN 84
 #define _SC_PHYS_PAGES 85
+#define _PC_PATH_MAX 4
 #define STDIN_FILENO 0
 #define STDOUT_FILENO 1
 #define STDERR_FILENO 2
@@ -32,9 +33,14 @@ off_t lseek(int, off_t, int);
 int access(const char *, int);
 char *getcwd(char *, size_t);
 int unlink(const char *);
+int unlinkat(int, const char *, int);
+int link(const char *, const char *);
+int symlink(const char *, const char *);
 int rmdir(const char *);
 ssize_t readlink(const char *, char *, size_t);
 int ftruncate(int, off_t);
+int truncate(const char *, off_t);
+long pathconf(const char *, int);
 int fsync(int);
 int fdatasync(int);
 int fchown(int, uid_t, gid_t);

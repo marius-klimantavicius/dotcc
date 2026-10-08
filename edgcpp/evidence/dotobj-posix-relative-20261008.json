@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-08",
+  "scope": "Canonical POSIX timespec stat ABI and handle-relative filesystem operations, with dotobj SQLite refresh",
+  "status": "linux-verified-windows-partial",
+  "checks": {
+    "ownedRuntimeNativeJitAot": 81,
+    "standaloneLinuxJitAndAotEach": 96,
+    "directBackendStaticInstanceAot": 11,
+    "standaloneWindowsUnderWine": 86,
+    "sqliteEngineSuitesJitAndAotEach": 8,
+    "sqliteTranslationUnits": 225,
+    "sqliteRuntimeImports": 70,
+    "sqliteUnresolvedImports": 0
+  },
+  "receipts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-runtime-acceptance-011/results.json",
+      "sha256": "431a30373ec572286954eb75265474b16356abff8441b5abd2f67f11a529d043"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-posix-relative-runtime-004/results.json",
+      "sha256": "37ff08a05ed9e6277e83f204ec14c666d5aad2c56d0052607861d4cef83682b6"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-posix-stat-direct-001/results.json",
+      "sha256": "705d16126e367ce5c955ae07afa0a903a19bc9503df65880fd36359db5ef34ec"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-posix-relative-wine-004/results.json",
+      "sha256": "ee65be92f29e9f4ce6e2136310fac86005ace9f34c4690138da7a59001f8bc80"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-posix-relative-wine-005/results.json",
+      "sha256": "ecb5d8a79ff9d0e5cd3956f261a90a42bc658b0b3a8a9bca53baab47dd3f19e7"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-musl-project-026/results.json",
+      "sha256": "4929f8eb3e31403368c9a78de81b875e1af751c50a5c85ffe441378eaace3be7"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-engine-acceptance-003/results.json",
+      "sha256": "d1ba92efe0b1654bbd374093243e5a1d4eec3c30e2f584c96344ed46c82a70c5"
+    }
+  ],
+  "limitations": [
+    "Wine directory-relative fixture currently fails parent lookup after directory rename with EAGAIN; it does not resolve against the replacement directory. Retained diagnostic follows.",
+    "Native Windows, Windows NativeAOT and macOS execution are unverified.",
+    "Windows symlink creation with absent target returns ENOTSUP because the target file/directory kind is unknown.",
+    "Only _PC_PATH_MAX is supported by pathconf.",
+    "The direct-backend ABI test uses native026; later handle-parent Windows branches are covered only where explicitly indicated."
+  ],
+  "wineParentLookupDiagnostic": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-posix-relative-wine-007/object-project-0.stderr",
+    "sha256": "90863ded82900531d8a9a378ca1d59f019daa5ce355096e69a7cc083a0ab4689",
+    "finding": "Wine GetFinalPathNameByHandle returns the old relative-parent name after rename; that name now has inode74863487, while the held directory is inode74863486. Identity verification rejects the replacement."
+  }
+}

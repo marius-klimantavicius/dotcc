@@ -68,11 +68,26 @@ internal static unsafe partial class PosixPlatform
             return result.StartsWith(@"\\?\", StringComparison.Ordinal) ? result[4..] : result;
         }
     }
-    internal static SafeFileHandle Open(string path, int flags, int mode)
+    private static void ValidateOpenFlags(int flags)
     {
         EnsureSupported();
         const int known = 3 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096 | 65536 | 131072 | 524288 | 1048576;
         if ((flags & ~known) != 0 || (flags & 3) == 3 || (flags & (64 | 65536)) == (64 | 65536)) throw Failure(22);
+    }
+    private static int UnixOpenFlags(int flags)
+    {
+        if (!OperatingSystem.IsMacOS()) return flags | 524288;
+        int native = (flags & 3) | 0x1000000;
+        if ((flags & 64) != 0) native |= 0x200; if ((flags & 128) != 0) native |= 0x800;
+        if ((flags & 256) != 0) native |= 0x20000; if ((flags & 512) != 0) native |= 0x400;
+        if ((flags & 1024) != 0) native |= 8; if ((flags & 2048) != 0) native |= 4;
+        if ((flags & 4096) != 0) native |= 0x400000; if ((flags & 65536) != 0) native |= 0x100000;
+        if ((flags & 131072) != 0) native |= 0x100; if ((flags & 1048576) != 0) native |= 0x80;
+        return native;
+    }
+    internal static SafeFileHandle Open(string path, int flags, int mode)
+    {
+        ValidateOpenFlags(flags);
         if (OperatingSystem.IsWindows())
         {
             uint access = (flags & 3) switch { 0 => 0x80000000u, 1 => 0x40000000u, _ => 0xc0000000u };
@@ -84,17 +99,7 @@ internal static unsafe partial class PosixPlatform
             try { if ((flags & 131072) != 0 && (WindowsInfo(handle).Attributes & 0x400) != 0) throw Failure(40); if ((flags & 65536) != 0 && (WindowsInfo(handle).Attributes & 16) == 0) throw Failure(20); return handle; }
             catch { handle.Dispose(); throw; }
         }
-        int nativeFlags = flags;
-        if (OperatingSystem.IsMacOS())
-        {
-            nativeFlags = (flags & 3) | 0x1000000;
-            if ((flags & 64) != 0) nativeFlags |= 0x200; if ((flags & 128) != 0) nativeFlags |= 0x800;
-            if ((flags & 256) != 0) nativeFlags |= 0x20000; if ((flags & 512) != 0) nativeFlags |= 0x400;
-            if ((flags & 1024) != 0) nativeFlags |= 8; if ((flags & 2048) != 0) nativeFlags |= 4;
-            if ((flags & 4096) != 0) nativeFlags |= 0x400000; if ((flags & 65536) != 0) nativeFlags |= 0x100000;
-            if ((flags & 131072) != 0) nativeFlags |= 0x100; if ((flags & 1048576) != 0) nativeFlags |= 0x80;
-        }
-        else nativeFlags |= 524288;
+        int nativeFlags = UnixOpenFlags(flags);
         byte[] name = Encoding.UTF8.GetBytes(path + "\0"); int fd;
         fixed (byte* p = name) do { fd = OperatingSystem.IsMacOS() && RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? OpenDarwin(p, nativeFlags, 0, 0, 0, 0, 0, 0, (uint)mode) : OpenUnix(p, nativeFlags, (uint)mode); } while (fd < 0 && Marshal.GetLastPInvokeError() == 4);
         if (fd < 0) throw NativeError(); return new SafeFileHandle(fd, true);
@@ -128,23 +133,34 @@ internal static unsafe partial class PosixPlatform
         EnsureSupported();
         if (OperatingSystem.IsWindows())
         {
-            uint kind = GetFileType(handle);
-            if (kind == 0 && Marshal.GetLastPInvokeError() != 0) throw NativeError();
-            if (kind == 2 || kind == 3)
-                return new PosixStat { st_mode = (kind == 2 ? 0x2000U : 0x1000U) | 438, st_nlink = 1, st_blksize = 4096 };
-            var info = WindowsInfo(handle);
+            // Query disk metadata directly. In Wine GetFileType inspects file
+            // contents, which changes access time even for a stat-only call.
+            if (!GetFileInformation(handle, out var info))
+            {
+                var error = NativeError();
+                uint kind = GetFileType(handle);
+                if (kind == 2 || kind == 3)
+                    return new PosixStat { st_mode = (kind == 2 ? 0x2000U : 0x1000U) | 438, st_nlink = 1, st_blksize = 4096 };
+                throw error;
+            }
             if (!GetBasicInformation(handle, 0, out var basic, 40) || !GetStandardInformation(handle, 1, out var standard, 24)) throw NativeError();
-            return new PosixStat { st_dev = info.VolumeSerial, st_ino = ((ulong)info.IndexHigh << 32) | info.IndexLow, st_nlink = info.Links, st_mode = (uint)(((info.Attributes & 16) != 0 ? 0x4000 : ((info.Attributes & 0x400) != 0 ? 0xa000 : 0x8000)) | ((info.Attributes & 1) != 0 ? 0x124 : 0x1b6)), st_size = (long)(((ulong)info.SizeHigh << 32) | info.SizeLow), st_blksize = 4096, st_blocks = (standard.AllocationSize + 511) / 512, st_atime = WindowsTime(info.AccessLow, info.AccessHigh), st_mtime = WindowsTime(info.WriteLow, info.WriteHigh), st_ctime = (basic.ChangeTime - 116444736000000000L) / 10000000 };
+            return new PosixStat { st_dev = info.VolumeSerial, st_ino = ((ulong)info.IndexHigh << 32) | info.IndexLow, st_nlink = info.Links, st_mode = (uint)(((info.Attributes & 0x400) != 0 ? 0xa000 : ((info.Attributes & 16) != 0 ? 0x4000 : 0x8000)) | ((info.Attributes & 1) != 0 ? 0x124 : 0x1b6)), st_size = (long)(((ulong)info.SizeHigh << 32) | info.SizeLow), st_blksize = 4096, st_blocks = (standard.AllocationSize + 511) / 512, st_atim = WindowsTimespec((long)(((ulong)info.AccessHigh << 32) | info.AccessLow)), st_mtim = WindowsTimespec((long)(((ulong)info.WriteHigh << 32) | info.WriteLow)), st_ctim = WindowsTimespec(basic.ChangeTime) };
         }
         byte* buffer = stackalloc byte[256]; int result = OperatingSystem.IsMacOS() && RuntimeInformation.ProcessArchitecture == Architecture.X64 ? FstatDarwin(handle, buffer) : FstatUnix(handle, buffer);
         if (result != 0) throw NativeError(); return ConvertStat(buffer);
     }
-    private static long WindowsTime(uint low, uint high) => ((long)(((ulong)high << 32) | low) - 116444736000000000L) / 10000000;
+    internal static PosixTimespec WindowsTimespec(long ticks)
+    {
+        long seconds = Math.DivRem(ticks - 116444736000000000L, 10000000, out long fraction);
+        // POSIX fractions remain nonnegative, including dates before the epoch.
+        if (fraction < 0) { --seconds; fraction += 10000000; }
+        return new() { tv_sec = seconds, tv_nsec = fraction * 100 };
+    }
     private static PosixStat ConvertStat(byte* b)
     {
-        if (OperatingSystem.IsMacOS()) return new() { st_dev = *(uint*)b, st_mode = *(ushort*)(b + 4), st_nlink = *(ushort*)(b + 6), st_ino = *(ulong*)(b + 8), st_uid = *(uint*)(b + 16), st_gid = *(uint*)(b + 20), st_rdev = *(uint*)(b + 24), st_atime = *(long*)(b + 32), st_mtime = *(long*)(b + 48), st_ctime = *(long*)(b + 64), st_size = *(long*)(b + 96), st_blocks = *(long*)(b + 104), st_blksize = *(int*)(b + 112) };
+        if (OperatingSystem.IsMacOS()) return new() { st_dev = *(uint*)b, st_mode = *(ushort*)(b + 4), st_nlink = *(ushort*)(b + 6), st_ino = *(ulong*)(b + 8), st_uid = *(uint*)(b + 16), st_gid = *(uint*)(b + 20), st_rdev = *(uint*)(b + 24), st_atim = *(PosixTimespec*)(b + 32), st_mtim = *(PosixTimespec*)(b + 48), st_ctim = *(PosixTimespec*)(b + 64), st_size = *(long*)(b + 96), st_blocks = *(long*)(b + 104), st_blksize = *(int*)(b + 112) };
         bool arm = RuntimeInformation.ProcessArchitecture == Architecture.Arm64;
-        return new() { st_dev = *(ulong*)b, st_ino = *(ulong*)(b + 8), st_nlink = arm ? *(uint*)(b + 20) : *(ulong*)(b + 16), st_mode = *(uint*)(b + (arm ? 16 : 24)), st_uid = *(uint*)(b + (arm ? 24 : 28)), st_gid = *(uint*)(b + (arm ? 28 : 32)), st_rdev = *(ulong*)(b + (arm ? 32 : 40)), st_size = *(long*)(b + 48), st_blksize = arm ? *(int*)(b + 56) : *(long*)(b + 56), st_blocks = *(long*)(b + 64), st_atime = *(long*)(b + 72), st_mtime = *(long*)(b + 88), st_ctime = *(long*)(b + 104) };
+        return new() { st_dev = *(ulong*)b, st_ino = *(ulong*)(b + 8), st_nlink = arm ? *(uint*)(b + 20) : *(ulong*)(b + 16), st_mode = *(uint*)(b + (arm ? 16 : 24)), st_uid = *(uint*)(b + (arm ? 24 : 28)), st_gid = *(uint*)(b + (arm ? 28 : 32)), st_rdev = *(ulong*)(b + (arm ? 32 : 40)), st_size = *(long*)(b + 48), st_blksize = arm ? *(int*)(b + 56) : *(long*)(b + 56), st_blocks = *(long*)(b + 64), st_atim = *(PosixTimespec*)(b + 72), st_mtim = *(PosixTimespec*)(b + 88), st_ctim = *(PosixTimespec*)(b + 104) };
     }
     internal static uint EffectiveUserId => OperatingSystem.IsWindows() ? 0 : Geteuid();
     internal static void Chmod(SafeFileHandle handle, string path, uint mode)

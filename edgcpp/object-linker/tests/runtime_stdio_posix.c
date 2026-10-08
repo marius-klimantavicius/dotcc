@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 
 /* This initializer must refer to the provider's cell, not a private copy. */
 static FILE **standard_output = &stdout;
@@ -43,7 +44,13 @@ int main(void) {
     FILE *stream = fdopen(fd, "r+");
     if (!stream || fileno(stream) != fd || fseek(stream, 0, SEEK_SET)) return 16;
     if (fputc('S', stream) != 'S' || fflush(stream) || fclose(stream)) return 17;
-    if (stat(path, &info) || info.st_size != (long)strlen(payload) || unlink(path)) return 18;
+    if (stat(path, &info) || info.st_size != (long)strlen(payload)) return 18;
+    struct timeval timestamps[2] = {{1700000000, 123456}, {1700001000, 654321}};
+    if (utimes(path, timestamps) || stat(path, &info)) return 21;
+    if (info.st_atim.tv_sec != 1700000000 || info.st_atim.tv_nsec != 123456000 ||
+        info.st_mtime != 1700001000 || info.st_mtim.tv_nsec != 654321000) return 22;
+    info.st_mtime = 7;
+    if (info.st_mtim.tv_sec != 7 || unlink(path)) return 23;
     errno = 0;
     if (open(path, O_RDONLY) != -1 || errno != ENOENT) return 19;
     if (sysconf(_SC_NPROCESSORS_ONLN) < 1) return 20;

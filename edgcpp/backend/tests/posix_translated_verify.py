@@ -37,7 +37,7 @@ native = out / 'native-oracle'
 run('layout-build', ['cc', '-std=c11', '-Wall', '-Wextra', '-Werror', '-DPOSIX_LAYOUT_ONLY',
     '-I', ROOT / 'backend/runtime/posix/include', source, '-o', layout])
 layout_output = run('layout-run', [layout]).stdout
-assert layout_output == ('stat 96 0 8 16 24 32 36 40 48 56 64 72 80 88\n'
+assert layout_output == ('stat 120 0 8 16 24 32 36 40 48 64 80 96 104 112\n'
                          'timeval 16 0 8\nflock 32 0 2 8 16 24\n'), layout_output
 run('native-build', ['cc', '-std=c11', '-Wall', '-Wextra', '-Werror', '-DPOSIX_NATIVE_ORACLE', source, '-o', native])
 native_cwd = out / 'native-work'; native_cwd.mkdir()

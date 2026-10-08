@@ -15,13 +15,17 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--wine", type=Path, required=True)
 parser.add_argument("--windows-dotnet", type=Path, required=True)
 parser.add_argument("--wine-prefix", type=Path, required=True)
-parser.add_argument("--runtime-dir", type=Path, required=True)
-parser.add_argument("--registry-dir", type=Path, required=True)
+parser.add_argument("--runtime-dir", type=Path)
+parser.add_argument("--registry-dir", type=Path)
 parser.add_argument("--sqlite-dir", type=Path)
+parser.add_argument("--object-project", type=Path, action="append", default=[],
+                    help="Additional bound dotobj executable project; runs its portable Debug assembly")
 parser.add_argument("--runtime-download-manifest", type=Path)
 parser.add_argument("--runtime-archive", type=Path)
 parser.add_argument("--output-dir", type=Path, required=True)
 args = parser.parse_args()
+if not (args.runtime_dir or args.registry_dir or args.sqlite_dir or args.object_project):
+    parser.error("select at least one runtime, registry, SQLite or object project fixture")
 out = args.output_dir.resolve()
 out.mkdir(parents=True, exist_ok=True)
 env = os.environ.copy()
@@ -48,13 +52,13 @@ if args.runtime_download_manifest:
     provenance["verified_archive_sha512"] = actual
 (out / "provenance.json").write_text(json.dumps(provenance, indent=2) + "\n")
 
-def run(command, label, timeout=180):
+def run(command, label, timeout=180, cwd=None):
     command = list(map(str, command))
     try:
-        result = subprocess.run(command, env=env, capture_output=True, text=True, timeout=timeout)
+        result = subprocess.run(command, env=env, cwd=cwd, capture_output=True, text=True, timeout=timeout)
         (out / (label + ".stdout")).write_text(result.stdout)
         (out / (label + ".stderr")).write_text(result.stderr)
-        results.append({"label": label, "command": command, "exit": result.returncode})
+        results.append({"label": label, "command": command, "cwd": str(cwd) if cwd else None, "exit": result.returncode})
         (out / "results.json").write_text(json.dumps(results, indent=2) + "\n")
         if result.returncode:
             raise RuntimeError(f"{label}: {result.returncode}\n{result.stdout}\n{result.stderr}")
@@ -72,12 +76,18 @@ def windows_path(path):
     return "Z:" + str(path.resolve()).replace("/", "\\")
 
 def managed(path, label, timeout=180):
-    run([args.wine, args.windows_dotnet, windows_path(path)], label, timeout)
+    work = out / (label + "-work")
+    work.mkdir(exist_ok=True)
+    run([args.wine, args.windows_dotnet, windows_path(path)], label, timeout, cwd=work)
 
 run([args.wine, "--version"], "wine-version")
 run([args.wine, args.windows_dotnet, "--info"], "windows-dotnet-info")
-managed(args.runtime_dir / "bin/Release/net10.0/PosixProbe.dll", "posix-runtime")
-managed(args.registry_dir / "bin/Release/net10.0/RegistryProbe.dll", "windows-registry")
+if args.runtime_dir:
+    managed(args.runtime_dir / "bin/Release/net10.0/PosixProbe.dll", "posix-runtime")
+if args.registry_dir:
+    managed(args.registry_dir / "bin/Release/net10.0/RegistryProbe.dll", "windows-registry")
+for index, project in enumerate(args.object_project):
+    managed(project / "bin/Debug/net10.0/Translated.dll", "object-project-" + str(index))
 if args.sqlite_dir:
     source = (args.sqlite_dir / "consumer/Program.cs").read_text()
     if "EDG_SQLITE_UNIX" not in source:

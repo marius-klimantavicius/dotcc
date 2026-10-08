@@ -35,8 +35,9 @@ public sealed unsafe partial class PosixContext
     private sealed class DirectoryOwner
     {
         internal readonly object Gate = new();
-        internal IEnumerator<string>? Entries;
-        internal bool Pending;
+        internal PosixPlatform.DirectoryStream? Entries;
+        internal Descriptor Descriptor = null!;
+        internal int FileDescriptor;
         internal int Dots;
         internal byte* Entry;
     }
@@ -97,20 +98,34 @@ public sealed unsafe partial class PosixContext
 
     public void* Opendir(sbyte* path)
     {
-        IEnumerator<string>? enumerator = null;
+        int fd = Open(path, 0x90000); // O_RDONLY | O_DIRECTORY | O_CLOEXEC
+        if (fd < 0) return null;
+        void* result = Fdopendir(fd);
+        if (result == null) { int error = lastError; Close(fd); SetError(error); }
+        return result;
+    }
+
+    public void* Fdopendir(int fd)
+    {
+        PosixPlatform.DirectoryStream? enumerator = null;
         byte* entry = null; void* token = null;
         try
         {
-            string name = Resolve(path);
-            if ((File.GetAttributes(name) & FileAttributes.Directory) == 0) { SetError(20); return null; }
-            enumerator = Directory.EnumerateFileSystemEntries(name).GetEnumerator();
-            bool pending = enumerator.MoveNext();
+            Descriptor? descriptor = Find(fd);
+            if (descriptor == null) return null;
+            lock (descriptor.Gate)
+            {
+                if (!CheckDirectory(descriptor)) return null;
+                if ((descriptor.Flags & 3) == 1) { SetError(9); return null; }
+                enumerator = new PosixPlatform.DirectoryStream(descriptor.Handle);
+            }
             entry = (byte*)NativeMemory.Alloc(4096); token = NativeMemory.Alloc(1);
             if (entry == null || token == null) throw new OutOfMemoryException();
             lock (directoriesGate)
             {
                 ObjectDisposedException.ThrowIf(disposed, this);
-                directories.Add((nint)token, new DirectoryOwner { Entries = enumerator, Pending = pending, Entry = entry });
+                directories.Add((nint)token, new DirectoryOwner { Entries = enumerator, Entry = entry,
+                    FileDescriptor = fd, Descriptor = descriptor });
             }
             void* result = token; token = null; entry = null; enumerator = null; return result;
         }
@@ -130,8 +145,9 @@ public sealed unsafe partial class PosixContext
                 if (directory.Dots < 2) name = directory.Dots++ == 0 ? "." : "..";
                 else
                 {
-                    if (!directory.Pending && !directory.Entries.MoveNext()) return null;
-                    directory.Pending = false; name = Path.GetFileName(directory.Entries.Current);
+                    string? next = directory.Entries.Read();
+                    if (next == null) return null;
+                    name = next;
                 }
                 int size = Utf8.GetByteCount(name);
                 if (size >= 4096) { SetError(36); return null; }
@@ -148,8 +164,12 @@ public sealed unsafe partial class PosixContext
         lock (directory.Gate)
         {
             if (directory.Entries is null) { SetError(9); return -1; }
-            directory.Entries.Dispose(); directory.Entries = null;
-            NativeMemory.Free(directory.Entry); directory.Entry = null; return 0;
+            int result = 0;
+            try { directory.Entries.Dispose(); }
+            catch (Exception error) when (PlatformFailure(error)) { result = Fail(error); }
+            finally { directory.Entries = null; NativeMemory.Free(directory.Entry); directory.Entry = null; }
+            int closed = CloseDirectoryDescriptor(directory.FileDescriptor, directory.Descriptor);
+            return result != 0 ? result : closed;
         }
     }
     private void CloseDirectories()
@@ -159,7 +179,14 @@ public sealed unsafe partial class PosixContext
             foreach (var item in directories)
             {
                 lock (item.Value.Gate)
-                { item.Value.Entries?.Dispose(); NativeMemory.Free(item.Value.Entry); NativeMemory.Free((void*)item.Key); }
+                {
+                    if (item.Value.Entries != null)
+                    {
+                        item.Value.Entries.Dispose(); item.Value.Entries = null;
+                        CloseDirectoryDescriptor(item.Value.FileDescriptor, item.Value.Descriptor);
+                    }
+                    NativeMemory.Free(item.Value.Entry); NativeMemory.Free((void*)item.Key);
+                }
             }
             directories.Clear();
         }

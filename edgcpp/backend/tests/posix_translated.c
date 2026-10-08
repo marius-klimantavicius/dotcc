@@ -77,6 +77,7 @@ int main(void) {
     lock.l_type = F_UNLCK;
     CHECK(fcntl(fd, F_SETLK, &lock) == 0);
     CHECK(utimes(name, times) == 0 && fstat(fd, &a) == 0 && a.st_atime == 1700000000 && a.st_mtime == 1700001000);
+    CHECK(a.st_atim.tv_nsec == 123456000 && a.st_mtim.tv_nsec == 654321000);
     CHECK(gettimeofday(&now, 0) == 0 && now.tv_sec > 0 && now.tv_usec >= 0 && now.tv_usec < 1000000);
     CHECK(sleep(0) == 0 && usleep(1) == 0);
     unsigned char *shared = mmap(0, (size_t)page, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);

@@ -8,6 +8,17 @@ void ensure_posix() {
   helper_output+="private "+mod+"global::Edg.Runtime.PosixContext? __edg_posix_value;\n";
   helper_output+="private "+mod+"global::Edg.Runtime.PosixContext __edg_posix { get { lock(__edg_libc) { if(__edg_posix_value==null)__edg_posix_value=new global::Edg.Runtime.PosixContext(__edg_libc.SetErrno); return __edg_posix_value; } } }\n";
 }
+bool posix_timespec_record(a_type_ptr t) {
+  t=skip_typerefs(t);
+  if(t->kind!=tk_struct || t->incomplete || t->size!=16 || alignment_of_type(t)!=8 ||
+     !t->source_corresp.name || string(t->source_corresp.name)!="timespec")return false;
+  unsigned index=0;
+  for(auto f=t->variant.class_struct_union.field_list;f;f=f->next,++index)
+    if(index>=2 || f->is_bit_field || !f->source_corresp.name ||
+       string(f->source_corresp.name)!=(index==0?"tv_sec":"tv_nsec") ||
+       f->offset!=index*8 || type(f->type)!="long")return false;
+  return index==2;
+}
 string posix_type(a_type_ptr t) {
   if(libc_file_pointer(t))return "FILE*";
   auto p=skip_typerefs(t);
@@ -62,15 +73,17 @@ string posix_type(a_type_ptr t) {
     return f?type(t):"POSIX_STATVFS*";
   }
   if(n!="stat" && n!="timeval")return type(t);
-  const char* stat_names[]={"st_dev","st_ino","st_mode","st_nlink","st_uid","st_gid","st_size","st_atime","st_mtime","st_ctime","st_rdev","st_blksize","st_blocks"};
-  const char* stat_types[]={"ulong","ulong","uint","ulong","uint","uint","long","long","long","long","ulong","long","long"};
-  unsigned stat_offsets[]={0,8,16,24,32,36,40,48,56,64,72,80,88};
+  const char* stat_names[]={"st_dev","st_ino","st_mode","st_nlink","st_uid","st_gid","st_size","st_atim","st_mtim","st_ctim","st_rdev","st_blksize","st_blocks"};
+  const char* stat_types[]={"ulong","ulong","uint","ulong","uint","uint","long","timespec","timespec","timespec","ulong","long","long"};
+  unsigned stat_offsets[]={0,8,16,24,32,36,40,48,64,80,96,104,112};
   unsigned index=0,count=n=="stat"?13:2;
-  if(p->size!=(n=="stat"?96:16) || alignment_of_type(p)!=8)return type(t);
+  if(p->size!=(n=="stat"?120:16) || alignment_of_type(p)!=8)return type(t);
   for(auto f=p->variant.class_struct_union.field_list;f;f=f->next,++index) {
     if(index>=count || f->is_bit_field || !f->source_corresp.name)return type(t);
     string expected=n=="stat"?stat_names[index]:(index==0?"tv_sec":"tv_usec");
-    if(string(f->source_corresp.name)!=expected || type(f->type)!=(n=="stat"?stat_types[index]:"long") ||
+    bool valid_type=n=="stat" && index>=7 && index<=9?posix_timespec_record(f->type):
+        type(f->type)==(n=="stat"?stat_types[index]:"long");
+    if(string(f->source_corresp.name)!=expected || !valid_type ||
        f->offset!=(n=="stat"?stat_offsets[index]:index*8))return type(t);
   }
   return index==count?(n=="stat"?"POSIX_STAT*":"POSIX_TIMEVAL*"):type(t);
@@ -85,6 +98,7 @@ const posix_binding posix_bindings[]={
   {"getsockname","int","int,POSIX_SOCKADDR*,uint*","Getsockname",false},
   {"shutdown","int","int,int","Shutdown",false},
   {"open","int","sbyte*,int","OpenVariadic",true},
+  {"openat","int","int,sbyte*,int","OpenAtVariadic",true},
   {"fcntl","int","int,int","FcntlVariadic",true},
   {"ioctl","int","int,ulong","IoctlVariadic",true},
   {"close","int","int","Close",false},
@@ -94,12 +108,17 @@ const posix_binding posix_bindings[]={
   {"pwrite","long","int,void*,ulong,long","Pwrite",false},
   {"lseek","long","int,long,int","Lseek",false},
   {"ftruncate","int","int,long","Ftruncate",false},
+  {"truncate","int","sbyte*,long","Truncate",false},
+  {"pathconf","long","sbyte*,int","Pathconf",false},
   {"fsync","int","int","Fsync",false},
   {"fdatasync","int","int","Fdatasync",false},
   {"access","int","sbyte*,int","Access",false},
   {"getcwd","sbyte*","sbyte*,ulong","Getcwd",false},
   {"realpath","sbyte*","sbyte*,sbyte*","Realpath",false},
   {"unlink","int","sbyte*","Unlink",false},
+  {"unlinkat","int","int,sbyte*,int","UnlinkAt",false},
+  {"link","int","sbyte*,sbyte*","Link",false},
+  {"symlink","int","sbyte*,sbyte*","Symlink",false},
   {"mkdir","int","sbyte*,uint","Mkdir",false},
   {"rmdir","int","sbyte*","Rmdir",false},
   {"readlink","long","sbyte*,sbyte*,ulong","Readlink",false},
@@ -129,6 +148,7 @@ const posix_binding posix_bindings[]={
   {"fdopen","FILE*","int,sbyte*","Fdopen",false},
   {"fileno","int","FILE*","Fileno",false},
   {"opendir","POSIX_DIR*","sbyte*","Opendir",false},
+  {"fdopendir","POSIX_DIR*","int","Fdopendir",false},
   {"readdir","POSIX_DIRENT*","POSIX_DIR*","Readdir",false},
   {"closedir","int","POSIX_DIR*","Closedir",false},
   {"getrlimit","int","int,POSIX_RLIMIT*","Getrlimit",false},

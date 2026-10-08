@@ -15,6 +15,8 @@
 #define O_NOFOLLOW 0400000
 #define O_CLOEXEC 02000000
 #define FD_CLOEXEC 1
+#define AT_FDCWD (-100)
+#define AT_REMOVEDIR 0x200
 #define F_GETFD 1
 #define F_SETFD 2
 #define F_GETFL 3
@@ -30,6 +32,7 @@ struct flock { short l_type, l_whence; long l_start, l_len; int l_pid; };
 extern "C" {
 #endif
 int open(const char *, int, ...);
+int openat(int, const char *, int, ...);
 int fcntl(int, int, ...);
 #ifdef __cplusplus
 }

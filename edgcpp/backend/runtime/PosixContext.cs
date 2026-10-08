@@ -60,10 +60,21 @@ public sealed unsafe partial class PosixContext : IDisposable, ILibcFileDescript
 
     internal string Resolve(sbyte* path)
     {
+        string name = DecodePath(path);
+        return ResolveName(name);
+    }
+
+    private static string DecodePath(sbyte* path)
+    {
         if (path == null) throw new ArgumentNullException(nameof(path));
         int size = 0; while (path[size] != 0) size = checked(size + 1);
         string name = Utf8.GetString(new ReadOnlySpan<byte>(path, size));
         if (name.Length == 0) throw new FileNotFoundException("Empty Unix path.");
+        return name;
+    }
+
+    private string ResolveName(string name)
+    {
         // Do not collapse symlink/.. components: the kernel must resolve them
         // in order, as required by POSIX path traversal.
         if (OperatingSystem.IsWindows()) return ResolveWindowsPath(name, workingDirectory);
@@ -111,17 +122,22 @@ public sealed unsafe partial class PosixContext : IDisposable, ILibcFileDescript
             string literal = Utf8.GetString(new ReadOnlySpan<byte>(path, pathLength));
             int device = literal == "/dev/null" ? 1 : literal is "/dev/urandom" or "/dev/random" ? 2 : 0;
             handle = device == 0 ? PosixPlatform.Open(name, flags, mode) : new SafeFileHandle(-1, false);
-            var descriptor = new Descriptor(handle, name, flags, device);
-            lock (descriptorsGate)
-            {
-                if (disposed) { handle.Dispose(); SetError(9); return -1; }
-                int fd = 3;
-                while (descriptors.ContainsKey(fd)) fd = checked(fd + 1);
-                descriptors.Add(fd, descriptor);
-                return fd;
-            }
+            return RegisterDescriptor(handle, name, flags, device);
         }
         catch (Exception error) when (PlatformFailure(error)) { handle?.Dispose(); return Fail(error); }
+    }
+
+    private int RegisterDescriptor(SafeFileHandle handle, string name, int flags, int device = 0)
+    {
+        var descriptor = new Descriptor(handle, name, flags, device);
+        lock (descriptorsGate)
+        {
+            if (disposed) { handle.Dispose(); SetError(9); return -1; }
+            int fd = 3;
+            while (descriptors.ContainsKey(fd)) fd = checked(fd + 1);
+            descriptors.Add(fd, descriptor);
+            return fd;
+        }
     }
 
     public int Close(int fd)
@@ -131,6 +147,24 @@ public sealed unsafe partial class PosixContext : IDisposable, ILibcFileDescript
         {
             if (!descriptors.Remove(fd, out descriptor)) { SetError(9); return -1; }
         }
+        return CloseDescriptor(descriptor);
+    }
+
+    private int CloseDirectoryDescriptor(int fd, Descriptor descriptor)
+    {
+        lock (descriptorsGate)
+        {
+            // A source that manually closed this fd may have reused its number.
+            // Never close a different resource while releasing the old DIR.
+            if (!descriptors.TryGetValue(fd, out var current) || !ReferenceEquals(current, descriptor))
+            { SetError(9); return -1; }
+            descriptors.Remove(fd);
+        }
+        return CloseDescriptor(descriptor);
+    }
+
+    private int CloseDescriptor(Descriptor descriptor)
+    {
         lock (descriptor.Gate)
         {
             descriptor.Closed = true;

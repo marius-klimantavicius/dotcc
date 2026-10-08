@@ -261,7 +261,7 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
         supported = target is not None and (target.startswith(('global::System.', 'global::Edg.Runtime.',
                     '__edg_libc.', '__edg_text.', '__edg_math.', '__edg_clock.', '__edg_environment.', '__edg_timezone.', '__edg_posix.', '__edg_files.', '__edg_command.')) or
                     target in ('__edg_malloc', '__edg_calloc', '__edg_realloc', '__edg_free', '__edg_aligned_alloc', '__edg_posix_memalign'))
-        supported = supported and method['variadic'] == (signature[0] in ('open', 'fcntl', 'ioctl'))
+        supported = supported and method['variadic'] == (signature[0] in ('open', 'openat', 'fcntl', 'ioctl'))
         if not supported:
             unresolved.append(dict(name=signature[0], result=signature[1], parameters=signature[2], canonicalTarget=target))
             continue

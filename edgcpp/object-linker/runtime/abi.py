@@ -16,11 +16,11 @@ PROFILES = {
     'timespec': ('TIMESPEC', 16, 8, [('tv_sec', 'i64', 0), ('tv_nsec', 'i64', 8)], 'void'),
     'timeval': ('POSIX_TIMEVAL', 16, 8, [('tv_sec', 'i64', 0), ('tv_usec', 'i64', 8)], 'global::Edg.Runtime.PosixTimeval'),
     'rlimit': ('POSIX_RLIMIT', 16, 8, [('rlim_cur', 'u64', 0), ('rlim_max', 'u64', 8)], 'global::Edg.Runtime.PosixRlimit'),
-    'stat': ('POSIX_STAT', 96, 8, [
+    'stat': ('POSIX_STAT', 120, 8, [
         ('st_dev', 'u64', 0), ('st_ino', 'u64', 8), ('st_mode', 'u32', 16), ('st_nlink', 'u64', 24),
-        ('st_uid', 'u32', 32), ('st_gid', 'u32', 36), ('st_size', 'i64', 40), ('st_atime', 'i64', 48),
-        ('st_mtime', 'i64', 56), ('st_ctime', 'i64', 64), ('st_rdev', 'u64', 72), ('st_blksize', 'i64', 80),
-        ('st_blocks', 'i64', 88)], 'global::Edg.Runtime.PosixStat'),
+        ('st_uid', 'u32', 32), ('st_gid', 'u32', 36), ('st_size', 'i64', 40), ('st_atim', 'TIMESPEC', 48),
+        ('st_mtim', 'TIMESPEC', 64), ('st_ctim', 'TIMESPEC', 80), ('st_rdev', 'u64', 96), ('st_blksize', 'i64', 104),
+        ('st_blocks', 'i64', 112)], 'global::Edg.Runtime.PosixStat'),
     'statvfs': ('POSIX_STATVFS', 88, 8, [(name, 'u64', index * 8) for index, name in enumerate(
         ('f_bsize', 'f_frsize', 'f_blocks', 'f_bfree', 'f_bavail', 'f_files', 'f_ffree', 'f_favail', 'f_fsid', 'f_flag', 'f_namemax'))],
         'global::Edg.Runtime.PosixStatvfs'),
@@ -41,6 +41,7 @@ class Boundaries:
             token, size, alignment, expected, runtime_type = profile
             obj = objects[record['unitId']]
             types = {row['id']: row for row in obj['executionTypes']}
+            records = {row['typeId']: row for row in obj['recordTypes']}
 
             def kind(identifier):
                 node = types[identifier]
@@ -48,6 +49,16 @@ class Boundaries:
                     return 'array(' + str(node['elementCount']) + ',' + kind(node['elementTypeId']) + ')'
                 if node['kind'] == 'pointer':
                     return 'ptr(' + kind(node['pointeeTypeId']) + ')'
+                if node['kind'] == 'record':
+                    nested = records[identifier]
+                    nested_fields = sorted((f for f in obj['recordFields'] if f['recordTypeId'] == identifier),
+                                           key=lambda f: f['ordinal'])
+                    # Only this exact leaf record is permitted in the portable
+                    # stat ABI; equal names or aggregate sizes are insufficient.
+                    if (nested['sourceName'], nested['size'], nested['alignment']) == ('timespec', 16, 8):
+                        shape = [(f['sourceName'], types[f['typeId']]['kind'], f['byteOffset']) for f in nested_fields]
+                        if shape == PROFILES['timespec'][3] and all(f.get('bitWidth') is None for f in nested_fields):
+                            return 'TIMESPEC'
                 return node['kind']
 
             fields = sorted((f for f in obj['recordFields'] if f['recordTypeId'] == record['typeId']), key=lambda f: f['ordinal'])

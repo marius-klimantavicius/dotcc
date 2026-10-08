@@ -22,6 +22,12 @@ public sealed unsafe partial class PosixContext
         catch (ArgumentException error) { return Fail(error); }
     }
 
+    public int OpenAtVariadic(int directory, sbyte* path, int flags, ReadOnlySpan<VaArg> arguments)
+    {
+        try { return OpenAt(directory, path, flags, (flags & 0x40) != 0 ? Variadic<int>(arguments) : 0); }
+        catch (ArgumentException error) { return Fail(error); }
+    }
+
     public int FcntlVariadic(int fd, int command, ReadOnlySpan<VaArg> arguments)
     {
         try
