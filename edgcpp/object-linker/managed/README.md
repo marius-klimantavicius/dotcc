@@ -1,6 +1,6 @@
 # Managed semantic object linker
 
-This is the executable `scalar-control-v6` implementation of the fresh
+This is the executable `scalar-control-v7` implementation of the fresh
 `.dotobj` semantic graph. It does not read the previous semantic-export format
 or an emission-command stream.
 
@@ -104,12 +104,12 @@ Push/pop and precompiled/module macro import are rejected for this profile.
 
 The link report still preserves the missing capability flags: `prelowerSource`,
 `macros`, and `lifetimes` are false. A complete source expression/statement view,
-all redeclarations, macro expansion history and lifetime capture remain absent. Globals/TLS, pointers, records, function
+all redeclarations, macro expansion history and lifetime capture remain absent. Globals/TLS, arrays, records, function
 addresses, exceptions/RAII, inline/COMDAT, templates and runtime providers are
 not implemented in this profile. Unsupported input is rejected; scalar fixtures
 do not demonstrate DuckDB readiness or full C++ coverage.
 
-The current schema requires scalar-control-v6 objects. Earlier v1/v2/v3/v4/v5 objects
+The current schema requires scalar-control-v7 objects. Earlier v1/v2/v3/v4/v5/v6 objects
 remain usable with their retained earlier tool build, or can be regenerated.
 
 The integer profile supports signed/unsigned 8/16/32/64-bit values, exact decimal
@@ -120,10 +120,27 @@ unchecked expressions where constant or runtime overflow would otherwise
 conflict with source unsigned wraparound. Unsigned negation emits typed zero
 minus the operand. Shifts convert non-int counts explicitly to int. Conditional
 expressions and short-circuit operators evaluate only their selected operands.
-This does not add floating point, pointers, compound assignment or comma nodes.
+This does not add floating point, compound assignment or comma nodes.
 
 The definition-text capture profile rejects actual `__VA_OPT__` replacement
 operators: the stock inspection formatter is not a complete round-trip format
 for trailing optional text. Quoted occurrences remain ordinary macro text.
 EDG preprocessing semantics are unchanged; a future token-based macro graph can
 represent this construct without relying on inspection formatting.
+
+
+The v7 profile adds typed scalar data pointers, `void*`, nested pointers and
+addressable binding/dereference places. C# uses an unsafe partial class with
+ordinary `&`, `*`, pointer casts, comparisons, element arithmetic and mutation.
+Cross-object signatures compare structural pointee types, independent of local
+IDs. Null constants stay typed. Execution/source pointer cycles and inconsistent
+pointee mappings are rejected. `source-map.json` includes execution type rows.
+For specified RHS-before-LHS assignment, an indirect place and its RHS must both
+be free of calls, assignment and mutation; more complex sequencing remains
+unsupported. Address-taking does not add heap allocation or pinning for these
+unmanaged stack locals. Source bounds and lifetimes still determine validity.
+
+When any input object uses pointer types, the first generated partial class
+contains one owner static constructor checking `IntPtr.Size == 8`. An incompatible
+32-bit process fails explicitly before translated functions execute. This
+enforces the fixed target ABI while allowing any supported 64-bit OS/runtime.

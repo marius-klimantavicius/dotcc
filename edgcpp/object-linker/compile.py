@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = Path(__file__).with_name('schema.sql')
 ARRAYS = {
     'sourceFiles': ('source_files', ['id', 'path', 'parentId']),
-    'types': ('types', ['id', 'kind']),
+    'types': ('types', ['id', 'kind', 'pointeeTypeId']),
     'entities': ('entities', ['id', 'sourceName', 'linkage', 'externalKey', 'definition',
                               'returnTypeId', 'sourceFileId', 'line', 'column']),
     'parameters': ('parameters', ['entityId', 'ordinal', 'typeId']),
@@ -89,7 +89,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v6':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v7':
         raise ValueError('Unsupported semantic wire version/profile')
     source_hashes = {}
     with sqlite3.connect(path) as db:
@@ -97,7 +97,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('BEGIN IMMEDIATE')
         db.execute('PRAGMA defer_foreign_keys=ON')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1)',
-                   ('scalar-control-v6', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v7', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source)))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

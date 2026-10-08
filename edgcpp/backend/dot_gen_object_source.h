@@ -88,6 +88,11 @@ inline unsigned capture_type(a_type_ptr t) {
       case ik_unsigned_long_long:value.kind="unsigned-long-long";value.execution=9;break;
       default:break;
     }
+  } else if(t->kind==tk_pointer && !t->variant.pointer.is_reference) {
+    value.kind="pointer";
+    value.underlying=capture_type(t->variant.pointer.type);
+    // Execution pointer IDs are interned by the object writer, independently
+    // of EDG addresses and of the source typedef/qualification structure.
   } else if(t->kind==tk_routine) {
     value.kind="routine";
     value.result=capture_type(t->variant.routine.return_type);

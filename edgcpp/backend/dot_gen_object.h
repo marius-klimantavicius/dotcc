@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v6: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v7: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -39,6 +39,8 @@ struct Writer {
   std::vector<string> source_types,source_declarations,source_functions,source_parameters;
   std::vector<string> macro_definitions,macro_parameters,macro_events;
   std::map<unsigned,unsigned> source_type_ids;
+  std::map<unsigned,unsigned> pointer_types;
+  std::vector<string> execution_types;
   std::set<a_scope_ptr> bound_scopes;
   std::set<unsigned> declared_bindings;
   struct Control { unsigned node; source_control_context labels; };
@@ -46,11 +48,21 @@ struct Writer {
   std::set<a_label_ptr> control_labels;
   std::map<a_statement_ptr,a_statement_ptr> switch_cases;
   string number(unsigned value){return value?std::to_string(value):"null";}
+  unsigned pointer_type(unsigned pointee) {
+    auto prior=pointer_types.find(pointee);if(prior!=pointer_types.end())return prior->second;
+    unsigned id=10+(unsigned)pointer_types.size();pointer_types[pointee]=id;
+    execution_types.push_back("{\"id\":"+number(id)+",\"kind\":\"pointer\",\"pointeeTypeId\":"+number(pointee)+"}");
+    return id;
+  }
   unsigned type_id(a_type_ptr type) {
     unsigned q=get_type_qualifiers(type);
     if(q & (TQ_VOLATILE|TQ_C11_ATOMIC))reject("volatile/atomic type");
     auto t=skip_typerefs(type);
     if(t->kind==tk_void)return 1;
+    if(t->kind==tk_pointer) {
+      if(t->variant.pointer.is_reference)reject("C++ reference type");
+      return pointer_type(type_id(t->variant.pointer.type));
+    }
     // EDG retains the bool marker alongside enum bookkeeping after lowering;
     // unlike a user enum, its executable representation is the lowered byte.
     if(t->kind==tk_integer && t->variant.integer.bool_type && t->size==1)return 3;
@@ -71,7 +83,7 @@ struct Writer {
         default:break;
       }
     }
-    reject("type outside void/fixed-width-integer profile",t->kind);
+    reject("type outside void/fixed-width-integer/data-pointer profile",t->kind);
   }
   void source_files(a_source_file_ptr file,unsigned parent) {
     for(;file;file=file->next) {
@@ -125,15 +137,22 @@ struct Writer {
         ",\"origin\":"+quote(value.origin)+macro_position(value.position,value.origin)+"}");
     }
   }
+  unsigned source_execution_type(unsigned captured) {
+    const auto &type=dot_object_source::state().types.at(captured-1);
+    if(type.execution)return type.execution;
+    if(type.kind=="pointer")return pointer_type(source_execution_type(type.underlying));
+    if(type.kind=="qualified" || type.kind=="typedef")return source_execution_type(type.underlying);
+    reject("source type outside scalar/data-pointer declaration profile");
+  }
   unsigned source_type(unsigned captured) {
     if(!captured)reject("missing pre-lowering scalar type");
     auto prior=source_type_ids.find(captured);if(prior!=source_type_ids.end())return prior->second;
     const auto &type=dot_object_source::state().types.at(captured-1);
-    if(!type.execution)reject("source type outside scalar declaration profile");
+    unsigned execution=source_execution_type(captured);
     unsigned id=next_source_type++;source_type_ids[captured]=id;
     unsigned underlying=type.underlying?source_type(type.underlying):0;
     source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.kind)+",\"sourceName\":"+quote(type.name)+
-      ",\"underlyingTypeId\":"+number(underlying)+",\"executionTypeId\":"+number(type.execution)+
+      ",\"underlyingTypeId\":"+number(underlying)+",\"executionTypeId\":"+number(execution)+
       ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+position(type.position)+"}");
     return id;
   }
@@ -233,7 +252,30 @@ struct Writer {
     if(int_constant_is_signed(c))text=std::to_string((long long)value_of_integer_constant(c,&overflow));
     else text=std::to_string((unsigned long long)unsigned_value_of_integer_constant(c,&overflow));
     if(overflow)reject("out of range scalar constant");
+    if(skip_typerefs(c->type)->kind==tk_pointer && text!="0")reject("non-null pointer constant");
     return node("constant",ty,pos,0,0,"",text,"value","none");
+  }
+  bool place(an_expr_node_ptr e) {
+    return e && (e->kind==enk_variable ||
+      (e->kind==enk_operation && (e->variant.operation.kind==eok_indirect ||
+                                 e->variant.operation.kind==eok_subscript)));
+  }
+  bool effect_free(an_expr_node_ptr e) {
+    if(!e)return false;
+    if(e->kind==enk_variable || e->kind==enk_constant)return true;
+    if(e->kind!=enk_operation)return false;
+    switch(e->variant.operation.kind) {
+      case eok_address_of:case eok_indirect:case eok_subscript:case eok_cast:case eok_question:
+      case eok_add:case eok_subtract:case eok_multiply:case eok_divide:case eok_remainder:
+      case eok_and:case eok_or:case eok_xor:case eok_shiftl:case eok_shiftr:
+      case eok_eq:case eok_ne:case eok_lt:case eok_le:case eok_gt:case eok_ge:
+      case eok_land:case eok_lor:case eok_negate:case eok_not:case eok_unary_plus:
+      case eok_complement:case eok_padd:case eok_psubtract:case eok_pdiff:break;
+      default:return false;
+    }
+    for(auto child=e->variant.operation.operands;child;child=child->next)
+      if(!effect_free(child))return false;
+    return true;
   }
   unsigned expression(an_expr_node_ptr e) {
     if(!e)reject("null expression");
@@ -255,9 +297,40 @@ struct Writer {
       return id;
     }
     if(operation.kind==eok_assign) {
-      if(!a || !b || b->next || a->kind!=enk_variable)reject("nonbinding assignment");
+      if(!a || !b || b->next || !place(a))reject("assignment outside supported memory places");
+      // C++17 evaluates the RHS before the LHS, unlike C#. In this bounded
+      // graph, direct bindings need no address evaluation; indirect places
+      // can be emitted directly only if neither side can change that address.
+      if(operation.eval_right_to_left && a->kind!=enk_variable &&
+         (!effect_free(a) || !effect_free(b)))reject("effectful right-to-left indirect assignment");
       unsigned id=node("assign",ty,e->position,0,0,"","","value",order);
       edge(id,"target",0,expression(a));edge(id,"value",0,expression(b));return id;
+    }
+    if(operation.kind==eok_address_of || operation.kind==eok_indirect) {
+      if(!a || b)reject("memory-place operator arity");
+      bool address=operation.kind==eok_address_of;
+      auto pointer=skip_typerefs(address?e->type:a->type);
+      if(pointer->kind!=tk_pointer || pointer->variant.pointer.is_reference ||
+         skip_typerefs(pointer->variant.pointer.type)->kind==tk_void)
+        reject("memory-place operator outside typed data pointers");
+      if(address && !place(a))reject("address outside supported memory places");
+      if(type_id(pointer->variant.pointer.type)!=type_id(address?a->type:e->type))
+        reject("memory-place pointee representation mismatch");
+      unsigned id=node(address?"address":"dereference",ty,e->position,0,0,"","",address?"value":"place",order);
+      edge(id,"operand",0,expression(a));return id;
+    }
+    if(operation.kind==eok_subscript) {
+      if(!a || !b || b->next)reject("subscript arity");
+      auto left=skip_typerefs(a->type),right=skip_typerefs(b->type);
+      auto pointer=left->kind==tk_pointer?left:right;
+      if(pointer->kind!=tk_pointer || pointer->variant.pointer.is_reference ||
+         type_id(pointer->variant.pointer.type)!=ty || ty==1)
+        reject("subscript outside typed data pointers");
+      unsigned add=node("binary",type_id(pointer),e->position,0,0,"pointer-add","","value",order);
+      // Preserve syntactic operand order, including the valid C form index[p].
+      edge(add,"left",0,expression(a));edge(add,"right",0,expression(b));
+      unsigned id=node("dereference",ty,e->position,0,0,"","","place","none");
+      edge(id,"operand",0,add);return id;
     }
     if(operation.kind==eok_cast) {
       if(!a || b || ty==1)reject("unsupported scalar conversion");
@@ -268,8 +341,7 @@ struct Writer {
       // Preserve lazy branch selection. The stock C backend requires both
       // lowered arm types to match the result; do not recreate promotions.
       // A scalar lvalue conditional is consumed here as the selected value.
-      // Assignment/mutation targets require a direct variable above/below;
-      // no address or reference operation can export its selected place.
+      // Selected conditional places remain outside this bounded profile.
       if(!a || !b || !b->next || b->next->next || ty==1)
         reject("conditional outside scalar value profile");
 #if GNU_EXTENSIONS_ALLOWED
@@ -284,10 +356,13 @@ struct Writer {
     }
     if(operation.kind==eok_pre_incr || operation.kind==eok_post_incr ||
        operation.kind==eok_pre_decr || operation.kind==eok_post_decr) {
-      if(!a || b || a->kind!=enk_variable)reject("nonbinding scalar mutation");
+      if(!a || b || !place(a))reject("mutation outside supported memory places");
       auto operand_type=skip_typerefs(a->type);
-      if(operand_type->kind!=tk_integer || operand_type->variant.integer.bool_type || type_id(a->type)!=ty)
-        reject("mutation outside integer binding profile");
+      bool integer=operand_type->kind==tk_integer && !operand_type->variant.integer.bool_type;
+      bool pointer=operand_type->kind==tk_pointer && !operand_type->variant.pointer.is_reference &&
+        skip_typerefs(operand_type->variant.pointer.type)->kind!=tk_void;
+      if((!integer && !pointer) || type_id(a->type)!=ty)
+        reject("mutation outside integer/data-pointer profile");
       string op=operation.kind==eok_pre_incr?"pre-inc":operation.kind==eok_post_incr?"post-inc":
                 operation.kind==eok_pre_decr?"pre-dec":"post-dec";
       unsigned id=node("mutate",ty,e->position,0,0,op,"","value",order);
@@ -296,6 +371,11 @@ struct Writer {
     const char *op=nullptr;bool unary=false;
     switch(operation.kind) {
       case eok_add:op="add";break;case eok_subtract:op="sub";break;case eok_multiply:op="mul";break;
+      // As in c_gen_be.c, these operands are element counts, not byte offsets.
+      // The void/empty-struct arithmetic extensions are outside this profile.
+      case eok_padd:op="pointer-add";break;
+      case eok_psubtract:op="pointer-subtract";break;
+      case eok_pdiff:op="pointer-difference";break;
       case eok_divide:op="div";break;case eok_remainder:op="rem";break;
       case eok_and:op="bit-and";break;case eok_or:op="bit-or";break;case eok_xor:op="bit-xor";break;
       case eok_shiftl:op="shl";break;case eok_shiftr:op="shr";break;
@@ -308,6 +388,12 @@ struct Writer {
       default:reject("operator",operation.kind);
     }
     if(!a || (unary?(b!=nullptr):(!b || b->next)))reject("operator arity");
+    if(operation.kind==eok_padd || operation.kind==eok_psubtract || operation.kind==eok_pdiff) {
+      auto left=skip_typerefs(a->type),right=skip_typerefs(b->type);
+      if((left->kind==tk_pointer && skip_typerefs(left->variant.pointer.type)->kind==tk_void) ||
+         (right->kind==tk_pointer && skip_typerefs(right->variant.pointer.type)->kind==tk_void))
+        reject("void-pointer arithmetic");
+    }
     unsigned id=node(unary?"unary":"binary",ty,e->position,0,0,op,"","value",order);
     edge(id,unary?"operand":"left",0,expression(a));if(!unary)edge(id,"right",0,expression(b));return id;
   }
@@ -495,14 +581,16 @@ struct Writer {
       functions.push_back("{\"entityId\":"+number(function)+",\"bodyNodeId\":"+number(root)+"}");
       context="file scope";
     }
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v6\",\"sourceFiles\":"+array(files)+
+    std::vector<string> types;
+    const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64"};
+    for(unsigned i=0;i<9;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null}");
+    types.insert(types.end(),execution_types.begin(),execution_types.end());
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v7\",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
       ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
-      ",\"types\":[{\"id\":1,\"kind\":\"void\"},{\"id\":2,\"kind\":\"i32\"},{\"id\":3,\"kind\":\"u8\"},"
-      "{\"id\":4,\"kind\":\"i8\"},{\"id\":5,\"kind\":\"i16\"},{\"id\":6,\"kind\":\"u16\"},"
-      "{\"id\":7,\"kind\":\"u32\"},{\"id\":8,\"kind\":\"i64\"},{\"id\":9,\"kind\":\"u64\"}],\"entities\":"+array(entities)+
+      ",\"types\":"+array(types)+",\"entities\":"+array(entities)+
       ",\"parameters\":"+array(parameters)+",\"functions\":"+array(functions)+",\"bindings\":"+array(bindings)+",\"nodes\":"+array(nodes)+",\"edges\":"+array(edges)+"}\n";
     if(fwrite(result.data(),1,result.size(),stdout)!=result.size() || fflush(stdout))reject("wire output failure");
   }

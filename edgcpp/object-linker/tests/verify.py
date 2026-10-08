@@ -26,18 +26,20 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     inputs = out / 'inputs'
     inputs.mkdir()
-    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'switches.cpp', 'integers.cpp', 'source_types.h', 'source_types.cpp', 'macros.h', 'macros.cpp']:
+    for name in ['fixture.h', 'provider.cpp', 'consumer.cpp', 'scopes.cpp', 'conversions.cpp', 'empty.cpp', 'loops.cpp', 'switches.cpp', 'integers.cpp', 'source_types.h', 'source_types.cpp', 'macros.h', 'macros.cpp', 'pointer_fixture.h', 'pointer_provider.cpp', 'pointers.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
     shutil.copy2(ROOT / 'tests/loops.cpp', inputs / 'loops-c.c')
     shutil.copy2(ROOT / 'tests/switches.cpp', inputs / 'switches-c.c')
     shutil.copy2(ROOT / 'tests/integers.cpp', inputs / 'integers-c.c')
     shutil.copy2(ROOT / 'tests/source_types.cpp', inputs / 'source-types-c.c')
     shutil.copy2(ROOT / 'tests/macros.cpp', inputs / 'macros-c.c')
+    shutil.copy2(ROOT / 'tests/pointers.cpp', inputs / 'pointers-c.c')
+    shutil.copy2(ROOT / 'tests/pointer_provider.cpp', inputs / 'pointer-provider-c.c')
     checks = []
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v6', nativeAotRequested=args.nativeaot,
+            profile='scalar-control-v7', nativeAotRequested=args.nativeaot,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, lifetime/EH or globals yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -116,6 +118,28 @@ def main():
             run('native-' + name + '-build', ['c++', '-std=c++17', inputs / (name + '.cpp'), '-o', out / ('native-' + name)])
             run('native-' + name + '-run', [out / ('native-' + name)])
             execute(name, link('link-' + name, [obj]))
+        pointer_objects = []
+        for language, standard, consumer_name, provider_name, extension, native in [
+            ('cpp', 'c++17', 'pointers', 'pointer_provider', '.cpp', 'c++'),
+            ('c', 'c11', 'pointers-c', 'pointer-provider-c', '.c', 'cc')]:
+            pointer_provider = compile_source(provider_name, inputs / (provider_name + extension), std=standard)
+            pointer_consumer = compile_source(consumer_name, inputs / (consumer_name + extension), std=standard)
+            run('native-pointers-' + language + '-build', [native, '-std=' + standard, inputs / (provider_name + extension), inputs / (consumer_name + extension), '-o', out / ('native-pointers-' + language)])
+            run('native-pointers-' + language + '-run', [out / ('native-pointers-' + language)])
+            execute('pointers-' + language, link('link-pointers-' + language, [pointer_provider, pointer_consumer]))
+            pointer_objects.append((pointer_provider, pointer_consumer))
+            with sqlite3.connect(pointer_consumer) as db:
+                check('typed-pointer-rows-' + language, db.execute("SELECT count(*) FROM types WHERE kind='pointer' AND pointee_type_id IS NOT NULL").fetchone()[0] >= 5)
+                check('pointer-source-provenance-' + language, db.execute("SELECT count(*) FROM source_types WHERE kind='pointer' AND underlying_type_id IS NOT NULL").fetchone()[0] >= 5)
+                check('pointer-places-' + language, db.execute("SELECT count(*) FROM nodes WHERE kind='dereference' AND value_category='place'").fetchone()[0] > 0)
+        pointer_provider, pointer_consumer = pointer_objects[0]
+        with sqlite3.connect(pointer_provider) as db:
+            provider_int_pointer = db.execute("SELECT t.id FROM types t JOIN types p ON p.id=t.pointee_type_id WHERE t.kind='pointer' AND p.kind='i32'").fetchone()[0]
+        with sqlite3.connect(pointer_consumer) as db:
+            consumer_int_pointer = db.execute("SELECT t.id FROM types t JOIN types p ON p.id=t.pointee_type_id WHERE t.kind='pointer' AND p.kind='i32'").fetchone()[0]
+        check('pointer-link-uses-structural-types', provider_int_pointer != consumer_int_pointer)
+        pointer_cs = '\n'.join(p.read_text() for p in (out / 'link-pointers-cpp').glob('*.cs'))
+        check('direct-pointer-source', 'unsafe' in pointer_cs and 'int*' in pointer_cs and '__edg_' not in pointer_cs)
         loops_object = out / 'loops.dotobj'
         loops_cs = '\n'.join(p.read_text() for p in (out / 'link-loops').glob('*.cs'))
         check('structured-loop-source', all(token in loops_cs for token in ['for (', 'do', 'while (', 'break;', 'continue;']) and 'goto ' not in loops_cs)
@@ -299,6 +323,42 @@ def main():
             "UPDATE source_functions SET capture_phase='after-lowering'", ())])
         run('source-capture-phase', ['dotnet', tool, 'verify', wrong_phase], None)
 
+        with sqlite3.connect(pointer_consumer) as db:
+            pointer_type = db.execute("SELECT min(id) FROM types WHERE kind='pointer'").fetchone()[0]
+            dereference_id = db.execute("SELECT min(id) FROM nodes WHERE kind='dereference'").fetchone()[0]
+            address_id = db.execute("SELECT min(id) FROM nodes WHERE kind='address'").fetchone()[0]
+        pointer_cycle = mutate('pointer-cycle', pointer_consumer, [(
+            "UPDATE types SET pointee_type_id=id WHERE id=?", (pointer_type,))])
+        run('pointer-type-cycle', ['dotnet', tool, 'verify', pointer_cycle], None)
+        duplicate_pointer = mutate('pointer-duplicate', pointer_consumer, [(
+            "INSERT INTO types SELECT 10000,kind,pointee_type_id FROM types WHERE id=?", (pointer_type,))])
+        run('duplicate-structural-pointer', ['dotnet', tool, 'verify', duplicate_pointer], None, 'Duplicate')
+        deep_pointer = mutate('pointer-depth', pointer_consumer, [(
+            "WITH RECURSIVE chain(n) AS (SELECT 1 UNION ALL SELECT n+1 FROM chain WHERE n<129) INSERT INTO types SELECT 10000+n,'pointer',CASE WHEN n=1 THEN (SELECT min(id) FROM types WHERE kind='pointer' AND id NOT IN (SELECT pointee_type_id FROM types WHERE kind='pointer')) ELSE 9999+n END FROM chain", ())])
+        run('pointer-depth-limit', ['dotnet', tool, 'verify', deep_pointer], None, 'nesting')
+        pointer_unknown = mutate('pointer-unknown', pointer_consumer, [(
+            "UPDATE types SET pointee_type_id=999999 WHERE id=?", (pointer_type,))])
+        run('unknown-pointer-pointee', ['dotnet', tool, 'verify', pointer_unknown], None)
+        wrong_load = mutate('pointer-load-type', pointer_consumer, [(
+            "UPDATE nodes SET type_id=9 WHERE id=?", (dereference_id,))])
+        run('dereference-type-mismatch', ['dotnet', tool, 'verify', wrong_load], None)
+        wrong_address = mutate('pointer-address-type', pointer_consumer, [(
+            "UPDATE nodes SET type_id=2 WHERE id=?", (address_id,))])
+        run('address-type-mismatch', ['dotnet', tool, 'verify', wrong_address], None)
+        invalid_address_operand = mutate('pointer-address-place', pointer_consumer, [(
+            "UPDATE nodes SET kind='constant',binding_id=NULL,constant_text='0',value_category='value' WHERE id=(SELECT child_id FROM edges WHERE parent_id=? AND role='operand')", (address_id,))])
+        run('address-requires-place', ['dotnet', tool, 'verify', invalid_address_operand], None)
+        invalid_null = mutate('pointer-nonzero-constant', pointer_consumer, [(
+            "UPDATE nodes SET constant_text='1' WHERE kind='constant' AND type_id IN (SELECT id FROM types WHERE kind='pointer')", ())])
+        run('nonzero-pointer-constant', ['dotnet', tool, 'verify', invalid_null], None)
+        invalid_source_pointer = mutate('pointer-source-shape', pointer_consumer, [(
+            "UPDATE source_types SET underlying_type_id=id WHERE kind='pointer' AND id=(SELECT min(id) FROM source_types WHERE kind='pointer')", ())])
+        run('source-pointer-cycle', ['dotnet', tool, 'verify', invalid_source_pointer], None)
+        mismatch_source = out / 'pointer-mismatch.cpp'
+        mismatch_source.write_text('extern "C" int pointer_read(unsigned int* value){return (int)*value;}\n')
+        mismatch_pointer_object = compile_source('pointer-signature-mismatch', mismatch_source)
+        link('pointer-signature-rejected', [pointer_consumer, mismatch_pointer_object], entry='main', expected=None, contains='Signature mismatch')
+
         macros_object = out / 'macros.dotobj'
         wrong_macro_event = mutate('macro-event-name', macros_object, [(
             "UPDATE macro_events SET name='DIFFERENT' WHERE id=(SELECT min(id) FROM macro_events WHERE kind='define')", ())])
@@ -321,7 +381,11 @@ def main():
             'push-macro': '#define VALUE 1\n#pragma push_macro("VALUE")\nint f(){return VALUE;}\n',
             'pop-macro': '#pragma pop_macro("VALUE")\nint f(){return 1;}\n',
             'global': 'int storage=1; int f(){return storage;}\n',
-            'pointer': 'int f(int* value){return *value;}\n',
+            'record-pointer': 'struct X { int value; }; int f(X* p){return p->value;}\n',
+            'function-pointer': 'int f(int (*call)(int)){return call(3);}\n',
+            'reference': 'int f(int& value){return value;}\n',
+            'volatile-pointer': 'int f(volatile int* value){return *value;}\n',
+            'ordered-pointer-store': 'int next(int** slot,int* value){*slot=value;return 7;} int f(){int a=1,b=2;int* p=&a; *p=next(&p,&b);return b;}\n',
             'volatile': 'int f(){volatile int value=1; return value;}\n',
             'inline': 'inline int f(){return 1;} int g(){return f();}\n',
             'noexcept': 'int f() noexcept {return 1;}\n',

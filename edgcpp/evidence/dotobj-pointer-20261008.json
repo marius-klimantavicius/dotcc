@@ -1,0 +1,174 @@
+{
+  "milestone": "Typed data pointers and memory places in owned semantic objects",
+  "date": "2026-10-08",
+  "profile": "scalar-control-v7",
+  "status": "passed-with-explicit-coverage-boundaries",
+  "acceptance": {
+    "checkCount": 287,
+    "results": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-pointer-acceptance-001/results.json",
+      "sha256": "336cf7a92691a4ef03bffc7b21b41ecae818f125baecd6be253ea4d4b08f767e"
+    },
+    "log": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-pointer-acceptance-001.log",
+      "sha256": "ca660618199e4be7b4b1680055d3fa4f13d71c436a2a0cc7c030b66ef0bffa6d"
+    },
+    "languages": [
+      "C++17",
+      "C11"
+    ],
+    "nativeReference": true,
+    "managedJit": true,
+    "nativeAot": true,
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39"
+  },
+  "compiler": {
+    "path": "/home/marius/p/dotcc/edgcpp/build/bin/cpfe-dot",
+    "sha256": "30820df5ed3c599fc7616950811883c1445a101ac5e326ac678288d676ee1b21"
+  },
+  "nativeBuildLog": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-pointer-native-build-001.log",
+    "sha256": "d522cfc5d2b9525922d7e29a5c2a8dc78695b026ba1e01c7ec98ee4b5b3e9b35"
+  },
+  "managedTool": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-pointer-acceptance-001/tool/bin/DotObj.Linker/release/dotobj-link.dll",
+    "sha256": "fe3a50a0fcc8cbb9e98a4d9cab568134e49ddb523c49d1b37741bb471900f4f6"
+  },
+  "generatedReview": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-pointer-acceptance-001/link-pointers-cpp/Translated.0000.pointer_provider_u002e_cpp.cs",
+      "sha256": "28d9983c55c427ef644754c14f4300ac825c5458fc0b5ca7bfd2699fa920766a"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-pointer-acceptance-001/link-pointers-cpp/Translated.0001.pointers_u002e_cpp.cs",
+      "sha256": "5d961fd725b908f7a6c7392d00f245e9f3a334c88f4a6d558ed92b79c597a860"
+    }
+  ],
+  "objects": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-pointer-acceptance-001/pointer_provider.dotobj",
+      "sha256": "bdc09e4b59f03583e669351c5381f0e225e36d8f1d4ac089e529a88849b00a7a"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-pointer-acceptance-001/pointers.dotobj",
+      "sha256": "255e89ea3b5341e94860f65a308e386cbe432faf7b3368000686627a2b915b85"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-pointer-acceptance-001/pointer-provider-c.dotobj",
+      "sha256": "3500a533725d75318a86e8e734813972fcd344f3644bdd22b97634007d8e545b"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-pointer-acceptance-001/pointers-c.dotobj",
+      "sha256": "f9ea66efeac0211e2fd5300bfca60d2a6cd8f2549ffff7c65a8d305be6258007"
+    }
+  ],
+  "coverage": [
+    "Structural pointer identity across independently compiled units with different pointer IDs",
+    "Address, typed dereference, aliasing, stores and integer/pointer mutation",
+    "Element-count arithmetic, indexing and pointer-to-pointer scaling",
+    "Null and nullptr, conditional selection and short-circuit truth, opaque/integer casts",
+    "Byte and lowered bool pointer storage, const/typedef source provenance",
+    "Malformed pointer cycles, duplicate structural types, excessive cached-chain nesting, signatures and memory-place type contracts",
+    "All prior scalar/control/source/macro/independent-unit tests"
+  ],
+  "review": {
+    "independentReview": "No remaining blocking findings; suggested qualifier/null/index/graph coverage incorporated",
+    "issuesResolved": [
+      "Synthetic indexed dereference evaluation-order metadata acceptance",
+      "Pointer nesting bound validated even when pointee chains are already cached"
+    ]
+  },
+  "targetContract": "LP64 with 64-bit pointers; generated owner initializer rejects a non-64-bit runtime when pointer types are present",
+  "limitations": [
+    "Arrays/records, function pointers, C++ references, globals/TLS, EH/RAII and template/COMDAT remain unsupported in this profile",
+    "Effectful RHS-before-LHS indirect assignments rejected pending sequencing lowering",
+    "Nonzero folded pointer constants rejected",
+    "Full original expression tree, macro expansion history and lifetimes not captured",
+    "Linux x64 executed; Windows/macOS and 32-bit rejection not executed",
+    "DuckDB whole-program work remains paused"
+  ],
+  "frontendSemanticsModified": false,
+  "intermediatesPreserved": true,
+  "implementation": [
+    {
+      "path": "edgcpp/backend/dot_gen_object.h",
+      "sha256": "4f012a20564a8ae21280311dd143899e99f021ec8331187b155aba85f5095502"
+    },
+    {
+      "path": "edgcpp/backend/dot_gen_object_source.h",
+      "sha256": "b98dbbe88a68b8881c9399b946a794a70de6fd286aafc4aa19285d9197fee204"
+    },
+    {
+      "path": "edgcpp/docs/dot-gen-be-plan.md",
+      "sha256": "3501ee63185cfffb57ae6473a8783a43998f74f0f008faa5d8489aa544fd73ae"
+    },
+    {
+      "path": "edgcpp/docs/dotobj-format.md",
+      "sha256": "d0bbd99660fa6ba20417fbcebcabfeb0474cd2271d1acc2478fc4075587bfe71"
+    },
+    {
+      "path": "edgcpp/docs/implementation-campaign.md",
+      "sha256": "e7743c78257a7fe31dcce458d40342e230e1d5f2ed77e4e2d9f2a44f4eab70e7"
+    },
+    {
+      "path": "edgcpp/object-linker/README.md",
+      "sha256": "d182b3f7501db4248a1317b156108ce0b1106799591e7aa0edce8eecd03d9fbb"
+    },
+    {
+      "path": "edgcpp/object-linker/compile.py",
+      "sha256": "36bddb834577da43c72916ec86f579d216075c2b9d23e7169292247c9fa42156"
+    },
+    {
+      "path": "edgcpp/object-linker/contract.md",
+      "sha256": "f70e2f1963709358992b93dae81b4def253f3b13e6a1fea7587fe9bd23c1920b"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/Emitter.cs",
+      "sha256": "9fce1938d2f14796677e125ce3cd2b2abae795316e599d7fe734a2b801a3daee"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/ObjectFile.cs",
+      "sha256": "f276a2137cbbac7a5fb2dbc7839b0251f0206e02e3c35c798678712ede5db456"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/Program.cs",
+      "sha256": "227f3b39e832956ab03e361b6edca0b10b545107b3372bca695f2933d38a7adc"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/README.md",
+      "sha256": "a347b7ff4f6447b8b1415c53a2543fdaf8d571a770c85f8fbb56497cfa422ff3"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/ScalarTypes.cs",
+      "sha256": "89fb7b226fe985eeaa3a89a704ab2af5f325009893107d0fb3d4100a88fb1392"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/SourceProvenance.cs",
+      "sha256": "86e6c9a5d400b3dca01d82cee734603ba0443179ac3e23fbc201a213ef41671f"
+    },
+    {
+      "path": "edgcpp/object-linker/managed/Verifier.cs",
+      "sha256": "9e3f74d7f1c4e40cf0b16e261378fbb0dcf4b35c6b6108cb58d19576673b8e73"
+    },
+    {
+      "path": "edgcpp/object-linker/schema.sql",
+      "sha256": "0100299ceb50a0847c581cb47e800c04ddc98721bf6c1e4e8d5d369bfee4a907"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/verify.py",
+      "sha256": "e47abeec1e7c985cd4c430d4541b8d55a425d8a150fb72ec150fa33d1b308dd1"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/pointer_fixture.h",
+      "sha256": "9303ca95426e639b19493e68ad983a0e9cf199e39dee11e89788e58cedc81901"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/pointer_provider.cpp",
+      "sha256": "64ecf5348e33925ae85aae76b515021fd703925c228ddd837f1ea55770d45881"
+    },
+    {
+      "path": "edgcpp/object-linker/tests/pointers.cpp",
+      "sha256": "668273dcb2c591426e8f04f8f18cba2dd30c2e476cb0c21c8c87ee97c8fa905d"
+    }
+  ]
+}

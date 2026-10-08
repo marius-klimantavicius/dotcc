@@ -46,8 +46,9 @@ verification.
 
 ## Current acceptance and boundaries
 
-`scalar-control-v6` supports defined/declaration function identities with strong
+`scalar-control-v7` supports defined/declaration function identities with strong
 external or TU-private linkage, signed/unsigned 8/16/32/64-bit integer operations,
+typed data pointers (including void pointers and pointer-to-pointer),
 parameters and block locals, direct calls, conversions, initialization,
 short-circuit and conditional expressions, bitwise operators and shifts,
 assignments, pre/post increment/decrement, return,
@@ -65,6 +66,20 @@ Integer constants retain exact decimal text, including the full unsigned
 uses the selected widths and unsigned wraparound. Conditional expressions
 evaluate only the selected branch. Source bool can have its
 lowered byte representation in emitted signatures.
+
+Pointer types use explicit pointee IDs in each object and structural signatures
+across translation units. Address-taking, dereferencing, indexing, null values,
+pointer/integer casts, comparisons, arithmetic and increment/decrement emit
+ordinary unsafe C#. Pointer arithmetic counts elements, including pointer-to-
+pointer elements; pointer difference uses the target's 64-bit signed result.
+Original pointer/typedef/const chains remain in source provenance. The generated
+owner checks that the runtime has 64-bit pointers when pointer types are used.
+
+C++ right-before-left indirect assignment currently requires both the target
+address expression and the assigned value to be free of calls and mutations;
+other cases fail explicitly pending expression sequencing support. Address and
+load/store nodes retain their distinct type and place contracts. Object lifetime
+and bounds rules remain the source program's responsibility.
 
 The profile records `sourceDeclarations=true`: read-only hooks before EDG's
 incremental/type lowering snapshot original scalar types, typedef chains,
@@ -92,8 +107,10 @@ PCH/module macro imports and non-UTF8/NUL metadata are explicitly rejected.
 Source/header bytes remain retained separately. This is still a partial source
 and execution graph, not the complete design.
 
-Globals/TLS, pointers/records, volatile/atomic behavior, inline/template/COMDAT,
+Globals/TLS, arrays/records, C++ references, function pointers, volatile/atomic
+behavior, inline/template/COMDAT,
 RAII/EH/noexcept, arbitrary goto and provider runtime linkage are rejected.
+Nonzero folded pointer constants are also outside this profile.
 The switch slice rejects nonblock bodies, nested case labels (including Duff’s
 device), GNU case ranges and executable statements before the first label. These are
 unfinished implementation work, not implicit fallbacks to raw code. No complete
@@ -112,7 +129,7 @@ python3 -B edgcpp/object-linker/tests/verify.py \
   --output-dir /path/fresh/dotobj-acceptance --nativeaot
 ```
 
-The 242-check acceptance run covers actual independent EDG compilation, native
+The 287-check acceptance run covers actual independent EDG compilation, native
 reference execution, managed JIT/NativeAOT, private name isolation, scope
 shadowing, loop-local reinitialization, short-circuit effects, bool/byte
 conversions, namespace collisions and implicit main return. Loop fixtures cover
@@ -122,6 +139,11 @@ wraparound with prefix/postfix values. Switch fixtures cover grouped/trailing
 labels, fallthrough to case/default, nested switches and loops, break versus
 continue, scoped locals, empty switches and selector side effects, and signed/
 unsigned 64-bit cases. Invalid duplicate labels and transfer targets are rejected.
+Pointer fixtures link two independently compiled units whose pointer type IDs
+differ, with native/JIT/AOT execution in C11 and C++17. They cover aliasing,
+indirect stores/mutation, pointer-to-pointer arithmetic, source qualifiers,
+null/casts/truth tests, 64-bit values and byte/bool storage. Malformed pointer
+types, source mappings, operands and signatures are rejected.
 Integer fixtures verify width boundaries,
 signed extension, narrowing, unsigned arithmetic/negation, bitwise/shift behavior
 and conditional branch side effects. Cross-unit tests distinguish long and
@@ -147,9 +169,9 @@ digest, snapshots, references, scope/type/operation contracts and required
 indexes. A hash demonstrates content integrity, not semantic correctness.
 
 Full logs/objects/generated projects remain under
-`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-switch-acceptance-001/`.
+`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-pointer-acceptance-001/`.
 
-The current schema requires `scalar-control-v6`. Earlier v1/v2/v3/v4/v5 objects and tools
+The current schema requires `scalar-control-v7`. Earlier v1/v2/v3/v4/v5/v6 objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 

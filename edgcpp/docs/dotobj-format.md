@@ -16,6 +16,8 @@ adds original declaration/type snapshots at pre-lowering hooks and a source map,
 with `sourceDeclarations=true`. V5 adds effective macro definition/undefinition provenance and a macro map.
 V6 adds structured switches, case labels and explicit switch/loop transfer targets,
 including C fallthrough represented by local C# `goto case`/`goto default` transfers.
+V7 adds structural data-pointer types and typed address/dereference places,
+with pointer arithmetic, cross-unit pointer signatures and ordinary unsafe C# output.
 Full source-tree/macro-expansion
 and lifetime capture, broad C++ coverage and the full graph design below remain
 unfinished; the initial profile explicitly records those missing capabilities.

@@ -25,6 +25,12 @@ internal sealed partial class ObjectFile
                     if (type.UnderlyingTypeId is null || (type.Kind == "typedef" ? type.SourceName.Length == 0 : type.SourceName.Length != 0 || !type.IsConst && !type.IsVolatile))
                         throw new InvalidDataException("Invalid source typedef or qualified type");
                 }
+                else if (type.Kind == "pointer")
+                {
+                    if (type.UnderlyingTypeId is null || !ScalarTypes.IsPointer(executionType) ||
+                        type.SourceName.Length != 0 || type.IsConst || type.IsVolatile)
+                        throw new InvalidDataException("Invalid source pointer type");
+                }
                 else
                 {
                     string expected = type.Kind switch
@@ -53,7 +59,12 @@ internal sealed partial class ObjectFile
                 if (!chain.Add(current.Id)) throw new InvalidDataException("Cycle in source type references");
                 if (current.UnderlyingTypeId is not long underlying) break;
                 if (!SourceTypes.TryGetValue(underlying, out SourceType? target)) throw new InvalidDataException("Unknown underlying source type");
-                if (current.ExecutionTypeId != target.ExecutionTypeId)
+                if (current.Kind == "pointer")
+                {
+                    if (ScalarTypes.Pointee(Type(current.ExecutionTypeId)) != Type(target.ExecutionTypeId))
+                        throw new InvalidDataException("Source pointer pointee disagrees with execution representation");
+                }
+                else if (current.ExecutionTypeId != target.ExecutionTypeId)
                     throw new InvalidDataException("Source typedef/qualification changes the execution representation");
                 current = target;
             }
@@ -174,6 +185,7 @@ internal sealed partial class ObjectFile
             writer.WriteEndArray();
         }
         Table("sourceFiles", "SELECT id,path,parent_id FROM source_files ORDER BY id", "id", "path", "parentId");
+        Table("executionTypes", "SELECT id,kind,pointee_type_id FROM types ORDER BY id", "id", "kind", "pointeeTypeId");
         Table("sourceTypes", "SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column FROM source_types ORDER BY id",
             "id", "kind", "sourceName", "underlyingTypeId", "executionTypeId", "isConst", "isVolatile", "sourceFileId", "line", "column");
         Table("sourceFunctions", "SELECT entity_id,return_source_type_id,capture_phase FROM source_functions ORDER BY entity_id", "entityId", "returnSourceTypeId", "capturePhase");

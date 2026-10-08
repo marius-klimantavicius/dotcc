@@ -8,12 +8,12 @@ Native stdout wire is one JSON object (transient packaging protocol only):
 ```
 {
   "formatVersion": 1,
-  "profile": "scalar-control-v6",
+  "profile": "scalar-control-v7",
   "sourceFiles": [{"id":1,"path":"/absolute/main.cpp","parentId":null}],
   "macroDefinitions": [{"id":1,"name":"LIMIT","form":"object","variadic":false,"dynamic":false,"definitionText":"#define LIMIT 4","origin":"source","sourceFileId":1,"line":1,"column":9}],
   "macroParameters": [],
   "macroEvents": [{"id":1,"kind":"define","name":"LIMIT","definitionId":1,"origin":"source","sourceFileId":1,"line":1,"column":9}],
-  "types": [{"id":1,"kind":"void"},{"id":2,"kind":"i32"},{"id":3,"kind":"bool"},{"id":4,"kind":"u8"}],
+  "types": [{"id":1,"kind":"void","pointeeTypeId":null},{"id":2,"kind":"i32","pointeeTypeId":null},{"id":3,"kind":"u8","pointeeTypeId":null},{"id":10,"kind":"pointer","pointeeTypeId":2}],
   "sourceTypes": [{"id":1,"kind":"int","sourceName":"","underlyingTypeId":null,"executionTypeId":2,"isConst":false,"isVolatile":false,"sourceFileId":null,"line":0,"column":0}],
   "sourceFunctions": [{"entityId":1,"returnSourceTypeId":1,"capturePhase":"before-lowering"}],
   "sourceParameters": [{"entityId":1,"ordinal":0,"sourceTypeId":1}],
@@ -32,7 +32,7 @@ Native stdout wire is one JSON object (transient packaging protocol only):
 All fields shown on each record are required (nullable values explicitly null).
 IDs positive signed int64; ordinals/line/column nonnegative. Entity definition is
 `strong` or `declaration`; linkage external (nonempty exact externalKey) or
-internal (externalKey=null). Unique local entity/binding/node IDs, no pointers.
+internal (externalKey=null). Unique local entity/binding/node IDs; no serialized EDG memory addresses.
 sourceFiles contains include occurrences; parentId nullable root; sourceFileId
 nullable only for synthetic/unknown origins. Constants are exact decimal text.
 Function bindings exist only for defined functions, parameters describe all
@@ -74,12 +74,19 @@ Supported node kinds and ordered edge roles:
   `goto default` only where needed for C fallthrough, and a final `break` when
   the last section can complete normally.
 - `constant`: integer or bool type + canonical exact decimal constantText.
+  A pointer constant must have text `0`, representing a typed null pointer.
   Integer types i8/u8/i16/u16/i32/u32/i64/u64 have their corresponding signed
   or unsigned width ranges; bool permits only 0/1. No leading plus, leading
   zeroes (except zero itself), whitespace or negative zero. Unsigned 64-bit
   values remain text, including values beyond SQLite's signed INTEGER range.
 - `binding`: bindingId and matching type. Denotes scalar place; consuming
   expression operations read its current value; assignment and mutation write it.
+- `address`: operand[0] is a binding or dereference place; the result is a
+  pointer whose pointee is exactly the operand type. Evaluates the address of
+  the place without reading its stored value. `&*p` retains pointer identity.
+- `dereference`: operand[0] is a pointer to a nonvoid type; the result type is
+  exactly that pointee, and valueCategory is place. Reading or writing requires
+  a valid source pointer; no additional bounds/lifetime guarantee is invented.
 - `call`: entityId + argument[0..n), type matches target return.
 - `binary`: operator add/sub/mul/div/rem/eq/ne/lt/le/gt/ge/and/or/bit-and/
   bit-or/bit-xor/shl/shr; left[0],right[0]. Arithmetic and bitwise operations
@@ -96,13 +103,27 @@ Supported node kinds and ordered edge roles:
   arm; its place identity does not escape this value-only profile. Void arms,
   GNU omitted-middle conditionals, and conditional places used as assignment
   or mutation targets are not supported.
-- `assign`: target[0] (binding node), value[0], result type target type.
+- `assign`: target[0] (binding or dereference place), value[0], result type
+  target type. For right-to-left indirect assignments both operands must be
+  recursively effect-free: no call, assignment or mutation. This bounded profile
+  rejects effectful cases until an explicit sequencing representation is added.
 - `mutate`: operator pre-inc/post-inc/pre-dec/post-dec, operand[0] (integer
-  binding), result type equals operand type. Prefix returns the new value;
+  or nonvoid pointer place), result type equals operand type. Prefix returns the new value;
   postfix returns the previous value. Unsigned mutation wraps at its width.
   Source bool mutation is rejected by the producer before physical u8 lowering
   loses its distinction; graph bool mutation is rejected by the verifier.
-- `convert`: operand[0], destination integer/bool type; explicit width/sign conversion or nonzero truth conversion.
+- `convert`: operand[0], destination integer/bool/pointer type; explicit
+  width/sign conversion, nonzero truth conversion, pointer-to-pointer cast,
+  or integer/pointer conversion. A graph bool-to-pointer conversion requires
+  an intermediate integer conversion. Source target pointer width is 64 bits.
+- Pointer binary operators are `pointer-add`, `pointer-subtract` and
+  `pointer-difference`. Addition has one nonvoid pointer and one promoted integer
+  operand, preserving their original left/right order; subtraction has a pointer
+  on the left and promoted integer on the right. Their result is that pointer
+  type. Difference has matching nonvoid pointer operands and i64 result.
+  Displacements count elements, not bytes; difference divides by pointee size.
+  Source object bounds and related-pointer rules still apply. Pointer comparison
+  operands have matching execution types after EDG's explicit conversions.
 
 Statements have typeId=null; expression nodes must name a type. Only `call`
 may have void type and only in expression statements, for initializer/step,
@@ -114,7 +135,7 @@ Loop condition/body/step roles encode execution and sequencing; database edge
 ordering is not itself an execution schedule. Initializer executes once, a for
 condition precedes each body iteration, and step follows each completed body.
 The structured scope profile excludes arbitrary jumps,
-references, globals/TLS, records, pointers, EH/RAII, inline/COMDAT and runtime
+references, globals/TLS, records, arrays, function pointers, EH/RAII, inline/COMDAT and runtime
 providers. Unsupported constructs fail export rather than emit partial output.
 
 Packager stores typed rows using schema.sql, including producer compiler/config,
@@ -130,8 +151,8 @@ The initial target is portable-lp64-binary80-v2; callable ABI dotobj-scalar-v1.
 The scalar-control-v3 object profile adds 8/16/32/64-bit signed/unsigned
 integers, bitwise/shift expressions and conditional values to v2's structured
 loops and explicit loop exit identities. It does not change the callable ABI.
-The current canonical schema reader requires scalar-control-v6 and rejects
-v1/v2/v3/v4/v5 objects; preserve their respective earlier tool build to read them,
+The current canonical schema reader requires scalar-control-v7 and rejects
+v1/v2/v3/v4/v5/v6 objects; preserve their respective earlier tool build to read them,
 or recompile with this producer.
 The profile uses EDG's fixed portable LP64 target: long and long long share the
 64-bit physical representation, while exact external keys retain C++ overload
@@ -240,16 +261,17 @@ profile. The `macros` capability remains false; the new narrower
 inspection metadata, separately from `source-map.json`, and does not add macro
 wrappers, constants, initialization code, or runtime dependencies to generated C#.
 
-Expression valueCategory is place for binding and value otherwise; statements
+Expression valueCategory is place for binding/dereference and value otherwise; statements
 use null. evaluationOrder is null for statements, none for constant/binding,
-and left-to-right/right-to-left/unspecified for operations. Unspecified permits
-the emitter to choose left-to-right; do not change a specified order. The
-initial assignment destination is a plain binding, so RHS-before-write honors
-right-to-left. Unsupported ordered expressions fail explicitly. u8 represents
+and left-to-right/right-to-left/unspecified for operations. Single-operand address
+and dereference nodes also permit none; their sole operand is evaluated once. Unspecified permits
+the emitter to choose left-to-right; do not change a specified order. A
+plain binding assignment needs only RHS-before-write; effectful indirect
+right-to-left assignments are rejected by this profile. Unsupported ordered expressions fail explicitly. u8 represents
 EDG's lowered unsigned-byte bool and requires numeric 0/1 comparison results
 unless expression result type is bool. Explicit conversions encode truth and
-width behavior. Parameters/locals/signatures may use any supported integer or
-bool type, never void. C# integer literals preserve signedness and width;
+width behavior. Parameters/locals may use any supported integer, bool or pointer type, never
+void. Function returns may also be void. C# integer literals preserve signedness and width;
 unsigned arithmetic and negation wrap with explicit unchecked expressions,
 including compile-time constant expressions. C# shift counts explicitly convert
 to int where needed. Only source-defined shifts are promised: negative or
@@ -290,3 +312,33 @@ capabilities. A switch block's declarations are emitted in a surrounding C#
 block to preserve scope across sections. Their default initialization only
 satisfies C# definite assignment; it does not define source indeterminate reads.
 The normal executable occurrence/ownership rules also apply to case constants.
+
+
+The scalar-control-v7 profile adds **typed data pointers and places**. Every
+execution `types` row has nullable `pointeeTypeId`; a `pointer` row requires a
+valid child execution type, and primitive rows require null. Execution types
+are canonical structural identities within an object; duplicates, cycles and
+nesting beyond 128 are rejected. Across objects the linker compares recursively
+resolved type shapes rather than object-local numeric type IDs. Primitive IDs
+1 through 9 retain the producer's prior meanings; pointer IDs begin at 10.
+`void*`, scalar pointers and nested pointers are accepted. Pointer-to-array,
+record, function and reference types remain outside this profile.
+
+Source `pointer` types have an underlying source type (including aliases and
+qualifiers), an empty sourceName and no direct qualifier bits; pointer-level
+qualifiers use a `qualified` wrapper. Its execution representation must point
+to the underlying source type's execution representation. Source pointer/alias
+chains are acyclic. `source-map.json` now also includes execution type rows so
+pointer relationships can be inspected without inferring local IDs.
+
+Generated C# uses an unsafe partial class and ordinary typed pointer declarations,
+address/dereference operators, assignment and increment/decrement. No generated
+heap allocation or pinning is needed for addresses of these unmanaged stack
+locals. This does not add allocation, globals, lifetime tracking or bounds
+checks. Unsupported sequencing is rejected instead of silently changing the
+source's specified evaluation order.
+
+When any input object uses pointer types, the first generated partial class
+contains one owner static constructor checking `IntPtr.Size == 8`. An incompatible
+32-bit process fails explicitly before translated functions execute. This
+enforces the fixed target ABI while allowing any supported 64-bit OS/runtime.

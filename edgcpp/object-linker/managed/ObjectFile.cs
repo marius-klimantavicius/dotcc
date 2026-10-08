@@ -57,7 +57,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v6" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v7" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -143,13 +143,37 @@ internal sealed partial class ObjectFile : IDisposable
 
     private void ReadSummaries()
     {
-        using (var query = database.Prepare("SELECT id,kind FROM types ORDER BY id"))
+        var rawTypes = new Dictionary<long, (string Kind, long? Pointee)>();
+        using (var query = database.Prepare("SELECT id,kind,pointee_type_id FROM types ORDER BY id"))
             while (query.Read())
             {
-                string type = query.Text(1);
-                if (query.Integer(0) <= 0 || (type is not ("void" or "bool") && !ScalarTypes.IsInteger(type))) throw new InvalidDataException("Unsupported scalar type");
-                Types.Add(query.Integer(0), type);
+                long id = query.Integer(0);
+                string kind = query.Text(1);
+                long? pointee = query.OptionalInteger(2);
+                if (id <= 0 || (kind is not ("void" or "bool" or "pointer") && !ScalarTypes.IsInteger(kind)) ||
+                    (kind == "pointer") != (pointee is not null))
+                    throw new InvalidDataException("Unsupported execution type or pointer shape");
+                rawTypes.Add(id, (kind, pointee));
             }
+        var active = new HashSet<long>();
+        var typeDepths = new Dictionary<long, int>();
+        var canonical = new HashSet<string>(StringComparer.Ordinal);
+        string ResolveType(long id, int depth)
+        {
+            if (Types.TryGetValue(id, out string? resolved)) return resolved;
+            if (depth > 128) throw new InvalidDataException("Pointer type nesting exceeds supported limit");
+            if (!rawTypes.TryGetValue(id, out var raw)) throw new InvalidDataException("Unknown pointer pointee type");
+            if (!active.Add(id)) throw new InvalidDataException("Cycle in execution pointer types");
+            string key = raw.Kind == "pointer" ? "ptr(" + ResolveType(raw.Pointee!.Value, depth + 1) + ")" : raw.Kind;
+            int nesting = raw.Pointee is long child ? typeDepths[child] + 1 : 0;
+            if (nesting > 128) throw new InvalidDataException("Pointer type nesting exceeds supported limit");
+            typeDepths.Add(id, nesting);
+            active.Remove(id);
+            if (!canonical.Add(key)) throw new InvalidDataException("Duplicate canonical execution type");
+            Types.Add(id, key);
+            return key;
+        }
+        foreach (long id in rawTypes.Keys) ResolveType(id, 0);
         using (var query = database.Prepare("SELECT id,source_name,linkage,external_key,definition,return_type_id,source_file_id,line,column FROM entities ORDER BY id"))
             while (query.Read())
             {

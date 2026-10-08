@@ -3,7 +3,7 @@ namespace DotObj;
 internal static class Verifier
 {
     private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "if", "while", "for", "do-while", "switch", "case", "break", "continue"];
-    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional"];
+    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -56,6 +56,20 @@ internal static class Verifier
         {
             if (!StatementKinds.Contains(node.Kind)) Fail($"Expected statement, found {node.Kind}");
         }
+        bool Pure(Node node)
+        {
+            var pending = new Stack<(Node Node, int Depth)>();
+            var seen = new HashSet<long>();
+            pending.Push((node, 0));
+            while (pending.TryPop(out var item))
+            {
+                if (item.Depth > 1024 || !seen.Add(item.Node.Id) || item.Node.Kind is "call" or "assign" or "mutate") return false;
+                foreach (Edge edge in body.Edges.GetValueOrDefault(item.Node.Id, []))
+                    pending.Push((body.Nodes[edge.ChildId], item.Depth + 1));
+            }
+            return true;
+        }
+        bool Place(Node node) => node.Kind is "binding" or "dereference";
         void Visit(Node node, List<long> scopes, HashSet<long> visible, List<long> controls, int depth)
         {
             if (depth > 1024) Fail("Graph nesting exceeds supported limit");
@@ -69,9 +83,10 @@ internal static class Verifier
             {
                 string type = Type(node);
                 if (type == "void" && node.Kind != "call") Fail("Only calls can have void type");
-                if (node.ValueCategory != (node.Kind == "binding" ? "place" : "value")) Fail("Incorrect value category");
+                if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
                 string[] orders = node.Kind is "constant" or "binding" ? ["none"] : ["left-to-right", "unspecified"];
                 if (node.Kind == "assign") orders = ["left-to-right", "right-to-left", "unspecified"];
+                if (node.Kind is "address" or "dereference") orders = ["none", "left-to-right", "unspecified"];
                 if (!orders.Contains(node.EvaluationOrder)) Fail($"Unsupported evaluation order at {node.Id}");
             }
             if ((node.EntityId != null) != (node.Kind == "call") ||
@@ -189,6 +204,17 @@ internal static class Verifier
                     if (!body.Bindings.TryGetValue(node.BindingId!.Value, out Binding? binding) || !scopes.Contains(binding.ScopeNodeId) || !visible.Contains(binding.Id)) Fail("Binding used outside scope or before declaration");
                     if (obj.Type(binding!.TypeId) != Type(node)) Fail("Binding reference type mismatch");
                     break;
+                case "address":
+                    EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
+                    if (!Place(Child(node, "operand")) || Type(node) != "ptr(" + Type(Child(node, "operand")) + ")")
+                        Fail("Address requires a typed place and matching pointer result");
+                    break;
+                case "dereference":
+                    EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
+                    if (!ScalarTypes.IsPointer(Type(Child(node, "operand"))) || Type(node) == "void" ||
+                        Type(Child(node, "operand")) != "ptr(" + Type(node) + ")")
+                        Fail("Dereference requires a nonvoid typed pointer and matching place result");
+                    break;
                 case "call":
                     EdgeShape(node, ("argument", 0, int.MaxValue));
                     if (!obj.Entities.TryGetValue(node.EntityId!.Value, out Entity? target)) Fail("Unknown call target");
@@ -200,7 +226,21 @@ internal static class Verifier
                 case "binary":
                     EdgeShape(node, ("left", 1, 1), ("right", 1, 1)); Expr(node, "left"); Expr(node, "right");
                     string operation = node.Operator!;
-                    if (operation is "add" or "sub" or "mul" or "div" or "rem" or "bit-and" or "bit-or" or "bit-xor")
+                    if (operation is "pointer-add" or "pointer-subtract")
+                    {
+                        bool pointerFirst = Type(Child(node, "left")) == Type(node) && ScalarTypes.IsPromotedInteger(Type(Child(node, "right")));
+                        bool pointerLast = operation == "pointer-add" && Type(Child(node, "right")) == Type(node) && ScalarTypes.IsPromotedInteger(Type(Child(node, "left")));
+                        if (!ScalarTypes.IsPointer(Type(node)) || ScalarTypes.Pointee(Type(node)) == "void" || !(pointerFirst || pointerLast))
+                            Fail("Pointer arithmetic requires a nonvoid pointer and promoted integer displacement");
+                    }
+                    else if (operation == "pointer-difference")
+                    {
+                        if (Type(node) != "i64" || !ScalarTypes.IsPointer(Type(Child(node, "left"))) ||
+                            ScalarTypes.Pointee(Type(Child(node, "left"))) == "void")
+                            Fail("Pointer difference requires matching nonvoid pointers and i64 result");
+                        SameType(Child(node, "left"), Child(node, "right"));
+                    }
+                    else if (operation is "add" or "sub" or "mul" or "div" or "rem" or "bit-and" or "bit-or" or "bit-xor")
                     {
                         if (!ScalarTypes.IsPromotedInteger(Type(node))) Fail("Arithmetic requires promoted integer operands and result");
                         SameType(node, Child(node, "left")); SameType(node, Child(node, "right"));
@@ -243,16 +283,24 @@ internal static class Verifier
                     break;
                 case "assign":
                     EdgeShape(node, ("target", 1, 1), ("value", 1, 1)); Expr(node, "target"); Expr(node, "value");
-                    if (Child(node, "target").Kind != "binding") Fail("Initial profile assignment target must be a binding");
+                    if (!Place(Child(node, "target"))) Fail("Assignment target must be a typed place");
+                    if (node.EvaluationOrder == "right-to-left" && Child(node, "target").Kind != "binding" &&
+                        (!Pure(Child(node, "target")) || !Pure(Child(node, "value"))))
+                        Fail("Indirect RHS-before-LHS assignment requires effect-free operands in this profile");
                     SameType(node, Child(node, "target")); SameType(node, Child(node, "value")); break;
                 case "mutate":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
                     if (node.Operator is not ("pre-inc" or "post-inc" or "pre-dec" or "post-dec") ||
-                        Child(node, "operand").Kind != "binding" || !ScalarTypes.IsInteger(Type(node)))
-                        Fail("Increment/decrement requires a supported operator and an integer binding");
+                        !Place(Child(node, "operand")) ||
+                        !(ScalarTypes.IsInteger(Type(node)) || ScalarTypes.IsPointer(Type(node)) && ScalarTypes.Pointee(Type(node)) != "void"))
+                        Fail("Increment/decrement requires an integer or nonvoid pointer place");
                     SameType(node, Child(node, "operand"));
                     break;
-                case "convert": EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand"); break;
+                case "convert":
+                    EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
+                    if (ScalarTypes.IsPointer(Type(node)) && Type(Child(node, "operand")) == "bool")
+                        Fail("Boolean-to-pointer conversion requires an explicit integer conversion");
+                    break;
             }
             var nestedControls = node.Kind is "while" or "for" or "do-while" or "switch" ? new List<long>(controls) { node.Id } : controls;
             foreach (Edge edge in body.Edges.GetValueOrDefault(node.Id, []).OrderBy(e => e.Ordinal))

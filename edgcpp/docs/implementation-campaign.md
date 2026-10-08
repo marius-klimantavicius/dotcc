@@ -2388,3 +2388,39 @@ pointers, full prelower source trees and C++ lifetimes remain unfinished.
 Current readers require v6 objects; runtime ABI and capability flags are
 unchanged. All prior tools/objects and current intermediates remain preserved;
 DuckDB's whole-program retry remains paused.
+
+
+The `scalar-control-v7` milestone adds typed data pointers and memory places.
+Execution types now carry nullable pointee IDs, with structural interning in
+native capture and canonical structural signature comparison across objects.
+Pre-lowering pointer/typedef/qualifier snapshots link to those execution types.
+The managed source map also includes execution type relationships. Pointer
+parameters, locals and returns support address-taking, dereference, indirect
+assignment/mutation, null values (including C++ nullptr), casts, comparisons,
+truth tests and element-count arithmetic. Indexing normalizes to a typed
+pointer-add plus dereference; generated code uses ordinary unsafe C#.
+
+The stock C backend confirms element-count arithmetic and pointer difference.
+No frontend semantics were modified. C++ right-before-left indirect assignment
+is explicitly rejected when either operand has effects; general sequencing
+requires a future lowering pass. Pointer-bearing output emits a single owner
+initializer that rejects a non-64-bit runtime, matching the captured target ABI.
+
+All 287 checks pass on Linux x64, including C11/C++17 native references, managed
+JIT and NativeAOT. The two pointer translation units deliberately assign
+int-pointer different local type IDs and still link by structural signature.
+Coverage includes top-level const versus pointer-to-const source provenance,
+null/opaque/integer round trips, aliasing, pointer-to-pointer arithmetic,
+index writes/mutations/addressing and bool/byte storage. Malformed type cycles,
+duplicate structural types, inner-first excessive type depth, unknown pointees,
+address/load type mismatches, nonplace address operands and incompatible
+cross-unit pointer signatures are rejected. [Hashed pointer milestone
+record](../evidence/dotobj-pointer-20261008.json).
+
+Independent review found an evaluation-order metadata integration mismatch and
+a cached-type depth-limit bypass; both were fixed before acceptance. Arrays,
+records, function pointers, C++ references, globals/TLS, full original source
+expression trees and lifetimes remain unfinished in the new object pipeline.
+Nonzero folded pointer constants remain outside this bounded profile. Current
+readers require v7 objects; earlier matching readers/objects and all current
+intermediates remain preserved. DuckDB whole-program work remains paused.
