@@ -142,6 +142,14 @@ fundamental RTTI definitions or EH matching. Those still require their own owned
 identity and lifetime tests; the direct backend's opaque-token scheme is not
 automatically applied to these real RTTI objects.
 
+Abstract and deleted virtual slots bind to shared `Edg.Runtime.CppVirtual`.
+EDG's `pure_virt.c` and `del_virt.c` call `__abort_execution` directly; the managed
+provider uses `Environment.FailFast` and does not invoke `std::terminate` hooks.
+`rtti_provider_verify.py --fixture abstract` exercises an actual abstract
+interface, overridden const calls, normal derived/base destruction and isolated
+pure/deleted ABI abort paths in JIT and NativeAOT. Both callbacks have checked
+zero-argument `void` signatures and never return a placeholder value.
+
 ## Independent-TU acceptance
 
 `object-linker/tests/cpp_cross_unit_verify.py --fixture exceptions` compiles provider, bridge

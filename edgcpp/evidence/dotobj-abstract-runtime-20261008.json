@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-08",
+  "status": "passed",
+  "checks": 19,
+  "scope": "Real abstract interface and deleted virtual slot ABI, overridden const call, normal derived/base destruction and isolated fatal runtime callbacks",
+  "receipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-abstract-runtime-acceptance-002/results.json",
+    "sha256": "e08e9d894e51e4ba2a7c1458ad1258f74d4e140e80c127002318de2599c258bb"
+  },
+  "runtime": "Shared CppVirtual using BCL Environment.FailFast, corresponding to EDG __abort_execution; no custom terminate-handler dispatch",
+  "verifiedPlatforms": [
+    "linux-x64 JIT",
+    "linux-x64 NativeAOT"
+  ],
+  "limitations": [
+    "Does not establish source EH, dynamic_cast, or Windows/macOS execution."
+  ]
+}

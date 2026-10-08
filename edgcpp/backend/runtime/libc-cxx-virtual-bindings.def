@@ -1,0 +1,2 @@
+EDG_LIBC("__cxa_pure_virtual", "void", "", "global::Edg.Runtime.CppVirtual.PureVirtual")
+EDG_LIBC("__cxa_deleted_virtual", "void", "", "global::Edg.Runtime.CppVirtual.DeletedVirtual")

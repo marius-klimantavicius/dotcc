@@ -35,6 +35,7 @@ RUNTIME_DEPENDENCIES = {
     "LibcFileDescriptors": (), "LibcFilesDescriptors": (),
     "LibcTimezone": ("LibcTimezoneData",), "LibcTimezoneData": (),
     "NonlocalJump": ("Vla",), "Coroutine": (),
+    "CppVirtual": (),
     "ExtendedFloat": ("Float128", "LibcFloat"),
     "Float128": ("Float128Conversions",), "Float128Conversions": ("Float80",),
     "Float80": (), "LibcContext": ("LibcInet",), "LibcInet": (), "AtomicOps": (), "VaList": (), "VaArg": (), "VaPack": ("VaArg", "VaList"),
