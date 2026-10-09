@@ -352,9 +352,10 @@ internal static class Verifier
                     EdgeShape(node, ("argument", 0, int.MaxValue));
                     var intrinsicArgs = body.Children(node.Id, "argument").Select(edge => body.Nodes[edge.ChildId]).ToArray();
                     if (intrinsicArgs.Any(argument => !IsExpression(argument) || Type(argument) == "void")) Fail("Intrinsic argument must be a value");
-                    if (ScalarTypes.IsWideInteger(Type(node)) || intrinsicArgs.Any(argument => ScalarTypes.IsWideInteger(Type(argument)) || ScalarTypes.IsPointer(Type(argument)) && ScalarTypes.IsWideInteger(ScalarTypes.Pointee(Type(argument)))))
-                        Fail("128-bit intrinsics require an explicit wide operation contract");
                     string intrinsic = node.Operator!;
+                    bool mathematicalOverflow = intrinsic is "add-overflow" or "sub-overflow" or "mul-overflow" or "add-overflow-volatile" or "sub-overflow-volatile" or "mul-overflow-volatile";
+                    if (ScalarTypes.IsWideInteger(Type(node)) || !mathematicalOverflow && intrinsicArgs.Any(argument => ScalarTypes.IsWideInteger(Type(argument)) || ScalarTypes.IsPointer(Type(argument)) && ScalarTypes.IsWideInteger(ScalarTypes.Pointee(Type(argument)))))
+                        Fail("128-bit intrinsics require an explicit wide operation contract");
                     if (intrinsic == "unreachable") { if (intrinsicArgs.Length != 0 || Type(node) != "void") Fail("Invalid unreachable intrinsic"); }
                     else if (intrinsic == "expect")
                     {
@@ -372,6 +373,8 @@ internal static class Verifier
                         if (intrinsicArgs.Length != 3 || !ScalarTypes.IsInteger(Type(intrinsicArgs[0])) || !ScalarTypes.IsInteger(Type(intrinsicArgs[1])) ||
                             !ScalarTypes.IsPointer(Type(intrinsicArgs[2])) || !ScalarTypes.IsInteger(ScalarTypes.Pointee(Type(intrinsicArgs[2]))) || !ScalarTypes.IsBooleanResult(Type(node)))
                             Fail("Invalid mathematical overflow intrinsic");
+                        if (intrinsic.EndsWith("-volatile", StringComparison.Ordinal) && ScalarTypes.IsWideInteger(ScalarTypes.Pointee(Type(intrinsicArgs[2]))))
+                            Fail("Volatile 128-bit overflow destination requires an explicit access contract");
                     }
                     else Fail("Unsupported intrinsic operation");
                     break;

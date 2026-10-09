@@ -598,3 +598,30 @@ user-provided assignment operator. Stock C preserves that distinction; future
 owned source facts must do the same rather than permit raw copying globally.
 The next arithmetic gate in `hugeint.cpp` is unsigned128 multiply-with-overflow.
 Full DuckDB generation remains incomplete, and libc++ runtime work stays deferred.
+
+## Mathematical 128-bit overflow intrinsics, v28 (2026-10-09)
+
+Add/subtract/multiply overflow nodes now support independent signed/unsigned
+operand and destination widths through 128 bits. They preserve the mathematical
+range test and always store the truncated result. Fixed UInt128 limbs and
+UInt128.BigMul avoid allocation, BigInteger and exception-based overflow tests.
+The unsigned multiplication case has a direct full-product path; ordinary narrow
+helpers are unchanged. Volatile 128 destinations remain explicitly rejected.
+
+Native051/managed046 passes 34 focused acceptance checks, including **12469
+mathematical cases** over 488 type triples and 1488 builtin wrappers, side-effect
+and alias checks, source-hidden linking, JIT and NativeAOT. Existing narrow
+intrinsics also pass JIT/NativeAOT. An independent emitter prototype passes
+20000 mathematical cases in both modes. Metadata verification passes 39 checks
+with eight resealed semantic rejections, and both signed/unsigned volatile 128
+source destinations reject before publishing objects.
+[Hashed v28 evidence](../evidence/dotobj-wide-overflow-20261009.json) links all
+receipts. Validation is targeted to arithmetic; the preceding profile 27 full
+1154-check regression remains the latest full run. Future full runs include the
+new wide fixture.
+
+Original DuckDB `hugeint.cpp` advances past multiplication to a source throw in
+`Convert`. The remaining `exception.cpp` copy-transport gate is being addressed
+with separate observed construction and assignment permissions. Full DuckDB
+generation and source C++ exception support remain incomplete; libc++ runtime
+implementation stays deferred.

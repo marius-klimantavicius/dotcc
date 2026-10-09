@@ -24,6 +24,7 @@ import project_c_verify
 import provider_verify
 import startup_actions_verify
 import assignment_verify
+import wide_overflow_verify
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('dotobj_compile', ROOT / 'compile.py')
@@ -48,6 +49,7 @@ def main():
     parser.add_argument('--template-identity-only', action='store_true', help='Run owned public/private template specialization identity acceptance')
     parser.add_argument('--indirect-values-only', action='store_true', help='Run original class value and physical indirect ABI acceptance')
     parser.add_argument('--packed-only', action='store_true', help='Run observed packed layout and independent typedef identity acceptance')
+    parser.add_argument('--wide-overflow-only', action='store_true', help='Run mathematical128-bit overflow and narrow intrinsic compatibility')
     parser.add_argument('--zero-bound-arrays-only', action='store_true', help='Run fixed-zero and incomplete array shape acceptance')
     args = parser.parse_args()
     out = args.output_dir.resolve()
@@ -98,7 +100,7 @@ def main():
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v27', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v28', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only, wideOverflowOnly=args.wide_overflow_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No complete prelower source view, macro expansion history or general C++ lifetime/EH coverage.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -182,6 +184,16 @@ def main():
                     db.execute('UPDATE content_digest SET sha256=?', (MODULE.logical_hash(db),))
             return path
 
+        if args.wide_overflow_only:
+            wide_overflow_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+            source = inputs / 'project_c_intrinsics.c'
+            obj = compile_source('narrow-intrinsics', source, std='c11')
+            run('narrow-intrinsics-native-build', ['cc', '-std=c11', '-O2', source, '-o', out / 'narrow-intrinsics-native'])
+            run('narrow-intrinsics-native-run', [out / 'narrow-intrinsics-native'])
+            execute('narrow-intrinsics', link('link-narrow-intrinsics', [obj]))
+            save('passed')
+            print(json.dumps(dict(status='passed', checks=len(checks), output=str(out))))
+            return
         if args.zero_bound_arrays_only:
             zero_bound_arrays_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
             save('passed')
@@ -238,6 +250,7 @@ def main():
             print(json.dumps(dict(status='passed', checks=len(checks), output=str(out))))
             return
 
+        wide_overflow_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
         linked = link('link', [provider, consumer])
         execute('linked', linked)
         scoped = link('link-scopes', [scopes])

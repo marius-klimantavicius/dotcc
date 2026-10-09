@@ -34,6 +34,8 @@ internal sealed partial class Emitter
                     : "global::System.Numerics.BitOperations.LeadingZeroCount(unchecked((" + unsigned + ")(value0 < 0 ? ~value0 : value0))) - 1";
                 code.Append("        return unchecked((").Append(Type(result)).Append(")(").Append(value).Append("));\n");
             }
+            else if (types.Take(2).Append(ScalarTypes.Pointee(types[2])).Any(ScalarTypes.IsWideInteger))
+                code.Append(WideOverflowBody(operation, types[0], types[1], ScalarTypes.Pointee(types[2]), result));
             else
             {
                 bool unsignedMath = operation.StartsWith("mul-", StringComparison.Ordinal) && types.Take(2).All(type => type.StartsWith('u'));

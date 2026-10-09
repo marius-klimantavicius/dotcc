@@ -4,7 +4,7 @@ This implements the owned object path of the [new design](../docs/dotobj-format.
 It uses a fresh SQLite schema and C# reader/linker/emitter, without the prior
 semantic-export experiment or C# text/command objects.
 
-The current profile is `scalar-control-v27`. It supports independently produced
+The current profile is `scalar-control-v28`. It supports independently produced
 SQLite and musl objects, typed provider selection, shared BCL runtime bindings,
 and explicit source startup actions. C++ file-scope initialization owns generated
 routine origins, original per-storage statement intervals and separate local
@@ -27,7 +27,9 @@ the packed field context. Empty GNU memory assembly owns original operand
 regions and saved VLA extents; emission evaluates them once and uses a BCL
 memory barrier without fabricated operand reads/writes. Fixed zero-bound arrays
 retain distinct identity from unspecified arrays, zero field extent and zero
-pointer stride while preserving operand side effects.
+pointer stride while preserving operand side effects. Mathematical overflow
+intrinsics support independent signed/unsigned operand and destination widths
+through 128 bits, using allocation-free full-width arithmetic.
 Original base declarations and generated
 ctor/dtor entries retain separate provenance from exact physical subobject views.
 COMDAT storage links to one canonical cell across translation units. Constructor
@@ -247,7 +249,7 @@ indexes. A hash demonstrates content integrity, not semantic correctness.
 Full logs/objects/generated projects remain under
 `/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/`.
 
-The current schema requires `scalar-control-v27`. Earlier-profile objects and tools
+The current schema requires `scalar-control-v28`. Earlier-profile objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 

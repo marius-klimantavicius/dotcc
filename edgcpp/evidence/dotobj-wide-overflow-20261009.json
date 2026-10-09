@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v28",
+  "scope": "Mathematical integer overflow intrinsics through128 bits with allocation-free fixed-width arithmetic",
+  "focusedAcceptanceChecks": 34,
+  "translatedMathematicalCases": 12469,
+  "operandDestinationTypeTriples": 488,
+  "ordinaryBuiltinWrappers": 1464,
+  "volatileNarrowWrappers": 24,
+  "independentEmitterPrototypeCases": 20000,
+  "malformedMetadataChecks": 39,
+  "semanticMalformedObjectsRejected": 8,
+  "sourceNegativeCases": 2,
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "regressionScope": "Targeted wide arithmetic and unchanged narrow intrinsic compatibility pass JIT/NativeAOT. The preceding profile27 full1154 checks passed; no new full-suite claim for profile28. Future full runs include wide acceptance.",
+  "artifacts": {
+    "focusedAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-wide-overflow-acceptance-001/results.json",
+      "sha256": "4112ff51b5ae1afaa18820041b8e1d33a4ac3896e7fecce55eb4f62580c1b532"
+    },
+    "nativeOracle": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-wide-overflow-native-oracle-002/results.json",
+      "sha256": "d0ae9583bd58b9eb6d41ed243ff4c678b07fcb3c57205217617f624de76851dd"
+    },
+    "mathematicalExpectedCases": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-wide-overflow-acceptance-001/retained-wide-overflow-source/expected.json",
+      "sha256": "d6fdd4739cd277577ca93cebf6f0992d48ccd053f9db237b3bebde76903a6fc6"
+    },
+    "prototypeJit": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-wide-overflow-managed-draft-001/prototype/jit-result.json",
+      "sha256": "e13b068009ba1be79a6040e66d56fddfbc40bd7e399e6db22714340f4711f390"
+    },
+    "prototypeNativeAot": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-wide-overflow-managed-draft-001/prototype/nativeaot-result.json",
+      "sha256": "146de609d50fea2194c75259701b411426ee4b08fef548240520910670794cbc"
+    },
+    "malformedMetadata": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-wide-overflow-metadata-005/results.json",
+      "sha256": "555c347ce25c06015af448e3864072688ff968c0baa1b2d41bfaab937764ccf1"
+    },
+    "sourceNegative": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-wide-overflow-source-negative-001/results.json",
+      "sha256": "16a33caa41ef6d094f77196280e13e86aa58237375fdb6166ed62ff7b152d70a"
+    },
+    "actualDuckdbFrontier": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-051-wide/results.json",
+      "sha256": "2f8a2c8330c7eb0509bd635ad86d2cf58e6d52d1da74539df2d1aa9b68f1d2ac"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native051-verified-snapshot/cpfe-dot",
+      "sha256": "be14ca04f161b06507e4a5221c37989fbb0ab97779fb06b0aab2ad85bee6aecc"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-046/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "936adfbad85a4c072109b473797d7ee4164e6b247b91d36fc5ec270dda78b79a"
+    }
+  },
+  "projectScope": "Original DuckDB hugeint.cpp advances past unsigned128 multiply-with-overflow to source throw in Convert. No complete unit generation claim.",
+  "semantics": [
+    "Independent signed/unsigned operand and destination widths preserve mathematical integer semantics.",
+    "Truncated low bits are stored even on overflow; each argument evaluates once, including aliasing and narrow volatile destinations.",
+    "UInt128.BigMul and two-limb sign/magnitude arithmetic avoid BigInteger, allocation and arithmetic exceptions; ordinary narrow helper code is unchanged."
+  ],
+  "limitations": [
+    "Other128-bit intrinsic categories and volatile128 destinations remain explicit gates.",
+    "No new C++ source exception matching, runtime library implementation or full DuckDB generation claim.",
+    "Malformed-run setup and overly specific diagnostic expectations were corrected in retained attempts001-004; no implementation change was needed."
+  ],
+  "priority": "Complete dotobj core toward full DuckDB C# generation; libc++ runtime implementation remains deferred."
+}

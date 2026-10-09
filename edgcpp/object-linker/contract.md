@@ -1279,3 +1279,21 @@ assigns it at the original expression site; alignment requirements remain exact,
 including over-aligned backing. It neither invents a source binding nor adds
 C++ construction/destruction. Existing addressable nontrivial temporaries stay
 in their original storage and retain their original lifetime obligations.
+
+## Wide mathematical overflow intrinsics (profile v28)
+
+Existing `add-overflow`, `sub-overflow` and `mul-overflow` nodes now accept
+signed/unsigned integer operands and destination widths through 128 bits, with
+independent operand/destination types. They compute the mathematical result,
+store its low destination bits even when overflow occurs, then return whether
+that mathematical result lies outside the destination range. Argument expressions
+evaluate once under the owned call ordering. Other 128-bit intrinsics remain
+gated; a 128-bit volatile destination still lacks an access contract and rejects.
+Wide operands with supported narrow volatile destinations keep volatile stores.
+
+The wide emitter uses a sign plus two UInt128 magnitude limbs, including
+UInt128.BigMul for full 256-bit products. It performs no heap allocation and uses
+no arithmetic exceptions to detect overflow. Unsigned multiplication specializes
+to full product, low-bit store and high/range checks. Existing narrow arithmetic
+helpers remain unchanged. This preserves mixed signed/unsigned mathematical
+semantics independently of the result width, including signed minimum values.

@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v27: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v28: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -1741,18 +1741,21 @@ struct Writer {
       default:return 0;
     }
     string operation=op;
+    bool mathematical_overflow=operation=="add-overflow" || operation=="sub-overflow" || operation=="mul-overflow";
     if(integer128(call->type))reject("integer128 intrinsic result");
     for(auto arg=first;arg;arg=arg->next)
-      if(integer128(arg->type))reject("integer128 intrinsic operand");
-    if(operation=="add-overflow" || operation=="sub-overflow" || operation=="mul-overflow") {
+      if(integer128(arg->type) && !mathematical_overflow)reject("integer128 intrinsic operand");
+    if(mathematical_overflow) {
       if(!first || !first->next || !first->next->next || first->next->next->next)reject("overflow intrinsic arity");
       auto target=skip_typerefs(first->next->next->type);
       if(target->kind!=tk_pointer || skip_typerefs(target->variant.pointer.type)->kind!=tk_integer)
         reject("overflow intrinsic destination");
-      if(integer128(target->variant.pointer.type))reject("integer128 overflow intrinsic destination");
       auto qualifiers=get_type_qualifiers(target->variant.pointer.type);
       if(qualifiers&(TQ_CONST|TQ_C11_ATOMIC))reject("overflow intrinsic destination qualifiers");
-      if(qualifiers&TQ_VOLATILE)operation+="-volatile";
+      if(qualifiers&TQ_VOLATILE) {
+        if(integer128(target->variant.pointer.type))reject("volatile integer128 overflow intrinsic destination");
+        operation+="-volatile";
+      }
     }
     unsigned id=node("intrinsic",type_id(call->type),call->position,0,0,operation,"","value",order),ordinal=0;
     for(auto arg=first;arg;arg=arg->next)edge(id,"argument",ordinal++,expression(arg));
@@ -2745,7 +2748,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v27\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v28\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
