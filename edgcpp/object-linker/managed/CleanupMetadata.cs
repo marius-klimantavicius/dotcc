@@ -13,6 +13,7 @@ internal sealed record CleanupFrameMarker(long NodeId, string Kind, string Captu
 internal sealed partial class ObjectFile
 {
     public Dictionary<long, long> ExpressionLifetimes { get; } = [];
+    public Dictionary<long, long> CleanupConditions { get; } = [];
     public Dictionary<long, long> NormalDestructions { get; } = [];
     public Dictionary<long, long> BaseSubobjectExpressions { get; } = [];
     public Dictionary<long, SourceLifetime> SourceLifetimes { get; } = [];
@@ -120,6 +121,16 @@ internal sealed partial class ObjectFile
                 if (!FunctionCleanupActions.TryGetValue(action.FunctionEntityId, out var actions))
                     FunctionCleanupActions.Add(action.FunctionEntityId, actions = []);
                 actions.Add(action);
+            }
+        using (var query = database.Prepare("SELECT c.action_id,c.flag_binding_id,c.capture_proof,b.function_id,b.kind,b.type_id,b.is_synthetic FROM cleanup_conditions c LEFT JOIN bindings b ON b.id=c.flag_binding_id ORDER BY c.action_id"))
+            while (query.Read())
+            {
+                if (!CleanupActions.TryGetValue(query.Integer(0), out CleanupAction? action) ||
+                    query.Text(2) != "observed-conditional-cleanup-flag" || query.OptionalInteger(3) != action.FunctionEntityId ||
+                    query.OptionalText(4) != "local" || query.OptionalInteger(5) is not long flagType || Type(flagType) != "i32" ||
+                    query.Integer(6) != 1 || BindingSourceTypes.ContainsKey(query.Integer(1)) ||
+                    !CleanupConditions.TryAdd(action.Id, query.Integer(1)))
+                    throw new InvalidDataException("Conditional cleanup requires its exact synthetic local flag and owning action");
             }
         using (var query = database.Prepare("SELECT d.node_id,d.source_obligation_id,d.capture_proof,n.function_id,n.kind,n.entity_id FROM normal_destructions d LEFT JOIN nodes n ON n.id=d.node_id ORDER BY d.node_id"))
             while (query.Read())

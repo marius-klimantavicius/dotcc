@@ -373,6 +373,7 @@ internal sealed partial class ObjectFile
             }
             writer.WriteEndArray();
         }
+        Table("cleanupConditions", "SELECT action_id,flag_binding_id,capture_proof FROM cleanup_conditions ORDER BY action_id", "actionId", "flagBindingId", "captureProof");
         Table("normalDestructions", "SELECT node_id,source_obligation_id,capture_proof FROM normal_destructions ORDER BY node_id", "nodeId", "sourceObligationId", "captureProof");
         Table("expressionLifetimes", "SELECT node_id,source_lifetime_id,capture_proof FROM expression_lifetimes ORDER BY node_id", "nodeId", "sourceLifetimeId", "captureProof");
         Table("baseSubobjectExpressions", "SELECT node_id,source_base_id FROM base_subobject_expressions ORDER BY node_id", "nodeId", "sourceBaseId");

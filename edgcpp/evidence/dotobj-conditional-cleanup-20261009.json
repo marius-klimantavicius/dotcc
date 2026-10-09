@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v26",
+  "scope": "Observed conditional scalar cleanup flags, exact supplementary-region mapping and guarded target evaluation",
+  "fullRegressionChecks": 1154,
+  "focusedExecutionChecks": 19,
+  "focusedExecutionCases": 43,
+  "malformedMetadataChecks": 31,
+  "semanticMalformedObjectsRejected": 6,
+  "schemaMalformedObjectsRejected": 3,
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v26-001/results.json",
+      "sha256": "211b59ce5fb7a3138cd0b0d6eada3c8f350843c8b2933e461bb559544e197123"
+    },
+    "focusedExecution": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-conditional-cleanup-acceptance-001/results.json",
+      "sha256": "27033d69cb19f24109ad6e6f6ba73c7078740d5fcae45811e9b7cb8719ab5efd"
+    },
+    "nativeAndStockCOracle": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-conditional-cleanup-native-v26-draft-001/acceptance-receipt.json",
+      "sha256": "625382e0da3f4355702facf62a9d62ce92e8eb3bf318af41f7270cb8043da9df"
+    },
+    "malformedMetadata": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-conditional-cleanup-metadata-002/results.json",
+      "sha256": "2b953314f072902b32a9fd33162370206a8f0fe3814b640c0e9d5156bad4fcc2"
+    },
+    "actualDuckdbFrontier": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-049-conditional/results.json",
+      "sha256": "4b93ff8182c84a4e5cc0e1564af7a9439308217dbea241fa58c0d12617071e0c"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native049-verified-snapshot/cpfe-dot",
+      "sha256": "1838b9ee4341dc924751bb7d3125b0425572770ef9900876bb5a962e772a6e02"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-044/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "875bf262f878941affcca4450a3eaca20472b3532753773acb648c8b24971792"
+    }
+  },
+  "projectScope": "Original DuckDB exception.cpp advances past conditional cleanup in ToJSON to record member of nonplace value in unordered_map operator[]. No complete unit generation claim.",
+  "semantics": [
+    "Optional condition row absence means unconditional; every present row requires exact synthetic local i32 flag ownership.",
+    "Original flag initialization and set/reset stores remain in ordinary body; stock unwinding checks the flag without clearing it.",
+    "Cleanup cursor advances first; false flags skip target evaluation and destructor.",
+    "Supplementary rows do not become states; original primary region indices remain exact."
+  ],
+  "limitations": [
+    "Conditional scalar actions only; arrays, VTT, guard/deallocation cleanup and source throw/catch matching remain gated.",
+    "Host CLR throws exercise cleanup; no C++ exception type-matching claim.",
+    "Metadata001 retained an overly specific expected diagnostic; existing earlier source-provenance rejection was correct and runner002 accommodates it.",
+    "No full DuckDB generation or new complete SQLite pipeline claim."
+  ],
+  "priority": "Complete dotobj core toward full DuckDB C# generation; libc++ runtime implementation remains deferred."
+}

@@ -34,7 +34,30 @@ internal static class CleanupHost
             Check(Core.cleanup_members, 8, 4268725) &&
             Check(Core.cleanup_temporary_result, 0, 333) && Check(Core.cleanup_temporary_result, 3, 3) &&
             Check(Core.cleanup_delegating, 0, 1283) && Check(Core.cleanup_delegating, 1, 1) &&
-            Check(Core.cleanup_delegating, 2, 123) && Check(Core.cleanup_delegating, 8, 1283) ? 0 : 1;
+            Check(Core.cleanup_delegating, 2, 123) && Check(Core.cleanup_delegating, 8, 1283) &&
+            Check(Core.cleanup_conditional_both, 0, 128383261) &&
+            Check(Core.cleanup_conditional_left, 0, 128261) &&
+            Check(Core.cleanup_conditional_right, 0, 138361) &&
+            Check(Core.cleanup_conditional_none, 0, 161) &&
+            Check(Core.cleanup_conditional_both, 1, 1) &&
+            Check(Core.cleanup_conditional_both, 2, 121) &&
+            Check(Core.cleanup_conditional_both, 3, 128321) &&
+            Check(Core.cleanup_conditional_both, 72, 12821) &&
+            Check(Core.cleanup_conditional_both, 73, 12838321) &&
+            Check(Core.cleanup_conditional_both, 9, 12838321) &&
+            Check(Core.cleanup_conditional_none, 9, 11) &&
+            Check(Core.cleanup_conditional_left, 9, 12821) &&
+            Check(Core.cleanup_conditional_right, 9, 13831) &&
+            Check(Core.cleanup_choice_left, 0, 128261) &&
+            Check(Core.cleanup_choice_right, 0, 138361) &&
+            Check(Core.cleanup_choice_left, 9, 12821) &&
+            Check(Core.cleanup_choice_right, 9, 13831) &&
+            Check(Core.cleanup_conditional_loop, 0, 282662826) &&
+            Check(Core.cleanup_conditional_loop, 2, 2) &&
+            Check(Core.cleanup_conditional_loop, 72, 282) &&
+            Check(Core.cleanup_conditional_loop, 10, 282) &&
+            Check(Core.cleanup_conditional_loop, 11, 2826) &&
+            Check(Core.cleanup_conditional_loop, 12, 28266282) ? 0 : 1;
     }
 }
 namespace Edg.Runtime
@@ -102,6 +125,8 @@ def main():
             run('verify', ['dotnet', args.linker.resolve(), 'verify', obj])
             with sqlite3.connect(obj) as db:
                 check('owned-expression-lifetime-boundary', db.execute('SELECT count(*) FROM expression_lifetimes').fetchone()[0] > 0)
+                check('owned-conditional-cleanup-actions', db.execute('SELECT count(*) FROM cleanup_conditions').fetchone()[0] >= 5)
+                check('multiple-conditional-actions-in-one-function', db.execute('SELECT max(n) FROM (SELECT count(*) AS n FROM cleanup_conditions c JOIN cleanup_actions a ON a.id=c.action_id GROUP BY a.function_entity_id)').fetchone()[0] >= 2)
             inputs.rename(out / 'retained-source')
             generated = out / 'generated'
             run('source-hidden-link', ['dotnet', args.linker.resolve(), 'link', '--out', generated,
@@ -124,9 +149,9 @@ def main():
     except Exception as exception:
         error = str(exception)
     receipt = dict(status='failed' if error else 'native-oracle-only' if args.native_only else 'passed',
-        error=error, checks=checks, commands=commands, cases=20,
+        error=error, checks=checks, commands=commands, cases=43,
         limitations=['Host throws are ordinary CLR exceptions, not implemented source C++ throw/catch/type matching',
-                     'No destructor-throws-during-unwind, arrays, conditional cleanup, VTT, guards or thread-exit coverage'])
+                     'No destructor-throws-during-unwind, arrays, VTT, guards or thread-exit coverage'])
     for name in ('compiler', 'linker', 'packager'):
         path = getattr(args, name)
         if path:

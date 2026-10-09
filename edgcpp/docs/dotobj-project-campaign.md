@@ -548,3 +548,28 @@ throw in `allocator.cpp` and `date.cpp`, and integer128 intrinsic operands in
 cleanup, source C++ throw/catch matching and a separate comma-place/prvalue member
 access remain open; this is not general C++ exception support. The generation-first
 checkpoint and deferral of libc++ runtime work remain unchanged.
+
+## Conditional scalar cleanup, v26 (2026-10-09)
+
+Conditional temporary destruction now owns its exact synthetic integer flag.
+The native adapter validates EDG's supplementary region row without treating it
+as an action, preserving primary state indices and successor links. Original
+flag initialization and body set/reset stores remain intact. Unwinding advances
+the cursor, tests the flag and evaluates the target only for an active action.
+Stock EDG does not reset this flag while unwinding; the generated code follows it.
+
+Native049/managed044 passes **1154 full regression checks including NativeAOT**.
+The expanded 43-case fixture agrees with native C++ and stock EDG-generated C at
+O0/O2, and translated C# under JIT/NativeAOT. It exercises multiple conditional
+temporaries, false branches, constructor/consumer failure and repeated loop
+activation/reset. Metadata verification passes 31 checks, including six resealed
+SQL-valid semantic rejections and three separately identified schema rejections.
+[Hashed v26 evidence](../evidence/dotobj-conditional-cleanup-20261009.json) links
+the retained receipts and tools.
+
+Original DuckDB `exception.cpp` passes its conditional cleanup gate and now stops
+at member selection on a record-valued expression in `unordered_map::operator[]`.
+The next core work follows stock C's distinction between a sequence ending in
+existing storage and a genuine record value requiring materialization. Array/VTT
+cleanup and source throw/catch remain open. No complete DuckDB generation or
+libc++ runtime implementation is claimed.

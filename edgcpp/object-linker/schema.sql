@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v25'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v26'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -223,6 +223,11 @@ CREATE TABLE cleanup_actions (
  callback_entity_id INTEGER NOT NULL REFERENCES entities(id),
  target_node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-region-entry')
+) STRICT;
+CREATE TABLE cleanup_conditions (
+ action_id INTEGER PRIMARY KEY REFERENCES cleanup_actions(id),
+ flag_binding_id INTEGER NOT NULL REFERENCES bindings(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-conditional-cleanup-flag')
 ) STRICT;
 CREATE TABLE cleanup_states (
  id INTEGER PRIMARY KEY CHECK(id>0),

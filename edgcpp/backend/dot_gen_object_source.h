@@ -195,7 +195,7 @@ struct CleanupPathPart {
 struct CleanupSnapshot {
   a_routine_ptr owner=nullptr;
   a_dynamic_init_ptr original=nullptr;
-  a_variable_ptr variable=nullptr;
+  a_variable_ptr variable=nullptr,conditional_flag=nullptr;
   a_type_ptr base_type=nullptr;
   bool indirect=false,base_subobject=false;
   std::vector<CleanupPathPart> path;
@@ -842,9 +842,10 @@ inline void observe_cleanup_region(a_dynamic_init_ptr dip,a_routine_ptr owner) {
   CleanupSnapshot value;value.owner=owner;value.original=dip;
   const auto &position=descr->init_pos_descr;
   value.variable=position.variable;value.base_type=position.base_type;
+  value.conditional_flag=descr->conditional_flag_var;
   value.indirect=position.indirect_through_variable;value.base_subobject=position.base_class_subobject;
   if(position.thrown_object_address || position.array_element_sequence || position.num_elem_node ||
-     !position.variable || descr->conditional_flag_var || descr->needs_subobject_construction_vtbl ||
+     !position.variable || descr->needs_subobject_construction_vtbl ||
      descr->use_delegation_dtor || dip->is_freeing_of_storage_on_exception ||
      dip->is_freeing_of_exception_object || dip->is_guard_var_for_local_static_var_init || dip->is_vla_deallocation)
     value.error="cleanup region outside scalar object/member/base contract";

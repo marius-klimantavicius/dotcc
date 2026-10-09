@@ -65,3 +65,39 @@ extern "C" void cleanup_delegating() {
     record(8);
     cleanup_throw_point(8);
 }
+
+// Both operands share one full-expression and are sequenced by commas.
+// Each conditional temporary has its own flag supplement in the EH table.
+static int conditional_consume(const Item &value) {
+    record(8);
+    cleanup_throw_point(70 + value.digit);
+    return value.digit;
+}
+static void conditional_pair(int left, int right) {
+    Item outer(1);
+    (left && conditional_consume(Item(2)),
+     right && conditional_consume(Item(3)),
+     cleanup_throw_point(9));
+    record(6);
+}
+extern "C" void cleanup_conditional_both() { conditional_pair(1, 1); }
+extern "C" void cleanup_conditional_left() { conditional_pair(1, 0); }
+extern "C" void cleanup_conditional_right() { conditional_pair(0, 1); }
+extern "C" void cleanup_conditional_none() { conditional_pair(0, 0); }
+static void conditional_choice(int left) {
+    Item outer(1);
+    (left ? conditional_consume(Item(2)) : conditional_consume(Item(3)),
+     cleanup_throw_point(9));
+    record(6);
+}
+extern "C" void cleanup_choice_left() { conditional_choice(1); }
+extern "C" void cleanup_choice_right() { conditional_choice(0); }
+extern "C" void cleanup_conditional_loop() {
+    // The same lowered temporary/flag is reused: true, false, true. The
+    // middle unwind must not destroy the already-destroyed first temporary.
+    for (int index = 0; index != 3; ++index) {
+        (index != 1 && conditional_consume(Item(2)),
+         cleanup_throw_point(10 + index));
+        record(6);
+    }
+}

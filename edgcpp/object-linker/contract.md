@@ -1243,3 +1243,20 @@ and source throw/catch/type matching remain explicit gates. Ordinary CLR host
 exceptions verify unwinding; they are not evidence of C++ exception matching.
 The historical general `lifetimes` capability remains false; the bounded source
 lifetime/state capabilities describe this implemented subset.
+
+## Conditional scalar cleanup (profile v26)
+
+`cleanup_conditions(action_id, flag_binding_id, capture_proof)` optionally
+qualifies one cleanup action with its exact observed conditional flag. The proof
+is `observed-conditional-cleanup-flag`; absence means unconditional. The flag is
+a synthetic automatic `i32` local owned by the action's function, without a
+source declaration identity. It must be live at every state transition that arms
+the action. Original body initialization and set/reset stores retain ownership.
+
+The adapter validates EDG's adjacent supplementary region against the observed
+flag and preserves the raw region numbers for actual transitions; supplementary
+rows do not become cleanup states. No stack-offset representation enters the
+object. The emitter advances the cleanup cursor, checks the flag and evaluates
+the target/destructor only when nonzero. Stock EDG unwinding does not clear the
+flag, so neither does this backend. This extension covers conditional scalar
+actions only; array, VTT, guard/deallocation and source EH gates remain.

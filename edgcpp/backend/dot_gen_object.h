@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v25: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v26: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -49,7 +49,7 @@ struct Writer {
   std::map<an_object_lifetime_ptr,unsigned> source_lifetime_ids;
   std::map<a_dynamic_init_ptr,unsigned> source_obligation_ids;
   std::vector<string> source_lifetimes,source_destruction_obligations,cleanup_actions,cleanup_states,cleanup_transitions,cleanup_frame_markers;
-  std::vector<string> expression_lifetimes;
+  std::vector<string> expression_lifetimes,cleanup_conditions;
   struct NodeShape {unsigned type=0;bool place=false;};
   std::vector<NodeShape> node_shapes;
   std::map<a_routine_ptr,unsigned> routine_ids;
@@ -950,11 +950,12 @@ struct Writer {
     cleanup_metadata.insert(frame->region_table);
     auto initializer=cleanup_initializer(scope,frame->region_table);
     if(!initializer)reject("cleanup prologue lacks exact region initializer");
-    auto entries=cleanup_fields(initializer);unsigned raw=0;
-    for(auto entry:entries) {
+    auto entries=cleanup_fields(initializer);
+    for(unsigned raw=0;raw<entries.size();++raw) {
+      auto entry=entries[raw];unsigned state_raw=raw;
       auto fields=cleanup_fields(entry,4);auto callback=fields[0];
       auto flags=cleanup_number(fields[3]);
-      if(flags&~0x51ULL || ((flags&0x11)==0x11))
+      if(flags&~0x53ULL || ((flags&0x11)==0x11))
         reject("cleanup action outside scalar local/member/base flags");
       if(callback->kind!=ck_address || callback->variant.address.kind!=abk_routine || callback->variant.address.offset)
         reject("cleanup callback lacks exact routine address");
@@ -964,6 +965,23 @@ struct Writer {
       if(observed.owner!=owner || !observed.error.empty())
         reject(observed.error.empty()?"cleanup region owner mismatch":observed.error.c_str());
       if(bool(flags&0x40)!=observed.base_subobject)reject("cleanup region base-subobject proof mismatch");
+      if(bool(flags&0x02)!=bool(observed.conditional_flag))reject("cleanup conditional flag proof mismatch");
+      if(observed.conditional_flag) {
+        // Stock C stores the condition in an adjacent supplementary region.
+        // It has no independent cleanup state; preserve physical indices for
+        // all actual state transitions and decode only this exact observation.
+        if(raw+1>=entries.size())reject("conditional cleanup lacks flag supplement");
+        auto supplement=cleanup_fields(entries[++raw],4);
+        auto handle=supplement[1];auto flag=observed.conditional_flag;
+        if(cleanup_number(supplement[0]) || cleanup_number(supplement[2])!=null_eh_region_number ||
+           cleanup_number(supplement[3]) || handle->kind!=ck_stack_offset ||
+           handle->variant.stack_offset.variable!=flag || handle->variant.stack_offset.offset)
+          reject("conditional cleanup supplement differs from observed flag");
+        if(var_has_static_or_thread_storage_duration(flag) || type_id(flag->type)!=2 ||
+           !(flag->compiler_generated || flag->lowering_generated) ||
+           dot_object_source::state().variables.count(flag))
+          reject("conditional cleanup flag is not an observed synthetic automatic int");
+      }
       auto original=dot_object_source::source_destruction(observed.original,owner);
       if(!original)reject("cleanup region lacks original source destruction");
       const auto &source=dot_object_source::state().destructions.at(original);
@@ -978,10 +996,10 @@ struct Writer {
       if(selected->special_kind!=sfk_destructor || skip_typerefs(signature->variant.routine.return_type)->kind!=tk_void ||
          !parameter || parameter->next || extra->has_ellipsis || skip_typerefs(parameter->type)->kind!=tk_pointer)
         reject("cleanup callback outside ordinary one-pointer void destructor ABI");
-      if(raw==null_eh_region_number)reject("cleanup state collides with frontend null sentinel");
+      if(state_raw==null_eh_region_number)reject("cleanup state collides with frontend null sentinel");
       PendingCleanup value;value.state_id=next_cleanup_state++;value.action_id=next_cleanup_action++;
       value.next=cleanup_number(fields[2]);value.callback=selected;value.original=original;value.observed=&observed;
-      active_cleanup.emplace(raw++,value);active_source_obligations.insert(original);
+      active_cleanup.emplace(state_raw,value);active_source_obligations.insert(original);
     }
     for(const auto &entry:active_cleanup) {
       std::set<unsigned long long> visited;auto state=entry.first;
@@ -1167,6 +1185,15 @@ struct Writer {
       const auto &entry=pair.second;
       unsigned next=entry.next==null_eh_region_number?0:active_cleanup.at(entry.next).state_id;
       unsigned callback=routine(entry.callback),target=cleanup_target(entry);
+      if(auto flag=entry.observed->conditional_flag) {
+        auto binding=binding_ids.find(flag);
+        if(binding==binding_ids.end())reject("conditional cleanup flag lacks owned local binding");
+        // The ordinary lowered body owns initialization and all arming/reset
+        // stores. Unwinding only tests the flag before evaluating the target,
+        // exactly as the stock runtime does; it adds no flag reset store.
+        cleanup_conditions.push_back("{\"actionId\":"+number(entry.action_id)+",\"flagBindingId\":"+number(binding->second)+
+          ",\"captureProof\":\"observed-conditional-cleanup-flag\"}");
+      }
       cleanup_actions.push_back("{\"id\":"+number(entry.action_id)+",\"functionEntityId\":"+number(function)+
         ",\"sourceObligationId\":"+number(source_obligation_ids.at(entry.original))+",\"callbackEntityId\":"+number(callback)+
         ",\"targetNodeId\":"+number(target)+",\"captureProof\":\"observed-region-entry\"}");
@@ -2695,7 +2722,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v25\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v26\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -2704,7 +2731,7 @@ struct Writer {
       ",\"cleanupActions\":"+array(cleanup_actions)+",\"cleanupStates\":"+array(cleanup_states)+
       ",\"cleanupTransitions\":"+array(cleanup_transitions)+",\"cleanupFrameMarkers\":"+array(cleanup_frame_markers)+
       ",\"expressionLifetimes\":"+array(expression_lifetimes)+
-      ",\"normalDestructions\":"+array(normal_destructions)+
+      ",\"normalDestructions\":"+array(normal_destructions)+",\"cleanupConditions\":"+array(cleanup_conditions)+
       ",\"sourceRecords\":"+array(source_records)+",\"sourceFields\":"+array(source_fields)+
       ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+
       ",\"baseSubobjectExpressions\":"+array(base_subobject_expressions)+

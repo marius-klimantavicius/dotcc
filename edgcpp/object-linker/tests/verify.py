@@ -98,7 +98,7 @@ def main():
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v25', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v26', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No complete prelower source view, macro expansion history or general C++ lifetime/EH coverage.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')

@@ -633,13 +633,20 @@ internal static class Verifier
         foreach (CleanupAction action in obj.FunctionCleanupActions.GetValueOrDefault(function.Id, []))
         {
             HashSet<long> captures = CleanupVerifier.TargetBindings(obj, function, body, action);
-            actionBindings.Add(action.Id, captures);
-            body.CleanupCapturedBindings.UnionWith(captures);
             // Only the validated pure recipe's actual bindings are visible in
             // this additional root. Arming sites below must see every capture.
             visitingCleanupTarget = true;
             Visit(body.Nodes[action.TargetNodeId], captures.Select(id => body.Bindings[id].ScopeNodeId).Distinct().ToList(), captures, [], 0);
             visitingCleanupTarget = false;
+            if (obj.CleanupConditions.TryGetValue(action.Id, out long flag))
+            {
+                if (!body.Bindings.TryGetValue(flag, out Binding? binding) || binding.FunctionId != function.Id ||
+                    binding.Kind != "local" || !binding.IsSynthetic || obj.Type(binding.TypeId) != "i32")
+                    Fail("Conditional cleanup flag is not an owned synthetic integer local");
+                captures.Add(flag);
+            }
+            actionBindings.Add(action.Id, captures);
+            body.CleanupCapturedBindings.UnionWith(captures);
         }
         foreach (var (nodeId, visible) in cleanupVisibility)
         {
