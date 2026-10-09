@@ -165,7 +165,10 @@ internal sealed partial class ObjectFile
                 if (sourceSignature.ParameterMode == "unspecified" && (function!.Definition == "declaration" || Parameters.GetValueOrDefault(entity, []).Count != 0))
                     throw new InvalidDataException("Unspecified source parameter mode requires a known zero-parameter definition");
             }
-        if (functions.Count + AbiRoutineOrigins.Count != Entities.Count) throw new InvalidDataException("Missing original or ABI function origin");
+        if (functions.Overlaps(AbiRoutineOrigins.Keys) || functions.Overlaps(GeneratedRoutineOrigins.Keys) ||
+            AbiRoutineOrigins.Keys.Any(GeneratedRoutineOrigins.ContainsKey) ||
+            functions.Count + AbiRoutineOrigins.Count + GeneratedRoutineOrigins.Count != Entities.Count)
+            throw new InvalidDataException("Missing or overlapping original, ABI or generated function origin");
         var parameterCounts = new Dictionary<long, int>();
         using (var query = database.Prepare("SELECT entity_id,ordinal,source_type_id,has_default_argument FROM source_parameters ORDER BY entity_id,ordinal"))
             while (query.Read())
@@ -187,6 +190,7 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Missing original parameter signature capture");
 
         VerifyAbiRoutineOrigins();
+        VerifyGeneratedRoutineOrigins();
 
         // Join declarations to their owned execution counterpart while streaming
         // rows. Retain the type IDs to verify declared volatile access sites.
@@ -236,7 +240,7 @@ internal sealed partial class ObjectFile
             }
         RejectRows("SELECT entity_id FROM source_declarations WHERE entity_id IS NOT NULL GROUP BY entity_id HAVING count(*)<>1", "Duplicate source function declaration identity");
         RejectRows("SELECT binding_id FROM source_declarations WHERE binding_id IS NOT NULL GROUP BY binding_id HAVING count(*)<>1", "Duplicate source binding declaration identity");
-        RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL AND e.id NOT IN (SELECT entity_id FROM abi_routine_origins)", "Missing original function declaration capture");
+        RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL AND e.id NOT IN (SELECT entity_id FROM abi_routine_origins) AND e.id NOT IN (SELECT entity_id FROM generated_routine_origins)", "Missing original function declaration capture");
         RejectRows("SELECT b.id FROM bindings b LEFT JOIN parameters p ON p.entity_id=b.function_id AND p.ordinal=b.ordinal WHERE b.kind='parameter' AND (p.parameter_role IS NULL OR b.is_synthetic <> (p.parameter_role IN ('this','result-buffer','forwarded-source')))", "Implicit ABI parameters must be synthetic and source parameters must be original");
         RejectRows("SELECT b.id FROM bindings b JOIN source_declarations d ON d.binding_id=b.id WHERE b.is_synthetic=1", "Synthetic execution binding must not have fabricated source capture");
         RejectRows("SELECT b.id FROM bindings b LEFT JOIN source_declarations d ON d.binding_id=b.id WHERE d.id IS NULL AND b.is_synthetic=0", "Missing original binding declaration capture");
@@ -267,7 +271,9 @@ internal sealed partial class ObjectFile
 
     public string FunctionSourceSignature(long entityId) => AbiRoutineOrigins.TryGetValue(entityId, out AbiRoutineOrigin? origin)
         ? "abi-entry(" + origin.EntryKind + ";" + SourceFunctionKinds[origin.PrimaryEntityId] + ";" + (origin.EntryKind == "constructor-default-adapter" ? "prefix=" + (Parameters.GetValueOrDefault(entityId, []).Count - 1) + ";" : "") + SourceRoutineSignature(EntitySourceRoutines[origin.PrimaryEntityId], 0) + ")"
-        : SourceRoutineSignature(EntitySourceRoutines[entityId], 0);
+        : GeneratedRoutineOrigins.TryGetValue(entityId, out GeneratedRoutineOrigin? generated)
+            ? "generated-routine(" + generated.Kind + ";" + EntityRoutine(entityId) + ";" + generated.FailurePolicy + ")"
+            : SourceRoutineSignature(EntitySourceRoutines[entityId], 0);
 
     private string SourceRoutineSignature(RoutineType routine, int depth)
     {
@@ -373,6 +379,14 @@ internal sealed partial class ObjectFile
             "nodeId", "ordinal", "direction", "constraintText", "sourceName", "sourceElementTypeId", "elementSize", "sourceShape", "extentKind", "fixedElementCount", "extentBindingId", "captureProof", "sourceFileId", "line", "column");
         Table("memoryBarrierDimensions", "SELECT node_id,operand_ordinal,ordinal,kind,fixed_count,extent_binding_id,source_file_id,line,column FROM memory_barrier_dimensions ORDER BY node_id,operand_ordinal,ordinal",
             "nodeId", "operandOrdinal", "ordinal", "kind", "fixedCount", "extentBindingId", "sourceFileId", "line", "column");
+        Table("generatedRoutineOrigins", "SELECT entity_id,kind,capture_proof,failure_policy FROM generated_routine_origins ORDER BY entity_id",
+            "entityId", "kind", "captureProof", "failurePolicy");
+        Table("generatedRoutineScaffolds", "SELECT entity_id,ordinal,node_id,binding_id,kind,capture_proof FROM generated_routine_scaffolds ORDER BY entity_id,ordinal",
+            "entityId", "ordinal", "nodeId", "bindingId", "kind", "captureProof");
+        Table("dynamicInitializers", "SELECT id,action_id,storage_id,source_ordinal,ordinal,capture_proof,source_file_id,line,column FROM dynamic_initializers ORDER BY id",
+            "id", "actionId", "storageId", "sourceOrdinal", "ordinal", "captureProof", "sourceFileId", "line", "column");
+        Table("dynamicInitializerStatements", "SELECT initializer_id,ordinal,node_id FROM dynamic_initializer_statements ORDER BY initializer_id,ordinal",
+            "initializerId", "ordinal", "nodeId");
         Table("initializationActions", "SELECT id,entity_id,phase,priority,ordinal,source_file_id,line,column FROM initialization_actions ORDER BY ordinal",
             "id", "entityId", "phase", "priority", "ordinal", "sourceFileId", "line", "column");
         Table("sourceFiles", "SELECT id,path,parent_id FROM source_files ORDER BY id", "id", "path", "parentId");

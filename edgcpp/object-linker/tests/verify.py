@@ -92,12 +92,13 @@ def main():
                  'template_identity_shared.h', 'template_identity_provider.cpp', 'template_identity_main.cpp',
                  'project_cpp_indirect_value_abi.cpp', 'project_cpp_packed_layout.cpp',
                  'packed_typedef_identity.h', 'packed_typedef_identity_provider.cpp', 'packed_typedef_identity_main.cpp', 'zero_bound_arrays.h',
-                 'zero_bound_arrays_provider.cpp', 'zero_bound_arrays_main.cpp']:
+                 'zero_bound_arrays_provider.cpp', 'zero_bound_arrays_main.cpp',
+                 'cpp_dynamic_startup_scalar.cpp', 'cpp_dynamic_startup_array.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v23', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v24', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -342,6 +343,11 @@ def main():
         project_c_verify.malformed(project_objects, tool, run, mutate)
         provider_verify.verify(inputs, out, tool, run, check, compile_source, execute)
         startup_actions_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+        for startup_case in ('scalar', 'array'):
+            startup_name = 'cpp-dynamic-startup-' + startup_case
+            startup_object = compile_source(startup_name, inputs / ('cpp_dynamic_startup_' + startup_case + '.cpp'))
+            startup_linked = link(startup_name + '-link', [startup_object])
+            execute(startup_name, startup_linked)
         assignment_verify.verify(inputs, out, run, check, compile_source, link, execute)
         loops_object = out / 'loops.dotobj'
         loops_cs = '\n'.join(p.read_text() for p in (out / 'link-loops').glob('*.cs'))

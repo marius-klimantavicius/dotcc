@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v23'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v24'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -175,6 +175,39 @@ CREATE TABLE initialization_actions (
  column INTEGER NOT NULL CHECK(column>=0),
  UNIQUE(phase,entity_id),
  UNIQUE(phase,ordinal)
+) STRICT;
+CREATE TABLE generated_routine_origins (
+ entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
+ kind TEXT NOT NULL CHECK(kind='file-scope-initializer'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-file-scope-init-creation'),
+ failure_policy TEXT NOT NULL CHECK(failure_policy='terminate')
+) STRICT;
+CREATE TABLE dynamic_initializers (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ action_id INTEGER NOT NULL REFERENCES initialization_actions(id),
+ storage_id INTEGER NOT NULL UNIQUE REFERENCES storages(id),
+ source_ordinal INTEGER NOT NULL UNIQUE CHECK(source_ordinal>=0),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-file-scope-init-lowering'),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ UNIQUE(action_id,ordinal)
+) STRICT;
+CREATE TABLE dynamic_initializer_statements (
+ initializer_id INTEGER NOT NULL REFERENCES dynamic_initializers(id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
+ PRIMARY KEY(initializer_id,ordinal)
+) STRICT;
+CREATE TABLE generated_routine_scaffolds (
+ entity_id INTEGER NOT NULL REFERENCES generated_routine_origins(entity_id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
+ binding_id INTEGER NOT NULL REFERENCES bindings(id),
+ kind TEXT NOT NULL CHECK(kind IN ('declaration','zero-initialization')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-scope-binding'),
+ PRIMARY KEY(entity_id,ordinal)
 ) STRICT;
 CREATE TABLE bindings (
  id INTEGER PRIMARY KEY CHECK(id>0),

@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v24",
+  "scope": "Observed C++ file-scope startup routines, per-source initialization intervals and exhaustive generated local scaffolding ownership",
+  "fullRegressionChecks": 1151,
+  "focusedScalarArrayChecks": 34,
+  "focusedPriorityChecks": 17,
+  "focusedTemporaryChecks": 19,
+  "malformedMetadataChecks": 164,
+  "malformedObjectsRejected": 41,
+  "localStaticGenerationChecks": 12,
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v24-001/results.json",
+      "sha256": "485fab5d61fa86f2ecb1c4f55d207a80e0b5988450f2500b844d13190adec744"
+    },
+    "scalarArrayExecutionManaged035": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-dynamic-startup-acceptance-001/results.json",
+      "sha256": "360a05ab204d93f20d0767d9ce5df4383ad1034978aa2800afeae3596d6bbee9"
+    },
+    "priorityExecution": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-dynamic-startup-priority-001/results.json",
+      "sha256": "3656689f3a19371da1aad9dd5d37df60c53b16dcafabaf2f469995b0c407dec0"
+    },
+    "temporaryExecution": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-dynamic-init-temporary-001/results.json",
+      "sha256": "47299980b5f289a8358dfd48d2e02fddce2ffe5f703706cfd6179814201e2547"
+    },
+    "malformedScalarArray": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-dynamic-init-metadata-001/results.json",
+      "sha256": "57c9ed73e2410d898499998e8fc70e3f288de3ba6fe1a86b5f90e6cfeccf16e8"
+    },
+    "malformedTemporary": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-dynamic-init-temporary-001/metadata/results.json",
+      "sha256": "ffed213cd462187581f51d7d9bca6f5199d5e0c1b2d8f2d9e8aaab8635d49480"
+    },
+    "localGenerationOnly": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-dynamic-startup-local-generation-001/results.json",
+      "sha256": "6aa57c431432fe8489b377263380c42f02a65adde13e01e331b68dca63192191"
+    },
+    "actualDuckdbFrontier": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-043-startup/results.json",
+      "sha256": "7e06916ed2b3c407a83a0aed64cde88d7357c7b249c3a8f1b532a13ac5a2335f"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native043-verified-snapshot/cpfe-dot",
+      "sha256": "870d1318e501c9369ad74597c61350361eac50513d3ae3de1d39e5791ebadbe6"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-036/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "cec0cb3c4eea805355ee0f76a3cfe9e18ee24f728fd85476534436c88314c8a7"
+    }
+  },
+  "projectScope": "Both tested original DuckDB date.cpp and hugeint.cpp advance from file-scope startup rejection to destruction obligations in FromCString and ToString; neither complete unit emits yet.",
+  "priority": "Complete missing dotobj core features toward full DuckDB C# generation; libc++ runtime implementation remains deferred.",
+  "limitations": [
+    "Non-TLS unguarded file-scope initialization with trivial destruction only; dynamic TLS, guarded inline/template globals, file-scope destruction and unsupported assembly remain explicit gates.",
+    "Local static is generation-only with unresolved guard calls, not a runtime or concurrent publication claim.",
+    "Declaration scaffolds execute in acceptance; pure zero-initialization scaffold path remains unexercised because its attempted partial-aggregate fixture exposed separately uncaptured compiler-generated memset.",
+    "Environment.FailFast is the existing termination policy; custom std::set_terminate dispatch is not implemented by this milestone.",
+    "Focused scalar/array native and stock references use managed035 for execution; final managed036 repeats both under JIT and NativeAOT in the full suite.",
+    "No full DuckDB generation or new complete SQLite pipeline claim."
+  ]
+}

@@ -1144,3 +1144,43 @@ on incomplete arrays remain explicit unsupported boundaries. Standalone zero-siz
 storage, all-zero records and zero-size aggregate values are not implied by this
 bounded field/address contract and remain gated rather than receiving fabricated
 physical bytes.
+
+
+## Observed C++ file-scope initialization: scalar-control-v24
+
+Generated file-scope initializer routines have explicit `generated_routine_origins`
+rows. Their execution ABI is an actual owned `void()` routine; they do not acquire
+fabricated original source-function declarations or source signatures. Observation
+hooks at stock initializer creation and insertion record the relationship rather
+than guessing generated name prefixes. The generated origin carries the observed
+creation proof and `terminate` failure policy, separate from routine noexcept ABI.
+
+Existing `initialization_actions` schedules these routines with the priority and
+order provided by stock lowering. `dynamic_initializers` maps each original
+source storage to its action, original pre-partition source ordinal, action-local
+ordinal and source location. Ordered `dynamic_initializer_statements` identify
+exact contiguous direct-body statement intervals for each original initializer.
+No-op intervals may be empty. `generated_routine_scaffolds` separately identifies
+the direct-body prefix of observed local declarations and their immediate pure
+zero initializations. Together the ranges and scaffold prefix account for every
+direct statement in the generated routine exactly once. Shared temporaries are
+not falsely attributed to a particular source storage initializer.
+
+The managed reader validates this exhaustive ownership, actual local bindings,
+dense ordinals, statement order and pure scaffold shape. Linking consumes the
+owned bodies and scheduling metadata after source removal. All selected static
+storage is allocated and its zero/constant initialization installed before any
+action executes. Priority, link input order and original action order determine
+the existing scheduler sequence; source line sorting is not used. Exceptions
+escaping a C++ file-scope initializer terminate at its dispatch boundary;
+explicitly classified non-C++ runtime transfers retain their existing behavior.
+The current boundary uses the backend's existing `Environment.FailFast` policy;
+custom `std::set_terminate` handler dispatch remains a separate runtime gap.
+
+GNU lowering can leave an already-consumed `dik_none` entry on the original
+file-scope list. Only entries whose exact lowering was observed, or definitions
+stock lowering suppresses, are accepted as residuals. This does not imply support
+for unowned file-scope assembly, dynamic TLS, guarded inline/template global
+initialization or destruction obligations. Those remain explicit feature gates.
+Function-local initialization guards are a separate publication/lifetime contract;
+plain generation of acquire/release calls alone is not a concurrency guarantee.

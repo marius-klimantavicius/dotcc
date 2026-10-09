@@ -29,6 +29,10 @@ ARRAYS = {
     'functions': ('functions', ['entityId', 'bodyNodeId']),
     'abiRoutineOrigins': ('abi_routine_origins', ['entityId', 'primaryEntityId', 'entryKind', 'isAliasEntry', 'captureProof', 'targetEntityId']),
     'initializationActions': ('initialization_actions', ['id', 'entityId', 'phase', 'priority', 'ordinal', 'sourceFileId', 'line', 'column']),
+    'generatedRoutineOrigins': ('generated_routine_origins', ['entityId', 'kind', 'captureProof', 'failurePolicy']),
+    'dynamicInitializers': ('dynamic_initializers', ['id', 'actionId', 'storageId', 'sourceOrdinal', 'ordinal', 'captureProof', 'sourceFileId', 'line', 'column']),
+    'dynamicInitializerStatements': ('dynamic_initializer_statements', ['initializerId', 'ordinal', 'nodeId']),
+    'generatedRoutineScaffolds': ('generated_routine_scaffolds', ['entityId', 'ordinal', 'nodeId', 'bindingId', 'kind', 'captureProof']),
     'bindings': ('bindings', ['id', 'functionId', 'kind', 'ordinal', 'typeId', 'sourceName',
                               'scopeNodeId', 'sourceFileId', 'line', 'column', 'isSynthetic']),
     'nodes': ('nodes', ['id', 'functionId', 'kind', 'typeId', 'entityId', 'bindingId',
@@ -117,7 +121,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v23':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v24':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -137,7 +141,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v23', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v24', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

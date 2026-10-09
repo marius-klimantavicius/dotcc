@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v23: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v24: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -32,6 +32,7 @@ struct Writer {
   unsigned next_entity=1,next_binding=1,next_node=1,next_file=1,next_source_type=1,next_source_declaration=1;
   unsigned function=0,next_execution_type=12,va_list_id=0,f80_id=0,i128_id=0,u128_id=0;
   a_statement_ptr function_block=nullptr;
+  unsigned owned_function_root=0;
   a_routine_ptr current_routine=nullptr;
   std::map<a_routine_ptr,unsigned> routine_ids;
   std::map<a_variable_ptr,unsigned> binding_ids;
@@ -47,6 +48,12 @@ struct Writer {
   std::vector<string> macro_definitions,macro_parameters,macro_events;
   // Action order is independent of executable reachability/entity numbering.
   std::vector<string> initialization_actions;
+  std::vector<string> generated_routine_origins,dynamic_initializers,dynamic_initializer_statements,generated_routine_scaffolds;
+  std::map<a_routine_ptr,unsigned> generated_scaffold_ordinals;
+  std::set<unsigned> generated_root_nodes,owned_generated_root_nodes;
+  std::map<a_routine_ptr,unsigned> initialization_action_ids;
+  std::map<a_statement_ptr,unsigned> initializer_statement_nodes;
+  std::set<a_statement_ptr> initializer_statement_anchors;
   std::vector<string> memory_barriers,memory_barrier_operands,memory_barrier_dimensions;
   std::map<unsigned,unsigned> source_type_ids;
   std::map<unsigned,unsigned> pointer_types;
@@ -846,6 +853,9 @@ struct Writer {
   }
   void edge(unsigned parent,const string &role,unsigned ordinal,unsigned child) {
     if(!child)reject("missing child node");
+    if(current_routine && parent==owned_function_root && role=="statement" &&
+       dot_object_source::state().generated_initializers.count(current_routine))
+      generated_root_nodes.insert(child);
     edges.push_back("{\"parentId\":"+number(parent)+",\"role\":"+quote(role)+",\"ordinal\":"+std::to_string(ordinal)+",\"childId\":"+number(child)+"}");
   }
   bool copyable_value(a_type_ptr type,bool base_payload=false) {
@@ -865,9 +875,94 @@ struct Writer {
     }
     return true;
   }
+  void validate_file_initializers(a_scope_ptr file_scope) {
+    auto &captured=dot_object_source::state();
+    if(file_scope->asm_entries)reject("file-scope assembly");
+    if(captured.file_initializer_destructions)reject("file-scope destruction obligations");
+    for(const auto &entry:captured.dynamic_initializers) {
+      const auto &init=entry.second;
+      diagnostic_scope diagnostic(init.position);
+      if(!init.variable)reject("observed file initializer lacks source storage");
+      if(ignore_variable_in_back_end(init.variable) || init.variable->suppress_inline_definition)continue;
+      if(!init.error.empty())reject(init.error.c_str());
+      if(!captured.file_initializers_observed || !init.begun || !init.complete ||
+         !init.routine || !captured.generated_initializers.count(init.routine))
+        reject("file initializer lacks complete observed lowering");
+      if(init.guarded)reject("guarded inline/template file initialization");
+      if(thread_storage(init.variable))reject("dynamic TLS initialization schedule");
+      if(!captured.variables.count(init.variable))reject("file initializer lacks original source declaration");
+      for(auto statement:init.statements) {
+        if(!initializer_statement_anchors.insert(statement).second)
+          reject("overlapping observed file initializer intervals");
+      }
+    }
+    // GNU priority lowering may leave the consumed dik_none head attached.
+    // Accept only entries whose exact lowering was observed (or definitions
+    // stock C explicitly suppresses), never an arbitrary residual list.
+    for(auto dip=file_scope->dynamic_inits;dip;dip=dip->next) {
+      auto observed=captured.dynamic_initializers.find(dip);
+      if(observed==captured.dynamic_initializers.end())reject("unobserved residual file initializer");
+      auto v=observed->second.variable;
+      if(!v || (!(ignore_variable_in_back_end(v) || v->suppress_inline_definition) &&
+                !observed->second.complete))reject("unconsumed residual file initializer");
+    }
+  }
+  void write_dynamic_initializer_origins() {
+    auto &captured=dot_object_source::state();
+    // Action order, not pointer-map order, determines persistent row IDs.
+    unsigned next=1;
+    std::set<a_dynamic_init_ptr> emitted;
+    for(auto routine:routines) {
+      auto origin=captured.generated_initializers.find(routine);
+      if(origin==captured.generated_initializers.end())continue;
+      auto action=initialization_action_ids.find(routine);
+      if(action==initialization_action_ids.end())reject("observed startup routine has no scheduled action");
+      unsigned ordinal=0;
+      for(auto original:origin->second.initializers) {
+        const auto &init=captured.dynamic_initializers.at(original);
+        if(init.ordinal!=ordinal || init.routine!=routine || !init.complete)
+          reject("file initializer action membership/order changed");
+        if(!emitted.insert(original).second)reject("source initializer has multiple actions");
+        unsigned id=next++;
+        dynamic_initializers.push_back("{\"id\":"+number(id)+",\"actionId\":"+number(action->second)+
+          ",\"storageId\":"+number(storage_ids.at(init.variable))+",\"sourceOrdinal\":"+std::to_string(init.source_ordinal)+
+          ",\"ordinal\":"+std::to_string(ordinal++)+",\"captureProof\":\"observed-file-scope-init-lowering\""+position(init.position)+"}");
+        unsigned statement_ordinal=0;
+        for(auto statement:init.statements) {
+          auto owned=initializer_statement_nodes.find(statement);
+          if(owned==initializer_statement_nodes.end()) {
+            // These stock nonexecuting nodes intentionally have no owned
+            // statement; dropping executable nodes would lose provenance.
+            if(statement->kind==stmk_empty || statement->kind==stmk_decl)continue;
+            reject("observed file initializer statement missing from owned graph");
+          }
+          if(!owned_generated_root_nodes.insert(owned->second).second)
+            reject("initializer statement has duplicate source/scaffold ownership");
+          dynamic_initializer_statements.push_back("{\"initializerId\":"+number(id)+
+            ",\"ordinal\":"+std::to_string(statement_ordinal++)+",\"nodeId\":"+number(owned->second)+"}");
+        }
+      }
+    }
+    for(const auto &entry:captured.dynamic_initializers) {
+      auto variable=entry.second.variable;
+      if(ignore_variable_in_back_end(variable) || variable->suppress_inline_definition)continue;
+      if(!emitted.count(entry.first))reject("observed source initializer lacks owned scheduled action");
+    }
+    if(generated_root_nodes!=owned_generated_root_nodes)
+      reject("generated initializer body has unexplained or nonroot statements");
+  }
+  void generated_scope_scaffold(unsigned node_id,unsigned binding_id,const string &kind) {
+    if(!current_routine || !dot_object_source::state().generated_initializers.count(current_routine))return;
+    unsigned ordinal=generated_scaffold_ordinals[current_routine]++;
+    generated_routine_scaffolds.push_back("{\"entityId\":"+number(function)+",\"ordinal\":"+std::to_string(ordinal)+
+      ",\"nodeId\":"+number(node_id)+",\"bindingId\":"+number(binding_id)+",\"kind\":"+quote(kind)+
+      ",\"captureProof\":\"observed-scope-binding\"}");
+    if(!owned_generated_root_nodes.insert(node_id).second)reject("duplicate generated scope scaffold");
+  }
   void startup_action(a_routine_ptr r,unsigned ordinal) {
 #if GNU_EXTENSIONS_ALLOWED
-    if(!r->is_initialization_routine)return;
+    auto observed=dot_object_source::state().generated_initializers.find(r);
+    if(!r->is_initialization_routine && observed==dot_object_source::state().generated_initializers.end())return;
     diagnostic_scope diagnostic(r->source_corresp.decl_position);
     auto type=skip_typerefs(r->type);
     if(type->kind!=tk_routine || r->function_def_number==NULL_function_def_number)
@@ -878,9 +973,15 @@ struct Writer {
     if(skip_typerefs(type->variant.routine.return_type)->kind!=tk_void ||
        extra->param_type_list || extra->has_ellipsis)
       reject("startup action outside void(void) calling contract");
-    unsigned long priority=r->has_ctor_priority?gnu_routine_supp(r)->ctor_priority:65535;
+    unsigned long priority=observed!=dot_object_source::state().generated_initializers.end()?
+      (observed->second.priority?observed->second.priority:65535):
+      r->has_ctor_priority?gnu_routine_supp(r)->ctor_priority:65535;
     if(priority>65535)reject("startup action priority outside GNU range");
     unsigned entity=routine(r);
+    if(observed!=dot_object_source::state().generated_initializers.end())
+      for(auto original:observed->second.initializers)
+        storage(dot_object_source::state().dynamic_initializers.at(original).variable);
+    initialization_action_ids[r]=unsigned(initialization_actions.size()+1);
     initialization_actions.push_back("{\"id\":"+number(unsigned(initialization_actions.size()+1))+",\"entityId\":"+number(entity)+
       ",\"phase\":\"startup\",\"priority\":"+std::to_string(priority)+
       ",\"ordinal\":"+std::to_string(ordinal)+position(r->source_corresp.decl_position)+"}");
@@ -967,6 +1068,19 @@ struct Writer {
     entities.push_back("{\"id\":"+number(id)+",\"sourceName\":"+quote(source_spelling(&r->source_corresp))+
       ",\"linkage\":"+quote(external?"external":"internal")+",\"externalKey\":"+(external?quote(key):"null")+
       ",\"definition\":"+quote(body?(coalescible?"linkonce":"strong"):"declaration")+",\"returnTypeId\":"+number(type_id(t->variant.routine.return_type))+position(r->source_corresp.decl_position)+",\"routineTypeId\":"+number(routine_type(t,known_empty_definition))+"}");
+    auto generated=dot_object_source::state().generated_initializers.find(r);
+    if(generated!=dot_object_source::state().generated_initializers.end()) {
+      const auto &origin=generated->second;
+      if(primary || adapter || !origin.complete || !origin.error.empty() || !r->compiler_generated || !body ||
+         origin.is_thread_local || origin.needed_bit || extra->param_type_list || extra->has_ellipsis ||
+         skip_typerefs(t->variant.routine.return_type)->kind!=tk_void ||
+         body->variant.routine.parameters || coalescible)
+        reject("generated initializer outside observed ordinary void() startup contract");
+      generated_routine_origins.push_back("{\"entityId\":"+number(id)+
+        ",\"kind\":\"file-scope-initializer\",\"captureProof\":\"observed-file-scope-init-creation\",\"failurePolicy\":\"terminate\"}");
+      routine_abi_slots[r]={};
+      return id;
+    }
     if(primary) {
 #if DO_IL_LOWERING && IA64_ABI
       unsigned primary_id=routine(primary);
@@ -1143,12 +1257,17 @@ struct Writer {
     for(auto v=scope->nonstatic_variables;v;v=v->next) {
       unsigned id=binding(v,block);
       if(!declared_bindings.insert(id).second)continue;
-      edge(block,"statement",ordinal++,node("declare",0,v->source_corresp.decl_position,0,id));
+      unsigned declaration=node("declare",0,v->source_corresp.decl_position,0,id);
+      edge(block,"statement",ordinal++,declaration);
+      if(block==owned_function_root)generated_scope_scaffold(declaration,id,"declaration");
       // lower_init marks partially dynamic aggregates initk_zero, leaving
       // explicit element stores in the statement stream. As c_gen_be's
       // dump_variable_decl does, zero this storage at lexical scope entry.
-      if(v->init_kind==initk_zero)
-        edge(block,"statement",ordinal++,initialize_aggregate(v,nullptr,v->source_corresp.decl_position));
+      if(v->init_kind==initk_zero) {
+        unsigned initialization=initialize_aggregate(v,nullptr,v->source_corresp.decl_position);
+        edge(block,"statement",ordinal++,initialization);
+        if(block==owned_function_root)generated_scope_scaffold(initialization,id,"zero-initialization");
+      }
     }
   }
   unsigned zero_node(unsigned type,const a_source_position &pos) {
@@ -1917,7 +2036,12 @@ struct Writer {
     }
     if(child->kind==stmk_empty || implicit_return(child))return;
     if(child->kind==stmk_label && control_labels.count(child->variant.label.ptr))return;
-    edge(block,"statement",ordinal++,statement(child));
+    unsigned owned_statement=statement(child);
+    edge(block,"statement",ordinal++,owned_statement);
+    if(initializer_statement_anchors.count(child)) {
+      if(!initializer_statement_nodes.emplace(child,owned_statement).second)
+        reject("file initializer statement emitted more than once");
+    }
     if(child->kind==stmk_init && cleanup_variables.count(child->variant.dynamic_init->variable)) {
       if(switch_body)reject("cleanup activation directly in switch body");
       auto v=child->variant.dynamic_init->variable;
@@ -2025,6 +2149,7 @@ struct Writer {
     switch(s->kind) {
       case stmk_block: {
         unsigned id=node("block",0,s->position),ordinal=0;
+        if(root_scope)owned_function_root=id;
         auto scope=root_scope?root_scope:s->variant.block.extra_info->assoc_scope;
         check_lifetime(s->variant.block.extra_info->lifetime);
         if(root_scope) {
@@ -2179,7 +2304,7 @@ struct Writer {
     source_files(il_header.primary_source_file,0);
     capture_macros();
     auto file_scope=il_header.primary_scope;
-    if(file_scope->dynamic_inits || file_scope->asm_entries)reject("global dynamic initialization/asm");
+    validate_file_initializers(file_scope);
     collect_storage(file_scope);
 #if GNU_EXTENSIONS_ALLOWED
     unsigned startup_ordinal=0;
@@ -2190,7 +2315,8 @@ struct Writer {
 #if GNU_EXTENSIONS_ALLOWED
       // Follow stock C dump_scope_routines order, not reachability or first
       // declaration position. Equal-priority ties are defined by this order.
-      if(r->is_initialization_routine)startup_action(r,startup_ordinal++);
+      if(r->is_initialization_routine || dot_object_source::state().generated_initializers.count(r))
+        startup_action(r,startup_ordinal++);
 #endif
       bool root=r->source_corresp.name_linkage==nlk_external || r->source_corresp.name_linkage==nlk_cplusplus_external;
       bool coalescible=r->is_inline || (r->is_template_function && !r->is_specialized);
@@ -2222,6 +2348,7 @@ struct Writer {
       functions.push_back("{\"entityId\":"+number(function)+",\"bodyNodeId\":"+number(root)+"}");
       context="file scope";
     }
+    write_dynamic_initializer_origins();
     for(const auto &storage_bytes:bitfield_data) {
       string bytes;unsigned long long begin=0,previous=0;
       for(const auto &byte:storage_bytes.second) {
@@ -2237,7 +2364,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v23\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v24\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -2251,6 +2378,10 @@ struct Writer {
       ",\"sourceRoutineTypes\":"+array(source_routine_types)+",\"sourceRoutineParameters\":"+array(source_routine_parameters)+
       ",\"sourceRoutineAbis\":"+array(source_routine_abis)+",\"sourceRoutineAbiParameters\":"+array(source_routine_abi_parameters)+
       ",\"initializationActions\":"+array(initialization_actions)+
+      ",\"generatedRoutineOrigins\":"+array(generated_routine_origins)+
+      ",\"generatedRoutineScaffolds\":"+array(generated_routine_scaffolds)+
+      ",\"dynamicInitializers\":"+array(dynamic_initializers)+
+      ",\"dynamicInitializerStatements\":"+array(dynamic_initializer_statements)+
       ",\"memoryBarriers\":"+array(memory_barriers)+",\"memoryBarrierOperands\":"+array(memory_barrier_operands)+
       ",\"memoryBarrierDimensions\":"+array(memory_barrier_dimensions)+
       ",\"types\":"+array(types)+",\"entities\":"+array(entities)+

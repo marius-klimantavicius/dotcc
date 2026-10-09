@@ -20,6 +20,8 @@ def main():
     parser.add_argument('--generation-only', action='store_true',
                         help='Permit external runtime declarations; do not compile or run generated C#')
     parser.add_argument('--nativeaot', action='store_true')
+    parser.add_argument('--case', action='append', choices=('scalar', 'array', 'local', 'priority'),
+                        help='Select fixture(s); default runs all three')
     args = parser.parse_args()
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -52,7 +54,7 @@ def main():
     error = None
     try:
         objects = []
-        for name in ('scalar', 'array', 'local'):
+        for name in args.case or ('scalar', 'array', 'local'):
             source = inputs / ('cpp_dynamic_startup_' + name + '.cpp')
             shutil.copy2(Path(__file__).parent / source.name, source)
             artifact(source, 'Independent standard-library-free fixture')

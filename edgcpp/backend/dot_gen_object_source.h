@@ -147,10 +147,33 @@ struct DefaultAdapter {
   a_routine_ptr target=nullptr,primary=nullptr;
   bool implied_arguments=false,copy_constructor=false,has_arguments=false;
 };
+// Private provenance for stock file-scope initialization lowering. An
+// insertion interval belongs to one original storage initializer; the writer
+// publishes only owned storage/action/statement IDs, never these IL pointers.
+struct DynamicInitializer {
+  a_dynamic_init_ptr original=nullptr;
+  a_variable_ptr variable=nullptr;
+  a_routine_ptr routine=nullptr;
+  unsigned source_ordinal=0,ordinal=0;
+  a_source_position position={};
+  a_statement_ptr previous=nullptr;
+  bool begun=false,complete=false,guarded=false;
+  std::vector<a_statement_ptr> statements;
+  std::string error;
+};
+struct GeneratedInitializer {
+  unsigned long priority=0,needed_bit=0;
+  bool is_thread_local=false,complete=false;
+  std::vector<a_dynamic_init_ptr> initializers;
+  std::string error;
+};
 struct State {
   std::map<a_type_ptr,unsigned> type_ids;
   std::vector<Type> types;
   std::map<a_routine_ptr,Function> functions;
+  bool file_initializers_observed=false,file_initializer_destructions=false;
+  std::map<a_dynamic_init_ptr,DynamicInitializer> dynamic_initializers;
+  std::map<a_routine_ptr,GeneratedInitializer> generated_initializers;
   std::map<unsigned,RoutineAbi> routine_abis;
   std::map<a_routine_ptr,a_variable_ptr> result_parameters;
   std::set<a_routine_ptr> runtime_declarations;
@@ -646,6 +669,91 @@ inline void capture_scope(a_scope_ptr scope) {
     if(!ns->is_namespace_alias)capture_scope(ns->variant.assoc_scope);
 }
 inline void observe_scope(a_scope_ptr scope){if(enabled())capture_scope(scope);}
+inline bool initializer_has_destructions(an_object_lifetime_ptr lifetime) {
+  if(!lifetime)return false;
+  if(lifetime->destructions)return true;
+  for(auto child=lifetime->child_lifetime;child;child=child->next)
+    if(initializer_has_destructions(child))return true;
+  return false;
+}
+inline void observe_file_initializers() {
+  if(!enabled())return;
+  auto &s=state();s.file_initializers_observed=true;
+  s.file_initializer_destructions=initializer_has_destructions(il_header.primary_scope->lifetime);
+  unsigned ordinal=0;
+  for(auto dip=il_header.primary_scope->dynamic_inits;dip;dip=dip->next,++ordinal) {
+    DynamicInitializer value;value.original=dip;value.variable=dip->variable;
+    value.source_ordinal=ordinal;
+    if(dip->destructor || initializer_has_destructions(dip->init_expr_lifetime))
+      value.error="file initializer has source destruction obligations";
+    if(value.variable) {
+      value.position=value.variable->source_corresp.decl_position;
+      capture_variable(value.variable);
+    } else value.error="file initializer lacks its source variable";
+    if(!s.dynamic_initializers.emplace(dip,value).second)
+      s.dynamic_initializers.at(dip).error="duplicate original file initializer";
+  }
+}
+inline void observe_generated_initializer(a_scope_ptr scope,unsigned long needed_bit,
+                                          unsigned long priority,a_boolean is_thread_local) {
+  if(!enabled())return;
+  GeneratedInitializer value;value.needed_bit=needed_bit;value.priority=priority;
+  value.is_thread_local=is_thread_local;
+  if(!state().generated_initializers.emplace(scope->variant.routine.ptr,value).second)
+    state().generated_initializers.at(scope->variant.routine.ptr).error="duplicate generated initializer creation";
+}
+inline void observe_initializer_begin(a_scope_ptr scope,a_dynamic_init_ptr dip,
+                                     a_boolean block_start,a_boolean after_statement,
+                                     a_statement_ptr anchor) {
+  if(!enabled())return;
+  auto &s=state();auto found=s.dynamic_initializers.find(dip);
+  if(found==s.dynamic_initializers.end()) {
+    DynamicInitializer value;value.error="file initializer absent from original list";
+    found=s.dynamic_initializers.emplace(dip,value).first;
+  }
+  auto &value=found->second;auto routine=scope->variant.routine.ptr;
+  auto generated=s.generated_initializers.find(routine);
+  if(generated==s.generated_initializers.end()) {value.error="initializer routine lacks creation observation";return;}
+  if(value.begun || value.variable!=dip->variable) {value.error="duplicate/changed file initializer";return;}
+  value.begun=true;value.routine=routine;
+  value.ordinal=unsigned(generated->second.initializers.size());
+  generated->second.initializers.push_back(dip);
+  value.guarded=value.variable->is_inline || value.variable->is_template_variable;
+  if(block_start) {
+    if(anchor!=scope->assoc_block)value.error="initializer insertion is not in its routine root";
+  } else if(after_statement)value.previous=anchor;
+  else value.error="initializer insertion is not a statement sequence";
+}
+inline void observe_initializer_end(a_scope_ptr scope,a_dynamic_init_ptr dip,
+                                   a_boolean block_start,a_boolean after_statement,
+                                   a_statement_ptr anchor) {
+  if(!enabled())return;
+  auto found=state().dynamic_initializers.find(dip);
+  if(found==state().dynamic_initializers.end())return;
+  auto &value=found->second;
+  if(!value.begun || value.complete || value.routine!=scope->variant.routine.ptr) {
+    value.error="file initializer completion lacks matching start";return;
+  }
+  value.complete=true;
+  if(!value.error.empty())return;
+  if(block_start) {
+    if(value.previous || anchor!=scope->assoc_block)value.error="initializer insertion moved backwards";
+    return;
+  }
+  if(!after_statement) {value.error="initializer completion is not a statement sequence";return;}
+  if(anchor==value.previous)return; // An observed no-op constructor is valid.
+  auto stmt=value.previous?value.previous->next:scope->assoc_block->variant.block.statements;
+  for(;stmt;stmt=stmt->next) {
+    value.statements.push_back(stmt);
+    if(stmt==anchor)return;
+  }
+  value.error="initializer statement interval lost its completion anchor";
+}
+inline void observe_generated_initializer_complete(a_scope_ptr scope) {
+  if(!enabled())return;
+  auto found=state().generated_initializers.find(scope->variant.routine.ptr);
+  if(found!=state().generated_initializers.end())found->second.complete=true;
+}
 inline void observe_frontend_identity_boundary() {
   if(!enabled() || C_mode())return;
   // fe_wrapup invokes this after normal file-scope name finalization. Copy

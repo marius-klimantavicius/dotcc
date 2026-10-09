@@ -348,6 +348,46 @@ for runtime_callback in ("ctor", "dtor"):
         '#if defined(EDG_DOT_BACKEND)\n'
         '    dot_object_source::observe_runtime_signature(function_type);\n'
         '#endif')
+# Observe stock file-scope dynamic initialization creation and insertion.
+# These hooks retain provenance; they do not change any frontend IL entry.
+object_source_overlay(init_lower,
+    '  a_scope_ptr file_scope = il_header.primary_scope;\n\n#if IMPLEMENTATION_SUPPORTS_MULTIPLE_THREADS',
+    '  a_scope_ptr file_scope = il_header.primary_scope;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_file_initializers();\n'
+    '#endif\n\n#if IMPLEMENTATION_SUPPORTS_MULTIPLE_THREADS')
+object_source_overlay(init_lower,
+    '  return scope;\n}  /* file_scope_init_insert_location */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_generated_initializer(scope, needed_bit_number,\n'
+    '      init_priority, do_thread_local);\n'
+    '#endif\n'
+    '  return scope;\n}  /* file_scope_init_insert_location */')
+object_source_overlay(init_lower,
+    '      if (var->is_inline\n#if TEMPLATE_STATIC_DATA_MEMBER_INIT_GUARD_CODE',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_source::observe_initializer_begin(scope, dip,\n'
+    '          insert_location.kind == ilk_block_start,\n'
+    '          insert_location.kind == ilk_after_statement,\n'
+    '          insert_location.variant.statement.stmt);\n'
+    '#endif\n'
+    '      if (var->is_inline\n#if TEMPLATE_STATIC_DATA_MEMBER_INIT_GUARD_CODE')
+object_source_overlay(init_lower,
+    '#endif /* IA64_ABI */\n#if SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS\n      if (do_single_init) {',
+    '#endif /* IA64_ABI */\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_source::observe_initializer_end(scope, dip,\n'
+    '          insert_location.kind == ilk_block_start,\n'
+    '          insert_location.kind == ilk_after_statement,\n'
+    '          insert_location.variant.statement.stmt);\n'
+    '#endif\n'
+    '#if SEPARATE_ROUTINES_FOR_FILE_SCOPE_DYNAMIC_INITS\n      if (do_single_init) {')
+object_source_overlay(init_lower,
+    '    pop_generated_routine_context(scope, region_number, &grcontext);\n    processing_file_scope_init_routine = FALSE;',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_generated_initializer_complete(scope);\n'
+    '#endif\n'
+    '    pop_generated_routine_context(scope, region_number, &grcontext);\n    processing_file_scope_init_routine = FALSE;')
 eh_lower = root / "upstream/src/lower_eh.c"
 object_source_overlay(eh_lower,
     '#include "lower_hdrs.h"',

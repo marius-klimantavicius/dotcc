@@ -478,3 +478,37 @@ pass native/stock-C references but are rejected by the owned exporter. Local
 static generation succeeds with unresolved externs, without proving concurrent
 guard publication. It establishes the next core-feature acceptance baseline;
 libc++ implementation and runtime provider work remain deferred.
+
+
+## Owned C++ file-scope startup, v24 (2026-10-09)
+
+Global scalar initialization, constructor-initialized constant arrays and
+constructor temporaries now own their generated startup routines and original
+per-storage statement intervals. Observed local-declaration scaffolding is kept
+separate from original initializer work. Their union must explain every direct
+body statement exactly once. Original source ordinals remain distinct from
+priority-partitioned action order; native GNU init_priority tests verify reversed
+source order. Source removal does not affect managed linking or scheduling.
+
+The stock GNU frontend may leave consumed `dik_none` entries on the file-scope
+list. Exact creation/insertion observations now distinguish those from unowned
+initialization; no frontend semantics or generated-name guesses were introduced.
+Zero and constant storage initialization precedes all selected dynamic actions.
+C++ startup exception boundaries use the existing FailFast termination policy;
+custom std::set_terminate dispatch remains runtime work.
+
+Native043/managed036 passes **1151 full regression checks including NativeAOT**.
+Independent scalar/array acceptance passes 34 checks, priority acceptance 17,
+and temporary scaffolding 19 (including executed stock C). Resealed malformed
+objects produce 41 semantic rejections across 164 metadata checks.
+[Hashed v24 evidence](../evidence/dotobj-file-scope-initialization-20261009.json)
+records final tools and focused/full receipts. Local static generation separately
+passes 12 checks with unresolved guard imports, without claiming concurrency or
+execution. The zero-initialization scaffold branch remains explicitly unexercised;
+a partial-aggregate attempt exposed a compiler-injected memset origin gap.
+
+Both original DuckDB `date.cpp` and `hugeint.cpp` now clear startup and reach
+unowned destruction in `FromCString` and `ToString`. Complete unit generation is
+still blocked. The next core slice owns typed cleanup states, destructor actions
+and constructor rollback, followed by source exception constructs; libc++ runtime
+implementation remains deferred under the generation-first checkpoint.

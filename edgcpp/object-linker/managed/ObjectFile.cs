@@ -24,6 +24,8 @@ internal sealed partial class ObjectFile : IDisposable
         ["memory_barrier_dimensions"] = "node_id,operand_ordinal,ordinal",
         ["source_record_types"] = "id", ["source_record_fields"] = "id",
         ["initialization_actions"] = "id",
+        ["generated_routine_origins"] = "entity_id", ["generated_routine_scaffolds"] = "entity_id,ordinal", ["dynamic_initializers"] = "id",
+        ["dynamic_initializer_statements"] = "initializer_id,ordinal",
         ["abi_routine_origins"] = "entity_id", ["source_record_bases"] = "id", ["record_base_subobjects"] = "record_type_id,source_base_id",
         ["object_info"] = "singleton", ["provenance"] = "ordinal", ["source_files"] = "id",
         ["record_types"] = "type_id", ["record_fields"] = "id",
@@ -68,7 +70,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v23" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v24" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -84,6 +86,7 @@ internal sealed partial class ObjectFile : IDisposable
                     throw new InvalidDataException("Primary source identity does not match exactly one available root snapshot");
             ReadSummaries();
             ReadInitializationActions();
+            ReadDynamicInitializers();
             ReadAndVerifySourceProvenance();
             ReadAndVerifyMacroProvenance();
             ReadMemoryBarrierMetadata();
@@ -292,6 +295,7 @@ internal sealed partial class ObjectFile : IDisposable
             }
         var body = new FunctionBody { RootId = Functions[functionId], Nodes = nodes, Bindings = bindings, Edges = edges };
         Verifier.Body(this, Entities[functionId], body);
+        VerifyGeneratedRoutineBody(functionId, body);
         return body;
     }
 
