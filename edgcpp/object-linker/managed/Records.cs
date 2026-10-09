@@ -14,7 +14,7 @@ internal sealed record RecordType(long TypeId, string IdentityKey, string Source
 internal sealed record RecordField(long Id, long RecordTypeId, long Ordinal,
     long TypeId, string SourceName, long ByteOffset, long? SourceTypeId,
     long? SourceFileId, long Line, long Column, long? BitOffset, long? BitWidth, bool? BitSigned,
-    long? SourceFieldId, string FieldRole, long? SourceBaseId);
+    long? SourceFieldId, string FieldRole, long? SourceBaseId, long? ObservedAlignment);
 
 internal sealed partial class ObjectFile
 {
@@ -44,11 +44,11 @@ internal sealed partial class ObjectFile
                     throw new InvalidDataException("Duplicate nominal record identity");
                 groupedFields.Add(record.TypeId, []);
             }
-        using (var query = database.Prepare("SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed,source_field_id,field_role,source_base_id FROM record_fields ORDER BY id"))
+        using (var query = database.Prepare("SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed,source_field_id,field_role,source_base_id,observed_alignment FROM record_fields ORDER BY id"))
             while (query.Read())
             {
                 var field = new RecordField(query.Integer(0), query.Integer(1), query.Integer(2), query.Integer(3), query.Text(4),
-                    query.Integer(5), query.OptionalInteger(6), query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.OptionalInteger(10), query.OptionalInteger(11), query.OptionalInteger(12) is long signed ? signed == 1 : null, query.OptionalInteger(13), query.Text(14), query.OptionalInteger(15));
+                    query.Integer(5), query.OptionalInteger(6), query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.OptionalInteger(10), query.OptionalInteger(11), query.OptionalInteger(12) is long signed ? signed == 1 : null, query.OptionalInteger(13), query.Text(14), query.OptionalInteger(15), query.OptionalInteger(16));
                 if (field.Id <= 0 || !Records.ContainsKey(field.RecordTypeId) || field.Ordinal < 0 ||
                     field.ByteOffset < 0 || field.Line < 0 || field.Column < 0 || field.FieldRole is not ("source" or "vptr" or "abi" or "base") ||
                     (field.FieldRole == "source" ? field.SourceTypeId is null or <= 0 || field.SourceFieldId is null or <= 0
@@ -58,6 +58,10 @@ internal sealed partial class ObjectFile
                 if ((field.BitOffset is null) != (field.BitWidth is null) || (field.BitOffset is null) != (field.BitSigned is null) ||
                     field.BitOffset is < 0 or > 7 || field.BitWidth is < 1 or > 64 || query.OptionalInteger(12) is < 0 or > 1)
                     throw new InvalidDataException("Invalid bitfield metadata");
+                if (field.BitWidth is not null && field.ObservedAlignment is not null ||
+                    field.ObservedAlignment is long alignment && (alignment <= 0 || !AlignmentDirective(alignment)) ||
+                    field.FieldRole == "source" && field.BitWidth is null && field.ObservedAlignment is null)
+                    throw new InvalidDataException("Ordinary source field requires observed layout alignment; bitfields have no scalar alignment observation");
                 if (!Fields.TryAdd(field.Id, field)) throw new InvalidDataException("Duplicate record field identity");
                 groupedFields[field.RecordTypeId].Add(field);
             }
@@ -145,8 +149,11 @@ internal sealed partial class ObjectFile
                     layoutDepth = Math.Max(layoutDepth, layoutDepths[nested.TypeId] + 1);
                     if (layoutDepth > 128) throw new InvalidDataException("By-value record layout nesting exceeds supported limit");
                 }
-                if (field.BitWidth is null && (StorageAlignment(type) > record.Alignment || field.ByteOffset % StorageAlignment(type) != 0))
-                    throw new InvalidDataException("Ordinary field does not satisfy its natural alignment");
+                if (field.BitWidth is null && field.ObservedAlignment is long observed && (observed > record.Alignment || field.ByteOffset % observed != 0))
+                    throw new InvalidDataException("Ordinary field does not satisfy its observed layout alignment");
+                if (field.BitWidth is null && field.FieldRole != "source" &&
+                    (record.Alignment < StorageAlignment(type) || field.ByteOffset % StorageAlignment(type) != 0))
+                    throw new InvalidDataException("Generated field requires its natural ABI alignment");
                 long begin = checked(field.ByteOffset * 8), end;
                 if (field.BitWidth is long width)
                 {

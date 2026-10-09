@@ -96,7 +96,7 @@ internal sealed partial class Linker
                         !CompatibleBaseSubobjects(prior.Object, prior.Record, obj, record) ||
                         expected.Length != actual.Length || actual.Where((field, index) => field.SourceName != expected[index].SourceName ||
                             field.ByteOffset != expected[index].ByteOffset || field.BitOffset != expected[index].BitOffset || field.BitWidth != expected[index].BitWidth || field.BitSigned != expected[index].BitSigned || obj.Type(field.TypeId) != prior.Object.Type(expected[index].TypeId) ||
-                            field.FieldRole != expected[index].FieldRole ||
+                            field.FieldRole != expected[index].FieldRole || field.ObservedAlignment != expected[index].ObservedAlignment ||
                             FieldBaseOrdinal(obj, field) != FieldBaseOrdinal(prior.Object, expected[index]) ||
                             FieldSourceSignature(obj, field) != FieldSourceSignature(prior.Object, expected[index])).Any())
                         throw new InvalidDataException($"Record layout mismatch for {record.IdentityKey}");
@@ -108,8 +108,6 @@ internal sealed partial class Linker
         names.Reserve(className);
         foreach (Symbol symbol in Definitions)
             Names.Add(symbol.Key, names.Allocate(symbol.Entity.SourceName, "function_" + symbol.Entity.Id));
-        foreach (StorageSymbol symbol in StorageDefinitions)
-            StorageNames.Add(symbol.Key, names.Allocate(symbol.Storage.SourceName, "__literal_" + symbol.Storage.Id));
     }
 
     private static string? FieldSourceSignature(ObjectFile obj, RecordField field) =>
@@ -151,7 +149,8 @@ internal sealed partial class Linker
             return left.SourceRecordId is null && right.SourceRecordId is null;
         SourceRecord a = leftObject.SourceRecords[leftId], b = rightObject.SourceRecords[rightId];
         if (a.IdentityKey != b.IdentityKey || a.SourceName != b.SourceName || a.RecordKind != b.RecordKind ||
-            a.IsTriviallyCopyable != b.IsTriviallyCopyable) return false;
+            a.IsTriviallyCopyable != b.IsTriviallyCopyable || a.IsPacked != b.IsPacked ||
+            a.MaxMemberAlignment != b.MaxMemberAlignment || a.ExplicitAlignment != b.ExplicitAlignment) return false;
         var expectedBases = leftObject.OriginalBases(leftId);
         var actualBases = rightObject.OriginalBases(rightId);
         if (expectedBases.Length != actualBases.Length || actualBases.Where((item, index) =>
@@ -163,7 +162,8 @@ internal sealed partial class Linker
         var actual = OriginalFields(rightObject, rightId);
         return expected.Length == actual.Length && !actual.Where((field, index) =>
             field.SourceName != expected[index].SourceName || field.IsMutable != expected[index].IsMutable ||
-            field.HasInitializer != expected[index].HasInitializer ||
+            field.HasInitializer != expected[index].HasInitializer || field.IsPacked != expected[index].IsPacked ||
+            field.ExplicitAlignment != expected[index].ExplicitAlignment ||
             field.HasNoUniqueAddress != expected[index].HasNoUniqueAddress || field.BitWidth != expected[index].BitWidth ||
             rightObject.SourceTypeSignature(field.SourceTypeId) != leftObject.SourceTypeSignature(expected[index].SourceTypeId)).Any();
     }
@@ -194,8 +194,7 @@ internal sealed partial class Linker
         if (storageDefinitions.TryGetValue(declaration.Key, out StorageSymbol? definition)) return definition;
         if (!allowExterns || declaration.Storage.Linkage != "external")
             throw new InvalidDataException($"Unresolved storage: {declaration.Storage.ExternalKey ?? declaration.Storage.SourceName}");
-        if (ExternStorages.TryAdd(declaration.Key, declaration))
-            StorageNames.Add(declaration.Key, names.Allocate(declaration.Storage.SourceName, "extern_storage_" + declaration.Storage.Id));
+        ExternStorages.TryAdd(declaration.Key, declaration);
         return ExternStorages[declaration.Key];
     }
 
@@ -248,5 +247,12 @@ internal sealed partial class Linker
             foreach (Relocation relocation in symbol.Object.Relocations.GetValueOrDefault(symbol.Storage.Id, []))
                 if (relocation.TargetEntityId is long entity) _ = Resolve(symbol.Object, entity);
                 else RequireStorageExtent(symbol.Object, relocation.TargetStorageId!.Value, relocation.Addend);
+        // Resolve every referenced function first, including late externs.
+        // Synthetic ref properties must not take a source function's name or
+        // reserve its name through a generated get_<property> accessor.
+        foreach (StorageSymbol symbol in StorageDefinitions.Concat(ExternStorages.Values.OrderBy(symbol => symbol.Key, StringComparer.Ordinal)))
+            if (!StorageNames.ContainsKey(symbol.Key))
+                StorageNames.Add(symbol.Key, names.AllocateProperty(symbol.Storage.SourceName,
+                    (ExternStorages.ContainsKey(symbol.Key) ? "extern_storage_" : "__literal_") + symbol.Storage.Id));
     }
 }

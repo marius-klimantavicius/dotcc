@@ -31,7 +31,11 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         Directory.CreateDirectory(output);
         generatedMembers.Reserve(className);
         foreach (string name in linker.Names.Values) generatedMembers.Reserve(name);
-        foreach (string name in linker.StorageNames.Values) generatedMembers.Reserve(name);
+        foreach (string name in linker.StorageNames.Values)
+        {
+            generatedMembers.Reserve(name);
+            generatedMembers.Reserve("get_" + name.TrimStart('@'));
+        }
         foreach (var (key, definition) in linker.Records.OrderBy(pair => pair.Key, StringComparer.Ordinal))
         {
             string name = generatedMembers.Allocate(definition.Record.SourceName + (definition.Record.RepresentationKind == "subobject" ? "__subobject" : ""), "Record");
@@ -52,7 +56,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v20");
+        lifetimeWriter.WriteString("profile", "scalar-control-v21");
         lifetimeWriter.WriteString("capture", "lexical-cleanup-activations");
         lifetimeWriter.WriteBoolean("lexicalCleanups", true);
         lifetimeWriter.WriteBoolean("lifetimes", false);
@@ -155,7 +159,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v20");
+            writer.WriteString("profile", "scalar-control-v21");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -168,7 +172,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v20");
+            writer.WriteString("profile", "scalar-control-v21");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -179,7 +183,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v20", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v21", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; variable-length arrays, source EH and C++ RAII are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance and explicit lexical cleanup activations only; no complete source expression/statement view, macro expansion history or general C++ lifetime capture" },
@@ -278,6 +282,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     "this" => "this", "result-buffer" => "__result", _ => binding.SourceName,
                 } : binding.SourceName,
                 "local_" + binding.Id));
+        var accessAlignment = new AccessAlignment(obj, body);
         var addressTaken = new HashSet<long>();
         void AddressRoot(Node place)
         {
@@ -288,6 +293,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             if (node.Kind is "address" or "array-decay" or "volatile-place") AddressRoot(body.Child(node.Id, "operand"));
             else if (node.Kind == "register-cleanup") addressTaken.Add(node.BindingId!.Value);
             else if (node.Kind == "block-copy") { AddressRoot(body.Child(node.Id, "target")); AddressRoot(body.Child(node.Id, "source")); }
+        foreach (Node node in body.Nodes.Values)
+            if (node.TypeId is not null && accessAlignment.NeedsUnaligned(node)) AddressRoot(node);
         var alignedPointers = body.Bindings.Values.Where(binding => addressTaken.Contains(binding.Id) && (obj.StorageAlignment(obj.Type(binding.TypeId)) > 8 || obj.Records.TryGetValue(binding.TypeId, out RecordType? view) && view.RepresentationKind == "subobject"))
             .OrderBy(binding => binding.Id).ToDictionary(binding => binding.Id, binding => allocator.Allocate("__storage_" + binding.SourceName, "aligned_storage"));
         var parameterNames = body.Bindings.Values.Where(binding => binding.Kind == "parameter").ToDictionary(binding => binding.Id,
@@ -331,7 +338,18 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         { "bool" => expression, "i32" => "(" + expression + " ? 1 : 0)", "u8" => "((byte)(" + expression + " ? 1 : 0))", _ => throw new InvalidDataException("Invalid boolean result") };
         string FromBoolean(string expression, string type) => type == "i32"
             ? "(" + expression + " ? 1 : 0)" : "((" + Type(type) + ")(" + expression + " ? 1 : 0))";
+        string UnalignedRead(string type, string address) => ScalarTypes.IsPointer(type)
+            ? "((" + Type(type) + ")global::System.Runtime.CompilerServices.Unsafe.ReadUnaligned<nuint>(" + address + "))"
+            : "global::System.Runtime.CompilerServices.Unsafe.ReadUnaligned<" + Type(type) + ">(" + address + ")";
+        string UnalignedWrite(string type, string address, string value) =>
+            "global::System.Runtime.CompilerServices.Unsafe.WriteUnaligned<" + (ScalarTypes.IsPointer(type) ? "nuint" : Type(type)) + ">(" + address + ", " +
+                (ScalarTypes.IsPointer(type) ? "(nuint)(" + value + ")" : value) + ")";
         string Expression(Node node)
+        {
+            if (liftedExpressions.TryGetValue(node.Id, out string? lifted)) return lifted;
+            return accessAlignment.NeedsUnaligned(node) ? UnalignedRead(NodeType(node), Address(node)) : Location(node);
+        }
+        string Location(Node node)
         {
             if (liftedExpressions.TryGetValue(node.Id, out string? lifted)) return lifted;
             Node Child(string role) => body.Child(node.Id, role);
@@ -372,7 +390,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     string fieldName = fieldNames[(obj.Type(field.RecordTypeId), field.Ordinal)];
                     Node owner = Child("operand");
                     if (owner.Kind == "dereference" && !liftedExpressions.ContainsKey(owner.Id)) return Expression(body.Child(owner.Id, "operand")) + "->" + fieldName;
-                    return Expression(owner) + "." + fieldName;
+                    return (owner.ValueCategory == "place" ? Location(owner) : Expression(owner)) + "." + fieldName;
                 case "array-decay": return "((" + Type(NodeType(node)) + ")" + Address(Child("operand")) + ")";
                 case "address": return Address(Child("operand"));
                 case "dereference":
@@ -388,9 +406,9 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 case "compound-assign": return "(" + Compound(node) + ")";
                 case "assign":
                     if (Child("target").Kind == "member" && obj.Fields[Child("target").FieldId!.Value].BitWidth is not null)
-                        return BitfieldResult(obj, obj.Fields[Child("target").FieldId!.Value], "(" + Operand("target") + " = " + Operand("value") + ")");
+                        return BitfieldResult(obj, obj.Fields[Child("target").FieldId!.Value], "(" + Location(Child("target")) + " = " + Operand("value") + ")");
                     return Child("target").Kind == "volatile-place" && !DirectVolatile(Child("target"))
-                    ? VolatileOperation(NodeType(node), "assign", Address(Child("target")), Operand("value")) : "(" + Operand("target") + " = " + Operand("value") + ")";
+                    ? VolatileOperation(NodeType(node), "assign", Address(Child("target")), Operand("value")) : "(" + Location(Child("target")) + " = " + Operand("value") + ")";
                 case "mutate": return "(" + Mutation(node) + ")";
                 case "convert":
                     if (NodeType(node) == NodeType(Child("operand"))) return Operand("operand");
@@ -461,15 +479,15 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     return "((" + Type(obj.Type(field.TypeId)) + "*)((byte*)" + Address(body.Child(node.Id, "operand")) + " + " + field.ByteOffset + " /* " + field.SourceName + " */))";
                 return "(&(" + Address(body.Child(node.Id, "operand")) + ")->" + fieldNames[(obj.Type(field.RecordTypeId), field.Ordinal)] + ")";
             }
-            return "(&" + Expression(node) + ")";
+            return "(&" + Location(node) + ")";
         }
         string Mutation(Node node, bool valueNeeded = true)
         {
             Node location = body.Child(node.Id, "operand");
             if (location.Kind == "volatile-place" && !DirectVolatile(location)) return VolatileOperation(NodeType(node), node.Operator!, Address(location), null);
             if (valueNeeded && location.Kind == "member" && obj.Fields[location.FieldId!.Value].BitWidth is not null && node.Operator is "pre-inc" or "pre-dec")
-                return BitfieldResult(obj, obj.Fields[location.FieldId!.Value], "(" + (node.Operator == "pre-inc" ? "++" : "--") + Expression(location) + ")");
-            string operand = Expression(location);
+                return BitfieldResult(obj, obj.Fields[location.FieldId!.Value], "(" + (node.Operator == "pre-inc" ? "++" : "--") + Location(location) + ")");
+            string operand = Location(location);
             string operation = node.Operator is "pre-inc" or "post-inc" ? "++" : "--";
             return node.Operator is "pre-inc" or "pre-dec" ? operation + operand : operand + operation;
         }
@@ -494,13 +512,13 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             if (target.Kind == "member" && obj.Fields[target.FieldId!.Value].BitWidth is not null && (valueNeeded || promotionDiffers))
                 return promotionDiffers
                     ? BitfieldOperation(obj, obj.Fields[target.FieldId!.Value], op + "=", Address(body.Child(target.Id, "operand")), value, valueType)
-                    : BitfieldResult(obj, obj.Fields[target.FieldId!.Value], "(" + Expression(target) + " " + op + "= " + value + ")");
+                    : BitfieldResult(obj, obj.Fields[target.FieldId!.Value], "(" + Location(target) + " " + op + "= " + value + ")");
             if (promotionDiffers) return CompoundOperation(NodeType(node), valueType, op, Address(target), value);
-            return Expression(target) + " " + op + "= " + value;
+            return Location(target) + " " + op + "= " + value;
         }
         string StatementExpression(Node node) => node.Kind switch
         {
-            "assign" => body.Child(node.Id, "target").Kind == "volatile-place" && !DirectVolatile(body.Child(node.Id, "target")) ? VolatileWrite(NodeType(node), Address(body.Child(node.Id, "target")), Expression(body.Child(node.Id, "value")), Expression(body.Child(body.Child(node.Id, "target").Id, "operand"))) : Expression(body.Child(node.Id, "target")) + " = " + Expression(body.Child(node.Id, "value")),
+            "assign" => body.Child(node.Id, "target").Kind == "volatile-place" && !DirectVolatile(body.Child(node.Id, "target")) ? VolatileWrite(NodeType(node), Address(body.Child(node.Id, "target")), Expression(body.Child(node.Id, "value")), Expression(body.Child(body.Child(node.Id, "target").Id, "operand"))) : Location(body.Child(node.Id, "target")) + " = " + Expression(body.Child(node.Id, "value")),
             "mutate" => Mutation(node, false),
             "compound-assign" => Compound(node, false),
             "call" or "indirect-call" or "va-start" or "va-copy" or "va-end" or "block-copy" => Expression(node),
@@ -588,7 +606,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             Node target = body.Child(node.Id, "target");
             string array = NodeType(target), leaf = ScalarTypes.Leaf(array);
-            string name = Expression(target);
+            string name = Location(target);
+            string Clear() => accessAlignment.NeedsUnaligned(target) ? UnalignedWrite(array, Address(target), "default(" + Type(array) + ")") : name + " = default";
             Node[] elements = body.Children(node.Id, "element").Select(edge => body.Nodes[edge.ChildId]).ToArray();
             if ((leaf == "f80" || ScalarTypes.IsWideInteger(leaf)) && elements.Length > 0 && elements.All(item => body.Child(item.Id, "value").Kind == "constant"))
             {
@@ -596,7 +615,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     .Select(item => checked(int.Parse(item.ConstantText!, System.Globalization.CultureInfo.InvariantCulture) + 1)).DefaultIfEmpty(0).Max();
                 if (prefix <= Math.Max(64, elements.Length * 4))
                 {
-                    Line(indent, name + " = default;");
+                    Line(indent, Clear() + ";");
                     if (prefix == 0) return;
                     string[] values = Enumerable.Repeat(ScalarTypes.Zero(leaf), prefix).ToArray();
                     foreach (Node item in elements)
@@ -604,7 +623,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                         int index = int.Parse(item.ConstantText!, System.Globalization.CultureInfo.InvariantCulture);
                         if (index < prefix) values[index] = body.Child(item.Id, "value").ConstantText!;
                     }
-                    string property = generatedMembers.Allocate("__DotObjWideInitializer_" + linker.Objects.ToList().IndexOf(obj) + "_" + function.Id + "_" + node.Id, "wide_initializer");
+                    string property = generatedMembers.AllocateProperty("__DotObjWideInitializer_" + linker.Objects.ToList().IndexOf(obj) + "_" + function.Id + "_" + node.Id, "wide_initializer");
                     initializers.Append("    private static global::System.ReadOnlySpan<ulong> ").Append(property).Append(" => [\n");
                     foreach (string bits in values)
                     {
@@ -612,7 +631,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                         else initializers.Append("        ").Append(Integer128Words(leaf, bits)).Append(", // ").Append(bits).Append('\n');
                     }
                     initializers.Append("    ];\n\n");
-                    Line(indent, Owner + "." + property + ".CopyTo(new global::System.Span<ulong>(" + Address(target) + ", " + checked(prefix * 2) + "));");
+                    Line(indent, "global::System.Runtime.InteropServices.MemoryMarshal.AsBytes(" + Owner + "." + property + ").CopyTo(new global::System.Span<byte>(" + Address(target) + ", " + checked(prefix * 16) + "));");
                     return;
                 }
             }
@@ -622,13 +641,13 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 var values = Enumerable.Repeat(ScalarTypes.Zero(leaf), checked((int)ScalarTypes.FlatCount(array))).ToArray();
                 foreach (Node item in elements) values[int.Parse(item.ConstantText!, System.Globalization.CultureInfo.InvariantCulture)] = body.Child(item.Id, "value").ConstantText!;
                 int prefix = Array.FindLastIndex(values, value => value != ScalarTypes.Zero(leaf)) + 1;
-                if (prefix == 0) { Line(indent, name + " = default;"); return; }
+                if (prefix == 0) { Line(indent, Clear() + ";"); return; }
                 if (prefix <= Math.Max(64, elements.Length * 4))
                 {
-                    if (prefix < values.Length) Line(indent, name + " = default;");
+                    if (prefix < values.Length) Line(indent, Clear() + ";");
                     // Collection-expression span properties embed blittable constants
                     // in assembly data; no managed array allocation or per-byte writes.
-                    string property = generatedMembers.Allocate("__DotObjInitializer_" + linker.Objects.ToList().IndexOf(obj) + "_" + function.Id + "_" + node.Id, "__DotObjInitializer");
+                    string property = generatedMembers.AllocateProperty("__DotObjInitializer_" + linker.Objects.ToList().IndexOf(obj) + "_" + function.Id + "_" + node.Id, "__DotObjInitializer");
                     // Nonfinite values need exact payloads, so embed their integer
                     // representations and reinterpret the read-only data once.
                     bool bitPattern = ScalarTypes.IsFloating(leaf) && values.Take(prefix).Any(value => !ScalarTypes.IsFiniteConstant(leaf, value));
@@ -640,20 +659,20 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     initializers.Append("    ];\n\n");
                     string data = "global::" + namespaceName + "." + className + "." + property;
                     if (bitPattern) data = "global::System.Runtime.InteropServices.MemoryMarshal.Cast<" + dataType + ", " + Type(leaf) + ">(" + data + ")";
-                    Line(indent, data + ".CopyTo(new global::System.Span<" + Type(leaf) + ">(" + Address(target) + ", " + prefix + "));");
+                    Line(indent, "global::System.Runtime.InteropServices.MemoryMarshal.AsBytes(" + data + ").CopyTo(new global::System.Span<byte>(" + Address(target) + ", " + checked(prefix * obj.StorageSize(leaf)) + "));");
                     return;
                 }
                 // A sparse high-index initializer should not expand into thousands
                 // of zero constants. The ordinary ordered stores below stay compact.
             }
-            Line(indent, name + " = default;");
+            Line(indent, Clear() + ";");
             if (elements.Length == 0) return;
             string targetName = target.Kind == "binding" ? body.Bindings[target.BindingId!.Value].SourceName : obj.Fields[target.FieldId!.Value].SourceName;
             string pointer = allocator.Allocate("__dotobj_" + targetName + "_elements", "__dotobj_elements");
             Line(indent, "{");
             Line(indent + 1, Type(leaf) + "* " + pointer + " = (" + Type(leaf) + "*)" + Address(target) + ";");
             foreach (Node item in elements)
-                Line(indent + 1, pointer + "[" + item.ConstantText + "] = " + ExpandedValue(body.Child(item.Id, "value"), indent + 1) + ";");
+                Line(indent + 1, (accessAlignment.Place(target) < obj.AccessAlignment(leaf) ? UnalignedWrite(leaf, pointer + " + " + item.ConstantText, ExpandedValue(body.Child(item.Id, "value"), indent + 1)) : pointer + "[" + item.ConstantText + "] = " + ExpandedValue(body.Child(item.Id, "value"), indent + 1)) + ";");
             Line(indent, "}");
         }
         bool Pure(Node node)
@@ -695,6 +714,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             bool result = node.Kind == "sequence" && body.Children(node.Id, "item").SkipLast(1)
                 .Any(edge => NodeType(body.Nodes[edge.ChildId]) == "void");
             if (node.Kind == "conditional" && NodeType(node) == "void") result = true;
+            if (node.Kind is "assign" or "compound-assign") result |= accessAlignment.NeedsUnaligned(body.Child(node.Id, "target"));
+            if (node.Kind == "mutate") result |= accessAlignment.NeedsUnaligned(body.Child(node.Id, "operand"));
             if (node.Kind == "block-copy") result |= !Pure(body.Child(node.Id, "target")) || !Pure(body.Child(node.Id, "source"));
             if (node.Kind is "assign" or "compound-assign" && node.EvaluationOrder == "right-to-left")
             {
@@ -780,6 +801,37 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     if (node.EvaluationOrder == "right-to-left") children = children.Reverse();
                     foreach (Edge edge in children) Value(body.Nodes[edge.ChildId]);
                 }
+            }
+            Node? unalignedTarget = node.Kind is "assign" or "compound-assign" ? body.Child(node.Id, "target")
+                : node.Kind == "mutate" ? body.Child(node.Id, "operand") : null;
+            if (unalignedTarget is not null && accessAlignment.NeedsUnaligned(unalignedTarget))
+            {
+                string type = NodeType(node), address = allocator.Allocate("__unaligned_address", "address");
+                Line(indent, "void* " + address + " = " + Address(unalignedTarget) + ";");
+                string value;
+                if (node.Kind == "assign") value = Expression(body.Child(node.Id, "value"));
+                else
+                {
+                    string old = allocator.Allocate("__previous", "previous");
+                    Line(indent, Type(type) + " " + old + " = " + UnalignedRead(type, address) + ";");
+                    if (node.Kind == "mutate")
+                    {
+                        value = "unchecked((" + Type(type) + ")(" + old + (node.Operator is "pre-inc" or "post-inc" ? " + 1))" : " - 1))");
+                        if (node.Operator is "post-inc" or "post-dec" && !discard)
+                            Line(indent, Type(type) + " " + result + " = " + old + ";");
+                    }
+                    else
+                    {
+                        Node rhs = body.Child(node.Id, "value");
+                        string op = node.Operator switch { "add" or "pointer-add" => "+", "sub" or "pointer-subtract" => "-", "mul" => "*", "div" => "/", "rem" => "%", "bit-and" => "&", "bit-or" => "|", "bit-xor" => "^", "shl" => "<<", "shr" => ">>", _ => throw new InvalidDataException("Invalid compound operator") };
+                        value = CompoundValue(type, NodeType(rhs), op, old, Expression(rhs));
+                    }
+                }
+                string stored = node.Kind == "mutate" && node.Operator is "post-inc" or "post-dec" ? allocator.Allocate("__updated", "updated") : result;
+                Line(indent, Type(type) + " " + stored + " = " + value + ";");
+                Line(indent, UnalignedWrite(type, address, stored) + ";");
+                foreach (long id in changed) liftedExpressions.Remove(id);
+                return discard ? "" : result;
             }
             string rendered = discard || NodeType(node) == "void" ? StatementExpression(node) : Expression(node);
             foreach (long id in changed) liftedExpressions.Remove(id);

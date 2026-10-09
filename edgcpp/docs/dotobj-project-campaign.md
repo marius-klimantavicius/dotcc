@@ -374,3 +374,34 @@ instead of the indirect-value ABI boundary. The latest 15-unit frontier still
 packages four units; packed libc++ string layouts, dynamic initialization,
 assembly barriers and lifetime/exception operations remain explicit blockers.
 Indirect passing alone does not discharge those obligations.
+
+
+## Observed packed records and readable accesses, v21 (2026-10-09)
+
+Original record/field packing directives and accepted field alignment are now
+captured at EDG's actual layout observation points. The exporter does not rerun
+layout or normalize frontend decisions. C++ unnamed classes with a real typedef
+linkage name retain their public nominal identity; anonymous-namespace and local
+scope ownership remains distinct across independent objects.
+
+Named packed fields and record copies retain ordinary C# member expressions and
+correct explicit offsets/packing. Absence of an IL `unaligned.` prefix was not
+proof of unsafe named access; the earlier blanket-helper proposal was corrected.
+Only raw typed accesses that lose field packing context use explicit unaligned
+operations. Tests cover offsets 1 through 15, nested arrays, pointer/callback and
+double fields, copies, static initialization and exact-once mutations. A separate
+naming regression preserves actual defined/extern function names when synthetic
+storage getters would collide.
+
+Native040/managed030 passes **1093 full regression checks including NativeAOT**,
+61 focused packed checks and 12 property-name checks. The fresh 225-unit SQLite
+pipeline passes all eight JIT/NativeAOT engine suites; final managed030 emits all 237
+translator C# files byte-identically to the executed managed028 output. Packed code also
+passes Windows .NET JIT under Wine, without claiming Windows NativeAOT or ARM64
+execution. [Hashed v21 evidence](../evidence/dotobj-packed-layout-20261009.json)
+records tools, failed intermediate tests, source-hidden relinking and provenance.
+
+The original DuckDB SHA-256 unit now packages, advancing the 15-unit frontier
+from four to five packaged units. Full dependency execution still needs the
+original memory-assembly barrier provider. Zero-bound arrays in libc++ string,
+dynamic initialization, destruction/EH and other project gates remain open.

@@ -35,9 +35,9 @@ ARRAYS = {
                         'operator', 'constantText', 'valueCategory', 'evaluationOrder',
                         'sourceFileId', 'line', 'column', 'fieldId', 'storageId']),
     'recordTypes': ('record_types', ['typeId', 'identityKey', 'sourceName', 'size', 'alignment', 'sourceFileId', 'line', 'column', 'layoutKind', 'sourceRecordId', 'representationKind', 'valueCopyKind', 'captureProof', 'completeTypeId']),
-    'recordFields': ('record_fields', ['id', 'recordTypeId', 'ordinal', 'typeId', 'sourceName', 'byteOffset', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'bitOffset', 'bitWidth', 'bitSigned', 'sourceFieldId', 'fieldRole', 'sourceBaseId']),
-    'sourceRecords': ('source_record_types', ['id', 'sourceTypeId', 'identityKey', 'sourceName', 'recordKind', 'isComplete', 'nativeSize', 'nativeAlignment', 'isTriviallyCopyable', 'capturePhase', 'sourceFileId', 'line', 'column']),
-    'sourceFields': ('source_record_fields', ['id', 'sourceRecordId', 'ordinal', 'sourceTypeId', 'sourceName', 'isMutable', 'hasNoUniqueAddress', 'bitWidth', 'sourceFileId', 'line', 'column', 'hasInitializer']),
+    'recordFields': ('record_fields', ['id', 'recordTypeId', 'ordinal', 'typeId', 'sourceName', 'byteOffset', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'bitOffset', 'bitWidth', 'bitSigned', 'sourceFieldId', 'fieldRole', 'sourceBaseId', 'observedAlignment']),
+    'sourceRecords': ('source_record_types', ['id', 'sourceTypeId', 'identityKey', 'sourceName', 'recordKind', 'isComplete', 'nativeSize', 'nativeAlignment', 'isTriviallyCopyable', 'capturePhase', 'sourceFileId', 'line', 'column', 'isPacked', 'maxMemberAlignment', 'explicitAlignment']),
+    'sourceFields': ('source_record_fields', ['id', 'sourceRecordId', 'ordinal', 'sourceTypeId', 'sourceName', 'isMutable', 'hasNoUniqueAddress', 'bitWidth', 'sourceFileId', 'line', 'column', 'hasInitializer', 'isPacked', 'explicitAlignment']),
     'sourceBases': ('source_record_bases', ['id', 'sourceRecordId', 'ordinal', 'baseSourceTypeId', 'accessKind', 'isVirtual', 'sourceFileId', 'line', 'column']),
     'recordBaseSubobjects': ('record_base_subobjects', ['recordTypeId', 'sourceBaseId', 'completeBaseTypeId', 'physicalViewTypeId', 'byteOffset', 'extent', 'fieldId']),
     'edges': ('edges', ['parentId', 'role', 'ordinal', 'childId']),
@@ -114,7 +114,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v20':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v21':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -134,7 +134,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v20', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v21', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

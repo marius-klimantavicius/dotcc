@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "date": "2026-10-09",
+  "status": "passed",
+  "runtimeAudit": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-packed-runtime-audit-001/results.json",
+    "sha256": "e7640c681706ae0cfebfb322814788e2a017c4e326f739bff57922122e8bdf78"
+  },
+  "wineExecution": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-packed-wine-002/results.json",
+    "sha256": "2a3813f0efb165ec9f83308d199e8a70eefb16bc9bf657150c0c72671b4fa922"
+  },
+  "scope": "Source review plus translated packed-layout fixture on Windows .NET JIT under Wine x64. No ARM64, native Windows or Windows NativeAOT execution claim.",
+  "retainedInitialWineReceipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-packed-wine-001/results.json",
+    "sha256": "1ee23a30dfebe3eebd560d07ad88ce46f09df808dfdb542015047909d01bf068"
+  },
+  "initialWineResult": "Application returned zero; harness rejected Wine synchronization startup notice. Final harness accepts only that exact infrastructure notice or empty stderr."
+}

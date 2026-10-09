@@ -557,6 +557,45 @@ internal static class Verifier
             foreach (Edge edge in edges)
                 if (!body.Nodes.ContainsKey(edge.ParentId) || !body.Nodes.ContainsKey(edge.ChildId)) Fail("Edge leaves function body");
         Visit(root!, [], parameters.Select(parameter => parameter.Id).ToHashSet(), [], 0);
+        var accessAlignment = new AccessAlignment(obj, body);
+        var parents = body.Edges.Values.SelectMany(edges => edges)
+            .Where(edge => body.Nodes[edge.ParentId].TypeId is not null || edge.Role != "target")
+            .ToLookup(edge => edge.ChildId);
+        foreach (Node node in body.Nodes.Values)
+        {
+            if (node.Kind == "volatile-place" && accessAlignment.Place(node) < obj.AccessAlignment(Type(node)))
+                Fail("Underaligned volatile access requires an explicit volatile alignment contract");
+            if (node.Kind == "intrinsic" && node.Operator?.EndsWith("-volatile", StringComparison.Ordinal) == true)
+                foreach (Edge argument in body.Children(node.Id, "argument"))
+                {
+                    Node value = body.Nodes[argument.ChildId];
+                    if (ScalarTypes.IsPointer(Type(value)) && accessAlignment.Pointer(value) < obj.AccessAlignment(ScalarTypes.Pointee(Type(value))))
+                        Fail("Underaligned volatile intrinsic destination is unsupported");
+                }
+            if (node.Kind is not ("address" or "array-decay")) continue;
+            string pointed = ScalarTypes.Pointee(Type(node));
+            if (pointed == "void" || RoutineTypes.IsRoutine(pointed) || accessAlignment.Pointer(node) >= obj.AccessAlignment(pointed)) continue;
+            void CheckEscape(Node pointer, int depth)
+            {
+                if (depth > 128) Fail("Excessively nested underaligned address expression");
+                foreach (Edge use in parents[pointer.Id])
+                {
+                    Node consumer = body.Nodes[use.ParentId];
+                    if (consumer.Kind == "dereference") continue;
+                    if (consumer.Kind == "convert" && ScalarTypes.IsPointer(Type(consumer)))
+                    {
+                        string element = ScalarTypes.Pointee(Type(consumer));
+                        if (element is "void" or "i8" or "u8") continue;
+                        CheckEscape(consumer, depth + 1); continue;
+                    }
+                    if (consumer.Kind == "binary" && consumer.Operator is "pointer-add" or "pointer-subtract" || consumer.Kind == "conditional")
+                    { CheckEscape(consumer, depth + 1); continue; }
+                    if (consumer.Kind == "binary" && consumer.Operator is "eq" or "ne" or "lt" or "le" or "gt" or "ge" or "pointer-difference") continue;
+                    Fail("Underaligned typed address escapes its verified place; use byte/void memory access or an explicit alignment-aware ABI");
+                }
+            }
+            CheckEscape(node, 0);
+        }
         if (jumpScopes.Count != 0 && cleanupBindings.Count != 0) Fail("Source gotos with lexical cleanup require explicit lifetime exits");
         foreach (var (jump, scopes) in jumpScopes)
         {

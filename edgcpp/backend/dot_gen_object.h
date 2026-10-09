@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v20: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v21: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -220,7 +220,9 @@ struct Writer {
         ",\"isComplete\":"+(t->incomplete?"false":"true")+",\"nativeSize\":"+std::to_string(source->size)+
         ",\"nativeAlignment\":"+std::to_string(source->alignment)+",\"isTriviallyCopyable\":"+
         (t->incomplete?"null":trivial?"true":"false")+",\"capturePhase\":"+
-        quote(pre==captured.prelower_records.end()?"before-lowering":"before-class-prelowering")+position(pos)+"}");
+        quote(pre==captured.prelower_records.end()?"before-lowering":"before-class-prelowering")+position(pos)+
+        ",\"isPacked\":"+(source->is_packed?"true":"false")+",\"maxMemberAlignment\":"+std::to_string(source->max_member_alignment)+
+        ",\"explicitAlignment\":"+std::to_string(source->explicit_alignment)+"}");
       unsigned source_ordinal=0;
       for(const auto &field:source->fields) {
         unsigned original_id=next_source_field++;source_field_ids[field.il]=original_id;originals[field.il]=&field;
@@ -229,7 +231,8 @@ struct Writer {
           ",\"sourceName\":"+quote(field.original_name)+
           ",\"isMutable\":"+(field.is_mutable?"true":"false")+",\"hasNoUniqueAddress\":"+
           (field.no_unique_address?"true":"false")+",\"bitWidth\":"+
-          (field.is_bit_field?std::to_string(field.bit_width):"null")+position(field.position)+",\"hasInitializer\":"+(field.has_initializer?"true":"false")+"}");
+          (field.is_bit_field?std::to_string(field.bit_width):"null")+position(field.position)+",\"hasInitializer\":"+(field.has_initializer?"true":"false")+
+          ",\"isPacked\":"+(field.is_packed?"true":"false")+",\"explicitAlignment\":"+std::to_string(field.explicit_alignment)+"}");
       }
       if(pre!=captured.prelower_records.end()) {
         unsigned base_ordinal=0;
@@ -279,6 +282,13 @@ struct Writer {
       unsigned long long extent=f->is_bit_field?(f->offset_bit_remainder+f->bit_size+7)/8:child->size;
       if(f->offset>t->size || child->alignment>16 || extent>t->size-f->offset)reject("record field outside containing storage");
       if(layout=="union" && f->offset)reject("union field nonzero storage offset");
+      string observed_alignment="null";
+      if(role=="source" && !f->is_bit_field) {
+        auto alignment=captured.observed_field_alignments.find(original_field);
+        if(alignment==captured.observed_field_alignments.end() || !alignment->second ||
+           (alignment->second&(alignment->second-1)))reject("source field lacks observed physical layout alignment");
+        observed_alignment=std::to_string(alignment->second);
+      }
       unsigned field_id=next_field++;field_ids[f]=field_id;
       record_fields.push_back("{\"id\":"+number(field_id)+",\"recordTypeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+
         ",\"typeId\":"+number(type_id(f->type))+",\"sourceName\":"+quote(field_name)+",\"byteOffset\":"+std::to_string(f->offset)+
@@ -286,7 +296,7 @@ struct Writer {
         ",\"bitOffset\":"+(f->is_bit_field?std::to_string(f->offset_bit_remainder):"null")+
         ",\"bitWidth\":"+(f->is_bit_field?std::to_string(f->bit_size):"null")+
         ",\"bitSigned\":"+(f->is_bit_field?(f->bit_field_is_signed?"true":"false"):"null")+
-        ",\"sourceFieldId\":"+number(source_field)+",\"fieldRole\":"+quote(role)+",\"sourceBaseId\":"+number(source_base)+"}");
+        ",\"sourceFieldId\":"+number(source_field)+",\"fieldRole\":"+quote(role)+",\"sourceBaseId\":"+number(source_base)+",\"observedAlignment\":"+observed_alignment+"}");
     }
     if(source && pre!=captured.prelower_records.end())for(const auto &base:pre->second.bases) {
       a_field_ptr physical=nullptr;
@@ -2099,7 +2109,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v20\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v21\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

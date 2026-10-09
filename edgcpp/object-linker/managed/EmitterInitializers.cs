@@ -39,7 +39,7 @@ internal sealed partial class Emitter
             string initializer;
             try { initializer = JsonSerializer.Serialize(StrictUtf8.GetString(bytes)) + "u8"; }
             catch (DecoderFallbackException) { initializer = "[" + string.Join(", ", bytes) + "]"; }
-            string name = generatedMembers.Allocate("__dot_initializer_" + storageDataDeclarations.Count, "initializer");
+            string name = generatedMembers.AllocateProperty("__dot_initializer_" + storageDataDeclarations.Count, "initializer");
             storageDataDeclarations.Add("\n    private static global::System.ReadOnlySpan<byte> " + name + " => " + initializer + ";\n");
             code.Append(' ', indent).Append(name).Append(".CopyTo(new global::System.Span<byte>(").Append(pointer).Append(" + ")
                 .Append(offset + start).Append(", ").Append(bytes.Length).Append("));\n");
@@ -130,15 +130,24 @@ internal sealed partial class Emitter
             for (long index = 0; index < elements; index++) if (!ExactConstruction(current, index * stride, pointers, covered)) return false;
             return !bytes.Where((value, index) => value != 0 && !covered[index]).Any() && relocations.Keys.All(pointers.Contains);
         }
+        void Store(string current, long offset, string location, string address, string value)
+        {
+            long guaranteed = AccessAlignment.AtOffset(storage.Alignment, offset);
+            if (guaranteed < obj.AccessAlignment(current))
+                code.Append(' ', indent).Append("global::System.Runtime.CompilerServices.Unsafe.WriteUnaligned<")
+                    .Append(ScalarTypes.IsPointer(current) ? "nuint" : Type(current)).Append(">(").Append(address).Append(", ")
+                    .Append(ScalarTypes.IsPointer(current) ? "(nuint)(" + value + ")" : value).Append(");\n");
+            else code.Append(' ', indent).Append(location).Append(" = ").Append(value).Append(";\n");
+        }
         if (ScalarTypes.IsScalar(type))
         {
             if (!ExactRepresentation(type, 1, size)) return false;
-            if (AnyData(0, size)) code.Append(' ', indent).Append(StorageReference(symbol)).Append(" = ").Append(Value(type, 0, indent)).Append(";\n");
+            if (AnyData(0, size)) Store(type, 0, StorageReference(symbol), StorageAddress(symbol), Value(type, 0, indent));
             return true;
         }
         if (ScalarTypes.IsRecord(type) && CanConstruct(type) && ExactRepresentation(type, 1, size))
         {
-            if (AnyData(0, size)) code.Append(' ', indent).Append(StorageReference(symbol)).Append(" = ").Append(Value(type, 0, indent)).Append(";\n");
+            if (AnyData(0, size)) Store(type, 0, StorageReference(symbol), StorageAddress(symbol), Value(type, 0, indent));
             return true;
         }
         if (!ScalarTypes.IsArray(type)) return false;
@@ -151,7 +160,7 @@ internal sealed partial class Emitter
             {
                 int length = (int)Math.Min(4096, count - first);
                 if (!AnyData(first * stride, length * stride)) continue;
-                string name = generatedMembers.Allocate("__dot_initializer_" + storageDataDeclarations.Count, "initializer");
+                string name = generatedMembers.AllocateProperty("__dot_initializer_" + storageDataDeclarations.Count, "initializer");
                 var declaration = new StringBuilder("\n    private static global::System.ReadOnlySpan<ulong> " + name + " => [\n");
                 for (int index = 0; index < length; index++)
                 {
@@ -180,7 +189,7 @@ internal sealed partial class Emitter
             for (long first = 0; first < count; first += 4096)
             {
                 int length = (int)Math.Min(4096, count - first); if (!AnyData(first * stride, length * stride)) continue;
-                string name = generatedMembers.Allocate("__dot_initializer_" + storageDataDeclarations.Count, "initializer");
+                string name = generatedMembers.AllocateProperty("__dot_initializer_" + storageDataDeclarations.Count, "initializer");
                 var literals = Enumerable.Range(0, length).Select(index => PhysicalConstant(dataType, bytes.AsSpan((int)((first + index) * stride))));
                 storageDataDeclarations.Add("\n    private static global::System.ReadOnlySpan<" + Type(dataType) + "> " + name + " => [" + string.Join(", ", literals) + "];\n");
                 string source = dataType == leaf ? name : "global::System.Runtime.InteropServices.MemoryMarshal.Cast<" + Type(dataType) + ", " + Type(leaf) + ">(" + name + ")";
@@ -193,7 +202,7 @@ internal sealed partial class Emitter
         string table = locals.Allocate(storage.SourceName, "table_" + storage.Id);
         code.Append(' ', indent).Append("var ").Append(table).Append(" = (").Append(Type(leaf)).Append("*)(").Append(pointer).Append(" + ").Append(storageOffsets[symbol.Key]).Append(");\n");
         for (long index = 0; index < count; index++)
-            if (AnyData(index * stride, stride)) code.Append(' ', indent).Append(table).Append('[').Append(index).Append("] = ").Append(Value(leaf, index * stride, indent)).Append(";\n");
+            if (AnyData(index * stride, stride)) Store(leaf, index * stride, table + "[" + index + "]", table + " + " + index, Value(leaf, index * stride, indent));
         return true;
     }
 }

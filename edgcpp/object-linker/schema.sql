@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v20'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v21'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -242,6 +242,9 @@ CREATE TABLE source_record_types (
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
+ is_packed INTEGER NOT NULL CHECK(is_packed IN (0,1)),
+ max_member_alignment INTEGER NOT NULL CHECK(max_member_alignment>=0 AND (max_member_alignment & (max_member_alignment-1))=0),
+ explicit_alignment INTEGER NOT NULL CHECK(explicit_alignment>=0 AND (explicit_alignment & (explicit_alignment-1))=0),
  CHECK((is_complete=0 AND native_size=0 AND native_alignment=0 AND is_trivially_copyable IS NULL) OR
        (is_complete=1 AND native_alignment>0 AND is_trivially_copyable IS NOT NULL))
 ) STRICT;
@@ -258,6 +261,8 @@ CREATE TABLE source_record_fields (
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  has_initializer INTEGER NOT NULL CHECK(has_initializer IN (0,1)),
+ is_packed INTEGER NOT NULL CHECK(is_packed IN (0,1)),
+ explicit_alignment INTEGER NOT NULL CHECK(explicit_alignment>=0 AND (explicit_alignment & (explicit_alignment-1))=0),
  UNIQUE(source_record_id,ordinal)
 ) STRICT;
 CREATE TABLE source_record_bases (
@@ -311,6 +316,9 @@ CREATE TABLE record_fields (
  source_field_id INTEGER REFERENCES source_record_fields(id),
  field_role TEXT NOT NULL CHECK(field_role IN ('source','vptr','abi','base')),
  source_base_id INTEGER REFERENCES source_record_bases(id),
+ observed_alignment INTEGER CHECK(observed_alignment>0 AND (observed_alignment & (observed_alignment-1))=0),
+ CHECK(field_role<>'source' OR bit_width IS NOT NULL OR observed_alignment IS NOT NULL),
+ CHECK(bit_width IS NULL OR observed_alignment IS NULL),
  CHECK((field_role='source' AND source_field_id IS NOT NULL AND source_type_id IS NOT NULL) OR
        (field_role IN ('vptr','abi','base') AND source_field_id IS NULL AND source_type_id IS NULL)),
  CHECK((field_role='base' AND source_base_id IS NOT NULL AND bit_offset IS NULL) OR

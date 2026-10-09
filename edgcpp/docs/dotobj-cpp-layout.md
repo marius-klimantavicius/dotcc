@@ -446,21 +446,25 @@ input before the reset if exporting an original explicit-alignment directive.
 Capture a field's input directive before its layout normalization. The final
 record size/alignment and field placement remain separate accepted layout facts.
 
-A future owned contract should preserve original record `isPacked` and
-`maxMemberAlignment`, original field `isPacked` and `explicitAlignment`, and the
-physical field's effective alignment. Managed explicit-layout records must retain
-exact size and offsets. Guaranteed unaligned reads/writes should use BCL
-`Unsafe.ReadUnaligned`/`Unsafe.WriteUnaligned` (pointer values through a native
-integer representation), unless a stronger CLR/target proof is established.
-This cannot be implemented by only removing the existing alignment check.
+Profile 21 preserves original record `isPacked`, `maxMemberAlignment` and
+`explicitAlignment`, original field `isPacked` and `explicitAlignment`, and the
+physical field's observed effective alignment. Managed explicit-layout records
+retain exact sizes, offsets and CLR packing. Ordinary named member access stays
+readable; an absent `unaligned.` IL prefix is not evidence that the runtime
+ignores this layout. A packed record copy uses the record's declared CLR layout,
+not the largest natural scalar alignment found recursively within it.
 
-Alignment belongs to the actual place as well as its nominal type. For nested
-packed members, a containing record can reduce the alignment of an otherwise
-ordinary nested record; access planning must carry that reduction through member
-chains. Address expressions must still designate the actual bytes, and compound
-assignment must evaluate the owner once. Volatile/atomic underaligned access
-needs its own contract and should remain rejected in the initial packed tranche.
-The existing natural-layout and packed-source guards remain active today.
+Alignment still matters when field context is lost, such as a packed array
+member decaying to an ordinary scalar pointer. For raw accesses the emitter
+propagates address guarantees through owners, byte offsets and array strides,
+and uses BCL `Unsafe.ReadUnaligned`/`Unsafe.WriteUnaligned` only where the raw
+pointed-to type requires stronger alignment. Pointer-valued raw accesses use
+native integer bits because generic APIs cannot accept pointer type arguments.
+Address expressions still designate the actual bytes, and side-effecting
+addresses and compound assignments evaluate once. Underaligned volatile/atomic
+access and escaped typed addresses remain bounded contracts rather than silently
+assuming natural alignment. See the runtime document's packed-access audit for
+the distinction between layout metadata and raw accesses.
 
 
 ## Source-to-execution routine ABI mapping (profile 20 acceptance in progress)

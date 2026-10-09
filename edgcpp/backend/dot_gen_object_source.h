@@ -62,7 +62,8 @@ struct RecordField {
   a_field_ptr il=nullptr;
   unsigned source_type=0;
   std::string name,original_name;
-  unsigned long long offset=0;
+  unsigned long long offset=0,explicit_alignment=0;
+  bool is_packed=false;
   unsigned bit_offset=0,bit_width=0;
   bool bit_signed=false,is_mutable=false,no_unique_address=false,is_bit_field=false,has_initializer=false;
   a_source_position position={};
@@ -77,7 +78,8 @@ struct Record {
   a_routine_ptr local_owner=nullptr;
   unsigned long long local_discriminator=0;
   bool local_owner_external=false,local_owner_c_linkage=false,local_identity_observed=false;
-  unsigned long long size=0,alignment=0;
+  unsigned long long size=0,alignment=0,max_member_alignment=0,explicit_alignment=0;
+  bool is_packed=false;
   a_source_position position={};
   std::vector<RecordField> fields;
 };
@@ -129,6 +131,9 @@ struct State {
   std::map<a_routine_ptr,DefaultAdapter> default_adapters;
   std::map<a_variable_ptr,Declaration> variables;
   std::map<a_type_ptr,Record> records;
+  std::map<a_type_ptr,unsigned long long> requested_record_alignments;
+  std::map<a_field_ptr,unsigned long long> requested_field_alignments;
+  std::map<a_field_ptr,unsigned long long> observed_field_alignments;
   std::map<a_type_ptr,std::string> finalized_record_identities;
   std::map<a_type_ptr,std::string> owned_local_record_identities;
   std::set<a_type_ptr> capturing_records;
@@ -145,6 +150,18 @@ struct State {
   unsigned next_original_field=1;
 };
 inline State &state(){static State value;return value;}
+inline void observe_class_layout_directive(a_type_ptr type) {
+  if(!enabled())return;
+  // Snapshot the requested directive before do_class_layout normalizes it.
+  // Repeated layout must not replace an ignored request with its final value.
+  state().requested_record_alignments.emplace(type,type->alignment_set_explicitly?type->alignment:0);
+}
+inline void observe_field_layout_directive(a_field_ptr field) {
+  if(enabled())state().requested_field_alignments.emplace(field,field->alignment);
+}
+inline void observe_field_layout_alignment(a_field_ptr field,a_boolean for_alignof,a_targ_alignment alignment) {
+  if(enabled() && !for_alignof)state().observed_field_alignments[field]=alignment;
+}
 inline std::string spelling(const a_source_correspondence &source) {
   if(!source.name)return "";
 #if NEED_NAME_MANGLING
@@ -185,7 +202,10 @@ inline void capture_record(a_type_ptr t) {
   // scope region; EDG retains enclosing_routine precisely for that case.
   value.local_owner=t->source_corresp.enclosing_routine;
   std::string qualified=value.name;
-  bool local=value.name.empty() || c.originally_unnamed || t->source_corresp.is_local_to_function ||
+  // In C++, an originally unnamed class may acquire a typedef name for
+  // linkage (decls.c). A real, nonfabricated source spelling then gives it
+  // the ordinary named-class identity; original scope still controls privacy.
+  bool local=value.name.empty() || (C_mode() && c.originally_unnamed) || t->source_corresp.is_local_to_function ||
     t->source_corresp.enclosing_routine || t->declared_in_function_prototype;
   for(auto scope=t->source_corresp.parent_scope;scope;scope=scope->parent) {
     if(scope->kind==sck_namespace) {
@@ -227,9 +247,12 @@ inline void capture_record(a_type_ptr t) {
   if(!value.size || value.size>2147483647ULL || !value.alignment || value.alignment>16)
     value.error="record outside complete plain layout profile";
 #if GNU_EXTENSIONS_ALLOWED
-  if(c.is_packed)value.error="packed record layout";
+  value.is_packed=c.is_packed;
 #endif
-  if(c.max_member_alignment)value.error="packed record alignment";
+  value.max_member_alignment=c.max_member_alignment;
+  auto requested_record=s.requested_record_alignments.find(t);
+  if(requested_record!=s.requested_record_alignments.end())value.explicit_alignment=requested_record->second;
+  else if(t->alignment_set_explicitly)value.error="record explicit alignment lacks original layout observation";
   // Unsupported execution layout does not erase the original member index.
   // Keep its typed source declarations for the independent semantic index;
   // the execution writer still rejects value.error before publishing layouts.
@@ -238,8 +261,10 @@ inline void capture_record(a_type_ptr t) {
     field.has_initializer=f->has_initializer;field.is_mutable=f->is_mutable;field.no_unique_address=f->has_no_unique_address_attribute;field.is_bit_field=f->is_bit_field;
     field.position=f->source_corresp.decl_position;
     if(field.name.empty())field.name="__anonymous_member_"+std::to_string(value.fields.size());
-    if(f->has_no_unique_address_attribute || f->is_lowered_base_class || f->class_subobject_with_tail_padding ||
-       f->alignment>skip_typerefs(f->type)->alignment)
+    auto requested_field=s.requested_field_alignments.find(f);
+    if(requested_field!=s.requested_field_alignments.end())field.explicit_alignment=requested_field->second;
+    else if(f->alignment)value.error="field explicit alignment lacks original layout observation";
+    if(f->has_no_unique_address_attribute || f->is_lowered_base_class || f->class_subobject_with_tail_padding)
       value.error="record field outside plain layout profile";
     if(f->is_bit_field) {
       field.bit_offset=f->offset_bit_remainder;field.bit_width=f->bit_size;field.bit_signed=f->bit_field_is_signed;
@@ -248,7 +273,7 @@ inline void capture_record(a_type_ptr t) {
         value.error="bitfield outside fixed integer layout";
     }
 #if GNU_EXTENSIONS_ALLOWED
-    if(f->is_packed)value.error="packed record field";
+    field.is_packed=f->is_packed;
 #endif
     field.source_type=capture_type(f->type);value.fields.push_back(field);
   }

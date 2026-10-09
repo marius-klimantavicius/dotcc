@@ -256,3 +256,49 @@ the BCL's [CryptographicOperations.ZeroMemory](https://learn.microsoft.com/en-us
 which specifically addresses write-elimination concerns. Arbitrary assembly,
 other architectures and general private-buffer dead-store guarantees remain
 outside this detached audit.
+
+## Packed field access
+
+Preserve ordinary named field access when the generated CLR record carries the
+correct explicit offsets and packing. The absence of an `unaligned.` IL prefix
+does not establish that a field access is unsafe: the runtime has type layout
+information, and its code generator can account for alignment independently of
+that prefix. The previous proposal to rewrite every packed field access as an
+`Unsafe.ReadUnaligned`/`Unsafe.WriteUnaligned` call was based on insufficient
+evidence and must not serve as the emission rule.
+
+The .NET 10 runtime exposes managed layout alignment through
+[`getClassAlignmentRequirementStatic`](https://github.com/dotnet/runtime/blob/v10.0.0/src/coreclr/vm/jitinterface.cpp).
+Its JIT also introduces unaligned access flags itself for some visibly
+misaligned ARM32 floating-point accesses in
+[`fgMorphFinalizeIndir`](https://github.com/dotnet/runtime/blob/v10.0.0/src/coreclr/jit/morph.cpp).
+That ARM32 example disproves the inference from IL alone; it is not an ARM32
+execution claim. The current object target requires a 64-bit process.
+
+Keep the distinction between a named packed field and an arbitrary typed
+pointer. Casting a byte address to `int*`, or decaying an array inside a packed
+record to its element pointer, can lose the containing layout's alignment
+information. Explicit unaligned operations remain appropriate for raw accesses
+whose known address alignment is insufficient for their accessed type.
+Record copies must use their declared record alignment rather than the maximum
+natural alignment of all descendant fields. A pointer to an ordinary record
+that has itself been placed at an insufficiently aligned address is a separate
+case; packing does not repair an incorrectly declared pointee type.
+
+Atomic and volatile operations need their own alignment and ordering checks.
+Successful ordinary packed loads do not prove that an unaligned atomic or
+volatile operation is supported. Host x64 tests likewise do not establish
+execution coverage on other architectures.
+
+The translated packed-layout fixture also passes Windows .NET JIT under Wine
+on x64; this is supplementary execution evidence, not native Windows or ARM64
+coverage. The [runtime audit receipt](../evidence/dotobj-packed-runtime-20261009.json)
+retains source hashes, the executed assembly hash and the initial harness run
+that rejected Wine's synchronization startup notice despite application exit 0.
+
+The profile21 SQLite regression freshly packages all 225 original SQLite/musl
+units, resolves all 70 runtime imports, and passes the eight engine suites in
+Linux x64 JIT and NativeAOT. The subsequent property-accessor naming correction
+produces the same set of 237 translator-generated C# files, byte for byte, as
+that executed build. Runtime binding files are separately identified by their
+provider receipts. See [SQLite profile21 evidence](../evidence/dotobj-sqlite-pipeline-20261009.json).

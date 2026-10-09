@@ -4,11 +4,14 @@ This implements the owned object path of the [new design](../docs/dotobj-format.
 It uses a fresh SQLite schema and C# reader/linker/emitter, without the prior
 semantic-export experiment or C# text/command objects.
 
-The current profile is `scalar-control-v20`. It supports independently produced
+The current profile is `scalar-control-v21`. It supports independently produced
 SQLite and musl objects, typed provider selection, shared BCL runtime bindings,
 and explicit source startup actions. Original class-value routine signatures retain explicit mappings to hidden
 result buffers, indirect parameters and implicit receivers. Generated runtime
-prototypes have observed origins distinct from user declarations.
+prototypes have observed origins distinct from user declarations. Packed records
+retain observed layout and original directives; named fields keep ordinary member
+syntax, with explicit unaligned operations restricted to raw accesses that lose
+the packed field context.
 Original base declarations and generated
 ctor/dtor entries retain separate provenance from exact physical subobject views.
 COMDAT storage links to one canonical cell across translation units. Constructor

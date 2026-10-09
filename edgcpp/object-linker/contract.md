@@ -1036,3 +1036,39 @@ created by the runtime-helper factories have their own finalized creation proof.
 slots, with no invented receiver, result buffer or copy indirection. The source
 index records this as a generated declaration, never as an original user function
 or fabricated parameter variable declaration.
+
+
+## Observed packing and memory access: scalar-control-v21
+
+Original records append `is_packed`, `max_member_alignment` and
+`explicit_alignment`; original fields append `is_packed` and
+`explicit_alignment`. Zero denotes no requested maximum/alignment directive.
+Requested facts are captured before layout normalizes them, separately from
+resulting native size/alignment. Incomplete declarations may lack facts supplied
+by a later complete definition; complete cross-unit definitions compare these
+original facts as well as their physical layouts.
+
+Physical fields append nullable `observed_alignment`, retained from the actual
+layout computation with ordinary-field semantics. The exporter never reruns a
+layout helper that may diagnose or normalize directives. Original non-bitfield
+members require this observation; copied fields inherit it only through their
+proven original-field origin. Bitfields bypass that layout helper and have null
+observations: their existing byte-backed representation is non-addressable and
+alignment-one-safe. Generated vptr/base/ABI fields may also have null when no
+such observation occurred. Null never means natural alignment or alignment one.
+
+Named member accesses preserve their field identity and use ordinary C# member
+syntax with explicit offsets and the correct CLR packing metadata. A missing
+`unaligned.` IL prefix is not evidence that the JIT ignores field layout.
+Packed record values likewise use their declared layout; the maximum natural
+alignment of their scalar children is not a separate requirement for every
+record copy.
+
+Raw pointer accesses can lose that field context, for example after a packed
+array member decays to a scalar pointer. Places derive address guarantees from
+storage or owners, field offsets and array strides. Only such raw accesses with
+insufficient guarantees use explicit unaligned reads or writes. Pointer values
+use native integer bits where generic APIs cannot accept pointer type arguments.
+Address and RHS evaluation retain the owned graph order and occur once.
+Unsupported atomic/volatile accesses remain explicit boundaries until their
+alignment guarantees and platform behavior are represented and verified.

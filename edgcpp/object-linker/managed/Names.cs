@@ -36,6 +36,20 @@ internal sealed class Names
         return ReservedKeywords.Contains(candidate) ? "@" + candidate : candidate;
     }
 
+    // A getter-only property also declares a CLR get_<name> method. Source
+    // functions take priority, so suffix the property if either name collides.
+    public string AllocateProperty(string source, string fallback)
+    {
+        string name = Identifier(string.IsNullOrEmpty(source) ? fallback : source);
+        string candidate = name;
+        int suffix = 2;
+        while (allocated.Contains(candidate) || allocated.Contains("get_" + candidate))
+            candidate = name + "__" + suffix++.ToString(CultureInfo.InvariantCulture);
+        allocated.Add(candidate);
+        allocated.Add("get_" + candidate);
+        return ReservedKeywords.Contains(candidate) ? "@" + candidate : candidate;
+    }
+
     public void Reserve(string name) => allocated.Add(name.TrimStart('@'));
 
     public static string Identifier(string text)

@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v21",
+  "pipelineReceipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-pipeline-003/results.json",
+    "sha256": "d50568ffbd3cd797dc64ca1f86373012fa10d8b735a7665ef356782ceafa62ac"
+  },
+  "engineReceipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-pipeline-003/engine/results.json",
+    "sha256": "1a842149d34d00d45d6977d812e24aea2a33fd381f734143aca3d99583ab9a90"
+  },
+  "relinkReceipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-relink-030-001/results.json",
+    "sha256": "485025e129944b1c0c3816f0ab4122a3a5029f1a11526bd803f69de3fa181b63"
+  },
+  "fileSetReceipt": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sqlite-relink-030-001/file-set-check.json",
+    "sha256": "7a3c4ad24b8621033caaa12b344bb442af333993be61bb0c552165baf1fb6500"
+  },
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native040-verified-snapshot/cpfe-dot",
+    "sha256": "1505524670d7169611ea3876febf29ffa2b9a6cc6c4b11f03cb2258e53496f43"
+  },
+  "executionLinker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-028/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "cfe6f0be73991d0f2ec90cce41f43b428eca51c50aadd1c094edca16ae3b417d"
+  },
+  "finalLinker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-030/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "4b18b744d03b57e79e92ee86156af87ca92575d13acc457459fa79d778e81e02"
+  },
+  "packagedUnits": 225,
+  "boundRuntimeImports": 70,
+  "engineSuites": 8,
+  "nativeAotVerified": true,
+  "finalLinkerGeneratedCsByteIdentical": true,
+  "generatedCsFiles": 237,
+  "scope": "Static assembly mode; Linux x64 JIT/NativeAOT; no full DuckDB execution claim"
+}

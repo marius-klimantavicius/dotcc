@@ -16,6 +16,8 @@ import references_verify
 import default_adapters_verify
 import template_identity_verify
 import indirect_values_verify
+import packed_layout_verify
+import packed_typedef_identity_verify
 import storage_verify
 import project_c_verify
 import provider_verify
@@ -44,6 +46,7 @@ def main():
     parser.add_argument('--default-adapters-only', action='store_true', help='Run observed constructor defaults and real array runtime acceptance')
     parser.add_argument('--template-identity-only', action='store_true', help='Run owned public/private template specialization identity acceptance')
     parser.add_argument('--indirect-values-only', action='store_true', help='Run original class value and physical indirect ABI acceptance')
+    parser.add_argument('--packed-only', action='store_true', help='Run observed packed layout and independent typedef identity acceptance')
     args = parser.parse_args()
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -85,12 +88,13 @@ def main():
                  'project_cpp_block_copy.cpp', 'project_cpp_void_conditionals.cpp',
                  'project_cpp_default_ctor_adapter.cpp', 'project_cpp_base_values.cpp',
                  'template_identity_shared.h', 'template_identity_provider.cpp', 'template_identity_main.cpp',
-                 'project_cpp_indirect_value_abi.cpp']:
+                 'project_cpp_indirect_value_abi.cpp', 'project_cpp_packed_layout.cpp',
+                 'packed_typedef_identity.h', 'packed_typedef_identity_provider.cpp', 'packed_typedef_identity_main.cpp']:
         shutil.copy2(ROOT / 'tests' / name, inputs / name)
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v20', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v21', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH yet.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -174,6 +178,11 @@ def main():
                     db.execute('UPDATE content_digest SET sha256=?', (MODULE.logical_hash(db),))
             return path
 
+        if args.packed_only:
+            packed_layout_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+            packed_typedef_identity_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+            save('passed')
+            return
         if args.indirect_values_only:
             indirect_values_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
             save('passed')
@@ -319,6 +328,8 @@ def main():
         default_adapters_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
         template_identity_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
         indirect_values_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+        packed_layout_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
+        packed_typedef_identity_verify.verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
         project_objects = project_c_verify.verify(inputs, out, tool, run, check, compile_source, link, execute)
         project_c_verify.malformed(project_objects, tool, run, mutate)
         provider_verify.verify(inputs, out, tool, run, check, compile_source, execute)

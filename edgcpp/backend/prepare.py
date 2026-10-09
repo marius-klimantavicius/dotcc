@@ -133,6 +133,32 @@ def object_source_overlay(path, original, patched):
         raise RuntimeError(f"EDG object source overlay does not match pinned {path.name}")
     path.write_text(source.replace(original, patched))
 
+# Observe accepted layout inputs/results, without rerunning frontend layout.
+layout_source = root / "upstream/src/layout.c"
+object_source_overlay(layout_source,
+    '#include "fe_common.h"',
+    '#include "fe_common.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
+object_source_overlay(layout_source,
+    '  db_enter(3, "do_class_layout");',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_class_layout_directive(class_type);\n'
+    '#endif\n  db_enter(3, "do_class_layout");')
+object_source_overlay(layout_source,
+    '  db_enter(4, "set_field_size_and_offset");',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_field_layout_directive(field);\n'
+    '#endif\n  db_enter(4, "set_field_size_and_offset");')
+object_source_overlay(layout_source,
+    '  /* If the alignment of this field was explicitly specified, honor that. */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_field_layout_directive(field);\n'
+    '#endif\n  /* If the alignment of this field was explicitly specified, honor that. */')
+object_source_overlay(layout_source,
+    '  return field_alignment;\n}  /* alignment_of_field_full */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_field_layout_alignment(field, for_alignof, field_alignment);\n'
+    '#endif\n  return field_alignment;\n}  /* alignment_of_field_full */')
+
 # Observe accepted macro changes without depending on optional EDG IL macro
 # capture. The stock decoder owns preprocessing semantics and token spelling.
 for filename in ("macro.c", "preproc.c", "symbol_tbl.c"):
