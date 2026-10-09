@@ -1,0 +1,30 @@
+{
+  "status": "pending-core-dotobj-features",
+  "checkpoint": "Generate DuckDB C# before expanding libc++ runtime support",
+  "artifacts": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-dynamic-startup-oracle-002",
+  "checks": 29,
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native042-verified-snapshot/cpfe-dot",
+    "sha256": "5a802ed84eb3a195dca33d6511690ebafc2d1259a76688f0760bf9d5b0176dac"
+  },
+  "linker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-034/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "64cf42309669bbb1113bc001875e2653b87c72f1c13601ccade177f61fcdb510"
+  },
+  "native_oracles": "All three standalone fixtures pass native C++ at O0 and O2; stock EDG C lowering retained unmodified.",
+  "global_scalar_initialization": "Owned exporter rejects global dynamic initialization/asm.",
+  "global_constructor_array": "Owned exporter rejects global dynamic initialization/asm; fixture models DuckDB date.cpp string_t arrays without a standard library.",
+  "local_static_initialization": "Exports, verifies and generates C# after source is hidden. Generated code contains external __cxa_guard_acquire/release declarations. No managed execution verified.",
+  "guard_publication": "Generated fast path currently reads the guard byte without an acquire operation. Source provenance and publication semantics remain required work.",
+  "stock_backend_reference": [
+    "c_gen_be.c: dump_coalesced_file_scope_initialization_routine",
+    "lower_init.c: b_lower_file_scope_dynamic_inits",
+    "Local stock C output: guard-byte test, __cxa_guard_acquire, initialization, __cxa_guard_release"
+  ],
+  "limitations": [
+    "No cross-translation-unit initialization order assertion",
+    "No thread-race, guard-abort, destructor or exception-unwind coverage",
+    "Stock C output is retained as a lowering reference, not claimed as an executed oracle"
+  ],
+  "previous_attempt": "oracle-001 retained: identical native/global results; strict local link rejected unresolved __cxa_guard_acquire."
+}

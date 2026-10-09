@@ -1,6 +1,21 @@
 # Plan for the EDG C# backend dot_gen_be.c
 
-Status: after reviewing the SQLite output on 2026-10-03, the user paused
+Current priority (2026-10-09): complete the missing **core `.dotobj` features**
+needed to generate C# for all DuckDB translation units and bundled dependencies.
+This checkpoint does not require the generated DuckDB project to compile or run.
+Prioritize semantic capture, portable owned types/operations, linking and C#
+emission for zero-bound arrays, dynamic initialization, destruction/lifetimes,
+exceptions and subsequent original-project gates. Defer libc++ implementation
+and runtime-binding gaps until this generation checkpoint is complete. Existing
+libc++ headers may expose a core language feature; that does not make broader
+standard-library/runtime completion a prerequisite. Preserve unsupported-feature
+errors until their semantics are owned: never omit required initialization,
+destruction, handlers or function bodies merely to produce output. Readable,
+source-corresponding emission remains mandatory. Track generation, compilation
+and execution separately in the [owned-object campaign](dotobj-project-campaign.md).
+The broader cross-platform runnable/NativeAOT objective remains subsequent work.
+
+Earlier direct-backend status: after reviewing the SQLite output on 2026-10-03, the user paused
 implementation, made source correspondence a primary requirement, then
 explicitly resumed implementation with coordinated workers. The revised
 emitter now passes the bounded source-correspondence acceptance described below.

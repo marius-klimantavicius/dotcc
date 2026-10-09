@@ -30,6 +30,7 @@ internal static class Verifier
         {
             if (binding.FunctionId != function.Id || binding.Kind is not ("local" or "parameter") || obj.Type(binding.TypeId) == "void")
                 Fail($"Invalid binding {binding.Id}");
+            if (ScalarTypes.IsAddressOnlyArray(obj.Type(binding.TypeId))) Fail("Automatic array storage requires a positive complete extent");
             if (binding.Kind == "local" && binding.Ordinal != null) Fail("Local has parameter ordinal");
             if (!body.Nodes.TryGetValue(binding.ScopeNodeId, out Node? scope) || scope.Kind != "block") Fail("Binding scope is not a block");
         }
@@ -421,6 +422,7 @@ internal static class Verifier
                     if (!LocalPlace(arrayTarget) || !ScalarTypes.IsArray(Type(arrayTarget)))
                         Fail("Array initialization requires a local array binding or its named member");
                     string leaf = ScalarTypes.Leaf(Type(arrayTarget));
+                    if (ScalarTypes.IsIncompleteArray(Type(arrayTarget))) Fail("Array initialization requires a known bound");
                     long count = ScalarTypes.FlatCount(Type(arrayTarget));
                     foreach (Edge edge in body.Children(node.Id, "element"))
                     {
@@ -475,6 +477,7 @@ internal static class Verifier
                         bool pointerLast = operation == "pointer-add" && Type(Child(node, "right")) == Type(node) && ScalarTypes.IsInteger(Type(Child(node, "left")));
                         if (!ScalarTypes.IsPointer(Type(node)) || (ScalarTypes.Pointee(Type(node)) == "void" || RoutineTypes.IsFunctionPointer(Type(node))) || !(pointerFirst || pointerLast))
                             Fail("Pointer arithmetic requires a nonvoid pointer and integer displacement");
+                        if (ScalarTypes.IsIncompleteArray(ScalarTypes.Pointee(Type(node)))) Fail("Pointer arithmetic requires a known array bound");
                     }
                     else if (operation == "pointer-difference")
                     {
@@ -482,6 +485,7 @@ internal static class Verifier
                             (ScalarTypes.Pointee(Type(Child(node, "left"))) == "void" || RoutineTypes.IsFunctionPointer(Type(Child(node, "left")))))
                             Fail("Pointer difference requires matching nonvoid pointers and i64 result");
                         SameType(Child(node, "left"), Child(node, "right"));
+                        if (ScalarTypes.IsAddressOnlyArray(ScalarTypes.Pointee(Type(Child(node, "left"))))) Fail("Pointer difference requires a positive element extent");
                     }
                     else if (operation is "add" or "sub" or "mul" or "div" or "rem" or "bit-and" or "bit-or" or "bit-xor")
                     {
@@ -551,6 +555,7 @@ internal static class Verifier
                     {
                         if (!ScalarTypes.IsPointer(Type(node)) || RoutineTypes.IsFunctionPointer(Type(node)) || ScalarTypes.Pointee(Type(node)) == "void" ||
                             !ScalarTypes.IsInteger(Type(Child(node, "value")))) Fail("Invalid compound pointer arithmetic");
+                        if (ScalarTypes.IsIncompleteArray(ScalarTypes.Pointee(Type(node)))) Fail("Compound pointer arithmetic requires a known array bound");
                     }
                     else if (!ScalarTypes.IsNumeric(Type(node)) || !ScalarTypes.IsNumeric(Type(Child(node, "value")))) Fail("Compound arithmetic requires numeric operands");
                     if (node.Operator is "rem" or "bit-and" or "bit-or" or "bit-xor" or "shl" or "shr" &&
@@ -569,6 +574,8 @@ internal static class Verifier
                         !(ScalarTypes.IsNumeric(Type(node)) || ScalarTypes.IsPointer(Type(node)) && ScalarTypes.Pointee(Type(node)) != "void" && !RoutineTypes.IsFunctionPointer(Type(node))))
                         Fail("Increment/decrement requires a numeric or nonvoid pointer place");
                     SameType(node, Child(node, "operand"));
+                    if (ScalarTypes.IsPointer(Type(node)) && ScalarTypes.IsIncompleteArray(ScalarTypes.Pointee(Type(node))))
+                        Fail("Pointer increment requires a known array bound");
                     break;
                 case "convert":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand", Type(node) == "void");

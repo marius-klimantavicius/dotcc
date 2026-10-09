@@ -2,6 +2,13 @@
 
 ## Decision and implementation status
 
+The current user priority (2026-10-09) is complete DuckDB C# generation by filling
+missing core `.dotobj` semantics. Generated-project compilation/execution is a
+later checkpoint; libc++ implementation and runtime binding work is deferred.
+Required initialization, lifetimes, exceptions and bodies must still be represented
+correctly rather than omitted. The [campaign ledger](dotobj-project-campaign.md)
+records the current profile and distinguishes generation from runtime acceptance.
+
 The user selected one SQLite `.dotobj` per original C/C++ translation unit,
 containing an owned semantic graph instead of C# text or emission commands.
 The old semantic-export experiment is explicitly not the implementation

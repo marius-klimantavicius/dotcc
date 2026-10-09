@@ -73,7 +73,7 @@ internal sealed partial class ObjectFile
 
     public bool CanCopyRecord(string type)
     {
-        if (ScalarTypes.IsArray(type)) return ScalarTypes.ElementCount(type) > 0 && CanCopyRecord(ScalarTypes.Element(type));
+        if (ScalarTypes.IsArray(type)) return !ScalarTypes.IsIncompleteArray(type) && (ScalarTypes.IsZeroArray(type) || CanCopyRecord(ScalarTypes.Element(type)));
         if (!ScalarTypes.IsRecord(type)) return true;
         RecordType record = RecordsByKey[type];
         return record.Size > 0 && record.ValueCopyKind == "ordinary" && CanCopyPayload(type);
@@ -81,7 +81,7 @@ internal sealed partial class ObjectFile
 
     public bool CanCopyPayload(string type)
     {
-        if (ScalarTypes.IsArray(type)) return ScalarTypes.ElementCount(type) > 0 && CanCopyPayload(ScalarTypes.Element(type));
+        if (ScalarTypes.IsArray(type)) return !ScalarTypes.IsIncompleteArray(type) && (ScalarTypes.IsZeroArray(type) || CanCopyPayload(ScalarTypes.Element(type)));
         if (!ScalarTypes.IsRecord(type)) return true;
         RecordType record = RecordsByKey[type];
         if (record.Size == 0) return false;
@@ -161,11 +161,16 @@ internal sealed partial class ObjectFile
                     begin = checked(begin + field.BitOffset!.Value); end = checked(begin + width);
                 }
                 else end = checked(begin + StorageSize(type) * 8);
-                if (ScalarTypes.IsArray(type) && ScalarTypes.ElementCount(type) == 0)
+                if (ScalarTypes.IsIncompleteArray(type))
                 {
                     if (index != fields.Length - 1 || record.LayoutKind == "union" || field.ByteOffset > record.Size)
                         throw new InvalidDataException("Incomplete array field must be a flexible tail member");
                     continue;
+                }
+                if (ScalarTypes.IsZeroArray(type))
+                {
+                    if (field.ByteOffset > record.Size) throw new InvalidDataException("Zero-bound array field address exceeds record storage");
+                    continue; // No physical bytes, including interior or union members.
                 }
                 if (end > record.Size * 8 || begin >= end) throw new InvalidDataException("Field extent lies outside complete record storage");
                 if (record.LayoutKind != "union" && occupied.Any(other => begin < other.End && other.Begin < end))

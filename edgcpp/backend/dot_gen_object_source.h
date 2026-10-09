@@ -23,6 +23,7 @@ inline bool enabled() {
 struct Type {
   unsigned id=0,underlying=0,execution=0;
   unsigned long long element_count=0;
+  bool array_bound_known=false;
   std::string kind,name;
   a_type_ptr record_type=nullptr;
   bool is_const=false,is_volatile=false;
@@ -367,6 +368,7 @@ inline unsigned capture_type(a_type_ptr t) {
     value.kind="array";
     value.underlying=capture_type(t->variant.array.element_type);
     value.element_count=t->variant.array.variant.number_of_elements;
+    value.array_bound_known=value.element_count!=0 || t->variant.array.bound_is_zero;
   } else if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
     if(t->variant.class_struct_union.extra_info && t->variant.class_struct_union.extra_info->is_va_list_tag)
       value.kind="va-list";
@@ -524,6 +526,9 @@ inline void observe_asm_before_lowering(an_asm_entry_ptr entry) {
         value.error="empty asm dependent array extent";break;
       } else {
         dimension.fixed_count=element->variant.array.variant.number_of_elements;
+        if(!dimension.fixed_count && !element->variant.array.bound_is_zero) {
+          value.error="empty asm operand has an unspecified array bound";break;
+        }
         if(dimension.fixed_count && value.fixed_count>(~0ULL)/dimension.fixed_count) {
           value.error="empty asm fixed extent overflow";break;
         }

@@ -1119,3 +1119,28 @@ the destination type's alignment contract. Observed packed addresses remain
 constrained through casts; typed pointer contracts survive erasure to byte/void
 representations before arithmetic; conditional joins retain unknown paths rather
 than letting an unrelated aligned branch strengthen every possible address.
+
+
+## Fixed zero-bound arrays: scalar-control-v23
+
+Execution and source array types distinguish `element_count=0` (a complete
+fixed zero-bound array) from SQL NULL (an unspecified bound). This follows EDG's
+observed `bound_is_zero` flag; both representations may have a numeric bound of
+zero in the frontend. Type identity, cross-unit compatibility and semantic
+provenance retain the distinction, including nested arrays and array pointers.
+
+Zero-bound fields retain exact zero extent, offset and alignment inside otherwise
+representable structs/unions; they may overlap a following field. Genuine
+incomplete/flexible fields remain limited to the final nonunion member. Record
+copies and initialization do not invent storage for empty fields. C# uses an
+address-only leaf-pointer view instead of a phantom `InlineArray(1)` wrapper;
+owned type identity remains available independently of that execution view.
+
+Pointer addition/subtraction by an integer and pointer mutations with zero-sized
+elements retain zero stride and evaluate their source operands once. This also
+applies to compound assignment and pre/post increment through supported volatile
+or unaligned places. Pointer difference with zero-sized elements and arithmetic
+on incomplete arrays remain explicit unsupported boundaries. Standalone zero-size
+storage, all-zero records and zero-size aggregate values are not implied by this
+bounded field/address contract and remain gated rather than receiving fabricated
+physical bytes.

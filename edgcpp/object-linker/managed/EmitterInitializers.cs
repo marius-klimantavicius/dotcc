@@ -84,6 +84,7 @@ internal sealed partial class Emitter
         bool CanConstruct(string current, int depth = 0)
         {
             if (depth > 128) return false;
+            if (ScalarTypes.IsZeroArray(current)) return true;
             if (current == "f80") return false;
             if (ScalarTypes.IsScalar(current)) return true;
             if (!ScalarTypes.IsRecord(current)) return false;
@@ -106,13 +107,14 @@ internal sealed partial class Emitter
             }
             if (ScalarTypes.IsNumeric(current) || current == "bool") return PhysicalConstant(current, bytes.AsSpan((int)offset));
             RecordType record = obj.RecordsByKey[current]; var valueCode = new StringBuilder("new()\n").Append(' ', level).Append("{\n");
-            foreach (RecordField field in obj.RecordFields(record.TypeId))
+            foreach (RecordField field in obj.RecordFields(record.TypeId).Where(field => !ScalarTypes.IsZeroArray(obj.Type(field.TypeId))))
                 valueCode.Append(' ', level + 4).Append(fieldNames[(current, field.Ordinal)]).Append(" = ")
                     .Append(Value(obj.Type(field.TypeId), offset + field.ByteOffset, level + 4)).Append(",\n");
             return valueCode.Append(' ', level).Append('}').ToString();
         }
         bool ExactConstruction(string current, long offset, HashSet<long> pointerSlots, bool[] covered)
         {
+            if (ScalarTypes.IsZeroArray(current)) return true;
             if (ScalarTypes.IsScalar(current))
             {
                 long extent = obj.StorageSize(current);

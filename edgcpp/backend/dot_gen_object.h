@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v22: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v23: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -50,7 +50,7 @@ struct Writer {
   std::vector<string> memory_barriers,memory_barrier_operands,memory_barrier_dimensions;
   std::map<unsigned,unsigned> source_type_ids;
   std::map<unsigned,unsigned> pointer_types;
-  std::map<std::pair<unsigned,unsigned long long>,unsigned> array_types;
+  std::map<std::pair<unsigned,std::pair<unsigned long long,bool>>,unsigned> array_types;
   std::vector<string> execution_types,record_types,record_fields;
   std::vector<string> source_records,source_fields,source_bases,record_base_subobjects,abi_routine_origins;
   std::map<a_base_class_ptr,unsigned> source_base_ids;
@@ -276,9 +276,13 @@ struct Writer {
         role="vptr";field_name="__edg_vptr";
       }
       if(field_name.empty())field_name="__edg_abi_field_"+std::to_string(ordinal);
-      bool flexible=child->kind==tk_array && !child->size && !child->variant.array.variant.number_of_elements;
+      bool flexible=child->kind==tk_array && array_type_has_no_bound(child);
+      bool zero_array=child->kind==tk_array && !child->size && complete_fixed_array(child);
       if(flexible && (f->next || layout=="union"))reject("flexible array outside final struct/class member");
-      if(!names.insert(field_name).second || (!child->size && !flexible) || !child->alignment)
+      // A GNU fixed [0] member contributes alignment and a named address but
+      // no occupied bytes. It is not the [] flexible tail, and may be interior
+      // or a union member. Never add a dummy physical element to its extent.
+      if(!names.insert(field_name).second || (!child->size && !flexible && !zero_array) || !child->alignment)
         reject("record physical field identity/extent");
       unsigned long long extent=f->is_bit_field?(f->offset_bit_remainder+f->bit_size+7)/8:child->size;
       if(f->offset>t->size || child->alignment>16 || extent>t->size-f->offset)reject("record field outside containing storage");
@@ -368,13 +372,19 @@ struct Writer {
   }
   unsigned aggregate_literal(a_constant_ptr value,const a_source_position &pos) {
     auto found=literal_ids.find(value);if(found!=literal_ids.end())return found->second;
-    auto type=skip_typerefs(value->type);unsigned id=next_storage++;literal_ids[value]=id;
+    auto type=skip_typerefs(value->type);
+    if(type->kind==tk_array && !type->size)reject("zero-sized aggregate literal storage needs an owned allocation contract");
+    unsigned id=next_storage++;literal_ids[value]=id;
     storages.push_back("{\"id\":"+number(id)+",\"sourceName\":\"\",\"linkage\":\"internal\",\"externalKey\":null,\"definition\":\"strong\",\"typeId\":"+number(type_id(type))+
       ",\"sourceTypeId\":null,\"isThreadLocal\":false,\"isConst\":true,\"alignment\":"+std::to_string(type->alignment)+position(pos)+"}");
     initialize_storage(id,type,value,0);return id;
   }
   void initialize_storage(unsigned id,a_type_ptr type,a_constant_ptr c,unsigned long long offset) {
     auto t=skip_typerefs(type);if(!c)return;
+    if(t->kind==tk_array && !t->size && complete_fixed_array(t)) {
+      if(!zero_constant_bits(c))reject("effectful/nonempty zero-sized array initializer");
+      return;
+    }
     if(c->kind==ck_string) {
       if(t->kind!=tk_array || c->variant.string.length>t->size)reject("static string initializer bounds");
       data_chunk(id,offset,string(c->variant.string.value,c->variant.string.length));return;
@@ -582,14 +592,22 @@ struct Writer {
     execution_types.push_back("{\"id\":"+number(id)+",\"kind\":\"pointer\",\"pointeeTypeId\":"+number(pointee)+",\"elementTypeId\":null,\"elementCount\":null}");
     return id;
   }
-  unsigned array_type(unsigned element,unsigned long long count) {
-
-    auto key=std::make_pair(element,count);
+  bool complete_fixed_array(a_type_ptr type) {
+    auto t=skip_typerefs(type);
+    if(t->kind!=tk_array || t->variant.array.is_variable_size_array ||
+       t->variant.array.is_vla || t->variant.array.is_template_dependent_size_array ||
+       array_type_has_no_bound(t))return false;
+    auto element=skip_typerefs(t->variant.array.element_type);
+    return element->kind==tk_array?complete_fixed_array(element):element->size!=0;
+  }
+  unsigned array_type(unsigned element,unsigned long long count,bool bound_known=true) {
+    if(!bound_known && count)reject("unknown array bound has a fixed element count");
+    auto key=std::make_pair(element,std::make_pair(count,bound_known));
     auto prior=array_types.find(key);if(prior!=array_types.end())return prior->second;
     if(count>2147483647ULL)reject("array count outside bounded fixed storage profile");
     unsigned id=next_execution_type++;array_types[key]=id;
     execution_types.push_back("{\"id\":"+number(id)+",\"kind\":\"array\",\"pointeeTypeId\":null,\"elementTypeId\":"+
-      number(element)+",\"elementCount\":"+std::to_string(count)+"}");
+      number(element)+",\"elementCount\":"+(bound_known?std::to_string(count):"null")+"}");
     return id;
   }
   unsigned type_id(a_type_ptr type) {
@@ -615,9 +633,11 @@ struct Writer {
       auto element=skip_typerefs(t->variant.array.element_type);
 
       auto count=t->variant.array.variant.number_of_elements;
-      if(!element->size || (count && (t->size/element->size!=count || t->size%element->size)) || (!count && t->size))
+      bool bound_known=count!=0 || t->variant.array.bound_is_zero;
+      if(count>2147483647ULL || (!element->size && !complete_fixed_array(element)) ||
+         t->size!=count*element->size)
         reject("array size/stride mismatch");
-      return array_type(type_id(t->variant.array.element_type),count);
+      return array_type(type_id(t->variant.array.element_type),count,bound_known);
     }
     if(t->kind==tk_float) {
       if(t->variant.float_kind==fk_float && t->size==4)return 10;
@@ -756,7 +776,7 @@ struct Writer {
     }
     if(type.kind=="pointer" || type.kind=="lvalue-reference" || type.kind=="rvalue-reference")
       return pointer_type(source_execution_type(type.underlying));
-    if(type.kind=="array")return array_type(source_execution_type(type.underlying),type.element_count);
+    if(type.kind=="array")return array_type(source_execution_type(type.underlying),type.element_count,type.array_bound_known);
     if(type.kind=="qualified" || type.kind=="typedef")return source_execution_type(type.underlying);
     reject("source type outside scalar/data-pointer declaration profile");
   }
@@ -784,7 +804,7 @@ struct Writer {
     }
     source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.kind)+",\"sourceName\":"+quote(type.name)+
       ",\"underlyingTypeId\":"+number(underlying)+",\"executionTypeId\":"+number(execution)+
-      ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+",\"elementCount\":"+(type.kind=="array"?std::to_string(type.element_count):"null")+position(type.position)+"}");
+      ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+",\"elementCount\":"+(type.kind=="array" && type.array_bound_known?std::to_string(type.element_count):"null")+position(type.position)+"}");
     return id;
   }
   void source_declaration(const dot_object_source::Declaration &declaration,
@@ -831,7 +851,7 @@ struct Writer {
   bool copyable_value(a_type_ptr type,bool base_payload=false) {
     if(get_type_qualifiers(type)&(TQ_VOLATILE|TQ_C11_ATOMIC))return false;
     auto t=skip_typerefs(type);
-    if(t->kind==tk_array)return t->size && t->variant.array.variant.number_of_elements && copyable_value(t->variant.array.element_type);
+    if(t->kind==tk_array)return complete_fixed_array(t) && copyable_value(t->variant.array.element_type);
     if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
       if(t->incomplete || t->variant.class_struct_union.any_volatile_member)return false;
       auto &source=dot_object_source::state();
@@ -992,6 +1012,9 @@ struct Writer {
     auto prior=binding_ids.find(v);if(prior!=binding_ids.end())return prior->second;
     diagnostic_scope diagnostic(v->source_corresp.decl_position);
     if(thread_storage(v) || v->storage_class==sc_static || v->storage_class==sc_extern)reject("nonautomatic storage");
+    auto object_type=skip_typerefs(v->type);
+    if(object_type->kind==tk_array && !object_type->size)
+      reject("automatic zero-sized/incomplete array storage needs an owned allocation contract");
     if(v->init_kind!=initk_none && v->init_kind!=initk_dynamic &&
        !(v->init_kind==initk_zero && (skip_typerefs(v->type)->kind==tk_array || skip_typerefs(v->type)->kind==tk_struct)))
       reject("nonexecutably placed local initializer",v->init_kind);
@@ -1603,6 +1626,10 @@ struct Writer {
                          unsigned long long offset,const a_source_position &position) {
     type=skip_typerefs(type);
     if(!value)return; // The array-init operation supplies omitted zero elements.
+    if(type->kind==tk_array && !type->size && complete_fixed_array(type)) {
+      if(!zero_constant_bits(value))reject("effectful/nonempty zero-sized array initializer");
+      return;
+    }
     if(type->kind!=tk_array) {
       unsigned expr=0;
       if(value->kind==ck_dynamic_init) {
@@ -1711,6 +1738,10 @@ struct Writer {
       } else reject("record member dynamic initializer",d->kind);
     }
     if(type->kind==tk_array) {
+      if(!type->size && complete_fixed_array(type)) {
+        if(!zero_constant_bits(value))reject("effectful/nonempty zero-sized array initializer");
+        return;
+      }
       // The complete local was zeroed first. Keep compact array-init payloads
       // for scalar arrays reached exclusively through named record fields.
       bool indexed=false;for(const auto &step:path)if(!step.field)indexed=true;
@@ -2206,7 +2237,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v22\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v23\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

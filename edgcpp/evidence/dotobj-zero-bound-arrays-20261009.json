@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v23",
+  "scope": "Fixed zero-bound versus unspecified array identity, zero-extent record fields and side-effect-preserving zero-stride pointer operations",
+  "fullRegressionChecks": 1139,
+  "focusedChecks": 54,
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v23-001/results.json",
+      "sha256": "54b1b517bfe12a61e7a2ebe1b278992f7b7274f567a291537b5611407bb25f60"
+    },
+    "focusedZeroBounds": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-zero-bound-acceptance-001/results.json",
+      "sha256": "aa09d315100ee1c1d924ddc3754cb412df32d6193ee5e4f34fce680554bb87a7"
+    },
+    "nativeStockOracle": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-zero-bound-oracle-002/results.json",
+      "sha256": "6cc68acc192288df78b8a9d11addbf82c0589a1a6b1be977c8a5c3807668bd93"
+    },
+    "selectedDuckdbFrontier": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-042/results.json",
+      "sha256": "215bebfaf50290eb345d6c8432b662cc08e554568e5a9a6f5f683fef88f1873e"
+    },
+    "pendingStartupOracle": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-dynamic-startup-oracle-002/results.json",
+      "sha256": "2323ad6cf10dbf637ae19153c263f687afdef91847a8755194cf2bc05cb8fd5c"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native042-verified-snapshot/cpfe-dot",
+      "sha256": "5a802ed84eb3a195dca33d6511690ebafc2d1259a76688f0760bf9d5b0176dac"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-034/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "64cf42309669bbb1113bc001875e2653b87c72f1c13601ccade177f61fcdb510"
+    }
+  },
+  "priority": "Complete missing dotobj core features toward full DuckDB C# generation first; generated project compilation/execution and libc++ runtime binding are deferred.",
+  "projectScope": "Six of fifteen selected units package from the 2635-unit retained manifest; original exception.cpp and string_util.cpp now reach destruction obligations, date.cpp and hugeint.cpp remain gated on dynamic initialization. No full-project generation claim.",
+  "limitations": [
+    "Standalone zero-size storage, all-zero records and zero-size aggregate values remain gated.",
+    "Zero-element pointer difference and incomplete-array pointer arithmetic remain rejected.",
+    "Dynamic startup oracle is pending implementation, not part of the claimed implemented coverage.",
+    "No new complete SQLite pipeline execution claim; full synthetic regression covers prior functionality."
+  ]
+}

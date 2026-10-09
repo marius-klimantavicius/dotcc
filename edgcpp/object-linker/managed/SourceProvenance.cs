@@ -24,7 +24,7 @@ internal sealed partial class ObjectFile
                 if (type.Id <= 0 || type.Line < 0 || type.Column < 0 || query.Integer(5) is not (0 or 1) || query.Integer(6) is not (0 or 1))
                     throw new InvalidDataException("Invalid source type identity, qualifiers or location");
                 string executionType = Type(type.ExecutionTypeId);
-                if ((type.Kind == "array" ? type.ElementCount is null or < 0 : type.ElementCount is not null))
+                if ((type.Kind == "array" ? type.ElementCount is < 0 : type.ElementCount is not null))
                     throw new InvalidDataException("Source array requires a nonnegative element count");
                 if (type.Kind is "typedef" or "qualified")
                 {
@@ -34,7 +34,7 @@ internal sealed partial class ObjectFile
                 else if (type.Kind == "array")
                 {
                     if (type.UnderlyingTypeId is null || type.SourceName.Length != 0 || type.IsConst || type.IsVolatile ||
-                        (!ScalarTypes.IsArray(executionType) || ScalarTypes.ElementCount(executionType) != type.ElementCount))
+                        (!ScalarTypes.IsArray(executionType) || ScalarTypes.ArrayBound(executionType) != type.ElementCount))
                         throw new InvalidDataException("Invalid source array type or execution extent");
                 }
                 else if (type.Kind is "pointer" or "lvalue-reference" or "rvalue-reference")
@@ -93,8 +93,7 @@ internal sealed partial class ObjectFile
                 {
                     if (Original(target).Kind is "lvalue-reference" or "rvalue-reference" ||
                         current.Kind != "pointer" && Original(target).Kind == "void" ||
-                        Original(target).Kind == "array" && Original(target).ElementCount == 0 ||
-                        ScalarTypes.Pointee(Type(current.ExecutionTypeId)) != Type(target.ExecutionTypeId))
+                                                ScalarTypes.Pointee(Type(current.ExecutionTypeId)) != Type(target.ExecutionTypeId))
                         throw new InvalidDataException("Source pointer pointee disagrees with execution representation");
                 }
                 else if (current.Kind == "array")
@@ -102,7 +101,7 @@ internal sealed partial class ObjectFile
                     string representation = Type(current.ExecutionTypeId);
                     string element = ScalarTypes.Element(representation);
                     if (element != Type(target.ExecutionTypeId)) throw new InvalidDataException("Source array element disagrees with execution representation");
-                    if (Original(target).Kind == "array" && Original(target).ElementCount == 0)
+                    if (Original(target).Kind == "array" && Original(target).ElementCount is null)
                         throw new InvalidDataException("Array element cannot be incomplete");
                 }
                 else if (current.ExecutionTypeId != target.ExecutionTypeId)
@@ -223,7 +222,7 @@ internal sealed partial class ObjectFile
                         (kind == "parameter" ? ParameterBindingType(function, query.Integer(16), type) != Type(query.Integer(12)) : type.ExecutionTypeId != query.OptionalInteger(12)) || query.OptionalText(13) != name)
                         throw new InvalidDataException("Source binding declaration does not match its execution binding");
                     if (!BindingSourceTypes.TryAdd(query.Integer(5), sourceTypeId)) throw new InvalidDataException("Duplicate source binding declaration identity");
-                    if (kind == "local" && Original(type).Kind == "array" && Original(type).ElementCount == 0)
+                    if (kind == "local" && Original(type).Kind == "array" && Original(type).ElementCount is null)
                         throw new InvalidDataException("Incomplete array is only supported as original parameter provenance");
                     // A canonical routine signature can come from an earlier
                     // prototype using a different typedef or top-level cv spelling.
@@ -313,7 +312,7 @@ internal sealed partial class ObjectFile
             type = SourceTypeById(type.UnderlyingTypeId!.Value);
             isConst |= type.IsConst; isVolatile |= type.IsVolatile;
         }
-        if (type.Kind == "array") return "array(" + type.ElementCount + "," +
+        if (type.Kind == "array") return "array(" + (type.ElementCount?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "?") + "," +
             SourceTypeSignature(type.UnderlyingTypeId!.Value, depth + 1, isConst, isVolatile) + ")";
         // References themselves cannot be cv-qualified; qualifiers belong to
         // their referent and are retained inside the distinct lref/rref node.

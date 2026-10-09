@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v22'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v23'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE types (
  element_count INTEGER,
  CHECK((kind='pointer' AND pointee_type_id IS NOT NULL) OR
        (kind<>'pointer' AND pointee_type_id IS NULL)),
- CHECK((kind='array' AND element_type_id IS NOT NULL AND element_count IS NOT NULL AND element_count>=0) OR
+ CHECK((kind='array' AND element_type_id IS NOT NULL AND (element_count IS NULL OR element_count>=0)) OR
        (kind<>'array' AND element_type_id IS NULL AND element_count IS NULL))
 ) STRICT;
 CREATE TABLE routine_types (

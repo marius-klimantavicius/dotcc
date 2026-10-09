@@ -12,7 +12,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
     private readonly Dictionary<string, string> recordNames = new(StringComparer.Ordinal);
     private readonly Dictionary<(string Record, long Ordinal), string> fieldNames = [];
     private string Type(string kind) => ScalarTypes.IsArray(kind)
-        ? "global::" + namespaceName + "." + className + "." + arrayNames[kind]
+        ? ScalarTypes.IsAddressOnlyArray(kind) ? Type(ScalarTypes.Leaf(kind)) : "global::" + namespaceName + "." + className + "." + arrayNames[kind]
         : ScalarTypes.IsRecord(kind) ? "global::" + namespaceName + "." + className + "." + recordNames[kind]
         : RoutineTypes.IsFunctionPointer(kind) ? FunctionPointerType(ScalarTypes.Pointee(kind))
         : ScalarTypes.IsPointer(kind) ? Type(ScalarTypes.Pointee(kind)) + "*" : ScalarTypes.CSharp(kind);
@@ -56,7 +56,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v22");
+        lifetimeWriter.WriteString("profile", "scalar-control-v23");
         lifetimeWriter.WriteString("capture", "lexical-cleanup-activations");
         lifetimeWriter.WriteBoolean("lexicalCleanups", true);
         lifetimeWriter.WriteBoolean("lifetimes", false);
@@ -82,16 +82,16 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             {
                 foreach (string array in linker.EmissionObjects.SelectMany(input => input.Types.Values).Where(ScalarTypes.IsArray).Distinct().Order(StringComparer.Ordinal))
                 {
+                    if (ScalarTypes.IsAddressOnlyArray(array)) continue;
                     string leaf = ScalarTypes.Leaf(array);
                     long count = 1;
                     for (string current = array; ScalarTypes.IsArray(current); current = ScalarTypes.Element(current))
                         count = checked(count * ScalarTypes.ElementCount(current));
-                    // Incomplete array views are address-only. Complete arrays
-                    // carry real repeated CLR fields, so record copies preserve
-                    // every element rather than relying on value-type padding.
+                    // Only positive extents have physical CLR array fields.
+                    // Zero-bound and incomplete arrays are address-only views.
                     bool pointers = ScalarTypes.IsPointer(leaf);
                     if (pointers) builder.Append("#pragma warning disable CS9184 // Pointer elements use address-based access, not generic span conversions.\n");
-                    builder.Append("    [global::System.Runtime.CompilerServices.InlineArray(").Append(Math.Max(1, count))
+                    builder.Append("    [global::System.Runtime.CompilerServices.InlineArray(").Append(count)
                         .Append(")]\n    public struct ").Append(arrayNames[array])
                         .Append("\n    {\n        public ").Append(leaf == "f80" ? "global::System.Runtime.Intrinsics.Vector128<byte>" : Type(leaf)).Append(" First;\n    }\n");
                     if (pointers) builder.Append("#pragma warning restore CS9184\n");
@@ -109,8 +109,10 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                             .Append(record.Alignment == 16 ? "global::System.Runtime.Intrinsics.Vector128<byte>" : record.Alignment == 8 ? "long" : record.Alignment == 4 ? "int" : "short").Append(' ')
                             .Append(backingNames.Allocate("__alignment", "alignment")).Append(";\n");
                     foreach (RecordField field in definition.Object.RecordFields(record.TypeId))
-                        if (ScalarTypes.IsArray(definition.Object.Type(field.TypeId)) && ScalarTypes.ElementCount(definition.Object.Type(field.TypeId)) == 0)
-                            builder.Append("        // Flexible tail: ").Append(Type(ScalarTypes.Element(definition.Object.Type(field.TypeId)))).Append(' ').Append(fieldNames[(key, field.Ordinal)]).Append("[] at byte offset ").Append(field.ByteOffset).Append(".\n");
+                        if (ScalarTypes.IsAddressOnlyArray(definition.Object.Type(field.TypeId)))
+                            builder.Append(ScalarTypes.IsIncompleteArray(definition.Object.Type(field.TypeId)) ? "        // Flexible tail: " : "        // Zero-byte array member: ")
+                                .Append(Type(ScalarTypes.Leaf(definition.Object.Type(field.TypeId)))).Append(' ').Append(fieldNames[(key, field.Ordinal)])
+                                .Append(" at byte offset ").Append(field.ByteOffset).Append("; original extent ").Append(definition.Object.Type(field.TypeId)).Append(".\n");
                         else if (field.BitWidth is not null) WriteBitfield(builder, definition.Object, field, fieldNames[(key, field.Ordinal)], backingNames);
                         else builder.Append(field.FieldRole == "source" ? "" : "        // Compiler-generated " + field.FieldRole + " field.\n").Append("        [global::System.Runtime.InteropServices.FieldOffset(").Append(field.ByteOffset).Append(")]\n        public ")
                             .Append(IsVolatileField(definition.Object, field) ? "volatile " : "").Append(Type(definition.Object.Type(field.TypeId))).Append(' ').Append(fieldNames[(key, field.Ordinal)]).Append(";\n");
@@ -159,7 +161,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v22");
+            writer.WriteString("profile", "scalar-control-v23");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -172,7 +174,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v22");
+            writer.WriteString("profile", "scalar-control-v23");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -183,7 +185,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v22", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v23", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; variable-length arrays, source EH and C++ RAII are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance and explicit lexical cleanup activations only; no complete source expression/statement view, macro expansion history or general C++ lifetime capture" },
@@ -442,6 +444,11 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     {
                         if (ScalarTypes.IsWideInteger(NodeType(Child("left")))) left = PointerIndex(Child("left"));
                         if (ScalarTypes.IsWideInteger(NodeType(Child("right")))) right = PointerIndex(Child("right"));
+                        if (ScalarTypes.IsZeroStridePointer(NodeType(node)))
+                        {
+                            if (ScalarTypes.IsPointer(NodeType(Child("left")))) right = "(" + right + " * 0 /* zero-size array stride */)";
+                            else left = "(" + left + " * 0 /* zero-size array stride */)";
+                        }
                     }
                     string expression = "(" + left + " " + op + " " + right + ")";
                     if (node.Operator is "eq" or "ne" or "lt" or "le" or "gt" or "ge") return Boolean(expression, node);
@@ -475,7 +482,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             if (node.Kind == "member")
             {
                 RecordField field = obj.Fields[node.FieldId!.Value];
-                if (ScalarTypes.IsArray(obj.Type(field.TypeId)) && ScalarTypes.ElementCount(obj.Type(field.TypeId)) == 0)
+                if (ScalarTypes.IsAddressOnlyArray(obj.Type(field.TypeId)))
                     return "((" + Type(obj.Type(field.TypeId)) + "*)((byte*)" + Address(body.Child(node.Id, "operand")) + " + " + field.ByteOffset + " /* " + field.SourceName + " */))";
                 return "(&(" + Address(body.Child(node.Id, "operand")) + ")->" + fieldNames[(obj.Type(field.RecordTypeId), field.Ordinal)] + ")";
             }
@@ -488,6 +495,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             if (valueNeeded && location.Kind == "member" && obj.Fields[location.FieldId!.Value].BitWidth is not null && node.Operator is "pre-inc" or "pre-dec")
                 return BitfieldResult(obj, obj.Fields[location.FieldId!.Value], "(" + (node.Operator == "pre-inc" ? "++" : "--") + Location(location) + ")");
             string operand = Location(location);
+            if (ScalarTypes.IsZeroStridePointer(NodeType(node))) return operand + " += 0 /* zero-size array stride */";
             string operation = node.Operator is "pre-inc" or "post-inc" ? "++" : "--";
             return node.Operator is "pre-inc" or "pre-dec" ? operation + operand : operand + operation;
         }
@@ -506,6 +514,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 value = "unchecked((" + Type(NodeType(node)) + ")(" + value + "))";
                 valueType = NodeType(node);
             }
+            if (ScalarTypes.IsZeroStridePointer(NodeType(node))) value = "(" + value + " * 0 /* zero-size array stride */)";
             Node target = body.Child(node.Id, "target");
             if (target.Kind == "volatile-place" && (!DirectVolatile(target) || CompoundPromotionDiffers(NodeType(node), valueType, op))) return VolatileOperation(NodeType(node), op + "=", Address(target), value, valueType);
             bool promotionDiffers = CompoundPromotionDiffers(NodeType(node), valueType, op);
@@ -609,6 +618,11 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             string name = Location(target);
             string Clear() => accessAlignment.NeedsUnaligned(target) ? UnalignedWrite(array, Address(target), "default(" + Type(array) + ")") : name + " = default";
             Node[] elements = body.Children(node.Id, "element").Select(edge => body.Nodes[edge.ChildId]).ToArray();
+            if (ScalarTypes.IsZeroArray(array))
+            {
+                Line(indent, "_ = (nuint)(" + Address(target) + "); // Empty array initialization has no stores.");
+                return;
+            }
             if ((leaf == "f80" || ScalarTypes.IsWideInteger(leaf)) && elements.Length > 0 && elements.All(item => body.Child(item.Id, "value").Kind == "constant"))
             {
                 int prefix = elements.Where(item => body.Child(item.Id, "value").ConstantText != ScalarTypes.Zero(leaf))
@@ -816,7 +830,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     Line(indent, Type(type) + " " + old + " = " + UnalignedRead(type, address) + ";");
                     if (node.Kind == "mutate")
                     {
-                        value = "unchecked((" + Type(type) + ")(" + old + (node.Operator is "pre-inc" or "post-inc" ? " + 1))" : " - 1))");
+                        value = "unchecked((" + Type(type) + ")(" + old + (node.Operator is "pre-inc" or "post-inc" ? " + " : " - ") + (ScalarTypes.IsZeroStridePointer(type) ? "0))" : "1))");
                         if (node.Operator is "post-inc" or "post-dec" && !discard)
                             Line(indent, Type(type) + " " + result + " = " + old + ";");
                     }
@@ -857,7 +871,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     Line(indent + 1, Type(type) + " " + value + " = " + CompoundValue(type, NodeType(right), op, VolatileRead(type, address), argument) + ";");
                 }
                 else Line(indent + 1, Type(type) + " " + value + " = unchecked((" + Type(type) + ")(" + VolatileRead(type, address) +
-                    (expression.Operator is "pre-inc" or "post-inc" ? " + 1));" : " - 1));"));
+                    (expression.Operator is "pre-inc" or "post-inc" ? " + " : " - ") + (ScalarTypes.IsZeroStridePointer(type) ? "0));" : "1));"));
                 Line(indent + 1, VolatileWrite(type, address, value) + ";"); Line(indent, "}"); return;
             }
             if (expression.Kind == "sequence")

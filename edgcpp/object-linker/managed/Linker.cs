@@ -185,7 +185,7 @@ internal sealed partial class Linker
         if (a < 0 || b < 0 || left[a..] != right[b..]) return false;
         string x = left[..a], y = right[..b];
         return ScalarTypes.IsArray(x) && ScalarTypes.IsArray(y) && ScalarTypes.Element(x) == ScalarTypes.Element(y) &&
-            (ScalarTypes.ElementCount(x) == 0 || ScalarTypes.ElementCount(y) == 0);
+            (ScalarTypes.IsIncompleteArray(x) || ScalarTypes.IsIncompleteArray(y));
     }
 
     public StorageSymbol ResolveStorage(ObjectFile obj, long id)

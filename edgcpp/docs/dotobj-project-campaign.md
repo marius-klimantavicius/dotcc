@@ -1,9 +1,19 @@
 # Owned semantic object implementation campaign
 
-The acceptance target is translation and execution of SQLite and DuckDB through
-independent SQLite `.dotobj` files produced from original translation units.
-The managed linker and C# emitter must work without the original source files or
-EDG. A successful small language fixture is supporting evidence, not completion.
+The immediate user-requested checkpoint (2026-10-09) is complete DuckDB C#
+generation through independent SQLite `.dotobj` files from original translation
+units, including bundled dependencies. Generated DuckDB code need not compile or
+execute for this checkpoint. Prioritize missing core semantic/type, initialization,
+lifetime/EH, linker and emitter features; defer libc++ implementation and runtime
+binding gaps. Existing headers remain useful evidence for general language
+features, not a requirement to finish the standard-library runtime first.
+
+The managed linker and C# emitter must work without original source files or EDG.
+Never satisfy generation by silently dropping required startup, destruction,
+handlers or bodies. Record generation, compilation and execution separately.
+SQLite already has execution acceptance; broader cross-platform DuckDB execution
+and NativeAOT remain later objectives. A small fixture supports a feature claim,
+not complete-project acceptance.
 
 ## Coordination and ownership
 
@@ -41,9 +51,13 @@ satisfy the object-pipeline acceptance target.
    virtual dispatch, RTTI/member pointers, static guards and library/runtime
    requirements. Consult stock EDG C lowering and the working direct backend;
    do not alter EDG frontend semantics to fit the emitter.
-5. Link all required DuckDB objects and bundled dependencies using bounded body
-   loading. Run SQL and DuckDB test selections against the native configuration,
-   then NativeAOT. Resolve actual failures before broadening acceptance claims.
+5. First link all required DuckDB objects and bundled dependencies using bounded
+   body loading and emit complete reviewable C#. Account for every required unit
+   and report any remaining semantic rejection explicitly. Compilation/execution
+   and missing libc++/runtime bindings are not gates for this generation checkpoint.
+6. Subsequently bind remaining runtime/library requirements, run SQL and DuckDB
+   test selections against the native configuration, then NativeAOT. Keep this
+   later execution milestone separate from complete source generation.
 
 ## Non-negotiable representation and output properties
 
@@ -435,3 +449,32 @@ The next general type feature distinguishes fixed zero-bound arrays from truly
 unspecified/flexible arrays. Existing exact stock-C and native oracles preserve
 zero byte extent and zero pointer stride without dropping side effects. No
 complete DuckDB generation claim is made at this milestone.
+
+
+## Fixed zero-bound array identity and execution, v23 (2026-10-09)
+
+Fixed `[0]` arrays now remain distinct from unspecified `[]` arrays in both the
+source index and execution graph. Original field extents, offsets and alignment
+are retained without phantom CLR elements. Zero-stride pointer arithmetic and
+mutations preserve operand evaluation and side effects, including nested arrays
+and supported volatile/unaligned places. True flexible fields retain their
+separate layout restrictions. Unsupported standalone empty storage and undefined
+zero-stride pointer difference remain explicit gates.
+
+Native042/managed034 passes **1139 full regression checks including NativeAOT**.
+The focused acceptance passes 54 checks, including independent native O0/O2,
+stock C lowering, source-hidden linking and malformed-object rejection; the full
+run additionally checks final generated source shape. [Hashed v23 evidence](../evidence/dotobj-zero-bound-arrays-20261009.json)
+records the immutable tools and receipts.
+
+The retained 15-unit DuckDB frontier packages six units. Actual `exception.cpp`
+and `string_util.cpp` now reach destruction obligations after clearing zero-array
+layout, while `date.cpp` and `hugeint.cpp` still require owned dynamic startup.
+This is a selected frontier, not complete generation of the 2635-unit manifest.
+
+The new [dynamic-startup oracle](../evidence/dotobj-dynamic-startup-20261009.json)
+is explicitly pending implementation: scalar and constructor-array global startup
+pass native/stock-C references but are rejected by the owned exporter. Local
+static generation succeeds with unresolved externs, without proving concurrent
+guard publication. It establishes the next core-feature acceptance baseline;
+libc++ implementation and runtime provider work remain deferred.

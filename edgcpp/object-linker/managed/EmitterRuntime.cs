@@ -25,8 +25,8 @@ internal sealed partial class Emitter
                 code.Append("        ").Append(t).Append(" previous = ").Append(VolatileRead(type, "address")).Append(";\n");
                 string expression = operation switch
                 {
-                    "pre-inc" or "post-inc" => "unchecked((" + t + ")(previous + 1))",
-                    "pre-dec" or "post-dec" => "unchecked((" + t + ")(previous - 1))",
+                    "pre-inc" or "post-inc" => "unchecked((" + t + ")(previous + " + (ScalarTypes.IsZeroStridePointer(type) ? "0" : "1") + "))",
+                    "pre-dec" or "post-dec" => "unchecked((" + t + ")(previous - " + (ScalarTypes.IsZeroStridePointer(type) ? "0" : "1") + "))",
                     _ => CompoundValue(type, valueType, operation[..^1], "previous", "value")
                 };
                 code.Append("        ").Append(t).Append(" next = ").Append(expression).Append(";\n");
@@ -44,7 +44,8 @@ internal sealed partial class Emitter
         : left == "i64" || right == "i64" ? "i64" : left == "u32" || right == "u32" ? "u32" : "i32";
     private string CompoundValue(string type, string valueType, string op, string left, string right)
     {
-        if (ScalarTypes.IsPointer(type)) return "(" + left + " " + op + " " + right + ")";
+        if (ScalarTypes.IsPointer(type)) return "(" + left + " " + op + " " +
+            (ScalarTypes.IsZeroStridePointer(type) ? "(" + right + " * 0 /* zero-size array stride */)" : right) + ")";
         string promoted = op is "<<" or ">>" ? PromotedType(type, "i32") : valueType;
         return "unchecked((" + Type(type) + ")((" + Type(promoted) + ")" + left + " " + op + " (" + (op is "<<" or ">>" ? "int" : Type(promoted)) + ")" + right + "))";
     }

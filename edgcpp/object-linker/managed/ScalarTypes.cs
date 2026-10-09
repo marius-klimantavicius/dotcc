@@ -8,14 +8,20 @@ internal static class ScalarTypes
     public static bool IsRecord(string kind) => kind.StartsWith("record(", StringComparison.Ordinal) && kind.EndsWith(')');
     public static bool IsScalar(string kind) => IsNumeric(kind) || IsPointer(kind) || kind == "bool";
     public static bool IsArray(string kind) => kind.StartsWith("array(", StringComparison.Ordinal) && kind.EndsWith(')');
-    public static long ElementCount(string kind) => long.Parse(kind.AsSpan(6, kind.IndexOf(',') - 6), CultureInfo.InvariantCulture);
+    public static long? ArrayBound(string kind) => kind.AsSpan(6, kind.IndexOf(',') - 6).SequenceEqual("?")
+        ? null : long.Parse(kind.AsSpan(6, kind.IndexOf(',') - 6), CultureInfo.InvariantCulture);
+    public static long ElementCount(string kind) => ArrayBound(kind) ?? 0;
+    public static bool IsIncompleteArray(string kind) => IsArray(kind) && ArrayBound(kind) is null;
+    public static bool IsAddressOnlyArray(string kind) => IsArray(kind) && FlatCount(kind) == 0;
+    public static bool IsZeroArray(string kind) => IsAddressOnlyArray(kind) && !IsIncompleteArray(kind);
+    public static bool IsZeroStridePointer(string kind) => IsPointer(kind) && IsZeroArray(Pointee(kind));
     public static string Element(string kind) => kind[(kind.IndexOf(',') + 1)..^1];
     public static string Leaf(string kind) => IsArray(kind) ? Leaf(Element(kind)) : kind;
     public static long FlatCount(string kind) => IsArray(kind) ? checked(ElementCount(kind) * FlatCount(Element(kind))) : 1;
     public static long Size(string kind) => IsArray(kind) ? checked(ElementCount(kind) * Size(Element(kind))) : IsPointer(kind) ? 8 : kind switch
     { "f80" or "i128" or "u128" => 16, "va-list" => 24, "bool" or "i8" or "u8" => 1, "i16" or "u16" => 2, "i32" or "u32" or "f32" => 4, "i64" or "u64" or "f64" => 8, _ => throw new InvalidDataException("Type has no storage size") };
     public static string ArrayName(string kind) => "__DotObjArray_" + Mangle(kind);
-    private static string Mangle(string kind) => IsArray(kind) ? "A" + ElementCount(kind) + "_" + Mangle(Element(kind)) : IsPointer(kind) ? "P_" + Mangle(Pointee(kind)) : kind;
+    private static string Mangle(string kind) => IsArray(kind) ? (IsIncompleteArray(kind) ? "I" : "A" + ElementCount(kind)) + "_" + Mangle(Element(kind)) : IsPointer(kind) ? "P_" + Mangle(Pointee(kind)) : kind;
     public static bool IsPointer(string kind) => kind.StartsWith("ptr(", StringComparison.Ordinal) && kind.EndsWith(')');
     public static string Pointee(string kind) => IsPointer(kind) ? kind[4..^1]
         : throw new InvalidDataException("Expected pointer type");

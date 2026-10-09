@@ -4,7 +4,7 @@ This implements the owned object path of the [new design](../docs/dotobj-format.
 It uses a fresh SQLite schema and C# reader/linker/emitter, without the prior
 semantic-export experiment or C# text/command objects.
 
-The current profile is `scalar-control-v22`. It supports independently produced
+The current profile is `scalar-control-v23`. It supports independently produced
 SQLite and musl objects, typed provider selection, shared BCL runtime bindings,
 and explicit source startup actions. Original class-value routine signatures retain explicit mappings to hidden
 result buffers, indirect parameters and implicit receivers. Generated runtime
@@ -13,7 +13,9 @@ retain observed layout and original directives; named fields keep ordinary membe
 syntax, with explicit unaligned operations restricted to raw accesses that lose
 the packed field context. Empty GNU memory assembly owns original operand
 regions and saved VLA extents; emission evaluates them once and uses a BCL
-memory barrier without fabricated operand reads/writes.
+memory barrier without fabricated operand reads/writes. Fixed zero-bound arrays
+retain distinct identity from unspecified arrays, zero field extent and zero
+pointer stride while preserving operand side effects.
 Original base declarations and generated
 ctor/dtor entries retain separate provenance from exact physical subobject views.
 COMDAT storage links to one canonical cell across translation units. Constructor

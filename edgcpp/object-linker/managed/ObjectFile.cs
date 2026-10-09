@@ -68,7 +68,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v22" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v23" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -169,7 +169,7 @@ internal sealed partial class ObjectFile : IDisposable
                 string kind = query.Text(1);
                 long? pointee = query.OptionalInteger(2), element = query.OptionalInteger(3), count = query.OptionalInteger(4);
                 if (id <= 0 || (kind is not ("void" or "bool" or "pointer" or "array" or "record" or "routine" or "va-list") && !ScalarTypes.IsNumeric(kind)) ||
-                    (kind == "pointer") != (pointee is not null) || (kind == "array") != (element is not null && count is >= 0) ||
+                    (kind == "pointer") != (pointee is not null) || (kind == "array") != (element is not null && count is null or >= 0) ||
                     kind != "array" && (element is not null || count is not null))
                     throw new InvalidDataException("Unsupported execution type or pointer shape");
                 rawTypes.Add(id, (kind, pointee, element, count));
@@ -190,11 +190,12 @@ internal sealed partial class ObjectFile : IDisposable
                     : throw new InvalidDataException("Routine execution type has no signature"),
                 "record" => Records.TryGetValue(id, out RecordType? record) ? record.Key : throw new InvalidDataException("Record type has no layout metadata"),
                 "pointer" => "ptr(" + ResolveType(raw.Pointee!.Value, depth + 1) + ")",
-                "array" => "array(" + raw.Count!.Value.ToString(CultureInfo.InvariantCulture) + "," + ResolveType(raw.Element!.Value, depth + 1) + ")",
+                "array" => "array(" + (raw.Count?.ToString(CultureInfo.InvariantCulture) ?? "?") + "," + ResolveType(raw.Element!.Value, depth + 1) + ")",
                 _ => raw.Kind
             };
             if (raw.Kind == "array")
             {
+                if (ScalarTypes.IsIncompleteArray(ScalarTypes.Element(key))) throw new InvalidDataException("Array element cannot have an unknown bound");
                 if (ScalarTypes.Element(key) == "void") throw new InvalidDataException("Array element cannot be void");
                 if (RoutineTypes.IsRoutine(ScalarTypes.Element(key))) throw new InvalidDataException("Array element cannot be routine type");
             }
