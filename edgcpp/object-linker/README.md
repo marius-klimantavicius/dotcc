@@ -4,11 +4,16 @@ This implements the owned object path of the [new design](../docs/dotobj-format.
 It uses a fresh SQLite schema and C# reader/linker/emitter, without the prior
 semantic-export experiment or C# text/command objects.
 
-The current profile is `scalar-control-v24`. It supports independently produced
+The current profile is `scalar-control-v25`. It supports independently produced
 SQLite and musl objects, typed provider selection, shared BCL runtime bindings,
 and explicit source startup actions. C++ file-scope initialization owns generated
 routine origins, original per-storage statement intervals and separate local
 scaffolding, with scheduling and exception boundaries independent of source text.
+Scalar destruction owns original lifetime trees, normal destructor calls and
+exceptional cleanup states. Named locals remain readable; CLR unwinding runs
+verified callbacks in EDG order, including ordinary base/member rollback and
+temporary boundaries, without native stack-offset frames. Source C++ throw/catch
+and conditional/array/VTT cleanup remain explicit gates.
 Original class-value routine signatures retain explicit mappings to hidden
 result buffers, indirect parameters and implicit receivers. Generated runtime
 prototypes have observed origins distinct from user declarations. Packed records

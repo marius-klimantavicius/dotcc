@@ -89,7 +89,8 @@ internal static unsafe class __DotObjEntry
 
     # With source exceptions disabled EDG has already materialized this normal
     # destructor call. Receiver support now lets us preserve and execute it;
-    # this is not a claim that unrepresented unwinding obligations are accepted.
+    # Exact normal destruction provenance accounts for the source obligation
+    # without adding exception cleanup to a no-exceptions translation.
     normal_destructor = inputs / 'cleanup-cpp-normal-destructor.cpp'
     normal_destructor.write_text('struct Guard{int* p;~Guard(){++*p;}}; '
         'int f(){int value=0;{Guard g{&value};}return value;} '
@@ -103,9 +104,14 @@ internal static unsafe class __DotObjEntry
     exceptional_destructor = inputs / 'cleanup-cpp-exceptional-destructor.cpp'
     exceptional_destructor.write_text('extern void may_throw(); struct Guard{int* p;~Guard(){++*p;}}; '
         'int f(){int value=0;{Guard g{&value};may_throw();}return value;}\n')
-    unsupported = compile_source('cleanup-cpp-exceptional-destructor', exceptional_destructor,
-                                 extra=['--exceptions', '--rtti'], expected=None)
-    check('cleanup-exceptional-destructor-not-published', not unsupported.exists())
+    exceptional = compile_source('cleanup-cpp-exceptional-destructor', exceptional_destructor,
+                                  extra=['--exceptions', '--rtti'])
+    run('cleanup-exceptional-destructor-verify', ['dotnet', tool, 'verify', exceptional])
+    with sqlite3.connect(normal_object) as db:
+        check('cleanup-normal-destruction-provenance', db.execute('SELECT count(*) FROM normal_destructions').fetchone()[0] > 0)
+    with sqlite3.connect(exceptional) as db:
+        check('cleanup-exceptional-destruction-provenance', db.execute('SELECT count(*) FROM cleanup_actions').fetchone()[0] > 0)
+
     for name, standard, code in [
         ('mixed-uninitialized', 'c++17', 'void drop(int*); int f(){int guard __attribute__((cleanup(drop))), value=1;return value;}'),
         ('split-array-initialization', 'c++17', 'void drop(int (*)[3]); int next(); int f(){int values[3] __attribute__((cleanup(drop)))={next(),next()};return values[0];}'),

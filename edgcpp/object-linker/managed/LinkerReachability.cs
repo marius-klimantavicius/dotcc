@@ -73,6 +73,8 @@ internal sealed partial class Linker
                 Symbol symbol = definitions[item.Key];
                 ActivateObject(symbol.Object);
                 FunctionBody body = symbol.Object.ReadBody(symbol.Entity.Id);
+                foreach (CleanupAction action in symbol.Object.FunctionCleanupActions.GetValueOrDefault(symbol.Entity.Id, []))
+                    ReferenceFunction(symbol.Object, action.CallbackEntityId);
                 foreach (Node node in body.Nodes.Values)
                 {
                     if (node.EntityId is long entity) ReferenceFunction(symbol.Object, entity);

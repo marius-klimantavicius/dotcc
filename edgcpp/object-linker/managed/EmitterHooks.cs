@@ -16,6 +16,8 @@ internal sealed partial class Emitter
 
             public static unsafe partial class ObjectProgram
             {
+                __OWNED_CLEANUP_HOOKS__
+
                 static partial void Enter();
                 static partial void Leave();
                 static partial void NormalExit(int status);
@@ -71,6 +73,23 @@ internal sealed partial class Emitter
                 }
             }
             """;
-        File.WriteAllText(Path.Combine(output, "Runtime.ObjectProgram.generated.cs"), source.Replace("__OWNED_TLS_RELEASE__", tlsRelease.Length == 0 ? "" : Owner + "." + tlsRelease + "();", StringComparison.Ordinal) + "\n", new UTF8Encoding(false));
+        string cleanupHooks = linker.Definitions.Any(symbol => symbol.Object.FunctionCleanupActions.ContainsKey(symbol.Entity.Id)) ? """
+            // A false first-pass filter marks exceptional exit without selecting
+            // a handler. Forced thread exit still runs destructors even though
+            // it bypasses source catch/noexcept termination classification.
+            public static bool BeginUnwind(global::System.Exception error, ref bool unwinding)
+            {
+                unwinding = true;
+                return false;
+            }
+
+            public static bool TerminateCleanupFailure(global::System.Exception error)
+            {
+                if (!IsRuntimeTransfer(error))
+                    global::System.Environment.FailFast("Destructor threw during unwinding", error);
+                return false;
+            }
+            """ : "";
+        File.WriteAllText(Path.Combine(output, "Runtime.ObjectProgram.generated.cs"), source.Replace("__OWNED_CLEANUP_HOOKS__", cleanupHooks.Replace("\n", "\n    ", StringComparison.Ordinal), StringComparison.Ordinal).Replace("__OWNED_TLS_RELEASE__", tlsRelease.Length == 0 ? "" : Owner + "." + tlsRelease + "();", StringComparison.Ordinal) + "\n", new UTF8Encoding(false));
     }
 }

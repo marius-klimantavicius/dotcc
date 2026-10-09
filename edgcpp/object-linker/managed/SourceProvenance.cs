@@ -361,7 +361,7 @@ internal sealed partial class ObjectFile
                     switch (query.ColumnType(index))
                     {
                         case 1:
-                            if (column is "hasVolatileKeyword" or "hasInlineKeyword" or "clobbersMemory" or "hasDefaultArgument" or "isAliasEntry" or "isVirtual" or "isConst" or "isVolatile" or "isSynthetic" or "isComplete" or "isTriviallyCopyable" or "isMutable" or "hasNoUniqueAddress" or "hasInitializer" or "objectIsConst" or "objectIsVolatile") writer.WriteBoolean(column, query.Integer(index) == 1);
+                            if (column is "isUnreachable" or "hasVolatileKeyword" or "hasInlineKeyword" or "clobbersMemory" or "hasDefaultArgument" or "isAliasEntry" or "isVirtual" or "isConst" or "isVolatile" or "isSynthetic" or "isComplete" or "isTriviallyCopyable" or "isMutable" or "hasNoUniqueAddress" or "hasInitializer" or "objectIsConst" or "objectIsVolatile") writer.WriteBoolean(column, query.Integer(index) == 1);
                             else writer.WriteNumber(column, query.Integer(index));
                             break;
                         case 3: writer.WriteString(column, query.Text(index)); break;
@@ -373,6 +373,21 @@ internal sealed partial class ObjectFile
             }
             writer.WriteEndArray();
         }
+        Table("normalDestructions", "SELECT node_id,source_obligation_id,capture_proof FROM normal_destructions ORDER BY node_id", "nodeId", "sourceObligationId", "captureProof");
+        Table("expressionLifetimes", "SELECT node_id,source_lifetime_id,capture_proof FROM expression_lifetimes ORDER BY node_id", "nodeId", "sourceLifetimeId", "captureProof");
+        Table("baseSubobjectExpressions", "SELECT node_id,source_base_id FROM base_subobject_expressions ORDER BY node_id", "nodeId", "sourceBaseId");
+        Table("sourceLifetimes", "SELECT id,function_entity_id,parent_lifetime_id,sibling_ordinal,parent_obligation_id,kind,source_file_id,line,column,capture_proof FROM source_lifetimes ORDER BY id",
+            "id", "functionEntityId", "parentLifetimeId", "siblingOrdinal", "parentObligationId", "kind", "sourceFileId", "line", "column", "captureProof");
+        Table("sourceDestructionObligations", "SELECT id,function_entity_id,lifetime_id,ordinal,destructor_entity_id,source_type_id,source_file_id,line,column,capture_proof FROM source_destruction_obligations ORDER BY id",
+            "id", "functionEntityId", "lifetimeId", "ordinal", "destructorEntityId", "sourceTypeId", "sourceFileId", "line", "column", "captureProof");
+        Table("cleanupActions", "SELECT id,function_entity_id,source_obligation_id,callback_entity_id,target_node_id,capture_proof FROM cleanup_actions ORDER BY id",
+            "id", "functionEntityId", "sourceObligationId", "callbackEntityId", "targetNodeId", "captureProof");
+        Table("cleanupStates", "SELECT id,function_entity_id,action_id,next_state_id FROM cleanup_states ORDER BY id",
+            "id", "functionEntityId", "actionId", "nextStateId");
+        Table("cleanupTransitions", "SELECT node_id,state_id,capture_proof,is_unreachable FROM cleanup_transitions ORDER BY node_id",
+            "nodeId", "stateId", "captureProof", "isUnreachable");
+        Table("cleanupFrameMarkers", "SELECT node_id,kind,capture_proof FROM cleanup_frame_markers ORDER BY node_id",
+            "nodeId", "kind", "captureProof");
         Table("memoryBarriers", "SELECT node_id,is_volatile,has_volatile_keyword,has_inline_keyword,clobbers_memory,capture_proof FROM memory_barriers ORDER BY node_id",
             "nodeId", "isVolatile", "hasVolatileKeyword", "hasInlineKeyword", "clobbersMemory", "captureProof");
         Table("memoryBarrierOperands", "SELECT node_id,ordinal,direction,constraint_text,source_name,source_element_type_id,element_size,source_shape,extent_kind,fixed_element_count,extent_binding_id,capture_proof,source_file_id,line,column FROM memory_barrier_operands ORDER BY node_id,ordinal",

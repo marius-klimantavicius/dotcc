@@ -512,3 +512,39 @@ unowned destruction in `FromCString` and `ToString`. Complete unit generation is
 still blocked. The next core slice owns typed cleanup states, destructor actions
 and constructor rollback, followed by source exception constructs; libc++ runtime
 implementation remains deferred under the generation-first checkpoint.
+
+## Owned scalar C++ cleanup, v25 (2026-10-09)
+
+Source lifetime trees, ordered destruction obligations and exact normal destructor
+calls now survive independently of EDG. Exceptional cleanup actions and their
+state transitions refer to typed target expressions and observed callbacks.
+Original destructor calls stay in normal control flow; CLR unwinding follows the
+verified cleanup chain for locals, temporaries, ordinary bases and members.
+Generated methods use named locals and a cleanup cursor rather than native stack
+frames. Optimized empty bases have an address-only view of the observed base
+subobject, with no fabricated storage field. Expression lifetime wrappers retain
+source identity through observed IL copies.
+
+The complete-object and subobject destructor distinction remains explicit. A
+delegating-constructor reduction exposed an observer timing error: capturing the
+destructor signature before EDG finalized its out-of-line declaration. The
+adapter now records identity first and observes the finalized signature at the
+existing routine hook; frontend semantics are unchanged. No-exceptions normal
+destruction remains supported and is checked against original obligations.
+
+Native048/managed042 passes **1154 full regression checks including NativeAOT**.
+Twenty focused native O0/O2 versus JIT/NativeAOT scenarios pass, including nested
+locals, constructor rollback, data-bearing and empty bases, member rollback,
+temporary return boundaries and delegating construction. Metadata acceptance
+passes 133 checks with 32 resealed malformed objects rejected; the separate
+normal-lifetime compatibility run passes 81 checks.
+[Hashed v25 evidence](../evidence/dotobj-scalar-cleanup-20261009.json) links all
+retained receipts and tools.
+
+Five original DuckDB units advance to the next explicit gates: conditional scalar
+cleanup in `exception.cpp`, virtual-base/VTT layout in `string_util.cpp`, source
+throw in `allocator.cpp` and `date.cpp`, and integer128 intrinsic operands in
+`hugeint.cpp`. None of these complete units generates yet. Conditional/array/VTT
+cleanup, source C++ throw/catch matching and a separate comma-place/prvalue member
+access remain open; this is not general C++ exception support. The generation-first
+checkpoint and deferral of libc++ runtime work remain unchanged.

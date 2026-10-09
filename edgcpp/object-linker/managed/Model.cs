@@ -12,6 +12,7 @@ internal sealed record Edge(long ParentId, string Role, long Ordinal, long Child
 internal sealed class FunctionBody
 {
     public bool RequiresFlatControl { get; set; }
+    public HashSet<long> CleanupCapturedBindings { get; } = [];
     public required long RootId { get; init; }
     public required Dictionary<long, Node> Nodes { get; init; }
     public required Dictionary<long, Binding> Bindings { get; init; }

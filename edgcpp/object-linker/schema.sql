@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v24'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v25'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -175,6 +175,71 @@ CREATE TABLE initialization_actions (
  column INTEGER NOT NULL CHECK(column>=0),
  UNIQUE(phase,entity_id),
  UNIQUE(phase,ordinal)
+) STRICT;
+CREATE TABLE source_lifetimes (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ function_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ parent_lifetime_id INTEGER REFERENCES source_lifetimes(id),
+ sibling_ordinal INTEGER NOT NULL CHECK(sibling_ordinal>=0),
+ parent_obligation_id INTEGER REFERENCES source_destruction_obligations(id),
+ kind TEXT NOT NULL CHECK(kind IN ('block','block-after-label','expression-temporary','try-block')),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
+ UNIQUE(function_entity_id,parent_lifetime_id,sibling_ordinal)
+) STRICT;
+CREATE TABLE source_destruction_obligations (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ function_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ lifetime_id INTEGER NOT NULL REFERENCES source_lifetimes(id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ destructor_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
+ UNIQUE(lifetime_id,ordinal)
+) STRICT;
+CREATE TABLE expression_lifetimes (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ source_lifetime_id INTEGER NOT NULL REFERENCES source_lifetimes(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-lifetime-wrapper')
+) STRICT;
+CREATE TABLE base_subobject_expressions (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ source_base_id INTEGER NOT NULL REFERENCES source_record_bases(id)
+) STRICT;
+CREATE TABLE normal_destructions (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ source_obligation_id INTEGER NOT NULL REFERENCES source_destruction_obligations(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-normal-destruction')
+) STRICT;
+CREATE TABLE cleanup_actions (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
+ source_obligation_id INTEGER NOT NULL REFERENCES source_destruction_obligations(id),
+ callback_entity_id INTEGER NOT NULL REFERENCES entities(id),
+ target_node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-region-entry')
+) STRICT;
+CREATE TABLE cleanup_states (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
+ action_id INTEGER NOT NULL UNIQUE REFERENCES cleanup_actions(id),
+ next_state_id INTEGER REFERENCES cleanup_states(id)
+) STRICT;
+CREATE TABLE cleanup_transitions (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ state_id INTEGER REFERENCES cleanup_states(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-cleanup-state'),
+ is_unreachable INTEGER NOT NULL CHECK(is_unreachable IN (0,1))
+) STRICT;
+CREATE TABLE cleanup_frame_markers (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ kind TEXT NOT NULL CHECK(kind IN ('prologue','epilogue')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-cleanup-frame')
 ) STRICT;
 CREATE TABLE generated_routine_origins (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),

@@ -235,6 +235,8 @@ internal sealed partial class Linker
         foreach (Symbol symbol in Definitions)
         {
             FunctionBody body = symbol.Object.ReadBody(symbol.Entity.Id);
+            foreach (CleanupAction action in symbol.Object.FunctionCleanupActions.GetValueOrDefault(symbol.Entity.Id, []))
+                _ = Resolve(symbol.Object, action.CallbackEntityId);
             foreach (Node node in body.Nodes.Values)
             {
                 if (node.Kind is "call" or "register-cleanup" or "function-address") _ = Resolve(symbol.Object, node.EntityId!.Value);

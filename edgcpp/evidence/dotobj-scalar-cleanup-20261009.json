@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v25",
+  "scope": "Owned source lifetimes, normal destruction provenance and scalar exceptional cleanup states",
+  "fullRegressionChecks": 1154,
+  "focusedExecutionChecks": 17,
+  "focusedExecutionCases": 20,
+  "compatibilityChecks": 81,
+  "malformedMetadataChecks": 133,
+  "malformedObjectsRejected": 32,
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v25-002/results.json",
+      "sha256": "0471b976b6a6d125c196c85b8ed559511e65752381c52114aa0c253ea376aef8"
+    },
+    "focusedExecution": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-cleanup-states-acceptance-006/results.json",
+      "sha256": "cd610a6b40438bfed8aab8ce8fce80cc0362e388843cc1137f702541b2f7a736"
+    },
+    "compatibility": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-cleanup-compatibility-001/results.json",
+      "sha256": "20ad94b93f6dd4c68ea3b1e53efa55a67ad2411308e67f49b39e63362ab9b687"
+    },
+    "malformedMetadata": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-cleanup-metadata-005/results.json",
+      "sha256": "73711d88ced74ee234accf40f8646b27e9faefd61f6313914e0430a5b9658d0c"
+    },
+    "actualDuckdbFrontier": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-048-cleanup/results.json",
+      "sha256": "03e02151b72bcca2efa3ade05cd4928c0c7e5e7af2af1a233c17899d2f7a4eae"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native048-verified-snapshot/cpfe-dot",
+      "sha256": "26e4b1e7a71338140e9240047ab8625c0156a1bdfdbeff244334304b24a577bf"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-042/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "1a879c08e004c6eb9aa2ab64a497ea6cbcbae07df228ae5dc2505a8db46f5500"
+    }
+  },
+  "projectScope": "Five original DuckDB units now stop at conditional cleanup (exception.cpp), virtual-base/VTT execution layout (string_util.cpp), source throw (allocator.cpp and date.cpp), and integer128 intrinsic operands (hugeint.cpp). No complete unit generation claim.",
+  "priority": "Complete missing dotobj core features toward full DuckDB C# generation; libc++ runtime implementation remains deferred.",
+  "limitations": [
+    "Scalar locals, temporaries, ordinary bases and members only; conditional flags, arrays, VTT and guard/delete cleanup actions remain gated.",
+    "Host exceptions exercise CLR unwinding; source C++ throw/catch/type matching is not implemented.",
+    "No destructor-throw, thread-exit or custom terminate-handler execution claim. Existing first-pass termination policy remains.",
+    "Expression lifetime boundaries are owned, but a separately observed comma-place/prvalue member access remains unsupported.",
+    "Normal destructor calls retain exact provenance; disappeared or inlined normal destruction requires a future owned replacement-range representation.",
+    "No full DuckDB generation or new SQLite pipeline claim."
+  ],
+  "retainedFailures": [
+    "dotobj-full-v25-001 (normal-only destructor coverage regression, fixed by owned normal destruction provenance)",
+    "dotobj-cleanup-states-acceptance-004 (separate comma-place/prvalue member gate)",
+    "dotobj-allocator-source-abi-inspection-001 (observer captured destructor signature too early, fixed without frontend semantic changes)"
+  ]
+}

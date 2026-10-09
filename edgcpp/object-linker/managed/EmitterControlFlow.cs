@@ -15,7 +15,7 @@ internal sealed partial class Emitter
         var continuations = new Dictionary<long, string>();
         var cases = new Dictionary<long, string>();
         string Label(string name) => allocator.Allocate("__dot_" + name, "flow");
-        foreach (Binding binding in body.Bindings.Values.Where(value => value.Kind == "local").OrderBy(value => value.Id))
+        foreach (Binding binding in body.Bindings.Values.Where(value => value.Kind == "local" && !body.CleanupCapturedBindings.Contains(value.Id)).OrderBy(value => value.Id))
             line(indent, declaration(binding));
         line(indent, "// Source jumps enter lexical regions; initialization remains at each source declaration.");
         void Emit(Node node)

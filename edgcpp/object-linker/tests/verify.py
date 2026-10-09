@@ -98,9 +98,9 @@ def main():
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v24', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
+            profile='scalar-control-v25', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
-            limitations=['No full prelower source view, macro expansion history, C++ lifetime/EH yet.',
+            limitations=['No complete prelower source view, macro expansion history or general C++ lifetime/EH coverage.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
 
     def run(label, command, expected=0, contains=None):
@@ -348,6 +348,12 @@ def main():
             startup_object = compile_source(startup_name, inputs / ('cpp_dynamic_startup_' + startup_case + '.cpp'))
             startup_linked = link(startup_name + '-link', [startup_object])
             execute(startup_name, startup_linked)
+        cleanup_command = [sys.executable, '-B', ROOT / 'tests/cpp_cleanup_states_verify.py',
+                           '--output-dir', out / 'cpp-cleanup-states', '--compiler', compiler,
+                           '--linker', tool, '--packager', ROOT / 'compile.py']
+        if args.nativeaot:
+            cleanup_command.append('--nativeaot')
+        run('cpp-cleanup-states-acceptance', cleanup_command)
         assignment_verify.verify(inputs, out, run, check, compile_source, link, execute)
         loops_object = out / 'loops.dotobj'
         loops_cs = '\n'.join(p.read_text() for p in (out / 'link-loops').glob('*.cs'))

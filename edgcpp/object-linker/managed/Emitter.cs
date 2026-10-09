@@ -56,8 +56,10 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v24");
-        lifetimeWriter.WriteString("capture", "lexical-cleanup-activations");
+        lifetimeWriter.WriteString("profile", "scalar-control-v25");
+        lifetimeWriter.WriteString("capture", "lexical-activations-and-observed-cpp-cleanup-states");
+        lifetimeWriter.WriteBoolean("cleanupStates", true);
+        lifetimeWriter.WriteBoolean("sourceLifetimes", true);
         lifetimeWriter.WriteBoolean("lexicalCleanups", true);
         lifetimeWriter.WriteBoolean("lifetimes", false);
         lifetimeWriter.WriteStartArray("objects");
@@ -161,7 +163,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v24");
+            writer.WriteString("profile", "scalar-control-v25");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -174,7 +176,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v24");
+            writer.WriteString("profile", "scalar-control-v25");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -185,10 +187,10 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v24", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v25", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
-            capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, prelowerSource = false, macros = false, lifetimes = false },
-            limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; variable-length arrays, source EH and C++ RAII are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance and explicit lexical cleanup activations only; no complete source expression/statement view, macro expansion history or general C++ lifetime capture" },
+            capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, cleanupStates = true, sourceLifetimes = true, prelowerSource = false, macros = false, lifetimes = false },
+            limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; ordinary C++ local/member/base exceptional destructor cleanup is owned; variable-length arrays, source throw/catch and conditional/array cleanup actions are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance plus lexical cleanup activations and observed source lifetime/exceptional destruction state graphs; no complete source expression/statement view, macro expansion history or general C++ EH capture" },
             @namespace = namespaceOption, @class = classOption, sourceMap = "source-map.json", macroMap = "macro-map.json", lifetimeMap = "lifetime-map.json",
             runtimeHooks = new
             {
@@ -248,7 +250,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         ObjectFile obj = symbol.Object;
         Entity function = symbol.Entity;
         FunctionBody body = obj.ReadBody(function.Id);
-        if (body.Nodes.Values.Any(node => node.Kind == "register-cleanup"))
+        if (body.Nodes.Values.Any(node => node.Kind == "register-cleanup") || obj.FunctionCleanupActions.ContainsKey(function.Id))
         {
             lifetimeWriter.WriteStartObject();
             lifetimeWriter.WriteNumber("entityId", function.Id);
@@ -272,6 +274,14 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 }
             }
             lifetimeWriter.WriteEndArray();
+            var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            lifetimeWriter.WritePropertyName("cleanupActions");
+            JsonSerializer.Serialize(lifetimeWriter, obj.FunctionCleanupActions.GetValueOrDefault(function.Id, []), jsonOptions);
+            lifetimeWriter.WritePropertyName("cleanupStates");
+            JsonSerializer.Serialize(lifetimeWriter, obj.FunctionCleanupStates.GetValueOrDefault(function.Id, []), jsonOptions);
+            lifetimeWriter.WritePropertyName("cleanupTransitions");
+            JsonSerializer.Serialize(lifetimeWriter, body.Nodes.Values.Where(node => node.Kind == "cleanup-transition")
+                .Select(node => obj.CleanupTransitions[node.Id]).ToArray(), jsonOptions);
             lifetimeWriter.WriteEndObject();
         }
         var allocator = new Names();
@@ -289,7 +299,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         void AddressRoot(Node place)
         {
             if (place.Kind == "binding") addressTaken.Add(place.BindingId!.Value);
-            else if (place.Kind is "member" or "volatile-place") AddressRoot(body.Child(place.Id, "operand"));
+            else if (place.Kind is "member" or "base-subobject" or "lifetime-scope" or "volatile-place") AddressRoot(body.Child(place.Id, "operand"));
         }
         foreach (Node node in body.Nodes.Values)
             if (node.Kind is "address" or "array-decay" or "volatile-place") AddressRoot(body.Child(node.Id, "operand"));
@@ -310,7 +320,11 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         bool variadicFunction = obj.Routines[function.RoutineTypeId].Variadic;
         bool terminate = obj.Routines[function.RoutineTypeId].ExceptionPolicy == "terminate" &&
             body.Nodes.Values.Any(node => node.Kind is not ("block" or "return"));
-        int bodyIndent = terminate ? 3 : 2;
+        bool hasCleanup = obj.FunctionCleanupActions.ContainsKey(function.Id);
+        string cleanupState = hasCleanup ? allocator.Allocate("__cleanup_state", "cleanup_state") : "";
+        string cleanupUnwinding = hasCleanup ? allocator.Allocate("__cleanup_unwinding", "cleanup_unwinding") : "";
+        int outerBodyIndent = terminate ? 3 : 2;
+        int bodyIndent = outerBodyIndent + (hasCleanup ? 1 : 0);
         string vaArguments = allocator.Allocate("__va_arguments", "va_arguments"), vaInput = allocator.Allocate("__va_input", "va_input");
         string vaPack = allocator.Allocate("__va_pack", "va_pack"), vaBytes = allocator.Allocate("__va_bytes", "va_bytes"), vaWorkspace = allocator.Allocate("__va_workspace", "va_workspace");
         var liftedExpressions = new Dictionary<long, string>();
@@ -349,6 +363,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         string Expression(Node node)
         {
             if (liftedExpressions.TryGetValue(node.Id, out string? lifted)) return lifted;
+            if (node.Kind == "lifetime-scope") return Expression(body.Child(node.Id, "operand"));
             return accessAlignment.NeedsUnaligned(node) ? UnalignedRead(NodeType(node), Address(node)) : Location(node);
         }
         string Location(Node node)
@@ -358,6 +373,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             string Operand(string role) => Expression(Child(role));
             switch (node.Kind)
             {
+                case "lifetime-scope": return Location(Child("operand"));
                 case "intrinsic": return Intrinsic(obj, node, body.Children(node.Id, "argument").Select(edge => body.Nodes[edge.ChildId]).ToArray(), Expression);
                 case "sequence":
                     Node[] items = body.Children(node.Id, "item").Select(edge => body.Nodes[edge.ChildId]).ToArray();
@@ -476,9 +492,16 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         string Address(Node node)
         {
             if (node.Kind == "binding" && alignedPointers.TryGetValue(node.BindingId!.Value, out string? aligned)) return aligned;
-            if (node.Kind == "volatile-place") return Address(body.Child(node.Id, "operand"));
+            if (node.Kind is "volatile-place" or "lifetime-scope") return Address(body.Child(node.Id, "operand"));
             if (node.Kind == "storage") return "((" + Type(NodeType(node)) + "*)" + StorageAddress(linker.ResolveStorage(obj, node.StorageId!.Value)) + ")";
             if (node.Kind == "dereference") return Expression(body.Child(node.Id, "operand"));
+            if (node.Kind == "base-subobject")
+            {
+                Node containing = body.Child(node.Id, "operand");
+                RecordBaseSubobject view = obj.BaseSubobjects[(containing.TypeId!.Value, obj.BaseSubobjectExpressions[node.Id])];
+                string address = Address(containing);
+                return "((" + Type(NodeType(node)) + "*)" + (view.ByteOffset == 0 ? address : "((byte*)" + address + " + " + view.ByteOffset + " /* empty base */)") + ")";
+            }
             if (node.Kind == "member")
             {
                 RecordField field = obj.Fields[node.FieldId!.Value];
@@ -527,6 +550,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         string StatementExpression(Node node) => node.Kind switch
         {
+            "lifetime-scope" => StatementExpression(body.Child(node.Id, "operand")),
             "assign" => body.Child(node.Id, "target").Kind == "volatile-place" && !DirectVolatile(body.Child(node.Id, "target")) ? VolatileWrite(NodeType(node), Address(body.Child(node.Id, "target")), Expression(body.Child(node.Id, "value")), Expression(body.Child(body.Child(node.Id, "target").Id, "operand"))) : Location(body.Child(node.Id, "target")) + " = " + Expression(body.Child(node.Id, "value")),
             "mutate" => Mutation(node, false),
             "compound-assign" => Compound(node, false),
@@ -692,7 +716,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         bool Pure(Node node)
         {
             if (purityCache.TryGetValue(node.Id, out bool cached)) return cached;
-            bool result = node.Kind is not ("call" or "indirect-call" or "assign" or "compound-assign" or "block-copy" or "mutate" or "volatile-place" or "va-start" or "va-copy" or "va-end" or "va-arg") &&
+            bool result = node.Kind is not ("cleanup-transition" or "call" or "indirect-call" or "assign" or "compound-assign" or "block-copy" or "mutate" or "volatile-place" or "va-start" or "va-copy" or "va-end" or "va-arg") &&
                 !(node.Kind == "intrinsic" && (node.Operator == "unreachable" || node.Operator!.Contains("overflow", StringComparison.Ordinal))) &&
                 body.Edges.GetValueOrDefault(node.Id, []).All(edge => Pure(body.Nodes[edge.ChildId]));
             purityCache[node.Id] = result;
@@ -701,11 +725,12 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         // An address rooted in owned stack storage with constant offsets cannot
         // change while the RHS runs, even if the RHS calls or mutates values.
         bool StablePlace(Node node, int depth = 0) => depth <= 1024 &&
-            (node.Kind is "binding" or "storage" || node.Kind is "member" or "volatile-place" && StablePlace(body.Child(node.Id, "operand"), depth + 1) ||
+            (node.Kind is "binding" or "storage" || node.Kind is "member" or "lifetime-scope" or "volatile-place" && StablePlace(body.Child(node.Id, "operand"), depth + 1) ||
                 node.Kind == "dereference" && StablePointer(body.Child(node.Id, "operand"), depth + 1));
         bool StablePointer(Node node, int depth = 0)
         {
             if (depth > 1024) return false;
+            if (node.Kind == "lifetime-scope") return StablePointer(body.Child(node.Id, "operand"), depth + 1);
             if (node.Kind is "storage-address" or "function-address" || node.Kind == "constant" && ScalarTypes.IsPointer(NodeType(node))) return true;
             if (node.Kind is "address" or "array-decay") return StablePlace(body.Child(node.Id, "operand"), depth + 1);
             if (node.Kind == "convert" && ScalarTypes.IsPointer(NodeType(node)) && ScalarTypes.IsPointer(NodeType(body.Child(node.Id, "operand"))))
@@ -748,6 +773,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         string ExpandedTruth(Node node, int indent) => NeedsExpansion(node) ? TruthText(Lift(node, indent), node) : Truth(node);
         string Lift(Node node, int indent, bool discard = false)
         {
+            if (node.Kind is "cleanup-transition" or "cleanup-frame") { Discard(node, indent); return ""; }
+            if (node.Kind == "lifetime-scope") return Lift(body.Child(node.Id, "operand"), indent, discard);
             if (node.Kind == "sequence")
             {
                 Node[] items = body.Children(node.Id, "item").Select(edge => body.Nodes[edge.ChildId]).ToArray();
@@ -787,7 +814,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             void Place(Node place)
             {
                 if (place.Kind is "binding" or "storage") return;
-                if (place.Kind is "member" or "volatile-place")
+                if (place.Kind is "member" or "lifetime-scope" or "volatile-place")
                 {
                     Place(body.Child(place.Id, "operand")); return;
                 }
@@ -855,6 +882,15 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         void Discard(Node expression, int indent)
         {
+            if (expression.Kind == "lifetime-scope") { Discard(body.Child(expression.Id, "operand"), indent); return; }
+            if (expression.Kind == "cleanup-frame") return;
+            if (expression.Kind == "cleanup-transition")
+            {
+                CleanupTransition transition = obj.CleanupTransitions[expression.Id];
+                if (!transition.IsUnreachable && hasCleanup)
+                    Line(indent, cleanupState + " = " + (transition.StateId ?? 0) + "L;");
+                return;
+            }
             if (NeedsExpansion(expression)) { Lift(expression, indent, true); return; }
             Node? volatileTarget = expression.Kind == "compound-assign" ? body.Child(expression.Id, "target")
                 : expression.Kind == "mutate" ? body.Child(expression.Id, "operand") : null;
@@ -911,6 +947,12 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     break;
                 case "declare":
                     Binding binding = body.Bindings[node.BindingId!.Value];
+                    if (body.CleanupCapturedBindings.Contains(binding.Id))
+                    {
+                        if (body.Children(node.Id, "initializer").Any())
+                            Line(indent, bindingNames[binding.Id] + " = " + ExpandedValue(Child("initializer"), indent) + ";");
+                        break;
+                    }
                     if (alignedPointers.ContainsKey(binding.Id))
                     {
                         Line(indent, "ref " + Type(obj.Type(binding.TypeId)) + " " + bindingNames[binding.Id] + " = ref *" + alignedPointers[binding.Id] + ";");
@@ -977,20 +1019,31 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             long alignment = obj.StorageAlignment(type);
             if (obj.StorageSize(type) > int.MaxValue - alignment + 1) throw new InvalidDataException("Aligned local allocation exceeds supported stack extent");
             string raw = allocator.Allocate("__allocation_" + binding.SourceName, "aligned_allocation");
-            Line(bodyIndent, "byte* " + raw + " = stackalloc byte[" + checked(obj.StorageSize(type) + alignment - 1) + "];");
-            Line(bodyIndent, Type(type) + "* " + pointer + " = (" + Type(type) + "*)(((nuint)" + raw + " + " + (alignment - 1) + ") & ~(nuint)" + (alignment - 1) + ");");
+            Line(outerBodyIndent, "byte* " + raw + " = stackalloc byte[" + checked(obj.StorageSize(type) + alignment - 1) + "];");
+            Line(outerBodyIndent, Type(type) + "* " + pointer + " = (" + Type(type) + "*)(((nuint)" + raw + " + " + (alignment - 1) + ") & ~(nuint)" + (alignment - 1) + ");");
             if (binding.Kind == "parameter")
             {
-                Line(bodyIndent, "ref " + Type(type) + " " + bindingNames[id] + " = ref *" + pointer + ";");
-                Line(bodyIndent, bindingNames[id] + " = " + parameterNames[id] + ";");
+                Line(outerBodyIndent, "ref " + Type(type) + " " + bindingNames[id] + " = ref *" + pointer + ";");
+                Line(outerBodyIndent, bindingNames[id] + " = " + parameterNames[id] + ";");
             }
         }
         if (variadicFunction)
         {
-            Line(bodyIndent, "int " + vaBytes + " = global::Edg.Runtime.VaPack.GetStackBytes(" + vaInput + ");");
-            Line(bodyIndent, "byte* " + vaWorkspace + " = stackalloc byte[" + vaBytes + "];");
-            Line(bodyIndent, "using var " + vaPack + " = new global::Edg.Runtime.VaPack(" + vaInput + ", " + vaWorkspace + ", " + vaBytes + ");");
-            Line(bodyIndent, "global::Edg.Runtime.VaList " + vaArguments + " = " + vaPack + ".Value;");
+            Line(outerBodyIndent, "int " + vaBytes + " = global::Edg.Runtime.VaPack.GetStackBytes(" + vaInput + ");");
+            Line(outerBodyIndent, "byte* " + vaWorkspace + " = stackalloc byte[" + vaBytes + "];");
+            Line(outerBodyIndent, "using var " + vaPack + " = new global::Edg.Runtime.VaPack(" + vaInput + ", " + vaWorkspace + ", " + vaBytes + ");");
+            Line(outerBodyIndent, "global::Edg.Runtime.VaList " + vaArguments + " = " + vaPack + ".Value;");
+        }
+        if (hasCleanup)
+        {
+            foreach (long id in body.CleanupCapturedBindings.Order())
+            {
+                Binding binding = body.Bindings[id];
+                if (binding.Kind == "local") Line(outerBodyIndent, LocalDeclaration(binding));
+            }
+            Line(outerBodyIndent, "long " + cleanupState + " = 0L;");
+            Line(outerBodyIndent, "bool " + cleanupUnwinding + " = false;");
+            Line(outerBodyIndent, "try"); Line(outerBodyIndent, "{");
         }
         if (body.RequiresFlatControl) FlatControl(obj, body, bodyIndent, allocator, bindingNames, LocalDeclaration, node => ExpandedValue(node, bodyIndent), node => ExpandedTruth(node, bodyIndent), Line, Statement, Discard);
         else BlockContents(body.Nodes[body.RootId], bodyIndent);
@@ -1016,6 +1069,34 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         };
         if (obj.Type(function.ReturnTypeId) != "void" && (body.RequiresFlatControl || FallsThrough(body.Nodes[body.RootId])))
             Line(bodyIndent, "throw new global::System.InvalidOperationException(\"Reached end of a non-void source function\");");
+        if (hasCleanup)
+        {
+            string error = allocator.Allocate("__cleanup_error", "cleanup_error");
+            string secondary = allocator.Allocate("__cleanup_failure", "cleanup_failure");
+            Line(outerBodyIndent, "}");
+            Line(outerBodyIndent, "catch (global::System.Exception " + error + ") when (global::Edg.Runtime.ObjectProgram.BeginUnwind(" + error + ", ref " + cleanupUnwinding + "))");
+            Line(outerBodyIndent, "{"); Line(outerBodyIndent + 1, "throw;"); Line(outerBodyIndent, "}");
+            Line(outerBodyIndent, "finally"); Line(outerBodyIndent, "{");
+            Line(outerBodyIndent + 1, "if (" + cleanupUnwinding + ")"); Line(outerBodyIndent + 1, "{");
+            Line(outerBodyIndent + 2, "try"); Line(outerBodyIndent + 2, "{");
+            Line(outerBodyIndent + 3, "while (" + cleanupState + " != 0L)"); Line(outerBodyIndent + 3, "{");
+            Line(outerBodyIndent + 4, "switch (" + cleanupState + ")"); Line(outerBodyIndent + 4, "{");
+            foreach (CleanupState state in obj.FunctionCleanupStates[function.Id].OrderBy(state => state.Id))
+            {
+                CleanupAction action = obj.CleanupActions[state.ActionId];
+                Line(outerBodyIndent + 5, "case " + state.Id + "L:");
+                Line(outerBodyIndent + 6, cleanupState + " = " + (state.NextStateId ?? 0) + "L;");
+                Line(outerBodyIndent + 6, FunctionReference(linker.Resolve(obj, action.CallbackEntityId)) + "(" + Expression(body.Nodes[action.TargetNodeId]) + ");");
+                Line(outerBodyIndent + 6, "break;");
+            }
+            Line(outerBodyIndent + 5, "default:");
+            Line(outerBodyIndent + 6, "global::System.Environment.FailFast(\"Invalid owned cleanup state\");");
+            Line(outerBodyIndent + 6, "break;");
+            Line(outerBodyIndent + 4, "}"); Line(outerBodyIndent + 3, "}"); Line(outerBodyIndent + 2, "}");
+            Line(outerBodyIndent + 2, "catch (global::System.Exception " + secondary + ") when (global::Edg.Runtime.ObjectProgram.TerminateCleanupFailure(" + secondary + "))");
+            Line(outerBodyIndent + 2, "{"); Line(outerBodyIndent + 3, "throw;"); Line(outerBodyIndent + 2, "}");
+            Line(outerBodyIndent + 1, "}"); Line(outerBodyIndent, "}");
+        }
         if (terminate)
         {
             string error = allocator.Allocate("__noexcept_error", "noexcept_error");

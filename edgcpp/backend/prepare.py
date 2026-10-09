@@ -501,3 +501,81 @@ object_source_overlay(c99,
     '  il_lowering_underway = TRUE;\n  curr_context = NULL;',
     '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_scope(scope);\n#endif\n'
     '  il_lowering_underway = TRUE;\n  curr_context = NULL;')
+
+# Retain source destruction identity through stock expression/ABI copies and
+# observe the typed position before it is represented as region-table handles.
+il_source = root / "upstream/src/il.c"
+object_source_overlay(il_source,
+    '#include "trans_copy.h"',
+    '#include "trans_copy.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
+object_source_overlay(il_source,
+    '  return new_dip;\n}  /* i_copy_dynamic_init */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_dynamic_init_copy(dip, new_dip);\n'
+    '#endif\n'
+    '  return new_dip;\n}  /* i_copy_dynamic_init */')
+object_source_overlay(eh_lower,
+    '                                     &dedp->region_number,\n'
+    '                                     insert_location);\n#if DO_UNORDERED_EH_PROCESSING',
+    '                                     &dedp->region_number,\n'
+    '                                     insert_location);\n'
+    '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+    '  dot_object_source::observe_cleanup_region(dip, innermost_function_scope->variant.routine.ptr);\n'
+    '#endif\n#if DO_UNORDERED_EH_PROCESSING')
+object_source_overlay(eh_lower,
+    '  dedp->cleanup_state_to_set_when_starting_destruction = next_dip;\n'
+    '#if DO_UNORDERED_EH_PROCESSING\n  if (dip->unordered) {\n'
+    '    /* The destruction is unordered with respect to some surrounding\n',
+    '  dedp->cleanup_state_to_set_when_starting_destruction = next_dip;\n'
+    '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+    '  dot_object_source::observe_cleanup_region(dip, innermost_function_scope->variant.routine.ptr);\n'
+    '#endif\n'
+    '#if DO_UNORDERED_EH_PROCESSING\n  if (dip->unordered) {\n'
+    '    /* The destruction is unordered with respect to some surrounding\n')
+
+# Preserve an exact copied lifetime boundary; the original and copy are both
+# known here, before pop may discard a lifetime with no destruction obligations.
+object_source_overlay(il_source,
+    '          bind_object_lifetime(curr_object_lifetime, iek_expr_node,\n'
+    '                               (char *)expr_copy);\n'
+    '          (void)pop_object_lifetime();',
+    '          bind_object_lifetime(curr_object_lifetime, iek_expr_node,\n'
+    '                               (char *)expr_copy);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '          dot_object_source::observe_lifetime_copy(expr->variant.object_lifetime.ptr, curr_object_lifetime);\n'
+    '#endif\n'
+    '          (void)pop_object_lifetime();')
+
+# Associate retained ordinary destructor calls with exact source obligations.
+# The observation scope changes no frontend inputs, insertion, or inlining.
+object_source_overlay(init_lower,
+    '  check_assertion(dip->destructor != NULL);\n'
+    '  /* Set the cleanup state to what it should be after the destruction,',
+    '  check_assertion(dip->destructor != NULL);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::NormalDestructionCapture dot_object_normal_destruction(dip, innermost_function_scope->variant.routine.ptr);\n'
+    '#endif\n'
+    '  /* Set the cleanup state to what it should be after the destruction,')
+object_source_overlay(init_lower,
+    '  add_destructor_call(dip->destructor, ipdp, have_complete_object,\n'
+    '                      vtt_addr_node, insert_location);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::NormalDestructionCapture dot_object_normal_destruction(dip, innermost_function_scope->variant.routine.ptr);\n'
+    '#endif\n'
+    '  add_destructor_call(dip->destructor, ipdp, have_complete_object,\n'
+    '                      vtt_addr_node, insert_location);')
+object_source_overlay(init_lower,
+    '  return top_level_node;\n}  /* make_call_node_full */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_normal_destruction_call(routine, call_node, top_level_node,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n'
+    '  return top_level_node;\n}  /* make_call_node_full */')
+
+object_source_overlay(il_source,
+    '  return expr_copy;\n}  /* i_copy_expr_tree */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_normal_destruction_copy(expr, expr_copy,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n'
+    '  return expr_copy;\n}  /* i_copy_expr_tree */')

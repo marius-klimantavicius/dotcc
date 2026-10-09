@@ -29,6 +29,15 @@ ARRAYS = {
     'functions': ('functions', ['entityId', 'bodyNodeId']),
     'abiRoutineOrigins': ('abi_routine_origins', ['entityId', 'primaryEntityId', 'entryKind', 'isAliasEntry', 'captureProof', 'targetEntityId']),
     'initializationActions': ('initialization_actions', ['id', 'entityId', 'phase', 'priority', 'ordinal', 'sourceFileId', 'line', 'column']),
+    'sourceLifetimes': ('source_lifetimes', ['id', 'functionEntityId', 'parentLifetimeId', 'siblingOrdinal', 'parentObligationId', 'kind', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'sourceDestructionObligations': ('source_destruction_obligations', ['id', 'functionEntityId', 'lifetimeId', 'ordinal', 'destructorEntityId', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'expressionLifetimes': ('expression_lifetimes', ['nodeId', 'sourceLifetimeId', 'captureProof']),
+    'baseSubobjectExpressions': ('base_subobject_expressions', ['nodeId', 'sourceBaseId']),
+    'normalDestructions': ('normal_destructions', ['nodeId', 'sourceObligationId', 'captureProof']),
+    'cleanupActions': ('cleanup_actions', ['id', 'functionEntityId', 'sourceObligationId', 'callbackEntityId', 'targetNodeId', 'captureProof']),
+    'cleanupStates': ('cleanup_states', ['id', 'functionEntityId', 'actionId', 'nextStateId']),
+    'cleanupTransitions': ('cleanup_transitions', ['nodeId', 'stateId', 'captureProof', 'isUnreachable']),
+    'cleanupFrameMarkers': ('cleanup_frame_markers', ['nodeId', 'kind', 'captureProof']),
     'generatedRoutineOrigins': ('generated_routine_origins', ['entityId', 'kind', 'captureProof', 'failurePolicy']),
     'dynamicInitializers': ('dynamic_initializers', ['id', 'actionId', 'storageId', 'sourceOrdinal', 'ordinal', 'captureProof', 'sourceFileId', 'line', 'column']),
     'dynamicInitializerStatements': ('dynamic_initializer_statements', ['initializerId', 'ordinal', 'nodeId']),
@@ -121,7 +130,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v24':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v25':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -141,7 +150,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v24', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v25', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

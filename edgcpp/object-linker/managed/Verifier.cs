@@ -3,13 +3,15 @@ namespace DotObj;
 internal static class Verifier
 {
     private static readonly HashSet<string> StatementKinds = ["memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
-    private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
+    private static readonly HashSet<string> ExpressionKinds = ["lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
         void Fail(string message) => throw new InvalidDataException($"{obj.Path}: {function.SourceName}: {message}");
         if (!body.Nodes.TryGetValue(body.RootId, out Node? root) || root.Kind != "block") Fail("Function root must be a block");
         var visited = new HashSet<long>();
+        var cleanupVisibility = new Dictionary<long, HashSet<long>>();
+        bool visitingCleanupTarget = false;
         var declarations = new HashSet<long>();
         var cleanupBindings = new HashSet<long>();
         var cleanupRegistrations = new HashSet<long>();
@@ -80,16 +82,18 @@ internal static class Verifier
         }
         bool DeclaredVolatile(Node node, int depth = 0) => depth < 128 && node.Kind switch
         {
+            "lifetime-scope" => DeclaredVolatile(Child(node, "operand"), depth + 1),
             "binding" => node.BindingId is long id && obj.BindingSourceTypes.TryGetValue(id, out long source) && VolatileSource(source),
             "storage" => node.StorageId is long id && obj.Storages.TryGetValue(id, out Storage? storage) && VolatileSource(storage.SourceTypeId),
             "member" => node.FieldId is long id && obj.Fields.TryGetValue(id, out RecordField? field) &&
                 (VolatileSource(field.SourceTypeId) || DeclaredVolatile(Child(node, "operand"), depth + 1)),
             _ => false
         };
-        bool Place(Node node) => node.Kind is "binding" or "storage" or "dereference" or "member" or "volatile-place";
+        bool Place(Node node, int depth = 0) => depth <= 1024 && (node.Kind is "binding" or "storage" or "dereference" or "member" or "base-subobject" or "volatile-place" ||
+            node.Kind == "lifetime-scope" && Place(Child(node, "operand"), depth + 1));
         bool LocalPlace(Node node, int depth = 0) => depth <= 1024 && (node.Kind == "binding" &&
             body.Bindings.TryGetValue(node.BindingId!.Value, out Binding? local) && local.Kind == "local" ||
-            node.Kind == "member" && LocalPlace(Child(node, "operand"), depth + 1));
+            node.Kind is "member" or "lifetime-scope" && LocalPlace(Child(node, "operand"), depth + 1));
         void Visit(Node node, List<long> scopes, HashSet<long> visible, List<long> controls, int depth)
         {
             if (depth > 1024) Fail("Graph nesting exceeds supported limit");
@@ -102,9 +106,10 @@ internal static class Verifier
             else
             {
                 string type = Type(node);
-                if (type == "void" && node.Kind is not ("call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional")) Fail("Only calls and explicit void operations can have void type");
+                if (type == "void" && node.Kind is not ("call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional" or "cleanup-transition" or "cleanup-frame" or "lifetime-scope")) Fail("Only calls and explicit void operations can have void type");
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
-                string[] orders = node.Kind is "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
+                string[] orders = node.Kind is "cleanup-transition" or "cleanup-frame" or "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
+                if (node.Kind is "cleanup-transition" or "cleanup-frame" or "base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
                 if (node.Kind is "assign" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
                 if (node.Kind is "address" or "dereference" or "array-decay" or "member" or "va-start" or "va-copy" or "va-end" or "va-arg") orders = ["none", "left-to-right", "unspecified"];
                 if (!orders.Contains(node.EvaluationOrder)) Fail($"Unsupported evaluation order at {node.Id}");
@@ -121,15 +126,15 @@ internal static class Verifier
             {
                 Node child = body.Nodes[edge.ChildId];
                 if (child.TypeId is long volatileType && ScalarTypes.IsScalar(obj.Type(volatileType)) && DeclaredVolatile(child) &&
-                    !(node.Kind is "volatile-place" or "address" && edge.Role == "operand"))
+                    !(node.Kind is "volatile-place" or "address" or "lifetime-scope" && edge.Role == "operand"))
                     Fail("Declared volatile place requires an explicit volatile access wrapper");
                 if (child.TypeId is long childType && ScalarTypes.IsArray(obj.Type(childType)) &&
-                    !(node.Kind is "address" or "array-decay" && edge.Role == "operand") &&
+                    !(node.Kind is "address" or "array-decay" or "lifetime-scope" && edge.Role == "operand") &&
                     !(node.Kind == "array-init" && edge.Role == "target") && node.Kind != "block-copy")
                     Fail("Array place requires explicit address, decay or initialization");
                 if (child.TypeId is long recordType && ScalarTypes.IsRecord(obj.Type(recordType)))
                 {
-                    bool allowed = node.Kind == "block-copy" || node.Kind is "member" or "address" && edge.Role == "operand" ||
+                    bool allowed = node.Kind == "block-copy" || node.Kind is "member" or "base-subobject" or "lifetime-scope" or "address" && edge.Role == "operand" ||
                         node.Kind == "assign" && (edge.Role == "target" || edge.Role == "value" && child.Kind == "default-value") ||
                         node.Kind == "declare" && edge.Role == "initializer" && child.Kind == "default-value" ||
                         node.Kind == "expr-stmt" && edge.Role == "value" && child.Kind == "assign";
@@ -154,6 +159,23 @@ internal static class Verifier
             }
             switch (node.Kind)
             {
+                case "lifetime-scope":
+                    EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand", Type(node) == "void");
+                    if (!obj.ExpressionLifetimes.ContainsKey(node.Id) || node.TypeId != Child(node, "operand").TypeId ||
+                        node.ValueCategory != Child(node, "operand").ValueCategory)
+                        Fail("Lifetime scope must preserve its child's exact type/category and original lifetime identity");
+                    break;
+                case "cleanup-transition":
+                    EdgeShape(node);
+                    if (Type(node) != "void" || !obj.CleanupTransitions.TryGetValue(node.Id, out CleanupTransition? transition))
+                        Fail("Cleanup transition lacks its observed marker metadata");
+                    cleanupVisibility.Add(node.Id, new HashSet<long>(visible));
+                    break;
+                case "cleanup-frame":
+                    EdgeShape(node);
+                    if (Type(node) != "void" || !obj.CleanupFrameMarkers.ContainsKey(node.Id))
+                        Fail("Cleanup frame annotation lacks its observed marker metadata");
+                    break;
                 case "memory-barrier":
                     if (!obj.MemoryBarriers.ContainsKey(node.Id)) Fail("Memory assembly statement lacks owned source proof");
                     MemoryBarrierOperand[] operands = obj.BarrierOperands(node.Id);
@@ -403,6 +425,16 @@ internal static class Verifier
                     EdgeShape(node);
                     if (!ScalarTypes.IsRecord(Type(node)) || obj.RecordsByKey[Type(node)].ValueCopyKind != "ordinary") Fail("Default value requires an ordinary-copy record type");
                     break;
+                case "base-subobject":
+                    EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
+                    Node containing = Child(node, "operand");
+                    if (!visitingCleanupTarget || !Place(containing) || containing.TypeId is not long ownerType ||
+                        !obj.BaseSubobjectExpressions.TryGetValue(node.Id, out long sourceBase) ||
+                        !obj.BaseSubobjects.TryGetValue((ownerType, sourceBase), out RecordBaseSubobject? relationship) ||
+                        relationship.CompleteBaseTypeId != node.TypeId || relationship.Extent != 0 || relationship.FieldId is not null ||
+                        obj.SourceBases[sourceBase].IsVirtual)
+                        Fail("Empty base view requires its exact nonvirtual source relationship inside a cleanup address recipe");
+                    break;
                 case "member":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
                     if (!obj.Fields.TryGetValue(node.FieldId!.Value, out RecordField? field) ||
@@ -597,12 +629,42 @@ internal static class Verifier
             foreach (Edge edge in edges)
                 if (!body.Nodes.ContainsKey(edge.ParentId) || !body.Nodes.ContainsKey(edge.ChildId)) Fail("Edge leaves function body");
         Visit(root!, [], parameters.Select(parameter => parameter.Id).ToHashSet(), [], 0);
+        var actionBindings = new Dictionary<long, HashSet<long>>();
+        foreach (CleanupAction action in obj.FunctionCleanupActions.GetValueOrDefault(function.Id, []))
+        {
+            HashSet<long> captures = CleanupVerifier.TargetBindings(obj, function, body, action);
+            actionBindings.Add(action.Id, captures);
+            body.CleanupCapturedBindings.UnionWith(captures);
+            // Only the validated pure recipe's actual bindings are visible in
+            // this additional root. Arming sites below must see every capture.
+            visitingCleanupTarget = true;
+            Visit(body.Nodes[action.TargetNodeId], captures.Select(id => body.Bindings[id].ScopeNodeId).Distinct().ToList(), captures, [], 0);
+            visitingCleanupTarget = false;
+        }
+        foreach (var (nodeId, visible) in cleanupVisibility)
+        {
+            CleanupTransition transition = obj.CleanupTransitions[nodeId];
+            if (transition.IsUnreachable) continue;
+            for (long? stateId = transition.StateId; stateId is long id; stateId = obj.CleanupStates[id].NextStateId)
+                if (!actionBindings[obj.CleanupStates[id].ActionId].IsSubsetOf(visible))
+                    Fail("Cleanup state arms a target outside its live declaration scope");
+        }
+        if (actionBindings.Count != 0)
+        {
+            Node[] prologues = body.Nodes.Values.Where(node => node.Kind == "cleanup-frame" && obj.CleanupFrameMarkers[node.Id].Kind == "prologue").ToArray();
+            if (prologues.Length != 1 || !body.Children(body.RootId, "statement").Any(edge =>
+                body.Nodes[edge.ChildId].Kind == "expr-stmt" && body.Child(edge.ChildId, "value").Id == prologues[0].Id))
+                Fail("Cleanup prologue must be an immediate statement of its owned function body");
+        }
         var accessAlignment = new AccessAlignment(obj, body);
         var parents = body.Edges.Values.SelectMany(edges => edges)
             .Where(edge => body.Nodes[edge.ParentId].TypeId is not null || edge.Role != "target")
             .ToLookup(edge => edge.ChildId);
         foreach (Node node in body.Nodes.Values)
         {
+            if (node.Kind == "base-subobject" && (parents[node.Id].Count() != 1 || parents[node.Id].Any(edge =>
+                body.Nodes[edge.ParentId].Kind != "address" || edge.Role != "operand")))
+                Fail("Zero-extent base subobject is an address-only view, not a complete object value");
             if (node.Kind == "volatile-place" && accessAlignment.Place(node) < obj.AccessAlignment(Type(node)))
                 Fail("Underaligned volatile access requires an explicit volatile alignment contract");
             if (node.Kind == "intrinsic" && node.Operator?.EndsWith("-volatile", StringComparison.Ordinal) == true)
@@ -621,6 +683,7 @@ internal static class Verifier
                 foreach (Edge use in parents[pointer.Id])
                 {
                     Node consumer = body.Nodes[use.ParentId];
+                    if (consumer.Kind == "lifetime-scope") { CheckEscape(consumer, depth + 1); continue; }
                     if (consumer.Kind == "dereference" || consumer.Kind == "memory-barrier" && use.Role == "address") continue;
                     if (consumer.Kind == "convert" && ScalarTypes.IsPointer(Type(consumer)))
                     {

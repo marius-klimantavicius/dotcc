@@ -1184,3 +1184,62 @@ for unowned file-scope assembly, dynamic TLS, guarded inline/template global
 initialization or destruction obligations. Those remain explicit feature gates.
 Function-local initialization guards are a separate publication/lifetime contract;
 plain generation of acquire/release calls alone is not a concurrency guarantee.
+
+
+## Owned scalar C++ destruction and temporary lifetimes: scalar-control-v25
+
+`source_lifetimes` and `source_destruction_obligations` retain the original
+function's pre-lowering lifetime tree, sibling list order, destruction-list order
+and exact parent destruction sublist relation. The function root is an observed
+block lifetime with no parent destruction sublist; a null or global-static outer
+context becomes the explicit boundary of this per-function graph. Other unowned
+outer contexts are rejected. ABI constructor/destructor copies retain their exact
+original primary owner and observed copy correspondence, rather than acquiring
+fabricated source lifetimes.
+
+`cleanup_actions` owns each exact execution destructor callback and a typed target
+expression, mapped to its original destruction obligation. `cleanup_states`
+retains the acyclic predecessor chain. `cleanup_transitions` owns the exact
+state-setting expressions, including transitions inside comma expressions.
+Unreachable-state annotations do not update the cursor. Separate `cleanup_frame_markers`
+retain observed prologue/epilogue annotations; those are not invented resets.
+Every captured destruction obligation must be represented or explicitly rejected.
+`normal_destructions` also maps exact observed normal-path destructor call nodes
+to those obligations. Completeness uses the union of these calls and unwind
+actions, preserving no-exceptions source code without inventing CLR unwind work.
+Call provenance comes from the stock destruction insertion context, not matching
+names or source positions. Disappeared/inlined calls remain gated until their
+exact replacement ranges are owned.
+
+Target expressions are restricted pure recipes over verified storage, typed
+member/base places and constant pointer adjustments. They do not serialize native
+stack offsets or executable text. Captured locals must be declared at each actual
+arming transition. Exact original-primary versus complete/subobject destructor
+relations are checked independently of pointer ABI compatibility. Optimized empty
+bases use address-only `base-subobject` nodes with `base_subobject_expressions`
+source identity, resolving the existing observed zero-extent base row. No field,
+physical byte or complete-record value load is invented for that view.
+
+An `expression_lifetimes` row connects a transparent `lifetime-scope` expression
+to its exact original temporary lifetime, including observed expression-tree
+copies. Its operand has identical type and value category. The boundary remains
+in the semantic graph and source map; emission forwards its expression/place
+without adding cleanup or resetting state. Existing transitions already own
+execution. Empty lifetime trees may be retained by boundaries without introducing
+a runtime cleanup frame.
+
+Emission preserves EDG's explicit normal-path destructor calls. Functions with
+owned actions use named locals, hoisting only bindings needed by unwind code.
+A first-pass filter marks exceptional exit; a finally dispatcher follows the
+owned state chain and advances before invoking each callback. Cleanup failure
+uses a first-pass termination filter. Cleanup eligibility is distinct from the
+runtime-transfer classifier, so dedicated thread-exit transfers are not silently
+excluded from destruction merely because they bypass noexcept termination.
+The current termination policy is FailFast, not custom std::set_terminate dispatch.
+
+The initial contract covers scalar locals, members and ordinary base rollback.
+Arrays, conditional cleanup, virtual-base/VTT actions, deallocation/guard actions
+and source throw/catch/type matching remain explicit gates. Ordinary CLR host
+exceptions verify unwinding; they are not evidence of C++ exception matching.
+The historical general `lifetimes` capability remains false; the bounded source
+lifetime/state capabilities describe this implemented subset.
