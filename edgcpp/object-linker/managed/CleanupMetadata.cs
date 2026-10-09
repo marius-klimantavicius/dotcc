@@ -144,9 +144,6 @@ internal sealed partial class ObjectFile
                     !NormalDestructions.TryAdd(query.Integer(0), obligation.Id))
                     throw new InvalidDataException("Normal destruction lacks its exact owned call, source obligation or destructor origin");
             }
-        if (SourceDestructionObligations.Keys.Except(CleanupActions.Values.Select(action => action.SourceObligationId)
-                .Concat(NormalDestructions.Values)).Any())
-            throw new InvalidDataException("Original destruction obligation has no observed owned execution action");
         using (var query = database.Prepare("SELECT id,function_entity_id,action_id,next_state_id FROM cleanup_states ORDER BY id"))
             while (query.Read())
             {

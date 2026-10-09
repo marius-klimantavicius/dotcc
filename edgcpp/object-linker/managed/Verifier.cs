@@ -3,7 +3,7 @@ namespace DotObj;
 internal static class Verifier
 {
     private static readonly HashSet<string> StatementKinds = ["memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
-    private static readonly HashSet<string> ExpressionKinds = ["throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
+    private static readonly HashSet<string> ExpressionKinds = ["cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -11,6 +11,7 @@ internal static class Verifier
         if (!body.Nodes.TryGetValue(body.RootId, out Node? root) || root.Kind != "block") Fail("Function root must be a block");
         var visited = new HashSet<long>();
         var cleanupVisibility = new Dictionary<long, HashSet<long>>();
+        var cleanupThrowVisibility = new Dictionary<long, HashSet<long>>();
         bool visitingCleanupTarget = false;
         var declarations = new HashSet<long>();
         var cleanupBindings = new HashSet<long>();
@@ -120,7 +121,7 @@ internal static class Verifier
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
                 string[] orders = node.Kind is "cleanup-transition" or "cleanup-frame" or "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
                 if (node.Kind is "cleanup-transition" or "cleanup-frame" or "base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
-                if (node.Kind is "thrown-object-address" or "throw-marker" or "rethrow") orders = ["none"];
+                if (node.Kind is "thrown-object-address" or "throw-marker" or "rethrow" or "cleanup-payload-address") orders = ["none"];
                 if (node.Kind is "materialize" or "throw") orders = ["left-to-right"];
                 if (node.Kind is "assign" or "record-transfer" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
                 if (node.Kind is "address" or "dereference" or "array-decay" or "member" or "va-start" or "va-copy" or "va-end" or "va-arg") orders = ["none", "left-to-right", "unspecified"];
@@ -190,6 +191,11 @@ internal static class Verifier
                     if (hasInitializer) Expr(node, "initializer", true);
                     activeThrows.Push(node.Id);
                     break;
+                case "cleanup-payload-address":
+                    EdgeShape(node);
+                    if (!visitingCleanupTarget || !obj.CleanupPayloadTargets.ContainsKey(node.Id))
+                        Fail("Payload cleanup address is only valid in its owned action recipe");
+                    break;
                 case "thrown-object-address":
                     EdgeShape(node);
                     if (Type(node) != "ptr(void)" || activeThrows.Count == 0 ||
@@ -228,6 +234,7 @@ internal static class Verifier
                         : obj.ThrowCleanupTransitions.ContainsKey(node.Id))
                         Fail("Cleanup transition differs from its exact throw initialization boundary");
                     cleanupVisibility.Add(node.Id, new HashSet<long>(visible));
+                    cleanupThrowVisibility.Add(node.Id, activeThrows.ToHashSet());
                     break;
                 case "cleanup-frame":
                     EdgeShape(node);
@@ -727,8 +734,13 @@ internal static class Verifier
             CleanupTransition transition = obj.CleanupTransitions[nodeId];
             if (transition.IsUnreachable) continue;
             for (long? stateId = transition.StateId; stateId is long id; stateId = obj.CleanupStates[id].NextStateId)
-                if (!actionBindings[obj.CleanupStates[id].ActionId].IsSubsetOf(visible))
+            {
+                long actionId = obj.CleanupStates[id].ActionId;
+                if (!actionBindings[actionId].IsSubsetOf(visible))
                     Fail("Cleanup state arms a target outside its live declaration scope");
+                if (obj.CleanupPayloadOwners.TryGetValue(actionId, out long throwId) && !cleanupThrowVisibility[nodeId].Contains(throwId))
+                    Fail("Cleanup state arms payload rollback outside its owning throw initializer");
+            }
         }
         if (actionBindings.Count != 0)
         {

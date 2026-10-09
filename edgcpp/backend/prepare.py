@@ -627,6 +627,13 @@ object_source_overlay(lower,
 
 
 # Typed throw initialization and exact runtime-address/start ownership.
+object_source_overlay(init_lower,
+    '  a_type_ptr         temp_type = NULL;\n\n  saved_code_pos = code_pos_for_lowering;',
+    '  a_type_ptr         temp_type = NULL;\n'
+    '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+    '  dot_object_source::observe_payload_subobject(dip, ipdp,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n\n  saved_code_pos = code_pos_for_lowering;')
 object_source_overlay(eh_lower,
     '  /* Check for a throw with no operand, i.e., a rethrow. */',
     '#if defined(EDG_DOT_BACKEND)\n'

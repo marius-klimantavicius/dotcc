@@ -117,7 +117,7 @@ def main():
     receipt = dict(status='failed' if error else 'passed', error=error, checks=checks, cases=60,
         commands=commands, rejections=rejections, fixtureProviderOnly=True,
         limitations=['No production exception runtime or translated source catch matching is implemented.',
-                    'Partial payload subobject cleanup remains an explicit unsupported case.',
+                    'Payload subobject rollback is covered separately by cpp_throw_payload_verify.py.',
                     'No post-start copy failure, throwing destructor, virtual base or thread-transfer execution coverage.'])
     for name in ('compiler', 'stock_compiler', 'stock_runtime', 'linker', 'packager'):
         path = getattr(args, name).resolve()

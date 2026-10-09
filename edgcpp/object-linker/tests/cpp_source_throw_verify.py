@@ -129,11 +129,11 @@ def main():
             'enum-identity': 'enum Code { value }; void reject() { throw value; }\n',
             'function-pointer-identity': 'void function() {} void reject() { throw &function; }\n',
             'source-handler': 'int reject() { try { throw 7; } catch(int value) { return value; } }\n',
-            'partial-payload-cleanup': '''extern void fail();
+            'payload-array-sequence-cleanup': '''extern void fail();
 static int destroyed;
 struct Member { Member(int value) { if(value==2) fail(); } ~Member() { ++destroyed; } };
-struct Payload { Member first, second; };
-void reject() { throw Payload{Member(1), Member(2)}; }
+struct Payload { Member values[2]; };
+void reject() { throw Payload{{Member(1), Member(2)}}; }
 ''',
         }
         for label, text in unsupported.items():

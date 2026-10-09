@@ -234,8 +234,43 @@ An initializer failure must not destroy outer locals at this boundary or invoke
 the complete payload destructor. Nested initializers save independent cursors.
 First-pass exception-start/termination classification remains the shared provider's
 responsibility. Payload propagation itself bypasses the initialization-failure
-catch. Partial payload subobject rollback and source handlers are still separate
-unsupported forms; this extension covers initializer-local scalar temporaries.
+catch. Profile 31 covers initializer-local scalar temporaries; profile 32 adds
+the payload subobject ownership described below. Source handlers remain a gate.
+
+## Payload subobject ownership (profile 32)
+
+`throw_payload_subobjects` relates an original destruction obligation to the
+throw whose complete payload destructor eventually owns it. `throw_payload_paths`
+stores an ordered typed member/nonvirtual-base path from that payload; it uses
+record-field and original-base IDs, not byte-offset text. The observer records
+the initialization destination before stock aggregate lowering can omit the
+final member's rollback entry. That optimization is valid because nothing can
+throw between completing the final member and completing the aggregate; it does
+not erase the member's eventual destruction obligation.
+
+Rollback actions retain their ordinary cleanup-state ordering. Their new
+`cleanup-payload-address` node has a `cleanup_payload_targets` row naming the
+exact action and throw. The verifier checks the payload pointer type, function,
+original obligation, terminal object type and matching member/base path. Arming
+sites must be within the owning throw initializer. A payload address recipe
+cannot appear as an ordinary executable expression. Missing target/ownership
+proofs, foreign owners, empty paths and mismatched same-type member paths fail
+verification, even with a valid database and recomputed digest.
+
+The emitter retains a named native payload pointer and completion flag where
+rollback needs them. Accepted initialization failures run the armed subobject
+actions before releasing unfinished storage; a successful initialization marks
+the payload complete. Subsequent function unwinding advances past its partial
+actions without invoking them. The provider later invokes the selected complete
+payload destructor exactly once. Other locals still unwind normally. No native
+stack frame or EDG IL mutation is introduced.
+
+The focused `cpp_throw_payload_verify.py` suite compares generated JIT/NativeAOT
+traces with native Clang and retains independent GCC and stock EDG C traces.
+Those references differ on some aggregate cases; the receipts preserve the
+differences instead of claiming universal parity. The provider is fixture-only.
+Array-sequence, virtual-base/VTT and delegated payload rollback, production EH
+ownership/dispatch and translated source handlers remain separate work.
 
 ## Shared headers later
 

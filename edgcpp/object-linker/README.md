@@ -4,7 +4,7 @@ This implements the owned object path of the [new design](../docs/dotobj-format.
 It uses a fresh SQLite schema and C# reader/linker/emitter, without the prior
 semantic-export experiment or C# text/command objects.
 
-The current profile is `scalar-control-v31`. It supports independently produced
+The current profile is `scalar-control-v32`. It supports independently produced
 SQLite and musl objects, typed provider selection, shared BCL runtime bindings,
 and explicit source startup actions. C++ file-scope initialization owns generated
 routine origins, original per-storage statement intervals and separate local
@@ -17,11 +17,15 @@ and rethrows own original type identity, payload initialization and destructor
 requirements, base adjustments and exception start/completion ordering. Their
 shared `Edg.Runtime.CppExceptions` provider is currently an explicitly unbound
 partial contract: use `--allow-externs` for generation, not execution. Source
-handlers, partial-payload subobject cleanup and array/VTT cleanup remain gates.
+handlers and array/VTT cleanup remain gates.
 Throw initializers own a saved entry cleanup cursor: evaluation failure destroys
 initializer-local temporaries before releasing unfinished payload storage, then
 propagates to the enclosing function's remaining cleanup. Nested throws preserve
-separate boundaries. The focused test provider exercises this contract but is
+separate boundaries. Payload-relative scalar member and nonvirtual base rollback
+has explicit typed targets and complete-payload ownership paths. Successful
+construction transfers destruction to the exception provider; rollback actions
+skip completed payloads. The last member remains represented even when EDG
+omits its unnecessary rollback entry. The focused test provider exercises this contract but is
 not a production exception runtime. Conditional scalar cleanup keeps
 EDG's exact synthetic flag and original body stores; unwinding tests the flag
 before evaluating the target, without adding reset stores. Comma expressions
@@ -263,7 +267,7 @@ indexes. A hash demonstrates content integrity, not semantic correctness.
 Full logs/objects/generated projects remain under
 `/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/`.
 
-The current schema requires `scalar-control-v31`. Earlier-profile objects and tools
+The current schema requires `scalar-control-v32`. Earlier-profile objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 

@@ -69,6 +69,7 @@ internal sealed class AccessAlignment(ObjectFile obj, FunctionBody body)
             "sequence" => PointerOrigin(SequenceTail(node)),
             "lifetime-scope" => PointerOrigin(body.Child(node.Id, "operand")),
             "address" or "array-decay" => new(Place(body.Child(node.Id, "operand")), false),
+            "cleanup-payload-address" => new(obj.ExceptionTypes[obj.ThrowExpressions[obj.CleanupPayloadTargets[node.Id].ThrowNodeId].ExceptionTypeId].PayloadAlignment, false),
             "storage-address" => new(AtOffset(Math.Max(1, obj.Storages[node.StorageId!.Value].Alignment), long.Parse(node.ConstantText!, System.Globalization.CultureInfo.InvariantCulture)), false),
             "convert" when ScalarTypes.IsPointer(Type(body.Child(node.Id, "operand"))) => SourcePointerOrigin(body.Child(node.Id, "operand")),
             "binary" when node.Operator is "pointer-add" or "pointer-subtract" => OffsetPointer(node),

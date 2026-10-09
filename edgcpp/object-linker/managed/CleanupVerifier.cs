@@ -8,6 +8,8 @@ internal static class CleanupVerifier
     {
         var bindings = new HashSet<long>();
         var visited = new HashSet<long>();
+        bool payloadTarget = false, hasSubobject = false;
+        var payloadPath = new List<PayloadPathPart>();
         void Fail(string message) => throw new InvalidDataException($"{obj.Path}: {function.SourceName}: {message}");
         string Type(Node node) => node.TypeId is long type ? obj.Type(type) : throw new InvalidDataException("Cleanup target has no type");
         Node Child(Node node, string role) => body.Child(node.Id, role);
@@ -17,6 +19,11 @@ internal static class CleanupVerifier
             if (node.FunctionId != function.Id) Fail("Cleanup target leaves its function");
             switch (node.Kind)
             {
+                case "cleanup-payload-address":
+                    if (!obj.CleanupPayloadTargets.TryGetValue(node.Id, out CleanupPayloadTarget? payload) || payload.ActionId != action.Id)
+                        Fail("Payload cleanup recipe belongs to a different action");
+                    payloadTarget = true;
+                    break;
                 case "binding":
                     if (node.BindingId is not long id || !body.Bindings.TryGetValue(id, out Binding? binding) || binding.FunctionId != function.Id)
                         Fail("Cleanup target references a foreign binding");
@@ -28,7 +35,11 @@ internal static class CleanupVerifier
                 case "constant":
                     if (!ScalarTypes.IsInteger(Type(node))) Fail("Cleanup address recipe only permits integer index constants");
                     break;
-                case "address": case "dereference": case "array-decay": case "member": case "base-subobject": break;
+                case "member":
+                    hasSubobject = true; payloadPath.Add(new(node.FieldId, null)); break;
+                case "base-subobject":
+                    hasSubobject = true; payloadPath.Add(new(null, obj.BaseSubobjectExpressions[node.Id])); break;
+                case "address": case "dereference": case "array-decay": break;
                 case "convert":
                     if (!ScalarTypes.IsPointer(Type(node)) || !ScalarTypes.IsPointer(Type(Child(node, "operand"))))
                         Fail("Cleanup target conversion must preserve pointer representation");
@@ -48,6 +59,28 @@ internal static class CleanupVerifier
         }
         if (!body.Nodes.TryGetValue(action.TargetNodeId, out Node? root)) Fail("Cleanup action has no owned target expression");
         Visit(root!, 0);
+        if (payloadTarget && !hasSubobject) Fail("Payload rollback requires a proper constructed subobject");
+        if (payloadTarget != obj.CleanupPayloadOwners.ContainsKey(action.Id)) Fail("Payload cleanup action has no matching target recipe");
+        if (payloadTarget && !payloadPath.AsEnumerable().Reverse().SequenceEqual(obj.PayloadSubobjectPaths[action.SourceObligationId]))
+            Fail("Payload rollback target differs from its constructed subobject path");
+        if (payloadTarget)
+        {
+            // Payload paths own exact subobjects, not arbitrary pointer math
+            // that merely visits the same member IDs somewhere in a recipe.
+            Node place = root!;
+            if (place.Kind == "convert") place = Child(place, "operand");
+            if (place.Kind != "address") Fail("Payload rollback requires the address of its exact subobject");
+            place = Child(place, "operand");
+            foreach (PayloadPathPart part in obj.PayloadSubobjectPaths[action.SourceObligationId].AsEnumerable().Reverse())
+            {
+                if (part.FieldId is long field ? place.Kind != "member" || place.FieldId != field
+                    : place.Kind != "base-subobject" || obj.BaseSubobjectExpressions.GetValueOrDefault(place.Id) != part.SourceBaseId)
+                    Fail("Payload rollback recipe introduces an unowned address adjustment");
+                place = Child(place, "operand");
+            }
+            if (place.Kind != "dereference" || Child(place, "operand").Kind != "cleanup-payload-address")
+                Fail("Payload rollback recipe does not start at its exact payload address");
+        }
         if (Type(root!) != obj.Parameters[action.CallbackEntityId][0]) Fail("Cleanup target differs from the selected destructor's pointer ABI");
         var alignment = new AccessAlignment(obj, body);
         string pointed = ScalarTypes.Pointee(Type(root!));

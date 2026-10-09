@@ -1,0 +1,127 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v32",
+  "scope": "Owned partial exception-payload scalar member/nonvirtual-base rollback and complete-payload destruction ownership; implemented by root alone",
+  "fullRegressionChecks": 1210,
+  "focusedChecks": 66,
+  "focusedExecutionScenarios": 40,
+  "malformedObjectsRejected": 8,
+  "finalVerifierRegressionChecks": 166,
+  "priorThrowInitializerChecks": 42,
+  "priorThrowInitializerScenarios": 60,
+  "priorSourceThrowGenerationChecks": 56,
+  "priorCleanupChecks": 21,
+  "priorCleanupScenarios": 47,
+  "verifiedExecutionModes": [
+    "native Clang C++ O0/O2",
+    "Linux x64 JIT",
+    "Linux x64 NativeAOT"
+  ],
+  "fixtureExceptionProviderOnly": true,
+  "productionExceptionProviderImplemented": false,
+  "otherReferences": {
+    "gcc": {
+      "compiler": "GCC 13.3",
+      "mismatchedScenariosPerOptimization": [
+        2,
+        2
+      ],
+      "observation": "Nested completed aggregate destructor body absent on two construction-failure paths; complete unmodified traces retained."
+    },
+    "stockEdgC": {
+      "mismatchedScenariosPerOptimization": [
+        7,
+        7
+      ],
+      "observation": "Partial-payload region actions remain active during successful propagation in the exercised C lowering/runtime configuration; exact outputs retained. No universal stock-C parity claimed."
+    },
+    "edgSemanticChanges": false
+  },
+  "validationBuilds": {
+    "fullRegression": {
+      "native": "059",
+      "managed": "056"
+    },
+    "finalFocusedSuites": {
+      "native": "060",
+      "managed": "057"
+    },
+    "finalRefinements": "Native publication orders payload rows by source obligation and scopes duplicate-origin checks to payload owners. Final managed verifier additionally rejects unowned pointer adjustments. Focused suites, malformed objects and the retained broad verifier commands were run after these changes."
+  },
+  "duckdb": {
+    "completeProjectGenerated": false,
+    "selectedOriginalUnits": 5,
+    "packagedUnits": [
+      "src/common/types/hugeint.cpp"
+    ],
+    "hugeintVerified": true,
+    "hugeintCSharpGenerated": true,
+    "emittedFunctionDefinitions": 280,
+    "hugeintCompiledOrExecuted": false,
+    "remainingSampledGates": {
+      "exception.cpp": "source declaration type outside supported profile",
+      "date.cpp": "source declaration type outside supported profile",
+      "allocator.cpp": "initialization with destructor",
+      "string_util.cpp": "virtual base/VTT execution layout"
+    }
+  },
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v32-001/results.json",
+      "sha256": "d9e13688949cac6d5a262e022ea5d4671de3701aee3a885bfece5ece9ddc6119"
+    },
+    "focusedAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-throw-payload-v32-003/results.json",
+      "sha256": "81cdcad42c234534277498ffb8c40fd8b976975a7b640e4e797f6abab630dfe1"
+    },
+    "finalVerifierRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v32-final-verifier-regression.json",
+      "sha256": "696f9cee802996169abdb3870c2110eee49eaff54139bf780d84b3e23f2b68f1"
+    },
+    "priorThrowInitializer": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-throw-initializer-v32-002/results.json",
+      "sha256": "d81e5c7d456898a8d58a6b5eff34573db5a89a5b623c24e6e495c45ec8bb8a57"
+    },
+    "priorSourceThrowGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-throw-v32-002/results.json",
+      "sha256": "09a91fa6fc5ef8e4ffce419805afc64cbc6a09cb67d982f5318557c76e03c8e6"
+    },
+    "priorCleanupExecution": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-cleanup-v32-001/results.json",
+      "sha256": "a06348df8c99941ba37581d4976792cca6ccb9832838df3f6435e4ae1501a270"
+    },
+    "originalDuckdbProbe": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-060-payload/results.json",
+      "sha256": "8eca8b8b4a2c30f8cda3e63afd0a95f53daa151863d231c87e37451b46c6fa01"
+    },
+    "hugeintGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-060-payload/hugeint-generation.json",
+      "sha256": "078a4a9e3fb06b62ea308fbc599385d31ea673f185b6a3a9c3fd4638a34ad43f"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native060-verified-snapshot/cpfe-dot",
+      "sha256": "326a3c98509bac731b924055d148f650af9143238e5dfb6042aac37b2048fa87"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-057/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "6cdc0e96c383a21803e6934fe88c4b09ba1d329414f89e085f70c640dcac66a0"
+    },
+    "toolingManifest": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v32-tooling-snapshot-002/sha256.json",
+      "sha256": "cd08c81887eefdf7f5f493a4e9cb5a150ca9041cfdb94012ba9c153e2ff75740"
+    }
+  },
+  "review": {
+    "payload": "edgcpp/artifacts/review/dotobj-throw-payload/Translated.0000.cpp_throw_payload_u002e_cpp.cs",
+    "hugeint": "edgcpp/artifacts/review/duckdb-dotobj-hugeint/Translated.0000.hugeint_u002e_cpp.cs"
+  },
+  "remaining": [
+    "Source catch matching, handler lifetimes and production exception ownership/dispatch remain unimplemented in dotobj.",
+    "Array-sequence, virtual-base/VTT and delegated payload rollback remain explicit gates.",
+    "Post-start copy failure, throwing destructors and cross-thread exception transfer are not covered by this fixture.",
+    "Full DuckDB generation, compilation and execution remain incomplete."
+  ],
+  "workStatus": "Phase complete; stop at this boundary and await user direction.",
+  "retainIntermediates": true
+}

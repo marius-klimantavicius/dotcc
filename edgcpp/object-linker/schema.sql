@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v31'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v32'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -611,6 +611,26 @@ CREATE TABLE throw_object_addresses (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
  throw_node_id INTEGER NOT NULL REFERENCES throw_expressions(node_id),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-thrown-object-address')
+) STRICT;
+CREATE TABLE cleanup_payload_targets (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ action_id INTEGER NOT NULL UNIQUE REFERENCES cleanup_actions(id),
+ throw_node_id INTEGER NOT NULL REFERENCES throw_initialization_boundaries(throw_node_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-thrown-object-position')
+) STRICT;
+CREATE TABLE throw_payload_subobjects (
+ source_obligation_id INTEGER PRIMARY KEY REFERENCES source_destruction_obligations(id),
+ throw_node_id INTEGER NOT NULL REFERENCES throw_initialization_boundaries(throw_node_id),
+ completion_policy TEXT NOT NULL CHECK(completion_policy='complete-payload-destructor'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-payload-subobject-init')
+) STRICT;
+CREATE TABLE throw_payload_paths (
+ source_obligation_id INTEGER NOT NULL REFERENCES throw_payload_subobjects(source_obligation_id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ field_id INTEGER REFERENCES record_fields(id),
+ source_base_id INTEGER REFERENCES source_record_bases(id),
+ PRIMARY KEY(source_obligation_id,ordinal),
+ CHECK((field_id IS NULL) != (source_base_id IS NULL))
 ) STRICT;
 CREATE TABLE throw_markers (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),

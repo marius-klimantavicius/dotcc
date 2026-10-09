@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v31: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v32: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -39,6 +39,7 @@ struct Writer {
   unsigned next_cleanup_state=1,next_cleanup_action=1;
   std::map<unsigned long long,PendingCleanup> active_cleanup;
   std::set<a_dynamic_init_ptr> active_source_obligations;
+  std::map<a_dynamic_init_ptr,const dot_object_source::CleanupSnapshot*> active_payload_subobjects;
   std::map<an_expr_node_ptr,a_dynamic_init_ptr> active_normal_calls;
   std::set<a_dynamic_init_ptr> active_normal_obligations,emitted_normal_obligations;
   std::vector<string> normal_destructions;
@@ -52,6 +53,9 @@ struct Writer {
   std::vector<string> expression_lifetimes,cleanup_conditions;
   std::vector<string> exception_types,exception_base_conversions,throw_expressions,throw_object_addresses,throw_markers,rethrow_expressions;
   std::vector<string> throw_initialization_boundaries,throw_cleanup_transitions;
+  std::vector<string> cleanup_payload_targets;
+  std::vector<string> throw_payload_subobjects,throw_payload_paths;
+  std::map<an_expr_node_ptr,unsigned> active_throw_ids;
   std::map<unsigned,unsigned> exception_type_ids;
   std::map<unsigned,a_routine_ptr> exception_source_destructors;
   std::map<a_routine_ptr,a_routine_ptr> complete_exception_destructors;
@@ -974,10 +978,18 @@ struct Writer {
     return nullptr;
   }
   void prepare_owned_cleanup(a_routine_ptr owner,a_scope_ptr scope) {
+    active_throw_ids.clear();
     active_cleanup.clear();active_source_obligations.clear();active_cleanup_prologue=nullptr;
+    active_payload_subobjects.clear();
     active_expression_lifetimes=false;
     active_normal_calls.clear();active_normal_obligations.clear();emitted_normal_obligations.clear();
     auto &captured=dot_object_source::state();
+    for(const auto &observed:captured.payload_subobjects)if(observed.owner==owner) {
+      auto original=dot_object_source::source_destruction(observed.original,owner);
+      if(!observed.error.empty())reject(observed.error.c_str());
+      if(!original || !active_payload_subobjects.emplace(original,&observed).second)
+        reject("payload subobject lacks unique original destruction");
+    }
     for(auto call:captured.normal_destruction_order[owner]) {
       const auto &observed=captured.normal_destruction_calls.at(call);
       auto source=dot_object_source::source_destruction(observed.original,owner);
@@ -1063,8 +1075,10 @@ struct Writer {
     if(!lifetime)return;
     for(auto dip=lifetime->destructions;dip;dip=dip->next_in_destruction_list) {
       auto source=current_routine?dot_object_source::source_destruction(dip,current_routine):nullptr;
-      if(!source || (!active_source_obligations.count(source) && !active_normal_obligations.count(source)))
-        reject("destruction obligations lack owned cleanup action or normal call");
+      if(!source || (!active_source_obligations.count(source) && !active_normal_obligations.count(source) && !active_payload_subobjects.count(source)))
+        reject((string("destruction obligations lack owned cleanup action or normal call: ")+
+          (dip->destructor?source_spelling(&dip->destructor->source_corresp):"no destructor")+
+          (source?" (source captured)":" (source missing)")).c_str());
     }
     for(auto child=lifetime->child_lifetime;child;child=child->next)check_lifetime(child);
   }
@@ -1074,17 +1088,17 @@ struct Writer {
     // An observed ABI forwarding entry has no independent source lifetime.
     // Its source primary owns that graph; only a body with actions republishes
     // the original obligations under the exact ABI-origin relation.
-    if(primary && active_cleanup.empty() && emitted_normal_obligations.empty() && !active_expression_lifetimes)return;
+    if(primary && active_cleanup.empty() && emitted_normal_obligations.empty() && active_payload_subobjects.empty() && !active_expression_lifetimes)return;
     const auto &original_lifetimes=captured.lifetime_order[owner];
     const auto &original_destructions=captured.destruction_order[owner];
-    // Each published original obligation has an observed unwind action or an
-    // actually emitted normal destruction call. Discarded observations alone
-    // cannot license omitting destruction from the final owned body.
+    // Each original obligation has an unwind action, an emitted normal call,
+    // or an observed subobject owned by a complete thrown payload. The latter
+    // must also name an actually emitted throw when write_owned_cleanup runs.
     for(auto original:original_destructions) {
-      if(!active_source_obligations.count(original) && !emitted_normal_obligations.count(original))
+      if(!active_source_obligations.count(original) && !emitted_normal_obligations.count(original) && !active_payload_subobjects.count(original))
         reject("original source destruction has no owned cleanup action or normal call");
     }
-    if(active_cleanup.empty() && emitted_normal_obligations.empty() && !active_expression_lifetimes)return;
+    if(active_cleanup.empty() && emitted_normal_obligations.empty() && active_payload_subobjects.empty() && !active_expression_lifetimes)return;
     if(!emitted_cleanup_sources.insert(owner).second)return;
     unsigned owner_id=routine(owner);
     for(auto original:original_lifetimes)
@@ -1148,9 +1162,21 @@ struct Writer {
   unsigned cleanup_target(const PendingCleanup &entry) {
     const auto &observed=*entry.observed;auto variable=observed.variable;
     const auto &source=dot_object_source::state().destructions.at(entry.original);auto pos=source.position;
-    if(!binding_ids.count(variable))reject("cleanup object is not owned function binding");
-    auto type=skip_typerefs(variable->type);
-    unsigned result=node("binding",type_id(type),pos,0,binding_ids.at(variable),"","","place","none");
+    a_type_ptr type;unsigned result;
+    if(observed.throw_origin) {
+      auto found=active_throw_ids.find(observed.throw_origin);
+      if(found==active_throw_ids.end())reject("payload cleanup lacks its emitted owning throw");
+      type=skip_typerefs(observed.base_type);
+      unsigned address=node("cleanup-payload-address",pointer_type(type_id(type)),pos,0,0,"","","value","none");
+      cleanup_payload_targets.push_back("{\"nodeId\":"+number(address)+",\"actionId\":"+number(entry.action_id)+
+        ",\"throwNodeId\":"+number(found->second)+",\"captureProof\":\"observed-thrown-object-position\"}");
+      result=node("dereference",type_id(type),pos,0,0,"","","place","none");
+      edge(result,"operand",0,address);
+    } else {
+      if(!binding_ids.count(variable))reject("cleanup object is not owned function binding");
+      type=skip_typerefs(variable->type);
+      result=node("binding",type_id(type),pos,0,binding_ids.at(variable),"","","place","none");
+    }
     if(observed.indirect) {
       if(type->kind!=tk_pointer)reject("indirect cleanup target is not pointer binding");
       type=skip_typerefs(type->variant.pointer.type);
@@ -1230,6 +1256,28 @@ struct Writer {
   }
   void write_owned_cleanup(a_routine_ptr owner) {
     source_cleanup_metadata(owner);
+    std::vector<std::pair<a_dynamic_init_ptr,const dot_object_source::CleanupSnapshot*>> payloads(
+      active_payload_subobjects.begin(),active_payload_subobjects.end());
+    std::sort(payloads.begin(),payloads.end(),[&](const auto &left,const auto &right) {
+      return source_obligation_ids.at(left.first)<source_obligation_ids.at(right.first);
+    });
+    for(const auto &entry:payloads) {
+      const auto &observed=*entry.second;auto found=active_throw_ids.find(observed.throw_origin);
+      if(found==active_throw_ids.end())reject("payload ownership lacks its emitted throw");
+      unsigned obligation=source_obligation_ids.at(entry.first);
+      throw_payload_subobjects.push_back("{\"sourceObligationId\":"+number(obligation)+
+        ",\"throwNodeId\":"+number(found->second)+",\"completionPolicy\":\"complete-payload-destructor\",\"captureProof\":\"observed-payload-subobject-init\"}");
+      auto type=skip_typerefs(observed.base_type);unsigned ordinal=0;
+      for(const auto &part:observed.path) {
+        if((!part.field && !part.base) || (part.base && part.base->is_virtual))reject("payload ownership outside nonvirtual scalar member/base path");
+        auto field=cleanup_path_field(type,part);
+        unsigned field_id=field?field_ids.at(field):0,base_id=field?0:source_base_ids.at(part.base);
+        throw_payload_paths.push_back("{\"sourceObligationId\":"+number(obligation)+",\"ordinal\":"+std::to_string(ordinal++)+
+          ",\"fieldId\":"+number(field_id)+",\"sourceBaseId\":"+number(base_id)+"}");
+        type=skip_typerefs(field?field->type:part.base->type);
+      }
+      if(!ordinal)reject("payload ownership requires a proper subobject");
+    }
     for(const auto &pair:active_cleanup) {
       const auto &entry=pair.second;
       unsigned next=entry.next==null_eh_region_number?0:active_cleanup.at(entry.next).state_id;
@@ -1922,6 +1970,10 @@ struct Writer {
       destructor=routine(complete_exception_destructor(saved.destructor));
     }
     unsigned id=node("throw",1,expr->position,0,0,"","","value","left-to-right");
+    bool owns_subobjects=std::any_of(active_payload_subobjects.begin(),active_payload_subobjects.end(),
+      [&](const auto &entry){return entry.second->throw_origin==saved.original;});
+    if(owns_subobjects && !active_throw_ids.emplace(saved.original,id).second)
+      reject("multiple emitted throws share one cleanup origin");
     throw_expressions.push_back("{\"nodeId\":"+number(id)+",\"exceptionTypeId\":"+number(descriptor)+
       ",\"destructorEntityId\":"+number(destructor)+
       ",\"initializationKind\":"+quote(saved.initializer?"expression":"empty")+
@@ -2933,7 +2985,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v31\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v32\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -2948,6 +3000,9 @@ struct Writer {
       ",\"throwExpressions\":"+array(throw_expressions)+",\"throwObjectAddresses\":"+array(throw_object_addresses)+
       ",\"throwMarkers\":"+array(throw_markers)+",\"rethrowExpressions\":"+array(rethrow_expressions)+
       ",\"throwInitializationBoundaries\":"+array(throw_initialization_boundaries)+",\"throwCleanupTransitions\":"+array(throw_cleanup_transitions)+
+      ",\"cleanupPayloadTargets\":"+array(cleanup_payload_targets)+
+      ",\"throwPayloadSubobjects\":"+array(throw_payload_subobjects)+
+      ",\"throwPayloadPaths\":"+array(throw_payload_paths)+
       ",\"recordValueTransfers\":"+array(record_value_transfers)+",\"sourceFields\":"+array(source_fields)+
       ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+
       ",\"baseSubobjectExpressions\":"+array(base_subobject_expressions)+

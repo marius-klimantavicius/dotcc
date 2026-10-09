@@ -5,6 +5,8 @@ internal sealed record ExceptionType(long Id, long SourceTypeId, long LeafSource
 internal sealed record ExceptionBaseConversion(long ExceptionTypeId, long Ordinal, long BaseSourceTypeId,
     long ByteOffset, bool IsPublic, bool IsAmbiguous);
 internal sealed record ThrowExpression(long NodeId, long ExceptionTypeId, long? DestructorEntityId, string InitializationKind);
+internal sealed record CleanupPayloadTarget(long NodeId, long ActionId, long ThrowNodeId);
+internal sealed record PayloadPathPart(long? FieldId, long? SourceBaseId);
 
 internal sealed partial class ObjectFile
 {
@@ -15,6 +17,10 @@ internal sealed partial class ObjectFile
     public Dictionary<long, long> ThrowMarkers { get; } = [];
     public HashSet<long> ThrowInitializationBoundaries { get; } = [];
     public Dictionary<long, long> ThrowCleanupTransitions { get; } = [];
+    public Dictionary<long, CleanupPayloadTarget> CleanupPayloadTargets { get; } = [];
+    public Dictionary<long, long> CleanupPayloadOwners { get; } = [];
+    public Dictionary<long, long> PayloadSubobjectOwners { get; } = [];
+    public Dictionary<long, List<PayloadPathPart>> PayloadSubobjectPaths { get; } = [];
     public HashSet<long> RethrowExpressions { get; } = [];
 
     // EH identity follows the original language type, never its C# storage type.
@@ -132,16 +138,87 @@ internal sealed partial class ObjectFile
         ReadThrowOwnerMap("throw_cleanup_transitions", "cleanup-transition", "observed-throw-initializer-transition", ThrowCleanupTransitions, false);
         ReadThrowOwnerMap("throw_object_addresses", "thrown-object-address", "observed-thrown-object-address", ThrowObjectAddresses, false);
         ReadThrowOwnerMap("throw_markers", "throw-marker", "observed-throw-start", ThrowMarkers, true);
+        ReadPayloadSubobjects();
+        using (var query = database.Prepare("SELECT p.node_id,p.action_id,p.throw_node_id,p.capture_proof,n.kind,n.type_id,n.function_id,t.function_id FROM cleanup_payload_targets p LEFT JOIN nodes n ON n.id=p.node_id LEFT JOIN nodes t ON t.id=p.throw_node_id"))
+            while (query.Read())
+            {
+                var target = new CleanupPayloadTarget(query.Integer(0), query.Integer(1), query.Integer(2));
+                if (!CleanupActions.TryGetValue(target.ActionId, out CleanupAction? action) ||
+                    !ThrowExpressions.TryGetValue(target.ThrowNodeId, out ThrowExpression? thrown) || thrown.InitializationKind != "expression" ||
+                    query.Text(3) != "observed-thrown-object-position" || query.OptionalText(4) != "cleanup-payload-address" ||
+                    query.OptionalInteger(5) is not long type || Type(type) != "ptr(" + Type(ExceptionTypes[thrown.ExceptionTypeId].PayloadTypeId) + ")" ||
+                    !ScalarTypes.IsRecord(Type(ExceptionTypes[thrown.ExceptionTypeId].PayloadTypeId)) ||
+                    query.OptionalInteger(6) != action.FunctionEntityId || query.OptionalInteger(7) != action.FunctionEntityId ||
+                    PayloadSubobjectOwners.GetValueOrDefault(action.SourceObligationId) != target.ThrowNodeId ||
+                    !CleanupPayloadTargets.TryAdd(target.NodeId, target) || !CleanupPayloadOwners.TryAdd(target.ActionId, target.ThrowNodeId))
+                    throw new InvalidDataException("Payload cleanup target lacks its exact action, throw or payload type");
+            }
+        if (CleanupActions.Values.Any(action => PayloadSubobjectOwners.ContainsKey(action.SourceObligationId) && !CleanupPayloadOwners.ContainsKey(action.Id)))
+            throw new InvalidDataException("Payload rollback action lacks its completion-aware payload target");
+        if (SourceDestructionObligations.Keys.Except(CleanupActions.Values.Select(action => action.SourceObligationId)
+                .Concat(NormalDestructions.Values).Concat(PayloadSubobjectOwners.Keys)).Any())
+            throw new InvalidDataException("Original destruction obligation has no observed owned execution action or complete payload owner");
         using (var query = database.Prepare("SELECT x.node_id,x.capture_proof,n.kind FROM rethrow_expressions x LEFT JOIN nodes n ON n.id=x.node_id ORDER BY x.node_id"))
             while (query.Read())
                 if (query.Text(1) != "observed-rethrow" || query.OptionalText(2) != "rethrow" || !RethrowExpressions.Add(query.Integer(0)))
                     throw new InvalidDataException("Invalid observed rethrow");
-        using var nodes = database.Prepare("SELECT id,kind FROM nodes WHERE kind IN ('throw','thrown-object-address','throw-marker','rethrow')");
+        using var nodes = database.Prepare("SELECT id,kind FROM nodes WHERE kind IN ('throw','thrown-object-address','throw-marker','rethrow','cleanup-payload-address')");
         while (nodes.Read())
             if (!(nodes.Text(1) switch { "throw" => ThrowExpressions.ContainsKey(nodes.Integer(0)),
                 "thrown-object-address" => ThrowObjectAddresses.ContainsKey(nodes.Integer(0)),
-                "throw-marker" => ThrowMarkers.ContainsKey(nodes.Integer(0)), _ => RethrowExpressions.Contains(nodes.Integer(0)) }))
+                "throw-marker" => ThrowMarkers.ContainsKey(nodes.Integer(0)), "cleanup-payload-address" => CleanupPayloadTargets.ContainsKey(nodes.Integer(0)), _ => RethrowExpressions.Contains(nodes.Integer(0)) }))
                 throw new InvalidDataException("Source exception node lacks its observed provenance");
+    }
+
+    private void ReadPayloadSubobjects()
+    {
+        using (var query = database.Prepare("SELECT p.source_obligation_id,p.throw_node_id,p.completion_policy,p.capture_proof,n.function_id FROM throw_payload_subobjects p LEFT JOIN nodes n ON n.id=p.throw_node_id"))
+            while (query.Read())
+            {
+                long obligationId = query.Integer(0), throwId = query.Integer(1);
+                if (!SourceDestructionObligations.TryGetValue(obligationId, out SourceDestructionObligation? obligation) ||
+                    !ThrowExpressions.TryGetValue(throwId, out ThrowExpression? thrown) || thrown.InitializationKind != "expression" ||
+                    thrown.DestructorEntityId is null || query.OptionalInteger(4) is not long owner ||
+                    OriginalFunction(owner) != obligation.FunctionEntityId || query.Text(2) != "complete-payload-destructor" ||
+                    query.Text(3) != "observed-payload-subobject-init" || !PayloadSubobjectOwners.TryAdd(obligationId, throwId))
+                    throw new InvalidDataException("Payload subobject lacks its original destruction obligation and complete throw owner");
+                PayloadSubobjectPaths.Add(obligationId, []);
+            }
+        using (var query = database.Prepare("SELECT source_obligation_id,ordinal,field_id,source_base_id FROM throw_payload_paths ORDER BY source_obligation_id,ordinal"))
+            while (query.Read())
+            {
+                if (!PayloadSubobjectPaths.TryGetValue(query.Integer(0), out var path) || query.Integer(1) != path.Count ||
+                    (query.OptionalInteger(2) is null) == (query.OptionalInteger(3) is null))
+                    throw new InvalidDataException("Payload subobject path is not a dense member/base sequence");
+                path.Add(new(query.OptionalInteger(2), query.OptionalInteger(3)));
+            }
+        foreach (var (obligationId, throwId) in PayloadSubobjectOwners)
+        {
+            long type = ExceptionTypes[ThrowExpressions[throwId].ExceptionTypeId].PayloadTypeId;
+            var path = PayloadSubobjectPaths[obligationId];
+            if (path.Count is 0 or > 128) throw new InvalidDataException("Payload ownership requires a proper member/base subobject");
+            foreach (PayloadPathPart part in path)
+            {
+                if (part.FieldId is long fieldId)
+                {
+                    if (!Fields.TryGetValue(fieldId, out RecordField? field) || field.RecordTypeId != type || field.BitWidth is not null ||
+                        field.FieldRole is not ("source" or "base") ||
+                        field.SourceBaseId is long sourceBase && SourceBases[sourceBase].IsVirtual)
+                        throw new InvalidDataException("Payload subobject path references a foreign or synthetic field");
+                    type = field.TypeId;
+                }
+                else
+                {
+                    if (!BaseSubobjects.TryGetValue((type, part.SourceBaseId!.Value), out RecordBaseSubobject? view) ||
+                        view.FieldId is not null || SourceBases[part.SourceBaseId.Value].IsVirtual)
+                        throw new InvalidDataException("Payload subobject path requires an exact nonvirtual empty base");
+                    type = view.CompleteBaseTypeId;
+                }
+            }
+            if (!Records.TryGetValue(type, out RecordType? record) ||
+                (record.CompleteTypeId ?? type) != SourceTypeById(SourceDestructionObligations[obligationId].SourceTypeId).ExecutionTypeId)
+                throw new InvalidDataException("Payload path does not end at the original destruction object type");
+        }
     }
 
     private void ReadThrowOwnerMap(string table, string nodeKind, string proof, Dictionary<long, long> target, bool marker)

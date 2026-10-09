@@ -201,6 +201,7 @@ struct CleanupPathPart {
 };
 struct CleanupSnapshot {
   a_routine_ptr owner=nullptr;
+  an_expr_node_ptr throw_origin=nullptr;
   a_dynamic_init_ptr original=nullptr;
   a_variable_ptr variable=nullptr,conditional_flag=nullptr;
   a_type_ptr base_type=nullptr;
@@ -237,6 +238,7 @@ struct State {
   std::map<a_dynamic_init_ptr,a_dynamic_init_ptr> dynamic_init_copies;
   std::map<an_object_lifetime_ptr,an_object_lifetime_ptr> lifetime_copies;
   std::map<a_constant_ptr,CleanupSnapshot> cleanup_regions;
+  std::vector<CleanupSnapshot> payload_subobjects;
   std::map<an_expr_node_ptr,RecordTransferSnapshot> record_transfers;
   std::map<an_expr_node_ptr,ThrowSnapshot> throws;
   std::map<an_expr_node_ptr,an_expr_node_ptr> throw_addresses,throw_markers;
@@ -959,6 +961,33 @@ inline a_dynamic_init_ptr source_destruction(a_dynamic_init_ptr value,a_routine_
   return nullptr;
 }
 #if DO_IL_LOWERING && GENERATE_EH_TABLES && !DO_FULL_PORTABLE_EH_LOWERING
+// Observe the typed construction destination before aggregate lowering drops
+// the final member's unnecessary rollback entry. Complete payload destruction
+// still owns that source obligation after successful throw initialization.
+inline void observe_payload_subobject(a_dynamic_init_ptr dip,an_init_pos_descr_ptr position,a_routine_ptr owner) {
+  if(!enabled() || !position->thrown_object_address || !dip->destructor || !dip->lifetime)return;
+  CleanupSnapshot value;value.owner=owner;value.original=dip;value.base_type=position->base_type;
+  value.base_subobject=position->base_class_subobject;
+  if(state().active_throws.empty() || position->variable || position->indirect_through_variable ||
+     position->array_element_sequence || position->num_elem_node || !position->modifiers ||
+     !dip->destruction_is_for_partially_constructed_aggregate)
+    value.error="payload construction outside scalar partial-aggregate ownership";
+  else {
+    value.throw_origin=state().active_throws.back();
+    const auto &thrown=state().throws.at(value.throw_origin);
+    if(thrown.owner!=owner || !thrown.destructor || skip_typerefs(thrown.payload_type)!=skip_typerefs(position->base_type))
+      value.error="payload subobject lacks its complete throw destructor";
+  }
+  for(auto modifier=position->modifiers;modifier;modifier=modifier->next) {
+    CleanupPathPart part;part.type=modifier->type;part.field=modifier->curr_field;
+    part.base=modifier->curr_base;part.index=modifier->curr_elem;
+#if GNU_VECTOR_TYPES_ALLOWED
+    if(modifier->is_vector_element)value.error="vector payload construction position";
+#endif
+    value.path.insert(value.path.begin(),part);
+  }
+  state().payload_subobjects.push_back(value);
+}
 inline void observe_cleanup_region(a_dynamic_init_ptr dip,a_routine_ptr owner) {
   if(!enabled())return;
   auto descr=dip->destructible_entity_descr;
@@ -968,8 +997,18 @@ inline void observe_cleanup_region(a_dynamic_init_ptr dip,a_routine_ptr owner) {
   value.variable=position.variable;value.base_type=position.base_type;
   value.conditional_flag=descr->conditional_flag_var;
   value.indirect=position.indirect_through_variable;value.base_subobject=position.base_class_subobject;
-  if(position.thrown_object_address || position.array_element_sequence || position.num_elem_node ||
-     !position.variable || descr->needs_subobject_construction_vtbl ||
+  if(position.thrown_object_address) {
+    if(state().active_throws.empty() || position.variable || position.indirect_through_variable || !position.modifiers)
+      value.error="payload subobject cleanup lacks exact active throw position";
+    else {
+      value.throw_origin=state().active_throws.back();
+      const auto &thrown=state().throws.at(value.throw_origin);
+      if(thrown.owner!=owner || skip_typerefs(thrown.payload_type)!=skip_typerefs(position.base_type))
+        value.error="payload cleanup root differs from observed throw type";
+    }
+  }
+  if(position.array_element_sequence || position.num_elem_node ||
+     (!position.variable && !position.thrown_object_address) || descr->needs_subobject_construction_vtbl ||
      descr->use_delegation_dtor || dip->is_freeing_of_storage_on_exception ||
      dip->is_freeing_of_exception_object || dip->is_guard_var_for_local_static_var_init || dip->is_vla_deallocation)
     value.error="cleanup region outside scalar object/member/base contract";
