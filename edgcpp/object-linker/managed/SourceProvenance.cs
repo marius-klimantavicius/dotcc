@@ -383,8 +383,14 @@ internal sealed partial class ObjectFile
             "id", "functionEntityId", "lifetimeId", "ordinal", "destructorEntityId", "sourceTypeId", "sourceFileId", "line", "column", "captureProof");
         Table("cleanupActions", "SELECT id,function_entity_id,source_obligation_id,callback_entity_id,target_node_id,capture_proof FROM cleanup_actions ORDER BY id",
             "id", "functionEntityId", "sourceObligationId", "callbackEntityId", "targetNodeId", "captureProof");
-        Table("cleanupStates", "SELECT id,function_entity_id,action_id,next_state_id FROM cleanup_states ORDER BY id",
-            "id", "functionEntityId", "actionId", "nextStateId");
+        Table("cleanupStates", "SELECT id,function_entity_id,action_id,next_state_id,handler_node_id FROM cleanup_states ORDER BY id",
+            "id", "functionEntityId", "actionId", "nextStateId", "handlerNodeId");
+        Table("sourceTries", "SELECT node_id,source_lifetime_id,capture_proof FROM source_tries ORDER BY node_id",
+            "nodeId", "sourceLifetimeId", "captureProof");
+        Table("sourceHandlers", "SELECT node_id,try_node_id,ordinal,match_kind,capture_proof FROM source_handlers ORDER BY node_id",
+            "nodeId", "tryNodeId", "ordinal", "matchKind", "captureProof");
+        Table("handlerMarkers", "SELECT node_id,owner_node_id,kind,capture_proof FROM handler_markers ORDER BY node_id",
+            "nodeId", "ownerNodeId", "kind", "captureProof");
         Table("cleanupTransitions", "SELECT node_id,state_id,capture_proof,is_unreachable FROM cleanup_transitions ORDER BY node_id",
             "nodeId", "stateId", "captureProof", "isUnreachable");
         Table("cleanupFrameMarkers", "SELECT node_id,kind,capture_proof FROM cleanup_frame_markers ORDER BY node_id",

@@ -4,7 +4,7 @@ This implements the owned object path of the [new design](../docs/dotobj-format.
 It uses a fresh SQLite schema and C# reader/linker/emitter, without the prior
 semantic-export experiment or C# text/command objects.
 
-The current profile is `scalar-control-v32`. It supports independently produced
+The current profile is `scalar-control-v33`. It supports independently produced
 SQLite and musl objects, typed provider selection, shared BCL runtime bindings,
 and explicit source startup actions. C++ file-scope initialization owns generated
 routine origins, original per-storage statement intervals and separate local
@@ -16,8 +16,10 @@ temporary boundaries, without native stack-offset frames. Bounded source throws
 and rethrows own original type identity, payload initialization and destructor
 requirements, base adjustments and exception start/completion ordering. Their
 shared `Edg.Runtime.CppExceptions` provider is currently an explicitly unbound
-partial contract: use `--allow-externs` for generation, not execution. Source
-handlers and array/VTT cleanup remain gates.
+partial contract: use `--allow-externs` for generation, not execution. Structured
+`try`/`catch (...)` regions own their original try lifetime, handler markers and
+exception-release states. Typed catch parameters, function-try blocks and
+array/VTT cleanup remain gates.
 Throw initializers own a saved entry cleanup cursor: evaluation failure destroys
 initializer-local temporaries before releasing unfinished payload storage, then
 propagates to the enclosing function's remaining cleanup. Nested throws preserve
@@ -267,7 +269,7 @@ indexes. A hash demonstrates content integrity, not semantic correctness.
 Full logs/objects/generated projects remain under
 `/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/`.
 
-The current schema requires `scalar-control-v32`. Earlier-profile objects and tools
+The current schema requires `scalar-control-v33`. Earlier-profile objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 

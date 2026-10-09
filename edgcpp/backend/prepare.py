@@ -627,6 +627,18 @@ object_source_overlay(lower,
 
 
 # Typed throw initialization and exact runtime-address/start ownership.
+object_source_overlay(eh_lower,
+    '  /* In the non-portable schemes, we keep the original "try" statement. */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_try(tsp, innermost_function_scope->variant.routine.ptr, is_function_try_block);\n'
+    '#endif\n'
+    '  /* In the non-portable schemes, we keep the original "try" statement. */')
+object_source_overlay(eh_lower,
+    '    /* Lower the dependent statement of the catch clause. */',
+    '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+    '    dot_object_source::HandlerCapture dot_object_handler_capture(handler);\n'
+    '#endif\n'
+    '    /* Lower the dependent statement of the catch clause. */')
 object_source_overlay(init_lower,
     '  a_type_ptr         temp_type = NULL;\n\n  saved_code_pos = code_pos_for_lowering;',
     '  a_type_ptr         temp_type = NULL;\n'

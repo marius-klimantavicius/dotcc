@@ -201,6 +201,7 @@ struct CleanupPathPart {
 };
 struct CleanupSnapshot {
   a_routine_ptr owner=nullptr;
+  a_handler_ptr release_handler=nullptr;
   an_expr_node_ptr throw_origin=nullptr;
   a_dynamic_init_ptr original=nullptr;
   a_variable_ptr variable=nullptr,conditional_flag=nullptr;
@@ -227,6 +228,12 @@ struct NormalDestruction {
   a_routine_ptr owner=nullptr,callback=nullptr;
   a_dynamic_init_ptr original=nullptr;
 };
+struct TrySnapshot {
+  a_routine_ptr owner=nullptr;
+  a_try_supplement_ptr original=nullptr;
+  std::vector<a_handler_ptr> handlers;
+  bool function_try=false;
+};
 struct State {
   std::map<a_type_ptr,unsigned> type_ids;
   std::vector<Type> types;
@@ -239,6 +246,9 @@ struct State {
   std::map<an_object_lifetime_ptr,an_object_lifetime_ptr> lifetime_copies;
   std::map<a_constant_ptr,CleanupSnapshot> cleanup_regions;
   std::vector<CleanupSnapshot> payload_subobjects;
+  std::map<a_try_supplement_ptr,TrySnapshot> tries;
+  std::vector<a_handler_ptr> active_handlers;
+  std::map<a_dynamic_init_ptr,std::pair<a_routine_ptr,a_handler_ptr>> handler_releases;
   std::map<an_expr_node_ptr,RecordTransferSnapshot> record_transfers;
   std::map<an_expr_node_ptr,ThrowSnapshot> throws;
   std::map<an_expr_node_ptr,an_expr_node_ptr> throw_addresses,throw_markers;
@@ -961,6 +971,17 @@ inline a_dynamic_init_ptr source_destruction(a_dynamic_init_ptr value,a_routine_
   return nullptr;
 }
 #if DO_IL_LOWERING && GENERATE_EH_TABLES && !DO_FULL_PORTABLE_EH_LOWERING
+inline void observe_try(a_try_supplement_ptr value,a_routine_ptr owner,bool function_try) {
+  if(!enabled())return;
+  TrySnapshot saved;saved.owner=owner;saved.original=value;saved.function_try=function_try;
+  for(auto handler=value->handlers;handler;handler=handler->next)saved.handlers.push_back(handler);
+  state().tries.emplace(value,saved);
+}
+struct HandlerCapture {
+  bool active=false;
+  HandlerCapture(a_handler_ptr handler) {if((active=enabled()))state().active_handlers.push_back(handler);}
+  ~HandlerCapture(){if(active)state().active_handlers.pop_back();}
+};
 // Observe the typed construction destination before aggregate lowering drops
 // the final member's unnecessary rollback entry. Complete payload destruction
 // still owns that source obligation after successful throw initialization.
@@ -993,6 +1014,16 @@ inline void observe_cleanup_region(a_dynamic_init_ptr dip,a_routine_ptr owner) {
   auto descr=dip->destructible_entity_descr;
   if(!descr || !descr->region_table_entry)return;
   CleanupSnapshot value;value.owner=owner;value.original=dip;
+  if(dip->is_freeing_of_exception_object) {
+    if(state().active_handlers.empty())value.error="exception release lacks its observed handler";
+    else {
+      value.release_handler=state().active_handlers.back();
+      state().handler_releases[dip]={owner,value.release_handler};
+    }
+    if(!state().cleanup_regions.emplace(descr->region_table_entry,value).second)
+      state().cleanup_regions.at(descr->region_table_entry).error="duplicate handler release observation";
+    return;
+  }
   const auto &position=descr->init_pos_descr;
   value.variable=position.variable;value.base_type=position.base_type;
   value.conditional_flag=descr->conditional_flag_var;

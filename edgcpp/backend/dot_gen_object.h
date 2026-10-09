@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v32: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v33: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -56,6 +56,10 @@ struct Writer {
   std::vector<string> cleanup_payload_targets;
   std::vector<string> throw_payload_subobjects,throw_payload_paths;
   std::map<an_expr_node_ptr,unsigned> active_throw_ids;
+  std::map<a_try_supplement_ptr,unsigned> active_try_ids;
+  std::map<a_handler_ptr,unsigned> active_handler_ids;
+  a_handler_ptr emitting_handler=nullptr;
+  std::vector<string> source_tries,source_handlers,handler_markers;
   std::map<unsigned,unsigned> exception_type_ids;
   std::map<unsigned,a_routine_ptr> exception_source_destructors;
   std::map<a_routine_ptr,a_routine_ptr> complete_exception_destructors;
@@ -978,6 +982,7 @@ struct Writer {
     return nullptr;
   }
   void prepare_owned_cleanup(a_routine_ptr owner,a_scope_ptr scope) {
+    active_try_ids.clear();active_handler_ids.clear();emitting_handler=nullptr;
     active_throw_ids.clear();
     active_cleanup.clear();active_source_obligations.clear();active_cleanup_prologue=nullptr;
     active_payload_subobjects.clear();
@@ -1023,6 +1028,12 @@ struct Writer {
       const auto &observed=found->second;
       if(observed.owner!=owner || !observed.error.empty())
         reject(observed.error.empty()?"cleanup region owner mismatch":observed.error.c_str());
+      if(observed.release_handler) {
+        if(flags || cleanup_number(fields[1]))reject("handler release region has unexpected flags or handle");
+        PendingCleanup value;value.state_id=next_cleanup_state++;
+        value.next=cleanup_number(fields[2]);value.observed=&observed;
+        active_cleanup.emplace(state_raw,value);continue;
+      }
       if(bool(flags&0x40)!=observed.base_subobject)reject("cleanup region base-subobject proof mismatch");
       if(bool(flags&0x02)!=bool(observed.conditional_flag))reject("cleanup conditional flag proof mismatch");
       if(observed.conditional_flag) {
@@ -1074,6 +1085,10 @@ struct Writer {
   void check_lifetime(an_object_lifetime_ptr lifetime) {
     if(!lifetime)return;
     for(auto dip=lifetime->destructions;dip;dip=dip->next_in_destruction_list) {
+      if(dip->is_freeing_of_exception_object) {
+        auto release=dot_object_source::state().handler_releases.find(dip);
+        if(release!=dot_object_source::state().handler_releases.end() && release->second.first==current_routine)continue;
+      }
       auto source=current_routine?dot_object_source::source_destruction(dip,current_routine):nullptr;
       if(!source || (!active_source_obligations.count(source) && !active_normal_obligations.count(source) && !active_payload_subobjects.count(source)))
         reject((string("destruction obligations lack owned cleanup action or normal call: ")+
@@ -1231,6 +1246,22 @@ struct Writer {
   }
   unsigned cleanup_marker(an_expr_node_ptr expr) {
     auto &value=expr->variant.lowered_eh;
+    if(value.kind==leck_exception_caught || value.kind==leck_catch_epilogue || value.kind==leck_try_epilogue) {
+      unsigned owner=0;string kind;
+      if(value.kind==leck_try_epilogue) {
+        auto found=active_try_ids.find(value.variant.epilogue_try_block);
+        if(found==active_try_ids.end())reject("try epilogue lacks its owned try");
+        owner=found->second;kind="try-exit";
+      } else {
+        auto handler=value.kind==leck_exception_caught?emitting_handler:value.variant.epilogue_handler;
+        auto found=active_handler_ids.find(handler);
+        if(found==active_handler_ids.end())reject("handler marker lacks its owned handler");
+        owner=found->second;kind=value.kind==leck_exception_caught?"caught":"handler-exit";
+      }
+      unsigned id=node("handler-marker",1,expr->position,0,0,"","","value","none");
+      handler_markers.push_back("{\"nodeId\":"+number(id)+",\"ownerNodeId\":"+number(owner)+
+        ",\"kind\":"+quote(kind)+",\"captureProof\":\"observed-handler-marker\"}");return id;
+    }
     if(value.kind==leck_cleanup_state || value.kind==leck_unreachable_cleanup_state) {
       unsigned state=0;auto raw=value.variant.cleanup_region_number;
       if(raw!=null_eh_region_number) {
@@ -1256,6 +1287,12 @@ struct Writer {
   }
   void write_owned_cleanup(a_routine_ptr owner) {
     source_cleanup_metadata(owner);
+    for(const auto &entry:active_try_ids) {
+      auto original=dot_object_source::source_lifetime(entry.first->lifetime,owner);
+      if(!original || !source_lifetime_ids.count(original))reject("source try lacks original lifetime identity");
+      source_tries.push_back("{\"nodeId\":"+number(entry.second)+",\"sourceLifetimeId\":"+number(source_lifetime_ids.at(original))+
+        ",\"captureProof\":\"observed-ordinary-try\"}");
+    }
     std::vector<std::pair<a_dynamic_init_ptr,const dot_object_source::CleanupSnapshot*>> payloads(
       active_payload_subobjects.begin(),active_payload_subobjects.end());
     std::sort(payloads.begin(),payloads.end(),[&](const auto &left,const auto &right) {
@@ -1281,6 +1318,13 @@ struct Writer {
     for(const auto &pair:active_cleanup) {
       const auto &entry=pair.second;
       unsigned next=entry.next==null_eh_region_number?0:active_cleanup.at(entry.next).state_id;
+      if(entry.observed->release_handler) {
+        auto found=active_handler_ids.find(entry.observed->release_handler);
+        if(found==active_handler_ids.end())reject("release state lacks its emitted handler");
+        cleanup_states.push_back("{\"id\":"+number(entry.state_id)+",\"functionEntityId\":"+number(function)+
+          ",\"actionId\":null,\"nextStateId\":"+number(next)+",\"handlerNodeId\":"+number(found->second)+"}");
+        continue;
+      }
       unsigned callback=routine(entry.callback),target=cleanup_target(entry);
       if(auto flag=entry.observed->conditional_flag) {
         auto binding=binding_ids.find(flag);
@@ -1295,7 +1339,7 @@ struct Writer {
         ",\"sourceObligationId\":"+number(source_obligation_ids.at(entry.original))+",\"callbackEntityId\":"+number(callback)+
         ",\"targetNodeId\":"+number(target)+",\"captureProof\":\"observed-region-entry\"}");
       cleanup_states.push_back("{\"id\":"+number(entry.state_id)+",\"functionEntityId\":"+number(function)+
-        ",\"actionId\":"+number(entry.action_id)+",\"nextStateId\":"+number(next)+"}");
+        ",\"actionId\":"+number(entry.action_id)+",\"nextStateId\":"+number(next)+",\"handlerNodeId\":null}");
     }
   }
   void validate_file_initializers(a_scope_ptr file_scope) {
@@ -2765,6 +2809,24 @@ struct Writer {
     if(!s)reject("missing statement");
     diagnostic_scope diagnostic(s->position);
     switch(s->kind) {
+      case stmk_try_block: {
+        auto t=s->variant.try_block;auto found=dot_object_source::state().tries.find(t);
+        if(found==dot_object_source::state().tries.end() || found->second.owner!=current_routine || found->second.function_try)
+          reject("source try lacks observed ordinary statement ownership");
+        const auto &saved=found->second;
+        if(saved.handlers.size()!=1 || saved.handlers[0]->parameter || saved.handlers[0]->next || t->handlers!=saved.handlers[0])
+          reject("typed source handlers require owned matching and parameter initialization");
+        unsigned id=node("try",0,s->position),handler=node("catch",0,saved.handlers[0]->catch_position);
+        if(!active_try_ids.emplace(t,id).second || !active_handler_ids.emplace(saved.handlers[0],handler).second)
+          reject("duplicated source handler ownership");
+        source_handlers.push_back("{\"nodeId\":"+number(handler)+",\"tryNodeId\":"+number(id)+
+          ",\"ordinal\":0,\"matchKind\":\"ellipsis\",\"captureProof\":\"observed-source-handler\"}");
+        check_lifetime(t->lifetime);
+        edge(id,"body",0,statement(t->statement));
+        auto previous=emitting_handler;emitting_handler=saved.handlers[0];
+        edge(handler,"body",0,statement(saved.handlers[0]->statement));emitting_handler=previous;
+        edge(id,"handler",0,handler);return id;
+      }
       case stmk_block: {
         unsigned id=node("block",0,s->position),ordinal=0;
         if(root_scope)owned_function_root=id;
@@ -2985,7 +3047,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v32\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v33\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -3003,6 +3065,8 @@ struct Writer {
       ",\"cleanupPayloadTargets\":"+array(cleanup_payload_targets)+
       ",\"throwPayloadSubobjects\":"+array(throw_payload_subobjects)+
       ",\"throwPayloadPaths\":"+array(throw_payload_paths)+
+      ",\"sourceTries\":"+array(source_tries)+",\"sourceHandlers\":"+array(source_handlers)+
+      ",\"handlerMarkers\":"+array(handler_markers)+
       ",\"recordValueTransfers\":"+array(record_value_transfers)+",\"sourceFields\":"+array(source_fields)+
       ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+
       ",\"baseSubobjectExpressions\":"+array(base_subobject_expressions)+

@@ -722,3 +722,32 @@ operand also remains gated; the focused fixture calls an ordinary observer for
 that operand while preserving the same temporary lifetime. Earlier failed probes
 and all generated artifacts are retained. Stop after this phase's validation and
 commit; do not start the next phase automatically.
+
+## Payload ownership and source catch-all regions, v32–v33 (2026-10-09)
+
+Implemented by root alone in successive bounded phases. Profile v32 added scalar
+member/nonvirtual-base rollback inside exception payloads, with complete-payload
+ownership taking over after successful initialization. Its [acceptance evidence](../evidence/dotobj-throw-payload-20261009.json)
+records 40 execution scenarios and eight malformed-object rejections, including
+the preserved differences among independent native reference implementations.
+
+Profile v33 adds ordinary structured `try`/`catch (...)`, original try lifetime
+identity, caught/exit markers and exact handler-release states. Emission preserves
+normal source exits and destructor order, including an outer destructor throwing
+after the source try has ended. Nested handlers, rethrows through called functions,
+replacement exceptions and handler-local construction failures retain payload
+ownership until the last handler relinquishes it. No frontend semantic fixes or
+native stack-offset frames were introduced.
+
+Native063/managed061 passes 105 focused scenarios against native C++ and stock
+EDG C at O0/O2, under JIT and NativeAOT. Five SQL-valid, digest-resealed malformed
+objects are rejected. A separate release-only module also builds and runs in
+both modes. Generated review source is at `artifacts/review/dotobj-catch-all`.
+The [v33 evidence](../evidence/dotobj-catch-all-20261009.json) records the final
+regression totals, immutable tools and retained artifacts.
+
+The same five original DuckDB units were probed. `hugeint.cpp` still exports,
+verifies and generates 280 function definitions; its C# has not been compiled
+or executed. The other four units retain their previous type, initialization
+and virtual-base/VTT gates. Typed catches, function-try blocks, array/VTT cleanup
+and the production exception provider remain open. Stop at this phase boundary.

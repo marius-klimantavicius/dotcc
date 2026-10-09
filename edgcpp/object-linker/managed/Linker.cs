@@ -233,6 +233,7 @@ internal sealed partial class Linker
     }
 
     public bool RequiresExceptionProvider { get; private set; }
+    public bool RequiresSourceHandlers { get; private set; }
     public Dictionary<(ObjectFile Object, long Id), ExceptionType> UsedExceptionTypes { get; } = [];
 
     public void VerifyBodies()
@@ -245,9 +246,10 @@ internal sealed partial class Linker
                 _ = Resolve(symbol.Object, action.CallbackEntityId);
             foreach (Node node in body.Nodes.Values)
             {
-                if (node.Kind is "throw" or "rethrow")
+                if (node.Kind is "throw" or "rethrow" or "try")
                 {
                     RequiresExceptionProvider = true;
+                    RequiresSourceHandlers |= node.Kind == "try";
                     if (!allowExterns) throw new InvalidDataException("Source exceptions require the shared Edg.Runtime.CppExceptions provider; use --allow-externs for generation-only output");
                     if (node.Kind == "throw")
                     {

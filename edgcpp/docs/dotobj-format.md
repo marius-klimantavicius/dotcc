@@ -235,7 +235,8 @@ the complete payload destructor. Nested initializers save independent cursors.
 First-pass exception-start/termination classification remains the shared provider's
 responsibility. Payload propagation itself bypasses the initialization-failure
 catch. Profile 31 covers initializer-local scalar temporaries; profile 32 adds
-the payload subobject ownership described below. Source handlers remain a gate.
+the payload subobject ownership described below. Profile 33 adds catch-all
+regions; typed handlers remain a gate.
 
 ## Payload subobject ownership (profile 32)
 
@@ -270,7 +271,51 @@ traces with native Clang and retains independent GCC and stock EDG C traces.
 Those references differ on some aggregate cases; the receipts preserve the
 differences instead of claiming universal parity. The provider is fixture-only.
 Array-sequence, virtual-base/VTT and delegated payload rollback, production EH
-ownership/dispatch and translated source handlers remain separate work.
+ownership/dispatch and typed source handlers remain separate work.
+
+## Source catch-all regions (profile 33)
+
+The retained `try` and `catch` statement nodes keep source structure. Each
+`source_tries` row identifies its original `try-block` lifetime, and a
+`source_handlers` row owns the exact ellipsis handler. The initial profile admits
+one `catch (...)` per ordinary try. Typed matching, catch-parameter initialization
+and constructor/destructor function-try blocks remain explicit gates.
+
+A cleanup state now selects either a destructor action or a handler release.
+`handler_node_id` denotes the exact runtime exception-release region observed
+while EDG lowers that handler; no runtime function name or stack offset is used
+to infer ownership. The original lifetime checker admits synthetic exception
+release entries only when the observer recorded that entry in the same function.
+The verifier requires one release state per handler and permits arming it only
+inside that handler's executable region. Ordinary local destructor states can
+chain through this release state to an enclosing handler or local object.
+
+`handler_markers` preserves EDG's caught, catch-exit and try-exit operations.
+The last distinction matters on a return: lowering can place outer-scope
+destructions inside the retained try statement, after the source try has ended.
+The emitted catch filter tests an active flag cleared by the try-exit marker,
+so exceptions from those destructions bypass the completed source try. The
+verifier checks marker kinds, function identity and protected-region ownership.
+Control-flow flattening across protected regions remains unsupported; structured
+returns, breaks, continues and outward gotos retain their observed exits.
+
+At runtime, a try saves the cleanup cursor. An accepted catch unwinds the
+protected body's locals to that cursor before entering the handler. Handler
+locals die before its release state relinquishes the caught exception. Both
+normal epilogues and exceptional exits use the same idempotent provider release;
+rethrow and nested handling retain outstanding payload ownership. The generated
+shared `CppHandlers` contract specifies nonthrowing handler bookkeeping,
+first-pass filters and per-thread active-handler state. It is emitted only for
+modules that use source handlers, preserving existing throw-only providers.
+Production dispatch/ownership is still unbound; fixture execution does not claim
+a complete exception runtime.
+
+`cpp_catch_all_verify.py` compares 105 traces with native C++ and the unchanged
+stock EDG C backend at O0/O2, then JIT and NativeAOT. Cases include nested handlers,
+rethrow through a called function, replacement exceptions, constructor failures,
+normal return/break/continue/goto, and throwing destructors on normal exits.
+Malformed objects with missing/foreign markers, wrong original lifetimes,
+misplaced handler bodies and prematurely armed release states are rejected.
 
 ## Shared headers later
 

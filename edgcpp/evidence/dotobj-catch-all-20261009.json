@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v33",
+  "scope": "Owned ordinary source try/catch-all regions, original try lifetimes, caught/exit markers and exception-release states; implemented by root alone",
+  "fullRegressionChecks": 1210,
+  "focusedChecks": 57,
+  "focusedExecutionScenarios": 105,
+  "malformedObjectsRejected": 5,
+  "priorPayloadChecks": 66,
+  "priorPayloadScenarios": 40,
+  "priorThrowInitializerChecks": 42,
+  "priorThrowInitializerScenarios": 60,
+  "priorSourceThrowGenerationChecks": 56,
+  "priorCleanupChecks": 21,
+  "priorCleanupScenarios": 47,
+  "verifiedExecutionModes": [
+    "native C++ O0/O2",
+    "stock EDG C backend O0/O2",
+    "Linux x64 JIT",
+    "Linux x64 NativeAOT"
+  ],
+  "fixtureExceptionProviderOnly": true,
+  "productionExceptionProviderImplemented": false,
+  "edgSemanticChanges": false,
+  "validationBuilds": {
+    "native": "063",
+    "managed": "061"
+  },
+  "focusedCoverage": [
+    "nested catch-all handlers",
+    "rethrow including called function",
+    "replacement exceptions",
+    "constructor failure inside protected and handler scopes",
+    "return, break, continue and outward goto",
+    "destructor throwing on normal return after source try exit",
+    "handler-local destructor throwing on normal return",
+    "source-hidden linking",
+    "release-only module with zero object destructor actions, JIT and NativeAOT"
+  ],
+  "receiptClarification": "The retained focused receipt predates a wording-only correction: throwing destructors on normal exits ARE covered; destructor failure during active unwinding is not covered by this fixture. Test runner wording is corrected in the tooling snapshot. Test behavior and results are unchanged.",
+  "duckdb": {
+    "completeProjectGenerated": false,
+    "selectedOriginalUnits": 5,
+    "packagedUnits": [
+      "src/common/types/hugeint.cpp"
+    ],
+    "hugeintVerified": true,
+    "hugeintCSharpGenerated": true,
+    "emittedFunctionDefinitions": 280,
+    "hugeintCompiledOrExecuted": false,
+    "remainingSampledGates": {
+      "exception.cpp": "source declaration type outside supported profile",
+      "date.cpp": "source declaration type outside supported profile",
+      "allocator.cpp": "initialization with destructor",
+      "string_util.cpp": "virtual base/VTT execution layout"
+    }
+  },
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v33-001/results.json",
+      "sha256": "a9498ee4a3ba3bd27b35dd8b565d7112f393526b5ed204077de6cb0ad108723a"
+    },
+    "focusedAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-catch-all-v33-003/results.json",
+      "sha256": "67246f7ad30aae0b037c0ed8665d820f2919097e83f4a15f33936c9d4cb9b94b"
+    },
+    "priorPayloadExecution": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-throw-payload-v33-001/results.json",
+      "sha256": "e3ac71f5692d0d18798c4e1d8538bb5a713632ea47f3354acc467d52f6a55d17"
+    },
+    "priorThrowInitializer": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-throw-initializer-v33-001/results.json",
+      "sha256": "9d8ef6262d4311b3c72e3a3ddc62369d1748d7fd7bcb8efc89195b4bb0869f42"
+    },
+    "priorSourceThrowGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-throw-v33-001/results.json",
+      "sha256": "d2d8db8dee08acc93b36d084ae47deaf7f65c462157c23398587c3e0c339f748"
+    },
+    "priorCleanupExecution": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-cleanup-v33-001/results.json",
+      "sha256": "a87d522000bb8660c28ed23eecb5a7a634850c3de3d562215be364dbaf2128d9"
+    },
+    "originalDuckdbProbe": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-063-handlers/results.json",
+      "sha256": "650bcf54fce3d1edfd4323a3ad756895172214c315f7bc765a62b13ccbfbd1c0"
+    },
+    "hugeintGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-063-handlers/hugeint-generation.json",
+      "sha256": "2e31cd0b760582e76c4a6e3cb3e193879e9b23fc48a42a2f1f85ca62a32443a1"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native063-verified-snapshot/cpfe-dot",
+      "sha256": "5b6508a35e0ae5437bd802c228311d7293d2dcd1310129a37f6d2bd416722ab1"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-061/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "8b60c66026ae7810726d72a450ebca65adc8ad8148cde1a1bedfbd6d7ea3cb1d"
+    },
+    "toolingManifest": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v33-tooling-snapshot-001/sha256.json",
+      "sha256": "e459d51739fd4402831eea1a78796f1daca7ad7b4477ee013ba6f004e3c2356e"
+    },
+    "generatedCatchAll": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-catch-all-v33-003/generated/Translated.0000.cpp_catch_all_u002e_cpp.cs",
+      "sha256": "a691002b8ae9d6fa326f8839f7b28644d0d326021add5f5cb4e7856dcbb4d30e"
+    }
+  },
+  "review": {
+    "catchAll": "edgcpp/artifacts/review/dotobj-catch-all/Translated.0000.cpp_catch_all_u002e_cpp.cs",
+    "hugeint": "edgcpp/artifacts/review/duckdb-dotobj-hugeint/Translated.0000.hugeint_u002e_cpp.cs"
+  },
+  "remaining": [
+    "Typed source matching and catch-parameter initialization remain explicit gates.",
+    "Function-try blocks and flattened control transfers across protected regions remain explicit gates.",
+    "The shared production exception provider remains unbound; fixture bodies are not a production runtime.",
+    "Array-sequence, virtual-base/VTT and delegated payload rollback remain explicit gates.",
+    "Post-start copy failure, destructor failure during active unwinding and cross-thread exception transfer are not covered by this fixture.",
+    "Full DuckDB generation, compilation and execution remain incomplete."
+  ],
+  "workStatus": "Phase complete; stop at this boundary and await user direction.",
+  "retainIntermediates": true
+}

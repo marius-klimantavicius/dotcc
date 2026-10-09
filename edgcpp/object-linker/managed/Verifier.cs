@@ -2,8 +2,8 @@ namespace DotObj;
 
 internal static class Verifier
 {
-    private static readonly HashSet<string> StatementKinds = ["memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
-    private static readonly HashSet<string> ExpressionKinds = ["cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
+    private static readonly HashSet<string> StatementKinds = ["try", "catch", "memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
+    private static readonly HashSet<string> ExpressionKinds = ["handler-marker", "cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -12,6 +12,10 @@ internal static class Verifier
         var visited = new HashSet<long>();
         var cleanupVisibility = new Dictionary<long, HashSet<long>>();
         var cleanupThrowVisibility = new Dictionary<long, HashSet<long>>();
+        var cleanupHandlerVisibility = new Dictionary<long, HashSet<long>>();
+        var tryScopes = new Dictionary<long, long[]>();
+        var activeTries = new Stack<long>();
+        var activeHandlers = new Stack<long>();
         bool visitingCleanupTarget = false;
         var declarations = new HashSet<long>();
         var cleanupBindings = new HashSet<long>();
@@ -117,11 +121,11 @@ internal static class Verifier
             else
             {
                 string type = Type(node);
-                if (type == "void" && node.Kind is not ("call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional" or "cleanup-transition" or "cleanup-frame" or "lifetime-scope" or "throw" or "throw-marker" or "rethrow")) Fail("Only calls and explicit void operations can have void type");
+                if (type == "void" && node.Kind is not ("call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional" or "cleanup-transition" or "cleanup-frame" or "lifetime-scope" or "throw" or "throw-marker" or "rethrow" or "handler-marker")) Fail("Only calls and explicit void operations can have void type");
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
                 string[] orders = node.Kind is "cleanup-transition" or "cleanup-frame" or "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
                 if (node.Kind is "cleanup-transition" or "cleanup-frame" or "base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
-                if (node.Kind is "thrown-object-address" or "throw-marker" or "rethrow" or "cleanup-payload-address") orders = ["none"];
+                if (node.Kind is "thrown-object-address" or "throw-marker" or "rethrow" or "cleanup-payload-address" or "handler-marker") orders = ["none"];
                 if (node.Kind is "materialize" or "throw") orders = ["left-to-right"];
                 if (node.Kind is "assign" or "record-transfer" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
                 if (node.Kind is "address" or "dereference" or "array-decay" or "member" or "va-start" or "va-copy" or "va-end" or "va-arg") orders = ["none", "left-to-right", "unspecified"];
@@ -183,6 +187,37 @@ internal static class Verifier
             }
             switch (node.Kind)
             {
+                case "try":
+                    EdgeShape(node, ("body", 1, 1), ("handler", 1, 1));
+                    if (!obj.SourceTries.ContainsKey(node.Id) || Child(node, "body").Kind != "block" ||
+                        Child(node, "handler").Kind != "catch" || obj.SourceHandlers[Child(node, "handler").Id].TryNodeId != node.Id)
+                        Fail("Try requires its owned body and exact handler");
+                    tryScopes.Add(node.Id, scopes.ToArray());
+                    activeTries.Push(node.Id);
+                    Visit(Child(node, "body"), scopes, visible, controls, depth + 1);
+                    Visit(Child(node, "handler"), scopes, visible, controls, depth + 1);
+                    activeTries.Pop(); return;
+                case "catch":
+                    EdgeShape(node, ("body", 1, 1));
+                    if (!obj.SourceHandlers.TryGetValue(node.Id, out SourceHandler? handler) || activeTries.Count == 0 ||
+                        activeTries.Peek() != handler.TryNodeId || Child(node, "body").Kind != "block")
+                        Fail("Catch is outside its owning source try");
+                    activeHandlers.Push(node.Id);
+                    Visit(Child(node, "body"), scopes, visible, controls, depth + 1);
+                    activeHandlers.Pop(); return;
+                case "handler-marker":
+                    EdgeShape(node);
+                    if (Type(node) != "void" || !obj.HandlerMarkers.TryGetValue(node.Id, out HandlerMarker? marker))
+                        Fail("Handler marker lacks its owned metadata");
+                    if (marker!.Kind == "try-exit")
+                    {
+                        if (!activeTries.Contains(marker.OwnerNodeId) &&
+                            (!tryScopes.TryGetValue(marker.OwnerNodeId, out long[]? ownerScopes) || !ownerScopes.SequenceEqual(scopes)))
+                            Fail("Try exit is outside its owned source region");
+                    }
+                    else if (!activeHandlers.Contains(marker.OwnerNodeId) || marker.Kind == "caught" && activeHandlers.Peek() != marker.OwnerNodeId)
+                        Fail("Handler marker is outside its active source handler");
+                    break;
                 case "throw":
                     if (Type(node) != "void" || !obj.ThrowExpressions.TryGetValue(node.Id, out ThrowExpression? thrown))
                         Fail("Throw lacks its observed payload initialization");
@@ -235,6 +270,7 @@ internal static class Verifier
                         Fail("Cleanup transition differs from its exact throw initialization boundary");
                     cleanupVisibility.Add(node.Id, new HashSet<long>(visible));
                     cleanupThrowVisibility.Add(node.Id, activeThrows.ToHashSet());
+                    cleanupHandlerVisibility.Add(node.Id, activeHandlers.ToHashSet());
                     break;
                 case "cleanup-frame":
                     EdgeShape(node);
@@ -735,14 +771,19 @@ internal static class Verifier
             if (transition.IsUnreachable) continue;
             for (long? stateId = transition.StateId; stateId is long id; stateId = obj.CleanupStates[id].NextStateId)
             {
-                long actionId = obj.CleanupStates[id].ActionId;
+                if (obj.CleanupStates[id].HandlerNodeId is long handlerId)
+                {
+                    if (!cleanupHandlerVisibility[nodeId].Contains(handlerId)) Fail("Release state is armed outside its owning handler");
+                    continue;
+                }
+                long actionId = obj.CleanupStates[id].ActionId!.Value;
                 if (!actionBindings[actionId].IsSubsetOf(visible))
                     Fail("Cleanup state arms a target outside its live declaration scope");
                 if (obj.CleanupPayloadOwners.TryGetValue(actionId, out long throwId) && !cleanupThrowVisibility[nodeId].Contains(throwId))
                     Fail("Cleanup state arms payload rollback outside its owning throw initializer");
             }
         }
-        if (actionBindings.Count != 0)
+        if (obj.FunctionCleanupStates.ContainsKey(function.Id))
         {
             Node[] prologues = body.Nodes.Values.Where(node => node.Kind == "cleanup-frame" && obj.CleanupFrameMarkers[node.Id].Kind == "prologue").ToArray();
             if (prologues.Length != 1 || !body.Children(body.RootId, "statement").Any(edge =>
@@ -806,6 +847,8 @@ internal static class Verifier
                 body.RequiresFlatControl = true;
         }
         if (body.RequiresFlatControl && cleanupBindings.Count != 0) Fail("Entries into source regions with lexical cleanup require explicit lifetime exits");
+        if (body.RequiresFlatControl && body.Nodes.Values.Any(node => node.Kind == "try"))
+            Fail("Flat control flow across source exception regions requires explicit protected-region transfers");
         if (visited.Count != body.Nodes.Count) Fail("Orphan executable nodes");
         if (declarations.Count != body.Bindings.Values.Count(binding => binding.Kind == "local")) Fail("Local has no declaration");
     }

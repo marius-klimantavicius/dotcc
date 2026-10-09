@@ -1375,3 +1375,32 @@ retains that structure; emission recognizes the proven terminal throw and emits
 its preceding effects followed by the actual throw, omitting the unreachable
 placeholder. It does not introduce a default return or evaluate a null record
 dereference. Normal branches still assign the conditional result.
+
+## Exception lifetime extensions (profiles v31–v33)
+
+These profiles supersede the v30 initializer and source-handler exclusions above.
+The [current format](../docs/dotobj-format.md) specifies throw-initializer cleanup
+boundaries (v31), scalar payload-subobject rollback (v32), and structured catch-all
+regions (v33). The shared production exception provider remains unbound.
+
+Profile v33 adds `try` nodes with exactly one `body` block and one `handler`
+catch node; the catch has exactly one `body` block. `source_tries` binds each try
+to its original source lifetime. `source_handlers` binds its sole ellipsis catch
+to the try. `handler_markers` binds void caught/handler-exit/try-exit expressions
+to their exact owner. Cleanup states choose either an object destructor action
+or a handler release, with exactly one release state per handler. The verifier
+checks function identity, lexical handler ownership and cleanup-state activation.
+
+Generation retains structured try/catch and named locals. Try-exit markers disable
+catching after a source try has ended, even if EDG places an outer destruction
+inside the retained statement on a return path. Exceptional handler exits unwind
+local objects before releasing the caught payload. Provider-owned catch frames
+preserve active-handler stacks, nested ownership and rethrow across function
+calls. `Edg.Runtime.CppHandlers.generated.cs` declares this additional contract
+only for modules using source handlers. Release-only modules still require the
+shared unwind hooks even when they have no object-destructor actions.
+
+Typed matching and catch-parameter initialization, function-try blocks, and
+flattened control transfers across protected regions remain rejected. Fixture
+JIT/NativeAOT execution validates the generated contract; it does not implement
+the shared production exception runtime.

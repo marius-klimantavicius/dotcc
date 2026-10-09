@@ -6,7 +6,7 @@ internal sealed record SourceDestructionObligation(long Id, long FunctionEntityI
     long Ordinal, long DestructorEntityId, long SourceTypeId, long? SourceFileId, long Line, long Column, string CaptureProof);
 internal sealed record CleanupAction(long Id, long FunctionEntityId, long SourceObligationId,
     long CallbackEntityId, long TargetNodeId, string CaptureProof);
-internal sealed record CleanupState(long Id, long FunctionEntityId, long ActionId, long? NextStateId);
+internal sealed record CleanupState(long Id, long FunctionEntityId, long? ActionId, long? NextStateId, long? HandlerNodeId);
 internal sealed record CleanupTransition(long NodeId, long? StateId, string CaptureProof, bool IsUnreachable);
 internal sealed record CleanupFrameMarker(long NodeId, string Kind, string CaptureProof);
 
@@ -144,18 +144,20 @@ internal sealed partial class ObjectFile
                     !NormalDestructions.TryAdd(query.Integer(0), obligation.Id))
                     throw new InvalidDataException("Normal destruction lacks its exact owned call, source obligation or destructor origin");
             }
-        using (var query = database.Prepare("SELECT id,function_entity_id,action_id,next_state_id FROM cleanup_states ORDER BY id"))
+        using (var query = database.Prepare("SELECT s.id,s.function_entity_id,s.action_id,s.next_state_id,s.handler_node_id,n.function_id,n.kind FROM cleanup_states s LEFT JOIN nodes n ON n.id=s.handler_node_id ORDER BY s.id"))
             while (query.Read())
             {
-                var state = new CleanupState(query.Integer(0), query.Integer(1), query.Integer(2), query.OptionalInteger(3));
-                if (state.Id <= 0 || !CleanupActions.TryGetValue(state.ActionId, out CleanupAction? action) ||
-                    action.FunctionEntityId != state.FunctionEntityId || !CleanupStates.TryAdd(state.Id, state))
+                var state = new CleanupState(query.Integer(0), query.Integer(1), query.OptionalInteger(2), query.OptionalInteger(3), query.OptionalInteger(4));
+                if (state.Id <= 0 || (state.ActionId is null) == (state.HandlerNodeId is null) ||
+                    (state.ActionId is long actionId ? !CleanupActions.TryGetValue(actionId, out CleanupAction? action) || action.FunctionEntityId != state.FunctionEntityId
+                        : query.OptionalInteger(5) != state.FunctionEntityId || query.OptionalText(6) != "catch") ||
+                    !CleanupStates.TryAdd(state.Id, state))
                     throw new InvalidDataException("Cleanup state must reference its own function's action");
                 if (!FunctionCleanupStates.TryGetValue(state.FunctionEntityId, out var states))
                     FunctionCleanupStates.Add(state.FunctionEntityId, states = []);
                 states.Add(state);
             }
-        if (CleanupActions.Keys.Except(CleanupStates.Values.Select(state => state.ActionId)).Any())
+        if (CleanupActions.Keys.Except(CleanupStates.Values.Where(state => state.ActionId is not null).Select(state => state.ActionId!.Value)).Any())
             throw new InvalidDataException("Cleanup action is missing its observed region state");
         foreach (CleanupState state in CleanupStates.Values)
         {

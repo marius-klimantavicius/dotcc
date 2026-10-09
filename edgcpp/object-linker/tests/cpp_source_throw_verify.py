@@ -84,7 +84,7 @@ def main():
         report = json.loads((generated / 'link-report.json').read_text())
         runtime = report['sourceExceptionRuntime']
         check('explicit-unbound-provider', runtime['required'] and runtime['status'] == 'generation-only-unbound-provider')
-        check('source-handlers-not-claimed', runtime['sourceHandlersSupported'] is False)
+        check('only-ellipsis-handlers-supported', runtime['sourceHandlersSupported'] is True and runtime['sourceHandlerKinds'] == ['ellipsis'])
         contract = (generated / 'Edg.Runtime.CppExceptions.generated.cs').read_text()
         check('required-partial-provider', 'partial' in contract and all(name in contract for name in
             ('Allocate', 'EnsureStarted', 'MarkComplete', 'ReleaseIncomplete', 'Rethrow')))

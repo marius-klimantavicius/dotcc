@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v32'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v33'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -232,8 +232,10 @@ CREATE TABLE cleanup_conditions (
 CREATE TABLE cleanup_states (
  id INTEGER PRIMARY KEY CHECK(id>0),
  function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
- action_id INTEGER NOT NULL UNIQUE REFERENCES cleanup_actions(id),
- next_state_id INTEGER REFERENCES cleanup_states(id)
+ action_id INTEGER UNIQUE REFERENCES cleanup_actions(id),
+ next_state_id INTEGER REFERENCES cleanup_states(id),
+ handler_node_id INTEGER UNIQUE REFERENCES source_handlers(node_id),
+ CHECK((action_id IS NULL) != (handler_node_id IS NULL))
 ) STRICT;
 CREATE TABLE cleanup_transitions (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
@@ -641,6 +643,24 @@ CREATE TABLE throw_markers (
 CREATE TABLE rethrow_expressions (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-rethrow')
+) STRICT;
+CREATE TABLE source_tries (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ source_lifetime_id INTEGER NOT NULL REFERENCES source_lifetimes(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-ordinary-try')
+) STRICT;
+CREATE TABLE source_handlers (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ try_node_id INTEGER NOT NULL UNIQUE REFERENCES source_tries(node_id),
+ ordinal INTEGER NOT NULL CHECK(ordinal=0),
+ match_kind TEXT NOT NULL CHECK(match_kind='ellipsis'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-source-handler')
+) STRICT;
+CREATE TABLE handler_markers (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ owner_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ kind TEXT NOT NULL CHECK(kind IN ('caught','handler-exit','try-exit')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-handler-marker')
 ) STRICT;
 
 COMMIT;

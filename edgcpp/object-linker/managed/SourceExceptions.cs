@@ -68,6 +68,7 @@ internal sealed partial class ObjectFile
 
     private void ReadExceptionMetadata()
     {
+        ReadSourceHandlers();
         using (var query = database.Prepare("SELECT id,source_type_id,leaf_source_type_id,payload_type_id,payload_size,payload_alignment,source_destructor_entity_id,capture_proof FROM exception_types ORDER BY id"))
             while (query.Read())
             {
