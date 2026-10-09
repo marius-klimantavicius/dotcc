@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v21: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v22: ")+what).c_str(),kind);
 }
 void check_lifetime(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return;
@@ -47,6 +47,7 @@ struct Writer {
   std::vector<string> macro_definitions,macro_parameters,macro_events;
   // Action order is independent of executable reachability/entity numbering.
   std::vector<string> initialization_actions;
+  std::vector<string> memory_barriers,memory_barrier_operands,memory_barrier_dimensions;
   std::map<unsigned,unsigned> source_type_ids;
   std::map<unsigned,unsigned> pointer_types;
   std::map<std::pair<unsigned,unsigned long long>,unsigned> array_types;
@@ -1892,6 +1893,101 @@ struct Writer {
       edge(block,"statement",ordinal++,register_cleanup(v,block,child->position));
     }
   }
+  unsigned memory_barrier(a_statement_ptr statement) {
+    auto entry=statement->variant.asm_entry;
+    auto &captured=dot_object_source::state();
+    auto found=captured.asm_statements.find(entry);
+    if(found==captured.asm_statements.end() || !found->second.lowering_observed)
+      reject("empty asm lacks observed source/lowering boundary");
+    const auto &source=found->second;
+    if(!source.error.empty())reject(source.error.c_str());
+    unsigned id=node("memory-barrier",0,statement->position);
+    memory_barriers.push_back("{\"nodeId\":"+number(id)+
+      ",\"isVolatile\":"+(source.is_volatile?"true":"false")+
+      ",\"hasVolatileKeyword\":"+(source.has_volatile_keyword?"true":"false")+
+      ",\"hasInlineKeyword\":"+(source.has_inline_keyword?"true":"false")+
+      ",\"clobbersMemory\":"+(source.clobbers_memory?"true":"false")+
+      ",\"captureProof\":\"observed-empty-gnu-asm\"}");
+#if GNU_EXTENSIONS_ALLOWED
+    unsigned ordinal=0;
+    for(auto operand=entry->operands;operand;operand=operand->next,++ordinal) {
+      if(ordinal>=source.order.size() || source.order[ordinal]!=operand || !source.operands.count(operand))
+        reject("empty asm operand identity/order changed during lowering");
+      const auto &original=source.operands.at(operand);
+      diagnostic_scope diagnostic(original.position);
+      if(!original.error.empty())reject(original.error.c_str());
+      auto expr=operand->expression;
+      if(!expr || !original.element_type || !original.source_element_type || !original.element_size)
+        reject("empty asm operand lacks captured element representation");
+      unsigned element=type_id(original.element_type),pointer=pointer_type(element),address=0;
+      if(original.array_address) {
+        if(skip_typerefs(expr->type)->kind!=tk_pointer)reject("empty asm array address did not lower to pointer");
+        address=expression(expr);
+        if(type_id(expr->type)!=pointer) {
+          unsigned cast=node("convert",pointer,expr->position,0,0,"","","value","left-to-right");
+          edge(cast,"operand",0,address);address=cast;
+        }
+      } else {
+        if(!place(expr))reject("empty asm operand lost its memory place");
+        auto actual=skip_typerefs(expr->type);
+        if(original.shape=="fixed-array" ? (actual->kind!=tk_array || type_id(array_leaf(actual))!=element) :
+           type_id(actual)!=element)reject("empty asm operand lost its original element representation");
+        unsigned actual_pointer=pointer_type(type_id(expr->type));
+        address=node("address",actual_pointer,expr->position,0,0,"","","value","left-to-right");
+        edge(address,"operand",0,expression(expr));
+        if(actual_pointer!=pointer) {
+          unsigned cast=node("convert",pointer,expr->position,0,0,"","","value","left-to-right");
+          edge(cast,"operand",0,address);address=cast;
+        }
+      }
+      // The address can contain the stock assignment of a VLA bound. Keep
+      // its evaluation before reading the saved total. Both expressions are
+      // owned children of this statement; neither performs a memory access.
+      edge(id,"address",ordinal,address);
+      bool variable=original.shape=="vla-array";
+      unsigned extent=0,saved_binding=0;
+      if(variable) {
+        if(original.dimensions.size()!=1 || !original.dimensions[0].saved_total)
+          reject("empty asm VLA operand lacks a rank-one saved total");
+        auto total=original.dimensions[0].saved_total;
+        auto binding=binding_ids.find(total);
+        if(binding==binding_ids.end() || type_id(total->type)!=8 || !(total->compiler_generated || total->lowering_generated))
+          reject("empty asm VLA total lacks its observed synthetic i64 binding");
+        saved_binding=binding->second;
+        unsigned read=node("binding",8,original.position,0,saved_binding,"","","place","none");
+        unsigned count=node("convert",9,original.position,0,0,"","","value","left-to-right");
+        edge(count,"operand",0,read);
+        unsigned size=node("constant",9,original.position,0,0,"",std::to_string(original.element_size),"value","none");
+        extent=node("binary",9,original.position,0,0,"mul","","value","left-to-right");
+        edge(extent,"left",0,count);edge(extent,"right",0,size);
+      } else {
+        if(original.fixed_count>(~0ULL)/original.element_size)reject("empty asm fixed byte extent overflow");
+        extent=node("constant",9,original.position,0,0,"",std::to_string(original.fixed_count*original.element_size),"value","none");
+      }
+      edge(id,"extent",ordinal,extent);
+      memory_barrier_operands.push_back("{\"nodeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal)+
+        ",\"direction\":"+quote(original.direction)+",\"constraintText\":"+quote(original.constraint)+
+        ",\"sourceName\":"+quote(original.name)+",\"sourceElementTypeId\":"+number(source_type(original.source_element_type))+
+        ",\"elementSize\":"+std::to_string(original.element_size)+",\"sourceShape\":"+quote(original.shape)+
+        ",\"extentKind\":"+quote(variable?"vla-total":"fixed")+
+        ",\"fixedElementCount\":"+(variable?"null":std::to_string(original.fixed_count))+
+        ",\"extentBindingId\":"+number(saved_binding)+
+        ",\"captureProof\":"+quote(variable?"observed-asm-vla-total":"observed-asm-place")+position(original.position)+"}");
+      unsigned dimension_ordinal=0;
+      for(const auto &dimension:original.dimensions) {
+        bool dynamic=dimension.original!=nullptr;
+        memory_barrier_dimensions.push_back("{\"nodeId\":"+number(id)+",\"operandOrdinal\":"+std::to_string(ordinal)+
+          ",\"ordinal\":"+std::to_string(dimension_ordinal++)+",\"kind\":"+quote(dynamic?"vla-total":"fixed")+
+          ",\"fixedCount\":"+(dynamic?"null":std::to_string(dimension.fixed_count))+
+          ",\"extentBindingId\":"+number(dynamic?saved_binding:0)+position(dimension.position)+"}");
+      }
+    }
+    if(ordinal!=source.order.size())reject("empty asm lost an original operand during lowering");
+#else
+    reject("GNU memory asm support is not configured");
+#endif
+    return id;
+  }
   unsigned statement(a_statement_ptr s,a_scope_ptr root_scope=nullptr) {
     if(!s)reject("missing statement");
     diagnostic_scope diagnostic(s->position);
@@ -2012,6 +2108,7 @@ struct Writer {
         string name=source_spelling(&label->source_corresp);if(name.empty())name="__label"+number(id);
         return node("label",0,s->position,0,0,"",name,"","",0,0,id);
       }
+      case stmk_asm:return memory_barrier(s);
       case stmk_empty:return node("block",0,s->position);
       case stmk_init: {
         auto d=s->variant.dynamic_init;
@@ -2109,7 +2206,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v21\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v22\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -2123,6 +2220,8 @@ struct Writer {
       ",\"sourceRoutineTypes\":"+array(source_routine_types)+",\"sourceRoutineParameters\":"+array(source_routine_parameters)+
       ",\"sourceRoutineAbis\":"+array(source_routine_abis)+",\"sourceRoutineAbiParameters\":"+array(source_routine_abi_parameters)+
       ",\"initializationActions\":"+array(initialization_actions)+
+      ",\"memoryBarriers\":"+array(memory_barriers)+",\"memoryBarrierOperands\":"+array(memory_barrier_operands)+
+      ",\"memoryBarrierDimensions\":"+array(memory_barrier_dimensions)+
       ",\"types\":"+array(types)+",\"entities\":"+array(entities)+
       ",\"parameters\":"+array(parameters)+",\"functions\":"+array(functions)+",\"bindings\":"+array(bindings)+",\"nodes\":"+array(nodes)+",\"edges\":"+array(edges)+"}\n";
     if(fwrite(result.data(),1,result.size(),stdout)!=result.size() || fflush(stdout))reject("wire output failure");

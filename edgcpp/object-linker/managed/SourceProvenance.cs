@@ -356,7 +356,7 @@ internal sealed partial class ObjectFile
                     switch (query.ColumnType(index))
                     {
                         case 1:
-                            if (column is "hasDefaultArgument" or "isAliasEntry" or "isVirtual" or "isConst" or "isVolatile" or "isSynthetic" or "isComplete" or "isTriviallyCopyable" or "isMutable" or "hasNoUniqueAddress" or "hasInitializer" or "objectIsConst" or "objectIsVolatile") writer.WriteBoolean(column, query.Integer(index) == 1);
+                            if (column is "hasVolatileKeyword" or "hasInlineKeyword" or "clobbersMemory" or "hasDefaultArgument" or "isAliasEntry" or "isVirtual" or "isConst" or "isVolatile" or "isSynthetic" or "isComplete" or "isTriviallyCopyable" or "isMutable" or "hasNoUniqueAddress" or "hasInitializer" or "objectIsConst" or "objectIsVolatile") writer.WriteBoolean(column, query.Integer(index) == 1);
                             else writer.WriteNumber(column, query.Integer(index));
                             break;
                         case 3: writer.WriteString(column, query.Text(index)); break;
@@ -368,6 +368,12 @@ internal sealed partial class ObjectFile
             }
             writer.WriteEndArray();
         }
+        Table("memoryBarriers", "SELECT node_id,is_volatile,has_volatile_keyword,has_inline_keyword,clobbers_memory,capture_proof FROM memory_barriers ORDER BY node_id",
+            "nodeId", "isVolatile", "hasVolatileKeyword", "hasInlineKeyword", "clobbersMemory", "captureProof");
+        Table("memoryBarrierOperands", "SELECT node_id,ordinal,direction,constraint_text,source_name,source_element_type_id,element_size,source_shape,extent_kind,fixed_element_count,extent_binding_id,capture_proof,source_file_id,line,column FROM memory_barrier_operands ORDER BY node_id,ordinal",
+            "nodeId", "ordinal", "direction", "constraintText", "sourceName", "sourceElementTypeId", "elementSize", "sourceShape", "extentKind", "fixedElementCount", "extentBindingId", "captureProof", "sourceFileId", "line", "column");
+        Table("memoryBarrierDimensions", "SELECT node_id,operand_ordinal,ordinal,kind,fixed_count,extent_binding_id,source_file_id,line,column FROM memory_barrier_dimensions ORDER BY node_id,operand_ordinal,ordinal",
+            "nodeId", "operandOrdinal", "ordinal", "kind", "fixedCount", "extentBindingId", "sourceFileId", "line", "column");
         Table("initializationActions", "SELECT id,entity_id,phase,priority,ordinal,source_file_id,line,column FROM initialization_actions ORDER BY ordinal",
             "id", "entityId", "phase", "priority", "ordinal", "sourceFileId", "line", "column");
         Table("sourceFiles", "SELECT id,path,parent_id FROM source_files ORDER BY id", "id", "path", "parentId");

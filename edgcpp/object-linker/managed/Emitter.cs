@@ -56,7 +56,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v21");
+        lifetimeWriter.WriteString("profile", "scalar-control-v22");
         lifetimeWriter.WriteString("capture", "lexical-cleanup-activations");
         lifetimeWriter.WriteBoolean("lexicalCleanups", true);
         lifetimeWriter.WriteBoolean("lifetimes", false);
@@ -159,7 +159,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v21");
+            writer.WriteString("profile", "scalar-control-v22");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -172,7 +172,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v21");
+            writer.WriteString("profile", "scalar-control-v22");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -183,7 +183,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v21", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v22", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; variable-length arrays, source EH and C++ RAII are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance and explicit lexical cleanup activations only; no complete source expression/statement view, macro expansion history or general C++ lifetime capture" },
@@ -870,6 +870,17 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             Node Child(string role) => body.Child(node.Id, role);
             switch (node.Kind)
             {
+                case "memory-barrier":
+                    Line(indent, "// Empty GNU memory assembly: evaluate operands, then preserve memory ordering.");
+                    Node[] addresses = body.Children(node.Id, "address").Select(edge => body.Nodes[edge.ChildId]).ToArray();
+                    Node[] extents = body.Children(node.Id, "extent").Select(edge => body.Nodes[edge.ChildId]).ToArray();
+                    for (int index = 0; index < addresses.Length; index++)
+                    {
+                        Line(indent, "_ = (nuint)(" + ExpandedValue(addresses[index], indent) + ");");
+                        Line(indent, "_ = " + ExpandedValue(extents[index], indent) + ";");
+                    }
+                    Line(indent, "global::System.Threading.Thread.MemoryBarrier();");
+                    break;
                 case "array-init": ArrayInitialize(node, indent); break;
                 case "block":
                     Line(indent, "{");

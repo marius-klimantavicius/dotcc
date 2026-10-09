@@ -352,6 +352,24 @@ eh_lower = root / "upstream/src/lower_eh.c"
 object_source_overlay(eh_lower,
     '#include "lower_hdrs.h"',
     '#include "lower_hdrs.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
+# Observe the exact memory-operand shape before stock VLA/lvalue lowering,
+# then read its saved total after lowering. These hooks do not mutate EDG IL.
+object_source_overlay(lower,
+    '  an_asm_operand_ptr aop;\n  for (aop = aep->operands; aop != NULL; aop = aop->next) {',
+    '  an_asm_operand_ptr aop;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_asm_before_lowering(aep);\n'
+    '#endif\n'
+    '  for (aop = aep->operands; aop != NULL; aop = aop->next) {')
+object_source_overlay(lower,
+    '    lower_full_expr(expr, (a_statement_ptr)NULL);\n'
+    '  }  /* for */\n#endif /* GNU_EXTENSIONS_ALLOWED */\n}  /* lower_asm_statement */',
+    '    lower_full_expr(expr, (a_statement_ptr)NULL);\n'
+    '  }  /* for */\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_asm_after_lowering(aep);\n'
+    '#endif\n'
+    '#endif /* GNU_EXTENSIONS_ALLOWED */\n}  /* lower_asm_statement */')
 object_source_overlay(lower,
     '  a_type_ptr ptr_return_type, new_type, member_type;\n',
     '  a_type_ptr ptr_return_type, new_type, member_type;\n'

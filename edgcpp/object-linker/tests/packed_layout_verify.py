@@ -46,6 +46,10 @@ def verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
     check('packed-layout-named-callback-access', re.search(r'->@?callback\b', text) is not None)
     check('packed-layout-structured-initializer',
           re.search(r'\btable\[0\]\s*=\s*new\(\)\s*\{\s*tag\s*=', text) is not None)
+    for name in ['raw_offset_alignment_probe', 'conditional_alignment_probe']:
+        body = re.search(r'\b' + name + r'\([^)]*\)\s*\{(.*?)^    \}', text, re.S | re.M)
+        check('packed-layout-' + name + '-retains-unaligned-origin',
+              body is not None and 'Unsafe.ReadUnaligned<uint>' in body.group(1))
     emitted = {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
                for path in generated.glob('*.cs')}
     directory.rename(out / 'retained-packed-layout-source')

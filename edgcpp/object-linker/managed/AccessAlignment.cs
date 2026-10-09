@@ -14,7 +14,9 @@ internal sealed partial class ObjectFile
 
 internal sealed class AccessAlignment(ObjectFile obj, FunctionBody body)
 {
-    private readonly Dictionary<long, long> places = [], pointers = [];
+    private readonly Dictionary<long, long> places = [];
+    private readonly record struct Origin(long? KnownAlignment, bool HasUnknown);
+    private readonly Dictionary<long, Origin> pointerOrigins = [];
     public static long AtOffset(long alignment, long offset)
     {
         while (alignment > 1 && offset % alignment != 0) alignment /= 2;
@@ -37,26 +39,55 @@ internal sealed class AccessAlignment(ObjectFile obj, FunctionBody body)
         };
         places.Add(node.Id, value); return value;
     }
+    private long NaturalPointerAlignment(Node node)
+    {
+        string type = Type(node), pointee = ScalarTypes.IsPointer(type) ? ScalarTypes.Pointee(type) : "void";
+        return pointee == "void" || RoutineTypes.IsRoutine(pointee) ? 1 : Math.Max(1, obj.StorageAlignment(pointee));
+    }
     public long Pointer(Node node)
     {
-        if (pointers.TryGetValue(node.Id, out long value)) return value;
-        string type = Type(node), pointee = ScalarTypes.IsPointer(type) ? ScalarTypes.Pointee(type) : "void";
-        long natural = pointee == "void" || RoutineTypes.IsRoutine(pointee) ? 1 : Math.Max(1, obj.StorageAlignment(pointee));
+        Origin origin = PointerOrigin(node);
+        long natural = NaturalPointerAlignment(node);
+        long known = origin.KnownAlignment ?? natural;
+        return origin.HasUnknown ? Math.Min(known, natural) : known;
+    }
+
+    // Opaque void*/char* values do not establish that a typed cast is
+    // underaligned. Preserve observed storage origins and stronger source
+    // typed-pointer contracts when casts erase that information. A conditional
+    // can contain both known origins and unknown paths; keep those separate so
+    // a later typed cast applies its contract only to the unknown paths.
+    private Origin PointerOrigin(Node node)
+    {
+        if (pointerOrigins.TryGetValue(node.Id, out Origin value)) return value;
         value = node.Kind switch
         {
-            "address" or "array-decay" => Place(body.Child(node.Id, "operand")),
-            "storage-address" => AtOffset(Math.Max(1, obj.Storages[node.StorageId!.Value].Alignment), long.Parse(node.ConstantText!, System.Globalization.CultureInfo.InvariantCulture)),
-            "convert" when ScalarTypes.IsPointer(Type(body.Child(node.Id, "operand"))) => Math.Min(natural, Pointer(body.Child(node.Id, "operand"))),
+            "address" or "array-decay" => new(Place(body.Child(node.Id, "operand")), false),
+            "storage-address" => new(AtOffset(Math.Max(1, obj.Storages[node.StorageId!.Value].Alignment), long.Parse(node.ConstantText!, System.Globalization.CultureInfo.InvariantCulture)), false),
+            "convert" when ScalarTypes.IsPointer(Type(body.Child(node.Id, "operand"))) => SourcePointerOrigin(body.Child(node.Id, "operand")),
             "binary" when node.Operator is "pointer-add" or "pointer-subtract" => OffsetPointer(node),
-            "conditional" => Math.Min(Pointer(body.Child(node.Id, "then")), Pointer(body.Child(node.Id, "else"))),
-            _ => natural,
+            "conditional" => MergeOrigins(PointerOrigin(body.Child(node.Id, "then")), PointerOrigin(body.Child(node.Id, "else"))),
+            _ => new(null, true),
         };
-        pointers.Add(node.Id, value); return value;
+        pointerOrigins.Add(node.Id, value); return value;
     }
-    private long OffsetPointer(Node node)
+    private Origin SourcePointerOrigin(Node node)
+    {
+        Origin origin = PointerOrigin(node);
+        string pointee = ScalarTypes.Pointee(Type(node));
+        if (!origin.HasUnknown || pointee is "void" or "i8" or "u8" || RoutineTypes.IsRoutine(pointee)) return origin;
+        long natural = NaturalPointerAlignment(node);
+        return new(origin.KnownAlignment is long known ? Math.Min(known, natural) : natural, false);
+    }
+    private static Origin MergeOrigins(Origin left, Origin right) => new(
+        left.KnownAlignment is long a && right.KnownAlignment is long b ? Math.Min(a, b) : left.KnownAlignment ?? right.KnownAlignment,
+        left.HasUnknown || right.HasUnknown);
+    private Origin OffsetPointer(Node node)
     {
         Node left = body.Child(node.Id, "left"), right = body.Child(node.Id, "right");
         Node pointer = ScalarTypes.IsPointer(Type(left)) ? left : right;
-        return AtOffset(Pointer(pointer), obj.StorageSize(ScalarTypes.Pointee(Type(pointer))));
+        Origin origin = SourcePointerOrigin(pointer);
+        return new(origin.KnownAlignment is long alignment
+            ? AtOffset(alignment, obj.StorageSize(ScalarTypes.Pointee(Type(pointer)))) : null, origin.HasUnknown);
     }
 }

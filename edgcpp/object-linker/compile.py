@@ -40,6 +40,9 @@ ARRAYS = {
     'sourceFields': ('source_record_fields', ['id', 'sourceRecordId', 'ordinal', 'sourceTypeId', 'sourceName', 'isMutable', 'hasNoUniqueAddress', 'bitWidth', 'sourceFileId', 'line', 'column', 'hasInitializer', 'isPacked', 'explicitAlignment']),
     'sourceBases': ('source_record_bases', ['id', 'sourceRecordId', 'ordinal', 'baseSourceTypeId', 'accessKind', 'isVirtual', 'sourceFileId', 'line', 'column']),
     'recordBaseSubobjects': ('record_base_subobjects', ['recordTypeId', 'sourceBaseId', 'completeBaseTypeId', 'physicalViewTypeId', 'byteOffset', 'extent', 'fieldId']),
+    'memoryBarriers': ('memory_barriers', ['nodeId', 'isVolatile', 'hasVolatileKeyword', 'hasInlineKeyword', 'clobbersMemory', 'captureProof']),
+    'memoryBarrierOperands': ('memory_barrier_operands', ['nodeId', 'ordinal', 'direction', 'constraintText', 'sourceName', 'sourceElementTypeId', 'elementSize', 'sourceShape', 'extentKind', 'fixedElementCount', 'extentBindingId', 'captureProof', 'sourceFileId', 'line', 'column']),
+    'memoryBarrierDimensions': ('memory_barrier_dimensions', ['nodeId', 'operandOrdinal', 'ordinal', 'kind', 'fixedCount', 'extentBindingId', 'sourceFileId', 'line', 'column']),
     'edges': ('edges', ['parentId', 'role', 'ordinal', 'childId']),
     'macroDefinitions': ('macro_definitions', ['id', 'name', 'form', 'variadic', 'dynamic',
                         'definitionText', 'origin', 'sourceFileId', 'line', 'column']),
@@ -114,7 +117,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v21':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v22':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -134,7 +137,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v21', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v22', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

@@ -58,6 +58,31 @@ struct Function {
   std::vector<a_variable_ptr> parameter_variables;
   std::vector<bool> parameter_defaults;
 };
+// Source-only memory operand shape. This does not declare general VLA
+// execution/source types. The original leaf and dimension facts are captured
+// before stock lowering replaces variable array types with their leaf type.
+struct AsmDimension {
+  unsigned long long fixed_count=0;
+  a_vla_dimension_ptr original=nullptr;
+  a_variable_ptr saved_total=nullptr;
+  a_source_position position={};
+};
+struct AsmOperand {
+  std::string direction,constraint,name,shape="object",error;
+  unsigned source_element_type=0;
+  a_type_ptr element_type=nullptr;
+  unsigned long long element_size=0,fixed_count=1;
+  bool array_address=false;
+  a_source_position position={};
+  std::vector<AsmDimension> dimensions;
+};
+struct AsmStatement {
+  std::string error;
+  bool is_volatile=false,has_volatile_keyword=false,has_inline_keyword=false;
+  bool clobbers_memory=false,lowering_observed=false;
+  std::vector<an_asm_operand_ptr> order;
+  std::map<an_asm_operand_ptr,AsmOperand> operands;
+};
 struct RecordField {
   a_field_ptr il=nullptr;
   unsigned source_type=0;
@@ -129,6 +154,7 @@ struct State {
   std::map<a_routine_ptr,a_variable_ptr> result_parameters;
   std::set<a_routine_ptr> runtime_declarations;
   std::map<a_routine_ptr,DefaultAdapter> default_adapters;
+  std::map<an_asm_entry_ptr,AsmStatement> asm_statements;
   std::map<a_variable_ptr,Declaration> variables;
   std::map<a_type_ptr,Record> records;
   std::map<a_type_ptr,unsigned long long> requested_record_alignments;
@@ -430,6 +456,116 @@ inline a_routine_ptr abi_primary(a_routine_ptr r) {
 #else
   (void)r;return nullptr;
 #endif
+}
+inline void observe_asm_before_lowering(an_asm_entry_ptr entry) {
+  if(!enabled() || state().asm_statements.count(entry))return;
+  auto &record=state().asm_statements[entry];
+#if GNU_EXTENSIONS_ALLOWED
+  record.is_volatile=entry->is_volatile;
+  record.has_volatile_keyword=entry->has_volatile_keyword;
+  record.has_inline_keyword=entry->has_inline_keyword;
+  auto text=entry->asm_string;
+  if(!entry->gnu_asm_form || entry->is_asm_goto || entry->labels ||
+     !text || text->kind!=ck_string || text->variant.string.length!=1 ||
+     !text->variant.string.value || text->variant.string.value[0]!=0 ||
+     skip_typerefs(text->type)->kind!=tk_array ||
+     skip_typerefs(skip_typerefs(text->type)->variant.array.element_type)->size!=1) {
+    record.error="asm outside exact empty GNU memory barrier";return;
+  }
+  for(auto clobber=entry->clobbers;clobber;clobber=clobber->next) {
+    if(clobber->reg!=anr_memory || record.clobbers_memory) {
+      record.error="empty asm clobber outside single memory clobber";return;
+    }
+    record.clobbers_memory=true;
+  }
+  bool seen_input=false;
+  for(auto operand=entry->operands;operand;operand=operand->next) {
+    AsmOperand value;value.position=operand->position;
+    value.name=operand->name?operand->name:"";
+#if RECORD_RAW_ASM_OPERAND_DESCRIPTIONS
+    value.constraint=operand->constraints_string?operand->constraints_string:"";
+    if(value.constraint=="m" && !operand->is_output_operand)value.direction="input";
+    else if(value.constraint=="=m" && operand->is_output_operand)value.direction="output";
+    else if(value.constraint=="+m" && operand->is_output_operand)value.direction="inout";
+    else value.error="empty asm operand outside exact memory constraint";
+#else
+    if(entry->number_of_constraints!=1 || !operand->constraints ||
+       operand->constraints->kind!=aoc_mem_any || operand->constraints->next)
+      value.error="empty asm operand outside exact memory constraint";
+    if(operand->modifiers==aom_input){value.direction="input";value.constraint="m";}
+    else if(operand->modifiers==aom_output){value.direction="output";value.constraint="=m";}
+    else if(operand->modifiers==aom_modify){value.direction="inout";value.constraint="+m";}
+    else value.error="empty asm operand direction";
+#endif
+    if(value.direction=="input")seen_input=true;
+    else if(seen_input)value.error="empty asm output follows input";
+    auto expression=operand->expression;
+    if(!expression){record.error="empty asm missing operand expression";return;}
+    auto original_type=expression->orig_lvalue_type?expression->orig_lvalue_type:expression->type;
+    if(expression->kind==enk_operation && expression->variant.operation.kind==eok_array_to_pointer) {
+      auto original=expression->variant.operation.operands;
+      if(!original || original->next || !original->is_lvalue || skip_typerefs(original->type)->kind!=tk_array) {
+        record.error="empty asm array operand lacks original place";return;
+      }
+      value.array_address=true;original_type=original->type;value.shape="fixed-array";
+    } else if(!expression->is_lvalue && !expression->orig_lvalue_type) {
+      value.error="empty asm scalar memory operand lacks original lvalue";
+    }
+    auto element_source=original_type;
+    auto element=skip_typerefs(element_source);
+    if(element->kind==tk_array)value.shape="fixed-array";
+    while(element->kind==tk_array) {
+      AsmDimension dimension;dimension.position=element->source_corresp.decl_position;
+      if(element->variant.array.is_vla) {
+        dimension.original=find_vla_dimension_in_current_function(element);
+        if(!dimension.original){value.error="empty asm VLA lacks original dimension";break;}
+        dimension.position=dimension.original->position;value.shape="vla-array";
+      } else if(element->variant.array.is_variable_size_array || element->variant.array.is_template_dependent_size_array) {
+        value.error="empty asm dependent array extent";break;
+      } else {
+        dimension.fixed_count=element->variant.array.variant.number_of_elements;
+        if(dimension.fixed_count && value.fixed_count>(~0ULL)/dimension.fixed_count) {
+          value.error="empty asm fixed extent overflow";break;
+        }
+        value.fixed_count*=dimension.fixed_count;
+      }
+      value.dimensions.push_back(dimension);
+      element_source=element->variant.array.element_type;
+      element=skip_typerefs(element_source);
+    }
+    if(value.shape=="vla-array" && (value.dimensions.size()!=1 || !value.dimensions[0].original))
+      value.error="empty asm higher-rank variable array extent";
+    if(element->kind==tk_array || element->kind==tk_void || element->kind==tk_routine || !element->size)
+      value.error="empty asm incomplete/unsupported operand element";
+    if(value.error.empty()) {
+      value.element_type=element;value.element_size=element->size;
+      value.source_element_type=capture_type(element_source);
+      if(value.shape!="vla-array" && value.fixed_count>(~0ULL)/value.element_size)
+        value.error="empty asm byte extent overflow";
+    }
+    record.order.push_back(operand);record.operands.emplace(operand,value);
+  }
+#else
+  (void)entry;record.error="GNU asm support is not configured";
+#endif
+}
+inline void observe_asm_after_lowering(an_asm_entry_ptr entry) {
+  if(!enabled())return;
+  auto found=state().asm_statements.find(entry);
+  if(found==state().asm_statements.end())return;
+  auto &record=found->second;record.lowering_observed=true;
+  for(auto &pair:record.operands)for(auto &dimension:pair.second.dimensions) {
+    if(!dimension.original)continue;
+#if DO_IL_LOWERING && LOWER_VARIABLE_LENGTH_ARRAYS
+    // Read the frontend's chosen variable. Never synthesize a new dimension
+    // variable or re-evaluate its original expression. The stock operand's
+    // lowered comma expression already owns bound evaluation/assignment.
+    dimension.saved_total=dimension.original->total_number_of_elements;
+    if(!dimension.saved_total)pair.second.error="empty asm VLA has no observed saved total";
+#else
+    pair.second.error="empty asm VLA requires observed lowering total";
+#endif
+  }
 }
 inline void capture_routine(a_routine_ptr r) {
   if(!r || abi_primary(r))return;

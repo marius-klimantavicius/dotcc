@@ -405,3 +405,33 @@ The original DuckDB SHA-256 unit now packages, advancing the 15-unit frontier
 from four to five packaged units. Full dependency execution still needs the
 original memory-assembly barrier provider. Zero-bound arrays in libc++ string,
 dynamic initialization, destruction/EH and other project gates remain open.
+
+
+## Owned memory assembly and project generation, v22 (2026-10-09)
+
+Empty GNU memory assembly now retains original operand direction, names, source
+locations, leaf types and dimensions in dedicated semantic tables. Address and
+byte-extent expressions remain owned graph nodes. Observers capture array shape
+before stock lowering erases it and retain the existing evaluated VLA-total
+binding afterwards. Emission evaluates addresses and extents once, then uses a
+BCL memory barrier without fabricated operand reads or writes. Unsupported
+assembly remains rejected; ignored `cc` clobbers follow EDG's explicit diagnostic.
+
+Pointer alignment analysis now distinguishes opaque unknown origins from actual
+packed storage and preserves typed-pointer information through byte/void erasure
+and conditional joins. Native041/managed033 passes **1095 full regression checks
+including NativeAOT**, plus 63 focused independent-TU memory-assembly checks.
+[Hashed v22 core evidence](../evidence/dotobj-memory-assembly-core-20261009.json)
+records immutable tools, source-hidden linking and malformed-object rejection.
+
+Original DuckDB MbedTLS and yyjson units now package, verify, link and emit C#.
+MbedTLS additionally passes native/JIT/NativeAOT acceptance on managed031; final033
+emission is recorded separately. yyjson reaches a runtime-binding gap after C#
+generation. The user's next checkpoint is complete DuckDB C# generation, without
+requiring compilation/execution yet; work now prioritizes missing dotobj type,
+initialization and lifetime/EH features instead of filling libc++ runtime gaps.
+
+The next general type feature distinguishes fixed zero-bound arrays from truly
+unspecified/flexible arrays. Existing exact stock-C and native oracles preserve
+zero byte extent and zero pointer stride without dropping side effects. No
+complete DuckDB generation claim is made at this milestone.

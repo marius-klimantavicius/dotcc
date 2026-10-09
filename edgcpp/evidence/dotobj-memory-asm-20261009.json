@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "date": "2026-10-09",
+  "status": "core-feature-verified",
+  "profile": "scalar-control-v22",
+  "coreAcceptance": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-memory-asm-acceptance-003/results.json",
+    "sha256": "395f0fd63aec5f60064e775e71fa0bd85ecfb41f91f8a896da52e7cb56544f80"
+  },
+  "priorCoreAcceptance": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-memory-asm-acceptance-002/results.json",
+    "sha256": "5aee6c7178235efb8c9c2e0a8610996a06e3f7c0c19afc5280a4d2bc13846f57"
+  },
+  "originalMbedTlsExecution": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-mbedtls-acceptance-003/results.json",
+    "sha256": "cdfc47d053fec105cb19ef142e992c6059b9b6572a2aad21c9e237e8a81df95c"
+  },
+  "finalGeneration": {
+    "mbedtls": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-generation-review-001/mbedtls-generation.json",
+      "sha256": "20d30578769d7962ed73955534d587fda5eb2f2b73da33ebf977998490299fb1"
+    },
+    "yyjson": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-generation-review-001/yyjson-generation.json",
+      "sha256": "5100f1bd25e96edac974df81388846438f44199188984420d3e50dc4e466f679"
+    }
+  },
+  "yyjsonRuntimeGate": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-yyjson-acceptance-003/results.json",
+    "sha256": "ad804cb785186e583f80e57d88da2499ce45d43fe20f652d8d94728d9f94b557"
+  },
+  "review": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-generation-review-001/review.json",
+    "sha256": "7fe06d5c22529f3ac01fd69a77e79b18ea9d05dc69a7d4e9c7b4182509817a40"
+  },
+  "verified": [
+    "63 core checks including native O0/O2 and JIT/NativeAOT on final041/033",
+    "Original scalar/fixed/VLA memory operands, source locations, constraints and saved dimension identities retained",
+    "Operand side effects evaluated once; no synthetic memory reads or writes",
+    "Source-hidden independent-TU linking and five semantic corruptions rejected after digest repair",
+    "Final C# generated for original Mbed TLS sha256/platform_util and yyjson with musl providers"
+  ],
+  "limitations": [
+    "No full DuckDB translation",
+    "No arbitrary assembly; multidimensional VLA asm operands remain rejected",
+    "Stock C output is an inspected lowering reference, not an executed oracle for VLA asm inputs",
+    "Mbed TLS execution used managed031; final033 changes one provider C# file and has generation-only evidence",
+    "yyjson runtime binding stopped at _ZTIv; deferred to prioritize missing dotobj features"
+  ],
+  "retainedInitialFailures": [
+    "memory-asm-oracle001: stock C VLA input decays to GCC-unaddressable pointer expression; unmodified output retained",
+    "memory-asm-acceptance001: negative cc-clobber assumption corrected; EDG explicitly ignores cc",
+    "mbedtls-acceptance002: synthetic consumer now matches actual DuckDB MBEDTLS_ALLOW_PRIVATE_ACCESS configuration",
+    "yyjson-acceptance002: unknown void-pointer alignment was incorrectly treated as known low alignment"
+  ]
+}

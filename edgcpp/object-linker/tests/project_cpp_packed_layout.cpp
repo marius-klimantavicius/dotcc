@@ -11,6 +11,24 @@ struct __attribute__((packed)) Packed {
 };
 struct Inner { unsigned long long wide; unsigned values[2]; };
 struct __attribute__((packed)) Nested { unsigned char tag; Inner inner; };
+// Opaque pointer inputs carry no observed storage-origin alignment. A typed
+// cast uses the caller's ordinary C/C++ alignment contract.
+static unsigned *ordinary_void_member(void *value) { return &((Inner *)value)->values[0]; }
+static unsigned *ordinary_char_member(char *value) { return &((Inner *)value)->values[1]; }
+// Emission-only alignment probe: do not execute this unaligned C++ cast.
+// Its explicit byte offset must not regain alignment through the final cast.
+unsigned raw_offset_alignment_probe(unsigned *source) {
+  return *(unsigned *)((char *)source + 1);
+}
+struct __attribute__((packed)) PackedStart { unsigned value; };
+union AlignedSource { unsigned long long alignment; PackedStart item; };
+unsigned conditional_alignment_probe(PackedStart *opaque, AlignedSource *known, bool choose) {
+  return *(unsigned *)&(choose ? opaque : &known->item)->value;
+}
+static unsigned *ordinary_conditional_member(void *opaque, Inner *known, bool choose) {
+  return &((Inner *)(choose ? opaque : known))->values[0];
+}
+
 #pragma pack(push, 2)
 struct Pragma { unsigned char tag; unsigned long long wide; };
 #pragma pack(pop)
@@ -66,7 +84,20 @@ int main() {
     if (index != 1 || assigned != 73 + offset || other->inner.values[1] != assigned) return 15;
     unsigned multiplied = (other->inner.values[index--] *= 3);
     if (index != 0 || multiplied != 219 + offset * 3 || other->inner.values[1] != multiplied) return 16;
+    // Casting a known packed address through void*/char* must not discard
+    // its actual weaker alignment before the raw scalar load/store.
+    unsigned roundtrip = ++*(unsigned *)(void *)&other->inner.values[0];
+    unsigned second = (*(unsigned *)(char *)&other->inner.values[1] += 2);
+    if (roundtrip != 33 || second != multiplied + 2) return 17;
   }
+  Inner ordinary = { 101, { 103, 107 } };
+  if (ordinary_void_member(&ordinary) != &ordinary.values[0] ||
+      ordinary_char_member((char *)&ordinary) != &ordinary.values[1]) return 18;
+  *ordinary_void_member(&ordinary) += 7;
+  *ordinary_char_member((char *)&ordinary) += 11;
+  if (ordinary.values[0] != 110 || ordinary.values[1] != 118) return 19;
+  if (ordinary_conditional_member(&ordinary, &ordinary, true) != &ordinary.values[0] ||
+      ordinary_conditional_member(&ordinary, &ordinary, false) != &ordinary.values[0]) return 20;
   Pragma pragma = { 1, 0x1020304050607080ULL };
   pragma.wide += 7;
   if (pragma.wide != 0x1020304050607087ULL) return 10;

@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v22",
+  "scope": "Owned empty GNU memory assembly, original memory regions and evaluated VLA extents; pointer origin alignment analysis",
+  "fullRegressionChecks": 1095,
+  "focusedMemoryAssemblyChecks": 63,
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v22-002/results.json",
+      "sha256": "f79c68705e198f304dd89a316f2b9cdc508de207d4f75d5e3504255418588d30"
+    },
+    "initialFullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v22-001/results.json",
+      "sha256": "a1dbba9bb026b8dc6b7491e69d676b383eedcc91cc902f084409888c4a17f042"
+    },
+    "memoryAssembly": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-memory-asm-acceptance-003/results.json",
+      "sha256": "395f0fd63aec5f60064e775e71fa0bd85ecfb41f91f8a896da52e7cb56544f80"
+    },
+    "alignmentOrigins": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-packed-alignment-origin-002/results.json",
+      "sha256": "cc3a700d92aebf549a701ca00bb65c7f46d7d6590a4fc193fa477200cd1c3e2d"
+    },
+    "alignmentEmission": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-packed-alignment-origin-002/alignment-origin-emission-checks.json",
+      "sha256": "0ba1d034e8ed3b17fa5b49093e13f7578edc8a9ad00a98d4dfee3ff2fa69d1f2"
+    },
+    "mbedtlsExecutionPriorLinker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-mbedtls-acceptance-003/results.json",
+      "sha256": "cdfc47d053fec105cb19ef142e992c6059b9b6572a2aad21c9e237e8a81df95c"
+    },
+    "mbedtlsGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-generation-review-001/mbedtls-generation.json",
+      "sha256": "20d30578769d7962ed73955534d587fda5eb2f2b73da33ebf977998490299fb1"
+    },
+    "yyjsonGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-generation-review-001/yyjson-generation.json",
+      "sha256": "5100f1bd25e96edac974df81388846438f44199188984420d3e50dc4e466f679"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native041-verified-snapshot/cpfe-dot",
+      "sha256": "be5c679df6a6930112c2aee24075f709b07993178f925502cc9d65d6594869e3"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-033/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "7e5a463718d64d342aabf7f428a7500746e8f7fe4198d4b099b59e6919353740"
+    }
+  },
+  "projectScope": "Original DuckDB MbedTLS and yyjson units now package, verify, link and generate C#. MbedTLS executes under prior managed031; final033 generation is recorded separately. yyjson runtime binding is deferred.",
+  "priority": "User requests missing dotobj features and complete DuckDB C# generation next, without requiring C# compilation/execution; libc++ runtime gap work is deferred.",
+  "retainedFailures": [
+    "A negative cc-clobber expectation conflicted with stock EDG explicitly ignoring cc; use a retained register clobber for the rejection oracle.",
+    "Synthetic MbedTLS consumer omitted MBEDTLS_ALLOW_PRIVATE_ACCESS used by actual DuckDB wrapper; corrected fixture configuration without relaxing nominal linkage checks.",
+    "yyjson exposed unknown opaque pointer origins being mistaken for observed underalignment; corrected origin lattice retains actual packed/byte-offset/conditional constraints."
+  ],
+  "limitations": [
+    "Exact empty GNU memory-only assembly, fixed arrays and rank-one VLA operands only; arbitrary assembly remains rejected.",
+    "Thread.MemoryBarrier is a conservative hardware fence, not a compiler-only cost or independent secure-zeroization claim.",
+    "No full DuckDB generation or execution claim. Fixed-zero arrays, dynamic initialization, destruction/EH and other graph gates remain pending."
+  ]
+}

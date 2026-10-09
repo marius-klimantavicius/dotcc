@@ -2,7 +2,7 @@ namespace DotObj;
 
 internal static class Verifier
 {
-    private static readonly HashSet<string> StatementKinds = ["block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
+    private static readonly HashSet<string> StatementKinds = ["memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
     private static readonly HashSet<string> ExpressionKinds = ["constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
@@ -153,6 +153,39 @@ internal static class Verifier
             }
             switch (node.Kind)
             {
+                case "memory-barrier":
+                    if (!obj.MemoryBarriers.ContainsKey(node.Id)) Fail("Memory assembly statement lacks owned source proof");
+                    MemoryBarrierOperand[] operands = obj.BarrierOperands(node.Id);
+                    EdgeShape(node, ("address", operands.Length, operands.Length), ("extent", operands.Length, operands.Length));
+                    Node[] addresses = body.Children(node.Id, "address").Select(edge => body.Nodes[edge.ChildId]).ToArray();
+                    Node[] extents = body.Children(node.Id, "extent").Select(edge => body.Nodes[edge.ChildId]).ToArray();
+                    for (int index = 0; index < operands.Length; index++)
+                    {
+                        MemoryBarrierOperand operand = operands[index];
+                        Node address = addresses[index], asmExtent = extents[index];
+                        string element = obj.Type(obj.SourceTypes[operand.SourceElementTypeId].ExecutionTypeId);
+                        if (!IsExpression(address) || Type(address) != "ptr(" + element + ")" || !IsExpression(asmExtent) || Type(asmExtent) != "u64")
+                            Fail("Memory assembly requires its typed element address and unsigned byte extent");
+                        if (operand.ExtentKind == "fixed")
+                        {
+                            var bytes = new System.Numerics.BigInteger(operand.FixedElementCount!.Value) * operand.ElementSize;
+                            if (bytes > ulong.MaxValue || asmExtent.Kind != "constant" ||
+                                asmExtent.ConstantText != bytes.ToString(System.Globalization.CultureInfo.InvariantCulture))
+                                Fail("Memory assembly fixed extent differs from its original bounded object");
+                        }
+                        else
+                        {
+                            if (!body.Bindings.TryGetValue(operand.ExtentBindingId!.Value, out Binding? total) || total.Kind != "local" || !total.IsSynthetic || obj.Type(total.TypeId) != "i64" ||
+                                asmExtent.Kind != "binary" || asmExtent.Operator != "mul")
+                                Fail("Memory assembly variable extent requires its observed saved total binding");
+                            Node savedCount = Child(asmExtent, "left"), elementSizeNode = Child(asmExtent, "right");
+                            if (savedCount.Kind != "convert" || Type(savedCount) != "u64" || Child(savedCount, "operand").Kind != "binding" ||
+                                Child(savedCount, "operand").BindingId != operand.ExtentBindingId || elementSizeNode.Kind != "constant" || Type(elementSizeNode) != "u64" ||
+                                elementSizeNode.ConstantText != operand.ElementSize.ToString(System.Globalization.CultureInfo.InvariantCulture))
+                                Fail("Memory assembly variable byte extent differs from its saved total and element size");
+                        }
+                    }
+                    break;
                 case "return":
                     bool isVoid = obj.Type(function.ReturnTypeId) == "void";
                     EdgeShape(node, ("value", isVoid ? 0 : 1, 1));
@@ -581,7 +614,7 @@ internal static class Verifier
                 foreach (Edge use in parents[pointer.Id])
                 {
                     Node consumer = body.Nodes[use.ParentId];
-                    if (consumer.Kind == "dereference") continue;
+                    if (consumer.Kind == "dereference" || consumer.Kind == "memory-barrier" && use.Role == "address") continue;
                     if (consumer.Kind == "convert" && ScalarTypes.IsPointer(Type(consumer)))
                     {
                         string element = ScalarTypes.Pointee(Type(consumer));

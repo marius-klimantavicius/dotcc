@@ -1,3 +1,6 @@
+// Match DuckDB's original mbedtls_wrapper.cpp and the library implementation:
+// all independent C++ units must see the same nominal context member names.
+#define MBEDTLS_ALLOW_PRIVATE_ACCESS
 #include "mbedtls/sha256.h"
 #include "mbedtls/platform_util.h"
 #include <stdio.h>

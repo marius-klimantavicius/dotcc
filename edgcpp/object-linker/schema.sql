@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v21'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v22'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -397,6 +397,54 @@ CREATE TABLE macro_events (
  CHECK((kind='define' AND definition_id IS NOT NULL) OR
        (kind='undef' AND definition_id IS NULL) OR kind IN ('push','pop'))
 ) STRICT;
+CREATE TABLE memory_barriers (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ is_volatile INTEGER NOT NULL CHECK(is_volatile IN (0,1)),
+ has_volatile_keyword INTEGER NOT NULL CHECK(has_volatile_keyword IN (0,1)),
+ has_inline_keyword INTEGER NOT NULL CHECK(has_inline_keyword IN (0,1)),
+ clobbers_memory INTEGER NOT NULL CHECK(clobbers_memory IN (0,1)),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-empty-gnu-asm'),
+ CHECK(has_volatile_keyword=0 OR is_volatile=1)
+) STRICT;
+CREATE TABLE memory_barrier_operands (
+ node_id INTEGER NOT NULL REFERENCES memory_barriers(node_id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ direction TEXT NOT NULL CHECK(direction IN ('input','output','inout')),
+ constraint_text TEXT NOT NULL CHECK(constraint_text IN ('m','=m','+m')),
+ source_name TEXT NOT NULL,
+ source_element_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ element_size INTEGER NOT NULL CHECK(element_size>0),
+ source_shape TEXT NOT NULL CHECK(source_shape IN ('object','fixed-array','vla-array')),
+ extent_kind TEXT NOT NULL CHECK(extent_kind IN ('fixed','vla-total')),
+ fixed_element_count INTEGER CHECK(fixed_element_count>=0),
+ extent_binding_id INTEGER REFERENCES bindings(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN ('observed-asm-place','observed-asm-vla-total')),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ PRIMARY KEY(node_id,ordinal),
+ CHECK((direction='input' AND constraint_text='m') OR (direction='output' AND constraint_text='=m') OR (direction='inout' AND constraint_text='+m')),
+ CHECK((extent_kind='fixed' AND fixed_element_count IS NOT NULL AND extent_binding_id IS NULL AND capture_proof='observed-asm-place') OR
+       (extent_kind='vla-total' AND fixed_element_count IS NULL AND extent_binding_id IS NOT NULL AND capture_proof='observed-asm-vla-total')),
+ CHECK((source_shape='vla-array')=(extent_kind='vla-total')),
+ CHECK(source_shape<>'object' OR fixed_element_count=1)
+) STRICT;
+CREATE TABLE memory_barrier_dimensions (
+ node_id INTEGER NOT NULL,
+ operand_ordinal INTEGER NOT NULL,
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ kind TEXT NOT NULL CHECK(kind IN ('fixed','vla-total')),
+ fixed_count INTEGER CHECK(fixed_count>=0),
+ extent_binding_id INTEGER REFERENCES bindings(id),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ PRIMARY KEY(node_id,operand_ordinal,ordinal),
+ FOREIGN KEY(node_id,operand_ordinal) REFERENCES memory_barrier_operands(node_id,ordinal),
+ CHECK((kind='fixed' AND fixed_count IS NOT NULL AND extent_binding_id IS NULL) OR
+       (kind='vla-total' AND fixed_count IS NULL AND extent_binding_id IS NOT NULL))
+) STRICT;
+
 CREATE TABLE content_digest (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  algorithm TEXT NOT NULL CHECK(algorithm='dotobj-semantic-sha256-v1'),

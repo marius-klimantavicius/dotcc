@@ -1072,3 +1072,50 @@ use native integer bits where generic APIs cannot accept pointer type arguments.
 Address and RHS evaluation retain the owned graph order and occur once.
 Unsupported atomic/volatile accesses remain explicit boundaries until their
 alignment guarantees and platform behavior are represented and verified.
+
+
+## Empty GNU memory assembly: scalar-control-v22
+
+An owned `memory-barrier` statement represents an observed empty GNU extended
+assembly template with only `m`, `=m` or `+m` operands and an optional `memory`
+retained semantic clobber. `memory_barriers` retains effective/explicit volatility, the inline
+keyword, memory clobber and capture proof. Nonempty templates, register or
+alternative constraints, other retained clobbers and asm-goto remain rejected.
+The frontend explicitly diagnoses and ignores the `cc` clobber in this
+configuration; the object follows that accepted semantic decision rather than
+reintroducing a discarded clobber. Original source snapshots and diagnostics
+retain its spelling.
+
+`memory_barrier_operands` retains original ordinal, input/output/inout direction,
+exact constraint, optional source name, element source type/size, source location
+and object/fixed-array/VLA-array shape. Ordered `memory_barrier_dimensions` rows
+preserve fixed dimensions or a rank-one variable bound. Each operand owns an
+`address` edge and an `extent` edge with the same ordinal; these are typed graph
+expressions, not rendered text or offsets into a source fragment.
+
+The observer records original operand shape before `lower_asm_statement` lowers
+its expression. For a VLA it then observes the existing synthetic ptrdiff binding
+holding EDG's evaluated total element count. The lowered address expression
+retains the bound's original side effects; its extent is an unsigned conversion
+of that saved binding multiplied by the original leaf size. The original bound
+expression is never copied or evaluated again. Fixed extents equal the checked
+product of dimensions and leaf size; zero fixed dimensions retain zero extent.
+General VLA storage and higher-rank variable shapes are not implied by this
+bounded operand contract.
+
+Managed verification checks metadata/edge ownership, source element size,
+dimension products and exact saved-binding extent expression. Emission evaluates
+each operand's address and then extent once, in original operand order, before a
+BCL `Thread.MemoryBarrier`. It never reads or writes through operand addresses
+merely to model a memory constraint. This is a conservative hardware fence, not
+a claim of equal cost to the native compiler-only barrier or an independent
+secure-zeroization guarantee. Existing calls that clear memory remain real calls.
+
+
+Alignment analysis distinguishes unknown pointer origins from observed storage
+alignment. An opaque `void*` or byte-pointer parameter/load does not by itself
+prove that a later typed access is underaligned. Defined source accesses follow
+the destination type's alignment contract. Observed packed addresses remain
+constrained through casts; typed pointer contracts survive erasure to byte/void
+representations before arithmetic; conditional joins retain unknown paths rather
+than letting an unrelated aligned branch strengthen every possible address.

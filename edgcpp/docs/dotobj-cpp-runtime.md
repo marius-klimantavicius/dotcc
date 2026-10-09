@@ -302,3 +302,46 @@ Linux x64 JIT and NativeAOT. The subsequent property-accessor naming correction
 produces the same set of 237 translator-generated C# files, byte for byte, as
 that executed build. Runtime binding files are separately identified by their
 provider receipts. See [SQLite profile21 evidence](../evidence/dotobj-sqlite-pipeline-20261009.json).
+
+## Owned empty memory assembly, profile22
+
+The object now owns exact empty GNU assembly memory operands: directions and
+constraints, optional operand names, source locations, element types, fixed
+dimensions, and the saved total-element binding of a rank-one VLA. The C#
+emitter evaluates each address and extent once and calls `Thread.MemoryBarrier`.
+It introduces no read or write through those addresses. The hardware fence is
+stronger than the original compiler-only barrier; optimizing that cost remains
+separate from preserving correctness. Nonempty assembly, registers, goto labels,
+other retained clobbers and multidimensional VLA operands remain explicit gates.
+
+`tests/memory_asm_verify.py` passes 63 checks with native041/managed033, including
+native C++ O0/O2, source-hidden independent-TU linking, JIT and NativeAOT. It
+checks side effects, unchanged operand bytes, fixed multidimensional arrays,
+dynamic byte and wider-element extents, and malformed semantic metadata after
+digest repair. Stock C output is retained to inspect lowering: input VLA array
+expressions decay to pointer expressions, while their evaluated dimensions
+survive in synthetic bindings. The exporter observes the original region before
+that decay. Stock C is not an execution oracle for those VLA operands.
+
+Original DuckDB SHA-256 and platform zeroization sources now package, link and
+execute with the musl providers under managed031 JIT and NativeAOT. The synthetic
+consumer uses `MBEDTLS_ALLOW_PRIVATE_ACCESS`, matching DuckDB's original wrapper;
+without it, Mbed TLS intentionally exposes differently named context members.
+Nominal record compatibility was not weakened to hide that configuration mismatch.
+All 36 digest cases match independent Python `hashlib` results, including
+streaming, cloning, unaligned buffers, sentinels and zeroization.
+
+The final managed033 alignment analysis distinguishes unknown pointer origins
+from observed storage alignment. A normal `void*` or byte-pointer value does not
+prove that a later typed access is underaligned; defined source accesses retain
+the destination type's contract. Known packed addresses remain tracked through
+casts and byte offsets. This allows original yyjson to verify and generate C#.
+Its runtime binding currently stops at `_ZTIv`, and is deferred while missing
+object features take priority.
+
+The final033 Mbed TLS and yyjson review projects are generation evidence only.
+yyjson's C# is unchanged from managed032; Mbed TLS changes one musl `vfprintf`
+file from its executed managed031 version. These partial translations are linked
+under `artifacts/review/duckdb-dotobj`; they are not complete DuckDB output.
+[Owned memory assembly evidence](../evidence/dotobj-memory-asm-20261009.json)
+records the exact tools, receipts and retained initial failures.
