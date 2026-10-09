@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v33'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v34'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -651,16 +651,28 @@ CREATE TABLE source_tries (
 ) STRICT;
 CREATE TABLE source_handlers (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
- try_node_id INTEGER NOT NULL UNIQUE REFERENCES source_tries(node_id),
- ordinal INTEGER NOT NULL CHECK(ordinal=0),
- match_kind TEXT NOT NULL CHECK(match_kind='ellipsis'),
- capture_proof TEXT NOT NULL CHECK(capture_proof='observed-source-handler')
+ try_node_id INTEGER NOT NULL REFERENCES source_tries(node_id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ match_kind TEXT NOT NULL CHECK(match_kind IN ('ellipsis','typed')),
+ source_type_id INTEGER REFERENCES source_types(id),
+ match_type_id INTEGER REFERENCES source_types(id),
+ parameter_binding_id INTEGER UNIQUE REFERENCES bindings(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-source-handler'),
+ UNIQUE(try_node_id,ordinal),
+ CHECK((match_kind='ellipsis' AND source_type_id IS NULL AND match_type_id IS NULL AND parameter_binding_id IS NULL)
+    OR (match_kind='typed' AND source_type_id IS NOT NULL AND match_type_id IS NOT NULL AND parameter_binding_id IS NOT NULL))
 ) STRICT;
 CREATE TABLE handler_markers (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
  owner_node_id INTEGER NOT NULL REFERENCES nodes(id),
  kind TEXT NOT NULL CHECK(kind IN ('caught','handler-exit','try-exit')),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-handler-marker')
+) STRICT;
+
+CREATE TABLE caught_object_addresses (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ handler_node_id INTEGER NOT NULL REFERENCES source_handlers(node_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-caught-object-address')
 ) STRICT;
 
 COMMIT;

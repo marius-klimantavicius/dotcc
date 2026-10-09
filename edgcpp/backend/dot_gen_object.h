@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v33: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v34: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -59,7 +59,7 @@ struct Writer {
   std::map<a_try_supplement_ptr,unsigned> active_try_ids;
   std::map<a_handler_ptr,unsigned> active_handler_ids;
   a_handler_ptr emitting_handler=nullptr;
-  std::vector<string> source_tries,source_handlers,handler_markers;
+  std::vector<string> source_tries,source_handlers,handler_markers,caught_object_addresses;
   std::map<unsigned,unsigned> exception_type_ids;
   std::map<unsigned,a_routine_ptr> exception_source_destructors;
   std::map<a_routine_ptr,a_routine_ptr> complete_exception_destructors;
@@ -1246,6 +1246,14 @@ struct Writer {
   }
   unsigned cleanup_marker(an_expr_node_ptr expr) {
     auto &value=expr->variant.lowered_eh;
+    if(value.kind==leck_caught_object_address) {
+      auto found=active_handler_ids.find(value.variant.caught_object_handler);
+      if(found==active_handler_ids.end() || !value.variant.caught_object_handler->parameter)
+        reject("caught object address lacks its typed handler");
+      unsigned id=node("caught-object-address",type_id(expr->type),expr->position,0,0,"","","value","none");
+      caught_object_addresses.push_back("{\"nodeId\":"+number(id)+",\"handlerNodeId\":"+number(found->second)+
+        ",\"captureProof\":\"observed-caught-object-address\"}");return id;
+    }
     if(value.kind==leck_exception_caught || value.kind==leck_catch_epilogue || value.kind==leck_try_epilogue) {
       unsigned owner=0;string kind;
       if(value.kind==leck_try_epilogue) {
@@ -2814,18 +2822,35 @@ struct Writer {
         if(found==dot_object_source::state().tries.end() || found->second.owner!=current_routine || found->second.function_try)
           reject("source try lacks observed ordinary statement ownership");
         const auto &saved=found->second;
-        if(saved.handlers.size()!=1 || saved.handlers[0]->parameter || saved.handlers[0]->next || t->handlers!=saved.handlers[0])
-          reject("typed source handlers require owned matching and parameter initialization");
-        unsigned id=node("try",0,s->position),handler=node("catch",0,saved.handlers[0]->catch_position);
-        if(!active_try_ids.emplace(t,id).second || !active_handler_ids.emplace(saved.handlers[0],handler).second)
-          reject("duplicated source handler ownership");
-        source_handlers.push_back("{\"nodeId\":"+number(handler)+",\"tryNodeId\":"+number(id)+
-          ",\"ordinal\":0,\"matchKind\":\"ellipsis\",\"captureProof\":\"observed-source-handler\"}");
+        if(saved.handlers.empty() || t->handlers!=saved.handlers[0])reject("source try handler list changed");
+        unsigned id=node("try",0,s->position);
+        if(!active_try_ids.emplace(t,id).second)reject("duplicated source try ownership");
+        std::vector<unsigned> ids;
+        for(auto h:saved.handlers) {
+          unsigned hid=node("catch",0,h->catch_position);ids.push_back(hid);
+          if(!active_handler_ids.emplace(h,hid).second)reject("duplicated source handler ownership");
+        }
         check_lifetime(t->lifetime);
         edge(id,"body",0,statement(t->statement));
-        auto previous=emitting_handler;emitting_handler=saved.handlers[0];
-        edge(handler,"body",0,statement(saved.handlers[0]->statement));emitting_handler=previous;
-        edge(id,"handler",0,handler);return id;
+        for(unsigned i=0;i<ids.size();++i) {
+          auto h=saved.handlers[i];const auto &caught=dot_object_source::state().handlers.at(h);
+          if(h->parameter!=caught.parameter || h->next!=(i+1<ids.size()?saved.handlers[i+1]:nullptr))
+            reject("source handler parameter or ordering changed");
+          auto previous=emitting_handler;emitting_handler=h;
+          edge(ids[i],"body",0,statement(h->statement));emitting_handler=previous;
+          unsigned param=0;
+          if(caught.parameter) {
+            if(!binding_ids.count(caught.parameter))reject("catch parameter lacks owned local binding");
+            param=binding_ids.at(caught.parameter);
+          }
+          source_handlers.push_back("{\"nodeId\":"+number(ids[i])+",\"tryNodeId\":"+number(id)+
+            ",\"ordinal\":"+std::to_string(i)+",\"matchKind\":"+quote(param?"typed":"ellipsis")+
+            ",\"sourceTypeId\":"+number(caught.source_type?source_type(caught.source_type):0)+
+            ",\"matchTypeId\":"+number(caught.match_type?source_type(caught.match_type):0)+
+            ",\"parameterBindingId\":"+number(param)+",\"captureProof\":\"observed-source-handler\"}");
+          edge(id,"handler",i,ids[i]);
+        }
+        return id;
       }
       case stmk_block: {
         unsigned id=node("block",0,s->position),ordinal=0;
@@ -3047,7 +3072,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v33\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v34\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -3066,7 +3091,7 @@ struct Writer {
       ",\"throwPayloadSubobjects\":"+array(throw_payload_subobjects)+
       ",\"throwPayloadPaths\":"+array(throw_payload_paths)+
       ",\"sourceTries\":"+array(source_tries)+",\"sourceHandlers\":"+array(source_handlers)+
-      ",\"handlerMarkers\":"+array(handler_markers)+
+      ",\"handlerMarkers\":"+array(handler_markers)+",\"caughtObjectAddresses\":"+array(caught_object_addresses)+
       ",\"recordValueTransfers\":"+array(record_value_transfers)+",\"sourceFields\":"+array(source_fields)+
       ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+
       ",\"baseSubobjectExpressions\":"+array(base_subobject_expressions)+

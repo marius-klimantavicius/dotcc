@@ -751,3 +751,33 @@ verifies and generates 280 function definitions; its C# has not been compiled
 or executed. The other four units retain their previous type, initialization
 and virtual-base/VTT gates. Typed catches, function-try blocks, array/VTT cleanup
 and the production exception provider remain open. Stop at this phase boundary.
+
+## Ordered typed handlers and catch parameters, v34 (2026-10-09)
+
+Implemented by root alone. Each try now owns its ordered typed/ellipsis handlers;
+typed entries retain the original parameter type, matching type and body-local
+binding. Caught-object-address expressions name their exact handler. The managed
+emitter keeps EDG's selected parameter initialization, copy-constructor calls and
+destructions in the structured handler body. Provider-owned matching and adjusted
+addresses use original source identities, including pointer qualifications and
+the existing public/unambiguous base-conversion facts.
+
+Native064/managed064 passes 58 focused checks: 14 traces match native C++ and
+stock EDG C at O0/O2 under JIT and NativeAOT, and separate child processes verify
+termination when a catch-parameter copy constructor throws. Five SQL-valid,
+digest-resealed malformed objects reject missing/foreign caught addresses,
+wrong matching types, foreign parameter bindings and invalid handler order.
+A separate catch-only module with no throw expressions or object-destructor
+actions compiles and runs in both managed modes. The existing catch-all suite
+passes its 105 scenarios and 57 checks, and source-throw generation retains 56
+checks. Constructor/destructor function-try blocks replace typed catches as the
+negative handler fixture; EDG lowers ordinary function-try blocks as ordinary try.
+
+The [v34 evidence](../evidence/dotobj-typed-catch-20261009.json) records the full
+regression result and retained tools. Review source is at
+`artifacts/review/dotobj-typed-catch`. The five-unit DuckDB probe is unchanged:
+`hugeint.cpp` exports, verifies and generates 280 function definitions, while
+the other sampled type/initialization/VTT gates remain. No compilation or
+execution of DuckDB is claimed. The shared production exception provider,
+constructor/destructor function-try blocks and array/VTT cleanup remain open.
+Stop after this phase's commit and await user direction.

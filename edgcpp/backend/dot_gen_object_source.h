@@ -228,6 +228,10 @@ struct NormalDestruction {
   a_routine_ptr owner=nullptr,callback=nullptr;
   a_dynamic_init_ptr original=nullptr;
 };
+struct HandlerSnapshot {
+  unsigned source_type=0,match_type=0;
+  a_variable_ptr parameter=nullptr;
+};
 struct TrySnapshot {
   a_routine_ptr owner=nullptr;
   a_try_supplement_ptr original=nullptr;
@@ -247,6 +251,7 @@ struct State {
   std::map<a_constant_ptr,CleanupSnapshot> cleanup_regions;
   std::vector<CleanupSnapshot> payload_subobjects;
   std::map<a_try_supplement_ptr,TrySnapshot> tries;
+  std::map<a_handler_ptr,HandlerSnapshot> handlers;
   std::vector<a_handler_ptr> active_handlers;
   std::map<a_dynamic_init_ptr,std::pair<a_routine_ptr,a_handler_ptr>> handler_releases;
   std::map<an_expr_node_ptr,RecordTransferSnapshot> record_transfers;
@@ -974,7 +979,16 @@ inline a_dynamic_init_ptr source_destruction(a_dynamic_init_ptr value,a_routine_
 inline void observe_try(a_try_supplement_ptr value,a_routine_ptr owner,bool function_try) {
   if(!enabled())return;
   TrySnapshot saved;saved.owner=owner;saved.original=value;saved.function_try=function_try;
-  for(auto handler=value->handlers;handler;handler=handler->next)saved.handlers.push_back(handler);
+  for(auto handler=value->handlers;handler;handler=handler->next) {
+    saved.handlers.push_back(handler);HandlerSnapshot caught;caught.parameter=handler->parameter;
+    if(caught.parameter) {
+      caught.source_type=capture_type(caught.parameter->type);
+      auto match=skip_typerefs(caught.parameter->type);
+      if(match->kind==tk_pointer && match->variant.pointer.is_reference)match=match->variant.pointer.type;
+      caught.match_type=capture_type(match);
+    }
+    state().handlers.emplace(handler,caught);
+  }
   state().tries.emplace(value,saved);
 }
 struct HandlerCapture {

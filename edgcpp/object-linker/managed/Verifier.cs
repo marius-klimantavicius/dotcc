@@ -3,7 +3,7 @@ namespace DotObj;
 internal static class Verifier
 {
     private static readonly HashSet<string> StatementKinds = ["try", "catch", "memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
-    private static readonly HashSet<string> ExpressionKinds = ["handler-marker", "cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
+    private static readonly HashSet<string> ExpressionKinds = ["caught-object-address", "handler-marker", "cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -125,7 +125,7 @@ internal static class Verifier
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
                 string[] orders = node.Kind is "cleanup-transition" or "cleanup-frame" or "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
                 if (node.Kind is "cleanup-transition" or "cleanup-frame" or "base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
-                if (node.Kind is "thrown-object-address" or "throw-marker" or "rethrow" or "cleanup-payload-address" or "handler-marker") orders = ["none"];
+                if (node.Kind is "thrown-object-address" or "throw-marker" or "rethrow" or "cleanup-payload-address" or "handler-marker" or "caught-object-address") orders = ["none"];
                 if (node.Kind is "materialize" or "throw") orders = ["left-to-right"];
                 if (node.Kind is "assign" or "record-transfer" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
                 if (node.Kind is "address" or "dereference" or "array-decay" or "member" or "va-start" or "va-copy" or "va-end" or "va-arg") orders = ["none", "left-to-right", "unspecified"];
@@ -188,23 +188,34 @@ internal static class Verifier
             switch (node.Kind)
             {
                 case "try":
-                    EdgeShape(node, ("body", 1, 1), ("handler", 1, 1));
+                    EdgeShape(node, ("body", 1, 1), ("handler", 1, int.MaxValue));
+                    var handlers = body.Children(node.Id, "handler").ToArray();
                     if (!obj.SourceTries.ContainsKey(node.Id) || Child(node, "body").Kind != "block" ||
-                        Child(node, "handler").Kind != "catch" || obj.SourceHandlers[Child(node, "handler").Id].TryNodeId != node.Id)
-                        Fail("Try requires its owned body and exact handler");
+                        handlers.Any(edge => body.Nodes[edge.ChildId].Kind != "catch" ||
+                            obj.SourceHandlers[edge.ChildId].TryNodeId != node.Id || obj.SourceHandlers[edge.ChildId].Ordinal != edge.Ordinal) ||
+                        handlers.Length != obj.SourceHandlers.Values.Count(handler => handler.TryNodeId == node.Id))
+                        Fail("Try requires its owned body and ordered handlers");
                     tryScopes.Add(node.Id, scopes.ToArray());
                     activeTries.Push(node.Id);
                     Visit(Child(node, "body"), scopes, visible, controls, depth + 1);
-                    Visit(Child(node, "handler"), scopes, visible, controls, depth + 1);
+                    foreach (var edge in handlers) Visit(body.Nodes[edge.ChildId], scopes, visible, controls, depth + 1);
                     activeTries.Pop(); return;
                 case "catch":
                     EdgeShape(node, ("body", 1, 1));
                     if (!obj.SourceHandlers.TryGetValue(node.Id, out SourceHandler? handler) || activeTries.Count == 0 ||
                         activeTries.Peek() != handler.TryNodeId || Child(node, "body").Kind != "block")
                         Fail("Catch is outside its owning source try");
+                    if (handler!.ParameterBindingId is long parameter &&
+                        (!body.Bindings.TryGetValue(parameter, out Binding? catchBinding) || catchBinding.Kind != "local" || catchBinding.ScopeNodeId != Child(node, "body").Id))
+                        Fail("Catch parameter is outside its handler body");
                     activeHandlers.Push(node.Id);
                     Visit(Child(node, "body"), scopes, visible, controls, depth + 1);
                     activeHandlers.Pop(); return;
+                case "caught-object-address":
+                    EdgeShape(node);
+                    if (!obj.CaughtObjectAddresses.TryGetValue(node.Id, out long caughtHandler) || !activeHandlers.Contains(caughtHandler))
+                        Fail("Caught object address is outside its owning handler");
+                    break;
                 case "handler-marker":
                     EdgeShape(node);
                     if (Type(node) != "void" || !obj.HandlerMarkers.TryGetValue(node.Id, out HandlerMarker? marker))

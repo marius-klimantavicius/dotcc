@@ -317,6 +317,48 @@ normal return/break/continue/goto, and throwing destructors on normal exits.
 Malformed objects with missing/foreign markers, wrong original lifetimes,
 misplaced handler bodies and prematurely armed release states are rejected.
 
+## Ordered typed handlers (profile 34)
+
+`source_handlers` now has dense per-try ordinals, a `typed` or `ellipsis` match
+kind, and nullable `source_type_id`, `match_type_id` and `parameter_binding_id`.
+All three are required for typed handlers and absent for ellipsis. The original
+parameter type retains references and cv-qualifiers; the matching type removes
+the outer reference. Ellipsis must be last. A handler's binding must belong to
+its body and agree with its original source declaration and execution type.
+
+`caught_object_addresses` owns the explicit `caught-object-address` expressions
+already produced by EDG lowering. Each names its exact typed handler, has type
+`void*`, and is valid only in that handler's region. The linker emits the source
+handler order as successive C# catch filters. It does not infer a handler from
+the CLR exception class or from the catch parameter's physical storage type.
+
+`Edg.Runtime.CppTypedHandlers.generated.cs` extends the shared contract only for
+modules using typed catches. `CppCatchType` carries original nominal identity,
+leaf identity and pointer qualifications. `FilterTypedCatch` performs first-pass
+matching without consuming the exception; `EnterTypedCatch` obtains a handler
+frame after protected-body cleanup. Its stable address denotes the selected base
+subobject for class references, or a per-handler converted pointer cell. The
+original thrown pointer remains intact for rethrow, as in EDG's C runtime.
+
+Parameter initialization is the existing EDG-selected expression/copy-constructor
+call, followed by the observed caught marker. Catch-by-value objects participate
+in the existing destructor state graph and die before the payload release state.
+A failure before the caught marker goes through `FilterHandlerFailure`, whose
+contract requires termination for a throwing parameter copy constructor.
+
+The fixture validates 14 native/stock-C/JIT/NativeAOT traces covering ordered
+matching, no numeric promotions, scalar references, class copies, nonzero base
+adjustment, qualified pointer catches and rethrow identity. Separate child
+processes verify parameter-copy failure termination in all four execution modes.
+Five malformed, SQL-valid and digest-resealed objects test missing/foreign
+addresses, wrong matching types, foreign parameter bindings and invalid order.
+
+The matching provider remains fixture-only. Unsupported source exception type
+identities, virtual-base conversions, constructor/destructor function-try blocks
+and flattened transfers across protected regions remain explicit gates. Ordinary
+function-try blocks follow EDG's ordinary try lowering; they do not require the
+constructor/destructor wrapper semantics. No frontend behavior was changed.
+
 ## Shared headers later
 
 Deduplicate identical source/token/constant bytes first. Sharing semantic header

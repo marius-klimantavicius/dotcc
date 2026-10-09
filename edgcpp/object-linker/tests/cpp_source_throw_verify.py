@@ -84,7 +84,7 @@ def main():
         report = json.loads((generated / 'link-report.json').read_text())
         runtime = report['sourceExceptionRuntime']
         check('explicit-unbound-provider', runtime['required'] and runtime['status'] == 'generation-only-unbound-provider')
-        check('only-ellipsis-handlers-supported', runtime['sourceHandlersSupported'] is True and runtime['sourceHandlerKinds'] == ['ellipsis'])
+        check('typed-and-ellipsis-handlers-supported', runtime['sourceHandlersSupported'] is True and runtime['sourceHandlerKinds'] == ['ellipsis', 'typed'])
         contract = (generated / 'Edg.Runtime.CppExceptions.generated.cs').read_text()
         check('required-partial-provider', 'partial' in contract and all(name in contract for name in
             ('Allocate', 'EnsureStarted', 'MarkComplete', 'ReleaseIncomplete', 'Rethrow')))
@@ -128,7 +128,7 @@ def main():
         unsupported = {
             'enum-identity': 'enum Code { value }; void reject() { throw value; }\n',
             'function-pointer-identity': 'void function() {} void reject() { throw &function; }\n',
-            'source-handler': 'int reject() { try { throw 7; } catch(int value) { return value; } }\n',
+            'function-try-handler': 'struct Rejected { Rejected() try { throw 7; } catch(...) {} }; void reject() { Rejected value; }\n',
             'payload-array-sequence-cleanup': '''extern void fail();
 static int destroyed;
 struct Member { Member(int value) { if(value==2) fail(); } ~Member() { ++destroyed; } };

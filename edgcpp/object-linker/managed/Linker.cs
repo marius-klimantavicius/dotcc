@@ -233,6 +233,7 @@ internal sealed partial class Linker
     }
 
     public bool RequiresExceptionProvider { get; private set; }
+    public Dictionary<(ObjectFile Object, long Id), SourceType> UsedCatchTypes { get; } = [];
     public bool RequiresSourceHandlers { get; private set; }
     public Dictionary<(ObjectFile Object, long Id), ExceptionType> UsedExceptionTypes { get; } = [];
 
@@ -246,6 +247,8 @@ internal sealed partial class Linker
                 _ = Resolve(symbol.Object, action.CallbackEntityId);
             foreach (Node node in body.Nodes.Values)
             {
+                if (node.Kind == "catch" && symbol.Object.SourceHandlers[node.Id].MatchTypeId is long matchType)
+                    UsedCatchTypes.TryAdd((symbol.Object, matchType), symbol.Object.SourceTypes[matchType]);
                 if (node.Kind is "throw" or "rethrow" or "try")
                 {
                     RequiresExceptionProvider = true;

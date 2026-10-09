@@ -1,0 +1,127 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v34",
+  "scope": "Owned ordered typed catch handlers, original parameter bindings/types and caught-object addresses; implemented by root alone",
+  "fullRegressionChecks": 1210,
+  "focusedChecks": 58,
+  "focusedExecutionScenarios": 14,
+  "malformedObjectsRejected": 5,
+  "catchParameterCopyFailureTerminationVerified": true,
+  "catchOnlyModuleWithoutThrowExpressionsVerified": true,
+  "priorCatchAllChecks": 57,
+  "priorCatchAllScenarios": 105,
+  "priorThrowInitializerChecks": 42,
+  "priorThrowInitializerScenarios": 60,
+  "priorSourceThrowGenerationChecks": 56,
+  "verifiedExecutionModes": [
+    "native C++ O0/O2",
+    "stock EDG C backend O0/O2",
+    "Linux x64 JIT",
+    "Linux x64 NativeAOT"
+  ],
+  "fixtureExceptionProviderOnly": true,
+  "productionExceptionProviderImplemented": false,
+  "edgSemanticChanges": false,
+  "validationBuilds": {
+    "native": "064",
+    "managed": "064",
+    "postBuildChanges": "Emitter indentation only; remaining changes are test/documentation/evidence updates."
+  },
+  "focusedCoverage": [
+    "ordered typed/ellipsis catches",
+    "nominal scalar identity without numeric promotion",
+    "scalar reference mutation and rethrow",
+    "derived-to-base class reference adjustment",
+    "EDG-selected catch-by-value copy constructor and destructor order",
+    "nonzero base-pointer adjustment",
+    "pointer qualification conversion",
+    "rethrow preserves original class type and pointer value",
+    "unnamed catch parameters",
+    "no-match propagation",
+    "parameter copy failure terminates before entering handler body",
+    "source-hidden linking",
+    "typed catch-only module with zero throw expressions and zero object-destructor actions, JIT and NativeAOT"
+  ],
+  "duckdb": {
+    "completeProjectGenerated": false,
+    "selectedOriginalUnits": 5,
+    "packagedUnits": [
+      "src/common/types/hugeint.cpp"
+    ],
+    "hugeintVerified": true,
+    "hugeintCSharpGenerated": true,
+    "emittedFunctionDefinitions": 280,
+    "hugeintCompiledOrExecuted": false,
+    "remainingSampledGates": {
+      "exception.cpp": "source declaration type outside supported profile",
+      "date.cpp": "source declaration type outside supported profile",
+      "allocator.cpp": "initialization with destructor",
+      "string_util.cpp": "virtual base/VTT execution layout"
+    }
+  },
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v34-001/results.json",
+      "sha256": "27d5e3decef3634a7b4eee57f088fb9f09f2fdb77fb1c35708bec59e10e88795"
+    },
+    "focusedAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-typed-catch-v34-002/results.json",
+      "sha256": "7fc96fdce014f405244afe54fb9728b7e3e501d949b82673c7010ce0fa84743f"
+    },
+    "catchOnlyExecution": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-typed-catch-only-001/results.json",
+      "sha256": "a9ef089bdf5e92be6263df39919cb7932e8898c29d5d9d030369ad868209c03b"
+    },
+    "priorCatchAll": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-catch-all-v34-001/results.json",
+      "sha256": "873658733c22f952509599a5ffa3fa66133bbe28671f5217aa33b553029956ea"
+    },
+    "priorThrowInitializer": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-throw-initializer-v34-001/results.json",
+      "sha256": "2f15beebce9e616a95170b4f3c42a1196a4588456a20a7b1eaffa440afc58b8f"
+    },
+    "priorSourceThrowGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-throw-v34-002/results.json",
+      "sha256": "9c74ac97b7fc881d55f05c1c63d030ea27fb0341a93b2d664be5318e21fe3869"
+    },
+    "originalDuckdbProbe": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-064-typed-handlers/results.json",
+      "sha256": "095335b9cbdbda5cc0b975065b0a0f3804f610b5fb111671ab24414713c1326d"
+    },
+    "hugeintGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-064-typed-handlers/hugeint-generation.json",
+      "sha256": "6ce8e2c05e3db0be4f1516e556455898193eab78e70e5e82108e3d234d55d465"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native064-verified-snapshot/cpfe-dot",
+      "sha256": "bf7afde9c0fbaa7f30d10894fc6bb50d924803b3210408300104b1b8f01b2b9c"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-064/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "259778bee762abe334d696563c5480ac98d4b6d15ca5f810db059c8af951fd14"
+    },
+    "toolingManifest": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v34-tooling-snapshot-001/sha256.json",
+      "sha256": "ae03ca24412db0c7aa7f4f35efe6532a53cc035270f836acb445306ea26d0021"
+    },
+    "generatedTypedCatch": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-typed-catch-v34-002/generated/Translated.0000.cpp_typed_catch_u002e_cpp.cs",
+      "sha256": "edb424a1ce4cb0cbaddcd402b55d45aa9ce9855d4e4a5e14ea8d49b0b437e9ae"
+    }
+  },
+  "review": {
+    "typedCatch": "edgcpp/artifacts/review/dotobj-typed-catch/Translated.0000.cpp_typed_catch_u002e_cpp.cs",
+    "hugeint": "edgcpp/artifacts/review/duckdb-dotobj-hugeint/Translated.0000.hugeint_u002e_cpp.cs"
+  },
+  "remaining": [
+    "The shared production matching and exception-ownership provider remains unbound; fixture bodies are not a production runtime.",
+    "Constructor/destructor function-try blocks and flattened control transfers across protected regions remain explicit gates. Ordinary function-try blocks follow EDG ordinary try lowering.",
+    "Unsupported original exception identity categories and virtual-base conversions remain gates.",
+    "Array-sequence, virtual-base/VTT and delegated payload rollback remain explicit gates.",
+    "Post-start throw-copy failure, destructor failure during active unwinding and cross-thread exception transfer are not covered by this fixture.",
+    "Full DuckDB generation, compilation and execution remain incomplete."
+  ],
+  "workStatus": "Phase complete; stop at this boundary and await user direction.",
+  "retainIntermediates": true
+}

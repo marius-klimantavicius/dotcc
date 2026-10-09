@@ -1404,3 +1404,24 @@ Typed matching and catch-parameter initialization, function-try blocks, and
 flattened control transfers across protected regions remain rejected. Fixture
 JIT/NativeAOT execution validates the generated contract; it does not implement
 the shared production exception runtime.
+
+## Ordered typed catch parameters (profile v34)
+
+Profile v34 supersedes the v33 typed-handler exclusion. Try nodes own one or more
+ordered handler edges, each verified against its original handler ordinal.
+Typed source-handler rows retain original parameter type, reference-stripped
+matching type and local binding; ellipsis rows have none of these. The verifier
+checks the parameter's original declaration and body scope. Ellipsis is last.
+
+The new `caught-object-address` expression is a `void*` value with no children;
+`caught_object_addresses` maps it to the exact typed handler. Its expression
+must occur inside that handler's region. Generated C# obtains it from the shared
+provider's typed catch frame, preserving base adjustments and stable storage for
+converted pointer values. EDG's parameter copy/reference initialization and
+destructor order remain executable graph operations. The caught marker separates
+parameter-initialization failure (termination) from exceptions in the handler.
+
+The [format specification](../docs/dotobj-format.md) documents the additional
+`CppTypedHandlers` ABI. Its production provider remains required and unbound.
+Ordinary function-try blocks follow ordinary try lowering; constructor/destructor
+function-try blocks and array/VTT cleanup remain gated.
