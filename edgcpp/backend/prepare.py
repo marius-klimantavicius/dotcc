@@ -575,6 +575,8 @@ object_source_overlay(init_lower,
 object_source_overlay(il_source,
     '  return expr_copy;\n}  /* i_copy_expr_tree */',
     '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_throw_copy(expr, expr_copy,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '  dot_object_source::observe_record_transfer_copy(expr, expr_copy,\n'
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '  dot_object_source::observe_normal_destruction_copy(expr, expr_copy,\n'
@@ -589,6 +591,8 @@ object_source_overlay(il_source,
 object_source_overlay(il_source,
     '  return expr_copy;\n}  /* copy_node */',
     '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_throw_copy(expr, expr_copy,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '  dot_object_source::observe_record_transfer_copy(expr, expr_copy,\n'
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '#endif\n'
@@ -620,3 +624,27 @@ object_source_overlay(lower,
     '        innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "temporary");\n'
     '#endif\n'
     '      (void)insert_expr_statement(temp_node, insert_location);')
+
+
+# Typed throw initialization and exact runtime-address/start ownership.
+object_source_overlay(eh_lower,
+    '  /* Check for a throw with no operand, i.e., a rethrow. */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::ThrowCapture dot_object_throw_capture(expr,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n'
+    '  /* Check for a throw with no operand, i.e., a rethrow. */')
+object_source_overlay(eh_lower,
+    '  return node;\n}  /* make_thrown_object_address_node */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_throw_construct(node, false);\n'
+    '#endif\n'
+    '  return node;\n}  /* make_thrown_object_address_node */')
+object_source_overlay(eh_lower,
+    '                          (a_lowered_eh_construct_kind)leck_exception_started);\n'
+    '    (void)insert_expr_statement(node, insert_location);',
+    '                          (a_lowered_eh_construct_kind)leck_exception_started);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_throw_construct(node, true);\n'
+    '#endif\n'
+    '    (void)insert_expr_statement(node, insert_location);')

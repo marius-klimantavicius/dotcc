@@ -652,3 +652,32 @@ payload construction and destruction, start/completion ordering and rethrow.
 Broader exception semantics have a separate nine-check native/stock-C
 [oracle baseline](../evidence/dotobj-source-eh-oracle-20261009.json); this is
 not an owned source exception implementation or execution claim.
+
+## Bounded source throw/rethrow generation, v30 (2026-10-09)
+
+Original exception identity, payload layout and destruction requirements now
+survive independently of EDG. Owned initializer addresses and start markers
+retain exact throw ownership; generated C# preserves selected construction,
+start/completion order, complete-object destruction and dynamic rethrow.
+Conditional throw arms emit the real terminal operation and omit unreachable
+stock placeholders. Source handlers and initializer cleanup boundaries remain
+explicitly unsupported.
+
+Native055/managed052 passes **56 generation checks**, including cross-unit
+descriptor identity, six resealed semantic rejections and four unsupported-source
+rejections. Source-hidden linking succeeds with --allow-externs. The C# compiler
+reports only six deliberately unbound runtime partial methods, not other C#
+errors. The required Edg.Runtime.CppExceptions contract has no invented provider
+bodies; this is not source-exception execution acceptance. Existing scalar
+cleanup/materialization and record-transport tests pass75 checks under JIT and
+NativeAOT. The last full regression remains profile29's1210 checks.
+[Hashed v30 evidence](../evidence/dotobj-source-throw-20261009.json) separates
+these claims and retains exact tools/receipts.
+
+The selected original DuckDB units now expose throw-initializer cleanup as the
+next common gate. GetIndex constructs a std::string argument temporary before
+constructing its exception; failure must clean that temporary before releasing
+payload storage, then preserve the outer function's remaining cleanup. Hugeint
+advances from Convert to NegateInPlace. string_util still requires the live
+stringstream hierarchy's virtual-base/VTT layout. Full DuckDB C# generation
+remains incomplete; the next work owns these initialization boundaries.

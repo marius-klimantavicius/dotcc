@@ -3,7 +3,7 @@ namespace DotObj;
 internal static class Verifier
 {
     private static readonly HashSet<string> StatementKinds = ["memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
-    private static readonly HashSet<string> ExpressionKinds = ["record-transfer", "materialize", "lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
+    private static readonly HashSet<string> ExpressionKinds = ["throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -103,6 +103,7 @@ internal static class Verifier
         bool LocalPlace(Node node, int depth = 0) => depth <= 1024 && (node.Kind == "binding" &&
             body.Bindings.TryGetValue(node.BindingId!.Value, out Binding? local) && local.Kind == "local" ||
             node.Kind is "member" or "lifetime-scope" && LocalPlace(Child(node, "operand"), depth + 1));
+        var activeThrows = new Stack<long>();
         void Visit(Node node, List<long> scopes, HashSet<long> visible, List<long> controls, int depth)
         {
             if (depth > 1024) Fail("Graph nesting exceeds supported limit");
@@ -115,11 +116,12 @@ internal static class Verifier
             else
             {
                 string type = Type(node);
-                if (type == "void" && node.Kind is not ("call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional" or "cleanup-transition" or "cleanup-frame" or "lifetime-scope")) Fail("Only calls and explicit void operations can have void type");
+                if (type == "void" && node.Kind is not ("call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional" or "cleanup-transition" or "cleanup-frame" or "lifetime-scope" or "throw" or "throw-marker" or "rethrow")) Fail("Only calls and explicit void operations can have void type");
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
                 string[] orders = node.Kind is "cleanup-transition" or "cleanup-frame" or "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
                 if (node.Kind is "cleanup-transition" or "cleanup-frame" or "base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
-                if (node.Kind == "materialize") orders = ["left-to-right"];
+                if (node.Kind is "thrown-object-address" or "throw-marker" or "rethrow") orders = ["none"];
+                if (node.Kind is "materialize" or "throw") orders = ["left-to-right"];
                 if (node.Kind is "assign" or "record-transfer" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
                 if (node.Kind is "address" or "dereference" or "array-decay" or "member" or "va-start" or "va-copy" or "va-end" or "va-arg") orders = ["none", "left-to-right", "unspecified"];
                 if (!orders.Contains(node.EvaluationOrder)) Fail($"Unsupported evaluation order at {node.Id}");
@@ -151,6 +153,7 @@ internal static class Verifier
                         node.Kind == "declare" && edge.Role == "initializer" && child.Kind == "default-value" ||
                         child.Kind is "assign" or "record-transfer" &&
                         (node.Kind == "expr-stmt" && edge.Role == "value" ||
+                         node.Kind == "throw" && edge.Role == "initializer" ||
                          node.Kind == "sequence" && child.Id != SequenceTail(node).Id ||
                          node.Kind == "convert" && Type(node) == "void" && edge.Role == "operand");
                     bool copyAllowed = node.Kind == "record-transfer" && edge.Role == "value"
@@ -179,6 +182,31 @@ internal static class Verifier
             }
             switch (node.Kind)
             {
+                case "throw":
+                    if (Type(node) != "void" || !obj.ThrowExpressions.TryGetValue(node.Id, out ThrowExpression? thrown))
+                        Fail("Throw lacks its observed payload initialization");
+                    bool hasInitializer = thrown!.InitializationKind == "expression";
+                    EdgeShape(node, ("initializer", hasInitializer ? 1 : 0, hasInitializer ? 1 : 0));
+                    if (hasInitializer) Expr(node, "initializer", true);
+                    activeThrows.Push(node.Id);
+                    break;
+                case "thrown-object-address":
+                    EdgeShape(node);
+                    if (Type(node) != "ptr(void)" || activeThrows.Count == 0 ||
+                        !obj.ThrowObjectAddresses.TryGetValue(node.Id, out long throwOwner) || throwOwner != activeThrows.Peek())
+                        Fail("Thrown object address requires its exact lexical initializer and original void-pointer type");
+                    break;
+                case "throw-marker":
+                    EdgeShape(node);
+                    if (Type(node) != "void" || activeThrows.Count == 0 ||
+                        !obj.ThrowMarkers.TryGetValue(node.Id, out long markerOwner) || markerOwner != activeThrows.Peek())
+                        Fail("Throw-start marker requires its exact lexical initializer");
+                    break;
+                case "rethrow":
+                    EdgeShape(node);
+                    if (Type(node) != "void" || !obj.RethrowExpressions.Contains(node.Id))
+                        Fail("Rethrow requires original throw provenance");
+                    break;
                 case "materialize":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
                     if (!ScalarTypes.IsRecord(Type(node)) || !obj.CanTransportRecord(Type(node)) ||
@@ -195,6 +223,8 @@ internal static class Verifier
                     EdgeShape(node);
                     if (Type(node) != "void" || !obj.CleanupTransitions.TryGetValue(node.Id, out CleanupTransition? transition))
                         Fail("Cleanup transition lacks its observed marker metadata");
+                    if (activeThrows.Count != 0 && !obj.CleanupTransitions[node.Id].IsUnreachable)
+                        Fail("Throw initializer cleanup transitions require owned partial-payload release scheduling");
                     cleanupVisibility.Add(node.Id, new HashSet<long>(visible));
                     break;
                 case "cleanup-frame":
@@ -665,6 +695,7 @@ internal static class Verifier
             var nestedControls = node.Kind is "while" or "for" or "do-while" or "switch" ? new List<long>(controls) { node.Id } : controls;
             foreach (Edge edge in body.Edges.GetValueOrDefault(node.Id, []).Where(edge => node.Kind != "case" || edge.Role != "target").OrderBy(e => e.Ordinal))
                 Visit(body.Nodes[edge.ChildId], scopes, visible, nestedControls, depth + 1);
+            if (node.Kind == "throw") activeThrows.Pop();
         }
         foreach (var edges in body.Edges.Values)
             foreach (Edge edge in edges)

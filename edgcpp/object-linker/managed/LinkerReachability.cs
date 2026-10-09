@@ -77,6 +77,8 @@ internal sealed partial class Linker
                     ReferenceFunction(symbol.Object, action.CallbackEntityId);
                 foreach (Node node in body.Nodes.Values)
                 {
+                    if (node.Kind == "throw" && symbol.Object.ThrowExpressions[node.Id].DestructorEntityId is long destructor)
+                        ReferenceFunction(symbol.Object, destructor);
                     if (node.EntityId is long entity) ReferenceFunction(symbol.Object, entity);
                     if (node.StorageId is long storage) ReferenceStorage(symbol.Object, storage);
                 }

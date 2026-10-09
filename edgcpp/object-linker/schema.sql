@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v29'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v30'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -570,4 +570,47 @@ CREATE TABLE content_digest (
 CREATE INDEX source_declarations_by_function ON source_declarations(function_entity_id,id);
 CREATE INDEX nodes_by_function ON nodes(function_id,id);
 CREATE INDEX bindings_by_function ON bindings(function_id,id);
+CREATE TABLE exception_types (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ leaf_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ payload_type_id INTEGER NOT NULL REFERENCES types(id),
+ payload_size INTEGER NOT NULL CHECK(payload_size>0),
+ payload_alignment INTEGER NOT NULL CHECK(payload_alignment>0),
+ source_destructor_entity_id INTEGER REFERENCES source_functions(entity_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-throw-lowering')
+) STRICT;
+CREATE TABLE exception_base_conversions (
+ exception_type_id INTEGER NOT NULL REFERENCES exception_types(id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ base_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ byte_offset INTEGER NOT NULL CHECK(byte_offset>=0),
+ is_public INTEGER NOT NULL CHECK(is_public IN (0,1)),
+ is_ambiguous INTEGER NOT NULL CHECK(is_ambiguous IN (0,1)),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-complete-base-layout'),
+ PRIMARY KEY(exception_type_id,ordinal)
+) STRICT;
+CREATE TABLE throw_expressions (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ exception_type_id INTEGER NOT NULL REFERENCES exception_types(id),
+ destructor_entity_id INTEGER REFERENCES entities(id),
+ initialization_kind TEXT NOT NULL CHECK(initialization_kind IN ('empty','expression')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-throw-lowering')
+) STRICT;
+CREATE TABLE throw_object_addresses (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ throw_node_id INTEGER NOT NULL REFERENCES throw_expressions(node_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-thrown-object-address')
+) STRICT;
+CREATE TABLE throw_markers (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ throw_node_id INTEGER NOT NULL REFERENCES throw_expressions(node_id),
+ kind TEXT NOT NULL CHECK(kind='started'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-throw-start')
+) STRICT;
+CREATE TABLE rethrow_expressions (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-rethrow')
+) STRICT;
+
 COMMIT;

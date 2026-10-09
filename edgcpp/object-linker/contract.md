@@ -1330,3 +1330,48 @@ C++ constructor/destructor is introduced by managed execution storage.
 Zero initialization of owned fixed record storage remains separate from a value
 copy. An ordinary-layout record with a flexible array tail may zero its fixed
 prefix; this does not permit reading or copying the unspecified tail.
+
+## Owned source throw/rethrow generation (profile v30)
+
+`exception_types` owns original source type and unqualified leaf identity, exact
+payload storage size/alignment and the original source destructor requirement.
+Linking erases aliases and top-level cv while retaining pointer-level cv, exact
+builtin categories and canonical original class identities. `long` and
+`long long` therefore remain distinct even when their storage ABI is identical.
+`exception_base_conversions` retains every observed nonvirtual candidate,
+including offsets, public accessibility and ambiguity. Reader checks require
+complete matching source base paths; no base-access decision is guessed from a
+physical struct or C# name.
+
+`throw_expressions` owns the selected complete-object destructor callback iff
+its descriptor requires destruction, and records empty versus expression
+initialization. Empty-class throws can legitimately have no initializer.
+`throw_object_addresses` and `throw_markers` identify their exact lexical throw
+owner; expression copies preserve this correspondence. The original initializer
+places the payload directly. Non-elided copies retain the exception-start marker
+after source evaluation and before copying, separately from payload completion.
+`rethrow_expressions` requests dynamic active-handler propagation, not a lexical
+catch lookup or construction of a replacement exception object.
+
+Generated code calls the required shared `Edg.Runtime.CppExceptions` partial ABI
+for allocation, start, completion, initialization-failure policy, incomplete
+release and rethrow. The descriptor and complete-destructor adapter are emitted
+from owned graph facts. No provider bodies or generic exception-message substitute
+are generated. Strict linking rejects the missing provider. `--allow-externs`
+emits source and a manifest status `generation-only-unbound-provider`; these
+outputs are not a runnable C++ exception implementation. Source handlers remain
+unsupported.
+
+Any operative cleanup-state transition in a throw initializer currently rejects.
+A partially built payload or argument temporary may need same-function cleanup
+before payload release; a future owned cleanup boundary must represent that
+ordering. Unreachable state annotations do not perform a transition. Constructor
+callees retain their existing frame cleanup. Other explicit gates include enum,
+function/member-pointer, nullptr and special-character exception identity,
+incomplete class leaves and virtual-base conversions.
+
+Stock lowering may make a conditional arm `(throw, typed-placeholder)`. The graph
+retains that structure; emission recognizes the proven terminal throw and emits
+its preceding effects followed by the actual throw, omitting the unreachable
+placeholder. It does not introduce a default return or evaluate a null record
+dereference. Normal branches still assign the conditional result.

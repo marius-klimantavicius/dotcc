@@ -232,8 +232,12 @@ internal sealed partial class Linker
         return entry;
     }
 
+    public bool RequiresExceptionProvider { get; private set; }
+    public Dictionary<(ObjectFile Object, long Id), ExceptionType> UsedExceptionTypes { get; } = [];
+
     public void VerifyBodies()
     {
+        var exceptionShapes = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (Symbol symbol in Definitions)
         {
             FunctionBody body = symbol.Object.ReadBody(symbol.Entity.Id);
@@ -241,6 +245,26 @@ internal sealed partial class Linker
                 _ = Resolve(symbol.Object, action.CallbackEntityId);
             foreach (Node node in body.Nodes.Values)
             {
+                if (node.Kind is "throw" or "rethrow")
+                {
+                    RequiresExceptionProvider = true;
+                    if (!allowExterns) throw new InvalidDataException("Source exceptions require the shared Edg.Runtime.CppExceptions provider; use --allow-externs for generation-only output");
+                    if (node.Kind == "throw")
+                    {
+                        ThrowExpression expression = symbol.Object.ThrowExpressions[node.Id];
+                        ExceptionType descriptor = symbol.Object.ExceptionTypes[expression.ExceptionTypeId];
+                        string destructorIdentity = descriptor.SourceDestructorEntityId is long primary
+                            ? new Symbol(symbol.Object, symbol.Object.Entities[primary]).Key + ":" + symbol.Object.FunctionSourceSignature(primary) : "none";
+                        string shape = descriptor.PayloadSize + ":" + descriptor.PayloadAlignment + ":" + destructorIdentity + ":" +
+                            string.Join(";", symbol.Object.ExceptionBases[descriptor.Id].Select(item =>
+                                symbol.Object.ExceptionTypeIdentity(item.BaseSourceTypeId) + ":" + item.ByteOffset + ":" + item.IsPublic + ":" + item.IsAmbiguous).Order(StringComparer.Ordinal));
+                        if (exceptionShapes.TryGetValue(descriptor.IdentityKey, out string? previous) && previous != shape)
+                            throw new InvalidDataException("Exception descriptor layout or resolved base facts disagree across translation units");
+                        exceptionShapes[descriptor.IdentityKey] = shape;
+                        UsedExceptionTypes.TryAdd((symbol.Object, expression.ExceptionTypeId), descriptor);
+                        if (expression.DestructorEntityId is long callback) _ = Resolve(symbol.Object, callback);
+                    }
+                }
                 if (node.Kind is "call" or "register-cleanup" or "function-address") _ = Resolve(symbol.Object, node.EntityId!.Value);
                 if (node.Kind == "storage") _ = ResolveStorage(symbol.Object, node.StorageId!.Value);
                 if (node.Kind == "storage-address") RequireStorageExtent(symbol.Object, node.StorageId!.Value,

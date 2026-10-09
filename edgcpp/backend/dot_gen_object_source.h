@@ -132,6 +132,11 @@ struct PrelowerBase {
   bool is_virtual=false;
   std::string access;
 };
+struct ExceptionBaseSnapshot {
+  unsigned source_type=0;
+  unsigned long long offset=0;
+  bool is_public=false,is_ambiguous=false,is_virtual=false;
+};
 struct PrelowerRecord {
   a_source_position position={};
   std::string name,error;
@@ -140,6 +145,7 @@ struct PrelowerRecord {
   unsigned long long size=0,alignment=0;
   std::vector<PrelowerField> fields;
   std::vector<PrelowerBase> bases;
+  std::vector<ExceptionBaseSnapshot> exception_bases;
 };
 struct RoutineAbi {
   std::string proof,error;
@@ -207,6 +213,15 @@ struct RecordTransferSnapshot {
   an_expr_node_ptr target=nullptr,value=nullptr;
   std::string kind;
 };
+struct ThrowSnapshot {
+  an_expr_node_ptr original=nullptr,initializer=nullptr;
+  a_routine_ptr owner=nullptr,destructor=nullptr;
+  a_type_ptr payload_type=nullptr,leaf_type=nullptr;
+  unsigned source_type=0,leaf_source_type=0;
+  unsigned long long size=0,alignment=0;
+  bool rethrow=false,complete=false;
+  std::string error;
+};
 struct NormalDestruction {
   a_routine_ptr owner=nullptr,callback=nullptr;
   a_dynamic_init_ptr original=nullptr;
@@ -223,6 +238,9 @@ struct State {
   std::map<an_object_lifetime_ptr,an_object_lifetime_ptr> lifetime_copies;
   std::map<a_constant_ptr,CleanupSnapshot> cleanup_regions;
   std::map<an_expr_node_ptr,RecordTransferSnapshot> record_transfers;
+  std::map<an_expr_node_ptr,ThrowSnapshot> throws;
+  std::map<an_expr_node_ptr,an_expr_node_ptr> throw_addresses,throw_markers;
+  std::vector<an_expr_node_ptr> active_throws;
   std::vector<NormalDestruction> normal_destruction_contexts;
   std::map<an_expr_node_ptr,NormalDestruction> normal_destruction_calls;
   std::map<a_routine_ptr,std::vector<an_expr_node_ptr>> normal_destruction_order;
@@ -833,6 +851,83 @@ inline void observe_record_transfer_copy(an_expr_node_ptr original,an_expr_node_
      found->second.target->next!=found->second.value)return;
   observe_record_transfer(copy,owner,found->second.kind.c_str());
 }
+// The throw initializer owns payload addresses and start markers. These maps
+// retain exact IL correspondence through both shallow and recursive copies.
+struct ThrowCapture {
+  an_expr_node_ptr expr=nullptr;
+  ThrowCapture(an_expr_node_ptr value,a_routine_ptr owner) {
+    if(!enabled())return;
+    expr=value;ThrowSnapshot saved;saved.original=value;saved.owner=owner;
+    if(!owner || !value || value->kind!=enk_throw) {expr=nullptr;return;}
+    auto tsp=value->variant.throw_info;saved.rethrow=tsp==nullptr;
+    if(tsp) {
+      saved.source_type=capture_type(tsp->type);saved.payload_type=tsp->type;
+      saved.destructor=tsp->destructor;
+      if(saved.destructor) {auto primary=abi_primary(saved.destructor);if(primary)saved.destructor=primary;}
+      auto leaf=tsp->type;unsigned depth=0;
+      while(true) {
+        if(is_or_was_nullptr_type(leaf)) {saved.error="nullptr exception identity not yet owned";break;}
+        leaf=skip_typerefs(leaf);
+        if(leaf->kind!=tk_pointer)break;
+        if(leaf->variant.pointer.is_reference) {saved.error="reference exception payload";break;}
+        ++depth;leaf=leaf->variant.pointer.type;
+      }
+      saved.leaf_type=skip_typerefs(leaf);leaf=saved.leaf_type;
+      if(leaf->kind==tk_integer) {
+        auto &i=leaf->variant.integer;
+        if((i.enum_type && !i.bool_type) || i.wchar_t_type || i.char8_t_type || i.char16_t_type || i.char32_t_type)
+          saved.error="exception nominal/special-character identity not yet owned";
+      } else if(leaf->kind==tk_struct || leaf->kind==tk_class || leaf->kind==tk_union) {
+        if(leaf->incomplete)saved.error="incomplete exception record leaf";
+      } else if(leaf->kind!=tk_float && !(leaf->kind==tk_void && depth))
+        saved.error="exception type outside builtin/record/data-pointer identity";
+      saved.leaf_source_type=capture_type(leaf);
+      auto payload=skip_typerefs(tsp->type);saved.size=payload->size;saved.alignment=payload->alignment;
+    }
+    state().throws[value]=saved;state().active_throws.push_back(value);
+  }
+  ~ThrowCapture() {
+    if(!expr)return;
+    auto &saved=state().throws.at(expr);
+    if(expr->kind!=enk_throw)saved.error="observed throw was fully lowered";
+    else if(saved.rethrow) {
+      if(expr->variant.throw_info)saved.error="observed rethrow gained payload";
+      else saved.complete=true;
+    } else if(!expr->variant.throw_info || expr->variant.throw_info->dynamic_init)
+      saved.error="observed throw initializer was not consumed";
+    else {saved.initializer=expr->variant.throw_info->expr;saved.complete=true;}
+    state().active_throws.pop_back();
+  }
+};
+inline void observe_throw_construct(an_expr_node_ptr expr,bool marker) {
+  if(!enabled() || state().active_throws.empty())return;
+  auto owner=state().active_throws.back();
+  if(marker)state().throw_markers[expr]=owner;
+  else state().throw_addresses[expr]=owner;
+}
+inline void observe_throw_copy(an_expr_node_ptr original,an_expr_node_ptr copy,a_routine_ptr owner) {
+  if(!enabled() || !owner || !original || !copy || original==copy)return;
+  auto found=state().throws.find(original);
+  if(found!=state().throws.end() && copy->kind==enk_throw) {
+    auto saved=found->second;
+    auto old_owner=abi_primary(saved.owner);if(!old_owner)old_owner=saved.owner;
+    auto new_owner=abi_primary(owner);if(!new_owner)new_owner=owner;
+    if(old_owner==new_owner && saved.complete &&
+       saved.rethrow==(copy->variant.throw_info==nullptr)) {
+      saved.owner=owner;saved.initializer=copy->variant.throw_info?copy->variant.throw_info->expr:nullptr;
+      state().throws[copy]=saved;
+    }
+  }
+  if(copy->kind==enk_lowered_eh_construct) {
+    if(copy->variant.lowered_eh.kind==leck_thrown_object_address) {
+      auto address=state().throw_addresses.find(original);
+      if(address!=state().throw_addresses.end())state().throw_addresses[copy]=address->second;
+    } else if(copy->variant.lowered_eh.kind==leck_exception_started) {
+      auto marker=state().throw_markers.find(original);
+      if(marker!=state().throw_markers.end())state().throw_markers[copy]=marker->second;
+    }
+  }
+}
 inline void observe_lifetime_copy(an_object_lifetime_ptr original,an_object_lifetime_ptr copy) {
   if(enabled() && original && copy && original!=copy)state().lifetime_copies.emplace(copy,original);
 }
@@ -1088,6 +1183,13 @@ inline void observe_record_before_prelowering(a_type_ptr type) {
     }
     if(item.access.empty())item.access="unknown";
     value.bases.push_back(item);
+  }
+  if(supplement)for(auto base=supplement->base_classes;base;base=base->next) {
+    ExceptionBaseSnapshot item;
+    item.source_type=capture_type(base->orig_type?base->orig_type:base->type);
+    item.offset=base->offset;item.is_public=base->has_public_derivation;
+    item.is_ambiguous=base->ambiguous;item.is_virtual=base->is_virtual;
+    value.exception_bases.push_back(item);
   }
   s.prelower_records.emplace(type,value);
 }

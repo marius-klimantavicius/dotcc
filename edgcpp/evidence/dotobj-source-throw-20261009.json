@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-09",
+  "status": "generation-only-passed",
+  "profile": "scalar-control-v30",
+  "scope": "Bounded owned C++ throw/rethrow semantic graph and C# generation; shared exception runtime deliberately unbound",
+  "generationChecks": 56,
+  "semanticMalformedObjectsRejected": 6,
+  "explicitUnsupportedSourceFormsRejected": 4,
+  "compatibilityExecutionChecks": 75,
+  "newSourceExceptionExecutionVerified": false,
+  "newSourceExceptionNativeAotVerified": false,
+  "compatibilityNativeAotVerified": true,
+  "artifacts": {
+    "generation": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-throw-acceptance-001/results.json",
+      "sha256": "b51abf394fcbb2351f2536ecc4b568ca98862ae22053edf20a9e47b6b1b2bf11"
+    },
+    "cleanupCompatibility": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-cleanup-compatibility-v30-001/results.json",
+      "sha256": "79e28c27f751e58a1be3a9d241fabe33a25716c969ea7226ff463c53abbadc99"
+    },
+    "recordTransportCompatibility": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-transport-compatibility-v30-001/results.json",
+      "sha256": "e186a797134935af9acc10949eb4b0ac7cc2f04268548b45ad33e2edec854f37"
+    },
+    "actualDuckdbFrontier": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-055-throw/results.json",
+      "sha256": "687c5b320892a0e178dc8ed19369805d53a235aa60faaa53b81754de89888a23"
+    },
+    "stockThrowContract": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-throw-native-v30-draft-001/contract.txt",
+      "sha256": "06083176eef055f821cba7bfe2f7656728919957acb373fd87b2d7e07dceb482"
+    },
+    "partialPayloadNativeOracle": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-throw-native-v30-draft-001/aggregate-native-oracle.json",
+      "sha256": "69b367ac94eced355cf6320dfd42ccee4d4e21a5af1ea38519969377885cce7f"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native055-verified-snapshot/cpfe-dot",
+      "sha256": "7adc7a6fed0c8ce5787e8e259ed7cff3b0463f5d5a62752458c7f7ce6fe1709e"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-052/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "a38ca29dbbd297751dc15b8aacccaf65e54cb4a890ca5ee8dac0255acca48dfd"
+    }
+  },
+  "coverage": [
+    "17 source throws and one dynamic rethrow, plus independently packaged secondary unit",
+    "Original builtin identity including long versus long-long, aliases and pointer qualification chains",
+    "Canonical descriptors coalesced across units; public nonzero, private and ambiguous nonvirtual base facts",
+    "Empty payload construction and exact complete-object destruction of directly constructed and copied class payloads",
+    "Start marker before non-elided copy, completion after initializer, distinct required shared provider operations",
+    "Conditional scalar/record throw branches omit unreachable stock placeholders; nonvoid terminal throw has no fabricated fallback",
+    "Source-hidden generation; strict missing-provider rejection; compiler reports only required unbound-partial CS8795 errors",
+    "Malformed payload layout, missing/wrong destructor, foreign initializer owner and missing throw/rethrow proof reject after valid digest resealing"
+  ],
+  "limitations": [
+    "No new C++ exception runtime execution claim: all six required Edg.Runtime.CppExceptions partial implementations remain unbound.",
+    "Source handlers/catch parameter initialization/handler release and throw-initializer cleanup boundaries remain explicit gates.",
+    "Enum/function/member-pointer/nullptr/special-character identities, incomplete record leaves and virtual exception base conversion remain gated.",
+    "Latest full regression is profile29 native054/managed051 with1210 checks. Profile30 has targeted75-check JIT/NativeAOT compatibility."
+  ],
+  "projectScope": "The four previously gated DuckDB throw units now reach required throw-initializer cleanup boundaries; hugeint progresses from Convert to NegateInPlace. GetIndex needs its std::string argument temporary cleaned before payload release. string_util still needs virtual-base/VTT layout. No complete DuckDB unit generation claim.",
+  "priority": "Continue core dotobj toward complete DuckDB C# generation; next own throw-initializer cleanup boundaries, with libc++ runtime work deferred."
+}

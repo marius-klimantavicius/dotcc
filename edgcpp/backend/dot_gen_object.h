@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v29: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v30: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -50,6 +50,13 @@ struct Writer {
   std::map<a_dynamic_init_ptr,unsigned> source_obligation_ids;
   std::vector<string> source_lifetimes,source_destruction_obligations,cleanup_actions,cleanup_states,cleanup_transitions,cleanup_frame_markers;
   std::vector<string> expression_lifetimes,cleanup_conditions;
+  std::vector<string> exception_types,exception_base_conversions,throw_expressions,throw_object_addresses,throw_markers,rethrow_expressions;
+  std::map<unsigned,unsigned> exception_type_ids;
+  std::map<unsigned,a_routine_ptr> exception_source_destructors;
+  std::map<a_routine_ptr,a_routine_ptr> complete_exception_destructors;
+  bool exception_destructors_indexed=false;
+  an_expr_node_ptr active_throw_origin=nullptr;
+  unsigned active_throw_node=0;
   struct NodeShape {unsigned type=0;bool place=false;};
   std::vector<NodeShape> node_shapes;
   std::map<a_routine_ptr,unsigned> routine_ids;
@@ -1197,6 +1204,8 @@ struct Writer {
   }
   unsigned cleanup_marker(an_expr_node_ptr expr) {
     auto &value=expr->variant.lowered_eh;
+    if(active_throw_node && value.kind==leck_cleanup_state)
+      reject("throw initializer cleanup needs an owned payload release boundary");
     if(value.kind==leck_cleanup_state || value.kind==leck_unreachable_cleanup_state) {
       unsigned state=0;auto raw=value.variant.cleanup_region_number;
       if(raw!=null_eh_region_number) {
@@ -1828,6 +1837,115 @@ struct Writer {
     }
     return result;
   }
+  unsigned exception_descriptor(const dot_object_source::ThrowSnapshot &saved) {
+    if(!saved.error.empty())reject(saved.error.c_str());
+    auto prior=exception_type_ids.find(saved.source_type);
+    if(prior!=exception_type_ids.end()) {
+      if(exception_source_destructors.at(saved.source_type)!=saved.destructor)
+        reject("inconsistent observed source exception destructor");
+      return prior->second;
+    }
+    if(!saved.size || !saved.alignment || saved.alignment>4096 ||
+       (saved.alignment&(saved.alignment-1)))reject("invalid observed exception payload storage");
+    auto payload=skip_typerefs(saved.payload_type);
+    if(payload->size!=saved.size || payload->alignment!=saved.alignment)
+      reject("exception payload layout changed after source observation");
+    unsigned id=unsigned(exception_type_ids.size()+1);exception_type_ids[saved.source_type]=id;
+    exception_source_destructors[saved.source_type]=saved.destructor;
+    unsigned source=source_type(saved.source_type),leaf=source_type(saved.leaf_source_type);
+    unsigned source_destructor=saved.destructor?routine(saved.destructor):0;
+    exception_types.push_back("{\"id\":"+number(id)+",\"sourceTypeId\":"+number(source)+
+      ",\"leafSourceTypeId\":"+number(leaf)+",\"payloadTypeId\":"+number(type_id(saved.payload_type))+
+      ",\"payloadSize\":"+std::to_string(saved.size)+",\"payloadAlignment\":"+std::to_string(saved.alignment)+
+      ",\"sourceDestructorEntityId\":"+number(source_destructor)+
+      ",\"captureProof\":\"before-throw-lowering\"}");
+    auto type=saved.leaf_type;
+    if(dot_object_source::state().types.at(saved.leaf_source_type-1).kind=="record") {
+      auto found=dot_object_source::state().prelower_records.find(type);
+      if(found==dot_object_source::state().prelower_records.end() || !found->second.complete)
+        reject("exception leaf lacks complete original record layout");
+      unsigned ordinal=0;
+      for(const auto &base:found->second.exception_bases) {
+        if(base.is_virtual)reject("virtual exception base conversion not yet owned");
+        if(base.offset>found->second.size)reject("exception base outside complete leaf storage");
+        exception_base_conversions.push_back("{\"exceptionTypeId\":"+number(id)+",\"ordinal\":"+
+          std::to_string(ordinal++)+",\"baseSourceTypeId\":"+number(source_type(base.source_type))+
+          ",\"byteOffset\":"+std::to_string(base.offset)+",\"isPublic\":"+(base.is_public?"true":"false")+
+          ",\"isAmbiguous\":"+(base.is_ambiguous?"true":"false")+
+          ",\"captureProof\":\"observed-complete-base-layout\"}");
+      }
+    }
+    return id;
+  }
+  a_routine_ptr complete_exception_destructor(a_routine_ptr primary) {
+    if(!exception_destructors_indexed) {
+      for(auto r=il_header.primary_scope->routines;r;r=r->next)if(r->ctor_dtor_kind==cdk_complete && r->special_kind==sfk_destructor) {
+        auto origin=dot_object_source::abi_primary(r);if(!origin)origin=r;
+        if(!complete_exception_destructors.emplace(origin,r).second)
+          reject("duplicate complete exception destructor entry");
+      }
+      exception_destructors_indexed=true;
+    }
+    auto found=complete_exception_destructors.find(primary);
+    if(found==complete_exception_destructors.end())reject("exception destructor lacks observed complete ABI entry");
+    auto result=found->second;auto type=skip_typerefs(result->type);
+    auto param=type->variant.routine.extra_info->param_type_list;
+    if(!param || param->next || skip_typerefs(param->type)->kind!=tk_pointer ||
+       skip_typerefs(type->variant.routine.return_type)->kind!=tk_void)
+      reject("exception destructor outside one-pointer void ABI");
+    return result;
+  }
+  unsigned throw_expression(an_expr_node_ptr expr) {
+    auto found=dot_object_source::state().throws.find(expr);
+    if(found==dot_object_source::state().throws.end())reject("throw lacks original lowering observation");
+    const auto &saved=found->second;
+    if(!saved.complete || saved.owner!=current_routine || type_id(expr->type)!=1)
+      reject("throw ownership/type/lowering proof changed");
+    if(!saved.error.empty())reject(saved.error.c_str());
+    auto supplement=expr->variant.throw_info;
+    if(saved.rethrow) {
+      if(supplement)reject("rethrow unexpectedly has payload");
+      unsigned id=node("rethrow",1,expr->position,0,0,"","","value","none");
+      rethrow_expressions.push_back("{\"nodeId\":"+number(id)+",\"captureProof\":\"observed-rethrow\"}");return id;
+    }
+    if(!supplement || supplement->dynamic_init || supplement->expr!=saved.initializer || supplement->type!=saved.payload_type)
+      reject("throw payload/initializer observation changed");
+    auto current_destructor=supplement->destructor;
+    if(current_destructor) {auto primary=dot_object_source::abi_primary(current_destructor);if(primary)current_destructor=primary;}
+    if(current_destructor!=saved.destructor)reject("throw source destructor observation changed");
+    unsigned descriptor=exception_descriptor(saved),destructor=0;
+    if(saved.destructor) {
+      auto type=skip_typerefs(saved.payload_type);
+      if(type->kind!=tk_struct && type->kind!=tk_class && type->kind!=tk_union)
+        reject("nonrecord exception payload destructor");
+      destructor=routine(complete_exception_destructor(saved.destructor));
+    }
+    unsigned id=node("throw",1,expr->position,0,0,"","","value","left-to-right");
+    throw_expressions.push_back("{\"nodeId\":"+number(id)+",\"exceptionTypeId\":"+number(descriptor)+
+      ",\"destructorEntityId\":"+number(destructor)+
+      ",\"initializationKind\":"+quote(saved.initializer?"expression":"empty")+
+      ",\"captureProof\":\"observed-throw-lowering\"}");
+    auto old_origin=active_throw_origin;auto old_node=active_throw_node;
+    active_throw_origin=saved.original;active_throw_node=id;
+    if(saved.initializer)edge(id,"initializer",0,expression(saved.initializer));
+    active_throw_origin=old_origin;active_throw_node=old_node;
+    return id;
+  }
+  unsigned throw_construct(an_expr_node_ptr expr) {
+    const bool marker=expr->variant.lowered_eh.kind==leck_exception_started;
+    const auto &map=marker?dot_object_source::state().throw_markers:dot_object_source::state().throw_addresses;
+    auto found=map.find(expr);
+    if(found==map.end() || !active_throw_node || found->second!=active_throw_origin)
+      reject("throw address/start lacks exact enclosing initializer ownership");
+    unsigned type=type_id(expr->type);
+    if(marker ? type!=1 : type!=pointer_type(1))reject("throw address/start type mismatch");
+    unsigned id=node(marker?"throw-marker":"thrown-object-address",type,expr->position,0,0,"","","value","none");
+    if(marker)throw_markers.push_back("{\"nodeId\":"+number(id)+",\"throwNodeId\":"+number(active_throw_node)+
+      ",\"kind\":\"started\",\"captureProof\":\"observed-throw-start\"}");
+    else throw_object_addresses.push_back("{\"nodeId\":"+number(id)+",\"throwNodeId\":"+number(active_throw_node)+
+      ",\"captureProof\":\"observed-thrown-object-address\"}");
+    return id;
+  }
   unsigned expression_core(an_expr_node_ptr e) {
     if(!e)reject("null expression");
     diagnostic_scope diagnostic(e->position);
@@ -1850,7 +1968,12 @@ struct Writer {
         ",\"captureProof\":\"observed-lifetime-wrapper\"}");
       active_expression_lifetimes=true;return result;
     }
-    if(e->kind==enk_lowered_eh_construct)return cleanup_marker(e);
+    if(e->kind==enk_throw)return throw_expression(e);
+    if(e->kind==enk_lowered_eh_construct) {
+      if(e->variant.lowered_eh.kind==leck_thrown_object_address ||
+         e->variant.lowered_eh.kind==leck_exception_started)return throw_construct(e);
+      return cleanup_marker(e);
+    }
     if(e->kind==enk_constant)return constant_node(node_constant(e),e->position);
     if(e->kind==enk_variable) {
       auto it=binding_ids.find(node_variable(e));if(it==binding_ids.end())
@@ -2804,7 +2927,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v29\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v30\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -2815,6 +2938,9 @@ struct Writer {
       ",\"expressionLifetimes\":"+array(expression_lifetimes)+
       ",\"normalDestructions\":"+array(normal_destructions)+",\"cleanupConditions\":"+array(cleanup_conditions)+
       ",\"sourceRecords\":"+array(source_records)+",\"sourceRecordOperations\":"+array(source_record_operations)+
+      ",\"exceptionTypes\":"+array(exception_types)+",\"exceptionBaseConversions\":"+array(exception_base_conversions)+
+      ",\"throwExpressions\":"+array(throw_expressions)+",\"throwObjectAddresses\":"+array(throw_object_addresses)+
+      ",\"throwMarkers\":"+array(throw_markers)+",\"rethrowExpressions\":"+array(rethrow_expressions)+
       ",\"recordValueTransfers\":"+array(record_value_transfers)+",\"sourceFields\":"+array(source_fields)+
       ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+
       ",\"baseSubobjectExpressions\":"+array(base_subobject_expressions)+

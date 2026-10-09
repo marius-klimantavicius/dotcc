@@ -52,11 +52,12 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         WriteStorage(output);
         WriteExterns(output);
         WriteNoexceptExterns(output);
+        WriteSourceExceptionContract(output);
         using var lifetimeStream = File.Create(Path.Combine(output, "lifetime-map.json"));
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v29");
+        lifetimeWriter.WriteString("profile", "scalar-control-v30");
         lifetimeWriter.WriteString("capture", "lexical-activations-and-observed-cpp-cleanup-states");
         lifetimeWriter.WriteBoolean("cleanupStates", true);
         lifetimeWriter.WriteBoolean("sourceLifetimes", true);
@@ -163,7 +164,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v29");
+            writer.WriteString("profile", "scalar-control-v30");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -176,7 +177,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v29");
+            writer.WriteString("profile", "scalar-control-v30");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -187,10 +188,10 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v29", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v30", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, cleanupStates = true, sourceLifetimes = true, prelowerSource = false, macros = false, lifetimes = false },
-            limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; ordinary and conditional scalar C++ local/member/base exceptional destructor cleanup is owned; variable-length arrays, source throw/catch and array/VTT cleanup actions are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance plus lexical cleanup activations and observed source lifetime/exceptional destruction state graphs; no complete source expression/statement view, macro expansion history or general C++ EH capture" },
+            limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; ordinary and conditional scalar C++ local/member/base exceptional destructor cleanup is owned; typed throw/rethrow generation requires an unbound shared exception provider; variable-length arrays, source catch handlers and array/VTT cleanup actions are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance plus lexical cleanup activations and observed source lifetime/exceptional destruction state graphs; no complete source expression/statement view, macro expansion history or general C++ EH capture" },
             @namespace = namespaceOption, @class = classOption, sourceMap = "source-map.json", macroMap = "macro-map.json", lifetimeMap = "lifetime-map.json",
             runtimeHooks = new
             {
@@ -204,6 +205,15 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 transferClassifier = "global::Edg.Runtime.ObjectProgram.IsRuntimeTransfer",
                 ownedThreadStorageRelease = "global::Edg.Runtime.ObjectProgram.ReleaseThreadStorage",
                 ownedThreadStorageReleaseOrder = "after-thread-finalizers-and-tss-destructors",
+            },
+            sourceExceptionRuntime = new
+            {
+                required = linker.RequiresExceptionProvider,
+                container = "global::Edg.Runtime.CppExceptions",
+                status = linker.RequiresExceptionProvider ? "generation-only-unbound-provider" : "not-required",
+                sourceHandlersSupported = false,
+                ownsPayloadInitialization = true,
+                ownsStartAndCompletionOrdering = true,
             },
             runtimeRequirements = linker.Externs.Values.OrderBy(symbol => symbol.Key, StringComparer.Ordinal).Select(symbol => new
             {
@@ -326,6 +336,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         string LocalDeclaration(Binding binding) => alignedPointers.TryGetValue(binding.Id, out string? pointer)
             ? "ref " + Type(obj.Type(binding.TypeId)) + " " + bindingNames[binding.Id] + " = ref *" + pointer + "; " + bindingNames[binding.Id] + " = default;"
             : Type(obj.Type(binding.TypeId)) + " " + bindingNames[binding.Id] + " = default;";
+        var throwCarrierNames = body.Nodes.Values.Where(node => node.Kind == "throw")
+            .ToDictionary(node => node.Id, node => allocator.Allocate("__thrown", "thrown"));
         var initializers = new StringBuilder();
         var labelNames = body.Nodes.Values.Where(node => node.Kind == "label").OrderBy(node => node.Id)
             .ToDictionary(node => node.Id, node => allocator.Allocate(node.ConstantText!, "label_" + node.Id));
@@ -436,6 +448,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     return FunctionReference(target) + "(" + Arguments(node, target.Object.EntityRoutine(target.Entity.Id)) + ")";
                 case "block-copy": return "global::System.Runtime.InteropServices.NativeMemory.Copy(" + Address(Child("source")) + ", " + Address(Child("target")) + ", (nuint)" + node.ConstantText + ")";
                 case "compound-assign": return "(" + Compound(node) + ")";
+                case "thrown-object-address": return throwCarrierNames[obj.ThrowObjectAddresses[node.Id]] + ".ObjectAddress";
                 case "record-transfer":
                 case "assign": return Assignment(node, true);
                 case "mutate": return "(" + Mutation(node) + ")";
@@ -741,7 +754,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         bool Pure(Node node)
         {
             if (purityCache.TryGetValue(node.Id, out bool cached)) return cached;
-            bool result = node.Kind is not ("materialize" or "cleanup-transition" or "call" or "indirect-call" or "assign" or "record-transfer" or "compound-assign" or "block-copy" or "mutate" or "volatile-place" or "va-start" or "va-copy" or "va-end" or "va-arg") &&
+            bool result = node.Kind is not ("throw" or "throw-marker" or "rethrow" or "materialize" or "cleanup-transition" or "call" or "indirect-call" or "assign" or "record-transfer" or "compound-assign" or "block-copy" or "mutate" or "volatile-place" or "va-start" or "va-copy" or "va-end" or "va-arg") &&
                 !(node.Kind == "intrinsic" && (node.Operator == "unreachable" || node.Operator!.Contains("overflow", StringComparison.Ordinal))) &&
                 body.Edges.GetValueOrDefault(node.Id, []).All(edge => Pure(body.Nodes[edge.ChildId]));
             purityCache[node.Id] = result;
@@ -777,6 +790,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             if (expansionCache.TryGetValue(node.Id, out bool cached)) return cached;
             bool result = node.Kind == "materialize" || node.Kind == "sequence" && (node.ValueCategory == "place" || body.Children(node.Id, "item").SkipLast(1)
                 .Any(edge => NodeType(body.Nodes[edge.ChildId]) == "void"));
+            if (node.Kind is "throw" or "throw-marker" or "rethrow") result = true;
             if (node.Kind == "conditional" && NodeType(node) == "void") result = true;
             if (node.Kind is "assign" or "record-transfer" or "compound-assign") result |= accessAlignment.NeedsUnaligned(body.Child(node.Id, "target"));
             if (node.Kind == "mutate") result |= accessAlignment.NeedsUnaligned(body.Child(node.Id, "operand"));
@@ -794,11 +808,30 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             expansionCache[node.Id] = result;
             return result;
         }
+        bool TerminalThrow(Node node) => node.Kind is "throw" or "rethrow" ||
+            node.Kind == "lifetime-scope" && TerminalThrow(body.Child(node.Id, "operand")) ||
+            node.Kind == "sequence" && body.Children(node.Id, "item").Any(edge => TerminalThrow(body.Nodes[edge.ChildId])) ||
+            node.Kind == "conditional" && TerminalThrow(body.Child(node.Id, "then")) && TerminalThrow(body.Child(node.Id, "else"));
+        void EmitTerminalThrow(Node node, int indent)
+        {
+            if (node.Kind == "lifetime-scope") { EmitTerminalThrow(body.Child(node.Id, "operand"), indent); return; }
+            if (node.Kind == "sequence")
+            {
+                foreach (Edge edge in body.Children(node.Id, "item"))
+                {
+                    Node item = body.Nodes[edge.ChildId];
+                    if (TerminalThrow(item)) { EmitTerminalThrow(item, indent); return; }
+                    Discard(item, indent);
+                }
+                throw new InvalidDataException("Terminal throw sequence lacks its owned throwing operation");
+            }
+            Discard(node, indent);
+        }
         string ExpandedValue(Node node, int indent) => NeedsExpansion(node) ? Lift(node, indent) : Expression(node);
         string ExpandedTruth(Node node, int indent) => NeedsExpansion(node) ? TruthText(Lift(node, indent), node) : Truth(node);
         string Lift(Node node, int indent, bool discard = false)
         {
-            if (node.Kind is "cleanup-transition" or "cleanup-frame") { Discard(node, indent); return ""; }
+            if (node.Kind is "cleanup-transition" or "cleanup-frame" or "throw" or "throw-marker" or "rethrow") { Discard(node, indent); return ""; }
             if (node.Kind == "materialize")
             {
                 string value = ExpandedValue(body.Child(node.Id, "operand"), indent);
@@ -829,6 +862,10 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 Line(indent, "}"); return isVoid ? "" : result;
                 void Branch(Node? value, bool fallback)
                 {
+                    // Stock wrap_throw supplies a typed unreachable tail for
+                    // C conditional typing. Preserve the owned tree, but emit
+                    // only its effects through the terminal throw operation.
+                    if (value is not null && TerminalThrow(value)) { EmitTerminalThrow(value, indent + 1); return; }
                     if (isVoid) { if (value != null) Discard(value, indent + 1); return; }
                     string text = conditional ? ExpandedValue(value!, indent + 1)
                         : Boolean(value == null ? fallback ? "true" : "false" : ExpandedTruth(value, indent + 1), node);
@@ -921,6 +958,33 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         void Discard(Node expression, int indent)
         {
             if (expression.Kind == "lifetime-scope") { Discard(body.Child(expression.Id, "operand"), indent); return; }
+            if (expression.Kind == "throw")
+            {
+                ThrowExpression thrown = obj.ThrowExpressions[expression.Id];
+                ExceptionType descriptor = obj.ExceptionTypes[thrown.ExceptionTypeId];
+                string carrier = throwCarrierNames[expression.Id], error = allocator.Allocate("__throw_error", "throw_error");
+                string destructor = thrown.DestructorEntityId is long callback
+                    ? "&" + exceptionDestructorNames[(obj, callback)] : "(delegate* managed<void*, void>)0";
+                Line(indent, "{");
+                Line(indent + 1, "var " + carrier + " = " + ExceptionRuntime + ".Allocate(" + exceptionDescriptorNames[descriptor.IdentityKey] + ", " + destructor + ");");
+                Line(indent + 1, "try"); Line(indent + 1, "{");
+                if (thrown.InitializationKind == "expression") Discard(body.Child(expression.Id, "initializer"), indent + 2);
+                Line(indent + 2, ExceptionRuntime + ".EnsureStarted(" + carrier + ");");
+                Line(indent + 2, ExceptionRuntime + ".MarkComplete(" + carrier + ");");
+                Line(indent + 2, "throw " + carrier + ";");
+                Line(indent + 1, "}");
+                Line(indent + 1, "catch (global::System.Exception " + error + ") when (" + ExceptionRuntime + ".FilterInitializationFailure(" + carrier + ", " + error + "))");
+                Line(indent + 1, "{");
+                Line(indent + 2, ExceptionRuntime + ".ReleaseIncomplete(" + carrier + ");");
+                Line(indent + 2, "throw;"); Line(indent + 1, "}");
+                Line(indent + 1, "finally { global::System.GC.KeepAlive(" + carrier + "); }");
+                Line(indent, "}"); return;
+            }
+            if (expression.Kind == "throw-marker")
+            {
+                Line(indent, ExceptionRuntime + ".EnsureStarted(" + throwCarrierNames[obj.ThrowMarkers[expression.Id]] + ");"); return;
+            }
+            if (expression.Kind == "rethrow") { Line(indent, "throw " + ExceptionRuntime + ".Rethrow();"); return; }
             if (expression.Kind == "cleanup-frame") return;
             if (expression.Kind == "cleanup-transition")
             {
@@ -1113,6 +1177,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         bool FallsThrough(Node node) => node.Kind switch
         {
             "return" or "break" or "continue" or "goto" => false,
+            "expr-stmt" when TerminalThrow(body.Child(node.Id, "value")) => false,
             "expr-stmt" when body.Child(node.Id, "value").Kind == "intrinsic" && body.Child(node.Id, "value").Operator == "unreachable" => false,
             "switch" => SwitchFallsThrough(node),
             "block" => body.Children(node.Id, "statement").All(edge => FallsThrough(body.Nodes[edge.ChildId])),

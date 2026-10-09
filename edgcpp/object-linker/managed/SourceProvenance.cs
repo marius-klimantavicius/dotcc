@@ -411,6 +411,15 @@ internal sealed partial class ObjectFile
             "typeId", "identityKey", "sourceName", "size", "alignment", "sourceFileId", "line", "column", "layoutKind", "sourceRecordId", "representationKind", "valueCopyKind", "captureProof", "completeTypeId");
         Table("recordFields", "SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed,source_field_id,field_role,source_base_id,observed_alignment FROM record_fields ORDER BY id",
             "id", "recordTypeId", "ordinal", "typeId", "sourceName", "byteOffset", "sourceTypeId", "sourceFileId", "line", "column", "bitOffset", "bitWidth", "bitSigned", "sourceFieldId", "fieldRole", "sourceBaseId", "observedAlignment");
+        Table("exceptionTypes", "SELECT id,source_type_id,leaf_source_type_id,payload_type_id,payload_size,payload_alignment,source_destructor_entity_id,capture_proof FROM exception_types ORDER BY id",
+            "id", "sourceTypeId", "leafSourceTypeId", "payloadTypeId", "payloadSize", "payloadAlignment", "sourceDestructorEntityId", "captureProof");
+        Table("exceptionBaseConversions", "SELECT exception_type_id,ordinal,base_source_type_id,byte_offset,is_public,is_ambiguous,capture_proof FROM exception_base_conversions ORDER BY exception_type_id,ordinal",
+            "exceptionTypeId", "ordinal", "baseSourceTypeId", "byteOffset", "isPublic", "isAmbiguous", "captureProof");
+        Table("throwExpressions", "SELECT node_id,exception_type_id,destructor_entity_id,initialization_kind,capture_proof FROM throw_expressions ORDER BY node_id",
+            "nodeId", "exceptionTypeId", "destructorEntityId", "initializationKind", "captureProof");
+        Table("throwObjectAddresses", "SELECT node_id,throw_node_id,capture_proof FROM throw_object_addresses ORDER BY node_id", "nodeId", "throwNodeId", "captureProof");
+        Table("throwMarkers", "SELECT node_id,throw_node_id,kind,capture_proof FROM throw_markers ORDER BY node_id", "nodeId", "throwNodeId", "kind", "captureProof");
+        Table("rethrowExpressions", "SELECT node_id,capture_proof FROM rethrow_expressions ORDER BY node_id", "nodeId", "captureProof");
         Table("sourceRecordOperations", "SELECT source_record_id,bitwise_construction_allowed,bitwise_assignment_allowed,requires_return_storage,capture_proof FROM source_record_operations ORDER BY source_record_id",
             "sourceRecordId", "bitwiseConstructionAllowed", "bitwiseAssignmentAllowed", "requiresReturnStorage", "captureProof");
         Table("recordValueTransfers", "SELECT node_id,kind,capture_proof FROM record_value_transfers ORDER BY node_id",
