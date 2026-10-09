@@ -57,7 +57,10 @@ internal static class CleanupHost
             Check(Core.cleanup_conditional_loop, 72, 282) &&
             Check(Core.cleanup_conditional_loop, 10, 282) &&
             Check(Core.cleanup_conditional_loop, 11, 2826) &&
-            Check(Core.cleanup_conditional_loop, 12, 28266282) ? 0 : 1;
+            Check(Core.cleanup_conditional_loop, 12, 28266282) &&
+            Check(Core.cleanup_temporary_member_result, 0, 333) &&
+            Check(Core.cleanup_temporary_member_result, 3, 3) &&
+            Check(Core.cleanup_sequence_places, 0, 4) && Check(Core.cleanup_aligned_materialization, 0, 4) ? 0 : 1;
     }
 }
 namespace Edg.Runtime
@@ -126,6 +129,8 @@ def main():
             with sqlite3.connect(obj) as db:
                 check('owned-expression-lifetime-boundary', db.execute('SELECT count(*) FROM expression_lifetimes').fetchone()[0] > 0)
                 check('owned-conditional-cleanup-actions', db.execute('SELECT count(*) FROM cleanup_conditions').fetchone()[0] >= 5)
+                check('owned-sequence-places', db.execute("SELECT count(*) FROM nodes WHERE kind='sequence' AND value_category='place'").fetchone()[0] > 0)
+                check('owned-record-materialization', db.execute("SELECT count(*) FROM nodes WHERE kind='materialize'").fetchone()[0] > 0)
                 check('multiple-conditional-actions-in-one-function', db.execute('SELECT max(n) FROM (SELECT count(*) AS n FROM cleanup_conditions c JOIN cleanup_actions a ON a.id=c.action_id GROUP BY a.function_entity_id)').fetchone()[0] >= 2)
             inputs.rename(out / 'retained-source')
             generated = out / 'generated'
@@ -149,7 +154,7 @@ def main():
     except Exception as exception:
         error = str(exception)
     receipt = dict(status='failed' if error else 'native-oracle-only' if args.native_only else 'passed',
-        error=error, checks=checks, commands=commands, cases=43,
+        error=error, checks=checks, commands=commands, cases=47,
         limitations=['Host throws are ordinary CLR exceptions, not implemented source C++ throw/catch/type matching',
                      'No destructor-throws-during-unwind, arrays, VTT, guards or thread-exit coverage'])
     for name in ('compiler', 'linker', 'packager'):

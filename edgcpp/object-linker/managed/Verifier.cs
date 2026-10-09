@@ -3,7 +3,7 @@ namespace DotObj;
 internal static class Verifier
 {
     private static readonly HashSet<string> StatementKinds = ["memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
-    private static readonly HashSet<string> ExpressionKinds = ["lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
+    private static readonly HashSet<string> ExpressionKinds = ["materialize", "lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -40,6 +40,13 @@ internal static class Verifier
         string Type(Node node) => node.TypeId is long id ? obj.Type(id) : throw new InvalidDataException("Expression has no type");
         bool IsExpression(Node node) => ExpressionKinds.Contains(node.Kind);
         Node Child(Node parent, string role) => body.Child(parent.Id, role);
+        Node SequenceTail(Node node) => body.Nodes[body.Children(node.Id, "item").Last().ChildId];
+        Node PlaceLeaf(Node node)
+        {
+            while (node.Kind is "lifetime-scope" or "sequence")
+                node = node.Kind == "sequence" ? SequenceTail(node) : Child(node, "operand");
+            return node;
+        }
         void EdgeShape(Node node, params (string Role, int Min, int Max)[] shapes)
         {
             var edges = body.Edges.GetValueOrDefault(node.Id, []);
@@ -82,6 +89,7 @@ internal static class Verifier
         }
         bool DeclaredVolatile(Node node, int depth = 0) => depth < 128 && node.Kind switch
         {
+            "sequence" => DeclaredVolatile(SequenceTail(node), depth + 1),
             "lifetime-scope" => DeclaredVolatile(Child(node, "operand"), depth + 1),
             "binding" => node.BindingId is long id && obj.BindingSourceTypes.TryGetValue(id, out long source) && VolatileSource(source),
             "storage" => node.StorageId is long id && obj.Storages.TryGetValue(id, out Storage? storage) && VolatileSource(storage.SourceTypeId),
@@ -89,8 +97,9 @@ internal static class Verifier
                 (VolatileSource(field.SourceTypeId) || DeclaredVolatile(Child(node, "operand"), depth + 1)),
             _ => false
         };
-        bool Place(Node node, int depth = 0) => depth <= 1024 && (node.Kind is "binding" or "storage" or "dereference" or "member" or "base-subobject" or "volatile-place" ||
-            node.Kind == "lifetime-scope" && Place(Child(node, "operand"), depth + 1));
+        bool Place(Node node, int depth = 0) => depth <= 1024 && (node.Kind is "binding" or "storage" or "dereference" or "member" or "materialize" or "base-subobject" or "volatile-place" ||
+            node.Kind == "lifetime-scope" && Place(Child(node, "operand"), depth + 1) ||
+            node.Kind == "sequence" && Place(SequenceTail(node), depth + 1));
         bool LocalPlace(Node node, int depth = 0) => depth <= 1024 && (node.Kind == "binding" &&
             body.Bindings.TryGetValue(node.BindingId!.Value, out Binding? local) && local.Kind == "local" ||
             node.Kind is "member" or "lifetime-scope" && LocalPlace(Child(node, "operand"), depth + 1));
@@ -110,6 +119,7 @@ internal static class Verifier
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
                 string[] orders = node.Kind is "cleanup-transition" or "cleanup-frame" or "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
                 if (node.Kind is "cleanup-transition" or "cleanup-frame" or "base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
+                if (node.Kind == "materialize") orders = ["left-to-right"];
                 if (node.Kind is "assign" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
                 if (node.Kind is "address" or "dereference" or "array-decay" or "member" or "va-start" or "va-copy" or "va-end" or "va-arg") orders = ["none", "left-to-right", "unspecified"];
                 if (!orders.Contains(node.EvaluationOrder)) Fail($"Unsupported evaluation order at {node.Id}");
@@ -126,15 +136,17 @@ internal static class Verifier
             {
                 Node child = body.Nodes[edge.ChildId];
                 if (child.TypeId is long volatileType && ScalarTypes.IsScalar(obj.Type(volatileType)) && DeclaredVolatile(child) &&
-                    !(node.Kind is "volatile-place" or "address" or "lifetime-scope" && edge.Role == "operand"))
+                    !(node.Kind is "volatile-place" or "address" or "lifetime-scope" && edge.Role == "operand") &&
+                    !(node.Kind == "sequence" && child.Id == SequenceTail(node).Id))
                     Fail("Declared volatile place requires an explicit volatile access wrapper");
                 if (child.TypeId is long childType && ScalarTypes.IsArray(obj.Type(childType)) &&
                     !(node.Kind is "address" or "array-decay" or "lifetime-scope" && edge.Role == "operand") &&
+                    !(node.Kind == "sequence" && child.Id == SequenceTail(node).Id) &&
                     !(node.Kind == "array-init" && edge.Role == "target") && node.Kind != "block-copy")
                     Fail("Array place requires explicit address, decay or initialization");
                 if (child.TypeId is long recordType && ScalarTypes.IsRecord(obj.Type(recordType)))
                 {
-                    bool allowed = node.Kind == "block-copy" || node.Kind is "member" or "base-subobject" or "lifetime-scope" or "address" && edge.Role == "operand" ||
+                    bool allowed = node.Kind == "block-copy" || node.Kind == "sequence" && node.ValueCategory == "place" && child.Id == SequenceTail(node).Id || node.Kind is "member" or "base-subobject" or "lifetime-scope" or "address" && edge.Role == "operand" ||
                         node.Kind == "assign" && (edge.Role == "target" || edge.Role == "value" && child.Kind == "default-value") ||
                         node.Kind == "declare" && edge.Role == "initializer" && child.Kind == "default-value" ||
                         node.Kind == "expr-stmt" && edge.Role == "value" && child.Kind == "assign";
@@ -159,6 +171,12 @@ internal static class Verifier
             }
             switch (node.Kind)
             {
+                case "materialize":
+                    EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
+                    if (!ScalarTypes.IsRecord(Type(node)) || !obj.CanCopyRecord(Type(node)) ||
+                        node.TypeId != Child(node, "operand").TypeId || Child(node, "operand").ValueCategory != "value")
+                        Fail("Record materialization requires a same-type ordinary-copy record value");
+                    break;
                 case "lifetime-scope":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand", Type(node) == "void");
                     if (!obj.ExpressionLifetimes.ContainsKey(node.Id) || node.TypeId != Child(node, "operand").TypeId ||
@@ -361,7 +379,7 @@ internal static class Verifier
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
                     if (!Place(Child(node, "operand")) || Child(node, "operand").Kind == "volatile-place" || !ScalarTypes.IsScalar(Type(node)))
                         Fail("Volatile place requires a scalar addressable location");
-                    if (Child(node, "operand").Kind == "member" && obj.Fields[Child(node, "operand").FieldId!.Value].BitWidth is not null)
+                    if (PlaceLeaf(Child(node, "operand")).Kind == "member" && obj.Fields[PlaceLeaf(Child(node, "operand")).FieldId!.Value].BitWidth is not null)
                         Fail("Volatile bitfield access requires a storage-unit contract");
                     if (ScalarTypes.IsWideInteger(Type(node))) Fail("Volatile 128-bit access requires an explicit access contract");
                     SameType(node, Child(node, "operand"));
@@ -380,8 +398,8 @@ internal static class Verifier
                 case "sequence":
                     EdgeShape(node, ("item", 2, int.MaxValue));
                     var sequence = body.Children(node.Id, "item").Select(edge => body.Nodes[edge.ChildId]).ToArray();
-                    if (node.EvaluationOrder != "left-to-right" || sequence.Any(item => !IsExpression(item)) || Type(node) != Type(sequence[^1]))
-                        Fail("Sequence must evaluate expressions in order and retain the final type");
+                    if (node.EvaluationOrder != "left-to-right" || sequence.Any(item => !IsExpression(item)) || node.TypeId != sequence[^1].TypeId || node.ValueCategory != sequence[^1].ValueCategory)
+                        Fail("Sequence must evaluate expressions in order and retain the final exact type and place category");
                     break;
                 case "label":
                     EdgeShape(node); labelScopes.Add(node.Id, scopes.ToArray()); break;
@@ -481,6 +499,8 @@ internal static class Verifier
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
                     if (!Place(Child(node, "operand")) || Type(node) != "ptr(" + Type(Child(node, "operand")) + ")")
                         Fail("Address requires a typed place and matching pointer result");
+                    if (PlaceLeaf(Child(node, "operand")) is { Kind: "member", FieldId: long addressField } && obj.Fields[addressField].BitWidth is not null)
+                        Fail("Bitfield has no independent address");
                     break;
                 case "dereference":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
@@ -691,6 +711,11 @@ internal static class Verifier
                 {
                     Node consumer = body.Nodes[use.ParentId];
                     if (consumer.Kind == "lifetime-scope") { CheckEscape(consumer, depth + 1); continue; }
+                    if (consumer.Kind == "sequence")
+                    {
+                        if (SequenceTail(consumer).Id == pointer.Id) CheckEscape(consumer, depth + 1);
+                        continue;
+                    }
                     if (consumer.Kind == "dereference" || consumer.Kind == "memory-barrier" && use.Role == "address") continue;
                     if (consumer.Kind == "convert" && ScalarTypes.IsPointer(Type(consumer)))
                     {

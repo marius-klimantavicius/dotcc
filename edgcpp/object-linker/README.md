@@ -4,7 +4,7 @@ This implements the owned object path of the [new design](../docs/dotobj-format.
 It uses a fresh SQLite schema and C# reader/linker/emitter, without the prior
 semantic-export experiment or C# text/command objects.
 
-The current profile is `scalar-control-v26`. It supports independently produced
+The current profile is `scalar-control-v27`. It supports independently produced
 SQLite and musl objects, typed provider selection, shared BCL runtime bindings,
 and explicit source startup actions. C++ file-scope initialization owns generated
 routine origins, original per-storage statement intervals and separate local
@@ -15,7 +15,9 @@ verified callbacks in EDG order, including ordinary base/member rollback and
 temporary boundaries, without native stack-offset frames. Source C++ throw/catch
 and array/VTT cleanup remain explicit gates. Conditional scalar cleanup keeps
 EDG's exact synthetic flag and original body stores; unwinding tests the flag
-before evaluating the target, without adding reset stores.
+before evaluating the target, without adding reset stores. Comma expressions
+retain the final item's execution storage; genuine record values get explicit
+materialization for member selection, with safe copy and alignment checks.
 Original class-value routine signatures retain explicit mappings to hidden
 result buffers, indirect parameters and implicit receivers. Generated runtime
 prototypes have observed origins distinct from user declarations. Packed records
@@ -245,7 +247,7 @@ indexes. A hash demonstrates content integrity, not semantic correctness.
 Full logs/objects/generated projects remain under
 `/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/`.
 
-The current schema requires `scalar-control-v26`. Earlier-profile objects and tools
+The current schema requires `scalar-control-v27`. Earlier-profile objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 

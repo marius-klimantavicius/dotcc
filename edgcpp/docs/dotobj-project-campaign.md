@@ -573,3 +573,28 @@ The next core work follows stock C's distinction between a sequence ending in
 existing storage and a genuine record value requiring materialization. Array/VTT
 cleanup and source throw/catch remain open. No complete DuckDB generation or
 libc++ runtime implementation is claimed.
+
+## Addressable sequences and record materialization, v27 (2026-10-09)
+
+Comma expressions now preserve the exact final item's execution location while
+evaluating earlier items once. Member selection on a genuine record value gets
+an explicit materialization node, following stock C emission. This remains
+bounded by existing safe-copy rules and does not invent a C++ object lifetime.
+Named fields, alignment, array decay, volatile operations and bitfield semantics
+remain intact. Overaligned execution storage is reserved once per activation.
+
+Native050/managed045 passes **1154 full regression checks including NativeAOT**.
+The expanded 47-case fixture agrees with native C++ and stock EDG-generated C
+at O0/O2, and C# under JIT/NativeAOT. It covers temporary member reads and
+destruction, sequence mutation/addressing, returned records/unions/bitfields,
+volatile accesses and a 300000-iteration aligned array-decay stress case.
+Metadata acceptance passes 39 checks with eight resealed semantic rejections.
+[Hashed v27 evidence](../evidence/dotobj-record-materialization-20261009.json)
+links the retained receipts and tools.
+
+Original DuckDB `exception.cpp` advances to the next copyability gate. A reduced
+type demonstrates the distinction: trivial copy construction can coexist with a
+user-provided assignment operator. Stock C preserves that distinction; future
+owned source facts must do the same rather than permit raw copying globally.
+The next arithmetic gate in `hugeint.cpp` is unsigned128 multiply-with-overflow.
+Full DuckDB generation remains incomplete, and libc++ runtime work stays deferred.

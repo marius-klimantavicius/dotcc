@@ -1260,3 +1260,22 @@ object. The emitter advances the cleanup cursor, checks the flag and evaluates
 the target/destructor only when nonzero. Stock EDG unwinding does not clear the
 flag, so neither does this backend. This extension covers conditional scalar
 actions only; array, VTT, guard/deallocation and source EH gates remain.
+
+## Addressable sequences and record materialization (profile v27)
+
+`sequence` retains left-to-right evaluation, and its exact execution type and
+place/value category equal those of its final item. Prefixes execute once before
+the final item is used as a value, location or address. This category describes
+owned execution storage, not an invented original C++ source value category.
+Alignment and volatile-place provenance pass through the final item; source
+lifetime wrappers remain independent owners. Bitfields still cannot be addressed.
+
+`materialize` is a record-typed place expression, evaluated left-to-right, with
+exactly one `operand` value of the same type. It is bounded by the existing
+complete, nonvolatile, safe record value-copy contract. It explicitly stores a
+genuine record value before selecting a member, following stock C emission. The
+managed emitter reserves execution storage once per function activation and
+assigns it at the original expression site; alignment requirements remain exact,
+including over-aligned backing. It neither invents a source binding nor adds
+C++ construction/destruction. Existing addressable nontrivial temporaries stay
+in their original storage and retain their original lifetime obligations.

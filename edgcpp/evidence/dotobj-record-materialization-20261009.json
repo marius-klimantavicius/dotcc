@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v27",
+  "scope": "Addressable sequences and bounded record materialization for member access",
+  "fullRegressionChecks": 1154,
+  "focusedExecutionChecks": 21,
+  "focusedExecutionCases": 47,
+  "malformedMetadataChecks": 39,
+  "semanticMalformedObjectsRejected": 8,
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v27-001/results.json",
+      "sha256": "352ea4e715ccc8458c163a87f3e3b1799255ccbd2f436384b1dc70d004400b16"
+    },
+    "focusedExecution": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sequence-place-acceptance-001/results.json",
+      "sha256": "67b2fed7d11ad938aa40161df7305b4b3b7872e48a8bf73fdae9dc02e3393c32"
+    },
+    "nativeOracle": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sequence-place-native-oracle-002/results.json",
+      "sha256": "bc84093a31c450bff5f8b1f50e7dc6d8dbcfca4daf755475ce26fc8d862c0ef0"
+    },
+    "stockCOracle": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sequence-place-stock-oracle-002/results.json",
+      "sha256": "3426fe8bcdded88dbe842a9584bbff4c1bd631564290d30e761858e1613f6cd1"
+    },
+    "malformedMetadata": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-sequence-place-metadata-002/results.json",
+      "sha256": "ab4832e3f9a17e3043d2594d3091c0601dc9d0a03fe902f2d45596735331136e"
+    },
+    "actualDuckdbFrontier": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-050-materialize/results.json",
+      "sha256": "87cbbce075dd6873f558c6a8c420083bcc49b77a4ec810c1b1ac994de5494d46"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native050-verified-snapshot/cpfe-dot",
+      "sha256": "f327a1877c676ef5933f73bea585a1a08fd1f23c699ca13e5959c6c38edd10a9"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-045/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "f73f822d4e16096021e28c1de2b1923bbcfab24065675666e0f86370eb5c7753"
+    }
+  },
+  "projectScope": "Original DuckDB exception.cpp advances past record-member-of-nonplace to by-value return copyability restrictions for a type with trivial copy construction but user-provided assignment. No complete unit generation claim.",
+  "semantics": [
+    "Sequence execution category/type follows exact final item; all prefixes evaluate once before value, location or address use.",
+    "Genuine record values materialize only under existing safe value-copy rules; no new source binding or C++ constructor/destructor is invented.",
+    "Alignment, array decay, volatile and bitfield rules pass through execution places; bitfield addresses still reject.",
+    "Overaligned materialization backing is reserved once per function activation, not repeatedly allocated in loops."
+  ],
+  "focusedCoverage": [
+    "Temporary Item(3).digit read with normal and exceptional destruction",
+    "Comma reads, compound assignment, postfix mutation, addresses and pointer increment evaluated once",
+    "Record, union, nested and bitfield-valued returned member access",
+    "Volatile comma reads and writes",
+    "Aligned returned record with array-member decay over300000 loop iterations and exactly300001 producer calls"
+  ],
+  "limitations": [
+    "Materialization retains existing nonvolatile safe-copy restrictions; trivial construction with user-provided assignment requires separate source facts in a future profile.",
+    "No source C++ throw/catch/type matching, array/VTT cleanup or full DuckDB generation claim.",
+    "Metadata001 retained an overly specific diagnostic expectation; outer sequence correctly rejected the inner category inconsistency before the narrower check. Runner002 passed without implementation change."
+  ],
+  "priority": "Complete dotobj core toward full DuckDB C# generation; libc++ runtime implementation remains deferred."
+}

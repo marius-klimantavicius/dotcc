@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v26: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v27: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -1653,6 +1653,13 @@ struct Writer {
   }
   bool place(an_expr_node_ptr e) {
     if(e && e->kind==enk_object_lifetime)return place(e->variant.object_lifetime.expr);
+    if(e && e->kind==enk_operation && e->variant.operation.kind==eok_comma) {
+      auto last=e->variant.operation.operands;if(!last)return false;
+      while(last->next)last=last->next;
+      // Execution addressability: source rvalues may already reside in a
+      // lowered temporary. Prefix effects do not copy that final storage.
+      return il_identical_types(skip_typerefs(e->type),skip_typerefs(last->type)) && place(last);
+    }
     return e && (e->kind==enk_variable ||
       (e->kind==enk_constant && node_constant(e)->kind==ck_string) ||
       (e->kind==enk_operation && (e->variant.operation.kind==eok_indirect || e->variant.operation.kind==eok_ref_indirect ||
@@ -1761,9 +1768,11 @@ struct Writer {
         ",\"captureProof\":\"observed-normal-destruction\"}");
       emitted_normal_obligations.insert(original);
     }
-    // A lifetime wrapper already owns its fully translated operand, including
-    // any volatile-place access marker. Do not wrap the same access twice.
-    if(e && e->kind!=enk_object_lifetime && place(e) && volatile_place(e)) {
+    // Transparent lifetime/sequence wrappers already own their final operand,
+    // including its volatile-place marker. Do not wrap the same access twice.
+    bool transparent=e && (e->kind==enk_object_lifetime ||
+      (e->kind==enk_operation && e->variant.operation.kind==eok_comma));
+    if(e && !transparent && place(e) && volatile_place(e)) {
       auto t=skip_typerefs(e->type);
       if(t->kind==tk_integer || t->kind==tk_float || t->kind==tk_pointer) {
         if(integer128(t))reject("volatile integer128 access");
@@ -1856,7 +1865,7 @@ struct Writer {
       if(operation.kind==eok_points_to_field) {
         if(base->kind!=tk_pointer)reject("member arrow without pointer");
         base=skip_typerefs(base->variant.pointer.type);
-      } else if(!place(a))reject("record member of nonplace value");
+      }
       unsigned owner=type_id(base);auto field=node_field(b);
       if(!field_ids.count(field) || parent_class_of(field)!=base || type_id(field->type)!=ty)
         reject("record member identity mismatch");
@@ -1864,6 +1873,16 @@ struct Writer {
       if(operation.kind==eok_points_to_field) {
         unsigned indirect=node("dereference",owner,a->position,0,0,"","","place","none");
         edge(indirect,"operand",0,operand);operand=indirect;
+      } else if(!node_shapes.at(operand).place) {
+        // The stock C backend materializes genuine record values before
+        // selecting a field. This is execution storage, not an extra C++
+        // construction: existing source lifetime/cleanup nodes remain owners.
+        if(node_shapes.at(operand).type!=owner ||
+           (base->kind!=tk_struct && base->kind!=tk_class && base->kind!=tk_union))
+          reject("record member materialization type mismatch");
+        if(!copyable_value(a->type))reject("record member materialization requires ordinary value-copy semantics");
+        unsigned temporary=node("materialize",owner,a->position,0,0,"","","place","left-to-right");
+        edge(temporary,"operand",0,operand);operand=temporary;
       }
       unsigned id=node("member",ty,e->position,0,0,"","","place",order,field_ids.at(field));
       edge(id,"operand",0,operand);return id;
@@ -2005,8 +2024,12 @@ struct Writer {
     }
     if(operation.kind==eok_comma) {
       if(!a || !b)reject("sequence expression arity");
-      unsigned id=node("sequence",ty,e->position,0,0,"","","value","left-to-right"),ordinal=0;
-      for(auto item=a;item;item=item->next)edge(id,"item",ordinal++,expression(item));
+      std::vector<unsigned> items;
+      for(auto item=a;item;item=item->next)items.push_back(expression(item));
+      const auto shape=node_shapes.at(items.back());
+      if(shape.type!=ty)reject("sequence final operand execution type mismatch");
+      unsigned id=node("sequence",ty,e->position,0,0,"","",shape.place?"place":"value","left-to-right"),ordinal=0;
+      for(auto item:items)edge(id,"item",ordinal++,item);
       return id;
     }
     if(operation.kind==eok_cast) {
@@ -2722,7 +2745,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v26\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v27\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

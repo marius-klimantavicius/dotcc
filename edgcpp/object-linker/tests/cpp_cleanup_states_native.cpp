@@ -12,6 +12,9 @@ extern "C" void cleanup_conditional_none();
 extern "C" void cleanup_choice_left();
 extern "C" void cleanup_choice_right();
 extern "C" void cleanup_conditional_loop();
+extern "C" void cleanup_temporary_member_result();
+extern "C" void cleanup_sequence_places();
+extern "C" void cleanup_aligned_materialization();
 static int selected;
 extern "C" void cleanup_throw_point(int point) { if (point == selected) throw point; }
 static int check(void (*run)(), int point, unsigned long long expected) {
@@ -53,5 +56,8 @@ int main() {
            check(cleanup_conditional_loop, 72, 282) ||
            check(cleanup_conditional_loop, 10, 282) ||
            check(cleanup_conditional_loop, 11, 2826) ||
-           check(cleanup_conditional_loop, 12, 28266282);
+           check(cleanup_conditional_loop, 12, 28266282) ||
+           check(cleanup_temporary_member_result, 0, 333) ||
+           check(cleanup_temporary_member_result, 3, 3) ||
+           check(cleanup_sequence_places, 0, 4) || check(cleanup_aligned_materialization, 0, 4);
 }

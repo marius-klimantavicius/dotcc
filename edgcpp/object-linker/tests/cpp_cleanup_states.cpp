@@ -101,3 +101,86 @@ extern "C" void cleanup_conditional_loop() {
         record(6);
     }
 }
+
+// A nontrivial temporary already has owned storage; selecting its member must
+// not create another record copy or change the existing destruction boundary.
+extern "C" void cleanup_temporary_member_result() {
+    int result = Item(3).digit;
+    record(result);
+}
+struct PlaceValue { int value; int other; };
+struct NestedPlaceValue { PlaceValue inner; };
+union UnionPlaceValue { int value; unsigned bits; };
+struct BitPlaceValue { unsigned bits : 3; };
+static int place_calls;
+static int place_step() { return ++place_calls; }
+static PlaceValue make_place_value(int value) {
+    ++place_calls;
+    return {value, value + 1};
+}
+static NestedPlaceValue make_nested_place_value() {
+    ++place_calls;
+    return {{41, 42}};
+}
+static UnionPlaceValue make_union_place_value() {
+    ++place_calls;
+    UnionPlaceValue result;
+    result.value = 11;
+    return result;
+}
+static BitPlaceValue make_bit_place_value() {
+    ++place_calls;
+    return {5};
+}
+extern "C" void cleanup_sequence_places() {
+    PlaceValue object{5, 7};
+    place_calls = 0;
+    int read = (place_step(), object).value;
+    (place_step(), object).value += 3;
+    int *address = &(place_step(), object).value;
+    int before = (place_step(), object).value++;
+    int returned = make_place_value(13).value;
+    int selected = (place_step(), make_place_value(17)).other;
+    int union_value = make_union_place_value().value;
+    PlaceValue rows[2]{{21, 22}, {31, 32}};
+    PlaceValue *next = rows;
+    int chosen = (place_step(), *next++).other;
+    volatile int observed = 19;
+    int volatile_read = (place_step(), observed);
+    (place_step(), observed) = 23;
+    int nested = make_nested_place_value().inner.other;
+    unsigned bits = make_bit_place_value().bits;
+    if (read == 5 && before == 8 && object.value == 9 && address == &object.value &&
+        returned == 13 && selected == 18 && union_value == 11 && chosen == 22 &&
+        next == rows + 1 && volatile_read == 19 && observed == 23 && nested == 42 &&
+        bits == 5 && place_calls == 13)
+        record(4);
+    else
+        record(9);
+}
+
+struct alignas(16) AlignedPlaceValue { int values[4]; };
+static int aligned_place_calls;
+static AlignedPlaceValue make_aligned_place_value(int value) {
+    ++aligned_place_calls;
+    return {{value, value + 1, value + 2, value + 3}};
+}
+static int check_aligned_place_array(const int *values, int value) {
+    return (reinterpret_cast<unsigned long long>(values) & 15) == 0 &&
+           values[0] == value && values[1] == value + 1 &&
+           values[2] == value + 2 && values[3] == value + 3;
+}
+extern "C" void cleanup_aligned_materialization() {
+    aligned_place_calls = 0;
+    // Array decay takes the address of a member of the returned record.
+    // A per-iteration stackalloc would grow beyond the ordinary thread stack;
+    // each execution materialization site needs one reusable aligned slot.
+    for (int index = 0; index != 300000; ++index) {
+        if (!check_aligned_place_array(make_aligned_place_value(index).values, index)) {
+            record(9);
+            return;
+        }
+    }
+    int last = make_aligned_place_value(7).values[2];
+    record(last == 9 && aligned_place_calls == 300001 ? 4 : 9);
+}

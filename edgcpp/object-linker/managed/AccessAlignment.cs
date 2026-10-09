@@ -23,7 +23,8 @@ internal sealed class AccessAlignment(ObjectFile obj, FunctionBody body)
         return Math.Max(1, alignment);
     }
     private string Type(Node node) => obj.Type(node.TypeId!.Value);
-    public bool NeedsUnaligned(Node node) => node.Kind == "lifetime-scope" ? NeedsUnaligned(body.Child(node.Id, "operand")) : node.ValueCategory == "place" &&
+    private Node SequenceTail(Node node) => body.Nodes[body.Children(node.Id, "item").Last().ChildId];
+    public bool NeedsUnaligned(Node node) => node.Kind == "sequence" ? NeedsUnaligned(SequenceTail(node)) : node.Kind == "lifetime-scope" ? NeedsUnaligned(body.Child(node.Id, "operand")) : node.ValueCategory == "place" &&
         node.Kind is "dereference" or "storage" &&
         Place(node) < obj.AccessAlignment(Type(node));
     public long Place(Node node)
@@ -31,6 +32,7 @@ internal sealed class AccessAlignment(ObjectFile obj, FunctionBody body)
         if (places.TryGetValue(node.Id, out long value)) return value;
         value = node.Kind switch
         {
+            "sequence" => Place(SequenceTail(node)),
             "lifetime-scope" => Place(body.Child(node.Id, "operand")),
             "base-subobject" => AtOffset(Place(body.Child(node.Id, "operand")), obj.BaseSubobjects[(body.Child(node.Id, "operand").TypeId!.Value, obj.BaseSubobjectExpressions[node.Id])].ByteOffset),
             "member" => AtOffset(Place(body.Child(node.Id, "operand")), obj.Fields[node.FieldId!.Value].ByteOffset),
@@ -64,6 +66,7 @@ internal sealed class AccessAlignment(ObjectFile obj, FunctionBody body)
         if (pointerOrigins.TryGetValue(node.Id, out Origin value)) return value;
         value = node.Kind switch
         {
+            "sequence" => PointerOrigin(SequenceTail(node)),
             "lifetime-scope" => PointerOrigin(body.Child(node.Id, "operand")),
             "address" or "array-decay" => new(Place(body.Child(node.Id, "operand")), false),
             "storage-address" => new(AtOffset(Math.Max(1, obj.Storages[node.StorageId!.Value].Alignment), long.Parse(node.ConstantText!, System.Globalization.CultureInfo.InvariantCulture)), false),
