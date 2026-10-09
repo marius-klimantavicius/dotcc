@@ -215,6 +215,28 @@ type. Distinguish raw definitions, evaluated constants, resolved expansion
 instances and explicitly typed API wrappers. Never replay arbitrary macros in
 the linker to invent missing semantic decisions.
 
+## Throw initialization cleanup (profile 31)
+
+Every `throw_expressions` row has a `throw_initialization_boundaries` row with
+policy `unwind-to-entry-before-release`. This denotes a dynamic snapshot of the
+function cleanup cursor immediately before payload allocation. It is not a
+guessed lexical scope or a serialized native stack address. Each cleanup marker
+inside an initializer also has a `throw_cleanup_transitions` row naming its exact
+innermost throw, including unreachable markers. The verifier checks these owners
+against executable graph nesting, function identity, and ordinary cleanup-state
+and target metadata. Missing boundaries, missing transition ownership and foreign
+owners are rejected after normal database/schema/digest validation.
+
+The emitter uses the same typed cleanup actions for function exit and failed
+initialization. On an accepted initialization failure it advances through actions
+until reaching the saved cursor, releases the incomplete payload, and rethrows.
+An initializer failure must not destroy outer locals at this boundary or invoke
+the complete payload destructor. Nested initializers save independent cursors.
+First-pass exception-start/termination classification remains the shared provider's
+responsibility. Payload propagation itself bypasses the initialization-failure
+catch. Partial payload subobject rollback and source handlers are still separate
+unsupported forms; this extension covers initializer-local scalar temporaries.
+
 ## Shared headers later
 
 Deduplicate identical source/token/constant bytes first. Sharing semantic header

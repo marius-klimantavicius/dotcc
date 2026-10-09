@@ -13,6 +13,8 @@ internal sealed partial class ObjectFile
     public Dictionary<long, ThrowExpression> ThrowExpressions { get; } = [];
     public Dictionary<long, long> ThrowObjectAddresses { get; } = [];
     public Dictionary<long, long> ThrowMarkers { get; } = [];
+    public HashSet<long> ThrowInitializationBoundaries { get; } = [];
+    public Dictionary<long, long> ThrowCleanupTransitions { get; } = [];
     public HashSet<long> RethrowExpressions { get; } = [];
 
     // EH identity follows the original language type, never its C# storage type.
@@ -120,6 +122,14 @@ internal sealed partial class ObjectFile
                         throw new InvalidDataException("Exception payload destructor lacks its exact source and complete-object ABI provenance");
                 }
             }
+        using (var query = database.Prepare("SELECT throw_node_id,cleanup_policy,capture_proof FROM throw_initialization_boundaries"))
+            while (query.Read())
+                if (!ThrowExpressions.ContainsKey(query.Integer(0)) || query.Text(1) != "unwind-to-entry-before-release" ||
+                    query.Text(2) != "observed-throw-initializer" || !ThrowInitializationBoundaries.Add(query.Integer(0)))
+                    throw new InvalidDataException("Invalid owned throw initialization cleanup boundary");
+        if (!ThrowInitializationBoundaries.SetEquals(ThrowExpressions.Keys))
+            throw new InvalidDataException("Throw requires its initialization cleanup/release boundary");
+        ReadThrowOwnerMap("throw_cleanup_transitions", "cleanup-transition", "observed-throw-initializer-transition", ThrowCleanupTransitions, false);
         ReadThrowOwnerMap("throw_object_addresses", "thrown-object-address", "observed-thrown-object-address", ThrowObjectAddresses, false);
         ReadThrowOwnerMap("throw_markers", "throw-marker", "observed-throw-start", ThrowMarkers, true);
         using (var query = database.Prepare("SELECT x.node_id,x.capture_proof,n.kind FROM rethrow_expressions x LEFT JOIN nodes n ON n.id=x.node_id ORDER BY x.node_id"))

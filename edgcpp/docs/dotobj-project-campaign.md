@@ -681,3 +681,44 @@ payload storage, then preserve the outer function's remaining cleanup. Hugeint
 advances from Convert to NegateInPlace. string_util still requires the live
 stringstream hierarchy's virtual-base/VTT layout. Full DuckDB C# generation
 remains incomplete; the next work owns these initialization boundaries.
+
+## Throw initializer cleanup boundaries, v31 (2026-10-09)
+
+Implemented by the root agent alone, as requested. Each typed throw now owns an
+initialization boundary and every enclosed cleanup transition names its exact
+innermost throw. Generated C# saves the entry cleanup cursor before allocation.
+Accepted initialization failures unwind initializer-local actions to that cursor,
+release unfinished payload storage, then propagate to the enclosing function.
+The existing verified destructor chain is reused, with state advancement before
+callbacks and conditional flag checks intact. Nested throws retain independent
+boundaries; no native stack-frame offsets or frontend semantic changes are added.
+
+Native056/managed054 passes 60 focused scenarios against native C++ and stock EDG
+C at O0/O2, and translated C# under JIT/NativeAOT. A fixture-only provider checks
+that local temporaries are destroyed before payload release, enclosing locals
+remain live at that boundary, incomplete payload destructors are not called and
+all payload allocations are released. Four schema-valid, resealed malformed
+objects reject missing or incorrect boundary/transition ownership. Prior typed
+throw generation passes 56 checks; existing cleanup acceptance passes 21 checks
+covering its 47 scenarios under JIT/NativeAOT. These tests do not implement a
+production exception provider or source catch matching.
+
+The full native056/managed054 regression passes **1210 checks including
+NativeAOT**. [Hashed v31 evidence](../evidence/dotobj-throw-initializer-20261009.json)
+records the immutable tools, focused oracles, malformed metadata rejections,
+project probe and generated-source hashes.
+
+Original DuckDB `hugeint.cpp` now exports, verifies and generates C# (280 emitted
+function definitions including required header bodies). The review alias is
+`artifacts/review/duckdb-dotobj-hugeint`. Its externs remain unbound; no compilation
+or execution of that unit is claimed. The other selected units retain explicit
+gates: unsupported source declaration types in `exception.cpp`/`date.cpp`, an
+initialization carrying a destructor in `allocator.cpp`, and virtual-base/VTT
+layout in `string_util.cpp`. These are recorded, not taken into this phase.
+
+Partial payload subobject rollback, source handlers and the shared production
+exception runtime remain unfinished. A direct discarded nontrivial record comma
+operand also remains gated; the focused fixture calls an ordinary observer for
+that operand while preserving the same temporary lifetime. Earlier failed probes
+and all generated artifacts are retained. Stop after this phase's validation and
+commit; do not start the next phase automatically.

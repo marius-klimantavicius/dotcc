@@ -22,6 +22,7 @@ internal sealed partial class ObjectFile : IDisposable
     {
         ["exception_types"] = "id", ["exception_base_conversions"] = "exception_type_id,ordinal",
         ["throw_expressions"] = "node_id", ["throw_object_addresses"] = "node_id",
+        ["throw_initialization_boundaries"] = "throw_node_id", ["throw_cleanup_transitions"] = "node_id",
         ["throw_markers"] = "node_id", ["rethrow_expressions"] = "node_id",
         ["normal_destructions"] = "node_id", ["expression_lifetimes"] = "node_id", ["base_subobject_expressions"] = "node_id", ["source_lifetimes"] = "id", ["source_destruction_obligations"] = "id",
         ["cleanup_conditions"] = "action_id", ["cleanup_actions"] = "id", ["cleanup_states"] = "id",
@@ -77,7 +78,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v30" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v31" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");

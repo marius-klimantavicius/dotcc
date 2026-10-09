@@ -223,8 +223,10 @@ internal static class Verifier
                     EdgeShape(node);
                     if (Type(node) != "void" || !obj.CleanupTransitions.TryGetValue(node.Id, out CleanupTransition? transition))
                         Fail("Cleanup transition lacks its observed marker metadata");
-                    if (activeThrows.Count != 0 && !obj.CleanupTransitions[node.Id].IsUnreachable)
-                        Fail("Throw initializer cleanup transitions require owned partial-payload release scheduling");
+                    if (activeThrows.Count != 0
+                        ? !obj.ThrowCleanupTransitions.TryGetValue(node.Id, out long cleanupOwner) || cleanupOwner != activeThrows.Peek()
+                        : obj.ThrowCleanupTransitions.ContainsKey(node.Id))
+                        Fail("Cleanup transition differs from its exact throw initialization boundary");
                     cleanupVisibility.Add(node.Id, new HashSet<long>(visible));
                     break;
                 case "cleanup-frame":

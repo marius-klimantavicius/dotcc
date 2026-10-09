@@ -108,6 +108,8 @@ def main():
             ('missing-throw-proof', [
                 ('DELETE FROM throw_object_addresses WHERE throw_node_id=?', (throw_node,)),
                 ('DELETE FROM throw_markers WHERE throw_node_id=?', (throw_node,)),
+                ('DELETE FROM throw_cleanup_transitions WHERE throw_node_id=?', (throw_node,)),
+                ('DELETE FROM throw_initialization_boundaries WHERE throw_node_id=?', (throw_node,)),
                 ('DELETE FROM throw_expressions WHERE node_id=?', (throw_node,))]),
             ('missing-rethrow-proof', [('DELETE FROM rethrow_expressions', ())]),
         ]

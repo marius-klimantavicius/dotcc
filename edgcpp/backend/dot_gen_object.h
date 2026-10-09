@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v30: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v31: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -51,6 +51,7 @@ struct Writer {
   std::vector<string> source_lifetimes,source_destruction_obligations,cleanup_actions,cleanup_states,cleanup_transitions,cleanup_frame_markers;
   std::vector<string> expression_lifetimes,cleanup_conditions;
   std::vector<string> exception_types,exception_base_conversions,throw_expressions,throw_object_addresses,throw_markers,rethrow_expressions;
+  std::vector<string> throw_initialization_boundaries,throw_cleanup_transitions;
   std::map<unsigned,unsigned> exception_type_ids;
   std::map<unsigned,a_routine_ptr> exception_source_destructors;
   std::map<a_routine_ptr,a_routine_ptr> complete_exception_destructors;
@@ -1204,8 +1205,6 @@ struct Writer {
   }
   unsigned cleanup_marker(an_expr_node_ptr expr) {
     auto &value=expr->variant.lowered_eh;
-    if(active_throw_node && value.kind==leck_cleanup_state)
-      reject("throw initializer cleanup needs an owned payload release boundary");
     if(value.kind==leck_cleanup_state || value.kind==leck_unreachable_cleanup_state) {
       unsigned state=0;auto raw=value.variant.cleanup_region_number;
       if(raw!=null_eh_region_number) {
@@ -1215,6 +1214,8 @@ struct Writer {
       unsigned result=node("cleanup-transition",1,expr->position,0,0,"","","value","left-to-right");
       cleanup_transitions.push_back("{\"nodeId\":"+number(result)+",\"stateId\":"+number(state)+
         ",\"captureProof\":\"observed-cleanup-state\",\"isUnreachable\":"+(value.kind==leck_unreachable_cleanup_state?"true":"false")+"}");
+      if(active_throw_node)throw_cleanup_transitions.push_back("{\"nodeId\":"+number(result)+
+        ",\"throwNodeId\":"+number(active_throw_node)+",\"captureProof\":\"observed-throw-initializer-transition\"}");
       return result;
     }
     if(value.kind==leck_function_prologue || value.kind==leck_function_epilogue) {
@@ -1925,6 +1926,11 @@ struct Writer {
       ",\"destructorEntityId\":"+number(destructor)+
       ",\"initializationKind\":"+quote(saved.initializer?"expression":"empty")+
       ",\"captureProof\":\"observed-throw-lowering\"}");
+    // The entry cursor is a runtime boundary, not an inferred source scope.
+    // Locals activated by this initializer unwind before its payload is freed;
+    // the enclosing function retains ownership of the predecessor chain.
+    throw_initialization_boundaries.push_back("{\"throwNodeId\":"+number(id)+
+      ",\"cleanupPolicy\":\"unwind-to-entry-before-release\",\"captureProof\":\"observed-throw-initializer\"}");
     auto old_origin=active_throw_origin;auto old_node=active_throw_node;
     active_throw_origin=saved.original;active_throw_node=id;
     if(saved.initializer)edge(id,"initializer",0,expression(saved.initializer));
@@ -2927,7 +2933,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v30\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v31\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -2941,6 +2947,7 @@ struct Writer {
       ",\"exceptionTypes\":"+array(exception_types)+",\"exceptionBaseConversions\":"+array(exception_base_conversions)+
       ",\"throwExpressions\":"+array(throw_expressions)+",\"throwObjectAddresses\":"+array(throw_object_addresses)+
       ",\"throwMarkers\":"+array(throw_markers)+",\"rethrowExpressions\":"+array(rethrow_expressions)+
+      ",\"throwInitializationBoundaries\":"+array(throw_initialization_boundaries)+",\"throwCleanupTransitions\":"+array(throw_cleanup_transitions)+
       ",\"recordValueTransfers\":"+array(record_value_transfers)+",\"sourceFields\":"+array(source_fields)+
       ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+
       ",\"baseSubobjectExpressions\":"+array(base_subobject_expressions)+

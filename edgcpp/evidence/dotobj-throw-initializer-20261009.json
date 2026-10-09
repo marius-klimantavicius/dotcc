@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v31",
+  "scope": "Owned throw-initializer cleanup boundaries and release order; implemented by root alone",
+  "fullRegressionChecks": 1210,
+  "focusedChecks": 42,
+  "focusedExecutionScenarios": 60,
+  "malformedObjectsRejected": 4,
+  "priorSourceThrowGenerationChecks": 56,
+  "priorCleanupChecks": 21,
+  "priorCleanupScenarios": 47,
+  "verifiedExecutionModes": [
+    "native C++ O0/O2",
+    "stock EDG C O0/O2",
+    "Linux x64 JIT",
+    "Linux x64 NativeAOT"
+  ],
+  "productionExceptionProviderImplemented": false,
+  "fixtureExceptionProviderOnly": true,
+  "duckdb": {
+    "completeProjectGenerated": false,
+    "selectedOriginalUnits": 5,
+    "packagedUnits": [
+      "src/common/types/hugeint.cpp"
+    ],
+    "hugeintVerified": true,
+    "hugeintCSharpGenerated": true,
+    "emittedFunctionDefinitions": 280,
+    "hugeintCompiledOrExecuted": false,
+    "remainingSampledGates": {
+      "exception.cpp": "source declaration type outside supported profile",
+      "date.cpp": "source declaration type outside supported profile",
+      "allocator.cpp": "initialization with destructor",
+      "string_util.cpp": "virtual base/VTT execution layout"
+    }
+  },
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v31-001/results.json",
+      "sha256": "d3a95e324b2499617203cdd69b59af34d6abf9bbbd94d474a497450d3d1508b0"
+    },
+    "focusedAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-throw-init-acceptance-002/results.json",
+      "sha256": "501bb6c0507e882163242858ecb3347c5a3e74705a57b9e309d0fab427b4f210"
+    },
+    "priorSourceThrowGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-throw-v31-001/results.json",
+      "sha256": "ad48010b96f7afd61de5416623aae43f93a7aa53bddf3eb301d0c43808306f68"
+    },
+    "priorCleanupExecution": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-cleanup-v31-001/results.json",
+      "sha256": "12de131b01696913108d62ac0525c3df50572c79e31a0bd3d6cd777ea7337716"
+    },
+    "originalDuckdbProbe": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-056-initializer/results.json",
+      "sha256": "39bd735f0375a4804bcbb55a4a8320388e757572868ec55759bd75b593c797f7"
+    },
+    "hugeintGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-056-initializer/hugeint-generation.json",
+      "sha256": "5267e987004fefe2689b9f9e567d91a981701abcc669b2a6dcc88d54824e77d3"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native056-verified-snapshot/cpfe-dot",
+      "sha256": "fb8d0b8e469a4203692155b94abe8a70c271327f0c6d1d3dd4409b5329fbd5d9"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-054/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "aa01acb66521d2910859cfe69f034901f59148e7bcc97c3db93c30b0850eae9a"
+    },
+    "toolingManifest": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v31-tooling-snapshot-002/sha256.json",
+      "sha256": "fbf64ee65faaa14132202dbab81285a70908f049fd8c85e2471e24bc2f2d93a1"
+    }
+  },
+  "limitations": [
+    "No production exception runtime or translated source catch matching is implemented.",
+    "Partial payload subobject cleanup remains an explicit unsupported case.",
+    "No post-start copy failure, throwing destructor, virtual base or thread-transfer execution coverage.",
+    "Direct discarded nontrivial record comma operand remains gated; fixture uses a normal observer call while retaining its temporary lifetime.",
+    "No full DuckDB or fresh SQLite project execution claimed.",
+    "All prior failed probes and generated intermediates retained."
+  ],
+  "nextAction": "Stopped after this phase at user request; source handlers and partial payload rollback remain later work."
+}

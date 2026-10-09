@@ -57,7 +57,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v30");
+        lifetimeWriter.WriteString("profile", "scalar-control-v31");
         lifetimeWriter.WriteString("capture", "lexical-activations-and-observed-cpp-cleanup-states");
         lifetimeWriter.WriteBoolean("cleanupStates", true);
         lifetimeWriter.WriteBoolean("sourceLifetimes", true);
@@ -164,7 +164,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v30");
+            writer.WriteString("profile", "scalar-control-v31");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -177,7 +177,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v30");
+            writer.WriteString("profile", "scalar-control-v31");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -188,7 +188,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v30", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v31", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, cleanupStates = true, sourceLifetimes = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; ordinary and conditional scalar C++ local/member/base exceptional destructor cleanup is owned; typed throw/rethrow generation requires an unbound shared exception provider; variable-length arrays, source catch handlers and array/VTT cleanup actions are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance plus lexical cleanup activations and observed source lifetime/exceptional destruction state graphs; no complete source expression/statement view, macro expansion history or general C++ EH capture" },
@@ -955,6 +955,36 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             Line(indent, Type(NodeType(node)) + " " + result + " = " + rendered + ";");
             return result;
         }
+        // Reuse the same verified action chain for function exit and a failed
+        // throw initializer. Advancing before the callback prevents double cleanup.
+        void UnwindCleanup(int indent, string boundary)
+        {
+            string secondary = allocator.Allocate("__cleanup_failure", "cleanup_failure");
+            Line(indent, "try"); Line(indent, "{");
+            Line(indent + 1, "while (" + cleanupState + " != " + boundary + ")"); Line(indent + 1, "{");
+            Line(indent + 2, "switch (" + cleanupState + ")"); Line(indent + 2, "{");
+            foreach (CleanupState state in obj.FunctionCleanupStates[function.Id].OrderBy(state => state.Id))
+            {
+                CleanupAction action = obj.CleanupActions[state.ActionId];
+                Line(indent + 3, "case " + state.Id + "L:");
+                Line(indent + 4, cleanupState + " = " + (state.NextStateId ?? 0) + "L;");
+                int actionIndent = indent + 4;
+                if (obj.CleanupConditions.TryGetValue(action.Id, out long flag))
+                {
+                    Line(actionIndent, "if (" + bindingNames[flag] + " != 0)"); Line(actionIndent, "{");
+                    ++actionIndent;
+                }
+                Line(actionIndent, FunctionReference(linker.Resolve(obj, action.CallbackEntityId)) + "(" + Expression(body.Nodes[action.TargetNodeId]) + ");");
+                if (obj.CleanupConditions.ContainsKey(action.Id)) Line(actionIndent - 1, "}");
+                Line(indent + 4, "break;");
+            }
+            Line(indent + 3, "default:");
+            Line(indent + 4, "global::System.Environment.FailFast(\"Invalid owned cleanup state\");");
+            Line(indent + 4, "break;");
+            Line(indent + 2, "}"); Line(indent + 1, "}"); Line(indent, "}");
+            Line(indent, "catch (global::System.Exception " + secondary + ") when (global::Edg.Runtime.ObjectProgram.TerminateCleanupFailure(" + secondary + "))");
+            Line(indent, "{"); Line(indent + 1, "throw;"); Line(indent, "}");
+        }
         void Discard(Node expression, int indent)
         {
             if (expression.Kind == "lifetime-scope") { Discard(body.Child(expression.Id, "operand"), indent); return; }
@@ -965,7 +995,9 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 string carrier = throwCarrierNames[expression.Id], error = allocator.Allocate("__throw_error", "throw_error");
                 string destructor = thrown.DestructorEntityId is long callback
                     ? "&" + exceptionDestructorNames[(obj, callback)] : "(delegate* managed<void*, void>)0";
+                string boundary = hasCleanup ? allocator.Allocate("__throw_cleanup_boundary", "throw_cleanup_boundary") : "0L";
                 Line(indent, "{");
+                if (hasCleanup) Line(indent + 1, "long " + boundary + " = " + cleanupState + ";");
                 Line(indent + 1, "var " + carrier + " = " + ExceptionRuntime + ".Allocate(" + exceptionDescriptorNames[descriptor.IdentityKey] + ", " + destructor + ");");
                 Line(indent + 1, "try"); Line(indent + 1, "{");
                 if (thrown.InitializationKind == "expression") Discard(body.Child(expression.Id, "initializer"), indent + 2);
@@ -975,6 +1007,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 Line(indent + 1, "}");
                 Line(indent + 1, "catch (global::System.Exception " + error + ") when (" + ExceptionRuntime + ".FilterInitializationFailure(" + carrier + ", " + error + "))");
                 Line(indent + 1, "{");
+                if (hasCleanup) UnwindCleanup(indent + 2, boundary);
                 Line(indent + 2, ExceptionRuntime + ".ReleaseIncomplete(" + carrier + ");");
                 Line(indent + 2, "throw;"); Line(indent + 1, "}");
                 Line(indent + 1, "finally { global::System.GC.KeepAlive(" + carrier + "); }");
@@ -1189,36 +1222,12 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         if (hasCleanup)
         {
             string error = allocator.Allocate("__cleanup_error", "cleanup_error");
-            string secondary = allocator.Allocate("__cleanup_failure", "cleanup_failure");
             Line(outerBodyIndent, "}");
             Line(outerBodyIndent, "catch (global::System.Exception " + error + ") when (global::Edg.Runtime.ObjectProgram.BeginUnwind(" + error + ", ref " + cleanupUnwinding + "))");
             Line(outerBodyIndent, "{"); Line(outerBodyIndent + 1, "throw;"); Line(outerBodyIndent, "}");
             Line(outerBodyIndent, "finally"); Line(outerBodyIndent, "{");
             Line(outerBodyIndent + 1, "if (" + cleanupUnwinding + ")"); Line(outerBodyIndent + 1, "{");
-            Line(outerBodyIndent + 2, "try"); Line(outerBodyIndent + 2, "{");
-            Line(outerBodyIndent + 3, "while (" + cleanupState + " != 0L)"); Line(outerBodyIndent + 3, "{");
-            Line(outerBodyIndent + 4, "switch (" + cleanupState + ")"); Line(outerBodyIndent + 4, "{");
-            foreach (CleanupState state in obj.FunctionCleanupStates[function.Id].OrderBy(state => state.Id))
-            {
-                CleanupAction action = obj.CleanupActions[state.ActionId];
-                Line(outerBodyIndent + 5, "case " + state.Id + "L:");
-                Line(outerBodyIndent + 6, cleanupState + " = " + (state.NextStateId ?? 0) + "L;");
-                int actionIndent = outerBodyIndent + 6;
-                if (obj.CleanupConditions.TryGetValue(action.Id, out long flag))
-                {
-                    Line(actionIndent, "if (" + bindingNames[flag] + " != 0)"); Line(actionIndent, "{");
-                    ++actionIndent;
-                }
-                Line(actionIndent, FunctionReference(linker.Resolve(obj, action.CallbackEntityId)) + "(" + Expression(body.Nodes[action.TargetNodeId]) + ");");
-                if (obj.CleanupConditions.ContainsKey(action.Id)) Line(actionIndent - 1, "}");
-                Line(outerBodyIndent + 6, "break;");
-            }
-            Line(outerBodyIndent + 5, "default:");
-            Line(outerBodyIndent + 6, "global::System.Environment.FailFast(\"Invalid owned cleanup state\");");
-            Line(outerBodyIndent + 6, "break;");
-            Line(outerBodyIndent + 4, "}"); Line(outerBodyIndent + 3, "}"); Line(outerBodyIndent + 2, "}");
-            Line(outerBodyIndent + 2, "catch (global::System.Exception " + secondary + ") when (global::Edg.Runtime.ObjectProgram.TerminateCleanupFailure(" + secondary + "))");
-            Line(outerBodyIndent + 2, "{"); Line(outerBodyIndent + 3, "throw;"); Line(outerBodyIndent + 2, "}");
+            UnwindCleanup(outerBodyIndent + 2, "0L");
             Line(outerBodyIndent + 1, "}"); Line(outerBodyIndent, "}");
         }
         if (terminate)

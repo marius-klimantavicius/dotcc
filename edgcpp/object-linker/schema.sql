@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v30'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v31'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -596,6 +596,16 @@ CREATE TABLE throw_expressions (
  destructor_entity_id INTEGER REFERENCES entities(id),
  initialization_kind TEXT NOT NULL CHECK(initialization_kind IN ('empty','expression')),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-throw-lowering')
+) STRICT;
+CREATE TABLE throw_initialization_boundaries (
+ throw_node_id INTEGER PRIMARY KEY REFERENCES throw_expressions(node_id),
+ cleanup_policy TEXT NOT NULL CHECK(cleanup_policy='unwind-to-entry-before-release'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-throw-initializer')
+) STRICT;
+CREATE TABLE throw_cleanup_transitions (
+ node_id INTEGER PRIMARY KEY REFERENCES cleanup_transitions(node_id),
+ throw_node_id INTEGER NOT NULL REFERENCES throw_initialization_boundaries(throw_node_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-throw-initializer-transition')
 ) STRICT;
 CREATE TABLE throw_object_addresses (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
