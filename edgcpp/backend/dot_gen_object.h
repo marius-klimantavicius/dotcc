@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v34: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v35: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -1298,8 +1298,15 @@ struct Writer {
     for(const auto &entry:active_try_ids) {
       auto original=dot_object_source::source_lifetime(entry.first->lifetime,owner);
       if(!original || !source_lifetime_ids.count(original))reject("source try lacks original lifetime identity");
+      const auto &saved=dot_object_source::state().tries.at(entry.first);
+      string kind="ordinary";
+      if(saved.function_try) {
+        if(owner->special_kind==sfk_constructor)kind="constructor";
+        else if(owner->special_kind==sfk_destructor)kind="destructor";
+        else reject("function-try owner is not a constructor or destructor");
+      }
       source_tries.push_back("{\"nodeId\":"+number(entry.second)+",\"sourceLifetimeId\":"+number(source_lifetime_ids.at(original))+
-        ",\"captureProof\":\"observed-ordinary-try\"}");
+        ",\"tryKind\":"+quote(kind)+",\"captureProof\":\"observed-source-try\"}");
     }
     std::vector<std::pair<a_dynamic_init_ptr,const dot_object_source::CleanupSnapshot*>> payloads(
       active_payload_subobjects.begin(),active_payload_subobjects.end());
@@ -2819,8 +2826,8 @@ struct Writer {
     switch(s->kind) {
       case stmk_try_block: {
         auto t=s->variant.try_block;auto found=dot_object_source::state().tries.find(t);
-        if(found==dot_object_source::state().tries.end() || found->second.owner!=current_routine || found->second.function_try)
-          reject("source try lacks observed ordinary statement ownership");
+        if(found==dot_object_source::state().tries.end() || found->second.owner!=current_routine)
+          reject("source try lacks observed statement ownership");
         const auto &saved=found->second;
         if(saved.handlers.empty() || t->handlers!=saved.handlers[0])reject("source try handler list changed");
         unsigned id=node("try",0,s->position);
@@ -3072,7 +3079,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v34\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v35\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

@@ -385,8 +385,8 @@ internal sealed partial class ObjectFile
             "id", "functionEntityId", "sourceObligationId", "callbackEntityId", "targetNodeId", "captureProof");
         Table("cleanupStates", "SELECT id,function_entity_id,action_id,next_state_id,handler_node_id FROM cleanup_states ORDER BY id",
             "id", "functionEntityId", "actionId", "nextStateId", "handlerNodeId");
-        Table("sourceTries", "SELECT node_id,source_lifetime_id,capture_proof FROM source_tries ORDER BY node_id",
-            "nodeId", "sourceLifetimeId", "captureProof");
+        Table("sourceTries", "SELECT node_id,source_lifetime_id,try_kind,capture_proof FROM source_tries ORDER BY node_id",
+            "nodeId", "sourceLifetimeId", "tryKind", "captureProof");
         Table("sourceHandlers", "SELECT node_id,try_node_id,ordinal,match_kind,source_type_id,match_type_id,parameter_binding_id,capture_proof FROM source_handlers ORDER BY node_id",
             "nodeId", "tryNodeId", "ordinal", "matchKind", "sourceTypeId", "matchTypeId", "parameterBindingId", "captureProof");
         Table("caughtObjectAddresses", "SELECT node_id,handler_node_id,capture_proof FROM caught_object_addresses ORDER BY node_id",

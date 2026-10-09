@@ -359,6 +359,38 @@ and flattened transfers across protected regions remain explicit gates. Ordinary
 function-try blocks follow EDG's ordinary try lowering; they do not require the
 constructor/destructor wrapper semantics. No frontend behavior was changed.
 
+## Constructor/destructor function-try regions (profile 35)
+
+`source_tries` adds `try_kind` (`ordinary`, `constructor`, or `destructor`) and
+uses `observed-source-try` provenance. The writer records EDG's existing
+constructor/destructor function-try observation and the owning routine kind.
+The reader verifies that this kind agrees with the original routine through
+any generated ABI entry, as well as checking the original try lifetime.
+Ordinary nested tries in constructors/destructors remain ordinary tries.
+
+EDG already places protected base/member initialization and destructor wrapper
+operations inside the retained dependent statement. It also represents implicit
+rethrows at handler fallthrough. The managed emitter therefore reuses the typed
+handler and cleanup-state machinery; it does not reconstruct constructor wrappers
+or synthesize a rethrow based on C# fallthrough. Completed subobjects are destroyed
+before entering a constructor handler. Member/base destructions triggered by a
+destructor-body exception finish before its handler. A delegating constructor
+whose target completed uses the observed whole-object cleanup before its handler.
+
+The focused fixture compares 34 traces with native C++ and stock EDG C at O0/O2,
+under JIT and NativeAOT. It exercises base/member construction failure, constructor
+body failure, base-subobject use, handler replacement exceptions, destructor body
+and member/base failures, implicit rethrow, a destructor handler's explicit return,
+delegation failure before/after target completion, and suppression inside a
+`noexcept` destructor. Four malformed objects reject mismatched routine kinds or
+a foreign original lifetime. The shared exception provider remains fixture-only.
+
+This supersedes the earlier constructor/destructor function-try exclusion for
+the supported scalar/nonvirtual object layout. Array-sequence and virtual-base/VTT
+cleanup, unsupported exception identities, flattened protected-region transfers
+and the production exception provider remain separate work. No EDG semantic
+changes were made.
+
 ## Shared headers later
 
 Deduplicate identical source/token/constant bytes first. Sharing semantic header

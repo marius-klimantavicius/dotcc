@@ -57,7 +57,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v34");
+        lifetimeWriter.WriteString("profile", "scalar-control-v35");
         lifetimeWriter.WriteString("capture", "lexical-activations-and-observed-cpp-cleanup-states");
         lifetimeWriter.WriteBoolean("cleanupStates", true);
         lifetimeWriter.WriteBoolean("sourceLifetimes", true);
@@ -164,7 +164,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v34");
+            writer.WriteString("profile", "scalar-control-v35");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -177,7 +177,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v34");
+            writer.WriteString("profile", "scalar-control-v35");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -188,10 +188,10 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v34", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v35", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, cleanupStates = true, sourceLifetimes = true, prelowerSource = false, macros = false, lifetimes = false },
-            limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; ordinary and conditional scalar C++ local/member/base exceptional destructor cleanup is owned; typed throw/rethrow generation requires an unbound shared exception provider; catch-all source regions and handler release states are owned; variable-length arrays, function-try blocks and array/VTT cleanup actions are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance plus lexical cleanup activations and observed source lifetime/exceptional destruction state graphs; no complete source expression/statement view, macro expansion history or general C++ EH capture" },
+            limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; ordinary and conditional scalar C++ local/member/base exceptional destructor cleanup is owned; typed throw/rethrow generation requires an unbound shared exception provider; ordinary and constructor/destructor function-try regions, typed handlers and release states are owned; variable-length arrays and array/VTT cleanup actions are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance plus lexical cleanup activations and observed source lifetime/exceptional destruction state graphs; no complete source expression/statement view, macro expansion history or general C++ EH capture" },
             @namespace = namespaceOption, @class = classOption, sourceMap = "source-map.json", macroMap = "macro-map.json", lifetimeMap = "lifetime-map.json",
             runtimeHooks = new
             {
@@ -213,6 +213,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 status = linker.RequiresExceptionProvider ? "generation-only-unbound-provider" : "not-required",
                 sourceHandlersSupported = true,
                 sourceHandlerKinds = new[] { "ellipsis", "typed" },
+                sourceTryKinds = new[] { "ordinary", "constructor", "destructor" },
                 ownsPayloadInitialization = true,
                 ownsStartAndCompletionOrdering = true,
             },

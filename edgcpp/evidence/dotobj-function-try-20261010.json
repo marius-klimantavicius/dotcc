@@ -1,0 +1,125 @@
+{
+  "date": "2026-10-10",
+  "status": "passed",
+  "profile": "scalar-control-v35",
+  "scope": "Owned constructor/destructor function-try routine identity, protected cleanup and implicit rethrow; implemented by root alone",
+  "fullRegressionChecks": 1042,
+  "fullRegressionNativeAot": false,
+  "focusedChecks": 47,
+  "focusedExecutionScenarios": 34,
+  "malformedObjectsRejected": 4,
+  "priorTypedCatchChecks": 58,
+  "priorTypedCatchScenarios": 14,
+  "priorCatchAllChecks": 57,
+  "priorCatchAllScenarios": 105,
+  "priorSourceThrowGenerationChecks": 56,
+  "verifiedExecutionModes": [
+    "native C++ O0/O2",
+    "stock EDG C backend O0/O2",
+    "Linux x64 JIT",
+    "Linux x64 NativeAOT (focused exception suites)"
+  ],
+  "fixtureExceptionProviderOnly": true,
+  "productionExceptionProviderImplemented": false,
+  "edgSemanticChanges": false,
+  "validationBuilds": {
+    "native": "065",
+    "managed": "067",
+    "earlierRegressionSuitesManaged": "066",
+    "finalCorrection": "Restored ordinary expression-lifetime packaging/source-map columns; final focused fixture explicitly checks nonempty expression lifetime rows. Corrected full JIT regression and DuckDB generation use managed067. Native source differs from its frozen build only by whitespace."
+  },
+  "focusedCoverage": [
+    "base/member construction failure before constructor handler entry",
+    "constructor body failure and implicit rethrow",
+    "base-subobject constructor/destructor ABI aliases",
+    "handler replacement exceptions",
+    "destructor body failure and member/base cleanup before handler entry",
+    "member/base destructor failure",
+    "destructor handler explicit return suppresses exception",
+    "delegating constructor failure before and after target completion",
+    "noexcept destructor catches and suppresses an exception",
+    "ordinary expression-lifetime packaging and source-map shape",
+    "source-hidden linking"
+  ],
+  "duckdb": {
+    "completeProjectGenerated": false,
+    "selectedOriginalUnits": 5,
+    "packagedUnits": [
+      "src/common/types/hugeint.cpp"
+    ],
+    "hugeintVerified": true,
+    "hugeintCSharpGenerated": true,
+    "emittedFunctionDefinitions": 280,
+    "hugeintCompiledOrExecuted": false,
+    "remainingSampledGates": {
+      "exception.cpp": "source declaration type outside supported profile",
+      "date.cpp": "source declaration type outside supported profile",
+      "allocator.cpp": "initialization with destructor",
+      "string_util.cpp": "virtual base/VTT execution layout"
+    }
+  },
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v35-002/results.json",
+      "sha256": "758684c62b74ac1369a63235471736111c46cbc4a8e214ff9c5ff3adea3bb89d"
+    },
+    "focusedAcceptance": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-function-try-v35-004/results.json",
+      "sha256": "b72102e0a740d6f68fd0dab68d86244f75f38e819d5ff02b0c10a4e56b15e674"
+    },
+    "priorTypedCatch": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-typed-catch-v35-001/results.json",
+      "sha256": "77aa8998187fe0c82b9e357687f40760c527185f1e1f28dfa5361f4c83f05ea8"
+    },
+    "priorCatchAll": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-catch-all-v35-001/results.json",
+      "sha256": "0d38d8762602134d8a434e061ced775dca2bfc3e7ec9011029ecef71465e7c8f"
+    },
+    "priorSourceThrowGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-throw-v35-001/results.json",
+      "sha256": "f9904ef49fe609642cbc67d1b2a84e922bb6d322d00ab0e88db9b2a8a1d2dd8f"
+    },
+    "originalDuckdbProbe": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-065-function-try-002/results.json",
+      "sha256": "eeb4e1b43fd6f903883221668e9601f935f7b4a41d1b696d1f415e36a3dee823"
+    },
+    "hugeintGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-065-function-try-002/hugeint-generation.json",
+      "sha256": "d1ee64238ef5bedb8d4096c47dfa7b5cd5829a88d8c70cc4b96ef6996c65daad"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native065-verified-snapshot/cpfe-dot",
+      "sha256": "f684e599ce6c0f3cb846f343f57f6a64887b568f82c824706af441d1e19c6421"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-067/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "de334b0e96b363f875dc713b72506505d232d8663e47ed0da8207293fa091bd1"
+    },
+    "toolingManifest": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v35-tooling-snapshot-001/sha256.json",
+      "sha256": "125cedd415da5031d736fd6ac0e71d8d4aee63a50587ccc6cd79aedd3e2ab54b"
+    },
+    "generatedFunctionTry": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-function-try-v35-004/generated/Translated.0000.cpp_function_try_u002e_cpp.cs",
+      "sha256": "96a73ffe6334407c7bc7c2e8d020be8495c47cb19f14363db33ef91232e9fa84"
+    }
+  },
+  "retainedAttempts": {
+    "interruptedFullRegression": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v35-001",
+    "failedDuckdbPackaging": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-065-function-try",
+    "reason": "An overbroad field-list edit incorrectly added tryKind to expression_lifetimes. Corrected only the packaging/source-map mapping; no EDG semantic changes. Incomplete broad NativeAOT attempt is not counted as a passing full suite."
+  },
+  "review": {
+    "functionTry": "edgcpp/artifacts/review/dotobj-function-try/Translated.0000.cpp_function_try_u002e_cpp.cs",
+    "hugeint": "edgcpp/artifacts/review/duckdb-dotobj-hugeint/Translated.0000.hugeint_u002e_cpp.cs"
+  },
+  "remaining": [
+    "The shared production matching and exception-ownership provider remains unbound; fixture bodies are not a production runtime.",
+    "Array-sequence and virtual-base/VTT cleanup/layout remain explicit gates; delegated payload rollback is separate from the tested constructor delegation.",
+    "Unsupported original exception identity categories and flattened control transfers across protected regions remain gates.",
+    "Post-start throw-copy failure, destructor failure during active unwinding and cross-thread exception transfer are not covered by this fixture.",
+    "Full DuckDB generation, compilation and execution remain incomplete."
+  ],
+  "workStatus": "Phase complete; stop at this boundary and await user direction.",
+  "retainIntermediates": true
+}

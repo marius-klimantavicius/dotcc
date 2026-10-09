@@ -781,3 +781,35 @@ the other sampled type/initialization/VTT gates remain. No compilation or
 execution of DuckDB is claimed. The shared production exception provider,
 constructor/destructor function-try blocks and array/VTT cleanup remain open.
 Stop after this phase's commit and await user direction.
+
+## Constructor/destructor function-try regions, v35 (2026-10-10)
+
+Implemented by root alone. The writer now admits EDG's observed constructor and
+destructor function-try blocks and records their original routine kind alongside
+the try lifetime. The reader verifies that role through ABI provenance. Existing
+protected bodies already contain selected member/base initialization, destruction
+and implicit rethrows, so the emitter reuses the verified cleanup/handler model
+without reconstructing wrappers or changing EDG semantics.
+
+Native065/managed067 passes 47 focused checks with 34 execution traces matching
+native C++ and stock EDG C at O0/O2, under JIT and NativeAOT. These include partial
+construction, base-subobject use, delegating construction failure before/after
+target completion, destructor body and member/base failures, replacement throws,
+implicit rethrow, explicit destructor-handler return and suppression inside a
+`noexcept` destructor. Four SQL-valid resealed objects reject incorrect routine
+kinds or foreign original lifetimes. A temporary-expression fixture also verifies
+that ordinary expression-lifetime rows and their source map remain unchanged.
+
+The first DuckDB probe exposed an accidental `tryKind` addition to expression-
+lifetime packaging/source-map columns. That edit was corrected, the incomplete
+broad run retained and stopped, and the broad regression restarted under JIT.
+Focused exception suites provide NativeAOT coverage; no completed full-suite
+NativeAOT pass is claimed for this phase. The [v35 evidence](../evidence/dotobj-function-try-20261010.json)
+records exact tool versions, final totals and retained failed/interrupted attempts.
+
+The corrected DuckDB probe returns to the previous result: `hugeint.cpp` exports,
+verifies and generates 280 function definitions; the other four sampled units
+retain their type/initialization/VTT gates. Review source is available at
+`artifacts/review/dotobj-function-try`. The shared production exception provider,
+array/VTT cleanup, unsupported exception identities and full DuckDB generation
+remain unfinished. Stop after this phase's commit and await user direction.

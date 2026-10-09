@@ -1425,3 +1425,19 @@ The [format specification](../docs/dotobj-format.md) documents the additional
 `CppTypedHandlers` ABI. Its production provider remains required and unbound.
 Ordinary function-try blocks follow ordinary try lowering; constructor/destructor
 function-try blocks and array/VTT cleanup remain gated.
+
+## Constructor/destructor function-try blocks (profile v35)
+
+The v35 profile supersedes the earlier function-try exclusion for supported
+scalar/nonvirtual layouts. `source_tries.try_kind` records ordinary, constructor
+or destructor ownership, using `observed-source-try` provenance. A special kind
+must match the original routine reached through its ABI mapping and retain its
+original try lifetime. The executable body owns EDG's selected initialization,
+member/base destruction, whole-object delegated cleanup and implicit rethrows.
+
+The existing structured catch filters and cleanup cursors implement these regions.
+No native stack frame, new provider ABI or extra C# wrapper transform is needed.
+Normal destructor-handler returns can suppress an exception; handler fallthrough
+uses EDG's explicit rethrow. A `noexcept` boundary remains outside its source
+handler region. Runtime matching/ownership still needs the shared production
+provider; array/VTT cleanup and other explicitly rejected layouts remain gated.

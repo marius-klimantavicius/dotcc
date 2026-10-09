@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v34'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v35'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -647,7 +647,8 @@ CREATE TABLE rethrow_expressions (
 CREATE TABLE source_tries (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
  source_lifetime_id INTEGER NOT NULL REFERENCES source_lifetimes(id),
- capture_proof TEXT NOT NULL CHECK(capture_proof='observed-ordinary-try')
+ try_kind TEXT NOT NULL CHECK(try_kind IN ('ordinary','constructor','destructor')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-source-try')
 ) STRICT;
 CREATE TABLE source_handlers (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),

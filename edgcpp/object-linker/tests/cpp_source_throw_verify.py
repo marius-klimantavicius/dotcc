@@ -128,7 +128,7 @@ def main():
         unsupported = {
             'enum-identity': 'enum Code { value }; void reject() { throw value; }\n',
             'function-pointer-identity': 'void function() {} void reject() { throw &function; }\n',
-            'function-try-handler': 'struct Rejected { Rejected() try { throw 7; } catch(...) {} }; void reject() { Rejected value; }\n',
+            'virtual-exception-layout': 'struct Base {}; struct Derived: virtual Base {}; void reject() { throw Derived(); }\n',
             'payload-array-sequence-cleanup': '''extern void fail();
 static int destroyed;
 struct Member { Member(int value) { if(value==2) fail(); } ~Member() { ++destroyed; } };

@@ -6,19 +6,25 @@ internal sealed record HandlerMarker(long NodeId, long OwnerNodeId, string Kind)
 internal sealed partial class ObjectFile
 {
     public Dictionary<long, long> SourceTries { get; } = [];
+    public Dictionary<long, string> SourceTryKinds { get; } = [];
     public Dictionary<long, SourceHandler> SourceHandlers { get; } = [];
     public Dictionary<long, long> CaughtObjectAddresses { get; } = [];
     public Dictionary<long, HandlerMarker> HandlerMarkers { get; } = [];
 
     private void ReadSourceHandlers()
     {
-        using (var query = database.Prepare("SELECT t.node_id,t.source_lifetime_id,t.capture_proof,n.function_id,n.kind FROM source_tries t LEFT JOIN nodes n ON n.id=t.node_id"))
+        using (var query = database.Prepare("SELECT t.node_id,t.source_lifetime_id,t.capture_proof,n.function_id,n.kind,t.try_kind FROM source_tries t LEFT JOIN nodes n ON n.id=t.node_id"))
             while (query.Read())
             {
                 if (!SourceLifetimes.TryGetValue(query.Integer(1), out SourceLifetime? lifetime) || lifetime.Kind != "try-block" ||
                     query.OptionalInteger(3) is not long owner || OriginalFunction(owner) != lifetime.FunctionEntityId ||
-                    query.Text(2) != "observed-ordinary-try" || query.OptionalText(4) != "try" || !SourceTries.TryAdd(query.Integer(0), lifetime.Id))
+                    query.Text(2) != "observed-source-try" || query.OptionalText(4) != "try" || !SourceTries.TryAdd(query.Integer(0), lifetime.Id))
                     throw new InvalidDataException("Source try lacks its exact original lifetime and function");
+                string kind = query.Text(5);
+                if (kind is not ("ordinary" or "constructor" or "destructor") ||
+                    kind != "ordinary" && SourceFunctionKinds.GetValueOrDefault(OriginalFunction(owner)) != kind)
+                    throw new InvalidDataException("Function-try kind differs from its original routine kind");
+                SourceTryKinds.Add(query.Integer(0), kind);
             }
         using (var query = database.Prepare("SELECT h.node_id,h.try_node_id,h.ordinal,h.match_kind,h.capture_proof,n.kind,n.function_id,t.function_id,h.source_type_id,h.match_type_id,h.parameter_binding_id,b.function_id,b.type_id,d.source_type_id FROM source_handlers h LEFT JOIN nodes n ON n.id=h.node_id LEFT JOIN nodes t ON t.id=h.try_node_id LEFT JOIN bindings b ON b.id=h.parameter_binding_id LEFT JOIN source_declarations d ON d.binding_id=b.id ORDER BY h.try_node_id,h.ordinal"))
             while (query.Read())
