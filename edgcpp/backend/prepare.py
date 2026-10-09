@@ -575,7 +575,48 @@ object_source_overlay(init_lower,
 object_source_overlay(il_source,
     '  return expr_copy;\n}  /* i_copy_expr_tree */',
     '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_record_transfer_copy(expr, expr_copy,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '  dot_object_source::observe_normal_destruction_copy(expr, expr_copy,\n'
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '#endif\n'
     '  return expr_copy;\n}  /* i_copy_expr_tree */')
+
+# Observe only exact already-lowered initialization/temporary assignments.
+# insert_expr may turn an observed assignment into a comma by shallow-copying
+# its old root first. Preserve that exact correspondence before the old root
+# changes kind; recursive i_copy_expr_tree refreshes copied operands separately.
+object_source_overlay(il_source,
+    '  return expr_copy;\n}  /* copy_node */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_record_transfer_copy(expr, expr_copy,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n'
+    '  return expr_copy;\n}  /* copy_node */')
+object_source_overlay(init_lower,
+    '    assign_stmt = insert_expr_statement(assign_node, insert_location);\n'
+    '    set_stmt_pos_to_code_pos_for_lowering(assign_stmt);\n'
+    '  }  /* if */\n}  /* add_init_assignment */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    if (have_complete_object) dot_object_source::observe_record_transfer(assign_node,\n'
+    '      innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "construction");\n'
+    '#endif\n'
+    '    assign_stmt = insert_expr_statement(assign_node, insert_location);\n'
+    '    set_stmt_pos_to_code_pos_for_lowering(assign_stmt);\n'
+    '  }  /* if */\n}  /* add_init_assignment */')
+object_source_overlay(lower,
+    '  return temp;\n}  /* assign_expr_to_temp */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_record_transfer(expr,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "temporary");\n'
+    '#endif\n'
+    '  return temp;\n}  /* assign_expr_to_temp */')
+object_source_overlay(lower,
+    '      temp_node = make_var_assignment_expr(temp, copy_node(expr));\n'
+    '      (void)insert_expr_statement(temp_node, insert_location);',
+    '      temp_node = make_var_assignment_expr(temp, copy_node(expr));\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_source::observe_record_transfer(temp_node,\n'
+    '        innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "temporary");\n'
+    '#endif\n'
+    '      (void)insert_expr_statement(temp_node, insert_location);')

@@ -54,10 +54,18 @@ def verify(inputs, out, tool, run, check, compile_source, link, execute):
                     "SELECT alignment FROM record_types WHERE source_name='WideRecord'").fetchone()[0] == 16)
             code = '\n'.join(path.read_text() for path in directory.glob('*.cs'))
             check('integer128-native-managed-values', 'System.Int128' in code and 'System.UInt128' in code)
-    for boundary in ['SWITCH', 'VOLATILE', 'BITFIELD', 'INTRINSIC_ARGUMENT', 'INTRINSIC_DESTINATION']:
+    for boundary in ['SWITCH', 'VOLATILE', 'BITFIELD']:
         compile_source('integer128-boundary-' + boundary.lower(),
                        inputs / 'project_c_integer128_boundaries.c', std='c11',
                        extra=['-D', 'TEST_' + boundary], expected=None)
+    # Profile28 owns wide mathematical overflow operands and destinations. The
+    # wide fixture checks their runtime results; keep these old boundary probes
+    # as positive packaging/verifier coverage rather than stale rejection tests.
+    for boundary in ['INTRINSIC_ARGUMENT', 'INTRINSIC_DESTINATION']:
+        name = 'integer128-boundary-' + boundary.lower()
+        obj = compile_source(name, inputs / 'project_c_integer128_boundaries.c',
+                             std='c11', extra=['-D', 'TEST_' + boundary])
+        run('verify-' + name, ['dotnet', tool, 'verify', obj])
     return objects
 
 

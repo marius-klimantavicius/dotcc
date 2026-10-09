@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v28: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v29: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -78,7 +78,7 @@ struct Writer {
   std::map<std::pair<unsigned,std::pair<unsigned long long,bool>>,unsigned> array_types;
   std::vector<string> execution_types,record_types,record_fields;
   std::vector<string> source_records,source_fields,source_bases,record_base_subobjects,abi_routine_origins;
-  std::vector<string> base_subobject_expressions;
+  std::vector<string> base_subobject_expressions,source_record_operations,record_value_transfers;
   std::map<a_base_class_ptr,unsigned> source_base_ids;
   unsigned next_source_base=1;
   std::map<a_type_ptr,unsigned> source_record_ids;
@@ -250,6 +250,16 @@ struct Writer {
         quote(pre==captured.prelower_records.end()?"before-lowering":"before-class-prelowering")+position(pos)+
         ",\"isPacked\":"+(source->is_packed?"true":"false")+",\"maxMemberAlignment\":"+std::to_string(source->max_member_alignment)+
         ",\"explicitAlignment\":"+std::to_string(source->explicit_alignment)+"}");
+      if(!C_mode() && !t->incomplete) {
+        if(pre==captured.prelower_records.end() || !pre->second.operations_known)
+          reject("complete source class lacks observed copy-operation policies");
+        const auto &operations=pre->second;
+        source_record_operations.push_back("{\"sourceRecordId\":"+number(source_record)+
+          ",\"bitwiseConstructionAllowed\":"+(operations.bitwise_construction?"true":"false")+
+          ",\"bitwiseAssignmentAllowed\":"+(operations.bitwise_assignment?"true":"false")+
+          ",\"requiresReturnStorage\":"+(operations.requires_return_storage?"true":"false")+
+          ",\"captureProof\":\"before-class-prelowering\"}");
+      }
       unsigned source_ordinal=0;
       for(const auto &field:source->fields) {
         unsigned original_id=next_source_field++;source_field_ids[field.il]=original_id;originals[field.il]=&field;
@@ -896,6 +906,35 @@ struct Writer {
     }
     return true;
   }
+  bool record_value_policy(a_type_ptr type,const string &kind,bool base_payload=false) {
+    if(get_type_qualifiers(type)&(TQ_VOLATILE|TQ_C11_ATOMIC))return false;
+    auto t=skip_typerefs(type);auto &captured=dot_object_source::state();
+    if(t->kind==tk_array)return complete_fixed_array(t) && record_value_policy(t->variant.array.element_type,kind);
+    if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
+      if(t->incomplete || t->variant.class_struct_union.any_volatile_member)return false;
+      if(captured.abi_records.count(t) && !(base_payload && captured.observed_subobjects.count(t)))return false;
+      if(!C_mode() && !base_payload) {
+        auto original=captured.prelower_records.find(t);
+        if(original==captured.prelower_records.end() || !original->second.operations_known)return false;
+        const auto &ops=original->second;
+        if(kind=="temporary") {
+          if(!ops.bitwise_construction && !ops.bitwise_assignment)return false;
+        } else if(!ops.bitwise_construction || (kind=="transport" && ops.requires_return_storage))return false;
+      }
+      for(auto field=t->variant.class_struct_union.field_list;field;field=field->next)
+        if(!record_value_policy(field->type,kind,captured.generated_base_fields.count(field)!=0))return false;
+    }
+    return true;
+  }
+  unsigned record_transfer(a_type_ptr type,const a_source_position &pos,const string &order,const string &kind) {
+    auto t=skip_typerefs(type);
+    if((t->kind!=tk_struct && t->kind!=tk_class && t->kind!=tk_union) || !record_value_policy(type,kind))
+      reject("record transfer lacks observed complete-object copy policy");
+    unsigned id=node("record-transfer",type_id(type),pos,0,0,"","","value",order);
+    record_value_transfers.push_back("{\"nodeId\":"+number(id)+",\"kind\":"+quote(kind)+
+      ",\"captureProof\":"+quote(kind=="construction"?"observed-dynamic-init":"observed-temporary-assignment")+"}");
+    return id;
+  }
   unsigned long long cleanup_number(a_constant_ptr value) {
     if(!value || value->kind!=ck_integer)reject("noninteger cleanup metadata");
     a_boolean overflow=FALSE;auto result=unsigned_value_of_integer_constant(value,&overflow);
@@ -1379,9 +1418,9 @@ struct Writer {
 
 
     auto record_value=[](a_type_ptr type){type=skip_typerefs(type);return type->kind==tk_struct || type->kind==tk_class || type->kind==tk_union;};
-    if(record_value(t->variant.routine.return_type) && !copyable_value(t->variant.routine.return_type))reject("by-value return with array/volatile storage");
+    if(record_value(t->variant.routine.return_type) && !record_value_policy(t->variant.routine.return_type,"transport"))reject("by-value return lacks safe observed transport policy");
     for(auto p=extra->param_type_list;p;p=p->next)
-      if(record_value(p->type) && !copyable_value(p->type))reject("by-value parameter with array/volatile storage");
+      if(record_value(p->type) && !record_value_policy(p->type,"transport"))reject("by-value parameter lacks safe observed transport policy");
     unsigned id=next_entity++;routine_ids[r]=id;routines.push_back(r);
     auto key=routine_linker_symbol(r);
     bool external=r->source_corresp.name_linkage==nlk_external || r->source_corresp.name_linkage==nlk_cplusplus_external;
@@ -1632,8 +1671,8 @@ struct Writer {
     if(c->kind==ck_float)return node("constant",ty,pos,0,0,"",floating_bits(c),"value","none");
     if(c->kind==ck_aggregate) {
       auto type=skip_typerefs(c->type);
-      if((type->kind!=tk_struct && type->kind!=tk_class && type->kind!=tk_union) || !copyable_value(type))
-        reject("folded aggregate constant outside complete copyable record");
+      if((type->kind!=tk_struct && type->kind!=tk_class && type->kind!=tk_union) || !record_value_policy(type,"construction"))
+        reject("folded aggregate constant outside complete constructible record");
       if(zero_constant_bits(c))return zero_node(ty,pos);
       return node("storage",ty,pos,0,0,"","","place","none",0,aggregate_literal(c,pos));
     }
@@ -1883,7 +1922,7 @@ struct Writer {
         if(node_shapes.at(operand).type!=owner ||
            (base->kind!=tk_struct && base->kind!=tk_class && base->kind!=tk_union))
           reject("record member materialization type mismatch");
-        if(!copyable_value(a->type))reject("record member materialization requires ordinary value-copy semantics");
+        if(!record_value_policy(a->type,"transport"))reject("record member materialization lacks safe observed transport policy");
         unsigned temporary=node("materialize",owner,a->position,0,0,"","","place","left-to-right");
         edge(temporary,"operand",0,operand);operand=temporary;
       }
@@ -1958,9 +1997,22 @@ struct Writer {
       edge(id,"target",0,expression(a));edge(id,"source",0,expression(b));return id;
     }
     if(operation.kind==eok_assign) {
-      if((skip_typerefs(e->type)->kind==tk_struct || skip_typerefs(e->type)->kind==tk_class || skip_typerefs(e->type)->kind==tk_union) &&
-         (!copyable_value(e->type) || volatile_place(a) || volatile_place(b)))reject("record copy with array/volatile storage");
       if(!a || !b || b->next || !place(a))reject("assignment outside supported memory places");
+      auto type=skip_typerefs(e->type);
+      bool record=type->kind==tk_struct || type->kind==tk_class || type->kind==tk_union;
+      auto observed=dot_object_source::state().record_transfers.find(e);
+      if(record && observed!=dot_object_source::state().record_transfers.end()) {
+        const auto &proof=observed->second;
+        if(proof.owner!=current_routine || proof.target!=a || proof.value!=b ||
+           volatile_place(a) || volatile_place(b))reject("record transfer observation changed");
+        if(proof.kind=="temporary" && (a->kind!=enk_variable ||
+           !(node_variable(a)->compiler_generated || node_variable(a)->lowering_generated)))
+          reject("observed temporary transfer lacks generated destination");
+        unsigned id=record_transfer(e->type,e->position,order,proof.kind);
+        edge(id,"target",0,expression(a));edge(id,"value",0,expression(b));return id;
+      }
+      if(record && (!copyable_value(e->type) || volatile_place(a) || volatile_place(b)))
+        reject("record assignment requires ordinary copy policy or exact construction observation");
       // C++17 evaluates the RHS before the LHS. Keep that owned order rather
       // than rewriting/revisiting source operands here. The managed emitter
       // captures the RHS then the target address exactly once when required.
@@ -2220,9 +2272,12 @@ struct Writer {
     return target;
   }
   void record_store(unsigned block,unsigned &ordinal,a_variable_ptr variable,
-                    const initializer_path &path,unsigned value,const a_source_position &pos) {
+                    const initializer_path &path,unsigned value,const a_source_position &pos,bool construction=false) {
     auto type=path.empty()?variable->type:path.back().type;
-    unsigned assign=node("assign",type_id(type),pos,0,0,"","","value","right-to-left");
+    auto raw=skip_typerefs(type);
+    bool record=raw->kind==tk_struct || raw->kind==tk_class || raw->kind==tk_union;
+    unsigned assign=construction && record?record_transfer(type,pos,"right-to-left","construction"):
+      node("assign",type_id(type),pos,0,0,"","","value","right-to-left");
     edge(assign,"target",0,record_place(variable,path,pos));edge(assign,"value",0,value);
     unsigned statement=node("expr-stmt",0,pos);edge(statement,"value",0,assign);
     edge(block,"statement",ordinal++,statement);
@@ -2234,8 +2289,8 @@ struct Writer {
       auto d=value->variant.dynamic_init.ptr;if(d->destructor)reject("record member destruction");
       if(d->kind==dik_constant || d->kind==dik_nonconstant_aggregate)value=d->variant.constant.ptr;
       else if(d->kind==dik_zero)value=nullptr;
-      else if(d->kind==dik_expression && type->kind!=tk_array && copyable_value(type)) {
-        record_store(block,ordinal,variable,path,expression(d->variant.expression),pos);return;
+      else if(d->kind==dik_expression && type->kind!=tk_array && record_value_policy(type,"construction")) {
+        record_store(block,ordinal,variable,path,expression(d->variant.expression),pos,true);return;
       } else reject("record member dynamic initializer",d->kind);
     }
     if(type->kind==tk_array) {
@@ -2655,7 +2710,7 @@ struct Writer {
         unsigned ty=type_id(d->variable->type);
         auto initialized_type=skip_typerefs(d->variable->type);
         bool initialized_record=initialized_type->kind==tk_struct || initialized_type->kind==tk_class || initialized_type->kind==tk_union;
-        if(initialized_record && d->kind==dik_expression && !copyable_value(d->variable->type))reject("record initialization copy with array/volatile storage");
+        if(initialized_record && d->kind==dik_expression && !record_value_policy(d->variable->type,"construction"))reject("record initialization lacks observed construction policy");
         if(initialized_type->kind==tk_array || (initialized_record && d->kind!=dik_expression)) {
           if(d->kind==dik_constant || d->kind==dik_nonconstant_aggregate)
             return initialize_aggregate(d->variable,d->variant.constant.ptr,s->position);
@@ -2667,7 +2722,8 @@ struct Writer {
         else if(d->kind==dik_constant)value=constant_node(d->variant.constant.ptr,s->position);
         else if(d->kind==dik_zero)value=zero_node(ty,s->position);
         else reject("dynamic initializer",d->kind);
-        unsigned assign=node("assign",ty,s->position,0,0,"","","value","right-to-left");
+        unsigned assign=initialized_record?record_transfer(d->variable->type,s->position,"right-to-left","construction"):
+          node("assign",ty,s->position,0,0,"","","value","right-to-left");
         edge(assign,"target",0,local_place(d->variable,s->position));edge(assign,"value",0,value);
         unsigned id=node("expr-stmt",0,s->position);edge(id,"value",0,assign);return id;
       }
@@ -2748,7 +2804,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v28\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v29\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -2758,7 +2814,8 @@ struct Writer {
       ",\"cleanupTransitions\":"+array(cleanup_transitions)+",\"cleanupFrameMarkers\":"+array(cleanup_frame_markers)+
       ",\"expressionLifetimes\":"+array(expression_lifetimes)+
       ",\"normalDestructions\":"+array(normal_destructions)+",\"cleanupConditions\":"+array(cleanup_conditions)+
-      ",\"sourceRecords\":"+array(source_records)+",\"sourceFields\":"+array(source_fields)+
+      ",\"sourceRecords\":"+array(source_records)+",\"sourceRecordOperations\":"+array(source_record_operations)+
+      ",\"recordValueTransfers\":"+array(record_value_transfers)+",\"sourceFields\":"+array(source_fields)+
       ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+
       ",\"baseSubobjectExpressions\":"+array(base_subobject_expressions)+
       ",\"abiRoutineOrigins\":"+array(abi_routine_origins)+

@@ -1297,3 +1297,36 @@ no arithmetic exceptions to detect overflow. Unsigned multiplication specializes
 to full product, low-bit store and high/range checks. Existing narrow arithmetic
 helpers remain unchanged. This preserves mixed signed/unsigned mathematical
 semantics independently of the result width, including signed minimum values.
+
+## Original record operation policies (profile v29)
+
+`source_record_operations` owns the completed original C++ class flags
+`bitwise_construction_allowed`, `bitwise_assignment_allowed` and
+`requires_return_storage`, with `before-class-prelowering` proof. Every complete
+original C++ record requires this row; C records, incomplete declarations and
+ABI-only representations do not invent one. Shared complete declarations must
+agree across C++ translation units. C/C++ shared-header records retain their
+existing physical and nominal compatibility checks; C does not invent C++
+operation facts. These facts are distinct from the existing
+whole-type trivial-copyability trait: deleted copy constructors and custom
+assignment operators expose why that trait alone is insufficient.
+
+`record-transfer` has exact record type, value category, target/value edges and
+owned assignment evaluation order. Exhaustive `record_value_transfers` rows
+identify construction (`observed-dynamic-init`) or compiler temporary transport
+(`observed-temporary-assignment`). Temporary targets must be owned synthetic
+locals. Copies retain provenance only through observed expression-tree copies;
+ordinary source assignment never gains a construction proof by inference.
+
+Construction requires the original construction permission. Observed temporary
+transfers use the construction-or-assignment rule of stock C lowering. Direct
+ABI value transport additionally forbids types requiring caller result storage.
+These explicit C++ permissions apply even to a trivially-copyable type; recursive
+member policies and existing completeness, volatility and physical base-view
+restrictions remain. Ordinary raw assignment keeps its conservative prior policy,
+and source custom assignment stays an explicit selected function call. No new
+C++ constructor/destructor is introduced by managed execution storage.
+
+Zero initialization of owned fixed record storage remains separate from a value
+copy. An ordinary-layout record with a flexible array tail may zero its fixed
+prefix; this does not permit reading or copying the unspecified tail.

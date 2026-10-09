@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-09",
+  "status": "passed",
+  "profile": "scalar-control-v29",
+  "scope": "Original C++ construction, compiler-temporary transfer and by-value transport permissions",
+  "fullRegressionChecks": 1210,
+  "focusedExecutionChecks": 54,
+  "malformedMetadataChecks": 52,
+  "semanticMalformedObjectsRejected": 11,
+  "nativeAotVerified": true,
+  "verifiedPlatforms": [
+    "linux-x64"
+  ],
+  "artifacts": {
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v29-004/results.json",
+      "sha256": "934c48734337202557f16a178c8a500059473b748f0cf497684fdf02dd15c628"
+    },
+    "focusedExecution": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-transport-acceptance-004/results.json",
+      "sha256": "7ebbc9cc51a6370219bcbe917a9f2535b4891e4a7de557e05adc1d3b4ebbe996"
+    },
+    "malformedMetadata": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-transport-metadata-005/results.json",
+      "sha256": "34ea110b2eaae1c9c1aa2ed7d113bdded38f3084d6fd661c7774704ac08e9851"
+    },
+    "nativeStockSingleOracle": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-transport-native-oracle-002/oracle.json",
+      "sha256": "7f064c203c15047d75411620a26e90fcb99ae59eab1b1b8f67d045f7f6ab592a"
+    },
+    "nativeStockCrossUnitOracle": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-transport-cross-oracle-001/oracle.json",
+      "sha256": "b2c09e28dd6494fc955a411fa202f65591342adeabffc6a659eec98b204d8ad6"
+    },
+    "actualDuckdbFrontier": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-054-transport/results.json",
+      "sha256": "4287936eb1c8275584886d68e8ebbb8249e59045878762351e27d2e8e52ef7eb"
+    },
+    "shallowCopyObservation": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-transport-observation-053/findings.txt",
+      "sha256": "1345a85217f9eff08f2d470737b910002dfa37f01c3153862072a18beff31336"
+    },
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native054-verified-snapshot/cpfe-dot",
+      "sha256": "e1ebd1a3270843dc6c53a4f8e59f23fc306a6fe492716d6aa5b9fc5cabd4035b"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-051/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "e131b047b125856931453be2af5163a5e263cb068b2359658def939a8bb5a51c"
+    }
+  },
+  "semantics": [
+    "Capture complete original class bitwise construction, bitwise assignment and caller-result-storage facts before structural lowering.",
+    "Construction and compiler temporary transfers retain exact original lowering and expression-copy correspondence, including shallow copy_node.",
+    "Custom assignment does not forbid trivial construction; trivial-copyability alone does not authorize deleted copy construction or direct transport requiring result storage.",
+    "Source custom assignment stays a selected call; raw assignment retains its prior conservative permissions.",
+    "C++ cross-unit facts must agree. Mixed C/C++ shared records retain prior physical/nominal compatibility without inventing C++ facts in C.",
+    "Fixed-prefix default zero initialization remains distinct from record value copying, preserving flexible-tail initialization without permitting tail copies."
+  ],
+  "coverage": [
+    "Single and independent translation units, incomplete forward declarations, construction-only and assignment-only consumers",
+    "Nested/union records, by-value calls/returns and conditional temporary arguments",
+    "Explicit copy constructors/destructors and guaranteed elision with deleted copy constructor",
+    "Resealed cross-unit operation disagreement and11 independently malformed semantic objects"
+  ],
+  "projectScope": "All five selected original DuckDB units remain explicitly gated: exception, date, allocator and hugeint at source throw; string_util at required virtual-base/VTT layout. No complete DuckDB generation claim.",
+  "retainedFailures": [
+    "Full001 exposed mixed C/C++ operation comparison; fixed narrowly in managed050.",
+    "Full002 exposed default zero-init versus flexible-tail copy distinction; fixed narrowly in managed051.",
+    "Full003 passed both fixes then exposed obsolete wide-intrinsic negative probes; those became positive packaging/verifier checks because profile28 already validates their execution.",
+    "Focused001 exposed new tables missing from schema digest map; focused002/003 exposed missing shallow-copy provenance; all fixed in native054/managed049 before focused004 pass.",
+    "Metadata003 did not start verification because coordinator specified a nonexistent retained driver path. Metadata004 and final005 pass."
+  ],
+  "priority": "Finish core dotobj toward full DuckDB C# generation; defer libc++ runtime implementation. Source exception fixture has separate native/stock oracle-only evidence."
+}

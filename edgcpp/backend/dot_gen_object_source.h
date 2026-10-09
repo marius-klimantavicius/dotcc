@@ -136,6 +136,7 @@ struct PrelowerRecord {
   a_source_position position={};
   std::string name,error;
   bool complete=false,trivial_copy_known=false,trivial_copy=false;
+  bool operations_known=false,bitwise_construction=false,bitwise_assignment=false,requires_return_storage=false;
   unsigned long long size=0,alignment=0;
   std::vector<PrelowerField> fields;
   std::vector<PrelowerBase> bases;
@@ -201,6 +202,11 @@ struct CleanupSnapshot {
   std::vector<CleanupPathPart> path;
   std::string error;
 };
+struct RecordTransferSnapshot {
+  a_routine_ptr owner=nullptr;
+  an_expr_node_ptr target=nullptr,value=nullptr;
+  std::string kind;
+};
 struct NormalDestruction {
   a_routine_ptr owner=nullptr,callback=nullptr;
   a_dynamic_init_ptr original=nullptr;
@@ -216,6 +222,7 @@ struct State {
   std::map<a_dynamic_init_ptr,a_dynamic_init_ptr> dynamic_init_copies;
   std::map<an_object_lifetime_ptr,an_object_lifetime_ptr> lifetime_copies;
   std::map<a_constant_ptr,CleanupSnapshot> cleanup_regions;
+  std::map<an_expr_node_ptr,RecordTransferSnapshot> record_transfers;
   std::vector<NormalDestruction> normal_destruction_contexts;
   std::map<an_expr_node_ptr,NormalDestruction> normal_destruction_calls;
   std::map<a_routine_ptr,std::vector<an_expr_node_ptr>> normal_destruction_order;
@@ -804,6 +811,28 @@ inline void observe_normal_destruction_copy(an_expr_node_ptr original,an_expr_no
   if(state().normal_destruction_calls.emplace(copy,value).second)
     state().normal_destruction_order[owner].push_back(copy);
 }
+inline void observe_record_transfer(an_expr_node_ptr expr,a_routine_ptr owner,const char *kind) {
+  if(!enabled() || !owner || !expr || expr->kind!=enk_operation ||
+     expr->variant.operation.kind!=eok_assign)return;
+  auto type=skip_typerefs(expr->type);
+  if(type->kind!=tk_struct && type->kind!=tk_class && type->kind!=tk_union)return;
+  auto target=expr->variant.operation.operands;
+  auto value=target?target->next:nullptr;
+  if(!target || !value || value->next)return;
+  RecordTransferSnapshot record;record.owner=owner;record.target=target;record.value=value;record.kind=kind;
+  state().record_transfers[expr]=record;
+}
+inline void observe_record_transfer_copy(an_expr_node_ptr original,an_expr_node_ptr copy,a_routine_ptr owner) {
+  if(!enabled() || !owner || original==copy || !copy)return;
+  auto found=state().record_transfers.find(original);
+  if(found==state().record_transfers.end())return;
+  auto old_owner=abi_primary(found->second.owner);if(!old_owner)old_owner=found->second.owner;
+  auto new_owner=abi_primary(owner);if(!new_owner)new_owner=owner;
+  if(old_owner!=new_owner || original->kind!=enk_operation || original->variant.operation.kind!=eok_assign ||
+     original->variant.operation.operands!=found->second.target ||
+     found->second.target->next!=found->second.value)return;
+  observe_record_transfer(copy,owner,found->second.kind.c_str());
+}
 inline void observe_lifetime_copy(an_object_lifetime_ptr original,an_object_lifetime_ptr copy) {
   if(enabled() && original && copy && original!=copy)state().lifetime_copies.emplace(copy,original);
 }
@@ -1020,6 +1049,17 @@ inline void observe_record_before_prelowering(a_type_ptr type) {
   // types never gain permission to copy merely because their fields fit.
   if(value.complete && type->source_corresp.assoc_info) {
     value.trivial_copy_known=true;value.trivial_copy=is_trivially_copyable_type(type);
+    if(!C_mode()) {
+      // These are distinct completed frontend facts. Whole-type trivial
+      // copyability additionally constrains assignment, unlike ABI transport.
+      auto cssp=class_symbol_supp(symbol_for(type));
+      value.bitwise_construction=cssp->construction_by_bitwise_copy_allowed;
+      value.bitwise_assignment=cssp->assignment_by_bitwise_copy_allowed;
+      a_boolean incomplete=FALSE;
+      value.requires_return_storage=type_returned_by_cctor(type,&incomplete);
+      value.operations_known=!incomplete;
+      if(incomplete)value.error="complete class has unresolved return storage policy";
+    }
   }
   for(auto field=type->variant.class_struct_union.field_list;field;field=field->next) {
     PrelowerField item;item.il=field;item.original_type=field->type;

@@ -56,7 +56,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v28");
+        lifetimeWriter.WriteString("profile", "scalar-control-v29");
         lifetimeWriter.WriteString("capture", "lexical-activations-and-observed-cpp-cleanup-states");
         lifetimeWriter.WriteBoolean("cleanupStates", true);
         lifetimeWriter.WriteBoolean("sourceLifetimes", true);
@@ -163,7 +163,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v28");
+            writer.WriteString("profile", "scalar-control-v29");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -176,7 +176,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v28");
+            writer.WriteString("profile", "scalar-control-v29");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -187,7 +187,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v28", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v29", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, cleanupStates = true, sourceLifetimes = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; ordinary and conditional scalar C++ local/member/base exceptional destructor cleanup is owned; variable-length arrays, source throw/catch and array/VTT cleanup actions are not supported; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance plus lexical cleanup activations and observed source lifetime/exceptional destruction state graphs; no complete source expression/statement view, macro expansion history or general C++ EH capture" },
@@ -436,6 +436,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     return FunctionReference(target) + "(" + Arguments(node, target.Object.EntityRoutine(target.Entity.Id)) + ")";
                 case "block-copy": return "global::System.Runtime.InteropServices.NativeMemory.Copy(" + Address(Child("source")) + ", " + Address(Child("target")) + ", (nuint)" + node.ConstantText + ")";
                 case "compound-assign": return "(" + Compound(node) + ")";
+                case "record-transfer":
                 case "assign": return Assignment(node, true);
                 case "mutate": return "(" + Mutation(node) + ")";
                 case "convert":
@@ -575,7 +576,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         string StatementExpression(Node node) => node.Kind switch
         {
             "lifetime-scope" => StatementExpression(body.Child(node.Id, "operand")),
-            "assign" => Assignment(node, false),
+            "assign" or "record-transfer" => Assignment(node, false),
             "mutate" => Mutation(node, false),
             "compound-assign" => Compound(node, false),
             "call" or "indirect-call" or "va-start" or "va-copy" or "va-end" or "block-copy" => Expression(node),
@@ -740,7 +741,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         bool Pure(Node node)
         {
             if (purityCache.TryGetValue(node.Id, out bool cached)) return cached;
-            bool result = node.Kind is not ("materialize" or "cleanup-transition" or "call" or "indirect-call" or "assign" or "compound-assign" or "block-copy" or "mutate" or "volatile-place" or "va-start" or "va-copy" or "va-end" or "va-arg") &&
+            bool result = node.Kind is not ("materialize" or "cleanup-transition" or "call" or "indirect-call" or "assign" or "record-transfer" or "compound-assign" or "block-copy" or "mutate" or "volatile-place" or "va-start" or "va-copy" or "va-end" or "va-arg") &&
                 !(node.Kind == "intrinsic" && (node.Operator == "unreachable" || node.Operator!.Contains("overflow", StringComparison.Ordinal))) &&
                 body.Edges.GetValueOrDefault(node.Id, []).All(edge => Pure(body.Nodes[edge.ChildId]));
             purityCache[node.Id] = result;
@@ -777,10 +778,10 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             bool result = node.Kind == "materialize" || node.Kind == "sequence" && (node.ValueCategory == "place" || body.Children(node.Id, "item").SkipLast(1)
                 .Any(edge => NodeType(body.Nodes[edge.ChildId]) == "void"));
             if (node.Kind == "conditional" && NodeType(node) == "void") result = true;
-            if (node.Kind is "assign" or "compound-assign") result |= accessAlignment.NeedsUnaligned(body.Child(node.Id, "target"));
+            if (node.Kind is "assign" or "record-transfer" or "compound-assign") result |= accessAlignment.NeedsUnaligned(body.Child(node.Id, "target"));
             if (node.Kind == "mutate") result |= accessAlignment.NeedsUnaligned(body.Child(node.Id, "operand"));
             if (node.Kind == "block-copy") result |= !Pure(body.Child(node.Id, "target")) || !Pure(body.Child(node.Id, "source"));
-            if (node.Kind is "assign" or "compound-assign" && node.EvaluationOrder == "right-to-left")
+            if (node.Kind is "assign" or "record-transfer" or "compound-assign" && node.EvaluationOrder == "right-to-left")
             {
                 Node target = body.Child(node.Id, "target"), value = body.Child(node.Id, "value");
                 // C# compound assignment reads the old destination before its
@@ -788,7 +789,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 result |= (node.Kind == "compound-assign" || !StablePlace(target)) && (!Pure(target) || !Pure(value));
             }
             result |= body.Edges.GetValueOrDefault(node.Id, []).Any(edge =>
-                (edge.Role != "target" || node.Kind is "assign" or "compound-assign" or "block-copy") &&
+                (edge.Role != "target" || node.Kind is "assign" or "record-transfer" or "compound-assign" or "block-copy") &&
                 body.Nodes[edge.ChildId].TypeId != null && NeedsExpansion(body.Nodes[edge.ChildId]));
             expansionCache[node.Id] = result;
             return result;
@@ -865,7 +866,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     if (node.EvaluationOrder == "right-to-left") { Place(body.Child(node.Id, "source")); Place(body.Child(node.Id, "target")); }
                     else { Place(body.Child(node.Id, "target")); Place(body.Child(node.Id, "source")); }
                 }
-                else if (node.Kind is "assign" or "compound-assign")
+                else if (node.Kind is "assign" or "record-transfer" or "compound-assign")
                 {
                     if (node.EvaluationOrder == "right-to-left") { Value(body.Child(node.Id, "value")); Place(body.Child(node.Id, "target")); }
                     else { Place(body.Child(node.Id, "target")); Value(body.Child(node.Id, "value")); }
@@ -880,14 +881,14 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     foreach (Edge edge in children) Value(body.Nodes[edge.ChildId]);
                 }
             }
-            Node? unalignedTarget = node.Kind is "assign" or "compound-assign" ? body.Child(node.Id, "target")
+            Node? unalignedTarget = node.Kind is "assign" or "record-transfer" or "compound-assign" ? body.Child(node.Id, "target")
                 : node.Kind == "mutate" ? body.Child(node.Id, "operand") : null;
             if (unalignedTarget is not null && accessAlignment.NeedsUnaligned(unalignedTarget))
             {
                 string type = NodeType(node), address = allocator.Allocate("__unaligned_address", "address");
                 Line(indent, "void* " + address + " = " + Address(unalignedTarget) + ";");
                 string value;
-                if (node.Kind == "assign") value = Expression(body.Child(node.Id, "value"));
+                if (node.Kind is "assign" or "record-transfer") value = Expression(body.Child(node.Id, "value"));
                 else
                 {
                     string old = allocator.Allocate("__previous", "previous");

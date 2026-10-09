@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-09",
+  "status": "oracle-only",
+  "scope": "Pending source C++ exception acceptance baseline; not an implementation claim",
+  "checks": 9,
+  "ownedGenerationVerified": false,
+  "ownedExecutionVerified": false,
+  "artifacts": {
+    "nativeStockOracle": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-eh-oracle-002/results.json",
+      "sha256": "91892ae023912826c394691369f740e2798449c695202eea9ac65a7b03c9ce2b"
+    },
+    "sourceFixture": {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/cpp_source_eh.cpp",
+      "sha256": "232e2260709a90f014ae2a34718d02103782330e46ef44264929bb2c18cf32b5"
+    },
+    "oracleRunner": {
+      "path": "/home/marius/p/dotcc/edgcpp/object-linker/tests/cpp_source_eh_verify.py",
+      "sha256": "c7c5e9805c53b1a89ef97e4fb8985287815e1a147e5a50d9653e0752fcd0d553"
+    }
+  },
+  "coverage": [
+    "Native C++ and stock EDG-generated C at O0 and O2",
+    "Nested RAII cleanup and dynamic helper rethrow",
+    "Pointer catch mutation versus original rethrow payload and pointer qualification",
+    "Distinct integral and enum type identities",
+    "Function pointer qualification conversion",
+    "Public nonzero-base adjustment, private and ambiguous base rejection",
+    "Explicit payload copy and destruction; catch-all"
+  ],
+  "priority": "Core dotobj source exception ownership and generation; libc++ runtime implementation deferred."
+}

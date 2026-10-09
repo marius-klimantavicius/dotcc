@@ -625,3 +625,30 @@ Original DuckDB `hugeint.cpp` advances past multiplication to a source throw in
 with separate observed construction and assignment permissions. Full DuckDB
 generation and source C++ exception support remain incomplete; libc++ runtime
 implementation stays deferred.
+
+## Original record construction and transport, v29 (2026-10-09)
+
+Complete original C++ records now own separate bitwise construction, assignment
+and caller-result-storage facts. Constructor-safe transfers retain exact EDG
+provenance, including generated argument temporaries moved through shallow IL
+copies. User-defined assignment remains an explicit call. Deleted copy
+constructors and explicit result buffers are respected independently of the
+whole-type trivial-copyability trait.
+
+Native054/managed051 passes **1210 full regression checks including
+NativeAOT**. The focused single/cross-unit fixture passes54 checks with JIT and
+NativeAOT; native C++ and stock EDG C agree at O0/O2. Final metadata acceptance
+passes52 checks with11 resealed semantic rejections. The broad run additionally
+found and fixed mixed C/C++ fact comparison and flexible-tail zero-initialization
+regressions; no source frontend semantics changed.
+[Hashed v29 evidence](../evidence/dotobj-record-transport-20261009.json) records
+final tools, passing receipts and retained failed attempts.
+
+Original DuckDB exception.cpp advances past copy transport to source throw.
+Date, allocator and hugeint also stop at source throws; string_util requires
+the live stringstream hierarchy's virtual-base/VTT layout. Full DuckDB generation
+remains incomplete. The next bounded core work owns source exception types,
+payload construction and destruction, start/completion ordering and rethrow.
+Broader exception semantics have a separate nine-check native/stock-C
+[oracle baseline](../evidence/dotobj-source-eh-oracle-20261009.json); this is
+not an owned source exception implementation or execution claim.

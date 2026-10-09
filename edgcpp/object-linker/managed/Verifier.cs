@@ -3,7 +3,7 @@ namespace DotObj;
 internal static class Verifier
 {
     private static readonly HashSet<string> StatementKinds = ["memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
-    private static readonly HashSet<string> ExpressionKinds = ["materialize", "lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
+    private static readonly HashSet<string> ExpressionKinds = ["record-transfer", "materialize", "lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -120,7 +120,7 @@ internal static class Verifier
                 string[] orders = node.Kind is "cleanup-transition" or "cleanup-frame" or "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
                 if (node.Kind is "cleanup-transition" or "cleanup-frame" or "base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
                 if (node.Kind == "materialize") orders = ["left-to-right"];
-                if (node.Kind is "assign" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
+                if (node.Kind is "assign" or "record-transfer" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
                 if (node.Kind is "address" or "dereference" or "array-decay" or "member" or "va-start" or "va-copy" or "va-end" or "va-arg") orders = ["none", "left-to-right", "unspecified"];
                 if (!orders.Contains(node.EvaluationOrder)) Fail($"Unsupported evaluation order at {node.Id}");
             }
@@ -147,10 +147,18 @@ internal static class Verifier
                 if (child.TypeId is long recordType && ScalarTypes.IsRecord(obj.Type(recordType)))
                 {
                     bool allowed = node.Kind == "block-copy" || node.Kind == "sequence" && node.ValueCategory == "place" && child.Id == SequenceTail(node).Id || node.Kind is "member" or "base-subobject" or "lifetime-scope" or "address" && edge.Role == "operand" ||
-                        node.Kind == "assign" && (edge.Role == "target" || edge.Role == "value" && child.Kind == "default-value") ||
+                        node.Kind is "assign" or "record-transfer" && (edge.Role == "target" || edge.Role == "value" && child.Kind == "default-value") ||
                         node.Kind == "declare" && edge.Role == "initializer" && child.Kind == "default-value" ||
-                        node.Kind == "expr-stmt" && edge.Role == "value" && child.Kind == "assign";
-                    if (!allowed && !obj.CanCopyRecord(obj.Type(recordType))) Fail("Record value copies require complete records without incomplete arrays or volatile fields");
+                        child.Kind is "assign" or "record-transfer" &&
+                        (node.Kind == "expr-stmt" && edge.Role == "value" ||
+                         node.Kind == "sequence" && child.Id != SequenceTail(node).Id ||
+                         node.Kind == "convert" && Type(node) == "void" && edge.Role == "operand");
+                    bool copyAllowed = node.Kind == "record-transfer" && edge.Role == "value"
+                        ? obj.RecordValueTransfers.TryGetValue(node.Id, out string? transferKind) && obj.CanTransferRecord(obj.Type(recordType), transferKind)
+                        : node.Kind == "assign" ? obj.CanCopyRecord(obj.Type(recordType))
+                        : node.Kind == "declare" ? obj.CanConstructRecord(obj.Type(recordType))
+                        : obj.CanTransportRecord(obj.Type(recordType));
+                    if (!allowed && !copyAllowed) Fail("Record value operation lacks its required construction, transport or assignment permission");
                 }
             }
 
@@ -173,9 +181,9 @@ internal static class Verifier
             {
                 case "materialize":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
-                    if (!ScalarTypes.IsRecord(Type(node)) || !obj.CanCopyRecord(Type(node)) ||
+                    if (!ScalarTypes.IsRecord(Type(node)) || !obj.CanTransportRecord(Type(node)) ||
                         node.TypeId != Child(node, "operand").TypeId || Child(node, "operand").ValueCategory != "value")
-                        Fail("Record materialization requires a same-type ordinary-copy record value");
+                        Fail("Record materialization requires a same-type construction-safe record value");
                     break;
                 case "lifetime-scope":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand", Type(node) == "void");
@@ -444,7 +452,7 @@ internal static class Verifier
                     break;
                 case "default-value":
                     EdgeShape(node);
-                    if (!ScalarTypes.IsRecord(Type(node)) || obj.RecordsByKey[Type(node)].ValueCopyKind != "ordinary") Fail("Default value requires an ordinary-copy record type");
+                    if (!obj.CanZeroInitializeRecord(Type(node))) Fail("Default value requires an owned zero-initializable record layout");
                     break;
                 case "base-subobject":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
@@ -587,7 +595,7 @@ internal static class Verifier
                 case "conditional":
                     EdgeShape(node, ("condition", 1, 1), ("then", 1, 1), ("else", 1, 1));
                     Condition(node, "condition"); Expr(node, "then", Type(node) == "void"); Expr(node, "else", Type(node) == "void");
-                    if (Type(node) != "void" && !ScalarTypes.IsScalar(Type(node)) && !(ScalarTypes.IsRecord(Type(node)) && obj.CanCopyRecord(Type(node)))) Fail("Conditional requires void, scalar or copyable record result");
+                    if (Type(node) != "void" && !ScalarTypes.IsScalar(Type(node)) && !(ScalarTypes.IsRecord(Type(node)) && obj.CanTransportRecord(Type(node)))) Fail("Conditional requires void, scalar or copyable record result");
                     SameType(node, Child(node, "then")); SameType(node, Child(node, "else"));
                     break;
                 case "block-copy":
@@ -616,6 +624,16 @@ internal static class Verifier
                     if (node.Operator is "rem" or "bit-and" or "bit-or" or "bit-xor" or "shl" or "shr" &&
                         (!ScalarTypes.IsInteger(Type(node)) || !ScalarTypes.IsInteger(Type(Child(node, "value"))))) Fail("Compound integer operator requires integer operands");
                     break;
+                case "record-transfer":
+                    EdgeShape(node, ("target", 1, 1), ("value", 1, 1)); Expr(node, "target"); Expr(node, "value");
+                    if (!ScalarTypes.IsRecord(Type(node)) || !Place(Child(node, "target")) ||
+                        !obj.RecordValueTransfers.TryGetValue(node.Id, out string? transferKind) || !obj.CanTransferRecord(Type(node), transferKind))
+                        Fail("Record transfer requires its observed construction or temporary-copy permission");
+                    if (transferKind == "temporary" && (Child(node, "target").Kind != "binding" ||
+                        !body.Bindings.TryGetValue(Child(node, "target").BindingId!.Value, out Binding? temporary) ||
+                        temporary.Kind != "local" || !temporary.IsSynthetic))
+                        Fail("Observed temporary transfer requires a generated local destination");
+                    SameType(node, Child(node, "target")); SameType(node, Child(node, "value")); break;
                 case "assign":
                     EdgeShape(node, ("target", 1, 1), ("value", 1, 1)); Expr(node, "target"); Expr(node, "value");
                     if (!Place(Child(node, "target"))) Fail("Assignment target must be a typed place");

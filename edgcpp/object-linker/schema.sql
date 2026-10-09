@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v28'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v29'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -350,6 +350,20 @@ CREATE TABLE source_record_types (
  explicit_alignment INTEGER NOT NULL CHECK(explicit_alignment>=0 AND (explicit_alignment & (explicit_alignment-1))=0),
  CHECK((is_complete=0 AND native_size=0 AND native_alignment=0 AND is_trivially_copyable IS NULL) OR
        (is_complete=1 AND native_alignment>0 AND is_trivially_copyable IS NOT NULL))
+) STRICT;
+CREATE TABLE source_record_operations (
+ source_record_id INTEGER PRIMARY KEY REFERENCES source_record_types(id),
+ bitwise_construction_allowed INTEGER NOT NULL CHECK(bitwise_construction_allowed IN (0,1)),
+ bitwise_assignment_allowed INTEGER NOT NULL CHECK(bitwise_assignment_allowed IN (0,1)),
+ requires_return_storage INTEGER NOT NULL CHECK(requires_return_storage IN (0,1)),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-class-prelowering')
+) STRICT;
+CREATE TABLE record_value_transfers (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ kind TEXT NOT NULL CHECK(kind IN ('construction','temporary')),
+ capture_proof TEXT NOT NULL,
+ CHECK((kind='construction' AND capture_proof='observed-dynamic-init') OR
+       (kind='temporary' AND capture_proof='observed-temporary-assignment'))
 ) STRICT;
 CREATE TABLE source_record_fields (
  id INTEGER PRIMARY KEY CHECK(id>0),

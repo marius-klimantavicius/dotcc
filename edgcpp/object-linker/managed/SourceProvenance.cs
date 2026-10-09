@@ -112,7 +112,7 @@ internal sealed partial class ObjectFile
         }
         ReadAndVerifySourceRoutineAbis();
         foreach (RoutineType routine in Routines.Values)
-            if (!CanCopyRecord(Type(routine.ReturnTypeId)) || routine.Parameters.Any(parameter => !CanCopyRecord(Type(parameter))))
+            if (!CanTransportRecord(Type(routine.ReturnTypeId)) || routine.Parameters.Any(parameter => !CanTransportRecord(Type(parameter))))
                 throw new InvalidDataException("Record value ABI cannot contain incomplete arrays or volatile fields in this profile");
         VerifyStorageSourceTypes();
         VerifySourceRecords();
@@ -411,6 +411,10 @@ internal sealed partial class ObjectFile
             "typeId", "identityKey", "sourceName", "size", "alignment", "sourceFileId", "line", "column", "layoutKind", "sourceRecordId", "representationKind", "valueCopyKind", "captureProof", "completeTypeId");
         Table("recordFields", "SELECT id,record_type_id,ordinal,type_id,source_name,byte_offset,source_type_id,source_file_id,line,column,bit_offset,bit_width,bit_signed,source_field_id,field_role,source_base_id,observed_alignment FROM record_fields ORDER BY id",
             "id", "recordTypeId", "ordinal", "typeId", "sourceName", "byteOffset", "sourceTypeId", "sourceFileId", "line", "column", "bitOffset", "bitWidth", "bitSigned", "sourceFieldId", "fieldRole", "sourceBaseId", "observedAlignment");
+        Table("sourceRecordOperations", "SELECT source_record_id,bitwise_construction_allowed,bitwise_assignment_allowed,requires_return_storage,capture_proof FROM source_record_operations ORDER BY source_record_id",
+            "sourceRecordId", "bitwiseConstructionAllowed", "bitwiseAssignmentAllowed", "requiresReturnStorage", "captureProof");
+        Table("recordValueTransfers", "SELECT node_id,kind,capture_proof FROM record_value_transfers ORDER BY node_id",
+            "nodeId", "kind", "captureProof");
         Table("sourceRecords", "SELECT id,source_type_id,identity_key,source_name,record_kind,is_complete,native_size,native_alignment,is_trivially_copyable,capture_phase,source_file_id,line,column,is_packed,max_member_alignment,explicit_alignment FROM source_record_types ORDER BY id",
             "id", "sourceTypeId", "identityKey", "sourceName", "recordKind", "isComplete", "nativeSize", "nativeAlignment", "isTriviallyCopyable", "capturePhase", "sourceFileId", "line", "column", "isPacked", "maxMemberAlignment", "explicitAlignment");
         Table("sourceFields", "SELECT id,source_record_id,ordinal,source_type_id,source_name,is_mutable,has_no_unique_address,bit_width,source_file_id,line,column,has_initializer,is_packed,explicit_alignment FROM source_record_fields ORDER BY id",

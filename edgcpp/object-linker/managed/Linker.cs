@@ -150,7 +150,9 @@ internal sealed partial class Linker
         SourceRecord a = leftObject.SourceRecords[leftId], b = rightObject.SourceRecords[rightId];
         if (a.IdentityKey != b.IdentityKey || a.SourceName != b.SourceName || a.RecordKind != b.RecordKind ||
             a.IsTriviallyCopyable != b.IsTriviallyCopyable || a.IsPacked != b.IsPacked ||
-            a.MaxMemberAlignment != b.MaxMemberAlignment || a.ExplicitAlignment != b.ExplicitAlignment) return false;
+            a.MaxMemberAlignment != b.MaxMemberAlignment || a.ExplicitAlignment != b.ExplicitAlignment ||
+            leftObject.SourceLanguage == "c++" && rightObject.SourceLanguage == "c++" &&
+            leftObject.RecordOperations.GetValueOrDefault(leftId) != rightObject.RecordOperations.GetValueOrDefault(rightId)) return false;
         var expectedBases = leftObject.OriginalBases(leftId);
         var actualBases = rightObject.OriginalBases(rightId);
         if (expectedBases.Length != actualBases.Length || actualBases.Where((item, index) =>

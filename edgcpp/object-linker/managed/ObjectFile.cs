@@ -26,6 +26,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["memory_barriers"] = "node_id", ["memory_barrier_operands"] = "node_id,ordinal",
         ["memory_barrier_dimensions"] = "node_id,operand_ordinal,ordinal",
         ["source_record_types"] = "id", ["source_record_fields"] = "id",
+        ["source_record_operations"] = "source_record_id", ["record_value_transfers"] = "node_id",
         ["initialization_actions"] = "id",
         ["generated_routine_origins"] = "entity_id", ["generated_routine_scaffolds"] = "entity_id,ordinal", ["dynamic_initializers"] = "id",
         ["dynamic_initializer_statements"] = "initializer_id,ordinal",
@@ -73,7 +74,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v28" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v29" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -94,6 +95,7 @@ internal sealed partial class ObjectFile : IDisposable
             ReadAndVerifyMacroProvenance();
             ReadMemoryBarrierMetadata();
             ReadCleanupMetadata();
+            ReadRecordValueTransfers();
         }
         catch { database.Dispose(); throw; }
     }
@@ -166,6 +168,7 @@ internal sealed partial class ObjectFile : IDisposable
     private void ReadSummaries()
     {
         ReadSourceRecordMetadata();
+        ReadSourceRecordOperations();
         ReadRecordMetadata();
         ReadRoutineMetadata(false);
         var rawTypes = new Dictionary<long, (string Kind, long? Pointee, long? Element, long? Count)>();
@@ -236,7 +239,7 @@ internal sealed partial class ObjectFile : IDisposable
                 if (entity.Id <= 0 || entity.Linkage is not ("external" or "internal") || entity.Definition is not ("strong" or "linkonce" or "declaration") ||
                     (entity.Linkage == "external" ? string.IsNullOrEmpty(entity.ExternalKey) : entity.ExternalKey != null) || entity.Line < 0 || entity.Column < 0)
                     throw new InvalidDataException("Invalid entity summary");
-                if (ScalarTypes.IsArray(Type(entity.ReturnTypeId)) || !CanCopyRecord(Type(entity.ReturnTypeId))) throw new InvalidDataException("Function cannot return an aggregate by value");
+                if (ScalarTypes.IsArray(Type(entity.ReturnTypeId)) || !CanTransportRecord(Type(entity.ReturnTypeId))) throw new InvalidDataException("Function cannot return an aggregate by value");
                 Entities.Add(entity.Id, entity);
             }
         using (var query = database.Prepare("SELECT entity_id,ordinal,type_id,parameter_role,source_ordinal FROM parameters ORDER BY entity_id,ordinal"))
@@ -246,7 +249,7 @@ internal sealed partial class ObjectFile : IDisposable
                 if (!Entities.ContainsKey(entity)) throw new InvalidDataException("Parameter references unknown entity");
                 if (!Parameters.TryGetValue(entity, out var parameters)) Parameters.Add(entity, parameters = []);
                 string type = Type(query.Integer(2));
-                if (query.Integer(1) != parameters.Count || (type == "void" || ScalarTypes.IsArray(type) || !CanCopyRecord(type))) throw new InvalidDataException("Invalid parameter ordinal/type");
+                if (query.Integer(1) != parameters.Count || (type == "void" || ScalarTypes.IsArray(type) || !CanTransportRecord(type))) throw new InvalidDataException("Invalid parameter ordinal/type");
                 string role = query.Text(3); long? sourceOrdinal = query.OptionalInteger(4);
                 long ordinal = query.Integer(1);
                 if (role is not ("source" or "indirect-source" or "this" or "result-buffer" or "forwarded-source") || (role is "this" or "result-buffer" ? sourceOrdinal is not null : sourceOrdinal is null or < 0))
