@@ -29,6 +29,7 @@ internal sealed partial class Linker
         Objects = objects.OrderBy(obj => obj.UnitId, StringComparer.Ordinal).ToArray();
         if (Objects.Select(obj => obj.UnitId).Distinct(StringComparer.Ordinal).Count() != Objects.Count)
             throw new InvalidDataException("The same translation unit was supplied more than once");
+        VerifyEnumDefinitions();
         // A provider's coalescible copy must not force archive extraction when
         // the primary inputs already supply that body. Strong definitions still
         // take precedence below, independently of this stable preference.
@@ -110,6 +111,39 @@ internal sealed partial class Linker
         names.Reserve(className);
         foreach (Symbol symbol in Definitions)
             Names.Add(symbol.Key, names.Allocate(symbol.Entity.SourceName, "function_" + symbol.Entity.Id));
+    }
+
+    private void VerifyEnumDefinitions()
+    {
+        var definitions = new Dictionary<string, (ObjectFile Object, SourceEnumType Type)>(StringComparer.Ordinal);
+        foreach (ObjectFile obj in Objects)
+            foreach (SourceEnumType type in obj.SourceEnums.Values)
+            {
+                if (!definitions.TryGetValue(type.IdentityKey, out var prior))
+                {
+                    definitions.Add(type.IdentityKey, (obj, type));
+                    continue;
+                }
+                if (type.IsScoped != prior.Type.IsScoped ||
+                    obj.SourceTypes[type.TypeId].SourceName != prior.Object.SourceTypes[prior.Type.TypeId].SourceName ||
+                    obj.SourceTypeSignature(type.UnderlyingTypeId) != prior.Object.SourceTypeSignature(prior.Type.UnderlyingTypeId))
+                    throw new InvalidDataException($"Original enum type mismatch for {type.IdentityKey}");
+                if (type.EnumeratorListComplete && prior.Type.EnumeratorListComplete)
+                {
+                    var current = obj.SourceEnumerators.GetValueOrDefault(type.TypeId, []);
+                    var previous = prior.Object.SourceEnumerators.GetValueOrDefault(prior.Type.TypeId, []);
+                    IEnumerable<(string Name, string Value)> currentValues = current.Select(item => (item.SourceName, item.ValueText));
+                    IEnumerable<(string Name, string Value)> previousValues = previous.Select(item => (item.SourceName, item.ValueText));
+                    if (obj.SourceLanguage == "c" && prior.Object.SourceLanguage == "c")
+                    {
+                        currentValues = currentValues.OrderBy(item => item.Name, StringComparer.Ordinal);
+                        previousValues = previousValues.OrderBy(item => item.Name, StringComparer.Ordinal);
+                    }
+                    if (!currentValues.SequenceEqual(previousValues))
+                        throw new InvalidDataException($"Original enum definition mismatch for {type.IdentityKey}");
+                }
+                if (type.EnumeratorListComplete && !prior.Type.EnumeratorListComplete) definitions[type.IdentityKey] = (obj, type);
+            }
     }
 
     private static string? FieldSourceSignature(ObjectFile obj, RecordField field) =>

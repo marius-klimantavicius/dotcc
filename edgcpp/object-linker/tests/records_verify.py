@@ -148,7 +148,7 @@ def malformed(provider, consumer, tool, run, link, mutate):
     run('verify-record-conflicting-name-object', ['dotnet', tool, 'verify', wrong_name])
     link('reject-record-cross-unit-name', [wrong_name, consumer], expected=None, contains='record')
     wrong_source = mutate('record-cross-unit-source', provider, [
-        ("INSERT INTO source_types SELECT max(id)+1,'long','',NULL,8,0,0,NULL,0,0,NULL FROM source_types", ()),
+        ("INSERT INTO source_types SELECT max(id)+1,'long','',NULL,8,0,0,NULL,0,0,NULL,0,0 FROM source_types", ()),
         ("UPDATE source_record_fields SET source_type_id=(SELECT max(id) FROM source_types) WHERE id IN (SELECT source_field_id FROM record_fields WHERE source_name='total')", ()),
         ("UPDATE record_fields SET source_type_id=(SELECT max(id) FROM source_types) WHERE source_name='total'", ())])
     run('verify-record-conflicting-source-object', ['dotnet', tool, 'verify', wrong_source])

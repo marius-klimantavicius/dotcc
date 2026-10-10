@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v36'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v37'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -358,13 +358,45 @@ CREATE TABLE source_types (
  kind TEXT NOT NULL,
  source_name TEXT NOT NULL,
  underlying_type_id INTEGER REFERENCES source_types(id),
- execution_type_id INTEGER NOT NULL REFERENCES types(id),
+ execution_type_id INTEGER REFERENCES types(id),
  is_const INTEGER NOT NULL CHECK(is_const IN (0,1)),
  is_volatile INTEGER NOT NULL CHECK(is_volatile IN (0,1)),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
- element_count INTEGER CHECK(element_count>=0)
+ element_count INTEGER CHECK(element_count>=0),
+ is_restrict INTEGER NOT NULL CHECK(is_restrict IN (0,1)),
+ is_atomic INTEGER NOT NULL CHECK(is_atomic IN (0,1))
+) STRICT;
+CREATE TABLE source_type_qualifiers (
+ type_id INTEGER NOT NULL REFERENCES source_types(id),
+ name TEXT NOT NULL,
+ PRIMARY KEY(type_id,name)
+) STRICT;
+CREATE TABLE source_enum_types (
+ type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
+ identity_key TEXT NOT NULL,
+ underlying_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ is_scoped INTEGER NOT NULL CHECK(is_scoped IN (0,1)),
+ is_complete INTEGER NOT NULL CHECK(is_complete IN (0,1)),
+ enumerator_list_complete INTEGER NOT NULL CHECK(enumerator_list_complete IN (0,1)),
+ has_explicit_base INTEGER NOT NULL CHECK(has_explicit_base IN (0,1))
+) STRICT;
+CREATE TABLE source_enumerators (
+ type_id INTEGER NOT NULL REFERENCES source_enum_types(type_id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ source_name TEXT NOT NULL,
+ value_text TEXT NOT NULL,
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ PRIMARY KEY(type_id,ordinal)
+) STRICT;
+CREATE TABLE source_member_pointer_types (
+ type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
+ owner_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ member_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN ('observed-source-type','observed-member-pointer-lowering'))
 ) STRICT;
 CREATE TABLE source_record_types (
  id INTEGER PRIMARY KEY CHECK(id>0),
@@ -466,13 +498,13 @@ CREATE TABLE record_fields (
  bit_width INTEGER CHECK(bit_width>0 AND bit_width<=64),
  bit_signed INTEGER CHECK(bit_signed IN (0,1)),
  source_field_id INTEGER REFERENCES source_record_fields(id),
- field_role TEXT NOT NULL CHECK(field_role IN ('source','vptr','abi','base','virtual-base')),
+ field_role TEXT NOT NULL CHECK(field_role IN ('source','vptr','abi','abi-code-address','base','virtual-base')),
  source_base_id INTEGER REFERENCES source_record_bases(id),
  observed_alignment INTEGER CHECK(observed_alignment>0 AND (observed_alignment & (observed_alignment-1))=0),
  CHECK(field_role<>'source' OR bit_width IS NOT NULL OR observed_alignment IS NOT NULL),
  CHECK(bit_width IS NULL OR observed_alignment IS NULL),
  CHECK((field_role='source' AND source_field_id IS NOT NULL AND source_type_id IS NOT NULL) OR
-       (field_role IN ('vptr','abi','base','virtual-base') AND source_field_id IS NULL AND source_type_id IS NULL)),
+       (field_role IN ('vptr','abi','abi-code-address','base','virtual-base') AND source_field_id IS NULL AND source_type_id IS NULL)),
  CHECK((field_role='base' AND source_base_id IS NOT NULL AND bit_offset IS NULL) OR
        (field_role<>'base' AND source_base_id IS NULL)),
  CHECK((bit_offset IS NULL AND bit_width IS NULL AND bit_signed IS NULL) OR

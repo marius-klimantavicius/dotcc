@@ -3,8 +3,14 @@ using System.Text.Json;
 namespace DotObj;
 
 internal sealed record SourceType(long Id, string Kind, string SourceName,
-    long? UnderlyingTypeId, long ExecutionTypeId, bool IsConst, bool IsVolatile,
-    long? SourceFileId, long Line, long Column, long? ElementCount);
+    long? UnderlyingTypeId, long? ExecutionRepresentationId, bool IsConst, bool IsVolatile,
+    long? SourceFileId, long Line, long Column, long? ElementCount, bool IsRestrict, bool IsAtomic)
+{
+    // Semantic-only types are valid metadata. A consumer requesting executable
+    // storage/ABI must have an observed mapping, never an invented fallback.
+    public long ExecutionTypeId => ExecutionRepresentationId ??
+        throw new InvalidDataException($"Source type {Id} ({Kind}) has no execution representation");
+}
 
 internal sealed partial class ObjectFile
 {
@@ -16,100 +22,7 @@ internal sealed partial class ObjectFile
     {
         ReadRoutineMetadata(true);
         ReadAbiRoutineOrigins();
-        using (var query = database.Prepare("SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count FROM source_types ORDER BY id"))
-            while (query.Read())
-            {
-                var type = new SourceType(query.Integer(0), query.Text(1), query.Text(2), query.OptionalInteger(3), query.Integer(4),
-                    query.Integer(5) == 1, query.Integer(6) == 1, query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.OptionalInteger(10));
-                if (type.Id <= 0 || type.Line < 0 || type.Column < 0 || query.Integer(5) is not (0 or 1) || query.Integer(6) is not (0 or 1))
-                    throw new InvalidDataException("Invalid source type identity, qualifiers or location");
-                string executionType = Type(type.ExecutionTypeId);
-                if ((type.Kind == "array" ? type.ElementCount is < 0 : type.ElementCount is not null))
-                    throw new InvalidDataException("Source array requires a nonnegative element count");
-                if (type.Kind is "typedef" or "qualified")
-                {
-                    if (type.UnderlyingTypeId is null || (type.Kind == "typedef" ? type.SourceName.Length == 0 : type.SourceName.Length != 0 || !type.IsConst && !type.IsVolatile))
-                        throw new InvalidDataException("Invalid source typedef or qualified type");
-                }
-                else if (type.Kind == "array")
-                {
-                    if (type.UnderlyingTypeId is null || type.SourceName.Length != 0 || type.IsConst || type.IsVolatile ||
-                        (!ScalarTypes.IsArray(executionType) || ScalarTypes.ArrayBound(executionType) != type.ElementCount))
-                        throw new InvalidDataException("Invalid source array type or execution extent");
-                }
-                else if (type.Kind is "pointer" or "lvalue-reference" or "rvalue-reference")
-                {
-                    if (type.UnderlyingTypeId is null || !ScalarTypes.IsPointer(executionType) ||
-                        type.SourceName.Length != 0 || type.IsConst || type.IsVolatile)
-                        throw new InvalidDataException("Invalid source pointer or reference type");
-                }
-                else if (type.Kind == "routine")
-                {
-                    if (!SourceRoutines.ContainsKey(type.Id) || !RoutineTypes.IsRoutine(executionType) || type.SourceName.Length != 0 ||
-                        type.UnderlyingTypeId is not null || type.IsConst || type.IsVolatile)
-                        throw new InvalidDataException("Invalid source routine type");
-                }
-                else if (type.Kind == "enum")
-                {
-                    if (!ScalarTypes.IsInteger(executionType) || type.UnderlyingTypeId is not null || type.IsConst || type.IsVolatile)
-                        throw new InvalidDataException("Invalid source enum representation");
-                }
-                else if (type.Kind == "record")
-                {
-                    if (!Records.TryGetValue(type.ExecutionTypeId, out RecordType? record) || record.SourceRecordId is not long sourceRecordId ||
-                        !SourceRecords.TryGetValue(sourceRecordId, out SourceRecord? original) || original.SourceTypeId != type.Id || type.SourceName != record.SourceName ||
-                        type.UnderlyingTypeId is not null || type.IsConst || type.IsVolatile)
-                        throw new InvalidDataException("Source record disagrees with its execution representation");
-                }
-                else
-                {
-                    string expected = type.Kind switch
-                    {
-                        "long-double" or "float80" or "float64x" => "f80", "va-list" => "va-list", "void" => "void", "bool" => "u8", "float" => "f32", "double" => "f64", "signed-char" => "i8", "unsigned-char" => "u8",
-                        "short" => "i16", "unsigned-short" => "u16", "int" => "i32", "unsigned-int" => "u32",
-                        "int128" => "i128", "unsigned-int128" => "u128", "long" or "long-long" => "i64", "unsigned-long" or "unsigned-long-long" => "u64",
-                        "char" when executionType is "i8" or "u8" => executionType,
-                        _ => throw new InvalidDataException("Unsupported original source scalar type")
-                    };
-                    if (executionType != expected || type.UnderlyingTypeId is not null || type.SourceName.Length != 0 || type.IsConst || type.IsVolatile)
-                        throw new InvalidDataException("Source builtin type disagrees with its execution representation");
-                }
-                SourceTypes.Add(type.Id, type);
-            }
-        // Walk each alias/qualification chain once, without recursion or reliance
-        // on physical row order. Original long and long long remain distinct even
-        // though both eventually name the same execution representation.
-        var visited = new HashSet<long>();
-        foreach (SourceType start in SourceTypes.Values)
-        {
-            var chain = new HashSet<long>();
-            SourceType current = start;
-            while (!visited.Contains(current.Id))
-            {
-                if (!chain.Add(current.Id)) throw new InvalidDataException("Cycle in source type references");
-                if (current.UnderlyingTypeId is not long underlying) break;
-                if (!SourceTypes.TryGetValue(underlying, out SourceType? target)) throw new InvalidDataException("Unknown underlying source type");
-                if (current.Kind is "pointer" or "lvalue-reference" or "rvalue-reference")
-                {
-                    if (Original(target).Kind is "lvalue-reference" or "rvalue-reference" ||
-                        current.Kind != "pointer" && Original(target).Kind == "void" ||
-                                                ScalarTypes.Pointee(Type(current.ExecutionTypeId)) != Type(target.ExecutionTypeId))
-                        throw new InvalidDataException("Source pointer pointee disagrees with execution representation");
-                }
-                else if (current.Kind == "array")
-                {
-                    string representation = Type(current.ExecutionTypeId);
-                    string element = ScalarTypes.Element(representation);
-                    if (element != Type(target.ExecutionTypeId)) throw new InvalidDataException("Source array element disagrees with execution representation");
-                    if (Original(target).Kind == "array" && Original(target).ElementCount is null)
-                        throw new InvalidDataException("Array element cannot be incomplete");
-                }
-                else if (current.ExecutionTypeId != target.ExecutionTypeId)
-                    throw new InvalidDataException("Source typedef/qualification changes the execution representation");
-                current = target;
-            }
-            visited.UnionWith(chain);
-        }
+        ReadAndVerifySourceTypes();
         ReadAndVerifySourceRoutineAbis();
         foreach (RoutineType routine in Routines.Values)
             if (!CanTransportRecord(Type(routine.ReturnTypeId)) || routine.Parameters.Any(parameter => !CanTransportRecord(Type(parameter))))
@@ -272,12 +185,12 @@ internal sealed partial class ObjectFile
     public string SourceTypeSignature(long id) => SourceTypeSignature(id, 0, false, false);
 
     public string FunctionSourceSignature(long entityId) => AbiRoutineOrigins.TryGetValue(entityId, out AbiRoutineOrigin? origin)
-        ? "abi-entry(" + origin.EntryKind + ";" + SourceFunctionKinds[origin.PrimaryEntityId] + ";" + (origin.EntryKind == "constructor-default-adapter" ? "prefix=" + (Parameters.GetValueOrDefault(entityId, []).Count - 1) + ";" : "") + SourceRoutineSignature(EntitySourceRoutines[origin.PrimaryEntityId], 0) + ")"
+        ? "abi-entry(" + origin.EntryKind + ";" + SourceFunctionKinds[origin.PrimaryEntityId] + ";" + (origin.EntryKind == "constructor-default-adapter" ? "prefix=" + (Parameters.GetValueOrDefault(entityId, []).Count - 1) + ";" : "") + SourceRoutineSignature(EntitySourceRoutines[origin.PrimaryEntityId], 0, includeAbi: true) + ")"
         : GeneratedRoutineOrigins.TryGetValue(entityId, out GeneratedRoutineOrigin? generated)
             ? "generated-routine(" + generated.Kind + ";" + EntityRoutine(entityId) + ";" + generated.FailurePolicy + ")"
-            : SourceRoutineSignature(EntitySourceRoutines[entityId], 0);
+            : SourceRoutineSignature(EntitySourceRoutines[entityId], 0, includeAbi: true);
 
-    private string SourceRoutineSignature(RoutineType routine, int depth)
+    private string SourceRoutineSignature(RoutineType routine, int depth, bool includeAbi = false)
     {
         if (depth > 128) throw new InvalidDataException("Source routine type nesting exceeds supported limit");
         // This profile admits unspecified C definitions only with known zero
@@ -286,9 +199,9 @@ internal sealed partial class ObjectFile
             ? SourceTypeSignature(objectType, depth + 1, routine.ObjectIsConst, routine.ObjectIsVolatile) + ":" + routine.ObjectRefQualifier : "none";
         return "source-routine(" + SourceTypeSignature(routine.ReturnTypeId, depth + 1, false, false) + ";" +
             string.Join(',', routine.Parameters.Select(parameter => SourceParameterSignature(parameter, depth + 1))) + ";" +
-            (routine.Variadic ? "1" : "0") + ";" + routine.ExceptionPolicy + ";" + receiver + ";abi=" +
-            SourceRoutineAbis[routine.TypeId].ReturnPassing + ":" + string.Join(',', RoutineAbiParameters(routine.TypeId).Select(slot =>
-                slot.ParameterRole + (slot.SourceOrdinal is long ordinal ? "#" + ordinal : ""))) + ")";
+            (routine.Variadic ? "1" : "0") + ";" + routine.ExceptionPolicy + ";" + receiver +
+            (includeAbi ? ";abi=" + SourceRoutineAbis[routine.TypeId].ReturnPassing + ":" + string.Join(',', RoutineAbiParameters(routine.TypeId).Select(slot =>
+                slot.ParameterRole + (slot.SourceOrdinal is long ordinal ? "#" + ordinal : ""))) : "") + ")";
     }
 
     private string SourceParameterSignature(long id, int depth)
@@ -314,11 +227,15 @@ internal sealed partial class ObjectFile
         if (depth > 128) throw new InvalidDataException("Source field type nesting exceeds supported limit");
         SourceType type = SourceTypeById(id);
         bool isConst = type.IsConst || inheritedConst, isVolatile = type.IsVolatile || inheritedVolatile;
+        bool isRestrict = type.IsRestrict, isAtomic = type.IsAtomic;
+        var extra = new SortedSet<string>(SourceTypeQualifiers.GetValueOrDefault(type.Id, []), StringComparer.Ordinal);
         while (type.Kind is "typedef" or "qualified")
         {
             if (++depth > 128) throw new InvalidDataException("Source field type nesting exceeds supported limit");
             type = SourceTypeById(type.UnderlyingTypeId!.Value);
             isConst |= type.IsConst; isVolatile |= type.IsVolatile;
+            isRestrict |= type.IsRestrict; isAtomic |= type.IsAtomic;
+            extra.UnionWith(SourceTypeQualifiers.GetValueOrDefault(type.Id, []));
         }
         if (type.Kind == "array") return "array(" + (type.ElementCount?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "?") + "," +
             SourceTypeSignature(type.UnderlyingTypeId!.Value, depth + 1, isConst, isVolatile) + ")";
@@ -326,13 +243,14 @@ internal sealed partial class ObjectFile
         // their referent and are retained inside the distinct lref/rref node.
         if (type.Kind is "lvalue-reference" or "rvalue-reference")
             return (type.Kind == "lvalue-reference" ? "lref(" : "rref(") + SourceTypeSignature(type.UnderlyingTypeId!.Value, depth + 1, false, false) + ")";
-        string qualifiers = (isConst ? "const:" : "") + (isVolatile ? "volatile:" : "");
+        string qualifiers = (isConst ? "const:" : "") + (isVolatile ? "volatile:" : "") + (isRestrict ? "restrict:" : "") + (isAtomic ? "atomic:" : "") + string.Concat(extra.Select(name => name + ":"));
         return qualifiers + (type.Kind switch
         {
             "pointer" => "ptr(" + SourceTypeSignature(type.UnderlyingTypeId!.Value, depth + 1, false, false) + ")",
-            "record" => Type(type.ExecutionTypeId),
+            "record" => "record(" + Convert.ToHexStringLower(System.Text.Encoding.UTF8.GetBytes(SourceRecordsByType[type.Id].IdentityKey)) + ")",
             "routine" => SourceRoutineSignature(SourceRoutines[type.Id], depth + 1),
-            "enum" => "enum(" + type.SourceName + "," + Type(type.ExecutionTypeId) + ")",
+            "enum" => SourceEnumSignature(type, depth + 1),
+            "member-pointer" => "member-pointer(" + SourceTypeSignature(SourceMemberPointers[type.Id].OwnerTypeId, depth + 1, false, false) + "," + SourceTypeSignature(SourceMemberPointers[type.Id].MemberTypeId, depth + 1, false, false) + ")",
             _ => type.Kind
         });
     }
@@ -363,7 +281,7 @@ internal sealed partial class ObjectFile
                     switch (query.ColumnType(index))
                     {
                         case 1:
-                            if (column is "isUnreachable" or "hasVolatileKeyword" or "hasInlineKeyword" or "clobbersMemory" or "hasDefaultArgument" or "isAliasEntry" or "isVirtual" or "isConst" or "isVolatile" or "isSynthetic" or "isComplete" or "isTriviallyCopyable" or "isMutable" or "hasNoUniqueAddress" or "hasInitializer" or "objectIsConst" or "objectIsVolatile") writer.WriteBoolean(column, query.Integer(index) == 1);
+                            if (column is "isRestrict" or "isAtomic" or "isScoped" or "enumeratorListComplete" or "hasExplicitBase" or "isUnreachable" or "hasVolatileKeyword" or "hasInlineKeyword" or "clobbersMemory" or "hasDefaultArgument" or "isAliasEntry" or "isVirtual" or "isConst" or "isVolatile" or "isSynthetic" or "isComplete" or "isTriviallyCopyable" or "isMutable" or "hasNoUniqueAddress" or "hasInitializer" or "objectIsConst" or "objectIsVolatile") writer.WriteBoolean(column, query.Integer(index) == 1);
                             else writer.WriteNumber(column, query.Integer(index));
                             break;
                         case 3: writer.WriteString(column, query.Text(index)); break;
@@ -449,8 +367,12 @@ internal sealed partial class ObjectFile
             "recordTypeId", "sourceBaseId", "completeBaseTypeId", "physicalViewTypeId", "byteOffset", "extent", "fieldId");
         Table("abiRoutineOrigins", "SELECT entity_id,primary_entity_id,entry_kind,is_alias_entry,capture_proof,target_entity_id FROM abi_routine_origins ORDER BY entity_id",
             "entityId", "primaryEntityId", "entryKind", "isAliasEntry", "captureProof", "targetEntityId");
-        Table("sourceTypes", "SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count FROM source_types ORDER BY id",
-            "id", "kind", "sourceName", "underlyingTypeId", "executionTypeId", "isConst", "isVolatile", "sourceFileId", "line", "column", "elementCount");
+        Table("sourceTypeQualifiers", "SELECT type_id,name FROM source_type_qualifiers ORDER BY type_id,name", "typeId", "name");
+        Table("sourceEnumTypes", "SELECT type_id,identity_key,underlying_type_id,is_scoped,is_complete,enumerator_list_complete,has_explicit_base FROM source_enum_types ORDER BY type_id", "typeId", "identityKey", "underlyingTypeId", "isScoped", "isComplete", "enumeratorListComplete", "hasExplicitBase");
+        Table("sourceEnumerators", "SELECT type_id,ordinal,source_name,value_text,source_file_id,line,column FROM source_enumerators ORDER BY type_id,ordinal", "typeId", "ordinal", "sourceName", "valueText", "sourceFileId", "line", "column");
+        Table("sourceMemberPointerTypes", "SELECT type_id,owner_type_id,member_type_id,capture_proof FROM source_member_pointer_types ORDER BY type_id", "typeId", "ownerTypeId", "memberTypeId", "captureProof");
+        Table("sourceTypes", "SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count,is_restrict,is_atomic FROM source_types ORDER BY id",
+            "id", "kind", "sourceName", "underlyingTypeId", "executionTypeId", "isConst", "isVolatile", "sourceFileId", "line", "column", "elementCount", "isRestrict", "isAtomic");
         Table("storages", "SELECT id,source_name,linkage,external_key,definition,type_id,source_type_id,is_thread_local,is_const,alignment,source_file_id,line,column FROM storages ORDER BY id",
             "id", "sourceName", "linkage", "externalKey", "definition", "typeId", "sourceTypeId", "isThreadLocal", "isConst", "alignment", "sourceFileId", "line", "column");
         Table("routineTypes", "SELECT type_id,return_type_id,variadic,exception_policy FROM routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy");

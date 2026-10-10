@@ -415,6 +415,19 @@ object_source_overlay(lower,
     '  a_type_ptr ptr_return_type, new_type, member_type;\n'
     '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_type(type);\n#endif\n')
 object_source_overlay(lower,
+    '  }  /* if */\n}  /* lower_type */',
+    '  }  /* if */\n'
+    '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_lowered_type(type);\n#endif\n'
+    '}  /* lower_type */')
+object_source_overlay(lower,
+    '    finish_class_type(mptr_type);\n',
+    '    finish_class_type(mptr_type);\n'
+    '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_member_pointer_record(mptr_type);\n#endif\n')
+object_source_overlay(lower,
+    '  return vptp_type;\n}  /* make_vptp_type */',
+    '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_erased_code_pointer(vptp_type);\n#endif\n'
+    '  return vptp_type;\n}  /* make_vptp_type */')
+object_source_overlay(lower,
     '          set_lowered_routine_calling_method_flag(type);\n'
     '          if (rtsp->value_returned_as_parameter) {',
     '          set_lowered_routine_calling_method_flag(type);\n'

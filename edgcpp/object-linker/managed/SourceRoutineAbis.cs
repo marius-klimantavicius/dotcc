@@ -15,12 +15,12 @@ internal sealed partial class ObjectFile
             while (query.Read())
             {
                 var abi = new SourceRoutineAbi(query.Integer(0), query.Text(1), query.Text(2));
-                if (!SourceRoutines.ContainsKey(abi.SourceRoutineTypeId) || abi.ReturnPassing is not ("direct" or "result-buffer") ||
+                if (!SourceRoutines.ContainsKey(abi.SourceRoutineTypeId) || SourceTypeById(abi.SourceRoutineTypeId).ExecutionRepresentationId is null || abi.ReturnPassing is not ("direct" or "result-buffer") ||
                     abi.CaptureProof is not ("source-c-signature" or "observed-routine-lowering" or "observed-runtime-signature"))
                     throw new InvalidDataException("Invalid original routine ABI header");
                 SourceRoutineAbis.Add(abi.SourceRoutineTypeId, abi);
             }
-        if (SourceRoutineAbis.Count != SourceRoutines.Count) throw new InvalidDataException("Missing original routine ABI header");
+        if (SourceRoutineAbis.Count != SourceRoutines.Values.Count(routine => SourceTypeById(routine.TypeId).ExecutionRepresentationId is not null)) throw new InvalidDataException("Missing original routine ABI header");
         using (var query = database.Prepare("SELECT source_routine_type_id,execution_ordinal,parameter_role,source_ordinal FROM source_routine_abi_parameters ORDER BY source_routine_type_id,execution_ordinal"))
             while (query.Read())
             {
@@ -35,8 +35,9 @@ internal sealed partial class ObjectFile
             }
         foreach (RoutineType routine in SourceRoutines.Values)
         {
-            SourceRoutineAbi abi = SourceRoutineAbis[routine.TypeId];
             SourceType source = SourceTypeById(routine.TypeId);
+            if (source.ExecutionRepresentationId is null) continue;
+            SourceRoutineAbi abi = SourceRoutineAbis[routine.TypeId];
             var physical = RoutineTypes.Signature(Type(source.ExecutionTypeId));
             var slots = RoutineAbiParameters(routine.TypeId);
             if (slots.Count != physical.Parameters.Length || physical.Variadic != routine.Variadic || physical.ExceptionPolicy != routine.ExceptionPolicy)

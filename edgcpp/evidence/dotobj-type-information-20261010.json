@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-10",
+  "status": "passed",
+  "profile": "scalar-control-v37",
+  "scope": "Original type identities and nullable execution mappings; exact enum and member-pointer metadata",
+  "edgSemanticChanges": false,
+  "allTypeInformationComplete": false,
+  "validationBuilds": {
+    "broadNative": "074",
+    "broadManaged": "083",
+    "finalNative": "075",
+    "finalManaged": "085",
+    "finalDifferences": "Verifier rejects missing reciprocal record mappings and unsupported qualifier execution; native rejects unsupported extension qualifiers/modifiers instead of losing semantics."
+  },
+  "acceptance": {
+    "typeInformation": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-type-information-v37-008/results.json",
+      "sha256": "49698342d5d3e1137d645fe5db3955eea407f052277caf9c9841805d3e805acb",
+      "status": "passed",
+      "checks": 225
+    },
+    "broadRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v37-001/results.json",
+      "sha256": "84c037cd444a45d800a953b3ddbd13872c9ba2f0a5ed81c49fb4e3e0c68f4e26",
+      "status": "passed",
+      "checks": 1042
+    },
+    "finalVerifierPositiveObjects": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v37-final-record-map-reverify-003/results.json",
+      "sha256": "fdb080ff137816a6eefa552889704eb97a1bdf1e9dbedfd05268ed1642fac223",
+      "status": "passed",
+      "objects": 140
+    },
+    "finalArrayVttRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-vtt-v37-002/results.json",
+      "sha256": "3ca20838f1b81a9ab5baac67cca2703e4c17488696628035b899b5bbc4f019a3",
+      "status": "passed",
+      "checks": 42,
+      "scenarios": 83
+    }
+  },
+  "verifiedExecutionModes": [
+    "Native C/C++ O0/O2",
+    "Stock EDG C O0/O2 (array/VTT regression)",
+    "Linux x64 JIT (broad regression and final array/VTT regression)"
+  ],
+  "newTypeFixturesManagedExecution": false,
+  "nativeAotRunThisPhase": false,
+  "artifacts": {
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native075-verified-snapshot/cpfe-dot",
+      "sha256": "a3da38d9b7948caa46632848cc97f0260444574c7026cf8cc2b9233e7b51b9ef"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-085/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "e1be37e89f822ecc09305e3cba9bfbec5d23ad45314f8ad9c5e66e47085aef97"
+    },
+    "sourceManifest": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v37-final-source-sha256.json",
+      "sha256": "af4424a4450e4a47ceb7aae8fe5b30a7217c63fcec13c102c5082d8545e6fcf2"
+    },
+    "duckdbProbe": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-075-types/results.json",
+      "sha256": "4b25e7d25e0fa45ecfc9bbd10fb5a59d57a76802cd3c4f0181902b978410dd70"
+    },
+    "duckdbGenerationLog": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-075-types/hugeint-link.log",
+      "sha256": "5087ee718ae33953dd22b83851d46f900d56967922955d7368cc69689d047f10"
+    },
+    "rttiProviderBuild": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v37-minimal-rtti-001/results.json",
+      "sha256": "9409cefa229c4c58604d7788453f9f61184b9c7d33eda9dcb8325443494716cf"
+    }
+  },
+  "duckdb": {
+    "completeProjectGenerated": false,
+    "selectedOriginalUnits": 5,
+    "packagedUnits": [
+      "src/common/types/hugeint.cpp"
+    ],
+    "emittedFunctionDefinitions": 280,
+    "compiledOrExecuted": false,
+    "remainingSampledGates": {
+      "string_util.cpp": "dotobj scalar-v37: physical base lacks direct original declaration (kind -1) in dotobj function GenerateRandomName",
+      "exception.cpp": "dotobj scalar-v37: exception construct outside owned scalar cleanup (kind 10) in dotobj function __construct_at",
+      "date.cpp": "dotobj scalar-v37: exception construct outside owned scalar cleanup (kind 10) in dotobj function construct",
+      "allocator.cpp": "dotobj scalar-v37: initialization with destructor (kind -1) in dotobj function Allocator"
+    },
+    "progress": "exception.cpp and date.cpp advance past missing nullptr source type to cleanup export gates."
+  },
+  "retainedAttempts": {
+    "dotobj-type-information-baseline-001": "v36 rejects source type fixture.",
+    "dotobj-type-information-v37-001": "Initial member-pointer export hit erased ABI code address treated as unprototyped routine.",
+    "dotobj-type-information-v37-002": "Reordered tests, same erased-address gate.",
+    "dotobj-type-information-v37-003": "Second record_fields SQL CHECK did not yet accept abi-code-address.",
+    "dotobj-type-information-v37-004": "Verifier did not yet accept stock zero-initialized member-function-pointer scaffold.",
+    "dotobj-type-information-v37-005": "Passed201 before later source-only and verifier hardening tests.",
+    "dotobj-type-information-v37-006": "Test incorrectly expected unmatched member routine to lack mapping; EDG validly observes its lowering. Replaced with genuinely unsupported variadic-indirect routine ABI.",
+    "dotobj-type-information-v37-007": "Passed209 before qualifier rejection tests.",
+    "dotobj-type-enum-c-anonymous-001": "C cross-unit anonymous enum compatibility regression before structural comparison fix.",
+    "dotobj-v37-final-record-map-reverify": "Selection included objects whose export succeeds but verification is intentionally rejected; corrected selection to successfully verified/linked objects.",
+    "dotobj-array-vtt-v37-001": "Root omitted required RTTI providers; rerun with newly exported v37 providers passes."
+  },
+  "remaining": [
+    "Native source-only record serialization remains coupled to physical-layout/base gates.",
+    "Unused declarations and uninstantiated template definitions are not exhaustively exported.",
+    "Bit-precise, complex/imaginary/fixed-point, vector/scalable/target-float and dependent/reflection type families.",
+    "Variable/dependent array bounds, C99 array-declarator qualifiers and minimum bounds.",
+    "Additional routine calling conventions, typed dynamic exception specifications and implicit-this qualifiers.",
+    "Named address spaces, platform pointer modifiers, UPC block size, MS member-pointer modifiers and CLI nullptr.",
+    "Template-alias arguments and decltype-expression provenance beyond resolved types.",
+    "Atomic execution contract and complete member-pointer execution/aggregate transport.",
+    "Remaining DuckDB initialization, cleanup and physical-base exporter gates; full project generation/compilation/execution."
+  ],
+  "review": {
+    "typeMetadata": "edgcpp/artifacts/review/dotobj-type-information",
+    "duckdb": "edgcpp/artifacts/review/duckdb-dotobj-hugeint/Translated.0000.hugeint_u002e_cpp.cs"
+  },
+  "retainIntermediates": true,
+  "workStatus": "Verified type-information milestone; all-type-information requirement remains open."
+}

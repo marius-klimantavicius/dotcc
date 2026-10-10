@@ -434,6 +434,63 @@ allocation rollback regions and virtual exception-base conversions remain explic
 gates. Nontrivial explicit array initializer-list temporaries also retain their
 ownership gate. This milestone does not claim complete RTTI or libc++ support.
 
+## Original type identity and optional execution mappings (v37)
+
+The source type graph is semantic data. `source_types.execution_type_id` is now
+nullable: NULL means that no execution representation has been established for
+that source type. It never means an opaque integer, pointer, or default ABI.
+Executable declarations, bindings, fields, signatures and operations still require
+an appropriate verified execution representation. Descriptive member-function
+signatures may retain their full original type without a lowered routine ABI.
+
+The added source kinds distinguish `nullptr`, `wchar-t`, `char8-t`, `char16-t`,
+`char32-t` and `member-pointer`. Nullptr keeps its original identity even though
+stock EDG lowers its execution representation to `void*`. Member-pointer mappings
+are observed at the actual EDG lowering boundary rather than guessed from size.
+The original member signature preserves owner, result, parameter types, cv/ref
+qualification and the supported exception policy. Its identity is independent of
+whether an execution ABI has also been captured. EDG's erased member-function
+code-address slot is marked `abi-code-address` in the observed ABI record and
+stored as `ptr(void)`; invocation still requires the original typed function
+pointer cast. It is never invented as a callable zero-argument function.
+
+| Relation | Owned information |
+| --- | --- |
+| `source_types` | Existing original type graph plus `is_restrict`, `is_atomic`; optional execution representation. |
+| `source_type_qualifiers` | Additional named qualifiers, including nullability; extension names are reserved but require the contracts described below. |
+| `source_enum_types` | Nominal identity, original underlying type, scopedness, type completeness, enumerator-list completeness and explicit underlying-type declaration. |
+| `source_enumerators` | Original declaration order, name, exact signed/unsigned decimal integer value and source location; values are not limited to SQLite's signed 64-bit integer range. |
+| `source_member_pointer_types` | Original owner type, member type and observed lowering/source capture provenance. |
+
+Enum identity participates in cross-unit signatures independently of integer
+storage. A fixed-underlying opaque enum declaration can match a definition in
+another unit; two available complete enumerator lists must agree. C++ retains
+nominal enum matching. C anonymous enums retain their original declaration
+identities but use structural cross-unit compatibility; C enumerator ordering
+does not affect compatibility. Enum values
+are validated against their original underlying integral type, including 128-bit
+values. Typedef and qualification nodes remain explicit instead of discarding
+qualifiers that have no immediate effect on scalar storage.
+
+This is a type-information milestone, not a claim of a complete EDG semantic
+dump. Export still follows declarations/types reached by the owned program graph.
+Unused declarations and uninstantiated template definitions are not exhaustively
+exported. Bit-precise integers, complex/imaginary/fixed-point types, target vector
+families, dependent/reflection types, named address spaces and additional routine
+ABI/exception-specification forms require further typed schema/capture support.
+Variable/dependent array bounds, C99 array-declarator qualifiers and minimum
+bounds, platform pointer modifiers, and template-alias/`decltype` expression
+provenance also remain incomplete. Source-record serialization still passes
+through physical-layout gates; allowing nullable mappings in the schema does
+not by itself remove those native exporter dependencies.
+Unsupported required forms remain explicit errors. Atomic type metadata does not
+by itself authorize non-atomic execution of atomic accesses.
+Unaligned/near/far qualifiers have no executable mapping in this profile; UPC
+qualifiers additionally require block-size metadata that is not yet represented.
+The native exporter rejects these forms explicitly instead of silently discarding
+their access, storage or layout semantics. Microsoft member-pointer modifiers
+and CLI nullptr types are also distinct unsupported forms.
+
 ## Shared headers later
 
 Deduplicate identical source/token/constant bytes first. Sharing semantic header

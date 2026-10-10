@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v36: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v37: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -79,6 +79,7 @@ struct Writer {
   std::vector<a_routine_ptr> routines;
   std::vector<string> files,entities,parameters,functions,bindings,nodes,edges;
   std::vector<string> source_types,source_declarations,source_functions,source_parameters;
+  std::vector<string> source_type_qualifiers,source_enum_types,source_enumerators,source_member_pointer_types;
   std::vector<string> source_routine_abis,source_routine_abi_parameters;
   struct AbiSlot {string role;unsigned source_ordinal,type;};
   std::map<a_routine_ptr,std::vector<AbiSlot>> routine_abi_slots;
@@ -332,7 +333,10 @@ struct Writer {
           source_base=mapped->second;role="base";
         }
         field_name=source_spelling(&f->source_corresp);
-      } else if(abi) {role="abi";field_name=source_spelling(&f->source_corresp);}
+      } else if(abi) {
+        role=captured.erased_code_pointer_types.count(child)?"abi-code-address":"abi";
+        field_name=source_spelling(&f->source_corresp);
+      }
       else {
         auto generated=captured.generated_field_roles.find(f);
         if(generated==captured.generated_field_roles.end() || generated->second!="vptr")reject("unclassified lowered physical field");
@@ -702,6 +706,8 @@ struct Writer {
   unsigned type_id(a_type_ptr type) {
     unsigned q=get_type_qualifiers(type);
     if(q & TQ_C11_ATOMIC)reject("atomic type");
+    if(q & ~(TQ_CONST|TQ_VOLATILE|TQ_RESTRICT|TQ_NULLABILITY))
+      reject("extension qualifier has no owned execution/storage contract");
     auto t=skip_typerefs(type);
     if(t->kind==tk_void)return 1;
     if(t->kind==tk_routine)return routine_type(t);
@@ -713,6 +719,17 @@ struct Writer {
       return record_type(t);
     }
     if(t->kind==tk_pointer) {
+      if(dot_object_source::state().erased_code_pointer_types.count(t)) {
+        // Stock make_vptp_type creates an erased ABI address, not a callable
+        // source signature. C lowering casts it to the true member/virtual
+        // routine type before calling; do not invent void() call permission.
+        auto target=skip_typerefs(t->variant.pointer.type);
+        if(target->kind!=tk_routine || target->variant.routine.extra_info->param_type_list ||
+           target->variant.routine.extra_info->has_ellipsis ||
+           skip_typerefs(target->variant.routine.return_type)->kind!=tk_void)
+          reject("observed erased code pointer has unexpected stock shape");
+        return pointer_type(1);
+      }
       return pointer_type(type_id(t->variant.pointer.type));
     }
     if(t->kind==tk_array) {
@@ -853,8 +870,11 @@ struct Writer {
   }
   unsigned source_execution_type(unsigned captured) {
     const auto &type=dot_object_source::state().types.at(captured-1);
+    if(!type.error.empty())reject(type.error.c_str());
     if(type.kind=="record" && dot_object_source::state().abi_records.count(type.record_type))
       reject("compiler ABI record cannot masquerade as an original source type");
+    if(type.is_atomic)reject("atomic source type has no supported execution representation");
+    if(type.kind=="qualified" || type.kind=="typedef")return source_execution_type(type.underlying);
     if(type.execution)return type.execution;
     if(type.is_int128)return integer128_type(type.is_unsigned_int128);
     if(type.kind=="record")return record_type(type.record_type);
@@ -868,17 +888,57 @@ struct Writer {
     if(type.kind=="pointer" || type.kind=="lvalue-reference" || type.kind=="rvalue-reference")
       return pointer_type(source_execution_type(type.underlying));
     if(type.kind=="array")return array_type(source_execution_type(type.underlying),type.element_count,type.array_bound_known);
-    if(type.kind=="qualified" || type.kind=="typedef")return source_execution_type(type.underlying);
-    reject("source type outside scalar/data-pointer declaration profile");
+    if(type.kind=="nullptr" || type.kind=="member-pointer") {
+      const auto &lowered=dot_object_source::state().lowered_source_types;
+      auto found=lowered.find(type.original_type);
+      if(found==lowered.end())reject("source type lacks observed lowered representation");
+      if(type.kind=="nullptr" && (found->second->kind!=tk_pointer ||
+         skip_typerefs(found->second->variant.pointer.type)->kind!=tk_void))
+        reject("nullptr lowering differs from stock void-pointer representation");
+      return type_id(found->second);
+    }
+    reject((string("source type has no supported execution representation: ")+type.kind).c_str());
+  }
+  bool source_execution_available(unsigned captured,std::set<unsigned> &active) {
+    const auto &state=dot_object_source::state();const auto &type=state.types.at(captured-1);
+    if(type.is_atomic)return false;
+    if(type.kind=="qualified" || type.kind=="typedef")return source_execution_available(type.underlying,active);
+    if(type.execution || type.is_int128 || type.kind=="record" || type.kind=="va-list" ||
+       type.kind=="long-double" || type.kind=="float80" || type.kind=="float64x")return true;
+    if(!active.insert(captured).second)return true;
+    bool available=false;
+    if(type.kind=="nullptr" || type.kind=="member-pointer")
+      available=state.lowered_source_types.count(type.original_type)!=0;
+    else if(type.kind=="pointer" || type.kind=="lvalue-reference" || type.kind=="rvalue-reference" ||
+            type.kind=="array" || type.kind=="qualified" || type.kind=="typedef")
+      available=source_execution_available(type.underlying,active);
+    else if(type.kind=="routine") {
+      auto abi=state.routine_abis.find(captured);
+      available=abi!=state.routine_abis.end() && abi->second.error.empty() &&
+        abi->second.indirect_parameters.size()==type.parameters.size() &&
+        !(type.variadic && (abi->second.result_buffer ||
+          std::find(abi->second.indirect_parameters.begin(),abi->second.indirect_parameters.end(),true)!=abi->second.indirect_parameters.end()));
+      if(available)available=source_execution_available(type.result,active);
+      if(available && type.object_type)available=source_execution_available(type.object_type,active);
+      for(auto parameter:type.parameters)if(available)available=source_execution_available(parameter,active);
+    }
+    active.erase(captured);return available;
+  }
+  unsigned optional_source_execution_type(unsigned captured) {
+    std::set<unsigned> active;
+    return source_execution_available(captured,active)?source_execution_type(captured):0;
   }
   unsigned source_type(unsigned captured) {
     if(!captured)reject("missing pre-lowering scalar type");
     auto prior=source_type_ids.find(captured);if(prior!=source_type_ids.end())return prior->second;
     const auto &type=dot_object_source::state().types.at(captured-1);
+    if(!type.error.empty())reject(type.error.c_str());
+    if(type.kind.empty())reject("source type family not yet represented in semantic schema");
     unsigned id=next_source_type++;source_type_ids[captured]=id;
-    unsigned execution=source_execution_type(captured);
+    unsigned execution=optional_source_execution_type(captured);
     unsigned underlying=type.underlying?source_type(type.underlying):0;
     if(type.kind=="routine") {
+      if(execution) {
       const auto &abi=source_abi(captured);
       source_routine_abis.push_back("{\"sourceRoutineTypeId\":"+number(id)+",\"returnPassing\":"+
         quote(abi.result_buffer?"result-buffer":"direct")+",\"captureProof\":"+quote(abi.proof)+"}");
@@ -888,14 +948,49 @@ struct Writer {
           std::to_string(execution_ordinal++)+",\"parameterRole\":"+quote(slot.role)+",\"sourceOrdinal\":"+
           (slot.role=="source" || slot.role=="indirect-source"?std::to_string(slot.source_ordinal):"null")+"}");
       }
+      }
       source_routine_types.push_back("{\"typeId\":"+number(id)+",\"returnTypeId\":"+number(source_type(type.result))+",\"variadic\":"+(type.variadic?"true":"false")+",\"exceptionPolicy\":"+quote(type.exception_policy)+",\"parameterMode\":"+quote(type.parameter_mode)+",\"objectTypeId\":"+number(type.object_type?source_type(type.object_type):0)+
         ",\"objectIsConst\":"+(type.object_is_const?"true":"false")+",\"objectIsVolatile\":"+(type.object_is_volatile?"true":"false")+
         ",\"objectRefQualifier\":"+quote(type.object_ref_qualifier)+"}");
       unsigned ordinal=0;for(auto parameter:type.parameters)source_routine_parameters.push_back("{\"typeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+",\"parameterTypeId\":"+number(source_type(parameter))+"}");
     }
+    if(type.kind=="enum") {
+      const auto &state=dot_object_source::state();const auto &enumeration=state.enums.at(type.original_type);
+      if(!enumeration.error.empty())reject(enumeration.error.c_str());
+      string identity=enumeration.identity;
+      auto finalized=state.finalized_enum_identities.find(type.original_type);
+      if(enumeration.needs_final_identity && finalized!=state.finalized_enum_identities.end())
+        identity="enum-abi:"+finalized->second;
+      else if(enumeration.needs_final_identity && identity.find("local-enum:")!=0)
+        reject("template enum lacks finalized frontend identity");
+      if(identity.find("local-enum:")==0) {
+        a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
+        conv_seq_to_file_and_line(type.position.seq,&display,&full,&line,&at_end);
+        identity+=":"+string(full?full:display?display:"")+":"+std::to_string((unsigned long long)line)+":"+
+          std::to_string(type.position.column)+":occurrence:"+std::to_string(enumeration.occurrence);
+        const char *unit=std::getenv("EDG_DOT_OBJECT_UNIT_ID");
+        if(unit)identity+=":unit:"+std::to_string(std::string(unit).size())+":"+unit;
+      }
+      source_enum_types.push_back("{\"typeId\":"+number(id)+",\"identityKey\":"+quote(identity)+
+        ",\"underlyingTypeId\":"+number(source_type(enumeration.underlying))+
+        ",\"isScoped\":"+(enumeration.scoped?"true":"false")+",\"isComplete\":"+(enumeration.complete?"true":"false")+
+        ",\"enumeratorListComplete\":"+(enumeration.list_complete?"true":"false")+
+        ",\"hasExplicitBase\":"+(enumeration.explicit_base?"true":"false")+"}");
+      unsigned ordinal=0;for(const auto &enumerator:enumeration.enumerators)
+        source_enumerators.push_back("{\"typeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+
+          ",\"sourceName\":"+quote(enumerator.name)+",\"valueText\":"+quote(enumerator.value)+position(enumerator.position)+"}");
+    }
+    if(type.kind=="member-pointer")
+      source_member_pointer_types.push_back("{\"typeId\":"+number(id)+",\"ownerTypeId\":"+number(source_type(type.member_owner))+
+        ",\"memberTypeId\":"+number(underlying)+",\"captureProof\":"+
+        quote(execution?"observed-member-pointer-lowering":"observed-source-type")+"}");
+    for(const auto &qualifier:type.qualifiers)
+      source_type_qualifiers.push_back("{\"typeId\":"+number(id)+",\"name\":"+quote(qualifier)+"}");
     source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.kind)+",\"sourceName\":"+quote(type.name)+
       ",\"underlyingTypeId\":"+number(underlying)+",\"executionTypeId\":"+number(execution)+
-      ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+",\"elementCount\":"+(type.kind=="array" && type.array_bound_known?std::to_string(type.element_count):"null")+position(type.position)+"}");
+      ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+
+      ",\"isRestrict\":"+(type.is_restrict?"true":"false")+",\"isAtomic\":"+(type.is_atomic?"true":"false")+
+      ",\"elementCount\":"+(type.kind=="array" && type.array_bound_known?std::to_string(type.element_count):"null")+position(type.position)+"}");
     return id;
   }
   void source_declaration(const dot_object_source::Declaration &declaration,
@@ -3214,10 +3309,12 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v36\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v37\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
+      ",\"sourceTypeQualifiers\":"+array(source_type_qualifiers)+",\"sourceEnumTypes\":"+array(source_enum_types)+
+      ",\"sourceEnumerators\":"+array(source_enumerators)+",\"sourceMemberPointerTypes\":"+array(source_member_pointer_types)+
       ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
       ",\"sourceLifetimes\":"+array(source_lifetimes)+",\"sourceDestructionObligations\":"+array(source_destruction_obligations)+
       ",\"cleanupActions\":"+array(cleanup_actions)+",\"cleanupArrays\":"+array(cleanup_arrays)+",\"cleanupVttArguments\":"+array(cleanup_vtt_arguments)+",\"arrayRuntimeOperations\":"+array(array_runtime_operations)+",\"cleanupStates\":"+array(cleanup_states)+

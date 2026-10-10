@@ -10,6 +10,7 @@ internal sealed record SourceRecordField(long Id, long SourceRecordId, long Ordi
 internal sealed partial class ObjectFile
 {
     public Dictionary<long, SourceRecord> SourceRecords { get; } = [];
+    public Dictionary<long, SourceRecord> SourceRecordsByType { get; } = [];
     public Dictionary<long, SourceRecordField> SourceFields { get; } = [];
     private readonly Dictionary<long, SourceRecordField[]> sourceFieldsByRecord = [];
 
@@ -29,7 +30,7 @@ internal sealed partial class ObjectFile
                     (record.IsComplete ? record.NativeAlignment == 0 || record.IsTriviallyCopyable is null
                         : record.NativeSize != 0 || record.NativeAlignment != 0 || record.IsTriviallyCopyable is not null))
                     throw new InvalidDataException("Invalid original record identity, completeness or capture metadata");
-                if (!SourceRecords.TryAdd(record.Id, record)) throw new InvalidDataException("Duplicate original record ID");
+                if (!SourceRecords.TryAdd(record.Id, record) || !SourceRecordsByType.TryAdd(record.SourceTypeId, record)) throw new InvalidDataException("Duplicate original record ID");
             }
         using (var query = database.Prepare("SELECT id,source_record_id,ordinal,source_type_id,source_name,is_mutable,has_no_unique_address,bit_width,source_file_id,line,column,has_initializer,is_packed,explicit_alignment FROM source_record_fields ORDER BY source_record_id,ordinal"))
             while (query.Read())
@@ -53,10 +54,10 @@ internal sealed partial class ObjectFile
         foreach (SourceRecord source in SourceRecords.Values)
         {
             SourceType type = SourceTypeById(source.SourceTypeId);
-            if (type.Kind != "record" || !Records.TryGetValue(type.ExecutionTypeId, out RecordType? execution) ||
+            if (type.Kind != "record" || type.ExecutionRepresentationId is long physical && (!Records.TryGetValue(physical, out RecordType? execution) ||
                 execution.SourceRecordId != source.Id || execution.RepresentationKind != "complete" ||
                 source.IdentityKey != execution.IdentityKey || source.SourceName != execution.SourceName || source.RecordKind != execution.LayoutKind ||
-                source.IsComplete != (execution.Size != 0) || source.NativeSize != execution.Size || source.NativeAlignment != execution.Alignment)
+                source.IsComplete != (execution.Size != 0) || source.NativeSize != execution.Size || source.NativeAlignment != execution.Alignment))
                 throw new InvalidDataException("Original record does not match its complete execution representation");
             SourceRecordField[] fields = sourceFieldsByRecord.GetValueOrDefault(source.Id, []);
             if (!source.IsComplete && fields.Length != 0) throw new InvalidDataException("Incomplete source record contains member declarations");
@@ -67,9 +68,16 @@ internal sealed partial class ObjectFile
                 if (field.Ordinal != index || field.SourceName.Length != 0 && !names.Add(field.SourceName))
                     throw new InvalidDataException("Original record field order or names are invalid");
                 SourceType member = SourceTypeById(field.SourceTypeId);
-                if (field.BitWidth is long width && (!ScalarTypes.IsInteger(Type(member.ExecutionTypeId)) ||
-                    width > StorageSize(Type(member.ExecutionTypeId)) * 8 || width == 0 && field.SourceName.Length != 0))
-                    throw new InvalidDataException("Original bitfield width or unnamed zero-width declaration is invalid");
+                if (field.BitWidth is long width)
+                {
+                    SourceType integer = Original(member);
+                    if (integer.Kind == "enum") integer = Original(SourceTypeById(SourceEnums[integer.Id].UnderlyingTypeId));
+                    var shape = SourceIntegerShape(integer);
+                    long storageBits = member.ExecutionRepresentationId is long physicalMember
+                        ? StorageSize(Type(physicalMember)) * 8 : Math.Max(8, shape.Bits);
+                    if (width > storageBits || width == 0 && field.SourceName.Length != 0)
+                        throw new InvalidDataException("Original bitfield width or unnamed zero-width declaration is invalid");
+                }
             }
         }
         foreach (RecordType record in Records.Values)
@@ -78,12 +86,24 @@ internal sealed partial class ObjectFile
             if (record.RepresentationKind == "abi")
             {
                 if (record.SourceRecordId is not null || record.CaptureProof != "observed-abi-creation" || record.ValueCopyKind != "explicit-only" ||
-                    record.Size == 0 || fields.Any(field => field.FieldRole != "abi"))
+                    record.Size == 0 || fields.Any(field => field.FieldRole is not ("abi" or "abi-code-address")))
                     throw new InvalidDataException("ABI record requires observed creation, hidden fields and explicit copy operations");
+                var codeAddresses = fields.Where(field => field.FieldRole == "abi-code-address").ToArray();
+                if (codeAddresses.Length != (record.IdentityKey == "abi:member-function-pointer" ? 1 : 0) ||
+                    codeAddresses.Any(field => Type(field.TypeId) != "ptr(void)" || field.BitWidth is not null))
+                    throw new InvalidDataException("Erased ABI code address requires its observed member-function-pointer representation");
+                if (record.IdentityKey == "abi:member-function-pointer" &&
+                    (record.LayoutKind != "struct" || record.Size != 16 || record.Alignment != 8 || fields.Length != 2 ||
+                     fields[0] is not { Ordinal: 0, SourceName: "f", FieldRole: "abi-code-address", ByteOffset: 0, BitWidth: null } || Type(fields[0].TypeId) != "ptr(void)" ||
+                     fields[1] is not { Ordinal: 1, SourceName: "d", FieldRole: "abi", ByteOffset: 8, BitWidth: null } || Type(fields[1].TypeId) != "i64"))
+                    throw new InvalidDataException("Observed member-function-pointer ABI must retain its exact LP64 code-address and adjustment layout");
                 continue;
             }
             if (record.SourceRecordId is not long sourceId || !SourceRecords.TryGetValue(sourceId, out SourceRecord? source))
                 throw new InvalidDataException("Complete record is missing original source capture");
+            if (SourceTypeById(source.SourceTypeId).ExecutionRepresentationId !=
+                (record.RepresentationKind == "subobject" ? record.CompleteTypeId : record.TypeId))
+                throw new InvalidDataException("Physical record requires its original type's exact complete execution mapping");
             if (record.ValueCopyKind == "ordinary" && (!source.IsComplete || source.IsTriviallyCopyable != true))
                 throw new InvalidDataException("Ordinary record values require a completed trivially-copyable source record");
             if (record.CaptureProof is "observed-class-lowering" or "observed-subobject-creation" && (!source.IsComplete || source.CapturePhase != "before-class-prelowering"))

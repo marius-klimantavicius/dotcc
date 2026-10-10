@@ -1501,3 +1501,32 @@ dynamic/cookie-count arrays, allocation rollback, adjusting/covariant thunks and
 virtual exception-base conversion remain gated. VTT-referenced RTTI tables use
 actual translated EDG/LLVM source providers. General default new/delete and full
 RTTI/libc++ integration are not supplied by this milestone.
+
+## Source type information (profile v37)
+
+Original type identity is separate from execution storage and ABI. The
+[format specification](../docs/dotobj-format.md#original-type-identity-and-optional-execution-mappings-v37)
+describes nullable source execution mappings, distinct nullptr/character types,
+qualifier preservation, enum definitions and member-pointer owner/member types.
+An absent execution mapping is allowed for descriptive metadata, never as an
+implicit scalar fallback for an executable declaration or operation.
+
+Nominal C++ enum identities participate in source signatures; their complete
+ordered enumerator definitions must agree across objects. C compatibility
+compares anonymous enums structurally and disregards enumerator declaration
+order while preserving each original enum identity in metadata. Exact values
+are stored as canonical decimal text, including signed/unsigned 128-bit values.
+
+Member-pointer execution mappings are observed at EDG's actual lowering boundary.
+The portable data-member representation and the exact generated member-function
+ABI record remain distinct. The latter's generic code-address field is explicitly
+marked and cannot be directly invoked without a typed function pointer. Its
+zero-initialized construction scaffold does not change C++ data-member-pointer
+null representation. Original semantic member signatures do not depend on the
+presence of optional lowered routine ABI metadata.
+
+This extends the reached type graph. It does not yet export every unused type
+or instantiate otherwise unused templates, and does not claim all EDG extension
+families or complete source-only record serialization. Required unsupported
+forms remain explicit errors; atomic metadata cannot authorize scalar atomic
+accesses. These gaps are separate from C# generation and runtime binding.

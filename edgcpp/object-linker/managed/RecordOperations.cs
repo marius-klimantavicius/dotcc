@@ -48,7 +48,8 @@ internal sealed partial class ObjectFile
     // a source object or read/copy a flexible tail. Preserve the original
     // ordinary-layout zeroing permission separately from value operations.
     public bool CanZeroInitializeRecord(string type) => ScalarTypes.IsRecord(type) &&
-        (RecordsByKey[type].ValueCopyKind == "ordinary" || CanConstructRecord(type));
+        (RecordsByKey[type].ValueCopyKind == "ordinary" || CanConstructRecord(type) ||
+         RecordsByKey[type] is { RepresentationKind: "abi", IdentityKey: "abi:member-function-pointer", CaptureProof: "observed-abi-creation" });
 
     public bool CanConstructRecord(string type) => CanRecordOperation(type, "construction");
     public bool CanTransportRecord(string type) => CanRecordOperation(type, "transport");

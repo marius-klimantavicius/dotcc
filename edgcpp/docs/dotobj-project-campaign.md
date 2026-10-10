@@ -863,3 +863,46 @@ exception-base matching, `exception_ptr`, custom terminate handlers, cross-threa
 payloads and native C++ exception interoperability remain open. Forced platform
 transfers abandoning a pending payload need a separate lifecycle contract.
 Full DuckDB translation remains incomplete. Stop at this phase boundary.
+
+## Original type information, v37 (2026-10-10)
+
+The exporter now preserves original `nullptr_t`, distinct character types,
+enum identities/definitions and member-pointer owner/member relationships.
+Enum values retain their exact signed or unsigned decimal value through 128 bits,
+with declaration order and source locations. Opaque enum declarations can link
+against complete definitions. C anonymous-enum compatibility is structural;
+C++ enum matching remains nominal. Typedefs and qualifiers remain explicit.
+
+Original semantic types have optional execution mappings. Descriptive member
+routine signatures retain their owner, result, parameters, cv/ref qualification
+and exception policy even when the current execution profile cannot represent
+their ABI. Executable uses still require verified mappings. Stock EDG lowering
+provides the nullptr/member-pointer correspondence; its erased member-function
+code address is stored separately from a callable typed function pointer.
+There are no frontend semantic fixes.
+
+This does not complete the user's all-type-information requirement. Native
+source-record export still depends on physical-layout support. Unused
+declarations and uninstantiated templates are not exhaustively captured, and
+additional EDG extension/dependent type families remain explicit gates. Atomic
+execution needs a separate contract. Full member-pointer execution/aggregate
+transport is also not claimed by this metadata milestone.
+
+Final native075/managed085 passes 225 focused export/metadata/link/rejection
+checks. Native074/managed083 passes all 1,042 broad JIT checks; final085 also
+reverifies all 140 objects successfully verified/linked by that run. The final
+array/VTT regression passes 42 checks covering 83 scenarios against native C++
+and stock EDG C at O0/O2 and translated JIT execution. No new NativeAOT run or
+managed execution of the type-information fixture is claimed.
+
+The five-unit DuckDB probe advances `exception.cpp` and `date.cpp` past nullptr
+type export to `exception construct outside owned scalar cleanup (kind 10)`.
+`string_util.cpp` and `allocator.cpp` retain their physical-base provenance and
+initialization-with-destructor gates. `hugeint.cpp` exports and generates 280
+function definitions, without compiling or executing that output. Review objects
+are at `artifacts/review/dotobj-type-information`; the hugeint review link now
+points to v37 output.
+
+The final validation counts, tool hashes, retained failed attempts and sampled
+DuckDB diagnostics are recorded in
+[v37 evidence](../evidence/dotobj-type-information-20261010.json).

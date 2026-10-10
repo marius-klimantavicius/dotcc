@@ -105,7 +105,7 @@ def main():
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v29', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only, wideOverflowOnly=args.wide_overflow_only, recordTransportOnly=args.record_transport_only,
+            profile='scalar-control-v37', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only, wideOverflowOnly=args.wide_overflow_only, recordTransportOnly=args.record_transport_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No complete prelower source view, macro expansion history or general C++ lifetime/EH coverage.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -469,9 +469,9 @@ def main():
             ("INSERT INTO routine_types SELECT (SELECT max(id) FROM types),return_type_id,variadic,exception_policy FROM routine_types WHERE type_id=(SELECT routine_type_id FROM entities WHERE source_name='from_a')", ()),
             ("INSERT INTO routine_parameters VALUES((SELECT max(id) FROM types),0,3)", ()),
             ("UPDATE entities SET routine_type_id=(SELECT max(id) FROM types) WHERE source_name='from_a'", ()),
-            ("INSERT INTO source_types SELECT max(id)+1,'unsigned-char','',NULL,3,0,0,NULL,0,0,NULL FROM source_types", ()),
+            ("INSERT INTO source_types SELECT max(id)+1,'unsigned-char','',NULL,3,0,0,NULL,0,0,NULL,0,0 FROM source_types", ()),
             ("UPDATE source_parameters SET source_type_id=(SELECT max(id) FROM source_types) WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ()),
-            ("INSERT INTO source_types SELECT (SELECT max(id)+1 FROM source_types),kind,source_name,underlying_type_id,(SELECT max(id) FROM types),is_const,is_volatile,source_file_id,line,column,element_count FROM source_types WHERE id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
+            ("INSERT INTO source_types SELECT (SELECT max(id)+1 FROM source_types),kind,source_name,underlying_type_id,(SELECT max(id) FROM types),is_const,is_volatile,source_file_id,line,column,element_count,is_restrict,is_atomic FROM source_types WHERE id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
             ("INSERT INTO source_routine_types SELECT (SELECT max(id) FROM source_types),return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier FROM source_routine_types WHERE type_id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
             ("INSERT INTO source_routine_parameters SELECT (SELECT max(id) FROM source_types),ordinal,source_type_id FROM source_parameters WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ()),
             ("INSERT INTO source_routine_abis SELECT (SELECT max(id) FROM source_types),return_passing,capture_proof FROM source_routine_abis WHERE source_routine_type_id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),

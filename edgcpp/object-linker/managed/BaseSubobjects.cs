@@ -69,8 +69,7 @@ internal sealed partial class ObjectFile
                 SourceBase item = group.Value[ordinal];
                 SourceType source = Original(SourceTypeById(item.BaseSourceTypeId));
                 if (!owner.IsComplete || owner.CapturePhase != "before-class-prelowering" || item.Ordinal != ordinal ||
-                    source.Kind != "record" || !Records.TryGetValue(source.ExecutionTypeId, out RecordType? target) || target.RepresentationKind != "complete" || target.Size == 0 ||
-                    target.SourceRecordId == owner.Id)
+                    source.Kind != "record" || !SourceRecordsByType.TryGetValue(source.Id, out SourceRecord? target) || !target.IsComplete || target.Id == owner.Id)
                     throw new InvalidDataException("Base declaration requires a complete original class");
             }
         }
@@ -81,7 +80,7 @@ internal sealed partial class ObjectFile
             if (depth > 128 || !active.Add(sourceId)) throw new InvalidDataException("Cyclic or excessively nested original base graph");
             if (!visited.Contains(sourceId))
                 foreach (SourceBase item in OriginalBases(sourceId))
-                    CheckBaseGraph(Records[Original(SourceTypeById(item.BaseSourceTypeId)).ExecutionTypeId].SourceRecordId!.Value, depth + 1);
+                    CheckBaseGraph(SourceRecordsByType[Original(SourceTypeById(item.BaseSourceTypeId)).Id].Id, depth + 1);
             active.Remove(sourceId); visited.Add(sourceId);
         }
         foreach (long sourceId in SourceRecords.Keys) CheckBaseGraph(sourceId, 0);

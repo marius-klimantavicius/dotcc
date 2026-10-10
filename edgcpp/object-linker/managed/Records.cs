@@ -50,7 +50,7 @@ internal sealed partial class ObjectFile
                 var field = new RecordField(query.Integer(0), query.Integer(1), query.Integer(2), query.Integer(3), query.Text(4),
                     query.Integer(5), query.OptionalInteger(6), query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.OptionalInteger(10), query.OptionalInteger(11), query.OptionalInteger(12) is long signed ? signed == 1 : null, query.OptionalInteger(13), query.Text(14), query.OptionalInteger(15), query.OptionalInteger(16));
                 if (field.Id <= 0 || !Records.ContainsKey(field.RecordTypeId) || field.Ordinal < 0 ||
-                    field.ByteOffset < 0 || field.Line < 0 || field.Column < 0 || field.FieldRole is not ("source" or "vptr" or "abi" or "base" or "virtual-base") ||
+                    field.ByteOffset < 0 || field.Line < 0 || field.Column < 0 || field.FieldRole is not ("source" or "vptr" or "abi" or "abi-code-address" or "base" or "virtual-base") ||
                     (field.FieldRole == "source" ? field.SourceTypeId is null or <= 0 || field.SourceFieldId is null or <= 0
                         : field.SourceTypeId is not null || field.SourceFieldId is not null) ||
                     (field.FieldRole == "base") != (field.SourceBaseId is not null))

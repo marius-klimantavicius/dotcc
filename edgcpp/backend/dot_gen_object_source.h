@@ -17,6 +17,7 @@
 #include "lower_il.h"
 #endif
 #include "symbol_tbl.h"
+#include "const_ints.h"
 BEGIN_EDG_NAMESPACE
 namespace dot_object_source {
 inline bool enabled() {
@@ -29,7 +30,11 @@ struct Type {
   bool array_bound_known=false;
   std::string kind,name;
   a_type_ptr record_type=nullptr;
-  bool is_const=false,is_volatile=false;
+  bool is_const=false,is_volatile=false,is_restrict=false,is_atomic=false;
+  std::vector<std::string> qualifiers;
+  std::string error;
+  a_type_ptr original_type=nullptr; // Private correspondence key, never wire.
+  unsigned member_owner=0;
   // Private physical representation fact also retained for 128-bit enums.
   bool is_int128=false,is_unsigned_int128=false;
   a_source_position position={};
@@ -42,6 +47,18 @@ struct Type {
   std::vector<unsigned> parameters;
   // Private prelowering parameter-declaration facts, never type identity/wire.
   std::vector<bool> declaration_defaults;
+};
+struct Enumerator {
+  std::string name,value;
+  a_source_position position={};
+};
+struct Enum {
+  unsigned underlying=0;
+  std::string identity,error;
+  bool scoped=false,complete=false,list_complete=false,explicit_base=false;
+  bool needs_final_identity=false;
+  unsigned occurrence=0;
+  std::vector<Enumerator> enumerators;
 };
 struct Declaration {
   unsigned type=0;
@@ -249,6 +266,11 @@ struct TrySnapshot {
 struct State {
   std::map<a_type_ptr,unsigned> type_ids;
   std::vector<Type> types;
+  std::map<a_type_ptr,Enum> enums;
+  std::map<a_type_ptr,a_type_ptr> lowered_source_types;
+  std::set<a_type_ptr> erased_code_pointer_types;
+  std::map<a_type_ptr,std::string> finalized_enum_identities;
+  std::map<std::pair<a_seq_number,a_column_number>,unsigned> enum_occurrence_counts;
   std::map<a_routine_ptr,Function> functions;
   std::map<an_object_lifetime_ptr,LifetimeSnapshot> lifetimes;
   std::map<a_routine_ptr,std::vector<an_object_lifetime_ptr>> lifetime_order;
@@ -323,6 +345,54 @@ inline std::string spelling(const a_source_correspondence &source) {
   return source.name;
 }
 inline unsigned capture_type(a_type_ptr t);
+inline void capture_enum(a_type_ptr t) {
+  auto &s=state();auto old=s.enums.find(t);
+  if(old!=s.enums.end() && old->second.list_complete)return;
+  Enum value;
+  if(old==s.enums.end()) {
+    auto key=std::make_pair(t->source_corresp.decl_position.seq,t->source_corresp.decl_position.column);
+    value.occurrence=s.enum_occurrence_counts[key]++;
+  } else value.occurrence=old->second.occurrence;
+  // Reserve before capturing the underlying type, whose declaration metadata
+  // may refer back to this enum through a typedef.
+  s.enums[t]=value;
+  auto supplement=integer_type_supp(t);
+  value.scoped=t->variant.integer.is_scoped_enum;
+  value.complete=!t->incomplete;
+  value.list_complete=supplement->enumerator_list_complete;
+  value.explicit_base=t->variant.integer.has_explicit_enum_base;
+  value.underlying=capture_type(supplement->base_type?supplement->base_type:
+                               integer_type(t->variant.integer.int_kind));
+  std::string qualified=spelling(t->source_corresp);
+  bool local=qualified.empty() || t->source_corresp.is_local_to_function ||
+             t->source_corresp.enclosing_routine || t->declared_in_function_prototype;
+  value.needs_final_identity=t->variant.integer.is_template_enum;
+  for(auto scope=t->source_corresp.parent_scope;scope;scope=scope->parent) {
+    if(scope->kind==sck_namespace) {
+      auto ns=scope->variant.assoc_namespace;auto part=ns?spelling(ns->source_corresp):std::string{};
+      if(!ns || ns->has_internal_linkage || part.empty())local=true;
+      qualified=part+"::"+qualified;
+    } else if(scope->kind==sck_class_struct_union) {
+      auto owner=scope->variant.assoc_type;
+      auto part=owner?spelling(owner->source_corresp):std::string{};
+      if(part.empty())local=true;
+      if(owner && owner->variant.class_struct_union.is_template_class)value.needs_final_identity=true;
+      qualified=part+"::"+qualified;
+    } else if(scope->kind!=sck_file)local=true;
+  }
+  value.needs_final_identity=value.needs_final_identity || (!C_mode() && local);
+  value.identity=(local?"local-enum:":"enum:")+qualified;
+  for(auto con=enum_constants(t);con;con=con->next) {
+    if(con->kind!=ck_integer) {value.error="enumerator lacks resolved integer value";break;}
+    Enumerator enumerator;enumerator.name=spelling(con->source_corresp);
+    enumerator.position=con->source_corresp.decl_position;
+    // This is the same arbitrary-precision conversion used by EDG's name
+    // mangler. It preserves signed values and all 128 bits without a host cast.
+    enumerator.value=decimal_str_for_integer_constant(con).as_temp_characters();
+    value.enumerators.push_back(enumerator);
+  }
+  s.enums[t]=value;
+}
 inline void capture_record(a_type_ptr t) {
   auto &s=state();auto old=s.records.find(t);
   if(old!=s.records.end() && (old->second.size || t->incomplete))return;
@@ -435,19 +505,43 @@ inline unsigned capture_type(a_type_ptr t) {
   auto &s=state();auto prior=s.type_ids.find(t);
   if(prior!=s.type_ids.end()) {
     if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union)capture_record(t);
+    if(t->kind==tk_integer && t->variant.integer.enum_type && !t->variant.integer.bool_type)capture_enum(t);
     return prior->second;
   }
   unsigned id=(unsigned)s.types.size()+1;s.type_ids[t]=id;s.types.emplace_back();
-  Type value;value.id=id;value.name=spelling(t->source_corresp);value.position=t->source_corresp.decl_position;
+  Type value;value.id=id;value.original_type=t;value.name=spelling(t->source_corresp);value.position=t->source_corresp.decl_position;
   if(t->kind==tk_typeref) {
     value.kind=type_is_typedef(t)?"typedef":"qualified";
     value.is_const=(t->variant.typeref.qualifiers&TQ_CONST)!=0;
     value.is_volatile=(t->variant.typeref.qualifiers&TQ_VOLATILE)!=0;
+    value.is_restrict=(t->variant.typeref.qualifiers&TQ_RESTRICT)!=0;
+    value.is_atomic=(t->variant.typeref.qualifiers&TQ_C11_ATOMIC)!=0;
+    auto remaining=t->variant.typeref.qualifiers & ~(TQ_CONST|TQ_VOLATILE|TQ_RESTRICT|TQ_C11_ATOMIC);
+    auto qualifier=[&](a_type_qualifier_set bit,const char *name) {
+      if(remaining&bit) {value.qualifiers.push_back(name);remaining&=~bit;}
+    };
+    qualifier(TQ_NULLABLE,"nullable");qualifier(TQ_NONNULL,"non-null");qualifier(TQ_NULL_UNSPECIFIED,"null-unspecified");
+#if MICROSOFT_EXTENSIONS_ALLOWED
+    qualifier(TQ_UNALIGNED,"unaligned");
+#endif
+#if NEAR_AND_FAR_ALLOWED
+    qualifier(TQ_NEAR,"near");qualifier(TQ_FAR,"far");
+#endif
+#if UPC_EXTENSIONS_ALLOWED
+    qualifier(TQ_UPC_SHARED,"upc-shared");qualifier(TQ_UPC_STRICT,"upc-strict");qualifier(TQ_UPC_RELAXED,"upc-relaxed");
+#endif
+    if(remaining)value.error="source type has unrepresented qualifier bits";
+    for(const auto &name:value.qualifiers)
+      if(name!="nullable" && name!="non-null" && name!="null-unspecified")
+        // UPC qualifiers additionally carry a block size in the typeref
+        // supplement. Near/far and unaligned affect storage/access contracts.
+        // Keeping only their names would falsely promise complete semantics.
+        value.error="source extension qualifier requires an owned auxiliary/storage contract: "+name;
     value.underlying=capture_type(t->variant.typeref.type);
     value.execution=s.types.at(value.underlying-1).execution;
     if(value.kind=="qualified") {
       value.name.clear();
-      if(!value.is_const && !value.is_volatile) {
+      if(!value.is_const && !value.is_volatile && !value.is_restrict && !value.is_atomic && value.qualifiers.empty() && value.error.empty()) {
         // Anonymous typeref bookkeeping with no represented qualifier adds
         // no declaration type distinction in this bounded scalar profile.
         s.type_ids[t]=value.underlying;return value.underlying;
@@ -472,7 +566,11 @@ inline unsigned capture_type(a_type_ptr t) {
       case ik_unsigned_int128:value.kind="unsigned-int128";value.is_int128=true;value.is_unsigned_int128=true;break;
       default:break;
     }
-    if(t->variant.integer.enum_type && !t->variant.integer.bool_type)value.kind="enum";
+    if(t->variant.integer.wchar_t_type)value.kind="wchar-t";
+    else if(t->variant.integer.char8_t_type)value.kind="char8-t";
+    else if(t->variant.integer.char16_t_type)value.kind="char16-t";
+    else if(t->variant.integer.char32_t_type)value.kind="char32-t";
+    if(t->variant.integer.enum_type && !t->variant.integer.bool_type) {value.kind="enum";capture_enum(t);}
   } else if(t->kind==tk_float) {
     if(t->variant.float_kind==fk_float && t->size==4){value.kind="float";value.execution=10;}
     else if(t->variant.float_kind==fk_double && t->size==8){value.kind="double";value.execution=11;}
@@ -481,6 +579,17 @@ inline unsigned capture_type(a_type_ptr t) {
       else if(t->variant.float_kind==fk_float80)value.kind="float80";
       else if(t->variant.float_kind==fk_float64x)value.kind="float64x";
     }
+  } else if(t->kind==tk_nullptr) {
+    value.kind="nullptr";
+    if(!is_standard_nullptr_type(t))value.error="managed nullptr source type is not represented";
+  } else if(t->kind==tk_ptr_to_member) {
+    value.kind="member-pointer";
+#if MICROSOFT_EXTENSIONS_ALLOWED
+    if(t->variant.ptr_to_member.modifiers)value.error="member-pointer modifiers are not represented in the source type contract";
+#endif
+    value.member_owner=capture_type(t->variant.ptr_to_member.orig_class_of_which_a_member?
+      t->variant.ptr_to_member.orig_class_of_which_a_member:t->variant.ptr_to_member.class_of_which_a_member);
+    value.underlying=capture_type(t->variant.ptr_to_member.type);
   } else if(t->kind==tk_pointer) {
     value.kind=t->variant.pointer.is_reference?(t->variant.pointer.is_rvalue_reference?"rvalue-reference":"lvalue-reference"):"pointer";
     value.underlying=capture_type(t->variant.pointer.type);
@@ -531,6 +640,12 @@ inline unsigned capture_type(a_type_ptr t) {
   s.types[id-1]=value;return id;
 }
 inline void observe_type(a_type_ptr type){if(enabled())capture_type(type);}
+inline void observe_lowered_type(a_type_ptr type) {
+  if(!enabled())return;
+  auto &s=state();auto original=s.type_ids.find(type);if(original==s.type_ids.end())return;
+  const auto &source=s.types.at(original->second-1);
+  if(source.kind=="nullptr" || source.kind=="member-pointer")s.lowered_source_types[type]=skip_typerefs(type);
+}
 inline void observe_routine_abi(a_type_ptr type) {
   if(!enabled())return;
   auto &s=state();unsigned id=capture_type(type);
@@ -1262,6 +1377,13 @@ inline void observe_frontend_identity_boundary() {
   // Pointer-derived names in the optional fast-mangling configuration are
   // deliberately not acceptable persistent identities.
   auto &s=state();
+  for(const auto &entry:s.enums) {
+    const auto &source=entry.first->source_corresp;
+#if !ONLY_MANGLE_TYPES_NEEDED_FOR_EXTERNAL_NAMES
+    if(source.name && source.name_has_been_mangled && !source.final_name_mangling_pending)
+      s.finalized_enum_identities[entry.first]=source.name;
+#endif
+  }
   for(const auto &entry:s.records) {
     auto type=entry.first;
     if(type->variant.class_struct_union.is_nonreal_class ||
@@ -1358,6 +1480,12 @@ inline void observe_record_before_prelowering(a_type_ptr type) {
 }
 inline void observe_abi_record(a_type_ptr type) {
   if(enabled())state().abi_records.insert(type);
+}
+inline void observe_member_pointer_record(a_type_ptr type) {
+  if(enabled())state().abi_record_keys[type]="abi:member-function-pointer";
+}
+inline void observe_erased_code_pointer(a_type_ptr type) {
+  if(enabled())state().erased_code_pointer_types.insert(type);
 }
 inline void observe_typeinfo_base_record(a_type_ptr type) {
   if(enabled())state().abi_record_keys[type]="abi:rtti:base-class-spec";

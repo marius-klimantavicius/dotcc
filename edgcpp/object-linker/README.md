@@ -4,9 +4,15 @@ This implements the owned object path of the [new design](../docs/dotobj-format.
 It uses a fresh SQLite schema and C# reader/linker/emitter, without the prior
 semantic-export experiment or C# text/command objects.
 
-The current profile is `scalar-control-v36`. It supports independently produced
+The current profile is `scalar-control-v37`. It supports independently produced
 SQLite and musl objects, typed provider selection, shared BCL runtime bindings,
-and explicit source startup actions. C++ file-scope initialization owns generated
+and source type identities independent of optional execution representations.
+The type graph retains `nullptr_t`, distinct character types, nominal enums and
+exact enumerators, member-pointer owner/member types, and qualifiers. Semantic
+type metadata can exist without a supported execution mapping; executable uses
+still require a verified mapping. Full unused-declaration and EDG extension-type
+coverage remains unfinished. The profile also supports explicit source startup
+actions. C++ file-scope initialization owns generated
 routine origins, original per-storage statement intervals and separate local
 scaffolding, with scheduling and exception boundaries independent of source text.
 Object destruction owns original lifetime trees, normal destructor calls and
@@ -278,7 +284,7 @@ indexes. A hash demonstrates content integrity, not semantic correctness.
 Full logs/objects/generated projects remain under
 `/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/`.
 
-The current schema requires `scalar-control-v36`. Earlier-profile objects and tools
+The current schema requires `scalar-control-v37`. Earlier-profile objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 
