@@ -906,3 +906,54 @@ points to v37 output.
 The final validation counts, tool hashes, retained failed attempts and sampled
 DuckDB diagnostics are recorded in
 [v37 evidence](../evidence/dotobj-type-information-20261010.json).
+
+
+## DuckDB initialization boundaries and virtual wrapper origins, v38 (2026-10-10)
+
+The user renewed continuous supervisor-led implementation through full DuckDB
+translation, then missing libc++/runtime implementation and execution. The
+supervisor coordinates separate lifetime and record/wrapper workers; it owns
+schema/managed integration, preparation/builds, project probes and commits.
+The original-source full manifest remains2,635 units (2,207 library,148 tests,
+224 libc and56 libc++); its seven static extensions are included and native
+extension loading is disabled. The old merged-IL restart recipe is superseded.
+
+Stock EDG internal initialization-failure expressions now have owned attempt and
+cleanup children. Their catch unwinds to the saved entry state before executing
+the selected cleanup and rethrowing; it does not mark the exception caught.
+Original allocation release obligations retain allocated types, selected
+deallocators, source locations, mixed lifetime ordering and parent overlap.
+Observed expression-copy correspondence keeps that ownership intact when stock
+lowering turns an expression into a sequence. Residual initialization statements
+with destructors are admitted only when their separate normal/unwind ownership
+is observed; destructor-only initialization emits no invented value store.
+
+Recursive source records now reserve all original member/base IDs before visiting
+child types. Generated fixed/virtual/covariant wrappers retain exact target,
+overridden and source-primary identities, plus their ordinary typed adjustment
+bodies and exact formal forwarding. No frontend semantic change or layout
+validation weakening was introduced. The adjustment tuple is descriptive and
+cross-unit provenance; symbolic tuple/body equivalence is not yet checked.
+
+Final native078/managed088 passes1,042 broad JIT checks. The allocation-boundary
+fixture passes37 checks/24 traces against native and stock EDG C at O0/O2, JIT
+and NativeAOT, including six malformed-object rejections. Recursive base identity
+passes14 checks; virtual wrappers pass18 export/metadata/source-hidden-link checks
+and a separate stock-C O0/O2 execution oracle. Generated thunk fixture execution
+is not claimed; sized delete remains an external requirement.
+
+The five-unit frontier now packages both `date.cpp` and `hugeint.cpp`. Date reaches
+a managed switch-selector promotion check; hugeint still emits280 definitions.
+Exception reaches retained `if constexpr`; allocator and string_util reach static-
+guard and ordinary-new cleanup actions. A broader38-subsystem sample packages17
+units, each independently verifies/links/emits C#. Combined linking correctly
+rejects a newly reduced anonymous libc++ record identity mismatch: fabricated
+EDG per-TU counters must not become shared nominal identities. None of these
+partial outputs is complete DuckDB generation, compilation or execution.
+
+[Hashed v38 evidence](../evidence/dotobj-duckdb-boundaries-20261010.json) records
+final tools, exact outcomes and retained failed attempts. Review output is at
+`artifacts/review/dotobj-duckdb-v38`. Continue next with stable anonymous-record
+ownership, guard/allocation region actions, constexpr selection and switch
+promotion; broader standard-library runtime implementation remains deferred
+until complete C# generation.

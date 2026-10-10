@@ -519,3 +519,29 @@ nodes out of the initially self-contained object.
 Generated code remains cross-platform/NativeAOT compatible, with optional
 independent owner instances, pinned global/TLS storage, native heap allocation,
 readable names/structured flow and auto-generated markers.
+
+
+## Internal initialization failure and virtual thunk origins (v38)
+
+The current object profile adds separate original allocation rollback obligations
+and internal exception boundaries. Selected deallocators, allocated object/array
+types, lifetime parentage and the mixed ordering of allocation/destruction
+obligations survive EDG lowering. An internal boundary owns its attempt and
+cleanup expressions, unwinds only to its saved entry state, executes the selected
+failure action and rethrows without marking the exception caught. Exact observed
+expression-copy correspondence preserves these identities when stock lowering
+copies an expression and replaces its original location with a sequence.
+
+Virtual/covariant wrappers have explicit generated origins and selected target
+references. The ordinary typed graph retains fixed/virtual receiver adjustment,
+forwarded arguments and null-safe covariant pointer/reference return adjustment.
+There is no raw source escape or emitted-text body. Original recursive class
+fields and direct bases reserve IDs before recursive type traversal, ensuring
+complete and subobject layouts reference the same original declarations.
+
+The adjustment tuple is descriptive/cross-unit provenance; body arithmetic is
+verified as an owned typed graph, but tuple/body symbolic equivalence remains a
+separate validation improvement. Variadic wrappers, ordinary-new region actions,
+static-guard abort actions and some record storage-initialization forms remain
+gated. Full source index/all-type coverage and full DuckDB generation are still
+incomplete. See `object-linker/contract.md` for exact relations and validation.

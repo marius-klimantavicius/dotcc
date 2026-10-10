@@ -485,6 +485,17 @@ object_source_overlay(lower,
 
 # Preserve exact base-descriptor correspondence at the physical insertion.
 object_source_overlay(lower,
+    '  mangle_wrapper_name(entry_routine);\n',
+    '  mangle_wrapper_name(entry_routine);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_thunk_wrapper(entry_routine);\n#endif\n')
+object_source_overlay(init_lower,
+    '  }  /* if */\n#endif /* MAINTAIN_NEEDED_FLAGS */\n}  /* add_body_for_wrapper_routine */',
+    '  }  /* if */\n#endif /* MAINTAIN_NEEDED_FLAGS */\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_thunk_body(routine, scope, roof_expr);\n#endif\n'
+    '}  /* add_body_for_wrapper_routine */')
+object_source_overlay(lower,
     '                                       a_type_ptr    struct_type)\n/*\nMake a dummy field for a base class',
     '                                       a_type_ptr    struct_type,\n'
     '                                       a_base_class_ptr observed_base)\n/*\nMake a dummy field for a base class')
@@ -702,6 +713,25 @@ object_source_overlay(lower,
 
 
 # Typed throw initialization and exact runtime-address/start ownership.
+for allocation_try_anchor in (
+    '          try_expr = make_internal_try_expr(try_expr, delete_call);',
+    '            try_expr = make_internal_try_expr(init_expr, delete_call);',
+):
+    object_source_overlay(init_lower, allocation_try_anchor,
+        allocation_try_anchor + '\n'
+        '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+        '  dot_object_source::observe_allocation_internal_try(try_expr, dyn_init_to_free_storage,\n'
+        '    innermost_function_scope->variant.routine.ptr);\n'
+        '#endif')
+object_source_overlay(init_lower,
+    '                                                 delete_routine, delete_args,\n'
+    '                                                 zero_storage);',
+    '                                                 delete_routine, delete_args,\n'
+    '                                                 zero_storage);\n'
+    '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+    '    dot_object_source::observe_allocation_internal_try(vec_new_node,\n'
+    '      ndsp->freeing_of_storage_on_exception, innermost_function_scope->variant.routine.ptr);\n'
+    '#endif')
 object_source_overlay(eh_lower,
     '  /* In the non-portable schemes, we keep the original "try" statement. */',
     '#if defined(EDG_DOT_BACKEND)\n'

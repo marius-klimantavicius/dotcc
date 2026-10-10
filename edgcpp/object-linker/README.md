@@ -4,7 +4,7 @@ This implements the owned object path of the [new design](../docs/dotobj-format.
 It uses a fresh SQLite schema and C# reader/linker/emitter, without the prior
 semantic-export experiment or C# text/command objects.
 
-The current profile is `scalar-control-v37`. It supports independently produced
+The current profile is `scalar-control-v38`. It supports independently produced
 SQLite and musl objects, typed provider selection, shared BCL runtime bindings,
 and source type identities independent of optional execution representations.
 The type graph retains `nullptr_t`, distinct character types, nominal enums and
@@ -284,7 +284,7 @@ indexes. A hash demonstrates content integrity, not semantic correctness.
 Full logs/objects/generated projects remain under
 `/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/`.
 
-The current schema requires `scalar-control-v37`. Earlier-profile objects and tools
+The current schema requires `scalar-control-v38`. Earlier-profile objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 
@@ -352,3 +352,15 @@ initialization remain explicit errors pending their distinct lifetime policies.
 `tests/verify.py --startup-only` tests registration, ordering and provider closure;
 `tests/startup_verify.py` tests concurrent initialization, reentry, constructor
 worker calls and cached failure using JIT and optional NativeAOT execution.
+
+
+The v38 contract retains compiler-created internal exception boundaries as owned
+attempt/cleanup expressions. Allocation rollback has its own original obligation
+(allocated type, selected deallocator, lifetime and ordering), distinct from an
+object destructor. Generated virtual adjustment wrappers retain target/overridden
+routine identities and explicit typed forwarding bodies. Recursive source record
+references reserve original member/base IDs before walking dependent types.
+The wrapper adjustment tuple is descriptive provenance: execution follows the
+verified typed body; tuple/body symbolic equivalence is not yet verified.
+Ordinary-new cleanup regions and local-static guard-abort actions remain explicit
+exporter gates. This is not full DuckDB generation or execution acceptance.

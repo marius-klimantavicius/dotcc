@@ -3,7 +3,7 @@ namespace DotObj;
 internal static class Verifier
 {
     private static readonly HashSet<string> StatementKinds = ["try", "catch", "memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
-    private static readonly HashSet<string> ExpressionKinds = ["caught-object-address", "handler-marker", "cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "virtual-base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
+    private static readonly HashSet<string> ExpressionKinds = ["internal-try-expression", "caught-object-address", "handler-marker", "cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "virtual-base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -121,12 +121,12 @@ internal static class Verifier
             else
             {
                 string type = Type(node);
-                if (type == "void" && node.Kind is not ("call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional" or "cleanup-transition" or "cleanup-frame" or "lifetime-scope" or "throw" or "throw-marker" or "rethrow" or "handler-marker")) Fail("Only calls and explicit void operations can have void type");
+                if (type == "void" && node.Kind is not ("call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional" or "cleanup-transition" or "cleanup-frame" or "lifetime-scope" or "throw" or "throw-marker" or "rethrow" or "handler-marker" or "internal-try-expression")) Fail("Only calls and explicit void operations can have void type");
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
                 string[] orders = node.Kind is "cleanup-transition" or "cleanup-frame" or "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
                 if (node.Kind is "cleanup-transition" or "cleanup-frame" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
                 if (node.Kind is "thrown-object-address" or "throw-marker" or "rethrow" or "cleanup-payload-address" or "handler-marker" or "caught-object-address") orders = ["none"];
-                if (node.Kind is "materialize" or "throw") orders = ["left-to-right"];
+                if (node.Kind is "materialize" or "throw" or "internal-try-expression") orders = ["left-to-right"];
                 if (node.Kind is "assign" or "record-transfer" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
                 if (node.Kind is "address" or "dereference" or "array-decay" or "member" or "va-start" or "va-copy" or "va-end" or "va-arg") orders = ["none", "left-to-right", "unspecified"];
                 if (!orders.Contains(node.EvaluationOrder)) Fail($"Unsupported evaluation order at {node.Id}");
@@ -270,6 +270,19 @@ internal static class Verifier
                     if (!obj.ExpressionLifetimes.ContainsKey(node.Id) || node.TypeId != Child(node, "operand").TypeId ||
                         node.ValueCategory != Child(node, "operand").ValueCategory)
                         Fail("Lifetime scope must preserve its child's exact type/category and original lifetime identity");
+                    break;
+                case "internal-try-expression":
+                    EdgeShape(node, ("attempt", 1, 1), ("cleanup", 1, 1));
+                    Expr(node, "attempt", true); Expr(node, "cleanup", true);
+                    if (Type(node) != "void" || !obj.InternalTryExpressions.Contains(node.Id))
+                        Fail("Internal try requires observed void expression and unwind-before-handler semantics");
+                    if (obj.InternalTryAllocations.TryGetValue(node.Id, out long allocation))
+                    {
+                        Node cleanup = Child(node, "cleanup");
+                        if (cleanup.Kind != "call" || cleanup.EntityId is not long deallocator ||
+                            obj.OriginalFunction(deallocator) != obj.SourceAllocationObligations[allocation].DeallocatorEntityId)
+                            Fail("Allocation failure boundary must invoke its exact original selected deallocator");
+                    }
                     break;
                 case "cleanup-transition":
                     EdgeShape(node);
@@ -827,6 +840,7 @@ internal static class Verifier
                 body.Nodes[edge.ChildId].Kind == "expr-stmt" && body.Child(edge.ChildId, "value").Id == prologues[0].Id))
                 Fail("Cleanup prologue must be an immediate statement of its owned function body");
         }
+        obj.VerifyThunkWrapperBody(function, body);
         var accessAlignment = new AccessAlignment(obj, body);
         var parents = body.Edges.Values.SelectMany(edges => edges)
             .Where(edge => body.Nodes[edge.ParentId].TypeId is not null || edge.Role != "target")

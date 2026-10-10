@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v37: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v38: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -56,6 +56,10 @@ struct Writer {
   std::vector<string> expression_lifetimes,cleanup_conditions;
   std::vector<string> exception_types,exception_base_conversions,throw_expressions,throw_object_addresses,throw_markers,rethrow_expressions;
   std::vector<string> throw_initialization_boundaries,throw_cleanup_transitions;
+  std::vector<string> internal_try_expressions;
+  std::vector<string> source_allocation_obligations;
+  std::map<an_expr_node_ptr,a_dynamic_init_ptr> active_allocation_internal_tries;
+  std::set<a_dynamic_init_ptr> active_allocation_obligations,emitted_allocation_obligations;
   std::vector<string> cleanup_payload_targets;
   std::vector<string> throw_payload_subobjects,throw_payload_paths;
   std::map<an_expr_node_ptr,unsigned> active_throw_ids;
@@ -98,6 +102,7 @@ struct Writer {
   std::map<std::pair<unsigned,std::pair<unsigned long long,bool>>,unsigned> array_types;
   std::vector<string> execution_types,record_types,record_fields;
   std::vector<string> source_records,source_fields,source_bases,record_base_subobjects,abi_routine_origins;
+  std::vector<string> thunk_wrappers,wrapper_calls;
   std::vector<string> base_subobject_expressions,virtual_base_subobjects,virtual_base_expressions,source_record_operations,record_value_transfers;
   std::map<a_base_class_ptr,unsigned> source_base_ids;
   unsigned next_source_base=1;
@@ -259,6 +264,15 @@ struct Writer {
       if(subobject)source_record=source_record_ids.at(complete);
       else {
       source_record=next_source_record++;source_record_ids[t]=source_record;
+      // Reserve every original member/base identity before following any
+      // source type. A field can point to a derived class whose physical base
+      // view re-enters this record while its source rows are still being
+      // emitted (for example basic_ios/basic_ostream). That view must use the
+      // very same original descriptors, independent of traversal order.
+      for(const auto &field:source->fields)
+        source_field_ids.emplace(field.il,next_source_field++);
+      if(pre!=captured.prelower_records.end())for(const auto &base:pre->second.bases)
+        source_base_ids.emplace(base.il,next_source_base++);
       auto source_type_it=captured.type_ids.find(t);
       if(source_type_it==captured.type_ids.end())reject("record source type was not captured before lowering");
       source_records.push_back("{\"id\":"+number(source_record)+",\"sourceTypeId\":"+number(source_type(source_type_it->second))+
@@ -281,7 +295,7 @@ struct Writer {
       }
       unsigned source_ordinal=0;
       for(const auto &field:source->fields) {
-        unsigned original_id=next_source_field++;source_field_ids[field.il]=original_id;originals[field.il]=&field;
+        unsigned original_id=source_field_ids.at(field.il);originals[field.il]=&field;
         source_fields.push_back("{\"id\":"+number(original_id)+",\"sourceRecordId\":"+number(source_record)+
           ",\"ordinal\":"+std::to_string(source_ordinal++)+",\"sourceTypeId\":"+number(source_type(field.source_type))+
           ",\"sourceName\":"+quote(field.original_name)+
@@ -293,7 +307,7 @@ struct Writer {
       if(pre!=captured.prelower_records.end()) {
         unsigned base_ordinal=0;
         for(const auto &base:pre->second.bases) {
-          unsigned base_id=next_source_base++;source_base_ids[base.il]=base_id;
+          unsigned base_id=source_base_ids.at(base.il);
           source_bases.push_back("{\"id\":"+number(base_id)+",\"sourceRecordId\":"+number(source_record)+
             ",\"ordinal\":"+std::to_string(base_ordinal++)+",\"baseSourceTypeId\":"+number(source_type(base.source_type_snapshot))+
             ",\"accessKind\":"+quote(base.access)+",\"isVirtual\":"+(base.is_virtual?"true":"false")+position(base.position)+"}");
@@ -329,7 +343,11 @@ struct Writer {
           role="virtual-base";
         } else {
           auto mapped=source_base_ids.find(base_field->second);
-          if(mapped==source_base_ids.end())reject("physical base lacks direct original declaration");
+          if(mapped==source_base_ids.end())reject((string("physical base lacks direct original declaration: record=")+identity+
+            " base="+source_spelling(&base_field->second->type->source_corresp)+
+            " direct="+(base_field->second->direct?"true":"false")+
+            " subobject="+(subobject?"true":"false")+
+            " source-bases="+std::to_string(pre==captured.prelower_records.end()?0:pre->second.bases.size())).c_str());
           source_base=mapped->second;role="base";
         }
         field_name=source_spelling(&f->source_corresp);
@@ -1123,7 +1141,15 @@ struct Writer {
     active_expression_lifetimes=false;
     active_normal_calls.clear();active_normal_obligations.clear();emitted_normal_obligations.clear();
     active_array_runtime.clear();active_array_obligations.clear();emitted_array_obligations.clear();
+    active_allocation_internal_tries.clear();active_allocation_obligations.clear();emitted_allocation_obligations.clear();
     auto &captured=dot_object_source::state();
+    for(const auto &entry:captured.allocation_internal_tries)if(entry.second.first==owner) {
+      auto original=dot_object_source::source_destruction(entry.second.second,owner);
+      if(!original || !captured.destructions.at(original).allocation_release)
+        reject("internal allocation rollback lacks original source ownership");
+      active_allocation_internal_tries.emplace(entry.first,original);
+      active_allocation_obligations.insert(original);
+    }
     for(const auto &observed:captured.payload_subobjects)if(observed.owner==owner) {
       auto original=dot_object_source::source_destruction(observed.original,owner);
       if(!observed.error.empty())reject(observed.error.c_str());
@@ -1265,7 +1291,7 @@ struct Writer {
         if(release!=dot_object_source::state().handler_releases.end() && release->second.first==current_routine)continue;
       }
       auto source=current_routine?dot_object_source::source_destruction(dip,current_routine):nullptr;
-      if(!source || (!active_source_obligations.count(source) && !active_normal_obligations.count(source) && !active_payload_subobjects.count(source) && !active_array_obligations.count(source)))
+      if(!source || (!active_source_obligations.count(source) && !active_normal_obligations.count(source) && !active_payload_subobjects.count(source) && !active_array_obligations.count(source) && !active_allocation_obligations.count(source)))
         reject((string("destruction obligations lack owned cleanup action or normal call: ")+
           (dip->destructor?source_spelling(&dip->destructor->source_corresp):"no destructor")+
           (source?" (source captured)":" (source missing)")+" active-actions="+std::to_string(active_cleanup.size())+
@@ -1286,13 +1312,13 @@ struct Writer {
     // An observed ABI forwarding entry has no independent source lifetime.
     // Its source primary owns that graph; only a body with actions republishes
     // the original obligations under the exact ABI-origin relation.
-    if(primary && active_cleanup.empty() && emitted_normal_obligations.empty() && active_payload_subobjects.empty() && emitted_array_obligations.empty() && !active_expression_lifetimes)return;
+    if(primary && active_cleanup.empty() && emitted_normal_obligations.empty() && active_payload_subobjects.empty() && emitted_array_obligations.empty() && emitted_allocation_obligations.empty() && !active_expression_lifetimes)return;
     const auto &original_lifetimes=captured.lifetime_order[owner];
     const auto &original_destructions=captured.destruction_order[owner];
     // Each execution variant owns only the actions present in its body. EDG
     // complete/subobject/delegation entry points share the original source
     // graph; prove coverage across emitted variants after all bodies exist.
-    if(active_cleanup.empty() && emitted_normal_obligations.empty() && active_payload_subobjects.empty() && emitted_array_obligations.empty() && !active_expression_lifetimes)return;
+    if(active_cleanup.empty() && emitted_normal_obligations.empty() && active_payload_subobjects.empty() && emitted_array_obligations.empty() && emitted_allocation_obligations.empty() && !active_expression_lifetimes)return;
     if(!emitted_cleanup_sources.insert(owner).second)return;
     unsigned owner_id=routine(owner);
     for(auto original:original_lifetimes)
@@ -1302,7 +1328,7 @@ struct Writer {
     for(auto original:original_lifetimes) {
       const auto &value=captured.lifetimes.at(original);
       if(!value.error.empty())reject(value.error.c_str());
-      unsigned parent=0,obligation=0;
+      unsigned parent=0,obligation=0,allocation_obligation=0;
       if(value.parent) {
         if(!source_lifetime_ids.count(value.parent))reject("source lifetime parent outside captured function");
         parent=source_lifetime_ids.at(value.parent);
@@ -1311,15 +1337,26 @@ struct Writer {
         auto found=source_obligation_ids.find(value.parent_obligation);
         if(found==source_obligation_ids.end() || captured.destructions.at(value.parent_obligation).lifetime!=value.parent)
           reject("source parent destruction relation is not exact parent ownership");
-        obligation=found->second;
+        if(captured.destructions.at(value.parent_obligation).allocation_release)allocation_obligation=found->second;
+        else obligation=found->second;
       }
       source_lifetimes.push_back("{\"id\":"+number(source_lifetime_ids.at(original))+",\"functionEntityId\":"+number(owner_id)+
         ",\"parentLifetimeId\":"+number(parent)+",\"siblingOrdinal\":"+std::to_string(value.sibling_ordinal)+
-        ",\"parentObligationId\":"+number(obligation)+",\"kind\":"+quote(value.kind)+position(value.position)+",\"captureProof\":\"before-lowering\"}");
+        ",\"parentObligationId\":"+number(obligation)+",\"parentAllocationObligationId\":"+number(allocation_obligation)+
+        ",\"kind\":"+quote(value.kind)+position(value.position)+",\"captureProof\":\"before-lowering\"}");
     }
     for(auto original:original_destructions) {
       const auto &value=captured.destructions.at(original);
-      if(!value.error.empty() || !source_lifetime_ids.count(value.lifetime))reject("invalid original destruction provenance");
+      if(!value.error.empty())reject(value.error.c_str());
+      if(!source_lifetime_ids.count(value.lifetime))reject("invalid original destruction lifetime provenance");
+      if(value.allocation_release) {
+        source_allocation_obligations.push_back("{\"id\":"+number(source_obligation_ids.at(original))+
+          ",\"functionEntityId\":"+number(owner_id)+",\"lifetimeId\":"+number(source_lifetime_ids.at(value.lifetime))+
+          ",\"ordinal\":"+std::to_string(value.ordinal)+",\"deallocatorEntityId\":"+number(routine(value.destructor))+
+          ",\"allocatedSourceTypeId\":"+number(source_type(value.source_type))+
+          ",\"isArray\":"+(value.array_allocation?"true":"false")+position(value.position)+",\"captureProof\":\"before-lowering\"}");
+        continue;
+      }
       source_destruction_obligations.push_back("{\"id\":"+number(source_obligation_ids.at(original))+
         ",\"functionEntityId\":"+number(owner_id)+",\"lifetimeId\":"+number(source_lifetime_ids.at(value.lifetime))+
         ",\"ordinal\":"+std::to_string(value.ordinal)+",\"destructorEntityId\":"+number(routine(value.destructor))+
@@ -1437,6 +1474,28 @@ struct Writer {
   }
   unsigned cleanup_marker(an_expr_node_ptr expr) {
     auto &value=expr->variant.lowered_eh;
+    if(value.kind==leck_internal_try) {
+      // lower_eh::make_internal_try_expr owns precisely two expressions.
+      // Its result is void: the attempt's value is discarded, and failure
+      // unwinds to this boundary before running the cleanup and rethrowing.
+      auto attempt=value.variant.try_and_catch_expr;
+      if(type_id(expr->type)!=1 || !attempt || !attempt->next || attempt->next->next)
+        reject("internal try lacks its exact void/two-expression contract");
+      unsigned id=node("internal-try-expression",1,expr->position,0,0,"","","value","left-to-right");
+      unsigned obligation=0;
+      auto allocation=active_allocation_internal_tries.find(expr);
+      if(allocation!=active_allocation_internal_tries.end()) {
+        auto original=allocation->second;
+        obligation=source_obligation_ids.emplace(original,unsigned(source_obligation_ids.size()+1)).first->second;
+        emitted_allocation_obligations.insert(original);
+      }
+      internal_try_expressions.push_back("{\"nodeId\":"+number(id)+
+        ",\"sourceAllocationObligationId\":"+number(obligation)+
+        ",\"cleanupPolicy\":\"unwind-to-entry-before-handler\",\"captureProof\":\"observed-internal-try\"}");
+      edge(id,"attempt",0,expression(attempt));
+      edge(id,"cleanup",0,expression(attempt->next));
+      return id;
+    }
     if(value.kind==leck_caught_object_address) {
       auto found=active_handler_ids.find(value.variant.caught_object_handler);
       if(found==active_handler_ids.end() || !value.variant.caught_object_handler->parameter)
@@ -1559,6 +1618,7 @@ struct Writer {
     covered_source_obligations.insert(active_source_obligations.begin(),active_source_obligations.end());
     covered_source_obligations.insert(emitted_normal_obligations.begin(),emitted_normal_obligations.end());
     covered_source_obligations.insert(emitted_array_obligations.begin(),emitted_array_obligations.end());
+    covered_source_obligations.insert(emitted_allocation_obligations.begin(),emitted_allocation_obligations.end());
     for(const auto &entry:active_payload_subobjects)covered_source_obligations.insert(entry.first);
   }
   void validate_file_initializers(a_scope_ptr file_scope) {
@@ -1679,9 +1739,13 @@ struct Writer {
     auto found=routine_ids.find(r);if(found!=routine_ids.end())return found->second;
     diagnostic_scope diagnostic(r->source_corresp.decl_position);
 #if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN
-    if(r->overriding_function_for_wrapper)
-      reject("adjusting virtual/covariant thunk requires owned wrapper provenance");
+    bool is_wrapper=r->overriding_function_for_wrapper!=nullptr;
+#else
+    bool is_wrapper=false;
 #endif
+    auto wrapper_it=dot_object_source::state().thunk_wrappers.find(r);
+    const dot_object_source::ThunkWrapper *wrapper=wrapper_it==dot_object_source::state().thunk_wrappers.end()?nullptr:&wrapper_it->second;
+    if(is_wrapper!=bool(wrapper))reject("virtual wrapper lacks observed creation provenance");
     auto primary=dot_object_source::abi_primary(r);
     auto adapter_it=dot_object_source::state().default_adapters.find(r);
     const dot_object_source::DefaultAdapter *adapter=adapter_it==dot_object_source::state().default_adapters.end()?nullptr:&adapter_it->second;
@@ -1758,6 +1822,49 @@ struct Writer {
     entities.push_back("{\"id\":"+number(id)+",\"sourceName\":"+quote(source_spelling(&r->source_corresp))+
       ",\"linkage\":"+quote(external?"external":"internal")+",\"externalKey\":"+(external?quote(key):"null")+
       ",\"definition\":"+quote(body?(coalescible?"linkonce":"strong"):"declaration")+",\"returnTypeId\":"+number(type_id(t->variant.routine.return_type))+position(r->source_corresp.decl_position)+",\"routineTypeId\":"+number(routine_type(t,known_empty_definition))+"}");
+    if(wrapper) {
+#if DO_IL_LOWERING && IA64_ABI
+      if(primary || adapter || !r->compiler_generated || !wrapper->target || !wrapper->overridden ||
+         wrapper->target==r || wrapper->overridden==r || wrapper->target->overriding_function_for_wrapper ||
+         r->overriding_function_for_wrapper!=wrapper->target || r->overridden_function_for_wrapper!=wrapper->overridden ||
+         r->delta!=wrapper->delta || r->vcall_index!=wrapper->vcall_index ||
+         r->return_delta!=wrapper->return_delta || r->vbase_index!=wrapper->vbase_index || extra->has_ellipsis ||
+         (body && (body!=wrapper->scope || !wrapper->forwarding)))
+        reject("wrapper differs from its observed nonvariadic creation/body");
+      unsigned target=routine(wrapper->target),overridden=routine(wrapper->overridden);
+      auto original=dot_object_source::abi_primary(wrapper->target);
+      unsigned original_id=routine(original?original:wrapper->target);
+      auto target_type=skip_typerefs(wrapper->target->type);
+      auto overridden_type=skip_typerefs(wrapper->overridden->type);
+      if(type_id(t->variant.routine.return_type)!=type_id(overridden_type->variant.routine.return_type) ||
+         target_type->variant.routine.extra_info->has_ellipsis)
+        reject("wrapper return/variadic contract differs from selected declarations");
+      const auto slots=routine_abi_slots.at(wrapper->target);
+      if(slots.empty() || std::count_if(slots.begin(),slots.end(),[](const AbiSlot &slot){return slot.role=="this";})!=1)
+        reject("wrapper target lacks one original receiver");
+      routine_abi_slots[r]=slots;
+      unsigned ordinal=0;
+      for(auto formal=extra->param_type_list;formal;formal=formal->next,++ordinal) {
+        if(ordinal>=slots.size() || type_id(formal->type)!=slots[ordinal].type || slots[ordinal].role=="result-buffer")
+          reject("wrapper formal differs from selected target ABI slot");
+        const auto &slot=slots[ordinal];
+        bool explicit_source=slot.role=="source" || slot.role=="indirect-source";
+        parameters.push_back("{\"entityId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal)+
+          ",\"typeId\":"+number(slot.type)+",\"parameterRole\":"+quote(explicit_source?"forwarded-source":slot.role)+
+          ",\"sourceOrdinal\":"+(explicit_source?std::to_string(slot.source_ordinal):"null")+"}");
+      }
+      if(ordinal!=slots.size() || (body && wrapper->parameters.size()!=slots.size()))
+        reject("wrapper parameter count differs from observed target/body");
+      thunk_wrappers.push_back("{\"entityId\":"+number(id)+",\"targetEntityId\":"+number(target)+
+        ",\"overriddenEntityId\":"+number(overridden)+",\"primaryEntityId\":"+number(original_id)+
+        ",\"thisDelta\":"+std::to_string(wrapper->delta)+",\"vcallIndex\":"+std::to_string(wrapper->vcall_index)+
+        ",\"returnDelta\":"+std::to_string(wrapper->return_delta)+",\"vbaseIndex\":"+std::to_string(wrapper->vbase_index)+
+        ",\"captureProof\":\"observed-wrapper-creation\"}");
+      return id;
+#else
+      reject("wrapper requires observed IA64 ABI");
+#endif
+    }
     auto generated=dot_object_source::state().generated_initializers.find(r);
     if(generated!=dot_object_source::state().generated_initializers.end()) {
       const auto &origin=generated->second;
@@ -1830,6 +1937,8 @@ struct Writer {
     auto source=dot_object_source::state().variables.find(v);
     bool synthetic=false;
     auto primary=dot_object_source::abi_primary(current_routine);
+    auto wrapper_it=dot_object_source::state().thunk_wrappers.find(current_routine);
+    const dot_object_source::ThunkWrapper *wrapper=wrapper_it==dot_object_source::state().thunk_wrappers.end()?nullptr:&wrapper_it->second;
     if(parameter) {
       if(!current_routine || !routine_abi_slots.count(current_routine) || ordinal>=routine_abi_slots.at(current_routine).size())
         reject("parameter outside observed routine ABI");
@@ -1841,7 +1950,12 @@ struct Writer {
       for(unsigned i=0;i<ordinal && formal && actual;++i){formal=formal->next;actual=actual->next;}
       if(actual!=v || !formal || type_id(v->type)!=slot.type || type_id(formal->type)!=slot.type)
         reject("execution parameter identity/type disagrees with observed ABI slot");
-      if(primary) {
+      if(wrapper) {
+        if(function_scope!=wrapper->scope || ordinal>=wrapper->parameters.size() || wrapper->parameters[ordinal]!=v ||
+           source!=dot_object_source::state().variables.end() || v->is_this_parameter!=(slot.role=="this"))
+          reject("wrapper formal lacks observed parameter identity/role");
+        synthetic=true;
+      } else if(primary) {
         if(source!=dot_object_source::state().variables.end() || slot.role=="result-buffer")
           reject("generated alternate parameter has unproved source/result origin");
         if(slot.role=="this" ? (!v->is_this_parameter || function_scope->variant.routine.this_param_variable!=v) :
@@ -1873,7 +1987,7 @@ struct Writer {
         }
       }
     }
-    if(primary && !parameter) {
+    if((primary || wrapper) && !parameter) {
       if(source!=dot_object_source::state().variables.end() || !(v->compiler_generated || v->lowering_generated))
         reject("alternate local lacks generated provenance");
       synthetic=true;
@@ -2294,6 +2408,24 @@ struct Writer {
     if(!e)reject("null expression");
     diagnostic_scope diagnostic(e->position);
     unsigned ty=type_id(e->type);
+    if(e->kind==enk_result_of_overriding_function) {
+      auto found=dot_object_source::state().thunk_wrappers.find(current_routine);
+      if(found==dot_object_source::state().thunk_wrappers.end() || found->second.forwarding!=e ||
+         !found->second.scope || found->second.scope!=scope_for_routine_or_null(current_routine))
+        reject("wrapper result lacks its observed forwarding expression/body");
+      const auto &wrapper=found->second;
+      auto target_type=skip_typerefs(wrapper.target->type);
+      if(ty!=type_id(target_type->variant.routine.return_type) || target_type->variant.routine.extra_info->has_ellipsis)
+        reject("wrapper forwarding result/variadic contract mismatch");
+      unsigned id=node("call",ty,e->position,routine(wrapper.target),0,"","","value","left-to-right"),ordinal=0;
+      for(auto parameter:wrapper.parameters) {
+        if(!binding_ids.count(parameter))reject("wrapper forwarding parameter lacks owned binding");
+        edge(id,"argument",ordinal++,local_place(parameter,e->position));
+      }
+      wrapper_calls.push_back("{\"nodeId\":"+number(id)+",\"wrapperEntityId\":"+number(function)+
+        ",\"captureProof\":\"observed-wrapper-forwarding\"}");
+      return id;
+    }
     if(e->kind==enk_object_lifetime) {
       auto &wrapper=e->variant.object_lifetime;
       if(!wrapper.expr || !wrapper.ptr || !il_identical_types(e->type,wrapper.expr->type))
@@ -3207,8 +3339,24 @@ struct Writer {
       case stmk_empty:return node("block",0,s->position);
       case stmk_init: {
         auto d=s->variant.dynamic_init;
-        if(d->destructor)reject("initialization with destructor");
+        if(d->destructor) {
+          // As in c_gen_be::dump_whole_variable_dynamic_init, this statement
+          // performs initialization only. Lowering emits destruction and
+          // activation separately; retain the destructor's original owner
+          // and require those observed actions instead of duplicating them.
+          auto original=dot_object_source::source_destruction(d,current_routine);
+          auto callback=dot_object_source::abi_primary(d->destructor);
+          if(!callback)callback=d->destructor;
+          if(!original || callback!=dot_object_source::state().destructions.at(original).destructor ||
+             (!active_source_obligations.count(original) && !active_normal_obligations.count(original) &&
+              !active_array_obligations.count(original)))
+            reject("initialization destructor lacks its observed cleanup ownership");
+        }
         if(!d->variable || !binding_ids.count(d->variable))reject("initialization without local binding");
+        // A destructor-only initialization has no value store. Stock C also
+        // treats dik_none as already initialized; the subsequent transition
+        // is still emitted and activates the owned destruction obligation.
+        if(d->kind==dik_none)return node("block",0,s->position);
         unsigned ty=type_id(d->variable->type);
         auto initialized_type=skip_typerefs(d->variable->type);
         bool initialized_record=initialized_type->kind==tk_struct || initialized_type->kind==tk_class || initialized_type->kind==tk_union;
@@ -3291,8 +3439,17 @@ struct Writer {
       context="file scope";
     }
     for(auto obligation:required_source_obligations)
-      if(!covered_source_obligations.count(obligation) || !source_obligation_ids.count(obligation))
-        reject("original source destruction lacks an owned emitted action across its ABI variants");
+      if(!covered_source_obligations.count(obligation) || !source_obligation_ids.count(obligation)) {
+        const auto &source=dot_object_source::state().destructions.at(obligation);
+        diagnostic_scope diagnostic(source.position);
+        reject((string("original source cleanup lacks an owned emitted action across its ABI variants: ")+
+          (source.allocation_release?"allocation":"destruction")+
+          " owner="+source_spelling(&source.owner->source_corresp)+
+          " ordinal="+std::to_string(source.ordinal)+
+          " callback="+(source.destructor?source_spelling(&source.destructor->source_corresp):"none")+
+          " emitted="+(covered_source_obligations.count(obligation)?"yes":"no")+
+          " metadata="+(source_obligation_ids.count(obligation)?"yes":"no")).c_str());
+      }
     write_dynamic_initializer_origins();
     for(const auto &storage_bytes:bitfield_data) {
       string bytes;unsigned long long begin=0,previous=0;
@@ -3309,7 +3466,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v37\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v38\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -3326,6 +3483,8 @@ struct Writer {
       ",\"throwExpressions\":"+array(throw_expressions)+",\"throwObjectAddresses\":"+array(throw_object_addresses)+
       ",\"throwMarkers\":"+array(throw_markers)+",\"rethrowExpressions\":"+array(rethrow_expressions)+
       ",\"throwInitializationBoundaries\":"+array(throw_initialization_boundaries)+",\"throwCleanupTransitions\":"+array(throw_cleanup_transitions)+
+      ",\"internalTryExpressions\":"+array(internal_try_expressions)+
+      ",\"sourceAllocationObligations\":"+array(source_allocation_obligations)+
       ",\"cleanupPayloadTargets\":"+array(cleanup_payload_targets)+
       ",\"throwPayloadSubobjects\":"+array(throw_payload_subobjects)+
       ",\"throwPayloadPaths\":"+array(throw_payload_paths)+
@@ -3335,6 +3494,7 @@ struct Writer {
       ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+",\"virtualBaseSubobjects\":"+array(virtual_base_subobjects)+",\"virtualBaseExpressions\":"+array(virtual_base_expressions)+
       ",\"baseSubobjectExpressions\":"+array(base_subobject_expressions)+
       ",\"abiRoutineOrigins\":"+array(abi_routine_origins)+
+      ",\"thunkWrappers\":"+array(thunk_wrappers)+",\"wrapperCalls\":"+array(wrapper_calls)+
       ",\"recordTypes\":"+array(record_types)+",\"recordFields\":"+array(record_fields)+
       ",\"storages\":"+array(storages)+",\"storageData\":"+array(storage_data)+",\"relocations\":"+array(relocations)+
       ",\"routineTypes\":"+array(routine_types)+",\"routineParameters\":"+array(routine_parameters)+

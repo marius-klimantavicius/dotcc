@@ -1530,3 +1530,34 @@ or instantiate otherwise unused templates, and does not claim all EDG extension
 families or complete source-only record serialization. Required unsupported
 forms remain explicit errors; atomic metadata cannot authorize scalar atomic
 accesses. These gaps are separate from C# generation and runtime binding.
+
+
+## Allocation boundaries and virtual wrappers (v38)
+
+`internal_try_expressions` owns a void `internal-try-expression` node with exactly
+one `attempt` and one `cleanup` edge. Only failure executes cleanup; nested owned
+cleanup states unwind to the entry boundary first, then the selected expression
+runs and the original exception is rethrown. This is an internal boundary, not a
+source catch: it does not acquire a handler or mark the C++ exception caught.
+Classified non-C++ runtime transfers bypass this internal handler.
+
+`source_allocation_obligations` retains original function/lifetime, ordinal,
+allocated source type, selected deallocator, array fact and source location.
+Allocation and destruction obligations have disjoint IDs and share dense original
+lifetime ordinals. `source_lifetimes.parent_allocation_obligation_id` distinguishes
+an allocation overlap from a destructor overlap. Each allocation obligation in
+this profile requires a matching observed internal boundary, whose cleanup is
+an exact direct call of that deallocator. Ordinary allocation region-table actions
+and static-guard aborts remain unsupported until their own action contracts exist.
+
+`thunk_wrappers` identifies each generated wrapper separately from original
+functions and constructor/destructor ABI entries. It retains exact selected,
+overridden and source-primary identities, fixed/dynamic adjustment facts and
+creation provenance. `wrapper_calls` identifies the single selected call in a
+wrapper definition; it must forward every observed formal exactly once in ABI
+order with its original slot role. Definitions require synthetic bindings and
+must not fabricate source declarations. The lowered typed body carries receiver
+and null-safe covariant result adjustment operations. Adjustment tuples remain
+descriptive provenance, checked for shape and cross-unit agreement; verification
+does not yet establish symbolic equivalence between those tuples and body
+arithmetic. Variadic wrappers remain explicitly unsupported.

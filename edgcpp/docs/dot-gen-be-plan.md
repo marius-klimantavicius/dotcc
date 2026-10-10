@@ -1,5 +1,10 @@
 # Plan for the EDG C# backend dot_gen_be.c
 
+Current authorization (2026-10-10): the supervisor continues through complete
+DuckDB translation and then missing libc++/runtime implementation and executable
+verification. The generation checkpoint below is the first milestone, not a stop
+point. State and worker ownership: [supervisor state](duckdb-supervisor-state.md).
+
 Current priority (2026-10-09): complete the missing **core `.dotobj` features**
 needed to generate C# for all DuckDB translation units and bundled dependencies.
 This checkpoint does not require the generated DuckDB project to compile or run.

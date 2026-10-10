@@ -175,6 +175,13 @@ struct DefaultAdapter {
   a_routine_ptr target=nullptr,primary=nullptr;
   bool implied_arguments=false,copy_constructor=false,has_arguments=false;
 };
+struct ThunkWrapper {
+  a_routine_ptr target=nullptr,overridden=nullptr;
+  long long delta=0,vcall_index=0,return_delta=0,vbase_index=0;
+  a_scope_ptr scope=nullptr;
+  an_expr_node_ptr forwarding=nullptr;
+  std::vector<a_variable_ptr> parameters;
+};
 // Private provenance for stock file-scope initialization lowering. An
 // insertion interval belongs to one original storage initializer; the writer
 // publishes only owned storage/action/statement IDs, never these IL pointers.
@@ -208,6 +215,7 @@ struct DestructionSnapshot {
   an_object_lifetime_ptr lifetime=nullptr;
   a_dynamic_init_ptr original=nullptr;
   unsigned ordinal=0,source_type=0;
+  bool allocation_release=false,array_allocation=false;
   a_source_position position={};
   std::string error;
 };
@@ -282,6 +290,7 @@ struct State {
   std::map<a_routine_ptr,std::vector<an_expr_node_ptr>> array_runtime_order;
   std::map<a_routine_ptr,a_variable_ptr> vtt_parameters;
   std::map<a_constant_ptr,CleanupSnapshot> cleanup_regions;
+  std::map<an_expr_node_ptr,std::pair<a_routine_ptr,a_dynamic_init_ptr>> allocation_internal_tries;
   std::vector<CleanupSnapshot> payload_subobjects;
   std::map<a_try_supplement_ptr,TrySnapshot> tries;
   std::map<a_handler_ptr,HandlerSnapshot> handlers;
@@ -301,6 +310,7 @@ struct State {
   std::map<a_routine_ptr,a_variable_ptr> result_parameters;
   std::set<a_routine_ptr> runtime_declarations;
   std::map<a_routine_ptr,DefaultAdapter> default_adapters;
+  std::map<a_routine_ptr,ThunkWrapper> thunk_wrappers;
   std::map<an_asm_entry_ptr,AsmStatement> asm_statements;
   std::map<a_variable_ptr,Declaration> variables;
   std::map<a_type_ptr,Record> records;
@@ -827,6 +837,9 @@ inline void observe_asm_after_lowering(an_asm_entry_ptr entry) {
 }
 inline void capture_routine(a_routine_ptr r) {
   if(!r || abi_primary(r))return;
+#if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN
+  if(r->overriding_function_for_wrapper)return;
+#endif
   auto &s=state();if(s.functions.count(r))return;
   a_type_ptr type=r->type;
 #if GENERATE_SOURCE_SEQUENCE_LISTS
@@ -845,6 +858,25 @@ inline void capture_routine(a_routine_ptr r) {
   s.functions[r]=function;
 }
 inline void observe_routine(a_routine_ptr routine){if(enabled())capture_routine(routine);}
+inline void observe_thunk_wrapper(a_routine_ptr routine) {
+#if DO_IL_LOWERING && IA64_ABI
+  if(!enabled() || !routine->overriding_function_for_wrapper)return;
+  ThunkWrapper value;value.target=routine->overriding_function_for_wrapper;
+  value.overridden=routine->overridden_function_for_wrapper;
+  value.delta=routine->delta;value.vcall_index=routine->vcall_index;
+  value.return_delta=routine->return_delta;value.vbase_index=routine->vbase_index;
+  state().thunk_wrappers.emplace(routine,value);
+#else
+  (void)routine;
+#endif
+}
+inline void observe_thunk_body(a_routine_ptr routine,a_scope_ptr scope,an_expr_node_ptr forwarding) {
+  if(!enabled())return;
+  auto found=state().thunk_wrappers.find(routine);
+  if(found==state().thunk_wrappers.end())return;
+  auto &value=found->second;value.scope=scope;value.forwarding=forwarding;
+  for(auto p=scope->variant.routine.parameters;p;p=p->next)value.parameters.push_back(p);
+}
 inline void observe_default_adapter(a_routine_ptr target,a_routine_ptr adapter,
                                     a_boolean implied,a_boolean copy,a_boolean has_arguments) {
   if(!enabled())return;
@@ -913,7 +945,9 @@ inline void capture_source_lifetime(an_object_lifetime_ptr lifetime,a_routine_pt
   for(auto dip=lifetime->destructions;dip;dip=dip->next_in_destruction_list,++ordinal) {
     DestructionSnapshot value;value.owner=owner;value.original=dip;value.lifetime=lifetime;value.ordinal=ordinal;
     value.destructor=dip->destructor;value.position=saved.position;
-    if(!value.destructor || dip->is_freeing_of_storage_on_exception || dip->is_freeing_of_exception_object ||
+    value.allocation_release=dip->is_freeing_of_storage_on_exception;
+    value.array_allocation=dip->is_array_freeing;
+    if(!value.destructor || dip->is_freeing_of_exception_object ||
        dip->is_guard_var_for_local_static_var_init || dip->is_vla_deallocation)
       value.error="source cleanup outside ordinary object destruction";
     if(value.destructor) {
@@ -922,7 +956,13 @@ inline void capture_source_lifetime(an_object_lifetime_ptr lifetime,a_routine_pt
       // earlier constructor. Its own prelower observer captures that signature
       // after the frontend has selected the definition's equivalent type.
     }
-    if(dip->variable) {
+    if(value.allocation_release) {
+      // The frontend associates the rollback entry with its precise new
+      // expression before lowering. Preserve its allocated type, including
+      // arrays, independently of the delete routine's erased void* ABI.
+      if(dip->assoc_new)value.source_type=capture_type(dip->assoc_new->type);
+      else value.error="source allocation release lacks original new expression";
+    } else if(dip->variable) {
       capture_variable(dip->variable);value.position=dip->variable->source_corresp.decl_position;
       auto variable=state().variables.find(dip->variable);
       value.source_type=variable==state().variables.end()?capture_type(dip->variable->type):variable->second.type;
@@ -1104,7 +1144,19 @@ inline void observe_throw_copy(an_expr_node_ptr original,an_expr_node_ptr copy,a
     }
   }
   if(copy->kind==enk_lowered_eh_construct) {
-    if(copy->variant.lowered_eh.kind==leck_thrown_object_address) {
+    if(copy->variant.lowered_eh.kind==leck_internal_try) {
+      // insert_expr shallow-copies an existing root before replacing that
+      // root with a comma. Preserve the exact rollback identity on the new
+      // internal-try node, just as for copied throw/lifetime constructs.
+      auto allocation=state().allocation_internal_tries.find(original);
+      if(allocation!=state().allocation_internal_tries.end()) {
+        auto old_owner=abi_primary(allocation->second.first);
+        if(!old_owner)old_owner=allocation->second.first;
+        auto new_owner=abi_primary(owner);if(!new_owner)new_owner=owner;
+        if(old_owner==new_owner)
+          state().allocation_internal_tries.emplace(copy,std::make_pair(owner,allocation->second.second));
+      }
+    } else if(copy->variant.lowered_eh.kind==leck_thrown_object_address) {
       auto address=state().throw_addresses.find(original);
       if(address!=state().throw_addresses.end())state().throw_addresses[copy]=address->second;
     } else if(copy->variant.lowered_eh.kind==leck_exception_started) {
@@ -1142,6 +1194,15 @@ inline a_dynamic_init_ptr source_destruction(a_dynamic_init_ptr value,a_routine_
     value=copied->second;
   }
   return nullptr;
+}
+inline void observe_allocation_internal_try(an_expr_node_ptr node,a_dynamic_init_ptr allocation,a_routine_ptr owner) {
+  if(!enabled() || !node || !allocation)return;
+  // make_placement_array_new_call returns (internal-try, result-temporary).
+  // Its direct scalar counterpart returns exactly the internal-try node.
+  if(node->kind==enk_operation && node->variant.operation.kind==eok_comma)
+    node=node->variant.operation.operands;
+  if(node->kind==enk_lowered_eh_construct && node->variant.lowered_eh.kind==leck_internal_try)
+    state().allocation_internal_tries.emplace(node,std::make_pair(owner,allocation));
 }
 #if DO_IL_LOWERING && GENERATE_EH_TABLES && !DO_FULL_PORTABLE_EH_LOWERING
 inline void observe_try(a_try_supplement_ptr value,a_routine_ptr owner,bool function_try) {
@@ -1262,6 +1323,9 @@ inline void capture_scope(a_scope_ptr scope) {
   if(!scope)return;
   // Alternate ABI bodies contain generated forwarding declarations only.
   if(scope->kind==sck_function && abi_primary(scope->variant.routine.ptr))return;
+#if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN
+  if(scope->kind==sck_function && scope->variant.routine.ptr->overriding_function_for_wrapper)return;
+#endif
   if(scope->kind==sck_function) {
     capture_routine(scope->variant.routine.ptr);
     auto &function=state().functions.at(scope->variant.routine.ptr);

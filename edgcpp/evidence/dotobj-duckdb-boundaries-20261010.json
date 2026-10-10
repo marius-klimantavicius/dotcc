@@ -1,0 +1,149 @@
+{
+  "date": "2026-10-10",
+  "profile": "scalar-control-v38",
+  "status": "passed",
+  "scope": "Owned initialization failure boundaries, allocation rollback provenance, recursive base identity and generated virtual/covariant wrappers",
+  "edgSemanticChanges": false,
+  "fullDuckDbGeneration": false,
+  "fullDuckDbCompilation": false,
+  "fullDuckDbExecution": false,
+  "fullRegressionNativeAot": false,
+  "acceptance": {
+    "broadJit": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v38-002/results.json",
+      "sha256": "1bc5236e8cb52234277293aa95b7600d8bf47c60c1438ce8a17af91cab85ed80",
+      "status": "passed",
+      "checks": 1042,
+      "scenarios": null
+    },
+    "allocationBoundary": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-lifetime-v38-003/results.json",
+      "sha256": "0e0c50205e9b30ea3e429df7eacd0ada23400d9bd41b20b6c50f4699faa457b2",
+      "status": "passed",
+      "checks": 37,
+      "scenarios": 24
+    },
+    "recursiveBases": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-base-v38-002/results.json",
+      "sha256": "876d5302cf53313c917d6ed8aded671cbe83f2b55db36fd85379a4f267f5e52d",
+      "status": "passed",
+      "checks": 14,
+      "scenarios": null
+    },
+    "virtualWrappers": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-thunks-v38-004/results.json",
+      "sha256": "1b75718ebe005f4694b93ded5003b8b9f98001656cb498ecf5e926165165a739",
+      "status": "passed",
+      "checks": 18,
+      "scenarios": null
+    },
+    "stockWrapperOracle": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-thunk-stock-c-001/results.json",
+      "sha256": "d121de6a21e0063cbbba4529bb3295ed81d578032de49640a06013311603873a",
+      "status": "passed",
+      "checks": null,
+      "scenarios": null
+    }
+  },
+  "tools": {
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native078-verified-snapshot/cpfe-dot",
+      "sha256": "5a159b128002367c7e2430b21e9bf6702c830fa6e3db77c3d1b62283a0c4d95b"
+    },
+    "linker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-088/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "f99ab96516a18bc9c6266efa093e7e7a44c6b6aa39874db4080a96675ffa224b"
+    },
+    "stockCompiler": {
+      "path": "edgcpp/build/bin/cpfe",
+      "sha256": "e669059e2068f623052ad8a21c146e776ce7cfb331fa849795208e3bcfdf07c3"
+    },
+    "stockRuntime": {
+      "path": "edgcpp/build/lib/libC.a",
+      "sha256": "f068889b4d56a590bfd33c94d67d5422c46c916eb2bbdd77891261eb02f2eed9"
+    }
+  },
+  "sourceSha256": {
+    "edgcpp/backend/dot_gen_object.h": "fa2b6ec59c590070225f11245f81a60244b7dd1656945291ca07db8157f1fabf",
+    "edgcpp/backend/dot_gen_object_source.h": "654430eca7e6720f2963a4d0e0e2026ecd213a10de31df5d70850cce08da3029",
+    "edgcpp/backend/prepare.py": "78b872a5b422b6a4dd770f47eee6ba094c04ad3989cdc5972e4bc90e04bc8c5e",
+    "edgcpp/object-linker/compile.py": "1401bf0eae17a21c4772a0be7d1d708558310d586adec7943ab76f3c829b5647",
+    "edgcpp/object-linker/schema.sql": "46007e73e65145c58e7bd9042dd61c662e1c5209461dfb5d43e503419c49a495",
+    "edgcpp/object-linker/managed/AllocationMetadata.cs": "8739a7d9adaea69569fee80af25116b2110c70883bd17d9d1120890f6ea32579",
+    "edgcpp/object-linker/managed/ThunkWrappers.cs": "76721332ec45fea73f015a65ad92b6677c72961efac26e5e1122a0630f19c368",
+    "edgcpp/object-linker/managed/CleanupMetadata.cs": "7fdd8f840c763681d762ec09fd8f472c323c0277423386e96d964dea33981c78",
+    "edgcpp/object-linker/managed/Emitter.cs": "ae23d983131a31b7cb89e0427ef40477b0ea140a5420542d2c09bc413e6c3cd3",
+    "edgcpp/object-linker/managed/ObjectFile.cs": "9db206cb97ee3bbf1d06e95799e628d618e44ff72df20ff1961ea6000e47bf16",
+    "edgcpp/object-linker/managed/Program.cs": "86366d4f59f3d99f7250871494da9d16780ffba698ed9a2a82519382c6e4924d",
+    "edgcpp/object-linker/managed/SourceProvenance.cs": "0a8aa9027d6b7be09d640c8bb778ba874cf606b4a52baf50a8cf943bd123c5c6",
+    "edgcpp/object-linker/managed/Verifier.cs": "31ac35598c74dd7b015e4b0b27d80b3b94f8bc2c1a829ea3c692e6d88fde049a",
+    "edgcpp/object-linker/tests/verify.py": "7a9fac4e362fd70cd0fb09b6eff8d273441ac98987a4c0fc1bd80639af12411d",
+    "edgcpp/object-linker/tests/duckdb_lifetime.cpp": "1007ef994c714281888557436570b234bcde43e497dd46b0ced883ca1ef4feb7",
+    "edgcpp/object-linker/tests/duckdb_lifetime_native.cpp": "6c9ac7b2f449195501be88e29d2b2d624aaba9a13496bd3ed7d720d3409907d2",
+    "edgcpp/object-linker/tests/duckdb_lifetime_verify.py": "dd20b1e5165893e93b716858e92e249649773804daca76af347566b1db99e877",
+    "edgcpp/object-linker/tests/duckdb_base_recursive.cpp": "a9031ccbd811ee354439f07e9ecc07f703d86983412e70b401a67979f7b3d929",
+    "edgcpp/object-linker/tests/duckdb_base_verify.py": "1671748b0e35661e975bba1ab2426b664fef09cd1afaa5ebd756de2959974edf",
+    "edgcpp/object-linker/tests/duckdb_thunk_wrappers.cpp": "3d8639cef351fb36fbd7564168689e6422056e0b685dba08383bea74376e1468",
+    "edgcpp/object-linker/tests/duckdb_thunk_verify.py": "04e982db351eb9d41916a33bc84f46200dc6e34a5ec086901e6972342c751442"
+  },
+  "project": {
+    "fullManifest": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-runtime-manifest-003/project.json",
+      "sha256": "7444081244ecdc704f1fa0887ca096352cc67e70de4a3000e35432eda76f2575"
+    },
+    "fullManifestUnits": 2635,
+    "roles": {
+      "library": 2207,
+      "test": 148,
+      "libc": 224,
+      "libcxx": 56
+    },
+    "nativeExtensionLoading": false,
+    "frontier": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-078/results.json",
+      "sha256": "c48e157d82a53dd75b0921e9f1e78a2c4979003717f1f14ecdbda3b54e13c245"
+    },
+    "frontierLinks": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-078-links-088/results.json",
+      "sha256": "d1f2cd7d4a4f173afeaf87c25c978c67d9b85276328fafcf50e26afb9c51178d"
+    },
+    "subsystemSampleManifest": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-subsystem-frontier-manifest-001.json",
+      "sha256": "01328b367b53a4456061f25b83ffb47bd18f9a055b5b59724620c281980552d3"
+    },
+    "subsystemProbe": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-subsystems-077/results.json",
+      "sha256": "a7c2bbbbd1119ba5e092532b5f52b73d026e8ff910f646ab7e0a3c5b39863ae9"
+    },
+    "subsystemUnits": 38,
+    "independentlyPackagedAndGenerated": 17,
+    "subsystemLinks": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-subsystems-077-links-087/results.json",
+      "sha256": "aa4378f3497f7be1f68c315fb50a385602adad661164f241fb9a9ae3394da757"
+    },
+    "combinedLink": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-subsystems-077-combined-088/result.json",
+      "sha256": "a2148ca122ae31a7a8b315aa2e5fe62e8614b88dce1a97df2de668648e929b75"
+    },
+    "combinedLinkStatus": "rejected-anonymous-record-identity-mismatch",
+    "subsystemTools": "native077/managed087; combined link managed088"
+  },
+  "review": "edgcpp/artifacts/review/dotobj-duckdb-v38",
+  "limitations": [
+    "Ordinary new rollback region actions and local-static guard abort remain unsupported",
+    "File-scope destructors remain unsupported",
+    "constexpr-if and switch promotion are next sampled gates",
+    "Wrapper execution is owned typed code; adjustment tuple/body symbolic agreement is not yet verified",
+    "Thunk fixture managed compilation/execution remains unverified; generation allows unresolved sized delete",
+    "Record storage initialization must be distinguished from aggregate value copying",
+    "Complete source index and all source-type family capture remain incomplete"
+  ],
+  "retainedAttempts": [
+    "dotobj-duckdb-lifetime-v38-001",
+    "dotobj-duckdb-lifetime-v38-002",
+    "dotobj-duckdb-thunks-v38-001",
+    "dotobj-duckdb-frontier-076-internal-try",
+    "dotobj-duckdb-frontier-077-alloc-thunk",
+    "dotobj-full-v38-001"
+  ]
+}

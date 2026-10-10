@@ -1,7 +1,7 @@
 namespace DotObj;
 
 internal sealed record SourceLifetime(long Id, long FunctionEntityId, long? ParentLifetimeId,
-    long SiblingOrdinal, long? ParentObligationId, string Kind, long? SourceFileId, long Line, long Column, string CaptureProof);
+    long SiblingOrdinal, long? ParentObligationId, long? ParentAllocationObligationId, string Kind, long? SourceFileId, long Line, long Column, string CaptureProof);
 internal sealed record SourceDestructionObligation(long Id, long FunctionEntityId, long LifetimeId,
     long Ordinal, long DestructorEntityId, long SourceTypeId, long? SourceFileId, long Line, long Column, string CaptureProof);
 internal sealed record CleanupAction(long Id, long FunctionEntityId, long SourceObligationId,
@@ -14,6 +14,7 @@ internal sealed record CleanupFrameMarker(long NodeId, string Kind, string Captu
 
 internal sealed partial class ObjectFile
 {
+    public HashSet<long> InternalTryExpressions { get; } = [];
     public Dictionary<long, long> ExpressionLifetimes { get; } = [];
     public Dictionary<long, ArrayRuntimeOperation> ArrayRuntimeOperations { get; } = [];
     public Dictionary<long, CleanupArray> CleanupArrays { get; } = [];
@@ -43,6 +44,13 @@ internal sealed partial class ObjectFile
 
     private void ReadCleanupMetadata()
     {
+        using (var query = database.Prepare("SELECT x.node_id,x.cleanup_policy,x.capture_proof,n.kind,n.function_id FROM internal_try_expressions x LEFT JOIN nodes n ON n.id=x.node_id ORDER BY x.node_id"))
+            while (query.Read())
+                if (SourceLanguage != "c++" || query.Text(1) != "unwind-to-entry-before-handler" ||
+                    query.Text(2) != "observed-internal-try" || query.OptionalText(3) != "internal-try-expression" ||
+                    query.OptionalInteger(4) is not long owner || !Functions.ContainsKey(owner) ||
+                    !InternalTryExpressions.Add(query.Integer(0)))
+                    throw new InvalidDataException("Internal try lacks its exact observed expression, function and cleanup policy");
         using (var query = database.Prepare("SELECT x.node_id,x.source_base_id,n.kind FROM base_subobject_expressions x LEFT JOIN nodes n ON n.id=x.node_id ORDER BY x.node_id"))
             while (query.Read())
             {
@@ -55,11 +63,11 @@ internal sealed partial class ObjectFile
                 if (!Records.ContainsKey(query.Integer(1)) || query.OptionalText(2) != "virtual-base-subobject" ||
                     !VirtualBaseExpressions.TryAdd(query.Integer(0), query.Integer(1)))
                     throw new InvalidDataException("Virtual-base expression lacks its observed complete base type");
-        using (var query = database.Prepare("SELECT id,function_entity_id,parent_lifetime_id,sibling_ordinal,parent_obligation_id,kind,source_file_id,line,column,capture_proof FROM source_lifetimes ORDER BY id"))
+        using (var query = database.Prepare("SELECT id,function_entity_id,parent_lifetime_id,sibling_ordinal,parent_obligation_id,parent_allocation_obligation_id,kind,source_file_id,line,column,capture_proof FROM source_lifetimes ORDER BY id"))
             while (query.Read())
             {
                 var lifetime = new SourceLifetime(query.Integer(0), query.Integer(1), query.OptionalInteger(2), query.Integer(3),
-                    query.OptionalInteger(4), query.Text(5), query.OptionalInteger(6), query.Integer(7), query.Integer(8), query.Text(9));
+                    query.OptionalInteger(4), query.OptionalInteger(5), query.Text(6), query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.Text(10));
                 if (lifetime.Id <= 0 || !EntitySourceRoutines.ContainsKey(lifetime.FunctionEntityId) ||
                     SourceFunctionKinds[lifetime.FunctionEntityId] == "runtime" || lifetime.SiblingOrdinal < 0 ||
                     lifetime.Kind is not ("block" or "block-after-label" or "expression-temporary" or "try-block") ||
@@ -93,13 +101,15 @@ internal sealed partial class ObjectFile
                     Original(SourceTypeById(receiver)).ExecutionTypeId != DestructionElementType(obligation.SourceTypeId).ExecutionTypeId)
                     throw new InvalidDataException("Source destruction type differs from its original destructor receiver");
             }
+        ReadAllocationObligations();
         foreach (var group in SourceLifetimes.Values.GroupBy(value => value.FunctionEntityId))
         {
             SourceLifetime[] roots = group.Where(value => value.ParentLifetimeId is null).ToArray();
-            if (roots.Length != 1 || roots[0].Kind != "block" || roots[0].SiblingOrdinal != 0 || roots[0].ParentObligationId is not null)
+            if (roots.Length != 1 || roots[0].Kind != "block" || roots[0].SiblingOrdinal != 0 || roots[0].ParentObligationId is not null || roots[0].ParentAllocationObligationId is not null)
                 throw new InvalidDataException("Original function lifetimes require exactly one block root");
         }
-        foreach (var group in SourceDestructionObligations.Values.GroupBy(value => value.LifetimeId))
+        foreach (var group in SourceDestructionObligations.Values.Select(value => (value.LifetimeId, value.Ordinal))
+            .Concat(SourceAllocationObligations.Values.Select(value => (value.LifetimeId, value.Ordinal))).GroupBy(value => value.LifetimeId))
             if (group.OrderBy(value => value.Ordinal).Where((value, ordinal) => value.Ordinal != ordinal).Any())
                 throw new InvalidDataException("Original destruction obligation order must be dense");
         foreach (var group in SourceLifetimes.Values.GroupBy(value => (value.FunctionEntityId, value.ParentLifetimeId)))
@@ -115,6 +125,10 @@ internal sealed partial class ObjectFile
                 if (!SourceLifetimes.TryGetValue(parent, out current) || current.FunctionEntityId != lifetime.FunctionEntityId)
                     throw new InvalidDataException("Original lifetime parent leaves its source function");
             }
+            if (lifetime.ParentAllocationObligationId is long allocation &&
+                (lifetime.ParentObligationId is not null || !SourceAllocationObligations.TryGetValue(allocation, out SourceAllocationObligation? allocationParent) ||
+                 allocationParent.LifetimeId != lifetime.ParentLifetimeId || lifetime.Kind == "block-after-label"))
+                throw new InvalidDataException("Original lifetime allocation overlap must reference its parent's allocation sublist");
             if (lifetime.ParentObligationId is long obligation &&
                 (!SourceDestructionObligations.TryGetValue(obligation, out SourceDestructionObligation? parentObligation) ||
                  parentObligation.LifetimeId != lifetime.ParentLifetimeId || lifetime.Kind == "block-after-label"))

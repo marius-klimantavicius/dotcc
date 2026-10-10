@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v37'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v38'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -164,6 +164,23 @@ CREATE TABLE functions (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
  body_node_id INTEGER NOT NULL REFERENCES nodes(id)
 ) STRICT;
+CREATE TABLE thunk_wrappers (
+ entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
+ target_entity_id INTEGER NOT NULL REFERENCES entities(id),
+ overridden_entity_id INTEGER NOT NULL REFERENCES entities(id),
+ primary_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ this_delta INTEGER NOT NULL,
+ vcall_index INTEGER NOT NULL,
+ return_delta INTEGER NOT NULL,
+ vbase_index INTEGER NOT NULL,
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-wrapper-creation'),
+ CHECK(entity_id<>target_entity_id AND entity_id<>overridden_entity_id AND entity_id<>primary_entity_id)
+) STRICT;
+CREATE TABLE wrapper_calls (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ wrapper_entity_id INTEGER NOT NULL REFERENCES thunk_wrappers(entity_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-wrapper-forwarding')
+) STRICT;
 CREATE TABLE initialization_actions (
  id INTEGER PRIMARY KEY CHECK(id>0),
  entity_id INTEGER NOT NULL REFERENCES entities(id),
@@ -182,11 +199,13 @@ CREATE TABLE source_lifetimes (
  parent_lifetime_id INTEGER REFERENCES source_lifetimes(id),
  sibling_ordinal INTEGER NOT NULL CHECK(sibling_ordinal>=0),
  parent_obligation_id INTEGER REFERENCES source_destruction_obligations(id),
+ parent_allocation_obligation_id INTEGER REFERENCES source_allocation_obligations(id),
  kind TEXT NOT NULL CHECK(kind IN ('block','block-after-label','expression-temporary','try-block')),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
+ CHECK(parent_obligation_id IS NULL OR parent_allocation_obligation_id IS NULL),
  UNIQUE(function_entity_id,parent_lifetime_id,sibling_ordinal)
 ) STRICT;
 CREATE TABLE source_destruction_obligations (
@@ -201,6 +220,26 @@ CREATE TABLE source_destruction_obligations (
  column INTEGER NOT NULL CHECK(column>=0),
  capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
  UNIQUE(lifetime_id,ordinal)
+) STRICT;
+CREATE TABLE source_allocation_obligations (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ function_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ lifetime_id INTEGER NOT NULL REFERENCES source_lifetimes(id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ deallocator_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ allocated_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ is_array INTEGER NOT NULL CHECK(is_array IN (0,1)),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
+ UNIQUE(lifetime_id,ordinal)
+) STRICT;
+CREATE TABLE internal_try_expressions (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ source_allocation_obligation_id INTEGER REFERENCES source_allocation_obligations(id),
+ cleanup_policy TEXT NOT NULL CHECK(cleanup_policy='unwind-to-entry-before-handler'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-internal-try')
 ) STRICT;
 CREATE TABLE expression_lifetimes (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
