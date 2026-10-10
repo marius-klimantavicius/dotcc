@@ -1,0 +1,58 @@
+{
+  "milestone": "dotobj v47 allocation ownership, discarded records, lazy defaulted exception policy and assignment sequencing",
+  "nativeCompiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native117-verified-snapshot/cpfe-dot",
+  "nativeSha256": "828753d236d0139739f7751c49cd045b4a08e05f4d5a303dc97210d964592e74",
+  "managedLinker": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-128/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "managedSha256": "23fcc5f380ef228cb8de8a85a8decab3c67f2bb019c8ff13838bccbb284f64e4",
+  "broad": {
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v47-002/results.json",
+    "checks": 1042,
+    "status": "passed"
+  },
+  "focused": [
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-uninitialized-new-v47-115-001/results.json",
+      "checks": 50,
+      "nativeAot": true
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-nested-record-discard-v47-115-001/results.json",
+      "checks": 33,
+      "nativeAot": true
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-defaulted-policy-v47-117-001/results.json",
+      "checks": 29,
+      "nativeAot": true
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-operator-call-order-v47-116-001/results.json",
+      "checks": 16,
+      "nativeAot": true
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-defaulted-policy-negatives-117/results.json",
+      "checks": 15,
+      "nativeAot": false
+    }
+  ],
+  "realDefaultedPolicy": {
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-defaulted-real-pair-117/policy-verification.json",
+    "bothObjectsVerified": true,
+    "combinedLink": "advanced to ReplacementScan layout mismatch; not generated"
+  },
+  "inventory": {
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-expanded-frontier-115/results.json",
+    "selected": 500,
+    "note": "Ongoing wider inventory uses earlier native115/managed126, not final117/128; do not conflate measurements."
+  },
+  "fullDuckdbTranslated": false,
+  "duckdbCompiled": false,
+  "duckdbExecuted": false,
+  "limitations": [
+    "Address-only imported incomplete by-value declarations remain gated.",
+    "Cross-TU partial callback ABI storage normalization remains pending.",
+    "Primary virtual-base vptr ownership and floating builtin classification fixes remain scratch.",
+    "No whole DuckDB generation, compilation, or execution claim."
+  ]
+}

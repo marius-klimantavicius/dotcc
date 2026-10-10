@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v46: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v47: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -44,7 +44,7 @@ struct Writer {
   std::map<a_dynamic_init_ptr,const dot_object_source::CleanupSnapshot*> active_payload_subobjects;
   std::map<an_expr_node_ptr,a_dynamic_init_ptr> active_normal_calls;
   std::set<a_dynamic_init_ptr> active_normal_obligations,emitted_normal_obligations;
-  std::vector<string> normal_destructions,cleanup_arrays,cleanup_vtt_arguments,array_runtime_operations,destruction_elisions,allocation_elisions;
+  std::vector<string> normal_destructions,cleanup_arrays,cleanup_vtt_arguments,array_runtime_operations,destruction_elisions,allocation_elisions,source_uninitialized_allocations;
   std::map<an_expr_node_ptr,std::pair<a_dynamic_init_ptr,const dot_object_source::ArrayRuntimeSnapshot*>> active_array_runtime;
   std::set<a_dynamic_init_ptr> active_array_obligations,emitted_array_obligations,covered_source_obligations,required_source_obligations;
   an_expr_node_ptr active_cleanup_prologue=nullptr;
@@ -1830,6 +1830,7 @@ struct Writer {
       }
       if(source && dot_object_source::state().automatic_partial_terminal.count(std::make_pair(source,current_routine)))continue;
       if(source && dot_object_source::state().empty_allocation_initializations.count(std::make_pair(source,current_routine)))continue;
+      if(source && dot_object_source::state().uninitialized_allocations.count(source))continue;
       if(!source || (!active_source_obligations.count(source) && !active_normal_obligations.count(source) && !active_payload_subobjects.count(source) && !active_array_obligations.count(source) && !active_allocation_obligations.count(source)))
         reject((string("destruction obligations lack owned cleanup action or normal call: ")+
           (dip->destructor?source_spelling(&dip->destructor->source_corresp):"no destructor")+
@@ -1856,6 +1857,7 @@ struct Writer {
         original_destructions.push_back(original);
     for(auto original:original_destructions)required_source_obligations.insert(original);
     bool has_terminal_elision=false;
+    for(auto original:original_destructions)if(captured.uninitialized_allocations.count(original))has_terminal_elision=true;
     for(const auto &elision:captured.automatic_partial_terminal)if(elision.second==execution)has_terminal_elision=true;
     for(const auto &elision:captured.automatic_destructor_no_effect)if(elision.second==execution)has_terminal_elision=true;
     for(const auto &elision:captured.empty_allocation_initializations)if(elision.second==execution)has_terminal_elision=true;
@@ -1909,6 +1911,15 @@ struct Writer {
             reject("original array allocation element lacks exact source destruction ownership");
           source_array_allocation_elements.push_back("{\"sourceAllocationObligationId\":"+number(source_obligation_ids.at(original))+
             ",\"sourceDestructionObligationId\":"+number(source_obligation_ids.at(paired->second))+",\"captureProof\":\"before-lowering\"}");
+        }
+        if(auto uninitialized=captured.uninitialized_allocations.find(original);uninitialized!=captured.uninitialized_allocations.end()) {
+          const auto &allocation=uninitialized->second;
+          if(!allocation.error.empty())reject(allocation.error.c_str());
+          source_uninitialized_allocations.push_back("{\"sourceAllocationObligationId\":"+number(source_obligation_ids.at(original))+
+            ",\"allocatorEntityId\":"+number(routine(allocation.allocator))+
+            ",\"isPlacement\":"+(allocation.placement?"true":"false")+
+            ",\"hasInitializer\":"+(allocation.has_initializer?"true":"false")+
+            ",\"captureProof\":\"original-new-without-initialization\"}");
         }
         source_allocation_obligations.push_back("{\"id\":"+number(source_obligation_ids.at(original))+
           ",\"functionEntityId\":"+number(value.owner?routine(value.owner):0)+",\"lifetimeId\":"+number(source_lifetime_ids.at(value.lifetime))+
@@ -2296,6 +2307,21 @@ struct Writer {
       allocation_elisions.push_back("{\"sourceAllocationObligationId\":"+number(source_obligation_ids.at(elision.first))+
         ",\"functionEntityId\":"+number(function)+",\"kind\":\"empty-initialization\",\"captureProof\":\"observed-empty-allocation-initialization\"}");
       covered_source_obligations.insert(elision.first);
+    }
+    auto &captured=dot_object_source::state();auto primary=dot_object_source::abi_primary(owner);
+    auto original_destructions=captured.destruction_order[primary?primary:owner];
+    for(auto original:captured.destruction_order[nullptr])
+      if(captured.initializer_lifetime_adoptions.count(std::make_pair(captured.destructions.at(original).lifetime,owner)))
+        original_destructions.push_back(original);
+    for(auto original:original_destructions)if(captured.uninitialized_allocations.count(original)) {
+      if(!source_obligation_ids.count(original) || active_allocation_obligations.count(original) ||
+         emitted_allocation_obligations.count(original) || active_source_obligations.count(original) ||
+         emitted_normal_obligations.count(original) || emitted_array_obligations.count(original) ||
+         captured.empty_allocation_initializations.count(std::make_pair(original,owner)))
+        reject("original uninitialized allocation also has an executable rollback or conflicting disposition");
+      allocation_elisions.push_back("{\"sourceAllocationObligationId\":"+number(source_obligation_ids.at(original))+
+        ",\"functionEntityId\":"+number(function)+",\"kind\":\"no-initialization\",\"captureProof\":\"original-new-without-initialization\"}");
+      covered_source_obligations.insert(original);
     }
     covered_source_obligations.insert(active_source_obligations.begin(),active_source_obligations.end());
     covered_source_obligations.insert(emitted_normal_obligations.begin(),emitted_normal_obligations.end());
@@ -4609,7 +4635,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v46\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v47\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -4632,7 +4658,7 @@ struct Writer {
       ",\"cleanupActions\":"+array(cleanup_actions)+",\"cleanupArrays\":"+array(cleanup_arrays)+",\"cleanupVttArguments\":"+array(cleanup_vtt_arguments)+",\"arrayRuntimeOperations\":"+array(array_runtime_operations)+",\"cleanupStates\":"+array(cleanup_states)+
       ",\"cleanupTransitions\":"+array(cleanup_transitions)+",\"cleanupFrameMarkers\":"+array(cleanup_frame_markers)+
       ",\"expressionLifetimes\":"+array(expression_lifetimes)+
-      ",\"destructionElisions\":"+array(destruction_elisions)+",\"allocationElisions\":"+array(allocation_elisions)+",\"normalDestructions\":"+array(normal_destructions)+",\"cleanupConditions\":"+array(cleanup_conditions)+
+      ",\"destructionElisions\":"+array(destruction_elisions)+",\"allocationElisions\":"+array(allocation_elisions)+",\"sourceUninitializedAllocations\":"+array(source_uninitialized_allocations)+",\"normalDestructions\":"+array(normal_destructions)+",\"cleanupConditions\":"+array(cleanup_conditions)+
       ",\"sourceRecords\":"+array(source_records)+",\"sourceRecordOperations\":"+array(source_record_operations)+
       ",\"sourceRecordOwners\":"+array(source_record_owners)+
       ",\"sourceTemplates\":"+array(source_templates)+",\"sourceTemplateParameters\":"+array(source_template_parameters)+

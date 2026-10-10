@@ -339,6 +339,14 @@ struct LifetimeSnapshot {
   std::string kind,error;
   a_source_position position={};
 };
+struct UninitializedAllocationSnapshot {
+  a_new_delete_supplement_ptr original=nullptr;
+  a_type_ptr allocated_type=nullptr;
+  a_routine_ptr allocator=nullptr,deallocator=nullptr;
+  bool placement=false,has_initializer=false;
+  a_source_position position={};
+  std::string error;
+};
 struct DestructionSnapshot {
   a_routine_ptr owner=nullptr,destructor=nullptr;
   a_dynamic_init_ptr initializer=nullptr;
@@ -463,6 +471,7 @@ struct State {
   std::set<a_dynamic_init_ptr> automatic_no_effect_observed;
   std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> automatic_destructor_no_effect;
   std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> empty_allocation_initializations;
+  std::map<a_dynamic_init_ptr,UninitializedAllocationSnapshot> uninitialized_allocations;
   std::map<a_routine_ptr,GeneratedStaticDestructor> generated_static_destructors;
   std::map<a_routine_ptr,std::vector<a_dynamic_init_ptr>> adopted_initializers;
   std::map<std::pair<an_object_lifetime_ptr,a_routine_ptr>,a_dynamic_init_ptr> initializer_lifetime_adoptions;
@@ -511,6 +520,7 @@ struct State {
   std::map<a_routine_ptr,GeneratedInitializer> generated_initializers;
   std::map<unsigned,RoutineAbi> routine_abis;
   std::map<unsigned,RoutineExceptionResolution> routine_exception_resolutions;
+  std::set<a_routine_ptr> requested_defaulted_exception_policies;
   std::map<a_routine_ptr,a_variable_ptr> result_parameters;
   std::set<a_routine_ptr> runtime_declarations;
   std::map<a_routine_ptr,DefaultAdapter> default_adapters;
@@ -1299,6 +1309,34 @@ struct GeneratedExceptionSpecificationCapture {
     state().routine_exception_resolutions[original_id]=resolution;
   }
 };
+inline bool request_referenced_defaulted_exception_policy(a_routine_ptr routine,a_boolean elided) {
+  if(!enabled() || C_mode() || !exceptions_enabled || !in_front_end || elided ||
+     il_lowering_underway || !routine->is_defaulted || routine->is_deleted ||
+     routine->is_prototype_instantiation || routine->defined_outside_of_parent ||
+     !routine->source_corresp.is_class_member)return false;
+  auto type=skip_typerefs(routine->type);
+  if(type->kind!=tk_routine || type->variant.routine.extra_info->exception_specification)return false;
+  auto owner=parent_class_of(routine);
+  if(owner->incomplete || !owner->source_corresp.assoc_info ||
+     type->variant.routine.extra_info->this_class!=owner)return false;
+  // Other members may already have prelowered this receiver. Stock
+  // update_generated_exception_spec_for_fields explicitly handles the
+  // generated base-class fields in that case. The selected routine itself
+  // must still have its original signature, before its calling-method/ABI
+  // observation; otherwise its emitted body could already use the old policy.
+  auto observed_type=state().type_ids.find(type);
+  if(observed_type!=state().type_ids.end() &&
+     state().routine_abis.count(observed_type->second))return false;
+  auto supplement=class_symbol_supp(symbol_for(owner));
+  if(supplement->scanning_field_initializer || supplement->has_initializer_fixups ||
+     supplement->default_ctor_body_delayed)return false;
+  // The set prevents a dependency recursion from querying the same selected
+  // defaulted member twice. Capture before the query to retain its initial
+  // absent policy; the existing stock-completion observer records the result.
+  if(!state().requested_defaulted_exception_policies.insert(routine).second)return false;
+  capture_type(type);
+  return true;
+}
 inline void observe_type(a_type_ptr type){if(enabled())capture_type(type);}
 inline void observe_lowered_type(a_type_ptr type) {
   if(!enabled())return;
@@ -1617,6 +1655,22 @@ inline void capture_array_allocation_element(a_dynamic_init_ptr allocation) {
   if(initialization && initialization->destructor)
     state().source_array_allocation_elements.emplace(allocation,initialization);
 }
+inline void observe_new_without_initialization(a_new_delete_supplement_ptr original,
+    a_dynamic_init_ptr allocation,a_source_position position) {
+  if(!enabled() || !allocation)return;
+  UninitializedAllocationSnapshot value;value.original=original;value.position=position;
+  if(!original || !original->is_new || original->dynamic_init || original->freeing_of_storage_on_exception ||
+     allocation->assoc_new || !allocation->is_freeing_of_storage_on_exception || allocation->is_array_freeing ||
+     !original->type || !original->routine || !allocation->destructor) {
+    value.error="original uninitialized allocation lacks exact unassociated scalar new recipe";
+  } else {
+    value.allocated_type=original->type;value.allocator=original->routine;value.deallocator=allocation->destructor;
+    value.placement=original->placement_new;value.has_initializer=original->has_new_initializer;
+  }
+  auto inserted=state().uninitialized_allocations.emplace(allocation,value);
+  if(!inserted.second && inserted.first->second.original!=original)
+    inserted.first->second.error="original uninitialized allocation belongs to multiple new expressions";
+}
 inline void capture_source_lifetime(an_object_lifetime_ptr lifetime,a_routine_ptr owner,
                                     an_object_lifetime_ptr parent=nullptr,unsigned sibling=0,
                                     a_dynamic_init_ptr initializer=nullptr) {
@@ -1669,7 +1723,16 @@ inline void capture_source_lifetime(an_object_lifetime_ptr lifetime,a_routine_pt
       // arrays, independently of the delete routine's erased void* ABI.
       capture_array_allocation_element(dip);
       if(dip->assoc_new)value.source_type=capture_type(dip->assoc_new->type);
-      else value.error="source allocation release lacks original new expression";
+      else if(auto found=state().uninitialized_allocations.find(dip);found!=state().uninitialized_allocations.end()) {
+        const auto &allocation=found->second;
+        if(!allocation.error.empty())value.error=allocation.error;
+        else if((abi_primary(allocation.deallocator)?abi_primary(allocation.deallocator):allocation.deallocator)!=value.destructor)
+          value.error="uninitialized allocation changed its original selected deallocator";
+        else {
+          value.source_type=capture_type(allocation.allocated_type);value.position=allocation.position;
+          capture_routine(allocation.allocator);
+        }
+      } else value.error="source allocation release lacks original new expression";
     } else if(dip->variable) {
       capture_variable(dip->variable);value.position=dip->variable->source_corresp.decl_position;
       auto variable=state().variables.find(dip->variable);

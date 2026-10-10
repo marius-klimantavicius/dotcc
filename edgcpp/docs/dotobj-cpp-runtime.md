@@ -566,3 +566,32 @@ as `noexcept`; all three retain the same source type IDs and naturally owned
 function entities. The unit and two RTTI provider objects generate C# containing
 1,043 function definitions. Unresolved imports are retained; this result verifies
 semantic metadata and C# generation, not compilation or execution of DuckDB.
+
+Profile 47 asks EDG to complete the implicit exception specification of an
+actually referenced in-class defaulted member through its existing
+`complete_defaulted_exc_spec` frontend API. The query occurs before stock
+`force_definition_of_compiler_generated_routine`, because that call can lower
+the selected body and receiver before returning. It is restricted to original,
+complete frontend types with no explicit specification or pending field
+initializer processing; it neither forces extra bodies nor relaxes link-time
+signature equality. The existing finalization observer retains the initial
+absent specification and the exact resolved throwing or nonthrowing policy.
+
+The two-translation-unit test passes 29 checks with native116/managed128,
+including native and stock-C O0/O2, implicit nonthrowing and throwing defaulted
+constructors, an explicit `noexcept(false)` constructor, source-hidden combined
+C# generation, JIT execution and NativeAOT execution
+(`dotobj-defaulted-policy-v47-116-001`). A further 15 checks reject nine resealed
+malformed resolution records (`dotobj-defaulted-policy-negatives-116`).
+
+The native117/managed128 strengthened test also passes 29 checks when a
+different member lowers the receiver in an earlier function, and retains an
+unused defaulted constructor with an ill-formed dependent initializer without
+instantiating it (`dotobj-defaulted-policy-v47-117-001`); the 15 provenance
+checks pass again (`dotobj-defaulted-policy-negatives-117`). EDG explicitly
+supports already-prelowered receivers in
+`update_generated_exception_spec_for_fields`, skipping generated base fields
+that its base-class traversal already handled. The query therefore checks
+that the selected routine's original ABI has not yet been lowered, rather than
+requiring an untouched receiver class. Queries remain confined to referenced
+members; class-wide eager exception-specification instantiation is not used.

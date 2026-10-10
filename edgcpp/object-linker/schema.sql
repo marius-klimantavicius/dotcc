@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v46'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v47'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -408,11 +408,18 @@ CREATE TABLE array_allocation_operations (
  helper_kind TEXT NOT NULL CHECK(helper_kind IN ('ia64-vector-new2','ia64-vector-new3')),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-array-new-runtime')
 ) STRICT;
+CREATE TABLE source_uninitialized_allocations (
+ source_allocation_obligation_id INTEGER PRIMARY KEY REFERENCES source_allocation_obligations(id),
+ allocator_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ is_placement INTEGER NOT NULL CHECK(is_placement IN (0,1)),
+ has_initializer INTEGER NOT NULL CHECK(has_initializer IN (0,1)),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-new-without-initialization')
+) STRICT;
 CREATE TABLE allocation_elisions (
  source_allocation_obligation_id INTEGER NOT NULL REFERENCES source_allocation_obligations(id),
  function_entity_id INTEGER NOT NULL REFERENCES entities(id),
- kind TEXT NOT NULL CHECK(kind='empty-initialization'),
- capture_proof TEXT NOT NULL CHECK(capture_proof='observed-empty-allocation-initialization'),
+ kind TEXT NOT NULL CHECK(kind IN ('empty-initialization','no-initialization')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN ('observed-empty-allocation-initialization','original-new-without-initialization')),
  PRIMARY KEY(source_allocation_obligation_id,function_entity_id)
 ) STRICT;
 CREATE TABLE source_allocation_obligations (

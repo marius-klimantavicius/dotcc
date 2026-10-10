@@ -326,6 +326,27 @@ object_source_overlay(symbols,
     '#endif\n'
     '      free_saved_macro_state(smsp);\n')
 
+# Complete the semantic exception policy of actually referenced in-class
+# defaulted members while the frontend still owns their original symbols.
+# This is a query through EDG's supported API, not an edit to its IL rules.
+reference_il = root / "upstream/src/il.c"
+reference_policy_query = ('#if defined(EDG_DOT_BACKEND)\n'
+    '  if (dot_object_source::request_referenced_defaulted_exception_policy(routine, elided_reference)) {\n'
+    '    complete_defaulted_exc_spec(routine);\n'
+    '  }\n'
+    '#endif\n')
+# Migrate the earlier end-of-function hook: force_definition can already lower
+# the selected member's body and receiver before returning. Query before that
+# dependency, preserving the original-type and frontend-context guards.
+reference_source = reference_il.read_text()
+reference_source = reference_source.replace(
+    reference_policy_query + '}  /* mark_routine_referenced_full */',
+    '}  /* mark_routine_referenced_full */')
+reference_il.write_text(reference_source)
+object_source_overlay(reference_il,
+    '  force_definition_of_compiler_generated_routine(routine);',
+    reference_policy_query + '  force_definition_of_compiler_generated_routine(routine);')
+
 wrapup = root / "upstream/src/fe_wrapup.c"
 object_source_overlay(wrapup,
     '#include "fe_wrapup.h"',
@@ -336,6 +357,19 @@ object_source_overlay(wrapup,
     '#if defined(EDG_DOT_BACKEND)\n'
     '  dot_object_source::observe_frontend_identity_boundary();\n'
     '#endif\n\n  in_front_end = FALSE;')
+
+expr_source = root / "upstream/src/expr.c"
+object_source_overlay(expr_source,
+    '#include "statements.h"',
+    '#include "statements.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
+object_source_overlay(expr_source,
+    '  record_typed_operator_position_in_expr_rescan_info(new_node,',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  if (!nps->needs_initialization)\n'
+    '    dot_object_source::observe_new_without_initialization(ndsp, nps->dyn_init_to_free_storage,\n'
+    '                                                        nps->type_position);\n'
+    '#endif\n'
+    '  record_typed_operator_position_in_expr_rescan_info(new_node,')
 
 for filename in ("lower_il.c", "lower_c99.c", "lower_init.c"):
     object_source_overlay(root / "upstream/src" / filename,

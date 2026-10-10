@@ -391,6 +391,8 @@ internal sealed partial class ObjectFile
             "sourceObligationId", "functionEntityId", "kind", "captureProof");
         Table("allocationCleanupActions", "SELECT id,function_entity_id,source_allocation_obligation_id,callback_entity_id,target_node_id,allocation_size,condition_binding_id,null_policy,capture_proof FROM allocation_cleanup_actions ORDER BY id",
             "id", "functionEntityId", "sourceAllocationObligationId", "callbackEntityId", "targetNodeId", "allocationSize", "conditionBindingId", "nullPolicy", "captureProof");
+        Table("sourceUninitializedAllocations", "SELECT source_allocation_obligation_id,allocator_entity_id,is_placement,has_initializer,capture_proof FROM source_uninitialized_allocations ORDER BY source_allocation_obligation_id",
+            "sourceAllocationObligationId", "allocatorEntityId", "isPlacement", "hasInitializer", "captureProof");
         Table("allocationElisions", "SELECT source_allocation_obligation_id,function_entity_id,kind,capture_proof FROM allocation_elisions ORDER BY source_allocation_obligation_id,function_entity_id",
             "sourceAllocationObligationId", "functionEntityId", "kind", "captureProof");
         Table("localStaticGuards", "SELECT id,function_entity_id,storage_id,guard_storage_id,source_type_id,source_lifetime_id,guard_policy,source_file_id,line,column,capture_proof FROM local_static_guards ORDER BY id",

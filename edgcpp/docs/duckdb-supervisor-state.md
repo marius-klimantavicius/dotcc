@@ -508,3 +508,46 @@ passing. Explicit SQL columns fix the test schema migration. Focused57 pass;
 field lifecycle has NativeAOT. Evidence finalized-semantics-20261010.json.
 No cross-TU generation success claimed beyond the validated one-unit1043
 definitions. Commit v46 next, then apply staged v47 batch.
+
+Committed v46 as e55465436 (20 owned files). Profile47 active. Base applies
+uninitialized-new source ownership; lifetime applies valid frontend semantic
+completion query for referenced defaulted exception specs. Supervisor applies
+recursive discard-result validation and for-step address preservation. Next
+native114/managed126 (125 is prior-profile scratch discard probe).
+
+
+v47 current tools: native114 failed C++ compilation (new writer scope); corrected
+native115 SHA346ef68ae0afc61e0fc7b17572546744a7517d7b7fc5df255dbef2bd2fc115a4
+and managed126 passed uninitialized-new50 and discarded-record33, both including
+NativeAOT. Its 500-unit inventory runs at expanded-frontier-115 (two jobs,8GiB
+per native process) with managed126 incremental verifier. This is broader
+inventory, not final exception-policy acceptance. Original query placement was
+proved too late by GDB: forcing a defaulted body already prelowered its class.
+Native116 moves the same guarded stock semantic query before body generation;
+SHA1acd4a5cb9b475e9989cd75a41c99ba54472988612ef792075ffb3aa91f9fce8.
+Managed128 adds observed RHS-first overloaded assignment-call sequencing;
+its prior diagnostic127 source and exact native/stock/JIT reducer are retained.
+116/128 defaulted policy paired-TU29 includes NativeAOT; provenance15 includes
+nine resealed negatives. Actual pair retry uses6GiB after honest2GiB bad_alloc
+resource failure. Operator-call-order116 passes16 incl NativeAOT. Broad116/128
+runs dotobj-full-v47-001. All receipts persist; no v47 commit until actual pair
+and integration evidence is assessed. Base stages next deferred address-only
+imported routine entities: both return/parameter reducers pass18 native/stock
+oracles, original incomplete types must be resolved from complete linked ABI.
+
+
+v47 accepted: native117 SHA828753d236d0139739f7751c49cd045b4a08e05f4d5a303dc97210d964592e74
+and managed128 pass all 1,042 broad checks. Focused 143 checks cover scalar
+uninitialized placement-new ownership, nested discarded record expressions,
+RHS-first overloaded assignment calls, and lazy referenced defaulted exception
+specification completion, including NativeAOT and malformed-metadata rejection.
+Stock EDG explicitly supports prelowered class base fields during exception-spec
+completion; query is guarded by original routine ABI, not class prelower state.
+Unused ill-formed dependent defaulted initializers remain lazy. Actual paired
+DuckDB vector constructor policies now agree; combined link advances to a
+ReplacementScan callback-layout mismatch. No combined generation claimed.
+Broad001 failed only because copied harness lacked stock cpfe; corrected002
+passes, both retained. Expanded500 inventory still uses earlier115/126.
+Evidence: dotobj-duckdb-allocation-policy-20261010.json. Next coherent batch:
+deferred external incomplete by-value declarations plus opaque callback storage,
+owned primary virtual-base vptr access, and floating classification intrinsics.

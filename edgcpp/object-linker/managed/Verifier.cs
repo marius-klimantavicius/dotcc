@@ -109,7 +109,22 @@ internal static class Verifier
             body.Bindings.TryGetValue(node.BindingId!.Value, out Binding? local) && local.Kind == "local" ||
             node.Kind is "member" or "lifetime-scope" && LocalPlace(Child(node, "operand"), depth + 1));
         var activeThrows = new Stack<long>();
-        void Visit(Node node, List<long> scopes, HashSet<long> visible, List<long> controls, int depth)
+        // Discarding a comma expression also discards its final operand.
+        // Track this through expression wrappers without granting permission
+        // to copy a class value when its result is actually consumed.
+        bool DiscardsChild(Node parent, Edge edge, bool discardedResult) =>
+            parent.Kind == "expr-stmt" && edge.Role == "value" ||
+            parent.Kind == "for" && edge.Role is "initializer" or "step" ||
+            parent.Kind == "internal-try-expression" && edge.Role is "attempt" or "cleanup" ||
+            parent.Kind == "throw" && edge.Role == "initializer" ||
+            parent.Kind == "sequence" && (discardedResult || edge.ChildId != SequenceTail(parent).Id) ||
+            parent.Kind == "convert" && Type(parent) == "void" && edge.Role == "operand" ||
+            parent.Kind == "lifetime-scope" && discardedResult && edge.Role == "operand";
+        bool DiscardedRecordEffect(Node node, int depth = 0) => depth <= 1024 &&
+            (Place(node) || node.Kind is "assign" or "record-transfer" or "record-constant-init" ||
+             node.Kind == "sequence" && DiscardedRecordEffect(SequenceTail(node), depth + 1) ||
+             node.Kind == "lifetime-scope" && DiscardedRecordEffect(Child(node, "operand"), depth + 1));
+        void Visit(Node node, List<long> scopes, HashSet<long> visible, List<long> controls, int depth, bool discardedResult = false)
         {
             if (depth > 1024) Fail("Graph nesting exceeds supported limit");
             if (!visited.Add(node.Id)) Fail($"Shared or cyclic executable node {node.Id}");
@@ -127,7 +142,7 @@ internal static class Verifier
                 if (node.Kind is "virtual-base-adjustment" or "cleanup-transition" or "cleanup-frame" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
                 if (node.Kind is "thrown-object-address" or "throw-marker" or "rethrow" or "cleanup-payload-address" or "handler-marker" or "caught-object-address") orders = ["none"];
                 if (node.Kind is "materialize" or "throw" or "internal-try-expression") orders = ["left-to-right"];
-                if (node.Kind is "assign" or "record-transfer" or "record-constant-init" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
+                if (node.Kind is "call" or "assign" or "record-transfer" or "record-constant-init" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
                 if (node.Kind is "address" or "dereference" or "array-decay" or "member" or "va-start" or "va-copy" or "va-end" or "va-arg") orders = ["none", "left-to-right", "unspecified"];
                 if (!orders.Contains(node.EvaluationOrder)) Fail($"Unsupported evaluation order at {node.Id}");
             }
@@ -153,22 +168,10 @@ internal static class Verifier
                     Fail("Array place requires explicit address, decay or initialization");
                 if (child.TypeId is long recordType && ScalarTypes.IsRecord(obj.Type(recordType)))
                 {
-                    // A discarded glvalue evaluates its place/address; it does
-                    // not transport the record value. Stock C preserves this
-                    // distinction for the left operand of a comma expression.
-                    bool discardedPlace = Place(child) &&
-                        (node.Kind == "sequence" && child.Id != SequenceTail(node).Id ||
-                         node.Kind == "convert" && Type(node) == "void" && edge.Role == "operand" ||
-                         node.Kind == "expr-stmt" && edge.Role == "value");
-                    bool allowed = node.Kind == "record-constant-init" && edge.Role is "target" or "value" || node.Kind == "record-storage-init" && edge.Role == "target" || discardedPlace || node.Kind == "block-copy" || node.Kind == "sequence" && node.ValueCategory == "place" && child.Id == SequenceTail(node).Id || node.Kind is "virtual-base-adjustment" or "member" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope" or "address" && edge.Role == "operand" ||
+                    bool discardedEffect = DiscardsChild(node, edge, discardedResult) && DiscardedRecordEffect(child);
+                    bool allowed = node.Kind == "record-constant-init" && edge.Role is "target" or "value" || node.Kind == "record-storage-init" && edge.Role == "target" || discardedEffect || node.Kind == "block-copy" || node.Kind == "sequence" && node.ValueCategory == "place" && child.Id == SequenceTail(node).Id || node.Kind is "virtual-base-adjustment" or "member" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope" or "address" && edge.Role == "operand" ||
                         node.Kind is "assign" or "record-transfer" && (edge.Role == "target" || edge.Role == "value" && child.Kind == "default-value") ||
-                        node.Kind == "declare" && edge.Role == "initializer" && child.Kind == "default-value" ||
-                        child.Kind is "assign" or "record-transfer" or "record-constant-init" &&
-                        (node.Kind == "expr-stmt" && edge.Role == "value" ||
-                         node.Kind == "internal-try-expression" && edge.Role is "attempt" or "cleanup" ||
-                         node.Kind == "throw" && edge.Role == "initializer" ||
-                         node.Kind == "sequence" && child.Id != SequenceTail(node).Id ||
-                         node.Kind == "convert" && Type(node) == "void" && edge.Role == "operand");
+                        node.Kind == "declare" && edge.Role == "initializer" && child.Kind == "default-value";
                     bool copyAllowed = node.Kind == "record-transfer" && edge.Role == "value"
                         ? obj.RecordValueTransfers.TryGetValue(node.Id, out string? transferKind) && obj.CanTransferRecord(obj.Type(recordType), transferKind)
                         : node.Kind == "assign" ? obj.CanCopyRecord(obj.Type(recordType))
@@ -829,7 +832,7 @@ internal static class Verifier
             }
             var nestedControls = node.Kind is "while" or "for" or "do-while" or "switch" ? new List<long>(controls) { node.Id } : controls;
             foreach (Edge edge in body.Edges.GetValueOrDefault(node.Id, []).Where(edge => node.Kind != "case" || edge.Role != "target").OrderBy(e => e.Ordinal))
-                Visit(body.Nodes[edge.ChildId], scopes, visible, nestedControls, depth + 1);
+                Visit(body.Nodes[edge.ChildId], scopes, visible, nestedControls, depth + 1, DiscardsChild(node, edge, discardedResult));
             if (node.Kind == "throw") activeThrows.Pop();
         }
         foreach (var edges in body.Edges.Values)
