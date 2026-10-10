@@ -766,3 +766,86 @@ Argument temporary copied into generated Element constructor adapter for
 new Element[n]; existing source-lifetime ancestry is under investigation.
 Base worker finishes coherent full source-concept graph in scratch. No full
 project generation/build/run claim; continue toward the generation checkpoint.
+
+
+v54 committed 6fc0c24f2. Candidate v55 source-concept graph integrated; native129
+and managed151 compile. Native129 SHA
+98d16e392c7a8d8656fde05138547db5fe5ca89b5344237518b8dbe51c69e3f5.
+First fixture fails the still-unrepresented dependent function-template lookup
+constant (configured tpck_template_ref); three real concept representatives reach
+ordered pack/substitution argument metadata. Base worker batches both exact
+families before next native cut. No source metadata omission accepted.
+ART ancestry diagnostic129 confirms an intermediate copied DIP already has an
+original source lifetime and destruction owned by the caller. Lifetime worker
+implements explicit generated-default-adapter execution adoption, retaining the
+original owner/type/ordinal and exact copy chain; no new fake source routine.
+Supervisor reserves TLS variable-wrapper/initializer ownership next; stock
+bodyless aliases and final storage resolution are recorded in retained scratch
+ dotobj-tls-wrapper-next/design.md. Native130 / managed152 are next available
+cuts. No new committed project-level generation result beyond v54.
+
+Candidate v55 progress (not acceptance): native130 / managed152 preserve exact
+concept packs and dependent function-template lookup, including empty argument
+boundaries. The focused source-only fixture now exports but finds an implicit
+first constrained-type binder verifier gap; three actual representatives advance
+to std::common_reference class-template pack capture. Both are integrated for
+native132 / managed155. Source graph declarations remain fully owned, with no
+fabricated selected overload or placeholder constant.
+
+Native131 / managed154 add observed copied-default-argument execution ownership
+and the initial constant-TLS wrapper/alias graph. Actual ART now packages for the
+first time; reader/emission and focused throwing cleanup tests are in progress.
+RE2 wrapper capture exposes an overly restrictive compiler_generated flag check:
+stock make_rout_entry factories do not set that flag. The exact factory identity,
+variable, signature and scope checks remain; only the unsupported flag assumption
+is corrected in native132. TLS reader allowlist omission in managed153 is fixed
+in managed154; the failed attempt is retained. First typed dynamic-spec audit
+confirms remaining ios/regex gates are legacy throw(), whose unexpected semantics
+must not be silently mapped to noexcept. No new verified actual-unit count yet.
+
+Frozen native131 SHA97c7e045d381c3ad0b3690e63898c764e36bd499c85f6a3dde9870e19f389ba8.
+Worker base owns class-pack follow-ups and four dependent-variable declaration
+reference bridge; lifetime owns ART focused JIT/AOT acceptance; supervisor owns
+TLS exact-body/runtime tests and integration. Persistent disk42GiB free/workspace
+80GiB: do not start a second full 70GiB corpus on persistent storage. No cleanup.
+
+
+ART131/154 accepted focused70 checks, including stock/native O0/O2, JIT,
+NativeAOT and13 resealed ownership negatives. Actual ART verifies and emits
+3,714 definitions with the two RTTI providers (dotobj-art-managed-131-154).
+This is a new actual unit result but latest-profile re-probe still pending.
+
+TLS132 still hit the same ABI gate after removing the unproven generic flag
+assumption. Exact133 diagnostics identify the real issue: source-function=1
+for _ZTW5value; the source walker incorrectly captured the generated wrapper as
+an original declaration. Native134 reserves the stock wrapper at creation and
+excludes only factory-owned TLS routines from original-function capture. No
+source graph is erased and no frontend semantics are modified. Managed156 also
+uses the actual owned `ne` opcode and accepts the exact address-of-storage node.
+
+Source constraints132 progress to class-valued constexpr aggregate at libc++
+ranges::swap; the fixture has a dependent variable-template boolean-result
+validation gap. Worker batches typed aggregate initializer/decl-reference graph
+and context-specific substitution validation. These remain explicit failures,
+not accepted coverage. Next coherent graph cut follows TLS134.
+
+
+Profile55 acceptance: native136 (SHA39f72d7272683c6bc5442831e724e71fe73a2145b4d2b973b7afed941e100c49),
+managed159 final source reader.721 checks pass: graph107, copied default-argument
+cleanup70, TLS53, initializer-list40, existing source/template regression451.
+TLS and initializer-list suites use frozen managed157/158 respectively before
+the disjoint new semantic-constant whitelist correction; final source and ART
+suites use159. Focused suites include JIT/NativeAOT and resealed negative objects.
+Two old test assumptions were corrected against retained evidence: sizeof/alignof
+are owned constant-expression nodes, and variadic member ABI is supported since53.
+
+Actual ART:3,714 definitions; RE2 re2.cc+set.cc:931; caching-file-system-wrapper
+DuckDB test:1,773. All four verify; last baseline managed reject is cleared.
+Cumulative prior136problem follow-up now81package/81verify,55export/config gates,
+zero managed rejects. Not a full latest-profile rebuild. Review links under
+artifacts/review/dotobj-duckdb-v55. Largest combined project still53units33,105defs.
+Current queue updated in duckdb-supervisor-priorities.md:38alias/concept source
+metadata,4static-member template references,2dynamic throw specs,3singleton
+provenance/layout families,8test-profile frontend issues. Dynamic-spec patch is
+READY in worker scratch, alias/static-member closure continues. Commit55 then
+native137/managed160 for next coherent profile56 cut. Continue autonomously.

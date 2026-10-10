@@ -34,6 +34,14 @@ internal sealed partial class Linker
         Objects = objects.OrderBy(obj => obj.UnitId, StringComparer.Ordinal).ToArray();
         if (Objects.Select(obj => obj.UnitId).Distinct(StringComparer.Ordinal).Count() != Objects.Count)
             throw new InvalidDataException("The same translation unit was supplied more than once");
+        var sourceConstraintContracts = new Dictionary<string,string>(StringComparer.Ordinal);
+        foreach (var obj in Objects)
+            foreach (var contract in obj.SourceConstraintContracts)
+            {
+                if (sourceConstraintContracts.TryGetValue(contract.Key, out string? previous) && previous != contract.Value)
+                    throw new InvalidDataException("Original concept/constraint definition mismatch: " + contract.Key);
+                sourceConstraintContracts[contract.Key] = contract.Value;
+            }
         VerifyEnumDefinitions();
         ResolveDeferredRoutineAbis();
         // A provider's coalescible copy must not force archive extraction when

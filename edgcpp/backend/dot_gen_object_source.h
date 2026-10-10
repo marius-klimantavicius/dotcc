@@ -20,6 +20,8 @@
 #endif
 #include "symbol_tbl.h"
 #include "const_ints.h"
+#include "exprutil.h"
+#include "scope_stk.h"
 BEGIN_EDG_NAMESPACE
 namespace dot_object_source {
 inline bool enabled() {
@@ -65,6 +67,7 @@ struct Type {
   unsigned dependent_owner=0,dependent_original_nested=0;
   int dependent_depth=0,dependent_position=0;
   bool dependent_pack=false;
+  unsigned constraint_expression=0;
   // Private physical representation fact also retained for 128-bit enums.
   bool is_int128=false,is_unsigned_int128=false;
   a_source_position position={};
@@ -80,7 +83,9 @@ struct Type {
   std::vector<bool> declaration_defaults;
 };
 struct SourceSemanticConstant {
-  unsigned type=0,member_owner=0,type_operand=0;
+  unsigned type=0,member_owner=0,type_operand=0,source_expression=0;
+  unsigned aggregate_flags=0,aggregate_original_type=0,aggregate_expression=0;
+  bool aggregate_template_const=false;
   int builtin_operation=-1;
   bool standard_alignof=false;
   std::string kind,name,value,operation,error;
@@ -102,7 +107,14 @@ struct SourceTemplateReference {
   a_source_position location={};
   std::vector<SourceTemplateFormal> parameters;
 };
-struct SourceTemplateArgument { unsigned type=0,constant=0,templ=0; };
+struct SourceTemplateArgument {
+  unsigned type=0,constant=0,templ=0;
+  std::string kind;
+  bool pack=false,pack_element=false,ellipsis=false,integer_pack=false,explicit_argument=false,injected_class=false;
+  bool auto_parameter=false,decltype_auto_parameter=false;
+  unsigned expansion=0,substituted_template=0;
+};
+inline SourceTemplateArgument capture_constraint_argument(a_template_arg_ptr,std::string&);
 struct Enumerator {
   std::string name,value;
   a_source_position position={};
@@ -240,6 +252,18 @@ struct RoutineAbi {
 struct DefaultAdapter {
   a_routine_ptr target=nullptr,primary=nullptr;
   bool implied_arguments=false,copy_constructor=false,has_arguments=false;
+};
+struct DefaultArgumentExecution {
+  a_routine_ptr owner=nullptr,source_owner=nullptr,target=nullptr;
+  a_scope_ptr scope=nullptr;
+  an_object_lifetime_ptr root=nullptr;
+  an_expr_node_ptr forwarding=nullptr;
+  std::map<a_dynamic_init_ptr,a_dynamic_init_ptr> obligations,temporaries;
+  std::map<an_object_lifetime_ptr,an_object_lifetime_ptr> lifetimes;
+  std::map<a_dynamic_init_ptr,unsigned> copied_ordinals;
+  std::map<an_object_lifetime_ptr,unsigned> sibling_ordinals;
+  bool complete=false;
+  std::string error;
 };
 struct LambdaEntry {
   a_routine_ptr target=nullptr;
@@ -553,6 +577,11 @@ struct State {
   std::map<a_routine_ptr,a_variable_ptr> result_parameters;
   std::set<a_routine_ptr> runtime_declarations;
   std::map<a_routine_ptr,DefaultAdapter> default_adapters;
+  std::map<a_routine_ptr,DefaultArgumentExecution> default_argument_executions;
+  std::vector<a_routine_ptr> active_default_argument_copies;
+  std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> default_argument_obligation_adoptions;
+  std::set<std::pair<an_object_lifetime_ptr,a_routine_ptr>> default_argument_lifetime_adoptions;
+  std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> default_argument_temporary_adoptions;
   std::map<a_routine_ptr,ThunkWrapper> thunk_wrappers;
   std::map<a_routine_ptr,LambdaEntry> lambda_entries;
   std::map<an_asm_entry_ptr,AsmStatement> asm_statements;
@@ -724,6 +753,7 @@ inline int source_builtin_trait_arity(a_builtin_operation_kind kind) {
     default:return 0;
   }
 }
+inline unsigned capture_constraint_expression(an_expr_node_ptr,unsigned);
 inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
   auto &s=state();if(!expression)return 0;
   if(expression->kind==enk_constant)return capture_semantic_constant(node_constant(expression));
@@ -752,6 +782,9 @@ inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
     value.standard_alignof=query.is_std_alignof;
     if(query.is_type)value.type_operand=capture_type(query.variant.type);
     else value.operands.push_back(capture_semantic_constant_expr(query.variant.expr));
+  } else if(expression->kind==enk_variable) {
+    value.kind="source-expression";
+    value.source_expression=capture_constraint_expression(expression,0);
   } else if(expression->kind!=enk_operation)value.error="dependent constant expression needs an owned source expression family";
   else {
     const auto &operation=expression->variant.operation;
@@ -786,6 +819,35 @@ inline unsigned capture_semantic_constant(a_constant_ptr constant) {
   value.name=spelling(constant->source_corresp);value.location=constant->source_corresp.decl_position;
   if(constant->kind==ck_integer) {
     value.kind="integer";value.name.clear();value.value=decimal_str_for_integer_constant(constant).as_temp_characters();
+  } else if(constant->kind==ck_aggregate) {
+    value.kind="aggregate";value.name.clear();
+    value.aggregate_original_type=capture_type(constant->orig_type);
+    value.aggregate_template_const=constant->variant.aggregate.added_const_for_template_param;
+    if(constant->variant.aggregate.has_dynamic_init_component || constant->has_been_prelowered || constant->vptr_has_been_lowered ||
+       constant->initializes_empty_object || constant->local_expr_ref || constant->uses_designated_initializers)
+      value.error="source aggregate constant requires original dynamic/designated/subobject initializer mapping";
+    if(constant->explicit_braces_on_aggregate)value.aggregate_flags|=1U<<0;
+    if(constant->explicit_parentheses_on_aggregate)value.aggregate_flags|=1U<<1;
+    if(constant->partial_aggr_value)value.aggregate_flags|=1U<<2;
+    if(constant->is_partially_initialized)value.aggregate_flags|=1U<<3;
+    if(constant->implicit_aggr_element)value.aggregate_flags|=1U<<4;
+    if(constant->is_compound_literal)value.aggregate_flags|=1U<<5;
+    if(constant->is_result_of_constexpr_call)value.aggregate_flags|=1U<<6;
+    if(constant->is_generic_initializer)value.aggregate_flags|=1U<<7;
+    if(constant->is_implicit_initialization)value.aggregate_flags|=1U<<8;
+    if(constant->constant_for_base_class)value.aggregate_flags|=1U<<9;
+    if(constant->constant_for_base_class_from_constexpr_folding)value.aggregate_flags|=1U<<10;
+    if(constant->implicit_cast)value.aggregate_flags|=1U<<11;
+    if(constant->explicit_cast_applied)value.aggregate_flags|=1U<<12;
+    if(constant->is_reinterpret_cast)value.aggregate_flags|=1U<<13;
+    if(constant->is_reinterpret_like_cast)value.aggregate_flags|=1U<<14;
+    if(constant->uses_designated_initializers)value.aggregate_flags|=1U<<15;
+    if(constant->expr)value.aggregate_expression=capture_constraint_expression(constant->expr,0);
+    a_constant_ptr last=nullptr;
+    for(auto child=constant->variant.aggregate.first_constant;child;child=child->next) {
+      value.operands.push_back(capture_semantic_constant(child));last=child;
+    }
+    if(last!=constant->variant.aggregate.last_constant)value.error="source aggregate constant has inconsistent original element boundaries";
   } else if(constant->kind==ck_template_param) {
     const auto &parameter=constant->variant.template_param;
     if(parameter.kind==tpck_param) {
@@ -1011,18 +1073,7 @@ inline void capture_record(a_type_ptr t) {
       value.template_error="dependent partial specialization requires owned selected argument mapping";
     if(value.template_error.empty()) {
       for(auto argument=extra->template_arg_list;argument;argument=argument->next) {
-        SourceTemplateArgument item;
-        if(argument->pack_expansion_descr || argument->is_pack_element || argument->is_pack ||
-           argument->has_pack_ellipsis || argument->is_integer_pack || argument->is_error)
-          value.template_error="dependent class template argument pack requires an owned expansion";
-        else if(argument->kind==tak_type && argument->variant.type)item.type=capture_type(argument->variant.type);
-        else if(argument->kind==tak_nontype && !argument->is_array_bound_of_unknown_type && argument->variant.constant)
-          item.constant=capture_semantic_constant(argument->variant.constant);
-        else if(argument->kind==tak_template && argument->variant.templ.ptr) {
-          if(argument->variant.templ.substituted_param_template)
-            value.template_error="template argument requires its owned substituted formal declaration";
-          else item.templ=capture_source_template(argument->variant.templ.ptr);
-        } else value.template_error="dependent class template argument family not yet represented";
+        auto item=capture_constraint_argument(argument,value.template_error);
         if(!value.template_error.empty())value.template_error+=" [argument-kind="+std::to_string(int(argument->kind))+
           ",ordinal="+std::to_string(value.template_arguments.size())+"]";
         value.template_arguments.push_back(item);
@@ -1093,6 +1144,8 @@ inline void capture_record(a_type_ptr t) {
   s.records[t]=value;
   for(const auto &field:value.fields)capture_field_initializer(field.il,t);
 }
+#include "dot_gen_object_source_operations.h"
+#include "dot_gen_object_source_constraints.h"
 inline unsigned capture_type(a_type_ptr t) {
   if(!t)return 0;
   auto &s=state();auto prior=s.type_ids.find(t);
@@ -1184,20 +1237,15 @@ inline unsigned capture_type(a_type_ptr t) {
     else if(parameter.kind==tptk_param) {
       value.dependent_kind="parameter";value.dependent_depth=extra->coordinates.depth;
       value.dependent_position=extra->coordinates.position;value.dependent_pack=parameter.is_pack;
-      if(value.dependent_depth<0 || value.dependent_position<=0 || extra->constraint.type_constraint)
-        value.error="dependent source parameter requires ordinary coordinates without an unrepresented constraint [name="+
-          value.name+",depth="+std::to_string(value.dependent_depth)+",position="+std::to_string(value.dependent_position)+
-          ",constraint="+std::to_string(extra->constraint.type_constraint?1:0)+"]";
+      if(value.dependent_depth<0 || value.dependent_position<=0)
+        value.error="dependent source parameter lacks ordinary original coordinates";
+      if(extra->constraint.type_constraint) {
+        if(extra->constraint.type_constraint->kind!=enk_concept_id)
+          value.error="original constrained type requires its exact concept-id";
+        else value.constraint_expression=capture_constraint_expression(extra->constraint.type_constraint);
+      }
       a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
       conv_seq_to_file_and_line(value.position.seq,&display,&full,&line,&at_end);
-      if(extra->constraint.type_constraint) {
-        auto constraint=extra->constraint.type_constraint;
-        value.error+=" [constraint-node="+std::to_string(int(constraint->kind))+
-          ",concept="+(constraint->kind==enk_concept_id && constraint->variant.concept_id.concept_template?
-             spelling(constraint->variant.concept_id.concept_template->source_corresp):std::string())+
-          ",source="+std::string(full?full:display?display:"")+":"+std::to_string(line)+":"+
-          std::to_string(value.position.column)+"]";
-      }
       if(!line || !(full?full:display))value.error="dependent source parameter lacks original declaration location";
       else value.dependent_identity=std::string(full?full:display)+":"+std::to_string(line)+":"+
         std::to_string(value.position.column)+":"+std::to_string(value.dependent_depth)+":"+std::to_string(value.dependent_position);
@@ -1582,8 +1630,9 @@ inline void observe_asm_after_lowering(an_asm_entry_ptr entry) {
 #endif
   }
 }
+inline bool is_observed_tls_routine(a_routine_ptr routine);
 inline void capture_routine(a_routine_ptr r) {
-  if(!r || abi_primary(r))return;
+  if(!r || abi_primary(r) || is_observed_tls_routine(r))return;
   if(state().generated_static_destructors.count(r))return;
   if(state().generated_array_initializers.count(r))return;
 #if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN
@@ -1654,6 +1703,11 @@ inline void observe_default_adapter(a_routine_ptr target,a_routine_ptr adapter,
   auto primary=abi_primary(target);origin.primary=primary?primary:target;
   origin.implied_arguments=implied;origin.copy_constructor=copy;origin.has_arguments=has_arguments;
   state().default_adapters.emplace(adapter,origin);
+  if(has_arguments) {
+    DefaultArgumentExecution execution;execution.target=target;
+    execution.owner=innermost_function_scope?innermost_function_scope->variant.routine.ptr:nullptr;
+    state().default_argument_executions.emplace(adapter,execution);
+  }
 }
 inline bool abi_storage_type(a_type_ptr type) {
   type=skip_typerefs(type);
@@ -2381,11 +2435,13 @@ inline void observe_lifetime_copy(an_object_lifetime_ptr original,an_object_life
   if(enabled() && original && copy && original!=copy)state().lifetime_copies.emplace(copy,original);
 }
 inline an_object_lifetime_ptr source_lifetime(an_object_lifetime_ptr value,a_routine_ptr owner) {
+  auto execution_owner=owner;
   auto primary=abi_primary(owner);if(primary)owner=primary;
   std::set<an_object_lifetime_ptr> seen;
   while(value && seen.insert(value).second) {
     auto direct=state().lifetimes.find(value);
     if(direct!=state().lifetimes.end() && (direct->second.owner==owner ||
+       state().default_argument_lifetime_adoptions.count(std::make_pair(value,execution_owner)) ||
        (direct->second.initializer && state().initializer_lifetime_adoptions.count(std::make_pair(value,owner)))))return value;
     auto copied=state().lifetime_copies.find(value);
     if(copied==state().lifetime_copies.end())break;
@@ -2394,7 +2450,103 @@ inline an_object_lifetime_ptr source_lifetime(an_object_lifetime_ptr value,a_rou
   return nullptr;
 }
 inline void observe_dynamic_init_copy(a_dynamic_init_ptr original,a_dynamic_init_ptr copy) {
-  if(enabled() && original!=copy)state().dynamic_init_copies.emplace(copy,original);
+  if(!enabled() || original==copy)return;
+  state().dynamic_init_copies.emplace(copy,original);
+  if(state().active_default_argument_copies.empty())return;
+  auto adapter=state().active_default_argument_copies.back();
+  auto &execution=state().default_argument_executions.at(adapter);
+  std::set<a_dynamic_init_ptr> seen;
+  for(auto candidate=original;candidate && seen.insert(candidate).second;) {
+    auto source=state().destructions.find(candidate);
+    if(source!=state().destructions.end()) {
+      if(!source->second.owner || source->second.initializer || !source->second.lifetime || !copy->lifetime ||
+         (execution.source_owner && execution.source_owner!=source->second.owner))
+        execution.error="default arguments have unsupported mixed original owners or absent copied lifetime";
+      else {
+        execution.source_owner=source->second.owner;
+        execution.obligations.emplace(copy,candidate);
+        auto inserted=execution.lifetimes.emplace(copy->lifetime,source->second.lifetime);
+        if(!inserted.second && inserted.first->second!=source->second.lifetime)
+          execution.error="generated argument lifetime merges distinct original boundaries";
+      }
+      break;
+    }
+    auto prior=state().dynamic_init_copies.find(candidate);
+    if(prior==state().dynamic_init_copies.end())break;
+    candidate=prior->second;
+  }
+  seen.clear();
+  for(auto candidate=original;candidate && seen.insert(candidate).second;) {
+    auto source=state().record_temporaries.find(candidate);
+    if(source!=state().record_temporaries.end()) {
+      if(!source->second.owner || source->second.initializer ||
+         (execution.source_owner && execution.source_owner!=source->second.owner))
+        execution.error="default argument temporary has a different original owner";
+      else {execution.source_owner=source->second.owner;execution.temporaries.emplace(copy,candidate);}
+      break;
+    }
+    auto prior=state().dynamic_init_copies.find(candidate);
+    if(prior==state().dynamic_init_copies.end())break;
+    candidate=prior->second;
+  }
+}
+inline void observe_default_argument_copy_begin(a_routine_ptr adapter,a_scope_ptr scope,
+                                                an_object_lifetime_ptr lifetime) {
+  if(!enabled())return;
+  auto found=state().default_argument_executions.find(adapter);
+  if(found==state().default_argument_executions.end())return;
+  auto &execution=found->second;execution.scope=scope;execution.root=lifetime;
+  state().active_default_argument_copies.push_back(adapter);
+}
+inline void observe_default_argument_copy_end(a_routine_ptr adapter) {
+  if(!enabled())return;
+  auto found=state().default_argument_executions.find(adapter);
+  if(found==state().default_argument_executions.end())return;
+  auto &execution=found->second;
+  if(state().active_default_argument_copies.empty() || state().active_default_argument_copies.back()!=adapter) {
+    execution.error="default argument copy stack mismatch";return;
+  }
+  state().active_default_argument_copies.pop_back();
+  if(execution.obligations.empty() && execution.temporaries.empty())return;
+  auto primary=execution.owner?abi_primary(execution.owner):nullptr;
+  if(!execution.owner || (primary?primary:execution.owner)!=execution.source_owner)
+    execution.error="default argument factory caller differs from the copied source owner";
+  if(execution.obligations.empty() || !execution.lifetimes.count(execution.root))
+    execution.error="default argument execution lacks exact copied root lifetime";
+  for(const auto &entry:execution.lifetimes) {
+    auto copied=entry.first,original=entry.second;
+    if(copied->kind!=original->kind || copied->kind!=olk_expr_temporary ||
+       (copied!=execution.root && !execution.lifetimes.count(copied->parent_lifetime)))
+      execution.error="copied default argument lifetime has an unowned parent or kind";
+    unsigned ordinal=0;
+    for(auto dip=copied->destructions;dip;dip=dip->next_in_destruction_list,++ordinal) {
+      if(!execution.obligations.count(dip))execution.error="copied default argument destruction lacks exact original";
+      else execution.copied_ordinals.emplace(dip,ordinal);
+    }
+    unsigned sibling=0;
+    if(copied!=execution.root) {
+      auto child=copied->parent_lifetime->child_lifetime;
+      while(child && child!=copied) {child=child->next;++sibling;}
+      if(!child)execution.error="copied default argument child lacks ordered parent membership";
+    }
+    execution.sibling_ordinals.emplace(copied,sibling);
+    auto inserted=state().lifetime_copies.emplace(copied,original);
+    if(!inserted.second && inserted.first->second!=original)
+      execution.error="copied default argument lifetime has conflicting provenance";
+    state().default_argument_lifetime_adoptions.emplace(original,adapter);
+  }
+  for(const auto &entry:execution.obligations)
+    state().default_argument_obligation_adoptions.emplace(entry.second,adapter);
+  for(const auto &entry:execution.temporaries)
+    state().default_argument_temporary_adoptions.emplace(entry.second,adapter);
+  execution.complete=true;
+}
+inline void observe_default_argument_forwarding(a_routine_ptr adapter,a_scope_ptr scope,an_expr_node_ptr call) {
+  if(!enabled())return;
+  auto found=state().default_argument_executions.find(adapter);
+  if(found==state().default_argument_executions.end())return;
+  if(found->second.scope && found->second.scope!=scope)found->second.error="default argument scope changed";
+  found->second.forwarding=call;
 }
 inline a_dynamic_init_ptr original_record_temporary(a_dynamic_init_ptr value) {
   std::set<a_dynamic_init_ptr> seen;
@@ -2681,11 +2833,13 @@ inline void observe_initializer_lifetime_copy(an_object_lifetime_ptr original,an
     state().initializer_lifetime_adoptions.emplace(std::make_pair(original,owner),initializer);
 }
 inline a_dynamic_init_ptr source_destruction(a_dynamic_init_ptr value,a_routine_ptr owner) {
+  auto execution_owner=owner;
   auto primary=abi_primary(owner);if(primary)owner=primary;
   std::set<a_dynamic_init_ptr> seen;
   while(value && seen.insert(value).second) {
     auto direct=state().destructions.find(value);
     if(direct!=state().destructions.end() && (direct->second.owner==owner ||
+       state().default_argument_obligation_adoptions.count(std::make_pair(value,execution_owner)) ||
        (direct->second.initializer && state().initializer_lifetime_adoptions.count(std::make_pair(direct->second.lifetime,owner)))))return value;
     auto copied=state().dynamic_init_copies.find(value);
     if(copied==state().dynamic_init_copies.end())break;
@@ -2854,6 +3008,7 @@ inline void observe_cleanup_region_copy(a_constant_ptr original,a_dynamic_init_p
 #endif
 inline void capture_scope(a_scope_ptr scope,a_routine_ptr function_owner=nullptr) {
   if(!scope)return;
+  if(scope->kind==sck_function && is_observed_tls_routine(scope->variant.routine.ptr))return;
   if(scope->kind==sck_function && scope->variant.routine.ptr->special_kind==sfk_lambda_entry_point) {
     capture_routine(scope->variant.routine.ptr);return;
   }
@@ -3144,6 +3299,7 @@ inline void observe_field_copy(a_field_ptr original,a_field_ptr copy) {
 inline void observe_vptr_field(a_field_ptr field) {
   if(enabled())state().generated_field_roles[field]="vptr";
 }
+#include "dot_gen_object_source_tls.h"
 }
 END_EDG_NAMESPACE
 #endif

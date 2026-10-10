@@ -7,6 +7,11 @@ root = Path(__file__).resolve().parents[1]
 for source, target in [
     (root / "backend/dot_gen_object_macros.h", root / "upstream/src/dot_gen_object_macros.h"),
     (root / "backend/dot_gen_object_source.h", root / "upstream/src/dot_gen_object_source.h"),
+    (root / "backend/dot_gen_object_source_tls.h", root / "upstream/src/dot_gen_object_source_tls.h"),
+    (root / "backend/dot_gen_object_tls_writer.h", root / "upstream/src/dot_gen_object_tls_writer.h"),
+    (root / "backend/dot_gen_object_source_operations.h", root / "upstream/src/dot_gen_object_source_operations.h"),
+    (root / "backend/dot_gen_object_source_constraints.h", root / "upstream/src/dot_gen_object_source_constraints.h"),
+    (root / "backend/dot_gen_object_constraints_writer.h", root / "upstream/src/dot_gen_object_constraints_writer.h"),
     (root / "backend/dot_gen_object.h", root / "upstream/src/dot_gen_object.h"),
     (root / "backend/dot_gen_primitive_views.h", root / "upstream/src/dot_gen_primitive_views.h"),
     (root / "backend/dot_gen_variable_aliases.h", root / "upstream/src/dot_gen_variable_aliases.h"),
@@ -377,10 +382,29 @@ for filename in ("lower_il.c", "lower_c99.c", "lower_init.c"):
         '#include "exprutil.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
 init_lower = root / "upstream/src/lower_init.c"
 object_source_overlay(init_lower,
+    '      default_arg_list = copy_list_of_expr_trees(default_arg_list, opts);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_source::observe_default_argument_copy_begin(new_routine, new_routine_scope, init_expr_lifetime);\n'
+    '#endif\n'
+    '      default_arg_list = copy_list_of_expr_trees(default_arg_list, opts);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_source::observe_default_argument_copy_end(new_routine);\n'
+    '#endif')
+# Migrate the older lambda-only factory hook without duplicating observers.
+old_forwarding_hook = ('      call_node = make_call_node(routine, first_arg);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_source::observe_lambda_entry_body(new_routine, new_routine_scope, call_node);\n'
+    '#endif')
+forwarding_source = init_lower.read_text()
+if old_forwarding_hook in forwarding_source:
+    init_lower.write_text(forwarding_source.replace(old_forwarding_hook,
+        '      call_node = make_call_node(routine, first_arg);'))
+object_source_overlay(init_lower,
     '      call_node = make_call_node(routine, first_arg);',
     '      call_node = make_call_node(routine, first_arg);\n'
     '#if defined(EDG_DOT_BACKEND)\n'
     '      dot_object_source::observe_lambda_entry_body(new_routine, new_routine_scope, call_node);\n'
+    '      dot_object_source::observe_default_argument_forwarding(new_routine, new_routine_scope, call_node);\n'
     '#endif')
 object_source_overlay(init_lower,
     '    define_default_version_of_routine(routine, new_routine, \n'
@@ -1274,3 +1298,46 @@ object_source_overlay(eh_lower,
     '    dot_object_source::observe_throw_construct(node, true);\n'
     '#endif\n'
     '    (void)insert_expr_statement(node, insert_location);')
+
+# Observe stock TLS wrapper/alias factories, preserving their original variables.
+object_source_overlay(init_lower,
+    '  return var->init_routine.thread.init_routine;\n}  /* thread_local_init_routine_for_variable */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_tls_variable_initializer(var);\n'
+    '#endif\n'
+    '  return var->init_routine.thread.init_routine;\n}  /* thread_local_init_routine_for_variable */')
+object_source_overlay(init_lower,
+    '    pop_generated_routine_context(scope, region_number, &grcontext);\n'
+    '  }  /* if */\n'
+    '  return var->init_routine.thread.wrapper;',
+    '    pop_generated_routine_context(scope, region_number, &grcontext);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_tls_variable_wrapper(var, scope, call_insert_location != &insert_location);\n'
+    '#endif\n'
+    '  }  /* if */\n'
+    '  return var->init_routine.thread.wrapper;')
+object_source_overlay(init_lower,
+    '}  /* make_null_tls_init_routine */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_empty_tls_initializer(routine, scope);\n'
+    '#endif\n'
+    '}  /* make_null_tls_init_routine */')
+
+# Reserve the exact stock wrapper before traversal can mistake it for a source declaration.
+object_source_overlay(init_lower,
+    '    var->init_routine.thread.wrapper = wrapper_routine;\n',
+    '    var->init_routine.thread.wrapper = wrapper_routine;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_tls_variable_wrapper_created(var);\n'
+    '#endif\n')
+
+# TLS declarations referenced from another TU may be absent from scope.variables.
+# Observe their original declaration before lower_variable mutates type/storage.
+object_source_overlay(lower,
+    '  if (!visited_yet(variable)) {\n    check_assertion(!ignore_variable_in_back_end(variable));',
+    '  if (!visited_yet(variable)) {\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    if (dot_object_source::enabled() && is_effective_thread_local(variable))\n'
+    '      dot_object_source::capture_variable(variable);\n'
+    '#endif\n'
+    '    check_assertion(!ignore_variable_in_back_end(variable));')

@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "milestone": "scalar-control-v55",
+  "status": "accepted",
+  "native": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native136-verified-snapshot/cpfe-dot",
+  "nativeSha256": "39f72d7272683c6bc5442831e724e71fe73a2145b4d2b973b7afed941e100c49",
+  "finalManaged": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-159/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "finalManagedSha256": "c22bde323612e3cdf15760bd050b14de330011ee26209635311a7578a0c2c9b0",
+  "checks": {
+    "sourceConstraints": {
+      "checkCount": 107,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-constraints-136-159-004/results.json",
+      "sha256": "2aebbc9df279be1087eed6025dee55ddb8305c6a0b334293b792f7d52711f35f"
+    },
+    "copiedDefaultArguments": {
+      "checkCount": 70,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-default-argument-136-159-001/results.json",
+      "sha256": "e6e8f0cf2ccd4d07f97702c48fd6ca501ee60fe9c3969ca511833b265e8cab05"
+    },
+    "tlsWrappers": {
+      "checkCount": 53,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-tls-136-157-001/results.json",
+      "sha256": "0bddd88bc01a7e436d7b0a4f08408a7dd9c2e803277f8b9533ad56830eabd7e4"
+    },
+    "initializerListTemporaries": {
+      "checkCount": 40,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-initializer-list-136-158-001/results.json",
+      "sha256": "22c4381930a692c2c1499a9e42a7f979183d4af689cf2491204d662b3653a049"
+    },
+    "sourceTypeInformation": {
+      "checkCount": 225,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-source-information-136-159-002/results.json",
+      "sha256": "7332e50ed78fc629b5f0258d00b286866f5e5012b043443aec49ed0eab180aaf"
+    },
+    "sourceRegression-templates-arguments": {
+      "checkCount": 23,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-source-regressions-136-159/templates-arguments/results.json",
+      "sha256": "e8e8cd113e933355d8ca53472e579b2aec460a65562412d4c85e23e8ccabd891"
+    },
+    "sourceRegression-templates-bounds": {
+      "checkCount": 27,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-source-regressions-136-159/templates-bounds/results.json",
+      "sha256": "e6bdf3c82a9edc27fb7ae6e123895e0e4c78fc698487979ae249e5df13f43a96"
+    },
+    "sourceRegression-templates-members": {
+      "checkCount": 23,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-source-regressions-136-159/templates-members/results.json",
+      "sha256": "c6b2d453d5daca403e5893195c2ee4cb48e1da162e69b220eb1e28119ab54643"
+    },
+    "sourceRegression-templates-traits": {
+      "checkCount": 35,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-source-regressions-136-159/templates-traits/results.json",
+      "sha256": "c47f8d90f60850bd362801a7e011d9ff908b228b5f8f54a8a5649427277ee5b4"
+    },
+    "sourceRegression-templates-member-templates": {
+      "checkCount": 27,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-source-regressions-136-159/templates-member-templates/results.json",
+      "sha256": "600334c34278ca215ae98e1e4576d8ca402f30e3514dae63c6fc595b715cfab1"
+    },
+    "sourceRegression-templates-template-parameters": {
+      "checkCount": 43,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-source-regressions-136-159/templates-template-parameters/results.json",
+      "sha256": "4ec0ff24104229155a52256fa7bdb315ba74bbfeb93d2573b9bb63427d2c19dd"
+    },
+    "sourceRegression-templates-nested-types": {
+      "checkCount": 26,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-source-regressions-136-159/templates-nested-types/results.json",
+      "sha256": "ac52e1aa41a215be34cd8c52b43d84fa5c8b5312ec0bb1108e39cc44163dc9b5"
+    },
+    "sourceRegression-dependent": {
+      "checkCount": 22,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v55-source-regressions-136-159/dependent/results.json",
+      "sha256": "b111443771019d41e765cc6027e59cd39bec827a1526ad83bf29bf3f38ca30be"
+    }
+  },
+  "totalChecks": 721,
+  "actual": [
+    {
+      "name": "ART",
+      "native": 131,
+      "managed": 154,
+      "definitions": 3714,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-art-managed-131-154/results.json"
+    },
+    {
+      "name": "RE2 re2.cc and set.cc",
+      "native": 136,
+      "managed": 157,
+      "definitions": 931,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-tls-managed-136-157/results.json"
+    },
+    {
+      "name": "test_caching_file_system_wrapper.cpp",
+      "native": 136,
+      "managed": 158,
+      "definitions": 1773,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-temporary-managed-136-158/results.json"
+    }
+  ],
+  "fullBaseline": {
+    "native": 119,
+    "managed": 134,
+    "total": 2635,
+    "packaged": 2509,
+    "verified": 2499
+  },
+  "cumulativeProblemFollowup": {
+    "total": 136,
+    "packaged": 81,
+    "verified": 81,
+    "remainingExporterOrFrontend": 55,
+    "remainingManaged": 0,
+    "latestProfileFullRun": false
+  },
+  "remaining": [
+    "38 original concept/alias-template metadata",
+    "4 dependent class-template static-member references",
+    "2 dynamic exception specifications",
+    "3 generated exception/partial construction/atomic layout singletons",
+    "8 original test profile/frontend diagnostics"
+  ],
+  "limitations": [
+    "Full DuckDB combined generation/compilation/execution remain incomplete.",
+    "721 checks span precisely recorded frozen tools; final schema matches all136 objects; ART actual131 predates final source graph additions.",
+    "Source-only alias-template/type-operator closure remains gated; no unknown-type identity fallback.",
+    "Constant TLS wrapper coverage does not claim dynamic TU TLS initializer support.",
+    "Mixed initializer-list array/element identity currently requires exact observed full-array cleanup proof.",
+    "All failed attempts and test-oracle/compiler differences remain retained."
+  ]
+}

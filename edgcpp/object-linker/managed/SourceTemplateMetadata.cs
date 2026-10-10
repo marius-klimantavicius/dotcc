@@ -9,7 +9,7 @@ internal sealed record SourceSemanticConstant(long Id, string Kind, long SourceT
     long? OwnerSourceTypeId, long? OperandSourceTypeId, long? BuiltinOperatorKind, bool IsStandardAlignof, long? SourceFileId, long Line, long Column);
 internal sealed record SourceRecordInstantiation(string ResolutionKind, long? PrototypeSourceRecordId, long? SourceTemplateId, long? MemberOwnerSourceTypeId,
     bool MemberOfUnknownBase, bool QualifiedUnknownBaseMember);
-internal sealed record SourceTemplateArgument(long Ordinal, string Kind, long? TypeId, long? ConstantId, long? TemplateId);
+internal sealed record SourceTemplateArgument(long Ordinal, string Kind, long? TypeId, long? ConstantId, long? TemplateId, bool IsPack=false);
 
 internal sealed partial class ObjectFile
 {
@@ -27,7 +27,7 @@ internal sealed partial class ObjectFile
                 var value = new SourceSemanticConstant(q.Integer(0), q.Text(1), q.Integer(2), q.Text(3), q.Text(4),
                     q.OptionalInteger(5), q.OptionalInteger(6), q.Integer(7) == 1, q.Text(8), q.OptionalInteger(9), q.OptionalInteger(10), q.OptionalInteger(11), q.Integer(12) == 1, q.OptionalInteger(13), q.Integer(14), q.Integer(15));
                 if (value.Id <= 0 || !SourceTypes.ContainsKey(value.SourceTypeId) || q.Integer(7) is not (0 or 1) || q.Integer(12) is not (0 or 1) ||
-                    value.Kind is not ("integer" or "parameter" or "operation" or "expression" or "member" or "type-operand" or "builtin-trait" or "sizeof" or "alignof" or "datasizeof") || value.Line < 0 || value.Column < 0 ||
+                    value.Kind is not ("integer" or "parameter" or "operation" or "expression" or "member" or "type-operand" or "builtin-trait" or "sizeof" or "alignof" or "datasizeof" or "source-expression" or "aggregate") || value.Line < 0 || value.Column < 0 ||
                     !SourceSemanticConstants.TryAdd(value.Id, value)) throw new InvalidDataException("Invalid original semantic constant");
             }
         var operands = new Dictionary<long, List<long>>();
@@ -87,13 +87,13 @@ internal sealed partial class ObjectFile
                 if (!SourceRecordInstantiations.TryAdd(instance.Id, relation))
                     throw new InvalidDataException("Duplicate source template instantiation relation");
             }
-        using (var q = database.Prepare("SELECT source_record_id,ordinal,kind,type_id,constant_id,template_id FROM source_template_arguments ORDER BY source_record_id,ordinal"))
+        using (var q = database.Prepare("SELECT source_record_id,ordinal,kind,type_id,constant_id,template_id,is_pack FROM source_template_arguments ORDER BY source_record_id,ordinal"))
             while (q.Read())
             {
                 long owner = q.Integer(0);
-                var argument = new SourceTemplateArgument(q.Integer(1), q.Text(2), q.OptionalInteger(3), q.OptionalInteger(4), q.OptionalInteger(5));
-                if (!SourceRecordInstantiations.ContainsKey(owner) ||
-                    !SourceTemplatePayloadValid(argument.Kind, argument.TypeId, argument.ConstantId, argument.TemplateId))
+                var argument = new SourceTemplateArgument(q.Integer(1), q.Text(2), q.OptionalInteger(3), q.OptionalInteger(4), q.OptionalInteger(5),q.Integer(6)==1);
+                if (!SourceRecordInstantiations.ContainsKey(owner) || q.Integer(6) is not(0 or 1) ||
+                    !SourceConstraintPayloadValid(argument.Kind, argument.TypeId, argument.ConstantId, argument.TemplateId))
                     throw new InvalidDataException("Source template argument lacks its typed semantic payload");
                 if (!SourceTemplateArguments.TryGetValue(owner, out var list)) SourceTemplateArguments[owner] = list = [];
                 if (argument.Ordinal != list.Count) throw new InvalidDataException("Source template arguments are not in original order");
@@ -102,6 +102,9 @@ internal sealed partial class ObjectFile
         foreach (var type in SourceTypes.Values)
             if ((type.ArrayBoundKind == "dependent") != SourceArrayBounds.ContainsKey(type.Id))
                 throw new InvalidDataException("Dependent array is missing its exact original bound expression");
+        ReadSourceConstraints();
+        ReadSourceConstantExpressions();
+        ReadSourceAggregateConstants();
         foreach (var constant in SourceSemanticConstants.Values) VerifySourceSemanticConstant(constant);
         VerifySourceTemplateReferences();
         foreach (long bound in SourceArrayBounds.Values)
@@ -112,6 +115,7 @@ internal sealed partial class ObjectFile
     {
         if (depth > 128) throw new InvalidDataException("Source semantic constant graph is cyclic or too deep");
         return SourceSemanticConstants[id].Kind is "parameter" or "member" ||
+            SourceSemanticConstantExpressions.TryGetValue(id,out long expression) && SourceVariableExpressionContainsParameter(expression,depth+1) ||
             SourceSemanticConstants[id].OperandSourceTypeId is long type && SourceTypeContainsParameter(type, depth + 1) ||
             SourceSemanticConstantOperands.GetValueOrDefault(id, []).Any(child => ContainsSourceParameter(child, depth + 1));
     }
@@ -120,9 +124,9 @@ internal sealed partial class ObjectFile
     {
         SourceType valueType = Original(SourceTypeById(value.SourceTypeId));
         bool unknownType = valueType.Kind == "dependent" && SourceDependentTypes[valueType.Id].Kind == "unknown";
-        if (unknownType && value.Kind is not ("member" or "expression"))
+        if (unknownType && value.Kind is not ("member" or "expression" or "source-expression"))
             throw new InvalidDataException("Only unresolved source member values may retain an unknown result type");
-        var shape = unknownType || value.Kind == "type-operand" ? (Bits: 0, Signed: false) : SourceIntegerShape(valueType);
+        var shape = unknownType || value.Kind is "type-operand" or "aggregate" ? (Bits: 0, Signed: false) : SourceIntegerShape(valueType);
         VerifySourceTypedExpression(value, valueType);
         if ((value.Kind == "member") != (value.OwnerSourceTypeId is not null))
             throw new InvalidDataException("Source constant member owner differs from its semantic kind");
@@ -150,6 +154,8 @@ internal sealed partial class ObjectFile
             {
                 if (value.ValueText.Length != 0) throw new InvalidDataException("Source type query has a fabricated evaluated value");
             }
+            else if(value.Kind=="aggregate")VerifySourceAggregateConstant(value);
+            else if(value.Kind=="source-expression")VerifySourceConstantExpression(value);
             else if (value.Kind == "integer")
             {
                 if (!BigInteger.TryParse(value.ValueText, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var number) ||
@@ -196,6 +202,8 @@ internal sealed partial class ObjectFile
         if (value.Kind == "alignof") result += value.IsStandardAlignof ? "std:" : "extension:";
         return value.Kind switch
         {
+            "aggregate" => result + SourceAggregateIdentity(value.Id,depth+1),
+            "source-expression" => result + SourceIdentityFrame(SourceVariableExpressionIdentity(SourceSemanticConstantExpressions[id],depth+1)),
             "integer" => result + SourceIdentityFrame(value.ValueText),
             "member" => result + SourceIdentityFrame(SourceArgumentTypeIdentity(value.OwnerSourceTypeId!.Value, depth + 1)) + SourceIdentityFrame(value.SourceName),
             "parameter" => result + SourceIdentityFrame(SourceConstantParameterIdentity(value)) + ":" + (value.IsPack ? "1" : "0"),
@@ -244,9 +252,9 @@ internal sealed partial class ObjectFile
             ? "source-parameter-instantiation:" + SourceIdentityFrame(SourceTemplateIdentity(relation.SourceTemplateId!.Value, depth + 1))
             : "source-member-instantiation:" + SourceIdentityFrame(SourceArgumentTypeIdentity(relation.MemberOwnerSourceTypeId!.Value, depth + 1)) +
                 SourceIdentityFrame(SourceRecords[id].SourceName);
-        return owner + string.Concat(SourceTemplateArguments.GetValueOrDefault(id, []).Select(argument => SourceIdentityFrame(argument.Kind == "type"
+        return owner + string.Concat(SourceTemplateArguments.GetValueOrDefault(id, []).Select(argument => SourceIdentityFrame((argument.Kind == "pack-boundary" ? "pack-boundary" : argument.Kind == "type"
                 ? "t" + SourceArgumentTypeIdentity(argument.TypeId!.Value, depth + 1) : argument.Kind == "constant"
-                ? "c" + SourceConstantIdentity(argument.ConstantId!.Value, depth + 1) : "m" + SourceTemplateIdentity(argument.TemplateId!.Value, depth + 1))));
+                ? "c" + SourceConstantIdentity(argument.ConstantId!.Value, depth + 1) : "m" + SourceTemplateIdentity(argument.TemplateId!.Value, depth + 1))+(argument.IsPack?":pack":""))));
     }
     private void VerifySourceTemplateMetadata()
     {

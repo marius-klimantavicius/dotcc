@@ -13,8 +13,42 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = Path(__file__).with_name('schema.sql')
 ARRAYS = {
+    'sourceSemanticConstantExpressions': ('source_semantic_constant_expressions', ['constantId', 'expressionId', 'captureProof']),
+    'sourceAggregateConstants': ('source_aggregate_constants', ['constantId', 'elementCount', 'originalTypeId', 'backingExpressionId', 'flagBits', 'addedTemplateConst', 'captureProof']),
+
+    'sourceConstraintArgumentDetails': ('source_constraint_argument_details', ['ownerKind', 'ownerId', 'substitutionOrdinal', 'argumentOrdinal', 'isPack', 'isPackElement', 'hasPackEllipsis', 'isIntegerPack', 'isExplicit', 'isInjectedClassName', 'parameterIsAuto', 'parameterIsDecltypeAuto', 'packExpansionId', 'substitutedTemplateId', 'captureProof']),
+    'sourcePackExpansions': ('source_pack_expansions', ['id', 'referenceCount', 'ellipsisSeen', 'usesOnlyEnclosingPacks', 'usesAnyEnclosingPacks', 'isFunctionDeclarator', 'isPackIndex', 'parameterIsTemplateTemplate', 'parameterSourceTypeId', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'sourcePackReferences': ('source_pack_references', ['expansionId', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId', 'parameterDepth', 'parameterPosition', 'usesEnclosingPack', 'sourceFileId', 'line', 'column']),
+    'sourceDependentFunctionLookups': ('source_dependent_function_lookups', ['expressionId', 'sourceName', 'qualifiedName', 'ownerSourceTypeId', 'conversionSourceTypeId', 'operatorKind', 'hasExplicitTemplateArguments', 'isQualifiedName', 'hasAddressOf', 'hasLookupSymbol', 'candidateCount', 'memberOfUnknownBase', 'qualifiedUnknownBaseMember', 'captureProof']),
+    'sourceDependentFunctionCandidates': ('source_dependent_function_candidates', ['expressionId', 'ordinal', 'declarationId']),
+    'sourceDependentFunctionArguments': ('source_dependent_function_arguments', ['expressionId', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
+
+    'sourceConcepts': ('source_concepts', ['id', 'sourceName', 'qualifiedName', 'parameterCount', 'definitionExpressionId', 'headerConstraintExpressionId', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'sourceConceptParameters': ('source_concept_parameters', ['conceptId', 'ordinal', 'kind', 'sourceName', 'typeId', 'constantId', 'templateId', 'defaultTypeId', 'defaultConstantId', 'defaultTemplateId', 'isPack', 'isAbbreviated', 'sourceFileId', 'line', 'column']),
+    'sourceExpressions': ('source_expressions', ['id', 'kind', 'edgeCount', 'parameterCount', 'argumentCount', 'substitutionCount', 'originalLvalueTypeId', 'isParenthesized', 'isCompilerGenerated', 'isVolatileFetch', 'sourceTypeId', 'valueCategory', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'sourceExpressionEdges': ('source_expression_edges', ['expressionId', 'role', 'ordinal', 'childExpressionId']),
+    'sourceTypeConstraints': ('source_type_constraints', ['sourceTypeId', 'constraintExpressionId', 'captureProof']),
+    'sourceConceptUses': ('source_concept_uses', ['expressionId', 'conceptId', 'isTypeConstraint']),
+    'sourceConceptArguments': ('source_concept_arguments', ['expressionId', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
+    'sourceExpressionParameters': ('source_expression_parameters', ['expressionId', 'ordinal', 'sourceTypeId', 'declaredSourceTypeId', 'sourceName', 'qualifierBits', 'isPack']),
+    'sourceExpressionParameterReferences': ('source_expression_parameter_references', ['expressionId', 'binderExpressionId', 'parameterOrdinal', 'originalLevelsUp']),
+    'sourceExpressionOperations': ('source_expression_operations', ['expressionId', 'opcode', 'operationName', 'originalTypeKind']),
+    'sourceExpressionFlags': ('source_expression_flags', ['expressionId', 'flag']),
+    'sourceExpressionTypeOperands': ('source_expression_type_operands', ['expressionId', 'sourceTypeId']),
+    'sourceExpressionConstants': ('source_expression_constants', ['expressionId', 'constantId']),
+    'sourceExpressionBindings': ('source_expression_bindings', ['expressionId', 'lexicalBinderExpressionId']),
+    'sourceExpressionRequirements': ('source_expression_requirements', ['expressionId', 'requiresNoexcept']),
+    'sourceExpressionQueries': ('source_expression_queries', ['expressionId', 'isStandardAlignof']),
+    'sourceExpressionSubstitutions': ('source_expression_substitutions', ['expressionId', 'substitutionOrdinal', 'formalCount', 'argumentCount', 'argumentsKnownDependent', 'argumentsKnownNondependent', 'adjustCoordinates', 'aliasDeductionGuide']),
+    'sourceExpressionSubstitutionFormals': ('source_expression_substitution_formals', ['expressionId', 'substitutionOrdinal', 'ordinal', 'kind', 'sourceName', 'typeId', 'constantId', 'templateId', 'defaultTypeId', 'defaultConstantId', 'defaultTemplateId', 'isPack', 'isAbbreviated', 'sourceFileId', 'line', 'column']),
+    'sourceExpressionSubstitutionArguments': ('source_expression_substitution_arguments', ['expressionId', 'substitutionOrdinal', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
+    'sourceExpressionDeclarations': ('source_expression_declarations', ['id', 'kind', 'sourceName', 'qualifiedName', 'sourceTypeId', 'ownerSourceTypeId', 'templatePrototypeDeclarationId', 'hasTemplateOrigin', 'isTemplatePrototype', 'isConstexpr', 'formalCount', 'argumentCount', 'originalInitKind', 'originalDynamicInitKind', 'initializerKind', 'initializerConstantId', 'initializerExpressionId', 'definitionStatus', 'captureProof', 'sourceFileId', 'line', 'column']),
+    'sourceExpressionDeclarationReferences': ('source_expression_declaration_references', ['expressionId', 'declarationId']),
+    'sourceExpressionDeclarationFormals': ('source_expression_declaration_formals', ['declarationId', 'ordinal', 'kind', 'sourceName', 'typeId', 'constantId', 'templateId', 'defaultTypeId', 'defaultConstantId', 'defaultTemplateId', 'isPack', 'isAbbreviated', 'sourceFileId', 'line', 'column']),
+    'sourceExpressionDeclarationArguments': ('source_expression_declaration_arguments', ['declarationId', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
+
     'sourceNestedTypeDeclarations': ('source_nested_type_declarations', ['typeId', 'ownerTypeId', 'captureProof']),
-    'sourceDependentTypes': ('source_dependent_types', ['typeId', 'kind', 'ownerTypeId', 'originalNestedTypeId', 'nestingDepth', 'parameterPosition', 'isPack', 'identityKey', 'captureProof']),
+    'sourceDependentTypes': ('source_dependent_types', ['typeId', 'kind', 'ownerTypeId', 'originalNestedTypeId', 'nestingDepth', 'parameterPosition', 'isPack', 'identityKey', 'captureProof', 'hasTypeConstraint']),
     'sourceFiles': ('source_files', ['id', 'path', 'parentId']),
     'types': ('types', ['id', 'kind', 'pointeeTypeId', 'elementTypeId', 'elementCount']),
     'storages': ('storages', ['id', 'sourceName', 'linkage', 'externalKey', 'definition', 'typeId', 'sourceTypeId', 'isThreadLocal', 'isConst', 'alignment', 'sourceFileId', 'line', 'column']),
@@ -49,6 +83,11 @@ ARRAYS = {
     'sourceStaticDestructions': ('source_static_destructions', ['id', 'lifetimeId', 'ordinal', 'storageId', 'sourceTypeId', 'selectedRoutineEntityId', 'sourceInitializerId', 'kind', 'isArrayAllocation', 'domain', 'sourceFileId', 'line', 'column', 'captureProof']),
     'initializerLifetimeExecutions': ('initializer_lifetime_executions', ['sourceLifetimeId', 'sourceStaticLifetimeId', 'sourceInitializerId', 'functionEntityId', 'captureProof']),
     'staticDestructionRegistrations': ('static_destruction_registrations', ['nodeId', 'sourceObligationId', 'sourceInitializerId', 'functionEntityId', 'callbackEntityId', 'objectNodeId', 'domain', 'captureProof']),
+    'defaultArgumentEvaluations': ('default_argument_evaluations', ['functionEntityId', 'ownerFunctionEntityId', 'sourceFunctionEntityId', 'targetEntityId', 'forwardingCallNodeId', 'rootSourceLifetimeId', 'captureProof']),
+    'defaultArgumentLifetimeExecutions': ('default_argument_lifetime_executions', ['functionEntityId', 'sourceLifetimeId', 'copiedParentSourceLifetimeId', 'copiedSiblingOrdinal', 'captureProof']),
+    'defaultArgumentObligationExecutions': ('default_argument_obligation_executions', ['functionEntityId', 'sourceObligationId', 'sourceAllocationObligationId', 'sourceLifetimeId', 'copiedOrdinal', 'captureProof']),
+    'defaultArgumentTemporaryExecutions': ('default_argument_temporary_executions', ['functionEntityId', 'sourceTemporaryId', 'captureProof']),
+    'tlsRoutineOrigins': ('tls_routine_origins', ['entityId', 'kind', 'sourceStorageId', 'targetEntityId', 'guardKind', 'captureProof']),
     'generatedArrayInitializers': ('generated_array_initializers', ['functionEntityId', 'ownerFunctionEntityId', 'sourceAllocationObligationId', 'sourceElementTypeId', 'elementTypeId', 'constructorEntityId', 'objectParameterBindingId', 'modelBindingId', 'modelInitializationNodeId', 'modelCopyNodeId', 'constructorCallNodeId', 'modelLoweredInitKind', 'modelSiteKind', 'modelZeroStorage', 'modelPartiallyInitialized', 'captureProof']),
     'generatedStaticDestructors': ('generated_static_destructors', ['functionEntityId', 'sourceObligationId', 'parameterBindingId', 'storageId', 'elementTypeId', 'elementCount', 'elementSize', 'captureProof']),
     'staticDestructionDispositions': ('static_destruction_dispositions', ['sourceObligationId', 'kind', 'captureProof']),
@@ -96,7 +135,7 @@ ARRAYS = {
     'sourceTemplates': ('source_templates', ['id', 'kind', 'sourceName', 'parameterDepth', 'parameterPosition', 'isPack', 'parameterCount', 'captureProof', 'sourceFileId', 'line', 'column']),
     'sourceTemplateParameters': ('source_template_parameters', ['sourceTemplateId', 'ordinal', 'kind', 'sourceName', 'typeId', 'constantId', 'templateId', 'defaultTypeId', 'defaultConstantId', 'defaultTemplateId', 'isPack', 'isAbbreviated', 'sourceFileId', 'line', 'column']),
     'sourceRecordInstantiations': ('source_record_instantiations', ['sourceRecordId', 'prototypeSourceRecordId', 'resolutionKind', 'sourceTemplateId', 'memberOwnerSourceTypeId', 'memberOfUnknownBase', 'qualifiedUnknownBaseMember', 'captureProof']),
-    'sourceTemplateArguments': ('source_template_arguments', ['sourceRecordId', 'ordinal', 'kind', 'typeId', 'constantId', 'templateId']),
+    'sourceTemplateArguments': ('source_template_arguments', ['sourceRecordId', 'ordinal', 'kind', 'typeId', 'constantId', 'templateId', 'isPack']),
     'sourceArrayBounds': ('source_array_bounds', ['typeId', 'constantId', 'captureProof']),
     'sourceSemanticConstants': ('source_semantic_constants', ['id', 'kind', 'sourceTypeId', 'sourceName', 'valueText', 'parameterDepth', 'parameterPosition', 'isPack', 'operatorName', 'ownerSourceTypeId', 'operandSourceTypeId', 'builtinOperatorKind', 'isStandardAlignof', 'sourceFileId', 'line', 'column']),
     'sourceSemanticConstantOperands': ('source_semantic_constant_operands', ['constantId', 'ordinal', 'operandId']),
@@ -208,7 +247,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v54':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v55':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -228,7 +267,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v54', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v55', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

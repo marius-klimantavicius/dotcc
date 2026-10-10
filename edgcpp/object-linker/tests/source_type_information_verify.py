@@ -107,9 +107,11 @@ def main():
                     db.execute('SELECT capture_proof FROM source_routine_abis WHERE source_routine_type_id=?',
                     (unmatched['type_id'],)).fetchone()[0] == 'observed-routine-lowering')
                 source_only = routines[original(member_types[member_ids['source_only']]['member_type_id'])['id']]
-                check('unsupported-ABI-member-function-retains-source-only-type', types[source_only['type_id']]['execution_type_id'] is None)
-                check('unsupported-ABI-member-function-has-no-fabricated-ABI', db.execute(
-                    'SELECT count(*) FROM source_routine_abis WHERE source_routine_type_id=?', (source_only['type_id'],)).fetchone()[0] == 0)
+                check('variadic-member-function-has-observed-ABI', types[source_only['type_id']]['execution_type_id'] is not None and db.execute(
+                    'SELECT capture_proof FROM source_routine_abis WHERE source_routine_type_id=?', (source_only['type_id'],)).fetchone()[0] == 'observed-routine-lowering')
+                observed_parameters = [tuple(row) for row in db.execute(
+                    'SELECT execution_ordinal,parameter_role,source_ordinal FROM source_routine_abi_parameters WHERE source_routine_type_id=? ORDER BY execution_ordinal', (source_only['type_id'],))]
+                check('variadic-member-function-preserves-indirect-record-parameter', observed_parameters == [(0, 'this', None), (1, 'source', 0), (2, 'indirect-source', 1)])
                 parameters = list(db.execute('SELECT parameter_type_id FROM source_routine_parameters WHERE type_id=? ORDER BY ordinal',
                     (source_only['type_id'],)))
                 check('source-only-member-function-complete-original-signature', source_only['object_is_volatile'] == 1 and

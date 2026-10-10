@@ -30,6 +30,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["throw_markers"] = "node_id", ["rethrow_expressions"] = "node_id",
         ["virtual_base_expressions"] = "node_id", ["virtual_base_subobjects"] = "record_type_id,complete_base_type_id",
         ["compile_time_selections"] = "node_id", ["thunk_wrappers"] = "entity_id", ["wrapper_calls"] = "node_id",
+        ["tls_routine_origins"] = "entity_id",
         ["lambda_entry_origins"] = "entity_id", ["lambda_entry_calls"] = "node_id",
         ["source_allocation_obligations"] = "id", ["internal_try_expressions"] = "node_id", ["normal_destructions"] = "node_id", ["expression_lifetimes"] = "node_id", ["base_subobject_expressions"] = "node_id", ["source_initializers"] = "id",
         ["source_templates"] = "id", ["source_template_parameters"] = "source_template_id,ordinal",
@@ -45,8 +46,43 @@ internal sealed partial class ObjectFile : IDisposable
         ["initializer_lifetime_executions"] = "source_lifetime_id,function_entity_id",
         ["static_destruction_registrations"] = "node_id",
         ["generated_static_destructors"] = "function_entity_id",
+        ["default_argument_evaluations"] = "function_entity_id",
+        ["default_argument_lifetime_executions"] = "function_entity_id,source_lifetime_id",
+        ["default_argument_obligation_executions"] = "function_entity_id,source_lifetime_id,copied_ordinal",
+        ["default_argument_temporary_executions"] = "function_entity_id,source_temporary_id",
         ["generated_array_initializers"] = "function_entity_id",
         ["static_destruction_dispositions"] = "source_obligation_id",
+        ["source_concepts"] = "id",
+        ["source_concept_parameters"] = "concept_id,ordinal",
+        ["source_expressions"] = "id",
+        ["source_expression_edges"] = "expression_id,role,ordinal",
+        ["source_type_constraints"] = "source_type_id",
+        ["source_concept_uses"] = "expression_id",
+        ["source_concept_arguments"] = "expression_id,ordinal",
+        ["source_expression_parameters"] = "expression_id,ordinal",
+        ["source_expression_parameter_references"] = "expression_id",
+        ["source_expression_operations"] = "expression_id",
+        ["source_expression_flags"] = "expression_id,flag",
+        ["source_expression_type_operands"] = "expression_id",
+        ["source_expression_constants"] = "expression_id",
+        ["source_expression_bindings"] = "expression_id",
+        ["source_expression_requirements"] = "expression_id",
+        ["source_expression_queries"] = "expression_id",
+        ["source_expression_substitutions"] = "expression_id,substitution_ordinal",
+        ["source_expression_substitution_formals"] = "expression_id,substitution_ordinal,ordinal",
+        ["source_expression_substitution_arguments"] = "expression_id,substitution_ordinal,ordinal",
+        ["source_expression_declarations"] = "id",
+        ["source_expression_declaration_references"] = "expression_id",
+        ["source_expression_declaration_formals"] = "declaration_id,ordinal",
+        ["source_expression_declaration_arguments"] = "declaration_id,ordinal",
+        ["source_constraint_argument_details"] = "owner_kind,owner_id,substitution_ordinal,argument_ordinal",
+        ["source_pack_expansions"] = "id",
+        ["source_pack_references"] = "expansion_id,ordinal",
+        ["source_dependent_function_lookups"] = "expression_id",
+        ["source_dependent_function_candidates"] = "expression_id,ordinal",
+        ["source_dependent_function_arguments"] = "expression_id,ordinal",
+        ["source_semantic_constant_expressions"] = "constant_id",
+        ["source_aggregate_constants"] = "constant_id",
         ["source_dependent_types"] = "type_id", ["source_nested_type_declarations"] = "type_id",
         ["source_lifetimes"] = "id", ["source_destruction_obligations"] = "id",
         ["destruction_elisions"] = "source_obligation_id,function_entity_id",
@@ -113,7 +149,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v54" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v55" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -133,15 +169,18 @@ internal sealed partial class ObjectFile : IDisposable
             ReadCompileTimeSelections();
             ReadThunkWrappers();
             ReadLambdaEntryOrigins();
+            ReadTlsRoutineOrigins();
             ReadAndVerifySourceProvenance();
             ReadAndVerifyMacroProvenance();
             ReadMemoryBarrierMetadata();
             ReadStaticSources();
+            ReadDefaultArgumentExecutions();
             ReadCleanupMetadata();
             ReadStaticExecutionMetadata();
             ReadGeneratedArrayInitializers();
             ReadRecordValueTransfers();
             ReadRecordStorageInitializations();
+            VerifyDefaultArgumentExecutions();
             ReadRecordConstantInitializations();
             ReadVirtualBaseAdjustments();
             ReadExceptionMetadata();

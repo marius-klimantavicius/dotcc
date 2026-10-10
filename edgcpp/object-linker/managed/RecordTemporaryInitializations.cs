@@ -10,13 +10,36 @@ internal sealed partial class ObjectFile
 
     private bool RecordTemporaryOwner(SourceRecordTemporary source, long function)
     {
-        if (source.FunctionEntityId is long original) return OriginalFunction(function) == original;
+        if (source.FunctionEntityId is long original) return OriginalFunction(function) == original ||
+            DefaultArgumentTemporaries.Contains((function,source.Id));
         if (source.SourceInitializerId is not long initializer) return false;
         if (IsSourceObligationExecution(initializer, null, function)) return true;
         if (FieldInitializerExecutions.TryGetValue((initializer, function), out var field))
             return field.ExecutionDisposition == "copied";
         return DynamicInitializers.Values.Any(value => value.SourceInitializerId == initializer &&
             InitializationActions.Any(action => action.Id == value.ActionId && action.EntityId == function));
+    }
+
+    private bool RecordTemporaryDestructionType(SourceRecordTemporary temporary, SourceDestructionObligation destruction)
+    {
+        SourceType source = Original(SourceTypeById(temporary.SourceTypeId));
+        SourceType destroyed = Original(SourceTypeById(destruction.SourceTypeId));
+        if (source.Id == destroyed.Id) return true;
+        if (source.Kind != "array") return false;
+        long count = 1;
+        while (source.Kind == "array")
+        {
+            if (source.ElementCount is not long bound || bound <= 0 || count > long.MaxValue / bound) return false;
+            count *= bound;
+            source = Original(SourceTypeById(source.UnderlyingTypeId!.Value));
+        }
+        if (source.Id != destroyed.Id) return false;
+        // Stock initializer-list backing arrays retain the whole temporary type
+        // but their destructor obligation names its leaf class. Require the
+        // corresponding observed full-array cleanup, including the exact bound.
+        CleanupAction[] actions = CleanupActions.Values.Where(action => action.SourceObligationId == destruction.Id).ToArray();
+        return actions.Length != 0 && actions.All(action => CleanupArrays.TryGetValue(action.Id, out var array) &&
+            array.ElementCount == count && array.ElementTypeId == source.ExecutionTypeId);
     }
 
     private void ReadRecordTemporaryInitializations()
@@ -36,7 +59,7 @@ internal sealed partial class ObjectFile
                 if (source.SourceDestructionObligationId is long obligation &&
                     (!SourceDestructionObligations.TryGetValue(obligation, out var destruction) ||
                      destruction.FunctionEntityId != source.FunctionEntityId || destruction.SourceInitializerId != source.SourceInitializerId ||
-                     Original(SourceTypeById(destruction.SourceTypeId)).Id != Original(SourceTypeById(source.SourceTypeId)).Id))
+                     !RecordTemporaryDestructionType(source, destruction)))
                     throw new InvalidDataException("Record temporary destruction differs from its original initialization identity");
             }
         foreach (var owner in SourceRecordTemporaries.Values.GroupBy(value => (value.FunctionEntityId, value.SourceInitializerId)))

@@ -689,3 +689,41 @@ initialization, null data-member pointers, element-constructor failure and prefi
 cleanup, source-hidden dotobj verification, C# generation, and twelve resealed
 malformed objects. The vector allocation and dynamic-array length failure runtime
 providers remain pending; this receipt does not claim translated execution.
+
+### Default-argument temporary execution in constructor adapters (v55)
+
+Stock `define_default_version_of_routine` copies accepted call-site default
+arguments into a generated constructor adapter with
+`CE_UNLINK_SOURCE_DESTRUCTIONS`. The original temporary, destruction and
+expression-lifetime identities remain owned by the source caller. Four
+`default_argument_*` relations record the exact adapter creation caller,
+selected constructor/forwarding call, copied lifetime parent/order, original
+obligation/copy order, and original record temporary. This is an execution
+adoption, not a new source declaration or reassigned source lifetime.
+
+The reader validates original ownership before admitting cleanup uses. Every
+actual adapter destruction/allocation and temporary initialization must have
+its own adoption. The adapter's address can occur only in an owned array
+construction or allocation callback in its observed caller; the forwarding
+constructor must receive the adapter's exact object parameter. Stock creates a
+fresh adapter per factory invocation. Two independent caller sites exercise
+that distinction and reject swapped same-type source objects and callbacks.
+
+Native131/managed154 pass 70 checks at
+`dotobj-v55-default-argument-131-154-001`: native C++ and stock C at O0/O2,
+per-element default-argument evaluation, argument-constructor and
+element-constructor failure, temporary destruction and constructed-prefix
+rollback, source-hidden verification/linking, production-runtime-bound JIT and
+NativeAOT execution, and thirteen resealed malformed objects. The native C++
+oracle explicitly uses `-fno-inline`, matching stock `--no_inlining`; GCC 13.3
+without that flag omitted one argument destruction in the two-site O2 reducer.
+That failed comparison is retained at
+`dotobj-default-argument-adoption-next/two-site-oracle-001`, with the passing
+aligned oracle at `two-site-oracle-002`.
+
+The actual DuckDB ART translation unit now exports, verifies, and links with
+both RTTI providers to 3,714 C# function definitions at
+`dotobj-art-managed-131-154/generated`. Its `ARTIndexScanState` default argument
+retains its original `LogicalType` temporary and destruction while executing
+inside the generated `Value` constructor adapter. This is actual C# generation
+coverage; it does not claim that the entire ART/library closure is runnable.

@@ -7,7 +7,30 @@ successful generation after one fix. The selected sample is deliberately varied,
 not statistically representative. Preserve all required source-type information;
 do not omit metadata to bypass a gate. Re-rank after each expanded probe.
 
-## Current queue (profile54 follow-up)
+## Current queue (profile55 follow-up)
+
+Four more baseline problem units now verify: ART, RE2 re2.cc/set.cc, and
+DuckDB's caching-file-system-wrapper test. ART generates3,714 definitions; the
+RE2 pair generates931; the test generates1,773. This brings the cumulative
+136-problem follow-up to **81 packaged and81 verified,55 export/frontend gates,
+zero managed rejects**. This combines explicitly tested frozen follow-ups; it
+is not a fresh full2,635-unit profile55 run.
+
+| Priority | Remaining observed family | Units | Assignment |
+| --- | --- | ---: | --- |
+| 1 | Original concept/type metadata, now alias-template declarations, selected/original arguments and type operators | 38 | Base worker; preserve exact source graph, no generic unknown-type identity. |
+| 2 | Dependent class-template static-member declaration references | 4 | Base worker; original class owner supplies template parameters. |
+| 3 | Dynamic exception specifications (actual ios/regex use legacy throw()) | 2 | Lifetime worker; preserve ordered source list and observed unexpected execution boundary, distinct from noexcept. |
+| 4 | Generated exception origin, partial construction, atomic record layout | 3 | Reprobe after shared families. |
+| 5 | Original test/profile frontend diagnostics | 8 | Explicit project configuration work; not an EDG parsing incapability claim. |
+
+Profile55 accepts721 checks: source graph107, default-argument cleanup70,
+constant TLS53, initializer-list temporary40, source regressions451. The largest
+combined project emission remains53 library units /33,105 definitions from
+profile52. Full-project generation remains required before runtime/libc++ closure.
+No full-project build/run claim. All intermediates retained.
+
+## Previous queue (profile54 follow-up)
 
 Weak binding now passes 163 checks with native/stock/JIT/NativeAOT and clears
 libc++ new.cpp and verbose_abort.cpp. RE2's two weak TLS wrapper units now reach

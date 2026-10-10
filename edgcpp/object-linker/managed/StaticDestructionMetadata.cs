@@ -44,7 +44,8 @@ internal sealed partial class ObjectFile
     }
 
     public bool IsSourceLifetimeExecution(SourceLifetime lifetime, long functionId)
-        => lifetime.FunctionEntityId is long sourceFunction ? OriginalFunction(functionId) == sourceFunction
+        => lifetime.FunctionEntityId is long sourceFunction ? OriginalFunction(functionId) == sourceFunction ||
+            DefaultArgumentLifetimes.ContainsKey((functionId,lifetime.Id))
             : lifetime.SourceInitializerId is long initializer &&
               InitializerLifetimeExecutions.TryGetValue((lifetime.Id, functionId), out var execution) &&
               execution.SourceInitializerId == initializer;
