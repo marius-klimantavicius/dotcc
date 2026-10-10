@@ -5,16 +5,17 @@ alignas(32) static unsigned char vector_arena[256];
 static unsigned long vector_requested_bytes, vector_requested_elements;
 static int vector_allocator_calls, vector_deallocator_calls;
 static int vector_constructor_calls, vector_destructor_calls;
-static int vector_next_id, vector_fail_constructor;
+static int vector_next_id, vector_fail_constructor, vector_fail_destructor;
 static bool vector_fail_allocator;
 static int vector_errors;
 
 struct DuckdbVectorElement {
     int id;
     DuckdbVectorElement();
-    ~DuckdbVectorElement() {
+    ~DuckdbVectorElement() noexcept(false) {
         ++vector_destructor_calls;
         putchar('a' + id - 1);
+        if (id == vector_fail_destructor) throw id;
     }
     static void* operator new[](unsigned long bytes) {
         ++vector_allocator_calls;
@@ -43,7 +44,13 @@ struct DuckdbVectorElement {
 
 static DuckdbVectorElement* vector_allocate(unsigned long count) {
     vector_requested_elements = count;
+#ifdef DUCKDB_VECTOR_TWO_ALLOCATIONS
+    // Two distinct original new expressions with identical callback types and
+    // execution owner. Their source cleanup obligations must not be swapped.
+    return count ? new DuckdbVectorElement[count] : new DuckdbVectorElement[0];
+#else
     return new DuckdbVectorElement[count];
+#endif
 }
 
 // Deliberately define this after vector_allocate: EDG builds the runtime
@@ -72,6 +79,9 @@ static void vector_release(DuckdbVectorElement* memory, unsigned long count) {
 }
 
 int main() {
+#ifndef DUCKDB_VECTOR_ALLOCATION_ONLY
+    vector_release(static_cast<DuckdbVectorElement*>(0), 0);
+#endif
     vector_release(vector_allocate(0), 0);
     vector_release(vector_allocate(2), 2);
 
@@ -92,5 +102,17 @@ int main() {
     if (vector_allocator_calls != 4 || vector_deallocator_calls != 3 ||
         vector_constructor_calls != 4 || vector_destructor_calls != 3)
         ++vector_errors;
+#ifndef DUCKDB_VECTOR_ALLOCATION_ONLY
+    vector_next_id = 0;
+    vector_fail_constructor = 0;
+    vector_fail_destructor = 2;
+    try { vector_release(vector_allocate(3), 3); } catch (int value) {
+        if (value != 2) ++vector_errors;
+        putchar('!');
+    }
+    if (vector_allocator_calls != 5 || vector_deallocator_calls != 4 ||
+        vector_constructor_calls != 7 || vector_destructor_calls != 6)
+        ++vector_errors;
+#endif
     return vector_errors;
 }

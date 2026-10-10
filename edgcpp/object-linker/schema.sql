@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v42'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v43'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -349,6 +349,26 @@ CREATE TABLE destruction_elisions (
  kind TEXT NOT NULL CHECK(kind IN ('terminal-no-throw','stock-no-effect')),
  capture_proof TEXT NOT NULL CHECK(capture_proof IN ('observed-terminal-partial-elision','observed-no-effect-destruction-removal')),
  PRIMARY KEY(source_obligation_id,function_entity_id)
+) STRICT;
+CREATE TABLE source_array_deletions (
+ source_obligation_id INTEGER PRIMARY KEY REFERENCES source_destruction_obligations(id),
+ deallocator_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-array-delete-lowering')
+) STRICT;
+CREATE TABLE array_deletion_operations (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ source_obligation_id INTEGER NOT NULL REFERENCES source_array_deletions(source_obligation_id),
+ destructor_entity_id INTEGER NOT NULL REFERENCES entities(id),
+ deallocator_entity_id INTEGER NOT NULL REFERENCES entities(id),
+ element_type_id INTEGER NOT NULL REFERENCES types(id),
+ padding_size INTEGER NOT NULL CHECK(padding_size>=0),
+ helper_kind TEXT NOT NULL CHECK(helper_kind IN ('ia64-vector-delete2','ia64-vector-delete3')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-array-delete-runtime')
+) STRICT;
+CREATE TABLE source_array_allocation_elements (
+ source_allocation_obligation_id INTEGER PRIMARY KEY REFERENCES source_allocation_obligations(id),
+ source_destruction_obligation_id INTEGER NOT NULL UNIQUE REFERENCES source_destruction_obligations(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering')
 ) STRICT;
 CREATE TABLE array_allocation_operations (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
@@ -695,7 +715,7 @@ CREATE TABLE source_record_types (
 -- Source-only template arguments and dependent extents never imply storage.
 CREATE TABLE source_semantic_constants (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind IN ('integer','parameter','operation','expression','member')),
+ kind TEXT NOT NULL CHECK(kind IN ('integer','parameter','operation','expression','member','type-operand','builtin-trait','sizeof','alignof','datasizeof')),
  source_type_id INTEGER NOT NULL REFERENCES source_types(id),
  source_name TEXT NOT NULL,
  value_text TEXT NOT NULL,
@@ -704,13 +724,19 @@ CREATE TABLE source_semantic_constants (
  is_pack INTEGER NOT NULL CHECK(is_pack IN (0,1)),
  operator_name TEXT NOT NULL,
  owner_source_type_id INTEGER REFERENCES source_types(id),
+ operand_source_type_id INTEGER REFERENCES source_types(id),
+ builtin_operator_kind INTEGER CHECK(builtin_operator_kind>=0),
+ is_standard_alignof INTEGER NOT NULL CHECK(is_standard_alignof IN (0,1)),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  CHECK((kind='parameter' AND parameter_depth>0 AND parameter_position>0 AND source_file_id IS NOT NULL AND line>0) OR
        (kind<>'parameter' AND parameter_depth IS NULL AND parameter_position IS NULL AND is_pack=0)),
  CHECK((kind='integer' AND length(value_text)>0) OR (kind<>'integer' AND value_text='')),
- CHECK((kind='operation' AND length(operator_name)>0) OR (kind<>'operation' AND operator_name='')),
+ CHECK((kind IN ('operation','builtin-trait') AND length(operator_name)>0) OR (kind NOT IN ('operation','builtin-trait') AND operator_name='')),
+ CHECK((kind='builtin-trait')=(builtin_operator_kind IS NOT NULL)),
+ CHECK(operand_source_type_id IS NULL OR kind IN ('type-operand','sizeof','alignof','datasizeof')),
+ CHECK(kind='alignof' OR is_standard_alignof=0),
  CHECK((kind='member' AND owner_source_type_id IS NOT NULL) OR (kind<>'member' AND owner_source_type_id IS NULL))
 ) STRICT;
 CREATE TABLE source_semantic_constant_operands (
@@ -726,9 +752,18 @@ CREATE TABLE source_array_bounds (
 ) STRICT;
 CREATE TABLE source_record_instantiations (
  source_record_id INTEGER PRIMARY KEY REFERENCES source_record_types(id),
- prototype_source_record_id INTEGER NOT NULL REFERENCES source_record_types(id),
- capture_proof TEXT NOT NULL CHECK(capture_proof='original-template-arguments'),
- CHECK(source_record_id<>prototype_source_record_id)
+ prototype_source_record_id INTEGER REFERENCES source_record_types(id),
+ resolution_kind TEXT NOT NULL CHECK(resolution_kind IN ('class-template','dependent-member-template')),
+ member_owner_source_type_id INTEGER REFERENCES source_types(id),
+ member_of_unknown_base INTEGER NOT NULL CHECK(member_of_unknown_base IN (0,1)),
+ qualified_unknown_base_member INTEGER NOT NULL CHECK(qualified_unknown_base_member IN (0,1)),
+ capture_proof TEXT NOT NULL,
+ CHECK((resolution_kind='class-template' AND prototype_source_record_id IS NOT NULL AND member_owner_source_type_id IS NULL AND
+        member_of_unknown_base=0 AND qualified_unknown_base_member=0 AND capture_proof='original-template-arguments') OR
+       (resolution_kind='dependent-member-template' AND prototype_source_record_id IS NULL AND member_owner_source_type_id IS NOT NULL AND
+        capture_proof='original-nonreal-member-template')),
+ CHECK(source_record_id<>prototype_source_record_id),
+ CHECK(qualified_unknown_base_member=0 OR member_of_unknown_base=1)
 ) STRICT;
 CREATE TABLE source_template_arguments (
  source_record_id INTEGER NOT NULL REFERENCES source_record_instantiations(source_record_id),

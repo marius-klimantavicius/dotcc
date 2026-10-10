@@ -480,3 +480,30 @@ original obligations and validates their execution, callback and element type;
 the additional relation will reject swapping otherwise matching obligations
 between two source array-new expressions. Do not infer this pair from adjacent
 ordinals: stock scanning can add argument temporaries between observations.
+
+Profile 43 also preserves the original allocation-to-element relationship in
+`source_array_allocation_elements`. It follows the frontend's
+`allocation DIP -> assoc_new -> dynamic_init` repeated-element initializer,
+recorded before lowering. Cleanup-list adjacency is not assumed: constructor
+arguments may introduce intervening temporaries. Runtime allocation operations
+must reference that exact original pair. Native107/managed117 passes 83 focused
+checks plus 28 native/stock oracle checks with two distinct same-type new
+expressions in the same function, including swapped-element and missing-pair
+mutations (`dotobj-vector-allocation-pair-v43-107-002`).
+
+The explicit-deallocator array-delete protocol is represented separately by
+`source_array_deletions` and `array_deletion_operations`. The source relation
+retains the original partial element-destruction obligation and selected
+`operator delete[]`; the runtime relation retains the finalized delete2/delete3
+call, complete destructor callback, selected deallocator, element extent and
+padding. The owned helper call performs reverse destruction, cleanup of the
+remaining elements if a destructor throws, and deallocation. Exact stock root
+replacement is observed because `lower_array_delete` overwrites the source
+expression with the helper call. Virtual destructor dispatch, aligned separate
+deallocation and implicit-default helper forms still require additional owned
+protocols. Native109/managed119 passes 123 full-fixture metadata/generation checks plus
+28 native/stock oracle checks (`dotobj-vector-full-v43-109-001`), including
+source-hidden generation, exact original pairing for two new expressions,
+malformed relation rejection, null deletion, zero-length arrays and a throwing
+destructor. This resolves the earlier full `delete[]` fixture exporter gate.
+Production vector runtime providers and translated execution remain pending.

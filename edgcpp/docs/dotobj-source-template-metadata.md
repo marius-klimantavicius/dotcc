@@ -31,3 +31,20 @@ before managed verification and generation. These additions do not yet represent
 all C++ template constructs: further dependent source expression families,
 partial specializations, template-template arguments and packs still require
 explicit owned representations where encountered.
+
+## Profile 43 additions
+
+Typed source operands and compiler type-trait nodes retain the exact original
+operator opcode/name and ordered type arguments. The profile checks 101
+all-type builtin operator contracts, with their result and arity rules; supported
+operator names do not imply every possible type-argument family is supported.
+Size/alignment queries retain type-versus-expression operands and standard
+versus GNU alignment form. These source-only descriptions do not evaluate
+uninstantiated templates or fabricate concrete values.
+
+Nonreal dependent member templates are a distinct instantiation relation. EDG
+deliberately supplies no ordinary class prototype for them. The relation keeps
+the exact enclosing source type, member name, ordered arguments and unknown-base
+qualification flags, following stock template equivalence. A fabricated ordinary
+prototype is rejected. Template-template parameters, encountered next in libc++
+node handles, require a separate template reference and formal-parameter graph.

@@ -55,7 +55,9 @@ struct Type {
   std::vector<bool> declaration_defaults;
 };
 struct SourceSemanticConstant {
-  unsigned type=0,member_owner=0;
+  unsigned type=0,member_owner=0,type_operand=0;
+  int builtin_operation=-1;
+  bool standard_alignof=false;
   std::string kind,name,value,operation,error;
   int depth=0,position=0;
   bool pack=false;
@@ -141,7 +143,8 @@ struct PrelowerBase {
 struct Record {
   std::string name,identity,error,layout_kind;
   bool template_identity=false,complete=false,dependent=false,prototype=false,layout_known=false;
-  unsigned template_prototype=0;
+  unsigned template_prototype=0,member_template_owner=0;
+  bool template_member_of_unknown_base=false,template_qualified_unknown_base=false;
   std::vector<SourceTemplateArgument> template_arguments;
   std::string template_error;
   std::vector<PrelowerBase> bases;
@@ -351,6 +354,13 @@ struct ArrayAllocationSnapshot {
   a_constant_ptr padding=nullptr;
   std::string helper,error;
 };
+struct ArrayDeletionSnapshot {
+  a_routine_ptr owner=nullptr,deallocator=nullptr,destructor=nullptr;
+  a_dynamic_init_ptr original=nullptr;
+  a_type_ptr element_type=nullptr;
+  a_constant_ptr padding=nullptr;
+  std::string helper,error;
+};
 struct ThrowSnapshot {
   an_expr_node_ptr original=nullptr,initializer=nullptr;
   a_routine_ptr owner=nullptr,destructor=nullptr;
@@ -410,12 +420,15 @@ struct State {
   std::map<an_object_lifetime_ptr,LifetimeSnapshot> lifetimes;
   std::map<a_routine_ptr,std::vector<an_object_lifetime_ptr>> lifetime_order;
   std::map<a_dynamic_init_ptr,DestructionSnapshot> destructions;
+  std::map<a_dynamic_init_ptr,a_dynamic_init_ptr> source_array_allocation_elements;
   std::map<a_routine_ptr,std::vector<a_dynamic_init_ptr>> destruction_order;
   std::map<a_dynamic_init_ptr,a_dynamic_init_ptr> dynamic_init_copies;
   std::map<an_object_lifetime_ptr,an_object_lifetime_ptr> lifetime_copies;
   std::map<an_expr_node_ptr,ArrayAllocationSnapshot> array_allocation_calls;
   std::map<an_expr_node_ptr,std::pair<a_routine_ptr,a_routine_ptr>> array_callback_addresses;
   std::vector<ArrayAllocationSnapshot> array_allocation_contexts;
+  std::map<an_expr_node_ptr,ArrayDeletionSnapshot> array_deletion_calls;
+  std::vector<ArrayDeletionSnapshot> array_deletion_contexts;
   std::map<an_expr_node_ptr,ArrayRuntimeSnapshot> array_runtime_calls;
   std::map<a_routine_ptr,std::vector<an_expr_node_ptr>> array_runtime_order;
   std::map<a_routine_ptr,a_variable_ptr> vtt_parameters;
@@ -494,13 +507,143 @@ inline std::string spelling(const a_source_correspondence &source) {
 inline unsigned capture_type(a_type_ptr t);
 inline void capture_field_initializer(a_field_ptr field,a_type_ptr owner);
 inline unsigned capture_semantic_constant(a_constant_ptr constant);
+// Exact all-type operand families from a_builtin_operation_kind.  A negative
+// arity means one or more type arguments; zero leaves the family explicitly gated.
+inline int source_builtin_trait_arity(a_builtin_operation_kind kind) {
+  switch(kind) {
+    case bok_has_assign:return 1;
+    case bok_has_copy:return 1;
+    case bok_has_nothrow_assign:return 1;
+    case bok_has_nothrow_constructor:return 1;
+    case bok_has_nothrow_copy:return 1;
+    case bok_has_trivial_assign:return 1;
+    case bok_has_trivial_constructor:return 1;
+    case bok_has_trivial_copy:return 1;
+    case bok_has_trivial_destructor:return 1;
+    case bok_has_user_destructor:return 1;
+    case bok_has_virtual_destructor:return 1;
+    case bok_is_abstract:return 1;
+    case bok_is_base_of:return 2;
+    case bok_is_class:return 1;
+    case bok_is_convertible_to:return 2;
+    case bok_is_empty:return 1;
+    case bok_is_enum:return 1;
+    case bok_is_pod:return 1;
+    case bok_is_polymorphic:return 1;
+    case bok_is_union:return 1;
+    case bok_types_compatible:return 2;
+    case bok_is_trivial:return 1;
+    case bok_is_standard_layout:return 1;
+    case bok_is_trivially_copyable:return 1;
+    case bok_is_literal_type:return 1;
+    case bok_has_trivial_move_constructor:return 1;
+    case bok_has_trivial_move_assign:return 1;
+    case bok_has_nothrow_move_assign:return 1;
+    case bok_is_constructible:return -1;
+    case bok_is_nothrow_constructible:return -1;
+    case bok_has_finalizer:return 1;
+    case bok_is_delegate:return 1;
+    case bok_is_interface_class:return 1;
+    case bok_is_ref_array:return 1;
+    case bok_is_ref_class:return 1;
+    case bok_is_sealed:return 1;
+    case bok_is_simple_value_class:return 1;
+    case bok_is_value_class:return 1;
+    case bok_is_final:return 1;
+    case bok_is_trivially_constructible:return -1;
+    case bok_is_destructible:return 1;
+    case bok_is_nothrow_destructible:return 1;
+    case bok_is_trivially_destructible:return 1;
+    case bok_is_nothrow_assignable:return 2;
+    case bok_is_trivially_assignable:return 2;
+    case bok_is_valid_winrt_type:return 1;
+    case bok_is_win_class:return 1;
+    case bok_is_win_interface:return 1;
+    case bok_is_assignable:return 2;
+    case bok_is_trivially_copy_assignable:return 1;
+    case bok_is_assignable_no_precondition_check:return 2;
+    case bok_has_unique_object_representations:return 1;
+    case bok_is_aggregate:return 1;
+    case bok_reference_binds_to_temporary:return 2;
+    case bok_is_same:return 2;
+    case bok_is_same_as:return 2;
+    case bok_is_function:return 1;
+    case bok_is_layout_compatible:return 2;
+    case bok_is_pointer_interconvertible_base_of:return 2;
+    case bok_is_array:return 1;
+    case bok_array_rank:return 1;
+    case bok_is_arithmetic:return 1;
+    case bok_is_complete_type:return 1;
+    case bok_is_compound:return 1;
+    case bok_is_const:return 1;
+    case bok_is_floating_point:return 1;
+    case bok_is_fundamental:return 1;
+    case bok_is_integral:return 1;
+    case bok_is_lvalue_reference:return 1;
+    case bok_is_member_function_pointer:return 1;
+    case bok_is_member_object_pointer:return 1;
+    case bok_is_member_pointer:return 1;
+    case bok_is_object:return 1;
+    case bok_is_pointer:return 1;
+    case bok_is_reference:return 1;
+    case bok_is_rvalue_reference:return 1;
+    case bok_is_scalar:return 1;
+    case bok_is_signed:return 1;
+    case bok_is_unsigned:return 1;
+    case bok_is_void:return 1;
+    case bok_is_volatile:return 1;
+    case bok_is_bounded_array:return 1;
+    case bok_is_unbounded_array:return 1;
+    case bok_is_referenceable:return 1;
+    case bok_is_nothrow_convertible:return 2;
+    case bok_reference_constructs_from_temporary:return 2;
+    case bok_reference_converts_from_temporary:return 2;
+    case bok_is_convertible:return 2;
+    case bok_is_trivially_equality_comparable:return 1;
+    case bok_is_scoped_enum:return 1;
+    case bok_is_trivially_relocatable:return 1;
+    case bok_is_invocable:return -1;
+    case bok_is_nothrow_invocable:return -1;
+    case bok_is_bitwise_cloneable:return 1;
+    case bok_builtin_is_virtual_base_of:return 2;
+    case bok_builtin_is_implicit_lifetime:return 1;
+    case bok_builtin_lt_synthesizes_from_spaceship:return 2;
+    case bok_builtin_gt_synthesizes_from_spaceship:return 2;
+    case bok_builtin_le_synthesizes_from_spaceship:return 2;
+    case bok_builtin_ge_synthesizes_from_spaceship:return 2;
+    case bok_builtin_is_structural:return 1;
+    default:return 0;
+  }
+}
 inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
   auto &s=state();if(!expression)return 0;
   if(expression->kind==enk_constant)return capture_semantic_constant(node_constant(expression));
   auto prior=s.semantic_constant_expr_ids.find(expression);if(prior!=s.semantic_constant_expr_ids.end())return prior->second;
   unsigned id=unsigned(s.semantic_constants.size()+1);s.semantic_constant_expr_ids[expression]=id;s.semantic_constants.emplace_back();
   SourceSemanticConstant value;value.kind="operation";value.type=capture_type(expression->type);value.location=expression->position;
-  if(expression->kind!=enk_operation)value.error="dependent constant expression needs an owned source expression family";
+  if(expression->kind==enk_type_operand) {
+    value.kind="type-operand";
+    if(!expression->variant.type_operand.type)value.error="source type operand has no original type";
+    else value.type_operand=capture_type(expression->variant.type_operand.type);
+  } else if(expression->kind==enk_builtin_operation) {
+    value.kind="builtin-trait";
+    auto builtin=expression->variant.builtin_operation.kind;
+    value.builtin_operation=int(builtin);value.operation=builtin_operation_names[builtin];
+    int arity=source_builtin_trait_arity(builtin);unsigned count=0;
+    if(!arity)value.error="dependent builtin operation needs additional owned operand roles";
+    for(auto operand=expression->variant.builtin_operation.operands;operand;operand=operand->next) {
+      ++count;
+      if(operand->kind!=enk_type_operand)value.error="source type trait requires its original ordered type operands";
+      value.operands.push_back(capture_semantic_constant_expr(operand));
+    }
+    if(arity && (arity>0?count!=unsigned(arity):count==0))value.error="source type trait has unexpected original arity";
+  } else if(expression->kind==enk_sizeof || expression->kind==enk_alignof || expression->kind==enk_datasizeof) {
+    value.kind=expression->kind==enk_sizeof?"sizeof":expression->kind==enk_alignof?"alignof":"datasizeof";
+    const auto &query=expression->variant.sizeof_info;
+    value.standard_alignof=query.is_std_alignof;
+    if(query.is_type)value.type_operand=capture_type(query.variant.type);
+    else value.operands.push_back(capture_semantic_constant_expr(query.variant.expr));
+  } else if(expression->kind!=enk_operation)value.error="dependent constant expression needs an owned source expression family";
   else {
     const auto &operation=expression->variant.operation;
     switch(operation.kind) {
@@ -517,6 +660,12 @@ inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
       default:value.error="dependent constant operation not yet represented";break;
     }
     for(auto operand=operation.operands;operand;operand=operand->next)value.operands.push_back(capture_semantic_constant_expr(operand));
+  }
+  if(!value.error.empty()) {
+    value.error+=" [expression-kind="+std::to_string(int(expression->kind))+
+      ",operator-kind="+(expression->kind==enk_operation?std::to_string(int(expression->variant.operation.kind)):
+      expression->kind==enk_builtin_operation?std::to_string(int(expression->variant.builtin_operation.kind)):"none")+
+      ",operator-name="+value.operation+"]";
   }
   s.semantic_constants[id-1]=value;return id;
 }
@@ -541,6 +690,16 @@ inline unsigned capture_semantic_constant(a_constant_ptr constant) {
       if(!owner || value.name.empty() || parameter.is_pack)
         value.error="dependent constant member lacks exact named owner";
       else value.member_owner=capture_type(owner);
+    } else if(parameter.kind==tpck_sizeof || parameter.kind==tpck_alignof || parameter.kind==tpck_datasizeof) {
+      value.kind=parameter.kind==tpck_sizeof?"sizeof":parameter.kind==tpck_alignof?"alignof":"datasizeof";value.name.clear();
+      const auto &query=parameter.variant.templ_sizeof;value.standard_alignof=query.is_std_alignof;
+#if PROTOTYPE_INSTANTIATIONS_IN_IL
+      if(parameter.local_expr_ref)value.error="dependent type query requires owned local expression reference";
+      else
+#endif
+      if(query.expr)value.operands.push_back(capture_semantic_constant_expr(query.expr));
+      else if(query.type)value.type_operand=capture_type(query.type);
+      else value.error="dependent type query has no original operand";
     } else if(parameter.kind==tpck_expression &&
 #if PROTOTYPE_INSTANTIATIONS_IN_IL
               !parameter.local_expr_ref &&
@@ -682,13 +841,28 @@ inline void capture_record(a_type_ptr t) {
   value.identity=(local?"local-record:":"record:")+qualified;
   if(value.dependent && !value.prototype) {
     auto templ=extra?extra->assoc_template:nullptr;
-    if(!templ || (templ->kind!=templk_class && templ->kind!=templk_member_class) ||
+    bool nonreal_member=templ && templ->kind==templk_class && templ->template_info &&
+      templ->template_info->is_nonreal_member && !templ->prototype_instantiation.type;
+    if(nonreal_member) {
+      // Stock equiv_nonreal_templates identifies T::Member<...> by the
+      // original parent type and member name, then compares actual arguments.
+      // Such a lookup deliberately has no concrete template prototype.
+      auto owner=t->source_corresp.is_class_member?parent_class_of(t):nullptr;
+      if(owner && class_type_supp(owner)->proxy_of_type)owner=class_type_supp(owner)->proxy_of_type;
+      if(!owner || value.name.empty() || value.name!=spelling(templ->source_corresp))
+        value.template_error="dependent member template lacks exact original owner/name";
+      else {
+        value.member_template_owner=capture_type(owner);
+        value.template_member_of_unknown_base=t->source_corresp.member_of_unknown_base;
+        value.template_qualified_unknown_base=t->source_corresp.qualified_unknown_base_member;
+      }
+    } else if(!templ || (templ->kind!=templk_class && templ->kind!=templk_member_class) ||
        !templ->prototype_instantiation.type || templ->prototype_instantiation.type==t)
       value.template_error="dependent class lacks original class template prototype";
-    else if(extra->partial_spec_template_arg_list)
+    else value.template_prototype=capture_type(templ->prototype_instantiation.type);
+    if(extra && extra->partial_spec_template_arg_list)
       value.template_error="dependent partial specialization requires owned selected argument mapping";
-    else {
-      value.template_prototype=capture_type(templ->prototype_instantiation.type);
+    if(value.template_error.empty()) {
       for(auto argument=extra->template_arg_list;argument;argument=argument->next) {
         SourceTemplateArgument item;
         if(argument->pack_expansion_descr || argument->is_pack_element || argument->is_pack ||
@@ -1236,6 +1410,25 @@ inline a_source_position lifetime_position(an_object_lifetime_ptr lifetime) {
   }
   return result;
 }
+// The frontend links deletion-on-throw to the exact new-expression supplement.
+// This is the original repeated-element initializer shape built by
+// add_array_nonconstant_aggregate_init and consumed by elem_dynamic_init.
+inline void capture_array_allocation_element(a_dynamic_init_ptr allocation) {
+  if(!allocation->is_freeing_of_storage_on_exception || !allocation->is_array_freeing || !allocation->assoc_new)return;
+  auto operation=allocation->assoc_new;
+  if(operation->new_initializer_is_brace_enclosed || operation->new_initializer_is_paren_aggr_init)return;
+  auto root=operation->dynamic_init;
+  if(!root || root->kind!=dik_nonconstant_aggregate)return;
+  auto aggregate=root->variant.constant.ptr;
+  if(!aggregate || aggregate->kind!=ck_aggregate)return;
+  auto repeat=aggregate->variant.aggregate.first_constant;
+  if(!repeat || repeat->kind!=ck_init_repeat || repeat->next)return;
+  auto element=repeat->variant.init_repeat.constant;
+  if(!element || element->kind!=ck_dynamic_init)return;
+  auto initialization=element->variant.dynamic_init.ptr;
+  if(initialization && initialization->destructor)
+    state().source_array_allocation_elements.emplace(allocation,initialization);
+}
 inline void capture_source_lifetime(an_object_lifetime_ptr lifetime,a_routine_ptr owner,
                                     an_object_lifetime_ptr parent=nullptr,unsigned sibling=0,
                                     a_dynamic_init_ptr initializer=nullptr) {
@@ -1286,6 +1479,7 @@ inline void capture_source_lifetime(an_object_lifetime_ptr lifetime,a_routine_pt
       // The frontend associates the rollback entry with its precise new
       // expression before lowering. Preserve its allocated type, including
       // arrays, independently of the delete routine's erased void* ABI.
+      capture_array_allocation_element(dip);
       if(dip->assoc_new)value.source_type=capture_type(dip->assoc_new->type);
       else value.error="source allocation release lacks original new expression";
     } else if(dip->variable) {
@@ -1722,11 +1916,29 @@ inline void observe_throw_construct(an_expr_node_ptr expr,bool marker) {
   if(marker)state().throw_markers[expr]=owner;
   else state().throw_addresses[expr]=owner;
 }
+inline void observe_array_protocol_overwrite(an_expr_node_ptr destination,an_expr_node_ptr source,a_routine_ptr owner) {
+  if(!enabled() || !owner || destination==source)return;
+  state().array_allocation_calls.erase(destination);
+  auto allocation=state().array_allocation_calls.find(source);
+  if(allocation!=state().array_allocation_calls.end() && allocation->second.owner==owner)
+    state().array_allocation_calls.emplace(destination,allocation->second);
+  state().array_deletion_calls.erase(destination);
+  auto deletion=state().array_deletion_calls.find(source);
+  if(deletion!=state().array_deletion_calls.end() && deletion->second.owner==owner)
+    state().array_deletion_calls.emplace(destination,deletion->second);
+  state().array_callback_addresses.erase(destination);
+  auto callback=state().array_callback_addresses.find(source);
+  if(callback!=state().array_callback_addresses.end() && callback->second.first==owner)
+    state().array_callback_addresses.emplace(destination,callback->second);
+}
 inline void observe_throw_copy(an_expr_node_ptr original,an_expr_node_ptr copy,a_routine_ptr owner) {
   if(!enabled() || !owner || !original || !copy || original==copy)return;
   auto array_callback=state().array_callback_addresses.find(original);
   if(array_callback!=state().array_callback_addresses.end() && array_callback->second.first==owner)
     state().array_callback_addresses.emplace(copy,array_callback->second);
+  auto array_deletion=state().array_deletion_calls.find(original);
+  if(array_deletion!=state().array_deletion_calls.end() && array_deletion->second.owner==owner)
+    state().array_deletion_calls.emplace(copy,array_deletion->second);
   auto array_allocation=state().array_allocation_calls.find(original);
   if(array_allocation!=state().array_allocation_calls.end() && array_allocation->second.owner==owner)
     state().array_allocation_calls.emplace(copy,array_allocation->second);
@@ -1803,6 +2015,51 @@ inline a_dynamic_init_ptr original_static_destruction(a_dynamic_init_ptr value) 
   return nullptr;
 }
 inline a_dynamic_init_ptr source_destruction(a_dynamic_init_ptr value,a_routine_ptr owner);
+struct ArrayDeletionCapture {
+  bool active=false;
+  ArrayDeletionCapture(a_dynamic_init_ptr destruction,a_routine_ptr deallocator,a_type_ptr element,a_routine_ptr owner) {
+    if(!(active=enabled()))return;
+    ArrayDeletionSnapshot value;value.owner=owner;value.deallocator=deallocator;value.element_type=element;
+    value.original=destruction?source_destruction(destruction,owner):nullptr;
+    if(!value.original)value.error="array delete lacks original partial element destruction";
+    if(!deallocator)value.error="array delete implicit default deallocator requires owned protocol";
+    state().array_deletion_contexts.push_back(value);
+  }
+  ~ArrayDeletionCapture(){if(active)state().array_deletion_contexts.pop_back();}
+};
+inline void observe_array_deletion_call(an_expr_node_ptr call) {
+  if(!enabled() || state().array_deletion_contexts.empty())return;
+  auto value=state().array_deletion_contexts.back();
+  if(!call || call->kind!=enk_operation || call->variant.operation.kind!=eok_call ||
+     !call->variant.operation.operands || call->variant.operation.operands->kind!=enk_routine) {
+    value.error="array delete requires owned direct runtime protocol";
+  } else {
+    auto target=call->variant.operation.operands;
+    value.helper=spelling(target->variant.routine.ptr->source_corresp);
+    if(value.helper!="__cxa_vec_delete2" && value.helper!="__cxa_vec_delete3")
+      value.error="array delete helper requires additional owned protocol";
+    unsigned ordinal=0;
+    for(auto argument=target->next;argument;argument=argument->next,++ordinal) {
+      if(ordinal==2) {
+        if(argument->kind!=enk_constant)value.error="array delete padding lacks exact constant";
+        else value.padding=node_constant(argument);
+      }
+      if(ordinal<3 || ordinal>4)continue;
+      auto leaf=argument;
+      while(leaf->kind==enk_operation && (leaf->variant.operation.kind==eok_cast ||
+            leaf->variant.operation.kind==eok_address_of))leaf=leaf->variant.operation.operands;
+      if(leaf->kind!=enk_routine) {
+        value.error="array delete virtual callback requires owned dispatch protocol";continue;
+      }
+      auto callback=leaf->variant.routine.ptr;
+      if(ordinal==3)value.destructor=callback;
+      else if(callback!=value.deallocator)value.error="array delete callback differs from original selected deallocator";
+      state().array_callback_addresses.emplace(leaf,std::make_pair(value.owner,callback));
+    }
+    if(ordinal!=5 || !value.padding || !value.destructor)value.error="array delete lacks finalized callback arguments";
+  }
+  if(call)state().array_deletion_calls.emplace(call,value);
+}
 struct ArrayAllocationCapture {
   bool active=false;
   ArrayAllocationCapture(a_dynamic_init_ptr allocation,a_dynamic_init_ptr destruction,a_type_ptr element,a_routine_ptr owner) {

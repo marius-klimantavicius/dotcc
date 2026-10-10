@@ -317,6 +317,12 @@ internal sealed partial class ObjectFile
             }
             writer.WriteEndArray();
         }
+        Table("sourceArrayDeletions", "SELECT source_obligation_id,deallocator_entity_id,capture_proof FROM source_array_deletions ORDER BY source_obligation_id",
+            "sourceObligationId", "deallocatorEntityId", "captureProof");
+        Table("arrayDeletionOperations", "SELECT node_id,source_obligation_id,destructor_entity_id,deallocator_entity_id,element_type_id,padding_size,helper_kind,capture_proof FROM array_deletion_operations ORDER BY node_id",
+            "nodeId", "sourceObligationId", "destructorEntityId", "deallocatorEntityId", "elementTypeId", "paddingSize", "helperKind", "captureProof");
+        Table("sourceArrayAllocationElements", "SELECT source_allocation_obligation_id,source_destruction_obligation_id,capture_proof FROM source_array_allocation_elements ORDER BY source_allocation_obligation_id",
+            "sourceAllocationObligationId", "sourceDestructionObligationId", "captureProof");
         Table("arrayAllocationOperations", "SELECT node_id,source_allocation_obligation_id,allocator_entity_id,deallocator_entity_id,constructor_entity_id,destructor_entity_id,element_type_id,padding_size,helper_kind,capture_proof,source_destruction_obligation_id FROM array_allocation_operations ORDER BY node_id",
             "nodeId", "sourceAllocationObligationId", "allocatorEntityId", "deallocatorEntityId", "constructorEntityId", "destructorEntityId", "elementTypeId", "paddingSize", "helperKind", "captureProof", "sourceDestructionObligationId");
         Table("arrayRuntimeOperations", "SELECT node_id,source_obligation_id,callback_entity_id,operation_kind,capture_proof,source_static_obligation_id,source_field_initializer_id FROM array_runtime_operations ORDER BY node_id",
@@ -338,14 +344,14 @@ internal sealed partial class ObjectFile
         Table("baseSubobjectExpressions", "SELECT node_id,source_base_id FROM base_subobject_expressions ORDER BY node_id", "nodeId", "sourceBaseId");
         Table("sourceDependentTypes", "SELECT type_id,kind,owner_type_id,nesting_depth,parameter_position,is_pack,identity_key,capture_proof FROM source_dependent_types ORDER BY type_id",
             "typeId", "kind", "ownerTypeId", "nestingDepth", "parameterPosition", "isPack", "identityKey", "captureProof");
-        Table("sourceRecordInstantiations", "SELECT source_record_id,prototype_source_record_id,capture_proof FROM source_record_instantiations ORDER BY source_record_id",
-            "sourceRecordId", "prototypeSourceRecordId", "captureProof");
+        Table("sourceRecordInstantiations", "SELECT source_record_id,prototype_source_record_id,resolution_kind,member_owner_source_type_id,member_of_unknown_base,qualified_unknown_base_member,capture_proof FROM source_record_instantiations ORDER BY source_record_id",
+            "sourceRecordId", "prototypeSourceRecordId", "resolutionKind", "memberOwnerSourceTypeId", "memberOfUnknownBase", "qualifiedUnknownBaseMember", "captureProof");
         Table("sourceTemplateArguments", "SELECT source_record_id,ordinal,kind,type_id,constant_id FROM source_template_arguments ORDER BY source_record_id,ordinal",
             "sourceRecordId", "ordinal", "kind", "typeId", "constantId");
         Table("sourceArrayBounds", "SELECT type_id,constant_id,capture_proof FROM source_array_bounds ORDER BY type_id",
             "typeId", "constantId", "captureProof");
-        Table("sourceSemanticConstants", "SELECT id,kind,source_type_id,source_name,value_text,parameter_depth,parameter_position,is_pack,operator_name,owner_source_type_id,source_file_id,line,column FROM source_semantic_constants ORDER BY id",
-            "id", "kind", "sourceTypeId", "sourceName", "valueText", "parameterDepth", "parameterPosition", "isPack", "operatorName", "ownerSourceTypeId", "sourceFileId", "line", "column");
+        Table("sourceSemanticConstants", "SELECT id,kind,source_type_id,source_name,value_text,parameter_depth,parameter_position,is_pack,operator_name,owner_source_type_id,operand_source_type_id,builtin_operator_kind,is_standard_alignof,source_file_id,line,column FROM source_semantic_constants ORDER BY id",
+            "id", "kind", "sourceTypeId", "sourceName", "valueText", "parameterDepth", "parameterPosition", "isPack", "operatorName", "ownerSourceTypeId", "operandSourceTypeId", "builtinOperatorKind", "isStandardAlignof", "sourceFileId", "line", "column");
         Table("sourceSemanticConstantOperands", "SELECT constant_id,ordinal,operand_id FROM source_semantic_constant_operands ORDER BY constant_id,ordinal",
             "constantId", "ordinal", "operandId");
         Table("sourceInitializers", "SELECT id,storage_id,source_name,execution_disposition,source_type_id,function_entity_id,source_ordinal,kind,source_file_id,line,column,capture_proof,source_field_id FROM source_initializers ORDER BY id",

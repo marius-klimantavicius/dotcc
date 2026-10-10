@@ -449,6 +449,20 @@ object_source_overlay(init_lower,
     '#endif\n'
     '    /* Construct the call of __vec_new or __array_new. */\n')
 object_source_overlay(init_lower,
+    '  /* Lower "arg". */\n  lower_expr(ptr_node);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::ArrayDeletionCapture dot_array_deletion_capture(\n'
+    '    dip != NULL ? elem_dynamic_init(dip) : NULL, delete_routine,\n'
+    '    new_delete_base_type_from_operation_type(ndsp->type), innermost_function_scope->variant.routine.ptr);\n'
+    '#endif\n'
+    '  /* Lower "arg". */\n  lower_expr(ptr_node);')
+object_source_overlay(init_lower,
+    '  return call_node;\n}  /* make_vec_delete_call */',
+    '#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
+    '  dot_object_source::observe_array_deletion_call(call_node);\n'
+    '#endif\n'
+    '  return call_node;\n}  /* make_vec_delete_call */')
+object_source_overlay(init_lower,
     '  return call_node;\n}  /* make_vec_new_call */',
     '#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
     '  dot_object_source::observe_array_allocation_call(call_node, entity_node, ctor_routine, dtor_routine,\n'
@@ -839,6 +853,15 @@ object_source_overlay(il_source,
     '}  /* overwrite_node */',
     '#if defined(EDG_DOT_BACKEND)\n'
     '  dot_object_source::observe_virtual_base_adjustment_overwrite(node, source_node,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n'
+    '}  /* overwrite_node */')
+# Runtime array helpers may replace the original new/delete expression root.
+# Preserve that exact replacement and invalidate any overwritten old proof.
+object_source_overlay(il_source,
+    '}  /* overwrite_node */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_array_protocol_overwrite(node, source_node,\n'
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '#endif\n'
     '}  /* overwrite_node */')

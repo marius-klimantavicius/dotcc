@@ -10,8 +10,27 @@ internal sealed partial class ObjectFile
 {
     public Dictionary<long, ArrayAllocationOperation> ArrayAllocationOperations { get; } = [];
 
+    public Dictionary<long, long> SourceArrayAllocationElements { get; } = [];
+
+    private void ReadSourceArrayAllocationElements()
+    {
+        using var query = database.Prepare("SELECT source_allocation_obligation_id,source_destruction_obligation_id,capture_proof FROM source_array_allocation_elements ORDER BY source_allocation_obligation_id");
+        while (query.Read())
+        {
+            long allocationId = query.Integer(0), destructionId = query.Integer(1);
+            if (query.Text(2) != "before-lowering" ||
+                !SourceAllocationObligations.TryGetValue(allocationId, out var allocation) || !allocation.IsArray ||
+                !SourceDestructionObligations.TryGetValue(destructionId, out var destruction) || !destruction.IsPartialAggregate ||
+                allocation.FunctionEntityId != destruction.FunctionEntityId || allocation.SourceInitializerId != destruction.SourceInitializerId ||
+                DestructionElementType(allocation.AllocatedSourceTypeId).ExecutionTypeId != DestructionElementType(destruction.SourceTypeId).ExecutionTypeId ||
+                !SourceArrayAllocationElements.TryAdd(allocationId, destructionId))
+                throw new InvalidDataException("Original array allocation element lacks its exact original source association");
+        }
+    }
+
     private void ReadArrayAllocationOperations()
     {
+        ReadSourceArrayAllocationElements();
         using var query = database.Prepare("SELECT a.node_id,a.source_allocation_obligation_id,a.allocator_entity_id,a.deallocator_entity_id,a.constructor_entity_id,a.destructor_entity_id,a.element_type_id,a.padding_size,a.helper_kind,a.capture_proof,n.function_id,a.source_destruction_obligation_id FROM array_allocation_operations a JOIN nodes n ON n.id=a.node_id ORDER BY a.node_id");
         while (query.Read())
         {
@@ -28,7 +47,8 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Vector allocation lacks its exact original array allocation, type or execution owner");
             if (value.SourceDestructionObligationId is long destructionId)
             {
-                if (!SourceDestructionObligations.TryGetValue(destructionId, out var destruction) ||
+                if (SourceArrayAllocationElements.GetValueOrDefault(value.SourceAllocationObligationId) != destructionId ||
+                    !SourceDestructionObligations.TryGetValue(destructionId, out var destruction) ||
                     !IsSourceLifetimeExecution(SourceLifetimes[destruction.LifetimeId], functionId) ||
                     value.DestructorEntityId is not long destructorId || OriginalFunction(destructorId) != destruction.DestructorEntityId ||
                     DestructionElementType(destruction.SourceTypeId).ExecutionTypeId != value.ElementTypeId)
@@ -36,6 +56,8 @@ internal sealed partial class ObjectFile
             }
             else if (value.DestructorEntityId is not null)
                 throw new InvalidDataException("Vector allocation destructor has no original source obligation");
+            else if (SourceArrayAllocationElements.TryGetValue(value.SourceAllocationObligationId, out long eliminatedElement))
+                RequireScalar($"SELECT count(*) FROM destruction_elisions WHERE source_obligation_id={eliminatedElement} AND function_entity_id={functionId} AND kind='stock-no-effect' AND capture_proof='observed-no-effect-destruction-removal'", 1);
             if (AllocationCleanupActions.Values.Any(action => action.SourceAllocationObligationId == original.Id && action.FunctionEntityId == functionId))
                 throw new InvalidDataException("Vector helper allocation also has an explicit allocation cleanup region");
         }

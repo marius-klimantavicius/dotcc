@@ -416,3 +416,31 @@ now saved in dotobj-duckdb-source-templates-arrays-20261010.json. Next v43 work
 is staged by workers in persistent scratch while the canonical milestone is
 committed: base owns typed compiler traits/sizeof/alignof source nodes; lifetime
 owns original allocation-to-element pairing and vector-delete protocol.
+
+Committed v42 as e9adc068c (30 explicit owned paths). v43 is active. Workers
+may apply their persistent scratch patches: base source-only compiler type
+traits/sizeof/alignof, lifetime original allocation-element pairs and exact
+vector-delete ownership. Supervisor bumps profile, integrates common readers,
+schedules107/117 when both freeze, expands real per-TU failure frontier.
+
+107/117 builds: native SHA
+d30313e5df97eba289cc23ba7ce1c35494e54c31b2d8c4e9defc0d57ce29261c;
+managed build clean. Typed trait/size/alignment fixture passes 35 checks.
+Original array allocation-element pairing with two same-type new expressions
+passes 83 checks (dotobj-vector-allocation-pair-v43-107-002), including swapped
+and missing original-pair rejection. Initial wrong-owned-call mutation touched
+two primary keys; corrected to mutate one protocol row. Real107 core/parquet
+units advance to dependent nested member-template identity for pointer_traits
+rebind; base worker traces exact original prototype. Lifetime worker implements
+vector-delete protocol in canonical sources after107 snapshot. No new commit
+yet; all current107 outputs retain frozen tooling107 and managed117.
+
+109/119 focused acceptance complete: source cases including NativeAOT 66,
+prior source metadata regressions 73, full vector metadata/generation 123,
+native/stock vector oracle 28. Native109 SHA
+3b96c468acca7528b3bcb53619b3e1c5960ca22277bfc4e7f23527b509610bed.
+Four real ICU units verify/link again to 269 definitions; other 23 representative
+units now stop at template-template parameter _MapOrSetSpecifics. New evidence
+dotobj-duckdb-traits-vector-delete-20261010.json. Commit v43 next; base prepares
+source-template reference/formal graph in scratch, lifetime investigates observed
+allocator noncopyable temporary initialization on frozen109 (no runtime detour).

@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v42: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v43: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -67,7 +67,10 @@ struct Writer {
   std::map<an_expr_node_ptr,a_dynamic_init_ptr> active_allocation_internal_tries;
   std::set<a_dynamic_init_ptr> active_allocation_obligations,emitted_allocation_obligations;
   std::map<an_expr_node_ptr,const dot_object_source::ArrayAllocationSnapshot*> active_array_allocations;
-  std::vector<string> array_allocation_operations;
+  std::vector<string> array_allocation_operations,source_array_allocation_elements;
+  std::map<an_expr_node_ptr,const dot_object_source::ArrayDeletionSnapshot*> active_array_deletions;
+  std::set<a_dynamic_init_ptr> emitted_array_deletion_sources;
+  std::vector<string> source_array_deletions,array_deletion_operations;
   std::vector<string> cleanup_payload_targets;
   std::vector<string> throw_payload_subobjects,throw_payload_paths;
   std::map<an_expr_node_ptr,unsigned> active_throw_ids;
@@ -236,6 +239,9 @@ struct Writer {
     string value_type=original_type.kind=="dependent" && original_type.dependent_kind=="unknown"?
       "dependent-unknown":source_argument_type_identity(value.type,depth+1);
     string result=value.kind+":"+source_frame(value_type);
+    if(value.type_operand)result+=source_frame(source_argument_type_identity(value.type_operand,depth+1));
+    if(value.kind=="builtin-trait")result+=source_frame(std::to_string(value.builtin_operation));
+    if(value.kind=="alignof")result+=value.standard_alignof?"std:":"extension:";
     if(value.kind=="integer")result+=source_frame(value.value);
     else if(value.kind=="member")result+=source_frame(source_argument_type_identity(value.member_owner,depth+1))+source_frame(value.name);
     else if(value.kind=="parameter") {
@@ -285,7 +291,10 @@ struct Writer {
       ",\"valueText\":"+quote(value.value)+",\"parameterDepth\":"+(value.kind=="parameter"?std::to_string(value.depth):"null")+
       ",\"parameterPosition\":"+(value.kind=="parameter"?std::to_string(value.position):"null")+
       ",\"isPack\":"+(value.pack?"true":"false")+",\"operatorName\":"+quote(value.operation)+
-      ",\"ownerSourceTypeId\":"+number(value.member_owner?source_type(value.member_owner):0)+position(value.location)+"}");
+      ",\"ownerSourceTypeId\":"+number(value.member_owner?source_type(value.member_owner):0)+
+      ",\"operandSourceTypeId\":"+number(value.type_operand?source_type(value.type_operand):0)+
+      ",\"builtinOperatorKind\":"+(value.builtin_operation>=0?std::to_string(value.builtin_operation):"null")+
+      ",\"isStandardAlignof\":"+(value.standard_alignof?"true":"false")+position(value.location)+"}");
     unsigned ordinal=0;for(auto child:value.operands)source_semantic_constant_operands.push_back("{\"constantId\":"+number(id)+
       ",\"ordinal\":"+std::to_string(ordinal++)+",\"operandId\":"+number(source_semantic_constant(child))+"}");
     return id;
@@ -307,10 +316,17 @@ struct Writer {
     if(source.dependent) {
       if(!source.prototype) {
         if(!source.template_error.empty())reject((source.identity+": "+source.template_error).c_str());
-        if(!source.template_prototype)reject("dependent record lacks owned template prototype");
-        const auto &prototype=captured.types.at(source.template_prototype-1);
-        if(prototype.kind!="record")reject("dependent class template prototype is not a record");
-        string result="source-instantiation:"+source_frame(original_record_identity(prototype.record_type,depth+1));
+        string result;
+        if(source.member_template_owner) {
+          if(source.template_prototype)reject("dependent member lookup has fabricated class template prototype");
+          result="source-member-instantiation:"+source_frame(source_argument_type_identity(source.member_template_owner,depth+1))+
+            source_frame(source.name);
+        } else {
+          if(!source.template_prototype)reject("dependent record lacks owned template prototype");
+          const auto &prototype=captured.types.at(source.template_prototype-1);
+          if(prototype.kind!="record")reject("dependent class template prototype is not a record");
+          result="source-instantiation:"+source_frame(original_record_identity(prototype.record_type,depth+1));
+        }
         for(const auto &argument:source.template_arguments)result+=source_frame(argument.type?
           "t"+source_argument_type_identity(argument.type,depth+1):"c"+source_constant_identity(argument.constant,depth+1));
         return result;
@@ -373,10 +389,15 @@ struct Writer {
       for(const auto &base:source->bases)
         source_base_ids.emplace(base.il,next_source_base++);
       if(source->dependent && !source->prototype && !captured.record_owners.count(t)) {
-        const auto &prototype=captured.types.at(source->template_prototype-1);
+        unsigned prototype_record=source->template_prototype?
+          source_record_metadata(captured.types.at(source->template_prototype-1).record_type):0;
         source_record_instantiations.push_back("{\"sourceRecordId\":"+number(source_record)+
-          ",\"prototypeSourceRecordId\":"+number(source_record_metadata(prototype.record_type))+
-          ",\"captureProof\":\"original-template-arguments\"}");
+          ",\"prototypeSourceRecordId\":"+number(prototype_record)+
+          ",\"resolutionKind\":"+quote(source->member_template_owner?"dependent-member-template":"class-template")+
+          ",\"memberOwnerSourceTypeId\":"+number(source->member_template_owner?source_type(source->member_template_owner):0)+
+          ",\"memberOfUnknownBase\":"+(source->template_member_of_unknown_base?"true":"false")+
+          ",\"qualifiedUnknownBaseMember\":"+(source->template_qualified_unknown_base?"true":"false")+
+          ",\"captureProof\":"+quote(source->member_template_owner?"original-nonreal-member-template":"original-template-arguments")+"}");
         unsigned ordinal=0;for(const auto &argument:source->template_arguments)
           source_template_arguments.push_back("{\"sourceRecordId\":"+number(source_record)+",\"ordinal\":"+std::to_string(ordinal++)+
             ",\"kind\":"+quote(argument.type?"type":"constant")+",\"typeId\":"+number(argument.type?source_type(argument.type):0)+
@@ -1369,6 +1390,18 @@ struct Writer {
     active_allocation_internal_tries.clear();active_allocation_obligations.clear();emitted_allocation_obligations.clear();
     active_guard_cleanups.clear();
     auto &captured=dot_object_source::state();
+    active_array_deletions.clear();
+    for(const auto &entry:captured.array_deletion_calls)if(entry.second.owner==owner) {
+      const auto &value=entry.second;
+      if(!value.error.empty())reject(value.error.c_str());
+      auto source=captured.destructions.find(value.original);
+      auto callback=dot_object_source::abi_primary(value.destructor);if(!callback)callback=value.destructor;
+      if(source==captured.destructions.end() || source->second.allocation_release || !source->second.partial_aggregate ||
+         dot_object_source::source_destruction(value.original,owner)!=value.original ||
+         !callback || source->second.destructor!=callback)
+        reject("array delete runtime differs from original partial element destruction");
+      active_array_deletions.emplace(entry.first,&value);active_array_obligations.insert(value.original);
+    }
     active_array_allocations.clear();
     for(const auto &entry:captured.array_allocation_calls)if(entry.second.owner==owner) {
       const auto &value=entry.second;
@@ -1379,6 +1412,9 @@ struct Writer {
          source->second.destructor!=value.deallocator)
         reject("vector allocation protocol differs from original selected array delete");
       if(value.original_destruction) {
+        auto paired=captured.source_array_allocation_elements.find(value.original);
+        if(paired==captured.source_array_allocation_elements.end() || paired->second!=value.original_destruction)
+          reject("vector allocation element differs from its original new-expression association");
         auto destruction=captured.destructions.find(value.original_destruction);
         auto callback=dot_object_source::abi_primary(value.destructor);if(!callback)callback=value.destructor;
         if(destruction==captured.destructions.end() || destruction->second.allocation_release ||
@@ -1747,6 +1783,16 @@ struct Writer {
       if(!value.error.empty())reject(value.error.c_str());
       if(!source_lifetime_ids.count(value.lifetime))reject("invalid original destruction lifetime provenance");
       if(value.allocation_release) {
+        auto paired=captured.source_array_allocation_elements.find(original);
+        if(paired!=captured.source_array_allocation_elements.end()) {
+          auto element=captured.destructions.find(paired->second);
+          if(element==captured.destructions.end() || !element->second.partial_aggregate ||
+             element->second.owner!=value.owner || element->second.initializer!=value.initializer ||
+             !source_obligation_ids.count(paired->second))
+            reject("original array allocation element lacks exact source destruction ownership");
+          source_array_allocation_elements.push_back("{\"sourceAllocationObligationId\":"+number(source_obligation_ids.at(original))+
+            ",\"sourceDestructionObligationId\":"+number(source_obligation_ids.at(paired->second))+",\"captureProof\":\"before-lowering\"}");
+        }
         source_allocation_obligations.push_back("{\"id\":"+number(source_obligation_ids.at(original))+
           ",\"functionEntityId\":"+number(value.owner?routine(value.owner):0)+",\"lifetimeId\":"+number(source_lifetime_ids.at(value.lifetime))+
           ",\"sourceInitializerId\":"+number(value.initializer?source_initializer_id(value.initializer):0)+
@@ -2914,6 +2960,21 @@ struct Writer {
   }
   unsigned expression(an_expr_node_ptr e) {
     unsigned result=expression_core(e);
+    auto deletion=active_array_deletions.find(e);
+    if(deletion!=active_array_deletions.end()) {
+      const auto &value=*deletion->second;
+      unsigned obligation=source_obligation_ids.emplace(value.original,unsigned(source_obligation_ids.size()+1)).first->second;
+      if(!node_shapes.at(result).direct_call)reject("array delete observation lost its owned direct call");
+      if(emitted_array_deletion_sources.insert(value.original).second)
+        source_array_deletions.push_back("{\"sourceObligationId\":"+number(obligation)+
+          ",\"deallocatorEntityId\":"+number(routine(value.deallocator))+",\"captureProof\":\"before-array-delete-lowering\"}");
+      array_deletion_operations.push_back("{\"nodeId\":"+number(result)+",\"sourceObligationId\":"+number(obligation)+
+        ",\"destructorEntityId\":"+number(routine(value.destructor))+",\"deallocatorEntityId\":"+number(routine(value.deallocator))+
+        ",\"elementTypeId\":"+number(type_id(value.element_type))+",\"paddingSize\":"+std::to_string(cleanup_number(value.padding))+
+        ",\"helperKind\":"+quote(value.helper=="__cxa_vec_delete2"?"ia64-vector-delete2":"ia64-vector-delete3")+
+        ",\"captureProof\":\"observed-array-delete-runtime\"}");
+      emitted_array_obligations.insert(value.original);
+    }
     auto allocation=active_array_allocations.find(e);
     if(allocation!=active_array_allocations.end()) {
       const auto &value=*allocation->second;
@@ -4365,7 +4426,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v42\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v43\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -4373,6 +4434,8 @@ struct Writer {
       ",\"sourceEnumerators\":"+array(source_enumerators)+",\"sourceMemberPointerTypes\":"+array(source_member_pointer_types)+
       ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
       ",\"sourceDependentTypes\":"+array(source_dependent_types)+
+      ",\"sourceArrayDeletions\":"+array(source_array_deletions)+",\"arrayDeletionOperations\":"+array(array_deletion_operations)+
+      ",\"sourceArrayAllocationElements\":"+array(source_array_allocation_elements)+
       ",\"arrayAllocationOperations\":"+array(array_allocation_operations)+
       ",\"fieldInitializerDestructionElisions\":"+array(field_initializer_destruction_elisions)+
       ",\"fieldInitializerPartialDestructionExecutions\":"+array(field_partial_destruction_executions)+

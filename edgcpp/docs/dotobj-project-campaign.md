@@ -1136,3 +1136,36 @@ Current106 diverse frontier: 27 representatives, four packaged ICU units and
 providers to 269 C# definitions. Review output is
 `artifacts/review/dotobj-duckdb-v42/icu-four-units`; no DuckDB C# compilation or
 execution claim. No intermediates were removed.
+
+## Typed source expressions and vector deletion, profile 43
+
+Native109/managed119 add typed compiler-trait operands and size/alignment
+queries, plus an exact nonreal dependent member-template relation. This advances
+real source export beyond `__is_empty` and `pointer_traits::rebind`; the next
+observed gate is the template-template parameter `_MapOrSetSpecifics` in libc++
+node handles. No concrete prototype is fabricated for either category.
+
+Array-new now separately records its original allocation-to-element association
+before lowering; no ordinal adjacency is assumed. Explicit direct delete2/3
+helper protocols retain original selected deallocation and element destruction
+ownership, callback ABI, stride and padding. Final stock node replacement
+propagates or invalidates the exact observed root proof. Full delete[] source
+fixtures now export, verify and generate C#, including two same-type allocation
+expressions. Production vector runtime providers and virtual/aligned/default
+protocol variants remain pending.
+
+Focused acceptance totals 262 checks (66 including NativeAOT for the two new
+source cases, 73 prior source metadata regressions, 123 full vector metadata and
+generation checks), plus 28 native/stock vector oracle checks. Those oracles
+exercise null/zero deletion, allocator failure, constructor prefix rollback, and
+a throwing destructor followed by remaining-element destruction and one
+deallocation. Translated vector runtime execution is not claimed. The previous
+v42 broad suite passed 1,042 checks; it was not repeated for this focused
+metadata milestone. Exact receipts are in
+`evidence/dotobj-duckdb-traits-vector-delete-20261010.json`.
+
+The 27-unit real frontier remains four packaged ICU units and 23 explicit
+template-template parameter gates. All four verify and generate together with
+RTTI providers to 269 definitions. This is partial generation, not a compiled
+or runnable DuckDB. Next workers own the template-reference/formal-parameter
+graph and observed noncopyable temporary initialization, respectively.

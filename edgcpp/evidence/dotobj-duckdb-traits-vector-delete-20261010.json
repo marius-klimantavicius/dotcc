@@ -1,0 +1,77 @@
+{
+  "milestone": "dotobj scalar-control-v43 typed traits, dependent member templates and vector deletion",
+  "status": "accepted-focused",
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native109-verified-snapshot/cpfe-dot",
+    "sha256": "3b96c468acca7528b3bcb53619b3e1c5960ca22277bfc4e7f23527b509610bed"
+  },
+  "linker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-119/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "af50575762dec97a68acd4cab6d0722f90409cca66b1230a022440adcabf1cfe"
+  },
+  "focused": {
+    "traits-aot": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v43-focused-aot-109-traits-001/results.json",
+      "sha256": "29f279deadaa88e8fe3cd5fe56ab6bc02cc71c9d48286b65a33b0d9dd6afce55",
+      "checks": 37,
+      "status": "passed"
+    },
+    "member-templates-aot": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v43-focused-aot-109-member-templates-001/results.json",
+      "sha256": "36c4da310a85ca00ddc939d994e4ff4aee31853ae0cbf5f99230241fa745183c",
+      "checks": 29,
+      "status": "passed"
+    },
+    "arguments": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-template-arguments-v43-109-regression-001/results.json",
+      "sha256": "a8fdb1f08439a5e83b867c2eecf6bb92a32ef62d8cd86b50b62ed8c451f989df",
+      "checks": 23,
+      "status": "passed"
+    },
+    "bounds": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-template-bounds-v43-109-regression-001/results.json",
+      "sha256": "2eaade550415c77604b6f7457bd701a71f8f3026ed8fb4604e6b3121aa00bb0e",
+      "checks": 27,
+      "status": "passed"
+    },
+    "members": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-template-members-v43-109-regression-001/results.json",
+      "sha256": "779736c3ef13163fd42fdc1983586e94de3a2137e8190c267e61d9cdf03307a7",
+      "checks": 23,
+      "status": "passed"
+    },
+    "vector-full": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-vector-full-v43-109-001/results.json",
+      "sha256": "66e17644ad02f687264193c1d7608be3e153d391a885b346d1a8fd43e5ce2499",
+      "checks": 123,
+      "status": "passed"
+    },
+    "vector-native-stock": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-vector-full-v43-109-001/oracles/results.json",
+      "sha256": "cf419e3d33697e5c2746702a275e5340be78271d1221681d5ec2d05370a67b3b",
+      "checks": 28,
+      "status": "passed"
+    }
+  },
+  "priorBroadBaseline": "dotobj-full-v42-002:1042 passed, not repeated for this focused metadata milestone",
+  "actualProject": {
+    "frontier": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-diverse-frontier-109/results.json",
+    "selectedUnits": 27,
+    "packaged": 4,
+    "remainingGate": "Template-template parameter _MapOrSetSpecifics requires an owned template reference and formal-parameter graph",
+    "verificationAndGeneration": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-icu-four-verify-109/results.json",
+    "generatedDirectory": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-icu-four-generated-109",
+    "generatedDefinitions": 269
+  },
+  "limits": [
+    "No full DuckDB generation, C# compilation or execution claim.",
+    "Production vector allocation/deletion runtime providers remain pending.",
+    "Virtual, aligned and implicit-default vector-deletion protocol variants remain explicit gates.",
+    "Enum/routine/member-pointer type argument identities and additional template references still require owned source contracts."
+  ],
+  "retainedFailures": [
+    "108 full vector source ownership failed because the stock final overwrite replaced the observed helper root;109 adds exact propagation/invalidation.",
+    "107 focused pair test originally mutated two primary keys to one value; test now mutates one row.",
+    "107 alignof fixture coalesced equivalent type queries; GNU expression alignof provides the required distinct original shape."
+  ]
+}

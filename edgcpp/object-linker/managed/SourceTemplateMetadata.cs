@@ -6,7 +6,9 @@ namespace DotObj;
 
 internal sealed record SourceSemanticConstant(long Id, string Kind, long SourceTypeId, string SourceName,
     string ValueText, long? ParameterDepth, long? ParameterPosition, bool IsPack, string OperatorName,
-    long? OwnerSourceTypeId, long? SourceFileId, long Line, long Column);
+    long? OwnerSourceTypeId, long? OperandSourceTypeId, long? BuiltinOperatorKind, bool IsStandardAlignof, long? SourceFileId, long Line, long Column);
+internal sealed record SourceRecordInstantiation(string ResolutionKind, long? PrototypeSourceRecordId, long? MemberOwnerSourceTypeId,
+    bool MemberOfUnknownBase, bool QualifiedUnknownBaseMember);
 internal sealed record SourceTemplateArgument(long Ordinal, string Kind, long? TypeId, long? ConstantId);
 
 internal sealed partial class ObjectFile
@@ -14,18 +16,18 @@ internal sealed partial class ObjectFile
     public Dictionary<long, SourceSemanticConstant> SourceSemanticConstants { get; } = [];
     public Dictionary<long, long[]> SourceSemanticConstantOperands { get; } = [];
     public Dictionary<long, long> SourceArrayBounds { get; } = [];
-    public Dictionary<long, long> SourceRecordInstantiations { get; } = [];
+    public Dictionary<long, SourceRecordInstantiation> SourceRecordInstantiations { get; } = [];
     public Dictionary<long, List<SourceTemplateArgument>> SourceTemplateArguments { get; } = [];
 
     private void ReadSourceTemplateMetadata()
     {
-        using (var q = database.Prepare("SELECT id,kind,source_type_id,source_name,value_text,parameter_depth,parameter_position,is_pack,operator_name,owner_source_type_id,source_file_id,line,column FROM source_semantic_constants ORDER BY id"))
+        using (var q = database.Prepare("SELECT id,kind,source_type_id,source_name,value_text,parameter_depth,parameter_position,is_pack,operator_name,owner_source_type_id,operand_source_type_id,builtin_operator_kind,is_standard_alignof,source_file_id,line,column FROM source_semantic_constants ORDER BY id"))
             while (q.Read())
             {
                 var value = new SourceSemanticConstant(q.Integer(0), q.Text(1), q.Integer(2), q.Text(3), q.Text(4),
-                    q.OptionalInteger(5), q.OptionalInteger(6), q.Integer(7) == 1, q.Text(8), q.OptionalInteger(9), q.OptionalInteger(10), q.Integer(11), q.Integer(12));
-                if (value.Id <= 0 || !SourceTypes.ContainsKey(value.SourceTypeId) || q.Integer(7) is not (0 or 1) ||
-                    value.Kind is not ("integer" or "parameter" or "operation" or "expression" or "member") || value.Line < 0 || value.Column < 0 ||
+                    q.OptionalInteger(5), q.OptionalInteger(6), q.Integer(7) == 1, q.Text(8), q.OptionalInteger(9), q.OptionalInteger(10), q.OptionalInteger(11), q.Integer(12) == 1, q.OptionalInteger(13), q.Integer(14), q.Integer(15));
+                if (value.Id <= 0 || !SourceTypes.ContainsKey(value.SourceTypeId) || q.Integer(7) is not (0 or 1) || q.Integer(12) is not (0 or 1) ||
+                    value.Kind is not ("integer" or "parameter" or "operation" or "expression" or "member" or "type-operand" or "builtin-trait" or "sizeof" or "alignof" or "datasizeof") || value.Line < 0 || value.Column < 0 ||
                     !SourceSemanticConstants.TryAdd(value.Id, value)) throw new InvalidDataException("Invalid original semantic constant");
             }
         var operands = new Dictionary<long, List<long>>();
@@ -48,14 +50,33 @@ internal sealed partial class ObjectFile
                     q.Text(2) != "original-dependent-bound" || !SourceArrayBounds.TryAdd(array.Id, q.Integer(1)))
                     throw new InvalidDataException("Dependent array bound requires its owned constant and no fabricated execution extent");
             }
-        using (var q = database.Prepare("SELECT source_record_id,prototype_source_record_id,capture_proof FROM source_record_instantiations ORDER BY source_record_id"))
+        using (var q = database.Prepare("SELECT source_record_id,prototype_source_record_id,resolution_kind,member_owner_source_type_id,member_of_unknown_base,qualified_unknown_base_member,capture_proof FROM source_record_instantiations ORDER BY source_record_id"))
             while (q.Read())
             {
+                var relation = new SourceRecordInstantiation(q.Text(2), q.OptionalInteger(1), q.OptionalInteger(3), q.Integer(4) == 1, q.Integer(5) == 1);
                 if (!SourceRecords.TryGetValue(q.Integer(0), out var instance) || !instance.IsDependent || instance.IsPrototypeInstantiation ||
-                    !SourceRecords.TryGetValue(q.Integer(1), out var prototype) || !prototype.IsDependent || !prototype.IsPrototypeInstantiation ||
-                    instance.Id == prototype.Id || instance.SourceName != prototype.SourceName || instance.RecordKind != prototype.RecordKind ||
-                    q.Text(2) != "original-template-arguments" || !SourceRecordInstantiations.TryAdd(instance.Id, prototype.Id))
-                    throw new InvalidDataException("Dependent class instance requires its exact original template prototype");
+                    q.Integer(4) is not (0 or 1) || q.Integer(5) is not (0 or 1) ||
+                    relation.QualifiedUnknownBaseMember && !relation.MemberOfUnknownBase)
+                    throw new InvalidDataException("Invalid original dependent class instance relation");
+                if (relation.ResolutionKind == "class-template")
+                {
+                    if (relation.PrototypeSourceRecordId is not long prototypeId || !SourceRecords.TryGetValue(prototypeId, out var prototype) ||
+                        !prototype.IsDependent || !prototype.IsPrototypeInstantiation || instance.Id == prototype.Id ||
+                        instance.SourceName != prototype.SourceName || instance.RecordKind != prototype.RecordKind ||
+                        relation.MemberOwnerSourceTypeId is not null || relation.MemberOfUnknownBase || relation.QualifiedUnknownBaseMember ||
+                        q.Text(6) != "original-template-arguments")
+                        throw new InvalidDataException("Dependent class instance requires its exact original template prototype");
+                }
+                else if (relation.ResolutionKind == "dependent-member-template")
+                {
+                    if (relation.PrototypeSourceRecordId is not null || relation.MemberOwnerSourceTypeId is not long owner ||
+                        !SourceTypes.ContainsKey(owner) || !SourceTypeContainsParameter(owner, 0) || instance.SourceName.Length == 0 ||
+                        q.Text(6) != "original-nonreal-member-template")
+                        throw new InvalidDataException("Dependent member template requires its original owner and no fabricated prototype");
+                }
+                else throw new InvalidDataException("Unknown source template resolution kind");
+                if (!SourceRecordInstantiations.TryAdd(instance.Id, relation))
+                    throw new InvalidDataException("Duplicate source template instantiation relation");
             }
         using (var q = database.Prepare("SELECT source_record_id,ordinal,kind,type_id,constant_id FROM source_template_arguments ORDER BY source_record_id,ordinal"))
             while (q.Read())
@@ -82,6 +103,7 @@ internal sealed partial class ObjectFile
     {
         if (depth > 128) throw new InvalidDataException("Source semantic constant graph is cyclic or too deep");
         return SourceSemanticConstants[id].Kind is "parameter" or "member" ||
+            SourceSemanticConstants[id].OperandSourceTypeId is long type && SourceTypeContainsParameter(type, depth + 1) ||
             SourceSemanticConstantOperands.GetValueOrDefault(id, []).Any(child => ContainsSourceParameter(child, depth + 1));
     }
 
@@ -91,7 +113,8 @@ internal sealed partial class ObjectFile
         bool unknownType = valueType.Kind == "dependent" && SourceDependentTypes[valueType.Id].Kind == "unknown";
         if (unknownType && value.Kind is not ("member" or "expression"))
             throw new InvalidDataException("Only unresolved source member values may retain an unknown result type");
-        var shape = unknownType ? (Bits: 0, Signed: false) : SourceIntegerShape(valueType);
+        var shape = unknownType || value.Kind == "type-operand" ? (Bits: 0, Signed: false) : SourceIntegerShape(valueType);
+        VerifySourceTypedExpression(value, valueType);
         if ((value.Kind == "member") != (value.OwnerSourceTypeId is not null))
             throw new InvalidDataException("Source constant member owner differs from its semantic kind");
         long[] operands = SourceSemanticConstantOperands.GetValueOrDefault(value.Id, []);
@@ -114,7 +137,11 @@ internal sealed partial class ObjectFile
         {
             if (value.ParameterDepth is not null || value.ParameterPosition is not null || value.IsPack || value.SourceName.Length != 0)
                 throw new InvalidDataException("Nonparameter source constant has fabricated declaration coordinates");
-            if (value.Kind == "integer")
+            if (value.Kind is "type-operand" or "builtin-trait" or "sizeof" or "alignof" or "datasizeof")
+            {
+                if (value.ValueText.Length != 0) throw new InvalidDataException("Source type query has a fabricated evaluated value");
+            }
+            else if (value.Kind == "integer")
             {
                 if (!BigInteger.TryParse(value.ValueText, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var number) ||
                     number.ToString(CultureInfo.InvariantCulture) != value.ValueText || operands.Length != 0 || value.OperatorName.Length != 0 ||
@@ -155,6 +182,9 @@ internal sealed partial class ObjectFile
         if (depth > 128) throw new InvalidDataException("Source constant identity cycle/depth");
         SourceSemanticConstant value = SourceSemanticConstants[id];
         string result = value.Kind + ":" + SourceIdentityFrame(SourceConstantTypeIdentity(value.SourceTypeId, depth + 1));
+        if (value.OperandSourceTypeId is long operandType) result += SourceIdentityFrame(SourceArgumentTypeIdentity(operandType, depth + 1));
+        if (value.Kind == "builtin-trait") result += SourceIdentityFrame(value.BuiltinOperatorKind!.Value.ToString(CultureInfo.InvariantCulture));
+        if (value.Kind == "alignof") result += value.IsStandardAlignof ? "std:" : "extension:";
         return value.Kind switch
         {
             "integer" => result + SourceIdentityFrame(value.ValueText),
@@ -198,9 +228,12 @@ internal sealed partial class ObjectFile
     private string SourceRecordIdentity(long id, int depth)
     {
         if (depth > 128) throw new InvalidDataException("Source record template identity cycle/depth");
-        if (!SourceRecordInstantiations.TryGetValue(id, out long prototype)) return SourceRecords[id].IdentityKey;
-        return "source-instantiation:" + SourceIdentityFrame(SourceRecordIdentity(prototype, depth + 1)) +
-            string.Concat(SourceTemplateArguments.GetValueOrDefault(id, []).Select(argument => SourceIdentityFrame(argument.Kind == "type"
+        if (!SourceRecordInstantiations.TryGetValue(id, out var relation)) return SourceRecords[id].IdentityKey;
+        string owner = relation.ResolutionKind == "class-template"
+            ? "source-instantiation:" + SourceIdentityFrame(SourceRecordIdentity(relation.PrototypeSourceRecordId!.Value, depth + 1))
+            : "source-member-instantiation:" + SourceIdentityFrame(SourceArgumentTypeIdentity(relation.MemberOwnerSourceTypeId!.Value, depth + 1)) +
+                SourceIdentityFrame(SourceRecords[id].SourceName);
+        return owner + string.Concat(SourceTemplateArguments.GetValueOrDefault(id, []).Select(argument => SourceIdentityFrame(argument.Kind == "type"
                 ? "t" + SourceArgumentTypeIdentity(argument.TypeId!.Value, depth + 1) : "c" + SourceConstantIdentity(argument.ConstantId!.Value, depth + 1))));
     }
     private void VerifySourceTemplateMetadata()
@@ -208,8 +241,9 @@ internal sealed partial class ObjectFile
         foreach (var record in SourceRecords.Values)
         {
             bool instance = record.IsDependent && !record.IsPrototypeInstantiation && !SourceRecordOwners.ContainsKey(record.Id);
-            if (SourceRecordInstantiations.ContainsKey(record.Id) != instance ||
-                record.IdentityKey.StartsWith("source-instantiation:", StringComparison.Ordinal) != instance ||
+            bool instanceKey = record.IdentityKey.StartsWith("source-instantiation:", StringComparison.Ordinal) ||
+                record.IdentityKey.StartsWith("source-member-instantiation:", StringComparison.Ordinal);
+            if (SourceRecordInstantiations.ContainsKey(record.Id) != instance || instanceKey != instance ||
                 instance && record.IdentityKey != SourceRecordIdentity(record.Id, 0))
                 throw new InvalidDataException("Dependent class identity differs from its exact original template arguments");
         }
