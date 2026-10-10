@@ -45,6 +45,8 @@ int fsync(int);
 int fdatasync(int);
 int fchown(int, uid_t, gid_t);
 uid_t geteuid(void);
+/* Process creation remains an explicit runtime import. */
+pid_t fork(void);
 pid_t getpid(void);
 unsigned int sleep(unsigned int);
 int usleep(unsigned int);

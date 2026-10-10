@@ -129,6 +129,8 @@ def main():
         report = sqlite(out, args.with_musl)
     else:
         report = duckdb(args.portable_manifest.resolve(), args.libcxx_acquisition.resolve(), args.with_musl, args.include_tests, args.with_libcxx)
+        if args.include_tests:
+            report = module(HERE / 'duckdb_test_profile.py', 'dotobj_duckdb_tests').prepare(report, out / 'test-profile')
     (out / 'project.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(dict(manifest=str(out / 'project.json'), units=len(report['units']))))
 

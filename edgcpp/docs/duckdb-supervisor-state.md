@@ -870,3 +870,23 @@ type-operator source metadata,3 singleton exporter families,8 test frontend
 profiles. Base worker owns the40-unit source graph; lifetime worker diagnoses
 types.cpp exception origin, test_config rollback and abi_atomic layout; supervisor
 owns test-profile provenance and integration. No cleanup, no runtime detour.
+
+
+Portable test-profile milestone (schema56 unchanged): canonical native139
+SHAe36e798cceefa77e4ce26faf8682d0ac6c9634e22ceb65df6538a723b4772cd6 and managed161
+export/verify all seven selected former frontend failures and jointly generate
+5,662 definitions. Full manifest still2635units,148tests, unchanged language
+standards, no omitted tests or host OS macros. Catch disables only OS crash
+interception and a GCC-only diagnostic probe; existing reviewed terminal
+adaptation is reused. Shared headers add fork/kill/bzero declarations, with
+unresolved partial imports retained. No process-test execution claimed.
+
+Canonical full next-run manifest: dotobj-test-profile-002/project.json. Previous
+manifest003 and source files are intact; unrelated pending PCG adaptation was
+not adopted. unittest now passes parsing and reaches source-parent static
+destruction ownership. Cumulative exports2591/2635 across retained versions;
+remaining44exporter gates =40alias/type-operator graph + types.cpp destructor
+origin + test_config member rollback + abi_atomic alignment + unittest static
+parent ownership. Workers are implementing exact observed source/cleanup facts.
+Review artifacts/review/dotobj-duckdb-v56/tests. Latest full-profile corpus and
+full combined link/compile/run remain outstanding. No cleanup.

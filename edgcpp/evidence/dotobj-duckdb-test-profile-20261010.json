@@ -1,0 +1,28 @@
+{
+  "status": "accepted-generation-profile",
+  "profile": 56,
+  "native": 139,
+  "managed": 161,
+  "manifest": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-test-profile-002/project.json",
+  "fullManifestUnits": 2635,
+  "testUnits": 148,
+  "unitsOmitted": 0,
+  "exportReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-test-profile-actual-139/results.json",
+  "verifyReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-test-profile-managed-139-161/results.json",
+  "linkReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-test-profile-managed-139-161/link-results.json",
+  "manifestAudit": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-test-profile-audit-001/results.json",
+  "packaged": 7,
+  "verified": 7,
+  "generatedDefinitions": 5662,
+  "cumulativeExportedAcrossRetainedVersions": 2591,
+  "remainingExporterGates": 44,
+  "latestFullCorpusRebuilt": false,
+  "testsExecuted": false,
+  "runtimeImports": [
+    "fork",
+    "kill",
+    "bzero"
+  ],
+  "remainingUnit": "test/unittest.cpp passes parsing; exporter rejects parent ownership of static destruction",
+  "unrelatedPendingPcgAdaptationAdopted": false
+}

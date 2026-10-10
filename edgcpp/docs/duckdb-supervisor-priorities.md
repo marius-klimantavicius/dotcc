@@ -1,3 +1,11 @@
+Latest test-profile checkpoint:2,591/2,635 exported across retained versions;
+44 exporter gates remain (40 alias/type-operator source graph;4 precise
+destructor-origin, member-rollback, over-alignment and static-parent families).
+Seven former frontend failures export/verify and jointly emit5,662definitions.
+All148test units retained. Next full-run manifest is dotobj-test-profile-002/
+project.json; full coherent re-export still pending. The tables below retain
+historical checkpoints and should not be read as current remaining totals.
+
 Current accepted checkpoint: profile56,2,584/2,635 exported across retained
 versions;51 export/config gates remain. This is not a full latest-profile corpus.
 
