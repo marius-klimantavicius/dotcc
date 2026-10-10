@@ -2,6 +2,55 @@ namespace DotObj;
 
 internal static class CleanupVerifier
 {
+    // The field root is construction of the actual member of this constructor,
+    // not an unrelated object of the same type or a nested initializer temporary.
+    public static void FieldInitializerTarget(ObjectFile obj, Entity function, FunctionBody body,
+        long sourceInitializerId, Node target)
+    {
+        SourceInitializer initializer = obj.SourceInitializers[sourceInitializerId];
+        long sourceFieldId = initializer.SourceFieldId!.Value;
+        long fieldSize = 0;
+        int depth = 0;
+        Node Child(Node node) => body.Child(node.Id, "operand");
+        long Offset(Node node)
+        {
+            if (++depth > 128 || node.FunctionId != function.Id)
+                throw new InvalidDataException("Field initializer target leaves its owned constructor");
+            if (node.Kind is "convert" or "address" or "array-decay" or "dereference")
+                return Offset(Child(node));
+            if (node.Kind == "binary" && node.Operator == "pointer-add")
+            {
+                Node left = body.Child(node.Id, "left"), right = body.Child(node.Id, "right");
+                if (right.Kind != "constant" || !long.TryParse(right.ConstantText,
+                    System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture,
+                    out long index) || index < 0 || left.TypeId is not long pointerType ||
+                    !ScalarTypes.IsPointer(obj.Type(pointerType)))
+                    throw new InvalidDataException("Field initializer requires a fixed forward member element path");
+                return checked(Offset(left) + index * obj.StorageSize(ScalarTypes.Pointee(obj.Type(pointerType))));
+            }
+            if (node.Kind != "member" || node.FieldId is not long fieldId ||
+                !obj.Fields.TryGetValue(fieldId, out RecordField? field) || field.SourceFieldId != sourceFieldId)
+                throw new InvalidDataException("Field initializer target differs from its original member");
+            Node owner = Child(node);
+            if (owner.Kind != "dereference")
+                throw new InvalidDataException("Field initializer member lacks its constructor receiver");
+            Node receiver = Child(owner);
+            // No arbitrary saved pointer aliases or base adjustment may stand in
+            // for this; those require their own exact observed correspondence.
+            if (receiver.Kind != "binding" || receiver.BindingId is not long bindingId ||
+                !body.Bindings.TryGetValue(bindingId, out Binding? binding) || binding.Kind != "parameter" ||
+                binding.Ordinal is not long ordinal ||
+                obj.ParameterRoles[(function.Id, ordinal)].Role != "this")
+                throw new InvalidDataException("Field initializer member is not owned by this constructor");
+            fieldSize = obj.StorageSize(obj.Type(field.TypeId));
+            return 0;
+        }
+        long offset = Offset(target);
+        if (target.TypeId is not long targetType || !ScalarTypes.IsPointer(obj.Type(targetType)) ||
+            offset < 0 || offset >= fieldSize)
+            throw new InvalidDataException("Field initializer pointer leaves its original member storage");
+    }
+
     public static HashSet<long> RollbackTargetBindings(ObjectFile obj, Entity function, FunctionBody body, long targetNodeId, bool guard)
     {
         var bindings = new HashSet<long>();
@@ -118,7 +167,14 @@ internal static class CleanupVerifier
                 Fail("Payload rollback recipe does not start at its exact payload address");
         }
         if (Type(root!) != obj.Parameters[action.CallbackEntityId][0]) Fail("Cleanup target differs from the selected destructor's pointer ABI");
-        if (action.SourceStaticObligationId is long staticId)
+        if (action.SourceFieldInitializerId is long fieldInitializer)
+            FieldInitializerTarget(obj, function, body, fieldInitializer, root!);
+        if (action.SourceStaticObligationId is long templateId &&
+            obj.SourceStaticDestructions[templateId].SourceInitializerId is long initializerId &&
+            obj.SourceInitializers[initializerId].Kind == "field-default")
+            FieldInitializerTarget(obj, function, body, initializerId, root!);
+        if (action.SourceStaticObligationId is long staticId &&
+            obj.SourceInitializers[obj.SourceStaticDestructions[staticId].SourceInitializerId!.Value].Kind != "field-default")
         {
             long storageId = obj.StaticCleanupStorage(action);
             long Offset(Node node)

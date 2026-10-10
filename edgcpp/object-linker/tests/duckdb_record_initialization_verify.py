@@ -21,7 +21,7 @@ def main():
     parser.add_argument('--native-aot', action='store_true')
     parser.add_argument('--rid', default='linux-x64')
     parser.add_argument('--provider', type=Path, action='append', default=[])
-    parser.add_argument('--case', choices=('polymorphic', 'aggregate', 'union', 'constexpr', 'constant_local'), action='append')
+    parser.add_argument('--case', choices=('polymorphic', 'aggregate', 'union', 'constexpr', 'constant_local', 'conditional'), action='append')
     args = parser.parse_args()
     if bool(args.stock_compiler) != bool(args.stock_runtime):
         parser.error('--stock-compiler and --stock-runtime must be provided together')
@@ -47,7 +47,7 @@ def main():
 
     error = None
     try:
-        for case in args.case or ('polymorphic', 'aggregate', 'union', 'constexpr', 'constant_local'):
+        for case in args.case or ('polymorphic', 'aggregate', 'union', 'constexpr', 'constant_local', 'conditional'):
             source = out / ('duckdb_record_initialization_' + case + '.cpp')
             source.write_text('#define DUCKDB_RECORD_NATIVE_ORACLE 1\n' +
                 '// Genuine deallocation required by the minimal RTTI provider closure.\n' +
@@ -74,9 +74,9 @@ def main():
             run(case + '-verify', ['dotnet', args.linker.resolve(), 'verify', obj])
             with sqlite3.connect(obj) as db:
                 check(case + '-foreign-keys-valid', not list(db.execute('PRAGMA foreign_key_check')))
-                initialization_table = 'record_constant_initializations' if case in ('constexpr', 'constant_local') else 'record_storage_initializations'
+                initialization_table = 'record_constant_initializations' if case in ('constexpr', 'constant_local', 'conditional') else 'record_storage_initializations'
                 check(case + '-owned-storage-initialization', db.execute('SELECT count(*) FROM ' + initialization_table).fetchone()[0] > 0)
-                if case in ('constexpr', 'constant_local'):
+                if case in ('constexpr', 'constant_local', 'conditional'):
                     check(case + '-owned-zero-constant', db.execute('SELECT count(*) FROM record_constant_initializations x WHERE NOT EXISTS(SELECT 1 FROM relocations r WHERE r.storage_id=x.storage_id)').fetchone()[0] > 0)
                 if case == 'constant_local':
                     check(case + '-owned-relocated-constant', db.execute('SELECT count(*) FROM relocations WHERE storage_id IN (SELECT storage_id FROM record_constant_initializations)').fetchone()[0] > 0)
@@ -115,7 +115,7 @@ def main():
                         mutation = "UPDATE destruction_elisions SET kind='terminal-no-throw' WHERE kind='stock-no-effect'"
                     elif kind == 'proof':
                         mutation = "UPDATE " + initialization_table + " SET capture_proof='invented'"
-                    elif case in ('constexpr', 'constant_local'):
+                    elif case in ('constexpr', 'constant_local', 'conditional'):
                         mutation = "UPDATE record_constant_initializations SET initialization_kind='invented'"
                     else:
                         mutation = 'UPDATE record_storage_initializations SET zero_storage=1-zero_storage'

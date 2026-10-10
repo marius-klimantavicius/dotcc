@@ -1,0 +1,108 @@
+{
+  "milestone": "dotobj-v41-lifetimes-source-records",
+  "goalStatus": "incomplete",
+  "nativeSnapshot": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native103-verified-snapshot",
+  "nativeSha256": "6ec6dd6b4cdad9e57f8f568330c5929039377c87f8e22195517aedcc2f466ace",
+  "managed": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-114/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "managedSha256": "7f4226d333782dd911b91e9e85ff299da621516e7ceafd2f4e0580ad19f98380",
+  "frozenHarness": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v41-acceptance-tools-103",
+  "focusedNativeAot": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v41-focused-aot-103/field-array/results.json",
+      "sha256": "35dbde8f46a2d049197943ed215e123c96c19e0f3731d95b015d2d813cdc3d3c",
+      "status": "passed",
+      "checks": 43,
+      "error": null
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v41-focused-aot-103/field-temporary/results.json",
+      "sha256": "b56bfebad1d376d890ee22cd3f781f9466879b9d3c95b564505abb303ff29325",
+      "status": "passed",
+      "checks": 43,
+      "error": null
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v41-focused-aot-103/field-no-effect/results.json",
+      "sha256": "c42b670e746ee432925651083619ad0899f409c6c93f53de8a9641cd3141cd4c",
+      "status": "passed",
+      "checks": 42,
+      "error": null
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v41-focused-aot-103/source-records/results.json",
+      "sha256": "76bca1d9ad50e553004510fdf924917a7380047fd0571d5a35033dbe7eb88362",
+      "status": "passed",
+      "checks": 32,
+      "error": null
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v41-focused-aot-103/conditional/results.json",
+      "sha256": "d3f7fc9b0d08a336db624bcc6325ead798c87230564d150df58d2d5ea89494a7",
+      "status": "passed",
+      "checks": 27,
+      "error": null
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v41-focused-aot-103/empty-placement/results.json",
+      "sha256": "80ae34be8527a725e60a218f2eec99864e6a41940edc05963654cbf68007b01a",
+      "status": "passed",
+      "checks": 35,
+      "error": null
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v41-focused-aot-103/icu-alias/results.json",
+      "sha256": "28bfbde9c2f10ce68dfc59f661e0b4d4f4dbce8629565859c2407cc88db48b00",
+      "status": "passed",
+      "checks": 32,
+      "error": null
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v41-focused-aot-103/storage-alignment/results.json",
+      "sha256": "4bbcbb09b9c0ae5653d70d48b3b3a9978700bfac9f7b73d0d4e28ca2a5ade2a7",
+      "status": "passed",
+      "checks": 34,
+      "error": null
+    }
+  ],
+  "broadRegression": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v41-001/results.json",
+    "sha256": "4065dab07b5330ecf72d90717d5edcb085afae646ec99b1b3aa62b55a3252bdd",
+    "status": "passed",
+    "checks": 1042,
+    "nativeAotRequested": false
+  },
+  "realProject": {
+    "fullManifest": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-runtime-manifest-003/project.json",
+    "manifestUnits": 2635,
+    "inventory": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-094/results.json",
+    "inventoryTools": "frozen native094/managed105 schema, not final v41",
+    "managedSample": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-managed-frontier-094-105-001/results.json",
+    "managedSampleVerified": 45,
+    "managedSampleTotal": 50,
+    "actualGeneratedSample": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-string-util-generated-099",
+    "actualGeneratedSampleTools": "native099/managed110 before later source template breadth",
+    "actualGeneratedSampleDefinitions": 1853,
+    "latestFrontier": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-103/results.json",
+    "remainingSourceGates": [
+      "nonprototype dependent allocator_traits template argument identity",
+      "dependent array bounds, including _Tp __buf_[_Size] in libcxx variant"
+    ],
+    "remainingExecutionGates": [
+      "owned array-allocation helper rollback protocol",
+      "generated noncopyable temporary initialization provenance",
+      "late-resolved constructor exception signatures"
+    ],
+    "completeProjectGeneration": false,
+    "completeProjectCompilation": false,
+    "completeProjectExecution": false,
+    "immutableInventoryCheckpoint": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v41-inventory-checkpoint.json",
+      "sha256": "27906fb4e6214bb0f2338375fa2389f6bdffe59e0a6453aa55acdd770012ab20",
+      "completed": 1929,
+      "statuses": {
+        "failed": 937,
+        "packaged": 992
+      }
+    }
+  }
+}

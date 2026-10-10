@@ -1056,3 +1056,43 @@ Review: `artifacts/review/dotobj-duckdb-v40`. Acceptance receipts:
 failure families, retaining the original constructor graph when adding field
 initializer template/execution correspondence. Do not return to merged IL or
 external preprocessing, and do not weaken ownership/alignment checks to pass.
+
+## DuckDB field lifetimes and source-only records, profile41
+
+Field-default initializers are preserved as original source templates with exact
+constructor-selection records. The exporter keeps their original temporary and
+partial-object destruction boundaries; each constructor copy owns its cleanup,
+automatic-lifetime adoption or observed no-effect/terminal disposition. Root
+field rollback targets must be the exact original member of the constructor's
+`this` parameter. Explicit member initializers do not masquerade as defaults.
+
+Source record metadata is now independent of executable layout. Definition
+completeness, dependency and prototype identity remain recorded even without a
+known layout or copy policy; executable use still requires its concrete observed
+layout and operation permissions. All captured original fields and direct bases
+remain referenced by identity. This exposes two further source-only families in
+real DuckDB headers: dependent specialization arguments (`allocator_traits`) and
+symbolic array bounds (`_Tp __buf_[_Size]`). They remain explicit gates.
+
+The same checkpoint captures exact empty-placement initialization elision,
+propagates original record-initialization proof through stock shallow expression
+overwrite, handles input `rm`/`mr` empty assembly using the permitted object-memory
+alternative, and respects declaration alignment of incomplete external arrays.
+The stock constructor-initializer no-effect branch is observed separately from
+its automatic-lifetime branch. EDG's semantics are unchanged.
+
+Frozen native103/managed114 passes 288 focused checks across eight NativeAOT
+fixtures, including native/stock C/JIT comparisons and resealed malformed-object
+rejection. Broad regression: 1,042 checks pass with the same frozen tool pair. Evidence:
+`evidence/dotobj-duckdb-field-types-20261010.json`.
+
+Full 2,635-unit baseline inventory is still running on frozen094; its per-unit
+results are not full-project success. A bounded 50-object managed-stage sample
+with matching105 tooling verifies 45 and rejects 5 on record initialization or
+routine signature correspondence. Earlier099/110 emits actual string_util.cpp
+plus RTTI providers (1,853 definitions) at the v41 review link; subsequent source
+template expansion still encounters the explicit source-only gates above. No
+complete DuckDB generation, C# compilation, execution or libc++ runtime closure
+is claimed. Next work owns dependent arguments/bounds and vector allocation
+helper rollback, followed by generated temporary initialization and resolved
+constructor exception signatures.

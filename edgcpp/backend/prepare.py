@@ -348,6 +348,13 @@ for runtime_callback in ("ctor", "dtor", "cctor"):
         '#if defined(EDG_DOT_BACKEND)\n'
         '    dot_object_source::observe_runtime_signature(function_type);\n'
         '#endif')
+for runtime_callback in ("new_routine", "delete_routine", "two_operand_delete_routine"):
+    object_source_overlay(init_lower,
+        f'    {runtime_callback}_ptr_type = make_pointer_type(function_type);',
+        f'    {runtime_callback}_ptr_type = make_pointer_type(function_type);\n'
+        '#if defined(EDG_DOT_BACKEND)\n'
+        '    dot_object_source::observe_runtime_signature(function_type);\n'
+        '#endif')
 object_source_overlay(init_lower,
     '    cxa_dtor_type = make_pointer_type(function_type);',
     '    cxa_dtor_type = make_pointer_type(function_type);\n'
@@ -382,6 +389,12 @@ object_source_overlay(init_lower,
     '#endif\n'
     '    goto remove_from_list;')
 object_source_overlay(init_lower,
+    '        /* This destruction has no effect and can be removed. */\n',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '        dot_object_source::observe_automatic_no_effect(dip);\n'
+    '#endif\n'
+    '        /* This destruction has no effect and can be removed. */\n')
+object_source_overlay(init_lower,
     '      /* This destruction isn\'t on a constructor_inits list and isn\'t\n'
     '         needed so remove it from the destruction list (it will still\n',
     '#if defined(EDG_DOT_BACKEND)\n'
@@ -399,6 +412,35 @@ object_source_overlay(init_lower,
     '        dot_object_source::observe_automatic_no_effect(ndsp->freeing_of_storage_on_exception);\n'
     '#endif\n'
     '        remove_from_destruction_list(ndsp->freeing_of_storage_on_exception);')
+object_source_overlay(init_lower,
+    '  if (olp != NULL) {\n'
+    "    /* If there's an object lifetime, save the destruction list and remove\n",
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::FieldInitializerCapture dot_field_initializer_capture(scope);\n'
+    '#endif\n'
+    '  if (olp != NULL) {\n'
+    "    /* If there's an object lifetime, save the destruction list and remove\n")
+object_source_overlay(init_lower,
+    '        /* Neither the construction nor destruction have any effect;\n',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '        dot_object_source::observe_field_initializer_selection(scope, ctor_init, true);\n'
+    '#endif\n'
+    '        /* Neither the construction nor destruction have any effect;\n')
+object_source_overlay(init_lower,
+    '        dip = copy_dynamic_init(field_dip, CE_COPYING_DMI_DIP);',
+    '        dip = copy_dynamic_init(field_dip, CE_COPYING_DMI_DIP);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '        dot_object_source::observe_field_initializer_selection(scope, ctor_init, false);\n'
+    '#endif')
+object_source_overlay(init_lower,
+    '      if (alloc_expr == NULL && init_expr == NULL) {\n'
+    '        /* If neither allocation nor initialization generated any code,\n',
+    '      if (alloc_expr == NULL && init_expr == NULL) {\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '        dot_object_source::observe_empty_allocation_initialization(dyn_init_to_free_storage,\n'
+    '          innermost_function_scope->variant.routine.ptr);\n'
+    '#endif\n'
+    '        /* If neither allocation nor initialization generated any code,\n')
 object_source_overlay(init_lower,
     '  /* Make a statement containing the call and insert it at the right\n'
     '     location. */\n'
@@ -837,6 +879,27 @@ object_source_overlay(lower,
     '#endif\n'
     '  *temp_var = assoc_var;\n'
     '  return troublesome;\n}  /* check_for_troublesome_aggregate_constant */')
+# Retire the unused conditional-specific experiment from previously prepared
+# trees. The stock path promotes an already-owned initialization via overwrite.
+source = lower.read_text()
+source = source.replace(
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '        dot_object_source::ConditionalRecordConstantInitialization dot_conditional_constant(\n'
+    '          new_expr, master_dip,\n'
+    '          innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n', '')
+source = source.replace(
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '        dot_conditional_constant.finish(expr);\n'
+    '#endif\n', '')
+lower.write_text(source)
+object_source_overlay(il_source,
+    '}  /* overwrite_node */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_record_transfer_overwrite(node, source_node,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n'
+    '}  /* overwrite_node */')
 object_source_overlay(init_lower,
     '    assign_stmt = insert_expr_statement(assign_node, insert_location);\n'
     '    set_stmt_pos_to_code_pos_for_lowering(assign_stmt);\n'

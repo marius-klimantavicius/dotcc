@@ -47,7 +47,7 @@ internal static class Program
             {
                 foreach (ObjectFile obj in objects)
                     foreach (long function in obj.Functions.Keys) _ = obj.ReadBody(function);
-                Console.WriteLine($"Verified {objects.Count} scalar-control-v40 semantic object(s).");
+                Console.WriteLine($"Verified {objects.Count} scalar-control-v41 semantic object(s).");
             }
             else
             {

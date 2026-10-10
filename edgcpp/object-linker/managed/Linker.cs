@@ -10,6 +10,7 @@ internal sealed partial class Linker
     public Dictionary<string, Symbol> Externs { get; } = new(StringComparer.Ordinal);
     public Dictionary<string, StorageSymbol> ExternStorages { get; } = new(StringComparer.Ordinal);
     private readonly Dictionary<string, long> requiredStorageExtents = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, long> requiredStorageAlignments = new(StringComparer.Ordinal);
     public Dictionary<string, string> StorageNames { get; } = new(StringComparer.Ordinal);
     private readonly Dictionary<string, StorageSymbol> storageDefinitions = new(StringComparer.Ordinal);
     private readonly Names names = new();
@@ -60,6 +61,7 @@ internal sealed partial class Linker
             foreach (Storage storage in obj.Storages.Values)
             {
                 var symbol = new StorageSymbol(obj, storage);
+                requiredStorageAlignments[symbol.Key] = Math.Max(requiredStorageAlignments.GetValueOrDefault(symbol.Key, 1), obj.StorageRequiredAlignment(storage));
                 if (storageSignatures.TryGetValue(symbol.Key, out string? prior) && !CompatibleStorage(prior, symbol.Signature))
                     throw new InvalidDataException($"Storage type/TLS mismatch: {storage.ExternalKey ?? storage.SourceName}");
                 storageSignatures[symbol.Key] = symbol.Signature;
@@ -70,6 +72,9 @@ internal sealed partial class Linker
                 else if (storage.Definition == "strong" || existing.Storage.Definition == "tentative" && storage.Definition == "linkonce")
                     storageDefinitions[symbol.Key] = symbol;
             }
+        foreach (StorageSymbol definition in storageDefinitions.Values)
+            if (definition.Storage.Alignment < requiredStorageAlignments[definition.Key])
+                throw new InvalidDataException($"Storage definition does not satisfy the required declaration alignment: {definition.Storage.ExternalKey ?? definition.Storage.SourceName}");
         SelectProviderClosure(providers);
         EmissionObjects = Objects.Where(obj => !providerObjects.Contains(obj) || selectedProviderObjects.Contains(obj)).ToArray();
         // Equal-priority GNU actions follow original link input order and the
@@ -194,6 +199,7 @@ internal sealed partial class Linker
         SourceRecord a = leftObject.SourceRecords[leftId], b = rightObject.SourceRecords[rightId];
         if (a.IdentityKey != b.IdentityKey || a.SourceName != b.SourceName || a.RecordKind != b.RecordKind ||
             a.IsTriviallyCopyable != b.IsTriviallyCopyable || a.IsPacked != b.IsPacked ||
+            a.LayoutKnown != b.LayoutKnown || a.IsDependent != b.IsDependent || a.IsPrototypeInstantiation != b.IsPrototypeInstantiation ||
             a.MaxMemberAlignment != b.MaxMemberAlignment || a.ExplicitAlignment != b.ExplicitAlignment ||
             leftObject.SourceLanguage == "c++" && rightObject.SourceLanguage == "c++" &&
             leftObject.RecordOperations.GetValueOrDefault(leftId) != rightObject.RecordOperations.GetValueOrDefault(rightId)) return false;
@@ -243,6 +249,9 @@ internal sealed partial class Linker
         ExternStorages.TryAdd(declaration.Key, declaration);
         return ExternStorages[declaration.Key];
     }
+
+    public long StorageMinimumAlignment(StorageSymbol symbol) => Math.Max(
+        symbol.Object.StorageRequiredAlignment(symbol.Storage), requiredStorageAlignments.GetValueOrDefault(symbol.Key, 1));
 
     public long StorageMinimumSize(StorageSymbol symbol) => Math.Max(
         symbol.Object.StorageSize(symbol.Object.Type(symbol.Storage.TypeId)),

@@ -35,7 +35,11 @@ ARRAYS = {
     'thunkWrappers': ('thunk_wrappers', ['entityId', 'targetEntityId', 'overriddenEntityId', 'primaryEntityId', 'thisDelta', 'vcallIndex', 'returnDelta', 'vbaseIndex', 'captureProof']),
     'wrapperCalls': ('wrapper_calls', ['nodeId', 'wrapperEntityId', 'captureProof']),
     'initializationActions': ('initialization_actions', ['id', 'entityId', 'phase', 'priority', 'ordinal', 'sourceFileId', 'line', 'column']),
-    'sourceInitializers': ('source_initializers', ['id', 'storageId', 'sourceName', 'executionDisposition', 'sourceTypeId', 'functionEntityId', 'sourceOrdinal', 'kind', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'sourceInitializers': ('source_initializers', ['id', 'storageId', 'sourceName', 'executionDisposition', 'sourceTypeId', 'functionEntityId', 'sourceOrdinal', 'sourceFieldId', 'kind', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'sourceFieldInitializerDestructions': ('source_field_initializer_destructions', ['sourceInitializerId', 'sourceTypeId', 'selectedRoutineEntityId', 'captureProof']),
+    'fieldInitializerExecutions': ('field_initializer_executions', ['sourceInitializerId', 'functionEntityId', 'constructorOrdinal', 'executionDisposition', 'captureProof']),
+    'fieldInitializerDestructionElisions': ('field_initializer_destruction_elisions', ['sourceInitializerId', 'functionEntityId', 'kind', 'captureProof']),
+    'fieldInitializerPartialDestructionExecutions': ('field_initializer_partial_destruction_executions', ['sourceStaticObligationId', 'functionEntityId', 'kind', 'captureProof']),
     'sourceStaticLifetimes': ('source_static_lifetimes', ['id', 'functionEntityId', 'sourceInitializerId', 'parentLifetimeId', 'parentObligationId', 'siblingOrdinal', 'kind', 'sourceFileId', 'line', 'column', 'captureProof']),
     'sourceStaticDestructions': ('source_static_destructions', ['id', 'lifetimeId', 'ordinal', 'storageId', 'sourceTypeId', 'selectedRoutineEntityId', 'sourceInitializerId', 'kind', 'isArrayAllocation', 'domain', 'sourceFileId', 'line', 'column', 'captureProof']),
     'initializerLifetimeExecutions': ('initializer_lifetime_executions', ['sourceLifetimeId', 'sourceStaticLifetimeId', 'sourceInitializerId', 'functionEntityId', 'captureProof']),
@@ -45,19 +49,20 @@ ARRAYS = {
     'sourceLifetimes': ('source_lifetimes', ['id', 'functionEntityId', 'parentLifetimeId', 'siblingOrdinal', 'parentObligationId', 'parentAllocationObligationId', 'kind', 'sourceFileId', 'line', 'column', 'captureProof', 'sourceInitializerId']),
     'sourceDestructionObligations': ('source_destruction_obligations', ['id', 'functionEntityId', 'lifetimeId', 'ordinal', 'destructorEntityId', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'captureProof', 'sourceInitializerId', 'sourceStaticObligationId', 'isPartialAggregate']),
     'destructionElisions': ('destruction_elisions', ['sourceObligationId', 'functionEntityId', 'kind', 'captureProof']),
+    'allocationElisions': ('allocation_elisions', ['sourceAllocationObligationId', 'functionEntityId', 'kind', 'captureProof']),
     'sourceAllocationObligations': ('source_allocation_obligations', ['id', 'functionEntityId', 'lifetimeId', 'ordinal', 'deallocatorEntityId', 'allocatedSourceTypeId', 'isArray', 'sourceFileId', 'line', 'column', 'captureProof', 'sourceInitializerId', 'sourceStaticObligationId']),
     'internalTryExpressions': ('internal_try_expressions', ['nodeId', 'sourceAllocationObligationId', 'cleanupPolicy', 'captureProof']),
     'expressionLifetimes': ('expression_lifetimes', ['nodeId', 'sourceLifetimeId', 'captureProof']),
     'baseSubobjectExpressions': ('base_subobject_expressions', ['nodeId', 'sourceBaseId']),
     'virtualBaseExpressions': ('virtual_base_expressions', ['nodeId', 'completeBaseTypeId']),
     'virtualBaseSubobjects': ('virtual_base_subobjects', ['recordTypeId', 'completeBaseTypeId', 'physicalViewTypeId', 'byteOffset', 'extent', 'fieldId', 'captureProof']),
-    'normalDestructions': ('normal_destructions', ['nodeId', 'sourceObligationId', 'captureProof', 'sourceStaticObligationId']),
+    'normalDestructions': ('normal_destructions', ['nodeId', 'sourceObligationId', 'captureProof', 'sourceStaticObligationId', 'sourceFieldInitializerId']),
     'allocationCleanupActions': ('allocation_cleanup_actions', ['id', 'functionEntityId', 'sourceAllocationObligationId', 'callbackEntityId', 'targetNodeId', 'allocationSize', 'conditionBindingId', 'nullPolicy', 'captureProof']),
     'localStaticGuards': ('local_static_guards', ['id', 'functionEntityId', 'storageId', 'guardStorageId', 'sourceTypeId', 'sourceLifetimeId', 'guardPolicy', 'sourceFileId', 'line', 'column', 'captureProof']),
     'guardOperations': ('guard_operations', ['nodeId', 'guardId', 'kind', 'captureProof']),
     'guardCleanupActions': ('guard_cleanup_actions', ['id', 'functionEntityId', 'guardId', 'targetNodeId', 'captureProof']),
-    'cleanupActions': ('cleanup_actions', ['id', 'functionEntityId', 'sourceObligationId', 'sourceStaticObligationId', 'callbackEntityId', 'targetNodeId', 'captureProof']),
-    'arrayRuntimeOperations': ('array_runtime_operations', ['nodeId', 'sourceObligationId', 'callbackEntityId', 'operationKind', 'captureProof', 'sourceStaticObligationId']),
+    'cleanupActions': ('cleanup_actions', ['id', 'functionEntityId', 'sourceObligationId', 'sourceStaticObligationId', 'callbackEntityId', 'targetNodeId', 'captureProof', 'sourceFieldInitializerId']),
+    'arrayRuntimeOperations': ('array_runtime_operations', ['nodeId', 'sourceObligationId', 'callbackEntityId', 'operationKind', 'captureProof', 'sourceStaticObligationId', 'sourceFieldInitializerId']),
     'cleanupArrays': ('cleanup_arrays', ['actionId', 'elementTypeId', 'elementCount', 'elementSize', 'captureProof']),
     'cleanupVttArguments': ('cleanup_vtt_arguments', ['actionId', 'bindingId', 'captureProof']),
     'cleanupConditions': ('cleanup_conditions', ['actionId', 'flagBindingId', 'captureProof']),
@@ -76,7 +81,7 @@ ARRAYS = {
     'recordTypes': ('record_types', ['typeId', 'identityKey', 'sourceName', 'size', 'alignment', 'sourceFileId', 'line', 'column', 'layoutKind', 'sourceRecordId', 'representationKind', 'valueCopyKind', 'captureProof', 'completeTypeId']),
     'recordFields': ('record_fields', ['id', 'recordTypeId', 'ordinal', 'typeId', 'sourceName', 'byteOffset', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'bitOffset', 'bitWidth', 'bitSigned', 'sourceFieldId', 'fieldRole', 'sourceBaseId', 'observedAlignment']),
     'sourceRecordOwners': ('source_record_owners', ['sourceRecordId', 'ownerSourceRecordId', 'ownerFieldId', 'kind', 'captureProof']),
-    'sourceRecords': ('source_record_types', ['id', 'sourceTypeId', 'identityKey', 'sourceName', 'recordKind', 'isComplete', 'nativeSize', 'nativeAlignment', 'isTriviallyCopyable', 'capturePhase', 'sourceFileId', 'line', 'column', 'isPacked', 'maxMemberAlignment', 'explicitAlignment']),
+    'sourceRecords': ('source_record_types', ['id', 'sourceTypeId', 'identityKey', 'sourceName', 'recordKind', 'isComplete', 'nativeSize', 'nativeAlignment', 'isTriviallyCopyable', 'capturePhase', 'sourceFileId', 'line', 'column', 'isPacked', 'maxMemberAlignment', 'explicitAlignment', 'layoutKnown', 'isDependent', 'isPrototypeInstantiation']),
     'exceptionTypes': ('exception_types', ['id', 'sourceTypeId', 'leafSourceTypeId', 'payloadTypeId', 'payloadSize', 'payloadAlignment', 'sourceDestructorEntityId', 'captureProof']),
     'exceptionBaseConversions': ('exception_base_conversions', ['exceptionTypeId', 'ordinal', 'baseSourceTypeId', 'byteOffset', 'isPublic', 'isAmbiguous', 'captureProof']),
     'throwExpressions': ('throw_expressions', ['nodeId', 'exceptionTypeId', 'destructorEntityId', 'initializationKind', 'captureProof']),
@@ -181,7 +186,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v40':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v41':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -201,7 +206,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v40', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v41', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

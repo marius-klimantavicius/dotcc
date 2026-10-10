@@ -31,6 +31,10 @@ internal sealed partial class ObjectFile : IDisposable
         ["virtual_base_expressions"] = "node_id", ["virtual_base_subobjects"] = "record_type_id,complete_base_type_id",
         ["compile_time_selections"] = "node_id", ["thunk_wrappers"] = "entity_id", ["wrapper_calls"] = "node_id",
         ["source_allocation_obligations"] = "id", ["internal_try_expressions"] = "node_id", ["normal_destructions"] = "node_id", ["expression_lifetimes"] = "node_id", ["base_subobject_expressions"] = "node_id", ["source_initializers"] = "id",
+        ["source_field_initializer_destructions"] = "source_initializer_id",
+        ["field_initializer_executions"] = "source_initializer_id,function_entity_id",
+        ["field_initializer_destruction_elisions"] = "source_initializer_id,function_entity_id",
+        ["field_initializer_partial_destruction_executions"] = "source_static_obligation_id,function_entity_id",
         ["source_static_lifetimes"] = "id",
         ["source_static_destructions"] = "id",
         ["initializer_lifetime_executions"] = "source_lifetime_id,function_entity_id",
@@ -40,6 +44,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["source_dependent_types"] = "type_id",
         ["source_lifetimes"] = "id", ["source_destruction_obligations"] = "id",
         ["destruction_elisions"] = "source_obligation_id,function_entity_id",
+        ["allocation_elisions"] = "source_allocation_obligation_id,function_entity_id",
         ["array_runtime_operations"] = "node_id", ["cleanup_arrays"] = "action_id", ["cleanup_vtt_arguments"] = "action_id",
         ["cleanup_conditions"] = "action_id", ["cleanup_actions"] = "id", ["cleanup_states"] = "id",
         ["allocation_cleanup_actions"] = "id", ["local_static_guards"] = "id", ["guard_operations"] = "node_id", ["guard_cleanup_actions"] = "id",
@@ -97,7 +102,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v40" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v41" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");

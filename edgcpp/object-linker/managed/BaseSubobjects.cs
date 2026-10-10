@@ -68,8 +68,9 @@ internal sealed partial class ObjectFile
             {
                 SourceBase item = group.Value[ordinal];
                 SourceType source = Original(SourceTypeById(item.BaseSourceTypeId));
-                if (!owner.IsComplete || owner.CapturePhase != "before-class-prelowering" || item.Ordinal != ordinal ||
-                    source.Kind != "record" || !SourceRecordsByType.TryGetValue(source.Id, out SourceRecord? target) || !target.IsComplete || target.Id == owner.Id)
+                bool dependentBase = owner.IsDependent && source.Kind == "dependent" && SourceDependentTypes.ContainsKey(source.Id);
+                if (!owner.IsComplete || item.Ordinal != ordinal ||
+                    !dependentBase && (source.Kind != "record" || !SourceRecordsByType.TryGetValue(source.Id, out SourceRecord? target) || !target.IsComplete || target.Id == owner.Id))
                     throw new InvalidDataException("Base declaration requires a complete original class");
             }
         }
@@ -80,7 +81,8 @@ internal sealed partial class ObjectFile
             if (depth > 128 || !active.Add(sourceId)) throw new InvalidDataException("Cyclic or excessively nested original base graph");
             if (!visited.Contains(sourceId))
                 foreach (SourceBase item in OriginalBases(sourceId))
-                    CheckBaseGraph(SourceRecordsByType[Original(SourceTypeById(item.BaseSourceTypeId)).Id].Id, depth + 1);
+                    if (SourceRecordsByType.TryGetValue(Original(SourceTypeById(item.BaseSourceTypeId)).Id, out SourceRecord? target))
+                        CheckBaseGraph(target.Id, depth + 1);
             active.Remove(sourceId); visited.Add(sourceId);
         }
         foreach (long sourceId in SourceRecords.Keys) CheckBaseGraph(sourceId, 0);

@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v40'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v41'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -203,15 +203,47 @@ CREATE TABLE source_initializers (
  id INTEGER PRIMARY KEY CHECK(id>0),
  storage_id INTEGER REFERENCES storages(id),
  source_name TEXT NOT NULL,
- execution_disposition TEXT NOT NULL CHECK(execution_disposition IN ('emitted','stock-not-emitted')),
+ execution_disposition TEXT NOT NULL CHECK(execution_disposition IN ('emitted','stock-not-emitted','source-template')),
  source_type_id INTEGER NOT NULL REFERENCES source_types(id),
  function_entity_id INTEGER REFERENCES source_functions(entity_id),
  source_ordinal INTEGER CHECK(source_ordinal>=0),
- kind TEXT NOT NULL CHECK(kind IN ('file','local-static')),
+ source_field_id INTEGER REFERENCES source_record_fields(id),
+ kind TEXT NOT NULL CHECK(kind IN ('file','local-static','field-default')),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0), column INTEGER NOT NULL CHECK(column>=0),
  capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
- CHECK((execution_disposition='emitted')=(storage_id IS NOT NULL))
+ CHECK((execution_disposition='emitted')=(storage_id IS NOT NULL)),
+ CHECK((kind='field-default')=(source_field_id IS NOT NULL)),
+ CHECK((kind='field-default')=(execution_disposition='source-template'))
+) STRICT;
+CREATE TABLE source_field_initializer_destructions (
+ source_initializer_id INTEGER PRIMARY KEY REFERENCES source_initializers(id),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ selected_routine_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering')
+) STRICT;
+CREATE TABLE field_initializer_executions (
+ source_initializer_id INTEGER NOT NULL REFERENCES source_initializers(id),
+ function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
+ constructor_ordinal INTEGER NOT NULL CHECK(constructor_ordinal>=0),
+ execution_disposition TEXT NOT NULL CHECK(execution_disposition IN ('copied','stock-no-effect')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN ('observed-field-initializer-copy','observed-no-effect-field-initializer')),
+ PRIMARY KEY(source_initializer_id,function_entity_id),
+ UNIQUE(function_entity_id,constructor_ordinal)
+) STRICT;
+CREATE TABLE field_initializer_destruction_elisions (
+ source_initializer_id INTEGER NOT NULL REFERENCES source_field_initializer_destructions(source_initializer_id),
+ function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
+ kind TEXT NOT NULL CHECK(kind='stock-no-effect'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-no-effect-destruction-removal'),
+ PRIMARY KEY(source_initializer_id,function_entity_id)
+) STRICT;
+CREATE TABLE field_initializer_partial_destruction_executions (
+ source_static_obligation_id INTEGER NOT NULL REFERENCES source_static_destructions(id),
+ function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
+ kind TEXT NOT NULL CHECK(kind IN ('cleanup-action','stock-terminal-no-throw','adopted-automatic')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-field-partial-disposition'),
+ PRIMARY KEY(source_static_obligation_id,function_entity_id)
 ) STRICT;
 CREATE TABLE source_static_lifetimes (
  id INTEGER PRIMARY KEY CHECK(id>0),
@@ -273,7 +305,7 @@ CREATE TABLE generated_static_destructors (
 ) STRICT;
 CREATE TABLE static_destruction_dispositions (
  source_obligation_id INTEGER PRIMARY KEY REFERENCES source_static_destructions(id),
- kind TEXT NOT NULL CHECK(kind IN ('registered','stock-proven-no-effect','stock-not-emitted','cleanup-action','stock-terminal-no-throw')),
+ kind TEXT NOT NULL CHECK(kind IN ('registered','stock-proven-no-effect','stock-not-emitted','cleanup-action','stock-terminal-no-throw','source-template')),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-static-destruction-disposition')
 ) STRICT;
 CREATE TABLE source_lifetimes (
@@ -317,6 +349,13 @@ CREATE TABLE destruction_elisions (
  kind TEXT NOT NULL CHECK(kind IN ('terminal-no-throw','stock-no-effect')),
  capture_proof TEXT NOT NULL CHECK(capture_proof IN ('observed-terminal-partial-elision','observed-no-effect-destruction-removal')),
  PRIMARY KEY(source_obligation_id,function_entity_id)
+) STRICT;
+CREATE TABLE allocation_elisions (
+ source_allocation_obligation_id INTEGER NOT NULL REFERENCES source_allocation_obligations(id),
+ function_entity_id INTEGER NOT NULL REFERENCES entities(id),
+ kind TEXT NOT NULL CHECK(kind='empty-initialization'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-empty-allocation-initialization'),
+ PRIMARY KEY(source_allocation_obligation_id,function_entity_id)
 ) STRICT;
 CREATE TABLE source_allocation_obligations (
  id INTEGER PRIMARY KEY CHECK(id>0),
@@ -368,27 +407,30 @@ CREATE TABLE normal_destructions (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
  source_obligation_id INTEGER REFERENCES source_destruction_obligations(id),
  source_static_obligation_id INTEGER REFERENCES source_static_destructions(id),
+ source_field_initializer_id INTEGER REFERENCES source_field_initializer_destructions(source_initializer_id),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-normal-destruction'),
- CHECK((source_obligation_id IS NULL)!=(source_static_obligation_id IS NULL))
+ CHECK((source_obligation_id IS NOT NULL)+(source_static_obligation_id IS NOT NULL)+(source_field_initializer_id IS NOT NULL)=1)
 ) STRICT;
 CREATE TABLE cleanup_actions (
  id INTEGER PRIMARY KEY CHECK(id>0),
  function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
  source_obligation_id INTEGER REFERENCES source_destruction_obligations(id),
  source_static_obligation_id INTEGER REFERENCES source_static_destructions(id),
+ source_field_initializer_id INTEGER REFERENCES source_field_initializer_destructions(source_initializer_id),
  callback_entity_id INTEGER NOT NULL REFERENCES entities(id),
  target_node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-region-entry'),
- CHECK((source_obligation_id IS NULL)!=(source_static_obligation_id IS NULL))
+ CHECK((source_obligation_id IS NOT NULL)+(source_static_obligation_id IS NOT NULL)+(source_field_initializer_id IS NOT NULL)=1)
 ) STRICT;
 CREATE TABLE array_runtime_operations (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
  source_obligation_id INTEGER REFERENCES source_destruction_obligations(id),
  source_static_obligation_id INTEGER REFERENCES source_static_destructions(id),
+ source_field_initializer_id INTEGER REFERENCES source_field_initializer_destructions(source_initializer_id),
  callback_entity_id INTEGER NOT NULL REFERENCES entities(id),
  operation_kind TEXT NOT NULL CHECK(operation_kind IN ('construct','destroy')),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-array-runtime'),
- CHECK((source_obligation_id IS NULL)!=(source_static_obligation_id IS NULL))
+ CHECK((source_obligation_id IS NOT NULL)+(source_static_obligation_id IS NOT NULL)+(source_field_initializer_id IS NOT NULL)=1)
 ) STRICT;
 CREATE TABLE cleanup_arrays (
  action_id INTEGER PRIMARY KEY REFERENCES cleanup_actions(id),
@@ -623,8 +665,15 @@ CREATE TABLE source_record_types (
  is_packed INTEGER NOT NULL CHECK(is_packed IN (0,1)),
  max_member_alignment INTEGER NOT NULL CHECK(max_member_alignment>=0 AND (max_member_alignment & (max_member_alignment-1))=0),
  explicit_alignment INTEGER NOT NULL CHECK(explicit_alignment>=0 AND (explicit_alignment & (explicit_alignment-1))=0),
- CHECK((is_complete=0 AND native_size=0 AND native_alignment=0 AND is_trivially_copyable IS NULL) OR
-       (is_complete=1 AND native_alignment>0 AND is_trivially_copyable IS NOT NULL))
+ layout_known INTEGER NOT NULL CHECK(layout_known IN (0,1)),
+ is_dependent INTEGER NOT NULL CHECK(is_dependent IN (0,1)),
+ is_prototype_instantiation INTEGER NOT NULL CHECK(is_prototype_instantiation IN (0,1)),
+ CHECK(is_complete=1 OR (layout_known=0 AND is_trivially_copyable IS NULL)),
+ CHECK((layout_known=1 AND is_complete=1 AND is_dependent=0 AND native_alignment>0) OR
+       (layout_known=0 AND native_size=0 AND native_alignment=0)),
+ CHECK(is_trivially_copyable IS NULL OR layout_known=1),
+ CHECK(is_dependent=0 OR layout_known=0),
+ CHECK(is_prototype_instantiation=0 OR is_dependent=1)
 ) STRICT;
 CREATE TABLE source_record_operations (
  source_record_id INTEGER PRIMARY KEY REFERENCES source_record_types(id),
@@ -837,7 +886,7 @@ CREATE TABLE memory_barrier_operands (
  node_id INTEGER NOT NULL REFERENCES memory_barriers(node_id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  direction TEXT NOT NULL CHECK(direction IN ('input','output','inout')),
- constraint_text TEXT NOT NULL CHECK(constraint_text IN ('m','=m','+m')),
+ constraint_text TEXT NOT NULL CHECK(constraint_text IN ('m','rm','mr','=m','+m')),
  source_name TEXT NOT NULL,
  source_element_type_id INTEGER NOT NULL REFERENCES source_types(id),
  element_size INTEGER NOT NULL CHECK(element_size>0),
@@ -850,9 +899,10 @@ CREATE TABLE memory_barrier_operands (
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  PRIMARY KEY(node_id,ordinal),
- CHECK((direction='input' AND constraint_text='m') OR (direction='output' AND constraint_text='=m') OR (direction='inout' AND constraint_text='+m')),
+ CHECK((direction='input' AND constraint_text IN ('m','rm','mr')) OR (direction='output' AND constraint_text='=m') OR (direction='inout' AND constraint_text='+m')),
  CHECK((extent_kind='fixed' AND fixed_element_count IS NOT NULL AND extent_binding_id IS NULL AND capture_proof='observed-asm-place') OR
        (extent_kind='vla-total' AND fixed_element_count IS NULL AND extent_binding_id IS NOT NULL AND capture_proof='observed-asm-vla-total')),
+ CHECK(constraint_text NOT IN ('rm','mr') OR source_shape='object'),
  CHECK((source_shape='vla-array')=(extent_kind='vla-total')),
  CHECK(source_shape<>'object' OR fixed_element_count=1)
 ) STRICT;

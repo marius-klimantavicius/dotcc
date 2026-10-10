@@ -2,7 +2,8 @@ namespace DotObj;
 
 internal sealed record SourceRecord(long Id, long SourceTypeId, string IdentityKey, string SourceName,
     string RecordKind, bool IsComplete, long NativeSize, long NativeAlignment, bool? IsTriviallyCopyable,
-    string CapturePhase, long? SourceFileId, long Line, long Column, bool IsPacked, long MaxMemberAlignment, long ExplicitAlignment);
+    string CapturePhase, long? SourceFileId, long Line, long Column, bool IsPacked, long MaxMemberAlignment, long ExplicitAlignment,
+    bool LayoutKnown, bool IsDependent, bool IsPrototypeInstantiation);
 internal sealed record SourceRecordField(long Id, long SourceRecordId, long Ordinal, long SourceTypeId,
     string SourceName, bool IsMutable, bool HasNoUniqueAddress, long? BitWidth,
     long? SourceFileId, long Line, long Column, bool HasInitializer, bool IsPacked, long ExplicitAlignment);
@@ -16,19 +17,22 @@ internal sealed partial class ObjectFile
 
     private void ReadSourceRecordMetadata()
     {
-        using (var query = database.Prepare("SELECT id,source_type_id,identity_key,source_name,record_kind,is_complete,native_size,native_alignment,is_trivially_copyable,capture_phase,source_file_id,line,column,is_packed,max_member_alignment,explicit_alignment FROM source_record_types ORDER BY id"))
+        using (var query = database.Prepare("SELECT id,source_type_id,identity_key,source_name,record_kind,is_complete,native_size,native_alignment,is_trivially_copyable,capture_phase,source_file_id,line,column,is_packed,max_member_alignment,explicit_alignment,layout_known,is_dependent,is_prototype_instantiation FROM source_record_types ORDER BY id"))
             while (query.Read())
             {
                 var record = new SourceRecord(query.Integer(0), query.Integer(1), query.Text(2), query.Text(3), query.Text(4),
                     query.Integer(5) == 1, query.Integer(6), query.Integer(7), query.OptionalInteger(8) is long copyable ? copyable == 1 : null,
-                    query.Text(9), query.OptionalInteger(10), query.Integer(11), query.Integer(12), query.Integer(13) == 1, query.Integer(14), query.Integer(15));
+                    query.Text(9), query.OptionalInteger(10), query.Integer(11), query.Integer(12), query.Integer(13) == 1, query.Integer(14), query.Integer(15), query.Integer(16) == 1, query.Integer(17) == 1, query.Integer(18) == 1);
                 if (record.Id <= 0 || record.SourceTypeId <= 0 || record.IdentityKey.Length == 0 ||
                     record.RecordKind is not ("struct" or "union" or "class") || query.Integer(5) is not (0 or 1) ||
                     query.OptionalInteger(8) is not (null or 0 or 1) || record.NativeSize < 0 || record.NativeAlignment < 0 ||
                     record.Line < 0 || record.Column < 0 || record.CapturePhase is not ("before-lowering" or "before-class-prelowering") ||
                     query.Integer(13) is not (0 or 1) || !AlignmentDirective(record.MaxMemberAlignment) || !AlignmentDirective(record.ExplicitAlignment) ||
-                    (record.IsComplete ? record.NativeAlignment == 0 || record.IsTriviallyCopyable is null
-                        : record.NativeSize != 0 || record.NativeAlignment != 0 || record.IsTriviallyCopyable is not null))
+                    query.Integer(16) is not (0 or 1) || query.Integer(17) is not (0 or 1) || query.Integer(18) is not (0 or 1) ||
+                    !record.IsComplete && (record.LayoutKnown || record.IsTriviallyCopyable is not null) ||
+                    (record.LayoutKnown ? !record.IsComplete || record.IsDependent || record.NativeAlignment == 0
+                        : record.NativeSize != 0 || record.NativeAlignment != 0 || record.IsTriviallyCopyable is not null) ||
+                    record.IsPrototypeInstantiation && !record.IsDependent)
                     throw new InvalidDataException("Invalid original record identity, completeness or capture metadata");
                 if (!SourceRecords.TryAdd(record.Id, record) || !SourceRecordsByType.TryAdd(record.SourceTypeId, record)) throw new InvalidDataException("Duplicate original record ID");
             }
@@ -54,7 +58,11 @@ internal sealed partial class ObjectFile
         foreach (SourceRecord source in SourceRecords.Values)
         {
             SourceType type = SourceTypeById(source.SourceTypeId);
+            if (source.IdentityKey.StartsWith("source-prototype:", StringComparison.Ordinal) !=
+                (source.IsDependent && source.IsPrototypeInstantiation && !SourceRecordOwners.ContainsKey(source.Id)))
+                throw new InvalidDataException("Original prototype identity differs from its dependent declaration facts");
             if (type.Kind != "record" || type.ExecutionRepresentationId is long physical && (!Records.TryGetValue(physical, out RecordType? execution) ||
+                source.IsDependent || source.IsComplete && (!source.LayoutKnown || source.IsTriviallyCopyable is null) ||
                 execution.SourceRecordId != source.Id || execution.RepresentationKind != "complete" ||
                 source.IdentityKey != execution.IdentityKey || source.SourceName != execution.SourceName || source.RecordKind != execution.LayoutKind ||
                 source.IsComplete != (execution.Size != 0) || source.NativeSize != execution.Size || source.NativeAlignment != execution.Alignment))

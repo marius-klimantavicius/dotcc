@@ -288,3 +288,77 @@ conditional-record initialization patch and addresses incomplete VTT alignment;
 supervisor integrates common schema/lifetime coverage and owns ICU register-or-
 memory empty-assembly support. All source constructor graphs remain preserved.
 No libc++ runtime detour, cleanup, external preprocessing or merged IL is allowed.
+
+## v41 frontier (099/110)
+
+Native099 SHA a1e9e954baf42d22ba88c342c7d0249997cc359485b2b139c47a687ddd7f1eed
+and managed110 built successfully. Empty placement cleanup passes32 focused
+checks, ICU rm/mr alias barriers29, external declaration alignment32; each
+includes native/stock-C/JIT and strict metadata cases. Conditional record
+construction still rejects the reduced case; exact observer correction pending.
+
+Real allocator.cpp now packages then hits the managed default-record layout
+gate. Real string_util.cpp packages, verifies and generates with two RTTI
+providers:1,853 function definitions in dotobj-duckdb-string-util-generated-099.
+Review link artifacts/review/dotobj-duckdb-v41/string-util. This is not compiled
+or runnable DuckDB. Full2635-unit inventory continues on frozen094; latest
+reported checkpoint1060 complete640 packaged,420 gated.
+
+Field-default source template/copy ownership is next; original source constructor
+graphs remain intact. Worker owns native/schema/static+field readers, supervisor
+common cleanup/array/normal owner integration, base worker conditional record
+correspondence and missing finalized new/delete array callback signature hooks.
+
+## Active field-template integration (101/111, not accepted)
+
+Native101 built SHA cb0d3de8dee58adfdf51d45af1476723a8b0a140f74bb13af02fafd07dfb3fd4;
+managed111 builds without warnings. New source field-initializer templates and
+constructor-copy relations retain the original constructor graph. Common root
+cleanup/normal/array owner fields and exact this/member target checks are in
+place. First fixture rejects a partial obligation from the original global
+field-template graph: retain that original sourceStaticObligationId and record
+its execution disposition per constructor. Do not fabricate an automatic source
+lifetime or license all constructor copies using one elision observation.
+
+Real101 probes additionally reject unused libcxx __exception_guard_noexceptions
+template layout because newly captured field templates currently force an
+execution record. Preserve source-only dependent types without requiring an
+execution layout until instantiated. Worker is correcting that boundary.
+
+Conditional pooled initialization diagnostic proves prior assumed master-entry
+observer path was absent. Base worker traces the tiny reducer under frozen101
+to locate the actual stock assignment boundary. Array allocation callback types
+now capture, but exact vector-helper allocation rollback ownership remains a
+separate explicit gap; no generated-execution success claimed for it.
+
+102/112 focused progress: exact shallow-overwrite propagation fixes conditional
+record initialization,25 checks pass (`dotobj-record-conditional-v41-004`).
+Field-default array initializer fixture passes37 native/stock/JIT/source-hidden
+and malformed-metadata checks (`dotobj-field-default-v41-003`). Native102 SHA
+34bc756f6c84c875c919fcb25b69760ea4b7836bef13733435891743dd26023e.
+103 pending strict root elisions, automatic adoption of nested field-template
+partials, separate ctor-init stock no-effect observer, source-only record split.
+
+A bounded50-object managed baseline inventory completed45 verified,5 gated;
+`dotobj-managed-frontier-094-105-001` explicitly matches native094 schema and
+managed105. Two signature gates are delayed constructor exception specifications:
+vector entity118 in039f07cb247c43a888267cc7 maps execution routine905 terminate
+but original routine1495 maps906 unwind, with identical void/this parameters.
+Keep exact signature validation; capture actual delayed resolution if confirmed.
+Other three verifier gates are record transfer/default initialization policies.
+
+## Accepted v41 checkpoint
+
+Frozen native103 SHA6ec6dd6b4cdad9e57f8f568330c5929039377c87f8e22195517aedcc2f466ace
+and managed114 pass1,042 broad checks and288 focused checks across eight
+NativeAOT suites. Frozen harness dotobj-v41-acceptance-tools-103 preserves the
+EDG sibling assets. Evidence dotobj-duckdb-field-types-20261010.json records
+exact receipts, hashes, tool versions and immutable partial project inventory.
+
+This accepts the current source-only record/field contract and copied initializer
+lifetimes; it does not complete DuckDB. New real source-only gates are dependent
+allocator_traits specialization arguments and symbolic array bounds in libcxx
+variant. Next base worker owns those typed semantic source representations;
+lifetime worker owns exact vector-helper allocation rollback protocol. Supervisor
+integrates common coverage/source maps, schedules bounded builds and verification,
+and commits. No runtime/libc++ closure detour, cleanup or merged IL.

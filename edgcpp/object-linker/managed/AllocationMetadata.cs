@@ -73,8 +73,10 @@ internal sealed partial class ObjectFile
         }
         using (var duplicates = database.Prepare("SELECT id FROM (SELECT id FROM cleanup_actions UNION ALL SELECT id FROM allocation_cleanup_actions UNION ALL SELECT id FROM guard_cleanup_actions) GROUP BY id HAVING count(*)<>1"))
             if (duplicates.Read()) throw new InvalidDataException("Cleanup action identifiers overlap between action kinds");
+        ReadAllocationElisions();
         if (SourceAllocationObligations.Keys.Except(InternalTryAllocations.Values
-                .Concat(AllocationCleanupActions.Values.Select(action => action.SourceAllocationObligationId))).Any())
-            throw new InvalidDataException("Original allocation rollback lacks an observed execution boundary");
+                .Concat(AllocationCleanupActions.Values.Select(action => action.SourceAllocationObligationId))
+                .Concat(AllocationElisions.Keys.Select(key => key.SourceAllocationObligationId))).Any())
+            throw new InvalidDataException("Original allocation rollback lacks an observed execution boundary or exact stock elision");
     }
 }

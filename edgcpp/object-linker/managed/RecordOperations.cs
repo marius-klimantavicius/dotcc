@@ -17,13 +17,13 @@ internal sealed partial class ObjectFile
         {
             long id = query.Integer(0);
             if (SourceLanguage != "c++" || !SourceRecords.TryGetValue(id, out SourceRecord? source) ||
-                !source.IsComplete || source.CapturePhase != "before-class-prelowering" ||
+                !source.IsComplete || !source.LayoutKnown || source.IsDependent || source.CapturePhase != "before-class-prelowering" ||
                 query.Integer(1) is not (0 or 1) || query.Integer(2) is not (0 or 1) || query.Integer(3) is not (0 or 1) ||
                 query.Integer(4) is not (0 or 1) || query.Text(5) != "before-class-prelowering" ||
                 !RecordOperations.TryAdd(id, new(query.Integer(1) == 1, query.Integer(2) == 1, query.Integer(3) == 1, query.Integer(4) == 1)))
                 throw new InvalidDataException("Invalid original record operation permissions");
         }
-        if (SourceLanguage == "c++" && SourceRecords.Values.Any(source => source.IsComplete && !RecordOperations.ContainsKey(source.Id)))
+        if (SourceLanguage == "c++" && SourceRecords.Values.Any(source => source.IsComplete && source.CapturePhase == "before-class-prelowering" && !RecordOperations.ContainsKey(source.Id)))
             throw new InvalidDataException("Complete C++ source record lacks original operation permissions");
     }
 

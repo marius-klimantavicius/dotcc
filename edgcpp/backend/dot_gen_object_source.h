@@ -120,9 +120,18 @@ struct RecordField {
   bool bit_signed=false,is_mutable=false,no_unique_address=false,is_bit_field=false,has_initializer=false;
   a_source_position position={};
 };
+struct PrelowerBase {
+  a_base_class_ptr il=nullptr;
+  a_type_ptr original_type=nullptr;
+  unsigned source_type_snapshot=0;
+  a_source_position position={};
+  bool is_virtual=false;
+  std::string access;
+};
 struct Record {
   std::string name,identity,error,layout_kind;
-  bool template_identity=false;
+  bool template_identity=false,complete=false,dependent=false,prototype=false,layout_known=false;
+  std::vector<PrelowerBase> bases;
   bool has_virtual_functions=false,has_bases=false;
   unsigned source_occurrence=0;
   // Private original declaration ownership. Unlike the C backend, dot retains
@@ -151,14 +160,6 @@ struct PrelowerField {
   unsigned long long byte_offset=0;
   unsigned bit_offset=0,bit_width=0;
   bool is_bit_field=false,is_mutable=false,no_unique_address=false,has_initializer=false;
-};
-struct PrelowerBase {
-  a_base_class_ptr il=nullptr;
-  a_type_ptr original_type=nullptr;
-  unsigned source_type_snapshot=0;
-  a_source_position position={};
-  bool is_virtual=false;
-  std::string access;
 };
 struct ExceptionBaseSnapshot {
   unsigned source_type=0;
@@ -213,7 +214,14 @@ struct GeneratedInitializer {
   std::vector<a_dynamic_init_ptr> initializers;
   std::string error;
 };
+struct FieldInitializerExecution {
+  unsigned constructor_ordinal=0;
+  bool no_effect=false;
+};
 struct SourceInitializer {
+  a_field_ptr field=nullptr;
+  a_type_ptr field_owner=nullptr;
+  a_routine_ptr field_destructor=nullptr;
   a_dynamic_init_ptr original=nullptr;
   a_variable_ptr variable=nullptr;
   a_routine_ptr owner=nullptr;
@@ -357,6 +365,8 @@ struct State {
   std::map<a_routine_ptr,Function> functions;
   std::map<a_dynamic_init_ptr,SourceInitializer> source_initializers;
   std::vector<a_dynamic_init_ptr> source_initializer_order;
+  std::map<std::pair<a_dynamic_init_ptr,a_routine_ptr>,FieldInitializerExecution> field_initializer_executions;
+  std::map<a_constructor_init_ptr,unsigned> field_initializer_ordinals;
   std::map<a_routine_ptr,unsigned> source_initializer_ordinals;
   std::map<an_object_lifetime_ptr,StaticLifetimeSnapshot> static_lifetimes;
   std::vector<an_object_lifetime_ptr> static_lifetime_order;
@@ -364,10 +374,12 @@ struct State {
   std::vector<a_dynamic_init_ptr> static_destruction_order;
   std::map<an_expr_node_ptr,StaticRegistrationSnapshot> static_registrations;
   std::set<a_dynamic_init_ptr> static_no_effect,static_partial_terminal;
+  std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> field_partial_terminal,field_destructor_no_effect;
   std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> automatic_partial_terminal;
   std::map<std::pair<a_dynamic_init_ptr,a_routine_ptr>,std::set<a_dynamic_init_ptr>> automatic_partial_terminal_copies;
   std::set<a_dynamic_init_ptr> automatic_no_effect_observed;
   std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> automatic_destructor_no_effect;
+  std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> empty_allocation_initializations;
   std::map<a_routine_ptr,GeneratedStaticDestructor> generated_static_destructors;
   std::map<a_routine_ptr,std::vector<a_dynamic_init_ptr>> adopted_initializers;
   std::map<std::pair<an_object_lifetime_ptr,a_routine_ptr>,a_dynamic_init_ptr> initializer_lifetime_adoptions;
@@ -454,6 +466,7 @@ inline std::string spelling(const a_source_correspondence &source) {
   return source.name;
 }
 inline unsigned capture_type(a_type_ptr t);
+inline void capture_field_initializer(a_field_ptr field,a_type_ptr owner);
 inline void capture_enum(a_type_ptr t) {
   auto &s=state();auto old=s.enums.find(t);
   if(old!=s.enums.end() && old->second.list_complete)return;
@@ -528,6 +541,9 @@ inline void capture_record(a_type_ptr t) {
   value.layout_kind=t->kind==tk_union?"union":t->kind==tk_class?"class":"struct";
   auto &c=t->variant.class_struct_union;auto extra=c.extra_info;
   value.template_identity=c.is_template_class;
+  value.complete=!t->incomplete;value.dependent=c.is_nonreal_class;
+  value.prototype=c.is_prototype_instantiation;
+  value.layout_known=value.complete && !value.dependent && value.alignment;
   // File-scope allocated local type entries cannot point into a function's
   // scope region; EDG retains enclosing_routine precisely for that case.
   value.local_owner=t->source_corresp.enclosing_routine;
@@ -621,7 +637,19 @@ inline void capture_record(a_type_ptr t) {
     }
     field.source_type=capture_type(f->type);value.fields.push_back(field);
   }
+  if(extra)for(auto base=extra->direct_base_classes;base;base=base->next_direct) {
+    PrelowerBase original;original.il=base;original.original_type=base->orig_type?base->orig_type:base->type;
+    original.source_type_snapshot=capture_type(original.original_type);
+    original.position=base->decl_position;original.is_virtual=base->is_virtual;
+    for(auto derivation=base->derivation;derivation;derivation=derivation->next)if(derivation->direct) {
+      original.access=derivation->access==as_public?"public":derivation->access==as_protected?"protected":
+        derivation->access==as_private?"private":"unknown";break;
+    }
+    if(original.access.empty())original.access="unknown";
+    value.bases.push_back(original);
+  }
   s.records[t]=value;
+  for(const auto &field:value.fields)capture_field_initializer(field.il,t);
 }
 inline unsigned capture_type(a_type_ptr t) {
   if(!t)return 0;
@@ -894,17 +922,24 @@ inline void observe_asm_before_lowering(an_asm_entry_ptr entry) {
     value.name=operand->name?operand->name:"";
 #if RECORD_RAW_ASM_OPERAND_DESCRIPTIONS
     value.constraint=operand->constraints_string?operand->constraints_string:"";
-    if(value.constraint=="m" && !operand->is_output_operand)value.direction="input";
+    if((value.constraint=="m" || value.constraint=="rm" || value.constraint=="mr") &&
+       !operand->is_output_operand)value.direction="input";
     else if(value.constraint=="=m" && operand->is_output_operand)value.direction="output";
     else if(value.constraint=="+m" && operand->is_output_operand)value.direction="inout";
     else value.error="empty asm operand outside exact memory constraint";
 #else
-    if(entry->number_of_constraints!=1 || !operand->constraints ||
-       operand->constraints->kind!=aoc_mem_any || operand->constraints->next)
+    auto constraint=operand->constraints;
+    bool memory_only=constraint && constraint->kind==aoc_mem_any && !constraint->next;
+    bool register_memory=constraint && constraint->next && !constraint->next->next &&
+      ((constraint->kind==aoc_reg_integer && constraint->next->kind==aoc_mem_any) ||
+       (constraint->kind==aoc_mem_any && constraint->next->kind==aoc_reg_integer));
+    if(entry->number_of_constraints!=1 || (!memory_only && !register_memory))
       value.error="empty asm operand outside exact memory constraint";
-    if(operand->modifiers==aom_input){value.direction="input";value.constraint="m";}
-    else if(operand->modifiers==aom_output){value.direction="output";value.constraint="=m";}
-    else if(operand->modifiers==aom_modify){value.direction="inout";value.constraint="+m";}
+    if(operand->modifiers==aom_input) {
+      value.direction="input";
+      value.constraint=register_memory ? (constraint->kind==aoc_reg_integer?"rm":"mr") : "m";
+    } else if(operand->modifiers==aom_output && memory_only){value.direction="output";value.constraint="=m";}
+    else if(operand->modifiers==aom_modify && memory_only){value.direction="inout";value.constraint="+m";}
     else value.error="empty asm operand direction";
 #endif
     if(value.direction=="input")seen_input=true;
@@ -946,6 +981,12 @@ inline void observe_asm_before_lowering(an_asm_entry_ptr entry) {
       element_source=element->variant.array.element_type;
       element=skip_typerefs(element_source);
     }
+    // For ICU's input "rm" barrier choose its legal memory alternative.
+    // Preserve the original alternatives, and keep the existing address-only
+    // evaluation contract. Rvalue materialization/array decay needs a separate
+    // model; never silently replace an input expression by a different object.
+    if((value.constraint=="rm" || value.constraint=="mr") && value.shape!="object")
+      value.error="register-or-memory empty asm requires an original object place";
     if(value.shape=="vla-array" && (value.dimensions.size()!=1 || !value.dimensions[0].original))
       value.error="empty asm higher-rank variable array extent";
     if(element->kind==tk_array || element->kind==tk_void || element->kind==tk_routine || !element->size)
@@ -1269,6 +1310,64 @@ inline void capture_source_initializer(a_dynamic_init_ptr dip,a_routine_ptr owne
   traversal.process_dynamic_init=capture_initializer_nested_destruction;
   traverse_dynamic_init(dip,&traversal);
 }
+// A default member initializer is a source template. Stock never lowers this
+// original DIP: it copies it into each selected constructor, and the root
+// destruction has no original lifetime until that execution copy is attached.
+inline void capture_field_initializer(a_field_ptr field,a_type_ptr owner) {
+  if(!field || !field->initializer)return;
+  auto dip=field->initializer;
+  if(state().source_initializers.count(dip))return;
+  SourceInitializer value;value.original=dip;value.field=field;value.field_owner=owner;
+  value.source_name=spelling(field->source_corresp);value.position=field->source_corresp.decl_position;
+  value.source_type=capture_type(field->type);value.field_destructor=dip->destructor;
+  if(auto primary=abi_primary(value.field_destructor))value.field_destructor=primary;
+  value.expression_lifetime=dip->init_expr_lifetime;
+  state().source_initializers.emplace(dip,value);state().source_initializer_order.push_back(dip);
+  if(dip->init_expr_lifetime) {
+    capture_static_lifetime(dip->init_expr_lifetime,nullptr,dip);
+    capture_source_lifetime(dip->init_expr_lifetime,nullptr,nullptr,0,dip);
+  }
+  SourceInitializerTraversal traversal;clear_expr_or_stmt_traversal_block(&traversal);
+  traversal.initializer=dip;traversal.process_non_dynamic_constants=TRUE;
+  traversal.process_dynamic_init=capture_initializer_nested_destruction;
+  traverse_dynamic_init(dip,&traversal);
+}
+inline a_dynamic_init_ptr original_field_initializer(a_dynamic_init_ptr value,a_routine_ptr owner) {
+  auto primary=abi_primary(owner);if(primary)owner=primary;
+  std::set<a_dynamic_init_ptr> seen;
+  while(value && seen.insert(value).second) {
+    auto found=state().source_initializers.find(value);
+    if(found!=state().source_initializers.end() && found->second.field &&
+       state().field_initializer_executions.count(std::make_pair(value,owner)))return value;
+    auto copy=state().dynamic_init_copies.find(value);
+    if(copy==state().dynamic_init_copies.end())break;
+    value=copy->second;
+  }
+  return nullptr;
+}
+inline void observe_field_initializer_selection(a_scope_ptr scope,a_constructor_init_ptr init,bool no_effect) {
+  if(!enabled() || !init || init->kind!=cik_field)return;
+  auto field=init->variant.field;auto owner=scope->variant.routine.ptr;
+  capture_field_initializer(field,parent_class_of(owner));
+  auto dip=field->initializer;if(!dip)return;
+  auto ordinal=state().field_initializer_ordinals.find(init);
+  if(ordinal==state().field_initializer_ordinals.end())return;
+  auto primary=abi_primary(owner);if(primary)owner=primary;
+  state().field_initializer_executions.emplace(std::make_pair(dip,owner),FieldInitializerExecution{ordinal->second,no_effect});
+  if(!no_effect)for(const auto &lifetime:state().lifetimes)if(lifetime.second.initializer==dip)
+    state().initializer_lifetime_adoptions.emplace(std::make_pair(lifetime.first,owner),dip);
+}
+struct FieldInitializerCapture {
+  a_scope_ptr scope=nullptr;
+  FieldInitializerCapture(a_scope_ptr value) {
+    if(!enabled())return;scope=value;unsigned ordinal=0;
+    for(auto init=scope->variant.routine.constructor_inits;init;init=init->next,++ordinal) {
+      if(init->kind!=cik_field || !init->use_field_initializer)continue;
+      capture_field_initializer(init->variant.field,parent_class_of(scope->variant.routine.ptr));
+      state().field_initializer_ordinals.emplace(init,ordinal);
+    }
+  }
+};
 // Observation scope only: stock lowering still creates/inlines the call. The
 // scoped context links that exact call to its originating destruction entry.
 struct NormalDestructionCapture {
@@ -1440,6 +1539,14 @@ inline void observe_record_transfer_copy(an_expr_node_ptr original,an_expr_node_
     copied->second.constant_initialization_kind=found->second.constant_initialization_kind;
   }
 }
+// overwrite_node promotes a lowered child without calling copy_node. Preserve
+// only that child's existing exact assignment proof, clearing stale metadata
+// when the new contents do not carry any record initialization observation.
+inline void observe_record_transfer_overwrite(an_expr_node_ptr destination,an_expr_node_ptr source,a_routine_ptr owner) {
+  if(!enabled() || !owner || destination==source)return;
+  state().record_transfers.erase(destination);
+  observe_record_transfer_copy(source,destination,owner);
+}
 // The throw initializer owns payload addresses and start markers. These maps
 // retain exact IL correspondence through both shallow and recursive copies.
 struct ThrowCapture {
@@ -1569,6 +1676,12 @@ inline a_dynamic_init_ptr original_static_destruction(a_dynamic_init_ptr value) 
   return nullptr;
 }
 inline a_dynamic_init_ptr source_destruction(a_dynamic_init_ptr value,a_routine_ptr owner);
+inline void observe_empty_allocation_initialization(a_dynamic_init_ptr dip,a_routine_ptr owner) {
+  if(!enabled() || !dip || !owner)return;
+  auto original=source_destruction(dip,owner);
+  if(original && state().destructions.at(original).allocation_release)
+    state().empty_allocation_initializations.emplace(original,owner);
+}
 inline void observe_automatic_no_effect(a_dynamic_init_ptr dip) {
   if(!enabled())return;
   auto owner=innermost_function_scope?innermost_function_scope->variant.routine.ptr:nullptr;
@@ -1578,6 +1691,8 @@ inline void observe_automatic_no_effect(a_dynamic_init_ptr dip) {
     if(!state().destructions.at(original).allocation_release)
       state().automatic_destructor_no_effect.emplace(original,owner);
   }
+  auto field=owner?original_field_initializer(dip,owner):nullptr;
+  if(field)state().field_destructor_no_effect.emplace(field,owner);
 }
 inline void observe_static_partial_terminal(a_dynamic_init_ptr dip) {
   if(!enabled())return;
@@ -1585,6 +1700,12 @@ inline void observe_static_partial_terminal(a_dynamic_init_ptr dip) {
   if(original && state().static_destructions.at(original).partial_aggregate)
     state().static_partial_terminal.insert(original);
   auto owner=innermost_function_scope?innermost_function_scope->variant.routine.ptr:nullptr;
+  if(original && owner) {
+    auto initializer=state().static_destructions.at(original).initializer;
+    if(initializer && state().source_initializers.count(initializer) && state().source_initializers.at(initializer).field &&
+       state().field_initializer_executions.count(std::make_pair(initializer,owner)))
+      state().field_partial_terminal.emplace(original,owner);
+  }
   auto automatic=owner?source_destruction(dip,owner):nullptr;
   if(automatic && state().destructions.at(automatic).partial_aggregate) {
     state().automatic_partial_terminal.emplace(automatic,owner);

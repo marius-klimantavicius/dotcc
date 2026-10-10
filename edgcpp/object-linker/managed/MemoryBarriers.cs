@@ -41,7 +41,8 @@ internal sealed partial class ObjectFile
                     !SourceTypes.TryGetValue(operand.SourceElementTypeId, out SourceType? element) ||
                     operand.ElementSize <= 0 || StorageSize(Type(element.ExecutionTypeId)) != operand.ElementSize ||
                     operand.SourceShape is not ("object" or "fixed-array" or "vla-array") ||
-                    (operand.Direction, operand.ConstraintText) is not (("input", "m") or ("output", "=m") or ("inout", "+m")) ||
+                    (operand.Direction, operand.ConstraintText) is not (("input", "m") or ("input", "rm") or ("input", "mr") or ("output", "=m") or ("inout", "+m")) ||
+                    (operand.ConstraintText is "rm" or "mr") && operand.SourceShape != "object" ||
                     (operand.ExtentKind == "fixed" ? operand.FixedElementCount is null or < 0 || operand.ExtentBindingId is not null ||
                         operand.CaptureProof != "observed-asm-place" || operand.SourceShape == "vla-array"
                     : operand.ExtentKind != "vla-total" || operand.FixedElementCount is not null || operand.ExtentBindingId is null or <= 0 ||

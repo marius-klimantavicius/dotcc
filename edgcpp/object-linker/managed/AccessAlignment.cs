@@ -6,6 +6,10 @@ namespace DotObj;
 // weaker guarantee than the pointed-to type's own layout.
 internal sealed partial class ObjectFile
 {
+    public long StorageRequiredAlignment(Storage storage) => storage.Definition == "declaration"
+        ? Math.Max(Math.Max(1, storage.Alignment), StorageAlignment(Type(storage.TypeId)))
+        : Math.Max(1, storage.Alignment);
+
     public long AccessAlignment(string type) => ScalarTypes.IsArray(type)
         ? AccessAlignment(ScalarTypes.Element(type))
         : ScalarTypes.IsRecord(type) ? ClrRecordPack(RecordsByKey[type])
@@ -39,7 +43,10 @@ internal sealed class AccessAlignment(ObjectFile obj, FunctionBody body)
             "member" => AtOffset(Place(body.Child(node.Id, "operand")), obj.Fields[node.FieldId!.Value].ByteOffset),
             "dereference" => Pointer(body.Child(node.Id, "operand")),
             "volatile-place" => Place(body.Child(node.Id, "operand")),
-            "storage" => Math.Max(1, obj.Storages[node.StorageId!.Value].Alignment),
+            // An incomplete external array has no allocated layout yet. Its
+            // compatible definition/provider must nevertheless satisfy the
+            // element type's alignment, just like every defined Storage.
+            "storage" => obj.StorageRequiredAlignment(obj.Storages[node.StorageId!.Value]),
             _ => Math.Max(1, obj.StorageAlignment(Type(node))),
         };
         places.Add(node.Id, value); return value;

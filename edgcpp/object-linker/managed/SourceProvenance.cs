@@ -57,7 +57,7 @@ internal sealed partial class ObjectFile
                 if (signatureType.Kind != "routine" || !SourceRoutines.TryGetValue(signatureType.Id, out RoutineType? sourceSignature) ||
                     Type(signatureType.ExecutionTypeId) != EntityRoutine(entity) || sourceSignature.ReturnTypeId != query.Integer(1) ||
                     RoutineAbiReturnType(sourceSignature) != Type(function.ReturnTypeId))
-                    throw new InvalidDataException("Original full function signature disagrees with function summary");
+                    throw new InvalidDataException($"Original full function signature disagrees with function summary: {function.SourceName} (entity {entity}, source routine {signatureType.Id}, execution routine {function.RoutineTypeId})");
                 if (functionKind is not ("ordinary" or "constructor" or "destructor" or "runtime") ||
                     functionKind is "constructor" or "destructor" && (sourceSignature.ObjectTypeId is null || Type(function.ReturnTypeId) != "void"))
                     throw new InvalidDataException("Invalid original special member function kind");
@@ -315,15 +315,15 @@ internal sealed partial class ObjectFile
             }
             writer.WriteEndArray();
         }
-        Table("arrayRuntimeOperations", "SELECT node_id,source_obligation_id,callback_entity_id,operation_kind,capture_proof,source_static_obligation_id FROM array_runtime_operations ORDER BY node_id",
-            "nodeId", "sourceObligationId", "callbackEntityId", "operationKind", "captureProof", "sourceStaticObligationId");
+        Table("arrayRuntimeOperations", "SELECT node_id,source_obligation_id,callback_entity_id,operation_kind,capture_proof,source_static_obligation_id,source_field_initializer_id FROM array_runtime_operations ORDER BY node_id",
+            "nodeId", "sourceObligationId", "callbackEntityId", "operationKind", "captureProof", "sourceStaticObligationId", "sourceFieldInitializerId");
         Table("cleanupArrays", "SELECT action_id,element_type_id,element_count,element_size,capture_proof FROM cleanup_arrays ORDER BY action_id", "actionId", "elementTypeId", "elementCount", "elementSize", "captureProof");
         Table("cleanupVttArguments", "SELECT action_id,binding_id,capture_proof FROM cleanup_vtt_arguments ORDER BY action_id", "actionId", "bindingId", "captureProof");
         Table("cleanupConditions", "SELECT action_id,flag_binding_id,capture_proof FROM cleanup_conditions ORDER BY action_id", "actionId", "flagBindingId", "captureProof");
         Table("virtualBaseExpressions", "SELECT node_id,complete_base_type_id FROM virtual_base_expressions ORDER BY node_id", "nodeId", "completeBaseTypeId");
         Table("virtualBaseSubobjects", "SELECT record_type_id,complete_base_type_id,physical_view_type_id,byte_offset,extent,field_id,capture_proof FROM virtual_base_subobjects ORDER BY record_type_id,complete_base_type_id", "recordTypeId", "completeBaseTypeId", "physicalViewTypeId", "byteOffset", "extent", "fieldId", "captureProof");
-        Table("normalDestructions", "SELECT node_id,source_obligation_id,capture_proof,source_static_obligation_id FROM normal_destructions ORDER BY node_id",
-            "nodeId", "sourceObligationId", "captureProof", "sourceStaticObligationId");
+        Table("normalDestructions", "SELECT node_id,source_obligation_id,capture_proof,source_static_obligation_id,source_field_initializer_id FROM normal_destructions ORDER BY node_id",
+            "nodeId", "sourceObligationId", "captureProof", "sourceStaticObligationId", "sourceFieldInitializerId");
         Table("sourceAllocationObligations", "SELECT id,function_entity_id,lifetime_id,ordinal,deallocator_entity_id,allocated_source_type_id,is_array,source_file_id,line,column,capture_proof,source_initializer_id,source_static_obligation_id FROM source_allocation_obligations ORDER BY id",
             "id", "functionEntityId", "lifetimeId", "ordinal", "deallocatorEntityId", "allocatedSourceTypeId", "isArray", "sourceFileId", "line", "column", "captureProof", "sourceInitializerId", "sourceStaticObligationId");
         Table("compileTimeSelections", "SELECT node_id,condition_value,has_else,capture_proof FROM compile_time_selections ORDER BY node_id", "nodeId", "conditionValue", "hasElse", "captureProof");
@@ -334,8 +334,16 @@ internal sealed partial class ObjectFile
         Table("baseSubobjectExpressions", "SELECT node_id,source_base_id FROM base_subobject_expressions ORDER BY node_id", "nodeId", "sourceBaseId");
         Table("sourceDependentTypes", "SELECT type_id,kind,owner_type_id,nesting_depth,parameter_position,is_pack,identity_key,capture_proof FROM source_dependent_types ORDER BY type_id",
             "typeId", "kind", "ownerTypeId", "nestingDepth", "parameterPosition", "isPack", "identityKey", "captureProof");
-        Table("sourceInitializers", "SELECT id,storage_id,source_name,execution_disposition,source_type_id,function_entity_id,source_ordinal,kind,source_file_id,line,column,capture_proof FROM source_initializers ORDER BY id",
-            "id", "storageId", "sourceName", "executionDisposition", "sourceTypeId", "functionEntityId", "sourceOrdinal", "kind", "sourceFileId", "line", "column", "captureProof");
+        Table("sourceInitializers", "SELECT id,storage_id,source_name,execution_disposition,source_type_id,function_entity_id,source_ordinal,kind,source_file_id,line,column,capture_proof,source_field_id FROM source_initializers ORDER BY id",
+            "id", "storageId", "sourceName", "executionDisposition", "sourceTypeId", "functionEntityId", "sourceOrdinal", "kind", "sourceFileId", "line", "column", "captureProof", "sourceFieldId");
+        Table("sourceFieldInitializerDestructions", "SELECT source_initializer_id,source_type_id,selected_routine_entity_id,capture_proof FROM source_field_initializer_destructions ORDER BY source_initializer_id",
+            "sourceInitializerId", "sourceTypeId", "selectedRoutineEntityId", "captureProof");
+        Table("fieldInitializerExecutions", "SELECT source_initializer_id,function_entity_id,constructor_ordinal,execution_disposition,capture_proof FROM field_initializer_executions ORDER BY source_initializer_id,function_entity_id",
+            "sourceInitializerId", "functionEntityId", "constructorOrdinal", "executionDisposition", "captureProof");
+        Table("fieldInitializerPartialDestructionExecutions", "SELECT source_static_obligation_id,function_entity_id,kind,capture_proof FROM field_initializer_partial_destruction_executions ORDER BY source_static_obligation_id,function_entity_id",
+            "sourceStaticObligationId", "functionEntityId", "kind", "captureProof");
+        Table("fieldInitializerDestructionElisions", "SELECT source_initializer_id,function_entity_id,kind,capture_proof FROM field_initializer_destruction_elisions ORDER BY source_initializer_id,function_entity_id",
+            "sourceInitializerId", "functionEntityId", "kind", "captureProof");
         Table("sourceStaticLifetimes", "SELECT id,function_entity_id,source_initializer_id,parent_lifetime_id,parent_obligation_id,sibling_ordinal,kind,source_file_id,line,column,capture_proof FROM source_static_lifetimes ORDER BY id",
             "id", "functionEntityId", "sourceInitializerId", "parentLifetimeId", "parentObligationId", "siblingOrdinal", "kind", "sourceFileId", "line", "column", "captureProof");
         Table("sourceStaticDestructions", "SELECT id,lifetime_id,ordinal,storage_id,source_type_id,selected_routine_entity_id,source_initializer_id,kind,is_array_allocation,domain,source_file_id,line,column,capture_proof FROM source_static_destructions ORDER BY id",
@@ -356,14 +364,16 @@ internal sealed partial class ObjectFile
             "sourceObligationId", "functionEntityId", "kind", "captureProof");
         Table("allocationCleanupActions", "SELECT id,function_entity_id,source_allocation_obligation_id,callback_entity_id,target_node_id,allocation_size,condition_binding_id,null_policy,capture_proof FROM allocation_cleanup_actions ORDER BY id",
             "id", "functionEntityId", "sourceAllocationObligationId", "callbackEntityId", "targetNodeId", "allocationSize", "conditionBindingId", "nullPolicy", "captureProof");
+        Table("allocationElisions", "SELECT source_allocation_obligation_id,function_entity_id,kind,capture_proof FROM allocation_elisions ORDER BY source_allocation_obligation_id,function_entity_id",
+            "sourceAllocationObligationId", "functionEntityId", "kind", "captureProof");
         Table("localStaticGuards", "SELECT id,function_entity_id,storage_id,guard_storage_id,source_type_id,source_lifetime_id,guard_policy,source_file_id,line,column,capture_proof FROM local_static_guards ORDER BY id",
             "id", "functionEntityId", "storageId", "guardStorageId", "sourceTypeId", "sourceLifetimeId", "guardPolicy", "sourceFileId", "line", "column", "captureProof");
         Table("guardOperations", "SELECT node_id,guard_id,kind,capture_proof FROM guard_operations ORDER BY node_id",
             "nodeId", "guardId", "kind", "captureProof");
         Table("guardCleanupActions", "SELECT id,function_entity_id,guard_id,target_node_id,capture_proof FROM guard_cleanup_actions ORDER BY id",
             "id", "functionEntityId", "guardId", "targetNodeId", "captureProof");
-        Table("cleanupActions", "SELECT id,function_entity_id,source_obligation_id,source_static_obligation_id,callback_entity_id,target_node_id,capture_proof FROM cleanup_actions ORDER BY id",
-            "id", "functionEntityId", "sourceObligationId", "sourceStaticObligationId", "callbackEntityId", "targetNodeId", "captureProof");
+        Table("cleanupActions", "SELECT id,function_entity_id,source_obligation_id,source_static_obligation_id,callback_entity_id,target_node_id,capture_proof,source_field_initializer_id FROM cleanup_actions ORDER BY id",
+            "id", "functionEntityId", "sourceObligationId", "sourceStaticObligationId", "callbackEntityId", "targetNodeId", "captureProof", "sourceFieldInitializerId");
         Table("cleanupStates", "SELECT id,function_entity_id,action_id,next_state_id,handler_node_id,allocation_action_id,guard_action_id FROM cleanup_states ORDER BY id",
             "id", "functionEntityId", "actionId", "nextStateId", "handlerNodeId", "allocationActionId", "guardActionId");
         Table("sourceTries", "SELECT node_id,source_lifetime_id,try_kind,capture_proof FROM source_tries ORDER BY node_id",
@@ -420,8 +430,8 @@ internal sealed partial class ObjectFile
         Table("recordValueTransfers", "SELECT node_id,kind,capture_proof FROM record_value_transfers ORDER BY node_id",
             "nodeId", "kind", "captureProof");
         Table("sourceRecordOwners", "SELECT source_record_id,owner_source_record_id,owner_field_id,kind,capture_proof FROM source_record_owners ORDER BY source_record_id", "sourceRecordId", "ownerSourceRecordId", "ownerFieldId", "kind", "captureProof");
-        Table("sourceRecords", "SELECT id,source_type_id,identity_key,source_name,record_kind,is_complete,native_size,native_alignment,is_trivially_copyable,capture_phase,source_file_id,line,column,is_packed,max_member_alignment,explicit_alignment FROM source_record_types ORDER BY id",
-            "id", "sourceTypeId", "identityKey", "sourceName", "recordKind", "isComplete", "nativeSize", "nativeAlignment", "isTriviallyCopyable", "capturePhase", "sourceFileId", "line", "column", "isPacked", "maxMemberAlignment", "explicitAlignment");
+        Table("sourceRecords", "SELECT id,source_type_id,identity_key,source_name,record_kind,is_complete,native_size,native_alignment,is_trivially_copyable,capture_phase,source_file_id,line,column,is_packed,max_member_alignment,explicit_alignment,layout_known,is_dependent,is_prototype_instantiation FROM source_record_types ORDER BY id",
+            "id", "sourceTypeId", "identityKey", "sourceName", "recordKind", "isComplete", "nativeSize", "nativeAlignment", "isTriviallyCopyable", "capturePhase", "sourceFileId", "line", "column", "isPacked", "maxMemberAlignment", "explicitAlignment", "layoutKnown", "isDependent", "isPrototypeInstantiation");
         Table("sourceFields", "SELECT id,source_record_id,ordinal,source_type_id,source_name,is_mutable,has_no_unique_address,bit_width,source_file_id,line,column,has_initializer,is_packed,explicit_alignment FROM source_record_fields ORDER BY id",
             "id", "sourceRecordId", "ordinal", "sourceTypeId", "sourceName", "isMutable", "hasNoUniqueAddress", "bitWidth", "sourceFileId", "line", "column", "hasInitializer", "isPacked", "explicitAlignment");
         Table("sourceBases", "SELECT id,source_record_id,ordinal,base_source_type_id,access_kind,is_virtual,source_file_id,line,column FROM source_record_bases ORDER BY id",

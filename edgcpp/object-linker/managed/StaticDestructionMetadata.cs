@@ -2,7 +2,7 @@ namespace DotObj;
 
 internal sealed record SourceInitializer(long Id, long? StorageId, long SourceTypeId, long? FunctionEntityId,
     long? SourceOrdinal, string Kind, long? SourceFileId, long Line, long Column, string CaptureProof,
-    string SourceName, string ExecutionDisposition);
+    string SourceName, string ExecutionDisposition, long? SourceFieldId);
 internal sealed record SourceStaticLifetime(long Id, long? FunctionEntityId, long? SourceInitializerId,
     long? ParentLifetimeId, long? ParentObligationId, long? SiblingOrdinal, string Kind,
     long? SourceFileId, long Line, long Column, string CaptureProof);
@@ -57,6 +57,12 @@ internal sealed partial class ObjectFile
     public void VerifyStaticDestructionUse(long sourceStaticObligationId, long functionEntityId,
         long callbackEntityId, string operationKind)
     {
+        if (SourceStaticDestructions.TryGetValue(sourceStaticObligationId, out var fieldPartial) &&
+            fieldPartial.SourceInitializerId is long fieldInitializer && SourceInitializers[fieldInitializer].Kind == "field-default")
+        {
+            VerifyFieldInitializerPartialDestructionUse(sourceStaticObligationId, functionEntityId, callbackEntityId, operationKind);
+            return;
+        }
         if (!SourceStaticDestructions.TryGetValue(sourceStaticObligationId, out var obligation) ||
             obligation.Kind != "persistent" || obligation.Domain != "process" ||
             !GeneratedStaticDestructors.TryGetValue(functionEntityId, out var generated) ||
@@ -94,17 +100,23 @@ internal sealed partial class ObjectFile
 
     private void ReadStaticSources()
     {
-        using (var q = database.Prepare("SELECT id,storage_id,source_type_id,function_entity_id,source_ordinal,kind,source_file_id,line,column,capture_proof,source_name,execution_disposition FROM source_initializers ORDER BY id"))
+        using (var q = database.Prepare("SELECT id,storage_id,source_type_id,function_entity_id,source_ordinal,kind,source_file_id,line,column,capture_proof,source_name,execution_disposition,source_field_id FROM source_initializers ORDER BY id"))
             while (q.Read())
             {
                 var value = new SourceInitializer(q.Integer(0), q.OptionalInteger(1), q.Integer(2), q.OptionalInteger(3), q.OptionalInteger(4),
-                    q.Text(5), q.OptionalInteger(6), q.Integer(7), q.Integer(8), q.Text(9), q.Text(10), q.Text(11));
-                if ((value.ExecutionDisposition == "emitted" ? value.StorageId is not long storageId ||
-                      !Storages.TryGetValue(storageId, out var storage) || storage.SourceTypeId != value.SourceTypeId
-                    : value.ExecutionDisposition != "stock-not-emitted" || value.StorageId is not null) ||
+                    q.Text(5), q.OptionalInteger(6), q.Integer(7), q.Integer(8), q.Text(9), q.Text(10), q.Text(11), q.OptionalInteger(12));
+                bool fieldTemplate = value.Kind == "field-default";
+                if ((fieldTemplate ? value.ExecutionDisposition != "source-template" || value.StorageId is not null ||
+                        value.FunctionEntityId is not null || value.SourceOrdinal is not null ||
+                        value.SourceFieldId is not long fieldId || !SourceFields.TryGetValue(fieldId, out var field) ||
+                        !field.HasInitializer || field.SourceTypeId != value.SourceTypeId || field.SourceName != value.SourceName
+                    : value.SourceFieldId is not null ||
+                      (value.ExecutionDisposition == "emitted" ? value.StorageId is not long storageId ||
+                        !Storages.TryGetValue(storageId, out var storage) || storage.SourceTypeId != value.SourceTypeId
+                        : value.ExecutionDisposition != "stock-not-emitted" || value.StorageId is not null) ||
+                      (value.Kind == "file" ? value.FunctionEntityId is not null || value.SourceOrdinal is null
+                        : value.Kind != "local-static" || value.FunctionEntityId is not long function || !EntitySourceRoutines.ContainsKey(function) || value.SourceOrdinal is not null)) ||
                     !SourceTypes.ContainsKey(value.SourceTypeId) ||
-                    (value.Kind == "file" ? value.FunctionEntityId is not null || value.SourceOrdinal is null
-                     : value.Kind != "local-static" || value.FunctionEntityId is not long function || !EntitySourceRoutines.ContainsKey(function) || value.SourceOrdinal is not null) ||
                     value.Line < 0 || value.Column < 0 || value.CaptureProof != "before-lowering" || !SourceInitializers.TryAdd(value.Id, value))
                     throw new InvalidDataException("Static initializer lacks its original declaration, type or source owner");
             }
@@ -191,17 +203,21 @@ internal sealed partial class ObjectFile
                     !GeneratedStaticDestructors.TryAdd(value.FunctionEntityId, value))
                     throw new InvalidDataException("Generated static destructor lacks its original persistent source obligation");
             }
+        ReadFieldInitializerMetadata();
     }
 
     private void ReadStaticExecutionMetadata()
     {
+        VerifyFieldInitializerExecutionMetadata();
         foreach (var execution in InitializerLifetimeExecutions.Values)
         {
             var original = SourceStaticLifetimes[execution.SourceStaticLifetimeId];
             if (!SourceLifetimes.TryGetValue(execution.SourceLifetimeId, out var lifetime) ||
                 lifetime.SourceInitializerId != execution.SourceInitializerId || lifetime.FunctionEntityId is not null ||
                 original.SourceInitializerId != execution.SourceInitializerId || original.Kind != lifetime.Kind ||
-                !GeneratedRoutineOrigins.ContainsKey(execution.FunctionEntityId))
+                !(SourceInitializers[execution.SourceInitializerId].Kind == "field-default"
+                    ? FieldInitializerExecutions.TryGetValue((execution.SourceInitializerId, execution.FunctionEntityId), out var fieldExecution) && fieldExecution.ExecutionDisposition == "copied"
+                    : GeneratedRoutineOrigins.ContainsKey(execution.FunctionEntityId)))
                 throw new InvalidDataException("Initializer lifetime adoption differs from its original source boundary");
         }
         using (var q = database.Prepare("SELECT node_id,source_obligation_id,source_initializer_id,function_entity_id,callback_entity_id,object_node_id,domain,capture_proof FROM static_destruction_registrations"))
@@ -268,13 +284,14 @@ internal sealed partial class ObjectFile
                 long id = q.Integer(0); string kind = q.Text(1);
                 if (!SourceStaticDestructions.TryGetValue(id, out var obligation) || obligation.Kind is not ("persistent" or "partial-aggregate") ||
                     (obligation.Kind == "persistent" ? kind is not ("registered" or "stock-proven-no-effect" or "stock-not-emitted")
-                        : kind is not ("cleanup-action" or "stock-terminal-no-throw" or "stock-not-emitted")) || q.Text(2) != "observed-static-destruction-disposition" ||
+                        : kind is not ("cleanup-action" or "stock-terminal-no-throw" or "stock-not-emitted" or "source-template")) || q.Text(2) != "observed-static-destruction-disposition" ||
+                    (kind == "source-template") != (obligation.SourceInitializerId is long templateInitializer && SourceInitializers[templateInitializer].Kind == "field-default") ||
                     (kind == "registered") != StaticDestructionRegistrations.Values.Any(value => value.SourceObligationId == id) ||
                     (kind == "stock-not-emitted") != (obligation.SourceInitializerId is long initializer && SourceInitializers[initializer].ExecutionDisposition == "stock-not-emitted") ||
                     !StaticDestructionDispositions.TryAdd(id, kind))
                     throw new InvalidDataException("Static source obligation has no exact observed disposition");
                 using var action = database.Prepare($"SELECT count(*) FROM cleanup_actions WHERE source_static_obligation_id={id}");
-                if (!action.Read() || (kind == "cleanup-action") != (action.Integer(0) > 0))
+                if (!action.Read() || kind != "source-template" && (kind == "cleanup-action") != (action.Integer(0) > 0))
                     throw new InvalidDataException("Static partial destruction action differs from its observed disposition");
             }
         foreach (var obligation in SourceStaticDestructions.Values.Where(value => value.Kind is "persistent" or "partial-aggregate"))

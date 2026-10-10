@@ -844,6 +844,26 @@ internal static class Verifier
             while (callback.Kind == "convert") callback = body.Child(callback.Id, "operand");
             if (callback.Kind != "function-address" || callback.EntityId != operation.CallbackEntityId)
                 Fail("Array runtime destructor argument differs from its observed original destruction obligation");
+            long? fieldInitializerId = operation.SourceFieldInitializerId;
+            if (operation.SourceStaticObligationId is long templateId &&
+                obj.SourceStaticDestructions[templateId].SourceInitializerId is long sourceInitializer &&
+                obj.SourceInitializers[sourceInitializer].Kind == "field-default")
+                fieldInitializerId = sourceInitializer;
+            if (fieldInitializerId is long fieldInitializer)
+            {
+                Node destination = body.Nodes[body.Children(call.Id, "argument").Single(edge => edge.Ordinal == 0).ChildId];
+                CleanupVerifier.FieldInitializerTarget(obj, function, body, fieldInitializer, destination);
+            }
+        }
+        var fieldDestructions = obj.NormalFieldDestructions.Concat(obj.NormalStaticDestructions
+            .Where(value => obj.SourceStaticDestructions[value.Value].SourceInitializerId is long initializer &&
+                obj.SourceInitializers[initializer].Kind == "field-default")
+            .Select(value => new KeyValuePair<long, long>(value.Key, obj.SourceStaticDestructions[value.Value].SourceInitializerId!.Value)));
+        foreach (var destruction in fieldDestructions.Where(value => body.Nodes.ContainsKey(value.Key)))
+        {
+            Node call = body.Nodes[destruction.Key];
+            Node receiver = body.Nodes[body.Children(call.Id, "argument").Single(edge => edge.Ordinal == 0).ChildId];
+            CleanupVerifier.FieldInitializerTarget(obj, function, body, destruction.Value, receiver);
         }
         var actionBindings = new Dictionary<long, HashSet<long>>();
         foreach (CleanupAction action in obj.FunctionCleanupActions.GetValueOrDefault(function.Id, []))

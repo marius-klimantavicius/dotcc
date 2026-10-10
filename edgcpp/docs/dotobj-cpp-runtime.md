@@ -311,8 +311,9 @@ dimensions, and the saved total-element binding of a rank-one VLA. The C#
 emitter evaluates each address and extent once and calls `Thread.MemoryBarrier`.
 It introduces no read or write through those addresses. The hardware fence is
 stronger than the original compiler-only barrier; optimizing that cost remains
-separate from preserving correctness. Nonempty assembly, registers, goto labels,
-other retained clobbers and multidimensional VLA operands remain explicit gates.
+separate from preserving correctness. Nonempty assembly, register-only operands,
+goto labels, other retained clobbers and multidimensional VLA operands remain
+explicit gates.
 
 `tests/memory_asm_verify.py` passes 63 checks with native041/managed033, including
 native C++ O0/O2, source-hidden independent-TU linking, JIT and NativeAOT. It
@@ -363,3 +364,87 @@ reverse cleanup. Actual EDG/LLVM RTTI source providers remain separate linked
 objects. This checkpoint does not implement `std::exception_ptr`, custom
 `set_terminate`, native C++ interoperation, cross-thread exception transfer, or
 platform lifecycle release of a C++ propagation abandoned by a forced transfer.
+
+## ICU register-or-memory alias barriers, profile41
+
+ICU's empty `asm volatile("" : : "rm"(pointer) : "memory")` permits a memory
+operand. The exporter preserves the original `rm` or `mr` constraint and chooses
+that permitted alternative only for an original object lvalue. Its owned
+address/extent evaluation and the existing BCL fence preserve side effects
+without fabricated loads or stores. Register-only constraints, rvalues requiring
+new temporary materialization and array-decay alternatives remain gated. The
+stock C backend preserves the constraint and original operand; EDG's configured
+parsed constraint list carries both alternatives, which our observer retains.
+
+This follows GCC's [simple operand constraints](https://gcc.gnu.org/onlinedocs/gcc/Simple-Constraints.html)
+and [extended assembly contract](https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html).
+The stronger BCL fence remains a correctness choice with potential runtime cost.
+Native099/managed110 passes29 focused checks in `duckdb_icu_alias_barrier_verify.py`: native and stock C at O0/O2, managed JIT, original constraint
+metadata and resealed invalid-object rejection. Actual bundled ICU `format.cpp`
+now packages; other ICU units still have independently diagnosed lifetime/array
+ABI gates. No full ICU runtime claim follows from this change.
+
+## Default member initializer ownership, profile41
+
+A C++ default member initializer is an original source template. EDG copies its
+DIP into each constructor that selects it; an explicit member initializer must
+not be attributed to that template. `.dotobj` preserves the original field,
+type, selected root destructor when one exists, nested lifetime graph and
+original declaration ordering. The constructor execution relation separately
+records the observed constructor-list ordinal and stock copying or no-effect
+removal. An unused template remains source metadata without invented storage,
+selected destructor or physical record layout.
+
+A root field rollback targets the observed constructor receiver and original
+member path. A partial field-array rollback retains its original static-graph
+obligation and has a per-constructor action or exact terminal no-throw
+disposition. A nested argument temporary instead adopts its original expression
+lifetime into the constructor; its cleanup targets the temporary, not the
+member. The original constructor graph is retained before expansion. Selected
+root destruction requires an owned operation or an observed stock elimination;
+absence of a cleanup action alone is not an elimination proof.
+
+Native102/managed112 verifies the shared field-array fixture under native and
+stock C at O0/O2 and managed JIT (37 checks, including source-hidden and resealed
+malformed metadata). Native103/managed114 additionally passes the nested argument
+temporary fixture (40 checks) and root no-effect destruction fixture (39 checks).
+Both preserve original source ownership and reject resealed malformed metadata.
+The separate constructor-initializer no-effect pass is now observed as well;
+the original base-destructor obligations remain even when stock removes their
+calls. Full DuckDB export still reaches independent dependent-template type
+identity gaps, and NativeAOT acceptance for this checkpoint is pending.
+
+## Planned vector allocation protocol ownership
+
+The next array-new relation will preserve EDG's selected runtime protocol rather
+than invent an explicit cleanup region around a helper that already owns it.
+`lower_array_new` retains the original allocation rollback DIP in
+`ndsp->freeing_of_storage_on_exception`. For the IA64 `__cxa_vec_new2` and
+`__cxa_vec_new3` paths, `make_vec_new_call` chooses the final constructor,
+destructor, allocator and deallocator callbacks and emits seven arguments:
+count, element size, padding, constructor, destructor, allocator, deallocator.
+The stock implementation is in `upstream/lib_src/vec_newdel.c`.
+
+Proposed `array_allocation_operations` rows contain the call node, original
+allocation obligation, selected allocator/deallocator entities, element type,
+nullable constructor/destructor callback entities, helper kind, observed padding
+size and `observed-array-new-runtime` capture proof. The call remains in the
+owned expression graph. Verification checks exact argument references and callback
+signatures, original selected `operator delete[]`, dynamic count type, element
+extent and observed padding. Ordinary allocation-obligation completeness then
+includes this helper-owned operation alongside explicit rollback and observed
+elimination.
+
+Observation must surround the actual `make_vec_new_call` in `lower_array_new`
+and inspect the finalized helper call before later casts and assignments. It
+applies only when the helper allocates storage (`entity_node == NULL`). Placement
+or aligned allocation outside the helper retains its separate rollback proof.
+The implicit-default `__cxa_vec_new` form needs a distinct proof of its default
+allocator/deallocator selection and must not be accepted merely by its name.
+
+Acceptance must compare native C++, stock lowered C and translated execution
+for successful allocation, allocator failure without deallocation, constructor
+failure after a constructed prefix, reverse prefix destruction, and exactly one
+selected deallocation. The sized-delete form must receive the full allocation
+size including padding. Runtime implementation can follow this capture contract;
+adding the relation alone does not make the runtime helper executable.

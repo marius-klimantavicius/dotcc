@@ -5,8 +5,8 @@ internal sealed record SourceLifetime(long Id, long? FunctionEntityId, long? Par
 internal sealed record SourceDestructionObligation(long Id, long? FunctionEntityId, long LifetimeId,
     long Ordinal, long DestructorEntityId, long SourceTypeId, long? SourceFileId, long Line, long Column, string CaptureProof, long? SourceInitializerId, long? SourceStaticObligationId, bool IsPartialAggregate);
 internal sealed record CleanupAction(long Id, long FunctionEntityId, long? SourceObligationId,
-    long CallbackEntityId, long TargetNodeId, string CaptureProof, long? SourceStaticObligationId);
-internal sealed record ArrayRuntimeOperation(long NodeId, long? SourceObligationId, long CallbackEntityId, string OperationKind, string CaptureProof, long? SourceStaticObligationId);
+    long CallbackEntityId, long TargetNodeId, string CaptureProof, long? SourceStaticObligationId, long? SourceFieldInitializerId);
+internal sealed record ArrayRuntimeOperation(long NodeId, long? SourceObligationId, long CallbackEntityId, string OperationKind, string CaptureProof, long? SourceStaticObligationId, long? SourceFieldInitializerId);
 internal sealed record CleanupArray(long ActionId, long ElementTypeId, long ElementCount, long ElementSize, string CaptureProof);
 internal sealed record CleanupState(long Id, long FunctionEntityId, long? ActionId, long? NextStateId, long? HandlerNodeId, long? AllocationActionId, long? GuardActionId);
 internal sealed record CleanupTransition(long NodeId, long? StateId, string CaptureProof, bool IsUnreachable);
@@ -22,6 +22,7 @@ internal sealed partial class ObjectFile
     public Dictionary<long, long> CleanupConditions { get; } = [];
     public Dictionary<long, long> NormalDestructions { get; } = [];
     public Dictionary<long, long> NormalStaticDestructions { get; } = [];
+    public Dictionary<long, long> NormalFieldDestructions { get; } = [];
     public Dictionary<long, long> VirtualBaseExpressions { get; } = [];
     public Dictionary<long, long> BaseSubobjectExpressions { get; } = [];
     public Dictionary<long, SourceLifetime> SourceLifetimes { get; } = [];
@@ -45,7 +46,8 @@ internal sealed partial class ObjectFile
 
     public long CleanupSourceType(CleanupAction action) => action.SourceObligationId is long automatic
         ? SourceDestructionObligations[automatic].SourceTypeId
-        : SourceStaticDestructions[action.SourceStaticObligationId!.Value].SourceTypeId;
+        : action.SourceStaticObligationId is long staticId ? SourceStaticDestructions[staticId].SourceTypeId
+        : FieldInitializerDestructions[action.SourceFieldInitializerId!.Value].SourceTypeId;
 
     public long StaticCleanupStorage(CleanupAction action)
         => SourceInitializers[SourceStaticDestructions[action.SourceStaticObligationId!.Value].SourceInitializerId!.Value].StorageId!.Value;
@@ -150,12 +152,12 @@ internal sealed partial class ObjectFile
                  parentObligation.LifetimeId != lifetime.ParentLifetimeId || lifetime.Kind == "block-after-label"))
                 throw new InvalidDataException("Original lifetime overlap must reference its parent's destruction sublist");
         }
-        using (var query = database.Prepare("SELECT a.id,a.function_entity_id,a.source_obligation_id,a.callback_entity_id,a.target_node_id,a.capture_proof,n.function_id,a.source_static_obligation_id FROM cleanup_actions a LEFT JOIN nodes n ON n.id=a.target_node_id ORDER BY a.id"))
+        using (var query = database.Prepare("SELECT a.id,a.function_entity_id,a.source_obligation_id,a.callback_entity_id,a.target_node_id,a.capture_proof,n.function_id,a.source_static_obligation_id,a.source_field_initializer_id FROM cleanup_actions a LEFT JOIN nodes n ON n.id=a.target_node_id ORDER BY a.id"))
             while (query.Read())
             {
-                var action = new CleanupAction(query.Integer(0), query.Integer(1), query.OptionalInteger(2), query.Integer(3), query.Integer(4), query.Text(5), query.OptionalInteger(7));
+                var action = new CleanupAction(query.Integer(0), query.Integer(1), query.OptionalInteger(2), query.Integer(3), query.Integer(4), query.Text(5), query.OptionalInteger(7), query.OptionalInteger(8));
                 if (action.Id <= 0 || !Functions.ContainsKey(action.FunctionEntityId) || query.OptionalInteger(6) != action.FunctionEntityId ||
-                    (action.SourceObligationId is null) == (action.SourceStaticObligationId is null) ||
+                    new long?[] { action.SourceObligationId, action.SourceStaticObligationId, action.SourceFieldInitializerId }.Count(id => id is not null) != 1 ||
                     action.CaptureProof != "observed-region-entry" || !Entities.TryGetValue(action.CallbackEntityId, out Entity? callback) ||
                     AbiRoutineOrigins.TryGetValue(callback.Id, out AbiRoutineOrigin? origin) && origin.EntryKind is not ("complete" or "subobject" or "delegation") ||
                     !CleanupActions.TryAdd(action.Id, action))
@@ -167,23 +169,31 @@ internal sealed partial class ObjectFile
                         OriginalFunction(callback.Id) != obligation.DestructorEntityId)
                         throw new InvalidDataException("Cleanup action differs from its original automatic destruction owner");
                 }
-                else if (!SourceStaticDestructions.TryGetValue(action.SourceStaticObligationId!.Value, out var obligation) ||
-                    obligation.Kind != "partial-aggregate" || obligation.SourceInitializerId is not long initializer ||
-                    !SourceInitializers.TryGetValue(initializer, out var sourceInitializer) || sourceInitializer.StorageId is null ||
-                    Original(SourceTypeById(sourceInitializer.SourceTypeId)).Kind != "array" ||
-                    !IsStaticInitializerExecution(SourceInitializers[initializer], action.FunctionEntityId) ||
-                    OriginalFunction(callback.Id) != obligation.SelectedRoutineEntityId ||
-                    AbiRoutineOrigins.TryGetValue(callback.Id, out var staticOrigin) && staticOrigin.EntryKind != "complete")
-                    throw new InvalidDataException("Static array rollback lacks its exact initializer, storage and selected destructor");
+                else if (action.SourceFieldInitializerId is long fieldInitializer)
+                    VerifyFieldInitializerDestructionUse(fieldInitializer, action.FunctionEntityId, callback.Id, "cleanup");
+                else
+                {
+                    if (!SourceStaticDestructions.TryGetValue(action.SourceStaticObligationId!.Value, out var obligation) ||
+                        obligation.Kind != "partial-aggregate" || obligation.SourceInitializerId is not long initializer ||
+                        !SourceInitializers.TryGetValue(initializer, out var sourceInitializer) ||
+                        OriginalFunction(callback.Id) != obligation.SelectedRoutineEntityId ||
+                        AbiRoutineOrigins.TryGetValue(callback.Id, out var staticOrigin) && staticOrigin.EntryKind != "complete")
+                        throw new InvalidDataException("Source template rollback lacks its exact initializer and selected destructor");
+                    if (sourceInitializer.Kind == "field-default")
+                        VerifyFieldInitializerPartialDestructionUse(obligation.Id, action.FunctionEntityId, callback.Id, "cleanup");
+                    else if (sourceInitializer.StorageId is null || Original(SourceTypeById(sourceInitializer.SourceTypeId)).Kind != "array" ||
+                        !IsStaticInitializerExecution(sourceInitializer, action.FunctionEntityId))
+                        throw new InvalidDataException("Static array rollback lacks its exact initializer execution and storage");
+                }
                 if (!FunctionCleanupActions.TryGetValue(action.FunctionEntityId, out var actions))
                     FunctionCleanupActions.Add(action.FunctionEntityId, actions = []);
                 actions.Add(action);
             }
-        using (var query = database.Prepare("SELECT a.node_id,a.source_obligation_id,a.callback_entity_id,a.operation_kind,a.capture_proof,n.kind,n.function_id,n.entity_id,a.source_static_obligation_id FROM array_runtime_operations a LEFT JOIN nodes n ON n.id=a.node_id ORDER BY a.node_id"))
+        using (var query = database.Prepare("SELECT a.node_id,a.source_obligation_id,a.callback_entity_id,a.operation_kind,a.capture_proof,n.kind,n.function_id,n.entity_id,a.source_static_obligation_id,a.source_field_initializer_id FROM array_runtime_operations a LEFT JOIN nodes n ON n.id=a.node_id ORDER BY a.node_id"))
             while (query.Read())
             {
-                var operation = new ArrayRuntimeOperation(query.Integer(0), query.OptionalInteger(1), query.Integer(2), query.Text(3), query.Text(4), query.OptionalInteger(8));
-                if ((operation.SourceObligationId is null) == (operation.SourceStaticObligationId is null) ||
+                var operation = new ArrayRuntimeOperation(query.Integer(0), query.OptionalInteger(1), query.Integer(2), query.Text(3), query.Text(4), query.OptionalInteger(8), query.OptionalInteger(9));
+                if (new long?[] { operation.SourceObligationId, operation.SourceStaticObligationId, operation.SourceFieldInitializerId }.Count(id => id is not null) != 1 ||
                     !Entities.ContainsKey(operation.CallbackEntityId) ||
                     operation.OperationKind is not ("construct" or "destroy") || operation.CaptureProof != "observed-array-runtime" ||
                     query.OptionalText(5) != "call" || query.OptionalInteger(6) is not long owner ||
@@ -199,6 +209,8 @@ internal sealed partial class ObjectFile
                         !IsSourceLifetimeExecution(SourceLifetimes[obligation.LifetimeId], owner))
                         throw new InvalidDataException("Array runtime operation differs from its original automatic destruction owner");
                 }
+                else if (operation.SourceFieldInitializerId is long fieldInitializer)
+                    VerifyFieldInitializerDestructionUse(fieldInitializer, owner, operation.CallbackEntityId, operation.OperationKind);
                 else VerifyStaticDestructionUse(operation.SourceStaticObligationId!.Value, owner, operation.CallbackEntityId, operation.OperationKind);
                 if (AbiRoutineOrigins.TryGetValue(operation.CallbackEntityId, out AbiRoutineOrigin? origin) && origin.EntryKind != "complete")
                     throw new InvalidDataException("Array runtime operation requires a complete-object destructor callback");
@@ -262,11 +274,11 @@ internal sealed partial class ObjectFile
                     !CleanupConditions.TryAdd(action.Id, query.Integer(1)))
                     throw new InvalidDataException("Conditional cleanup requires its exact synthetic local flag and owning action");
             }
-        using (var query = database.Prepare("SELECT d.node_id,d.source_obligation_id,d.capture_proof,n.function_id,n.kind,n.entity_id,d.source_static_obligation_id FROM normal_destructions d LEFT JOIN nodes n ON n.id=d.node_id ORDER BY d.node_id"))
+        using (var query = database.Prepare("SELECT d.node_id,d.source_obligation_id,d.capture_proof,n.function_id,n.kind,n.entity_id,d.source_static_obligation_id,d.source_field_initializer_id FROM normal_destructions d LEFT JOIN nodes n ON n.id=d.node_id ORDER BY d.node_id"))
             while (query.Read())
             {
-                long? sourceObligation = query.OptionalInteger(1), staticObligation = query.OptionalInteger(6);
-                if ((sourceObligation is null) == (staticObligation is null) ||
+                long? sourceObligation = query.OptionalInteger(1), staticObligation = query.OptionalInteger(6), fieldInitializer = query.OptionalInteger(7);
+                if (new long?[] { sourceObligation, staticObligation, fieldInitializer }.Count(id => id is not null) != 1 ||
                     query.Text(2) != "observed-normal-destruction" || query.OptionalInteger(3) is not long function ||
                     !Functions.ContainsKey(function) || query.OptionalText(4) != "call" || query.OptionalInteger(5) is not long callback ||
                     !Entities.ContainsKey(callback) ||
@@ -278,6 +290,12 @@ internal sealed partial class ObjectFile
                         !IsSourceLifetimeExecution(SourceLifetimes[obligation.LifetimeId], function) ||
                         OriginalFunction(callback) != obligation.DestructorEntityId || !NormalDestructions.TryAdd(query.Integer(0), original))
                         throw new InvalidDataException("Normal destruction differs from its original automatic obligation");
+                }
+                else if (fieldInitializer is long fieldRoot)
+                {
+                    VerifyFieldInitializerDestructionUse(fieldRoot, function, callback, "destroy");
+                    if (!NormalFieldDestructions.TryAdd(query.Integer(0), fieldRoot))
+                        throw new InvalidDataException("Duplicate field initializer destruction operation");
                 }
                 else
                 {
