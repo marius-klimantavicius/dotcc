@@ -7,35 +7,32 @@ successful generation after one fix. The selected sample is deliberately varied,
 not statistically representative. Preserve all required source-type information;
 do not omit metadata to bypass a gate. Re-rank after each expanded probe.
 
-## Current queue (native113 / managed124)
+## Current queue (completed 500-unit native115 / managed126 inventory)
 
-The complete identical 160-unit checkpoint is
-`dotobj-duckdb-expanded-summary-113.json` in persistent campaign storage:
-135 packaged and 127 individually verified, versus 128 packaged and 82 verified
-with native112/managed123. The 45 additional verifiable units demonstrate the
-benefit of batching the previous 33 static-lifetime ordering, nine generated
-exception-specification and eight field-destructor first failures. Some units
-advance to another gate; these counts are not additive promises.
+The expanded sample includes the previous 160 and spans 430 library, 48 test,
+12 libc++ and 10 libc units. Completed: 456 packaged, 447 individually verified,
+38 explicit exporter gates, one packaging failure and five test-configuration
+failures; no exporter crashes. Receipt `dotobj-duckdb-expanded-summary-115.json`.
+These are earlier v47 tools, not the final117/128 exception-policy query.
+Final v47 is committed as `83f0e6dc0`, with 1,042 broad and 143 focused checks.
 
-| Priority | Observed blocker | Current affected sample units | Work and owner |
+| Priority | Measured blocker | Affected selected units | Work and owner |
 | --- | --- | ---: | --- |
-| Integration prerequisite | Defaulted exception specification unresolved in one TU, resolved in another | Combined 48-unit generation rejects one shared vector constructor signature | Lifetime worker: inspect stock semantic completion API while original frontend context is valid; preserve provenance, never ignore signature disagreement. |
-| 1 | By-value transport | 7 return + 2 parameter export failures | Lifetime worker after current integration: inspect selected ABI and stock C transport. |
-| 2 | Discarded record expression context | 3 nested initialization sequences + 1 for-step reference expression | Supervisor: propagate semantic discard through sequence tails without permitting copies; base worker validates native/stock reducers. |
-| 3 | Uninitialized placement-new rollback ownership | 2 former crash units now precise export gates | Base worker: retain exact original allocation ownership and proof that no initialization/rollback is executed. |
-| Later observed | Record assignment | 2 export failures | Preserve selected source construction/assignment distinction. |
-| Later observed | Lambda parameter correspondence | 2 export failures | Preserve original lambda/invoker ownership. |
-| Later observed | Virtual base, signbit intrinsic, cached storage type, initialization evaluation order | 1 managed reject each | Keep exact evidence; promote shared causes when a wider scan measures impact. |
-| Later observed | Uninitialized array allocation, variadic result ABI, partial fixed-array rollback, constrained source parameter, contention-table layout | 1 export failure each | Required project paths, not discarded; defer behind larger measured families. |
-| Configuration/package | Zero-size assembly operand packaging and test frontend configuration | 1 packaging failure + 4 test configuration diagnostics | Explicitly distinct from EDG semantic capability; retain original stderr and invocation. |
+| Integration prerequisite | Partial callback ABI storage has different physical observations across TUs | Combined real pair rejects ReplacementScan layout | Base worker: normalize only identical original semantic signatures, compare known decisions, preserve partial observations; actual calls stay gated until complete ABI. |
+| 1 | Incomplete by-value external declaration signatures | 16 return + 4 parameter export failures | Base worker: source-owned deferred imported declarations; link to complete providers before calls. Current v48 batch. |
+| 2 | Floating classification builtins treated as ordinary varargs | 4 managed rejects | Lifetime worker: exact EDG builtin identity, typed intrinsic f32/f64/f80, BCL/bit classification; unchanged varargs validation. Current v48 batch. |
+| 3 | Primary virtual base carries vptr | 2 managed rejects | Supervisor: exact owned zero-offset primary placement; both actual Parquet units verify in scratch. Current v48 batch. |
+| 4 | Record assignment / result construction | 4 assignment + 1 unique_ptr construction export failures | Lifetime worker: next scratch observation of selected copy/construction semantics. |
+| 5 | Dependent source parameter constraints | 4 exporter gates in libc++ source | Required source metadata; behind selected library generation blockers, not a runtime implementation detour. |
+| Small managed fixes | Constant byte-offset alignment; incomplete array storage view; RHS-first call order | 1 managed reject each | Supervisor alignment scratch verifies task_scheduler; base diagnoses fmt against stock C array-view rule; Arrow sequencing already passes final v47. |
+| Later observed | Missing allocation object type; variadic indirect ABI; lambda parameter identity | 2 export failures each | Preserve precise allocation, ABI and parameter ownership; no omission workaround. |
+| Later observed | Dependent constant expression; partial array rollback; contention-table layout | 1 export failure each | Required paths retained behind larger measured shared blockers. |
+| Configuration/package | Static-array destructor observes typedef size zero; test POSIX frontend configuration | 1 packaging + 5 frontend failures | Distinct from EDG parsing capability; retain invocations and stderr. |
 
-Source-only template/formal and nested-declaration blockers were prerequisites
-for measuring these downstream execution and linking errors. Their required type
-information remains represented. No libc++ runtime implementation detour is in
-this queue. The first whole-project scan supplied historical priorities; later
-selection deliberately spreads over path/role groups and is not statistical.
-After the next coherent integration, expand beyond these 160 units and rerank
-against new evidence rather than repeatedly polishing the same selected units.
+All counts are first failures: clearing a gate may reveal another, and these are
+not additive promises of full generation. The next integration must measure
+combined C# generation and expand toward the complete project, rather than
+polishing this sample indefinitely. No runtime/libc++ closure detour is active.
 
 ## Historical whole-project evidence
 

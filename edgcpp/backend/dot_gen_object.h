@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v47: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v48: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -169,6 +169,7 @@ struct Writer {
   std::map<unsigned,std::map<unsigned long long,unsigned char>> bitfield_data;
   std::vector<string> routine_types,routine_parameters,source_routine_types,source_routine_parameters;
   std::vector<string> deferred_routine_abis;
+  std::vector<string> deferred_function_declarations;
   std::map<string,unsigned> signature_ids;
   std::vector<string> source_routine_exception_resolutions;
   unsigned signature_type(unsigned result,const std::vector<unsigned> &args,bool variadic,const string &exception_policy) {
@@ -941,6 +942,20 @@ struct Writer {
           " ["+variable_linker_symbol(v)+"]").c_str());
       bool root=v->source_corresp.name_linkage==nlk_external || v->source_corresp.name_linkage==nlk_cplusplus_external;
       if(v->compiler_generated || v->lowering_generated || (v->is_template_variable && !v->is_specialized))root=false;
+#if DO_IL_LOWERING
+      // lower_il::define_virtual_function_table makes the key-function TU
+      // own this external definition even without a local constructor use.
+      // Match the stock C needed predicate; never manufacture an optional
+      // table or identify ABI objects from their mangled spelling.
+      if(v->lowering_generated && v->vtable_defined &&
+         (v->source_corresp.name_linkage==nlk_external || v->source_corresp.name_linkage==nlk_cplusplus_external)) {
+#if MAINTAIN_NEEDED_FLAGS
+        root=needed_flag_is_set(&v->source_corresp);
+#else
+        root=v->source_corresp.referenced;
+#endif
+      }
+#endif
       if(v->explicit_instantiation && !v->explicit_do_not_instantiate)root=true;
 #if GNU_EXTENSIONS_ALLOWED
       root=root || v->has_gnu_used_attribute;
@@ -2633,9 +2648,19 @@ struct Writer {
 
 
     auto record_value=[](a_type_ptr type){type=skip_typerefs(type);return type->kind==tk_struct || type->kind==tk_class || type->kind==tk_union;};
-    if(record_value(t->variant.routine.return_type) && !record_value_policy(t->variant.routine.return_type,"transport"))reject("by-value return lacks safe observed transport policy");
+    bool deferred_declaration=false;
+    bool declaration_only=!body && !primary && !adapter && !wrapper && !C_mode() &&
+      (r->source_corresp.name_linkage==nlk_external || r->source_corresp.name_linkage==nlk_cplusplus_external);
+    auto require_value_policy=[&](a_type_ptr value,const char *operation,const char *message) {
+      if(!record_value(value) || record_value_policy(value,operation))return;
+      // Stock C retains incomplete by-value types in imported prototypes and
+      // address-only vtable entries. This grants no executable transport.
+      if(!declaration_only || !skip_typerefs(value)->incomplete)reject(message);
+      deferred_declaration=true;
+    };
+    require_value_policy(t->variant.routine.return_type,"transport","by-value return lacks safe observed transport policy");
     for(auto p=extra->param_type_list;p;p=p->next)
-      if(record_value(p->type) && !record_value_policy(p->type,"argument"))reject("by-value parameter lacks safe observed transport policy");
+      require_value_policy(p->type,"argument","by-value parameter lacks safe observed transport policy");
     unsigned id=next_entity++;routine_ids[r]=id;routines.push_back(r);
     auto key=routine_linker_symbol(r);
     bool external=r->source_corresp.name_linkage==nlk_external || r->source_corresp.name_linkage==nlk_cplusplus_external;
@@ -2733,6 +2758,13 @@ struct Writer {
     if(source_function_it==dot_object_source::state().functions.end())reject("missing routine ABI source snapshot");
     const auto &source_function_value=source_function_it->second;
     const auto &source_signature=dot_object_source::state().types.at(source_function_value.signature_type-1);
+    if(deferred_declaration) {
+      const auto &observed=source_abi(source_function_value.signature_type);
+      if(observed.proof!="observed-routine-lowering" || source_function_value.function_kind!="ordinary")
+        reject("deferred declaration lacks an observed original ordinary routine ABI");
+      deferred_function_declarations.push_back("{\"entityId\":"+number(id)+",\"sourceRoutineTypeId\":"+
+        number(source_type(source_function_value.signature_type))+",\"captureProof\":\"observed-incomplete-declaration\"}");
+    }
     bool has_this=source_signature.object_type!=0;
     if(!adapter && has_this!=(extra->this_class!=nullptr))reject("source/execution receiver disagreement");
     auto slots=source_abi_slots(source_function_value.signature_type);
@@ -3052,6 +3084,16 @@ struct Writer {
     if(!special_kind_is(r,sfk_none))return 0;
     const char *op=nullptr;
     switch(r->variant.builtin_function_kind) {
+      case bfk_signbit:op="__builtin_signbit";break;
+      case bfk_signbitf:op="__builtin_signbitf";break;
+      case bfk_signbitl:op="__builtin_signbitl";break;
+      case bfk_isnan:op="__builtin_isnan";break;
+      case bfk_isnanf:op="__builtin_isnanf";break;
+      case bfk_isnanl:op="__builtin_isnanl";break;
+      case bfk_isinf:op="__builtin_isinf";break;
+      case bfk_isinff:op="__builtin_isinff";break;
+      case bfk_isinfl:op="__builtin_isinfl";break;
+      case bfk_isfinite:op="__builtin_isfinite";break;
       case bfk_clz:case bfk_clzl:case bfk_clzll:op="clz";break;
       case bfk_ctz:case bfk_ctzl:case bfk_ctzll:op="ctz";break;
       case bfk_popcount:case bfk_popcountl:case bfk_popcountll:op="popcount";break;
@@ -4635,7 +4677,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v47\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v48\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -4692,6 +4734,7 @@ struct Writer {
       ",\"sourceRoutineExceptionResolutions\":"+array(source_routine_exception_resolutions)+
       ",\"sourceRoutineTypes\":"+array(source_routine_types)+",\"sourceRoutineParameters\":"+array(source_routine_parameters)+
       ",\"deferredRoutineAbis\":"+array(deferred_routine_abis)+
+      ",\"deferredFunctionDeclarations\":"+array(deferred_function_declarations)+
       ",\"sourceRoutineAbis\":"+array(source_routine_abis)+",\"sourceRoutineAbiParameters\":"+array(source_routine_abi_parameters)+
       ",\"initializationActions\":"+array(initialization_actions)+
       ",\"generatedRoutineOrigins\":"+array(generated_routine_origins)+

@@ -75,6 +75,7 @@ def main():
         with sqlite3.connect(obj) as db:
             db.row_factory = sqlite3.Row
             check('foreign-key-integrity', not list(db.execute('PRAGMA foreign_key_check')))
+            check('owned-primary-virtual-base-vptr', db.execute("SELECT count(*) FROM record_fields f JOIN virtual_base_subobjects v ON v.field_id=f.id JOIN record_fields p ON p.record_type_id=f.type_id WHERE f.field_role='virtual-base' AND f.byte_offset=0 AND v.byte_offset=0 AND p.field_role='vptr' AND p.byte_offset=0").fetchone()[0] > 0)
             check('owned-dynamic-adjustments', db.execute('SELECT count(*) FROM virtual_base_adjustments WHERE is_complete_object=0').fetchone()[0] >= 2)
             alias = db.execute("SELECT v.operand_node_id,a.binding_id,b.binding_id FROM virtual_base_adjustments v JOIN nodes a ON a.id=v.source_node_id JOIN nodes b ON b.id=v.lookup_source_node_id WHERE a.kind='binding' AND b.kind='binding' AND a.binding_id<>b.binding_id LIMIT 1").fetchone()
             check('owned-distinct-temporary-aliases', alias is not None)
@@ -105,6 +106,7 @@ def main():
                 check(name + '-foreign-keys-valid', not list(db.execute('PRAGMA foreign_key_check')))
                 db.execute('UPDATE content_digest SET sha256=?', (packager.logical_hash(db),))
             run(name, ['dotnet', args.linker.resolve(), 'verify', damaged], False)
+        reject('reject-missing-primary-placement', lambda db: db.execute("UPDATE virtual_base_subobjects SET field_id=NULL WHERE field_id IN (SELECT f.id FROM record_fields f JOIN record_fields p ON p.record_type_id=f.type_id WHERE f.field_role='virtual-base' AND f.byte_offset=0 AND p.field_role='vptr')"))
         reject('reject-changed-vtable-slot', lambda db: db.execute('UPDATE virtual_base_adjustments SET vtable_index=vtable_index-1'))
         reject('reject-broken-temporary-alias', lambda db: db.execute('UPDATE nodes SET binding_id=? WHERE id=?', (alias[2], alias_target)))
         check('alias-mismatch-rejected-by-body-proof', 'Virtual base adjustment differs' in (out / 'reject-broken-temporary-alias.stderr').read_text())

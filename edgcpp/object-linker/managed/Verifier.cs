@@ -498,7 +498,13 @@ internal static class Verifier
                     bool mathematicalOverflow = intrinsic is "add-overflow" or "sub-overflow" or "mul-overflow" or "add-overflow-volatile" or "sub-overflow-volatile" or "mul-overflow-volatile";
                     if (ScalarTypes.IsWideInteger(Type(node)) || !mathematicalOverflow && intrinsicArgs.Any(argument => ScalarTypes.IsWideInteger(Type(argument)) || ScalarTypes.IsPointer(Type(argument)) && ScalarTypes.IsWideInteger(ScalarTypes.Pointee(Type(argument)))))
                         Fail("128-bit intrinsics require an explicit wide operation contract");
-                    if (intrinsic == "unreachable") { if (intrinsicArgs.Length != 0 || Type(node) != "void") Fail("Invalid unreachable intrinsic"); }
+                    if (FloatingIntrinsics.IsClassification(intrinsic))
+                    {
+                        if (intrinsicArgs.Length != 1 || Type(node) != "i32" ||
+                            !FloatingIntrinsics.AcceptsOperand(intrinsic, Type(intrinsicArgs[0])))
+                            Fail("Invalid typed floating classification intrinsic");
+                    }
+                    else if (intrinsic == "unreachable") { if (intrinsicArgs.Length != 0 || Type(node) != "void") Fail("Invalid unreachable intrinsic"); }
                     else if (intrinsic == "expect")
                     {
                         if (intrinsicArgs.Length != 2 || !ScalarTypes.IsInteger(Type(node)) || intrinsicArgs.Any(argument => Type(argument) != Type(node))) Fail("Invalid expectation intrinsic");
@@ -554,7 +560,16 @@ internal static class Verifier
                     jumpScopes.Add(node.Id, scopes.ToArray()); return;
                 case "storage":
                     EdgeShape(node);
-                    if (!obj.Storages.TryGetValue(node.StorageId!.Value, out Storage? storage) || Type(node) != obj.Type(storage.TypeId))
+                    if (!obj.Storages.TryGetValue(node.StorageId!.Value, out Storage? storage))
+                        Fail("Storage place has no selected declaration");
+                    string declaredStorageType = obj.Type(storage!.TypeId);
+                    // c_gen_be::check_type_of_variable_node preserves array
+                    // views formed before a late major-bound completion.
+                    // Both exact type rows remain owned; inner bounds/elements
+                    // and two known major bounds must still match.
+                    if (Type(node) != declaredStorageType && !(ScalarTypes.IsArray(Type(node)) && ScalarTypes.IsArray(declaredStorageType) &&
+                        (ScalarTypes.IsIncompleteArray(Type(node)) || ScalarTypes.IsIncompleteArray(declaredStorageType)) &&
+                        ScalarTypes.Element(Type(node)) == ScalarTypes.Element(declaredStorageType)))
                         Fail("Storage place does not match its declaration type");
                     break;
                 case "storage-address":
@@ -683,7 +698,8 @@ internal static class Verifier
                 case "call":
                     EdgeShape(node, ("argument", 0, int.MaxValue));
                     if (!obj.Entities.TryGetValue(node.EntityId!.Value, out Entity? target)) Fail("Unknown call target");
-                    if (obj.Type(target!.ReturnTypeId) != Type(node)) Fail("Call return type mismatch");
+                    if (obj.DeferredFunctionDeclarations.ContainsKey(target!.Id)) Fail("Direct call requires a completed original routine ABI");
+                    if (obj.Type(target.ReturnTypeId) != Type(node)) Fail("Call return type mismatch");
                     var args = body.Children(node.Id, "argument").Select(edge => body.Nodes[edge.ChildId]).ToArray();
                     var expected = obj.Parameters.GetValueOrDefault(target.Id, []);
                     bool variadic = obj.Routines[target.RoutineTypeId].Variadic;

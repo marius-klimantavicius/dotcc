@@ -1,0 +1,102 @@
+{
+  "milestone": "dotobj v48 deferred imported declarations, callback storage and project semantic access",
+  "nativeCompiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native119-verified-snapshot/cpfe-dot",
+  "nativeSha256": "604fcfd24fe3db698345e98955503b2fd15e64a99df5aedfd435ec32fd93e223",
+  "managedLinker": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-134/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "managedSha256": "c19e885f09148680adcd475ca3ab0d113f4c88069427c30424e0150b424b642d",
+  "focused": [
+    {
+      "name": "deferred-parameter",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v48-deferred-parameter-119-134-001/results.json",
+      "checks": 38,
+      "nativeAot": true
+    },
+    {
+      "name": "deferred-return",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v48-deferred-return-119-134-001/results.json",
+      "checks": 40,
+      "nativeAot": true
+    },
+    {
+      "name": "partial-storage",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v48-partial-storage-119-134-001/results.json",
+      "checks": 36,
+      "nativeAot": true
+    },
+    {
+      "name": "partial-complete",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v48-partial-complete-119-134-001/results.json",
+      "checks": 36,
+      "nativeAot": true
+    },
+    {
+      "name": "floating",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v48-floating-119-134-001/results.json",
+      "checks": 26,
+      "nativeAot": true
+    },
+    {
+      "name": "array-views",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v48-array-views-119-134-001/results.json",
+      "checks": 26,
+      "nativeAot": true
+    },
+    {
+      "name": "virtual-base",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v48-virtual-base-119-134-001/results.json",
+      "checks": 35,
+      "nativeAot": true
+    },
+    {
+      "name": "constant-offset",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v48-constant-offset-119-134-001/results.json",
+      "checks": 20,
+      "nativeAot": true
+    },
+    {
+      "name": "packed",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v48-packed-119-134-001/results.json",
+      "checks": 60,
+      "nativeAot": false
+    },
+    {
+      "name": "transport",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v48-transport-119-134-001/results.json",
+      "checks": 50,
+      "nativeAot": false
+    }
+  ],
+  "totalChecks": 367,
+  "selectedProject": {
+    "selected": 31,
+    "packaged": 31,
+    "individuallyVerified": 31,
+    "compiler": "native118",
+    "verifier": "30 with managed131; fmt with managed133",
+    "packageReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-targeted-frontier-118/results.json",
+    "verificationReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-targeted-managed-118/results.json",
+    "fmtReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-storage-array-views-next/fmt-118-133.log"
+  },
+  "generation": {
+    "primaryUnits": 2,
+    "providers": 2,
+    "definitions": 6909,
+    "output": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-defaulted-real-pair-generation-118-134/generated",
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-defaulted-real-pair-generation-118-134/result.json",
+    "compiler": "native118",
+    "linker": "managed134",
+    "combined31": "Rejected: complete-constructor entry imported exception policy differs from original callable constructor contract",
+    "combined31Receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-targeted-generation-118/stderr"
+  },
+  "fullInventory": {
+    "manifestUnits": 2635,
+    "status": "running",
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-119/results.json",
+    "verificationReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-managed-119/results.json",
+    "nativeJobs": 2,
+    "memoryLimitMiBPerNative": 8192
+  },
+  "fullDuckdbTranslated": false,
+  "duckdbCompiled": false,
+  "duckdbExecuted": false
+}

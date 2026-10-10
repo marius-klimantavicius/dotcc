@@ -19,6 +19,8 @@ internal sealed partial class Linker
     private readonly Dictionary<string, Symbol> definitions = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> signatures = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> sourceSignatures = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, string> semanticFunctionSignatures = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, Symbol> completeDeclarations = new(StringComparer.Ordinal);
     private readonly Dictionary<ObjectFile, Dictionary<long, SourceRecordField[]>> sourceFieldIndex = [];
     public Dictionary<string, string> Names { get; } = new(StringComparer.Ordinal);
     public Dictionary<string, (ObjectFile Object, RecordType Record)> Records { get; } = new(StringComparer.Ordinal);
@@ -35,19 +37,35 @@ internal sealed partial class Linker
         // A provider's coalescible copy must not force archive extraction when
         // the primary inputs already supply that body. Strong definitions still
         // take precedence below, independently of this stable preference.
+        var deferredDeclarationSymbols = Objects.SelectMany(obj => obj.DeferredFunctionDeclarations.Keys
+            .Select(id => new Symbol(obj, obj.Entities[id]).Key)).ToHashSet(StringComparer.Ordinal);
         var resolutionOrder = Objects.OrderBy(obj => providers?.Contains(obj) == true).ToArray();
         foreach (ObjectFile obj in resolutionOrder)
             foreach (Entity entity in obj.Entities.Values)
             {
                 var symbol = new Symbol(obj, entity);
+                if (deferredDeclarationSymbols.Contains(symbol.Key) &&
+                    (!obj.EntitySourceRoutines.ContainsKey(entity.Id) || obj.SourceFunctionKinds.GetValueOrDefault(entity.Id) != "ordinary"))
+                    throw new InvalidDataException("Deferred original declaration cannot resolve to a generated or special-member origin");
                 string signature = CanonicalExecutionType(symbol.Signature);
                 if (signatures.TryGetValue(symbol.Key, out string? prior) && prior != signature)
                     throw new InvalidDataException($"Signature mismatch for {entity.ExternalKey ?? entity.SourceName}: {prior} versus {symbol.Signature}");
                 signatures[symbol.Key] = signature;
-                string sourceSignature = obj.FunctionSourceSignature(entity.Id);
-                if (sourceSignatures.TryGetValue(symbol.Key, out string? priorSource) && priorSource != sourceSignature)
-                    throw new InvalidDataException($"Source signature mismatch for {entity.ExternalKey ?? entity.SourceName}: {priorSource} versus {sourceSignature}");
-                sourceSignatures[symbol.Key] = sourceSignature;
+                if (obj.EntitySourceRoutines.TryGetValue(entity.Id, out RoutineType? original))
+                {
+                    string semanticSignature = obj.SourceTypeSignature(original.TypeId);
+                    if (semanticFunctionSignatures.TryGetValue(symbol.Key, out string? priorSemantic) && priorSemantic != semanticSignature)
+                        throw new InvalidDataException($"Original semantic signature mismatch for {entity.ExternalKey ?? entity.SourceName}");
+                    semanticFunctionSignatures[symbol.Key] = semanticSignature;
+                }
+                if (!obj.DeferredFunctionDeclarations.ContainsKey(entity.Id))
+                {
+                    string sourceSignature = obj.FunctionSourceSignature(entity.Id);
+                    if (sourceSignatures.TryGetValue(symbol.Key, out string? priorSource) && priorSource != sourceSignature)
+                        throw new InvalidDataException($"Source signature mismatch for {entity.ExternalKey ?? entity.SourceName}: {priorSource} versus {sourceSignature}");
+                    sourceSignatures[symbol.Key] = sourceSignature;
+                    completeDeclarations.TryAdd(symbol.Key, symbol);
+                }
                 if (entity.Definition != "declaration")
                 {
                     if (!definitions.TryGetValue(symbol.Key, out Symbol? existing)) definitions.Add(symbol.Key, symbol);
@@ -224,6 +242,13 @@ internal sealed partial class Linker
     {
         var declaration = new Symbol(obj, obj.Entities[id]);
         if (definitions.TryGetValue(declaration.Key, out Symbol? definition)) return definition;
+        if (obj.DeferredFunctionDeclarations.ContainsKey(id))
+        {
+            if (!completeDeclarations.TryGetValue(declaration.Key, out Symbol? completed) ||
+                IsUnresolvedRoutine(CanonicalExecutionType(declaration.Signature)))
+                throw new InvalidDataException($"Deferred function declaration requires a completed ABI provider: {declaration.Entity.ExternalKey}");
+            declaration = completed;
+        }
         if ((!allowExterns && RuntimeArrayProvider.TryGetMethod(declaration) is null) || declaration.Entity.Linkage != "external")
             throw new InvalidDataException($"Unresolved function: {declaration.Entity.ExternalKey ?? declaration.Entity.SourceName} (referenced from {obj.PrimarySource})");
         if (Externs.TryAdd(declaration.Key, declaration)) Names.Add(declaration.Key, names.Allocate(declaration.Entity.SourceName, "extern_" + declaration.Entity.Id));
@@ -326,7 +351,15 @@ internal sealed partial class Linker
                     }
                 }
                 if (node.Kind is "call" or "register-cleanup" or "function-address") _ = Resolve(symbol.Object, node.EntityId!.Value);
-                if (node.Kind == "storage") _ = ResolveStorage(symbol.Object, node.StorageId!.Value);
+                if (node.Kind == "storage")
+                {
+                    _ = ResolveStorage(symbol.Object, node.StorageId!.Value);
+                    // A completed expression view can also refer to an extern
+                    // declaration whose major bound is still unknown here.
+                    // Its retained extent is an obligation on the provider.
+                    if (node.TypeId != symbol.Object.Storages[node.StorageId.Value].TypeId)
+                        RequireStorageExtent(symbol.Object, node.StorageId.Value, symbol.Object.StorageSize(symbol.Object.Type(node.TypeId!.Value)));
+                }
                 if (node.Kind == "storage-address") RequireStorageExtent(symbol.Object, node.StorageId!.Value,
                     long.Parse(node.ConstantText!, System.Globalization.CultureInfo.InvariantCulture));
             }

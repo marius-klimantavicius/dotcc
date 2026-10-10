@@ -23,7 +23,16 @@ LeftView &evaluate(LeftView *object) { ++evaluations; return *object; }
 SharedState *select_state(LeftView *object) { return &evaluate(object); }
 int select_value(LeftView *object) { return evaluate(object).value; }
 int select_truth(LeftView *object) { if (evaluate(object)) return 1; return 0; }
+struct Root { virtual int value() const { return 3; } };
+struct Primary : virtual Root { int value() const override { return 7; } };
+struct Secondary : virtual Root { int payload = 31; };
+struct Diamond : Secondary, Primary {};
+Root *base(Primary *value) { return value; }
+int read(Root *value) { return value->value(); }
+int check_primary_vptr() { Primary first; Diamond second; return read(base(&first)) == 7 && read(base(&second)) == 7 ? 0 : 1; }
+
 int main() {
+    if (check_primary_vptr()) return 5;
     LeftView first(31);
     LargerObject second(47);
     SharedState *a = select_state(&first);

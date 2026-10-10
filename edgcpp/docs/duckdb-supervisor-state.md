@@ -551,3 +551,43 @@ passes, both retained. Expanded500 inventory still uses earlier115/126.
 Evidence: dotobj-duckdb-allocation-policy-20261010.json. Next coherent batch:
 deferred external incomplete by-value declarations plus opaque callback storage,
 owned primary virtual-base vptr access, and floating classification intrinsics.
+
+
+Committed v47: 83f0e6dc0. Wider500115/126 complete: 456 packaged, 447
+verified, 38 exporter gates, one package failure, five test-configuration
+failures, no exporter crashes. Updated ranked queue from exact first failures.
+v48 native118 SHA861a493032d72ebb8979a4d7771a2e4ded270ac1286acc7b593a220234ccbd63
+and managed131 built. Includes deferred imported declarations and partial callback
+storage equivalence, typed floating classifiers, owned primary virtual-base vptr
+path, and exact constant byte-offset alignment. Alignment scratch132 verifies
+actual task_scheduler and passes native/stock/JIT/AOT16 plus strict dynamic and
+misaligned field-address negative18 suite. Focused v48 deferred parameter38,
+partial storage36, partial complete36, floating26 pass with NativeAOT.
+Return/virtual-base initial harness selected wrong RTTI provider pair; retained
+failed bind logs; corrected118b uses libcxx typeinfo.cpp + abi_typeinfo.cpp,
+retry in progress. Current31 real-unit probe targets20 by-value first gates,
+nine managed rejects and two cross-TU policy/layout units. Next managed fmt
+array-view support staged by base worker; lifetime worker reduces lowered raw
+record transfers after explicit conditional-return construction. No full
+DuckDB generation/compile/run claim.
+
+
+v48 accepted native119 SHA604fcfd24fe3db698345e98955503b2fd15e64a99df5aedfd435ec32fd93e223
+and managed134: 257 new focused checks (all eight suites include NativeAOT)
+plus 60 existing packed-layout and 50 record-transport checks. Original return
+fixture now verifies independently emitted Base vtable/RTTI roots and passes40;
+root criterion follows stock lowered external vtable definition/needed flags.
+Array-view negatives reject before either exact storage or immediate array-decay
+contract; corrected diagnostic expectation, preserved failed attempt. Exact
+major-bound view support verifies fmt; known external extent obligation retained.
+All31 targeted real objects package with118 and verify (30 with131, fmt with133).
+Actual cross-unit pair plus RTTI providers emits6,909definitions with134, review
+link dotobj-duckdb-v48/cross-unit-pair. Combined31 rejects FileMetaDataC1 callable
+exception policy vs lowered imported-wrapper policy; base worker stages distinct
+source contract relation, not ignoring mismatch. Full2635 inventory119/134 runs
+two8GiB native jobs with incremental verification. No full generation/compile/run.
+Supervisor corrected historical package diagnosis: test_parallel_csv has static
+array destructor element size0 from typedef size observation, not an asm
+operand. Tiny typedef-array reducer reproduces exactly; next scratch fix will
+retain typedef source identity and use actual underlying element layout.
+Evidence dotobj-duckdb-deferred-callbacks-20261010.json.

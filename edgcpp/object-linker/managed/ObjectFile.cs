@@ -70,7 +70,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["routine_types"] = "type_id", ["routine_parameters"] = "type_id,ordinal",
         ["source_routine_exception_resolutions"] = "source_routine_type_id",
         ["source_routine_types"] = "type_id", ["source_routine_parameters"] = "type_id,ordinal",
-        ["deferred_routine_abis"] = "routine_type_id,source_routine_type_id", ["source_routine_abis"] = "source_routine_type_id", ["source_routine_abi_parameters"] = "source_routine_type_id,execution_ordinal",
+        ["deferred_function_declarations"] = "entity_id", ["deferred_routine_abis"] = "routine_type_id,source_routine_type_id", ["source_routine_abis"] = "source_routine_type_id", ["source_routine_abi_parameters"] = "source_routine_type_id,execution_ordinal",
         ["storages"] = "id", ["storage_data"] = "storage_id,byte_offset", ["relocations"] = "storage_id,byte_offset",
         ["types"] = "id", ["entities"] = "id", ["parameters"] = "entity_id,ordinal",
         ["functions"] = "entity_id", ["bindings"] = "id", ["nodes"] = "id",
@@ -111,7 +111,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v47" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v48" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -277,6 +277,7 @@ internal sealed partial class ObjectFile : IDisposable
             if (StorageSize(array) < 0 || StorageSize(array) > int.MaxValue) throw new InvalidDataException("Array extent exceeds supported storage");
         if (Routines.Keys.Any(id => !RoutineTypes.IsRoutine(Type(id)))) throw new InvalidDataException("Routine metadata describes a non-routine type");
         ReadStorages();
+        ReadDeferredFunctionDeclarations();
         using (var query = database.Prepare("SELECT id,source_name,linkage,external_key,definition,return_type_id,source_file_id,line,column,routine_type_id FROM entities ORDER BY id"))
             while (query.Read())
             {
@@ -284,7 +285,7 @@ internal sealed partial class ObjectFile : IDisposable
                 if (entity.Id <= 0 || entity.Linkage is not ("external" or "internal") || entity.Definition is not ("strong" or "linkonce" or "declaration") ||
                     (entity.Linkage == "external" ? string.IsNullOrEmpty(entity.ExternalKey) : entity.ExternalKey != null) || entity.Line < 0 || entity.Column < 0)
                     throw new InvalidDataException("Invalid entity summary");
-                if (ScalarTypes.IsArray(Type(entity.ReturnTypeId)) || !CanTransportRecord(Type(entity.ReturnTypeId))) throw new InvalidDataException("Function cannot return an aggregate by value");
+                if (ScalarTypes.IsArray(Type(entity.ReturnTypeId)) || !CanTransportRecord(Type(entity.ReturnTypeId)) && !PermitsDeferredValue(entity.Id, Type(entity.ReturnTypeId))) throw new InvalidDataException("Function cannot return an aggregate by value");
                 Entities.Add(entity.Id, entity);
             }
         using (var query = database.Prepare("SELECT entity_id,ordinal,type_id,parameter_role,source_ordinal FROM parameters ORDER BY entity_id,ordinal"))
@@ -294,7 +295,7 @@ internal sealed partial class ObjectFile : IDisposable
                 if (!Entities.ContainsKey(entity)) throw new InvalidDataException("Parameter references unknown entity");
                 if (!Parameters.TryGetValue(entity, out var parameters)) Parameters.Add(entity, parameters = []);
                 string type = Type(query.Integer(2));
-                if (query.Integer(1) != parameters.Count || (type == "void" || ScalarTypes.IsArray(type) || !CanPassRecord(type))) throw new InvalidDataException("Invalid parameter ordinal/type");
+                if (query.Integer(1) != parameters.Count || (type == "void" || ScalarTypes.IsArray(type) || !CanPassRecord(type) && !PermitsDeferredValue(entity, type))) throw new InvalidDataException("Invalid parameter ordinal/type");
                 string role = query.Text(3); long? sourceOrdinal = query.OptionalInteger(4);
                 long ordinal = query.Integer(1);
                 if (role is not ("source" or "indirect-source" or "this" or "result-buffer" or "vtt" or "forwarded-source" or "static-object") || (role is "this" or "result-buffer" or "vtt" or "static-object" ? sourceOrdinal is not null : sourceOrdinal is null or < 0))

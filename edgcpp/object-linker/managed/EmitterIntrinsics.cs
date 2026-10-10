@@ -9,6 +9,7 @@ internal sealed partial class Emitter
     {
         string operation = node.Operator!, result = obj.Type(node.TypeId!.Value);
         string[] types = arguments.Select(argument => obj.Type(argument.TypeId!.Value)).ToArray();
+        if (FloatingIntrinsics.IsClassification(operation)) return FloatingClassification(operation, types[0], expression(arguments[0]));
         if (operation == "unreachable") return "throw new global::System.InvalidOperationException(\"Reached source unreachable intrinsic\")";
         if (operation == "bswap") return "global::System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(" + expression(arguments[0]) + ")";
         if (operation is "clz" or "ctz" or "popcount" or "parity")

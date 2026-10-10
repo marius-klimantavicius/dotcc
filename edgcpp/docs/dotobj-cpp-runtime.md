@@ -595,3 +595,21 @@ that its base-class traversal already handled. The query therefore checks
 that the selected routine's original ABI has not yet been lowered, rather than
 requiring an untouched receiver class. Queries remain confined to referenced
 members; class-wide eager exception-specification instantiation is not used.
+
+
+### Typed floating classifications (v48)
+
+EDG's canonical builtin kinds for `signbit`, `isnan`, `isinf`, and `isfinite`
+now produce typed intrinsic nodes, retaining their exact builtin spelling and
+unpromoted `float`, `double`, or binary80 operand. Their polymorphic frontend
+ellipsis declarations do not describe an ordinary variadic call. Ordinary
+variadic calls still require default argument promotions. Fixed `f`/`l`
+variants require the corresponding operand width.
+
+C# uses BCL classification and bit operations for `float`/`double`; binary80
+uses its original sign, exponent and significand, without rounding through
+`double`. Each operand is evaluated once. The native119/managed134 focused
+suite passes 26 checks, including native and stock-C O0/O2, signed zeros,
+subnormals, infinities, signaling/quiet NaNs, finite values beyond binary64's
+range, source-hidden generation, JIT/NativeAOT, and four resealed malformed
+objects (`dotobj-v48-floating-119-134-001`).

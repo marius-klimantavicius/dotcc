@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v47'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v48'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -1242,6 +1242,12 @@ CREATE TABLE caught_object_addresses (
 ) STRICT;
 
 COMMIT;
+
+CREATE TABLE deferred_function_declarations (
+ entity_id INTEGER PRIMARY KEY REFERENCES source_functions(entity_id),
+ source_routine_type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-incomplete-declaration')
+) STRICT;
 
 CREATE TABLE deferred_routine_abis (
  routine_type_id INTEGER NOT NULL REFERENCES routine_types(type_id),

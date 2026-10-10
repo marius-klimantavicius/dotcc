@@ -31,7 +31,7 @@ internal sealed partial class ObjectFile
     public void VerifyVirtualBaseAdjustmentBody(Node node, FunctionBody body)
     {
         VirtualBaseAdjustment adjustment = VirtualBaseAdjustments[node.Id];
-        void Fail() => throw new InvalidDataException("Virtual base adjustment differs from its exact observed object/vtable lookup");
+        void Fail() => throw new InvalidDataException($"Virtual base adjustment differs from its exact observed object/vtable lookup at node {node.Id}");
         Node Child(Node value, string role) => body.Child(value.Id, role);
         bool Contains(Node root, long wanted, int depth = 0) => root.Id == wanted || depth < 128 &&
             body.Edges.GetValueOrDefault(root.Id, []).Any(edge => Contains(body.Nodes[edge.ChildId], wanted, depth + 1));
@@ -86,8 +86,18 @@ internal sealed partial class ObjectFile
             if (value.Id == lookup.Id) return true;
             if (depth > 128) return false;
             if (value.Kind == "dereference") return Child(value, "operand").Id == lookup.Id;
-            if (value.Kind != "member" || Fields[value.FieldId!.Value].ByteOffset != 0 ||
-                Fields[value.FieldId.Value].FieldRole is not ("vptr" or "base")) return false;
+            if (value.Kind != "member") return false;
+            RecordField field = Fields[value.FieldId!.Value];
+            if (field.ByteOffset != 0) return false;
+            if (field.FieldRole == "virtual-base")
+            {
+                // A nearly empty virtual base may carry the primary vptr.
+                // Its exact zero-offset physical field is already owned by
+                // the observed virtual-base placement, including base views.
+                if (!RecordVirtualBases(field.RecordTypeId).Any(placement =>
+                    placement.FieldId == field.Id && placement.ByteOffset == 0)) return false;
+            }
+            else if (field.FieldRole is not ("vptr" or "base")) return false;
             return LookupPath(Child(value, "operand"), depth + 1);
         }
         bool lookupPointer = lookup.TypeId is long lookupType && ScalarTypes.IsPointer(Type(lookupType));

@@ -103,7 +103,18 @@ internal sealed class AccessAlignment(ObjectFile obj, FunctionBody body)
         Node left = body.Child(node.Id, "left"), right = body.Child(node.Id, "right");
         Node pointer = ScalarTypes.IsPointer(Type(left)) ? left : right;
         Origin origin = SourcePointerOrigin(pointer);
+        long stride = obj.StorageSize(ScalarTypes.Pointee(Type(pointer)));
+        Node index = pointer.Id == left.Id ? right : left;
+        if (index.Kind == "constant" && System.Numerics.BigInteger.TryParse(index.ConstantText,
+            System.Globalization.NumberStyles.AllowLeadingSign, System.Globalization.CultureInfo.InvariantCulture,
+            out System.Numerics.BigInteger count) && origin.KnownAlignment is long exactAlignment)
+        {
+            // Constant byte offsets preserve alignment when they are multiples
+            // of it. Modulo avoids overflow for wide or unsigned indices.
+            long offsetModuloAlignment = (long)((count * stride) % exactAlignment);
+            return new(AtOffset(exactAlignment, offsetModuloAlignment), origin.HasUnknown);
+        }
         return new(origin.KnownAlignment is long alignment
-            ? AtOffset(alignment, obj.StorageSize(ScalarTypes.Pointee(Type(pointer)))) : null, origin.HasUnknown);
+            ? AtOffset(alignment, stride) : null, origin.HasUnknown);
     }
 }
