@@ -9,7 +9,7 @@ internal sealed partial class ObjectFile
             while (source.Read())
             {
                 string origin = source.Text(1);
-                if (origin is not ("captured" or "generated-resolution") || !SourceRoutines.ContainsKey(source.Integer(0)))
+                if (origin is not ("captured" or "generated-resolution" or "implicit-destructor-resolution") || !SourceRoutines.ContainsKey(source.Integer(0)))
                     throw new InvalidDataException("Invalid source routine exception policy origin");
                 origins.Add(source.Integer(0), origin);
             }
@@ -43,17 +43,19 @@ internal sealed partial class ObjectFile
                     indeterminate || cached || prototype ? "unsupported-dynamic" : "dynamic";
             }
             bool defaulted = Flag(18), generated = Flag(19), inherited = Flag(20);
-            if (SourceLanguage != "c++" || origins.GetValueOrDefault(source) != "generated-resolution" ||
+            bool implicitDestructor = origins.GetValueOrDefault(source) == "implicit-destructor-resolution";
+            string proof = implicitDestructor ? "observed-implicit-destructor-exception-specification" : "observed-generated-exception-specification";
+            if (SourceLanguage != "c++" || origins.GetValueOrDefault(source) is not ("generated-resolution" or "implicit-destructor-resolution") ||
                 !observed.Add(source) || !SourceRoutines.TryGetValue(source, out var originalRoutine) ||
                 !SourceRoutines.TryGetValue(final, out var finalRoutine) ||
                 Policy(5) != initialPolicy || Policy(11) != resolvedPolicy ||
                 resolvedPolicy is not ("unwind" or "terminate" or "dynamic") || Flag(12) || Flag(13) || Flag(14) ||
                 originalRoutine.ExceptionPolicy != resolvedPolicy || finalRoutine.ExceptionPolicy != resolvedPolicy ||
-                !defaulted && !generated && !inherited || inherited && kind != "constructor" ||
+                (implicitDestructor ? kind != "destructor" || defaulted || generated || inherited : !defaulted && !generated && !inherited) || inherited && kind != "constructor" ||
                 kind is not ("constructor" or "destructor" or "assignment" or "equality" or "inequality" or
                     "less" or "greater" or "less-equal" or "greater-equal" or "three-way-comparison") ||
                 kind is "constructor" or "destructor" or "assignment" && originalRoutine.ObjectTypeId is null ||
-                rows.Text(21) != "observed-generated-exception-specification")
+                rows.Text(21) != proof)
                 throw new InvalidDataException("Generated routine exception specification lacks its exact original and resolved policy");
             // A stock replacement type may change exception policy, never the
             // already-selected source result, receiver or explicit parameters.
@@ -66,7 +68,7 @@ internal sealed partial class ObjectFile
                  RoutineTypes.Signature(EntityRoutine(entity)).ExceptionPolicy != resolvedPolicy))
                 throw new InvalidDataException("Generated exception specification source entity disagrees with its selected type and ABI");
         }
-        if (!observed.SetEquals(origins.Where(pair => pair.Value == "generated-resolution").Select(pair => pair.Key)))
+        if (!observed.SetEquals(origins.Where(pair => pair.Value is "generated-resolution" or "implicit-destructor-resolution").Select(pair => pair.Key)))
             throw new InvalidDataException("Missing generated routine exception specification provenance");
     }
 }

@@ -32,7 +32,7 @@ internal sealed partial class ObjectFile
                 var record = new RecordType(query.Integer(0), query.Text(1), query.Text(2), query.Integer(3), query.Integer(4),
                     query.OptionalInteger(5), query.Integer(6), query.Integer(7), query.Text(8), query.OptionalInteger(9), query.Text(10), query.Text(11), query.Text(12), query.OptionalInteger(13));
                 if (record.TypeId <= 0 || record.IdentityKey.Length == 0 || record.Size < 0 || record.Size > int.MaxValue ||
-                    (record.Size == 0 ? record.Alignment != 0 : record.Alignment is not (1 or 2 or 4 or 8 or 16)) ||
+                    (record.Size == 0 ? record.Alignment != 0 : record.Alignment is not (1 or 2 or 4 or 8 or 16 or 32 or 64)) ||
                     record.LayoutKind is not ("struct" or "class" or "union") || record.Line < 0 || record.Column < 0 ||
                     record.RepresentationKind is not ("complete" or "abi" or "subobject") || record.ValueCopyKind is not ("ordinary" or "explicit-only") ||
                     (record.RepresentationKind == "complete" ? record.SourceRecordId is null || record.CaptureProof is not ("source-snapshot" or "observed-class-lowering")
@@ -104,7 +104,8 @@ internal sealed partial class ObjectFile
 
     public static long ClrRecordPack(RecordType record)
     {
-        long pack = Math.Max(1, record.Alignment);
+        // CLR value alignment is capped; owned addressable storage retains the full source alignment.
+        long pack = Math.Max(1, Math.Min(16, record.Alignment));
         if (record.RepresentationKind == "subobject")
             while (record.Size % pack != 0) pack /= 2;
         return pack;

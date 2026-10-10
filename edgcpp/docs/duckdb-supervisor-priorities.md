@@ -1,3 +1,10 @@
+Profile57 current:2,593/2,635 exported across retained versions,42 exporter
+gates remain. Priority1:40-unit alias/type-operator graph (READY for integration).
+Priority2:test_config array-member rollback and unittest static-parent ownership.
+Both prior singleton destructor-origin and alignas64 gates now pass actual
+export/verify/generation with80focused checks. Full latest-profile corpus and
+full combined generation remain the next major acceptance boundaries.
+
 Latest test-profile checkpoint:2,591/2,635 exported across retained versions;
 44 exporter gates remain (40 alias/type-operator source graph;4 precise
 destructor-origin, member-rollback, over-alignment and static-parent families).

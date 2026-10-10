@@ -55,7 +55,7 @@ struct RoutineExceptionResolution {
   ExceptionPolicyFlags final_flags;
   DynamicExceptionSpecification dynamic_specification;
   std::string special_kind,error;
-  bool is_defaulted=false,compiler_generated=false,inheriting_constructor=false;
+  bool is_defaulted=false,compiler_generated=false,inheriting_constructor=false,implicit_destructor=false;
 };
 struct Type {
   unsigned id=0,underlying=0,execution=0;
@@ -1108,7 +1108,7 @@ inline void capture_record(a_type_ptr t) {
   if(t->incomplete){s.records[t]=value;return;}
   value.has_virtual_functions=c.any_virtual_functions_including_in_base_classes;
   value.has_bases=extra && extra->base_classes;
-  if(!value.size || value.size>2147483647ULL || !value.alignment || value.alignment>16)
+  if(!value.size || value.size>2147483647ULL || !value.alignment || value.alignment>64 || (value.alignment&(value.alignment-1)))
     value.error="record outside complete plain layout profile";
 #if GNU_EXTENSIONS_ALLOWED
   value.is_packed=c.is_packed;
@@ -1385,6 +1385,11 @@ struct GeneratedExceptionSpecificationCapture {
     resolution.is_defaulted=routine->is_defaulted;
     resolution.compiler_generated=routine->compiler_generated;
     resolution.inheriting_constructor=routine->is_inheriting_ctor;
+    // Stock update_routine_type_exception_specification_if_needed calls this
+    // exact factory for user-declared destructors without an explicit spec.
+    // Such a source destructor is not a synthesized/defaulted function.
+    resolution.implicit_destructor=routine->special_kind==sfk_destructor &&
+      !resolution.is_defaulted && !resolution.compiler_generated && !resolution.inheriting_constructor;
     if(routine->special_kind==sfk_constructor)resolution.special_kind="constructor";
     else if(routine->special_kind==sfk_destructor)resolution.special_kind="destructor";
     else if(routine->special_kind==sfk_operator) {

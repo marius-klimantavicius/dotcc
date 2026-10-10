@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v56: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v57: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -601,7 +601,7 @@ struct Writer {
     }
     if(source && !subobject && ((!t->incomplete && t->size!=source->size) || (!t->incomplete && t->alignment!=source->alignment)))
       reject("record complete-object extent changed during lowering");
-    if(!t->incomplete && (!t->size || t->size>2147483647ULL || !t->alignment || t->alignment>16))
+    if(!t->incomplete && (!t->size || t->size>2147483647ULL || !t->alignment || t->alignment>64 || (t->alignment&(t->alignment-1))))
       reject("record native extent/alignment outside execution profile");
     string identity,name,layout=t->kind==tk_union?"union":t->kind==tk_class?"class":"struct";
     a_source_position pos={};
@@ -680,7 +680,7 @@ struct Writer {
       if(!names.insert(field_name).second || (!child->size && !flexible && !zero_array) || !child->alignment)
         reject("record physical field identity/extent");
       unsigned long long extent=f->is_bit_field?(f->offset_bit_remainder+f->bit_size+7)/8:child->size;
-      if(f->offset>t->size || child->alignment>16 || extent>t->size-f->offset)reject("record field outside containing storage");
+      if(f->offset>t->size || child->alignment>64 || (child->alignment&(child->alignment-1)) || extent>t->size-f->offset)reject("record field outside containing storage");
       if(layout=="union" && f->offset)reject("union field nonzero storage offset");
       string observed_alignment="null";
       if(role=="source" && !f->is_bit_field) {
@@ -1333,7 +1333,8 @@ struct Writer {
       }
       }
       source_routine_types.push_back("{\"typeId\":"+number(id)+",\"returnTypeId\":"+number(source_type(type.result))+",\"variadic\":"+(type.variadic?"true":"false")+",\"exceptionPolicy\":"+quote(dot_object_source::resolved_exception_policy(captured))+
-        ",\"exceptionPolicyOrigin\":"+quote(dot_object_source::state().routine_exception_resolutions.count(captured)?"generated-resolution":"captured")+",\"parameterMode\":"+quote(type.parameter_mode)+",\"objectTypeId\":"+number(type.object_type?source_type(type.object_type):0)+
+        ",\"exceptionPolicyOrigin\":"+quote(dot_object_source::state().routine_exception_resolutions.count(captured)?
+          dot_object_source::state().routine_exception_resolutions.at(captured).implicit_destructor?"implicit-destructor-resolution":"generated-resolution":"captured")+",\"parameterMode\":"+quote(type.parameter_mode)+",\"objectTypeId\":"+number(type.object_type?source_type(type.object_type):0)+
         ",\"objectIsConst\":"+(type.object_is_const?"true":"false")+",\"objectIsVolatile\":"+(type.object_is_volatile?"true":"false")+
         ",\"objectRefQualifier\":"+quote(type.object_ref_qualifier)+"}");
       if(dot_object_source::resolved_exception_policy(captured)=="dynamic") {
@@ -1410,8 +1411,16 @@ struct Writer {
       const auto &resolution=entry.second;
       if(!resolution.error.empty())reject(resolution.error.c_str());
       const auto &initial=state.types.at(entry.first-1).initial_exception_flags;
-      if(!resolution.is_defaulted && !resolution.compiler_generated && !resolution.inheriting_constructor)
-        reject("generated exception specification lacks exact member origin");
+      if(!resolution.is_defaulted && !resolution.compiler_generated && !resolution.inheriting_constructor && !resolution.implicit_destructor) {
+        diagnostic_scope origin_scope(resolution.routine->source_corresp.decl_position);
+        reject((string("generated exception specification lacks exact member origin; routine=")+
+          dot_object_source::spelling(resolution.routine->source_corresp)+
+          " special-kind="+resolution.special_kind+
+          " source-member="+(resolution.routine->source_corresp.is_class_member?"yes":"no")+
+          " source-type="+std::to_string(entry.first)).c_str());
+      }
+      if(resolution.implicit_destructor && (resolution.special_kind!="destructor" || !state.types.at(entry.first-1).object_type))
+        reject("implicit destructor exception specification lacks original member receiver");
       unsigned final_id=source_type(resolution.final_type),entity=0;
       auto routine_source=state.functions.find(resolution.routine);
       if(routine_ids.count(resolution.routine) && routine_source!=state.functions.end() &&
@@ -1435,7 +1444,7 @@ struct Writer {
         ",\"isDefaulted\":"+(resolution.is_defaulted?"true":"false")+
         ",\"isCompilerGenerated\":"+(resolution.compiler_generated?"true":"false")+
         ",\"isInheritingConstructor\":"+(resolution.inheriting_constructor?"true":"false")+
-        ",\"captureProof\":\"observed-generated-exception-specification\"}");
+        ",\"captureProof\":"+quote(resolution.implicit_destructor?"observed-implicit-destructor-exception-specification":"observed-generated-exception-specification")+"}");
     }
     }
   }
@@ -5062,7 +5071,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v56\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v57\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

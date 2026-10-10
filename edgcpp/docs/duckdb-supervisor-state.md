@@ -890,3 +890,25 @@ origin + test_config member rollback + abi_atomic alignment + unittest static
 parent ownership. Workers are implementing exact observed source/cleanup facts.
 Review artifacts/review/dotobj-duckdb-v56/tests. Latest full-profile corpus and
 full combined link/compile/run remain outstanding. No cleanup.
+
+
+Profile57 accepted: native141/managed163,80 focused checks pass (alignment36,
+implicit destructor policy44), including native/stock O0/O2, JIT/NativeAOT and
+resealed negatives. Three alignment negative diagnostic assertions additionally
+checked against retained outputs. Both original and physical32/64-byte alignment
+remain owned; CLR value packing is capped16 while existing addressable stack,
+pinned globals and TLS buffers retain full alignment. Actual abi_atomic now
+verifies/generates74definitions with two RTTI providers.
+
+Actual types.cpp now verifies/generates2,471definitions with two RTTI providers.
+Its LogicalType destructor is user-written and has no explicit specification.
+Stock EDG correctly resolves its implicit exception specification through the
+same factory used for generated members; the exporter now records that exact
+implicit-destructor origin without falsifying generated/defaulted flags.
+
+Cumulative retained-version exports2593/2635;42exporter gates remain:40shared
+alias/type-operator metadata, test_config array-member rollback and unittest
+static-parent ownership. Largest combined full-project subset remains53units,
+33,105definitions. Review artifacts/review/dotobj-duckdb-v57/{alignment,types}.
+Alias worker payload READY for next profile58/native142/managed164; lifetime
+worker stages exact array-plus-member cleanup ownership. Continue autonomously.

@@ -1,0 +1,34 @@
+{
+  "profile": 57,
+  "native": 141,
+  "managed": 163,
+  "nativeSha256": "863b428cbfd1d63c4609ffbf723446fe1b0e7fd3b8a4c98bc6763b612a929028",
+  "checks": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v57-overalignment-141-163-002/results.json",
+      "checks": 36
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v57-implicit-destructor-141-163-001/results.json",
+      "checks": 44
+    }
+  ],
+  "totalChecks": 80,
+  "additionalExactNegativeDiagnostics": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v57-overalignment-141-163-002/negative-diagnostics.json",
+  "actual": [
+    {
+      "unit": "libcxx:adapter/abi_atomic.cpp",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-overalignment-managed-141-163/results.json",
+      "definitionsIncludingTwoRttiProviders": 74
+    },
+    {
+      "unit": "duckdb:src/common/types.cpp",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-implicit-destructor-types-managed-141-163/results.json",
+      "definitionsIncludingTwoRttiProviders": 2471
+    }
+  ],
+  "cumulativeExportedAcrossVersions": 2593,
+  "fullManifestUnits": 2635,
+  "remainingExporterGates": 42,
+  "latestFullCorpusRebuilt": false
+}

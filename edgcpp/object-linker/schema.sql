@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v56'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v57'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE routine_parameters (
  PRIMARY KEY(type_id,ordinal)
 ) STRICT;
 CREATE TABLE source_routine_types (
- exception_policy_origin TEXT NOT NULL CHECK(exception_policy_origin IN ('captured','generated-resolution')),
+ exception_policy_origin TEXT NOT NULL CHECK(exception_policy_origin IN ('captured','generated-resolution','implicit-destructor-resolution')),
  type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
  return_type_id INTEGER NOT NULL REFERENCES source_types(id),
  variadic INTEGER NOT NULL CHECK(variadic IN (0,1)),
@@ -93,7 +93,7 @@ CREATE TABLE source_routine_exception_resolutions (
  is_compiler_generated INTEGER NOT NULL CHECK(is_compiler_generated IN (0,1)),
  is_inheriting_constructor INTEGER NOT NULL CHECK(is_inheriting_constructor IN (0,1)),
  special_member_kind TEXT NOT NULL CHECK(special_member_kind IN ('constructor','destructor','assignment','equality','inequality','less','greater','less-equal','greater-equal','three-way-comparison')),
- capture_proof TEXT NOT NULL CHECK(capture_proof='observed-generated-exception-specification')
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN ('observed-generated-exception-specification','observed-implicit-destructor-exception-specification'))
 ) STRICT;
 CREATE TABLE source_routine_parameters (
  type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),
@@ -1035,7 +1035,7 @@ CREATE TABLE record_types (
  identity_key TEXT NOT NULL,
  source_name TEXT NOT NULL,
  size INTEGER NOT NULL CHECK(size>=0 AND size<=2147483647),
- alignment INTEGER NOT NULL CHECK(alignment IN (0,1,2,4,8,16)),
+ alignment INTEGER NOT NULL CHECK(alignment IN (0,1,2,4,8,16,32,64)),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
