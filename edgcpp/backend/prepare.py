@@ -1036,6 +1036,36 @@ object_source_overlay(lower,
     '      (void)insert_expr_statement(temp_node, insert_location);')
 
 
+# These stock operations move already-evaluated class storage without invoking
+# another C++ copy constructor or creating another destruction obligation.
+object_source_overlay(init_lower,
+    '  assign = make_var_assignment_expr(temp, rhs_expr);\n'
+    '  /* Replace the original expression with a reference to the temporary. */',
+    '  assign = make_var_assignment_expr(temp, rhs_expr);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_record_storage_copy(assign,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "evaluation-save");\n'
+    '#endif\n'
+    '  /* Replace the original expression with a reference to the temporary. */')
+object_source_overlay(init_lower,
+    '    if (temp_assignment != NULL) {\n'
+    '      overwrite_node(expr, make_comma_node(temp_assignment, copy_node(expr)));\n'
+    '    }  /* if */\n'
+    '  }  /* if */\n'
+    '  check_assertion(expr->is_lvalue == returns_lvalue);\n'
+    '}  /* rewrite_class_assignment_if_necessary */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_record_storage_copy(expr,\n'
+    '      innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "class-assignment");\n'
+    '#endif\n'
+    '    if (temp_assignment != NULL) {\n'
+    '      overwrite_node(expr, make_comma_node(temp_assignment, copy_node(expr)));\n'
+    '    }  /* if */\n'
+    '  }  /* if */\n'
+    '  check_assertion(expr->is_lvalue == returns_lvalue);\n'
+    '}  /* rewrite_class_assignment_if_necessary */')
+
+
 # Typed throw initialization and exact runtime-address/start ownership.
 object_source_overlay(init_lower,
     '  /* Make an "if" statement and insert it into the program. */\n'

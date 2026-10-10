@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v48: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v49: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -147,7 +147,7 @@ struct Writer {
   std::vector<string> source_record_owners;
   std::vector<string> thunk_wrappers,wrapper_calls;
   std::vector<string> compile_time_selections;
-  std::vector<string> base_subobject_expressions,virtual_base_subobjects,virtual_base_expressions,source_record_operations,record_value_transfers,record_storage_initializations,record_constant_initializations;
+  std::vector<string> base_subobject_expressions,virtual_base_subobjects,virtual_base_expressions,source_record_operations,record_value_transfers,record_storage_copies,record_storage_initializations,record_constant_initializations;
   std::vector<string> source_record_temporaries,record_temporary_initializations;
   std::map<a_dynamic_init_ptr,unsigned> source_record_temporary_ids;
   std::map<unsigned,unsigned> binding_source_declarations;
@@ -3606,6 +3606,29 @@ struct Writer {
       auto type=skip_typerefs(e->type);
       bool record=type->kind==tk_struct || type->kind==tk_class || type->kind==tk_union;
       auto observed=dot_object_source::state().record_transfers.find(e);
+      auto storage_copy=dot_object_source::state().record_storage_copies.find(e);
+      if(record && !copyable_value(e->type) && storage_copy!=dot_object_source::state().record_storage_copies.end() &&
+         (observed==dot_object_source::state().record_transfers.end() ||
+          (!observed->second.constant_storage && !record_value_policy(e->type,observed->second.kind)))) {
+        const auto &proof=storage_copy->second;
+        if(proof.owner!=current_routine || proof.target!=a || proof.value!=b || proof.type!=type ||
+           !proof.bytes || proof.bytes!=type->size || type_id(a->type)!=ty || type_id(b->type)!=ty ||
+           volatile_place(a) || volatile_place(b) || contains_volatile_storage(e->type) ||
+           !source_record_ids.count(type) ||
+           (proof.kind!="evaluation-save" && proof.kind!="class-assignment"))
+          reject("observed lowered record storage copy changed");
+        if(proof.kind=="evaluation-save" && (a->kind!=enk_variable ||
+           !(node_variable(a)->compiler_generated || node_variable(a)->lowering_generated)))
+          reject("record evaluation save lacks generated destination");
+        unsigned id=node("record-transfer",ty,e->position,0,0,"","","value",order);
+        unsigned target=expression(a),value=expression(b);
+        edge(id,"target",0,target);edge(id,"value",0,value);
+        record_storage_copies.push_back("{\"nodeId\":"+number(id)+",\"targetNodeId\":"+number(target)+
+          ",\"valueNodeId\":"+number(value)+",\"sourceRecordId\":"+number(source_record_ids.at(type))+
+          ",\"byteCount\":"+number(proof.bytes)+",\"kind\":"+quote(proof.kind)+
+          ",\"captureProof\":"+quote(proof.kind=="evaluation-save"?"observed-pre-execution-save":"observed-class-assignment-lowering")+"}");
+        return id;
+      }
       if(record && observed!=dot_object_source::state().record_transfers.end()) {
         const auto &proof=observed->second;
         if(proof.owner!=current_routine || proof.target!=a || proof.value!=b ||
@@ -3634,7 +3657,16 @@ struct Writer {
           auto original=dot_object_source::state().prelower_records.find(type);
           string detail="record transfer policy: operation="+proof.kind+", target-kind="+std::to_string(int(a->kind))+
             ", rhs-kind="+std::to_string(int(b->kind))+", type="+source_spelling(&type->source_corresp);
-          if(a->kind==enk_variable)detail+=", target="+source_spelling(&node_variable(a)->source_corresp);
+          if(a->kind==enk_variable)detail+=", target="+source_spelling(&node_variable(a)->source_corresp)+
+            ", target-generated="+std::to_string(node_variable(a)->compiler_generated || node_variable(a)->lowering_generated);
+          if(b->kind==enk_operation) {
+            detail+=", rhs-op="+std::to_string(int(b->variant.operation.kind));
+            auto child=b->variant.operation.operands;
+            for(unsigned child_index=0;child && child_index<3;child=child->next,++child_index) {
+              detail+=", rhs-child-"+std::to_string(child_index)+"="+std::to_string(int(child->kind));
+              if(child->kind==enk_operation)detail+="/"+std::to_string(int(child->variant.operation.kind));
+            }
+          }
           if(a->kind==enk_operation)detail+=", target-op="+std::to_string(int(a->variant.operation.kind));
           if(b->kind==enk_variable)detail+=", rhs-variable="+source_spelling(&node_variable(b)->source_corresp)+
             ", rhs-init="+std::to_string(int(node_variable(b)->init_kind))+
@@ -4677,7 +4709,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v48\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v49\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -4722,7 +4754,7 @@ struct Writer {
       ",\"sourceTries\":"+array(source_tries)+",\"sourceHandlers\":"+array(source_handlers)+
       ",\"handlerMarkers\":"+array(handler_markers)+",\"caughtObjectAddresses\":"+array(caught_object_addresses)+
       ",\"sourceRecordTemporaries\":"+array(source_record_temporaries)+",\"recordTemporaryInitializations\":"+array(record_temporary_initializations)+
-      " ,\"recordValueTransfers\":"+array(record_value_transfers)+",\"recordStorageInitializations\":"+array(record_storage_initializations)+",\"recordConstantInitializations\":"+array(record_constant_initializations)+",\"sourceFields\":"+array(source_fields)+
+      " ,\"recordValueTransfers\":"+array(record_value_transfers)+",\"recordStorageCopies\":"+array(record_storage_copies)+",\"recordStorageInitializations\":"+array(record_storage_initializations)+",\"recordConstantInitializations\":"+array(record_constant_initializations)+",\"sourceFields\":"+array(source_fields)+
       ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+",\"virtualBaseSubobjects\":"+array(virtual_base_subobjects)+",\"virtualBaseExpressions\":"+array(virtual_base_expressions)+",\"virtualBaseAdjustments\":"+array(virtual_base_adjustments)+
       ",\"baseSubobjectExpressions\":"+array(base_subobject_expressions)+
       ",\"abiRoutineOrigins\":"+array(abi_routine_origins)+

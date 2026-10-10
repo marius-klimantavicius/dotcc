@@ -1,0 +1,58 @@
+{
+  "milestone": "dotobj v49 stock-owned storage copies, complete ctor/dtor contracts and static alias array stride",
+  "status": "accepted",
+  "nativeCompiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native120-verified-snapshot/cpfe-dot",
+  "nativeSha256": "cb330c748f61d440f43e9780f0f6ccfb484789060c2fb8088e666a2c9647d78a",
+  "managedLinker": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-136/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "focused": [
+    {
+      "name": "record-copy",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v49-record-copy-120-135-002/results.json",
+      "sha256": "ff8d71c96544598cd74f901392970bc33358193fec715b6165c5502ecba0dbf0",
+      "checks": 30,
+      "nativeAot": true
+    },
+    {
+      "name": "constructor",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v49-constructor-120-135-002/results.json",
+      "sha256": "4491004df95932be3a4b4978d64da4decc52be179b36aa2ee8059fe84f9b7e93",
+      "checks": 45,
+      "nativeAot": true
+    },
+    {
+      "name": "destructor",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v49-destructor-tail-120-136-002/results.json",
+      "sha256": "3035387f80c9451a41de97d7ac1ae32240984efa9c654258ffdac0d342bf4bcd",
+      "checks": 48,
+      "nativeAot": true
+    },
+    {
+      "name": "static-alias-array",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v49-static-alias-array-120-135-001/results.json",
+      "sha256": "cb8bafea70c1cfdb9e8e7441399f41c6d1ce486c762981262e0e5f6923025668",
+      "checks": 17,
+      "nativeAot": true
+    }
+  ],
+  "managedSha256": "386d0da0aa446806fb603d6a58999867c043dc981421bc5030a32a4e4ceba864",
+  "generation": {
+    "primaryUnits": 7,
+    "providers": 2,
+    "definitions": 17316,
+    "output": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-targeted-generation-120-136/generated",
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-targeted-generation-120-136/result.json",
+    "compiled": false,
+    "executed": false
+  },
+  "fullDuckdbTranslated": false,
+  "limitations": [
+    "Three of ten selected units retain record transfer/construction proof gates.",
+    "Full2635 inventory runs frozen119/134, not candidate120/136.",
+    "No full-project generation, C# compilation or execution claimed."
+  ],
+  "broad": {
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v49-acceptance.json",
+    "uniqueChecks": 1043,
+    "requiredExistingChecks": 1042
+  }
+}

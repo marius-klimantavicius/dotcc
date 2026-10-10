@@ -173,7 +173,7 @@ internal static class Verifier
                         node.Kind is "assign" or "record-transfer" && (edge.Role == "target" || edge.Role == "value" && child.Kind == "default-value") ||
                         node.Kind == "declare" && edge.Role == "initializer" && child.Kind == "default-value";
                     bool copyAllowed = node.Kind == "record-transfer" && edge.Role == "value"
-                        ? obj.RecordValueTransfers.TryGetValue(node.Id, out string? transferKind) && obj.CanTransferRecord(obj.Type(recordType), transferKind)
+                        ? obj.RecordStorageCopies.ContainsKey(node.Id) || obj.RecordValueTransfers.TryGetValue(node.Id, out string? transferKind) && obj.CanTransferRecord(obj.Type(recordType), transferKind)
                         : node.Kind == "assign" ? obj.CanCopyRecord(obj.Type(recordType))
                         : node.Kind == "declare" ? obj.CanConstructRecord(obj.Type(recordType))
                         : node.Kind is "call" or "indirect-call" && edge.Role == "argument" ? obj.CanPassRecord(obj.Type(recordType))
@@ -810,10 +810,16 @@ internal static class Verifier
                     SameType(node, Child(node, "target")); SameType(node, Child(node, "value")); break;
                 case "record-transfer":
                     EdgeShape(node, ("target", 1, 1), ("value", 1, 1)); Expr(node, "target"); Expr(node, "value");
+                    string? transferKind = obj.RecordValueTransfers.GetValueOrDefault(node.Id);
+                    bool storageCopy = obj.RecordStorageCopies.TryGetValue(node.Id, out RecordStorageCopy? storageCopyProof);
                     if (!ScalarTypes.IsRecord(Type(node)) || !Place(Child(node, "target")) ||
-                        !obj.RecordValueTransfers.TryGetValue(node.Id, out string? transferKind) || !obj.CanTransferRecord(Type(node), transferKind))
-                        Fail("Record transfer requires its observed construction or temporary-copy permission");
-                    if (transferKind == "temporary" && (Child(node, "target").Kind != "binding" ||
+                        !(storageCopy || transferKind is not null && obj.CanTransferRecord(Type(node), transferKind)))
+                        Fail("Record transfer requires its observed construction, temporary-copy or lowered storage-copy permission");
+                    if (storageCopy && (Child(node, "target").Id != storageCopyProof!.TargetNodeId ||
+                        Child(node, "value").Id != storageCopyProof.ValueNodeId ||
+                        DeclaredVolatile(Child(node, "target")) || DeclaredVolatile(Child(node, "value"))))
+                        Fail("Lowered record storage copy changed its observed nonvolatile target/value");
+                    if ((transferKind == "temporary" || storageCopy && storageCopyProof!.Kind == "evaluation-save") && (Child(node, "target").Kind != "binding" ||
                         !body.Bindings.TryGetValue(Child(node, "target").BindingId!.Value, out Binding? temporary) ||
                         temporary.Kind != "local" || !temporary.IsSynthetic))
                         Fail("Observed temporary transfer requires a generated local destination");

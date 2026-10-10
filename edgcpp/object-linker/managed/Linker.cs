@@ -47,7 +47,7 @@ internal sealed partial class Linker
                 if (deferredDeclarationSymbols.Contains(symbol.Key) &&
                     (!obj.EntitySourceRoutines.ContainsKey(entity.Id) || obj.SourceFunctionKinds.GetValueOrDefault(entity.Id) != "ordinary"))
                     throw new InvalidDataException("Deferred original declaration cannot resolve to a generated or special-member origin");
-                string signature = CanonicalExecutionType(symbol.Signature);
+                string signature = CanonicalExecutionType(obj.CallableRoutine(entity.Id));
                 if (signatures.TryGetValue(symbol.Key, out string? prior) && prior != signature)
                     throw new InvalidDataException($"Signature mismatch for {entity.ExternalKey ?? entity.SourceName}: {prior} versus {symbol.Signature}");
                 signatures[symbol.Key] = signature;

@@ -403,6 +403,13 @@ struct RecordTransferSnapshot {
   a_variable_ptr constant_storage=nullptr;
   std::string constant_initialization_kind;
 };
+struct RecordStorageCopySnapshot {
+  a_routine_ptr owner=nullptr;
+  an_expr_node_ptr target=nullptr,value=nullptr;
+  a_type_ptr type=nullptr;
+  unsigned long long bytes=0;
+  std::string kind;
+};
 struct ArrayAllocationSnapshot {
   a_routine_ptr owner=nullptr,allocator=nullptr,deallocator=nullptr,constructor=nullptr,destructor=nullptr;
   a_dynamic_init_ptr original=nullptr,original_destruction=nullptr;
@@ -507,6 +514,7 @@ struct State {
   std::vector<a_handler_ptr> active_handlers;
   std::map<a_dynamic_init_ptr,std::pair<a_routine_ptr,a_handler_ptr>> handler_releases;
   std::map<an_expr_node_ptr,RecordTransferSnapshot> record_transfers;
+  std::map<an_expr_node_ptr,RecordStorageCopySnapshot> record_storage_copies;
   std::map<a_variable_ptr,a_constant_ptr> pooled_record_constants;
   std::map<an_expr_node_ptr,VirtualBaseAdjustmentSnapshot> virtual_base_adjustments;
   std::map<an_expr_node_ptr,ThrowSnapshot> throws;
@@ -2105,6 +2113,34 @@ inline void observe_virtual_base_null_preservation(an_expr_node_ptr wrapper,an_e
      copied->second.vtable_index==original->second.vtable_index)
     state().virtual_base_adjustments.erase(original);
 }
+// Stock lowering sometimes saves an already-constructed class value in raw
+// execution storage. This is independent of the original C++ copy operations.
+inline void observe_record_storage_copy(an_expr_node_ptr expr,a_routine_ptr owner,const char *kind) {
+  if(!enabled() || !owner || !expr || expr->kind!=enk_operation ||
+     expr->variant.operation.kind!=eok_assign)return;
+  auto type=skip_typerefs(expr->type);
+  if(type->kind!=tk_struct && type->kind!=tk_class && type->kind!=tk_union)return;
+  auto target=expr->variant.operation.operands;auto value=target?target->next:nullptr;
+  if(!target || !value || value->next)return;
+  RecordStorageCopySnapshot copy;copy.owner=owner;copy.target=target;copy.value=value;
+  copy.type=type;copy.bytes=type->size;copy.kind=kind;
+  state().record_storage_copies[expr]=copy;
+}
+inline void observe_record_storage_copy_copy(an_expr_node_ptr original,an_expr_node_ptr copy,a_routine_ptr owner) {
+  if(!enabled() || !owner || original==copy || !copy)return;
+  auto found=state().record_storage_copies.find(original);
+  if(found==state().record_storage_copies.end())return;
+  auto old_owner=abi_primary(found->second.owner);if(!old_owner)old_owner=found->second.owner;
+  auto new_owner=abi_primary(owner);if(!new_owner)new_owner=owner;
+  if(old_owner!=new_owner || original->kind!=enk_operation || original->variant.operation.kind!=eok_assign ||
+     original->variant.operation.operands!=found->second.target ||
+     found->second.target->next!=found->second.value)return;
+  observe_record_storage_copy(copy,owner,found->second.kind.c_str());
+  auto copied=state().record_storage_copies.find(copy);
+  if(copied!=state().record_storage_copies.end()) {
+    copied->second.type=found->second.type;copied->second.bytes=found->second.bytes;
+  }
+}
 inline void observe_record_transfer(an_expr_node_ptr expr,a_routine_ptr owner,const char *kind) {
   if(!enabled() || !owner || !expr || expr->kind!=enk_operation ||
      expr->variant.operation.kind!=eok_assign)return;
@@ -2135,6 +2171,7 @@ inline void observe_record_constant_initialization(an_expr_node_ptr expression,a
   value.constant_storage=variable;value.constant_initialization_kind=kind==dik_zero?"zero":"constant";
 }
 inline void observe_record_transfer_copy(an_expr_node_ptr original,an_expr_node_ptr copy,a_routine_ptr owner) {
+  observe_record_storage_copy_copy(original,copy,owner);
   if(!enabled() || !owner || original==copy || !copy)return;
   auto found=state().record_transfers.find(original);
   if(found==state().record_transfers.end())return;
@@ -2156,6 +2193,7 @@ inline void observe_record_transfer_copy(an_expr_node_ptr original,an_expr_node_
 inline void observe_record_transfer_overwrite(an_expr_node_ptr destination,an_expr_node_ptr source,a_routine_ptr owner) {
   if(!enabled() || !owner || destination==source)return;
   state().record_transfers.erase(destination);
+  state().record_storage_copies.erase(destination);
   observe_record_transfer_copy(source,destination,owner);
 }
 // The throw initializer owns payload addresses and start markers. These maps
@@ -2492,7 +2530,10 @@ inline void observe_static_destructor_begin(a_routine_ptr routine,a_scope_ptr sc
   if(!value.original || !value.variable || position->modifiers || position->indirect_through_variable)
     value.error="generated static destructor lacks exact original storage";
   if(type->kind==tk_array) {
-    value.array=true;value.element_type=underlying_array_element_type(type);
+    // Array element aliases carry source identity, not storage extent.
+    // Keep that identity in the source obligation; observe physical layout
+    // from the actual element just as stock destructor generation does.
+    value.array=true;value.element_type=skip_typerefs(underlying_array_element_type(type));
     value.element_count=num_array_elements(type);value.element_size=value.element_type->size;
   }
   state().generated_static_destructors.emplace(routine,value);

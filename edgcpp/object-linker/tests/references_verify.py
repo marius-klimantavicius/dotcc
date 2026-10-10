@@ -55,7 +55,7 @@ def verify(inputs, out, tool, run, check, compile_source, link, execute, mutate)
             path.write_text(code + '\n')
             objects.append(compile_source(name_role, path))
         link('reject-reference-source-signature-' + name, objects,
-             expected=None, contains='Source signature mismatch')
+             expected=None, contains='Original semantic signature mismatch')
 
     provider = inputs / 'reference-compatible-provider.cpp'
     provider.write_text('''typedef int &IntRef;

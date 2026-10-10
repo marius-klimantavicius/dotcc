@@ -461,6 +461,8 @@ internal sealed partial class ObjectFile
             "nodeId", "bindingId", "sourceDeclarationId", "sourceTypeId", "sourceInitKind", "loweredInitKind", "siteKind", "zeroStorage", "partiallyInitialized", "captureProof");
         Table("recordConstantInitializations", "SELECT node_id,source_record_id,storage_id,initialization_kind,capture_proof FROM record_constant_initializations ORDER BY node_id",
             "nodeId", "sourceRecordId", "storageId", "initializationKind", "captureProof");
+        Table("recordStorageCopies", "SELECT node_id,target_node_id,value_node_id,source_record_id,byte_count,kind,capture_proof FROM record_storage_copies ORDER BY node_id",
+            "nodeId", "targetNodeId", "valueNodeId", "sourceRecordId", "byteCount", "kind", "captureProof");
         Table("recordValueTransfers", "SELECT node_id,kind,capture_proof FROM record_value_transfers ORDER BY node_id",
             "nodeId", "kind", "captureProof");
         Table("sourceRecordOwners", "SELECT source_record_id,owner_source_record_id,owner_field_id,kind,capture_proof FROM source_record_owners ORDER BY source_record_id", "sourceRecordId", "ownerSourceRecordId", "ownerFieldId", "kind", "captureProof");

@@ -38,9 +38,10 @@ internal sealed partial class ObjectFile
                     query.OptionalText(3) != "record-transfer" || !RecordValueTransfers.TryAdd(query.Integer(0), kind))
                     throw new InvalidDataException("Invalid observed record value transfer");
             }
+        ReadRecordStorageCopies();
         using var nodes = database.Prepare("SELECT id FROM nodes WHERE kind='record-transfer'");
         while (nodes.Read())
-            if (!RecordValueTransfers.ContainsKey(nodes.Integer(0)))
+            if (!RecordValueTransfers.ContainsKey(nodes.Integer(0)) && !RecordStorageCopies.ContainsKey(nodes.Integer(0)))
                 throw new InvalidDataException("Record transfer lacks observed operation provenance");
     }
 

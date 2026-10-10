@@ -7,6 +7,28 @@ internal sealed partial class ObjectFile
     public Dictionary<long, AbiRoutineOrigin> AbiRoutineOrigins { get; } = [];
     public Dictionary<long, string> SourceFunctionKinds { get; } = [];
 
+    // A generated complete constructor or destructor retains its original callable contract.
+    // Stock lower_init::alternate_entry_point installs a local exception
+    // specification only when its owned virtual-base work needs that boundary.
+    // Imported entries therefore often have an unwind execution summary even
+    // though the selected original constructor is noexcept. Keep that summary
+    // for body emission; this contract is used only for symbol resolution and
+    // external calls. Other wrappers can execute work outside their primary.
+    public string CallableExceptionPolicy(long entityId)
+    {
+        if (AbiRoutineOrigins.TryGetValue(entityId, out AbiRoutineOrigin? origin) &&
+            origin.EntryKind == "complete" && (SourceFunctionKinds[origin.PrimaryEntityId] is "constructor" or "destructor"))
+            return EntitySourceRoutines[origin.PrimaryEntityId].ExceptionPolicy;
+        return Routines[Entities[entityId].RoutineTypeId].ExceptionPolicy;
+    }
+
+    public string CallableRoutine(long entityId)
+    {
+        Entity entity = Entities[entityId];
+        return RoutineTypes.Key(Type(entity.ReturnTypeId), Parameters.GetValueOrDefault(entityId, []),
+            Routines[entity.RoutineTypeId].Variadic, CallableExceptionPolicy(entityId));
+    }
+
     private void ReadAbiRoutineOrigins()
     {
         using var query = database.Prepare("SELECT entity_id,primary_entity_id,entry_kind,is_alias_entry,capture_proof,target_entity_id FROM abi_routine_origins ORDER BY entity_id");
@@ -35,6 +57,9 @@ internal sealed partial class ObjectFile
             RoutineType execution = Routines[entity.RoutineTypeId];
             if (Type(entity.ReturnTypeId) != "void" || execution.Variadic || Type(SourceTypeById(primary.ReturnTypeId).ExecutionTypeId) != "void")
                 throw new InvalidDataException("Generated constructor/destructor entry requires the supported void-return ABI");
+            if (origin.EntryKind == "complete" && (kind is "constructor" or "destructor") &&
+                execution.ExceptionPolicy == "terminate" && primary.ExceptionPolicy != "terminate")
+                throw new InvalidDataException($"Complete {kind} execution boundary conflicts with its original callable exception contract");
             var parameters = Parameters.GetValueOrDefault(entity.Id, []);
             var originalParameters = Parameters.GetValueOrDefault(origin.PrimaryEntityId, []);
             var originalSlots = RoutineAbiParameters(primary.TypeId);

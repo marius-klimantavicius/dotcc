@@ -591,3 +591,41 @@ array destructor element size0 from typedef size observation, not an asm
 operand. Tiny typedef-array reducer reproduces exactly; next scratch fix will
 retain typedef source identity and use actual underlying element layout.
 Evidence dotobj-duckdb-deferred-callbacks-20261010.json.
+
+
+Committed v48 aa4d098e0. Profile49 candidate native120
+SHAcb330c748f61d440f43e9780f0f6ccfb484789060c2fb8088e666a2c9647d78a
+and managed135 built from frozen snapshots. New per-node record storage-copy
+proof retains stock evaluation-save/class-assignment semantics without granting
+source copy operations; full extent excludes stock tail-padding memcpy path.
+Complete constructor callable noexcept derives only from verified original
+primary origin; lowered body policy remains separately retained. Static array
+destructor observes skip_typerefs(element) for layout while preserving source
+alias identity. Focused PASS30 record copy, PASS45 constructor contract, PASS17
+static alias array, all including NativeAOT. Initial test-only failures retained:
+EDG raw assignment flag differs from test assumption; missing genuine sizeddelete
+in ctor fixture now supplied through free. Actual12010-unit probe packages7;
+TPCH DBGenContext assignment, async anonymous-record assignment and unique_ptr
+construction remain. Seven successful units+RTTI all individually verify135,
+combined generation pending. Broad1042 suite running dotobj-full-v49-001.
+Full119 inventory resumed with4 bounded8GiB jobs after recording a stop and
+preserving in-flight attempts; receipt dotobj-full-119-resume-concurrency.json.
+Host had124GiB total/~81GiB available. Frozen compiler/manifest/options unchanged,
+--resume validates original fingerprints; max native budget32GiB. No cleanup.
+
+
+v49 accepted: native120 and managed136 retain exact complete constructor AND
+destructor callable contracts, while preserving raw lowered body policy; deleting
+entries remain excluded. Focused140 checks (30 storage copy,45 constructor,48
+destructor,17 alias-array commands) include NativeAOT and strict resealed negatives.
+Broad1,042 existing checks all pass, plus one continuation linkage check; exact
+SHA-linked prefix/continuation receipt dotobj-full-v49-acceptance.json preserves
+all failed diagnostic/private-harness attempts without semantic relaxation.
+Seven actual units plus two RTTI providers now generate17,316definitions; review
+link dotobj-duckdb-v49/seven-units. No DuckDB compile or run claim. Remaining
+three of ten probes need further selected record transfer/construction evidence.
+Next50 stages virtual-array deletion callback protocol (17ICU first gates),
+anonymous implicit constructor spelling, incomplete opaque handle alignment,
+and exact parent-owned label lifetime overlap. Full119 inventory continues
+four bounded jobs; latest measured1,199processed1,172packaged1,166verified.
+Evidence dotobj-duckdb-storage-copy-contracts-20261010.json.

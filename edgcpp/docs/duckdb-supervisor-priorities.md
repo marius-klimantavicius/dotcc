@@ -7,7 +7,30 @@ successful generation after one fix. The selected sample is deliberately varied,
 not statistically representative. Preserve all required source-type information;
 do not omit metadata to bypass a gate. Re-rank after each expanded probe.
 
-## Current queue (completed 500-unit native115 / managed126 inventory)
+## Current queue (running full 2,635-unit native119 / managed134 inventory)
+
+Snapshot: 1,125 processed, 1,098 packaged, 27 failed; incremental managed
+verification has 1,082 verified and five rejected objects. These frozen v48
+tools do not include the v49 candidate or staged v50 corrections. Exact snapshot:
+`dotobj-full-failure-priorities-119-latest.json` in persistent campaign storage.
+
+| Priority | Measured first blocker | Count | Current action |
+| --- | --- | ---: | --- |
+| Integration | Complete constructor/destructor callable policy differs from raw imported wrapper policy | Cross-unit linkage | v49 exact original complete-entry contract now generates 17,316 definitions from seven real units plus two RTTI providers; acceptance finishing. |
+| 1 | Virtual array delete finalized callback protocol | 17 ICU units | Lifetime worker staged v50 observation of stock null-array guard, cookie count and virtual destructor selection. No runtime expansion required for generation. |
+| 2 | Raw lowered record assignments | 5 units | v49 exact evaluation-save/class-assignment proof clears some; three cases in separate ten-unit probe remain unproven. Preserve gates, revisit after shared array-delete fix. |
+| Small managed fixes | Anonymous implicit constructor spelling; opaque handle false alignment | 2 + 2 rejects | v50 staged source-captured spelling and unknown-layout alignment fix; actual opaque ICU pair verifies, native/stock/JIT/AOT fixture passes. |
+| Newly observed | Original lifetime overlap ownership | 1 managed reject | Base worker investigating qualified_name.cpp against stock lifetime sublists. |
+| Later observed | By-value parameter transport; wrapper target parameter ABI | 2 + 1 exporter gates | Reduce exact selected source/execution ownership after current shared fix. |
+| Already fixed candidate | Typedef-array destructor physical stride | 1 package failure | v49 preserves source alias and uses underlying element size; native/stock/JIT/AOT fixture passes. |
+| Later observed | Unique_ptr result/parameter construction | 1 exporter gate | parser.cpp GetStatement hits the retained record-construction proof gate; diagnose selected transfer, not a frontend parsing failure. |
+
+Counts are current first failures, not predicted successes. Continue the full
+inventory concurrently with focused acceptance. After v49 acceptance, integrate
+v50 as a coherent exporter/reader protocol and probe all affected actual units.
+The complete project has not yet linked, generated, compiled or executed.
+
+## Previous queue (completed 500-unit native115 / managed126 inventory)
 
 The expanded sample includes the previous 160 and spans 430 library, 48 test,
 12 libc++ and 10 libc units. Completed: 456 packaged, 447 individually verified,
