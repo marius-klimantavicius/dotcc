@@ -27,8 +27,9 @@ internal sealed partial class ObjectFile
             long id=query.Integer(0), target=query.Integer(1), value=query.Integer(2), sourceId=query.Integer(3);
             long bytes=query.Integer(4); string kind=query.Text(5);
             string type=Type(query.Integer(8));
-            if (SourceLanguage != "c++" || kind is not ("evaluation-save" or "class-assignment") ||
-                query.Text(6) != (kind == "evaluation-save" ? "observed-pre-execution-save" : "observed-class-assignment-lowering") ||
+            if (SourceLanguage != "c++" || kind is not ("evaluation-save" or "class-assignment" or "initializer-storage" or "bitwise-initialization") ||
+                query.Text(6) != (kind switch { "evaluation-save" => "observed-pre-execution-save", "class-assignment" => "observed-class-assignment-lowering",
+                    "initializer-storage" => "observed-initialization-storage", _ => "observed-bitwise-initialization" }) ||
                 query.OptionalText(7) != "record-transfer" || !ScalarTypes.IsRecord(type) ||
                 !SourceRecords.TryGetValue(sourceId, out SourceRecord? source) || !source.IsComplete || !source.LayoutKnown ||
                 source.IsDependent || source.CapturePhase != "before-class-prelowering" ||

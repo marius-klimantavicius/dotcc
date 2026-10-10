@@ -661,3 +661,52 @@ Source constraints diagnostic shows three _Iter concept constraints and regex
 dynamic typed exception specification in four libc++ source probes; retain full
 required metadata, lower priority than current measured project transfer gates.
 Evidence dotobj-duckdb-virtual-array-provenance-20261010.json.
+
+
+Committed v50: a3e4ffbdc. Candidate v51 native122
+SHA1a135f5a24c7782fe6f5f30e76fed4a6979c9521d5476dc67644f5cad4a216a1
+and managed142 are frozen. Exact stock complete-object initializer-storage and
+bitwise-initialization observations added; scalar member-function-pointer ABI
+value transport preserves original member type/owner; result-buffer thunks
+forward the unchanged caller destination and adjust only this. Supervisor
+reduced six missing source destruction types to deliberately excluded arrays
+in the existing frontend new-without-initialization recipe. The same exact
+no-initialization source relation now requires matching array shape; existing
+false scalar-to-array mutation remains rejected. Fixed-bound array focused50
+passes NativeAOT; dynamic-bound variant packages/verifies/generates but runtime
+__cxa_throw_bad_array_new_length remains unresolved (retained failed binding).
+Member-pointer initializer validation now recognizes original scalar member
+pointer backed by the observed ABI record, not a fabricated source class.
+Focused member-pointer31 and result-wrapper27 pass with NativeAOT. Original
+uninitialized-scalar regression passes. Extended record fixture native/stock
+passes, but exact new proof-kind reachability acceptance still in progress.
+Current38-unit original-source probe selected all first failures from the
+1,992-unit frozen119 snapshot except accepted virtual-delete gates, plus managed
+rejects; manifest dotobj-v51-frontier-manifest.json retains original2635 provenance.
+Incremental122/142 verification currently27/27 passes, including uniset pair,
+number_patternmodifier, DBGen, TPCDS, parser and uninitialized-array users.
+Remaining explicit gates include source routine ABI, generated exception member
+origin, lambda parameter identity and initialized-array rollback disposition.
+No full DuckDB generation/compile/run claim.
+
+Space preservation: completed full094 and expanded115 corpora moved to
+/home/marius/p/dotcc/edgcpp/artifacts/campaign/retained-frontiers-20261010.
+Existing /mnt/storage campaign paths remain symlinks; every file/size inventory
+and summary/compiler hash verified. No intermediate removed. Receipt
+frontier-relocation-20261010.json. Free space after relocation:60GiB persistent,
+81GiB workspace. Active full119 untouched.
+
+
+v51 accepted: all 197 focused checks pass, including NativeAOT in the four
+new suites. Final copy fixture requires both initializer-storage and bitwise-
+initialization observations. All 30 packaged real units in the 38-unit selection
+verify under managed142. Combined generation with two matching RTTI providers
+and real PhysicalOperator/PhysicalJoin providers emits 24,797 definitions.
+Review: artifacts/review/dotobj-duckdb-v51/combined30. Earlier provider-incomplete
+link attempts retained; no declaration policy weakened. Evidence:
+dotobj-duckdb-initialization-transports-20261010.json. Next profile52 workers:
+base owns exact captureless lambda static-entry origins/formals, lifetime owns
+dynamic-array zero-initialization rollback disposition. Supervisor takes TLS
+local-static guards. Synthesized zero-model-plus-ctor vector callbacks retain a
+separate required generated origin; ordinary source routine ABI stays strict.
+No full project generation, compilation or execution claim.

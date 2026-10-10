@@ -1006,6 +1006,27 @@ object_source_overlay(il_source,
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '#endif\n'
     '}  /* overwrite_node */')
+# Upgrade the existing complete-object observer as one idempotent block.
+# Remove the short-lived separate hook if a prepared tree already contains it.
+source = init_lower.read_text()
+source = source.replace(
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    if (have_complete_object) dot_object_source::observe_record_transfer(assign_node,\n'
+    '      innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "construction");\n'
+    '#endif\n', '')
+source = source.replace(
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    if (have_complete_object) dot_object_source::observe_record_storage_copy(assign_node,\n'
+    '      innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "initializer-storage");\n'
+    '#endif\n', '')
+source = source.replace(
+    '    if (have_complete_object) dot_object_source::observe_record_constant_initialization(assign_node, dip, con);\n'
+    '#endif\n',
+    '    if (have_complete_object) dot_object_source::observe_record_constant_initialization(assign_node, dip, con);\n'
+    '    if (have_complete_object) dot_object_source::observe_record_storage_copy(assign_node,\n'
+    '      innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "initializer-storage");\n'
+    '#endif\n')
+init_lower.write_text(source)
 object_source_overlay(init_lower,
     '    assign_stmt = insert_expr_statement(assign_node, insert_location);\n'
     '    set_stmt_pos_to_code_pos_for_lowering(assign_stmt);\n'
@@ -1014,6 +1035,8 @@ object_source_overlay(init_lower,
     '    if (have_complete_object) dot_object_source::observe_record_transfer(assign_node,\n'
     '      innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "construction");\n'
     '    if (have_complete_object) dot_object_source::observe_record_constant_initialization(assign_node, dip, con);\n'
+    '    if (have_complete_object) dot_object_source::observe_record_storage_copy(assign_node,\n'
+    '      innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "initializer-storage");\n'
     '#endif\n'
     '    assign_stmt = insert_expr_statement(assign_node, insert_location);\n'
     '    set_stmt_pos_to_code_pos_for_lowering(assign_stmt);\n'
@@ -1085,6 +1108,19 @@ object_source_overlay(init_lower,
     '#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
     '      dot_object_source::observe_array_deletion_virtual_callback(dtor_routine, dtor_addr_node, integer_type((an_integer_kind)targ_size_t_int_kind));\n'
     '#endif')
+
+# Stock dynamic initialization and dik_bitwise_copy emit complete-object
+# storage copies after resolving the C++ construction operation separately.
+# Keep those exact factory origins distinct from an ordinary C++ assignment.
+object_source_overlay(init_lower,
+    '                                                          source_node);\n'
+    '    (void)insert_expr_statement(assign_node, insert_location);',
+    '                                                          source_node);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    if (have_complete_object) dot_object_source::observe_record_storage_copy(assign_node,\n'
+    '      innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "bitwise-initialization");\n'
+    '#endif\n'
+    '    (void)insert_expr_statement(assign_node, insert_location);')
 
 # Typed throw initialization and exact runtime-address/start ownership.
 object_source_overlay(init_lower,

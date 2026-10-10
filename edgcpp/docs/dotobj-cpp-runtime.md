@@ -613,3 +613,35 @@ suite passes 26 checks, including native and stock-C O0/O2, signed zeros,
 subnormals, infinities, signaling/quiet NaNs, finite values beyond binary64's
 range, source-hidden generation, JIT/NativeAOT, and four resealed malformed
 objects (`dotobj-v48-floating-119-134-001`).
+
+### Complete-object initialization storage (v51)
+
+The `record_storage_copies` contract also records exact complete-object
+assignments emitted by stock `add_init_assignment` (`initializer-storage`) and
+`add_bitwise_copy` (`bitwise-initialization`). These factories have already
+selected the C++ initialization operation. Their storage assignment must not
+be mistaken for another user-visible copy constructor or assignment operator.
+The original source record's construction and assignment permissions remain
+unchanged. Existing accepted construction and constant-initialization records
+retain precedence.
+
+Each additional proof owns its actual expression, function, destination,
+value, source record and full object byte extent. Volatile storage and partial
+subobjects remain excluded. Stock tail-padding copies retain their smaller
+`memcpy` extent. Preparation upgrades the existing initialization observer in
+one idempotent block, without changing EDG's IL.
+
+The focused fixture checks move-only lambda capture, single source evaluation,
+constructor/destructor balance and tail-padding preservation. It also requires
+both new proof kinds: a default-copy/custom-assignment member in an implicitly
+copied parent, and a reference condition declaration converting a derived
+move-only owner through an inherited bool operator. The latter must not
+prematurely destroy or move from the original owner.
+
+Native122/managed141 pass 42 checks: native C++ and stock C at O0/O2,
+source-hidden verification/generation, JIT, NativeAOT and 17 resealed malformed
+objects (`dotobj-v51-record-copy-122-141-002`). Actual ICU NullableValue and
+TPCH DBGenContext copies now carry bitwise-initialization proofs; actual
+DuckDBExtensionsInit unique_ptr condition temporaries carry initializer-storage
+proofs. These object exports advance their previous copy-policy gates without
+changing the original C++ operation permissions.

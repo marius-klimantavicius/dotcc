@@ -19,7 +19,7 @@ internal sealed partial class ObjectFile
             var value = new SourceUninitializedAllocation(query.Integer(0), query.Integer(1),
                 query.Integer(2) != 0, query.Integer(3) != 0, query.Text(4));
             if (!SourceAllocationObligations.TryGetValue(value.SourceAllocationObligationId, out var obligation) ||
-                obligation.IsArray || Original(SourceTypeById(obligation.AllocatedSourceTypeId)).Kind != "record" ||
+                Original(SourceTypeById(obligation.AllocatedSourceTypeId)).Kind != (obligation.IsArray ? "array" : "record") ||
                 !EntitySourceRoutines.TryGetValue(value.AllocatorEntityId, out var allocator) ||
                 SourceFunctionKinds[value.AllocatorEntityId] is not ("ordinary" or "runtime") ||
                 allocator.ObjectTypeId is not null || allocator.Variadic || allocator.Parameters.Length == 0 ||
@@ -28,7 +28,7 @@ internal sealed partial class ObjectFile
                 query.Integer(2) is not (0 or 1) || query.Integer(3) is not (0 or 1) ||
                 value.CaptureProof != "original-new-without-initialization" ||
                 !SourceUninitializedAllocations.TryAdd(value.SourceAllocationObligationId, value))
-                throw new InvalidDataException("Uninitialized new lacks its original scalar record allocation and selected allocator");
+                throw new InvalidDataException("Uninitialized new lacks its original allocation type/array shape and selected allocator");
             if (value.IsPlacement)
             {
                 var deallocator = EntitySourceRoutines[obligation.DeallocatorEntityId];
@@ -41,6 +41,6 @@ internal sealed partial class ObjectFile
         RejectRows("""
             SELECT u.source_allocation_obligation_id FROM source_uninitialized_allocations u
             JOIN array_allocation_operations a ON a.source_allocation_obligation_id=u.source_allocation_obligation_id
-            """, "Uninitialized scalar new also has an array allocation protocol");
+            """, "Uninitialized new also has an initialized array allocation protocol");
     }
 }

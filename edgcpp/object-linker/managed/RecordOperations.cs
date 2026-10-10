@@ -63,6 +63,11 @@ internal sealed partial class ObjectFile
             (ScalarTypes.IsZeroArray(type) || CanRecordOperation(ScalarTypes.Element(type), kind));
         if (!ScalarTypes.IsRecord(type)) return true;
         RecordType record = RecordsByKey[type];
+        // This is a scalar member-function pointer in the source language;
+        // stock lowering uses an ordinary by-value record for its two words.
+        // SourceRecords verifies the exact owned ABI shape independently.
+        if (HasScalarAbiValueSemantics(record))
+            return (kind is "construction" or "temporary" or "transport" or "argument") && CanCopyPayload(type);
         if (SourceLanguage != "c++") return CanCopyRecord(type);
         if (record.RepresentationKind != "complete" || record.SourceRecordId is not long id ||
             !RecordOperations.TryGetValue(id, out SourceRecordOperations? operations) || !CanCopyPayload(type)) return false;

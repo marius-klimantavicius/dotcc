@@ -1,0 +1,81 @@
+{
+  "milestone": "dotobj v51 stock initialization copies, scalar member-pointer ABI values, indirect-result thunks and original uninitialized arrays",
+  "status": "accepted",
+  "nativeCompiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native122-verified-snapshot/cpfe-dot",
+  "nativeSha256": "1a135f5a24c7782fe6f5f30e76fed4a6979c9521d5476dc67644f5cad4a216a1",
+  "managedLinker": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-142/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "managedSha256": "9c1b2be022f326a889f3f89e79737a57dc4667f35f7bed133755a9d472a0c8d4",
+  "focused": [
+    {
+      "name": "member-pointer",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v51-member-pointer-122-142-002/results.json",
+      "sha256": "2e260e5f7ab0d56a022bed660c31b6859d34a59052f4e67df72675a581a86b03",
+      "checks": 31,
+      "nativeAot": true
+    },
+    {
+      "name": "result-wrapper",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v51-result-wrapper-122-141-001/results.json",
+      "sha256": "66e01fde847d44e8d70c79db6f4f2a4a6e56978d05661a6fc9dfde51632d73b6",
+      "checks": 27,
+      "nativeAot": true
+    },
+    {
+      "name": "record-storage",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v51-record-copy-122-141-002/results.json",
+      "sha256": "b4fba76823ad1c754a4e60f4accc055bc78807aefaf5a9879d194a5b0aa49810",
+      "checks": 42,
+      "nativeAot": true
+    },
+    {
+      "name": "uninitialized-array",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v51-uninitialized-array-fixed-122-141-002/results.json",
+      "sha256": "4f2ad475ee6f5e798fee22e759f3cf8d824240b01403a72f840269db6141e6cb",
+      "checks": 50,
+      "nativeAot": true
+    },
+    {
+      "name": "uninitialized-scalar",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v51-uninitialized-scalar-122-141-001/results.json",
+      "sha256": "589fa53d97268413e7ea63616979913ac2c9cded70069bbcfdc11b114d87225f",
+      "checks": 47,
+      "nativeAot": false
+    }
+  ],
+  "actual": {
+    "selection": 38,
+    "packaged": 30,
+    "verified": 30,
+    "exportReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-122/results.json",
+    "verifyReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-managed-122-142/results.json"
+  },
+  "generation": {
+    "primaryUnits": 30,
+    "providers": 4,
+    "definitions": 24797,
+    "output": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-v51-combined-122-142-003/generated",
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-v51-combined-122-142-003/result.json",
+    "compiled": false,
+    "executed": false
+  },
+  "frozenFullBaseline": {
+    "compiler": 119,
+    "managed": 134,
+    "total": 2635,
+    "processed": 2630,
+    "statuses": {
+      "packaged": 2506,
+      "failed": 124
+    },
+    "managedStatuses": {
+      "verified": 2495,
+      "rejected": 10
+    }
+  },
+  "limitations": [
+    "Full project not yet generated, compiled or executed.",
+    "Dynamic array-length generation succeeds; __cxa_throw_bad_array_new_length runtime provider remains unresolved.",
+    "Eight selected units retain exact source ABI, lambda origin, initialized-array rollback, TLS guard and lifetime provenance gates.",
+    "Earlier failed combined attempts retained; actual PhysicalOperator and PhysicalJoin providers satisfy deferred ABI declarations."
+  ]
+}

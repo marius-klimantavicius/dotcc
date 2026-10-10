@@ -6,6 +6,17 @@ internal sealed partial class ObjectFile
 {
     public Dictionary<long, RecordStorageInitialization> RecordStorageInitializations { get; } = [];
 
+    private bool HasOriginalMemberPointerStorage(long sourceTypeId, RecordType record)
+    {
+        if (!HasScalarAbiValueSemantics(record)) return false;
+        SourceType source = SourceTypeById(sourceTypeId);
+        while (source.Kind is "typedef" or "qualified" or "array")
+            source = SourceTypeById(source.UnderlyingTypeId!.Value);
+        return source.Kind == "member-pointer" && source.ExecutionRepresentationId == record.TypeId &&
+            SourceMemberPointers.TryGetValue(source.Id, out SourceMemberPointerType? member) &&
+            Original(SourceTypeById(member.MemberTypeId)).Kind == "routine";
+    }
+
     private void ReadRecordStorageInitializations()
     {
         using var query = database.Prepare("SELECT x.node_id,x.binding_id,x.source_type_id,x.source_init_kind,x.lowered_init_kind,x.site_kind,x.zero_storage,x.partially_initialized,x.capture_proof,n.kind,n.function_id,b.function_id,b.kind,b.type_id,d.kind,d.binding_id,d.source_type_id,d.function_entity_id FROM record_storage_initializations x LEFT JOIN nodes n ON n.id=x.node_id LEFT JOIN bindings b ON b.id=x.binding_id LEFT JOIN source_declarations d ON d.id=x.source_declaration_id ORDER BY x.node_id");
@@ -25,7 +36,8 @@ internal sealed partial class ObjectFile
                 query.OptionalText(14) != "local" || query.Integer(15) != binding ||
                 query.Integer(16) != query.Integer(2) || query.Integer(17) != query.Integer(10) ||
                 !BindingSourceTypes.TryGetValue(binding, out long source) || source != query.Integer(2) ||
-                !ScalarTypes.IsRecord(leaf) || RecordsByKey[leaf].RepresentationKind != "complete" ||
+                !ScalarTypes.IsRecord(leaf) ||
+                (RecordsByKey[leaf].RepresentationKind != "complete" && !HasOriginalMemberPointerStorage(source, RecordsByKey[leaf])) ||
                 !RecordStorageInitializations.TryAdd(query.Integer(0), new(binding, zero)))
                 throw new InvalidDataException("Record storage initialization lacks exact original local and observed zeroing provenance");
         }

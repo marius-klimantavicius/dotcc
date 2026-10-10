@@ -1672,9 +1672,10 @@ inline void observe_new_without_initialization(a_new_delete_supplement_ptr origi
   if(!enabled() || !allocation)return;
   UninitializedAllocationSnapshot value;value.original=original;value.position=position;
   if(!original || !original->is_new || original->dynamic_init || original->freeing_of_storage_on_exception ||
-     allocation->assoc_new || !allocation->is_freeing_of_storage_on_exception || allocation->is_array_freeing ||
-     !original->type || !original->routine || !allocation->destructor) {
-    value.error="original uninitialized allocation lacks exact unassociated scalar new recipe";
+     allocation->assoc_new || !allocation->is_freeing_of_storage_on_exception ||
+     !original->type || !original->routine || !allocation->destructor ||
+     bool(allocation->is_array_freeing)!=(skip_typerefs(original->type)->kind==tk_array)) {
+    value.error="original uninitialized allocation lacks exact unassociated new recipe and array shape";
   } else {
     value.allocated_type=original->type;value.allocator=original->routine;value.deallocator=allocation->destructor;
     value.placement=original->placement_new;value.has_initializer=original->has_new_initializer;
@@ -1760,7 +1761,12 @@ inline void capture_source_lifetime(an_object_lifetime_ptr lifetime,a_routine_pt
           value.source_type=capture_type(signature->variant.routine.extra_info->this_class);
       }
     }
-    if(!value.source_type)value.error="source destruction lacks original object type";
+    if(!value.source_type) {
+      if(value.error.empty())value.error="source destruction lacks original object type";
+      value.error+=" [owner="+(owner?spelling(owner->source_corresp):std::string("<initializer>"))+
+        ",ordinal="+std::to_string(ordinal)+",allocation="+std::to_string(value.allocation_release)+
+        ",array="+std::to_string(value.array_allocation)+",associated-new="+std::to_string(dip->assoc_new?1:0)+"]";
+    }
     if(!state().destructions.emplace(dip,value).second)
       state().destructions.at(dip).error="source destruction belongs to multiple lifetimes";
     state().destruction_order[owner].push_back(dip);

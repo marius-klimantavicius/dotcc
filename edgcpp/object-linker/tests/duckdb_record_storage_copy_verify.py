@@ -18,6 +18,7 @@ def main():
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--native-aot', action='store_true')
     parser.add_argument('--oracle-only', action='store_true')
+    parser.add_argument('--require-kind', action='append', default=[], choices=('initializer-storage','bitwise-initialization'))
     parser.add_argument('--provider', type=Path, action='append', default=[])
     parser.add_argument('--runtime-binder', type=Path, default=Path(__file__).resolve().parents[1] / 'runtime/bind.py')
     args = parser.parse_args()
@@ -54,7 +55,10 @@ def main():
             run('verify', ['dotnet', args.linker.resolve(), 'verify', obj])
             with sqlite3.connect(obj) as db:
                 kinds={row[0] for row in db.execute('SELECT kind FROM record_storage_copies')}
-                check('both-stock-copy-observations', kinds == {'evaluation-save','class-assignment'})
+                check('both-stock-copy-observations', {'evaluation-save','class-assignment'} <= kinds)
+                for kind in args.require_kind:
+                    check('observed-'+kind, kind in kinds)
+                factory_rows=list(db.execute("SELECT node_id,target_node_id,value_node_id FROM record_storage_copies WHERE kind IN ('initializer-storage','bitwise-initialization')"))
                 row=db.execute("SELECT c.node_id,c.target_node_id,c.value_node_id,c.source_record_id FROM record_storage_copies c WHERE kind='evaluation-save' LIMIT 1").fetchone()
                 selected,target,value,source_record=row
                 ordinary=db.execute('SELECT bitwise_construction_allowed,bitwise_assignment_allowed FROM source_record_operations WHERE source_record_id=?',(source_record,)).fetchone()
@@ -76,6 +80,15 @@ def main():
                 'wrong-capture-proof': ("UPDATE record_storage_copies SET capture_proof='unobserved-copy' WHERE node_id=?",(selected,)),
                 'rewrite-as-ordinary-assignment': ("UPDATE nodes SET kind='assign' WHERE id=?",(selected,)),
             }
+            for factory_id,factory_target,factory_value in factory_rows:
+                for suffix,sql,values in (
+                    ('missing', 'DELETE FROM record_storage_copies WHERE node_id=?', (factory_id,)),
+                    ('target', 'UPDATE record_storage_copies SET target_node_id=? WHERE node_id=?', (factory_value,factory_id)),
+                    ('value', 'UPDATE record_storage_copies SET value_node_id=? WHERE node_id=?', (factory_target,factory_id)),
+                    ('extent', 'UPDATE record_storage_copies SET byte_count=byte_count-1 WHERE node_id=?', (factory_id,)),
+                    ('proof', "UPDATE record_storage_copies SET capture_proof='unobserved-copy' WHERE node_id=?", (factory_id,)),
+                ):
+                    mutations['factory-'+str(factory_id)+'-'+suffix]=(sql,values)
             for name,(sql,values) in mutations.items():
                 bad=out/(name+'.dotobj'); shutil.copy2(obj,bad)
                 with sqlite3.connect(bad) as db:

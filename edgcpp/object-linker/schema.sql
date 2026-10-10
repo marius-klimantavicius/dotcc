@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v50'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v51'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -938,10 +938,12 @@ CREATE TABLE record_storage_copies (
  value_node_id INTEGER NOT NULL REFERENCES nodes(id),
  source_record_id INTEGER NOT NULL REFERENCES source_record_types(id),
  byte_count INTEGER NOT NULL CHECK(byte_count>0),
- kind TEXT NOT NULL CHECK(kind IN ('evaluation-save','class-assignment')),
+ kind TEXT NOT NULL CHECK(kind IN ('evaluation-save','class-assignment','initializer-storage','bitwise-initialization')),
  capture_proof TEXT NOT NULL,
  CHECK((kind='evaluation-save' AND capture_proof='observed-pre-execution-save') OR
-       (kind='class-assignment' AND capture_proof='observed-class-assignment-lowering'))
+       (kind='class-assignment' AND capture_proof='observed-class-assignment-lowering') OR
+       (kind='initializer-storage' AND capture_proof='observed-initialization-storage') OR
+       (kind='bitwise-initialization' AND capture_proof='observed-bitwise-initialization'))
 ) STRICT;
 CREATE TABLE record_value_transfers (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),

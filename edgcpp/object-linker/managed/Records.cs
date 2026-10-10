@@ -71,12 +71,15 @@ internal sealed partial class ObjectFile
 
     public RecordField[] RecordFields(long typeId) => fieldsByRecord[typeId];
 
+    private static bool HasScalarAbiValueSemantics(RecordType record) => record is
+        { RepresentationKind: "abi", IdentityKey: "abi:member-function-pointer", CaptureProof: "observed-abi-creation" };
+
     public bool CanCopyRecord(string type)
     {
         if (ScalarTypes.IsArray(type)) return !ScalarTypes.IsIncompleteArray(type) && (ScalarTypes.IsZeroArray(type) || CanCopyRecord(ScalarTypes.Element(type)));
         if (!ScalarTypes.IsRecord(type)) return true;
         RecordType record = RecordsByKey[type];
-        return record.Size > 0 && record.ValueCopyKind == "ordinary" && CanCopyPayload(type);
+        return record.Size > 0 && (record.ValueCopyKind == "ordinary" || HasScalarAbiValueSemantics(record)) && CanCopyPayload(type);
     }
 
     public bool CanCopyPayload(string type)

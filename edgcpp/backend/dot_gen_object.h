@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v50: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v51: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -1426,6 +1426,14 @@ struct Writer {
       generated_root_nodes.insert(child);
     edges.push_back("{\"parentId\":"+number(parent)+",\"role\":"+quote(role)+",\"ordinal\":"+std::to_string(ordinal)+",\"childId\":"+number(child)+"}");
   }
+  bool scalar_abi_record(a_type_ptr type) {
+    const auto &source=dot_object_source::state();
+    auto observed=source.abi_record_keys.find(type);
+    // lower_il::make_mptr_type owns this scalar C++ representation. Its
+    // generated record has no original class constructors/copy policy.
+    return source.abi_records.count(type) && observed!=source.abi_record_keys.end() &&
+      observed->second=="abi:member-function-pointer";
+  }
   bool copyable_value(a_type_ptr type,bool base_payload=false) {
     if(get_type_qualifiers(type)&(TQ_VOLATILE|TQ_C11_ATOMIC))return false;
     auto t=skip_typerefs(type);
@@ -1433,8 +1441,8 @@ struct Writer {
     if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
       if(t->incomplete || t->variant.class_struct_union.any_volatile_member)return false;
       auto &source=dot_object_source::state();
-      if(source.abi_records.count(t) && !(base_payload && source.observed_subobjects.count(t)))return false;
-      if(!C_mode() && !base_payload) {
+      if(source.abi_records.count(t) && !scalar_abi_record(t) && !(base_payload && source.observed_subobjects.count(t)))return false;
+      if(!C_mode() && !base_payload && !scalar_abi_record(t)) {
         auto original=source.prelower_records.find(t);
         if(original==source.prelower_records.end() || !original->second.trivial_copy_known || !original->second.trivial_copy)return false;
       }
@@ -1449,8 +1457,8 @@ struct Writer {
     if(t->kind==tk_array)return complete_fixed_array(t) && record_value_policy(t->variant.array.element_type,kind);
     if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
       if(t->incomplete || t->variant.class_struct_union.any_volatile_member)return false;
-      if(captured.abi_records.count(t) && !(base_payload && captured.observed_subobjects.count(t)))return false;
-      if(!C_mode() && !base_payload) {
+      if(captured.abi_records.count(t) && !scalar_abi_record(t) && !(base_payload && captured.observed_subobjects.count(t)))return false;
+      if(!C_mode() && !base_payload && !scalar_abi_record(t)) {
         auto original=captured.prelower_records.find(t);
         if(original==captured.prelower_records.end() || !original->second.operations_known)return false;
         const auto &ops=original->second;
@@ -2700,10 +2708,23 @@ struct Writer {
       const auto slots=routine_abi_slots.at(wrapper->target);
       if(slots.empty() || std::count_if(slots.begin(),slots.end(),[](const AbiSlot &slot){return slot.role=="this";})!=1)
         reject("wrapper target lacks one original receiver");
+      bool indirect_result=std::any_of(slots.begin(),slots.end(),[](const AbiSlot &slot){return slot.role=="result-buffer";});
+      if(indirect_result) {
+        auto overridden_primary=dot_object_source::abi_primary(wrapper->overridden);
+        const auto &source=dot_object_source::state();
+        auto target_source=source.functions.find(original?original:wrapper->target);
+        auto overridden_source=source.functions.find(overridden_primary?overridden_primary:wrapper->overridden);
+        if(target_source==source.functions.end() || overridden_source==source.functions.end() ||
+           !source_abi(target_source->second.signature_type).result_buffer ||
+           !source_abi(overridden_source->second.signature_type).result_buffer ||
+           type_id(t->variant.routine.return_type)!=1 || type_id(target_type->variant.routine.return_type)!=1 ||
+           wrapper->return_delta || wrapper->vbase_index)
+          reject("wrapper result buffer lacks matching original indirect-return contract");
+      }
       routine_abi_slots[r]=slots;
       unsigned ordinal=0;
       for(auto formal=extra->param_type_list;formal;formal=formal->next,++ordinal) {
-        if(ordinal>=slots.size() || type_id(formal->type)!=slots[ordinal].type || slots[ordinal].role=="result-buffer")
+        if(ordinal>=slots.size() || type_id(formal->type)!=slots[ordinal].type)
           reject("wrapper formal differs from selected target ABI slot");
         const auto &slot=slots[ordinal];
         bool explicit_source=slot.role=="source" || slot.role=="indirect-source";
@@ -3632,7 +3653,8 @@ struct Writer {
            !proof.bytes || proof.bytes!=type->size || type_id(a->type)!=ty || type_id(b->type)!=ty ||
            volatile_place(a) || volatile_place(b) || contains_volatile_storage(e->type) ||
            !source_record_ids.count(type) ||
-           (proof.kind!="evaluation-save" && proof.kind!="class-assignment"))
+           (proof.kind!="evaluation-save" && proof.kind!="class-assignment" &&
+            proof.kind!="initializer-storage" && proof.kind!="bitwise-initialization"))
           reject("observed lowered record storage copy changed");
         if(proof.kind=="evaluation-save" && (a->kind!=enk_variable ||
            !(node_variable(a)->compiler_generated || node_variable(a)->lowering_generated)))
@@ -3643,7 +3665,9 @@ struct Writer {
         record_storage_copies.push_back("{\"nodeId\":"+number(id)+",\"targetNodeId\":"+number(target)+
           ",\"valueNodeId\":"+number(value)+",\"sourceRecordId\":"+number(source_record_ids.at(type))+
           ",\"byteCount\":"+number(proof.bytes)+",\"kind\":"+quote(proof.kind)+
-          ",\"captureProof\":"+quote(proof.kind=="evaluation-save"?"observed-pre-execution-save":"observed-class-assignment-lowering")+"}");
+          ",\"captureProof\":"+quote(proof.kind=="evaluation-save"?"observed-pre-execution-save":
+            proof.kind=="class-assignment"?"observed-class-assignment-lowering":
+            proof.kind=="initializer-storage"?"observed-initialization-storage":"observed-bitwise-initialization")+"}");
         return id;
       }
       if(record && observed!=dot_object_source::state().record_transfers.end()) {
@@ -4726,7 +4750,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v50\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v51\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
