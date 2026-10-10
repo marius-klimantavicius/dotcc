@@ -1,12 +1,12 @@
 namespace DotObj;
 
-internal sealed record SourceLifetime(long Id, long FunctionEntityId, long? ParentLifetimeId,
-    long SiblingOrdinal, long? ParentObligationId, long? ParentAllocationObligationId, string Kind, long? SourceFileId, long Line, long Column, string CaptureProof);
-internal sealed record SourceDestructionObligation(long Id, long FunctionEntityId, long LifetimeId,
-    long Ordinal, long DestructorEntityId, long SourceTypeId, long? SourceFileId, long Line, long Column, string CaptureProof);
-internal sealed record CleanupAction(long Id, long FunctionEntityId, long SourceObligationId,
-    long CallbackEntityId, long TargetNodeId, string CaptureProof);
-internal sealed record ArrayRuntimeOperation(long NodeId, long SourceObligationId, long CallbackEntityId, string OperationKind, string CaptureProof);
+internal sealed record SourceLifetime(long Id, long? FunctionEntityId, long? ParentLifetimeId,
+    long SiblingOrdinal, long? ParentObligationId, long? ParentAllocationObligationId, string Kind, long? SourceFileId, long Line, long Column, string CaptureProof, long? SourceInitializerId);
+internal sealed record SourceDestructionObligation(long Id, long? FunctionEntityId, long LifetimeId,
+    long Ordinal, long DestructorEntityId, long SourceTypeId, long? SourceFileId, long Line, long Column, string CaptureProof, long? SourceInitializerId, long? SourceStaticObligationId, bool IsPartialAggregate);
+internal sealed record CleanupAction(long Id, long FunctionEntityId, long? SourceObligationId,
+    long CallbackEntityId, long TargetNodeId, string CaptureProof, long? SourceStaticObligationId);
+internal sealed record ArrayRuntimeOperation(long NodeId, long? SourceObligationId, long CallbackEntityId, string OperationKind, string CaptureProof, long? SourceStaticObligationId);
 internal sealed record CleanupArray(long ActionId, long ElementTypeId, long ElementCount, long ElementSize, string CaptureProof);
 internal sealed record CleanupState(long Id, long FunctionEntityId, long? ActionId, long? NextStateId, long? HandlerNodeId, long? AllocationActionId, long? GuardActionId);
 internal sealed record CleanupTransition(long NodeId, long? StateId, string CaptureProof, bool IsUnreachable);
@@ -21,6 +21,7 @@ internal sealed partial class ObjectFile
     public Dictionary<long, long> CleanupVttArguments { get; } = [];
     public Dictionary<long, long> CleanupConditions { get; } = [];
     public Dictionary<long, long> NormalDestructions { get; } = [];
+    public Dictionary<long, long> NormalStaticDestructions { get; } = [];
     public Dictionary<long, long> VirtualBaseExpressions { get; } = [];
     public Dictionary<long, long> BaseSubobjectExpressions { get; } = [];
     public Dictionary<long, SourceLifetime> SourceLifetimes { get; } = [];
@@ -41,6 +42,19 @@ internal sealed partial class ObjectFile
         while (type.Kind == "array") type = Original(SourceTypeById(type.UnderlyingTypeId!.Value));
         return type;
     }
+
+    public long CleanupSourceType(CleanupAction action) => action.SourceObligationId is long automatic
+        ? SourceDestructionObligations[automatic].SourceTypeId
+        : SourceStaticDestructions[action.SourceStaticObligationId!.Value].SourceTypeId;
+
+    public long StaticCleanupStorage(CleanupAction action)
+        => SourceInitializers[SourceStaticDestructions[action.SourceStaticObligationId!.Value].SourceInitializerId!.Value].StorageId!.Value;
+
+    private bool IsStaticInitializerExecution(SourceInitializer initializer, long functionId)
+        => initializer.ExecutionDisposition == "emitted" && (initializer.FunctionEntityId is long original
+            ? OriginalFunction(functionId) == original
+            : DynamicInitializers.Values.Any(value => value.SourceInitializerId == initializer.Id &&
+                InitializationActions.Any(action => action.Id == value.ActionId && action.EntityId == functionId)));
 
     private void ReadCleanupMetadata()
     {
@@ -63,13 +77,14 @@ internal sealed partial class ObjectFile
                 if (!Records.ContainsKey(query.Integer(1)) || query.OptionalText(2) != "virtual-base-subobject" ||
                     !VirtualBaseExpressions.TryAdd(query.Integer(0), query.Integer(1)))
                     throw new InvalidDataException("Virtual-base expression lacks its observed complete base type");
-        using (var query = database.Prepare("SELECT id,function_entity_id,parent_lifetime_id,sibling_ordinal,parent_obligation_id,parent_allocation_obligation_id,kind,source_file_id,line,column,capture_proof FROM source_lifetimes ORDER BY id"))
+        using (var query = database.Prepare("SELECT id,function_entity_id,parent_lifetime_id,sibling_ordinal,parent_obligation_id,parent_allocation_obligation_id,kind,source_file_id,line,column,capture_proof,source_initializer_id FROM source_lifetimes ORDER BY id"))
             while (query.Read())
             {
-                var lifetime = new SourceLifetime(query.Integer(0), query.Integer(1), query.OptionalInteger(2), query.Integer(3),
-                    query.OptionalInteger(4), query.OptionalInteger(5), query.Text(6), query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.Text(10));
-                if (lifetime.Id <= 0 || !EntitySourceRoutines.ContainsKey(lifetime.FunctionEntityId) ||
-                    SourceFunctionKinds[lifetime.FunctionEntityId] == "runtime" || lifetime.SiblingOrdinal < 0 ||
+                var lifetime = new SourceLifetime(query.Integer(0), query.OptionalInteger(1), query.OptionalInteger(2), query.Integer(3),
+                    query.OptionalInteger(4), query.OptionalInteger(5), query.Text(6), query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.Text(10), query.OptionalInteger(11));
+                if (lifetime.Id <= 0 || (lifetime.FunctionEntityId is null) == (lifetime.SourceInitializerId is null) ||
+                    lifetime.FunctionEntityId is long sourceFunction && (!EntitySourceRoutines.ContainsKey(sourceFunction) || SourceFunctionKinds[sourceFunction] == "runtime") ||
+                    lifetime.SourceInitializerId is long sourceInitializer && !SourceInitializers.ContainsKey(sourceInitializer) || lifetime.SiblingOrdinal < 0 ||
                     lifetime.Kind is not ("block" or "block-after-label" or "expression-temporary" or "try-block") ||
                     lifetime.Line < 0 || lifetime.Column < 0 || lifetime.CaptureProof != "before-lowering" ||
                     !SourceLifetimes.TryAdd(lifetime.Id, lifetime))
@@ -80,17 +95,17 @@ internal sealed partial class ObjectFile
             {
                 if (!SourceLifetimes.TryGetValue(query.Integer(1), out SourceLifetime? lifetime) ||
                     lifetime.Kind != "expression-temporary" || query.OptionalInteger(3) is not long function ||
-                    OriginalFunction(function) != lifetime.FunctionEntityId || query.OptionalText(4) != "lifetime-scope" ||
+                    !IsSourceLifetimeExecution(lifetime, function) || query.OptionalText(4) != "lifetime-scope" ||
                     query.Text(2) != "observed-lifetime-wrapper" || !ExpressionLifetimes.TryAdd(query.Integer(0), lifetime.Id))
                     throw new InvalidDataException("Expression lifetime boundary lacks its exact original temporary lifetime and function owner");
             }
-        using (var query = database.Prepare("SELECT id,function_entity_id,lifetime_id,ordinal,destructor_entity_id,source_type_id,source_file_id,line,column,capture_proof FROM source_destruction_obligations ORDER BY lifetime_id,ordinal"))
+        using (var query = database.Prepare("SELECT id,function_entity_id,lifetime_id,ordinal,destructor_entity_id,source_type_id,source_file_id,line,column,capture_proof,source_initializer_id,source_static_obligation_id,is_partial_aggregate FROM source_destruction_obligations ORDER BY lifetime_id,ordinal"))
             while (query.Read())
             {
-                var obligation = new SourceDestructionObligation(query.Integer(0), query.Integer(1), query.Integer(2), query.Integer(3),
-                    query.Integer(4), query.Integer(5), query.OptionalInteger(6), query.Integer(7), query.Integer(8), query.Text(9));
+                var obligation = new SourceDestructionObligation(query.Integer(0), query.OptionalInteger(1), query.Integer(2), query.Integer(3),
+                    query.Integer(4), query.Integer(5), query.OptionalInteger(6), query.Integer(7), query.Integer(8), query.Text(9), query.OptionalInteger(10), query.OptionalInteger(11), query.Integer(12) != 0);
                 if (obligation.Id <= 0 || !SourceLifetimes.TryGetValue(obligation.LifetimeId, out SourceLifetime? lifetime) ||
-                    lifetime.FunctionEntityId != obligation.FunctionEntityId || obligation.Ordinal < 0 ||
+                    lifetime.FunctionEntityId != obligation.FunctionEntityId || lifetime.SourceInitializerId != obligation.SourceInitializerId || obligation.Ordinal < 0 ||
                     !SourceFunctionKinds.TryGetValue(obligation.DestructorEntityId, out string? kind) || kind != "destructor" ||
                     DestructionElementType(obligation.SourceTypeId).Kind != "record" ||
                     obligation.Line < 0 || obligation.Column < 0 || obligation.CaptureProof != "before-lowering" ||
@@ -103,7 +118,7 @@ internal sealed partial class ObjectFile
             }
         ReadAllocationObligations();
         ReadGuardMetadata();
-        foreach (var group in SourceLifetimes.Values.GroupBy(value => value.FunctionEntityId))
+        foreach (var group in SourceLifetimes.Values.Where(value => value.FunctionEntityId is not null).GroupBy(value => value.FunctionEntityId))
         {
             SourceLifetime[] roots = group.Where(value => value.ParentLifetimeId is null).ToArray();
             if (roots.Length != 1 || roots[0].Kind != "block" || roots[0].SiblingOrdinal != 0 || roots[0].ParentObligationId is not null || roots[0].ParentAllocationObligationId is not null)
@@ -113,7 +128,7 @@ internal sealed partial class ObjectFile
             .Concat(SourceAllocationObligations.Values.Select(value => (value.LifetimeId, value.Ordinal))).GroupBy(value => value.LifetimeId))
             if (group.OrderBy(value => value.Ordinal).Where((value, ordinal) => value.Ordinal != ordinal).Any())
                 throw new InvalidDataException("Original destruction obligation order must be dense");
-        foreach (var group in SourceLifetimes.Values.GroupBy(value => (value.FunctionEntityId, value.ParentLifetimeId)))
+        foreach (var group in SourceLifetimes.Values.GroupBy(value => (value.FunctionEntityId, value.SourceInitializerId, value.ParentLifetimeId)))
             if (group.OrderBy(value => value.SiblingOrdinal).Where((value, ordinal) => value.SiblingOrdinal != ordinal).Any())
                 throw new InvalidDataException("Original lifetime sibling order must be dense");
         foreach (SourceLifetime lifetime in SourceLifetimes.Values)
@@ -123,7 +138,7 @@ internal sealed partial class ObjectFile
             {
                 if (!seen.Add(current.Id)) throw new InvalidDataException("Cycle in original lifetime parents");
                 if (current.ParentLifetimeId is not long parent) break;
-                if (!SourceLifetimes.TryGetValue(parent, out current) || current.FunctionEntityId != lifetime.FunctionEntityId)
+                if (!SourceLifetimes.TryGetValue(parent, out current) || (current.FunctionEntityId != lifetime.FunctionEntityId || current.SourceInitializerId != lifetime.SourceInitializerId))
                     throw new InvalidDataException("Original lifetime parent leaves its source function");
             }
             if (lifetime.ParentAllocationObligationId is long allocation &&
@@ -135,35 +150,56 @@ internal sealed partial class ObjectFile
                  parentObligation.LifetimeId != lifetime.ParentLifetimeId || lifetime.Kind == "block-after-label"))
                 throw new InvalidDataException("Original lifetime overlap must reference its parent's destruction sublist");
         }
-        using (var query = database.Prepare("SELECT a.id,a.function_entity_id,a.source_obligation_id,a.callback_entity_id,a.target_node_id,a.capture_proof,n.function_id FROM cleanup_actions a LEFT JOIN nodes n ON n.id=a.target_node_id ORDER BY a.id"))
+        using (var query = database.Prepare("SELECT a.id,a.function_entity_id,a.source_obligation_id,a.callback_entity_id,a.target_node_id,a.capture_proof,n.function_id,a.source_static_obligation_id FROM cleanup_actions a LEFT JOIN nodes n ON n.id=a.target_node_id ORDER BY a.id"))
             while (query.Read())
             {
-                var action = new CleanupAction(query.Integer(0), query.Integer(1), query.Integer(2), query.Integer(3), query.Integer(4), query.Text(5));
+                var action = new CleanupAction(query.Integer(0), query.Integer(1), query.OptionalInteger(2), query.Integer(3), query.Integer(4), query.Text(5), query.OptionalInteger(7));
                 if (action.Id <= 0 || !Functions.ContainsKey(action.FunctionEntityId) || query.OptionalInteger(6) != action.FunctionEntityId ||
-                    !SourceDestructionObligations.TryGetValue(action.SourceObligationId, out SourceDestructionObligation? obligation) ||
-                    OriginalFunction(action.FunctionEntityId) != obligation.FunctionEntityId ||
+                    (action.SourceObligationId is null) == (action.SourceStaticObligationId is null) ||
                     action.CaptureProof != "observed-region-entry" || !Entities.TryGetValue(action.CallbackEntityId, out Entity? callback) ||
-                    OriginalFunction(callback.Id) != obligation.DestructorEntityId ||
                     AbiRoutineOrigins.TryGetValue(callback.Id, out AbiRoutineOrigin? origin) && origin.EntryKind is not ("complete" or "subobject" or "delegation") ||
                     !CleanupActions.TryAdd(action.Id, action))
                     throw new InvalidDataException("Cleanup action lacks its exact original obligation, function or destructor origin");
+                if (action.SourceObligationId is long automatic)
+                {
+                    if (!SourceDestructionObligations.TryGetValue(automatic, out var obligation) ||
+                        !IsSourceLifetimeExecution(SourceLifetimes[obligation.LifetimeId], action.FunctionEntityId) ||
+                        OriginalFunction(callback.Id) != obligation.DestructorEntityId)
+                        throw new InvalidDataException("Cleanup action differs from its original automatic destruction owner");
+                }
+                else if (!SourceStaticDestructions.TryGetValue(action.SourceStaticObligationId!.Value, out var obligation) ||
+                    obligation.Kind != "partial-aggregate" || obligation.SourceInitializerId is not long initializer ||
+                    !SourceInitializers.TryGetValue(initializer, out var sourceInitializer) || sourceInitializer.StorageId is null ||
+                    Original(SourceTypeById(sourceInitializer.SourceTypeId)).Kind != "array" ||
+                    !IsStaticInitializerExecution(SourceInitializers[initializer], action.FunctionEntityId) ||
+                    OriginalFunction(callback.Id) != obligation.SelectedRoutineEntityId ||
+                    AbiRoutineOrigins.TryGetValue(callback.Id, out var staticOrigin) && staticOrigin.EntryKind != "complete")
+                    throw new InvalidDataException("Static array rollback lacks its exact initializer, storage and selected destructor");
                 if (!FunctionCleanupActions.TryGetValue(action.FunctionEntityId, out var actions))
                     FunctionCleanupActions.Add(action.FunctionEntityId, actions = []);
                 actions.Add(action);
             }
-        using (var query = database.Prepare("SELECT a.node_id,a.source_obligation_id,a.callback_entity_id,a.operation_kind,a.capture_proof,n.kind,n.function_id,n.entity_id FROM array_runtime_operations a LEFT JOIN nodes n ON n.id=a.node_id ORDER BY a.node_id"))
+        using (var query = database.Prepare("SELECT a.node_id,a.source_obligation_id,a.callback_entity_id,a.operation_kind,a.capture_proof,n.kind,n.function_id,n.entity_id,a.source_static_obligation_id FROM array_runtime_operations a LEFT JOIN nodes n ON n.id=a.node_id ORDER BY a.node_id"))
             while (query.Read())
             {
-                var operation = new ArrayRuntimeOperation(query.Integer(0), query.Integer(1), query.Integer(2), query.Text(3), query.Text(4));
-                if (!SourceDestructionObligations.TryGetValue(operation.SourceObligationId, out SourceDestructionObligation? obligation) ||
-                    !Entities.ContainsKey(operation.CallbackEntityId) || OriginalFunction(operation.CallbackEntityId) != obligation.DestructorEntityId ||
+                var operation = new ArrayRuntimeOperation(query.Integer(0), query.OptionalInteger(1), query.Integer(2), query.Text(3), query.Text(4), query.OptionalInteger(8));
+                if ((operation.SourceObligationId is null) == (operation.SourceStaticObligationId is null) ||
+                    !Entities.ContainsKey(operation.CallbackEntityId) ||
                     operation.OperationKind is not ("construct" or "destroy") || operation.CaptureProof != "observed-array-runtime" ||
-                    query.OptionalText(5) != "call" || query.OptionalInteger(6) is not long owner || OriginalFunction(owner) != obligation.FunctionEntityId ||
+                    query.OptionalText(5) != "call" || query.OptionalInteger(6) is not long owner ||
                     query.OptionalInteger(7) is not long helper || !Entities.TryGetValue(helper, out Entity? runtime) ||
                     RuntimeArrayProvider.TryGetMethod(new Symbol(this, runtime)) is not string method ||
                     (operation.OperationKind == "construct" ? method is not ("Construct" or "CopyConstruct") : method is not ("Destroy" or "Cleanup")) ||
                     !ArrayRuntimeOperations.TryAdd(operation.NodeId, operation))
                     throw new InvalidDataException("Array runtime operation lacks its exact source obligation, destructor or runtime helper origin");
+                if (operation.SourceObligationId is long sourceObligation)
+                {
+                    if (!SourceDestructionObligations.TryGetValue(sourceObligation, out SourceDestructionObligation? obligation) ||
+                        OriginalFunction(operation.CallbackEntityId) != obligation.DestructorEntityId ||
+                        !IsSourceLifetimeExecution(SourceLifetimes[obligation.LifetimeId], owner))
+                        throw new InvalidDataException("Array runtime operation differs from its original automatic destruction owner");
+                }
+                else VerifyStaticDestructionUse(operation.SourceStaticObligationId!.Value, owner, operation.CallbackEntityId, operation.OperationKind);
                 if (AbiRoutineOrigins.TryGetValue(operation.CallbackEntityId, out AbiRoutineOrigin? origin) && origin.EntryKind != "complete")
                     throw new InvalidDataException("Array runtime operation requires a complete-object destructor callback");
             }
@@ -176,10 +212,10 @@ internal sealed partial class ObjectFile
                     !Types.ContainsKey(array.ElementTypeId) || !ScalarTypes.IsRecord(Type(array.ElementTypeId)) ||
                     array.ElementCount <= 0 || array.ElementSize != StorageSize(Type(array.ElementTypeId)) ||
                     array.ElementSize <= 0 || array.ElementCount > long.MaxValue / array.ElementSize ||
-                    DestructionElementType(SourceDestructionObligations[action.SourceObligationId].SourceTypeId).ExecutionTypeId != array.ElementTypeId ||
+                    DestructionElementType(CleanupSourceType(action)).ExecutionTypeId != array.ElementTypeId ||
                     array.CaptureProof != "observed-array-region" || !CleanupArrays.TryAdd(array.ActionId, array))
                     throw new InvalidDataException("Array cleanup requires its exact complete leaf type, positive count and stride");
-                SourceType source = Original(SourceTypeById(SourceDestructionObligations[action.SourceObligationId].SourceTypeId));
+                SourceType source = Original(SourceTypeById(CleanupSourceType(action)));
                 if (source.Kind == "array")
                 {
                     long count = 1;
@@ -226,17 +262,29 @@ internal sealed partial class ObjectFile
                     !CleanupConditions.TryAdd(action.Id, query.Integer(1)))
                     throw new InvalidDataException("Conditional cleanup requires its exact synthetic local flag and owning action");
             }
-        using (var query = database.Prepare("SELECT d.node_id,d.source_obligation_id,d.capture_proof,n.function_id,n.kind,n.entity_id FROM normal_destructions d LEFT JOIN nodes n ON n.id=d.node_id ORDER BY d.node_id"))
+        using (var query = database.Prepare("SELECT d.node_id,d.source_obligation_id,d.capture_proof,n.function_id,n.kind,n.entity_id,d.source_static_obligation_id FROM normal_destructions d LEFT JOIN nodes n ON n.id=d.node_id ORDER BY d.node_id"))
             while (query.Read())
             {
-                if (!SourceDestructionObligations.TryGetValue(query.Integer(1), out SourceDestructionObligation? obligation) ||
+                long? sourceObligation = query.OptionalInteger(1), staticObligation = query.OptionalInteger(6);
+                if ((sourceObligation is null) == (staticObligation is null) ||
                     query.Text(2) != "observed-normal-destruction" || query.OptionalInteger(3) is not long function ||
-                    !Functions.ContainsKey(function) || OriginalFunction(function) != obligation.FunctionEntityId ||
-                    query.OptionalText(4) != "call" || query.OptionalInteger(5) is not long callback ||
-                    !Entities.ContainsKey(callback) || OriginalFunction(callback) != obligation.DestructorEntityId ||
-                    AbiRoutineOrigins.TryGetValue(callback, out AbiRoutineOrigin? origin) && origin.EntryKind is not ("complete" or "subobject" or "delegation") ||
-                    !NormalDestructions.TryAdd(query.Integer(0), obligation.Id))
+                    !Functions.ContainsKey(function) || query.OptionalText(4) != "call" || query.OptionalInteger(5) is not long callback ||
+                    !Entities.ContainsKey(callback) ||
+                    AbiRoutineOrigins.TryGetValue(callback, out AbiRoutineOrigin? origin) && origin.EntryKind is not ("complete" or "subobject" or "delegation"))
                     throw new InvalidDataException("Normal destruction lacks its exact owned call, source obligation or destructor origin");
+                if (sourceObligation is long original)
+                {
+                    if (!SourceDestructionObligations.TryGetValue(original, out SourceDestructionObligation? obligation) ||
+                        !IsSourceLifetimeExecution(SourceLifetimes[obligation.LifetimeId], function) ||
+                        OriginalFunction(callback) != obligation.DestructorEntityId || !NormalDestructions.TryAdd(query.Integer(0), original))
+                        throw new InvalidDataException("Normal destruction differs from its original automatic obligation");
+                }
+                else
+                {
+                    VerifyStaticDestructionUse(staticObligation!.Value, function, callback, "destroy");
+                    if (!NormalStaticDestructions.TryAdd(query.Integer(0), staticObligation.Value))
+                        throw new InvalidDataException("Duplicate static destruction operation");
+                }
             }
         using (var query = database.Prepare("SELECT s.id,s.function_entity_id,s.action_id,s.next_state_id,s.handler_node_id,n.function_id,n.kind,s.allocation_action_id,s.guard_action_id FROM cleanup_states s LEFT JOIN nodes n ON n.id=s.handler_node_id ORDER BY s.id"))
             while (query.Read())

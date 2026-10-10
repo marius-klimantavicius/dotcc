@@ -30,6 +30,7 @@ internal sealed partial class Linker
         if (Objects.Select(obj => obj.UnitId).Distinct(StringComparer.Ordinal).Count() != Objects.Count)
             throw new InvalidDataException("The same translation unit was supplied more than once");
         VerifyEnumDefinitions();
+        ResolveDeferredRoutineAbis();
         // A provider's coalescible copy must not force archive extraction when
         // the primary inputs already supply that body. Strong definitions still
         // take precedence below, independently of this stable preference.
@@ -38,9 +39,10 @@ internal sealed partial class Linker
             foreach (Entity entity in obj.Entities.Values)
             {
                 var symbol = new Symbol(obj, entity);
-                if (signatures.TryGetValue(symbol.Key, out string? prior) && prior != symbol.Signature)
+                string signature = CanonicalExecutionType(symbol.Signature);
+                if (signatures.TryGetValue(symbol.Key, out string? prior) && prior != signature)
                     throw new InvalidDataException($"Signature mismatch for {entity.ExternalKey ?? entity.SourceName}: {prior} versus {symbol.Signature}");
-                signatures[symbol.Key] = symbol.Signature;
+                signatures[symbol.Key] = signature;
                 string sourceSignature = obj.FunctionSourceSignature(entity.Id);
                 if (sourceSignatures.TryGetValue(symbol.Key, out string? priorSource) && priorSource != sourceSignature)
                     throw new InvalidDataException($"Source signature mismatch for {entity.ExternalKey ?? entity.SourceName}: {priorSource} versus {sourceSignature}");
@@ -98,7 +100,7 @@ internal sealed partial class Linker
                         !CompatibleOriginalRecord(prior.Object, prior.Record, obj, record) ||
                         !CompatibleBaseSubobjects(prior.Object, prior.Record, obj, record) ||
                         expected.Length != actual.Length || actual.Where((field, index) => field.SourceName != expected[index].SourceName ||
-                            field.ByteOffset != expected[index].ByteOffset || field.BitOffset != expected[index].BitOffset || field.BitWidth != expected[index].BitWidth || field.BitSigned != expected[index].BitSigned || obj.Type(field.TypeId) != prior.Object.Type(expected[index].TypeId) ||
+                            field.ByteOffset != expected[index].ByteOffset || field.BitOffset != expected[index].BitOffset || field.BitWidth != expected[index].BitWidth || field.BitSigned != expected[index].BitSigned || CanonicalExecutionType(obj.Type(field.TypeId)) != CanonicalExecutionType(prior.Object.Type(expected[index].TypeId)) ||
                             field.FieldRole != expected[index].FieldRole || field.ObservedAlignment != expected[index].ObservedAlignment ||
                             FieldBaseOrdinal(obj, field) != FieldBaseOrdinal(prior.Object, expected[index]) ||
                             FieldSourceSignature(obj, field) != FieldSourceSignature(prior.Object, expected[index])).Any())

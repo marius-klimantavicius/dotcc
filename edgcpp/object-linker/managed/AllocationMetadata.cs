@@ -1,8 +1,8 @@
 namespace DotObj;
 
-internal sealed record SourceAllocationObligation(long Id, long FunctionEntityId, long LifetimeId,
+internal sealed record SourceAllocationObligation(long Id, long? FunctionEntityId, long LifetimeId,
     long Ordinal, long DeallocatorEntityId, long AllocatedSourceTypeId, bool IsArray,
-    long? SourceFileId, long Line, long Column, string CaptureProof);
+    long? SourceFileId, long Line, long Column, string CaptureProof, long? SourceInitializerId, long? SourceStaticObligationId);
 internal sealed record AllocationCleanupAction(long Id, long FunctionEntityId, long SourceAllocationObligationId,
     long CallbackEntityId, long TargetNodeId, long? AllocationSize, long? ConditionBindingId,
     string NullPolicy, string CaptureProof);
@@ -15,15 +15,15 @@ internal sealed partial class ObjectFile
 
     private void ReadAllocationObligations()
     {
-        using var query = database.Prepare("SELECT id,function_entity_id,lifetime_id,ordinal,deallocator_entity_id,allocated_source_type_id,is_array,source_file_id,line,column,capture_proof FROM source_allocation_obligations ORDER BY lifetime_id,ordinal");
+        using var query = database.Prepare("SELECT id,function_entity_id,lifetime_id,ordinal,deallocator_entity_id,allocated_source_type_id,is_array,source_file_id,line,column,capture_proof,source_initializer_id,source_static_obligation_id FROM source_allocation_obligations ORDER BY lifetime_id,ordinal");
         while (query.Read())
         {
-            var obligation = new SourceAllocationObligation(query.Integer(0), query.Integer(1), query.Integer(2),
+            var obligation = new SourceAllocationObligation(query.Integer(0), query.OptionalInteger(1), query.Integer(2),
                 query.Integer(3), query.Integer(4), query.Integer(5), query.Integer(6) != 0,
-                query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.Text(10));
+                query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.Text(10), query.OptionalInteger(11), query.OptionalInteger(12));
             if (obligation.Id <= 0 || SourceDestructionObligations.ContainsKey(obligation.Id) ||
                 !SourceLifetimes.TryGetValue(obligation.LifetimeId, out SourceLifetime? lifetime) ||
-                lifetime.FunctionEntityId != obligation.FunctionEntityId || obligation.Ordinal < 0 ||
+                lifetime.FunctionEntityId != obligation.FunctionEntityId || lifetime.SourceInitializerId != obligation.SourceInitializerId || obligation.Ordinal < 0 ||
                 !EntitySourceRoutines.TryGetValue(obligation.DeallocatorEntityId, out RoutineType? routine) ||
                 SourceFunctionKinds[obligation.DeallocatorEntityId] is not ("ordinary" or "runtime") ||
                 routine.ObjectTypeId is not null || routine.Variadic ||
@@ -39,7 +39,7 @@ internal sealed partial class ObjectFile
         while (boundaries.Read())
         {
             if (!SourceAllocationObligations.TryGetValue(boundaries.Integer(1), out SourceAllocationObligation? obligation) ||
-                OriginalFunction(boundaries.Integer(2)) != obligation.FunctionEntityId ||
+                !IsSourceLifetimeExecution(SourceLifetimes[obligation.LifetimeId], boundaries.Integer(2)) ||
                 !InternalTryExpressions.Contains(boundaries.Integer(0)) ||
                 !InternalTryAllocations.TryAdd(boundaries.Integer(0), obligation.Id))
                 throw new InvalidDataException("Internal allocation boundary differs from its original obligation or function");
@@ -50,7 +50,7 @@ internal sealed partial class ObjectFile
             var action = new AllocationCleanupAction(actions.Integer(0), actions.Integer(1), actions.Integer(2), actions.Integer(3),
                 actions.Integer(4), actions.OptionalInteger(5), actions.OptionalInteger(6), actions.Text(7), actions.Text(8));
             if (action.Id <= 0 || !SourceAllocationObligations.TryGetValue(action.SourceAllocationObligationId, out SourceAllocationObligation? obligation) ||
-                obligation.IsArray || OriginalFunction(action.FunctionEntityId) != obligation.FunctionEntityId ||
+                obligation.IsArray || !IsSourceLifetimeExecution(SourceLifetimes[obligation.LifetimeId], action.FunctionEntityId) ||
                 !Functions.ContainsKey(action.FunctionEntityId) || actions.OptionalInteger(9) != action.FunctionEntityId ||
                 actions.OptionalInteger(10) is not long targetType || Type(targetType) != "ptr(void)" ||
                 !Entities.TryGetValue(action.CallbackEntityId, out Entity? callback) || OriginalFunction(callback.Id) != obligation.DeallocatorEntityId ||

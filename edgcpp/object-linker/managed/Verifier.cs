@@ -2,8 +2,8 @@ namespace DotObj;
 
 internal static class Verifier
 {
-    private static readonly HashSet<string> StatementKinds = ["compile-time-if", "try", "catch", "memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
-    private static readonly HashSet<string> ExpressionKinds = ["guard-operation", "internal-try-expression", "caught-object-address", "handler-marker", "cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "virtual-base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
+    private static readonly HashSet<string> StatementKinds = ["record-storage-init", "compile-time-if", "try", "catch", "memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
+    private static readonly HashSet<string> ExpressionKinds = ["record-constant-init", "virtual-base-adjustment", "static-destruction-register", "guard-operation", "internal-try-expression", "caught-object-address", "handler-marker", "cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "virtual-base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -124,10 +124,10 @@ internal static class Verifier
                 if (type == "void" && node.Kind is not ("guard-operation" or "call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional" or "cleanup-transition" or "cleanup-frame" or "lifetime-scope" or "throw" or "throw-marker" or "rethrow" or "handler-marker" or "internal-try-expression")) Fail("Only calls and explicit void operations can have void type");
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
                 string[] orders = node.Kind is "cleanup-transition" or "cleanup-frame" or "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
-                if (node.Kind is "cleanup-transition" or "cleanup-frame" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
+                if (node.Kind is "virtual-base-adjustment" or "cleanup-transition" or "cleanup-frame" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
                 if (node.Kind is "thrown-object-address" or "throw-marker" or "rethrow" or "cleanup-payload-address" or "handler-marker" or "caught-object-address") orders = ["none"];
                 if (node.Kind is "materialize" or "throw" or "internal-try-expression") orders = ["left-to-right"];
-                if (node.Kind is "assign" or "record-transfer" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
+                if (node.Kind is "assign" or "record-transfer" or "record-constant-init" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
                 if (node.Kind is "address" or "dereference" or "array-decay" or "member" or "va-start" or "va-copy" or "va-end" or "va-arg") orders = ["none", "left-to-right", "unspecified"];
                 if (!orders.Contains(node.EvaluationOrder)) Fail($"Unsupported evaluation order at {node.Id}");
             }
@@ -149,14 +149,21 @@ internal static class Verifier
                 if (child.TypeId is long childType && ScalarTypes.IsArray(obj.Type(childType)) &&
                     !(node.Kind is "address" or "array-decay" or "lifetime-scope" && edge.Role == "operand") &&
                     !(node.Kind == "sequence" && child.Id == SequenceTail(node).Id) &&
-                    !(node.Kind == "array-init" && edge.Role == "target") && node.Kind != "block-copy")
+                    !(node.Kind is "array-init" or "record-storage-init" && edge.Role == "target") && node.Kind != "block-copy")
                     Fail("Array place requires explicit address, decay or initialization");
                 if (child.TypeId is long recordType && ScalarTypes.IsRecord(obj.Type(recordType)))
                 {
-                    bool allowed = node.Kind == "block-copy" || node.Kind == "sequence" && node.ValueCategory == "place" && child.Id == SequenceTail(node).Id || node.Kind is "member" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope" or "address" && edge.Role == "operand" ||
+                    // A discarded glvalue evaluates its place/address; it does
+                    // not transport the record value. Stock C preserves this
+                    // distinction for the left operand of a comma expression.
+                    bool discardedPlace = Place(child) &&
+                        (node.Kind == "sequence" && child.Id != SequenceTail(node).Id ||
+                         node.Kind == "convert" && Type(node) == "void" && edge.Role == "operand" ||
+                         node.Kind == "expr-stmt" && edge.Role == "value");
+                    bool allowed = node.Kind == "record-constant-init" && edge.Role is "target" or "value" || node.Kind == "record-storage-init" && edge.Role == "target" || discardedPlace || node.Kind == "block-copy" || node.Kind == "sequence" && node.ValueCategory == "place" && child.Id == SequenceTail(node).Id || node.Kind is "virtual-base-adjustment" or "member" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope" or "address" && edge.Role == "operand" ||
                         node.Kind is "assign" or "record-transfer" && (edge.Role == "target" || edge.Role == "value" && child.Kind == "default-value") ||
                         node.Kind == "declare" && edge.Role == "initializer" && child.Kind == "default-value" ||
-                        child.Kind is "assign" or "record-transfer" &&
+                        child.Kind is "assign" or "record-transfer" or "record-constant-init" &&
                         (node.Kind == "expr-stmt" && edge.Role == "value" ||
                          node.Kind == "throw" && edge.Role == "initializer" ||
                          node.Kind == "sequence" && child.Id != SequenceTail(node).Id ||
@@ -165,6 +172,7 @@ internal static class Verifier
                         ? obj.RecordValueTransfers.TryGetValue(node.Id, out string? transferKind) && obj.CanTransferRecord(obj.Type(recordType), transferKind)
                         : node.Kind == "assign" ? obj.CanCopyRecord(obj.Type(recordType))
                         : node.Kind == "declare" ? obj.CanConstructRecord(obj.Type(recordType))
+                        : node.Kind is "call" or "indirect-call" && edge.Role == "argument" ? obj.CanPassRecord(obj.Type(recordType))
                         : obj.CanTransportRecord(obj.Type(recordType));
                     if (!allowed && !copyAllowed) Fail("Record value operation lacks its required construction, transport or assignment permission");
                 }
@@ -469,6 +477,15 @@ internal static class Verifier
                         Fail(node.Kind == "break" ? "Break target must be the nearest enclosing loop or switch"
                             : "Continue target must be the nearest enclosing loop");
                     return; // target is an identity reference, not another executable occurrence.
+                case "static-destruction-register":
+                    EdgeShape(node, ("callback", 1, 1), ("object", 1, 1));
+                    Expr(node, "callback"); Expr(node, "object");
+                    if (Type(node) != "i32" || node.EvaluationOrder != "left-to-right" ||
+                        !RoutineTypes.IsFunctionPointer(Type(Child(node, "callback"))) ||
+                        !ScalarTypes.IsPointer(Type(Child(node, "object"))) || RoutineTypes.IsFunctionPointer(Type(Child(node, "object"))) ||
+                        !obj.StaticDestructionRegistrations.ContainsKey(node.Id))
+                        Fail("Static destructor registration lacks its typed owned provenance");
+                    break;
                 case "intrinsic":
                     EdgeShape(node, ("argument", 0, int.MaxValue));
                     var intrinsicArgs = body.Children(node.Id, "argument").Select(edge => body.Nodes[edge.ChildId]).ToArray();
@@ -552,6 +569,8 @@ internal static class Verifier
                 case "indirect-call":
                     EdgeShape(node, ("operand", 1, 1), ("argument", 0, int.MaxValue)); Expr(node, "operand");
                     if (!RoutineTypes.IsFunctionPointer(Type(Child(node, "operand")))) Fail("Indirect call requires a typed function pointer");
+                    if (obj.DeferredRoutineKeys.Contains(ScalarTypes.Pointee(Type(Child(node, "operand")))))
+                        Fail("Indirect call requires a completed original routine ABI");
                     var indirectSignature = RoutineTypes.Signature(ScalarTypes.Pointee(Type(Child(node, "operand"))));
                     var indirectArgs = body.Children(node.Id, "argument").Select(edge => body.Nodes[edge.ChildId]).ToArray();
                     if (Type(node) != indirectSignature.Result || (indirectSignature.Variadic ? indirectArgs.Length < indirectSignature.Parameters.Length : indirectArgs.Length != indirectSignature.Parameters.Length) ||
@@ -566,6 +585,13 @@ internal static class Verifier
                 case "default-value":
                     EdgeShape(node);
                     if (!obj.CanZeroInitializeRecord(Type(node))) Fail("Default value requires an owned zero-initializable record layout");
+                    break;
+                case "virtual-base-adjustment":
+                    EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
+                    if (!ScalarTypes.IsPointer(Type(node)) || Type(node) != Type(Child(node, "operand")) ||
+                        !obj.VirtualBaseAdjustments.ContainsKey(node.Id))
+                        Fail("Virtual base adjustment requires its exact lowered pointer and owned provenance");
+                    obj.VerifyVirtualBaseAdjustmentBody(node, body);
                     break;
                 case "virtual-base-subobject":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
@@ -597,6 +623,15 @@ internal static class Verifier
                     EdgeShape(node);
                     if (!body.Bindings.TryGetValue(node.BindingId!.Value, out Binding? binding) || !scopes.Contains(binding.ScopeNodeId) || !visible.Contains(binding.Id)) Fail("Binding used outside scope or before declaration");
                     if (obj.Type(binding!.TypeId) != Type(node)) Fail("Binding reference type mismatch");
+                    break;
+                case "record-storage-init":
+                    EdgeShape(node, ("target", 1, 1), ("body", 1, 1)); Expr(node, "target");
+                    Node initialized = Child(node, "target");
+                    if (!obj.RecordStorageInitializations.TryGetValue(node.Id, out RecordStorageInitialization? initialization) ||
+                        initialized.Kind != "binding" || !Place(initialized) || initialized.BindingId != initialization.BindingId ||
+                        Child(node, "body").Kind != "block")
+                        Fail("Record storage initialization requires its original local binding and typed initialization body");
+                    obj.VerifyRecordStorageInitializationBody(node, body);
                     break;
                 case "array-init":
                     EdgeShape(node, ("target", 1, 1), ("element", 0, int.MaxValue));
@@ -746,6 +781,13 @@ internal static class Verifier
                     if (node.Operator is "rem" or "bit-and" or "bit-or" or "bit-xor" or "shl" or "shr" &&
                         (!ScalarTypes.IsInteger(Type(node)) || !ScalarTypes.IsInteger(Type(Child(node, "value"))))) Fail("Compound integer operator requires integer operands");
                     break;
+                case "record-constant-init":
+                    EdgeShape(node, ("target", 1, 1), ("value", 1, 1)); Expr(node, "target"); Expr(node, "value");
+                    if (!obj.RecordConstantInitializations.TryGetValue(node.Id, out RecordConstantInitialization? constantInitialization) ||
+                        !Place(Child(node, "target")) || Child(node, "value").Kind != "storage" ||
+                        Child(node, "value").StorageId != constantInitialization.StorageId || DeclaredVolatile(Child(node, "target")))
+                        Fail("Record constant initialization requires its exact constant storage and nonvolatile target place");
+                    SameType(node, Child(node, "target")); SameType(node, Child(node, "value")); break;
                 case "record-transfer":
                     EdgeShape(node, ("target", 1, 1), ("value", 1, 1)); Expr(node, "target"); Expr(node, "value");
                     if (!ScalarTypes.IsRecord(Type(node)) || !Place(Child(node, "target")) ||
@@ -911,7 +953,7 @@ internal static class Verifier
                     if (consumer.Kind == "binary" && consumer.Operator is "pointer-add" or "pointer-subtract" || consumer.Kind == "conditional")
                     { CheckEscape(consumer, depth + 1); continue; }
                     if (consumer.Kind == "binary" && consumer.Operator is "eq" or "ne" or "lt" or "le" or "gt" or "ge" or "pointer-difference") continue;
-                    Fail("Underaligned typed address escapes its verified place; use byte/void memory access or an explicit alignment-aware ABI");
+                    Fail($"Underaligned typed address {node.Id} ({Type(node)}, alignment {accessAlignment.Pointer(node)}) escapes through {pointer.Id} to {consumer.Id} ({consumer.Kind}, {use.Role}); use byte/void memory access or an explicit alignment-aware ABI");
                 }
             }
             CheckEscape(node, 0);

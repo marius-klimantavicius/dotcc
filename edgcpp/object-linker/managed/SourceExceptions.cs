@@ -150,15 +150,16 @@ internal sealed partial class ObjectFile
                     query.OptionalInteger(5) is not long type || Type(type) != "ptr(" + Type(ExceptionTypes[thrown.ExceptionTypeId].PayloadTypeId) + ")" ||
                     !ScalarTypes.IsRecord(Type(ExceptionTypes[thrown.ExceptionTypeId].PayloadTypeId)) ||
                     query.OptionalInteger(6) != action.FunctionEntityId || query.OptionalInteger(7) != action.FunctionEntityId ||
-                    PayloadSubobjectOwners.GetValueOrDefault(action.SourceObligationId) != target.ThrowNodeId ||
+                    action.SourceObligationId is not long sourceObligation || PayloadSubobjectOwners.GetValueOrDefault(sourceObligation) != target.ThrowNodeId ||
                     !CleanupPayloadTargets.TryAdd(target.NodeId, target) || !CleanupPayloadOwners.TryAdd(target.ActionId, target.ThrowNodeId))
                     throw new InvalidDataException("Payload cleanup target lacks its exact action, throw or payload type");
             }
-        if (CleanupActions.Values.Any(action => PayloadSubobjectOwners.ContainsKey(action.SourceObligationId) && !CleanupPayloadOwners.ContainsKey(action.Id)))
+        if (CleanupActions.Values.Any(action => action.SourceObligationId is long obligation && PayloadSubobjectOwners.ContainsKey(obligation) && !CleanupPayloadOwners.ContainsKey(action.Id)))
             throw new InvalidDataException("Payload rollback action lacks its completion-aware payload target");
-        if (SourceDestructionObligations.Keys.Except(CleanupActions.Values.Select(action => action.SourceObligationId)
-                .Concat(NormalDestructions.Values).Concat(ArrayRuntimeOperations.Values.Select(operation => operation.SourceObligationId)).Concat(PayloadSubobjectOwners.Keys)).Any())
-            throw new InvalidDataException("Original destruction obligation has no observed owned execution action or complete payload owner");
+        ReadDestructionElisions();
+        if (SourceDestructionObligations.Keys.Except(CleanupActions.Values.Where(action => action.SourceObligationId is not null).Select(action => action.SourceObligationId!.Value)
+                .Concat(NormalDestructions.Values).Concat(ArrayRuntimeOperations.Values.Where(operation => operation.SourceObligationId is not null).Select(operation => operation.SourceObligationId!.Value)).Concat(PayloadSubobjectOwners.Keys).Concat(DestructionElisions.Keys.Select(key => key.SourceObligationId))).Any())
+            throw new InvalidDataException("Original destruction obligation has no observed owned execution action, complete payload owner or exact stock elision");
         using (var query = database.Prepare("SELECT x.node_id,x.capture_proof,n.kind FROM rethrow_expressions x LEFT JOIN nodes n ON n.id=x.node_id ORDER BY x.node_id"))
             while (query.Read())
                 if (query.Text(1) != "observed-rethrow" || query.OptionalText(2) != "rethrow" || !RethrowExpressions.Add(query.Integer(0)))
@@ -180,7 +181,7 @@ internal sealed partial class ObjectFile
                 if (!SourceDestructionObligations.TryGetValue(obligationId, out SourceDestructionObligation? obligation) ||
                     !ThrowExpressions.TryGetValue(throwId, out ThrowExpression? thrown) || thrown.InitializationKind != "expression" ||
                     thrown.DestructorEntityId is null || query.OptionalInteger(4) is not long owner ||
-                    OriginalFunction(owner) != obligation.FunctionEntityId || query.Text(2) != "complete-payload-destructor" ||
+                    !IsSourceLifetimeExecution(SourceLifetimes[obligation.LifetimeId], owner) || query.Text(2) != "complete-payload-destructor" ||
                     query.Text(3) != "observed-payload-subobject-init" || !PayloadSubobjectOwners.TryAdd(obligationId, throwId))
                     throw new InvalidDataException("Payload subobject lacks its original destruction obligation and complete throw owner");
                 PayloadSubobjectPaths.Add(obligationId, []);

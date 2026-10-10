@@ -1,0 +1,118 @@
+{
+  "profile": "scalar-control-v40",
+  "status": "passed-scoped-milestone",
+  "tools": {
+    "native": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native098-verified-snapshot/cpfe-dot",
+      "sha256": "00a9d692dee792c4a278311362d649b032c6da0b0b8b4c9b389eff3155067b78"
+    },
+    "managed": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-109/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "d24d33ce92abe46d78c9b1c717e49b0b0f965b2bf4550587fbd70c2dac610025"
+    },
+    "packager": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v40-tooling-098/compile.py",
+      "sha256": "899bd94cf57e1492ca97a116c279a701f8517bbf37833c22e5e29c8d65e2f1c7"
+    },
+    "schema": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v40-tooling-098/schema.sql",
+      "sha256": "947a93ccb0465cd8aa5622f589610c07f728771aa3416e83d4b0251d44673ced"
+    }
+  },
+  "evidence": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v40-003/results.json",
+      "sha256": "a523015dfc44a93eea9555ae4390784c8cde28cc28c51f9cf01ff5658510fdb8",
+      "status": "passed",
+      "checks": 1042
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-global-v40-005/results.json",
+      "sha256": "9e0d15ba5a7e0af41df23c387df231fb92660ffb16c8385636acb01582b56bae",
+      "status": "passed",
+      "checks": 146
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-init-v40-009/results.json",
+      "sha256": "165e98023bc637483b1409fad75cbaa8dbf861d3c372949eb2a104b0b57eccb9",
+      "status": "passed",
+      "checks": 138
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-virtual-base-v40-006/results.json",
+      "sha256": "7d767903aa0488e6acefbfb6bfb54ed6f37379dcc83773dba2631e76d197c8bf",
+      "status": "passed",
+      "checks": 31
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-terminal-partial-v40-001/results.json",
+      "sha256": "c88edd9df30f2bff6424fd1c48dd6f5bd15688b477da30e66aee70204ca280f0",
+      "status": "passed",
+      "checks": 32
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-terminal-array-coexistence-098/verification/results.json",
+      "sha256": "721636bec206d1c82de7bbb491254a6a6dd490c1a58c7f0cba0ab9aefb05cffb",
+      "status": "passed",
+      "checks": 8
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-no-effect-negative-096/results.json",
+      "sha256": "63fb4557789906bab9ebba34aaf4512b7b311677a2db0f50c293c0506ac5ac29",
+      "status": "passed",
+      "checks": null
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-process-shared-finalizers-001/results.json",
+      "sha256": "1f261c142f506fadcb8f1075d26a28abe256f591c2ddf9adcfe9020321b54df3",
+      "status": "passed",
+      "checks": 87
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v40-final-focused-098/argument/results.json",
+      "sha256": "6990c531d9975c387a1c2d7dff1425e1f1377d85ae9900f312fe50df69c3c844",
+      "status": "passed",
+      "checks": 24
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v40-final-focused-098/deferred/results.json",
+      "sha256": "8d2035c2249d2e42c435edc16d4c3ff25c342fd77f75ebaa257c6f8e1d9daeea",
+      "status": "passed",
+      "checks": 29
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v40-final-focused-098/discarded/results.json",
+      "sha256": "3a65b15f248bbfcb828fbfa68cd30370ba9dec4e28324480c828f165d14274ee",
+      "status": "passed",
+      "checks": 26
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v40-final-focused-098/dependent/results.json",
+      "sha256": "f5bf130e55c1ede35b0ce5ae645483104c9281b12d390ccc55424db8a063b4b2",
+      "status": "passed",
+      "checks": 24
+    }
+  ],
+  "broadToolBoundary": "1042 checks on native096/managed107; final098/109 changes separately verify construct-only terminal elision coexistence and exact saved-pointer alias proof. No claim that all receipts ran final tools.",
+  "fullProject": {
+    "manifest": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-runtime-manifest-003/project.json",
+    "totalManifestUnits": 2635,
+    "inventoryStatus": "in-progress",
+    "checkpoint": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v40-inventory-checkpoint.json",
+    "checkpointSha256": "e91012cc447c6a80b17e2d1da2ab7e2537ee9025ab610566176a5b77709915b5",
+    "completedAtCheckpoint": 810,
+    "packagedAtCheckpoint": 456,
+    "fullGeneration": false,
+    "compilation": false,
+    "execution": false
+  },
+  "knownBlockers": [
+    "Exact empty-initialization allocation rollback elision (_Storage) retains original obligation but lacks execution disposition.",
+    "Default-member initializer original template graph and observed constructor copies need ownership; original constructor graph must remain intact.",
+    "Bundled ICU empty GNU asm input rm constraints are not yet represented.",
+    "Conditional noncopyable initialization requires exact observed master-entry constant transport.",
+    "string_util now passes virtual-base correspondence, then fails incomplete external VTT-array typed-address alignment.",
+    "Additional failures retained in complete manifest inventory; libc++ runtime closure intentionally deferred."
+  ],
+  "review": "edgcpp/artifacts/review/dotobj-duckdb-v40"
+}

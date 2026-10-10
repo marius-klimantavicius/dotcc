@@ -67,6 +67,7 @@ internal sealed class AccessAlignment(ObjectFile obj, FunctionBody body)
         if (pointerOrigins.TryGetValue(node.Id, out Origin value)) return value;
         value = node.Kind switch
         {
+            "virtual-base-adjustment" => new(obj.Records[obj.VirtualBaseAdjustments[node.Id].CompleteBaseTypeId].Alignment, false),
             "sequence" => PointerOrigin(SequenceTail(node)),
             "lifetime-scope" => PointerOrigin(body.Child(node.Id, "operand")),
             "address" or "array-decay" => new(Place(body.Child(node.Id, "operand")), false),

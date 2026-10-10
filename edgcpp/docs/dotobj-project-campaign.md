@@ -935,7 +935,7 @@ bodies and exact formal forwarding. No frontend semantic change or layout
 validation weakening was introduced. The adjustment tuple is descriptive and
 cross-unit provenance; symbolic tuple/body equivalence is not yet checked.
 
-Final native078/managed088 passes1,042 broad JIT checks. The allocation-boundary
+Final native078/managed088 passes 1,042 broad JIT checks. The allocation-boundary
 fixture passes37 checks/24 traces against native and stock EDG C at O0/O2, JIT
 and NativeAOT, including six malformed-object rejections. Recursive base identity
 passes14 checks; virtual wrappers pass18 export/metadata/source-hidden-link checks
@@ -1002,3 +1002,57 @@ Review: `artifacts/review/dotobj-duckdb-v39`. Hashed acceptance evidence:
 contains 2,635 units; the samples above must not be mistaken for the full project.
 Next implement global/static destructor registration and initializer lifetime
 ownership, then the remaining record operation/ABI and project frontier gates.
+
+
+## 2026-10-10: v40 static lifetimes, record initialization and source-only types
+
+The object now retains original file/local-static initializer identities,
+shared static lifetime graphs, persistent and partial-aggregate obligations,
+constructor-temporary adoption, successful destructor registration and generated
+array callbacks. Stock-suppressed constexpr declarations keep source types and
+initializer provenance without fabricated runtime storage. Exact stock terminal
+and no-effect destruction removals retain explicit dispositions. Array runtime
+construction may own prefix rollback while a terminal disposition removes the
+later cleanup interval; actual destruction/action conflicts remain rejected.
+
+A shared BCL finalizer registry preserves order with atexit, registrations made
+while draining and explicit repeatable library finalization. This is per-assembly
+static runtime acceptance, not complete independent-engine ownership. Original
+record argument and result ABI policies are distinct. Unused incomplete callback
+signatures retain deferred ABI information, with cross-unit completion before
+calls. Record storage/pooled-constant initialization preserves source construction
+semantics without licensing generic copies of noncopyable objects. Constant data
+uses default only when the actual bytes and relocations establish all-zero bits;
+logical C++ zero initialization alone is insufficient.
+
+Source-only dependent template parameters/member types retain identities and
+owners without invented layouts. Ordinary virtual-base adjustment metadata keeps
+the actual dynamic lookup, copied-pointer and null-preservation semantics. Exact
+saved-pointer assignment chains prove aliases introduced by stock lowering;
+malformed alias/vtable changes are rejected. Discarded noncopyable places evaluate
+their effects without materializing forbidden value copies.
+
+Broad native096/managed107 acceptance passes 1,042 checks. Focused final checks
+include 146 static lifetime checks under native/stock-C/JIT/NativeAOT,138 record
+initialization checks,31 virtual-base checks including NativeAOT,32 terminal
+partial-array checks,8 construct/elision coexistence checks and two additional
+resealed no-effect disposition rejections. The final native098/managed109 delta
+is the narrowly verified construct-versus-destroy conflict distinction and exact
+saved-pointer alias proof; the broad suite was not repeated for these targeted
+changes. Individual receipts and tool hashes identify which tools ran each test.
+
+Real exception.cpp now packages and emits; replace_type.cpp packages 619 functions.
+The 38-unit sample reached 25 packages during development, but this is no longer
+the only project probe. A full 2,635-unit immutable native094 inventory is running
+with two 8-GiB workers. Early dominant families are missing empty allocation-boundary
+dispositions, original default-member initializer ownership and bundled ICU's
+register-or-memory empty assembly operands. String_util.cpp packages and verifies
+its virtual-base correspondences with managed109, then still fails a distinct
+constructor-vptr typed-address alignment check. Full combined DuckDB generation,
+compilation and execution remain incomplete; no libc++ runtime closure is claimed.
+
+Review: `artifacts/review/dotobj-duckdb-v40`. Acceptance receipts:
+`evidence/dotobj-duckdb-static-types-20261010.json`. Continue with common full-project
+failure families, retaining the original constructor graph when adding field
+initializer template/execution correspondence. Do not return to merged IL or
+external preprocessing, and do not weaken ownership/alignment checks to pass.

@@ -11,6 +11,7 @@
 #include <vector>
 #include "fe_common.h"
 #include "il.h"
+#include "il_walk.h"
 #include "types.h"
 #include "lower_name.h"
 #if DO_IL_LOWERING
@@ -35,6 +36,10 @@ struct Type {
   std::string error;
   a_type_ptr original_type=nullptr; // Private correspondence key, never wire.
   unsigned member_owner=0;
+  std::string dependent_kind,dependent_identity;
+  unsigned dependent_owner=0;
+  int dependent_depth=0,dependent_position=0;
+  bool dependent_pack=false;
   // Private physical representation fact also retained for 128-bit enums.
   bool is_int128=false,is_unsigned_int128=false;
   a_source_position position={};
@@ -68,6 +73,7 @@ struct Declaration {
   // an explicit activation statement, never an EDG address or attribute text.
   a_routine_ptr cleanup=nullptr;
   bool has_initializer=false;
+  unsigned initializer_kind=0; // Exact original an_init_kind before lowering.
 };
 struct Function {
   Declaration declaration;
@@ -163,7 +169,7 @@ struct PrelowerRecord {
   a_source_position position={};
   std::string name,error;
   bool complete=false,trivial_copy_known=false,trivial_copy=false;
-  bool operations_known=false,bitwise_construction=false,bitwise_assignment=false,requires_return_storage=false;
+  bool operations_known=false,bitwise_construction=false,bitwise_assignment=false,requires_return_storage=false,requires_parameter_storage=false;
   unsigned long long size=0,alignment=0;
   std::vector<PrelowerField> fields;
   std::vector<PrelowerBase> bases,virtual_bases;
@@ -207,8 +213,54 @@ struct GeneratedInitializer {
   std::vector<a_dynamic_init_ptr> initializers;
   std::string error;
 };
+struct SourceInitializer {
+  a_dynamic_init_ptr original=nullptr;
+  a_variable_ptr variable=nullptr;
+  a_routine_ptr owner=nullptr;
+  an_object_lifetime_ptr expression_lifetime=nullptr;
+  unsigned source_type=0,ordinal=0;
+  a_source_position position={};
+  std::string source_name;
+};
+struct StaticLifetimeSnapshot {
+  an_object_lifetime_ptr original=nullptr,parent=nullptr;
+  a_dynamic_init_ptr initializer=nullptr,parent_obligation=nullptr;
+  a_routine_ptr owner=nullptr;
+  unsigned sibling_ordinal=0;
+  bool has_sibling_ordinal=false;
+  std::string kind,error,entity_description;
+  a_source_position position={};
+};
+struct StaticDestructionSnapshot {
+  a_dynamic_init_ptr original=nullptr,initializer=nullptr;
+  an_object_lifetime_ptr lifetime=nullptr;
+  a_routine_ptr owner=nullptr,selected_routine=nullptr;
+  a_variable_ptr variable=nullptr;
+  unsigned ordinal=0,source_type=0;
+  bool persistent=false,partial_aggregate=false,allocation=false,array_allocation=false,thread=false;
+  a_source_position position={};
+  std::string error;
+};
+struct StaticRegistrationSnapshot {
+  a_dynamic_init_ptr original=nullptr;
+  a_routine_ptr owner=nullptr,callback=nullptr;
+  an_expr_node_ptr object=nullptr,callback_expression=nullptr,dso=nullptr;
+  a_variable_ptr variable=nullptr;
+  bool thread=false;
+  std::string error;
+};
+struct GeneratedStaticDestructor {
+  a_dynamic_init_ptr original=nullptr;
+  a_variable_ptr variable=nullptr,parameter=nullptr;
+  a_scope_ptr scope=nullptr;
+  a_type_ptr element_type=nullptr;
+  unsigned long long element_count=0,element_size=0;
+  bool complete=false,array=false;
+  std::string error;
+};
 struct LifetimeSnapshot {
   a_routine_ptr owner=nullptr;
+  a_dynamic_init_ptr initializer=nullptr;
   an_object_lifetime_ptr original=nullptr,parent=nullptr;
   a_dynamic_init_ptr parent_obligation=nullptr;
   unsigned sibling_ordinal=0;
@@ -217,10 +269,11 @@ struct LifetimeSnapshot {
 };
 struct DestructionSnapshot {
   a_routine_ptr owner=nullptr,destructor=nullptr;
+  a_dynamic_init_ptr initializer=nullptr;
   an_object_lifetime_ptr lifetime=nullptr;
   a_dynamic_init_ptr original=nullptr;
   unsigned ordinal=0,source_type=0;
-  bool allocation_release=false,array_allocation=false;
+  bool allocation_release=false,array_allocation=false,partial_aggregate=false;
   a_source_position position={};
   std::string error;
 };
@@ -257,10 +310,18 @@ struct CleanupSnapshot {
   std::vector<CleanupPathPart> path;
   std::string error;
 };
+struct VirtualBaseAdjustmentSnapshot {
+  a_routine_ptr owner=nullptr;
+  an_expr_node_ptr source_object=nullptr,lookup_object=nullptr,offset=nullptr;
+  a_type_ptr derived_type=nullptr,base_type=nullptr;
+  long long vtable_index=0;
+};
 struct RecordTransferSnapshot {
   a_routine_ptr owner=nullptr;
   an_expr_node_ptr target=nullptr,value=nullptr;
   std::string kind;
+  a_variable_ptr constant_storage=nullptr;
+  std::string constant_initialization_kind;
 };
 struct ThrowSnapshot {
   an_expr_node_ptr original=nullptr,initializer=nullptr;
@@ -294,6 +355,23 @@ struct State {
   std::map<a_type_ptr,std::string> finalized_enum_identities;
   std::map<std::pair<a_seq_number,a_column_number>,unsigned> enum_occurrence_counts;
   std::map<a_routine_ptr,Function> functions;
+  std::map<a_dynamic_init_ptr,SourceInitializer> source_initializers;
+  std::vector<a_dynamic_init_ptr> source_initializer_order;
+  std::map<a_routine_ptr,unsigned> source_initializer_ordinals;
+  std::map<an_object_lifetime_ptr,StaticLifetimeSnapshot> static_lifetimes;
+  std::vector<an_object_lifetime_ptr> static_lifetime_order;
+  std::map<a_dynamic_init_ptr,StaticDestructionSnapshot> static_destructions;
+  std::vector<a_dynamic_init_ptr> static_destruction_order;
+  std::map<an_expr_node_ptr,StaticRegistrationSnapshot> static_registrations;
+  std::set<a_dynamic_init_ptr> static_no_effect,static_partial_terminal;
+  std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> automatic_partial_terminal;
+  std::map<std::pair<a_dynamic_init_ptr,a_routine_ptr>,std::set<a_dynamic_init_ptr>> automatic_partial_terminal_copies;
+  std::set<a_dynamic_init_ptr> automatic_no_effect_observed;
+  std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> automatic_destructor_no_effect;
+  std::map<a_routine_ptr,GeneratedStaticDestructor> generated_static_destructors;
+  std::map<a_routine_ptr,std::vector<a_dynamic_init_ptr>> adopted_initializers;
+  std::map<std::pair<an_object_lifetime_ptr,a_routine_ptr>,a_dynamic_init_ptr> initializer_lifetime_adoptions;
+  a_dynamic_init_ptr active_file_initializer=nullptr;
   std::map<an_object_lifetime_ptr,LifetimeSnapshot> lifetimes;
   std::map<a_routine_ptr,std::vector<an_object_lifetime_ptr>> lifetime_order;
   std::map<a_dynamic_init_ptr,DestructionSnapshot> destructions;
@@ -315,6 +393,8 @@ struct State {
   std::vector<a_handler_ptr> active_handlers;
   std::map<a_dynamic_init_ptr,std::pair<a_routine_ptr,a_handler_ptr>> handler_releases;
   std::map<an_expr_node_ptr,RecordTransferSnapshot> record_transfers;
+  std::map<a_variable_ptr,a_constant_ptr> pooled_record_constants;
+  std::map<an_expr_node_ptr,VirtualBaseAdjustmentSnapshot> virtual_base_adjustments;
   std::map<an_expr_node_ptr,ThrowSnapshot> throws;
   std::map<an_expr_node_ptr,an_expr_node_ptr> throw_addresses,throw_markers;
   std::vector<an_expr_node_ptr> active_throws;
@@ -625,6 +705,33 @@ inline unsigned capture_type(a_type_ptr t) {
   } else if(t->kind==tk_nullptr) {
     value.kind="nullptr";
     if(!is_standard_nullptr_type(t))value.error="managed nullptr source type is not represented";
+  } else if(t->kind==tk_template_param) {
+    value.kind="dependent";
+    const auto &parameter=t->variant.template_param;auto extra=parameter.extra_info;
+    if(!extra || parameter.is_generic_param || parameter.is_auto_param || parameter.is_decltype_auto ||
+       parameter.originally_class_template_param || (extra && extra->orig_nested_type))
+      value.error="dependent source type requires additional generic/placeholder/nested-origin contract";
+    else if(parameter.kind==tptk_param) {
+      value.dependent_kind="parameter";value.dependent_depth=extra->coordinates.depth;
+      value.dependent_position=extra->coordinates.position;value.dependent_pack=parameter.is_pack;
+      if(value.dependent_depth<=0 || value.dependent_position<=0 || extra->constraint.type_constraint)
+        value.error="dependent source parameter requires ordinary coordinates without an unrepresented constraint";
+      a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
+      conv_seq_to_file_and_line(value.position.seq,&display,&full,&line,&at_end);
+      if(!line || !(full?full:display))value.error="dependent source parameter lacks original declaration location";
+      else value.dependent_identity=std::string(full?full:display)+":"+std::to_string(line)+":"+
+        std::to_string(value.position.column)+":"+std::to_string(value.dependent_depth)+":"+std::to_string(value.dependent_position);
+    } else if(parameter.kind==tptk_member) {
+      value.dependent_kind="member";
+      a_type_ptr owner=t->source_corresp.is_class_member?parent_class_of(t):nullptr;
+      if(owner && class_type_supp(owner)->proxy_of_type)owner=class_type_supp(owner)->proxy_of_type;
+      if(!owner || owner==t || value.name.empty() || parameter.is_pack)
+        value.error="dependent source member lacks exact named owner";
+      else value.dependent_owner=capture_type(owner);
+    } else if(parameter.kind==tptk_unknown) {
+      value.dependent_kind="unknown";value.name.clear();
+      if(parameter.is_pack)value.error="unknown dependent pack requires an explicit expansion contract";
+    } else value.error="dependent bit-precise source type requires its width expression";
   } else if(t->kind==tk_ptr_to_member) {
     value.kind="member-pointer";
 #if MICROSOFT_EXTENSIONS_ALLOWED
@@ -679,7 +786,7 @@ inline unsigned capture_type(a_type_ptr t) {
   }
   // Unknown entries are retained privately as unavailable, never exported as
   // opaque payloads. An unused unsupported declaration cannot block the TU.
-  if(t->kind!=tk_typeref && value.kind!="record" && value.kind!="enum")value.name.clear();
+  if(t->kind!=tk_typeref && value.kind!="record" && value.kind!="enum" && value.kind!="dependent")value.name.clear();
   s.types[id-1]=value;return id;
 }
 inline void observe_type(a_type_ptr type){if(enabled())capture_type(type);}
@@ -738,10 +845,15 @@ inline void observe_runtime_signature(a_type_ptr type) {
     abi.error="runtime signature was captured before final formal assembly";
   s.routine_abis[id]=abi;
 }
+inline void capture_routine(a_routine_ptr routine);
 inline void observe_runtime_declaration(a_routine_ptr routine) {
   if(!enabled())return;
   state().runtime_declarations.insert(routine);
   observe_runtime_signature(routine->type);
+  // File-scope generated destructor bodies may create this declaration after
+  // the original file scope has been captured. Its exact creation is the
+  // provenance boundary; it is never a fabricated source routine.
+  capture_routine(routine);
 }
 inline void observe_result_parameter(a_routine_ptr routine,a_variable_ptr parameter) {
   if(enabled())state().result_parameters[routine]=parameter;
@@ -870,6 +982,7 @@ inline void observe_asm_after_lowering(an_asm_entry_ptr entry) {
 }
 inline void capture_routine(a_routine_ptr r) {
   if(!r || abi_primary(r))return;
+  if(state().generated_static_destructors.count(r))return;
 #if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN
   if(r->overriding_function_for_wrapper)return;
 #endif
@@ -934,7 +1047,7 @@ inline void capture_variable(a_variable_ptr v) {
   if(v->declared_type)type=v->declared_type;
 #endif
   Declaration value;value.type=capture_type(type);value.name=spelling(v->source_corresp);
-  value.has_initializer=v->init_kind!=initk_none;
+  value.has_initializer=v->init_kind!=initk_none;value.initializer_kind=unsigned(v->init_kind);
 #if GNU_EXTENSIONS_ALLOWED
   value.cleanup=v->cleanup_routine;
 #endif
@@ -951,13 +1064,21 @@ inline a_source_position lifetime_position(an_object_lifetime_ptr lifetime) {
   } else if(lifetime->entity.kind==iek_statement) {
     auto stmt=reinterpret_cast<a_statement_ptr>(lifetime->entity.ptr);
     if(stmt)result=stmt->position;
+  } else if(lifetime->entity.kind==iek_dynamic_init) {
+    auto dip=reinterpret_cast<a_dynamic_init_ptr>(lifetime->entity.ptr);
+    if(dip && dip->variable)result=dip->variable->source_corresp.decl_position;
+    else if(dip && (dip->kind==dik_expression || dip->kind==dik_class_result_via_ctor) && dip->variant.expression)
+      result=dip->variant.expression->position;
+    else if(dip && dip->kind==dik_constructor && dip->variant.constructor.args)
+      result=dip->variant.constructor.args->position;
   }
   return result;
 }
 inline void capture_source_lifetime(an_object_lifetime_ptr lifetime,a_routine_ptr owner,
-                                    an_object_lifetime_ptr parent=nullptr,unsigned sibling=0) {
+                                    an_object_lifetime_ptr parent=nullptr,unsigned sibling=0,
+                                    a_dynamic_init_ptr initializer=nullptr) {
   if(!lifetime || state().lifetimes.count(lifetime))return;
-  LifetimeSnapshot saved;saved.owner=owner;saved.original=lifetime;saved.parent=parent;
+  LifetimeSnapshot saved;saved.owner=owner;saved.initializer=initializer;saved.original=lifetime;saved.parent=parent;
   saved.parent_obligation=lifetime->parent_destruction_sublist;saved.sibling_ordinal=sibling;
   saved.position=lifetime_position(lifetime);
   if(lifetime->entity.kind==iek_local_static_variable_init) {
@@ -972,7 +1093,7 @@ inline void capture_source_lifetime(an_object_lifetime_ptr lifetime,a_routine_pt
   // The function cleanup graph ends at the surrounding global-static source
   // context. That parent owns no automatic action in this call frame. Reject
   // any other outer lifetime rather than silently dropping its relation.
-  if(!parent && (lifetime->kind!=olk_block || lifetime->parent_destruction_sublist ||
+  if(!parent && !initializer && (lifetime->kind!=olk_block || lifetime->parent_destruction_sublist ||
       (lifetime->parent_lifetime && lifetime->parent_lifetime->kind!=olk_global_static)))
     saved.error="source function lifetime has unowned outer lifetime";
   switch(lifetime->kind) {
@@ -985,10 +1106,11 @@ inline void capture_source_lifetime(an_object_lifetime_ptr lifetime,a_routine_pt
   state().lifetimes.emplace(lifetime,saved);state().lifetime_order[owner].push_back(lifetime);
   unsigned ordinal=0;
   for(auto dip=lifetime->destructions;dip;dip=dip->next_in_destruction_list,++ordinal) {
-    DestructionSnapshot value;value.owner=owner;value.original=dip;value.lifetime=lifetime;value.ordinal=ordinal;
+    DestructionSnapshot value;value.owner=owner;value.initializer=initializer;value.original=dip;value.lifetime=lifetime;value.ordinal=ordinal;
     value.destructor=dip->destructor;value.position=saved.position;
     value.allocation_release=dip->is_freeing_of_storage_on_exception;
     value.array_allocation=dip->is_array_freeing;
+    value.partial_aggregate=dip->destruction_is_for_partially_constructed_aggregate;
     if(!value.destructor || dip->is_freeing_of_exception_object ||
        dip->is_guard_var_for_local_static_var_init || dip->is_vla_deallocation)
       value.error="source cleanup outside ordinary object destruction";
@@ -1026,7 +1148,126 @@ inline void capture_source_lifetime(an_object_lifetime_ptr lifetime,a_routine_pt
   }
   unsigned child_ordinal=0;
   for(auto child=lifetime->child_lifetime;child;child=child->next)
-    capture_source_lifetime(child,owner,lifetime,child_ordinal++);
+    capture_source_lifetime(child,owner,lifetime,child_ordinal++,initializer);
+}
+inline void capture_static_lifetime(an_object_lifetime_ptr lifetime,a_routine_ptr owner,
+                                   a_dynamic_init_ptr initializer=nullptr,bool listed=false,unsigned ordinal=0) {
+  if(!lifetime)return;
+  auto captured=state().static_lifetimes.find(lifetime);
+  if(captured!=state().static_lifetimes.end()) {
+    // The global graph is captured first, before each declaration is visited.
+    // Attaching its exact initializer later must preserve original graph IDs,
+    // parents and sibling ordering rather than recapture or fabricate roots.
+    if(initializer) {
+      if(captured->second.initializer && captured->second.initializer!=initializer)
+        captured->second.error="original static lifetime belongs to multiple initializer subtrees";
+      else captured->second.initializer=initializer;
+      for(auto dip=lifetime->destructions;dip;dip=dip->next_in_destruction_list) {
+        auto destruction=state().static_destructions.find(dip);
+        if(destruction==state().static_destructions.end())continue;
+        if(destruction->second.initializer && destruction->second.initializer!=initializer)
+          destruction->second.error="original static destruction belongs to multiple initializer subtrees";
+        else destruction->second.initializer=initializer;
+      }
+      unsigned sibling=0;
+      for(auto child=lifetime->child_lifetime;child;child=child->next)
+        capture_static_lifetime(child,owner,initializer,true,sibling++);
+    }
+    return;
+  }
+  StaticLifetimeSnapshot value;value.original=lifetime;value.owner=owner;value.initializer=initializer;
+  value.parent=lifetime->parent_lifetime;value.parent_obligation=lifetime->parent_destruction_sublist;
+  value.has_sibling_ordinal=listed;value.sibling_ordinal=ordinal;value.position=lifetime_position(lifetime);
+  if(lifetime->entity.kind==iek_dynamic_init) {
+    auto dip=reinterpret_cast<a_dynamic_init_ptr>(lifetime->entity.ptr);
+    if(dip)value.entity_description=" dynamic-init-kind="+std::to_string(dip->kind)+
+      " dynamic-init-variable="+(dip->variable?spelling(dip->variable->source_corresp):"none")+
+      " dynamic-init-lifetime-kind="+(dip->lifetime?std::to_string(dip->lifetime->kind):"none");
+  }
+  switch(lifetime->kind) {
+    case olk_global_static:value.kind="global-static";break;
+    case olk_function_static:value.kind="function-static";break;
+    case olk_block:value.kind="block";break;
+    case olk_block_after_label:value.kind="block-after-label";break;
+    case olk_expr_temporary:value.kind="expression-temporary";break;
+    case olk_try_block:value.kind="try-block";break;
+    default:value.kind="unsupported";break;
+  }
+  state().static_lifetimes.emplace(lifetime,value);state().static_lifetime_order.push_back(lifetime);
+  unsigned destruction_ordinal=0;
+  for(auto dip=lifetime->destructions;dip;dip=dip->next_in_destruction_list,++destruction_ordinal) {
+    StaticDestructionSnapshot saved;saved.original=dip;saved.initializer=initializer;saved.owner=owner;
+    saved.lifetime=lifetime;saved.ordinal=destruction_ordinal;saved.selected_routine=dip->destructor;
+    saved.variable=dip->variable;saved.partial_aggregate=dip->destruction_is_for_partially_constructed_aggregate;
+    saved.persistent=!saved.partial_aggregate && (lifetime->kind==olk_global_static || lifetime->kind==olk_function_static);
+    saved.allocation=dip->is_freeing_of_storage_on_exception;saved.array_allocation=dip->is_array_freeing;
+    saved.position=value.position;
+    if(saved.selected_routine) {
+      auto primary=abi_primary(saved.selected_routine);if(primary)saved.selected_routine=primary;
+    } else saved.error="static source graph obligation lacks selected routine";
+    if(saved.variable) {
+      capture_variable(saved.variable);saved.source_type=capture_type(saved.variable->type);
+      saved.position=saved.variable->source_corresp.decl_position;
+      saved.thread=var_has_thread_storage_duration(saved.variable);
+    } else if(saved.allocation && dip->assoc_new) saved.source_type=capture_type(dip->assoc_new->type);
+    else if(saved.selected_routine) {
+      auto type=skip_typerefs(saved.selected_routine->type);
+      if(type->kind==tk_routine && type->variant.routine.extra_info->this_class)
+        saved.source_type=capture_type(type->variant.routine.extra_info->this_class);
+    }
+    if(saved.allocation && dip->assoc_new)saved.source_type=capture_type(dip->assoc_new->type);
+    if(!saved.source_type)saved.error="static source graph obligation lacks original type";
+    if(state().static_destructions.emplace(dip,saved).second)state().static_destruction_order.push_back(dip);
+  }
+  unsigned sibling=0;
+  for(auto child=lifetime->child_lifetime;child;child=child->next)
+    capture_static_lifetime(child,owner,initializer,true,sibling++);
+}
+struct SourceInitializerTraversal : an_expr_or_stmt_traversal_block {
+  a_dynamic_init_ptr initializer=nullptr;
+  a_routine_ptr owner=nullptr;
+};
+inline void capture_initializer_nested_destruction(a_dynamic_init_ptr dip,an_expr_or_stmt_traversal_block_ptr traversal) {
+  auto &context=*static_cast<SourceInitializerTraversal*>(traversal);
+  if(dip->lifetime && (!context.owner || dip->lifetime->kind==olk_global_static || dip->lifetime->kind==olk_function_static)) {
+    bool static_root=dip->lifetime->kind==olk_global_static || dip->lifetime->kind==olk_function_static;
+    capture_static_lifetime(dip->lifetime,context.owner,static_root?nullptr:context.initializer);
+  }
+  auto found=state().static_destructions.find(dip);
+  if(found!=state().static_destructions.end()) {
+    if(found->second.initializer && found->second.initializer!=context.initializer)
+      found->second.error="original destruction belongs to multiple source initializer subtrees";
+    else found->second.initializer=context.initializer;
+  }
+  // Nested full expressions can own temporary destruction/allocation lists
+  // independently of the aggregate's outer initialization-expression lifetime.
+  // Keep those original boundaries; execution adoption is observed separately.
+  if(!context.owner && dip->init_expr_lifetime) {
+    capture_static_lifetime(dip->init_expr_lifetime,nullptr,context.initializer);
+    if(!state().lifetimes.count(dip->init_expr_lifetime))
+      capture_source_lifetime(dip->init_expr_lifetime,nullptr,nullptr,0,context.initializer);
+  }
+}
+inline void capture_source_initializer(a_dynamic_init_ptr dip,a_routine_ptr owner,unsigned ordinal) {
+  if(!dip || !dip->variable || state().source_initializers.count(dip))return;
+  SourceInitializer value;value.original=dip;value.variable=dip->variable;value.owner=owner;value.ordinal=ordinal;
+  value.source_name=spelling(dip->variable->source_corresp);
+  value.source_type=capture_type(dip->variable->type);value.position=dip->variable->source_corresp.decl_position;
+  value.expression_lifetime=dip->init_expr_lifetime;
+  capture_variable(dip->variable);
+  state().source_initializers.emplace(dip,value);state().source_initializer_order.push_back(dip);
+  if(dip->lifetime)capture_static_lifetime(dip->lifetime,owner);
+  auto obligation=state().static_destructions.find(dip);
+  if(obligation!=state().static_destructions.end())obligation->second.initializer=dip;
+  if(dip->init_expr_lifetime && !owner) {
+    capture_static_lifetime(dip->init_expr_lifetime,owner,dip);
+    capture_source_lifetime(dip->init_expr_lifetime,nullptr,nullptr,0,dip);
+  }
+  SourceInitializerTraversal traversal;clear_expr_or_stmt_traversal_block(&traversal);
+  traversal.initializer=dip;traversal.owner=owner;
+  traversal.process_non_dynamic_constants=TRUE;
+  traversal.process_dynamic_init=capture_initializer_nested_destruction;
+  traverse_dynamic_init(dip,&traversal);
 }
 // Observation scope only: stock lowering still creates/inlines the call. The
 // scoped context links that exact call to its originating destruction entry.
@@ -1096,6 +1337,64 @@ inline void observe_normal_destruction_copy(an_expr_node_ptr original,an_expr_no
   if(state().normal_destruction_calls.emplace(copy,value).second)
     state().normal_destruction_order[owner].push_back(copy);
 }
+inline void observe_virtual_base_adjustment(an_expr_node_ptr result,an_expr_node_ptr source_object,
+    an_expr_node_ptr lookup_object,an_expr_node_ptr offset,a_type_ptr derived_type,a_base_class_ptr base,a_routine_ptr owner) {
+  if(!enabled() || !owner || !result || !source_object || !offset || !base || !base->is_virtual)return;
+  VirtualBaseAdjustmentSnapshot value;value.owner=owner;value.source_object=source_object;
+  // field_lvalue_selection_expr cancels a generated (*p).field into
+  // p->field. Retain p itself, which survives that exact stock rewrite,
+  // rather than the discarded dereference shell.
+  if(lookup_object && lookup_object->kind==enk_operation &&
+     lookup_object->variant.operation.kind==eok_indirect)
+    lookup_object=lookup_object->variant.operation.operands;
+  value.lookup_object=lookup_object;value.offset=offset;value.derived_type=derived_type;value.base_type=base->type;
+  value.vtable_index=static_cast<long long>(base->vbase_offset_index);
+  state().virtual_base_adjustments[result]=value;
+}
+inline an_expr_node_ptr corresponding_virtual_base_child(an_expr_node_ptr original,an_expr_node_ptr copy,
+                                                         an_expr_node_ptr wanted,unsigned depth=0) {
+  if(!original || !copy || depth>128)return nullptr;
+  if(original==wanted)return copy;
+  if(original->kind!=enk_operation || copy->kind!=enk_operation ||
+     original->variant.operation.kind!=copy->variant.operation.kind)return nullptr;
+  auto a=original->variant.operation.operands,b=copy->variant.operation.operands;
+  for(;a && b;a=a->next,b=b->next) {
+    auto found=corresponding_virtual_base_child(a,b,wanted,depth+1);if(found)return found;
+  }
+  return nullptr;
+}
+inline void observe_virtual_base_adjustment_copy(an_expr_node_ptr original,an_expr_node_ptr copy,a_routine_ptr owner) {
+  if(!enabled() || !owner || original==copy)return;
+  auto found=state().virtual_base_adjustments.find(original);if(found==state().virtual_base_adjustments.end())return;
+  auto old_owner=abi_primary(found->second.owner);if(!old_owner)old_owner=found->second.owner;
+  auto new_owner=abi_primary(owner);if(!new_owner)new_owner=owner;
+  if(old_owner!=new_owner)return;
+  auto value=found->second;value.owner=owner;
+  value.source_object=corresponding_virtual_base_child(original,copy,value.source_object);
+  value.lookup_object=corresponding_virtual_base_child(original,copy,value.lookup_object);
+  value.offset=corresponding_virtual_base_child(original,copy,value.offset);
+  state().virtual_base_adjustments[copy]=value;
+}
+inline void observe_virtual_base_adjustment_overwrite(an_expr_node_ptr destination,an_expr_node_ptr source,a_routine_ptr owner) {
+  if(!enabled() || !owner || destination==source)return;
+  state().virtual_base_adjustments.erase(destination);
+  observe_virtual_base_adjustment_copy(source,destination,owner);
+}
+inline void observe_virtual_base_null_preservation(an_expr_node_ptr wrapper,an_expr_node_ptr adjusted) {
+  if(!enabled())return;
+  auto original=state().virtual_base_adjustments.find(wrapper);
+  if(original==state().virtual_base_adjustments.end())return;
+  auto copied=state().virtual_base_adjustments.find(adjusted);
+  // add_null_preservation_code copied the adjusted pointer into its true
+  // branch. That branch owns the proof; the new conditional is an ordinary
+  // null-preserving pointer expression, not another virtual-base lookup.
+  if(copied!=state().virtual_base_adjustments.end() &&
+     copied->second.owner==original->second.owner &&
+     copied->second.derived_type==original->second.derived_type &&
+     copied->second.base_type==original->second.base_type &&
+     copied->second.vtable_index==original->second.vtable_index)
+    state().virtual_base_adjustments.erase(original);
+}
 inline void observe_record_transfer(an_expr_node_ptr expr,a_routine_ptr owner,const char *kind) {
   if(!enabled() || !owner || !expr || expr->kind!=enk_operation ||
      expr->variant.operation.kind!=eok_assign)return;
@@ -1107,6 +1406,24 @@ inline void observe_record_transfer(an_expr_node_ptr expr,a_routine_ptr owner,co
   RecordTransferSnapshot record;record.owner=owner;record.target=target;record.value=value;record.kind=kind;
   state().record_transfers[expr]=record;
 }
+inline void observe_pooled_record_constant(a_constant_ptr constant,a_variable_ptr variable) {
+  if(!enabled() || !constant || !variable || constant->kind!=ck_aggregate)return;
+  auto type=skip_typerefs(constant->type);
+  if(type->kind!=tk_struct && type->kind!=tk_class && type->kind!=tk_union)return;
+  state().pooled_record_constants[variable]=constant;
+}
+inline void observe_record_constant_initialization(an_expr_node_ptr expression,a_dynamic_init_ptr initializer,a_constant_ptr constant) {
+  if(!enabled())return;
+  auto found=state().record_transfers.find(expression);if(found==state().record_transfers.end())return;
+  auto kind=initializer?initializer->kind:constant?dik_constant:dik_none;
+  if(kind!=dik_zero && kind!=dik_constant)return;
+  auto &value=found->second;
+  if(value.kind!="construction" || value.value->kind!=enk_variable)return;
+  auto variable=node_variable(value.value);
+  if(!state().pooled_record_constants.count(variable) ||
+     !(variable->compiler_generated || variable->lowering_generated))return;
+  value.constant_storage=variable;value.constant_initialization_kind=kind==dik_zero?"zero":"constant";
+}
 inline void observe_record_transfer_copy(an_expr_node_ptr original,an_expr_node_ptr copy,a_routine_ptr owner) {
   if(!enabled() || !owner || original==copy || !copy)return;
   auto found=state().record_transfers.find(original);
@@ -1117,6 +1434,11 @@ inline void observe_record_transfer_copy(an_expr_node_ptr original,an_expr_node_
      original->variant.operation.operands!=found->second.target ||
      found->second.target->next!=found->second.value)return;
   observe_record_transfer(copy,owner,found->second.kind.c_str());
+  auto copied=state().record_transfers.find(copy);
+  if(copied!=state().record_transfers.end()) {
+    copied->second.constant_storage=found->second.constant_storage;
+    copied->second.constant_initialization_kind=found->second.constant_initialization_kind;
+  }
 }
 // The throw initializer owns payload addresses and start markers. These maps
 // retain exact IL correspondence through both shallow and recursive copies.
@@ -1174,6 +1496,9 @@ inline void observe_throw_construct(an_expr_node_ptr expr,bool marker) {
 }
 inline void observe_throw_copy(an_expr_node_ptr original,an_expr_node_ptr copy,a_routine_ptr owner) {
   if(!enabled() || !owner || !original || !copy || original==copy)return;
+  auto registration=state().static_registrations.find(original);
+  if(registration!=state().static_registrations.end() && registration->second.owner==owner)
+    state().static_registrations.emplace(copy,registration->second);
   auto guard=state().local_static_guard_operations.find(original);
   if(guard!=state().local_static_guard_operations.end()) {
     auto storage=state().local_static_guard_variables.at(guard->second.first);
@@ -1222,7 +1547,8 @@ inline an_object_lifetime_ptr source_lifetime(an_object_lifetime_ptr value,a_rou
   std::set<an_object_lifetime_ptr> seen;
   while(value && seen.insert(value).second) {
     auto direct=state().lifetimes.find(value);
-    if(direct!=state().lifetimes.end() && direct->second.owner==owner)return value;
+    if(direct!=state().lifetimes.end() && (direct->second.owner==owner ||
+       (direct->second.initializer && state().initializer_lifetime_adoptions.count(std::make_pair(value,owner)))))return value;
     auto copied=state().lifetime_copies.find(value);
     if(copied==state().lifetime_copies.end())break;
     value=copied->second;
@@ -1232,12 +1558,101 @@ inline an_object_lifetime_ptr source_lifetime(an_object_lifetime_ptr value,a_rou
 inline void observe_dynamic_init_copy(a_dynamic_init_ptr original,a_dynamic_init_ptr copy) {
   if(enabled() && original!=copy)state().dynamic_init_copies.emplace(copy,original);
 }
+inline a_dynamic_init_ptr original_static_destruction(a_dynamic_init_ptr value) {
+  std::set<a_dynamic_init_ptr> seen;
+  while(value && seen.insert(value).second) {
+    if(state().static_destructions.count(value))return value;
+    auto copied=state().dynamic_init_copies.find(value);
+    if(copied==state().dynamic_init_copies.end())break;
+    value=copied->second;
+  }
+  return nullptr;
+}
+inline a_dynamic_init_ptr source_destruction(a_dynamic_init_ptr value,a_routine_ptr owner);
+inline void observe_automatic_no_effect(a_dynamic_init_ptr dip) {
+  if(!enabled())return;
+  auto owner=innermost_function_scope?innermost_function_scope->variant.routine.ptr:nullptr;
+  auto original=owner?source_destruction(dip,owner):nullptr;
+  if(original) {
+    state().automatic_no_effect_observed.insert(original);
+    if(!state().destructions.at(original).allocation_release)
+      state().automatic_destructor_no_effect.emplace(original,owner);
+  }
+}
+inline void observe_static_partial_terminal(a_dynamic_init_ptr dip) {
+  if(!enabled())return;
+  auto original=original_static_destruction(dip);
+  if(original && state().static_destructions.at(original).partial_aggregate)
+    state().static_partial_terminal.insert(original);
+  auto owner=innermost_function_scope?innermost_function_scope->variant.routine.ptr:nullptr;
+  auto automatic=owner?source_destruction(dip,owner):nullptr;
+  if(automatic && state().destructions.at(automatic).partial_aggregate) {
+    state().automatic_partial_terminal.emplace(automatic,owner);
+    state().automatic_partial_terminal_copies[std::make_pair(automatic,owner)].insert(dip);
+  }
+}
+inline void observe_static_no_effect(a_dynamic_init_ptr dip) {
+  if(!enabled())return;
+  auto original=original_static_destruction(dip);
+  if(original)state().static_no_effect.insert(original);
+}
+inline void observe_static_registration(a_dynamic_init_ptr dip,an_init_pos_descr_ptr position,
+                                       an_expr_node_ptr call,a_routine_ptr callback,a_routine_ptr owner) {
+  if(!enabled())return;
+  StaticRegistrationSnapshot value;value.original=original_static_destruction(dip);
+  value.owner=owner;value.callback=callback;value.variable=position->variable;
+  value.thread=position->variable && var_has_thread_storage_duration(position->variable);
+  if(!value.original || !state().static_destructions.at(value.original).persistent)
+    value.error="static registration lacks original persistent source obligation";
+  if(position->modifiers || position->indirect_through_variable || position->thrown_object_address ||
+     !call || call->kind!=enk_operation || call->variant.operation.kind!=eok_call)
+    value.error="static registration lacks exact whole-storage call observation";
+  if(call && call->kind==enk_operation && call->variant.operation.kind==eok_call) {
+    auto operand=call->variant.operation.operands;
+    value.callback_expression=operand?operand->next:nullptr;
+    value.object=value.callback_expression?value.callback_expression->next:nullptr;
+    value.dso=value.object?value.object->next:nullptr;
+    if(!value.callback_expression || !value.object || !value.dso || value.dso->next)
+      value.error="static registration runtime call changed arity";
+  }
+  state().static_registrations.emplace(call,value);
+}
+inline void observe_static_destructor_begin(a_routine_ptr routine,a_scope_ptr scope,
+                                          a_dynamic_init_ptr dip,an_init_pos_descr_ptr position) {
+  if(!enabled())return;
+  GeneratedStaticDestructor value;value.original=original_static_destruction(dip);
+  value.scope=scope;value.variable=position->variable;value.parameter=scope->variant.routine.parameters;
+  auto type=skip_typerefs(position->base_type);
+  if(!value.original || !value.variable || position->modifiers || position->indirect_through_variable)
+    value.error="generated static destructor lacks exact original storage";
+  if(type->kind==tk_array) {
+    value.array=true;value.element_type=underlying_array_element_type(type);
+    value.element_count=num_array_elements(type);value.element_size=value.element_type->size;
+  }
+  state().generated_static_destructors.emplace(routine,value);
+}
+inline void observe_static_destructor_complete(a_routine_ptr routine,a_scope_ptr scope) {
+  if(!enabled())return;
+  auto found=state().generated_static_destructors.find(routine);
+  if(found!=state().generated_static_destructors.end()) {
+    found->second.complete=true;found->second.parameter=scope->variant.routine.parameters;
+  }
+}
+inline void observe_initializer_lifetime_copy(an_object_lifetime_ptr original,an_object_lifetime_ptr copy,
+                                             a_routine_ptr owner) {
+  if(!enabled())return;
+  observe_lifetime_copy(original,copy);
+  auto initializer=state().active_file_initializer;
+  if(initializer && state().lifetimes.count(original) && state().lifetimes.at(original).initializer==initializer)
+    state().initializer_lifetime_adoptions.emplace(std::make_pair(original,owner),initializer);
+}
 inline a_dynamic_init_ptr source_destruction(a_dynamic_init_ptr value,a_routine_ptr owner) {
   auto primary=abi_primary(owner);if(primary)owner=primary;
   std::set<a_dynamic_init_ptr> seen;
   while(value && seen.insert(value).second) {
     auto direct=state().destructions.find(value);
-    if(direct!=state().destructions.end() && direct->second.owner==owner)return value;
+    if(direct!=state().destructions.end() && (direct->second.owner==owner ||
+       (direct->second.initializer && state().initializer_lifetime_adoptions.count(std::make_pair(direct->second.lifetime,owner)))))return value;
     auto copied=state().dynamic_init_copies.find(value);
     if(copied==state().dynamic_init_copies.end())break;
     value=copied->second;
@@ -1392,15 +1807,21 @@ inline void observe_cleanup_region_copy(a_constant_ptr original,a_dynamic_init_p
 }
 
 #endif
-inline void capture_scope(a_scope_ptr scope) {
+inline void capture_scope(a_scope_ptr scope,a_routine_ptr function_owner=nullptr) {
   if(!scope)return;
+  if(scope->kind==sck_function && state().generated_static_destructors.count(scope->variant.routine.ptr))return;
   // Alternate ABI bodies contain generated forwarding declarations only.
   if(scope->kind==sck_function && abi_primary(scope->variant.routine.ptr))return;
 #if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN
   if(scope->kind==sck_function && scope->variant.routine.ptr->overriding_function_for_wrapper)return;
 #endif
   if(scope->kind==sck_function) {
+    function_owner=scope->variant.routine.ptr;
     capture_routine(scope->variant.routine.ptr);
+    capture_static_lifetime(scope->variant.routine.lifetime_of_local_static_vars,scope->variant.routine.ptr);
+    if(auto lifetime=scope->variant.routine.lifetime_of_local_static_vars)
+      for(auto dip=lifetime->destructions;dip;dip=dip->next_in_destruction_list)
+        capture_source_initializer(dip,scope->variant.routine.ptr,0);
     auto &function=state().functions.at(scope->variant.routine.ptr);
     if(!function.scope_captured) {
       function.scope_captured=true;function.implicit_this=scope->variant.routine.this_param_variable;
@@ -1414,8 +1835,12 @@ inline void capture_scope(a_scope_ptr scope) {
   for(auto t=scope->types;t;t=t->next)capture_type(t);
   for(auto v=scope->nonstatic_variables;v;v=v->next)capture_variable(v);
   for(auto v=scope->variables;v;v=v->next)capture_variable(v);
+  for(auto init=scope->local_static_variable_inits;init;init=init->next)
+    if(init->init_kind==initk_dynamic) {
+      if(function_owner)capture_source_initializer(init->initializer.dynamic,function_owner,0);
+    }
   for(auto r=scope->routines;r;r=r->next)capture_routine(r);
-  for(auto child=scope->scopes;child;child=child->next)capture_scope(child);
+  for(auto child=scope->scopes;child;child=child->next)capture_scope(child,function_owner);
   for(auto ns=scope->namespaces;ns;ns=ns->next)
     if(!ns->is_namespace_alias)capture_scope(ns->variant.assoc_scope);
 }
@@ -1431,12 +1856,12 @@ inline void observe_file_initializers() {
   if(!enabled())return;
   auto &s=state();s.file_initializers_observed=true;
   s.file_initializer_destructions=initializer_has_destructions(il_header.primary_scope->lifetime);
+  capture_static_lifetime(il_header.primary_scope->lifetime,nullptr);
   unsigned ordinal=0;
   for(auto dip=il_header.primary_scope->dynamic_inits;dip;dip=dip->next,++ordinal) {
+    capture_source_initializer(dip,nullptr,ordinal);
     DynamicInitializer value;value.original=dip;value.variable=dip->variable;
     value.source_ordinal=ordinal;
-    if(dip->destructor || initializer_has_destructions(dip->init_expr_lifetime))
-      value.error="file initializer has source destruction obligations";
     if(value.variable) {
       value.position=value.variable->source_corresp.decl_position;
       capture_variable(value.variable);
@@ -1467,6 +1892,10 @@ inline void observe_initializer_begin(a_scope_ptr scope,a_dynamic_init_ptr dip,
   if(generated==s.generated_initializers.end()) {value.error="initializer routine lacks creation observation";return;}
   if(value.begun || value.variable!=dip->variable) {value.error="duplicate/changed file initializer";return;}
   value.begun=true;value.routine=routine;
+  s.active_file_initializer=dip;
+  s.adopted_initializers[routine].push_back(dip);
+  for(const auto &lifetime:s.lifetimes)if(lifetime.second.initializer==dip)
+    s.initializer_lifetime_adoptions.emplace(std::make_pair(lifetime.first,routine),dip);
   value.ordinal=unsigned(generated->second.initializers.size());
   generated->second.initializers.push_back(dip);
   value.guarded=value.variable->is_inline || value.variable->is_template_variable;
@@ -1482,6 +1911,7 @@ inline void observe_initializer_end(a_scope_ptr scope,a_dynamic_init_ptr dip,
   auto found=state().dynamic_initializers.find(dip);
   if(found==state().dynamic_initializers.end())return;
   auto &value=found->second;
+  if(state().active_file_initializer==dip)state().active_file_initializer=nullptr;
   if(!value.begun || value.complete || value.routine!=scope->variant.routine.ptr) {
     value.error="file initializer completion lacks matching start";return;
   }
@@ -1568,6 +1998,11 @@ inline void observe_record_before_prelowering(a_type_ptr type) {
       auto cssp=class_symbol_supp(symbol_for(type));
       value.bitwise_construction=cssp->construction_by_bitwise_copy_allowed;
       value.bitwise_assignment=cssp->assignment_by_bitwise_copy_allowed;
+      // il.c::set_arg_transfer_method_flag differs from the return rule:
+      // a deleted copy constructor alone does not make a trivial move
+      // parameter indirect. Observe that distinct completed frontend fact.
+      value.requires_parameter_storage=!cssp->construction_by_bitwise_copy_allowed ||
+        (!any_cfront_mode() && has_deleted_or_nontrivial_destructor(cssp));
       a_boolean incomplete=FALSE;
       value.requires_return_storage=type_returned_by_cctor(type,&incomplete);
       value.operations_known=!incomplete;

@@ -30,6 +30,7 @@ internal sealed partial class ObjectFile
                 SourceTypes.Add(type.Id, type);
             }
         ReadSourceTypeDetails();
+        ReadDependentSourceTypes();
         foreach (SourceType type in SourceTypes.Values)
         {
             string? execution = type.ExecutionRepresentationId is long id ? Type(id) : null;
@@ -48,6 +49,10 @@ internal sealed partial class ObjectFile
                 if (qualified) throw new InvalidDataException("Source qualifiers require an owned qualification or typedef node");
                 switch (type.Kind)
                 {
+                    case "dependent":
+                        if (!SourceDependentTypes.ContainsKey(type.Id) || execution is not null || type.UnderlyingTypeId is not null)
+                            throw new InvalidDataException("Dependent source type cannot fabricate an execution representation");
+                        break;
                     case "array":
                         if (type.UnderlyingTypeId is null || type.SourceName.Length != 0 || execution is not null &&
                             (!ScalarTypes.IsArray(execution) || ScalarTypes.ArrayBound(execution) != type.ElementCount))

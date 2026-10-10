@@ -97,7 +97,7 @@ internal static class CleanupVerifier
         Visit(root!, 0);
         if (payloadTarget && !hasSubobject) Fail("Payload rollback requires a proper constructed subobject");
         if (payloadTarget != obj.CleanupPayloadOwners.ContainsKey(action.Id)) Fail("Payload cleanup action has no matching target recipe");
-        if (payloadTarget && !payloadPath.AsEnumerable().Reverse().SequenceEqual(obj.PayloadSubobjectPaths[action.SourceObligationId]))
+        if (payloadTarget && (action.SourceObligationId is not long automatic || !payloadPath.AsEnumerable().Reverse().SequenceEqual(obj.PayloadSubobjectPaths[automatic])))
             Fail("Payload rollback target differs from its constructed subobject path");
         if (payloadTarget)
         {
@@ -107,7 +107,7 @@ internal static class CleanupVerifier
             if (place.Kind == "convert") place = Child(place, "operand");
             if (place.Kind != "address") Fail("Payload rollback requires the address of its exact subobject");
             place = Child(place, "operand");
-            foreach (PayloadPathPart part in obj.PayloadSubobjectPaths[action.SourceObligationId].AsEnumerable().Reverse())
+            foreach (PayloadPathPart part in obj.PayloadSubobjectPaths[action.SourceObligationId!.Value].AsEnumerable().Reverse())
             {
                 if (part.FieldId is long field ? place.Kind != "member" || place.FieldId != field
                     : place.Kind != "base-subobject" || obj.BaseSubobjectExpressions.GetValueOrDefault(place.Id) != part.SourceBaseId)
@@ -118,6 +118,38 @@ internal static class CleanupVerifier
                 Fail("Payload rollback recipe does not start at its exact payload address");
         }
         if (Type(root!) != obj.Parameters[action.CallbackEntityId][0]) Fail("Cleanup target differs from the selected destructor's pointer ABI");
+        if (action.SourceStaticObligationId is long staticId)
+        {
+            long storageId = obj.StaticCleanupStorage(action);
+            long Offset(Node node)
+            {
+                if (node.Kind is "convert" or "address" or "array-decay" or "dereference")
+                    return Offset(Child(node, "operand"));
+                if (node.Kind is "storage" or "storage-address")
+                {
+                    if (node.StorageId != storageId || node.Kind == "storage-address" && node.ConstantText != "0")
+                        throw new InvalidDataException("Static array rollback starts at a foreign storage or offset");
+                    return 0;
+                }
+                if (node.Kind == "binary" && node.Operator == "pointer-add")
+                {
+                    Node left = Child(node, "left"), right = Child(node, "right");
+                    if (right.Kind != "constant" || !long.TryParse(right.ConstantText,
+                        System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture,
+                        out long index) || index < 0)
+                        throw new InvalidDataException("Static array rollback requires a fixed forward element path");
+                    return checked(Offset(left) + index * obj.StorageSize(ScalarTypes.Pointee(Type(left))));
+                }
+                throw new InvalidDataException("Static array rollback requires its exact original array storage path");
+            }
+            long offset = Offset(root!);
+            long extent = obj.CleanupArrays.TryGetValue(action.Id, out var staticArray)
+                ? checked(staticArray.ElementCount * staticArray.ElementSize)
+                : obj.StorageSize(ScalarTypes.Pointee(Type(root!)));
+            if (bindings.Count != 0 || payloadTarget || extent <= 0 || offset < 0 ||
+                checked(offset + extent) > obj.StorageSize(obj.Type(obj.Storages[storageId].TypeId)))
+                Fail("Static array rollback leaves the original array's bounded storage");
+        }
         if (obj.CleanupArrays.TryGetValue(action.Id, out CleanupArray? array))
         {
             long Available(Node node)

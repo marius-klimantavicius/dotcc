@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v39'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v40'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -142,10 +142,10 @@ CREATE TABLE parameters (
  entity_id INTEGER NOT NULL REFERENCES entities(id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  type_id INTEGER NOT NULL REFERENCES types(id),
- parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','indirect-source','this','result-buffer','vtt','forwarded-source')),
+ parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','indirect-source','this','result-buffer','vtt','forwarded-source','static-object')),
  source_ordinal INTEGER CHECK(source_ordinal>=0),
  CHECK((parameter_role IN ('source','indirect-source','forwarded-source') AND source_ordinal IS NOT NULL) OR
-       (parameter_role IN ('this','result-buffer','vtt') AND source_ordinal IS NULL)),
+       (parameter_role IN ('this','result-buffer','vtt','static-object') AND source_ordinal IS NULL)),
  UNIQUE(entity_id,source_ordinal),
  PRIMARY KEY(entity_id,ordinal)
 ) STRICT;
@@ -199,9 +199,87 @@ CREATE TABLE initialization_actions (
  UNIQUE(phase,entity_id),
  UNIQUE(phase,ordinal)
 ) STRICT;
+CREATE TABLE source_initializers (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ storage_id INTEGER REFERENCES storages(id),
+ source_name TEXT NOT NULL,
+ execution_disposition TEXT NOT NULL CHECK(execution_disposition IN ('emitted','stock-not-emitted')),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ function_entity_id INTEGER REFERENCES source_functions(entity_id),
+ source_ordinal INTEGER CHECK(source_ordinal>=0),
+ kind TEXT NOT NULL CHECK(kind IN ('file','local-static')),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0), column INTEGER NOT NULL CHECK(column>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
+ CHECK((execution_disposition='emitted')=(storage_id IS NOT NULL))
+) STRICT;
+CREATE TABLE source_static_lifetimes (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ function_entity_id INTEGER REFERENCES source_functions(entity_id),
+ source_initializer_id INTEGER REFERENCES source_initializers(id),
+ parent_lifetime_id INTEGER REFERENCES source_static_lifetimes(id),
+ parent_obligation_id INTEGER REFERENCES source_static_destructions(id),
+ sibling_ordinal INTEGER CHECK(sibling_ordinal>=0),
+ kind TEXT NOT NULL CHECK(kind IN ('global-static','function-static','block','block-after-label','expression-temporary','try-block')),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0), column INTEGER NOT NULL CHECK(column>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering')
+) STRICT;
+CREATE TABLE source_static_destructions (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ lifetime_id INTEGER NOT NULL REFERENCES source_static_lifetimes(id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ storage_id INTEGER REFERENCES storages(id),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ selected_routine_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ source_initializer_id INTEGER REFERENCES source_initializers(id),
+ kind TEXT NOT NULL CHECK(kind IN ('persistent','partial-aggregate','automatic','allocation')),
+ is_array_allocation INTEGER CHECK(is_array_allocation IN (0,1)),
+ domain TEXT NOT NULL CHECK(domain IN ('process','thread')),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0), column INTEGER NOT NULL CHECK(column>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
+ CHECK((kind='allocation')=(is_array_allocation IS NOT NULL)),
+ UNIQUE(lifetime_id,ordinal)
+) STRICT;
+CREATE TABLE initializer_lifetime_executions (
+ source_lifetime_id INTEGER NOT NULL REFERENCES source_lifetimes(id),
+ source_static_lifetime_id INTEGER NOT NULL REFERENCES source_static_lifetimes(id),
+ source_initializer_id INTEGER NOT NULL REFERENCES source_initializers(id),
+ function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-initializer-lifetime-adoption'),
+ PRIMARY KEY(source_lifetime_id,function_entity_id)
+) STRICT;
+CREATE TABLE static_destruction_registrations (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ source_obligation_id INTEGER NOT NULL REFERENCES source_static_destructions(id),
+ source_initializer_id INTEGER NOT NULL REFERENCES source_initializers(id),
+ function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
+ callback_entity_id INTEGER NOT NULL REFERENCES entities(id),
+ object_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ domain TEXT NOT NULL CHECK(domain IN ('process','thread')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-static-destruction-registration')
+) STRICT;
+CREATE TABLE generated_static_destructors (
+ function_entity_id INTEGER PRIMARY KEY REFERENCES functions(entity_id),
+ source_obligation_id INTEGER NOT NULL REFERENCES source_static_destructions(id),
+ parameter_binding_id INTEGER NOT NULL REFERENCES bindings(id),
+ storage_id INTEGER NOT NULL REFERENCES storages(id),
+ element_type_id INTEGER REFERENCES types(id),
+ element_count INTEGER CHECK(element_count>0),
+ element_size INTEGER CHECK(element_size>0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-static-destructor-body'),
+ CHECK((element_type_id IS NULL)=(element_count IS NULL) AND (element_count IS NULL)=(element_size IS NULL))
+) STRICT;
+CREATE TABLE static_destruction_dispositions (
+ source_obligation_id INTEGER PRIMARY KEY REFERENCES source_static_destructions(id),
+ kind TEXT NOT NULL CHECK(kind IN ('registered','stock-proven-no-effect','stock-not-emitted','cleanup-action','stock-terminal-no-throw')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-static-destruction-disposition')
+) STRICT;
 CREATE TABLE source_lifetimes (
  id INTEGER PRIMARY KEY CHECK(id>0),
- function_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ function_entity_id INTEGER REFERENCES source_functions(entity_id),
+ source_initializer_id INTEGER REFERENCES source_initializers(id),
  parent_lifetime_id INTEGER REFERENCES source_lifetimes(id),
  sibling_ordinal INTEGER NOT NULL CHECK(sibling_ordinal>=0),
  parent_obligation_id INTEGER REFERENCES source_destruction_obligations(id),
@@ -211,25 +289,40 @@ CREATE TABLE source_lifetimes (
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
+ CHECK((function_entity_id IS NULL)!=(source_initializer_id IS NULL)),
  CHECK(parent_obligation_id IS NULL OR parent_allocation_obligation_id IS NULL),
- UNIQUE(function_entity_id,parent_lifetime_id,sibling_ordinal)
+ UNIQUE(function_entity_id,parent_lifetime_id,sibling_ordinal),
+ UNIQUE(source_initializer_id,parent_lifetime_id,sibling_ordinal)
 ) STRICT;
 CREATE TABLE source_destruction_obligations (
  id INTEGER PRIMARY KEY CHECK(id>0),
- function_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ function_entity_id INTEGER REFERENCES source_functions(entity_id),
+ source_initializer_id INTEGER REFERENCES source_initializers(id),
+ source_static_obligation_id INTEGER REFERENCES source_static_destructions(id),
  lifetime_id INTEGER NOT NULL REFERENCES source_lifetimes(id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  destructor_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
  source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ is_partial_aggregate INTEGER NOT NULL CHECK(is_partial_aggregate IN (0,1)),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
+ CHECK((function_entity_id IS NULL)!=(source_initializer_id IS NULL)),
  UNIQUE(lifetime_id,ordinal)
+) STRICT;
+CREATE TABLE destruction_elisions (
+ source_obligation_id INTEGER NOT NULL REFERENCES source_destruction_obligations(id),
+ function_entity_id INTEGER NOT NULL REFERENCES entities(id),
+ kind TEXT NOT NULL CHECK(kind IN ('terminal-no-throw','stock-no-effect')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN ('observed-terminal-partial-elision','observed-no-effect-destruction-removal')),
+ PRIMARY KEY(source_obligation_id,function_entity_id)
 ) STRICT;
 CREATE TABLE source_allocation_obligations (
  id INTEGER PRIMARY KEY CHECK(id>0),
- function_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ function_entity_id INTEGER REFERENCES source_functions(entity_id),
+ source_initializer_id INTEGER REFERENCES source_initializers(id),
+ source_static_obligation_id INTEGER REFERENCES source_static_destructions(id),
  lifetime_id INTEGER NOT NULL REFERENCES source_lifetimes(id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  deallocator_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
@@ -239,6 +332,7 @@ CREATE TABLE source_allocation_obligations (
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
+ CHECK((function_entity_id IS NULL)!=(source_initializer_id IS NULL)),
  UNIQUE(lifetime_id,ordinal)
 ) STRICT;
 CREATE TABLE internal_try_expressions (
@@ -272,23 +366,29 @@ CREATE TABLE virtual_base_subobjects (
 ) STRICT;
 CREATE TABLE normal_destructions (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
- source_obligation_id INTEGER NOT NULL REFERENCES source_destruction_obligations(id),
- capture_proof TEXT NOT NULL CHECK(capture_proof='observed-normal-destruction')
+ source_obligation_id INTEGER REFERENCES source_destruction_obligations(id),
+ source_static_obligation_id INTEGER REFERENCES source_static_destructions(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-normal-destruction'),
+ CHECK((source_obligation_id IS NULL)!=(source_static_obligation_id IS NULL))
 ) STRICT;
 CREATE TABLE cleanup_actions (
  id INTEGER PRIMARY KEY CHECK(id>0),
  function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
- source_obligation_id INTEGER NOT NULL REFERENCES source_destruction_obligations(id),
+ source_obligation_id INTEGER REFERENCES source_destruction_obligations(id),
+ source_static_obligation_id INTEGER REFERENCES source_static_destructions(id),
  callback_entity_id INTEGER NOT NULL REFERENCES entities(id),
  target_node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
- capture_proof TEXT NOT NULL CHECK(capture_proof='observed-region-entry')
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-region-entry'),
+ CHECK((source_obligation_id IS NULL)!=(source_static_obligation_id IS NULL))
 ) STRICT;
 CREATE TABLE array_runtime_operations (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
- source_obligation_id INTEGER NOT NULL REFERENCES source_destruction_obligations(id),
+ source_obligation_id INTEGER REFERENCES source_destruction_obligations(id),
+ source_static_obligation_id INTEGER REFERENCES source_static_destructions(id),
  callback_entity_id INTEGER NOT NULL REFERENCES entities(id),
  operation_kind TEXT NOT NULL CHECK(operation_kind IN ('construct','destroy')),
- capture_proof TEXT NOT NULL CHECK(capture_proof='observed-array-runtime')
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-array-runtime'),
+ CHECK((source_obligation_id IS NULL)!=(source_static_obligation_id IS NULL))
 ) STRICT;
 CREATE TABLE cleanup_arrays (
  action_id INTEGER PRIMARY KEY REFERENCES cleanup_actions(id),
@@ -372,6 +472,7 @@ CREATE TABLE generated_routine_origins (
 ) STRICT;
 CREATE TABLE dynamic_initializers (
  id INTEGER PRIMARY KEY CHECK(id>0),
+ source_initializer_id INTEGER NOT NULL REFERENCES source_initializers(id),
  action_id INTEGER NOT NULL REFERENCES initialization_actions(id),
  storage_id INTEGER NOT NULL UNIQUE REFERENCES storages(id),
  source_ordinal INTEGER NOT NULL UNIQUE CHECK(source_ordinal>=0),
@@ -392,9 +493,11 @@ CREATE TABLE generated_routine_scaffolds (
  entity_id INTEGER NOT NULL REFERENCES generated_routine_origins(entity_id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
- binding_id INTEGER NOT NULL REFERENCES bindings(id),
- kind TEXT NOT NULL CHECK(kind IN ('declaration','zero-initialization')),
- capture_proof TEXT NOT NULL CHECK(capture_proof='observed-scope-binding'),
+ binding_id INTEGER REFERENCES bindings(id),
+ kind TEXT NOT NULL CHECK(kind IN ('declaration','zero-initialization','cleanup-frame')),
+ capture_proof TEXT NOT NULL,
+ CHECK((kind='cleanup-frame' AND binding_id IS NULL AND capture_proof='observed-function-cleanup-frame') OR
+       (kind!='cleanup-frame' AND binding_id IS NOT NULL AND capture_proof='observed-scope-binding')),
  PRIMARY KEY(entity_id,ordinal)
 ) STRICT;
 CREATE TABLE bindings (
@@ -456,6 +559,19 @@ CREATE TABLE source_type_qualifiers (
  name TEXT NOT NULL,
  PRIMARY KEY(type_id,name)
 ) STRICT;
+CREATE TABLE source_dependent_types (
+ type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
+ kind TEXT NOT NULL CHECK(kind IN ('parameter','member','unknown')),
+ owner_type_id INTEGER REFERENCES source_types(id),
+ nesting_depth INTEGER CHECK(nesting_depth>0),
+ parameter_position INTEGER CHECK(parameter_position>0),
+ is_pack INTEGER NOT NULL CHECK(is_pack IN (0,1)),
+ identity_key TEXT NOT NULL,
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
+ CHECK((kind='parameter' AND owner_type_id IS NULL AND nesting_depth IS NOT NULL AND parameter_position IS NOT NULL AND identity_key!='') OR
+       (kind='member' AND owner_type_id IS NOT NULL AND nesting_depth IS NULL AND parameter_position IS NULL AND is_pack=0 AND identity_key='') OR
+       (kind='unknown' AND owner_type_id IS NULL AND nesting_depth IS NULL AND parameter_position IS NULL AND is_pack=0 AND identity_key=''))
+) STRICT;
 CREATE TABLE source_enum_types (
  type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
  identity_key TEXT NOT NULL,
@@ -515,7 +631,42 @@ CREATE TABLE source_record_operations (
  bitwise_construction_allowed INTEGER NOT NULL CHECK(bitwise_construction_allowed IN (0,1)),
  bitwise_assignment_allowed INTEGER NOT NULL CHECK(bitwise_assignment_allowed IN (0,1)),
  requires_return_storage INTEGER NOT NULL CHECK(requires_return_storage IN (0,1)),
+ requires_parameter_storage INTEGER NOT NULL CHECK(requires_parameter_storage IN (0,1)),
  capture_proof TEXT NOT NULL CHECK(capture_proof='before-class-prelowering')
+) STRICT;
+CREATE TABLE virtual_base_adjustments (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ operand_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ source_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ lookup_source_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ derived_type_id INTEGER NOT NULL REFERENCES record_types(type_id),
+ complete_base_type_id INTEGER NOT NULL REFERENCES record_types(type_id),
+ offset_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ vtable_index INTEGER NOT NULL,
+ is_complete_object INTEGER NOT NULL CHECK(is_complete_object=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-virtual-base-adjustment')
+) STRICT;
+CREATE TABLE record_storage_initializations (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ binding_id INTEGER NOT NULL REFERENCES bindings(id),
+ source_declaration_id INTEGER NOT NULL REFERENCES source_declarations(id),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ source_init_kind INTEGER NOT NULL CHECK(source_init_kind BETWEEN 0 AND 5),
+ lowered_init_kind INTEGER NOT NULL CHECK(lowered_init_kind BETWEEN 0 AND 5),
+ site_kind TEXT NOT NULL CHECK(site_kind IN ('scope-entry','dynamic-init','lowered-assignment')),
+ zero_storage INTEGER NOT NULL CHECK(zero_storage IN (0,1)),
+ partially_initialized INTEGER NOT NULL CHECK(partially_initialized IN (0,1)),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-storage-initialization'),
+ CHECK(zero_storage=(lowered_init_kind=3 OR (lowered_init_kind=2 AND partially_initialized=1))),
+ CHECK(partially_initialized=0 OR lowered_init_kind=2),
+ CHECK(site_kind<>'scope-entry' OR lowered_init_kind=3)
+) STRICT;
+CREATE TABLE record_constant_initializations (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ source_record_id INTEGER NOT NULL REFERENCES source_record_types(id),
+ storage_id INTEGER NOT NULL REFERENCES storages(id),
+ initialization_kind TEXT NOT NULL CHECK(initialization_kind IN ('zero','constant')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-pooled-record-initialization')
 ) STRICT;
 CREATE TABLE record_value_transfers (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
@@ -834,3 +985,11 @@ CREATE TABLE caught_object_addresses (
 ) STRICT;
 
 COMMIT;
+
+CREATE TABLE deferred_routine_abis (
+ routine_type_id INTEGER NOT NULL REFERENCES routine_types(type_id),
+ source_routine_type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),
+ reason TEXT NOT NULL CHECK(reason='incomplete-value-type'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-incomplete-routine-lowering'),
+ PRIMARY KEY(routine_type_id,source_routine_type_id)
+) STRICT;

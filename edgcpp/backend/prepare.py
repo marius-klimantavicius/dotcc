@@ -348,6 +348,89 @@ for runtime_callback in ("ctor", "dtor", "cctor"):
         '#if defined(EDG_DOT_BACKEND)\n'
         '    dot_object_source::observe_runtime_signature(function_type);\n'
         '#endif')
+object_source_overlay(init_lower,
+    '    cxa_dtor_type = make_pointer_type(function_type);',
+    '    cxa_dtor_type = make_pointer_type(function_type);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_runtime_signature(function_type);\n'
+    '#endif')
+object_source_overlay(init_lower,
+    '  /* Generate the code for the destruction. */\n'
+    '  add_destructor_call(dip->destructor, ipdp, /*have_complete_object=*/TRUE,',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_static_destructor_begin(routine, scope, dip, ipdp);\n'
+    '  dot_object_source::NormalDestructionCapture dot_static_destruction_capture(dip, routine);\n'
+    '#endif\n'
+    '  /* Generate the code for the destruction. */\n'
+    '  add_destructor_call(dip->destructor, ipdp, /*have_complete_object=*/TRUE,')
+object_source_overlay(init_lower,
+    '  ipdp->variable->referenced_non_locally = TRUE;\n'
+    '  pop_generated_routine_context(scope, region_number, &grcontext);',
+    '  ipdp->variable->referenced_non_locally = TRUE;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_static_destructor_complete(routine, scope);\n'
+    '#endif\n'
+    '  pop_generated_routine_context(scope, region_number, &grcontext);')
+object_source_overlay(init_lower,
+    '    /* There\'s no need to call the destructor; skip the destruction processing\n'
+    '       altogether. */\n'
+    '    goto remove_from_list;',
+    '    /* There\'s no need to call the destructor; skip the destruction processing\n'
+    '       altogether. */\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_static_no_effect(dip);\n'
+    '#endif\n'
+    '    goto remove_from_list;')
+object_source_overlay(init_lower,
+    '      /* This destruction isn\'t on a constructor_inits list and isn\'t\n'
+    '         needed so remove it from the destruction list (it will still\n',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_source::observe_automatic_no_effect(dip);\n'
+    '#endif\n'
+    '      /* This destruction isn\'t on a constructor_inits list and isn\'t\n'
+    '         needed so remove it from the destruction list (it will still\n')
+object_source_overlay(init_lower,
+    '        /* If an operator delete call was needed for this new call, it is\n'
+    '           not needed any longer. */\n'
+    '        remove_from_destruction_list(ndsp->freeing_of_storage_on_exception);',
+    '        /* If an operator delete call was needed for this new call, it is\n'
+    '           not needed any longer. */\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '        dot_object_source::observe_automatic_no_effect(ndsp->freeing_of_storage_on_exception);\n'
+    '#endif\n'
+    '        remove_from_destruction_list(ndsp->freeing_of_storage_on_exception);')
+object_source_overlay(init_lower,
+    '  /* Make a statement containing the call and insert it at the right\n'
+    '     location. */\n'
+    '  (void)insert_expr_statement_set_pos(call_node, insert_location);',
+    '#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
+    '  dot_object_source::observe_static_registration(dip, ipdp, call_node, dtor_routine,\n'
+    '    innermost_function_scope->variant.routine.ptr);\n'
+    '#endif\n'
+    '  /* Make a statement containing the call and insert it at the right\n'
+    '     location. */\n'
+    '  (void)insert_expr_statement_set_pos(call_node, insert_location);')
+object_source_overlay(init_lower,
+    '        dip->destructible_entity_descr->\n'
+    '                            is_destruction_for_partial_static_aggregate = TRUE;\n'
+    '      } else {\n'
+    '        /* Update the cleanup information so that this entity will be',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '        dot_object_source::observe_static_partial_terminal(dip);\n'
+    '#endif\n'
+    '        dip->destructible_entity_descr->\n'
+    '                            is_destruction_for_partial_static_aggregate = TRUE;\n'
+    '      } else {\n'
+    '        /* Update the cleanup information so that this entity will be')
+object_source_overlay(init_lower,
+    '    /* The original lifetime won\'t be used, so unbind it. */\n'
+    '    unbind_object_lifetime(*init_expr_lifetime);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_initializer_lifetime_copy(*init_expr_lifetime, curr_object_lifetime,\n'
+    '      innermost_function_scope->variant.routine.ptr);\n'
+    '#endif\n'
+    '    /* The original lifetime won\'t be used, so unbind it. */\n'
+    '    unbind_object_lifetime(*init_expr_lifetime);')
 # Observe stock file-scope dynamic initialization creation and insertion.
 # These hooks retain provenance; they do not change any frontend IL entry.
 object_source_overlay(init_lower,
@@ -665,6 +748,8 @@ object_source_overlay(il_source,
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '  dot_object_source::observe_record_transfer_copy(expr, expr_copy,\n'
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '  dot_object_source::observe_virtual_base_adjustment_copy(expr, expr_copy,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '  dot_object_source::observe_normal_destruction_copy(expr, expr_copy,\n'
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '#endif\n'
@@ -681,8 +766,77 @@ object_source_overlay(il_source,
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '  dot_object_source::observe_record_transfer_copy(expr, expr_copy,\n'
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '  dot_object_source::observe_virtual_base_adjustment_copy(expr, expr_copy,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '#endif\n'
     '  return expr_copy;\n}  /* copy_node */')
+object_source_overlay(il_source,
+    '}  /* overwrite_node */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_virtual_base_adjustment_overwrite(node, source_node,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n'
+    '}  /* overwrite_node */')
+# Migrate the first virtual-base observer, which watched a final class lvalue.
+# Related-class lowering cancels &* and may overwrite that node; only the
+# pointer result before add_indirection owns the dynamic adjustment now.
+obsolete_virtual_hooks = (
+    '#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
+    '  if (!complete_object) dot_object_source::observe_virtual_base_adjustment(\n'
+    '    node, dot_original_virtual_base_object, second_use, vbase_offset, class_type, bcp,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_original_virtual_base_object = node;\n'
+    '#endif\n'
+    '    node = add_address_of_to_node(node);\n',
+)
+source = lower.read_text()
+source = source.replace(obsolete_virtual_hooks[0], '')
+source = source.replace(obsolete_virtual_hooks[1], '    node = add_address_of_to_node(node);\n')
+lower.write_text(source)
+object_source_overlay(lower,
+    '  a_type_ptr       class_type, data_section_class_type;\n',
+    '  a_type_ptr       class_type, data_section_class_type;\n'
+    '#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
+    '  an_expr_node_ptr dot_original_virtual_base_object = NULL;\n'
+    '#endif\n')
+object_source_overlay(lower,
+    '    node = add_address_of_to_node(node);\n'
+    '    /* The vbase offset is stored in bytes.',
+    '    node = add_address_of_to_node(node);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_original_virtual_base_object = node;\n'
+    '#endif\n'
+    '    /* The vbase offset is stored in bytes.')
+object_source_overlay(lower,
+    '    /* Convert back to lvalue. */\n'
+    '    node = add_indirection_to_node(node);\n',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_virtual_base_adjustment(\n'
+    '      node, dot_original_virtual_base_object, second_use, vbase_offset, class_type, bcp,\n'
+    '      innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n'
+    '    /* Convert back to lvalue. */\n'
+    '    node = add_indirection_to_node(node);\n')
+source = lower.read_text()
+virtual_function = source[source.index('static an_expr_node_ptr make_vbase_class_lvalue('):source.index('}  /* make_vbase_class_lvalue */')]
+if virtual_function.count('dot_object_source::observe_virtual_base_adjustment(') != 1 or virtual_function.count('dot_original_virtual_base_object = node;') != 1:
+    raise RuntimeError('Virtual-base adjustment observer must have exactly one pointer-result capture')
+object_source_overlay(lower,
+    '  release_local_constant(&null_constant);\n}  /* add_null_preservation_code */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_virtual_base_null_preservation(expr, source_node);\n'
+    '#endif\n'
+    '  release_local_constant(&null_constant);\n}  /* add_null_preservation_code */')
+object_source_overlay(lower,
+    '  *temp_var = assoc_var;\n'
+    '  return troublesome;\n}  /* check_for_troublesome_aggregate_constant */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  if (troublesome) dot_object_source::observe_pooled_record_constant(constant, assoc_var);\n'
+    '#endif\n'
+    '  *temp_var = assoc_var;\n'
+    '  return troublesome;\n}  /* check_for_troublesome_aggregate_constant */')
 object_source_overlay(init_lower,
     '    assign_stmt = insert_expr_statement(assign_node, insert_location);\n'
     '    set_stmt_pos_to_code_pos_for_lowering(assign_stmt);\n'
@@ -690,6 +844,7 @@ object_source_overlay(init_lower,
     '#if defined(EDG_DOT_BACKEND)\n'
     '    if (have_complete_object) dot_object_source::observe_record_transfer(assign_node,\n'
     '      innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "construction");\n'
+    '    if (have_complete_object) dot_object_source::observe_record_constant_initialization(assign_node, dip, con);\n'
     '#endif\n'
     '    assign_stmt = insert_expr_statement(assign_node, insert_location);\n'
     '    set_stmt_pos_to_code_pos_for_lowering(assign_stmt);\n'

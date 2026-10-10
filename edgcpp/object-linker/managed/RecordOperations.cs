@@ -3,7 +3,7 @@ namespace DotObj;
 // Operation permissions are original C++ semantic facts. They do not describe a
 // new physical representation or authorize invoking a user-defined operation.
 internal sealed record SourceRecordOperations(bool BitwiseConstructionAllowed,
-    bool BitwiseAssignmentAllowed, bool RequiresReturnStorage);
+    bool BitwiseAssignmentAllowed, bool RequiresReturnStorage, bool RequiresParameterStorage);
 
 internal sealed partial class ObjectFile
 {
@@ -12,15 +12,15 @@ internal sealed partial class ObjectFile
 
     private void ReadSourceRecordOperations()
     {
-        using var query = database.Prepare("SELECT source_record_id,bitwise_construction_allowed,bitwise_assignment_allowed,requires_return_storage,capture_proof FROM source_record_operations ORDER BY source_record_id");
+        using var query = database.Prepare("SELECT source_record_id,bitwise_construction_allowed,bitwise_assignment_allowed,requires_return_storage,requires_parameter_storage,capture_proof FROM source_record_operations ORDER BY source_record_id");
         while (query.Read())
         {
             long id = query.Integer(0);
             if (SourceLanguage != "c++" || !SourceRecords.TryGetValue(id, out SourceRecord? source) ||
                 !source.IsComplete || source.CapturePhase != "before-class-prelowering" ||
                 query.Integer(1) is not (0 or 1) || query.Integer(2) is not (0 or 1) || query.Integer(3) is not (0 or 1) ||
-                query.Text(4) != "before-class-prelowering" ||
-                !RecordOperations.TryAdd(id, new(query.Integer(1) == 1, query.Integer(2) == 1, query.Integer(3) == 1)))
+                query.Integer(4) is not (0 or 1) || query.Text(5) != "before-class-prelowering" ||
+                !RecordOperations.TryAdd(id, new(query.Integer(1) == 1, query.Integer(2) == 1, query.Integer(3) == 1, query.Integer(4) == 1)))
                 throw new InvalidDataException("Invalid original record operation permissions");
         }
         if (SourceLanguage == "c++" && SourceRecords.Values.Any(source => source.IsComplete && !RecordOperations.ContainsKey(source.Id)))
@@ -53,6 +53,7 @@ internal sealed partial class ObjectFile
 
     public bool CanConstructRecord(string type) => CanRecordOperation(type, "construction");
     public bool CanTransportRecord(string type) => CanRecordOperation(type, "transport");
+    public bool CanPassRecord(string type) => CanRecordOperation(type, "argument");
     public bool CanTransferRecord(string type, string kind) => CanRecordOperation(type, kind);
 
     private bool CanRecordOperation(string type, string kind)
@@ -69,6 +70,7 @@ internal sealed partial class ObjectFile
             "construction" => operations.BitwiseConstructionAllowed,
             "temporary" => operations.BitwiseConstructionAllowed || operations.BitwiseAssignmentAllowed,
             "transport" => operations.BitwiseConstructionAllowed && !operations.RequiresReturnStorage,
+            "argument" => operations.BitwiseConstructionAllowed && !operations.RequiresParameterStorage,
             _ => false,
         };
         return allowed && CanOperationPayload(record, kind);

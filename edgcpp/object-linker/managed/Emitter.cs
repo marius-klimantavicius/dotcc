@@ -11,10 +11,11 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
     private readonly Dictionary<string, string> arrayNames = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> recordNames = new(StringComparer.Ordinal);
     private readonly Dictionary<(string Record, long Ordinal), string> fieldNames = [];
-    private string Type(string kind) => ScalarTypes.IsArray(kind)
+    private string Type(string kind) => ResolvedType(linker.CanonicalExecutionType(kind));
+    private string ResolvedType(string kind) => ScalarTypes.IsArray(kind)
         ? ScalarTypes.IsAddressOnlyArray(kind) ? Type(ScalarTypes.Leaf(kind)) : "global::" + namespaceName + "." + className + "." + arrayNames[kind]
         : ScalarTypes.IsRecord(kind) ? "global::" + namespaceName + "." + className + "." + recordNames[kind]
-        : RoutineTypes.IsFunctionPointer(kind) ? FunctionPointerType(ScalarTypes.Pointee(kind))
+        : RoutineTypes.IsFunctionPointer(kind) ? linker.IsUnresolvedRoutine(ScalarTypes.Pointee(kind)) ? "void*" : FunctionPointerType(ScalarTypes.Pointee(kind))
         : ScalarTypes.IsPointer(kind) ? Type(ScalarTypes.Pointee(kind)) + "*" : ScalarTypes.CSharp(kind);
     private string FunctionPointerType(string kind)
     {
@@ -47,7 +48,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             foreach (RecordField field in definition.Object.RecordFields(definition.Record.TypeId))
                 fieldNames.Add((key, field.Ordinal), fields.Allocate(field.SourceName, "field_" + field.Ordinal));
         }
-        foreach (string array in linker.EmissionObjects.SelectMany(obj => obj.Types.Values).Where(ScalarTypes.IsArray).Distinct().Order(StringComparer.Ordinal))
+        foreach (string array in linker.EmissionObjects.SelectMany(obj => obj.Types.Values).Where(ScalarTypes.IsArray).Select(linker.CanonicalExecutionType).Distinct().Order(StringComparer.Ordinal))
             arrayNames.Add(array, generatedMembers.Allocate(ScalarTypes.ArrayName(array), "__DotObjArray"));
         WriteStorage(output);
         WriteExterns(output);
@@ -57,7 +58,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v39");
+        lifetimeWriter.WriteString("profile", "scalar-control-v40");
         lifetimeWriter.WriteString("capture", "lexical-activations-and-observed-cpp-cleanup-states");
         lifetimeWriter.WriteBoolean("cleanupStates", true);
         lifetimeWriter.WriteBoolean("sourceLifetimes", true);
@@ -83,7 +84,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             }
             if (ReferenceEquals(obj, linker.Objects[0]))
             {
-                foreach (string array in linker.EmissionObjects.SelectMany(input => input.Types.Values).Where(ScalarTypes.IsArray).Distinct().Order(StringComparer.Ordinal))
+                foreach (string array in linker.EmissionObjects.SelectMany(input => input.Types.Values).Where(ScalarTypes.IsArray).Select(linker.CanonicalExecutionType).Distinct().Order(StringComparer.Ordinal))
                 {
                     if (ScalarTypes.IsAddressOnlyArray(array)) continue;
                     string leaf = ScalarTypes.Leaf(array);
@@ -164,7 +165,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v39");
+            writer.WriteString("profile", "scalar-control-v40");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -177,7 +178,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v39");
+            writer.WriteString("profile", "scalar-control-v40");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -188,7 +189,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v39", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v40", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, cleanupStates = true, sourceLifetimes = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; ordinary and conditional scalar C++ local/member/base exceptional destructor cleanup is owned; typed throw/rethrow uses the shared exception provider by default (external provider opt-out available); ordinary and constructor/destructor function-try regions, typed handlers and release states are owned; fixed helper-based array cleanup and owned subobject VTT arguments are supported; variable-length/cookie arrays, nontrivial initializer-list temporary ownership and adjusting thunks remain gated; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance plus lexical cleanup activations and observed source lifetime/exceptional destruction state graphs; no complete source expression/statement view, macro expansion history or general C++ EH capture" },
@@ -201,6 +202,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 libraryInitialization = "global::Edg.Runtime.ObjectProgram.InitializeLibrary",
                 executableInitializesLibrary = true, startupActionsRunOutsideTypeInitializer = true,
                 startupFailureCached = true, shutdownActionsSupported = false,
+                staticDestructionRegistry = HasStaticDestruction ? "global::Edg.Runtime.CppFinalizers.Program" : null,
+                libraryFinalization = HasStaticDestruction ? "global::Edg.Runtime.ObjectProgram.FinalizeLibrary" : null,
                 optionalHooks = new[] { "Enter", "Leave", "NormalExit", "TryHandleTransfer", "ClassifyTransfer" },
                 transferClassifier = "global::Edg.Runtime.ObjectProgram.IsRuntimeTransfer",
                 ownedThreadStorageRelease = "global::Edg.Runtime.ObjectProgram.ReleaseThreadStorage",
@@ -319,6 +322,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 } : binding.SourceName,
                 "local_" + binding.Id));
         Node SequenceTail(Node node) => body.Nodes[body.Children(node.Id, "item").Last().ChildId];
+        bool RecordPlace(Node node) => node.ValueCategory == "place" && node.TypeId is long type && ScalarTypes.IsRecord(obj.Type(type));
         Node PlaceLeaf(Node node)
         {
             while (node.Kind is "lifetime-scope" or "sequence")
@@ -335,12 +339,21 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             if (place.Kind == "binding") addressTaken.Add(place.BindingId!.Value);
             else if (place.Kind == "sequence") AddressRoot(SequenceTail(place));
-            else if (place.Kind is "member" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope" or "volatile-place") AddressRoot(body.Child(place.Id, "operand"));
+            else if (place.Kind is "virtual-base-adjustment" or "member" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope" or "volatile-place") AddressRoot(body.Child(place.Id, "operand"));
         }
         foreach (Node node in body.Nodes.Values)
             if (node.Kind is "address" or "array-decay" or "volatile-place") AddressRoot(body.Child(node.Id, "operand"));
             else if (node.Kind == "register-cleanup") addressTaken.Add(node.BindingId!.Value);
             else if (node.Kind == "block-copy") { AddressRoot(body.Child(node.Id, "target")); AddressRoot(body.Child(node.Id, "source")); }
+        foreach (Node parent in body.Nodes.Values)
+            foreach (Edge edge in body.Edges.GetValueOrDefault(parent.Id, []))
+            {
+                Node child = body.Nodes[edge.ChildId];
+                if (RecordPlace(child) &&
+                    (parent.Kind == "sequence" && child.Id != SequenceTail(parent).Id ||
+                     parent.Kind == "convert" && NodeType(parent) == "void" && edge.Role == "operand" ||
+                     parent.Kind == "expr-stmt" && edge.Role == "value")) AddressRoot(child);
+            }
         foreach (Node node in body.Nodes.Values)
             if (node.TypeId is not null && accessAlignment.NeedsUnaligned(node)) AddressRoot(node);
         var alignedPointers = body.Bindings.Values.Where(binding => addressTaken.Contains(binding.Id) && (obj.StorageAlignment(obj.Type(binding.TypeId)) > 8 || obj.Records.TryGetValue(binding.TypeId, out RecordType? view) && view.RepresentationKind == "subobject"))
@@ -421,6 +434,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             string Operand(string role) => Expression(Child(role));
             switch (node.Kind)
             {
+                case "virtual-base-adjustment":
                 case "lifetime-scope": return Location(Child("operand"));
                 case "intrinsic": return Intrinsic(obj, node, body.Children(node.Id, "argument").Select(edge => body.Nodes[edge.ChildId]).ToArray(), Expression);
                 case "materialize": return materializedNames[node.Id];
@@ -433,7 +447,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                         Node item = items[index];
                         while (item.Kind == "convert" && NodeType(item) == "void") item = body.Child(item.Id, "operand");
                         if (NodeType(item) == "void") throw new InvalidDataException("Void-prefix comma expression requires statement expansion at " + node.Id + " in " + function.SourceName);
-                        string head = Expression(item); if (ScalarTypes.IsPointer(NodeType(item))) head = "((nuint)" + head + ")";
+                        string head = RecordPlace(item) ? "((nuint)" + Address(item) + ")" : Expression(item);
+                        if (!RecordPlace(item) && ScalarTypes.IsPointer(NodeType(item))) head = "((nuint)" + head + ")";
                         tail = "(" + head + " switch { _ => " + tail + " })";
                     }
                     return tail;
@@ -467,6 +482,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                         ScalarTypes.IsPointer(NodeType(body.Child(pointer.Id, "left"))))
                         return "(" + Expression(body.Child(pointer.Id, "left")) + ")[" + PointerIndex(body.Child(pointer.Id, "right")) + "]";
                     return "(*" + Operand("operand") + ")";
+                case "static-destruction-register":
+                    return "global::Edg.Runtime.ObjectProgram.RegisterStaticDestructor((delegate* managed<void*, void>)(" + Operand("callback") + "), (void*)(" + Operand("object") + "))";
                 case "guard-operation":
                     string guardMethod = obj.GuardOperations[node.Id].Kind switch { "probe" => "NeedsInitialization", "acquire" => "Acquire", "release" => "Release", _ => throw new InvalidDataException("Invalid guard operation") };
                     return "global::Edg.Runtime.CppGuards." + guardMethod + "(" + Operand("guard") + ")";
@@ -478,6 +495,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 case "cleanup-payload-address": return "((" + Type(NodeType(node)) + ")" + cleanupPayloadNames[obj.CleanupPayloadTargets[node.Id].ThrowNodeId] + ")";
                 case "caught-object-address": return "((global::Edg.Runtime.CppTypedCatch)" + handlerNames[obj.CaughtObjectAddresses[node.Id]] + "!).ObjectAddress";
                 case "thrown-object-address": return throwCarrierNames[obj.ThrowObjectAddresses[node.Id]] + ".ObjectAddress";
+                case "record-constant-init":
                 case "record-transfer":
                 case "assign": return Assignment(node, true);
                 case "mutate": return "(" + Mutation(node) + ")";
@@ -547,7 +565,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             if (node.Kind == "binding" && alignedPointers.TryGetValue(node.BindingId!.Value, out string? aligned)) return aligned;
             if (node.Kind == "materialize" && materializedPointers.TryGetValue(node.Id, out string? materialized)) return materialized;
             if (node.Kind == "sequence") return Address(SequenceTail(node));
-            if (node.Kind is "volatile-place" or "lifetime-scope") return Address(body.Child(node.Id, "operand"));
+            if (node.Kind is "virtual-base-adjustment" or "volatile-place" or "lifetime-scope") return Address(body.Child(node.Id, "operand"));
             if (node.Kind == "storage") return "((" + Type(NodeType(node)) + "*)" + StorageAddress(linker.ResolveStorage(obj, node.StorageId!.Value)) + ")";
             if (node.Kind == "dereference") return Expression(body.Child(node.Id, "operand"));
             if (node.Kind == "virtual-base-subobject")
@@ -576,7 +594,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         string Assignment(Node node, bool valueNeeded)
         {
             Node target = body.Child(node.Id, "target"), leaf = PlaceLeaf(target);
-            string value = Expression(body.Child(node.Id, "value"));
+            string value = node.Kind == "record-constant-init" && obj.RecordConstantInitializations[node.Id].AllBitsZero
+                ? "default" : Expression(body.Child(node.Id, "value"));
             if (leaf.Kind == "volatile-place" && !DirectVolatile(leaf))
                 return valueNeeded ? VolatileOperation(NodeType(node), "assign", Address(target), value)
                     : VolatileWrite(NodeType(node), Address(target), value, Location(body.Child(leaf.Id, "operand")));
@@ -625,12 +644,13 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         string StatementExpression(Node node) => node.Kind switch
         {
             "lifetime-scope" => StatementExpression(body.Child(node.Id, "operand")),
-            "assign" or "record-transfer" => Assignment(node, false),
+            "assign" or "record-transfer" or "record-constant-init" => Assignment(node, false),
             "mutate" => Mutation(node, false),
             "compound-assign" => Compound(node, false),
-            "guard-operation" or "call" or "indirect-call" or "va-start" or "va-copy" or "va-end" or "block-copy" => Expression(node),
+            "static-destruction-register" or "guard-operation" or "call" or "indirect-call" or "va-start" or "va-copy" or "va-end" or "block-copy" => Expression(node),
             "intrinsic" when node.Operator == "unreachable" => Expression(node),
             "convert" when NodeType(node) == "void" => StatementExpression(body.Child(node.Id, "operand")),
+            _ when RecordPlace(node) => "_ = (nuint)" + Address(node),
             _ => "_ = " + Expression(node)
         };
         void Line(int indent, string text) => output.Append(' ', indent * 4).Append(text).Append('\n');
@@ -790,7 +810,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         bool Pure(Node node)
         {
             if (purityCache.TryGetValue(node.Id, out bool cached)) return cached;
-            bool result = node.Kind is not ("guard-operation" or "internal-try-expression" or "throw" or "throw-marker" or "rethrow" or "materialize" or "cleanup-transition" or "call" or "indirect-call" or "assign" or "record-transfer" or "compound-assign" or "block-copy" or "mutate" or "volatile-place" or "va-start" or "va-copy" or "va-end" or "va-arg") &&
+            bool result = node.Kind is not ("static-destruction-register" or "guard-operation" or "internal-try-expression" or "throw" or "throw-marker" or "rethrow" or "materialize" or "cleanup-transition" or "call" or "indirect-call" or "assign" or "record-transfer" or "record-constant-init" or "compound-assign" or "block-copy" or "mutate" or "volatile-place" or "va-start" or "va-copy" or "va-end" or "va-arg") &&
                 !(node.Kind == "intrinsic" && (node.Operator == "unreachable" || node.Operator!.Contains("overflow", StringComparison.Ordinal))) &&
                 body.Edges.GetValueOrDefault(node.Id, []).All(edge => Pure(body.Nodes[edge.ChildId]));
             purityCache[node.Id] = result;
@@ -799,7 +819,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         // An address rooted in owned stack storage with constant offsets cannot
         // change while the RHS runs, even if the RHS calls or mutates values.
         bool StablePlace(Node node, int depth = 0) => depth <= 1024 &&
-            (node.Kind is "binding" or "storage" || node.Kind is "member" or "lifetime-scope" or "volatile-place" && StablePlace(body.Child(node.Id, "operand"), depth + 1) ||
+            (node.Kind is "binding" or "storage" || node.Kind is "virtual-base-adjustment" or "member" or "lifetime-scope" or "volatile-place" && StablePlace(body.Child(node.Id, "operand"), depth + 1) ||
                 node.Kind == "dereference" && StablePointer(body.Child(node.Id, "operand"), depth + 1));
         bool StablePointer(Node node, int depth = 0)
         {
@@ -828,10 +848,10 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 .Any(edge => NodeType(body.Nodes[edge.ChildId]) == "void"));
             if (node.Kind is "internal-try-expression" or "throw" or "throw-marker" or "rethrow") result = true;
             if (node.Kind == "conditional" && NodeType(node) == "void") result = true;
-            if (node.Kind is "assign" or "record-transfer" or "compound-assign") result |= accessAlignment.NeedsUnaligned(body.Child(node.Id, "target"));
+            if (node.Kind is "assign" or "record-transfer" or "record-constant-init" or "compound-assign") result |= accessAlignment.NeedsUnaligned(body.Child(node.Id, "target"));
             if (node.Kind == "mutate") result |= accessAlignment.NeedsUnaligned(body.Child(node.Id, "operand"));
             if (node.Kind == "block-copy") result |= !Pure(body.Child(node.Id, "target")) || !Pure(body.Child(node.Id, "source"));
-            if (node.Kind is "assign" or "record-transfer" or "compound-assign" && node.EvaluationOrder == "right-to-left")
+            if (node.Kind is "assign" or "record-transfer" or "record-constant-init" or "compound-assign" && node.EvaluationOrder == "right-to-left")
             {
                 Node target = body.Child(node.Id, "target"), value = body.Child(node.Id, "value");
                 // C# compound assignment reads the old destination before its
@@ -839,7 +859,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 result |= (node.Kind == "compound-assign" || !StablePlace(target)) && (!Pure(target) || !Pure(value));
             }
             result |= body.Edges.GetValueOrDefault(node.Id, []).Any(edge =>
-                (edge.Role != "target" || node.Kind is "assign" or "record-transfer" or "compound-assign" or "block-copy") &&
+                (edge.Role != "target" || node.Kind is "assign" or "record-transfer" or "record-constant-init" or "compound-assign" or "block-copy") &&
                 body.Nodes[edge.ChildId].TypeId != null && NeedsExpansion(body.Nodes[edge.ChildId]));
             expansionCache[node.Id] = result;
             return result;
@@ -874,7 +894,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 Line(indent, materializedNames[node.Id] + " = " + value + ";");
                 return discard ? "" : materializedNames[node.Id];
             }
-            if (node.Kind == "lifetime-scope") return Lift(body.Child(node.Id, "operand"), indent, discard);
+            if (node.Kind is "virtual-base-adjustment" or "lifetime-scope") return Lift(body.Child(node.Id, "operand"), indent, discard);
             if (node.Kind == "sequence")
             {
                 Node[] items = body.Children(node.Id, "item").Select(edge => body.Nodes[edge.ChildId]).ToArray();
@@ -925,7 +945,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     Place(items[^1]); return;
                 }
                 if (place.Kind == "materialize") { Lift(place, indent); return; }
-                if (place.Kind is "member" or "lifetime-scope" or "volatile-place")
+                if (place.Kind is "virtual-base-adjustment" or "member" or "lifetime-scope" or "volatile-place")
                 {
                     Place(body.Child(place.Id, "operand")); return;
                 }
@@ -939,7 +959,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     if (node.EvaluationOrder == "right-to-left") { Place(body.Child(node.Id, "source")); Place(body.Child(node.Id, "target")); }
                     else { Place(body.Child(node.Id, "target")); Place(body.Child(node.Id, "source")); }
                 }
-                else if (node.Kind is "assign" or "record-transfer" or "compound-assign")
+                else if (node.Kind is "assign" or "record-transfer" or "record-constant-init" or "compound-assign")
                 {
                     if (node.EvaluationOrder == "right-to-left") { Value(body.Child(node.Id, "value")); Place(body.Child(node.Id, "target")); }
                     else { Place(body.Child(node.Id, "target")); Value(body.Child(node.Id, "value")); }
@@ -954,14 +974,14 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     foreach (Edge edge in children) Value(body.Nodes[edge.ChildId]);
                 }
             }
-            Node? unalignedTarget = node.Kind is "assign" or "record-transfer" or "compound-assign" ? body.Child(node.Id, "target")
+            Node? unalignedTarget = node.Kind is "assign" or "record-transfer" or "record-constant-init" or "compound-assign" ? body.Child(node.Id, "target")
                 : node.Kind == "mutate" ? body.Child(node.Id, "operand") : null;
             if (unalignedTarget is not null && accessAlignment.NeedsUnaligned(unalignedTarget))
             {
                 string type = NodeType(node), address = allocator.Allocate("__unaligned_address", "address");
                 Line(indent, "void* " + address + " = " + Address(unalignedTarget) + ";");
                 string value;
-                if (node.Kind is "assign" or "record-transfer") value = Expression(body.Child(node.Id, "value"));
+                if (node.Kind is "assign" or "record-transfer" or "record-constant-init") value = Expression(body.Child(node.Id, "value"));
                 else
                 {
                     string old = allocator.Allocate("__previous", "previous");
@@ -1077,7 +1097,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         void Discard(Node expression, int indent)
         {
-            if (expression.Kind == "lifetime-scope") { Discard(body.Child(expression.Id, "operand"), indent); return; }
+            if (expression.Kind is "virtual-base-adjustment" or "lifetime-scope") { Discard(body.Child(expression.Id, "operand"), indent); return; }
             if (expression.Kind == "internal-try-expression")
             {
                 string boundary = hasCleanup ? allocator.Allocate("__initialization_boundary", "initialization_boundary") : "0L";
@@ -1220,6 +1240,11 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                         Line(indent, "_ = " + ExpandedValue(extents[index], indent) + ";");
                     }
                     Line(indent, "global::System.Threading.Thread.MemoryBarrier();");
+                    break;
+                case "record-storage-init":
+                    if (obj.RecordStorageInitializations[node.Id].ZeroStorage)
+                        Line(indent, Location(Child("target")) + " = default;");
+                    BlockContents(Child("body"), indent);
                     break;
                 case "array-init": ArrayInitialize(node, indent); break;
                 case "block":

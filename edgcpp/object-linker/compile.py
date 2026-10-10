@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import sqlite3
 import subprocess
@@ -12,6 +13,7 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = Path(__file__).with_name('schema.sql')
 ARRAYS = {
+    'sourceDependentTypes': ('source_dependent_types', ['typeId', 'kind', 'ownerTypeId', 'nestingDepth', 'parameterPosition', 'isPack', 'identityKey', 'captureProof']),
     'sourceFiles': ('source_files', ['id', 'path', 'parentId']),
     'types': ('types', ['id', 'kind', 'pointeeTypeId', 'elementTypeId', 'elementCount']),
     'storages': ('storages', ['id', 'sourceName', 'linkage', 'externalKey', 'definition', 'typeId', 'sourceTypeId', 'isThreadLocal', 'isConst', 'alignment', 'sourceFileId', 'line', 'column']),
@@ -21,6 +23,7 @@ ARRAYS = {
     'routineParameters': ('routine_parameters', ['typeId', 'ordinal', 'parameterTypeId']),
     'sourceRoutineTypes': ('source_routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy', 'parameterMode', 'objectTypeId', 'objectIsConst', 'objectIsVolatile', 'objectRefQualifier']),
     'sourceRoutineParameters': ('source_routine_parameters', ['typeId', 'ordinal', 'parameterTypeId']),
+    'deferredRoutineAbis': ('deferred_routine_abis', ['routineTypeId', 'sourceRoutineTypeId', 'reason', 'captureProof']),
     'sourceRoutineAbis': ('source_routine_abis', ['sourceRoutineTypeId', 'returnPassing', 'captureProof']),
     'sourceRoutineAbiParameters': ('source_routine_abi_parameters', ['sourceRoutineTypeId', 'executionOrdinal', 'parameterRole', 'sourceOrdinal']),
     'entities': ('entities', ['id', 'sourceName', 'linkage', 'externalKey', 'definition',
@@ -32,21 +35,29 @@ ARRAYS = {
     'thunkWrappers': ('thunk_wrappers', ['entityId', 'targetEntityId', 'overriddenEntityId', 'primaryEntityId', 'thisDelta', 'vcallIndex', 'returnDelta', 'vbaseIndex', 'captureProof']),
     'wrapperCalls': ('wrapper_calls', ['nodeId', 'wrapperEntityId', 'captureProof']),
     'initializationActions': ('initialization_actions', ['id', 'entityId', 'phase', 'priority', 'ordinal', 'sourceFileId', 'line', 'column']),
-    'sourceLifetimes': ('source_lifetimes', ['id', 'functionEntityId', 'parentLifetimeId', 'siblingOrdinal', 'parentObligationId', 'parentAllocationObligationId', 'kind', 'sourceFileId', 'line', 'column', 'captureProof']),
-    'sourceDestructionObligations': ('source_destruction_obligations', ['id', 'functionEntityId', 'lifetimeId', 'ordinal', 'destructorEntityId', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'captureProof']),
-    'sourceAllocationObligations': ('source_allocation_obligations', ['id', 'functionEntityId', 'lifetimeId', 'ordinal', 'deallocatorEntityId', 'allocatedSourceTypeId', 'isArray', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'sourceInitializers': ('source_initializers', ['id', 'storageId', 'sourceName', 'executionDisposition', 'sourceTypeId', 'functionEntityId', 'sourceOrdinal', 'kind', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'sourceStaticLifetimes': ('source_static_lifetimes', ['id', 'functionEntityId', 'sourceInitializerId', 'parentLifetimeId', 'parentObligationId', 'siblingOrdinal', 'kind', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'sourceStaticDestructions': ('source_static_destructions', ['id', 'lifetimeId', 'ordinal', 'storageId', 'sourceTypeId', 'selectedRoutineEntityId', 'sourceInitializerId', 'kind', 'isArrayAllocation', 'domain', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'initializerLifetimeExecutions': ('initializer_lifetime_executions', ['sourceLifetimeId', 'sourceStaticLifetimeId', 'sourceInitializerId', 'functionEntityId', 'captureProof']),
+    'staticDestructionRegistrations': ('static_destruction_registrations', ['nodeId', 'sourceObligationId', 'sourceInitializerId', 'functionEntityId', 'callbackEntityId', 'objectNodeId', 'domain', 'captureProof']),
+    'generatedStaticDestructors': ('generated_static_destructors', ['functionEntityId', 'sourceObligationId', 'parameterBindingId', 'storageId', 'elementTypeId', 'elementCount', 'elementSize', 'captureProof']),
+    'staticDestructionDispositions': ('static_destruction_dispositions', ['sourceObligationId', 'kind', 'captureProof']),
+    'sourceLifetimes': ('source_lifetimes', ['id', 'functionEntityId', 'parentLifetimeId', 'siblingOrdinal', 'parentObligationId', 'parentAllocationObligationId', 'kind', 'sourceFileId', 'line', 'column', 'captureProof', 'sourceInitializerId']),
+    'sourceDestructionObligations': ('source_destruction_obligations', ['id', 'functionEntityId', 'lifetimeId', 'ordinal', 'destructorEntityId', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'captureProof', 'sourceInitializerId', 'sourceStaticObligationId', 'isPartialAggregate']),
+    'destructionElisions': ('destruction_elisions', ['sourceObligationId', 'functionEntityId', 'kind', 'captureProof']),
+    'sourceAllocationObligations': ('source_allocation_obligations', ['id', 'functionEntityId', 'lifetimeId', 'ordinal', 'deallocatorEntityId', 'allocatedSourceTypeId', 'isArray', 'sourceFileId', 'line', 'column', 'captureProof', 'sourceInitializerId', 'sourceStaticObligationId']),
     'internalTryExpressions': ('internal_try_expressions', ['nodeId', 'sourceAllocationObligationId', 'cleanupPolicy', 'captureProof']),
     'expressionLifetimes': ('expression_lifetimes', ['nodeId', 'sourceLifetimeId', 'captureProof']),
     'baseSubobjectExpressions': ('base_subobject_expressions', ['nodeId', 'sourceBaseId']),
     'virtualBaseExpressions': ('virtual_base_expressions', ['nodeId', 'completeBaseTypeId']),
     'virtualBaseSubobjects': ('virtual_base_subobjects', ['recordTypeId', 'completeBaseTypeId', 'physicalViewTypeId', 'byteOffset', 'extent', 'fieldId', 'captureProof']),
-    'normalDestructions': ('normal_destructions', ['nodeId', 'sourceObligationId', 'captureProof']),
+    'normalDestructions': ('normal_destructions', ['nodeId', 'sourceObligationId', 'captureProof', 'sourceStaticObligationId']),
     'allocationCleanupActions': ('allocation_cleanup_actions', ['id', 'functionEntityId', 'sourceAllocationObligationId', 'callbackEntityId', 'targetNodeId', 'allocationSize', 'conditionBindingId', 'nullPolicy', 'captureProof']),
     'localStaticGuards': ('local_static_guards', ['id', 'functionEntityId', 'storageId', 'guardStorageId', 'sourceTypeId', 'sourceLifetimeId', 'guardPolicy', 'sourceFileId', 'line', 'column', 'captureProof']),
     'guardOperations': ('guard_operations', ['nodeId', 'guardId', 'kind', 'captureProof']),
     'guardCleanupActions': ('guard_cleanup_actions', ['id', 'functionEntityId', 'guardId', 'targetNodeId', 'captureProof']),
-    'cleanupActions': ('cleanup_actions', ['id', 'functionEntityId', 'sourceObligationId', 'callbackEntityId', 'targetNodeId', 'captureProof']),
-    'arrayRuntimeOperations': ('array_runtime_operations', ['nodeId', 'sourceObligationId', 'callbackEntityId', 'operationKind', 'captureProof']),
+    'cleanupActions': ('cleanup_actions', ['id', 'functionEntityId', 'sourceObligationId', 'sourceStaticObligationId', 'callbackEntityId', 'targetNodeId', 'captureProof']),
+    'arrayRuntimeOperations': ('array_runtime_operations', ['nodeId', 'sourceObligationId', 'callbackEntityId', 'operationKind', 'captureProof', 'sourceStaticObligationId']),
     'cleanupArrays': ('cleanup_arrays', ['actionId', 'elementTypeId', 'elementCount', 'elementSize', 'captureProof']),
     'cleanupVttArguments': ('cleanup_vtt_arguments', ['actionId', 'bindingId', 'captureProof']),
     'cleanupConditions': ('cleanup_conditions', ['actionId', 'flagBindingId', 'captureProof']),
@@ -54,7 +65,7 @@ ARRAYS = {
     'cleanupTransitions': ('cleanup_transitions', ['nodeId', 'stateId', 'captureProof', 'isUnreachable']),
     'cleanupFrameMarkers': ('cleanup_frame_markers', ['nodeId', 'kind', 'captureProof']),
     'generatedRoutineOrigins': ('generated_routine_origins', ['entityId', 'kind', 'captureProof', 'failurePolicy']),
-    'dynamicInitializers': ('dynamic_initializers', ['id', 'actionId', 'storageId', 'sourceOrdinal', 'ordinal', 'captureProof', 'sourceFileId', 'line', 'column']),
+    'dynamicInitializers': ('dynamic_initializers', ['id', 'actionId', 'storageId', 'sourceInitializerId', 'sourceOrdinal', 'ordinal', 'captureProof', 'sourceFileId', 'line', 'column']),
     'dynamicInitializerStatements': ('dynamic_initializer_statements', ['initializerId', 'ordinal', 'nodeId']),
     'generatedRoutineScaffolds': ('generated_routine_scaffolds', ['entityId', 'ordinal', 'nodeId', 'bindingId', 'kind', 'captureProof']),
     'bindings': ('bindings', ['id', 'functionId', 'kind', 'ordinal', 'typeId', 'sourceName',
@@ -81,7 +92,10 @@ ARRAYS = {
     'throwObjectAddresses': ('throw_object_addresses', ['nodeId', 'throwNodeId', 'captureProof']),
     'throwMarkers': ('throw_markers', ['nodeId', 'throwNodeId', 'kind', 'captureProof']),
     'rethrowExpressions': ('rethrow_expressions', ['nodeId', 'captureProof']),
-    'sourceRecordOperations': ('source_record_operations', ['sourceRecordId', 'bitwiseConstructionAllowed', 'bitwiseAssignmentAllowed', 'requiresReturnStorage', 'captureProof']),
+    'sourceRecordOperations': ('source_record_operations', ['sourceRecordId', 'bitwiseConstructionAllowed', 'bitwiseAssignmentAllowed', 'requiresReturnStorage', 'requiresParameterStorage', 'captureProof']),
+    'virtualBaseAdjustments': ('virtual_base_adjustments', ['nodeId', 'operandNodeId', 'sourceNodeId', 'lookupSourceNodeId', 'derivedTypeId', 'completeBaseTypeId', 'offsetNodeId', 'vtableIndex', 'isCompleteObject', 'captureProof']),
+    'recordConstantInitializations': ('record_constant_initializations', ['nodeId', 'sourceRecordId', 'storageId', 'initializationKind', 'captureProof']),
+    'recordStorageInitializations': ('record_storage_initializations', ['nodeId', 'bindingId', 'sourceDeclarationId', 'sourceTypeId', 'sourceInitKind', 'loweredInitKind', 'siteKind', 'zeroStorage', 'partiallyInitialized', 'captureProof']),
     'recordValueTransfers': ('record_value_transfers', ['nodeId', 'kind', 'captureProof']),
     'sourceFields': ('source_record_fields', ['id', 'sourceRecordId', 'ordinal', 'sourceTypeId', 'sourceName', 'isMutable', 'hasNoUniqueAddress', 'bitWidth', 'sourceFileId', 'line', 'column', 'hasInitializer', 'isPacked', 'explicitAlignment']),
     'sourceBases': ('source_record_bases', ['id', 'sourceRecordId', 'ordinal', 'baseSourceTypeId', 'accessKind', 'isVirtual', 'sourceFileId', 'line', 'column']),
@@ -167,7 +181,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v39':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v40':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -187,13 +201,23 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v39', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v40', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))
         for name, (table, fields) in ARRAYS.items():
             if not isinstance(wire[name], list):
                 raise ValueError('Expected array: ' + name)
+            columns = [re.sub(r'[A-Z]', lambda match: '_' + match[0].lower(), field) for field in fields]
+            if name == 'storageData':
+                columns[-1] = 'bytes'
+            if name == 'sourceFiles':
+                columns += ['available', 'sha256', 'bytes']
+            schema_columns = [row[1] for row in db.execute('PRAGMA table_info(' + quote(table) + ')')]
+            if len(columns) != len(set(columns)) or set(columns) != set(schema_columns):
+                raise ValueError('Semantic field/schema mismatch: ' + name)
+            insert = ('INSERT INTO ' + quote(table) + '(' + ','.join(map(quote, columns)) +
+                      ') VALUES(' + ','.join('?' for _ in columns) + ')')
             for record in wire[name]:
                 if not isinstance(record, dict) or set(record) != set(fields):
                     raise ValueError('Invalid fields in ' + name + ': ' + str(record))
@@ -219,7 +243,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
                         values += [1, digest, data]
                     else:
                         values += [0, None, None]
-                db.execute('INSERT INTO ' + quote(table) + ' VALUES(' + ','.join('?' for _ in values) + ')', values)
+                db.execute(insert, values)
         errors = list(db.execute('PRAGMA foreign_key_check'))
         if errors:
             raise ValueError('Invalid semantic references: ' + str(errors[:10]))

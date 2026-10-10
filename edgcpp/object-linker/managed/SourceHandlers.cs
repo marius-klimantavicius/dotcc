@@ -17,7 +17,7 @@ internal sealed partial class ObjectFile
             while (query.Read())
             {
                 if (!SourceLifetimes.TryGetValue(query.Integer(1), out SourceLifetime? lifetime) || lifetime.Kind != "try-block" ||
-                    query.OptionalInteger(3) is not long owner || OriginalFunction(owner) != lifetime.FunctionEntityId ||
+                    query.OptionalInteger(3) is not long owner || !IsSourceLifetimeExecution(lifetime, owner) ||
                     query.Text(2) != "observed-source-try" || query.OptionalText(4) != "try" || !SourceTries.TryAdd(query.Integer(0), lifetime.Id))
                     throw new InvalidDataException("Source try lacks its exact original lifetime and function");
                 string kind = query.Text(5);
