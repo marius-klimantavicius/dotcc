@@ -1145,3 +1145,41 @@ exact borrowed routine template argument/type ownership (unittest), and original
 dependent bitfield width expressions (exception/string_util managed checks).
 Then regenerate the full project with bounded per-unit memory and the weighted
 workspace/persistent storage plan. No full generation/runtime success is claimed.
+
+### v61 candidate157/186 source bitfield checkpoint
+
+Original source bitfields now retain `bit_size_constant` and declared width
+independently of EDG's stored value-bit count, following stock cp_gen_be. A
+nonreal template's physical placeholder no longer supplies an invented declared
+width or integral type. Native157/managed186 passes36 focused checks, including
+source-hidden JIT, symbolic dependent widths, a40-bit declaration with32 value
+bits, a zero-width boundary, and five resealed malformed graph cases. Both real
+exception.cpp and string_util.cpp export and verify (receipt
+`dotobj-bitfield-real-frontier-157/verify186.json`).
+
+Managed185 failed its schema registry initialization; no acceptance claimed for
+that tool. Managed186 corrects the missing source_bitfield_widths registry entry
+without changing native wire/schema. Static temporary adoption157/186 passes46
+focused checks and is being checked on actual test_config. The original routine
+substitution ownership worker is preparing the final observed export gate.
+
+### Accepted v61 checkpoint (native158 / managed187)
+
+All44 exported units in the45-unit ownership frontier now verify, including
+test_config.cpp, exception.cpp, string_util.cpp and locale.cpp. Acceptance is
+286 checks: bitfield widths36, static initializer rollback58 (including
+NativeAOT), named routine template substitutions39, record/layout regression153.
+See `evidence/dotobj-duckdb-source-graph-v61-20261010.json`.
+
+The sole observed export failure is unittest.cpp. It advances past named
+find_if/begin substitution and now reaches anonymous routine types produced by
+`function_declarator` while reparsing an instantiated function body; exact
+declarator/enclosing-instantiation ownership is next. Four header-free variants reproduce that same gate. Retained-version
+export evidence is2,634/2,635; a fresh coherent full corpus is still outstanding.
+
+Scaling preparation found source snapshot pages account for59% of the three
+measured objects' disk footprint, while metadata dictionaries remain resident
+for every ObjectFile. The next storage slice will losslessly compress new
+source BLOBs with exact decoded-content verification, retaining self-contained
+objects and all intermediates. Linker scaling analysis proceeds independently
+of libc++ runtime work.

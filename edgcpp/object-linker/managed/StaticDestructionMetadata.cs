@@ -291,12 +291,38 @@ internal sealed partial class ObjectFile
                 long id = q.Integer(0); string kind = q.Text(1);
                 if (!SourceStaticDestructions.TryGetValue(id, out var obligation) || obligation.Kind is not ("persistent" or "partial-aggregate") ||
                     (obligation.Kind == "persistent" ? kind is not ("registered" or "stock-proven-no-effect" or "stock-not-emitted")
-                        : kind is not ("cleanup-action" or "stock-terminal-no-throw" or "stock-not-emitted" or "source-template")) || q.Text(2) != "observed-static-destruction-disposition" ||
+                        : kind is not ("cleanup-action" or "stock-terminal-no-throw" or "stock-not-emitted" or "source-template" or "adopted-automatic")) || q.Text(2) != "observed-static-destruction-disposition" ||
                     (kind == "source-template") != (obligation.SourceInitializerId is long templateInitializer && SourceInitializers[templateInitializer].Kind == "field-default") ||
                     (kind == "registered") != StaticDestructionRegistrations.Values.Any(value => value.SourceObligationId == id) ||
                     (kind == "stock-not-emitted") != (obligation.SourceInitializerId is long initializer && SourceInitializers[initializer].ExecutionDisposition == "stock-not-emitted") ||
                     !StaticDestructionDispositions.TryAdd(id, kind))
                     throw new InvalidDataException("Static source obligation has no exact observed disposition");
+                if (obligation.Kind == "partial-aggregate" && kind != "source-template")
+                {
+                    var projections = SourceDestructionObligations.Values.Where(value => value.SourceStaticObligationId == id).ToArray();
+                    bool adopted = projections.Length != 0;
+                    if ((kind == "adopted-automatic") != adopted || projections.Length > 1)
+                        throw new InvalidDataException("Static partial automatic disposition lacks exactly one original projection");
+                    if (adopted)
+                    {
+                        var projection = projections[0];
+                        if (projection.FunctionEntityId is not null || projection.SourceInitializerId != obligation.SourceInitializerId ||
+                            !projection.IsPartialAggregate || projection.Ordinal != obligation.Ordinal || projection.SourceTypeId != obligation.SourceTypeId ||
+                            projection.DestructorEntityId != obligation.SelectedRoutineEntityId ||
+                            obligation.SourceInitializerId is not long sourceInitializer)
+                            throw new InvalidDataException("Static partial automatic projection differs from its original lifetime, ordinal, type or destructor");
+                        var executions = InitializerLifetimeExecutions.Values.Where(execution => execution.SourceLifetimeId == projection.LifetimeId).ToArray();
+                        var source = SourceInitializers[sourceInitializer];
+                        if (executions.Length == 0 || executions.Any(execution => execution.SourceStaticLifetimeId != obligation.LifetimeId ||
+                            execution.SourceInitializerId != sourceInitializer ||
+                            (source.Kind == "file" ? !DynamicInitializers.Values.Any(initializer => initializer.SourceInitializerId == sourceInitializer &&
+                                InitializationActions.Any(action => action.Id == initializer.ActionId && action.EntityId == execution.FunctionEntityId))
+                                : source.Kind != "local-static" || OriginalFunction(execution.FunctionEntityId) != source.FunctionEntityId)))
+                            throw new InvalidDataException("Static partial automatic execution differs from its exact original initializer action");
+                        // The existing automatic cleanup verifier and source obligation
+                        // completeness checks still own every projected execution.
+                    }
+                }
                 using var action = database.Prepare($"SELECT count(*) FROM cleanup_actions WHERE source_static_obligation_id={id}");
                 if (!action.Read() || kind != "source-template" && (kind == "cleanup-action") != (action.Integer(0) > 0))
                     throw new InvalidDataException("Static partial destruction action differs from its observed disposition");

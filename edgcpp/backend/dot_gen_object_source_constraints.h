@@ -182,7 +182,14 @@ struct SourceClassSpecialization {
   std::vector<SourceTemplateArgument> arguments;
   std::string error;
 };
+struct SourceRoutineTypeSubstitution {
+  a_routine_ptr selected=nullptr;
+  std::map<a_type_ptr,std::vector<unsigned>> roots;
+  std::map<unsigned,unsigned> observed_arguments;
+  unsigned declaration=0;
+};
 struct SourceConstraintGraph {
+  std::map<unsigned,SourceRoutineTypeSubstitution> routine_substitutions;
   std::map<a_scope_ptr,SourceLocalScopeSnapshot> local_scope_snapshots;
   std::map<a_scope_ptr,unsigned> local_scope_ids;
   std::vector<SourceLocalScope> local_scopes;

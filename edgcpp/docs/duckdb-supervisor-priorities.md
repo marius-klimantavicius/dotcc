@@ -283,3 +283,14 @@ partial-class, and typed pointer-zero suites have passed 44 + 43 + 29 checks.
 
 Latest bounded evidence:43/45 export,41/45 verified across155/182 and locale184.
 Retained-version cumulative exports2633/2635; no coherent latest full corpus.
+
+### Current queue after v61
+
+1. Exact anonymous routine declarator/enclosing-instantiation ownership for unittest.cpp.
+   The44 other frontier units now export and verify.
+2. Lossless source snapshot storage encoding before the full corpus, with exact
+   original hash/length/codec verification; no existing evidence is removed.
+3. Full2635-unit export/verify and bounded whole-program linking/generation.
+4. Compilation and runtime/libc++ closure based on actual generated project gaps.
+
+The2,634/2,635 export count combines retained versions and is not a fresh full run.

@@ -55,6 +55,7 @@ internal sealed partial class ObjectFile
     private void VerifySourceRecords()
     {
         VerifyBaseMetadata();
+        ReadAndVerifySourceBitfieldWidths();
         foreach (SourceRecord source in SourceRecords.Values)
         {
             SourceType type = SourceTypeById(source.SourceTypeId);
@@ -81,6 +82,16 @@ internal sealed partial class ObjectFile
                 {
                     SourceType integer = Original(member);
                     if (integer.Kind == "enum") integer = Original(SourceTypeById(SourceEnums[integer.Id].UnderlyingTypeId));
+                    // A prototype may declare T::size_type bits : N. Its
+                    // original member type and width recipe are owned, but no
+                    // integral storage width exists before substitution.
+                    bool dependentInteger = integer.Kind == "dependent" && SourceTypeContainsParameter(integer.Id, 0);
+                    if (dependentInteger)
+                    {
+                        if (!source.IsDependent || source.LayoutKnown || member.ExecutionRepresentationId is not null)
+                            throw new InvalidDataException("Dependent bitfield member claims a concrete integral layout");
+                        continue;
+                    }
                     var shape = SourceIntegerShape(integer);
                     long storageBits = member.ExecutionRepresentationId is long physicalMember
                         ? StorageSize(Type(physicalMember)) * 8 : Math.Max(8, shape.Bits);

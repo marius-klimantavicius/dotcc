@@ -946,3 +946,31 @@ now accepts that explicit original ownership; foreign initializer/function
 mutations remain rejected. Native156/managed184 passed28 checks, including
 source-hidden verification, production-bound JIT and three malformed cases.
 The real locale.cpp object now verifies with managed184.
+
+### Static initializer temporary rollback
+
+Temporary initializer-list backing arrays inside a static aggregate initializer
+retain their original static lifetime, parent destruction boundary, ordinal,
+type and selected destructor. When stock lowering adopts that subtree for
+automatic execution, `adopted-automatic` records the exact original-to-execution
+projection. Ordinary automatic cleanup completeness remains required; the
+static disposition neither invents cleanup nor declares it unnecessary.
+
+Independent full-expression roots of one initializer each have execution-root
+ordinal zero. Their original static sibling ordering remains in the original
+graph. Verification requires a distinct original boundary per projected root,
+matching source initializer and lifetime kind, and the exact generated dynamic
+initializer action. Actual children and ordinary function roots retain dense
+sibling validation. A source-local-static initializer instead requires its exact
+original enclosing function.
+
+The focused fixture includes two separate temporary backing arrays, failures at
+each constructor position, ordinary completion, and process-exit destruction.
+Malformed cases cover foreign initializer execution, duplicated original root
+boundaries, renumbered execution roots and altered source destruction metadata.
+
+Native158/managed187 passed 58 checks at
+`dotobj-v61-static-adoption-158-187-001/results.json`: native and stock C O0/O2,
+source-hidden verification, production-bound JIT, NativeAOT, and eleven resealed
+negative metadata cases. The production exception provider handles constructor
+failure and temporary cleanup; no test runtime implementations are substituted.

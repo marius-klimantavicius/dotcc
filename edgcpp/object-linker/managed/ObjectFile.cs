@@ -43,6 +43,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["source_enum_increments"] = "operation_constant_id",
         ["source_pack_sizes"] = "constant_id",
         ["source_proxy_types"] = "source_record_id",
+        ["source_bitfield_widths"] = "source_field_id",
         ["source_semantic_constant_operands"] = "constant_id,ordinal",
         ["source_field_initializer_destructions"] = "source_initializer_id",
         ["field_initializer_executions"] = "source_initializer_id,function_entity_id",
@@ -126,6 +127,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["source_dynamic_exception_specifications"] = "source_routine_type_id",
         ["source_dynamic_exception_types"] = "source_routine_type_id,ordinal",
         ["function_dynamic_exception_boundaries"] = "function_entity_id",
+        ["source_routine_type_substitutions"] = "routine_source_type_id", ["source_routine_borrowed_arguments"] = "routine_source_type_id,argument_ordinal",
         ["source_routine_types"] = "type_id", ["source_routine_parameters"] = "type_id,ordinal",
         ["deferred_function_declarations"] = "entity_id", ["deferred_routine_abis"] = "routine_type_id,source_routine_type_id", ["source_routine_abis"] = "source_routine_type_id", ["source_routine_abi_parameters"] = "source_routine_type_id,execution_ordinal",
         ["storages"] = "id", ["storage_data"] = "storage_id,byte_offset", ["relocations"] = "storage_id,byte_offset",
@@ -168,7 +170,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v60" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v61" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");

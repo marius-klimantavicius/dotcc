@@ -1,0 +1,45 @@
+{
+  "profile": "scalar-control-v61",
+  "status": "accepted-bounded-milestone",
+  "receipts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v61-bitfield-widths-157-186-001/results.json",
+      "sha256": "f6b836f50cf92d9cead52d9aa898ea9da5fe5e054f2a34c8d816783b5d66413d",
+      "checks": 36
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v61-static-adoption-158-187-001/results.json",
+      "sha256": "5c726326d1910921c5febf8d4a73398d99201e8e6a97df40f932212adc5ea653",
+      "checks": 58
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v61-substitutions-158-187-002/results.json",
+      "sha256": "061480e97b9c801f466be5c7d4ceecc96a2f2987d421e90762d98e709fde0e61",
+      "checks": 39
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v61-record-regression-158-187-001/results.json",
+      "sha256": "b880a8b80b08f478035fe66c7bb86b4de4ba5693805f65cc4824e88661bb1438",
+      "checks": 153
+    }
+  ],
+  "checks": 286,
+  "native158Sha256": "aa95d530a683bfab9c9672a38988b721cef1116ef3490e6ea9e83f04377647bb",
+  "managed187Sha256": "fd23defb884eee016f2bbfacb4fc494de1f044f8922f7f0e85645371746cf561",
+  "frontier": {
+    "manifestUnits": 45,
+    "exported": 44,
+    "verified": 44,
+    "report": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-ownership-frontier-158-187/summary.json"
+  },
+  "cumulativeExportsAcrossRetainedVersions": 2634,
+  "fullManifestUnits": 2635,
+  "fullLatestCorpusRebuilt": false,
+  "generationComplete": false,
+  "remainingExportGate": "unittest.cpp anonymous function type created by function_declarator in an instantiated function body requires exact enclosing-instantiation ownership",
+  "knownNextPipelineWork": [
+    "full coherent bounded corpus",
+    "whole-program linking/generation memory scaling",
+    "compile/runtime/libc++ closure after generation"
+  ]
+}

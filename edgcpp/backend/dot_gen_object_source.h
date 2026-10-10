@@ -223,7 +223,10 @@ struct RecordField {
   std::string name,original_name;
   unsigned long long offset=0,explicit_alignment=0;
   bool is_packed=false;
-  unsigned bit_offset=0,bit_width=0;
+  unsigned bit_offset=0,bit_width=0,source_width_constant=0;
+  unsigned long long declared_bit_width=0;
+  bool symbolic_bit_width=false;
+  std::string source_width_error;
   bool bit_signed=false,is_mutable=false,no_unique_address=false,is_bit_field=false,has_initializer=false;
   a_source_position position={};
 };
@@ -1305,6 +1308,15 @@ inline void capture_record(a_type_ptr t) {
       value.error="record field outside plain layout profile";
     if(f->is_bit_field) {
       field.bit_offset=f->offset_bit_remainder;field.bit_width=f->bit_size;field.bit_signed=f->bit_field_is_signed;
+      // cp_gen_be prints the original bit_size_constant. bit_size alone is
+      // only storage width (and a placeholder in nonreal template classes).
+      field.declared_bit_width=f->declared_bit_size;
+      if(f->bit_size_constant) {
+        field.source_width_constant=capture_semantic_constant(f->bit_size_constant);
+        field.symbolic_bit_width=f->bit_size_constant->kind==ck_template_param;
+        if(f->bit_size_constant->kind!=ck_integer && !field.symbolic_bit_width)
+          field.source_width_error="original bitfield width requires its exact constant family";
+      } else field.declared_bit_width=f->bit_size;
       if(field.bit_offset>7 || field.bit_width>64 || skip_typerefs(f->type)->kind!=tk_integer ||
          (field.bit_width && skip_typerefs(f->type)->size>8))
         value.error="bitfield outside fixed integer layout";
@@ -1354,6 +1366,58 @@ inline bool source_expression_has_parameter(unsigned expression,std::set<unsigne
   if(value.kind=="parameter-reference")return true;
   for(const auto &edge:value.edges)if(source_expression_has_parameter(edge.child,seen))return true;
   return false;
+}
+// A deduced type argument is an existing source type, not a declaration in
+// the consuming function prototype. Preserve its original decltype recipe's
+// lexical owner. Only exact original argument roots receive this boundary.
+inline bool source_type_has_parameter_recipe(unsigned id,std::set<unsigned> &seen) {
+  if(!id || !seen.insert(id).second)return false;
+  const auto value=state().types.at(id-1);
+  if(value.operator_expression) {
+    std::set<unsigned> expressions;
+    if(source_expression_has_parameter(value.operator_expression,expressions))return true;
+  }
+  if(value.kind=="typedef" || value.kind=="qualified" || value.kind=="pointer" ||
+     value.kind=="lvalue-reference" || value.kind=="rvalue-reference" || value.kind=="array")
+    return source_type_has_parameter_recipe(value.underlying,seen);
+  return false;
+}
+inline void capture_routine_substitution_roots(a_type_ptr type,unsigned id) {
+  auto routine=type->variant.routine.extra_info->assoc_routine;
+  auto templ=routine?routine->assoc_template:nullptr;
+  if(!routine || routine->is_prototype_instantiation || !templ || !templ->template_decl ||
+     (templ->kind!=templk_function && templ->kind!=templk_member_function) ||
+     !templ->prototype_instantiation.routine || templ->prototype_instantiation.routine==routine ||
+     !routine->template_arg_list)return;
+  auto &graph=source_constraint_graph();
+  if(graph.routine_substitutions.count(id))return;
+  graph.routine_substitutions[id].selected=routine;
+  SourceParameterScope original_scope(0);unsigned ordinal=0;
+  for(auto argument=routine->template_arg_list;argument;argument=argument->next,++ordinal) {
+    if(argument->kind!=tak_type)continue;
+    unsigned source=capture_type(argument->variant.type);std::set<unsigned> seen;
+    if(source_type_has_parameter_recipe(source,seen))
+      graph.routine_substitutions.at(id).roots[argument->variant.type].push_back(ordinal);
+  }
+}
+inline unsigned source_type_lexical_binder(a_type_ptr type) {
+  auto &graph=source_constraint_graph();unsigned binder=graph.active_binder;
+  if(!binder)return 0;
+  unsigned routine=graph.binders.at(binder).routine;
+  auto substitution=graph.routine_substitutions.find(routine);
+  if(substitution==graph.routine_substitutions.end())return binder;
+  auto root=substitution->second.roots.find(type);
+  if(root==substitution->second.roots.end())return binder;
+  auto source=state().type_ids.find(type);
+  if(source==state().type_ids.end())return binder; // Roots were captured first.
+  for(unsigned ordinal:root->second)substitution->second.observed_arguments[ordinal]=source->second;
+  // The selected declaration owns the actual ordered argument list; no ABI
+  // routine or fabricated source declaration is introduced for this edge.
+  if(!substitution->second.declaration) {
+    SourceParameterScope original_scope(0);
+    substitution->second.declaration=capture_constraint_routine(substitution->second.selected);
+  }
+  return 0;
 }
 inline void capture_pending_type_context(a_type_ptr t,unsigned id) {
   auto &graph=source_constraint_graph();unsigned binder=graph.active_binder;
@@ -1429,6 +1493,7 @@ inline void capture_pending_type_context(a_type_ptr t,unsigned id) {
 }
 inline unsigned capture_type(a_type_ptr t) {
   if(!t)return 0;
+  SourceParameterScope lexical_scope(source_type_lexical_binder(t));
   auto &s=state();auto prior=s.type_ids.find(t);
   if(prior!=s.type_ids.end()) {
     unsigned original_namespace=capture_parameter_template_namespace(t);
@@ -1689,6 +1754,7 @@ inline unsigned capture_type(a_type_ptr t) {
         recipe_parent=0;value.prototype_origin=recipe_id;
       }
     }
+    capture_routine_substitution_roots(recipe,recipe_id);
     auto frames=capture_parameter_binder_pair(0,recipe_id,recipe_parent,recipe->variant.routine.extra_info->param_type_list);
     if(value.prototype_origin)value.prototype_origin_binder=frames.second;
     {SourceParameterScope prototype(frames.second);value.result=capture_type(t->variant.routine.return_type);}

@@ -131,8 +131,26 @@ internal sealed partial class ObjectFile
             if (group.OrderBy(value => value.Ordinal).Where((value, ordinal) => value.Ordinal != ordinal).Any())
                 throw new InvalidDataException("Original destruction obligation order must be dense");
         foreach (var group in SourceLifetimes.Values.GroupBy(value => (value.FunctionEntityId, value.SourceInitializerId, value.ParentLifetimeId)))
-            if (group.OrderBy(value => value.SiblingOrdinal).Where((value, ordinal) => value.SiblingOrdinal != ordinal).Any())
+        {
+            if (group.Key.FunctionEntityId is null && group.Key.ParentLifetimeId is null)
+            {
+                // Distinct full expressions in one static aggregate initializer
+                // project independently into the execution lifetime forest. Their
+                // original static parent/obligation/ordinal remain in that graph.
+                var originalRoots = new HashSet<long>();
+                foreach (var root in group)
+                {
+                    var executions = InitializerLifetimeExecutions.Values.Where(execution => execution.SourceLifetimeId == root.Id).ToArray();
+                    var boundaries = executions.Select(execution => execution.SourceStaticLifetimeId).Distinct().ToArray();
+                    if (root.SourceInitializerId is not long initializer || root.SiblingOrdinal != 0 || boundaries.Length != 1 ||
+                        executions.Any(execution => execution.SourceInitializerId != initializer) || !originalRoots.Add(boundaries[0]) ||
+                        !SourceStaticLifetimes.TryGetValue(boundaries[0], out var original) || original.SourceInitializerId != initializer || original.Kind != root.Kind)
+                        throw new InvalidDataException("Independent initializer lifetime root lacks its unique original static boundary");
+                }
+            }
+            else if (group.OrderBy(value => value.SiblingOrdinal).Where((value, ordinal) => value.SiblingOrdinal != ordinal).Any())
                 throw new InvalidDataException("Original lifetime sibling order must be dense");
+        }
         foreach (SourceLifetime lifetime in SourceLifetimes.Values)
         {
             var seen = new HashSet<long>();

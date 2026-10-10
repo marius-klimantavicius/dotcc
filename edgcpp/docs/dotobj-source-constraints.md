@@ -190,3 +190,50 @@ The source ownership frontier now exports43/45 units and verifies41 after the
 managed184 local-static temporary correction. This is a bounded checkpoint, not
 a full corpus or a generation/compilation claim. Source-only dependent bitfield
 width recipes and borrowed instantiated prototype types remain explicit gates.
+
+### v61 original routine type-argument substitution
+
+A function-template instantiation may reuse the exact original type node from
+another function's trailing `decltype` return. The consuming prototype does not
+own that type's parameter-reference recipe. Capture now records an exact boundary
+at an original `tak_type` argument root, suspends only the consuming routine's
+binder at that boundary, and preserves the original source type and lexical
+owner. Transparent pointer/reference/qualification wrappers remain in the graph.
+Stock `il_def.h` documents the routine's ordered actual template argument list;
+`il_to_str.c::get_param_for_param_ref` resolves parameter references through the
+original prototype stack and inside/outside parameter-list phases.
+
+`source_routine_types.has_borrowed_arguments` requires a corresponding
+`source_routine_type_substitutions` row selecting the existing original template
+routine declaration. `source_routine_borrowed_arguments` retains exact actual
+argument ordinals and source type IDs. The declaration's prototype and argument
+closure remain semantic metadata, without a fabricated ABI or executable body.
+The verifier checks that the selected argument occurs in the consuming signature,
+retains an original parameter recipe, and has not been reparented to the consumer.
+Missing original lexical ownership still fails; the adapter does not invent a
+binder or waive an unrelated scope conflict.
+
+Frozen158/187 acceptance passed39 checks in
+`dotobj-v61-substitutions-158-187-002/results.json`: native O0/O2, hidden-source
+verification/linking, exact original argument and prototype identity, nested
+pointer recipe ownership, translated JIT, and five resealed negative cases.
+The retained001 run exposed only a test setup assumption that an unused consuming
+binder would be serialized; its correction mutates the actually retained recipe
+binder's owner. The production capture/reader did not change after the frozen
+build. This focused receipt does not establish full DuckDB translation.
+
+### v61 original source bitfield widths
+
+`source_bitfield_widths` retains the exact original constant recipe and either
+an evaluated declared width or a dependent width. `source_record_fields.bit_width`
+is EDG's original stored value-bit count; for a nonreal class that count can be
+a placeholder and does not establish a physical layout or declared width. The
+reader checks original recipes independently, including C++ declared padding
+widths beyond the value type's width. Cross-unit source record comparison also
+compares the declared width identity. No dependent integral width is invented.
+
+Native157/managed186 passed36 focused checks (source-hidden JIT and five
+malformed cases), including symbolic `sizeof(T::size_type)*8-1`, a width template
+parameter, a40-bit declaration with32 value bits, and unnamed zero-width fields.
+The real exception.cpp/string_util.cpp objects now verify. Final158/187 record
+and layout regression passed153 checks, and the45-unit probe exports/verifies44.

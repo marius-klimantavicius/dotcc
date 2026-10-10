@@ -107,6 +107,7 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Dependent array is missing its exact original bound expression");
         ReadSourceConstraints();
         ReadSourceTypeOrigins();
+        ReadSourceRoutineSubstitutions();
         ReadSourceConstantExpressions();
         ReadSourceAggregateConstants();
         ReadSourcePackSizes();

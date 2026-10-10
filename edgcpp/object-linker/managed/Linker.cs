@@ -250,6 +250,7 @@ internal sealed partial class Linker
             field.HasInitializer != expected[index].HasInitializer || field.IsPacked != expected[index].IsPacked ||
             field.ExplicitAlignment != expected[index].ExplicitAlignment ||
             field.HasNoUniqueAddress != expected[index].HasNoUniqueAddress || field.BitWidth != expected[index].BitWidth ||
+            rightObject.SourceBitfieldWidthIdentity(field.Id) != leftObject.SourceBitfieldWidthIdentity(expected[index].Id) ||
             rightObject.SourceTypeSignature(field.SourceTypeId) != leftObject.SourceTypeSignature(expected[index].SourceTypeId)).Any();
     }
 

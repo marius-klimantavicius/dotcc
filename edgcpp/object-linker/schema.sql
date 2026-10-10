@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v60'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v61'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -58,6 +58,7 @@ CREATE TABLE routine_parameters (
  PRIMARY KEY(type_id,ordinal)
 ) STRICT;
 CREATE TABLE source_routine_types (
+ has_borrowed_arguments INTEGER NOT NULL CHECK(has_borrowed_arguments IN (0,1)),
  prototype_origin TEXT NOT NULL DEFAULT 'original' CHECK(prototype_origin IN('original','lambda-conversion-copy')),
  exception_policy_origin TEXT NOT NULL CHECK(exception_policy_origin IN ('captured','generated-resolution','implicit-destructor-resolution')),
  type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
@@ -375,7 +376,7 @@ CREATE TABLE generated_static_destructors (
 ) STRICT;
 CREATE TABLE static_destruction_dispositions (
  source_obligation_id INTEGER PRIMARY KEY REFERENCES source_static_destructions(id),
- kind TEXT NOT NULL CHECK(kind IN ('registered','stock-proven-no-effect','stock-not-emitted','cleanup-action','stock-terminal-no-throw','source-template')),
+ kind TEXT NOT NULL CHECK(kind IN ('registered','stock-proven-no-effect','stock-not-emitted','cleanup-action','stock-terminal-no-throw','source-template','adopted-automatic')),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-static-destruction-disposition')
 ) STRICT;
 CREATE TABLE source_lifetimes (
@@ -1893,4 +1894,27 @@ CREATE TABLE source_local_variable_declarations (
  declared_source_type_id INTEGER REFERENCES source_types(id),
  capture_proof TEXT NOT NULL CHECK(capture_proof='original-nonstatic-variable-list'),
  UNIQUE(scope_id,declaration_ordinal)
+) STRICT;
+
+CREATE TABLE source_bitfield_widths (
+ source_field_id INTEGER PRIMARY KEY REFERENCES source_record_fields(id),
+ constant_id INTEGER REFERENCES source_semantic_constants(id),
+ declared_width INTEGER CHECK(declared_width>=0),
+ width_kind TEXT NOT NULL CHECK(width_kind IN ('evaluated','dependent')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-field-width'),
+ CHECK((width_kind='dependent')=(declared_width IS NULL)),
+ CHECK(width_kind<>'dependent' OR constant_id IS NOT NULL)
+) STRICT;
+
+CREATE TABLE source_routine_type_substitutions (
+ routine_source_type_id INTEGER PRIMARY KEY REFERENCES source_routine_types(type_id),
+ selected_source_declaration_id INTEGER NOT NULL REFERENCES source_expression_declarations(id),
+ borrowed_argument_count INTEGER NOT NULL CHECK(borrowed_argument_count>0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-routine-type-argument-substitution')
+) STRICT;
+CREATE TABLE source_routine_borrowed_arguments (
+ routine_source_type_id INTEGER NOT NULL REFERENCES source_routine_type_substitutions(routine_source_type_id),
+ argument_ordinal INTEGER NOT NULL CHECK(argument_ordinal>=0),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ PRIMARY KEY(routine_source_type_id,argument_ordinal)
 ) STRICT;
