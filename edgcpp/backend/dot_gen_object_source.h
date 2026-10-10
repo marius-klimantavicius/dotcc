@@ -418,6 +418,8 @@ struct ArrayAllocationSnapshot {
   std::string helper,error;
 };
 struct ArrayDeletionSnapshot {
+  bool virtual_callback=false;
+  unsigned long long vtable_index=0,cookie_size=0;
   a_routine_ptr owner=nullptr,deallocator=nullptr,destructor=nullptr;
   a_dynamic_init_ptr original=nullptr;
   a_type_ptr element_type=nullptr;
@@ -1163,7 +1165,9 @@ inline unsigned capture_type(a_type_ptr t) {
       value.dependent_kind="parameter";value.dependent_depth=extra->coordinates.depth;
       value.dependent_position=extra->coordinates.position;value.dependent_pack=parameter.is_pack;
       if(value.dependent_depth<0 || value.dependent_position<=0 || extra->constraint.type_constraint)
-        value.error="dependent source parameter requires ordinary coordinates without an unrepresented constraint";
+        value.error="dependent source parameter requires ordinary coordinates without an unrepresented constraint [name="+
+          value.name+",depth="+std::to_string(value.dependent_depth)+",position="+std::to_string(value.dependent_position)+
+          ",constraint="+std::to_string(extra->constraint.type_constraint?1:0)+"]";
       a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
       conv_seq_to_file_and_line(value.position.seq,&display,&full,&line,&at_end);
       if(!line || !(full?full:display))value.error="dependent source parameter lacks original declaration location";
@@ -2380,6 +2384,17 @@ struct ArrayDeletionCapture {
   }
   ~ArrayDeletionCapture(){if(active)state().array_deletion_contexts.pop_back();}
 };
+inline void observe_array_deletion_virtual_callback(a_routine_ptr destructor,an_expr_node_ptr callback,a_type_ptr cookie_type) {
+  if(!enabled() || state().array_deletion_contexts.empty())return;
+  auto &value=state().array_deletion_contexts.back();
+  if(!destructor || !destructor->is_virtual || destructor->ctor_dtor_kind!=cdk_complete ||
+     !callback || callback->kind!=enk_operation || callback->variant.operation.kind!=eok_question) {
+    value.error="array delete virtual callback lacks exact complete-destructor selection";return;
+  }
+  value.virtual_callback=true;value.destructor=destructor;
+  value.vtable_index=destructor->number.virtual_function;
+  value.cookie_size=cookie_type?skip_typerefs(cookie_type)->size:0;
+}
 inline void observe_array_deletion_call(an_expr_node_ptr call) {
   if(!enabled() || state().array_deletion_contexts.empty())return;
   auto value=state().array_deletion_contexts.back();
@@ -2398,6 +2413,7 @@ inline void observe_array_deletion_call(an_expr_node_ptr call) {
         else value.padding=node_constant(argument);
       }
       if(ordinal<3 || ordinal>4)continue;
+      if(ordinal==3 && value.virtual_callback)continue;
       auto leaf=argument;
       while(leaf->kind==enk_operation && (leaf->variant.operation.kind==eok_cast ||
             leaf->variant.operation.kind==eok_address_of))leaf=leaf->variant.operation.operands;
@@ -2409,7 +2425,7 @@ inline void observe_array_deletion_call(an_expr_node_ptr call) {
       else if(callback!=value.deallocator)value.error="array delete callback differs from original selected deallocator";
       state().array_callback_addresses.emplace(leaf,std::make_pair(value.owner,callback));
     }
-    if(ordinal!=5 || !value.padding || !value.destructor)value.error="array delete lacks finalized callback arguments";
+    if(value.error.empty() && (ordinal!=5 || !value.padding || !value.destructor))value.error="array delete lacks finalized callback arguments";
   }
   if(call)state().array_deletion_calls.emplace(call,value);
 }

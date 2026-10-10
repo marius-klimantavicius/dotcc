@@ -1,0 +1,80 @@
+{
+  "milestone": "dotobj v50 virtual array deletion and original source/lifetime/alignment contracts",
+  "status": "accepted",
+  "nativeCompiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native121-verified-snapshot/cpfe-dot",
+  "nativeSha256": "005cd33d8e6495aabf4862a59a66b33468c298d80cd4a7d9a2910af41c16005a",
+  "managedLinker": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-140/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "focused": [
+    {
+      "name": "anonymous-name",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v50-anonymous-name-121-138-001/results.json",
+      "sha256": "7b6c7bc41e6b70a1cc7755713f43e9178466de43aee620627e790011e0fca299",
+      "checks": 24,
+      "nativeAot": true
+    },
+    {
+      "name": "opaque-alignment",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v50-opaque-alignment-121-138-001/results.json",
+      "sha256": "64c5a42d53e3934ba61d56507cbd109a599b380e67181ff31bf19698bfb52239",
+      "checks": 18,
+      "nativeAot": true
+    },
+    {
+      "name": "label-overlap",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v50-label-overlap-121-138-001/results.json",
+      "sha256": "309ba8b6bc92e7b9c6675ae9682502c44fc14db1d952862aa23dd1e86ea068ab",
+      "checks": 23,
+      "nativeAot": true
+    },
+    {
+      "name": "virtual-delete",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v50-virtual-delete-121-140-003/results.json",
+      "sha256": "8c3a2cba5638bd925b34f8eb7588d2290c1b7d2daeddfe2915aeec636d2837f9",
+      "checks": 169,
+      "nativeAot": false
+    },
+    {
+      "name": "virtual-member-view",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v50-virtual-member-view-121-140-003/results.json",
+      "sha256": "0d454b4bf0f105942c175b60228b7f95b7f1694df4c8ab483edc3dd3627609fe",
+      "checks": 195,
+      "nativeAot": false
+    },
+    {
+      "name": "direct-vector-regression",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v50-direct-vector-121-139-001/results.json",
+      "sha256": "f1525e8af1a71115c2ce2f7216d53cf972eb2770b61903ca69d5475830ec52e8",
+      "checks": 117,
+      "nativeAot": false
+    },
+    {
+      "name": "array-vtt-regression",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v50-array-vtt-121-139-001/results.json",
+      "sha256": "aed6bc6a05725b780bf4989da6597bd950ae7fedfa2c3ba4bea923367fa34d3d",
+      "checks": 42,
+      "nativeAot": false
+    }
+  ],
+  "totalChecks": 588,
+  "actualGeneration": {
+    "primaryUnits": 23,
+    "providers": 2,
+    "definitions": 5943,
+    "allIndividuallyVerified": true,
+    "output": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-v50-combined-121-140/generated",
+    "verificationReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-v50-combined-121-140/verification.json",
+    "generationReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-v50-combined-121-140/result.json",
+    "arrayGateUnitsCleared": 17,
+    "priorManagedRejectUnitsCleared": 5,
+    "recordCopyFollowupCleared": 1
+  },
+  "remainingObserved": [
+    "Five of six record transfer followups still reject under exact current proof gates.",
+    "Virtual vector allocation/deletion runtime providers remain unresolved: new virtual suites verify source-hidden generation and native/stock semantics, not managed execution.",
+    "Full2635 inventory uses frozen119/134; no full-project generation/compile/run claimed."
+  ],
+  "fullDuckdbTranslated": false,
+  "duckdbCompiled": false,
+  "duckdbExecuted": false,
+  "managedSha256": "e4b512595879288ced61afd097fe0fa3450ee08055c07473bec0e052a0cae1a8"
+}

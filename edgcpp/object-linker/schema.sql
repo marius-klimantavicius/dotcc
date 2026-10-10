@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v49'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v50'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -388,7 +388,15 @@ CREATE TABLE array_deletion_operations (
  element_type_id INTEGER NOT NULL REFERENCES types(id),
  padding_size INTEGER NOT NULL CHECK(padding_size>=0),
  helper_kind TEXT NOT NULL CHECK(helper_kind IN ('ia64-vector-delete2','ia64-vector-delete3')),
+ callback_kind TEXT NOT NULL CHECK(callback_kind IN ('direct','virtual-cookie-guarded')),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-array-delete-runtime')
+) STRICT;
+CREATE TABLE array_deletion_virtual_callbacks (
+ call_node_id INTEGER PRIMARY KEY REFERENCES array_deletion_operations(node_id),
+ callback_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ vtable_index INTEGER NOT NULL CHECK(vtable_index>=0),
+ cookie_size INTEGER NOT NULL CHECK(cookie_size>0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-array-delete-virtual-dispatch')
 ) STRICT;
 CREATE TABLE source_array_allocation_elements (
  source_allocation_obligation_id INTEGER PRIMARY KEY REFERENCES source_allocation_obligations(id),

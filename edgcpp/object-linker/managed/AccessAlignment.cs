@@ -91,7 +91,11 @@ internal sealed class AccessAlignment(ObjectFile obj, FunctionBody body)
     {
         Origin origin = PointerOrigin(node);
         string pointee = ScalarTypes.Pointee(Type(node));
-        if (!origin.HasUnknown || pointee is "void" or "i8" or "u8" || RoutineTypes.IsRoutine(pointee)) return origin;
+        // An incomplete opaque handle has no layout/alignment contract yet.
+        // Its fallback one-byte size is not evidence of an underaligned origin.
+        // Keep any known actual storage origin, including packed fields.
+        if (!origin.HasUnknown || pointee is "void" or "i8" or "u8" || RoutineTypes.IsRoutine(pointee) ||
+            ScalarTypes.IsRecord(pointee) && obj.RecordsByKey[pointee].Alignment == 0) return origin;
         long natural = NaturalPointerAlignment(node);
         return new(origin.KnownAlignment is long known ? Math.Min(known, natural) : natural, false);
     }

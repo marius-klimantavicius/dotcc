@@ -322,8 +322,10 @@ internal sealed partial class ObjectFile
         }
         Table("sourceArrayDeletions", "SELECT source_obligation_id,deallocator_entity_id,capture_proof FROM source_array_deletions ORDER BY source_obligation_id",
             "sourceObligationId", "deallocatorEntityId", "captureProof");
-        Table("arrayDeletionOperations", "SELECT node_id,source_obligation_id,destructor_entity_id,deallocator_entity_id,element_type_id,padding_size,helper_kind,capture_proof FROM array_deletion_operations ORDER BY node_id",
-            "nodeId", "sourceObligationId", "destructorEntityId", "deallocatorEntityId", "elementTypeId", "paddingSize", "helperKind", "captureProof");
+        Table("arrayDeletionOperations", "SELECT node_id,source_obligation_id,destructor_entity_id,deallocator_entity_id,element_type_id,padding_size,helper_kind,capture_proof,callback_kind FROM array_deletion_operations ORDER BY node_id",
+            "nodeId", "sourceObligationId", "destructorEntityId", "deallocatorEntityId", "elementTypeId", "paddingSize", "helperKind", "captureProof", "callbackKind");
+        Table("arrayDeletionVirtualCallbacks", "SELECT call_node_id,callback_node_id,vtable_index,cookie_size,capture_proof FROM array_deletion_virtual_callbacks ORDER BY call_node_id",
+            "callNodeId", "callbackNodeId", "vtableIndex", "cookieSize", "captureProof");
         Table("sourceArrayAllocationElements", "SELECT source_allocation_obligation_id,source_destruction_obligation_id,capture_proof FROM source_array_allocation_elements ORDER BY source_allocation_obligation_id",
             "sourceAllocationObligationId", "sourceDestructionObligationId", "captureProof");
         Table("arrayAllocationOperations", "SELECT node_id,source_allocation_obligation_id,allocator_entity_id,deallocator_entity_id,constructor_entity_id,destructor_entity_id,element_type_id,padding_size,helper_kind,capture_proof,source_destruction_obligation_id FROM array_allocation_operations ORDER BY node_id",

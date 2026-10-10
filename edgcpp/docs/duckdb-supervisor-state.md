@@ -629,3 +629,35 @@ anonymous implicit constructor spelling, incomplete opaque handle alignment,
 and exact parent-owned label lifetime overlap. Full119 inventory continues
 four bounded jobs; latest measured1,199processed1,172packaged1,166verified.
 Evidence dotobj-duckdb-storage-copy-contracts-20261010.json.
+
+
+Committed v49:727321039. Profile50 integrated virtual-cookie-guarded array
+destructor metadata and exact graph validation; source-captured anonymous
+routine names; opaque-handle unknown alignment; parent-owned block-after-label
+lifetime overlap. Managed138 built and frozen; native121 build pending after
+two retained observer-scope compile failures (cookie type now explicitly passed
+from the stock integer_type(targ_size_t_int_kind) query). No frontend semantics
+changed. Affected array/record manifest23units and separate managed5-unit probe
+will measure real generation; dependent source-parameter diagnostic now records
+name/depth/position/constraint for the existing precise rejection.
+
+
+v50 accepted native121 SHA005cd33d8e6495aabf4862a59a66b33468c298d80cd4a7d9a2910af41c16005a
+and managed140. Focused588 checks across seven suites; anonymous24,opaque18,
+label23 include NativeAOT. Virtual default169 and late-member-view195 preserve
+source-hidden graph/generation, native/stock semantics and strict negatives;
+production vector runtime remains unresolved. Direct-vector117 and array/VTT42
+regressions pass. Complete original destructor needs no generated ABI origin;
+late raw member callback view matches exact original receiver/policy and finalized
+destructor ABI, never a generic pointer relaxation. All17ICU array gates clear.
+All25objects (23actual+2RTTI) verify140 and combined generation emits5,943
+definitions; review dotobj-duckdb-v50/combined23. Five of six record followups
+still require exact stock transfer provenance. Full119 latest1,655processed,
+1,615packaged,40fails; managed1,602verified,7rejects, three now-known label
+overlap rejects included. No fullDuckDB compile/run. Next ABI batch: observed
+member-pointer representation value transport, result-buffer forwarding thunks;
+worker also proves stock add_bitwise_copy/add_init_assignment storage copies.
+Source constraints diagnostic shows three _Iter concept constraints and regex
+dynamic typed exception specification in four libc++ source probes; retain full
+required metadata, lower priority than current measured project transfer gates.
+Evidence dotobj-duckdb-virtual-array-provenance-20261010.json.

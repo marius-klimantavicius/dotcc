@@ -9,26 +9,28 @@ do not omit metadata to bypass a gate. Re-rank after each expanded probe.
 
 ## Current queue (running full 2,635-unit native119 / managed134 inventory)
 
-Snapshot: 1,125 processed, 1,098 packaged, 27 failed; incremental managed
-verification has 1,082 verified and five rejected objects. These frozen v48
-tools do not include the v49 candidate or staged v50 corrections. Exact snapshot:
-`dotobj-full-failure-priorities-119-latest.json` in persistent campaign storage.
+Snapshot: 1,712 processed, 1,670 packaged, 42 first failures. Exact retained
+snapshot: `dotobj-full-failure-priorities-119-v50.json`. This inventory remains
+frozen at v48. Accepted v49/v50 changes are measured separately, not projected
+onto untested units. Profile50 clears all17 measured virtual array-delete units
+and five previously managed-rejected units;23actual units plus2RTTI providers
+now link/generate5,943 definitions. It does not complete the full project.
 
 | Priority | Measured first blocker | Count | Current action |
 | --- | --- | ---: | --- |
-| Integration | Complete constructor/destructor callable policy differs from raw imported wrapper policy | Cross-unit linkage | v49 exact original complete-entry contract now generates 17,316 definitions from seven real units plus two RTTI providers; acceptance finishing. |
-| 1 | Virtual array delete finalized callback protocol | 17 ICU units | Lifetime worker staged v50 observation of stock null-array guard, cookie count and virtual destructor selection. No runtime expansion required for generation. |
-| 2 | Raw lowered record assignments | 5 units | v49 exact evaluation-save/class-assignment proof clears some; three cases in separate ten-unit probe remain unproven. Preserve gates, revisit after shared array-delete fix. |
-| Small managed fixes | Anonymous implicit constructor spelling; opaque handle false alignment | 2 + 2 rejects | v50 staged source-captured spelling and unknown-layout alignment fix; actual opaque ICU pair verifies, native/stock/JIT/AOT fixture passes. |
-| Newly observed | Original lifetime overlap ownership | 1 managed reject | Base worker investigating qualified_name.cpp against stock lifetime sublists. |
-| Later observed | By-value parameter transport; wrapper target parameter ABI | 2 + 1 exporter gates | Reduce exact selected source/execution ownership after current shared fix. |
-| Already fixed candidate | Typedef-array destructor physical stride | 1 package failure | v49 preserves source alias and uses underlying element size; native/stock/JIT/AOT fixture passes. |
-| Later observed | Unique_ptr result/parameter construction | 1 exporter gate | parser.cpp GetStatement hits the retained record-construction proof gate; diagnose selected transfer, not a frontend parsing failure. |
+| 1 | Raw lowered record assignment / result construction | 9 + 2 | Lifetime worker stages exact complete-object add_bitwise_copy/add_init_assignment observations. Existing source-copy rules remain; accepted v49 covers other stock storage copies. |
+| 2 | Source destruction lacks original object type | 6 | Supervisor inspects retained creation/capture provenance; preserve precise missing allocation/type reason before implementing ownership. |
+| 3 | Member-function-pointer by-value representation transport | 2 | Base worker staged existing observed scalar ABI record transport; source member owner/signature remains distinct. |
+| 4 | Result-buffer forwarding through receiver-adjusting wrapper | 1 | Base worker reduced exact secondary-base thunk; stage unchanged caller result pointer and only stock this adjustment. |
+| Newly observed | Calling-method ABI; original parameter identity | 1 + 1 | Keep exact original declarations and physical calling slots; reduce after current shared transfer batch. |
+| Newly observed | Array allocation rollback action coverage | 2 | Preserve cleanup ownership; investigate make_uniq_array/make_unsafe_uniq_array stock elision/rollback evidence. |
+| Cleared in newer focused real probes | Virtual array delete; alias-array stride | 17 + 1 earlier first failures | v50 clears17actual units; v49 alias-array stride fixture+actual probe accepted. |
+| Cleared managed family | Anonymous ctor spelling; opaque alignment; label lifetime overlap | 2 + 2 + 3 current rejects | v50 actual5probe covers first occurrences and all three mechanisms; later two label units await fresh export. |
+| Required source-only metadata | Constrained dependent _Iter; dynamic typed exception specification | 3 + 1 latest libc++ source probes | Exact diagnostic121 identifies actual concept constraints. Preserve semantic constraints, not omitted source types; behind current project transfer families. |
 
-Counts are current first failures, not predicted successes. Continue the full
-inventory concurrently with focused acceptance. After v49 acceptance, integrate
-v50 as a coherent exporter/reader protocol and probe all affected actual units.
-The complete project has not yet linked, generated, compiled or executed.
+Continue the full inventory concurrently with coherent focused milestones.
+Production virtual-vector runtime closure remains later; generation acceptance
+uses exact native/stock semantics and owned graph checks without fake providers.
 
 ## Previous queue (completed 500-unit native115 / managed126 inventory)
 

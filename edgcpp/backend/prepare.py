@@ -1066,6 +1066,26 @@ object_source_overlay(init_lower,
     '}  /* rewrite_class_assignment_if_necessary */')
 
 
+# Update the observer signature in an already prepared source overlay.
+source = init_lower.read_text()
+source = source.replace(
+    'observe_array_deletion_virtual_callback(dtor_routine, dtor_addr_node);',
+    'observe_array_deletion_virtual_callback(dtor_routine, dtor_addr_node, integer_type((an_integer_kind)targ_size_t_int_kind));')
+source = source.replace(
+    'observe_array_deletion_virtual_callback(dtor_routine, dtor_addr_node, size_t_type);',
+    'observe_array_deletion_virtual_callback(dtor_routine, dtor_addr_node, integer_type((an_integer_kind)targ_size_t_int_kind));')
+init_lower.write_text(source)
+# Observe the precise GNU/IA64 virtual array destructor selection after stock
+# lowering adds its zero-element cookie guard. No IL is changed.
+object_source_overlay(init_lower,
+    '      dtor_addr_node = make_operator_node((an_expr_operator_kind)eok_question,\n'
+    '                                          dtor_addr_node->type, num_elem_node);',
+    '      dtor_addr_node = make_operator_node((an_expr_operator_kind)eok_question,\n'
+    '                                          dtor_addr_node->type, num_elem_node);\n'
+    '#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
+    '      dot_object_source::observe_array_deletion_virtual_callback(dtor_routine, dtor_addr_node, integer_type((an_integer_kind)targ_size_t_int_kind));\n'
+    '#endif')
+
 # Typed throw initialization and exact runtime-address/start ownership.
 object_source_overlay(init_lower,
     '  /* Make an "if" statement and insert it into the program. */\n'

@@ -53,7 +53,8 @@ ARRAYS = {
     'sourceDestructionObligations': ('source_destruction_obligations', ['id', 'functionEntityId', 'lifetimeId', 'ordinal', 'destructorEntityId', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'captureProof', 'sourceInitializerId', 'sourceStaticObligationId', 'isPartialAggregate']),
     'destructionElisions': ('destruction_elisions', ['sourceObligationId', 'functionEntityId', 'kind', 'captureProof']),
     'sourceArrayDeletions': ('source_array_deletions', ['sourceObligationId', 'deallocatorEntityId', 'captureProof']),
-    'arrayDeletionOperations': ('array_deletion_operations', ['nodeId', 'sourceObligationId', 'destructorEntityId', 'deallocatorEntityId', 'elementTypeId', 'paddingSize', 'helperKind', 'captureProof']),
+    'arrayDeletionOperations': ('array_deletion_operations', ['nodeId', 'sourceObligationId', 'destructorEntityId', 'deallocatorEntityId', 'elementTypeId', 'paddingSize', 'helperKind', 'captureProof', 'callbackKind']),
+    'arrayDeletionVirtualCallbacks': ('array_deletion_virtual_callbacks', ['callNodeId', 'callbackNodeId', 'vtableIndex', 'cookieSize', 'captureProof']),
     'sourceArrayAllocationElements': ('source_array_allocation_elements', ['sourceAllocationObligationId', 'sourceDestructionObligationId', 'captureProof']),
     'arrayAllocationOperations': ('array_allocation_operations', ['nodeId', 'sourceAllocationObligationId', 'sourceDestructionObligationId', 'allocatorEntityId', 'deallocatorEntityId', 'constructorEntityId', 'destructorEntityId', 'elementTypeId', 'paddingSize', 'helperKind', 'captureProof']),
     'sourceUninitializedAllocations': ('source_uninitialized_allocations', ['sourceAllocationObligationId', 'allocatorEntityId', 'isPlacement', 'hasInitializer', 'captureProof']),
@@ -204,7 +205,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v49':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v50':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -224,7 +225,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v49', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v50', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

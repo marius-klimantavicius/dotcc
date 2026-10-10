@@ -3,7 +3,7 @@ using System.Globalization;
 namespace DotObj;
 
 internal sealed record ArrayDeletionOperation(long NodeId, long SourceObligationId, long DestructorEntityId,
-    long DeallocatorEntityId, long ElementTypeId, long PaddingSize, string HelperKind, string CaptureProof);
+    long DeallocatorEntityId, long ElementTypeId, long PaddingSize, string HelperKind, string CaptureProof, string CallbackKind);
 
 internal sealed partial class ObjectFile
 {
@@ -24,21 +24,22 @@ internal sealed partial class ObjectFile
                     sources.Text(2) != "before-array-delete-lowering" || !SourceArrayDeletions.TryAdd(obligationId, deallocatorId))
                     throw new InvalidDataException("Array delete lacks its original partial destruction and selected deallocation routine");
             }
-        using var query = database.Prepare("SELECT a.node_id,a.source_obligation_id,a.destructor_entity_id,a.deallocator_entity_id,a.element_type_id,a.padding_size,a.helper_kind,a.capture_proof,n.function_id FROM array_deletion_operations a JOIN nodes n ON n.id=a.node_id ORDER BY a.node_id");
+        using var query = database.Prepare("SELECT a.node_id,a.source_obligation_id,a.destructor_entity_id,a.deallocator_entity_id,a.element_type_id,a.padding_size,a.helper_kind,a.capture_proof,a.callback_kind,n.function_id FROM array_deletion_operations a JOIN nodes n ON n.id=a.node_id ORDER BY a.node_id");
         while (query.Read())
         {
             var value = new ArrayDeletionOperation(query.Integer(0), query.Integer(1), query.Integer(2), query.Integer(3),
-                query.Integer(4), query.Integer(5), query.Text(6), query.Text(7));
-            long functionId = query.Integer(8);
+                query.Integer(4), query.Integer(5), query.Text(6), query.Text(7), query.Text(8));
+            long functionId = query.Integer(9);
             if (!SourceArrayDeletions.TryGetValue(value.SourceObligationId, out long deallocator) ||
                 !SourceDestructionObligations.TryGetValue(value.SourceObligationId, out var original) ||
                 !IsSourceLifetimeExecution(SourceLifetimes[original.LifetimeId], functionId) || !Functions.ContainsKey(functionId) ||
                 OriginalFunction(value.DeallocatorEntityId) != deallocator || OriginalFunction(value.DestructorEntityId) != original.DestructorEntityId ||
                 DestructionElementType(original.SourceTypeId).ExecutionTypeId != value.ElementTypeId || value.PaddingSize < 0 ||
                 value.HelperKind is not ("ia64-vector-delete2" or "ia64-vector-delete3") || value.CaptureProof != "observed-array-delete-runtime" ||
-                !ArrayDeletionOperations.TryAdd(value.NodeId, value))
+                value.CallbackKind is not ("direct" or "virtual-cookie-guarded") || !ArrayDeletionOperations.TryAdd(value.NodeId, value))
                 throw new InvalidDataException("Array delete protocol differs from original destruction, deallocation or execution ownership");
         }
+        ReadArrayDeletionVirtualCallbacks();
         if (SourceArrayDeletions.Keys.Except(ArrayDeletionOperations.Values.Select(operation => operation.SourceObligationId)).Any())
             throw new InvalidDataException("Original array delete lacks its observed runtime protocol");
     }
@@ -99,7 +100,8 @@ internal sealed partial class ObjectFile
                     : !actual.SequenceEqual(sized ? ["ptr(void)", "u64"] : ["ptr(void)"]))
                     throw new InvalidDataException("Array delete callback differs from element or sized-delete ABI");
             }
-            Callback(args[3], value.DestructorEntityId, true);
+            if (value.CallbackKind == "direct") Callback(args[3], value.DestructorEntityId, true);
+            else VerifyArrayDeletionVirtualCallback(value, args, body);
             Callback(args[4], value.DeallocatorEntityId, false);
         }
     }

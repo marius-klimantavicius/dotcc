@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v49: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v50: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -70,7 +70,7 @@ struct Writer {
   std::vector<string> array_allocation_operations,source_array_allocation_elements;
   std::map<an_expr_node_ptr,const dot_object_source::ArrayDeletionSnapshot*> active_array_deletions;
   std::set<a_dynamic_init_ptr> emitted_array_deletion_sources;
-  std::vector<string> source_array_deletions,array_deletion_operations;
+  std::vector<string> source_array_deletions,array_deletion_operations,array_deletion_virtual_callbacks;
   std::vector<string> cleanup_payload_targets;
   std::vector<string> throw_payload_subobjects,throw_payload_paths;
   std::map<an_expr_node_ptr,unsigned> active_throw_ids;
@@ -2670,7 +2670,14 @@ struct Writer {
 #if DO_IL_LOWERING && IA64_ABI
     coalescible=coalescible || r->use_comdat;
 #endif
-    entities.push_back("{\"id\":"+number(id)+",\"sourceName\":"+quote(source_spelling(&r->source_corresp))+
+    // A synthesized special member of an unnamed original class can receive
+    // a backend identifier after capture. That is its execution name, not a
+    // source spelling. Retain the exact original declaration (including empty
+    // anonymous names); generated-only routines keep their existing fallback.
+    auto original_spelling=dot_object_source::state().functions.find(r);
+    string entity_source_name=original_spelling==dot_object_source::state().functions.end()?
+      source_spelling(&r->source_corresp):original_spelling->second.declaration.name;
+    entities.push_back("{\"id\":"+number(id)+",\"sourceName\":"+quote(entity_source_name)+
       ",\"linkage\":"+quote(external?"external":"internal")+",\"externalKey\":"+(external?quote(key):"null")+
       ",\"definition\":"+quote(body?(coalescible?"linkonce":"strong"):"declaration")+",\"returnTypeId\":"+number(type_id(t->variant.routine.return_type))+position(r->source_corresp.decl_position)+",\"routineTypeId\":"+number(routine_type(t,known_empty_definition))+"}");
     if(wrapper) {
@@ -3158,7 +3165,17 @@ struct Writer {
         ",\"destructorEntityId\":"+number(routine(value.destructor))+",\"deallocatorEntityId\":"+number(routine(value.deallocator))+
         ",\"elementTypeId\":"+number(type_id(value.element_type))+",\"paddingSize\":"+std::to_string(cleanup_number(value.padding))+
         ",\"helperKind\":"+quote(value.helper=="__cxa_vec_delete2"?"ia64-vector-delete2":"ia64-vector-delete3")+
+        ",\"callbackKind\":"+quote(value.virtual_callback?"virtual-cookie-guarded":"direct")+
         ",\"captureProof\":\"observed-array-delete-runtime\"}");
+      if(value.virtual_callback) {
+        auto callback=e->variant.operation.operands;
+        for(unsigned ordinal=0;callback && ordinal<4;++ordinal)callback=callback->next;
+        if(!callback || !emitted_expression_ids.count(callback))reject("array delete virtual callback lost its emitted argument");
+        array_deletion_virtual_callbacks.push_back("{\"callNodeId\":"+number(result)+
+          ",\"callbackNodeId\":"+number(emitted_expression_ids.at(callback))+
+          ",\"vtableIndex\":"+std::to_string(value.vtable_index)+",\"cookieSize\":"+std::to_string(value.cookie_size)+
+          ",\"captureProof\":\"observed-array-delete-virtual-dispatch\"}");
+      }
       emitted_array_obligations.insert(value.original);
     }
     auto allocation=active_array_allocations.find(e);
@@ -4709,7 +4726,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v49\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v50\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -4718,7 +4735,7 @@ struct Writer {
       ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
       ",\"sourceDependentTypes\":"+array(source_dependent_types)+
       ",\"sourceNestedTypeDeclarations\":"+array(source_nested_type_declarations)+
-      ",\"sourceArrayDeletions\":"+array(source_array_deletions)+",\"arrayDeletionOperations\":"+array(array_deletion_operations)+
+      ",\"sourceArrayDeletions\":"+array(source_array_deletions)+",\"arrayDeletionOperations\":"+array(array_deletion_operations)+",\"arrayDeletionVirtualCallbacks\":"+array(array_deletion_virtual_callbacks)+
       ",\"sourceArrayAllocationElements\":"+array(source_array_allocation_elements)+
       ",\"arrayAllocationOperations\":"+array(array_allocation_operations)+
       ",\"fieldInitializerDestructionElisions\":"+array(field_initializer_destruction_elisions)+

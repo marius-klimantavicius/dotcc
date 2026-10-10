@@ -143,13 +143,20 @@ internal sealed partial class ObjectFile
                 if (!SourceLifetimes.TryGetValue(parent, out current) || (current.FunctionEntityId != lifetime.FunctionEntityId || current.SourceInitializerId != lifetime.SourceInitializerId))
                     throw new InvalidDataException("Original lifetime parent leaves its source function");
             }
+            // Label lifetimes continue the preceding block region. Stock
+            // push_or_repush_object_lifetime retains the parent's live sublist,
+            // and normal/exceptional exit lowering consumes that exact entry.
+            if (lifetime.Kind == "block-after-label" &&
+                (lifetime.ParentLifetimeId is not long predecessor ||
+                 SourceLifetimes[predecessor].Kind is not ("block" or "block-after-label")))
+                throw new InvalidDataException("Original label lifetime requires its block or label predecessor");
             if (lifetime.ParentAllocationObligationId is long allocation &&
                 (lifetime.ParentObligationId is not null || !SourceAllocationObligations.TryGetValue(allocation, out SourceAllocationObligation? allocationParent) ||
-                 allocationParent.LifetimeId != lifetime.ParentLifetimeId || lifetime.Kind == "block-after-label"))
+                 allocationParent.LifetimeId != lifetime.ParentLifetimeId))
                 throw new InvalidDataException("Original lifetime allocation overlap must reference its parent's allocation sublist");
             if (lifetime.ParentObligationId is long obligation &&
                 (!SourceDestructionObligations.TryGetValue(obligation, out SourceDestructionObligation? parentObligation) ||
-                 parentObligation.LifetimeId != lifetime.ParentLifetimeId || lifetime.Kind == "block-after-label"))
+                 parentObligation.LifetimeId != lifetime.ParentLifetimeId))
                 throw new InvalidDataException("Original lifetime overlap must reference its parent's destruction sublist");
         }
         using (var query = database.Prepare("SELECT a.id,a.function_entity_id,a.source_obligation_id,a.callback_entity_id,a.target_node_id,a.capture_proof,n.function_id,a.source_static_obligation_id,a.source_field_initializer_id FROM cleanup_actions a LEFT JOIN nodes n ON n.id=a.target_node_id ORDER BY a.id"))
