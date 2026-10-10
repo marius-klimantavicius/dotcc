@@ -633,6 +633,12 @@ object_source_overlay(init_lower,
     '    pop_generated_routine_context(scope, region_number, &grcontext);\n    processing_file_scope_init_routine = FALSE;')
 eh_lower = root / "upstream/src/lower_eh.c"
 object_source_overlay(eh_lower,
+    '  routine = scope->variant.routine.ptr;\n#if DO_FULL_PORTABLE_EH_LOWERING',
+    '  routine = scope->variant.routine.ptr;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_dynamic_exception_boundary(routine);\n'
+    '#endif\n#if DO_FULL_PORTABLE_EH_LOWERING')
+object_source_overlay(eh_lower,
     '#include "lower_hdrs.h"',
     '#include "lower_hdrs.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
 # Observe the exact memory-operand shape before stock VLA/lvalue lowering,

@@ -328,6 +328,7 @@ internal sealed partial class Linker
     public bool RequiresExceptionProvider { get; private set; }
     public Dictionary<(ObjectFile Object, long Id), SourceType> UsedCatchTypes { get; } = [];
     public bool RequiresSourceHandlers { get; private set; }
+    public bool RequiresDynamicSpecifications { get; private set; }
     public Dictionary<(ObjectFile Object, long Id), ExceptionType> UsedExceptionTypes { get; } = [];
 
     public void VerifyBodies()
@@ -336,6 +337,14 @@ internal sealed partial class Linker
         foreach (Symbol symbol in Definitions)
         {
             FunctionBody body = symbol.Object.ReadBody(symbol.Entity.Id);
+            if(symbol.Object.DynamicExceptionBoundaries.TryGetValue(symbol.Entity.Id,out long specificationId))
+            {
+                RequiresDynamicSpecifications=RequiresExceptionProvider=RequiresSourceHandlers=true;
+                if(!allowExterns)throw new InvalidDataException("Dynamic exception specifications require the shared unexpected provider; use --allow-externs for generation-only output");
+                foreach(var permitted in symbol.Object.DynamicExceptionSpecifications[specificationId].Types)
+                    UsedCatchTypes.TryAdd((symbol.Object,permitted.MatchSourceTypeId),symbol.Object.SourceTypes[permitted.MatchSourceTypeId]);
+            }
+
             foreach (CleanupAction action in symbol.Object.FunctionCleanupActions.GetValueOrDefault(symbol.Entity.Id, []))
                 _ = Resolve(symbol.Object, action.CallbackEntityId);
             foreach (AllocationCleanupAction action in symbol.Object.AllocationCleanupActions.Values.Where(action => action.FunctionEntityId == symbol.Entity.Id))

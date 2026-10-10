@@ -39,14 +39,15 @@ internal sealed partial class ObjectFile
                     prototype = Flag(offset + 3), noExcept = Flag(offset + 4), any = Flag(offset + 5);
                 if (!present && (indeterminate || cached || prototype || noExcept || any))
                     throw new InvalidDataException("Absent original exception specification carries flags");
-                return !present || any ? "unwind" : noExcept ? "terminate" : "unsupported-dynamic";
+                return !present || any ? "unwind" : noExcept ? "terminate" :
+                    indeterminate || cached || prototype ? "unsupported-dynamic" : "dynamic";
             }
             bool defaulted = Flag(18), generated = Flag(19), inherited = Flag(20);
             if (SourceLanguage != "c++" || origins.GetValueOrDefault(source) != "generated-resolution" ||
                 !observed.Add(source) || !SourceRoutines.TryGetValue(source, out var originalRoutine) ||
                 !SourceRoutines.TryGetValue(final, out var finalRoutine) ||
                 Policy(5) != initialPolicy || Policy(11) != resolvedPolicy ||
-                resolvedPolicy is not ("unwind" or "terminate") || Flag(12) || Flag(13) || Flag(14) ||
+                resolvedPolicy is not ("unwind" or "terminate" or "dynamic") || Flag(12) || Flag(13) || Flag(14) ||
                 originalRoutine.ExceptionPolicy != resolvedPolicy || finalRoutine.ExceptionPolicy != resolvedPolicy ||
                 !defaulted && !generated && !inherited || inherited && kind != "constructor" ||
                 kind is not ("constructor" or "destructor" or "assignment" or "equality" or "inequality" or

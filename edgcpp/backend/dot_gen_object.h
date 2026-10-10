@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v55: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v56: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -176,8 +176,9 @@ struct Writer {
   std::vector<string> deferred_function_declarations;
   std::map<string,unsigned> signature_ids;
   std::vector<string> source_routine_exception_resolutions;
+  std::vector<string> source_dynamic_exception_specifications,source_dynamic_exception_types,function_dynamic_exception_boundaries;
   unsigned signature_type(unsigned result,const std::vector<unsigned> &args,bool variadic,const string &exception_policy) {
-    if(exception_policy!="unwind" && exception_policy!="terminate")reject("dynamic typed exception specification");
+    if(exception_policy!="unwind" && exception_policy!="terminate" && exception_policy!="dynamic")reject("dynamic typed exception specification");
     string key=number(result)+(variadic?"v:":"f:")+exception_policy+":";for(auto arg:args)key+=number(arg)+",";
     auto prior=signature_ids.find(key);if(prior!=signature_ids.end())return prior->second;
     unsigned id=next_execution_type++;signature_ids[key]=id;
@@ -235,8 +236,7 @@ struct Writer {
       reject("unprototyped/foreign-convention function type");
     if(known_empty_definition && (extra->param_type_list || extra->has_ellipsis))reject("nonempty old-style execution signature");
     std::vector<unsigned> args;for(auto p=extra->param_type_list;p;p=p->next)args.push_back(type_id(p->type));
-    auto specification=extra->exception_specification;
-    string policy=specification && !specification->throw_any?(specification->is_noexcept?"terminate":"unsupported-dynamic"):"unwind";
+    string policy=dot_object_source::exception_policy_flags(t).policy();
     return signature_type(type_id(t->variant.routine.return_type),args,extra->has_ellipsis,policy);
   }
   static string source_frame(const string &value) { return std::to_string(value.size())+":"+value; }
@@ -252,7 +252,7 @@ struct Writer {
     if(!value.error.empty())reject(value.error.c_str());
     if(value.kind!="variable" || value.qualified_name.empty())reject("source value lacks original variable declaration identity");
     string result=source_frame(value.qualified_name)+source_frame(value.owner_type?source_argument_type_identity(value.owner_type,depth+1):"")+
-      (value.has_template_origin?"1":"0")+(value.is_template_prototype?"1":"0");
+      (value.has_template_origin?"1":"0")+(value.is_template_prototype?"1":"0")+source_frame(value.template_origin_kind);
     // Stock equiv_template_variables compares the original template and actual
     // argument list. The initializer remains in the owned declaration graph,
     // not substituted as a guessed constant or included in nominal identity.
@@ -1336,6 +1336,16 @@ struct Writer {
         ",\"exceptionPolicyOrigin\":"+quote(dot_object_source::state().routine_exception_resolutions.count(captured)?"generated-resolution":"captured")+",\"parameterMode\":"+quote(type.parameter_mode)+",\"objectTypeId\":"+number(type.object_type?source_type(type.object_type):0)+
         ",\"objectIsConst\":"+(type.object_is_const?"true":"false")+",\"objectIsVolatile\":"+(type.object_is_volatile?"true":"false")+
         ",\"objectRefQualifier\":"+quote(type.object_ref_qualifier)+"}");
+      if(dot_object_source::resolved_exception_policy(captured)=="dynamic") {
+        const auto &specification=dot_object_source::resolved_dynamic_exception_specification(captured);
+        if(!specification.error.empty())reject(specification.error.c_str());
+        source_dynamic_exception_specifications.push_back("{\"sourceRoutineTypeId\":"+number(id)+
+          ",\"kind\":\"throw-list\",\"allowedTypeCount\":"+std::to_string(specification.declared_types.size())+",\"captureProof\":\"observed-resolved-source-specification\"}");
+        for(unsigned item=0;item<specification.declared_types.size();++item)
+          source_dynamic_exception_types.push_back("{\"sourceRoutineTypeId\":"+number(id)+",\"ordinal\":"+std::to_string(item)+
+            ",\"declaredSourceTypeId\":"+number(source_type(specification.declared_types[item]))+
+            ",\"matchSourceTypeId\":"+number(source_type(specification.match_types[item]))+"}");
+      }
       unsigned ordinal=0;for(auto parameter:type.parameters)source_routine_parameters.push_back("{\"typeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+",\"parameterTypeId\":"+number(source_type(parameter))+"}");
     }
     if(type.kind=="enum") {
@@ -4913,6 +4923,17 @@ struct Writer {
       function_block=scope->assoc_block;
       unsigned root=statement(scope->assoc_block,scope);
       write_owned_cleanup(r);
+      if(dot_object_source::exception_policy_flags(skip_typerefs(r->type)).policy()=="dynamic") {
+        const auto &captured=dot_object_source::state();
+        auto found=captured.dynamic_exception_boundaries.find(r);
+        if(found==captured.dynamic_exception_boundaries.end())reject("dynamic exception body lacks observed stock throw-spec boundary");
+        auto error=captured.dynamic_exception_boundary_errors.find(r);
+        if(error!=captured.dynamic_exception_boundary_errors.end())reject(error->second.c_str());
+        function_dynamic_exception_boundaries.push_back("{\"functionEntityId\":"+number(function)+
+          ",\"sourceRoutineTypeId\":"+number(source_type(found->second))+
+          ",\"captureProof\":\"observed-throw-spec-function-boundary\"}");
+      }
+
       auto arguments=dot_object_source::state().default_argument_executions.find(r);
       if(arguments!=dot_object_source::state().default_argument_executions.end() && arguments->second.complete) {
         const auto &origin=arguments->second;
@@ -5041,7 +5062,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v55\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v56\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -5134,6 +5155,9 @@ struct Writer {
       ",\"storages\":"+array(storages)+",\"storageData\":"+array(storage_data)+",\"relocations\":"+array(relocations)+
       ",\"routineTypes\":"+array(routine_types)+",\"routineParameters\":"+array(routine_parameters)+
       ",\"sourceRoutineExceptionResolutions\":"+array(source_routine_exception_resolutions)+
+      ",\"sourceDynamicExceptionSpecifications\":"+array(source_dynamic_exception_specifications)+
+      ",\"sourceDynamicExceptionTypes\":"+array(source_dynamic_exception_types)+
+      ",\"functionDynamicExceptionBoundaries\":"+array(function_dynamic_exception_boundaries)+
       ",\"sourceRoutineTypes\":"+array(source_routine_types)+",\"sourceRoutineParameters\":"+array(source_routine_parameters)+
       ",\"deferredRoutineAbis\":"+array(deferred_routine_abis)+
       ",\"deferredFunctionDeclarations\":"+array(deferred_function_declarations)+

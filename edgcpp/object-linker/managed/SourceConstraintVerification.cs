@@ -118,11 +118,13 @@ internal sealed partial class ObjectFile
             var arguments=SourceExpressionDeclarationArguments.GetValueOrDefault(declaration.Id,[]);
             if(formals.Count!=declaration.FormalCount || arguments.Count!=declaration.ArgumentCount ||
                 !declaration.HasTemplate && (declaration.IsPrototype || declaration.TemplatePrototype is not null || formals.Count!=0 || arguments.Count!=0) ||
-                declaration.HasTemplate && (declaration.IsPrototype== (declaration.TemplatePrototype is not null)) ||
+                declaration.HasTemplate && declaration.TemplateOriginKind!="static-data-member" && (declaration.IsPrototype== (declaration.TemplatePrototype is not null)) ||
                 (Original(SourceTypeById(declaration.Type)).Kind=="routine")!=(declaration.Kind=="routine"))
                 throw new InvalidDataException("Source declaration template/signature ownership is incomplete");
             VerifySourceConstraintInitializer(declaration);
-            if(declaration.TemplatePrototype is long prototype)
+            if(declaration.TemplateOriginKind=="static-data-member")
+                VerifySourceStaticMemberDeclaration(declaration,formals,arguments);
+            else if(declaration.TemplatePrototype is long prototype)
             {
                 if(!SourceExpressionDeclarations.TryGetValue(prototype,out var original) || !original.IsPrototype || !original.HasTemplate || original.TemplatePrototype is not null ||
                     original.Kind!=declaration.Kind || original.Name!=declaration.Name || original.QualifiedName!=declaration.QualifiedName)
@@ -292,14 +294,28 @@ internal sealed partial class ObjectFile
             result+=SourceIdentityFrame(edge.Role)+SourceIdentityFrame(SourceExpressionIdentity(edge.Child,active,activeConcepts));
         active.Remove(id);return sourceExpressionIdentityCache[id]=SourceGraphHash(result);
     }
+    private void VerifySourceStaticMemberDeclaration(SourceExpressionDeclaration value,List<SourceTemplateFormal> formals,List<SourceTemplateArgument> arguments)
+    {
+        if(value.Kind!="variable" || value.OwnerType is not long owner || value.TemplatePrototype is not long primary ||
+            !SourceExpressionDeclarations.TryGetValue(primary,out var original) || original.Kind!="variable" ||
+            original.TemplateOriginKind!="static-data-member" || original.TemplatePrototype!=original.Id ||
+            original.OwnerType is not long originalOwner || original.Name!=value.Name || original.QualifiedName!=value.QualifiedName ||
+            formals.Count!=0 || arguments.Count!=0)
+            throw new InvalidDataException("Static template member lacks its exact original declaration and enclosing class");
+        var type=Original(SourceTypeById(owner));var parent=Original(SourceTypeById(originalOwner));
+        if(type.Kind!="record" || parent.Kind!="record" ||
+            type.Id!=parent.Id && (!SourceRecordInstantiations.TryGetValue(SourceRecordsByType[type.Id].Id,out var instance) ||
+                instance.PrototypeSourceRecordId!=SourceRecordsByType[parent.Id].Id))
+            throw new InvalidDataException("Static template member owner does not instantiate its original class");
+    }
     private string SourceConstraintDeclarationIdentity(long id,HashSet<long> active,HashSet<long> activeConcepts)
     {
         if(active.Count>128 || !active.Add(id))throw new InvalidDataException("Source declaration template prototype cycle/depth");
         var value=SourceExpressionDeclarations[id];string result=SourceIdentityFrame(value.Kind)+SourceIdentityFrame(value.QualifiedName)+SourceIdentityFrame(SourceTypeSignature(value.Type))+
-            SourceIdentityFrame(value.OwnerType is long owner?SourceTypeSignature(owner):"")+(value.Constexpr?"1":"0")+(value.HasTemplate?"1":"0")+(value.IsPrototype?"1":"0")+
+            SourceIdentityFrame(value.OwnerType is long owner?SourceTypeSignature(owner):"")+(value.Constexpr?"1":"0")+(value.HasTemplate?"1":"0")+(value.IsPrototype?"1":"0")+SourceIdentityFrame(value.TemplateOriginKind)+
             string.Concat(SourceExpressionDeclarationFormals.GetValueOrDefault(id,[]).Select(SourceConstraintFormalIdentity))+
             string.Concat(SourceExpressionDeclarationArguments.GetValueOrDefault(id,[]).Select(argument=>SourceIdentityFrame(SourceConstraintArgumentDetailsIdentity("declaration",id,0,argument))));
-        if(value.TemplatePrototype is long prototype)result+=SourceIdentityFrame(SourceConstraintDeclarationIdentity(prototype,active,activeConcepts));
+        if(value.TemplatePrototype is long prototype && prototype!=id)result+=SourceIdentityFrame(SourceConstraintDeclarationIdentity(prototype,active,activeConcepts));
         result+=SourceIdentityFrame(value.InitializerKind)+SourceIdentityFrame(value.OriginalInitKind?.ToString(CultureInfo.InvariantCulture)??"")+SourceIdentityFrame(value.OriginalDynamicInitKind?.ToString(CultureInfo.InvariantCulture)??"");
         if(value.InitializerConstant is long constant)result+=SourceIdentityFrame(SourceConstantIdentity(constant,0));
         if(value.InitializerExpression is long expression)result+=SourceIdentityFrame(SourceExpressionIdentity(expression,[],activeConcepts));

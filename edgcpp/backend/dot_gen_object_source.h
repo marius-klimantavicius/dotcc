@@ -32,7 +32,8 @@ struct ExceptionPolicyFlags {
   bool present=false,indeterminate=false,arg_cached=false,copy_from_prototype=false;
   bool is_noexcept=false,throw_any=false;
   std::string policy() const {
-    return !present || throw_any?"unwind":is_noexcept?"terminate":"unsupported-dynamic";
+    return !present || throw_any?"unwind":is_noexcept?"terminate":
+      indeterminate || arg_cached || copy_from_prototype?"unsupported-dynamic":"dynamic";
   }
 };
 inline ExceptionPolicyFlags exception_policy_flags(a_type_ptr type) {
@@ -44,10 +45,15 @@ inline ExceptionPolicyFlags exception_policy_flags(a_type_ptr type) {
   }
   return result;
 }
+struct DynamicExceptionSpecification {
+  std::vector<unsigned> declared_types,match_types;
+  std::string error;
+};
 struct RoutineExceptionResolution {
   unsigned final_type=0;
   a_routine_ptr routine=nullptr;
   ExceptionPolicyFlags final_flags;
+  DynamicExceptionSpecification dynamic_specification;
   std::string special_kind,error;
   bool is_defaulted=false,compiler_generated=false,inheriting_constructor=false;
 };
@@ -78,6 +84,7 @@ struct Type {
   bool variadic=false;
   std::string exception_policy="unwind",parameter_mode="prototype";
   ExceptionPolicyFlags initial_exception_flags;
+  DynamicExceptionSpecification dynamic_specification;
   std::vector<unsigned> parameters;
   // Private prelowering parameter-declaration facts, never type identity/wire.
   std::vector<bool> declaration_defaults;
@@ -578,6 +585,8 @@ struct State {
   std::set<a_routine_ptr> runtime_declarations;
   std::map<a_routine_ptr,DefaultAdapter> default_adapters;
   std::map<a_routine_ptr,DefaultArgumentExecution> default_argument_executions;
+  std::map<a_routine_ptr,unsigned> dynamic_exception_boundaries;
+  std::map<a_routine_ptr,std::string> dynamic_exception_boundary_errors;
   std::vector<a_routine_ptr> active_default_argument_copies;
   std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> default_argument_obligation_adoptions;
   std::set<std::pair<an_object_lifetime_ptr,a_routine_ptr>> default_argument_lifetime_adoptions;
@@ -630,6 +639,22 @@ inline std::string spelling(const a_source_correspondence &source) {
   return source.name;
 }
 inline unsigned capture_type(a_type_ptr t);
+inline DynamicExceptionSpecification capture_dynamic_exception_specification(an_exception_specification_ptr specification) {
+  DynamicExceptionSpecification value;
+  if(!specification || specification->is_noexcept || specification->throw_any || specification->indeterminate ||
+     specification->arg_cached || specification->copy_from_prototype) {
+    value.error="dynamic exception specification is unresolved or has another kind";return value;
+  }
+  for(auto item=specification->variant.exception_specification_type_list;item;item=item->next) {
+    if(item->is_pack_expansion) {value.error="dynamic exception specification retains an unexpanded type pack";break;}
+    value.declared_types.push_back(capture_type(item->type));
+    auto plain=skip_typerefs(item->type);
+    auto match=plain->kind==tk_pointer && plain->variant.pointer.is_reference?plain->variant.pointer.type:item->type;
+    value.match_types.push_back(capture_type(match));
+  }
+  return value;
+}
+
 inline void capture_field_initializer(a_field_ptr field,a_type_ptr owner);
 inline void trace_routine_exception_policy(const char *phase,unsigned id,a_type_ptr type,const std::string &cached) {
   static const bool trace=std::getenv("DOTOBJ_TRACE_ROUTINE_EXCEPTION_POLICY")!=nullptr;
@@ -1309,6 +1334,8 @@ inline unsigned capture_type(a_type_ptr t) {
     // below may provide a later semantic policy for this exact source identity.
     value.initial_exception_flags=exception_policy_flags(t);
     value.exception_policy=value.initial_exception_flags.policy();
+    if(value.exception_policy=="dynamic")
+      value.dynamic_specification=capture_dynamic_exception_specification(t->variant.routine.extra_info->exception_specification);
     value.result=capture_type(t->variant.routine.return_type);
     auto extra=t->variant.routine.extra_info;
     if(extra->this_class) {
@@ -1385,6 +1412,8 @@ struct GeneratedExceptionSpecificationCapture {
     }
     resolution.final_type=resolution.routine->type==original_type?original_id:capture_type(resolution.routine->type);
     resolution.final_flags=exception_policy_flags(resolution.routine->type);
+    if(resolution.final_flags.policy()=="dynamic")
+      resolution.dynamic_specification=capture_dynamic_exception_specification(resolution.routine->type->variant.routine.extra_info->exception_specification);
     if(resolution.final_flags.indeterminate || resolution.final_flags.arg_cached || resolution.final_flags.copy_from_prototype)
       resolution.error="generated exception specification remained unresolved";
     auto found=state().routine_exception_resolutions.find(original_id);
@@ -1668,6 +1697,33 @@ inline void capture_routine(a_routine_ptr r) {
   s.functions[r]=function;
 }
 inline void observe_routine(a_routine_ptr routine){if(enabled())capture_routine(routine);}
+inline const DynamicExceptionSpecification &resolved_dynamic_exception_specification(unsigned id) {
+  auto found=state().routine_exception_resolutions.find(id);
+  return found==state().routine_exception_resolutions.end()?state().types.at(id-1).dynamic_specification:found->second.dynamic_specification;
+}
+inline void observe_dynamic_exception_boundary(a_routine_ptr routine) {
+  if(!enabled() || !routine || !exceptions_enabled || building_runtime)return;
+  auto type=skip_typerefs(routine->type);
+  if(type->kind!=tk_routine || exception_policy_flags(type).policy()!="dynamic")return;
+  auto primary=abi_primary(routine);if(!primary)primary=routine;
+  auto source=state().functions.find(primary);
+  if(source==state().functions.end()) {
+    state().dynamic_exception_boundary_errors[routine]="dynamic boundary has no original source routine";return;
+  }
+  auto id=source->second.signature_type;
+  const auto original=resolved_dynamic_exception_specification(id);
+  auto actual=capture_dynamic_exception_specification(type->variant.routine.extra_info->exception_specification);
+  if(resolved_exception_policy(id)!="dynamic" || !original.error.empty() || !actual.error.empty() ||
+     original.declared_types.size()!=actual.declared_types.size()) {
+    state().dynamic_exception_boundary_errors[routine]="dynamic boundary differs from original selected throw specification";return;
+  }
+  for(size_t i=0;i<actual.declared_types.size();++i)
+    if(!il_identical_types(state().types.at(original.declared_types[i]-1).original_type,
+                           state().types.at(actual.declared_types[i]-1).original_type))
+      state().dynamic_exception_boundary_errors[routine]="dynamic boundary changed an original allowed exception type";
+  state().dynamic_exception_boundaries.emplace(routine,id);
+}
+
 inline void observe_lambda_entry_body(a_routine_ptr routine,a_scope_ptr scope,an_expr_node_ptr forwarding) {
   if(!enabled() || routine->special_kind!=sfk_lambda_entry_point)return;
   auto found=state().lambda_entries.find(routine);

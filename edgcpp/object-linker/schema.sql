@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v55'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v56'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE routine_types (
  type_id INTEGER PRIMARY KEY REFERENCES types(id),
  return_type_id INTEGER NOT NULL REFERENCES types(id),
  variadic INTEGER NOT NULL CHECK(variadic IN (0,1)),
- exception_policy TEXT NOT NULL CHECK(exception_policy IN ('unwind','terminate'))
+ exception_policy TEXT NOT NULL CHECK(exception_policy IN ('unwind','terminate','dynamic'))
 ) STRICT;
 CREATE TABLE routine_parameters (
  type_id INTEGER NOT NULL REFERENCES routine_types(type_id),
@@ -62,7 +62,7 @@ CREATE TABLE source_routine_types (
  type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
  return_type_id INTEGER NOT NULL REFERENCES source_types(id),
  variadic INTEGER NOT NULL CHECK(variadic IN (0,1)),
- exception_policy TEXT NOT NULL CHECK(exception_policy IN ('unwind','terminate')),
+ exception_policy TEXT NOT NULL CHECK(exception_policy IN ('unwind','terminate','dynamic')),
  parameter_mode TEXT NOT NULL CHECK(parameter_mode IN ('prototype','unspecified')),
  object_type_id INTEGER REFERENCES source_types(id),
  object_is_const INTEGER NOT NULL CHECK(object_is_const IN (0,1)),
@@ -75,8 +75,8 @@ CREATE TABLE source_routine_exception_resolutions (
  source_routine_type_id INTEGER PRIMARY KEY REFERENCES source_routine_types(type_id),
  final_source_routine_type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),
  source_function_entity_id INTEGER REFERENCES source_functions(entity_id),
- initial_policy TEXT NOT NULL CHECK(initial_policy IN ('unwind','terminate','unsupported-dynamic')),
- resolved_policy TEXT NOT NULL CHECK(resolved_policy IN ('unwind','terminate')),
+ initial_policy TEXT NOT NULL CHECK(initial_policy IN ('unwind','terminate','dynamic','unsupported-dynamic')),
+ resolved_policy TEXT NOT NULL CHECK(resolved_policy IN ('unwind','terminate','dynamic')),
  initial_present INTEGER NOT NULL CHECK(initial_present IN (0,1)),
  initial_indeterminate INTEGER NOT NULL CHECK(initial_indeterminate IN (0,1)),
  initial_arg_cached INTEGER NOT NULL CHECK(initial_arg_cached IN (0,1)),
@@ -1464,6 +1464,7 @@ CREATE TABLE source_expression_declarations (
  source_name TEXT NOT NULL,qualified_name TEXT NOT NULL,source_type_id INTEGER NOT NULL REFERENCES source_types(id),
  owner_source_type_id INTEGER REFERENCES source_types(id),
  template_prototype_declaration_id INTEGER REFERENCES source_expression_declarations(id),
+ template_origin_kind TEXT NOT NULL CHECK(template_origin_kind IN('none','variable-template','function-template','static-data-member')),
  has_template_origin INTEGER NOT NULL CHECK(has_template_origin IN(0,1)),is_template_prototype INTEGER NOT NULL CHECK(is_template_prototype IN(0,1)),
  is_constexpr INTEGER NOT NULL CHECK(is_constexpr IN(0,1)),
  formal_count INTEGER NOT NULL CHECK(formal_count>=0),argument_count INTEGER NOT NULL CHECK(argument_count>=0),
@@ -1596,4 +1597,23 @@ CREATE TABLE source_aggregate_constants (
  flag_bits INTEGER NOT NULL CHECK(flag_bits BETWEEN 0 AND 65535),
  added_template_const INTEGER NOT NULL CHECK(added_template_const IN(0,1)),
  capture_proof TEXT NOT NULL CHECK(capture_proof='original-aggregate-constant')
+) STRICT;
+
+CREATE TABLE source_dynamic_exception_specifications (
+ source_routine_type_id INTEGER PRIMARY KEY REFERENCES source_routine_types(type_id),
+ kind TEXT NOT NULL CHECK(kind='throw-list'),
+ allowed_type_count INTEGER NOT NULL CHECK(allowed_type_count>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-resolved-source-specification')
+) STRICT;
+CREATE TABLE source_dynamic_exception_types (
+ source_routine_type_id INTEGER NOT NULL REFERENCES source_dynamic_exception_specifications(source_routine_type_id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ declared_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ match_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ PRIMARY KEY(source_routine_type_id,ordinal)
+) STRICT;
+CREATE TABLE function_dynamic_exception_boundaries (
+ function_entity_id INTEGER PRIMARY KEY REFERENCES functions(entity_id),
+ source_routine_type_id INTEGER NOT NULL REFERENCES source_dynamic_exception_specifications(source_routine_type_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-throw-spec-function-boundary')
 ) STRICT;

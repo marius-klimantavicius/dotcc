@@ -21,8 +21,10 @@ internal sealed partial class ObjectFile
     private void ReadAndVerifySourceProvenance()
     {
         ReadRoutineMetadata(true);
+        ReadSourceDynamicSpecifications();
         ReadAbiRoutineOrigins();
         ReadAndVerifySourceTypes();
+        VerifySourceDynamicSpecifications();
         ReadAndVerifySourceRecordOwners();
         VerifySourceNestedTypeDeclarations();
         VerifySourceTemplateMetadata();
@@ -242,7 +244,7 @@ internal sealed partial class ObjectFile
             ? SourceTypeSignature(objectType, depth + 1, routine.ObjectIsConst, routine.ObjectIsVolatile) + ":" + routine.ObjectRefQualifier : "none";
         return "source-routine(" + SourceTypeSignature(routine.ReturnTypeId, depth + 1, false, false) + ";" +
             string.Join(',', routine.Parameters.Select(parameter => SourceParameterSignature(parameter, depth + 1))) + ";" +
-            (routine.Variadic ? "1" : "0") + ";" + routine.ExceptionPolicy + ";" + receiver +
+            (routine.Variadic ? "1" : "0") + ";" + SourceCallableExceptionPolicy(routine) + DynamicSpecificationSignature(routine.TypeId, depth + 1) + ";" + receiver +
             (includeAbi ? ";abi=" + SourceRoutineAbis[routine.TypeId].ReturnPassing + ":" + string.Join(',', RoutineAbiParameters(routine.TypeId).Select(slot =>
                 slot.ParameterRole + (slot.SourceOrdinal is long ordinal ? "#" + ordinal : ""))) : "") + ")";
     }
@@ -407,8 +409,8 @@ internal sealed partial class ObjectFile
             "expressionId", "substitutionOrdinal", "ordinal", "kind", "sourceName", "typeId", "constantId", "templateId", "defaultTypeId", "defaultConstantId", "defaultTemplateId", "isPack", "isAbbreviated", "sourceFileId", "line", "column");
         Table("sourceExpressionSubstitutionArguments", "SELECT expression_id,substitution_ordinal,ordinal,kind,source_type_id,constant_id,template_id FROM source_expression_substitution_arguments ORDER BY expression_id,substitution_ordinal,ordinal",
             "expressionId", "substitutionOrdinal", "ordinal", "kind", "sourceTypeId", "constantId", "templateId");
-        Table("sourceExpressionDeclarations", "SELECT id,kind,source_name,qualified_name,source_type_id,owner_source_type_id,template_prototype_declaration_id,has_template_origin,is_template_prototype,is_constexpr,formal_count,argument_count,original_init_kind,original_dynamic_init_kind,initializer_kind,initializer_constant_id,initializer_expression_id,definition_status,capture_proof,source_file_id,line,column FROM source_expression_declarations ORDER BY id",
-            "id", "kind", "sourceName", "qualifiedName", "sourceTypeId", "ownerSourceTypeId", "templatePrototypeDeclarationId", "hasTemplateOrigin", "isTemplatePrototype", "isConstexpr", "formalCount", "argumentCount", "originalInitKind", "originalDynamicInitKind", "initializerKind", "initializerConstantId", "initializerExpressionId", "definitionStatus", "captureProof", "sourceFileId", "line", "column");
+        Table("sourceExpressionDeclarations", "SELECT id,kind,source_name,qualified_name,source_type_id,owner_source_type_id,template_prototype_declaration_id,template_origin_kind,has_template_origin,is_template_prototype,is_constexpr,formal_count,argument_count,original_init_kind,original_dynamic_init_kind,initializer_kind,initializer_constant_id,initializer_expression_id,definition_status,capture_proof,source_file_id,line,column FROM source_expression_declarations ORDER BY id",
+            "id", "kind", "sourceName", "qualifiedName", "sourceTypeId", "ownerSourceTypeId", "templatePrototypeDeclarationId", "templateOriginKind", "hasTemplateOrigin", "isTemplatePrototype", "isConstexpr", "formalCount", "argumentCount", "originalInitKind", "originalDynamicInitKind", "initializerKind", "initializerConstantId", "initializerExpressionId", "definitionStatus", "captureProof", "sourceFileId", "line", "column");
         Table("sourceExpressionDeclarationReferences", "SELECT expression_id,declaration_id FROM source_expression_declaration_references ORDER BY expression_id",
             "expressionId", "declarationId");
         Table("sourceExpressionDeclarationFormals", "SELECT declaration_id,ordinal,kind,source_name,type_id,constant_id,template_id,default_type_id,default_constant_id,default_template_id,is_pack,is_abbreviated,source_file_id,line,column FROM source_expression_declaration_formals ORDER BY declaration_id,ordinal",
@@ -581,6 +583,12 @@ internal sealed partial class ObjectFile
             "id", "sourceName", "linkage", "externalKey", "definition", "typeId", "sourceTypeId", "isThreadLocal", "isConst", "alignment", "sourceFileId", "line", "column");
         Table("routineTypes", "SELECT type_id,return_type_id,variadic,exception_policy FROM routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy");
         Table("routineParameters", "SELECT type_id,ordinal,parameter_type_id FROM routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");
+        Table("sourceDynamicExceptionSpecifications", "SELECT source_routine_type_id,kind,allowed_type_count,capture_proof FROM source_dynamic_exception_specifications ORDER BY source_routine_type_id,kind,allowed_type_count,capture_proof",
+            "sourceRoutineTypeId", "kind", "allowedTypeCount", "captureProof");
+        Table("sourceDynamicExceptionTypes", "SELECT source_routine_type_id,ordinal,declared_source_type_id,match_source_type_id FROM source_dynamic_exception_types ORDER BY source_routine_type_id,ordinal,declared_source_type_id,match_source_type_id",
+            "sourceRoutineTypeId", "ordinal", "declaredSourceTypeId", "matchSourceTypeId");
+        Table("functionDynamicExceptionBoundaries", "SELECT function_entity_id,source_routine_type_id,capture_proof FROM function_dynamic_exception_boundaries ORDER BY function_entity_id,source_routine_type_id,capture_proof",
+            "functionEntityId", "sourceRoutineTypeId", "captureProof");
         Table("sourceRoutineTypes", "SELECT type_id,return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier,exception_policy_origin FROM source_routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy", "parameterMode", "objectTypeId", "objectIsConst", "objectIsVolatile", "objectRefQualifier", "exceptionPolicyOrigin");
         Table("sourceRoutineExceptionResolutions", "SELECT source_routine_type_id,final_source_routine_type_id,source_function_entity_id,initial_policy,resolved_policy,initial_present,initial_indeterminate,initial_arg_cached,initial_copy_from_prototype,initial_is_noexcept,initial_throw_any,final_present,final_indeterminate,final_arg_cached,final_copy_from_prototype,final_is_noexcept,final_throw_any,special_member_kind,is_defaulted,is_compiler_generated,is_inheriting_constructor,capture_proof FROM source_routine_exception_resolutions ORDER BY source_routine_type_id", "sourceRoutineTypeId", "finalSourceRoutineTypeId", "sourceFunctionEntityId", "initialPolicy", "resolvedPolicy", "initialPresent", "initialIndeterminate", "initialArgCached", "initialCopyFromPrototype", "initialIsNoexcept", "initialThrowAny", "finalPresent", "finalIndeterminate", "finalArgCached", "finalCopyFromPrototype", "finalIsNoexcept", "finalThrowAny", "specialMemberKind", "isDefaulted", "isCompilerGenerated", "isInheritingConstructor", "captureProof");
         Table("sourceRoutineParameters", "SELECT type_id,ordinal,parameter_type_id FROM source_routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");

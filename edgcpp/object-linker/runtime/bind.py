@@ -211,6 +211,10 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
                             symbol=requirement['ExternalKey'], container=requirement['container'], arguments=arguments,
                             variadic=requirement['variadic'], variadicParameter=requirement['variadicParameter']))
     bound, unresolved, bodies, helpers, allocation, groups = provider_bound, [], {}, set(), set(), set()
+    if link.get('sourceExceptionRuntime', {}).get('dynamicSpecificationsRequired', False):
+        unresolved.append(dict(name='Edg.Runtime.CppExceptions.HandleSpecificationViolation',
+            reason='Shared std::unexpected/replacement exception provider is required'))
+
     process_callbacks = False
     thread_services = False
     threads_used = False

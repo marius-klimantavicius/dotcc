@@ -68,6 +68,7 @@ unsigned source_constraint_declaration(unsigned captured) {
     ",\"sourceTypeId\":"+number(source_type(value.type))+
     ",\"ownerSourceTypeId\":"+number(value.owner_type?source_type(value.owner_type):0)+
     ",\"templatePrototypeDeclarationId\":"+number(value.template_prototype?source_constraint_declaration(value.template_prototype):0)+
+    ",\"templateOriginKind\":"+quote(value.template_origin_kind)+
     ",\"hasTemplateOrigin\":"+(value.has_template_origin?"true":"false")+
     ",\"isTemplatePrototype\":"+(value.is_template_prototype?"true":"false")+
     ",\"isConstexpr\":"+(value.is_constexpr?"true":"false")+

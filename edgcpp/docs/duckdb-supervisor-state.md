@@ -849,3 +849,24 @@ metadata,4static-member template references,2dynamic throw specs,3singleton
 provenance/layout families,8test-profile frontend issues. Dynamic-spec patch is
 READY in worker scratch, alias/static-member closure continues. Commit55 then
 native137/managed160 for next coherent profile56 cut. Continue autonomously.
+
+
+Profile56 accepted: native137/138 and managed160/161.210 checks pass: static
+class-template members37 (native/JIT/NativeAOT), dynamic specifications68
+(native/stock semantic oracle, source-hidden generation,10 resealed negatives),
+and existing source constraint graph regression105. Original static member
+references retain exact class/template origins without invented member formals.
+Dynamic throw lists and observed body boundaries remain distinct from noexcept;
+the required shared unexpected/replacement provider stays explicitly unresolved.
+Empty bodies omit the catch wrapper while retaining boundary metadata. No
+translated dynamic-spec execution is claimed.
+
+Actual patas/alprd/chimp/alp all export and verify; combined C# generation emits
+3,314 definitions with two RTTI providers. Review: artifacts/review/
+dotobj-duckdb-v56/static-members. Cumulative retained-version export coverage is
+2,584/2,635;85/136 original problem units now verify,51 export/config gates remain.
+This is NOT one coherent latest-profile corpus. Current queue:40 shared alias/
+type-operator source metadata,3 singleton exporter families,8 test frontend
+profiles. Base worker owns the40-unit source graph; lifetime worker diagnoses
+types.cpp exception origin, test_config rollback and abi_atomic layout; supervisor
+owns test-profile provenance and integration. No cleanup, no runtime detour.

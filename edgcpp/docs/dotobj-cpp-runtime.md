@@ -727,3 +727,39 @@ both RTTI providers to 3,714 C# function definitions at
 retains its original `LogicalType` temporary and destruction while executing
 inside the generated `Value` constructor adapter. This is actual C# generation
 coverage; it does not claim that the entire ART/library closure is runnable.
+
+
+### Legacy dynamic exception specifications (generation accepted)
+
+The source contract retains the original `throw(...)` kind, ordered allowed
+source types and the reference-stripped matching type for each entry. An empty
+`throw()` list is explicit. Each emitted dynamic boundary must have an observed
+stock exception-prologue relation to its original source routine type. Source
+and execution policy remain distinct from `noexcept`; empty `throw()` and
+`noexcept` are compatible only as callable contracts, following stock
+`types.c::is_nothrow_spec`, while their bodies retain different behavior.
+
+Generated code first completes automatic-object unwinding, allows matching
+exceptions to propagate, and delegates violations to the shared
+`Edg.Runtime.CppExceptions.HandleSpecificationViolation` provider. That provider
+must implement `std::unexpected`, original/replacement catch ownership,
+allowed-type matching, the permitted `std::bad_exception` substitution, and
+termination when required. Runtime control transfers bypass this boundary.
+The current generation milestone emits a required partial contract with no
+fallback implementation: link and runtime-binding reports explicitly mark the
+unexpected provider unresolved. Translated execution is not yet verified.
+
+The retained native and stock-C oracle at
+`dotobj-dynamic-exception-spec-next/oracles-001/results.json` passed 13 checks
+at O0/O2 (native `-fno-inline`, stock `--no_inlining`). It verifies permitted
+integer/class exceptions and confirms that violating empty `throw()` destroys
+the local RAII object and invokes `std::unexpected` (configured exit 73), rather
+than immediately treating the body as a noexcept violation. The focused
+metadata/generation runner passed 68 checks with frozen native138/managed161
+at `dotobj-v56-dynamic-138-161-002/results.json`. This includes modern-mode
+legacy destructor spelling, two-unit empty-list/noexcept callable compatibility,
+source-hidden linking, retained source boundary metadata with omitted empty-body
+try/catch wrappers, explicit unresolved-provider reporting, and 10 resealed
+malformed-object rejections. The actual libc++ `ios.cpp` and `regex.cpp` now
+advance beyond this exception-specification gate to an independent dependent
+source-type/template-argument representation gate; they are not yet packaged.

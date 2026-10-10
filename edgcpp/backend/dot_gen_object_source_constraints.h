@@ -59,6 +59,7 @@ struct SourceConstraintDeclaration {
   std::string initializer_kind="not-variable";
   unsigned initializer_constant=0,initializer_expression=0;
   bool has_template_origin=false,is_template_prototype=false,is_constexpr=false;
+  std::string template_origin_kind="none";
   a_source_position location={};
   std::vector<SourceTemplateFormal> template_formals;
   std::vector<SourceConstraintArgument> template_arguments;
@@ -184,7 +185,17 @@ inline unsigned capture_constraint_variable(a_variable_ptr variable) {
   if(variable->template_info) {
     auto info=variable->template_info;auto templ=info->assoc_template;
     value.has_template_origin=true;value.is_template_prototype=variable->is_prototype_instantiation;
-    if(!templ || (templ->kind!=templk_variable && templ->kind!=templk_static_data_member) || !templ->template_decl || !templ->prototype_instantiation.variable)
+    value.template_origin_kind=templ && templ->kind==templk_static_data_member?"static-data-member":"variable-template";
+    if(templ && templ->kind==templk_static_data_member) {
+      // Static members inherit their template arguments from the original
+      // enclosing class. Stock a_variable_template_info documents that both
+      // argument lists and the independent template header are absent here.
+      auto primary=templ->prototype_instantiation.variable;
+      if(!primary || !variable->source_corresp.is_class_member || !primary->source_corresp.is_class_member ||
+         info->template_arg_list || info->partial_spec_template_arg_list || templ->template_decl)
+        value.error="static template member lost its original class declaration ownership";
+      else value.template_prototype=primary==variable?id:capture_constraint_variable(primary);
+    } else if(!templ || templ->kind!=templk_variable || !templ->template_decl || !templ->prototype_instantiation.variable)
       value.error="source variable reference lacks its exact original template declaration";
     else {
       if(templ->prototype_instantiation.variable!=variable)value.template_prototype=capture_constraint_variable(templ->prototype_instantiation.variable);
@@ -205,6 +216,7 @@ inline unsigned capture_constraint_routine(a_routine_ptr routine) {
   capture_constraint_declaration_scope(routine->source_corresp,value);
   if(routine->assoc_template) {
     auto templ=routine->assoc_template;value.has_template_origin=true;value.is_template_prototype=routine->is_prototype_instantiation;
+    value.template_origin_kind="function-template";
     if((templ->kind!=templk_function && templ->kind!=templk_member_function) || !templ->template_decl || !templ->prototype_instantiation.routine)
       value.error="source routine reference lacks its exact original template declaration";
     else {

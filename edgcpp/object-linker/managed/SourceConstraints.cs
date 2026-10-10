@@ -6,7 +6,7 @@ internal sealed record SourceExpressionEdge(string Role, long Ordinal, long Chil
 internal sealed record SourceConcept(long Id, string Name, string QualifiedName, long Definition, long? HeaderConstraint, long ParameterCount);
 internal sealed record SourceExpressionParameter(long Type, long? DeclaredType, string Name, long Qualifiers, bool Pack);
 internal sealed record SourceExpressionDeclaration(long Id, string Kind, string Name, string QualifiedName, long Type,
-    long? OwnerType, long? TemplatePrototype, bool HasTemplate, bool IsPrototype, bool Constexpr, long FormalCount, long ArgumentCount, long? OriginalInitKind, long? OriginalDynamicInitKind, string InitializerKind, long? InitializerConstant, long? InitializerExpression);
+    long? OwnerType, long? TemplatePrototype, bool HasTemplate, bool IsPrototype, bool Constexpr, long FormalCount, long ArgumentCount, long? OriginalInitKind, long? OriginalDynamicInitKind, string InitializerKind, long? InitializerConstant, long? InitializerExpression, string TemplateOriginKind);
 internal sealed record SourceExpressionSubstitution(bool Dependent, bool Nondependent, bool AdjustCoordinates, bool AliasDeductionGuide, long FormalCount, long ArgumentCount);
 
 internal sealed partial class ObjectFile
@@ -130,12 +130,14 @@ internal sealed partial class ObjectFile
     }
     private void ReadSourceConstraintDeclarations()
     {
-        using var q=database.Prepare("SELECT id,kind,source_name,qualified_name,source_type_id,owner_source_type_id,template_prototype_declaration_id,has_template_origin,is_template_prototype,is_constexpr,formal_count,argument_count,definition_status,capture_proof,original_init_kind,original_dynamic_init_kind,initializer_kind,initializer_constant_id,initializer_expression_id FROM source_expression_declarations ORDER BY id");
+        using var q=database.Prepare("SELECT id,kind,source_name,qualified_name,source_type_id,owner_source_type_id,template_prototype_declaration_id,has_template_origin,is_template_prototype,is_constexpr,formal_count,argument_count,definition_status,capture_proof,original_init_kind,original_dynamic_init_kind,initializer_kind,initializer_constant_id,initializer_expression_id,template_origin_kind FROM source_expression_declarations ORDER BY id");
         while(q.Read())
         {
-            var value=new SourceExpressionDeclaration(q.Integer(0),q.Text(1),q.Text(2),q.Text(3),q.Integer(4),q.OptionalInteger(5),q.OptionalInteger(6),q.Integer(7)==1,q.Integer(8)==1,q.Integer(9)==1,q.Integer(10),q.Integer(11),q.OptionalInteger(14),q.OptionalInteger(15),q.Text(16),q.OptionalInteger(17),q.OptionalInteger(18));
+            var value=new SourceExpressionDeclaration(q.Integer(0),q.Text(1),q.Text(2),q.Text(3),q.Integer(4),q.OptionalInteger(5),q.OptionalInteger(6),q.Integer(7)==1,q.Integer(8)==1,q.Integer(9)==1,q.Integer(10),q.Integer(11),q.OptionalInteger(14),q.OptionalInteger(15),q.Text(16),q.OptionalInteger(17),q.OptionalInteger(18),q.Text(19));
             if(value.Id<=0 || value.Kind is not("variable" or "routine") || value.Name.Length==0 || value.QualifiedName.Length==0 || !SourceTypes.ContainsKey(value.Type) ||
                 value.OwnerType is long owner && !SourceTypes.ContainsKey(owner) || q.Integer(7) is not(0 or 1) || q.Integer(8) is not(0 or 1) || q.Integer(9) is not(0 or 1) ||
+                value.TemplateOriginKind is not("none" or "variable-template" or "function-template" or "static-data-member") ||
+                value.HasTemplate != (value.TemplateOriginKind!="none") ||
                 value.FormalCount<0 || value.ArgumentCount<0 || q.Text(12)!="reference-only" || q.Text(13)!="original-expression-declaration" ||
                 !SourceExpressionDeclarations.TryAdd(value.Id,value))throw new InvalidDataException("Source expression declaration must retain its original semantic-only signature");
         }

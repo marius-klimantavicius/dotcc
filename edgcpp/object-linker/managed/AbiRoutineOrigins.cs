@@ -18,8 +18,11 @@ internal sealed partial class ObjectFile
     {
         if (AbiRoutineOrigins.TryGetValue(entityId, out AbiRoutineOrigin? origin) &&
             origin.EntryKind == "complete" && (SourceFunctionKinds[origin.PrimaryEntityId] is "constructor" or "destructor"))
-            return EntitySourceRoutines[origin.PrimaryEntityId].ExceptionPolicy;
-        return Routines[Entities[entityId].RoutineTypeId].ExceptionPolicy;
+            return SourceCallableExceptionPolicy(EntitySourceRoutines[origin.PrimaryEntityId]);
+        string policy = Routines[Entities[entityId].RoutineTypeId].ExceptionPolicy;
+        if (policy == "dynamic" && EntitySourceRoutines.TryGetValue(OriginalFunction(entityId), out var source))
+            return SourceCallableExceptionPolicy(source);
+        return policy;
     }
 
     public string CallableRoutine(long entityId)

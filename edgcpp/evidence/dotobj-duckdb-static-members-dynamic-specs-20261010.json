@@ -1,0 +1,58 @@
+{
+  "profile": 56,
+  "nativeSnapshots": [
+    137,
+    138
+  ],
+  "managedSnapshots": [
+    160,
+    161
+  ],
+  "native138Sha256": "9135a281b710d2a61a4e58a6096f4082621bc09f3b6f7ab2514354ddf97da99c",
+  "checks": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v56-static-member-137-160-002/results.json",
+      "checks": 37
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v56-dynamic-138-161-002/results.json",
+      "checks": 68
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v56-source-regression-138-161-001/results.json",
+      "checks": 105
+    }
+  ],
+  "totalChecks": 210,
+  "actualGeneration": {
+    "command": [
+      "dotnet",
+      "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-160/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "link",
+      "--allow-externs",
+      "--namespace",
+      "Managed.DuckDb",
+      "--class",
+      "DuckDbCore",
+      "--out",
+      "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-static-member-managed-137-160/generated",
+      "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-dynamic-actual-137/08040bcb08a346698b372e34-001/unit.dotobj",
+      "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-static-member-rest-actual-137/b9ce09c8fd9f7303eca31021-001/unit.dotobj",
+      "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-static-member-rest-actual-137/c4dad5647a9279993ee42644-001/unit.dotobj",
+      "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-static-member-rest-actual-137/6a74a6013d7f92e69825d5e7-001/unit.dotobj",
+      "--provider",
+      "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-dynamic-actual-137/16814664ede267a348ab68cb-001/unit.dotobj",
+      "--provider",
+      "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-dynamic-actual-137/5ba8f548d359c5c0d1c9431e-001/unit.dotobj"
+    ],
+    "exitCode": 0,
+    "seconds": 7.104264724010136,
+    "definitions": 3314
+  },
+  "cumulativeExportedAcrossVersions": 2584,
+  "fullManifestUnits": 2635,
+  "remainingExportOrConfiguration": 51,
+  "latestFullCorpusRebuilt": false,
+  "translatedDynamicExceptionExecutionVerified": false,
+  "runtimeGap": "Required shared std::unexpected/replacement provider is unresolved; generation retains this requirement explicitly."
+}

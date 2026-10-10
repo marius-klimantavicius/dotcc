@@ -58,7 +58,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v55");
+        lifetimeWriter.WriteString("profile", "scalar-control-v56");
         lifetimeWriter.WriteString("capture", "lexical-activations-and-observed-cpp-cleanup-states");
         lifetimeWriter.WriteBoolean("cleanupStates", true);
         lifetimeWriter.WriteBoolean("sourceLifetimes", true);
@@ -165,7 +165,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v55");
+            writer.WriteString("profile", "scalar-control-v56");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -178,7 +178,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v55");
+            writer.WriteString("profile", "scalar-control-v56");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -189,7 +189,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v55", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v56", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, cleanupStates = true, sourceLifetimes = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; ordinary and conditional scalar C++ local/member/base exceptional destructor cleanup is owned; typed throw/rethrow uses the shared exception provider by default (external provider opt-out available); ordinary and constructor/destructor function-try regions, typed handlers and release states are owned; fixed helper-based array cleanup and owned subobject VTT arguments are supported; variable-length/cookie arrays, nontrivial initializer-list temporary ownership and adjusting thunks remain gated; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance plus lexical cleanup activations and observed source lifetime/exceptional destruction state graphs; no complete source expression/statement view, macro expansion history or general C++ EH capture" },
@@ -214,6 +214,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 required = linker.RequiresExceptionProvider,
                 container = "global::Edg.Runtime.CppExceptions",
                 status = !linker.RequiresExceptionProvider ? "not-required" : sharedExceptionProvider ? "shared-provider" : "generation-only-unbound-provider",
+                dynamicSpecificationsRequired = linker.RequiresDynamicSpecifications,
+                dynamicSpecificationsStatus = linker.RequiresDynamicSpecifications ? "generation-only-unbound-unexpected-provider" : "not-required",
                 sourceHandlersSupported = true,
                 sourceHandlerKinds = new[] { "ellipsis", "typed" },
                 sourceTryKinds = new[] { "ordinary", "constructor", "destructor" },
@@ -371,6 +373,8 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         var labelNames = body.Nodes.Values.Where(node => node.Kind == "label").OrderBy(node => node.Id)
             .ToDictionary(node => node.Id, node => allocator.Allocate(node.ConstantText!, "label_" + node.Id));
         bool variadicFunction = obj.Routines[function.RoutineTypeId].Variadic;
+        bool dynamicSpecification = obj.DynamicExceptionBoundaries.ContainsKey(function.Id) &&
+            body.Nodes.Values.Any(node => node.Kind is not ("block" or "return"));
         bool terminate = obj.Routines[function.RoutineTypeId].ExceptionPolicy == "terminate" &&
             body.Nodes.Values.Any(node => node.Kind is not ("block" or "return"));
         var cleanupPayloadNames = obj.FunctionCleanupActions.GetValueOrDefault(function.Id, [])
@@ -386,7 +390,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         bool hasCleanup = obj.FunctionCleanupStates.ContainsKey(function.Id);
         string cleanupState = hasCleanup ? allocator.Allocate("__cleanup_state", "cleanup_state") : "";
         string cleanupUnwinding = hasCleanup ? allocator.Allocate("__cleanup_unwinding", "cleanup_unwinding") : "";
-        int outerBodyIndent = terminate ? 3 : 2;
+        int outerBodyIndent = terminate || dynamicSpecification ? 3 : 2;
         int bodyIndent = outerBodyIndent + (hasCleanup ? 1 : 0);
         string vaArguments = allocator.Allocate("__va_arguments", "va_arguments"), vaInput = allocator.Allocate("__va_input", "va_input");
         string vaPack = allocator.Allocate("__va_pack", "va_pack"), vaBytes = allocator.Allocate("__va_bytes", "va_bytes"), vaWorkspace = allocator.Allocate("__va_workspace", "va_workspace");
@@ -1342,7 +1346,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             string.Join(", ", parameters.Select(binding => Type(obj.Type(binding.TypeId)) + " " + parameterNames[binding.Id])
                 .Concat(variadicFunction ? ["params global::System.ReadOnlySpan<global::Edg.Runtime.VaArg> " + vaInput] : [])) + ")");
         Line(1, "{");
-        if (terminate) { Line(2, "try"); Line(2, "{"); }
+        if (terminate || dynamicSpecification) { Line(2, "try"); Line(2, "{"); }
         foreach (var (id, pointer) in alignedPointers)
         {
             Binding binding = body.Bindings[id]; string type = obj.Type(binding.TypeId);
@@ -1437,6 +1441,19 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             Line(2, "}"); Line(2, "catch (global::System.Exception " + error + ") when (!global::Edg.Runtime.ObjectProgram.IsRuntimeTransfer(" + error + "))"); Line(2, "{");
             Line(3, "global::System.Environment.FailFast(\"Exception escaped noexcept function\", " + error + ");");
             Line(3, "throw;"); Line(2, "}");
+        }
+        if (dynamicSpecification)
+        {
+            long specificationId = obj.DynamicExceptionBoundaries[function.Id];
+            string error = allocator.Allocate("__specification_error", "specification_error");
+            var allowed = obj.DynamicExceptionSpecifications[specificationId].Types;
+            string matches = allowed.Length == 0 ? "false" : string.Join(" || ", allowed.Select(type =>
+                ExceptionRuntime + ".FilterTypedCatch(" + error + ", " + catchDescriptorNames[obj.ExceptionTypeIdentity(type.MatchSourceTypeId)] + ")"));
+            Line(2, "}");
+            Line(2, "catch (global::System.Exception " + error + ") when (!global::Edg.Runtime.ObjectProgram.IsRuntimeTransfer(" + error + ") && !(" + matches + "))");
+            Line(2, "{");
+            Line(3, "throw " + ExceptionRuntime + ".HandleSpecificationViolation(" + error + ", " + dynamicSpecificationNames[(obj, specificationId)] + ");");
+            Line(2, "}");
         }
         Line(1, "}"); Line(0, "");
         output.Append(initializers);

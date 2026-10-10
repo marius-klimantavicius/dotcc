@@ -1,3 +1,20 @@
+Current accepted checkpoint: profile56,2,584/2,635 exported across retained
+versions;51 export/config gates remain. This is not a full latest-profile corpus.
+
+| Rank | Remaining first-failure family | Units | Owner |
+| --- | --- | ---: | --- |
+| 1 | Alias templates / dependent type operators in source metadata | 40 | Base worker; exact original declaration, ordered arguments and RHS graph |
+| 2 | Generated exception origin; partial construction rollback; atomic record layout | 3 | Lifetime worker; diagnose and stage coherent ownership fixes |
+| 3 | Catch/compiler diagnostic profile, terminal profile, missing POSIX declarations | 8 | Supervisor; retain tests and explicit runtime requirements |
+
+Four static-member compression units now export/verify and jointly generate
+3,314 definitions. Dynamic-spec source/export gate is cleared; ios/regex now
+reach the40-unit alias family.210 focused/regression checks accepted in profile56.
+Production unexpected provider remains explicitly unresolved for later runtime
+closure. Full export, then combined generation remain the current objectives.
+
+Earlier evidence and counts follow; they are historical, not current totals.
+
 # DuckDB translation priority queue
 
 This queue prioritizes observed shared blockers by the number of real units

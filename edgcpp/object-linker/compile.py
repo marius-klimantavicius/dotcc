@@ -42,7 +42,7 @@ ARRAYS = {
     'sourceExpressionSubstitutions': ('source_expression_substitutions', ['expressionId', 'substitutionOrdinal', 'formalCount', 'argumentCount', 'argumentsKnownDependent', 'argumentsKnownNondependent', 'adjustCoordinates', 'aliasDeductionGuide']),
     'sourceExpressionSubstitutionFormals': ('source_expression_substitution_formals', ['expressionId', 'substitutionOrdinal', 'ordinal', 'kind', 'sourceName', 'typeId', 'constantId', 'templateId', 'defaultTypeId', 'defaultConstantId', 'defaultTemplateId', 'isPack', 'isAbbreviated', 'sourceFileId', 'line', 'column']),
     'sourceExpressionSubstitutionArguments': ('source_expression_substitution_arguments', ['expressionId', 'substitutionOrdinal', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
-    'sourceExpressionDeclarations': ('source_expression_declarations', ['id', 'kind', 'sourceName', 'qualifiedName', 'sourceTypeId', 'ownerSourceTypeId', 'templatePrototypeDeclarationId', 'hasTemplateOrigin', 'isTemplatePrototype', 'isConstexpr', 'formalCount', 'argumentCount', 'originalInitKind', 'originalDynamicInitKind', 'initializerKind', 'initializerConstantId', 'initializerExpressionId', 'definitionStatus', 'captureProof', 'sourceFileId', 'line', 'column']),
+    'sourceExpressionDeclarations': ('source_expression_declarations', ['id', 'kind', 'sourceName', 'qualifiedName', 'sourceTypeId', 'ownerSourceTypeId', 'templatePrototypeDeclarationId', 'templateOriginKind', 'hasTemplateOrigin', 'isTemplatePrototype', 'isConstexpr', 'formalCount', 'argumentCount', 'originalInitKind', 'originalDynamicInitKind', 'initializerKind', 'initializerConstantId', 'initializerExpressionId', 'definitionStatus', 'captureProof', 'sourceFileId', 'line', 'column']),
     'sourceExpressionDeclarationReferences': ('source_expression_declaration_references', ['expressionId', 'declarationId']),
     'sourceExpressionDeclarationFormals': ('source_expression_declaration_formals', ['declarationId', 'ordinal', 'kind', 'sourceName', 'typeId', 'constantId', 'templateId', 'defaultTypeId', 'defaultConstantId', 'defaultTemplateId', 'isPack', 'isAbbreviated', 'sourceFileId', 'line', 'column']),
     'sourceExpressionDeclarationArguments': ('source_expression_declaration_arguments', ['declarationId', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
@@ -57,6 +57,9 @@ ARRAYS = {
     'routineTypes': ('routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy']),
     'routineParameters': ('routine_parameters', ['typeId', 'ordinal', 'parameterTypeId']),
     'sourceRoutineExceptionResolutions': ('source_routine_exception_resolutions', ['sourceRoutineTypeId', 'finalSourceRoutineTypeId', 'sourceFunctionEntityId', 'initialPolicy', 'resolvedPolicy', 'initialPresent', 'initialIndeterminate', 'initialArgCached', 'initialCopyFromPrototype', 'initialIsNoexcept', 'initialThrowAny', 'finalPresent', 'finalIndeterminate', 'finalArgCached', 'finalCopyFromPrototype', 'finalIsNoexcept', 'finalThrowAny', 'specialMemberKind', 'isDefaulted', 'isCompilerGenerated', 'isInheritingConstructor', 'captureProof']),
+    'sourceDynamicExceptionSpecifications': ('source_dynamic_exception_specifications', ['sourceRoutineTypeId', 'kind', 'allowedTypeCount', 'captureProof']),
+    'sourceDynamicExceptionTypes': ('source_dynamic_exception_types', ['sourceRoutineTypeId', 'ordinal', 'declaredSourceTypeId', 'matchSourceTypeId']),
+    'functionDynamicExceptionBoundaries': ('function_dynamic_exception_boundaries', ['functionEntityId', 'sourceRoutineTypeId', 'captureProof']),
     'sourceRoutineTypes': ('source_routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy', 'parameterMode', 'objectTypeId', 'objectIsConst', 'objectIsVolatile', 'objectRefQualifier', 'exceptionPolicyOrigin']),
     'sourceRoutineParameters': ('source_routine_parameters', ['typeId', 'ordinal', 'parameterTypeId']),
     'deferredFunctionDeclarations': ('deferred_function_declarations', ['entityId', 'sourceRoutineTypeId', 'captureProof']),
@@ -247,7 +250,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v55':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v56':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -267,7 +270,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v55', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v56', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))
@@ -330,7 +333,7 @@ def main():
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--work-dir', required=True, type=Path)
     parser.add_argument('--compiler', type=Path, default=ROOT / 'build/bin/cpfe-dot')
-    parser.add_argument('--std', choices=['c11', 'c++17', 'c++20'], default='c++17')
+    parser.add_argument('--std', choices=['c11', 'c++14', 'c++17', 'c++20'], default='c++17')
     parser.add_argument('--unit-id')
     parser.add_argument('-I', dest='frontend_options', action=FrontendOption)
     parser.add_argument('-D', dest='frontend_options', action=FrontendOption)
