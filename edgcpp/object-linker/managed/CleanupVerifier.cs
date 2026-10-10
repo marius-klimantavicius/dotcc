@@ -2,6 +2,39 @@ namespace DotObj;
 
 internal static class CleanupVerifier
 {
+    public static HashSet<long> RollbackTargetBindings(ObjectFile obj, Entity function, FunctionBody body, long targetNodeId, bool guard)
+    {
+        var bindings = new HashSet<long>();
+        if (!body.Nodes.TryGetValue(targetNodeId, out Node? root) || root.FunctionId != function.Id)
+            throw new InvalidDataException("Rollback target leaves its owned function");
+        if (guard)
+        {
+            // ReadGuardMetadata already verifies exact zero-offset guard storage.
+            if (root.Kind != "storage-address" || obj.Type(root.TypeId!.Value) != "ptr(u64)")
+                throw new InvalidDataException("Guard rollback target must be its owned storage address");
+        }
+        else
+        {
+            if (obj.Type(root.TypeId!.Value) != "ptr(void)")
+                throw new InvalidDataException("Allocation rollback requires its delete pointer ABI");
+            var visited = new HashSet<long>();
+            while (root.Kind == "convert")
+            {
+                if (!visited.Add(root.Id) || visited.Count > 128 || body.Edges.GetValueOrDefault(root.Id, []).Count != 1)
+                    throw new InvalidDataException("Invalid allocation rollback pointer conversion recipe");
+                root = body.Child(root.Id, "operand");
+                if (!ScalarTypes.IsPointer(obj.Type(root.TypeId!.Value)))
+                    throw new InvalidDataException("Allocation rollback conversion must preserve pointer representation");
+            }
+            if (root.Kind != "binding" || root.BindingId is not long bindingId ||
+                !body.Bindings.TryGetValue(bindingId, out Binding? binding) || binding.FunctionId != function.Id ||
+                binding.Kind != "local" || !ScalarTypes.IsPointer(obj.Type(binding.TypeId)))
+                throw new InvalidDataException("Allocation rollback must read its owned allocated-pointer local");
+            bindings.Add(binding.Id);
+        }
+        return bindings;
+    }
+
     // Action roots are recipes over already-owned storage, not executable
     // expressions with arbitrary detached visibility or source side effects.
     public static HashSet<long> TargetBindings(ObjectFile obj, Entity function, FunctionBody body, CleanupAction action)

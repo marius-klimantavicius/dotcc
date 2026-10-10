@@ -56,7 +56,7 @@ def main():
         run('bind',[sys.executable,'-B',ROOT/'runtime/bind.py','--project',project])
         receipt=json.loads((project/'runtime-bindings.json').read_text())
         check('all-guard-imports-bound',receipt['status']=='bound' and {'__cxa_guard_acquire','__cxa_guard_release','__cxa_guard_abort'} <= {row['name'] for row in receipt['bound']})
-        check('canonical-guard-body-provenance',any(row['path'].endswith('dot_gen_lifecycle.h') and row['sha256']==sha(row['path']) for row in receipt['bindingInputs']))
+        check('canonical-guard-body-provenance',any(row['path'].endswith('CppGuards.cs') and row['sha256']==sha(row['path']) for row in receipt['implementationInputs']))
         run('build',['dotnet','build',project/'Translated.csproj','--nologo','-v:q'])
         run('jit',['dotnet',project/'bin/Debug/net10.0/Translated.dll'])
         if args.nativeaot:
@@ -67,7 +67,7 @@ def main():
         bad_obj=compile('bad',bad);bad_project=out/'bad-generated'
         run('bad-link',['dotnet',args.linker.resolve(),'link','--out',bad_project,'--entry','main','--allow-externs',bad_obj])
         rejected=run('bad-bind',[sys.executable,'-B',ROOT/'runtime/bind.py','--project',bad_project],1)
-        check('wrong-width-rejected',b'Local-static guard ABI does not match' in rejected.stderr and not list(bad_project.glob('Runtime.Guards*.cs')))
+        check('wrong-width-rejected',b'Local-static guard ABI does not match' in rejected.stderr and not list(bad_project.glob('Runtime.CppGuards.cs')))
     except Exception as error:failure=str(error)
     result=dict(schema=1,status='failed' if failure else 'passed',error=failure,checks=checks,commands=commands,
         nativeAotVerified=args.nativeaot and not failure,compiler=dict(path=str(args.compiler.resolve()),sha256=sha(args.compiler)),

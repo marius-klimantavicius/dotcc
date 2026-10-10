@@ -8,7 +8,7 @@ internal sealed record CleanupAction(long Id, long FunctionEntityId, long Source
     long CallbackEntityId, long TargetNodeId, string CaptureProof);
 internal sealed record ArrayRuntimeOperation(long NodeId, long SourceObligationId, long CallbackEntityId, string OperationKind, string CaptureProof);
 internal sealed record CleanupArray(long ActionId, long ElementTypeId, long ElementCount, long ElementSize, string CaptureProof);
-internal sealed record CleanupState(long Id, long FunctionEntityId, long? ActionId, long? NextStateId, long? HandlerNodeId);
+internal sealed record CleanupState(long Id, long FunctionEntityId, long? ActionId, long? NextStateId, long? HandlerNodeId, long? AllocationActionId, long? GuardActionId);
 internal sealed record CleanupTransition(long NodeId, long? StateId, string CaptureProof, bool IsUnreachable);
 internal sealed record CleanupFrameMarker(long NodeId, string Kind, string CaptureProof);
 
@@ -102,6 +102,7 @@ internal sealed partial class ObjectFile
                     throw new InvalidDataException("Source destruction type differs from its original destructor receiver");
             }
         ReadAllocationObligations();
+        ReadGuardMetadata();
         foreach (var group in SourceLifetimes.Values.GroupBy(value => value.FunctionEntityId))
         {
             SourceLifetime[] roots = group.Where(value => value.ParentLifetimeId is null).ToArray();
@@ -237,13 +238,15 @@ internal sealed partial class ObjectFile
                     !NormalDestructions.TryAdd(query.Integer(0), obligation.Id))
                     throw new InvalidDataException("Normal destruction lacks its exact owned call, source obligation or destructor origin");
             }
-        using (var query = database.Prepare("SELECT s.id,s.function_entity_id,s.action_id,s.next_state_id,s.handler_node_id,n.function_id,n.kind FROM cleanup_states s LEFT JOIN nodes n ON n.id=s.handler_node_id ORDER BY s.id"))
+        using (var query = database.Prepare("SELECT s.id,s.function_entity_id,s.action_id,s.next_state_id,s.handler_node_id,n.function_id,n.kind,s.allocation_action_id,s.guard_action_id FROM cleanup_states s LEFT JOIN nodes n ON n.id=s.handler_node_id ORDER BY s.id"))
             while (query.Read())
             {
-                var state = new CleanupState(query.Integer(0), query.Integer(1), query.OptionalInteger(2), query.OptionalInteger(3), query.OptionalInteger(4));
-                if (state.Id <= 0 || (state.ActionId is null) == (state.HandlerNodeId is null) ||
-                    (state.ActionId is long actionId ? !CleanupActions.TryGetValue(actionId, out CleanupAction? action) || action.FunctionEntityId != state.FunctionEntityId
-                        : query.OptionalInteger(5) != state.FunctionEntityId || query.OptionalText(6) != "catch") ||
+                var state = new CleanupState(query.Integer(0), query.Integer(1), query.OptionalInteger(2), query.OptionalInteger(3), query.OptionalInteger(4), query.OptionalInteger(7), query.OptionalInteger(8));
+                if (state.Id <= 0 || new long?[] { state.ActionId, state.HandlerNodeId, state.AllocationActionId, state.GuardActionId }.Count(id => id is not null) != 1 ||
+                    state.ActionId is long actionId && (!CleanupActions.TryGetValue(actionId, out CleanupAction? action) || action.FunctionEntityId != state.FunctionEntityId) ||
+                    state.HandlerNodeId is not null && (query.OptionalInteger(5) != state.FunctionEntityId || query.OptionalText(6) != "catch") ||
+                    state.AllocationActionId is long allocationId && (!AllocationCleanupActions.TryGetValue(allocationId, out AllocationCleanupAction? allocationAction) || allocationAction.FunctionEntityId != state.FunctionEntityId) ||
+                    state.GuardActionId is long guardId && (!GuardCleanupActions.TryGetValue(guardId, out GuardCleanupAction? guardAction) || guardAction.FunctionEntityId != state.FunctionEntityId) ||
                     !CleanupStates.TryAdd(state.Id, state))
                     throw new InvalidDataException("Cleanup state must reference its own function's action");
                 if (!FunctionCleanupStates.TryGetValue(state.FunctionEntityId, out var states))
@@ -252,6 +255,9 @@ internal sealed partial class ObjectFile
             }
         if (CleanupActions.Keys.Except(CleanupStates.Values.Where(state => state.ActionId is not null).Select(state => state.ActionId!.Value)).Any())
             throw new InvalidDataException("Cleanup action is missing its observed region state");
+        if (AllocationCleanupActions.Keys.Except(CleanupStates.Values.Where(state => state.AllocationActionId is not null).Select(state => state.AllocationActionId!.Value)).Any() ||
+            GuardCleanupActions.Keys.Except(CleanupStates.Values.Where(state => state.GuardActionId is not null).Select(state => state.GuardActionId!.Value)).Any())
+            throw new InvalidDataException("Rollback action is missing its observed region state");
         foreach (CleanupState state in CleanupStates.Values)
         {
             var seen = new HashSet<long>();

@@ -1,0 +1,100 @@
+{
+  "profile": "scalar-control-v39",
+  "status": "passed-scoped-milestone",
+  "native": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native084-verified-snapshot/cpfe-dot",
+  "managed": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-090/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "evidence": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v39-001/results.json",
+      "sha256": "21933e636ca77dbfd7053fb4eaf1c0dab96df6b535fc928a3d72d0da3dd347b0",
+      "status": "passed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-anonymous-v39-001/results.json",
+      "sha256": "e333cd3bd7e9022a2d7faef84c0c6740c7130b4596881a4f0db0b80461a0e7be",
+      "status": "passed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-selections-v39-001/results.json",
+      "sha256": "fbcc18a97783c719f726aece6e888c715bb250f33f291824045db90d40a38924",
+      "status": "passed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-runtime-guards-v39-001/results.json",
+      "sha256": "8265589774c70bdd2dd965764000bea2d6835cd15c7ec2826efdf33fc8891cf9",
+      "status": "passed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-rollback-v39-002/results.json",
+      "sha256": "8b654d2619ba549622fb3be472b56ee5c9f9c48ee6e5ca8358f8d69de4dd16fe",
+      "status": "passed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-void-v39-001/results.json",
+      "sha256": "ec5f417f1233a415c02c4b20415ceda59c8e8632fe62dd6aadaba54df55f5a6c",
+      "status": "passed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-084/results.json",
+      "sha256": "e94cd8f6dec654728112b0ce8cf3e4f059f2d1983a38e2ff07b9dadd87723bac",
+      "status": "failed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-084-links-090/results.json",
+      "sha256": "c5eae94db36700b6b2fdf8be6d00416c952e34142494e4fa85dc186145998a9d",
+      "status": null
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-subsystems-080/results.json",
+      "sha256": "c7cb70e1e4b9959bb32d8c72ed3f44c01341e6381bc0f4f059f45e7267acb66a",
+      "status": "failed"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-subsystems-080-links-090/results.json",
+      "sha256": "a8a1793ab1652639680ba850395951bb485bf61bee189d20d0da47e798a360d7",
+      "status": null
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v39-002/results.json",
+      "sha256": "2b7b3bd2dafa13ad125a87aa90f033aa0cef702c15de3d3a8016c7c2f9094620",
+      "status": "passed"
+    }
+  ],
+  "review": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v39-review",
+  "scope": "Full DuckDB pipeline remains incomplete; focused runtime tests and partial project export/generation only.",
+  "toolHashes": {
+    "native": "f62e29336128fd7987ba2969de9c14ae408de5debe1874555ddbbb912d6a7fd1",
+    "managed": "1b1505f1962527a1dab3c478e94acd0c870a167845d7b6d4f9af443562705b93"
+  },
+  "nativeSourceReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native084-verified-snapshot/source-sha256.json",
+  "focusedChecks": {
+    "anonymous": 35,
+    "selections": 34,
+    "guardAbi": 16,
+    "rollback": 65,
+    "void": 19
+  },
+  "projectResults": {
+    "fullManifestUnits": 2635,
+    "subsystemSelected": 38,
+    "subsystemPackaged": 22,
+    "subsystemGeneratedIndividually": 21,
+    "fiveUnitPackaged": 3,
+    "fiveUnitGenerated": 2,
+    "fullGeneration": false,
+    "projectCompiled": false,
+    "projectExecuted": false
+  },
+  "remainingGates": [
+    "source/global static destruction registration and initializer lifetimes",
+    "discarded record place verification/emission",
+    "source and physical by-value record transport policy",
+    "additional unvisited full-manifest exporter/linker gates"
+  ],
+  "finalBroadChecks": 1042,
+  "retainedFailedAttempts": [
+    "dotobj-rollback-v39-001",
+    "dotobj-duckdb-build-082.log",
+    "dotobj-duckdb-subsystems-080-combined-090"
+  ]
+}

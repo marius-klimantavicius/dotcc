@@ -2,8 +2,8 @@ namespace DotObj;
 
 internal static class Verifier
 {
-    private static readonly HashSet<string> StatementKinds = ["try", "catch", "memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
-    private static readonly HashSet<string> ExpressionKinds = ["internal-try-expression", "caught-object-address", "handler-marker", "cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "virtual-base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
+    private static readonly HashSet<string> StatementKinds = ["compile-time-if", "try", "catch", "memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
+    private static readonly HashSet<string> ExpressionKinds = ["guard-operation", "internal-try-expression", "caught-object-address", "handler-marker", "cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "virtual-base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -121,7 +121,7 @@ internal static class Verifier
             else
             {
                 string type = Type(node);
-                if (type == "void" && node.Kind is not ("call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional" or "cleanup-transition" or "cleanup-frame" or "lifetime-scope" or "throw" or "throw-marker" or "rethrow" or "handler-marker" or "internal-try-expression")) Fail("Only calls and explicit void operations can have void type");
+                if (type == "void" && node.Kind is not ("guard-operation" or "call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional" or "cleanup-transition" or "cleanup-frame" or "lifetime-scope" or "throw" or "throw-marker" or "rethrow" or "handler-marker" or "internal-try-expression")) Fail("Only calls and explicit void operations can have void type");
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
                 string[] orders = node.Kind is "cleanup-transition" or "cleanup-frame" or "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
                 if (node.Kind is "cleanup-transition" or "cleanup-frame" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
@@ -271,6 +271,12 @@ internal static class Verifier
                         node.ValueCategory != Child(node, "operand").ValueCategory)
                         Fail("Lifetime scope must preserve its child's exact type/category and original lifetime identity");
                     break;
+                case "guard-operation":
+                    EdgeShape(node, ("guard", 1, 1)); Expr(node, "guard");
+                    if (!obj.GuardOperations.TryGetValue(node.Id, out GuardOperation? guardOperation) ||
+                        Type(node) != (guardOperation.Kind == "release" ? "void" : "i32") || Type(Child(node, "guard")) != "ptr(u64)")
+                        Fail("Guard operation lacks its verified publication contract");
+                    break;
                 case "internal-try-expression":
                     EdgeShape(node, ("attempt", 1, 1), ("cleanup", 1, 1));
                     Expr(node, "attempt", true); Expr(node, "cleanup", true);
@@ -368,6 +374,14 @@ internal static class Verifier
                     if (cleanupParameters.Count != 1 ||
                         cleanupParameters[0] != "ptr(" + obj.Type(cleanupBinding!.TypeId) + ")" && cleanupParameters[0] != "ptr(void)")
                         Fail("Cleanup callback must accept a pointer to its local binding type or void");
+                    break;
+                case "compile-time-if":
+                    EdgeShape(node, ("body", 1, 1)); Statement(Child(node, "body"));
+                    if (!obj.CompileTimeSelections.TryGetValue(node.Id, out CompileTimeSelection? selection))
+                        Fail("Compile-time selection lacks its observed frontend decision");
+                    if (!selection!.ConditionValue && !selection.HasElse &&
+                        (Child(node, "body").Kind != "block" || body.Children(Child(node, "body").Id, "statement").Any()))
+                        Fail("A false compile-time selection without else must have an empty body");
                     break;
                 case "if":
                     EdgeShape(node, ("condition", 1, 1), ("then", 1, 1), ("else", 0, 1));
@@ -815,6 +829,19 @@ internal static class Verifier
             actionBindings.Add(action.Id, captures);
             body.CleanupCapturedBindings.UnionWith(captures);
         }
+        foreach (var action in obj.AllocationCleanupActions.Values.Where(action => action.FunctionEntityId == function.Id)
+            .Select(action => (action.Id, action.TargetNodeId, action.ConditionBindingId, Guard: false))
+            .Concat(obj.GuardCleanupActions.Values.Where(action => action.FunctionEntityId == function.Id)
+                .Select(action => (action.Id, action.TargetNodeId, ConditionBindingId: (long?)null, Guard: true))))
+        {
+            HashSet<long> captures = CleanupVerifier.RollbackTargetBindings(obj, function, body, action.TargetNodeId, action.Guard);
+            visitingCleanupTarget = true;
+            Visit(body.Nodes[action.TargetNodeId], captures.Select(id => body.Bindings[id].ScopeNodeId).Distinct().ToList(), captures, [], 0);
+            visitingCleanupTarget = false;
+            if (action.ConditionBindingId is long condition) captures.Add(condition);
+            actionBindings.Add(action.Id, captures);
+            body.CleanupCapturedBindings.UnionWith(captures);
+        }
         foreach (var (nodeId, visible) in cleanupVisibility)
         {
             CleanupTransition transition = obj.CleanupTransitions[nodeId];
@@ -826,7 +853,7 @@ internal static class Verifier
                     if (!cleanupHandlerVisibility[nodeId].Contains(handlerId)) Fail("Release state is armed outside its owning handler");
                     continue;
                 }
-                long actionId = obj.CleanupStates[id].ActionId!.Value;
+                long actionId = (obj.CleanupStates[id].ActionId ?? obj.CleanupStates[id].AllocationActionId ?? obj.CleanupStates[id].GuardActionId)!.Value;
                 if (!actionBindings[actionId].IsSubsetOf(visible))
                     Fail("Cleanup state arms a target outside its live declaration scope");
                 if (obj.CleanupPayloadOwners.TryGetValue(actionId, out long throwId) && !cleanupThrowVisibility[nodeId].Contains(throwId))

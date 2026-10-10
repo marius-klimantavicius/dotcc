@@ -287,6 +287,8 @@ internal sealed partial class Linker
             FunctionBody body = symbol.Object.ReadBody(symbol.Entity.Id);
             foreach (CleanupAction action in symbol.Object.FunctionCleanupActions.GetValueOrDefault(symbol.Entity.Id, []))
                 _ = Resolve(symbol.Object, action.CallbackEntityId);
+            foreach (AllocationCleanupAction action in symbol.Object.AllocationCleanupActions.Values.Where(action => action.FunctionEntityId == symbol.Entity.Id))
+                _ = Resolve(symbol.Object, action.CallbackEntityId);
             foreach (Node node in body.Nodes.Values)
             {
                 if (node.Kind == "catch" && symbol.Object.SourceHandlers[node.Id].MatchTypeId is long matchType)

@@ -957,3 +957,48 @@ final tools, exact outcomes and retained failed attempts. Review output is at
 ownership, guard/allocation region actions, constexpr selection and switch
 promotion; broader standard-library runtime implementation remains deferred
 until complete C# generation.
+
+## 2026-10-10: v39 allocation rollback, guarded initialization and selection
+
+The owned object separates ordinary scalar allocation-release actions and local
+static guard-abort actions from destructor and catch-release states. Allocation
+metadata retains the original allocated type, selected delete callback, optional
+sized-delete extent and conditional activation, with stock skip-null behavior.
+Detached action target recipes are verified against live local bindings. Provider
+selection follows delete callbacks as well as ordinary call edges.
+
+Local static initialization records its original storage, type and lifetime,
+exact guard storage, probe/acquire/release operations and exceptional abort action.
+The shared `Edg.Runtime.CppGuards` BCL implementation publishes with volatile
+access and serializes contenders with a monitor. Semantic operations and external
+Itanium guard bindings share that implementation. This phase covers non-TLS
+64-bit Itanium guards; nontrivial static destructor registration remains separate.
+
+Anonymous member records use their original enclosing record identity and member
+ordinal, with explicit `source_record_owners` provenance. EDG's per-unit fabricated
+C-tag counters no longer distinguish the same anonymous header member. Known
+`if constexpr` decisions retain a typed selected statement and decision metadata;
+no discarded dependent branch is spuriously executed. Narrow switch selectors
+receive the C/C++ integral promotion. Folded void constants follow stock C's
+`((void)0)` using the existing explicit void-conversion node.
+
+Focused evidence: 35 anonymous-record checks,34 selection/switch checks with
+native/stock-C/JIT/NativeAOT execution,16 shared guard ABI checks,65 allocation+
+local-static rollback checks including 32-thread retry/publication under JIT/AOT,
+and19 folded-void checks. Final native084/managed090 passed 1,042 broad JIT checks.
+The earlier native080 broad pass and intermediate failures are also retained.
+
+The 38-subsystem sample improves from17 to22 packaged objects;21 independently
+emit C#. Combined linking now passes the old anonymous-record mismatch and stops
+at a record-value ABI permission gate. The five-unit frontier packages `date`,
+`hugeint` and `string_util`; date and hugeint emit. String_util now stops at a
+managed discarded record-place check, exception at a source by-value transport
+check, and allocator at the unobserved stock `__cxa_atexit` callback signature.
+These are translation gates, preceding libc++ runtime completion. No complete
+DuckDB generation, compilation or execution is claimed.
+
+Review: `artifacts/review/dotobj-duckdb-v39`. Hashed acceptance evidence:
+`evidence/dotobj-duckdb-rollback-selection-20261010.json`. The full manifest still
+contains 2,635 units; the samples above must not be mistaken for the full project.
+Next implement global/static destructor registration and initializer lifetime
+ownership, then the remaining record operation/ABI and project frontier gates.

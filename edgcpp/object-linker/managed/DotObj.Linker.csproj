@@ -8,6 +8,7 @@
     <AssemblyName>dotobj-link</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="../runtime/CppGuards.cs" LogicalName="DotObj.Runtime.CppGuards.cs" />
     <EmbeddedResource Include="../runtime/CppArrays.cs" LogicalName="DotObj.Runtime.CppArrays.cs" />
     <EmbeddedResource Include="../runtime/CppExceptions.cs" LogicalName="DotObj.Runtime.CppExceptions.cs" />
     <EmbeddedResource Include="../schema.sql" LogicalName="DotObj.Schema.sql" />

@@ -1260,3 +1260,13 @@ prove its lifetime. Thirty-five focused checks cover rethrow/replacement order,
 JIT/NativeAOT and affected handler regressions
 (`evidence/milestone-coroutine-function-try-parameter.json`). Handler-local RAII
 and other unproven regions continue to fail closed.
+
+The owned per-unit object campaign now has separate scalar allocation rollback,
+local-static guard publication/abort, stable anonymous member identities, retained
+constexpr decisions and integral switch promotion (profile v39). Shared guard
+code is used by semantic emission and external ABI bindings. Focused native,
+stock-C, JIT and NativeAOT checks are recorded in
+`evidence/dotobj-duckdb-rollback-selection-20261010.json`; this is partial DuckDB
+translation progress, not complete libc++ or project execution. Continue with
+owned static destructor registration/global initializer lifetimes and record
+operation/ABI gates before expanding library runtime closure.

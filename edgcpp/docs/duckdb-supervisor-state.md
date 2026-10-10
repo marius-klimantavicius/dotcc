@@ -84,7 +84,7 @@ allocation rollback among fake destructors. All076 attempts are retained.
 Final native078/managed088:1,042 broad JIT checks,37 lifetime checks/24 native+
 stock-C/JIT/NativeAOT scenarios,14 base checks,18 thunk metadata/link checks.
 Date now packages but verifier rejects its narrow switch selector. Hugeint still
-generates. The38-subsystem sample packages17 units and all17 independently emit;
+generates. The 38-subsystem sample packages17 units and all17 independently emit;
 combined linking rejects fabricated anonymous-record counter identities.
 Evidence: `evidence/dotobj-duckdb-boundaries-20261010.json`.
 
@@ -95,3 +95,48 @@ managed verification/emission and constexpr/switch selection. Native078 sources
 and all v38 validation are frozen for the milestone commit. No libc++ runtime
 closure work starts before full generation. New rollback/storage-init fixtures
 are next-phase preparation and are excluded from this commit.
+
+## v39 integration in progress
+
+Native079/managed089 built. Stable anonymous-member identities pass35 focused
+checks including source-hidden multiunit linking and execution. Constexpr branch
+selection and narrow integer switch promotion pass34 checks against native and
+stock C, JIT and NativeAOT. Shared BCL guard runtime passes16 direct ABI checks,
+including contention/publication, abort/retry and NativeAOT. These are focused
+results, not full DuckDB acceptance.
+
+Allocation/guard semantic actions are now represented separately from object
+destructor and handler cleanup states. Native080 corrects the stock sized-delete
+supplement's zero element-count convention. Original guarded-local-static capture
+is still under investigation; full translated rollback acceptance is pending.
+Workers: lifetime worker owns guard/allocation capture and acceptance; base worker
+investigates original file-scope destruction provenance for the next project gate.
+Supervisor owns schema/action verification, emission, selection closure, tools,
+project batches and milestone commits. v39 is not yet committed.
+
+## v39 focused acceptance and final verification
+
+Native084/managed090 are frozen. Native080 broad suite passed 1,042 checks; final
+native084 broad rerun passed 1,042 checks at `dotobj-full-v39-002`. Focused acceptance:
+35anonymous identity,34constexpr/switch,16shared guard ABI,65allocation/localstatic
+rollback (native/stock sequential,JIT/AOT,32thread publication),19foldedvoid.
+Review link `artifacts/review/dotobj-duckdb-v39` contains retained source outputs.
+The38unit sample now packages22 and independently emits21. Combined linking
+passes anonymous identity and reaches record transport. Fiveunit final084 sample
+packages3:date/hugeint emit,string_util verifier rejects discarded recordplace.
+Exception still has physical byvalue transport gate. Allocator now reaches exact
+missing ABI for stock make_cxa_dtor_type(void(void*)) used by __cxa_atexit.
+
+Nextworker findings are preserved but excluded from v39implementation acceptance:
+`docs/dotobj-global-lifetime-design.md` and27native/stock oraclechecks; global/static
+registration must occur at observed successful registration call, including local
+static registration before guard publication. Source original global lifetime
+ownership and generated array destructor callback provenance must be explicit.
+Baseworker also identified string_util's Split nonfinal sequence operand as a
+discarded noncopyable basic_istream place, currently incorrectly treated as value
+transport by managed verification. No EDG semantic defect is alleged.
+
+V39 acceptance is complete and committed as the allocation/guard/selection
+milestone. Native084 and managed090 are immutable acceptance tools. Continue
+with the next source/static lifetime and record-value gates; full DuckDB
+generation and runtime verification are still incomplete.

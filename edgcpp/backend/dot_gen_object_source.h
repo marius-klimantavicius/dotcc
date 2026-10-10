@@ -129,6 +129,11 @@ struct Record {
   a_source_position position={};
   std::vector<RecordField> fields;
 };
+struct RecordOwner {
+  a_type_ptr owner=nullptr;
+  a_field_ptr field=nullptr;
+  unsigned ordinal=0;
+};
 // Independent provenance for the next record-layout profile. These snapshots
 // do not participate in v14 emission or change its capture/type numbering.
 struct PrelowerField {
@@ -219,6 +224,14 @@ struct DestructionSnapshot {
   a_source_position position={};
   std::string error;
 };
+struct LocalStaticSnapshot {
+  a_routine_ptr owner=nullptr;
+  a_variable_ptr variable=nullptr,guard=nullptr;
+  an_object_lifetime_ptr lifetime=nullptr;
+  unsigned source_type=0;
+  a_source_position position={};
+  bool probe=false,acquire=false,release=false;
+};
 struct ArrayRuntimeSnapshot {
   a_routine_ptr owner=nullptr,callback=nullptr;
   a_dynamic_init_ptr original=nullptr;
@@ -238,6 +251,7 @@ struct CleanupSnapshot {
   a_variable_ptr variable=nullptr,conditional_flag=nullptr,vtt_argument=nullptr;
   a_type_ptr base_type=nullptr;
   bool indirect=false,base_subobject=false,array=false,delegation=false;
+  bool allocation_release=false,guard_abort=false;
   a_type_ptr element_type=nullptr;
   unsigned long long element_count=0;
   std::vector<CleanupPathPart> path;
@@ -291,6 +305,10 @@ struct State {
   std::map<a_routine_ptr,a_variable_ptr> vtt_parameters;
   std::map<a_constant_ptr,CleanupSnapshot> cleanup_regions;
   std::map<an_expr_node_ptr,std::pair<a_routine_ptr,a_dynamic_init_ptr>> allocation_internal_tries;
+  std::map<a_variable_ptr,LocalStaticSnapshot> local_static_initializers;
+  std::map<a_variable_ptr,a_variable_ptr> local_static_guard_variables;
+  std::map<an_expr_node_ptr,std::pair<a_variable_ptr,std::string>> local_static_guard_operations;
+  std::map<a_dynamic_init_ptr,std::pair<a_routine_ptr,a_variable_ptr>> local_static_guard_cleanups;
   std::vector<CleanupSnapshot> payload_subobjects;
   std::map<a_try_supplement_ptr,TrySnapshot> tries;
   std::map<a_handler_ptr,HandlerSnapshot> handlers;
@@ -318,6 +336,7 @@ struct State {
   std::map<a_field_ptr,unsigned long long> requested_field_alignments;
   std::map<a_field_ptr,unsigned long long> observed_field_alignments;
   std::map<a_type_ptr,std::string> finalized_record_identities;
+  std::map<a_type_ptr,RecordOwner> record_owners;
   std::map<a_type_ptr,std::string> owned_local_record_identities;
   std::set<a_type_ptr> capturing_records;
   std::map<std::pair<a_seq_number,a_column_number>,unsigned> record_occurrence_counts;
@@ -506,6 +525,20 @@ inline void capture_record(a_type_ptr t) {
 #if GNU_EXTENSIONS_ALLOWED
     field.is_packed=f->is_packed;
 #endif
+    if(!C_mode()) {
+      // Anonymous C tags are numbered independently in each translation unit.
+      // Retain the original member declaration instead of promoting that C
+      // spelling to a cross-unit C++ nominal identity. Declarator wrappers do
+      // not create new anonymous types (for example `struct {...} *a, *b`).
+      auto child=skip_typerefs(f->type);
+      while(child->kind==tk_array || child->kind==tk_pointer)
+        child=skip_typerefs(child->kind==tk_array?child->variant.array.element_type:child->variant.pointer.type);
+      if((child->kind==tk_struct || child->kind==tk_class || child->kind==tk_union) &&
+         child->variant.class_struct_union.originally_unnamed && spelling(child->source_corresp).empty() &&
+         !child->variant.class_struct_union.extra_info->is_lambda_closure_class &&
+         child->source_corresp.is_class_member && parent_class_of(child)==t)
+        s.record_owners.emplace(child,RecordOwner{t,f,unsigned(value.fields.size())});
+    }
     field.source_type=capture_type(f->type);value.fields.push_back(field);
   }
   s.records[t]=value;
@@ -927,6 +960,15 @@ inline void capture_source_lifetime(an_object_lifetime_ptr lifetime,a_routine_pt
   LifetimeSnapshot saved;saved.owner=owner;saved.original=lifetime;saved.parent=parent;
   saved.parent_obligation=lifetime->parent_destruction_sublist;saved.sibling_ordinal=sibling;
   saved.position=lifetime_position(lifetime);
+  if(lifetime->entity.kind==iek_local_static_variable_init) {
+    auto init=reinterpret_cast<a_local_static_variable_init_ptr>(lifetime->entity.ptr);
+    if(init && init->variable) {
+      LocalStaticSnapshot value;value.owner=owner;value.variable=init->variable;value.lifetime=lifetime;
+      value.source_type=capture_type(init->variable->type);value.position=init->variable->source_corresp.decl_position;
+      state().local_static_initializers.emplace(init->variable,value);
+      saved.position=value.position;
+    }
+  }
   // The function cleanup graph ends at the surrounding global-static source
   // context. That parent owns no automatic action in this call frame. Reject
   // any other outer lifetime rather than silently dropping its relation.
@@ -1132,6 +1174,13 @@ inline void observe_throw_construct(an_expr_node_ptr expr,bool marker) {
 }
 inline void observe_throw_copy(an_expr_node_ptr original,an_expr_node_ptr copy,a_routine_ptr owner) {
   if(!enabled() || !owner || !original || !copy || original==copy)return;
+  auto guard=state().local_static_guard_operations.find(original);
+  if(guard!=state().local_static_guard_operations.end()) {
+    auto storage=state().local_static_guard_variables.at(guard->second.first);
+    auto source_owner=state().local_static_initializers.at(storage).owner;
+    auto primary=abi_primary(owner);if(!primary)primary=owner;
+    if(source_owner==primary)state().local_static_guard_operations.emplace(copy,guard->second);
+  }
   auto found=state().throws.find(original);
   if(found!=state().throws.end() && copy->kind==enk_throw) {
     auto saved=found->second;
@@ -1204,6 +1253,28 @@ inline void observe_allocation_internal_try(an_expr_node_ptr node,a_dynamic_init
   if(node->kind==enk_lowered_eh_construct && node->variant.lowered_eh.kind==leck_internal_try)
     state().allocation_internal_tries.emplace(node,std::make_pair(owner,allocation));
 }
+inline void observe_local_static_guard_probe(a_variable_ptr variable,a_variable_ptr guard,
+                                             an_expr_node_ptr probe,a_routine_ptr owner) {
+  if(!enabled())return;
+  auto found=state().local_static_initializers.find(variable);
+  if(found==state().local_static_initializers.end() || found->second.owner!=owner)return;
+  found->second.guard=guard;found->second.probe=true;
+  state().local_static_guard_variables.emplace(guard,variable);
+  state().local_static_guard_operations.emplace(probe,std::make_pair(guard,"probe"));
+}
+inline void observe_local_static_guard_calls(a_variable_ptr guard,an_expr_node_ptr acquire,an_expr_node_ptr release) {
+  if(!enabled())return;
+  auto found=state().local_static_guard_variables.find(guard);
+  if(found==state().local_static_guard_variables.end())return;
+  auto &source=state().local_static_initializers.at(found->second);
+  source.acquire=true;source.release=true;
+  state().local_static_guard_operations.emplace(acquire,std::make_pair(guard,"acquire"));
+  state().local_static_guard_operations.emplace(release,std::make_pair(guard,"release"));
+}
+inline void observe_local_static_guard_cleanup(a_dynamic_init_ptr dip,a_variable_ptr guard,a_routine_ptr owner) {
+  if(enabled() && state().local_static_guard_variables.count(guard))
+    state().local_static_guard_cleanups.emplace(dip,std::make_pair(owner,guard));
+}
 #if DO_IL_LOWERING && GENERATE_EH_TABLES && !DO_FULL_PORTABLE_EH_LOWERING
 inline void observe_try(a_try_supplement_ptr value,a_routine_ptr owner,bool function_try) {
   if(!enabled())return;
@@ -1269,6 +1340,8 @@ inline void observe_cleanup_region(a_dynamic_init_ptr dip,a_routine_ptr owner,a_
   }
   const auto &position=descr->init_pos_descr;
   value.variable=position.variable;value.base_type=position.base_type;
+  value.allocation_release=dip->is_freeing_of_storage_on_exception;
+  value.guard_abort=dip->is_guard_var_for_local_static_var_init;
   value.conditional_flag=descr->conditional_flag_var;
   value.indirect=position.indirect_through_variable;value.base_subobject=position.base_class_subobject;
   value.delegation=descr->use_delegation_dtor;value.vtt_argument=vtt_argument;
@@ -1294,8 +1367,8 @@ inline void observe_cleanup_region(a_dynamic_init_ptr dip,a_routine_ptr owner,a_
     }
   }
   if(position.num_elem_node || (position.variable && position.variable->is_vla) ||
-     (!position.variable && !position.thrown_object_address) || dip->is_freeing_of_storage_on_exception ||
-     dip->is_freeing_of_exception_object || dip->is_guard_var_for_local_static_var_init || dip->is_vla_deallocation)
+     (!position.variable && !position.thrown_object_address) ||
+     dip->is_freeing_of_exception_object || dip->is_vla_deallocation)
     value.error="cleanup region outside fixed object/array/member/base contract";
   for(auto modifier=position.modifiers;modifier;modifier=modifier->next) {
     CleanupPathPart part;part.type=modifier->type;part.field=modifier->curr_field;
@@ -1454,7 +1527,8 @@ inline void observe_frontend_identity_boundary() {
        type->variant.class_struct_union.is_prototype_instantiation)continue;
 #if !ONLY_MANGLE_TYPES_NEEDED_FOR_EXTERNAL_NAMES
     const auto &source=type->source_corresp;
-    if(source.name && source.name_has_been_mangled && !source.final_name_mangling_pending) {
+    if(source.name && source.name_has_been_mangled && !source.final_name_mangling_pending &&
+       !(source.unnamed_entity_given_fabricated_name && s.record_owners.count(type))) {
       s.finalized_record_identities[type]=source.name;
     } else if(entry.second.local_identity_observed) {
       const auto &record=entry.second;

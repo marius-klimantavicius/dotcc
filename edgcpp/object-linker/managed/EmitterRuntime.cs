@@ -56,7 +56,8 @@ internal sealed partial class Emitter
             .Concat(linker.Objects.Any(obj => obj.Types.Values.Contains("f80")) ? ["Float80.cs"] : [])
             .Concat(programArguments ? ["ProgramArguments.cs"] : [])
             .Concat(linker.Externs.Values.Any(symbol => RuntimeArrayProvider.TryGetMethod(symbol) is not null) ||
-                linker.Definitions.Any(symbol => symbol.Object.FunctionCleanupActions.GetValueOrDefault(symbol.Entity.Id, []).Any(action => symbol.Object.CleanupArrays.ContainsKey(action.Id))) ? ["CppArrays.cs"] : []).ToArray();
+                linker.Definitions.Any(symbol => symbol.Object.FunctionCleanupActions.GetValueOrDefault(symbol.Entity.Id, []).Any(action => symbol.Object.CleanupArrays.ContainsKey(action.Id))) ? ["CppArrays.cs"] : [])
+            .Concat(linker.Objects.Any(obj => obj.GuardOperations.Count != 0 || obj.GuardCleanupActions.Count != 0) ? ["CppGuards.cs"] : []).ToArray();
         foreach (string file in runtimeFiles)
             {
                 using Stream source = typeof(Emitter).Assembly.GetManifestResourceStream("DotObj.Runtime." + file)

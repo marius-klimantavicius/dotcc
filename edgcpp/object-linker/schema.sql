@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v38'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v39'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -164,6 +164,12 @@ CREATE TABLE functions (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
  body_node_id INTEGER NOT NULL REFERENCES nodes(id)
 ) STRICT;
+CREATE TABLE compile_time_selections (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ condition_value INTEGER NOT NULL CHECK(condition_value IN (0,1)),
+ has_else INTEGER NOT NULL CHECK(has_else IN (0,1)),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-constexpr-selection')
+) STRICT;
 CREATE TABLE thunk_wrappers (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
  target_entity_id INTEGER NOT NULL REFERENCES entities(id),
@@ -301,13 +307,51 @@ CREATE TABLE cleanup_conditions (
  flag_binding_id INTEGER NOT NULL REFERENCES bindings(id),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-conditional-cleanup-flag')
 ) STRICT;
+CREATE TABLE allocation_cleanup_actions (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
+ source_allocation_obligation_id INTEGER NOT NULL REFERENCES source_allocation_obligations(id),
+ callback_entity_id INTEGER NOT NULL REFERENCES entities(id),
+ target_node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
+ allocation_size INTEGER CHECK(allocation_size>0),
+ condition_binding_id INTEGER REFERENCES bindings(id),
+ null_policy TEXT NOT NULL CHECK(null_policy='skip-null'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-allocation-region')
+) STRICT;
+CREATE TABLE local_static_guards (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ function_entity_id INTEGER NOT NULL REFERENCES entities(id),
+ storage_id INTEGER NOT NULL UNIQUE REFERENCES storages(id),
+ guard_storage_id INTEGER NOT NULL UNIQUE REFERENCES storages(id),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ source_lifetime_id INTEGER NOT NULL REFERENCES source_lifetimes(id),
+ guard_policy TEXT NOT NULL CHECK(guard_policy='ia64-acquire-release'),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0), column INTEGER NOT NULL CHECK(column>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-local-static-guard')
+) STRICT;
+CREATE TABLE guard_operations (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ guard_id INTEGER NOT NULL REFERENCES local_static_guards(id),
+ kind TEXT NOT NULL CHECK(kind IN ('probe','acquire','release')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-local-static-guard-operation')
+) STRICT;
+CREATE TABLE guard_cleanup_actions (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
+ guard_id INTEGER NOT NULL REFERENCES local_static_guards(id),
+ target_node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-guard-region')
+) STRICT;
 CREATE TABLE cleanup_states (
  id INTEGER PRIMARY KEY CHECK(id>0),
  function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
  action_id INTEGER UNIQUE REFERENCES cleanup_actions(id),
  next_state_id INTEGER REFERENCES cleanup_states(id),
  handler_node_id INTEGER UNIQUE REFERENCES source_handlers(node_id),
- CHECK((action_id IS NULL) != (handler_node_id IS NULL))
+ allocation_action_id INTEGER UNIQUE REFERENCES allocation_cleanup_actions(id),
+ guard_action_id INTEGER UNIQUE REFERENCES guard_cleanup_actions(id),
+ CHECK((action_id IS NOT NULL)+(handler_node_id IS NOT NULL)+(allocation_action_id IS NOT NULL)+(guard_action_id IS NOT NULL)=1)
 ) STRICT;
 CREATE TABLE cleanup_transitions (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
@@ -436,6 +480,15 @@ CREATE TABLE source_member_pointer_types (
  owner_type_id INTEGER NOT NULL REFERENCES source_types(id),
  member_type_id INTEGER NOT NULL REFERENCES source_types(id),
  capture_proof TEXT NOT NULL CHECK(capture_proof IN ('observed-source-type','observed-member-pointer-lowering'))
+) STRICT;
+CREATE TABLE source_record_owners (
+ source_record_id INTEGER PRIMARY KEY REFERENCES source_record_types(id),
+ owner_source_record_id INTEGER NOT NULL REFERENCES source_record_types(id),
+ owner_field_id INTEGER NOT NULL REFERENCES source_record_fields(id),
+ kind TEXT NOT NULL CHECK(kind='anonymous-member'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-member-declaration'),
+ UNIQUE(owner_source_record_id,owner_field_id),
+ CHECK(source_record_id<>owner_source_record_id)
 ) STRICT;
 CREATE TABLE source_record_types (
  id INTEGER PRIMARY KEY CHECK(id>0),

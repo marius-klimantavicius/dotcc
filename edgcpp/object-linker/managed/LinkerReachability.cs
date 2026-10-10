@@ -75,6 +75,8 @@ internal sealed partial class Linker
                 FunctionBody body = symbol.Object.ReadBody(symbol.Entity.Id);
                 foreach (CleanupAction action in symbol.Object.FunctionCleanupActions.GetValueOrDefault(symbol.Entity.Id, []))
                     ReferenceFunction(symbol.Object, action.CallbackEntityId);
+                foreach (AllocationCleanupAction action in symbol.Object.AllocationCleanupActions.Values.Where(action => action.FunctionEntityId == symbol.Entity.Id))
+                    ReferenceFunction(symbol.Object, action.CallbackEntityId);
                 foreach (Node node in body.Nodes.Values)
                 {
                     if (node.Kind == "throw" && symbol.Object.ThrowExpressions[node.Id].DestructorEntityId is long destructor)

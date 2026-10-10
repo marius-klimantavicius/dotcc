@@ -713,6 +713,28 @@ object_source_overlay(lower,
 
 
 # Typed throw initialization and exact runtime-address/start ownership.
+object_source_overlay(init_lower,
+    '  /* Make an "if" statement and insert it into the program. */\n'
+    '  insert_if_statement(compare_node, /*is_initialization_guard=*/TRUE,',
+    '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+    '  dot_object_source::observe_local_static_guard_probe(guarded_var, *test_var, compare_node,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n'
+    '  /* Make an "if" statement and insert it into the program. */\n'
+    '  insert_if_statement(compare_node, /*is_initialization_guard=*/TRUE,')
+object_source_overlay(init_lower,
+    '      /* Make the acquire call a boolean controlling expression. */',
+    '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+    '      dot_object_source::observe_local_static_guard_calls(*test_var, acquire_node, release_node);\n'
+    '#endif\n'
+    '      /* Make the acquire call a boolean controlling expression. */')
+object_source_overlay(init_lower,
+    '    dip->is_guard_var_for_local_static_var_init = TRUE;',
+    '    dip->is_guard_var_for_local_static_var_init = TRUE;\n'
+    '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+    '    dot_object_source::observe_local_static_guard_cleanup(dip, local_static_guard_var,\n'
+    '      innermost_function_scope->variant.routine.ptr);\n'
+    '#endif')
 for allocation_try_anchor in (
     '          try_expr = make_internal_try_expr(try_expr, delete_call);',
     '            try_expr = make_internal_try_expr(init_expr, delete_call);',

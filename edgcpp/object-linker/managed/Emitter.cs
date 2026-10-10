@@ -57,7 +57,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v38");
+        lifetimeWriter.WriteString("profile", "scalar-control-v39");
         lifetimeWriter.WriteString("capture", "lexical-activations-and-observed-cpp-cleanup-states");
         lifetimeWriter.WriteBoolean("cleanupStates", true);
         lifetimeWriter.WriteBoolean("sourceLifetimes", true);
@@ -164,7 +164,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v38");
+            writer.WriteString("profile", "scalar-control-v39");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -177,7 +177,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v38");
+            writer.WriteString("profile", "scalar-control-v39");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -188,7 +188,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v38", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v39", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, cleanupStates = true, sourceLifetimes = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; ordinary and conditional scalar C++ local/member/base exceptional destructor cleanup is owned; typed throw/rethrow uses the shared exception provider by default (external provider opt-out available); ordinary and constructor/destructor function-try regions, typed handlers and release states are owned; fixed helper-based array cleanup and owned subobject VTT arguments are supported; variable-length/cookie arrays, nontrivial initializer-list temporary ownership and adjusting thunks remain gated; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance plus lexical cleanup activations and observed source lifetime/exceptional destruction state graphs; no complete source expression/statement view, macro expansion history or general C++ EH capture" },
@@ -262,7 +262,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         ObjectFile obj = symbol.Object;
         Entity function = symbol.Entity;
         FunctionBody body = obj.ReadBody(function.Id);
-        if (body.Nodes.Values.Any(node => node.Kind == "register-cleanup") || obj.FunctionCleanupActions.ContainsKey(function.Id))
+        if (body.Nodes.Values.Any(node => node.Kind == "register-cleanup") || obj.FunctionCleanupStates.ContainsKey(function.Id))
         {
             lifetimeWriter.WriteStartObject();
             lifetimeWriter.WriteNumber("entityId", function.Id);
@@ -297,6 +297,10 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 .Where(action => obj.CleanupVttArguments.ContainsKey(action.Id)).Select(action => new { actionId = action.Id, bindingId = obj.CleanupVttArguments[action.Id] }).ToArray(), jsonOptions);
             lifetimeWriter.WritePropertyName("arrayRuntimeOperations");
             JsonSerializer.Serialize(lifetimeWriter, obj.ArrayRuntimeOperations.Values.Where(operation => body.Nodes.ContainsKey(operation.NodeId)).ToArray(), jsonOptions);
+            lifetimeWriter.WritePropertyName("allocationCleanupActions");
+            JsonSerializer.Serialize(lifetimeWriter, obj.AllocationCleanupActions.Values.Where(action => action.FunctionEntityId == function.Id), jsonOptions);
+            lifetimeWriter.WritePropertyName("guardCleanupActions");
+            JsonSerializer.Serialize(lifetimeWriter, obj.GuardCleanupActions.Values.Where(action => action.FunctionEntityId == function.Id), jsonOptions);
             lifetimeWriter.WritePropertyName("cleanupStates");
             JsonSerializer.Serialize(lifetimeWriter, obj.FunctionCleanupStates.GetValueOrDefault(function.Id, []), jsonOptions);
             lifetimeWriter.WritePropertyName("cleanupTransitions");
@@ -463,6 +467,9 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                         ScalarTypes.IsPointer(NodeType(body.Child(pointer.Id, "left"))))
                         return "(" + Expression(body.Child(pointer.Id, "left")) + ")[" + PointerIndex(body.Child(pointer.Id, "right")) + "]";
                     return "(*" + Operand("operand") + ")";
+                case "guard-operation":
+                    string guardMethod = obj.GuardOperations[node.Id].Kind switch { "probe" => "NeedsInitialization", "acquire" => "Acquire", "release" => "Release", _ => throw new InvalidDataException("Invalid guard operation") };
+                    return "global::Edg.Runtime.CppGuards." + guardMethod + "(" + Operand("guard") + ")";
                 case "call":
                     Symbol target = linker.Resolve(obj, node.EntityId!.Value);
                     return FunctionReference(target) + "(" + Arguments(node, target.Object.EntityRoutine(target.Entity.Id)) + ")";
@@ -621,7 +628,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             "assign" or "record-transfer" => Assignment(node, false),
             "mutate" => Mutation(node, false),
             "compound-assign" => Compound(node, false),
-            "call" or "indirect-call" or "va-start" or "va-copy" or "va-end" or "block-copy" => Expression(node),
+            "guard-operation" or "call" or "indirect-call" or "va-start" or "va-copy" or "va-end" or "block-copy" => Expression(node),
             "intrinsic" when node.Operator == "unreachable" => Expression(node),
             "convert" when NodeType(node) == "void" => StatementExpression(body.Child(node.Id, "operand")),
             _ => "_ = " + Expression(node)
@@ -783,7 +790,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         bool Pure(Node node)
         {
             if (purityCache.TryGetValue(node.Id, out bool cached)) return cached;
-            bool result = node.Kind is not ("internal-try-expression" or "throw" or "throw-marker" or "rethrow" or "materialize" or "cleanup-transition" or "call" or "indirect-call" or "assign" or "record-transfer" or "compound-assign" or "block-copy" or "mutate" or "volatile-place" or "va-start" or "va-copy" or "va-end" or "va-arg") &&
+            bool result = node.Kind is not ("guard-operation" or "internal-try-expression" or "throw" or "throw-marker" or "rethrow" or "materialize" or "cleanup-transition" or "call" or "indirect-call" or "assign" or "record-transfer" or "compound-assign" or "block-copy" or "mutate" or "volatile-place" or "va-start" or "va-copy" or "va-end" or "va-arg") &&
                 !(node.Kind == "intrinsic" && (node.Operator == "unreachable" || node.Operator!.Contains("overflow", StringComparison.Ordinal))) &&
                 body.Edges.GetValueOrDefault(node.Id, []).All(edge => Pure(body.Nodes[edge.ChildId]));
             purityCache[node.Id] = result;
@@ -1005,6 +1012,28 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                     Line(indent + 5, ExceptionRuntime + ".LeaveCatch(" + handlerNames[handlerId] + "!);");
                     Line(indent + 5, "break;"); continue;
                 }
+                if (state.GuardActionId is long guardActionId)
+                {
+                    GuardCleanupAction guardAction = obj.GuardCleanupActions[guardActionId];
+                    Line(indent + 5, "global::Edg.Runtime.CppGuards.Abort(" + Expression(body.Nodes[guardAction.TargetNodeId]) + ");");
+                    Line(indent + 5, "break;"); continue;
+                }
+                if (state.AllocationActionId is long allocationActionId)
+                {
+                    AllocationCleanupAction allocation = obj.AllocationCleanupActions[allocationActionId];
+                    int allocationIndent = indent + 5;
+                    Line(allocationIndent, "{"); ++allocationIndent;
+                    if (allocation.ConditionBindingId is long condition)
+                    {
+                        Line(allocationIndent, "if (" + bindingNames[condition] + " != 0)"); Line(allocationIndent, "{"); ++allocationIndent;
+                    }
+                    string pointer = allocator.Allocate("__allocation_rollback", "allocation_rollback");
+                    Line(allocationIndent, "void* " + pointer + " = " + Expression(body.Nodes[allocation.TargetNodeId]) + ";");
+                    string size = allocation.AllocationSize is long extent ? ", " + extent + "UL" : "";
+                    Line(allocationIndent, "if (" + pointer + " != null) " + FunctionReference(linker.Resolve(obj, allocation.CallbackEntityId)) + "(" + pointer + size + ");");
+                    if (allocation.ConditionBindingId is not null) Line(--allocationIndent, "}");
+                    Line(--allocationIndent, "}"); Line(indent + 5, "break;"); continue;
+                }
                 CleanupAction action = obj.CleanupActions[state.ActionId!.Value];
                 int actionIndent = indent + 5;
                 if (obj.CleanupPayloadOwners.TryGetValue(action.Id, out long payloadOwner))
@@ -1146,6 +1175,13 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
             Node Child(string role) => body.Child(node.Id, role);
             switch (node.Kind)
             {
+                case "compile-time-if":
+                {
+                    CompileTimeSelection selection = obj.CompileTimeSelections[node.Id];
+                    Line(indent, "// if constexpr: " + (selection.ConditionValue ? "then" : selection.HasElse ? "else" : "no") + " branch selected by C++ semantic analysis.");
+                    Statement(Child("body"), indent);
+                    break;
+                }
                 case "try":
                 {
                     string active = tryNames[node.Id], boundary = allocator.Allocate("__try_boundary", "try_boundary");

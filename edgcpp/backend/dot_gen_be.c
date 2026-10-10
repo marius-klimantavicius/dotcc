@@ -12,6 +12,7 @@
 #include "il_walk.h"
 #include "const_ints.h"
 #include "float_pt.h"
+#include "folding.h"
 #include "mem_manage.h"
 #include "lower_il.h"
 #include "lower_eh.h"

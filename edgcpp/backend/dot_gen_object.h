@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v38: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v39: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -36,6 +36,7 @@ struct Writer {
     a_dynamic_init_ptr original=nullptr;
     const dot_object_source::CleanupSnapshot *observed=nullptr;
     unsigned long long array_count=0,array_element_size=0;
+    bool allocation_release=false,sized_release=false,guard_abort=false;
   };
   unsigned next_cleanup_state=1,next_cleanup_action=1;
   std::map<unsigned long long,PendingCleanup> active_cleanup;
@@ -58,6 +59,9 @@ struct Writer {
   std::vector<string> throw_initialization_boundaries,throw_cleanup_transitions;
   std::vector<string> internal_try_expressions;
   std::vector<string> source_allocation_obligations;
+  std::vector<string> allocation_cleanup_actions,local_static_guards,guard_operations,guard_cleanup_actions;
+  std::map<a_variable_ptr,unsigned> local_static_guard_ids;
+  std::set<a_dynamic_init_ptr> active_guard_cleanups;
   std::map<an_expr_node_ptr,a_dynamic_init_ptr> active_allocation_internal_tries;
   std::set<a_dynamic_init_ptr> active_allocation_obligations,emitted_allocation_obligations;
   std::vector<string> cleanup_payload_targets;
@@ -102,7 +106,9 @@ struct Writer {
   std::map<std::pair<unsigned,std::pair<unsigned long long,bool>>,unsigned> array_types;
   std::vector<string> execution_types,record_types,record_fields;
   std::vector<string> source_records,source_fields,source_bases,record_base_subobjects,abi_routine_origins;
+  std::vector<string> source_record_owners;
   std::vector<string> thunk_wrappers,wrapper_calls;
+  std::vector<string> compile_time_selections;
   std::vector<string> base_subobject_expressions,virtual_base_subobjects,virtual_base_expressions,source_record_operations,record_value_transfers;
   std::map<a_base_class_ptr,unsigned> source_base_ids;
   unsigned next_source_base=1;
@@ -183,6 +189,44 @@ struct Writer {
     string policy=specification && !specification->throw_any?(specification->is_noexcept?"terminate":"unsupported-dynamic"):"unwind";
     return signature_type(type_id(t->variant.routine.return_type),args,extra->has_ellipsis,policy);
   }
+  string original_record_identity(a_type_ptr type,unsigned depth=0) {
+    if(depth>128)reject("original record ownership cycle/depth");
+    auto &captured=dot_object_source::state();
+    auto found=captured.records.find(type);
+    if(found==captured.records.end())reject("original record owner lacks source snapshot");
+    const auto &source=found->second;
+    auto owner=captured.record_owners.find(type);
+    if(owner!=captured.record_owners.end()) {
+      if(!source.name.empty() || !owner->second.owner || owner->second.owner==type || !owner->second.field)
+        reject("invalid original anonymous member ownership");
+      auto identity=original_record_identity(owner->second.owner,depth+1);
+      return "record-member:"+std::to_string(identity.size())+":"+identity+":field:"+std::to_string(owner->second.ordinal);
+    }
+    string identity=source.identity;
+    if(source.template_identity || (!C_mode() && identity.find("local-record:")==0)) {
+      // A genuine finalized name retains namespace/template/function ownership.
+      // Anonymous member C names were excluded in favor of their owner above.
+      auto finalized=captured.finalized_record_identities.find(type);
+      auto local=captured.owned_local_record_identities.find(type);
+      if(finalized==captured.finalized_record_identities.end() && local==captured.owned_local_record_identities.end()) {
+        const auto &actual=type->source_corresp;
+        reject((string("template/local C++ record lacks finalized frontend identity: ")+source.identity+
+          " actual-name="+(actual.name?actual.name:"<null>")+
+          " mangled="+(actual.name_has_been_mangled?"true":"false")+
+          " pending="+(actual.final_name_mangling_pending?"true":"false")+
+          " template="+(source.template_identity?"true":"false")).c_str());
+      }
+      identity=finalized!=captured.finalized_record_identities.end()?
+        "record-abi:"+finalized->second:"record-local-owner:"+local->second;
+    }
+    if(identity.find("local-record:")==0) {
+      a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
+      conv_seq_to_file_and_line(source.position.seq,&display,&full,&line,&at_end);
+      identity+=":"+string(full?full:display?display:"")+":"+std::to_string((unsigned long long)line)+":"+
+        std::to_string(source.position.column)+":occurrence:"+std::to_string(source.source_occurrence);
+    }
+    return identity;
+  }
   unsigned record_type(a_type_ptr t) {
     auto prior=record_ids.find(t);if(prior!=record_ids.end())return prior->second;
     auto &captured=dot_object_source::state();
@@ -223,30 +267,7 @@ struct Writer {
         source_spelling(&t->source_corresp)+" fields="+[&](){string r;for(auto f=t->variant.class_struct_union.field_list;f;f=f->next)r+=source_spelling(&f->source_corresp)+",";return r;}()).c_str());
       identity=key->second;name=source_spelling(&t->source_corresp);
     } else {
-      identity=source->identity;name=source->name;layout=source->layout_kind;pos=source->position;
-      if(source->template_identity || (!C_mode() && identity.find("local-record:")==0)) {
-        // The stock name retains actual namespace/function ownership: private
-        // namespace types are TU-specific even at a shared header position,
-        // while external inline-function local types retain their ODR identity.
-        auto finalized=captured.finalized_record_identities.find(complete);
-        auto local=captured.owned_local_record_identities.find(complete);
-        if(finalized==captured.finalized_record_identities.end() && local==captured.owned_local_record_identities.end()) {
-          const auto &actual=complete->source_corresp;
-          reject((string("template/local C++ record lacks finalized frontend identity: ")+source->identity+
-            " actual-name="+(actual.name?actual.name:"<null>")+
-            " mangled="+(actual.name_has_been_mangled?"true":"false")+
-            " pending="+(actual.final_name_mangling_pending?"true":"false")+
-            " template="+(source->template_identity?"true":"false")).c_str());
-        }
-        identity=finalized!=captured.finalized_record_identities.end()?
-          "record-abi:"+finalized->second:"record-local-owner:"+local->second;
-      }
-      if(identity.find("local-record:")==0) {
-        a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
-        conv_seq_to_file_and_line(source->position.seq,&display,&full,&line,&at_end);
-        identity+=":"+string(full?full:display?display:"")+":"+std::to_string((unsigned long long)line)+":"+
-          std::to_string(source->position.column)+":occurrence:"+std::to_string(source->source_occurrence);
-      }
+      identity=original_record_identity(complete);name=source->name;layout=source->layout_kind;pos=source->position;
     }
     if(subobject)identity+="/subobject";
     unsigned id=reserved?reserved:next_execution_type++;record_ids[t]=id;
@@ -273,6 +294,18 @@ struct Writer {
         source_field_ids.emplace(field.il,next_source_field++);
       if(pre!=captured.prelower_records.end())for(const auto &base:pre->second.bases)
         source_base_ids.emplace(base.il,next_source_base++);
+      auto owner=captured.record_owners.find(t);
+      if(owner!=captured.record_owners.end()) {
+        // A child may be the first exported type (e.g. decltype(obj.member)).
+        // Its IDs are already reserved before walking the owner back to it.
+        record_type(owner->second.owner);
+        if(!source_record_ids.count(owner->second.owner) || !source_field_ids.count(owner->second.field))
+          reject("anonymous record owner lacks original record/member IDs");
+        source_record_owners.push_back("{\"sourceRecordId\":"+number(source_record)+
+          ",\"ownerSourceRecordId\":"+number(source_record_ids.at(owner->second.owner))+
+          ",\"ownerFieldId\":"+number(source_field_ids.at(owner->second.field))+
+          ",\"kind\":\"anonymous-member\",\"captureProof\":\"original-member-declaration\"}");
+      }
       auto source_type_it=captured.type_ids.find(t);
       if(source_type_it==captured.type_ids.end())reject("record source type was not captured before lowering");
       source_records.push_back("{\"id\":"+number(source_record)+",\"sourceTypeId\":"+number(source_type(source_type_it->second))+
@@ -1142,6 +1175,7 @@ struct Writer {
     active_normal_calls.clear();active_normal_obligations.clear();emitted_normal_obligations.clear();
     active_array_runtime.clear();active_array_obligations.clear();emitted_array_obligations.clear();
     active_allocation_internal_tries.clear();active_allocation_obligations.clear();emitted_allocation_obligations.clear();
+    active_guard_cleanups.clear();
     auto &captured=dot_object_source::state();
     for(const auto &entry:captured.allocation_internal_tries)if(entry.second.first==owner) {
       auto original=dot_object_source::source_destruction(entry.second.second,owner);
@@ -1194,16 +1228,33 @@ struct Writer {
       auto entry=entries[raw];unsigned state_raw=raw;
       auto fields=cleanup_fields(entry,4);auto callback=fields[0];
       auto flags=cleanup_number(fields[3]);
-      if(flags&~0x7bULL || ((flags&0x11)==0x11) || ((flags&0x48)==0x48) ||
+      if(flags&~0xffULL || ((flags&0x11)==0x11) || ((flags&0x48)==0x48) ||
          ((flags&0x20) && ((flags&0x48)!=0x40)))
         reject("cleanup action outside fixed array/local/member/base/VTT flags");
-      if(callback->kind!=ck_address || callback->variant.address.kind!=abk_routine || callback->variant.address.offset)
-        reject("cleanup callback lacks exact routine address");
       auto found=dot_object_source::state().cleanup_regions.find(entry);
       if(found==dot_object_source::state().cleanup_regions.end())reject("cleanup region lacks typed lowering observation");
       const auto &observed=found->second;
       if(observed.owner!=owner || !observed.error.empty())
         reject(observed.error.empty()?"cleanup region owner mismatch":observed.error.c_str());
+      if(observed.guard_abort) {
+        auto guard=captured.local_static_guard_cleanups.find(observed.original);
+        if(flags!=0x80)reject("guard region has unexpected flags");
+        // Stock add_region_table_entry casts zero to its generic function
+        // pointer type. is_zero_constant deliberately excludes implicit casts.
+        if(!is_null_pointer_value(callback))reject("guard region callback is not null");
+        if(guard==captured.local_static_guard_cleanups.end())
+          reject("guard region lacks observed local-static source rollback");
+        if(guard->second.first!=owner)reject("guard region rollback owner mismatch");
+        if(guard->second.second!=observed.variable)reject("guard region rollback storage mismatch");
+        if(observed.indirect ||
+           !observed.path.empty() || observed.array || observed.conditional_flag || observed.vtt_argument)
+          reject("guard region lacks exact local-static storage rollback");
+        PendingCleanup value;value.state_id=next_cleanup_state++;value.action_id=next_cleanup_action++;
+        value.next=cleanup_number(fields[2]);value.observed=&observed;value.guard_abort=true;
+        active_cleanup.emplace(state_raw,value);active_guard_cleanups.insert(observed.original);continue;
+      }
+      if(callback->kind!=ck_address || callback->variant.address.kind!=abk_routine || callback->variant.address.offset)
+        reject("cleanup callback lacks exact routine address");
       if(observed.release_handler) {
         if(flags || cleanup_number(fields[1]))reject("handler release region has unexpected flags or handle");
         PendingCleanup value;value.state_id=next_cleanup_state++;
@@ -1211,10 +1262,24 @@ struct Writer {
         active_cleanup.emplace(state_raw,value);continue;
       }
       if(bool(flags&0x40)!=bool(observed.base_subobject || observed.delegation))reject("cleanup region base-subobject proof mismatch");
-      if(bool(flags&0x08)!=observed.array)reject("cleanup array proof mismatch");
+      if(bool(flags&0x04)!=observed.allocation_release)reject("cleanup allocation proof mismatch");
+      if(!observed.allocation_release && bool(flags&0x08)!=observed.array)reject("cleanup array proof mismatch");
       if(bool(flags&0x20)!=bool(observed.vtt_argument))reject("cleanup VTT proof mismatch");
       unsigned long long array_count=0,array_element_size=0;
-      if(observed.array) {
+      if(observed.allocation_release) {
+        if(flags&~0x0fULL || !observed.indirect || !observed.variable || !observed.path.empty() || observed.array ||
+           skip_typerefs(observed.variable->type)->kind!=tk_pointer)
+          reject("allocation region outside owned scalar pointer rollback");
+        if(flags&0x08) {
+          auto index=cleanup_number(fields[1]);
+          if(index>=array_entries.size())reject("sized allocation region lacks exact size supplement");
+          auto array=cleanup_fields(array_entries[index],3);
+          array_element_size=cleanup_number(array[1]);array_count=cleanup_number(array[2]);
+          auto allocated=skip_typerefs(skip_typerefs(observed.variable->type)->variant.pointer.type);
+          if(array_count!=0 || !array_element_size || array_element_size!=allocated->size)
+            reject("sized allocation cleanup size differs from allocated object");
+        }
+      } else if(observed.array) {
         auto index=cleanup_number(fields[1]);
         if(index>=array_entries.size())reject("cleanup array table index outside exact table");
         auto array=cleanup_fields(array_entries[index],3);
@@ -1261,7 +1326,14 @@ struct Writer {
       if(signature->kind!=tk_routine)reject("cleanup callback is not routine");
       auto extra=signature->variant.routine.extra_info;
       auto parameter=extra->param_type_list;
-      if(selected->special_kind!=sfk_destructor || skip_typerefs(signature->variant.routine.return_type)->kind!=tk_void ||
+      if(observed.allocation_release) {
+        if(!source.allocation_release || source.array_allocation ||
+           skip_typerefs(signature->variant.routine.return_type)->kind!=tk_void || !parameter || extra->has_ellipsis ||
+           skip_typerefs(parameter->type)->kind!=tk_pointer ||
+           skip_typerefs(skip_typerefs(parameter->type)->variant.pointer.type)->kind!=tk_void ||
+           (bool(flags&0x08)?(!parameter->next || parameter->next->next || type_id(parameter->next->type)!=9):parameter->next!=nullptr))
+          reject("allocation region differs from original unsized/sized delete ABI");
+      } else if(selected->special_kind!=sfk_destructor || skip_typerefs(signature->variant.routine.return_type)->kind!=tk_void ||
          !parameter || extra->has_ellipsis || skip_typerefs(parameter->type)->kind!=tk_pointer ||
          (observed.vtt_argument?(!parameter->next || parameter->next->next ||
            type_id(parameter->next->type)!=type_id(observed.vtt_argument->type)):parameter->next!=nullptr))
@@ -1270,7 +1342,10 @@ struct Writer {
       PendingCleanup value;value.state_id=next_cleanup_state++;value.action_id=next_cleanup_action++;
       value.next=cleanup_number(fields[2]);value.callback=selected;value.original=original;value.observed=&observed;
       value.array_count=array_count;value.array_element_size=array_element_size;
-      active_cleanup.emplace(state_raw,value);active_source_obligations.insert(original);
+      value.allocation_release=observed.allocation_release;value.sized_release=observed.allocation_release && (flags&0x08);
+      active_cleanup.emplace(state_raw,value);
+      if(value.allocation_release)active_allocation_obligations.insert(original);
+      else active_source_obligations.insert(original);
     }
     for(const auto &entry:active_cleanup) {
       std::set<unsigned long long> visited;auto state=entry.first;
@@ -1286,6 +1361,7 @@ struct Writer {
   void check_lifetime(an_object_lifetime_ptr lifetime) {
     if(!lifetime)return;
     for(auto dip=lifetime->destructions;dip;dip=dip->next_in_destruction_list) {
+      if(dip->is_guard_var_for_local_static_var_init && active_guard_cleanups.count(dip))continue;
       if(dip->is_freeing_of_exception_object) {
         auto release=dot_object_source::state().handler_releases.find(dip);
         if(release!=dot_object_source::state().handler_releases.end() && release->second.first==current_routine)continue;
@@ -1389,6 +1465,49 @@ struct Writer {
         for(const auto &base:part.base->is_virtual?original->second.virtual_bases:original->second.bases)if(base.il==part.base)return nullptr;
     }
     reject("cleanup member/base path lacks exact lowered field correspondence");
+  }
+  unsigned local_static_guard(a_variable_ptr guard) {
+    auto prior=local_static_guard_ids.find(guard);if(prior!=local_static_guard_ids.end())return prior->second;
+    auto &captured=dot_object_source::state();
+    auto found=captured.local_static_guard_variables.find(guard);
+    if(found==captured.local_static_guard_variables.end())reject("guard lacks original static initialization");
+    const auto &source=captured.local_static_initializers.at(found->second);
+    auto owner=dot_object_source::abi_primary(current_routine);if(!owner)owner=current_routine;
+    if(source.owner!=owner || !source.probe || !source.acquire || !source.release ||
+       var_has_thread_storage_duration(guard) || type_id(guard->type)!=9 || !source.lifetime ||
+       !captured.lifetimes.count(source.lifetime))reject("guard outside observed non-TLS IA64 acquire/release contract");
+    unsigned id=unsigned(local_static_guard_ids.size()+1);local_static_guard_ids.emplace(guard,id);
+    unsigned lifetime=source_lifetime_ids.emplace(source.lifetime,unsigned(source_lifetime_ids.size()+1)).first->second;
+    local_static_guards.push_back("{\"id\":"+number(id)+",\"functionEntityId\":"+number(routine(source.owner))+
+      ",\"storageId\":"+number(storage(source.variable))+",\"guardStorageId\":"+number(storage(guard))+
+      ",\"sourceTypeId\":"+number(source_type(source.source_type))+",\"sourceLifetimeId\":"+number(lifetime)+
+      ",\"guardPolicy\":\"ia64-acquire-release\""+position(source.position)+",\"captureProof\":\"observed-local-static-guard\"}");
+    return id;
+  }
+  unsigned guard_address(a_variable_ptr guard,const a_source_position &pos) {
+    if(type_id(guard->type)!=9)reject("local-static guard address is not ulong storage");
+    return node("storage-address",pointer_type(9),pos,0,0,"","0","value","none",0,storage(guard));
+  }
+  unsigned guard_operation(an_expr_node_ptr expr,a_variable_ptr guard,const string &kind) {
+    unsigned type=type_id(expr->type);
+    if(type!=(kind=="release"?1:2))reject("observed guard operation result type changed");
+    unsigned id=node("guard-operation",type,expr->position,0,0,"","","value","left-to-right");
+    edge(id,"guard",0,guard_address(guard,expr->position));
+    guard_operations.push_back("{\"nodeId\":"+number(id)+",\"guardId\":"+number(local_static_guard(guard))+
+      ",\"kind\":"+quote(kind)+",\"captureProof\":\"observed-local-static-guard-operation\"}");
+    return id;
+  }
+  unsigned allocation_target(const PendingCleanup &entry) {
+    auto variable=entry.observed->variable;
+    if(!variable || !binding_ids.count(variable) || !entry.observed->indirect || !entry.observed->path.empty())
+      reject("allocation rollback target is not its observed pointer binding");
+    unsigned type=type_id(variable->type);
+    auto pos=dot_object_source::state().destructions.at(entry.original).position;
+    unsigned target=node("binding",type,pos,0,binding_ids.at(variable),"","","place","none");
+    auto parameter=skip_typerefs(entry.callback->type)->variant.routine.extra_info->param_type_list;
+    unsigned expected=type_id(parameter->type);
+    unsigned converted=node("convert",expected,pos,0,0,"","","value","left-to-right");
+    edge(converted,"operand",0,target);return converted;
   }
   unsigned cleanup_target(const PendingCleanup &entry) {
     const auto &observed=*entry.observed;auto variable=observed.variable;
@@ -1587,8 +1706,31 @@ struct Writer {
         auto found=active_handler_ids.find(entry.observed->release_handler);
         if(found==active_handler_ids.end())reject("release state lacks its emitted handler");
         cleanup_states.push_back("{\"id\":"+number(entry.state_id)+",\"functionEntityId\":"+number(function)+
-          ",\"actionId\":null,\"nextStateId\":"+number(next)+",\"handlerNodeId\":"+number(found->second)+"}");
+          ",\"actionId\":null,\"allocationActionId\":null,\"guardActionId\":null,\"nextStateId\":"+number(next)+",\"handlerNodeId\":"+number(found->second)+"}");
         continue;
+      }
+      if(entry.guard_abort) {
+        auto guard=entry.observed->variable;unsigned id=local_static_guard(guard);
+        auto &captured=dot_object_source::state();
+        auto pos=captured.local_static_initializers.at(captured.local_static_guard_variables.at(guard)).position;
+        unsigned target=guard_address(guard,pos);
+        guard_cleanup_actions.push_back("{\"id\":"+number(entry.action_id)+",\"functionEntityId\":"+number(function)+
+          ",\"guardId\":"+number(id)+",\"targetNodeId\":"+number(target)+",\"captureProof\":\"observed-guard-region\"}");
+        cleanup_states.push_back("{\"id\":"+number(entry.state_id)+",\"functionEntityId\":"+number(function)+
+          ",\"actionId\":null,\"allocationActionId\":null,\"guardActionId\":"+number(entry.action_id)+
+          ",\"nextStateId\":"+number(next)+",\"handlerNodeId\":null}");continue;
+      }
+      if(entry.allocation_release) {
+        unsigned flag=entry.observed->conditional_flag?binding_ids.at(entry.observed->conditional_flag):0;
+        allocation_cleanup_actions.push_back("{\"id\":"+number(entry.action_id)+",\"functionEntityId\":"+number(function)+
+          ",\"sourceAllocationObligationId\":"+number(source_obligation_ids.at(entry.original))+
+          ",\"callbackEntityId\":"+number(routine(entry.callback))+",\"targetNodeId\":"+number(allocation_target(entry))+
+          ",\"allocationSize\":"+(entry.sized_release?std::to_string(entry.array_element_size):"null")+
+          ",\"conditionBindingId\":"+number(flag)+",\"nullPolicy\":\"skip-null\",\"captureProof\":\"observed-allocation-region\"}");
+        cleanup_states.push_back("{\"id\":"+number(entry.state_id)+",\"functionEntityId\":"+number(function)+
+          ",\"actionId\":null,\"allocationActionId\":"+number(entry.action_id)+",\"guardActionId\":null"+
+          ",\"nextStateId\":"+number(next)+",\"handlerNodeId\":null}");
+        emitted_allocation_obligations.insert(entry.original);continue;
       }
       unsigned callback=routine(entry.callback),target=cleanup_target(entry);
       if(auto flag=entry.observed->conditional_flag) {
@@ -1613,7 +1755,8 @@ struct Writer {
         ",\"sourceObligationId\":"+number(source_obligation_ids.at(entry.original))+",\"callbackEntityId\":"+number(callback)+
         ",\"targetNodeId\":"+number(target)+",\"captureProof\":\"observed-region-entry\"}");
       cleanup_states.push_back("{\"id\":"+number(entry.state_id)+",\"functionEntityId\":"+number(function)+
-        ",\"actionId\":"+number(entry.action_id)+",\"nextStateId\":"+number(next)+",\"handlerNodeId\":null}");
+        ",\"actionId\":"+number(entry.action_id)+",\"allocationActionId\":null,\"guardActionId\":null"+
+        ",\"nextStateId\":"+number(next)+",\"handlerNodeId\":null}");
     }
     covered_source_obligations.insert(active_source_obligations.begin(),active_source_obligations.end());
     covered_source_obligations.insert(emitted_normal_obligations.begin(),emitted_normal_obligations.end());
@@ -2118,6 +2261,13 @@ struct Writer {
       edge(converted,"operand",0,result);return converted;
     }
     if(c->kind==ck_float)return node("constant",ty,pos,0,0,"",floating_bits(c),"value","none");
+    if(c->kind==ck_void) {
+      if(ty!=1)reject("folded void constant has nonvoid type");
+      // Stock il_to_str renders a C++14 folded void value as ((void)0).
+      unsigned zero=node("constant",2,pos,0,0,"","0","value","none");
+      unsigned discarded=node("convert",ty,pos,0,0,"","","value","left-to-right");
+      edge(discarded,"operand",0,zero);return discarded;
+    }
     if(c->kind==ck_aggregate) {
       auto type=skip_typerefs(c->type);
       if((type->kind!=tk_struct && type->kind!=tk_class && type->kind!=tk_union) || !record_value_policy(type,"construction"))
@@ -2407,6 +2557,10 @@ struct Writer {
   unsigned expression_core(an_expr_node_ptr e) {
     if(!e)reject("null expression");
     diagnostic_scope diagnostic(e->position);
+    auto guard=dot_object_source::state().local_static_guard_operations.find(e);
+    if(guard!=dot_object_source::state().local_static_guard_operations.end() && e->kind==enk_operation &&
+       e->variant.operation.kind==(guard->second.second=="probe"?eok_eq:eok_call))
+      return guard_operation(e,guard->second.first,guard->second.second);
     unsigned ty=type_id(e->type);
     if(e->kind==enk_result_of_overriding_function) {
       auto found=dot_object_source::state().thunk_wrappers.find(current_routine);
@@ -3245,6 +3399,20 @@ struct Writer {
         if(!s->expr)reject("empty expression statement");
         unsigned id=node("expr-stmt",0,s->position);edge(id,"value",0,expression(s->expr));return id;
       }
+      case stmk_constexpr_if: {
+        // c_gen_be::dump_statement emits only the frontend-selected branch.
+        // A discarded template branch may not have been instantiated at all.
+        auto choice=s->variant.constexpr_if;
+        if(!choice || !choice->value_known)reject("dependent constexpr selection reached executable graph");
+        unsigned id=node("compile-time-if",0,s->position);
+        auto selected=choice->value?choice->then_statement:choice->else_statement;
+        edge(id,"body",0,selected?statement(selected):node("block",0,s->position));
+        compile_time_selections.push_back("{\"nodeId\":"+number(id)+
+          ",\"conditionValue\":"+(choice->value?"true":"false")+
+          ",\"hasElse\":"+(choice->else_statement?"true":"false")+
+          ",\"captureProof\":\"observed-constexpr-selection\"}");
+        return id;
+      }
       case stmk_if: {
         unsigned id=node("if",0,s->position);edge(id,"condition",0,expression(s->expr));
         edge(id,"then",0,statement(s->variant.if_stmt.then_statement));
@@ -3292,7 +3460,15 @@ struct Writer {
           if(!entry->case_value && descriptor->default_case!=entry)reject("switch default descriptor");
           switch_cases[child]=id;
         }
-        edge(id,"condition",0,expression(s->expr));
+        unsigned selector=expression(s->expr);
+        auto selector_type=skip_typerefs(s->expr->type);
+        // Stock C relies on C's integral promotion at switch. Preserve that
+        // operation explicitly when EDG retains a narrow scalar expression.
+        if(selector_type->kind==tk_integer && selector_type->size<targ_sizeof_int) {
+          unsigned promoted=node("convert",2,s->expr->position,0,0,"","","value","left-to-right");
+          edge(promoted,"operand",0,selector);selector=promoted;
+        }
+        edge(id,"condition",0,selector);
         auto labels=source_context(s,body,false);
         if(labels.break_target) {
           if(labels.break_target->source_corresp.name || !labels.break_target->switch_break_label)
@@ -3466,7 +3642,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v38\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v39\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -3479,12 +3655,16 @@ struct Writer {
       ",\"expressionLifetimes\":"+array(expression_lifetimes)+
       ",\"normalDestructions\":"+array(normal_destructions)+",\"cleanupConditions\":"+array(cleanup_conditions)+
       ",\"sourceRecords\":"+array(source_records)+",\"sourceRecordOperations\":"+array(source_record_operations)+
+      ",\"sourceRecordOwners\":"+array(source_record_owners)+
       ",\"exceptionTypes\":"+array(exception_types)+",\"exceptionBaseConversions\":"+array(exception_base_conversions)+
       ",\"throwExpressions\":"+array(throw_expressions)+",\"throwObjectAddresses\":"+array(throw_object_addresses)+
       ",\"throwMarkers\":"+array(throw_markers)+",\"rethrowExpressions\":"+array(rethrow_expressions)+
       ",\"throwInitializationBoundaries\":"+array(throw_initialization_boundaries)+",\"throwCleanupTransitions\":"+array(throw_cleanup_transitions)+
       ",\"internalTryExpressions\":"+array(internal_try_expressions)+
       ",\"sourceAllocationObligations\":"+array(source_allocation_obligations)+
+      ",\"allocationCleanupActions\":"+array(allocation_cleanup_actions)+
+      ",\"localStaticGuards\":"+array(local_static_guards)+",\"guardOperations\":"+array(guard_operations)+
+      ",\"guardCleanupActions\":"+array(guard_cleanup_actions)+
       ",\"cleanupPayloadTargets\":"+array(cleanup_payload_targets)+
       ",\"throwPayloadSubobjects\":"+array(throw_payload_subobjects)+
       ",\"throwPayloadPaths\":"+array(throw_payload_paths)+
@@ -3494,6 +3674,7 @@ struct Writer {
       ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+",\"virtualBaseSubobjects\":"+array(virtual_base_subobjects)+",\"virtualBaseExpressions\":"+array(virtual_base_expressions)+
       ",\"baseSubobjectExpressions\":"+array(base_subobject_expressions)+
       ",\"abiRoutineOrigins\":"+array(abi_routine_origins)+
+      ",\"compileTimeSelections\":"+array(compile_time_selections)+
       ",\"thunkWrappers\":"+array(thunk_wrappers)+",\"wrapperCalls\":"+array(wrapper_calls)+
       ",\"recordTypes\":"+array(record_types)+",\"recordFields\":"+array(record_fields)+
       ",\"storages\":"+array(storages)+",\"storageData\":"+array(storage_data)+",\"relocations\":"+array(relocations)+

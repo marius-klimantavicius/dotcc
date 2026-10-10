@@ -231,7 +231,7 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
         if guard is not None:
             guards_used = True
             bound.append(dict(name=method['symbol'], result=method['result'], parameters=[kind for kind, _ in method['arguments']],
-                              target='global::Edg.Runtime.DotObjGuards'))
+                              target='global::Edg.Runtime.CppGuards'))
             parameters = ', '.join(kind + ' ' + name for kind, name in method['arguments'])
             statement = ('' if method['result'] == 'void' else 'return ') + guard + ';'
             bodies.setdefault(method['container'], []).append('public static partial ' + method['result'] + ' ' + method['name'] + '(' + parameters + ')\n    {\n        ' + statement + '\n    }\n')
@@ -325,8 +325,6 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
     files = {}
     if arrays_used:
         files['Runtime.Arrays.generated.cs'] = array_source(BACKEND, thread_services)
-    if guards_used:
-        files['Runtime.Guards.generated.cs'] = guard_source(BACKEND)
     # Returning from source main has normal exit semantics even when no explicit
     # exit/atexit symbol is referenced. Flush existing buffered FILE streams.
     # Library initialization and ordinary managed exports never call this hook.
@@ -350,6 +348,17 @@ def bind(project, allow_unresolved=False, provider_receipts=()):
         helpers.update(service_helpers)
     sources = []
     reused = []
+    if guards_used:
+        path = Path(__file__).with_name('CppGuards.cs')
+        sources.append(dict(path=str(path), sha256=sha(path)))
+        data = guard_source(BACKEND)
+        existing = project / 'Runtime.CppGuards.cs'
+        if existing.exists():
+            if existing.read_text() != data:
+                raise ValueError('Existing shared guard runtime differs from canonical source: ' + str(existing))
+            reused.append(dict(path=str(existing), sha256=sha(existing)))
+        else:
+            files['Runtime.CppGuards.cs'] = data
     selected_helpers = helper_sources(helpers)
     for name, path in selected_helpers.items():
         data = path.read_text()
