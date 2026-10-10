@@ -31,6 +31,12 @@ internal sealed partial class ObjectFile
                     value.NestingDepth + ":" + value.ParameterPosition)
                     throw new InvalidDataException("Template parameter identity differs from its original declaration");
             }
+            else if (value.Kind == "auto-placeholder")
+            {
+                if(value.OwnerTypeId is not null || value.NestingDepth!=-1 || value.ParameterPosition is not(1 or 2) ||
+                   value.IsPack || value.IdentityKey.Length!=0 || type.SourceName.Length!=0)
+                    throw new InvalidDataException("Auto placeholder differs from its original type-specifier coordinates");
+            }
             else if (value.Kind == "member")
             {
                 if (value.OwnerTypeId is not long owner || !SourceTypes.ContainsKey(owner) || type.SourceName.Length == 0 ||
@@ -69,6 +75,7 @@ internal sealed partial class ObjectFile
         return value.Kind switch
         {
             "parameter" => "dependent-parameter(" + Encode(value.IdentityKey) + ";" + value.IsPack + ")",
+            "auto-placeholder" => SourceArgumentTypeIdentity(type.Id,depth+1),
             "member" => "dependent-member(" + SourceTypeSignature(value.OwnerTypeId!.Value, depth + 1, false, false) + ";" + Encode(type.SourceName) + ")",
             _ => "dependent-unknown"
         };

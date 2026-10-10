@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v58'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v59'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -733,17 +733,18 @@ CREATE TABLE source_nested_type_declarations (
 CREATE TABLE source_dependent_types (
  has_type_constraint INTEGER NOT NULL CHECK(has_type_constraint IN(0,1)),
  type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
- kind TEXT NOT NULL CHECK(kind IN ('parameter','member','unknown')),
+ kind TEXT NOT NULL CHECK(kind IN ('parameter','member','unknown','auto-placeholder')),
  owner_type_id INTEGER REFERENCES source_types(id),
  original_nested_type_id INTEGER REFERENCES source_nested_type_declarations(type_id),
- nesting_depth INTEGER CHECK(nesting_depth>=0),
+ nesting_depth INTEGER CHECK(nesting_depth>=-1),
  parameter_position INTEGER CHECK(parameter_position>0),
  is_pack INTEGER NOT NULL CHECK(is_pack IN (0,1)),
  identity_key TEXT NOT NULL,
  capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
- CHECK(has_type_constraint=0 OR kind='parameter'),
+ CHECK(has_type_constraint=0 OR kind IN ('parameter','auto-placeholder')),
  CHECK(kind='member' OR original_nested_type_id IS NULL),
- CHECK((kind='parameter' AND owner_type_id IS NULL AND nesting_depth IS NOT NULL AND parameter_position IS NOT NULL AND identity_key!='') OR
+ CHECK((kind='auto-placeholder' AND owner_type_id IS NULL AND nesting_depth=-1 AND parameter_position IN(1,2) AND is_pack=0 AND identity_key='') OR
+       (kind='parameter' AND owner_type_id IS NULL AND nesting_depth IS NOT NULL AND nesting_depth>=0 AND parameter_position IS NOT NULL AND identity_key!='') OR
        (kind='member' AND owner_type_id IS NOT NULL AND nesting_depth IS NULL AND parameter_position IS NULL AND is_pack=0 AND identity_key='') OR
        (kind='unknown' AND owner_type_id IS NULL AND nesting_depth IS NULL AND parameter_position IS NULL AND is_pack=0 AND identity_key=''))
 ) STRICT;
@@ -754,9 +755,19 @@ CREATE TABLE source_enum_types (
  is_scoped INTEGER NOT NULL CHECK(is_scoped IN (0,1)),
  is_complete INTEGER NOT NULL CHECK(is_complete IN (0,1)),
  enumerator_list_complete INTEGER NOT NULL CHECK(enumerator_list_complete IN (0,1)),
- has_explicit_base INTEGER NOT NULL CHECK(has_explicit_base IN (0,1))
+ has_explicit_base INTEGER NOT NULL CHECK(has_explicit_base IN (0,1)),
+ is_template INTEGER NOT NULL CHECK(is_template IN (0,1)),
+ owner_type_id INTEGER REFERENCES source_types(id),
+ source_occurrence INTEGER NOT NULL CHECK(source_occurrence>=0),
+ enumerator_count INTEGER NOT NULL CHECK(enumerator_count>=0),
+ is_nonreal INTEGER NOT NULL CHECK(is_nonreal IN(0,1)),
+ is_prototype INTEGER NOT NULL CHECK(is_prototype IN(0,1)),
+ is_specialized INTEGER NOT NULL CHECK(is_specialized IN(0,1)),
+ originally_unnamed INTEGER NOT NULL CHECK(originally_unnamed IN(0,1)),
+ underlying_origin TEXT NOT NULL CHECK(underlying_origin IN('declared','inferred','prototype-placeholder'))
 ) STRICT;
 CREATE TABLE source_enumerators (
+ constant_id INTEGER REFERENCES source_semantic_constants(id),
  type_id INTEGER NOT NULL REFERENCES source_enum_types(type_id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  source_name TEXT NOT NULL,
@@ -764,6 +775,7 @@ CREATE TABLE source_enumerators (
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
+ CHECK((constant_id IS NULL AND value_text!='') OR (constant_id IS NOT NULL AND value_text='')),
  PRIMARY KEY(type_id,ordinal)
 ) STRICT;
 CREATE TABLE source_member_pointer_types (
@@ -811,7 +823,7 @@ CREATE TABLE source_record_types (
 -- Source-only template arguments and dependent extents never imply storage.
 CREATE TABLE source_semantic_constants (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind IN ('integer','parameter','operation','expression','member','type-operand','builtin-trait','sizeof','alignof','datasizeof','source-expression','aggregate')),
+ kind TEXT NOT NULL CHECK(kind IN ('integer','parameter','operation','expression','member','type-operand','builtin-trait','sizeof','alignof','datasizeof','source-expression','aggregate','sizeof-pack')),
  source_type_id INTEGER NOT NULL REFERENCES source_types(id),
  source_name TEXT NOT NULL,
  value_text TEXT NOT NULL,
@@ -890,6 +902,7 @@ CREATE TABLE source_record_instantiations (
  member_owner_source_type_id INTEGER REFERENCES source_types(id),
  member_of_unknown_base INTEGER NOT NULL CHECK(member_of_unknown_base IN (0,1)),
  qualified_unknown_base_member INTEGER NOT NULL CHECK(qualified_unknown_base_member IN (0,1)),
+ has_selected_partial_specialization INTEGER NOT NULL CHECK(has_selected_partial_specialization IN(0,1)),
  capture_proof TEXT NOT NULL,
  CHECK((resolution_kind='class-template' AND prototype_source_record_id IS NOT NULL AND source_template_id IS NULL AND member_owner_source_type_id IS NULL AND
         member_of_unknown_base=0 AND qualified_unknown_base_member=0 AND capture_proof='original-template-arguments') OR
@@ -1470,6 +1483,7 @@ CREATE TABLE source_expression_declarations (
  template_prototype_declaration_id INTEGER REFERENCES source_expression_declarations(id),
  template_origin_kind TEXT NOT NULL CHECK(template_origin_kind IN('none','variable-template','function-template','static-data-member','class-member-function')),
  routine_kind TEXT NOT NULL CHECK(routine_kind IN('not-routine','function','constructor','destructor','operator')),
+ scope_kind TEXT NOT NULL CHECK(scope_kind IN('nonlocal','function-parameter')),
  has_template_origin INTEGER NOT NULL CHECK(has_template_origin IN(0,1)),is_template_prototype INTEGER NOT NULL CHECK(is_template_prototype IN(0,1)),
  is_constexpr INTEGER NOT NULL CHECK(is_constexpr IN(0,1)),
  formal_count INTEGER NOT NULL CHECK(formal_count>=0),argument_count INTEGER NOT NULL CHECK(argument_count>=0),
@@ -1505,7 +1519,7 @@ CREATE TABLE source_expression_declaration_arguments (
 ) STRICT;
 
 CREATE TABLE source_constraint_argument_details (
- owner_kind TEXT NOT NULL CHECK(owner_kind IN('class','concept','declaration','substitution','lookup','alias-selected','alias-original')),owner_id INTEGER NOT NULL CHECK(owner_id>0),
+ owner_kind TEXT NOT NULL CHECK(owner_kind IN('class','concept','declaration','substitution','lookup','alias-selected','alias-original','class-pattern','class-selected')),owner_id INTEGER NOT NULL CHECK(owner_id>0),
  substitution_ordinal INTEGER NOT NULL CHECK(substitution_ordinal>=0),argument_ordinal INTEGER NOT NULL CHECK(argument_ordinal>=0),
  is_pack INTEGER NOT NULL CHECK(is_pack IN(0,1)),is_pack_element INTEGER NOT NULL CHECK(is_pack_element IN(0,1)),
  has_pack_ellipsis INTEGER NOT NULL CHECK(has_pack_ellipsis IN(0,1)),is_integer_pack INTEGER NOT NULL CHECK(is_integer_pack IN(0,1)),
@@ -1723,4 +1737,96 @@ CREATE TABLE source_expression_field_references (
  expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),
  source_field_id INTEGER NOT NULL REFERENCES source_record_fields(id),
  capture_proof TEXT NOT NULL CHECK(capture_proof='original-field-reference')
+) STRICT;
+
+CREATE TABLE source_function_parameter_declarations (
+ declaration_id INTEGER PRIMARY KEY REFERENCES source_expression_declarations(id),
+ routine_declaration_id INTEGER NOT NULL REFERENCES source_expression_declarations(id),
+ binder_id INTEGER NOT NULL REFERENCES source_parameter_binders(id),
+ parameter_ordinal INTEGER NOT NULL CHECK(parameter_ordinal>=0),
+ declared_source_type_id INTEGER REFERENCES source_types(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-function-parameter-list'),
+ FOREIGN KEY(binder_id,parameter_ordinal) REFERENCES source_binder_parameters(binder_id,ordinal),
+ UNIQUE(routine_declaration_id,parameter_ordinal)
+) STRICT;
+
+CREATE TABLE source_class_template_headers (
+ source_record_id INTEGER PRIMARY KEY REFERENCES source_record_types(id),
+ primary_source_record_id INTEGER REFERENCES source_class_template_headers(source_record_id),
+ formal_count INTEGER NOT NULL CHECK(formal_count>=0),pattern_count INTEGER NOT NULL CHECK(pattern_count>=0),
+ constraint_expression_id INTEGER REFERENCES source_expressions(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-class-template-header'),
+ CHECK(primary_source_record_id IS NULL OR primary_source_record_id!=source_record_id)
+) STRICT;
+CREATE TABLE source_class_specializations (
+ source_record_id INTEGER PRIMARY KEY REFERENCES source_record_instantiations(source_record_id),
+ selected_source_record_id INTEGER NOT NULL REFERENCES source_class_template_headers(source_record_id),
+ selected_argument_count INTEGER NOT NULL CHECK(selected_argument_count>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-partial-class-substitution')
+) STRICT;
+
+CREATE TABLE source_class_template_formals (
+ source_record_id INTEGER NOT NULL REFERENCES source_class_template_headers(source_record_id),ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ kind TEXT NOT NULL CHECK(kind IN ('type','constant','template')),
+ source_name TEXT NOT NULL,
+ type_id INTEGER REFERENCES source_types(id),constant_id INTEGER REFERENCES source_semantic_constants(id),
+ template_id INTEGER REFERENCES source_templates(id),
+ default_type_id INTEGER REFERENCES source_types(id),default_constant_id INTEGER REFERENCES source_semantic_constants(id),
+ default_template_id INTEGER REFERENCES source_templates(id),
+ is_pack INTEGER NOT NULL CHECK(is_pack IN(0,1)),is_abbreviated INTEGER NOT NULL CHECK(is_abbreviated IN(0,1)),
+ source_file_id INTEGER REFERENCES source_files(id),line INTEGER NOT NULL,column INTEGER NOT NULL,
+ PRIMARY KEY(source_record_id,ordinal)
+) STRICT;
+
+CREATE TABLE source_class_template_patterns (
+ source_record_id INTEGER NOT NULL REFERENCES source_class_template_headers(source_record_id),
+ is_pack INTEGER NOT NULL CHECK(is_pack IN(0,1)),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ kind TEXT NOT NULL CHECK(kind IN ('type','constant','template','pack-boundary')),
+ type_id INTEGER REFERENCES source_types(id),
+ constant_id INTEGER REFERENCES source_semantic_constants(id),
+ template_id INTEGER REFERENCES source_templates(id),
+ PRIMARY KEY(source_record_id,ordinal),
+ CHECK((kind='type' AND type_id IS NOT NULL AND constant_id IS NULL AND template_id IS NULL) OR
+       (kind='constant' AND type_id IS NULL AND constant_id IS NOT NULL AND template_id IS NULL) OR
+       (kind='template' AND type_id IS NULL AND constant_id IS NULL AND template_id IS NOT NULL) OR
+       (kind='pack-boundary' AND type_id IS NULL AND constant_id IS NULL AND template_id IS NULL))
+) STRICT;
+
+CREATE TABLE source_class_specialization_arguments (
+ source_record_id INTEGER NOT NULL REFERENCES source_class_specializations(source_record_id),
+ is_pack INTEGER NOT NULL CHECK(is_pack IN(0,1)),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ kind TEXT NOT NULL CHECK(kind IN ('type','constant','template','pack-boundary')),
+ type_id INTEGER REFERENCES source_types(id),
+ constant_id INTEGER REFERENCES source_semantic_constants(id),
+ template_id INTEGER REFERENCES source_templates(id),
+ PRIMARY KEY(source_record_id,ordinal),
+ CHECK((kind='type' AND type_id IS NOT NULL AND constant_id IS NULL AND template_id IS NULL) OR
+       (kind='constant' AND type_id IS NULL AND constant_id IS NOT NULL AND template_id IS NULL) OR
+       (kind='template' AND type_id IS NULL AND constant_id IS NULL AND template_id IS NOT NULL) OR
+       (kind='pack-boundary' AND type_id IS NULL AND constant_id IS NULL AND template_id IS NULL))
+) STRICT;
+
+CREATE TABLE source_enum_increments (
+ operation_constant_id INTEGER PRIMARY KEY REFERENCES source_semantic_constants(id),
+ previous_constant_id INTEGER NOT NULL UNIQUE REFERENCES source_semantic_constants(id),
+ one_constant_id INTEGER NOT NULL REFERENCES source_semantic_constants(id),
+ original_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ did_force_dependent_type INTEGER NOT NULL CHECK(did_force_dependent_type IN(0,1)),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-dependent-enumerator-increment')
+) STRICT;
+
+-- Original unevaluated sizeof...(pack), preserving the exact operand category.
+CREATE TABLE source_pack_sizes (
+ constant_id INTEGER PRIMARY KEY REFERENCES source_semantic_constants(id),
+ is_type INTEGER NOT NULL CHECK(is_type IN(0,1)),
+ is_template_template INTEGER NOT NULL CHECK(is_template_template IN(0,1)),
+ source_type_id INTEGER REFERENCES source_types(id),
+ expression_id INTEGER REFERENCES source_expressions(id),
+ template_id INTEGER REFERENCES source_templates(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-sizeof-pack'),
+ CHECK((is_template_template=1 AND template_id IS NOT NULL AND source_type_id IS NULL AND expression_id IS NULL) OR
+       (is_template_template=0 AND is_type=1 AND source_type_id IS NOT NULL AND template_id IS NULL AND expression_id IS NULL) OR
+       (is_template_template=0 AND is_type=0 AND expression_id IS NOT NULL AND source_type_id IS NULL AND template_id IS NULL))
 ) STRICT;

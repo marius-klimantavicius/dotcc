@@ -28,7 +28,9 @@ internal sealed partial class ObjectFile
         var value=SourceExpressionDeclarations[id];
         return SourceIdentityFrame(value.Kind)+SourceIdentityFrame(value.QualifiedName)+SourceIdentityFrame(SourceExpressionTypeKey(value.Type,depth+1))+
             SourceIdentityFrame(value.OwnerType is long owner?SourceArgumentTypeIdentity(owner,depth+1):"")+SourceIdentityFrame(value.TemplateOriginKind)+SourceIdentityFrame(value.RoutineKind)+SourceIdentityFrame(SourceDeclarationOperators.TryGetValue(id,out long originalOperator)?originalOperator.ToString(CultureInfo.InvariantCulture):"")+(value.Constexpr?"1":"0")+
-            (value.HasTemplate?"1":"0")+(value.IsPrototype?"1":"0")+"F"+SourceIdentityFrame(SourceExpressionDeclarationFormals.GetValueOrDefault(id,[]).Count.ToString(CultureInfo.InvariantCulture))+
+            (value.HasTemplate?"1":"0")+(value.IsPrototype?"1":"0")+"B"+
+            SourceIdentityFrame(SourceFunctionParameterDeclarations.TryGetValue(id,out var parameter)?SourceStructuralDeclarationKey(parameter.Routine,depth+1):"")+
+            SourceIdentityFrame(SourceFunctionParameterDeclarations.TryGetValue(id,out parameter)?parameter.Ordinal.ToString(CultureInfo.InvariantCulture):"")+"F"+SourceIdentityFrame(SourceExpressionDeclarationFormals.GetValueOrDefault(id,[]).Count.ToString(CultureInfo.InvariantCulture))+
             string.Concat(SourceExpressionDeclarationFormals.GetValueOrDefault(id,[]).Select(f=>SourceIdentityFrame(SourceStructuralFormalKey(f,depth+1))))+"A"+SourceIdentityFrame(SourceExpressionDeclarationArguments.GetValueOrDefault(id,[]).Count.ToString(CultureInfo.InvariantCulture))+
             string.Concat(SourceExpressionDeclarationArguments.GetValueOrDefault(id,[]).Select(a=>SourceIdentityFrame(SourceStructuralArgumentKey(a,SourceConstraintArgumentDetails[("declaration",id,0,a.Ordinal)].Pack,depth+1))));
     }

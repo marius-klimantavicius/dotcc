@@ -114,9 +114,13 @@ struct Type {
   std::vector<bool> declaration_defaults;
 };
 struct SourceSemanticConstant {
+  unsigned pack_type=0,pack_expression=0,pack_template=0;
+  bool pack_is_type=false,pack_is_template=false;
   unsigned type=0,member_owner=0,type_operand=0,source_expression=0;
   unsigned aggregate_flags=0,aggregate_original_type=0,aggregate_expression=0;
   bool aggregate_template_const=false;
+  unsigned enum_increment_original_type=0;
+  bool enum_increment_forced_type=false;
   int builtin_operation=-1;
   bool standard_alignof=false;
   std::string kind,name,value,operation,error;
@@ -124,6 +128,12 @@ struct SourceSemanticConstant {
   bool pack=false;
   a_source_position location={};
   std::vector<unsigned> operands;
+};
+struct SourceEnumIncrement {
+  a_type_ptr original_type=nullptr;
+  a_constant_ptr previous=nullptr,one=nullptr;
+  bool forced_type=false;
+  std::string error;
 };
 struct SourceTemplateFormal {
   std::string kind,name;
@@ -148,11 +158,13 @@ struct SourceTemplateArgument {
 };
 inline SourceTemplateArgument capture_constraint_argument(a_template_arg_ptr,std::string&);
 struct Enumerator {
+  unsigned constant=0;
   std::string name,value;
   a_source_position position={};
 };
 struct Enum {
-  unsigned underlying=0;
+  unsigned underlying=0,owner=0;
+  bool is_template=false,nonreal=false,prototype=false,specialized=false,originally_unnamed=false;
   std::string identity,error;
   bool scoped=false,complete=false,list_complete=false,explicit_base=false;
   bool needs_final_identity=false;
@@ -534,9 +546,11 @@ struct State {
   std::vector<SourceSemanticConstant> semantic_constants;
   std::map<a_constant_ptr,unsigned> semantic_constant_ids;
   std::map<an_expr_node_ptr,unsigned> semantic_constant_expr_ids;
+  std::map<an_expr_node_ptr,SourceEnumIncrement> source_enum_increments;
   std::map<a_type_ptr,unsigned> type_ids;
   std::vector<Type> types;
   std::map<a_type_ptr,Enum> enums;
+  std::set<a_type_ptr> capturing_enums;
   std::map<a_type_ptr,a_type_ptr> lowered_source_types;
   std::set<a_type_ptr> erased_code_pointer_types;
   std::map<a_type_ptr,std::string> finalized_enum_identities;
@@ -826,6 +840,27 @@ inline int source_builtin_trait_arity(a_builtin_operation_kind kind) {
 }
 inline unsigned capture_constraint_expression(an_expr_node_ptr,unsigned);
 inline unsigned current_source_parameter_binder();
+inline bool capture_source_class_specialization(a_type_ptr,a_template_ptr,std::string&);
+inline void observe_dependent_enum_increment(an_expr_node_ptr expression,a_type_ptr original_type,bool forced_type,a_type_ptr unknown_type) {
+  if(!enabled())return;
+  SourceEnumIncrement value;value.original_type=original_type;value.forced_type=forced_type;
+  auto operands=expression && expression->kind==enk_operation?expression->variant.operation.operands:nullptr;
+  if(!expression || expression->kind!=enk_operation || expression->variant.operation.kind!=eok_add ||
+      !expression->compiler_generated || expression->type!=original_type || !operands || !operands->next || operands->next->next ||
+      operands->kind!=enk_constant || operands->next->kind!=enk_constant)
+    value.error="dependent enum increment lost its exact stock generated addition";
+  else {
+    value.previous=node_constant(operands);value.one=node_constant(operands->next);
+    if(!value.previous || value.previous->kind!=ck_template_param || value.previous->variant.template_param.kind!=tpck_expression ||
+        !value.previous->variant.template_param.variant.expr || value.one->kind!=ck_integer ||
+        value.previous->variant.template_param.variant.expr->type!=original_type ||
+        (forced_type?value.previous->type!=unknown_type:value.previous->type!=original_type))
+      value.error="dependent enum increment lost its original previous-value wrapper/type";
+  }
+  if(!state().source_enum_increments.emplace(expression,value).second)
+    state().source_enum_increments.at(expression).error="duplicate stock dependent enum increment observation";
+}
+inline unsigned capture_source_template(a_template_ptr);
 inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
   auto &s=state();if(!expression)return 0;
   if(expression->kind==enk_constant)return capture_semantic_constant(node_constant(expression));
@@ -854,6 +889,14 @@ inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
     value.standard_alignof=query.is_std_alignof;
     if(query.is_type)value.type_operand=capture_type(query.variant.type);
     else value.operands.push_back(capture_semantic_constant_expr(query.variant.expr));
+  } else if(expression->kind==enk_sizeof_pack) {
+    // cp_gen_be::gen_expression preserves these three original operand roles.
+    value.kind="sizeof-pack";const auto &query=expression->variant.sizeof_pack;
+    value.pack_is_type=query.is_type;value.pack_is_template=query.is_template_template;
+    if(query.is_template_template)value.pack_template=capture_source_template(query.variant.templ);
+    else if(query.is_type)value.pack_type=capture_type(query.variant.type);
+    else value.pack_expression=capture_constraint_expression(query.variant.expr,current_source_parameter_binder());
+    if(!value.pack_type && !value.pack_template && !value.pack_expression)value.error="original pack-size query has no operand";
   } else if(expression->kind==enk_variable) {
     value.kind="source-expression";
     value.source_expression=capture_constraint_expression(expression,current_source_parameter_binder());
@@ -871,6 +914,7 @@ inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
       case eok_negate:value.operation="neg";break;case eok_unary_plus:value.operation="plus";break;
       case eok_not:value.operation="not";break;case eok_complement:value.operation="bit-not";break;
       case eok_cast:value.operation="cast";break;
+      case eok_question:value.operation="conditional";break;
       default:value.error="dependent constant operation not yet represented";break;
     }
     for(auto operand=operation.operands;operand;operand=operand->next)value.operands.push_back(capture_semantic_constant_expr(operand));
@@ -880,6 +924,18 @@ inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
       ",operator-kind="+(expression->kind==enk_operation?std::to_string(int(expression->variant.operation.kind)):
       expression->kind==enk_builtin_operation?std::to_string(int(expression->variant.builtin_operation.kind)):"none")+
       ",operator-name="+value.operation+"]";
+  }
+  auto increment=s.source_enum_increments.find(expression);
+  if(increment!=s.source_enum_increments.end()) {
+    const auto &observed=increment->second;
+    if(!observed.error.empty())value.error=observed.error;
+    else if(value.kind!="operation" || value.operation!="add" || value.operands.size()!=2 ||
+        value.operands[0]!=capture_semantic_constant(observed.previous) || value.operands[1]!=capture_semantic_constant(observed.one))
+      value.error="dependent enum increment operands differ from their exact creation observation";
+    else {
+      value.enum_increment_original_type=capture_type(observed.original_type);
+      value.enum_increment_forced_type=observed.forced_type;
+    }
   }
   s.semantic_constants[id-1]=value;return id;
 }
@@ -1015,6 +1071,8 @@ inline unsigned capture_source_template(a_template_ptr templ) {
 inline void capture_enum(a_type_ptr t) {
   auto &s=state();auto old=s.enums.find(t);
   if(old!=s.enums.end() && old->second.list_complete)return;
+  if(!s.capturing_enums.insert(t).second)return;
+  struct EnumCaptureGuard {State &state;a_type_ptr type;~EnumCaptureGuard(){state.capturing_enums.erase(type);}} guard{s,t};
   Enum value;
   if(old==s.enums.end()) {
     auto key=std::make_pair(t->source_corresp.decl_position.seq,t->source_corresp.decl_position.column);
@@ -1033,7 +1091,13 @@ inline void capture_enum(a_type_ptr t) {
   std::string qualified=spelling(t->source_corresp);
   bool local=qualified.empty() || t->source_corresp.is_local_to_function ||
              t->source_corresp.enclosing_routine || t->declared_in_function_prototype;
-  value.needs_final_identity=t->variant.integer.is_template_enum;
+  value.is_template=t->variant.integer.is_template_enum;
+  value.nonreal=t->variant.integer.is_nonreal;
+  value.prototype=t->variant.integer.is_prototype_instantiation;
+  value.specialized=t->variant.integer.is_specialized;
+  value.originally_unnamed=t->variant.integer.originally_unnamed;
+  value.needs_final_identity=value.is_template;
+  if(t->source_corresp.is_class_member)value.owner=capture_type(parent_class_of(t));
   for(auto scope=t->source_corresp.parent_scope;scope;scope=scope->parent) {
     if(scope->kind==sck_namespace) {
       auto ns=scope->variant.assoc_namespace;auto part=ns?spelling(ns->source_corresp):std::string{};
@@ -1050,7 +1114,7 @@ inline void capture_enum(a_type_ptr t) {
   value.needs_final_identity=value.needs_final_identity || (!C_mode() && local);
   value.identity=(local?"local-enum:":"enum:")+qualified;
   for(auto con=enum_constants(t);con;con=con->next) {
-    if(con->kind!=ck_integer) {
+    if(con->kind!=ck_integer && !(value.is_template && con->kind==ck_template_param)) {
       value.error="enumerator lacks resolved integer value: enum="+qualified+
         " enumerator="+spelling(con->source_corresp)+" constant-kind="+std::to_string(int(con->kind))+
         " template-enum="+std::to_string(int(t->variant.integer.is_template_enum));
@@ -1067,7 +1131,8 @@ inline void capture_enum(a_type_ptr t) {
     enumerator.position=con->source_corresp.decl_position;
     // This is the same arbitrary-precision conversion used by EDG's name
     // mangler. It preserves signed values and all 128 bits without a host cast.
-    enumerator.value=decimal_str_for_integer_constant(con).as_temp_characters();
+    if(con->kind==ck_integer)enumerator.value=decimal_str_for_integer_constant(con).as_temp_characters();
+    else enumerator.constant=capture_semantic_constant(con);
     value.enumerators.push_back(enumerator);
   }
   s.enums[t]=value;
@@ -1165,10 +1230,16 @@ inline void capture_record(a_type_ptr t) {
       }
     } else if(!templ || (templ->kind!=templk_class && templ->kind!=templk_member_class) ||
        !templ->prototype_instantiation.type || templ->prototype_instantiation.type==t)
-      value.template_error="dependent class lacks original class template prototype";
+      value.template_error="dependent class lacks original class template prototype [name="+value.name+
+        ",proxy="+(is_proxy_class(t)?std::string("yes"):std::string("no"))+
+        ",proxy-kind="+(extra && extra->proxy_of_type?std::to_string(int(extra->proxy_of_type->kind)):std::string("none"))+
+        ",lambda="+(extra && extra->is_lambda_closure_class?std::string("yes"):std::string("no"))+
+        ",template-kind="+(templ?std::to_string(int(templ->kind)):std::string("none"))+
+        ",prototype-present="+(templ && templ->prototype_instantiation.type?std::string("yes"):std::string("no"))+
+        ",prototype-self="+(templ && templ->prototype_instantiation.type==t?std::string("yes"):std::string("no"))+
+        ",seq="+std::to_string(value.position.seq)+",column="+std::to_string(value.position.column)+"]";
     else value.template_prototype=capture_type(templ->prototype_instantiation.type);
-    if(extra && extra->partial_spec_template_arg_list)
-      value.template_error="dependent partial specialization requires owned selected argument mapping";
+    if(value.template_prototype)capture_source_class_specialization(t,templ,value.template_error);
     if(value.template_error.empty()) {
       for(auto argument=extra->template_arg_list;argument;argument=argument->next) {
         auto item=capture_constraint_argument(argument,value.template_error);
@@ -1410,7 +1481,20 @@ inline unsigned capture_type(a_type_ptr t) {
     if(!extra || parameter.is_generic_param || parameter.is_auto_param || parameter.is_decltype_auto ||
        parameter.originally_class_template_param)
       value.error="dependent source type requires additional generic/placeholder/nested-origin contract";
-    else if(parameter.kind==tptk_param) {
+    else if(parameter.kind==tptk_param && extra->coordinates.depth==AUTO_TYPE_NESTING_DEPTH) {
+      // Stock make_auto_type owns these placeholder coordinates. They do not
+      // denote a template formal and need not have a declaration location.
+      value.dependent_kind="auto-placeholder";value.dependent_depth=extra->coordinates.depth;
+      value.dependent_position=extra->coordinates.position;
+      if(parameter.is_pack || extra->template_symbol || extra->orig_nested_type || !value.name.empty() ||
+         (value.dependent_position!=PLAIN_AUTO_TYPE_POS_NUMBER && value.dependent_position!=DECLTYPE_AUTO_POS_NUMBER))
+        value.error="source auto placeholder lacks its exact original type-specifier form";
+      if(extra->constraint.type_constraint) {
+        if(extra->constraint.type_constraint->kind!=enk_concept_id)
+          value.error="constrained auto placeholder requires its exact original concept-id";
+        else value.constraint_expression=capture_constraint_expression(extra->constraint.type_constraint);
+      }
+    } else if(parameter.kind==tptk_param) {
       value.dependent_kind="parameter";value.dependent_depth=extra->coordinates.depth;
       value.dependent_position=extra->coordinates.position;value.dependent_pack=parameter.is_pack;
       if(value.dependent_depth<0 || value.dependent_position<=0)
@@ -1422,7 +1506,11 @@ inline unsigned capture_type(a_type_ptr t) {
       }
       a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
       conv_seq_to_file_and_line(value.position.seq,&display,&full,&line,&at_end);
-      if(!line || !(full?full:display))value.error="dependent source parameter lacks original declaration location";
+      if(!line || !(full?full:display))value.error="dependent source parameter lacks original declaration location [name="+value.name+
+        ",seq="+std::to_string(value.position.seq)+",column="+std::to_string(value.position.column)+
+        ",depth="+std::to_string(value.dependent_depth)+",position="+std::to_string(value.dependent_position)+
+        ",pack="+(parameter.is_pack?"yes":"no")+",template-symbol="+(extra->template_symbol?"yes":"no")+
+        ",original-nested-type="+(extra->orig_nested_type?"yes":"no")+"]";
       else value.dependent_identity=std::string(full?full:display)+":"+std::to_string(line)+":"+
         std::to_string(value.position.column)+":"+std::to_string(value.dependent_depth)+":"+std::to_string(value.dependent_position);
     } else if(parameter.kind==tptk_member) {

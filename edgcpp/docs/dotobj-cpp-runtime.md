@@ -845,3 +845,40 @@ suite also passed 107 checks including JIT/NativeAOT at
 parameter variables inside body-local type expressions still require a separate
 original declaration-ownership relation; these are not prototype `param_ref`
 nodes and are not admitted through the new prototype binder rule.
+
+
+### Named parameters in original body-local type expressions
+
+A parameter referenced by a body-local `decltype` is an original variable
+reference, distinct from a prototype `param_ref`. The new declaration relation
+records exact membership in the original function parameter list, its ordinal,
+the semantic routine declaration, and its original prototype binder. The
+variable's declared type remains separate from the adjusted parameter type;
+EDG can retain a template declaration type after substitution. No executable
+function body is forced merely to retain this source ownership.
+
+Native149/managed175 passed 44 checks at
+`dotobj-v59-function-parameters-149-175-001/results.json`: native/stock C O0/O2,
+source-hidden verification, JIT, NativeAOT, and seven malformed ownership,
+type, discriminator, and phase cases. The fixture covers free functions,
+template members, and same-named parameters in distinct functions. Arbitrary
+block-local variables and qualified parameter/type mismatches remain gated
+until their original scope or qualifier correspondence is represented.
+
+### Implicit increments of dependent enumerators
+
+EDG deliberately changes the previous-value wrapper of an implicit dependent
+enumerator increment to its unknown-dependent type while preserving the typed
+backing expression. The exporter records this exact stock factory observation,
+the generated addition, previous value, integer-one operand, original result
+type, and whether EDG changed the wrapper type. The reader verifies the ordered
+operation and its original enumerator ancestry before admitting this specific
+wrapper/backing-type difference. Ordinary expression wrappers keep their exact
+type checks.
+
+Native151/managed178 passed 47 focused checks at
+`dotobj-v59-enum-increments-151-178-003/results.json`, including native/stock C
+O0/O2, source-hidden verification, JIT, NativeAOT, and eight resealed malformed
+operation, operand, type, provenance, and disposition cases. Earlier receipts
+retain a fixture that did not force the prototype enum graph and a mismatched
+pack-size schema; neither is counted as semantic acceptance.

@@ -1030,3 +1030,84 @@ Native149 / managed175 now integrate original enum symbolic values/owner/flags,
 source function-parameter declaration ownership and both primary/selected
 partial-class substitutions. Their acceptance is pending. No runtime/libc++
 implementation work has displaced the exporter-first priority.
+
+
+Profile58 committed as ddbe0d4fe. Profile59 native149/managed175 focused
+function-parameter ownership passes44 checks; partial-class primary/selected
+substitution graphs pass43, both including NativeAOT. Its first actual sweep
+caught an enum writer regression: an optional absent owner was sent through
+required source_type(0), blocking44 units. Native150 fixes that mechanical call
+and prevents prototype enum types from acquiring an executable scalar mapping.
+
+Original enum initializer expressions can have a different type from their
+completed enum declaration: stock decl_spec.c change_enum_constants_type
+changes the named constant's type after scanning all values. The reader now
+requires the exact owned enum declaration row for this boundary. A second case,
+implicit successor enumerators, intentionally changes the previous-value copy
+to unknown-dependent in stock il.c increment_template_dependent_enum_constant.
+The lifetime worker is capturing that precise factory relation for151; no
+blanket wrapper-type mismatch allowance was added.
+
+Native150 / managed176 frozen SHAa899c8e903b1a366e0952552429267e7a077acddfac0a568425e975e233a8e11;
+45-unit actual frontier running. Pointer-valued ck_integer zero source constants
+retain original pointer types; focused null validation pending on176. No newly
+claimed full-project coverage from the regressed149 cut.
+
+### Candidate v59, frozen native150 / managed176
+
+The 45-unit source frontier now exports 17 units and verifies 16. DuckDB
+exception.cpp and hugeint.cpp export again; exception has a zero/nullptr source
+constant reader gate. These are regression recoveries, so retained-version full
+coverage remains 2,608 / 2,635, not a coherent current-profile corpus.
+
+Prioritize the 18 shared `sizeof...(pack)` original semantic graph failures, then
+six original auto/decltype-auto placeholder failures. Remaining first gates are
+two local class prototypes, one routine prototype binder, and one unnamed
+namespace. Exact dependent enum increment provenance and zero-only nullptr
+reader support are integrated for the next cut. Candidate local-parameter,
+partial-class, and typed pointer-zero suites have passed 44 + 43 + 29 checks.
+
+### Candidate v59, native151 / corrected managed178
+
+Current checkpoint: native151 exports 32 / 45 frontier units; corrected managed178
+verifies 31 / 32 using unchanged native151 semantic wire. All 15 newly exported
+libc++ units verify, raising cumulative retained-version export coverage to
+2,623 / 2,635 (12 original export failures remain). This is not a coherent latest
+full corpus. Candidate profile59 remains uncommitted. Exception.cpp has one
+selected class-substitution ownership reader gate.
+
+| Priority | Current first gates | Owner |
+| --- | ---: | --- |
+| Exact auto/decltype(auto) source placeholders | 6 | Lifetime worker; integrated for native152 / managed179 |
+| Nonreal local class source ownership | 4 | Supervisor; exact diagnostic capture in native152 |
+| Unnamed namespace identity and ownership | 1 | Base worker; source and nominal physical identity |
+| Competing original routine prototype scopes | 1 | Supervisor after class ownership |
+| Cleanup field correspondence | 1 | Lifetime worker after auto placeholders |
+| Selected class substitution verification | 1 exported unit | Base worker after namespace |
+
+The 13 native gates include a historical core regression, so they are not the
+12 original failures. Older checkpoints below are retained history.
+
+
+Evidence: `dotobj-source-ownership-frontier-151-177/summary.json` retains the
+original schema registry failure; `dotobj-source-ownership-repack151-178/results.json`
+records corrected packaging and verification of unchanged native wire. Exact
+sizeof-pack metadata passes 41 focused checks, dependent enum increment provenance
+47 checks including NativeAOT, and zero-only nullptr literals/formals 32 checks.
+
+### Accepted profile59 checkpoint
+
+Frozen native152 / managed179 passes 430 focused and source-graph regression
+checks across retained cuts. The final 45-unit frontier exports 35 and verifies
+34. Memory.cpp, future.cpp, and abi_mutex.cpp now export/verify, raising cumulative
+retained-version exports to 2,626 / 2,635. Nine original export failures remain;
+this is still not a coherent full corpus. Exception.cpp has the explicit selected
+class substitution reader gate.
+
+Next native first gates: five original proxy-class type relations, one private
+namespace, one anonymous-union cleanup path, one routine calling-method ABI, one
+local declaration binder, and one shared prototype binder. The ten first gates
+include the historical string_util regression. The supervisor owns proxy types;
+base worker owns namespaces and selected substitution; lifetime worker owns the
+stock anonymous-union cleanup path and calling-method/local-binder follow-up.
+Evidence: `evidence/dotobj-duckdb-source-graph-v59-20261010.json`.

@@ -36,8 +36,12 @@ internal sealed partial class ObjectFile : IDisposable
         ["source_named_templates"] = "template_id", ["source_alias_instances"] = "type_id",
         ["source_alias_arguments"] = "type_id,list_kind,ordinal", ["source_type_operators"] = "type_id",
         ["source_templates"] = "id", ["source_template_parameters"] = "source_template_id,ordinal",
-        ["source_record_instantiations"] = "source_record_id", ["source_template_arguments"] = "source_record_id,ordinal",
+        ["source_class_template_headers"] = "source_record_id", ["source_class_specializations"] = "source_record_id",
+        ["source_class_template_formals"] = "source_record_id,ordinal", ["source_class_template_patterns"] = "source_record_id,ordinal",
+        ["source_class_specialization_arguments"] = "source_record_id,ordinal", ["source_record_instantiations"] = "source_record_id", ["source_template_arguments"] = "source_record_id,ordinal",
         ["source_array_bounds"] = "type_id", ["source_semantic_constants"] = "id",
+        ["source_enum_increments"] = "operation_constant_id",
+        ["source_pack_sizes"] = "constant_id",
         ["source_semantic_constant_operands"] = "constant_id,ordinal",
         ["source_field_initializer_destructions"] = "source_initializer_id",
         ["field_initializer_executions"] = "source_initializer_id,function_entity_id",
@@ -79,6 +83,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["source_expression_substitution_formals"] = "expression_id,substitution_ordinal,ordinal",
         ["source_expression_substitution_arguments"] = "expression_id,substitution_ordinal,ordinal",
         ["source_expression_declarations"] = "id",
+        ["source_function_parameter_declarations"] = "declaration_id",
         ["source_expression_declaration_references"] = "expression_id",
         ["source_expression_declaration_formals"] = "declaration_id,ordinal",
         ["source_expression_declaration_arguments"] = "declaration_id,ordinal",
@@ -159,7 +164,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v58" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v59" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");

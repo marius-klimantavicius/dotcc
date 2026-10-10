@@ -71,7 +71,7 @@ internal sealed partial class ObjectFile
             {
                 var key=(kind,owner,substitution,argument.Ordinal);
                 if(!SourceConstraintArgumentDetails.TryGetValue(key,out var facts) || !used.Add(key) ||
-                    kind=="class" && facts.Pack!=argument.IsPack || facts.IntegerPack && argument.Kind!="constant" || facts.SubstitutedTemplate is not null && argument.Kind!="template" ||
+                    (kind is "class" or "class-pattern" or "class-selected") && facts.Pack!=argument.IsPack || facts.IntegerPack && argument.Kind!="constant" || facts.SubstitutedTemplate is not null && argument.Kind!="template" ||
                     facts.InjectedClass && argument.Kind!="type" || facts.Auto && facts.DecltypeAuto)
                     throw new InvalidDataException("Original argument lacks exact pack, expansion and substitution facts");
             }
@@ -79,6 +79,8 @@ internal sealed partial class ObjectFile
         foreach(var pair in SourceAliasSelectedArguments)Arguments("alias-selected",pair.Key,0,pair.Value);
         foreach(var pair in SourceAliasOriginalArguments)Arguments("alias-original",pair.Key,0,pair.Value);
         foreach(var pair in SourceTemplateArguments)Arguments("class",pair.Key,0,pair.Value);
+        foreach(var pair in SourceClassTemplatePatterns)Arguments("class-pattern",pair.Key,0,pair.Value);
+        foreach(var pair in SourceClassSpecializationArguments)Arguments("class-selected",pair.Key,0,pair.Value);
         foreach(var pair in SourceConceptArguments)Arguments("concept",pair.Key,0,pair.Value);
         foreach(var pair in SourceExpressionDeclarationArguments)Arguments("declaration",pair.Key,0,pair.Value);
         foreach(var pair in SourceExpressionSubstitutionArguments)Arguments("substitution",pair.Key.Expression,pair.Key.Ordinal,pair.Value);

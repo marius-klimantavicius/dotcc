@@ -116,6 +116,7 @@ internal sealed partial class ObjectFile
         SourceType type = SourceTypeById(id);
         if (type.Kind == "dependent") return true;
         if (type.Kind == "record") return SourceRecordsByType[id].IsDependent;
+        if (type.Kind == "enum") return SourceEnums[id].IsNonreal;
         return type.UnderlyingTypeId is long underlying && SourceTypeContainsParameter(underlying, depth + 1) ||
             type.ArrayBoundKind == "dependent";
     }

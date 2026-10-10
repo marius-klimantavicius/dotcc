@@ -11,7 +11,9 @@ internal sealed partial class ObjectFile
     private void VerifySourceConstraints()
     {
         VerifySourceParameterBinders();
+        VerifySourceFunctionParameterDeclarations();
         VerifySourceConstraintExtensions();
+        VerifySourceClassTemplates();
         VerifySourceAllocationPresence();
         VerifySourceFoldPresence();
         foreach(var expression in SourceExpressions.Values)
@@ -160,7 +162,7 @@ internal sealed partial class ObjectFile
             // EDG retains only explicit arguments. The declared parameter is
             // the implicit first type via this exact owned relation; compound
             // requirements instead supply the type of their result expression.
-            if(!SourceDependentTypes.TryGetValue(pair.Key,out var parameter) || parameter.Kind!="parameter")
+            if(!SourceDependentTypes.TryGetValue(pair.Key,out var parameter) || parameter.Kind is not("parameter" or "auto-placeholder"))
                 throw new InvalidDataException("Original type constraint does not bind its declared parameter");
         }
         var active=new HashSet<long>();var done=new HashSet<long>();
@@ -174,7 +176,7 @@ internal sealed partial class ObjectFile
         VerifySourceConstantExpressionDeclarations();
         foreach(var concept in SourceConcepts.Values)
             AddSourceConstraintContract("concept:"+concept.QualifiedName,SourceConceptIdentity(concept.Id,new HashSet<long>()));
-        foreach(var pair in SourceTypeConstraints)
+        foreach(var pair in SourceTypeConstraints.Where(pair=>SourceDependentTypes[pair.Key].Kind=="parameter"))
             AddSourceConstraintContract("parameter:"+SourceDependentTypes[pair.Key].IdentityKey,SourceExpressionIdentity(pair.Value,new HashSet<long>(),new HashSet<long>()));
     }
     private void VerifySourceConstraintInitializer(SourceExpressionDeclaration value)
@@ -342,6 +344,7 @@ internal sealed partial class ObjectFile
             SourceIdentityFrame(value.OwnerType is long owner?SourceTypeSignature(owner):"")+(value.Constexpr?"1":"0")+(value.HasTemplate?"1":"0")+(value.IsPrototype?"1":"0")+SourceIdentityFrame(value.TemplateOriginKind)+SourceIdentityFrame(value.RoutineKind)+SourceIdentityFrame(SourceDeclarationOperators.TryGetValue(id,out long originalOperator)?originalOperator.ToString(CultureInfo.InvariantCulture):"")+
             string.Concat(SourceExpressionDeclarationFormals.GetValueOrDefault(id,[]).Select(SourceConstraintFormalIdentity))+
             string.Concat(SourceExpressionDeclarationArguments.GetValueOrDefault(id,[]).Select(argument=>SourceIdentityFrame(SourceConstraintArgumentDetailsIdentity("declaration",id,0,argument))));
+        if(SourceFunctionParameterDeclarations.TryGetValue(id,out var parameter))result+="B"+SourceIdentityFrame(SourceConstraintDeclarationIdentity(parameter.Routine,active,activeConcepts))+SourceIdentityFrame(parameter.Ordinal.ToString(CultureInfo.InvariantCulture));
         if(value.TemplatePrototype is long prototype && prototype!=id)result+=SourceIdentityFrame(SourceConstraintDeclarationIdentity(prototype,active,activeConcepts));
         result+=SourceIdentityFrame(value.InitializerKind)+SourceIdentityFrame(value.OriginalInitKind?.ToString(CultureInfo.InvariantCulture)??"")+SourceIdentityFrame(value.OriginalDynamicInitKind?.ToString(CultureInfo.InvariantCulture)??"");
         if(value.InitializerConstant is long constant)result+=SourceIdentityFrame(SourceConstantIdentity(constant,0));

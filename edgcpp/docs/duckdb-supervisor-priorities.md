@@ -1,3 +1,30 @@
+Accepted profile59: native152 / managed179, 35 exports and 34 verified units in
+the 45-unit frontier. Cumulative retained-version coverage is 2,626 / 2,635; nine
+original export failures remain. No coherent full corpus or full generation yet.
+Current order: five original proxy-class source relations (supervisor), exact
+namespace/selected substitution (base), anonymous-union cleanup followed by
+calling-method ABI/local binder (lifetime). One shared prototype binder remains.
+Earlier checkpoints below are retained history.
+
+Current checkpoint: native151 exports 32 / 45 frontier units; corrected managed178
+verifies 31 / 32 using unchanged native151 semantic wire. All 15 newly exported
+libc++ units verify, raising cumulative retained-version export coverage to
+2,623 / 2,635 (12 original export failures remain). This is not a coherent latest
+full corpus. Candidate profile59 remains uncommitted. Exception.cpp has one
+selected class-substitution ownership reader gate.
+
+| Priority | Current first gates | Owner |
+| --- | ---: | --- |
+| Exact auto/decltype(auto) source placeholders | 6 | Lifetime worker; integrated for native152 / managed179 |
+| Nonreal local class source ownership | 4 | Supervisor; exact diagnostic capture in native152 |
+| Unnamed namespace identity and ownership | 1 | Base worker; source and nominal physical identity |
+| Competing original routine prototype scopes | 1 | Supervisor after class ownership |
+| Cleanup field correspondence | 1 | Lifetime worker after auto placeholders |
+| Selected class substitution verification | 1 exported unit | Base worker after namespace |
+
+The 13 native gates include a historical core regression, so they are not the
+12 original failures. Older checkpoints below are retained history.
+
 Accepted profile 57: 2,593/2,635 units exported across retained versions, with
 42 original exporter gates remaining. This is not a coherent latest-profile
 corpus. Candidate profile 58 remains unaccepted: its expanded source graph also
@@ -229,3 +256,17 @@ base worker owns both primary and selected partial-specialization substitutions.
 Exact prototype origin improvements cleared the previous conflicting-binder
 first gates. Latest receipt: dotobj-ranked-source-frontier-148.json.
 Cumulative retained-version exports: 2,608/2,635; no coherent latest full corpus.
+
+### Candidate v59, frozen native150 / managed176
+
+The 45-unit source frontier now exports 17 units and verifies 16. DuckDB
+exception.cpp and hugeint.cpp export again; exception has a zero/nullptr source
+constant reader gate. These are regression recoveries, so retained-version full
+coverage remains 2,608 / 2,635, not a coherent current-profile corpus.
+
+Prioritize the 18 shared `sizeof...(pack)` original semantic graph failures, then
+six original auto/decltype-auto placeholder failures. Remaining first gates are
+two local class prototypes, one routine prototype binder, and one unnamed
+namespace. Exact dependent enum increment provenance and zero-only nullptr
+reader support are integrated for the next cut. Candidate local-parameter,
+partial-class, and typed pointer-zero suites have passed 44 + 43 + 29 checks.

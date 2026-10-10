@@ -50,7 +50,7 @@ internal sealed partial class ObjectFile
             var type = SourceTypeById(pair.Key);
             string identity = SourceNestedTypeIdentity(pair.Key);
             if (type.Kind == "record" && SourceRecordsByType[type.Id].IdentityKey != identity ||
-                type.Kind == "enum" && SourceEnums[type.Id].IdentityKey != identity)
+                type.Kind == "enum" && (SourceEnums[type.Id].IdentityKey != identity || SourceEnums[type.Id].OwnerTypeId != pair.Value))
                 throw new InvalidDataException("Nested type identity differs from its exact original enclosing declaration");
         }
         foreach (var record in SourceRecords.Values)

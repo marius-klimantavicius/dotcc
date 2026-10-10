@@ -1,0 +1,72 @@
+{
+  "status": "accepted-source-graph-milestone",
+  "profile": "scalar-control-v59",
+  "focusedChecks": 430,
+  "checks": [
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v59-function-parameters-149-175-001/results.json",
+      "sha256": "a821b80e064484d376228f7d096a24c127f35dba29bad6287d4abfce1c1a1b88",
+      "checks": 44
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v59-partial-class-149-175-002/results.json",
+      "sha256": "b357209006df8d91d2960344b0f21ae63cf0b246df14364e93171e91a083eec2",
+      "checks": 43
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v59-null-pointers-150-176-001/results.json",
+      "sha256": "d359b49df5bb7fcc7aadc0f8169b4cde8826a418e587277134158da5e8cedb24",
+      "checks": 29
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v59-enum-increments-151-178-003/results.json",
+      "sha256": "a468a5d7e37ef5d9a65bc02bff73ed48038add93621be8ba25191d4a0703b9bc",
+      "checks": 47
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v59-nullptr-151-178-002/results.json",
+      "sha256": "874e2ab2173ad59eb033469bfd5aca1cedbe84d791cd764e77ea2a70fdc8f515",
+      "checks": 32
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v59-pack-sizes-151-178-001/results.json",
+      "sha256": "fe651ac84f8e173b3c361d6d531f84e2316a89a1a915834102c638707fdf3b93",
+      "checks": 41
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v59-enumerators-152-179-001/results.json",
+      "sha256": "0b0e28ef2312deb359e90311b576d1569e246958e488e8d8f179d8ce92a9fcf3",
+      "checks": 46
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v59-auto-placeholders-152-179-001/results.json",
+      "sha256": "4a05f1cab5f66e9c412795754006f627bf85645d28057b647329880787aef3cb",
+      "checks": 43
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v59-constraints-152-179-001/results.json",
+      "sha256": "2085976a164204ca79331423aef1274ef5371de31bb0a3ae08a9e2ada8d18261",
+      "checks": 105
+    }
+  ],
+  "compiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native152-verified-snapshot/cpfe-dot",
+  "linker": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-179/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "frontier": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-ownership-frontier-152-179/summary.json",
+  "frontierUnits": 45,
+  "exported": 35,
+  "verified": 34,
+  "cumulativeExportedAcrossVersions": 2626,
+  "fullManifestUnits": 2635,
+  "coherentFullCorpus": false,
+  "fullGeneration": false,
+  "fullCompile": false,
+  "fullRun": false,
+  "remainingManagedGate": "exception.cpp: selected original class substitution ownership",
+  "notes": [
+    "Original enum source graph, exact EDG implicit successor factory observation, sizeof...(pack) operand categories, auto/decltype(auto) placeholders, function parameter owner, partial class substitution, and zero-only pointer/nullptr constants.",
+    "No new runtime implementation; focused native/stock/source-hidden/JIT checks with NativeAOT in selected ownership suites, plus105 source graph regression checks. Broad1042checks remain accepted v58 evidence, not rerun or counted here.",
+    "All intermediates retained including schema-table registry and test fixture corrections. Native151 unchanged wires were repackaged to corrected schema for earlier31/32 verification; final152/179 frontier is coherent for the45 selected units."
+  ],
+  "compilerSha256": "19deb2afa4c3f38ec9cb3c64a49743bddc7b0cf88e8efbe4d289850d9380b193",
+  "linkerSha256": "ec3ee7e2ee53f0cb0ccc71331427c93e6c1f4d70dfb958dcdd4f3ba5734eebe5"
+}

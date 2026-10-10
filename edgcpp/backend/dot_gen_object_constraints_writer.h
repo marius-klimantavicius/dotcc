@@ -77,7 +77,46 @@ string constraint_formal_row(const char *owner_name,unsigned owner,unsigned ordi
     ",\"isPack\":"+(formal.pack?"true":"false")+
     ",\"isAbbreviated\":"+(formal.abbreviated?"true":"false")+position(formal.position)+"}";
 }
-std::vector<string> source_declaration_operators;
+std::set<a_type_ptr> written_source_class_headers,written_source_class_specializations;
+std::vector<string> source_class_template_headers,source_class_template_formals,source_class_template_patterns,source_class_specializations,source_class_specialization_arguments;
+string source_class_argument_row(unsigned owner,unsigned ordinal,const dot_object_source::SourceTemplateArgument &argument) {
+  return "{\"sourceRecordId\":"+number(owner)+",\"ordinal\":"+std::to_string(ordinal)+",\"kind\":"+quote(argument.kind)+
+    ",\"typeId\":"+number(argument.type?source_type(argument.type):0)+",\"constantId\":"+number(argument.constant?source_semantic_constant(argument.constant):0)+
+    ",\"templateId\":"+number(argument.templ?source_template_reference(argument.templ):0)+",\"isPack\":"+(argument.pack?"true":"false")+"}";
+}
+unsigned source_class_header(a_type_ptr type) {
+  auto &graph=dot_object_source::source_constraint_graph();auto entry=graph.class_template_headers.find(type);
+  if(entry==graph.class_template_headers.end())reject("source class template header lacks its original capture");
+  if(!written_source_class_headers.insert(type).second)return source_record_metadata(type);
+  const auto value=entry->second;if(!value.error.empty())reject(value.error.c_str());
+  unsigned record=source_record_metadata(type);
+  unsigned primary=value.primary?source_class_header(dot_object_source::state().types.at(value.primary-1).record_type):0;
+  source_class_template_headers.push_back("{\"sourceRecordId\":"+number(record)+",\"primarySourceRecordId\":"+number(primary)+
+    ",\"formalCount\":"+std::to_string(value.formals.size())+",\"patternCount\":"+std::to_string(value.pattern.size())+
+    ",\"constraintExpressionId\":"+number(value.constraint?source_constraint_expression(value.constraint):0)+",\"captureProof\":\"original-class-template-header\"}");
+  unsigned ordinal=0;for(const auto &formal:value.formals)source_class_template_formals.push_back(constraint_formal_row("sourceRecordId",record,ordinal++,formal));
+  ordinal=0;for(const auto &argument:value.pattern) {
+    source_constraint_argument_details_row("class-pattern",record,ordinal,0,argument);
+    source_class_template_patterns.push_back(source_class_argument_row(record,ordinal++,argument));
+  }
+  return record;
+}
+void source_class_specialization_metadata(a_type_ptr type) {
+  auto &graph=dot_object_source::source_constraint_graph();
+  if(graph.class_template_headers.count(type))source_class_header(type);
+  auto found=graph.class_specializations.find(type);
+  if(found==graph.class_specializations.end() || !written_source_class_specializations.insert(type).second)return;
+  const auto value=found->second;if(!value.error.empty())reject(value.error.c_str());
+  if(!value.selected)reject("source partial class instance has no selected header");
+  unsigned record=source_record_metadata(type),selected=source_class_header(dot_object_source::state().types.at(value.selected-1).record_type);
+  source_class_specializations.push_back("{\"sourceRecordId\":"+number(record)+",\"selectedSourceRecordId\":"+number(selected)+
+    ",\"selectedArgumentCount\":"+std::to_string(value.arguments.size())+",\"captureProof\":\"original-partial-class-substitution\"}");
+  unsigned ordinal=0;for(const auto &argument:value.arguments) {
+    source_constraint_argument_details_row("class-selected",record,ordinal,0,argument);
+    source_class_specialization_arguments.push_back(source_class_argument_row(record,ordinal++,argument));
+  }
+}
+std::vector<string> source_declaration_operators,source_function_parameter_declarations;
 unsigned source_constraint_declaration(unsigned captured) {
   if(!captured)reject("source expression declaration is absent");
   if(!written_source_declarations.insert(captured).second)return captured;
@@ -88,6 +127,7 @@ unsigned source_constraint_declaration(unsigned captured) {
     ",\"sourceTypeId\":"+number(source_type(value.type))+
     ",\"ownerSourceTypeId\":"+number(value.owner_type?source_type(value.owner_type):0)+
     ",\"templatePrototypeDeclarationId\":"+number(value.template_prototype?source_constraint_declaration(value.template_prototype):0)+
+    ",\"scopeKind\":"+quote(value.parameter_owner?"function-parameter":"nonlocal")+
     ",\"routineKind\":"+quote(value.routine_kind)+",\"templateOriginKind\":"+quote(value.template_origin_kind)+
     ",\"hasTemplateOrigin\":"+(value.has_template_origin?"true":"false")+
     ",\"isTemplatePrototype\":"+(value.is_template_prototype?"true":"false")+
@@ -99,6 +139,12 @@ unsigned source_constraint_declaration(unsigned captured) {
     ",\"initializerExpressionId\":"+number(value.initializer_expression?source_constraint_expression(value.initializer_expression):0)+
     ",\"formalCount\":"+std::to_string(value.template_formals.size())+",\"argumentCount\":"+std::to_string(value.template_arguments.size())+
     ",\"definitionStatus\":\"reference-only\",\"captureProof\":\"original-expression-declaration\""+position(value.location)+"}");
+  if(value.parameter_owner)source_function_parameter_declarations.push_back("{\"declarationId\":"+number(captured)+
+    ",\"routineDeclarationId\":"+number(source_constraint_declaration(value.parameter_owner))+
+    ",\"binderId\":"+number(source_parameter_binder(value.parameter_binder))+
+    ",\"parameterOrdinal\":"+std::to_string(value.parameter_ordinal)+
+    ",\"declaredSourceTypeId\":"+number(value.parameter_declared_type?source_type(value.parameter_declared_type):0)+
+    ",\"captureProof\":\"original-function-parameter-list\"}");
   if(value.operator_kind>=0)source_declaration_operators.push_back("{\"declarationId\":"+number(captured)+",\"operatorKind\":"+std::to_string(value.operator_kind)+",\"captureProof\":\"original-operator-declaration\"}");
   unsigned ordinal=0;for(const auto &formal:value.template_formals)
     source_expression_declaration_formals.push_back(constraint_formal_row("declarationId",captured,ordinal++,formal));

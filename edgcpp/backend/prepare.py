@@ -833,6 +833,15 @@ object_source_overlay(init_lower,
 # observe the typed position before it is represented as region-table handles.
 il_source = root / "upstream/src/il.c"
 object_source_overlay(il_source,
+    '  con->variant.template_param.variant.expr->compiler_generated = TRUE;\n'
+    '  release_local_constant(&one_val);',
+    '  con->variant.template_param.variant.expr->compiler_generated = TRUE;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_dependent_enum_increment(\n'
+    '      con->variant.template_param.variant.expr, con->type, prev_val->type != con->type, type_of_unknown_templ_param_nontype);\n'
+    '#endif\n'
+    '  release_local_constant(&one_val);')
+object_source_overlay(il_source,
     '#include "trans_copy.h"',
     '#include "trans_copy.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
 # Only signatures already owned by the exact lambda factory inherit its

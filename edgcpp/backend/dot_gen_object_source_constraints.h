@@ -145,6 +145,7 @@ struct SourceConstraintBinder {
 struct SourceConstraintDeclaration {
   std::string kind,name,qualified_name,error;
   unsigned type=0,owner_type=0,template_prototype=0;
+  unsigned parameter_owner=0,parameter_binder=0,parameter_ordinal=0,parameter_declared_type=0;
   int original_init_kind=-1,original_dynamic_init_kind=-1,operator_kind=-1;
   std::string initializer_kind="not-variable";
   unsigned initializer_constant=0,initializer_expression=0;
@@ -154,6 +155,17 @@ struct SourceConstraintDeclaration {
   std::vector<SourceTemplateFormal> template_formals;
   std::vector<SourceConstraintArgument> template_arguments;
 };
+struct SourceClassTemplateHeader {
+  unsigned type=0,primary=0,constraint=0;
+  std::vector<SourceTemplateFormal> formals;
+  std::vector<SourceTemplateArgument> pattern;
+  std::string error;
+};
+struct SourceClassSpecialization {
+  unsigned selected=0;
+  std::vector<SourceTemplateArgument> arguments;
+  std::string error;
+};
 struct SourceConstraintGraph {
   std::map<std::pair<an_expr_node_ptr,unsigned>,unsigned> expressions_by_original;
   std::map<a_template_ptr,unsigned> concepts_by_original;
@@ -161,6 +173,8 @@ struct SourceConstraintGraph {
   std::vector<SourceConstraintConcept> concepts;
   std::map<unsigned,SourceConstraintBinder> binders;
   unsigned active_binder=0;
+  std::map<a_type_ptr,SourceClassTemplateHeader> class_template_headers;
+  std::map<a_type_ptr,SourceClassSpecialization> class_specializations;
   std::set<a_new_delete_supplement_ptr> deferred_new_lookups;
   std::map<std::tuple<unsigned,unsigned,unsigned>,std::pair<unsigned,unsigned>> binder_pairs;
   std::map<unsigned,unsigned> requires_binders;
@@ -212,6 +226,7 @@ inline std::pair<unsigned,unsigned> capture_parameter_binder_pair(unsigned expre
 }
 inline unsigned capture_constraint_expression(an_expr_node_ptr,unsigned=~0U);
 inline unsigned capture_constraint_concept(a_template_ptr);
+inline unsigned capture_constraint_routine(a_routine_ptr);
 
 inline unsigned capture_constraint_pack_expansion(a_pack_expansion_descr_ptr original) {
   if(!original)return 0;
@@ -284,14 +299,107 @@ inline SourceTemplateFormal capture_constraint_formal(a_template_parameter_ptr p
   return formal;
 }
 
+inline bool capture_constraint_function_parameter(a_variable_ptr variable,SourceConstraintDeclaration &value) {
+  if(!variable->is_parameter || variable->is_this_parameter)return false;
+  auto scope=variable->source_corresp.parent_scope;
+  if(!scope || scope->kind!=sck_function || !scope->variant.routine.ptr)return false;
+  auto routine=scope->variant.routine.ptr;auto &s=state();auto &graph=source_constraint_graph();
+  auto captured=s.functions.find(routine);std::vector<a_variable_ptr> parameters;
+  if(captured!=s.functions.end() && captured->second.scope_captured)parameters=captured->second.parameter_variables;
+  else {
+    auto type=s.type_ids.find(routine->type);
+    if(type!=s.type_ids.end() && s.routine_abis.count(type->second)) {
+      value.error="source function parameter lost its prelowering declaration list";return false;
+    }
+    for(auto parameter=scope->variant.routine.parameters;parameter;parameter=parameter->next)
+      if(parameter!=scope->variant.routine.this_param_variable)parameters.push_back(parameter);
+  }
+  unsigned ordinal=0;while(ordinal<parameters.size() && parameters[ordinal]!=variable)++ordinal;
+  if(ordinal==parameters.size())return false;
+  value.parameter_ordinal=ordinal;
+  value.parameter_owner=capture_constraint_routine(routine);
+  unsigned type=captured!=s.functions.end()?captured->second.signature_type:capture_type(routine->type);
+  auto binder=graph.binder_pairs.find(std::make_tuple(0U,type,0U));
+  if(binder==graph.binder_pairs.end()) {value.error="source function parameter lacks its original routine prototype binder";return false;}
+  value.parameter_binder=binder->second.second;
+  const auto &original=graph.binders.at(value.parameter_binder).parameters;
+  if(original.size()!=parameters.size() || value.parameter_ordinal>=original.size() ||
+      original[value.parameter_ordinal].type!=value.type) {
+    value.error="source function parameter differs from its exact original adjusted signature";return false;
+  }
+#if GENERATE_SOURCE_SEQUENCE_LISTS
+  value.parameter_declared_type=capture_type(variable->declared_type);
+#endif
+  return true;
+}
+// Each partial class specialization has two distinct formal/actual maps.
+// The class supplement's template_arg_list belongs to the primary template;
+// partial_spec_template_arg_list belongs to the selected partial declaration.
+inline unsigned capture_source_class_template_header(a_template_ptr templ,std::string &error) {
+  SourceParameterScope scope(0);auto &graph=source_constraint_graph();
+  if(!templ || (templ->kind!=templk_class && templ->kind!=templk_member_class) ||
+      !templ->template_decl || !templ->prototype_instantiation.type || !is_immediate_class_type(templ->prototype_instantiation.type)) {
+    error="selected class template lacks its exact original header/prototype";return 0;
+  }
+  auto prototype=templ->prototype_instantiation.type;
+  auto previous=graph.class_template_headers.find(prototype);
+  if(previous!=graph.class_template_headers.end())return previous->second.type?previous->second.type:capture_type(prototype);
+  graph.class_template_headers[prototype]=SourceClassTemplateHeader{};
+  unsigned type_id=capture_type(prototype);graph.class_template_headers[prototype].type=type_id;
+  SourceClassTemplateHeader value;value.type=type_id;
+  auto symbol=symbol_for(templ);
+  if(!symbol || symbol->kind!=sk_class_template) {value.error="class template header lacks its original class template symbol";}
+  else {
+    auto primary_symbol=symbol->variant.template_info->primary_template_sym;
+    if(primary_symbol) {
+      if(primary_symbol==symbol || primary_symbol->kind!=sk_class_template || !primary_symbol->variant.template_info)
+        value.error="partial class template has invalid original primary declaration";
+      else value.primary=capture_source_class_template_header(primary_symbol->variant.template_info->il_template_entry,value.error);
+    }
+  }
+  for(auto formal=templ->template_decl->param_list;formal;formal=formal->next)value.formals.push_back(capture_constraint_formal(formal,value.error));
+  if(templ->template_decl->constraint.requires_clause)value.constraint=capture_constraint_expression(templ->template_decl->constraint.requires_clause->constraint,0);
+  if(value.primary)for(auto argument=class_type_supp(prototype)->template_arg_list;argument;argument=argument->next)
+    value.pattern.push_back(capture_constraint_argument(argument,value.error));
+  graph.class_template_headers[prototype]=value;if(!value.error.empty())error=value.error;return type_id;
+}
+inline bool capture_source_class_specialization(a_type_ptr instance,a_template_ptr templ,std::string &error) {
+  if(!instance || !templ || (templ->kind!=templk_class && templ->kind!=templk_member_class))return false;
+  auto supplement=class_type_supp(instance);auto symbol=symbol_for(templ);
+  if(!symbol || symbol->kind!=sk_class_template) {
+    if(supplement->partial_spec_template_arg_list)error="partial class instance lacks original selected template symbol";
+    return false;
+  }
+  auto primary=symbol->variant.template_info->primary_template_sym;
+  if(!primary) {
+    if(supplement->partial_spec_template_arg_list)error="partial class arguments have no selected partial declaration";
+    return false;
+  }
+  auto &graph=source_constraint_graph();auto found=graph.class_specializations.find(instance);
+  if(found!=graph.class_specializations.end()) {if(!found->second.error.empty())error=found->second.error;return true;}
+  graph.class_specializations[instance]=SourceClassSpecialization{};
+  SourceClassSpecialization value;value.selected=capture_source_class_template_header(templ,value.error);
+  for(auto argument=supplement->partial_spec_template_arg_list;argument;argument=argument->next)
+    value.arguments.push_back(capture_constraint_argument(argument,value.error));
+  graph.class_specializations[instance]=value;if(!value.error.empty())error=value.error;return true;
+}
+
 inline void capture_constraint_declaration_scope(a_source_correspondence &source,SourceConstraintDeclaration &value) {
   value.name=spelling(source);value.qualified_name=value.name;value.location=source.decl_position;
   if(source.is_class_member)value.owner_type=capture_type(scp_parent_class(&source));
   for(auto scope=source.parent_scope;scope;scope=scope->parent) {
     if(scope->kind==sck_namespace) {
       auto ns=scope->variant.assoc_namespace;
-      if(!ns || ns->has_internal_linkage || spelling(ns->source_corresp).empty())value.error="source expression declaration needs original unnamed namespace identity";
+      if(!ns || ns->has_internal_linkage || spelling(ns->source_corresp).empty())value.error="source expression declaration needs original unnamed namespace identity [declaration="+value.name+
+        ",namespace="+(ns?spelling(ns->source_corresp):std::string("absent"))+
+        ",internal="+(ns && ns->has_internal_linkage?"yes":"no")+
+        ",seq="+std::to_string(ns?ns->source_corresp.decl_position.seq:0)+
+        ",column="+std::to_string(ns?ns->source_corresp.decl_position.column:0)+"]";
       else value.qualified_name=spelling(ns->source_corresp)+"::"+value.qualified_name;
+    } else if(scope->kind==sck_function && value.parameter_owner && scope==source.parent_scope) {
+      // The exact original parameter-list relation owns this local declaration.
+      // Its routine retains enclosing class/namespace/template identity.
+      break;
     } else if(scope->kind!=sck_file && scope->kind!=sck_class_struct_union)
       value.error="source expression declaration needs original local binder";
   }
@@ -304,6 +412,7 @@ inline unsigned capture_constraint_variable(a_variable_ptr variable) {
   auto previous=graph.declarations_by_original.find(key);if(previous!=graph.declarations_by_original.end())return previous->second;
   unsigned id=unsigned(graph.declarations.size()+1);graph.declarations_by_original[key]=id;graph.declarations.emplace_back();
   SourceConstraintDeclaration value;value.kind="variable";value.type=capture_type(variable->type);value.is_constexpr=variable->is_constexpr;
+  capture_constraint_function_parameter(variable,value);
   capture_constraint_declaration_scope(variable->source_corresp,value);
   value.original_init_kind=int(variable->init_kind);value.initializer_kind="none";
   a_constant_ptr initializer_constant=nullptr;
@@ -375,9 +484,10 @@ inline void capture_selected_member_owner(unsigned owner_id,unsigned primary_id,
   }
   auto supplement=class_type_supp(owner);auto templ=supplement?supplement->assoc_template:nullptr;
   if(!templ || (templ->kind!=templk_class && templ->kind!=templk_member_class) ||
-      templ->prototype_instantiation.type!=primary || supplement->partial_spec_template_arg_list || record.prototype) {
+      templ->prototype_instantiation.type!=primary || record.prototype) {
     error="selected concrete member requires exact original enclosing class substitution";return;
   }
+  capture_source_class_specialization(owner,templ,record.template_error);
   record.template_prototype=primary_id;s.records[owner]=record; // Reserve before recursive argument capture.
   for(auto argument=supplement->template_arg_list;argument;argument=argument->next)
     record.template_arguments.push_back(capture_constraint_argument(argument,record.template_error));
@@ -686,6 +796,8 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
       } else {value.kind="constant";value.constant=capture_semantic_constant(constant);}
       break;
     }
+    case enk_sizeof_pack:
+      value.kind="constant";value.constant=capture_semantic_constant_expr(expression);break;
     case enk_sizeof: case enk_alignof: case enk_datasizeof: {
       value.kind=expression->kind==enk_sizeof?"sizeof":expression->kind==enk_alignof?"alignof":"datasizeof";
       const auto &query=expression->variant.sizeof_info;value.standard_alignof=query.is_std_alignof;

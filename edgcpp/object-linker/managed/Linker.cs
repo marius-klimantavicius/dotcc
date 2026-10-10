@@ -159,7 +159,12 @@ internal sealed partial class Linker
                     definitions.Add(type.IdentityKey, (obj, type));
                     continue;
                 }
-                if (type.IsScoped != prior.Type.IsScoped ||
+                if ((type.OwnerTypeId is long owner?obj.SourceTypeSignature(owner):null)!=
+                    (prior.Type.OwnerTypeId is long priorOwner?prior.Object.SourceTypeSignature(priorOwner):null) ||
+                    type.IsNonreal!=prior.Type.IsNonreal || type.IsPrototype!=prior.Type.IsPrototype ||
+                    type.IsSpecialized!=prior.Type.IsSpecialized || type.OriginallyUnnamed!=prior.Type.OriginallyUnnamed ||
+                    type.UnderlyingOrigin!=prior.Type.UnderlyingOrigin ||
+                    type.IsTemplate != prior.Type.IsTemplate || type.IsScoped != prior.Type.IsScoped ||
                     obj.SourceTypes[type.TypeId].SourceName != prior.Object.SourceTypes[prior.Type.TypeId].SourceName ||
                     obj.SourceTypeSignature(type.UnderlyingTypeId) != prior.Object.SourceTypeSignature(prior.Type.UnderlyingTypeId))
                     throw new InvalidDataException($"Original enum type mismatch for {type.IdentityKey}");
@@ -167,8 +172,8 @@ internal sealed partial class Linker
                 {
                     var current = obj.SourceEnumerators.GetValueOrDefault(type.TypeId, []);
                     var previous = prior.Object.SourceEnumerators.GetValueOrDefault(prior.Type.TypeId, []);
-                    IEnumerable<(string Name, string Value)> currentValues = current.Select(item => (item.SourceName, item.ValueText));
-                    IEnumerable<(string Name, string Value)> previousValues = previous.Select(item => (item.SourceName, item.ValueText));
+                    IEnumerable<(string Name, string Value)> currentValues = current.Select(item => (item.SourceName, obj.SourceEnumeratorValueIdentity(item)));
+                    IEnumerable<(string Name, string Value)> previousValues = previous.Select(item => (item.SourceName, prior.Object.SourceEnumeratorValueIdentity(item)));
                     if (obj.SourceLanguage == "c" && prior.Object.SourceLanguage == "c")
                     {
                         currentValues = currentValues.OrderBy(item => item.Name, StringComparer.Ordinal);

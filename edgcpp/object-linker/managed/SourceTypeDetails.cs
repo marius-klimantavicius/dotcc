@@ -4,9 +4,9 @@ using System.Numerics;
 namespace DotObj;
 
 internal sealed record SourceEnumType(long TypeId, string IdentityKey, long UnderlyingTypeId,
-    bool IsScoped, bool IsComplete, bool EnumeratorListComplete, bool HasExplicitBase);
+    bool IsScoped, bool IsComplete, bool EnumeratorListComplete, bool HasExplicitBase, bool IsTemplate, long? OwnerTypeId, long SourceOccurrence, long EnumeratorCount, bool IsNonreal, bool IsPrototype, bool IsSpecialized, bool OriginallyUnnamed, string UnderlyingOrigin);
 internal sealed record SourceEnumerator(long TypeId, long Ordinal, string SourceName, string ValueText,
-    long? SourceFileId, long Line, long Column);
+    long? SourceFileId, long Line, long Column, long? ConstantId);
 internal sealed record SourceMemberPointerType(long TypeId, long OwnerTypeId, long MemberTypeId, string CaptureProof);
 
 internal sealed partial class ObjectFile
@@ -150,20 +150,20 @@ internal sealed partial class ObjectFile
                 if (!SourceTypeQualifiers.TryGetValue(id, out var qualifiers)) SourceTypeQualifiers.Add(id, qualifiers = new(StringComparer.Ordinal));
                 if (!qualifiers.Add(name)) throw new InvalidDataException("Duplicate original source qualifier");
             }
-        using (var query = database.Prepare("SELECT type_id,identity_key,underlying_type_id,is_scoped,is_complete,enumerator_list_complete,has_explicit_base FROM source_enum_types ORDER BY type_id"))
+        using (var query = database.Prepare("SELECT type_id,identity_key,underlying_type_id,is_scoped,is_complete,enumerator_list_complete,has_explicit_base,is_template,owner_type_id,source_occurrence,enumerator_count,is_nonreal,is_prototype,is_specialized,originally_unnamed,underlying_origin FROM source_enum_types ORDER BY type_id"))
             while (query.Read())
             {
-                var type = new SourceEnumType(query.Integer(0), query.Text(1), query.Integer(2), query.Integer(3) == 1, query.Integer(4) == 1, query.Integer(5) == 1, query.Integer(6) == 1);
+                var type = new SourceEnumType(query.Integer(0), query.Text(1), query.Integer(2), query.Integer(3) == 1, query.Integer(4) == 1, query.Integer(5) == 1, query.Integer(6) == 1, query.Integer(7) == 1, query.OptionalInteger(8), query.Integer(9), query.Integer(10),query.Integer(11)==1,query.Integer(12)==1,query.Integer(13)==1,query.Integer(14)==1,query.Text(15));
                 if (SourceTypeById(type.TypeId).Kind != "enum" || type.IdentityKey.Length == 0 ||
                     query.Integer(3) is not (0 or 1) || query.Integer(4) is not (0 or 1) || query.Integer(5) is not (0 or 1) || query.Integer(6) is not (0 or 1) ||
-                    type.EnumeratorListComplete && !type.IsComplete)
+                    query.Integer(7) is not (0 or 1) || type.EnumeratorListComplete && !type.IsComplete)
                     throw new InvalidDataException("Invalid original enum identity or completeness");
                 SourceEnums.Add(type.TypeId, type);
             }
-        using (var query = database.Prepare("SELECT type_id,ordinal,source_name,value_text,source_file_id,line,column FROM source_enumerators ORDER BY type_id,ordinal"))
+        using (var query = database.Prepare("SELECT type_id,ordinal,source_name,value_text,source_file_id,line,column,constant_id FROM source_enumerators ORDER BY type_id,ordinal"))
             while (query.Read())
             {
-                var item = new SourceEnumerator(query.Integer(0), query.Integer(1), query.Text(2), query.Text(3), query.OptionalInteger(4), query.Integer(5), query.Integer(6));
+                var item = new SourceEnumerator(query.Integer(0), query.Integer(1), query.Text(2), query.Text(3), query.OptionalInteger(4), query.Integer(5), query.Integer(6), query.OptionalInteger(7));
                 if (!SourceEnums.TryGetValue(item.TypeId, out SourceEnumType? type) || !type.EnumeratorListComplete || item.SourceName.Length == 0 || item.Line < 0 || item.Column < 0)
                     throw new InvalidDataException("Invalid original enumerator identity or location");
                 if (!SourceEnumerators.TryGetValue(item.TypeId, out var entries)) SourceEnumerators.Add(item.TypeId, entries = []);
@@ -190,16 +190,49 @@ internal sealed partial class ObjectFile
         foreach (SourceEnumType item in SourceEnums.Values)
         {
             SourceType source = SourceTypeById(item.TypeId), underlying = Original(SourceTypeById(item.UnderlyingTypeId));
-            (int bits, bool signed) = SourceIntegerShape(underlying);
+            if(item.OwnerTypeId is long owner && SourceTypeById(owner).Kind!="record")
+                throw new InvalidDataException("Original enum owner is not a class type");
+            if(item.SourceOccurrence<0 || item.EnumeratorCount!=SourceEnumerators.GetValueOrDefault(item.TypeId,[]).Count)
+                throw new InvalidDataException("Original enum lost its complete ordered enumerator list");
+            if(item.IdentityKey.StartsWith("source-member-enum:",StringComparison.Ordinal)) {
+                if(!item.IsTemplate || item.OwnerTypeId is not long exactOwner)
+                    throw new InvalidDataException("Original template enum identity lost its declaration owner");
+                string expected="source-member-enum:"+SourceIdentityFrame(SourceArgumentTypeIdentity(exactOwner,0))+SourceIdentityFrame(source.SourceName);
+                if(source.SourceName.Length==0) {
+                    if(source.SourceFileId is null)throw new InvalidDataException("Anonymous original enum lacks its declaration location");
+                    using var file=database.Prepare($"SELECT path FROM source_files WHERE id={source.SourceFileId}");
+                    if(!file.Read())throw new InvalidDataException("Anonymous original enum lacks its declaration location");
+                    expected+=SourceIdentityFrame(file.Text(0)+":"+source.Line+":"+source.Column+":"+item.SourceOccurrence);
+                }
+                if(item.IdentityKey!=expected)throw new InvalidDataException("Original template enum identity differs from its exact owner and declaration");
+            }
+            if(item.UnderlyingOrigin!=(item.HasExplicitBase?"declared":item.IsNonreal&&!item.IsScoped?"prototype-placeholder":"inferred") ||
+               item.IsPrototype&&!item.IsNonreal || item.IsNonreal&&!item.IsTemplate ||
+               item.IsNonreal && source.ExecutionRepresentationId is not null)
+                throw new InvalidDataException("Original enum prototype and underlying type origin disagree");
+            bool symbolic=SourceEnumerators.GetValueOrDefault(item.TypeId,[]).Any(value=>value.ConstantId is not null);
+            if(symbolic && (!item.IsTemplate || source.ExecutionRepresentationId is not null))
+                throw new InvalidDataException("Original template enum values cannot claim a resolved execution representation");
+            bool unresolvedUnderlying=item.UnderlyingOrigin=="prototype-placeholder" || SourceTypeContainsParameter(underlying.Id,0);
+            if(unresolvedUnderlying && !item.IsNonreal)throw new InvalidDataException("Concrete enum cannot retain an unresolved underlying type");
+            (int bits, bool signed) = unresolvedUnderlying?(0,false):SourceIntegerShape(underlying);
             if (source.ExecutionRepresentationId is long physical && Type(physical) != Type(underlying.ExecutionTypeId))
                 throw new InvalidDataException("Enum execution representation differs from its original underlying type");
             BigInteger minimum = signed ? -(BigInteger.One << (bits - 1)) : BigInteger.Zero;
             BigInteger maximum = (BigInteger.One << (signed ? bits - 1 : bits)) - 1;
             var names = new HashSet<string>(StringComparer.Ordinal);
             foreach (SourceEnumerator value in SourceEnumerators.GetValueOrDefault(item.TypeId, []))
-                if (!names.Add(value.SourceName) || !BigInteger.TryParse(value.ValueText, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out BigInteger number) ||
-                    number.ToString(CultureInfo.InvariantCulture) != value.ValueText || number < minimum || number > maximum)
+            {
+                if(!names.Add(value.SourceName))throw new InvalidDataException("Duplicate original enumerator name");
+                if(value.ConstantId is long constant) {
+                    if(value.ValueText.Length!=0 || !SourceSemanticConstants.TryGetValue(constant,out var expression) ||
+                       expression.Kind is not ("expression" or "member" or "sizeof" or "alignof" or "datasizeof") ||
+                       Original(SourceTypeById(expression.SourceTypeId)).Id!=source.Id)
+                        throw new InvalidDataException("Original symbolic enumerator lacks its exact enum-typed semantic constant");
+                } else if (!BigInteger.TryParse(value.ValueText, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out BigInteger number) ||
+                    number.ToString(CultureInfo.InvariantCulture) != value.ValueText || !unresolvedUnderlying&&(number < minimum || number > maximum))
                     throw new InvalidDataException("Invalid original enumerator name, exact integer value or underlying range");
+            }
         }
         foreach (SourceMemberPointerType item in SourceMemberPointers.Values)
         {
@@ -238,8 +271,12 @@ internal sealed partial class ObjectFile
         return "enum(" + Convert.ToHexStringLower(System.Text.Encoding.UTF8.GetBytes(enumeration.IdentityKey)) + "," + underlying + "," + enumeration.IsScoped + ")";
     }
 
+    internal string SourceEnumeratorValueIdentity(SourceEnumerator value) => value.ConstantId is long id
+        ? "expression:"+SourceConstantIdentity(id,0) : "integer:"+value.ValueText;
+
     private (int Bits, bool Signed) SourceIntegerShape(SourceType type) => type.Kind switch
     {
+        "enum" when !SourceEnums[type.Id].IsNonreal => SourceIntegerShape(Original(SourceTypeById(SourceEnums[type.Id].UnderlyingTypeId))),
         "bool" => (1, false), "signed-char" => (8, true), "unsigned-char" or "char8-t" => (8, false),
         "short" => (16, true), "unsigned-short" or "char16-t" => (16, false), "int" => (32, true), "unsigned-int" or "char32-t" => (32, false),
         "long" or "long-long" => (64, true), "unsigned-long" or "unsigned-long-long" => (64, false), "int128" => (128, true), "unsigned-int128" => (128, false),

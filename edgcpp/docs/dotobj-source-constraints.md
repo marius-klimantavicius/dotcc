@@ -96,3 +96,47 @@ ordinal. These are semantic-only nodes and do not request executable layout or
 invent a folded result. The focused148/174 suite passed47 checks including JIT,
 NativeAOT and seven resealed negative cases, retained at
 `dotobj-v58-source-lists-148-174-001/results.json` beneath the campaign root above.
+
+The profile59 partial-class extension preserves both original substitutions:
+arguments against the primary template header, and arguments against the
+selected partial specialization's header. Each header retains original formals,
+defaults, pack markers, constraints, and the partial's pattern arguments. Header
+contracts compare the full original pattern details; actual substitutions use
+semantic argument identity so equivalent explicit and defaulted arguments do
+not acquire different nominal identities. Concrete class ABI identity remains
+unchanged. Source-position prototype identity distinguishes separate partial
+specializations of one primary.
+
+The focused149/175 suite passed 43 checks, including two partial specializations
+of one primary, distinct primary/selected formal arities, selected non-type
+arguments, hidden-source verification, JIT, NativeAOT, and six resealed negatives.
+Evidence: `dotobj-v59-partial-class-149-175-002/results.json`. The retained first
+attempt, `dotobj-v59-partial-class-149-175-001`, separately reproduces the original
+pointer-typed `ck_integer` constant verifier gap; the class test now uses an
+original requires-bound pointer to isolate the substitution graph. This receipt
+does not establish acceptance of the pending profile59 real-project frontier.
+
+Original `ck_integer` values can have pointer source types after a cast, as
+specified by stock `il_to_str.c::form_integer_constant`. The source verifier now
+accepts canonical zero while retaining the exact pointer and pointee signature;
+it assigns no integral width to the pointer. Nonzero addresses remain outside
+this bounded slice. The focused150/176 receipt
+`dotobj-v59-null-pointers-150-176-001/results.json` passed 29 checks: data-pointer,
+const-pointee and function-pointer nulls, hidden-source verification, JIT, and
+resealed nonzero/negative/noncanonical pointer and ordinary integer-overflow
+rejections. This does not yet cover the separately observed `nullptr_t` literal
+and non-type formal extension queued for the next frozen cut.
+
+Profile59 retains dependent enum declarations with original class owner, ordered
+resolved or symbolic values, scoped/anonymous flags and declared/inferred versus
+prototype-placeholder underlying-type provenance. Nonreal enums never acquire
+an invented physical representation. `source_enum_increments` records EDG's exact
+implicit-successor factory, including its deliberately unknown-typed previous
+value clone; this does not relax arbitrary wrapper type equality.
+
+`source_pack_sizes` preserves the original type, expression or template-template
+operand of sizeof...(pack), both original category flags and its unsigned result
+type. It stores no computed count before substitution. Type and value packs are
+validated against their exact parameter declarations. Original auto/decltype(auto)
+placeholders preserve EDG's type-specifier coordinates and optional constraint
+graph independently from ordinary template-formal identities.
