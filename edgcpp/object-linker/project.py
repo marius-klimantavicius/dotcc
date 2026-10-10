@@ -43,6 +43,10 @@ def environment():
                EDG_DOT_NAMESPACE='@DotObject', EDG_DOT_CLASS='@Unit',
                EDG_DOT_EMIT='managedlib', EDG_DOT_INSTANCE='0', EDG_DOT_NEST='1',
                EDG_DOT_LIBC='none', EDG_DOT_RUNTIME='none', EDG_DOT_POSIX='0')
+    # This opt-in changes only rejection diagnostics, never translation policy.
+    # The campaign fingerprint below records it alongside the fixed selectors.
+    if os.environ.get('EDG_DOTOBJ_DIAG_SOURCE_ERRORS') == '1':
+        env['EDG_DOTOBJ_DIAG_SOURCE_ERRORS'] = '1'
     return env
 
 

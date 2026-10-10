@@ -19,7 +19,40 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v57: ")+what).c_str(),kind);
+  // Observational diagnostics only: capture can discover several unsupported
+  // source branches before the writer reaches the first one. Report those
+  // already captured errors together without accepting or traversing any new
+  // semantic graph. This is not a list of necessarily reachable definitions.
+  if(const char *option=getenv("EDG_DOTOBJ_DIAG_SOURCE_ERRORS")) {
+    if(string(option)=="1") {
+      const auto &graph=dot_object_source::source_constraint_graph();
+      std::map<std::pair<string,string>,unsigned> counts;
+      std::map<std::pair<string,string>,a_source_position> positions;
+      auto collect=[&](const char *family,const auto &values) {
+        for(const auto &value:values) {
+          if(value.error.empty())continue;
+          const auto key=std::make_pair(string(family),value.error);
+          if(++counts[key]==1)positions[key]=value.location;
+        }
+      };
+      collect("expression",graph.expressions);
+      collect("declaration",graph.declarations);
+      collect("concept",graph.concepts);
+      collect("pack-expansion",graph.expansions);
+      for(const auto &item:counts) {
+        const auto &location=positions.at(item.first);
+        a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
+        if(location.seq)conv_seq_to_file_and_line(location.seq,&display,&full,&line,&at_end);
+        string row="{\"family\":"+quote(item.first.first)+",\"error\":"+
+          quote(item.first.second)+",\"capturedCount\":"+std::to_string(item.second)+
+          ",\"firstFile\":"+quote(full?full:display?display:"")+
+          ",\"firstLine\":"+std::to_string(line)+",\"firstColumn\":"+
+          std::to_string(location.column)+"}";
+        fprintf(stderr,"dotobj captured source error: %s\n",row.c_str());
+      }
+    }
+  }
+  unsupported((string("dotobj scalar-v58: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -171,7 +204,7 @@ struct Writer {
   std::vector<string> storages,storage_data,relocations;
   std::map<unsigned,std::map<unsigned long long,string>> storage_chunks;
   std::map<unsigned,std::map<unsigned long long,unsigned char>> bitfield_data;
-  std::vector<string> routine_types,routine_parameters,source_routine_types,source_routine_parameters;
+  std::vector<string> routine_types,routine_parameters,source_routine_types,source_routine_parameters,source_routine_prototype_origins;
   std::vector<string> deferred_routine_abis;
   std::vector<string> deferred_function_declarations;
   std::map<string,unsigned> signature_ids;
@@ -295,6 +328,17 @@ struct Writer {
     if(depth>128 || !id)reject("source template type identity cycle/depth");
     const auto &value=dot_object_source::state().types.at(id-1);
     if(!value.error.empty())reject(value.error.c_str());
+    auto qualify_origin=[&](const string &origin) {
+      string qualifiers=(value.is_const?"c":"")+string(value.is_volatile?"v":"")+(value.is_restrict?"r":"")+(value.is_atomic?"a":"");
+      for(const auto &qualifier:value.qualifiers)qualifiers+=source_frame(qualifier);
+      return qualifiers.empty()?origin:"q"+source_frame(qualifiers)+source_frame(origin);
+    };
+    if(value.source_form=="template-alias" && dot_object_source::state().source_aliases.at(value.original_type).nonreal)
+      return qualify_origin(source_alias_identity(value.original_type,depth+1));
+    if(value.source_form=="type-operator" && value.operator_dependent) {
+      if(value.operator_type)return qualify_origin("type-operator:"+source_frame(std::to_string(value.type_operator))+source_frame(source_argument_type_identity(value.operator_type,depth+1)));
+      return qualify_origin("type-operator:"+source_frame(std::to_string(value.type_operator))+(value.operator_unparenthesized?"1":"0")+source_frame(source_expression_key(value.operator_expression,depth+1)));
+    }
     if(value.kind=="typedef" || value.kind=="qualified") {
       string inner=source_argument_type_identity(value.underlying,depth+1);
       if(!value.is_const && !value.is_volatile && !value.is_restrict && !value.is_atomic && value.qualifiers.empty())return inner;
@@ -312,7 +356,16 @@ struct Writer {
       value.array_bound_known?std::to_string(value.element_count):"?")+source_frame(source_argument_type_identity(value.underlying,depth+1));
     if(value.kind=="pointer" || value.kind=="lvalue-reference" || value.kind=="rvalue-reference")
       return value.kind+":"+source_frame(source_argument_type_identity(value.underlying,depth+1));
-    if(value.kind=="enum" || value.kind=="routine" || value.kind=="member-pointer" || value.kind.empty())
+    if(value.kind=="routine") {
+      string result="routine:"+source_frame(source_expression_type_key(value.result,depth+1))+source_frame(value.object_type?source_argument_type_identity(value.object_type,depth+1):"")+
+        (value.object_is_const?"1":"0")+(value.object_is_volatile?"1":"0")+source_frame(value.object_ref_qualifier)+(value.variadic?"1":"0")+
+        source_frame(dot_object_source::resolved_exception_policy(id))+source_frame(value.parameter_mode);
+      for(auto parameter:value.parameters)result+=source_frame(source_expression_type_key(parameter,depth+1));
+      for(auto thrown:dot_object_source::resolved_dynamic_exception_specification(id).declared_types)result+=source_frame(source_argument_type_identity(thrown,depth+1));
+      return result;
+    }
+    if(value.kind=="member-pointer")return "member-pointer:"+source_frame(source_argument_type_identity(value.member_owner,depth+1))+source_frame(source_argument_type_identity(value.underlying,depth+1));
+    if(value.kind=="enum" || value.kind.empty())
       reject("source template argument type identity family not yet represented");
     return value.kind;
   }
@@ -343,6 +396,129 @@ struct Writer {
       ",\"ordinal\":"+std::to_string(ordinal++)+",\"operandId\":"+number(source_semantic_constant(child))+"}");
     return id;
   }
+  string source_expression_type_key(unsigned id,unsigned depth) {
+    if(!id || depth>128)reject("source expression type identity cycle/depth");
+    const auto &value=dot_object_source::state().types.at(id-1);
+    if(value.kind=="dependent" && value.dependent_kind=="unknown")return "dependent-unknown";
+    if(value.kind=="typedef" || value.kind=="qualified") {
+      if(value.source_form!="plain")return source_argument_type_identity(id,depth+1);
+      string inner=source_expression_type_key(value.underlying,depth+1);
+      string qualifiers=(value.is_const?"c":"")+string(value.is_volatile?"v":"")+(value.is_restrict?"r":"")+(value.is_atomic?"a":"");
+      for(const auto &q:value.qualifiers)qualifiers+=source_frame(q);
+      return qualifiers.empty()?inner:"q"+source_frame(qualifiers)+source_frame(inner);
+    }
+    return source_argument_type_identity(id,depth+1);
+  }
+  string source_argument_key(const dot_object_source::SourceTemplateArgument &value,unsigned depth) {
+    return (value.kind=="pack-boundary"?string("pack-boundary"):value.type?"t"+source_argument_type_identity(value.type,depth+1):
+      value.constant?"c"+source_constant_identity(value.constant,depth+1):"m"+source_template_identity(value.templ,depth+1))+(value.pack?":pack":"");
+  }
+  string source_formal_key(const dot_object_source::SourceTemplateFormal &value,unsigned depth) {
+    return source_frame(value.kind)+(value.pack?"1":"0")+(value.abbreviated?"1":"0")+
+      source_frame(value.type?"t"+source_argument_type_identity(value.type,depth+1):value.constant?"c"+source_constant_identity(value.constant,depth+1):"m"+source_template_identity(value.templ,depth+1))+
+      source_frame(value.default_type?"t"+source_argument_type_identity(value.default_type,depth+1):value.default_constant?"c"+source_constant_identity(value.default_constant,depth+1):
+        value.default_template?"m"+source_template_identity(value.default_template,depth+1):"");
+  }
+  string source_declaration_key(unsigned id,unsigned depth) {
+    if(!id || depth>128)reject("source declaration identity cycle/depth");
+    const auto &value=dot_object_source::source_constraint_graph().declarations.at(id-1);
+    if(!value.error.empty())reject(value.error.c_str());
+    string result=source_frame(value.kind)+source_frame(value.qualified_name)+source_frame(source_expression_type_key(value.type,depth+1))+
+      source_frame(value.owner_type?source_argument_type_identity(value.owner_type,depth+1):"")+source_frame(value.template_origin_kind)+source_frame(value.routine_kind)+source_frame(value.operator_kind<0?"":std::to_string(value.operator_kind))+(value.is_constexpr?"1":"0")+
+      (value.has_template_origin?"1":"0")+(value.is_template_prototype?"1":"0");
+    result+="F"+source_frame(std::to_string(value.template_formals.size()));
+    for(const auto &formal:value.template_formals)result+=source_frame(source_formal_key(formal,depth+1));
+    result+="A"+source_frame(std::to_string(value.template_arguments.size()));
+    for(const auto &argument:value.template_arguments)result+=source_frame(source_argument_key(argument,depth+1));
+    return result;
+  }
+  string source_parameter_reference_context_key(const dot_object_source::SourceConstraintExpression &expression) {
+    auto &graph=dot_object_source::source_constraint_graph();unsigned current=expression.binder;
+    string result;std::set<unsigned> seen;
+    while(current && seen.insert(current).second) {
+      const auto &value=graph.binders.at(current);
+      result+=source_frame(value.expression?"requires":"routine-prototype")+(value.outside?"1":"0");
+      if(current==expression.resolved_binder)return result;
+      current=value.parent;
+    }
+    reject("source parameter reference context does not reach its exact owner");return "";
+  }
+  string source_expression_key(unsigned id,unsigned depth) {
+    if(!id || depth>128)reject("source expression structural identity cycle/depth");
+    const auto &value=dot_object_source::source_constraint_graph().expressions.at(id-1);
+    if(!value.error.empty())reject(value.error.c_str());
+    string result=source_frame(value.kind)+source_frame(value.type?source_expression_type_key(value.type,depth+1):"")+
+      (value.lvalue?"l":value.xvalue?"x":"p")+source_frame(value.original_lvalue_type?source_expression_type_key(value.original_lvalue_type,depth+1):"")+
+      (value.parenthesized?"1":"0")+(value.compiler_generated?"1":"0")+(value.volatile_fetch?"1":"0")+(value.pack_expansion?"1":"0");
+    if(value.kind=="operation" || value.kind=="builtin-operation")result+="O"+source_frame(std::to_string(value.opcode))+source_frame(value.operation)+source_frame(value.operation_type_kind<0?"":std::to_string(value.operation_type_kind));
+    auto flags=value.flags;std::sort(flags.begin(),flags.end());result+="F"+source_frame(std::to_string(flags.size()));for(const auto &flag:flags)result+=source_frame(flag);
+    if(value.type_operand)result+="T"+source_frame(source_argument_type_identity(value.type_operand,depth+1));
+    if(value.constant)result+="C"+source_frame(source_constant_identity(value.constant,depth+1));
+    if(value.kind=="parameter-reference")result+="R"+source_frame(std::to_string(value.parameter_number))+source_frame(std::to_string(value.levels_up))+source_frame(source_parameter_reference_context_key(value));
+    if(value.kind=="compound-requirement")result+=value.noexcept_required?"N1":"N0";
+    if(value.kind=="sizeof" || value.kind=="alignof" || value.kind=="datasizeof")result+=value.standard_alignof?"Q1":"Q0";
+    result+="P"+source_frame(std::to_string(value.parameters.size()));
+    for(const auto &parameter:value.parameters)result+=source_frame(source_expression_type_key(parameter.type,depth+1))+
+      source_frame(parameter.declared_type?source_expression_type_key(parameter.declared_type,depth+1):"")+source_frame(std::to_string(parameter.qualifiers))+(parameter.pack?"1":"0");
+    if(value.declaration)result+="D"+source_frame(source_declaration_key(value.declaration,depth+1));
+    if(value.kind=="dependent-function-reference") {
+      result+="L"+source_frame(value.lookup_name)+source_frame(value.lookup_qualified_name)+source_frame(value.lookup_owner?source_argument_type_identity(value.lookup_owner,depth+1):"")+
+        source_frame(value.lookup_conversion_type?source_argument_type_identity(value.lookup_conversion_type,depth+1):"")+source_frame(std::to_string(value.lookup_operator))+
+        (value.lookup_template?"1":"0")+(value.lookup_qualified?"1":"0")+(value.lookup_address?"1":"0")+(value.lookup_symbol?"1":"0")+
+        (value.lookup_unknown_base?"1":"0")+(value.lookup_qualified_unknown_base?"1":"0");
+      result+="C"+source_frame(std::to_string(value.lookup_candidates.size()));
+      for(auto candidate:value.lookup_candidates)result+=source_frame(source_declaration_key(candidate,depth+1));
+    }
+    if(value.concept_id) {
+      const auto &concept=dot_object_source::source_constraint_graph().concepts.at(value.concept_id-1);
+      if(!concept.error.empty())reject(concept.error.c_str());
+      result+="K"+source_frame(concept.qualified_name)+(value.type_constraint?"1":"0")+"F"+source_frame(std::to_string(concept.formals.size()));
+      for(const auto &formal:concept.formals)result+=source_frame(source_formal_key(formal,depth+1));
+    }
+    result+="A"+source_frame(std::to_string(value.arguments.size()));
+    for(const auto &argument:value.arguments)result+=source_frame(source_argument_key(argument,depth+1));
+    result+="S"+source_frame(std::to_string(value.substitutions.size()));
+    for(const auto &substitution:value.substitutions) {
+      string group=string(substitution.known_dependent?"1":"0")+(substitution.known_nondependent?"1":"0")+(substitution.adjust_coordinates?"1":"0")+(substitution.alias_deduction_guide?"1":"0");
+      group+="F"+source_frame(std::to_string(substitution.formals.size()));
+      for(const auto &formal:substitution.formals)group+=source_frame(source_formal_key(formal,depth+1));
+      group+="A"+source_frame(std::to_string(substitution.arguments.size()));
+      for(const auto &argument:substitution.arguments)group+=source_frame(source_argument_key(argument,depth+1));
+      result+=source_frame(group);
+    }
+    if(value.kind=="field-reference")result+="H"+source_frame(source_expression_type_key(value.field_owner,depth+1))+source_frame(std::to_string(value.field_ordinal));
+    if(value.kind=="fold-expression")result+="J"+source_frame(std::to_string(value.fold_token))+source_frame(value.fold_operator)+(value.fold_left?"1":"0");
+    if(value.kind=="allocation-expression") {
+      const auto &allocation=value.allocation;
+      result+="B"+source_frame(source_expression_type_key(allocation.type,depth+1))+
+        source_frame(allocation.routine?source_declaration_key(allocation.routine,depth+1):"")+
+        (allocation.is_new?"1":"0")+(allocation.dependent?"1":"0")+(allocation.placement?"1":"0")+(allocation.aligned?"1":"0")+
+        (allocation.array_delete?"1":"0")+(allocation.global?"1":"0")+(allocation.has_initializer?"1":"0")+(allocation.braced?"1":"0")+
+        (allocation.paren_aggregate?"1":"0")+(allocation.deducible?"1":"0")+(allocation.parenthesized?"1":"0")+(allocation.lookup_deferred?"1":"0");
+    }
+    if(value.kind=="temporary-initialization") {
+      const auto &temp=value.temporary;
+      result+="I"+source_frame(std::to_string(temp.initialization_kind))+source_frame(temp.spelled_type?source_argument_type_identity(temp.spelled_type,depth+1):"")+
+        source_frame(temp.constructor?source_declaration_key(temp.constructor,depth+1):"")+source_frame(temp.destructor?source_declaration_key(temp.destructor,depth+1):"")+
+        source_frame(temp.constant?source_constant_identity(temp.constant,depth+1):"")+(temp.dependent_constructor?"1":"0");
+      auto init_flags=temp.flags;std::sort(init_flags.begin(),init_flags.end());result+="F"+source_frame(std::to_string(init_flags.size()));
+      for(const auto &flag:init_flags)result+=source_frame(flag);
+    }
+    auto ordered_edges=value.edges;std::stable_sort(ordered_edges.begin(),ordered_edges.end(),[](const auto&a,const auto&b){return a.role<b.role;});
+    result+="E"+source_frame(std::to_string(ordered_edges.size()));
+    for(const auto &edge:ordered_edges)result+=source_frame(edge.role)+source_frame(source_expression_key(edge.child,depth+1));
+    return result;
+  }
+  string source_alias_identity(a_type_ptr type,unsigned depth) {
+    if(depth>128)reject("source alias identity cycle/depth");
+    const auto &value=dot_object_source::state().source_aliases.at(type);
+    if(!value.error.empty())reject(value.error.c_str());
+    string result="alias-instance:"+source_frame(source_template_identity(value.templ,depth+1));
+    for(const auto &argument:value.arguments)result+=source_frame((argument.kind=="pack-boundary"?string("pack-boundary"):argument.type?
+      "t"+source_argument_type_identity(argument.type,depth+1):argument.constant?"c"+source_constant_identity(argument.constant,depth+1):
+      "m"+source_template_identity(argument.templ,depth+1))+(argument.pack?":pack":""));
+    return result;
+  }
   string source_template_identity(unsigned id,unsigned depth=0) {
     if(!id || depth>128)reject("source template identity cycle/depth");
     const auto &value=dot_object_source::state().source_templates.at(id-1);
@@ -351,6 +527,9 @@ struct Writer {
     conv_seq_to_file_and_line(value.location.seq,&display,&full,&line,&at_end);
     string result="template-parameter:"+source_frame(string(full?full:display?display:"")+":"+std::to_string(line)+":"+
       std::to_string(value.location.column)+":"+std::to_string(value.depth)+":"+std::to_string(value.position))+":"+(value.pack?"1":"0");
+    if(value.kind=="alias")result="template-alias:"+source_frame(value.qualified_name)+
+      source_frame(value.owner_type?source_argument_type_identity(value.owner_type,depth+1):"")+
+      source_frame(string(full?full:display?display:"")+":"+std::to_string(line)+":"+std::to_string(value.location.column));
     for(const auto &formal:value.parameters) {
       string item=formal.kind+":"+(formal.pack?"1":"0")+":"+(formal.abbreviated?"1":"0");
       item+=source_frame(formal.type?source_argument_type_identity(formal.type,depth+1):formal.constant?
@@ -367,9 +546,13 @@ struct Writer {
     const auto &value=dot_object_source::state().source_templates.at(captured-1);
     if(!value.error.empty())reject(value.error.c_str());
     unsigned id=unsigned(source_template_ids.size()+1);source_template_ids[captured]=id;
-    source_templates.push_back("{\"id\":"+number(id)+",\"kind\":\"parameter\",\"sourceName\":"+quote(value.name)+
-      ",\"parameterDepth\":"+std::to_string(value.depth)+",\"parameterPosition\":"+std::to_string(value.position)+
-      ",\"isPack\":"+(value.pack?"true":"false")+",\"parameterCount\":"+std::to_string(value.parameters.size())+",\"captureProof\":\"original-template-parameter\""+position(value.location)+"}");
+    source_templates.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(value.kind)+",\"sourceName\":"+quote(value.name)+
+      ",\"parameterDepth\":"+(value.kind=="parameter"?std::to_string(value.depth):"null")+",\"parameterPosition\":"+(value.kind=="parameter"?std::to_string(value.position):"null")+
+      ",\"isPack\":"+(value.pack?"true":"false")+",\"parameterCount\":"+std::to_string(value.parameters.size())+",\"captureProof\":"+
+      quote(value.kind=="parameter"?"original-template-parameter":"original-alias-template")+position(value.location)+"}");
+    if(value.kind=="alias")source_named_templates.push_back("{\"templateId\":"+number(id)+",\"qualifiedName\":"+quote(value.qualified_name)+
+      ",\"ownerSourceTypeId\":"+number(value.owner_type?source_type(value.owner_type):0)+",\"prototypeSourceTypeId\":"+number(source_type(value.prototype_type))+
+      ",\"constraintExpressionId\":"+number(value.header_constraint?source_constraint_expression(value.header_constraint):0)+",\"captureProof\":\"original-alias-template\"}");
     unsigned ordinal=0;for(const auto &formal:value.parameters)source_template_parameters.push_back("{\"sourceTemplateId\":"+number(id)+
       ",\"ordinal\":"+std::to_string(ordinal++)+",\"kind\":"+quote(formal.kind)+",\"sourceName\":"+quote(formal.name)+
       ",\"typeId\":"+number(formal.type?source_type(formal.type):0)+",\"constantId\":"+number(formal.constant?source_semantic_constant(formal.constant):0)+
@@ -488,7 +671,8 @@ struct Writer {
         source_field_ids.emplace(field.il,next_source_field++);
       for(const auto &base:source->bases)
         source_base_ids.emplace(base.il,next_source_base++);
-      if(source->dependent && !source->prototype && !captured.record_owners.count(t) && !captured.nested_type_declarations.count(t)) {
+      if((source->dependent || source->template_prototype) && !source->prototype && !captured.record_owners.count(t) && !captured.nested_type_declarations.count(t)) {
+        if(!source->template_error.empty())reject(source->template_error.c_str());
         unsigned prototype_record=source->template_prototype?
           source_record_metadata(captured.types.at(source->template_prototype-1).record_type):0;
         source_record_instantiations.push_back("{\"sourceRecordId\":"+number(source_record)+
@@ -1336,7 +1520,12 @@ struct Writer {
         ",\"exceptionPolicyOrigin\":"+quote(dot_object_source::state().routine_exception_resolutions.count(captured)?
           dot_object_source::state().routine_exception_resolutions.at(captured).implicit_destructor?"implicit-destructor-resolution":"generated-resolution":"captured")+",\"parameterMode\":"+quote(type.parameter_mode)+",\"objectTypeId\":"+number(type.object_type?source_type(type.object_type):0)+
         ",\"objectIsConst\":"+(type.object_is_const?"true":"false")+",\"objectIsVolatile\":"+(type.object_is_volatile?"true":"false")+
-        ",\"objectRefQualifier\":"+quote(type.object_ref_qualifier)+"}");
+        ",\"objectRefQualifier\":"+quote(type.object_ref_qualifier)+",\"prototypeOrigin\":"+
+          quote(type.prototype_origin?"lambda-conversion-copy":"original")+"}");
+      if(type.prototype_origin)source_routine_prototype_origins.push_back("{\"routineSourceTypeId\":"+number(id)+
+        ",\"originalRoutineSourceTypeId\":"+number(source_type(type.prototype_origin))+
+        ",\"originalBinderId\":"+number(source_parameter_binder(type.prototype_origin_binder))+
+        ",\"kind\":\"lambda-conversion-copy\",\"captureProof\":\"observed-lambda-conversion-prototype\"}");
       if(dot_object_source::resolved_exception_policy(captured)=="dynamic") {
         const auto &specification=dot_object_source::resolved_dynamic_exception_specification(captured);
         if(!specification.error.empty())reject(specification.error.c_str());
@@ -1382,7 +1571,9 @@ struct Writer {
         quote(execution?"observed-member-pointer-lowering":"observed-source-type")+"}");
     for(const auto &qualifier:type.qualifiers)
       source_type_qualifiers.push_back("{\"typeId\":"+number(id)+",\"name\":"+quote(qualifier)+"}");
+    source_type_origin(id,type);
     source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.kind)+",\"sourceName\":"+quote(type.name)+
+      ",\"sourceForm\":"+quote(type.source_form)+
       ",\"underlyingTypeId\":"+number(underlying)+",\"executionTypeId\":"+number(execution)+
       ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+
       ",\"isRestrict\":"+(type.is_restrict?"true":"false")+",\"isAtomic\":"+(type.is_atomic?"true":"false")+
@@ -1861,9 +2052,23 @@ struct Writer {
           original_type=skip_typerefs(source_initializer_entry->second.variable->type);
         }
         if(original_type->kind!=tk_array)reject("partial construction rollback requires its original fixed array");
-        for(unsigned index=path_start;index<observed.path.size();++index)
-          if(observed.path[index].field || observed.path[index].base)
-            reject("partial construction rollback outside fixed array element path");
+        auto target_type=original_type;
+        for(unsigned index=path_start;index<observed.path.size();++index) {
+          const auto &part=observed.path[index];
+          if(part.base)reject("static partial construction rollback through a base requires owned base provenance");
+          if(part.field) {
+            if(target_type->kind!=tk_struct && target_type->kind!=tk_class)
+              reject("static partial construction member must belong to its exact struct or class");
+            auto field=cleanup_path_field(target_type,part);
+            if(!field || field->is_bit_field)reject("static partial construction cannot target a bitfield");
+            target_type=skip_typerefs(field->type);
+          } else {
+            if(target_type->kind!=tk_array || array_type_has_no_bound(target_type) ||
+               part.index>=target_type->variant.array.variant.number_of_elements)
+              reject("static partial construction element is outside its fixed array bounds");
+            target_type=skip_typerefs(target_type->variant.array.element_type);
+          }
+        }
         source_destructor=source.selected_routine;static_cleanup=true;
       } else if(!field_cleanup) {
         const auto &source=captured.destructions.at(original);
@@ -2013,10 +2218,40 @@ struct Writer {
         if(!source_lifetime_ids.count(value.parent))reject("source lifetime parent outside captured function");
         parent=source_lifetime_ids.at(value.parent);
       }
-      if(value.parent_obligation) {
+      // An initializer's execution root projects an original full-expression
+      // child of the global static lifetime. Its outer destruction sublist is
+      // process-lifetime provenance, not automatic cleanup in this function.
+      // Keep that exact relation in source_static_lifetimes and its adoption;
+      // never reinterpret a persistent obligation as an automatic parent.
+      bool static_parent_boundary=false;
+      if(value.parent_obligation && !value.parent && !value.owner && value.initializer) {
+        auto original_lifetime=captured.static_lifetimes.find(original);
+        auto original_obligation=captured.static_destructions.find(value.parent_obligation);
+        const auto &initializer_source=captured.source_initializers.at(value.initializer);
+        if(original_lifetime!=captured.static_lifetimes.end() && original_lifetime->second.parent &&
+           original_lifetime->second.parent_obligation==value.parent_obligation &&
+           original_lifetime->second.initializer==value.initializer &&
+           original_obligation!=captured.static_destructions.end() &&
+           original_obligation->second.lifetime==original_lifetime->second.parent &&
+           captured.static_lifetimes.at(original_lifetime->second.parent).kind=="global-static" &&
+           !initializer_source.owner && !initializer_source.field)
+          static_parent_boundary=true;
+      }
+      if(value.parent_obligation && !static_parent_boundary) {
         auto found=source_obligation_ids.find(value.parent_obligation);
-        if(found==source_obligation_ids.end() || captured.destructions.at(value.parent_obligation).lifetime!=value.parent)
-          reject("source parent destruction relation is not exact parent ownership");
+        if(found==source_obligation_ids.end() || captured.destructions.at(value.parent_obligation).lifetime!=value.parent) {
+          auto automatic=captured.destructions.find(value.parent_obligation);
+          auto persistent=captured.static_destructions.find(value.parent_obligation);
+          reject(("source parent destruction relation is not exact parent ownership; kind="+value.kind+
+            " parent="+std::to_string(value.parent?1:0)+" emitted-parent-obligation="+std::to_string(found!=source_obligation_ids.end())+
+            " automatic="+std::to_string(automatic!=captured.destructions.end())+
+            " static="+std::to_string(persistent!=captured.static_destructions.end())+
+            " automatic-parent-match="+std::to_string(automatic!=captured.destructions.end() && automatic->second.lifetime==value.parent)+
+            " initializer="+(value.initializer?captured.source_initializers.at(value.initializer).source_name:string("none"))+
+            " source="+std::to_string(value.position.seq)+":"+std::to_string(value.position.column)+
+            " parent-routine="+(automatic!=captured.destructions.end() && automatic->second.owner?source_spelling(&automatic->second.owner->source_corresp):string("none"))+
+            " parent-destructor="+(value.parent_obligation->destructor?source_spelling(&value.parent_obligation->destructor->source_corresp):string("none"))).c_str());
+        }
         if(captured.destructions.at(value.parent_obligation).allocation_release)allocation_obligation=found->second;
         else obligation=found->second;
       }
@@ -5071,7 +5306,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v57\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v58\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -5089,6 +5324,10 @@ struct Writer {
       ",\"sourceDependentFunctionArguments\":"+array(source_dependent_function_arguments)+
       ",\"sourceConcepts\":"+array(source_concepts)+
       ",\"sourceConceptParameters\":"+array(source_concept_parameters)+
+      ",\"sourceExpressionAllocations\":"+array(source_expression_allocations)+",\"sourceDeclarationOperators\":"+array(source_declaration_operators)+
+      ",\"sourceExpressionTemporaries\":"+array(source_expression_temporaries)+",\"sourceExpressionTemporaryFlags\":"+array(source_expression_temporary_flags)+
+      ",\"sourceExpressionFieldReferences\":"+array(source_expression_field_references)+
+      ",\"sourceExpressionFolds\":"+array(source_expression_folds)+
       ",\"sourceExpressions\":"+array(source_expressions)+
       ",\"sourceExpressionEdges\":"+array(source_expression_edges)+
       ",\"sourceTypeConstraints\":"+array(source_type_constraints)+
@@ -5100,6 +5339,7 @@ struct Writer {
       ",\"sourceExpressionFlags\":"+array(source_expression_flags)+
       ",\"sourceExpressionTypeOperands\":"+array(source_expression_type_operands)+
       ",\"sourceExpressionConstants\":"+array(source_expression_constants)+
+      ",\"sourceParameterBinders\":"+array(source_parameter_binders)+",\"sourceBinderParameters\":"+array(source_binder_parameters)+
       ",\"sourceExpressionBindings\":"+array(source_expression_bindings)+
       ",\"sourceExpressionRequirements\":"+array(source_expression_requirements)+
       ",\"sourceExpressionQueries\":"+array(source_expression_queries)+
@@ -5134,6 +5374,8 @@ struct Writer {
       ",\"destructionElisions\":"+array(destruction_elisions)+",\"allocationElisions\":"+array(allocation_elisions)+",\"sourceUninitializedAllocations\":"+array(source_uninitialized_allocations)+",\"normalDestructions\":"+array(normal_destructions)+",\"cleanupConditions\":"+array(cleanup_conditions)+
       ",\"sourceRecords\":"+array(source_records)+",\"sourceRecordOperations\":"+array(source_record_operations)+
       ",\"sourceRecordOwners\":"+array(source_record_owners)+
+      ",\"sourceNamedTemplates\":"+array(source_named_templates)+",\"sourceAliasInstances\":"+array(source_alias_instances)+
+      ",\"sourceAliasArguments\":"+array(source_alias_arguments)+",\"sourceTypeOperators\":"+array(source_type_operators)+
       ",\"sourceTemplates\":"+array(source_templates)+",\"sourceTemplateParameters\":"+array(source_template_parameters)+
       ",\"sourceRecordInstantiations\":"+array(source_record_instantiations)+",\"sourceTemplateArguments\":"+array(source_template_arguments)+
       ",\"sourceArrayBounds\":"+array(source_array_bounds)+",\"sourceSemanticConstants\":"+array(source_semantic_constants)+
@@ -5167,7 +5409,7 @@ struct Writer {
       ",\"sourceDynamicExceptionSpecifications\":"+array(source_dynamic_exception_specifications)+
       ",\"sourceDynamicExceptionTypes\":"+array(source_dynamic_exception_types)+
       ",\"functionDynamicExceptionBoundaries\":"+array(function_dynamic_exception_boundaries)+
-      ",\"sourceRoutineTypes\":"+array(source_routine_types)+",\"sourceRoutineParameters\":"+array(source_routine_parameters)+
+      ",\"sourceRoutinePrototypeOrigins\":"+array(source_routine_prototype_origins)+",\"sourceRoutineTypes\":"+array(source_routine_types)+",\"sourceRoutineParameters\":"+array(source_routine_parameters)+
       ",\"deferredRoutineAbis\":"+array(deferred_routine_abis)+
       ",\"deferredFunctionDeclarations\":"+array(deferred_function_declarations)+
       ",\"sourceRoutineAbis\":"+array(source_routine_abis)+",\"sourceRoutineAbiParameters\":"+array(source_routine_abi_parameters)+

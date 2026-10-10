@@ -763,3 +763,85 @@ try/catch wrappers, explicit unresolved-provider reporting, and 10 resealed
 malformed-object rejections. The actual libc++ `ios.cpp` and `regex.cpp` now
 advance beyond this exception-specification gate to an independent dependent
 source-type/template-argument representation gate; they are not yet packaged.
+
+
+### Implicit exception specifications on user-written destructors
+
+Stock EDG derives an implicit exception specification for a user-written
+destructor without an explicit specification, even though that routine is not
+defaulted or compiler-generated. The exporter observes that exact stock
+finalization and retains `implicit-destructor-resolution` separately from
+generated-member origins. Original member identity and all original origin
+flags remain unchanged; the resolved source policy must agree with the emitted
+ABI. No additional bodies or unused specifications are forced.
+
+Frozen native141/managed163 passed 44 checks at
+`dotobj-v57-implicit-destructor-141-163-001/results.json`, including native and
+stock C at O0/O2, source-hidden verification, JIT, NativeAOT, and seven resealed
+malformed-object rejections. The fixture captures out-of-line destructor
+declarations before their definitions and verifies both the nonthrowing case
+and propagation from a member destructor declared `noexcept(false)`.
+DuckDB `src/common/types.cpp` now exports, verifies, and generates 2,471 C#
+function definitions with the two RTTI providers at
+`dotobj-implicit-destructor-types-managed-141-163/generated`. This is generation
+coverage for that translation unit, not execution of the complete DuckDB closure.
+
+
+### Static array rollback through record members
+
+An observed partial-construction target may traverse fixed array elements and
+original nonbitfield struct/class members. Every step retains the original
+field identity and type, checks the declared array bound or member storage
+extent, and remains within the original static object. Base-subobject and
+union paths still require their own protocol; this change does not infer them
+from byte offsets.
+
+Native143/managed165 passed 33 checks at
+`dotobj-v58-static-member-143-165-001/results.json`: native and stock C O0/O2,
+source-hidden verification, JIT, NativeAOT, and four resealed field/type/extent
+and source-obligation mutations. The fixture verifies successful global array
+construction/destruction and catches automatic aggregate construction failures
+at each member, checking exactly which constructed members are destroyed.
+It does not assume that an uncaught exception during global initialization
+must unwind before termination. Actual DuckDB `test/helpers/test_config.cpp`
+now passes this path gate and reaches the separate outer-static-lifetime
+projection gate.
+
+
+### Global lifetime boundaries during initializer execution
+
+A global initializer full expression can refer to the preceding global
+destruction sublist. The complete original static graph retains that parent
+and obligation. Its initializer-lifetime adoption projects an automatic
+execution root without treating an already-registered global destructor as
+cleanup owned by the generated initializer function. This projection requires
+the exact original file initializer and global-static parent; other missing
+automatic-parent relationships remain rejected.
+
+Native144/managed166 passed 34 checks at
+`dotobj-v58-static-parent-144-166-001/results.json`: native/stock C O0/O2,
+source-hidden graph validation, JIT, NativeAOT, and four resealed malformed
+objects. Two separate global initializers exercise temporary destruction,
+retained outer-static boundaries, and final global destruction counts.
+
+
+### Original prototype parameter scopes
+
+Source type expressions now retain their original routine-prototype or
+requires-expression binders, ordered adjusted and declared parameter types,
+and the inside/outside-parameter-list phase used by EDG's parameter-reference
+resolution. Expression result-type annotations reuse an existing source type
+recipe without redeclaring its lexical scope. Generated lambda conversion
+signatures retain a separate signature and an explicit original-call-operator
+recipe relation, observed at stock signature creation and propagated only
+through observed stock type copies.
+
+Native148/managed174 passed 67 focused checks at
+`dotobj-v58-parameter-binders-148-174-001/results.json`, including native/stock C
+O0/O2, source-hidden verification, JIT, NativeAOT, and 14 resealed ownership,
+phase, type, and lambda-origin mutations. The existing requires/source-constraint
+suite also passed 107 checks including JIT/NativeAOT at
+`dotobj-v58-constraints-148-174-001/results.json`. References to named function
+parameter variables inside body-local type expressions still require a separate
+original declaration-ownership relation; these are not prototype `param_ref`
+nodes and are not admitted through the new prototype binder rule.

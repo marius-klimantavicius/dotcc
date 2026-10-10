@@ -3,6 +3,76 @@ static_assert(int(initk_none)==0 && int(initk_static)==1 && int(initk_dynamic)==
 static_assert(int(dik_zero)==1 && int(dik_constant)==2 && int(dik_expression)==3, "source dynamic initializer profile mismatch");
 // Staged source-only constraint capture. Included inside dot_object_source after
 // capture_type/capture_semantic_constant have been declared. Never lowers EDG IL.
+// Exact configured token identities, independent of execution operation IDs.
+inline const char *source_fold_operator(a_token_kind token) {
+  static_assert(int(tok_ampersand)==36, "source fold token profile mismatch");
+  static_assert(int(tok_star)==37, "source fold token profile mismatch");
+  static_assert(int(tok_plus)==38, "source fold token profile mismatch");
+  static_assert(int(tok_minus)==39, "source fold token profile mismatch");
+  static_assert(int(tok_divide)==42, "source fold token profile mismatch");
+  static_assert(int(tok_remainder)==43, "source fold token profile mismatch");
+  static_assert(int(tok_shift_left)==44, "source fold token profile mismatch");
+  static_assert(int(tok_shift_right)==45, "source fold token profile mismatch");
+  static_assert(int(tok_lt)==46, "source fold token profile mismatch");
+  static_assert(int(tok_gt)==47, "source fold token profile mismatch");
+  static_assert(int(tok_le)==48, "source fold token profile mismatch");
+  static_assert(int(tok_ge)==49, "source fold token profile mismatch");
+  static_assert(int(tok_eq)==50, "source fold token profile mismatch");
+  static_assert(int(tok_ne)==51, "source fold token profile mismatch");
+  static_assert(int(tok_excl_or)==54, "source fold token profile mismatch");
+  static_assert(int(tok_or)==55, "source fold token profile mismatch");
+  static_assert(int(tok_and_and)==56, "source fold token profile mismatch");
+  static_assert(int(tok_or_or)==57, "source fold token profile mismatch");
+  static_assert(int(tok_assign)==60, "source fold token profile mismatch");
+  static_assert(int(tok_times_assign)==61, "source fold token profile mismatch");
+  static_assert(int(tok_divide_assign)==62, "source fold token profile mismatch");
+  static_assert(int(tok_remainder_assign)==63, "source fold token profile mismatch");
+  static_assert(int(tok_plus_assign)==64, "source fold token profile mismatch");
+  static_assert(int(tok_minus_assign)==65, "source fold token profile mismatch");
+  static_assert(int(tok_shift_left_assign)==66, "source fold token profile mismatch");
+  static_assert(int(tok_shift_right_assign)==67, "source fold token profile mismatch");
+  static_assert(int(tok_and_assign)==68, "source fold token profile mismatch");
+  static_assert(int(tok_excl_or_assign)==69, "source fold token profile mismatch");
+  static_assert(int(tok_or_assign)==70, "source fold token profile mismatch");
+  static_assert(int(tok_comma)==71, "source fold token profile mismatch");
+  static_assert(int(tok_period_star)==216, "source fold token profile mismatch");
+  static_assert(int(tok_arrow_star)==217, "source fold token profile mismatch");
+  switch(token) {
+    case tok_ampersand:return "&";
+    case tok_star:return "*";
+    case tok_plus:return "+";
+    case tok_minus:return "-";
+    case tok_divide:return "/";
+    case tok_remainder:return "%";
+    case tok_shift_left:return "<<";
+    case tok_shift_right:return ">>";
+    case tok_lt:return "<";
+    case tok_gt:return ">";
+    case tok_le:return "<=";
+    case tok_ge:return ">=";
+    case tok_eq:return "==";
+    case tok_ne:return "!=";
+    case tok_excl_or:return "^";
+    case tok_or:return "|";
+    case tok_and_and:return "&&";
+    case tok_or_or:return "||";
+    case tok_assign:return "=";
+    case tok_times_assign:return "*=";
+    case tok_divide_assign:return "/=";
+    case tok_remainder_assign:return "%=";
+    case tok_plus_assign:return "+=";
+    case tok_minus_assign:return "-=";
+    case tok_shift_left_assign:return "<<=";
+    case tok_shift_right_assign:return ">>=";
+    case tok_and_assign:return "&=";
+    case tok_excl_or_assign:return "^=";
+    case tok_or_assign:return "|=";
+    case tok_comma:return ",";
+    case tok_period_star:return ".*";
+    case tok_arrow_star:return "->*";
+    default:return nullptr;
+  }
+}
 using SourceConstraintArgument=SourceTemplateArgument;
 struct SourceConstraintPackReference : SourceTemplateArgument {
   bool enclosing=false;int depth=-1,position=-1;
@@ -24,10 +94,26 @@ struct SourceConstraintSubstitution {
   std::vector<SourceTemplateFormal> formals;
   std::vector<SourceConstraintArgument> arguments;
 };
+struct SourceConstraintTemporary {
+  int initialization_kind=-1;
+  unsigned spelled_type=0,constructor=0,destructor=0,constant=0;
+  bool dependent_constructor=false;
+  std::vector<std::string> flags;
+};
+struct SourceConstraintAllocation {
+  unsigned type=0,routine=0;
+  bool lookup_deferred=false;
+  bool is_new=false,dependent=false,placement=false,aligned=false,array_delete=false,global=false;
+  bool has_initializer=false,braced=false,paren_aggregate=false,deducible=false,parenthesized=false;
+};
 struct SourceConstraintExpression {
   std::string kind,operation,error;
+  SourceConstraintTemporary temporary;
+  SourceConstraintAllocation allocation;
   unsigned type=0,original_lvalue_type=0,constant=0,type_operand=0,concept_id=0,binder=0,declaration=0;
-  bool parenthesized=false,compiler_generated=false,volatile_fetch=false;
+  bool parenthesized=false,compiler_generated=false,volatile_fetch=false,pack_expansion=false;
+  int fold_token=-1;bool fold_left=false;std::string fold_operator;
+  a_field_ptr field=nullptr;unsigned field_owner=0,field_ordinal=0;
   unsigned parameter_number=0,levels_up=0,resolved_binder=0;
   bool standard_alignof=false;
   int opcode=-1,operation_type_kind=-1;
@@ -51,15 +137,19 @@ struct SourceConstraintConcept {
   unsigned definition=0,header_constraint=0;
   std::vector<SourceTemplateFormal> formals;
 };
-struct SourceConstraintBinder {unsigned parent=0;std::vector<SourceConstraintParameter> parameters;};
+struct SourceConstraintBinder {
+  unsigned parent=0,expression=0,routine=0;
+  bool outside=false;
+  std::vector<SourceConstraintParameter> parameters;
+};
 struct SourceConstraintDeclaration {
   std::string kind,name,qualified_name,error;
   unsigned type=0,owner_type=0,template_prototype=0;
-  int original_init_kind=-1,original_dynamic_init_kind=-1;
+  int original_init_kind=-1,original_dynamic_init_kind=-1,operator_kind=-1;
   std::string initializer_kind="not-variable";
   unsigned initializer_constant=0,initializer_expression=0;
   bool has_template_origin=false,is_template_prototype=false,is_constexpr=false;
-  std::string template_origin_kind="none";
+  std::string template_origin_kind="none",routine_kind="not-routine";
   a_source_position location={};
   std::vector<SourceTemplateFormal> template_formals;
   std::vector<SourceConstraintArgument> template_arguments;
@@ -70,6 +160,12 @@ struct SourceConstraintGraph {
   std::vector<SourceConstraintExpression> expressions;
   std::vector<SourceConstraintConcept> concepts;
   std::map<unsigned,SourceConstraintBinder> binders;
+  unsigned active_binder=0;
+  std::set<a_new_delete_supplement_ptr> deferred_new_lookups;
+  std::map<std::tuple<unsigned,unsigned,unsigned>,std::pair<unsigned,unsigned>> binder_pairs;
+  std::map<unsigned,unsigned> requires_binders;
+  std::map<unsigned,unsigned> type_operator_binders;
+  std::set<a_type_ptr> active_type_contexts;
   std::map<std::pair<void*,std::string>,unsigned> declarations_by_original;
   std::vector<SourceConstraintDeclaration> declarations;
   std::set<unsigned> semantic_routine_signatures;
@@ -77,7 +173,44 @@ struct SourceConstraintGraph {
   std::vector<SourceConstraintPackExpansion> expansions;
 };
 inline SourceConstraintGraph &source_constraint_graph(){static SourceConstraintGraph graph;return graph;}
-inline unsigned capture_constraint_expression(an_expr_node_ptr,unsigned=0);
+// Preserve the frontend lookup decision separately from allocated type
+// dependence: GNU prototype instantiation defers even `::new int`.
+inline void observe_source_new_lookup(a_new_delete_supplement_ptr supplement,bool deferred) {
+  auto &entries=source_constraint_graph().deferred_new_lookups;
+  if(deferred)entries.insert(supplement);else entries.erase(supplement);
+}
+inline void observe_source_new_lookup_copy(a_new_delete_supplement_ptr original,a_new_delete_supplement_ptr copy) {
+  observe_source_new_lookup(copy,source_constraint_graph().deferred_new_lookups.count(original)!=0);
+}
+struct SourceParameterScope {
+  unsigned previous;
+  explicit SourceParameterScope(unsigned binder):previous(source_constraint_graph().active_binder){source_constraint_graph().active_binder=binder;}
+  ~SourceParameterScope(){source_constraint_graph().active_binder=previous;}
+};
+inline unsigned current_source_parameter_binder(){return source_constraint_graph().active_binder;}
+inline std::pair<unsigned,unsigned> capture_parameter_binder_pair(unsigned expression,unsigned routine,unsigned parent,a_param_type_ptr parameters) {
+  auto &graph=source_constraint_graph();auto key=std::make_tuple(expression,routine,parent);
+  auto previous=graph.binder_pairs.find(key);if(previous!=graph.binder_pairs.end())return previous->second;
+  unsigned inside=unsigned(graph.binders.size()+1),outside=inside+1;
+  graph.binder_pairs.emplace(key,std::make_pair(inside,outside));
+  graph.binders[inside]={parent,expression,routine,false,{}};
+  graph.binders[outside]={parent,expression,routine,true,{}};
+  auto &values=graph.binders.at(inside).parameters;
+  unsigned ordinal=0;
+  for(auto parameter=parameters;parameter;parameter=parameter->next) {
+    SourceConstraintParameter value;value.ordinal=ordinal++;value.name=parameter->name?parameter->name:"";
+    value.qualifiers=parameter->qualifiers;value.pack=parameter->is_parameter_pack;value.requires_parameter=parameter->is_requires_expr_param;
+    values.push_back(value);
+  }
+  SourceParameterScope scope(inside);ordinal=0;
+  for(auto parameter=parameters;parameter;parameter=parameter->next,++ordinal) {
+    values[ordinal].type=capture_type(parameter->type);
+    values[ordinal].declared_type=capture_type(parameter->declared_type);
+  }
+  graph.binders.at(outside).parameters=values;
+  return {inside,outside};
+}
+inline unsigned capture_constraint_expression(an_expr_node_ptr,unsigned=~0U);
 inline unsigned capture_constraint_concept(a_template_ptr);
 
 inline unsigned capture_constraint_pack_expansion(a_pack_expansion_descr_ptr original) {
@@ -123,6 +256,22 @@ inline SourceConstraintArgument capture_constraint_argument(a_template_arg_ptr a
   return result;
 }
 
+inline void capture_source_alias(a_type_ptr type) {
+  auto &s=state();if(s.source_aliases.count(type))return;
+  s.source_aliases.emplace(type,SourceAliasInstance{});
+  SourceAliasInstance value;auto extra=type->variant.typeref.extra_info;
+  value.prototype=type->variant.typeref.is_prototype_instantiation;
+  value.nonreal=type->variant.typeref.is_nonreal;value.dependent=type->variant.typeref.is_dependent;
+  if(!extra || !extra->assoc_template)value.error="alias instance has no original template declaration";
+  else {
+    value.templ=capture_source_template(extra->assoc_template);value.minimum_arguments=extra->min_template_arguments;
+    value.original_present=extra->orig_template_arg_list!=nullptr;
+    for(auto arg=extra->template_arg_list;arg;arg=arg->next)value.arguments.push_back(capture_constraint_argument(arg,value.error));
+    for(auto arg=extra->orig_template_arg_list;arg;arg=arg->next)value.original_arguments.push_back(capture_constraint_argument(arg,value.error));
+  }
+  s.source_aliases[type]=value;
+}
+
 inline SourceTemplateFormal capture_constraint_formal(a_template_parameter_ptr param,std::string &error) {
   SourceTemplateFormal formal;
   if(!param){error="source constraint substitution lacks its original IL formal declaration";return formal;}
@@ -149,6 +298,7 @@ inline void capture_constraint_declaration_scope(a_source_correspondence &source
   if(value.name.empty())value.error="source expression declaration needs original anonymous member identity";
 }
 inline unsigned capture_constraint_variable(a_variable_ptr variable) {
+  SourceParameterScope declaration_scope(0);
   if(!variable)return 0;
   auto &graph=source_constraint_graph();auto key=std::make_pair(static_cast<void*>(variable),std::string("variable"));
   auto previous=graph.declarations_by_original.find(key);if(previous!=graph.declarations_by_original.end())return previous->second;
@@ -206,18 +356,61 @@ inline unsigned capture_constraint_variable(a_variable_ptr variable) {
   }
   graph.declarations[id-1]=value;return id;
 }
+// A selected ordinary member may belong to a concrete class specialization.
+// Capture its original enclosing-class substitution without changing its ABI
+// or nominal record identity. Independent member-template arguments stay empty.
+inline void capture_selected_member_owner(unsigned owner_id,unsigned primary_id,std::string &error) {
+  if(owner_id==primary_id)return;
+  auto &s=state();
+  auto owner=owner_id?s.types.at(owner_id-1).record_type:nullptr;
+  auto primary=primary_id?s.types.at(primary_id-1).record_type:nullptr;
+  if(!owner || !primary || !s.records.count(owner) || !s.records.count(primary)) {
+    error="selected member lacks original enclosing class snapshots";return;
+  }
+  auto record=s.records.at(owner);
+  if(record.dependent)return; // Already captured by original dependent class traversal.
+  if(record.template_prototype) {
+    if(record.template_prototype!=primary_id)error="selected members disagree on original enclosing class prototype";
+    return;
+  }
+  auto supplement=class_type_supp(owner);auto templ=supplement?supplement->assoc_template:nullptr;
+  if(!templ || (templ->kind!=templk_class && templ->kind!=templk_member_class) ||
+      templ->prototype_instantiation.type!=primary || supplement->partial_spec_template_arg_list || record.prototype) {
+    error="selected concrete member requires exact original enclosing class substitution";return;
+  }
+  record.template_prototype=primary_id;s.records[owner]=record; // Reserve before recursive argument capture.
+  for(auto argument=supplement->template_arg_list;argument;argument=argument->next)
+    record.template_arguments.push_back(capture_constraint_argument(argument,record.template_error));
+  if(!record.template_error.empty())error=record.template_error;
+  s.records[owner]=record;
+}
 inline unsigned capture_constraint_routine(a_routine_ptr routine) {
+  SourceParameterScope declaration_scope(0);
   if(!routine)return 0;
   auto &graph=source_constraint_graph();auto key=std::make_pair(static_cast<void*>(routine),std::string("routine"));
   auto previous=graph.declarations_by_original.find(key);if(previous!=graph.declarations_by_original.end())return previous->second;
   unsigned id=unsigned(graph.declarations.size()+1);graph.declarations_by_original[key]=id;graph.declarations.emplace_back();
   SourceConstraintDeclaration value;value.kind="routine";value.type=capture_type(routine->type);value.is_constexpr=routine->is_constexpr;
+  value.routine_kind=routine->special_kind==sfk_constructor?"constructor":routine->special_kind==sfk_destructor?"destructor":routine->special_kind==sfk_operator?"operator":"function";
+  if(routine->special_kind==sfk_operator)value.operator_kind=int(routine->variant.opname_kind);
   graph.semantic_routine_signatures.insert(value.type);
   capture_constraint_declaration_scope(routine->source_corresp,value);
   if(routine->assoc_template) {
     auto templ=routine->assoc_template;value.has_template_origin=true;value.is_template_prototype=routine->is_prototype_instantiation;
     value.template_origin_kind="function-template";
-    if((templ->kind!=templk_function && templ->kind!=templk_member_function) || !templ->template_decl || !templ->prototype_instantiation.routine)
+    if(templ->kind==templk_member_function && !templ->template_decl) {
+      value.template_origin_kind="class-member-function";
+      auto primary=templ->prototype_instantiation.routine;
+      // il_def.h: ordinary members of class templates have no independent
+      // template argument list. Their exact class owns the substitution.
+      if(!primary || !routine->source_corresp.is_class_member || !primary->source_corresp.is_class_member ||
+         routine->template_arg_list || primary->template_arg_list)
+        value.error="source class member routine lost its original class/prototype ownership";
+      else {
+        value.template_prototype=primary==routine?id:capture_constraint_routine(primary);
+        if(primary!=routine)capture_selected_member_owner(value.owner_type,graph.declarations.at(value.template_prototype-1).owner_type,value.error);
+      }
+    } else if((templ->kind!=templk_function && templ->kind!=templk_member_function) || !templ->template_decl || !templ->prototype_instantiation.routine)
       value.error="source routine reference lacks its exact original template declaration";
     else {
       if(templ->prototype_instantiation.routine!=routine)value.template_prototype=capture_constraint_routine(templ->prototype_instantiation.routine);
@@ -306,13 +499,21 @@ inline void capture_constraint_function_constant(a_constant_ptr constant,SourceC
 }
 inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsigned binder) {
   if(!expression)return 0;
-  auto &graph=source_constraint_graph();auto key=std::make_pair(expression,binder);
+  auto &graph=source_constraint_graph();if(binder==~0U)binder=graph.active_binder;
+  SourceParameterScope scope(binder);auto key=std::make_pair(expression,binder);
   auto previous=graph.expressions_by_original.find(key);if(previous!=graph.expressions_by_original.end())return previous->second;
   unsigned id=unsigned(graph.expressions.size()+1);graph.expressions_by_original[key]=id;graph.expressions.emplace_back();
-  SourceConstraintExpression value;value.type=capture_type(expression->type);value.location=expression->position;
-  value.original_lvalue_type=capture_type(expression->orig_lvalue_type);
+  SourceConstraintExpression value;value.location=expression->position;
+  {
+    // Semantic result annotations use an existing type; they do not declare
+    // the type recipe anew in the surrounding expression's lexical scope.
+    SourceParameterScope result_annotation_scope(0);
+    value.type=capture_type(expression->type);
+    value.original_lvalue_type=capture_type(expression->orig_lvalue_type);
+  }
   value.parenthesized=expression->is_parenthesized;value.compiler_generated=expression->compiler_generated;value.volatile_fetch=expression->volatile_fetch;
   value.lvalue=expression->is_lvalue;value.xvalue=expression->is_xvalue;value.binder=binder;
+  value.pack_expansion=expression->is_pack_expansion;
   auto edge=[&](const char *role,an_expr_node_ptr child,unsigned context){value.edges.push_back({role,capture_constraint_expression(child,context)});};
   switch(expression->kind) {
     case enk_concept_id:
@@ -321,16 +522,13 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
       for(auto arg=expression->variant.concept_id.args;arg;arg=arg->next)value.arguments.push_back(capture_constraint_argument(arg,value.error));
       break;
     case enk_requires: {
-      value.kind="requires";unsigned ordinal=0;
-      for(auto param=expression->variant.requires_expr.parameters;param;param=param->next) {
-        SourceConstraintParameter formal;formal.type=capture_type(param->type);formal.declared_type=capture_type(param->declared_type);
-        formal.ordinal=ordinal++;formal.qualifiers=param->qualifiers;formal.name=param->name?param->name:"";
-        formal.pack=param->is_parameter_pack;formal.requires_parameter=param->is_requires_expr_param;
-        if(param->has_default_arg || param->default_arg_expr || !formal.requires_parameter)value.error="source requires parameter lost original parameter contract";
-        value.parameters.push_back(formal);
-      }
-      graph.binders[id]={binder,value.parameters};
-      for(auto req=expression->variant.requires_expr.requirements;req;req=req->next)edge("requirement",req,id);
+      value.kind="requires";
+      auto frames=capture_parameter_binder_pair(id,0,binder,expression->variant.requires_expr.parameters);
+      graph.requires_binders[id]=frames.second;value.parameters=graph.binders.at(frames.second).parameters;
+      for(auto param=expression->variant.requires_expr.parameters;param;param=param->next)
+        if(param->has_default_arg || param->default_arg_expr || !param->is_requires_expr_param)
+          value.error="source requires parameter lost original parameter contract";
+      for(auto req=expression->variant.requires_expr.requirements;req;req=req->next)edge("requirement",req,frames.second);
       if(requires_expr_substs) {
         const auto &substitutions=requires_expr_substs->get(expression);
         for(auto pair=substitutions.begin();pair!=substitutions.end();++pair) {
@@ -356,21 +554,115 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
       break;
     }
     case enk_nested_req:value.kind="nested-requirement";edge("constraint",expression->variant.nested_req.constraint,binder);break;
+    case enk_field: {
+      value.kind="field-reference";value.field=expression->variant.field.ptr;
+      if(!value.field) {value.error="original field reference has no selected field";break;}
+      auto owner=parent_class_of(value.field);value.field_owner=capture_type(owner);
+      auto record=state().records.find(owner);bool found=false;
+      if(record!=state().records.end())for(const auto &field:record->second.fields) {
+        if(field.il==value.field) {found=true;break;}++value.field_ordinal;
+      }
+      if(!found)value.error="source field reference lacks its exact original enclosing record/member";
+      break;
+    }
+    case enk_braced_init_list:
+      value.kind="braced-initializer-list";
+      for(auto element=expression->variant.braced_init_list;element;element=element->next)edge("element",element,binder);
+      break;
+    case enk_fold: {
+      value.kind="fold-expression";value.fold_token=int(expression->variant.fold.operator_token);value.fold_left=expression->variant.fold.left_associative;
+      auto fold_spelling=source_fold_operator(expression->variant.fold.operator_token);
+      if(!fold_spelling)value.error="original fold operator is not a C++17 fold token";
+      else value.fold_operator=fold_spelling;
+      // Partial substitution can retain more than two original operands.
+      for(auto operand=expression->variant.fold.operands;operand;operand=operand->next)edge("operand",operand,binder);
+      if(value.edges.empty())value.error="original fold expression has no operand";
+      break;
+    }
+    case enk_new_delete: {
+      value.kind="allocation-expression";
+      auto supplement=expression->variant.new_delete;
+      if(!supplement) {value.error="original allocation expression lacks its supplement";break;}
+      auto &allocation=value.allocation;
+      allocation.type=capture_type(supplement->type);allocation.routine=capture_constraint_routine(supplement->routine);
+      allocation.is_new=supplement->is_new;allocation.lookup_deferred=source_constraint_graph().deferred_new_lookups.count(supplement)!=0;
+      allocation.dependent=!supplement->routine && (allocation.lookup_deferred || (supplement->type && is_template_dependent_type(supplement->type)));
+      allocation.placement=supplement->placement_new;allocation.aligned=supplement->aligned_version;
+      allocation.array_delete=supplement->array_delete;allocation.global=supplement->global_new_or_delete;
+      allocation.has_initializer=supplement->has_new_initializer;allocation.braced=supplement->new_initializer_is_brace_enclosed;
+      allocation.paren_aggregate=supplement->new_initializer_is_paren_aggr_init;allocation.deducible=supplement->deducible_type;
+      allocation.parenthesized=supplement->parenthesized_type_id;
+      if(!allocation.type)value.error="original allocation expression lacks its object type";
+      if(!allocation.routine && !allocation.dependent)value.error="source allocation requires its original folded/default operator selection";
+      if(supplement->dynamic_init || supplement->freeing_of_storage_on_exception)
+        value.error="source allocation requires its original initialization/rollback graph";
+      for(auto arg=supplement->arg;arg;arg=arg->next)edge(allocation.is_new?"allocation-argument":"delete-operand",arg,binder);
+      if(supplement->number_of_elements)edge("array-bound",supplement->number_of_elements,binder);
+      break;
+    }
+    case enk_temp_init: {
+      value.kind="temporary-initialization";
+      auto dip=expression->variant.init.dynamic_init;
+      if(!dip) {value.error="original source temporary lacks its selected initialization";break;}
+      auto &temp=value.temporary;temp.initialization_kind=int(dip->kind);
+      temp.spelled_type=capture_type(expression->variant.init.source.type);
+      temp.destructor=capture_constraint_routine(dip->destructor);
+      // This is an unevaluated/source-expression graph, not an execution body.
+      // A real linked lifetime must get its own original source-only graph;
+      // never adopt it into an unrelated emitted function or silently drop it.
+      if(dip->variable || dip->lifetime || dip->init_expr_lifetime || dip->next_in_destruction_list ||
+         dip->master_entry || dip->lifetime_of_overlapping_temps || dip->is_freeing_of_storage_on_exception ||
+         dip->is_array_freeing || dip->is_constructor_init || dip->destruction_is_for_partially_constructed_aggregate ||
+         dip->overlaps_temps_in_inner_lifetime)
+        value.error="source temporary requires its original linked lifetime/master initialization graph";
+      auto flag=[&](bool set,const char *name){if(set)temp.flags.push_back(name);};
+      flag(dip->static_temp,"static-storage");flag(dip->follows_an_exec_statement,"after-statement");
+      flag(dip->inside_conditional_expression,"conditional");flag(dip->unordered,"unordered-destruction");
+      flag(dip->has_temporary_lifetime,"temporary-lifetime");flag(dip->is_explicit_cast,"explicit-cast");
+      flag(dip->is_compound_literal,"compound-literal");flag(dip->is_braced_initializer,"braced");
+      flag(dip->is_partially_initialized,"partial-initialization");flag(dip->is_result_for_class_rvalue_question_mark,"conditional-result");
+      flag(dip->class_rvalue_initialized_through_master_entry,"master-result");flag(dip->is_result_for_comma_operator,"comma-result");
+      flag(dip->is_reused_value,"reused-value");flag(dip->is_creation_of_initializer_list_object,"initializer-list-object");
+      flag(dip->is_array_for_initializer_list_object,"initializer-list-array");
+      flag(dip->is_top_temporary_for_constexpr_reference_param,"constexpr-reference-argument");
+      switch(dip->kind) {
+        case dik_none:case dik_zero:break;
+        case dik_constant:case dik_nonconstant_aggregate:temp.constant=capture_semantic_constant(dip->variant.constant.ptr);break;
+        case dik_expression:case dik_class_result_via_ctor:edge("initializer",dip->variant.expression,binder);break;
+        case dik_constructor:
+          temp.constructor=capture_constraint_routine(dip->variant.constructor.ptr);
+          temp.dependent_constructor=!dip->variant.constructor.ptr && is_template_dependent_type(expression->type);
+          if(!temp.constructor && !temp.dependent_constructor)value.error="source temporary constructor has no selected routine or dependent type";
+          flag(dip->variant.constructor.is_copy_constructor_with_implied_source,"implied-copy-source");
+          flag(dip->variant.constructor.is_implicit_copy_for_copy_initialization,"implicit-copy-initialization");
+          flag(dip->variant.constructor.value_initialization,"value-initialization");
+          flag(dip->variant.constructor.has_sequenced_arguments,"sequenced-arguments");
+          flag(dip->variant.constructor.is_array_copy,"array-copy");
+          if(dip->variant.constructor.is_copy_constructor_with_implied_source || dip->variant.constructor.is_array_copy)
+            value.error="source temporary copy requires original implied source/array recipe";
+          for(auto arg=dip->variant.constructor.args;arg;arg=arg->next)edge("argument",arg,binder);
+          break;
+        case dik_bitwise_copy:
+          if(!dip->variant.bitwise_copy.source)value.error="source temporary bitwise copy requires original implied source";
+          else edge("source",dip->variant.bitwise_copy.source,binder);
+          break;
+        default:value.error="source temporary initialization kind requires its original family: kind="+std::to_string(int(dip->kind));break;
+      }
+      break;
+    }
     case enk_param_ref:
       value.kind="parameter-reference";value.parameter_number=expression->variant.param_ref.param_num;value.levels_up=expression->variant.param_ref.levels_up;
       if(!binder || !value.parameter_number)value.error="source parameter reference requires original enclosing binder";
       else {
-        // Requires bodies are outside their parameter list, matching
-        // il_to_str.c::get_param_for_param_ref; levels_up traverses binders.
-        unsigned selected=binder;
-        for(unsigned level=0;level<value.levels_up && selected;level++) {
-          auto found=graph.binders.find(selected);
-          if(found==graph.binders.end()){selected=0;break;}
-          selected=found->second.parent;
-        }
+        // Exact stock get_param_for_param_ref prototype-stack resolution.
+        unsigned selected=binder,levels=value.levels_up;
+        if(levels==0) {
+          while(selected && !graph.binders.at(selected).outside)selected=graph.binders.at(selected).parent;
+        } else if(!graph.binders.at(selected).outside)--levels;
+        for(unsigned level=0;level<levels && selected;++level)selected=graph.binders.at(selected).parent;
         auto found=graph.binders.find(selected);
         if(found==graph.binders.end() || value.parameter_number>found->second.parameters.size())
-          value.error="source parameter reference leaves its exact original requires binder";
+          value.error="source parameter reference leaves its exact original parameter binder";
         else value.resolved_binder=selected;
       }
       break;

@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v57'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v58'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -58,6 +58,7 @@ CREATE TABLE routine_parameters (
  PRIMARY KEY(type_id,ordinal)
 ) STRICT;
 CREATE TABLE source_routine_types (
+ prototype_origin TEXT NOT NULL DEFAULT 'original' CHECK(prototype_origin IN('original','lambda-conversion-copy')),
  exception_policy_origin TEXT NOT NULL CHECK(exception_policy_origin IN ('captured','generated-resolution','implicit-destructor-resolution')),
  type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
  return_type_id INTEGER NOT NULL REFERENCES source_types(id),
@@ -700,6 +701,7 @@ CREATE TABLE edges (
 ) STRICT;
 CREATE TABLE source_types (
  id INTEGER PRIMARY KEY CHECK(id>0),
+ source_form TEXT NOT NULL DEFAULT 'plain' CHECK(source_form IN('plain','template-alias','type-operator')),
  kind TEXT NOT NULL,
  source_name TEXT NOT NULL,
  underlying_type_id INTEGER REFERENCES source_types(id),
@@ -846,16 +848,17 @@ CREATE TABLE source_array_bounds (
 ) STRICT;
 CREATE TABLE source_templates (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind='parameter'),
+ kind TEXT NOT NULL CHECK(kind IN('parameter','alias')),
  source_name TEXT NOT NULL,
- parameter_depth INTEGER NOT NULL CHECK(parameter_depth>=0),
- parameter_position INTEGER NOT NULL CHECK(parameter_position>0),
+ parameter_depth INTEGER CHECK(parameter_depth>=0),
+ parameter_position INTEGER CHECK(parameter_position>0),
  is_pack INTEGER NOT NULL CHECK(is_pack IN (0,1)),
  parameter_count INTEGER NOT NULL CHECK(parameter_count>=0),
- capture_proof TEXT NOT NULL CHECK(capture_proof='original-template-parameter'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN('original-template-parameter','original-alias-template')),
  source_file_id INTEGER NOT NULL REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>0),
- column INTEGER NOT NULL CHECK(column>=0)
+ column INTEGER NOT NULL CHECK(column>=0),
+ CHECK((kind='parameter' AND parameter_depth IS NOT NULL AND parameter_position IS NOT NULL AND capture_proof='original-template-parameter') OR (kind='alias' AND parameter_depth IS NULL AND parameter_position IS NULL AND is_pack=0 AND capture_proof='original-alias-template'))
 ) STRICT;
 CREATE TABLE source_template_parameters (
  source_template_id INTEGER NOT NULL REFERENCES source_templates(id),
@@ -1352,7 +1355,7 @@ CREATE TABLE source_concept_parameters (
 ) STRICT;
 CREATE TABLE source_expressions (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind IN('concept-id','requires','compound-requirement','nested-requirement','parameter-reference','variable-reference','routine-reference','dependent-function-reference','type-operand','constant','expression-constant','sizeof','alignof','datasizeof','builtin-operation','operation')),
+ kind TEXT NOT NULL CHECK(kind IN('concept-id','requires','compound-requirement','nested-requirement','parameter-reference','variable-reference','routine-reference','dependent-function-reference','type-operand','constant','expression-constant','sizeof','alignof','datasizeof','builtin-operation','operation','temporary-initialization','allocation-expression','braced-initializer-list','fold-expression','field-reference')),
  edge_count INTEGER NOT NULL CHECK(edge_count>=0),
  parameter_count INTEGER NOT NULL CHECK(parameter_count>=0),
  argument_count INTEGER NOT NULL CHECK(argument_count>=0),
@@ -1361,6 +1364,7 @@ CREATE TABLE source_expressions (
  is_parenthesized INTEGER NOT NULL CHECK(is_parenthesized IN(0,1)),
  is_compiler_generated INTEGER NOT NULL CHECK(is_compiler_generated IN(0,1)),
  is_volatile_fetch INTEGER NOT NULL CHECK(is_volatile_fetch IN(0,1)),
+ is_pack_expansion INTEGER NOT NULL CHECK(is_pack_expansion IN(0,1)),
  source_type_id INTEGER REFERENCES source_types(id),
  value_category TEXT NOT NULL CHECK(value_category IN('none','lvalue','xvalue','prvalue')),
  source_file_id INTEGER REFERENCES source_files(id),line INTEGER NOT NULL,column INTEGER NOT NULL,
@@ -1396,10 +1400,10 @@ CREATE TABLE source_expression_parameters (
 ) STRICT;
 CREATE TABLE source_expression_parameter_references (
  expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),
- binder_expression_id INTEGER NOT NULL REFERENCES source_expressions(id),
+ binder_id INTEGER NOT NULL REFERENCES source_parameter_binders(id),
  parameter_ordinal INTEGER NOT NULL CHECK(parameter_ordinal>=0),
  original_levels_up INTEGER NOT NULL CHECK(original_levels_up>=0),
- FOREIGN KEY(binder_expression_id,parameter_ordinal) REFERENCES source_expression_parameters(expression_id,ordinal)
+ FOREIGN KEY(binder_id,parameter_ordinal) REFERENCES source_binder_parameters(binder_id,ordinal)
 ) STRICT;
 CREATE TABLE source_expression_operations (
  expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),
@@ -1420,7 +1424,7 @@ CREATE TABLE source_expression_constants (
 
 CREATE TABLE source_expression_bindings (
  expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),
- lexical_binder_expression_id INTEGER NOT NULL REFERENCES source_expressions(id)
+ lexical_binder_id INTEGER NOT NULL REFERENCES source_parameter_binders(id)
 ) STRICT;
 CREATE TABLE source_expression_requirements (
  expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),requires_noexcept INTEGER NOT NULL CHECK(requires_noexcept IN(0,1))
@@ -1464,7 +1468,8 @@ CREATE TABLE source_expression_declarations (
  source_name TEXT NOT NULL,qualified_name TEXT NOT NULL,source_type_id INTEGER NOT NULL REFERENCES source_types(id),
  owner_source_type_id INTEGER REFERENCES source_types(id),
  template_prototype_declaration_id INTEGER REFERENCES source_expression_declarations(id),
- template_origin_kind TEXT NOT NULL CHECK(template_origin_kind IN('none','variable-template','function-template','static-data-member')),
+ template_origin_kind TEXT NOT NULL CHECK(template_origin_kind IN('none','variable-template','function-template','static-data-member','class-member-function')),
+ routine_kind TEXT NOT NULL CHECK(routine_kind IN('not-routine','function','constructor','destructor','operator')),
  has_template_origin INTEGER NOT NULL CHECK(has_template_origin IN(0,1)),is_template_prototype INTEGER NOT NULL CHECK(is_template_prototype IN(0,1)),
  is_constexpr INTEGER NOT NULL CHECK(is_constexpr IN(0,1)),
  formal_count INTEGER NOT NULL CHECK(formal_count>=0),argument_count INTEGER NOT NULL CHECK(argument_count>=0),
@@ -1500,7 +1505,7 @@ CREATE TABLE source_expression_declaration_arguments (
 ) STRICT;
 
 CREATE TABLE source_constraint_argument_details (
- owner_kind TEXT NOT NULL CHECK(owner_kind IN('concept','declaration','substitution','lookup','class')),owner_id INTEGER NOT NULL CHECK(owner_id>0),
+ owner_kind TEXT NOT NULL CHECK(owner_kind IN('class','concept','declaration','substitution','lookup','alias-selected','alias-original')),owner_id INTEGER NOT NULL CHECK(owner_id>0),
  substitution_ordinal INTEGER NOT NULL CHECK(substitution_ordinal>=0),argument_ordinal INTEGER NOT NULL CHECK(argument_ordinal>=0),
  is_pack INTEGER NOT NULL CHECK(is_pack IN(0,1)),is_pack_element INTEGER NOT NULL CHECK(is_pack_element IN(0,1)),
  has_pack_ellipsis INTEGER NOT NULL CHECK(has_pack_ellipsis IN(0,1)),is_integer_pack INTEGER NOT NULL CHECK(is_integer_pack IN(0,1)),
@@ -1616,4 +1621,106 @@ CREATE TABLE function_dynamic_exception_boundaries (
  function_entity_id INTEGER PRIMARY KEY REFERENCES functions(entity_id),
  source_routine_type_id INTEGER NOT NULL REFERENCES source_dynamic_exception_specifications(source_routine_type_id),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-throw-spec-function-boundary')
+) STRICT;
+
+CREATE TABLE source_named_templates (
+ template_id INTEGER PRIMARY KEY REFERENCES source_templates(id),qualified_name TEXT NOT NULL,
+ owner_source_type_id INTEGER REFERENCES source_types(id),prototype_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ constraint_expression_id INTEGER REFERENCES source_expressions(id),capture_proof TEXT NOT NULL CHECK(capture_proof='original-alias-template')
+) STRICT;
+CREATE TABLE source_alias_instances (
+ type_id INTEGER PRIMARY KEY REFERENCES source_types(id),template_id INTEGER NOT NULL REFERENCES source_templates(id),
+ is_prototype INTEGER NOT NULL CHECK(is_prototype IN(0,1)),is_nonreal INTEGER NOT NULL CHECK(is_nonreal IN(0,1)),
+ is_dependent INTEGER NOT NULL CHECK(is_dependent IN(0,1)),argument_count INTEGER NOT NULL CHECK(argument_count>=0),
+ has_original_arguments INTEGER NOT NULL CHECK(has_original_arguments IN(0,1)),original_argument_count INTEGER NOT NULL CHECK(original_argument_count>=0),
+ minimum_arguments INTEGER NOT NULL CHECK(minimum_arguments>=-1),capture_proof TEXT NOT NULL CHECK(capture_proof='original-alias-instance')
+) STRICT;
+CREATE TABLE source_alias_arguments (
+ type_id INTEGER NOT NULL REFERENCES source_alias_instances(type_id),list_kind TEXT NOT NULL CHECK(list_kind IN('alias-selected','alias-original')),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),kind TEXT NOT NULL CHECK(kind IN('type','constant','template','pack-boundary')),
+ source_type_id INTEGER REFERENCES source_types(id),constant_id INTEGER REFERENCES source_semantic_constants(id),template_id INTEGER REFERENCES source_templates(id),
+ PRIMARY KEY(type_id,list_kind,ordinal)
+) STRICT;
+CREATE TABLE source_type_operators (
+ type_id INTEGER PRIMARY KEY REFERENCES source_types(id),opcode INTEGER NOT NULL,
+ expression_id INTEGER REFERENCES source_expressions(id),operand_source_type_id INTEGER REFERENCES source_types(id),
+ is_dependent INTEGER NOT NULL CHECK(is_dependent IN(0,1)),is_unparenthesized_decltype INTEGER NOT NULL CHECK(is_unparenthesized_decltype IN(0,1)),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-type-operator'),operator_name TEXT NOT NULL,CHECK((expression_id IS NULL)!=(operand_source_type_id IS NULL))
+) STRICT;
+
+CREATE TABLE source_expression_temporaries (
+ expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),initialization_kind INTEGER NOT NULL CHECK(initialization_kind BETWEEN 0 AND 7),
+ spelled_source_type_id INTEGER REFERENCES source_types(id),constructor_declaration_id INTEGER REFERENCES source_expression_declarations(id),
+ destructor_declaration_id INTEGER REFERENCES source_expression_declarations(id),constant_id INTEGER REFERENCES source_semantic_constants(id),
+ is_dependent_constructor INTEGER NOT NULL CHECK(is_dependent_constructor IN(0,1)),
+ lifetime_disposition TEXT NOT NULL CHECK(lifetime_disposition='no-linked-lifetime'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-expression-temporary')
+) STRICT;
+CREATE TABLE source_expression_temporary_flags (
+ expression_id INTEGER NOT NULL REFERENCES source_expression_temporaries(expression_id),flag TEXT NOT NULL,
+ PRIMARY KEY(expression_id,flag)
+) STRICT;
+
+CREATE TABLE source_parameter_binders (
+ id INTEGER PRIMARY KEY,kind TEXT NOT NULL CHECK(kind IN('requires','routine-prototype')),
+ parent_binder_id INTEGER REFERENCES source_parameter_binders(id),
+ requires_expression_id INTEGER REFERENCES source_expressions(id),
+ routine_source_type_id INTEGER REFERENCES source_routine_types(type_id),
+ outside_parameter_list INTEGER NOT NULL CHECK(outside_parameter_list IN(0,1)),
+ parameter_count INTEGER NOT NULL CHECK(parameter_count>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-parameter-scope'),
+ CHECK((kind='requires' AND requires_expression_id IS NOT NULL AND routine_source_type_id IS NULL) OR
+       (kind='routine-prototype' AND requires_expression_id IS NULL AND routine_source_type_id IS NOT NULL))
+) STRICT;
+CREATE TABLE source_binder_parameters (
+ binder_id INTEGER NOT NULL REFERENCES source_parameter_binders(id),ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),declared_source_type_id INTEGER REFERENCES source_types(id),
+ source_name TEXT NOT NULL,qualifier_bits INTEGER NOT NULL CHECK(qualifier_bits>=0),
+ is_pack INTEGER NOT NULL CHECK(is_pack IN(0,1)),PRIMARY KEY(binder_id,ordinal)
+) STRICT;
+
+CREATE TABLE source_expression_allocations (
+ expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),
+ object_source_type_id INTEGER NOT NULL REFERENCES source_types(id),operator_declaration_id INTEGER REFERENCES source_expression_declarations(id),
+ is_new INTEGER NOT NULL CHECK(is_new IN(0,1)),
+ is_dependent_selection INTEGER NOT NULL CHECK(is_dependent_selection IN(0,1)),
+ is_placement INTEGER NOT NULL CHECK(is_placement IN(0,1)),
+ is_aligned INTEGER NOT NULL CHECK(is_aligned IN(0,1)),
+ is_array_delete INTEGER NOT NULL CHECK(is_array_delete IN(0,1)),
+ is_global INTEGER NOT NULL CHECK(is_global IN(0,1)),
+ has_initializer INTEGER NOT NULL CHECK(has_initializer IN(0,1)),
+ is_braced_initializer INTEGER NOT NULL CHECK(is_braced_initializer IN(0,1)),
+ is_parenthesized_aggregate INTEGER NOT NULL CHECK(is_parenthesized_aggregate IN(0,1)),
+ has_deducible_type INTEGER NOT NULL CHECK(has_deducible_type IN(0,1)),
+ has_parenthesized_type_id INTEGER NOT NULL CHECK(has_parenthesized_type_id IN(0,1)),
+ initialization_disposition TEXT NOT NULL CHECK(initialization_disposition='absent-in-original'),
+ rollback_disposition TEXT NOT NULL CHECK(rollback_disposition='absent-in-original'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-new-delete-expression'),
+ is_lookup_deferred INTEGER NOT NULL CHECK(is_lookup_deferred IN(0,1))
+) STRICT;
+CREATE TABLE source_declaration_operators (
+ declaration_id INTEGER PRIMARY KEY REFERENCES source_expression_declarations(id),operator_kind INTEGER NOT NULL CHECK(operator_kind BETWEEN 1 AND 47),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-operator-declaration')
+) STRICT;
+
+CREATE TABLE source_routine_prototype_origins (
+ routine_source_type_id INTEGER PRIMARY KEY REFERENCES source_routine_types(type_id),
+ original_routine_source_type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),
+ original_binder_id INTEGER NOT NULL REFERENCES source_parameter_binders(id),
+ kind TEXT NOT NULL CHECK(kind='lambda-conversion-copy'),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-lambda-conversion-prototype'),
+ CHECK(routine_source_type_id<>original_routine_source_type_id)
+) STRICT;
+
+CREATE TABLE source_expression_folds (
+ expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),
+ operator_token INTEGER NOT NULL CHECK(operator_token>=0),operator_spelling TEXT NOT NULL,
+ is_left_associative INTEGER NOT NULL CHECK(is_left_associative IN(0,1)),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-fold-expression')
+) STRICT;
+
+CREATE TABLE source_expression_field_references (
+ expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),
+ source_field_id INTEGER NOT NULL REFERENCES source_record_fields(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-field-reference')
 ) STRICT;

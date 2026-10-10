@@ -220,6 +220,12 @@ internal sealed partial class ObjectFile
                     ? FieldInitializerExecutions.TryGetValue((execution.SourceInitializerId, execution.FunctionEntityId), out var fieldExecution) && fieldExecution.ExecutionDisposition == "copied"
                     : GeneratedRoutineOrigins.ContainsKey(execution.FunctionEntityId)))
                 throw new InvalidDataException("Initializer lifetime adoption differs from its original source boundary");
+            if (lifetime.ParentLifetimeId is null && original.ParentObligationId is not null &&
+                (SourceInitializers[execution.SourceInitializerId].Kind != "file" ||
+                 lifetime.ParentObligationId is not null || lifetime.ParentAllocationObligationId is not null ||
+                 lifetime.SiblingOrdinal != 0 || original.ParentLifetimeId is not long outer ||
+                 SourceStaticLifetimes[outer].Kind != "global-static"))
+                throw new InvalidDataException("Initializer execution root lost its exact outer static lifetime boundary");
         }
         using (var q = database.Prepare("SELECT node_id,source_obligation_id,source_initializer_id,function_entity_id,callback_entity_id,object_node_id,domain,capture_proof FROM static_destruction_registrations"))
             while (q.Read())

@@ -155,6 +155,15 @@ object_source_overlay(class_declarations,
     '  dot_exception_specification_capture.complete();\n'
     '#endif\n}  /* form_exception_specification_for_generated_function */')
 
+# Preserve the original lambda call-operator recipe before the stock factory
+# clears receiver association and installs the conversion-target/static types.
+object_source_overlay(class_declarations,
+    '  rtsp = call_type->variant.routine.extra_info;',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_lambda_conversion_prototype(call_type, call_op);\n'
+    '#endif\n'
+    '  rtsp = call_type->variant.routine.extra_info;')
+
 # Observe accepted layout inputs/results, without rerunning frontend layout.
 layout_source = root / "upstream/src/layout.c"
 object_source_overlay(layout_source,
@@ -375,6 +384,19 @@ object_source_overlay(expr_source,
     '                                                        nps->type_position);\n'
     '#endif\n'
     '  record_typed_operator_position_in_expr_rescan_info(new_node,')
+
+object_source_overlay(expr_source,
+    '  ndsp->routine = nps->new_routine;',
+    '  ndsp->routine = nps->new_routine;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_source_new_lookup(ndsp, nps->unknown_dependent_new);\n'
+    '#endif')
+object_source_overlay(root / "upstream/src/il.c",
+    '    expr_copy->variant.new_delete = copy_new_delete;',
+    '    expr_copy->variant.new_delete = copy_new_delete;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_source_new_lookup_copy(expr->variant.new_delete, copy_new_delete);\n'
+    '#endif')
 
 for filename in ("lower_il.c", "lower_c99.c", "lower_init.c"):
     object_source_overlay(root / "upstream/src" / filename,
@@ -813,6 +835,13 @@ il_source = root / "upstream/src/il.c"
 object_source_overlay(il_source,
     '#include "trans_copy.h"',
     '#include "trans_copy.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
+# Only signatures already owned by the exact lambda factory inherit its
+# recipe when stock copy_type_full duplicates them for later declarations.
+object_source_overlay(il_source,
+    '}  /* copy_type_full */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_lambda_prototype_type_copy(from, to);\n'
+    '#endif\n}  /* copy_type_full */')
 object_source_overlay(il_source,
     '  return new_dip;\n}  /* i_copy_dynamic_init */',
     '#if defined(EDG_DOT_BACKEND)\n'

@@ -76,6 +76,8 @@ internal sealed partial class ObjectFile
                     throw new InvalidDataException("Original argument lacks exact pack, expansion and substitution facts");
             }
         }
+        foreach(var pair in SourceAliasSelectedArguments)Arguments("alias-selected",pair.Key,0,pair.Value);
+        foreach(var pair in SourceAliasOriginalArguments)Arguments("alias-original",pair.Key,0,pair.Value);
         foreach(var pair in SourceTemplateArguments)Arguments("class",pair.Key,0,pair.Value);
         foreach(var pair in SourceConceptArguments)Arguments("concept",pair.Key,0,pair.Value);
         foreach(var pair in SourceExpressionDeclarationArguments)Arguments("declaration",pair.Key,0,pair.Value);
@@ -100,7 +102,7 @@ internal sealed partial class ObjectFile
                     if(parameter.Kind!="parameter")throw new InvalidDataException("Pack constant reference is not its original template parameter");
                     depth=parameter.ParameterDepth!.Value;position=parameter.ParameterPosition!.Value;pack=parameter.IsPack;
                 }
-                else {var parameter=SourceTemplates[argument.TemplateId!.Value];depth=parameter.ParameterDepth;position=parameter.ParameterPosition;pack=parameter.IsPack;}
+                else {var parameter=SourceTemplates[argument.TemplateId!.Value];if(parameter.Kind!="parameter")throw new InvalidDataException("Pack template reference is not its original template parameter");depth=parameter.ParameterDepth!.Value;position=parameter.ParameterPosition!.Value;pack=parameter.IsPack;}
                 if(!pack || reference.Depth is long original && (original!=depth || reference.Position!=position))throw new InvalidDataException("Original pack reference coordinates disagree with selected parameter");
             }
         }

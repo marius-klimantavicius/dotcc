@@ -55,7 +55,8 @@ internal sealed partial class ObjectFile
             while (q.Read())
             {
                 var relation = new SourceRecordInstantiation(q.Text(2), q.OptionalInteger(1), q.OptionalInteger(3), q.OptionalInteger(4), q.Integer(5) == 1, q.Integer(6) == 1);
-                if (!SourceRecords.TryGetValue(q.Integer(0), out var instance) || !instance.IsDependent || instance.IsPrototypeInstantiation ||
+                if (!SourceRecords.TryGetValue(q.Integer(0), out var instance) || instance.IsPrototypeInstantiation ||
+                    !instance.IsDependent && relation.ResolutionKind!="class-template" ||
                     q.Integer(5) is not (0 or 1) || q.Integer(6) is not (0 or 1) ||
                     relation.QualifiedUnknownBaseMember && !relation.MemberOfUnknownBase)
                     throw new InvalidDataException("Invalid original dependent class instance relation");
@@ -77,7 +78,7 @@ internal sealed partial class ObjectFile
                 }
                 else if (relation.ResolutionKind == "template-parameter")
                 {
-                    if (relation.SourceTemplateId is not long template || !SourceTemplates.TryGetValue(template, out var parameter) || instance.SourceName != parameter.SourceName ||
+                    if (relation.SourceTemplateId is not long template || !SourceTemplates.TryGetValue(template, out var parameter) || parameter.Kind!="parameter" || instance.SourceName != parameter.SourceName ||
                         relation.PrototypeSourceRecordId is not null || relation.MemberOwnerSourceTypeId is not null ||
                         relation.MemberOfUnknownBase || relation.QualifiedUnknownBaseMember ||
                         q.Text(7) != "original-template-parameter-instantiation")
@@ -103,6 +104,7 @@ internal sealed partial class ObjectFile
             if ((type.ArrayBoundKind == "dependent") != SourceArrayBounds.ContainsKey(type.Id))
                 throw new InvalidDataException("Dependent array is missing its exact original bound expression");
         ReadSourceConstraints();
+        ReadSourceTypeOrigins();
         ReadSourceConstantExpressions();
         ReadSourceAggregateConstants();
         foreach (var constant in SourceSemanticConstants.Values) VerifySourceSemanticConstant(constant);
@@ -126,7 +128,13 @@ internal sealed partial class ObjectFile
         bool unknownType = valueType.Kind == "dependent" && SourceDependentTypes[valueType.Id].Kind == "unknown";
         if (unknownType && value.Kind is not ("member" or "expression" or "source-expression"))
             throw new InvalidDataException("Only unresolved source member values may retain an unknown result type");
-        var shape = unknownType || value.Kind is "type-operand" or "aggregate" ? (Bits: 0, Signed: false) : SourceIntegerShape(valueType);
+        // A symbolic prototype expression such as T(-1) retains T as its exact
+        // source type. It has no integral width until substitution; only a
+        // resolved integer literal is allowed to claim a checked integer range.
+        bool dependentSymbolic = value.Kind is "parameter" or "member" or "expression" or "operation" or "source-expression" &&
+            SourceTypeContainsParameter(value.SourceTypeId, 0);
+        var shape = unknownType || dependentSymbolic || value.Kind is "type-operand" or "aggregate"
+            ? (Bits: 0, Signed: false) : SourceIntegerShape(valueType);
         VerifySourceTypedExpression(value, valueType);
         if ((value.Kind == "member") != (value.OwnerSourceTypeId is not null))
             throw new InvalidDataException("Source constant member owner differs from its semantic kind");
@@ -215,6 +223,13 @@ internal sealed partial class ObjectFile
     {
         if (depth > 128) throw new InvalidDataException("Source template type identity cycle/depth");
         SourceType value = SourceTypeById(id);
+        string QualifyOrigin(string origin) {
+            string qualifiers=(value.IsConst?"c":"")+(value.IsVolatile?"v":"")+(value.IsRestrict?"r":"")+(value.IsAtomic?"a":"")+
+                string.Concat(SourceTypeQualifiers.GetValueOrDefault(id,[]).Select(SourceIdentityFrame));
+            return qualifiers.Length==0?origin:"q"+SourceIdentityFrame(qualifiers)+SourceIdentityFrame(origin);
+        }
+        if(SourceAliasInstances.TryGetValue(id,out var alias) && alias.Nonreal)return QualifyOrigin(SourceAliasIdentity(id,depth+1));
+        if(SourceTypeOperators.TryGetValue(id,out var operation) && operation.Dependent)return QualifyOrigin(SourceTypeOperatorIdentity(id,depth+1));
         if (value.Kind is "typedef" or "qualified")
         {
             string inner = SourceArgumentTypeIdentity(value.UnderlyingTypeId!.Value, depth + 1);
@@ -238,14 +253,23 @@ internal sealed partial class ObjectFile
             SourceIdentityFrame(SourceArgumentTypeIdentity(value.UnderlyingTypeId!.Value, depth + 1));
         if (value.Kind is "pointer" or "lvalue-reference" or "rvalue-reference")
             return value.Kind + ":" + SourceIdentityFrame(SourceArgumentTypeIdentity(value.UnderlyingTypeId!.Value, depth + 1));
-        if (value.Kind is "enum" or "routine" or "member-pointer")
+        if(value.Kind=="routine") {
+            var routine=SourceRoutines[id];string result="routine:"+SourceIdentityFrame(SourceExpressionTypeKey(routine.ReturnTypeId,depth+1))+
+                SourceIdentityFrame(routine.ObjectTypeId is long owner?SourceArgumentTypeIdentity(owner,depth+1):"")+(routine.ObjectIsConst?"1":"0")+(routine.ObjectIsVolatile?"1":"0")+
+                SourceIdentityFrame(routine.ObjectRefQualifier)+(routine.Variadic?"1":"0")+SourceIdentityFrame(routine.ExceptionPolicy)+SourceIdentityFrame(routine.ParameterMode);
+            foreach(long parameter in routine.Parameters)result+=SourceIdentityFrame(SourceExpressionTypeKey(parameter,depth+1));
+            if(DynamicExceptionSpecifications.TryGetValue(id,out var specification))foreach(var item in specification.Types)result+=SourceIdentityFrame(SourceArgumentTypeIdentity(item.DeclaredSourceTypeId,depth+1));
+            return result;
+        }
+        if(value.Kind=="member-pointer")return "member-pointer:"+SourceIdentityFrame(SourceArgumentTypeIdentity(SourceMemberPointers[id].OwnerTypeId,depth+1))+SourceIdentityFrame(SourceArgumentTypeIdentity(SourceMemberPointers[id].MemberTypeId,depth+1));
+        if (value.Kind is "enum")
             throw new InvalidDataException("Source template argument identity family lacks an owned contract");
         return value.Kind;
     }
     private string SourceRecordIdentity(long id, int depth)
     {
         if (depth > 128) throw new InvalidDataException("Source record template identity cycle/depth");
-        if (!SourceRecordInstantiations.TryGetValue(id, out var relation)) return SourceRecords[id].IdentityKey;
+        if (!SourceRecords[id].IsDependent || !SourceRecordInstantiations.TryGetValue(id, out var relation)) return SourceRecords[id].IdentityKey;
         string owner = relation.ResolutionKind == "class-template"
             ? "source-instantiation:" + SourceIdentityFrame(SourceRecordIdentity(relation.PrototypeSourceRecordId!.Value, depth + 1))
             : relation.ResolutionKind == "template-parameter"
@@ -264,7 +288,13 @@ internal sealed partial class ObjectFile
             bool instanceKey = record.IdentityKey.StartsWith("source-instantiation:", StringComparison.Ordinal) ||
                 record.IdentityKey.StartsWith("source-member-instantiation:", StringComparison.Ordinal) ||
                 record.IdentityKey.StartsWith("source-parameter-instantiation:", StringComparison.Ordinal);
-            if (SourceRecordInstantiations.ContainsKey(record.Id) != instance || instanceKey != instance ||
+            bool selectedConcrete= !record.IsDependent && SourceRecordInstantiations.ContainsKey(record.Id);
+            if(selectedConcrete && !SourceExpressionDeclarations.Values.Any(declaration=>declaration.TemplateOriginKind=="class-member-function" &&
+                declaration.OwnerType==record.SourceTypeId && declaration.TemplatePrototype is long primary &&
+                SourceExpressionDeclarations.TryGetValue(primary,out var original) && original.OwnerType is long originalOwner &&
+                SourceRecordsByType.TryGetValue(originalOwner,out var prototype) && prototype.Id==SourceRecordInstantiations[record.Id].PrototypeSourceRecordId))
+                throw new InvalidDataException("Concrete class substitution lacks its exact selected original member ownership");
+            if (SourceRecordInstantiations.ContainsKey(record.Id) != (instance || selectedConcrete) || instanceKey != instance ||
                 instance && record.IdentityKey != SourceRecordIdentity(record.Id, 0))
                 throw new InvalidDataException("Dependent class identity differs from its exact original template arguments");
         }

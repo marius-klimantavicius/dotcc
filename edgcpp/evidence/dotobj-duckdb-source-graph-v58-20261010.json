@@ -1,0 +1,84 @@
+{
+  "status": "accepted-feature-milestone",
+  "profile": "scalar-control-v58",
+  "parentCommit": "e17621278",
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native148-verified-snapshot/cpfe-dot",
+    "sha256": "fffc7a5403e7a42cf24ad3fff08abd9835e86fe2951c60e9f7e90dcf125c4c8d"
+  },
+  "linker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-174/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "bc047fb7fe361d07394b6914530e7a7b594b5987ac2cb698d1826e363130c014"
+  },
+  "broad": {
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v58-acceptance.json",
+    "sha256": "718f22a659a47416bd4846db3c1e295f3d4bb1f1b88b677ab6614d3aaf78e75e",
+    "uniqueChecks": 1042
+  },
+  "focused": [
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v58-alias-142-164-001/results.json",
+      "sha256": "8da2e25d008a5a51c3c7ed74fe5b8e561d953556569fb137dc32920e11805114",
+      "acceptedChecks": 49
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v58-static-parent-144-166-001/results.json",
+      "sha256": "2edc6d3aa815c115c58be3abb511c59e72647dc78c14a1df53436ffb0dbea0cb",
+      "acceptedChecks": 34
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v58-temporary-145-168-tail-002/results.json",
+      "sha256": "3d7987e04d3e1868e0ae348906d3ec1ccaf01deee1062490c7c9b65739c3b767",
+      "acceptedChecks": 42
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v58-source-allocations-147-173-002/results.json",
+      "sha256": "8d41f1a143d665f8d853e2448c6f567115299836d302d5025fb86d2ee9d9f5ad",
+      "acceptedChecks": 50
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v58-source-lists-148-174-001/results.json",
+      "sha256": "a797330d8305ddca88f6880cd44efce4b2e8cd0fbffc8366e0164c9230b204a9",
+      "acceptedChecks": 47
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v58-parameter-binders-148-174-001/results.json",
+      "sha256": "e7ac4d95db40f87b1187277d5058040ab82c03244ca319570d097f99d909d69d",
+      "acceptedChecks": 67
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v58-constraints-148-174-001/results.json",
+      "sha256": "cf2776975ddbcfd9cfd85dc123d7c15c115a196bf2795a0b0c3a76bb4633a102",
+      "acceptedChecks": 107
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v58-symbolic-cast-148-174-002/results.json",
+      "sha256": "e6aa9d25775bd2c883723e2b073d88c7bcb82c3e6792c198d3f67e4bf67176ba",
+      "acceptedChecks": 25
+    }
+  ],
+  "focusedChecks": 421,
+  "projectFrontier": {
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-ownership-frontier-148-174/summary.json",
+    "selectedUnits": 45,
+    "exported": 15,
+    "verified": 15,
+    "originalManifestUnits": 2635,
+    "cumulativeRetainedVersionExports": 2608,
+    "singleCoherentFullCorpus": false
+  },
+  "combinedGeneration": {
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-libcxx-fifteen-148-174/result.json",
+    "status": "blocked-unresolved-provider",
+    "detail": "std::condition_variable::wait provider condition_variable.cpp remains behind an original dependent-enum export gate"
+  },
+  "remaining": [
+    "original dependent enum value graphs",
+    "original function parameter declarations in body-local type expressions",
+    "primary and selected partial class substitutions",
+    "unnamed namespace declarations",
+    "dependent parameter source locations",
+    "coherent full corpus and combined generation",
+    "full generated C# compilation/runtime/NativeAOT verification"
+  ]
+}

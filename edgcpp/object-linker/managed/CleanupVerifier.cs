@@ -187,6 +187,17 @@ internal static class CleanupVerifier
                         throw new InvalidDataException("Static array rollback starts at a foreign storage or offset");
                     return 0;
                 }
+                if (node.Kind == "member")
+                {
+                    Node parent = Child(node, "operand");
+                    if (node.FieldId is not long fieldId || !obj.Fields.TryGetValue(fieldId, out var field) ||
+                        field.FieldRole != "source" || field.SourceFieldId is null || field.BitWidth is not null ||
+                        Type(parent) != obj.Type(field.RecordTypeId) || Type(node) != obj.Type(field.TypeId) ||
+                        obj.Records[field.RecordTypeId].LayoutKind is not ("struct" or "class") ||
+                        field.ByteOffset < 0 || checked(field.ByteOffset + obj.StorageSize(Type(node))) > obj.StorageSize(Type(parent)))
+                        throw new InvalidDataException("Static partial rollback member lacks exact original field and bounded owner storage");
+                    return checked(Offset(parent) + field.ByteOffset);
+                }
                 if (node.Kind == "binary" && node.Operator == "pointer-add")
                 {
                     Node left = Child(node, "left"), right = Child(node, "right");

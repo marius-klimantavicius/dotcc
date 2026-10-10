@@ -44,6 +44,25 @@ std::vector<string> source_expression_operations,source_expression_flags;
 std::vector<string> source_expression_type_operands,source_expression_constants;
 std::vector<string> source_expression_requirements,source_expression_bindings,source_expression_queries;
 std::vector<string> source_expression_substitutions,source_expression_substitution_formals,source_expression_substitution_arguments;
+std::set<unsigned> written_source_parameter_binders;
+std::vector<string> source_parameter_binders,source_binder_parameters;
+unsigned source_parameter_binder(unsigned id) {
+  if(!id || !written_source_parameter_binders.insert(id).second)return id;
+  const auto &value=dot_object_source::source_constraint_graph().binders.at(id);
+  source_parameter_binders.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(value.expression?"requires":"routine-prototype")+
+    ",\"parentBinderId\":"+number(source_parameter_binder(value.parent))+
+    ",\"requiresExpressionId\":"+number(value.expression?source_constraint_expression(value.expression):0)+
+    ",\"routineSourceTypeId\":"+number(value.routine?source_type(value.routine):0)+
+    ",\"outsideParameterList\":"+(value.outside?"true":"false")+
+    ",\"parameterCount\":"+std::to_string(value.parameters.size())+",\"captureProof\":\"original-parameter-scope\"}");
+  for(const auto &parameter:value.parameters)source_binder_parameters.push_back("{\"binderId\":"+number(id)+
+    ",\"ordinal\":"+std::to_string(parameter.ordinal)+",\"sourceTypeId\":"+number(source_type(parameter.type))+
+    ",\"declaredSourceTypeId\":"+number(parameter.declared_type?source_type(parameter.declared_type):0)+
+    ",\"sourceName\":"+quote(parameter.name)+",\"qualifierBits\":"+std::to_string(parameter.qualifiers)+
+    ",\"isPack\":"+(parameter.pack?"true":"false")+"}");
+  return id;
+}
+
 
 string constraint_formal_row(const char *owner_name,unsigned owner,unsigned ordinal,
                              const dot_object_source::SourceTemplateFormal &formal) {
@@ -58,6 +77,7 @@ string constraint_formal_row(const char *owner_name,unsigned owner,unsigned ordi
     ",\"isPack\":"+(formal.pack?"true":"false")+
     ",\"isAbbreviated\":"+(formal.abbreviated?"true":"false")+position(formal.position)+"}";
 }
+std::vector<string> source_declaration_operators;
 unsigned source_constraint_declaration(unsigned captured) {
   if(!captured)reject("source expression declaration is absent");
   if(!written_source_declarations.insert(captured).second)return captured;
@@ -68,7 +88,7 @@ unsigned source_constraint_declaration(unsigned captured) {
     ",\"sourceTypeId\":"+number(source_type(value.type))+
     ",\"ownerSourceTypeId\":"+number(value.owner_type?source_type(value.owner_type):0)+
     ",\"templatePrototypeDeclarationId\":"+number(value.template_prototype?source_constraint_declaration(value.template_prototype):0)+
-    ",\"templateOriginKind\":"+quote(value.template_origin_kind)+
+    ",\"routineKind\":"+quote(value.routine_kind)+",\"templateOriginKind\":"+quote(value.template_origin_kind)+
     ",\"hasTemplateOrigin\":"+(value.has_template_origin?"true":"false")+
     ",\"isTemplatePrototype\":"+(value.is_template_prototype?"true":"false")+
     ",\"isConstexpr\":"+(value.is_constexpr?"true":"false")+
@@ -79,6 +99,7 @@ unsigned source_constraint_declaration(unsigned captured) {
     ",\"initializerExpressionId\":"+number(value.initializer_expression?source_constraint_expression(value.initializer_expression):0)+
     ",\"formalCount\":"+std::to_string(value.template_formals.size())+",\"argumentCount\":"+std::to_string(value.template_arguments.size())+
     ",\"definitionStatus\":\"reference-only\",\"captureProof\":\"original-expression-declaration\""+position(value.location)+"}");
+  if(value.operator_kind>=0)source_declaration_operators.push_back("{\"declarationId\":"+number(captured)+",\"operatorKind\":"+std::to_string(value.operator_kind)+",\"captureProof\":\"original-operator-declaration\"}");
   unsigned ordinal=0;for(const auto &formal:value.template_formals)
     source_expression_declaration_formals.push_back(constraint_formal_row("declarationId",captured,ordinal++,formal));
   ordinal=0;for(const auto &argument:value.template_arguments) {
@@ -106,6 +127,7 @@ unsigned source_constraint_concept(unsigned captured) {
     source_concept_parameters.push_back(constraint_formal_row("conceptId",captured,ordinal++,formal));
   return captured;
 }
+std::vector<string> source_expression_temporaries,source_expression_temporary_flags,source_expression_allocations,source_expression_folds,source_expression_field_references;
 unsigned source_constraint_expression(unsigned captured) {
   if(!captured)reject("source expression reference is absent");
   if(!written_source_expressions.insert(captured).second)return captured;
@@ -117,16 +139,49 @@ unsigned source_constraint_expression(unsigned captured) {
     ",\"isParenthesized\":"+(value.parenthesized?"true":"false")+
     ",\"isCompilerGenerated\":"+(value.compiler_generated?"true":"false")+
     ",\"isVolatileFetch\":"+(value.volatile_fetch?"true":"false")+
+    ",\"isPackExpansion\":"+(value.pack_expansion?"true":"false")+
     ",\"valueCategory\":"+quote(!value.type?"none":value.lvalue?"lvalue":value.xvalue?"xvalue":"prvalue")+
     ",\"edgeCount\":"+std::to_string(value.edges.size())+",\"parameterCount\":"+std::to_string(value.parameters.size())+
     ",\"argumentCount\":"+std::to_string(value.arguments.size())+",\"substitutionCount\":"+std::to_string(value.substitutions.size())+
     ",\"captureProof\":\"original-source-expression\""+position(value.location)+"}");
+  if(value.kind=="field-reference") {
+    auto owner=dot_object_source::state().types.at(value.field_owner-1).record_type;
+    source_record_metadata(owner);
+    if(!source_field_ids.count(value.field))reject("source field reference has no original field row");
+    source_expression_field_references.push_back("{\"expressionId\":"+number(captured)+",\"sourceFieldId\":"+number(source_field_ids.at(value.field))+",\"captureProof\":\"original-field-reference\"}");
+  }
+  if(value.kind=="fold-expression")
+    source_expression_folds.push_back("{\"expressionId\":"+number(captured)+",\"operatorToken\":"+std::to_string(value.fold_token)+
+      ",\"operatorSpelling\":"+quote(value.fold_operator)+",\"isLeftAssociative\":"+(value.fold_left?"true":"false")+",\"captureProof\":\"original-fold-expression\"}");
+  if(value.kind=="allocation-expression") {
+    const auto &allocation=value.allocation;
+    source_expression_allocations.push_back("{\"expressionId\":"+number(captured)+",\"objectSourceTypeId\":"+number(source_type(allocation.type))+
+      ",\"operatorDeclarationId\":"+number(allocation.routine?source_constraint_declaration(allocation.routine):0)+
+      ",\"isNew\":"+(allocation.is_new?"true":"false")+",\"isDependentSelection\":"+(allocation.dependent?"true":"false")+
+      ",\"isPlacement\":"+(allocation.placement?"true":"false")+",\"isAligned\":"+(allocation.aligned?"true":"false")+
+      ",\"isArrayDelete\":"+(allocation.array_delete?"true":"false")+",\"isGlobal\":"+(allocation.global?"true":"false")+
+      ",\"hasInitializer\":"+(allocation.has_initializer?"true":"false")+",\"isBracedInitializer\":"+(allocation.braced?"true":"false")+
+      ",\"isParenthesizedAggregate\":"+(allocation.paren_aggregate?"true":"false")+",\"hasDeducibleType\":"+(allocation.deducible?"true":"false")+
+      ",\"hasParenthesizedTypeId\":"+(allocation.parenthesized?"true":"false")+
+      ",\"isLookupDeferred\":"+(allocation.lookup_deferred?"true":"false")+
+      ",\"initializationDisposition\":\"absent-in-original\",\"rollbackDisposition\":\"absent-in-original\",\"captureProof\":\"original-new-delete-expression\"}");
+  }
+  if(value.kind=="temporary-initialization") {
+    const auto &temp=value.temporary;
+    source_expression_temporaries.push_back("{\"expressionId\":"+number(captured)+",\"initializationKind\":"+std::to_string(temp.initialization_kind)+
+      ",\"spelledSourceTypeId\":"+number(temp.spelled_type?source_type(temp.spelled_type):0)+
+      ",\"constructorDeclarationId\":"+number(temp.constructor?source_constraint_declaration(temp.constructor):0)+
+      ",\"destructorDeclarationId\":"+number(temp.destructor?source_constraint_declaration(temp.destructor):0)+
+      ",\"constantId\":"+number(temp.constant?source_semantic_constant(temp.constant):0)+
+      ",\"isDependentConstructor\":"+(temp.dependent_constructor?"true":"false")+",\"lifetimeDisposition\":\"no-linked-lifetime\",\"captureProof\":\"original-expression-temporary\"}");
+    for(const auto &flag:temp.flags)source_expression_temporary_flags.push_back("{\"expressionId\":"+number(captured)+",\"flag\":"+quote(flag)+"}");
+  }
   std::map<string,unsigned> ordinals;
   for(const auto &edge:value.edges)source_expression_edges.push_back("{\"expressionId\":"+number(captured)+
     ",\"role\":"+quote(edge.role)+",\"ordinal\":"+std::to_string(ordinals[edge.role]++)+
     ",\"childExpressionId\":"+number(source_constraint_expression(edge.child))+"}");
   if(value.binder)source_expression_bindings.push_back("{\"expressionId\":"+number(captured)+
-    ",\"lexicalBinderExpressionId\":"+number(source_constraint_expression(value.binder))+"}");
+    ",\"lexicalBinderId\":"+number(source_parameter_binder(value.binder))+"}");
   if(value.declaration)source_expression_declaration_references.push_back("{\"expressionId\":"+number(captured)+
     ",\"declarationId\":"+number(source_constraint_declaration(value.declaration))+"}");
   if(value.kind=="concept-id") {
@@ -192,9 +247,10 @@ unsigned source_constraint_expression(unsigned captured) {
       ++substitution_ordinal;
     }
   }
+  if(value.kind=="requires")source_parameter_binder(dot_object_source::source_constraint_graph().requires_binders.at(captured));
   if(value.kind=="parameter-reference")
     source_expression_parameter_references.push_back("{\"expressionId\":"+number(captured)+
-      ",\"binderExpressionId\":"+number(source_constraint_expression(value.resolved_binder))+
+      ",\"binderId\":"+number(source_parameter_binder(value.resolved_binder))+
       ",\"parameterOrdinal\":"+std::to_string(value.parameter_number-1)+
       ",\"originalLevelsUp\":"+std::to_string(value.levels_up)+"}");
   if(value.kind=="operation" || value.kind=="builtin-operation")
@@ -210,4 +266,57 @@ unsigned source_constraint_expression(unsigned captured) {
   if(value.kind=="sizeof" || value.kind=="alignof" || value.kind=="datasizeof")source_expression_queries.push_back("{\"expressionId\":"+
     number(captured)+",\"isStandardAlignof\":"+(value.standard_alignof?"true":"false")+"}");
   return captured;
+}
+
+static const char *source_type_operator_name(int opcode) {
+  switch(opcode) {
+    case 1:return "decltype";
+    case 5:return "__underlying_type";
+    case 6:return "typeof-expression";
+    case 7:return "typeof-type";
+    case 14:return "__add_lvalue_reference";
+    case 15:return "__add_pointer";
+    case 16:return "__add_rvalue_reference";
+    case 17:return "__decay";
+    case 18:return "__make_signed";
+    case 19:return "__make_unsigned";
+    case 20:return "__remove_all_extents";
+    case 21:return "__remove_const";
+    case 22:return "__remove_cv";
+    case 23:return "__remove_cvref";
+    case 24:return "__remove_extent";
+    case 25:return "__remove_pointer";
+    case 26:return "__remove_reference_t";
+    case 27:return "__remove_restrict";
+    case 28:return "__remove_volatile";
+    case 29:return "__remove_reference";
+    default:reject("source type operator has no configured semantic name");return "";
+  }
+}
+std::vector<string> source_named_templates,source_alias_instances,source_alias_arguments,source_type_operators;
+void source_type_origin(unsigned id,const dot_object_source::Type &type) {
+  if(type.source_form=="template-alias") {
+    const auto &value=dot_object_source::state().source_aliases.at(type.original_type);
+    if(!value.error.empty())reject(value.error.c_str());
+    source_alias_instances.push_back("{\"typeId\":"+number(id)+",\"templateId\":"+number(source_template_reference(value.templ))+
+      ",\"isPrototype\":"+(value.prototype?"true":"false")+",\"isNonreal\":"+(value.nonreal?"true":"false")+
+      ",\"isDependent\":"+(value.dependent?"true":"false")+",\"argumentCount\":"+std::to_string(value.arguments.size())+
+      ",\"hasOriginalArguments\":"+(value.original_present?"true":"false")+",\"originalArgumentCount\":"+std::to_string(value.original_arguments.size())+
+      ",\"minimumArguments\":"+std::to_string(value.minimum_arguments)+",\"captureProof\":\"original-alias-instance\"}");
+    auto arguments=[&](const char *kind,const std::vector<dot_object_source::SourceTemplateArgument> &args) {
+      unsigned ordinal=0;for(const auto &arg:args) {
+        source_constraint_argument_details_row(kind,id,ordinal,0,arg);
+        source_alias_arguments.push_back("{\"typeId\":"+number(id)+",\"listKind\":"+quote(kind)+",\"ordinal\":"+std::to_string(ordinal++)+
+          ",\"kind\":"+quote(arg.kind)+",\"sourceTypeId\":"+number(arg.type?source_type(arg.type):0)+
+          ",\"constantId\":"+number(arg.constant?source_semantic_constant(arg.constant):0)+",\"templateId\":"+number(arg.templ?source_template_reference(arg.templ):0)+"}");
+      }
+    };
+    arguments("alias-selected",value.arguments);arguments("alias-original",value.original_arguments);
+  } else if(type.source_form=="type-operator") {
+    source_type_operators.push_back("{\"typeId\":"+number(id)+",\"opcode\":"+std::to_string(type.type_operator)+",\"operatorName\":"+quote(source_type_operator_name(type.type_operator))+
+      ",\"expressionId\":"+number(type.operator_expression?source_constraint_expression(type.operator_expression):0)+
+      ",\"operandSourceTypeId\":"+number(type.operator_type?source_type(type.operator_type):0)+
+      ",\"isDependent\":"+(type.operator_dependent?"true":"false")+",\"isUnparenthesizedDecltype\":"+(type.operator_unparenthesized?"true":"false")+
+      ",\"captureProof\":\"original-type-operator\"}");
+  }
 }

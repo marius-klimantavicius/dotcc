@@ -10,7 +10,12 @@ internal sealed partial class ObjectFile
 
     private void VerifySourceConstraints()
     {
+        VerifySourceParameterBinders();
         VerifySourceConstraintExtensions();
+        VerifySourceAllocationPresence();
+        VerifySourceFoldPresence();
+        foreach(var expression in SourceExpressions.Values)
+            if((expression.Kind=="temporary-initialization")!=SourceExpressionTemporaries.ContainsKey(expression.Id))throw new InvalidDataException("Original temporary expression is missing its initialization provenance");
         foreach(var value in SourceExpressions.Values)
         {
             var edges=SourceExpressionEdges.GetValueOrDefault(value.Id,[]);
@@ -61,13 +66,13 @@ internal sealed partial class ObjectFile
                     break;
                 case "nested-requirement":Shape(("constraint",1,1));RequireSourceConstraintOperand(SourceExpressions[edges.Single().Child]);break;
                 case "expression-constant":Shape(("expression",1,1));break;
+                case "field-reference":Shape();VerifySourceFieldReference(value);break;
+                case "braced-initializer-list":Shape(("element",0,int.MaxValue));break;
+                case "fold-expression":Shape(("operand",1,int.MaxValue));break;
+                case "allocation-expression":VerifySourceExpressionAllocation(value,edges);break;
+                case "temporary-initialization":VerifySourceExpressionTemporary(value,edges);break;
                 case "parameter-reference":
-                    Shape();var reference=SourceExpressionParameterReferences[value.Id];
-                    long selected=SourceExpressionBinders.GetValueOrDefault(value.Id);
-                    for(long level=0;level<reference.Levels && selected!=0;level++)selected=SourceExpressionBinders.GetValueOrDefault(selected);
-                    if(selected==0 || selected!=reference.Binder || SourceExpressions[selected].Kind!="requires" ||
-                        reference.Ordinal>=SourceExpressionParameters.GetValueOrDefault(selected,[]).Count)
-                        throw new InvalidDataException("Source parameter reference does not resolve through its exact lexical binders");
+                    Shape();VerifySourceParameterReference(value.Id);
                     break;
                 case "variable-reference":case "routine-reference":
                     Shape();var declaration=SourceExpressionDeclarations[SourceExpressionDeclarationReferences[value.Id]];
@@ -96,11 +101,12 @@ internal sealed partial class ObjectFile
                     VerifySourceOperationFlags(value.Id,operation.Name);break;
                 default:throw new InvalidDataException("Unknown owned source expression family: "+value.Kind);
             }
-            if(SourceExpressionBinders.TryGetValue(value.Id,out long binder) && (SourceExpressions[binder].Kind!="requires" || binder==value.Id))
-                throw new InvalidDataException("Source expression lexical owner is not an enclosing requires expression");
+            if(SourceExpressionBinders.TryGetValue(value.Id,out long binder) &&
+                (!SourceParameterBinders.ContainsKey(binder) || SourceParameterBinders[binder].RequiresExpression==value.Id))
+                throw new InvalidDataException("Source expression lexical owner is not an enclosing original parameter scope");
             foreach(var edge in edges)
             {
-                long expected=value.Kind=="requires"?value.Id:SourceExpressionBinders.GetValueOrDefault(value.Id);
+                long expected=value.Kind=="requires"?SourceRequiresBodyBinders[value.Id]:SourceExpressionBinders.GetValueOrDefault(value.Id);
                 if(SourceExpressionBinders.GetValueOrDefault(edge.Child)!=expected)
                     throw new InvalidDataException("Source operand changed its original lexical parameter scope");
             }
@@ -118,12 +124,14 @@ internal sealed partial class ObjectFile
             var arguments=SourceExpressionDeclarationArguments.GetValueOrDefault(declaration.Id,[]);
             if(formals.Count!=declaration.FormalCount || arguments.Count!=declaration.ArgumentCount ||
                 !declaration.HasTemplate && (declaration.IsPrototype || declaration.TemplatePrototype is not null || formals.Count!=0 || arguments.Count!=0) ||
-                declaration.HasTemplate && declaration.TemplateOriginKind!="static-data-member" && (declaration.IsPrototype== (declaration.TemplatePrototype is not null)) ||
+                declaration.HasTemplate && declaration.TemplateOriginKind is not("static-data-member" or "class-member-function") && (declaration.IsPrototype== (declaration.TemplatePrototype is not null)) ||
                 (Original(SourceTypeById(declaration.Type)).Kind=="routine")!=(declaration.Kind=="routine"))
                 throw new InvalidDataException("Source declaration template/signature ownership is incomplete");
             VerifySourceConstraintInitializer(declaration);
             if(declaration.TemplateOriginKind=="static-data-member")
                 VerifySourceStaticMemberDeclaration(declaration,formals,arguments);
+            else if(declaration.TemplateOriginKind=="class-member-function")
+                VerifySourceClassMemberRoutine(declaration,formals,arguments);
             else if(declaration.TemplatePrototype is long prototype)
             {
                 if(!SourceExpressionDeclarations.TryGetValue(prototype,out var original) || !original.IsPrototype || !original.HasTemplate || original.TemplatePrototype is not null ||
@@ -271,7 +279,7 @@ internal sealed partial class ObjectFile
         if(sourceExpressionIdentityCache.TryGetValue(id,out string? cached))return cached;
         if(active.Count>256 || !active.Add(id))throw new InvalidDataException("Source expression identity cycle/depth");
         var value=SourceExpressions[id];string result=SourceIdentityFrame(value.Kind)+SourceIdentityFrame(value.SourceTypeId is long type?SourceTypeSignature(type):"")+SourceIdentityFrame(value.Category);
-        result+=SourceIdentityFrame(value.OriginalLvalueTypeId is long original?SourceTypeSignature(original):"")+(value.Parenthesized?"1":"0")+(value.CompilerGenerated?"1":"0")+(value.VolatileFetch?"1":"0");
+        result+=SourceIdentityFrame(value.OriginalLvalueTypeId is long original?SourceTypeSignature(original):"")+(value.Parenthesized?"1":"0")+(value.CompilerGenerated?"1":"0")+(value.VolatileFetch?"1":"0")+(value.PackExpansion?"1":"0");
         if(SourceConceptUses.TryGetValue(id,out var use))result+=SourceIdentityFrame(SourceConceptIdentity(use.Concept,activeConcepts))+(use.TypeConstraint?"1":"0")+
             string.Concat(SourceConceptArguments.GetValueOrDefault(id,[]).Select(argument=>SourceIdentityFrame(SourceConstraintArgumentDetailsIdentity("concept",id,0,argument))));
         if(SourceDependentFunctionLookups.ContainsKey(id))result+=SourceIdentityFrame(SourceDependentFunctionIdentity(id,activeConcepts));
@@ -279,7 +287,7 @@ internal sealed partial class ObjectFile
         result+=string.Concat(SourceExpressionFlags.GetValueOrDefault(id,[]).Order(StringComparer.Ordinal).Select(SourceIdentityFrame));
         if(SourceExpressionTypeOperands.TryGetValue(id,out long operand))result+=SourceIdentityFrame(SourceTypeSignature(operand));
         if(SourceExpressionConstants.TryGetValue(id,out long constant))result+=SourceIdentityFrame(SourceConstantIdentity(constant,0));
-        if(SourceExpressionParameterReferences.TryGetValue(id,out var reference))result+=SourceIdentityFrame(reference.Ordinal.ToString(CultureInfo.InvariantCulture))+SourceIdentityFrame(reference.Levels.ToString(CultureInfo.InvariantCulture));
+        if(SourceExpressionParameterReferences.TryGetValue(id,out var reference))result+=SourceIdentityFrame(reference.Ordinal.ToString(CultureInfo.InvariantCulture))+SourceIdentityFrame(reference.Levels.ToString(CultureInfo.InvariantCulture))+SourceIdentityFrame(SourceParameterReferenceContextKey(id));
         if(SourceExpressionRequirements.TryGetValue(id,out bool noexceptRequired))result+=noexceptRequired?"1":"0";
         if(SourceExpressionQueries.TryGetValue(id,out bool standard))result+=standard?"1":"0";
         foreach(var parameter in SourceExpressionParameters.GetValueOrDefault(id,[]))result+=SourceIdentityFrame(SourceTypeSignature(parameter.Type))+SourceIdentityFrame(parameter.DeclaredType is long declared?SourceTypeSignature(declared):"")+SourceIdentityFrame(parameter.Qualifiers.ToString(CultureInfo.InvariantCulture))+(parameter.Pack?"1":"0");
@@ -290,6 +298,10 @@ internal sealed partial class ObjectFile
                 string.Concat(SourceExpressionSubstitutionFormals.GetValueOrDefault(substitution.Key,[]).Select(SourceConstraintFormalIdentity))+
                 string.Concat(SourceExpressionSubstitutionArguments.GetValueOrDefault(substitution.Key,[]).Select(argument=>SourceIdentityFrame(SourceConstraintArgumentDetailsIdentity("substitution",id,substitution.Key.Ordinal,argument))));
         }
+        if(SourceExpressionFieldReferences.ContainsKey(id))result+="H"+SourceIdentityFrame(SourceFieldReferenceIdentity(id,0));
+        if(SourceExpressionFolds.ContainsKey(id))result+="J"+SourceIdentityFrame(SourceFoldIdentity(id));
+        if(SourceExpressionAllocations.ContainsKey(id))result+="B"+SourceIdentityFrame(SourceAllocationIdentity(id,0));
+        if(SourceExpressionTemporaries.ContainsKey(id))result+="I"+SourceIdentityFrame(SourceTemporaryIdentity(id,0));
         foreach(var edge in SourceExpressionEdges.GetValueOrDefault(id,[]).OrderBy(edge=>edge.Role,StringComparer.Ordinal).ThenBy(edge=>edge.Ordinal))
             result+=SourceIdentityFrame(edge.Role)+SourceIdentityFrame(SourceExpressionIdentity(edge.Child,active,activeConcepts));
         active.Remove(id);return sourceExpressionIdentityCache[id]=SourceGraphHash(result);
@@ -308,11 +320,26 @@ internal sealed partial class ObjectFile
                 instance.PrototypeSourceRecordId!=SourceRecordsByType[parent.Id].Id))
             throw new InvalidDataException("Static template member owner does not instantiate its original class");
     }
+    private void VerifySourceClassMemberRoutine(SourceExpressionDeclaration value,List<SourceTemplateFormal> formals,List<SourceTemplateArgument> arguments)
+    {
+        if(value.Kind!="routine" || value.OwnerType is not long owner || value.TemplatePrototype is not long primary ||
+            !SourceExpressionDeclarations.TryGetValue(primary,out var original) || original.Kind!="routine" ||
+            original.TemplateOriginKind!="class-member-function" || original.TemplatePrototype!=original.Id ||
+            original.RoutineKind!=value.RoutineKind ||
+            original.OwnerType is not long originalOwner || original.Name!=value.Name || original.QualifiedName!=value.QualifiedName ||
+            formals.Count!=0 || arguments.Count!=0)
+            throw new InvalidDataException("Class member routine lacks its exact original declaration and enclosing class");
+        var type=Original(SourceTypeById(owner));var parent=Original(SourceTypeById(originalOwner));
+        if(type.Kind!="record" || parent.Kind!="record" ||
+            type.Id!=parent.Id && (!SourceRecordInstantiations.TryGetValue(SourceRecordsByType[type.Id].Id,out var instance) ||
+                instance.PrototypeSourceRecordId!=SourceRecordsByType[parent.Id].Id))
+            throw new InvalidDataException("Class member routine owner does not instantiate its original class");
+    }
     private string SourceConstraintDeclarationIdentity(long id,HashSet<long> active,HashSet<long> activeConcepts)
     {
         if(active.Count>128 || !active.Add(id))throw new InvalidDataException("Source declaration template prototype cycle/depth");
         var value=SourceExpressionDeclarations[id];string result=SourceIdentityFrame(value.Kind)+SourceIdentityFrame(value.QualifiedName)+SourceIdentityFrame(SourceTypeSignature(value.Type))+
-            SourceIdentityFrame(value.OwnerType is long owner?SourceTypeSignature(owner):"")+(value.Constexpr?"1":"0")+(value.HasTemplate?"1":"0")+(value.IsPrototype?"1":"0")+SourceIdentityFrame(value.TemplateOriginKind)+
+            SourceIdentityFrame(value.OwnerType is long owner?SourceTypeSignature(owner):"")+(value.Constexpr?"1":"0")+(value.HasTemplate?"1":"0")+(value.IsPrototype?"1":"0")+SourceIdentityFrame(value.TemplateOriginKind)+SourceIdentityFrame(value.RoutineKind)+SourceIdentityFrame(SourceDeclarationOperators.TryGetValue(id,out long originalOperator)?originalOperator.ToString(CultureInfo.InvariantCulture):"")+
             string.Concat(SourceExpressionDeclarationFormals.GetValueOrDefault(id,[]).Select(SourceConstraintFormalIdentity))+
             string.Concat(SourceExpressionDeclarationArguments.GetValueOrDefault(id,[]).Select(argument=>SourceIdentityFrame(SourceConstraintArgumentDetailsIdentity("declaration",id,0,argument))));
         if(value.TemplatePrototype is long prototype && prototype!=id)result+=SourceIdentityFrame(SourceConstraintDeclarationIdentity(prototype,active,activeConcepts));

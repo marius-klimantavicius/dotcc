@@ -1,9 +1,29 @@
-Profile57 current:2,593/2,635 exported across retained versions,42 exporter
-gates remain. Priority1:40-unit alias/type-operator graph (READY for integration).
-Priority2:test_config array-member rollback and unittest static-parent ownership.
-Both prior singleton destructor-origin and alignas64 gates now pass actual
-export/verify/generation with80focused checks. Full latest-profile corpus and
-full combined generation remain the next major acceptance boundaries.
+Accepted profile 57: 2,593/2,635 units exported across retained versions, with
+42 original exporter gates remaining. This is not a coherent latest-profile
+corpus. Candidate profile 58 remains unaccepted: its expanded source graph also
+reveals missing lexical binder/member-prototype ownership in three previously
+passing core probes. Do not carry historical coverage forward as a v58 result.
+
+| Priority | Measured frontier | Assignment |
+| --- | --- | --- |
+| 1 | All 40 remaining libc++ source units advance through alias and temporary metadata to original `enk_new_delete` source expressions | Base worker: exact source allocation/deallocation recipe. |
+| 1 | Three core/test probes advance to dependent enum values; hugeint reaches a competing original decltype context | Supervisor: dependent enumerator constant graph. Lifetime worker: exact declaration versus expression type annotation scope. |
+| 2 | unittest reaches a selected ordinary member from a partial class specialization | Base worker: preserve both primary-template and selected-partial argument lists with exact selected declaration ownership. |
+
+Frozen native 145 / managed 168: complete 45-unit probe has no additional full
+exports, but advances three probes beyond the original missing binder gate.
+Static-parent lifetime acceptance passes 34 checks including JIT/NativeAOT;
+temporary/member metadata passes 42 and requires regression 107. The new binder
+fixture still rejects a shared decltype context. Six retained native probes
+inventory sibling braced/fold/field, partial owner and local binder families;
+captured graph counts do not prove every branch is serialized or reachable.
+Native 146 / managed 169 is building allocation metadata and precise scope/enum
+diagnostics. All three implementation streams remain source export closure. Both
+accepted singleton destructor-origin and alignas64 gates pass actual
+export/verify/generation with 80 focused checks.
+After these shared ownership gates close, measure representative metadata
+growth and rebuild the complete 2,635-unit corpus, then perform combined C#
+generation. Runtime/libc++ implementation remains behind that boundary.
 
 Latest test-profile checkpoint:2,591/2,635 exported across retained versions;
 44 exporter gates remain (40 alias/type-operator source graph;4 precise
@@ -198,3 +218,14 @@ metadata edit. Keep rare unrelated language/library features and libc++ runtime
 closure behind the current full-generation checkpoint. Both historical crash
 units remain explicitly selected. Later stages still include full linking,
 C# compilation, shared runtime closure, NativeAOT and DuckDB execution/tests.
+
+
+Current native148/managed174 frontier (45 selected units, not full project):
+15 exported and verified. First remaining gates: 21 dependent original enums,
+5 function-local parameter references, 2 selected partial-class member owners,
+1 unnamed namespace declaration, 1 dependent parameter source location.
+Supervisor owns enums, lifetime worker owns original function-parameter lists,
+base worker owns both primary and selected partial-specialization substitutions.
+Exact prototype origin improvements cleared the previous conflicting-binder
+first gates. Latest receipt: dotobj-ranked-source-frontier-148.json.
+Cumulative retained-version exports: 2,608/2,635; no coherent latest full corpus.

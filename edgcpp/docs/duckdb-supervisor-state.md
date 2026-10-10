@@ -912,3 +912,121 @@ static-parent ownership. Largest combined full-project subset remains53units,
 33,105definitions. Review artifacts/review/dotobj-duckdb-v57/{alignment,types}.
 Alias worker payload READY for next profile58/native142/managed164; lifetime
 worker stages exact array-plus-member cleanup ownership. Continue autonomously.
+
+
+Profile58 candidate142/164 focused alias graph passes49checks (source-hidden,
+JIT/NativeAOT,7resealed negatives). Whole40-family probe completes with zero
+new exports: every unit advances to the same configured enk_temp_init source
+expression family. Worker now owns its exact selected initializer/temporary
+graph and explicit structural-identity section framing. This is not an EDG
+parsing failure, and no new export count is claimed. Static array-member
+rollback integrated in143/165, alongside a diagnostic for unittest parent
+ownership. Header-free initializer reducer preserves preceding global
+destruction as the original lifetime parent; exact bridge still under review.
+
+Storage measurement full119:65.69GiB physical unit evidence (library59.79,
+tests5.62, libc0.24, libc++0.04). Tentative next coherent corpus splits units
+70/30 by measured bytes across workspace/persistent storage, retains all old
+outputs and reserves20/12GiB respectively. Expected25percent growth is planning
+only, not measured58 evidence. Saved dotobj-next-full-storage-plan.json; do not
+start a full corpus until source graph/ownership closure is accepted.
+
+Frozen 143/165 follow-up: static array/member rollback passes 33 checks,
+including native/stock O0/O2, JIT/NativeAOT and four resealed negative objects.
+Actual test_config advances to its original static destruction parent, for
+which the exact execution projection patch is ready. The original parent and
+static destruction obligation remain recorded; they must not be reinterpreted
+as an automatic cleanup parent.
+
+Candidate 58 also exposes source metadata gaps in previously passing core
+probes: exception.cpp and hugeint.cpp require the original routine prototype
+parameter binder, while string_util.cpp requires the exact ordinary member of
+a class template (which correctly has no independent template argument list).
+All three probes fail explicitly in dotobj-core-regression-143/results.json.
+Thus 2,593 exports remains a cumulative retained-version result, not a claim
+that candidate 58 preserves those exports. Base worker owns temporary source
+construction/member routine origins/identity framing; lifetime worker owns
+routine parameter binders and the ready static-parent projection. Next combined
+cut is native 144 / managed 166. No runtime implementation detour or cleanup.
+
+Native 144 / managed 166 builds and the complete 45-unit frontier probe finish.
+All 40 libc++ units advance to original source `enk_new_delete` metadata; all
+five DuckDB probes advance to routine prototype parameter binders. No additional
+complete export is claimed. Both test initializer gates and ordinary member
+routine origin now advance. Static-parent focused acceptance passes 34 checks,
+including native/stock O0/O2, JIT/NativeAOT, and four resealed negatives.
+
+The temporary fixture exposed a mechanical SQL expression-kind whitelist
+omission. Corrected managed 167 embeds the updated exact schema; its separate
+144/167 tooling snapshot retains the unchanged native 144 compiler and a
+stronger class-member origin fixture. Original 144/166 evidence is preserved.
+Source new/delete capture and routine binder closure continue in parallel.
+Supervisor staged an opt-in `EDG_DOTOBJ_DIAG_SOURCE_ERRORS=1` diagnostic for the
+next native build: aggregate errors already present in the captured source
+graph, with counts and first locations, while retaining strict first rejection.
+This will inventory sibling failures together; it does not accept unsupported
+metadata or claim every captured declaration is reachable.
+
+Native 145 / managed 168 builds after one mechanical managed array Length fix.
+Source temporary/member acceptance passes 42 checks (including retained JIT/AOT
+positive execution and resealed negative tails); requires/source-constraint
+regression passes 107. The new binder fixture remains gated on a shared
+decltype scope, so candidate 58 remains unaccepted. The 45-unit probe has no
+new complete exports: 40 source allocation gates, three dependent enumerator
+gates, one competing binder scope, and one selected partial-class member origin.
+Supervisor owns dependent enum metadata, reduced to a header-free class-template
+enum using sizeof(T), an implicit successor and a prior enumerator reference.
+
+The project driver scrubbed the first opt-in diagnostic environment flag.
+Six direct native 145 probes therefore collected the actual inventory into
+dotobj-captured-source-errors-145/results.json, and project.py now explicitly
+passes only this diagnostic flag alongside its fixed translation selectors.
+Captured siblings include braced initializer lists, fold expressions, field
+references, partial-specialization argument lists and local binder references.
+These are captured graph counts, not necessarily reachable serialized nodes.
+
+Native 146 / managed 169 is building source new/delete metadata plus precise
+enum/binder diagnostics. Allocation capture preserves all three observed
+dependent forms: global new, scalar delete and array delete. The reader checks
+the original delete operand/object type relation and global operator ownership.
+Original dynamic initializer/rollback subgraphs remain explicit gates when
+present. Source field/braced/fold and partial owner work is next in the base
+worker queue; exact annotation versus declaration scope remains with lifetime
+worker. Full corpus/generation and runtime implementation remain outstanding.
+
+
+Native 147 / managed 172 is frozen (native SHA-256
+73f9b6efbc19c5d74647fcc353bbdd6dda87bb9b9730e25a1d1acdf5a45a0bcf).
+It adds exact lambda-conversion prototype origin, separates expression type
+annotation visits from declaration binder ownership, and records deferred new
+operator lookup independently from type dependency. Focused acceptance and
+45-unit original-source frontier are running against this immutable cut.
+
+Native 146 exported 15 previously blocked libc++ units. Managed 171 verifies
+all 15 after preserving symbolic dependent casts such as T(-1) without claiming
+an integral width before substitution. Receipt:
+dotobj-symbolic-actual-146-171/results.json. Cumulative retained-version export
+coverage is now 2,608/2,635, leaving 27 original export failures; this is not one
+coherent latest-profile full corpus and is not a full-generation result.
+Candidate v58 remains uncommitted pending its integrated acceptance. Supervisor
+owns dependent enum values/nominal identity; base worker owns brace/fold/field
+source graphs; lifetime worker owns exact prototype and local binder origins.
+
+
+Profile58 acceptance is complete: native148 / managed174, 1,042 broad integration
+checks plus 421 focused checks across retained feature cuts. Focused suites cover
+native/stock oracles, source-hidden verification, JIT/NativeAOT and malformed
+owned metadata. The broad suite's old alignas(32) negative was corrected to
+successful export and verification, matching accepted profile57 support; the
+successful prefix and continuation receipts are retained. Evidence:
+evidence/dotobj-duckdb-source-graph-v58-20261010.json.
+
+The same45-unit frontier exports/verifies15 units. Combining those15 reaches an
+unresolved std::condition_variable::wait provider; its defining unit remains
+behind the original enum graph gate. No full-generation result is claimed.
+Profile58 implementation was staged separately before next-profile canonical
+edits, so profile59 can build without delaying this verified milestone commit.
+Native149 / managed175 now integrate original enum symbolic values/owner/flags,
+source function-parameter declaration ownership and both primary/selected
+partial-class substitutions. Their acceptance is pending. No runtime/libc++
+implementation work has displaced the exporter-first priority.

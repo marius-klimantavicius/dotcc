@@ -33,6 +33,8 @@ internal sealed partial class ObjectFile : IDisposable
         ["tls_routine_origins"] = "entity_id",
         ["lambda_entry_origins"] = "entity_id", ["lambda_entry_calls"] = "node_id",
         ["source_allocation_obligations"] = "id", ["internal_try_expressions"] = "node_id", ["normal_destructions"] = "node_id", ["expression_lifetimes"] = "node_id", ["base_subobject_expressions"] = "node_id", ["source_initializers"] = "id",
+        ["source_named_templates"] = "template_id", ["source_alias_instances"] = "type_id",
+        ["source_alias_arguments"] = "type_id,list_kind,ordinal", ["source_type_operators"] = "type_id",
         ["source_templates"] = "id", ["source_template_parameters"] = "source_template_id,ordinal",
         ["source_record_instantiations"] = "source_record_id", ["source_template_arguments"] = "source_record_id,ordinal",
         ["source_array_bounds"] = "type_id", ["source_semantic_constants"] = "id",
@@ -54,6 +56,8 @@ internal sealed partial class ObjectFile : IDisposable
         ["static_destruction_dispositions"] = "source_obligation_id",
         ["source_concepts"] = "id",
         ["source_concept_parameters"] = "concept_id,ordinal",
+        ["source_expression_temporaries"] = "expression_id", ["source_expression_temporary_flags"] = "expression_id,flag",
+        ["source_expression_field_references"] = "expression_id", ["source_expression_folds"] = "expression_id", ["source_expression_allocations"] = "expression_id", ["source_declaration_operators"] = "declaration_id",
         ["source_expressions"] = "id",
         ["source_expression_edges"] = "expression_id,role,ordinal",
         ["source_type_constraints"] = "source_type_id",
@@ -66,6 +70,9 @@ internal sealed partial class ObjectFile : IDisposable
         ["source_expression_type_operands"] = "expression_id",
         ["source_expression_constants"] = "expression_id",
         ["source_expression_bindings"] = "expression_id",
+        ["source_routine_prototype_origins"] = "routine_source_type_id",
+        ["source_parameter_binders"] = "id",
+        ["source_binder_parameters"] = "binder_id,ordinal",
         ["source_expression_requirements"] = "expression_id",
         ["source_expression_queries"] = "expression_id",
         ["source_expression_substitutions"] = "expression_id,substitution_ordinal",
@@ -152,7 +159,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v57" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v58" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");

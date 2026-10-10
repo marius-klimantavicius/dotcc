@@ -18,12 +18,12 @@ internal sealed partial class ObjectFile
 
     private void ReadAndVerifySourceTypes()
     {
-        using (var query = database.Prepare("SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count,is_restrict,is_atomic,array_bound_kind FROM source_types ORDER BY id"))
+        using (var query = database.Prepare("SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count,is_restrict,is_atomic,array_bound_kind,source_form FROM source_types ORDER BY id"))
             while (query.Read())
             {
                 var type = new SourceType(query.Integer(0), query.Text(1), query.Text(2), query.OptionalInteger(3), query.OptionalInteger(4),
                     query.Integer(5) == 1, query.Integer(6) == 1, query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.OptionalInteger(10),
-                    query.Integer(11) == 1, query.Integer(12) == 1, query.OptionalText(13));
+                    query.Integer(11) == 1, query.Integer(12) == 1, query.OptionalText(13),query.Text(14));
                 if (type.Id <= 0 || type.Line < 0 || type.Column < 0 || query.Integer(5) is not (0 or 1) || query.Integer(6) is not (0 or 1) ||
                     query.Integer(11) is not (0 or 1) || query.Integer(12) is not (0 or 1))
                     throw new InvalidDataException("Invalid source type identity, qualifiers or location");
@@ -45,7 +45,7 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Source array requires a nonnegative element count");
             if (type.Kind is "typedef" or "qualified")
             {
-                if (type.UnderlyingTypeId is null || (type.Kind == "typedef" ? type.SourceName.Length == 0 : type.SourceName.Length != 0 || !qualified))
+                if (type.UnderlyingTypeId is null || (type.Kind == "typedef" ? type.SourceName.Length == 0 : type.SourceName.Length != 0 || !qualified && type.SourceForm=="plain"))
                     throw new InvalidDataException("Invalid source typedef or qualified type");
             }
             else
@@ -244,6 +244,6 @@ internal sealed partial class ObjectFile
         "short" => (16, true), "unsigned-short" or "char16-t" => (16, false), "int" => (32, true), "unsigned-int" or "char32-t" => (32, false),
         "long" or "long-long" => (64, true), "unsigned-long" or "unsigned-long-long" => (64, false), "int128" => (128, true), "unsigned-int128" => (128, false),
         "char" or "wchar-t" when type.ExecutionRepresentationId is long id && ScalarTypes.IsInteger(Type(id)) => (checked((int)StorageSize(Type(id)) * 8), Type(id).StartsWith('i')),
-        _ => throw new InvalidDataException("Enum underlying type must retain a supported original integral type")
+        _ => throw new InvalidDataException($"Expected a supported original integral type (source type {type.Id}, kind {type.Kind})")
     };
 }

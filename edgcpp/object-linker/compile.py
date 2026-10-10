@@ -25,30 +25,43 @@ ARRAYS = {
 
     'sourceConcepts': ('source_concepts', ['id', 'sourceName', 'qualifiedName', 'parameterCount', 'definitionExpressionId', 'headerConstraintExpressionId', 'sourceFileId', 'line', 'column', 'captureProof']),
     'sourceConceptParameters': ('source_concept_parameters', ['conceptId', 'ordinal', 'kind', 'sourceName', 'typeId', 'constantId', 'templateId', 'defaultTypeId', 'defaultConstantId', 'defaultTemplateId', 'isPack', 'isAbbreviated', 'sourceFileId', 'line', 'column']),
-    'sourceExpressions': ('source_expressions', ['id', 'kind', 'edgeCount', 'parameterCount', 'argumentCount', 'substitutionCount', 'originalLvalueTypeId', 'isParenthesized', 'isCompilerGenerated', 'isVolatileFetch', 'sourceTypeId', 'valueCategory', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'sourceExpressionTemporaries': ('source_expression_temporaries', ['expressionId', 'initializationKind', 'spelledSourceTypeId', 'constructorDeclarationId', 'destructorDeclarationId', 'constantId', 'isDependentConstructor', 'lifetimeDisposition', 'captureProof']),
+    'sourceExpressionTemporaryFlags': ('source_expression_temporary_flags', ['expressionId', 'flag']),
+    'sourceExpressionAllocations': ('source_expression_allocations', ['expressionId', 'objectSourceTypeId', 'operatorDeclarationId', 'isNew', 'isDependentSelection', 'isPlacement', 'isAligned', 'isArrayDelete', 'isGlobal', 'hasInitializer', 'isBracedInitializer', 'isParenthesizedAggregate', 'hasDeducibleType', 'hasParenthesizedTypeId', 'initializationDisposition', 'rollbackDisposition', 'captureProof', 'isLookupDeferred']),
+    'sourceDeclarationOperators': ('source_declaration_operators', ['declarationId', 'operatorKind', 'captureProof']),
+    'sourceExpressionFieldReferences': ('source_expression_field_references', ['expressionId', 'sourceFieldId', 'captureProof']),
+    'sourceExpressionFolds': ('source_expression_folds', ['expressionId', 'operatorToken', 'operatorSpelling', 'isLeftAssociative', 'captureProof']),
+    'sourceExpressions': ('source_expressions', ['id', 'kind', 'edgeCount', 'parameterCount', 'argumentCount', 'substitutionCount', 'originalLvalueTypeId', 'isParenthesized', 'isCompilerGenerated', 'isVolatileFetch', 'isPackExpansion', 'sourceTypeId', 'valueCategory', 'sourceFileId', 'line', 'column', 'captureProof']),
     'sourceExpressionEdges': ('source_expression_edges', ['expressionId', 'role', 'ordinal', 'childExpressionId']),
     'sourceTypeConstraints': ('source_type_constraints', ['sourceTypeId', 'constraintExpressionId', 'captureProof']),
     'sourceConceptUses': ('source_concept_uses', ['expressionId', 'conceptId', 'isTypeConstraint']),
     'sourceConceptArguments': ('source_concept_arguments', ['expressionId', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
     'sourceExpressionParameters': ('source_expression_parameters', ['expressionId', 'ordinal', 'sourceTypeId', 'declaredSourceTypeId', 'sourceName', 'qualifierBits', 'isPack']),
-    'sourceExpressionParameterReferences': ('source_expression_parameter_references', ['expressionId', 'binderExpressionId', 'parameterOrdinal', 'originalLevelsUp']),
+    'sourceExpressionParameterReferences': ('source_expression_parameter_references', ['expressionId', 'binderId', 'parameterOrdinal', 'originalLevelsUp']),
     'sourceExpressionOperations': ('source_expression_operations', ['expressionId', 'opcode', 'operationName', 'originalTypeKind']),
     'sourceExpressionFlags': ('source_expression_flags', ['expressionId', 'flag']),
     'sourceExpressionTypeOperands': ('source_expression_type_operands', ['expressionId', 'sourceTypeId']),
     'sourceExpressionConstants': ('source_expression_constants', ['expressionId', 'constantId']),
-    'sourceExpressionBindings': ('source_expression_bindings', ['expressionId', 'lexicalBinderExpressionId']),
+    'sourceRoutinePrototypeOrigins': ('source_routine_prototype_origins', ['routineSourceTypeId', 'originalRoutineSourceTypeId', 'originalBinderId', 'kind', 'captureProof']),
+    'sourceParameterBinders': ('source_parameter_binders', ['id', 'kind', 'parentBinderId', 'requiresExpressionId', 'routineSourceTypeId', 'outsideParameterList', 'parameterCount', 'captureProof']),
+    'sourceBinderParameters': ('source_binder_parameters', ['binderId', 'ordinal', 'sourceTypeId', 'declaredSourceTypeId', 'sourceName', 'qualifierBits', 'isPack']),
+    'sourceExpressionBindings': ('source_expression_bindings', ['expressionId', 'lexicalBinderId']),
     'sourceExpressionRequirements': ('source_expression_requirements', ['expressionId', 'requiresNoexcept']),
     'sourceExpressionQueries': ('source_expression_queries', ['expressionId', 'isStandardAlignof']),
     'sourceExpressionSubstitutions': ('source_expression_substitutions', ['expressionId', 'substitutionOrdinal', 'formalCount', 'argumentCount', 'argumentsKnownDependent', 'argumentsKnownNondependent', 'adjustCoordinates', 'aliasDeductionGuide']),
     'sourceExpressionSubstitutionFormals': ('source_expression_substitution_formals', ['expressionId', 'substitutionOrdinal', 'ordinal', 'kind', 'sourceName', 'typeId', 'constantId', 'templateId', 'defaultTypeId', 'defaultConstantId', 'defaultTemplateId', 'isPack', 'isAbbreviated', 'sourceFileId', 'line', 'column']),
     'sourceExpressionSubstitutionArguments': ('source_expression_substitution_arguments', ['expressionId', 'substitutionOrdinal', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
-    'sourceExpressionDeclarations': ('source_expression_declarations', ['id', 'kind', 'sourceName', 'qualifiedName', 'sourceTypeId', 'ownerSourceTypeId', 'templatePrototypeDeclarationId', 'templateOriginKind', 'hasTemplateOrigin', 'isTemplatePrototype', 'isConstexpr', 'formalCount', 'argumentCount', 'originalInitKind', 'originalDynamicInitKind', 'initializerKind', 'initializerConstantId', 'initializerExpressionId', 'definitionStatus', 'captureProof', 'sourceFileId', 'line', 'column']),
+    'sourceExpressionDeclarations': ('source_expression_declarations', ['id', 'kind', 'sourceName', 'qualifiedName', 'sourceTypeId', 'ownerSourceTypeId', 'templatePrototypeDeclarationId', 'templateOriginKind', 'routineKind', 'hasTemplateOrigin', 'isTemplatePrototype', 'isConstexpr', 'formalCount', 'argumentCount', 'originalInitKind', 'originalDynamicInitKind', 'initializerKind', 'initializerConstantId', 'initializerExpressionId', 'definitionStatus', 'captureProof', 'sourceFileId', 'line', 'column']),
     'sourceExpressionDeclarationReferences': ('source_expression_declaration_references', ['expressionId', 'declarationId']),
     'sourceExpressionDeclarationFormals': ('source_expression_declaration_formals', ['declarationId', 'ordinal', 'kind', 'sourceName', 'typeId', 'constantId', 'templateId', 'defaultTypeId', 'defaultConstantId', 'defaultTemplateId', 'isPack', 'isAbbreviated', 'sourceFileId', 'line', 'column']),
     'sourceExpressionDeclarationArguments': ('source_expression_declaration_arguments', ['declarationId', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
 
     'sourceNestedTypeDeclarations': ('source_nested_type_declarations', ['typeId', 'ownerTypeId', 'captureProof']),
     'sourceDependentTypes': ('source_dependent_types', ['typeId', 'kind', 'ownerTypeId', 'originalNestedTypeId', 'nestingDepth', 'parameterPosition', 'isPack', 'identityKey', 'captureProof', 'hasTypeConstraint']),
+    'sourceNamedTemplates': ('source_named_templates', ['templateId', 'qualifiedName', 'ownerSourceTypeId', 'prototypeSourceTypeId', 'constraintExpressionId', 'captureProof']),
+    'sourceAliasInstances': ('source_alias_instances', ['typeId', 'templateId', 'isPrototype', 'isNonreal', 'isDependent', 'argumentCount', 'hasOriginalArguments', 'originalArgumentCount', 'minimumArguments', 'captureProof']),
+    'sourceAliasArguments': ('source_alias_arguments', ['typeId', 'listKind', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
+    'sourceTypeOperators': ('source_type_operators', ['typeId', 'opcode', 'expressionId', 'operandSourceTypeId', 'isDependent', 'isUnparenthesizedDecltype', 'captureProof', 'operatorName']),
     'sourceFiles': ('source_files', ['id', 'path', 'parentId']),
     'types': ('types', ['id', 'kind', 'pointeeTypeId', 'elementTypeId', 'elementCount']),
     'storages': ('storages', ['id', 'sourceName', 'linkage', 'externalKey', 'definition', 'typeId', 'sourceTypeId', 'isThreadLocal', 'isConst', 'alignment', 'sourceFileId', 'line', 'column']),
@@ -60,7 +73,7 @@ ARRAYS = {
     'sourceDynamicExceptionSpecifications': ('source_dynamic_exception_specifications', ['sourceRoutineTypeId', 'kind', 'allowedTypeCount', 'captureProof']),
     'sourceDynamicExceptionTypes': ('source_dynamic_exception_types', ['sourceRoutineTypeId', 'ordinal', 'declaredSourceTypeId', 'matchSourceTypeId']),
     'functionDynamicExceptionBoundaries': ('function_dynamic_exception_boundaries', ['functionEntityId', 'sourceRoutineTypeId', 'captureProof']),
-    'sourceRoutineTypes': ('source_routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy', 'parameterMode', 'objectTypeId', 'objectIsConst', 'objectIsVolatile', 'objectRefQualifier', 'exceptionPolicyOrigin']),
+    'sourceRoutineTypes': ('source_routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy', 'parameterMode', 'objectTypeId', 'objectIsConst', 'objectIsVolatile', 'objectRefQualifier', 'exceptionPolicyOrigin', 'prototypeOrigin']),
     'sourceRoutineParameters': ('source_routine_parameters', ['typeId', 'ordinal', 'parameterTypeId']),
     'deferredFunctionDeclarations': ('deferred_function_declarations', ['entityId', 'sourceRoutineTypeId', 'captureProof']),
     'deferredRoutineAbis': ('deferred_routine_abis', ['routineTypeId', 'sourceRoutineTypeId', 'reason', 'captureProof']),
@@ -177,7 +190,7 @@ ARRAYS = {
                         'definitionText', 'origin', 'sourceFileId', 'line', 'column']),
     'macroParameters': ('macro_parameters', ['definitionId', 'ordinal', 'name']),
     'macroEvents': ('macro_events', ['id', 'kind', 'name', 'definitionId', 'origin', 'sourceFileId', 'line', 'column']),
-    'sourceTypes': ('source_types', ['id', 'kind', 'sourceName', 'underlyingTypeId',
+    'sourceTypes': ('source_types', ['id', 'sourceForm', 'kind', 'sourceName', 'underlyingTypeId',
                                    'executionTypeId', 'isConst', 'isVolatile', 'sourceFileId', 'line', 'column', 'elementCount', 'isRestrict', 'isAtomic', 'arrayBoundKind']),
     'sourceTypeQualifiers': ('source_type_qualifiers', ['typeId', 'name']),
     'sourceEnumTypes': ('source_enum_types', ['typeId', 'identityKey', 'underlyingTypeId', 'isScoped', 'isComplete', 'enumeratorListComplete', 'hasExplicitBase']),
@@ -250,7 +263,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v57':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v58':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -270,7 +283,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v57', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v58', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

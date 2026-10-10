@@ -53,3 +53,46 @@ source-hidden linking, JIT, NativeAOT and resealed metadata rejections. Copied
 default-argument execution ownership adds70 checks documented in
 [the C++ runtime notes](dotobj-cpp-runtime.md). Retained evidence and limitations
 are recorded in `evidence/dotobj-duckdb-constraints-tls-temporaries-20261010.json`.
+
+The accepted profile58 source-graph milestone additionally retains original
+unevaluated temporary initialization recipes and selected ordinary members of
+concrete class-template instances. Concrete nominal record identities remain
+unchanged; their original selected member and enclosing class substitution are
+retained independently. This currently covers the selected-member path, not all
+otherwise captured concrete template records. A partial specialization requires
+both the primary-template and selected-specialization argument lists and remains
+an explicit gate pending that contract.
+
+Original new/delete expressions preserve allocated/deleted source type, selected
+operator declaration where present, source flags and ordered arguments. Source
+operator declarations carry their exact original operator kind. GNU prototype
+instantiation deliberately defers even `::new int` lookup; the frontend's
+`unknown_dependent_new` decision is observed and copied with the original
+supplement, independently of type dependency. Dependent delete retains EDG's
+unknown deleted-type placeholder and the actual dependent operand or pointer to
+dependent type. Concrete delete operands must match the original pointed-to
+type. No callable runtime ABI is fabricated from any of these source-only rows.
+Linked initialization and rollback graphs outside the accepted absence case
+remain explicit gates.
+
+Focused evidence for these additions: temporary/member metadata has42 combined
+checks at `dotobj-v58-temporary-145-168-tail-002/results.json` (referencing its
+original execution receipt); allocations have50 checks at
+`dotobj-v58-source-allocations-147-173-002/results.json`, both beneath
+`/mnt/storage/dotcc-edg-campaign-20261003`. These include source-hidden loading,
+JIT/NativeAOT and resealed malformed metadata. Profile58 passes 1,042 broad
+integration checks and 421 focused checks across its retained feature cuts.
+It is an accepted feature milestone, not a whole-project checkpoint: remaining
+original source graph families and the coherent full corpus are still pending.
+The combined receipt is `evidence/dotobj-duckdb-source-graph-v58-20261010.json`.
+
+Brace-enclosed source initializer lists retain ordered elements, including an
+empty list. Original fold expressions retain the configured operator token and
+spelling, left/right association, all ordered operands, and each expression's
+original pack-expansion marker; EDG can retain more than two operands after
+partial substitution. Original field operands point to the existing source
+record/field declaration, with identity derived from original owner and member
+ordinal. These are semantic-only nodes and do not request executable layout or
+invent a folded result. The focused148/174 suite passed47 checks including JIT,
+NativeAOT and seven resealed negative cases, retained at
+`dotobj-v58-source-lists-148-174-001/results.json` beneath the campaign root above.

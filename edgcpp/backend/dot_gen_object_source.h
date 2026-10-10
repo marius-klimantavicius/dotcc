@@ -10,6 +10,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <tuple>
 #include "fe_common.h"
 #include "il.h"
 #include "il_walk.h"
@@ -57,12 +58,35 @@ struct RoutineExceptionResolution {
   std::string special_kind,error;
   bool is_defaulted=false,compiler_generated=false,inheriting_constructor=false,implicit_destructor=false;
 };
+static_assert(int(trk_is_decltype)==1 &&
+  int(trk_is_underlying_type)==5 &&
+  int(trk_is_typeof_with_expression)==6 &&
+  int(trk_is_typeof_with_type_operand)==7 &&
+  int(trk_add_lvalue_reference)==14 &&
+  int(trk_add_pointer)==15 &&
+  int(trk_add_rvalue_reference)==16 &&
+  int(trk_decay)==17 &&
+  int(trk_make_signed)==18 &&
+  int(trk_make_unsigned)==19 &&
+  int(trk_remove_all_extents)==20 &&
+  int(trk_remove_const)==21 &&
+  int(trk_remove_cv)==22 &&
+  int(trk_remove_cvref)==23 &&
+  int(trk_remove_extent)==24 &&
+  int(trk_remove_pointer)==25 &&
+  int(trk_remove_reference_t)==26 &&
+  int(trk_remove_restrict)==27 &&
+  int(trk_remove_volatile)==28 &&
+  int(trk_remove_reference)==29, "source type operator profile mismatch");
 struct Type {
   unsigned id=0,underlying=0,execution=0;
   unsigned long long element_count=0;
   bool array_bound_known=false;
   unsigned dependent_array_bound=0;
-  std::string kind,name;
+  std::string kind,name,source_form="plain";
+  int type_operator=-1;
+  unsigned operator_expression=0,operator_type=0;
+  bool operator_dependent=false,operator_unparenthesized=false;
   a_type_ptr record_type=nullptr;
   bool is_const=false,is_volatile=false,is_restrict=false,is_atomic=false;
   std::vector<std::string> qualifiers;
@@ -78,7 +102,7 @@ struct Type {
   bool is_int128=false,is_unsigned_int128=false;
   a_source_position position={};
   // Routine types are private signature snapshots, not scalar sourceTypes.
-  unsigned result=0,object_type=0;
+  unsigned result=0,object_type=0,prototype_origin=0,prototype_origin_binder=0;
   bool object_is_const=false,object_is_volatile=false;
   std::string object_ref_qualifier="none";
   bool variadic=false;
@@ -108,7 +132,8 @@ struct SourceTemplateFormal {
   a_source_position position={};
 };
 struct SourceTemplateReference {
-  std::string name,error;
+  std::string name,error,kind="parameter",qualified_name;
+  unsigned owner_type=0,prototype_type=0,header_constraint=0;
   int depth=0,position=0;
   bool pack=false;
   a_source_position location={};
@@ -497,7 +522,13 @@ struct TrySnapshot {
   std::vector<a_handler_ptr> handlers;
   bool function_try=false;
 };
+struct SourceAliasInstance {
+  unsigned templ=0;bool prototype=false,nonreal=false,dependent=false,original_present=false;
+  int minimum_arguments=-1;std::string error;
+  std::vector<SourceTemplateArgument> arguments,original_arguments;
+};
 struct State {
+  std::map<a_type_ptr,SourceAliasInstance> source_aliases;
   std::vector<SourceTemplateReference> source_templates;
   std::map<a_template_ptr,unsigned> source_template_ids;
   std::vector<SourceSemanticConstant> semantic_constants;
@@ -593,6 +624,7 @@ struct State {
   std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> default_argument_temporary_adoptions;
   std::map<a_routine_ptr,ThunkWrapper> thunk_wrappers;
   std::map<a_routine_ptr,LambdaEntry> lambda_entries;
+  std::map<a_type_ptr,std::pair<a_type_ptr,a_routine_ptr>> lambda_prototype_recipes;
   std::map<an_asm_entry_ptr,AsmStatement> asm_statements;
   std::map<a_variable_ptr,Declaration> variables;
   std::map<a_type_ptr,Record> records;
@@ -617,6 +649,20 @@ struct State {
   unsigned next_original_field=1;
 };
 inline State &state(){static State value;return value;}
+inline void observe_lambda_conversion_prototype(a_type_ptr copied,a_routine_ptr selected) {
+  if(!enabled() || !copied || !selected)return;
+  auto value=std::make_pair(selected->type,selected);
+  auto inserted=state().lambda_prototype_recipes.emplace(copied,value);
+  if(!inserted.second && inserted.first->second!=value)inserted.first->second={nullptr,nullptr};
+}
+inline void observe_lambda_prototype_type_copy(a_type_ptr original,a_type_ptr copied) {
+  if(!enabled() || !original || !copied || original==copied)return;
+  auto &recipes=state().lambda_prototype_recipes;auto found=recipes.find(original);
+  if(found==recipes.end())return;
+  auto inserted=recipes.emplace(copied,found->second);
+  if(!inserted.second && inserted.first->second!=found->second)inserted.first->second={nullptr,nullptr};
+}
+
 inline void observe_class_layout_directive(a_type_ptr type) {
   if(!enabled())return;
   // Snapshot the requested directive before do_class_layout normalizes it.
@@ -779,6 +825,7 @@ inline int source_builtin_trait_arity(a_builtin_operation_kind kind) {
   }
 }
 inline unsigned capture_constraint_expression(an_expr_node_ptr,unsigned);
+inline unsigned current_source_parameter_binder();
 inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
   auto &s=state();if(!expression)return 0;
   if(expression->kind==enk_constant)return capture_semantic_constant(node_constant(expression));
@@ -809,7 +856,7 @@ inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
     else value.operands.push_back(capture_semantic_constant_expr(query.variant.expr));
   } else if(expression->kind==enk_variable) {
     value.kind="source-expression";
-    value.source_expression=capture_constraint_expression(expression,0);
+    value.source_expression=capture_constraint_expression(expression,current_source_parameter_binder());
   } else if(expression->kind!=enk_operation)value.error="dependent constant expression needs an owned source expression family";
   else {
     const auto &operation=expression->variant.operation;
@@ -867,7 +914,7 @@ inline unsigned capture_semantic_constant(a_constant_ptr constant) {
     if(constant->is_reinterpret_cast)value.aggregate_flags|=1U<<13;
     if(constant->is_reinterpret_like_cast)value.aggregate_flags|=1U<<14;
     if(constant->uses_designated_initializers)value.aggregate_flags|=1U<<15;
-    if(constant->expr)value.aggregate_expression=capture_constraint_expression(constant->expr,0);
+    if(constant->expr)value.aggregate_expression=capture_constraint_expression(constant->expr,current_source_parameter_binder());
     a_constant_ptr last=nullptr;
     for(auto child=constant->variant.aggregate.first_constant;child;child=child->next) {
       value.operands.push_back(capture_semantic_constant(child));last=child;
@@ -923,15 +970,29 @@ inline unsigned capture_source_template(a_template_ptr templ) {
   SourceTemplateReference value;value.name=spelling(templ->source_corresp);value.location=templ->source_corresp.decl_position;
   value.depth=templ->coordinates.depth;value.position=templ->coordinates.position;value.pack=templ->is_pack;
   auto declaration=templ->template_decl;
-  if(templ->kind!=templk_template_template_param)
+  if(templ->kind==templk_class && templ->prototype_instantiation.type &&
+     templ->prototype_instantiation.type->kind==tk_typeref &&
+     templ->prototype_instantiation.type->variant.typeref.kind==trk_is_template_alias) {
+    value.kind="alias";value.qualified_name=value.name;
+    if(templ->source_corresp.is_class_member)value.owner_type=capture_type(parent_class_of(templ));
+    for(auto scope=templ->source_corresp.parent_scope;scope;scope=scope->parent) {
+      if(scope->kind==sck_namespace) {
+        auto ns=scope->variant.assoc_namespace;
+        if(!ns || ns->has_internal_linkage || spelling(ns->source_corresp).empty())value.error="alias template needs original unnamed namespace identity";
+        else value.qualified_name=spelling(ns->source_corresp)+"::"+value.qualified_name;
+      } else if(scope->kind!=sck_file && scope->kind!=sck_class_struct_union)value.error="alias template needs original lexical owner";
+    }
+    value.prototype_type=capture_type(templ->prototype_instantiation.type);
+    if(declaration && declaration->constraint.requires_clause)value.header_constraint=capture_constraint_expression(declaration->constraint.requires_clause->constraint,0);
+  } else if(templ->kind!=templk_template_template_param)
     value.error="source template reference kind requires its owned declaration [kind="+std::to_string(int(templ->kind))+",name="+value.name+"]";
-  else if(!declaration || value.depth<0 || value.position<=0 || !value.location.seq)
+  if(!declaration || (value.kind=="parameter" && (value.depth<0 || value.position<=0)) || !value.location.seq)
     value.error="template template parameter lacks its original declaration/header coordinates";
   else if(
 #if MICROSOFT_EXTENSIONS_ALLOWED
     declaration->is_generic ||
 #endif
-    declaration->constraint.requires_clause)
+    (value.kind=="parameter" && declaration->constraint.requires_clause))
     value.error="source template parameter constraints require an owned semantic graph";
   else for(auto parameter=declaration->param_list;parameter;parameter=parameter->next) {
     SourceTemplateFormal formal;formal.name=spelling(parameter->source_corresp);formal.position=parameter->source_corresp.decl_position;
@@ -989,7 +1050,19 @@ inline void capture_enum(a_type_ptr t) {
   value.needs_final_identity=value.needs_final_identity || (!C_mode() && local);
   value.identity=(local?"local-enum:":"enum:")+qualified;
   for(auto con=enum_constants(t);con;con=con->next) {
-    if(con->kind!=ck_integer) {value.error="enumerator lacks resolved integer value";break;}
+    if(con->kind!=ck_integer) {
+      value.error="enumerator lacks resolved integer value: enum="+qualified+
+        " enumerator="+spelling(con->source_corresp)+" constant-kind="+std::to_string(int(con->kind))+
+        " template-enum="+std::to_string(int(t->variant.integer.is_template_enum));
+      if(getenv("EDG_DOTOBJ_DIAG_SOURCE_ERRORS")) {
+        a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
+        const auto &position=con->source_corresp.decl_position;
+        if(position.seq)conv_seq_to_file_and_line(position.seq,&display,&full,&line,&at_end);
+        value.error+=" original="+std::string(full?full:display?display:"")+":"+
+          std::to_string(line)+":"+std::to_string(position.column);
+      }
+      break;
+    }
     Enumerator enumerator;enumerator.name=spelling(con->source_corresp);
     enumerator.position=con->source_corresp.decl_position;
     // This is the same arbitrary-precision conversion used by EDG's name
@@ -1171,11 +1244,68 @@ inline void capture_record(a_type_ptr t) {
 }
 #include "dot_gen_object_source_operations.h"
 #include "dot_gen_object_source_constraints.h"
+// An original type may first be reached through a semantic use before its
+// declaration's prototype scope is available. Only that exact original type
+// pointer, revisited through a return/parameter type edge, may complete the
+// pending operator expression; competing declaration owners stay rejected.
+inline bool source_expression_has_parameter(unsigned expression,std::set<unsigned> &seen) {
+  if(!expression || !seen.insert(expression).second)return false;
+  const auto &value=source_constraint_graph().expressions.at(expression-1);
+  if(value.kind=="parameter-reference")return true;
+  for(const auto &edge:value.edges)if(source_expression_has_parameter(edge.child,seen))return true;
+  return false;
+}
+inline void capture_pending_type_context(a_type_ptr t,unsigned id) {
+  auto &graph=source_constraint_graph();unsigned binder=graph.active_binder;
+  if(!binder || !graph.active_type_contexts.insert(t).second)return;
+  auto &saved=state().types.at(id-1);
+  if(t->kind==tk_typeref) {
+    if(saved.source_form=="type-operator" && saved.operator_expression) {
+      std::set<unsigned> seen;
+      if(source_expression_has_parameter(saved.operator_expression,seen)) {
+        auto previous=graph.type_operator_binders.find(id);
+        if(previous==graph.type_operator_binders.end() || !previous->second) {
+          auto expression=decltype_arg(t);
+          if(expression) {
+            unsigned resolved=capture_constraint_expression(expression,binder);
+            state().types.at(id-1).operator_expression=resolved;graph.type_operator_binders[id]=binder;
+          }
+        } else if(previous->second!=binder) {
+          auto describe=[&](unsigned frame) {
+            const auto &entry=graph.binders.at(frame);
+            std::string text="binder="+std::to_string(frame)+" owner="+std::to_string(entry.routine)+
+              " requires="+std::to_string(entry.expression)+" parent="+std::to_string(entry.parent)+
+              " outside="+std::to_string(entry.outside);
+            if(entry.routine && std::getenv("EDG_DOTOBJ_DIAG_SOURCE_ERRORS")) {
+              const auto &owner=state().types.at(entry.routine-1);
+              auto original=owner.original_type;
+              text+=" original="+std::to_string(reinterpret_cast<size_t>(original));
+              text+=" receiver="+std::to_string(owner.object_type);
+              if(original && original->kind==tk_routine) {
+                auto supplement=original->variant.routine.extra_info;
+                text+=" parameters="+std::to_string(reinterpret_cast<size_t>(supplement->param_type_list))+
+                  " lambda="+std::to_string(supplement->assoc_routine_is_lambda_body)+
+                  " special="+std::to_string(supplement->assoc_routine?int(supplement->assoc_routine->special_kind):-1);
+              }
+            }
+            return text;
+          };
+          state().types.at(id-1).error="original type operator has competing lexical parameter scopes: type="+
+            std::to_string(id)+" old["+describe(previous->second)+"] new["+describe(binder)+"]";
+        }
+      }
+    }
+    capture_type(t->variant.typeref.type);
+  } else if(t->kind==tk_pointer)capture_type(t->variant.pointer.type);
+  else if(t->kind==tk_array)capture_type(t->variant.array.element_type);
+  graph.active_type_contexts.erase(t);
+}
 inline unsigned capture_type(a_type_ptr t) {
   if(!t)return 0;
   auto &s=state();auto prior=s.type_ids.find(t);
   if(prior!=s.type_ids.end()) {
-    if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union)capture_record(t);
+    capture_pending_type_context(t,prior->second);
+    if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union){SourceParameterScope scope(0);capture_record(t);}
     if(t->kind==tk_integer && t->variant.integer.enum_type && !t->variant.integer.bool_type)capture_enum(t);
     return prior->second;
   }
@@ -1183,6 +1313,27 @@ inline unsigned capture_type(a_type_ptr t) {
   Type value;value.id=id;value.original_type=t;value.name=spelling(t->source_corresp);value.position=t->source_corresp.decl_position;
   if(t->kind==tk_typeref) {
     value.kind=type_is_typedef(t)?"typedef":"qualified";
+    if(t->variant.typeref.kind==trk_is_template_alias)value.source_form="template-alias";
+    else if(t->variant.typeref.kind==trk_is_decltype || t->variant.typeref.kind==trk_is_typeof_with_expression ||
+            t->variant.typeref.kind==trk_is_typeof_with_type_operand || t->variant.typeref.kind==trk_is_underlying_type ||
+            (t->variant.typeref.kind>=trk_add_lvalue_reference && t->variant.typeref.kind<=trk_remove_reference)) {
+      value.source_form="type-operator";value.type_operator=int(t->variant.typeref.kind);
+      value.operator_dependent=t->variant.typeref.is_dependent_type_operator;
+      value.operator_unparenthesized=t->variant.typeref.decltype_expr_not_parenthesized;
+      auto extra=t->variant.typeref.extra_info;
+      if(!extra)value.error="original type operator lacks its operand supplement";
+      else {
+        if(t->variant.typeref.kind==trk_is_decltype || t->variant.typeref.kind==trk_is_typeof_with_expression) {
+          auto expression=decltype_arg(t);
+          if(!expression)value.error="original expression type operator requires its lexical expression";
+          else {
+            value.operator_expression=capture_constraint_expression(expression);
+            source_constraint_graph().type_operator_binders[id]=current_source_parameter_binder();
+          }
+        } else if(extra->operator_type_arg)value.operator_type=capture_type(extra->operator_type_arg);
+        else value.error="original type operator has no original type operand";
+      }
+    }
     value.is_const=(t->variant.typeref.qualifiers&TQ_CONST)!=0;
     value.is_volatile=(t->variant.typeref.qualifiers&TQ_VOLATILE)!=0;
     value.is_restrict=(t->variant.typeref.qualifiers&TQ_RESTRICT)!=0;
@@ -1212,7 +1363,7 @@ inline unsigned capture_type(a_type_ptr t) {
     value.execution=s.types.at(value.underlying-1).execution;
     if(value.kind=="qualified") {
       value.name.clear();
-      if(!value.is_const && !value.is_volatile && !value.is_restrict && !value.is_atomic && value.qualifiers.empty() && value.error.empty()) {
+      if(value.source_form=="plain" && !value.is_const && !value.is_volatile && !value.is_restrict && !value.is_atomic && value.qualifiers.empty() && value.error.empty()) {
         // Anonymous typeref bookkeeping with no represented qualifier adds
         // no declaration type distinction in this bounded scalar profile.
         s.type_ids[t]=value.underlying;return value.underlying;
@@ -1326,7 +1477,7 @@ inline unsigned capture_type(a_type_ptr t) {
   } else if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
     if(t->variant.class_struct_union.extra_info && t->variant.class_struct_union.extra_info->is_va_list_tag)
       value.kind="va-list";
-    else {value.kind="record";value.record_type=t;capture_record(t);}
+    else {value.kind="record";value.record_type=t;SourceParameterScope scope(0);capture_record(t);}
   } else if(t->kind==tk_routine) {
     value.kind="routine";
     // Capture policy before receiver/result recursion can finalize a defaulted
@@ -1336,8 +1487,53 @@ inline unsigned capture_type(a_type_ptr t) {
     value.exception_policy=value.initial_exception_flags.policy();
     if(value.exception_policy=="dynamic")
       value.dynamic_specification=capture_dynamic_exception_specification(t->variant.routine.extra_info->exception_specification);
-    value.result=capture_type(t->variant.routine.return_type);
     auto extra=t->variant.routine.extra_info;
+    a_type_ptr recipe=t;
+    unsigned recipe_id=id,recipe_parent=current_source_parameter_binder();
+    auto copied_prototype=s.lambda_prototype_recipes.find(t);
+    if(copied_prototype!=s.lambda_prototype_recipes.end()) {
+      // generate_lambda_conversion_function copies the call operator signature,
+      // but shares its original return/parameter type recipes. The generated
+      // conversion target is a use of that source prototype, not a new lexical
+      // declaration of its decltype expressions.
+      auto selected=copied_prototype->second.second;
+      recipe=copied_prototype->second.first?skip_typerefs(copied_prototype->second.first):nullptr;
+      if(extra->assoc_routine && extra->assoc_routine->special_kind==sfk_lambda_entry_point &&
+         extra->assoc_routine->variant.lambda_call_operator!=selected)
+        value.error="generated lambda prototype entry differs from its observed factory origin";
+      if(!recipe || recipe==t || recipe->kind!=tk_routine) {
+        value.error="generated lambda prototype lacks its exact original call operator type";
+        recipe=t;
+      } else {
+        auto original=recipe->variant.routine.extra_info;
+        if(!original->assoc_routine_is_lambda_body || !original->this_class || !original->has_this_param ||
+           extra->assoc_routine_is_lambda_body || extra->this_class || extra->has_this_param ||
+           extra->qualifiers!=TQ_NONE || extra->ref_qualifiers!=rqk_default ||
+           extra->has_ellipsis!=original->has_ellipsis || extra->prototyped!=original->prototyped ||
+           t->variant.routine.return_type!=recipe->variant.routine.return_type ||
+           extra->exception_specification!=original->exception_specification)
+          value.error="generated lambda prototype differs from stock receiver-cleared signature copy";
+#if MICROSOFT_EXTENSIONS_ALLOWED || GNU_X86_ATTRIBUTES_ALLOWED
+        if(extra->calling_convention!=original->calling_convention)
+          value.error="generated lambda prototype requires its changed calling convention contract";
+#endif
+        auto copied_parameter=extra->param_type_list,original_parameter=original->param_type_list;
+        for(;copied_parameter && original_parameter;copied_parameter=copied_parameter->next,original_parameter=original_parameter->next) {
+          if(copied_parameter->type!=original_parameter->type || copied_parameter->declared_type!=original_parameter->declared_type ||
+             copied_parameter->qualifiers!=original_parameter->qualifiers || copied_parameter->is_parameter_pack!=original_parameter->is_parameter_pack ||
+             copied_parameter->is_requires_expr_param!=original_parameter->is_requires_expr_param || copied_parameter->has_default_arg ||
+             std::string(copied_parameter->name?copied_parameter->name:"")!=std::string(original_parameter->name?original_parameter->name:""))
+            value.error="generated lambda prototype lost its exact copied parameter declaration";
+        }
+        if(copied_parameter || original_parameter)value.error="generated lambda prototype parameter copy is incomplete";
+        {SourceParameterScope original_scope(0);recipe_id=capture_type(recipe);}
+        recipe_parent=0;value.prototype_origin=recipe_id;
+      }
+    }
+    auto frames=capture_parameter_binder_pair(0,recipe_id,recipe_parent,recipe->variant.routine.extra_info->param_type_list);
+    if(value.prototype_origin)value.prototype_origin_binder=frames.second;
+    {SourceParameterScope prototype(frames.second);value.result=capture_type(t->variant.routine.return_type);}
+    SourceParameterScope receiver_scope(0);
     if(extra->this_class) {
       value.object_type=capture_type(extra->this_class);
       value.object_is_const=(extra->qualifiers&TQ_CONST)!=0;
@@ -1348,8 +1544,10 @@ inline unsigned capture_type(a_type_ptr t) {
     value.variadic=t->variant.routine.extra_info->has_ellipsis;
     value.parameter_mode=t->variant.routine.extra_info->prototyped?"prototype":"unspecified";
     trace_routine_exception_policy("source-capture",id,t,value.exception_policy);
-    for(auto p=t->variant.routine.extra_info->param_type_list;p;p=p->next) {
-      value.parameters.push_back(capture_type(p->declared_type?p->declared_type:p->type));
+    unsigned parameter_ordinal=0;
+    for(auto p=extra->param_type_list;p;p=p->next,++parameter_ordinal) {
+      const auto &parameter=source_constraint_graph().binders.at(frames.first).parameters.at(parameter_ordinal);
+      value.parameters.push_back(parameter.declared_type?parameter.declared_type:parameter.type);
       value.declaration_defaults.push_back(p->has_default_arg);
     }
     if(C_mode()) {
@@ -1363,7 +1561,9 @@ inline unsigned capture_type(a_type_ptr t) {
   // Unknown entries are retained privately as unavailable, never exported as
   // opaque payloads. An unused unsupported declaration cannot block the TU.
   if(t->kind!=tk_typeref && value.kind!="record" && value.kind!="enum" && value.kind!="dependent")value.name.clear();
-  s.types[id-1]=value;return id;
+  s.types[id-1]=value;
+  if(value.source_form=="template-alias")capture_source_alias(t);
+  return id;
 }
 inline std::string resolved_exception_policy(unsigned id) {
   auto found=state().routine_exception_resolutions.find(id);
