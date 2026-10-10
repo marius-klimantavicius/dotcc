@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v53'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v54'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -154,12 +154,15 @@ CREATE TABLE entities (
  source_name TEXT NOT NULL,
  linkage TEXT NOT NULL CHECK(linkage IN ('external','internal')),
  external_key TEXT,
- definition TEXT NOT NULL CHECK(definition IN ('declaration','strong','linkonce')),
+ definition TEXT NOT NULL CHECK(definition IN ('declaration','strong','linkonce','weak')),
  return_type_id INTEGER NOT NULL REFERENCES types(id),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
  routine_type_id INTEGER NOT NULL REFERENCES routine_types(type_id),
+ is_weak INTEGER NOT NULL CHECK(is_weak IN (0,1)),
+ CHECK((is_weak=1 AND linkage='external' AND definition IN ('weak','declaration')) OR
+       (is_weak=0 AND definition!='weak')),
  CHECK((linkage='external' AND external_key IS NOT NULL) OR
        (linkage='internal' AND external_key IS NULL))
 ) STRICT;

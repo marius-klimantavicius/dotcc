@@ -113,7 +113,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v53" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v54" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -282,11 +282,13 @@ internal sealed partial class ObjectFile : IDisposable
         if (Routines.Keys.Any(id => !RoutineTypes.IsRoutine(Type(id)))) throw new InvalidDataException("Routine metadata describes a non-routine type");
         ReadStorages();
         ReadDeferredFunctionDeclarations();
-        using (var query = database.Prepare("SELECT id,source_name,linkage,external_key,definition,return_type_id,source_file_id,line,column,routine_type_id FROM entities ORDER BY id"))
+        using (var query = database.Prepare("SELECT id,source_name,linkage,external_key,definition,return_type_id,source_file_id,line,column,routine_type_id,is_weak FROM entities ORDER BY id"))
             while (query.Read())
             {
-                var entity = new Entity(query.Integer(0), query.Text(1), query.Text(2), query.OptionalText(3), query.Text(4), query.Integer(5), query.OptionalInteger(6), query.Integer(7), query.Integer(8), query.Integer(9));
-                if (entity.Id <= 0 || entity.Linkage is not ("external" or "internal") || entity.Definition is not ("strong" or "linkonce" or "declaration") ||
+                var entity = new Entity(query.Integer(0), query.Text(1), query.Text(2), query.OptionalText(3), query.Text(4), query.Integer(5), query.OptionalInteger(6), query.Integer(7), query.Integer(8), query.Integer(9), query.Integer(10) == 1);
+                if (entity.Id <= 0 || entity.Linkage is not ("external" or "internal") || entity.Definition is not ("strong" or "linkonce" or "weak" or "declaration") ||
+                    query.Integer(10) is not (0 or 1) ||
+                    (entity.IsWeak ? entity.Linkage != "external" || entity.Definition is not ("weak" or "declaration") : entity.Definition == "weak") ||
                     (entity.Linkage == "external" ? string.IsNullOrEmpty(entity.ExternalKey) : entity.ExternalKey != null) || entity.Line < 0 || entity.Column < 0)
                     throw new InvalidDataException("Invalid entity summary");
                 if (ScalarTypes.IsArray(Type(entity.ReturnTypeId)) || !CanTransportRecord(Type(entity.ReturnTypeId)) && !PermitsDeferredValue(entity.Id, Type(entity.ReturnTypeId))) throw new InvalidDataException("Function cannot return an aggregate by value");
@@ -313,7 +315,7 @@ internal sealed partial class ObjectFile : IDisposable
         using (var query = database.Prepare("SELECT entity_id,body_node_id FROM functions ORDER BY entity_id"))
             while (query.Read()) Functions.Add(query.Integer(0), query.Integer(1));
         foreach (Entity entity in Entities.Values)
-            if (Functions.ContainsKey(entity.Id) != (entity.Definition is "strong" or "linkonce")) throw new InvalidDataException("Definition/body summary mismatch");
+            if (Functions.ContainsKey(entity.Id) != (entity.Definition is "strong" or "linkonce" or "weak")) throw new InvalidDataException("Definition/body summary mismatch");
         VerifyStorageRelocations();
         if (Functions.Keys.Any(id => !Entities.ContainsKey(id))) throw new InvalidDataException("Function has no entity summary");
     }

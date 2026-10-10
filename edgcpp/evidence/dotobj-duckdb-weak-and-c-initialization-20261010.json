@@ -1,0 +1,82 @@
+{
+  "milestone": "dotobj v54 exact weak routine binding and C pooled-record initialization",
+  "status": "accepted",
+  "nativeCompiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native128-verified-snapshot/cpfe-dot",
+  "nativeSha256": "dddebca69610fc266e90efbafd3a69c2ab1188ea9b1d5ad28852f9da31a6697b",
+  "managedLinkers": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-149/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "1efebad7bff3807fa29c575a82e637b88457913129c32093bdfa8a040dbdb7e6"
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-150/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "4159fcdf1db9e1f0d682cf63bfc08cf6eb191af4fee1439f6a7e17b13276e8f2"
+    }
+  ],
+  "focused": [
+    {
+      "name": "weak",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v54-weak-128-149-001/results.json",
+      "sha256": "05a882840ac9b85d15a97a25b52a71405b778bfa6b48cc5d5c7d4a0c7166d237",
+      "checks": 163,
+      "managed": 149,
+      "nativeAot": true
+    },
+    {
+      "name": "variadic-regression",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v54-variadic-regression-128-149-001/results.json",
+      "sha256": "6406257123d57ec5124b563a608f2b97370093e838d3b1f63f643116f8c13491",
+      "checks": 27,
+      "managed": 149,
+      "nativeAot": false
+    },
+    {
+      "name": "c-pooled",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v54-c-pooled-128-150-001/results.json",
+      "sha256": "4cee58c6c8e2dc68f2e8dd4096cb4aac471284cbbde522999d32b2a3d5923c77",
+      "checks": 22,
+      "managed": 150,
+      "nativeAot": true
+    }
+  ],
+  "actualFailureFollowup": {
+    "selected": 136,
+    "packaged": 78,
+    "verified": 77,
+    "remainingExportOrFrontend": 58,
+    "remainingManaged": 1,
+    "newlyPackaged": [
+      "libcxx/src/new.cpp",
+      "libcxx/src/verbose_abort.cpp"
+    ],
+    "newlyVerified": [
+      "libcxx/src/new.cpp",
+      "libcxx/src/verbose_abort.cpp",
+      "musl/scanf/vfscanf.c"
+    ],
+    "receipts": [
+      "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-weak-128/results.json",
+      "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-weak-managed-128-149/results.json",
+      "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-musl-vfscanf-managed-128-150/verify.json"
+    ]
+  },
+  "generation": [
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-v54-weak-generated-128-149/result.json",
+      "definitions": 26,
+      "compiled": false,
+      "executed": false
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-musl-vfscanf-managed-128-150/generate.json",
+      "definitions": 7,
+      "compiled": false,
+      "executed": false
+    }
+  ],
+  "limitations": [
+    "Failure follow-up combines newer targeted probes; not all 2635 units have been re-exported at v54.",
+    "RE2 set/re2 now reach an unowned generated TLS routine ABI gate after weak linkage is exported.",
+    "Full DuckDB generation, compilation and execution remain incomplete."
+  ]
+}

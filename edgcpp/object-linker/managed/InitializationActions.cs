@@ -21,7 +21,7 @@ internal sealed partial class ObjectFile
                 action.Ordinal < 0 || !ordinals.Add(action.Ordinal) || action.Line < 0 || action.Column < 0 || !targets.Add(action.EntityId))
                 throw new InvalidDataException("Invalid startup action identity, phase, priority, order or location");
             if (!Entities.TryGetValue(action.EntityId, out Entity? entity) || !Functions.ContainsKey(entity.Id) ||
-                entity.Definition is not ("strong" or "linkonce") || Type(entity.ReturnTypeId) != "void" ||
+                entity.Definition is not ("strong" or "linkonce" or "weak") || Type(entity.ReturnTypeId) != "void" ||
                 Parameters.GetValueOrDefault(entity.Id, []).Count != 0 || Routines[entity.RoutineTypeId].Variadic)
                 throw new InvalidDataException("Startup action must name a defined nonvariadic void(void) function");
             initializationActions.Add(action);

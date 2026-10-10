@@ -1,7 +1,7 @@
 namespace DotObj;
 
 internal sealed record Entity(long Id, string SourceName, string Linkage, string? ExternalKey,
-    string Definition, long ReturnTypeId, long? SourceFileId, long Line, long Column, long RoutineTypeId);
+    string Definition, long ReturnTypeId, long? SourceFileId, long Line, long Column, long RoutineTypeId, bool IsWeak);
 internal sealed record Binding(long Id, long FunctionId, string Kind, long? Ordinal,
     long TypeId, string SourceName, long ScopeNodeId, bool IsSynthetic);
 internal sealed record Node(long Id, long FunctionId, string Kind, long? TypeId,

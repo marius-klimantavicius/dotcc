@@ -23,6 +23,7 @@ internal sealed partial class Linker
         var functions = new HashSet<string>(StringComparer.Ordinal);
         var storages = new HashSet<string>(StringComparer.Ordinal);
         var pending = new Queue<(bool Storage, string Key)>();
+        var weakReferences = new HashSet<string>(StringComparer.Ordinal);
         void Function(Symbol symbol)
         {
             if (functions.Add(symbol.Key)) pending.Enqueue((false, symbol.Key));
@@ -34,6 +35,8 @@ internal sealed partial class Linker
         void ActivateObject(ObjectFile obj)
         {
             if (!providerObjects.Contains(obj) || !selectedProviderObjects.Add(obj)) return;
+            foreach (string key in weakReferences)
+                if (definitions.TryGetValue(key,out var weak) && weak.Object==obj) Function(weak);
             // Extraction of a provider translation unit also retains its source
             // startup obligations, even when their functions have internal linkage.
             foreach (InitializationAction action in obj.InitializationActions)
@@ -42,7 +45,13 @@ internal sealed partial class Linker
         void ReferenceFunction(ObjectFile obj, long id)
         {
             string key = new Symbol(obj, obj.Entities[id]).Key;
-            if (definitions.TryGetValue(key, out Symbol? symbol)) Function(symbol);
+            if (definitions.TryGetValue(key, out Symbol? symbol))
+            {
+                if (obj.Entities[id].IsWeak && obj.Entities[id].Definition=="declaration" &&
+                    providerObjects.Contains(symbol.Object) && !selectedProviderObjects.Contains(symbol.Object))
+                    weakReferences.Add(key);
+                else Function(symbol);
+            }
         }
         void ReferenceStorage(ObjectFile obj, long id)
         {

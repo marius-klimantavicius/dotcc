@@ -13,7 +13,7 @@ internal sealed partial class ObjectFile
         {
             long id = query.Integer(0), source = query.Integer(1), storageId = query.Integer(2);
             string type = Type(query.Integer(6));
-            if (SourceLanguage != "c++" || query.Text(3) is not ("zero" or "constant") ||
+            if (query.Text(3) is not ("zero" or "constant") ||
                 query.Text(4) != "observed-pooled-record-initialization" || query.OptionalText(5) != "record-constant-init" ||
                 !ScalarTypes.IsRecord(type) || RecordsByKey[type].RepresentationKind != "complete" ||
                 RecordsByKey[type].SourceRecordId != source || !SourceRecords[source].IsComplete ||
@@ -30,7 +30,7 @@ internal sealed partial class ObjectFile
             while (nodes.Read())
                 if (!RecordConstantInitializations.ContainsKey(nodes.Integer(0)))
                     throw new InvalidDataException("Record constant initialization lacks owned metadata");
-        // The pooled representation is not a live C++ source object. Keep its
+        // The pooled representation is not a live source object. Keep its
         // address private and allow only the observed initialization reads.
         using var uses = database.Prepare("SELECT n.id,n.kind,e.role,x.storage_id FROM nodes n LEFT JOIN edges e ON e.child_id=n.id LEFT JOIN record_constant_initializations x ON x.node_id=e.parent_id WHERE n.storage_id IN (SELECT storage_id FROM record_constant_initializations)");
         while (uses.Read())

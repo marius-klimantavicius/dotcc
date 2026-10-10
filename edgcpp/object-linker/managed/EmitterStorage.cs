@@ -29,8 +29,11 @@ internal sealed partial class Emitter
         ? Names.OptionIdentifier(Names.Identifier(symbol.Entity.SourceName)) : linker.Names[symbol.Key];
     private readonly Dictionary<string, string> noexceptExternNames = new(StringComparer.Ordinal);
     private string ExternProviderReference(Symbol symbol) => RuntimeArrayProvider.TryGetMethod(symbol) is string arrayMethod ? "global::Edg.Runtime.CppArrays." + arrayMethod : (SharedExtern(symbol) ? "global::Edg.Runtime.LibC." : Owner + ".") + ExternName(symbol);
+    private string FunctionAddress(Symbol symbol) => "((" + FunctionPointerType(symbol.Object.EntityRoutine(symbol.Entity.Id)) + ")" +
+        (linker.IsUndefinedWeak(symbol) ? "0" : "&" + FunctionReference(symbol)) + ")";
     private string FunctionReference(Symbol symbol)
     {
+        if (linker.IsUndefinedWeak(symbol)) return FunctionAddress(symbol);
         if (!linker.Externs.ContainsKey(symbol.Key)) return Owner + "." + linker.Names[symbol.Key];
         if (symbol.Object.CallableExceptionPolicy(symbol.Entity.Id) != "terminate") return ExternProviderReference(symbol);
         if (!noexceptExternNames.TryGetValue(symbol.Key, out string? name))
@@ -161,7 +164,7 @@ internal sealed partial class Emitter
                 else
                 {
                     Symbol target = linker.Resolve(symbol.Object, relocation.TargetEntityId!.Value);
-                    value = "(nuint)(" + FunctionPointerType(target.Object.EntityRoutine(target.Entity.Id)) + ")&" + FunctionReference(target);
+                    value = "(nuint)" + FunctionAddress(target);
                 }
                 code.Append(' ', indent).Append("global::System.Runtime.CompilerServices.Unsafe.WriteUnaligned<nuint>(").Append(pointer).Append(" + ")
                     .Append(storageOffsets[symbol.Key] + relocation.ByteOffset).Append(", ").Append(value).Append(");\n");

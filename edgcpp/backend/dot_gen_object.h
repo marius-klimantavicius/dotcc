@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v53: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v54: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -1736,7 +1736,33 @@ struct Writer {
         source_destructor=source.field_destructor;field_cleanup=true;
       } else if(!original) {
         original=dot_object_source::original_static_destruction(observed.original);
-        if(!original)reject("cleanup region lacks original automatic or static destruction");
+        if(!original) {
+          auto candidate=observed.original;
+          std::set<a_dynamic_init_ptr> seen_candidates;
+          while(candidate && seen_candidates.insert(candidate).second) {
+            auto copied=captured.dynamic_init_copies.find(candidate);
+            if(copied==captured.dynamic_init_copies.end())break;
+            candidate=copied->second;
+          }
+          auto known=captured.destructions.find(candidate);
+          auto missing_callback=observed.original->destructor;
+          auto location=missing_callback?missing_callback->source_corresp.decl_position:owner->source_corresp.decl_position;
+          diagnostic_scope missing_cleanup_scope(location);
+          reject((string("cleanup region lacks original automatic or static destruction; callback=")+
+            (missing_callback?dot_object_source::spelling(missing_callback->source_corresp):"none")+
+            " variable="+(observed.variable?dot_object_source::spelling(observed.variable->source_corresp):"none")+
+            " base-type="+(observed.base_type?dot_object_source::spelling(skip_typerefs(observed.base_type)->source_corresp):"none")+
+            " original-found="+(known!=captured.destructions.end()?"yes":"no")+
+            " original-owner="+(known!=captured.destructions.end() && known->second.owner?
+              dot_object_source::spelling(known->second.owner->source_corresp):"none")+
+            " generated="+(owner->compiler_generated?"yes":"no")+
+            " initializer="+std::to_string(captured.generated_initializers.count(owner))+
+            " array-initializer="+std::to_string(captured.generated_array_initializers.count(owner))+
+            " static-destructor="+std::to_string(captured.generated_static_destructors.count(owner))+
+            " original-partial="+(observed.original->destruction_is_for_partially_constructed_aggregate?"yes":"no")+
+            " allocation="+(observed.allocation_release?"yes":"no")+
+            " indirect="+(observed.indirect?"yes":"no")+" path="+std::to_string(observed.path.size())).c_str());
+        }
         const auto &source=captured.static_destructions.at(original);
         auto source_initializer_entry=captured.source_initializers.find(source.initializer);
         field_partial=source_initializer_entry!=captured.source_initializers.end() && source_initializer_entry->second.field;
@@ -2663,7 +2689,7 @@ struct Writer {
 
 #if GNU_EXTENSIONS_ALLOWED
     if(r->is_finalization_routine)reject("shutdown actions require an owned atexit/finalization ordering contract");
-    if(r->is_weak || r->is_weakref || r->is_gnu_alias || r->is_ifunc)
+    if(r->is_weakref || r->is_gnu_alias || r->is_ifunc)
       reject((string("special routine linkage: name=")+dot_object_source::spelling(r->source_corresp)+
         " weak="+std::to_string(r->is_weak)+" weakref="+std::to_string(r->is_weakref)+
         " alias="+std::to_string(r->is_gnu_alias)+" ifunc="+std::to_string(r->is_ifunc)).c_str());
@@ -2699,6 +2725,11 @@ struct Writer {
     bool external=r->source_corresp.name_linkage==nlk_external || r->source_corresp.name_linkage==nlk_cplusplus_external;
     if(external && key.empty())reject("missing exact external identity");
     if(adapter && external)reject("default constructor adapter is not TU-private");
+    bool weak=false;
+#if GNU_EXTENSIONS_ALLOWED
+    weak=r->is_weak;
+#endif
+    if(weak && !external)reject("weak routine lacks external linkage");
     bool coalescible=r->is_inline || (r->is_template_function && !r->is_specialized);
 #if DO_IL_LOWERING && IA64_ABI
     coalescible=coalescible || r->use_comdat;
@@ -2712,7 +2743,7 @@ struct Writer {
       source_spelling(&r->source_corresp):original_spelling->second.declaration.name;
     entities.push_back("{\"id\":"+number(id)+",\"sourceName\":"+quote(entity_source_name)+
       ",\"linkage\":"+quote(external?"external":"internal")+",\"externalKey\":"+(external?quote(key):"null")+
-      ",\"definition\":"+quote(body?(coalescible?"linkonce":"strong"):"declaration")+",\"returnTypeId\":"+number(type_id(t->variant.routine.return_type))+position(r->source_corresp.decl_position)+",\"routineTypeId\":"+number(routine_type(t,known_empty_definition))+"}");
+      ",\"definition\":"+quote(body?(weak?"weak":coalescible?"linkonce":"strong"):"declaration")+",\"returnTypeId\":"+number(type_id(t->variant.routine.return_type))+position(r->source_corresp.decl_position)+",\"routineTypeId\":"+number(routine_type(t,known_empty_definition))+",\"isWeak\":"+(weak?"true":"false")+"}");
     if(wrapper) {
 #if DO_IL_LOWERING && IA64_ABI
       if(primary || adapter || !r->compiler_generated || !wrapper->target || !wrapper->overridden ||
@@ -4899,7 +4930,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v53\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v54\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

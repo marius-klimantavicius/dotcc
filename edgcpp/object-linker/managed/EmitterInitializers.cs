@@ -100,7 +100,7 @@ internal sealed partial class Emitter
                 {
                     if (relocation.TargetStorageId is long target) return "(" + Type(current) + ")" + StorageAddress(linker.ResolveStorage(obj, target), relocation.Addend);
                     Symbol function = linker.Resolve(obj, relocation.TargetEntityId!.Value);
-                    return "(" + Type(current) + ")(" + FunctionPointerType(function.Object.EntityRoutine(function.Entity.Id)) + ")&" + FunctionReference(function);
+                    return "(" + Type(current) + ")" + FunctionAddress(function);
                 }
                 ulong value = BinaryPrimitives.ReadUInt64LittleEndian(bytes.AsSpan((int)offset, 8));
                 return value == 0 ? "null" : "(" + Type(current) + ")(nuint)0x" + value.ToString("x", CultureInfo.InvariantCulture) + "UL";

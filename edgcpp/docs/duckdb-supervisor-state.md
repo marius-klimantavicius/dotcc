@@ -750,3 +750,19 @@ rejects remain. This is not a latest-profile full 2,635-unit rebuild. Next:
 source concepts (38), dependent variable references (4), weak linkage (4),
 ART cleanup diagnosis, then remaining measured families. Full generation is
 still the checkpoint before runtime closure; no full compile/run claim.
+
+
+v53 committed fbaf7b0a5. v54 accepted: native128, managed149 weak linkage and
+managed150 C pooled-record reader. 212 checks pass (163 weak, 27 variadic
+regression, 22 C compound literal); weak and C suites include NativeAOT. Actual
+libc++ new/verbose_abort now package, verify and generate 26 definitions with
+RTTI providers; actual musl vfscanf now verifies and generates seven definitions.
+Review artifacts/review/dotobj-duckdb-v54; evidence
+ dotobj-duckdb-weak-and-c-initialization-20261010.json.
+Across all 136 baseline failures, 78 package and 77 verify; 58 export/frontend
+gates and one managed reject remain. RE2 set/re2 advance from weak linkage to
+exact generated TLS routine ABI provenance. ART is reduced to default-argument
+Argument temporary copied into generated Element constructor adapter for
+new Element[n]; existing source-lifetime ancestry is under investigation.
+Base worker finishes coherent full source-concept graph in scratch. No full
+project generation/build/run claim; continue toward the generation checkpoint.

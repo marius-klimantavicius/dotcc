@@ -7,7 +7,23 @@ successful generation after one fix. The selected sample is deliberately varied,
 not statistically representative. Preserve all required source-type information;
 do not omit metadata to bypass a gate. Re-rank after each expanded probe.
 
-## Current queue (profile53 follow-up)
+## Current queue (profile54 follow-up)
+
+Weak binding now passes 163 checks with native/stock/JIT/NativeAOT and clears
+libc++ new.cpp and verbose_abort.cpp. RE2's two weak TLS wrapper units now reach
+missing generated routine ABI provenance. The remaining musl vfscanf reader
+failure was a C++-only guard on an already captured generic stock constant
+initialization; exact C compound-literal coverage now passes 22 checks with
+NativeAOT, and the actual provider verifies/generates. Total follow-up:
+**78 packaged, 77 verified, 58 export/frontend gates, one managed reject**.
+Top queue: 38 constrained source metadata + four dependent variable references
+(base worker); exact copied default-argument lifetime in ART constructor adapter
+(lifetime worker); two generated TLS routine origins; two typed exception lists;
+remaining singleton generated exception/partial construction/atomic-layout
+families; eight test-profile diagnostics; one managed temporary identity reject.
+Shared runtime implementation remains deferred behind full-project generation.
+
+## Previous profile53 follow-up
 
 Profile53 clears the seven variadic indirect ABI and two generated-array helper
 first failures: all nine now package, verify and jointly generate 9,930 C#

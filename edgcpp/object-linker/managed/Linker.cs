@@ -14,6 +14,8 @@ internal sealed partial class Linker
     public Dictionary<string, string> StorageNames { get; } = new(StringComparer.Ordinal);
     private readonly Dictionary<string, StorageSymbol> storageDefinitions = new(StringComparer.Ordinal);
     private readonly Names names = new();
+    private readonly Dictionary<string,Symbol> unresolvedWeakFunctions = new(StringComparer.Ordinal);
+    public bool IsUndefinedWeak(Symbol symbol) => unresolvedWeakFunctions.ContainsKey(symbol.Key) && !Externs.ContainsKey(symbol.Key);
     private readonly bool allowExterns;
     private readonly bool sharedExceptionProvider;
     private readonly Dictionary<string, Symbol> definitions = new(StringComparer.Ordinal);
@@ -39,7 +41,7 @@ internal sealed partial class Linker
         // take precedence below, independently of this stable preference.
         var deferredDeclarationSymbols = Objects.SelectMany(obj => obj.DeferredFunctionDeclarations.Keys
             .Select(id => new Symbol(obj, obj.Entities[id]).Key)).ToHashSet(StringComparer.Ordinal);
-        var resolutionOrder = Objects.OrderBy(obj => providers?.Contains(obj) == true).ToArray();
+        var resolutionOrder = objects.OrderBy(obj => providers?.Contains(obj) == true).ToArray();
         foreach (ObjectFile obj in resolutionOrder)
             foreach (Entity entity in obj.Entities.Values)
             {
@@ -242,6 +244,11 @@ internal sealed partial class Linker
     {
         var declaration = new Symbol(obj, obj.Entities[id]);
         if (definitions.TryGetValue(declaration.Key, out Symbol? definition)) return definition;
+        if (declaration.Entity.IsWeak)
+        {
+            unresolvedWeakFunctions.TryAdd(declaration.Key,declaration);
+            return declaration;
+        }
         if (obj.DeferredFunctionDeclarations.ContainsKey(id))
         {
             if (!completeDeclarations.TryGetValue(declaration.Key, out Symbol? completed) ||
