@@ -14,11 +14,11 @@ def main():
     for name in ('compiler', 'linker', 'packager', 'output-dir'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--native-aot', action='store_true')
-    parser.add_argument('--case', choices=('arguments', 'bounds', 'members', 'traits', 'member-templates'), required=True)
+    parser.add_argument('--case', choices=('arguments', 'bounds', 'members', 'traits', 'member-templates', 'template-parameters'), required=True)
     args = parser.parse_args()
     out = args.output_dir.resolve(); out.mkdir(parents=True, exist_ok=False)
     source = out / (args.case + '.cpp')
-    shutil.copy2(Path(__file__).with_name({'arguments': 'duckdb_source_record_template_arguments.cpp', 'bounds': 'duckdb_source_dependent_array_bounds.cpp', 'members': 'duckdb_source_dependent_member_constants.cpp', 'traits': 'duckdb_source_typed_traits.cpp', 'member-templates': 'duckdb_source_member_templates.cpp'}[args.case]), source)
+    shutil.copy2(Path(__file__).with_name({'arguments': 'duckdb_source_record_template_arguments.cpp', 'bounds': 'duckdb_source_dependent_array_bounds.cpp', 'members': 'duckdb_source_dependent_member_constants.cpp', 'traits': 'duckdb_source_typed_traits.cpp', 'member-templates': 'duckdb_source_member_templates.cpp', 'template-parameters': 'duckdb_source_template_parameters.cpp'}[args.case]), source)
     tooling = out / 'tooling'; tooling.mkdir()
     for name in ('compile.py', 'schema.sql'):
         shutil.copy2(args.packager.resolve().parent / name, tooling / name)
@@ -55,6 +55,17 @@ def main():
                 check('qualifier-distinguishes-arguments', db.execute("SELECT count(*) FROM source_template_arguments a JOIN source_types t ON t.id=a.type_id WHERE t.is_const=1").fetchone()[0] > 0)
                 check('distinct-dependent-record-identities', db.execute("SELECT count(DISTINCT identity_key) FROM source_record_types WHERE source_name='DuckdbSourceTraits' AND is_dependent=1 AND is_prototype_instantiation=0").fetchone()[0] >= 2)
                 check('distinct-parameter-binders', db.execute("SELECT count(DISTINCT d.identity_key) FROM source_template_arguments a JOIN source_dependent_types d ON d.type_id=a.type_id JOIN source_types t ON t.id=d.type_id WHERE d.kind='parameter' AND t.source_name='T'").fetchone()[0] >= 2)
+            elif args.case == 'template-parameters':
+                check('owned-template-parameter-instances', db.execute("SELECT count(*) FROM source_record_instantiations WHERE resolution_kind='template-parameter'").fetchone()[0] >= 4)
+                check('retained-template-argument', db.execute("SELECT count(*) FROM source_template_arguments WHERE kind='template'").fetchone()[0] >= 1)
+                check('all-formal-parameter-kinds', db.execute("SELECT count(DISTINCT kind) FROM source_template_parameters").fetchone()[0] == 3)
+                check('exact-no-nesting-depth-formals', db.execute("SELECT count(*) FROM source_template_parameters p JOIN source_dependent_types t ON t.type_id=p.type_id WHERE t.nesting_depth=0 AND t.parameter_position=p.ordinal+1").fetchone()[0] >= 4)
+                check('exact-non-type-formal-coordinate', db.execute("SELECT count(*) FROM source_template_parameters p JOIN source_semantic_constants c ON c.id=p.constant_id WHERE c.parameter_depth=0 AND c.parameter_position=p.ordinal+1").fetchone()[0] >= 1)
+                check('exact-nested-template-formal-coordinate', db.execute("SELECT count(*) FROM source_template_parameters p JOIN source_templates t ON t.id=p.template_id WHERE t.parameter_depth=0 AND t.parameter_position=p.ordinal+1").fetchone()[0] >= 1)
+                check('typed-default-argument', db.execute("SELECT count(*) FROM source_template_parameters WHERE default_type_id IS NOT NULL").fetchone()[0] >= 1)
+                check('constant-default-argument', db.execute("SELECT count(*) FROM source_template_parameters WHERE default_constant_id IS NOT NULL").fetchone()[0] >= 1)
+                check('distinct-template-binder-identities', db.execute("SELECT count(DISTINCT r.identity_key) FROM source_record_instantiations i JOIN source_record_types r ON r.id=i.source_record_id WHERE resolution_kind='template-parameter' AND r.source_name='Specifics'").fetchone()[0] >= 3)
+                check('complete-formal-parameter-lists', db.execute("SELECT count(*) FROM source_templates t WHERE parameter_count != (SELECT count(*) FROM source_template_parameters p WHERE p.source_template_id=t.id)").fetchone()[0] == 0)
             elif args.case == 'member-templates':
                 check('owned-member-template-lookup', db.execute("SELECT count(*) FROM source_record_instantiations WHERE resolution_kind='dependent-member-template'").fetchone()[0] >= 4)
                 check('no-fabricated-member-prototype', db.execute("SELECT count(*) FROM source_record_instantiations WHERE resolution_kind='dependent-member-template' AND prototype_source_record_id IS NOT NULL").fetchone()[0] == 0)
@@ -118,6 +129,16 @@ def main():
                 ('reject-member-template-owner-substitution', "UPDATE source_record_instantiations SET member_owner_source_type_id=(SELECT min(member_owner_source_type_id) FROM source_record_instantiations WHERE resolution_kind='dependent-member-template') WHERE resolution_kind='dependent-member-template'"),
                 ('reject-member-template-argument-omission', "DELETE FROM source_template_arguments WHERE source_record_id=(SELECT min(source_record_id) FROM source_record_instantiations WHERE resolution_kind='dependent-member-template')"),
                 ('reject-member-template-fabricated-prototype', "UPDATE source_record_instantiations SET resolution_kind='class-template',prototype_source_record_id=(SELECT min(prototype_source_record_id) FROM source_record_instantiations WHERE resolution_kind='class-template'),member_owner_source_type_id=NULL,member_of_unknown_base=0,qualified_unknown_base_member=0,capture_proof='original-template-arguments' WHERE resolution_kind='dependent-member-template'")]
+        if args.case == 'template-parameters':
+            negatives = [
+                ('reject-template-formal-depth', "UPDATE source_dependent_types SET nesting_depth=1 WHERE nesting_depth=0"),
+                ('reject-template-non-type-position', "UPDATE source_semantic_constants SET parameter_position=parameter_position+1 WHERE kind='parameter' AND parameter_depth=0"),
+                ('reject-template-formal-omission', "DELETE FROM source_template_parameters WHERE rowid=(SELECT min(rowid) FROM source_template_parameters)"),
+                ('reject-template-binder-substitution', "UPDATE source_templates SET parameter_position=parameter_position+1 WHERE id=(SELECT min(id) FROM source_templates)"),
+                ('reject-template-formal-type-substitution', "UPDATE source_template_parameters SET type_id=(SELECT id FROM source_types WHERE kind='int' LIMIT 1) WHERE kind='type'"),
+                ('reject-template-default-erasure', "UPDATE source_template_parameters SET default_constant_id=NULL WHERE default_constant_id IS NOT NULL"),
+                ('reject-template-instance-reference', "UPDATE source_record_instantiations SET source_template_id=(SELECT max(id) FROM source_templates) WHERE resolution_kind='template-parameter' AND source_template_id != (SELECT max(id) FROM source_templates)"),
+                ('reject-template-argument-omission', "DELETE FROM source_template_arguments WHERE kind='template'")]
         for name, sql in negatives:
             damaged = out / (name + '.dotobj'); shutil.copy2(obj, damaged)
             with sqlite3.connect(damaged) as db:

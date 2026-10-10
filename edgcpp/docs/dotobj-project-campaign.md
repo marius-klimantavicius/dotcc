@@ -1169,3 +1169,33 @@ template-template parameter gates. All four verify and generate together with
 RTTI providers to 269 definitions. This is partial generation, not a compiled
 or runnable DuckDB. Next workers own the template-reference/formal-parameter
 graph and observed noncopyable temporary initialization, respectively.
+
+
+## v44 — template formals and generated temporary storage
+
+Original template-template parameters now own their ordered type, non-type and
+nested-template formal graph, including typed defaults and exact declaration
+coordinates. EDG's `NO_NESTING_DEPTH` inner-formal convention is preserved as
+zero and accepted only with an owned formal position. Concrete-template and
+substitution variants remain explicit gates when not represented.
+
+Generated record temporary initialization now links the original initializer,
+selected generated binding and original destruction obligation. It does not
+invent a named source local or permit record copying/zeroing that the original
+initialization did not perform. Same-type temporary identity swaps are rejected
+against independent normal/exception cleanup targets. A discarded constexpr
+placement-new result inside an observed internal exception boundary no longer
+incorrectly requests record transport permission.
+
+Native111/managed121 pass 1,042 broad checks and 120 focused checks including
+native/stock C oracles, source-hidden generation, JIT and NativeAOT. The expanded
+33-unit DuckDB probe packages nine units; seven verify and link with two RTTI
+providers to 9,710 C# definitions, including arg_min_max, array_casts and
+allocator. Review: `artifacts/review/dotobj-duckdb-v44/seven-units`.
+This is generation evidence, not C# compilation or execution of DuckDB.
+
+Twenty-four sampled units now require an exact original-nested-type relation.
+Two packaged units remain blocked by function-reference adjustment and delayed
+special-member exception policy capture. Both historical exporter-crash units
+remain selected, but stop at the earlier nested-type gate; they are not proven
+fixed. Receipt: `evidence/dotobj-duckdb-template-formals-temporaries-20261010.json`.

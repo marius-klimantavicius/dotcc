@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v43'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v44'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -642,7 +642,7 @@ CREATE TABLE source_dependent_types (
  type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
  kind TEXT NOT NULL CHECK(kind IN ('parameter','member','unknown')),
  owner_type_id INTEGER REFERENCES source_types(id),
- nesting_depth INTEGER CHECK(nesting_depth>0),
+ nesting_depth INTEGER CHECK(nesting_depth>=0),
  parameter_position INTEGER CHECK(parameter_position>0),
  is_pack INTEGER NOT NULL CHECK(is_pack IN (0,1)),
  identity_key TEXT NOT NULL,
@@ -730,7 +730,7 @@ CREATE TABLE source_semantic_constants (
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
- CHECK((kind='parameter' AND parameter_depth>0 AND parameter_position>0 AND source_file_id IS NOT NULL AND line>0) OR
+ CHECK((kind='parameter' AND parameter_depth>=0 AND parameter_position>0 AND source_file_id IS NOT NULL AND line>0) OR
        (kind<>'parameter' AND parameter_depth IS NULL AND parameter_position IS NULL AND is_pack=0)),
  CHECK((kind='integer' AND length(value_text)>0) OR (kind<>'integer' AND value_text='')),
  CHECK((kind IN ('operation','builtin-trait') AND length(operator_name)>0) OR (kind NOT IN ('operation','builtin-trait') AND operator_name='')),
@@ -750,30 +750,70 @@ CREATE TABLE source_array_bounds (
  constant_id INTEGER NOT NULL REFERENCES source_semantic_constants(id),
  capture_proof TEXT NOT NULL CHECK(capture_proof='original-dependent-bound')
 ) STRICT;
+CREATE TABLE source_templates (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ kind TEXT NOT NULL CHECK(kind='parameter'),
+ source_name TEXT NOT NULL,
+ parameter_depth INTEGER NOT NULL CHECK(parameter_depth>=0),
+ parameter_position INTEGER NOT NULL CHECK(parameter_position>0),
+ is_pack INTEGER NOT NULL CHECK(is_pack IN (0,1)),
+ parameter_count INTEGER NOT NULL CHECK(parameter_count>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-template-parameter'),
+ source_file_id INTEGER NOT NULL REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>0),
+ column INTEGER NOT NULL CHECK(column>=0)
+) STRICT;
+CREATE TABLE source_template_parameters (
+ source_template_id INTEGER NOT NULL REFERENCES source_templates(id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ kind TEXT NOT NULL CHECK(kind IN ('type','constant','template')),
+ source_name TEXT NOT NULL,
+ type_id INTEGER REFERENCES source_types(id),
+ constant_id INTEGER REFERENCES source_semantic_constants(id),
+ template_id INTEGER REFERENCES source_templates(id),
+ default_type_id INTEGER REFERENCES source_types(id),
+ default_constant_id INTEGER REFERENCES source_semantic_constants(id),
+ default_template_id INTEGER REFERENCES source_templates(id),
+ is_pack INTEGER NOT NULL CHECK(is_pack IN (0,1)),
+ is_abbreviated INTEGER NOT NULL CHECK(is_abbreviated IN (0,1)),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ PRIMARY KEY(source_template_id,ordinal),
+ CHECK((kind='type' AND type_id IS NOT NULL AND constant_id IS NULL AND template_id IS NULL AND default_constant_id IS NULL AND default_template_id IS NULL) OR
+       (kind='constant' AND type_id IS NULL AND constant_id IS NOT NULL AND template_id IS NULL AND default_type_id IS NULL AND default_template_id IS NULL) OR
+       (kind='template' AND type_id IS NULL AND constant_id IS NULL AND template_id IS NOT NULL AND default_type_id IS NULL AND default_constant_id IS NULL)),
+ CHECK(is_pack=0 OR (default_type_id IS NULL AND default_constant_id IS NULL AND default_template_id IS NULL))
+) STRICT;
 CREATE TABLE source_record_instantiations (
  source_record_id INTEGER PRIMARY KEY REFERENCES source_record_types(id),
  prototype_source_record_id INTEGER REFERENCES source_record_types(id),
- resolution_kind TEXT NOT NULL CHECK(resolution_kind IN ('class-template','dependent-member-template')),
+ resolution_kind TEXT NOT NULL CHECK(resolution_kind IN ('class-template','dependent-member-template','template-parameter')),
+ source_template_id INTEGER REFERENCES source_templates(id),
  member_owner_source_type_id INTEGER REFERENCES source_types(id),
  member_of_unknown_base INTEGER NOT NULL CHECK(member_of_unknown_base IN (0,1)),
  qualified_unknown_base_member INTEGER NOT NULL CHECK(qualified_unknown_base_member IN (0,1)),
  capture_proof TEXT NOT NULL,
- CHECK((resolution_kind='class-template' AND prototype_source_record_id IS NOT NULL AND member_owner_source_type_id IS NULL AND
+ CHECK((resolution_kind='class-template' AND prototype_source_record_id IS NOT NULL AND source_template_id IS NULL AND member_owner_source_type_id IS NULL AND
         member_of_unknown_base=0 AND qualified_unknown_base_member=0 AND capture_proof='original-template-arguments') OR
-       (resolution_kind='dependent-member-template' AND prototype_source_record_id IS NULL AND member_owner_source_type_id IS NOT NULL AND
-        capture_proof='original-nonreal-member-template')),
+       (resolution_kind='dependent-member-template' AND prototype_source_record_id IS NULL AND source_template_id IS NULL AND member_owner_source_type_id IS NOT NULL AND
+        capture_proof='original-nonreal-member-template') OR
+       (resolution_kind='template-parameter' AND prototype_source_record_id IS NULL AND source_template_id IS NOT NULL AND member_owner_source_type_id IS NULL AND
+        member_of_unknown_base=0 AND qualified_unknown_base_member=0 AND capture_proof='original-template-parameter-instantiation')),
  CHECK(source_record_id<>prototype_source_record_id),
  CHECK(qualified_unknown_base_member=0 OR member_of_unknown_base=1)
 ) STRICT;
 CREATE TABLE source_template_arguments (
  source_record_id INTEGER NOT NULL REFERENCES source_record_instantiations(source_record_id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
- kind TEXT NOT NULL CHECK(kind IN ('type','constant')),
+ kind TEXT NOT NULL CHECK(kind IN ('type','constant','template')),
  type_id INTEGER REFERENCES source_types(id),
  constant_id INTEGER REFERENCES source_semantic_constants(id),
+ template_id INTEGER REFERENCES source_templates(id),
  PRIMARY KEY(source_record_id,ordinal),
- CHECK((kind='type' AND type_id IS NOT NULL AND constant_id IS NULL) OR
-       (kind='constant' AND type_id IS NULL AND constant_id IS NOT NULL))
+ CHECK((kind='type' AND type_id IS NOT NULL AND constant_id IS NULL AND template_id IS NULL) OR
+       (kind='constant' AND type_id IS NULL AND constant_id IS NOT NULL AND template_id IS NULL) OR
+       (kind='template' AND type_id IS NULL AND constant_id IS NULL AND template_id IS NOT NULL))
 ) STRICT;
 CREATE TABLE source_record_operations (
  source_record_id INTEGER PRIMARY KEY REFERENCES source_record_types(id),
@@ -806,6 +846,33 @@ CREATE TABLE record_storage_initializations (
  zero_storage INTEGER NOT NULL CHECK(zero_storage IN (0,1)),
  partially_initialized INTEGER NOT NULL CHECK(partially_initialized IN (0,1)),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-storage-initialization'),
+ CHECK(zero_storage=(lowered_init_kind=3 OR (lowered_init_kind=2 AND partially_initialized=1))),
+ CHECK(partially_initialized=0 OR lowered_init_kind=2),
+ CHECK(site_kind<>'scope-entry' OR lowered_init_kind=3)
+) STRICT;
+CREATE TABLE source_record_temporaries (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ function_entity_id INTEGER REFERENCES source_functions(entity_id),
+ source_initializer_id INTEGER REFERENCES source_initializers(id),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ source_ordinal INTEGER NOT NULL CHECK(source_ordinal>=0),
+ dynamic_init_kind INTEGER NOT NULL CHECK(dynamic_init_kind BETWEEN 0 AND 8),
+ source_destruction_obligation_id INTEGER REFERENCES source_destruction_obligations(id),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
+ column INTEGER NOT NULL CHECK(column>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
+ CHECK((function_entity_id IS NULL)<>(source_initializer_id IS NULL))
+) STRICT;
+CREATE TABLE record_temporary_initializations (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ binding_id INTEGER NOT NULL REFERENCES bindings(id),
+ source_temporary_id INTEGER NOT NULL REFERENCES source_record_temporaries(id),
+ lowered_init_kind INTEGER NOT NULL CHECK(lowered_init_kind BETWEEN 0 AND 5),
+ site_kind TEXT NOT NULL CHECK(site_kind IN ('scope-entry','dynamic-init','lowered-assignment')),
+ zero_storage INTEGER NOT NULL CHECK(zero_storage IN (0,1)),
+ partially_initialized INTEGER NOT NULL CHECK(partially_initialized IN (0,1)),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-temporary-storage-initialization'),
  CHECK(zero_storage=(lowered_init_kind=3 OR (lowered_init_kind=2 AND partially_initialized=1))),
  CHECK(partially_initialized=0 OR lowered_init_kind=2),
  CHECK(site_kind<>'scope-entry' OR lowered_init_kind=3)

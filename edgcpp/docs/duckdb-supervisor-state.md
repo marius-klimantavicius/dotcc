@@ -444,3 +444,21 @@ units now stop at template-template parameter _MapOrSetSpecifics. New evidence
 dotobj-duckdb-traits-vector-delete-20261010.json. Commit v43 next; base prepares
 source-template reference/formal graph in scratch, lifetime investigates observed
 allocator noncopyable temporary initialization on frozen109 (no runtime detour).
+
+Committed v43 as bd371da99 (27 owned files). Profile44 active. Base worker
+applies reusable original template-reference/formal-parameter graph; lifetime
+worker confirmed current109 noncopyable generated temporary default-value
+rejection and now owns exact original initializer-to-generated-storage support.
+Next native110/managed120 when both coherent; preserve all previous evidence.
+
+
+111/121 v44 acceptance complete: 1,042 broad checks plus 120 focused checks
+including NativeAOT. Native111 SHA
+bc59d5de9fff15721c5de8b63933baa34db7bc48858aa363ec72903805827714.
+Expanded33 actual units: nine packaged, seven verified; seven primary plus two
+RTTI providers link to 9,710 definitions in18.2 seconds under2GiB managed heap
+limit. No DuckDB C# compilation/run claim. Review v44/seven-units, detailed
+receipt dotobj-duckdb-template-formals-temporaries-20261010.json. Commit next.
+Workers prepare v45 in persistent scratch: exact dependent nested declaration
+relation (base); function-designator reference adjustment (lifetime). Supervisor
+investigates delayed defaulted-special-member exception signature capture.

@@ -48,3 +48,31 @@ the exact enclosing source type, member name, ordered arguments and unknown-base
 qualification flags, following stock template equivalence. A fabricated ordinary
 prototype is rejected. Template-template parameters, encountered next in libc++
 node handles, require a separate template reference and formal-parameter graph.
+
+## Profile 44 additions
+
+`source_templates` stores original template-template parameter references and
+`source_template_parameters` stores their complete ordered formal lists. Type,
+non-type, and nested-template formals retain their typed placeholder payloads,
+defaults, pack/abbreviated flags, and declaration locations. Template-valued
+arguments reference this graph. A `template-parameter` instantiation points to
+its original template reference rather than inventing a concrete class prototype.
+Canonical identities derive from the declaration binder, complete formal graph,
+and ordered argument identities; database row IDs are never identity components.
+
+EDG deliberately assigns `NO_NESTING_DEPTH` (zero) to inner template-template
+formals (`il_def.h:4486`, `templates.c:33023`). Zero is retained exactly and is
+accepted only with an owned formal declaration and matching ordinal/parameter
+position. Ordinary source parameters still need their original positive nesting
+depth. Missing formals, substituted placeholders, changed defaults, missing
+arguments, and mismatched template references are rejected after resealing the
+object digest. Stock template equivalence is documented in `templates.c:8174`
+and `templates.c:8689`; original formal/default payloads are in `il_def.h:17137`.
+
+Native111/managed121 passed **45 checks**, including native O0/O2, source-hidden
+verification/linking, managed execution, NativeAOT execution, and eight metadata
+negative cases. The retained receipt is
+`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-template-parameters-v44-111-002/results.json`.
+This proves the parameter-reference family used by libc++ node handles; concrete
+template references, substituted-template mappings, constraints, and argument
+packs still have explicit gates until their original semantics are represented.

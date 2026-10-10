@@ -20,7 +20,7 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Dependent type lacks its original source type and capture");
             if (value.Kind == "parameter")
             {
-                if (value.OwnerTypeId is not null || value.NestingDepth is not > 0 || value.ParameterPosition is not > 0 ||
+                if (value.OwnerTypeId is not null || value.NestingDepth is not >= 0 || value.ParameterPosition is not > 0 ||
                     type.SourceFileId is not long fileId || type.Line <= 0)
                     throw new InvalidDataException("Template type parameter requires its original declaration and coordinates");
                 using var file = database.Prepare($"SELECT path FROM source_files WHERE id={fileId}");

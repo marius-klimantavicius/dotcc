@@ -81,6 +81,7 @@ def main():
                 if case == 'constant_local':
                     check(case + '-owned-relocated-constant', db.execute('SELECT count(*) FROM relocations WHERE storage_id IN (SELECT storage_id FROM record_constant_initializations)').fetchone()[0] > 0)
                 if case == 'constexpr':
+                    check(case + '-constant-placement-internal-try', db.execute("SELECT count(*) FROM edges e JOIN nodes p ON p.id=e.parent_id JOIN nodes c ON c.id=e.child_id WHERE p.kind='internal-try-expression' AND e.role='attempt' AND c.kind='record-constant-init'").fetchone()[0] > 0)
                     # NRVO uses the result-buffer constant pool. Its other
                     # local is initialized by the distinct local-storage path.
                     check(case + '-stock-no-effect-destruction', db.execute("SELECT count(*) FROM destruction_elisions WHERE kind='stock-no-effect' AND capture_proof='observed-no-effect-destruction-removal'").fetchone()[0] > 0)

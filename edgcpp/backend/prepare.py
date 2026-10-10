@@ -711,6 +711,15 @@ object_source_overlay(c99,
     '#if defined(EDG_DOT_BACKEND)\n  dot_object_source::observe_scope(scope);\n#endif\n'
     '  il_lowering_underway = TRUE;\n  curr_context = NULL;')
 
+# Observe the exact generated storage chosen for an original temporary DIP.
+object_source_overlay(init_lower,
+    '      dip->variable = temp_var;\n',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_source::observe_record_temporary_binding(dip, temp_var,\n'
+    '        innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n'
+    '      dip->variable = temp_var;\n')
+
 # Retain source destruction identity through stock expression/ABI copies and
 # observe the typed position before it is represented as region-table handles.
 il_source = root / "upstream/src/il.c"

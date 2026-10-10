@@ -7,9 +7,9 @@ namespace DotObj;
 internal sealed record SourceSemanticConstant(long Id, string Kind, long SourceTypeId, string SourceName,
     string ValueText, long? ParameterDepth, long? ParameterPosition, bool IsPack, string OperatorName,
     long? OwnerSourceTypeId, long? OperandSourceTypeId, long? BuiltinOperatorKind, bool IsStandardAlignof, long? SourceFileId, long Line, long Column);
-internal sealed record SourceRecordInstantiation(string ResolutionKind, long? PrototypeSourceRecordId, long? MemberOwnerSourceTypeId,
+internal sealed record SourceRecordInstantiation(string ResolutionKind, long? PrototypeSourceRecordId, long? SourceTemplateId, long? MemberOwnerSourceTypeId,
     bool MemberOfUnknownBase, bool QualifiedUnknownBaseMember);
-internal sealed record SourceTemplateArgument(long Ordinal, string Kind, long? TypeId, long? ConstantId);
+internal sealed record SourceTemplateArgument(long Ordinal, string Kind, long? TypeId, long? ConstantId, long? TemplateId);
 
 internal sealed partial class ObjectFile
 {
@@ -50,12 +50,13 @@ internal sealed partial class ObjectFile
                     q.Text(2) != "original-dependent-bound" || !SourceArrayBounds.TryAdd(array.Id, q.Integer(1)))
                     throw new InvalidDataException("Dependent array bound requires its owned constant and no fabricated execution extent");
             }
-        using (var q = database.Prepare("SELECT source_record_id,prototype_source_record_id,resolution_kind,member_owner_source_type_id,member_of_unknown_base,qualified_unknown_base_member,capture_proof FROM source_record_instantiations ORDER BY source_record_id"))
+        ReadSourceTemplateReferences();
+        using (var q = database.Prepare("SELECT source_record_id,prototype_source_record_id,resolution_kind,source_template_id,member_owner_source_type_id,member_of_unknown_base,qualified_unknown_base_member,capture_proof FROM source_record_instantiations ORDER BY source_record_id"))
             while (q.Read())
             {
-                var relation = new SourceRecordInstantiation(q.Text(2), q.OptionalInteger(1), q.OptionalInteger(3), q.Integer(4) == 1, q.Integer(5) == 1);
+                var relation = new SourceRecordInstantiation(q.Text(2), q.OptionalInteger(1), q.OptionalInteger(3), q.OptionalInteger(4), q.Integer(5) == 1, q.Integer(6) == 1);
                 if (!SourceRecords.TryGetValue(q.Integer(0), out var instance) || !instance.IsDependent || instance.IsPrototypeInstantiation ||
-                    q.Integer(4) is not (0 or 1) || q.Integer(5) is not (0 or 1) ||
+                    q.Integer(5) is not (0 or 1) || q.Integer(6) is not (0 or 1) ||
                     relation.QualifiedUnknownBaseMember && !relation.MemberOfUnknownBase)
                     throw new InvalidDataException("Invalid original dependent class instance relation");
                 if (relation.ResolutionKind == "class-template")
@@ -63,29 +64,36 @@ internal sealed partial class ObjectFile
                     if (relation.PrototypeSourceRecordId is not long prototypeId || !SourceRecords.TryGetValue(prototypeId, out var prototype) ||
                         !prototype.IsDependent || !prototype.IsPrototypeInstantiation || instance.Id == prototype.Id ||
                         instance.SourceName != prototype.SourceName || instance.RecordKind != prototype.RecordKind ||
-                        relation.MemberOwnerSourceTypeId is not null || relation.MemberOfUnknownBase || relation.QualifiedUnknownBaseMember ||
-                        q.Text(6) != "original-template-arguments")
+                        relation.SourceTemplateId is not null || relation.MemberOwnerSourceTypeId is not null || relation.MemberOfUnknownBase || relation.QualifiedUnknownBaseMember ||
+                        q.Text(7) != "original-template-arguments")
                         throw new InvalidDataException("Dependent class instance requires its exact original template prototype");
                 }
                 else if (relation.ResolutionKind == "dependent-member-template")
                 {
-                    if (relation.PrototypeSourceRecordId is not null || relation.MemberOwnerSourceTypeId is not long owner ||
+                    if (relation.PrototypeSourceRecordId is not null || relation.SourceTemplateId is not null || relation.MemberOwnerSourceTypeId is not long owner ||
                         !SourceTypes.ContainsKey(owner) || !SourceTypeContainsParameter(owner, 0) || instance.SourceName.Length == 0 ||
-                        q.Text(6) != "original-nonreal-member-template")
+                        q.Text(7) != "original-nonreal-member-template")
                         throw new InvalidDataException("Dependent member template requires its original owner and no fabricated prototype");
+                }
+                else if (relation.ResolutionKind == "template-parameter")
+                {
+                    if (relation.SourceTemplateId is not long template || !SourceTemplates.TryGetValue(template, out var parameter) || instance.SourceName != parameter.SourceName ||
+                        relation.PrototypeSourceRecordId is not null || relation.MemberOwnerSourceTypeId is not null ||
+                        relation.MemberOfUnknownBase || relation.QualifiedUnknownBaseMember ||
+                        q.Text(7) != "original-template-parameter-instantiation")
+                        throw new InvalidDataException("Template parameter instance requires its exact original template declaration");
                 }
                 else throw new InvalidDataException("Unknown source template resolution kind");
                 if (!SourceRecordInstantiations.TryAdd(instance.Id, relation))
                     throw new InvalidDataException("Duplicate source template instantiation relation");
             }
-        using (var q = database.Prepare("SELECT source_record_id,ordinal,kind,type_id,constant_id FROM source_template_arguments ORDER BY source_record_id,ordinal"))
+        using (var q = database.Prepare("SELECT source_record_id,ordinal,kind,type_id,constant_id,template_id FROM source_template_arguments ORDER BY source_record_id,ordinal"))
             while (q.Read())
             {
                 long owner = q.Integer(0);
-                var argument = new SourceTemplateArgument(q.Integer(1), q.Text(2), q.OptionalInteger(3), q.OptionalInteger(4));
+                var argument = new SourceTemplateArgument(q.Integer(1), q.Text(2), q.OptionalInteger(3), q.OptionalInteger(4), q.OptionalInteger(5));
                 if (!SourceRecordInstantiations.ContainsKey(owner) ||
-                    (argument.Kind == "type" ? argument.TypeId is not long type || !SourceTypes.ContainsKey(type) || argument.ConstantId is not null
-                     : argument.Kind != "constant" || argument.TypeId is not null || argument.ConstantId is not long constant || !SourceSemanticConstants.ContainsKey(constant)))
+                    !SourceTemplatePayloadValid(argument.Kind, argument.TypeId, argument.ConstantId, argument.TemplateId))
                     throw new InvalidDataException("Source template argument lacks its typed semantic payload");
                 if (!SourceTemplateArguments.TryGetValue(owner, out var list)) SourceTemplateArguments[owner] = list = [];
                 if (argument.Ordinal != list.Count) throw new InvalidDataException("Source template arguments are not in original order");
@@ -95,6 +103,7 @@ internal sealed partial class ObjectFile
             if ((type.ArrayBoundKind == "dependent") != SourceArrayBounds.ContainsKey(type.Id))
                 throw new InvalidDataException("Dependent array is missing its exact original bound expression");
         foreach (var constant in SourceSemanticConstants.Values) VerifySourceSemanticConstant(constant);
+        VerifySourceTemplateReferences();
         foreach (long bound in SourceArrayBounds.Values)
             if (!ContainsSourceParameter(bound, 0)) throw new InvalidDataException("Dependent array bound lost its dependent semantic operand");
     }
@@ -128,7 +137,7 @@ internal sealed partial class ObjectFile
         }
         else if (value.Kind == "parameter")
         {
-            if (value.ParameterDepth is not > 0 || value.ParameterPosition is not > 0 || value.SourceFileId is null || value.Line <= 0 ||
+            if (value.ParameterDepth is not >= 0 || value.ParameterPosition is not > 0 || value.SourceFileId is null || value.Line <= 0 ||
                 value.ValueText.Length != 0 || value.OperatorName.Length != 0 || operands.Length != 0)
                 throw new InvalidDataException("Non-type template parameter requires its original declaration and coordinates");
             SourceConstantParameterIdentity(value);
@@ -231,10 +240,13 @@ internal sealed partial class ObjectFile
         if (!SourceRecordInstantiations.TryGetValue(id, out var relation)) return SourceRecords[id].IdentityKey;
         string owner = relation.ResolutionKind == "class-template"
             ? "source-instantiation:" + SourceIdentityFrame(SourceRecordIdentity(relation.PrototypeSourceRecordId!.Value, depth + 1))
+            : relation.ResolutionKind == "template-parameter"
+            ? "source-parameter-instantiation:" + SourceIdentityFrame(SourceTemplateIdentity(relation.SourceTemplateId!.Value, depth + 1))
             : "source-member-instantiation:" + SourceIdentityFrame(SourceArgumentTypeIdentity(relation.MemberOwnerSourceTypeId!.Value, depth + 1)) +
                 SourceIdentityFrame(SourceRecords[id].SourceName);
         return owner + string.Concat(SourceTemplateArguments.GetValueOrDefault(id, []).Select(argument => SourceIdentityFrame(argument.Kind == "type"
-                ? "t" + SourceArgumentTypeIdentity(argument.TypeId!.Value, depth + 1) : "c" + SourceConstantIdentity(argument.ConstantId!.Value, depth + 1))));
+                ? "t" + SourceArgumentTypeIdentity(argument.TypeId!.Value, depth + 1) : argument.Kind == "constant"
+                ? "c" + SourceConstantIdentity(argument.ConstantId!.Value, depth + 1) : "m" + SourceTemplateIdentity(argument.TemplateId!.Value, depth + 1))));
     }
     private void VerifySourceTemplateMetadata()
     {
@@ -242,7 +254,8 @@ internal sealed partial class ObjectFile
         {
             bool instance = record.IsDependent && !record.IsPrototypeInstantiation && !SourceRecordOwners.ContainsKey(record.Id);
             bool instanceKey = record.IdentityKey.StartsWith("source-instantiation:", StringComparison.Ordinal) ||
-                record.IdentityKey.StartsWith("source-member-instantiation:", StringComparison.Ordinal);
+                record.IdentityKey.StartsWith("source-member-instantiation:", StringComparison.Ordinal) ||
+                record.IdentityKey.StartsWith("source-parameter-instantiation:", StringComparison.Ordinal);
             if (SourceRecordInstantiations.ContainsKey(record.Id) != instance || instanceKey != instance ||
                 instance && record.IdentityKey != SourceRecordIdentity(record.Id, 0))
                 throw new InvalidDataException("Dependent class identity differs from its exact original template arguments");

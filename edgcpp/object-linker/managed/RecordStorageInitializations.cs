@@ -29,6 +29,7 @@ internal sealed partial class ObjectFile
                 !RecordStorageInitializations.TryAdd(query.Integer(0), new(binding, zero)))
                 throw new InvalidDataException("Record storage initialization lacks exact original local and observed zeroing provenance");
         }
+        ReadRecordTemporaryInitializations();
         using var nodes = database.Prepare("SELECT id FROM nodes WHERE kind='record-storage-init'");
         while (nodes.Read())
             if (!RecordStorageInitializations.ContainsKey(nodes.Integer(0)))
@@ -64,5 +65,6 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Typed record initializer writes outside its exact original local storage");
         }
         Check(body.Child(initialization.Id, "body"), 0);
+        VerifyRecordTemporaryDestructionBinding(initialization, body);
     }
 }

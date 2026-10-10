@@ -344,10 +344,14 @@ internal sealed partial class ObjectFile
         Table("baseSubobjectExpressions", "SELECT node_id,source_base_id FROM base_subobject_expressions ORDER BY node_id", "nodeId", "sourceBaseId");
         Table("sourceDependentTypes", "SELECT type_id,kind,owner_type_id,nesting_depth,parameter_position,is_pack,identity_key,capture_proof FROM source_dependent_types ORDER BY type_id",
             "typeId", "kind", "ownerTypeId", "nestingDepth", "parameterPosition", "isPack", "identityKey", "captureProof");
-        Table("sourceRecordInstantiations", "SELECT source_record_id,prototype_source_record_id,resolution_kind,member_owner_source_type_id,member_of_unknown_base,qualified_unknown_base_member,capture_proof FROM source_record_instantiations ORDER BY source_record_id",
-            "sourceRecordId", "prototypeSourceRecordId", "resolutionKind", "memberOwnerSourceTypeId", "memberOfUnknownBase", "qualifiedUnknownBaseMember", "captureProof");
-        Table("sourceTemplateArguments", "SELECT source_record_id,ordinal,kind,type_id,constant_id FROM source_template_arguments ORDER BY source_record_id,ordinal",
-            "sourceRecordId", "ordinal", "kind", "typeId", "constantId");
+        Table("sourceTemplates", "SELECT id,kind,source_name,parameter_depth,parameter_position,is_pack,parameter_count,capture_proof,source_file_id,line,column FROM source_templates ORDER BY id",
+            "id", "kind", "sourceName", "parameterDepth", "parameterPosition", "isPack", "parameterCount", "captureProof", "sourceFileId", "line", "column");
+        Table("sourceTemplateParameters", "SELECT source_template_id,ordinal,kind,source_name,type_id,constant_id,template_id,default_type_id,default_constant_id,default_template_id,is_pack,is_abbreviated,source_file_id,line,column FROM source_template_parameters ORDER BY source_template_id,ordinal",
+            "sourceTemplateId", "ordinal", "kind", "sourceName", "typeId", "constantId", "templateId", "defaultTypeId", "defaultConstantId", "defaultTemplateId", "isPack", "isAbbreviated", "sourceFileId", "line", "column");
+        Table("sourceRecordInstantiations", "SELECT source_record_id,prototype_source_record_id,resolution_kind,source_template_id,member_owner_source_type_id,member_of_unknown_base,qualified_unknown_base_member,capture_proof FROM source_record_instantiations ORDER BY source_record_id",
+            "sourceRecordId", "prototypeSourceRecordId", "resolutionKind", "sourceTemplateId", "memberOwnerSourceTypeId", "memberOfUnknownBase", "qualifiedUnknownBaseMember", "captureProof");
+        Table("sourceTemplateArguments", "SELECT source_record_id,ordinal,kind,type_id,constant_id,template_id FROM source_template_arguments ORDER BY source_record_id,ordinal",
+            "sourceRecordId", "ordinal", "kind", "typeId", "constantId", "templateId");
         Table("sourceArrayBounds", "SELECT type_id,constant_id,capture_proof FROM source_array_bounds ORDER BY type_id",
             "typeId", "constantId", "captureProof");
         Table("sourceSemanticConstants", "SELECT id,kind,source_type_id,source_name,value_text,parameter_depth,parameter_position,is_pack,operator_name,owner_source_type_id,operand_source_type_id,builtin_operator_kind,is_standard_alignof,source_file_id,line,column FROM source_semantic_constants ORDER BY id",
@@ -443,6 +447,10 @@ internal sealed partial class ObjectFile
             "sourceRecordId", "bitwiseConstructionAllowed", "bitwiseAssignmentAllowed", "requiresReturnStorage", "requiresParameterStorage", "captureProof");
         Table("virtualBaseAdjustments", "SELECT node_id,operand_node_id,source_node_id,lookup_source_node_id,derived_type_id,complete_base_type_id,offset_node_id,vtable_index,is_complete_object,capture_proof FROM virtual_base_adjustments ORDER BY node_id",
             "nodeId", "operandNodeId", "sourceNodeId", "lookupSourceNodeId", "derivedTypeId", "completeBaseTypeId", "offsetNodeId", "vtableIndex", "isCompleteObject", "captureProof");
+        Table("sourceRecordTemporaries", "SELECT id,function_entity_id,source_initializer_id,source_type_id,source_ordinal,dynamic_init_kind,source_destruction_obligation_id,source_file_id,line,column,capture_proof FROM source_record_temporaries ORDER BY id",
+            "id", "functionEntityId", "sourceInitializerId", "sourceTypeId", "sourceOrdinal", "dynamicInitKind", "sourceDestructionObligationId", "sourceFileId", "line", "column", "captureProof");
+        Table("recordTemporaryInitializations", "SELECT node_id,binding_id,source_temporary_id,lowered_init_kind,site_kind,zero_storage,partially_initialized,capture_proof FROM record_temporary_initializations ORDER BY node_id",
+            "nodeId", "bindingId", "sourceTemporaryId", "loweredInitKind", "siteKind", "zeroStorage", "partiallyInitialized", "captureProof");
         Table("recordStorageInitializations", "SELECT node_id,binding_id,source_declaration_id,source_type_id,source_init_kind,lowered_init_kind,site_kind,zero_storage,partially_initialized,capture_proof FROM record_storage_initializations ORDER BY node_id",
             "nodeId", "bindingId", "sourceDeclarationId", "sourceTypeId", "sourceInitKind", "loweredInitKind", "siteKind", "zeroStorage", "partiallyInitialized", "captureProof");
         Table("recordConstantInitializations", "SELECT node_id,source_record_id,storage_id,initialization_kind,capture_proof FROM record_constant_initializations ORDER BY node_id",

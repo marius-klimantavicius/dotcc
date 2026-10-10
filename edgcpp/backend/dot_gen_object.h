@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v43: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v44: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -136,7 +136,8 @@ struct Writer {
   std::vector<string> memory_barriers,memory_barrier_operands,memory_barrier_dimensions;
   std::map<unsigned,unsigned> source_type_ids;
   std::vector<string> source_dependent_types;
-  std::vector<string> source_record_instantiations,source_template_arguments,source_array_bounds;
+  std::vector<string> source_record_instantiations,source_template_arguments,source_array_bounds,source_templates,source_template_parameters;
+  std::map<unsigned,unsigned> source_template_ids;
   std::vector<string> source_semantic_constants,source_semantic_constant_operands;
   std::map<unsigned,unsigned> source_semantic_constant_ids;
   std::map<unsigned,unsigned> pointer_types;
@@ -147,6 +148,8 @@ struct Writer {
   std::vector<string> thunk_wrappers,wrapper_calls;
   std::vector<string> compile_time_selections;
   std::vector<string> base_subobject_expressions,virtual_base_subobjects,virtual_base_expressions,source_record_operations,record_value_transfers,record_storage_initializations,record_constant_initializations;
+  std::vector<string> source_record_temporaries,record_temporary_initializations;
+  std::map<a_dynamic_init_ptr,unsigned> source_record_temporary_ids;
   std::map<unsigned,unsigned> binding_source_declarations;
   std::map<an_expr_node_ptr,unsigned> emitted_expression_ids;
   std::vector<string> virtual_base_adjustments;
@@ -299,6 +302,43 @@ struct Writer {
       ",\"ordinal\":"+std::to_string(ordinal++)+",\"operandId\":"+number(source_semantic_constant(child))+"}");
     return id;
   }
+  string source_template_identity(unsigned id,unsigned depth=0) {
+    if(!id || depth>128)reject("source template identity cycle/depth");
+    const auto &value=dot_object_source::state().source_templates.at(id-1);
+    if(!value.error.empty())reject(value.error.c_str());
+    a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
+    conv_seq_to_file_and_line(value.location.seq,&display,&full,&line,&at_end);
+    string result="template-parameter:"+source_frame(string(full?full:display?display:"")+":"+std::to_string(line)+":"+
+      std::to_string(value.location.column)+":"+std::to_string(value.depth)+":"+std::to_string(value.position))+":"+(value.pack?"1":"0");
+    for(const auto &formal:value.parameters) {
+      string item=formal.kind+":"+(formal.pack?"1":"0")+":"+(formal.abbreviated?"1":"0");
+      item+=source_frame(formal.type?source_argument_type_identity(formal.type,depth+1):formal.constant?
+        source_constant_identity(formal.constant,depth+1):source_template_identity(formal.templ,depth+1));
+      item+=source_frame(formal.default_type?"t"+source_argument_type_identity(formal.default_type,depth+1):formal.default_constant?
+        "c"+source_constant_identity(formal.default_constant,depth+1):formal.default_template?"m"+source_template_identity(formal.default_template,depth+1):"");
+      result+=source_frame(item);
+    }
+    return result;
+  }
+  unsigned source_template_reference(unsigned captured) {
+    if(!captured)reject("source template reference is missing");
+    auto previous=source_template_ids.find(captured);if(previous!=source_template_ids.end())return previous->second;
+    const auto &value=dot_object_source::state().source_templates.at(captured-1);
+    if(!value.error.empty())reject(value.error.c_str());
+    unsigned id=unsigned(source_template_ids.size()+1);source_template_ids[captured]=id;
+    source_templates.push_back("{\"id\":"+number(id)+",\"kind\":\"parameter\",\"sourceName\":"+quote(value.name)+
+      ",\"parameterDepth\":"+std::to_string(value.depth)+",\"parameterPosition\":"+std::to_string(value.position)+
+      ",\"isPack\":"+(value.pack?"true":"false")+",\"parameterCount\":"+std::to_string(value.parameters.size())+",\"captureProof\":\"original-template-parameter\""+position(value.location)+"}");
+    unsigned ordinal=0;for(const auto &formal:value.parameters)source_template_parameters.push_back("{\"sourceTemplateId\":"+number(id)+
+      ",\"ordinal\":"+std::to_string(ordinal++)+",\"kind\":"+quote(formal.kind)+",\"sourceName\":"+quote(formal.name)+
+      ",\"typeId\":"+number(formal.type?source_type(formal.type):0)+",\"constantId\":"+number(formal.constant?source_semantic_constant(formal.constant):0)+
+      ",\"templateId\":"+number(formal.templ?source_template_reference(formal.templ):0)+
+      ",\"defaultTypeId\":"+number(formal.default_type?source_type(formal.default_type):0)+
+      ",\"defaultConstantId\":"+number(formal.default_constant?source_semantic_constant(formal.default_constant):0)+
+      ",\"defaultTemplateId\":"+number(formal.default_template?source_template_reference(formal.default_template):0)+
+      ",\"isPack\":"+(formal.pack?"true":"false")+",\"isAbbreviated\":"+(formal.abbreviated?"true":"false")+position(formal.position)+"}");
+    return id;
+  }
   string original_record_identity(a_type_ptr type,unsigned depth=0) {
     if(depth>128)reject("original record ownership cycle/depth");
     auto &captured=dot_object_source::state();
@@ -317,7 +357,10 @@ struct Writer {
       if(!source.prototype) {
         if(!source.template_error.empty())reject((source.identity+": "+source.template_error).c_str());
         string result;
-        if(source.member_template_owner) {
+        if(source.template_parameter) {
+          if(source.member_template_owner || source.template_prototype)reject("template parameter instance has invented concrete template ownership");
+          result="source-parameter-instantiation:"+source_frame(source_template_identity(source.template_parameter,depth+1));
+        } else if(source.member_template_owner) {
           if(source.template_prototype)reject("dependent member lookup has fabricated class template prototype");
           result="source-member-instantiation:"+source_frame(source_argument_type_identity(source.member_template_owner,depth+1))+
             source_frame(source.name);
@@ -328,7 +371,7 @@ struct Writer {
           result="source-instantiation:"+source_frame(original_record_identity(prototype.record_type,depth+1));
         }
         for(const auto &argument:source.template_arguments)result+=source_frame(argument.type?
-          "t"+source_argument_type_identity(argument.type,depth+1):"c"+source_constant_identity(argument.constant,depth+1));
+          "t"+source_argument_type_identity(argument.type,depth+1):argument.constant?"c"+source_constant_identity(argument.constant,depth+1):"m"+source_template_identity(argument.templ,depth+1));
         return result;
       }
       a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
@@ -393,15 +436,17 @@ struct Writer {
           source_record_metadata(captured.types.at(source->template_prototype-1).record_type):0;
         source_record_instantiations.push_back("{\"sourceRecordId\":"+number(source_record)+
           ",\"prototypeSourceRecordId\":"+number(prototype_record)+
-          ",\"resolutionKind\":"+quote(source->member_template_owner?"dependent-member-template":"class-template")+
+          ",\"resolutionKind\":"+quote(source->template_parameter?"template-parameter":source->member_template_owner?"dependent-member-template":"class-template")+
+          ",\"sourceTemplateId\":"+number(source->template_parameter?source_template_reference(source->template_parameter):0)+
           ",\"memberOwnerSourceTypeId\":"+number(source->member_template_owner?source_type(source->member_template_owner):0)+
           ",\"memberOfUnknownBase\":"+(source->template_member_of_unknown_base?"true":"false")+
           ",\"qualifiedUnknownBaseMember\":"+(source->template_qualified_unknown_base?"true":"false")+
-          ",\"captureProof\":"+quote(source->member_template_owner?"original-nonreal-member-template":"original-template-arguments")+"}");
+          ",\"captureProof\":"+quote(source->template_parameter?"original-template-parameter-instantiation":source->member_template_owner?"original-nonreal-member-template":"original-template-arguments")+"}");
         unsigned ordinal=0;for(const auto &argument:source->template_arguments)
           source_template_arguments.push_back("{\"sourceRecordId\":"+number(source_record)+",\"ordinal\":"+std::to_string(ordinal++)+
-            ",\"kind\":"+quote(argument.type?"type":"constant")+",\"typeId\":"+number(argument.type?source_type(argument.type):0)+
-            ",\"constantId\":"+number(argument.constant?source_semantic_constant(argument.constant):0)+"}");
+            ",\"kind\":"+quote(argument.type?"type":argument.constant?"constant":"template")+",\"typeId\":"+number(argument.type?source_type(argument.type):0)+
+            ",\"constantId\":"+number(argument.constant?source_semantic_constant(argument.constant):0)+
+            ",\"templateId\":"+number(argument.templ?source_template_reference(argument.templ):0)+"}");
       }
       auto owner=captured.record_owners.find(t);
       if(owner!=captured.record_owners.end()) {
@@ -3842,6 +3887,37 @@ struct Writer {
     }
     return false;
   }
+  a_dynamic_init_ptr temporary_initialization_source(a_variable_ptr variable,a_dynamic_init_ptr dynamic) {
+    auto found=dot_object_source::state().record_temporary_bindings.find(variable);
+    if(found==dot_object_source::state().record_temporary_bindings.end())return nullptr;
+    a_dynamic_init_ptr original=nullptr;
+    for(const auto &candidate:found->second) {
+      if(candidate.owner!=current_routine || (dynamic && candidate.lowered!=dynamic))continue;
+      if(original && original!=candidate.original)reject("reused temporary storage lacks exact initialization occurrence");
+      original=candidate.original;
+    }
+    return original;
+  }
+  unsigned source_record_temporary(a_dynamic_init_ptr original) {
+    auto prior=source_record_temporary_ids.find(original);
+    if(prior!=source_record_temporary_ids.end())return prior->second;
+    unsigned id=unsigned(source_record_temporary_ids.size()+1);source_record_temporary_ids.emplace(original,id);
+    return id;
+  }
+  void write_source_record_temporaries() {
+    for(const auto &entry:source_record_temporary_ids) {
+      auto original=entry.first;unsigned id=entry.second;
+      const auto &source=dot_object_source::state().record_temporaries.at(original);
+    source_record_temporaries.push_back("{\"id\":"+number(id)+
+      ",\"functionEntityId\":"+number(source.owner?routine(source.owner):0)+
+      ",\"sourceInitializerId\":"+number(source.initializer?source_initializer_id(source.initializer):0)+
+      ",\"sourceTypeId\":"+number(source_type(source.source_type))+
+      ",\"sourceOrdinal\":"+std::to_string(source.ordinal)+
+      ",\"dynamicInitKind\":"+std::to_string(source.initialization_kind)+
+      ",\"sourceDestructionObligationId\":"+number(source_obligation_ids.count(original)?source_obligation_ids.at(original):0)+
+      position(source.position)+",\"captureProof\":\"before-lowering\"}");
+    }
+  }
   unsigned initialize_aggregate(a_variable_ptr variable,a_constant_ptr value,const a_source_position &pos,a_dynamic_init_ptr dynamic=nullptr,bool lowered_assignment=false) {
     // Source volatile accesses already have explicit volatile-place nodes.
     // Bulk default/array initialization cannot substitute for the observable
@@ -3856,8 +3932,9 @@ struct Writer {
       binding_source_declarations.count(binding_ids.at(variable)) &&
       (leaf->kind==tk_struct || leaf->kind==tk_class || leaf->kind==tk_union) &&
       leaf->variant.class_struct_union.extra_info;
+    auto temporary=temporary_initialization_source(variable,dynamic);
     unsigned initialization=0;
-    if(owned) {
+    if(owned || temporary) {
       // This initializes storage, not a C++ record value or an assignment.
       // Match c_gen_be::start_initializer_assignments exactly: its memset
       // prefix is required only for explicit zero or partial initialization.
@@ -3865,7 +3942,17 @@ struct Writer {
         (variable->init_kind==initk_dynamic && variable->initializer.dynamic->is_partially_initialized);
       initialization=node("record-storage-init",0,pos);
       edge(initialization,"target",0,record_place(variable,path,pos));edge(initialization,"body",0,block);
-      record_storage_initializations.push_back("{\"nodeId\":"+number(initialization)+
+      if(owned && temporary)reject("record initialization has both original local and temporary identity");
+      if(temporary) {
+        record_temporary_initializations.push_back("{\"nodeId\":"+number(initialization)+
+          ",\"bindingId\":"+number(binding_ids.at(variable))+
+          ",\"sourceTemporaryId\":"+number(source_record_temporary(temporary))+
+          ",\"loweredInitKind\":"+number(unsigned(variable->init_kind))+
+          ",\"siteKind\":"+quote(lowered_assignment?"lowered-assignment":dynamic?"dynamic-init":"scope-entry")+
+          ",\"zeroStorage\":"+(zero?"true":"false")+",\"partiallyInitialized\":"+
+          (variable->init_kind==initk_dynamic && variable->initializer.dynamic->is_partially_initialized?"true":"false")+
+          ",\"captureProof\":\"observed-temporary-storage-initialization\"}");
+      } else record_storage_initializations.push_back("{\"nodeId\":"+number(initialization)+
         ",\"bindingId\":"+number(binding_ids.at(variable))+",\"sourceDeclarationId\":"+number(binding_source_declarations.at(binding_ids.at(variable)))+
         ",\"sourceTypeId\":"+number(source_type(source->second.type))+",\"sourceInitKind\":"+number(source->second.initializer_kind)+
         ",\"loweredInitKind\":"+number(unsigned(variable->init_kind))+",\"siteKind\":"+quote(lowered_assignment?"lowered-assignment":dynamic?"dynamic-init":"scope-entry")+
@@ -4153,8 +4240,8 @@ struct Writer {
              !proof.value->next && proof.target->kind==enk_variable && proof.value->kind==enk_constant) {
             auto variable=node_variable(proof.target);auto value=node_constant(proof.value);
             if(value->kind==ck_aggregate && binding_ids.count(variable) &&
-               binding_source_declarations.count(binding_ids.at(variable)) &&
-               dot_object_source::state().variables.count(variable) &&
+               ((binding_source_declarations.count(binding_ids.at(variable)) &&
+                 dot_object_source::state().variables.count(variable)) || temporary_initialization_source(variable,nullptr)) &&
                type_id(proof.target->type)==type_id(proof.value->type)) {
               if(value->is_partially_initialized && variable->init_kind!=initk_zero &&
                  !(variable->init_kind==initk_dynamic && variable->initializer.dynamic->is_partially_initialized))
@@ -4411,6 +4498,7 @@ struct Writer {
       }
     write_dynamic_initializer_origins();
     finish_static_source_metadata();
+    write_source_record_temporaries();
     for(const auto &storage_bytes:bitfield_data) {
       string bytes;unsigned long long begin=0,previous=0;
       for(const auto &byte:storage_bytes.second) {
@@ -4426,7 +4514,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v43\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v44\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -4451,6 +4539,7 @@ struct Writer {
       ",\"destructionElisions\":"+array(destruction_elisions)+",\"allocationElisions\":"+array(allocation_elisions)+",\"normalDestructions\":"+array(normal_destructions)+",\"cleanupConditions\":"+array(cleanup_conditions)+
       ",\"sourceRecords\":"+array(source_records)+",\"sourceRecordOperations\":"+array(source_record_operations)+
       ",\"sourceRecordOwners\":"+array(source_record_owners)+
+      ",\"sourceTemplates\":"+array(source_templates)+",\"sourceTemplateParameters\":"+array(source_template_parameters)+
       ",\"sourceRecordInstantiations\":"+array(source_record_instantiations)+",\"sourceTemplateArguments\":"+array(source_template_arguments)+
       ",\"sourceArrayBounds\":"+array(source_array_bounds)+",\"sourceSemanticConstants\":"+array(source_semantic_constants)+
       ",\"sourceSemanticConstantOperands\":"+array(source_semantic_constant_operands)+
@@ -4468,7 +4557,8 @@ struct Writer {
       ",\"throwPayloadPaths\":"+array(throw_payload_paths)+
       ",\"sourceTries\":"+array(source_tries)+",\"sourceHandlers\":"+array(source_handlers)+
       ",\"handlerMarkers\":"+array(handler_markers)+",\"caughtObjectAddresses\":"+array(caught_object_addresses)+
-      ",\"recordValueTransfers\":"+array(record_value_transfers)+",\"recordStorageInitializations\":"+array(record_storage_initializations)+",\"recordConstantInitializations\":"+array(record_constant_initializations)+",\"sourceFields\":"+array(source_fields)+
+      ",\"sourceRecordTemporaries\":"+array(source_record_temporaries)+",\"recordTemporaryInitializations\":"+array(record_temporary_initializations)+
+      " ,\"recordValueTransfers\":"+array(record_value_transfers)+",\"recordStorageInitializations\":"+array(record_storage_initializations)+",\"recordConstantInitializations\":"+array(record_constant_initializations)+",\"sourceFields\":"+array(source_fields)+
       ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+",\"virtualBaseSubobjects\":"+array(virtual_base_subobjects)+",\"virtualBaseExpressions\":"+array(virtual_base_expressions)+",\"virtualBaseAdjustments\":"+array(virtual_base_adjustments)+
       ",\"baseSubobjectExpressions\":"+array(base_subobject_expressions)+
       ",\"abiRoutineOrigins\":"+array(abi_routine_origins)+

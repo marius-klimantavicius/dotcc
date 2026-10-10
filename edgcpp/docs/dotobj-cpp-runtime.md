@@ -507,3 +507,29 @@ source-hidden generation, exact original pairing for two new expressions,
 malformed relation rejection, null deletion, zero-length arrays and a throwing
 destructor. This resolves the earlier full `delete[]` fixture exporter gate.
 Production vector runtime providers and translated execution remain pending.
+
+Profile 44 distinguishes generated record temporary storage from source local
+variables. `source_record_temporaries` records each represented original
+`enk_temp_init` DIP's source owner, type, dynamic initialization kind, traversal
+ordinal, position and original destruction obligation. The observation runs
+before lowering, including constructor-initializer expressions and initializer
+templates. `record_temporary_initializations` ties an owned `record-storage-init`
+node and its generated local binding to that original DIP through stock
+`lower_temp_init`'s exact destination selection. This does not create a source
+local declaration or grant value-copy/default-value permission to a noncopyable
+record. Zeroing follows the same explicit-zero/partial-initialization predicate
+as stock `c_gen_be::start_initializer_assignments`; otherwise only the actual
+member stores are emitted.
+
+The reduced DuckDB delegating-constructor temporary passes 36 focused
+native/stock-C O0/O2, source-hidden C# generation, JIT execution and malformed
+metadata checks with native110/managed120
+(`dotobj-record-temporary-v44-110-002`). The two-same-type-temporary probe retains
+separate original DIPs and generated bindings; source traversal order and
+reverse destruction-list order are recorded independently. The hardened two-temporary case passes 42 checks with native111/managed121,
+including NativeAOT execution and rejection of swapped same-type original
+temporary IDs (`dotobj-record-two-temporary-v44-111-001`). The verifier requires
+generated local storage and matches its original destruction obligation to an
+independent emitted cleanup/normal-destruction target, or an exact observed
+elision in that execution. Source locals remain on their separate provenance
+path when a master initialization targets existing storage.

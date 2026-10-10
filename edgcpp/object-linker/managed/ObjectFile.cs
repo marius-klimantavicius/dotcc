@@ -31,6 +31,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["virtual_base_expressions"] = "node_id", ["virtual_base_subobjects"] = "record_type_id,complete_base_type_id",
         ["compile_time_selections"] = "node_id", ["thunk_wrappers"] = "entity_id", ["wrapper_calls"] = "node_id",
         ["source_allocation_obligations"] = "id", ["internal_try_expressions"] = "node_id", ["normal_destructions"] = "node_id", ["expression_lifetimes"] = "node_id", ["base_subobject_expressions"] = "node_id", ["source_initializers"] = "id",
+        ["source_templates"] = "id", ["source_template_parameters"] = "source_template_id,ordinal",
         ["source_record_instantiations"] = "source_record_id", ["source_template_arguments"] = "source_record_id,ordinal",
         ["source_array_bounds"] = "type_id", ["source_semantic_constants"] = "id",
         ["source_semantic_constant_operands"] = "constant_id,ordinal",
@@ -58,7 +59,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["memory_barriers"] = "node_id", ["memory_barrier_operands"] = "node_id,ordinal",
         ["memory_barrier_dimensions"] = "node_id,operand_ordinal,ordinal",
         ["source_record_owners"] = "source_record_id", ["source_record_types"] = "id", ["source_record_fields"] = "id",
-        ["source_record_operations"] = "source_record_id", ["record_value_transfers"] = "node_id", ["record_storage_initializations"] = "node_id", ["record_constant_initializations"] = "node_id", ["virtual_base_adjustments"] = "node_id",
+        ["source_record_operations"] = "source_record_id", ["record_value_transfers"] = "node_id", ["record_storage_initializations"] = "node_id", ["source_record_temporaries"] = "id", ["record_temporary_initializations"] = "node_id", ["record_constant_initializations"] = "node_id", ["virtual_base_adjustments"] = "node_id",
         ["initialization_actions"] = "id",
         ["generated_routine_origins"] = "entity_id", ["generated_routine_scaffolds"] = "entity_id,ordinal", ["dynamic_initializers"] = "id",
         ["dynamic_initializer_statements"] = "initializer_id,ordinal",
@@ -108,7 +109,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v43" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v44" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");

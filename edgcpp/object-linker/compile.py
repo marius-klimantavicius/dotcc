@@ -85,8 +85,10 @@ ARRAYS = {
     'recordTypes': ('record_types', ['typeId', 'identityKey', 'sourceName', 'size', 'alignment', 'sourceFileId', 'line', 'column', 'layoutKind', 'sourceRecordId', 'representationKind', 'valueCopyKind', 'captureProof', 'completeTypeId']),
     'recordFields': ('record_fields', ['id', 'recordTypeId', 'ordinal', 'typeId', 'sourceName', 'byteOffset', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'bitOffset', 'bitWidth', 'bitSigned', 'sourceFieldId', 'fieldRole', 'sourceBaseId', 'observedAlignment']),
     'sourceRecordOwners': ('source_record_owners', ['sourceRecordId', 'ownerSourceRecordId', 'ownerFieldId', 'kind', 'captureProof']),
-    'sourceRecordInstantiations': ('source_record_instantiations', ['sourceRecordId', 'prototypeSourceRecordId', 'resolutionKind', 'memberOwnerSourceTypeId', 'memberOfUnknownBase', 'qualifiedUnknownBaseMember', 'captureProof']),
-    'sourceTemplateArguments': ('source_template_arguments', ['sourceRecordId', 'ordinal', 'kind', 'typeId', 'constantId']),
+    'sourceTemplates': ('source_templates', ['id', 'kind', 'sourceName', 'parameterDepth', 'parameterPosition', 'isPack', 'parameterCount', 'captureProof', 'sourceFileId', 'line', 'column']),
+    'sourceTemplateParameters': ('source_template_parameters', ['sourceTemplateId', 'ordinal', 'kind', 'sourceName', 'typeId', 'constantId', 'templateId', 'defaultTypeId', 'defaultConstantId', 'defaultTemplateId', 'isPack', 'isAbbreviated', 'sourceFileId', 'line', 'column']),
+    'sourceRecordInstantiations': ('source_record_instantiations', ['sourceRecordId', 'prototypeSourceRecordId', 'resolutionKind', 'sourceTemplateId', 'memberOwnerSourceTypeId', 'memberOfUnknownBase', 'qualifiedUnknownBaseMember', 'captureProof']),
+    'sourceTemplateArguments': ('source_template_arguments', ['sourceRecordId', 'ordinal', 'kind', 'typeId', 'constantId', 'templateId']),
     'sourceArrayBounds': ('source_array_bounds', ['typeId', 'constantId', 'captureProof']),
     'sourceSemanticConstants': ('source_semantic_constants', ['id', 'kind', 'sourceTypeId', 'sourceName', 'valueText', 'parameterDepth', 'parameterPosition', 'isPack', 'operatorName', 'ownerSourceTypeId', 'operandSourceTypeId', 'builtinOperatorKind', 'isStandardAlignof', 'sourceFileId', 'line', 'column']),
     'sourceSemanticConstantOperands': ('source_semantic_constant_operands', ['constantId', 'ordinal', 'operandId']),
@@ -109,6 +111,8 @@ ARRAYS = {
     'sourceRecordOperations': ('source_record_operations', ['sourceRecordId', 'bitwiseConstructionAllowed', 'bitwiseAssignmentAllowed', 'requiresReturnStorage', 'requiresParameterStorage', 'captureProof']),
     'virtualBaseAdjustments': ('virtual_base_adjustments', ['nodeId', 'operandNodeId', 'sourceNodeId', 'lookupSourceNodeId', 'derivedTypeId', 'completeBaseTypeId', 'offsetNodeId', 'vtableIndex', 'isCompleteObject', 'captureProof']),
     'recordConstantInitializations': ('record_constant_initializations', ['nodeId', 'sourceRecordId', 'storageId', 'initializationKind', 'captureProof']),
+    'sourceRecordTemporaries': ('source_record_temporaries', ['id', 'functionEntityId', 'sourceInitializerId', 'sourceTypeId', 'sourceOrdinal', 'dynamicInitKind', 'sourceDestructionObligationId', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'recordTemporaryInitializations': ('record_temporary_initializations', ['nodeId', 'bindingId', 'sourceTemporaryId', 'loweredInitKind', 'siteKind', 'zeroStorage', 'partiallyInitialized', 'captureProof']),
     'recordStorageInitializations': ('record_storage_initializations', ['nodeId', 'bindingId', 'sourceDeclarationId', 'sourceTypeId', 'sourceInitKind', 'loweredInitKind', 'siteKind', 'zeroStorage', 'partiallyInitialized', 'captureProof']),
     'recordValueTransfers': ('record_value_transfers', ['nodeId', 'kind', 'captureProof']),
     'sourceFields': ('source_record_fields', ['id', 'sourceRecordId', 'ordinal', 'sourceTypeId', 'sourceName', 'isMutable', 'hasNoUniqueAddress', 'bitWidth', 'sourceFileId', 'line', 'column', 'hasInitializer', 'isPacked', 'explicitAlignment']),
@@ -195,7 +199,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v43':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v44':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -215,7 +219,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v43', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v44', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

@@ -165,6 +165,7 @@ internal static class Verifier
                         node.Kind == "declare" && edge.Role == "initializer" && child.Kind == "default-value" ||
                         child.Kind is "assign" or "record-transfer" or "record-constant-init" &&
                         (node.Kind == "expr-stmt" && edge.Role == "value" ||
+                         node.Kind == "internal-try-expression" && edge.Role is "attempt" or "cleanup" ||
                          node.Kind == "throw" && edge.Role == "initializer" ||
                          node.Kind == "sequence" && child.Id != SequenceTail(node).Id ||
                          node.Kind == "convert" && Type(node) == "void" && edge.Role == "operand");
@@ -174,7 +175,7 @@ internal static class Verifier
                         : node.Kind == "declare" ? obj.CanConstructRecord(obj.Type(recordType))
                         : node.Kind is "call" or "indirect-call" && edge.Role == "argument" ? obj.CanPassRecord(obj.Type(recordType))
                         : obj.CanTransportRecord(obj.Type(recordType));
-                    if (!allowed && !copyAllowed) Fail("Record value operation lacks its required construction, transport or assignment permission");
+                    if (!allowed && !copyAllowed) Fail($"Record value operation lacks its required construction, transport or assignment permission (parent {node.Id}:{node.Kind}, child {child.Id}:{child.Kind}, edge {edge.Role}, type {recordType})");
                 }
             }
 

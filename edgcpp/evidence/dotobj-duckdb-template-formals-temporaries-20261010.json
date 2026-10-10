@@ -1,0 +1,60 @@
+{
+  "milestone": "dotobj v44 template formal graphs and generated record temporary initialization",
+  "nativeCompiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native111-verified-snapshot/cpfe-dot",
+  "nativeSha256": "bc59d5de9fff15721c5de8b63933baa34db7bc48858aa363ec72903805827714",
+  "managedLinker": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-121/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "focused": [
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-template-parameters-v44-111-002/results.json",
+      "status": "passed",
+      "checks": 45,
+      "nativeAot": true
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-record-two-temporary-v44-111-001/results.json",
+      "status": "passed",
+      "checks": 42,
+      "nativeAot": true
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-constexpr-placement-v44-111-001/results.json",
+      "status": "passed",
+      "checks": 33,
+      "nativeAot": true
+    }
+  ],
+  "realProject": {
+    "manifest": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-runtime-manifest-003/project.json",
+    "totalUnits": 2635,
+    "selectedUnits": 33,
+    "packaged": 9,
+    "exportGates": 24,
+    "verified": 7,
+    "managedGates": 2,
+    "results": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-diverse-frontier-111/results.json",
+    "verification": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-managed-frontier-111/results.json",
+    "generation": {
+      "primaryUnits": 7,
+      "rttiProviders": 2,
+      "definitions": 9710,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-seven-generation-111.json",
+      "output": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-seven-generated-111",
+      "managedGcHeapLimitBytes": 2147483648,
+      "csharpCompilationVerified": false,
+      "executionVerified": false
+    }
+  },
+  "remainingObservedGates": [
+    "Dependent view of an original nested type lacks an owned declaration relation (24 sampled units)",
+    "Function reference adjustment after function-designator decay (__invoke in ICU umutex)",
+    "Delayed special-member exception specification capture (vector in bind_recursive_cte_node)"
+  ],
+  "historicalCrashCoverage": "task_scheduler.cpp and buffer_pool.cpp explicitly selected; currently stop at prior nested-type gate, so historical exporter crashes are not proven fixed",
+  "fullDuckdbTranslationComplete": false,
+  "broadAcceptance": {
+    "status": "passed",
+    "checks": 1042,
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v44-001/results.json",
+    "nativeAotRequested": false
+  }
+}

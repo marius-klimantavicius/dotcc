@@ -64,7 +64,20 @@ struct SourceSemanticConstant {
   a_source_position location={};
   std::vector<unsigned> operands;
 };
-struct SourceTemplateArgument { unsigned type=0,constant=0; };
+struct SourceTemplateFormal {
+  std::string kind,name;
+  unsigned type=0,constant=0,templ=0,default_type=0,default_constant=0,default_template=0;
+  bool pack=false,abbreviated=false;
+  a_source_position position={};
+};
+struct SourceTemplateReference {
+  std::string name,error;
+  int depth=0,position=0;
+  bool pack=false;
+  a_source_position location={};
+  std::vector<SourceTemplateFormal> parameters;
+};
+struct SourceTemplateArgument { unsigned type=0,constant=0,templ=0; };
 struct Enumerator {
   std::string name,value;
   a_source_position position={};
@@ -143,7 +156,7 @@ struct PrelowerBase {
 struct Record {
   std::string name,identity,error,layout_kind;
   bool template_identity=false,complete=false,dependent=false,prototype=false,layout_known=false;
-  unsigned template_prototype=0,member_template_owner=0;
+  unsigned template_prototype=0,member_template_owner=0,template_parameter=0;
   bool template_member_of_unknown_base=false,template_qualified_unknown_base=false;
   std::vector<SourceTemplateArgument> template_arguments;
   std::string template_error;
@@ -229,6 +242,16 @@ struct GeneratedInitializer {
   bool is_thread_local=false,complete=false;
   std::vector<a_dynamic_init_ptr> initializers;
   std::string error;
+};
+struct SourceRecordTemporary {
+  a_dynamic_init_ptr original=nullptr,initializer=nullptr;
+  a_routine_ptr owner=nullptr;
+  unsigned source_type=0,ordinal=0,initialization_kind=0;
+  a_source_position position={};
+};
+struct RecordTemporaryBinding {
+  a_dynamic_init_ptr original=nullptr,lowered=nullptr;
+  a_routine_ptr owner=nullptr;
 };
 struct FieldInitializerExecution {
   unsigned constructor_ordinal=0;
@@ -385,6 +408,8 @@ struct TrySnapshot {
   bool function_try=false;
 };
 struct State {
+  std::vector<SourceTemplateReference> source_templates;
+  std::map<a_template_ptr,unsigned> source_template_ids;
   std::vector<SourceSemanticConstant> semantic_constants;
   std::map<a_constant_ptr,unsigned> semantic_constant_ids;
   std::map<an_expr_node_ptr,unsigned> semantic_constant_expr_ids;
@@ -423,6 +448,10 @@ struct State {
   std::map<a_dynamic_init_ptr,a_dynamic_init_ptr> source_array_allocation_elements;
   std::map<a_routine_ptr,std::vector<a_dynamic_init_ptr>> destruction_order;
   std::map<a_dynamic_init_ptr,a_dynamic_init_ptr> dynamic_init_copies;
+  std::map<a_dynamic_init_ptr,SourceRecordTemporary> record_temporaries;
+  std::vector<a_dynamic_init_ptr> record_temporary_order;
+  std::map<std::pair<a_routine_ptr,a_dynamic_init_ptr>,unsigned> record_temporary_ordinals;
+  std::map<a_variable_ptr,std::vector<RecordTemporaryBinding>> record_temporary_bindings;
   std::map<an_object_lifetime_ptr,an_object_lifetime_ptr> lifetime_copies;
   std::map<an_expr_node_ptr,ArrayAllocationSnapshot> array_allocation_calls;
   std::map<an_expr_node_ptr,std::pair<a_routine_ptr,a_routine_ptr>> array_callback_addresses;
@@ -682,7 +711,7 @@ inline unsigned capture_semantic_constant(a_constant_ptr constant) {
     if(parameter.kind==tpck_param) {
       value.kind="parameter";value.depth=parameter.variant.coordinates.depth;value.position=parameter.variant.coordinates.position;
       value.pack=parameter.is_pack;
-      if(value.depth<=0 || value.position<=0 || !value.location.seq)value.error="non-type parameter lacks original declaration coordinates";
+      if(value.depth<0 || value.position<=0 || !value.location.seq)value.error="non-type parameter lacks original declaration coordinates";
     } else if(parameter.kind==tpck_member) {
       value.kind="member";
       auto owner=constant->source_corresp.is_class_member?parent_class_of(constant):nullptr;
@@ -717,6 +746,42 @@ inline unsigned capture_semantic_constant(a_constant_ptr constant) {
       std::to_string(value.location.column)+"]";
   }
   s.semantic_constants[id-1]=value;return id;
+}
+
+inline unsigned capture_source_template(a_template_ptr templ) {
+  if(!templ)return 0;
+  auto &s=state();auto previous=s.source_template_ids.find(templ);
+  if(previous!=s.source_template_ids.end())return previous->second;
+  unsigned id=unsigned(s.source_templates.size()+1);s.source_template_ids[templ]=id;s.source_templates.emplace_back();
+  SourceTemplateReference value;value.name=spelling(templ->source_corresp);value.location=templ->source_corresp.decl_position;
+  value.depth=templ->coordinates.depth;value.position=templ->coordinates.position;value.pack=templ->is_pack;
+  auto declaration=templ->template_decl;
+  if(templ->kind!=templk_template_template_param)
+    value.error="source template reference kind requires its owned declaration [kind="+std::to_string(int(templ->kind))+",name="+value.name+"]";
+  else if(!declaration || value.depth<0 || value.position<=0 || !value.location.seq)
+    value.error="template template parameter lacks its original declaration/header coordinates";
+  else if(
+#if MICROSOFT_EXTENSIONS_ALLOWED
+    declaration->is_generic ||
+#endif
+    declaration->constraint.requires_clause)
+    value.error="source template parameter constraints require an owned semantic graph";
+  else for(auto parameter=declaration->param_list;parameter;parameter=parameter->next) {
+    SourceTemplateFormal formal;formal.name=spelling(parameter->source_corresp);formal.position=parameter->source_corresp.decl_position;
+    formal.pack=parameter->is_pack;formal.abbreviated=parameter->is_abbreviated;
+    if(parameter->kind==tpk_type) {
+      formal.kind="type";formal.type=capture_type(parameter->variant.type.ptr);
+      formal.default_type=capture_type(parameter->variant.type.default_arg_type);
+    } else if(parameter->kind==tpk_nontype) {
+      formal.kind="constant";formal.constant=capture_semantic_constant(parameter->variant.nontype.constant);
+      formal.default_constant=capture_semantic_constant(parameter->variant.nontype.default_arg_constant);
+    } else if(parameter->kind==tpk_template) {
+      formal.kind="template";formal.templ=capture_source_template(parameter->variant.templ.class_template);
+      formal.default_template=capture_source_template(parameter->variant.templ.default_arg_template);
+    } else value.error="source template formal parameter has no owned semantic kind";
+    value.parameters.push_back(formal);
+  }
+  s.source_templates[id-1]=value;return id;
 }
 
 inline void capture_enum(a_type_ptr t) {
@@ -843,7 +908,9 @@ inline void capture_record(a_type_ptr t) {
     auto templ=extra?extra->assoc_template:nullptr;
     bool nonreal_member=templ && templ->kind==templk_class && templ->template_info &&
       templ->template_info->is_nonreal_member && !templ->prototype_instantiation.type;
-    if(nonreal_member) {
+    if(templ && templ->kind==templk_template_template_param) {
+      value.template_parameter=capture_source_template(templ);
+    } else if(nonreal_member) {
       // Stock equiv_nonreal_templates identifies T::Member<...> by the
       // original parent type and member name, then compares actual arguments.
       // Such a lookup deliberately has no concrete template prototype.
@@ -871,7 +938,11 @@ inline void capture_record(a_type_ptr t) {
         else if(argument->kind==tak_type && argument->variant.type)item.type=capture_type(argument->variant.type);
         else if(argument->kind==tak_nontype && !argument->is_array_bound_of_unknown_type && argument->variant.constant)
           item.constant=capture_semantic_constant(argument->variant.constant);
-        else value.template_error="dependent class template argument family not yet represented";
+        else if(argument->kind==tak_template && argument->variant.templ.ptr) {
+          if(argument->variant.templ.substituted_param_template)
+            value.template_error="template argument requires its owned substituted formal declaration";
+          else item.templ=capture_source_template(argument->variant.templ.ptr);
+        } else value.template_error="dependent class template argument family not yet represented";
         if(!value.template_error.empty())value.template_error+=" [argument-kind="+std::to_string(int(argument->kind))+
           ",ordinal="+std::to_string(value.template_arguments.size())+"]";
         value.template_arguments.push_back(item);
@@ -1033,7 +1104,7 @@ inline unsigned capture_type(a_type_ptr t) {
     else if(parameter.kind==tptk_param) {
       value.dependent_kind="parameter";value.dependent_depth=extra->coordinates.depth;
       value.dependent_position=extra->coordinates.position;value.dependent_pack=parameter.is_pack;
-      if(value.dependent_depth<=0 || value.dependent_position<=0 || extra->constraint.type_constraint)
+      if(value.dependent_depth<0 || value.dependent_position<=0 || extra->constraint.type_constraint)
         value.error="dependent source parameter requires ordinary coordinates without an unrepresented constraint";
       a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
       conv_seq_to_file_and_line(value.position.seq,&display,&full,&line,&at_end);
@@ -1583,6 +1654,19 @@ struct SourceInitializerTraversal : an_expr_or_stmt_traversal_block {
   a_dynamic_init_ptr initializer=nullptr;
   a_routine_ptr owner=nullptr;
 };
+inline void capture_record_temporary(an_expr_node_ptr expr,an_expr_or_stmt_traversal_block_ptr traversal) {
+  if(!expr || expr->kind!=enk_temp_init)return;
+  auto type=skip_typerefs(expr->type);
+  while(type->kind==tk_array)type=skip_typerefs(type->variant.array.element_type);
+  if(type->kind!=tk_struct && type->kind!=tk_class && type->kind!=tk_union)return;
+  auto dip=expr->variant.init.dynamic_init;
+  if(!dip || state().record_temporaries.count(dip))return;
+  auto &context=*static_cast<SourceInitializerTraversal*>(traversal);
+  SourceRecordTemporary value;value.original=dip;value.owner=context.initializer?nullptr:context.owner;value.initializer=context.initializer;
+  value.source_type=capture_type(expr->type);value.initialization_kind=unsigned(dip->kind);value.position=expr->position;
+  value.ordinal=state().record_temporary_ordinals[std::make_pair(value.owner,value.initializer)]++;
+  state().record_temporaries.emplace(dip,value);state().record_temporary_order.push_back(dip);
+}
 inline void capture_initializer_nested_destruction(a_dynamic_init_ptr dip,an_expr_or_stmt_traversal_block_ptr traversal) {
   auto &context=*static_cast<SourceInitializerTraversal*>(traversal);
   if(dip->lifetime && (!context.owner || dip->lifetime->kind==olk_global_static || dip->lifetime->kind==olk_function_static)) {
@@ -1622,6 +1706,7 @@ inline void capture_source_initializer(a_dynamic_init_ptr dip,a_routine_ptr owne
   SourceInitializerTraversal traversal;clear_expr_or_stmt_traversal_block(&traversal);
   traversal.initializer=dip;traversal.owner=owner;
   traversal.process_non_dynamic_constants=TRUE;
+  traversal.process_expr=capture_record_temporary;
   traversal.process_dynamic_init=capture_initializer_nested_destruction;
   traverse_dynamic_init(dip,&traversal);
 }
@@ -1644,6 +1729,7 @@ inline void capture_field_initializer(a_field_ptr field,a_type_ptr owner) {
   }
   SourceInitializerTraversal traversal;clear_expr_or_stmt_traversal_block(&traversal);
   traversal.initializer=dip;traversal.process_non_dynamic_constants=TRUE;
+  traversal.process_expr=capture_record_temporary;
   traversal.process_dynamic_init=capture_initializer_nested_destruction;
   traverse_dynamic_init(dip,&traversal);
 }
@@ -2003,6 +2089,25 @@ inline an_object_lifetime_ptr source_lifetime(an_object_lifetime_ptr value,a_rou
 }
 inline void observe_dynamic_init_copy(a_dynamic_init_ptr original,a_dynamic_init_ptr copy) {
   if(enabled() && original!=copy)state().dynamic_init_copies.emplace(copy,original);
+}
+inline a_dynamic_init_ptr original_record_temporary(a_dynamic_init_ptr value) {
+  std::set<a_dynamic_init_ptr> seen;
+  while(value && seen.insert(value).second) {
+    if(state().record_temporaries.count(value))return value;
+    auto copy=state().dynamic_init_copies.find(value);
+    if(copy==state().dynamic_init_copies.end())break;
+    value=copy->second;
+  }
+  return nullptr;
+}
+inline void observe_record_temporary_binding(a_dynamic_init_ptr dip,a_variable_ptr variable,a_routine_ptr owner) {
+  if(!enabled() || !dip || !variable || !owner || !(variable->compiler_generated || variable->lowering_generated))return;
+  auto original=original_record_temporary(dip);if(!original)return;
+  RecordTemporaryBinding value;value.original=original;value.lowered=dip;value.owner=owner;
+  auto &bindings=state().record_temporary_bindings[variable];
+  for(const auto &existing:bindings)
+    if(existing.original==original && existing.lowered==dip && existing.owner==owner)return;
+  bindings.push_back(value);
 }
 inline a_dynamic_init_ptr original_static_destruction(a_dynamic_init_ptr value) {
   std::set<a_dynamic_init_ptr> seen;
@@ -2377,6 +2482,12 @@ inline void capture_scope(a_scope_ptr scope,a_routine_ptr function_owner=nullptr
     if(!function.scope_captured) {
       function.scope_captured=true;function.implicit_this=scope->variant.routine.this_param_variable;
       capture_source_lifetime(scope->lifetime,scope->variant.routine.ptr);
+      SourceInitializerTraversal traversal;clear_expr_or_stmt_traversal_block(&traversal);
+      traversal.owner=function_owner;traversal.process_expr=capture_record_temporary;
+      traversal.process_non_dynamic_constants=TRUE;
+      for(auto init=scope->variant.routine.constructor_inits;init;init=init->next)
+        if(init->initializer)traverse_dynamic_init(init->initializer,&traversal);
+      if(scope->assoc_block)traverse_statement(scope->assoc_block,&traversal);
       for(auto v=scope->variant.routine.parameters;v;v=v->next) {
         if(v!=function.implicit_this)function.parameter_variables.push_back(v);
       }

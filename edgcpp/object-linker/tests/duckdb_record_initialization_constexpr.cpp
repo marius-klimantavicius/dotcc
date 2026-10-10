@@ -1,5 +1,7 @@
 // libc++ shared_ptr's constexpr default constructor is folded to a constant
 // aggregate before add_init_assignment. Initializing it is not a copy.
+void *operator new(unsigned long, void *storage) noexcept { return storage; }
+void operator delete(void *, void *) noexcept {}
 int duckdb_constant_anchor = 73;
 struct DuckdbRecordConstant {
     int *first;
@@ -21,7 +23,15 @@ extern "C" int duckdb_record_initialization_constexpr() {
     int value = 31;
     DuckdbRecordConstant result = make_constant(&value);
     DuckdbRecordConstant relocated(&duckdb_constant_anchor);
-    return result.first == &value && result.second == nullptr &&
+    // ICU UMutex::getMutex uses placement new of a constexpr mutex. The
+    // internal allocation-failure boundary discards the initialization result;
+    // it does not copy the noncopyable record out of its new storage.
+    alignas(DuckdbRecordConstant) unsigned char storage[sizeof(DuckdbRecordConstant)];
+    auto placed = new(storage) DuckdbRecordConstant(&duckdb_constant_anchor);
+    bool placed_valid = placed->first == &duckdb_constant_anchor &&
+        placed->second == &duckdb_constant_anchor;
+    placed->~DuckdbRecordConstant();
+    return placed_valid && result.first == &value && result.second == nullptr &&
         relocated.first == &duckdb_constant_anchor && relocated.second == &duckdb_constant_anchor &&
         *relocated.first == 73 ? 0 : 1;
 }
