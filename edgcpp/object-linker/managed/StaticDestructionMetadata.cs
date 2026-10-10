@@ -64,7 +64,7 @@ internal sealed partial class ObjectFile
             return;
         }
         if (!SourceStaticDestructions.TryGetValue(sourceStaticObligationId, out var obligation) ||
-            obligation.Kind != "persistent" || obligation.Domain != "process" ||
+            obligation.Kind != "persistent" || obligation.Domain is not ("process" or "thread") ||
             !GeneratedStaticDestructors.TryGetValue(functionEntityId, out var generated) ||
             generated.SourceObligationId != obligation.Id ||
             OriginalFunction(callbackEntityId) != obligation.SelectedRoutineEntityId ||
@@ -225,10 +225,10 @@ internal sealed partial class ObjectFile
             {
                 var value = new StaticDestructionRegistration(q.Integer(0), q.Integer(1), q.Integer(2), q.Integer(3), q.Integer(4), q.Integer(5), q.Text(6), q.Text(7));
                 if (!SourceStaticDestructions.TryGetValue(value.SourceObligationId, out var obligation) || obligation.Kind != "persistent" ||
-                    obligation.SourceInitializerId != value.SourceInitializerId || value.Domain != "process" || obligation.Domain != value.Domain ||
+                    obligation.SourceInitializerId != value.SourceInitializerId || value.Domain is not ("process" or "thread") || obligation.Domain != value.Domain ||
                     !Functions.ContainsKey(value.FunctionEntityId) || !Entities.ContainsKey(value.CallbackEntityId) ||
                     value.CaptureProof != "observed-static-destruction-registration" || !StaticDestructionRegistrations.TryAdd(value.NodeId, value))
-                    throw new InvalidDataException("Static destruction registration lacks exact source ownership and process domain");
+                    throw new InvalidDataException("Static destruction registration lacks exact source ownership and lifetime domain");
                 bool generated = GeneratedStaticDestructors.TryGetValue(value.CallbackEntityId, out var callback);
                 if (generated ? callback!.SourceObligationId != obligation.Id : OriginalFunction(value.CallbackEntityId) != obligation.SelectedRoutineEntityId)
                     throw new InvalidDataException("Static registration callback differs from original selected destruction");

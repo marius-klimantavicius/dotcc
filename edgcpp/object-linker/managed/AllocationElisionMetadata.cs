@@ -20,6 +20,10 @@ internal sealed partial class ObjectFile
                     !SourceUninitializedAllocations.ContainsKey(value.SourceAllocationObligationId),
                 "no-initialization" => value.CaptureProof == "original-new-without-initialization" &&
                     SourceUninitializedAllocations.ContainsKey(value.SourceAllocationObligationId),
+                "dynamic-array-zero-initialization" => value.CaptureProof == "observed-dynamic-array-zero-initialization" &&
+                    !SourceUninitializedAllocations.ContainsKey(value.SourceAllocationObligationId) &&
+                    SourceAllocationObligations.TryGetValue(value.SourceAllocationObligationId, out var zeroAllocation) &&
+                    zeroAllocation.IsArray && Original(SourceTypeById(zeroAllocation.AllocatedSourceTypeId)).Kind == "array",
                 _ => false
             };
             if (!disposition ||
@@ -35,6 +39,12 @@ internal sealed partial class ObjectFile
         if (SourceUninitializedAllocations.Keys.Except(AllocationElisions.Values
                 .Where(value => value.Kind == "no-initialization").Select(value => value.SourceAllocationObligationId)).Any())
             throw new InvalidDataException("Original new without initialization lacks its exact no-rollback disposition");
+        RejectRows("""
+            SELECT e.source_allocation_obligation_id FROM allocation_elisions e
+            JOIN array_allocation_operations a ON a.source_allocation_obligation_id=e.source_allocation_obligation_id
+            JOIN nodes n ON n.id=a.node_id
+            WHERE e.kind='dynamic-array-zero-initialization' AND n.function_id=e.function_entity_id
+            """, "Array zero initialization also has a runtime allocation rollback protocol");
         RejectRows("""
             SELECT e.source_allocation_obligation_id FROM allocation_elisions e
             JOIN internal_try_expressions t ON t.source_allocation_obligation_id=e.source_allocation_obligation_id

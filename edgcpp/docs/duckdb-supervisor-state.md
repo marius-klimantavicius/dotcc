@@ -710,3 +710,29 @@ dynamic-array zero-initialization rollback disposition. Supervisor takes TLS
 local-static guards. Synthesized zero-model-plus-ctor vector callbacks retain a
 separate required generated origin; ordinary source routine ABI stays strict.
 No full project generation, compilation or execution claim.
+
+
+v51 committed 8abe30721. Candidate v52 final native125 SHA
+4acb0510dbd9e44bbe6b4a571dcf1ef94dae7b73484ff21a278b48ca8186c42b
+and managed146 are frozen. Lambda origin/forwarding, exact dynamic-array zeroing
+rollback disposition, per-thread byte guard publication and preserved thread
+destruction registration implemented. Stock retains a TLS guard abort region;
+its byte reset is preserved without a process monitor. Shared runtime uses the
+same thread callback registry as __cxa_thread_atexit and releases TLS afterward.
+Focused 274 checks pass (36 lambda, 40 zero-array, 35 scalar TLS, 38 nontrivial
+TLS, 125 global-lifetime regression); lambda and TLS include NativeAOT.
+All 136 prior failures/rejects re-probed, with exact newer lambda/TLS correction
+follow-ups: 67 package, 65 verify; 69 exporter/frontend gates and 2 managed
+rejects remain in that selection. Complete frozen baseline: 2,509 package and
+2,499 verify out of 2,635. Current 53-library-unit combined generation underway.
+Next ranked work: 38 constrained source metadata (base), 7 variadic indirect ABI
+(supervisor), owned generated array model/ctor callbacks (lifetime). No real
+DuckDB compiled/executed yet. Full latest queue and receipts in priorities doc.
+
+
+v52 accepted: combined 53 verified library units plus four actual providers
+emit 33,105 definitions. Review artifacts/review/dotobj-duckdb-v52/combined53.
+Evidence dotobj-duckdb-lambda-thread-lifetimes-20261010.json; all 274 checks pass.
+Next native cut126 / managed147 reserved for generated array callback provenance,
+variadic ABI transport and source-constraint diagnostics. Concept graph remains
+worker scratch until complete typed schema/capture/verification are ready.

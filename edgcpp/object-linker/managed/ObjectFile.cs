@@ -30,6 +30,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["throw_markers"] = "node_id", ["rethrow_expressions"] = "node_id",
         ["virtual_base_expressions"] = "node_id", ["virtual_base_subobjects"] = "record_type_id,complete_base_type_id",
         ["compile_time_selections"] = "node_id", ["thunk_wrappers"] = "entity_id", ["wrapper_calls"] = "node_id",
+        ["lambda_entry_origins"] = "entity_id", ["lambda_entry_calls"] = "node_id",
         ["source_allocation_obligations"] = "id", ["internal_try_expressions"] = "node_id", ["normal_destructions"] = "node_id", ["expression_lifetimes"] = "node_id", ["base_subobject_expressions"] = "node_id", ["source_initializers"] = "id",
         ["source_templates"] = "id", ["source_template_parameters"] = "source_template_id,ordinal",
         ["source_record_instantiations"] = "source_record_id", ["source_template_arguments"] = "source_record_id,ordinal",
@@ -111,7 +112,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v51" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v52" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -130,6 +131,7 @@ internal sealed partial class ObjectFile : IDisposable
             ReadDynamicInitializers();
             ReadCompileTimeSelections();
             ReadThunkWrappers();
+            ReadLambdaEntryOrigins();
             ReadAndVerifySourceProvenance();
             ReadAndVerifyMacroProvenance();
             ReadMemoryBarrierMetadata();

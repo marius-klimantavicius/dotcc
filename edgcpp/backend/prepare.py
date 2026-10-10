@@ -377,6 +377,12 @@ for filename in ("lower_il.c", "lower_c99.c", "lower_init.c"):
         '#include "exprutil.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
 init_lower = root / "upstream/src/lower_init.c"
 object_source_overlay(init_lower,
+    '      call_node = make_call_node(routine, first_arg);',
+    '      call_node = make_call_node(routine, first_arg);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_source::observe_lambda_entry_body(new_routine, new_routine_scope, call_node);\n'
+    '#endif')
+object_source_overlay(init_lower,
     '    define_default_version_of_routine(routine, new_routine, \n'
     '                                      default_arg_list);',
     '#if defined(EDG_DOT_BACKEND)\n'
@@ -1121,6 +1127,25 @@ object_source_overlay(init_lower,
     '      innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL, "bitwise-initialization");\n'
     '#endif\n'
     '    (void)insert_expr_statement(assign_node, insert_location);')
+
+# This special variable-length zero initializer bypasses rollback setup;
+# observe the exact stock branch instead of inventing a cleanup action.
+object_source_overlay(init_lower,
+    '        insert_runtime_zeroing_call(var_rvalue_expr(temp_var),\n'
+    '                                    var_rvalue_expr(num_bytes_temp),\n'
+    '                                    &insert_location);',
+    '        insert_runtime_zeroing_call(var_rvalue_expr(temp_var),\n'
+    '                                    var_rvalue_expr(num_bytes_temp),\n'
+    '                                    &insert_location);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '        dot_object_source::observe_dynamic_array_zero_initialization(ndsp, dip,\n'
+    '          innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif')
+
+# Observe the completed per-thread first-byte publication at its exact stock factory.
+object_source_overlay(init_lower,
+    "static void set_local_static_guard_var(\n                                 a_variable_ptr         local_static_guard_var,\n                                 an_insert_location_ptr insert_location)\n/*\nlocal_static_guard_var is the guard variable associated with the initialization\nof a local static variable.  If necessary, add code to set the guard variable\nto indicate that the initialization is complete.  Insert the code at\n*insert_location.\n*/\n{\n  if (targ_ia64_abi_use_guard_acquire_release &&\n      !is_effective_thread_local(local_static_guard_var)) {\n    /* In non-thread-local cases, the call to __cxa_guard_release has already\n       been emitted, so there's nothing to do here. */\n  } else {\n    if (targ_ia64_abi_use_int_static_init_guard) {\n      /* ARM EABI specifies to use least significant bit for guard test. */\n      (void)insert_assignment_statement(var_lvalue_expr(\n                                                       local_static_guard_var),\n                                        (an_expr_operator_kind)eok_assign,\n                                        node_for_integer_constant(1L,\n                                                      (an_integer_kind)ik_int),\n                                        insert_location);\n    } else {\n      /* IA-64 ABI specifies to use first byte for guard test. */\n      (void)insert_assignment_statement(add_indirection_to_node(\n                                         add_cast_to_char_star(\n                                         var_addr_expr(\n                                                     local_static_guard_var))),\n                                        (an_expr_operator_kind)eok_assign,\n                                        node_for_integer_constant(1L,\n                                                     (an_integer_kind)ik_char),\n                                        insert_location);\n    }  /* if */\n  }  /* if */\n}  /* set_local_static_guard_var */",
+    "static void set_local_static_guard_var(\n                                 a_variable_ptr         local_static_guard_var,\n                                 an_insert_location_ptr insert_location)\n/*\nlocal_static_guard_var is the guard variable associated with the initialization\nof a local static variable.  If necessary, add code to set the guard variable\nto indicate that the initialization is complete.  Insert the code at\n*insert_location.\n*/\n{\n  if (targ_ia64_abi_use_guard_acquire_release &&\n      !is_effective_thread_local(local_static_guard_var)) {\n    /* In non-thread-local cases, the call to __cxa_guard_release has already\n       been emitted, so there's nothing to do here. */\n  } else {\n    if (targ_ia64_abi_use_int_static_init_guard) {\n      /* ARM EABI specifies to use least significant bit for guard test. */\n      a_statement_ptr dot_guard_publication = insert_assignment_statement(var_lvalue_expr(\n                                                       local_static_guard_var),\n                                        (an_expr_operator_kind)eok_assign,\n                                        node_for_integer_constant(1L,\n                                                      (an_integer_kind)ik_int),\n                                        insert_location);\n#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n      dot_object_source::observe_local_thread_guard_publication(local_static_guard_var, dot_guard_publication);\n#endif\n    } else {\n      /* IA-64 ABI specifies to use first byte for guard test. */\n      a_statement_ptr dot_guard_publication = insert_assignment_statement(add_indirection_to_node(\n                                         add_cast_to_char_star(\n                                         var_addr_expr(\n                                                     local_static_guard_var))),\n                                        (an_expr_operator_kind)eok_assign,\n                                        node_for_integer_constant(1L,\n                                                     (an_integer_kind)ik_char),\n                                        insert_location);\n#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n      dot_object_source::observe_local_thread_guard_publication(local_static_guard_var, dot_guard_publication);\n#endif\n    }  /* if */\n  }  /* if */\n}  /* set_local_static_guard_var */")
 
 # Typed throw initialization and exact runtime-address/start ownership.
 object_source_overlay(init_lower,

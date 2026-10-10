@@ -32,10 +32,10 @@ internal sealed partial class ObjectFile
                     lifetime.FunctionEntityId != guard.FunctionEntityId || lifetime.Kind != "block" ||
                     !Storages.TryGetValue(guard.StorageId, out Storage? storage) || storage.SourceTypeId != guard.SourceTypeId ||
                     !Storages.TryGetValue(guard.GuardStorageId, out Storage? guardStorage) || guard.StorageId == guard.GuardStorageId ||
-                    Type(guardStorage.TypeId) != "u64" || guardStorage.IsConst || guardStorage.IsThreadLocal || storage.IsThreadLocal ||
+                    Type(guardStorage.TypeId) != "u64" || guardStorage.IsConst || guardStorage.IsThreadLocal != storage.IsThreadLocal ||
                     guardStorage.Definition == "declaration" || storage.Definition == "declaration" ||
                     SourceTypeById(guard.SourceTypeId).ExecutionTypeId != storage.TypeId ||
-                    guard.GuardPolicy != "ia64-acquire-release" || guard.Line < 0 || guard.Column < 0 ||
+                    guard.GuardPolicy != (storage.IsThreadLocal ? "thread-local-byte" : "ia64-acquire-release") || guard.Line < 0 || guard.Column < 0 ||
                     guard.CaptureProof != "observed-local-static-guard" || !LocalStaticGuards.TryAdd(guard.Id, guard))
                     throw new InvalidDataException("Local static guard lacks its original storage, type, lifetime or publication contract");
             }
@@ -47,10 +47,11 @@ internal sealed partial class ObjectFile
             {
                 var operation = new GuardOperation(query.Integer(0), query.Integer(1), query.Text(2), query.Text(3));
                 if (!LocalStaticGuards.TryGetValue(operation.GuardId, out LocalStaticGuard? guard) ||
-                    operation.Kind is not ("probe" or "acquire" or "release") || operation.CaptureProof != "observed-local-static-guard-operation" ||
+                    operation.Kind is not ("probe" or "acquire" or "release" or "thread-publish") ||
+                    (guard.GuardPolicy == "thread-local-byte" ? operation.Kind is "acquire" or "release" : operation.Kind == "thread-publish") || operation.CaptureProof != "observed-local-static-guard-operation" ||
                     query.OptionalText(4) != "guard-operation" || query.OptionalInteger(5) is not long function ||
                     OriginalFunction(function) != guard.FunctionEntityId || query.OptionalInteger(6) is not long type ||
-                    Type(type) != (operation.Kind == "release" ? "void" : "i32") || !GuardOperations.TryAdd(operation.NodeId, operation))
+                    Type(type) != (operation.Kind is "release" or "thread-publish" ? "void" : "i32") || !GuardOperations.TryAdd(operation.NodeId, operation))
                     throw new InvalidDataException("Guard semantic operation lacks its exact observed function, kind and result type");
                 using var address = database.Prepare($"SELECT child_id,role,ordinal FROM edges WHERE parent_id={operation.NodeId}");
                 if (!address.Read() || address.Text(1) != "guard" || address.Integer(2) != 0)
@@ -59,7 +60,7 @@ internal sealed partial class ObjectFile
                 if (address.Read()) throw new InvalidDataException("Guard semantic operation has extra operands");
             }
         foreach (LocalStaticGuard guard in LocalStaticGuards.Values)
-            foreach (string kind in new[] { "probe", "acquire", "release" })
+            foreach (string kind in guard.GuardPolicy == "thread-local-byte" ? new[] { "probe", "thread-publish" } : new[] { "probe", "acquire", "release" })
                 if (!GuardOperations.Values.Any(operation => operation.GuardId == guard.Id && operation.Kind == kind))
                     throw new InvalidDataException("Local static guard lacks a complete acquire/publication sequence");
         using (var nodes = database.Prepare("SELECT id FROM nodes WHERE kind='guard-operation'"))

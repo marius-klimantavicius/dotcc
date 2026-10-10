@@ -101,6 +101,7 @@ public static unsafe partial class ObjectProgram
 '''
     if owned_static_registry:
         hooks = hooks.replace('    public static void ReleaseThread()',
+            '    public static int RegisterThreadDestructor(delegate* managed<void*, void> callback, void* argument) => DotObjServices.RegisterDestructor((nint)callback, (nint)argument, true);\n'
             '    static partial void FinalizeRuntimeThread() => DotObjServices.ReleaseRuntimeThread();\n'
             '    static partial void FinalizeRuntimeServices() => DotObjServices.FlushAfterLibraryFinalization();\n'
             '    public static void ReleaseThread()')

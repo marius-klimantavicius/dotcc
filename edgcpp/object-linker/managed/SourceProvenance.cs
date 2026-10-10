@@ -97,7 +97,8 @@ internal sealed partial class ObjectFile
             GeneratedRoutineOrigins.Keys.Any(ThunkWrappers.ContainsKey) ||
             staticDestructors.Overlaps(functions) || staticDestructors.Overlaps(AbiRoutineOrigins.Keys) ||
             staticDestructors.Overlaps(GeneratedRoutineOrigins.Keys) || staticDestructors.Overlaps(ThunkWrappers.Keys) ||
-            functions.Count + AbiRoutineOrigins.Count + GeneratedRoutineOrigins.Count + ThunkWrappers.Count + staticDestructors.Count != Entities.Count)
+            LambdaEntryOrigins.Keys.Any(id => functions.Contains(id) || AbiRoutineOrigins.ContainsKey(id) || GeneratedRoutineOrigins.ContainsKey(id) || ThunkWrappers.ContainsKey(id) || staticDestructors.Contains(id)) ||
+            functions.Count + AbiRoutineOrigins.Count + GeneratedRoutineOrigins.Count + ThunkWrappers.Count + staticDestructors.Count + LambdaEntryOrigins.Count != Entities.Count)
             throw new InvalidDataException("Missing or overlapping original, ABI or generated function origin");
         var parameterCounts = new Dictionary<long, int>();
         using (var query = database.Prepare("SELECT entity_id,ordinal,source_type_id,has_default_argument FROM source_parameters ORDER BY entity_id,ordinal"))
@@ -123,6 +124,7 @@ internal sealed partial class ObjectFile
         VerifyAbiRoutineOrigins();
         VerifyGeneratedRoutineOrigins();
         VerifyThunkWrappers();
+        VerifyLambdaEntryOrigins();
 
         // Join declarations to their owned execution counterpart while streaming
         // rows. Retain the type IDs to verify declared volatile access sites.
@@ -172,7 +174,7 @@ internal sealed partial class ObjectFile
             }
         RejectRows("SELECT entity_id FROM source_declarations WHERE entity_id IS NOT NULL GROUP BY entity_id HAVING count(*)<>1", "Duplicate source function declaration identity");
         RejectRows("SELECT binding_id FROM source_declarations WHERE binding_id IS NOT NULL GROUP BY binding_id HAVING count(*)<>1", "Duplicate source binding declaration identity");
-        RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL AND e.id NOT IN (SELECT entity_id FROM abi_routine_origins) AND e.id NOT IN (SELECT entity_id FROM generated_routine_origins) AND e.id NOT IN (SELECT entity_id FROM thunk_wrappers) AND e.id NOT IN (SELECT function_entity_id FROM generated_static_destructors)", "Missing original function declaration capture");
+        RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL AND e.id NOT IN (SELECT entity_id FROM abi_routine_origins) AND e.id NOT IN (SELECT entity_id FROM generated_routine_origins) AND e.id NOT IN (SELECT entity_id FROM thunk_wrappers) AND e.id NOT IN (SELECT entity_id FROM lambda_entry_origins) AND e.id NOT IN (SELECT function_entity_id FROM generated_static_destructors)", "Missing original function declaration capture");
         RejectRows("SELECT d.id FROM source_declarations d JOIN generated_static_destructors g ON g.function_entity_id=d.entity_id", "Generated static destructor must not fabricate an original declaration");
         RejectRows("SELECT b.id FROM bindings b LEFT JOIN parameters p ON p.entity_id=b.function_id AND p.ordinal=b.ordinal WHERE b.kind='parameter' AND (p.parameter_role IS NULL OR b.is_synthetic <> (p.parameter_role IN ('this','result-buffer','vtt','forwarded-source','static-object')))", "Implicit ABI parameters must be synthetic and source parameters must be original");
         RejectRows("SELECT b.id FROM bindings b JOIN source_declarations d ON d.binding_id=b.id WHERE b.is_synthetic=1", "Synthetic execution binding must not have fabricated source capture");
@@ -213,6 +215,9 @@ internal sealed partial class ObjectFile
                     FunctionSourceSignature(wrapper.TargetEntityId) + ";" + Convert.ToHexString(System.Text.Encoding.UTF8.GetBytes(new Symbol(this, Entities[wrapper.OverriddenEntityId]).Key)) + ":" +
                     FunctionSourceSignature(wrapper.OverriddenEntityId) + ";" + wrapper.ThisDelta + ";" + wrapper.VcallIndex + ";" +
                     wrapper.ReturnDelta + ";" + wrapper.VbaseIndex + ")"
+                : LambdaEntryOrigins.TryGetValue(entityId, out LambdaEntryOrigin? lambda)
+                    ? "lambda-static-entry(" + Convert.ToHexString(System.Text.Encoding.UTF8.GetBytes(new Symbol(this, Entities[lambda.TargetEntityId]).Key)) + ";" +
+                        SourceRoutineSignature(SourceRoutines[lambda.EntrySourceRoutineTypeId], 0, includeAbi: true) + ";" + FunctionSourceSignature(lambda.TargetEntityId) + ")"
                 : SourceRoutineSignature(EntitySourceRoutines[entityId], 0, includeAbi: true);
 
     private string SourceRoutineSignature(RoutineType routine, int depth, bool includeAbi = false)
@@ -344,6 +349,8 @@ internal sealed partial class ObjectFile
         Table("compileTimeSelections", "SELECT node_id,condition_value,has_else,capture_proof FROM compile_time_selections ORDER BY node_id", "nodeId", "conditionValue", "hasElse", "captureProof");
         Table("thunkWrappers", "SELECT entity_id,target_entity_id,overridden_entity_id,primary_entity_id,this_delta,vcall_index,return_delta,vbase_index,capture_proof FROM thunk_wrappers ORDER BY entity_id", "entityId", "targetEntityId", "overriddenEntityId", "primaryEntityId", "thisDelta", "vcallIndex", "returnDelta", "vbaseIndex", "captureProof");
         Table("wrapperCalls", "SELECT node_id,wrapper_entity_id,capture_proof FROM wrapper_calls ORDER BY node_id", "nodeId", "wrapperEntityId", "captureProof");
+        Table("lambdaEntryOrigins", "SELECT entity_id,target_entity_id,closure_source_type_id,entry_source_routine_type_id,capture_proof FROM lambda_entry_origins ORDER BY entity_id", "entityId", "targetEntityId", "closureSourceTypeId", "entrySourceRoutineTypeId", "captureProof");
+        Table("lambdaEntryCalls", "SELECT node_id,entry_entity_id,capture_proof FROM lambda_entry_calls ORDER BY node_id", "nodeId", "entryEntityId", "captureProof");
         Table("internalTryExpressions", "SELECT node_id,source_allocation_obligation_id,cleanup_policy,capture_proof FROM internal_try_expressions ORDER BY node_id", "nodeId", "sourceAllocationObligationId", "cleanupPolicy", "captureProof");
         Table("expressionLifetimes", "SELECT node_id,source_lifetime_id,capture_proof FROM expression_lifetimes ORDER BY node_id", "nodeId", "sourceLifetimeId", "captureProof");
         Table("baseSubobjectExpressions", "SELECT node_id,source_base_id FROM base_subobject_expressions ORDER BY node_id", "nodeId", "sourceBaseId");

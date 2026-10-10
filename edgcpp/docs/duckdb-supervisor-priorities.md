@@ -7,7 +7,39 @@ successful generation after one fix. The selected sample is deliberately varied,
 not statistically representative. Preserve all required source-type information;
 do not omit metadata to bypass a gate. Re-rank after each expanded probe.
 
-## Current queue (running full 2,635-unit native119 / managed134 inventory)
+## Current queue (complete baseline and all-failure follow-up, profile52)
+
+Frozen native119/managed134 completed all 2,635 original-source units: 2,509
+packaged and 2,499 verified; 126 export/package failures and 10 managed rejects.
+All 136 failures/rejects were then selected with native123, and every new lambda
+packaging failure plus both TLS units were re-exported with corrected native125.
+The combined follow-up has **67 packaged, 65 verified, 69 explicit remaining
+export/frontend gates and 2 managed rejects**. Receipts:
+`dotobj-v52-remaining-frontier.json`, `dotobj-duckdb-managed-123-146/results.json`,
+`dotobj-duckdb-managed-125-146/results.json`. These newer probes are a complete
+failure follow-up, not a re-export of the other 2,499 baseline successes.
+
+| Priority | Current first failure | Units | Assignment |
+| --- | --- | ---: | --- |
+| 1 | Constrained dependent `_Iter` source metadata | 38 | Base worker builds owned concept declarations, requirements, operands and substitution maps. Required source information; no metadata omission. |
+| 2 | Variadic indirect parameter/result ABI | 7 | Supervisor reduces RE2 StringPrintf plus exact result/parameter transport and va-list ownership. |
+| 3 | Dependent expression variable references | 4 | Required reusable source expression graph, adjacent to concept work. |
+| 4 | Special linkage | 4 | Inspect actual linkage attributes and stock C emission; no wholesale acceptance. |
+| 5 | Owned generated zero-model/constructor callback ABI | 2 | Lifetime worker implements generated helper provenance, semantic zero values, copy and selected constructor. |
+| 6 | Dynamic typed exception specifications | 2 | Preserve declared type lists and execution policy; required source metadata. |
+| Remaining execution/provenance families | Generated exception origin, original cleanup, partial construction and atomic record layout | 1 each | Retained precise actual gates; follow shared families first. |
+| Configuration | Original test frontend diagnostics | 8 | Separate project/profile issues, not evidence that EDG cannot parse DuckDB. |
+| Managed readers | Temporary destruction identity; musl constant record storage | 1 each | Retained original-source objects and exact rejection. |
+
+Accepted profile52 focused results: lambda 36, zero-array 40, scalar TLS guard 35,
+nontrivial TLS destruction 38, and global lifetime regression 125 checks. Lambda
+and both TLS suites include JIT and NativeAOT. Real selected units include all
+nine prior lambda packaging failures, both TLS users and both zero-array users.
+Combined generation of all 53 verified library units in this follow-up plus four
+actual providers emits 33,105 definitions. Full-project generation remains the
+integration checkpoint before runtime/library execution closure.
+
+## Previous queue (partial native119 / managed134 inventory)
 
 Snapshot: 1,712 processed, 1,670 packaged, 42 first failures. Exact retained
 snapshot: `dotobj-full-failure-priorities-119-v50.json`. This inventory remains

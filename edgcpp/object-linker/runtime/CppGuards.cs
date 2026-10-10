@@ -9,6 +9,14 @@ public static unsafe class CppGuards
     private static readonly object Sync = new();
     private static readonly global::System.Collections.Generic.Dictionary<nint, Guard> Guards = new();
 
+    // Stock thread-local guards publish only after successful initialization.
+    // Their storage is owned by the calling thread, so no monitor is involved.
+    public static int NeedsThreadInitialization(ulong* address) => *(byte*)address == 0 ? 1 : 0;
+    public static void PublishThreadInitialization(ulong* address) => *(byte*)address = 1;
+    // EDG retains its guard cleanup region for TLS too. Preserve its byte reset
+    // without attempting to release a monitor that this thread never acquired.
+    public static void AbortThreadInitialization(ulong* address) => *(byte*)address = 0;
+
     public static int NeedsInitialization(ulong* address)
         => global::System.Threading.Volatile.Read(ref *(byte*)address) == 0 ? 1 : 0;
 

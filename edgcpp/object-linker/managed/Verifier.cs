@@ -286,7 +286,7 @@ internal static class Verifier
                 case "guard-operation":
                     EdgeShape(node, ("guard", 1, 1)); Expr(node, "guard");
                     if (!obj.GuardOperations.TryGetValue(node.Id, out GuardOperation? guardOperation) ||
-                        Type(node) != (guardOperation.Kind == "release" ? "void" : "i32") || Type(Child(node, "guard")) != "ptr(u64)")
+                        Type(node) != (guardOperation.Kind is "release" or "thread-publish" ? "void" : "i32") || Type(Child(node, "guard")) != "ptr(u64)")
                         Fail("Guard operation lacks its verified publication contract");
                     break;
                 case "internal-try-expression":
@@ -958,6 +958,7 @@ internal static class Verifier
                 Fail("Cleanup prologue must be an immediate statement of its owned function body");
         }
         obj.VerifyThunkWrapperBody(function, body);
+        obj.VerifyLambdaEntryBody(function, body);
         var accessAlignment = new AccessAlignment(obj, body);
         var parents = body.Edges.Values.SelectMany(edges => edges)
             .Where(edge => body.Nodes[edge.ParentId].TypeId is not null || edge.Role != "target")

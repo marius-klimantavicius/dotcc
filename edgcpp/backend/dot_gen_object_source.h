@@ -241,6 +241,13 @@ struct DefaultAdapter {
   a_routine_ptr target=nullptr,primary=nullptr;
   bool implied_arguments=false,copy_constructor=false,has_arguments=false;
 };
+struct LambdaEntry {
+  a_routine_ptr target=nullptr;
+  unsigned signature_type=0,closure_type=0;
+  a_scope_ptr scope=nullptr;
+  an_expr_node_ptr forwarding=nullptr;
+  std::vector<a_variable_ptr> parameters;
+};
 struct ThunkWrapper {
   a_routine_ptr target=nullptr,overridden=nullptr;
   long long delta=0,vcall_index=0,return_delta=0,vbase_index=0;
@@ -363,7 +370,7 @@ struct LocalStaticSnapshot {
   an_object_lifetime_ptr lifetime=nullptr;
   unsigned source_type=0;
   a_source_position position={};
-  bool probe=false,acquire=false,release=false;
+  bool probe=false,acquire=false,release=false,thread_publish=false;
 };
 struct ArrayRuntimeSnapshot {
   a_routine_ptr owner=nullptr,callback=nullptr;
@@ -480,6 +487,7 @@ struct State {
   std::set<a_dynamic_init_ptr> automatic_no_effect_observed;
   std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> automatic_destructor_no_effect;
   std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> empty_allocation_initializations;
+  std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> zero_array_allocation_initializations;
   std::map<a_dynamic_init_ptr,UninitializedAllocationSnapshot> uninitialized_allocations;
   std::map<a_routine_ptr,GeneratedStaticDestructor> generated_static_destructors;
   std::map<a_routine_ptr,std::vector<a_dynamic_init_ptr>> adopted_initializers;
@@ -535,6 +543,7 @@ struct State {
   std::set<a_routine_ptr> runtime_declarations;
   std::map<a_routine_ptr,DefaultAdapter> default_adapters;
   std::map<a_routine_ptr,ThunkWrapper> thunk_wrappers;
+  std::map<a_routine_ptr,LambdaEntry> lambda_entries;
   std::map<an_asm_entry_ptr,AsmStatement> asm_statements;
   std::map<a_variable_ptr,Declaration> variables;
   std::map<a_type_ptr,Record> records;
@@ -1561,6 +1570,18 @@ inline void capture_routine(a_routine_ptr r) {
   if(r->overriding_function_for_wrapper)return;
 #endif
   auto &s=state();if(s.functions.count(r))return;
+  if(r->special_kind==sfk_lambda_entry_point) {
+    if(s.lambda_entries.count(r))return;
+    LambdaEntry entry;entry.target=r->variant.lambda_call_operator;
+    entry.signature_type=capture_type(r->type);
+    s.lambda_entries.emplace(r,entry);
+    if(entry.target) {
+      capture_routine(entry.target);
+      const auto &original=s.functions.at(entry.target);
+      s.lambda_entries.at(r).closure_type=s.types.at(original.signature_type-1).object_type;
+    }
+    return;
+  }
   a_type_ptr type=r->type;
 #if GENERATE_SOURCE_SEQUENCE_LISTS
   if(r->declared_type)type=r->declared_type;
@@ -1578,6 +1599,13 @@ inline void capture_routine(a_routine_ptr r) {
   s.functions[r]=function;
 }
 inline void observe_routine(a_routine_ptr routine){if(enabled())capture_routine(routine);}
+inline void observe_lambda_entry_body(a_routine_ptr routine,a_scope_ptr scope,an_expr_node_ptr forwarding) {
+  if(!enabled() || routine->special_kind!=sfk_lambda_entry_point)return;
+  auto found=state().lambda_entries.find(routine);
+  if(found==state().lambda_entries.end())return;
+  auto &entry=found->second;entry.scope=scope;entry.forwarding=forwarding;
+  for(auto p=scope->variant.routine.parameters;p;p=p->next)entry.parameters.push_back(p);
+}
 inline void observe_thunk_wrapper(a_routine_ptr routine) {
 #if DO_IL_LOWERING && IA64_ABI
   if(!enabled() || !routine->overriding_function_for_wrapper)return;
@@ -2481,6 +2509,21 @@ inline void observe_array_allocation_call(an_expr_node_ptr call,an_expr_node_ptr
   }
   if(call)state().array_allocation_calls.emplace(call,value);
 }
+// The stock variable-length dik_zero branch emits only nonthrowing runtime
+// zeroing after allocation and deliberately creates no rollback region.
+inline void observe_dynamic_array_zero_initialization(a_new_delete_supplement_ptr allocation,
+    a_dynamic_init_ptr initialization,a_routine_ptr owner) {
+  if(!enabled() || !allocation || !initialization || !owner)return;
+  auto release=allocation->freeing_of_storage_on_exception;
+  auto original=release?source_destruction(release,owner):nullptr;
+  if(!original || allocation->dynamic_init!=initialization ||
+     initialization->kind!=dik_zero || !allocation->type ||
+     skip_typerefs(allocation->type)->kind!=tk_array || skip_typerefs(allocation->type)->size ||
+     release->assoc_new!=allocation || !release->is_array_freeing ||
+     !state().destructions.at(original).allocation_release ||
+     !state().destructions.at(original).array_allocation)return;
+  state().zero_array_allocation_initializations.emplace(original,owner);
+}
 inline void observe_empty_allocation_initialization(a_dynamic_init_ptr dip,a_routine_ptr owner) {
   if(!enabled() || !dip || !owner)return;
   auto original=source_destruction(dip,owner);
@@ -2615,6 +2658,17 @@ inline void observe_local_static_guard_calls(a_variable_ptr guard,an_expr_node_p
   state().local_static_guard_operations.emplace(acquire,std::make_pair(guard,"acquire"));
   state().local_static_guard_operations.emplace(release,std::make_pair(guard,"release"));
 }
+inline void observe_local_thread_guard_publication(a_variable_ptr guard,a_statement_ptr statement) {
+  if(!enabled() || !guard || !statement || statement->kind!=stmk_expr ||
+     !statement->expr || statement->expr->kind!=enk_operation ||
+     statement->expr->variant.operation.kind!=eok_assign || !var_has_thread_storage_duration(guard))return;
+  auto found=state().local_static_guard_variables.find(guard);
+  if(found==state().local_static_guard_variables.end())return;
+  auto &source=state().local_static_initializers.at(found->second);
+  if(!var_has_thread_storage_duration(source.variable) || source.acquire || source.release)return;
+  source.thread_publish=true;
+  state().local_static_guard_operations.emplace(statement->expr,std::make_pair(guard,"thread-publish"));
+}
 inline void observe_local_static_guard_cleanup(a_dynamic_init_ptr dip,a_variable_ptr guard,a_routine_ptr owner) {
   if(enabled() && state().local_static_guard_variables.count(guard))
     state().local_static_guard_cleanups.emplace(dip,std::make_pair(owner,guard));
@@ -2738,6 +2792,9 @@ inline void observe_cleanup_region_copy(a_constant_ptr original,a_dynamic_init_p
 #endif
 inline void capture_scope(a_scope_ptr scope,a_routine_ptr function_owner=nullptr) {
   if(!scope)return;
+  if(scope->kind==sck_function && scope->variant.routine.ptr->special_kind==sfk_lambda_entry_point) {
+    capture_routine(scope->variant.routine.ptr);return;
+  }
   if(scope->kind==sck_function && state().generated_static_destructors.count(scope->variant.routine.ptr))return;
   // Alternate ABI bodies contain generated forwarding declarations only.
   if(scope->kind==sck_function && abi_primary(scope->variant.routine.ptr))return;

@@ -58,7 +58,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         using var lifetimeWriter = new Utf8JsonWriter(lifetimeStream, new JsonWriterOptions { Indented = true });
         lifetimeWriter.WriteStartObject();
         lifetimeWriter.WriteNumber("formatVersion", 1);
-        lifetimeWriter.WriteString("profile", "scalar-control-v51");
+        lifetimeWriter.WriteString("profile", "scalar-control-v52");
         lifetimeWriter.WriteString("capture", "lexical-activations-and-observed-cpp-cleanup-states");
         lifetimeWriter.WriteBoolean("cleanupStates", true);
         lifetimeWriter.WriteBoolean("sourceLifetimes", true);
@@ -165,7 +165,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v51");
+            writer.WriteString("profile", "scalar-control-v52");
             writer.WriteString("capture", "scalar-declarations-before-lowering");
             writer.WriteBoolean("prelowerSource", false);
             writer.WriteStartArray("objects");
@@ -178,7 +178,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         {
             writer.WriteStartObject();
             writer.WriteNumber("formatVersion", 1);
-            writer.WriteString("profile", "scalar-control-v51");
+            writer.WriteString("profile", "scalar-control-v52");
             writer.WriteString("capture", "preprocessor-definition-events");
             writer.WriteBoolean("macroDefinitions", true);
             writer.WriteBoolean("macros", false);
@@ -189,7 +189,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
         }
         File.WriteAllText(Path.Combine(output, "link-report.json"), JsonSerializer.Serialize(new
         {
-            formatVersion = 1, profile = "scalar-control-v51", status = "linked",
+            formatVersion = 1, profile = "scalar-control-v52", status = "linked",
             targetAbi = "portable-lp64-binary80-v2", runtimeAbi = "dotobj-scalar-v1",
             capabilities = new { sourceDeclarations = true, macroDefinitions = true, lexicalCleanups = true, cleanupStates = true, sourceLifetimes = true, prelowerSource = false, macros = false, lifetimes = false },
             limitations = new[] { "Project C profile with named records/unions/bitfields, static/TLS storage, function pointers, variadics, volatile operations and GNU lexical cleanup; aggregate values require complete nonvolatile POD layouts; ordinary and conditional scalar C++ local/member/base exceptional destructor cleanup is owned; typed throw/rethrow uses the shared exception provider by default (external provider opt-out available); ordinary and constructor/destructor function-try regions, typed handlers and release states are owned; fixed helper-based array cleanup and owned subobject VTT arguments are supported; variable-length/cookie arrays, nontrivial initializer-list temporary ownership and adjusting thunks remain gated; runtime extern bodies must be supplied separately", "Pre-lowering scalar/pointer/array/record declaration/type provenance plus lexical cleanup activations and observed source lifetime/exceptional destruction state graphs; no complete source expression/statement view, macro expansion history or general C++ EH capture" },
@@ -468,7 +468,7 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 case "function-address":
                     return "((" + Type(NodeType(node)) + ")&" + FunctionReference(linker.Resolve(obj, node.EntityId!.Value)) + ")";
                 case "indirect-call":
-                    return (Child("operand").Kind is "binding" or "storage" or "member" ? Operand("operand") : "(" + Operand("operand") + ")") + "(" + Arguments(node, ScalarTypes.Pointee(NodeType(Child("operand")))) + ")";
+                    return (liftedExpressions.ContainsKey(Child("operand").Id) || Child("operand").Kind is "binding" or "storage" or "member" ? Operand("operand") : "(" + Operand("operand") + ")") + "(" + Arguments(node, ScalarTypes.Pointee(NodeType(Child("operand")))) + ")";
                 case "default-value": return "default(" + Type(NodeType(node)) + ")";
                 case "member":
                     RecordField field = obj.Fields[node.FieldId!.Value];
@@ -485,9 +485,13 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                         return "(" + Expression(body.Child(pointer.Id, "left")) + ")[" + PointerIndex(body.Child(pointer.Id, "right")) + "]";
                     return "(*" + Operand("operand") + ")";
                 case "static-destruction-register":
-                    return "global::Edg.Runtime.ObjectProgram.RegisterStaticDestructor((delegate* managed<void*, void>)(" + Operand("callback") + "), (void*)(" + Operand("object") + "))";
+                    string registerMethod = obj.StaticDestructionRegistrations[node.Id].Domain == "thread"
+                        ? "RegisterThreadDestructor" : "RegisterStaticDestructor";
+                    return "global::Edg.Runtime.ObjectProgram." + registerMethod + "((delegate* managed<void*, void>)(" + Operand("callback") + "), (void*)(" + Operand("object") + "))";
                 case "guard-operation":
-                    string guardMethod = obj.GuardOperations[node.Id].Kind switch { "probe" => "NeedsInitialization", "acquire" => "Acquire", "release" => "Release", _ => throw new InvalidDataException("Invalid guard operation") };
+                    GuardOperation guardOperation = obj.GuardOperations[node.Id];
+                    bool threadGuard = obj.LocalStaticGuards[guardOperation.GuardId].GuardPolicy == "thread-local-byte";
+                    string guardMethod = guardOperation.Kind switch { "probe" => threadGuard ? "NeedsThreadInitialization" : "NeedsInitialization", "thread-publish" => "PublishThreadInitialization", "acquire" => "Acquire", "release" => "Release", _ => throw new InvalidDataException("Invalid guard operation") };
                     return "global::Edg.Runtime.CppGuards." + guardMethod + "(" + Operand("guard") + ")";
                 case "call":
                     Symbol target = linker.Resolve(obj, node.EntityId!.Value);
@@ -1044,7 +1048,9 @@ internal sealed partial class Emitter(Linker linker, string namespaceOption, str
                 if (state.GuardActionId is long guardActionId)
                 {
                     GuardCleanupAction guardAction = obj.GuardCleanupActions[guardActionId];
-                    Line(indent + 5, "global::Edg.Runtime.CppGuards.Abort(" + Expression(body.Nodes[guardAction.TargetNodeId]) + ");");
+                    string abortMethod = obj.LocalStaticGuards[guardAction.GuardId].GuardPolicy == "thread-local-byte"
+                        ? "AbortThreadInitialization" : "Abort";
+                    Line(indent + 5, "global::Edg.Runtime.CppGuards." + abortMethod + "(" + Expression(body.Nodes[guardAction.TargetNodeId]) + ");");
                     Line(indent + 5, "break;"); continue;
                 }
                 if (state.AllocationActionId is long allocationActionId)

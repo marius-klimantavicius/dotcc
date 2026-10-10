@@ -645,3 +645,23 @@ TPCH DBGenContext copies now carry bitwise-initialization proofs; actual
 DuckDBExtensionsInit unique_ptr condition temporaries carry initializer-storage
 proofs. These object exports advance their previous copy-policy gates without
 changing the original C++ operation permissions.
+
+### Dynamic-array zero initialization (v52)
+
+`new Value[count]()` can retain an original delete[] rollback obligation even
+when `Value` has a trivial defaulted constructor. Stock `lower_new` handles
+its variable-length `dik_zero` initializer with a nonthrowing zeroing operation,
+bypassing rollback setup. The allocation itself can still throw before it
+returns storage. `allocation_elisions` records this exact branch as
+`dynamic-array-zero-initialization`, preserving the original lifetime, ordinal,
+allocated array source type and selected deallocator. It is distinct from
+no initialization and from an empty lowered initialization expression.
+
+Native123/managed143 pass 40 checks at `dotobj-v52-zero-array-123-143-001`:
+native C++/stock C O0/O2, dirty allocator storage becoming zero, one evaluation
+of the element count, allocator failure without a spurious deletion,
+source-hidden verification and C# generation, and six malformed metadata
+objects. The shared dynamic-array length failure runtime provider remains
+pending, so this receipt does not claim translated execution. Arrays requiring
+a generated zero-then-constructor callback remain a separate owned-protocol
+feature.

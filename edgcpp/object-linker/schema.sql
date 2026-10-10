@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v51'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v52'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -211,6 +211,19 @@ CREATE TABLE wrapper_calls (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
  wrapper_entity_id INTEGER NOT NULL REFERENCES thunk_wrappers(entity_id),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-wrapper-forwarding')
+) STRICT;
+CREATE TABLE lambda_entry_origins (
+ entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
+ target_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
+ closure_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ entry_source_routine_type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-lambda-static-entry'),
+ CHECK(entity_id<>target_entity_id)
+) STRICT;
+CREATE TABLE lambda_entry_calls (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ entry_entity_id INTEGER NOT NULL REFERENCES lambda_entry_origins(entity_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-lambda-entry-forwarding')
 ) STRICT;
 CREATE TABLE initialization_actions (
  id INTEGER PRIMARY KEY CHECK(id>0),
@@ -426,8 +439,8 @@ CREATE TABLE source_uninitialized_allocations (
 CREATE TABLE allocation_elisions (
  source_allocation_obligation_id INTEGER NOT NULL REFERENCES source_allocation_obligations(id),
  function_entity_id INTEGER NOT NULL REFERENCES entities(id),
- kind TEXT NOT NULL CHECK(kind IN ('empty-initialization','no-initialization')),
- capture_proof TEXT NOT NULL CHECK(capture_proof IN ('observed-empty-allocation-initialization','original-new-without-initialization')),
+ kind TEXT NOT NULL CHECK(kind IN ('empty-initialization','no-initialization','dynamic-array-zero-initialization')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN ('observed-empty-allocation-initialization','original-new-without-initialization','observed-dynamic-array-zero-initialization')),
  PRIMARY KEY(source_allocation_obligation_id,function_entity_id)
 ) STRICT;
 CREATE TABLE source_allocation_obligations (
@@ -540,7 +553,7 @@ CREATE TABLE local_static_guards (
  guard_storage_id INTEGER NOT NULL UNIQUE REFERENCES storages(id),
  source_type_id INTEGER NOT NULL REFERENCES source_types(id),
  source_lifetime_id INTEGER NOT NULL REFERENCES source_lifetimes(id),
- guard_policy TEXT NOT NULL CHECK(guard_policy='ia64-acquire-release'),
+ guard_policy TEXT NOT NULL CHECK(guard_policy IN ('ia64-acquire-release','thread-local-byte')),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0), column INTEGER NOT NULL CHECK(column>=0),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-local-static-guard')
@@ -548,7 +561,7 @@ CREATE TABLE local_static_guards (
 CREATE TABLE guard_operations (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
  guard_id INTEGER NOT NULL REFERENCES local_static_guards(id),
- kind TEXT NOT NULL CHECK(kind IN ('probe','acquire','release')),
+ kind TEXT NOT NULL CHECK(kind IN ('probe','acquire','release','thread-publish')),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-local-static-guard-operation')
 ) STRICT;
 CREATE TABLE guard_cleanup_actions (
