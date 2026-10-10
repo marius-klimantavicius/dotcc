@@ -11,6 +11,8 @@ for source, target in [
     (root / "backend/dot_gen_object_tls_writer.h", root / "upstream/src/dot_gen_object_tls_writer.h"),
     (root / "backend/dot_gen_object_source_operations.h", root / "upstream/src/dot_gen_object_source_operations.h"),
     (root / "backend/dot_gen_object_source_constraints.h", root / "upstream/src/dot_gen_object_source_constraints.h"),
+    (root / "backend/dot_gen_object_source_namespaces.h", root / "upstream/src/dot_gen_object_source_namespaces.h"),
+    (root / "backend/dot_gen_object_namespaces.h", root / "upstream/src/dot_gen_object_namespaces.h"),
     (root / "backend/dot_gen_object_constraints_writer.h", root / "upstream/src/dot_gen_object_constraints_writer.h"),
     (root / "backend/dot_gen_object.h", root / "upstream/src/dot_gen_object.h"),
     (root / "backend/dot_gen_primitive_views.h", root / "upstream/src/dot_gen_primitive_views.h"),
@@ -444,6 +446,13 @@ object_source_overlay(init_lower,
     '    dot_object_source::observe_runtime_declaration(*routine);\n'
     '#endif\n'
     '  }  /* if */\n  return *routine;\n}  /* make_prototyped_runtime_routine */')
+object_source_overlay(init_lower,
+    '  ptr_elem_type = make_pointer_type(elem_type);\n',
+    '  ptr_elem_type = make_pointer_type(elem_type);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::EntityInitializerCapture dot_entity_initializer_capture(\n'
+    '    ndsp->freeing_of_storage_on_exception, elem_type, innermost_function_scope->variant.routine.ptr);\n'
+    '#endif\n')
 for runtime_callback in ("ctor", "dtor", "cctor"):
     object_source_overlay(init_lower,
         f'    {runtime_callback}_ptr_type = make_pointer_type(function_type);',
@@ -946,10 +955,20 @@ object_source_overlay(init_lower,
     '#endif\n'
     '  add_destructor_call(dip->destructor, ipdp, have_complete_object,\n'
     '                      vtt_addr_node, insert_location);')
+# Upgrade the exact existing call observer without stacking its prior form.
+old_entity_call_observer = ('#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_normal_destruction_call(routine, call_node, top_level_node,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n')
+entity_call_source = init_lower.read_text()
+if old_entity_call_observer in entity_call_source:
+    init_lower.write_text(entity_call_source.replace(old_entity_call_observer, ''))
 object_source_overlay(init_lower,
     '  return top_level_node;\n}  /* make_call_node_full */',
     '#if defined(EDG_DOT_BACKEND)\n'
     '  dot_object_source::observe_normal_destruction_call(routine, call_node, top_level_node,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '  dot_object_source::observe_generated_entity_initializer_call(routine, top_level_node,\n'
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '#endif\n'
     '  return top_level_node;\n}  /* make_call_node_full */')

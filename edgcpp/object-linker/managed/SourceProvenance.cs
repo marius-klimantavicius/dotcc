@@ -4,7 +4,7 @@ namespace DotObj;
 
 internal sealed record SourceType(long Id, string Kind, string SourceName,
     long? UnderlyingTypeId, long? ExecutionRepresentationId, bool IsConst, bool IsVolatile,
-    long? SourceFileId, long Line, long Column, long? ElementCount, bool IsRestrict, bool IsAtomic, string? ArrayBoundKind, string SourceForm="plain")
+    long? SourceFileId, long Line, long Column, long? ElementCount, bool IsRestrict, bool IsAtomic, string? ArrayBoundKind, string SourceForm="plain",bool HasNamespaceOwner=false)
 {
     // Semantic-only types are valid metadata. A consumer requesting executable
     // storage/ABI must have an observed mapping, never an invented fallback.
@@ -27,6 +27,7 @@ internal sealed partial class ObjectFile
         VerifySourceDynamicSpecifications();
         ReadAndVerifySourceRecordOwners();
         VerifySourceNestedTypeDeclarations();
+        VerifySourceNamespaces();
         VerifySourceTemplateMetadata();
         VerifySourceConstraints();
         VerifySourceTypeOriginContracts();
@@ -96,7 +97,7 @@ internal sealed partial class ObjectFile
                 if (!Entities.ContainsKey(generated.Integer(0)) || !staticDestructors.Add(generated.Integer(0)))
                     throw new InvalidDataException("Invalid generated static destructor identity");
         var arrayInitializers = new HashSet<long>();
-        using (var generated = database.Prepare("SELECT function_entity_id FROM generated_array_initializers"))
+        using (var generated = database.Prepare("SELECT function_entity_id FROM generated_array_initializers UNION ALL SELECT function_entity_id FROM generated_entity_initializers"))
             while (generated.Read())
                 if (!Entities.ContainsKey(generated.Integer(0)) || !arrayInitializers.Add(generated.Integer(0)))
                     throw new InvalidDataException("Invalid generated array initializer identity");
@@ -185,10 +186,11 @@ internal sealed partial class ObjectFile
             }
         RejectRows("SELECT entity_id FROM source_declarations WHERE entity_id IS NOT NULL GROUP BY entity_id HAVING count(*)<>1", "Duplicate source function declaration identity");
         RejectRows("SELECT binding_id FROM source_declarations WHERE binding_id IS NOT NULL GROUP BY binding_id HAVING count(*)<>1", "Duplicate source binding declaration identity");
-        RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL AND e.id NOT IN (SELECT entity_id FROM abi_routine_origins) AND e.id NOT IN (SELECT entity_id FROM generated_routine_origins) AND e.id NOT IN (SELECT entity_id FROM thunk_wrappers) AND e.id NOT IN (SELECT entity_id FROM lambda_entry_origins) AND e.id NOT IN (SELECT function_entity_id FROM generated_static_destructors) AND e.id NOT IN (SELECT function_entity_id FROM generated_array_initializers) AND e.id NOT IN (SELECT entity_id FROM tls_routine_origins)", "Missing original function declaration capture");
+        RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL AND e.id NOT IN (SELECT entity_id FROM abi_routine_origins) AND e.id NOT IN (SELECT entity_id FROM generated_routine_origins) AND e.id NOT IN (SELECT entity_id FROM thunk_wrappers) AND e.id NOT IN (SELECT entity_id FROM lambda_entry_origins) AND e.id NOT IN (SELECT function_entity_id FROM generated_static_destructors) AND e.id NOT IN (SELECT function_entity_id FROM generated_array_initializers) AND e.id NOT IN (SELECT function_entity_id FROM generated_entity_initializers) AND e.id NOT IN (SELECT entity_id FROM tls_routine_origins)", "Missing original function declaration capture");
+        RejectRows("SELECT d.id FROM source_declarations d JOIN generated_entity_initializers g ON g.function_entity_id=d.entity_id", "Generated counted initializer must not fabricate an original declaration");
         RejectRows("SELECT d.id FROM source_declarations d JOIN generated_array_initializers g ON g.function_entity_id=d.entity_id", "Generated array initializer must not fabricate an original declaration");
         RejectRows("SELECT d.id FROM source_declarations d JOIN generated_static_destructors g ON g.function_entity_id=d.entity_id", "Generated static destructor must not fabricate an original declaration");
-        RejectRows("SELECT b.id FROM bindings b LEFT JOIN parameters p ON p.entity_id=b.function_id AND p.ordinal=b.ordinal WHERE b.kind='parameter' AND (p.parameter_role IS NULL OR b.is_synthetic <> (p.parameter_role IN ('this','result-buffer','vtt','forwarded-source','static-object','initialization-object')))", "Implicit ABI parameters must be synthetic and source parameters must be original");
+        RejectRows("SELECT b.id FROM bindings b LEFT JOIN parameters p ON p.entity_id=b.function_id AND p.ordinal=b.ordinal WHERE b.kind='parameter' AND (p.parameter_role IS NULL OR b.is_synthetic <> (p.parameter_role IN ('this','result-buffer','vtt','forwarded-source','static-object','initialization-object','entity-destination','entity-count','entity-model')))", "Implicit ABI parameters must be synthetic and source parameters must be original");
         RejectRows("SELECT b.id FROM bindings b JOIN source_declarations d ON d.binding_id=b.id WHERE b.is_synthetic=1", "Synthetic execution binding must not have fabricated source capture");
         RejectRows("SELECT b.id FROM bindings b LEFT JOIN source_declarations d ON d.binding_id=b.id WHERE d.id IS NULL AND b.is_synthetic=0", "Missing original binding declaration capture");
     }
@@ -223,6 +225,8 @@ internal sealed partial class ObjectFile
             ? "generated-routine(" + generated.Kind + ";" + EntityRoutine(entityId) + ";" + generated.FailurePolicy + ")"
             : GeneratedStaticDestructors.TryGetValue(entityId, out GeneratedStaticDestructor? destruction)
                 ? StaticDestructorSourceSignature(destruction)
+            : GeneratedEntityInitializers.TryGetValue(entityId,out var countedInitializer)
+                ? "generated-counted-model-initializer("+SourceTypeSignature(countedInitializer.SourceElementTypeId)+")"
             : GeneratedArrayInitializers.TryGetValue(entityId, out GeneratedArrayInitializer? initializer)
                 ? "generated-array-zero-initializer(" + SourceTypeSignature(initializer.SourceElementTypeId) + ";" +
                     (initializer.ConstructorEntityId is long constructor ? FunctionSourceSignature(constructor) : "no-constructor") + ")"
@@ -376,8 +380,12 @@ internal sealed partial class ObjectFile
         Table("expressionLifetimes", "SELECT node_id,source_lifetime_id,capture_proof FROM expression_lifetimes ORDER BY node_id", "nodeId", "sourceLifetimeId", "captureProof");
         Table("baseSubobjectExpressions", "SELECT node_id,source_base_id FROM base_subobject_expressions ORDER BY node_id", "nodeId", "sourceBaseId");
         Table("sourceNestedTypeDeclarations", "SELECT type_id,owner_type_id,capture_proof FROM source_nested_type_declarations ORDER BY type_id", "typeId", "ownerTypeId", "captureProof");
-        Table("sourceConcepts", "SELECT id,source_name,qualified_name,parameter_count,definition_expression_id,header_constraint_expression_id,source_file_id,line,column,capture_proof FROM source_concepts ORDER BY id",
-            "id", "sourceName", "qualifiedName", "parameterCount", "definitionExpressionId", "headerConstraintExpressionId", "sourceFileId", "line", "column", "captureProof");
+        Table("sourceNamespaces", "SELECT id,parent_id,source_name,is_unnamed,is_inline,has_internal_linkage,source_file_id,line,column,capture_proof FROM source_namespaces ORDER BY id",
+            "id", "parentId", "sourceName", "isUnnamed", "isInline", "hasInternalLinkage", "sourceFileId", "line", "column", "captureProof");
+        Table("sourceNamespaceOwners", "SELECT owner_kind,owner_id,namespace_id,capture_proof FROM source_namespace_owners ORDER BY owner_kind,owner_id",
+            "ownerKind", "ownerId", "namespaceId", "captureProof");
+        Table("sourceConcepts", "SELECT has_namespace_owner,id,source_name,qualified_name,parameter_count,definition_expression_id,header_constraint_expression_id,source_file_id,line,column,capture_proof FROM source_concepts ORDER BY id",
+            "hasNamespaceOwner", "id", "sourceName", "qualifiedName", "parameterCount", "definitionExpressionId", "headerConstraintExpressionId", "sourceFileId", "line", "column", "captureProof");
         Table("sourceConceptParameters", "SELECT concept_id,ordinal,kind,source_name,type_id,constant_id,template_id,default_type_id,default_constant_id,default_template_id,is_pack,is_abbreviated,source_file_id,line,column FROM source_concept_parameters ORDER BY concept_id,ordinal",
             "conceptId", "ordinal", "kind", "sourceName", "typeId", "constantId", "templateId", "defaultTypeId", "defaultConstantId", "defaultTemplateId", "isPack", "isAbbreviated", "sourceFileId", "line", "column");
         Table("sourceExpressionTemporaries", "SELECT expression_id,initialization_kind,spelled_source_type_id,constructor_declaration_id,destructor_declaration_id,constant_id,is_dependent_constructor,lifetime_disposition,capture_proof FROM source_expression_temporaries ORDER BY expression_id",
@@ -386,6 +394,10 @@ internal sealed partial class ObjectFile
             "expressionId", "flag");
         Table("sourceExpressionAllocations", "SELECT expression_id,object_source_type_id,operator_declaration_id,is_new,is_dependent_selection,is_placement,is_aligned,is_array_delete,is_global,has_initializer,is_braced_initializer,is_parenthesized_aggregate,has_deducible_type,has_parenthesized_type_id,initialization_disposition,rollback_disposition,capture_proof,is_lookup_deferred FROM source_expression_allocations ORDER BY expression_id",
             "expressionId", "objectSourceTypeId", "operatorDeclarationId", "isNew", "isDependentSelection", "isPlacement", "isAligned", "isArrayDelete", "isGlobal", "hasInitializer", "isBracedInitializer", "isParenthesizedAggregate", "hasDeducibleType", "hasParenthesizedTypeId", "initializationDisposition", "rollbackDisposition", "captureProof", "isLookupDeferred");
+        Table("sourceLocalScopes", "SELECT id,routine_declaration_id,parent_id,kind,sibling_ordinal,child_scope_count,variable_count,source_file_id,line,column,capture_proof FROM source_local_scopes ORDER BY id",
+            "id","routineDeclarationId","parentId","kind","siblingOrdinal","childScopeCount","variableCount","sourceFileId","line","column","captureProof");
+        Table("sourceLocalVariableDeclarations", "SELECT declaration_id,scope_id,declaration_ordinal,declared_source_type_id,capture_proof FROM source_local_variable_declarations ORDER BY declaration_id",
+            "declarationId","scopeId","declarationOrdinal","declaredSourceTypeId","captureProof");
         Table("sourceFunctionParameterDeclarations", "SELECT declaration_id,routine_declaration_id,binder_id,parameter_ordinal,declared_source_type_id,capture_proof FROM source_function_parameter_declarations ORDER BY declaration_id",
             "declarationId", "routineDeclarationId", "binderId", "parameterOrdinal", "declaredSourceTypeId", "captureProof");
         Table("sourceDeclarationOperators", "SELECT declaration_id,operator_kind,capture_proof FROM source_declaration_operators ORDER BY declaration_id",
@@ -456,6 +468,8 @@ internal sealed partial class ObjectFile
             "expressionId", "ordinal", "kind", "sourceTypeId", "constantId", "templateId");
         Table("sourceSemanticConstantExpressions", "SELECT constant_id,expression_id,capture_proof FROM source_semantic_constant_expressions ORDER BY constant_id",
             "constantId", "expressionId", "captureProof");
+        Table("sourceProxyTypes", "SELECT source_record_id,original_type_id,source_occurrence,capture_proof FROM source_proxy_types ORDER BY source_record_id",
+            "sourceRecordId", "originalTypeId", "sourceOccurrence", "captureProof");
         Table("sourcePackSizes", "SELECT constant_id,is_type,is_template_template,source_type_id,expression_id,template_id,capture_proof FROM source_pack_sizes ORDER BY constant_id",
             "constantId", "isType", "isTemplateTemplate", "sourceTypeId", "expressionId", "templateId", "captureProof");
         Table("sourceAggregateConstants", "SELECT constant_id,element_count,original_type_id,backing_expression_id,flag_bits,added_template_const,capture_proof FROM source_aggregate_constants ORDER BY constant_id",
@@ -514,6 +528,9 @@ internal sealed partial class ObjectFile
             "functionEntityId", "sourceObligationId", "sourceAllocationObligationId", "sourceLifetimeId", "copiedOrdinal", "captureProof");
         Table("defaultArgumentTemporaryExecutions", "SELECT function_entity_id,source_temporary_id,capture_proof FROM default_argument_temporary_executions ORDER BY function_entity_id,source_temporary_id,capture_proof",
             "functionEntityId", "sourceTemporaryId", "captureProof");
+        Table("generatedEntityInitializers", "SELECT function_entity_id,owner_function_entity_id,source_allocation_obligation_id,source_element_type_id,element_type_id,destination_binding_id,count_binding_id,model_binding_id,copy_node_id,capture_proof FROM generated_entity_initializers ORDER BY function_entity_id",
+            "functionEntityId","ownerFunctionEntityId","sourceAllocationObligationId","sourceElementTypeId","elementTypeId","destinationBindingId","countBindingId","modelBindingId","copyNodeId","captureProof");
+        Table("generatedEntityInitializerCalls", "SELECT node_id,helper_entity_id,capture_proof FROM generated_entity_initializer_calls ORDER BY node_id", "nodeId","helperEntityId","captureProof");
         Table("generatedArrayInitializers", "SELECT function_entity_id,owner_function_entity_id,source_allocation_obligation_id,source_element_type_id,element_type_id,constructor_entity_id,object_parameter_binding_id,model_binding_id,model_initialization_node_id,model_copy_node_id,constructor_call_node_id,model_lowered_init_kind,model_site_kind,model_zero_storage,model_partially_initialized,capture_proof FROM generated_array_initializers ORDER BY function_entity_id",
             "functionEntityId", "ownerFunctionEntityId", "sourceAllocationObligationId", "sourceElementTypeId", "elementTypeId", "constructorEntityId", "objectParameterBindingId", "modelBindingId", "modelInitializationNodeId", "modelCopyNodeId", "constructorCallNodeId", "modelLoweredInitKind", "modelSiteKind", "modelZeroStorage", "modelPartiallyInitialized", "captureProof");
         Table("generatedStaticDestructors", "SELECT function_entity_id,source_obligation_id,parameter_binding_id,storage_id,element_type_id,element_count,element_size,capture_proof FROM generated_static_destructors ORDER BY function_entity_id",
@@ -570,8 +587,8 @@ internal sealed partial class ObjectFile
             "initializerId", "ordinal", "nodeId");
         Table("initializationActions", "SELECT id,entity_id,phase,priority,ordinal,source_file_id,line,column FROM initialization_actions ORDER BY ordinal",
             "id", "entityId", "phase", "priority", "ordinal", "sourceFileId", "line", "column");
-        Table("sourceNamedTemplates", "SELECT template_id,qualified_name,owner_source_type_id,prototype_source_type_id,constraint_expression_id,capture_proof FROM source_named_templates ORDER BY template_id",
-            "templateId", "qualifiedName", "ownerSourceTypeId", "prototypeSourceTypeId", "constraintExpressionId", "captureProof");
+        Table("sourceNamedTemplates", "SELECT has_namespace_owner,template_id,qualified_name,owner_source_type_id,prototype_source_type_id,constraint_expression_id,capture_proof FROM source_named_templates ORDER BY template_id",
+            "hasNamespaceOwner", "templateId", "qualifiedName", "ownerSourceTypeId", "prototypeSourceTypeId", "constraintExpressionId", "captureProof");
         Table("sourceAliasInstances", "SELECT type_id,template_id,is_prototype,is_nonreal,is_dependent,argument_count,has_original_arguments,original_argument_count,minimum_arguments,capture_proof FROM source_alias_instances ORDER BY type_id",
             "typeId", "templateId", "isPrototype", "isNonreal", "isDependent", "argumentCount", "hasOriginalArguments", "originalArgumentCount", "minimumArguments", "captureProof");
         Table("sourceAliasArguments", "SELECT type_id,list_kind,ordinal,kind,source_type_id,constant_id,template_id FROM source_alias_arguments ORDER BY type_id,list_kind,ordinal",
@@ -624,8 +641,8 @@ internal sealed partial class ObjectFile
         Table("sourceEnumTypes", "SELECT type_id,identity_key,underlying_type_id,is_scoped,is_complete,enumerator_list_complete,has_explicit_base,is_template,owner_type_id,source_occurrence,enumerator_count,is_nonreal,is_prototype,is_specialized,originally_unnamed,underlying_origin FROM source_enum_types ORDER BY type_id", "typeId", "identityKey", "underlyingTypeId", "isScoped", "isComplete", "enumeratorListComplete", "hasExplicitBase", "isTemplate", "ownerTypeId", "sourceOccurrence", "enumeratorCount", "isNonreal", "isPrototype", "isSpecialized", "originallyUnnamed", "underlyingOrigin");
         Table("sourceEnumerators", "SELECT type_id,ordinal,source_name,value_text,source_file_id,line,column,constant_id FROM source_enumerators ORDER BY type_id,ordinal", "typeId", "ordinal", "sourceName", "valueText", "sourceFileId", "line", "column", "constantId");
         Table("sourceMemberPointerTypes", "SELECT type_id,owner_type_id,member_type_id,capture_proof FROM source_member_pointer_types ORDER BY type_id", "typeId", "ownerTypeId", "memberTypeId", "captureProof");
-        Table("sourceTypes", "SELECT id,source_form,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count,is_restrict,is_atomic,array_bound_kind FROM source_types ORDER BY id",
-            "id", "sourceForm", "kind", "sourceName", "underlyingTypeId", "executionTypeId", "isConst", "isVolatile", "sourceFileId", "line", "column", "elementCount", "isRestrict", "isAtomic", "arrayBoundKind");
+        Table("sourceTypes", "SELECT has_namespace_owner,id,source_form,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count,is_restrict,is_atomic,array_bound_kind FROM source_types ORDER BY id",
+            "hasNamespaceOwner", "id", "sourceForm", "kind", "sourceName", "underlyingTypeId", "executionTypeId", "isConst", "isVolatile", "sourceFileId", "line", "column", "elementCount", "isRestrict", "isAtomic", "arrayBoundKind");
         Table("storages", "SELECT id,source_name,linkage,external_key,definition,type_id,source_type_id,is_thread_local,is_const,alignment,source_file_id,line,column FROM storages ORDER BY id",
             "id", "sourceName", "linkage", "externalKey", "definition", "typeId", "sourceTypeId", "isThreadLocal", "isConst", "alignment", "sourceFileId", "line", "column");
         Table("routineTypes", "SELECT type_id,return_type_id,variadic,exception_policy FROM routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy");

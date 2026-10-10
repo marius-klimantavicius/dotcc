@@ -117,17 +117,31 @@ void source_class_specialization_metadata(a_type_ptr type) {
   }
 }
 std::vector<string> source_declaration_operators,source_function_parameter_declarations;
+std::vector<string> source_local_scopes,source_local_variable_declarations;
+std::set<unsigned> written_source_local_scopes;
+unsigned source_local_scope(unsigned id) {
+  if(!id)reject("source local scope is absent");
+  if(!written_source_local_scopes.insert(id).second)return id;
+  const auto value=dot_object_source::source_constraint_graph().local_scopes.at(id-1);
+  if(!value.error.empty())reject(value.error.c_str());
+  source_local_scopes.push_back("{\"id\":"+number(id)+",\"routineDeclarationId\":"+number(source_constraint_declaration(value.routine))+
+    ",\"parentId\":"+number(value.parent?source_local_scope(value.parent):0)+",\"kind\":"+quote(value.kind)+
+    ",\"siblingOrdinal\":"+std::to_string(value.ordinal)+",\"childScopeCount\":"+std::to_string(value.child_count)+
+    ",\"variableCount\":"+std::to_string(value.variable_count)+",\"captureProof\":\"original-local-scope-tree\""+position(value.position)+"}");
+  return id;
+}
 unsigned source_constraint_declaration(unsigned captured) {
   if(!captured)reject("source expression declaration is absent");
   if(!written_source_declarations.insert(captured).second)return captured;
   const auto value=dot_object_source::source_constraint_graph().declarations.at(captured-1);
   if(!value.error.empty())reject(value.error.c_str());
+  source_namespace_owner("declaration",captured,value.namespace_owner);
   source_expression_declarations.push_back("{\"id\":"+number(captured)+",\"kind\":"+quote(value.kind)+
     ",\"sourceName\":"+quote(value.name)+",\"qualifiedName\":"+quote(value.qualified_name)+
     ",\"sourceTypeId\":"+number(source_type(value.type))+
     ",\"ownerSourceTypeId\":"+number(value.owner_type?source_type(value.owner_type):0)+
     ",\"templatePrototypeDeclarationId\":"+number(value.template_prototype?source_constraint_declaration(value.template_prototype):0)+
-    ",\"scopeKind\":"+quote(value.parameter_owner?"function-parameter":"nonlocal")+
+    ",\"scopeKind\":"+quote(value.parameter_owner?"function-parameter":value.local_scope?"function-local":value.namespace_owner?"namespace":"nonlocal")+
     ",\"routineKind\":"+quote(value.routine_kind)+",\"templateOriginKind\":"+quote(value.template_origin_kind)+
     ",\"hasTemplateOrigin\":"+(value.has_template_origin?"true":"false")+
     ",\"isTemplatePrototype\":"+(value.is_template_prototype?"true":"false")+
@@ -145,6 +159,10 @@ unsigned source_constraint_declaration(unsigned captured) {
     ",\"parameterOrdinal\":"+std::to_string(value.parameter_ordinal)+
     ",\"declaredSourceTypeId\":"+number(value.parameter_declared_type?source_type(value.parameter_declared_type):0)+
     ",\"captureProof\":\"original-function-parameter-list\"}");
+  if(value.local_scope)source_local_variable_declarations.push_back("{\"declarationId\":"+number(captured)+
+    ",\"scopeId\":"+number(source_local_scope(value.local_scope))+",\"declarationOrdinal\":"+std::to_string(value.local_ordinal)+
+    ",\"declaredSourceTypeId\":"+number(value.local_declared_type?source_type(value.local_declared_type):0)+
+    ",\"captureProof\":\"original-nonstatic-variable-list\"}");
   if(value.operator_kind>=0)source_declaration_operators.push_back("{\"declarationId\":"+number(captured)+",\"operatorKind\":"+std::to_string(value.operator_kind)+",\"captureProof\":\"original-operator-declaration\"}");
   unsigned ordinal=0;for(const auto &formal:value.template_formals)
     source_expression_declaration_formals.push_back(constraint_formal_row("declarationId",captured,ordinal++,formal));
@@ -163,8 +181,10 @@ unsigned source_constraint_concept(unsigned captured) {
   if(!written_source_concepts.insert(captured).second)return captured;
   const auto value=dot_object_source::source_constraint_graph().concepts.at(captured-1);
   if(!value.error.empty())reject(value.error.c_str());
+  source_namespace_owner("concept",captured,value.namespace_owner);
   source_concepts.push_back("{\"id\":"+number(captured)+",\"sourceName\":"+quote(value.name)+
     ",\"qualifiedName\":"+quote(value.qualified_name)+
+    ",\"hasNamespaceOwner\":"+(value.namespace_owner?"true":"false")+
     ",\"parameterCount\":"+std::to_string(value.formals.size())+
     ",\"definitionExpressionId\":"+number(source_constraint_expression(value.definition))+
     ",\"headerConstraintExpressionId\":"+number(value.header_constraint?source_constraint_expression(value.header_constraint):0)+

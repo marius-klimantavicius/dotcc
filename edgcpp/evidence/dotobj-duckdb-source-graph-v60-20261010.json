@@ -1,0 +1,70 @@
+{
+  "profile": "scalar-control-v60",
+  "status": "accepted-bounded-milestone",
+  "receipts": [
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v60-anonymous-union-153-180-001/results.json",
+      "sha256": "28e102becfebcde6f6885a27a09456356848b26026dd3ea4ec25fcd7a21f141e",
+      "checks": 31
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v60-counted-helper-154-181-001/results.json",
+      "sha256": "35a33069e28dde23f148e1db0dd18a7cbb7cedc8e49424a2822eed83c9b2dff2",
+      "checks": 41
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v60-parameter-qualifiers-154-181-001/results.json",
+      "sha256": "baee4a9d4a3c4f55f4525ef68b170b07ad5dffcf9ec7a55d6c9d2c33d909a63a",
+      "checks": 28
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v60-proxies-cast-155-182-001/results.json",
+      "sha256": "57a276c43839a2e75f24521d912e710983df81846940d811b997250d67312bd4",
+      "checks": 39
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v60-namespaces-155-182-001/results.json",
+      "sha256": "b6166ac35056a86221d70ef53489f0c64c05b905d4b6acd18381398190654615",
+      "checks": 53
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v60-concrete-witness-155-182-001/results.json",
+      "sha256": "a244644c66b4911c898abf8d80712164f790f4472859c65aa11a63bc4bc44767",
+      "checks": 26
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v60-local-variables-155-182-001/results.json",
+      "sha256": "4fe547a179283f78af12354411616ca5461e4a9f4ff1f46c53bd761680186ee5",
+      "checks": 46
+    },
+    {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v60-local-static-temporary-156-184-001/results.json",
+      "sha256": "a17d0d7a9b002ecfb4efe60c2fd519d7db1ef7a6337213a51af7790b19e10ec3",
+      "checks": 28
+    }
+  ],
+  "checks": 292,
+  "fullProjectComplete": false,
+  "latestFullCorpusRebuilt": false,
+  "realFrontier": {
+    "manifestUnits": 45,
+    "native155Managed182Exported": 43,
+    "native155Managed182Verified": 40,
+    "managed184AdditionalVerified": [
+      "libcxx:src/locale.cpp"
+    ],
+    "report": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-ownership-frontier-155-182/summary.json"
+  },
+  "retainedVersionExportCoverage": {
+    "exported": 2633,
+    "total": 2635,
+    "notCoherentLatestCorpus": true
+  },
+  "remaining": [
+    "test_config.cpp static partial aggregate automatic execution adoption",
+    "unittest.cpp borrowed instantiated routine argument lexical scope",
+    "exception.cpp/string_util.cpp exact dependent source bitfield width recipes",
+    "full fresh per-TU corpus and whole-program link/generation/compile/runtime verification"
+  ],
+  "broadRegression": "No new broad1042 run claimed; prior v58 receipt remains separate."
+}

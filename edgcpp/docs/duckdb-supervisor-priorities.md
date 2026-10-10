@@ -270,3 +270,16 @@ two local class prototypes, one routine prototype binder, and one unnamed
 namespace. Exact dependent enum increment provenance and zero-only nullptr
 reader support are integrated for the next cut. Candidate local-parameter,
 partial-class, and typed pointer-zero suites have passed 44 + 43 + 29 checks.
+
+### Current queue after v60 (2026-10-10)
+
+1. Finish the two remaining observed export gates: test_config static temporary
+   rollback ownership and unittest borrowed instantiated type lexical ownership.
+2. Preserve original dependent bitfield width recipes exposed by source witness
+   closure, clearing exception/string_util managed graph verification.
+3. Fresh2635-unit export/verify corpus with bounded workers and split storage;
+   use measured failures to prioritize any new shared graph gaps.
+4. Whole-project linking/C# generation, then compilation/runtime/libc++ closure.
+
+Latest bounded evidence:43/45 export,41/45 verified across155/182 and locale184.
+Retained-version cumulative exports2633/2635; no coherent latest full corpus.

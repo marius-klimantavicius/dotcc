@@ -12,6 +12,7 @@ internal sealed partial class ObjectFile
     {
         VerifySourceParameterBinders();
         VerifySourceFunctionParameterDeclarations();
+        VerifySourceLocalDeclarations();
         VerifySourceConstraintExtensions();
         VerifySourceClassTemplates();
         VerifySourceAllocationPresence();
@@ -175,7 +176,7 @@ internal sealed partial class ObjectFile
         foreach(long id in SourceExpressions.Keys)Visit(id);
         VerifySourceConstantExpressionDeclarations();
         foreach(var concept in SourceConcepts.Values)
-            AddSourceConstraintContract("concept:"+concept.QualifiedName,SourceConceptIdentity(concept.Id,new HashSet<long>()));
+            AddSourceConstraintContract("concept:"+SourceNamespaceIdentitySuffix("concept",concept.Id)+concept.QualifiedName,SourceConceptIdentity(concept.Id,new HashSet<long>()));
         foreach(var pair in SourceTypeConstraints.Where(pair=>SourceDependentTypes[pair.Key].Kind=="parameter"))
             AddSourceConstraintContract("parameter:"+SourceDependentTypes[pair.Key].IdentityKey,SourceExpressionIdentity(pair.Value,new HashSet<long>(),new HashSet<long>()));
     }
@@ -258,7 +259,7 @@ internal sealed partial class ObjectFile
     {
         if(sourceConceptIdentityCache.TryGetValue(id,out string? cached))return cached;
         if(!activeConcepts.Add(id))throw new InvalidDataException("Original concept definition cycle");
-        var concept=SourceConcepts[id];string value=SourceIdentityFrame(concept.QualifiedName)+
+        var concept=SourceConcepts[id];string value=SourceIdentityFrame(concept.QualifiedName)+SourceNamespaceIdentitySuffix("concept",id)+
             string.Concat(SourceConceptFormals.GetValueOrDefault(id,[]).Select(SourceConstraintFormalIdentity))+
             SourceIdentityFrame(SourceExpressionIdentity(concept.Definition,[],activeConcepts))+
             (concept.HeaderConstraint is long header?SourceIdentityFrame(SourceExpressionIdentity(header,[],activeConcepts)):"0:");
@@ -344,7 +345,9 @@ internal sealed partial class ObjectFile
             SourceIdentityFrame(value.OwnerType is long owner?SourceTypeSignature(owner):"")+(value.Constexpr?"1":"0")+(value.HasTemplate?"1":"0")+(value.IsPrototype?"1":"0")+SourceIdentityFrame(value.TemplateOriginKind)+SourceIdentityFrame(value.RoutineKind)+SourceIdentityFrame(SourceDeclarationOperators.TryGetValue(id,out long originalOperator)?originalOperator.ToString(CultureInfo.InvariantCulture):"")+
             string.Concat(SourceExpressionDeclarationFormals.GetValueOrDefault(id,[]).Select(SourceConstraintFormalIdentity))+
             string.Concat(SourceExpressionDeclarationArguments.GetValueOrDefault(id,[]).Select(argument=>SourceIdentityFrame(SourceConstraintArgumentDetailsIdentity("declaration",id,0,argument))));
+        result+=SourceNamespaceIdentitySuffix("declaration",id);
         if(SourceFunctionParameterDeclarations.TryGetValue(id,out var parameter))result+="B"+SourceIdentityFrame(SourceConstraintDeclarationIdentity(parameter.Routine,active,activeConcepts))+SourceIdentityFrame(parameter.Ordinal.ToString(CultureInfo.InvariantCulture));
+        if(SourceLocalVariableDeclarations.TryGetValue(id,out var local))result+="L"+SourceIdentityFrame(SourceLocalScopeKey(local.Scope,0))+SourceIdentityFrame(local.Ordinal.ToString(CultureInfo.InvariantCulture));
         if(value.TemplatePrototype is long prototype && prototype!=id)result+=SourceIdentityFrame(SourceConstraintDeclarationIdentity(prototype,active,activeConcepts));
         result+=SourceIdentityFrame(value.InitializerKind)+SourceIdentityFrame(value.OriginalInitKind?.ToString(CultureInfo.InvariantCulture)??"")+SourceIdentityFrame(value.OriginalDynamicInitKind?.ToString(CultureInfo.InvariantCulture)??"");
         if(value.InitializerConstant is long constant)result+=SourceIdentityFrame(SourceConstantIdentity(constant,0));

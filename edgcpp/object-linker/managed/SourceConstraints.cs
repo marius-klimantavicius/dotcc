@@ -3,7 +3,7 @@ namespace DotObj;
 internal sealed record SourceExpression(long Id, string Kind, long? SourceTypeId, string Category,
     long EdgeCount, long ParameterCount, long ArgumentCount, long SubstitutionCount, long? OriginalLvalueTypeId, bool Parenthesized, bool CompilerGenerated, bool VolatileFetch,bool PackExpansion);
 internal sealed record SourceExpressionEdge(string Role, long Ordinal, long Child);
-internal sealed record SourceConcept(long Id, string Name, string QualifiedName, long Definition, long? HeaderConstraint, long ParameterCount);
+internal sealed record SourceConcept(long Id, string Name, string QualifiedName, long Definition, long? HeaderConstraint, long ParameterCount,bool HasNamespaceOwner);
 internal sealed record SourceExpressionParameter(long Type, long? DeclaredType, string Name, long Qualifiers, bool Pack);
 internal sealed record SourceExpressionDeclaration(long Id, string Kind, string Name, string QualifiedName, long Type,
     long? OwnerType, long? TemplatePrototype, bool HasTemplate, bool IsPrototype, bool Constexpr, long FormalCount, long ArgumentCount, long? OriginalInitKind, long? OriginalDynamicInitKind, string InitializerKind, long? InitializerConstant, long? InitializerExpression, string TemplateOriginKind,string RoutineKind,string ScopeKind);
@@ -59,13 +59,13 @@ internal sealed partial class ObjectFile
                 if (edge.Ordinal != edges.Count(item=>item.Role==edge.Role)) throw new InvalidDataException("Source expression operand order is not contiguous");
                 edges.Add(edge);
             }
-        using (var q = database.Prepare("SELECT id,source_name,qualified_name,definition_expression_id,header_constraint_expression_id,parameter_count,capture_proof FROM source_concepts ORDER BY id"))
+        using (var q = database.Prepare("SELECT id,source_name,qualified_name,definition_expression_id,header_constraint_expression_id,parameter_count,capture_proof,has_namespace_owner FROM source_concepts ORDER BY id"))
             while (q.Read())
             {
-                var value=new SourceConcept(q.Integer(0),q.Text(1),q.Text(2),q.Integer(3),q.OptionalInteger(4),q.Integer(5));
+                var value=new SourceConcept(q.Integer(0),q.Text(1),q.Text(2),q.Integer(3),q.OptionalInteger(4),q.Integer(5),q.Integer(7)==1);
                 if(value.Id<=0 || value.Name.Length==0 || value.QualifiedName.Length==0 || value.ParameterCount<=0 ||
                     !SourceExpressions.ContainsKey(value.Definition) || value.HeaderConstraint is long header && !SourceExpressions.ContainsKey(header) ||
-                    q.Text(6)!="original-concept-definition" || !SourceConcepts.TryAdd(value.Id,value)) throw new InvalidDataException("Source concept lacks its original definition and formal header");
+                    q.Text(6)!="original-concept-definition" || q.Integer(7) is not(0 or 1) || !SourceConcepts.TryAdd(value.Id,value)) throw new InvalidDataException("Source concept lacks its original definition and formal header");
             }
         using (var q=database.Prepare("SELECT source_type_id,constraint_expression_id,capture_proof FROM source_type_constraints ORDER BY source_type_id"))
             while(q.Read())
@@ -110,6 +110,7 @@ internal sealed partial class ObjectFile
         ReadSourceExpressionBoolRelation("source_expression_queries","is_standard_alignof",SourceExpressionQueries);
         ReadSourceConstraintDeclarations();
         ReadSourceFunctionParameterDeclarations();
+        ReadSourceLocalDeclarations();
         ReadSourceExpressionLongRelation("source_expression_declaration_references","declaration_id",SourceExpressionDeclarationReferences,SourceExpressionDeclarations.ContainsKey);
         ReadSourceConstraintFormals("source_concept_parameters","concept_id",SourceConcepts.ContainsKey,SourceConceptFormals);
         ReadSourceConstraintArguments("source_concept_arguments","expression_id",SourceConceptUses.ContainsKey,SourceConceptArguments);
@@ -143,7 +144,7 @@ internal sealed partial class ObjectFile
             if(value.Id<=0 || value.Kind is not("variable" or "routine") || value.Name.Length==0 || value.QualifiedName.Length==0 || !SourceTypes.ContainsKey(value.Type) ||
                 value.OwnerType is long owner && !SourceTypes.ContainsKey(owner) || q.Integer(7) is not(0 or 1) || q.Integer(8) is not(0 or 1) || q.Integer(9) is not(0 or 1) ||
                 value.TemplateOriginKind is not("none" or "variable-template" or "function-template" or "static-data-member" or "class-member-function") ||
-                value.HasTemplate != (value.TemplateOriginKind!="none") || value.ScopeKind is not("nonlocal" or "function-parameter") ||
+                value.HasTemplate != (value.TemplateOriginKind!="none") || value.ScopeKind is not("nonlocal" or "function-parameter" or "function-local" or "namespace") ||
                 (value.Kind=="variable"?value.RoutineKind!="not-routine":value.RoutineKind is not("function" or "constructor" or "destructor" or "operator")) ||
                 value.FormalCount<0 || value.ArgumentCount<0 || q.Text(12)!="reference-only" || q.Text(13)!="original-expression-declaration" ||
                 !SourceExpressionDeclarations.TryAdd(value.Id,value))throw new InvalidDataException("Source expression declaration must retain its original semantic-only signature");

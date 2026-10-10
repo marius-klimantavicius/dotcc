@@ -1111,3 +1111,37 @@ include the historical string_util regression. The supervisor owns proxy types;
 base worker owns namespaces and selected substitution; lifetime worker owns the
 stock anonymous-union cleanup path and calling-method/local-binder follow-up.
 Evidence: `evidence/dotobj-duckdb-source-graph-v59-20261010.json`.
+
+### Candidate v60, native154 / managed181 (not accepted)
+
+The 45-unit source ownership probe exported 24 and verified 21, below accepted
+v59 (35 exported / 34 verified). New proxy type reachability exposes original
+requires-expression cast type recipes without their lexical parameter binder.
+A header-free `static_cast<alias<decltype(t.data())>>` reproduces this exact
+gate. The correction distinguishes user-written cast destination syntax from
+borrowed semantic result annotations and traverses original alias arguments.
+Native155 / managed182 batches that correction with exact selected-member
+witness closure, namespace ownership for private template formals, and original
+block-local declaration/scope membership. No candidate coverage is accepted yet.
+
+Focused154 evidence: proxy graph 39 checks, parameter qualifier restoration 28,
+counted model array helper 41 (generation only). Anonymous-union cleanup153
+passed 31 including NativeAOT. Namespace154 ownership checks passed26 before
+combined link exposed private constrained-formal identity; its correction is
+in155. Accepted cumulative export remains2,626/2,635 across versions, not a
+fresh coherent full-project corpus.
+
+### Accepted v60 bounded checkpoint
+
+292 focused checks across eight retained acceptance cuts passed; see
+`evidence/dotobj-duckdb-source-graph-v60-20261010.json`. Final45-unit probe155
+exports43 and verifies40; the exact local-static initializer ownership fix in
+managed184 verifies locale.cpp as well (41 total). Seven historical exporter
+failures now export, and string_util's regression is restored. Cumulative
+retained-version export evidence reaches2,633/2,635, not a coherent fresh corpus.
+
+Next v61: original static initializer temporary cleanup adoption (test_config),
+exact borrowed routine template argument/type ownership (unittest), and original
+dependent bitfield width expressions (exception/string_util managed checks).
+Then regenerate the full project with bounded per-unit memory and the weighted
+workspace/persistent storage plan. No full generation/runtime success is claimed.

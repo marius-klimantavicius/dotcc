@@ -52,7 +52,7 @@ string array(const std::vector<string> &values) {
       }
     }
   }
-  unsupported((string("dotobj scalar-v59: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v60: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -176,13 +176,15 @@ struct Writer {
   std::map<unsigned,unsigned> pointer_types;
   std::map<std::pair<unsigned,std::pair<unsigned long long,bool>>,unsigned> array_types;
   std::vector<string> execution_types,record_types,record_fields;
-  std::vector<string> source_records,source_fields,source_bases,record_base_subobjects,abi_routine_origins;
+  std::vector<string> source_records,source_fields,source_bases,record_base_subobjects,abi_routine_origins,source_proxy_types;
   std::vector<string> source_record_owners;
   std::vector<string> thunk_wrappers,wrapper_calls,lambda_entry_origins,lambda_entry_calls;
   std::vector<string> compile_time_selections;
   std::vector<string> base_subobject_expressions,virtual_base_subobjects,virtual_base_expressions,source_record_operations,record_value_transfers,record_storage_copies,record_storage_initializations,record_constant_initializations;
   std::vector<string> source_record_temporaries,record_temporary_initializations;
   std::vector<string> generated_array_initializers;
+  std::vector<string> generated_entity_initializers,generated_entity_initializer_calls;
+  std::map<a_routine_ptr,unsigned> entity_initializer_model_copies;
   std::vector<string> default_argument_evaluations,default_argument_lifetime_executions,default_argument_obligation_executions,default_argument_temporary_executions;
   struct ArrayInitializerModelEmission { unsigned node=0,copy=0; bool zero=false,partial=false; string site; };
   std::map<a_routine_ptr,ArrayInitializerModelEmission> array_initializer_model_emissions;
@@ -273,6 +275,7 @@ struct Writer {
     return signature_type(type_id(t->variant.routine.return_type),args,extra->has_ellipsis,policy);
   }
   static string source_frame(const string &value) { return std::to_string(value.size())+":"+value; }
+#include "dot_gen_object_namespaces.h"
   std::vector<string> source_semantic_constant_expressions,source_aggregate_constants,source_pack_sizes;
   string source_variable_expression_identity(unsigned captured,unsigned depth) {
     if(!captured || depth>128)reject("original source variable identity cycle/depth");
@@ -286,6 +289,7 @@ struct Writer {
     if(value.kind!="variable" || value.qualified_name.empty())reject("source value lacks original variable declaration identity");
     string result=source_frame(value.qualified_name)+source_frame(value.owner_type?source_argument_type_identity(value.owner_type,depth+1):"")+
       (value.has_template_origin?"1":"0")+(value.is_template_prototype?"1":"0")+source_frame(value.template_origin_kind);
+    if(value.namespace_owner && !source_private_namespace(value.namespace_owner).empty())result+="N"+source_frame(source_private_namespace(value.namespace_owner));
     // Stock equiv_template_variables compares the original template and actual
     // argument list. The initializer remains in the owned declaration graph,
     // not substituted as a guessed constant or included in nominal identity.
@@ -359,7 +363,7 @@ struct Writer {
       const char *unit=std::getenv("EDG_DOT_OBJECT_UNIT_ID");
       if(unit)identity+=":unit:"+std::to_string(std::string(unit).size())+":"+unit;
     }
-    return identity;
+    return enumeration.owner?identity:source_namespace_nominal_identity(value.namespace_owner,identity);
   }
   string source_argument_type_identity(unsigned id,unsigned depth=0) {
     if(depth>128 || !id)reject("source template type identity cycle/depth");
@@ -385,7 +389,7 @@ struct Writer {
     }
     if(value.kind=="record")return "r"+source_frame(original_record_identity(value.record_type,depth+1));
     if(value.kind=="dependent") {
-      if(value.dependent_kind=="parameter")return "p"+source_frame(value.dependent_identity)+(value.dependent_pack?"1":"0");
+      if(value.dependent_kind=="parameter")return "p"+source_frame(source_namespace_nominal_identity(value.namespace_owner,value.dependent_identity))+(value.dependent_pack?"1":"0");
       if(value.dependent_kind=="auto-placeholder")return "auto:"+source_frame(std::to_string(value.dependent_position))+
         source_frame(value.constraint_expression?source_expression_key(value.constraint_expression,depth+1):"");
       if(value.dependent_kind=="member")return "m"+source_frame(source_argument_type_identity(value.dependent_owner,depth+1))+source_frame(value.name);
@@ -471,6 +475,12 @@ struct Writer {
       source_frame(value.default_type?"t"+source_argument_type_identity(value.default_type,depth+1):value.default_constant?"c"+source_constant_identity(value.default_constant,depth+1):
         value.default_template?"m"+source_template_identity(value.default_template,depth+1):"");
   }
+  string source_local_scope_key(unsigned id,unsigned depth) {
+    if(!id || depth>128)reject("original local scope identity cycle/depth");
+    const auto &value=dot_object_source::source_constraint_graph().local_scopes.at(id-1);
+    if(!value.error.empty())reject(value.error.c_str());
+    return source_frame(value.kind)+source_frame(value.parent?source_local_scope_key(value.parent,depth+1):source_declaration_key(value.routine,depth+1))+source_frame(std::to_string(value.ordinal));
+  }
   string source_declaration_key(unsigned id,unsigned depth) {
     if(!id || depth>128)reject("source declaration identity cycle/depth");
     const auto &value=dot_object_source::source_constraint_graph().declarations.at(id-1);
@@ -478,8 +488,10 @@ struct Writer {
     string result=source_frame(value.kind)+source_frame(value.qualified_name)+source_frame(source_expression_type_key(value.type,depth+1))+
       source_frame(value.owner_type?source_argument_type_identity(value.owner_type,depth+1):"")+source_frame(value.template_origin_kind)+source_frame(value.routine_kind)+source_frame(value.operator_kind<0?"":std::to_string(value.operator_kind))+(value.is_constexpr?"1":"0")+
       (value.has_template_origin?"1":"0")+(value.is_template_prototype?"1":"0");
+    if(value.namespace_owner && !source_private_namespace(value.namespace_owner).empty())result+="N"+source_frame(source_private_namespace(value.namespace_owner));
     result+="B"+source_frame(value.parameter_owner?source_declaration_key(value.parameter_owner,depth+1):"")+
       source_frame(value.parameter_owner?std::to_string(value.parameter_ordinal):"");
+    result+="L"+source_frame(value.local_scope?source_local_scope_key(value.local_scope,depth+1):"")+source_frame(value.local_scope?std::to_string(value.local_ordinal):"");
     result+="F"+source_frame(std::to_string(value.template_formals.size()));
     for(const auto &formal:value.template_formals)result+=source_frame(source_formal_key(formal,depth+1));
     result+="A"+source_frame(std::to_string(value.template_arguments.size()));
@@ -526,7 +538,9 @@ struct Writer {
     if(value.concept_id) {
       const auto &concept=dot_object_source::source_constraint_graph().concepts.at(value.concept_id-1);
       if(!concept.error.empty())reject(concept.error.c_str());
-      result+="K"+source_frame(concept.qualified_name)+(value.type_constraint?"1":"0")+"F"+source_frame(std::to_string(concept.formals.size()));
+      result+="K"+source_frame(concept.qualified_name)+(value.type_constraint?"1":"0");
+      if(!source_private_namespace(concept.namespace_owner).empty())result+="N"+source_frame(source_private_namespace(concept.namespace_owner));
+      result+="F"+source_frame(std::to_string(concept.formals.size()));
       for(const auto &formal:concept.formals)result+=source_frame(source_formal_key(formal,depth+1));
     }
     result+="A"+source_frame(std::to_string(value.arguments.size()));
@@ -584,6 +598,7 @@ struct Writer {
     if(value.kind=="alias")result="template-alias:"+source_frame(value.qualified_name)+
       source_frame(value.owner_type?source_argument_type_identity(value.owner_type,depth+1):"")+
       source_frame(string(full?full:display?display:"")+":"+std::to_string(line)+":"+std::to_string(value.location.column));
+    if(value.kind=="alias" && !source_private_namespace(value.namespace_owner).empty())result+="N"+source_frame(source_private_namespace(value.namespace_owner));
     for(const auto &formal:value.parameters) {
       string item=formal.kind+":"+(formal.pack?"1":"0")+":"+(formal.abbreviated?"1":"0");
       item+=source_frame(formal.type?source_argument_type_identity(formal.type,depth+1):formal.constant?
@@ -604,8 +619,10 @@ struct Writer {
       ",\"parameterDepth\":"+(value.kind=="parameter"?std::to_string(value.depth):"null")+",\"parameterPosition\":"+(value.kind=="parameter"?std::to_string(value.position):"null")+
       ",\"isPack\":"+(value.pack?"true":"false")+",\"parameterCount\":"+std::to_string(value.parameters.size())+",\"captureProof\":"+
       quote(value.kind=="parameter"?"original-template-parameter":"original-alias-template")+position(value.location)+"}");
+    if(value.kind=="alias")source_namespace_owner("template",id,value.namespace_owner);
     if(value.kind=="alias")source_named_templates.push_back("{\"templateId\":"+number(id)+",\"qualifiedName\":"+quote(value.qualified_name)+
       ",\"ownerSourceTypeId\":"+number(value.owner_type?source_type(value.owner_type):0)+",\"prototypeSourceTypeId\":"+number(source_type(value.prototype_type))+
+      ",\"hasNamespaceOwner\":"+(value.namespace_owner?"true":"false")+
       ",\"constraintExpressionId\":"+number(value.header_constraint?source_constraint_expression(value.header_constraint):0)+",\"captureProof\":\"original-alias-template\"}");
     unsigned ordinal=0;for(const auto &formal:value.parameters)source_template_parameters.push_back("{\"sourceTemplateId\":"+number(id)+
       ",\"ordinal\":"+std::to_string(ordinal++)+",\"kind\":"+quote(formal.kind)+",\"sourceName\":"+quote(formal.name)+
@@ -635,6 +652,16 @@ struct Writer {
     auto found=captured.records.find(type);
     if(found==captured.records.end())reject("original record owner lacks source snapshot");
     const auto &source=found->second;
+    if(source.proxy_type) {
+      if(!source.template_error.empty())reject(source.template_error.c_str());
+      const auto &original=captured.types.at(source.proxy_type-1);
+      if(original.kind=="dependent" && original.dependent_kind=="unknown") {
+        const char *unit=std::getenv("EDG_DOT_OBJECT_UNIT_ID");
+        if(!unit || !*unit)reject("unknown source proxy requires its owned translation unit");
+        return "source-proxy-local:"+source_frame(unit)+source_frame(std::to_string(source.source_occurrence));
+      }
+      return "source-proxy:"+source_frame(source_argument_type_identity(source.proxy_type,depth+1));
+    }
     auto owner=captured.record_owners.find(type);
     if(owner!=captured.record_owners.end()) {
       if(!source.name.empty() || !owner->second.owner || owner->second.owner==type || !owner->second.field)
@@ -670,7 +697,7 @@ struct Writer {
       }
       a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
       conv_seq_to_file_and_line(source.position.seq,&display,&full,&line,&at_end);
-      return "source-prototype:"+identity+":"+string(full?full:display?display:"")+":"+
+      return "source-prototype:"+source_namespace_nominal_identity(source.namespace_owner,identity)+":"+string(full?full:display?display:"")+":"+
         std::to_string((unsigned long long)line)+":"+std::to_string(source.position.column);
     }
     if(source.template_identity || (!C_mode() && identity.find("local-record:")==0)) {
@@ -695,7 +722,7 @@ struct Writer {
       identity+=":"+string(full?full:display?display:"")+":"+std::to_string((unsigned long long)line)+":"+
         std::to_string(source.position.column)+":occurrence:"+std::to_string(source.source_occurrence);
     }
-    return identity;
+    return source_namespace_nominal_identity(source.namespace_owner,identity);
   }
   unsigned source_record_metadata(a_type_ptr t) {
     auto prior=source_record_ids.find(t);if(prior!=source_record_ids.end())return prior->second;
@@ -726,8 +753,17 @@ struct Writer {
       for(const auto &base:source->bases)
         source_base_ids.emplace(base.il,next_source_base++);
       source_class_specialization_metadata(t);
-      if((source->dependent || source->template_prototype) && !source->prototype && !captured.record_owners.count(t) && !captured.nested_type_declarations.count(t)) {
+      if(source->proxy_type)source_proxy_types.push_back("{\"sourceRecordId\":"+number(source_record)+
+        ",\"originalTypeId\":"+number(source_type(source->proxy_type))+
+        ",\"sourceOccurrence\":"+std::to_string(source->source_occurrence)+
+        ",\"captureProof\":\"original-class-proxy-of-type\"}");
+      if((source->dependent || source->template_prototype) && !source->proxy_type && !source->prototype && !captured.record_owners.count(t) && !captured.nested_type_declarations.count(t)) {
         if(!source->template_error.empty())reject(source->template_error.c_str());
+        // Keep the exact capture cause reachable even when the discovering
+        // expression belongs to an unused template and is not itself emitted.
+        // Its original owner/prototype relation is verified by the existing
+        // concrete-class substitution contract; no new routine is fabricated.
+        if(source->template_member_witness)source_constraint_declaration(source->template_member_witness);
         unsigned prototype_record=source->template_prototype?
           source_record_metadata(captured.types.at(source->template_prototype-1).record_type):0;
         source_record_instantiations.push_back("{\"sourceRecordId\":"+number(source_record)+
@@ -1548,7 +1584,7 @@ struct Writer {
       ",\"originalNestedTypeId\":"+number(type.dependent_original_nested?source_type(type.dependent_original_nested):0)+
       ",\"nestingDepth\":"+((type.dependent_kind=="parameter" || type.dependent_kind=="auto-placeholder")?std::to_string(type.dependent_depth):"null")+
       ",\"parameterPosition\":"+((type.dependent_kind=="parameter" || type.dependent_kind=="auto-placeholder")?std::to_string(type.dependent_position):"null")+
-      ",\"isPack\":"+(type.dependent_pack?"true":"false")+",\"hasTypeConstraint\":"+(type.constraint_expression?"true":"false")+",\"identityKey\":"+quote(type.dependent_identity)+
+      ",\"isPack\":"+(type.dependent_pack?"true":"false")+",\"hasTypeConstraint\":"+(type.constraint_expression?"true":"false")+",\"identityKey\":"+quote(type.dependent_kind=="parameter"?source_namespace_nominal_identity(type.namespace_owner,type.dependent_identity):type.dependent_identity)+
       ",\"captureProof\":\"before-lowering\"}");
     if(type.kind=="routine") {
       if(execution) {
@@ -1627,7 +1663,9 @@ struct Writer {
     for(const auto &qualifier:type.qualifiers)
       source_type_qualifiers.push_back("{\"typeId\":"+number(id)+",\"name\":"+quote(qualifier)+"}");
     source_type_origin(id,type);
+    source_namespace_owner("type",id,type.namespace_owner);
     source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.kind)+",\"sourceName\":"+quote(type.name)+
+      ",\"hasNamespaceOwner\":"+(type.namespace_owner?"true":"false")+
       ",\"sourceForm\":"+quote(type.source_form)+
       ",\"underlyingTypeId\":"+number(underlying)+",\"executionTypeId\":"+number(execution)+
       ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+
@@ -2114,9 +2152,10 @@ struct Writer {
           if(part.field) {
             if(target_type->kind!=tk_struct && target_type->kind!=tk_class)
               reject("static partial construction member must belong to its exact struct or class");
-            auto field=cleanup_path_field(target_type,part);
-            if(!field || field->is_bit_field)reject("static partial construction cannot target a bitfield");
-            target_type=skip_typerefs(field->type);
+            for(auto field:cleanup_path_fields(target_type,part)) {
+              if(!field || field->is_bit_field)reject("static partial construction cannot target a bitfield");
+              target_type=skip_typerefs(field->type);
+            }
           } else {
             if(target_type->kind!=tk_array || array_type_has_no_bound(target_type) ||
                part.index>=target_type->variant.array.variant.number_of_elements)
@@ -2359,18 +2398,19 @@ struct Writer {
         ",\"sourceTypeId\":"+number(source_type(value.source_type))+position(value.position)+",\"captureProof\":\"before-lowering\"}");
     }
   }
-  a_field_ptr cleanup_path_field(a_type_ptr parent,const dot_object_source::CleanupPathPart &part) {
+  std::vector<a_field_ptr> cleanup_path_fields(a_type_ptr parent,const dot_object_source::CleanupPathPart &part,unsigned depth=0) {
+    if(depth>64)reject("cleanup anonymous-parent chain cycle/depth");
     auto &captured=dot_object_source::state();parent=skip_typerefs(parent);
     if(parent->kind!=tk_struct && parent->kind!=tk_class && parent->kind!=tk_union)reject("cleanup member parent is not a record");
     type_id(parent);
     for(auto field=parent->variant.class_struct_union.field_list;field;field=field->next) {
       if(part.base) {
         auto base=captured.generated_base_fields.find(field);
-        if(base!=captured.generated_base_fields.end() && base->second==part.base)return field;
+        if(base!=captured.generated_base_fields.end() && base->second==part.base)return {field};
       } else {
         auto original=field;std::set<a_field_ptr> visited;
         while(original && visited.insert(original).second) {
-          if(original==part.field)return field;
+          if(original==part.field)return {field};
           auto copied=captured.copied_fields.find(original);
           if(copied==captured.copied_fields.end())break;
           original=copied->second;
@@ -2382,7 +2422,23 @@ struct Writer {
       if(view!=captured.observed_subobjects.end())complete=view->second;
       auto original=captured.prelower_records.find(complete);
       if(original!=captured.prelower_records.end())
-        for(const auto &base:part.base->is_virtual?original->second.virtual_bases:original->second.bases)if(base.il==part.base)return nullptr;
+        for(const auto &base:part.base->is_virtual?original->second.virtual_bases:original->second.bases)if(base.il==part.base)return {nullptr};
+    }
+    if(part.field && !part.base && part.field->source_corresp.is_class_member) {
+      // Like stock au_field_lvalue_selection_expr, restore standard anonymous
+      // union selections omitted from constructor initializer descriptors.
+      // Follow the exact original parent field; never search by offset/name.
+      auto owner=parent_class_of(part.field);auto supplement=class_type_supp(owner);
+      if(supplement->anonymous_union_kind==auk_field && supplement->anonymous_union_field) {
+        auto anonymous=supplement->anonymous_union_field;
+        if(!anonymous->is_anonymous_parent_object || skip_typerefs(anonymous->type)!=skip_typerefs(owner))
+          reject("cleanup anonymous union lacks its exact original parent field");
+        dot_object_source::CleanupPathPart enclosing;enclosing.field=anonymous;enclosing.type=anonymous->type;
+        auto fields=cleanup_path_fields(parent,enclosing,depth+1);
+        if(fields.empty() || !fields.back())reject("anonymous cleanup parent cannot be an address-only base");
+        auto suffix=cleanup_path_fields(fields.back()->type,part,depth+1);
+        fields.insert(fields.end(),suffix.begin(),suffix.end());return fields;
+      }
     }
     reject("cleanup member/base path lacks exact lowered field correspondence");
   }
@@ -2469,7 +2525,7 @@ struct Writer {
     }
     for(const auto &part:observed.path) {
       if(part.field || part.base) {
-        auto field=cleanup_path_field(type,part);
+        for(auto field:cleanup_path_fields(type,part)) {
         if(!field) {
           // Empty-base optimization removes the physical field, not the
           // source base identity or its observed address. Keep an address-only
@@ -2487,6 +2543,7 @@ struct Writer {
         type=skip_typerefs(field->type);
         unsigned member=node("member",type_id(type),pos,0,0,"","","place","none",field_ids.at(field));
         edge(member,"operand",0,result);result=member;
+        }
       } else {
         if(type->kind!=tk_array || array_type_has_no_bound(type) || part.index>=type->variant.array.variant.number_of_elements)
           reject("cleanup array-element path outside fixed bounds");
@@ -2625,11 +2682,12 @@ struct Writer {
       auto type=skip_typerefs(observed.base_type);unsigned ordinal=0;
       for(const auto &part:observed.path) {
         if((!part.field && !part.base) || (part.base && part.base->is_virtual))reject("payload ownership outside nonvirtual scalar member/base path");
-        auto field=cleanup_path_field(type,part);
+        for(auto field:cleanup_path_fields(type,part)) {
         unsigned field_id=field?field_ids.at(field):0,base_id=field?0:source_base_ids.at(part.base);
         throw_payload_paths.push_back("{\"sourceObligationId\":"+number(obligation)+",\"ordinal\":"+std::to_string(ordinal++)+
           ",\"fieldId\":"+number(field_id)+",\"sourceBaseId\":"+number(base_id)+"}");
         type=skip_typerefs(field?field->type:part.base->type);
+        }
       }
       if(!ordinal)reject("payload ownership requires a proper subobject");
     }
@@ -2898,8 +2956,18 @@ struct Writer {
         }
         bool action=emitted_static_cleanup_obligations.count(original),terminal=captured.static_partial_terminal.count(original);
         bool omitted=!source_initializer_emitted(value.initializer);
-        if(omitted?(action || terminal):(action==terminal))
-          reject("original static partial aggregate lacks exactly one action or observed terminal elision");
+        if(omitted?(action || terminal):(action==terminal)) {
+          const auto &source_initializer_entry=captured.source_initializers.at(value.initializer);
+          diagnostic_scope diagnostic(value.position);
+          reject((string("original static partial aggregate lacks exactly one action or observed terminal elision: type=")+
+            captured.types.at(value.source_type-1).name+" ordinal="+std::to_string(value.ordinal)+
+            " owner="+(value.owner?source_spelling(&value.owner->source_corresp):"none")+
+            " initializer="+source_initializer_entry.source_name+
+            " lifetime="+captured.static_lifetimes.at(value.lifetime).kind+
+            " action="+(action?"yes":"no")+" terminal="+(terminal?"yes":"no")+" omitted="+(omitted?"yes":"no")+
+            " automatic-original="+(captured.destructions.count(original)?"yes":"no")+
+            " automatic-emitted="+(emitted_source_obligations.count(original)?"yes":"no")).c_str());
+        }
         static_destruction_dispositions.push_back("{\"sourceObligationId\":"+number(static_obligation_id(original))+
           ",\"kind\":"+quote(omitted?"stock-not-emitted":action?"cleanup-action":"stock-terminal-no-throw")+
           ",\"captureProof\":\"observed-static-destruction-disposition\"}");
@@ -3173,6 +3241,29 @@ struct Writer {
 #endif
     }
     if(write_tls_routine_origin(r,id,t,body))return id;
+    auto entity_initializer=dot_object_source::state().generated_entity_initializers.find(r);
+    if(entity_initializer!=dot_object_source::state().generated_entity_initializers.end()) {
+      const auto &origin=entity_initializer->second;auto formal=extra->param_type_list;
+      unsigned pointer=pointer_type(type_id(origin.origin.element));
+      if(primary || adapter || !origin.complete || !origin.error.empty() || !r->compiler_generated ||
+         !body || body!=origin.scope || extra->has_ellipsis || coalescible ||
+         skip_typerefs(t->variant.routine.return_type)->kind!=tk_void)
+        reject("generated counted initializer lacks observed complete factory body");
+      const char *roles[]={"entity-destination","entity-count","entity-model"};
+      auto parameter=body->variant.routine.parameters;
+      a_variable_ptr expected[]={origin.destination,origin.count,origin.model};
+      unsigned types[]={pointer,9,pointer};
+      for(unsigned index=0;index<3;++index) {
+        if(!formal || !parameter || parameter!=expected[index] || type_id(formal->type)!=types[index] || type_id(parameter->type)!=types[index])
+          reject("generated counted initializer differs from exact destination/count/model ABI");
+        routine_abi_slots[r].push_back({roles[index],0,types[index]});
+        parameters.push_back("{\"entityId\":"+number(id)+",\"ordinal\":"+std::to_string(index)+
+          ",\"typeId\":"+number(types[index])+",\"parameterRole\":"+quote(roles[index])+",\"sourceOrdinal\":null}");
+        formal=formal->next;parameter=parameter->next;
+      }
+      if(formal || parameter)reject("generated counted initializer has extra parameters");
+      return id;
+    }
     auto array_initializer=dot_object_source::state().generated_array_initializers.find(r);
     if(array_initializer!=dot_object_source::state().generated_array_initializers.end()) {
       const auto &origin=array_initializer->second;auto formal=extra->param_type_list;
@@ -3338,6 +3429,13 @@ struct Writer {
         if(function_scope!=lambda->scope || ordinal>=lambda->parameters.size() || lambda->parameters[ordinal]!=v ||
            source!=dot_object_source::state().variables.end() || v->is_this_parameter || slot.role=="this" || slot.role=="vtt")
           reject("lambda static formal lacks observed generated identity/role");
+        synthetic=true;
+      } else if(slot.role=="entity-destination" || slot.role=="entity-count" || slot.role=="entity-model") {
+        auto generated=dot_object_source::state().generated_entity_initializers.find(current_routine);
+        if(generated==dot_object_source::state().generated_entity_initializers.end() || ordinal>2 ||
+           generated->second.scope!=function_scope || source!=dot_object_source::state().variables.end() || v->is_this_parameter ||
+           v!=(ordinal==0?generated->second.destination:ordinal==1?generated->second.count:generated->second.model))
+          reject("generated counted initializer parameter lacks exact factory identity");
         synthetic=true;
       } else if(slot.role=="initialization-object") {
         auto generated=dot_object_source::state().generated_array_initializers.find(current_routine);
@@ -3772,6 +3870,16 @@ struct Writer {
         ",\"vtableIndex\":"+std::to_string(observed.vtable_index)+",\"isCompleteObject\":false,\"captureProof\":\"observed-virtual-base-adjustment\"}");
       result=wrapper;
     }
+    auto generated_call=dot_object_source::state().generated_entity_initializer_calls.find(e);
+    if(generated_call!=dot_object_source::state().generated_entity_initializer_calls.end()) {
+      const auto &origin=dot_object_source::state().generated_entity_initializers.at(generated_call->second);
+      if(origin.origin.owner!=current_routine || e->kind!=enk_operation || e->variant.operation.kind!=eok_call ||
+         !e->variant.operation.operands || e->variant.operation.operands->kind!=enk_routine ||
+         e->variant.operation.operands->variant.routine.ptr!=generated_call->second)
+        reject("generated counted initializer call lost exact selected factory helper");
+      generated_entity_initializer_calls.push_back("{\"nodeId\":"+number(result)+",\"helperEntityId\":"+number(routine(generated_call->second))+
+        ",\"captureProof\":\"observed-entity-initializer-call\"}");
+    }
     emitted_expression_ids[e]=result;
     return result;
   }
@@ -4145,7 +4253,7 @@ struct Writer {
       auto observed=dot_object_source::state().record_transfers.find(e);
       auto storage_copy=dot_object_source::state().record_storage_copies.find(e);
       if(record && storage_copy!=dot_object_source::state().record_storage_copies.end() &&
-         (storage_copy->second.kind=="array-zero-model" || (!copyable_value(e->type) &&
+         (storage_copy->second.kind=="array-zero-model" || storage_copy->second.kind=="entity-model" || (!copyable_value(e->type) &&
           (observed==dot_object_source::state().record_transfers.end() ||
            (!observed->second.constant_storage && !record_value_policy(e->type,observed->second.kind)))))) {
         const auto &proof=storage_copy->second;
@@ -4154,7 +4262,7 @@ struct Writer {
            volatile_place(a) || volatile_place(b) || contains_volatile_storage(e->type) ||
            !source_record_ids.count(type) ||
            (proof.kind!="evaluation-save" && proof.kind!="class-assignment" &&
-            proof.kind!="initializer-storage" && proof.kind!="bitwise-initialization" && proof.kind!="array-zero-model"))
+            proof.kind!="initializer-storage" && proof.kind!="bitwise-initialization" && proof.kind!="array-zero-model" && proof.kind!="entity-model"))
           reject("observed lowered record storage copy changed");
         if(proof.kind=="evaluation-save" && (a->kind!=enk_variable ||
            !(node_variable(a)->compiler_generated || node_variable(a)->lowering_generated)))
@@ -4168,6 +4276,11 @@ struct Writer {
              b->kind!=enk_variable || node_variable(b)!=origin->second.model)
             reject("generated array model copy lost exact destination/model binding");
         }
+        if(proof.kind=="entity-model") {
+          auto origin=dot_object_source::state().generated_entity_initializers.find(current_routine);
+          if(origin==dot_object_source::state().generated_entity_initializers.end() || origin->second.copy!=e)
+            reject("counted entity model copy lacks its exact generated factory operation");
+        }
         unsigned id=node("record-transfer",ty,e->position,0,0,"","","value",order);
         unsigned target=expression(a),value=expression(b);
         edge(id,"target",0,target);edge(id,"value",0,value);
@@ -4177,7 +4290,9 @@ struct Writer {
           ",\"captureProof\":"+quote(proof.kind=="evaluation-save"?"observed-pre-execution-save":
             proof.kind=="class-assignment"?"observed-class-assignment-lowering":
             proof.kind=="initializer-storage"?"observed-initialization-storage":
-            proof.kind=="bitwise-initialization"?"observed-bitwise-initialization":"observed-array-zero-model-copy")+"}");
+            proof.kind=="bitwise-initialization"?"observed-bitwise-initialization":proof.kind=="entity-model"?"observed-entity-model-copy":"observed-array-zero-model-copy")+"}");
+        if(proof.kind=="entity-model" && !entity_initializer_model_copies.emplace(current_routine,id).second)
+          reject("counted entity initializer emitted multiple model copies");
         if(proof.kind=="array-zero-model") {
           auto &model=array_initializer_model_emissions[current_routine];
           if(model.copy)reject("generated array initializer emitted multiple model copies");
@@ -5292,6 +5407,26 @@ struct Writer {
           ",\"elementSize\":"+(origin.array?std::to_string(origin.element_size):"null")+
           ",\"captureProof\":\"observed-static-destructor-body\"}");
       }
+      auto entity_initializer=dot_object_source::state().generated_entity_initializers.find(r);
+      if(entity_initializer!=dot_object_source::state().generated_entity_initializers.end()) {
+        const auto &origin=entity_initializer->second;const auto &captured=dot_object_source::state();
+        unsigned source=captured.destructions.at(origin.origin.allocation).source_type;
+        while(captured.types.at(source-1).kind=="typedef" || captured.types.at(source-1).kind=="qualified" || captured.types.at(source-1).kind=="array")
+          source=captured.types.at(source-1).underlying;
+        if(!source_obligation_ids.count(origin.origin.allocation) || !entity_initializer_model_copies.count(r) ||
+           source_execution_type(source)!=type_id(origin.origin.element))
+          reject("counted entity initializer lost original allocation/model correspondence");
+        generated_entity_initializers.push_back("{\"functionEntityId\":"+number(function)+
+          ",\"ownerFunctionEntityId\":"+number(routine(origin.origin.owner))+
+          ",\"sourceAllocationObligationId\":"+number(source_obligation_ids.at(origin.origin.allocation))+
+          ",\"sourceElementTypeId\":"+number(source_type(source))+
+          ",\"elementTypeId\":"+number(type_id(origin.origin.element))+
+          ",\"destinationBindingId\":"+number(binding_ids.at(origin.destination))+
+          ",\"countBindingId\":"+number(binding_ids.at(origin.count))+
+          ",\"modelBindingId\":"+number(binding_ids.at(origin.model))+
+          ",\"copyNodeId\":"+number(entity_initializer_model_copies.at(r))+
+          ",\"captureProof\":\"observed-counted-model-initializer-factory\"}");
+      }
       auto array_initializer=dot_object_source::state().generated_array_initializers.find(r);
       if(array_initializer!=dot_object_source::state().generated_array_initializers.end()) {
         const auto &origin=array_initializer->second;const auto &model=array_initializer_model_emissions[r];
@@ -5361,7 +5496,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v59\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v60\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -5381,7 +5516,9 @@ struct Writer {
       ",\"sourceConcepts\":"+array(source_concepts)+
       ",\"sourceConceptParameters\":"+array(source_concept_parameters)+
       ",\"sourceExpressionAllocations\":"+array(source_expression_allocations)+",\"sourceDeclarationOperators\":"+array(source_declaration_operators)+",\"sourceFunctionParameterDeclarations\":"+array(source_function_parameter_declarations)+
+      ",\"sourceLocalScopes\":"+array(source_local_scopes)+",\"sourceLocalVariableDeclarations\":"+array(source_local_variable_declarations)+
       ",\"sourceExpressionTemporaries\":"+array(source_expression_temporaries)+",\"sourceExpressionTemporaryFlags\":"+array(source_expression_temporary_flags)+
+      ",\"sourceNamespaces\":"+array(source_namespaces)+",\"sourceNamespaceOwners\":"+array(source_namespace_owners)+
       ",\"sourceClassTemplateHeaders\":"+array(source_class_template_headers)+",\"sourceClassTemplateFormals\":"+array(source_class_template_formals)+
       ",\"sourceClassTemplatePatterns\":"+array(source_class_template_patterns)+",\"sourceClassSpecializations\":"+array(source_class_specializations)+
       ",\"sourceClassSpecializationArguments\":"+array(source_class_specialization_arguments)+
@@ -5420,6 +5557,8 @@ struct Writer {
       ",\"sourceStaticDestructions\":"+array(source_static_destructions)+",\"initializerLifetimeExecutions\":"+array(initializer_lifetime_executions)+
       ",\"tlsRoutineOrigins\":"+array(tls_routine_origins)+
       ",\"generatedArrayInitializers\":"+array(generated_array_initializers)+
+      ",\"generatedEntityInitializers\":"+array(generated_entity_initializers)+
+      ",\"generatedEntityInitializerCalls\":"+array(generated_entity_initializer_calls)+
       ",\"defaultArgumentEvaluations\":"+array(default_argument_evaluations)+
       ",\"defaultArgumentLifetimeExecutions\":"+array(default_argument_lifetime_executions)+
       ",\"defaultArgumentObligationExecutions\":"+array(default_argument_obligation_executions)+
@@ -5431,6 +5570,7 @@ struct Writer {
       ",\"cleanupTransitions\":"+array(cleanup_transitions)+",\"cleanupFrameMarkers\":"+array(cleanup_frame_markers)+
       ",\"expressionLifetimes\":"+array(expression_lifetimes)+
       ",\"destructionElisions\":"+array(destruction_elisions)+",\"allocationElisions\":"+array(allocation_elisions)+",\"sourceUninitializedAllocations\":"+array(source_uninitialized_allocations)+",\"normalDestructions\":"+array(normal_destructions)+",\"cleanupConditions\":"+array(cleanup_conditions)+
+      ",\"sourceProxyTypes\":"+array(source_proxy_types)+
       ",\"sourceRecords\":"+array(source_records)+",\"sourceRecordOperations\":"+array(source_record_operations)+
       ",\"sourceRecordOwners\":"+array(source_record_owners)+
       ",\"sourceNamedTemplates\":"+array(source_named_templates)+",\"sourceAliasInstances\":"+array(source_alias_instances)+

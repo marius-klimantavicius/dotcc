@@ -21,6 +21,7 @@ internal sealed partial class ObjectFile
 
     private void ReadSourceTemplateMetadata()
     {
+        ReadSourceProxyTypes();
         using (var q = database.Prepare("SELECT id,kind,source_type_id,source_name,value_text,parameter_depth,parameter_position,is_pack,operator_name,owner_source_type_id,operand_source_type_id,builtin_operator_kind,is_standard_alignof,source_file_id,line,column FROM source_semantic_constants ORDER BY id"))
             while (q.Read())
             {
@@ -303,9 +304,10 @@ internal sealed partial class ObjectFile
     }
     private void VerifySourceTemplateMetadata()
     {
+        VerifySourceProxyTypes();
         foreach (var record in SourceRecords.Values)
         {
-            bool instance = record.IsDependent && !record.IsPrototypeInstantiation && !SourceRecordOwners.ContainsKey(record.Id) && !SourceNestedTypeDeclarations.ContainsKey(record.SourceTypeId);
+            bool instance = record.IsDependent && !SourceProxyTypes.ContainsKey(record.Id) && !record.IsPrototypeInstantiation && !SourceRecordOwners.ContainsKey(record.Id) && !SourceNestedTypeDeclarations.ContainsKey(record.SourceTypeId);
             bool instanceKey = record.IdentityKey.StartsWith("source-instantiation:", StringComparison.Ordinal) ||
                 record.IdentityKey.StartsWith("source-member-instantiation:", StringComparison.Ordinal) ||
                 record.IdentityKey.StartsWith("source-parameter-instantiation:", StringComparison.Ordinal);

@@ -13,8 +13,11 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = Path(__file__).with_name('schema.sql')
 ARRAYS = {
+    'sourceNamespaces': ('source_namespaces', ['id','parentId','sourceName','isUnnamed','isInline','hasInternalLinkage','sourceFileId','line','column','captureProof']),
+    'sourceNamespaceOwners': ('source_namespace_owners', ['ownerKind','ownerId','namespaceId','captureProof']),
     'sourceEnumIncrements': ('source_enum_increments', ['operationConstantId', 'previousConstantId', 'oneConstantId', 'originalSourceTypeId', 'didForceDependentType', 'captureProof']),
     'sourceSemanticConstantExpressions': ('source_semantic_constant_expressions', ['constantId', 'expressionId', 'captureProof']),
+    'sourceProxyTypes': ('source_proxy_types', ['sourceRecordId', 'originalTypeId', 'sourceOccurrence', 'captureProof']),
     'sourcePackSizes': ('source_pack_sizes', ['constantId', 'isType', 'isTemplateTemplate', 'sourceTypeId', 'expressionId', 'templateId', 'captureProof']),
     'sourceAggregateConstants': ('source_aggregate_constants', ['constantId', 'elementCount', 'originalTypeId', 'backingExpressionId', 'flagBits', 'addedTemplateConst', 'captureProof']),
 
@@ -25,11 +28,13 @@ ARRAYS = {
     'sourceDependentFunctionCandidates': ('source_dependent_function_candidates', ['expressionId', 'ordinal', 'declarationId']),
     'sourceDependentFunctionArguments': ('source_dependent_function_arguments', ['expressionId', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
 
-    'sourceConcepts': ('source_concepts', ['id', 'sourceName', 'qualifiedName', 'parameterCount', 'definitionExpressionId', 'headerConstraintExpressionId', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'sourceConcepts': ('source_concepts', ['hasNamespaceOwner', 'id', 'sourceName', 'qualifiedName', 'parameterCount', 'definitionExpressionId', 'headerConstraintExpressionId', 'sourceFileId', 'line', 'column', 'captureProof']),
     'sourceConceptParameters': ('source_concept_parameters', ['conceptId', 'ordinal', 'kind', 'sourceName', 'typeId', 'constantId', 'templateId', 'defaultTypeId', 'defaultConstantId', 'defaultTemplateId', 'isPack', 'isAbbreviated', 'sourceFileId', 'line', 'column']),
     'sourceExpressionTemporaries': ('source_expression_temporaries', ['expressionId', 'initializationKind', 'spelledSourceTypeId', 'constructorDeclarationId', 'destructorDeclarationId', 'constantId', 'isDependentConstructor', 'lifetimeDisposition', 'captureProof']),
     'sourceExpressionTemporaryFlags': ('source_expression_temporary_flags', ['expressionId', 'flag']),
     'sourceExpressionAllocations': ('source_expression_allocations', ['expressionId', 'objectSourceTypeId', 'operatorDeclarationId', 'isNew', 'isDependentSelection', 'isPlacement', 'isAligned', 'isArrayDelete', 'isGlobal', 'hasInitializer', 'isBracedInitializer', 'isParenthesizedAggregate', 'hasDeducibleType', 'hasParenthesizedTypeId', 'initializationDisposition', 'rollbackDisposition', 'captureProof', 'isLookupDeferred']),
+    'sourceLocalScopes': ('source_local_scopes', ['id','routineDeclarationId','parentId','kind','siblingOrdinal','childScopeCount','variableCount','sourceFileId','line','column','captureProof']),
+    'sourceLocalVariableDeclarations': ('source_local_variable_declarations', ['declarationId','scopeId','declarationOrdinal','declaredSourceTypeId','captureProof']),
     'sourceFunctionParameterDeclarations': ('source_function_parameter_declarations', ['declarationId', 'routineDeclarationId', 'binderId', 'parameterOrdinal', 'declaredSourceTypeId', 'captureProof']),
     'sourceDeclarationOperators': ('source_declaration_operators', ['declarationId', 'operatorKind', 'captureProof']),
     'sourceExpressionFieldReferences': ('source_expression_field_references', ['expressionId', 'sourceFieldId', 'captureProof']),
@@ -61,7 +66,7 @@ ARRAYS = {
 
     'sourceNestedTypeDeclarations': ('source_nested_type_declarations', ['typeId', 'ownerTypeId', 'captureProof']),
     'sourceDependentTypes': ('source_dependent_types', ['typeId', 'kind', 'ownerTypeId', 'originalNestedTypeId', 'nestingDepth', 'parameterPosition', 'isPack', 'identityKey', 'captureProof', 'hasTypeConstraint']),
-    'sourceNamedTemplates': ('source_named_templates', ['templateId', 'qualifiedName', 'ownerSourceTypeId', 'prototypeSourceTypeId', 'constraintExpressionId', 'captureProof']),
+    'sourceNamedTemplates': ('source_named_templates', ['hasNamespaceOwner', 'templateId', 'qualifiedName', 'ownerSourceTypeId', 'prototypeSourceTypeId', 'constraintExpressionId', 'captureProof']),
     'sourceAliasInstances': ('source_alias_instances', ['typeId', 'templateId', 'isPrototype', 'isNonreal', 'isDependent', 'argumentCount', 'hasOriginalArguments', 'originalArgumentCount', 'minimumArguments', 'captureProof']),
     'sourceAliasArguments': ('source_alias_arguments', ['typeId', 'listKind', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
     'sourceTypeOperators': ('source_type_operators', ['typeId', 'opcode', 'expressionId', 'operandSourceTypeId', 'isDependent', 'isUnparenthesizedDecltype', 'captureProof', 'operatorName']),
@@ -107,6 +112,8 @@ ARRAYS = {
     'defaultArgumentObligationExecutions': ('default_argument_obligation_executions', ['functionEntityId', 'sourceObligationId', 'sourceAllocationObligationId', 'sourceLifetimeId', 'copiedOrdinal', 'captureProof']),
     'defaultArgumentTemporaryExecutions': ('default_argument_temporary_executions', ['functionEntityId', 'sourceTemporaryId', 'captureProof']),
     'tlsRoutineOrigins': ('tls_routine_origins', ['entityId', 'kind', 'sourceStorageId', 'targetEntityId', 'guardKind', 'captureProof']),
+    'generatedEntityInitializers': ('generated_entity_initializers', ['functionEntityId','ownerFunctionEntityId','sourceAllocationObligationId','sourceElementTypeId','elementTypeId','destinationBindingId','countBindingId','modelBindingId','copyNodeId','captureProof']),
+    'generatedEntityInitializerCalls': ('generated_entity_initializer_calls', ['nodeId','helperEntityId','captureProof']),
     'generatedArrayInitializers': ('generated_array_initializers', ['functionEntityId', 'ownerFunctionEntityId', 'sourceAllocationObligationId', 'sourceElementTypeId', 'elementTypeId', 'constructorEntityId', 'objectParameterBindingId', 'modelBindingId', 'modelInitializationNodeId', 'modelCopyNodeId', 'constructorCallNodeId', 'modelLoweredInitKind', 'modelSiteKind', 'modelZeroStorage', 'modelPartiallyInitialized', 'captureProof']),
     'generatedStaticDestructors': ('generated_static_destructors', ['functionEntityId', 'sourceObligationId', 'parameterBindingId', 'storageId', 'elementTypeId', 'elementCount', 'elementSize', 'captureProof']),
     'staticDestructionDispositions': ('static_destruction_dispositions', ['sourceObligationId', 'kind', 'captureProof']),
@@ -198,7 +205,7 @@ ARRAYS = {
                         'definitionText', 'origin', 'sourceFileId', 'line', 'column']),
     'macroParameters': ('macro_parameters', ['definitionId', 'ordinal', 'name']),
     'macroEvents': ('macro_events', ['id', 'kind', 'name', 'definitionId', 'origin', 'sourceFileId', 'line', 'column']),
-    'sourceTypes': ('source_types', ['id', 'sourceForm', 'kind', 'sourceName', 'underlyingTypeId',
+    'sourceTypes': ('source_types', ['hasNamespaceOwner', 'id', 'sourceForm', 'kind', 'sourceName', 'underlyingTypeId',
                                    'executionTypeId', 'isConst', 'isVolatile', 'sourceFileId', 'line', 'column', 'elementCount', 'isRestrict', 'isAtomic', 'arrayBoundKind']),
     'sourceTypeQualifiers': ('source_type_qualifiers', ['typeId', 'name']),
     'sourceEnumTypes': ('source_enum_types', ['typeId', 'identityKey', 'underlyingTypeId', 'isScoped', 'isComplete', 'enumeratorListComplete', 'hasExplicitBase', 'isTemplate', 'ownerTypeId', 'sourceOccurrence', 'enumeratorCount', 'isNonreal', 'isPrototype', 'isSpecialized', 'originallyUnnamed', 'underlyingOrigin']),
@@ -271,7 +278,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v59':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v60':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -291,7 +298,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v59', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v60', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

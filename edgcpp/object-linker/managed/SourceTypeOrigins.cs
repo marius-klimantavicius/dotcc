@@ -1,6 +1,6 @@
 using System.Globalization;
 namespace DotObj;
-internal sealed record SourceNamedTemplate(string QualifiedName,long? Owner,long Prototype,long? Constraint);
+internal sealed record SourceNamedTemplate(string QualifiedName,long? Owner,long Prototype,long? Constraint,bool HasNamespaceOwner);
 internal sealed record SourceAliasInstance(long Template,bool Prototype,bool Nonreal,bool Dependent,long Count,bool OriginalPresent,long OriginalCount,long MinimumArguments);
 internal sealed record SourceTypeOperator(long Opcode,string Name,long? Expression,long? Operand,bool Dependent,bool Unparenthesized);
 internal sealed partial class ObjectFile
@@ -36,13 +36,13 @@ internal sealed partial class ObjectFile
     };
     private void ReadSourceTypeOrigins()
     {
-        using(var q=database.Prepare("SELECT template_id,qualified_name,owner_source_type_id,prototype_source_type_id,constraint_expression_id,capture_proof FROM source_named_templates ORDER BY template_id"))
+        using(var q=database.Prepare("SELECT template_id,qualified_name,owner_source_type_id,prototype_source_type_id,constraint_expression_id,capture_proof,has_namespace_owner FROM source_named_templates ORDER BY template_id"))
             while(q.Read())
             {
-                var value=new SourceNamedTemplate(q.Text(1),q.OptionalInteger(2),q.Integer(3),q.OptionalInteger(4));
+                var value=new SourceNamedTemplate(q.Text(1),q.OptionalInteger(2),q.Integer(3),q.OptionalInteger(4),q.Integer(6)==1);
                 if(!SourceTemplates.TryGetValue(q.Integer(0),out var template) || template.Kind!="alias" || value.QualifiedName.Length==0 ||
                     value.Owner is long owner && !SourceTypes.ContainsKey(owner) || !SourceTypes.ContainsKey(value.Prototype) ||
-                    value.Constraint is long constraint && !SourceExpressions.ContainsKey(constraint) || q.Text(5)!="original-alias-template" ||
+                    value.Constraint is long constraint && !SourceExpressions.ContainsKey(constraint) || q.Text(5)!="original-alias-template" || q.Integer(6) is not(0 or 1) ||
                     !SourceNamedTemplates.TryAdd(q.Integer(0),value))throw new InvalidDataException("Named alias template lost its original declaration/header");
             }
         using(var q=database.Prepare("SELECT type_id,template_id,is_prototype,is_nonreal,is_dependent,argument_count,has_original_arguments,original_argument_count,minimum_arguments,capture_proof FROM source_alias_instances ORDER BY type_id"))

@@ -13,6 +13,13 @@ internal sealed partial class ObjectFile
         if (source.FunctionEntityId is long original) return OriginalFunction(function) == original ||
             DefaultArgumentTemporaries.Contains((function,source.Id));
         if (source.SourceInitializerId is not long initializer) return false;
+        // A trivial record argument can be materialized within a local-static
+        // initializer without acquiring a destruction lifetime or global
+        // initialization action. Its original initializer still owns the
+        // exact enclosing function (including an observed constructor copy).
+        if (SourceInitializers.TryGetValue(initializer, out var local) &&
+            local.Kind == "local-static" && local.FunctionEntityId is long owner &&
+            OriginalFunction(function) == owner) return true;
         if (IsSourceObligationExecution(initializer, null, function)) return true;
         if (FieldInitializerExecutions.TryGetValue((initializer, function), out var field))
             return field.ExecutionDisposition == "copied";

@@ -27,8 +27,8 @@ internal sealed partial class ObjectFile
                     type.SourceFileId is not long fileId || type.Line <= 0)
                     throw new InvalidDataException("Template type parameter requires its original declaration and coordinates");
                 using var file = database.Prepare($"SELECT path FROM source_files WHERE id={fileId}");
-                if (!file.Read() || value.IdentityKey != file.Text(0) + ":" + type.Line + ":" + type.Column + ":" +
-                    value.NestingDepth + ":" + value.ParameterPosition)
+                if (!file.Read() || value.IdentityKey != SourceNamespaceNominalIdentity("type",type.Id,file.Text(0) + ":" + type.Line + ":" + type.Column + ":" +
+                    value.NestingDepth + ":" + value.ParameterPosition))
                     throw new InvalidDataException("Template parameter identity differs from its original declaration");
             }
             else if (value.Kind == "auto-placeholder")

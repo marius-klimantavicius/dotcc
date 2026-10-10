@@ -882,3 +882,67 @@ O0/O2, source-hidden verification, JIT, NativeAOT, and eight resealed malformed
 operation, operand, type, provenance, and disposition cases. Earlier receipts
 retain a fixture that did not force the prototype enum graph and a mismatched
 pack-size schema; neither is counted as semantic acceptance.
+
+### Original auto type placeholders
+
+Undeduced `auto` and `decltype(auto)` are original type specifiers, not template
+formal declarations. The source graph retains EDG's placeholder discriminator,
+its exact reserved depth/position, and any original concept constraint. These
+rows have no invented formal identity or execution type; deduced types retain
+their separate original type representation. Constraint recipes participate in
+structural identity. Native152/managed179 passed 43 checks at
+`dotobj-v59-auto-placeholders-152-179-001/results.json`, including native/stock C
+O0/O2, source-hidden verification, JIT, and seven malformed source graphs.
+
+### Constructor rollback through anonymous union members
+
+Constructor initializer descriptors can omit anonymous union parent selections.
+The stock C lowerer restores them through exact anonymous-parent ownership.
+Cleanup emission now follows the same original parent fields and emits the full
+typed member chain, retaining ordinary source field identities and existing
+base/subobject checks. No offset or spelling-based match supplies ownership.
+
+Native153/managed180 passed 31 checks at
+`dotobj-v60-anonymous-union-153-180-001/results.json`: native/stock C O0/O2,
+source-hidden verification, JIT, NativeAOT, and three malformed field/path
+mutations. The fixture covers nested anonymous unions, successful construction
+with intentionally omitted final destruction, failure after member construction,
+and failure within the member constructor.
+### Counted model initialization helpers
+
+Aligned array allocation can use EDG's generated three-parameter initializer
+(destination, element count, immutable model) rather than a scalar constructor
+callback. The object graph retains the exact generated factory, its original
+array allocation, selected element type, synthetic parameter roles, unique
+observed call, and complete-object model copy. The managed verifier checks the
+countdown loop, advancing destination, fixed model, and exact copied extent.
+
+Native154/managed181 passed 41 checks at
+`dotobj-v60-counted-helper-154-181-001/results.json`, including native/stock C
+O0/O2, source-hidden verification and generation, plus eight malformed metadata
+and body cases. This is generation acceptance; unresolved production allocation
+and vector-runtime imports remain explicit. No managed execution was claimed.
+
+### Original block-local declaration references
+
+Source-only type recipes such as `decltype(ts.tv_sec)` retain the actual local
+variable, original owning routine and lexical function/block/condition scope,
+original nonstatic-variable-list ordinal, declared type, source name/location,
+and existing initializer expression or constant graph. These declarations are
+separate from prototype parameters. Scope ancestry is snapshotted before local
+type traversal and identities use the owning routine and relative scope path,
+never object-local row identifiers or inferred qualified names.
+
+Native155/managed182 passed 46 checks at
+`dotobj-v60-local-variables-155-182-001/results.json`: native/stock C O0/O2,
+source-hidden verification, production-bound JIT, and eight malformed ownership,
+scope, ordinal, provenance and cycle cases. The fixture retains three same-name
+variables in distinct scopes and a local initializer recipe. NativeAOT was not
+rerun for this source-only metadata change.
+
+Local-static trivial record arguments retain their exact original initializer
+and enclosing function even when no destructor lifetime is needed. The reader
+now accepts that explicit original ownership; foreign initializer/function
+mutations remain rejected. Native156/managed184 passed28 checks, including
+source-hidden verification, production-bound JIT and three malformed cases.
+The real locale.cpp object now verifies with managed184.

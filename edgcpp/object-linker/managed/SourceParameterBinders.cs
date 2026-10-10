@@ -109,8 +109,23 @@ internal sealed partial class ObjectFile
         if(selected==0 || selected!=reference.Binder || reference.Ordinal>=SourceBinderParameters.GetValueOrDefault(selected,[]).Count)
             throw new InvalidDataException("Source parameter reference does not resolve through its exact lexical binders");
         var parameter=SourceBinderParameters[selected][checked((int)reference.Ordinal)];var value=SourceExpressions[expression];
-        if((value.OriginalLvalueTypeId??value.SourceTypeId) is not long type || SourceTypeSignature(type)!=SourceTypeSignature(parameter.Type))
+        if((value.OriginalLvalueTypeId??value.SourceTypeId) is not long type || SourceTypeSignature(type)!=SourceParameterValueSignature(parameter))
             throw new InvalidDataException("Source parameter reference lost its exact original adjusted or lvalue type");
+    }
+    private string SourceParameterValueSignature(SourceExpressionParameter parameter)
+    {
+        // il_def::a_param_type.qualifiers retains the top-level qualifiers
+        // removed from a function type. expr::make_param_ref_operand uses the
+        // original param-id value type (func_def.c checks the same bitset).
+        // Restore those exact qualifiers; never erase a mismatch on the use.
+        long bits=parameter.Qualifiers;
+        if((bits&~127L)!=0)throw new InvalidDataException("Source parameter value needs an owned extended qualifier contract");
+        string prefix=(bits%2!=0?"const:":"")+((bits&2)!=0?"volatile:":"")+((bits&4)!=0?"restrict:":"")+((bits&8)!=0?"atomic:":"");
+        var extras=new List<string>();
+        if((bits&16)!=0)extras.Add("nullable");
+        if((bits&32)!=0)extras.Add("nonnull");
+        if((bits&64)!=0)extras.Add("null-unspecified");
+        return prefix+string.Concat(extras.Order(StringComparer.Ordinal).Select(value=>value+":"))+SourceTypeSignature(parameter.Type);
     }
     private string SourceParameterReferenceContextKey(long expression)
     {

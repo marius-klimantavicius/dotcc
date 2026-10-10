@@ -132,6 +132,7 @@ struct SourceConstraintExpression {
   std::vector<SourceConstraintArgument> arguments;
 };
 struct SourceConstraintConcept {
+  unsigned namespace_owner=0;
   std::string name,qualified_name,error;
   a_source_position location={};
   unsigned definition=0,header_constraint=0;
@@ -142,10 +143,25 @@ struct SourceConstraintBinder {
   bool outside=false;
   std::vector<SourceConstraintParameter> parameters;
 };
+struct SourceLocalScopeSnapshot {
+  a_routine_ptr routine=nullptr;
+  a_scope_ptr parent=nullptr;
+  unsigned ordinal=0,child_count=0;
+  std::string kind;
+  a_source_position position={};
+  std::vector<a_variable_ptr> variables;
+};
+struct SourceLocalScope {
+  unsigned routine=0,parent=0,ordinal=0,child_count=0,variable_count=0;
+  std::string kind,error;
+  a_source_position position={};
+};
 struct SourceConstraintDeclaration {
+  unsigned namespace_owner=0;
   std::string kind,name,qualified_name,error;
   unsigned type=0,owner_type=0,template_prototype=0;
   unsigned parameter_owner=0,parameter_binder=0,parameter_ordinal=0,parameter_declared_type=0;
+  unsigned local_scope=0,local_ordinal=0,local_declared_type=0;
   int original_init_kind=-1,original_dynamic_init_kind=-1,operator_kind=-1;
   std::string initializer_kind="not-variable";
   unsigned initializer_constant=0,initializer_expression=0;
@@ -167,6 +183,9 @@ struct SourceClassSpecialization {
   std::string error;
 };
 struct SourceConstraintGraph {
+  std::map<a_scope_ptr,SourceLocalScopeSnapshot> local_scope_snapshots;
+  std::map<a_scope_ptr,unsigned> local_scope_ids;
+  std::vector<SourceLocalScope> local_scopes;
   std::map<std::pair<an_expr_node_ptr,unsigned>,unsigned> expressions_by_original;
   std::map<a_template_ptr,unsigned> concepts_by_original;
   std::vector<SourceConstraintExpression> expressions;
@@ -299,6 +318,60 @@ inline SourceTemplateFormal capture_constraint_formal(a_template_parameter_ptr p
   return formal;
 }
 
+// Snapshot exact original scope/list identities before local type traversal can
+// recursively capture decltype(variable.member). No source execution owner or
+// generated parameter is invented for a block-local declaration.
+inline void snapshot_source_local_scopes(a_scope_ptr scope,a_routine_ptr routine=nullptr,a_scope_ptr parent=nullptr,unsigned ordinal=0) {
+  if(!scope || (scope->kind!=sck_function && scope->kind!=sck_block && scope->kind!=sck_condition))return;
+  auto &snapshots=source_constraint_graph().local_scope_snapshots;
+  if(snapshots.count(scope))return;
+  if(scope->kind==sck_function) {routine=scope->variant.routine.ptr;parent=nullptr;ordinal=0;}
+  if(!routine)return;
+  SourceLocalScopeSnapshot value;value.routine=routine;value.parent=parent;value.ordinal=ordinal;
+  value.kind=scope->kind==sck_function?"function":scope->kind==sck_block?"block":"condition";
+  if(scope->assoc_block)value.position=scope->assoc_block->position;
+  for(auto variable=scope->nonstatic_variables;variable;variable=variable->next)value.variables.push_back(variable);
+  for(auto child=scope->scopes;child;child=child->next)++value.child_count;
+  snapshots[scope]=value;
+  unsigned child_ordinal=0;for(auto child=scope->scopes;child;child=child->next)
+    snapshot_source_local_scopes(child,routine,scope,child_ordinal++);
+}
+inline unsigned capture_source_local_scope(a_scope_ptr scope) {
+  auto &graph=source_constraint_graph();auto previous=graph.local_scope_ids.find(scope);
+  if(previous!=graph.local_scope_ids.end())return previous->second;
+  auto found=graph.local_scope_snapshots.find(scope);if(found==graph.local_scope_snapshots.end())return 0;
+  unsigned id=unsigned(graph.local_scopes.size()+1);graph.local_scope_ids[scope]=id;graph.local_scopes.emplace_back();
+  const auto original=found->second;SourceLocalScope value;value.kind=original.kind;value.position=original.position;
+  value.ordinal=original.ordinal;value.child_count=original.child_count;value.variable_count=unsigned(original.variables.size());
+  value.routine=capture_constraint_routine(original.routine);
+  if(original.parent) {value.parent=capture_source_local_scope(original.parent);if(!value.parent)value.error="original local scope lost its parent snapshot";}
+  graph.local_scopes[id-1]=value;return id;
+}
+inline bool capture_constraint_local_variable(a_variable_ptr variable,SourceConstraintDeclaration &value) {
+  if(variable->is_parameter || variable->compiler_generated || variable->lowering_generated || !variable->source_corresp.enclosing_routine)return false;
+  auto scope=variable->source_corresp.parent_scope;auto routine=variable->source_corresp.enclosing_routine;
+  if(!scope || (scope->kind!=sck_function && scope->kind!=sck_block && scope->kind!=sck_condition))return false;
+  auto &graph=source_constraint_graph();
+  if(!graph.local_scope_snapshots.count(scope)) {
+    auto type=state().type_ids.find(routine->type);
+    if(type!=state().type_ids.end() && state().routine_abis.count(type->second)) {
+      value.error="source local variable lacks its prelowering scope snapshot";return false;
+    }
+    auto root=scope;while(root && root->kind!=sck_function)root=root->parent;
+    if(!root || root->variant.routine.ptr!=routine)return false;
+    snapshot_source_local_scopes(root);
+  }
+  const auto &original=graph.local_scope_snapshots.at(scope);
+  unsigned ordinal=0;while(ordinal<original.variables.size() && original.variables[ordinal]!=variable)++ordinal;
+  if(original.routine!=routine || ordinal==original.variables.size()) {
+    value.error="source local variable differs from its exact original scope/list membership";return false;
+  }
+  value.local_scope=capture_source_local_scope(scope);value.local_ordinal=ordinal;
+#if GENERATE_SOURCE_SEQUENCE_LISTS
+  value.local_declared_type=capture_type(variable->declared_type);
+#endif
+  return value.local_scope!=0;
+}
 inline bool capture_constraint_function_parameter(a_variable_ptr variable,SourceConstraintDeclaration &value) {
   if(!variable->is_parameter || variable->is_this_parameter)return false;
   auto scope=variable->source_corresp.parent_scope;
@@ -386,16 +459,14 @@ inline bool capture_source_class_specialization(a_type_ptr instance,a_template_p
 
 inline void capture_constraint_declaration_scope(a_source_correspondence &source,SourceConstraintDeclaration &value) {
   value.name=spelling(source);value.qualified_name=value.name;value.location=source.decl_position;
+  if(!value.parameter_owner && !value.local_scope)value.namespace_owner=capture_source_namespace_owner(source);
   if(source.is_class_member)value.owner_type=capture_type(scp_parent_class(&source));
   for(auto scope=source.parent_scope;scope;scope=scope->parent) {
+    if(value.local_scope)break; // Exact original scope ancestry is serialized separately.
     if(scope->kind==sck_namespace) {
       auto ns=scope->variant.assoc_namespace;
-      if(!ns || ns->has_internal_linkage || spelling(ns->source_corresp).empty())value.error="source expression declaration needs original unnamed namespace identity [declaration="+value.name+
-        ",namespace="+(ns?spelling(ns->source_corresp):std::string("absent"))+
-        ",internal="+(ns && ns->has_internal_linkage?"yes":"no")+
-        ",seq="+std::to_string(ns?ns->source_corresp.decl_position.seq:0)+
-        ",column="+std::to_string(ns?ns->source_corresp.decl_position.column:0)+"]";
-      else value.qualified_name=spelling(ns->source_corresp)+"::"+value.qualified_name;
+      if(!ns)value.error="source declaration has absent original namespace";
+      else if(!spelling(ns->source_corresp).empty())value.qualified_name=spelling(ns->source_corresp)+"::"+value.qualified_name;
     } else if(scope->kind==sck_function && value.parameter_owner && scope==source.parent_scope) {
       // The exact original parameter-list relation owns this local declaration.
       // Its routine retains enclosing class/namespace/template identity.
@@ -412,7 +483,7 @@ inline unsigned capture_constraint_variable(a_variable_ptr variable) {
   auto previous=graph.declarations_by_original.find(key);if(previous!=graph.declarations_by_original.end())return previous->second;
   unsigned id=unsigned(graph.declarations.size()+1);graph.declarations_by_original[key]=id;graph.declarations.emplace_back();
   SourceConstraintDeclaration value;value.kind="variable";value.type=capture_type(variable->type);value.is_constexpr=variable->is_constexpr;
-  capture_constraint_function_parameter(variable,value);
+  if(!capture_constraint_function_parameter(variable,value))capture_constraint_local_variable(variable,value);
   capture_constraint_declaration_scope(variable->source_corresp,value);
   value.original_init_kind=int(variable->init_kind);value.initializer_kind="none";
   a_constant_ptr initializer_constant=nullptr;
@@ -468,7 +539,7 @@ inline unsigned capture_constraint_variable(a_variable_ptr variable) {
 // A selected ordinary member may belong to a concrete class specialization.
 // Capture its original enclosing-class substitution without changing its ABI
 // or nominal record identity. Independent member-template arguments stay empty.
-inline void capture_selected_member_owner(unsigned owner_id,unsigned primary_id,std::string &error) {
+inline void capture_selected_member_owner(unsigned owner_id,unsigned primary_id,unsigned witness,std::string &error) {
   if(owner_id==primary_id)return;
   auto &s=state();
   auto owner=owner_id?s.types.at(owner_id-1).record_type:nullptr;
@@ -488,6 +559,10 @@ inline void capture_selected_member_owner(unsigned owner_id,unsigned primary_id,
     error="selected concrete member requires exact original enclosing class substitution";return;
   }
   capture_source_class_specialization(owner,templ,record.template_error);
+  // This original selected declaration caused the otherwise concrete record
+  // to retain its class substitution. The expression that discovered it may
+  // remain source-only/unemitted, so keep the exact witness as a graph edge.
+  record.template_member_witness=witness;
   record.template_prototype=primary_id;s.records[owner]=record; // Reserve before recursive argument capture.
   for(auto argument=supplement->template_arg_list;argument;argument=argument->next)
     record.template_arguments.push_back(capture_constraint_argument(argument,record.template_error));
@@ -518,7 +593,7 @@ inline unsigned capture_constraint_routine(a_routine_ptr routine) {
         value.error="source class member routine lost its original class/prototype ownership";
       else {
         value.template_prototype=primary==routine?id:capture_constraint_routine(primary);
-        if(primary!=routine)capture_selected_member_owner(value.owner_type,graph.declarations.at(value.template_prototype-1).owner_type,value.error);
+        if(primary!=routine)capture_selected_member_owner(value.owner_type,graph.declarations.at(value.template_prototype-1).owner_type,id,value.error);
       }
     } else if((templ->kind!=templk_function && templ->kind!=templk_member_function) || !templ->template_decl || !templ->prototype_instantiation.routine)
       value.error="source routine reference lacks its exact original template declaration";
@@ -541,11 +616,12 @@ inline unsigned capture_constraint_concept(a_template_ptr declaration) {
   SourceConstraintConcept value;
   auto definition=canonical->definition_template?canonical->definition_template:canonical;
   value.name=spelling(canonical->source_corresp);value.qualified_name=value.name;value.location=canonical->source_corresp.decl_position;
+  value.namespace_owner=capture_source_namespace_owner(canonical->source_corresp);
   for(auto scope=canonical->source_corresp.parent_scope;scope;scope=scope->parent) {
     if(scope->kind==sck_namespace) {
       auto ns=scope->variant.assoc_namespace;
-      if(!ns || ns->has_internal_linkage || spelling(ns->source_corresp).empty())value.error="source concept requires owned unnamed namespace identity";
-      else value.qualified_name=spelling(ns->source_corresp)+"::"+value.qualified_name;
+      if(!ns)value.error="source concept has absent original namespace";
+      else if(!spelling(ns->source_corresp).empty())value.qualified_name=spelling(ns->source_corresp)+"::"+value.qualified_name;
     } else if(scope->kind!=sck_file)value.error="source concept requires owned nonnamespace declaration scope";
   }
   if(canonical->kind!=templk_concept || definition->kind!=templk_concept || value.name.empty() || !definition->template_decl)
@@ -617,7 +693,15 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
   {
     // Semantic result annotations use an existing type; they do not declare
     // the type recipe anew in the surrounding expression's lexical scope.
-    SourceParameterScope result_annotation_scope(0);
+    // Stock cp_gen_be renders a user-written cast's destination type in
+    // this lexical prototype scope; an implicit conversion merely borrows
+    // its semantic result type (which may belong to another declaration).
+    bool lexical_cast=expression->kind==enk_operation && !expression->compiler_generated &&
+      (expression->variant.operation.kind==eok_cast || expression->variant.operation.kind==eok_ref_cast ||
+       expression->variant.operation.kind==eok_bool_cast);
+    bool lexical_temporary=expression->kind==enk_temp_init && expression->variant.init.dynamic_init &&
+      expression->variant.init.dynamic_init->is_explicit_cast;
+    SourceParameterScope result_annotation_scope(lexical_cast || lexical_temporary?binder:0);
     value.type=capture_type(expression->type);
     value.original_lvalue_type=capture_type(expression->orig_lvalue_type);
   }

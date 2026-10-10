@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v59'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v60'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -171,10 +171,10 @@ CREATE TABLE parameters (
  entity_id INTEGER NOT NULL REFERENCES entities(id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  type_id INTEGER NOT NULL REFERENCES types(id),
- parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','indirect-source','this','result-buffer','vtt','forwarded-source','static-object','initialization-object')),
+ parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','indirect-source','this','result-buffer','vtt','forwarded-source','static-object','initialization-object','entity-destination','entity-count','entity-model')),
  source_ordinal INTEGER CHECK(source_ordinal>=0),
  CHECK((parameter_role IN ('source','indirect-source','forwarded-source') AND source_ordinal IS NOT NULL) OR
-       (parameter_role IN ('this','result-buffer','vtt','static-object','initialization-object') AND source_ordinal IS NULL)),
+       (parameter_role IN ('this','result-buffer','vtt','static-object','initialization-object','entity-destination','entity-count','entity-model') AND source_ordinal IS NULL)),
  UNIQUE(entity_id,source_ordinal),
  PRIMARY KEY(entity_id,ordinal)
 ) STRICT;
@@ -700,6 +700,7 @@ CREATE TABLE edges (
  PRIMARY KEY(parent_id,role,ordinal)
 ) STRICT;
 CREATE TABLE source_types (
+ has_namespace_owner INTEGER NOT NULL CHECK(has_namespace_owner IN(0,1)),
  id INTEGER PRIMARY KEY CHECK(id>0),
  source_form TEXT NOT NULL DEFAULT 'plain' CHECK(source_form IN('plain','template-alias','type-operator')),
  kind TEXT NOT NULL,
@@ -1002,13 +1003,14 @@ CREATE TABLE record_storage_copies (
  value_node_id INTEGER NOT NULL REFERENCES nodes(id),
  source_record_id INTEGER NOT NULL REFERENCES source_record_types(id),
  byte_count INTEGER NOT NULL CHECK(byte_count>0),
- kind TEXT NOT NULL CHECK(kind IN ('evaluation-save','class-assignment','initializer-storage','bitwise-initialization','array-zero-model')),
+ kind TEXT NOT NULL CHECK(kind IN ('evaluation-save','class-assignment','initializer-storage','bitwise-initialization','array-zero-model','entity-model')),
  capture_proof TEXT NOT NULL,
  CHECK((kind='evaluation-save' AND capture_proof='observed-pre-execution-save') OR
        (kind='class-assignment' AND capture_proof='observed-class-assignment-lowering') OR
        (kind='initializer-storage' AND capture_proof='observed-initialization-storage') OR
        (kind='bitwise-initialization' AND capture_proof='observed-bitwise-initialization') OR
-       (kind='array-zero-model' AND capture_proof='observed-array-zero-model-copy'))
+       (kind='array-zero-model' AND capture_proof='observed-array-zero-model-copy') OR
+       (kind='entity-model' AND capture_proof='observed-entity-model-copy'))
 ) STRICT;
 CREATE TABLE record_value_transfers (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
@@ -1345,6 +1347,7 @@ CREATE TABLE deferred_routine_abis (
 
 -- Owned source-only constraint graph; staged for the next profile.
 CREATE TABLE source_concepts (
+ has_namespace_owner INTEGER NOT NULL CHECK(has_namespace_owner IN(0,1)),
  id INTEGER PRIMARY KEY CHECK(id>0),
  source_name TEXT NOT NULL CHECK(length(source_name)>0),
  qualified_name TEXT NOT NULL CHECK(length(qualified_name)>0),
@@ -1483,7 +1486,7 @@ CREATE TABLE source_expression_declarations (
  template_prototype_declaration_id INTEGER REFERENCES source_expression_declarations(id),
  template_origin_kind TEXT NOT NULL CHECK(template_origin_kind IN('none','variable-template','function-template','static-data-member','class-member-function')),
  routine_kind TEXT NOT NULL CHECK(routine_kind IN('not-routine','function','constructor','destructor','operator')),
- scope_kind TEXT NOT NULL CHECK(scope_kind IN('nonlocal','function-parameter')),
+ scope_kind TEXT NOT NULL CHECK(scope_kind IN('nonlocal','function-parameter','function-local','namespace')),
  has_template_origin INTEGER NOT NULL CHECK(has_template_origin IN(0,1)),is_template_prototype INTEGER NOT NULL CHECK(is_template_prototype IN(0,1)),
  is_constexpr INTEGER NOT NULL CHECK(is_constexpr IN(0,1)),
  formal_count INTEGER NOT NULL CHECK(formal_count>=0),argument_count INTEGER NOT NULL CHECK(argument_count>=0),
@@ -1638,6 +1641,7 @@ CREATE TABLE function_dynamic_exception_boundaries (
 ) STRICT;
 
 CREATE TABLE source_named_templates (
+ has_namespace_owner INTEGER NOT NULL CHECK(has_namespace_owner IN(0,1)),
  template_id INTEGER PRIMARY KEY REFERENCES source_templates(id),qualified_name TEXT NOT NULL,
  owner_source_type_id INTEGER REFERENCES source_types(id),prototype_source_type_id INTEGER NOT NULL REFERENCES source_types(id),
  constraint_expression_id INTEGER REFERENCES source_expressions(id),capture_proof TEXT NOT NULL CHECK(capture_proof='original-alias-template')
@@ -1829,4 +1833,64 @@ CREATE TABLE source_pack_sizes (
  CHECK((is_template_template=1 AND template_id IS NOT NULL AND source_type_id IS NULL AND expression_id IS NULL) OR
        (is_template_template=0 AND is_type=1 AND source_type_id IS NOT NULL AND template_id IS NULL AND expression_id IS NULL) OR
        (is_template_template=0 AND is_type=0 AND expression_id IS NOT NULL AND source_type_id IS NULL AND template_id IS NULL))
+) STRICT;
+
+-- A nonreal EDG lookup class representing an original parameter/decltype.
+CREATE TABLE source_proxy_types (
+ source_record_id INTEGER PRIMARY KEY REFERENCES source_record_types(id),
+ original_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ source_occurrence INTEGER NOT NULL CHECK(source_occurrence>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-class-proxy-of-type')
+) STRICT;
+
+CREATE TABLE generated_entity_initializers (
+ function_entity_id INTEGER PRIMARY KEY REFERENCES functions(entity_id),
+ owner_function_entity_id INTEGER NOT NULL REFERENCES functions(entity_id),
+ source_allocation_obligation_id INTEGER NOT NULL REFERENCES source_allocation_obligations(id),
+ source_element_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ element_type_id INTEGER NOT NULL REFERENCES types(id),
+ destination_binding_id INTEGER NOT NULL REFERENCES bindings(id),
+ count_binding_id INTEGER NOT NULL REFERENCES bindings(id),
+ model_binding_id INTEGER NOT NULL REFERENCES bindings(id),
+ copy_node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-counted-model-initializer-factory')
+) STRICT;
+CREATE TABLE generated_entity_initializer_calls (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ helper_entity_id INTEGER NOT NULL UNIQUE REFERENCES generated_entity_initializers(function_entity_id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-entity-initializer-call')
+) STRICT;
+
+CREATE TABLE source_namespaces (
+ id INTEGER PRIMARY KEY,parent_id INTEGER REFERENCES source_namespaces(id),
+ source_name TEXT NOT NULL,is_unnamed INTEGER NOT NULL CHECK(is_unnamed IN(0,1)),
+ is_inline INTEGER NOT NULL CHECK(is_inline IN(0,1)),has_internal_linkage INTEGER NOT NULL CHECK(has_internal_linkage IN(0,1)),
+ source_file_id INTEGER REFERENCES source_files(id),line INTEGER NOT NULL CHECK(line>=0),column INTEGER NOT NULL CHECK(column>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-namespace-declaration'),
+ CHECK((is_unnamed=1)=(source_name='')),CHECK(parent_id IS NULL OR parent_id!=id)
+) STRICT;
+CREATE TABLE source_namespace_owners (
+ owner_kind TEXT NOT NULL CHECK(owner_kind IN('type','declaration','concept','template')),
+ owner_id INTEGER NOT NULL CHECK(owner_id>0),namespace_id INTEGER NOT NULL REFERENCES source_namespaces(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-enclosing-namespace'),PRIMARY KEY(owner_kind,owner_id)
+) STRICT;
+
+CREATE TABLE source_local_scopes (
+ id INTEGER PRIMARY KEY,
+ routine_declaration_id INTEGER NOT NULL REFERENCES source_expression_declarations(id),
+ parent_id INTEGER REFERENCES source_local_scopes(id),
+ kind TEXT NOT NULL CHECK(kind IN('function','block','condition')),
+ sibling_ordinal INTEGER NOT NULL CHECK(sibling_ordinal>=0),
+ child_scope_count INTEGER NOT NULL CHECK(child_scope_count>=0),variable_count INTEGER NOT NULL CHECK(variable_count>=0),
+ source_file_id INTEGER REFERENCES source_files(id),line INTEGER NOT NULL,column INTEGER NOT NULL,
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-local-scope-tree'),
+ CHECK((kind='function')=(parent_id IS NULL)),CHECK(parent_id IS NULL OR parent_id!=id)
+) STRICT;
+CREATE TABLE source_local_variable_declarations (
+ declaration_id INTEGER PRIMARY KEY REFERENCES source_expression_declarations(id),
+ scope_id INTEGER NOT NULL REFERENCES source_local_scopes(id),
+ declaration_ordinal INTEGER NOT NULL CHECK(declaration_ordinal>=0),
+ declared_source_type_id INTEGER REFERENCES source_types(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-nonstatic-variable-list'),
+ UNIQUE(scope_id,declaration_ordinal)
 ) STRICT;

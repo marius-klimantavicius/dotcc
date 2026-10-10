@@ -106,6 +106,7 @@ internal sealed partial class ObjectFile
             result="template-alias:"+SourceIdentityFrame(declaration.QualifiedName)+SourceIdentityFrame(declaration.Owner is long owner?SourceArgumentTypeIdentity(owner,depth+1):"")+
                 SourceIdentityFrame(file.Text(0)+":"+value.Line+":"+value.Column);
         }
+        if(value.Kind=="alias")result+=SourceNamespaceIdentitySuffix("template",id);
         foreach (var formal in SourceTemplateParameters.GetValueOrDefault(id, []))
         {
             string item = formal.Kind + ":" + (formal.IsPack ? "1" : "0") + ":" + (formal.IsAbbreviated ? "1" : "0");

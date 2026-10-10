@@ -26,7 +26,7 @@ internal sealed partial class ObjectFile
                 declaration.OwnerType is not null || declaration.HasTemplate || declaration.InitializerKind!="none" ||
                 declaration.OriginalInitKind!=0 || declaration.OriginalDynamicInitKind is not null ||
                 declaration.InitializerExpression is not null || declaration.InitializerConstant is not null ||
-                owner.ScopeKind!="nonlocal" || owner.Kind!="routine" || binder.Kind!="routine-prototype" || !binder.Outside || binder.Parent is not null ||
+                owner.ScopeKind is not("nonlocal" or "namespace") || owner.Kind!="routine" || binder.Kind!="routine-prototype" || !binder.Outside || binder.Parent is not null ||
                 binder.RoutineType!=owner.Type || value.Ordinal>=parameters.Count ||
                 SourceTypeSignature(declaration.Type)!=SourceTypeSignature(parameters[(int)value.Ordinal].Type) ||
                 !unique.Add((value.Routine,value.Ordinal)))

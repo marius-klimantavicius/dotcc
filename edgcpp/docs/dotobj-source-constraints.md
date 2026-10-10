@@ -124,8 +124,10 @@ this bounded slice. The focused150/176 receipt
 `dotobj-v59-null-pointers-150-176-001/results.json` passed 29 checks: data-pointer,
 const-pointee and function-pointer nulls, hidden-source verification, JIT, and
 resealed nonzero/negative/noncanonical pointer and ordinary integer-overflow
-rejections. This does not yet cover the separately observed `nullptr_t` literal
-and non-type formal extension queued for the next frozen cut.
+rejections. The subsequent `nullptr_t` literal and original non-type formal
+extension passed 32 checks in `dotobj-v59-nullptr-151-178-002/results.json`:
+canonical null payloads retain their exact source type; template parameters retain
+original coordinates and never acquire a fabricated integer payload.
 
 Profile59 retains dependent enum declarations with original class owner, ordered
 resolved or symbolic values, scoped/anonymous flags and declared/inferred versus
@@ -140,3 +142,51 @@ type. It stores no computed count before substitution. Type and value packs are
 validated against their exact parameter declarations. Original auto/decltype(auto)
 placeholders preserve EDG's type-specifier coordinates and optional constraint
 graph independently from ordinary template-formal identities.
+
+
+Original namespace ownership now has typed declaration rows and owner edges for
+source types, expression declarations, concepts and alias templates. Empty
+unnamed namespace spelling stays empty; reopenings reuse the original namespace
+entity. Private namespace identity uses its exact parent plus producer UnitId,
+including named descendants. Public namespace identities remain shared across
+translation units. Record, enum, declaration, concept, alias and template-formal
+identities retain this ownership. Formal namespaces are observed from the original
+frontend template symbol while available, including later cached recapture;
+conflicting original ownership is rejected.
+
+The frozen155/182 namespace suite passed 53 checks in
+`dotobj-v60-namespaces-155-182-001/results.json`: two units share a header but own
+private records with distinct identities/layouts (8 and 12 bytes), source files
+are hidden before verification/linking, and native O0/O2 and translated JIT agree.
+Six resealed negatives cover original namespace spelling, repeated declaration
+identity, internal linkage, missing ownership, marker contradiction and parent
+cycles. The earlier154 failure is retained; it exposed the missing private
+formal ownership path now covered by the paired test. This slice does not yet
+establish full concrete-instantiation identity for every public template whose
+actual type argument is TU-private; complete concrete argument provenance remains
+a separate requirement.
+
+Concrete class substitution capture now retains the exact selected original member
+that caused the record snapshot to be enriched. If an unused template's expression
+is not otherwise serialized, emitting the enriched record still emits its original
+member/prototype declaration closure. These remain semantic declarations and gain
+no executable body. The strict existing class substitution verifier is unchanged.
+The five-line unused-template reducer reproduces the prior real `exception.cpp`
+gate; `dotobj-v60-concrete-witness-155-182-001/results.json` passes 26 native,
+source-hidden verification, JIT and malformed-witness checks. These focused receipts
+do not claim full DuckDB translation or acceptance of all candidate-profile60 work.
+
+### v60 proxy and lexical type closure
+
+Original nonreal class proxies retain their exact `proxy_of_type` target. An
+unknown target remains unknown and unit/occurrence-local, with no invented
+physical class layout. Explicit cast destination types retain their lexical
+parameter context through alias arguments; borrowed semantic result annotations
+do not invent a new prototype owner. Top-level formal qualifiers are restored
+from the original parameter descriptor when checking parameter references.
+Proxy/cast acceptance155 passed39 checks, and qualifier acceptance154 passed28.
+
+The source ownership frontier now exports43/45 units and verifies41 after the
+managed184 local-static temporary correction. This is a bounded checkpoint, not
+a full corpus or a generation/compilation claim. Source-only dependent bitfield
+width recipes and borrowed instantiated prototype types remain explicit gates.

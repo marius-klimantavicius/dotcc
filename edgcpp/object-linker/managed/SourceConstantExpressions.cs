@@ -31,6 +31,7 @@ internal sealed partial class ObjectFile
         if(value.Kind!="variable")throw new InvalidDataException("Original source variable identity has a nonvariable declaration");
         string result=SourceIdentityFrame(value.QualifiedName)+SourceIdentityFrame(value.OwnerType is long owner?SourceArgumentTypeIdentity(owner,depth+1):"")+
             (value.HasTemplate?"1":"0")+(value.IsPrototype?"1":"0")+SourceIdentityFrame(value.TemplateOriginKind);
+        result+=SourceNamespaceIdentitySuffix("declaration",id);
         foreach(var argument in SourceExpressionDeclarationArguments.GetValueOrDefault(id,[]))
         {
             var facts=SourceConstraintArgumentDetails[("declaration",id,0,argument.Ordinal)];

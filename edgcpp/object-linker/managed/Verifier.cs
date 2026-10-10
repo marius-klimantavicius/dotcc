@@ -863,6 +863,7 @@ internal static class Verifier
         Visit(root!, [], parameters.Select(parameter => parameter.Id).ToHashSet(), [], 0);
         obj.VerifyArrayAllocationBody(function.Id, body);
         obj.VerifyGeneratedArrayInitializerBody(function.Id, body);
+        obj.VerifyGeneratedEntityInitializerBody(function.Id, body);
         obj.VerifyDefaultArgumentBody(function.Id, body);
         obj.VerifyTlsRoutineBody(function.Id, body);
         obj.VerifyArrayDeletionBody(function.Id, body);

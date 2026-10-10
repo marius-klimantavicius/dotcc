@@ -79,7 +79,7 @@ static_assert(int(trk_is_decltype)==1 &&
   int(trk_remove_volatile)==28 &&
   int(trk_remove_reference)==29, "source type operator profile mismatch");
 struct Type {
-  unsigned id=0,underlying=0,execution=0;
+  unsigned id=0,underlying=0,execution=0,namespace_owner=0;
   unsigned long long element_count=0;
   bool array_bound_known=false;
   unsigned dependent_array_bound=0;
@@ -142,6 +142,7 @@ struct SourceTemplateFormal {
   a_source_position position={};
 };
 struct SourceTemplateReference {
+  unsigned namespace_owner=0;
   std::string name,error,kind="parameter",qualified_name;
   unsigned owner_type=0,prototype_type=0,header_constraint=0;
   int depth=0,position=0;
@@ -235,9 +236,11 @@ struct PrelowerBase {
   std::string access;
 };
 struct Record {
+  unsigned template_member_witness=0;
+  unsigned namespace_owner=0;
   std::string name,identity,error,layout_kind;
   bool template_identity=false,complete=false,dependent=false,prototype=false,layout_known=false;
-  unsigned template_prototype=0,member_template_owner=0,template_parameter=0;
+  unsigned template_prototype=0,member_template_owner=0,template_parameter=0,proxy_type=0;
   bool template_member_of_unknown_base=false,template_qualified_unknown_base=false;
   std::vector<SourceTemplateArgument> template_arguments;
   std::string template_error;
@@ -485,6 +488,19 @@ struct RecordStorageCopySnapshot {
   unsigned long long bytes=0;
   std::string kind;
 };
+struct EntityInitializerContext {
+  a_routine_ptr owner=nullptr;
+  a_dynamic_init_ptr allocation=nullptr;
+  a_type_ptr element=nullptr;
+};
+struct GeneratedEntityInitializer {
+  EntityInitializerContext origin;
+  a_scope_ptr scope=nullptr;
+  a_variable_ptr destination=nullptr,count=nullptr,model=nullptr;
+  an_expr_node_ptr copy=nullptr;
+  bool complete=false;
+  std::string error;
+};
 struct GeneratedArrayInitializer {
   a_routine_ptr owner=nullptr,constructor=nullptr;
   a_dynamic_init_ptr allocation=nullptr;
@@ -577,6 +593,9 @@ struct State {
   std::map<a_dynamic_init_ptr,UninitializedAllocationSnapshot> uninitialized_allocations;
   std::map<a_routine_ptr,GeneratedStaticDestructor> generated_static_destructors;
   std::map<a_routine_ptr,GeneratedArrayInitializer> generated_array_initializers;
+  std::vector<EntityInitializerContext> entity_initializer_contexts;
+  std::map<a_routine_ptr,GeneratedEntityInitializer> generated_entity_initializers;
+  std::map<an_expr_node_ptr,a_routine_ptr> generated_entity_initializer_calls;
   std::map<a_routine_ptr,std::vector<a_dynamic_init_ptr>> adopted_initializers;
   std::map<std::pair<an_object_lifetime_ptr,a_routine_ptr>,a_dynamic_init_ptr> initializer_lifetime_adoptions;
   a_dynamic_init_ptr active_file_initializer=nullptr;
@@ -698,6 +717,7 @@ inline std::string spelling(const a_source_correspondence &source) {
 #endif
   return source.name;
 }
+#include "dot_gen_object_source_namespaces.h"
 inline unsigned capture_type(a_type_ptr t);
 inline DynamicExceptionSpecification capture_dynamic_exception_specification(an_exception_specification_ptr specification) {
   DynamicExceptionSpecification value;
@@ -1030,12 +1050,13 @@ inline unsigned capture_source_template(a_template_ptr templ) {
      templ->prototype_instantiation.type->kind==tk_typeref &&
      templ->prototype_instantiation.type->variant.typeref.kind==trk_is_template_alias) {
     value.kind="alias";value.qualified_name=value.name;
+    value.namespace_owner=capture_source_namespace_owner(templ->source_corresp);
     if(templ->source_corresp.is_class_member)value.owner_type=capture_type(parent_class_of(templ));
     for(auto scope=templ->source_corresp.parent_scope;scope;scope=scope->parent) {
       if(scope->kind==sck_namespace) {
         auto ns=scope->variant.assoc_namespace;
-        if(!ns || ns->has_internal_linkage || spelling(ns->source_corresp).empty())value.error="alias template needs original unnamed namespace identity";
-        else value.qualified_name=spelling(ns->source_corresp)+"::"+value.qualified_name;
+        if(!ns)value.error="alias template has absent original namespace";
+        else if(!spelling(ns->source_corresp).empty())value.qualified_name=spelling(ns->source_corresp)+"::"+value.qualified_name;
       } else if(scope->kind!=sck_file && scope->kind!=sck_class_struct_union)value.error="alias template needs original lexical owner";
     }
     value.prototype_type=capture_type(templ->prototype_instantiation.type);
@@ -1149,6 +1170,7 @@ inline void capture_record(a_type_ptr t) {
   // ordinary nominal record references, not infinitely expanded structures.
   s.records[t]=Record{};
   Record value;value.name=spelling(t->source_corresp);value.position=t->source_corresp.decl_position;
+  value.namespace_owner=capture_source_namespace_owner(t->source_corresp);
   auto occurrence=s.record_occurrences.find(t);
   if(occurrence==s.record_occurrences.end()) {
     // Several distinct anonymous declarations can come from one top-level
@@ -1209,7 +1231,14 @@ inline void capture_record(a_type_ptr t) {
     }
   }
   value.identity=(local?"local-record:":"record:")+qualified;
-  if(value.dependent && !value.prototype) {
+  if(extra && extra->proxy_of_type) {
+    // EDG's nonreal lookup class is a proxy for this exact original template
+    // parameter or decltype, not an instantiated class template. cp_gen_be
+    // follows proxy_of_type when reconstructing the source type/name.
+    value.proxy_type=capture_type(extra->proxy_of_type);
+    if(!value.dependent || value.prototype || extra->proxy_of_type==t)
+      value.template_error="original proxy class has inconsistent nonreal ownership";
+  } else if(value.dependent && !value.prototype) {
     auto templ=extra?extra->assoc_template:nullptr;
     bool nonreal_member=templ && templ->kind==templk_class && templ->template_info &&
       templ->template_info->is_nonreal_member && !templ->prototype_instantiation.type;
@@ -1350,13 +1379,29 @@ inline void capture_pending_type_context(a_type_ptr t,unsigned id) {
             if(entry.routine && std::getenv("EDG_DOTOBJ_DIAG_SOURCE_ERRORS")) {
               const auto &owner=state().types.at(entry.routine-1);
               auto original=owner.original_type;
+              if(!original)for(const auto &candidate:state().type_ids)if(candidate.second==owner.id || candidate.second==graph.binders.at(frame).routine){original=candidate.first;break;}
               text+=" original="+std::to_string(reinterpret_cast<size_t>(original));
               text+=" receiver="+std::to_string(owner.object_type);
               if(original && original->kind==tk_routine) {
                 auto supplement=original->variant.routine.extra_info;
                 text+=" parameters="+std::to_string(reinterpret_cast<size_t>(supplement->param_type_list))+
                   " lambda="+std::to_string(supplement->assoc_routine_is_lambda_body)+
-                  " special="+std::to_string(supplement->assoc_routine?int(supplement->assoc_routine->special_kind):-1);
+                  " special="+std::to_string(supplement->assoc_routine?int(supplement->assoc_routine->special_kind):-1)+
+                  " return="+std::to_string(reinterpret_cast<size_t>(original->variant.routine.return_type))+
+                  " routine="+(supplement->assoc_routine?spelling(supplement->assoc_routine->source_corresp):std::string("none"));
+                auto diag_associated=supplement->assoc_routine;
+                if(diag_associated) {
+                  text+=" template-kind="+std::to_string(diag_associated->assoc_template?int(diag_associated->assoc_template->kind):-1)+" arguments=[";
+                  for(auto diag_argument=diag_associated->template_arg_list;diag_argument;diag_argument=diag_argument->next) {
+                    auto diag_argument_type=diag_argument->kind==tak_type?diag_argument->variant.type:nullptr;
+                    text+=std::to_string(int(diag_argument->kind))+":"+std::to_string(reinterpret_cast<size_t>(diag_argument_type))+
+                      ":exact-root="+(diag_argument_type==t?"yes":"no")+",";
+                  }
+                  text+="]";
+                }
+                text+=" borrowed-root="+std::to_string(reinterpret_cast<size_t>(t))+
+                  " type-enclosing-routine="+(t->source_corresp.enclosing_routine?spelling(t->source_corresp.enclosing_routine->source_corresp):std::string("none"))+
+                  " type-parent-kind="+std::to_string(t->source_corresp.parent_scope?int(t->source_corresp.parent_scope->kind):-1);
               }
             }
             return text;
@@ -1366,22 +1411,48 @@ inline void capture_pending_type_context(a_type_ptr t,unsigned id) {
         }
       }
     }
+    if(t->variant.typeref.kind==trk_is_template_alias && t->variant.typeref.extra_info) {
+      // An alias used in a lexical type operand owns its original argument
+      // recipes as well as the substituted underlying type.
+      auto extra=t->variant.typeref.extra_info;
+      for(auto arg=extra->template_arg_list;arg;arg=arg->next)
+        if(arg->kind==tak_type)capture_type(arg->variant.type);
+      for(auto arg=extra->orig_template_arg_list;arg;arg=arg->next)
+        if(arg->kind==tak_type)capture_type(arg->variant.type);
+    }
     capture_type(t->variant.typeref.type);
   } else if(t->kind==tk_pointer)capture_type(t->variant.pointer.type);
   else if(t->kind==tk_array)capture_type(t->variant.array.element_type);
+  else if((t->kind==tk_class || t->kind==tk_struct || t->kind==tk_union) && class_type_supp(t)->proxy_of_type)
+    capture_type(class_type_supp(t)->proxy_of_type);
   graph.active_type_contexts.erase(t);
 }
 inline unsigned capture_type(a_type_ptr t) {
   if(!t)return 0;
   auto &s=state();auto prior=s.type_ids.find(t);
   if(prior!=s.type_ids.end()) {
+    unsigned original_namespace=capture_parameter_template_namespace(t);
+    if(original_namespace) {
+      auto &original=s.types.at(prior->second-1);
+      if(original.namespace_owner && original.namespace_owner!=original_namespace)
+        original.error="source formal namespace conflicts with its exact original enclosing template";
+      else original.namespace_owner=original_namespace;
+    }
     capture_pending_type_context(t,prior->second);
-    if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union){SourceParameterScope scope(0);capture_record(t);}
+    if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union){SourceParameterScope scope(class_type_supp(t)->proxy_of_type?current_source_parameter_binder():0);capture_record(t);}
     if(t->kind==tk_integer && t->variant.integer.enum_type && !t->variant.integer.bool_type)capture_enum(t);
     return prior->second;
   }
   unsigned id=(unsigned)s.types.size()+1;s.type_ids[t]=id;s.types.emplace_back();
   Type value;value.id=id;value.original_type=t;value.name=spelling(t->source_corresp);value.position=t->source_corresp.decl_position;
+  if(!value.name.empty() || is_immediate_class_type(t) || (t->kind==tk_integer && t->variant.integer.enum_type))
+    value.namespace_owner=capture_source_namespace_owner(t->source_corresp);
+  unsigned formal_namespace=capture_parameter_template_namespace(t);
+  if(formal_namespace) {
+    if(value.namespace_owner && value.namespace_owner!=formal_namespace)
+      value.error="source formal namespace conflicts with its exact original enclosing template";
+    else value.namespace_owner=formal_namespace;
+  }
   if(t->kind==tk_typeref) {
     value.kind=type_is_typedef(t)?"typedef":"qualified";
     if(t->variant.typeref.kind==trk_is_template_alias)value.source_form="template-alias";
@@ -1565,7 +1636,7 @@ inline unsigned capture_type(a_type_ptr t) {
   } else if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
     if(t->variant.class_struct_union.extra_info && t->variant.class_struct_union.extra_info->is_va_list_tag)
       value.kind="va-list";
-    else {value.kind="record";value.record_type=t;SourceParameterScope scope(0);capture_record(t);}
+    else {value.kind="record";value.record_type=t;SourceParameterScope scope(class_type_supp(t)->proxy_of_type?current_source_parameter_binder():0);capture_record(t);}
   } else if(t->kind==tk_routine) {
     value.kind="routine";
     // Capture policy before receiver/result recursion can finalize a defaulted
@@ -1956,7 +2027,7 @@ inline bool is_observed_tls_routine(a_routine_ptr routine);
 inline void capture_routine(a_routine_ptr r) {
   if(!r || abi_primary(r) || is_observed_tls_routine(r))return;
   if(state().generated_static_destructors.count(r))return;
-  if(state().generated_array_initializers.count(r))return;
+  if((state().generated_array_initializers.count(r) || state().generated_entity_initializers.count(r)))return;
 #if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN
   if(r->overriding_function_for_wrapper)return;
 #endif
@@ -2712,6 +2783,12 @@ inline void observe_throw_construct(an_expr_node_ptr expr,bool marker) {
   else state().throw_addresses[expr]=owner;
 }
 inline void observe_array_protocol_overwrite(an_expr_node_ptr destination,an_expr_node_ptr source,a_routine_ptr owner) {
+  if(enabled() && destination!=source) {
+    state().generated_entity_initializer_calls.erase(destination);
+    auto call=state().generated_entity_initializer_calls.find(source);
+    if(call!=state().generated_entity_initializer_calls.end() && state().generated_entity_initializers.at(call->second).origin.owner==owner)
+      state().generated_entity_initializer_calls.emplace(destination,call->second);
+  }
   if(!enabled() || !owner || destination==source)return;
   state().array_allocation_calls.erase(destination);
   auto allocation=state().array_allocation_calls.find(source);
@@ -2996,9 +3073,34 @@ struct ArrayAllocationCapture {
   }
   ~ArrayAllocationCapture(){if(active)state().array_allocation_contexts.pop_back();}
 };
+struct EntityInitializerCapture {
+  bool active=false;
+  EntityInitializerCapture(a_dynamic_init_ptr allocation,a_type_ptr element,a_routine_ptr owner) {
+    if(!(active=enabled()))return;
+    state().entity_initializer_contexts.push_back({owner,allocation?source_destruction(allocation,owner):nullptr,skip_typerefs(element)});
+  }
+  ~EntityInitializerCapture(){if(active)state().entity_initializer_contexts.pop_back();}
+};
+inline void observe_generated_entity_initializer_call(a_routine_ptr helper,an_expr_node_ptr call,a_routine_ptr owner) {
+  if(!enabled())return;
+  auto found=state().generated_entity_initializers.find(helper);
+  if(found==state().generated_entity_initializers.end())return;
+  if(found->second.origin.owner!=owner || !call || call->kind!=enk_operation || call->variant.operation.kind!=eok_call)
+    found->second.error="generated entity initializer lost exact owning direct call";
+  else state().generated_entity_initializer_calls.emplace(call,helper);
+}
 inline void observe_generated_array_initializer_begin(a_routine_ptr helper,a_type_ptr element,
     bool complete_object,bool count_parameter,bool zero_entity,a_routine_ptr constructor) {
-  if(!enabled() || state().array_allocation_contexts.empty())return;
+  if(!enabled())return;
+  if(complete_object && count_parameter && !zero_entity && !constructor && !state().entity_initializer_contexts.empty()) {
+    GeneratedEntityInitializer value;value.origin=state().entity_initializer_contexts.back();
+    if(!helper || !value.origin.owner || !value.origin.allocation || skip_typerefs(element)!=value.origin.element ||
+       (value.origin.element->kind!=tk_struct && value.origin.element->kind!=tk_class))
+      value.error="generated counted model initializer lacks exact array-new record origin";
+    if(helper) {state().generated_entity_initializers.emplace(helper,value);observe_runtime_signature(helper->type);}
+    return;
+  }
+  if(state().array_allocation_contexts.empty())return;
   const auto &context=state().array_allocation_contexts.back();
   if(!context.original || !complete_object || count_parameter || !zero_entity)return;
   GeneratedArrayInitializer value;value.owner=context.owner;value.allocation=context.original;
@@ -3015,6 +3117,14 @@ inline void observe_generated_array_initializer_begin(a_routine_ptr helper,a_typ
 inline void observe_generated_array_initializer_copy(a_routine_ptr helper,a_scope_ptr scope,
     a_variable_ptr parameter,a_variable_ptr model,an_expr_node_ptr copy) {
   if(!enabled())return;
+  auto entity=state().generated_entity_initializers.find(helper);
+  if(entity!=state().generated_entity_initializers.end()) {
+    auto &value=entity->second;value.scope=scope;value.destination=parameter;value.count=parameter?parameter->next:nullptr;value.model=model;value.copy=copy;
+    if(!scope || !parameter || !value.count || value.count->next!=model || !model || model->next ||
+       !copy || copy->kind!=enk_operation || copy->variant.operation.kind!=eok_assign)
+      value.error="generated counted initializer lost exact parameters/model copy";
+    observe_record_storage_copy(copy,helper,"entity-model");return;
+  }
   auto found=state().generated_array_initializers.find(helper);
   if(found==state().generated_array_initializers.end())return;
   auto &value=found->second;value.scope=scope;value.parameter=parameter;value.model=model;value.copy=copy;
@@ -3030,6 +3140,13 @@ inline void observe_generated_array_initializer_constructor(a_routine_ptr helper
 }
 inline void observe_generated_array_initializer_complete(a_routine_ptr helper,a_scope_ptr scope) {
   if(!enabled())return;
+  auto entity=state().generated_entity_initializers.find(helper);
+  if(entity!=state().generated_entity_initializers.end()) {
+    auto &value=entity->second;
+    if(value.scope!=scope || !value.copy || !value.destination || !value.count || !value.model)
+      value.error="generated counted model initializer incomplete at factory completion";
+    value.complete=true;return;
+  }
   auto found=state().generated_array_initializers.find(helper);
   if(found==state().generated_array_initializers.end())return;
   auto &value=found->second;
@@ -3362,7 +3479,7 @@ inline void capture_scope(a_scope_ptr scope,a_routine_ptr function_owner=nullptr
     capture_routine(scope->variant.routine.ptr);return;
   }
   if(scope->kind==sck_function && state().generated_static_destructors.count(scope->variant.routine.ptr))return;
-  if(scope->kind==sck_function && state().generated_array_initializers.count(scope->variant.routine.ptr))return;
+  if(scope->kind==sck_function && (state().generated_array_initializers.count(scope->variant.routine.ptr) || state().generated_entity_initializers.count(scope->variant.routine.ptr)))return;
   // Alternate ABI bodies contain generated forwarding declarations only.
   if(scope->kind==sck_function && abi_primary(scope->variant.routine.ptr))return;
 #if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN
@@ -3370,6 +3487,7 @@ inline void capture_scope(a_scope_ptr scope,a_routine_ptr function_owner=nullptr
 #endif
   if(scope->kind==sck_function) {
     function_owner=scope->variant.routine.ptr;
+    snapshot_source_local_scopes(scope);
     capture_routine(scope->variant.routine.ptr);
     capture_static_lifetime(scope->variant.routine.lifetime_of_local_static_vars,scope->variant.routine.ptr);
     if(auto lifetime=scope->variant.routine.lifetime_of_local_static_vars)

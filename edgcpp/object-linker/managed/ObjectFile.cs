@@ -38,10 +38,11 @@ internal sealed partial class ObjectFile : IDisposable
         ["source_templates"] = "id", ["source_template_parameters"] = "source_template_id,ordinal",
         ["source_class_template_headers"] = "source_record_id", ["source_class_specializations"] = "source_record_id",
         ["source_class_template_formals"] = "source_record_id,ordinal", ["source_class_template_patterns"] = "source_record_id,ordinal",
-        ["source_class_specialization_arguments"] = "source_record_id,ordinal", ["source_record_instantiations"] = "source_record_id", ["source_template_arguments"] = "source_record_id,ordinal",
+        ["source_class_specialization_arguments"] = "source_record_id,ordinal", ["source_namespaces"] = "id", ["source_namespace_owners"] = "owner_kind,owner_id", ["source_record_instantiations"] = "source_record_id", ["source_template_arguments"] = "source_record_id,ordinal",
         ["source_array_bounds"] = "type_id", ["source_semantic_constants"] = "id",
         ["source_enum_increments"] = "operation_constant_id",
         ["source_pack_sizes"] = "constant_id",
+        ["source_proxy_types"] = "source_record_id",
         ["source_semantic_constant_operands"] = "constant_id,ordinal",
         ["source_field_initializer_destructions"] = "source_initializer_id",
         ["field_initializer_executions"] = "source_initializer_id,function_entity_id",
@@ -57,6 +58,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["default_argument_obligation_executions"] = "function_entity_id,source_lifetime_id,copied_ordinal",
         ["default_argument_temporary_executions"] = "function_entity_id,source_temporary_id",
         ["generated_array_initializers"] = "function_entity_id",
+        ["generated_entity_initializers"] = "function_entity_id", ["generated_entity_initializer_calls"] = "node_id",
         ["static_destruction_dispositions"] = "source_obligation_id",
         ["source_concepts"] = "id",
         ["source_concept_parameters"] = "concept_id,ordinal",
@@ -83,6 +85,8 @@ internal sealed partial class ObjectFile : IDisposable
         ["source_expression_substitution_formals"] = "expression_id,substitution_ordinal,ordinal",
         ["source_expression_substitution_arguments"] = "expression_id,substitution_ordinal,ordinal",
         ["source_expression_declarations"] = "id",
+        ["source_local_scopes"] = "id",
+        ["source_local_variable_declarations"] = "declaration_id",
         ["source_function_parameter_declarations"] = "declaration_id",
         ["source_expression_declaration_references"] = "expression_id",
         ["source_expression_declaration_formals"] = "declaration_id,ordinal",
@@ -164,7 +168,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v59" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v60" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -193,6 +197,7 @@ internal sealed partial class ObjectFile : IDisposable
             ReadCleanupMetadata();
             ReadStaticExecutionMetadata();
             ReadGeneratedArrayInitializers();
+            ReadGeneratedEntityInitializers();
             ReadRecordValueTransfers();
             ReadRecordStorageInitializations();
             VerifyDefaultArgumentExecutions();
@@ -359,7 +364,7 @@ internal sealed partial class ObjectFile : IDisposable
                 if (query.Integer(1) != parameters.Count || (type == "void" || ScalarTypes.IsArray(type) || !CanPassRecord(type) && !PermitsDeferredValue(entity, type))) throw new InvalidDataException("Invalid parameter ordinal/type");
                 string role = query.Text(3); long? sourceOrdinal = query.OptionalInteger(4);
                 long ordinal = query.Integer(1);
-                if (role is not ("source" or "indirect-source" or "this" or "result-buffer" or "vtt" or "forwarded-source" or "static-object" or "initialization-object") || (role is "this" or "result-buffer" or "vtt" or "static-object" or "initialization-object" ? sourceOrdinal is not null : sourceOrdinal is null or < 0))
+                if (role is not ("source" or "indirect-source" or "this" or "result-buffer" or "vtt" or "forwarded-source" or "static-object" or "initialization-object" or "entity-destination" or "entity-count" or "entity-model") || (role is "this" or "result-buffer" or "vtt" or "static-object" or "initialization-object" or "entity-destination" or "entity-count" or "entity-model" ? sourceOrdinal is not null : sourceOrdinal is null or < 0))
                     throw new InvalidDataException("Invalid execution parameter source role");
                 ParameterRoles.Add((entity, ordinal), new(entity, ordinal, role, sourceOrdinal));
                 parameters.Add(type);
@@ -394,7 +399,7 @@ internal sealed partial class ObjectFile : IDisposable
             {
                 var binding = new Binding(query.Integer(0), query.Integer(1), query.Text(2), query.OptionalInteger(3), query.Integer(4), query.Text(5), query.Integer(6), query.Integer(7) == 1);
                 bool syntheticParameter = binding.Kind == "parameter" && binding.Ordinal is long ordinal &&
-                    ParameterRoles.TryGetValue((functionId, ordinal), out ParameterSemantics? parameter) && parameter.Role is "this" or "result-buffer" or "vtt" or "forwarded-source" or "static-object" or "initialization-object";
+                    ParameterRoles.TryGetValue((functionId, ordinal), out ParameterSemantics? parameter) && parameter.Role is "this" or "result-buffer" or "vtt" or "forwarded-source" or "static-object" or "initialization-object" or "entity-destination" or "entity-count" or "entity-model";
                 if (query.Integer(7) is not (0 or 1) || binding.Kind == "parameter" && binding.IsSynthetic != syntheticParameter || binding.IsSynthetic && binding.Kind is not ("local" or "parameter"))
                     throw new InvalidDataException("Synthetic parameter requires a proven generated ABI role");
                 bindings.Add(binding.Id, binding);
