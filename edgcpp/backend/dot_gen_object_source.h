@@ -29,6 +29,7 @@ struct Type {
   unsigned id=0,underlying=0,execution=0;
   unsigned long long element_count=0;
   bool array_bound_known=false;
+  unsigned dependent_array_bound=0;
   std::string kind,name;
   a_type_ptr record_type=nullptr;
   bool is_const=false,is_volatile=false,is_restrict=false,is_atomic=false;
@@ -53,6 +54,15 @@ struct Type {
   // Private prelowering parameter-declaration facts, never type identity/wire.
   std::vector<bool> declaration_defaults;
 };
+struct SourceSemanticConstant {
+  unsigned type=0,member_owner=0;
+  std::string kind,name,value,operation,error;
+  int depth=0,position=0;
+  bool pack=false;
+  a_source_position location={};
+  std::vector<unsigned> operands;
+};
+struct SourceTemplateArgument { unsigned type=0,constant=0; };
 struct Enumerator {
   std::string name,value;
   a_source_position position={};
@@ -131,6 +141,9 @@ struct PrelowerBase {
 struct Record {
   std::string name,identity,error,layout_kind;
   bool template_identity=false,complete=false,dependent=false,prototype=false,layout_known=false;
+  unsigned template_prototype=0;
+  std::vector<SourceTemplateArgument> template_arguments;
+  std::string template_error;
   std::vector<PrelowerBase> bases;
   bool has_virtual_functions=false,has_bases=false;
   unsigned source_occurrence=0;
@@ -331,6 +344,13 @@ struct RecordTransferSnapshot {
   a_variable_ptr constant_storage=nullptr;
   std::string constant_initialization_kind;
 };
+struct ArrayAllocationSnapshot {
+  a_routine_ptr owner=nullptr,allocator=nullptr,deallocator=nullptr,constructor=nullptr,destructor=nullptr;
+  a_dynamic_init_ptr original=nullptr,original_destruction=nullptr;
+  a_type_ptr element_type=nullptr;
+  a_constant_ptr padding=nullptr;
+  std::string helper,error;
+};
 struct ThrowSnapshot {
   an_expr_node_ptr original=nullptr,initializer=nullptr;
   a_routine_ptr owner=nullptr,destructor=nullptr;
@@ -355,6 +375,9 @@ struct TrySnapshot {
   bool function_try=false;
 };
 struct State {
+  std::vector<SourceSemanticConstant> semantic_constants;
+  std::map<a_constant_ptr,unsigned> semantic_constant_ids;
+  std::map<an_expr_node_ptr,unsigned> semantic_constant_expr_ids;
   std::map<a_type_ptr,unsigned> type_ids;
   std::vector<Type> types;
   std::map<a_type_ptr,Enum> enums;
@@ -390,6 +413,9 @@ struct State {
   std::map<a_routine_ptr,std::vector<a_dynamic_init_ptr>> destruction_order;
   std::map<a_dynamic_init_ptr,a_dynamic_init_ptr> dynamic_init_copies;
   std::map<an_object_lifetime_ptr,an_object_lifetime_ptr> lifetime_copies;
+  std::map<an_expr_node_ptr,ArrayAllocationSnapshot> array_allocation_calls;
+  std::map<an_expr_node_ptr,std::pair<a_routine_ptr,a_routine_ptr>> array_callback_addresses;
+  std::vector<ArrayAllocationSnapshot> array_allocation_contexts;
   std::map<an_expr_node_ptr,ArrayRuntimeSnapshot> array_runtime_calls;
   std::map<a_routine_ptr,std::vector<an_expr_node_ptr>> array_runtime_order;
   std::map<a_routine_ptr,a_variable_ptr> vtt_parameters;
@@ -467,6 +493,73 @@ inline std::string spelling(const a_source_correspondence &source) {
 }
 inline unsigned capture_type(a_type_ptr t);
 inline void capture_field_initializer(a_field_ptr field,a_type_ptr owner);
+inline unsigned capture_semantic_constant(a_constant_ptr constant);
+inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
+  auto &s=state();if(!expression)return 0;
+  if(expression->kind==enk_constant)return capture_semantic_constant(node_constant(expression));
+  auto prior=s.semantic_constant_expr_ids.find(expression);if(prior!=s.semantic_constant_expr_ids.end())return prior->second;
+  unsigned id=unsigned(s.semantic_constants.size()+1);s.semantic_constant_expr_ids[expression]=id;s.semantic_constants.emplace_back();
+  SourceSemanticConstant value;value.kind="operation";value.type=capture_type(expression->type);value.location=expression->position;
+  if(expression->kind!=enk_operation)value.error="dependent constant expression needs an owned source expression family";
+  else {
+    const auto &operation=expression->variant.operation;
+    switch(operation.kind) {
+      case eok_add:value.operation="add";break;case eok_subtract:value.operation="sub";break;
+      case eok_multiply:value.operation="mul";break;case eok_divide:value.operation="div";break;case eok_remainder:value.operation="rem";break;
+      case eok_shiftl:value.operation="shl";break;case eok_shiftr:value.operation="shr";break;
+      case eok_and:value.operation="bit-and";break;case eok_or:value.operation="bit-or";break;case eok_xor:value.operation="bit-xor";break;
+      case eok_eq:value.operation="eq";break;case eok_ne:value.operation="ne";break;case eok_lt:value.operation="lt";break;
+      case eok_le:value.operation="le";break;case eok_gt:value.operation="gt";break;case eok_ge:value.operation="ge";break;
+      case eok_land:value.operation="and";break;case eok_lor:value.operation="or";break;
+      case eok_negate:value.operation="neg";break;case eok_unary_plus:value.operation="plus";break;
+      case eok_not:value.operation="not";break;case eok_complement:value.operation="bit-not";break;
+      case eok_cast:value.operation="cast";break;
+      default:value.error="dependent constant operation not yet represented";break;
+    }
+    for(auto operand=operation.operands;operand;operand=operand->next)value.operands.push_back(capture_semantic_constant_expr(operand));
+  }
+  s.semantic_constants[id-1]=value;return id;
+}
+inline unsigned capture_semantic_constant(a_constant_ptr constant) {
+  if(!constant)return 0;
+  auto &s=state();auto prior=s.semantic_constant_ids.find(constant);if(prior!=s.semantic_constant_ids.end())return prior->second;
+  unsigned id=unsigned(s.semantic_constants.size()+1);s.semantic_constant_ids[constant]=id;s.semantic_constants.emplace_back();
+  SourceSemanticConstant value;value.type=capture_type(constant->type);
+  value.name=spelling(constant->source_corresp);value.location=constant->source_corresp.decl_position;
+  if(constant->kind==ck_integer) {
+    value.kind="integer";value.name.clear();value.value=decimal_str_for_integer_constant(constant).as_temp_characters();
+  } else if(constant->kind==ck_template_param) {
+    const auto &parameter=constant->variant.template_param;
+    if(parameter.kind==tpck_param) {
+      value.kind="parameter";value.depth=parameter.variant.coordinates.depth;value.position=parameter.variant.coordinates.position;
+      value.pack=parameter.is_pack;
+      if(value.depth<=0 || value.position<=0 || !value.location.seq)value.error="non-type parameter lacks original declaration coordinates";
+    } else if(parameter.kind==tpck_member) {
+      value.kind="member";
+      auto owner=constant->source_corresp.is_class_member?parent_class_of(constant):nullptr;
+      if(owner && class_type_supp(owner)->proxy_of_type)owner=class_type_supp(owner)->proxy_of_type;
+      if(!owner || value.name.empty() || parameter.is_pack)
+        value.error="dependent constant member lacks exact named owner";
+      else value.member_owner=capture_type(owner);
+    } else if(parameter.kind==tpck_expression &&
+#if PROTOTYPE_INSTANTIATIONS_IN_IL
+              !parameter.local_expr_ref &&
+#endif
+              parameter.variant.expr) {
+      value.kind="expression";value.name.clear();value.operands.push_back(capture_semantic_constant_expr(parameter.variant.expr));
+    } else value.error="dependent constant requires additional original semantic representation";
+  } else value.error="source template constant family not yet represented";
+  if(!value.error.empty()) {
+    a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
+    conv_seq_to_file_and_line(value.location.seq,&display,&full,&line,&at_end);
+    value.error+=" [constant-kind="+std::to_string(int(constant->kind))+",template-kind="+
+      (constant->kind==ck_template_param?std::to_string(int(constant->variant.template_param.kind)):"none")+
+      ",name="+value.name+",source="+std::string(full?full:display?display:"")+":"+std::to_string(line)+":"+
+      std::to_string(value.location.column)+"]";
+  }
+  s.semantic_constants[id-1]=value;return id;
+}
+
 inline void capture_enum(a_type_ptr t) {
   auto &s=state();auto old=s.enums.find(t);
   if(old!=s.enums.end() && old->second.list_complete)return;
@@ -587,6 +680,30 @@ inline void capture_record(a_type_ptr t) {
     }
   }
   value.identity=(local?"local-record:":"record:")+qualified;
+  if(value.dependent && !value.prototype) {
+    auto templ=extra?extra->assoc_template:nullptr;
+    if(!templ || (templ->kind!=templk_class && templ->kind!=templk_member_class) ||
+       !templ->prototype_instantiation.type || templ->prototype_instantiation.type==t)
+      value.template_error="dependent class lacks original class template prototype";
+    else if(extra->partial_spec_template_arg_list)
+      value.template_error="dependent partial specialization requires owned selected argument mapping";
+    else {
+      value.template_prototype=capture_type(templ->prototype_instantiation.type);
+      for(auto argument=extra->template_arg_list;argument;argument=argument->next) {
+        SourceTemplateArgument item;
+        if(argument->pack_expansion_descr || argument->is_pack_element || argument->is_pack ||
+           argument->has_pack_ellipsis || argument->is_integer_pack || argument->is_error)
+          value.template_error="dependent class template argument pack requires an owned expansion";
+        else if(argument->kind==tak_type && argument->variant.type)item.type=capture_type(argument->variant.type);
+        else if(argument->kind==tak_nontype && !argument->is_array_bound_of_unknown_type && argument->variant.constant)
+          item.constant=capture_semantic_constant(argument->variant.constant);
+        else value.template_error="dependent class template argument family not yet represented";
+        if(!value.template_error.empty())value.template_error+=" [argument-kind="+std::to_string(int(argument->kind))+
+          ",ordinal="+std::to_string(value.template_arguments.size())+"]";
+        value.template_arguments.push_back(item);
+      }
+    }
+  }
   if(t->incomplete){s.records[t]=value;return;}
   value.has_virtual_functions=c.any_virtual_functions_including_in_base_classes;
   value.has_bases=extra && extra->base_classes;
@@ -773,6 +890,10 @@ inline unsigned capture_type(a_type_ptr t) {
     value.underlying=capture_type(t->variant.pointer.type);
     // Execution pointer IDs are interned by the object writer, independently
     // of EDG addresses and of the source typedef/qualification structure.
+  } else if(t->kind==tk_array && t->variant.array.is_template_dependent_size_array) {
+    value.kind="array";value.underlying=capture_type(t->variant.array.element_type);
+    value.dependent_array_bound=capture_semantic_constant(t->variant.array.variant.element_count_constant);
+    if(!value.dependent_array_bound)value.error="dependent array bound lacks its original semantic constant";
   } else if(t->kind==tk_array && !t->variant.array.is_variable_size_array &&
             !t->variant.array.is_vla && !t->variant.array.is_template_dependent_size_array &&
             true) {
@@ -1603,6 +1724,12 @@ inline void observe_throw_construct(an_expr_node_ptr expr,bool marker) {
 }
 inline void observe_throw_copy(an_expr_node_ptr original,an_expr_node_ptr copy,a_routine_ptr owner) {
   if(!enabled() || !owner || !original || !copy || original==copy)return;
+  auto array_callback=state().array_callback_addresses.find(original);
+  if(array_callback!=state().array_callback_addresses.end() && array_callback->second.first==owner)
+    state().array_callback_addresses.emplace(copy,array_callback->second);
+  auto array_allocation=state().array_allocation_calls.find(original);
+  if(array_allocation!=state().array_allocation_calls.end() && array_allocation->second.owner==owner)
+    state().array_allocation_calls.emplace(copy,array_allocation->second);
   auto registration=state().static_registrations.find(original);
   if(registration!=state().static_registrations.end() && registration->second.owner==owner)
     state().static_registrations.emplace(copy,registration->second);
@@ -1676,6 +1803,52 @@ inline a_dynamic_init_ptr original_static_destruction(a_dynamic_init_ptr value) 
   return nullptr;
 }
 inline a_dynamic_init_ptr source_destruction(a_dynamic_init_ptr value,a_routine_ptr owner);
+struct ArrayAllocationCapture {
+  bool active=false;
+  ArrayAllocationCapture(a_dynamic_init_ptr allocation,a_dynamic_init_ptr destruction,a_type_ptr element,a_routine_ptr owner) {
+    if(!(active=enabled()))return;
+    ArrayAllocationSnapshot value;value.owner=owner;value.element_type=element;
+    value.original=allocation?source_destruction(allocation,owner):nullptr;
+    value.original_destruction=destruction?source_destruction(destruction,owner):nullptr;
+    if(destruction && !value.original_destruction)value.error="vector allocation element cleanup lacks original source owner";
+    state().array_allocation_contexts.push_back(value);
+  }
+  ~ArrayAllocationCapture(){if(active)state().array_allocation_contexts.pop_back();}
+};
+inline void observe_array_allocation_call(an_expr_node_ptr call,an_expr_node_ptr destination,
+    a_routine_ptr constructor,a_routine_ptr destructor,a_routine_ptr allocator,a_routine_ptr deallocator,
+    an_expr_node_ptr padding) {
+  if(!enabled() || state().array_allocation_contexts.empty())return;
+  auto value=state().array_allocation_contexts.back();
+  if(!value.original || destination)return;
+  value.constructor=constructor;value.destructor=destructor;value.allocator=allocator;value.deallocator=deallocator;
+  if(!call || call->kind!=enk_operation || call->variant.operation.kind!=eok_call ||
+     !call->variant.operation.operands || call->variant.operation.operands->kind!=enk_routine) {
+    value.error="array allocation lacks exact finalized runtime call";
+  } else {
+    value.helper=spelling(call->variant.operation.operands->variant.routine.ptr->source_corresp);
+    if(value.helper!="__cxa_vec_new2" && value.helper!="__cxa_vec_new3")
+      value.error="array allocation helper lacks explicit selected callback protocol";
+  }
+  if(!allocator || !deallocator || !padding || padding->kind!=enk_constant)
+    value.error="array allocation helper lacks finalized callbacks or constant padding";
+  else value.padding=node_constant(padding);
+  if(value.error.empty()) {
+    auto argument=call->variant.operation.operands->next;
+    a_routine_ptr callbacks[]={constructor,destructor,allocator,deallocator};
+    for(unsigned ordinal=0;argument;argument=argument->next,++ordinal)if(ordinal>=3 && ordinal<7) {
+      auto callback=callbacks[ordinal-3];if(!callback)continue;
+      auto leaf=argument;
+      while(leaf->kind==enk_operation && (leaf->variant.operation.kind==eok_cast ||
+            leaf->variant.operation.kind==eok_address_of))leaf=leaf->variant.operation.operands;
+      if(leaf->kind!=enk_routine || leaf->variant.routine.ptr!=callback) {
+        value.error="vector allocation callback lacks exact finalized routine designator";break;
+      }
+      state().array_callback_addresses.emplace(leaf,std::make_pair(value.owner,callback));
+    }
+  }
+  if(call)state().array_allocation_calls.emplace(call,value);
+}
 inline void observe_empty_allocation_initialization(a_dynamic_init_ptr dip,a_routine_ptr owner) {
   if(!enabled() || !dip || !owner)return;
   auto original=source_destruction(dip,owner);

@@ -1,0 +1,123 @@
+{
+  "status": "failed",
+  "processed": 2635,
+  "manifestUnits": 2635,
+  "classification": {
+    "exporter-rejection": 1223,
+    "packaged": 1402,
+    "other-failure": 10
+  },
+  "resultsSha256": "3404333b5071997bbea69cb0779161a8c7cee3417df73854f821a10470809f10",
+  "notGenerationOrExecutionProof": true,
+  "otherFailures": [
+    {
+      "unitId": "duckdb:src/parallel/task_scheduler.cpp:494cba4847ce283e",
+      "source": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/src/parallel/task_scheduler.cpp",
+      "work": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-094/f0f15a51f0b8bc06f259deee-001",
+      "exitCode": 1,
+      "kind": "exporter-out-of-range",
+      "diagnosticTail": "b_m\n                      oodycamel::ConcurrentQueue<T, Traits> &) [with\n                      T=duckdb::shared_ptr<duckdb::Task, true>,\n                      Traits=duckdb_moodycamel::ConcurrentQueueDefaultTraits]\"\n                      at line 68 of\n                      \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable\n                      -correspondence-001/source/src/parallel/task_scheduler.cp\n                      p\"\n\nterminate called after throwing an instance of 'std::out_of_range'\n  what():  vector::_M_range_check: __n (which is 4294967295) >= this->size() (which is 611238)\n"
+    },
+    {
+      "unitId": "duckdb:src/storage/buffer/buffer_pool.cpp:494cba4847ce283e",
+      "source": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/src/storage/buffer/buffer_pool.cpp",
+      "work": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-094/adb097451cfc3fc85a543aab-001",
+      "exitCode": 1,
+      "kind": "exporter-out-of-range",
+      "diagnosticTail": "oodycamel::ConcurrentQueue<T,\n                      Traits>::enqueue(T &&) [with\n                      T=duckdb::BufferEvictionNode,\n                      Traits=duckdb_moodycamel::ConcurrentQueueDefaultTraits]\"\n                      at line 132 of\n                      \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable\n                      -correspondence-001/source/src/storage/buffer/buffer_pool\n                      .cpp\"\n\nterminate called after throwing an instance of 'std::out_of_range'\n  what():  vector::_M_range_check: __n (which is 4294967295) >= this->size() (which is 629263)\n"
+    },
+    {
+      "unitId": "duckdb:test/unittest.cpp:eeeebf908c4923f4",
+      "source": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/unittest.cpp",
+      "work": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-094/8d2e01d057232ead630fae7d-001",
+      "exitCode": 1,
+      "kind": "test-configuration-or-platform-api",
+      "diagnosticTail": "       duckdb::CompressionFunction, SAFE=true]\" at line 72\n            instantiation of \"const T *duckdb::atomic_ptr<T, SAFE>::get() const\n                      [with T=const duckdb::CompressionFunction, SAFE=true]\" at\n                      line 90 of\n                      \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable\n                      -correspondence-001/source/src/include/duckdb/storage/tab\n                      le/column_data.hpp\"\n\n11 errors detected in the compilation of \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/unittest.cpp\".\n"
+    },
+    {
+      "unitId": "duckdb:test/common/test_file_system.cpp:23637e5a5c24d79b",
+      "source": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/common/test_file_system.cpp",
+      "work": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-094/3286f0c3980a207dad4455ac-001",
+      "exitCode": 1,
+      "kind": "test-configuration-or-platform-api",
+      "diagnosticTail": "nce-001/source/src/include/duckdb/common/prin\n                      ter.hpp\"\n            instantiation of \"void duckdb::Printer::PrintF(const\n                      std::__dotgen_v1::string &, ARGS...) [with ARGS=<>]\" at\n                      line 325 of\n                      \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable\n                      -correspondence-001/source/test/common/test_file_system.c\n                      pp\"\n\n2 errors detected in the compilation of \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/common/test_file_system.cpp\".\n"
+    },
+    {
+      "unitId": "duckdb:test/extension/test_remote_optimizer.cpp:6d69be38b99cecca",
+      "source": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/extension/test_remote_optimizer.cpp",
+      "work": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-094/9496289ef721289b1daf6f69-001",
+      "exitCode": 1,
+      "kind": "test-configuration-or-platform-api",
+      "diagnosticTail": "sionFunction, SAFE=true]\" at line 72\n            instantiation of \"const T *duckdb::atomic_ptr<T, SAFE>::get() const\n                      [with T=const duckdb::CompressionFunction, SAFE=true]\" at\n                      line 90 of\n                      \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable\n                      -correspondence-001/source/src/include/duckdb/storage/tab\n                      le/column_data.hpp\"\n\n6 errors detected in the compilation of \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/extension/test_remote_optimizer.cpp\".\n"
+    },
+    {
+      "unitId": "duckdb:test/sqlite/result_helper.cpp:985bbfcd3a5992a5",
+      "source": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/sqlite/result_helper.cpp",
+      "work": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-094/0b82176a98be9f843d384023-001",
+      "exitCode": 1,
+      "kind": "test-configuration-or-platform-api",
+      "diagnosticTail": "    urce/third_party/re2/re2/re2.h\", line 929: warning: unrecognized GCC\n          pragma\n  #pragma GCC diagnostic ignored \"-Wmissing-field-initializers\"\n              ^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/test/sqlite/termcolor.hpp\", line 25: catastrophic error: #error\n          directive: unsupported platform\n  #error unsupported platform\n   ^\n\n1 catastrophic error detected in the compilation of \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/sqlite/result_helper.cpp\".\nCompilation terminated.\n"
+    },
+    {
+      "unitId": "duckdb:test/sqlite/sqllogic_test_logger.cpp:985bbfcd3a5992a5",
+      "source": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/sqlite/sqllogic_test_logger.cpp",
+      "work": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-094/3847086010af782e5768cd7c-001",
+      "exitCode": 1,
+      "kind": "test-configuration-or-platform-api",
+      "diagnosticTail": "ble-correspondence-001/so\n          urce/src/include/duckdb/common/column_index.hpp\", line 252: warning:\n          statement is unreachable\n  \t\treturn true;\n  \t\t^\n\n\"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/so\n          urce/test/sqlite/termcolor.hpp\", line 25: catastrophic error: #error\n          directive: unsupported platform\n  #error unsupported platform\n   ^\n\n1 catastrophic error detected in the compilation of \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/sqlite/sqllogic_test_logger.cpp\".\nCompilation terminated.\n"
+    },
+    {
+      "unitId": "duckdb:test/persistence/test_locking.cpp:23637e5a5c24d79b",
+      "source": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/persistence/test_locking.cpp",
+      "work": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-094/8e6b94dcb3e959469b1db82f-001",
+      "exitCode": 1,
+      "kind": "test-configuration-or-platform-api",
+      "diagnosticTail": "CompressionFunction, SAFE=true]\" at line 72\n            instantiation of \"const T *duckdb::atomic_ptr<T, SAFE>::get() const\n                      [with T=const duckdb::CompressionFunction, SAFE=true]\" at\n                      line 90 of\n                      \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable\n                      -correspondence-001/source/src/include/duckdb/storage/tab\n                      le/column_data.hpp\"\n\n6 errors detected in the compilation of \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/persistence/test_locking.cpp\".\n"
+    },
+    {
+      "unitId": "duckdb:test/persistence/test_persistence.cpp:23637e5a5c24d79b",
+      "source": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/persistence/test_persistence.cpp",
+      "work": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-094/3f42571bd423625251bd31a8-001",
+      "exitCode": 1,
+      "kind": "test-configuration-or-platform-api",
+      "diagnosticTail": "ressionFunction, SAFE=true]\" at line 72\n            instantiation of \"const T *duckdb::atomic_ptr<T, SAFE>::get() const\n                      [with T=const duckdb::CompressionFunction, SAFE=true]\" at\n                      line 90 of\n                      \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable\n                      -correspondence-001/source/src/include/duckdb/storage/tab\n                      le/column_data.hpp\"\n\n3 errors detected in the compilation of \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/persistence/test_persistence.cpp\".\n"
+    },
+    {
+      "unitId": "duckdb:test/persistence/test_sequence_crash.cpp:23637e5a5c24d79b",
+      "source": "/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/persistence/test_sequence_crash.cpp",
+      "work": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-094/3ec6b8e5222428f60ae27757-001",
+      "exitCode": 1,
+      "kind": "test-configuration-or-platform-api",
+      "diagnosticTail": "sionFunction, SAFE=true]\" at line 72\n            instantiation of \"const T *duckdb::atomic_ptr<T, SAFE>::get() const\n                      [with T=const duckdb::CompressionFunction, SAFE=true]\" at\n                      line 90 of\n                      \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable\n                      -correspondence-001/source/src/include/duckdb/storage/tab\n                      le/column_data.hpp\"\n\n6 errors detected in the compilation of \"/mnt/storage/dotcc-edg-campaign-20261003/duckdb-portable-correspondence-001/source/test/persistence/test_sequence_crash.cpp\".\n"
+    }
+  ],
+  "manifest": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-runtime-manifest-003/project.json",
+    "sha256": "7444081244ecdc704f1fa0887ca096352cc67e70de4a3000e35432eda76f2575"
+  },
+  "toolchain": {
+    "compiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native094-verified-snapshot/cpfe-dot",
+    "schemaProfile": "scalar-control-v40",
+    "note": "Strict historical baseline; current v41/v42 fixes not applied to this inventory."
+  },
+  "resultsPath": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-full-frontier-094/results.json",
+  "byRole": {
+    "library": {
+      "exporter-gate": 1063,
+      "packaged": 1142,
+      "exporter-exception": 2
+    },
+    "test": {
+      "frontend-diagnostic": 8,
+      "exporter-gate": 135,
+      "packaged": 5
+    },
+    "libc": {
+      "packaged": 224
+    },
+    "libcxx": {
+      "packaged": 31,
+      "exporter-gate": 25
+    }
+  }
+}

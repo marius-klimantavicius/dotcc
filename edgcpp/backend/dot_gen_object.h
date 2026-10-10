@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v41: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v42: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -66,6 +66,8 @@ struct Writer {
   std::set<a_dynamic_init_ptr> active_guard_cleanups;
   std::map<an_expr_node_ptr,a_dynamic_init_ptr> active_allocation_internal_tries;
   std::set<a_dynamic_init_ptr> active_allocation_obligations,emitted_allocation_obligations;
+  std::map<an_expr_node_ptr,const dot_object_source::ArrayAllocationSnapshot*> active_array_allocations;
+  std::vector<string> array_allocation_operations;
   std::vector<string> cleanup_payload_targets;
   std::vector<string> throw_payload_subobjects,throw_payload_paths;
   std::map<an_expr_node_ptr,unsigned> active_throw_ids;
@@ -79,7 +81,7 @@ struct Writer {
   bool exception_destructors_indexed=false;
   an_expr_node_ptr active_throw_origin=nullptr;
   unsigned active_throw_node=0;
-  struct NodeShape {unsigned type=0;bool place=false;size_t json_index=0;};
+  struct NodeShape {unsigned type=0;bool place=false;size_t json_index=0;bool direct_call=false;};
   std::vector<NodeShape> node_shapes;
   std::map<a_routine_ptr,unsigned> routine_ids;
   std::map<a_variable_ptr,unsigned> binding_ids;
@@ -131,6 +133,9 @@ struct Writer {
   std::vector<string> memory_barriers,memory_barrier_operands,memory_barrier_dimensions;
   std::map<unsigned,unsigned> source_type_ids;
   std::vector<string> source_dependent_types;
+  std::vector<string> source_record_instantiations,source_template_arguments,source_array_bounds;
+  std::vector<string> source_semantic_constants,source_semantic_constant_operands;
+  std::map<unsigned,unsigned> source_semantic_constant_ids;
   std::map<unsigned,unsigned> pointer_types;
   std::map<std::pair<unsigned,std::pair<unsigned long long,bool>>,unsigned> array_types;
   std::vector<string> execution_types,record_types,record_fields;
@@ -222,6 +227,69 @@ struct Writer {
     string policy=specification && !specification->throw_any?(specification->is_noexcept?"terminate":"unsupported-dynamic"):"unwind";
     return signature_type(type_id(t->variant.routine.return_type),args,extra->has_ellipsis,policy);
   }
+  static string source_frame(const string &value) { return std::to_string(value.size())+":"+value; }
+  string source_constant_identity(unsigned id,unsigned depth=0) {
+    if(depth>128 || !id)reject("source semantic constant identity cycle/depth");
+    const auto &value=dot_object_source::state().semantic_constants.at(id-1);
+    if(!value.error.empty())reject(value.error.c_str());
+    const auto &original_type=dot_object_source::state().types.at(value.type-1);
+    string value_type=original_type.kind=="dependent" && original_type.dependent_kind=="unknown"?
+      "dependent-unknown":source_argument_type_identity(value.type,depth+1);
+    string result=value.kind+":"+source_frame(value_type);
+    if(value.kind=="integer")result+=source_frame(value.value);
+    else if(value.kind=="member")result+=source_frame(source_argument_type_identity(value.member_owner,depth+1))+source_frame(value.name);
+    else if(value.kind=="parameter") {
+      a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
+      conv_seq_to_file_and_line(value.location.seq,&display,&full,&line,&at_end);
+      result+=source_frame(string(full?full:display?display:"")+":"+std::to_string(line)+":"+
+        std::to_string(value.location.column)+":"+std::to_string(value.depth)+":"+std::to_string(value.position))+":"+(value.pack?"1":"0");
+    } else {
+      result+=source_frame(value.operation);
+      for(auto child:value.operands)result+=source_frame(source_constant_identity(child,depth+1));
+    }
+    return result;
+  }
+  string source_argument_type_identity(unsigned id,unsigned depth=0) {
+    if(depth>128 || !id)reject("source template type identity cycle/depth");
+    const auto &value=dot_object_source::state().types.at(id-1);
+    if(!value.error.empty())reject(value.error.c_str());
+    if(value.kind=="typedef" || value.kind=="qualified") {
+      string inner=source_argument_type_identity(value.underlying,depth+1);
+      if(!value.is_const && !value.is_volatile && !value.is_restrict && !value.is_atomic && value.qualifiers.empty())return inner;
+      string qualifiers=(value.is_const?"c":"")+string(value.is_volatile?"v":"")+(value.is_restrict?"r":"")+(value.is_atomic?"a":"");
+      for(const auto &qualifier:value.qualifiers)qualifiers+=source_frame(qualifier);
+      return "q"+source_frame(qualifiers)+source_frame(inner);
+    }
+    if(value.kind=="record")return "r"+source_frame(original_record_identity(value.record_type,depth+1));
+    if(value.kind=="dependent") {
+      if(value.dependent_kind=="parameter")return "p"+source_frame(value.dependent_identity)+(value.dependent_pack?"1":"0");
+      if(value.dependent_kind=="member")return "m"+source_frame(source_argument_type_identity(value.dependent_owner,depth+1))+source_frame(value.name);
+      reject("unknown dependent type cannot identify a template argument");
+    }
+    if(value.kind=="array")return "a"+source_frame(value.dependent_array_bound?source_constant_identity(value.dependent_array_bound,depth+1):
+      value.array_bound_known?std::to_string(value.element_count):"?")+source_frame(source_argument_type_identity(value.underlying,depth+1));
+    if(value.kind=="pointer" || value.kind=="lvalue-reference" || value.kind=="rvalue-reference")
+      return value.kind+":"+source_frame(source_argument_type_identity(value.underlying,depth+1));
+    if(value.kind=="enum" || value.kind=="routine" || value.kind=="member-pointer" || value.kind.empty())
+      reject("source template argument type identity family not yet represented");
+    return value.kind;
+  }
+  unsigned source_semantic_constant(unsigned captured) {
+    if(!captured)reject("source semantic constant is missing");
+    auto prior=source_semantic_constant_ids.find(captured);if(prior!=source_semantic_constant_ids.end())return prior->second;
+    const auto &value=dot_object_source::state().semantic_constants.at(captured-1);
+    if(!value.error.empty())reject(value.error.c_str());
+    unsigned id=unsigned(source_semantic_constant_ids.size()+1);source_semantic_constant_ids[captured]=id;
+    source_semantic_constants.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(value.kind)+
+      ",\"sourceTypeId\":"+number(source_type(value.type))+",\"sourceName\":"+quote(value.name)+
+      ",\"valueText\":"+quote(value.value)+",\"parameterDepth\":"+(value.kind=="parameter"?std::to_string(value.depth):"null")+
+      ",\"parameterPosition\":"+(value.kind=="parameter"?std::to_string(value.position):"null")+
+      ",\"isPack\":"+(value.pack?"true":"false")+",\"operatorName\":"+quote(value.operation)+
+      ",\"ownerSourceTypeId\":"+number(value.member_owner?source_type(value.member_owner):0)+position(value.location)+"}");
+    unsigned ordinal=0;for(auto child:value.operands)source_semantic_constant_operands.push_back("{\"constantId\":"+number(id)+
+      ",\"ordinal\":"+std::to_string(ordinal++)+",\"operandId\":"+number(source_semantic_constant(child))+"}");
+    return id;
+  }
   string original_record_identity(a_type_ptr type,unsigned depth=0) {
     if(depth>128)reject("original record ownership cycle/depth");
     auto &captured=dot_object_source::state();
@@ -237,7 +305,16 @@ struct Writer {
     }
     string identity=source.identity;
     if(source.dependent) {
-      if(!source.prototype)reject("nonprototype dependent record needs owned template argument identity");
+      if(!source.prototype) {
+        if(!source.template_error.empty())reject((source.identity+": "+source.template_error).c_str());
+        if(!source.template_prototype)reject("dependent record lacks owned template prototype");
+        const auto &prototype=captured.types.at(source.template_prototype-1);
+        if(prototype.kind!="record")reject("dependent class template prototype is not a record");
+        string result="source-instantiation:"+source_frame(original_record_identity(prototype.record_type,depth+1));
+        for(const auto &argument:source.template_arguments)result+=source_frame(argument.type?
+          "t"+source_argument_type_identity(argument.type,depth+1):"c"+source_constant_identity(argument.constant,depth+1));
+        return result;
+      }
       a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
       conv_seq_to_file_and_line(source.position.seq,&display,&full,&line,&at_end);
       return "source-prototype:"+identity+":"+string(full?full:display?display:"")+":"+
@@ -295,6 +372,16 @@ struct Writer {
         source_field_ids.emplace(field.il,next_source_field++);
       for(const auto &base:source->bases)
         source_base_ids.emplace(base.il,next_source_base++);
+      if(source->dependent && !source->prototype && !captured.record_owners.count(t)) {
+        const auto &prototype=captured.types.at(source->template_prototype-1);
+        source_record_instantiations.push_back("{\"sourceRecordId\":"+number(source_record)+
+          ",\"prototypeSourceRecordId\":"+number(source_record_metadata(prototype.record_type))+
+          ",\"captureProof\":\"original-template-arguments\"}");
+        unsigned ordinal=0;for(const auto &argument:source->template_arguments)
+          source_template_arguments.push_back("{\"sourceRecordId\":"+number(source_record)+",\"ordinal\":"+std::to_string(ordinal++)+
+            ",\"kind\":"+quote(argument.type?"type":"constant")+",\"typeId\":"+number(argument.type?source_type(argument.type):0)+
+            ",\"constantId\":"+number(argument.constant?source_semantic_constant(argument.constant):0)+"}");
+      }
       auto owner=captured.record_owners.find(t);
       if(owner!=captured.record_owners.end()) {
         // A child may be the first exported type (e.g. decltype(obj.member)).
@@ -1016,7 +1103,7 @@ struct Writer {
   }
   bool source_execution_available(unsigned captured,std::set<unsigned> &active) {
     const auto &state=dot_object_source::state();const auto &type=state.types.at(captured-1);
-    if(type.is_atomic)return false;
+    if(type.is_atomic || type.dependent_array_bound)return false;
     if(type.kind=="qualified" || type.kind=="typedef")return source_execution_available(type.underlying,active);
     if(type.kind=="record") {
       if(record_ids.count(type.record_type))return true;
@@ -1068,6 +1155,8 @@ struct Writer {
     unsigned execution=optional_source_execution_type(captured);
     unsigned underlying=type.underlying?source_type(type.underlying):0;
     if(type.kind=="record")source_record_metadata(type.record_type);
+    if(type.dependent_array_bound)source_array_bounds.push_back("{\"typeId\":"+number(id)+",\"constantId\":"+
+      number(source_semantic_constant(type.dependent_array_bound))+",\"captureProof\":\"original-dependent-bound\"}");
     if(type.kind=="dependent")source_dependent_types.push_back("{\"typeId\":"+number(id)+
       ",\"kind\":"+quote(type.dependent_kind)+",\"ownerTypeId\":"+number(type.dependent_owner?source_type(type.dependent_owner):0)+
       ",\"nestingDepth\":"+(type.dependent_kind=="parameter"?std::to_string(type.dependent_depth):"null")+
@@ -1140,7 +1229,8 @@ struct Writer {
       ",\"underlyingTypeId\":"+number(underlying)+",\"executionTypeId\":"+number(execution)+
       ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+
       ",\"isRestrict\":"+(type.is_restrict?"true":"false")+",\"isAtomic\":"+(type.is_atomic?"true":"false")+
-      ",\"elementCount\":"+(type.kind=="array" && type.array_bound_known?std::to_string(type.element_count):"null")+position(type.position)+"}");
+      ",\"elementCount\":"+(type.kind=="array" && type.array_bound_known?std::to_string(type.element_count):"null")+
+      ",\"arrayBoundKind\":"+(type.kind=="array"?quote(type.dependent_array_bound?"dependent":type.array_bound_known?"constant":"unspecified"):"null")+position(type.position)+"}");
     return id;
   }
   void source_declaration(const dot_object_source::Declaration &declaration,
@@ -1176,7 +1266,7 @@ struct Writer {
                 const string &value="",const string &category="",const string &order="",unsigned field=0,unsigned storage=0,unsigned reserved_id=0) {
     unsigned id=reserved_id?reserved_id:next_node++;
     if(node_shapes.size()<=id)node_shapes.resize(id+1);
-    node_shapes[id].type=ty;node_shapes[id].place=category=="place";
+    node_shapes[id].type=ty;node_shapes[id].place=category=="place";node_shapes[id].direct_call=kind=="call";
     node_shapes[id].json_index=nodes.size();
     nodes.push_back("{\"id\":"+number(id)+",\"functionId\":"+number(function)+",\"kind\":"+quote(kind)+",\"typeId\":"+number(ty)+
       ",\"entityId\":"+number(entity)+",\"bindingId\":"+number(binding)+",\"operator\":"+(op.empty()?"null":quote(op))+
@@ -1279,6 +1369,26 @@ struct Writer {
     active_allocation_internal_tries.clear();active_allocation_obligations.clear();emitted_allocation_obligations.clear();
     active_guard_cleanups.clear();
     auto &captured=dot_object_source::state();
+    active_array_allocations.clear();
+    for(const auto &entry:captured.array_allocation_calls)if(entry.second.owner==owner) {
+      const auto &value=entry.second;
+      if(!value.error.empty())reject(value.error.c_str());
+      auto source=captured.destructions.find(value.original);
+      if(source==captured.destructions.end() || !source->second.allocation_release || !source->second.array_allocation ||
+         dot_object_source::source_destruction(value.original,owner)!=value.original ||
+         source->second.destructor!=value.deallocator)
+        reject("vector allocation protocol differs from original selected array delete");
+      if(value.original_destruction) {
+        auto destruction=captured.destructions.find(value.original_destruction);
+        auto callback=dot_object_source::abi_primary(value.destructor);if(!callback)callback=value.destructor;
+        if(destruction==captured.destructions.end() || destruction->second.allocation_release ||
+           dot_object_source::source_destruction(value.original_destruction,owner)!=value.original_destruction ||
+           !callback || destruction->second.destructor!=callback)
+          reject("vector allocation element rollback differs from original selected destruction");
+        active_array_obligations.insert(value.original_destruction);
+      } else if(value.destructor)reject("vector allocation destructor lacks original element obligation");
+      active_array_allocations.emplace(entry.first,&value);active_allocation_obligations.insert(value.original);
+    }
     for(const auto &entry:captured.allocation_internal_tries)if(entry.second.first==owner) {
       auto original=dot_object_source::source_destruction(entry.second.second,owner);
       if(!original || !captured.destructions.at(original).allocation_release)
@@ -2804,6 +2914,23 @@ struct Writer {
   }
   unsigned expression(an_expr_node_ptr e) {
     unsigned result=expression_core(e);
+    auto allocation=active_array_allocations.find(e);
+    if(allocation!=active_array_allocations.end()) {
+      const auto &value=*allocation->second;
+      unsigned obligation=source_obligation_ids.emplace(value.original,unsigned(source_obligation_ids.size()+1)).first->second;
+      if(!node_shapes.at(result).direct_call)reject("array allocation observation lost its owned direct call");
+      unsigned destruction=value.original_destruction?source_obligation_ids.emplace(value.original_destruction,unsigned(source_obligation_ids.size()+1)).first->second:0;
+      array_allocation_operations.push_back("{\"nodeId\":"+number(result)+",\"sourceAllocationObligationId\":"+number(obligation)+
+        ",\"sourceDestructionObligationId\":"+number(destruction)+
+        ",\"allocatorEntityId\":"+number(routine(value.allocator))+",\"deallocatorEntityId\":"+number(routine(value.deallocator))+
+        ",\"constructorEntityId\":"+number(value.constructor?routine(value.constructor):0)+
+        ",\"destructorEntityId\":"+number(value.destructor?routine(value.destructor):0)+
+        ",\"elementTypeId\":"+number(type_id(value.element_type))+",\"paddingSize\":"+std::to_string(cleanup_number(value.padding))+
+        ",\"helperKind\":"+quote(value.helper=="__cxa_vec_new2"?"ia64-vector-new2":"ia64-vector-new3")+
+        ",\"captureProof\":\"observed-array-new-runtime\"}");
+      emitted_allocation_obligations.insert(value.original);
+      if(value.original_destruction)emitted_array_obligations.insert(value.original_destruction);
+    }
     auto array=active_array_runtime.find(e);
     if(array!=active_array_runtime.end()) {
       auto original=array->second.first;const auto &observed=*array->second.second;
@@ -3080,7 +3207,14 @@ struct Writer {
       // A routine expression can already include function-to-pointer decay
       // (e.g. return callback_name). Its entity signature owns exactly one
       // pointer layer independently of that contextual expression type.
-      if(ty!=signature && ty!=pointer) {
+      // Stock's vector runtime builder takes this exact routine address before
+      // an out-of-line method may receive its lowered receiver parameter.
+      // The observed callback and its source-routine ABI own the resulting
+      // address; arbitrary routine designators still require type equality.
+      auto callback=dot_object_source::state().array_callback_addresses.find(e);
+      bool owned_callback=callback!=dot_object_source::state().array_callback_addresses.end() &&
+        callback->second.first==current_routine && callback->second.second==target;
+      if(ty!=signature && ty!=pointer && !owned_callback) {
         auto describe_signature=[&](unsigned id) {
           for(const auto &candidate:pointer_types)if(candidate.second==id){id=candidate.first;break;}
           for(const auto &candidate:signature_ids)if(candidate.second==id)return candidate.first;
@@ -4231,7 +4365,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v41\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v42\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -4239,6 +4373,7 @@ struct Writer {
       ",\"sourceEnumerators\":"+array(source_enumerators)+",\"sourceMemberPointerTypes\":"+array(source_member_pointer_types)+
       ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
       ",\"sourceDependentTypes\":"+array(source_dependent_types)+
+      ",\"arrayAllocationOperations\":"+array(array_allocation_operations)+
       ",\"fieldInitializerDestructionElisions\":"+array(field_initializer_destruction_elisions)+
       ",\"fieldInitializerPartialDestructionExecutions\":"+array(field_partial_destruction_executions)+
       ",\"sourceFieldInitializerDestructions\":"+array(source_field_initializer_destructions)+",\"fieldInitializerExecutions\":"+array(field_initializer_executions)+
@@ -4253,6 +4388,9 @@ struct Writer {
       ",\"destructionElisions\":"+array(destruction_elisions)+",\"allocationElisions\":"+array(allocation_elisions)+",\"normalDestructions\":"+array(normal_destructions)+",\"cleanupConditions\":"+array(cleanup_conditions)+
       ",\"sourceRecords\":"+array(source_records)+",\"sourceRecordOperations\":"+array(source_record_operations)+
       ",\"sourceRecordOwners\":"+array(source_record_owners)+
+      ",\"sourceRecordInstantiations\":"+array(source_record_instantiations)+",\"sourceTemplateArguments\":"+array(source_template_arguments)+
+      ",\"sourceArrayBounds\":"+array(source_array_bounds)+",\"sourceSemanticConstants\":"+array(source_semantic_constants)+
+      ",\"sourceSemanticConstantOperands\":"+array(source_semantic_constant_operands)+
       ",\"exceptionTypes\":"+array(exception_types)+",\"exceptionBaseConversions\":"+array(exception_base_conversions)+
       ",\"throwExpressions\":"+array(throw_expressions)+",\"throwObjectAddresses\":"+array(throw_object_addresses)+
       ",\"throwMarkers\":"+array(throw_markers)+",\"rethrowExpressions\":"+array(rethrow_expressions)+

@@ -18,12 +18,12 @@ internal sealed partial class ObjectFile
 
     private void ReadAndVerifySourceTypes()
     {
-        using (var query = database.Prepare("SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count,is_restrict,is_atomic FROM source_types ORDER BY id"))
+        using (var query = database.Prepare("SELECT id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count,is_restrict,is_atomic,array_bound_kind FROM source_types ORDER BY id"))
             while (query.Read())
             {
                 var type = new SourceType(query.Integer(0), query.Text(1), query.Text(2), query.OptionalInteger(3), query.OptionalInteger(4),
                     query.Integer(5) == 1, query.Integer(6) == 1, query.OptionalInteger(7), query.Integer(8), query.Integer(9), query.OptionalInteger(10),
-                    query.Integer(11) == 1, query.Integer(12) == 1);
+                    query.Integer(11) == 1, query.Integer(12) == 1, query.OptionalText(13));
                 if (type.Id <= 0 || type.Line < 0 || type.Column < 0 || query.Integer(5) is not (0 or 1) || query.Integer(6) is not (0 or 1) ||
                     query.Integer(11) is not (0 or 1) || query.Integer(12) is not (0 or 1))
                     throw new InvalidDataException("Invalid source type identity, qualifiers or location");
@@ -31,12 +31,16 @@ internal sealed partial class ObjectFile
             }
         ReadSourceTypeDetails();
         ReadDependentSourceTypes();
+        ReadSourceTemplateMetadata();
         foreach (SourceType type in SourceTypes.Values)
         {
             string? execution = type.ExecutionRepresentationId is long id ? Type(id) : null;
             if (type.IsAtomic && execution is not null)
                 throw new InvalidDataException("Atomic source types require an explicit atomic execution contract");
             bool qualified = type.IsConst || type.IsVolatile || type.IsRestrict || type.IsAtomic || SourceTypeQualifiers.ContainsKey(type.Id);
+            if (type.Kind == "array" ? type.ArrayBoundKind is not ("constant" or "unspecified" or "dependent") ||
+                (type.ArrayBoundKind == "constant") != (type.ElementCount is not null) : type.ArrayBoundKind is not null)
+                throw new InvalidDataException("Source array bound kind differs from its original extent");
             if (type.Kind == "array" ? type.ElementCount is < 0 : type.ElementCount is not null)
                 throw new InvalidDataException("Source array requires a nonnegative element count");
             if (type.Kind is "typedef" or "qualified")
@@ -118,7 +122,7 @@ internal sealed partial class ObjectFile
                 {
                     if (current.ExecutionRepresentationId is long physical && ScalarTypes.Element(Type(physical)) != Type(target.ExecutionTypeId))
                         throw new InvalidDataException("Source array element disagrees with execution representation");
-                    if (Original(target).Kind == "array" && Original(target).ElementCount is null)
+                    if (Original(target).Kind == "array" && Original(target).ElementCount is null && !SourceArrayBounds.ContainsKey(Original(target).Id))
                         throw new InvalidDataException("Array element cannot be incomplete");
                 }
                 else if (current.Kind != "member-pointer" && current.ExecutionRepresentationId is long physical && physical != target.ExecutionRepresentationId)

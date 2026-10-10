@@ -1096,3 +1096,43 @@ complete DuckDB generation, C# compilation, execution or libc++ runtime closure
 is claimed. Next work owns dependent arguments/bounds and vector allocation
 helper rollback, followed by generated temporary initialization and resolved
 constructor exception signatures.
+
+## Source template metadata and vector allocation, profile 42
+
+Native106/managed116 preserve dependent specialization prototypes and ordered
+typed arguments, symbolic array bounds, original non-type parameter identity,
+and dependent trait members with their owner and result types. Source-only
+types remain separate from physical execution layouts. The representation is
+documented in `dotobj-source-template-metadata.md`; unsupported expression
+families remain explicit gates. The next observed real gate is `__is_empty`
+with an original type operand.
+
+Array-new helpers retain separate original allocation-release and partial
+element-destruction obligations, selected callbacks, padding and helper ABI.
+Exactly observed callbacks can retain the selected lowered ABI when their
+out-of-line constructor is lowered after its address was created. General
+routine-designator equality remains enforced. Production vector runtime
+providers and vector-delete ownership remain outstanding. An additional original
+allocation/element pairing relation is queued to strengthen independent checking
+of otherwise equivalent same-type obligations.
+
+Acceptance: 1,042 broad checks, 79 focused source-template checks including
+NativeAOT, 69 vector metadata/generation checks and 28 native/stock vector oracle
+checks. Vector execution in translated C# is not claimed. The initial broad
+attempt found a malformed-object test INSERT that assumed the previous column
+count; explicit column lists fixed that test without changing106/116. Exact
+receipts and tool hashes are in
+`evidence/dotobj-duckdb-source-templates-arrays-20261010.json`.
+
+The full historical094 inventory completed all 2,635 units: 1,402 packaged,
+1,223 exporter gates, two exporter range exceptions and eight test configuration
+or platform declaration failures. All 2,207 library units reached exporter
+processing; the eight frontend diagnostic failures are test units. This is an
+older v40 inventory, not proof of current full-project generation. See
+`evidence/dotobj-duckdb-full-baseline-20261010.json`.
+
+Current106 diverse frontier: 27 representatives, four packaged ICU units and
+23 source-expression gates. All four objects verify and link with two RTTI
+providers to 269 C# definitions. Review output is
+`artifacts/review/dotobj-duckdb-v42/icu-four-units`; no DuckDB C# compilation or
+execution claim. No intermediates were removed.

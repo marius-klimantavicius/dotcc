@@ -835,6 +835,7 @@ internal static class Verifier
             foreach (Edge edge in edges)
                 if (!body.Nodes.ContainsKey(edge.ParentId) || !body.Nodes.ContainsKey(edge.ChildId)) Fail("Edge leaves function body");
         Visit(root!, [], parameters.Select(parameter => parameter.Id).ToHashSet(), [], 0);
+        obj.VerifyArrayAllocationBody(function.Id, body);
         foreach (ArrayRuntimeOperation operation in obj.ArrayRuntimeOperations.Values.Where(operation => body.Nodes.ContainsKey(operation.NodeId)))
         {
             Node call = body.Nodes[operation.NodeId];

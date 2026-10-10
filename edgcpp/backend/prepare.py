@@ -432,6 +432,29 @@ object_source_overlay(init_lower,
     '#if defined(EDG_DOT_BACKEND)\n'
     '        dot_object_source::observe_field_initializer_selection(scope, ctor_init, false);\n'
     '#endif')
+# Upgrade the earlier allocation-only observation without stacking contexts.
+obsolete_array_capture = ('#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::ArrayAllocationCapture dot_array_allocation_capture(\n'
+    '      ndsp->freeing_of_storage_on_exception, elem_type, innermost_function_scope->variant.routine.ptr);\n'
+    '#endif\n')
+source = init_lower.read_text()
+if obsolete_array_capture in source:
+    init_lower.write_text(source.replace(obsolete_array_capture, ''))
+object_source_overlay(init_lower,
+    '    /* Construct the call of __vec_new or __array_new. */\n',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::ArrayAllocationCapture dot_array_allocation_capture(\n'
+    '      ndsp->freeing_of_storage_on_exception, dtor_routine != NULL ? elem_dynamic_init(dip) : NULL,\n'
+    '      elem_type, innermost_function_scope->variant.routine.ptr);\n'
+    '#endif\n'
+    '    /* Construct the call of __vec_new or __array_new. */\n')
+object_source_overlay(init_lower,
+    '  return call_node;\n}  /* make_vec_new_call */',
+    '#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
+    '  dot_object_source::observe_array_allocation_call(call_node, entity_node, ctor_routine, dtor_routine,\n'
+    '    new_routine, delete_routine, padding_size_node);\n'
+    '#endif\n'
+    '  return call_node;\n}  /* make_vec_new_call */')
 object_source_overlay(init_lower,
     '      if (alloc_expr == NULL && init_expr == NULL) {\n'
     '        /* If neither allocation nor initialization generated any code,\n',

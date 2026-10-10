@@ -1,0 +1,77 @@
+{
+  "milestone": "dotobj scalar-control-v42 source template metadata and array allocation protocol",
+  "status": "accepted",
+  "compiler": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native106-verified-snapshot/cpfe-dot",
+    "sha256": "988861d85cf043cb07da37089e076dde82c12eb3526c4cf7d3b62ca3c2675efd"
+  },
+  "linker": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-116/bin/DotObj.Linker/debug/dotobj-link.dll",
+    "sha256": "0522500cf200faab1fd0040bad9b293b6ce698cc7326c35f4f8eeeb09afceb87"
+  },
+  "focused": {
+    "arguments-aot": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-template-arguments-v42-106-aot-001/results.json",
+      "sha256": "0d6ff76058a05a02fe20da4170ddeba74fdac79646df50d934aac5c64da357f8",
+      "status": "passed",
+      "checks": 25
+    },
+    "bounds-aot": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-template-bounds-v42-106-aot-001/results.json",
+      "sha256": "807a1f33aec680d4dc275d4947dd3bac0eee0f1ea9dae165ea1e7ce9559da476",
+      "status": "passed",
+      "checks": 29
+    },
+    "members-aot": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-template-members-v42-106-aot-001/results.json",
+      "sha256": "1d30a5a5bd08518086c4a21db1cf06e857f68d350936153e25bc464187d9ca07",
+      "status": "passed",
+      "checks": 25
+    },
+    "vector-protocol": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-vector-allocation-v42-003/results.json",
+      "sha256": "d5e0f5900c0239e10db517779132db5104cd6e90d624e981e2fb35f66c04de8d",
+      "status": "passed",
+      "checks": 69
+    },
+    "vector-native-stock": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-vector-allocation-v42-003/oracles/results.json",
+      "sha256": "f91b8968f0b254ba22a110718bb4d0ce80f7023e8e1daee373304d9ffd298df1",
+      "status": "passed",
+      "checks": 28
+    }
+  },
+  "realProject": {
+    "frontier": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-diverse-frontier-106/results.json",
+    "frontierSha256": "4e40b452ebcf031fc72dc707ccf5fe05ef75940cf5219595aec3bce9ebfddd7f",
+    "selectedUnits": 27,
+    "packaged": 4,
+    "sourceExpressionGates": 23,
+    "verifiedPrimaryUnits": 4,
+    "linkedObjectsIncludingRttiProviders": 6,
+    "generatedDefinitions": 269,
+    "generatedDirectory": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-icu-four-generated-106",
+    "verificationReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-icu-four-verify-106/results.json",
+    "translatedProjectCompiled": false,
+    "translatedProjectExecuted": false
+  },
+  "limits": [
+    "Full DuckDB project generation remains incomplete.",
+    "Additional dependent source expression families remain unsupported, next observed builtin is __is_empty.",
+    "Vector delete[] original destruction ownership remains a separate exporter gap.",
+    "Production __cxa_vec_new2/new3 runtime providers are not yet implemented; vector results claim metadata/generation only.",
+    "Independent original allocation-to-element source pairing will be strengthened next; current backend captures exact observed pair."
+  ],
+  "retainedFailures": {
+    "broad001": "Old malformed-object test used positional source_types INSERT with13 columns; corrected tests explicitly name columns. Production106/116 unchanged.",
+    "vector002": "Full delete[] fixture retains missing original destruction ownership failure.",
+    "member001": "Fixture assertion expected bound root to be member; exact graph correctly retained expression/cast/member."
+  },
+  "broad": {
+    "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v42-002/results.json",
+    "sha256": "86b0d45fcd73d115064ce3a054dc1983aae0f4439f459e2e1186b4ff7bdfb4b6",
+    "checks": 1042,
+    "status": "passed",
+    "harness": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v42-acceptance-tools-106b"
+  }
+}

@@ -158,7 +158,9 @@ internal sealed partial class ObjectFile
             throw new InvalidDataException("Payload rollback action lacks its completion-aware payload target");
         ReadDestructionElisions();
         if (SourceDestructionObligations.Keys.Except(CleanupActions.Values.Where(action => action.SourceObligationId is not null).Select(action => action.SourceObligationId!.Value)
-                .Concat(NormalDestructions.Values).Concat(ArrayRuntimeOperations.Values.Where(operation => operation.SourceObligationId is not null).Select(operation => operation.SourceObligationId!.Value)).Concat(PayloadSubobjectOwners.Keys).Concat(DestructionElisions.Keys.Select(key => key.SourceObligationId))).Any())
+                .Concat(NormalDestructions.Values).Concat(ArrayRuntimeOperations.Values.Where(operation => operation.SourceObligationId is not null).Select(operation => operation.SourceObligationId!.Value))
+                .Concat(ArrayAllocationOperations.Values.Where(operation => operation.SourceDestructionObligationId is not null).Select(operation => operation.SourceDestructionObligationId!.Value))
+                .Concat(PayloadSubobjectOwners.Keys).Concat(DestructionElisions.Keys.Select(key => key.SourceObligationId))).Any())
             throw new InvalidDataException("Original destruction obligation has no observed owned execution action, complete payload owner or exact stock elision");
         using (var query = database.Prepare("SELECT x.node_id,x.capture_proof,n.kind FROM rethrow_expressions x LEFT JOIN nodes n ON n.id=x.node_id ORDER BY x.node_id"))
             while (query.Read())

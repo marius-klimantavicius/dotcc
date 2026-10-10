@@ -412,11 +412,14 @@ Both preserve original source ownership and reject resealed malformed metadata.
 The separate constructor-initializer no-effect pass is now observed as well;
 the original base-destructor obligations remain even when stock removes their
 calls. Full DuckDB export still reaches independent dependent-template type
-identity gaps, and NativeAOT acceptance for this checkpoint is pending.
+identity gaps. Final NativeAOT acceptance with native103/managed114 passed 43
+field-array, 43 field-temporary and 42 field-no-effect checks, retained under
+`dotobj-v41-focused-aot-103`. The complete v41 focused set passed 288 checks
+and the broad frozen regression suite passed 1042 checks.
 
-## Planned vector allocation protocol ownership
+## Vector allocation protocol ownership (profile 42)
 
-The next array-new relation will preserve EDG's selected runtime protocol rather
+The array-new relation preserves EDG's selected runtime protocol rather
 than invent an explicit cleanup region around a helper that already owns it.
 `lower_array_new` retains the original allocation rollback DIP in
 `ndsp->freeing_of_storage_on_exception`. For the IA64 `__cxa_vec_new2` and
@@ -425,10 +428,13 @@ destructor, allocator and deallocator callbacks and emits seven arguments:
 count, element size, padding, constructor, destructor, allocator, deallocator.
 The stock implementation is in `upstream/lib_src/vec_newdel.c`.
 
-Proposed `array_allocation_operations` rows contain the call node, original
-allocation obligation, selected allocator/deallocator entities, element type,
+`array_allocation_operations` rows contain the call node, original
+allocation obligation and optional original element-destruction obligation,
+selected allocator/deallocator entities, element type,
 nullable constructor/destructor callback entities, helper kind, observed padding
-size and `observed-array-new-runtime` capture proof. The call remains in the
+size and `observed-array-new-runtime` capture proof. These are distinct source
+obligations: element rollback destroys the constructed prefix, while allocation
+rollback invokes the selected deallocator. The call remains in the
 owned expression graph. Verification checks exact argument references and callback
 signatures, original selected `operator delete[]`, dynamic count type, element
 extent and observed padding. Ordinary allocation-obligation completeness then
@@ -445,6 +451,32 @@ allocator/deallocator selection and must not be accepted merely by its name.
 Acceptance must compare native C++, stock lowered C and translated execution
 for successful allocation, allocator failure without deallocation, constructor
 failure after a constructed prefix, reverse prefix destruction, and exactly one
-selected deallocation. The sized-delete form must receive the full allocation
-size including padding. Runtime implementation can follow this capture contract;
-adding the relation alone does not make the runtime helper executable.
+selected deallocation. The sized-delete form receives the element extent plus
+padding. For zero elements, stock EDG may allocate one payload byte while still
+passing zero element extent plus padding to sized delete; preserve that observed
+protocol rather than equating allocation granularity with constructed extent.
+Runtime implementation can follow this capture contract; adding the relation
+alone does not make the runtime helper executable. Native and stock C oracles
+for both helper forms pass 28 checks, including an out-of-line constructor whose
+receiver ABI is lowered after the callback address is created
+(`dotobj-vector-allocation-oracles-003`). Only an exactly observed finalized
+callback operand may use the selected target declaration ABI in that case; the
+general routine-designator type equality remains enforced.
+
+Native106/managed116 passes 69 focused metadata/generation checks and 28 native
+and stock C oracle checks at `dotobj-vector-allocation-v42-003`. Both new2 and
+new3 generate C# with source files hidden and reject nine resealed malformed
+objects each. This uses an explicit allocation-only fixture mode: successful
+arrays are destroyed and deallocated with ordinary source C++ calls, preserving
+the same event oracle while isolating the separate vector-delete exporter gap.
+The full `delete[]` fixture remains rejected by missing original destruction
+ownership (`dotobj-vector-allocation-v42-002`). Production new2/new3 runtime
+providers are also pending; these results do not claim translated execution.
+
+The next independent source relation will retain the pre-lowering pair between
+an allocation DIP's `assoc_new` initialization and the exact element DIP inside
+the array aggregate/repeat initializer. Current protocol capture observes both
+original obligations and validates their execution, callback and element type;
+the additional relation will reject swapping otherwise matching obligations
+between two source array-new expressions. Do not infer this pair from adjacent
+ordinals: stock scanning can add argument temporaries between observations.

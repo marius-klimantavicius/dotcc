@@ -362,3 +362,57 @@ variant. Next base worker owns those typed semantic source representations;
 lifetime worker owns exact vector-helper allocation rollback protocol. Supervisor
 integrates common coverage/source maps, schedules bounded builds and verification,
 and commits. No runtime/libc++ closure detour, cleanup or merged IL.
+
+Committed v41 as bd4a08f6b (44 explicit owned paths). Profile42 now active
+in canonical code. Base worker owns typed source template arguments/semantic
+constants/dependent array bounds; lifetime worker owns exact array-allocation
+helper protocol. Supervisor added ReadArrayAllocationOperations and helper-owned
+source obligation coverage union, pending dedicated reader. Next native104 and
+managed115 (113 was superseded by114 before acceptance because a final source
+record guard landed after113 compilation). Build freezes require worker readiness
+acknowledgements before preparation. Full094 inventory remains running.
+
+## Active v42 acceptance (105/115)
+
+Native105 builds successfully, SHA
+bbd3b8b4fac87f83594b74f6f8563079cfd18071e957d3e60c4bb19d3047340a;
+managed115 builds without warnings. Native104 retained the failed integration
+build (NodeShape lacked direct-call classification);105 records an exact boolean
+instead of adding a string to every execution node. Base worker runs owned
+source-template argument/bound acceptance; lifetime worker runs vector helper
+protocol acceptance. Supervisor runs five actual DuckDB frontier units (core
+extension, lambda functions, ICU character properties/day periods, CSV options).
+No production vector allocation provider or translated execution claim yet.
+Full094 baseline continues; checkpoint is separately saved as
+dotobj-v42-baseline-inventory-checkpoint.json. No cleanup.
+
+The full frozen094 baseline inventory completed all 2,635 units: 1,402
+packaged, 1,223 explicit exporter gates, two exporter range-check exceptions
+(task_scheduler/buffer_pool using concurrentqueue), and eight test configuration
+or platform API declaration failures. No timeout. This historical inventory
+uses v40, not current v42, and is not full project generation evidence. Receipt:
+`evidence/dotobj-duckdb-full-baseline-20261010.json`. Current105 verifies and
+generates bundled ICU characterproperties (49 definitions); review link under
+`artifacts/review/dotobj-duckdb-v42/icu-characterproperties`.
+
+106/116 accepts dependent trait-member constants and exact out-of-line vector
+callback ABI provenance. Native106 SHA
+988861d85cf043cb07da37089e076dde82c12eb3526c4cf7d3b62ca3c2675efd.
+Focused source-template NativeAOT suites pass 79 checks; vector allocation
+metadata/generation passes 69 plus 28 native/stock oracle checks. No translated
+vector-runtime execution claim. Original full delete[] fixture remains gated.
+
+Diverse actual106 inventory completed 27 representatives: four packaged ICU
+units, 23 source-dependent-expression gates. The four ICU units verify and link
+with two RTTI providers to 269 generated definitions, review link
+`artifacts/review/dotobj-duckdb-v42/icu-four-units`. Broad acceptance first found
+a test's positional source_types INSERT assumed 13 columns; source array bound
+kind makes 14. Test mutations now name columns explicitly. Frozen harness106b
+runs broad002 against unchanged native106/managed116. Workers retain read-only
+next-family diagnosis until milestone commit.
+
+Broad002 passed all 1,042 checks with unchanged106/116. v42 accepted evidence
+now saved in dotobj-duckdb-source-templates-arrays-20261010.json. Next v43 work
+is staged by workers in persistent scratch while the canonical milestone is
+committed: base owns typed compiler traits/sizeof/alignof source nodes; lifetime
+owns original allocation-to-element pairing and vector-delete protocol.
