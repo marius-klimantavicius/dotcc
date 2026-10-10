@@ -118,6 +118,7 @@ internal sealed partial class ObjectFile
             if (parameterCounts.GetValueOrDefault(entityId) != sourceRoutine.Parameters.Length)
                 throw new InvalidDataException("Missing original parameter signature capture");
 
+        ReadRoutineExceptionResolutions();
         VerifyAbiRoutineOrigins();
         VerifyGeneratedRoutineOrigins();
         VerifyThunkWrappers();
@@ -480,7 +481,8 @@ internal sealed partial class ObjectFile
             "id", "sourceName", "linkage", "externalKey", "definition", "typeId", "sourceTypeId", "isThreadLocal", "isConst", "alignment", "sourceFileId", "line", "column");
         Table("routineTypes", "SELECT type_id,return_type_id,variadic,exception_policy FROM routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy");
         Table("routineParameters", "SELECT type_id,ordinal,parameter_type_id FROM routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");
-        Table("sourceRoutineTypes", "SELECT type_id,return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier FROM source_routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy", "parameterMode", "objectTypeId", "objectIsConst", "objectIsVolatile", "objectRefQualifier");
+        Table("sourceRoutineTypes", "SELECT type_id,return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier,exception_policy_origin FROM source_routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy", "parameterMode", "objectTypeId", "objectIsConst", "objectIsVolatile", "objectRefQualifier", "exceptionPolicyOrigin");
+        Table("sourceRoutineExceptionResolutions", "SELECT source_routine_type_id,final_source_routine_type_id,source_function_entity_id,initial_policy,resolved_policy,initial_present,initial_indeterminate,initial_arg_cached,initial_copy_from_prototype,initial_is_noexcept,initial_throw_any,final_present,final_indeterminate,final_arg_cached,final_copy_from_prototype,final_is_noexcept,final_throw_any,special_member_kind,is_defaulted,is_compiler_generated,is_inheriting_constructor,capture_proof FROM source_routine_exception_resolutions ORDER BY source_routine_type_id", "sourceRoutineTypeId", "finalSourceRoutineTypeId", "sourceFunctionEntityId", "initialPolicy", "resolvedPolicy", "initialPresent", "initialIndeterminate", "initialArgCached", "initialCopyFromPrototype", "initialIsNoexcept", "initialThrowAny", "finalPresent", "finalIndeterminate", "finalArgCached", "finalCopyFromPrototype", "finalIsNoexcept", "finalThrowAny", "specialMemberKind", "isDefaulted", "isCompilerGenerated", "isInheritingConstructor", "captureProof");
         Table("sourceRoutineParameters", "SELECT type_id,ordinal,parameter_type_id FROM source_routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");
         Table("deferredRoutineAbis", "SELECT routine_type_id,source_routine_type_id,reason,capture_proof FROM deferred_routine_abis ORDER BY routine_type_id,source_routine_type_id", "routineTypeId", "sourceRoutineTypeId", "reason", "captureProof");
         Table("sourceRoutineAbis", "SELECT source_routine_type_id,return_passing,capture_proof FROM source_routine_abis ORDER BY source_routine_type_id", "sourceRoutineTypeId", "returnPassing", "captureProof");

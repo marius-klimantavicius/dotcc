@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v45'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v46'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -58,6 +58,7 @@ CREATE TABLE routine_parameters (
  PRIMARY KEY(type_id,ordinal)
 ) STRICT;
 CREATE TABLE source_routine_types (
+ exception_policy_origin TEXT NOT NULL CHECK(exception_policy_origin IN ('captured','generated-resolution')),
  type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
  return_type_id INTEGER NOT NULL REFERENCES source_types(id),
  variadic INTEGER NOT NULL CHECK(variadic IN (0,1)),
@@ -69,6 +70,30 @@ CREATE TABLE source_routine_types (
  object_ref_qualifier TEXT NOT NULL CHECK(object_ref_qualifier IN ('none','lvalue','rvalue')),
  CHECK(object_type_id IS NOT NULL OR
        (object_is_const=0 AND object_is_volatile=0 AND object_ref_qualifier='none'))
+) STRICT;
+CREATE TABLE source_routine_exception_resolutions (
+ source_routine_type_id INTEGER PRIMARY KEY REFERENCES source_routine_types(type_id),
+ final_source_routine_type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),
+ source_function_entity_id INTEGER REFERENCES source_functions(entity_id),
+ initial_policy TEXT NOT NULL CHECK(initial_policy IN ('unwind','terminate','unsupported-dynamic')),
+ resolved_policy TEXT NOT NULL CHECK(resolved_policy IN ('unwind','terminate')),
+ initial_present INTEGER NOT NULL CHECK(initial_present IN (0,1)),
+ initial_indeterminate INTEGER NOT NULL CHECK(initial_indeterminate IN (0,1)),
+ initial_arg_cached INTEGER NOT NULL CHECK(initial_arg_cached IN (0,1)),
+ initial_copy_from_prototype INTEGER NOT NULL CHECK(initial_copy_from_prototype IN (0,1)),
+ initial_is_noexcept INTEGER NOT NULL CHECK(initial_is_noexcept IN (0,1)),
+ initial_throw_any INTEGER NOT NULL CHECK(initial_throw_any IN (0,1)),
+ final_present INTEGER NOT NULL CHECK(final_present IN (0,1)),
+ final_indeterminate INTEGER NOT NULL CHECK(final_indeterminate IN (0,1)),
+ final_arg_cached INTEGER NOT NULL CHECK(final_arg_cached IN (0,1)),
+ final_copy_from_prototype INTEGER NOT NULL CHECK(final_copy_from_prototype IN (0,1)),
+ final_is_noexcept INTEGER NOT NULL CHECK(final_is_noexcept IN (0,1)),
+ final_throw_any INTEGER NOT NULL CHECK(final_throw_any IN (0,1)),
+ is_defaulted INTEGER NOT NULL CHECK(is_defaulted IN (0,1)),
+ is_compiler_generated INTEGER NOT NULL CHECK(is_compiler_generated IN (0,1)),
+ is_inheriting_constructor INTEGER NOT NULL CHECK(is_inheriting_constructor IN (0,1)),
+ special_member_kind TEXT NOT NULL CHECK(special_member_kind IN ('constructor','destructor','assignment','equality','inequality','less','greater','less-equal','greater-equal','three-way-comparison')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-generated-exception-specification')
 ) STRICT;
 CREATE TABLE source_routine_parameters (
  type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),

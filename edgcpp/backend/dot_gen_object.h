@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v45: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v46: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -170,6 +170,7 @@ struct Writer {
   std::vector<string> routine_types,routine_parameters,source_routine_types,source_routine_parameters;
   std::vector<string> deferred_routine_abis;
   std::map<string,unsigned> signature_ids;
+  std::vector<string> source_routine_exception_resolutions;
   unsigned signature_type(unsigned result,const std::vector<unsigned> &args,bool variadic,const string &exception_policy) {
     if(exception_policy!="unwind" && exception_policy!="terminate")reject("dynamic typed exception specification");
     string key=number(result)+(variadic?"v:":"f:")+exception_policy+":";for(auto arg:args)key+=number(arg)+",";
@@ -1164,7 +1165,7 @@ struct Writer {
     if(type.kind=="routine") {
       std::vector<unsigned> args;
       for(const auto &slot:source_abi_slots(captured))args.push_back(slot.type);
-      return signature_type(source_abi(captured).result_buffer?1:source_execution_type(type.result),args,type.variadic,type.exception_policy);
+      return signature_type(source_abi(captured).result_buffer?1:source_execution_type(type.result),args,type.variadic,dot_object_source::resolved_exception_policy(captured));
     }
     if(type.kind=="pointer" || type.kind=="lvalue-reference" || type.kind=="rvalue-reference")
       return pointer_type(source_execution_type(type.underlying));
@@ -1273,7 +1274,8 @@ struct Writer {
           (slot.role=="source" || slot.role=="indirect-source"?std::to_string(slot.source_ordinal):"null")+"}");
       }
       }
-      source_routine_types.push_back("{\"typeId\":"+number(id)+",\"returnTypeId\":"+number(source_type(type.result))+",\"variadic\":"+(type.variadic?"true":"false")+",\"exceptionPolicy\":"+quote(type.exception_policy)+",\"parameterMode\":"+quote(type.parameter_mode)+",\"objectTypeId\":"+number(type.object_type?source_type(type.object_type):0)+
+      source_routine_types.push_back("{\"typeId\":"+number(id)+",\"returnTypeId\":"+number(source_type(type.result))+",\"variadic\":"+(type.variadic?"true":"false")+",\"exceptionPolicy\":"+quote(dot_object_source::resolved_exception_policy(captured))+
+        ",\"exceptionPolicyOrigin\":"+quote(dot_object_source::state().routine_exception_resolutions.count(captured)?"generated-resolution":"captured")+",\"parameterMode\":"+quote(type.parameter_mode)+",\"objectTypeId\":"+number(type.object_type?source_type(type.object_type):0)+
         ",\"objectIsConst\":"+(type.object_is_const?"true":"false")+",\"objectIsVolatile\":"+(type.object_is_volatile?"true":"false")+
         ",\"objectRefQualifier\":"+quote(type.object_ref_qualifier)+"}");
       unsigned ordinal=0;for(auto parameter:type.parameters)source_routine_parameters.push_back("{\"typeId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+",\"parameterTypeId\":"+number(source_type(parameter))+"}");
@@ -1326,6 +1328,48 @@ struct Writer {
     source_declarations.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(kind)+",\"sourceName\":"+quote(declaration.name)+
       ",\"sourceTypeId\":"+number(source_type(declaration.type))+",\"entityId\":"+number(entity)+",\"bindingId\":"+number(binding)+
       ",\"functionEntityId\":"+number(owner)+position(declaration.position)+"}");
+  }
+  void write_routine_exception_resolutions() {
+    const auto &state=dot_object_source::state();
+    // Source-only signatures remain source-only: this never calls routine().
+    std::set<unsigned> written;
+    bool progress=true;
+    while(progress) {
+    progress=false;
+    for(const auto &entry:state.routine_exception_resolutions) {
+      if(!source_type_ids.count(entry.first) || !written.insert(entry.first).second)continue;
+      progress=true;
+      const auto &resolution=entry.second;
+      if(!resolution.error.empty())reject(resolution.error.c_str());
+      const auto &initial=state.types.at(entry.first-1).initial_exception_flags;
+      if(!resolution.is_defaulted && !resolution.compiler_generated && !resolution.inheriting_constructor)
+        reject("generated exception specification lacks exact member origin");
+      unsigned final_id=source_type(resolution.final_type),entity=0;
+      auto routine_source=state.functions.find(resolution.routine);
+      if(routine_ids.count(resolution.routine) && routine_source!=state.functions.end() &&
+         (routine_source->second.signature_type==entry.first || routine_source->second.signature_type==resolution.final_type))
+        entity=routine_ids.at(resolution.routine);
+      auto flags=[&](const char *prefix,const dot_object_source::ExceptionPolicyFlags &value) {
+        string p=prefix,result;
+        result+=",\""+p+"Present\":"+(value.present?"true":"false");
+        result+=",\""+p+"Indeterminate\":"+(value.indeterminate?"true":"false");
+        result+=",\""+p+"ArgCached\":"+(value.arg_cached?"true":"false");
+        result+=",\""+p+"CopyFromPrototype\":"+(value.copy_from_prototype?"true":"false");
+        result+=",\""+p+"IsNoexcept\":"+(value.is_noexcept?"true":"false");
+        result+=",\""+p+"ThrowAny\":"+(value.throw_any?"true":"false");
+        return result;
+      };
+      source_routine_exception_resolutions.push_back("{\"sourceRoutineTypeId\":"+number(source_type_ids.at(entry.first))+
+        ",\"finalSourceRoutineTypeId\":"+number(final_id)+",\"sourceFunctionEntityId\":"+number(entity)+
+        ",\"initialPolicy\":"+quote(initial.policy())+",\"resolvedPolicy\":"+quote(resolution.final_flags.policy())+
+        flags("initial",initial)+flags("final",resolution.final_flags)+
+        ",\"specialMemberKind\":"+quote(resolution.special_kind)+
+        ",\"isDefaulted\":"+(resolution.is_defaulted?"true":"false")+
+        ",\"isCompilerGenerated\":"+(resolution.compiler_generated?"true":"false")+
+        ",\"isInheritingConstructor\":"+(resolution.inheriting_constructor?"true":"false")+
+        ",\"captureProof\":\"observed-generated-exception-specification\"}");
+    }
+    }
   }
   void source_function(a_routine_ptr r,unsigned entity) {
     auto found=dot_object_source::state().functions.find(r);
@@ -1742,6 +1786,14 @@ struct Writer {
       }
     }
   }
+  string diagnostic_destruction_type(a_dynamic_init_ptr original) {
+    const auto &captured=dot_object_source::state();auto found=captured.destructions.find(original);
+    if(found==captured.destructions.end())return "unobserved";
+    const auto &source=found->second;
+    string kind=source.source_type && source.source_type<=captured.types.size()?
+      captured.types[source.source_type-1].kind:"unavailable";
+    return source.error.empty()?kind:kind+" ["+source.error+"]";
+  }
   void check_lifetime(an_object_lifetime_ptr lifetime) {
     if(!lifetime)return;
     for(auto dip=lifetime->destructions;dip;dip=dip->next_in_destruction_list) {
@@ -1785,10 +1837,10 @@ struct Writer {
           " active-obligations="+std::to_string(active_source_obligations.size())+
           " variable="+(dip->variable?source_spelling(&dip->variable->source_corresp):"none")+
           " lifetime-kind="+std::to_string(lifetime->kind)+
-          " source-type="+(source?dot_object_source::state().types.at(dot_object_source::state().destructions.at(source).source_type-1).kind:"unknown")+
+          " source-type="+(source?diagnostic_destruction_type(source):"unknown")+
           " source-ordinal="+(source?std::to_string(dot_object_source::state().destructions.at(source).ordinal):"none")+
           " action-source-ordinals="+[&](){string r;for(auto original:active_source_obligations)r+=std::to_string(dot_object_source::state().destructions.at(original).ordinal)+":"+
-            dot_object_source::state().types.at(dot_object_source::state().destructions.at(original).source_type-1).kind+",";return r;}()).c_str());
+            diagnostic_destruction_type(original)+",";return r;}()).c_str());
     }
     for(auto child=lifetime->child_lifetime;child;child=child->next)check_lifetime(child);
   }
@@ -2291,6 +2343,7 @@ struct Writer {
     for(auto original:captured.static_destruction_order)static_obligation_id(original);
     for(auto original:captured.source_initializer_order) {
       const auto &value=captured.source_initializers.at(original);
+      if(!value.error.empty())reject(value.error.c_str());
       if(value.field)source_record_metadata(value.field_owner);
       source_initializers.push_back("{\"id\":"+number(source_initializer_id(original))+
         ",\"storageId\":"+number(source_initializer_emitted(original)?storage(value.variable):0)+",\"sourceTypeId\":"+number(source_type(value.source_type))+
@@ -4540,6 +4593,7 @@ struct Writer {
     write_dynamic_initializer_origins();
     finish_static_source_metadata();
     write_source_record_temporaries();
+    write_routine_exception_resolutions();
     for(const auto &storage_bytes:bitfield_data) {
       string bytes;unsigned long long begin=0,previous=0;
       for(const auto &byte:storage_bytes.second) {
@@ -4555,7 +4609,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v45\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v46\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -4609,6 +4663,7 @@ struct Writer {
       ",\"recordTypes\":"+array(record_types)+",\"recordFields\":"+array(record_fields)+
       ",\"storages\":"+array(storages)+",\"storageData\":"+array(storage_data)+",\"relocations\":"+array(relocations)+
       ",\"routineTypes\":"+array(routine_types)+",\"routineParameters\":"+array(routine_parameters)+
+      ",\"sourceRoutineExceptionResolutions\":"+array(source_routine_exception_resolutions)+
       ",\"sourceRoutineTypes\":"+array(source_routine_types)+",\"sourceRoutineParameters\":"+array(source_routine_parameters)+
       ",\"deferredRoutineAbis\":"+array(deferred_routine_abis)+
       ",\"sourceRoutineAbis\":"+array(source_routine_abis)+",\"sourceRoutineAbiParameters\":"+array(source_routine_abi_parameters)+

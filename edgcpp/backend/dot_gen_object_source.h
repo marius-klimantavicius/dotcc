@@ -26,6 +26,29 @@ inline bool enabled() {
   static const bool value=[](){const char *v=std::getenv("EDG_DOT_OBJECT");return v && std::string(v)=="1";}();
   return value;
 }
+struct ExceptionPolicyFlags {
+  bool present=false,indeterminate=false,arg_cached=false,copy_from_prototype=false;
+  bool is_noexcept=false,throw_any=false;
+  std::string policy() const {
+    return !present || throw_any?"unwind":is_noexcept?"terminate":"unsupported-dynamic";
+  }
+};
+inline ExceptionPolicyFlags exception_policy_flags(a_type_ptr type) {
+  ExceptionPolicyFlags result;auto spec=type->variant.routine.extra_info->exception_specification;
+  if(spec) {
+    result.present=true;result.indeterminate=spec->indeterminate;result.arg_cached=spec->arg_cached;
+    result.copy_from_prototype=spec->copy_from_prototype;result.is_noexcept=spec->is_noexcept;
+    result.throw_any=spec->throw_any;
+  }
+  return result;
+}
+struct RoutineExceptionResolution {
+  unsigned final_type=0;
+  a_routine_ptr routine=nullptr;
+  ExceptionPolicyFlags final_flags;
+  std::string special_kind,error;
+  bool is_defaulted=false,compiler_generated=false,inheriting_constructor=false;
+};
 struct Type {
   unsigned id=0,underlying=0,execution=0;
   unsigned long long element_count=0;
@@ -51,6 +74,7 @@ struct Type {
   std::string object_ref_qualifier="none";
   bool variadic=false;
   std::string exception_policy="unwind",parameter_mode="prototype";
+  ExceptionPolicyFlags initial_exception_flags;
   std::vector<unsigned> parameters;
   // Private prelowering parameter-declaration facts, never type identity/wire.
   std::vector<bool> declaration_defaults;
@@ -268,7 +292,7 @@ struct SourceInitializer {
   an_object_lifetime_ptr expression_lifetime=nullptr;
   unsigned source_type=0,ordinal=0;
   a_source_position position={};
-  std::string source_name;
+  std::string source_name,error;
 };
 struct StaticLifetimeSnapshot {
   an_object_lifetime_ptr original=nullptr,parent=nullptr;
@@ -486,6 +510,7 @@ struct State {
   std::map<a_dynamic_init_ptr,DynamicInitializer> dynamic_initializers;
   std::map<a_routine_ptr,GeneratedInitializer> generated_initializers;
   std::map<unsigned,RoutineAbi> routine_abis;
+  std::map<unsigned,RoutineExceptionResolution> routine_exception_resolutions;
   std::map<a_routine_ptr,a_variable_ptr> result_parameters;
   std::set<a_routine_ptr> runtime_declarations;
   std::map<a_routine_ptr,DefaultAdapter> default_adapters;
@@ -1181,6 +1206,11 @@ inline unsigned capture_type(a_type_ptr t) {
     else {value.kind="record";value.record_type=t;capture_record(t);}
   } else if(t->kind==tk_routine) {
     value.kind="routine";
+    // Capture policy before receiver/result recursion can finalize a defaulted
+    // member's exception specification. Only the stock finalization observer
+    // below may provide a later semantic policy for this exact source identity.
+    value.initial_exception_flags=exception_policy_flags(t);
+    value.exception_policy=value.initial_exception_flags.policy();
     value.result=capture_type(t->variant.routine.return_type);
     auto extra=t->variant.routine.extra_info;
     if(extra->this_class) {
@@ -1192,9 +1222,6 @@ inline unsigned capture_type(a_type_ptr t) {
     }
     value.variadic=t->variant.routine.extra_info->has_ellipsis;
     value.parameter_mode=t->variant.routine.extra_info->prototyped?"prototype":"unspecified";
-    auto specification=t->variant.routine.extra_info->exception_specification;
-    if(specification && !specification->throw_any)
-      value.exception_policy=specification->is_noexcept?"terminate":"unsupported-dynamic";
     trace_routine_exception_policy("source-capture",id,t,value.exception_policy);
     for(auto p=t->variant.routine.extra_info->param_type_list;p;p=p->next) {
       value.parameters.push_back(capture_type(p->declared_type?p->declared_type:p->type));
@@ -1213,6 +1240,65 @@ inline unsigned capture_type(a_type_ptr t) {
   if(t->kind!=tk_typeref && value.kind!="record" && value.kind!="enum" && value.kind!="dependent")value.name.clear();
   s.types[id-1]=value;return id;
 }
+inline std::string resolved_exception_policy(unsigned id) {
+  auto found=state().routine_exception_resolutions.find(id);
+  return found==state().routine_exception_resolutions.end()?state().types.at(id-1).exception_policy:
+    found->second.final_flags.policy();
+}
+// The caller is exactly form_exception_specification_for_generated_function:
+// retain entry and completion type identity without resolving any EDG state.
+struct GeneratedExceptionSpecificationCapture {
+  unsigned original_id=0;
+  a_type_ptr original_type=nullptr;
+  RoutineExceptionResolution resolution;
+  GeneratedExceptionSpecificationCapture(a_routine_ptr routine) {
+    if(!enabled())return;
+    original_type=routine->type;
+    auto found=state().type_ids.find(original_type);
+    if(found!=state().type_ids.end())original_id=found->second;
+    resolution.routine=routine;
+    resolution.is_defaulted=routine->is_defaulted;
+    resolution.compiler_generated=routine->compiler_generated;
+    resolution.inheriting_constructor=routine->is_inheriting_ctor;
+    if(routine->special_kind==sfk_constructor)resolution.special_kind="constructor";
+    else if(routine->special_kind==sfk_destructor)resolution.special_kind="destructor";
+    else if(routine->special_kind==sfk_operator) {
+      switch(routine->variant.opname_kind) {
+        case onk_assign:resolution.special_kind="assignment";break;
+        case onk_eq:resolution.special_kind="equality";break;
+        case onk_ne:resolution.special_kind="inequality";break;
+        case onk_lt:resolution.special_kind="less";break;
+        case onk_gt:resolution.special_kind="greater";break;
+        case onk_le:resolution.special_kind="less-equal";break;
+        case onk_ge:resolution.special_kind="greater-equal";break;
+        case onk_spaceship:resolution.special_kind="three-way-comparison";break;
+        default:resolution.error="unexpected generated exception-specification operator";break;
+      }
+    } else resolution.error="unexpected generated exception-specification function kind";
+    if(exception_policy_flags(original_type).present)
+      resolution.error="generated exception specification entry was not empty";
+  }
+  void complete() {
+    if(!original_type)return;
+    if(!original_id) {
+      auto found=state().type_ids.find(original_type);
+      if(found==state().type_ids.end())return;
+      original_id=found->second;
+    }
+    resolution.final_type=resolution.routine->type==original_type?original_id:capture_type(resolution.routine->type);
+    resolution.final_flags=exception_policy_flags(resolution.routine->type);
+    if(resolution.final_flags.indeterminate || resolution.final_flags.arg_cached || resolution.final_flags.copy_from_prototype)
+      resolution.error="generated exception specification remained unresolved";
+    auto found=state().routine_exception_resolutions.find(original_id);
+    if(found!=state().routine_exception_resolutions.end() &&
+       (found->second.routine!=resolution.routine ||
+        found->second.final_type!=resolution.final_type ||
+        found->second.final_flags.policy()!=resolution.final_flags.policy() ||
+        found->second.special_kind!=resolution.special_kind))
+      resolution.error="conflicting generated exception-specification finalizations";
+    state().routine_exception_resolutions[original_id]=resolution;
+  }
+};
 inline void observe_type(a_type_ptr type){if(enabled())capture_type(type);}
 inline void observe_lowered_type(a_type_ptr type) {
   if(!enabled())return;
@@ -1613,8 +1699,21 @@ inline void capture_static_lifetime(an_object_lifetime_ptr lifetime,a_routine_pt
   if(!lifetime)return;
   auto captured=state().static_lifetimes.find(lifetime);
   if(captured!=state().static_lifetimes.end()) {
-    // The global graph is captured first, before each declaration is visited.
-    // Attaching its exact initializer later must preserve original graph IDs,
+    // A field-default subtree can be observed before the complete global
+    // child list. Attach its exact list position when that original list is
+    // subsequently traversed, without recapturing IDs or initializer owners.
+    if(listed) {
+      if(captured->second.parent!=lifetime->parent_lifetime ||
+         captured->second.parent_obligation!=lifetime->parent_destruction_sublist ||
+         (captured->second.has_sibling_ordinal && captured->second.sibling_ordinal!=ordinal))
+        captured->second.error="original static lifetime has conflicting child-list provenance";
+      else {
+        captured->second.has_sibling_ordinal=true;
+        captured->second.sibling_ordinal=ordinal;
+      }
+    }
+    // When the global graph was observed first, attaching the exact
+    // initializer later must preserve original graph IDs,
     // parents and sibling ordering rather than recapture or fabricate roots.
     if(initializer) {
       if(captured->second.initializer && captured->second.initializer!=initializer)
@@ -1789,6 +1888,22 @@ inline void observe_field_initializer_selection(a_scope_ptr scope,a_constructor_
   if(!no_effect)for(const auto &lifetime:state().lifetimes)if(lifetime.second.initializer==dip)
     state().initializer_lifetime_adoptions.emplace(std::make_pair(lifetime.first,owner),dip);
 }
+// The original field DIP is completed lazily when its constructor is
+// selected. Observe the finalized destructor before stock copies that DIP;
+// never infer original selection from a lowered cleanup callback.
+inline void finalize_field_initializer_destructor(a_field_ptr field,a_type_ptr owner) {
+  if(!field || !field->initializer)return;
+  auto found=state().source_initializers.find(field->initializer);
+  if(found==state().source_initializers.end())return;
+  auto &source=found->second;auto destructor=field->initializer->destructor;
+  if(auto primary=abi_primary(destructor))destructor=primary;
+  if(source.field!=field || source.field_owner!=owner || source.original!=field->initializer ||
+     (source.field_destructor && source.field_destructor!=destructor)) {
+    source.error="finalized field initializer destructor conflicts with its original declaration";return;
+  }
+  source.field_destructor=destructor;
+  if(destructor)capture_routine(destructor);
+}
 struct FieldInitializerCapture {
   a_scope_ptr scope=nullptr;
   FieldInitializerCapture(a_scope_ptr value) {
@@ -1796,6 +1911,7 @@ struct FieldInitializerCapture {
     for(auto init=scope->variant.routine.constructor_inits;init;init=init->next,++ordinal) {
       if(init->kind!=cik_field || !init->use_field_initializer)continue;
       capture_field_initializer(init->variant.field,parent_class_of(scope->variant.routine.ptr));
+      finalize_field_initializer_destructor(init->variant.field,parent_class_of(scope->variant.routine.ptr));
       state().field_initializer_ordinals.emplace(init,ordinal);
     }
   }

@@ -167,6 +167,8 @@ def compile_unit(request_path):
     save(work / 'invocation.json', invocation)
     with (work / 'wire.json').open('wb') as stdout, (work / 'stderr').open('wb') as stderr:
         result = subprocess.run(command, cwd=work, env=env, stdout=stdout, stderr=stderr)
+    invocation['frontendExitCode'] = result.returncode
+    save(work / 'invocation.json', invocation)
     if result.returncode:
         raise RuntimeError('Frontend failed: ' + str(work / 'stderr'))
     if sha(source) != before or sha(compiler) != invocation['compilerSha256']:
@@ -258,9 +260,14 @@ def build(args):
         result = json.loads((work / 'result.json').read_text()) if code == 0 else dict(status='failed')
         result.update(source=unit['source'], work=str(work), exitCode=code, timeout=timed_out,
                       seconds=round(time.monotonic() - start, 3))
+        invocation_path = work / 'invocation.json'
+        invocation = json.loads(invocation_path.read_text()) if invocation_path.exists() else {}
+        result['frontendExitCode'] = invocation.get('frontendExitCode')
         if code:
-            diagnostic = work / 'stderr'
-            result['diagnostic'] = diagnostic.read_text(errors='replace')[-4000:] if diagnostic.exists() else (work / 'worker.stderr').read_text(errors='replace')[-4000:]
+            result['failureStage'] = 'package' if result['frontendExitCode'] == 0 else 'frontend-or-export'
+            diagnostics = [path.read_text(errors='replace')[-4000:]
+                           for path in (work / 'stderr', work / 'worker.stderr') if path.exists()]
+            result['diagnostic'] = '\n'.join(value for value in diagnostics if value)
         return key, result
 
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:

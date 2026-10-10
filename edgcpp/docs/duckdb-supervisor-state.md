@@ -479,3 +479,32 @@ attachment + project packaging diagnostics; base finalized field destructor +
 separate diagnostic crash guard; lifetime exact generated exception-spec
 finalization relation. Actual ConcurrentQueue placement ownership still being
 diagnosed, not claimed fixed. Preserve all160 evidence and unrelated edits.
+
+Committed v45 as c360a0d99 (24 owned paths). Profile46 active. Supervisor
+applied exact cached static-child ordinal attachment and clearer project failure
+stage/worker diagnostics. Workers may apply narrow finalized field/noexcept
+patches; next native113 / managed124. No cleanup and no runtime detour.
+
+
+113/124 v46 integration: expanded 160 completed with 135 packaged and 127
+individually verified (previous 128/82). Exact static child-list attachment,
+finalized field destructor selection and generated exception-specification
+provenance clear the largest selected shared gates. Focused field acceptance
+42 including NativeAOT; exception-policy actual-object acceptance 15 with nine
+resealed negatives, and bind_recursive_cte_node + RTTI emits 1,043 definitions.
+Combined 48-unit generation remains rejected: the same vector constructor has
+an unresolved absent defaulted exception spec in one TU and resolved noexcept
+in another. No relaxed matching or whole-project generation claim. Lifetime
+worker stages a stock semantic query at a valid original frontend boundary.
+Broad acceptance001 passed 939 checks then stopped on a stale test SQL INSERT
+arity; corrected runner002 is in progress with unchanged113/124 implementation.
+Next scratch: base uninitialized-new ownership; supervisor recursive discarded
+record result validation (diagnostic managed125), with real four-unit verification
+and focused native/stock reducer. No next production changes applied yet.
+
+113/124 v46 acceptance completed: 1,042 unique broad checks across retained
+939-check prefix plus 116-check continuation (13 setup checks overlap), all
+passing. Explicit SQL columns fix the test schema migration. Focused57 pass;
+field lifecycle has NativeAOT. Evidence finalized-semantics-20261010.json.
+No cross-TU generation success claimed beyond the validated one-unit1043
+definitions. Commit v46 next, then apply staged v47 batch.

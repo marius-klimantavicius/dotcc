@@ -13,13 +13,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('compiler', 'linker', 'packager', 'output-dir', 'stock-compiler', 'stock-runtime'):
         parser.add_argument('--' + name, type=Path, required=True)
-    parser.add_argument('--case', choices=('array', 'temporary', 'no_effect'), default='array')
+    parser.add_argument('--case', choices=('array', 'temporary', 'no_effect', 'finalized_destructor'), default='array')
     parser.add_argument('--native-aot', action='store_true')
     parser.add_argument('--provider', type=Path, action='append', default=[])
     args = parser.parse_args()
     out = args.output_dir.resolve(); out.mkdir(parents=True, exist_ok=False)
     source = out / 'field.cpp'
-    fixture = {'array': 'duckdb_field_initializer_lifetimes.cpp', 'temporary': 'duckdb_field_initializer_temporary.cpp', 'no_effect': 'duckdb_field_initializer_no_effect.cpp'}[args.case]
+    fixture = {'array': 'duckdb_field_initializer_lifetimes.cpp', 'temporary': 'duckdb_field_initializer_temporary.cpp', 'no_effect': 'duckdb_field_initializer_no_effect.cpp', 'finalized_destructor': 'duckdb_field_initializer_finalized_destructor.cpp'}[args.case]
     shutil.copy2(Path(__file__).with_name(fixture), source)
     tooling = out / 'tooling'; tooling.mkdir()
     for name in ('compile.py', 'schema.sql'):
@@ -41,7 +41,7 @@ def main():
         check(name, (result.returncode == 0) == success)
         if expected is not None: check(name + "-output", result.stdout == expected)
 
-    expected = {'array': b'12a!123cba123cba456fed', 'temporary': b'12a!12Sbas', 'no_effect': b'C'}[args.case]
+    expected = {'array': b'12a!123cba123cba456fed', 'temporary': b'12a!12Sbas', 'no_effect': b'C', 'finalized_destructor': b'CD!CD'}[args.case]
     error = None
     try:
         for optimization in ('0', '2'):
@@ -65,6 +65,8 @@ def main():
             if args.case == 'array':
                 check('two-constructors-share-original-template', db.execute("SELECT count(*) FROM (SELECT source_initializer_id FROM field_initializer_executions WHERE execution_disposition='copied' GROUP BY source_initializer_id HAVING count(*)>=2)").fetchone()[0] >= 1)
                 check('unused-template-preserved', db.execute("SELECT count(*) FROM source_initializers i JOIN source_record_fields f ON f.id=i.source_field_id JOIN source_record_types r ON r.id=f.source_record_id WHERE r.source_name='UnusedHolder' AND NOT EXISTS(SELECT 1 FROM field_initializer_executions e WHERE e.source_initializer_id=i.id)").fetchone()[0] == 1)
+            elif args.case == 'finalized_destructor':
+                check('finalized-root-destructor-cleanup', db.execute("SELECT count(*) FROM cleanup_actions WHERE source_field_initializer_id IS NOT NULL").fetchone()[0] >= 1)
             elif args.case == 'temporary':
                 check('nested-temporary-lifetime-adopted', db.execute('SELECT count(*) FROM initializer_lifetime_executions').fetchone()[0] > 0)
                 check('partial-temporary-original-and-execution-linked', db.execute("SELECT count(*) FROM field_initializer_partial_destruction_executions WHERE kind='adopted-automatic'").fetchone()[0] > 0)
@@ -83,6 +85,7 @@ def main():
             run('nativeaot', [out / 'aot/Translated'], expected=expected)
         negatives = [
             ('reject-missing-field-execution', 'DELETE FROM field_initializer_executions'),
+            ('reject-finalized-destructor-type', "UPDATE source_field_initializer_destructions SET source_type_id=(SELECT id FROM source_types WHERE kind='int' LIMIT 1)") if args.case == 'finalized_destructor' else
             ('reject-missing-root-elision', 'DELETE FROM field_initializer_destruction_elisions') if args.case == 'no_effect' else
             ('reject-missing-partial-execution', 'DELETE FROM field_initializer_partial_destruction_executions'),
             ('reject-field-owner-function', "UPDATE field_initializer_executions SET function_entity_id=(SELECT id FROM entities WHERE source_name='main' LIMIT 1) WHERE rowid=(SELECT min(rowid) FROM field_initializer_executions)"),

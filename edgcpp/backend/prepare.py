@@ -133,6 +133,23 @@ def object_source_overlay(path, original, patched):
         raise RuntimeError(f"EDG object source overlay does not match pinned {path.name}")
     path.write_text(source.replace(original, patched))
 
+# Observe the precise lazy defaulted/generated exception-specification boundary.
+class_declarations = root / "upstream/src/class_decl.c"
+object_source_overlay(class_declarations,
+    '#include "fe_common.h"',
+    '#include "fe_common.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
+object_source_overlay(class_declarations,
+    '  check_assertion(!C_mode() && exceptions_enabled);\n  check_assertion(rtsp->exception_specification == NULL);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::GeneratedExceptionSpecificationCapture dot_exception_specification_capture(rp);\n'
+    '#endif\n'
+    '  check_assertion(!C_mode() && exceptions_enabled);\n  check_assertion(rtsp->exception_specification == NULL);')
+object_source_overlay(class_declarations,
+    '}  /* form_exception_specification_for_generated_function */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_exception_specification_capture.complete();\n'
+    '#endif\n}  /* form_exception_specification_for_generated_function */')
+
 # Observe accepted layout inputs/results, without rerunning frontend layout.
 layout_source = root / "upstream/src/layout.c"
 object_source_overlay(layout_source,

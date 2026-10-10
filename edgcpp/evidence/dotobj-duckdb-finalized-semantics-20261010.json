@@ -1,0 +1,63 @@
+{
+  "milestone": "dotobj v46 finalized field and routine semantics plus exact static child ordering",
+  "nativeCompiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native113-verified-snapshot/cpfe-dot",
+  "nativeSha256": "76b12326708c690a3907367daeb3cad2a719c287cc6ec090b24c3b7fc608c3c8",
+  "managedLinker": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-124/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "managedSha256": "e2cbb58affa28877deb7074ed96016d023988f48dce286cdef6f3d1359fde43f",
+  "broad": {
+    "status": "passed",
+    "uniqueChecks": 1042,
+    "prefix": {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v46-002/results.json",
+      "checks": 939,
+      "harnessFailure": "stale positional SQL mutation; explicit column list fixed"
+    },
+    "continuation": {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v46-continuation-003/results.json",
+      "checks": 116,
+      "usesRetainedFixtures": true
+    },
+    "compiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native113-verified-snapshot/cpfe-dot",
+    "linker": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-124/bin/DotObj.Linker/debug/dotobj-link.dll"
+  },
+  "focused": [
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-field-finalized-v46-113-002/results.json",
+      "status": "passed",
+      "checks": 42,
+      "nativeAot": true
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-exception-policy-v46-113-001/results.json",
+      "status": "passed",
+      "checks": 15,
+      "nativeAot": false
+    }
+  ],
+  "expandedProject": {
+    "selectedUnits": 160,
+    "packagedUnits": 135,
+    "verifiedUnits": 127,
+    "exportGates": 20,
+    "packagingFailures": 1,
+    "frontendConfigurationDiagnostics": 4,
+    "managedRejects": 8,
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-expanded-summary-113.json"
+  },
+  "generation": {
+    "successfulPrimary": "bind_recursive_cte_node.cpp",
+    "definitions": 1043,
+    "output": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-exception-policy-v46-113-001/generated",
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-exception-policy-v46-113-001/generation.json",
+    "combined48": "rejected: unresolved versus resolved implicit defaulted constructor exception specification",
+    "combinedReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-many-generation-113.json"
+  },
+  "fullDuckdbTranslated": false,
+  "duckdbCompiled": false,
+  "duckdbExecuted": false,
+  "limitations": [
+    "Selected160 are not the full2635 project.",
+    "Two former exporter range crashes now report precise uninitialized allocation ownership gates; semantic fix remains pending.",
+    "Cross-unit implicit exception specification completion remains pending; no mismatch relaxation."
+  ]
+}

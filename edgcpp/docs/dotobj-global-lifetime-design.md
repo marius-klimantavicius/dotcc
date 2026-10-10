@@ -157,3 +157,30 @@ wrong storage/callback/complete-destructor entry, duplicate registration,
 missing callback origin, and treating a temporary as a persistent static
 obligation. Empty-destructor elimination must retain an explicit verified
 source disposition.
+
+## Profile 46 finalized field destructor observation
+
+The field-default initializer is retained before its implicit constructor is
+selected. Its original dynamic-initialization entry can acquire the selected
+destructor later. At the existing pre-copy hook in stock
+`copy_non_static_data_member_initializers_if_necessary`, the exporter now
+records that finalized selection from the original field entry. It validates
+the original field, enclosing type and initializer identity, and rejects a
+conflicting previously nonnull destructor. No destructor is inferred from an
+already lowered cleanup callback.
+
+This fixes the real `CryptoMetaData::unique_file_identifier` constructor-failure
+case without changing its original lifetime graph. Native113/managed124 passed
+42 focused checks, including native C++ and stock C at O0/O2, hidden-source
+verification/linking, JIT, NativeAOT and five resealed metadata negatives. The
+fixture prints `CD!CD`, demonstrating destruction after a later member throws
+and after successful construction. Receipt:
+`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-field-finalized-v46-113-002/results.json`.
+
+A separate bounds check in the exporter diagnostic formatter now reports an
+unrepresented allocated source type instead of throwing `std::out_of_range`.
+The historical ConcurrentQueue crashes reduce to placement new of a record
+with a user-declared trivial defaulted constructor. Stock parsing registers a
+rollback declaration before constructor selection, then leaves it unattached
+when no initialization is required. This semantic case remains a separate
+explicit gate in native113; the diagnostic correction does not claim support.

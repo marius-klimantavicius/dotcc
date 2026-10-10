@@ -545,3 +545,24 @@ native and stock-C O0/O2, original-source-reference metadata, source-hidden
 JIT/NativeAOT execution, a side-effecting function-reference factory evaluated
 once, ordinary function-pointer lvalues/members, and a noexcept function
 reference (`dotobj-function-reference-v45-112-001`).
+
+Profile 46 retains lazy defaulted/generated routine exception-specification
+resolution through the exact stock
+`form_exception_specification_for_generated_function` boundary. The original
+source-type snapshot keeps the initial specification flags and policy;
+`source_routine_exception_resolutions` records the original/final type identities,
+final flags and policy, constructor/destructor/operator kind, defaulted/generated
+origin, and an original function entity when already emitted. The observer does
+not resolve EDG state or force routine bodies. Both semantic routine rows and
+source ABI signatures use the observed final policy, while ordinary ABI/function
+consistency checks remain strict. `exception_policy_origin` distinguishes this
+path from an unchanged capture and makes missing resolution provenance invalid.
+
+The actual DuckDB `bind_recursive_cte_node.cpp` reproducer passes 15 metadata
+checks with native113/managed124, including nine resealed malformed-provenance
+rejections (`dotobj-exception-policy-v46-113-001`). Its three defaulted `vector`
+constructors were initially captured without a specification and later finalized
+as `noexcept`; all three retain the same source type IDs and naturally owned
+function entities. The unit and two RTTI provider objects generate C# containing
+1,043 function definitions. Unresolved imports are retained; this result verifies
+semantic metadata and C# generation, not compilation or execution of DuckDB.
