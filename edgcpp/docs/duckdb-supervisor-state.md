@@ -462,3 +462,20 @@ receipt dotobj-duckdb-template-formals-temporaries-20261010.json. Commit next.
 Workers prepare v45 in persistent scratch: exact dependent nested declaration
 relation (base); function-designator reference adjustment (lifetime). Supervisor
 investigates delayed defaulted-special-member exception signature capture.
+
+Committed v44 as8036b0304 (27 owned paths). Profile45 active; workers may apply
+narrow scratch changes, preserving unrelated edits. Next native112/managed122.
+
+
+112/123 v45 acceptance: 47 focused checks including NativeAOT. Native112 SHA
+0406415bfd2dc418728d3588f7a3f7aa0d07279e6fc1f311a06c83b08ce82832.
+Expanded160 completed: 128 packaged, 82 verified. Twelve verified primaries
+plus two RTTI providers link to10,779 definitions in19.6 seconds with2GiB managed
+heap limit. Current ranks: static lifetime sibling capture33, final noexcept9,
+field destructor finalization8, by-value transport9. Queue documented in
+supervisor-priorities; full receipt nested-types-function-references-20261010.
+Commit v45 next. v46 scratch ready: supervisor original child-list ordinal
+attachment + project packaging diagnostics; base finalized field destructor +
+separate diagnostic crash guard; lifetime exact generated exception-spec
+finalization relation. Actual ConcurrentQueue placement ownership still being
+diagnosed, not claimed fixed. Preserve all160 evidence and unrelated edits.

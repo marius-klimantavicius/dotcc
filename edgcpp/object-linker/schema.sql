@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v44'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v45'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -638,15 +638,23 @@ CREATE TABLE source_type_qualifiers (
  name TEXT NOT NULL,
  PRIMARY KEY(type_id,name)
 ) STRICT;
+CREATE TABLE source_nested_type_declarations (
+ type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
+ owner_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-nested-declaration'),
+ CHECK(type_id<>owner_type_id)
+) STRICT;
 CREATE TABLE source_dependent_types (
  type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
  kind TEXT NOT NULL CHECK(kind IN ('parameter','member','unknown')),
  owner_type_id INTEGER REFERENCES source_types(id),
+ original_nested_type_id INTEGER REFERENCES source_nested_type_declarations(type_id),
  nesting_depth INTEGER CHECK(nesting_depth>=0),
  parameter_position INTEGER CHECK(parameter_position>0),
  is_pack INTEGER NOT NULL CHECK(is_pack IN (0,1)),
  identity_key TEXT NOT NULL,
  capture_proof TEXT NOT NULL CHECK(capture_proof='before-lowering'),
+ CHECK(kind='member' OR original_nested_type_id IS NULL),
  CHECK((kind='parameter' AND owner_type_id IS NULL AND nesting_depth IS NOT NULL AND parameter_position IS NOT NULL AND identity_key!='') OR
        (kind='member' AND owner_type_id IS NOT NULL AND nesting_depth IS NULL AND parameter_position IS NULL AND is_pack=0 AND identity_key='') OR
        (kind='unknown' AND owner_type_id IS NULL AND nesting_depth IS NULL AND parameter_position IS NULL AND is_pack=0 AND identity_key=''))

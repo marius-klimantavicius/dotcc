@@ -13,7 +13,8 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = Path(__file__).with_name('schema.sql')
 ARRAYS = {
-    'sourceDependentTypes': ('source_dependent_types', ['typeId', 'kind', 'ownerTypeId', 'nestingDepth', 'parameterPosition', 'isPack', 'identityKey', 'captureProof']),
+    'sourceNestedTypeDeclarations': ('source_nested_type_declarations', ['typeId', 'ownerTypeId', 'captureProof']),
+    'sourceDependentTypes': ('source_dependent_types', ['typeId', 'kind', 'ownerTypeId', 'originalNestedTypeId', 'nestingDepth', 'parameterPosition', 'isPack', 'identityKey', 'captureProof']),
     'sourceFiles': ('source_files', ['id', 'path', 'parentId']),
     'types': ('types', ['id', 'kind', 'pointeeTypeId', 'elementTypeId', 'elementCount']),
     'storages': ('storages', ['id', 'sourceName', 'linkage', 'externalKey', 'definition', 'typeId', 'sourceTypeId', 'isThreadLocal', 'isConst', 'alignment', 'sourceFileId', 'line', 'column']),
@@ -199,7 +200,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v44':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v45':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -219,7 +220,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v44', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v45', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

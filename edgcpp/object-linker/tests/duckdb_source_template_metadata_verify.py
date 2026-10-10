@@ -14,11 +14,11 @@ def main():
     for name in ('compiler', 'linker', 'packager', 'output-dir'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--native-aot', action='store_true')
-    parser.add_argument('--case', choices=('arguments', 'bounds', 'members', 'traits', 'member-templates', 'template-parameters'), required=True)
+    parser.add_argument('--case', choices=('arguments', 'bounds', 'members', 'traits', 'member-templates', 'template-parameters', 'nested-types'), required=True)
     args = parser.parse_args()
     out = args.output_dir.resolve(); out.mkdir(parents=True, exist_ok=False)
     source = out / (args.case + '.cpp')
-    shutil.copy2(Path(__file__).with_name({'arguments': 'duckdb_source_record_template_arguments.cpp', 'bounds': 'duckdb_source_dependent_array_bounds.cpp', 'members': 'duckdb_source_dependent_member_constants.cpp', 'traits': 'duckdb_source_typed_traits.cpp', 'member-templates': 'duckdb_source_member_templates.cpp', 'template-parameters': 'duckdb_source_template_parameters.cpp'}[args.case]), source)
+    shutil.copy2(Path(__file__).with_name({'arguments': 'duckdb_source_record_template_arguments.cpp', 'bounds': 'duckdb_source_dependent_array_bounds.cpp', 'members': 'duckdb_source_dependent_member_constants.cpp', 'traits': 'duckdb_source_typed_traits.cpp', 'member-templates': 'duckdb_source_member_templates.cpp', 'template-parameters': 'duckdb_source_template_parameters.cpp', 'nested-types': 'duckdb_source_nested_types.cpp'}[args.case]), source)
     tooling = out / 'tooling'; tooling.mkdir()
     for name in ('compile.py', 'schema.sql'):
         shutil.copy2(args.packager.resolve().parent / name, tooling / name)
@@ -55,6 +55,12 @@ def main():
                 check('qualifier-distinguishes-arguments', db.execute("SELECT count(*) FROM source_template_arguments a JOIN source_types t ON t.id=a.type_id WHERE t.is_const=1").fetchone()[0] > 0)
                 check('distinct-dependent-record-identities', db.execute("SELECT count(DISTINCT identity_key) FROM source_record_types WHERE source_name='DuckdbSourceTraits' AND is_dependent=1 AND is_prototype_instantiation=0").fetchone()[0] >= 2)
                 check('distinct-parameter-binders', db.execute("SELECT count(DISTINCT d.identity_key) FROM source_template_arguments a JOIN source_dependent_types d ON d.type_id=a.type_id JOIN source_types t ON t.id=d.type_id WHERE d.kind='parameter' AND t.source_name='T'").fetchone()[0] >= 2)
+            elif args.case == 'nested-types':
+                check('original-nested-declarations-retained', db.execute("SELECT count(*) FROM source_nested_type_declarations").fetchone()[0] >= 3)
+                check('nested-record-and-enum-families', db.execute("SELECT count(DISTINCT t.kind) FROM source_nested_type_declarations d JOIN source_types t ON t.id=d.type_id").fetchone()[0] >= 2)
+                check('exact-dependent-view-declaration', db.execute("SELECT count(*) FROM source_dependent_types WHERE original_nested_type_id IS NOT NULL").fetchone()[0] >= 3)
+                check('original-nested-owner-distinction', db.execute("SELECT count(DISTINCT r.identity_key) FROM source_nested_type_declarations d JOIN source_record_types r ON r.source_type_id=d.type_id WHERE r.source_name='Node'").fetchone()[0] == 2)
+                check('source-only-nested-declarations', db.execute("SELECT count(*) FROM source_nested_type_declarations d JOIN source_types t ON t.id=d.type_id WHERE t.kind='record' AND t.execution_type_id IS NOT NULL").fetchone()[0] == 0)
             elif args.case == 'template-parameters':
                 check('owned-template-parameter-instances', db.execute("SELECT count(*) FROM source_record_instantiations WHERE resolution_kind='template-parameter'").fetchone()[0] >= 4)
                 check('retained-template-argument', db.execute("SELECT count(*) FROM source_template_arguments WHERE kind='template'").fetchone()[0] >= 1)
@@ -139,6 +145,12 @@ def main():
                 ('reject-template-default-erasure', "UPDATE source_template_parameters SET default_constant_id=NULL WHERE default_constant_id IS NOT NULL"),
                 ('reject-template-instance-reference', "UPDATE source_record_instantiations SET source_template_id=(SELECT max(id) FROM source_templates) WHERE resolution_kind='template-parameter' AND source_template_id != (SELECT max(id) FROM source_templates)"),
                 ('reject-template-argument-omission', "DELETE FROM source_template_arguments WHERE kind='template'")]
+        if args.case == 'nested-types':
+            negatives = [
+                ('reject-nested-view-erasure', "UPDATE source_dependent_types SET original_nested_type_id=NULL WHERE original_nested_type_id IS NOT NULL"),
+                ('reject-nested-declaration-owner', "UPDATE source_nested_type_declarations SET owner_type_id=(SELECT max(owner_type_id) FROM source_nested_type_declarations) WHERE owner_type_id != (SELECT max(owner_type_id) FROM source_nested_type_declarations)"),
+                ('reject-nested-declaration-substitution', "UPDATE source_dependent_types SET original_nested_type_id=(SELECT max(original_nested_type_id) FROM source_dependent_types WHERE original_nested_type_id IS NOT NULL) WHERE original_nested_type_id IS NOT NULL AND original_nested_type_id != (SELECT max(original_nested_type_id) FROM source_dependent_types WHERE original_nested_type_id IS NOT NULL)"),
+                ('reject-nested-declaration-identity', "UPDATE source_record_types SET identity_key=identity_key||'_changed' WHERE identity_key LIKE 'source-nested-declaration:%'")]
         for name, sql in negatives:
             damaged = out / (name + '.dotobj'); shutil.copy2(obj, damaged)
             with sqlite3.connect(damaged) as db:

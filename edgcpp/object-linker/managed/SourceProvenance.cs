@@ -24,6 +24,7 @@ internal sealed partial class ObjectFile
         ReadAbiRoutineOrigins();
         ReadAndVerifySourceTypes();
         ReadAndVerifySourceRecordOwners();
+        VerifySourceNestedTypeDeclarations();
         VerifySourceTemplateMetadata();
         ReadAndVerifySourceRoutineAbis();
         ReadAndVerifyDeferredRoutineAbis();
@@ -342,8 +343,9 @@ internal sealed partial class ObjectFile
         Table("internalTryExpressions", "SELECT node_id,source_allocation_obligation_id,cleanup_policy,capture_proof FROM internal_try_expressions ORDER BY node_id", "nodeId", "sourceAllocationObligationId", "cleanupPolicy", "captureProof");
         Table("expressionLifetimes", "SELECT node_id,source_lifetime_id,capture_proof FROM expression_lifetimes ORDER BY node_id", "nodeId", "sourceLifetimeId", "captureProof");
         Table("baseSubobjectExpressions", "SELECT node_id,source_base_id FROM base_subobject_expressions ORDER BY node_id", "nodeId", "sourceBaseId");
-        Table("sourceDependentTypes", "SELECT type_id,kind,owner_type_id,nesting_depth,parameter_position,is_pack,identity_key,capture_proof FROM source_dependent_types ORDER BY type_id",
-            "typeId", "kind", "ownerTypeId", "nestingDepth", "parameterPosition", "isPack", "identityKey", "captureProof");
+        Table("sourceNestedTypeDeclarations", "SELECT type_id,owner_type_id,capture_proof FROM source_nested_type_declarations ORDER BY type_id", "typeId", "ownerTypeId", "captureProof");
+        Table("sourceDependentTypes", "SELECT type_id,kind,owner_type_id,original_nested_type_id,nesting_depth,parameter_position,is_pack,identity_key,capture_proof FROM source_dependent_types ORDER BY type_id",
+            "typeId", "kind", "ownerTypeId", "originalNestedTypeId", "nestingDepth", "parameterPosition", "isPack", "identityKey", "captureProof");
         Table("sourceTemplates", "SELECT id,kind,source_name,parameter_depth,parameter_position,is_pack,parameter_count,capture_proof,source_file_id,line,column FROM source_templates ORDER BY id",
             "id", "kind", "sourceName", "parameterDepth", "parameterPosition", "isPack", "parameterCount", "captureProof", "sourceFileId", "line", "column");
         Table("sourceTemplateParameters", "SELECT source_template_id,ordinal,kind,source_name,type_id,constant_id,template_id,default_type_id,default_constant_id,default_template_id,is_pack,is_abbreviated,source_file_id,line,column FROM source_template_parameters ORDER BY source_template_id,ordinal",

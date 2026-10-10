@@ -1,6 +1,6 @@
 namespace DotObj;
 
-internal sealed record DependentSourceType(long TypeId, string Kind, long? OwnerTypeId,
+internal sealed record DependentSourceType(long TypeId, string Kind, long? OwnerTypeId, long? OriginalNestedTypeId,
     long? NestingDepth, long? ParameterPosition, bool IsPack, string IdentityKey);
 
 internal sealed partial class ObjectFile
@@ -9,15 +9,18 @@ internal sealed partial class ObjectFile
 
     private void ReadDependentSourceTypes()
     {
-        using var query = database.Prepare("SELECT type_id,kind,owner_type_id,nesting_depth,parameter_position,is_pack,identity_key,capture_proof FROM source_dependent_types ORDER BY type_id");
+        ReadSourceNestedTypeDeclarations();
+        using var query = database.Prepare("SELECT type_id,kind,owner_type_id,original_nested_type_id,nesting_depth,parameter_position,is_pack,identity_key,capture_proof FROM source_dependent_types ORDER BY type_id");
         while (query.Read())
         {
             var value = new DependentSourceType(query.Integer(0), query.Text(1), query.OptionalInteger(2),
-                query.OptionalInteger(3), query.OptionalInteger(4), query.Integer(5) == 1, query.Text(6));
+                query.OptionalInteger(3), query.OptionalInteger(4), query.OptionalInteger(5), query.Integer(6) == 1, query.Text(7));
             if (!SourceTypes.TryGetValue(value.TypeId, out var type) || type.Kind != "dependent" ||
-                query.Integer(5) is not (0 or 1) || query.Text(7) != "before-lowering" ||
+                query.Integer(6) is not (0 or 1) || query.Text(8) != "before-lowering" ||
                 !SourceDependentTypes.TryAdd(value.TypeId, value))
                 throw new InvalidDataException("Dependent type lacks its original source type and capture");
+            if (value.OriginalNestedTypeId is not null && value.Kind != "member")
+                throw new InvalidDataException("Only an original dependent member may retain a nested declaration");
             if (value.Kind == "parameter")
             {
                 if (value.OwnerTypeId is not null || value.NestingDepth is not >= 0 || value.ParameterPosition is not > 0 ||

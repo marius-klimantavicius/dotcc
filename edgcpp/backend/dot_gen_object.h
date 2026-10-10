@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v44: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v45: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -135,7 +135,7 @@ struct Writer {
   std::set<a_statement_ptr> initializer_statement_anchors;
   std::vector<string> memory_barriers,memory_barrier_operands,memory_barrier_dimensions;
   std::map<unsigned,unsigned> source_type_ids;
-  std::vector<string> source_dependent_types;
+  std::vector<string> source_dependent_types,source_nested_type_declarations;
   std::vector<string> source_record_instantiations,source_template_arguments,source_array_bounds,source_templates,source_template_parameters;
   std::map<unsigned,unsigned> source_template_ids;
   std::vector<string> source_semantic_constants,source_semantic_constant_operands;
@@ -339,6 +339,18 @@ struct Writer {
       ",\"isPack\":"+(formal.pack?"true":"false")+",\"isAbbreviated\":"+(formal.abbreviated?"true":"false")+position(formal.position)+"}");
     return id;
   }
+  string original_nested_type_identity(a_type_ptr type,unsigned depth=0) {
+    if(depth>128)reject("original nested type ownership cycle/depth");
+    const auto &captured=dot_object_source::state();
+    auto owner=captured.nested_type_declarations.find(type);
+    if(owner==captured.nested_type_declarations.end())reject("nested declaration lacks its original parent");
+    auto original=captured.type_ids.find(type),parent=captured.type_ids.find(owner->second);
+    if(original==captured.type_ids.end() || parent==captured.type_ids.end())reject("nested declaration source types were not captured");
+    const auto &snapshot=captured.types.at(original->second-1);
+    if(snapshot.name.empty())reject("unnamed nested declaration needs its original occurrence identity");
+    return "source-nested-declaration:"+source_frame(source_argument_type_identity(parent->second,depth+1))+
+      source_frame(snapshot.kind)+source_frame(snapshot.name);
+  }
   string original_record_identity(a_type_ptr type,unsigned depth=0) {
     if(depth>128)reject("original record ownership cycle/depth");
     auto &captured=dot_object_source::state();
@@ -352,6 +364,7 @@ struct Writer {
       auto identity=original_record_identity(owner->second.owner,depth+1);
       return "record-member:"+std::to_string(identity.size())+":"+identity+":field:"+std::to_string(owner->second.ordinal);
     }
+    if(captured.nested_type_declarations.count(type))return original_nested_type_identity(type,depth+1);
     string identity=source.identity;
     if(source.dependent) {
       if(!source.prototype) {
@@ -431,7 +444,7 @@ struct Writer {
         source_field_ids.emplace(field.il,next_source_field++);
       for(const auto &base:source->bases)
         source_base_ids.emplace(base.il,next_source_base++);
-      if(source->dependent && !source->prototype && !captured.record_owners.count(t)) {
+      if(source->dependent && !source->prototype && !captured.record_owners.count(t) && !captured.nested_type_declarations.count(t)) {
         unsigned prototype_record=source->template_prototype?
           source_record_metadata(captured.types.at(source->template_prototype-1).record_type):0;
         source_record_instantiations.push_back("{\"sourceRecordId\":"+number(source_record)+
@@ -1221,10 +1234,16 @@ struct Writer {
     unsigned execution=optional_source_execution_type(captured);
     unsigned underlying=type.underlying?source_type(type.underlying):0;
     if(type.kind=="record")source_record_metadata(type.record_type);
+    const auto &source_state=dot_object_source::state();
+    auto nested_owner=source_state.nested_type_declarations.find(type.original_type);
+    if(nested_owner!=source_state.nested_type_declarations.end())
+      source_nested_type_declarations.push_back("{\"typeId\":"+number(id)+",\"ownerTypeId\":"+
+        number(source_type(source_state.type_ids.at(nested_owner->second)))+",\"captureProof\":\"original-nested-declaration\"}");
     if(type.dependent_array_bound)source_array_bounds.push_back("{\"typeId\":"+number(id)+",\"constantId\":"+
       number(source_semantic_constant(type.dependent_array_bound))+",\"captureProof\":\"original-dependent-bound\"}");
     if(type.kind=="dependent")source_dependent_types.push_back("{\"typeId\":"+number(id)+
       ",\"kind\":"+quote(type.dependent_kind)+",\"ownerTypeId\":"+number(type.dependent_owner?source_type(type.dependent_owner):0)+
+      ",\"originalNestedTypeId\":"+number(type.dependent_original_nested?source_type(type.dependent_original_nested):0)+
       ",\"nestingDepth\":"+(type.dependent_kind=="parameter"?std::to_string(type.dependent_depth):"null")+
       ",\"parameterPosition\":"+(type.dependent_kind=="parameter"?std::to_string(type.dependent_position):"null")+
       ",\"isPack\":"+(type.dependent_pack?"true":"false")+",\"identityKey\":"+quote(type.dependent_identity)+
@@ -1264,7 +1283,8 @@ struct Writer {
       if(!enumeration.error.empty())reject(enumeration.error.c_str());
       string identity=enumeration.identity;
       auto finalized=state.finalized_enum_identities.find(type.original_type);
-      if(enumeration.needs_final_identity && finalized!=state.finalized_enum_identities.end())
+      if(state.nested_type_declarations.count(type.original_type))identity=original_nested_type_identity(type.original_type);
+      else if(enumeration.needs_final_identity && finalized!=state.finalized_enum_identities.end())
         identity="enum-abi:"+finalized->second;
       else if(enumeration.needs_final_identity && identity.find("local-enum:")!=0)
         reject("template enum lacks finalized frontend identity");
@@ -3521,7 +3541,28 @@ struct Writer {
       edge(id,"target",0,expression(a));edge(id,"value",0,expression(b));return id;
     }
     if(operation.kind==eok_lvalue_adjust) {
-      if(!a || b || !place(a))reject("lvalue adjustment outside places");
+      if(!a || b)reject("lvalue adjustment arity");
+      if(skip_typerefs(a->type)->kind==tk_routine) {
+        // Stock dump_lvalue_cast accounts for implicit function-to-pointer
+        // decay. A function designator already has that pointer representation
+        // in the owned graph; taking its data address would add a false layer.
+        unsigned target=0;
+        if(e->orig_lvalue_type) {
+          if(skip_typerefs(e->orig_lvalue_type)->kind!=tk_routine)
+            reject("function lvalue adjustment has a nonfunction original type");
+          target=pointer_type(type_id(e->orig_lvalue_type));
+        } else if(!e->is_lvalue && function_pointer(e->type))target=ty;
+        else if(skip_typerefs(e->type)->kind==tk_routine)target=pointer_type(ty);
+        else reject("function lvalue adjustment lacks a function result");
+        if(target!=ty && target!=pointer_type(ty))reject("function adjustment result representation changed");
+        unsigned value=expression(a);
+        if(node_shapes.at(value).type!=pointer_type(type_id(a->type)))
+          reject("function adjustment operand lost its normalized designator");
+        if(node_shapes.at(value).type==target)return value;
+        unsigned result=node("convert",target,e->position,0,0,"","","value","left-to-right");
+        edge(result,"operand",0,value);return result;
+      }
+      if(!place(a))reject("lvalue adjustment outside places");
       unsigned original=type_id(a->type);
       unsigned address=node("address",pointer_type(original),e->position,0,0,"","","value","none");
       edge(address,"operand",0,expression(a));
@@ -4514,7 +4555,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v44\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v45\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -4522,6 +4563,7 @@ struct Writer {
       ",\"sourceEnumerators\":"+array(source_enumerators)+",\"sourceMemberPointerTypes\":"+array(source_member_pointer_types)+
       ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
       ",\"sourceDependentTypes\":"+array(source_dependent_types)+
+      ",\"sourceNestedTypeDeclarations\":"+array(source_nested_type_declarations)+
       ",\"sourceArrayDeletions\":"+array(source_array_deletions)+",\"arrayDeletionOperations\":"+array(array_deletion_operations)+
       ",\"sourceArrayAllocationElements\":"+array(source_array_allocation_elements)+
       ",\"arrayAllocationOperations\":"+array(array_allocation_operations)+

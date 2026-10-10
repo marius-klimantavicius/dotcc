@@ -1,0 +1,144 @@
+{
+  "milestone": "dotobj v45 original nested declarations and function reference decay",
+  "nativeCompiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native112-verified-snapshot/cpfe-dot",
+  "nativeSha256": "0406415bfd2dc418728d3588f7a3f7aa0d07279e6fc1f311a06c83b08ce82832",
+  "managedLinker": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-123/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "managedSha256": "cf4ef43004c98e4d48d1f9f1a19de358edf891d293966e3dd4b13ae1bc0f84b7",
+  "focused": [
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-nested-types-v45-112-004/results.json",
+      "status": "passed",
+      "checks": 28,
+      "nativeAot": true
+    },
+    {
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-function-reference-v45-112-001/results.json",
+      "status": "passed",
+      "checks": 19,
+      "nativeAot": true
+    }
+  ],
+  "expandedProject": {
+    "selectedUnits": 160,
+    "packagedUnits": 128,
+    "failureStages": {
+      "exporter-gate": 25,
+      "exporter-crash": 2,
+      "frontend-diagnostic": 4,
+      "package": 1
+    },
+    "byRole": {
+      "library": {
+        "packaged": 102,
+        "failed": 15
+      },
+      "test": {
+        "failed": 15,
+        "packaged": 19
+      },
+      "libc": {
+        "packaged": 3
+      },
+      "libcxx": {
+        "failed": 2,
+        "packaged": 4
+      }
+    },
+    "failures": [
+      {
+        "stage": "exporter-gate",
+        "diagnostic": "root field destruction lacks exact constructor receiver/member recipe",
+        "count": 8
+      },
+      {
+        "stage": "exporter-gate",
+        "diagnostic": "by-value return lacks safe observed transport policy",
+        "count": 7
+      },
+      {
+        "stage": "frontend-diagnostic",
+        "diagnostic": "test/platform declarations or language configuration",
+        "count": 4
+      },
+      {
+        "stage": "exporter-crash",
+        "diagnostic": "vector range diagnostic failure",
+        "count": 2
+      },
+      {
+        "stage": "exporter-gate",
+        "diagnostic": "by-value parameter lacks safe observed transport policy",
+        "count": 2
+      },
+      {
+        "stage": "exporter-gate",
+        "diagnostic": "original parameter identity/order changed during lowering",
+        "count": 2
+      },
+      {
+        "stage": "exporter-gate",
+        "diagnostic": "original source cleanup lacks an owned emitted action across its ABI variants: allocation owner=make_unsafe_uniq_array_uninitialized ordinal=0 callback=operator delete[] source-type=none emitted=no metadata=no observed-no-effect=no",
+        "count": 1
+      },
+      {
+        "stage": "exporter-gate",
+        "diagnostic": "variadic indirect-value/result-buffer ABI",
+        "count": 1
+      },
+      {
+        "stage": "exporter-gate",
+        "diagnostic": "record assignment requires ordinary copy policy or exact construction observation: type=, target-kind=3, rhs-kind=3, pooled-rhs=0",
+        "count": 1
+      },
+      {
+        "stage": "package",
+        "diagnostic": "sqlite3.IntegrityError: CHECK constraint failed: element_size>0",
+        "count": 1
+      },
+      {
+        "stage": "exporter-gate",
+        "diagnostic": "partial construction rollback outside fixed array element path",
+        "count": 1
+      },
+      {
+        "stage": "exporter-gate",
+        "diagnostic": "dependent source parameter requires ordinary coordinates without an unrepresented constraint",
+        "count": 1
+      },
+      {
+        "stage": "exporter-gate",
+        "diagnostic": "record:std::__dotgen_v1::__libcpp_contention_table_entry: record outside complete plain layout profile",
+        "count": 1
+      }
+    ],
+    "managedResults": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-expanded-managed-112-123/results.json",
+    "managedStatuses": {
+      "rejected": 46,
+      "verified": 82
+    }
+  },
+  "generation": {
+    "primaryUnits": 12,
+    "rttiProviders": 2,
+    "definitions": 10779,
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-twelve-generation-112.json",
+    "output": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-twelve-generated-112",
+    "managedGcHeapLimitBytes": 2147483648,
+    "csharpCompilationVerified": false,
+    "executionVerified": false
+  },
+  "broadRegressionReference": {
+    "milestone": "v44",
+    "checks": 1042,
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v44-001/results.json",
+    "rerunForThisMilestone": false
+  },
+  "priorities": {
+    "staticLifetimeSiblingOrder": 33,
+    "resolvedDefaultedExceptionPolicy": 9,
+    "finalizedFieldDestructor": 8,
+    "byValueTransport": 9,
+    "diagnosticCrashes": 2
+  },
+  "fullDuckdbTranslationComplete": false
+}

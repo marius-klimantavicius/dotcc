@@ -45,7 +45,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["static_destruction_registrations"] = "node_id",
         ["generated_static_destructors"] = "function_entity_id",
         ["static_destruction_dispositions"] = "source_obligation_id",
-        ["source_dependent_types"] = "type_id",
+        ["source_dependent_types"] = "type_id", ["source_nested_type_declarations"] = "type_id",
         ["source_lifetimes"] = "id", ["source_destruction_obligations"] = "id",
         ["destruction_elisions"] = "source_obligation_id,function_entity_id",
         ["source_array_deletions"] = "source_obligation_id", ["array_deletion_operations"] = "node_id",
@@ -109,7 +109,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v44" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v45" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");

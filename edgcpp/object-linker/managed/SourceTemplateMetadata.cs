@@ -252,7 +252,7 @@ internal sealed partial class ObjectFile
     {
         foreach (var record in SourceRecords.Values)
         {
-            bool instance = record.IsDependent && !record.IsPrototypeInstantiation && !SourceRecordOwners.ContainsKey(record.Id);
+            bool instance = record.IsDependent && !record.IsPrototypeInstantiation && !SourceRecordOwners.ContainsKey(record.Id) && !SourceNestedTypeDeclarations.ContainsKey(record.SourceTypeId);
             bool instanceKey = record.IdentityKey.StartsWith("source-instantiation:", StringComparison.Ordinal) ||
                 record.IdentityKey.StartsWith("source-member-instantiation:", StringComparison.Ordinal) ||
                 record.IdentityKey.StartsWith("source-parameter-instantiation:", StringComparison.Ordinal);

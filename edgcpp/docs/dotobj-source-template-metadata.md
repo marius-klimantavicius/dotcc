@@ -76,3 +76,24 @@ negative cases. The retained receipt is
 This proves the parameter-reference family used by libc++ node handles; concrete
 template references, substituted-template mappings, constraints, and argument
 packs still have explicit gates until their original semantics are represented.
+
+## Profile 45 nested declarations
+
+A nonreal nested type retains both its dependent member view and its exact
+original declaration through `originalNestedTypeId`. The separate
+`source_nested_type_declarations` relation records the original enclosing type;
+it is distinct from the anonymous-field `source_record_owners` relation. Named
+nested record and enum identities incorporate that enclosing semantic identity,
+and the verifier checks the declaration family, owner, name and dependent view.
+Original prototype/dependent flags remain unchanged. A typedef declaration may
+retain its own source type family instead of being cast to a record.
+
+Native112/managed123 passed **28 checks** (native O0/O2, hidden-source
+verification/linking, JIT, NativeAOT and four resealed negatives) at
+`/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-nested-types-v45-112-004/results.json`.
+The real driver was `duckdb/common/arena_linked_list.hpp:94`, whose `Node` has an
+original declaration and a nonreal dependent view; stock
+`lookup.c:create_nonreal_version_of_nested_type` explicitly describes those two
+forms. The independent defined-enum reducer remains retained as
+`duckdb_source_nested_enum_definition.cpp`: its prototype enumerator values need
+a typed semantic expression, and are not silently treated as resolved integers.

@@ -1199,3 +1199,30 @@ Two packaged units remain blocked by function-reference adjustment and delayed
 special-member exception policy capture. Both historical exporter-crash units
 remain selected, but stop at the earlier nested-type gate; they are not proven
 fixed. Receipt: `evidence/dotobj-duckdb-template-formals-temporaries-20261010.json`.
+
+
+## v45 — original nested declarations and function-reference decay
+
+Dependent views of named nested record, enum and typedef declarations retain an
+explicit original declaration/owner edge. Their source-only structure remains
+separate from execution layout. Template prototype flags are preserved even
+when the validated identity derives from a nested owner. Function-reference
+adjustments now follow stock C's implicit function-designator decay, while
+ordinary function-pointer lvalues retain their actual storage address.
+
+Native112/managed123 pass 47 focused checks including native/stock oracles,
+source-hidden generation, JIT and NativeAOT. The immediately preceding v44 broad
+checkpoint remains 1,042 checks; it was not rerun for this metadata milestone.
+Twelve independently verified real units combine with two RTTI providers into
+10,779 C# definitions under a 2 GiB managed heap limit. Review:
+`artifacts/review/dotobj-duckdb-v45/twelve-units`. No DuckDB C# compile/run claim.
+
+The expanded 160-unit probe finishes with 128 packaged and 82 verified.
+Failures: 25 exporter gates, two exporter diagnostic crashes, one packaging
+constraint, four frontend/configuration diagnostics, plus 46 managed rejects.
+The ranked next batch targets 33 static-lifetime ordinal rejects, nine finalized
+exception-policy rejects and eight finalized field-destructor export gates.
+The two ConcurrentQueue crashes are diagnostic formatting of a zero source type
+while reporting missing placement-allocation provenance; guarding diagnostics
+alone will not implement that missing semantic relation. Detailed evidence:
+`evidence/dotobj-duckdb-nested-types-function-references-20261010.json`.

@@ -533,3 +533,15 @@ generated local storage and matches its original destruction obligation to an
 independent emitted cleanup/normal-destruction target, or an exact observed
 elision in that execution. Source locals remain on their separate provenance
 path when a master initialization targets existing storage.
+
+Profile 45 normalizes function-designator `eok_lvalue_adjust` using stock
+`dump_lvalue_cast`'s function-to-pointer decay rule. The owned graph already
+represents a function designator as its function pointer, so this adjustment
+performs only the required function-pointer conversion. It does not take the
+address of that pointer as data storage. Ordinary function-pointer variables
+and members remain typed places and retain their real address/cast/dereference
+operations. The focused native112/managed122 case passes 19 checks, including
+native and stock-C O0/O2, original-source-reference metadata, source-hidden
+JIT/NativeAOT execution, a side-effecting function-reference factory evaluated
+once, ordinary function-pointer lvalues/members, and a noexcept function
+reference (`dotobj-function-reference-v45-112-001`).

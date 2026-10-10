@@ -5,6 +5,7 @@
 // inactive for ordinary dot/C backends. Addresses are private lookup keys only;
 // the published object contains IDs, owned strings and copied positions.
 #include <cstdlib>
+#include <cstdio>
 #include <map>
 #include <set>
 #include <string>
@@ -38,7 +39,7 @@ struct Type {
   a_type_ptr original_type=nullptr; // Private correspondence key, never wire.
   unsigned member_owner=0;
   std::string dependent_kind,dependent_identity;
-  unsigned dependent_owner=0;
+  unsigned dependent_owner=0,dependent_original_nested=0;
   int dependent_depth=0,dependent_position=0;
   bool dependent_pack=false;
   // Private physical representation fact also retained for 128-bit enums.
@@ -497,6 +498,7 @@ struct State {
   std::map<a_field_ptr,unsigned long long> observed_field_alignments;
   std::map<a_type_ptr,std::string> finalized_record_identities;
   std::map<a_type_ptr,RecordOwner> record_owners;
+  std::map<a_type_ptr,a_type_ptr> nested_type_declarations;
   std::map<a_type_ptr,std::string> owned_local_record_identities;
   std::set<a_type_ptr> capturing_records;
   std::map<std::pair<a_seq_number,a_column_number>,unsigned> record_occurrence_counts;
@@ -535,6 +537,19 @@ inline std::string spelling(const a_source_correspondence &source) {
 }
 inline unsigned capture_type(a_type_ptr t);
 inline void capture_field_initializer(a_field_ptr field,a_type_ptr owner);
+inline void trace_routine_exception_policy(const char *phase,unsigned id,a_type_ptr type,const std::string &cached) {
+  static const bool trace=std::getenv("DOTOBJ_TRACE_ROUTINE_EXCEPTION_POLICY")!=nullptr;
+  if(!trace)return;
+  auto extra=type->variant.routine.extra_info;auto spec=extra->exception_specification;
+  std::fprintf(stderr,"DOTOBJ_EXCEPTION_POLICY phase=%s id=%u type=%p receiver=%s receiver_ptr=%p cached=%s present=%d indeterminate=%d arg_cached=%d copy_from_prototype=%d is_noexcept=%d throw_any=%d assoc_routine=%s defaulted=%d\n",
+    phase,id,static_cast<void*>(type),extra->this_class?spelling(extra->this_class->source_corresp).c_str():"",
+    static_cast<void*>(extra->this_class),cached.c_str(),spec!=nullptr,
+    spec?int(spec->indeterminate):0,spec?int(spec->arg_cached):0,spec?int(spec->copy_from_prototype):0,
+    spec?int(spec->is_noexcept):0,spec?int(spec->throw_any):0,
+    extra->assoc_routine?spelling(extra->assoc_routine->source_corresp).c_str():"",
+    extra->assoc_routine?int(extra->assoc_routine->is_defaulted):0);
+}
+
 inline unsigned capture_semantic_constant(a_constant_ptr constant);
 // Exact all-type operand families from a_builtin_operation_kind.  A negative
 // arity means one or more type arguments; zero leaves the family explicitly gated.
@@ -1099,7 +1114,7 @@ inline unsigned capture_type(a_type_ptr t) {
     value.kind="dependent";
     const auto &parameter=t->variant.template_param;auto extra=parameter.extra_info;
     if(!extra || parameter.is_generic_param || parameter.is_auto_param || parameter.is_decltype_auto ||
-       parameter.originally_class_template_param || (extra && extra->orig_nested_type))
+       parameter.originally_class_template_param)
       value.error="dependent source type requires additional generic/placeholder/nested-origin contract";
     else if(parameter.kind==tptk_param) {
       value.dependent_kind="parameter";value.dependent_depth=extra->coordinates.depth;
@@ -1117,7 +1132,21 @@ inline unsigned capture_type(a_type_ptr t) {
       if(owner && class_type_supp(owner)->proxy_of_type)owner=class_type_supp(owner)->proxy_of_type;
       if(!owner || owner==t || value.name.empty() || parameter.is_pack)
         value.error="dependent source member lacks exact named owner";
-      else value.dependent_owner=capture_type(owner);
+      else {
+        value.dependent_owner=capture_type(owner);
+        if(extra->orig_nested_type) {
+          auto original=extra->orig_nested_type;
+          if(!original->source_corresp.is_class_member || parent_class_of(original)!=owner ||
+             spelling(original->source_corresp)!=value.name || value.name.empty())
+            value.error="nonreal nested type lost its exact original declaration owner/name";
+          else {
+            auto prior_owner=s.nested_type_declarations.emplace(original,owner);
+            if(!prior_owner.second && prior_owner.first->second!=owner)
+              value.error="original nested type has conflicting enclosing declarations";
+            value.dependent_original_nested=capture_type(original);
+          }
+        }
+      }
     } else if(parameter.kind==tptk_unknown) {
       value.dependent_kind="unknown";value.name.clear();
       if(parameter.is_pack)value.error="unknown dependent pack requires an explicit expansion contract";
@@ -1166,6 +1195,7 @@ inline unsigned capture_type(a_type_ptr t) {
     auto specification=t->variant.routine.extra_info->exception_specification;
     if(specification && !specification->throw_any)
       value.exception_policy=specification->is_noexcept?"terminate":"unsupported-dynamic";
+    trace_routine_exception_policy("source-capture",id,t,value.exception_policy);
     for(auto p=t->variant.routine.extra_info->param_type_list;p;p=p->next) {
       value.parameters.push_back(capture_type(p->declared_type?p->declared_type:p->type));
       value.declaration_defaults.push_back(p->has_default_arg);
@@ -1196,6 +1226,7 @@ inline void observe_routine_abi(a_type_ptr type) {
   const auto &source=s.types.at(id-1);
   RoutineAbi abi;abi.proof="observed-routine-lowering";
   auto extra=type->variant.routine.extra_info;
+  trace_routine_exception_policy("abi-observation",id,type,source.exception_policy);
   abi.result_buffer=extra->value_returned_as_parameter;
   abi.result_follows_this=extra->return_value_parameter_follows_this;
   for(auto parameter=extra->param_type_list;parameter;parameter=parameter->next) {
