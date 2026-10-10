@@ -37,6 +37,9 @@ internal static class CleanupVerifier
                     break;
                 case "member":
                     hasSubobject = true; payloadPath.Add(new(node.FieldId, null)); break;
+                case "virtual-base-subobject":
+                    if (payloadTarget) Fail("Virtual payload rollback requires an expanded construction path contract");
+                    hasSubobject = true; break;
                 case "base-subobject":
                     hasSubobject = true; payloadPath.Add(new(null, obj.BaseSubobjectExpressions[node.Id])); break;
                 case "address": case "dereference": case "array-decay": break;
@@ -82,6 +85,30 @@ internal static class CleanupVerifier
                 Fail("Payload rollback recipe does not start at its exact payload address");
         }
         if (Type(root!) != obj.Parameters[action.CallbackEntityId][0]) Fail("Cleanup target differs from the selected destructor's pointer ABI");
+        if (obj.CleanupArrays.TryGetValue(action.Id, out CleanupArray? array))
+        {
+            long Available(Node node)
+            {
+                if (node.Kind == "convert") return Available(Child(node, "operand"));
+                if (node.Kind is "address" or "array-decay" && Child(node, "operand").Kind == "dereference")
+                    return Available(Child(Child(node, "operand"), "operand"));
+                if (node.Kind is "address" or "array-decay") return obj.StorageSize(Type(Child(node, "operand")));
+                if (node.Kind == "storage-address") return obj.StorageSize(obj.Type(obj.Storages[node.StorageId!.Value].TypeId));
+                if (node.Kind == "binary")
+                {
+                    Node left = Child(node, "left"), offset = Child(node, "right");
+                    if (!long.TryParse(offset.ConstantText, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out long elements) || elements < 0)
+                        throw new InvalidDataException("Array cleanup offset must be a bounded forward element index");
+                    long stride = obj.StorageSize(ScalarTypes.Pointee(Type(left)));
+                    if (stride <= 0 || elements > long.MaxValue / stride || node.Operator != "pointer-add")
+                        throw new InvalidDataException("Array cleanup offset is outside its owned span");
+                    return Available(left) - elements * stride;
+                }
+                throw new InvalidDataException("Array cleanup requires an address derived from its bounded array storage");
+            }
+            if (Available(root!) < checked(array.ElementCount * array.ElementSize))
+                Fail("Array cleanup span exceeds its owned target storage");
+        }
         var alignment = new AccessAlignment(obj, body);
         string pointed = ScalarTypes.Pointee(Type(root!));
         if (alignment.Pointer(root!) < obj.AccessAlignment(pointed))

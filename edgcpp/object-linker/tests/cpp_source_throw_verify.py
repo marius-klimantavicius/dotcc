@@ -76,11 +76,11 @@ def main():
             '--unit-id', 'source-throw-secondary', '--exceptions', '--no-rtti'])
         source.rename(out / 'retained-source.cpp')
         secondary.rename(out / 'retained-secondary.cpp')
-        run('strict-link-requires-provider', ['dotnet', args.linker.resolve(), 'link', '--out', out / 'strict', obj],
+        run('strict-link-requires-provider', ['dotnet', args.linker.resolve(), 'link', '--out', out / 'strict', '--exception-provider', 'external', obj],
             1, 'Edg.Runtime.CppExceptions')
         generated = out / 'generated'
         run('source-hidden-generation', ['dotnet', args.linker.resolve(), 'link', '--out', generated,
-            '--allow-externs', '--namespace', 'Owned.Exceptions', '--class', 'Core', obj, second_obj])
+            '--exception-provider', 'external', '--allow-externs', '--namespace', 'Owned.Exceptions', '--class', 'Core', obj, second_obj])
         report = json.loads((generated / 'link-report.json').read_text())
         runtime = report['sourceExceptionRuntime']
         check('explicit-unbound-provider', runtime['required'] and runtime['status'] == 'generation-only-unbound-provider')

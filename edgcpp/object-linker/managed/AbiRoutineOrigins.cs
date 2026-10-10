@@ -14,7 +14,7 @@ internal sealed partial class ObjectFile
         {
             var origin = new AbiRoutineOrigin(query.Integer(0), query.Integer(1), query.Text(2), query.Integer(3) == 1, query.Text(4), query.OptionalInteger(5));
             if (!Entities.ContainsKey(origin.EntityId) || !Entities.ContainsKey(origin.PrimaryEntityId) || origin.EntityId == origin.PrimaryEntityId ||
-                origin.EntryKind is not ("complete" or "subobject" or "deleting" or "constructor-default-adapter") || query.Integer(3) is not (0 or 1) ||
+                origin.EntryKind is not ("complete" or "subobject" or "deleting" or "delegation" or "constructor-default-adapter") || query.Integer(3) is not (0 or 1) ||
                 (origin.EntryKind == "constructor-default-adapter"
                     ? origin.TargetEntityId is not long target || !Entities.ContainsKey(target) || origin.IsAliasEntry || origin.CaptureProof != "observed-default-wrapper-creation"
                     : origin.TargetEntityId is not null || origin.CaptureProof != "primary-ctor-dtor-link"))
@@ -29,7 +29,7 @@ internal sealed partial class ObjectFile
         {
             if (EntitySourceRoutines.ContainsKey(origin.EntityId) || !EntitySourceRoutines.TryGetValue(origin.PrimaryEntityId, out RoutineType? primary) ||
                 !SourceFunctionKinds.TryGetValue(origin.PrimaryEntityId, out string? kind) || kind is not ("constructor" or "destructor") ||
-                origin.EntryKind == "deleting" && kind != "destructor" || primary.ObjectTypeId is null || primary.Variadic)
+                origin.EntryKind is "deleting" or "delegation" && kind != "destructor" || primary.ObjectTypeId is null || primary.Variadic)
                 throw new InvalidDataException("Generated entry requires a direct original constructor/destructor origin");
             Entity entity = Entities[origin.EntityId];
             RoutineType execution = Routines[entity.RoutineTypeId];
@@ -58,12 +58,32 @@ internal sealed partial class ObjectFile
             // Alias provenance does not replace the owned lowered body. Stock
             // EDG may give a forwarding entry its own exception policy; its
             // explicit call still crosses the primary's noexcept boundary.
-            else if (!parameters.SequenceEqual(originalParameters) || parameters.Count != originalSlots.Count)
-                throw new InvalidDataException("Generated entry parameter ABI differs from its primary routine");
+            else
+            {
+                string[] originalExplicit = originalSlots.Where(slot => slot.ParameterRole != "vtt")
+                    .Select(slot => originalParameters[(int)slot.ExecutionOrdinal]).ToArray();
+                string[] entryExplicit = parameters.Where((_, ordinal) => ParameterRoles[(entity.Id, ordinal)].Role != "vtt").ToArray();
+                int vttCount = parameters.Count - entryExplicit.Length;
+                int expectedVttCount = originalSlots.Any(slot => slot.ParameterRole == "vtt") &&
+                    origin.EntryKind is "subobject" or "delegation" ? 1 : 0;
+                if (!entryExplicit.SequenceEqual(originalExplicit) || vttCount != expectedVttCount)
+                    throw new InvalidDataException("Generated entry parameter ABI differs from its primary routine");
+            }
+            int originalOrdinal = 0;
             for (int ordinal = 0; ordinal < parameters.Count; ordinal++)
             {
                 ParameterSemantics role = ParameterRoles[(entity.Id, ordinal)];
-                SourceRoutineAbiParameter original = originalSlots[ordinal];
+                if (role.Role == "vtt")
+                {
+                    SourceRoutineAbiParameter? vtt = originalSlots.SingleOrDefault(slot => slot.ParameterRole == "vtt");
+                    if (role.SourceOrdinal is not null || vtt is null || ordinal != vtt.ExecutionOrdinal ||
+                        !ScalarTypes.IsPointer(parameters[ordinal]) || parameters[ordinal] != originalParameters[(int)vtt.ExecutionOrdinal])
+                        throw new InvalidDataException("Generated VTT parameter requires a hidden pointer ABI slot");
+                    continue;
+                }
+                while (originalOrdinal < originalSlots.Count && originalSlots[originalOrdinal].ParameterRole == "vtt") originalOrdinal++;
+                if (originalOrdinal == originalSlots.Count) throw new InvalidDataException("Generated entry has an extra source parameter");
+                SourceRoutineAbiParameter original = originalSlots[originalOrdinal++];
                 if (original.ParameterRole == "this" ? role.Role != "this" || role.SourceOrdinal is not null
                     : original.ParameterRole is not ("source" or "indirect-source") || role.Role != "forwarded-source" || role.SourceOrdinal != original.SourceOrdinal)
                     throw new InvalidDataException("Generated entry parameter lacks its proven primary source role");

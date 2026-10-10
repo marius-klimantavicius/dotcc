@@ -7,10 +7,11 @@ internal static class Program
         var objects = new List<ObjectFile>();
         try
         {
-            if (args.Length == 0 || args[0] is not ("link" or "verify")) throw new ArgumentException("Usage: dotobj-link link --out DIRECTORY [--namespace NAME] [--class NAME] [--entry SYMBOL] [--provider LIBRARY.dotobj] OBJECT.dotobj... | verify OBJECT.dotobj...");
+            if (args.Length == 0 || args[0] is not ("link" or "verify")) throw new ArgumentException("Usage: dotobj-link link --out DIRECTORY [--namespace NAME] [--class NAME] [--entry SYMBOL] [--exception-provider shared|external] [--provider LIBRARY.dotobj] OBJECT.dotobj... | verify OBJECT.dotobj...");
             string command = args[0], namespaceName = "Translated", className = "Program";
             string? output = null, entry = null;
             bool allowExterns = false;
+            bool sharedExceptionProvider = true;
             var paths = new List<string>();
             var providerPaths = new HashSet<string>(OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
             for (int index = 1; index < args.Length; index++)
@@ -27,6 +28,9 @@ internal static class Program
                         case "--namespace": namespaceName = value; break;
                         case "--class": className = value; break;
                         case "--entry": entry = value; break;
+                        case "--exception-provider":
+                            sharedExceptionProvider = value switch { "shared" => true, "external" => false,
+                                _ => throw new ArgumentException("--exception-provider must be shared or external") }; break;
                         case "--provider": providerPaths.Add(Path.GetFullPath(value)); paths.Add(value); break;
                         default: throw new ArgumentException("Unknown option " + argument);
                     }
@@ -43,14 +47,14 @@ internal static class Program
             {
                 foreach (ObjectFile obj in objects)
                     foreach (long function in obj.Functions.Keys) _ = obj.ReadBody(function);
-                Console.WriteLine($"Verified {objects.Count} scalar-control-v35 semantic object(s).");
+                Console.WriteLine($"Verified {objects.Count} scalar-control-v36 semantic object(s).");
             }
             else
             {
                 var providers = objects.Where(obj => providerPaths.Contains(Path.GetFullPath(obj.Path))).ToHashSet();
-                var linker = new Linker(objects, className, allowExterns, providers);
+                var linker = new Linker(objects, className, allowExterns, providers, sharedExceptionProvider);
                 linker.VerifyBodies();
-                new Emitter(linker, namespaceName, className).Write(Path.GetFullPath(output!), entry);
+                new Emitter(linker, namespaceName, className, sharedExceptionProvider).Write(Path.GetFullPath(output!), entry);
                 linker.WriteSelection(Path.GetFullPath(output!));
                 Console.WriteLine($"Linked {objects.Count} object(s), {linker.Definitions.Count} function definition(s) into {Path.GetFullPath(output!)}");
             }

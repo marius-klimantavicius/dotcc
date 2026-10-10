@@ -144,12 +144,13 @@ struct PrelowerRecord {
   bool operations_known=false,bitwise_construction=false,bitwise_assignment=false,requires_return_storage=false;
   unsigned long long size=0,alignment=0;
   std::vector<PrelowerField> fields;
-  std::vector<PrelowerBase> bases;
+  std::vector<PrelowerBase> bases,virtual_bases;
   std::vector<ExceptionBaseSnapshot> exception_bases;
 };
 struct RoutineAbi {
   std::string proof,error;
   bool result_buffer=false,result_follows_this=false;
+  a_type_ptr vtt_type=nullptr;
   std::vector<bool> indirect_parameters;
   std::vector<a_param_type_ptr> original_parameters;
 };
@@ -193,6 +194,11 @@ struct DestructionSnapshot {
   a_source_position position={};
   std::string error;
 };
+struct ArrayRuntimeSnapshot {
+  a_routine_ptr owner=nullptr,callback=nullptr;
+  a_dynamic_init_ptr original=nullptr;
+  std::string operation;
+};
 struct CleanupPathPart {
   a_type_ptr type=nullptr;
   a_field_ptr field=nullptr;
@@ -204,9 +210,11 @@ struct CleanupSnapshot {
   a_handler_ptr release_handler=nullptr;
   an_expr_node_ptr throw_origin=nullptr;
   a_dynamic_init_ptr original=nullptr;
-  a_variable_ptr variable=nullptr,conditional_flag=nullptr;
+  a_variable_ptr variable=nullptr,conditional_flag=nullptr,vtt_argument=nullptr;
   a_type_ptr base_type=nullptr;
-  bool indirect=false,base_subobject=false;
+  bool indirect=false,base_subobject=false,array=false,delegation=false;
+  a_type_ptr element_type=nullptr;
+  unsigned long long element_count=0;
   std::vector<CleanupPathPart> path;
   std::string error;
 };
@@ -248,6 +256,9 @@ struct State {
   std::map<a_routine_ptr,std::vector<a_dynamic_init_ptr>> destruction_order;
   std::map<a_dynamic_init_ptr,a_dynamic_init_ptr> dynamic_init_copies;
   std::map<an_object_lifetime_ptr,an_object_lifetime_ptr> lifetime_copies;
+  std::map<an_expr_node_ptr,ArrayRuntimeSnapshot> array_runtime_calls;
+  std::map<a_routine_ptr,std::vector<an_expr_node_ptr>> array_runtime_order;
+  std::map<a_routine_ptr,a_variable_ptr> vtt_parameters;
   std::map<a_constant_ptr,CleanupSnapshot> cleanup_regions;
   std::vector<CleanupSnapshot> payload_subobjects;
   std::map<a_try_supplement_ptr,TrySnapshot> tries;
@@ -536,6 +547,20 @@ inline void observe_routine_abi(a_type_ptr type) {
      (source.object_type!=0)!=(extra->this_class!=nullptr))
     abi.error="routine ABI observation does not match original source signature";
   s.routine_abis[id]=abi;
+}
+inline void observe_vtt_type(a_type_ptr type) {
+  if(!enabled())return;
+  auto found=state().type_ids.find(type);
+  if(found==state().type_ids.end())return;
+  auto extra=type->variant.routine.extra_info;
+  if(extra->this_class && skip_typerefs(extra->this_class)->variant.class_struct_union.any_virtual_base_classes) {
+    auto &abi=state().routine_abis.at(found->second);
+    if(!extra->param_type_list || !extra->param_type_list->next)abi.error="missing observed VTT ABI slot";
+    else abi.vtt_type=extra->param_type_list->next->type;
+  }
+}
+inline void observe_vtt_parameter(a_routine_ptr routine,a_variable_ptr variable) {
+  if(enabled())state().vtt_parameters[routine]=variable;
 }
 inline void observe_runtime_signature(a_type_ptr type) {
   if(!enabled())return;
@@ -830,9 +855,37 @@ inline void observe_normal_destruction_call(a_routine_ptr routine,an_expr_node_p
   if(state().normal_destruction_calls.emplace(call,value).second)
     state().normal_destruction_order[owner].push_back(call);
 }
+inline void observe_array_runtime(a_dynamic_init_ptr dip,a_routine_ptr callback,an_expr_node_ptr call,a_routine_ptr owner,bool construction) {
+  if(!enabled() || !callback || !call)return;
+  // IA64 __cxa_vec_ctor returns void; stock lowering wraps its actual call
+  // in (call, destination). Attribute ownership to the call, not the comma.
+  while(call->kind==enk_operation && call->variant.operation.kind==eok_comma)
+    call=call->variant.operation.operands;
+  if(!call || call->kind!=enk_operation || call->variant.operation.kind!=eok_call)return;
+  if(!dip) {
+    if(state().normal_destruction_contexts.empty())return;
+    const auto &context=state().normal_destruction_contexts.back();
+    if(context.owner!=owner)return;
+    dip=context.original;
+  }
+  if(!dip)return;
+  ArrayRuntimeSnapshot value;value.owner=owner;value.original=dip;value.callback=callback;
+  value.operation=construction?"construct":"destroy";
+  if(state().array_runtime_calls.emplace(call,value).second)state().array_runtime_order[owner].push_back(call);
+}
 inline void observe_normal_destruction_copy(an_expr_node_ptr original,an_expr_node_ptr copy,a_routine_ptr owner) {
   if(!enabled() || !owner || original==copy || !copy || copy->kind!=enk_operation ||
      copy->variant.operation.kind!=eok_call)return;
+  auto array=state().array_runtime_calls.find(original);
+  if(array!=state().array_runtime_calls.end()) {
+    auto value=array->second;
+    auto primary=abi_primary(owner);if(!primary)primary=owner;
+    auto original_owner=abi_primary(value.owner);if(!original_owner)original_owner=value.owner;
+    if(primary==original_owner) {
+      value.owner=owner;
+      if(state().array_runtime_calls.emplace(copy,value).second)state().array_runtime_order[owner].push_back(copy);
+    }
+  }
   auto found=state().normal_destruction_calls.find(original);
   if(found==state().normal_destruction_calls.end())return;
   auto value=found->second;auto old_owner=abi_primary(value.owner);if(!old_owner)old_owner=value.owner;
@@ -1023,7 +1076,7 @@ inline void observe_payload_subobject(a_dynamic_init_ptr dip,an_init_pos_descr_p
   }
   state().payload_subobjects.push_back(value);
 }
-inline void observe_cleanup_region(a_dynamic_init_ptr dip,a_routine_ptr owner) {
+inline void observe_cleanup_region(a_dynamic_init_ptr dip,a_routine_ptr owner,a_variable_ptr vtt_argument=nullptr) {
   if(!enabled())return;
   auto descr=dip->destructible_entity_descr;
   if(!descr || !descr->region_table_entry)return;
@@ -1042,6 +1095,18 @@ inline void observe_cleanup_region(a_dynamic_init_ptr dip,a_routine_ptr owner) {
   value.variable=position.variable;value.base_type=position.base_type;
   value.conditional_flag=descr->conditional_flag_var;
   value.indirect=position.indirect_through_variable;value.base_subobject=position.base_class_subobject;
+  value.delegation=descr->use_delegation_dtor;value.vtt_argument=vtt_argument;
+  auto entity_type=skip_typerefs(position.modifiers?position.modifiers->type:position.base_type);
+  value.array=position.array_element_sequence || entity_type->kind==tk_array;
+  if(value.array) {
+    value.element_type=entity_type->kind==tk_array?underlying_array_element_type(entity_type):entity_type;
+    if(position.array_element_sequence) {
+      if(position.array_element_count<0)value.error="array cleanup requires owned cookie count";
+      else value.element_count=position.array_element_count;
+    } else value.element_count=num_array_elements(entity_type);
+  }
+  if(bool(vtt_argument)!=bool(descr->needs_subobject_construction_vtbl || descr->use_delegation_dtor))
+    value.error="cleanup VTT lacks exact argument binding observation";
   if(position.thrown_object_address) {
     if(state().active_throws.empty() || position.variable || position.indirect_through_variable || !position.modifiers)
       value.error="payload subobject cleanup lacks exact active throw position";
@@ -1052,11 +1117,10 @@ inline void observe_cleanup_region(a_dynamic_init_ptr dip,a_routine_ptr owner) {
         value.error="payload cleanup root differs from observed throw type";
     }
   }
-  if(position.array_element_sequence || position.num_elem_node ||
-     (!position.variable && !position.thrown_object_address) || descr->needs_subobject_construction_vtbl ||
-     descr->use_delegation_dtor || dip->is_freeing_of_storage_on_exception ||
+  if(position.num_elem_node || (position.variable && position.variable->is_vla) ||
+     (!position.variable && !position.thrown_object_address) || dip->is_freeing_of_storage_on_exception ||
      dip->is_freeing_of_exception_object || dip->is_guard_var_for_local_static_var_init || dip->is_vla_deallocation)
-    value.error="cleanup region outside scalar object/member/base contract";
+    value.error="cleanup region outside fixed object/array/member/base contract";
   for(auto modifier=position.modifiers;modifier;modifier=modifier->next) {
     CleanupPathPart part;part.type=modifier->type;part.field=modifier->curr_field;
     part.base=modifier->curr_base;part.index=modifier->curr_elem;
@@ -1068,6 +1132,16 @@ inline void observe_cleanup_region(a_dynamic_init_ptr dip,a_routine_ptr owner) {
   if(!state().cleanup_regions.emplace(descr->region_table_entry,value).second)
     state().cleanup_regions.at(descr->region_table_entry).error="duplicate cleanup region observation";
 }
+inline void observe_cleanup_region_copy(a_constant_ptr original,a_dynamic_init_ptr dip,a_routine_ptr owner) {
+  if(!enabled())return;
+  auto found=state().cleanup_regions.find(original);
+  if(found==state().cleanup_regions.end())return;
+  auto value=found->second;
+  if(value.owner!=owner)value.error="cloned cleanup region changed function owner";
+  if(!state().cleanup_regions.emplace(dip->destructible_entity_descr->region_table_entry,value).second)
+    state().cleanup_regions.at(dip->destructible_entity_descr->region_table_entry).error="duplicate cleanup clone observation";
+}
+
 #endif
 inline void capture_scope(a_scope_ptr scope) {
   if(!scope)return;
@@ -1269,6 +1343,11 @@ inline void observe_record_before_prelowering(a_type_ptr type) {
     value.bases.push_back(item);
   }
   if(supplement)for(auto base=supplement->base_classes;base;base=base->next) {
+    if(base->is_virtual) {
+      PrelowerBase physical;physical.il=base;physical.original_type=base->orig_type?base->orig_type:base->type;
+      physical.is_virtual=true;physical.source_type_snapshot=capture_type(physical.original_type);
+      value.virtual_bases.push_back(physical);
+    }
     ExceptionBaseSnapshot item;
     item.source_type=capture_type(base->orig_type?base->orig_type:base->type);
     item.offset=base->offset;item.is_public=base->has_public_derivation;
@@ -1279,6 +1358,9 @@ inline void observe_record_before_prelowering(a_type_ptr type) {
 }
 inline void observe_abi_record(a_type_ptr type) {
   if(enabled())state().abi_records.insert(type);
+}
+inline void observe_typeinfo_base_record(a_type_ptr type) {
+  if(enabled())state().abi_record_keys[type]="abi:rtti:base-class-spec";
 }
 inline void observe_typeinfo_record(a_type_ptr type,a_type_info_kind kind,unsigned long long base_count) {
   if(!enabled())return;

@@ -33,8 +33,13 @@ ARRAYS = {
     'sourceDestructionObligations': ('source_destruction_obligations', ['id', 'functionEntityId', 'lifetimeId', 'ordinal', 'destructorEntityId', 'sourceTypeId', 'sourceFileId', 'line', 'column', 'captureProof']),
     'expressionLifetimes': ('expression_lifetimes', ['nodeId', 'sourceLifetimeId', 'captureProof']),
     'baseSubobjectExpressions': ('base_subobject_expressions', ['nodeId', 'sourceBaseId']),
+    'virtualBaseExpressions': ('virtual_base_expressions', ['nodeId', 'completeBaseTypeId']),
+    'virtualBaseSubobjects': ('virtual_base_subobjects', ['recordTypeId', 'completeBaseTypeId', 'physicalViewTypeId', 'byteOffset', 'extent', 'fieldId', 'captureProof']),
     'normalDestructions': ('normal_destructions', ['nodeId', 'sourceObligationId', 'captureProof']),
     'cleanupActions': ('cleanup_actions', ['id', 'functionEntityId', 'sourceObligationId', 'callbackEntityId', 'targetNodeId', 'captureProof']),
+    'arrayRuntimeOperations': ('array_runtime_operations', ['nodeId', 'sourceObligationId', 'callbackEntityId', 'operationKind', 'captureProof']),
+    'cleanupArrays': ('cleanup_arrays', ['actionId', 'elementTypeId', 'elementCount', 'elementSize', 'captureProof']),
+    'cleanupVttArguments': ('cleanup_vtt_arguments', ['actionId', 'bindingId', 'captureProof']),
     'cleanupConditions': ('cleanup_conditions', ['actionId', 'flagBindingId', 'captureProof']),
     'cleanupStates': ('cleanup_states', ['id', 'functionEntityId', 'actionId', 'nextStateId', 'handlerNodeId']),
     'cleanupTransitions': ('cleanup_transitions', ['nodeId', 'stateId', 'captureProof', 'isUnreachable']),
@@ -148,7 +153,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v35':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v36':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -168,7 +173,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v35', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v36', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))

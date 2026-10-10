@@ -157,7 +157,7 @@ internal sealed partial class ObjectFile
         if (CleanupActions.Values.Any(action => PayloadSubobjectOwners.ContainsKey(action.SourceObligationId) && !CleanupPayloadOwners.ContainsKey(action.Id)))
             throw new InvalidDataException("Payload rollback action lacks its completion-aware payload target");
         if (SourceDestructionObligations.Keys.Except(CleanupActions.Values.Select(action => action.SourceObligationId)
-                .Concat(NormalDestructions.Values).Concat(PayloadSubobjectOwners.Keys)).Any())
+                .Concat(NormalDestructions.Values).Concat(ArrayRuntimeOperations.Values.Select(operation => operation.SourceObligationId)).Concat(PayloadSubobjectOwners.Keys)).Any())
             throw new InvalidDataException("Original destruction obligation has no observed owned execution action or complete payload owner");
         using (var query = database.Prepare("SELECT x.node_id,x.capture_proof,n.kind FROM rethrow_expressions x LEFT JOIN nodes n ON n.id=x.node_id ORDER BY x.node_id"))
             while (query.Read())

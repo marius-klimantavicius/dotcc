@@ -6,6 +6,8 @@ internal sealed record SourceDestructionObligation(long Id, long FunctionEntityI
     long Ordinal, long DestructorEntityId, long SourceTypeId, long? SourceFileId, long Line, long Column, string CaptureProof);
 internal sealed record CleanupAction(long Id, long FunctionEntityId, long SourceObligationId,
     long CallbackEntityId, long TargetNodeId, string CaptureProof);
+internal sealed record ArrayRuntimeOperation(long NodeId, long SourceObligationId, long CallbackEntityId, string OperationKind, string CaptureProof);
+internal sealed record CleanupArray(long ActionId, long ElementTypeId, long ElementCount, long ElementSize, string CaptureProof);
 internal sealed record CleanupState(long Id, long FunctionEntityId, long? ActionId, long? NextStateId, long? HandlerNodeId);
 internal sealed record CleanupTransition(long NodeId, long? StateId, string CaptureProof, bool IsUnreachable);
 internal sealed record CleanupFrameMarker(long NodeId, string Kind, string CaptureProof);
@@ -13,8 +15,12 @@ internal sealed record CleanupFrameMarker(long NodeId, string Kind, string Captu
 internal sealed partial class ObjectFile
 {
     public Dictionary<long, long> ExpressionLifetimes { get; } = [];
+    public Dictionary<long, ArrayRuntimeOperation> ArrayRuntimeOperations { get; } = [];
+    public Dictionary<long, CleanupArray> CleanupArrays { get; } = [];
+    public Dictionary<long, long> CleanupVttArguments { get; } = [];
     public Dictionary<long, long> CleanupConditions { get; } = [];
     public Dictionary<long, long> NormalDestructions { get; } = [];
+    public Dictionary<long, long> VirtualBaseExpressions { get; } = [];
     public Dictionary<long, long> BaseSubobjectExpressions { get; } = [];
     public Dictionary<long, SourceLifetime> SourceLifetimes { get; } = [];
     public Dictionary<long, SourceDestructionObligation> SourceDestructionObligations { get; } = [];
@@ -28,6 +34,13 @@ internal sealed partial class ObjectFile
     public long OriginalFunction(long entityId) => AbiRoutineOrigins.TryGetValue(entityId, out AbiRoutineOrigin? origin)
         ? origin.PrimaryEntityId : entityId;
 
+    private SourceType DestructionElementType(long sourceTypeId)
+    {
+        SourceType type = Original(SourceTypeById(sourceTypeId));
+        while (type.Kind == "array") type = Original(SourceTypeById(type.UnderlyingTypeId!.Value));
+        return type;
+    }
+
     private void ReadCleanupMetadata()
     {
         using (var query = database.Prepare("SELECT x.node_id,x.source_base_id,n.kind FROM base_subobject_expressions x LEFT JOIN nodes n ON n.id=x.node_id ORDER BY x.node_id"))
@@ -37,6 +50,11 @@ internal sealed partial class ObjectFile
                     !BaseSubobjectExpressions.TryAdd(query.Integer(0), query.Integer(1)))
                     throw new InvalidDataException("Base-subobject expression lacks its exact original base relationship");
             }
+        using (var query = database.Prepare("SELECT x.node_id,x.complete_base_type_id,n.kind FROM virtual_base_expressions x LEFT JOIN nodes n ON n.id=x.node_id ORDER BY x.node_id"))
+            while (query.Read())
+                if (!Records.ContainsKey(query.Integer(1)) || query.OptionalText(2) != "virtual-base-subobject" ||
+                    !VirtualBaseExpressions.TryAdd(query.Integer(0), query.Integer(1)))
+                    throw new InvalidDataException("Virtual-base expression lacks its observed complete base type");
         using (var query = database.Prepare("SELECT id,function_entity_id,parent_lifetime_id,sibling_ordinal,parent_obligation_id,kind,source_file_id,line,column,capture_proof FROM source_lifetimes ORDER BY id"))
             while (query.Read())
             {
@@ -66,13 +84,13 @@ internal sealed partial class ObjectFile
                 if (obligation.Id <= 0 || !SourceLifetimes.TryGetValue(obligation.LifetimeId, out SourceLifetime? lifetime) ||
                     lifetime.FunctionEntityId != obligation.FunctionEntityId || obligation.Ordinal < 0 ||
                     !SourceFunctionKinds.TryGetValue(obligation.DestructorEntityId, out string? kind) || kind != "destructor" ||
-                    Original(SourceTypeById(obligation.SourceTypeId)).Kind != "record" ||
+                    DestructionElementType(obligation.SourceTypeId).Kind != "record" ||
                     obligation.Line < 0 || obligation.Column < 0 || obligation.CaptureProof != "before-lowering" ||
                     !SourceDestructionObligations.TryAdd(obligation.Id, obligation))
                     throw new InvalidDataException("Invalid original destruction obligation or destructor provenance");
                 RoutineType destructor = EntitySourceRoutines[obligation.DestructorEntityId];
                 if (destructor.ObjectTypeId is not long receiver ||
-                    Original(SourceTypeById(receiver)).ExecutionTypeId != Original(SourceTypeById(obligation.SourceTypeId)).ExecutionTypeId)
+                    Original(SourceTypeById(receiver)).ExecutionTypeId != DestructionElementType(obligation.SourceTypeId).ExecutionTypeId)
                     throw new InvalidDataException("Source destruction type differs from its original destructor receiver");
             }
         foreach (var group in SourceLifetimes.Values.GroupBy(value => value.FunctionEntityId))
@@ -111,17 +129,78 @@ internal sealed partial class ObjectFile
                     OriginalFunction(action.FunctionEntityId) != obligation.FunctionEntityId ||
                     action.CaptureProof != "observed-region-entry" || !Entities.TryGetValue(action.CallbackEntityId, out Entity? callback) ||
                     OriginalFunction(callback.Id) != obligation.DestructorEntityId ||
-                    AbiRoutineOrigins.TryGetValue(callback.Id, out AbiRoutineOrigin? origin) && origin.EntryKind is not ("complete" or "subobject") ||
+                    AbiRoutineOrigins.TryGetValue(callback.Id, out AbiRoutineOrigin? origin) && origin.EntryKind is not ("complete" or "subobject" or "delegation") ||
                     !CleanupActions.TryAdd(action.Id, action))
                     throw new InvalidDataException("Cleanup action lacks its exact original obligation, function or destructor origin");
-                var parameters = Parameters.GetValueOrDefault(callback.Id, []);
-                if (Type(callback.ReturnTypeId) != "void" || Routines[callback.RoutineTypeId].Variadic ||
-                    parameters.Count != 1 || !ScalarTypes.IsPointer(parameters[0]))
-                    throw new InvalidDataException("Cleanup destructor requires the supported void(one object pointer) ABI");
                 if (!FunctionCleanupActions.TryGetValue(action.FunctionEntityId, out var actions))
                     FunctionCleanupActions.Add(action.FunctionEntityId, actions = []);
                 actions.Add(action);
             }
+        using (var query = database.Prepare("SELECT a.node_id,a.source_obligation_id,a.callback_entity_id,a.operation_kind,a.capture_proof,n.kind,n.function_id,n.entity_id FROM array_runtime_operations a LEFT JOIN nodes n ON n.id=a.node_id ORDER BY a.node_id"))
+            while (query.Read())
+            {
+                var operation = new ArrayRuntimeOperation(query.Integer(0), query.Integer(1), query.Integer(2), query.Text(3), query.Text(4));
+                if (!SourceDestructionObligations.TryGetValue(operation.SourceObligationId, out SourceDestructionObligation? obligation) ||
+                    !Entities.ContainsKey(operation.CallbackEntityId) || OriginalFunction(operation.CallbackEntityId) != obligation.DestructorEntityId ||
+                    operation.OperationKind is not ("construct" or "destroy") || operation.CaptureProof != "observed-array-runtime" ||
+                    query.OptionalText(5) != "call" || query.OptionalInteger(6) is not long owner || OriginalFunction(owner) != obligation.FunctionEntityId ||
+                    query.OptionalInteger(7) is not long helper || !Entities.TryGetValue(helper, out Entity? runtime) ||
+                    RuntimeArrayProvider.TryGetMethod(new Symbol(this, runtime)) is not string method ||
+                    (operation.OperationKind == "construct" ? method is not ("Construct" or "CopyConstruct") : method is not ("Destroy" or "Cleanup")) ||
+                    !ArrayRuntimeOperations.TryAdd(operation.NodeId, operation))
+                    throw new InvalidDataException("Array runtime operation lacks its exact source obligation, destructor or runtime helper origin");
+                if (AbiRoutineOrigins.TryGetValue(operation.CallbackEntityId, out AbiRoutineOrigin? origin) && origin.EntryKind != "complete")
+                    throw new InvalidDataException("Array runtime operation requires a complete-object destructor callback");
+            }
+        using (var query = database.Prepare("SELECT action_id,element_type_id,element_count,element_size,capture_proof FROM cleanup_arrays ORDER BY action_id"))
+            while (query.Read())
+            {
+                var array = new CleanupArray(query.Integer(0), query.Integer(1), query.Integer(2), query.Integer(3), query.Text(4));
+                if (!CleanupActions.TryGetValue(array.ActionId, out CleanupAction? action) ||
+                    AbiRoutineOrigins.TryGetValue(action.CallbackEntityId, out AbiRoutineOrigin? arrayOrigin) && arrayOrigin.EntryKind != "complete" ||
+                    !Types.ContainsKey(array.ElementTypeId) || !ScalarTypes.IsRecord(Type(array.ElementTypeId)) ||
+                    array.ElementCount <= 0 || array.ElementSize != StorageSize(Type(array.ElementTypeId)) ||
+                    array.ElementSize <= 0 || array.ElementCount > long.MaxValue / array.ElementSize ||
+                    DestructionElementType(SourceDestructionObligations[action.SourceObligationId].SourceTypeId).ExecutionTypeId != array.ElementTypeId ||
+                    array.CaptureProof != "observed-array-region" || !CleanupArrays.TryAdd(array.ActionId, array))
+                    throw new InvalidDataException("Array cleanup requires its exact complete leaf type, positive count and stride");
+                SourceType source = Original(SourceTypeById(SourceDestructionObligations[action.SourceObligationId].SourceTypeId));
+                if (source.Kind == "array")
+                {
+                    long count = 1;
+                    while (source.Kind == "array")
+                    {
+                        if (source.ElementCount is not long bound || bound <= 0 || count > long.MaxValue / bound)
+                            throw new InvalidDataException("Array cleanup requires fixed original array bounds");
+                        count *= bound; source = Original(SourceTypeById(source.UnderlyingTypeId!.Value));
+                    }
+                    if (array.ElementCount > count) throw new InvalidDataException("Array cleanup exceeds its original array declaration");
+                }
+            }
+        using (var query = database.Prepare("SELECT v.action_id,v.binding_id,v.capture_proof,b.function_id,b.type_id FROM cleanup_vtt_arguments v LEFT JOIN bindings b ON b.id=v.binding_id ORDER BY v.action_id"))
+            while (query.Read())
+            {
+                if (!CleanupActions.TryGetValue(query.Integer(0), out CleanupAction? action) ||
+                    CleanupArrays.ContainsKey(action.Id) || query.Text(2) != "observed-subobject-vtt" ||
+                    query.OptionalInteger(3) != action.FunctionEntityId || query.OptionalInteger(4) is not long type ||
+                    !ScalarTypes.IsPointer(Type(type)) || !CleanupVttArguments.TryAdd(action.Id, query.Integer(1)))
+                    throw new InvalidDataException("Subobject VTT cleanup argument requires its exact owned pointer binding");
+                var parameters = Parameters.GetValueOrDefault(action.CallbackEntityId, []);
+                if (parameters.Count != 2 || parameters[1] != Type(type))
+                    throw new InvalidDataException("Subobject VTT argument differs from the selected destructor ABI");
+            }
+        foreach (CleanupAction action in CleanupActions.Values)
+        {
+            Entity callback = Entities[action.CallbackEntityId];
+            var parameters = Parameters.GetValueOrDefault(callback.Id, []);
+            if (Type(callback.ReturnTypeId) != "void" || Routines[callback.RoutineTypeId].Variadic ||
+                parameters.Count != (CleanupVttArguments.ContainsKey(action.Id) ? 2 : 1) ||
+                !ScalarTypes.IsPointer(parameters[0]))
+                throw new InvalidDataException("Cleanup destructor requires its owned object-pointer and optional VTT-pointer ABI");
+            if (CleanupArrays.TryGetValue(action.Id, out CleanupArray? array) &&
+                parameters[0] != "ptr(" + Type(array.ElementTypeId) + ")")
+                throw new InvalidDataException("Array destructor pointer differs from its complete leaf element type");
+        }
         using (var query = database.Prepare("SELECT c.action_id,c.flag_binding_id,c.capture_proof,b.function_id,b.kind,b.type_id,b.is_synthetic FROM cleanup_conditions c LEFT JOIN bindings b ON b.id=c.flag_binding_id ORDER BY c.action_id"))
             while (query.Read())
             {
@@ -140,7 +219,7 @@ internal sealed partial class ObjectFile
                     !Functions.ContainsKey(function) || OriginalFunction(function) != obligation.FunctionEntityId ||
                     query.OptionalText(4) != "call" || query.OptionalInteger(5) is not long callback ||
                     !Entities.ContainsKey(callback) || OriginalFunction(callback) != obligation.DestructorEntityId ||
-                    AbiRoutineOrigins.TryGetValue(callback, out AbiRoutineOrigin? origin) && origin.EntryKind is not ("complete" or "subobject") ||
+                    AbiRoutineOrigins.TryGetValue(callback, out AbiRoutineOrigin? origin) && origin.EntryKind is not ("complete" or "subobject" or "delegation") ||
                     !NormalDestructions.TryAdd(query.Integer(0), obligation.Id))
                     throw new InvalidDataException("Normal destruction lacks its exact owned call, source obligation or destructor origin");
             }

@@ -813,3 +813,53 @@ retain their type/initialization/VTT gates. Review source is available at
 `artifacts/review/dotobj-function-try`. The shared production exception provider,
 array/VTT cleanup, unsupported exception identities and full DuckDB generation
 remain unfinished. Stop after this phase's commit and await user direction.
+
+## Fixed array/VTT cleanup and shared exceptions, v36 (2026-10-10)
+
+Root coordinated separate native capture, managed verification/emission and
+runtime acceptance work. The object now owns fixed-array element/count/stride
+metadata, exact EDG array-runtime calls, subobject VTT bindings and virtual-base
+placements. Hidden VTT parameters retain their actual ABI roles. Source lifetime
+coverage accounts for the operations emitted by each constructor/destructor ABI
+variant. EDG's C backend and array runtime supplied the behavioral reference;
+there are no frontend semantic fixes or raw native stack frames.
+
+The linker supplies shared BCL implementations for array construction/copy,
+reverse destruction and completed-prefix rollback. Classified runtime transfers
+continue through the remaining array elements and scalar cleanup states.
+Virtual-base tests deliberately change the base offset between complete types
+and use real translated RTTI providers. Fixed arrays initialized through EDG's
+array helpers are supported; nontrivial explicit initializer-list temporaries,
+dynamic/cookie counts and adjusting/covariant thunks remain explicit gates.
+
+The default exception provider is now shared production source, with aligned
+native payload storage, typed matching, pointer adjustments, synchronous
+thread-local handler ownership, nested rethrow counts and exact complete-object
+destruction. Exception-runtime failures terminate. Executable boundaries terminate
+uncaught C++ exceptions; managed library callers have an explicit ownership
+contract in `object-linker/runtime/EXCEPTIONS.md`. The external partial-provider
+option remains available for independent fixtures and host implementations.
+
+Native071/managed076 passes 83 array/VTT scenarios against native C++ and stock
+EDG C at O0/O2 under JIT and NativeAOT, plus termination and malformed-object
+checks. The shared exception provider passes 52 source scenarios and 102 direct
+API assertions per managed execution mode; array runtime tests add 117 assertions
+per mode. Seven translated transfer scenarios verify remaining cleanup order.
+Managed077 adds a verifier-only zero-stride rejection, with a retained regression
+that previously crashed. The final broad JIT regression passes all 1,042 checks;
+focused suites provide NativeAOT coverage. Managed078 only corrects link-report
+limitation text, with generated C# verified unchanged in the typed-exception fixture. The [v36 evidence](../evidence/dotobj-array-vtt-exceptions-20261010.json)
+records exact counts, tool hashes and retained failed attempts.
+
+The five-unit DuckDB probe still generates 280 function definitions for
+`hugeint.cpp`, without compiling or running them. `string_util.cpp` advances past
+the blanket VTT gate to missing physical-base declaration provenance; the other
+three sampled units retain type/initialization gates. Review output is at
+`artifacts/review/dotobj-array-vtt` and `artifacts/review/dotobj-production-exceptions`.
+
+This checkpoint does not finish all C++ cleanup or exception facilities.
+Allocation/guard rollback, array/virtual exception-payload rollback, virtual
+exception-base matching, `exception_ptr`, custom terminate handlers, cross-thread
+payloads and native C++ exception interoperability remain open. Forced platform
+transfers abandoning a pending payload need a separate lifecycle contract.
+Full DuckDB translation remains incomplete. Stop at this phase boundary.

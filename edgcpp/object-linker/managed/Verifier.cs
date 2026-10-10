@@ -3,7 +3,7 @@ namespace DotObj;
 internal static class Verifier
 {
     private static readonly HashSet<string> StatementKinds = ["try", "catch", "memory-barrier", "block", "return", "expr-stmt", "declare", "register-cleanup", "if", "while", "for", "do-while", "switch", "case", "break", "continue", "array-init", "array-element", "label", "goto"];
-    private static readonly HashSet<string> ExpressionKinds = ["caught-object-address", "handler-marker", "cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
+    private static readonly HashSet<string> ExpressionKinds = ["caught-object-address", "handler-marker", "cleanup-payload-address", "throw", "thrown-object-address", "throw-marker", "rethrow", "record-transfer", "materialize", "lifetime-scope", "base-subobject", "virtual-base-subobject", "cleanup-transition", "cleanup-frame", "constant", "binding", "call", "binary", "unary", "assign", "convert", "mutate", "conditional", "address", "dereference", "array-decay", "member", "default-value", "storage", "storage-address", "function-address", "indirect-call", "compound-assign", "sequence", "va-start", "va-copy", "va-end", "va-arg", "volatile-place", "intrinsic", "block-copy"];
 
     public static void Body(ObjectFile obj, Entity function, FunctionBody body)
     {
@@ -102,7 +102,7 @@ internal static class Verifier
                 (VolatileSource(field.SourceTypeId) || DeclaredVolatile(Child(node, "operand"), depth + 1)),
             _ => false
         };
-        bool Place(Node node, int depth = 0) => depth <= 1024 && (node.Kind is "binding" or "storage" or "dereference" or "member" or "materialize" or "base-subobject" or "volatile-place" ||
+        bool Place(Node node, int depth = 0) => depth <= 1024 && (node.Kind is "binding" or "storage" or "dereference" or "member" or "materialize" or "base-subobject" or "virtual-base-subobject" or "volatile-place" ||
             node.Kind == "lifetime-scope" && Place(Child(node, "operand"), depth + 1) ||
             node.Kind == "sequence" && Place(SequenceTail(node), depth + 1));
         bool LocalPlace(Node node, int depth = 0) => depth <= 1024 && (node.Kind == "binding" &&
@@ -124,7 +124,7 @@ internal static class Verifier
                 if (type == "void" && node.Kind is not ("call" or "indirect-call" or "convert" or "sequence" or "va-start" or "va-copy" or "va-end" or "intrinsic" or "block-copy" or "conditional" or "cleanup-transition" or "cleanup-frame" or "lifetime-scope" or "throw" or "throw-marker" or "rethrow" or "handler-marker")) Fail("Only calls and explicit void operations can have void type");
                 if (node.ValueCategory != (Place(node) ? "place" : "value")) Fail("Incorrect value category");
                 string[] orders = node.Kind is "cleanup-transition" or "cleanup-frame" or "constant" or "binding" or "default-value" or "storage" or "storage-address" or "function-address" or "volatile-place" ? ["none"] : ["left-to-right", "unspecified"];
-                if (node.Kind is "cleanup-transition" or "cleanup-frame" or "base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
+                if (node.Kind is "cleanup-transition" or "cleanup-frame" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope") orders = ["none", "left-to-right"];
                 if (node.Kind is "thrown-object-address" or "throw-marker" or "rethrow" or "cleanup-payload-address" or "handler-marker" or "caught-object-address") orders = ["none"];
                 if (node.Kind is "materialize" or "throw") orders = ["left-to-right"];
                 if (node.Kind is "assign" or "record-transfer" or "compound-assign" or "block-copy") orders = ["left-to-right", "right-to-left", "unspecified"];
@@ -153,7 +153,7 @@ internal static class Verifier
                     Fail("Array place requires explicit address, decay or initialization");
                 if (child.TypeId is long recordType && ScalarTypes.IsRecord(obj.Type(recordType)))
                 {
-                    bool allowed = node.Kind == "block-copy" || node.Kind == "sequence" && node.ValueCategory == "place" && child.Id == SequenceTail(node).Id || node.Kind is "member" or "base-subobject" or "lifetime-scope" or "address" && edge.Role == "operand" ||
+                    bool allowed = node.Kind == "block-copy" || node.Kind == "sequence" && node.ValueCategory == "place" && child.Id == SequenceTail(node).Id || node.Kind is "member" or "base-subobject" or "virtual-base-subobject" or "lifetime-scope" or "address" && edge.Role == "operand" ||
                         node.Kind is "assign" or "record-transfer" && (edge.Role == "target" || edge.Role == "value" && child.Kind == "default-value") ||
                         node.Kind == "declare" && edge.Role == "initializer" && child.Kind == "default-value" ||
                         child.Kind is "assign" or "record-transfer" &&
@@ -540,6 +540,15 @@ internal static class Verifier
                     EdgeShape(node);
                     if (!obj.CanZeroInitializeRecord(Type(node))) Fail("Default value requires an owned zero-initializable record layout");
                     break;
+                case "virtual-base-subobject":
+                    EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
+                    Node virtualOwner = Child(node, "operand");
+                    if (!visitingCleanupTarget || !Place(virtualOwner) || virtualOwner.TypeId is not long virtualOwnerType ||
+                        !obj.VirtualBaseExpressions.TryGetValue(node.Id, out long completeBase) ||
+                        !obj.VirtualBaseSubobjects.TryGetValue((virtualOwnerType, completeBase), out VirtualBaseSubobject? virtualView) ||
+                        virtualView.CompleteBaseTypeId != node.TypeId || virtualView.FieldId is not null)
+                        Fail("Virtual base view requires its exact observed placement inside a cleanup address recipe");
+                    break;
                 case "base-subobject":
                     EdgeShape(node, ("operand", 1, 1)); Expr(node, "operand");
                     Node containing = Child(node, "operand");
@@ -757,6 +766,16 @@ internal static class Verifier
             foreach (Edge edge in edges)
                 if (!body.Nodes.ContainsKey(edge.ParentId) || !body.Nodes.ContainsKey(edge.ChildId)) Fail("Edge leaves function body");
         Visit(root!, [], parameters.Select(parameter => parameter.Id).ToHashSet(), [], 0);
+        foreach (ArrayRuntimeOperation operation in obj.ArrayRuntimeOperations.Values.Where(operation => body.Nodes.ContainsKey(operation.NodeId)))
+        {
+            Node call = body.Nodes[operation.NodeId];
+            string method = RuntimeArrayProvider.TryGetMethod(new Symbol(obj, obj.Entities[call.EntityId!.Value]))!;
+            int callbackOrdinal = method == "CopyConstruct" ? 5 : method == "Construct" ? 4 : 3;
+            Node callback = body.Nodes[body.Children(call.Id, "argument").Single(edge => edge.Ordinal == callbackOrdinal).ChildId];
+            while (callback.Kind == "convert") callback = body.Child(callback.Id, "operand");
+            if (callback.Kind != "function-address" || callback.EntityId != operation.CallbackEntityId)
+                Fail("Array runtime destructor argument differs from its observed original destruction obligation");
+        }
         var actionBindings = new Dictionary<long, HashSet<long>>();
         foreach (CleanupAction action in obj.FunctionCleanupActions.GetValueOrDefault(function.Id, []))
         {
@@ -772,6 +791,13 @@ internal static class Verifier
                     binding.Kind != "local" || !binding.IsSynthetic || obj.Type(binding.TypeId) != "i32")
                     Fail("Conditional cleanup flag is not an owned synthetic integer local");
                 captures.Add(flag);
+            }
+            if (obj.CleanupVttArguments.TryGetValue(action.Id, out long vtt))
+            {
+                if (!body.Bindings.TryGetValue(vtt, out Binding? binding) || binding.FunctionId != function.Id ||
+                    !ScalarTypes.IsPointer(obj.Type(binding.TypeId)))
+                    Fail("Subobject cleanup VTT argument is not an owned pointer binding");
+                captures.Add(vtt);
             }
             actionBindings.Add(action.Id, captures);
             body.CleanupCapturedBindings.UnionWith(captures);
@@ -807,7 +833,7 @@ internal static class Verifier
             .ToLookup(edge => edge.ChildId);
         foreach (Node node in body.Nodes.Values)
         {
-            if (node.Kind == "base-subobject" && (parents[node.Id].Count() != 1 || parents[node.Id].Any(edge =>
+            if (node.Kind is "base-subobject" or "virtual-base-subobject" && (parents[node.Id].Count() != 1 || parents[node.Id].Any(edge =>
                 body.Nodes[edge.ParentId].Kind != "address" || edge.Role != "operand")))
                 Fail("Zero-extent base subobject is an address-only view, not a complete object value");
             if (node.Kind == "volatile-place" && accessAlignment.Place(node) < obj.AccessAlignment(Type(node)))

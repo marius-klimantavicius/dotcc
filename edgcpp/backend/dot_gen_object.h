@@ -19,7 +19,7 @@ string array(const std::vector<string> &values) {
   return result+"]";
 }
 [[noreturn]] void reject(const char *what,int kind=-1) {
-  unsupported((string("dotobj scalar-v35: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v36: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -35,6 +35,7 @@ struct Writer {
     a_routine_ptr callback=nullptr;
     a_dynamic_init_ptr original=nullptr;
     const dot_object_source::CleanupSnapshot *observed=nullptr;
+    unsigned long long array_count=0,array_element_size=0;
   };
   unsigned next_cleanup_state=1,next_cleanup_action=1;
   std::map<unsigned long long,PendingCleanup> active_cleanup;
@@ -42,7 +43,9 @@ struct Writer {
   std::map<a_dynamic_init_ptr,const dot_object_source::CleanupSnapshot*> active_payload_subobjects;
   std::map<an_expr_node_ptr,a_dynamic_init_ptr> active_normal_calls;
   std::set<a_dynamic_init_ptr> active_normal_obligations,emitted_normal_obligations;
-  std::vector<string> normal_destructions;
+  std::vector<string> normal_destructions,cleanup_arrays,cleanup_vtt_arguments,array_runtime_operations;
+  std::map<an_expr_node_ptr,std::pair<a_dynamic_init_ptr,const dot_object_source::ArrayRuntimeSnapshot*>> active_array_runtime;
+  std::set<a_dynamic_init_ptr> active_array_obligations,emitted_array_obligations,covered_source_obligations,required_source_obligations;
   an_expr_node_ptr active_cleanup_prologue=nullptr;
   bool active_expression_lifetimes=false;
   std::set<a_variable_ptr> cleanup_metadata;
@@ -94,7 +97,7 @@ struct Writer {
   std::map<std::pair<unsigned,std::pair<unsigned long long,bool>>,unsigned> array_types;
   std::vector<string> execution_types,record_types,record_fields;
   std::vector<string> source_records,source_fields,source_bases,record_base_subobjects,abi_routine_origins;
-  std::vector<string> base_subobject_expressions,source_record_operations,record_value_transfers;
+  std::vector<string> base_subobject_expressions,virtual_base_subobjects,virtual_base_expressions,source_record_operations,record_value_transfers;
   std::map<a_base_class_ptr,unsigned> source_base_ids;
   unsigned next_source_base=1;
   std::map<a_type_ptr,unsigned> source_record_ids;
@@ -189,8 +192,6 @@ struct Writer {
     const dot_object_source::Record *source=abi?nullptr:&found->second;
     if(source && !source->error.empty())reject((source->identity+": "+source->error).c_str());
     if(source && source->has_bases && pre==captured.prelower_records.end())reject("base layout lacks prelowering provenance");
-    if(pre!=captured.prelower_records.end())for(const auto &base:pre->second.bases)
-      if(base.is_virtual)reject("virtual base/VTT execution layout is not represented");
     if(source && source->has_virtual_functions && pre==captured.prelower_records.end())
       reject("virtual record lacks an observed prelowering boundary");
     if(pre!=captured.prelower_records.end() && !pre->second.error.empty())reject(pre->second.error.c_str());
@@ -212,7 +213,8 @@ struct Writer {
     a_source_position pos={};
     if(abi) {
       auto key=captured.abi_record_keys.find(t);
-      if(key==captured.abi_record_keys.end())reject("unclassified compiler ABI record creation");
+      if(key==captured.abi_record_keys.end())reject((string("unclassified compiler ABI record creation: ")+
+        source_spelling(&t->source_corresp)+" fields="+[&](){string r;for(auto f=t->variant.class_struct_union.field_list;f;f=f->next)r+=source_spelling(&f->source_corresp)+",";return r;}()).c_str());
       identity=key->second;name=source_spelling(&t->source_corresp);
     } else {
       identity=source->identity;name=source->name;layout=source->layout_kind;pos=source->position;
@@ -318,9 +320,18 @@ struct Writer {
         source_type_id=source_type(field.source_type);source_field=source_field_ids.at(original_field);
         if(f->offset!=field.offset)reject("original field offset changed during lowering");
       } else if(base_field!=captured.generated_base_fields.end()) {
-        auto mapped=source_base_ids.find(base_field->second);
-        if(mapped==source_base_ids.end())reject("physical base lacks direct original declaration");
-        source_base=mapped->second;role="base";field_name=source_spelling(&f->source_corresp);
+        if(base_field->second->is_virtual) {
+          bool observed=false;
+          if(pre!=captured.prelower_records.end())for(const auto &base:pre->second.virtual_bases)
+            if(base.il==base_field->second)observed=true;
+          if(!observed)reject("physical virtual base lacks exact prelower placement");
+          role="virtual-base";
+        } else {
+          auto mapped=source_base_ids.find(base_field->second);
+          if(mapped==source_base_ids.end())reject("physical base lacks direct original declaration");
+          source_base=mapped->second;role="base";
+        }
+        field_name=source_spelling(&f->source_corresp);
       } else if(abi) {role="abi";field_name=source_spelling(&f->source_corresp);}
       else {
         auto generated=captured.generated_field_roles.find(f);
@@ -356,6 +367,7 @@ struct Writer {
         ",\"sourceFieldId\":"+number(source_field)+",\"fieldRole\":"+quote(role)+",\"sourceBaseId\":"+number(source_base)+",\"observedAlignment\":"+observed_alignment+"}");
     }
     if(source && pre!=captured.prelower_records.end())for(const auto &base:pre->second.bases) {
+      if(base.is_virtual)continue;
       a_field_ptr physical=nullptr;
       for(auto f=t->variant.class_struct_union.field_list;f;f=f->next) {
         auto entry=captured.generated_base_fields.find(f);
@@ -371,6 +383,31 @@ struct Writer {
         ",\"completeBaseTypeId\":"+number(base_complete)+",\"physicalViewTypeId\":"+number(physical?type_id(physical->type):0)+
         ",\"byteOffset\":"+std::to_string(base.il->offset)+",\"extent\":"+std::to_string(physical?skip_typerefs(physical->type)->size:0)+
         ",\"fieldId\":"+number(physical?field_ids.at(physical):0)+"}");
+    }
+    if(source && pre!=captured.prelower_records.end())for(const auto &base:pre->second.virtual_bases) {
+      a_field_ptr physical=nullptr;
+      for(auto field=t->variant.class_struct_union.field_list;field;field=field->next) {
+        auto entry=captured.generated_base_fields.find(field);
+        if(entry!=captured.generated_base_fields.end() && entry->second==base.il) {
+          if(physical)reject("duplicate physical virtual base");
+          physical=field;
+        }
+      }
+      // Nonprimary virtual bases live only in the complete object. A primary
+      // virtual base can be retained in the subobject's physical field list.
+      if(subobject && !physical)continue;
+      auto base_type=skip_typerefs(base.il->type);
+      auto partner=base_type->variant.class_struct_union.extra_info->subobject_partner;
+      auto view_type=physical?skip_typerefs(physical->type):partner?partner:base_type;
+      if(!physical && !base.il->is_optimized_empty_base && !base.il->shares_virtual_function_info)
+        reject("virtual base placement lacks physical/empty/shared proof");
+      if(physical && physical->offset!=base.il->offset)reject("virtual base placement differs from observed descriptor");
+      auto extent=base.il->is_optimized_empty_base?0:view_type->size;
+      if(base.il->offset>t->size || extent>t->size-base.il->offset)reject("virtual base placement exceeds containing extent");
+      virtual_base_subobjects.push_back("{\"recordTypeId\":"+number(id)+",\"completeBaseTypeId\":"+number(record_type(base_type))+
+        ",\"physicalViewTypeId\":"+number(extent?type_id(view_type):0)+",\"byteOffset\":"+std::to_string(base.il->offset)+
+        ",\"extent\":"+std::to_string(extent)+",\"fieldId\":"+number(physical?field_ids.at(physical):0)+
+        ",\"captureProof\":\"observed-virtual-base-placement\"}");
     }
     return id;
   }
@@ -777,7 +814,8 @@ struct Writer {
   const dot_object_source::RoutineAbi &source_abi(unsigned captured) {
     const auto &state=dot_object_source::state();
     auto found=state.routine_abis.find(captured);
-    if(found==state.routine_abis.end())reject("source routine has no observed calling-method ABI");
+    if(found==state.routine_abis.end())reject((string("source routine has no observed calling-method ABI: type=")+std::to_string(captured)+
+      " object="+std::to_string(state.types.at(captured-1).object_type)+" params="+std::to_string(state.types.at(captured-1).parameters.size())).c_str());
     const auto &abi=found->second;
     const auto &source=state.types.at(captured-1);
     if(!abi.error.empty())reject(abi.error.c_str());
@@ -804,6 +842,7 @@ struct Writer {
     auto result_slot=[&](){result.push_back({"result-buffer",0,pointer_type(source_execution_type(source.result))});};
     if(abi.result_buffer && (!source.object_type || !abi.result_follows_this))result_slot();
     if(source.object_type)result.push_back({"this",0,pointer_type(source_execution_type(source.object_type))});
+    if(abi.vtt_type)result.push_back({"vtt",0,type_id(abi.vtt_type)});
     if(abi.result_buffer && source.object_type && abi.result_follows_this)result_slot();
     for(unsigned i=0;i<source.parameters.size();++i) {
       unsigned type=adjusted_source_parameter(source.parameters[i]);
@@ -988,6 +1027,7 @@ struct Writer {
     active_payload_subobjects.clear();
     active_expression_lifetimes=false;
     active_normal_calls.clear();active_normal_obligations.clear();emitted_normal_obligations.clear();
+    active_array_runtime.clear();active_array_obligations.clear();emitted_array_obligations.clear();
     auto &captured=dot_object_source::state();
     for(const auto &observed:captured.payload_subobjects)if(observed.owner==owner) {
       auto original=dot_object_source::source_destruction(observed.original,owner);
@@ -1003,13 +1043,27 @@ struct Writer {
       if(callback!=captured.destructions.at(source).destructor)reject("normal destruction callback origin mismatch");
       active_normal_calls.emplace(call,source);active_normal_obligations.insert(source);
     }
+    for(auto call:captured.array_runtime_order[owner]) {
+      const auto &observed=captured.array_runtime_calls.at(call);
+      auto source=dot_object_source::source_destruction(observed.original,owner);
+      if(!source)continue;
+      auto callback=dot_object_source::abi_primary(observed.callback);if(!callback)callback=observed.callback;
+      if(callback!=captured.destructions.at(source).destructor)reject("array runtime callback origin mismatch");
+      active_array_runtime.emplace(call,std::make_pair(source,&observed));active_array_obligations.insert(source);
+    }
     std::vector<an_expr_node_ptr> frames;find_cleanup_frames(scope->assoc_block,frames);
     if(frames.size()>1)reject("multiple observed cleanup prologues");
     if(frames.empty())return;
     auto frame=frames[0]->variant.lowered_eh.variant.prologue_info;
     if(frame->routine!=owner)reject("cleanup prologue routine mismatch");
     active_cleanup_prologue=frames[0];
-    if(frame->array_table)reject("cleanup array actions require owned array contract");
+    std::vector<a_constant_ptr> array_entries;
+    if(frame->array_table) {
+      cleanup_metadata.insert(frame->array_table);
+      auto array_initializer=cleanup_initializer(scope,frame->array_table);
+      if(!array_initializer)reject("cleanup prologue lacks exact array initializer");
+      array_entries=cleanup_fields(array_initializer);
+    }
     if(!frame->region_table)return;
     cleanup_metadata.insert(frame->region_table);
     auto initializer=cleanup_initializer(scope,frame->region_table);
@@ -1019,8 +1073,9 @@ struct Writer {
       auto entry=entries[raw];unsigned state_raw=raw;
       auto fields=cleanup_fields(entry,4);auto callback=fields[0];
       auto flags=cleanup_number(fields[3]);
-      if(flags&~0x53ULL || ((flags&0x11)==0x11))
-        reject("cleanup action outside scalar local/member/base flags");
+      if(flags&~0x7bULL || ((flags&0x11)==0x11) || ((flags&0x48)==0x48) ||
+         ((flags&0x20) && ((flags&0x48)!=0x40)))
+        reject("cleanup action outside fixed array/local/member/base/VTT flags");
       if(callback->kind!=ck_address || callback->variant.address.kind!=abk_routine || callback->variant.address.offset)
         reject("cleanup callback lacks exact routine address");
       auto found=dot_object_source::state().cleanup_regions.find(entry);
@@ -1034,7 +1089,19 @@ struct Writer {
         value.next=cleanup_number(fields[2]);value.observed=&observed;
         active_cleanup.emplace(state_raw,value);continue;
       }
-      if(bool(flags&0x40)!=observed.base_subobject)reject("cleanup region base-subobject proof mismatch");
+      if(bool(flags&0x40)!=bool(observed.base_subobject || observed.delegation))reject("cleanup region base-subobject proof mismatch");
+      if(bool(flags&0x08)!=observed.array)reject("cleanup array proof mismatch");
+      if(bool(flags&0x20)!=bool(observed.vtt_argument))reject("cleanup VTT proof mismatch");
+      unsigned long long array_count=0,array_element_size=0;
+      if(observed.array) {
+        auto index=cleanup_number(fields[1]);
+        if(index>=array_entries.size())reject("cleanup array table index outside exact table");
+        auto array=cleanup_fields(array_entries[index],3);
+        array_element_size=cleanup_number(array[1]);array_count=cleanup_number(array[2]);
+        if(!observed.element_type || array_element_size!=skip_typerefs(observed.element_type)->size ||
+           array_count!=observed.element_count || !array_count || !array_element_size || array_count>2147483647ULL)
+          reject("cleanup array extent differs from observed typed position");
+      }
       if(bool(flags&0x02)!=bool(observed.conditional_flag))reject("cleanup conditional flag proof mismatch");
       if(observed.conditional_flag) {
         // Stock C stores the condition in an adjacent supplementary region.
@@ -1052,6 +1119,16 @@ struct Writer {
            dot_object_source::state().variables.count(flag))
           reject("conditional cleanup flag is not an observed synthetic automatic int");
       }
+      if(observed.vtt_argument) {
+        if(raw+1>=entries.size())reject("VTT cleanup lacks argument supplement");
+        auto supplement=cleanup_fields(entries[++raw],4);auto handle=supplement[1];
+        if(cleanup_number(supplement[0]) || cleanup_number(supplement[2])!=null_eh_region_number ||
+           cleanup_number(supplement[3])!=1 || handle->kind!=ck_stack_offset ||
+           handle->variant.stack_offset.variable!=observed.vtt_argument || handle->variant.stack_offset.offset ||
+           skip_typerefs(observed.vtt_argument->type)->kind!=tk_pointer ||
+           var_has_static_or_thread_storage_duration(observed.vtt_argument))
+          reject("VTT cleanup supplement differs from observed automatic argument");
+      }
       auto original=dot_object_source::source_destruction(observed.original,owner);
       if(!original)reject("cleanup region lacks original source destruction");
       const auto &source=dot_object_source::state().destructions.at(original);
@@ -1064,11 +1141,14 @@ struct Writer {
       auto extra=signature->variant.routine.extra_info;
       auto parameter=extra->param_type_list;
       if(selected->special_kind!=sfk_destructor || skip_typerefs(signature->variant.routine.return_type)->kind!=tk_void ||
-         !parameter || parameter->next || extra->has_ellipsis || skip_typerefs(parameter->type)->kind!=tk_pointer)
-        reject("cleanup callback outside ordinary one-pointer void destructor ABI");
+         !parameter || extra->has_ellipsis || skip_typerefs(parameter->type)->kind!=tk_pointer ||
+         (observed.vtt_argument?(!parameter->next || parameter->next->next ||
+           type_id(parameter->next->type)!=type_id(observed.vtt_argument->type)):parameter->next!=nullptr))
+        reject("cleanup callback outside observed receiver/VTT void destructor ABI");
       if(state_raw==null_eh_region_number)reject("cleanup state collides with frontend null sentinel");
       PendingCleanup value;value.state_id=next_cleanup_state++;value.action_id=next_cleanup_action++;
       value.next=cleanup_number(fields[2]);value.callback=selected;value.original=original;value.observed=&observed;
+      value.array_count=array_count;value.array_element_size=array_element_size;
       active_cleanup.emplace(state_raw,value);active_source_obligations.insert(original);
     }
     for(const auto &entry:active_cleanup) {
@@ -1090,30 +1170,34 @@ struct Writer {
         if(release!=dot_object_source::state().handler_releases.end() && release->second.first==current_routine)continue;
       }
       auto source=current_routine?dot_object_source::source_destruction(dip,current_routine):nullptr;
-      if(!source || (!active_source_obligations.count(source) && !active_normal_obligations.count(source) && !active_payload_subobjects.count(source)))
+      if(!source || (!active_source_obligations.count(source) && !active_normal_obligations.count(source) && !active_payload_subobjects.count(source) && !active_array_obligations.count(source)))
         reject((string("destruction obligations lack owned cleanup action or normal call: ")+
           (dip->destructor?source_spelling(&dip->destructor->source_corresp):"no destructor")+
-          (source?" (source captured)":" (source missing)")).c_str());
+          (source?" (source captured)":" (source missing)")+" active-actions="+std::to_string(active_cleanup.size())+
+          " active-obligations="+std::to_string(active_source_obligations.size())+
+          " variable="+(dip->variable?source_spelling(&dip->variable->source_corresp):"none")+
+          " lifetime-kind="+std::to_string(lifetime->kind)+
+          " source-type="+(source?dot_object_source::state().types.at(dot_object_source::state().destructions.at(source).source_type-1).kind:"unknown")+
+          " source-ordinal="+(source?std::to_string(dot_object_source::state().destructions.at(source).ordinal):"none")+
+          " action-source-ordinals="+[&](){string r;for(auto original:active_source_obligations)r+=std::to_string(dot_object_source::state().destructions.at(original).ordinal)+":"+
+            dot_object_source::state().types.at(dot_object_source::state().destructions.at(original).source_type-1).kind+",";return r;}()).c_str());
     }
     for(auto child=lifetime->child_lifetime;child;child=child->next)check_lifetime(child);
   }
   void source_cleanup_metadata(a_routine_ptr execution) {
     auto &captured=dot_object_source::state();auto primary=dot_object_source::abi_primary(execution);
     auto owner=primary?primary:execution;
+    for(auto original:captured.destruction_order[owner])required_source_obligations.insert(original);
     // An observed ABI forwarding entry has no independent source lifetime.
     // Its source primary owns that graph; only a body with actions republishes
     // the original obligations under the exact ABI-origin relation.
-    if(primary && active_cleanup.empty() && emitted_normal_obligations.empty() && active_payload_subobjects.empty() && !active_expression_lifetimes)return;
+    if(primary && active_cleanup.empty() && emitted_normal_obligations.empty() && active_payload_subobjects.empty() && emitted_array_obligations.empty() && !active_expression_lifetimes)return;
     const auto &original_lifetimes=captured.lifetime_order[owner];
     const auto &original_destructions=captured.destruction_order[owner];
-    // Each original obligation has an unwind action, an emitted normal call,
-    // or an observed subobject owned by a complete thrown payload. The latter
-    // must also name an actually emitted throw when write_owned_cleanup runs.
-    for(auto original:original_destructions) {
-      if(!active_source_obligations.count(original) && !emitted_normal_obligations.count(original) && !active_payload_subobjects.count(original))
-        reject("original source destruction has no owned cleanup action or normal call");
-    }
-    if(active_cleanup.empty() && emitted_normal_obligations.empty() && active_payload_subobjects.empty() && !active_expression_lifetimes)return;
+    // Each execution variant owns only the actions present in its body. EDG
+    // complete/subobject/delegation entry points share the original source
+    // graph; prove coverage across emitted variants after all bodies exist.
+    if(active_cleanup.empty() && emitted_normal_obligations.empty() && active_payload_subobjects.empty() && emitted_array_obligations.empty() && !active_expression_lifetimes)return;
     if(!emitted_cleanup_sources.insert(owner).second)return;
     unsigned owner_id=routine(owner);
     for(auto original:original_lifetimes)
@@ -1165,12 +1249,12 @@ struct Writer {
         }
       }
     }
-    if(part.base && part.base->is_optimized_empty_base) {
+    if(part.base && (part.base->is_optimized_empty_base || (part.base->is_virtual && part.base->shares_virtual_function_info))) {
       auto complete=parent;auto view=captured.observed_subobjects.find(parent);
       if(view!=captured.observed_subobjects.end())complete=view->second;
       auto original=captured.prelower_records.find(complete);
       if(original!=captured.prelower_records.end())
-        for(const auto &base:original->second.bases)if(base.il==part.base)return nullptr;
+        for(const auto &base:part.base->is_virtual?original->second.virtual_bases:original->second.bases)if(base.il==part.base)return nullptr;
     }
     reject("cleanup member/base path lacks exact lowered field correspondence");
   }
@@ -1200,16 +1284,17 @@ struct Writer {
     }
     for(const auto &part:observed.path) {
       if(part.field || part.base) {
-        if(part.base && part.base->is_virtual)reject("virtual base cleanup path needs explicit virtual adjustment");
         auto field=cleanup_path_field(type,part);
         if(!field) {
           // Empty-base optimization removes the physical field, not the
           // source base identity or its observed address. Keep an address-only
           // place tied to recordBaseSubobjects; never allocate a dummy byte.
           type=skip_typerefs(part.base->type);
-          unsigned base=node("base-subobject",type_id(type),pos,0,0,"","","place","none");
+          unsigned base=node(part.base->is_virtual?"virtual-base-subobject":"base-subobject",type_id(type),pos,0,0,"","","place","none");
           edge(base,"operand",0,result);
-          base_subobject_expressions.push_back("{\"nodeId\":"+number(base)+
+          if(part.base->is_virtual)virtual_base_expressions.push_back("{\"nodeId\":"+number(base)+
+            ",\"completeBaseTypeId\":"+number(type_id(type))+"}");
+          else base_subobject_expressions.push_back("{\"nodeId\":"+number(base)+
             ",\"sourceBaseId\":"+number(source_base_ids.at(part.base))+"}");
           result=base;continue;
         }
@@ -1228,8 +1313,19 @@ struct Writer {
         result=node("dereference",type_id(type),pos,0,0,"","","place","none");edge(result,"operand",0,add);
       }
     }
+    if(observed.array) {
+      // Retain typed array decay to the underlying leaf, including all fixed
+      // dimensions. Counts/strides come from the observed EDG array region.
+      while(type->kind==tk_array) {
+        type=skip_typerefs(type->variant.array.element_type);
+        unsigned decay=node("array-decay",pointer_type(type_id(type)),pos,0,0,"","","value","none");
+        edge(decay,"operand",0,result);
+        result=node("dereference",type_id(type),pos,0,0,"","","place","none");edge(result,"operand",0,decay);
+      }
+      if(type!=skip_typerefs(observed.element_type))reject("cleanup array leaf differs from observed element");
+    }
     if(type->kind!=tk_struct && type->kind!=tk_class && type->kind!=tk_union)
-      reject("cleanup target is not scalar object");
+      reject("cleanup target is not object leaf");
     unsigned address_type=pointer_type(type_id(type));
     unsigned address=node("address",address_type,pos,0,0,"","","value","none");edge(address,"operand",0,result);
     auto callback=skip_typerefs(entry.callback->type);auto parameter=callback->variant.routine.extra_info->param_type_list;
@@ -1237,7 +1333,7 @@ struct Writer {
     unsigned expected_pointer=type_id(parameter->type);
     if(address_type!=expected_pointer) {
       auto found=dot_object_source::state().observed_subobjects.find(type);
-      if(!observed.base_subobject || found==dot_object_source::state().observed_subobjects.end() || found->second!=expected)
+      if(!(observed.base_subobject || observed.delegation) || found==dot_object_source::state().observed_subobjects.end() || found->second!=expected)
         reject("cleanup target pointer differs from exact destructor receiver");
       unsigned convert=node("convert",expected_pointer,pos,0,0,"","","value","left-to-right");
       edge(convert,"operand",0,address);address=convert;
@@ -1350,12 +1446,25 @@ struct Writer {
         cleanup_conditions.push_back("{\"actionId\":"+number(entry.action_id)+",\"flagBindingId\":"+number(binding->second)+
           ",\"captureProof\":\"observed-conditional-cleanup-flag\"}");
       }
+      if(entry.observed->array)cleanup_arrays.push_back("{\"actionId\":"+number(entry.action_id)+
+        ",\"elementTypeId\":"+number(type_id(entry.observed->element_type))+",\"elementCount\":"+std::to_string(entry.array_count)+
+        ",\"elementSize\":"+std::to_string(entry.array_element_size)+",\"captureProof\":\"observed-array-region\"}");
+      if(entry.observed->vtt_argument) {
+        auto binding=binding_ids.find(entry.observed->vtt_argument);
+        if(binding==binding_ids.end())reject("VTT cleanup argument lacks owned binding");
+        cleanup_vtt_arguments.push_back("{\"actionId\":"+number(entry.action_id)+",\"bindingId\":"+number(binding->second)+
+          ",\"captureProof\":\"observed-subobject-vtt\"}");
+      }
       cleanup_actions.push_back("{\"id\":"+number(entry.action_id)+",\"functionEntityId\":"+number(function)+
         ",\"sourceObligationId\":"+number(source_obligation_ids.at(entry.original))+",\"callbackEntityId\":"+number(callback)+
         ",\"targetNodeId\":"+number(target)+",\"captureProof\":\"observed-region-entry\"}");
       cleanup_states.push_back("{\"id\":"+number(entry.state_id)+",\"functionEntityId\":"+number(function)+
         ",\"actionId\":"+number(entry.action_id)+",\"nextStateId\":"+number(next)+",\"handlerNodeId\":null}");
     }
+    covered_source_obligations.insert(active_source_obligations.begin(),active_source_obligations.end());
+    covered_source_obligations.insert(emitted_normal_obligations.begin(),emitted_normal_obligations.end());
+    covered_source_obligations.insert(emitted_array_obligations.begin(),emitted_array_obligations.end());
+    for(const auto &entry:active_payload_subobjects)covered_source_obligations.insert(entry.first);
   }
   void validate_file_initializers(a_scope_ptr file_scope) {
     auto &captured=dot_object_source::state();
@@ -1474,6 +1583,10 @@ struct Writer {
   unsigned routine(a_routine_ptr r) {
     auto found=routine_ids.find(r);if(found!=routine_ids.end())return found->second;
     diagnostic_scope diagnostic(r->source_corresp.decl_position);
+#if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN
+    if(r->overriding_function_for_wrapper)
+      reject("adjusting virtual/covariant thunk requires owned wrapper provenance");
+#endif
     auto primary=dot_object_source::abi_primary(r);
     auto adapter_it=dot_object_source::state().default_adapters.find(r);
     const dot_object_source::DefaultAdapter *adapter=adapter_it==dot_object_source::state().default_adapters.end()?nullptr:&adapter_it->second;
@@ -1482,12 +1595,12 @@ struct Writer {
     if(primary) {
       if(dot_object_source::abi_primary(primary) || primary==r)reject("cyclic/generated primary ABI origin");
       entry_kind=adapter?"constructor-default-adapter":r->ctor_dtor_kind==cdk_deleting?"deleting":r->ctor_dtor_kind==cdk_subobject?"subobject":
-        r->ctor_dtor_kind==cdk_complete?"complete":"unsupported";
+        r->ctor_dtor_kind==cdk_complete?"complete":r->ctor_dtor_kind==cdk_delegation?"delegation":"unsupported";
       if(entry_kind=="unsupported" || ctors_return_this || dtors_return_this || targ_ia64_abi_variant_ctors_and_dtors_return_this)
         reject("alternate entry outside ordinary nondelegating void-return ABI");
       auto original=dot_object_source::state().functions.find(primary);
       if(original==dot_object_source::state().functions.end() || original->second.function_kind=="ordinary" ||
-         (entry_kind=="deleting" && original->second.function_kind!="destructor"))reject("alternate lacks original constructor/destructor proof");
+         ((entry_kind=="deleting" || entry_kind=="delegation") && original->second.function_kind!="destructor"))reject("alternate lacks original constructor/destructor proof");
       const auto &signature=dot_object_source::state().types.at(original->second.signature_type-1);
       if(signature.variadic || !signature.object_type)reject("variadic/receiverless alternate entry");
       if(adapter) {
@@ -1581,6 +1694,10 @@ struct Writer {
     bool has_this=source_signature.object_type!=0;
     if(!adapter && has_this!=(extra->this_class!=nullptr))reject("source/execution receiver disagreement");
     auto slots=source_abi_slots(source_function_value.signature_type);
+#if DO_IL_LOWERING && IA64_ABI
+    if(primary && !adapter && r->ctor_dtor_kind!=cdk_subobject && r->ctor_dtor_kind!=cdk_delegation)
+      slots.erase(std::remove_if(slots.begin(),slots.end(),[](const AbiSlot &slot){return slot.role=="vtt";}),slots.end());
+#endif
     if(adapter) {
       slots.erase(std::remove_if(slots.begin(),slots.end(),[](const AbiSlot &slot){return slot.role!="this";}),slots.end());
       if(slots.size()!=1)reject("default adapter lacks its original receiver ABI");
@@ -1642,6 +1759,12 @@ struct Writer {
           if(!v->is_this_parameter || !original.scope_captured || original.implicit_this!=v ||
              function_scope->variant.routine.this_param_variable!=v || source!=dot_object_source::state().variables.end())
             reject("implicit receiver lacks original scope identity proof");
+          synthetic=true;
+        } else if(slot.role=="vtt") {
+          auto vtt=dot_object_source::state().vtt_parameters.find(current_routine);
+          if(vtt==dot_object_source::state().vtt_parameters.end() || vtt->second!=v ||
+             source!=dot_object_source::state().variables.end() || !(v->compiler_generated || v->lowering_generated))
+            reject("VTT parameter lacks observed lowering variable identity");
           synthetic=true;
         } else if(slot.role=="result-buffer") {
           auto result=dot_object_source::state().result_parameters.find(current_routine);
@@ -1919,6 +2042,15 @@ struct Writer {
   }
   unsigned expression(an_expr_node_ptr e) {
     unsigned result=expression_core(e);
+    auto array=active_array_runtime.find(e);
+    if(array!=active_array_runtime.end()) {
+      auto original=array->second.first;const auto &observed=*array->second.second;
+      unsigned source=source_obligation_ids.emplace(original,unsigned(source_obligation_ids.size()+1)).first->second;
+      array_runtime_operations.push_back("{\"nodeId\":"+number(result)+",\"sourceObligationId\":"+number(source)+
+        ",\"callbackEntityId\":"+number(routine(observed.callback))+",\"operationKind\":"+quote(observed.operation)+
+        ",\"captureProof\":\"observed-array-runtime\"}");
+      emitted_array_obligations.insert(original);
+    }
     auto normal=active_normal_calls.find(e);
     if(normal!=active_normal_calls.end()) {
       auto original=normal->second;
@@ -3063,6 +3195,9 @@ struct Writer {
       functions.push_back("{\"entityId\":"+number(function)+",\"bodyNodeId\":"+number(root)+"}");
       context="file scope";
     }
+    for(auto obligation:required_source_obligations)
+      if(!covered_source_obligations.count(obligation) || !source_obligation_ids.count(obligation))
+        reject("original source destruction lacks an owned emitted action across its ABI variants");
     write_dynamic_initializer_origins();
     for(const auto &storage_bytes:bitfield_data) {
       string bytes;unsigned long long begin=0,previous=0;
@@ -3079,13 +3214,13 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v35\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v36\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
       ",\"sourceFunctions\":"+array(source_functions)+",\"sourceParameters\":"+array(source_parameters)+
       ",\"sourceLifetimes\":"+array(source_lifetimes)+",\"sourceDestructionObligations\":"+array(source_destruction_obligations)+
-      ",\"cleanupActions\":"+array(cleanup_actions)+",\"cleanupStates\":"+array(cleanup_states)+
+      ",\"cleanupActions\":"+array(cleanup_actions)+",\"cleanupArrays\":"+array(cleanup_arrays)+",\"cleanupVttArguments\":"+array(cleanup_vtt_arguments)+",\"arrayRuntimeOperations\":"+array(array_runtime_operations)+",\"cleanupStates\":"+array(cleanup_states)+
       ",\"cleanupTransitions\":"+array(cleanup_transitions)+",\"cleanupFrameMarkers\":"+array(cleanup_frame_markers)+
       ",\"expressionLifetimes\":"+array(expression_lifetimes)+
       ",\"normalDestructions\":"+array(normal_destructions)+",\"cleanupConditions\":"+array(cleanup_conditions)+
@@ -3100,7 +3235,7 @@ struct Writer {
       ",\"sourceTries\":"+array(source_tries)+",\"sourceHandlers\":"+array(source_handlers)+
       ",\"handlerMarkers\":"+array(handler_markers)+",\"caughtObjectAddresses\":"+array(caught_object_addresses)+
       ",\"recordValueTransfers\":"+array(record_value_transfers)+",\"sourceFields\":"+array(source_fields)+
-      ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+
+      ",\"sourceBases\":"+array(source_bases)+",\"recordBaseSubobjects\":"+array(record_base_subobjects)+",\"virtualBaseSubobjects\":"+array(virtual_base_subobjects)+",\"virtualBaseExpressions\":"+array(virtual_base_expressions)+
       ",\"baseSubobjectExpressions\":"+array(base_subobject_expressions)+
       ",\"abiRoutineOrigins\":"+array(abi_routine_origins)+
       ",\"recordTypes\":"+array(record_types)+",\"recordFields\":"+array(record_fields)+

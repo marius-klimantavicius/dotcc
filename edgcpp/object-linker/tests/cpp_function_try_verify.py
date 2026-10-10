@@ -84,7 +84,7 @@ def main():
         inputs.rename(out / 'retained-source')
         generated = out / 'generated'
         run('source-hidden-link', ['dotnet', args.linker.resolve(), 'link', '--out', generated,
-            '--namespace', 'Tests.FunctionTry', '--class', 'Core', '--allow-externs', obj])
+            '--namespace', 'Tests.FunctionTry', '--class', 'Core', '--exception-provider', 'external', '--allow-externs', obj])
         report = json.loads((generated / 'link-report.json').read_text())
         check('advertised-source-try-kinds', report['sourceExceptionRuntime']['sourceTryKinds'] == ['ordinary','constructor','destructor'])
         source_map = json.loads((generated / 'source-map.json').read_text())['objects'][0]

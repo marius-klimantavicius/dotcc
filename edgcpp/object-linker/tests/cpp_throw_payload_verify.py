@@ -101,7 +101,7 @@ def main():
         inputs.rename(out / 'retained-source')
         generated = out / 'generated'
         run('source-hidden-link', ['dotnet', args.linker.resolve(), 'link', '--out', generated,
-            '--namespace', 'Tests.ThrowPayload', '--class', 'Core', '--allow-externs', obj])
+            '--namespace', 'Tests.ThrowPayload', '--class', 'Core', '--exception-provider', 'external', '--allow-externs', obj])
         shutil.copy2(out / 'retained-source/ThrowPayloadHost.cs', generated / 'ThrowPayloadHost.cs')
         project = generated / 'Translated.csproj'
         project.write_text(project.read_text().replace('<OutputType>Library</OutputType>',

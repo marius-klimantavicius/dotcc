@@ -153,6 +153,8 @@ internal sealed partial class ObjectFile
                 SourceFunctionKinds.Add(entity, functionKind);
                 EntitySourceRoutines.Add(entity, sourceSignature);
                 var slots = RoutineAbiParameters(sourceSignature.TypeId);
+                if (slots.Any(slot => slot.ParameterRole == "vtt") && functionKind is not ("constructor" or "destructor"))
+                    throw new InvalidDataException("VTT pointer requires an original constructor or destructor");
                 var executionParameters = Parameters.GetValueOrDefault(entity, []);
                 if (executionParameters.Count != slots.Count)
                     throw new InvalidDataException("Execution parameters do not map to original explicit parameters and receiver");
@@ -241,7 +243,7 @@ internal sealed partial class ObjectFile
         RejectRows("SELECT entity_id FROM source_declarations WHERE entity_id IS NOT NULL GROUP BY entity_id HAVING count(*)<>1", "Duplicate source function declaration identity");
         RejectRows("SELECT binding_id FROM source_declarations WHERE binding_id IS NOT NULL GROUP BY binding_id HAVING count(*)<>1", "Duplicate source binding declaration identity");
         RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL AND e.id NOT IN (SELECT entity_id FROM abi_routine_origins) AND e.id NOT IN (SELECT entity_id FROM generated_routine_origins)", "Missing original function declaration capture");
-        RejectRows("SELECT b.id FROM bindings b LEFT JOIN parameters p ON p.entity_id=b.function_id AND p.ordinal=b.ordinal WHERE b.kind='parameter' AND (p.parameter_role IS NULL OR b.is_synthetic <> (p.parameter_role IN ('this','result-buffer','forwarded-source')))", "Implicit ABI parameters must be synthetic and source parameters must be original");
+        RejectRows("SELECT b.id FROM bindings b LEFT JOIN parameters p ON p.entity_id=b.function_id AND p.ordinal=b.ordinal WHERE b.kind='parameter' AND (p.parameter_role IS NULL OR b.is_synthetic <> (p.parameter_role IN ('this','result-buffer','vtt','forwarded-source')))", "Implicit ABI parameters must be synthetic and source parameters must be original");
         RejectRows("SELECT b.id FROM bindings b JOIN source_declarations d ON d.binding_id=b.id WHERE b.is_synthetic=1", "Synthetic execution binding must not have fabricated source capture");
         RejectRows("SELECT b.id FROM bindings b LEFT JOIN source_declarations d ON d.binding_id=b.id WHERE d.id IS NULL AND b.is_synthetic=0", "Missing original binding declaration capture");
     }
@@ -373,7 +375,12 @@ internal sealed partial class ObjectFile
             }
             writer.WriteEndArray();
         }
+        Table("arrayRuntimeOperations", "SELECT node_id,source_obligation_id,callback_entity_id,operation_kind,capture_proof FROM array_runtime_operations ORDER BY node_id", "nodeId", "sourceObligationId", "callbackEntityId", "operationKind", "captureProof");
+        Table("cleanupArrays", "SELECT action_id,element_type_id,element_count,element_size,capture_proof FROM cleanup_arrays ORDER BY action_id", "actionId", "elementTypeId", "elementCount", "elementSize", "captureProof");
+        Table("cleanupVttArguments", "SELECT action_id,binding_id,capture_proof FROM cleanup_vtt_arguments ORDER BY action_id", "actionId", "bindingId", "captureProof");
         Table("cleanupConditions", "SELECT action_id,flag_binding_id,capture_proof FROM cleanup_conditions ORDER BY action_id", "actionId", "flagBindingId", "captureProof");
+        Table("virtualBaseExpressions", "SELECT node_id,complete_base_type_id FROM virtual_base_expressions ORDER BY node_id", "nodeId", "completeBaseTypeId");
+        Table("virtualBaseSubobjects", "SELECT record_type_id,complete_base_type_id,physical_view_type_id,byte_offset,extent,field_id,capture_proof FROM virtual_base_subobjects ORDER BY record_type_id,complete_base_type_id", "recordTypeId", "completeBaseTypeId", "physicalViewTypeId", "byteOffset", "extent", "fieldId", "captureProof");
         Table("normalDestructions", "SELECT node_id,source_obligation_id,capture_proof FROM normal_destructions ORDER BY node_id", "nodeId", "sourceObligationId", "captureProof");
         Table("expressionLifetimes", "SELECT node_id,source_lifetime_id,capture_proof FROM expression_lifetimes ORDER BY node_id", "nodeId", "sourceLifetimeId", "captureProof");
         Table("baseSubobjectExpressions", "SELECT node_id,source_base_id FROM base_subobject_expressions ORDER BY node_id", "nodeId", "sourceBaseId");

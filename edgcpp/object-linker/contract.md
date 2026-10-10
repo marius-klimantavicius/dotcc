@@ -1441,3 +1441,63 @@ Normal destructor-handler returns can suppress an exception; handler fallthrough
 uses EDG's explicit rethrow. A `noexcept` boundary remains outside its source
 handler region. Runtime matching/ownership still needs the shared production
 provider; array/VTT cleanup and other explicitly rejected layouts remain gated.
+
+## Shared exception provider (profile v36)
+
+The linker now includes the shared implementation of the exception ABI by default.
+This supersedes the unbound-provider requirement in the v30–v35 historical
+sections. Source exceptions alone no longer require `--allow-externs`.
+`--exception-provider external` deliberately selects the earlier contract-only
+behavior, requiring `--allow-externs` and reporting
+`generation-only-unbound-provider`. Default linked output reports
+`shared-provider` and includes the single maintained runtime source as an
+embedded linker resource. Unresolved ordinary functions remain independently
+subject to the existing provider/link rules.
+
+Payload allocation preserves observed size/alignment with native storage.
+Completion arms the exact complete-object callback; initializer failure releases
+unfinished storage after generated rollback. Thread-local handlers and separate
+pending-propagation counts preserve nested catches and simultaneous rethrows of
+the same payload. Caught markers end uncaught status only after catch parameter
+initialization. Last-owner release invokes the complete destructor once, then
+frees storage. Typed matching uses the existing original identities, pointer
+qualification facts and public/unambiguous base adjustments. Converted pointers
+use distinct per-handler native cells; rethrow retains the original payload.
+
+The provider is BCL-based and NativeAOT compatible. Executable boundaries terminate
+on unhandled C++ carriers. Library consumers can explicitly enter, mark and leave
+a catch through the public contract. Runtime transfers bypass source matching
+but retain cleanup. The [runtime contract](runtime/EXCEPTIONS.md) specifies failure
+policy, managed interoperation and limitations, including absent `exception_ptr`,
+custom `set_terminate` binding and cross-thread payload transfer. This does not
+extend the set of source exception types accepted by the semantic-object verifier.
+
+## Array/VTT ownership (profile v36)
+
+The [format specification](../docs/dotobj-format.md#fixed-arrays-and-vtt-cleanup-v36)
+describes `cleanup_arrays`, `array_runtime_operations`,
+`cleanup_vtt_arguments`, `virtual_base_subobjects` and
+`virtual_base_expressions`. Fixed array targets retain typed address recipes and
+validated spans. Runtime-owned completed-prefix construction/copy cleanup is
+associated with its original source destruction, not silently dropped. Generated
+hidden VTT slots and exact argument bindings retain subobject/delegation cleanup.
+Coverage is checked across the actual emitted ABI variants while retaining every
+original source obligation. The emitter continues to use named locals and CLR
+unwinding instead of native stack-offset frames.
+
+Shared `CppArrays` routines are bound only for verified EDG runtime-origin symbols
+with the exact portable ABI. Real source definitions take precedence. Ordinary
+array destruction cleans the remaining elements after its first failure;
+exceptional cleanup terminates on an ordinary destructor failure. Classified
+runtime transfers finish the remaining elements/states before propagation. The
+runtime itself does not provide platform lifecycle handling for an abandoned
+C++ payload.
+
+Verified source forms include fixed local/member/multidimensional arrays using
+EDG's vector helpers, implicit array-member copying, virtual-base constructor
+rollback, and delegated destruction through different VTT base offsets. This is
+not all array/C++ syntax: nontrivial explicit initializer-list temporaries,
+dynamic/cookie-count arrays, allocation rollback, adjusting/covariant thunks and
+virtual exception-base conversion remain gated. VTT-referenced RTTI tables use
+actual translated EDG/LLVM source providers. General default new/delete and full
+RTTI/libc++ integration are not supplied by this milestone.

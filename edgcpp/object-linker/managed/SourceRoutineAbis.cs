@@ -28,8 +28,8 @@ internal sealed partial class ObjectFile
                 if (!SourceRoutineAbis.ContainsKey(slot.SourceRoutineTypeId)) throw new InvalidDataException("ABI slot has no original routine header");
                 if (!sourceRoutineAbiParameters.TryGetValue(slot.SourceRoutineTypeId, out var list))
                     sourceRoutineAbiParameters.Add(slot.SourceRoutineTypeId, list = []);
-                if (slot.ExecutionOrdinal != list.Count || slot.ParameterRole is not ("source" or "indirect-source" or "this" or "result-buffer") ||
-                    (slot.ParameterRole is "this" or "result-buffer" ? slot.SourceOrdinal is not null : slot.SourceOrdinal is null or < 0))
+                if (slot.ExecutionOrdinal != list.Count || slot.ParameterRole is not ("source" or "indirect-source" or "this" or "result-buffer" or "vtt") ||
+                    (slot.ParameterRole is "this" or "result-buffer" or "vtt" ? slot.SourceOrdinal is not null : slot.SourceOrdinal is null or < 0))
                     throw new InvalidDataException("Invalid original routine ABI slot");
                 list.Add(slot);
             }
@@ -41,7 +41,7 @@ internal sealed partial class ObjectFile
             var slots = RoutineAbiParameters(routine.TypeId);
             if (slots.Count != physical.Parameters.Length || physical.Variadic != routine.Variadic || physical.ExceptionPolicy != routine.ExceptionPolicy)
                 throw new InvalidDataException("Original routine ABI slot count or calling policy mismatch");
-            int sourceOrdinal = 0, receivers = 0, results = 0;
+            int sourceOrdinal = 0, receivers = 0, results = 0, vtts = 0;
             bool sawSource = false;
             foreach (SourceRoutineAbiParameter slot in slots)
             {
@@ -55,12 +55,13 @@ internal sealed partial class ObjectFile
                 else
                 {
                     if (sawSource) throw new InvalidDataException("Implicit ABI slots must precede original explicit parameters");
-                    if (slot.ParameterRole == "this") receivers++; else results++;
+                    if (slot.ParameterRole == "this") receivers++; else if (slot.ParameterRole == "vtt") vtts++; else results++;
                 }
                 if (physical.Parameters[slot.ExecutionOrdinal] != RoutineAbiParameterType(routine, slot))
                     throw new InvalidDataException("Original routine ABI slot disagrees with physical parameter type");
             }
             if (sourceOrdinal != routine.Parameters.Length || receivers != (routine.ObjectTypeId is null ? 0 : 1) ||
+                vtts > 1 || vtts != 0 && routine.ObjectTypeId is null ||
                 results != (abi.ReturnPassing == "result-buffer" ? 1 : 0) || physical.Result != RoutineAbiReturnType(routine))
                 throw new InvalidDataException("Original routine ABI receiver/result/source mapping is incomplete");
             if (abi.CaptureProof == "source-c-signature" && SourceLanguage != "c" ||
@@ -76,6 +77,13 @@ internal sealed partial class ObjectFile
 
     private string RoutineAbiParameterType(RoutineType routine, SourceRoutineAbiParameter slot)
     {
+        if (slot.ParameterRole == "vtt")
+        {
+            string type = RoutineTypes.Signature(Type(SourceTypeById(routine.TypeId).ExecutionTypeId)).Parameters[slot.ExecutionOrdinal];
+            if (routine.ObjectTypeId is null || !ScalarTypes.IsPointer(type))
+                throw new InvalidDataException("VTT ABI slot requires an observed member-routine pointer");
+            return type;
+        }
         if (slot.ParameterRole == "this")
         {
             if (routine.ObjectTypeId is not long id || SourceTypeById(id).Kind != "record")

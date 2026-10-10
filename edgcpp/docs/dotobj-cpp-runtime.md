@@ -345,3 +345,21 @@ file from its executed managed031 version. These partial translations are linked
 under `artifacts/review/duckdb-dotobj`; they are not complete DuckDB output.
 [Owned memory assembly evidence](../evidence/dotobj-memory-asm-20261009.json)
 records the exact tools, receipts and retained initial failures.
+
+## Shared provider implementation checkpoint (v36)
+
+The object linker now includes `object-linker/runtime/CppExceptions.cs` by default
+for reachable source exceptions. It implements the previously captured contract:
+aligned native payload allocation, partial/complete ownership, exact/base/pointer
+matching, stable converted-pointer cells, thread-local handlers, nested rethrows
+and termination paths. `--exception-provider external` preserves explicit custom
+provider integration and independent fixture-provider testing. The implementation
+uses BCL APIs and managed function pointers and is tested under JIT and NativeAOT.
+See [the public runtime boundary](../object-linker/runtime/EXCEPTIONS.md) for managed
+library consumption and remaining ABI/platform gaps.
+
+`CppArrays.cs` supplies source-owned vector construction/copy/destruction and
+reverse cleanup. Actual EDG/LLVM RTTI source providers remain separate linked
+objects. This checkpoint does not implement `std::exception_ptr`, custom
+`set_terminate`, native C++ interoperation, cross-thread exception transfer, or
+platform lifecycle release of a C++ propagation abandoned by a forced transfer.

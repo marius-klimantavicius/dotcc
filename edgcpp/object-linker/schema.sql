@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v35'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v36'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -84,10 +84,10 @@ CREATE TABLE source_routine_abis (
 CREATE TABLE source_routine_abi_parameters (
  source_routine_type_id INTEGER NOT NULL REFERENCES source_routine_abis(source_routine_type_id),
  execution_ordinal INTEGER NOT NULL CHECK(execution_ordinal>=0),
- parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','indirect-source','this','result-buffer')),
+ parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','indirect-source','this','result-buffer','vtt')),
  source_ordinal INTEGER CHECK(source_ordinal>=0),
  CHECK((parameter_role IN ('source','indirect-source') AND source_ordinal IS NOT NULL) OR
-       (parameter_role IN ('this','result-buffer') AND source_ordinal IS NULL)),
+       (parameter_role IN ('this','result-buffer','vtt') AND source_ordinal IS NULL)),
  UNIQUE(source_routine_type_id,source_ordinal),
  PRIMARY KEY(source_routine_type_id,execution_ordinal)
 ) STRICT;
@@ -142,17 +142,17 @@ CREATE TABLE parameters (
  entity_id INTEGER NOT NULL REFERENCES entities(id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  type_id INTEGER NOT NULL REFERENCES types(id),
- parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','indirect-source','this','result-buffer','forwarded-source')),
+ parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','indirect-source','this','result-buffer','vtt','forwarded-source')),
  source_ordinal INTEGER CHECK(source_ordinal>=0),
  CHECK((parameter_role IN ('source','indirect-source','forwarded-source') AND source_ordinal IS NOT NULL) OR
-       (parameter_role IN ('this','result-buffer') AND source_ordinal IS NULL)),
+       (parameter_role IN ('this','result-buffer','vtt') AND source_ordinal IS NULL)),
  UNIQUE(entity_id,source_ordinal),
  PRIMARY KEY(entity_id,ordinal)
 ) STRICT;
 CREATE TABLE abi_routine_origins (
  entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
  primary_entity_id INTEGER NOT NULL REFERENCES source_functions(entity_id),
- entry_kind TEXT NOT NULL CHECK(entry_kind IN ('complete','subobject','deleting','constructor-default-adapter')),
+ entry_kind TEXT NOT NULL CHECK(entry_kind IN ('complete','subobject','deleting','delegation','constructor-default-adapter')),
  is_alias_entry INTEGER NOT NULL CHECK(is_alias_entry IN (0,1)),
  capture_proof TEXT NOT NULL CHECK(capture_proof IN ('primary-ctor-dtor-link','observed-default-wrapper-creation')),
  target_entity_id INTEGER REFERENCES entities(id),
@@ -211,6 +211,20 @@ CREATE TABLE base_subobject_expressions (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
  source_base_id INTEGER NOT NULL REFERENCES source_record_bases(id)
 ) STRICT;
+CREATE TABLE virtual_base_expressions (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ complete_base_type_id INTEGER NOT NULL REFERENCES record_types(type_id)
+) STRICT;
+CREATE TABLE virtual_base_subobjects (
+ record_type_id INTEGER NOT NULL REFERENCES record_types(type_id),
+ complete_base_type_id INTEGER NOT NULL REFERENCES record_types(type_id),
+ physical_view_type_id INTEGER REFERENCES record_types(type_id),
+ byte_offset INTEGER NOT NULL CHECK(byte_offset>=0),
+ extent INTEGER NOT NULL CHECK(extent>=0),
+ field_id INTEGER UNIQUE REFERENCES record_fields(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-virtual-base-placement'),
+ PRIMARY KEY(record_type_id,complete_base_type_id)
+) STRICT;
 CREATE TABLE normal_destructions (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
  source_obligation_id INTEGER NOT NULL REFERENCES source_destruction_obligations(id),
@@ -223,6 +237,25 @@ CREATE TABLE cleanup_actions (
  callback_entity_id INTEGER NOT NULL REFERENCES entities(id),
  target_node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-region-entry')
+) STRICT;
+CREATE TABLE array_runtime_operations (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ source_obligation_id INTEGER NOT NULL REFERENCES source_destruction_obligations(id),
+ callback_entity_id INTEGER NOT NULL REFERENCES entities(id),
+ operation_kind TEXT NOT NULL CHECK(operation_kind IN ('construct','destroy')),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-array-runtime')
+) STRICT;
+CREATE TABLE cleanup_arrays (
+ action_id INTEGER PRIMARY KEY REFERENCES cleanup_actions(id),
+ element_type_id INTEGER NOT NULL REFERENCES types(id),
+ element_count INTEGER NOT NULL CHECK(element_count>0),
+ element_size INTEGER NOT NULL CHECK(element_size>0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-array-region')
+) STRICT;
+CREATE TABLE cleanup_vtt_arguments (
+ action_id INTEGER PRIMARY KEY REFERENCES cleanup_actions(id),
+ binding_id INTEGER NOT NULL REFERENCES bindings(id),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-subobject-vtt')
 ) STRICT;
 CREATE TABLE cleanup_conditions (
  action_id INTEGER PRIMARY KEY REFERENCES cleanup_actions(id),
@@ -433,13 +466,13 @@ CREATE TABLE record_fields (
  bit_width INTEGER CHECK(bit_width>0 AND bit_width<=64),
  bit_signed INTEGER CHECK(bit_signed IN (0,1)),
  source_field_id INTEGER REFERENCES source_record_fields(id),
- field_role TEXT NOT NULL CHECK(field_role IN ('source','vptr','abi','base')),
+ field_role TEXT NOT NULL CHECK(field_role IN ('source','vptr','abi','base','virtual-base')),
  source_base_id INTEGER REFERENCES source_record_bases(id),
  observed_alignment INTEGER CHECK(observed_alignment>0 AND (observed_alignment & (observed_alignment-1))=0),
  CHECK(field_role<>'source' OR bit_width IS NOT NULL OR observed_alignment IS NOT NULL),
  CHECK(bit_width IS NULL OR observed_alignment IS NULL),
  CHECK((field_role='source' AND source_field_id IS NOT NULL AND source_type_id IS NOT NULL) OR
-       (field_role IN ('vptr','abi','base') AND source_field_id IS NULL AND source_type_id IS NULL)),
+       (field_role IN ('vptr','abi','base','virtual-base') AND source_field_id IS NULL AND source_type_id IS NULL)),
  CHECK((field_role='base' AND source_base_id IS NOT NULL AND bit_offset IS NULL) OR
        (field_role<>'base' AND source_base_id IS NULL)),
  CHECK((bit_offset IS NULL AND bit_width IS NULL AND bit_signed IS NULL) OR

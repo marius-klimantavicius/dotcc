@@ -92,7 +92,7 @@ internal sealed partial class ObjectFile
             int vptrs = 0;
             foreach (RecordField field in fields)
             {
-                if (field.FieldRole == "base") continue;
+                if (field.FieldRole is "base" or "virtual-base") continue;
                 if (field.FieldRole == "vptr")
                 {
                     ++vptrs;

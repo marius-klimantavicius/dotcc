@@ -89,7 +89,7 @@ def main():
         inputs.rename(out / 'retained-source')
         generated = out / 'generated'
         run('source-hidden-link', ['dotnet', args.linker.resolve(), 'link', '--out', generated,
-            '--namespace', 'Tests.TypedCatch', '--class', 'Core', '--allow-externs', obj])
+            '--namespace', 'Tests.TypedCatch', '--class', 'Core', '--exception-provider', 'external', '--allow-externs', obj])
         source_map = json.loads((generated / 'source-map.json').read_text())['objects'][0]
         check('review-map-handlers', len(source_map['sourceTries']) == 15 and len(source_map['sourceHandlers']) == 21)
         check('review-map-release-ownership', len([state for state in source_map['cleanupStates'] if state['handlerNodeId'] is not None]) == 21)

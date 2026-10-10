@@ -5,10 +5,16 @@ internal sealed record SourceBase(long Id, long SourceRecordId, long Ordinal, lo
 internal sealed record RecordBaseSubobject(long RecordTypeId, long SourceBaseId, long CompleteBaseTypeId,
     long? PhysicalViewTypeId, long ByteOffset, long Extent, long? FieldId);
 
+internal sealed record VirtualBaseSubobject(long RecordTypeId, long CompleteBaseTypeId, long? PhysicalViewTypeId,
+    long ByteOffset, long Extent, long? FieldId, string CaptureProof);
+
 internal sealed partial class ObjectFile
 {
+    public Dictionary<(long RecordTypeId, long CompleteBaseTypeId), VirtualBaseSubobject> VirtualBaseSubobjects { get; } = [];
     public Dictionary<long, SourceBase> SourceBases { get; } = [];
     public Dictionary<(long RecordTypeId, long SourceBaseId), RecordBaseSubobject> BaseSubobjects { get; } = [];
+    private readonly Dictionary<long, VirtualBaseSubobject[]> virtualBasesByRecord = [];
+    public VirtualBaseSubobject[] RecordVirtualBases(long recordTypeId) => virtualBasesByRecord.GetValueOrDefault(recordTypeId, []);
     private readonly Dictionary<long, SourceBase[]> basesBySourceRecord = [];
     private readonly Dictionary<long, RecordBaseSubobject[]> basesByRecord = [];
     public RecordBaseSubobject[] RecordBases(long recordTypeId) => basesByRecord.GetValueOrDefault(recordTypeId, []);
@@ -38,6 +44,17 @@ internal sealed partial class ObjectFile
                     throw new InvalidDataException("Invalid physical base subobject relationship");
                 BaseSubobjects.Add((item.RecordTypeId, item.SourceBaseId), item);
             }
+        using (var query = database.Prepare("SELECT record_type_id,complete_base_type_id,physical_view_type_id,byte_offset,extent,field_id,capture_proof FROM virtual_base_subobjects ORDER BY record_type_id,complete_base_type_id"))
+            while (query.Read())
+            {
+                var item = new VirtualBaseSubobject(query.Integer(0), query.Integer(1), query.OptionalInteger(2), query.Integer(3), query.Integer(4), query.OptionalInteger(5), query.Text(6));
+                if (!Records.ContainsKey(item.RecordTypeId) || !Records.ContainsKey(item.CompleteBaseTypeId) || item.ByteOffset < 0 || item.Extent < 0 ||
+                    item.CaptureProof != "observed-virtual-base-placement" || (item.Extent == 0 ? item.PhysicalViewTypeId is not null || item.FieldId is not null : item.PhysicalViewTypeId is null))
+                    throw new InvalidDataException("Invalid observed virtual base placement");
+                VirtualBaseSubobjects.Add((item.RecordTypeId, item.CompleteBaseTypeId), item);
+            }
+        foreach (var group in VirtualBaseSubobjects.Values.GroupBy(item => item.RecordTypeId))
+            virtualBasesByRecord.Add(group.Key, group.OrderBy(item => Type(item.CompleteBaseTypeId), StringComparer.Ordinal).ToArray());
         foreach (var group in BaseSubobjects.Values.GroupBy(item => item.RecordTypeId))
             basesByRecord.Add(group.Key, group.OrderBy(item => SourceBases[item.SourceBaseId].Ordinal).ToArray());
     }
@@ -51,10 +68,10 @@ internal sealed partial class ObjectFile
             {
                 SourceBase item = group.Value[ordinal];
                 SourceType source = Original(SourceTypeById(item.BaseSourceTypeId));
-                if (!owner.IsComplete || owner.CapturePhase != "before-class-prelowering" || item.Ordinal != ordinal || item.IsVirtual ||
+                if (!owner.IsComplete || owner.CapturePhase != "before-class-prelowering" || item.Ordinal != ordinal ||
                     source.Kind != "record" || !Records.TryGetValue(source.ExecutionTypeId, out RecordType? target) || target.RepresentationKind != "complete" || target.Size == 0 ||
                     target.SourceRecordId == owner.Id)
-                    throw new InvalidDataException("Base declaration requires a complete nonvirtual original class");
+                    throw new InvalidDataException("Base declaration requires a complete original class");
             }
         }
         var visited = new HashSet<long>();
@@ -78,7 +95,8 @@ internal sealed partial class ObjectFile
                     record.IdentityKey == complete.IdentityKey || record.ValueCopyKind != "explicit-only")
                     throw new InvalidDataException("Subobject must identify its complete nominal class and bounded native extent");
             }
-            SourceBase[] expected = record.SourceRecordId is long sourceId ? OriginalBases(sourceId) : [];
+            SourceBase[] expected = record.SourceRecordId is long sourceId
+                ? OriginalBases(sourceId).Where(source => !source.IsVirtual).ToArray() : [];
             foreach (SourceBase source in expected)
             {
                 if (!BaseSubobjects.TryGetValue((record.TypeId, source.Id), out RecordBaseSubobject? item))
@@ -106,5 +124,48 @@ internal sealed partial class ObjectFile
                 if (!BaseSubobjects.TryGetValue((record.TypeId, field.SourceBaseId!.Value), out RecordBaseSubobject? relationship) || relationship.FieldId != field.Id)
                     throw new InvalidDataException("Base field lacks its owned relationship");
         }
+        foreach (RecordType record in Records.Values)
+        {
+            var virtualTypes = new HashSet<long>();
+            var traversed = new HashSet<long>();
+            void Collect(long sourceRecord)
+            {
+                if (!traversed.Add(sourceRecord)) return;
+                foreach (SourceBase source in OriginalBases(sourceRecord))
+                {
+                    RecordType complete = Records[Original(SourceTypeById(source.BaseSourceTypeId)).ExecutionTypeId];
+                    if (source.IsVirtual) virtualTypes.Add(complete.TypeId);
+                    Collect(complete.SourceRecordId!.Value);
+                }
+            }
+            if (record.SourceRecordId is long owner) Collect(owner);
+            foreach (VirtualBaseSubobject item in RecordVirtualBases(record.TypeId))
+            {
+                RecordType complete = Records[item.CompleteBaseTypeId];
+                if (!virtualTypes.Contains(complete.TypeId) || complete.RepresentationKind != "complete" ||
+                    item.ByteOffset > record.Size || item.Extent > record.Size - item.ByteOffset ||
+                    item.ByteOffset % complete.Alignment != 0 || complete.Alignment > record.Alignment)
+                    throw new InvalidDataException("Virtual base placement differs from its reachable original base or containing layout");
+                if (item.Extent == 0)
+                {
+                    if (RecordFields(complete.TypeId).Length != 0 || RecordBases(complete.TypeId).Any(nested => nested.Extent != 0))
+                        throw new InvalidDataException("Zero-extent virtual base must have no physical payload");
+                    continue;
+                }
+                if (!Records.TryGetValue(item.PhysicalViewTypeId!.Value, out RecordType? view) ||
+                    (view.TypeId != complete.TypeId && view.CompleteTypeId != complete.TypeId) || view.Size != item.Extent)
+                    throw new InvalidDataException("Virtual base placement lacks its complete nominal physical view");
+                if (item.FieldId is long fieldId && (!Fields.TryGetValue(fieldId, out RecordField? field) ||
+                    field.RecordTypeId != record.TypeId || field.FieldRole != "virtual-base" || field.SourceBaseId is not null ||
+                    field.TypeId != view.TypeId || field.ByteOffset != item.ByteOffset || field.BitWidth is not null))
+                    throw new InvalidDataException("Virtual base field differs from its observed physical placement");
+            }
+            if (record.RepresentationKind == "complete" && virtualTypes.Any(type => !VirtualBaseSubobjects.ContainsKey((record.TypeId, type))))
+                throw new InvalidDataException("Complete object is missing a reachable virtual base placement");
+            foreach (RecordField field in RecordFields(record.TypeId).Where(field => field.FieldRole == "virtual-base"))
+                if (!RecordVirtualBases(record.TypeId).Any(item => item.FieldId == field.Id))
+                    throw new InvalidDataException("Virtual base field lacks its owned placement");
+        }
+
     }
 }

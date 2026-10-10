@@ -62,7 +62,11 @@ internal sealed partial class Emitter
                             bool handled = false;
                             int result = 0;
                             TryHandleTransfer(error, ref handled, ref result);
-                            if (!handled) throw;
+                            if (!handled)
+                            {
+                                __UNCAUGHT_CPP__
+                                throw;
+                            }
                             return result;
                         }
                     }
@@ -90,6 +94,6 @@ internal sealed partial class Emitter
                 return false;
             }
             """ : "";
-        File.WriteAllText(Path.Combine(output, "Runtime.ObjectProgram.generated.cs"), source.Replace("__OWNED_CLEANUP_HOOKS__", cleanupHooks.Replace("\n", "\n    ", StringComparison.Ordinal), StringComparison.Ordinal).Replace("__OWNED_TLS_RELEASE__", tlsRelease.Length == 0 ? "" : Owner + "." + tlsRelease + "();", StringComparison.Ordinal) + "\n", new UTF8Encoding(false));
+        File.WriteAllText(Path.Combine(output, "Runtime.ObjectProgram.generated.cs"), source.Replace("__UNCAUGHT_CPP__", sharedExceptionProvider && linker.RequiresExceptionProvider ? "if (error is global::Edg.Runtime.CppException) global::System.Environment.FailFast(\"Uncaught C++ exception at program boundary\", error);" : "", StringComparison.Ordinal).Replace("__OWNED_CLEANUP_HOOKS__", cleanupHooks.Replace("\n", "\n    ", StringComparison.Ordinal), StringComparison.Ordinal).Replace("__OWNED_TLS_RELEASE__", tlsRelease.Length == 0 ? "" : Owner + "." + tlsRelease + "();", StringComparison.Ordinal) + "\n", new UTF8Encoding(false));
     }
 }

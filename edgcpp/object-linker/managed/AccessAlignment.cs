@@ -34,6 +34,7 @@ internal sealed class AccessAlignment(ObjectFile obj, FunctionBody body)
         {
             "sequence" => Place(SequenceTail(node)),
             "lifetime-scope" => Place(body.Child(node.Id, "operand")),
+            "virtual-base-subobject" => AtOffset(Place(body.Child(node.Id, "operand")), obj.VirtualBaseSubobjects[(body.Child(node.Id, "operand").TypeId!.Value, obj.VirtualBaseExpressions[node.Id])].ByteOffset),
             "base-subobject" => AtOffset(Place(body.Child(node.Id, "operand")), obj.BaseSubobjects[(body.Child(node.Id, "operand").TypeId!.Value, obj.BaseSubobjectExpressions[node.Id])].ByteOffset),
             "member" => AtOffset(Place(body.Child(node.Id, "operand")), obj.Fields[node.FieldId!.Value].ByteOffset),
             "dereference" => Pointer(body.Child(node.Id, "operand")),

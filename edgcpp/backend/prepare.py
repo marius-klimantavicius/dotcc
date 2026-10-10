@@ -341,7 +341,7 @@ object_source_overlay(init_lower,
     '    dot_object_source::observe_runtime_declaration(*routine);\n'
     '#endif\n'
     '  }  /* if */\n  return *routine;\n}  /* make_prototyped_runtime_routine */')
-for runtime_callback in ("ctor", "dtor"):
+for runtime_callback in ("ctor", "dtor", "cctor"):
     object_source_overlay(init_lower,
         f'    {runtime_callback}_ptr_type = make_pointer_type(function_type);',
         f'    {runtime_callback}_ptr_type = make_pointer_type(function_type);\n'
@@ -453,6 +453,23 @@ object_source_overlay(lower,
     '#if defined(EDG_DOT_BACKEND)\n'
     '  dot_object_source::observe_vptr_field(observed_field);\n'
     '#else\n  (void)observed_field;\n#endif\n}  /* add_dummy_field */')
+for vtt_kind in ('constructor', 'destructor'):
+    object_source_overlay(lower,
+        '#endif /* IA64_ABI */\n}  /* lower_' + vtt_kind + '_routine_type */',
+        '#endif /* IA64_ABI */\n#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
+        '  dot_object_source::observe_vtt_type(routine_type);\n#endif\n'
+        '}  /* lower_' + vtt_kind + '_routine_type */')
+object_source_overlay(lower,
+    '    prev_param_var->next = vtt_param_var;\n',
+    '    prev_param_var->next = vtt_param_var;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_vtt_parameter(ctor_routine, vtt_param_var);\n#endif\n')
+object_source_overlay(lower,
+    '      this_param_var->next = vtt_param_var;\n',
+    '      this_param_var->next = vtt_param_var;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_source::observe_vtt_parameter(dtor_routine, vtt_param_var);\n#endif\n')
+
 # Preserve exact base-descriptor correspondence at the physical insertion.
 object_source_overlay(lower,
     '                                       a_type_ptr    struct_type)\n/*\nMake a dummy field for a base class',
@@ -475,6 +492,12 @@ object_source_overlay(lower,
     '  ctsp->subobject_partner = subobject_type;\n'
     '#if defined(EDG_DOT_BACKEND)\n'
     '  dot_object_source::observe_subobject_type(class_type, subobject_type);\n#endif\n')
+object_source_overlay(eh_lower,
+    '    finish_class_type(base_class_spec_type);\n',
+    '    finish_class_type(base_class_spec_type);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_typeinfo_base_record(base_class_spec_type);\n'
+    '#endif\n')
 object_source_overlay(eh_lower,
     '    finish_class_type(typeinfo_types[(int)tik_user]);\n',
     '    finish_class_type(typeinfo_types[(int)tik_user]);\n'
@@ -514,24 +537,63 @@ object_source_overlay(il_source,
     '  dot_object_source::observe_dynamic_init_copy(dip, new_dip);\n'
     '#endif\n'
     '  return new_dip;\n}  /* i_copy_dynamic_init */')
+if 'has_subobject_vtable ? subobject_vtable_handle.variable : NULL' not in eh_lower.read_text():
+    object_source_overlay(eh_lower,
+        '                                     &dedp->region_number,\n'
+        '                                     insert_location);\n#if DO_UNORDERED_EH_PROCESSING',
+        '                                     &dedp->region_number,\n'
+        '                                     insert_location);\n'
+        '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+        '  dot_object_source::observe_cleanup_region(dip, innermost_function_scope->variant.routine.ptr);\n'
+        '#endif\n#if DO_UNORDERED_EH_PROCESSING')
+if 'dot_object_source::observe_cleanup_region_copy(orig_region_table_entry' not in eh_lower.read_text():
+    object_source_overlay(eh_lower,
+        '  dedp->cleanup_state_to_set_when_starting_destruction = next_dip;\n'
+        '#if DO_UNORDERED_EH_PROCESSING\n  if (dip->unordered) {\n'
+        '    /* The destruction is unordered with respect to some surrounding\n',
+        '  dedp->cleanup_state_to_set_when_starting_destruction = next_dip;\n'
+        '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+        '  dot_object_source::observe_cleanup_region(dip, innermost_function_scope->variant.routine.ptr);\n'
+        '#endif\n'
+        '#if DO_UNORDERED_EH_PROCESSING\n  if (dip->unordered) {\n'
+        '    /* The destruction is unordered with respect to some surrounding\n')
+
+# Observe the exact VTT local/parameter at its typed lowering boundary. The
+# original handle remains stock EDG metadata; no generated name/offset guessing.
 object_source_overlay(eh_lower,
-    '                                     &dedp->region_number,\n'
-    '                                     insert_location);\n#if DO_UNORDERED_EH_PROCESSING',
-    '                                     &dedp->region_number,\n'
     '                                     insert_location);\n'
     '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
-    '  dot_object_source::observe_cleanup_region(dip, innermost_function_scope->variant.routine.ptr);\n'
-    '#endif\n#if DO_UNORDERED_EH_PROCESSING')
+    '  dot_object_source::observe_cleanup_region(dip, innermost_function_scope->variant.routine.ptr);\n',
+    '                                     insert_location);\n'
+    '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+    '  dot_object_source::observe_cleanup_region(dip, innermost_function_scope->variant.routine.ptr,\n'
+    '      has_subobject_vtable ? subobject_vtable_handle.variable : NULL);\n')
 object_source_overlay(eh_lower,
     '  dedp->cleanup_state_to_set_when_starting_destruction = next_dip;\n'
-    '#if DO_UNORDERED_EH_PROCESSING\n  if (dip->unordered) {\n'
-    '    /* The destruction is unordered with respect to some surrounding\n',
+    '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
+    '  dot_object_source::observe_cleanup_region(dip, innermost_function_scope->variant.routine.ptr);\n',
     '  dedp->cleanup_state_to_set_when_starting_destruction = next_dip;\n'
     '#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n'
-    '  dot_object_source::observe_cleanup_region(dip, innermost_function_scope->variant.routine.ptr);\n'
+    '  dot_object_source::observe_cleanup_region_copy(orig_region_table_entry, dip, innermost_function_scope->variant.routine.ptr);\n')
+
+# The stock array runtime owns partial prefix construction and normal reverse
+# destruction; retain the exact originating destruction and callback.
+object_source_overlay(init_lower,
+    '  (void)insert_expr_statement_set_pos(call_node, insert_location);\n'
+    '}  /* add_array_constructor_call */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_array_runtime(dip, dtor_routine, call_node, innermost_function_scope->variant.routine.ptr, true);\n'
     '#endif\n'
-    '#if DO_UNORDERED_EH_PROCESSING\n  if (dip->unordered) {\n'
-    '    /* The destruction is unordered with respect to some surrounding\n')
+    '  (void)insert_expr_statement_set_pos(call_node, insert_location);\n'
+    '}  /* add_array_constructor_call */')
+object_source_overlay(init_lower,
+    '                                     /*free_storage=*/FALSE);\n'
+    '    /* Make a statement containing the call and insert it at the right\n',
+    '                                     /*free_storage=*/FALSE);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_array_runtime(NULL, dtor_routine, call_node, innermost_function_scope->variant.routine.ptr, false);\n'
+    '#endif\n'
+    '    /* Make a statement containing the call and insert it at the right\n')
 
 # Preserve an exact copied lifetime boundary; the original and copy are both
 # known here, before pop may discard a lifetime with no destruction obligations.

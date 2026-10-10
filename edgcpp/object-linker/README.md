@@ -4,27 +4,31 @@ This implements the owned object path of the [new design](../docs/dotobj-format.
 It uses a fresh SQLite schema and C# reader/linker/emitter, without the prior
 semantic-export experiment or C# text/command objects.
 
-The current profile is `scalar-control-v35`. It supports independently produced
+The current profile is `scalar-control-v36`. It supports independently produced
 SQLite and musl objects, typed provider selection, shared BCL runtime bindings,
 and explicit source startup actions. C++ file-scope initialization owns generated
 routine origins, original per-storage statement intervals and separate local
 scaffolding, with scheduling and exception boundaries independent of source text.
-Scalar destruction owns original lifetime trees, normal destructor calls and
+Object destruction owns original lifetime trees, normal destructor calls and
 exceptional cleanup states. Named locals remain readable; CLR unwinding runs
 verified callbacks in EDG order, including ordinary base/member rollback and
 temporary boundaries, without native stack-offset frames. Bounded source throws
 and rethrows own original type identity, payload initialization and destructor
 requirements, base adjustments and exception start/completion ordering. Their
-shared `Edg.Runtime.CppExceptions` provider is currently an explicitly unbound
-partial contract: use `--allow-externs` for generation, not execution. Structured
+shared `Edg.Runtime.CppExceptions` provider is included by default, with aligned
+native payload storage and thread-local handler ownership. The explicit
+`--exception-provider external` option retains unbound partial contracts for
+custom hosts; it requires `--allow-externs`. Structured
 `try` regions own their original lifetime, ordered typed/ellipsis handlers,
 parameter bindings, adjusted caught-object addresses and exception-release
 states. EDG-selected parameter copies and destructions remain in the handler
 body. Constructor/destructor function-try blocks retain their original routine
 kind, protected initialization/destruction and implicit rethrows. Delegating
-constructor cleanup reuses the observed complete-object action. Array/VTT cleanup
-remains gated. Typed matching uses original builtin/class/data-pointer identities;
-the shared production matching/ownership provider is still unbound.
+constructor cleanup reuses the observed complete-object action. Fixed-array
+cleanup owns element spans and helper-managed partial construction; virtual-base
+cleanup retains exact hidden VTT arguments and observed physical base placements. Typed matching uses original builtin/class/data-pointer identities;
+the shared matching/ownership implementation is documented in
+[runtime/EXCEPTIONS.md](runtime/EXCEPTIONS.md).
 Throw initializers own a saved entry cleanup cursor: evaluation failure destroys
 initializer-local temporaries before releasing unfinished payload storage, then
 propagates to the enclosing function's remaining cleanup. Nested throws preserve
@@ -32,8 +36,8 @@ separate boundaries. Payload-relative scalar member and nonvirtual base rollback
 has explicit typed targets and complete-payload ownership paths. Successful
 construction transfers destruction to the exception provider; rollback actions
 skip completed payloads. The last member remains represented even when EDG
-omits its unnecessary rollback entry. The focused test provider exercises this contract but is
-not a production exception runtime. Conditional scalar cleanup keeps
+omits its unnecessary rollback entry. Independent fixture providers remain available to test the contract separately
+from the shared implementation. Conditional scalar cleanup keeps
 EDG's exact synthetic flag and original body stores; unwinding tests the flag
 before evaluating the target, without adding reset stores. Comma expressions
 retain the final item's execution storage; genuine record values get explicit
@@ -274,7 +278,7 @@ indexes. A hash demonstrates content integrity, not semantic correctness.
 Full logs/objects/generated projects remain under
 `/mnt/storage/dotcc-edg-campaign-20261003/dotobj-float-acceptance-002/`.
 
-The current schema requires `scalar-control-v35`. Earlier-profile objects and tools
+The current schema requires `scalar-control-v36`. Earlier-profile objects and tools
 remain retained together; regenerate objects to use the new tool. The runtime
 calling ABI remains `dotobj-scalar-v1`.
 

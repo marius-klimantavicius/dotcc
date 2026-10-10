@@ -54,7 +54,9 @@ internal sealed partial class Emitter
         bool varargs = linker.Objects.Any(obj => obj.Types.Values.Contains("va-list") || obj.Routines.Values.Any(routine => routine.Variadic));
         string[] runtimeFiles = (varargs ? new[] { "VaList.cs", "VaArg.cs", "VaPack.cs" } : [])
             .Concat(linker.Objects.Any(obj => obj.Types.Values.Contains("f80")) ? ["Float80.cs"] : [])
-            .Concat(programArguments ? ["ProgramArguments.cs"] : []).ToArray();
+            .Concat(programArguments ? ["ProgramArguments.cs"] : [])
+            .Concat(linker.Externs.Values.Any(symbol => RuntimeArrayProvider.TryGetMethod(symbol) is not null) ||
+                linker.Definitions.Any(symbol => symbol.Object.FunctionCleanupActions.GetValueOrDefault(symbol.Entity.Id, []).Any(action => symbol.Object.CleanupArrays.ContainsKey(action.Id))) ? ["CppArrays.cs"] : []).ToArray();
         foreach (string file in runtimeFiles)
             {
                 using Stream source = typeof(Emitter).Assembly.GetManifestResourceStream("DotObj.Runtime." + file)

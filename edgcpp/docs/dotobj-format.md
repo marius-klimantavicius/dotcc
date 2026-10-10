@@ -391,6 +391,49 @@ cleanup, unsupported exception identities, flattened protected-region transfers
 and the production exception provider remain separate work. No EDG semantic
 changes were made.
 
+## Fixed arrays and VTT cleanup (v36)
+
+`cleanup_arrays` extends an owned cleanup action with its complete leaf element
+execution type, fixed positive count and byte stride. The reader verifies source
+bounds, target storage span, complete-destructor ABI and original destruction
+identity. `array_runtime_operations` associates an actual lowered vector helper
+call with its source obligation and selected element destructor. It distinguishes
+construction (including copy construction and completed-prefix rollback) from
+normal reverse destruction. The helper call is a semantic call node, even where
+EDG surrounds it with a comma expression returning the destination.
+
+`cleanup_vtt_arguments` names the exact binding passed as a destructor's second
+argument. Source and generated routine ABIs own a hidden `vtt` slot; complete and
+deleting entries omit it, while subobject/delegation entries retain it when the
+source ABI requires it. This argument is never reconstructed from a native stack
+frame offset. `virtual_base_subobjects` records observed complete-object and
+subobject placements, their physical view/field or empty/shared identity, and
+extent. `virtual_base_expressions` identifies address-only base access by its
+complete base type. Layout bounds, reachable original base identities and
+cross-unit consistency remain verified.
+
+The complete source lifetime tree is retained. Complete-object and base-subobject
+ABI variants can implement different portions of it; final coverage checks the
+union of their actually emitted, provenance-checked destruction operations.
+Every original obligation must still be represented, including helper-managed
+partial array construction. Source and lifetime maps include these relations.
+
+The shared `CppArrays` BCL implementation performs reverse prefix rollback and
+array destruction. A first normal destructor failure still destroys remaining
+elements; a second ordinary exception during unwind terminates. Classified
+runtime transfers preserve the remaining element/state cleanup before propagating
+the latest transfer. This does not complete platform thread-exit ownership of
+an abandoned C++ exception payload.
+
+The default shared `CppExceptions` provider now implements the existing payload,
+matching and handler ABI; see the [runtime contract](../object-linker/runtime/EXCEPTIONS.md).
+Actual RTTI tables referenced by VTT/vtable storage still require real typeinfo
+source providers. Tests link the existing pinned EDG/LLVM providers, not placeholder
+vtables. Adjusting/covariant thunk provenance, dynamic/cookie-count array cleanup,
+allocation rollback regions and virtual exception-base conversions remain explicit
+gates. Nontrivial explicit array initializer-list temporaries also retain their
+ownership gate. This milestone does not claim complete RTTI or libc++ support.
+
 ## Shared headers later
 
 Deduplicate identical source/token/constant bytes first. Sharing semantic header

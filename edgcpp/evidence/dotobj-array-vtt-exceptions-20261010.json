@@ -1,0 +1,154 @@
+{
+  "date": "2026-10-10",
+  "status": "passed",
+  "profile": "scalar-control-v36",
+  "scope": "Owned fixed-array cleanup and subobject VTT metadata; default shared exception and array runtime providers",
+  "edgSemanticChanges": false,
+  "productionExceptionProviderImplemented": true,
+  "fullRegressionNativeAot": false,
+  "verifiedExecutionModes": [
+    "native C++ O0/O2",
+    "stock EDG C backend O0/O2",
+    "Linux x64 JIT",
+    "Linux x64 NativeAOT (focused suites)"
+  ],
+  "validationBuilds": {
+    "native": "071",
+    "focusedManaged": "076",
+    "broadManaged": "077",
+    "finalManaged": "078",
+    "managed077Change": "Verifier-only zero-stride guard plus malformed-object test",
+    "managed078Change": "Link-report limitation text only; emission/runtime unchanged"
+  },
+  "acceptance": {
+    "arrayVtt": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-vtt-v36-010/results.json",
+      "sha256": "1e2f860bfa70a8bee7064e8fe8fab5fb97b580acbffb9cc96fcf1aa1f79fa622",
+      "status": "passed",
+      "checks": 51,
+      "scenarios": 83
+    },
+    "productionExceptions": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/production-provider-v36-003/results.json",
+      "sha256": "679f8ed07e3e1a1685036a93893f025fcbcd20f14cce698eb5c7ca77a5d91947",
+      "status": "passed",
+      "checks": 111,
+      "scenarios": 52
+    },
+    "arrayRuntime": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-runtime-v36-003/results.json",
+      "sha256": "838810236767f8868d427ee28c1bfa6fc6895383c7a353e07f39c911daa08f29",
+      "status": "passed",
+      "checks": 38
+    },
+    "translatedTransfers": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-runtime-transfer-v36-002/results.json",
+      "sha256": "59d41bde4716488e87fba7a9a4207e94f12e225cae7e2c3f2d18f8c326143d2e",
+      "status": "passed",
+      "checks": 9,
+      "scenarios": 7
+    },
+    "throwPayloadRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-throw-payload-v36-001/results.json",
+      "sha256": "c00fb1dd0f583773c465462fc41aedfd85cefeb19c2cedbc6d65d13dc70eb071",
+      "status": "passed",
+      "checks": 66,
+      "scenarios": 40
+    },
+    "throwInitializerRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-throw-initializer-v36-001/results.json",
+      "sha256": "1f041ad5d51dac95b4d8e7b4b1a4fcfe466fd323b04a16680902743df3943f52",
+      "status": "passed",
+      "checks": 42,
+      "scenarios": 60
+    },
+    "sourceThrowGeneration": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-source-throw-v36-001/results.json",
+      "sha256": "95598b4bfa69774c36020d2128a23a79ad91bbd1cf80f55c1964ac97adb22448",
+      "status": "generation-only-passed",
+      "checks": 56
+    },
+    "zeroStrideRejection": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-zero-stride-v36-after/results.json",
+      "sha256": "7cd618e0b21b6990b82f6a7090ff175a1ffe4a41122c8fd05d572d022ffca483",
+      "status": "passed",
+      "checks": 2
+    }
+  },
+  "providerApiAssertionsPerMode": 102,
+  "arrayApiAssertionsPerMode": 117,
+  "artifacts": {
+    "compiler": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native071-verified-snapshot/cpfe-dot",
+      "sha256": "5b872c83fd7faf2256f4360f9df6b293a5ed24134daf157992a36623362b9bc5"
+    },
+    "focusedLinker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-076/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "dcb7354685fe5695b64710697b26fbd526bfde71a4423aa89345faaaa10ccb7c"
+    },
+    "broadLinker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-077/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "2cd980abb4afe69d16e67eedd0e08b224529fa1f9347801e09eed93f4a78e28f"
+    },
+    "duckdbProbe": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-071-array-vtt/results.json",
+      "sha256": "d93005ff01bb03880231b668f5b61ae0607b04464c4492a7303525d70ef68bfd"
+    },
+    "finalLinker": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-078/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "3c1e5708ff99c6a1bae2a909509a878f05e09854342e63fec6ff3964b1362ffa"
+    },
+    "sourceManifest": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v36-final-source-sha256.json",
+      "sha256": "5e8a845960b0721c807dff600d0d342ad983a00a57c86a297fb4a8f47275ae60"
+    },
+    "finalReportCheck": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v36-final-report-check/results.json",
+      "sha256": "9a48d67b68414c191750cd4775ff53f538fe34a33753e4a5aaa30cd3e08771a4"
+    },
+    "fullRegression": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v36-005/results.json",
+      "sha256": "a5e48bfd7bb5921c8b9da86d52e6e8b08f4590c2ec173d313ab380f7f1402b1c"
+    }
+  },
+  "duckdb": {
+    "completeProjectGenerated": false,
+    "selectedOriginalUnits": 5,
+    "packagedUnits": [
+      "src/common/types/hugeint.cpp"
+    ],
+    "emittedFunctionDefinitions": 280,
+    "compiledOrExecuted": false,
+    "remainingSampledGates": {
+      "exception.cpp": "source declaration type outside supported profile",
+      "date.cpp": "source declaration type outside supported profile",
+      "allocator.cpp": "initialization with destructor",
+      "string_util.cpp": "physical base lacks direct original declaration (advanced past blanket VTT gate)"
+    }
+  },
+  "retainedAttempts": {
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v36-001": "Schema changed during early integration.",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v36-002": "Wire schema changed during early integration.",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v36-003": "Frozen harness missing relative dotnet.py tool dependency; stopped after 328 checks.",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-full-v36-004": "Frozen harness missing relative stock compiler dependency; stopped after 580 checks.",
+    "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-array-zero-stride-v36-before": "Malformed zero-stride graph crashed verifier076; verifier077 rejects cleanly."
+  },
+  "remaining": [
+    "Nontrivial explicit array initializer-list temporary ownership; helper-based fixed default/copy arrays are covered.",
+    "Dynamic/VLA/cookie-count array cleanup.",
+    "Adjusting/covariant virtual thunk provenance.",
+    "Allocation-delete/guard/free-storage rollback regions.",
+    "Thrown payload array/virtual-subobject rollback and virtual exception-base conversion.",
+    "std::exception_ptr, custom terminate handlers, cross-thread payload transfer and native C++ exception interoperability.",
+    "Platform lifecycle release of pending C++ payload abandoned by forced runtime transfer.",
+    "Full DuckDB generation, compilation and execution."
+  ],
+  "review": {
+    "arrays": "edgcpp/artifacts/review/dotobj-array-vtt/Translated.0001.cpp_array_vtt_cleanup_u002e_cpp.cs",
+    "exceptions": "edgcpp/artifacts/review/dotobj-production-exceptions",
+    "duckdb": "edgcpp/artifacts/review/duckdb-dotobj-hugeint/Translated.0000.hugeint_u002e_cpp.cs"
+  },
+  "retainIntermediates": true,
+  "fullRegressionChecks": 1042,
+  "workStatus": "Verified milestone complete; stop at this phase boundary. Explicit remaining gates are not claimed complete."
+}

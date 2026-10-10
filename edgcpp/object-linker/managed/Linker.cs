@@ -14,6 +14,7 @@ internal sealed partial class Linker
     private readonly Dictionary<string, StorageSymbol> storageDefinitions = new(StringComparer.Ordinal);
     private readonly Names names = new();
     private readonly bool allowExterns;
+    private readonly bool sharedExceptionProvider;
     private readonly Dictionary<string, Symbol> definitions = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> signatures = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> sourceSignatures = new(StringComparer.Ordinal);
@@ -21,9 +22,10 @@ internal sealed partial class Linker
     public Dictionary<string, string> Names { get; } = new(StringComparer.Ordinal);
     public Dictionary<string, (ObjectFile Object, RecordType Record)> Records { get; } = new(StringComparer.Ordinal);
 
-    public Linker(IReadOnlyList<ObjectFile> objects, string className, bool allowExterns = false, IReadOnlySet<ObjectFile>? providers = null)
+    public Linker(IReadOnlyList<ObjectFile> objects, string className, bool allowExterns = false, IReadOnlySet<ObjectFile>? providers = null, bool sharedExceptionProvider = true)
     {
         this.allowExterns = allowExterns;
+        this.sharedExceptionProvider = sharedExceptionProvider;
         Objects = objects.OrderBy(obj => obj.UnitId, StringComparer.Ordinal).ToArray();
         if (Objects.Select(obj => obj.UnitId).Distinct(StringComparer.Ordinal).Count() != Objects.Count)
             throw new InvalidDataException("The same translation unit was supplied more than once");
@@ -122,6 +124,12 @@ internal sealed partial class Linker
     private static bool CompatibleBaseSubobjects(ObjectFile leftObject, RecordType left,
         ObjectFile rightObject, RecordType right)
     {
+        string[] VirtualPlacements(ObjectFile obj, long type) => obj.RecordVirtualBases(type)
+            .Select(item => obj.Type(item.CompleteBaseTypeId) + ":" +
+                (item.PhysicalViewTypeId is long view ? obj.Type(view) : "empty") + ":" + item.ByteOffset + ":" + item.Extent + ":" +
+                (item.FieldId is long field ? obj.Fields[field].Ordinal.ToString(System.Globalization.CultureInfo.InvariantCulture) : "alias"))
+            .Order(StringComparer.Ordinal).ToArray();
+        if (!VirtualPlacements(leftObject, left.TypeId).SequenceEqual(VirtualPlacements(rightObject, right.TypeId))) return false;
         var expected = leftObject.RecordBases(left.TypeId);
         var actual = rightObject.RecordBases(right.TypeId);
         return expected.Length == actual.Length && !actual.Where((item, index) =>
@@ -174,7 +182,7 @@ internal sealed partial class Linker
     {
         var declaration = new Symbol(obj, obj.Entities[id]);
         if (definitions.TryGetValue(declaration.Key, out Symbol? definition)) return definition;
-        if (!allowExterns || declaration.Entity.Linkage != "external")
+        if ((!allowExterns && RuntimeArrayProvider.TryGetMethod(declaration) is null) || declaration.Entity.Linkage != "external")
             throw new InvalidDataException($"Unresolved function: {declaration.Entity.ExternalKey ?? declaration.Entity.SourceName} (referenced from {obj.PrimarySource})");
         if (Externs.TryAdd(declaration.Key, declaration)) Names.Add(declaration.Key, names.Allocate(declaration.Entity.SourceName, "extern_" + declaration.Entity.Id));
         return Externs[declaration.Key];
@@ -253,7 +261,7 @@ internal sealed partial class Linker
                 {
                     RequiresExceptionProvider = true;
                     RequiresSourceHandlers |= node.Kind == "try";
-                    if (!allowExterns) throw new InvalidDataException("Source exceptions require the shared Edg.Runtime.CppExceptions provider; use --allow-externs for generation-only output");
+                    if (!sharedExceptionProvider && !allowExterns) throw new InvalidDataException("Source exceptions require the shared Edg.Runtime.CppExceptions provider; use --allow-externs for generation-only output");
                     if (node.Kind == "throw")
                     {
                         ThrowExpression expression = symbol.Object.ThrowExpressions[node.Id];

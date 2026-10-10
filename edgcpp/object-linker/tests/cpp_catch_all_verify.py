@@ -84,7 +84,7 @@ def main():
         inputs.rename(out / 'retained-source')
         generated = out / 'generated'
         run('source-hidden-link', ['dotnet', args.linker.resolve(), 'link', '--out', generated,
-            '--namespace', 'Tests.CatchAll', '--class', 'Core', '--allow-externs', obj])
+            '--namespace', 'Tests.CatchAll', '--class', 'Core', '--exception-provider', 'external', '--allow-externs', obj])
         source_map = json.loads((generated / 'source-map.json').read_text())['objects'][0]
         check('review-map-handlers', len(source_map['sourceTries']) == len(source_map['sourceHandlers']) == 7)
         check('review-map-release-ownership', len([state for state in source_map['cleanupStates'] if state['handlerNodeId'] is not None]) == 7)
@@ -113,7 +113,7 @@ def main():
         minimal_source.rename(out / 'retained-only-handler.cpp')
         minimal = out / 'minimal-generated'
         run('minimal-link', ['dotnet', args.linker.resolve(), 'link', '--out', minimal,
-            '--namespace', 'Tests.CatchAll', '--class', 'Core', '--allow-externs', minimal_object])
+            '--namespace', 'Tests.CatchAll', '--class', 'Core', '--exception-provider', 'external', '--allow-externs', minimal_object])
         host = (out / 'retained-source/CatchAllHost.cs').read_text()
         start = host.index('    public static int Main()')
         end = host.index('\n}\nnamespace Edg.Runtime', start)
