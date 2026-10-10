@@ -417,6 +417,16 @@ struct RecordStorageCopySnapshot {
   unsigned long long bytes=0;
   std::string kind;
 };
+struct GeneratedArrayInitializer {
+  a_routine_ptr owner=nullptr,constructor=nullptr;
+  a_dynamic_init_ptr allocation=nullptr;
+  a_type_ptr element=nullptr;
+  a_scope_ptr scope=nullptr;
+  a_variable_ptr parameter=nullptr,model=nullptr;
+  an_expr_node_ptr copy=nullptr,constructor_call=nullptr;
+  bool complete=false;
+  std::string error;
+};
 struct ArrayAllocationSnapshot {
   a_routine_ptr owner=nullptr,allocator=nullptr,deallocator=nullptr,constructor=nullptr,destructor=nullptr;
   a_dynamic_init_ptr original=nullptr,original_destruction=nullptr;
@@ -490,6 +500,7 @@ struct State {
   std::set<std::pair<a_dynamic_init_ptr,a_routine_ptr>> zero_array_allocation_initializations;
   std::map<a_dynamic_init_ptr,UninitializedAllocationSnapshot> uninitialized_allocations;
   std::map<a_routine_ptr,GeneratedStaticDestructor> generated_static_destructors;
+  std::map<a_routine_ptr,GeneratedArrayInitializer> generated_array_initializers;
   std::map<a_routine_ptr,std::vector<a_dynamic_init_ptr>> adopted_initializers;
   std::map<std::pair<an_object_lifetime_ptr,a_routine_ptr>,a_dynamic_init_ptr> initializer_lifetime_adoptions;
   a_dynamic_init_ptr active_file_initializer=nullptr;
@@ -1179,6 +1190,14 @@ inline unsigned capture_type(a_type_ptr t) {
           ",constraint="+std::to_string(extra->constraint.type_constraint?1:0)+"]";
       a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
       conv_seq_to_file_and_line(value.position.seq,&display,&full,&line,&at_end);
+      if(extra->constraint.type_constraint) {
+        auto constraint=extra->constraint.type_constraint;
+        value.error+=" [constraint-node="+std::to_string(int(constraint->kind))+
+          ",concept="+(constraint->kind==enk_concept_id && constraint->variant.concept_id.concept_template?
+             spelling(constraint->variant.concept_id.concept_template->source_corresp):std::string())+
+          ",source="+std::string(full?full:display?display:"")+":"+std::to_string(line)+":"+
+          std::to_string(value.position.column)+"]";
+      }
       if(!line || !(full?full:display))value.error="dependent source parameter lacks original declaration location";
       else value.dependent_identity=std::string(full?full:display)+":"+std::to_string(line)+":"+
         std::to_string(value.position.column)+":"+std::to_string(value.dependent_depth)+":"+std::to_string(value.dependent_position);
@@ -1566,6 +1585,7 @@ inline void observe_asm_after_lowering(an_asm_entry_ptr entry) {
 inline void capture_routine(a_routine_ptr r) {
   if(!r || abi_primary(r))return;
   if(state().generated_static_destructors.count(r))return;
+  if(state().generated_array_initializers.count(r))return;
 #if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN
   if(r->overriding_function_for_wrapper)return;
 #endif
@@ -2475,6 +2495,48 @@ struct ArrayAllocationCapture {
   }
   ~ArrayAllocationCapture(){if(active)state().array_allocation_contexts.pop_back();}
 };
+inline void observe_generated_array_initializer_begin(a_routine_ptr helper,a_type_ptr element,
+    bool complete_object,bool count_parameter,bool zero_entity,a_routine_ptr constructor) {
+  if(!enabled() || state().array_allocation_contexts.empty())return;
+  const auto &context=state().array_allocation_contexts.back();
+  if(!context.original || !complete_object || count_parameter || !zero_entity)return;
+  GeneratedArrayInitializer value;value.owner=context.owner;value.allocation=context.original;
+  value.element=skip_typerefs(element);value.constructor=constructor;
+  if(!helper || !context.owner || !context.error.empty() ||
+     value.element!=skip_typerefs(context.element_type) ||
+     (value.element->kind!=tk_struct && value.element->kind!=tk_class))
+    value.error="generated vector initializer lacks exact complete record/new origin";
+  if(helper) {
+    state().generated_array_initializers.emplace(helper,value);
+    observe_runtime_signature(helper->type);
+  }
+}
+inline void observe_generated_array_initializer_copy(a_routine_ptr helper,a_scope_ptr scope,
+    a_variable_ptr parameter,a_variable_ptr model,an_expr_node_ptr copy) {
+  if(!enabled())return;
+  auto found=state().generated_array_initializers.find(helper);
+  if(found==state().generated_array_initializers.end())return;
+  auto &value=found->second;value.scope=scope;value.parameter=parameter;value.model=model;value.copy=copy;
+  if(!scope || !parameter || parameter->next || !model || model==parameter ||
+     !copy || copy->kind!=enk_operation || copy->variant.operation.kind!=eok_assign)
+    value.error="generated array initializer lacks its exact model and destination";
+  observe_record_storage_copy(copy,helper,"array-zero-model");
+}
+inline void observe_generated_array_initializer_constructor(a_routine_ptr helper,an_expr_node_ptr call) {
+  if(!enabled())return;
+  auto found=state().generated_array_initializers.find(helper);
+  if(found!=state().generated_array_initializers.end())found->second.constructor_call=call;
+}
+inline void observe_generated_array_initializer_complete(a_routine_ptr helper,a_scope_ptr scope) {
+  if(!enabled())return;
+  auto found=state().generated_array_initializers.find(helper);
+  if(found==state().generated_array_initializers.end())return;
+  auto &value=found->second;
+  if(value.scope!=scope || !value.copy || !value.model || !value.parameter ||
+     bool(value.constructor)!=bool(value.constructor_call))
+    value.error="generated array initializer incomplete at stock factory boundary";
+  value.complete=true;
+}
 inline void observe_array_allocation_call(an_expr_node_ptr call,an_expr_node_ptr destination,
     a_routine_ptr constructor,a_routine_ptr destructor,a_routine_ptr allocator,a_routine_ptr deallocator,
     an_expr_node_ptr padding) {
@@ -2796,6 +2858,7 @@ inline void capture_scope(a_scope_ptr scope,a_routine_ptr function_owner=nullptr
     capture_routine(scope->variant.routine.ptr);return;
   }
   if(scope->kind==sck_function && state().generated_static_destructors.count(scope->variant.routine.ptr))return;
+  if(scope->kind==sck_function && state().generated_array_initializers.count(scope->variant.routine.ptr))return;
   // Alternate ABI bodies contain generated forwarding declarations only.
   if(scope->kind==sck_function && abi_primary(scope->variant.routine.ptr))return;
 #if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN

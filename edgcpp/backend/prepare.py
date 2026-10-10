@@ -1147,6 +1147,51 @@ object_source_overlay(init_lower,
     "static void set_local_static_guard_var(\n                                 a_variable_ptr         local_static_guard_var,\n                                 an_insert_location_ptr insert_location)\n/*\nlocal_static_guard_var is the guard variable associated with the initialization\nof a local static variable.  If necessary, add code to set the guard variable\nto indicate that the initialization is complete.  Insert the code at\n*insert_location.\n*/\n{\n  if (targ_ia64_abi_use_guard_acquire_release &&\n      !is_effective_thread_local(local_static_guard_var)) {\n    /* In non-thread-local cases, the call to __cxa_guard_release has already\n       been emitted, so there's nothing to do here. */\n  } else {\n    if (targ_ia64_abi_use_int_static_init_guard) {\n      /* ARM EABI specifies to use least significant bit for guard test. */\n      (void)insert_assignment_statement(var_lvalue_expr(\n                                                       local_static_guard_var),\n                                        (an_expr_operator_kind)eok_assign,\n                                        node_for_integer_constant(1L,\n                                                      (an_integer_kind)ik_int),\n                                        insert_location);\n    } else {\n      /* IA-64 ABI specifies to use first byte for guard test. */\n      (void)insert_assignment_statement(add_indirection_to_node(\n                                         add_cast_to_char_star(\n                                         var_addr_expr(\n                                                     local_static_guard_var))),\n                                        (an_expr_operator_kind)eok_assign,\n                                        node_for_integer_constant(1L,\n                                                     (an_integer_kind)ik_char),\n                                        insert_location);\n    }  /* if */\n  }  /* if */\n}  /* set_local_static_guard_var */",
     "static void set_local_static_guard_var(\n                                 a_variable_ptr         local_static_guard_var,\n                                 an_insert_location_ptr insert_location)\n/*\nlocal_static_guard_var is the guard variable associated with the initialization\nof a local static variable.  If necessary, add code to set the guard variable\nto indicate that the initialization is complete.  Insert the code at\n*insert_location.\n*/\n{\n  if (targ_ia64_abi_use_guard_acquire_release &&\n      !is_effective_thread_local(local_static_guard_var)) {\n    /* In non-thread-local cases, the call to __cxa_guard_release has already\n       been emitted, so there's nothing to do here. */\n  } else {\n    if (targ_ia64_abi_use_int_static_init_guard) {\n      /* ARM EABI specifies to use least significant bit for guard test. */\n      a_statement_ptr dot_guard_publication = insert_assignment_statement(var_lvalue_expr(\n                                                       local_static_guard_var),\n                                        (an_expr_operator_kind)eok_assign,\n                                        node_for_integer_constant(1L,\n                                                      (an_integer_kind)ik_int),\n                                        insert_location);\n#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n      dot_object_source::observe_local_thread_guard_publication(local_static_guard_var, dot_guard_publication);\n#endif\n    } else {\n      /* IA-64 ABI specifies to use first byte for guard test. */\n      a_statement_ptr dot_guard_publication = insert_assignment_statement(add_indirection_to_node(\n                                         add_cast_to_char_star(\n                                         var_addr_expr(\n                                                     local_static_guard_var))),\n                                        (an_expr_operator_kind)eok_assign,\n                                        node_for_integer_constant(1L,\n                                                     (an_integer_kind)ik_char),\n                                        insert_location);\n#if defined(EDG_DOT_BACKEND) && !DO_FULL_PORTABLE_EH_LOWERING\n      dot_object_source::observe_local_thread_guard_publication(local_static_guard_var, dot_guard_publication);\n#endif\n    }  /* if */\n  }  /* if */\n}  /* set_local_static_guard_var */")
 
+# Own only the one-element zero/constructor helper created inside vector new.
+object_source_overlay(init_lower,
+    '    model_param_type = alloc_param_type(make_pointer_type(model_type));\n'
+    '    (*last_param_type)->next = model_param_type;\n'
+    '  }  /* if */\n'
+    '  /* Build the definition of the routine.  */\n'
+    '  scope = make_routine_definition(rp, /*make_return=*/TRUE,',
+    '    model_param_type = alloc_param_type(make_pointer_type(model_type));\n'
+    '    (*last_param_type)->next = model_param_type;\n'
+    '  }  /* if */\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_generated_array_initializer_begin(rp, type, have_complete_object,\n'
+    '    need_array_count, zero_entity, ctor_routine);\n'
+    '#endif\n'
+    '  /* Build the definition of the routine.  */\n'
+    '  scope = make_routine_definition(rp, /*make_return=*/TRUE,')
+object_source_overlay(init_lower,
+    '                                            source_expr);\n'
+    '  if (ctor_routine != NULL) {',
+    '                                            source_expr);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_generated_array_initializer_copy(rp, scope, entity_var, model_var, copy_expr);\n'
+    '#endif\n'
+    '  if (ctor_routine != NULL) {')
+object_source_overlay(init_lower,
+    '    ctor_call = make_call_node(ctor_routine, ctor_entity_expr);\n'
+    '    copy_expr = make_comma_node(copy_expr, ctor_call);',
+    '    ctor_call = make_call_node(ctor_routine, ctor_entity_expr);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_object_source::observe_generated_array_initializer_constructor(rp, ctor_call);\n'
+    '#endif\n'
+    '    copy_expr = make_comma_node(copy_expr, ctor_call);')
+object_source_overlay(init_lower,
+    '  /* Clean up. */\n'
+    '  pop_generated_routine_context(scope, il_region, &context);\n'
+    '  return rp;\n'
+    '}  /* helper_routine_to_initialize_entity */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_generated_array_initializer_complete(rp, scope);\n'
+    '#endif\n'
+    '  /* Clean up. */\n'
+    '  pop_generated_routine_context(scope, il_region, &context);\n'
+    '  return rp;\n'
+    '}  /* helper_routine_to_initialize_entity */')
+
 # Typed throw initialization and exact runtime-address/start ownership.
 object_source_overlay(init_lower,
     '  /* Make an "if" statement and insert it into the program. */\n'

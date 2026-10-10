@@ -7,7 +7,21 @@ successful generation after one fix. The selected sample is deliberately varied,
 not statistically representative. Preserve all required source-type information;
 do not omit metadata to bypass a gate. Re-rank after each expanded probe.
 
-## Current queue (complete baseline and all-failure follow-up, profile52)
+## Current queue (profile53 follow-up)
+
+Profile53 clears the seven variadic indirect ABI and two generated-array helper
+first failures: all nine now package, verify and jointly generate 9,930 C#
+definitions with four actual providers. Focused 88 checks pass; variadic includes
+JIT/NativeAOT. Across the prior 136 failures, 76 package and 74 verify; 60
+export/frontend gates and two managed rejects remain. The highest priority is
+still 38 constrained source-type cases; four dependent variable references share
+that graph work. All four special linkage failures are exact weak routines
+(two RE2 TLS wrappers, libc++ verbose_abort and new). Supervisor takes weak
+linkage while lifetime worker identifies ART's exact generated cleanup owner.
+Dynamic typed exception lists (two), remaining singleton families, and eight
+project test configuration errors follow. Preserve every original source fact.
+
+## Previous complete baseline and profile52 failure follow-up
 
 Frozen native119/managed134 completed all 2,635 original-source units: 2,509
 packaged and 2,499 verified; 126 export/package failures and 10 managed rejects.

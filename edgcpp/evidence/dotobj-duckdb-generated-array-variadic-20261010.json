@@ -1,0 +1,58 @@
+{
+  "milestone": "dotobj v53 generated array zero-model construction and variadic indirect ABI transport",
+  "status": "accepted",
+  "nativeCompiler": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native126-verified-snapshot/cpfe-dot",
+  "nativeSha256": "e64eed9941213bfe495d886f730a99c270a207b442a9dce541ab34d73abee01a",
+  "managedLinker": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-147/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "managedSha256": "ebb7e3f061d17ac40b346c7098b7e22394324c053570ee3a35eebc1ae4e20459",
+  "focused": [
+    {
+      "name": "generated-array",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v53-generated-array-126-147-001/results.json",
+      "sha256": "c2288f116377d836689dc017be29bac16c5deb985c98e1def0ecda7d88495fab",
+      "checks": 59,
+      "nativeAot": false
+    },
+    {
+      "name": "variadic-transport",
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v53-variadic-126-147-002/results.json",
+      "sha256": "9b9edb185c2e7d1ee3fcc03d7f20643d6374f50f3a8e18bff1a55910466d6cb2",
+      "checks": 29,
+      "nativeAot": true
+    }
+  ],
+  "actualFailureFollowup": {
+    "newlyPackagedAndVerified": 9,
+    "selected": 136,
+    "packaged": 76,
+    "verified": 74,
+    "remainingExportOrFrontend": 60,
+    "remainingManaged": 2,
+    "exportReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-frontier-126/results.json",
+    "verifyReceipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-managed-126-147/results.json"
+  },
+  "generation": {
+    "exitCode": 0,
+    "seconds": 13.350059009972028,
+    "primaryUnits": 9,
+    "providers": 4,
+    "definitions": 9930,
+    "output": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-v53-combined-126-147/generated",
+    "compiled": false,
+    "executed": false
+  },
+  "completedFrozenBaseline": {
+    "compiler": 119,
+    "managed": 134,
+    "total": 2635,
+    "packaged": 2509,
+    "verified": 2499,
+    "exportOrPackageFailures": 126,
+    "managedRejects": 10
+  },
+  "limitations": [
+    "The 136-unit follow-up combines precise newer failure probes; the 2499 successful baseline units have not been re-exported under v53.",
+    "Generated-array fixture is source-hidden verified and emitted, not JIT/AOT executed; vector/array-length runtime provider closure remains deferred.",
+    "Full DuckDB C# generation, compilation and execution remain incomplete."
+  ]
+}

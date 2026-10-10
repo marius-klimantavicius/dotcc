@@ -665,3 +665,27 @@ objects. The shared dynamic-array length failure runtime provider remains
 pending, so this receipt does not claim translated execution. Arrays requiring
 a generated zero-then-constructor callback remain a separate owned-protocol
 feature.
+
+### Generated array semantic-zero callbacks (v53)
+
+When value-initialized arrays need both semantic zero initialization and a
+constructor, stock `helper_routine_to_initialize_entity` creates a callback
+with a typed constant model, a complete-object storage copy and the selected
+constructor call. The new `generated_array_initializers` relation retains
+that generated origin, original allocation obligation, source/execution element
+types, exact destination/model bindings, initialization/copy/call nodes and
+stock zero-prefix decision. It does not invent a source routine or declaration.
+The callback's address is confined to its observed vector allocation argument.
+
+The model remains an explicit typed initializer. In particular, IA64 ABI null
+pointers to data members are represented by -1, so replacing the model with
+byte zeroing would be incorrect. Verification checks the original member types,
+model field values, full copy extent, constructor destination and execution
+order. The source record's copy and assignment permissions remain unchanged.
+
+Native126/managed147 pass 59 checks at
+`dotobj-v53-generated-array-126-147-001`: native C++/stock C O0/O2, dirty-storage
+initialization, null data-member pointers, element-constructor failure and prefix
+cleanup, source-hidden dotobj verification, C# generation, and twelve resealed
+malformed objects. The vector allocation and dynamic-array length failure runtime
+providers remain pending; this receipt does not claim translated execution.

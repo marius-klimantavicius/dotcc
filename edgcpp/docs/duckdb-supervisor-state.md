@@ -15,14 +15,12 @@ project probes, durable evidence and Git staging/commits. Root is read-only whil
 that ownership is active. Native edits are canonical `backend/` files; generated
 upstream overlays and unrelated existing work remain unstaged.
 
-- `lifetime_export`: original DuckDB `exception.cpp`/`date.cpp` unsupported
-  exception construct kind 10, then `allocator.cpp` initialization with destructor.
-  Owns lifetime portions of `dot_gen_object.h` and focused lifecycle fixtures.
-- `base_provenance`: original DuckDB `string_util.cpp` physical base lacking direct
-  original declaration. Owns record/base portions of `dot_gen_object.h`, relevant
-  source-base capture and focused base fixtures.
-- Supervisor: schema/managed integration as required, full-manifest provenance,
-  broader bounded-memory frontier probes and milestone acceptance.
+- `lifetime_export`: exact generated cleanup ownership in ART; v53 generated
+  array zero-model/constructor callbacks accepted. Scratch diagnostic queued.
+- `base_provenance`: full typed source concept/requirement graph and declaration
+  references, preserving dependent substitution environments. Scratch only.
+- Supervisor: verified integration/commits, weak routine linkage and remaining
+  measured project families, bounded project probes and storage planning.
 
 Workers consult stock EDG C lowering/backend before choosing representations.
 Overlapping native files have function-level ownership, with edits coordinated.
@@ -736,3 +734,19 @@ Evidence dotobj-duckdb-lambda-thread-lifetimes-20261010.json; all 274 checks pas
 Next native cut126 / managed147 reserved for generated array callback provenance,
 variadic ABI transport and source-constraint diagnostics. Concept graph remains
 worker scratch until complete typed schema/capture/verification are ready.
+
+
+v53 accepted with native126 and managed147: 88 focused checks (59 generated
+array model/constructor, 29 variadic indirect transport). Variadic direct and
+function-pointer calls, fixed indirect parameters, result buffers and va-lists
+pass native/stock O0/O2, JIT and NativeAOT. Array callback checks preserve exact
+model initialization/copy/constructor order, null data-member pointers and
+rollback provenance; runtime provider closure remains deferred. All nine real
+selected array/RE2 units package and verify; combined nine plus four providers
+emit 9,930 definitions. Review artifacts/review/dotobj-duckdb-v53/combined9;
+evidence dotobj-duckdb-generated-array-variadic-20261010.json. Across the 136
+prior failures: 76 package, 74 verify, 60 export/frontend gates and two managed
+rejects remain. This is not a latest-profile full 2,635-unit rebuild. Next:
+source concepts (38), dependent variable references (4), weak linkage (4),
+ART cleanup diagnosis, then remaining measured families. Full generation is
+still the checkpoint before runtime closure; no full compile/run claim.

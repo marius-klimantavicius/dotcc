@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v52'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v53'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -167,10 +167,10 @@ CREATE TABLE parameters (
  entity_id INTEGER NOT NULL REFERENCES entities(id),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  type_id INTEGER NOT NULL REFERENCES types(id),
- parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','indirect-source','this','result-buffer','vtt','forwarded-source','static-object')),
+ parameter_role TEXT NOT NULL CHECK(parameter_role IN ('source','indirect-source','this','result-buffer','vtt','forwarded-source','static-object','initialization-object')),
  source_ordinal INTEGER CHECK(source_ordinal>=0),
  CHECK((parameter_role IN ('source','indirect-source','forwarded-source') AND source_ordinal IS NOT NULL) OR
-       (parameter_role IN ('this','result-buffer','vtt','static-object') AND source_ordinal IS NULL)),
+       (parameter_role IN ('this','result-buffer','vtt','static-object','initialization-object') AND source_ordinal IS NULL)),
  UNIQUE(entity_id,source_ordinal),
  PRIMARY KEY(entity_id,ordinal)
 ) STRICT;
@@ -329,6 +329,26 @@ CREATE TABLE static_destruction_registrations (
  object_node_id INTEGER NOT NULL REFERENCES nodes(id),
  domain TEXT NOT NULL CHECK(domain IN ('process','thread')),
  capture_proof TEXT NOT NULL CHECK(capture_proof='observed-static-destruction-registration')
+) STRICT;
+CREATE TABLE generated_array_initializers (
+ function_entity_id INTEGER PRIMARY KEY REFERENCES entities(id),
+ owner_function_entity_id INTEGER NOT NULL REFERENCES entities(id),
+ source_allocation_obligation_id INTEGER NOT NULL REFERENCES source_allocation_obligations(id),
+ source_element_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ element_type_id INTEGER NOT NULL REFERENCES types(id),
+ constructor_entity_id INTEGER REFERENCES entities(id),
+ object_parameter_binding_id INTEGER NOT NULL REFERENCES bindings(id),
+ model_binding_id INTEGER NOT NULL REFERENCES bindings(id),
+ model_initialization_node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
+ model_copy_node_id INTEGER NOT NULL UNIQUE REFERENCES nodes(id),
+ constructor_call_node_id INTEGER UNIQUE REFERENCES nodes(id),
+ model_lowered_init_kind INTEGER NOT NULL CHECK(model_lowered_init_kind BETWEEN 0 AND 5),
+ model_site_kind TEXT NOT NULL CHECK(model_site_kind IN ('scope-entry','dynamic-init','lowered-assignment')),
+ model_zero_storage INTEGER NOT NULL CHECK(model_zero_storage IN (0,1)),
+ model_partially_initialized INTEGER NOT NULL CHECK(model_partially_initialized IN (0,1)),
+ capture_proof TEXT NOT NULL CHECK(capture_proof='observed-array-zero-initializer-factory'),
+ CHECK((constructor_entity_id IS NULL)=(constructor_call_node_id IS NULL)),
+ CHECK(object_parameter_binding_id<>model_binding_id)
 ) STRICT;
 CREATE TABLE generated_static_destructors (
  function_entity_id INTEGER PRIMARY KEY REFERENCES functions(entity_id),
@@ -951,12 +971,13 @@ CREATE TABLE record_storage_copies (
  value_node_id INTEGER NOT NULL REFERENCES nodes(id),
  source_record_id INTEGER NOT NULL REFERENCES source_record_types(id),
  byte_count INTEGER NOT NULL CHECK(byte_count>0),
- kind TEXT NOT NULL CHECK(kind IN ('evaluation-save','class-assignment','initializer-storage','bitwise-initialization')),
+ kind TEXT NOT NULL CHECK(kind IN ('evaluation-save','class-assignment','initializer-storage','bitwise-initialization','array-zero-model')),
  capture_proof TEXT NOT NULL,
  CHECK((kind='evaluation-save' AND capture_proof='observed-pre-execution-save') OR
        (kind='class-assignment' AND capture_proof='observed-class-assignment-lowering') OR
        (kind='initializer-storage' AND capture_proof='observed-initialization-storage') OR
-       (kind='bitwise-initialization' AND capture_proof='observed-bitwise-initialization'))
+       (kind='bitwise-initialization' AND capture_proof='observed-bitwise-initialization') OR
+       (kind='array-zero-model' AND capture_proof='observed-array-zero-model-copy'))
 ) STRICT;
 CREATE TABLE record_value_transfers (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),

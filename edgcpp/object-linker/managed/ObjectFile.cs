@@ -45,6 +45,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["initializer_lifetime_executions"] = "source_lifetime_id,function_entity_id",
         ["static_destruction_registrations"] = "node_id",
         ["generated_static_destructors"] = "function_entity_id",
+        ["generated_array_initializers"] = "function_entity_id",
         ["static_destruction_dispositions"] = "source_obligation_id",
         ["source_dependent_types"] = "type_id", ["source_nested_type_declarations"] = "type_id",
         ["source_lifetimes"] = "id", ["source_destruction_obligations"] = "id",
@@ -112,7 +113,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v52" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v53" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -138,6 +139,7 @@ internal sealed partial class ObjectFile : IDisposable
             ReadStaticSources();
             ReadCleanupMetadata();
             ReadStaticExecutionMetadata();
+            ReadGeneratedArrayInitializers();
             ReadRecordValueTransfers();
             ReadRecordStorageInitializations();
             ReadRecordConstantInitializations();
@@ -300,7 +302,7 @@ internal sealed partial class ObjectFile : IDisposable
                 if (query.Integer(1) != parameters.Count || (type == "void" || ScalarTypes.IsArray(type) || !CanPassRecord(type) && !PermitsDeferredValue(entity, type))) throw new InvalidDataException("Invalid parameter ordinal/type");
                 string role = query.Text(3); long? sourceOrdinal = query.OptionalInteger(4);
                 long ordinal = query.Integer(1);
-                if (role is not ("source" or "indirect-source" or "this" or "result-buffer" or "vtt" or "forwarded-source" or "static-object") || (role is "this" or "result-buffer" or "vtt" or "static-object" ? sourceOrdinal is not null : sourceOrdinal is null or < 0))
+                if (role is not ("source" or "indirect-source" or "this" or "result-buffer" or "vtt" or "forwarded-source" or "static-object" or "initialization-object") || (role is "this" or "result-buffer" or "vtt" or "static-object" or "initialization-object" ? sourceOrdinal is not null : sourceOrdinal is null or < 0))
                     throw new InvalidDataException("Invalid execution parameter source role");
                 ParameterRoles.Add((entity, ordinal), new(entity, ordinal, role, sourceOrdinal));
                 parameters.Add(type);
@@ -335,7 +337,7 @@ internal sealed partial class ObjectFile : IDisposable
             {
                 var binding = new Binding(query.Integer(0), query.Integer(1), query.Text(2), query.OptionalInteger(3), query.Integer(4), query.Text(5), query.Integer(6), query.Integer(7) == 1);
                 bool syntheticParameter = binding.Kind == "parameter" && binding.Ordinal is long ordinal &&
-                    ParameterRoles.TryGetValue((functionId, ordinal), out ParameterSemantics? parameter) && parameter.Role is "this" or "result-buffer" or "vtt" or "forwarded-source" or "static-object";
+                    ParameterRoles.TryGetValue((functionId, ordinal), out ParameterSemantics? parameter) && parameter.Role is "this" or "result-buffer" or "vtt" or "forwarded-source" or "static-object" or "initialization-object";
                 if (query.Integer(7) is not (0 or 1) || binding.Kind == "parameter" && binding.IsSynthetic != syntheticParameter || binding.IsSynthetic && binding.Kind is not ("local" or "parameter"))
                     throw new InvalidDataException("Synthetic parameter requires a proven generated ABI role");
                 bindings.Add(binding.Id, binding);

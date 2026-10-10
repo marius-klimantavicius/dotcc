@@ -27,9 +27,9 @@ internal sealed partial class ObjectFile
             long id=query.Integer(0), target=query.Integer(1), value=query.Integer(2), sourceId=query.Integer(3);
             long bytes=query.Integer(4); string kind=query.Text(5);
             string type=Type(query.Integer(8));
-            if (SourceLanguage != "c++" || kind is not ("evaluation-save" or "class-assignment" or "initializer-storage" or "bitwise-initialization") ||
+            if (SourceLanguage != "c++" || kind is not ("evaluation-save" or "class-assignment" or "initializer-storage" or "bitwise-initialization" or "array-zero-model") ||
                 query.Text(6) != (kind switch { "evaluation-save" => "observed-pre-execution-save", "class-assignment" => "observed-class-assignment-lowering",
-                    "initializer-storage" => "observed-initialization-storage", _ => "observed-bitwise-initialization" }) ||
+                    "initializer-storage" => "observed-initialization-storage", "bitwise-initialization" => "observed-bitwise-initialization", _ => "observed-array-zero-model-copy" }) ||
                 query.OptionalText(7) != "record-transfer" || !ScalarTypes.IsRecord(type) ||
                 !SourceRecords.TryGetValue(sourceId, out SourceRecord? source) || !source.IsComplete || !source.LayoutKnown ||
                 source.IsDependent || source.CapturePhase != "before-class-prelowering" ||
@@ -42,5 +42,6 @@ internal sealed partial class ObjectFile
                 !RecordStorageCopies.TryAdd(id,new(target,value,sourceId,bytes,kind)))
                 throw new InvalidDataException("Lowered record storage copy lacks its exact source type, extent and execution operands");
         }
+        VerifyGeneratedArrayModelCopies();
     }
 }

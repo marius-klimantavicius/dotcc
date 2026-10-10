@@ -42,6 +42,7 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Record storage initialization lacks exact original local and observed zeroing provenance");
         }
         ReadRecordTemporaryInitializations();
+        ReadGeneratedArrayModelInitializations();
         using var nodes = database.Prepare("SELECT id FROM nodes WHERE kind='record-storage-init'");
         while (nodes.Read())
             if (!RecordStorageInitializations.ContainsKey(nodes.Integer(0)))

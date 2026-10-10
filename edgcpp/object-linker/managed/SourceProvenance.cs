@@ -91,6 +91,11 @@ internal sealed partial class ObjectFile
             while (generated.Read())
                 if (!Entities.ContainsKey(generated.Integer(0)) || !staticDestructors.Add(generated.Integer(0)))
                     throw new InvalidDataException("Invalid generated static destructor identity");
+        var arrayInitializers = new HashSet<long>();
+        using (var generated = database.Prepare("SELECT function_entity_id FROM generated_array_initializers"))
+            while (generated.Read())
+                if (!Entities.ContainsKey(generated.Integer(0)) || !arrayInitializers.Add(generated.Integer(0)))
+                    throw new InvalidDataException("Invalid generated array initializer identity");
         if (functions.Overlaps(AbiRoutineOrigins.Keys) || functions.Overlaps(GeneratedRoutineOrigins.Keys) ||
             AbiRoutineOrigins.Keys.Any(GeneratedRoutineOrigins.ContainsKey) ||
             functions.Overlaps(ThunkWrappers.Keys) || AbiRoutineOrigins.Keys.Any(ThunkWrappers.ContainsKey) ||
@@ -98,7 +103,8 @@ internal sealed partial class ObjectFile
             staticDestructors.Overlaps(functions) || staticDestructors.Overlaps(AbiRoutineOrigins.Keys) ||
             staticDestructors.Overlaps(GeneratedRoutineOrigins.Keys) || staticDestructors.Overlaps(ThunkWrappers.Keys) ||
             LambdaEntryOrigins.Keys.Any(id => functions.Contains(id) || AbiRoutineOrigins.ContainsKey(id) || GeneratedRoutineOrigins.ContainsKey(id) || ThunkWrappers.ContainsKey(id) || staticDestructors.Contains(id)) ||
-            functions.Count + AbiRoutineOrigins.Count + GeneratedRoutineOrigins.Count + ThunkWrappers.Count + staticDestructors.Count + LambdaEntryOrigins.Count != Entities.Count)
+            arrayInitializers.Any(id => functions.Contains(id) || AbiRoutineOrigins.ContainsKey(id) || GeneratedRoutineOrigins.ContainsKey(id) || ThunkWrappers.ContainsKey(id) || staticDestructors.Contains(id) || LambdaEntryOrigins.ContainsKey(id)) ||
+            functions.Count + AbiRoutineOrigins.Count + GeneratedRoutineOrigins.Count + ThunkWrappers.Count + staticDestructors.Count + LambdaEntryOrigins.Count + arrayInitializers.Count != Entities.Count)
             throw new InvalidDataException("Missing or overlapping original, ABI or generated function origin");
         var parameterCounts = new Dictionary<long, int>();
         using (var query = database.Prepare("SELECT entity_id,ordinal,source_type_id,has_default_argument FROM source_parameters ORDER BY entity_id,ordinal"))
@@ -174,9 +180,10 @@ internal sealed partial class ObjectFile
             }
         RejectRows("SELECT entity_id FROM source_declarations WHERE entity_id IS NOT NULL GROUP BY entity_id HAVING count(*)<>1", "Duplicate source function declaration identity");
         RejectRows("SELECT binding_id FROM source_declarations WHERE binding_id IS NOT NULL GROUP BY binding_id HAVING count(*)<>1", "Duplicate source binding declaration identity");
-        RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL AND e.id NOT IN (SELECT entity_id FROM abi_routine_origins) AND e.id NOT IN (SELECT entity_id FROM generated_routine_origins) AND e.id NOT IN (SELECT entity_id FROM thunk_wrappers) AND e.id NOT IN (SELECT entity_id FROM lambda_entry_origins) AND e.id NOT IN (SELECT function_entity_id FROM generated_static_destructors)", "Missing original function declaration capture");
+        RejectRows("SELECT e.id FROM entities e LEFT JOIN source_declarations d ON d.entity_id=e.id WHERE d.id IS NULL AND e.id NOT IN (SELECT entity_id FROM abi_routine_origins) AND e.id NOT IN (SELECT entity_id FROM generated_routine_origins) AND e.id NOT IN (SELECT entity_id FROM thunk_wrappers) AND e.id NOT IN (SELECT entity_id FROM lambda_entry_origins) AND e.id NOT IN (SELECT function_entity_id FROM generated_static_destructors) AND e.id NOT IN (SELECT function_entity_id FROM generated_array_initializers)", "Missing original function declaration capture");
+        RejectRows("SELECT d.id FROM source_declarations d JOIN generated_array_initializers g ON g.function_entity_id=d.entity_id", "Generated array initializer must not fabricate an original declaration");
         RejectRows("SELECT d.id FROM source_declarations d JOIN generated_static_destructors g ON g.function_entity_id=d.entity_id", "Generated static destructor must not fabricate an original declaration");
-        RejectRows("SELECT b.id FROM bindings b LEFT JOIN parameters p ON p.entity_id=b.function_id AND p.ordinal=b.ordinal WHERE b.kind='parameter' AND (p.parameter_role IS NULL OR b.is_synthetic <> (p.parameter_role IN ('this','result-buffer','vtt','forwarded-source','static-object')))", "Implicit ABI parameters must be synthetic and source parameters must be original");
+        RejectRows("SELECT b.id FROM bindings b LEFT JOIN parameters p ON p.entity_id=b.function_id AND p.ordinal=b.ordinal WHERE b.kind='parameter' AND (p.parameter_role IS NULL OR b.is_synthetic <> (p.parameter_role IN ('this','result-buffer','vtt','forwarded-source','static-object','initialization-object')))", "Implicit ABI parameters must be synthetic and source parameters must be original");
         RejectRows("SELECT b.id FROM bindings b JOIN source_declarations d ON d.binding_id=b.id WHERE b.is_synthetic=1", "Synthetic execution binding must not have fabricated source capture");
         RejectRows("SELECT b.id FROM bindings b LEFT JOIN source_declarations d ON d.binding_id=b.id WHERE d.id IS NULL AND b.is_synthetic=0", "Missing original binding declaration capture");
     }
@@ -210,6 +217,9 @@ internal sealed partial class ObjectFile
             ? "generated-routine(" + generated.Kind + ";" + EntityRoutine(entityId) + ";" + generated.FailurePolicy + ")"
             : GeneratedStaticDestructors.TryGetValue(entityId, out GeneratedStaticDestructor? destruction)
                 ? StaticDestructorSourceSignature(destruction)
+            : GeneratedArrayInitializers.TryGetValue(entityId, out GeneratedArrayInitializer? initializer)
+                ? "generated-array-zero-initializer(" + SourceTypeSignature(initializer.SourceElementTypeId) + ";" +
+                    (initializer.ConstructorEntityId is long constructor ? FunctionSourceSignature(constructor) : "no-constructor") + ")"
             : ThunkWrappers.TryGetValue(entityId, out ThunkWrapper? wrapper)
                 ? "virtual-wrapper(" + Convert.ToHexString(System.Text.Encoding.UTF8.GetBytes(new Symbol(this, Entities[wrapper.TargetEntityId]).Key)) + ":" +
                     FunctionSourceSignature(wrapper.TargetEntityId) + ";" + Convert.ToHexString(System.Text.Encoding.UTF8.GetBytes(new Symbol(this, Entities[wrapper.OverriddenEntityId]).Key)) + ":" +
@@ -389,6 +399,8 @@ internal sealed partial class ObjectFile
             "sourceLifetimeId", "sourceStaticLifetimeId", "sourceInitializerId", "functionEntityId", "captureProof");
         Table("staticDestructionRegistrations", "SELECT node_id,source_obligation_id,source_initializer_id,function_entity_id,callback_entity_id,object_node_id,domain,capture_proof FROM static_destruction_registrations ORDER BY node_id",
             "nodeId", "sourceObligationId", "sourceInitializerId", "functionEntityId", "callbackEntityId", "objectNodeId", "domain", "captureProof");
+        Table("generatedArrayInitializers", "SELECT function_entity_id,owner_function_entity_id,source_allocation_obligation_id,source_element_type_id,element_type_id,constructor_entity_id,object_parameter_binding_id,model_binding_id,model_initialization_node_id,model_copy_node_id,constructor_call_node_id,model_lowered_init_kind,model_site_kind,model_zero_storage,model_partially_initialized,capture_proof FROM generated_array_initializers ORDER BY function_entity_id",
+            "functionEntityId", "ownerFunctionEntityId", "sourceAllocationObligationId", "sourceElementTypeId", "elementTypeId", "constructorEntityId", "objectParameterBindingId", "modelBindingId", "modelInitializationNodeId", "modelCopyNodeId", "constructorCallNodeId", "modelLoweredInitKind", "modelSiteKind", "modelZeroStorage", "modelPartiallyInitialized", "captureProof");
         Table("generatedStaticDestructors", "SELECT function_entity_id,source_obligation_id,parameter_binding_id,storage_id,element_type_id,element_count,element_size,capture_proof FROM generated_static_destructors ORDER BY function_entity_id",
             "functionEntityId", "sourceObligationId", "parameterBindingId", "storageId", "elementTypeId", "elementCount", "elementSize", "captureProof");
         Table("staticDestructionDispositions", "SELECT source_obligation_id,kind,capture_proof FROM static_destruction_dispositions ORDER BY source_obligation_id",
