@@ -40,6 +40,28 @@ FROM template_instances i JOIN templates t ON t.id=i.template_id
 LEFT JOIN symbols s ON s.id=i.symbol_id JOIN template_arguments a ON a.instance_id=i.id
 LEFT JOIN types ty ON ty.id=a.type_id ORDER BY i.id,a.ordinal;
 
+SELECT t.name AS template,f.ordinal,f.kind,f.name,f.parameter_depth,
+       f.parameter_position,f.is_pack,f.default_value_text
+FROM template_formals f JOIN templates t ON t.id=f.template_id
+ORDER BY f.template_id,f.ordinal;
+
+SELECT instance_id,ordinal,parent_ordinal,kind,is_pack_expansion,
+       type_id,template_id,constant_text FROM template_arguments
+ORDER BY instance_id,ordinal;
+
+SELECT t.name,t.kind,t.is_dependent,p.kind AS parameter_kind,
+       p.parameter_depth,p.parameter_position,p.qualifier_type_id
+FROM types t LEFT JOIN template_type_parameters p ON p.type_id=t.id
+WHERE t.is_dependent=1 ORDER BY t.id;
+
+SELECT s.name AS function,p.ordinal,p.name AS empty_parameter_pack
+FROM empty_parameter_packs p JOIN symbols s ON s.id=p.function_id
+ORDER BY p.function_id,p.ordinal;
+
+SELECT t.builtin_name,t.size,t.alignment,f.format,f.precision_bits,
+       f.min_exponent,f.max_exponent
+FROM floating_types f JOIN types t ON t.id=f.type_id ORDER BY t.id;
+
 -- Destruction ordinal is the order supplied by EDG, not an inferred reversal.
 SELECT l.id,l.kind,l.parent_id,l.owner_node_id,d.ordinal,i.id AS initialization,
        v.name AS variable,dt.name AS destructor,i.conditional,i.partial_aggregate

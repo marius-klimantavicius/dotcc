@@ -12,7 +12,7 @@ internal sealed partial class Emitter
         // field that could enlarge the containing record.
         foreach(var unit in program.Units)
         {
-            foreach(var subobject in unit.BaseSubobjects.Values)
+            foreach(var subobject in unit.BaseSubobjects.Values.Where(subobject=>executableTypes.Contains((unit,subobject.Owner))))
             {
                 if(subobject.Virtual)continue;
                 string owner=Type(unit,subobject.Owner),target=Type(unit,subobject.Type);
@@ -25,7 +25,8 @@ internal sealed partial class Emitter
 
     private void WriteClassConversionHelpers(Unit unit,long? function)
     {
-        foreach(var conversion in unit.ClassConversions.Values.Where(conversion=>unit.Nodes[conversion.Node].Function==function))
+        foreach(var conversion in unit.ClassConversions.Values.Where(conversion=>unit.Nodes[conversion.Node].Function==function &&
+            (function is not null || executableGlobalNodes.Contains((unit,conversion.Node)))))
         {
             Node node=unit.Nodes[conversion.Node];
             if(!unit.BaseSubobjects.TryGetValue(conversion.Base,out var subobject))

@@ -12,6 +12,7 @@
 #include "types.h"
 #include "const_ints.h"
 #include "exprutil.h"
+#include "expr.h"
 #include "dot_gen_semantic_sqlite.h"
 BEGIN_EDG_NAMESPACE
 namespace dot_semantic {
@@ -34,7 +35,7 @@ struct Location { Id file=0;unsigned long long line=0,column=0; };
 struct State {
   dot_semantic_sqlite::Database db;
   Id next_type=1,next_symbol=1,next_node=1,next_field=1,next_file=1,next_template=1,next_instance=1;
-  Id next_lifetime=1,next_initialization=1,next_base=1,next_enum_value=1;
+  Id next_lifetime=1,next_initialization=1,next_base=1,next_enum_value=1,next_formal=1;
   Id function=0;
   std::map<a_type_ptr,Id> types;
   std::map<a_routine_ptr,Id> routines;
@@ -72,10 +73,74 @@ struct State {
   }
   Id template_id(a_template_ptr t) {
     if(!t)return 0;
+    // EDG canonicalizes template declaration identities this same way in
+    // il::canonicalize_tagged_ptr; do not allocate one entity per redeclaration.
+    if(t->canonical_template)t=t->canonical_template;
     auto found=templates.find(t);if(found!=templates.end())return found->second;
     Id id=next_template++;templates[t]=id;auto pos=location(t->source_corresp.decl_position);
-    db.insert("templates",{{"id",id},{"kind","template"},{"name",spelling(t->source_corresp)},
+    const char *kind=nullptr;
+    switch(t->kind) {
+      case templk_class:kind="class";break;
+      case templk_function:kind="function";break;
+      case templk_variable:kind="variable";break;
+      case templk_member_function:kind="member-function";break;
+      case templk_static_data_member:kind="static-data-member";break;
+      case templk_member_class:kind="member-class";break;
+      case templk_member_enum:kind="member-enum";break;
+      case templk_template_template_param:kind="template-parameter";break;
+      case templk_concept:kind="concept";break;
+      default:missing("template declaration kind",int(t->kind));
+    }
+    bool parameter=t->kind==templk_template_template_param;
+    db.insert("templates",{{"id",id},{"kind",kind},{"name",spelling(t->source_corresp)},
+      {"parameter_depth",parameter?Value(t->coordinates.depth):Value(nullptr)},
+      {"parameter_position",parameter?Value(t->coordinates.position):Value(nullptr)},
+      {"is_parameter_pack",bool(t->is_pack)},
       {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
+    unsigned ordinal=0;
+    for(auto formal=t->template_decl?t->template_decl->param_list:nullptr;formal;formal=formal->next,++ordinal) {
+      const char *formal_kind=nullptr;Id formal_type=0,formal_template=0,default_type=0,default_template=0,default_value_type=0;
+      Value depth=nullptr,position=nullptr,default_value=nullptr;
+      switch(formal->kind) {
+        case tpk_type: {
+          formal_kind="type";auto parameter_type=formal->variant.type.ptr;
+          formal_type=type_id(parameter_type);default_type=type_id(formal->variant.type.default_arg_type);
+          auto plain=skip_typerefs(parameter_type);
+          if(plain->kind==tk_template_param) {
+            depth=plain->variant.template_param.extra_info->coordinates.depth;
+            position=plain->variant.template_param.extra_info->coordinates.position;
+          }
+          break;
+        }
+        case tpk_nontype: {
+          formal_kind="constant";auto parameter_value=formal->variant.nontype.constant;
+          formal_type=type_id(parameter_value->type);
+          if(parameter_value->kind!=ck_template_param || parameter_value->variant.template_param.kind!=tpck_param)
+            missing("nontype template formal reference");
+          depth=parameter_value->variant.template_param.variant.coordinates.depth;
+          position=parameter_value->variant.template_param.variant.coordinates.position;
+          if(auto initial=formal->variant.nontype.default_arg_constant) {
+            default_value_type=type_id(initial->type);default_value=integer(initial);
+          }
+          break;
+        }
+        case tpk_template: {
+          formal_kind="template";auto parameter_template=formal->variant.templ.class_template;
+          formal_template=template_id(parameter_template);
+          depth=parameter_template->coordinates.depth;position=parameter_template->coordinates.position;
+          default_template=template_id(formal->variant.templ.default_arg_template);break;
+        }
+        default:missing("template formal",int(formal->kind));
+      }
+      auto formal_pos=location(formal->source_corresp.decl_position);
+      db.insert("template_formals",{{"id",next_formal++},{"template_id",id},{"ordinal",ordinal},
+        {"kind",formal_kind},{"name",spelling(formal->source_corresp)},
+        {"type_id",optional(formal_type)},{"parameter_template_id",optional(formal_template)},
+        {"parameter_depth",depth},{"parameter_position",position},{"is_pack",bool(formal->is_pack)},
+        {"default_type_id",optional(default_type)},{"default_template_id",optional(default_template)},
+        {"default_value_type_id",optional(default_value_type)},{"default_value_text",default_value},
+        {"file_id",optional(formal_pos.file)},{"line",formal_pos.line},{"column",formal_pos.column}});
+    }
     return id;
   }
   std::string integer(a_constant_ptr c) {
@@ -86,19 +151,39 @@ struct State {
     if(overflow)missing("integer constant wider than 64 bits");
     return value;
   }
-  void instance(a_template_ptr t,a_template_arg_ptr args,Id symbol,Id type) {
+  void instance(a_template_ptr t,a_template_arg_ptr args,Id symbol,Id type,bool dependent) {
     if(!t)return;
     Id id=next_instance++;
     db.insert("template_instances",{{"id",id},{"template_id",template_id(t)},
-      {"symbol_id",optional(symbol)},{"type_id",optional(type)}});
-    unsigned ordinal=0;
+      {"symbol_id",optional(symbol)},{"type_id",optional(type)},{"is_dependent",dependent}});
+    unsigned ordinal=0;int pack_ordinal=-1;
     for(auto arg=args;arg;arg=arg->next,++ordinal) {
-      if(arg->kind==tak_type)
-        db.insert("template_arguments",{{"instance_id",id},{"ordinal",ordinal},{"kind","type"},{"type_id",type_id(arg->variant.type)}});
-      else if(arg->kind==tak_nontype)
-        db.insert("template_arguments",{{"instance_id",id},{"ordinal",ordinal},{"kind","constant"},
-          {"type_id",type_id(arg->variant.constant->type)},{"constant_text",integer(arg->variant.constant)}});
-      else missing("template argument",int(arg->kind));
+      if(arg->kind==tak_start_of_pack_expansion) {
+        // As in lower_name::mangled_template_arguments_or_parameter_pack,
+        // the following is_pack_element entries belong to this pack. An
+        // empty pack still has its own semantic argument container.
+        db.insert("template_arguments",{{"instance_id",id},{"ordinal",ordinal},{"kind","pack"}});
+        pack_ordinal=int(ordinal);continue;
+      }
+      if(!arg->is_pack_element && !arg->is_pack)pack_ordinal=-1;
+      const char *kind=nullptr;Id argument_type=0,templ=0;Value value=nullptr;
+      switch(arg->kind) {
+        case tak_type:
+          kind="type";argument_type=type_id(arg->variant.type);break;
+        case tak_nontype:
+          kind="constant";
+          if(arg->is_array_bound_of_unknown_type || !arg->variant.constant)
+            missing("unresolved nontype template argument");
+          argument_type=type_id(arg->variant.constant->type);value=integer(arg->variant.constant);break;
+        case tak_template:
+          kind="template";templ=template_id(arg->variant.templ.ptr);
+          if(!templ)missing("selected template template argument");break;
+        default:missing("template argument",int(arg->kind));
+      }
+      db.insert("template_arguments",{{"instance_id",id},{"ordinal",ordinal},{"kind",kind},
+        {"parent_ordinal",pack_ordinal<0?Value(nullptr):Value(pack_ordinal)},
+        {"is_pack_expansion",bool(arg->pack_expansion_descr || arg->is_pack || arg->has_pack_ellipsis)},
+        {"type_id",optional(argument_type)},{"template_id",optional(templ)},{"constant_text",value}});
     }
   }
   const char *exception_policy(a_type_ptr type) {
@@ -110,17 +195,38 @@ struct State {
     if(spec->is_noexcept)return "terminate";
     missing("dynamic exception specification projection");
   }
+  const char *floating_name(a_float_kind kind) {
+    // Preserve language type identity even when two kinds share a format.
+    switch(kind) {
+      case fk_float16:return "_Float16";
+      case fk_fp16:return "__fp16";
+      case fk_float:return "float";
+      case fk_float32x:return "_Float32x";
+      case fk_double:return "double";
+      case fk_float64x:return "_Float64x";
+      case fk_long_double:return "long double";
+      case fk_float80:return "__float80";
+      case fk_float128:return "__float128";
+      case fk_std_bfloat16:return "std::bfloat16_t";
+      case fk_std_float16:return "std::float16_t";
+      case fk_std_float32:return "std::float32_t";
+      case fk_std_float64:return "std::float64_t";
+      case fk_std_float128:return "std::float128_t";
+      default:missing("floating language type",int(kind));
+    }
+  }
   Id type_id(a_type_ptr t) {
     if(!t)return 0;
     auto found=types.find(t);if(found!=types.end())return found->second;
     Id id=next_type++;types[t]=id;
-    std::string kind,name=spelling(t->source_corresp),record_kind,builtin;
+    std::string kind,name=spelling(t->source_corresp),record_kind,builtin,float_format;
     Id underlying=0,pointee=0,element=0,result=0,object=0;
     Value count=nullptr;bool variadic=false,incomplete=is_incomplete_type(t);
     unsigned qualifiers=get_type_qualifiers(t);
     if(qualifiers & ~(TQ_CONST|TQ_VOLATILE|TQ_RESTRICT))missing("extended type qualifiers");
     switch(t->kind) {
       case tk_void:kind="void";builtin="void";break;
+      case tk_template_param:kind="template-parameter";break;
       case tk_typeref:
         kind=type_is_typedef(t)?"typedef":"qualified";underlying=type_id(t->variant.typeref.type);break;
       case tk_integer:
@@ -153,10 +259,23 @@ struct State {
           case ik_unsigned_long_long:kind="u64";builtin="unsigned long long";break;
           default:missing("integer type",int(t->variant.integer.int_kind));
         }break;
-      case tk_float:
-        if(t->variant.float_kind==fk_float){kind="f32";builtin="float";}
-        else if(t->variant.float_kind==fk_double){kind="f64";builtin="double";}
-        else missing("floating type",int(t->variant.float_kind));break;
+      case tk_float: {
+        builtin=floating_name(t->variant.float_kind);
+        // These target properties are initialized for every EDG float kind
+        // by exprutil_init. Storage size alone cannot distinguish binary128
+        // from a padded x87 value, or long double from double on all targets.
+        auto precision=num_mantissa_bits[int(t->variant.float_kind)];
+        int minimum=min_exponent[int(t->variant.float_kind)];
+        int maximum=max_exponent[int(t->variant.float_kind)];
+        if(precision==11 && minimum==-13 && maximum==16){kind="f16";float_format="binary16";}
+        else if(precision==8 && minimum==-125 && maximum==128){kind="bf16";float_format="bfloat16";}
+        else if(precision==24 && minimum==-125 && maximum==128){kind="f32";float_format="binary32";}
+        else if(precision==53 && minimum==-1021 && maximum==1024){kind="f64";float_format="binary64";}
+        else if(precision==64 && minimum==-16381 && maximum==16384){kind="f80";float_format="x87-binary80";}
+        else if(precision==113 && minimum==-16381 && maximum==16384){kind="f128";float_format="binary128";}
+        else {kind="floating";float_format="target-binary";}
+        break;
+      }
       case tk_pointer:
         kind=t->variant.pointer.is_reference?(t->variant.pointer.is_rvalue_reference?"rvalue-reference":"lvalue-reference"):"pointer";
         pointee=type_id(t->variant.pointer.type);break;
@@ -181,7 +300,33 @@ struct State {
       {"object_type_id",optional(object)},{"is_const",bool(qualifiers&TQ_CONST)},
       {"is_volatile",bool(qualifiers&TQ_VOLATILE)},{"is_restrict",bool(qualifiers&TQ_RESTRICT)},
       {"is_variadic",variadic},{"is_incomplete",incomplete},{"record_kind",record_kind.empty()?Value(nullptr):Value(record_kind)},
+      {"is_dependent",bool(is_template_dependent_type(t))},
       {"builtin_name",builtin.empty()?Value(nullptr):Value(builtin)}});
+    if(t->kind==tk_template_param) {
+      auto extra=t->variant.template_param.extra_info;
+      const char *parameter_kind=nullptr;Id qualifier=0;
+      Value depth=nullptr,position=nullptr;
+      switch(t->variant.template_param.kind) {
+        case tptk_param:
+          parameter_kind="parameter";depth=extra->coordinates.depth;position=extra->coordinates.position;break;
+        case tptk_member: {
+          parameter_kind="member";auto owner=parent_class_or_null(t);
+          // A proxy is EDG lookup machinery; its proxy_of_type identifies
+          // the actual source qualifier, e.g. T in typename T::member.
+          if(owner && class_type_supp(owner)->proxy_of_type)owner=class_type_supp(owner)->proxy_of_type;
+          qualifier=type_id(owner);break;
+        }
+        case tptk_unknown:parameter_kind="unknown";break;
+        default:missing("dependent type form",int(t->variant.template_param.kind));
+      }
+      db.insert("template_type_parameters",{{"type_id",id},{"kind",parameter_kind},
+        {"parameter_depth",depth},{"parameter_position",position},
+        {"is_pack",bool(t->variant.template_param.is_pack)},{"qualifier_type_id",optional(qualifier)}});
+    }
+    if(t->kind==tk_float)db.insert("floating_types",{{"type_id",id},{"format",float_format},
+      {"precision_bits",num_mantissa_bits[int(t->variant.float_kind)]},
+      {"min_exponent",min_exponent[int(t->variant.float_kind)]},
+      {"max_exponent",max_exponent[int(t->variant.float_kind)]}});
     if(t->kind==tk_routine) {
       db.update("types","id",id,{{"exception_policy",exception_policy(t)}});
       unsigned ordinal=0;
@@ -235,7 +380,7 @@ struct State {
       }
       unsigned ordinal=0;
       for(auto f=t->variant.class_struct_union.field_list;f;f=f->next,++ordinal)field_id(f,id,ordinal);
-      instance(extra->assoc_template,extra->template_arg_list,0,id);
+      instance(extra->assoc_template,extra->template_arg_list,0,id,is_template_dependent_type(t));
     }
     return id;
   }
@@ -265,7 +410,7 @@ struct State {
       {"type_id",signature},{"is_definition",r->function_def_number!=NULL_function_def_number},
       {"definition_kind",r->is_inline || (r->is_template_function && !r->is_specialized)?"weak":"strong"},
       {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
-    instance(r->assoc_template,r->template_arg_list,id,0);return id;
+    instance(r->assoc_template,r->template_arg_list,id,0,is_template_dependent_type(r->type));return id;
   }
   Id variable(a_variable_ptr v,bool local=false,bool parameter=false) {
     auto found=variables.find(v);if(found!=variables.end())return found->second;
@@ -315,6 +460,17 @@ struct State {
     type_id(underlying_enum_type(type));
     auto found=enum_values.find(c);
     if(found!=enum_values.end())db.update("nodes","id",id,{{"enum_value_id",found->second}});
+  }
+  bool empty_pack_parameter(a_variable_ptr v) {
+    // Exact lower_il::is_empty_pack_parameter predicate. func_def creates
+    // this dummy for an empty expansion; it never denotes runtime storage.
+    return v->compiler_generated && type_is(v->type,tk_template_param);
+  }
+  bool has_static_storage(a_scope_ptr scope) {
+    if(scope->local_static_variable_inits)return true;
+    for(auto v=scope->variables;v;v=v->next)
+      if(!empty_pack_parameter(v))return true;
+    return false;
   }
   Id lifetime_id(an_object_lifetime_ptr value) {
     if(!value)return 0;
@@ -561,7 +717,7 @@ struct State {
     switch(s->kind) {
       case stmk_block: {
         auto scope=root_scope?root_scope:s->variant.block.extra_info->assoc_scope;
-        if(scope && (scope->variables || scope->local_static_variable_inits))missing("block static storage projection");
+        if(scope && has_static_storage(scope))missing("block static storage projection");
         attach_lifetime(id,scope?scope->lifetime:s->variant.block.extra_info->lifetime);
         if(scope)for(auto v=scope->nonstatic_variables;v;v=v->next)variable(v,true);
         unsigned ordinal=0;for(auto child=s->variant.block.statements;child;child=child->next)
@@ -629,7 +785,7 @@ struct State {
   }
   void local_bindings(a_scope_ptr scope) {
     if(!scope)return;
-    if(scope->variables || scope->local_static_variable_inits)missing("local static storage projection");
+    if(has_static_storage(scope))missing("local static storage projection");
     for(auto v=scope->nonstatic_variables;v;v=v->next)variable(v,true);
     for(auto child=scope->scopes;child;child=child->next)local_bindings(child);
   }
@@ -661,9 +817,23 @@ struct State {
     if(scope->kind==sck_function) {
       auto r=scope->variant.routine.ptr;
       if(r->is_prototype_instantiation || !scope->assoc_block || !bodies.insert(r).second)return;
-      if(scope->variables || scope->local_static_variable_inits)missing("function static storage projection");
+      if(has_static_storage(scope)) {
+        std::string detail="function static storage projection in "+spelling(r->source_corresp);
+        for(auto v=scope->variables;v;v=v->next)
+          detail+=" ["+spelling(v->source_corresp)+", storage="+std::to_string(int(v->storage_class))+
+            ", init="+std::to_string(int(v->init_kind))+", pack="+std::to_string(int(v->is_pack))+
+            ", generated="+std::to_string(int(v->compiler_generated))+"]";
+        missing(detail);
+      }
       Id previous=function;function=routine(r);expressions.clear();
       db.update("symbols","id",function,{{"is_definition",true}});
+      unsigned empty_ordinal=0;
+      for(auto v=scope->variables;v;v=v->next)if(empty_pack_parameter(v)) {
+        auto pos=location(v->source_corresp.decl_position);
+        db.insert("empty_parameter_packs",{{"function_id",function},{"ordinal",empty_ordinal++},
+          {"name",spelling(v->source_corresp)},{"file_id",optional(pos.file)},
+          {"line",pos.line},{"column",pos.column}});
+      }
       unsigned ordinal=0;Id receiver=0;
       // Before lowering, EDG keeps the implicit receiver separate from the
       // explicit parameters. lower_il::lower_routine_scope prepends this same
@@ -700,6 +870,9 @@ struct State {
     if(scope->dynamic_inits)missing("file/namespace dynamic initialization schedule");
     if(scope->asm_entries)missing("file-scope assembly declaration");
     for(auto v=scope->variables;v;v=v->next) {
+      // Lowering later promotes the same dummy to file scope. Its source
+      // empty-pack declaration was captured with the function, not as data.
+      if(empty_pack_parameter(v))continue;
 #if DO_IL_LOWERING
       // Earlier function lowering can append ABI-only RTTI/vtable storage to
       // this later file-scope list. Such storage is not a source declaration;
@@ -714,7 +887,6 @@ struct State {
     for(auto t=scope->types;t;t=t->next) {
       if(!t->source_corresp.decl_position.seq)continue;
       if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) {
-        if(t->variant.class_struct_union.is_nonreal_class)missing("dependent record declaration");
         type_id(t);capture(class_type_supp(t)->assoc_scope);
       } else type_id(t);
     }

@@ -5,6 +5,8 @@ internal sealed partial class Emitter
     private readonly Dictionary<(Unit,long),string> exceptionDescriptors=[];
     private readonly Dictionary<(Unit,long),string> catchDescriptors=[];
     private readonly Dictionary<SymbolRef,string> payloadDestructors=[];
+    private readonly Dictionary<(Unit Unit,long Type,long? Destructor),Throw> requiredExceptionTypes=[];
+    private readonly HashSet<(Unit Unit,long Type)> requiredCatchTypes=[];
 
     private (ProgramType Type,string Identity) ExceptionType(Unit unit,long id,bool reference=false)
     {
@@ -15,23 +17,30 @@ internal sealed partial class Emitter
         throw new InvalidDataException("Exception descriptor emission not implemented for "+type.Kind+" "+type.Name);
     }
 
-    private void PrepareExceptionDescriptors()
+    private void CollectExceptionRequirements(Unit unit,long? function)
     {
-        foreach(var unit in program.Units)PrepareExceptionDescriptors(unit);
-        foreach(var function in program.Functions)
+        bool Needed(long node)=>unit.Nodes[node].Function==function &&
+            (function is not null || executableGlobalNodes.Contains((unit,node)));
+        NeedsExceptionRuntime|=unit.Throws.Values.Any(site=>Needed(site.Node)) ||
+            unit.Handlers.Values.SelectMany(handlers=>handlers).Any(handler=>Needed(handler.CatchNode)) ||
+            function is not null && unit.Destructions.Keys.Any(id=>unit.Lifetimes[id].Function==function);
+        foreach(var site in unit.Throws.Values.Where(site=>!site.Rethrow && Needed(site.Node)))
         {
-            using var body=program.LoadFunction(function);
-            NeedsExceptionRuntime|=function.Unit.FunctionDetails[function.Id].ExceptionPolicy=="terminate";
-            PrepareExceptionDescriptors(function.Unit);
+            long type=site.Type??throw new InvalidDataException("Thrown type missing");
+            UseType(unit,type);
+            requiredExceptionTypes.TryAdd((unit,type,site.Destructor),site);
         }
+        foreach(var handler in unit.Handlers.Values.SelectMany(handlers=>handlers).Where(handler=>Needed(handler.CatchNode)))
+            if(handler.Type is long type){UseType(unit,type);requiredCatchTypes.Add((unit,type));}
     }
 
-    private void PrepareExceptionDescriptors(Unit unit)
+    private void PrepareExceptionDescriptors()
     {
-        NeedsExceptionRuntime|=unit.Throws.Count!=0 || unit.Handlers.Count!=0 || unit.Destructions.Count!=0;
-        foreach(var site in unit.Throws.Values.Where(site=>!site.Rethrow))
+        foreach(var requirement in requiredExceptionTypes)
         {
-            long id=site.Type??throw new InvalidDataException("Thrown type missing");
+            Unit unit=requirement.Key.Unit;
+            long id=requirement.Key.Type;
+            var site=requirement.Value;
             var (type,identity)=ExceptionType(unit,id);
             if(type.Kind=="record" && unit.BaseSubobjects.Values.Any(subobject=>subobject.Owner==type.Id))
                 throw new InvalidDataException("Exception base matching emission is not yet implemented for "+type.Name);
@@ -54,9 +63,10 @@ internal sealed partial class Emitter
                 }
             }
         }
-        foreach(var handler in unit.Handlers.Values.SelectMany(handlers=>handlers).Where(handler=>handler.Type is not null))
+        foreach(var requirement in requiredCatchTypes)
         {
-            long id=handler.Type!.Value;
+            Unit unit=requirement.Unit;
+            long id=requirement.Type;
             if(catchDescriptors.ContainsKey((unit,id)))continue;
             var (type,identity)=ExceptionType(unit,id,reference:true);
             string name=names.Allocate("__catch_type_"+catchDescriptors.Count,"catch_type");

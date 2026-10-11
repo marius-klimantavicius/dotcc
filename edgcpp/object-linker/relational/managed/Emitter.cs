@@ -24,8 +24,9 @@ internal sealed partial class Emitter
                 source=details.Kind switch {"constructor"=>"__ctor_"+source,"destructor"=>"__dtor_"+source,_=>source};
             symbolNames.Add(symbol,names.Allocate(source,"symbol_"+symbol.Id));
         }
+        FindExecutableTypes();
         foreach(var unit in program.Units)
-            foreach(var type in unit.Types.Values.Where(type=>type.Kind=="record"))
+            foreach(var type in unit.Types.Values.Where(type=>type.Kind=="record" && executableTypes.Contains((unit,type.Id))))
             {
                 string key=type.Linkage=="external"?"external:"+type.LinkName:unit.Path+":"+type.Id;
                 if(!records.TryGetValue(key,out var record))
@@ -107,6 +108,7 @@ internal sealed partial class Emitter
 
     private void Record(Unit unit,ProgramType record,string name)
     {
+        if(record.Dependent)throw new InvalidDataException("Dependent record reached executable C# emission: "+record.Name);
         if(record.Incomplete)
         {
             Line(1,"// Opaque declaration; only pointers to this type can be emitted.");
@@ -136,6 +138,7 @@ internal sealed partial class Emitter
     private string Type(Unit unit,long id,bool allowIncomplete=false)
     {
         var type=unit.Original(id);
+        if(type.Dependent)throw new InvalidDataException("Dependent type reached executable C# emission: "+type.Name);
         if(type.Kind=="record" && type.Incomplete && !allowIncomplete)
             throw new InvalidDataException("Incomplete record used by value: "+type.Name);
         return type.Kind switch

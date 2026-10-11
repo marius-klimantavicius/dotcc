@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1004;
+PRAGMA user_version = 1007;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -34,6 +34,7 @@ CREATE TABLE types (
  is_variadic INTEGER NOT NULL DEFAULT 0 CHECK(is_variadic IN(0,1)),
  exception_policy TEXT NOT NULL DEFAULT 'unwind' CHECK(exception_policy IN('unwind','terminate','dependent')),
  record_kind TEXT,
+ is_dependent INTEGER NOT NULL DEFAULT 0 CHECK(is_dependent IN(0,1)),
  is_incomplete INTEGER NOT NULL DEFAULT 0 CHECK(is_incomplete IN(0,1))
 ) STRICT;
 CREATE TABLE type_parameters (
@@ -42,6 +43,13 @@ CREATE TABLE type_parameters (
  parameter_type_id INTEGER NOT NULL REFERENCES types(id),
  PRIMARY KEY(type_id,ordinal)
 ) STRICT, WITHOUT ROWID;
+CREATE TABLE floating_types (
+ type_id INTEGER PRIMARY KEY REFERENCES types(id),
+ format TEXT NOT NULL,
+ precision_bits INTEGER NOT NULL,
+ min_exponent INTEGER NOT NULL,
+ max_exponent INTEGER NOT NULL
+) STRICT;
 CREATE TABLE enums (
  type_id INTEGER PRIMARY KEY REFERENCES types(id),
  is_scoped INTEGER NOT NULL CHECK(is_scoped IN(0,1)),
@@ -124,6 +132,17 @@ CREATE TABLE parameters (
  symbol_id INTEGER NOT NULL REFERENCES symbols(id),
  PRIMARY KEY(function_id,ordinal)
 ) STRICT, WITHOUT ROWID;
+-- Source declaration of an empty function parameter pack. EDG's compiler
+-- placeholder is not a runtime static variable and has no executable storage.
+CREATE TABLE empty_parameter_packs (
+ function_id INTEGER NOT NULL REFERENCES symbols(id),
+ ordinal INTEGER NOT NULL,
+ name TEXT NOT NULL,
+ file_id INTEGER REFERENCES files(id),
+ line INTEGER,
+ column INTEGER,
+ PRIMARY KEY(function_id,ordinal)
+) STRICT, WITHOUT ROWID;
 CREATE TABLE nodes (
  id INTEGER PRIMARY KEY,
  function_id INTEGER REFERENCES symbols(id),
@@ -154,6 +173,7 @@ CREATE TABLE edges (
  PRIMARY KEY(parent_id,role,ordinal)
 ) STRICT, WITHOUT ROWID;
 CREATE INDEX edges_child ON edges(child_id);
+CREATE INDEX nodes_function ON nodes(function_id,id);
 -- Selected class conversion facts, not a request to resolve a base path.
 CREATE TABLE class_conversions (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
@@ -172,6 +192,9 @@ CREATE TABLE templates (
  id INTEGER PRIMARY KEY,
  kind TEXT NOT NULL,
  name TEXT NOT NULL,
+ parameter_depth INTEGER,
+ parameter_position INTEGER,
+ is_parameter_pack INTEGER NOT NULL DEFAULT 0 CHECK(is_parameter_pack IN(0,1)),
  file_id INTEGER REFERENCES files(id),
  line INTEGER,
  column INTEGER
@@ -181,17 +204,49 @@ CREATE TABLE template_instances (
  template_id INTEGER NOT NULL REFERENCES templates(id),
  symbol_id INTEGER REFERENCES symbols(id),
  type_id INTEGER REFERENCES types(id),
+ is_dependent INTEGER NOT NULL DEFAULT 0 CHECK(is_dependent IN(0,1)),
  CHECK((symbol_id IS NULL) <> (type_id IS NULL))
+) STRICT;
+CREATE TABLE template_type_parameters (
+ type_id INTEGER PRIMARY KEY REFERENCES types(id),
+ kind TEXT NOT NULL CHECK(kind IN('parameter','member','unknown')),
+ parameter_depth INTEGER,
+ parameter_position INTEGER,
+ is_pack INTEGER NOT NULL CHECK(is_pack IN(0,1)),
+ qualifier_type_id INTEGER REFERENCES types(id)
+) STRICT;
+CREATE TABLE template_formals (
+ id INTEGER PRIMARY KEY,
+ template_id INTEGER NOT NULL REFERENCES templates(id),
+ ordinal INTEGER NOT NULL,
+ kind TEXT NOT NULL CHECK(kind IN('type','constant','template')),
+ name TEXT NOT NULL,
+ type_id INTEGER REFERENCES types(id),
+ parameter_template_id INTEGER REFERENCES templates(id),
+ parameter_depth INTEGER,
+ parameter_position INTEGER,
+ is_pack INTEGER NOT NULL CHECK(is_pack IN(0,1)),
+ default_type_id INTEGER REFERENCES types(id),
+ default_template_id INTEGER REFERENCES templates(id),
+ default_value_type_id INTEGER REFERENCES types(id),
+ default_value_text TEXT,
+ file_id INTEGER REFERENCES files(id),
+ line INTEGER,
+ column INTEGER,
+ UNIQUE(template_id,ordinal)
 ) STRICT;
 CREATE TABLE template_arguments (
  instance_id INTEGER NOT NULL REFERENCES template_instances(id),
  ordinal INTEGER NOT NULL,
+ parent_ordinal INTEGER,
  kind TEXT NOT NULL,
+ is_pack_expansion INTEGER NOT NULL DEFAULT 0 CHECK(is_pack_expansion IN(0,1)),
  type_id INTEGER REFERENCES types(id),
  expression_id INTEGER REFERENCES nodes(id),
  template_id INTEGER REFERENCES templates(id),
  constant_text TEXT,
- PRIMARY KEY(instance_id,ordinal)
+ PRIMARY KEY(instance_id,ordinal),
+ FOREIGN KEY(instance_id,parent_ordinal) REFERENCES template_arguments(instance_id,ordinal)
 ) STRICT, WITHOUT ROWID;
 
 -- EDG-selected initialization and cleanup facts. Ordinals preserve the supplied
@@ -231,6 +286,8 @@ CREATE TABLE initializations (
  is_partially_initialized INTEGER NOT NULL DEFAULT 0 CHECK(is_partially_initialized IN(0,1)),
  static_storage INTEGER NOT NULL DEFAULT 0 CHECK(static_storage IN(0,1))
 ) STRICT;
+CREATE INDEX lifetimes_function ON lifetimes(function_id,id);
+CREATE INDEX initializations_function ON initializations(function_id,id);
 CREATE TABLE initialization_arguments (
  initialization_id INTEGER NOT NULL REFERENCES initializations(id),
  ordinal INTEGER NOT NULL,

@@ -78,6 +78,15 @@ C# uses named enum declarations and values; folded constants retain their record
 numeric value. `tests/verify_enums.py` exercises cross-unit storage, promotions,
 unsigned 64-bit values and enum exception identity.
 
+Template argument packs use explicit parent/member rows, including empty packs
+and selected template-template references. `template_formals`,
+`template_type_parameters` and dependence flags preserve source declarations and
+prototype fields. The generator follows recorded executable references to choose
+types for C# emission; it does not instantiate dependent recipes. Empty function
+packs have a source declaration row and no runtime storage. Run `tests/verify_packs.py`
+for the executable slice. `tests/verify_floating_metadata.py` checks explicit
+floating formats and source identities; extended floating arithmetic remains work.
+
 This covers lexical return cleanup, partial member/base construction, reference catches,
 rethrow and exception-object destruction. Arrays/virtual-base construction, nontrivial
 temporaries, function-try blocks, complex catch conversions, macros, all type

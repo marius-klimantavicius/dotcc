@@ -160,6 +160,42 @@ at `dotobj-relational-{bases,lifetime,enums}-body-regression-v1`. The preserved
 Reproduce the retention check with `tests/verify_body_loading.py` using the usual
 `--out`, `--linker` and optional `--nativeaot` arguments.
 
+## Verified template packs and dependent source declarations
+
+`artifacts/review/dotobj-relational-packs-v5/` passes SQL integrity, native C++,
+source-hidden C# and Linux x64 NativeAOT. The two units exercise ordered type and
+integer packs, an empty pack, and `Wrapped<Box, int>` with a selected template
+argument. Source formals and dependent `Box<T>`/`Wrapped` prototype fields remain
+in the object, while the generator follows recorded executable references and
+emits concrete types. It never instantiates a recipe. EDG's empty function-pack
+placeholder is represented by an `empty_parameter_packs` source declaration,
+not a runtime static. Actual static storage remains explicitly unsupported.
+
+The schema has 29 ordinary tables. Pack members reference their container ordinal;
+template formals preserve selected type/template identities, coordinates, pack
+flags and supported scalar/type/template defaults. Dependence is explicit on
+types and instances. `template_type_parameters` records the actual EDG parameter,
+member or unknown-dependent form. More complex dependent expressions/defaults
+remain unsupported rather than becoming opaque payloads. Each object is 176,128
+bytes; provider has 38 nodes/30 types, main has 33 nodes/16 types. Storage summaries
+and tool hashes are retained.
+
+`floating_types` also preserves source builtin identity and explicit target
+precision/exponent/format properties. `dotobj-relational-floating-metadata-v1/`
+verifies float, double, long double (x87 binary80) and __float128 (binary128),
+including source-hidden folded-sizeof execution. This does not claim extended
+floating arithmetic emission. Native/C#/NativeAOT regressions pass for the original,
+base, lifetime and enum slices under `*-template-regression-v1`; body retention
+remains 251 peak nodes of 1,531 at `dotobj-relational-body-loading-type-closure-v1`.
+
+The bounded DuckDB probe at `dotobj-relational-duckdb-hugeint-v6/` reaches
+`constructor return initialization`. No full DuckDB object is published yet.
+Explicit returned-object initialization and caller-provided return storage are
+the next active work; the full-corpus campaign remains stopped.
+
+Reproduce with `tests/verify_packs.py` and `tests/verify_floating_metadata.py` using
+the usual `--out` and `--linker` arguments (`--nativeaot` is supported for packs).
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
