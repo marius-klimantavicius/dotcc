@@ -177,19 +177,18 @@ def compile_unit(request_path):
         raise RuntimeError('Frontend failed: ' + str(work / 'stderr'))
     if sha(source) != before or sha(compiler) != invocation['compilerSha256']:
         raise ValueError('Source/compiler changed during compilation')
-    wire = json.loads((work / 'wire.json').read_text(), object_pairs_hook=module.unique_object)
     partial, output = work / 'object.partial.sqlite', work / 'unit.dotobj'
     provenance = [('producer', 'dot-gen-owned-semantic-project-v1'),
                   ('compiler-sha256', invocation['compilerSha256']),
                   ('arguments', json.dumps(command[1:])), ('packager-sha256', packaging_hashes[0]),
                   ('schema-sha256', packaging_hashes[1]), ('project-driver-sha256', sha(__file__)),
                   ('environment', json.dumps(invocation['environment'], sort_keys=True))]
-    module.package(wire, partial, source, unit['id'], provenance, started_ns)
+    packaged = module.package_file(work / 'wire.json', partial, source, unit['id'], provenance, started_ns)
     if packaging_hashes != (sha(HERE / 'compile.py'), sha(HERE / 'schema.sql')):
         raise ValueError('Packager/schema changed during compilation')
     os.link(partial, output)
     save(work / 'result.json', dict(status='packaged', object=str(output), sha256=sha(output),
-         frontendInvocations=1, profile=wire['profile'], counts={k: len(wire[k]) for k in module.ARRAYS}))
+         frontendInvocations=1, profile=packaged['profile'], counts=packaged['counts']))
 
 
 def object_unchanged(result):

@@ -1,0 +1,58 @@
+{
+  "status": "verified-packaging-milestone",
+  "baselineProfile": "scalar-control-v62",
+  "semanticAuthorityMigration": "v64 native/managed migration remains unaccepted and is not part of this commit",
+  "stagedTooling": "edgcpp/artifacts/campaign/edg-authority-20261011/streaming-commit-tooling",
+  "stagedPackagerSha256": "414e305131d3cade87e990e3fdef2d72ed38bcbedd4b6cca2158fbb8ce3de8e1",
+  "checks": {
+    "status": "passed",
+    "checks": [
+      "chunk-boundary-1",
+      "chunk-boundary-2",
+      "chunk-boundary-3",
+      "chunk-boundary-7",
+      "chunk-boundary-16",
+      "chunk-boundary-65536",
+      "reject-duplicate-top-key",
+      "reject-duplicate-row-key",
+      "reject-truncated-string",
+      "reject-truncated-row",
+      "reject-trailing-row-comma",
+      "reject-missing-property-comma",
+      "reject-trailing-content",
+      "reject-wrong-array-shape",
+      "same-row-counts-and-profile",
+      "identical-logical-contents",
+      "streamed-foreign-keys",
+      "streamed-integrity"
+    ]
+  },
+  "acceptedReader": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-191/bin/DotObj.Linker/debug/dotobj-link.dll",
+  "acceptedReaderVerification": "streamed v62 exception object verified",
+  "largeWireMeasurement": {
+    "sameLogicalContents": true,
+    "digest": "6d0474ac55553d2339267636c9202452d7b98fbd4f318ec5ff8f3872726426c4",
+    "results": [
+      {
+        "mode": "memory",
+        "objectBytes": 67514368,
+        "peakRssKiB": 771712,
+        "seconds": 10.201931576011702,
+        "wireBytes": 187802678
+      },
+      {
+        "mode": "stream",
+        "objectBytes": 67514368,
+        "peakRssKiB": 29880,
+        "seconds": 10.628509352041874,
+        "wireBytes": 187802678
+      }
+    ],
+    "evidence": "artifacts/campaign/edg-authority-20261011/packaging-comparison.json"
+  },
+  "limits": [
+    "Measurement uses one retained187802678-byte unittest wire, not complete project packaging.",
+    "Does not change object schema or remove integrity checking.",
+    "Does not establish full source graph capture, full DuckDB C# generation or execution."
+  ]
+}

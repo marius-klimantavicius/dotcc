@@ -9,6 +9,7 @@ from pathlib import Path
 import sqlite3
 import subprocess
 import time
+import types
 import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -246,6 +247,92 @@ def unique_object(pairs):
     return result
 
 
+class WireReader:
+    """Read one wire row at a time; keep JSON syntax/duplicate-key checks."""
+    def __init__(self, stream, chunk_size=65536):
+        self.stream = stream
+        self.chunk_size = chunk_size
+        self.buffer = ''
+        self.offset = 0
+        self.eof = False
+        self.decoder = json.JSONDecoder(object_pairs_hook=unique_object)
+
+    def fill(self):
+        self.buffer = self.buffer[self.offset:]
+        self.offset = 0
+        block = self.stream.read(self.chunk_size)
+        self.eof = not block
+        self.buffer += block
+        return bool(block)
+
+    def peek(self):
+        while True:
+            while self.offset < len(self.buffer) and self.buffer[self.offset] in ' \t\r\n':
+                self.offset += 1
+            if self.offset < len(self.buffer):
+                return self.buffer[self.offset]
+            if self.eof or not self.fill():
+                return ''
+
+    def take(self, expected):
+        if self.peek() != expected:
+            raise ValueError('Expected JSON ' + repr(expected))
+        self.offset += 1
+
+    def value(self):
+        self.peek()
+        while True:
+            try:
+                value, end = self.decoder.raw_decode(self.buffer, self.offset)
+                # A scalar token may end at a chunk boundary before its next
+                # digit. Refill before accepting it; rows are normally objects.
+                if end == len(self.buffer) and not self.eof:
+                    self.fill()
+                    continue
+                self.offset = end
+                return value
+            except json.JSONDecodeError as error:
+                if self.eof:
+                    raise ValueError('Invalid or truncated semantic wire JSON') from error
+                if (error.pos < len(self.buffer) - 32 and
+                        not error.msg.startswith('Unterminated string')):
+                    raise ValueError('Invalid semantic wire JSON') from error
+                if not self.fill():
+                    raise ValueError('Invalid or truncated semantic wire JSON') from error
+
+    def rows(self):
+        self.take('[')
+        if self.peek() == ']':
+            self.take(']')
+            return
+        while True:
+            yield self.value()
+            if self.peek() == ']':
+                self.take(']')
+                return
+            self.take(',')
+
+    def entries(self):
+        self.take('{')
+        seen = set()
+        if self.peek() == '}':
+            self.take('}')
+        else:
+            while True:
+                name = self.value()
+                if not isinstance(name, str) or name in seen:
+                    raise ValueError('Invalid or repeated semantic wire field')
+                seen.add(name)
+                self.take(':')
+                yield name, self.rows() if name in ARRAYS else self.value()
+                if self.peek() == '}':
+                    self.take('}')
+                    break
+                self.take(',')
+        if self.peek():
+            raise ValueError('Trailing content after semantic wire')
+
+
 def quote(value):
     return '"' + value.replace('"', '""') + '"'
 
@@ -282,12 +369,17 @@ def logical_hash(db):
 
 
 def package(wire, path, source, unit_id, provenance, started_ns):
-    if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
-        raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v62':
-        raise ValueError('Unsupported semantic wire version/profile')
-    if wire['sourceLanguage'] not in ('c', 'c++'):
-        raise ValueError('Unsupported source language')
+    """Compatibility entry point for already decoded fixture wires."""
+    return package_entries(iter(wire.items()), path, source, unit_id, provenance, started_ns)
+
+
+def package_file(wire_path, path, source, unit_id, provenance, started_ns):
+    with Path(wire_path).open(encoding='utf-8') as stream:
+        return package_entries(WireReader(stream).entries(), path, source, unit_id, provenance, started_ns)
+
+
+def package_entries(entries, path, source, unit_id, provenance, started_ns):
+    header, counts, seen = {}, {}, set()
     for kind, value in provenance:
         if kind == 'environment':
             captured_unit = json.loads(value).get('EDG_DOT_OBJECT_UNIT_ID')
@@ -303,14 +395,21 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         # CHECK/UNIQUE/NOT NULL constraints remain enforced on every insertion.
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
-        db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v62', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
-                    unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))
-        for name, (table, fields) in ARRAYS.items():
-            if not isinstance(wire[name], list):
+        for name, records in entries:
+            if name in seen:
+                raise ValueError('Repeated semantic wire field: ' + name)
+            seen.add(name)
+            if name in ('formatVersion', 'profile', 'sourceLanguage'):
+                header[name] = records
+                continue
+            if name not in ARRAYS:
+                raise ValueError('Unexpected semantic wire field: ' + name)
+            table, fields = ARRAYS[name]
+            if not isinstance(records, (list, types.GeneratorType)):
                 raise ValueError('Expected array: ' + name)
+            counts[name] = 0
             columns = [re.sub(r'[A-Z]', lambda match: '_' + match[0].lower(), field) for field in fields]
             if name == 'storageData':
                 columns[-1] = 'bytes'
@@ -321,7 +420,8 @@ def package(wire, path, source, unit_id, provenance, started_ns):
                 raise ValueError('Semantic field/schema mismatch: ' + name)
             insert = ('INSERT INTO ' + quote(table) + '(' + ','.join(map(quote, columns)) +
                       ') VALUES(' + ','.join('?' for _ in columns) + ')')
-            for record in wire[name]:
+            for record in records:
+                counts[name] += 1
                 if not isinstance(record, dict) or set(record) != set(fields):
                     raise ValueError('Invalid fields in ' + name + ': ' + str(record))
                 values = [record[key] for key in fields]
@@ -351,6 +451,15 @@ def package(wire, path, source, unit_id, provenance, started_ns):
                     else:
                         values += [0, None, None, None, None]
                 db.execute(insert, values)
+        if seen != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
+            raise ValueError('Missing semantic wire fields')
+        if header['formatVersion'] != 1 or header['profile'] != 'scalar-control-v62':
+            raise ValueError('Unsupported semantic wire version/profile')
+        if header['sourceLanguage'] not in ('c', 'c++'):
+            raise ValueError('Unsupported source language')
+        db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
+                   (header['profile'], 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                    unit_id, str(source), sha(source), header['sourceLanguage']))
         errors = list(db.execute('PRAGMA foreign_key_check'))
         if errors:
             raise ValueError('Invalid semantic references: ' + str(errors[:10]))
@@ -363,6 +472,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
     for file, digest in source_hashes.items():
         if sha(file) != digest:
             raise ValueError('Source changed after snapshot: ' + file)
+    return dict(profile=header['profile'], counts=counts)
 
 
 def main():
@@ -419,12 +529,11 @@ def main():
         raise RuntimeError('Frontend failed; preserved diagnostic: ' + str(work / 'stderr'))
     if sha(source) != before or sha(compiler) != compiler_hash:
         raise ValueError('Source/compiler changed during compilation')
-    wire = json.loads((work / 'wire.json').read_text(), object_pairs_hook=unique_object)
     partial = work / 'object.partial.sqlite'
     provenance = [('producer', 'dot-gen-owned-semantic-v1'), ('compiler-sha256', compiler_hash),
                   ('arguments', json.dumps(command[1:])), ('packager-sha256', sha(__file__)),
                   ('schema-sha256', sha(SCHEMA)), ('environment', json.dumps(invocation['environment'], sort_keys=True))]
-    package(wire, partial, source, unit_id, provenance, started_ns)
+    packaged = package_file(work / 'wire.json', partial, source, unit_id, provenance, started_ns)
     # Stage on the destination filesystem, then publish atomically without
     # overwriting another build. Retain both staged copies as campaign evidence.
     pending = output.with_name(output.name + '.pending')
@@ -435,9 +544,9 @@ def main():
         os.fsync(outgoing.fileno())
     os.link(pending, output)
     report = dict(status='packaged-semantic-object', object=str(output), sha256=sha(output),
-                  profile=wire['profile'], frontendInvocations=1, executionVerified=False,
+                  profile=packaged['profile'], frontendInvocations=1, executionVerified=False,
                   capabilities=dict(prelowerSource=False, macros=False, lifetimes=False, lexicalCleanups=True, sourceDeclarations=True, macroDefinitions=True),
-                  counts={name: len(wire[name]) for name in ARRAYS})
+                  counts=packaged['counts'])
     (work / 'results.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report))
 
