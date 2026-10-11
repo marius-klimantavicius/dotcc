@@ -21,7 +21,7 @@ internal sealed partial class Emitter
             if(member.Kind=="direct-base" && !member.Virtual)
             {
                 var initialization=unit.Initializations[member.Initialization];
-                bool hasRecordActions=initialization.Kind is "constant" or "expression" &&
+                bool hasRecordActions=initialization.Kind is "constant" or "expression" or "aggregate" &&
                     initialization.Value is long value && unit.RecordInitializers.ContainsKey(value);
                 if(unit.FunctionDetails[function!.Value.Id].Kind=="constructor" &&
                     initialization.Kind is not ("none" or "constructor") && !hasRecordActions)
@@ -236,6 +236,12 @@ internal sealed partial class Emitter
                     if(unit.RecordInitializers.ContainsKey(value.Id))WriteRecordInitializer(value,destination,indent);
                     else if(unit.ArrayInitializers.ContainsKey(value.Id) || unit.LiteralInitializers.ContainsKey(value.Id))WriteArrayInitializer(value,"(&"+destination+")",indent);
                     else Line(indent,destination+" = "+ExpandedExpression(value,indent)+";");
+                    break;
+                case "aggregate":
+                    var aggregate=unit.Nodes[initialization.Value??throw new InvalidDataException("Exporter defect: aggregate initialization actions missing")];
+                    if(unit.RecordInitializers.ContainsKey(aggregate.Id))WriteRecordInitializer(aggregate,destination,indent);
+                    else if(unit.ArrayInitializers.ContainsKey(aggregate.Id))WriteArrayInitializer(aggregate,"(&"+destination+")",indent);
+                    else throw unit.Missing(aggregate,"exporter defect: aggregate initialization requires selected record or array actions");
                     break;
                 case "bitwise-copy":
                     string source=initialization.ImpliedSource?impliedSource??throw new InvalidDataException("Implied initialization source missing")

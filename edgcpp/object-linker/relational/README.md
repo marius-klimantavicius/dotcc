@@ -153,6 +153,11 @@ allocator providers and checks once-only effects, invalid/zero/fixed counts,
 conditional execution and exceptions. This is not a standard runtime binder.
 Initialization, placement/aligned allocation, cookies and rollback remain unsupported.
 
+Dynamic scalar aggregate components reference exact initialization actions at the
+existing selected field/array destinations. `tests/verify_dynamic_aggregates.py`
+covers nested aggregates, returned records, side effects, zeroing and throws.
+Nontrivial component cleanup and dynamic repeated elements remain unsupported.
+
 Switches retain exact selected case/default identities, values and source body order.
 `tests/verify_switches.py` covers lexical fallthrough, nested exits and condition/local
 cleanup. The reader emits the supplied control flow; it does not infer reachability.

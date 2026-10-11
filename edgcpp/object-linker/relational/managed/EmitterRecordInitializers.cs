@@ -31,6 +31,21 @@ internal sealed partial class Emitter
 
     private sealed partial class FunctionWriter
     {
+        private bool WriteAggregateComponent(Node node,string destination,int indent,long repeat=1)
+        {
+            if(node.Kind!="initialize")return false;
+            if(node.Initialization is not long selected || !unit.Initializations.TryGetValue(selected,out var action))
+                throw unit.Missing(node,"exporter defect: aggregate component initialization missing");
+            if(repeat!=1)throw unit.Missing(node,"repeated dynamic aggregate component emission is not yet supported");
+            if(action.Kind is not ("constant" or "expression" or "zero") || action.Constructor is not null ||
+                action.Destructor is not null || action.Lifetime is not null || action.ExpressionLifetime is not null)
+                throw unit.Missing(node,"aggregate component constructor or lifetime action emission is not yet supported");
+            // The parent element relation supplies this destination. No local
+            // variable or independently selected field initialization is needed.
+            WriteInitialization(action,destination,indent);
+            return true;
+        }
+
         public void WriteRecordInitializer(Node node,string destination,int indent)
         {
             if(!unit.RecordInitializers.TryGetValue(node.Id,out var initialization))
@@ -53,6 +68,9 @@ internal sealed partial class Emitter
                 }
                 else throw unit.Missing(node,"exporter defect: aggregate element requires one selected field or base");
                 var value=unit.Nodes[element.Value];
+                if(element.Base is not null && value.Kind=="initialize")
+                    throw unit.Missing(value,"dynamic aggregate base action emission requires explicit subobject extent handling");
+                if(WriteAggregateComponent(value,target,indent))continue;
                 if(unit.RecordInitializers.ContainsKey(value.Id))WriteRecordInitializer(value,target,indent);
                 else if(unit.ArrayInitializers.ContainsKey(value.Id) || unit.LiteralInitializers.ContainsKey(value.Id))WriteArrayInitializer(value,"(&"+target+")",indent);
                 else if(element.Base is not null)

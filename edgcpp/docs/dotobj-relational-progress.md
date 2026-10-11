@@ -764,6 +764,39 @@ Actual `hugeint-v31` passes the switch and reaches dynamic initialization kind 6
 selected aggregate components using existing destination/initialization rows.
 Broad campaign remains stopped.
 
+## Selected scalar dynamic aggregate components (2026-10-11)
+
+Verified `dotobj-relational-dynamic-aggregates-v1` passes native C++, source-hidden
+C#, and Linux NativeAOT. Diagnostic probe `hugeint-v32` established the concrete
+source: libc++ `__hash_combine` initializes local `_PairT __p` from two scalar size_t
+expressions at `__functional/hash.h:327`, without cleanup obligations.
+
+No schema addition (1018 / 43 tables): outer initialization kind `aggregate` points
+to existing selected record/array actions. A dynamic scalar component is an ordinary
+`initialize` node referencing its exact EDG initialization ID; the parent element
+row already identifies the field/base/array destination. The consumer applies that
+action directly to the recorded destination. Existing zero extents, ordered element
+writes, selected expressions and once-only side effects are preserved.
+
+Tests cover nested scalar records/arrays, partial zero initialization, returned
+records, pointer-valued fields, ordered side effects and throws. Rich aggregate or
+component destruction/lifetime/remapping and dynamic repeated components still
+reject explicitly; the negative constructor/destructor aggregate does not publish.
+The missing-initialization diagnostic now retains bounded function/type/source and
+first-direct-component context for subsequent real blockers. Existing constant
+record/array regressions pass native/C#/NativeAOT at `*-dynamic-regression-v1`.
+provider: 245,760 bytes / 35 nodes / 29 types
+main: 286,720 bytes / 299 nodes / 35 types.
+Storage summaries and tested tool hashes are retained.
+
+Actual `hugeint-v33` gets past the aggregate and stops at libc++
+`__algorithm/shuffle.h:59`, `__seed`: a zero-initialized function-local static char
+whose address is converted to uintptr_t. No complete DuckDB object is published;
+1.08 s / 296,960 KiB is early-rejection cost. Next work is exact selected persistent
+storage/link identity and stable address emission for this bounded scalar case.
+Dynamic static initialization/guard protocols are not implied by that slice.
+Broad campaign remains stopped.
+
 ## Retention purpose audit (2026-10-11)
 
 The resolved program graph includes requested source browsing facts beyond current

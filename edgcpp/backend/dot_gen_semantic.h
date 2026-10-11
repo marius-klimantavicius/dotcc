@@ -737,10 +737,29 @@ struct State {
       default:missing("dependent value",int(value.kind));
     }
   }
+  Id aggregate_element(a_constant_ptr c,const a_source_position &p,bool complete_object=true) {
+    if(c->kind!=ck_dynamic_init)return constant(c,p,complete_object);
+    auto init=c->variant.dynamic_init.ptr;
+    // lower_init::lower_ck_dynamic_init applies this exact selected action
+    // to the current aggregate destination. Scalar components require no
+    // partial-object cleanup or constructor destination remapping.
+    if(!init || !is_scalar_type(c->type) ||
+       (init->kind!=dik_expression && init->kind!=dik_constant && init->kind!=dik_zero) ||
+       init->variable || init->destructor || init->lifetime || init->init_expr_lifetime ||
+       init->lifetime_of_overlapping_temps || init->master_entry ||
+       init->class_rvalue_initialized_through_master_entry || init->unordered ||
+       init->overlaps_temps_in_inner_lifetime ||
+       init->destruction_is_for_partially_constructed_aggregate ||
+       init->is_freeing_of_storage_on_exception)
+      missing_initialization(init,c->type,p,
+        "aggregate component requires scalar initialization without cleanup/remapping",c);
+    Id id=node("initialize",p,type_id(c->type));
+    db.update("nodes","id",id,{{"initialization_id",initialization_id(init,c->type)}});
+    return id;
+  }
   void record_initializer(Id id,a_constant_ptr c,const a_source_position &p,bool complete_object) {
     auto type=skip_typerefs(c->type);
     auto &record=type->variant.class_struct_union;
-    if(c->variant.aggregate.has_dynamic_init_component)missing("record initializer dynamic component");
     if(record.any_virtual_base_classes || record.any_virtual_functions_including_in_base_classes)
       missing("record initializer virtual layout actions");
     if(c->uses_designated_initializers && !c->explicit_braces_on_aggregate &&
@@ -772,7 +791,6 @@ struct State {
         item=item->next;
         if(!item || item->kind==ck_designator)missing("record initializer designator value");
       }
-      if(item->kind==ck_dynamic_init)missing("record initializer dynamic component");
       if(item->kind==ck_init_repeat)missing("record initializer repetition");
       Id selected_field=0,selected_base=0;
       bool child_complete=true;
@@ -790,7 +808,7 @@ struct State {
       const auto &position=item->source_corresp.decl_position.seq?item->source_corresp.decl_position:p;
       db.insert("record_initializer_elements",{{"initializer_node_id",id},{"ordinal",ordinal++},
         {"field_id",optional(selected_field)},{"base_subobject_id",optional(selected_base)},
-        {"value_node_id",constant(item,position,child_complete)}});
+        {"value_node_id",aggregate_element(item,position,child_complete)}});
     }
   }
   void aggregate_initializer(Id id,a_constant_ptr c,const a_source_position &p,bool complete_object=true) {
@@ -806,8 +824,6 @@ struct State {
         ", type-kind="+std::to_string(int(type->kind))+
         ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]");
     }
-    if(c->variant.aggregate.has_dynamic_init_component)
-      missing("array initializer dynamic component");
     if(c->uses_designated_initializers && !c->explicit_braces_on_aggregate &&
        !c->explicit_parentheses_on_aggregate)
       missing("unbraced designated array initializer merge");
@@ -828,6 +844,9 @@ struct State {
       auto value=item;a_targ_size_t count=1;
       if(item->kind==ck_init_repeat) {
         value=item->variant.init_repeat.constant;count=item->variant.init_repeat.count;
+        if(value->kind==ck_dynamic_init ||
+           (value->kind==ck_aggregate && value->variant.aggregate.has_dynamic_init_component))
+          missing("repeated dynamic aggregate component evaluation");
         if(!count)missing("runtime array initializer repetition");
         if(item->variant.init_repeat.multidimensional_aggr_tail_not_repeated)
           missing("designated array initializer repetition tail");
@@ -837,10 +856,9 @@ struct State {
         if(!identical_types_ignoring_qualifiers(value->type,type->variant.array.element_type))
           missing("flattened multidimensional array initializer repetition");
       }
-      if(value->kind==ck_dynamic_init)missing("array initializer dynamic component");
       const auto &position=value->source_corresp.decl_position.seq?value->source_corresp.decl_position:p;
       db.insert("array_initializer_elements",{{"initializer_node_id",id},{"ordinal",ordinal++},
-        {"array_index",index},{"repeat_count",count},{"value_node_id",constant(value,position)}});
+        {"array_index",index},{"repeat_count",count},{"value_node_id",aggregate_element(value,position)}});
       index+=count;
     }
   }
@@ -1048,6 +1066,52 @@ struct State {
     db.update("nodes","id",owner,{{"lifetime_id",id}});
     db.update("lifetimes","id",id,{{"owner_node_id",owner}});
   }
+  [[noreturn]] void missing_initialization(a_dynamic_init_ptr init,a_type_ptr target,
+      a_source_position pos,const char *reason,a_constant_ptr component=nullptr) {
+    if(!init)missing(std::string(reason)+" without selected initialization");
+    a_constant_ptr aggregate=nullptr;
+    if(init->kind==dik_nonconstant_aggregate) {
+      aggregate=init->variant.constant.ptr;
+      if(!component && aggregate->kind==ck_aggregate)
+        for(auto item=aggregate->variant.aggregate.first_constant;item;item=item->next)
+          if(item->kind==ck_dynamic_init){component=item;break;}
+      if(!pos.seq)pos=aggregate->source_corresp.decl_position;
+    }
+    auto selected=component?component->variant.dynamic_init.ptr:nullptr;
+    if(!pos.seq && component)pos=component->source_corresp.decl_position;
+    if(!pos.seq && selected && selected->kind==dik_expression)
+      pos=selected->variant.expression->position;
+    std::string name;
+    for(const auto &entry:routines)if(entry.second==function) {
+      name=spelling(entry.first->source_corresp);
+      if(!pos.seq)pos=entry.first->source_corresp.decl_position;
+      break;
+    }
+    auto source=location(pos);std::string path;
+    for(const auto &file:files)if(file.second==source.file){path=file.first;break;}
+    auto entity=target?target:init->variable?init->variable->type:aggregate?aggregate->type:nullptr;
+    std::string detail=std::string(reason)+" [function="+name+
+      ", target="+(entity?spelling(entity->source_corresp):"")+
+      ", target-kind="+std::to_string(entity?int(skip_typerefs(entity)->kind):-1)+
+      ", variable="+(init->variable?spelling(init->variable->source_corresp):"")+
+      ", aggregate-kind="+std::to_string(aggregate?int(aggregate->kind):-1)+
+      ", partial="+std::to_string(int(init->is_partially_initialized))+
+      ", destructor="+std::to_string(init->destructor?1:0)+
+      ", lifetime="+std::to_string(init->lifetime?1:0)+
+      ", expression-lifetime="+std::to_string(init->init_expr_lifetime?1:0)+
+      ", overlap="+std::to_string(init->lifetime_of_overlapping_temps?1:0)+
+      ", partial-cleanup="+std::to_string(int(init->destruction_is_for_partially_constructed_aggregate));
+    if(selected)detail+=", component-kind="+std::to_string(int(selected->kind))+
+      ", component-type="+(component->type?spelling(component->type->source_corresp):"")+
+      ", component-type-kind="+std::to_string(component->type?int(skip_typerefs(component->type)->kind):-1)+
+      ", component-destructor="+std::to_string(selected->destructor?1:0)+
+      ", component-lifetime="+std::to_string(selected->lifetime?1:0)+
+      ", component-expression-lifetime="+std::to_string(selected->init_expr_lifetime?1:0)+
+      ", component-overlap="+std::to_string(selected->lifetime_of_overlapping_temps?1:0)+
+      ", component-partial="+std::to_string(int(selected->destruction_is_for_partially_constructed_aggregate));
+    missing(detail+", file="+path+", line="+std::to_string(source.line)+
+      ", column="+std::to_string(source.column)+"]",int(init->kind));
+  }
   Id initialization_id(a_dynamic_init_ptr init,a_type_ptr target=nullptr) {
     if(!init)return 0;
     if(template_recipe)missing("template recipe initialization ownership");
@@ -1072,6 +1136,15 @@ struct State {
       case dik_expression:kind="expression";value=expression(init->variant.expression);break;
       case dik_class_result_via_ctor:kind="class-result";value=expression(init->variant.expression);break;
       case dik_constant:kind="constant";value=constant(init->variant.constant.ptr,pos,!subobject_initializations.count(init));break;
+      case dik_nonconstant_aggregate:
+        if(init->destructor || init->lifetime || init->init_expr_lifetime ||
+           init->lifetime_of_overlapping_temps || init->unordered ||
+           init->overlaps_temps_in_inner_lifetime ||
+           init->destruction_is_for_partially_constructed_aggregate ||
+           init->is_freeing_of_storage_on_exception)
+          missing_initialization(init,target,pos,"nonconstant aggregate requires richer cleanup projection");
+        kind="aggregate";
+        value=constant(init->variant.constant.ptr,pos,!subobject_initializations.count(init));break;
       case dik_constructor:
         kind="constructor";
         if(!init->variant.constructor.ptr)missing("selected constructor");
@@ -1084,7 +1157,7 @@ struct State {
       case dik_bitwise_copy:
         kind="bitwise-copy";value=expression(init->variant.bitwise_copy.source);
         implied_source=init->variant.bitwise_copy.source==nullptr;break;
-      default:missing("dynamic initialization",int(init->kind));
+      default:missing_initialization(init,target,pos,"dynamic initialization");
     }
     Id life=lifetime_id(init->lifetime),expr_life=lifetime_id(init->init_expr_lifetime);
     Id overlap=lifetime_id(init->lifetime_of_overlapping_temps);

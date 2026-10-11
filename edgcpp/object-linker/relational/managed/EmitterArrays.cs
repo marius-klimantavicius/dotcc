@@ -134,7 +134,7 @@ internal sealed partial class Emitter
                 {
                     Line(indent,"global::System.Runtime.InteropServices.NativeMemory.Clear("+Name(variable)+", "+unit.Original(unit.Symbols[variable].Type).Size+"U);");return;
                 }
-                if(initialization.Kind is not("constant" or "expression") || initialization.Value is not long value)
+                if(initialization.Kind is not("constant" or "expression" or "aggregate") || initialization.Value is not long value)
                     throw unit.Missing(node,"array initialization requires explicit array initializer actions");
                 WriteArrayInitializer(unit.Nodes[value],Name(variable),indent);return;
             }
@@ -165,8 +165,11 @@ internal sealed partial class Emitter
                 }
                 string destination="(("+element+"*)"+address+")["+index+"]";
                 var value=unit.Nodes[action.Value];
-                if(unit.IsArray(type.Element!.Value))WriteArrayInitializer(value,"(&"+destination+")",level);
-                else Line(level,destination+" = "+Expression(value)+";");
+                if(!WriteAggregateComponent(value,destination,level,action.Repeat))
+                {
+                    if(unit.IsArray(type.Element!.Value))WriteArrayInitializer(value,"(&"+destination+")",level);
+                    else Line(level,destination+" = "+ExpandedExpression(value,level)+";");
+                }
                 if(action.Repeat>1)Line(indent,"}");
             }
         }
