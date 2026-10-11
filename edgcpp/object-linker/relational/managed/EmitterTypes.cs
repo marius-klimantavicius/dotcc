@@ -113,9 +113,10 @@ internal sealed partial class Emitter
         {
             UseType(unit,call.ReceiverType);UseType(unit,call.CallableType);
         }
-        // A selected-type reference describes the represented C++ type. RTTI
-        // storage comes from the selected provider, without realizing that type.
-        foreach(var edge in unit.Edges.GetValueOrDefault(node.Id,[]).Where(edge=>edge.Role!="selected-type"))
+        // Selected-type and source-condition edges retain source metadata.
+        // RTTI storage and constexpr branch execution follow their selected
+        // program references, without realizing or evaluating this metadata.
+        foreach(var edge in unit.Edges.GetValueOrDefault(node.Id,[]).Where(edge=>edge.Role is not ("selected-type" or "source-condition")))
             UseNode(unit,unit.Nodes[edge.Child],visited);
     }
 

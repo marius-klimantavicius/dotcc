@@ -427,6 +427,7 @@ internal sealed partial class Emitter
                 case "static-declaration":WriteStaticDeclaration(node,indent);break;
                 case "static-assertion":WriteDeclaration(node,indent);break;
                 case "if":WriteIf(node,indent);break;
+                case "constexpr-if":WriteConstexprIf(node,indent);break;
                 case "while":WriteWhile(node,indent);break;
                 case "do-while":
                     Line(indent,"do");WriteLoopBody(node,indent);

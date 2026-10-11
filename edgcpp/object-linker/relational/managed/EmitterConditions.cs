@@ -57,6 +57,31 @@ internal sealed partial class Emitter
             Line(indent,"}");
         }
 
+        private void WriteConstexprIf(Node statement,int indent)
+        {
+            string selection=statement.Constant??throw unit.Missing(statement,"exporter defect: constexpr-if selection missing");
+            Line(indent,"// if constexpr ("+selection+")");
+            Node? selected=unit.Children(statement,"selected-body").FirstOrDefault();
+            Node? condition=unit.Children(statement,"condition").FirstOrDefault();
+            void Selected(int level)
+            {
+                if(selected is null)Line(level,";");
+                else Body(selected,level);
+            }
+            // EDG selected the branch. A condition wrapper still owns its
+            // runtime initializer and cleanup; its predicate is metadata only.
+            if(condition is null){Selected(indent);return;}
+            if(condition.Kind!="condition")
+                throw unit.Missing(condition,"constexpr-if initializer wrapper emission is not implemented");
+            Line(indent,"{");
+            WriteLifetimeRegion(condition,indent+1,level=>
+            {
+                WriteConditionInitialization(condition,level);
+                Selected(level);
+            });
+            Line(indent,"}");
+        }
+
         private void WriteWhile(Node statement,int indent)
         {
             Node condition=Child(statement,"condition");

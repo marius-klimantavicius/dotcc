@@ -1044,6 +1044,36 @@ complete DuckDB object or actual DuckDB C# output has been published; recorded
 probe timings remain early-rejection costs. Shared-result destination schema
 review remains pending independently.
 
+## EDG-selected constexpr branches and initializer scopes (2026-10-11)
+
+Verified `dotobj-relational-constexpr-if-v3` retains EDG's explicit selected
+boolean and one `selected-body` alias to its already captured then/else node.
+`source-condition` edges preserve the supplied predicate as recipe metadata;
+the generator never re-evaluates it. A C++17 condition wrapper retains executable
+initialization, scope and cleanup, while its predicate remains metadata. No new
+schema, capture map or hook is added; schema remains 1018 / 43 tables.
+
+The current bound accepts only absent/EDG-empty discarded branches and explicitly
+rejects a nonempty retained discarded source branch. Unknown selections and
+conflicting wrapper capture contexts also reject. Source conditions may already
+be EDG-folded constants; tests do not reconstruct unfurled source syntax.
+
+The C++17 two-TU fixture checks six true/false selected branches, exact aliases,
+recipe ownership and runtime initializer effects/destruction on normal return
+and throw/catch. Native C++, source-hidden C# and Linux NativeAOT pass. The
+ordinary predicate function definition is preserved, with no runtime call from
+the constexpr selection. Nonempty discarded source rejection publishes no
+object. Native/managed builds pass. Provider: 245,760 bytes / 44 nodes / 17 types;
+main: 262,144 bytes / 190 nodes / 28 types. Hashes and per-table storage are retained.
+
+Actual `exception-v7` advances through constexpr-if and rejects placement-new
+record construction with selected exception deallocation at libc++
+`__memory/allocator.h:173:5`. Its exact null-guard/cleanup capture needs director
+review. Independently configured `checksum-v1` rejects a dynamic exception
+specification; its actual stock policy is being investigated. `hugeint-v40`
+still awaits shared-result destination schema review. No complete DuckDB object
+or actual DuckDB C# output has been published; probe timings are rejection costs.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

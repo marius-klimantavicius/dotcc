@@ -710,6 +710,15 @@ struct State {
     if(--recipe_capture_depth==0){recipe_expressions.clear();recipe_constants.clear();}
     return id;
   }
+  Id recipe_expression(an_expr_node_ptr e,const a_source_position &pos,Id source_node) {
+    auto previous_function=function;bool previous_recipe=template_recipe;
+    if(recipe_capture_depth++==0){recipe_expressions.clear();recipe_constants.clear();}
+    function=0;template_recipe=true;
+    Id id=expression(e,&pos,source_node);
+    template_recipe=previous_recipe;function=previous_function;
+    if(--recipe_capture_depth==0){recipe_expressions.clear();recipe_constants.clear();}
+    return id;
+  }
   [[noreturn]] void missing_dependent_value(a_constant_ptr c,const a_source_position &p,const char *reason) {
     auto source=location(p);std::string path;
     for(const auto &file:files)if(file.second==source.file){path=file.first;break;}
@@ -1865,10 +1874,14 @@ struct State {
       missing("delete expression without selected deallocator call");
     deallocation_stack.pop_back();
   }
-  Id expression(an_expr_node_ptr e,const a_source_position *inherited_position=nullptr,Id source_node=0) {
+  Id expression(an_expr_node_ptr e,const a_source_position *inherited_position=nullptr,Id source_node=0,
+                bool source_condition=false) {
     if(!e)return 0;
     auto &expression_ids=template_recipe?recipe_expressions:expressions;
-    auto found=expression_ids.find(e);if(found!=expression_ids.end())return found->second;
+    auto found=expression_ids.find(e);if(found!=expression_ids.end()) {
+      if(source_condition)missing("constexpr condition wrapper already captured for execution");
+      return found->second;
+    }
     // Some stock folded/synthetic operands have no position of their own.
     // Retain their nearest enclosing expression's navigation and explicit
     // source link without changing EDG entries or reconstructing syntax.
@@ -2025,7 +2038,9 @@ struct State {
       // A C++17 selection initializer is a freestanding statement: EDG
       // deliberately supplies no adjacent stmk_init for its declarations.
       edge(id,"initializer",0,statement(condition->initialization,nullptr,true));
-      edge(id,"value",0,expression(condition->expr));
+      if(source_condition)
+        edge(id,"source-condition",0,recipe_expression(condition->expr,source_position,id));
+      else edge(id,"value",0,expression(condition->expr));
     } else if(e->kind==enk_object_lifetime) {
       attach_lifetime(id,e->variant.object_lifetime.ptr);
       edge(id,"operand",0,expression(e->variant.object_lifetime.expr));
@@ -2072,6 +2087,7 @@ struct State {
     switch(s->kind) {
       case stmk_block:kind="block";break;case stmk_return:kind="return";break;
       case stmk_expr:kind="expr-stmt";break;case stmk_if:kind="if";break;
+      case stmk_constexpr_if:kind="constexpr-if";break;
       case stmk_while:kind="while";break;case stmk_end_test_while:kind="do-while";break;
       case stmk_for:kind="for";break;case stmk_decl:kind="decl";break;case stmk_init:kind="decl";break;
       case stmk_range_based_for:kind="range-for";break;
@@ -2133,6 +2149,24 @@ struct State {
       case stmk_if:
         edge(id,"condition",0,expression(s->expr));edge(id,"then",0,statement(s->variant.if_stmt.then_statement));
         edge(id,"else",0,statement(s->variant.if_stmt.else_statement));break;
+      case stmk_constexpr_if: {
+        auto selected=s->variant.constexpr_if;
+        if(!selected->value_known)missing("dependent constexpr-if outside source recipe");
+        auto discarded=selected->value?selected->else_statement:selected->then_statement;
+        if(discarded && discarded->kind!=stmk_empty)
+          missing("constexpr-if nonempty discarded source branch navigation");
+        db.update("nodes","id",id,{{"constant_text",selected->value?"true":"false"}});
+        // The stock constexpr-if result selects execution. Its source
+        // predicate is navigation-only even when it remains a constexpr call.
+        // A C++17 initializer still owns ordinary runtime actions and cleanup.
+        if(s->expr && s->expr->kind==enk_condition)
+          edge(id,"condition",0,expression(s->expr,&s->position,id,true));
+        else edge(id,"source-condition",0,recipe_expression(s->expr,s->position,id));
+        Id then_node=statement(selected->then_statement),else_node=statement(selected->else_statement);
+        edge(id,"then",0,then_node);edge(id,"else",0,else_node);
+        edge(id,"selected-body",0,selected->value?then_node:else_node);
+        break;
+      }
       case stmk_while:case stmk_end_test_while:
         edge(id,"condition",0,expression(s->expr));edge(id,"body",0,statement(s->variant.loop_statement));break;
       case stmk_for: {
