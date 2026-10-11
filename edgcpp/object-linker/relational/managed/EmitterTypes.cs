@@ -27,9 +27,11 @@ internal sealed partial class Emitter
             using var body=program.LoadFunction(function);
             var visited=new HashSet<long>();
             foreach(var node in unit.Nodes.Values.Where(node=>node.Function==function.Id))UseNode(unit,node,visited);
+            var byteZeroInitializations=unit.Nodes.Values.Where(node=>IsAllocationByteZero(unit,node))
+                .Select(node=>node.Initialization!.Value).ToHashSet();
             foreach(var initialization in unit.Initializations.Values.Where(initialization=>initialization.Function==function.Id))
             {
-                if(initialization.Type is long type)UseType(unit,type);
+                if(initialization.Type is long type && !byteZeroInitializations.Contains(initialization.Id))UseType(unit,type);
                 if(initialization.Constructor is long constructor)UseType(unit,unit.Symbols[constructor].Type);
                 if(initialization.Destructor is long destructor)UseType(unit,unit.Symbols[destructor].Type);
             }
@@ -67,7 +69,11 @@ internal sealed partial class Emitter
         }
         needsNullptrNormalization|=node.ValueNormalization=="nullptr-zero";
         if(node.Function is null)executableGlobalNodes.Add((unit,node.Id));
-        if(node.Type is long type)UseType(unit,type);
+        bool byteZero=IsAllocationByteZero(unit,node);
+        // This selected byte-zero action retains its source runtime array
+        // type for navigation. Execution uses the recorded byte count and
+        // allocation result, without requiring a fixed array value layout.
+        if(node.Type is long type && !byteZero)UseType(unit,type);
         if(node.ExecutionType is long execution)UseType(unit,execution);
         if(node.OperationType is long operation)UseType(unit,operation);
         if(node.OriginalLvalueType is long original)UseType(unit,original);
@@ -103,7 +109,7 @@ internal sealed partial class Emitter
         }
         if(node.Initialization is long selected && unit.Initializations.TryGetValue(selected,out var initialization))
         {
-            if(initialization.Type is long initializedType)UseType(unit,initializedType);
+            if(initialization.Type is long initializedType && !byteZero)UseType(unit,initializedType);
             if(initialization.Constructor is long constructor)UseType(unit,unit.Symbols[constructor].Type);
             if(initialization.Destructor is long destructor)UseType(unit,unit.Symbols[destructor].Type);
             if(initialization.Value is long value)UseNode(unit,unit.Nodes[value],visited);
@@ -116,9 +122,12 @@ internal sealed partial class Emitter
         }
         // These edges retain source metadata. Selected execution follows its
         // program references without realizing or evaluating this metadata.
-        foreach(var edge in unit.Edges.GetValueOrDefault(node.Id,[]).Where(edge=>edge.Role is not ("selected-type" or "source-condition" or "source-name")))
+        foreach(var edge in unit.Edges.GetValueOrDefault(node.Id,[]).Where(edge=>edge.Role is not ("selected-type" or "source-condition" or "source-name" or "selected-abi-entry")))
             UseNode(unit,unit.Nodes[edge.Child],visited);
     }
+
+    private static bool IsAllocationByteZero(Unit unit,Node node)=>node.Kind=="allocation-initialize" &&
+        node.Initialization is long id && unit.Initializations.TryGetValue(id,out var initialization) && initialization.Kind=="zero";
 
     private void UseBase(Unit unit,BaseSubobject subobject)
     {

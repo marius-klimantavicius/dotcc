@@ -11,6 +11,8 @@ internal sealed partial class Emitter
         {
             if(allocation.CountSymbol is not long count)
             {
+                if(unit.Nodes[allocation.Node].Operator=="zero-initialized")
+                    throw unit.Missing(unit.Nodes[allocation.Node],"runtime zero-initialized allocation requires its selected count binding");
                 if(allocation.CountValue is not null || allocation.Check is not null || allocation.Failure is not null)
                     throw unit.Missing(unit.Nodes[allocation.Node],"exporter defect: allocation check requires its selected count binding");
                 continue;
@@ -41,12 +43,37 @@ internal sealed partial class Emitter
                 Line(2,"if ("+Truth(unit.Nodes[check])+") "+Name(failure)+"();");
             }
             else if(allocation.Failure is not null)throw unit.Missing(node,"exporter defect: allocation length predicate missing");
-            Line(2,"return "+AllocationCall(node,allocation)+";");Line(1,"}");
+            if(node.Operator=="zero-initialized")WriteZeroInitializedAllocation(node,allocation,2);
+            else Line(2,"return "+AllocationCall(node,allocation)+";");
+            Line(1,"}");
         }
 
-        private string AllocationCall(Node node,Allocation allocation)
+        private void WriteZeroInitializedAllocation(Node node,Allocation allocation,int indent)
         {
-            string call=Name(allocation.Allocator)+"("+Expression(unit.Nodes[allocation.Size])+")";
+            Node initialize=Child(node,"initialize");
+            if(!IsAllocationByteZero(unit,initialize))
+                throw unit.Missing(initialize,"runtime byte-zero allocation requires its selected zero initialization action");
+            var initialization=unit.Initializations[initialize.Initialization!.Value];
+            CheckInitialization(initialization);
+            if(initialization.Destructor is not null || initialization.DestinationInitialization is not null ||
+               Child(initialize,"byte-count").Id!=allocation.Size || allocation.ResultOffset!=0)
+                throw unit.Missing(initialize,"runtime byte-zero allocation requires its recorded size without object cleanup/cookie handling");
+            bool nullCheck=allocation.ConstructionNullCheck
+                ??throw unit.Missing(node,"exporter defect: selected construction null guard missing");
+            Node size=unit.Nodes[allocation.Size];
+            string bytes=allocator.Allocate("__allocation_bytes_"+node.Id,"allocation_bytes");
+            Line(indent,NodeType(size)+" "+bytes+" = "+Expression(size)+";");
+            string result=allocator.Allocate("__allocation_result_"+node.Id,"allocation_result");
+            Line(indent,NodeType(node)+" "+result+" = "+AllocationCall(node,allocation,bytes)+";");
+            string clear="global::System.Runtime.InteropServices.NativeMemory.Clear("+result+", unchecked((nuint)"+bytes+"));";
+            if(nullCheck)Line(indent,"if ("+result+" != null) "+clear);
+            else Line(indent,clear);
+            Line(indent,"return "+result+";");
+        }
+
+        private string AllocationCall(Node node,Allocation allocation,string? size=null)
+        {
+            string call=Name(allocation.Allocator)+"("+(size??Expression(unit.Nodes[allocation.Size]))+")";
             if(allocation.ResultOffset!=0)call="((byte*)"+call+" + ("+allocation.ResultOffset+"))";
             return "(("+NodeType(node)+")"+call+")";
         }

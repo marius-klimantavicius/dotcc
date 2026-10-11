@@ -1,0 +1,34 @@
+typedef decltype(sizeof(0)) size_type;
+struct Member {
+    int value;
+    explicit Member(int input);
+    ~Member() noexcept;
+};
+struct Value {
+    Member member;
+    explicit Value(int input);
+    ~Value() noexcept;
+    static void operator delete(void* pointer, size_type bytes) noexcept;
+};
+void* operator new[](size_type bytes) noexcept;
+void* operator new(size_type bytes, void* pointer) noexcept;
+void operator delete(void* pointer, void* argument) noexcept;
+extern long long arena[32];
+extern long long value_arena[8];
+extern int chosen_count;
+extern int count_calls;
+extern int allocation_calls;
+extern size_type allocated_bytes;
+extern bool return_null;
+extern int failure_calls;
+extern int pointer_calls;
+extern int value_destructions;
+extern int member_destructions;
+extern int deallocation_calls;
+extern void* deleted_pointer;
+extern size_type deleted_bytes;
+extern long long trace;
+void reset();
+unsigned long long* allocate_zero_words();
+Value* construct_value(int input);
+void release_value(bool null_pointer);

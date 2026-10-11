@@ -270,6 +270,13 @@ arrays and typed function pointers, without selecting overrides. Run
 adjustment and receiver/argument effects. Construction tables, virtual destructors,
 virtual-base/covariant adjustments and variadic slots remain unsupported.
 
+Scalar runtime-array byte-zero initialization follows an observed stock action,
+its exact saved byte extent and selected null guard. Nonvirtual nonthrowing record
+delete retains the chosen complete destructor, pointer reuse, null guard and
+selected deallocator arguments. `tests/verify_allocation_actions.py` checks these
+across source-hidden objects, including member cleanup and class-sized deletion.
+Class/cookie arrays and throwing/virtual record deletion remain explicit boundaries.
+
 Vacuous destructor calls retain the selected source operation and evaluate only
 its object/pointer designation, without a destructor/provider. Optional type-name
 operands remain recipe metadata. `tests/verify_vacuous_destructors.py` checks

@@ -86,7 +86,7 @@ internal sealed partial class Emitter
         WriteNullptrHelper();
         PrepareExceptionDescriptors();
         WriteLiteralStorage();
-        foreach(var unit in program.Units){WriteClassConversionHelpers(unit,null);WriteVirtualCallHelpers(unit,null);WriteCompoundHelpers(unit,null);WriteAllocationHelpers(unit,null);}
+        foreach(var unit in program.Units){WriteClassConversionHelpers(unit,null);WriteVirtualCallHelpers(unit,null);WriteCompoundHelpers(unit,null);WriteAllocationHelpers(unit,null);WriteDeallocationHelpers(unit,null);}
         foreach(var global in program.Globals)
         {
             if(global.Unit.IsArray(global.Symbol.Type)){WriteGlobalArray(global);continue;}
@@ -109,9 +109,10 @@ internal sealed partial class Emitter
                 WriteVirtualCallHelpers(function.Unit,function.Id);
                 WriteCompoundHelpers(function.Unit,function.Id);
                 WriteAllocationHelpers(function.Unit,function.Id);
+                WriteDeallocationHelpers(function.Unit,function.Id);
                 new FunctionWriter(this,function.Unit,function).Write();
             }
-            finally {ReleaseClassConversionNames(function.Unit,function.Id);ReleaseVirtualCallNames(function.Unit,function.Id);ReleaseCompoundNames(function.Unit,function.Id);ReleaseAllocationNames(function.Unit,function.Id);}
+            finally {ReleaseClassConversionNames(function.Unit,function.Id);ReleaseVirtualCallNames(function.Unit,function.Id);ReleaseCompoundNames(function.Unit,function.Id);ReleaseAllocationNames(function.Unit,function.Id);ReleaseDeallocationNames(function.Unit,function.Id);}
         }
         if(entry is not null)
         {
@@ -211,6 +212,7 @@ internal sealed partial class Emitter
             foreach(string value in emitter.arrayNames.Values)allocator.Reserve(value);
             foreach(string value in emitter.literalNames.Values)allocator.Reserve(value);
             foreach(string value in emitter.allocationNames.Values)allocator.Reserve(value);
+            foreach(string value in emitter.deallocationNames.Values)allocator.Reserve(value);
             if(emitter.localArrayStorageName is string arrayStorage)allocator.Reserve(arrayStorage);
             if(emitter.nullptrValueName is string helper)allocator.Reserve(helper);
             if(function is SymbolRef selected)
@@ -267,7 +269,7 @@ internal sealed partial class Emitter
                 case "type-info-address":return TypeInfoAddress(node);
                 case "string-literal":return "(*"+ArrayAddress(node)+")";
                 case "new":return AllocationExpression(node);
-                case "delete":return Expression(Child(node,"execution"));
+                case "delete":return node.Operator=="destroy"?DeallocationExpression(node):Expression(Child(node,"execution"));
                 case "variable":
                     long variable=node.Symbol??throw unit.Missing(node,"selected symbol missing");
                     return unit.IsArray(unit.Symbols[variable].Type) || emitter.HasPinnedRecordStorage(unit,variable) || emitter.HasPinnedScalarStorage(unit,variable)?"(*"+Name(variable)+")":Name(variable);

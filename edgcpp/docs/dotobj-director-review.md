@@ -66,3 +66,21 @@ The first review found the director had ended its turn while construction
 decisions were queued. Workers continued independent features, but the primary
 DuckDB path remained blocked. This is corrected by active periodic reviews and
 delegating ordinary in-contract decisions to the supervisor.
+
+## Active review record (UTC, 2026-10-11)
+
+| Time | Evidence inspected | Decision or correction |
+| --- | --- | --- |
+| 16:27 | Current initialization schema and stock `lower_init.c` master destinations | Approved shared-destination FK and placement facts; removed ordinary-extension approval bottleneck; fixed full inventory and original language modes. |
+| 16:30 | Managed `Unit`, `LinkedProgram` and function-body loading | Catalogs remain fully resident. Measure real-unit and bounded-batch memory before increasing the link batch; do not divert the current exporter work. |
+| 16:31 | Shared-result native patch and managed destination emitter | One FK and bound destination are sufficient. Structured branches construct into selected storage; binding restoration and cleanup ownership reviewed. |
+| 16:33 | Compiler entry point, invocation environment and legacy capture gate | New relational runs clear legacy mode variables and bypass the old raw-graph emitter. |
+| 16:36 | Shared-results-v1 generated source and retained test/build evidence | Direct caller-result construction and local cleanup match the intended projection; self-address and failure tests pass native/C#/NativeAOT. Real hugeint probe advances to placement construction. |
+| 16:42 | Placement emitter, stock catch-region construction and actual allocator source | Require exact cleanup ownership and protected-action references. Check actual source wrappers rather than testing only a convenient synthetic expression. |
+| 16:48 | Actual hugeint placement-copy failure and exception hash-table jump | Fold the existing selected record-copy action into the placement milestone; retain source jumps instead of rewriting all control flow. |
+| 16:56 | Placement-v1 generated allocator/initialization/catch sequence | Saved arguments, guard and selected protected action match the intended representation; native/C#/NativeAOT and related regressions pass in `4e27fb690`. |
+| 16:58 | EDG label lifetime definitions and exporter `attach_lifetime` | A jump's common lifetime is a reference, not a new cleanup-region owner. Store it separately; do not overwrite lexical lifetime ownership. |
+| 17:07 | Vacuous-destruction lowering and managed discarded locations | Preserve operand evaluation without loading/copying an unused record; optional destructor-name operand is navigation. Corrected the dot-field receiver lookup to ordered operand zero. |
+| 17:15 | Stock runtime array zeroing and nonvirtual record delete | Project the selected byte-zero action and saved extent rather than deriving scalar zero representations. Record exact complete-destructor entry, pointer reuse and null guard; do not invent a destruction `finally` absent from this selected path. |
+| 17:22 | Allocation/deallocation emitters and new fixture source | Existing schema suffices. Byte count and delete pointer are saved once; selected guard and member destruction precede the exact sized deallocator. Fixture tests pointer mutation during destruction, null paths and allocation-length failure. |
+| 17:23 | Real exception-v12 and hugeint-v46 probe reports | Exception advances to the lambda blocker shared with checksum. Correct the observed array-count correspondence, then prioritize closure facts selected by EDG. Complete real-object count remains zero. |

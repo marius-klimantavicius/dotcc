@@ -1237,6 +1237,52 @@ results. Complete real DuckDB objects and actual C# output remain zero; measured
 project costs still describe rejected export stages only. These allocation
 families are the next active work.
 
+## Observed scalar array byte-zero actions and nonthrowing record deletion (2026-10-11)
+
+Verified `dotobj-relational-allocation-actions-v3` extends existing allocation
+facts without changing schema 1021 / 43 tables. Runtime single-dimensional scalar
+array initialization retains its selected zero action. A narrow observer at the
+actual stock runtime-zero call ties its byte-count edge to the recorded allocation
+size; completion requires this observation and the stock null-check decision.
+The second stock reusable element-count temporary aliases its exact selected RHS,
+so length checks and size computation never reevaluate the source count. No
+scalar zero representation is derived by the exporter or consumer.
+
+Generated helpers save byte count before allocation, clear exactly that extent
+under the recorded guard and return the selected pointer. The source runtime-array
+type remains browsable on the action, without requiring a fixed array value layout.
+Nonvirtual, EDG-nonthrowing scalar record delete retains its source destruction,
+exact selected complete ABI entry, typed null policy and deallocator argument graph.
+Stock reusable pointer identities alias the captured source pointer. The helper
+saves it once and invokes the existing complete source destructor body, including
+recorded member/base epilogue, followed by the exact selected deallocator. It uses
+the recorded receiver definition instead of treating implicit this as an ordinary
+source parameter. No speculative failure finally or synthetic provider is added.
+
+The focused C++17 two-TU fixture checks positive/zero/negative lengths, saved size
+despite allocator mutation, null allocation, exact clear extent, once-only pointer
+evaluation, pointer mutation during destruction, member epilogue, class-selected
+sized delete and null operand effects. Native C++, source-hidden C# and Linux
+NativeAOT pass. Existing plain allocation/deallocation regressions pass all three
+paths. Native/managed builds pass; a throwing-destructor export rejects explicitly.
+Provider: 286,720 bytes / 258 nodes / 54 types; main: 282,624 bytes / 237 nodes /
+47 types. Tested hashes, SQL summaries and per-table storage are retained. Director
+inspected generated helpers and reviewed the selected-action correspondence.
+
+Actual `hugeint-v47` passes scalar zero-array initialization and reaches virtual
+deleting destruction of `VectorAuxiliaryData` at libc++ `unique_ptr.h:66`.
+`exception-v12` passes nonvirtual record deletion and converges with `checksum-v6`
+on the same captureless lambda at libc++ `string:925`. EDG's selected closure
+initialization and call operator are next; capture parsing/reanalysis is excluded.
+Virtual deletion is a separate selected deleting-entry dispatch, not complete
+destruction plus an inferred delete. Complete real DuckDB objects and generated
+actual C# remain zero; probe costs are still rejected-export stage costs.
+
+The nonexecuting `template-recipe` domain currently also contains selected source
+and ABI navigation references. A future natural schema revision should distinguish
+that metadata name while preserving exact references and executable isolation.
+This naming correction does not justify delaying real-TU export work.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

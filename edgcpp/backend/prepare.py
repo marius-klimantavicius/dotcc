@@ -1521,6 +1521,12 @@ object_source_overlay(init_lower,
     '  dot_semantic::allocation_count_binding(temp);\n'
     '#endif')
 object_source_overlay(init_lower,
+    '      temp = make_lowered_temporary(number_of_elements->type);',
+    '      temp = make_lowered_temporary(number_of_elements->type);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_semantic::allocation_effective_count_binding(temp, number_of_elements);\n'
+    '#endif')
+object_source_overlay(init_lower,
     '  insert_expr(call_node, &then_insert_location);\n'
     '  release_local_constant(&zero_constant);\n'
     '  release_local_constant(&elem_size_constant);',
@@ -1544,6 +1550,16 @@ object_source_overlay(init_lower,
     '  dot_semantic::allocation_construction_null_check(ndsp, result);\n'
     '#endif\n'
     '  return result;\n}  /* null_check_needed */')
+# Observe the scalar runtime-array byte-zero action at its actual stock call.
+# num_bytes_temp already holds the exact captured allocation size.
+object_source_overlay(init_lower,
+    '        insert_runtime_zeroing_call(var_rvalue_expr(temp_var),\n'
+    '                                    var_rvalue_expr(num_bytes_temp),',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '        dot_semantic::allocation_zeroing(ndsp, num_bytes_temp);\n'
+    '#endif\n'
+    '        insert_runtime_zeroing_call(var_rvalue_expr(temp_var),\n'
+    '                                    var_rvalue_expr(num_bytes_temp),')
 object_source_overlay(init_lower,
     '    change_to_cast(expr, call_node, expr->type);',
     '#if defined(EDG_DOT_BACKEND)\n'
@@ -1567,6 +1583,25 @@ object_source_overlay(init_lower,
     '  dot_semantic::deallocation_arguments(delete_routine, arg_node);\n'
     '#endif\n'
     '  call_node = make_call_node(delete_routine, arg_node);')
+object_source_overlay(init_lower,
+    '    dtor_call_node = make_dtor_call_for_delete(dip, ptr_node, delete_routine);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::deallocation_begin(ndsp);\n'
+    '#endif\n'
+    '    dtor_call_node = make_dtor_call_for_delete(dip, ptr_node, delete_routine);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::deallocation_end(ndsp);\n'
+    '#endif')
+# Selected complete destructor, null guard, and reusable pointer identities.
+object_source_overlay(init_lower,
+    '  /* Make a call of the destructor. */\n'
+    '  call_node = make_call_node_full(dtor_routine, ptr_node,',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::deallocation_destruction(dip, dtor_routine, ptr_node,\n'
+    '    ptr_node_delete, need_null_ptr_test);\n'
+    '#endif\n'
+    '  /* Make a call of the destructor. */\n'
+    '  call_node = make_call_node_full(dtor_routine, ptr_node,')
 object_source_overlay(lower,
     '}  /* promote_static_variable_out_of_function */',
     '#if defined(EDG_DOT_BACKEND)\n'
