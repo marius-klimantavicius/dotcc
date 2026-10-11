@@ -1107,6 +1107,33 @@ destination and placement-construction reviews remain pending for `hugeint-v40`
 and `exception-v7`. No complete real DuckDB object or actual DuckDB C# output has
 been published. Retained project probe timings remain early-rejection costs.
 
+## Selected builtin addressof projection (2026-10-11)
+
+Verified `dotobj-relational-builtin-addressof-v3` maps only EDG-selected
+`bok_builtin_addressof` to ordinary typed `address-of` with its sole selected
+lvalue operand. Exact source spelling remains recipe-only navigation metadata.
+Stock `lower_builtin_addressof` supplies this behavior; no overload lookup,
+callable ABI, schema change or managed implementation change is needed.
+
+The C++17 two-TU fixture proves overloaded `operator&` bypass, once-only reference
+selection, record/scalar/field/array-element/static/local mutation and cross-TU
+address identity. Native C++, source-hidden C# and Linux NativeAOT pass. Provider:
+253,952 bytes / 81 nodes / 25 types; main: 266,240 bytes / 223 nodes / 26 types.
+The tested compiler uses schema 1018 / 43 tables. Its exact header/schema and tool
+hash snapshot is retained separately from in-progress shared-destination edits.
+Earlier fixture failures exercised unsupported folded subobject/nonzero variable
+relocations; the final fixture uses the required runtime address expressions and
+does not claim those relocation forms.
+
+Actual `checksum-v5` advances through builtin addressof and reaches source lambda
+expression EDG kind 6. Shared-result destination capture and consumption are now
+approved and actively being implemented for `hugeint-v40`; placement cleanup and
+exact stock null-guard capture are approved next for `exception-v7`. Original
+2,635-unit manifest/per-TU language modes are authoritative: 2,207 library sources
+first, 148 tests next, with 224 musl and 56 libc++ provider units tracked explicitly.
+No complete real DuckDB object or actual DuckDB C# output has been published.
+Project probe timings remain early-rejection costs.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

@@ -206,6 +206,9 @@ Residual `__builtin_is_constant_evaluated` queries use stock EDG's typed runtime
 zero, while compile-time folded values remain EDG constants. Exact selected builtin
 spelling remains navigation metadata, with no callable ABI/provider. Run
 `tests/verify_constant_evaluation_query.py` for runtime and compile-time separation.
+EDG-selected builtin addressof uses ordinary address-of on its selected lvalue,
+bypassing overloaded `operator&`; `tests/verify_builtin_addressof.py` checks
+once-only reference selection and cross-unit storage identities.
 
 Switches retain exact selected case/default identities, values and source body order.
 `tests/verify_switches.py` covers lexical fallthrough, nested exits and condition/local

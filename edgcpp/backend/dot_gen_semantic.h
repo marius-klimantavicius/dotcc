@@ -2003,6 +2003,41 @@ struct State {
           ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]";
         missing(detail,int(e->kind));
       }
+      case enk_builtin_operation: {
+        auto selected=e->variant.builtin_operation.kind;
+        if(selected==bok_builtin_addressof) {
+          auto operand=e->variant.builtin_operation.operands;
+          if(!operand || operand->next || !operand->is_lvalue)
+            missing("builtin addressof selected lvalue operand");
+          // Stock lower_builtin_addressof preserves this source result
+          // type/category and applies ordinary address-of to this lvalue.
+          kind="operation";op="address-of";break;
+        }
+        auto pos=location(source_position);std::string path,owner;
+        for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+        for(const auto &entry:routines)if(entry.second==function){owner=spelling(entry.first->source_corresp);break;}
+        unsigned count=0;for(auto child=e->variant.builtin_operation.operands;child;child=child->next)++count;
+        std::string detail="builtin expression [operation="+std::string(builtin_operation_names[selected])+
+          ", opcode="+std::to_string(int(selected))+
+          ", domain="+std::string(template_recipe?"template-recipe":"program")+
+          ", function="+owner+", result-type="+(e->type?spelling(e->type->source_corresp):"")+
+          ", result-kind="+std::to_string(e->type?int(skip_typerefs(e->type)->kind):-1)+
+          ", operands="+std::to_string(count)+", file="+path+
+          ", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]";
+        unsigned ordinal=0;
+        for(auto child=e->variant.builtin_operation.operands;child && ordinal<4;child=child->next,++ordinal) {
+          auto selected_type=child->kind==enk_type_operand?child->variant.type_operand.type:child->type;
+          auto child_pos=location(child->position);std::string child_path;
+          for(const auto &file:files)if(file.second==child_pos.file){child_path=file.first;break;}
+          detail+=" [operand="+std::to_string(ordinal)+", kind="+std::to_string(int(child->kind))+
+            ", operator="+std::to_string(child->kind==enk_operation?int(child->variant.operation.kind):-1)+
+            ", type="+(selected_type?spelling(selected_type->source_corresp):"")+
+            ", type-kind="+std::to_string(selected_type?int(skip_typerefs(selected_type)->kind):-1)+
+            ", file="+child_path+", line="+std::to_string(child_pos.line)+
+            ", column="+std::to_string(child_pos.column)+"]";
+        }
+        missing(detail,int(e->kind));
+      }
       case enk_operation: {
         if(e->variant.operation.kind==eok_subscript && e->variant.operation.pointer_operand_is_second)
           missing("reversed subscript operand projection");
@@ -2073,6 +2108,15 @@ struct State {
           edge(id,"last-parameter",0,expression(child,&source_position,id));
         else edge(id,"operand",ordinal,expression(child,&source_position,id));
       }
+    } else if(e->kind==enk_builtin_operation) {
+      edge(id,"operand",0,expression(e->variant.builtin_operation.operands,&source_position,id));
+      Id previous=function;bool previous_recipe=template_recipe;
+      function=0;template_recipe=true;
+      Id name=node("reference-name",source_position,0,nullptr,nullptr,
+        builtin_operation_names[e->variant.builtin_operation.kind]);
+      db.update("nodes","id",name,{{"source_node_id",id}});
+      function=previous;template_recipe=previous_recipe;
+      edge(id,"source-name",0,name);
     } else if(e->kind==enk_temp_init) {
       db.update("nodes","id",id,{{"initialization_id",initialization_id(e->variant.init.dynamic_init,e->type)}});
     } else if(e->kind==enk_condition) {
