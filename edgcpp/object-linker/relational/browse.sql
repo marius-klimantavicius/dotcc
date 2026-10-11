@@ -11,6 +11,16 @@ LEFT JOIN symbols s ON s.id=n.symbol_id ORDER BY n.id;
 
 SELECT parent_id,role,ordinal,child_id FROM edges ORDER BY parent_id,role,ordinal;
 
+SELECT t.name AS enum,storage.builtin_name AS underlying,e.is_scoped,
+       e.has_explicit_base,v.ordinal,v.name,v.value_text
+FROM enums e JOIN types t ON t.id=e.type_id
+JOIN types storage ON storage.id=t.underlying_type_id
+LEFT JOIN enum_values v ON v.enum_type_id=e.type_id ORDER BY e.type_id,v.ordinal;
+
+SELECT n.id,t.name AS enum,v.name AS selected_enumerator
+FROM nodes n JOIN enum_values v ON v.id=n.enum_value_id
+JOIN types t ON t.id=v.enum_type_id ORDER BY n.id;
+
 SELECT t.name AS record,f.name,f.byte_offset,ft.kind AS field_type
 FROM fields f JOIN types t ON t.id=f.owner_type_id JOIN types ft ON ft.id=f.type_id
 ORDER BY f.owner_type_id,f.ordinal;

@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1003;
+PRAGMA user_version = 1004;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -42,6 +42,28 @@ CREATE TABLE type_parameters (
  parameter_type_id INTEGER NOT NULL REFERENCES types(id),
  PRIMARY KEY(type_id,ordinal)
 ) STRICT, WITHOUT ROWID;
+CREATE TABLE enums (
+ type_id INTEGER PRIMARY KEY REFERENCES types(id),
+ is_scoped INTEGER NOT NULL CHECK(is_scoped IN(0,1)),
+ has_explicit_base INTEGER NOT NULL CHECK(has_explicit_base IN(0,1)),
+ declared_base_type_id INTEGER REFERENCES types(id),
+ is_definition INTEGER NOT NULL CHECK(is_definition IN(0,1)),
+ file_id INTEGER REFERENCES files(id),
+ line INTEGER,
+ column INTEGER
+) STRICT;
+CREATE TABLE enum_values (
+ id INTEGER PRIMARY KEY,
+ enum_type_id INTEGER NOT NULL REFERENCES types(id),
+ ordinal INTEGER NOT NULL,
+ name TEXT NOT NULL,
+ value_text TEXT NOT NULL,
+ value_type_id INTEGER NOT NULL REFERENCES types(id),
+ file_id INTEGER REFERENCES files(id),
+ line INTEGER,
+ column INTEGER,
+ UNIQUE(enum_type_id,ordinal)
+) STRICT;
 CREATE TABLE fields (
  id INTEGER PRIMARY KEY,
  owner_type_id INTEGER NOT NULL REFERENCES types(id),
@@ -114,6 +136,7 @@ CREATE TABLE nodes (
  constant_text TEXT,
  symbol_id INTEGER REFERENCES symbols(id),
  field_id INTEGER REFERENCES fields(id),
+ enum_value_id INTEGER REFERENCES enum_values(id),
  file_id INTEGER REFERENCES files(id),
  line INTEGER,
  column INTEGER,

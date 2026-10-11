@@ -72,6 +72,12 @@ preservation. Named pointer projections respect reused base tail padding. Run
 `tests/verify_bases.py` with the same arguments to compare native, source-hidden
 C# and NativeAOT execution, including second-base construction failure.
 
+Named enums retain EDG-selected underlying types, ordered exact values and selected
+enumerator references in `enums`, `enum_values` and `nodes.enum_value_id`. Generated
+C# uses named enum declarations and values; folded constants retain their recorded
+numeric value. `tests/verify_enums.py` exercises cross-unit storage, promotions,
+unsigned 64-bit values and enum exception identity.
+
 This covers lexical return cleanup, partial member/base construction, reference catches,
 rethrow and exception-object destruction. Arrays/virtual-base construction, nontrivial
 temporaries, function-try blocks, complex catch conversions, macros, all type

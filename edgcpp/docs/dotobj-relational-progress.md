@@ -108,10 +108,35 @@ execution paths.
 The same bounded DuckDB `hugeint.cpp` probe now passes the base metadata boundary
 and rejects `enum metadata` before publication. Evidence:
 `artifacts/review/dotobj-relational-duckdb-hugeint-v2/` (0.07 seconds, 32,144 KiB
-maximum RSS for this early rejection, not a complete TU measurement). Enum
-declarations, values and EDG-selected underlying types are the next active work.
+maximum RSS for this early rejection, not a complete TU measurement).
 
 Reproduce with `object-linker/relational/tests/verify_bases.py --out <new-directory>
+--linker artifacts/relational-tool/dotobj-relational.dll --nativeaot`.
+
+## Verified enum declarations and execution
+
+`artifacts/review/dotobj-relational-enums-v2/` passes native C++, source-hidden C#
+and Linux x64 NativeAOT. The two units retain named scoped/unscoped enums in
+function signatures and record fields, signed values and the exact unsigned
+64-bit maximum. A thrown `Status` matches its enum handler rather than an earlier
+handler for its underlying `unsigned short`. Generated C# retains `Status.ready`,
+`Legacy.negative` and `Wide.high` where EDG supplied the selected declaration.
+
+`enums` and `enum_values` bring the schema to 25 ordinary tables. EDG supplies
+the underlying builtin type, scoped/explicit-base flags, ordered values and
+source coordinates. Nodes reference selected enumerators by identity; folded
+numeric values do not acquire guessed names. Provider: 143,360 bytes, 37 nodes,
+19 types. Main: 151,552 bytes, 85 nodes, 24 types. Per-table storage and tool hashes
+are retained. Enum storage forms unsupported by C# reject explicitly. The earlier
+base, lifetime and original slices pass native/C#/NativeAOT under the same tools
+at their `*-regression-v6` directories.
+
+The bounded DuckDB `hugeint.cpp` probe advances to `template argument (EDG kind 3)`
+at `artifacts/review/dotobj-relational-duckdb-hugeint-v3/`. This is an early rejection,
+not a successful TU export. The next work is compact pack membership and template
+argument identity; dependent recipes must remain metadata rather than C# analysis.
+
+Reproduce with `object-linker/relational/tests/verify_enums.py --out <new-directory>
 --linker artifacts/relational-tool/dotobj-relational.dll --nativeaot`.
 
 ## Remaining work

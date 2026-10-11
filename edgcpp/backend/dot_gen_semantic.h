@@ -34,7 +34,7 @@ struct Location { Id file=0;unsigned long long line=0,column=0; };
 struct State {
   dot_semantic_sqlite::Database db;
   Id next_type=1,next_symbol=1,next_node=1,next_field=1,next_file=1,next_template=1,next_instance=1;
-  Id next_lifetime=1,next_initialization=1,next_base=1;
+  Id next_lifetime=1,next_initialization=1,next_base=1,next_enum_value=1;
   Id function=0;
   std::map<a_type_ptr,Id> types;
   std::map<a_routine_ptr,Id> routines;
@@ -42,6 +42,7 @@ struct State {
   std::map<a_variable_ptr,Id> variables;
   std::map<a_field_ptr,Id> fields;
   std::map<a_base_class_ptr,Id> base_subobjects;
+  std::map<a_constant_ptr,Id> enum_values;
   std::map<a_template_ptr,Id> templates;
   std::map<std::string,Id> files;
   std::map<an_expr_node_ptr,Id> expressions;
@@ -123,7 +124,20 @@ struct State {
       case tk_typeref:
         kind=type_is_typedef(t)?"typedef":"qualified";underlying=type_id(t->variant.typeref.type);break;
       case tk_integer:
-        if(t->variant.integer.enum_type && !t->variant.integer.bool_type)missing("enum metadata");
+        if(t->variant.integer.enum_type) {
+          kind="enum";
+          auto extra=integer_type_supp(t);
+          // Use the same selected underlying type as EDG's
+          // types::apply_type_transforming_intrinsic(trk_is_underlying_type).
+          // GNU's underlying kind can differ from the promotion kind.
+          if(t->variant.integer.has_explicit_enum_base)underlying=type_id(extra->base_type);
+#if GNU_EXTENSIONS_ALLOWED
+          else if(extra->underlying_type_should_use_unsigned)
+            underlying=type_id(integer_type(unsigned_int_kind_of[t->variant.integer.int_kind]));
+#endif
+          else underlying=type_id(integer_type(t->variant.integer.int_kind));
+          break;
+        }
         if(t->variant.integer.bool_type){kind="bool";builtin="bool";}
         else switch(t->variant.integer.int_kind) {
           case ik_char:kind=targ_has_signed_chars?"i8":"u8";builtin="char";break;
@@ -173,6 +187,25 @@ struct State {
       unsigned ordinal=0;
       for(auto p=t->variant.routine.extra_info->param_type_list;p;p=p->next)
         db.insert("type_parameters",{{"type_id",id},{"ordinal",ordinal++},{"parameter_type_id",type_id(p->type)}});
+    }
+    if(kind=="enum") {
+      auto extra=integer_type_supp(t);auto pos=location(t->source_corresp.decl_position);
+      db.insert("enums",{{"type_id",id},{"is_scoped",bool(t->variant.integer.is_scoped_enum)},
+        {"has_explicit_base",bool(t->variant.integer.has_explicit_enum_base)},
+        {"declared_base_type_id",optional(type_id(extra->base_type))},
+        {"is_definition",bool(extra->enumerator_list_complete)},
+        {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
+      // enum_constants also handles scoped enum declarations. This is the
+      // same ordered list consumed by c_gen_be::dump_enum_definition.
+      unsigned ordinal=0;
+      for(auto value=enum_constants(t);value;value=value->next,++ordinal) {
+        Id value_id=next_enum_value++;enum_values[value]=value_id;
+        auto value_pos=location(value->source_corresp.decl_position);
+        db.insert("enum_values",{{"id",value_id},{"enum_type_id",id},{"ordinal",ordinal},
+          {"name",spelling(value->source_corresp)},{"value_text",integer(value)},
+          {"value_type_id",type_id(value->type)},{"file_id",optional(value_pos.file)},
+          {"line",value_pos.line},{"column",value_pos.column}});
+      }
     }
     if(kind=="record") {
       auto extra=class_type_supp(t);
@@ -270,7 +303,18 @@ struct State {
   }
   Id constant(a_constant_ptr c,const a_source_position &p) {
     if(c->kind!=ck_integer)missing("constant",int(c->kind));
-    return node("constant",p,type_id(c->type),"prvalue",nullptr,integer(c));
+    Id id=node("constant",p,type_id(c->type),"prvalue",nullptr,integer(c));
+    attach_enum_value(id,c);return id;
+  }
+  void attach_enum_value(Id id,a_constant_ptr c) {
+    if(!is_enum_constant(c))return;
+    // C enumerators carry an affiliated integral type; C++ enumerators
+    // carry the enum type itself. Retain only an actual EDG entity identity,
+    // never guess a declaration from a coincidentally equal value or name.
+    auto type=skip_lexical_typerefs(c->type);
+    type_id(underlying_enum_type(type));
+    auto found=enum_values.find(c);
+    if(found!=enum_values.end())db.update("nodes","id",id,{{"enum_value_id",found->second}});
   }
   Id lifetime_id(an_object_lifetime_ptr value) {
     if(!value)return 0;
@@ -452,6 +496,7 @@ struct State {
     Id id=node(kind,e->position,type_id(e->type),e->is_lvalue?"lvalue":e->is_xvalue?"xvalue":"prvalue",
       op,text,symbol,field,type_id(e->orig_lvalue_type),e->compiler_generated);
     expressions[e]=id;
+    if(e->kind==enk_constant)attach_enum_value(id,node_constant(e));
     if(e->kind==enk_operation) {
       if(e->variant.operation.kind==eok_base_class_cast || e->variant.operation.kind==eok_derived_class_cast)
         class_conversion(id,e);
@@ -679,7 +724,8 @@ struct State {
   void finish() {
     for(const auto &entry:routines)db.update("symbols","id",entry.second,{{"link_name",entry.first->source_corresp.name?entry.first->source_corresp.name:""}});
     for(const auto &entry:types) {
-      auto t=entry.first;if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union)
+      auto t=entry.first;if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union ||
+                           (t->kind==tk_integer && t->variant.integer.enum_type))
         db.update("types","id",entry.second,{{"link_name",t->source_corresp.name?t->source_corresp.name:""}});
     }
     const auto source=il_header.primary_source_file;
