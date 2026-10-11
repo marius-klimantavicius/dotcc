@@ -98,6 +98,11 @@ inspectable without loading or instantiating them in the executable consumer.
 `tests/verify_dependent_values.py` checks concrete execution and recipe isolation,
 including dependent integer and floating defaults.
 
+Records first referenced while incomplete retain their entity ID when EDG completes
+the definition. Layout and source fields/bases are filled once before ABI lowering.
+`tests/verify_record_completion.py` checks an early pointer-reference function followed
+by construction and member access after the definition.
+
 Standard `std::nullptr_t` retains its distinct source identity and EDG layout.
 `nodes.value_normalization` explicitly records zero-valued prvalue behavior;
 the consumer preserves operand effects and follows that fact. Run

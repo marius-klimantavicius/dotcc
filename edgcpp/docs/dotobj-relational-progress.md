@@ -374,6 +374,28 @@ The actual DuckDB probe at `dotobj-relational-duckdb-hugeint-v13/` advances past
 capture reentrancy and is being distinguished from a lowered ABI field before any
 fix. No complete DuckDB object is published; the broad campaign remains stopped.
 
+## Verified record definition completion
+
+`artifacts/review/dotobj-relational-completion-v1/` passes native C++, SQL integrity,
+source-hidden C# and Linux x64 NativeAOT. A function referencing `Later*` precedes
+its record definition; later construction and member access use the same type ID.
+The exporter now completes records initially seen incomplete using EDG's completed
+source definition, updating layout/completeness and emitting fields/bases once.
+The existing source prelower boundary completes pending records before synthetic
+ABI fields appear. Already-complete records are not refreshed from lowered lists.
+No schema expansion, observation history or consumer semantic inference is added.
+
+Provider: 208,896 bytes, 23 nodes, 22 types; its one `Later` row has size/alignment
+4/4 and one source field. Main: 208,896 bytes. Dependent-value and virtual-dispatch
+regressions pass native/C#/NativeAOT at `*-completion-regression-v1`. Storage and
+tool hashes are retained. Reproduce with `tests/verify_record_completion.py`.
+
+Actual DuckDB `hugeint-v14` identified the missing field as `error_condition::__val_`,
+with exact membership in EDG's owner field list. With completion fixed, bounded
+`dotobj-relational-duckdb-hugeint-v15/` advances to expression operation EDG kind 83.
+No complete DuckDB object is published. Probe timing remains early-rejection data;
+the full campaign stays stopped while this next concrete frontier is investigated.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

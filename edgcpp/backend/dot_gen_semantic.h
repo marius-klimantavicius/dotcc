@@ -41,6 +41,8 @@ struct State {
   Id function=0;
   a_type_ptr return_type=nullptr;
   std::map<a_type_ptr,Id> types;
+  std::set<a_type_ptr> capturing_types;
+  std::set<a_type_ptr> incomplete_records,record_template_instances;
   std::map<a_routine_ptr,Id> routines;
   std::map<a_routine_ptr,Id> routine_source_types;
   std::map<a_routine_ptr,Id> routine_receiver_types;
@@ -303,8 +305,24 @@ struct State {
   }
   Id type_id(a_type_ptr t) {
     if(!t)return 0;
-    auto found=types.find(t);if(found!=types.end())return found->second;
-    Id id=next_type++;types[t]=id;
+    auto found=types.find(t);
+    if(found!=types.end()) {
+      // A declaration can first be reached through a pointer before EDG
+      // sees its definition. Complete that same source entity once, before
+      // lowering can add ABI fields; never reinterpret an already-captured
+      // complete record from a later lowered field list.
+      if(incomplete_records.count(t) && !is_incomplete_type(t) && !capturing_types.count(t)) {
+        incomplete_records.erase(t);capturing_types.insert(t);
+        db.update("types","id",found->second,{{"size",t->size},{"alignment",t->alignment},
+          {"is_incomplete",false},{"is_dependent",bool(is_template_dependent_type(t))},
+          {"name",spelling(t->source_corresp)},
+          {"record_kind",t->kind==tk_struct?"struct":t->kind==tk_class?"class":"union"}});
+        record_definition(t,found->second);
+        capturing_types.erase(t);
+      }
+      return found->second;
+    }
+    Id id=next_type++;types[t]=id;capturing_types.insert(t);
     std::string kind,name=spelling(t->source_corresp),record_kind,builtin,float_format;
     Id underlying=0,pointee=0,element=0,result=0,object=0;
     Value count=nullptr;bool variadic=false,incomplete=is_incomplete_type(t);
@@ -446,6 +464,18 @@ struct State {
       }
     }
     if(kind=="record") {
+      if(incomplete)incomplete_records.insert(t);
+      else record_definition(t,id);
+      record_instance(t,id);
+    }
+    capturing_types.erase(t);return id;
+  }
+  void record_instance(a_type_ptr t,Id id) {
+    auto extra=class_type_supp(t);
+    if(extra->assoc_template && record_template_instances.insert(t).second)
+      instance(extra->assoc_template,extra->template_arg_list,0,id,is_template_dependent_type(t));
+  }
+  void record_definition(a_type_ptr t,Id id) {
       auto extra=class_type_supp(t);
       // EDG's list identifies subobjects, including repeated indirect bases;
       // the direct base number separately retains source declaration order.
@@ -479,9 +509,7 @@ struct State {
       if(extra->assoc_scope && !is_template_dependent_type(t))
         for(auto r=extra->assoc_scope->routines;r;r=r->next)
           if(r->is_virtual && !r->is_consteval)routine(r);
-      instance(extra->assoc_template,extra->template_arg_list,0,id,is_template_dependent_type(t));
-    }
-    return id;
+      record_instance(t,id);
   }
   Id base_id(a_base_class_ptr base) {
     if(!base)return 0;
@@ -492,7 +520,27 @@ struct State {
   }
   Id field_id(a_field_ptr f,Id owner=0,unsigned ordinal=0) {
     auto found=fields.find(f);if(found!=fields.end())return found->second;
-    if(!owner){type_id(parent_class_of(f));found=fields.find(f);if(found!=fields.end())return found->second;missing("field owner");}
+    if(!owner) {
+      auto owner_type=parent_class_of(f);
+      bool cached=types.count(owner_type)!=0;
+      type_id(owner_type);found=fields.find(f);if(found!=fields.end())return found->second;
+      int list_ordinal=-1;unsigned list_size=0;bool proxy=false;
+      if(is_immediate_class_type(owner_type)) {
+        for(auto entry=owner_type->variant.class_struct_union.field_list;entry;entry=entry->next,++list_size)
+          if(entry==f)list_ordinal=int(list_size);
+        proxy=class_type_supp(owner_type)->proxy_of_type!=nullptr;
+      }
+      auto pos=location(f->source_corresp.decl_position);std::string path;
+      for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+      missing("field owner [field="+spelling(f->source_corresp)+", owner="+spelling(owner_type->source_corresp)+
+        ", owner-kind="+std::to_string(int(owner_type->kind))+", cached="+std::to_string(cached)+
+        ", capturing="+std::to_string(capturing_types.count(owner_type))+
+        ", owner-list-ordinal="+std::to_string(list_ordinal)+", owner-list-size="+std::to_string(list_size)+
+        ", proxy="+std::to_string(proxy)+", generated="+std::to_string(bool(f->compiler_generated))+
+        ", field-type="+spelling(f->type->source_corresp)+", field-type-kind="+std::to_string(int(f->type->kind))+
+        ", recipe="+std::to_string(template_recipe)+", file="+path+
+        ", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]");
+    }
     Id id=next_field++;fields[f]=id;auto pos=location(f->source_corresp.decl_position);
     db.insert("fields",{{"id",id},{"owner_type_id",owner},{"name",spelling(f->source_corresp)},
       {"type_id",type_id(f->type)},{"ordinal",ordinal},{"byte_offset",f->offset},
@@ -806,6 +854,9 @@ struct State {
   }
   void virtual_source_class(a_type_ptr t) {
     if(!types.count(t) || is_template_dependent_type(t))return;
+    // The existing stock prelower boundary precedes synthetic vptr/base
+    // fields. Finalize a source declaration that became complete meanwhile.
+    type_id(t);
     auto scope=class_type_supp(t)->assoc_scope;
     if(scope)for(auto r=scope->routines;r;r=r->next)virtual_source_routine(r);
   }
