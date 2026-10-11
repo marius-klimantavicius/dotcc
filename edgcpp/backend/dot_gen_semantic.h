@@ -710,17 +710,74 @@ struct State {
     if(--recipe_capture_depth==0){recipe_expressions.clear();recipe_constants.clear();}
     return id;
   }
-  const char *dependent_value_kind(a_constant_ptr c) {
+  [[noreturn]] void missing_dependent_value(a_constant_ptr c,const a_source_position &p,const char *reason) {
+    auto source=location(p);std::string path;
+    for(const auto &file:files)if(file.second==source.file){path=file.first;break;}
+    auto reference=c->variant.template_param.kind==tpck_template_ref?
+      c->variant.template_param.variant.template_ref.con:c;
+    if(!reference)reference=c;
+    std::string detail=std::string(reason)+" [name="+spelling(reference->source_corresp)+
+      ", recipe="+std::to_string(template_recipe?1:0)+", reference-kind="+
+      std::to_string(reference->kind==ck_template_param?int(reference->variant.template_param.kind):-1);
+    if(c->variant.template_param.kind==tpck_template_ref) {
+      unsigned ordinal=0;
+      for(auto arg=c->variant.template_param.variant.template_ref.arg_list;arg;arg=arg->next,++ordinal)
+        detail+=" [argument="+std::to_string(ordinal)+", kind="+std::to_string(int(arg->kind))+
+          ", pack-element="+std::to_string(int(arg->is_pack_element))+
+          ", pack="+std::to_string(int(arg->is_pack))+"]";
+    }
+    missing(detail+", file="+path+", line="+std::to_string(source.line)+
+      ", column="+std::to_string(source.column)+"]",int(c->variant.template_param.kind));
+  }
+  const char *dependent_value_kind(a_constant_ptr c,const a_source_position &p) {
     switch(c->variant.template_param.kind) {
       case tpck_param:return "template-parameter-reference";
       case tpck_member:return "dependent-member-reference";
       case tpck_expression:return "dependent-expression";
       case tpck_dependent_constant:return "dependent-constant";
       case tpck_address:return "dependent-address";
-      default:missing("dependent value "+spelling(c->source_corresp),int(c->variant.template_param.kind));
+      case tpck_template_ref:return "dependent-template-reference";
+      case tpck_unknown_function:return c->variant.template_param.is_qualified_name?
+        "dependent-qualified-function-reference":"dependent-function-reference";
+      default:missing_dependent_value(c,p,"dependent value");
     }
   }
-  void dependent_value(Id id,a_constant_ptr c) {
+  std::string namespace_reference_name(a_constant_ptr c) {
+    std::string name=spelling(c->source_corresp);
+    // The source correspondence retains the namespace selected for this
+    // dependent name. The front-end overload-set symbol is never inspected.
+    for(auto ns=parent_namespace_or_null(c);ns;ns=parent_namespace_or_null(ns)) {
+      auto prefix=spelling(ns->source_corresp);
+      if(!prefix.empty())name=prefix+"::"+name;
+    }
+    return name;
+  }
+  void dependent_template_arguments(Id id,a_constant_ptr c,const a_source_position &p) {
+    Id pack=0;unsigned ordinal=0,element=0;
+    for(auto arg=c->variant.template_param.variant.template_ref.arg_list;arg;arg=arg->next) {
+      if(arg->kind==tak_start_of_pack_expansion) {
+        pack=node("template-argument-pack",p);
+        edge(id,"template-argument",ordinal++,pack);element=0;continue;
+      }
+      if(!arg->is_pack_element && !arg->is_pack)pack=0;
+      Id value=0;
+      switch(arg->kind) {
+        case tak_type:value=node("type-reference",p,type_id(arg->variant.type));break;
+        case tak_nontype:
+          if(arg->is_array_bound_of_unknown_type || !arg->variant.constant)
+            missing_dependent_value(c,p,"dependent explicit template argument value");
+          value=constant(arg->variant.constant,p);break;
+        default:missing_dependent_value(c,p,"dependent explicit template argument kind");
+      }
+      if(arg->pack_expansion_descr || arg->is_pack || arg->has_pack_ellipsis) {
+        Id expansion=node("template-pack-expansion",p);
+        edge(expansion,"operand",0,value);value=expansion;
+      }
+      if(pack)edge(pack,"element",element++,value);
+      else edge(id,"template-argument",ordinal++,value);
+    }
+  }
+  void dependent_value(Id id,a_constant_ptr c,const a_source_position &p) {
     auto &value=c->variant.template_param;
     switch(value.kind) {
       case tpck_param:case tpck_member: {
@@ -746,7 +803,26 @@ struct State {
       }
       case tpck_dependent_constant:case tpck_address:
         edge(id,"operand",0,constant(value.variant.constant,c->source_corresp.decl_position));break;
-      default:missing("dependent value",int(value.kind));
+      case tpck_unknown_function: {
+        if(!template_recipe)missing_dependent_value(c,p,"unresolved function reference outside source recipe");
+        auto owner=parent_class_or_null(c);
+        if(owner && class_type_supp(owner)->proxy_of_type)owner=class_type_supp(owner)->proxy_of_type;
+        db.insert("template_value_references",{{"node_id",id},{"name",namespace_reference_name(c)},
+          {"is_pack",bool(value.is_pack)},{"qualifier_type_id",optional(type_id(owner))}});
+        if(value.has_address_of)db.update("nodes","id",id,{{"operator","address-of"}});
+        if(value.variant.unknown_function.conversion_type)
+          edge(id,"conversion-type",0,node("type-reference",p,type_id(value.variant.unknown_function.conversion_type)));
+#if MICROSOFT_EXTENSIONS_ALLOWED
+        if(value.variant.unknown_function.property_or_event_descr)
+          missing_dependent_value(c,p,"C++/CLI dependent accessor reference");
+#endif
+        break;
+      }
+      case tpck_template_ref:
+        if(!template_recipe)missing_dependent_value(c,p,"unresolved template reference outside source recipe");
+        edge(id,"template",0,constant(value.variant.template_ref.con,p));
+        dependent_template_arguments(id,c,p);break;
+      default:missing_dependent_value(c,p,"dependent value");
     }
   }
   Id aggregate_element(a_constant_ptr c,const a_source_position &p,bool complete_object=true) {
@@ -1111,9 +1187,9 @@ struct State {
       auto found=recipe_constants.find(c);if(found!=recipe_constants.end())return found->second;
     }
     if(c->kind==ck_template_param) {
-      Id id=node(dependent_value_kind(c),p,type_id(c->type),"prvalue");
+      Id id=node(dependent_value_kind(c,p),p,type_id(c->type),"prvalue");
       if(template_recipe)recipe_constants[c]=id;
-      dependent_value(id,c);return id;
+      dependent_value(id,c,p);return id;
     }
     if(c->kind==ck_aggregate) {
       Id id=node(is_immediate_class_type(skip_typerefs(c->type))?"record-initializer":"array-initializer",
@@ -1794,7 +1870,7 @@ struct State {
     const char *kind=nullptr,*op=nullptr;std::string text;Id symbol=0,field=0;
     switch(e->kind) {
       case enk_constant:
-        if(node_constant(e)->kind==ck_template_param)kind=dependent_value_kind(node_constant(e));
+        if(node_constant(e)->kind==ck_template_param)kind=dependent_value_kind(node_constant(e),source_position);
         else if(node_constant(e)->kind==ck_string)kind="string-literal";
         else if(node_constant(e)->kind==ck_address)kind="address-constant";
         else if(node_constant(e)->kind==ck_aggregate)
@@ -1901,7 +1977,7 @@ struct State {
       db.update("nodes","id",id,{{"value_normalization","nullptr-zero"}});
     if(e->kind==enk_constant) {
       if(node_constant(e)->kind==ck_string || node_constant(e)->kind==ck_address)attach_literal(id,node_constant(e),source_position);
-      if(node_constant(e)->kind==ck_template_param)dependent_value(id,node_constant(e));
+      if(node_constant(e)->kind==ck_template_param)dependent_value(id,node_constant(e),source_position);
       if(node_constant(e)->kind==ck_aggregate)aggregate_initializer(id,node_constant(e),e->position);
       attach_enum_value(id,node_constant(e));
       if(node_constant(e)->kind==ck_float)

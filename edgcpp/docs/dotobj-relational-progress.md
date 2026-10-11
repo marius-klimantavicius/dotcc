@@ -917,6 +917,28 @@ proven minimal. Each added relation must have a concrete linker/generator or
 requested navigation purpose. No metadata removal or new collection follows merely
 from the absence of a current managed reader.
 
+## Dependent explicit template references (2026-10-11)
+
+Verified `dotobj-relational-dependent-template-reference-v1` preserves a source
+recipe's qualified function-template name and ordered explicit type/value
+arguments using existing nodes, edges and `template_value_references`. Recipe
+references never select a runtime routine or serialize frontend overload sets.
+Supplied pack groups/expansion markers use ordinary recipe nodes; unsupported
+template-template argument kinds reject with source/name/argument diagnostics.
+This is requested default-recipe navigation, not managed template instantiation.
+
+The focused C++17 fixture checks `Recipes::choose<T, 3>()` as a formal default,
+SQL integrity/source locations/recipe isolation, native execution and source-hidden
+C# execution of concrete instances. Its object is 245,760 bytes / 31 nodes /
+12 types; per-table storage and tested tool hashes are retained. Native compiler
+build passes. Schema remains 1018 / 43 tables.
+
+Configured actual `exception-v2` advances past the dependent template reference
+and rejects libc++ `__functional/hash.h:122:11` operation EDG 85. This remains an
+early rejection, with no complete DuckDB object. `hugeint-v40` still awaits
+architecture review of the explicit shared-result initialization destination;
+no schema change has been implemented while that review is pending.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
