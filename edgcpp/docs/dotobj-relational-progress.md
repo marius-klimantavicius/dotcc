@@ -282,6 +282,37 @@ The real DuckDB probe at `dotobj-relational-duckdb-hugeint-v9/` advances to
 object has been published. Explicit condition initialization and lifetime scope
 are next; broad export remains stopped.
 
+## Verified condition declarations and iteration lifetimes
+
+`artifacts/review/dotobj-relational-conditions-v2/` passes original C++ under
+Clang 21, SQL integrity, source-hidden C# and Linux x64 NativeAOT. Nine source
+condition nodes retain selected initialization, exact test-expression edges,
+optional C++17 initializer statements and EDG lifetime ownership. A `for`
+initializer's lifetime is separate from each condition iteration. Explicit
+`class-rvalue-adjust` nodes preserve the same class result and destination.
+
+The fixture covers scalar and record selection initializers, false conditions,
+nontrivial loop conditions, nested continue targets, break, body exceptions,
+constructor failure, and a record in the outer for initializer. Rewritten for
+continues execute the increment before condition destruction, as EDG selected.
+GCC's original-source reference fails that check with early destruction, matching
+[reported GCC bug 86769](https://gcc.gnu.org/pipermail/gcc-bugs/2018-August/631919.html).
+Clang agrees with EDG's executable lowering (`lower_il.c` increment insertion then
+condition cleanup); the test uses Clang and retains compiler provenance. EDG
+semantics were not changed to match GCC.
+
+Provider: 233,472 bytes, 407 nodes, 25 types. Main: 184,320 bytes, 4 nodes, 18 types.
+Storage summaries and hashes are retained. Original, lifetime and return-object
+regressions pass native/C#/NativeAOT at `*-condition-regression-v1`. Reproduce with
+`tests/verify_conditions.py`, usual arguments and optional `--native-cxx` (defaults
+to available Clang). Switch emission and more complex condition temporary
+lifetimes remain work.
+
+The real bounded probe at `dotobj-relational-duckdb-hugeint-v10/` advances to
+`virtual call dispatch projection`. No complete DuckDB object is published yet.
+Explicit EDG-selected virtual dispatch tables/calls and lifecycle writes are the
+next investigation, without reconstructing override selection in C#.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

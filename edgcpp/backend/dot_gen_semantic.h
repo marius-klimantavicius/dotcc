@@ -632,6 +632,7 @@ struct State {
       DOT_SEMANTIC_OP(eok_indirect,"indirect");DOT_SEMANTIC_OP(eok_ref_indirect,"ref-indirect");
       DOT_SEMANTIC_OP(eok_cast,"cast");DOT_SEMANTIC_OP(eok_ref_cast,"ref-cast");
       DOT_SEMANTIC_OP(eok_lvalue_cast,"lvalue-cast");DOT_SEMANTIC_OP(eok_lvalue_adjust,"lvalue-adjust");
+      DOT_SEMANTIC_OP(eok_class_rvalue_adjust,"class-rvalue-adjust");
       DOT_SEMANTIC_OP(eok_base_class_cast,"base-class-cast");DOT_SEMANTIC_OP(eok_derived_class_cast,"derived-class-cast");
       DOT_SEMANTIC_OP(eok_bool_cast,"bool-cast");DOT_SEMANTIC_OP(eok_array_to_pointer,"array-to-pointer");
       DOT_SEMANTIC_OP(eok_add,"add");DOT_SEMANTIC_OP(eok_subtract,"subtract");
@@ -693,6 +694,7 @@ struct State {
       case enk_routine:kind="function";symbol=routine(e->variant.routine.ptr);break;
       case enk_field:kind="field";field=field_id(node_field(e));break;
       case enk_temp_init:kind="temporary";break;
+      case enk_condition:kind="condition";break;
       case enk_object_lifetime:kind="lifetime-scope";break;
       case enk_throw:kind=e->variant.throw_info?"throw":"rethrow";break;
       case enk_operation: {
@@ -732,6 +734,21 @@ struct State {
         edge(id,"operand",ordinal++,expression(child));
     } else if(e->kind==enk_temp_init) {
       db.update("nodes","id",id,{{"initialization_id",initialization_id(e->variant.init.dynamic_init,e->type)}});
+    } else if(e->kind==enk_condition) {
+      auto condition=e->variant.condition;
+      // lower_il::lower_condition keeps this scope around the complete
+      // selection, or around each loop iteration including the for step.
+      if(condition->scope) {
+        if(has_static_storage(condition->scope))missing("condition static storage projection");
+        attach_lifetime(id,condition->scope->lifetime);
+        for(auto v=condition->scope->nonstatic_variables;v;v=v->next)variable(v,true);
+      }
+      if(condition->dynamic_init)
+        db.update("nodes","id",id,{{"initialization_id",initialization_id(condition->dynamic_init)}});
+      // A C++17 selection initializer is a freestanding statement: EDG
+      // deliberately supplies no adjacent stmk_init for its declarations.
+      edge(id,"initializer",0,statement(condition->initialization,nullptr,true));
+      edge(id,"value",0,expression(condition->expr));
     } else if(e->kind==enk_object_lifetime) {
       attach_lifetime(id,e->variant.object_lifetime.ptr);
       edge(id,"operand",0,expression(e->variant.object_lifetime.expr));
@@ -763,7 +780,7 @@ struct State {
     }
     return id;
   }
-  Id statement(a_statement_ptr s,a_scope_ptr root_scope=nullptr) {
+  Id statement(a_statement_ptr s,a_scope_ptr root_scope=nullptr,bool condition_initializer=false) {
     if(!s)return 0;
     if(s->kind==stmk_init && declaration_initializers.count(s->variant.dynamic_init))return 0;
     const char *kind=nullptr;
@@ -807,10 +824,19 @@ struct State {
         edge(id,"else",0,statement(s->variant.if_stmt.else_statement));break;
       case stmk_while:case stmk_end_test_while:
         edge(id,"condition",0,expression(s->expr));edge(id,"body",0,statement(s->variant.loop_statement));break;
-      case stmk_for:
+      case stmk_for: {
+        auto scope=s->variant.for_loop.extra_info->for_init_scope;
+        if(scope) {
+          if(has_static_storage(scope))missing("for initializer static storage projection");
+          // This lifetime surrounds the whole loop; the condition node owns
+          // the separate lifetime entered and left on every iteration.
+          attach_lifetime(id,scope->lifetime);
+          for(auto v=scope->nonstatic_variables;v;v=v->next)variable(v,true);
+        }
         edge(id,"initializer",0,statement(s->variant.for_loop.extra_info->initialization));
         edge(id,"condition",0,expression(s->expr));edge(id,"step",0,expression(s->variant.for_loop.extra_info->increment));
         edge(id,"body",0,statement(s->variant.for_loop.statement));break;
+      }
       case stmk_decl: {
         unsigned ordinal=0;
         for(auto item=s->variant.decl.entities;item;item=item->next) {
@@ -819,10 +845,14 @@ struct State {
             // EDG retains the declaration and its immediately following
             // executable initialization separately. Project that exact pair
             // as the original source declaration with one initializer.
+            // Standalone C++17 selection initializers instead use the
+            // variable's recorded initializer directly, like stock
+            // lower_il::make_init_statements_for_entity_list.
             if(v->init_kind==initk_dynamic) {
-              if(!s->next || s->next->kind!=stmk_init || s->next->variant.dynamic_init!=v->initializer.dynamic)
+              if(!condition_initializer && (!s->next || s->next->kind!=stmk_init ||
+                 s->next->variant.dynamic_init!=v->initializer.dynamic))
                 missing("nonadjacent declaration/initialization projection");
-              declaration_initializers.insert(v->initializer.dynamic);
+              if(!condition_initializer)declaration_initializers.insert(v->initializer.dynamic);
             }
             edge(id,"declaration",ordinal++,declaration(v,s->position));
           }

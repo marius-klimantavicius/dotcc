@@ -101,3 +101,7 @@ JOIN symbols source ON source.id=c.copy_source_symbol_id ORDER BY s.id,c.ordinal
 SELECT n.id,n.kind,n.operator,t.kind AS type,n.value_normalization
 FROM nodes n LEFT JOIN types t ON t.id=n.type_id
 WHERE n.value_normalization IS NOT NULL ORDER BY n.id;
+
+SELECT n.id,n.kind,n.initialization_id,n.lifetime_id,l.owner_node_id
+FROM nodes n LEFT JOIN lifetimes l ON l.id=n.lifetime_id
+WHERE n.kind IN ('condition','for') ORDER BY n.id;

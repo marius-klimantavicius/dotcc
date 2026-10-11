@@ -105,6 +105,12 @@ result pointer in C#, preserving object identity through forwarded calls. Run
 cleanup. Implicit member copies use the recorded `copy_source_symbol_id`; optional
 NRVO optimization and more complex return-result unwinding remain work.
 
+Condition declarations retain selected initialization, test expression, optional
+C++17 initializer and lifetime ownership. Generated loops preserve per-iteration
+cleanup and the selected increment/continue order. `tests/verify_conditions.py`
+checks these with Clang as the original-source oracle (GCC bug 86769 destroys
+for-condition variables too early), plus source-hidden C# and NativeAOT.
+
 This covers lexical return cleanup, partial member/base construction, reference catches,
 rethrow and exception-object destruction. Arrays/virtual-base construction, nontrivial
 temporaries, function-try blocks, complex catch conversions, macros, all type

@@ -287,7 +287,7 @@ internal sealed partial class Emitter
                     if(NodeType(node)=="bool")return Truth(N(0));
                     if(NodeType(N(0))=="bool" && NodeType(node)!="bool")return "(("+NodeType(node)+")("+E(0)+" ? 1 : 0))";
                     return "unchecked(("+NodeType(node)+")"+E(0)+")";
-                case "lvalue-adjust":return E(0);
+                case "lvalue-adjust":case "class-rvalue-adjust":return E(0);
                 case "base-class-cast":case "derived-class-cast":return ClassConversionExpression(node,N(0));
                 case "array-to-pointer":throw unit.Missing(node,"array storage emission is not yet implemented");
                 case "conditional":return "("+Truth(N(0))+" ? "+E(1)+" : "+E(2)+")";
@@ -364,15 +364,14 @@ internal sealed partial class Emitter
                     break;
                 case "decl":foreach(var declaration in unit.Children(node,"declaration"))WriteDeclaration(declaration,indent);break;
                 case "initialize":WriteDeclaration(node,indent);break;
-                case "if":
-                    Line(indent,"if ("+Truth(Child(node,"condition"))+")");Body(Child(node,"then"),indent);
-                    if(unit.Children(node,"else").FirstOrDefault() is Node alternative){Line(indent,"else");Body(alternative,indent);}break;
-                case "while":Line(indent,"while ("+Truth(Child(node,"condition"))+")");Body(Child(node,"body"),indent);break;
-                case "do-while":Line(indent,"do");Body(Child(node,"body"),indent);Line(indent,"while ("+Truth(Child(node,"condition"))+");");break;
-                case "for":
-                    string Part(string role)=>unit.Children(node,role).FirstOrDefault() is Node part?role=="condition"?Truth(part):Header(part):"";
-                    Line(indent,"for ("+Part("initializer")+"; "+Part("condition")+"; "+Part("step")+")");Body(Child(node,"body"),indent);break;
-                case "break":Line(indent,"break;");break;case "continue":Line(indent,"continue;");break;
+                case "if":WriteIf(node,indent);break;
+                case "while":WriteWhile(node,indent);break;
+                case "do-while":
+                    Line(indent,"do");WriteLoopBody(node,indent);
+                    Line(indent,"while ("+Truth(Child(node,"condition"))+");");break;
+                case "for":WriteFor(node,indent);break;
+                case "break":Line(indent,"break;");break;
+                case "continue":WriteContinue(node,indent);break;
                 case "try":WriteTry(node,indent);break;
                 case "throw":case "rethrow":WriteThrow(node,indent);break;
                 default:throw unit.Missing(node,"C# statement emission is not implemented");

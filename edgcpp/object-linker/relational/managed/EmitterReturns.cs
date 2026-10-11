@@ -60,6 +60,12 @@ internal sealed partial class Emitter
 
         private void WriteClassResultCall(Node call,string destination,int indent)
         {
+            if(call.Kind=="operation" && call.Operator=="class-rvalue-adjust")
+            {
+                if(call.Lifetime is long adjustedLifetime && unit.Destructions.GetValueOrDefault(adjustedLifetime,[]).Count!=0)
+                    throw unit.Missing(call,"class result adjustment cleanup emission is not yet implemented");
+                WriteClassResultCall(Child(call,"operand"),destination,indent);return;
+            }
             if(call.Kind!="operation" || call.Operator is not ("call" or "dot-member-call" or "points-to-member-call"))
                 throw unit.Missing(call,"class result destination requires supported direct call emission");
             if(call.Lifetime is long lifetime && unit.Destructions.GetValueOrDefault(lifetime,[]).Count!=0)
