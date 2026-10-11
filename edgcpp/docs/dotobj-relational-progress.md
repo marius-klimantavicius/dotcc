@@ -1328,6 +1328,38 @@ then converge on dependent/runtime array-bound metadata. `hugeint-v47` remains a
 virtual deleting destruction. Complete real DuckDB objects and actual DuckDB C#
 remain zero. Project timing/RSS measurements still describe rejected export stages.
 
+## Array bound and size-query source metadata (2026-10-11)
+
+Verified `dotobj-relational-array-bound-metadata-v2` adds two nullable type columns
+in schema 1023 / 44 tables: `array_bound_kind` and `array_bound_node_id`. Dependent
+and runtime non-VLA bounds retain exact selected constants or source expressions
+in the existing nonexecuting recipe domain. Fixed counts, explicit zero and
+incomplete bounds remain distinct. NULL represents a genuinely unknown dependent
+bound only when EDG supplies no value and no local-reference flag. Stock local
+expression accessors resolve selected dependent and fixed-bound correspondence;
+an absent correspondence rejects with array/source context. No new identity map,
+bound evaluation or allocation ownership is introduced.
+
+Source `sizeof...` type/expression operands and adjacent size/alignment queries
+retain typed source nodes and selected ordinary operand references. The consumer
+does not compute pack sizes or instantiate source recipes. Template-template pack
+references, executable residual size queries and VLA dimension correspondence
+remain explicit boundaries. The SQL browser includes the selected bound relation.
+
+The fixture checks wrapped dependent expression/member bounds, a selected type-pack
+bound, fixed count 3, explicit zero, incomplete array signatures and recipe
+isolation. Native, source-hidden concrete C# and Linux NativeAOT pass; VLA export
+rejects explicitly. Object: 249,856 bytes / 29 nodes / 44 types. Tested compiler,
+reader build snapshot, SQL summaries and per-table storage remain in the review
+directory; independent required-provider work was excluded from this tested DLL.
+
+Actual `checksum-v13` and `exception-v16` pass the array and pack/query metadata
+boundaries, then converge on recipe-only `__is_same` with two selected type operands
+at libc++ `is_same.h:40`. Selected builtin source recipes are the next exporter
+work. `hugeint-v47` remains at virtual deleting destruction. Complete real DuckDB
+objects and actual DuckDB C# remain zero; resource evidence describes rejected
+export stages only.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

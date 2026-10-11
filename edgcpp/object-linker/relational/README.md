@@ -120,6 +120,14 @@ both metadata paths and source-hidden declaration-only execution. Defined dynami
 specification bodies retain an explicit generation boundary until runtime handling
 is implemented; member-pointer operations also remain unsupported.
 
+Array types keep fixed/zero/incomplete counts separate from selected dependent or
+runtime bound metadata in `array_bound_kind` and `array_bound_node_id`. Bound recipes
+retain EDG's exact local-expression correspondence and never add another runtime
+evaluation. `tests/verify_array_bound_metadata.py` checks selected bound navigation,
+concrete array execution and the explicit VLA dimension boundary. Source-only pack
+size and size/alignment queries retain their selected operands without computing
+or instantiating them in the consumer.
+
 Compound assignments carry EDG's selected calculation type in
 `nodes.operation_type_id`, distinct from their stored/result type. Named generated
 helpers preserve operand order, narrowing and lvalue result identity. Run

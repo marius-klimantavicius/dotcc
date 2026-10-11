@@ -11,6 +11,12 @@ LEFT JOIN symbols s ON s.id=n.symbol_id ORDER BY n.id;
 
 SELECT parent_id,role,ordinal,child_id FROM edges ORDER BY parent_id,role,ordinal;
 
+-- Bound nodes are source navigation, separate from allocation/count execution.
+SELECT t.id,t.name,t.element_count,t.is_incomplete,t.array_bound_kind,
+       t.array_bound_node_id,n.domain,n.kind,n.operator,n.constant_text
+FROM types t LEFT JOIN nodes n ON n.id=t.array_bound_node_id
+WHERE t.kind='array' ORDER BY t.id;
+
 SELECT t.name AS enum,storage.builtin_name AS underlying,e.is_scoped,
        e.has_explicit_base,v.ordinal,v.name,v.value_text
 FROM enums e JOIN types t ON t.id=e.type_id

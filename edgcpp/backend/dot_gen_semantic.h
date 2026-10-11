@@ -141,7 +141,14 @@ struct State {
   std::set<an_object_lifetime_ptr> deferred_destructions;
   State():db(std::getenv("EDG_DOT_SEMANTIC")) {}
   [[noreturn]] void missing(const std::string &what,int kind=-1) {
-    std::fprintf(stderr,"semantic exporter missing %s%s\n",what.c_str(),
+    std::string detail=what;
+    unsigned array_contexts=0;
+    for(auto type:capturing_types)if(type->kind==tk_array &&
+      (type->variant.array.is_template_dependent_size_array || type->variant.array.is_variable_size_array ||
+       type->variant.array.constant_bound_expr_in_local_expr_node_ref ||
+       type->variant.array.dep_constant_bound_expr_in_local_expr_node_ref) && array_contexts++<3)
+      detail+="\n  "+array_bound_description(type);
+    std::fprintf(stderr,"semantic exporter missing %s%s\n",detail.c_str(),
       (kind<0?std::string():" (EDG kind "+std::to_string(kind)+")").c_str());
     std::exit(1);
   }
@@ -370,6 +377,30 @@ struct State {
       default:missing("floating language type",int(kind));
     }
   }
+  std::string array_bound_description(a_type_ptr type) {
+    auto &array=type->variant.array;
+    auto selected=array.is_template_dependent_size_array?array.variant.element_count_constant:nullptr;
+    auto expr=array.is_variable_size_array && !array.is_vla?array.variant.element_count_expr:nullptr;
+    auto position=type->source_corresp.decl_position;
+    if(!position.seq && selected)position=selected->source_corresp.decl_position;
+    if(!position.seq && expr)position=expr->position;
+    auto pos=location(position);std::string path,owner;
+    for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+    if(type->source_corresp.enclosing_routine)owner=spelling(type->source_corresp.enclosing_routine->source_corresp);
+    else for(const auto &entry:routines)if(entry.second==function){owner=spelling(entry.first->source_corresp);break;}
+    return "array bound [type="+spelling(type->source_corresp)+", function="+owner+
+      ", recipe="+std::to_string(template_recipe?1:0)+
+      ", dependent="+std::to_string(int(array.is_template_dependent_size_array))+
+      ", runtime="+std::to_string(int(array.is_variable_size_array))+
+      ", vla="+std::to_string(int(array.is_vla))+
+      ", vla-dimension="+std::to_string(int(array.has_assoc_vla_dimension))+
+      ", local-constant="+std::to_string(int(array.constant_bound_expr_in_local_expr_node_ref))+
+      ", local-dependent="+std::to_string(int(array.dep_constant_bound_expr_in_local_expr_node_ref))+
+      ", constant-kind="+std::to_string(selected?int(selected->kind):-1)+
+      ", dependent-kind="+std::to_string(selected && selected->kind==ck_template_param?int(selected->variant.template_param.kind):-1)+
+      ", expression-kind="+std::to_string(expr?int(expr->kind):-1)+
+      ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]";
+  }
   Id type_id(a_type_ptr t) {
     if(!t)return 0;
     auto found=types.find(t);
@@ -474,9 +505,11 @@ struct State {
           t->variant.ptr_to_member.orig_class_of_which_a_member:t->variant.ptr_to_member.class_of_which_a_member);
         pointee=type_id(t->variant.ptr_to_member.type);break;
       case tk_array:
-        if(t->variant.array.is_variable_size_array || t->variant.array.is_template_dependent_size_array)missing("dependent/runtime array bound");
+        if(t->variant.array.is_vla)missing("VLA type requires selected dimension correspondence");
         kind="array";element=type_id(t->variant.array.element_type);
-        if(t->variant.array.variant.number_of_elements || t->variant.array.bound_is_zero)count=Value(t->variant.array.variant.number_of_elements);
+        if(!t->variant.array.is_variable_size_array && !t->variant.array.is_template_dependent_size_array &&
+           (t->variant.array.variant.number_of_elements || t->variant.array.bound_is_zero))
+          count=Value(t->variant.array.variant.number_of_elements);
         break;
       case tk_routine:
         kind="function";result=type_id(t->variant.routine.return_type);
@@ -520,6 +553,31 @@ struct State {
       {"is_dependent",bool(is_template_dependent_type(t))},
       {"builtin_name",builtin.empty()?Value(nullptr):Value(builtin)},
       {"semantic_role",semantic_role?Value(semantic_role):Value(nullptr)}});
+    if(t->kind==tk_array) {
+      auto &array=t->variant.array;const char *bound_kind=nullptr;Id bound=0;
+      if(array.is_template_dependent_size_array) {
+        bound_kind="dependent";
+        auto selected=array.variant.element_count_constant;
+        an_expr_node_ptr local_expr=nullptr;
+        if(array.dep_constant_bound_expr_in_local_expr_node_ref) {
+          local_expr=find_local_expr_node((char*)t,lerk_dep_array_bound);
+          if(!local_expr)missing("dependent array bound local expression correspondence");
+          if(!selected || selected->kind!=ck_template_param || selected->variant.template_param.kind!=tpck_expression)
+            missing("dependent array bound local constant family");
+        }
+        if(selected)bound=recipe_value(selected,t->source_corresp.decl_position,local_expr);
+      } else if(array.is_variable_size_array) {
+        bound_kind="runtime";
+        auto selected=array.variant.element_count_expr;
+        if(!selected)missing("runtime array bound expression correspondence");
+        bound=recipe_expression(selected,selected->position,0);
+      } else if(array.constant_bound_expr_in_local_expr_node_ref) {
+        auto selected=find_local_expr_node((char*)t,lerk_array_bound);
+        if(!selected)missing("constant array bound local expression correspondence");
+        bound=recipe_expression(selected,selected->position,0);
+      }
+      if(bound_kind || bound)db.update("types","id",id,{{"array_bound_kind",bound_kind},{"array_bound_node_id",optional(bound)}});
+    }
     if(t->kind==tk_template_param) {
       auto extra=t->variant.template_param.extra_info;
       const char *parameter_kind=nullptr;Id qualifier=0;
@@ -737,11 +795,11 @@ struct State {
   void edge(Id parent,const char *role,unsigned ordinal,Id child) {
     if(child)db.insert("edges",{{"parent_id",parent},{"role",role},{"ordinal",ordinal},{"child_id",child}});
   }
-  Id recipe_value(a_constant_ptr c,const a_source_position &pos) {
+  Id recipe_value(a_constant_ptr c,const a_source_position &pos,an_expr_node_ptr local_expression=nullptr) {
     auto previous_function=function;bool previous_recipe=template_recipe;
     if(recipe_capture_depth++==0){recipe_expressions.clear();recipe_constants.clear();}
     function=0;template_recipe=true;
-    Id id=constant(c,pos);
+    Id id=constant(c,pos,true,local_expression);
     template_recipe=previous_recipe;function=previous_function;
     if(--recipe_capture_depth==0){recipe_expressions.clear();recipe_constants.clear();}
     return id;
@@ -822,7 +880,7 @@ struct State {
       else edge(id,"template-argument",ordinal++,value);
     }
   }
-  void dependent_value(Id id,a_constant_ptr c,const a_source_position &p) {
+  void dependent_value(Id id,a_constant_ptr c,const a_source_position &p,an_expr_node_ptr local_expression=nullptr) {
     auto &value=c->variant.template_param;
     switch(value.kind) {
       case tpck_param:case tpck_member: {
@@ -842,7 +900,7 @@ struct State {
       case tpck_expression: {
         // This stock accessor also resolves EDG's file/function-region
         // correspondence. Only the source expression is projected.
-        auto operand=expr_node_from_tpck_expression(c);
+        auto operand=local_expression?local_expression:expr_node_from_tpck_expression(c);
         if(!operand)missing("dependent source expression");
         edge(id,"operand",0,expression(operand));break;
       }
@@ -1242,14 +1300,14 @@ struct State {
       db.update("nodes","id",id,{{"literal_object_id",object},{"literal_byte_offset",c->variant.address.offset}});
     }
   }
-  Id constant(a_constant_ptr c,const a_source_position &p,bool complete_object=true) {
+  Id constant(a_constant_ptr c,const a_source_position &p,bool complete_object=true,an_expr_node_ptr local_expression=nullptr) {
     if(template_recipe) {
       auto found=recipe_constants.find(c);if(found!=recipe_constants.end())return found->second;
     }
     if(c->kind==ck_template_param) {
       Id id=node(dependent_value_kind(c,p),p,type_id(c->type),"prvalue");
       if(template_recipe)recipe_constants[c]=id;
-      dependent_value(id,c,p);return id;
+      dependent_value(id,c,p,local_expression);return id;
     }
     if(c->kind==ck_aggregate) {
       Id id=node(is_immediate_class_type(skip_typerefs(c->type))?"record-initializer":"array-initializer",
@@ -2193,6 +2251,30 @@ struct State {
       case enk_condition:kind="condition";break;
       case enk_object_lifetime:kind="lifetime-scope";break;
       case enk_throw:kind=e->variant.throw_info?"throw":"rethrow";break;
+      case enk_sizeof:case enk_alignof:case enk_datasizeof: {
+        if(!template_recipe) {
+          auto pos=location(source_position);std::string path;
+          for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+          missing("runtime size/alignment expression [file="+path+", line="+std::to_string(pos.line)+
+            ", column="+std::to_string(pos.column)+"]",int(e->kind));
+        }
+        kind="operation";
+        op=e->kind==enk_sizeof?"sizeof":e->kind==enk_datasizeof?"datasizeof":
+          e->variant.sizeof_info.is_std_alignof?"alignof":"gnu-alignof";
+        break;
+      }
+      case enk_sizeof_pack: {
+        auto &selected=e->variant.sizeof_pack;
+        if(!template_recipe || selected.is_template_template) {
+          auto pos=location(source_position);std::string path;
+          for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+          missing("sizeof-pack selected reference [category="+
+            std::string(selected.is_template_template?"template-template":selected.is_type?"type":"expression")+
+            ", domain="+std::string(template_recipe?"template-recipe":"program")+
+            ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]");
+        }
+        kind="sizeof-pack";op=selected.is_type?"type":"expression";break;
+      }
       case enk_typeid:
         if(e->variant.typeid_info.is_dynamic)missing("dynamic source typeid expression");
 #if MICROSOFT_EXTENSIONS_ALLOWED
@@ -2343,6 +2425,33 @@ struct State {
       attach_enum_value(id,node_constant(e));
       if(node_constant(e)->kind==ck_float)
         db.update("nodes","id",id,{{"floating_value_id",floating_value(node_constant(e))}});
+    }
+    if(e->kind==enk_sizeof || e->kind==enk_alignof || e->kind==enk_datasizeof) {
+      auto &selected=e->variant.sizeof_info;Id operand=0;
+      if(selected.is_type) {
+        if(!selected.variant.type)missing("size/alignment selected type reference");
+        operand=node("type-reference",source_position,type_id(selected.variant.type));
+        db.update("nodes","id",operand,{{"source_node_id",id}});
+      } else {
+        if(!selected.variant.expr)missing("size/alignment selected expression reference");
+        operand=expression(selected.variant.expr,&source_position,id);
+      }
+      edge(id,"operand",0,operand);
+    }
+    if(e->kind==enk_sizeof_pack) {
+      // cp_gen_be retains exactly this selected pack operand. It supplies
+      // source navigation only; EDG owns any eventual pack-size evaluation.
+      auto &selected=e->variant.sizeof_pack;
+      Id operand=0;
+      if(selected.is_type) {
+        if(!selected.variant.type)missing("sizeof-pack selected type reference");
+        operand=node("type-reference",source_position,type_id(selected.variant.type));
+        db.update("nodes","id",operand,{{"source_node_id",id}});
+      } else {
+        if(!selected.variant.expr)missing("sizeof-pack selected expression reference");
+        operand=expression(selected.variant.expr,&source_position,id);
+      }
+      edge(id,"operand",0,operand);
     }
     if(e->kind==enk_operation) {
       bool vacuous=e->variant.operation.kind==eok_dot_vacuous_destructor_call ||

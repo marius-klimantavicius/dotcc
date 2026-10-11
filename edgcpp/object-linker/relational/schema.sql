@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1022;
+PRAGMA user_version = 1023;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -26,6 +26,10 @@ CREATE TABLE types (
  pointee_type_id INTEGER REFERENCES types(id),
  element_type_id INTEGER REFERENCES types(id),
  element_count INTEGER,
+ -- Selected source bound navigation; NULL kind retains fixed/incomplete facts.
+ -- A dependent bound node may be NULL when EDG supplies an unknown bound.
+ array_bound_kind TEXT CHECK(array_bound_kind IN('dependent','runtime')),
+ array_bound_node_id INTEGER REFERENCES nodes(id),
  return_type_id INTEGER REFERENCES types(id),
  return_storage TEXT NOT NULL DEFAULT 'value' CHECK(return_storage IN('value','caller-provided')),
  object_type_id INTEGER REFERENCES types(id),
