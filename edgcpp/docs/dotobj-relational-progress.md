@@ -396,6 +396,34 @@ with exact membership in EDG's owner field list. With completion fixed, bounded
 No complete DuckDB object is published. Probe timing remains early-rejection data;
 the full campaign stays stopped while this next concrete frontier is investigated.
 
+## Verified compound assignment computation and identity
+
+`artifacts/review/dotobj-relational-compounds-v1/` passes native C++, SQL integrity,
+source-hidden C# and Linux x64 NativeAOT. Schema version 1013 adds nullable
+`nodes.operation_type_id`, the result of EDG's stock
+`compound_assignment_operation_type` helper. Stored/result types and value
+categories remain separate. The five bitwise/shift compound operators join the
+existing arithmetic compounds. Generated helpers compute using the recorded type,
+convert back to storage, preserve the recorded operand order and return the
+original destination address. The consumer does not recompute C++ promotions.
+
+Coverage includes narrow integer truncation, bool storage, signed/unsigned right
+shift, mixed signedness, RHS-before-LHS effects exactly once, reference/address
+aliasing of the result, and skipped conditional/short-circuit effects. Provider:
+249,856 bytes, 317 nodes, 13 types. Main: 208,896 bytes, 4 nodes, 4 types. Helpers
+retain scalar operator/type keys; per-body node maps are released. Complex lvalue
+address forms and address-taken globals remain explicit unsupported paths.
+
+Condition/lifetime and body-loading regressions pass native/C#/NativeAOT at
+`*-compound-regression-v1`; peak body nodes remain 251 of 1,531. Preserved old
+14-table objects still link/run at `dotobj-relational-v3-compound-compat`.
+Reproduce with `tests/verify_compound_assignments.py`; storage/hashes are retained.
+Actual bounded DuckDB `hugeint-v16` advances from `|=` to `va_start` (EDG operation
+112). No complete object is published; this is still an early-rejection probe.
+Next work projects EDG's explicit va_list role and builtin operations into the
+existing portable cursor runtime, preserving source identity and nonexecuted
+last-parameter anchors.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

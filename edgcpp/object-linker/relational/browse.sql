@@ -123,3 +123,8 @@ SELECT n.id,n.domain,n.kind,n.operator,n.type_id,r.name,r.parameter_depth,
        r.parameter_position,r.is_pack,r.qualifier_type_id
 FROM nodes n LEFT JOIN template_value_references r ON r.node_id=n.id
 WHERE n.domain='template-recipe' ORDER BY n.id;
+
+SELECT n.id,n.operator,n.value_category,n.evaluation_order,
+       stored.builtin_name AS stored_type,calculation.builtin_name AS calculation_type
+FROM nodes n JOIN types stored ON stored.id=n.type_id
+JOIN types calculation ON calculation.id=n.operation_type_id ORDER BY n.id;

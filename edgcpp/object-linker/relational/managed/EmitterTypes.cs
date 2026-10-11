@@ -57,6 +57,7 @@ internal sealed partial class Emitter
         if(node.Function is null)executableGlobalNodes.Add((unit,node.Id));
         if(node.Type is long type)UseType(unit,type);
         if(node.ExecutionType is long execution)UseType(unit,execution);
+        if(node.OperationType is long operation)UseType(unit,operation);
         if(node.OriginalLvalueType is long original)UseType(unit,original);
         if(node.Symbol is long symbol)UseType(unit,unit.Symbols[symbol].Type);
         if(node.Field is long field)

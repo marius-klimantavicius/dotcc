@@ -170,6 +170,9 @@ internal sealed partial class Emitter
         private string ExpandedExpression(Node node,int indent)
         {
             if(expandedValues.TryGetValue(node.Id,out string? found))return NormalizeValue(node,found);
+            // These helpers preserve the recorded operand order inside the
+            // expression, including conditional and short-circuit branches.
+            if(UsesCompoundHelper(node))return Expression(node);
             var operands=unit.Children(node,"operand").ToArray();
             if(node.EvaluationOrder=="right-to-left" && operands.Length>1)
             {

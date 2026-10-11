@@ -81,7 +81,7 @@ internal sealed partial class Emitter
         WriteVirtualTables();
         WriteNullptrHelper();
         PrepareExceptionDescriptors();
-        foreach(var unit in program.Units){WriteClassConversionHelpers(unit,null);WriteVirtualCallHelpers(unit,null);}
+        foreach(var unit in program.Units){WriteClassConversionHelpers(unit,null);WriteVirtualCallHelpers(unit,null);WriteCompoundHelpers(unit,null);}
         foreach(var global in program.Globals)
         {
             string value=global.Unit.Initializers.TryGetValue(global.Id,out var initializer)
@@ -95,9 +95,10 @@ internal sealed partial class Emitter
             {
                 WriteClassConversionHelpers(function.Unit,function.Id);
                 WriteVirtualCallHelpers(function.Unit,function.Id);
+                WriteCompoundHelpers(function.Unit,function.Id);
                 new FunctionWriter(this,function.Unit,function).Write();
             }
-            finally {ReleaseClassConversionNames(function.Unit,function.Id);ReleaseVirtualCallNames(function.Unit,function.Id);}
+            finally {ReleaseClassConversionNames(function.Unit,function.Id);ReleaseVirtualCallNames(function.Unit,function.Id);ReleaseCompoundNames(function.Unit,function.Id);}
         }
         if(entry is not null)
         {
@@ -190,6 +191,7 @@ internal sealed partial class Emitter
             foreach(string value in emitter.typeNames.Values)allocator.Reserve(value);
             foreach(string value in emitter.virtualTableNames.Values)allocator.Reserve(value);
             foreach(string value in emitter.virtualCallNames.Values)allocator.Reserve(value);
+            foreach(string value in emitter.compoundHelpers.Values)allocator.Reserve(value);
             if(emitter.nullptrValueName is string helper)allocator.Reserve(helper);
             if(function is SymbolRef selected)
             {
@@ -268,6 +270,7 @@ internal sealed partial class Emitter
             string Binary(string op)=>"("+E(0)+" "+op+" "+E(1)+")";
             string Unary(string op)=>"("+op+E(0)+")";
             string op=node.Operator??throw unit.Missing(node,"operation discriminator missing");
+            if(UsesCompoundHelper(node))return CompoundExpression(node,N(0),N(1));
             if(node.EvaluationOrder=="right-to-left" && operands.Length>1 && !expandedValues.ContainsKey(operands[1].Id))
                 throw unit.Missing(node,"right-to-left operation needs statement expansion");
             switch(op)
@@ -322,6 +325,7 @@ internal sealed partial class Emitter
         private string StatementExpression(Node node,string? rendered=null)
         {
             string value=rendered??Expression(node);
+            if(UsesCompoundHelper(node))return "_ = "+value;
             if(node.Kind=="operation" && node.Operator is "assign" or "add-assign" or "subtract-assign" or "multiply-assign" or "divide-assign" or "remainder-assign" or "pre-increment" or "post-increment" or "pre-decrement" or "post-decrement")
                 return value[1..^1];
             if(node.Kind=="operation" && node.Operator is "call" or "dot-member-call" or "points-to-member-call")return value;

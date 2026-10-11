@@ -103,6 +103,12 @@ the definition. Layout and source fields/bases are filled once before ABI loweri
 `tests/verify_record_completion.py` checks an early pointer-reference function followed
 by construction and member access after the definition.
 
+Compound assignments carry EDG's selected calculation type in
+`nodes.operation_type_id`, distinct from their stored/result type. Named generated
+helpers preserve operand order, narrowing and lvalue result identity. Run
+`tests/verify_compound_assignments.py` for arithmetic, bitwise and shift coverage,
+including conditional execution and address/reference results.
+
 Standard `std::nullptr_t` retains its distinct source identity and EDG layout.
 `nodes.value_normalization` explicitly records zero-valued prvalue behavior;
 the consumer preserves operand effects and follows that fact. Run

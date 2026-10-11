@@ -796,6 +796,9 @@ struct State {
       DOT_SEMANTIC_OP(eok_assign,"assign");DOT_SEMANTIC_OP(eok_add_assign,"add-assign");
       DOT_SEMANTIC_OP(eok_subtract_assign,"subtract-assign");DOT_SEMANTIC_OP(eok_multiply_assign,"multiply-assign");
       DOT_SEMANTIC_OP(eok_divide_assign,"divide-assign");DOT_SEMANTIC_OP(eok_remainder_assign,"remainder-assign");
+      DOT_SEMANTIC_OP(eok_and_assign,"bit-and-assign");DOT_SEMANTIC_OP(eok_or_assign,"bit-or-assign");
+      DOT_SEMANTIC_OP(eok_xor_assign,"bit-xor-assign");
+      DOT_SEMANTIC_OP(eok_shiftl_assign,"shift-left-assign");DOT_SEMANTIC_OP(eok_shiftr_assign,"shift-right-assign");
       DOT_SEMANTIC_OP(eok_land,"logical-and");DOT_SEMANTIC_OP(eok_lor,"logical-or");
       DOT_SEMANTIC_OP(eok_not,"not");DOT_SEMANTIC_OP(eok_negate,"negate");
       DOT_SEMANTIC_OP(eok_complement,"complement");DOT_SEMANTIC_OP(eok_and,"bit-and");
@@ -1035,6 +1038,11 @@ struct State {
         db.update("nodes","id",id,{{"floating_value_id",floating_value(node_constant(e))}});
     }
     if(e->kind==enk_operation) {
+      if(is_compound_assignment_operator(e->variant.operation.kind))
+        // The stock helper handles promotions (especially the promoted left
+        // operand of a shift). This is distinct from the stored/result type
+        // and does not ask the consumer to re-run arithmetic conversions.
+        db.update("nodes","id",id,{{"operation_type_id",type_id(compound_assignment_operation_type(e))}});
       if(e->variant.operation.is_virtual_call)virtual_call(id,e);
       if(e->variant.operation.kind==eok_base_class_cast || e->variant.operation.kind==eok_derived_class_cast)
         class_conversion(id,e);
