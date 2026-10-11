@@ -5,6 +5,7 @@ import shutil
 
 root = Path(__file__).resolve().parents[1]
 for source, target in [
+    (root / "backend/dot_gen_object_field_state.h", root / "upstream/src/dot_gen_object_field_state.h"),
     (root / "backend/dot_gen_object_graph.h", root / "upstream/src/dot_gen_object_graph.h"),
     (root / "backend/dot_gen_object_graph_walk.h", root / "upstream/src/dot_gen_object_graph_walk.h"),
     (root / "backend/dot_gen_object_macros.h", root / "upstream/src/dot_gen_object_macros.h"),
@@ -141,6 +142,32 @@ def object_source_overlay(path, original, patched):
     if source.count(original) != 1:
         raise RuntimeError(f"EDG object source overlay does not match pinned {path.name}")
     path.write_text(source.replace(original, patched))
+
+# Observe availability of the one pinned variable bit not initialized by
+# clear_variable. These hooks do not write EDG state or infer its value.
+for filename in ("il_alloc.c", "decl_inits.c", "trans_copy.c"):
+    object_source_overlay(root / "upstream/src" / filename,
+        '#include "fe_common.h"',
+        '#include "fe_common.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_field_state.h"\n#endif')
+object_source_overlay(root / "upstream/src/il_alloc.c",
+    '}  /* clear_variable */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::field_observation::variable_cleared(vp);\n'
+    '#endif\n}  /* clear_variable */')
+object_source_overlay(root / "upstream/src/decl_inits.c",
+    '    if (!def_init_performed) var->uninitialized = TRUE;',
+    '    if (!def_init_performed) var->uninitialized = TRUE;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    if (!def_init_performed)\n'
+    '      dot_object_source::field_observation::variable_uninitialized_assigned(var);\n'
+    '#endif')
+object_source_overlay(root / "upstream/src/trans_copy.c",
+    '    (void)memcpy(copy, ptr, size_t_arg(sizeof_il_entry[(int)kind]));',
+    '    (void)memcpy(copy, ptr, size_t_arg(sizeof_il_entry[(int)kind]));\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    if (kind == iek_variable)\n'
+    '      dot_object_source::field_observation::variable_copied(ptr, copy);\n'
+    '#endif')
 
 # The selected routine exists before the declaration's symbol/type does.
 # Retain that stock factory edge for nested anonymous declarators only.

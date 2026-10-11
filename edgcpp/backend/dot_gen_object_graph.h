@@ -14,6 +14,7 @@
 #include "mem_tables.h"
 #include "scope_stk.h"
 #include "exprutil.h"
+#include "dot_gen_object_field_state.h"
 BEGIN_EDG_NAMESPACE
 namespace dot_object_source { namespace typed_graph {
 inline std::string json(const std::string &s) {
@@ -54,10 +55,24 @@ inline bool expanded_fields() {
   static bool value=[](){auto setting=std::getenv("EDG_DOT_GRAPH_EXPANDED_FIELDS");return setting && std::strcmp(setting,"1")==0;}();
   return value;
 }
-// The spool contains the public, explicitly typed row encoding. Its private
-// block framing is two little-endian uint64s: byte length and row count.
+inline bool flat_fields() {
+  static bool value=[](){auto setting=std::getenv("EDG_DOT_GRAPH_FLAT_FIELDS");return setting && std::strcmp(setting,"1")==0;}();
+  return value;
+}
+inline unsigned varuint_size(unsigned long long value) {
+  unsigned size=1;while(value>=128){++size;value>>=7;}return size;
+}
+// Public graph-groups-v1 grammar (counts and IDs are shortest ULEB64):
+// layoutCount; each layout: fieldCount,(definitionId,ordinal)*;
+// groupCount; each group: nodeId,layoutId,payload* in that layout's order.
+// Layout IDs are implicit 1..layoutCount. Scalar/ref/length-prefixed payloads
+// have exactly graph-fields-v1 encodings; decoded row order is unchanged.
+// The private spool framing is two little-endian uint64s: length,rowCount.
 struct FieldBlocks {
   FILE *file=nullptr;std::string pending;unsigned pending_rows=0;
+  typedef std::vector<std::pair<unsigned,unsigned>> Layout;
+  struct Group {unsigned node;Layout layout;std::string payload;};
+  std::vector<Group> groups;size_t pending_logical_bytes=0;
   unsigned long long rows=0,bytes=0,blocks=0;
   void block(const char *data,size_t size,unsigned count) {
     if(!file)file=std::tmpfile();
@@ -67,11 +82,45 @@ struct FieldBlocks {
     if(std::fwrite(header,1,16,file)!=16 || std::fwrite(data,1,size,file)!=size)std::abort();
     ++blocks;bytes+=size;rows+=count;
   }
-  void flush(){if(pending_rows){block(pending.data(),pending.size(),pending_rows);pending.clear();pending_rows=0;}}
-  void row(const std::string &value) {
-    if(value.size()>65536){flush();block(value.data(),value.size(),1);return;}
-    if(pending.size()+value.size()>65536)flush();
-    pending+=value;++pending_rows;
+  void flush() {
+    if(!pending_rows)return;
+    if(flat_fields())block(pending.data(),pending.size(),pending_rows);
+    else {
+      // Block-local layouts describe exact ordered field/ordinal sequences.
+      // They do not compare, normalize or discard any EDG observations.
+      std::map<Layout,unsigned> layouts;
+      std::vector<const Layout*> ordered;
+      std::vector<unsigned> group_layouts;
+      for(const auto &group:groups) {
+        auto entry=layouts.emplace(group.layout,unsigned(layouts.size()+1));
+        if(entry.second)ordered.push_back(&entry.first->first);
+        group_layouts.push_back(entry.first->second);
+      }
+      std::string encoded;encoded.reserve(pending_logical_bytes);
+      varuint(encoded,ordered.size());
+      for(auto layout:ordered) {
+        varuint(encoded,layout->size());
+        for(const auto &field:*layout){varuint(encoded,field.first);varuint(encoded,field.second);}
+      }
+      varuint(encoded,groups.size());
+      for(size_t index=0;index<groups.size();++index) {
+        const auto &group=groups[index];varuint(encoded,group.node);varuint(encoded,group_layouts[index]);encoded+=group.payload;
+      }
+      block(encoded.data(),encoded.size(),pending_rows);
+    }
+    pending.clear();groups.clear();pending_rows=0;pending_logical_bytes=0;
+  }
+  void row(unsigned node,unsigned definition,unsigned ordinal,const std::string &payload) {
+    size_t logical_size=varuint_size(node)+varuint_size(definition)+varuint_size(ordinal)+payload.size();
+    if(pending_rows && pending_logical_bytes+logical_size>65536)flush();
+    if(flat_fields()) {
+      varuint(pending,node);varuint(pending,definition);varuint(pending,ordinal);pending+=payload;
+    } else {
+      if(groups.empty() || groups.back().node!=node)groups.push_back({node,{}, {}});
+      auto &group=groups.back();group.layout.emplace_back(definition,ordinal);group.payload+=payload;
+    }
+    ++pending_rows;pending_logical_bytes+=logical_size;
+    if(logical_size>65536)flush();
   }
   void write(FILE *destination) {
     flush();std::fputc('[',destination);
@@ -81,7 +130,7 @@ struct FieldBlocks {
         unsigned long long length=0,count=0;
         for(unsigned i=0;i<8;++i){length|=(unsigned long long)header[i]<<(i*8);count|=(unsigned long long)header[i+8]<<(i*8);}
         if(ordinal)std::fputc(',',destination);
-        std::fprintf(destination,"{\"blockOrdinal\":%llu,\"rowCount\":%llu,\"dataHex\":\"",ordinal++,count);
+        std::fprintf(destination,"{\"blockOrdinal\":%llu,\"rowCount\":%llu,\"encoding\":\"%s\",\"dataHex\":\"",ordinal++,count,flat_fields()?"graph-fields-v1":"graph-groups-v1");
         char buffer[4096],hex[8192];const char *digits="0123456789abcdef";
         while(length) {
           size_t size=length>sizeof(buffer)?sizeof(buffer):size_t(length);
@@ -106,7 +155,7 @@ struct Graph {
   unsigned next_node=1;bool refreshing=false,refresh_file_scope=false;
   unsigned refresh_mode=0;std::set<const void*> refresh_targets;
   Spool nodes,fields,roots;
-  Spool field_definitions;FieldBlocks field_blocks;std::string encoded_field;
+  Spool field_definitions;FieldBlocks field_blocks;std::string encoded_field;unsigned current_field_definition=0;
   std::map<std::tuple<unsigned,std::string,std::string,int>,unsigned> field_definition_ids;
   std::map<std::string,unsigned> field_ordinals;
   std::string field_prefix;
@@ -130,7 +179,7 @@ struct Graph {
     if(std::getenv("EDG_DOT_GRAPH_STATS"))
       std::fprintf(stderr,"dotobj typed graph: canonical=%llu nodes=%llu fields=%llu roots=%llu bytes=%llu\n",
         (unsigned long long)ids.size(),nodes.rows,expanded_fields()?fields.rows:field_blocks.rows+field_blocks.pending_rows,roots.rows,
-        nodes.bytes+roots.bytes+(expanded_fields()?fields.bytes:field_blocks.bytes+field_blocks.pending.size()+field_definitions.bytes));
+        nodes.bytes+roots.bytes+(expanded_fields()?fields.bytes:field_blocks.bytes+field_blocks.pending_logical_bytes+field_definitions.bytes));
   }
 };
 inline Graph &graph(){static Graph value;return value;}
@@ -170,7 +219,7 @@ inline bool begin_field(const char *name,const char *kind,int target_kind,std::s
       std::to_string(unsigned(g.current_kind))+",\"name\":"+json(key)+",\"valueKind\":"+json(kind)+
       ",\"targetEntryKind\":"+(target_kind<0?"null":std::to_string(target_kind))+"}");
   }
-  g.encoded_field.clear();varuint(g.encoded_field,g.current);varuint(g.encoded_field,id);varuint(g.encoded_field,0);
+  g.encoded_field.clear();g.current_field_definition=id;
   return true;
 }
 inline void field(const char *name,const char *kind,const std::string &value,unsigned target=0,int target_kind=-1) {
@@ -178,7 +227,7 @@ inline void field(const char *name,const char *kind,const std::string &value,uns
   if(!expanded_fields()) {
     if(target_kind>=0)varuint(g.encoded_field,target);
     else {varuint(g.encoded_field,value.size());g.encoded_field+=value;}
-    g.field_blocks.row(g.encoded_field);return;
+    g.field_blocks.row(g.current,g.current_field_definition,0,g.encoded_field);return;
   }
   std::string encoded=value;
   if(std::strcmp(kind,"bytes")==0) {
@@ -204,7 +253,7 @@ inline void integer_field(const char *name,unsigned long long value,bool is_sign
     if(is_signed)value=(value<<1)^(0ULL-(value>>63));
     varuint(g.encoded_field,value);
   }
-  g.field_blocks.row(g.encoded_field);
+  g.field_blocks.row(g.current,g.current_field_definition,0,g.encoded_field);
 }
 inline void reference(const char *name,const void *pointer,an_il_entry_kind kind,bool primary=false) {
   // A null tagged pointer can have iek_none. There is no referenced node.
@@ -228,6 +277,16 @@ inline void string_field(const char *name,const char *pointer,an_il_entry_kind k
 }
 inline void observe_frontend_field(const char *,a_pack_expansion_descr_ptr,int);
 inline void observe_frontend_field(const char *,an_expr_rescan_info_entry_ptr,int);
+inline void observe_frontend_field(const char *,an_arg_operand_ptr,int);
+inline void observe_frontend_field(const char *,an_init_component_ptr,int);
+inline void frontend_symbol_reference(const char *,a_symbol_ptr);
+inline void observe_variable_uninitialized(a_variable_ptr pointer) {
+  bool available=field_observation::variable_uninitialized_available(pointer);
+  scalar("uninitialized.available",available);
+  if(available)scalar("uninitialized",pointer->uninitialized);
+  else graph().coverage.emplace(unsigned(graph().current_kind),"uninitialized","gap",
+    "No assignment observed: pinned clear_variable leaves this storage bit uninitialized; no value read or synthesized");
+}
 template<class T> inline auto observe_frontend_field(const char *name,T *pointer,int)
   -> decltype(type_to_il_entry_kind<typename std::remove_cv<T>::type>(), void()) {
   reference(name,pointer,type_to_il_entry_kind<typename std::remove_cv<T>::type>());
@@ -382,6 +441,47 @@ inline void observe_frontend_field(const char *name,a_pack_expansion_descr_ptr p
   }
   scalar("packs_referenced.count",ordinal);
 }
+inline void frontend_operand(const char *name,const an_operand &operand) {
+  InlineFields operand_prefix(name);
+  reference("type",operand.type,iek_type);
+#if OPTIMIZE_VIRTUAL_FUNCTION_CALLS
+  reference("orig_routine_type",operand.orig_routine_type,iek_type);
+#endif
+#define DOT_OPERAND_SCALAR(member) scalar(#member,operand.member)
+  DOT_OPERAND_SCALAR(kind);DOT_OPERAND_SCALAR(state);DOT_OPERAND_SCALAR(bound_function);
+  DOT_OPERAND_SCALAR(selector_is_object_pointer);DOT_OPERAND_SCALAR(virtual_function);
+  DOT_OPERAND_SCALAR(is_id_expression);DOT_OPERAND_SCALAR(is_address_of_id_expression);DOT_OPERAND_SCALAR(id_expression_was_parenthesized);
+  DOT_OPERAND_SCALAR(is_qualified_name);DOT_OPERAND_SCALAR(is_microsoft_deferred_name);DOT_OPERAND_SCALAR(access_control_error_reported);
+  DOT_OPERAND_SCALAR(is_operand_of_address_of);DOT_OPERAND_SCALAR(has_required_ptr_to_member_form);DOT_OPERAND_SCALAR(is_template_id);
+  DOT_OPERAND_SCALAR(is_simple_string_literal);DOT_OPERAND_SCALAR(conditional_simple_string_literal);DOT_OPERAND_SCALAR(is_cfront_null_pointer_constant);
+  DOT_OPERAND_SCALAR(is_name_followed_by_left_paren);DOT_OPERAND_SCALAR(is_dummy_lvalue);DOT_OPERAND_SCALAR(is_parenthesized);
+  DOT_OPERAND_SCALAR(name_reference_set);DOT_OPERAND_SCALAR(caused_template_instantiation);DOT_OPERAND_SCALAR(pending_capture);DOT_OPERAND_SCALAR(ruled_out_expr_kinds);
+#if MICROSOFT_EXTENSIONS_ALLOWED
+  DOT_OPERAND_SCALAR(is_microsoft_noop);DOT_OPERAND_SCALAR(allow_addr_of_managed_member);
+#endif
+#undef DOT_OPERAND_SCALAR
+  source_position_fields("position",operand.position);
+#if EXTRA_SOURCE_POSITIONS_IN_IL
+  source_position_fields("end_position",operand.end_position);
+#endif
+  source_position_fields("id_position",operand.id_position);source_position_fields("ampersand_position",operand.ampersand_position);
+  reference("template_arg_list",operand.template_arg_list,iek_template_arg);
+  if(operand.name_reference_set){InlineFields nested("name_reference");capture_entry((char*)&operand.name_reference,iek_name_reference);}
+  observe_frontend_field("pack_expansion_descr",operand.pack_expansion_descr,0);
+  if(operand.ref_entries_list)frontend_gap("ref_entries_list","Frontend reference-use bookkeeping has no standalone graph representation");
+  if(operand.saved_ref_entries_list)frontend_gap("saved_ref_entries_list","Frontend reference-use bookkeeping has no standalone graph representation");
+  frontend_symbol_reference("symbol",operand.symbol);
+  switch(operand.kind) {
+    case ok_expression:reference("variant.expression",operand.variant.expression,iek_expr_node);break;
+    case ok_constant:{InlineFields nested("variant.constant");capture_entry((char*)&operand.variant.constant,iek_constant);break;}
+    case ok_braced_init_list:observe_frontend_field("variant.braced_init_list",operand.variant.braced_init_list,0);break;
+#if MICROSOFT_EXTENSIONS_ALLOWED
+    case ok_property_ref:reference("variant.property_ref.object",operand.variant.property_ref.object,iek_expr_node);observe_frontend_field("variant.property_ref.subscripts",operand.variant.property_ref.subscripts,0);break;
+    case ok_event_ref:reference("variant.event_ref.object",operand.variant.event_ref.object,iek_expr_node);break;
+#endif
+    default:break;
+  }
+}
 inline void observe_frontend_field(const char *name,an_expr_rescan_info_entry_ptr pointer,int) {
   InlineFields prefix(name);scalar("present",pointer!=nullptr);if(!pointer)return;
   scalar("identity",frontend_identity(pointer));
@@ -390,48 +490,77 @@ inline void observe_frontend_field(const char *name,an_expr_rescan_info_entry_pt
   source_position_fields("operator_position",pointer->operator_position);
   source_position_fields("secondary_operator_position",pointer->secondary_operator_position);
   reference("type",pointer->type,iek_type);
-  {
-    InlineFields operand_prefix("saved_operand");const auto &operand=pointer->saved_operand;
-    reference("type",operand.type,iek_type);
-#if OPTIMIZE_VIRTUAL_FUNCTION_CALLS
-    reference("orig_routine_type",operand.orig_routine_type,iek_type);
-#endif
-#define DOT_OPERAND_SCALAR(member) scalar(#member,operand.member)
-    DOT_OPERAND_SCALAR(kind);DOT_OPERAND_SCALAR(state);DOT_OPERAND_SCALAR(bound_function);
-    DOT_OPERAND_SCALAR(selector_is_object_pointer);DOT_OPERAND_SCALAR(virtual_function);
-    DOT_OPERAND_SCALAR(is_id_expression);DOT_OPERAND_SCALAR(is_address_of_id_expression);DOT_OPERAND_SCALAR(id_expression_was_parenthesized);
-    DOT_OPERAND_SCALAR(is_qualified_name);DOT_OPERAND_SCALAR(is_microsoft_deferred_name);DOT_OPERAND_SCALAR(access_control_error_reported);
-    DOT_OPERAND_SCALAR(is_operand_of_address_of);DOT_OPERAND_SCALAR(has_required_ptr_to_member_form);DOT_OPERAND_SCALAR(is_template_id);
-    DOT_OPERAND_SCALAR(is_simple_string_literal);DOT_OPERAND_SCALAR(conditional_simple_string_literal);DOT_OPERAND_SCALAR(is_cfront_null_pointer_constant);
-    DOT_OPERAND_SCALAR(is_name_followed_by_left_paren);DOT_OPERAND_SCALAR(is_dummy_lvalue);DOT_OPERAND_SCALAR(is_parenthesized);
-    DOT_OPERAND_SCALAR(name_reference_set);DOT_OPERAND_SCALAR(caused_template_instantiation);DOT_OPERAND_SCALAR(pending_capture);DOT_OPERAND_SCALAR(ruled_out_expr_kinds);
-#if MICROSOFT_EXTENSIONS_ALLOWED
-    DOT_OPERAND_SCALAR(is_microsoft_noop);DOT_OPERAND_SCALAR(allow_addr_of_managed_member);
-#endif
-#undef DOT_OPERAND_SCALAR
-    source_position_fields("position",operand.position);
-#if EXTRA_SOURCE_POSITIONS_IN_IL
-    source_position_fields("end_position",operand.end_position);
-#endif
-    source_position_fields("id_position",operand.id_position);source_position_fields("ampersand_position",operand.ampersand_position);
-    reference("template_arg_list",operand.template_arg_list,iek_template_arg);
-    if(operand.name_reference_set){InlineFields nested("name_reference");capture_entry((char*)&operand.name_reference,iek_name_reference);}
-    observe_frontend_field("pack_expansion_descr",operand.pack_expansion_descr,0);
-    if(operand.ref_entries_list)frontend_gap("ref_entries_list","Frontend reference-use bookkeeping has no standalone graph representation");
-    if(operand.saved_ref_entries_list)frontend_gap("saved_ref_entries_list","Frontend reference-use bookkeeping has no standalone graph representation");
-    frontend_symbol_reference("symbol",operand.symbol);
-    switch(operand.kind) {
-      case ok_expression:reference("variant.expression",operand.variant.expression,iek_expr_node);break;
-      case ok_constant:{InlineFields nested("variant.constant");capture_entry((char*)&operand.variant.constant,iek_constant);break;}
-      case ok_braced_init_list:observe_frontend_field("variant.braced_init_list",operand.variant.braced_init_list,0);break;
-#if MICROSOFT_EXTENSIONS_ALLOWED
-      case ok_property_ref:reference("variant.property_ref.object",operand.variant.property_ref.object,iek_expr_node);observe_frontend_field("variant.property_ref.subscripts",operand.variant.property_ref.subscripts,0);break;
-      case ok_event_ref:reference("variant.event_ref.object",operand.variant.event_ref.object,iek_expr_node);break;
-#endif
-      default:break;
-    }
-  }
+  frontend_operand("saved_operand",pointer->saved_operand);
   g.inline_active.erase(pointer);
+}
+inline void observe_frontend_field(const char *name,an_arg_operand_ptr pointer,int) {
+  InlineFields prefix(name);scalar("identity",frontend_identity(pointer));
+  unsigned ordinal=0;std::set<an_arg_operand_ptr> seen;
+  for(auto item=pointer;item;item=item->next,++ordinal) {
+    if(!seen.insert(item).second)break;
+    InlineFields element("items["+std::to_string(ordinal)+"]");
+    scalar("identity",frontend_identity(item));scalar("next.identity",frontend_identity(item->next));
+    if(!graph().inline_active.insert(item).second) {
+      frontend_gap("operand","Recursive frontend operand content is represented at its enclosing observation");
+      continue;
+    }
+    frontend_operand("operand",item->operand);
+    graph().inline_active.erase(item);
+  }
+  scalar("count",ordinal);
+}
+inline void observe_frontend_field(const char *name,an_init_component_ptr pointer,int) {
+  InlineFields prefix(name);scalar("identity",frontend_identity(pointer));
+  unsigned ordinal=0;std::set<an_init_component_ptr> seen;
+  for(auto item=pointer;item;item=item->next,++ordinal) {
+    if(!seen.insert(item).second)break;
+    InlineFields element("items["+std::to_string(ordinal)+"]");
+    scalar("identity",frontend_identity(item));scalar("next.identity",frontend_identity(item->next));
+    if(!graph().inline_active.insert(item).second) {
+      frontend_gap("content","Recursive initializer content is represented at its enclosing observation");
+      continue;
+    }
+#define DOT_INIT_COMPONENT_SCALAR(member) scalar(#member,item->member)
+    DOT_INIT_COMPONENT_SCALAR(kind);DOT_INIT_COMPONENT_SCALAR(bundled);
+    DOT_INIT_COMPONENT_SCALAR(detached_ref_entries);DOT_INIT_COMPONENT_SCALAR(contains_designator);
+    DOT_INIT_COMPONENT_SCALAR(check_narrowing);DOT_INIT_COMPONENT_SCALAR(braced_init_in_parentheses);
+    DOT_INIT_COMPONENT_SCALAR(permanently_allocated);
+#if CHECKING
+    DOT_INIT_COMPONENT_SCALAR(on_free_list);
+#endif
+    DOT_INIT_COMPONENT_SCALAR(constant_expr_ruled_out);DOT_INIT_COMPONENT_SCALAR(consteval_function_designator_seen);
+    DOT_INIT_COMPONENT_SCALAR(preserved_deduced_pack);DOT_INIT_COMPONENT_SCALAR(direct_init_designator);
+#undef DOT_INIT_COMPONENT_SCALAR
+    observe_frontend_field("pack_expansion_descr",item->pack_expansion_descr,0);
+    switch(item->kind) {
+      case ick_expression:
+        observe_frontend_field("variant.expr.arg_op",item->variant.expr.arg_op,0);
+        reference("variant.expr.lifetime",item->variant.expr.lifetime,iek_object_lifetime);
+        break;
+      case ick_braced:
+        observe_frontend_field("variant.braced.list",item->variant.braced.list,0);
+        source_position_fields("variant.braced.start_pos",item->variant.braced.start_pos);
+        source_position_fields("variant.braced.end_pos",item->variant.braced.end_pos);
+        break;
+      case ick_designator: {
+        const auto &designator=item->variant.designator;
+        scalar("variant.designator.field_name.identity",frontend_identity(designator.field_name));
+        if(designator.field_name && designator.field_name->identifier)
+          field("variant.designator.field_name.identifier","bytes",std::string(designator.field_name->identifier,designator.field_name->identifier_length));
+        reference("variant.designator.element_index",designator.element_index,iek_constant);
+        reference("variant.designator.last_element_index",designator.last_element_index,iek_constant);
+        reference("variant.designator.resolved_field",designator.resolved_field,iek_field);
+        source_position_fields("variant.designator.position",designator.position);
+        break;
+      }
+      case ick_continued:
+        scalar("variant.continuation.state.identity",frontend_identity(item->variant.continuation.state));
+        frontend_gap("variant.continuation.state","Opaque frontend parser suspension/resumption state; pointed-to contents not captured");
+        break;
+    }
+    graph().inline_active.erase(item);
+  }
+  scalar("count",ordinal);
 }
 inline void requires_substitutions(an_expr_node_ptr expression) {
   if(expression->kind!=enk_requires)return;

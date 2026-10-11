@@ -105,7 +105,7 @@ internal static class Program
                 // Verification has no cross-unit state. Release each object's
                 // metadata and SQLite snapshot before opening the next unit.
                 foreach (string path in paths) VerifyObject(path);
-                Console.WriteLine($"Verified {paths.Count} scalar-control-v65 semantic object(s).");
+                Console.WriteLine($"Verified {paths.Count} scalar-control-v66 semantic object(s).");
             }
             else
             {

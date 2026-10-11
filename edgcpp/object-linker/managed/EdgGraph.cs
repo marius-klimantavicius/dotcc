@@ -39,7 +39,7 @@ internal sealed partial class ObjectFile
         writer.WriteString("format","dotobj-edg-graph-reference-v1");
         writer.WriteString("path",Path); writer.WriteString("sha256",receipt.Hash);
         writer.WriteNumber("byteLength",receipt.Size); writer.WriteString("semanticDigest",Digest);
-        writer.WriteString("unitId",UnitId); writer.WriteString("profile","scalar-control-v65");
+        writer.WriteString("unitId",UnitId); writer.WriteString("profile","scalar-control-v66");
         writer.WriteStartObject("counts");
         using (var counts = database.Prepare("SELECT (SELECT count(*) FROM edg_graph_node_entries),(SELECT coalesce(sum(row_count),0) FROM edg_graph_field_blocks),(SELECT count(*) FROM edg_graph_roots),(SELECT count(*) FROM edg_graph_field_definitions),(SELECT count(*) FROM edg_graph_field_blocks)"))
         {
@@ -59,7 +59,11 @@ internal sealed partial class ObjectFile
         foreach(string column in new[]{"id","entry_kind","entry_kind_name","capture_phase"}) writer.WriteStringValue(column);
         writer.WriteEndArray(); writer.WriteEndObject();
         writer.WriteStartObject("fieldRows");
-        writer.WriteString("encoding","graph-fields-v1"); writer.WriteString("accessor","ObjectFile.ReadEdgGraphFields");
+        writer.WriteString("accessor","ObjectFile.ReadEdgGraphFields");
+        writer.WriteStartArray("blockEncodings");
+        using (var encodings = database.Prepare("SELECT DISTINCT encoding FROM edg_graph_field_blocks ORDER BY encoding"))
+            while (encodings.Read()) writer.WriteStringValue(encodings.Text(0));
+        writer.WriteEndArray();
         writer.WriteStartArray("columns");
         foreach(string column in new[]{"nodeId","name","ordinal","valueKind","value","targetId","targetEntryKind"}) writer.WriteStringValue(column);
         writer.WriteEndArray(); writer.WriteStartArray("inspectionCommand");
@@ -175,44 +179,97 @@ internal sealed partial class ObjectFile
     private IEnumerable<(EdgGraphField Field, GraphFieldDefinition Definition)> DecodeGraphFields(
         List<GraphFieldDefinition> definitions, bool materialize)
     {
-        using var blocks = database.Prepare("SELECT ordinal,row_count,bytes,codec,decoded_byte_length,sha256 FROM edg_graph_field_blocks ORDER BY ordinal");
+        using var blocks = database.Prepare("SELECT ordinal,row_count,bytes,codec,decoded_byte_length,sha256,encoding FROM edg_graph_field_blocks ORDER BY ordinal");
         long ordinal = 0;
         while (blocks.Read())
         {
             long rows = blocks.Integer(1), length = blocks.Integer(4);
-            if (blocks.Integer(0) != ordinal++ || rows <= 0 || length is <= 0 or > int.MaxValue || rows > length / 4)
+            string encoding = blocks.Text(6);
+            if (blocks.Integer(0) != ordinal++ || rows <= 0 || length is <= 0 or > int.MaxValue || rows > length)
                 throw new InvalidDataException("Invalid EDG graph field block ordinal or extent");
             using var input = new GraphBlockInput(blocks.Bytes(2), blocks.Text(3), length, blocks.Text(5));
-            for (long row = 0; row < rows; row++)
+            GraphFieldDefinition Definition(long id) => id > 0 && id <= definitions.Count ? definitions[(int)id - 1]
+                : throw new InvalidDataException("EDG graph field has an invalid definition ID");
+            if (encoding == "graph-fields-v1")
             {
-                long node = input.NonnegativeInteger(), definitionId = input.NonnegativeInteger(), fieldOrdinal = input.NonnegativeInteger();
-                if (node == 0 || definitionId == 0 || definitionId > definitions.Count)
-                    throw new InvalidDataException("EDG graph field has an invalid owner or definition ID");
-                var definition = definitions[(int)definitionId - 1];
-                string? value = null; long? target = null;
-                switch (definition.Kind)
+                if (rows > length / 4) throw new InvalidDataException("Invalid EDG graph flat field block extent");
+                for (long row = 0; row < rows; row++)
                 {
-                    case "signed":
-                        ulong encoded = input.VarUInt();
-                        long signed = (long)(encoded >> 1) ^ -(long)(encoded & 1);
-                        if (materialize) value = signed.ToString(CultureInfo.InvariantCulture);
-                        break;
-                    case "unsigned":
-                        ulong unsigned = input.VarUInt();
-                        if (materialize) value = unsigned.ToString(CultureInfo.InvariantCulture);
-                        break;
-                    case "boolean":
-                        int boolean = input.Byte();
-                        if (boolean > 1) throw new InvalidDataException("EDG graph boolean is not zero or one");
-                        if (materialize) value = boolean == 0 ? "0" : "1";
-                        break;
-                    case "text": case "bytes": value = input.Payload(definition.Kind == "text", materialize); break;
-                    case "reference": long reference = input.NonnegativeInteger(); target = reference == 0 ? null : reference; break;
+                    long node = input.NonnegativeInteger();
+                    var definition = Definition(input.NonnegativeInteger());
+                    long fieldOrdinal = input.NonnegativeInteger();
+                    yield return (ReadGraphField(input, node, definition, fieldOrdinal, materialize), definition);
                 }
-                yield return (new(node, definition.Name, fieldOrdinal, definition.Kind, value, target, definition.TargetKind), definition);
             }
+            else if (encoding == "graph-groups-v1")
+            {
+                long layoutCount = input.NonnegativeInteger(), declaredFields = 0;
+                if (layoutCount <= 0 || layoutCount > rows || layoutCount > input.Remaining / 3 || layoutCount > Array.MaxLength)
+                    throw new InvalidDataException("Invalid EDG graph group layout count");
+                // Grow only after consuming actual metadata. Never allocate from
+                // an untrusted count or retain layouts beyond the current block.
+                var layouts = new List<(GraphFieldDefinition Definition, long Ordinal)[]>();
+                for (long layout = 0; layout < layoutCount; layout++)
+                {
+                    long fields = input.NonnegativeInteger();
+                    if (fields <= 0 || fields > rows - declaredFields || fields > input.Remaining / 2 || fields > Array.MaxLength)
+                        throw new InvalidDataException("Invalid EDG graph group layout extent");
+                    declaredFields += fields;
+                    var entries = new List<(GraphFieldDefinition Definition, long Ordinal)>();
+                    for (long field = 0; field < fields; field++)
+                        entries.Add((Definition(input.NonnegativeInteger()), input.NonnegativeInteger()));
+                    layouts.Add(entries.ToArray());
+                }
+                long groups = input.NonnegativeInteger(), decodedRows = 0;
+                if (groups <= 0 || groups > rows || groups > input.Remaining / 3)
+                    throw new InvalidDataException("Invalid EDG graph group count");
+                bool[] used = new bool[layouts.Count];
+                for (long group = 0; group < groups; group++)
+                {
+                    long node = input.NonnegativeInteger(), layoutId = input.NonnegativeInteger();
+                    if (node <= 0 || layoutId <= 0 || layoutId > layouts.Count)
+                        throw new InvalidDataException("EDG graph group has an invalid owner or layout ID");
+                    var layout = layouts[(int)layoutId - 1];
+                    if (layout.LongLength > rows - decodedRows)
+                        throw new InvalidDataException("EDG graph groups exceed declared field row count");
+                    used[(int)layoutId - 1] = true;
+                    foreach (var entry in layout)
+                        yield return (ReadGraphField(input, node, entry.Definition, entry.Ordinal, materialize), entry.Definition);
+                    decodedRows += layout.Length;
+                }
+                if (decodedRows != rows || used.Any(value => !value))
+                    throw new InvalidDataException("EDG graph group row count or layout usage mismatch");
+            }
+            else throw new InvalidDataException("Unsupported EDG graph field block encoding");
             input.Complete();
         }
+    }
+
+    private static EdgGraphField ReadGraphField(GraphBlockInput input, long node,
+        GraphFieldDefinition definition, long ordinal, bool materialize)
+    {
+        if (node <= 0) throw new InvalidDataException("EDG graph field has an invalid owner ID");
+        string? value = null; long? target = null;
+        switch (definition.Kind)
+        {
+            case "signed":
+                ulong encoded = input.VarUInt();
+                long signed = (long)(encoded >> 1) ^ -(long)(encoded & 1);
+                if (materialize) value = signed.ToString(CultureInfo.InvariantCulture);
+                break;
+            case "unsigned":
+                ulong unsigned = input.VarUInt();
+                if (materialize) value = unsigned.ToString(CultureInfo.InvariantCulture);
+                break;
+            case "boolean":
+                int boolean = input.Byte();
+                if (boolean > 1) throw new InvalidDataException("EDG graph boolean is not zero or one");
+                if (materialize) value = boolean == 0 ? "0" : "1";
+                break;
+            case "text": case "bytes": value = input.Payload(definition.Kind == "text", materialize); break;
+            case "reference": long reference = input.NonnegativeInteger(); target = reference == 0 ? null : reference; break;
+        }
+        return new(node, definition.Name, ordinal, definition.Kind, value, target, definition.TargetKind);
     }
 
     private sealed class GraphBlockInput : IDisposable
@@ -259,6 +316,8 @@ internal sealed partial class ObjectFile
             if (available != 0) hash.AppendData(buffer, 0, available);
             return available != 0;
         }
+        public long Remaining => length - consumed;
+
         public int Byte()
         {
             if (!Fill()) throw new InvalidDataException("Truncated EDG graph field payload");

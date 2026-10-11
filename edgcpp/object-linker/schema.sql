@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v65'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v66'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -56,6 +56,7 @@ CREATE TABLE edg_graph_field_blocks (
  codec TEXT NOT NULL CHECK(codec IN ('raw','zlib')),
  decoded_byte_length INTEGER NOT NULL CHECK(decoded_byte_length>0 AND decoded_byte_length<=2147483647),
  sha256 TEXT NOT NULL CHECK(length(sha256)=64 AND sha256 NOT GLOB '*[^0-9a-f]*'),
+ encoding TEXT NOT NULL CHECK(encoding IN ('graph-fields-v1','graph-groups-v1')),
  CHECK((codec='raw' AND length(bytes)=decoded_byte_length) OR
        (codec='zlib' AND length(bytes)>=6 AND length(bytes)<decoded_byte_length))
 ) STRICT;

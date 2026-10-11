@@ -50,12 +50,53 @@ def read_varuint(data, offset):
 
 
 
-def decode_block(data, row_count, definitions):
+def decode_block(data, row_count, definitions, encoding='graph-fields-v1'):
     offset = 0
-    for _ in range(row_count):
-        node, offset = read_varuint(data, offset)
-        ident, offset = read_varuint(data, offset)
-        ordinal, offset = read_varuint(data, offset)
+    layouts, used, remaining, layout = [], set(), 0, []
+    if encoding == 'graph-groups-v1':
+        count, offset = read_varuint(data, offset)
+        if not 0 < count <= row_count:
+            raise ValueError('Invalid graph layout count')
+        declared = 0
+        for _ in range(count):
+            length, offset = read_varuint(data, offset)
+            declared += length
+            if length == 0 or declared > row_count:
+                raise ValueError('Invalid graph layout length')
+            descriptors = []
+            for _ in range(length):
+                ident, offset = read_varuint(data, offset)
+                ordinal, offset = read_varuint(data, offset)
+                if ident not in definitions:
+                    raise ValueError('Unknown graph field definition')
+                descriptors.append((ident, ordinal))
+            layouts.append(descriptors)
+        remaining, offset = read_varuint(data, offset)
+        if not 0 < remaining <= row_count:
+            raise ValueError('Invalid graph group count')
+    elif encoding != 'graph-fields-v1':
+        raise ValueError('Unknown graph field encoding')
+    position = 0
+    for row_index in range(row_count):
+        if encoding == 'graph-fields-v1':
+            node, offset = read_varuint(data, offset)
+            ident, offset = read_varuint(data, offset)
+            ordinal, offset = read_varuint(data, offset)
+        else:
+            if position == len(layout):
+                if remaining == 0:
+                    raise ValueError('Graph groups end before row count')
+                node, offset = read_varuint(data, offset)
+                layout_id, offset = read_varuint(data, offset)
+                if not 0 < layout_id <= len(layouts):
+                    raise ValueError('Unknown graph layout')
+                used.add(layout_id)
+                layout, position = layouts[layout_id - 1], 0
+                if len(layout) > row_count - row_index:
+                    raise ValueError('Graph group exceeds row count')
+                remaining -= 1
+            ident, ordinal = layout[position]
+            position += 1
         if node == 0 or ident not in definitions:
             raise ValueError('Unknown graph node/field definition')
         definition = definitions[ident]
@@ -85,6 +126,8 @@ def decode_block(data, row_count, definitions):
                    value=value, targetId=target, targetEntryKind=definition['targetEntryKind'])
     if offset != len(data):
         raise ValueError('Trailing graph block bytes')
+    if encoding == 'graph-groups-v1' and (remaining or position != len(layout) or len(used) != len(layouts)):
+        raise ValueError('Unused graph group/layout or wrong row count')
 
 
 
@@ -109,11 +152,11 @@ def read_stored(data, codec, length, digest):
 def rows(db):
     definitions = {row[0]: dict(id=row[0], ownerEntryKind=row[1], name=row[2], valueKind=row[3], targetEntryKind=row[4])
                    for row in db.execute('SELECT id,owner_entry_kind,name,value_kind,target_entry_kind FROM edg_graph_field_definitions')}
-    for expected, row in enumerate(db.execute('SELECT ordinal,row_count,bytes,codec,decoded_byte_length,sha256 FROM edg_graph_field_blocks ORDER BY ordinal')):
-        ordinal, count, data, codec, length, digest = row
+    for expected, row in enumerate(db.execute('SELECT ordinal,row_count,bytes,codec,decoded_byte_length,sha256,encoding FROM edg_graph_field_blocks ORDER BY ordinal')):
+        ordinal, count, data, codec, length, digest, encoding = row
         if ordinal != expected:
             raise ValueError('Noncontiguous graph blocks')
-        yield from decode_block(read_stored(data, codec, length, digest), count, definitions)
+        yield from decode_block(read_stored(data, codec, length, digest), count, definitions, encoding)
 
 
 def main():

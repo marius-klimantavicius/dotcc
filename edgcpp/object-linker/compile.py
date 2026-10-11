@@ -17,7 +17,7 @@ SCHEMA = Path(__file__).with_name('schema.sql')
 ARRAYS = {
     'edgGraphNodes': ('edg_graph_nodes', ['id', 'entryKind', 'entryKindName', 'capturePhase']),
     'edgGraphFieldDefinitions': ('edg_graph_field_definitions', ['id', 'ownerEntryKind', 'name', 'valueKind', 'targetEntryKind']),
-    'edgGraphFieldBlocks': ('edg_graph_field_blocks', ['blockOrdinal', 'rowCount', 'dataHex']),
+    'edgGraphFieldBlocks': ('edg_graph_field_blocks', ['blockOrdinal', 'rowCount', 'dataHex', 'encoding']),
     'edgGraphRoots': ('edg_graph_roots', ['nodeId', 'contextNodeId', 'role', 'ordinal']),
     'edgGraphCoverage': ('edg_graph_coverage', ['entryKind', 'field', 'disposition', 'detail']),
     'sourceNamespaces': ('source_namespaces', ['id','parentId','sourceName','isUnnamed','isInline','hasInternalLinkage','sourceFileId','line','column','captureProof']),
@@ -429,14 +429,16 @@ def _graph_encode_row(record, definition_id, definition):
     return out
 
 
-def _graph_stored_block(ordinal, row_count, data):
+def _graph_stored_block(ordinal, row_count, data, encoding='graph-fields-v1'):
+    if encoding not in ('graph-fields-v1', 'graph-groups-v1'):
+        raise ValueError('Unknown graph field encoding')
     if type(ordinal) is not int or ordinal < 0 or type(row_count) is not int or row_count <= 0:
         raise ValueError('Invalid graph block counts')
     if not data or len(data) > _GRAPH_MAX_BYTES:
         raise ValueError('Unsupported graph block byte length')
     compressed = zlib.compress(data, level=6)
     encoded, codec = (compressed, 'zlib') if len(compressed) < len(data) else (data, 'raw')
-    return ordinal, row_count, encoded, codec, len(data), hashlib.sha256(data).hexdigest()
+    return ordinal, row_count, encoded, codec, len(data), hashlib.sha256(data).hexdigest(), encoding
 
 
 
@@ -519,7 +521,7 @@ def package_entries(entries, path, source, unit_id, provenance, started_ns):
                     encoded = _graph_encode_row(record, definitions[key],
                         dict(valueKind=record['valueKind']))
                     if payload and len(payload) + len(encoded) > _GRAPH_BLOCK_BYTES:
-                        db.execute('INSERT INTO edg_graph_field_blocks VALUES(?,?,?,?,?,?)',
+                        db.execute('INSERT INTO edg_graph_field_blocks VALUES(?,?,?,?,?,?,?)',
                             _graph_stored_block(block_ordinal, row_count, payload))
                         block_ordinal += 1
                         payload, row_count = bytearray(), 0
@@ -527,7 +529,7 @@ def package_entries(entries, path, source, unit_id, provenance, started_ns):
                     row_count += 1
                     counts[name] += 1
                 if payload:
-                    db.execute('INSERT INTO edg_graph_field_blocks VALUES(?,?,?,?,?,?)',
+                    db.execute('INSERT INTO edg_graph_field_blocks VALUES(?,?,?,?,?,?,?)',
                         _graph_stored_block(block_ordinal, row_count, payload))
                 continue
             if name not in ARRAYS:
@@ -542,7 +544,7 @@ def package_entries(entries, path, source, unit_id, provenance, started_ns):
             if name == 'edgGraphFieldBlocks':
                 if 'edgGraphFields' in seen:
                     raise ValueError('Mixed EDG graph field representations')
-                columns = ['ordinal', 'row_count', 'bytes', 'codec', 'decoded_byte_length', 'sha256']
+                columns = ['ordinal', 'row_count', 'bytes', 'codec', 'decoded_byte_length', 'sha256', 'encoding']
             if name == 'edgGraphFieldDefinitions' and 'edgGraphFields' in seen:
                 raise ValueError('Mixed EDG graph field representations')
             if name == 'sourceFiles':
@@ -559,7 +561,7 @@ def package_entries(entries, path, source, unit_id, provenance, started_ns):
                 values = [record[key] for key in fields]
                 if name == 'edgGraphFieldBlocks':
                     values = _graph_stored_block(record['blockOrdinal'], record['rowCount'],
-                                                       _graph_canonical_hex(record['dataHex']))
+                                                       _graph_canonical_hex(record['dataHex']), record['encoding'])
                 if name == 'storageData':
                     data = record['dataHex']
                     if (not isinstance(data, str) or not data or len(data) % 2
@@ -592,7 +594,7 @@ def package_entries(entries, path, source, unit_id, provenance, started_ns):
             expected.add('edgGraphFields')
         if seen != expected:
             raise ValueError('Missing semantic wire fields')
-        if header['formatVersion'] != 1 or header['profile'] != 'scalar-control-v65':
+        if header['formatVersion'] != 1 or header['profile'] != 'scalar-control-v66':
             raise ValueError('Unsupported semantic wire version/profile')
         if header['sourceLanguage'] not in ('c', 'c++'):
             raise ValueError('Unsupported source language')

@@ -1,0 +1,142 @@
+{
+  "status": "focused-and-three-original-units-verified",
+  "profile": "scalar-control-v66",
+  "native": 174,
+  "managed": 213,
+  "compilerSha256": "59611109d901b2d2c4156e965714a83f9d1362049124a57c46604e9fb895fdb3",
+  "schemaSha256": "12472a239ae1d754bb5eb3fa68cc371f03bdd65ff2c4fd8f41efdfecfa912928",
+  "changes": [
+    "Exact repeated field descriptor sequences grouped per bounded block; original typed row order/IDs/payloads preserved",
+    "Raw,grouped and expanded diagnostic encodings independently agree",
+    "Argument operands,tagged initializer/lifetime/designator and selected symbol references directly retained",
+    "Indeterminate EDG variable.uninitialized storage is explicitly unavailable unless assignment/copy was observed; no EDG semantic writes",
+    "Project streams and retains gzip wire, supports explicit EDG base and multiple artifact roots, stable resume fingerprint"
+  ],
+  "focused": {
+    "codec": {
+      "status": "passed",
+      "checks": 79,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/codec174-213-availability/results.json"
+    },
+    "graph": {
+      "status": "passed-graph-integration",
+      "checks": 62,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/graph174-213/results.json"
+    },
+    "terminalPartial": {
+      "status": "passed",
+      "checks": 35,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/terminal174-213/results.json"
+    },
+    "catalogTerminal": {
+      "status": "passed",
+      "checks": 32,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/catalog-terminal174-213/results.json"
+    },
+    "genericBridge": {
+      "status": "passed",
+      "checks": 71,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/generic174-213/results.json"
+    },
+    "groupedFormat": {
+      "status": "passed",
+      "checks": 53,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/grouped174-213/results.json"
+    },
+    "catalogImport": {
+      "status": "passed",
+      "checks": 40,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/catalog-import174-213/results.json"
+    }
+  },
+  "real172": [
+    {
+      "unit": "duckdb:src/common/exception.cpp:494cba4847ce283e",
+      "exitCode": 0,
+      "seconds": 24.80729693803005,
+      "time": "24.79 633516\n",
+      "wireBytes": 74543329,
+      "wireCompression": "gzip-1",
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/edg-authority-20261011/after172-exception",
+      "objectBytes": 93089792,
+      "verify213": true,
+      "verifyTimeAndPeakKiB": "10.82 147356"
+    },
+    {
+      "unit": "duckdb:src/common/operator/cast_operators.cpp:494cba4847ce283e",
+      "exitCode": 0,
+      "seconds": 148.66050245601218,
+      "time": "148.61 3393648\n",
+      "wireBytes": 424733150,
+      "wireCompression": "gzip-1",
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/edg-authority-20261011/after172-cast_operators",
+      "objectBytes": 552148992,
+      "verify213": true,
+      "verifyTimeAndPeakKiB": "62.06 396700"
+    },
+    {
+      "unit": "duckdb:test/unittest.cpp:eeeebf908c4923f4",
+      "exitCode": 0,
+      "seconds": 202.63111039198702,
+      "time": "202.58 5010936\n",
+      "wireBytes": 615246952,
+      "wireCompression": "gzip-1",
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/edg-authority-20261011/after172-unittest",
+      "objectBytes": 812720128,
+      "verify213": true,
+      "verifyTimeAndPeakKiB": "88.69 548948"
+    }
+  ],
+  "real174Pilot": {
+    "path": "edgcpp/artifacts/campaign/edg-authority-20261011/pilot174-three/results.json",
+    "exported": 3,
+    "packaged": 3,
+    "verified": 3,
+    "units": [
+      {
+        "unit": "duckdb:src/common/exception.cpp:494cba4847ce283e",
+        "object": "/mnt/secondary/dotcc-edg-campaign-20261011/pilot174-three/8ec6bdeef7f930846409e7ad-001/unit.dotobj",
+        "bytes": 95887360,
+        "exportAndPackageSeconds": 36.214,
+        "verifyTimeAndPeakKiB": "11.30 148892"
+      },
+      {
+        "unit": "duckdb:src/common/operator/cast_operators.cpp:494cba4847ce283e",
+        "object": "/mnt/secondary/dotcc-edg-campaign-20261011/pilot174-three/ce2064279d5b25dffa87cd72-001/unit.dotobj",
+        "bytes": 565440512,
+        "exportAndPackageSeconds": 206.486,
+        "verifyTimeAndPeakKiB": "68.79 399816"
+      },
+      {
+        "unit": "duckdb:test/unittest.cpp:eeeebf908c4923f4",
+        "object": "/mnt/secondary/dotcc-edg-campaign-20261011/pilot174-three/8d2e01d057232ead630fae7d-001/unit.dotobj",
+        "bytes": 830726144,
+        "exportAndPackageSeconds": 301.515,
+        "verifyTimeAndPeakKiB": "91.20 577804"
+      }
+    ]
+  },
+  "transport": {
+    "status": "passed",
+    "native": 172,
+    "sameCapturedWireRawAndGzipLogicalObjectDigestIdentical": true,
+    "rawWireBytes": 779362,
+    "gzipWireBytes": 95964,
+    "digest": "78ca5837dc2f894a18555fb1ab1b2d8dbd8e96f6f3b7fb12d716f5bb2424d94f",
+    "separateWorkRoots": true,
+    "crossInvocationNote": "Separate compiler invocations retained different original predefined __TIME__ macro observations despite later fixed clock redefinition; exact transport comparison uses the same captured wire, no macro data normalization.",
+    "resumeReusesExactObjectWithoutSecondFrontendAttempt": true
+  },
+  "limitations": [
+    "Full2635-unit corpus pending",
+    "No full DuckDB C# compilation/JIT/NativeAOT run",
+    "Remaining frontend content gaps explicit; no complete-graph claim",
+    "Runtime/OS implementation remains next phase after complete generation"
+  ],
+  "full174Cohort": {
+    "status": "started",
+    "manifest": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-cxx20-candidate-001/project.json",
+    "units": 2635,
+    "results": "edgcpp/artifacts/campaign/edg-authority-20261011/full174-cxx20/results.json"
+  }
+}

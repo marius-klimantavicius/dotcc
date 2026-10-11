@@ -103,14 +103,14 @@ def main():
                     if sql:
                         db.execute(sql)
                     else:
-                        ordinal, count, data, codec, length, digest = db.execute('SELECT * FROM edg_graph_field_blocks ORDER BY ordinal LIMIT 1').fetchone()
+                        ordinal, count, data, codec, length, digest, encoding = db.execute('SELECT * FROM edg_graph_field_blocks ORDER BY ordinal LIMIT 1').fetchone()
                         raw = graph.read_stored(data, codec, length, digest)
                         if name == 'invalid-integer-encoding':
                             _, end = graph.read_varuint(raw, 0)
                             raw = raw[:end - 1] + bytes([raw[end - 1] | 128, 0]) + raw[end:]
                         else:
                             definitions = {r[0]: dict(id=r[0], ownerEntryKind=r[1], name=r[2], valueKind=r[3], targetEntryKind=r[4]) for r in db.execute('SELECT * FROM edg_graph_field_definitions')}
-                            decoded = list(graph.decode_block(raw, count, definitions))
+                            decoded = list(graph.decode_block(raw, count, definitions, encoding))
                             next(row for row in decoded if row['targetId'] is not None)['targetId'] = 9223372036854775807
                             payload = bytearray()
                             for row in decoded:
@@ -118,8 +118,9 @@ def main():
                                 definition = next(d for d in definitions.values() if (d['ownerEntryKind'], d['name'], d['valueKind'], d['targetEntryKind']) == (owner, row['name'], row['valueKind'], row['targetEntryKind']))
                                 payload += graph.encode_row(row, definition['id'], definition)
                             raw = payload
-                        values = graph.stored_block(ordinal, count, raw)
-                        db.execute('UPDATE edg_graph_field_blocks SET row_count=?,bytes=?,codec=?,decoded_byte_length=?,sha256=? WHERE ordinal=?', (*values[1:], ordinal))
+                            encoding = 'graph-fields-v1'
+                        values = graph.stored_block(ordinal, count, raw, encoding)
+                        db.execute('UPDATE edg_graph_field_blocks SET row_count=?,bytes=?,codec=?,decoded_byte_length=?,sha256=?,encoding=? WHERE ordinal=?', (*values[1:], ordinal))
                     check(fixture + ':' + name + '-changed', db.total_changes > 0)
                     db.execute('UPDATE content_digest SET sha256=?', (packager.logical_hash(db),))
                 run(work, name, ['dotnet', args.linker.resolve(), 'verify', damaged], success=False)

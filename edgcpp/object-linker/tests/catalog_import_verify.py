@@ -122,10 +122,11 @@ def main():
                 roots=db.execute('SELECT count(*) FROM edg_graph_roots').fetchone()[0],
                 definitions=db.execute('SELECT count(*) FROM edg_graph_field_definitions').fetchone()[0],
                 blocks=db.execute('SELECT count(*) FROM edg_graph_field_blocks').fetchone()[0])
+            expected_encodings=[row[0] for row in db.execute('SELECT DISTINCT encoding FROM edg_graph_field_blocks ORDER BY encoding')]
             check('graph-map-exact-logical-receipt',graph['unitId']==db.execute('SELECT unit_id FROM object_info').fetchone()[0] and
                   graph['semanticDigest']==db.execute('SELECT sha256 FROM content_digest').fetchone()[0])
         check('graph-map-exact-counts',graph['counts']==expected_counts)
-        check('graph-map-explicit-typed-accessor',graph['fieldRows']['encoding']=='graph-fields-v1' and
+        check('graph-map-explicit-typed-accessor',graph['fieldRows']['blockEncodings']==expected_encodings and
               graph['fieldRows']['inspectionCommand']==['dotobj-link','inspect-edg-graph',str(reopen_input)] and
               graph['tables']==dict(nodes='edg_graph_nodes',nodeEntries='edg_graph_node_entries',nodeKinds='edg_graph_node_kinds',definitions='edg_graph_field_definitions',blocks='edg_graph_field_blocks',roots='edg_graph_roots',coverage='edg_graph_coverage'))
         check('graph-map-explicit-logical-node-view',graph['nodeRows']==dict(view='edg_graph_nodes',columns=['id','entry_kind','entry_kind_name','capture_phase']))
@@ -139,6 +140,26 @@ def main():
             with (out/'graph-fields.jsonl').open() as rows:
                 count=sum(1 for row in rows if set(json.loads(row))==set(graph['fieldRows']['columns']))
             check('expanded-graph-exact-row-count-and-columns',count==expected_counts['fields'])
+        # Receipt columns are mutable catalog data, not proof that the importer
+        # previously validated these particular bytes. A matching rewritten
+        # receipt must never turn catalog reopening into a graph-validation skip.
+        forged_input=out/'rewritten-receipt.dotobj';shutil.copy2(reopen_input,forged_input)
+        with sqlite3.connect(forged_input) as db:
+            changed=db.execute("UPDATE edg_graph_field_blocks SET sha256=? WHERE ordinal=(SELECT min(ordinal) FROM edg_graph_field_blocks)",('0'*64,)).rowcount
+            check('rewritten-receipt-graph-mutation-selected',changed==1)
+            check('rewritten-receipt-object-structurally-valid',db.execute('PRAGMA integrity_check').fetchone()==('ok',) and not list(db.execute('PRAGMA foreign_key_check')))
+            forged_digest=packager.logical_hash(db)
+            db.execute('UPDATE content_digest SET sha256=?',(forged_digest,))
+        with forged_input.open('rb') as stream:forged_hash=hashlib.file_digest(stream,'sha256').hexdigest()
+        forged_catalog=out/'rewritten-receipt.sqlite';shutil.copy2(reopen_catalog,forged_catalog)
+        with sqlite3.connect(forged_catalog) as db:
+            db.execute('UPDATE units SET path=?,file_sha256=?,byte_length=?,logical_sha256=?',
+                       (str(forged_input),forged_hash,forged_input.stat().st_size,forged_digest))
+        forged_command=['dotnet',str(a.driver.resolve()),'catalog-maps','--out',str(out/'rewritten-receipt-maps'),str(forged_catalog)]
+        forged=subprocess.run(forged_command,capture_output=True,timeout=600)
+        (out/'rewritten-receipt.stdout').write_bytes(forged.stdout);(out/'rewritten-receipt.stderr').write_bytes(forged.stderr)
+        commands.append(dict(name='rewritten-receipt',command=forged_command,exitCode=forged.returncode))
+        check('rewritten-matching-receipt-cannot-bypass-graph-integrity',forged.returncode!=0 and b'EDG graph block digest mismatch' in forged.stderr)
         with sqlite3.connect(reopen_input) as db:
             db.execute("UPDATE object_info SET unit_id=unit_id||'-changed'")
             db.execute('UPDATE content_digest SET sha256=?',(packager.logical_hash(db),))

@@ -8,6 +8,7 @@ packaging one TU. No preprocessing subprocess or whole-program EDG merge is used
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import hashlib
+import gzip
 import importlib.util
 import json
 import os
@@ -18,6 +19,7 @@ import signal
 import sqlite3
 import subprocess
 import sys
+import threading
 import time
 
 HERE = Path(__file__).resolve().parent
@@ -35,10 +37,10 @@ def save(path, value):
     temporary.replace(path)
 
 
-def environment():
+def environment(edg_base=None):
     # Never inherit legacy-backend selectors from a developer's shell.
     env = {k: v for k, v in os.environ.items() if not k.startswith('EDG_')}
-    env.update(EDG_BASE=str(EDG / 'upstream/bases/docker/dev-env/gcc'),
+    env.update(EDG_BASE=str(edg_base or EDG / 'upstream/bases/docker/dev-env/gcc'),
                EDG_DOT_OBJECT='1', EDG_DOT_TARGET='portable-lp64-binary80-v2',
                EDG_DOT_NAMESPACE='@DotObject', EDG_DOT_CLASS='@Unit',
                EDG_DOT_EMIT='managedlib', EDG_DOT_INSTANCE='0', EDG_DOT_NEST='1',
@@ -162,18 +164,36 @@ def compile_unit(request_path):
         command += ['--instantiate', 'used']
     # A single reproducible clock applies to all TUs and resumed attempts.
     command += ['-D__DATE__="Jan  1 1970"', '-D__TIME__="00:00:00"', *unit['arguments'], '--', str(source)]
-    env = environment()
+    env = environment(request.get('edgBase'))
     env['EDG_DOT_OBJECT_UNIT_ID'] = unit['id']
     started_ns = time.time_ns()
     before = sha(source)
+    compression = request.get('wireCompression', 'none')
+    if compression not in ('none', 'gzip'):
+        raise ValueError('Unsupported wire compression')
+    wire = work / ('wire.json.gz' if compression == 'gzip' else 'wire.json')
     invocation = dict(command=command, sourceSha256=before, compilerSha256=sha(compiler),
+                      wireCompression=compression, wire=str(wire),
                       environment={k: v for k, v in env.items() if k.startswith('EDG_')})
     save(work / 'invocation.json', invocation)
-    with (work / 'wire.json').open('wb') as stdout, (work / 'stderr').open('wb') as stderr:
-        result = subprocess.run(command, cwd=work, env=env, stdout=stdout, stderr=stderr)
-    invocation['frontendExitCode'] = result.returncode
+    with wire.open('wb') as stdout, (work / 'stderr').open('wb') as stderr:
+        if compression == 'gzip':
+            process = subprocess.Popen(command, cwd=work, env=env, stdout=subprocess.PIPE, stderr=stderr)
+            try:
+                with gzip.GzipFile(filename='', mode='wb', fileobj=stdout, compresslevel=1, mtime=0) as encoded:
+                    shutil.copyfileobj(process.stdout, encoded, 1024 * 1024)
+            except BaseException:
+                process.kill()
+                process.wait()
+                raise
+            finally:
+                process.stdout.close()
+            code = process.wait()
+        else:
+            code = subprocess.run(command, cwd=work, env=env, stdout=stdout, stderr=stderr).returncode
+    invocation['frontendExitCode'] = code
     save(work / 'invocation.json', invocation)
-    if result.returncode:
+    if code:
         raise RuntimeError('Frontend failed: ' + str(work / 'stderr'))
     if sha(source) != before or sha(compiler) != invocation['compilerSha256']:
         raise ValueError('Source/compiler changed during compilation')
@@ -183,7 +203,11 @@ def compile_unit(request_path):
                   ('arguments', json.dumps(command[1:])), ('packager-sha256', packaging_hashes[0]),
                   ('schema-sha256', packaging_hashes[1]), ('project-driver-sha256', sha(__file__)),
                   ('environment', json.dumps(invocation['environment'], sort_keys=True))]
-    packaged = module.package_file(work / 'wire.json', partial, source, unit['id'], provenance, started_ns)
+    if compression == 'gzip':
+        with gzip.open(wire, 'rt', encoding='utf-8') as stream:
+            packaged = module.package_entries(module.WireReader(stream).entries(), partial, source, unit['id'], provenance, started_ns)
+    else:
+        packaged = module.package_file(wire, partial, source, unit['id'], provenance, started_ns)
     if packaging_hashes != (sha(HERE / 'compile.py'), sha(HERE / 'schema.sql')):
         raise ValueError('Packager/schema changed during compilation')
     os.link(partial, output)
@@ -211,11 +235,18 @@ def build(args):
     if not units:
         raise ValueError('No source units selected')
     out.mkdir(parents=True, exist_ok=args.resume)
+    work_roots = [path.resolve() for path in args.work_root] or [out]
+    if len(work_roots) != len(set(work_roots)):
+        raise ValueError('Repeated work root')
+    for root in work_roots:
+        if root != out:
+            root.mkdir(parents=True, exist_ok=True)
     inputs = inventory(units)
     fingerprint = dict(manifestSha256=sha(manifest_path), selectedIds=[u['id'] for u in units],
                        compilerSha256=sha(args.compiler), driverSha256=sha(__file__),
                        packagerSha256=sha(HERE / 'compile.py'), schemaSha256=sha(HERE / 'schema.sql'),
-                       inputs=inputs, environment={k: v for k, v in environment().items()
+                       wireCompression=args.wire_compression,
+                       inputs=inputs, environment={k: v for k, v in environment(args.edg_base.resolve()).items()
                            if k.startswith(('EDG_', 'LC_')) or k in ('LANG', 'TZ', 'CPATH', 'C_INCLUDE_PATH', 'CPLUS_INCLUDE_PATH')})
     fingerprint_path = out / 'inputs.json'
     if args.resume:
@@ -231,7 +262,9 @@ def build(args):
     if sha(out / 'cpfe-dot') != fingerprint['compilerSha256']:
         raise ValueError('Retained compiler changed')
     report['status'] = 'running'
+    report['workRoots'] = list(map(str, work_roots))
     save(out / 'results.json', report)
+    allocation_lock = threading.Lock()
 
     def run(unit):
         key = unit['id']
@@ -241,19 +274,23 @@ def build(args):
         # A scheduling floor, not a per-process disk limit: already running
         # workers finish and retain their evidence. A resumed campaign can
         # lower the floor or use newly available space without changing inputs.
-        free = shutil.disk_usage(out).free
-        if free < args.min_free_space_mib * 1024 * 1024:
-            return key, dict(status='deferred', source=unit['source'],
-                             reason='minimum-free-space', freeBytes=free,
-                             minimumFreeBytes=args.min_free_space_mib * 1024 * 1024)
         stem = hashlib.sha256(key.encode()).hexdigest()[:24]
-        attempt = 1
-        while (out / f'{stem}-{attempt:03d}').exists():
-            attempt += 1
-        work = out / f'{stem}-{attempt:03d}'
-        work.mkdir()
+        with allocation_lock:
+            spaces = [(shutil.disk_usage(root).free, root) for root in work_roots]
+            free, root = max(spaces, key=lambda item: item[0])
+            if free < args.min_free_space_mib * 1024 * 1024:
+                return key, dict(status='deferred', source=unit['source'],
+                                 reason='minimum-free-space', freeBytes=free,
+                                 freeSpaceByRoot={str(path): available for available, path in spaces},
+                                 minimumFreeBytes=args.min_free_space_mib * 1024 * 1024)
+            attempt = 1
+            while any((path / f'{stem}-{attempt:03d}').exists() for path in work_roots):
+                attempt += 1
+            work = root / f'{stem}-{attempt:03d}'
+            work.mkdir()
         request = work / 'request.json'
-        save(request, dict(unit=unit, compiler=str(out / 'cpfe-dot'), memoryLimitMiB=args.memory_limit_mib))
+        save(request, dict(unit=unit, compiler=str(out / 'cpfe-dot'), memoryLimitMiB=args.memory_limit_mib,
+                           wireCompression=args.wire_compression, edgBase=str(args.edg_base.resolve())))
         start = time.monotonic()
         timed_out = False
         with (work / 'worker.stdout').open('wb') as stdout, (work / 'worker.stderr').open('wb') as stderr:
@@ -314,7 +351,12 @@ def main():
     project = commands.add_parser('build')
     project.add_argument('--manifest', type=Path, required=True)
     project.add_argument('--output-dir', type=Path, required=True)
+    project.add_argument('--work-root', action='append', type=Path, default=[],
+                         help='Retain TU artifacts here; repeat to use the root with most free space')
     project.add_argument('--compiler', type=Path, default=EDG / 'build/bin/cpfe-dot')
+    project.add_argument('--edg-base', type=Path, default=EDG / 'upstream/bases/docker/dev-env/gcc')
+    project.add_argument('--wire-compression', choices=('none', 'gzip'), default='none',
+                         help='Retain a lossless streamed wire archive instead of expanded JSON')
     project.add_argument('--resume', action='store_true')
     project.add_argument('--select', default='.*')
     project.add_argument('--limit', type=int)

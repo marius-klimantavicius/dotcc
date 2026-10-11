@@ -94,10 +94,11 @@ def main():
             with sqlite3.connect(path) as db:
                 unit=db.execute('SELECT unit_id FROM object_info').fetchone()[0]
                 field_count=db.execute('SELECT coalesce(sum(row_count),0) FROM edg_graph_field_blocks').fetchone()[0]
+                encodings=[row[0] for row in db.execute('SELECT DISTINCT encoding FROM edg_graph_field_blocks ORDER BY encoding')]
             graph=source_objects[unit]['edgGraph']
             with path.open('rb') as stream:digest=hashlib.file_digest(stream,'sha256').hexdigest()
             check(f'graph-{index}-exact-retained-object-receipt',graph['path']==str(path) and graph['sha256']==digest and graph['byteLength']==path.stat().st_size)
-            check(f'graph-{index}-typed-row-count',graph['counts']['fields']==field_count and graph['fieldRows']['encoding']=='graph-fields-v1')
+            check(f'graph-{index}-typed-row-count',graph['counts']['fields']==field_count and graph['fieldRows']['blockEncodings']==encodings)
             check(f'graph-{index}-no-expanded-duplication','edgGraphFields' not in source_objects[unit])
         def lifetimes(path):
             return {key: value for key, value in objects(path).items() if value['functions']}

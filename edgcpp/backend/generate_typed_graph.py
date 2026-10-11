@@ -219,6 +219,12 @@ def generate(walker, configured):
                 gaps.add((typename, '$entry', 'declaration-not-in-configured-inventory'))
             return match[0]
         top = scalar_lines(records[typename][1], '', typename)
+        if typename == 'a_variable':
+            # Stock clear_variable leaves this bit indeterminate. Capture its
+            # actual value only after an observed stock assignment/copy.
+            top = [line.replace('scalar("uninitialized", eptr->uninitialized);',
+                                'observe_variable_uninitialized(eptr);')
+                   for line in top]
         groups = union_groups(records[typename][1], '', typename)
         deferred = {}
         for path, lines in sorted(groups.items(), key=lambda item: len(item[0])):
@@ -280,7 +286,7 @@ def generate(walker, configured):
               '#define DOT_GRAPH_FINGERPRINT \"' + fingerprint + '\"\n'
               '#define DO_SUBTREE_WALK FALSE\n#define NEEDED_FLAG_WALK FALSE\n#define KEEP_IN_IL_WALK FALSE\n'
               '#define WALK_ENTRY_ROUTINE_STATIC inline\n#define WALK_ENTRY_ROUTINE_NAME capture_entry\n'
-              + walker[:start] + macros + body + '\n'
+              + walker[:start].replace('conditionally_clear_fe_pointer((ptr).assoc_info)', 'frontend_symbol_reference("source_corresp.assoc_info", (a_symbol_ptr)(ptr).assoc_info)') + macros + body + '\n'
               '#define UNDEF_WALK_ENTRY_MACROS_AT_END 1\n'
               + walker[walker.index('#ifdef UNDEF_WALK_ENTRY_MACROS_AT_END'):] + '\n'
               '#undef UNDEF_WALK_ENTRY_MACROS_AT_END\n'

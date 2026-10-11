@@ -65,7 +65,7 @@ internal sealed class CatalogUnitReader : IDisposable
         using var macros=new Utf8JsonWriter(macroStream,new JsonWriterOptions{Indented=true});
         foreach(var writer in new[]{source,macros})
         {
-            writer.WriteStartObject();writer.WriteNumber("formatVersion",1);writer.WriteString("profile","scalar-control-v65");
+            writer.WriteStartObject();writer.WriteNumber("formatVersion",1);writer.WriteString("profile","scalar-control-v66");
             writer.WriteStartArray("objects");
         }
         foreach(var unit in Units())WithUnit(unit,obj=>{obj.WriteSourceMap(source);obj.WriteMacroMap(macros);});
