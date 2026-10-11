@@ -18,7 +18,15 @@ internal sealed partial class ObjectFile
     public Dictionary<long, long> BindingSourceTypes { get; } = [];
     public Dictionary<(long EntityId, long Ordinal), bool> SourceParameterDefaults { get; } = [];
 
-    private void ReadAndVerifySourceProvenance()
+    private void ReadSourceProvenance()
+    {
+        ReadRetainedSourceIntegrity();
+        ReadSourceExecutionContracts();
+    }
+
+    // These tables are navigation projections of EDG's source graph. Read typed
+    // payloads and their object-local relations without redoing C++ selection.
+    private void ReadRetainedSourceIntegrity()
     {
         ReadRoutineMetadata(true);
         ReadSourceDynamicSpecifications();
@@ -28,9 +36,12 @@ internal sealed partial class ObjectFile
         ReadAndVerifySourceRecordOwners();
         VerifySourceNestedTypeDeclarations();
         VerifySourceNamespaces();
-        VerifySourceTemplateMetadata();
         VerifySourceConstraints();
-        VerifySourceTypeOriginContracts();
+    }
+
+    // Recorded executable ABI and lifetime mappings remain required by emission.
+    private void ReadSourceExecutionContracts()
+    {
         ReadAndVerifySourceRoutineAbis();
         ReadAndVerifyDeferredRoutineAbis();
         foreach (RoutineType routine in Routines.Values)
@@ -349,6 +360,14 @@ internal sealed partial class ObjectFile
             }
             writer.WriteEndArray();
         }
+        Table("edgGraphNodes", "SELECT id,entry_kind,entry_kind_name,capture_phase FROM edg_graph_nodes ORDER BY id",
+            "id", "entryKind", "entryKindName", "capturePhase");
+        Table("edgGraphFields", "SELECT node_id,name,ordinal,value_kind,value,target_id,target_entry_kind FROM edg_graph_fields ORDER BY node_id,name,ordinal",
+            "nodeId", "name", "ordinal", "valueKind", "value", "targetId", "targetEntryKind");
+        Table("edgGraphRoots", "SELECT node_id,context_node_id,role,ordinal FROM edg_graph_roots ORDER BY role,ordinal",
+            "nodeId", "contextNodeId", "role", "ordinal");
+        Table("edgGraphCoverage", "SELECT entry_kind,field,disposition,detail FROM edg_graph_coverage ORDER BY entry_kind,field",
+            "entryKind", "field", "disposition", "detail");
         Table("sourceArrayDeletions", "SELECT source_obligation_id,deallocator_entity_id,capture_proof FROM source_array_deletions ORDER BY source_obligation_id",
             "sourceObligationId", "deallocatorEntityId", "captureProof");
         Table("arrayDeletionOperations", "SELECT node_id,source_obligation_id,destructor_entity_id,deallocator_entity_id,element_type_id,padding_size,helper_kind,capture_proof,callback_kind FROM array_deletion_operations ORDER BY node_id",
@@ -418,8 +437,8 @@ internal sealed partial class ObjectFile
             "expressionId", "ordinal", "kind", "sourceTypeId", "constantId", "templateId");
         Table("sourceExpressionParameters", "SELECT expression_id,ordinal,source_type_id,declared_source_type_id,source_name,qualifier_bits,is_pack FROM source_expression_parameters ORDER BY expression_id,ordinal",
             "expressionId", "ordinal", "sourceTypeId", "declaredSourceTypeId", "sourceName", "qualifierBits", "isPack");
-        Table("sourceExpressionParameterReferences", "SELECT expression_id,binder_id,parameter_ordinal,original_levels_up FROM source_expression_parameter_references ORDER BY expression_id",
-            "expressionId", "binderId", "parameterOrdinal", "originalLevelsUp");
+        Table("sourceExpressionParameterReferences", "SELECT expression_id,binder_id,parameter_number,original_levels_up FROM source_expression_parameter_references ORDER BY expression_id",
+            "expressionId", "binderId", "parameterNumber", "originalLevelsUp");
         Table("sourceExpressionOperations", "SELECT expression_id,opcode,operation_name,original_type_kind FROM source_expression_operations ORDER BY expression_id",
             "expressionId", "opcode", "operationName", "originalTypeKind");
         Table("sourceExpressionFlags", "SELECT expression_id,flag FROM source_expression_flags ORDER BY expression_id,flag",
@@ -656,7 +675,7 @@ internal sealed partial class ObjectFile
         Table("sourceRoutineTypes", "SELECT type_id,return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier,exception_policy_origin,prototype_origin,has_borrowed_arguments,declarator_context_count FROM source_routine_types ORDER BY type_id", "typeId", "returnTypeId", "variadic", "exceptionPolicy", "parameterMode", "objectTypeId", "objectIsConst", "objectIsVolatile", "objectRefQualifier", "exceptionPolicyOrigin", "prototypeOrigin", "hasBorrowedArguments", "declaratorContextCount");
         Table("sourceDeclaratorContexts", "SELECT id,routine_source_type_id,scope_ordinal,kind,selected_source_declaration_id,source_record_id,header_source_record_id,argument_count,borrowed_argument_count,source_file_id,line,column,capture_proof FROM source_declarator_contexts ORDER BY id", "id", "routineSourceTypeId", "scopeOrdinal", "kind", "selectedSourceDeclarationId", "sourceRecordId", "headerSourceRecordId", "argumentCount", "borrowedArgumentCount", "sourceFileId", "line", "column", "captureProof");
         Table("sourceDeclaratorBorrowedArguments", "SELECT context_id,argument_ordinal,source_type_id FROM source_declarator_borrowed_arguments ORDER BY context_id,argument_ordinal", "contextId", "argumentOrdinal", "sourceTypeId");
-        Table("sourceRoutineTypeSubstitutions", "SELECT routine_source_type_id,selected_source_declaration_id,borrowed_argument_count,capture_proof FROM source_routine_type_substitutions ORDER BY routine_source_type_id", "routineSourceTypeId", "selectedSourceDeclarationId", "borrowedArgumentCount", "captureProof");
+        Table("sourceRoutineTypeSubstitutions", "SELECT routine_source_type_id,selected_source_declaration_id,argument_owner_kind,borrowed_argument_count,capture_proof FROM source_routine_type_substitutions ORDER BY routine_source_type_id", "routineSourceTypeId", "selectedSourceDeclarationId", "argumentOwnerKind", "borrowedArgumentCount", "captureProof");
         Table("sourceRoutineBorrowedArguments", "SELECT routine_source_type_id,argument_ordinal,source_type_id FROM source_routine_borrowed_arguments ORDER BY routine_source_type_id,argument_ordinal", "routineSourceTypeId", "argumentOrdinal", "sourceTypeId");
         Table("sourceRoutineExceptionResolutions", "SELECT source_routine_type_id,final_source_routine_type_id,source_function_entity_id,initial_policy,resolved_policy,initial_present,initial_indeterminate,initial_arg_cached,initial_copy_from_prototype,initial_is_noexcept,initial_throw_any,final_present,final_indeterminate,final_arg_cached,final_copy_from_prototype,final_is_noexcept,final_throw_any,special_member_kind,is_defaulted,is_compiler_generated,is_inheriting_constructor,capture_proof FROM source_routine_exception_resolutions ORDER BY source_routine_type_id", "sourceRoutineTypeId", "finalSourceRoutineTypeId", "sourceFunctionEntityId", "initialPolicy", "resolvedPolicy", "initialPresent", "initialIndeterminate", "initialArgCached", "initialCopyFromPrototype", "initialIsNoexcept", "initialThrowAny", "finalPresent", "finalIndeterminate", "finalArgCached", "finalCopyFromPrototype", "finalIsNoexcept", "finalThrowAny", "specialMemberKind", "isDefaulted", "isCompilerGenerated", "isInheritingConstructor", "captureProof");
         Table("sourceRoutineParameters", "SELECT type_id,ordinal,parameter_type_id FROM source_routine_parameters ORDER BY type_id,ordinal", "typeId", "ordinal", "parameterTypeId");

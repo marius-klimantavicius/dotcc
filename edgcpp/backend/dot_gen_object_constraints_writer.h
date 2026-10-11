@@ -134,6 +134,7 @@ unsigned source_constraint_declaration(unsigned captured) {
   if(!captured)reject("source expression declaration is absent");
   if(!written_source_declarations.insert(captured).second)return captured;
   const auto value=dot_object_source::source_constraint_graph().declarations.at(captured-1);
+  dot_object_source::typed_graph::projection(value.graph_node,"source-declaration",captured-1);
   if(!value.error.empty())reject(value.error.c_str());
   source_namespace_owner("declaration",captured,value.namespace_owner);
   source_expression_declarations.push_back("{\"id\":"+number(captured)+",\"kind\":"+quote(value.kind)+
@@ -198,6 +199,7 @@ unsigned source_constraint_expression(unsigned captured) {
   if(!captured)reject("source expression reference is absent");
   if(!written_source_expressions.insert(captured).second)return captured;
   const auto value=dot_object_source::source_constraint_graph().expressions.at(captured-1);
+  dot_object_source::typed_graph::projection(value.graph_node,"source-expression",captured-1);
   if(!value.error.empty())reject(value.error.c_str());
   source_expressions.push_back("{\"id\":"+number(captured)+",\"kind\":"+quote(value.kind)+
     ",\"sourceTypeId\":"+number(value.type?source_type(value.type):0)+
@@ -230,7 +232,9 @@ unsigned source_constraint_expression(unsigned captured) {
       ",\"isParenthesizedAggregate\":"+(allocation.paren_aggregate?"true":"false")+",\"hasDeducibleType\":"+(allocation.deducible?"true":"false")+
       ",\"hasParenthesizedTypeId\":"+(allocation.parenthesized?"true":"false")+
       ",\"isLookupDeferred\":"+(allocation.lookup_deferred?"true":"false")+
-      ",\"initializationDisposition\":\"absent-in-original\",\"rollbackDisposition\":\"absent-in-original\",\"captureProof\":\"original-new-delete-expression\"}");
+      ",\"initializationDisposition\":"+quote(allocation.initialization_present?"retained-in-edg-graph":"absent-in-original")+
+      ",\"rollbackDisposition\":"+quote(allocation.rollback_present?"retained-in-edg-graph":"absent-in-original")+
+      ",\"captureProof\":\"original-new-delete-expression\"}");
   }
   if(value.kind=="temporary-initialization") {
     const auto &temp=value.temporary;
@@ -316,8 +320,8 @@ unsigned source_constraint_expression(unsigned captured) {
   if(value.kind=="requires")source_parameter_binder(dot_object_source::source_constraint_graph().requires_binders.at(captured));
   if(value.kind=="parameter-reference")
     source_expression_parameter_references.push_back("{\"expressionId\":"+number(captured)+
-      ",\"binderId\":"+number(source_parameter_binder(value.resolved_binder))+
-      ",\"parameterOrdinal\":"+std::to_string(value.parameter_number-1)+
+      ",\"binderId\":"+string("null")+
+      ",\"parameterNumber\":"+std::to_string(value.parameter_number)+
       ",\"originalLevelsUp\":"+std::to_string(value.levels_up)+"}");
   if(value.kind=="operation" || value.kind=="builtin-operation")
     source_expression_operations.push_back("{\"expressionId\":"+number(captured)+",\"opcode\":"+std::to_string(value.opcode)+

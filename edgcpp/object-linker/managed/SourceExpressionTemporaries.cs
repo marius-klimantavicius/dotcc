@@ -37,28 +37,21 @@ internal sealed partial class ObjectFile
     private void VerifySourceExpressionTemporary(SourceExpression expression,List<SourceExpressionEdge> edges)
     {
         if(!SourceExpressionTemporaries.TryGetValue(expression.Id,out var value) || expression.SourceTypeId is not long type)throw new InvalidDataException("Original temporary expression lacks its typed initialization recipe");
-        bool constructor=value.Kind==5,constant=value.Kind is 2 or 6;
-        if((value.Constant is not null)!=constant || !constructor && (value.Constructor is not null || value.DependentConstructor) ||
-            constructor && ((value.Constructor is not null)==value.DependentConstructor) ||
-            value.DependentConstructor && !SourceTypeContainsParameter(type,0))
-            throw new InvalidDataException("Original source temporary has inconsistent selected initialization");
+        bool constant=value.Kind is 2 or 6;
+        if((value.Constant is not null)!=constant)
+            throw new InvalidDataException("Source temporary constant payload differs from its recorded initialization kind");
         string? role=value.Kind switch {3 or 4=>"initializer",5=>"argument",7=>"source",_=>null};
         if(role is null?edges.Count!=0:edges.Any(edge=>edge.Role!=role) || value.Kind!=5 && edges.Count!=1)
             throw new InvalidDataException("Original source temporary lost its ordered initializer operands");
-        var flags=SourceExpressionTemporaryFlags.GetValueOrDefault(expression.Id,[]);
-        if(!constructor && flags.Any(flag=>flag is "implicit-copy-initialization" or "value-initialization" or "sequenced-arguments"))
-            throw new InvalidDataException("Source temporary constructor flags lack constructor initialization");
-        if(value.Constructor is long ctor)VerifyTemporaryRoutine(ctor,"constructor",type);
-        if(value.Destructor is long dtor)VerifyTemporaryRoutine(dtor,"destructor",type);
+        if(value.Constructor is long ctor)VerifyTemporaryRoutine(ctor,"constructor");
+        if(value.Destructor is long dtor)VerifyTemporaryRoutine(dtor,"destructor");
     }
 
-    private void VerifyTemporaryRoutine(long declaration,string expected,long objectType)
+    private void VerifyTemporaryRoutine(long declaration,string expected)
     {
         var value=SourceExpressionDeclarations[declaration];
-        while(SourceTypeById(objectType).Kind is "qualified" or "typedef" or "array")objectType=SourceTypeById(objectType).UnderlyingTypeId??throw new InvalidDataException("Source temporary object type has no underlying type");
-        if(value.Kind!="routine" || value.RoutineKind!=expected || !SourceRoutines.TryGetValue(value.Type,out var signature) ||
-            signature.ObjectTypeId is not long owner || SourceArgumentTypeIdentity(owner,0)!=SourceArgumentTypeIdentity(objectType,0))
-            throw new InvalidDataException("Source temporary selected routine lacks its exact original object and special-member role");
+        if(value.Kind!="routine" || value.RoutineKind!=expected || !SourceRoutines.ContainsKey(value.Type))
+            throw new InvalidDataException("Source temporary has an invalid selected routine reference kind");
     }
 
     private string SourceTemporaryIdentity(long id,int depth)

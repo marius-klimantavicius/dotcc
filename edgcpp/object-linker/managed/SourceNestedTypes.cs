@@ -47,19 +47,7 @@ internal sealed partial class ObjectFile
                 if (!seen.Add(owner) || seen.Count > 128) throw new InvalidDataException("Nested source declaration ownership cycle/depth");
                 owner = next;
             }
-            var type = SourceTypeById(pair.Key);
-            string identity = SourceNestedTypeIdentity(pair.Key);
-            if (type.Kind == "record" && SourceRecordsByType[type.Id].IdentityKey != identity ||
-                type.Kind == "enum" && (SourceEnums[type.Id].IdentityKey != identity || SourceEnums[type.Id].OwnerTypeId != pair.Value))
-                throw new InvalidDataException("Nested type identity differs from its exact original enclosing declaration");
+
         }
-        foreach (var record in SourceRecords.Values)
-            if (record.IdentityKey.StartsWith("source-nested-declaration:", StringComparison.Ordinal) &&
-                !SourceNestedTypeDeclarations.ContainsKey(record.SourceTypeId))
-                throw new InvalidDataException("Nested source record identity lacks declaration provenance");
-        foreach (var enumeration in SourceEnums.Values)
-            if (enumeration.IdentityKey.StartsWith("source-nested-declaration:", StringComparison.Ordinal) &&
-                !SourceNestedTypeDeclarations.ContainsKey(enumeration.TypeId))
-                throw new InvalidDataException("Nested source enum identity lacks declaration provenance");
     }
 }

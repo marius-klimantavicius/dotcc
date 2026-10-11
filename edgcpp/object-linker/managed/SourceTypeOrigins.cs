@@ -92,7 +92,6 @@ internal sealed partial class ObjectFile
             if(!SourceAliasInstances.TryGetValue(value.Prototype,out var prototype) || prototype.Template!=pair.Key || !prototype.Prototype ||
                 type.SourceName!=SourceTemplates[pair.Key].SourceName)
                 throw new InvalidDataException("Alias template does not own its exact original prototype type");
-            if(value.Constraint is long constraint)RequireSourceConstraintOperand(SourceExpressions[constraint]);
         }
         foreach(var pair in SourceAliasInstances)
         {
@@ -122,36 +121,5 @@ internal sealed partial class ObjectFile
         var value=SourceTypeOperators[id];
         if(value.Operand is long type)return "type-operator:"+SourceIdentityFrame(value.Opcode.ToString(CultureInfo.InvariantCulture))+SourceIdentityFrame(SourceArgumentTypeIdentity(type,depth+1));
         return "type-operator:"+SourceIdentityFrame(value.Opcode.ToString(CultureInfo.InvariantCulture))+(value.Unparenthesized?"1":"0")+SourceIdentityFrame(SourceStructuralExpressionKey(value.Expression!.Value,depth+1));
-    }
-    private void VerifySourceTypeOriginContracts()
-    {
-        foreach(var pair in SourceAliasInstances)
-        {
-            var value=pair.Value;
-            MatchSourceConstraintArguments(SourceTemplateParameters.GetValueOrDefault(value.Template,[]),SourceAliasSelectedArguments.GetValueOrDefault(pair.Key,[]),"alias-selected",pair.Key,0);
-            string key=SourceAliasIdentity(pair.Key,0);
-            string contract=(value.Prototype?"1":"0")+(value.Nonreal?"1":"0")+(value.Dependent?"1":"0")+(value.OriginalPresent?"1":"0")+
-                string.Concat(SourceAliasOriginalArguments.GetValueOrDefault(pair.Key,[]).Select(arg=>SourceIdentityFrame(SourceConstraintArgumentDetailsIdentity("alias-original",pair.Key,0,arg))));
-            // This declaration boundary retains the original unevaluated RHS,
-            // including decltype/type operands even when execution is unknown.
-            var declaration=SourceNamedTemplates[value.Template];
-            var underlying=SourceTypes[declaration.Prototype].UnderlyingTypeId!.Value;
-            contract+=SourceIdentityFrame(SourceAliasDefinitionContract(underlying,[]));
-            if(declaration.Constraint is long constraint)contract+=SourceIdentityFrame(SourceExpressionIdentity(constraint,[],[]));
-            AddSourceConstraintContract("alias:"+key,contract);
-        }
-    }
-    private string SourceAliasDefinitionContract(long id,HashSet<long> active)
-    {
-        if(active.Count>128 || !active.Add(id))throw new InvalidDataException("Original alias definition type cycle/depth");
-        var type=SourceTypes[id];string result;
-        if(SourceTypeOperators.TryGetValue(id,out var op))
-            result="operator:"+op.Opcode+":"+(op.Dependent?"1":"0")+(op.Unparenthesized?"1":"0")+SourceIdentityFrame(op.Expression is long expression?
-                SourceExpressionIdentity(expression,[],[]):SourceTypeSignature(op.Operand!.Value));
-        else if(SourceAliasInstances.ContainsKey(id))result=SourceAliasIdentity(id,0);
-        else if(type.Kind is "typedef" or "qualified")result=SourceIdentityFrame((type.IsConst?"c":"")+(type.IsVolatile?"v":"")+(type.IsRestrict?"r":"")+(type.IsAtomic?"a":"")+string.Concat(SourceTypeQualifiers.GetValueOrDefault(id,[]).Select(SourceIdentityFrame)))+
-            SourceAliasDefinitionContract(type.UnderlyingTypeId!.Value,active);
-        else result=SourceTypeSignature(id);
-        active.Remove(id);return result;
     }
 }

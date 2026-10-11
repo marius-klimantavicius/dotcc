@@ -62,10 +62,7 @@ internal sealed partial class ObjectFile
                 if(!SourceClassTemplateHeaders.TryGetValue(primary,out var original) || original.Primary is not null ||
                     SourceRecords[primary].SourceName!=record.SourceName || SourceRecords[primary].RecordKind!=record.RecordKind)
                     throw new InvalidDataException("Selected class specialization lost its original primary header");
-                MatchSourceConstraintArguments(SourceClassTemplateFormals.GetValueOrDefault(primary,[]),pattern,"class-pattern",pair.Key,0);
             }
-            if(value.Constraint is long constraint)RequireSourceConstraintOperand(SourceExpressions[constraint]);
-            AddSourceConstraintContract("class-template-header:"+SourceRecordIdentity(pair.Key,0),SourceClassHeaderContract(pair.Key));
         }
         foreach(var pair in SourceRecordInstantiations)
         {
@@ -75,24 +72,7 @@ internal sealed partial class ObjectFile
             var selected=SourceClassSpecializations[pair.Key];var header=SourceClassTemplateHeaders[selected.Selected];
             var arguments=SourceClassSpecializationArguments.GetValueOrDefault(pair.Key,[]);
             if(arguments.Count!=selected.ArgumentCount)throw new InvalidDataException("Selected class argument mapping is incomplete");
-            MatchSourceConstraintArguments(SourceClassTemplateFormals.GetValueOrDefault(selected.Selected,[]),arguments,"class-selected",pair.Key,0);
-            MatchSourceConstraintArguments(SourceClassTemplateFormals.GetValueOrDefault(header.Primary!.Value,[]),SourceTemplateArguments.GetValueOrDefault(pair.Key,[]),"class",pair.Key,0);
-            // Concrete nominal/ABI identity stays unchanged. The two original
-            // substitutions are independently compared when units are linked.
-            string contract=SourceIdentityFrame(SourceClassHeaderContract(selected.Selected))+SourceIdentityFrame(SourceClassHeaderContract(header.Primary.Value))+
-                "P"+SourceClassArgumentContract(SourceTemplateArguments.GetValueOrDefault(pair.Key,[]))+
-                "S"+SourceClassArgumentContract(arguments);
-            AddSourceConstraintContract("class-partial-instance:"+SourceRecordIdentity(pair.Key,0),contract);
+
         }
-    }
-    private string SourceClassArgumentContract(List<SourceTemplateArgument> arguments)=>
-        SourceIdentityFrame(arguments.Count.ToString(CultureInfo.InvariantCulture))+string.Concat(arguments.Select(argument=>SourceIdentityFrame(SourceStructuralArgumentKey(argument,argument.IsPack,0))));
-    private string SourceClassHeaderContract(long id)
-    {
-        var value=SourceClassTemplateHeaders[id];var formals=SourceClassTemplateFormals.GetValueOrDefault(id,[]);
-        return SourceIdentityFrame(SourceRecordIdentity(id,0))+SourceIdentityFrame(value.Primary is long primary?SourceRecordIdentity(primary,0):"")+
-            "F"+SourceIdentityFrame(formals.Count.ToString(CultureInfo.InvariantCulture))+string.Concat(formals.Select(formal=>SourceIdentityFrame(SourceStructuralFormalKey(formal,0))))+
-            "P"+SourceIdentityFrame(value.PatternCount.ToString(CultureInfo.InvariantCulture))+string.Concat(SourceClassTemplatePatterns.GetValueOrDefault(id,[]).Select(argument=>SourceIdentityFrame(SourceConstraintArgumentDetailsIdentity("class-pattern",id,0,argument))))+
-            "C"+SourceIdentityFrame(value.Constraint is long constraint?SourceStructuralExpressionKey(constraint,0):"");
     }
 }

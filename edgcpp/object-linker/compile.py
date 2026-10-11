@@ -15,6 +15,10 @@ import zlib
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = Path(__file__).with_name('schema.sql')
 ARRAYS = {
+    'edgGraphNodes': ('edg_graph_nodes', ['id', 'entryKind', 'entryKindName', 'capturePhase']),
+    'edgGraphFields': ('edg_graph_fields', ['nodeId', 'name', 'ordinal', 'valueKind', 'value', 'targetId', 'targetEntryKind']),
+    'edgGraphRoots': ('edg_graph_roots', ['nodeId', 'contextNodeId', 'role', 'ordinal']),
+    'edgGraphCoverage': ('edg_graph_coverage', ['entryKind', 'field', 'disposition', 'detail']),
     'sourceNamespaces': ('source_namespaces', ['id','parentId','sourceName','isUnnamed','isInline','hasInternalLinkage','sourceFileId','line','column','captureProof']),
     'sourceNamespaceOwners': ('source_namespace_owners', ['ownerKind','ownerId','namespaceId','captureProof']),
     'sourceEnumIncrements': ('source_enum_increments', ['operationConstantId', 'previousConstantId', 'oneConstantId', 'originalSourceTypeId', 'didForceDependentType', 'captureProof']),
@@ -47,7 +51,7 @@ ARRAYS = {
     'sourceConceptUses': ('source_concept_uses', ['expressionId', 'conceptId', 'isTypeConstraint']),
     'sourceConceptArguments': ('source_concept_arguments', ['expressionId', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
     'sourceExpressionParameters': ('source_expression_parameters', ['expressionId', 'ordinal', 'sourceTypeId', 'declaredSourceTypeId', 'sourceName', 'qualifierBits', 'isPack']),
-    'sourceExpressionParameterReferences': ('source_expression_parameter_references', ['expressionId', 'binderId', 'parameterOrdinal', 'originalLevelsUp']),
+    'sourceExpressionParameterReferences': ('source_expression_parameter_references', ['expressionId', 'binderId', 'parameterNumber', 'originalLevelsUp']),
     'sourceExpressionOperations': ('source_expression_operations', ['expressionId', 'opcode', 'operationName', 'originalTypeKind']),
     'sourceExpressionFlags': ('source_expression_flags', ['expressionId', 'flag']),
     'sourceExpressionTypeOperands': ('source_expression_type_operands', ['expressionId', 'sourceTypeId']),
@@ -86,7 +90,7 @@ ARRAYS = {
     'sourceRoutineTypes': ('source_routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy', 'parameterMode', 'objectTypeId', 'objectIsConst', 'objectIsVolatile', 'objectRefQualifier', 'exceptionPolicyOrigin', 'prototypeOrigin', 'hasBorrowedArguments', 'declaratorContextCount']),
     'sourceDeclaratorContexts': ('source_declarator_contexts', ['id', 'routineSourceTypeId', 'scopeOrdinal', 'kind', 'selectedSourceDeclarationId', 'sourceRecordId', 'headerSourceRecordId', 'argumentCount', 'borrowedArgumentCount', 'sourceFileId', 'line', 'column', 'captureProof']),
     'sourceDeclaratorBorrowedArguments': ('source_declarator_borrowed_arguments', ['contextId', 'argumentOrdinal', 'sourceTypeId']),
-    'sourceRoutineTypeSubstitutions': ('source_routine_type_substitutions', ['routineSourceTypeId', 'selectedSourceDeclarationId', 'borrowedArgumentCount', 'captureProof']),
+    'sourceRoutineTypeSubstitutions': ('source_routine_type_substitutions', ['routineSourceTypeId', 'selectedSourceDeclarationId', 'argumentOwnerKind', 'borrowedArgumentCount', 'captureProof']),
     'sourceRoutineBorrowedArguments': ('source_routine_borrowed_arguments', ['routineSourceTypeId', 'argumentOrdinal', 'sourceTypeId']),
     'sourceRoutineParameters': ('source_routine_parameters', ['typeId', 'ordinal', 'parameterTypeId']),
     'deferredFunctionDeclarations': ('deferred_function_declarations', ['entityId', 'sourceRoutineTypeId', 'captureProof']),
@@ -453,7 +457,7 @@ def package_entries(entries, path, source, unit_id, provenance, started_ns):
                 db.execute(insert, values)
         if seen != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
             raise ValueError('Missing semantic wire fields')
-        if header['formatVersion'] != 1 or header['profile'] != 'scalar-control-v62':
+        if header['formatVersion'] != 1 or header['profile'] != 'scalar-control-v64':
             raise ValueError('Unsupported semantic wire version/profile')
         if header['sourceLanguage'] not in ('c', 'c++'):
             raise ValueError('Unsupported source language')

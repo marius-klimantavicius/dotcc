@@ -22,8 +22,7 @@ internal sealed partial class ObjectFile
             var owner = SourceRecords[field.SourceRecordId];
             if (width.Kind == "dependent")
             {
-                if (!owner.IsDependent || owner.LayoutKnown || width.ConstantId is not long symbolic ||
-                    !ContainsSourceParameter(symbolic, 0))
+                if (!owner.IsDependent || owner.LayoutKnown || width.ConstantId is null)
                     throw new InvalidDataException("Dependent bitfield width claims evaluated storage or lacks its symbolic recipe");
             }
             else

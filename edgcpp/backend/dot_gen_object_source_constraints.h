@@ -101,12 +101,14 @@ struct SourceConstraintTemporary {
   std::vector<std::string> flags;
 };
 struct SourceConstraintAllocation {
+  bool initialization_present=false,rollback_present=false;
   unsigned type=0,routine=0;
   bool lookup_deferred=false;
   bool is_new=false,dependent=false,placement=false,aligned=false,array_delete=false,global=false;
   bool has_initializer=false,braced=false,paren_aggregate=false,deducible=false,parenthesized=false;
 };
 struct SourceConstraintExpression {
+  unsigned graph_node=0;
   std::string kind,operation,error;
   SourceConstraintTemporary temporary;
   SourceConstraintAllocation allocation;
@@ -114,7 +116,7 @@ struct SourceConstraintExpression {
   bool parenthesized=false,compiler_generated=false,volatile_fetch=false,pack_expansion=false;
   int fold_token=-1;bool fold_left=false;std::string fold_operator;
   a_field_ptr field=nullptr;unsigned field_owner=0,field_ordinal=0;
-  unsigned parameter_number=0,levels_up=0,resolved_binder=0;
+  unsigned parameter_number=0,levels_up=0;
   bool standard_alignof=false;
   int opcode=-1,operation_type_kind=-1;
   std::vector<std::string> flags;
@@ -157,6 +159,7 @@ struct SourceLocalScope {
   a_source_position position={};
 };
 struct SourceConstraintDeclaration {
+  unsigned graph_node=0;
   unsigned namespace_owner=0;
   std::string kind,name,qualified_name,error;
   unsigned type=0,owner_type=0,template_prototype=0;
@@ -183,6 +186,7 @@ struct SourceClassSpecialization {
   std::string error;
 };
 struct SourceRoutineTypeSubstitution {
+  std::string argument_owner_kind="function-template";
   a_routine_ptr selected=nullptr;
   std::map<a_type_ptr,std::vector<unsigned>> roots;
   std::map<unsigned,unsigned> observed_arguments;
@@ -215,8 +219,6 @@ struct SourceConstraintGraph {
   std::set<a_new_delete_supplement_ptr> deferred_new_lookups;
   std::map<std::tuple<unsigned,unsigned,unsigned>,std::pair<unsigned,unsigned>> binder_pairs;
   std::map<unsigned,unsigned> requires_binders;
-  std::map<unsigned,unsigned> type_operator_binders;
-  std::set<a_type_ptr> active_type_contexts;
   std::map<std::pair<void*,std::string>,unsigned> declarations_by_original;
   std::vector<SourceConstraintDeclaration> declarations;
   std::set<unsigned> semantic_routine_signatures;
@@ -500,7 +502,7 @@ inline unsigned capture_constraint_variable(a_variable_ptr variable) {
   auto &graph=source_constraint_graph();auto key=std::make_pair(static_cast<void*>(variable),std::string("variable"));
   auto previous=graph.declarations_by_original.find(key);if(previous!=graph.declarations_by_original.end())return previous->second;
   unsigned id=unsigned(graph.declarations.size()+1);graph.declarations_by_original[key]=id;graph.declarations.emplace_back();
-  SourceConstraintDeclaration value;value.kind="variable";value.type=capture_type(variable->type);value.is_constexpr=variable->is_constexpr;
+  SourceConstraintDeclaration value;value.graph_node=typed_graph::root(variable,iek_variable,"observed-declaration",id-1);value.kind="variable";value.type=capture_type(variable->type);value.is_constexpr=variable->is_constexpr;
   if(!capture_constraint_function_parameter(variable,value))capture_constraint_local_variable(variable,value);
   capture_constraint_declaration_scope(variable->source_corresp,value);
   value.original_init_kind=int(variable->init_kind);value.initializer_kind="none";
@@ -587,77 +589,13 @@ inline void capture_selected_member_owner(unsigned owner_id,unsigned primary_id,
   if(!record.template_error.empty())error=record.template_error;
   s.records[owner]=record;
 }
-inline bool same_declarator_argument(const SourceTemplateArgument &left,const SourceTemplateArgument &right) {
-  return std::tie(left.kind,left.type,left.constant,left.templ,left.pack,left.pack_element,left.ellipsis,
-    left.integer_pack,left.explicit_argument,left.injected_class,left.auto_parameter,left.decltype_auto_parameter,
-    left.expansion,left.substituted_template)==std::tie(right.kind,right.type,right.constant,right.templ,
-    right.pack,right.pack_element,right.ellipsis,right.integer_pack,right.explicit_argument,right.injected_class,
-    right.auto_parameter,right.decltype_auto_parameter,right.expansion,right.substituted_template);
-}
-inline void capture_declarator_context_owner(unsigned context_id) {
-  auto &graph=source_constraint_graph();
-  if(graph.declarator_contexts.at(context_id-1).owner_captured)return;
-  graph.declarator_contexts.at(context_id-1).owner_captured=true;
-  auto value=graph.declarator_contexts.at(context_id-1);const auto original=value.original;
-  SourceParameterScope original_scope(0);std::vector<SourceTemplateArgument> arguments;
-  if(original.routine && original.routine->assoc_template && original.routine->assoc_template->template_decl) {
-    auto templ=original.routine->assoc_template;
-    if((templ->kind!=templk_function && templ->kind!=templk_member_function) ||
-       original.header!=templ->template_decl || original.routine->is_prototype_instantiation)
-      value.error="anonymous routine context differs from its original function template header";
-    else {
-      value.kind="routine";value.declaration=capture_constraint_routine(original.routine);
-      arguments=graph.declarations.at(value.declaration-1).template_arguments;
-    }
-  } else {
-    auto owner=original.record;
-    if(!owner && original.routine && original.routine->source_corresp.is_class_member)
-      owner=scp_parent_class(&original.routine->source_corresp);
-    if(!owner || !is_immediate_class_type(owner))value.error="anonymous routine declarator requires an owned original routine or class context";
-    else {
-      auto supplement=class_type_supp(owner);auto templ=supplement->assoc_template;
-      if(!templ || (templ->kind!=templk_class && templ->kind!=templk_member_class) ||
-         !templ->template_decl || original.header!=templ->template_decl || owner->variant.class_struct_union.is_prototype_instantiation)
-        value.error="anonymous routine context differs from its original class template header";
-      else {
-        value.record_type=capture_type(owner);value.header_type=capture_source_class_template_header(templ,value.error);
-        bool partial=capture_source_class_specialization(owner,templ,value.error);
-        auto record=state().records.at(owner);
-        auto header=graph.class_template_headers.at(templ->prototype_instantiation.type);
-        unsigned primary=header.type;
-        if(record.template_prototype && record.template_prototype!=primary)
-          value.error="anonymous routine context conflicts with original class prototype";
-        else if(!record.template_prototype) {
-          record.template_prototype=primary;record.template_declarator_witness=context_id;
-          state().records[owner]=record;
-          for(auto argument=supplement->template_arg_list;argument;argument=argument->next)
-            record.template_arguments.push_back(capture_constraint_argument(argument,record.template_error));
-          state().records[owner]=record;
-        }
-        value.kind=partial?"class-partial":"class";
-        arguments=partial?graph.class_specializations.at(owner).arguments:state().records.at(owner).template_arguments;
-      }
-    }
-  }
-  if(value.error.empty() && arguments.size()!=original.arguments.size())
-    value.error="anonymous routine declarator context has different original argument count";
-  for(unsigned ordinal=0;value.error.empty() && ordinal<original.arguments.size();++ordinal) {
-    auto argument=original.arguments[ordinal];auto captured=capture_constraint_argument(&argument,value.error);
-    if(!same_declarator_argument(captured,arguments.at(ordinal)))
-      value.error="anonymous routine declarator context differs from the exact original ordered arguments";
-  }
-  // Recursive capture can add observed borrows. Preserve those live facts.
-  auto &destination=graph.declarator_contexts.at(context_id-1);
-  destination.kind=value.kind;destination.error=value.error;destination.declaration=value.declaration;
-  destination.record_type=value.record_type;destination.header_type=value.header_type;
-}
 inline unsigned capture_constraint_routine(a_routine_ptr routine) {
   SourceParameterScope declaration_scope(0);
   if(!routine)return 0;
   auto &graph=source_constraint_graph();auto key=std::make_pair(static_cast<void*>(routine),std::string("routine"));
   auto previous=graph.declarations_by_original.find(key);if(previous!=graph.declarations_by_original.end())return previous->second;
   unsigned id=unsigned(graph.declarations.size()+1);graph.declarations_by_original[key]=id;graph.declarations.emplace_back();
-  SourceConstraintDeclaration value;value.kind="routine";value.type=capture_type(routine->type);value.is_constexpr=routine->is_constexpr;
+  SourceConstraintDeclaration value;value.graph_node=typed_graph::root(routine,iek_routine,"observed-declaration",id-1);value.kind="routine";value.type=capture_type(routine->type);value.is_constexpr=routine->is_constexpr;
   value.routine_kind=routine->special_kind==sfk_constructor?"constructor":routine->special_kind==sfk_destructor?"destructor":routine->special_kind==sfk_operator?"operator":"function";
   if(routine->special_kind==sfk_operator)value.operator_kind=int(routine->variant.opname_kind);
   graph.semantic_routine_signatures.insert(value.type);
@@ -771,7 +709,7 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
   SourceParameterScope scope(binder);auto key=std::make_pair(expression,binder);
   auto previous=graph.expressions_by_original.find(key);if(previous!=graph.expressions_by_original.end())return previous->second;
   unsigned id=unsigned(graph.expressions.size()+1);graph.expressions_by_original[key]=id;graph.expressions.emplace_back();
-  SourceConstraintExpression value;value.location=expression->position;
+  SourceConstraintExpression value;value.graph_node=typed_graph::root(expression,iek_expr_node,"observed-expression",id-1);value.location=expression->position;
   {
     // Semantic result annotations use an existing type; they do not declare
     // the type recipe anew in the surrounding expression's lexical scope.
@@ -868,10 +806,12 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
       allocation.has_initializer=supplement->has_new_initializer;allocation.braced=supplement->new_initializer_is_brace_enclosed;
       allocation.paren_aggregate=supplement->new_initializer_is_paren_aggr_init;allocation.deducible=supplement->deducible_type;
       allocation.parenthesized=supplement->parenthesized_type_id;
+      allocation.initialization_present=supplement->dynamic_init!=nullptr;
+      allocation.rollback_present=supplement->freeing_of_storage_on_exception!=nullptr;
       if(!allocation.type)value.error="original allocation expression lacks its object type";
       if(!allocation.routine && !allocation.dependent)value.error="source allocation requires its original folded/default operator selection";
-      if(supplement->dynamic_init || supplement->freeing_of_storage_on_exception)
-        value.error="source allocation requires its original initialization/rollback graph";
+      // Initializer and rollback are retained as typed EDG graph links.
+      // Their presence does not require a second source-language projection.
       for(auto arg=supplement->arg;arg;arg=arg->next)edge(allocation.is_new?"allocation-argument":"delete-operand",arg,binder);
       if(supplement->number_of_elements)edge("array-bound",supplement->number_of_elements,binder);
       break;
@@ -928,19 +868,8 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
     }
     case enk_param_ref:
       value.kind="parameter-reference";value.parameter_number=expression->variant.param_ref.param_num;value.levels_up=expression->variant.param_ref.levels_up;
-      if(!binder || !value.parameter_number)value.error="source parameter reference requires original enclosing binder";
-      else {
-        // Exact stock get_param_for_param_ref prototype-stack resolution.
-        unsigned selected=binder,levels=value.levels_up;
-        if(levels==0) {
-          while(selected && !graph.binders.at(selected).outside)selected=graph.binders.at(selected).parent;
-        } else if(!graph.binders.at(selected).outside)--levels;
-        for(unsigned level=0;level<levels && selected;++level)selected=graph.binders.at(selected).parent;
-        auto found=graph.binders.find(selected);
-        if(found==graph.binders.end() || value.parameter_number>found->second.parameters.size())
-          value.error="source parameter reference leaves its exact original parameter binder";
-        else value.resolved_binder=selected;
-      }
+      // param_num (including zero for implicit this) and levels_up are EDG
+      // data. Resolving them here would duplicate frontend C++ name binding.
       break;
     case enk_variable:value.kind="variable-reference";value.declaration=capture_constraint_variable(expression->variant.variable.ptr);break;
     case enk_routine:

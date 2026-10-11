@@ -19,10 +19,7 @@ internal sealed partial class ObjectFile
                     q.Text(9)!="original-namespace-declaration" || !SourceNamespaces.TryAdd(value.Id,value))
                     throw new InvalidDataException("Original namespace declaration lost its name, flags or location");
             }
-        var namespaceIdentities=new HashSet<string>(StringComparer.Ordinal);
-        foreach(long id in SourceNamespaces.Keys)
-            if(!namespaceIdentities.Add(SourceNamespaceIdentity(id,[])))
-                throw new InvalidDataException("Repeated original namespace identity must reuse its exact declaration row");
+        foreach(long id in SourceNamespaces.Keys) SourceNamespaceIdentity(id,[]);
         using(var q=database.Prepare("SELECT owner_kind,owner_id,namespace_id,capture_proof FROM source_namespace_owners ORDER BY owner_kind,owner_id"))
             while(q.Read())
             {
@@ -75,23 +72,6 @@ internal sealed partial class ObjectFile
             if(typeOwner is long original && (!SourceNamespaceOwners.TryGetValue(("type",original),out long parentNamespace) ||
                 sourceNamespaceKeys[parentNamespace]!=sourceNamespaceKeys[pair.Value]))
                 throw new InvalidDataException("Original member namespace differs from its owning type namespace");
-        }
-        foreach(var value in SourceNamespaces.Values)
-            AddSourceConstraintContract("namespace:"+sourceNamespaceKeys[value.Id],(value.Unnamed?"1":"0")+(value.Inline?"1":"0")+(value.Internal?"1":"0"));
-        foreach(var record in SourceRecords.Values)
-        {
-            if(SourceProxyTypes.ContainsKey(record.Id) || SourceRecordOwners.ContainsKey(record.Id) || SourceNestedTypeDeclarations.ContainsKey(record.SourceTypeId) || record.IsDependent && !record.IsPrototypeInstantiation)continue;
-            string owner=SourcePrivateNamespace("type",record.SourceTypeId);
-            string prefix=(record.IsDependent && record.IsPrototypeInstantiation?"source-prototype:":"")+"namespace-private:";
-            if(owner.Length!=0? !record.IdentityKey.StartsWith(prefix+SourceIdentityFrame(owner),StringComparison.Ordinal):record.IdentityKey.StartsWith(prefix,StringComparison.Ordinal))
-                throw new InvalidDataException("Original private namespace record identity differs from its owned unit scope");
-        }
-        foreach(var enumeration in SourceEnums.Values)
-        {
-            if(enumeration.OwnerTypeId is not null)continue;
-            string owner=SourcePrivateNamespace("type",enumeration.TypeId);string prefix="namespace-private:";
-            if(owner.Length!=0?!enumeration.IdentityKey.StartsWith(prefix+SourceIdentityFrame(owner),StringComparison.Ordinal):enumeration.IdentityKey.StartsWith(prefix,StringComparison.Ordinal))
-                throw new InvalidDataException("Original private namespace enum identity differs from its owned unit scope");
         }
     }
 }

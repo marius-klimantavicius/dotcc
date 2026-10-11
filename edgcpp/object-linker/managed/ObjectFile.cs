@@ -20,6 +20,8 @@ internal sealed partial class ObjectFile : IDisposable
 
     private static readonly Dictionary<string, string> Tables = new(StringComparer.Ordinal)
     {
+        ["edg_graph_nodes"] = "id", ["edg_graph_fields"] = "node_id,name,ordinal",
+        ["edg_graph_roots"] = "role,ordinal", ["edg_graph_coverage"] = "entry_kind,field",
         ["exception_types"] = "id", ["exception_base_conversions"] = "exception_type_id,ordinal",
         ["throw_expressions"] = "node_id", ["throw_object_addresses"] = "node_id",
         ["throw_initialization_boundaries"] = "throw_node_id", ["throw_cleanup_transitions"] = "node_id",
@@ -171,7 +173,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v62" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v64" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -185,6 +187,7 @@ internal sealed partial class ObjectFile : IDisposable
             using (var primary = database.Prepare("SELECT s.available,s.sha256,o.source_sha256 FROM source_files s JOIN object_info o ON s.path=o.primary_source WHERE s.parent_id IS NULL"))
                 if (!primary.Read() || primary.Integer(0) != 1 || primary.Text(1) != primary.Text(2) || primary.Read())
                     throw new InvalidDataException("Primary source identity does not match exactly one available root snapshot");
+            ReadEdgGraphIntegrity();
             ReadSummaries();
             ReadInitializationActions();
             ReadDynamicInitializers();
@@ -192,7 +195,7 @@ internal sealed partial class ObjectFile : IDisposable
             ReadThunkWrappers();
             ReadLambdaEntryOrigins();
             ReadTlsRoutineOrigins();
-            ReadAndVerifySourceProvenance();
+            ReadSourceProvenance();
             ReadAndVerifyMacroProvenance();
             ReadMemoryBarrierMetadata();
             ReadStaticSources();

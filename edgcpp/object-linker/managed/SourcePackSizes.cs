@@ -21,27 +21,11 @@ internal sealed partial class ObjectFile
             if(SourcePackSizes.ContainsKey(constant.Id)!=(constant.Kind=="sizeof-pack"))
                 throw new InvalidDataException("Original pack size is missing its required operand metadata");
     }
-    private bool IsOriginalPackExpression(long id)
-    {
-        if(SourceExpressionConstants.TryGetValue(id,out long constant))
-            return SourceSemanticConstants[constant].Kind=="parameter" && SourceSemanticConstants[constant].IsPack;
-        if(SourceExpressionParameterReferences.TryGetValue(id,out var reference))
-            return SourceBinderParameters.TryGetValue(reference.Binder,out var parameters) && reference.Ordinal>=0 &&
-                reference.Ordinal<parameters.Count && parameters[(int)reference.Ordinal].Pack;
-        if(SourceExpressionDeclarationReferences.TryGetValue(id,out long declaration) &&
-            SourceFunctionParameterDeclarations.TryGetValue(declaration,out var parameter))
-            return SourceBinderParameters.TryGetValue(parameter.Binder,out var parameters) && parameter.Ordinal>=0 &&
-                parameter.Ordinal<parameters.Count && parameters[(int)parameter.Ordinal].Pack;
-        return false;
-    }
     private void VerifySourcePackSize(SourceSemanticConstant constant)
     {
-        var value=SourcePackSizes[constant.Id];var result=Original(SourceTypeById(constant.SourceTypeId));
-        bool pack=value.Type is long type ? SourceDependentTypes.TryGetValue(Original(SourceTypeById(type)).Id,out var parameter) && parameter.Kind=="parameter" && parameter.IsPack :
-            value.Template is long template ? SourceTemplates[template].Kind=="parameter" && SourceTemplates[template].IsPack : IsOriginalPackExpression(value.Expression!.Value);
-        if(!pack || constant.ValueText.Length!=0 || constant.OperatorName.Length!=0 ||
-            SourceSemanticConstantOperands.GetValueOrDefault(constant.Id,[]).Length!=0 || result.Kind=="bool" || SourceIntegerShape(result).Signed)
-            throw new InvalidDataException("Original pack size needs its exact parameter pack and unevaluated unsigned result");
+        if(constant.ValueText.Length!=0 || constant.OperatorName.Length!=0 ||
+            SourceSemanticConstantOperands.GetValueOrDefault(constant.Id,[]).Length!=0)
+            throw new InvalidDataException("Original pack size contains an unexpected evaluated value or operand list");
     }
     private string SourcePackSizeIdentity(long id,int depth)
     {

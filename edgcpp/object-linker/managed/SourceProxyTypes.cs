@@ -15,21 +15,4 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Original proxy class lost its exact dependent source type or claims an execution layout");
         }
     }
-    private void VerifySourceProxyTypes()
-    {
-        foreach(var pair in SourceProxyTypes)
-        {
-            var record=SourceRecords[pair.Key];var target=SourceTypeById(pair.Value.OriginalType);
-            bool unknown=target.Kind=="dependent" && SourceDependentTypes[target.Id].Kind=="unknown";
-            string expected=unknown?"source-proxy-local:"+SourceIdentityFrame(UnitId)+SourceIdentityFrame(pair.Value.Occurrence.ToString(System.Globalization.CultureInfo.InvariantCulture)):
-                "source-proxy:"+SourceIdentityFrame(SourceArgumentTypeIdentity(target.Id,0));
-            if(target.Kind!="dependent" && target.SourceForm!="type-operator" ||
-                !SourceTypeContainsParameter(target.Id,0) || SourceRecordInstantiations.ContainsKey(record.Id) ||
-                record.IdentityKey!=expected)
-                throw new InvalidDataException("Original proxy identity differs from its exact template parameter or type operator");
-        }
-        foreach(var record in SourceRecords.Values)
-            if((record.IdentityKey.StartsWith("source-proxy:",StringComparison.Ordinal) || record.IdentityKey.StartsWith("source-proxy-local:",StringComparison.Ordinal))!=SourceProxyTypes.ContainsKey(record.Id))
-                throw new InvalidDataException("Original proxy class lacks its required source-type relation");
-    }
 }

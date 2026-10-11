@@ -1,0 +1,470 @@
+{
+  "status": "verified-implementation-checkpoint",
+  "profile": "scalar-control-v64",
+  "native": "native167",
+  "managed": "managed206",
+  "authority": "EDG; managed consumer trusts source-language semantics",
+  "changes": [
+    "Remove exporter recursive source/template structural identities, lexical owner reconstruction, borrowed-recipe proof traversals and their caches.",
+    "Preserve actual source observations with typed EDG nodes/fields/references, context roots and prelower boundaries; retain existing executable/lifetime/EH projections.",
+    "Remove managed template/concept/enum global equivalence, template argument rematching, lexical/prototype rematching, new/delete result/operator and selected-constructor-owner reanalysis.",
+    "Keep container/typed-reference integrity and actual symbol/provider/ABI linking.",
+    "Provide per-unit disk catalog generation using existing function/lifetime emitter."
+  ],
+  "validation": {
+    "focused": {
+      "checks": 62,
+      "result": "edgcpp/artifacts/campaign/edg-authority-20261011/graph167-206/results.json",
+      "completeRawGraphAccepted": false,
+      "graphs": [
+        {
+          "fixture": "duckdb_source_member_substitutions",
+          "nodes": 824,
+          "fields": 39901,
+          "coverageGaps": [
+            [
+              2,
+              "(((a_constant_ptr)entry_ptr)->source_corresp).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              2,
+              "(((a_constant_ptr)entry_ptr)->source_corresp).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              2,
+              "rescan_info",
+              "additional configured field capture required"
+            ],
+            [
+              3,
+              "pack_expansion_descr",
+              "additional configured field capture required"
+            ],
+            [
+              6,
+              "(((a_type_ptr)entry_ptr)->source_corresp).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              6,
+              "(((a_type_ptr)entry_ptr)->source_corresp).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              7,
+              "((((a_variable_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              7,
+              "((((a_variable_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              8,
+              "((((a_field_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              8,
+              "((((a_field_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              11,
+              "((((a_routine_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              11,
+              "((((a_routine_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              13,
+              "extra.rescan_info",
+              "additional configured field capture required"
+            ],
+            [
+              30,
+              "((((a_namespace_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              30,
+              "((((a_namespace_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              32,
+              "destructible_entity_descr",
+              "additional configured field capture required"
+            ],
+            [
+              32,
+              "init_destination",
+              "additional configured field capture required"
+            ],
+            [
+              32,
+              "rescan_info",
+              "additional configured field capture required"
+            ],
+            [
+              46,
+              "template_symbol",
+              "additional configured field capture required"
+            ],
+            [
+              53,
+              "arg_operand",
+              "additional configured field capture required"
+            ],
+            [
+              53,
+              "pack_expansion_descr",
+              "additional configured field capture required"
+            ],
+            [
+              61,
+              "(((a_template_ptr)entry_ptr)->source_corresp).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              61,
+              "(((a_template_ptr)entry_ptr)->source_corresp).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              61,
+              "template_info",
+              "additional configured field capture required"
+            ],
+            [
+              66,
+              "((((a_template_parameter_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              66,
+              "((((a_template_parameter_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ]
+          ]
+        },
+        {
+          "fixture": "duckdb_source_implicit_this",
+          "nodes": 453,
+          "fields": 22655,
+          "coverageGaps": [
+            [
+              2,
+              "(((a_constant_ptr)entry_ptr)->source_corresp).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              2,
+              "(((a_constant_ptr)entry_ptr)->source_corresp).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              2,
+              "rescan_info",
+              "additional configured field capture required"
+            ],
+            [
+              3,
+              "pack_expansion_descr",
+              "additional configured field capture required"
+            ],
+            [
+              6,
+              "(((a_type_ptr)entry_ptr)->source_corresp).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              6,
+              "(((a_type_ptr)entry_ptr)->source_corresp).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              7,
+              "((((a_variable_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              7,
+              "((((a_variable_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              8,
+              "((((a_field_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              8,
+              "((((a_field_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              11,
+              "((((a_routine_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              11,
+              "((((a_routine_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              13,
+              "extra.rescan_info",
+              "additional configured field capture required"
+            ],
+            [
+              30,
+              "((((a_namespace_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              30,
+              "((((a_namespace_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              32,
+              "destructible_entity_descr",
+              "additional configured field capture required"
+            ],
+            [
+              32,
+              "init_destination",
+              "additional configured field capture required"
+            ],
+            [
+              32,
+              "rescan_info",
+              "additional configured field capture required"
+            ],
+            [
+              46,
+              "template_symbol",
+              "additional configured field capture required"
+            ],
+            [
+              53,
+              "arg_operand",
+              "additional configured field capture required"
+            ],
+            [
+              53,
+              "pack_expansion_descr",
+              "additional configured field capture required"
+            ],
+            [
+              61,
+              "(((a_template_ptr)entry_ptr)->source_corresp).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              61,
+              "(((a_template_ptr)entry_ptr)->source_corresp).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              61,
+              "template_info",
+              "additional configured field capture required"
+            ],
+            [
+              66,
+              "((((a_template_parameter_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              66,
+              "((((a_template_parameter_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ]
+          ]
+        },
+        {
+          "fixture": "duckdb_source_member_names",
+          "nodes": 799,
+          "fields": 38828,
+          "coverageGaps": [
+            [
+              2,
+              "(((a_constant_ptr)entry_ptr)->source_corresp).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              2,
+              "(((a_constant_ptr)entry_ptr)->source_corresp).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              2,
+              "rescan_info",
+              "additional configured field capture required"
+            ],
+            [
+              2,
+              "variant.template_param. variant.unknown_function.symbol",
+              "additional configured field capture required"
+            ],
+            [
+              3,
+              "pack_expansion_descr",
+              "additional configured field capture required"
+            ],
+            [
+              6,
+              "(((a_type_ptr)entry_ptr)->source_corresp).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              6,
+              "(((a_type_ptr)entry_ptr)->source_corresp).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              7,
+              "((((a_variable_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              7,
+              "((((a_variable_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              8,
+              "((((a_field_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              8,
+              "((((a_field_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              11,
+              "((((a_routine_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              11,
+              "((((a_routine_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              13,
+              "extra.rescan_info",
+              "additional configured field capture required"
+            ],
+            [
+              30,
+              "((((a_namespace_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              30,
+              "((((a_namespace_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              32,
+              "destructible_entity_descr",
+              "additional configured field capture required"
+            ],
+            [
+              32,
+              "init_destination",
+              "additional configured field capture required"
+            ],
+            [
+              32,
+              "rescan_info",
+              "additional configured field capture required"
+            ],
+            [
+              46,
+              "template_symbol",
+              "additional configured field capture required"
+            ],
+            [
+              53,
+              "arg_operand",
+              "additional configured field capture required"
+            ],
+            [
+              53,
+              "pack_expansion_descr",
+              "additional configured field capture required"
+            ],
+            [
+              61,
+              "(((a_template_ptr)entry_ptr)->source_corresp).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              61,
+              "(((a_template_ptr)entry_ptr)->source_corresp).trans_unit_corresp",
+              "additional configured field capture required"
+            ],
+            [
+              61,
+              "template_info",
+              "additional configured field capture required"
+            ],
+            [
+              66,
+              "((((a_template_parameter_ptr)entry_ptr)->source_corresp)).assoc_info",
+              "additional configured field capture required"
+            ],
+            [
+              66,
+              "((((a_template_parameter_ptr)entry_ptr)->source_corresp)).trans_unit_corresp",
+              "additional configured field capture required"
+            ]
+          ]
+        }
+      ]
+    },
+    "terminalPartial": {
+      "checks": 35,
+      "result": "edgcpp/artifacts/campaign/edg-authority-20261011/partial167-206/results.json",
+      "nativeStockJitNativeAotTrace": "123Xcba1!12a!123ba!"
+    },
+    "catalogGeneration": {
+      "build202": {
+        "checks": 84,
+        "targets": [
+          "implicit-this",
+          "weak-strong-override",
+          "optional-provider",
+          "activated-provider"
+        ]
+      },
+      "build204": {
+        "checks": 25,
+        "target": "weak-strong-override"
+      },
+      "build205": {
+        "checks": 29,
+        "target": "terminal-partial-EH",
+        "result": "edgcpp/artifacts/campaign/edg-authority-20261011/catalog-generation-partial166-205/results.json"
+      }
+    }
+  },
+  "limitations": [
+    "Not a coherent full DuckDB corpus; no full DuckDB generation/compilation/execution claim.",
+    "Configured frontend-only graph coverage gaps remain explicitly recorded; completeRawGraphAccepted is false.",
+    "Expanded typed graph representation is too large for full corpus on available disks; lossless structured compression is subsequent work.",
+    "No exporter speedup claimed: native166 diagnostic exception export59.16s/633360KiB including gzip vs native160 baseline1.53s/519488KiB; raw graph adds data formerly absent.166 diagnostic also had inaccurate allocation absence labels corrected in167, so it is not accepted object evidence."
+  ]
+}

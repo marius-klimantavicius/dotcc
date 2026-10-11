@@ -59,43 +59,8 @@ internal sealed partial class ObjectFile
         foreach (var value in SourceTemplates.Values)
             if (SourceTemplateParameters.GetValueOrDefault(value.Id, []).Count != value.ParameterCount)
                 throw new InvalidDataException("Source template parameter list is incomplete");
-        foreach (var pair in SourceTemplateParameters)
-            foreach (var formal in pair.Value)
-            {
-                if(SourceTemplates[pair.Key].Kind=="alias") {VerifySourceConstraintFormal(formal);continue;}
-                if (formal.Kind == "type")
-                {
-                    var type = Original(SourceTypeById(formal.TypeId!.Value));
-                    if (type.Kind != "dependent" || !SourceDependentTypes.TryGetValue(type.Id, out var parameter) ||
-                        parameter.Kind != "parameter" || parameter.IsPack != formal.IsPack ||
-                        parameter.NestingDepth != 0 || parameter.ParameterPosition != formal.Ordinal + 1)
-                        throw new InvalidDataException("Template type formal must retain its original placeholder type");
-                }
-                else if (formal.Kind == "constant")
-                {
-                    var constant = SourceSemanticConstants[formal.ConstantId!.Value];
-                    if (constant.Kind != "parameter" || constant.IsPack != formal.IsPack ||
-                        constant.ParameterDepth != 0 || constant.ParameterPosition != formal.Ordinal + 1)
-                        throw new InvalidDataException("Template non-type formal must retain its original placeholder value");
-                }
-                else if (SourceTemplates[formal.TemplateId!.Value].IsPack != formal.IsPack ||
-                    SourceTemplates[formal.TemplateId.Value].ParameterDepth != 0 ||
-                    SourceTemplates[formal.TemplateId.Value].ParameterPosition != formal.Ordinal + 1)
-                    throw new InvalidDataException("Template formal pack differs from its exact template parameter declaration");
-            }
-        // EDG NO_NESTING_DEPTH belongs specifically to an original inner
-        // template-template formal list; it is not an unbound source type.
-        var formals = SourceTemplateParameters.Values.SelectMany(value => value).ToArray();
-        foreach (var parameter in SourceDependentTypes.Values.Where(value => value.Kind == "parameter" && value.NestingDepth == 0))
-            if (!formals.Any(formal => formal.TypeId is long type && Original(SourceTypeById(type)).Id == parameter.TypeId))
-                throw new InvalidDataException("Depth-zero source type has no owned template formal declaration");
-        foreach (var parameter in SourceSemanticConstants.Values.Where(value => value.Kind == "parameter" && value.ParameterDepth == 0))
-            if (!formals.Any(formal => formal.ConstantId == parameter.Id))
-                throw new InvalidDataException("Depth-zero source value has no owned template formal declaration");
-        foreach (var parameter in SourceTemplates.Values.Where(value => value.Kind=="parameter" && value.ParameterDepth == 0))
-            if (!formals.Any(formal => formal.TemplateId == parameter.Id))
-                throw new InvalidDataException("Depth-zero source template has no owned enclosing formal declaration");
-        foreach (long id in SourceTemplates.Keys) SourceTemplateIdentity(id, 0);
+        foreach (var formal in SourceTemplateParameters.Values.SelectMany(values => values))
+            VerifySourceConstraintFormal(formal);
     }
     private string SourceTemplateIdentity(long id, int depth)
     {

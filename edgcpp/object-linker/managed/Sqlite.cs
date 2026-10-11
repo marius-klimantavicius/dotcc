@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace DotObj;
 
 // SQLite is a linker dependency only. No generated application references this class.
-internal sealed class Sqlite : IDisposable
+internal sealed partial class Sqlite : IDisposable
 {
     private nint database;
 
@@ -24,19 +24,26 @@ internal sealed class Sqlite : IDisposable
         throw new DllNotFoundException("The dotobj linker requires SQLite 3 (sqlite3.dll, libsqlite3.so, or libsqlite3.dylib).");
     }
 
-    public Sqlite(string path)
+    public Sqlite(string path) : this(path, false) {}
+
+    private Sqlite(string path, bool catalogWriter)
     {
-        // READONLY, no URI interpretation, and no extension loading.
-        int result = Native.sqlite3_open_v2(path, out database, 1, 0);
+        // Object files stay READONLY; only the exclusive-create catalog factory
+        // selects writing. No URI interpretation or extension loading in either mode.
+        int result = Native.sqlite3_open_v2(path, out database, catalogWriter ? 2 : 1, 0);
         if (result != 0)
         {
             string error = Error;
             Dispose();
             throw new InvalidDataException($"Cannot open object {path}: {error}");
         }
-        Execute("PRAGMA query_only=ON");
+        if (!catalogWriter) Execute("PRAGMA query_only=ON");
+        else Execute("PRAGMA foreign_keys=ON");
+        Execute("PRAGMA cache_size=-8192");
+        Execute("PRAGMA temp_store=FILE");
+        Execute("PRAGMA mmap_size=0");
         Execute("PRAGMA trusted_schema=OFF");
-        Execute("BEGIN"); // All reads observe a single snapshot.
+        if (!catalogWriter) Execute("BEGIN"); // All object reads observe a single snapshot.
     }
 
     private string Error => Marshal.PtrToStringUTF8(Native.sqlite3_errmsg(database)) ?? "SQLite error";
@@ -63,7 +70,7 @@ internal sealed class Sqlite : IDisposable
         }
     }
 
-    internal sealed class Statement(Sqlite owner, nint handle) : IDisposable
+    internal sealed partial class Statement(Sqlite owner, nint handle) : IDisposable
     {
         private nint statement = handle;
         public bool Read()
@@ -97,7 +104,7 @@ internal sealed class Sqlite : IDisposable
         }
     }
 
-    private static class Native
+    private static partial class Native
     {
         private const string Library = "dotobj_sqlite";
         [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]

@@ -79,7 +79,7 @@ internal sealed partial class Emitter
                 }
             }
             """;
-        string cleanupHooks = linker.Definitions.Any(symbol => symbol.Object.FunctionCleanupStates.ContainsKey(symbol.Entity.Id)) ? """
+        string cleanupHooks = (emissionPlan?.RuntimeFlag("CleanupFrame",true) ?? linker.Definitions.Any(symbol => symbol.Object.FunctionCleanupStates.ContainsKey(symbol.Entity.Id))) ? """
             // A false first-pass filter marks exceptional exit without selecting
             // a handler. Forced thread exit still runs destructors even though
             // it bypasses source catch/noexcept termination classification.

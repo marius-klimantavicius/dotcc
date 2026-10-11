@@ -116,22 +116,15 @@ internal sealed partial class ObjectFile
         ReadSourceEnumIncrements();
         foreach (var constant in SourceSemanticConstants.Values) VerifySourceSemanticConstant(constant);
         VerifySourceTemplateReferences();
-        foreach (long bound in SourceArrayBounds.Values)
-            if (!ContainsSourceParameter(bound, 0)) throw new InvalidDataException("Dependent array bound lost its dependent semantic operand");
-    }
-
-    private bool ContainsSourceParameter(long id, int depth)
-    {
-        if (depth > 128) throw new InvalidDataException("Source semantic constant graph is cyclic or too deep");
-        return SourceSemanticConstants[id].Kind is "parameter" or "member" ||
-            SourcePackSizes.ContainsKey(id) ||
-            SourceSemanticConstantExpressions.TryGetValue(id,out long expression) && SourceVariableExpressionContainsParameter(expression,depth+1) ||
-            SourceSemanticConstants[id].OperandSourceTypeId is long type && SourceTypeContainsParameter(type, depth + 1) ||
-            SourceSemanticConstantOperands.GetValueOrDefault(id, []).Any(child => ContainsSourceParameter(child, depth + 1));
     }
 
     private void VerifySourceSemanticConstant(SourceSemanticConstant value)
     {
+        if(value.Kind=="source-expression")
+        {
+            VerifySourceConstantExpression(value);
+            return;
+        }
         SourceType valueType = Original(SourceTypeById(value.SourceTypeId));
         bool unknownType = valueType.Kind == "dependent" && SourceDependentTypes[valueType.Id].Kind == "unknown";
         if (unknownType && value.Kind is not ("member" or "expression" or "source-expression"))
@@ -167,7 +160,6 @@ internal sealed partial class ObjectFile
             if (value.ParameterDepth is not >= 0 || value.ParameterPosition is not > 0 || value.SourceFileId is null || value.Line <= 0 ||
                 value.ValueText.Length != 0 || value.OperatorName.Length != 0 || operands.Length != 0)
                 throw new InvalidDataException("Non-type template parameter requires its original declaration and coordinates");
-            SourceConstantParameterIdentity(value);
         }
         else
         {
@@ -198,18 +190,9 @@ internal sealed partial class ObjectFile
                 if (value.ValueText.Length != 0 || (value.Kind == "expression" ? value.OperatorName.Length != 0 || operands.Length != 1
                     : !unary && !binary && !conditional || operands.Length != (conditional ? 3 : unary ? 1 : 2)))
                     throw new InvalidDataException("Source constant operation lost its exact operator or operand shape");
-                // EDG changes the declared enumerator type when completing
-                // its enum, retaining the original initializer's type. The
-                // owned enumerator row proves this declaration boundary.
-                bool enumInitializer=valueType.Kind=="enum" && SourceEnums[valueType.Id].IsNonreal &&
-                    SourceEnumerators.GetValueOrDefault(valueType.Id,[]).Any(item=>item.ConstantId==value.Id);
-                if (value.Kind == "expression" && !enumInitializer && !SourceEnumIncrementPreviousValues.ContainsKey(value.Id) && SourceConstantTypeIdentity(value.SourceTypeId, 0) !=
-                    SourceConstantTypeIdentity(SourceSemanticConstants[operands[0]].SourceTypeId, 0))
-                    throw new InvalidDataException("Source constant expression wrapper changes its operand type");
+
             }
         }
-        // Name-only leaves have their receiver-bound identity checked separately.
-        if(!sourceMemberNameConstants.Contains(value.Id)) SourceConstantIdentity(value.Id, 0); // Includes cycle/depth validation.
     }
 
     private static string SourceIdentityFrame(string value) => Encoding.UTF8.GetByteCount(value).ToString(CultureInfo.InvariantCulture) + ":" + value;
@@ -236,7 +219,7 @@ internal sealed partial class ObjectFile
         {
             "sizeof-pack" => result + SourcePackSizeIdentity(value.Id,depth+1),
             "aggregate" => result + SourceAggregateIdentity(value.Id,depth+1),
-            "source-expression" => result + SourceIdentityFrame(SourceVariableExpressionIdentity(SourceSemanticConstantExpressions[id],depth+1)),
+            "source-expression" => result + SourceIdentityFrame(UnitId)+SourceIdentityFrame(SourceSemanticConstantExpressions[id].ToString(CultureInfo.InvariantCulture)),
             "integer" => result + SourceIdentityFrame(value.ValueText),
             "member" => result + SourceIdentityFrame(SourceArgumentTypeIdentity(value.OwnerSourceTypeId!.Value, depth + 1)) + SourceIdentityFrame(value.SourceName),
             "parameter" => result + SourceIdentityFrame(SourceConstantParameterIdentity(value)) + ":" + (value.IsPack ? "1" : "0"),
@@ -305,25 +288,5 @@ internal sealed partial class ObjectFile
         return owner + string.Concat(SourceTemplateArguments.GetValueOrDefault(id, []).Select(argument => SourceIdentityFrame((argument.Kind == "pack-boundary" ? "pack-boundary" : argument.Kind == "type"
                 ? "t" + SourceArgumentTypeIdentity(argument.TypeId!.Value, depth + 1) : argument.Kind == "constant"
                 ? "c" + SourceConstantIdentity(argument.ConstantId!.Value, depth + 1) : "m" + SourceTemplateIdentity(argument.TemplateId!.Value, depth + 1))+(argument.IsPack?":pack":""))));
-    }
-    private void VerifySourceTemplateMetadata()
-    {
-        VerifySourceProxyTypes();
-        foreach (var record in SourceRecords.Values)
-        {
-            bool instance = record.IsDependent && !SourceProxyTypes.ContainsKey(record.Id) && !record.IsPrototypeInstantiation && !SourceRecordOwners.ContainsKey(record.Id) && !SourceNestedTypeDeclarations.ContainsKey(record.SourceTypeId);
-            bool instanceKey = record.IdentityKey.StartsWith("source-instantiation:", StringComparison.Ordinal) ||
-                record.IdentityKey.StartsWith("source-member-instantiation:", StringComparison.Ordinal) ||
-                record.IdentityKey.StartsWith("source-parameter-instantiation:", StringComparison.Ordinal);
-            bool selectedConcrete= !record.IsDependent && SourceRecordInstantiations.ContainsKey(record.Id);
-            if(selectedConcrete && !SourceDeclaratorClassWitnesses.Contains(record.Id) && !SourceExpressionDeclarations.Values.Any(declaration=>declaration.TemplateOriginKind=="class-member-function" &&
-                declaration.OwnerType==record.SourceTypeId && declaration.TemplatePrototype is long primary &&
-                SourceExpressionDeclarations.TryGetValue(primary,out var original) && original.OwnerType is long originalOwner &&
-                SourceRecordsByType.TryGetValue(originalOwner,out var prototype) && prototype.Id==SourceRecordInstantiations[record.Id].PrototypeSourceRecordId))
-                throw new InvalidDataException("Concrete class substitution lacks its exact selected original member ownership");
-            if (SourceRecordInstantiations.ContainsKey(record.Id) != (instance || selectedConcrete) || instanceKey != instance ||
-                instance && record.IdentityKey != SourceRecordIdentity(record.Id, 0))
-                throw new InvalidDataException("Dependent class identity differs from its exact original template arguments");
-        }
     }
 }

@@ -26,13 +26,20 @@ internal sealed class Names
         "remove", "required", "scoped", "select", "set", "unmanaged", "value", "var", "when", "where", "with", "yield"
     };
     private readonly HashSet<string> allocated = new(StringComparer.Ordinal);
+    private readonly Func<string,bool>? persistentAdd;
+    private readonly Func<string,bool>? persistentContains;
+    public Names() {}
+    public Names(Func<string,bool> add, Func<string,bool> contains)
+    { persistentAdd=add; persistentContains=contains; }
+    private bool Add(string value)=>persistentAdd?.Invoke(value)??allocated.Add(value);
+    private bool Contains(string value)=>persistentContains?.Invoke(value)??allocated.Contains(value);
 
     public string Allocate(string source, string fallback)
     {
         string name = Identifier(string.IsNullOrEmpty(source) ? fallback : source);
         string candidate = name;
         int suffix = 2;
-        while (!allocated.Add(candidate)) candidate = name + "__" + suffix++.ToString(CultureInfo.InvariantCulture);
+        while (!Add(candidate)) candidate = name + "__" + suffix++.ToString(CultureInfo.InvariantCulture);
         return ReservedKeywords.Contains(candidate) ? "@" + candidate : candidate;
     }
 
@@ -43,14 +50,14 @@ internal sealed class Names
         string name = Identifier(string.IsNullOrEmpty(source) ? fallback : source);
         string candidate = name;
         int suffix = 2;
-        while (allocated.Contains(candidate) || allocated.Contains("get_" + candidate))
+        while (Contains(candidate) || Contains("get_" + candidate))
             candidate = name + "__" + suffix++.ToString(CultureInfo.InvariantCulture);
-        allocated.Add(candidate);
-        allocated.Add("get_" + candidate);
+        Add(candidate);
+        Add("get_" + candidate);
         return ReservedKeywords.Contains(candidate) ? "@" + candidate : candidate;
     }
 
-    public void Reserve(string name) => allocated.Add(name.TrimStart('@'));
+    public void Reserve(string name) => Add(name.TrimStart('@'));
 
     public static string Identifier(string text)
     {

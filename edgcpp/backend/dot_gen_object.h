@@ -280,59 +280,10 @@ struct Writer {
   static string source_frame(const string &value) { return std::to_string(value.size())+":"+value; }
 #include "dot_gen_object_namespaces.h"
   std::vector<string> source_semantic_constant_expressions,source_aggregate_constants,source_pack_sizes;
-  string source_variable_expression_identity(unsigned captured,unsigned depth) {
-    if(!captured || depth>128)reject("original source variable identity cycle/depth");
-    const auto &graph=dot_object_source::source_constraint_graph();
-    const auto &expression=graph.expressions.at(captured-1);
-    if(!expression.error.empty())reject(expression.error.c_str());
-    if(expression.kind!="variable-reference" || !expression.declaration)
-      reject("dependent source value requires its exact original variable reference");
-    const auto &value=graph.declarations.at(expression.declaration-1);
-    if(!value.error.empty())reject(value.error.c_str());
-    if(value.kind!="variable" || value.qualified_name.empty())reject("source value lacks original variable declaration identity");
-    string result=source_frame(value.qualified_name)+source_frame(value.owner_type?source_argument_type_identity(value.owner_type,depth+1):"")+
-      (value.has_template_origin?"1":"0")+(value.is_template_prototype?"1":"0")+source_frame(value.template_origin_kind);
-    if(value.namespace_owner && !source_private_namespace(value.namespace_owner).empty())result+="N"+source_frame(source_private_namespace(value.namespace_owner));
-    // Stock equiv_template_variables compares the original template and actual
-    // argument list. The initializer remains in the owned declaration graph,
-    // not substituted as a guessed constant or included in nominal identity.
-    for(const auto &argument:value.template_arguments)result+=source_frame((argument.kind=="pack-boundary"?string("pack-boundary"):argument.type?
-      "t"+source_argument_type_identity(argument.type,depth+1):argument.constant?"c"+source_constant_identity(argument.constant,depth+1):
-      "m"+source_template_identity(argument.templ,depth+1))+(argument.pack?":pack":""));
-    return result;
-  }
-  string source_constant_identity(unsigned id,unsigned depth=0) {
-    if(depth>128 || !id)reject("source semantic constant identity cycle/depth");
-    const auto &value=dot_object_source::state().semantic_constants.at(id-1);
-    if(!value.error.empty())reject(value.error.c_str());
-    const auto &original_type=dot_object_source::state().types.at(value.type-1);
-    string value_type=original_type.kind=="dependent" && original_type.dependent_kind=="unknown"?
-      "dependent-unknown":source_argument_type_identity(value.type,depth+1);
-    string result=value.kind+":"+source_frame(value_type);
-    if(value.type_operand)result+=source_frame(source_argument_type_identity(value.type_operand,depth+1));
-    if(value.kind=="builtin-trait")result+=source_frame(std::to_string(value.builtin_operation));
-    if(value.kind=="alignof")result+=value.standard_alignof?"std:":"extension:";
-    if(value.kind=="source-expression")result+=source_frame(source_variable_expression_identity(value.source_expression,depth+1));
-    else if(value.kind=="sizeof-pack")result+=(value.pack_is_type?"1":"0")+string(value.pack_is_template?"1":"0")+
-      source_frame(value.pack_type?source_argument_type_identity(value.pack_type,depth+1):value.pack_template?
-        source_template_identity(value.pack_template,depth+1):source_expression_key(value.pack_expression,depth+1));
-    else if(value.kind=="aggregate") {
-      result+=source_frame(std::to_string(value.aggregate_flags))+(value.aggregate_template_const?"1":"0")+
-        source_frame(value.aggregate_original_type?source_argument_type_identity(value.aggregate_original_type,depth+1):"");
-      for(auto child:value.operands)result+=source_frame(source_constant_identity(child,depth+1));
-    }
-    else if(value.kind=="integer")result+=source_frame(value.value);
-    else if(value.kind=="member")result+=source_frame(source_argument_type_identity(value.member_owner,depth+1))+source_frame(value.name);
-    else if(value.kind=="parameter") {
-      a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
-      conv_seq_to_file_and_line(value.location.seq,&display,&full,&line,&at_end);
-      result+=source_frame(string(full?full:display?display:"")+":"+std::to_string(line)+":"+
-        std::to_string(value.location.column)+":"+std::to_string(value.depth)+":"+std::to_string(value.position))+":"+(value.pack?"1":"0");
-    } else {
-      result+=source_frame(value.operation);
-      for(auto child:value.operands)result+=source_frame(source_constant_identity(child,depth+1));
-    }
-    return result;
+  string source_local_type_identity(unsigned captured) {
+    const char *unit=std::getenv("EDG_DOT_OBJECT_UNIT_ID");
+    if(!unit || !*unit)reject("source node identity lacks its object unit ID");
+    return "edg-source-node:"+source_frame(unit)+source_frame(std::to_string(captured));
   }
   string original_enum_identity(unsigned captured,unsigned depth=0) {
     if(depth>128)reject("source enum identity cycle/depth");
@@ -344,18 +295,8 @@ struct Writer {
     if(state.nested_type_declarations.count(value.original_type))identity=original_nested_type_identity(value.original_type);
     else if(enumeration.needs_final_identity && finalized!=state.finalized_enum_identities.end())
       identity="enum-abi:"+finalized->second;
-    else if(enumeration.is_template && enumeration.owner) {
-      // Nominal prototype enum identity uses its original owner, never the
-      // recursive enumerator value graph or a fabricated physical ABI type.
-      identity="source-member-enum:"+source_frame(source_argument_type_identity(enumeration.owner,depth+1))+
-        source_frame(value.name);
-      if(value.name.empty()) {
-        a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
-        conv_seq_to_file_and_line(value.position.seq,&display,&full,&line,&at_end);
-        identity+=source_frame(string(full?full:display?display:"")+":"+std::to_string(line)+":"+
-          std::to_string(value.position.column)+":"+std::to_string(enumeration.occurrence));
-      }
-    }
+    else if(enumeration.is_template && enumeration.owner)
+      identity=source_local_type_identity(captured);
     else if(enumeration.needs_final_identity && identity.find("local-enum:")!=0)
       reject("template enum lacks finalized frontend identity");
     if(identity.find("local-enum:")==0) {
@@ -368,60 +309,13 @@ struct Writer {
     }
     return enumeration.owner?identity:source_namespace_nominal_identity(value.namespace_owner,identity);
   }
-  string source_argument_type_identity(unsigned id,unsigned depth=0) {
-    if(depth>128 || !id)reject("source template type identity cycle/depth");
-    const auto &value=dot_object_source::state().types.at(id-1);
-    if(!value.error.empty())reject(value.error.c_str());
-    auto qualify_origin=[&](const string &origin) {
-      string qualifiers=(value.is_const?"c":"")+string(value.is_volatile?"v":"")+(value.is_restrict?"r":"")+(value.is_atomic?"a":"");
-      for(const auto &qualifier:value.qualifiers)qualifiers+=source_frame(qualifier);
-      return qualifiers.empty()?origin:"q"+source_frame(qualifiers)+source_frame(origin);
-    };
-    if(value.source_form=="template-alias" && dot_object_source::state().source_aliases.at(value.original_type).nonreal)
-      return qualify_origin(source_alias_identity(value.original_type,depth+1));
-    if(value.source_form=="type-operator" && value.operator_dependent) {
-      if(value.operator_type)return qualify_origin("type-operator:"+source_frame(std::to_string(value.type_operator))+source_frame(source_argument_type_identity(value.operator_type,depth+1)));
-      return qualify_origin("type-operator:"+source_frame(std::to_string(value.type_operator))+(value.operator_unparenthesized?"1":"0")+source_frame(source_expression_key(value.operator_expression,depth+1)));
-    }
-    if(value.kind=="typedef" || value.kind=="qualified") {
-      string inner=source_argument_type_identity(value.underlying,depth+1);
-      if(!value.is_const && !value.is_volatile && !value.is_restrict && !value.is_atomic && value.qualifiers.empty())return inner;
-      string qualifiers=(value.is_const?"c":"")+string(value.is_volatile?"v":"")+(value.is_restrict?"r":"")+(value.is_atomic?"a":"");
-      for(const auto &qualifier:value.qualifiers)qualifiers+=source_frame(qualifier);
-      return "q"+source_frame(qualifiers)+source_frame(inner);
-    }
-    if(value.kind=="record")return "r"+source_frame(original_record_identity(value.record_type,depth+1));
-    if(value.kind=="dependent") {
-      if(value.dependent_kind=="parameter")return "p"+source_frame(source_namespace_nominal_identity(value.namespace_owner,value.dependent_identity))+(value.dependent_pack?"1":"0");
-      if(value.dependent_kind=="auto-placeholder")return "auto:"+source_frame(std::to_string(value.dependent_position))+
-        source_frame(value.constraint_expression?source_expression_key(value.constraint_expression,depth+1):"");
-      if(value.dependent_kind=="member")return "m"+source_frame(source_argument_type_identity(value.dependent_owner,depth+1))+source_frame(value.name);
-      reject("unknown dependent type cannot identify a template argument");
-    }
-    if(value.kind=="array")return "a"+source_frame(value.dependent_array_bound?source_constant_identity(value.dependent_array_bound,depth+1):
-      value.array_bound_known?std::to_string(value.element_count):"?")+source_frame(source_argument_type_identity(value.underlying,depth+1));
-    if(value.kind=="pointer" || value.kind=="lvalue-reference" || value.kind=="rvalue-reference")
-      return value.kind+":"+source_frame(source_argument_type_identity(value.underlying,depth+1));
-    if(value.kind=="routine") {
-      string result="routine:"+source_frame(source_expression_type_key(value.result,depth+1))+source_frame(value.object_type?source_argument_type_identity(value.object_type,depth+1):"")+
-        (value.object_is_const?"1":"0")+(value.object_is_volatile?"1":"0")+source_frame(value.object_ref_qualifier)+(value.variadic?"1":"0")+
-        source_frame(dot_object_source::resolved_exception_policy(id))+source_frame(value.parameter_mode);
-      for(auto parameter:value.parameters)result+=source_frame(source_expression_type_key(parameter,depth+1));
-      for(auto thrown:dot_object_source::resolved_dynamic_exception_specification(id).declared_types)result+=source_frame(source_argument_type_identity(thrown,depth+1));
-      return result;
-    }
-    if(value.kind=="member-pointer")return "member-pointer:"+source_frame(source_argument_type_identity(value.member_owner,depth+1))+source_frame(source_argument_type_identity(value.underlying,depth+1));
-    if(value.kind=="enum")return "enum:"+source_frame(original_enum_identity(id,depth+1));
-    if(value.kind.empty())
-      reject("source template argument type identity family not yet represented");
-    return value.kind;
-  }
   unsigned source_semantic_constant(unsigned captured) {
     if(!captured)reject("source semantic constant is missing");
     auto prior=source_semantic_constant_ids.find(captured);if(prior!=source_semantic_constant_ids.end())return prior->second;
     const auto &value=dot_object_source::state().semantic_constants.at(captured-1);
     if(!value.error.empty())reject(value.error.c_str());
     unsigned id=unsigned(source_semantic_constant_ids.size()+1);source_semantic_constant_ids[captured]=id;
+    dot_object_source::typed_graph::projection(value.graph_node,"source-constant",id-1);
     source_semantic_constants.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(value.kind)+
       ",\"sourceTypeId\":"+number(source_type(value.type))+",\"sourceName\":"+quote(value.name)+
       ",\"valueText\":"+quote(value.value)+",\"parameterDepth\":"+(value.kind=="parameter"?std::to_string(value.depth):"null")+
@@ -450,190 +344,10 @@ struct Writer {
       ",\"captureProof\":\"original-aggregate-constant\"}");
     if(value.source_expression)source_semantic_constant_expressions.push_back("{\"constantId\":"+number(id)+
       ",\"expressionId\":"+number(source_constraint_expression(value.source_expression))+
-      ",\"captureProof\":\"original-dependent-variable-expression\"}");
+      ",\"captureProof\":\"original-edg-expression\"}");
     unsigned ordinal=0;for(auto child:value.operands)source_semantic_constant_operands.push_back("{\"constantId\":"+number(id)+
       ",\"ordinal\":"+std::to_string(ordinal++)+",\"operandId\":"+number(source_semantic_constant(child))+"}");
     return id;
-  }
-  string source_expression_type_key(unsigned id,unsigned depth) {
-    if(!id || depth>128)reject("source expression type identity cycle/depth");
-    const auto &value=dot_object_source::state().types.at(id-1);
-    if(value.kind=="dependent" && value.dependent_kind=="unknown")return "dependent-unknown";
-    if(value.kind=="typedef" || value.kind=="qualified") {
-      if(value.source_form!="plain")return source_argument_type_identity(id,depth+1);
-      string inner=source_expression_type_key(value.underlying,depth+1);
-      string qualifiers=(value.is_const?"c":"")+string(value.is_volatile?"v":"")+(value.is_restrict?"r":"")+(value.is_atomic?"a":"");
-      for(const auto &q:value.qualifiers)qualifiers+=source_frame(q);
-      return qualifiers.empty()?inner:"q"+source_frame(qualifiers)+source_frame(inner);
-    }
-    return source_argument_type_identity(id,depth+1);
-  }
-  string source_argument_key(const dot_object_source::SourceTemplateArgument &value,unsigned depth) {
-    return (value.kind=="pack-boundary"?string("pack-boundary"):value.type?"t"+source_argument_type_identity(value.type,depth+1):
-      value.constant?"c"+source_constant_identity(value.constant,depth+1):"m"+source_template_identity(value.templ,depth+1))+(value.pack?":pack":"");
-  }
-  string source_formal_key(const dot_object_source::SourceTemplateFormal &value,unsigned depth) {
-    return source_frame(value.kind)+(value.pack?"1":"0")+(value.abbreviated?"1":"0")+
-      source_frame(value.type?"t"+source_argument_type_identity(value.type,depth+1):value.constant?"c"+source_constant_identity(value.constant,depth+1):"m"+source_template_identity(value.templ,depth+1))+
-      source_frame(value.default_type?"t"+source_argument_type_identity(value.default_type,depth+1):value.default_constant?"c"+source_constant_identity(value.default_constant,depth+1):
-        value.default_template?"m"+source_template_identity(value.default_template,depth+1):"");
-  }
-  string source_local_scope_key(unsigned id,unsigned depth) {
-    if(!id || depth>128)reject("original local scope identity cycle/depth");
-    const auto &value=dot_object_source::source_constraint_graph().local_scopes.at(id-1);
-    if(!value.error.empty())reject(value.error.c_str());
-    return source_frame(value.kind)+source_frame(value.parent?source_local_scope_key(value.parent,depth+1):source_declaration_key(value.routine,depth+1))+source_frame(std::to_string(value.ordinal));
-  }
-  string source_declaration_key(unsigned id,unsigned depth) {
-    if(!id || depth>128)reject("source declaration identity cycle/depth");
-    const auto &value=dot_object_source::source_constraint_graph().declarations.at(id-1);
-    if(!value.error.empty())reject(value.error.c_str());
-    string result=source_frame(value.kind)+source_frame(value.qualified_name)+source_frame(source_expression_type_key(value.type,depth+1))+
-      source_frame(value.owner_type?source_argument_type_identity(value.owner_type,depth+1):"")+source_frame(value.template_origin_kind)+source_frame(value.routine_kind)+source_frame(value.operator_kind<0?"":std::to_string(value.operator_kind))+(value.is_constexpr?"1":"0")+
-      (value.has_template_origin?"1":"0")+(value.is_template_prototype?"1":"0");
-    if(value.namespace_owner && !source_private_namespace(value.namespace_owner).empty())result+="N"+source_frame(source_private_namespace(value.namespace_owner));
-    result+="B"+source_frame(value.parameter_owner?source_declaration_key(value.parameter_owner,depth+1):"")+
-      source_frame(value.parameter_owner?std::to_string(value.parameter_ordinal):"");
-    result+="L"+source_frame(value.local_scope?source_local_scope_key(value.local_scope,depth+1):"")+source_frame(value.local_scope?std::to_string(value.local_ordinal):"");
-    result+="F"+source_frame(std::to_string(value.template_formals.size()));
-    for(const auto &formal:value.template_formals)result+=source_frame(source_formal_key(formal,depth+1));
-    result+="A"+source_frame(std::to_string(value.template_arguments.size()));
-    for(const auto &argument:value.template_arguments)result+=source_frame(source_argument_key(argument,depth+1));
-    return result;
-  }
-  string source_parameter_reference_context_key(const dot_object_source::SourceConstraintExpression &expression) {
-    auto &graph=dot_object_source::source_constraint_graph();unsigned current=expression.binder;
-    string result;std::set<unsigned> seen;
-    while(current && seen.insert(current).second) {
-      const auto &value=graph.binders.at(current);
-      result+=source_frame(value.expression?"requires":"routine-prototype")+(value.outside?"1":"0");
-      if(current==expression.resolved_binder)return result;
-      current=value.parent;
-    }
-    reject("source parameter reference context does not reach its exact owner");return "";
-  }
-  string source_expression_constant_identity(unsigned id,unsigned depth) {
-    auto &graph=dot_object_source::source_constraint_graph();
-    const auto &expression=graph.expressions.at(id-1);
-    const auto &constant=dot_object_source::state().semantic_constants.at(expression.constant-1);
-    if(constant.kind!="member" || !constant.member_owner)return source_constant_identity(expression.constant,depth);
-    const auto &owner=dot_object_source::state().types.at(constant.member_owner-1);
-    if(owner.kind!="dependent" || owner.dependent_kind!="unknown")return source_constant_identity(expression.constant,depth);
-    unsigned receiver=0;int opcode=-1;unsigned uses=0;
-    for(const auto &parent:graph.expressions)for(unsigned ordinal=0;ordinal<parent.edges.size();++ordinal) {
-      const auto &edge=parent.edges.at(ordinal);if(edge.child!=id)continue;++uses;
-      if(parent.kind!="operation" || (parent.operation!="eok_dot_static" && parent.operation!="eok_points_to_static") ||
-         parent.edges.size()!=2 || ordinal!=1 || edge.role!="operand" || parent.edges.at(0).role!="operand")
-        reject("unknown-owner member name lacks its exact source receiver operation");
-      receiver=parent.edges.at(0).child;opcode=parent.opcode;
-    }
-    if(uses!=1 || !receiver || expression.kind!="constant" || expression.type!=constant.type)
-      reject("unknown-owner member name has an invalid receiver or name operand");
-    const auto &result_type=dot_object_source::state().types.at(constant.type-1);
-    string type_key=result_type.kind=="dependent" && result_type.dependent_kind=="unknown"?
-      "dependent-unknown":source_argument_type_identity(constant.type,depth+1);
-    return "dependent-member-name:"+source_frame(type_key)+
-      source_frame(constant.name)+source_frame(std::to_string(opcode))+source_frame(source_expression_key(receiver,depth+1));
-  }
-  string source_expression_key(unsigned id,unsigned depth) {
-    if(!id || depth>128)reject("source expression structural identity cycle/depth");
-    const auto &value=dot_object_source::source_constraint_graph().expressions.at(id-1);
-    if(!value.error.empty())reject(value.error.c_str());
-    string result=source_frame(value.kind)+source_frame(value.type?source_expression_type_key(value.type,depth+1):"")+
-      (value.lvalue?"l":value.xvalue?"x":"p")+source_frame(value.original_lvalue_type?source_expression_type_key(value.original_lvalue_type,depth+1):"")+
-      (value.parenthesized?"1":"0")+(value.compiler_generated?"1":"0")+(value.volatile_fetch?"1":"0")+(value.pack_expansion?"1":"0");
-    if(value.kind=="operation" || value.kind=="builtin-operation")result+="O"+source_frame(std::to_string(value.opcode))+source_frame(value.operation)+source_frame(value.operation_type_kind<0?"":std::to_string(value.operation_type_kind));
-    auto flags=value.flags;std::sort(flags.begin(),flags.end());result+="F"+source_frame(std::to_string(flags.size()));for(const auto &flag:flags)result+=source_frame(flag);
-    if(value.type_operand)result+="T"+source_frame(source_argument_type_identity(value.type_operand,depth+1));
-    if(value.constant)result+="C"+source_frame(source_expression_constant_identity(id,depth+1));
-    if(value.kind=="parameter-reference")result+="R"+source_frame(std::to_string(value.parameter_number))+source_frame(std::to_string(value.levels_up))+source_frame(source_parameter_reference_context_key(value));
-    if(value.kind=="compound-requirement")result+=value.noexcept_required?"N1":"N0";
-    if(value.kind=="sizeof" || value.kind=="alignof" || value.kind=="datasizeof")result+=value.standard_alignof?"Q1":"Q0";
-    result+="P"+source_frame(std::to_string(value.parameters.size()));
-    for(const auto &parameter:value.parameters)result+=source_frame(source_expression_type_key(parameter.type,depth+1))+
-      source_frame(parameter.declared_type?source_expression_type_key(parameter.declared_type,depth+1):"")+source_frame(std::to_string(parameter.qualifiers))+(parameter.pack?"1":"0");
-    if(value.declaration)result+="D"+source_frame(source_declaration_key(value.declaration,depth+1));
-    if(value.kind=="dependent-function-reference") {
-      result+="L"+source_frame(value.lookup_name)+source_frame(value.lookup_qualified_name)+source_frame(value.lookup_owner?source_argument_type_identity(value.lookup_owner,depth+1):"")+
-        source_frame(value.lookup_conversion_type?source_argument_type_identity(value.lookup_conversion_type,depth+1):"")+source_frame(std::to_string(value.lookup_operator))+
-        (value.lookup_template?"1":"0")+(value.lookup_qualified?"1":"0")+(value.lookup_address?"1":"0")+(value.lookup_symbol?"1":"0")+
-        (value.lookup_unknown_base?"1":"0")+(value.lookup_qualified_unknown_base?"1":"0");
-      result+="C"+source_frame(std::to_string(value.lookup_candidates.size()));
-      for(auto candidate:value.lookup_candidates)result+=source_frame(source_declaration_key(candidate,depth+1));
-    }
-    if(value.concept_id) {
-      const auto &concept=dot_object_source::source_constraint_graph().concepts.at(value.concept_id-1);
-      if(!concept.error.empty())reject(concept.error.c_str());
-      result+="K"+source_frame(concept.qualified_name)+(value.type_constraint?"1":"0");
-      if(!source_private_namespace(concept.namespace_owner).empty())result+="N"+source_frame(source_private_namespace(concept.namespace_owner));
-      result+="F"+source_frame(std::to_string(concept.formals.size()));
-      for(const auto &formal:concept.formals)result+=source_frame(source_formal_key(formal,depth+1));
-    }
-    result+="A"+source_frame(std::to_string(value.arguments.size()));
-    for(const auto &argument:value.arguments)result+=source_frame(source_argument_key(argument,depth+1));
-    result+="S"+source_frame(std::to_string(value.substitutions.size()));
-    for(const auto &substitution:value.substitutions) {
-      string group=string(substitution.known_dependent?"1":"0")+(substitution.known_nondependent?"1":"0")+(substitution.adjust_coordinates?"1":"0")+(substitution.alias_deduction_guide?"1":"0");
-      group+="F"+source_frame(std::to_string(substitution.formals.size()));
-      for(const auto &formal:substitution.formals)group+=source_frame(source_formal_key(formal,depth+1));
-      group+="A"+source_frame(std::to_string(substitution.arguments.size()));
-      for(const auto &argument:substitution.arguments)group+=source_frame(source_argument_key(argument,depth+1));
-      result+=source_frame(group);
-    }
-    if(value.kind=="field-reference")result+="H"+source_frame(source_expression_type_key(value.field_owner,depth+1))+source_frame(std::to_string(value.field_ordinal));
-    if(value.kind=="fold-expression")result+="J"+source_frame(std::to_string(value.fold_token))+source_frame(value.fold_operator)+(value.fold_left?"1":"0");
-    if(value.kind=="allocation-expression") {
-      const auto &allocation=value.allocation;
-      result+="B"+source_frame(source_expression_type_key(allocation.type,depth+1))+
-        source_frame(allocation.routine?source_declaration_key(allocation.routine,depth+1):"")+
-        (allocation.is_new?"1":"0")+(allocation.dependent?"1":"0")+(allocation.placement?"1":"0")+(allocation.aligned?"1":"0")+
-        (allocation.array_delete?"1":"0")+(allocation.global?"1":"0")+(allocation.has_initializer?"1":"0")+(allocation.braced?"1":"0")+
-        (allocation.paren_aggregate?"1":"0")+(allocation.deducible?"1":"0")+(allocation.parenthesized?"1":"0")+(allocation.lookup_deferred?"1":"0");
-    }
-    if(value.kind=="temporary-initialization") {
-      const auto &temp=value.temporary;
-      result+="I"+source_frame(std::to_string(temp.initialization_kind))+source_frame(temp.spelled_type?source_argument_type_identity(temp.spelled_type,depth+1):"")+
-        source_frame(temp.constructor?source_declaration_key(temp.constructor,depth+1):"")+source_frame(temp.destructor?source_declaration_key(temp.destructor,depth+1):"")+
-        source_frame(temp.constant?source_constant_identity(temp.constant,depth+1):"")+(temp.dependent_constructor?"1":"0");
-      auto init_flags=temp.flags;std::sort(init_flags.begin(),init_flags.end());result+="F"+source_frame(std::to_string(init_flags.size()));
-      for(const auto &flag:init_flags)result+=source_frame(flag);
-    }
-    auto ordered_edges=value.edges;std::stable_sort(ordered_edges.begin(),ordered_edges.end(),[](const auto&a,const auto&b){return a.role<b.role;});
-    result+="E"+source_frame(std::to_string(ordered_edges.size()));
-    for(const auto &edge:ordered_edges)result+=source_frame(edge.role)+source_frame(source_expression_key(edge.child,depth+1));
-    return result;
-  }
-  string source_alias_identity(a_type_ptr type,unsigned depth) {
-    if(depth>128)reject("source alias identity cycle/depth");
-    const auto &value=dot_object_source::state().source_aliases.at(type);
-    if(!value.error.empty())reject(value.error.c_str());
-    string result="alias-instance:"+source_frame(source_template_identity(value.templ,depth+1));
-    for(const auto &argument:value.arguments)result+=source_frame((argument.kind=="pack-boundary"?string("pack-boundary"):argument.type?
-      "t"+source_argument_type_identity(argument.type,depth+1):argument.constant?"c"+source_constant_identity(argument.constant,depth+1):
-      "m"+source_template_identity(argument.templ,depth+1))+(argument.pack?":pack":""));
-    return result;
-  }
-  string source_template_identity(unsigned id,unsigned depth=0) {
-    if(!id || depth>128)reject("source template identity cycle/depth");
-    const auto &value=dot_object_source::state().source_templates.at(id-1);
-    if(!value.error.empty())reject(value.error.c_str());
-    a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
-    conv_seq_to_file_and_line(value.location.seq,&display,&full,&line,&at_end);
-    string result="template-parameter:"+source_frame(string(full?full:display?display:"")+":"+std::to_string(line)+":"+
-      std::to_string(value.location.column)+":"+std::to_string(value.depth)+":"+std::to_string(value.position))+":"+(value.pack?"1":"0");
-    if(value.kind=="alias")result="template-alias:"+source_frame(value.qualified_name)+
-      source_frame(value.owner_type?source_argument_type_identity(value.owner_type,depth+1):"")+
-      source_frame(string(full?full:display?display:"")+":"+std::to_string(line)+":"+std::to_string(value.location.column));
-    if(value.kind=="alias" && !source_private_namespace(value.namespace_owner).empty())result+="N"+source_frame(source_private_namespace(value.namespace_owner));
-    for(const auto &formal:value.parameters) {
-      string item=formal.kind+":"+(formal.pack?"1":"0")+":"+(formal.abbreviated?"1":"0");
-      item+=source_frame(formal.type?source_argument_type_identity(formal.type,depth+1):formal.constant?
-        source_constant_identity(formal.constant,depth+1):source_template_identity(formal.templ,depth+1));
-      item+=source_frame(formal.default_type?"t"+source_argument_type_identity(formal.default_type,depth+1):formal.default_constant?
-        "c"+source_constant_identity(formal.default_constant,depth+1):formal.default_template?"m"+source_template_identity(formal.default_template,depth+1):"");
-      result+=source_frame(item);
-    }
-    return result;
   }
   unsigned source_template_reference(unsigned captured) {
     if(!captured)reject("source template reference is missing");
@@ -669,8 +383,11 @@ struct Writer {
     if(original==captured.type_ids.end() || parent==captured.type_ids.end())reject("nested declaration source types were not captured");
     const auto &snapshot=captured.types.at(original->second-1);
     if(snapshot.name.empty())reject("unnamed nested declaration needs its original occurrence identity");
-    return "source-nested-declaration:"+source_frame(source_argument_type_identity(parent->second,depth+1))+
-      source_frame(snapshot.kind)+source_frame(snapshot.name);
+    if(snapshot.kind=="record") {
+      auto finalized=captured.finalized_record_identities.find(type);
+      if(finalized!=captured.finalized_record_identities.end())return "record-abi:"+finalized->second;
+    }
+    return source_local_type_identity(original->second);
   }
   string original_record_identity(a_type_ptr type,unsigned depth=0) {
     if(depth>128)reject("original record ownership cycle/depth");
@@ -678,16 +395,11 @@ struct Writer {
     auto found=captured.records.find(type);
     if(found==captured.records.end())reject("original record owner lacks source snapshot");
     const auto &source=found->second;
-    if(source.proxy_type) {
-      if(!source.template_error.empty())reject(source.template_error.c_str());
-      const auto &original=captured.types.at(source.proxy_type-1);
-      if(original.kind=="dependent" && original.dependent_kind=="unknown") {
-        const char *unit=std::getenv("EDG_DOT_OBJECT_UNIT_ID");
-        if(!unit || !*unit)reject("unknown source proxy requires its owned translation unit");
-        return "source-proxy-local:"+source_frame(unit)+source_frame(std::to_string(source.source_occurrence));
-      }
-      return "source-proxy:"+source_frame(source_argument_type_identity(source.proxy_type,depth+1));
-    }
+    // Uninstantiated source records are graph nodes, not cross-unit semantic
+    // contracts. Their full prototype/argument/expression data is serialized
+    // independently below; no C++ equivalence operation is required here.
+    if(source.proxy_type || source.dependent)
+      return source_local_type_identity(captured.type_ids.at(type));
     auto owner=captured.record_owners.find(type);
     if(owner!=captured.record_owners.end()) {
       if(!source.name.empty() || !owner->second.owner || owner->second.owner==type || !owner->second.field)
@@ -697,35 +409,6 @@ struct Writer {
     }
     if(captured.nested_type_declarations.count(type))return original_nested_type_identity(type,depth+1);
     string identity=source.identity;
-    if(source.dependent) {
-      if(!source.prototype) {
-        if(!source.template_error.empty())reject((source.identity+": "+source.template_error).c_str());
-        string result;
-        if(source.template_parameter) {
-          if(source.member_template_owner || source.template_prototype)reject("template parameter instance has invented concrete template ownership");
-          result="source-parameter-instantiation:"+source_frame(source_template_identity(source.template_parameter,depth+1));
-        } else if(source.member_template_owner) {
-          if(source.template_prototype)reject("dependent member lookup has fabricated class template prototype");
-          result="source-member-instantiation:"+source_frame(source_argument_type_identity(source.member_template_owner,depth+1))+
-            source_frame(source.name);
-        } else {
-          if(!source.template_prototype)reject("dependent record lacks owned template prototype");
-          const auto &prototype=captured.types.at(source.template_prototype-1);
-          if(prototype.kind!="record")reject("dependent class template prototype is not a record");
-          result="source-instantiation:"+source_frame(original_record_identity(prototype.record_type,depth+1));
-        }
-        // Stock equiv_template_arg_lists compares kind, original payload and
-        // is_pack (templates.c). Preserve boundaries for variadic identities;
-        // expansion rescanning metadata is retained independently below.
-        for(const auto &argument:source.template_arguments)result+=source_frame((argument.kind=="pack-boundary"?string("pack-boundary"):argument.type?
-          "t"+source_argument_type_identity(argument.type,depth+1):argument.constant?"c"+source_constant_identity(argument.constant,depth+1):"m"+source_template_identity(argument.templ,depth+1))+(argument.pack?":pack":""));
-        return result;
-      }
-      a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
-      conv_seq_to_file_and_line(source.position.seq,&display,&full,&line,&at_end);
-      return "source-prototype:"+source_namespace_nominal_identity(source.namespace_owner,identity)+":"+string(full?full:display?display:"")+":"+
-        std::to_string((unsigned long long)line)+":"+std::to_string(source.position.column);
-    }
     if(source.template_identity || (!C_mode() && identity.find("local-record:")==0)) {
       // A genuine finalized name retains namespace/template/function ownership.
       // Anonymous member C names were excluded in favor of their owner above.
@@ -755,8 +438,9 @@ struct Writer {
     if(previous!=source_declarator_context_ids.end())return previous->second;
     const auto observation=dot_object_source::source_constraint_graph().declarator_contexts.at(captured-1);
     if(!observation.error.empty())reject(observation.error.c_str());
-    if(!observation.owner_captured || observation.observed_arguments.empty())reject("original declarator context has no observed borrowed arguments");
+    if(!observation.owner_captured)reject("original declarator context observation is absent");
     unsigned id=unsigned(source_declarator_context_ids.size()+1);source_declarator_context_ids[captured]=id;
+    dot_object_source::typed_graph::projection(observation.original.graph_node,"source-declarator-context",id-1);
     auto &captured_types=dot_object_source::state().types;
     unsigned declaration=observation.declaration?source_constraint_declaration(observation.declaration):0;
     unsigned record=observation.record_type?source_record_metadata(captured_types.at(observation.record_type-1).record_type):0;
@@ -1623,6 +1307,7 @@ struct Writer {
         " source="+(full?full:display?display:"")+":"+std::to_string(line)+":"+std::to_string(type.position.column)).c_str());
     }
     unsigned id=next_source_type++;source_type_ids[captured]=id;
+    dot_object_source::typed_graph::projection(type.graph_node,"source-type",id-1);
     unsigned execution=optional_source_execution_type(captured);
     unsigned underlying=type.underlying?source_type(type.underlying):0;
     if(type.kind=="record")source_record_metadata(type.record_type);
@@ -1682,6 +1367,7 @@ struct Writer {
         if(!observation.declaration)reject("source routine substitution lost its selected original declaration");
         source_routine_type_substitutions.push_back("{\"routineSourceTypeId\":"+number(id)+
           ",\"selectedSourceDeclarationId\":"+number(source_constraint_declaration(observation.declaration))+
+          ",\"argumentOwnerKind\":"+quote(observation.argument_owner_kind)+
           ",\"borrowedArgumentCount\":"+std::to_string(observation.observed_arguments.size())+
           ",\"captureProof\":\"original-routine-type-argument-substitution\"}");
         for(const auto &argument:observation.observed_arguments)
@@ -5585,7 +5271,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v62\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v64\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -5709,8 +5395,10 @@ struct Writer {
       ",\"memoryBarriers\":"+array(memory_barriers)+",\"memoryBarrierOperands\":"+array(memory_barrier_operands)+
       ",\"memoryBarrierDimensions\":"+array(memory_barrier_dimensions)+
       ",\"types\":"+array(types)+",\"entities\":"+array(entities)+
-      ",\"parameters\":"+array(parameters)+",\"functions\":"+array(functions)+",\"bindings\":"+array(bindings)+",\"nodes\":"+array(nodes)+",\"edges\":"+array(edges)+"}\n";
-    if(fwrite(result.data(),1,result.size(),stdout)!=result.size() || fflush(stdout))reject("wire output failure");
+      ",\"parameters\":"+array(parameters)+",\"functions\":"+array(functions)+",\"bindings\":"+array(bindings)+",\"nodes\":"+array(nodes)+",\"edges\":"+array(edges);
+    if(fwrite(result.data(),1,result.size(),stdout)!=result.size())reject("wire output failure");
+    dot_object_source::typed_graph::write(stdout);
+    if(fputs("}\n",stdout)<0 || fflush(stdout))reject("wire output failure");
   }
 };
 void emit(){Writer writer;writer.run();}

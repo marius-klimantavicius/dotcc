@@ -195,18 +195,6 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Original enum owner is not a class type");
             if(item.SourceOccurrence<0 || item.EnumeratorCount!=SourceEnumerators.GetValueOrDefault(item.TypeId,[]).Count)
                 throw new InvalidDataException("Original enum lost its complete ordered enumerator list");
-            if(item.IdentityKey.StartsWith("source-member-enum:",StringComparison.Ordinal)) {
-                if(!item.IsTemplate || item.OwnerTypeId is not long exactOwner)
-                    throw new InvalidDataException("Original template enum identity lost its declaration owner");
-                string expected="source-member-enum:"+SourceIdentityFrame(SourceArgumentTypeIdentity(exactOwner,0))+SourceIdentityFrame(source.SourceName);
-                if(source.SourceName.Length==0) {
-                    if(source.SourceFileId is null)throw new InvalidDataException("Anonymous original enum lacks its declaration location");
-                    using var file=database.Prepare($"SELECT path FROM source_files WHERE id={source.SourceFileId}");
-                    if(!file.Read())throw new InvalidDataException("Anonymous original enum lacks its declaration location");
-                    expected+=SourceIdentityFrame(file.Text(0)+":"+source.Line+":"+source.Column+":"+item.SourceOccurrence);
-                }
-                if(item.IdentityKey!=expected)throw new InvalidDataException("Original template enum identity differs from its exact owner and declaration");
-            }
             if(item.UnderlyingOrigin!=(item.HasExplicitBase?"declared":item.IsNonreal&&!item.IsScoped?"prototype-placeholder":"inferred") ||
                item.IsPrototype&&!item.IsNonreal || item.IsNonreal&&!item.IsTemplate ||
                item.IsNonreal && source.ExecutionRepresentationId is not null)

@@ -59,10 +59,6 @@ internal sealed partial class ObjectFile
         foreach (SourceRecord source in SourceRecords.Values)
         {
             SourceType type = SourceTypeById(source.SourceTypeId);
-            if (source.IdentityKey.StartsWith("source-prototype:", StringComparison.Ordinal) !=
-                (source.IsDependent && source.IsPrototypeInstantiation && !SourceRecordOwners.ContainsKey(source.Id) &&
-                 !SourceNestedTypeDeclarations.ContainsKey(source.SourceTypeId)))
-                throw new InvalidDataException("Original prototype identity differs from its dependent declaration facts");
             if (type.Kind != "record" || type.ExecutionRepresentationId is long physical && (!Records.TryGetValue(physical, out RecordType? execution) ||
                 source.IsDependent || source.IsComplete && (!source.LayoutKnown || source.IsTriviallyCopyable is null) ||
                 execution.SourceRecordId != source.Id || execution.RepresentationKind != "complete" ||

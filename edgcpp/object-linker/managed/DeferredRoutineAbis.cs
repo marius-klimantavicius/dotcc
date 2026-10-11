@@ -127,9 +127,14 @@ internal sealed partial class Linker
             }
     }
 
-    public bool IsUnresolvedRoutine(string type) => unresolvedDeferredRoutines.Contains(type);
+    public bool IsUnresolvedRoutine(string type) => catalogPlan?.Unresolved(type) ?? unresolvedDeferredRoutines.Contains(type);
 
-    public string CanonicalExecutionType(string type) => CanonicalExecutionType(type, new HashSet<string>(StringComparer.Ordinal), 0);
+    public string CanonicalExecutionType(string type)
+    {
+        if(catalogPlan is null)return CanonicalExecutionType(type,new HashSet<string>(StringComparer.Ordinal),0);
+        if(!normalizedTypes.TryGetValue(type,out string? value))normalizedTypes.Add(type,value=catalogPlan.Canonical(type));
+        return value;
+    }
 
     private string CanonicalExecutionType(string type, HashSet<string> active, int depth)
     {

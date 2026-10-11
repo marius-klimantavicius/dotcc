@@ -28,7 +28,6 @@ internal sealed partial class ObjectFile
                 declaration.InitializerExpression is not null || declaration.InitializerConstant is not null ||
                 owner.ScopeKind is not("nonlocal" or "namespace") || owner.Kind!="routine" || binder.Kind!="routine-prototype" || !binder.Outside || binder.Parent is not null ||
                 binder.RoutineType!=owner.Type || value.Ordinal>=parameters.Count ||
-                SourceTypeSignature(declaration.Type)!=SourceTypeSignature(parameters[(int)value.Ordinal].Type) ||
                 !unique.Add((value.Routine,value.Ordinal)))
                 throw new InvalidDataException("Source function parameter differs from its exact original routine, ordinal or adjusted type");
         }

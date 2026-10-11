@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v62'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v64'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -23,6 +23,44 @@ CREATE TABLE provenance (
  ordinal INTEGER PRIMARY KEY,
  kind TEXT NOT NULL,
  value TEXT NOT NULL
+) STRICT;
+-- EDG owns the meaning of this graph. These tables enforce its serialization
+-- structure, without resolving source-language recipes or lexical binders.
+CREATE TABLE edg_graph_nodes (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ entry_kind INTEGER NOT NULL CHECK(entry_kind>=0),
+ entry_kind_name TEXT NOT NULL CHECK(length(entry_kind_name)>0),
+ capture_phase TEXT NOT NULL CHECK(capture_phase='frontend-observation'),
+ UNIQUE(id,entry_kind)
+) STRICT;
+CREATE TABLE edg_graph_fields (
+ node_id INTEGER NOT NULL REFERENCES edg_graph_nodes(id),
+ name TEXT NOT NULL CHECK(length(name)>0),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ value_kind TEXT NOT NULL CHECK(value_kind IN ('signed','unsigned','boolean','text','bytes','reference')),
+ value TEXT,
+ target_id INTEGER,
+ target_entry_kind INTEGER CHECK(target_entry_kind>=0),
+ PRIMARY KEY(node_id,name,ordinal),
+ FOREIGN KEY(target_id,target_entry_kind) REFERENCES edg_graph_nodes(id,entry_kind),
+ CHECK((value_kind='reference' AND value IS NULL AND target_entry_kind IS NOT NULL) OR
+       (value_kind<>'reference' AND value IS NOT NULL AND target_id IS NULL AND target_entry_kind IS NULL)),
+ CHECK(value_kind<>'boolean' OR value IN ('0','1')),
+ CHECK(value_kind<>'bytes' OR (length(value)%2=0 AND value NOT GLOB '*[^0-9a-f]*'))
+) STRICT;
+CREATE TABLE edg_graph_roots (
+ node_id INTEGER NOT NULL REFERENCES edg_graph_nodes(id),
+ context_node_id INTEGER REFERENCES edg_graph_nodes(id),
+ role TEXT NOT NULL CHECK(length(role)>0),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ PRIMARY KEY(role,ordinal)
+) STRICT;
+CREATE TABLE edg_graph_coverage (
+ entry_kind INTEGER NOT NULL CHECK(entry_kind>=0),
+ field TEXT NOT NULL CHECK(length(field)>0),
+ disposition TEXT NOT NULL CHECK(disposition IN ('retained','frontend-private','gap','configuration')),
+ detail TEXT NOT NULL,
+ PRIMARY KEY(entry_kind,field)
 ) STRICT;
 CREATE TABLE source_files (
  id INTEGER PRIMARY KEY CHECK(id>0),
@@ -1422,10 +1460,9 @@ CREATE TABLE source_expression_parameters (
 ) STRICT;
 CREATE TABLE source_expression_parameter_references (
  expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),
- binder_id INTEGER NOT NULL REFERENCES source_parameter_binders(id),
- parameter_ordinal INTEGER NOT NULL CHECK(parameter_ordinal>=0),
- original_levels_up INTEGER NOT NULL CHECK(original_levels_up>=0),
- FOREIGN KEY(binder_id,parameter_ordinal) REFERENCES source_binder_parameters(binder_id,ordinal)
+ binder_id INTEGER REFERENCES source_parameter_binders(id),
+ parameter_number INTEGER NOT NULL CHECK(parameter_number>=0),
+ original_levels_up INTEGER NOT NULL CHECK(original_levels_up>=0)
 ) STRICT;
 CREATE TABLE source_expression_operations (
  expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),
@@ -1615,7 +1652,7 @@ CREATE TABLE default_argument_temporary_executions (
 CREATE TABLE source_semantic_constant_expressions (
  constant_id INTEGER PRIMARY KEY REFERENCES source_semantic_constants(id),
  expression_id INTEGER NOT NULL REFERENCES source_expressions(id),
- capture_proof TEXT NOT NULL CHECK(capture_proof='original-dependent-variable-expression')
+ capture_proof TEXT NOT NULL CHECK(capture_proof='original-edg-expression')
 ) STRICT;
 CREATE TABLE source_aggregate_constants (
  constant_id INTEGER PRIMARY KEY REFERENCES source_semantic_constants(id),
@@ -1717,8 +1754,8 @@ CREATE TABLE source_expression_allocations (
  is_parenthesized_aggregate INTEGER NOT NULL CHECK(is_parenthesized_aggregate IN(0,1)),
  has_deducible_type INTEGER NOT NULL CHECK(has_deducible_type IN(0,1)),
  has_parenthesized_type_id INTEGER NOT NULL CHECK(has_parenthesized_type_id IN(0,1)),
- initialization_disposition TEXT NOT NULL CHECK(initialization_disposition='absent-in-original'),
- rollback_disposition TEXT NOT NULL CHECK(rollback_disposition='absent-in-original'),
+ initialization_disposition TEXT NOT NULL CHECK(initialization_disposition IN ('absent-in-original','retained-in-edg-graph')),
+ rollback_disposition TEXT NOT NULL CHECK(rollback_disposition IN ('absent-in-original','retained-in-edg-graph')),
  capture_proof TEXT NOT NULL CHECK(capture_proof='original-new-delete-expression'),
  is_lookup_deferred INTEGER NOT NULL CHECK(is_lookup_deferred IN(0,1))
 ) STRICT;
@@ -1914,6 +1951,7 @@ CREATE TABLE source_bitfield_widths (
 CREATE TABLE source_routine_type_substitutions (
  routine_source_type_id INTEGER PRIMARY KEY REFERENCES source_routine_types(type_id),
  selected_source_declaration_id INTEGER NOT NULL REFERENCES source_expression_declarations(id),
+ argument_owner_kind TEXT NOT NULL CHECK(argument_owner_kind IN ('function-template','class-template','class-partial')),
  borrowed_argument_count INTEGER NOT NULL CHECK(borrowed_argument_count>0),
  capture_proof TEXT NOT NULL CHECK(capture_proof='original-routine-type-argument-substitution')
 ) STRICT;
@@ -1930,19 +1968,20 @@ CREATE TABLE source_declarator_contexts (
  id INTEGER PRIMARY KEY CHECK(id>0),
  routine_source_type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),
  scope_ordinal INTEGER NOT NULL CHECK(scope_ordinal>=0),
- kind TEXT NOT NULL CHECK(kind IN('routine','class','class-partial')),
+ kind TEXT NOT NULL CHECK(kind IN('routine','class','class-partial','observed')),
  selected_source_declaration_id INTEGER REFERENCES source_expression_declarations(id),
  source_record_id INTEGER REFERENCES source_record_types(id),
  header_source_record_id INTEGER REFERENCES source_class_template_headers(source_record_id),
- argument_count INTEGER NOT NULL CHECK(argument_count>0),
- borrowed_argument_count INTEGER NOT NULL CHECK(borrowed_argument_count>0 AND borrowed_argument_count<=argument_count),
+ argument_count INTEGER NOT NULL CHECK(argument_count>=0),
+ borrowed_argument_count INTEGER NOT NULL CHECK(borrowed_argument_count>=0 AND borrowed_argument_count<=argument_count),
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),column INTEGER NOT NULL CHECK(column>=0),
  capture_proof TEXT NOT NULL CHECK(capture_proof IN('observed-routine-declarator-instantiation-context','observed-function-instantiation-declarator-context')),
- CHECK(capture_proof<>'observed-function-instantiation-declarator-context' OR kind='routine'),
+ CHECK(capture_proof<>'observed-function-instantiation-declarator-context' OR kind IN('routine','observed')),
  UNIQUE(routine_source_type_id,scope_ordinal),
  CHECK((kind='routine' AND selected_source_declaration_id IS NOT NULL AND source_record_id IS NULL AND header_source_record_id IS NULL) OR
-       (kind<>'routine' AND selected_source_declaration_id IS NULL AND source_record_id IS NOT NULL AND header_source_record_id IS NOT NULL))
+       (kind IN('class','class-partial') AND selected_source_declaration_id IS NULL AND source_record_id IS NOT NULL AND header_source_record_id IS NOT NULL) OR
+       kind='observed')
 ) STRICT;
 CREATE TABLE source_declarator_borrowed_arguments (
  context_id INTEGER NOT NULL REFERENCES source_declarator_contexts(id),

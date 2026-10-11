@@ -23,6 +23,7 @@
 #include "const_ints.h"
 #include "exprutil.h"
 #include "scope_stk.h"
+#include "dot_gen_object_graph.h"
 BEGIN_EDG_NAMESPACE
 namespace dot_object_source {
 inline bool enabled() {
@@ -79,6 +80,7 @@ static_assert(int(trk_is_decltype)==1 &&
   int(trk_remove_volatile)==28 &&
   int(trk_remove_reference)==29, "source type operator profile mismatch");
 struct Type {
+  unsigned graph_node=0;
   unsigned id=0,underlying=0,execution=0,namespace_owner=0;
   unsigned long long element_count=0;
   bool array_bound_known=false;
@@ -114,6 +116,7 @@ struct Type {
   std::vector<bool> declaration_defaults;
 };
 struct SourceSemanticConstant {
+  unsigned graph_node=0;
   unsigned pack_type=0,pack_expression=0,pack_template=0;
   bool pack_is_type=false,pack_is_template=false;
   unsigned type=0,member_owner=0,type_operand=0,source_expression=0;
@@ -158,7 +161,6 @@ struct SourceTemplateArgument {
   unsigned expansion=0,substituted_template=0;
 };
 inline SourceTemplateArgument capture_constraint_argument(a_template_arg_ptr,std::string&);
-inline bool same_declarator_argument(const SourceTemplateArgument&,const SourceTemplateArgument&);
 struct Enumerator {
   unsigned constant=0;
   std::string name,value;
@@ -567,6 +569,7 @@ struct RoutineInstantiationFactory {
   a_template_arg_ptr arguments=nullptr;
 };
 struct RoutineDeclaratorContext {
+  unsigned graph_node=0;
   bool from_function_factory=false;
   a_routine_ptr routine=nullptr;
   a_type_ptr record=nullptr;
@@ -680,7 +683,6 @@ struct State {
   std::map<a_type_ptr,std::pair<a_type_ptr,a_routine_ptr>> lambda_prototype_recipes;
   std::map<a_type_ptr,std::vector<RoutineDeclaratorContext>> routine_declarator_contexts;
   std::vector<RoutineInstantiationFactory> routine_instantiation_factories;
-  std::map<a_type_ptr,std::string> routine_declarator_errors;
   std::map<an_asm_entry_ptr,AsmStatement> asm_statements;
   std::map<a_variable_ptr,Declaration> variables;
   std::map<a_type_ptr,Record> records;
@@ -715,46 +717,29 @@ struct RoutineInstantiationCapture {
   }
   ~RoutineInstantiationCapture() {if(active)state().routine_instantiation_factories.pop_back();}
 };
-inline bool original_type_has_expression_recipe(a_type_ptr type,std::set<a_type_ptr> &seen) {
-  if(!type || !seen.insert(type).second)return false;
-  if(type->kind==tk_typeref) {
-    if(type->variant.typeref.kind==trk_is_decltype || type->variant.typeref.kind==trk_is_typeof_with_expression)return true;
-    return original_type_has_expression_recipe(type->variant.typeref.type,seen);
-  }
-  if(type->kind==tk_pointer)return original_type_has_expression_recipe(type->variant.pointer.type,seen);
-  if(type->kind==tk_array)return original_type_has_expression_recipe(type->variant.array.element_type,seen);
-  return false;
-}
 inline void observe_routine_declarator_context(a_type_ptr type,const a_source_position &position) {
   if(!enabled() || !type || type->kind!=tk_routine)return;
   std::vector<RoutineDeclaratorContext> contexts;unsigned ordinal=0;
   for(auto scope=scope_stack_entry_for(depth_innermost_instantiation_scope);scope;scope=previous_scope_of(scope)) {
     if(!scope_is(scope,sck_template_instantiation))continue;
-    unsigned scope_ordinal=ordinal++;bool relevant=false;
-    for(auto argument=scope->template_arg_list;argument;argument=argument->next) {
-      std::set<a_type_ptr> seen;
-      if(argument->kind==tak_type && original_type_has_expression_recipe(argument->variant.type,seen))relevant=true;
-    }
-    if(!relevant)continue;
+    unsigned scope_ordinal=ordinal++;
     RoutineDeclaratorContext value;value.routine=scope->assoc_routine;value.record=scope->assoc_type;
     value.header=scope->template_decl_info?scope->template_decl_info->template_decl:nullptr;
-    if(!value.routine && !value.record && !scope->instance_sym && value.header) {
-      for(const auto &factory:state().routine_instantiation_factories)
-        if(factory.header==value.header && factory.arguments==scope->template_arg_list) {
-          if(value.routine && value.routine!=factory.routine)
-            state().routine_declarator_errors[type]="anonymous routine declarator has competing exact instantiation factories";
-          else {value.routine=factory.routine;value.from_function_factory=true;}
-        }
-    }
     value.position=position;value.scope_ordinal=scope_ordinal;
+    static unsigned graph_observation=0;
+    value.graph_node=typed_graph::context(type,value.routine,value.record,value.header,scope->template_arg_list,position,scope_ordinal,graph_observation++);
+    unsigned factory_ordinal=0;
+    for(const auto &factory:state().routine_instantiation_factories)
+      typed_graph::context_factory(value.graph_node,factory_ordinal++,factory.routine,factory.header,factory.arguments);
     for(auto argument=scope->template_arg_list;argument;argument=argument->next) {
       value.arguments.push_back(*argument);value.arguments.back().next=nullptr;
     }
     contexts.push_back(value);
   }
   if(contexts.empty())return;
-  auto inserted=state().routine_declarator_contexts.emplace(type,contexts);
-  if(!inserted.second)state().routine_declarator_errors[type]="routine declarator has competing original factory contexts";
+  state().routine_declarator_contexts.emplace(type,contexts);
+  // Every live observation is retained in the typed graph, including repeated
+  // observations of one shared routine type. The projection keeps its first view.
 }
 
 inline void observe_lambda_conversion_prototype(a_type_ptr copied,a_routine_ptr selected) {
@@ -825,135 +810,18 @@ inline void trace_routine_exception_policy(const char *phase,unsigned id,a_type_
 }
 
 inline unsigned capture_semantic_constant(a_constant_ptr constant);
-// Exact all-type operand families from a_builtin_operation_kind.  A negative
-// arity means one or more type arguments; zero leaves the family explicitly gated.
-inline int source_builtin_trait_arity(a_builtin_operation_kind kind) {
-  switch(kind) {
-    case bok_has_assign:return 1;
-    case bok_has_copy:return 1;
-    case bok_has_nothrow_assign:return 1;
-    case bok_has_nothrow_constructor:return 1;
-    case bok_has_nothrow_copy:return 1;
-    case bok_has_trivial_assign:return 1;
-    case bok_has_trivial_constructor:return 1;
-    case bok_has_trivial_copy:return 1;
-    case bok_has_trivial_destructor:return 1;
-    case bok_has_user_destructor:return 1;
-    case bok_has_virtual_destructor:return 1;
-    case bok_is_abstract:return 1;
-    case bok_is_base_of:return 2;
-    case bok_is_class:return 1;
-    case bok_is_convertible_to:return 2;
-    case bok_is_empty:return 1;
-    case bok_is_enum:return 1;
-    case bok_is_pod:return 1;
-    case bok_is_polymorphic:return 1;
-    case bok_is_union:return 1;
-    case bok_types_compatible:return 2;
-    case bok_is_trivial:return 1;
-    case bok_is_standard_layout:return 1;
-    case bok_is_trivially_copyable:return 1;
-    case bok_is_literal_type:return 1;
-    case bok_has_trivial_move_constructor:return 1;
-    case bok_has_trivial_move_assign:return 1;
-    case bok_has_nothrow_move_assign:return 1;
-    case bok_is_constructible:return -1;
-    case bok_is_nothrow_constructible:return -1;
-    case bok_has_finalizer:return 1;
-    case bok_is_delegate:return 1;
-    case bok_is_interface_class:return 1;
-    case bok_is_ref_array:return 1;
-    case bok_is_ref_class:return 1;
-    case bok_is_sealed:return 1;
-    case bok_is_simple_value_class:return 1;
-    case bok_is_value_class:return 1;
-    case bok_is_final:return 1;
-    case bok_is_trivially_constructible:return -1;
-    case bok_is_destructible:return 1;
-    case bok_is_nothrow_destructible:return 1;
-    case bok_is_trivially_destructible:return 1;
-    case bok_is_nothrow_assignable:return 2;
-    case bok_is_trivially_assignable:return 2;
-    case bok_is_valid_winrt_type:return 1;
-    case bok_is_win_class:return 1;
-    case bok_is_win_interface:return 1;
-    case bok_is_assignable:return 2;
-    case bok_is_trivially_copy_assignable:return 1;
-    case bok_is_assignable_no_precondition_check:return 2;
-    case bok_has_unique_object_representations:return 1;
-    case bok_is_aggregate:return 1;
-    case bok_reference_binds_to_temporary:return 2;
-    case bok_is_same:return 2;
-    case bok_is_same_as:return 2;
-    case bok_is_function:return 1;
-    case bok_is_layout_compatible:return 2;
-    case bok_is_pointer_interconvertible_base_of:return 2;
-    case bok_is_array:return 1;
-    case bok_array_rank:return 1;
-    case bok_is_arithmetic:return 1;
-    case bok_is_complete_type:return 1;
-    case bok_is_compound:return 1;
-    case bok_is_const:return 1;
-    case bok_is_floating_point:return 1;
-    case bok_is_fundamental:return 1;
-    case bok_is_integral:return 1;
-    case bok_is_lvalue_reference:return 1;
-    case bok_is_member_function_pointer:return 1;
-    case bok_is_member_object_pointer:return 1;
-    case bok_is_member_pointer:return 1;
-    case bok_is_object:return 1;
-    case bok_is_pointer:return 1;
-    case bok_is_reference:return 1;
-    case bok_is_rvalue_reference:return 1;
-    case bok_is_scalar:return 1;
-    case bok_is_signed:return 1;
-    case bok_is_unsigned:return 1;
-    case bok_is_void:return 1;
-    case bok_is_volatile:return 1;
-    case bok_is_bounded_array:return 1;
-    case bok_is_unbounded_array:return 1;
-    case bok_is_referenceable:return 1;
-    case bok_is_nothrow_convertible:return 2;
-    case bok_reference_constructs_from_temporary:return 2;
-    case bok_reference_converts_from_temporary:return 2;
-    case bok_is_convertible:return 2;
-    case bok_is_trivially_equality_comparable:return 1;
-    case bok_is_scoped_enum:return 1;
-    case bok_is_trivially_relocatable:return 1;
-    case bok_is_invocable:return -1;
-    case bok_is_nothrow_invocable:return -1;
-    case bok_is_bitwise_cloneable:return 1;
-    case bok_builtin_is_virtual_base_of:return 2;
-    case bok_builtin_is_implicit_lifetime:return 1;
-    case bok_builtin_lt_synthesizes_from_spaceship:return 2;
-    case bok_builtin_gt_synthesizes_from_spaceship:return 2;
-    case bok_builtin_le_synthesizes_from_spaceship:return 2;
-    case bok_builtin_ge_synthesizes_from_spaceship:return 2;
-    case bok_builtin_is_structural:return 1;
-    default:return 0;
-  }
-}
 inline unsigned capture_constraint_expression(an_expr_node_ptr,unsigned);
 inline unsigned current_source_parameter_binder();
 inline bool capture_source_class_specialization(a_type_ptr,a_template_ptr,std::string&);
 inline void observe_dependent_enum_increment(an_expr_node_ptr expression,a_type_ptr original_type,bool forced_type,a_type_ptr unknown_type) {
   if(!enabled())return;
   SourceEnumIncrement value;value.original_type=original_type;value.forced_type=forced_type;
-  auto operands=expression && expression->kind==enk_operation?expression->variant.operation.operands:nullptr;
-  if(!expression || expression->kind!=enk_operation || expression->variant.operation.kind!=eok_add ||
-      !expression->compiler_generated || expression->type!=original_type || !operands || !operands->next || operands->next->next ||
-      operands->kind!=enk_constant || operands->next->kind!=enk_constant)
-    value.error="dependent enum increment lost its exact stock generated addition";
-  else {
-    value.previous=node_constant(operands);value.one=node_constant(operands->next);
-    if(!value.previous || value.previous->kind!=ck_template_param || value.previous->variant.template_param.kind!=tpck_expression ||
-        !value.previous->variant.template_param.variant.expr || value.one->kind!=ck_integer ||
-        value.previous->variant.template_param.variant.expr->type!=original_type ||
-        (forced_type?value.previous->type!=unknown_type:value.previous->type!=original_type))
-      value.error="dependent enum increment lost its original previous-value wrapper/type";
-  }
-  if(!state().source_enum_increments.emplace(expression,value).second)
-    state().source_enum_increments.at(expression).error="duplicate stock dependent enum increment observation";
+  auto operands=expression?expression->variant.operation.operands:nullptr;
+  if(operands)value.previous=node_constant(operands);
+  if(operands && operands->next)value.one=node_constant(operands->next);
+  static unsigned observation=0;
+  typed_graph::root(expression,iek_expr_node,"enum-increment-observation",observation++,0,true);
+  state().source_enum_increments[expression]=value;
 }
 inline unsigned capture_source_template(a_template_ptr);
 inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
@@ -961,76 +829,25 @@ inline unsigned capture_semantic_constant_expr(an_expr_node_ptr expression) {
   if(expression->kind==enk_constant)return capture_semantic_constant(node_constant(expression));
   auto prior=s.semantic_constant_expr_ids.find(expression);if(prior!=s.semantic_constant_expr_ids.end())return prior->second;
   unsigned id=unsigned(s.semantic_constants.size()+1);s.semantic_constant_expr_ids[expression]=id;s.semantic_constants.emplace_back();
-  SourceSemanticConstant value;value.kind="operation";value.type=capture_type(expression->type);value.location=expression->position;
-  if(expression->kind==enk_type_operand) {
-    value.kind="type-operand";
-    if(!expression->variant.type_operand.type)value.error="source type operand has no original type";
-    else value.type_operand=capture_type(expression->variant.type_operand.type);
-  } else if(expression->kind==enk_builtin_operation) {
-    value.kind="builtin-trait";
-    auto builtin=expression->variant.builtin_operation.kind;
-    value.builtin_operation=int(builtin);value.operation=builtin_operation_names[builtin];
-    int arity=source_builtin_trait_arity(builtin);unsigned count=0;
-    if(!arity)value.error="dependent builtin operation needs additional owned operand roles";
-    for(auto operand=expression->variant.builtin_operation.operands;operand;operand=operand->next) {
-      ++count;
-      if(operand->kind!=enk_type_operand)value.error="source type trait requires its original ordered type operands";
-      value.operands.push_back(capture_semantic_constant_expr(operand));
-    }
-    if(arity && (arity>0?count!=unsigned(arity):count==0))value.error="source type trait has unexpected original arity";
-  } else if(expression->kind==enk_sizeof || expression->kind==enk_alignof || expression->kind==enk_datasizeof) {
-    value.kind=expression->kind==enk_sizeof?"sizeof":expression->kind==enk_alignof?"alignof":"datasizeof";
-    const auto &query=expression->variant.sizeof_info;
-    value.standard_alignof=query.is_std_alignof;
-    if(query.is_type)value.type_operand=capture_type(query.variant.type);
-    else value.operands.push_back(capture_semantic_constant_expr(query.variant.expr));
+  SourceSemanticConstant value;value.graph_node=typed_graph::root(expression,iek_expr_node,"observed-constant-expression",id-1);
+  value.type=capture_type(expression->type);value.location=expression->position;
+  auto increment=s.source_enum_increments.find(expression);
+  if(increment!=s.source_enum_increments.end()) {
+    const auto &observed=increment->second;
+    value.kind="operation";value.operation="add";
+    value.operands.push_back(capture_semantic_constant(observed.previous));
+    value.operands.push_back(capture_semantic_constant(observed.one));
+    value.enum_increment_original_type=capture_type(observed.original_type);
+    value.enum_increment_forced_type=observed.forced_type;
   } else if(expression->kind==enk_sizeof_pack) {
-    // cp_gen_be::gen_expression preserves these three original operand roles.
     value.kind="sizeof-pack";const auto &query=expression->variant.sizeof_pack;
     value.pack_is_type=query.is_type;value.pack_is_template=query.is_template_template;
     if(query.is_template_template)value.pack_template=capture_source_template(query.variant.templ);
     else if(query.is_type)value.pack_type=capture_type(query.variant.type);
     else value.pack_expression=capture_constraint_expression(query.variant.expr,current_source_parameter_binder());
-    if(!value.pack_type && !value.pack_template && !value.pack_expression)value.error="original pack-size query has no operand";
-  } else if(expression->kind==enk_variable) {
+  } else {
     value.kind="source-expression";
     value.source_expression=capture_constraint_expression(expression,current_source_parameter_binder());
-  } else if(expression->kind!=enk_operation)value.error="dependent constant expression needs an owned source expression family";
-  else {
-    const auto &operation=expression->variant.operation;
-    switch(operation.kind) {
-      case eok_add:value.operation="add";break;case eok_subtract:value.operation="sub";break;
-      case eok_multiply:value.operation="mul";break;case eok_divide:value.operation="div";break;case eok_remainder:value.operation="rem";break;
-      case eok_shiftl:value.operation="shl";break;case eok_shiftr:value.operation="shr";break;
-      case eok_and:value.operation="bit-and";break;case eok_or:value.operation="bit-or";break;case eok_xor:value.operation="bit-xor";break;
-      case eok_eq:value.operation="eq";break;case eok_ne:value.operation="ne";break;case eok_lt:value.operation="lt";break;
-      case eok_le:value.operation="le";break;case eok_gt:value.operation="gt";break;case eok_ge:value.operation="ge";break;
-      case eok_land:value.operation="and";break;case eok_lor:value.operation="or";break;
-      case eok_negate:value.operation="neg";break;case eok_unary_plus:value.operation="plus";break;
-      case eok_not:value.operation="not";break;case eok_complement:value.operation="bit-not";break;
-      case eok_cast:value.operation="cast";break;
-      case eok_question:value.operation="conditional";break;
-      default:value.error="dependent constant operation not yet represented";break;
-    }
-    for(auto operand=operation.operands;operand;operand=operand->next)value.operands.push_back(capture_semantic_constant_expr(operand));
-  }
-  if(!value.error.empty()) {
-    value.error+=" [expression-kind="+std::to_string(int(expression->kind))+
-      ",operator-kind="+(expression->kind==enk_operation?std::to_string(int(expression->variant.operation.kind)):
-      expression->kind==enk_builtin_operation?std::to_string(int(expression->variant.builtin_operation.kind)):"none")+
-      ",operator-name="+value.operation+"]";
-  }
-  auto increment=s.source_enum_increments.find(expression);
-  if(increment!=s.source_enum_increments.end()) {
-    const auto &observed=increment->second;
-    if(!observed.error.empty())value.error=observed.error;
-    else if(value.kind!="operation" || value.operation!="add" || value.operands.size()!=2 ||
-        value.operands[0]!=capture_semantic_constant(observed.previous) || value.operands[1]!=capture_semantic_constant(observed.one))
-      value.error="dependent enum increment operands differ from their exact creation observation";
-    else {
-      value.enum_increment_original_type=capture_type(observed.original_type);
-      value.enum_increment_forced_type=observed.forced_type;
-    }
   }
   s.semantic_constants[id-1]=value;return id;
 }
@@ -1038,7 +855,7 @@ inline unsigned capture_semantic_constant(a_constant_ptr constant) {
   if(!constant)return 0;
   auto &s=state();auto prior=s.semantic_constant_ids.find(constant);if(prior!=s.semantic_constant_ids.end())return prior->second;
   unsigned id=unsigned(s.semantic_constants.size()+1);s.semantic_constant_ids[constant]=id;s.semantic_constants.emplace_back();
-  SourceSemanticConstant value;value.type=capture_type(constant->type);
+  SourceSemanticConstant value;value.graph_node=typed_graph::root(constant,iek_constant,"observed-constant",id-1);value.type=capture_type(constant->type);
   value.name=spelling(constant->source_corresp);value.location=constant->source_corresp.decl_position;
   if(constant->kind==ck_integer) {
     value.kind="integer";value.name.clear();value.value=decimal_str_for_integer_constant(constant).as_temp_characters();
@@ -1428,17 +1245,9 @@ inline void capture_record(a_type_ptr t) {
   // when committing the enclosing record's otherwise independent snapshot.
   const auto context_record=s.records.at(t);
   if(context_record.template_declarator_witness) {
-    if(value.template_prototype && value.template_prototype!=context_record.template_prototype)
-      value.template_error="declarator class witness conflicts with its original selected prototype";
-    else if(!value.template_prototype) {
+    if(!value.template_prototype) {
       value.template_prototype=context_record.template_prototype;
       value.template_arguments=context_record.template_arguments;
-    } else {
-      if(value.template_arguments.size()!=context_record.template_arguments.size())
-        value.template_error="declarator class witness conflicts with its original argument count";
-      else for(unsigned argument=0;argument<value.template_arguments.size();++argument)
-        if(!same_declarator_argument(value.template_arguments[argument],context_record.template_arguments[argument]))
-          value.template_error="declarator class witness conflicts with its exact original arguments";
     }
     if(!context_record.template_error.empty())value.template_error=context_record.template_error;
     value.template_declarator_witness=context_record.template_declarator_witness;
@@ -1448,48 +1257,44 @@ inline void capture_record(a_type_ptr t) {
 }
 #include "dot_gen_object_source_operations.h"
 #include "dot_gen_object_source_constraints.h"
-// An original type may first be reached through a semantic use before its
-// declaration's prototype scope is available. Only that exact original type
-// pointer, revisited through a return/parameter type edge, may complete the
-// pending operator expression; competing declaration owners stay rejected.
-inline bool source_expression_has_parameter(unsigned expression,std::set<unsigned> &seen) {
-  if(!expression || !seen.insert(expression).second)return false;
-  const auto &value=source_constraint_graph().expressions.at(expression-1);
-  if(value.kind=="parameter-reference")return true;
-  for(const auto &edge:value.edges)if(source_expression_has_parameter(edge.child,seen))return true;
-  return false;
-}
-// A deduced type argument is an existing source type, not a declaration in
-// the consuming function prototype. Preserve its original decltype recipe's
-// lexical owner. Only exact original argument roots receive this boundary.
-inline bool source_type_has_parameter_recipe(unsigned id,std::set<unsigned> &seen) {
-  if(!id || !seen.insert(id).second)return false;
-  const auto value=state().types.at(id-1);
-  if(value.operator_expression) {
-    std::set<unsigned> expressions;
-    if(source_expression_has_parameter(value.operator_expression,expressions))return true;
-  }
-  if(value.kind=="typedef" || value.kind=="qualified" || value.kind=="pointer" ||
-     value.kind=="lvalue-reference" || value.kind=="rvalue-reference" || value.kind=="array")
-    return source_type_has_parameter_recipe(value.underlying,seen);
-  return false;
-}
+// Retain exact selected declarations, ordered argument roots, and observed
+// uses. These are pointer-identity observations, not borrowed-recipe analysis.
 inline void capture_routine_substitution_roots(a_type_ptr type,unsigned id) {
   auto routine=type->variant.routine.extra_info->assoc_routine;
   auto templ=routine?routine->assoc_template:nullptr;
-  if(!routine || routine->is_prototype_instantiation || !templ || !templ->template_decl ||
+  if(!routine || routine->is_prototype_instantiation || !templ ||
      (templ->kind!=templk_function && templ->kind!=templk_member_function) ||
-     !templ->prototype_instantiation.routine || templ->prototype_instantiation.routine==routine ||
-     !routine->template_arg_list)return;
+     !templ->prototype_instantiation.routine || templ->prototype_instantiation.routine==routine)return;
+  auto arguments=routine->template_arg_list;std::string argument_owner="function-template";
+  if(templ->kind==templk_member_function && !templ->template_decl) {
+    // il_def.h: ordinary members have no independent template arguments.
+    // Their exact enclosing instance owns primary or selected-partial arguments.
+    auto primary=templ->prototype_instantiation.routine;
+    if(arguments || !routine->source_corresp.is_class_member || !primary->source_corresp.is_class_member)return;
+    auto owner=scp_parent_class(&routine->source_corresp);
+    auto original_owner=scp_parent_class(&primary->source_corresp);
+    if(!owner || !original_owner || !is_immediate_class_type(owner) ||
+       owner->variant.class_struct_union.is_prototype_instantiation)return;
+    auto supplement=class_type_supp(owner);auto class_template=supplement->assoc_template;
+    if(!class_template || (class_template->kind!=templk_class && class_template->kind!=templk_member_class) ||
+       !class_template->template_decl || class_template->prototype_instantiation.type!=original_owner)return;
+    auto symbol=symbol_for(class_template);
+    if(!symbol || symbol->kind!=sk_class_template || !symbol->variant.template_info)return;
+    bool partial=symbol->variant.template_info->primary_template_sym!=nullptr;
+    if(!partial && supplement->partial_spec_template_arg_list)return;
+    argument_owner=partial?"class-partial":"class-template";
+    arguments=partial?supplement->partial_spec_template_arg_list:supplement->template_arg_list;
+  } else if(!templ->template_decl)return;
+  if(!arguments)return;
   auto &graph=source_constraint_graph();
   if(graph.routine_substitutions.count(id))return;
   graph.routine_substitutions[id].selected=routine;
+  graph.routine_substitutions.at(id).argument_owner_kind=argument_owner;
   SourceParameterScope original_scope(0);unsigned ordinal=0;
-  for(auto argument=routine->template_arg_list;argument;argument=argument->next,++ordinal) {
+  for(auto argument=arguments;argument;argument=argument->next,++ordinal) {
     if(argument->kind!=tak_type)continue;
-    unsigned source=capture_type(argument->variant.type);std::set<unsigned> seen;
-    if(source_type_has_parameter_recipe(source,seen))
-      graph.routine_substitutions.at(id).roots[argument->variant.type].push_back(ordinal);
+    capture_type(argument->variant.type);
+    graph.routine_substitutions.at(id).roots[argument->variant.type].push_back(ordinal);
   }
 }
 inline void capture_declarator_substitution_roots(a_type_ptr type,unsigned id) {
@@ -1500,37 +1305,33 @@ inline void capture_declarator_substitution_roots(a_type_ptr type,unsigned id) {
   for(const auto &original:found->second) {
     unsigned context_id=unsigned(graph.declarator_contexts.size()+1);SourceDeclaratorContext value;
     value.routine_type=id;value.scope_ordinal=original.scope_ordinal;value.position=original.position;value.original=original;
-    value.error=state().routine_declarator_errors[type];graph.declarator_contexts.push_back(value);
+    value.kind="observed";value.owner_captured=true;graph.declarator_contexts.push_back(value);
     graph.routine_declarator_contexts.at(id).push_back(context_id);
     for(unsigned ordinal=0;ordinal<original.arguments.size();++ordinal) {
       const auto &argument=original.arguments[ordinal];if(argument.kind!=tak_type)continue;
-      unsigned source=capture_type(argument.variant.type);std::set<unsigned> seen;
-      if(source_type_has_parameter_recipe(source,seen))
-        graph.declarator_contexts.at(context_id-1).roots[argument.variant.type].push_back(ordinal);
+      capture_type(argument.variant.type);
+      graph.declarator_contexts.at(context_id-1).roots[argument.variant.type].push_back(ordinal);
     }
   }
 }
-inline unsigned source_type_lexical_binder(a_type_ptr type) {
+inline void observe_source_type_use(a_type_ptr type) {
   auto &graph=source_constraint_graph();unsigned binder=graph.active_binder;
-  if(!binder)return 0;
+  if(!binder)return;
   unsigned routine=graph.binders.at(binder).routine;
   auto factory=graph.routine_declarator_contexts.find(routine);
-  bool borrowed=false;
   if(factory!=graph.routine_declarator_contexts.end())for(unsigned context_id:factory->second) {
     auto roots=graph.declarator_contexts.at(context_id-1).roots.find(type);
     if(roots==graph.declarator_contexts.at(context_id-1).roots.end())continue;
     auto source=state().type_ids.find(type);if(source==state().type_ids.end())continue;
     auto ordinals=roots->second;
     for(unsigned ordinal:ordinals)graph.declarator_contexts.at(context_id-1).observed_arguments[ordinal]=source->second;
-    capture_declarator_context_owner(context_id);borrowed=true;
   }
-  if(borrowed)return 0;
   auto substitution=graph.routine_substitutions.find(routine);
-  if(substitution==graph.routine_substitutions.end())return binder;
+  if(substitution==graph.routine_substitutions.end())return;
   auto root=substitution->second.roots.find(type);
-  if(root==substitution->second.roots.end())return binder;
+  if(root==substitution->second.roots.end())return;
   auto source=state().type_ids.find(type);
-  if(source==state().type_ids.end())return binder; // Roots were captured first.
+  if(source==state().type_ids.end())return; // Roots were captured first.
   for(unsigned ordinal:root->second)substitution->second.observed_arguments[ordinal]=source->second;
   // The selected declaration owns the actual ordered argument list; no ABI
   // routine or fabricated source declaration is introduced for this edge.
@@ -1538,83 +1339,13 @@ inline unsigned source_type_lexical_binder(a_type_ptr type) {
     SourceParameterScope original_scope(0);
     substitution->second.declaration=capture_constraint_routine(substitution->second.selected);
   }
-  return 0;
+  return;
 }
-inline void capture_pending_type_context(a_type_ptr t,unsigned id) {
-  auto &graph=source_constraint_graph();unsigned binder=graph.active_binder;
-  if(!binder || !graph.active_type_contexts.insert(t).second)return;
-  auto &saved=state().types.at(id-1);
-  if(t->kind==tk_typeref) {
-    if(saved.source_form=="type-operator" && saved.operator_expression) {
-      std::set<unsigned> seen;
-      if(source_expression_has_parameter(saved.operator_expression,seen)) {
-        auto previous=graph.type_operator_binders.find(id);
-        if(previous==graph.type_operator_binders.end() || !previous->second) {
-          auto expression=decltype_arg(t);
-          if(expression) {
-            unsigned resolved=capture_constraint_expression(expression,binder);
-            state().types.at(id-1).operator_expression=resolved;graph.type_operator_binders[id]=binder;
-          }
-        } else if(previous->second!=binder) {
-          auto describe=[&](unsigned frame) {
-            const auto &entry=graph.binders.at(frame);
-            std::string text="binder="+std::to_string(frame)+" owner="+std::to_string(entry.routine)+
-              " requires="+std::to_string(entry.expression)+" parent="+std::to_string(entry.parent)+
-              " outside="+std::to_string(entry.outside);
-            if(entry.routine && std::getenv("EDG_DOTOBJ_DIAG_SOURCE_ERRORS")) {
-              const auto &owner=state().types.at(entry.routine-1);
-              auto original=owner.original_type;
-              if(!original)for(const auto &candidate:state().type_ids)if(candidate.second==owner.id || candidate.second==graph.binders.at(frame).routine){original=candidate.first;break;}
-              text+=" original="+std::to_string(reinterpret_cast<size_t>(original));
-              text+=" receiver="+std::to_string(owner.object_type);
-              if(original && original->kind==tk_routine) {
-                auto supplement=original->variant.routine.extra_info;
-                text+=" parameters="+std::to_string(reinterpret_cast<size_t>(supplement->param_type_list))+
-                  " lambda="+std::to_string(supplement->assoc_routine_is_lambda_body)+
-                  " special="+std::to_string(supplement->assoc_routine?int(supplement->assoc_routine->special_kind):-1)+
-                  " return="+std::to_string(reinterpret_cast<size_t>(original->variant.routine.return_type))+
-                  " routine="+(supplement->assoc_routine?spelling(supplement->assoc_routine->source_corresp):std::string("none"));
-                auto diag_associated=supplement->assoc_routine;
-                if(diag_associated) {
-                  text+=" template-kind="+std::to_string(diag_associated->assoc_template?int(diag_associated->assoc_template->kind):-1)+" arguments=[";
-                  for(auto diag_argument=diag_associated->template_arg_list;diag_argument;diag_argument=diag_argument->next) {
-                    auto diag_argument_type=diag_argument->kind==tak_type?diag_argument->variant.type:nullptr;
-                    text+=std::to_string(int(diag_argument->kind))+":"+std::to_string(reinterpret_cast<size_t>(diag_argument_type))+
-                      ":exact-root="+(diag_argument_type==t?"yes":"no")+",";
-                  }
-                  text+="]";
-                }
-                text+=" borrowed-root="+std::to_string(reinterpret_cast<size_t>(t))+
-                  " type-enclosing-routine="+(t->source_corresp.enclosing_routine?spelling(t->source_corresp.enclosing_routine->source_corresp):std::string("none"))+
-                  " type-parent-kind="+std::to_string(t->source_corresp.parent_scope?int(t->source_corresp.parent_scope->kind):-1);
-              }
-            }
-            return text;
-          };
-          state().types.at(id-1).error="original type operator has competing lexical parameter scopes: type="+
-            std::to_string(id)+" old["+describe(previous->second)+"] new["+describe(binder)+"]";
-        }
-      }
-    }
-    if(t->variant.typeref.kind==trk_is_template_alias && t->variant.typeref.extra_info) {
-      // An alias used in a lexical type operand owns its original argument
-      // recipes as well as the substituted underlying type.
-      auto extra=t->variant.typeref.extra_info;
-      for(auto arg=extra->template_arg_list;arg;arg=arg->next)
-        if(arg->kind==tak_type)capture_type(arg->variant.type);
-      for(auto arg=extra->orig_template_arg_list;arg;arg=arg->next)
-        if(arg->kind==tak_type)capture_type(arg->variant.type);
-    }
-    capture_type(t->variant.typeref.type);
-  } else if(t->kind==tk_pointer)capture_type(t->variant.pointer.type);
-  else if(t->kind==tk_array)capture_type(t->variant.array.element_type);
-  else if((t->kind==tk_class || t->kind==tk_struct || t->kind==tk_union) && class_type_supp(t)->proxy_of_type)
-    capture_type(class_type_supp(t)->proxy_of_type);
-  graph.active_type_contexts.erase(t);
-}
+// EDG type identity is object-local. A shared original recipe is captured
+// once; following a new use never rebinds it or re-runs lexical lookup.
 inline unsigned capture_type(a_type_ptr t) {
   if(!t)return 0;
-  SourceParameterScope lexical_scope(source_type_lexical_binder(t));
+  observe_source_type_use(t);
   auto &s=state();auto prior=s.type_ids.find(t);
   if(prior!=s.type_ids.end()) {
     unsigned original_namespace=capture_parameter_template_namespace(t);
@@ -1624,13 +1355,12 @@ inline unsigned capture_type(a_type_ptr t) {
         original.error="source formal namespace conflicts with its exact original enclosing template";
       else original.namespace_owner=original_namespace;
     }
-    capture_pending_type_context(t,prior->second);
     if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union){SourceParameterScope scope(class_type_supp(t)->proxy_of_type?current_source_parameter_binder():0);capture_record(t);}
     if(t->kind==tk_integer && t->variant.integer.enum_type && !t->variant.integer.bool_type)capture_enum(t);
     return prior->second;
   }
   unsigned id=(unsigned)s.types.size()+1;s.type_ids[t]=id;s.types.emplace_back();
-  Type value;value.id=id;value.original_type=t;value.name=spelling(t->source_corresp);value.position=t->source_corresp.decl_position;
+  Type value;value.graph_node=typed_graph::root(t,iek_type,"observed-type",id-1);value.id=id;value.original_type=t;value.name=spelling(t->source_corresp);value.position=t->source_corresp.decl_position;
   if(!value.name.empty() || is_immediate_class_type(t) || (t->kind==tk_integer && t->variant.integer.enum_type))
     value.namespace_owner=capture_source_namespace_owner(t->source_corresp);
   unsigned formal_namespace=capture_parameter_template_namespace(t);
@@ -1656,7 +1386,6 @@ inline unsigned capture_type(a_type_ptr t) {
           if(!expression)value.error="original expression type operator requires its lexical expression";
           else {
             value.operator_expression=capture_constraint_expression(expression);
-            source_constraint_graph().type_operator_binders[id]=current_source_parameter_binder();
           }
         } else if(extra->operator_type_arg)value.operator_type=capture_type(extra->operator_type_arg);
         else value.error="original type operator has no original type operand";
@@ -1841,36 +1570,11 @@ inline unsigned capture_type(a_type_ptr t) {
       // but shares its original return/parameter type recipes. The generated
       // conversion target is a use of that source prototype, not a new lexical
       // declaration of its decltype expressions.
-      auto selected=copied_prototype->second.second;
       recipe=copied_prototype->second.first?skip_typerefs(copied_prototype->second.first):nullptr;
-      if(extra->assoc_routine && extra->assoc_routine->special_kind==sfk_lambda_entry_point &&
-         extra->assoc_routine->variant.lambda_call_operator!=selected)
-        value.error="generated lambda prototype entry differs from its observed factory origin";
       if(!recipe || recipe==t || recipe->kind!=tk_routine) {
-        value.error="generated lambda prototype lacks its exact original call operator type";
+        value.error="generated lambda prototype lacks its captured original call operator type";
         recipe=t;
       } else {
-        auto original=recipe->variant.routine.extra_info;
-        if(!original->assoc_routine_is_lambda_body || !original->this_class || !original->has_this_param ||
-           extra->assoc_routine_is_lambda_body || extra->this_class || extra->has_this_param ||
-           extra->qualifiers!=TQ_NONE || extra->ref_qualifiers!=rqk_default ||
-           extra->has_ellipsis!=original->has_ellipsis || extra->prototyped!=original->prototyped ||
-           t->variant.routine.return_type!=recipe->variant.routine.return_type ||
-           extra->exception_specification!=original->exception_specification)
-          value.error="generated lambda prototype differs from stock receiver-cleared signature copy";
-#if MICROSOFT_EXTENSIONS_ALLOWED || GNU_X86_ATTRIBUTES_ALLOWED
-        if(extra->calling_convention!=original->calling_convention)
-          value.error="generated lambda prototype requires its changed calling convention contract";
-#endif
-        auto copied_parameter=extra->param_type_list,original_parameter=original->param_type_list;
-        for(;copied_parameter && original_parameter;copied_parameter=copied_parameter->next,original_parameter=original_parameter->next) {
-          if(copied_parameter->type!=original_parameter->type || copied_parameter->declared_type!=original_parameter->declared_type ||
-             copied_parameter->qualifiers!=original_parameter->qualifiers || copied_parameter->is_parameter_pack!=original_parameter->is_parameter_pack ||
-             copied_parameter->is_requires_expr_param!=original_parameter->is_requires_expr_param || copied_parameter->has_default_arg ||
-             std::string(copied_parameter->name?copied_parameter->name:"")!=std::string(original_parameter->name?original_parameter->name:""))
-            value.error="generated lambda prototype lost its exact copied parameter declaration";
-        }
-        if(copied_parameter || original_parameter)value.error="generated lambda prototype parameter copy is incomplete";
         {SourceParameterScope original_scope(0);recipe_id=capture_type(recipe);}
         recipe_parent=0;value.prototype_origin=recipe_id;
       }
@@ -3709,7 +3413,7 @@ inline void capture_scope(a_scope_ptr scope,a_routine_ptr function_owner=nullptr
   for(auto ns=scope->namespaces;ns;ns=ns->next)
     if(!ns->is_namespace_alias)capture_scope(ns->variant.assoc_scope);
 }
-inline void observe_scope(a_scope_ptr scope){if(enabled())capture_scope(scope);}
+inline void observe_scope(a_scope_ptr scope){if(enabled()){typed_graph::scope_boundary(scope);capture_scope(scope);}}
 inline bool initializer_has_destructions(an_object_lifetime_ptr lifetime) {
   if(!lifetime)return false;
   if(lifetime->destructions)return true;
@@ -3849,6 +3553,7 @@ inline void observe_record_before_prelowering(a_type_ptr type) {
   if(type->incomplete)return;
   auto &s=state();
   if(s.abi_records.count(type) || s.prelower_records.count(type))return;
+  typed_graph::record_boundary(type);
   capture_record(type);
   PrelowerRecord value;value.name=spelling(type->source_corresp);
   value.position=type->source_corresp.decl_position;value.complete=!type->incomplete;

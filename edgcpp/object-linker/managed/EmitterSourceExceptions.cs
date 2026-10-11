@@ -11,6 +11,23 @@ internal sealed partial class Emitter
     private readonly Dictionary<(ObjectFile Object, long SourceRoutineType), string> dynamicSpecificationNames = [];
     private const string ExceptionRuntime = "global::Edg.Runtime.CppExceptions";
 
+    private IEnumerable<(ObjectFile Object,long Node)> ThrowSites()
+    {
+        if(emissionPlan is not null)
+        {
+            ObjectFile obj=linker.Objects[0];
+            foreach(var use in emissionPlan.ExceptionUses(emissionUnit!.Id))
+                if(use.Kind=="throw")yield return(obj,use.Node);
+            yield break;
+        }
+        foreach(var function in linker.Definitions)
+        {
+            var body=function.Object.ReadBody(function.Entity.Id);
+            foreach(var node in body.Nodes.Values)
+                if(node.Kind=="throw")yield return(function.Object,node.Id);
+        }
+    }
+
     private void WriteSourceExceptionContract(string output)
     {
         if (!linker.RequiresExceptionProvider) return;
@@ -137,8 +154,9 @@ public static unsafe partial class CppExceptions
             var first = group.First();
             ObjectFile obj = first.Key.Object;
             ExceptionType type = first.Value;
-            string name = generatedMembers.Allocate("__exception_type_" + exceptionDescriptorNames.Count, "exception_type");
+            string name = ExceptionName("exception-type",type.IdentityKey,"__exception_type_" + exceptionDescriptorNames.Count);
             exceptionDescriptorNames.Add(type.IdentityKey, name);
+            if(!EmitDescriptor("exception-type",type.IdentityKey))continue;
             var qualifiers = new List<int>();
             SourceType current = obj.SourceTypes[type.SourceTypeId];
             while (true)
@@ -170,8 +188,9 @@ public static unsafe partial class CppExceptions
         {
             ObjectFile obj = pair.Key.Object; string identity = obj.ExceptionTypeIdentity(pair.Key.Id);
             if (catchDescriptorNames.ContainsKey(identity)) continue;
-            string name = generatedMembers.Allocate("__catch_type_" + catchDescriptorNames.Count, "catch_type");
+            string name = ExceptionName("catch-type",identity,"__catch_type_" + catchDescriptorNames.Count);
             catchDescriptorNames.Add(identity, name);
+            if(!EmitDescriptor("catch-type",identity))continue;
             SourceType current = pair.Value; var qualifiers = new List<int>();
             while (true)
             {
@@ -202,22 +221,18 @@ public static unsafe partial class CppExceptions
                 .Append(string.Join(", ", obj.DynamicExceptionSpecifications[specificationId].Types.Select(type =>
                     catchDescriptorNames[obj.ExceptionTypeIdentity(type.MatchSourceTypeId)]))).Append("];\n");
         }
-        foreach (Symbol function in linker.Definitions)
+        foreach (var site in ThrowSites())
         {
-            ObjectFile obj = function.Object;
-            FunctionBody body = obj.ReadBody(function.Entity.Id);
-            foreach (Node node in body.Nodes.Values.Where(node => node.Kind == "throw"))
-            {
-                ThrowExpression expression = obj.ThrowExpressions[node.Id];
+                ObjectFile obj=site.Object;
+                ThrowExpression expression = obj.ThrowExpressions[site.Node];
                 if (expression.DestructorEntityId is not long destructor || exceptionDestructorNames.ContainsKey((obj, destructor))) continue;
                 string name = generatedMembers.Allocate("__destroy_exception_" + obj.Entities[destructor].SourceName, "destroy_exception");
                 exceptionDestructorNames.Add((obj, destructor), name);
                 Symbol callback = linker.Resolve(obj, destructor);
                 code.Append("    private static void ").Append(name).Append("(void* payload) => ").Append(FunctionReference(callback))
                     .Append("((").Append(Type(obj.Parameters[destructor][0])).Append(")payload);\n");
-            }
         }
         code.Append("}\n");
-        File.WriteAllText(Path.Combine(output, "Translated.Exceptions.generated.cs"), code.ToString(), new UTF8Encoding(false));
+        File.WriteAllText(Path.Combine(output, UnitFile("Translated.Exceptions.generated.cs")), code.ToString(), new UTF8Encoding(false));
     }
 }

@@ -27,16 +27,10 @@ internal sealed partial class ObjectFile
                     sourceFieldsByRecord.GetValueOrDefault(owner.Id, []).Any(prior => prior.Ordinal < field.Ordinal &&
                         AnonymousMemberLeaf(prior.SourceTypeId).Id == leaf.Id))
                     throw new InvalidDataException("Anonymous member owner must be its first exact original declarator");
-                string identity = "record-member:" + Encoding.UTF8.GetByteCount(owner.IdentityKey).ToString(CultureInfo.InvariantCulture) +
-                    ":" + owner.IdentityKey + ":field:" + field.Ordinal.ToString(CultureInfo.InvariantCulture);
-                if (child.IdentityKey != identity)
-                    throw new InvalidDataException("Anonymous member identity differs from its original owner and ordinal");
                 SourceRecordOwners.Add(item.SourceRecordId, item);
             }
         foreach (SourceRecord record in SourceRecords.Values)
         {
-            if (record.IdentityKey.StartsWith("record-member:", StringComparison.Ordinal) && !SourceRecordOwners.ContainsKey(record.Id))
-                throw new InvalidDataException("Anonymous member identity lacks owned declaration provenance");
             var seen = new HashSet<long>();
             long current = record.Id;
             while (SourceRecordOwners.TryGetValue(current, out SourceRecordOwner? owner))

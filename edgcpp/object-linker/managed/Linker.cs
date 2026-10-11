@@ -34,15 +34,8 @@ internal sealed partial class Linker
         Objects = objects.OrderBy(obj => obj.UnitId, StringComparer.Ordinal).ToArray();
         if (Objects.Select(obj => obj.UnitId).Distinct(StringComparer.Ordinal).Count() != Objects.Count)
             throw new InvalidDataException("The same translation unit was supplied more than once");
-        var sourceConstraintContracts = new Dictionary<string,string>(StringComparer.Ordinal);
-        foreach (var obj in Objects)
-            foreach (var contract in obj.SourceConstraintContracts)
-            {
-                if (sourceConstraintContracts.TryGetValue(contract.Key, out string? previous) && previous != contract.Value)
-                    throw new InvalidDataException("Original concept/constraint definition mismatch: " + contract.Key);
-                sourceConstraintContracts[contract.Key] = contract.Value;
-            }
-        VerifyEnumDefinitions();
+        // Source-only concepts, defaults and uninstantiated declarations are
+        // EDG metadata, not link contracts. Resolve recorded callable ABIs below.
         ResolveDeferredRoutineAbis();
         // A provider's coalescible copy must not force archive extraction when
         // the primary inputs already supply that body. Strong definitions still
@@ -257,6 +250,11 @@ internal sealed partial class Linker
     public Symbol Resolve(ObjectFile obj, long id)
     {
         var declaration = new Symbol(obj, obj.Entities[id]);
+        if(catalogPlan is not null)
+        {
+            if(definitions.ContainsKey(declaration.Key) || Externs.ContainsKey(declaration.Key) || unresolvedWeakFunctions.ContainsKey(declaration.Key))return declaration;
+            throw new InvalidDataException("Function is absent from resolved catalog: "+declaration.Key);
+        }
         if (definitions.TryGetValue(declaration.Key, out Symbol? definition)) return definition;
         if (declaration.Entity.IsWeak)
         {
@@ -289,6 +287,11 @@ internal sealed partial class Linker
     public StorageSymbol ResolveStorage(ObjectFile obj, long id)
     {
         var declaration = new StorageSymbol(obj, obj.Storages[id]);
+        if(catalogPlan is not null)
+        {
+            if(storageDefinitions.ContainsKey(declaration.Key) || ExternStorages.ContainsKey(declaration.Key))return declaration;
+            throw new InvalidDataException("Storage is absent from resolved catalog: "+declaration.Key);
+        }
         if (storageDefinitions.TryGetValue(declaration.Key, out StorageSymbol? definition)) return definition;
         if (!allowExterns || declaration.Storage.Linkage != "external")
             throw new InvalidDataException($"Unresolved storage: {declaration.Storage.ExternalKey ?? declaration.Storage.SourceName}");

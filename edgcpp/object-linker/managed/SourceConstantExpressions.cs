@@ -9,9 +9,9 @@ internal sealed partial class ObjectFile
         while(q.Read())
         {
             if(!SourceSemanticConstants.TryGetValue(q.Integer(0),out var value) || value.Kind!="source-expression" ||
-                !SourceExpressions.TryGetValue(q.Integer(1),out var expression) || expression.Kind!="variable-reference" ||
-                q.Text(2)!="original-dependent-variable-expression" || !SourceSemanticConstantExpressions.TryAdd(q.Integer(0),q.Integer(1)))
-                throw new InvalidDataException("Dependent source value lost its original variable expression bridge");
+                !SourceExpressions.ContainsKey(q.Integer(1)) ||
+                q.Text(2)!="original-edg-expression" || !SourceSemanticConstantExpressions.TryAdd(q.Integer(0),q.Integer(1)))
+                throw new InvalidDataException("Dependent source value lost its retained EDG expression reference");
         }
         foreach(var value in SourceSemanticConstants.Values)
             if(SourceSemanticConstantExpressions.ContainsKey(value.Id)!=(value.Kind=="source-expression"))
@@ -19,40 +19,11 @@ internal sealed partial class ObjectFile
     }
     private void VerifySourceConstantExpression(SourceSemanticConstant value)
     {
-        if(!SourceSemanticConstantExpressions.TryGetValue(value.Id,out long id) || value.OperatorName.Length!=0 || value.ValueText.Length!=0 ||
-            SourceSemanticConstantOperands.GetValueOrDefault(value.Id,[]).Length!=0 || SourceExpressions[id].SourceTypeId is not long type ||
-            SourceConstantTypeIdentity(type,0)!=SourceConstantTypeIdentity(value.SourceTypeId,0))
-            throw new InvalidDataException("Dependent source variable expression changed its original value type or invented an evaluated value");
-    }
-    private string SourceVariableExpressionIdentity(long expression,int depth)
-    {
-        if(depth>128 || !SourceExpressionDeclarationReferences.TryGetValue(expression,out long id))throw new InvalidDataException("Original source variable identity cycle/declaration");
-        var value=SourceExpressionDeclarations[id];
-        if(value.Kind!="variable")throw new InvalidDataException("Original source variable identity has a nonvariable declaration");
-        string result=SourceIdentityFrame(value.QualifiedName)+SourceIdentityFrame(value.OwnerType is long owner?SourceArgumentTypeIdentity(owner,depth+1):"")+
-            (value.HasTemplate?"1":"0")+(value.IsPrototype?"1":"0")+SourceIdentityFrame(value.TemplateOriginKind);
-        result+=SourceNamespaceIdentitySuffix("declaration",id);
-        foreach(var argument in SourceExpressionDeclarationArguments.GetValueOrDefault(id,[]))
-        {
-            var facts=SourceConstraintArgumentDetails[("declaration",id,0,argument.Ordinal)];
-            result+=SourceIdentityFrame((argument.Kind=="pack-boundary"?"pack-boundary":argument.Kind=="type"?"t"+SourceArgumentTypeIdentity(argument.TypeId!.Value,depth+1):
-                argument.Kind=="constant"?"c"+SourceConstantIdentity(argument.ConstantId!.Value,depth+1):"m"+SourceTemplateIdentity(argument.TemplateId!.Value,depth+1))+(facts.Pack?":pack":""));
-        }
-        return result;
-    }
-    private bool SourceVariableExpressionContainsParameter(long expression,int depth)
-    {
-        if(depth>128)throw new InvalidDataException("Original source variable dependency cycle/depth");
-        long id=SourceExpressionDeclarationReferences[expression];var value=SourceExpressionDeclarations[id];
-        return value.OwnerType is long owner && SourceTypeContainsParameter(owner,depth+1) ||
-            SourceExpressionDeclarationArguments.GetValueOrDefault(id,[]).Any(argument=>argument.Kind=="type"?SourceTypeContainsParameter(argument.TypeId!.Value,depth+1):
-                argument.Kind=="constant"?ContainsSourceParameter(argument.ConstantId!.Value,depth+1):argument.Kind=="template");
-    }
-    private void VerifySourceConstantExpressionDeclarations()
-    {
-        foreach(long expression in SourceSemanticConstantExpressions.Values)
-            AddSourceConstraintContract("source-variable:"+SourceVariableExpressionIdentity(expression,0),
-                SourceConstraintDeclarationIdentity(SourceExpressionDeclarationReferences[expression],[],[]));
+        if(!SourceSemanticConstantExpressions.ContainsKey(value.Id) || value.OperatorName.Length!=0 || value.ValueText.Length!=0 ||
+            value.ParameterDepth is not null || value.ParameterPosition is not null || value.IsPack || value.SourceName.Length!=0 ||
+            value.OwnerSourceTypeId is not null || value.OperandSourceTypeId is not null || value.BuiltinOperatorKind is not null || value.IsStandardAlignof ||
+            SourceSemanticConstantOperands.GetValueOrDefault(value.Id,[]).Length!=0)
+            throw new InvalidDataException("Retained EDG expression has an invalid constant projection payload");
     }
 }
 

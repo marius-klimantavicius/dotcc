@@ -19,7 +19,7 @@ internal sealed partial class ObjectFile
     public Dictionary<long, (long Concept, bool TypeConstraint)> SourceConceptUses { get; } = [];
     public Dictionary<long, List<SourceTemplateArgument>> SourceConceptArguments { get; } = [];
     public Dictionary<long, List<SourceExpressionParameter>> SourceExpressionParameters { get; } = [];
-    public Dictionary<long, (long Binder, long Ordinal, long Levels)> SourceExpressionParameterReferences { get; } = [];
+    public Dictionary<long, (long? Binder, long Number, long Levels)> SourceExpressionParameterReferences { get; } = [];
     public Dictionary<long, long> SourceExpressionBinders { get; } = [];
     public Dictionary<long, (long Opcode, string Name, long? OriginalTypeKind)> SourceExpressionOperations { get; } = [];
     public Dictionary<long, HashSet<string>> SourceExpressionFlags { get; } = [];
@@ -91,10 +91,10 @@ internal sealed partial class ObjectFile
         ReadSourceExpressionLongRelation("source_expression_bindings","lexical_binder_id",SourceExpressionBinders,SourceParameterBinders.ContainsKey);
         ReadSourceExpressionLongRelation("source_expression_type_operands","source_type_id",SourceExpressionTypeOperands,SourceTypes.ContainsKey);
         ReadSourceExpressionLongRelation("source_expression_constants","constant_id",SourceExpressionConstants,SourceSemanticConstants.ContainsKey);
-        using(var q=database.Prepare("SELECT expression_id,binder_id,parameter_ordinal,original_levels_up FROM source_expression_parameter_references ORDER BY expression_id"))
+        using(var q=database.Prepare("SELECT expression_id,binder_id,parameter_number,original_levels_up FROM source_expression_parameter_references ORDER BY expression_id"))
             while(q.Read())
-                if(!SourceExpressions.ContainsKey(q.Integer(0)) || !SourceParameterBinders.ContainsKey(q.Integer(1)) || q.Integer(2)<0 || q.Integer(3)<0 ||
-                    !SourceExpressionParameterReferences.TryAdd(q.Integer(0),(q.Integer(1),q.Integer(2),q.Integer(3)))) throw new InvalidDataException("Invalid original requires parameter reference");
+                if(!SourceExpressions.ContainsKey(q.Integer(0)) || q.OptionalInteger(1) is long binder && !SourceParameterBinders.ContainsKey(binder) || q.Integer(2)<0 || q.Integer(3)<0 ||
+                    !SourceExpressionParameterReferences.TryAdd(q.Integer(0),(q.OptionalInteger(1),q.Integer(2),q.Integer(3)))) throw new InvalidDataException("Invalid original requires parameter reference");
         using(var q=database.Prepare("SELECT expression_id,opcode,operation_name,original_type_kind FROM source_expression_operations ORDER BY expression_id"))
             while(q.Read())
                 if(!SourceExpressions.ContainsKey(q.Integer(0)) || q.Integer(1)<0 || !SourceExpressionOperations.TryAdd(q.Integer(0),(q.Integer(1),q.Text(2),q.OptionalInteger(3))))
@@ -169,9 +169,7 @@ internal sealed partial class ObjectFile
         bool hasDefault=formal.DefaultTypeId is not null || formal.DefaultConstantId is not null || formal.DefaultTemplateId is not null;
         if(hasDefault && (formal.IsPack || !SourceTemplatePayloadValid(formal.Kind,formal.DefaultTypeId,formal.DefaultConstantId,formal.DefaultTemplateId)))
             throw new InvalidDataException("Source constraint formal default has a different semantic kind");
-        if(formal.Kind=="type" && (!SourceDependentTypes.TryGetValue(Original(SourceTypeById(formal.TypeId!.Value)).Id,out var parameter) || parameter.Kind!="parameter" || parameter.IsPack!=formal.IsPack) ||
-            formal.Kind=="constant" && (SourceSemanticConstants[formal.ConstantId!.Value].Kind!="parameter" || SourceSemanticConstants[formal.ConstantId.Value].IsPack!=formal.IsPack))
-            throw new InvalidDataException("Source constraint formal must reference its original parameter declaration");
+
     }
     private void ReadSourceConstraintArguments(string table,string ownerColumn,Func<long,bool> ownerExists,Dictionary<long,List<SourceTemplateArgument>> target)
     {

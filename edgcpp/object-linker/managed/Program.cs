@@ -7,10 +7,10 @@ internal static class Program
         var objects = new List<ObjectFile>();
         try
         {
-            if (args.Length == 0 || args[0] is not ("link" or "verify")) throw new ArgumentException("Usage: dotobj-link link --out DIRECTORY [--namespace NAME] [--class NAME] [--entry SYMBOL] [--exception-provider shared|external] [--provider LIBRARY.dotobj] OBJECT.dotobj... | verify OBJECT.dotobj...");
+            if (args.Length == 0 || args[0] is not ("link" or "verify" or "catalog" or "catalog-maps" or "catalog-generate")) throw new ArgumentException("Usage: dotobj-link link --out DIRECTORY [--namespace NAME] [--class NAME] [--entry SYMBOL] [--exception-provider shared|external] [--provider LIBRARY.dotobj] OBJECT.dotobj... | verify OBJECT.dotobj... | catalog [--resolve] --out CATALOG.sqlite [--provider OBJECT.dotobj] OBJECT.dotobj... | catalog-maps --out DIRECTORY CATALOG.sqlite | catalog-generate --out DIRECTORY CATALOG.sqlite");
             string command = args[0], namespaceName = "Translated", className = "Program";
             string? output = null, entry = null;
-            bool allowExterns = false;
+            bool allowExterns = false, auditCatalogLifetimes = false, resolveCatalog = false;
             bool sharedExceptionProvider = true;
             var paths = new List<string>();
             var providerPaths = new HashSet<string>(OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
@@ -18,6 +18,8 @@ internal static class Program
             {
                 string argument = args[index];
                 if (argument == "--allow-externs") { allowExterns = true; continue; }
+                if (argument == "--audit-object-lifetimes") { auditCatalogLifetimes = true; continue; }
+                if (argument == "--resolve") { resolveCatalog = true; continue; }
                 if (argument.StartsWith("--", StringComparison.Ordinal))
                 {
                     if (index + 1 == args.Length) throw new ArgumentException("Missing value for " + argument);
@@ -38,16 +40,59 @@ internal static class Program
                 else paths.Add(argument);
             }
             if (paths.Count == 0) throw new ArgumentException("No semantic objects supplied");
+            if (auditCatalogLifetimes && command is not("catalog" or "catalog-generate")) throw new ArgumentException("--audit-object-lifetimes requires catalog or catalog-generate");
+            if (resolveCatalog && command != "catalog") throw new ArgumentException("--resolve requires catalog");
             if (command == "verify" && providerPaths.Count != 0) throw new ArgumentException("--provider is a link option; verify checks complete objects");
             if (command == "link" && paths.All(path => providerPaths.Contains(Path.GetFullPath(path)))) throw new ArgumentException("At least one primary semantic object is required");
-            if (command == "link" && output is null) throw new ArgumentException("link requires --out DIRECTORY");
+            if (command is "link" or "catalog" or "catalog-maps" or "catalog-generate" && output is null) throw new ArgumentException(command + " requires --out");
             _ = Names.Namespace(namespaceName); _ = Names.OptionIdentifier(className);
-            if (command == "verify")
+            if(command=="catalog-generate")
+            {
+                if(paths.Count!=1 || providerPaths.Count!=0)throw new ArgumentException("catalog-generate requires exactly one resolved catalog");
+                CatalogGenerator.Write(paths[0],Path.GetFullPath(output!),namespaceName,className,entry,sharedExceptionProvider,
+                    auditCatalogLifetimes?reference=>{
+                        GC.Collect();GC.WaitForPendingFinalizers();GC.Collect();
+                        if(reference.IsAlive)throw new InvalidOperationException("A generated catalog unit is still strongly retained");
+                    }:null);
+                Console.WriteLine("Generated C# from the resolved catalog with bounded unit loading.");
+            }
+            else if (command == "catalog-maps")
+            {
+                if(paths.Count!=1 || providerPaths.Count!=0)throw new ArgumentException("catalog-maps requires exactly one catalog");
+                using var units=new CatalogUnitReader(paths[0]);
+                units.WriteMaps(Path.GetFullPath(output!));
+                Console.WriteLine("Wrote retained source and macro maps; no C# was generated.");
+            }
+            else if (command == "catalog")
+            {
+                int released = 0;
+                var timer = System.Diagnostics.Stopwatch.StartNew();
+                CatalogImporter.Import(output!, paths.Select(path => new CatalogInput(path, providerPaths.Contains(Path.GetFullPath(path)))),
+                    unit => Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new {
+                        status = "unit-imported", unit, elapsedMilliseconds = timer.ElapsedMilliseconds,
+                        managedBytes = GC.GetTotalMemory(false), peakWorkingSet = System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64,
+                        auditedReleasedObjects = released })),
+                    auditCatalogLifetimes ? reference => {
+                        GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect();
+                        if (reference.IsAlive) throw new InvalidOperationException("A completed catalog unit is still strongly retained");
+                        released++;
+                    } : null);
+                if (resolveCatalog)
+                {
+                    using var resolver = new CatalogResolver(output!);
+                    resolver.Resolve(className,allowExterns,sharedExceptionProvider);
+                }
+                Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new {
+                    status = resolveCatalog ? "selected-not-generated" : "imported-not-resolved", units = paths.Count,
+                    elapsedMilliseconds = timer.ElapsedMilliseconds,
+                    peakWorkingSet = System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64 }));
+            }
+            else if (command == "verify")
             {
                 // Verification has no cross-unit state. Release each object's
                 // metadata and SQLite snapshot before opening the next unit.
                 foreach (string path in paths) VerifyObject(path);
-                Console.WriteLine($"Verified {paths.Count} scalar-control-v62 semantic object(s).");
+                Console.WriteLine($"Verified {paths.Count} scalar-control-v64 semantic object(s).");
             }
             else
             {

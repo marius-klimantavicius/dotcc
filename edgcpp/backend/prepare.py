@@ -5,6 +5,8 @@ import shutil
 
 root = Path(__file__).resolve().parents[1]
 for source, target in [
+    (root / "backend/dot_gen_object_graph.h", root / "upstream/src/dot_gen_object_graph.h"),
+    (root / "backend/dot_gen_object_graph_walk.h", root / "upstream/src/dot_gen_object_graph_walk.h"),
     (root / "backend/dot_gen_object_macros.h", root / "upstream/src/dot_gen_object_macros.h"),
     (root / "backend/dot_gen_object_source.h", root / "upstream/src/dot_gen_object_source.h"),
     (root / "backend/dot_gen_object_source_tls.h", root / "upstream/src/dot_gen_object_source_tls.h"),

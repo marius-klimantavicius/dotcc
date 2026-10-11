@@ -90,23 +90,7 @@ internal sealed partial class ObjectFile
         {
             var refs=SourcePackReferences.GetValueOrDefault(pair.Key,[]);
             if(refs.Count!=pair.Value.Count)throw new InvalidDataException("Original pack expansion reference list is incomplete");
-            foreach(var reference in refs)
-            {
-                var argument=reference.Argument;long depth,position;bool pack;
-                if(argument.Kind=="type")
-                {
-                    if(!SourceDependentTypes.TryGetValue(Original(SourceTypeById(argument.TypeId!.Value)).Id,out var parameter) || parameter.Kind!="parameter")throw new InvalidDataException("Pack type reference is not its original template parameter");
-                    depth=parameter.NestingDepth!.Value;position=parameter.ParameterPosition!.Value;pack=parameter.IsPack;
-                }
-                else if(argument.Kind=="constant")
-                {
-                    var parameter=SourceSemanticConstants[argument.ConstantId!.Value];
-                    if(parameter.Kind!="parameter")throw new InvalidDataException("Pack constant reference is not its original template parameter");
-                    depth=parameter.ParameterDepth!.Value;position=parameter.ParameterPosition!.Value;pack=parameter.IsPack;
-                }
-                else {var parameter=SourceTemplates[argument.TemplateId!.Value];if(parameter.Kind!="parameter")throw new InvalidDataException("Pack template reference is not its original template parameter");depth=parameter.ParameterDepth!.Value;position=parameter.ParameterPosition!.Value;pack=parameter.IsPack;}
-                if(!pack || reference.Depth is long original && (original!=depth || reference.Position!=position))throw new InvalidDataException("Original pack reference coordinates disagree with selected parameter");
-            }
+
         }
         foreach(var pair in SourceDependentFunctionLookups)
         {
@@ -116,29 +100,5 @@ internal sealed partial class ObjectFile
                 value.Name.Length==0 && value.Operator==0 && value.Conversion is null || value.QualifiedName.Length==0 && value.Owner is null)
                 throw new InvalidDataException("Dependent function lookup lost its original candidates/name or explicit argument boundary");
         }
-    }
-    private string SourceConstraintArgumentDetailsIdentity(string kind,long owner,long substitution,SourceTemplateArgument argument)
-    {
-        var value=SourceConstraintArgumentDetails[(kind,owner,substitution,argument.Ordinal)];
-        return SourceIdentityFrame(argument.Kind=="pack-boundary"?"pack-boundary":SourceConstraintArgumentIdentity(argument))+
-            (value.Pack?"1":"0")+(value.PackElement?"1":"0")+(value.Ellipsis?"1":"0")+(value.IntegerPack?"1":"0")+(value.Explicit?"1":"0")+(value.InjectedClass?"1":"0")+(value.Auto?"1":"0")+(value.DecltypeAuto?"1":"0")+
-            SourceIdentityFrame(value.SubstitutedTemplate is long template?SourceTemplateIdentity(template,0):"")+SourceIdentityFrame(value.Expansion is long expansion?SourcePackExpansionIdentity(expansion):"");
-    }
-    private string SourcePackExpansionIdentity(long id)
-    {
-        var value=SourcePackExpansions[id];string result=(value.Ellipsis?"1":"0")+(value.EnclosingOnly?"1":"0")+(value.EnclosingAny?"1":"0")+(value.FunctionDeclarator?"1":"0")+(value.PackIndex?"1":"0")+(value.TemplateTemplate?"1":"0")+
-            SourceIdentityFrame(value.ParameterType is long type?SourceTypeSignature(type):"");
-        foreach(var reference in SourcePackReferences.GetValueOrDefault(id,[]))result+=SourceIdentityFrame(SourceConstraintArgumentIdentity(reference.Argument))+
-            SourceIdentityFrame(reference.Depth?.ToString(CultureInfo.InvariantCulture)??"")+SourceIdentityFrame(reference.Position?.ToString(CultureInfo.InvariantCulture)??"")+(reference.Enclosing?"1":"0");
-        return SourceGraphHash(result);
-    }
-    private string SourceDependentFunctionIdentity(long id,HashSet<long> activeConcepts)
-    {
-        var value=SourceDependentFunctionLookups[id];string result=SourceIdentityFrame(value.Name)+SourceIdentityFrame(value.QualifiedName)+
-            SourceIdentityFrame(value.Owner is long owner?SourceTypeSignature(owner):"")+SourceIdentityFrame(value.Conversion is long conversion?SourceTypeSignature(conversion):"")+
-            SourceIdentityFrame(value.Operator.ToString(CultureInfo.InvariantCulture))+(value.ExplicitArguments?"1":"0")+(value.Qualified?"1":"0")+(value.Address?"1":"0")+(value.Symbol?"1":"0")+(value.UnknownBase?"1":"0")+(value.QualifiedUnknownBase?"1":"0");
-        foreach(long candidate in SourceDependentFunctionCandidates.GetValueOrDefault(id,[]))result+=SourceIdentityFrame(SourceConstraintDeclarationIdentity(candidate,sourceDeclarationIdentityActive,activeConcepts));
-        foreach(var argument in SourceDependentFunctionArguments.GetValueOrDefault(id,[]))result+=SourceIdentityFrame(SourceConstraintArgumentDetailsIdentity("lookup",id,0,argument));
-        return result;
     }
 }

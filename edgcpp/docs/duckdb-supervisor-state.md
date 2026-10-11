@@ -1,3 +1,110 @@
+# Fresh EDG-authority supervisor — 2026-10-11
+
+Current authority: `docs/dotobj-edg-authority-plan-20261011.md` (04d1767d9).
+All older sections below are historical evidence, not instructions to reconstruct
+or prove EDG source-language semantics. EDG is semantic authority. Managed code
+assumes dotobj semantics correct; retain format/integrity and ordinary ABI/link
+checks, and diagnose actual exporter omissions or mis-exported facts only.
+
+Fresh supervisor `/root/edg_authority_supervisor` exclusively schedules prepare,
+builds, Git mutations and integrated project runs. Interrupted old supervisor and
+workers remain inactive. Two fresh workers own disjoint implementation areas:
+native faithful typed graph capture (`backend/`), and managed trusted consumption
+plus disk-backed linking (`object-linker/managed/`). Supervisor owns schema,
+packager, integration fixtures and evidence, coordinated via explicit wire contracts.
+
+Accepted baseline: 74cfa57dc, v62, native160 / managed191. Current v63 member
+substitution and streamed-emitter/catalog changes remain candidates. Reuse sound
+work and preserve every intermediate. Historical 2,634/2,635 mixed-version exports
+are not a coherent full corpus; no full generated/compiled/run DuckDB claim exists.
+Snapshot: `artifacts/campaign/edg-authority-handoff-20261011`. Next implementation
+seams: native source_type/source_record_metadata capture gates; mandatory managed
+ReadAndVerifySourceProvenance; global uninstantiated SourceConstraintContracts.
+Replace source-language reconstruction with faithful EDG data capture/consumption,
+while retaining functioning execution/lifetime/EH projections and readable output.
+
+First acceptance uses real unittest.cpp and cast_operators.cpp plus existing
+shared-decltype, implicit-this and dependent-member fixtures. Then freeze a single
+configuration/tool/schema for all 2,635 original TUs, selected providers, bounded
+catalog linking and complete C# generation before runtime closure and execution.
+Persistent root `/mnt/storage/dotcc-edg-campaign-20261003`; no cleanup authorized.
+Reserve floors remain 12 GiB persistent / 20 GiB workspace; 8 GiB per native TU.
+
+
+Current implementation candidate v64: native worker removed roughly 500 lines of
+source structural-identity normalization and lexical/borrowed-recipe proof passes,
+including their caches; integration build pending. Managed194 builds cleanly after
+removing eager unused template/concept/enum contracts and lexical reanalysis.
+Supervisor integrated typed EDG graph SQLite arrays with object-local IDs, typed
+references, primitive fields, roots and coverage/configuration identity; raw EDG
+parameter number replaces reconstructed parameter ordinal (zero means implicit
+this). Structural SQL check accepts sharing/cycles/nulls and rejects bad targets.
+These are implementation candidates, not accepted complete capture/export.
+
+Same-input baseline native160 measurement retained under
+`artifacts/campaign/edg-authority-20261011`: exception.cpp exports in 1.53s with
+519488KiB peak RSS; cast_operators.cpp rejects source binder after 8.74s/2557052KiB;
+unittest.cpp rejects competing source binder after 12.62s/3506548KiB. Same command,
+configuration and 8GiB per-process cap will be used for the new compiler.
+
+
+2026-10-11 integration evidence (still no accepted full v64 object corpus):
+- Native162 removes semantic proof work, exports all three real units; managed196
+  verifies them and emits 15,453 combined C# definitions with unresolved externs
+  retained. This candidate lacked some actual context rows and is not accepted.
+- Native163 restores direct selected-argument/declarator capture. Managed198
+  passes 50 projection tests (shared member/implicit this/dependent member,
+  native/stock/source-hidden JIT), and 35 terminal-partial lifetime/EH tests
+  (native/stock/JIT/NativeAOT exact trace plus damaged execution metadata).
+- Native163 real probes expose old inferred context-header equivalence and
+  closed source-expression capture gates. Native worker is replacing those with
+  direct typed stock walker capture, file-spooled to bound memory, preserving
+  raw header/argument identities without forced equivalence. Raw graph scaffold
+  explicitly reports gaps and is not called complete.
+- Disk catalog importer197 passes 43 checks with member+three real objects;
+  exact dependencies/receipts/corruption/rollback/released ObjectFiles tested.
+  Peak working set 224,464,896 bytes. Resolver198 is a new unaccepted candidate;
+  actual three-unit selection parity and bounded emission are next.
+- Existing cpp_source_eh.cpp enum-throw gate fails identically on baseline160 and
+  candidate163; no removal regression or new runtime closure claim is inferred.
+All evidence lives under `artifacts/campaign/edg-authority-20261011`. No artifacts
+were deleted. Root receives exact distinctions between export/verify/generate
+and focused compile/run; full DuckDB compilation/execution remain outstanding.
+
+
+Verified packaging milestone committed `3c4f30a13`: incremental strict wire rows
+instead of a resident decoded JSON tree, same SQLite schema/content. Exact staged
+v62 tooling passes 18 parser/content parity checks and streamed exception object
+verifies with accepted managed191. Same 187,802,678-byte retained unittest wire:
+771,712 -> 29,880 KiB peak RSS, 10.20 -> 10.63 seconds, identical logical digest.
+This commit excludes all unaccepted v64 native/schema/managed migration changes.
+Evidence `evidence/dotobj-streaming-packaging-20261011.json`.
+
+Catalog resolution199 matches real3 and seven weak/strong/provider selections
+(13 + 91 checks), and rejects/rolls back duplicate strong definitions (4).
+Weak fixture native/stock/JIT suite passes161. Streamed storage200 compiles/runs
+4097-byte initializer and three strong/weak/provider cases. Complete catalog
+C# emission still pending; maps/reopening and runtime requirement summaries are
+new candidates awaiting next schema-matching tool build.
+
+
+Native164 first real typedgraph integration passes62 bounded fixture checks with
+managed201 (native/stock/source-hidden JIT; sharednodes, raw parameter0, corrupt
+references/encoding/configuration). It is NOT accepted complete capture. Repeated
+scope snapshots duplicate whole header subgraphs: exception.cpp produced over
+15GiB anonymous graph spool before any final wire output, with only43MiBRSS.
+Supervisor stopped this bounded probe before storage floor; metadata/diagnostics
+retained at `artifacts/campaign/edg-authority-20261011/after164-exception`.
+Native worker now fixes snapshot/occurrence storage to retain actual observations
+without duplicating unchanged global subgraphs for each scope. Native165 draft
+also retains typed IL links stock walker classifies with frontend pointers and
+removes factory-header matching/enum proof computation. No further reallargeTU
+run until the duplication defect is corrected on bounded measurements.
+Managed201 builds clean; subsequent bounded catalog emitter integration is still
+candidate work. All full export/link/generate/compile/run project phases remain.
+
+---
+
 # DuckDB translation supervisor — resumed 2026-10-10
 
 The user authorized continuous coordinated implementation of complete DuckDB
@@ -1260,3 +1367,53 @@ binder relaxation. A 32-large-unit C++20 breadth probe is active; no coherent
 full inventory or full generated DuckDB library is claimed. The separate
 managed worker is implementing verified catalog import as the first explicit
 bounded-memory linker slice. Native/managed runtime closure remains later.
+
+2026-10-11 native165 checkpoint: native164 fullgraph focused suite passed62 checks,
+but same real exception.cpp produced >15GiB anonymous graph fields in80.57s
+(48972KiB RSS, no final wire) and was stopped before reserve floor. Not accepted.
+Native165 now bounds refresh to actual direct observation targets and stock IL
+memory-region boundaries, preserves stable IDs/references and explicit versions.
+Canonical syntax passed; prepare/source snapshot completed; build in progress.
+Managed202 clean build includes first integrated per-unit catalog generator;
+validation pending. No coherent full-corpus export/generation/compile/run claim.
+
+Native165 completed exception.cpp in35.59s/600176KiB with exit1, wire0.
+Observed temporary fields~7.1GiB. Rejection is the OLD source allocation projection
+gate that rejects when EDG dynamic_init/rollback data is PRESENT, although raw
+typed edges retain it; no evidence of missing EDG data or walker mutation yet.
+Native worker removes that redundant projection gate and reduces repeated
+snapshots. This candidate is not accepted and no performance gain is claimed.
+Managed202 per-unit disk catalog generation passed21checks each for implicit-this
+and three-unit weak/strong override: identical complete source/macromaps, recorded
+lifetimes, symbols/records/receipts, generated C# builds/JIT0, released ObjectFiles.
+Optional/activated-provider cases running. No full DuckDB compilation claim.
+
+Native166 diagnostic exception export succeeds:59.16s/633360KiB including gzip
+backpressure; retained638312648-byte wire.json.gz. Graph counters924748canonical
+nodes,1500660totalnodes,57470315fields,233530roots,8388764375textbytes. It is NOT
+accepted: removal of old allocation-present gate exposed false absent-in-original
+projection literals.167 fixes actual independent init/rollback presence, adds
+missing configured primitive union arms, honest retained/disabled coverage, and
+first/latest observed ID bookkeeping without changing previous edges.167 build
+running. Large original cast/unittest probes deferred until graphstorage scaling;
+57M individually named field rows on exception alone cannot scale to2635within
+existing disk. No opaque semantic substitute is authorized; lossless explicit
+typed-field dictionaries/structured compression are under implementation design.
+Terminalpartial166/204 remains correct:35 native/stock/JIT/NativeAOT exacttrace
+and missing/corrupt execution metadata checks. Managed202 bounded generator
+passed84checks across4targets;204 strongoverride25checks adds report/startup
+parity.203 reader verifies all6native165weakunits with configuredkindcatalog.
+205 buildclean removes two redundant selectedEH bodypasses using verified
+catalog locators; terminalpartial catalog validation pending harness runtimebind.
+Managed worker removing remaining source allocation/ctor-owner semantic reproof.
+No coherent fullDuckDB export/verify/link/generate/compile/run claimed.
+
+Verified implementation checkpoint: native167/managed206 passes62 focused graph
+checks and35 terminalpartial native/stock/JIT/NativeAOT checks. Preserved source
+member substitutions, implicitthis raw parameter0, dependent member access and
+exact lifetime/EH trace; damaged typed refs/config/primitive encodings and damaged
+execution metadata reject. Graph coverage remains explicitly incomplete (26/27
+reported gaps), no fullcorpusclaim. Evidence: evidence/dotobj-edg-authority-removal-20261011.json.
+Next candidate v65 replaces repeated field JSON/SQL rows with explicit typed field
+definitions and lossless bounded compressed row blocks; native/managed/packager
+work starts from frozen167/206 snapshots, not a restart.

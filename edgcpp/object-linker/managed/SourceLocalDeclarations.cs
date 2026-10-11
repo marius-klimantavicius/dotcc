@@ -46,7 +46,9 @@ internal sealed partial class ObjectFile
                     !siblings.Add((parent,scope.Ordinal)))throw new InvalidDataException("Original local scope differs from its parent routine or sibling list");
             }
             else if(scope.Ordinal!=0 || !roots.Add(scope.Routine))throw new InvalidDataException("Original function has conflicting local root scopes");
-            _=SourceLocalScopeKey(scope.Id,0);
+            var ancestors = new HashSet<long>();
+            for (long? current=scope.Id; current is long id; current=SourceLocalScopes[id].Parent)
+                if (!ancestors.Add(id)) throw new InvalidDataException("Original local scope parent graph is cyclic");
         }
         var ordinals=new HashSet<(long,long)>();
         foreach(var pair in SourceLocalVariableDeclarations)
