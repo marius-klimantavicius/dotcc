@@ -156,7 +156,9 @@ internal sealed partial class Emitter
         var type=unit.Original(target);
         if(type.Kind!="function")return Type(unit,target,allowIncomplete:true)+"*";
         if(type.Variadic)throw new InvalidDataException("Variadic function pointers require a supported runtime signature");
-        return "delegate* managed<"+string.Join(", ",unit.TypeParameters.GetValueOrDefault(type.Id,[]).Select(id=>Type(unit,id)).Append(Type(unit,type.Result!.Value)))+">";
+        var parameters=unit.TypeParameters.GetValueOrDefault(type.Id,[]).Select(id=>Type(unit,id));
+        if(type.ReturnStorage=="caller-provided")parameters=parameters.Prepend(Type(unit,type.Result!.Value)+"*");
+        return "delegate* managed<"+string.Join(", ",parameters.Append(type.ReturnStorage=="caller-provided"?"void":Type(unit,type.Result!.Value)))+">";
     }
     private void Line(int indent,string text="")
     {
@@ -169,6 +171,7 @@ internal sealed partial class Emitter
         private readonly Unit unit;
         private readonly SymbolRef? function;
         private readonly Dictionary<long,string> locals=[];
+        private readonly string? returnDestination;
         public FunctionWriter(Emitter emitter,Unit unit,SymbolRef? function)
         {
             this.emitter=emitter;this.unit=unit;this.function=function;
@@ -177,8 +180,12 @@ internal sealed partial class Emitter
             foreach(string value in emitter.symbolNames.Values)allocator.Reserve(value);
             foreach(string value in emitter.typeNames.Values)allocator.Reserve(value);
             if(function is SymbolRef selected)
+            {
                 foreach(var local in unit.Symbols.Values.Where(value=>value.Parent==selected.Id))
                     locals.Add(local.Id,allocator.Allocate(local.Name,"local_"+local.Id));
+                if(unit.Original(selected.Symbol.Type).ReturnStorage=="caller-provided")
+                    returnDestination=allocator.Allocate("__result","return_value");
+            }
         }
         private void Line(int indent,string text="")=>emitter.Line(indent,text);
         private string Name(long id)=>locals.TryGetValue(id,out var name)?name:emitter.SymbolName(unit,id);
@@ -191,7 +198,8 @@ internal sealed partial class Emitter
             var signature=unit.Original(selected.Symbol.Type);
             if(signature.Variadic)throw new InvalidDataException("Variadic definitions not yet supported: "+selected.Symbol.Name);
             string parameters=string.Join(", ",unit.Parameters.GetValueOrDefault(selected.Id,[]).Select(id=>Type(unit.Symbols[id].Type)+" "+Name(id)));
-            Line(1,"public static "+Type(signature.Result!.Value)+" "+emitter.symbolNames[selected]+"("+parameters+")");
+            if(returnDestination is not null)parameters=Type(signature.Result!.Value)+"* "+returnDestination+(parameters.Length==0?"":", "+parameters);
+            Line(1,"public static "+(returnDestination is null?Type(signature.Result!.Value):"void")+" "+emitter.symbolNames[selected]+"("+parameters+")");
             WriteFunctionBody(unit.Nodes[unit.Functions[selected.Id]],1);
         }
         private string Truth(Node node)
@@ -277,6 +285,8 @@ internal sealed partial class Emitter
                     long field=node.Field??N(1).Field??throw unit.Missing(node,"selected field missing");
                     return "("+E(0)+")"+(op=="dot-field"?".":"->")+emitter.fieldNames[(unit,field)];
                 case "call":case "dot-member-call":case "points-to-member-call":
+                    if(CallSignature(N(0)).ReturnStorage=="caller-provided")
+                        throw unit.Missing(node,"caller-provided class result requires an explicit initialization destination");
                     string target=E(0);
                     var args=operands.Skip(1).Select(Expression).ToArray();
                     if(op=="dot-member-call")args[0]="(&"+args[0]+")";
@@ -332,8 +342,7 @@ internal sealed partial class Emitter
                 case "block":
                     WriteBlock(node,indent);break;
                 case "return":
-                    if(constructorCompletionRequired)Line(indent,"__constructor_complete = true;");
-                    Line(indent,unit.Children(node,"value").FirstOrDefault() is Node value?"return "+Expression(value)+";":"return;");break;
+                    WriteReturn(node,indent);break;
                 case "expr-stmt":
                     if(Child(node,"value").Kind is "throw" or "rethrow")WriteThrow(Child(node,"value"),indent);
                     else

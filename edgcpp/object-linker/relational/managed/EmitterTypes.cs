@@ -34,6 +34,7 @@ internal sealed partial class Emitter
                 if(member.Type is long type)UseType(unit,type);
                 if(member.Field is long field)UseType(unit,unit.Fields[field].Owner);
                 if(member.Base is long selected)UseBase(unit,unit.BaseSubobjects[selected]);
+                if(member.CopySource is long source)UseType(unit,unit.Symbols[source].Type);
             }
             foreach(var conversion in unit.ClassConversions.Values.Where(conversion=>unit.Nodes[conversion.Node].Function==function.Id))
                 UseBase(unit,unit.BaseSubobjects[conversion.Base]);

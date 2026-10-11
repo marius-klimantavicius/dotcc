@@ -87,6 +87,13 @@ packs have a source declaration row and no runtime storage. Run `tests/verify_pa
 for the executable slice. `tests/verify_floating_metadata.py` checks explicit
 floating formats and source identities; extended floating arithmetic remains work.
 
+Selected return initializations and `types.return_storage` distinguish ordinary
+value returns from caller-provided result storage. The latter becomes an explicit
+result pointer in C#, preserving object identity through forwarded calls. Run
+`tests/verify_returns.py` to check self-pointer identity and construction failure
+cleanup. Implicit member copies use the recorded `copy_source_symbol_id`; optional
+NRVO optimization and more complex return-result unwinding remain work.
+
 This covers lexical return cleanup, partial member/base construction, reference catches,
 rethrow and exception-object destruction. Arrays/virtual-base construction, nontrivial
 temporaries, function-try blocks, complex catch conversions, macros, all type

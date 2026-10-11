@@ -2,7 +2,7 @@ namespace DotObj.Relational;
 
 internal sealed record ProgramType(long Id, string Kind, string Name, long? Size, long? Alignment,
     long? Pointee, long? Element, long? Count, long? Result, long? Underlying, bool Variadic, bool Incomplete,
-    string LinkName, string Linkage, bool Volatile,string? BuiltinName,bool Dependent);
+    string LinkName, string Linkage, bool Volatile,string? BuiltinName,bool Dependent,string ReturnStorage);
 internal sealed record Field(long Id, long Owner, string Name, long Type, long Ordinal, long Offset, long? BitOffset, long? BitWidth);
 internal sealed record Symbol(long Id, string Kind, string Name, string LinkName, string Linkage, long Type, long? Parent, bool Definition, string DefinitionKind);
 internal sealed record Node(long Id, long? Function, string Kind, long? Type, long? ExecutionType,
@@ -22,6 +22,7 @@ internal sealed partial class Unit : IDisposable
     public string Source { get; }
     public string Abi { get; }
     public bool HasLifecycles {get;}
+    public bool HasReturnStorage {get;}
     public Dictionary<long, ProgramType> Types { get; } = [];
     public Dictionary<long, Field> Fields { get; } = [];
     public Dictionary<long, Symbol> Symbols { get; } = [];
@@ -51,10 +52,12 @@ internal sealed partial class Unit : IDisposable
             bool hasDependentTypes;
             using(var query=database.Prepare("SELECT 1 FROM pragma_table_info('types') WHERE name='is_dependent'"))
                 hasDependentTypes=query.Read();
+            using(var query=database.Prepare("SELECT 1 FROM pragma_table_info('types') WHERE name='return_storage'"))
+                HasReturnStorage=query.Read();
             using (var q = database.Prepare("SELECT id,path FROM files ORDER BY id"))
                 while (q.Read()) Files.Add(q.Integer(0), q.Text(1));
-            using (var q = database.Prepare("SELECT id,kind,name,size,alignment,pointee_type_id,element_type_id,element_count,return_type_id,underlying_type_id,is_variadic,is_incomplete,link_name,linkage,is_volatile,"+(HasLifecycles?"builtin_name":"NULL")+","+(hasDependentTypes?"is_dependent":"0")+" FROM types ORDER BY id"))
-                while (q.Read()) Types.Add(q.Integer(0), new(q.Integer(0),q.Text(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalInteger(5),q.OptionalInteger(6),q.OptionalInteger(7),q.OptionalInteger(8),q.OptionalInteger(9),q.Integer(10)!=0,q.Integer(11)!=0,q.Text(12),q.Text(13),q.Integer(14)!=0,q.OptionalText(15),q.Integer(16)!=0));
+            using (var q = database.Prepare("SELECT id,kind,name,size,alignment,pointee_type_id,element_type_id,element_count,return_type_id,underlying_type_id,is_variadic,is_incomplete,link_name,linkage,is_volatile,"+(HasLifecycles?"builtin_name":"NULL")+","+(hasDependentTypes?"is_dependent":"0")+","+(HasReturnStorage?"return_storage":"'value'")+" FROM types ORDER BY id"))
+                while (q.Read()) Types.Add(q.Integer(0), new(q.Integer(0),q.Text(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalInteger(5),q.OptionalInteger(6),q.OptionalInteger(7),q.OptionalInteger(8),q.OptionalInteger(9),q.Integer(10)!=0,q.Integer(11)!=0,q.Text(12),q.Text(13),q.Integer(14)!=0,q.OptionalText(15),q.Integer(16)!=0,q.Text(17)));
             ReadEnums();
             using (var q = database.Prepare("SELECT id,owner_type_id,name,type_id,ordinal,byte_offset,bit_offset,bit_width FROM fields ORDER BY owner_type_id,ordinal"))
                 while (q.Read()) Fields.Add(q.Integer(0), new(q.Integer(0),q.Integer(1),q.Text(2),q.Integer(3),q.Integer(4),q.Integer(5),q.OptionalInteger(6),q.OptionalInteger(7)));

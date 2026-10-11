@@ -81,3 +81,15 @@ ORDER BY c.function_id,c.ordinal;
 
 SELECT * FROM try_handlers ORDER BY try_node_id,ordinal;
 SELECT * FROM throws ORDER BY node_id;
+
+SELECT s.name,t.return_storage,n.id AS return_node,i.kind AS initialization,
+       ctor.name AS constructor,f.nrvo_candidate_symbol_id
+FROM functions f JOIN symbols s ON s.id=f.symbol_id JOIN types t ON t.id=s.type_id
+JOIN nodes n ON n.function_id=f.symbol_id AND n.kind='return'
+LEFT JOIN initializations i ON i.id=n.initialization_id
+LEFT JOIN symbols ctor ON ctor.id=i.constructor_symbol_id ORDER BY s.id,n.id;
+
+SELECT s.name,c.ordinal,field.name,source.name AS selected_copy_source
+FROM constructor_initializers c JOIN symbols s ON s.id=c.function_id
+LEFT JOIN fields field ON field.id=c.field_id
+JOIN symbols source ON source.id=c.copy_source_symbol_id ORDER BY s.id,c.ordinal;

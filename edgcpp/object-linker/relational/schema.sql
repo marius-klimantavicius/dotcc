@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1007;
+PRAGMA user_version = 1008;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -26,6 +26,7 @@ CREATE TABLE types (
  element_type_id INTEGER REFERENCES types(id),
  element_count INTEGER,
  return_type_id INTEGER REFERENCES types(id),
+ return_storage TEXT NOT NULL DEFAULT 'value' CHECK(return_storage IN('value','caller-provided')),
  object_type_id INTEGER REFERENCES types(id),
  underlying_type_id INTEGER REFERENCES types(id),
  is_const INTEGER NOT NULL DEFAULT 0 CHECK(is_const IN(0,1)),
@@ -124,6 +125,7 @@ CREATE TABLE functions (
  kind TEXT NOT NULL DEFAULT 'ordinary' CHECK(kind IN('ordinary','constructor','destructor')),
  body_node_id INTEGER NOT NULL REFERENCES nodes(id),
  receiver_symbol_id INTEGER REFERENCES symbols(id),
+ nrvo_candidate_symbol_id INTEGER REFERENCES symbols(id),
  exception_policy TEXT NOT NULL DEFAULT 'unwind' CHECK(exception_policy IN('unwind','terminate'))
 ) STRICT;
 CREATE TABLE parameters (
@@ -307,6 +309,7 @@ CREATE TABLE constructor_initializers (
  field_id INTEGER REFERENCES fields(id),
  target_type_id INTEGER REFERENCES types(id),
  base_subobject_id INTEGER REFERENCES base_subobjects(id),
+ copy_source_symbol_id INTEGER REFERENCES symbols(id),
  is_virtual INTEGER NOT NULL DEFAULT 0 CHECK(is_virtual IN(0,1)),
  initialization_id INTEGER NOT NULL REFERENCES initializations(id),
  PRIMARY KEY(function_id,ordinal)

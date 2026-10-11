@@ -37,6 +37,7 @@ struct State {
   Id next_type=1,next_symbol=1,next_node=1,next_field=1,next_file=1,next_template=1,next_instance=1;
   Id next_lifetime=1,next_initialization=1,next_base=1,next_enum_value=1,next_formal=1;
   Id function=0;
+  a_type_ptr return_type=nullptr;
   std::map<a_type_ptr,Id> types;
   std::map<a_routine_ptr,Id> routines;
   std::map<a_routine_ptr,Id> routine_source_types;
@@ -328,7 +329,8 @@ struct State {
       {"min_exponent",min_exponent[int(t->variant.float_kind)]},
       {"max_exponent",max_exponent[int(t->variant.float_kind)]}});
     if(t->kind==tk_routine) {
-      db.update("types","id",id,{{"exception_policy",exception_policy(t)}});
+      db.update("types","id",id,{{"exception_policy",exception_policy(t)},
+        {"return_storage",t->variant.routine.extra_info->value_returned_by_cctor?"caller-provided":"value"}});
       unsigned ordinal=0;
       for(auto p=t->variant.routine.extra_info->param_type_list;p;p=p->next)
         db.insert("type_parameters",{{"type_id",id},{"ordinal",ordinal++},{"parameter_type_id",type_id(p->type)}});
@@ -511,6 +513,8 @@ struct State {
   }
   Id initialization_id(a_dynamic_init_ptr init,a_type_ptr target=nullptr) {
     if(!init)return 0;
+    if(init->master_entry || init->class_rvalue_initialized_through_master_entry)
+      missing("shared class-result initialization destination");
     Id target_type=type_id(target?target:init->variable?init->variable->type:nullptr);
     auto found=initializations.find(init);
     if(found!=initializations.end()) {
@@ -528,6 +532,7 @@ struct State {
       case dik_none:kind="none";break;
       case dik_zero:kind="zero";break;
       case dik_expression:kind="expression";value=expression(init->variant.expression);break;
+      case dik_class_result_via_ctor:kind="class-result";value=expression(init->variant.expression);break;
       case dik_constant:kind="constant";value=constant(init->variant.constant.ptr,pos);break;
       case dik_constructor:
         kind="constructor";
@@ -724,8 +729,13 @@ struct State {
           edge(id,"statement",ordinal++,statement(child));break;
       }
       case stmk_return:
-        if(s->variant.return_dynamic_init)missing("constructor return initialization");
-        edge(id,"value",0,expression(s->expr));break;
+        if(s->variant.return_dynamic_init) {
+          // lower_il::lower_return_statement applies this exact selected
+          // initialization to the returned object's destination. EDG has
+          // already performed required elision; retain the selected action.
+          db.update("nodes","id",id,{{"type_id",type_id(return_type)},
+            {"initialization_id",initialization_id(s->variant.return_dynamic_init,return_type)}});
+        } else edge(id,"value",0,expression(s->expr));break;
       case stmk_expr:edge(id,"value",0,expression(s->expr));break;
       case stmk_if:
         edge(id,"condition",0,expression(s->expr));edge(id,"then",0,statement(s->variant.if_stmt.then_statement));
@@ -806,8 +816,23 @@ struct State {
       }
       if(!entry->initializer)missing("default field initializer selection");
       if(entry->source_expr)missing("explicit array constructor initializer source");
+      Id copy_source=0;
+      auto init=entry->initializer;
+      bool implied=(init->kind==dik_bitwise_copy && !init->variant.bitwise_copy.source) ||
+        (init->kind==dik_constructor && init->variant.constructor.is_copy_constructor_with_implied_source);
+      if(implied) {
+        // Source-form equivalent of lower_init::var_for_copy_constructor_source:
+        // before lowering the receiver is separate and there are no added
+        // VTT/virtual-base parameters. The first explicit parameter supplies
+        // the object; this same selected ctor-initializer selects its member.
+        auto source=scope->variant.routine.parameters;
+        if(source && source==scope->variant.routine.this_param_variable)source=source->next;
+        if(!source)missing("selected constructor copy source parameter");
+        copy_source=variable(source,true,true);
+      }
       db.insert("constructor_initializers",{{"function_id",function},{"ordinal",ordinal},{"kind",kind},
         {"field_id",optional(field)},{"base_subobject_id",optional(base)},
+        {"copy_source_symbol_id",optional(copy_source)},
         {"target_type_id",optional(type_id(target))},{"is_virtual",is_virtual},
         {"initialization_id",initialization_id(entry->initializer,target)}});
     }
@@ -825,7 +850,9 @@ struct State {
             ", generated="+std::to_string(int(v->compiler_generated))+"]";
         missing(detail);
       }
-      Id previous=function;function=routine(r);expressions.clear();
+      Id previous=function;auto previous_return_type=return_type;
+      return_type=skip_typerefs(r->type)->variant.routine.return_type;
+      function=routine(r);expressions.clear();
       db.update("symbols","id",function,{{"is_definition",true}});
       unsigned empty_ordinal=0;
       for(auto v=scope->variables;v;v=v->next)if(empty_pack_parameter(v)) {
@@ -854,14 +881,17 @@ struct State {
       Id body=statement(scope->assoc_block,scope);
       const char *policy=exception_policy(r->type);
       if(std::string(policy)=="dependent")missing("finalized function exception policy");
-      db.update("types","id",routine_source_types[r],{{"exception_policy",policy}});
+      db.update("types","id",routine_source_types[r],{{"exception_policy",policy},
+        {"return_storage",skip_typerefs(r->type)->variant.routine.extra_info->value_returned_by_cctor?"caller-provided":"value"}});
       const char *kind=r->special_kind==sfk_constructor?"constructor":r->special_kind==sfk_destructor?"destructor":"ordinary";
       db.insert("functions",{{"symbol_id",function},{"body_node_id",body},{"receiver_symbol_id",optional(receiver)},
-        {"kind",kind},{"exception_policy",policy}});
+        {"kind",kind},{"exception_policy",policy},
+        {"nrvo_candidate_symbol_id",optional(scope->variant.routine.return_value_variable?
+          variable(scope->variant.routine.return_value_variable,true):0)}});
       for(auto variable:local_variables)variables.erase(variable);
       local_variables.clear();expressions.clear();declaration_initializers.clear();
       lifetimes.clear();initializations.clear();initialization_values.clear();initialization_types.clear();initializing.clear();
-      function=previous;return;
+      function=previous;return_type=previous_return_type;return;
     }
     if(!declaration_scopes.insert(scope).second)return;
     // File and namespace initializers have an explicit EDG execution list.

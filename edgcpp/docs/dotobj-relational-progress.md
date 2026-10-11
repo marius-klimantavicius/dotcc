@@ -196,6 +196,39 @@ the next active work; the full-corpus campaign remains stopped.
 Reproduce with `tests/verify_packs.py` and `tests/verify_floating_metadata.py` using
 the usual `--out` and `--linker` arguments (`--nativeaot` is supported for packs).
 
+## Verified returned-object construction
+
+`artifacts/review/dotobj-relational-returns-v6/` passes native C++, source-hidden
+C# and Linux x64 NativeAOT. A returned `Result` stores its own address; EDG-selected
+caller-provided storage is forwarded through `forward_result` into `make_result`,
+so the address matches the final caller object. Trace `1234` verifies construction,
+callee-local cleanup and caller destruction. A throwing result constructor gives
+`1235`: only the completed callee local is destroyed before the handler. A separate
+`Scalar` list-return exercises EDG-selected value-return storage.
+
+Function types record `return_storage`; return nodes reference selected
+initializations and result types. `class-result` initializations bind the selected
+call to the supplied destination. C# uses an explicit result pointer for
+caller-provided storage and a local value for EDG value returns. Selected implicit
+member copy sources are recorded in `constructor_initializers.copy_source_symbol_id`;
+the consumer does not choose a copy parameter by position. NRVO candidate metadata
+is retained; optional NRVO optimization is not applied. Required frontend elision
+is already reflected in EDG's selected initialization.
+
+Provider: 176,128 bytes, 69 nodes, 46 types. Main: 184,320 bytes, 109 nodes, 45 types.
+Storage summaries and tool hashes are retained. Lifetime, bases and packs regress
+under native/C#/NativeAOT at their `*-return-regression-v1` directories. The test
+also verifies rejection when potentially throwing local cleanup would require
+unexported return-result unwinding facts. Shared comma/conditional result storage,
+unbound caller-result expressions, nontrivial implied-copy constructor arguments
+and return-result lifetime transfer remain explicit unsupported cases.
+
+The real DuckDB probe at `dotobj-relational-duckdb-hugeint-v7/` advances to
+`noninteger constant value (EDG kind 4)`. Exact floating literal values are the
+next exporter/consumer work. This is still an early rejection without a published
+DuckDB object. Reproduce returns with `tests/verify_returns.py` and the usual
+`--out`, `--linker`, `--nativeaot` arguments.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

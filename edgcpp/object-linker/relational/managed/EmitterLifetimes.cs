@@ -12,15 +12,15 @@ internal sealed partial class Emitter
         private readonly HashSet<long> cleanupFlags=[];
         private bool constructorCompletionRequired;
         private string Flag(long initialization)=>"__constructed_"+initialization;
-        private string Target(ConstructorInitializer member)
+        private string Target(ConstructorInitializer member,long? source=null)
         {
-            long receiver=unit.FunctionDetails[function!.Value.Id].Receiver
+            long receiver=source??unit.FunctionDetails[function!.Value.Id].Receiver
                 ??throw new InvalidDataException("Constructor/destructor receiver was not exported");
             if(member.Kind=="field" && member.Field is long field)
                 return Name(receiver)+"->"+emitter.fieldNames[(unit,field)];
             if(member.Kind=="direct-base" && !member.Virtual)
             {
-                if(unit.FunctionDetails[function.Value.Id].Kind=="constructor" &&
+                if(unit.FunctionDetails[function!.Value.Id].Kind=="constructor" &&
                     unit.Initializations[member.Initialization].Kind is not ("none" or "constructor"))
                     throw new InvalidDataException("Base subobject initialization needs explicit copy/zero extent emission: "+member.Initialization);
                 long selected=member.Base??throw new InvalidDataException("Exporter defect: constructor/destructor base subobject missing");
@@ -35,6 +35,7 @@ internal sealed partial class Emitter
         {
             long functionId=function!.Value.Id;
             var details=unit.FunctionDetails[functionId];
+            CheckReturnCleanup();
             foreach(var lifetime in unit.Lifetimes.Values.Where(lifetime=>lifetime.Function==functionId))
                 foreach(long initialization in unit.Destructions.GetValueOrDefault(lifetime.Id,[]))
                 {
@@ -61,7 +62,12 @@ internal sealed partial class Emitter
                 {
                     if(details.Kind=="constructor")
                         foreach(var member in unit.ConstructorInitializers.GetValueOrDefault(functionId,[]))
-                            WriteInitialization(unit.Initializations[member.Initialization],Target(member),content);
+                        {
+                            var initialization=unit.Initializations[member.Initialization];
+                            string? source=initialization.ImpliedSource
+                                ?Target(member,member.CopySource??throw new InvalidDataException("Exporter defect: implied constructor member copy source missing")):null;
+                            WriteInitialization(initialization,Target(member),content,source);
+                        }
                     foreach(var child in unit.Children(body,"statement"))Statement(child,content);
                     if(constructorCompletionRequired && unit.Children(body,"statement").LastOrDefault()?.Kind!="return")Line(content,"__constructor_complete = true;");
                 }
@@ -205,6 +211,8 @@ internal sealed partial class Emitter
                     var arguments=unit.InitializationArguments.GetValueOrDefault(initialization.Id,[])
                         .Select(id=>ExpandedExpression(unit.Nodes[id],indent)).ToArray();
                     Line(indent,emitter.SymbolName(unit,constructor)+"(&"+destination+(arguments.Length==0?"":", "+string.Join(", ",arguments))+");");break;
+                case "class-result":
+                    WriteClassResultCall(unit.Nodes[initialization.Value??throw new InvalidDataException("Class result call missing")],destination,indent);break;
                 default:throw new InvalidDataException("Unsupported initialization kind "+initialization.Kind);
             }
             if(cleanupFlags.Contains(initialization.Id))Line(indent,Flag(initialization.Id)+" = true;");
