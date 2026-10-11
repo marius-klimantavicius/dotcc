@@ -19,7 +19,7 @@ internal sealed partial class Emitter
             if(node.Kind=="variable")
             {
                 long symbol=node.Symbol??throw unit.Missing(node,"selected variable missing");
-                if(unit.IsArray(unit.Symbols[symbol].Type) || emitter.HasPinnedScalarStorage(unit,symbol) || emitter.HasPinnedRecordStorage(unit,symbol))return Name(symbol);
+                if(unit.IsArray(unit.Symbols[symbol].Type) || emitter.HasPinnedScalarStorage(unit,symbol) || emitter.HasPinnedRecordStorage(unit,symbol) || emitter.HasProviderAddress(unit,symbol))return Name(symbol);
                 if(unit.Symbols[symbol].Parent is null)
                     throw unit.Missing(node,"discarded global location requires pinned storage emission");
                 return "(&"+Expression(node)+")";

@@ -2336,6 +2336,12 @@ struct State {
       }
       case enk_builtin_operation: {
         auto selected=e->variant.builtin_operation.kind;
+        if(template_recipe) {
+          // cp_gen_be prints this selected name and operand list directly.
+          // Recipes retain the operation without realizing a trait value,
+          // callable ABI, or runtime lowering decision.
+          kind="operation";op=builtin_operation_names[selected];break;
+        }
         if(selected==bok_builtin_addressof) {
           auto operand=e->variant.builtin_operation.operands;
           if(!operand || operand->next || !operand->is_lvalue)
@@ -2481,14 +2487,28 @@ struct State {
         else edge(id,"operand",ordinal,expression(child,&source_position,id));
       }
     } else if(e->kind==enk_builtin_operation) {
-      edge(id,"operand",0,expression(e->variant.builtin_operation.operands,&source_position,id));
-      Id previous=function;bool previous_recipe=template_recipe;
-      function=0;template_recipe=true;
-      Id name=node("reference-name",source_position,0,nullptr,nullptr,
-        builtin_operation_names[e->variant.builtin_operation.kind]);
-      db.update("nodes","id",name,{{"source_node_id",id}});
-      function=previous;template_recipe=previous_recipe;
-      edge(id,"source-name",0,name);
+      if(template_recipe) {
+        unsigned ordinal=0;
+        for(auto child=e->variant.builtin_operation.operands;child;child=child->next,++ordinal) {
+          Id operand=0;
+          if(child->kind==enk_type_operand) {
+            if(!child->variant.type_operand.type)missing("builtin recipe selected type operand");
+            operand=node("type-reference",child->position.seq?child->position:source_position,
+              type_id(child->variant.type_operand.type));
+            db.update("nodes","id",operand,{{"source_node_id",id}});
+          } else operand=expression(child,&source_position,id);
+          edge(id,"operand",ordinal,operand);
+        }
+      } else {
+        edge(id,"operand",0,expression(e->variant.builtin_operation.operands,&source_position,id));
+        Id previous=function;bool previous_recipe=template_recipe;
+        function=0;template_recipe=true;
+        Id name=node("reference-name",source_position,0,nullptr,nullptr,
+          builtin_operation_names[e->variant.builtin_operation.kind]);
+        db.update("nodes","id",name,{{"source_node_id",id}});
+        function=previous;template_recipe=previous_recipe;
+        edge(id,"source-name",0,name);
+      }
     } else if(e->kind==enk_temp_init || e->kind==enk_lambda) {
       db.update("nodes","id",id,{{"initialization_id",initialization_id(e->variant.init.dynamic_init,e->type)}});
     } else if(e->kind==enk_condition) {

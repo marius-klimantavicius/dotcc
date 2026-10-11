@@ -29,9 +29,7 @@ internal sealed partial class Emitter
                 if(allocationOwnedCleanups.Contains(id))continue;
                 if(initialization.Function!=function!.Value.Id || initialization.Destructor is not long destructor)continue;
                 var selected=emitter.program.Resolve(unit,destructor);
-                if(!selected.Unit.FunctionDetails.TryGetValue(selected.Id,out var details))
-                    throw new InvalidDataException("No definition for return cleanup destructor "+selected.Symbol.LinkName);
-                if(details.ExceptionPolicy!="terminate")
+                if(emitter.DeclarationExceptionPolicy(selected)!="terminate")
                     throw new InvalidDataException("Caller-provided return with potentially throwing cleanup requires explicit return-result unwinding facts: "+selected.Symbol.Name);
             }
         }

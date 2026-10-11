@@ -32,8 +32,8 @@ internal sealed partial class Emitter
             foreach(var initialization in unit.Initializations.Values.Where(initialization=>initialization.Function==function.Id))
             {
                 if(initialization.Type is long type && !byteZeroInitializations.Contains(initialization.Id))UseType(unit,type);
-                if(initialization.Constructor is long constructor)UseType(unit,unit.Symbols[constructor].Type);
-                if(initialization.Destructor is long destructor)UseType(unit,unit.Symbols[destructor].Type);
+                if(initialization.Constructor is long constructor)UseSymbol(unit,constructor);
+                if(initialization.Destructor is long destructor)UseSymbol(unit,destructor);
             }
             foreach(var member in unit.ConstructorInitializers.GetValueOrDefault(function.Id,[]))
             {
@@ -47,7 +47,10 @@ internal sealed partial class Emitter
             foreach(var write in unit.VptrWrites.GetValueOrDefault(function.Id,[]))
                 if(write.Table is long table)UseVirtualTable(unit,table);
             foreach(var site in unit.Throws.Values.Where(site=>unit.Nodes[site.Node].Function==function.Id))
+            {
                 if(site.Type is long type)UseType(unit,type);
+                if(site.Destructor is long destructor)UseSymbol(unit,destructor);
+            }
             foreach(var handler in unit.Handlers.Values.SelectMany(handlers=>handlers).Where(handler=>unit.Nodes[handler.CatchNode].Function==function.Id))
                 if(handler.Type is long type)UseType(unit,type);
             NeedsExceptionRuntime|=unit.FunctionDetails[function.Id].ExceptionPolicy=="terminate";
@@ -77,7 +80,11 @@ internal sealed partial class Emitter
         if(node.ExecutionType is long execution)UseType(unit,execution);
         if(node.OperationType is long operation)UseType(unit,operation);
         if(node.OriginalLvalueType is long original)UseType(unit,original);
-        if(node.Symbol is long symbol && node.Kind!="type-info-address")UseType(unit,unit.Symbols[symbol].Type);
+        if(node.Symbol is long symbol && node.Kind!="type-info-address")
+        {
+            if(node.Kind is "variable" or "function" or "routine-address")UseSymbol(unit,symbol);
+            else UseType(unit,unit.Symbols[symbol].Type);
+        }
         if(node.Field is long field)
         {
             UseType(unit,unit.Fields[field].Owner);UseType(unit,unit.Fields[field].Type);
@@ -90,12 +97,12 @@ internal sealed partial class Emitter
             NeedsExceptionRuntime|=node.Operator=="placement";
             // The allocated array type is source metadata. Runtime execution
             // uses the selected pointer result and supplied size/check graph.
-            UseType(unit,unit.Symbols[allocation.Allocator].Type);
+            UseSymbol(unit,allocation.Allocator);
             if(allocation.CountSymbol is long count)UseType(unit,unit.Symbols[count].Type);
             if(allocation.CountValue is long countValue)UseNode(unit,unit.Nodes[countValue],visited);
             UseNode(unit,unit.Nodes[allocation.Size],visited);
             if(allocation.Check is long check)UseNode(unit,unit.Nodes[check],visited);
-            if(allocation.Failure is long failure)UseType(unit,unit.Symbols[failure].Type);
+            if(allocation.Failure is long failure)UseSymbol(unit,failure);
         }
         foreach(var element in unit.ArrayElements.GetValueOrDefault(node.Id,[]))UseNode(unit,unit.Nodes[element.Value],visited);
         foreach(var element in unit.RecordElements.GetValueOrDefault(node.Id,[]))
@@ -110,8 +117,8 @@ internal sealed partial class Emitter
         if(node.Initialization is long selected && unit.Initializations.TryGetValue(selected,out var initialization))
         {
             if(initialization.Type is long initializedType && !byteZero)UseType(unit,initializedType);
-            if(initialization.Constructor is long constructor)UseType(unit,unit.Symbols[constructor].Type);
-            if(initialization.Destructor is long destructor)UseType(unit,unit.Symbols[destructor].Type);
+            if(initialization.Constructor is long constructor)UseSymbol(unit,constructor);
+            if(initialization.Destructor is long destructor)UseSymbol(unit,destructor);
             if(initialization.Value is long value)UseNode(unit,unit.Nodes[value],visited);
             foreach(long argument in unit.InitializationArguments.GetValueOrDefault(selected,[]))UseNode(unit,unit.Nodes[argument],visited);
         }

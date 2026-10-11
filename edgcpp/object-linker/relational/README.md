@@ -37,6 +37,20 @@ dotnet edgcpp/artifacts/relational-tool/dotobj-relational.dll link \
   /path/example.dotobj
 ```
 
+Strict linking requires providers for referenced external symbols. To emit reviewable
+sources before those providers are available, add `--unresolved-providers required-partial`.
+The generator emits explicit public partial function declarations and typed persistent
+address accessors, with exact recorded identities in `Imports.tsv`. Missing implementations
+fail C# compilation. Provider code must implement those declarations and keep external
+storage addresses stable; generated code supplies no fallback storage or function bodies.
+Original callable names take priority over generated storage properties and getters.
+`tests/verify_required_providers.py` checks required bindings, cross-TU function pointers,
+writable global addresses and a genuine native RTTI provider with source files hidden.
+
+Selected type-trait builtin recipes retain EDG's exact operation name and ordered
+source/type operands without computing a result or importing a callable.
+`tests/verify_builtin_recipes.py` checks that separation from concrete execution.
+
 The native compiler opens the SQLite transaction and inserts prepared rows.
 There is no JSON wire or packager. On success the driver publishes the object;
 on failure it preserves diagnostics and the unpublished partial file. Linking

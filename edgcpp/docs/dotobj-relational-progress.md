@@ -1360,6 +1360,42 @@ work. `hugeint-v47` remains at virtual deleting destruction. Complete real DuckD
 objects and actual DuckDB C# remain zero; resource evidence describes rejected
 export stages only.
 
+## Builtin source recipes and required provider declarations (2026-10-11)
+
+Verified `dotobj-relational-builtin-recipes-v1` retains selected builtin spellings,
+typed source nodes and ordered type/expression operands in the nonexecuting recipe
+domain. It evaluates no trait and creates no callable ABI or runtime action. Existing
+executable builtin addressof behavior is unchanged. The fixture checks `__is_same`,
+`__is_trivial` and `__is_constructible`, concrete folded results and source isolation.
+Native, source-hidden C# and Linux NativeAOT pass. Object: 249,856 bytes / 25 nodes /
+14 types; schema 1023 / 44 ordinary tables is unchanged.
+
+Verified `dotobj-relational-required-providers-v2` adds opt-in
+`--unresolved-providers required-partial`, retaining strict linking by default.
+Referenced externals become required explicit public partial function declarations
+or typed persistent address accessors. `Imports.tsv` preserves exact unit/symbol/link,
+type and exception-policy correspondence. No fallback body, fabricated storage or
+provider loader is generated. Callable source names take priority over synthetic
+storage/getter names; `get_imported_value` remains unchanged. Unused declarations
+and lambda prototype navigation do not create imports.
+
+The two-TU fixture proves missing implementations fail compilation, function pointer
+identity/calls across units, stable repeated writable global addresses and RTTI identity
+from a genuine native `&typeid(void)` provider. Provider loading is handwritten fixture
+glue, separate from translated sources. Native, source-hidden C# and NativeAOT pass.
+Consumer: 258,048 bytes / 37 nodes / 83 types; main: 266,240 bytes / 75 nodes / 91 types.
+`dotobj-relational-required-providers-static-regression-v1` also passes native,
+source-hidden C# and NativeAOT, preserving strict-mode pinned globals and two-phase
+static initialization. Tested tool hashes, SQL/storage summaries and review artifacts
+are retained for all three runs.
+
+Actual `checksum-v14` and `exception-v17` pass builtin recipes and converge on the
+selected dependent `sizeof` constant family at libc++ `string:813`. The next exporter
+work preserves exact type/expression query operands and stock local correspondence
+without evaluating them. `hugeint-v47` remains at virtual deleting destruction.
+Complete real DuckDB objects and generated actual DuckDB C# remain zero. Resource
+evidence still describes rejected export stages, never a completed TU.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

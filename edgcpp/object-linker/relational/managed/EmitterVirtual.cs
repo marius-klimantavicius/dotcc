@@ -40,7 +40,7 @@ internal sealed partial class Emitter
                     UseType(unit,unit.Symbols[target].Type);continue;
                 }
                 var function=program.Resolve(unit,target);
-                UseType(function.Unit,function.Symbol.Type);
+                UseSymbol(unit,target);
                 if(function.Unit.FunctionDetails.TryGetValue(function.Id,out var details) && details.Receiver is long receiver)
                     UseType(function.Unit,function.Unit.Symbols[receiver].Type);
             }
@@ -117,8 +117,7 @@ internal sealed partial class Emitter
             long targetId=entry.Target??throw new InvalidDataException("Exporter defect: virtual entry target missing");
             var target=program.Resolve(unit,targetId);
             string targetName=SymbolName(unit,targetId);
-            long targetReceiver=target.Unit.FunctionDetails[target.Id].Receiver??throw new InvalidDataException("Virtual target receiver missing: "+target.Symbol.Name);
-            string receiverType=Type(target.Unit,target.Unit.Symbols[targetReceiver].Type);
+            string receiverType=ReceiverType(target);
             string receiver="("+receiverType+")"+(entry.ThisDelta==0?"receiver":"((byte*)receiver + "+entry.ThisDelta+")");
             var arguments=Enumerable.Range(0,unit.TypeParameters.GetValueOrDefault(unit.Original(entry.CallableType).Id,[]).Count).Select(index=>"argument"+index).ToList();
             arguments.Insert(0,receiver);if(indirect)arguments.Insert(0,"result");

@@ -7,9 +7,10 @@ internal static class Program
         try
         {
             if (args.Length == 0 || args[0] != "link")
-                throw new ArgumentException("Usage: dotobj-relational link --out DIRECTORY [--namespace NAME] [--class NAME] [--entry SYMBOL] OBJECT.dotobj...");
+                throw new ArgumentException("Usage: dotobj-relational link --out DIRECTORY [--namespace NAME] [--class NAME] [--entry SYMBOL] [--unresolved-providers required-partial] OBJECT.dotobj...");
             string? output = null, entry = null;
             string namespaceName = "Translated", className = "Program";
+            bool requiredProviders = false;
             var paths = new List<string>();
             for (int index = 1; index < args.Length; index++)
             {
@@ -23,6 +24,10 @@ internal static class Program
                     case "--namespace": namespaceName = value; break;
                     case "--class": className = value; break;
                     case "--entry": entry = value; break;
+                    case "--unresolved-providers":
+                        requiredProviders = value == "required-partial" ? true :
+                            throw new ArgumentException("Unknown unresolved provider mode " + value);
+                        break;
                     default: throw new ArgumentException("Unknown option " + argument);
                 }
             }
@@ -30,7 +35,7 @@ internal static class Program
             namespaceName = Names.Namespace(namespaceName);
             className = Names.OptionIdentifier(className);
             using var program = new LinkedProgram(paths);
-            new Emitter(program, namespaceName, className).Write(Path.GetFullPath(output), entry);
+            new Emitter(program, namespaceName, className, requiredProviders).Write(Path.GetFullPath(output), entry);
             Console.WriteLine($"Generated C# from {paths.Count} relational object(s).");
             Console.WriteLine($"Body loading: peak rows {program.PeakFunctionBodyRows}; peak nodes {program.PeakFunctionBodyNodes}; functions loaded {program.FunctionBodyLoads}; active bodies {program.LoadedFunctionBodies}; peak bodies {program.PeakLoadedFunctionBodies}");
             Console.WriteLine($"Retained catalogs: types {program.Units.Sum(unit=>unit.Types.Count)}; symbols {program.Units.Sum(unit=>unit.Symbols.Count)}; virtual tables {program.Units.Sum(unit=>unit.VirtualTables.Count)}; virtual entries {program.Units.Sum(unit=>unit.VirtualEntries.Values.Sum(entries=>entries.Count))}; literal objects {program.Units.Sum(unit=>unit.Literals.Count)}; global nodes {program.Units.Sum(unit=>unit.GlobalExpressionNodes)}. Catalog loading is not yet bounded; literal bytes are streamed.");

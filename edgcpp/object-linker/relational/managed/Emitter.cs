@@ -13,11 +13,12 @@ internal sealed partial class Emitter
     private readonly Dictionary<string,(Unit Unit,ProgramType Type,string Name)> records = new(StringComparer.Ordinal);
     private TextWriter output=TextWriter.Null;
 
-    public Emitter(LinkedProgram program,string namespaceName,string className)
+    public Emitter(LinkedProgram program,string namespaceName,string className,bool requiredProviders=false)
     {
         this.program=program;this.namespaceName=namespaceName;this.className=className;
+        this.requiredProviders=requiredProviders;
         names.Reserve(className);names.Reserve("Main");
-        foreach(var symbol in program.Functions.Concat(program.Globals))
+        foreach(var symbol in program.Functions)
         {
             string source=symbol.Symbol.Name;
             if(symbol.Unit.FunctionDetails.TryGetValue(symbol.Id,out var details))
@@ -26,6 +27,14 @@ internal sealed partial class Emitter
         }
         PrepareVirtualCatalog();
         FindExecutableTypes();
+        // Callable source names take priority over generated storage getters.
+        foreach(var global in program.Globals)
+        {
+            bool property=global.Unit.IsArray(global.Symbol.Type) || HasPinnedRecordStorage(global.Unit,global.Id) || HasPinnedScalarStorage(global.Unit,global.Id);
+            symbolNames.Add(global,property?names.AllocateProperty(global.Symbol.Name,"symbol_"+global.Id):
+                names.Allocate(global.Symbol.Name,"symbol_"+global.Id));
+        }
+        PrepareProviderStorageNames();
         foreach(var unit in program.Units)
             foreach(var type in unit.Types.Values.Where(type=>type.Kind=="record" && unit.VaListRole(type.Id) is null && executableTypes.Contains((unit,type.Id))))
             {
@@ -64,6 +73,7 @@ internal sealed partial class Emitter
             WriteFloatingRuntime(directory);
             WriteVirtualRuntime(directory);
             WriteVarargsRuntime(directory);
+            if(requiredProviders)WriteImportsManifest(directory);
         }
         catch
         {
@@ -114,6 +124,7 @@ internal sealed partial class Emitter
             }
             finally {ReleaseClassConversionNames(function.Unit,function.Id);ReleaseVirtualCallNames(function.Unit,function.Id);ReleaseCompoundNames(function.Unit,function.Id);ReleaseAllocationNames(function.Unit,function.Id);ReleaseDeallocationNames(function.Unit,function.Id);}
         }
+        WriteRequiredProviders();
         if(entry is not null)
         {
             var matches=program.Functions.Where(function=>function.Symbol.Name==entry || function.Symbol.LinkName==entry).ToArray();
@@ -154,6 +165,7 @@ internal sealed partial class Emitter
     {
         var selected=program.Resolve(unit,id);
         if(symbolNames.TryGetValue(selected,out string? name))return name;
+        if(RequireProvider(selected) is ProviderImport import)return import.Name;
         throw new InvalidDataException("No definition for "+selected.Symbol.LinkName+" ("+selected.Symbol.Name+")");
     }
 
@@ -184,6 +196,7 @@ internal sealed partial class Emitter
         if(type.Kind!="function")return Type(unit,target,allowIncomplete:true)+"*";
         var parameters=unit.TypeParameters.GetValueOrDefault(type.Id,[]).Select(id=>Type(unit,id));
         if(type.Variadic){needsVarargsRuntime=true;parameters=parameters.Append(VaSpanType);}
+        if(type.ObjectType is long receiver)parameters=parameters.Prepend(Pointer(unit,receiver));
         if(type.ReturnStorage=="caller-provided")parameters=parameters.Prepend(Type(unit,type.Result!.Value)+"*");
         return "delegate* managed<"+string.Join(", ",parameters.Append(type.ReturnStorage=="caller-provided"?"void":Type(unit,type.Result!.Value)))+">";
     }
@@ -272,7 +285,7 @@ internal sealed partial class Emitter
                 case "delete":return node.Operator=="destroy"?DeallocationExpression(node):Expression(Child(node,"execution"));
                 case "variable":
                     long variable=node.Symbol??throw unit.Missing(node,"selected symbol missing");
-                    return unit.IsArray(unit.Symbols[variable].Type) || emitter.HasPinnedRecordStorage(unit,variable) || emitter.HasPinnedScalarStorage(unit,variable)?"(*"+Name(variable)+")":Name(variable);
+                    return unit.IsArray(unit.Symbols[variable].Type) || emitter.HasPinnedRecordStorage(unit,variable) || emitter.HasPinnedScalarStorage(unit,variable) || emitter.HasProviderAddress(unit,variable)?"(*"+Name(variable)+")":Name(variable);
                 case "function":case "routine-address":return FunctionAddress(node);
                 case "initialize":return unit.Children(node,"value").FirstOrDefault() is Node value?Expression(value):"default";
                 case "operation":return Operation(node);
@@ -333,7 +346,7 @@ internal sealed partial class Emitter
                 case "address-of":case "reference-to":
                     if(N(0).Kind=="function")return FunctionAddress(N(0));
                     if(N(0).Type is long addressedType && unit.IsArray(addressedType))return ArrayAddress(N(0));
-                    if(N(0).Kind=="variable" && N(0).Symbol is long pinned && (emitter.HasPinnedRecordStorage(unit,pinned) || emitter.HasPinnedScalarStorage(unit,pinned)))return Name(pinned);
+                    if(N(0).Kind=="variable" && N(0).Symbol is long pinned && (emitter.HasPinnedRecordStorage(unit,pinned) || emitter.HasPinnedScalarStorage(unit,pinned) || emitter.HasProviderAddress(unit,pinned)))return Name(pinned);
                     if(N(0).Kind=="variable" && N(0).Symbol is long addressed && unit.Symbols[addressed].Parent is null)
                         throw unit.Missing(node,"address-taken global requires pinned storage support");
                     return "(&"+E(0)+")";

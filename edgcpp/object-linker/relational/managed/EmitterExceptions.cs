@@ -59,8 +59,8 @@ internal sealed partial class Emitter
                 {
                     string name=names.Allocate("__destroy_payload_"+payloadDestructors.Count,"destroy_payload");
                     payloadDestructors.Add(selected,name);
-                    long parameter=selected.Unit.Parameters.GetValueOrDefault(selected.Id,[]).Single();
-                    Line(1,"private static void "+name+"(void* payload) => "+SymbolName(unit,destructor)+"(("+Type(selected.Unit,selected.Unit.Symbols[parameter].Type)+")payload);");
+                    string receiver=ReceiverType(selected);
+                    Line(1,"private static void "+name+"(void* payload) => "+SymbolName(unit,destructor)+"(("+receiver+")payload);");
                 }
             }
         }

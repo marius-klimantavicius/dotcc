@@ -43,10 +43,10 @@ internal sealed partial class Emitter
                 if(nullCheck){Line(2,"if ("+parameter+" != null)");Line(2,"{");}
                 int indent=nullCheck?3:2;
                 var selected=emitter.program.Resolve(unit,destructor);
-                if(!selected.Unit.FunctionDetails.TryGetValue(selected.Id,out var details) || details.Receiver is not long receiver ||
-                   selected.Unit.Parameters.GetValueOrDefault(selected.Id,[]).Count!=1)
+                if(selected.Symbol.Definition && selected.Unit.Parameters.GetValueOrDefault(selected.Id,[]).Count!=1 ||
+                   !selected.Symbol.Definition && selected.Unit.TypeParameters.GetValueOrDefault(selected.Unit.Original(selected.Symbol.Type).Id,[]).Count!=0)
                     throw unit.Missing(destroy,"selected source destructor requires its recorded receiver definition");
-                string receiverType=emitter.Type(selected.Unit,selected.Unit.Symbols[receiver].Type);
+                string receiverType=emitter.ReceiverType(selected);
                 // The existing source destructor body includes its recorded
                 // complete-object member/base epilogue. The complete ABI entry
                 // is retained separately as navigation, without a fake body.
