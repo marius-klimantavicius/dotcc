@@ -147,6 +147,11 @@ before recorded scalar/record/array constant initialization actions execute.
 stable addresses and forward cross-TU pointer initializers. Dynamic static guards,
 static destruction and TLS remain unsupported.
 
+Fixed-layout pointer differences use selected typed operands and result, preserving
+element counts through ordinary C# pointer subtraction. `tests/verify_pointer_differences.py`
+checks cross-unit char/int counts, effects and conditional execution. Void, function,
+incomplete and runtime-sized pointees remain unsupported.
+
 Scalar default member initializers reuse ordinary selected constructor actions when
 EDG explicitly selects the field initializer. `tests/verify_default_members.py`
 covers constants, typed null pointers, templates, and explicit overrides. Richer

@@ -1006,7 +1006,19 @@ struct State {
         if(!selected_literals.count(v)){attach_variable_address(id,c,p);return;}
         object=selected_literal_object(v);
       }
-      else missing("nonliteral constant address",int(c->variant.address.kind));
+      else {
+        auto pos=location(p);std::string path,owner;
+        for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+        for(const auto &routine:routines)if(routine.second==function){owner=spelling(routine.first->source_corresp);break;}
+        std::string detail="nonliteral constant address [function="+owner+", file="+path+
+          ", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column);
+        if(c->variant.address.kind==abk_typeid) {
+          auto target=c->variant.address.variant.type;
+          detail+=", typeid-target="+spelling(target->source_corresp)+", typeid-kind="+std::to_string(int(target->kind));
+        }
+        detail+="]";
+        missing(detail,int(c->variant.address.kind));
+      }
       db.update("nodes","id",id,{{"literal_object_id",object},{"literal_byte_offset",c->variant.address.offset}});
     }
   }
@@ -1284,6 +1296,7 @@ struct State {
       DOT_SEMANTIC_OP(eok_add,"add");DOT_SEMANTIC_OP(eok_subtract,"subtract");
       DOT_SEMANTIC_OP(eok_multiply,"multiply");DOT_SEMANTIC_OP(eok_divide,"divide");DOT_SEMANTIC_OP(eok_remainder,"remainder");
       DOT_SEMANTIC_OP(eok_padd,"pointer-add");DOT_SEMANTIC_OP(eok_psubtract,"pointer-subtract");
+      DOT_SEMANTIC_OP(eok_pdiff,"pointer-difference");
       DOT_SEMANTIC_OP(eok_eq,"eq");DOT_SEMANTIC_OP(eok_ne,"ne");DOT_SEMANTIC_OP(eok_lt,"lt");
       DOT_SEMANTIC_OP(eok_le,"le");DOT_SEMANTIC_OP(eok_gt,"gt");DOT_SEMANTIC_OP(eok_ge,"ge");
       DOT_SEMANTIC_OP(eok_assign,"assign");DOT_SEMANTIC_OP(eok_add_assign,"add-assign");

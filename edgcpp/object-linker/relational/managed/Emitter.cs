@@ -311,6 +311,7 @@ internal sealed partial class Emitter
             switch(op)
             {
                 case "add":case "pointer-add":return Binary("+");case "subtract":case "pointer-subtract":return Binary("-");case "multiply":return Binary("*");
+                case "pointer-difference":return PointerDifference(node,N(0),N(1));
                 case "divide":return Binary("/");case "remainder":return Binary("%");
                 case "shift-left":return "("+E(0)+" << (int)"+E(1)+")";case "shift-right":return "("+E(0)+" >> (int)"+E(1)+")";
                 case "and":case "bit-and":return Binary("&");case "or":case "bit-or":return Binary("|");case "xor":case "bit-xor":return Binary("^");

@@ -832,6 +832,32 @@ retained performance remains early-rejection cost. Next work is the selected
 typed pointer-difference expression, using existing nodes/edges. Broad campaign
 remains stopped.
 
+## Selected fixed-layout pointer differences (2026-10-11)
+
+Verified `dotobj-relational-pointer-differences-v1` passes native C++, source-hidden
+C#, and Linux NativeAOT. Schema remains 1018 / 43 tables. `eok_pdiff` is an ordinary
+`pointer-difference` operation with existing selected pointer operands, ordered
+edges and typed prvalue result. The generator emits typed pointer subtraction
+and casts to the recorded result type, preserving the pointee element count.
+Fixed positive complete pointee layout is required; void, function, incomplete
+and runtime-sized pointees remain explicit unsupported generation cases.
+
+The focused cross-TU fixture checks char/int positive, negative and zero counts,
+once-only operand effects, skipped branches and EDG's enclosing assignment
+RHS-before-destination order. It does not demand a specific operand order where
+EDG records C++ unspecified order. Provider: 245,760 bytes / 43 nodes / 17 types;
+main: 282,624 bytes / 240 nodes / 26 types. SQL checks, per-table storage and
+tested tool hashes are retained with original and generated sources.
+
+Actual `hugeint-v36` advances past libc++ `__to_chars_itoa` pointer difference.
+Diagnostic `hugeint-v37` identifies the next boundary: `&typeid(void)` in the
+constant empty `std::function` policy aggregate at `__functional/function.h:522:9`.
+Stock `lower_typeid_constant` selects a persistent ABI RTTI variable, with void's
+fundamental typeinfo supplied by the runtime. Exporting that correspondence and
+its provider storage needs an explicit architecture review; opaque type tokens
+are not a substitute. No complete DuckDB object is published; retained timings
+remain early-rejection costs. Broad campaign remains stopped.
+
 ## Retention purpose audit (2026-10-11)
 
 The resolved program graph includes requested source browsing facts beyond current
