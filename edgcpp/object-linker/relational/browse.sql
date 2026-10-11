@@ -97,3 +97,7 @@ SELECT s.name,c.ordinal,field.name,source.name AS selected_copy_source
 FROM constructor_initializers c JOIN symbols s ON s.id=c.function_id
 LEFT JOIN fields field ON field.id=c.field_id
 JOIN symbols source ON source.id=c.copy_source_symbol_id ORDER BY s.id,c.ordinal;
+
+SELECT n.id,n.kind,n.operator,t.kind AS type,n.value_normalization
+FROM nodes n LEFT JOIN types t ON t.id=n.type_id
+WHERE n.value_normalization IS NOT NULL ORDER BY n.id;

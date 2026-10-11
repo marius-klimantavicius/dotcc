@@ -274,6 +274,12 @@ struct State {
     if(qualifiers & ~(TQ_CONST|TQ_VOLATILE|TQ_RESTRICT))missing("extended type qualifiers");
     switch(t->kind) {
       case tk_void:kind="void";builtin="void";break;
+      case tk_nullptr:
+        if(!is_standard_nullptr_type(t))missing("C++/CLI nullptr type");
+        // Keep the distinct source type. lower_il::lower_type uses void*
+        // storage, while nullptr prvalues denote zero even when their source
+        // storage is uninitialized (rewrite_nullptr_expr_if_necessary).
+        kind="nullptr";builtin="std::nullptr_t";break;
       case tk_template_param:kind="template-parameter";break;
       case tk_typeref:
         kind=type_is_typedef(t)?"typedef":"qualified";underlying=type_id(t->variant.typeref.type);break;
@@ -705,6 +711,13 @@ struct State {
     Id id=node(kind,e->position,type_id(e->type),e->is_lvalue?"lvalue":e->is_xvalue?"xvalue":"prvalue",
       op,text,symbol,field,type_id(e->orig_lvalue_type),e->compiler_generated);
     expressions[e]=id;
+    // Source-form predicate for lower_il::rewrite_nullptr_expr_if_necessary.
+    // lower_expr first changes xvalues to lvalues, so both glvalue forms are
+    // excluded here. Retain the original children for evaluation/side effects;
+    // the explicit result rule replaces the value, not the storage location.
+    if(!e->is_lvalue && !e->is_xvalue && is_standard_nullptr_type(e->type) &&
+       e->kind!=enk_constant && e->kind!=enk_field && !e->result_is_not_used)
+      db.update("nodes","id",id,{{"value_normalization","nullptr-zero"}});
     if(e->kind==enk_constant) {
       attach_enum_value(id,node_constant(e));
       if(node_constant(e)->kind==ck_float)

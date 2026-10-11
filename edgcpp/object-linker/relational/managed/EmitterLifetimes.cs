@@ -159,7 +159,7 @@ internal sealed partial class Emitter
 
         private string ExpandedExpression(Node node,int indent)
         {
-            if(expandedValues.TryGetValue(node.Id,out string? found))return found;
+            if(expandedValues.TryGetValue(node.Id,out string? found))return NormalizeValue(node,found);
             var operands=unit.Children(node,"operand").ToArray();
             if(node.EvaluationOrder=="right-to-left" && operands.Length>1)
             {
@@ -185,7 +185,7 @@ internal sealed partial class Emitter
                 Line(indent,Type(initialization.Type??node.Type!.Value)+" "+name+" = default;");
                 WriteInitialization(initialization,name,indent);
                 expandedValues.Add(node.Id,name);
-                return name;
+                return NormalizeValue(node,name);
             }
             if(node.Kind=="operation" && node.Operator is "conditional" or "logical-and" or "logical-or")return Expression(node);
             if(node.EvaluationOrder=="right-to-left")operands=operands.Reverse().ToArray();

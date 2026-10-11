@@ -12,6 +12,7 @@ internal sealed partial class Emitter
     {
         var type=unit.Original(id);
         if(reference && type.Kind is "lvalue-reference" or "rvalue-reference")type=unit.Original(type.Pointee!.Value);
+        if(type.Kind=="nullptr")throw new InvalidDataException("nullptr exception matching, including pointer handlers, is not yet implemented");
         if(type.Kind is "record" or "enum")return(type,type.Linkage=="external"?type.Kind+":"+type.LinkName:type.Kind+":"+unit.Source+":"+type.Id);
         if(type.BuiltinName is string builtin)return(type,"builtin:"+builtin);
         throw new InvalidDataException("Exception descriptor emission not implemented for "+type.Kind+" "+type.Name);

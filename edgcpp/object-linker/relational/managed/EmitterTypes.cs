@@ -51,6 +51,7 @@ internal sealed partial class Emitter
     private void UseNode(Unit unit,Node node,HashSet<long> visited)
     {
         if(!visited.Add(node.Id))return;
+        needsNullptrNormalization|=node.ValueNormalization=="nullptr-zero";
         if(node.Function is null)executableGlobalNodes.Add((unit,node.Id));
         if(node.Type is long type)UseType(unit,type);
         if(node.ExecutionType is long execution)UseType(unit,execution);

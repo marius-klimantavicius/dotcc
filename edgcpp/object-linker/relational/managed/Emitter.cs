@@ -41,6 +41,7 @@ internal sealed partial class Emitter
                     fieldNames.Add((unit,field.Id),members.Allocate(field.Name,"field_"+field.Ordinal));
             }
         PrepareEnums();
+        if(needsNullptrNormalization)nullptrValueName=names.Allocate("__nullptr_value","nullptr_value");
     }
 
     public void Write(string directory,string? entry)
@@ -75,6 +76,7 @@ internal sealed partial class Emitter
         WriteEnums();
         foreach(var record in records.Values) Record(record.Unit,record.Type,record.Name);
         WriteInheritanceHelpers();
+        WriteNullptrHelper();
         PrepareExceptionDescriptors();
         foreach(var unit in program.Units)WriteClassConversionHelpers(unit,null);
         foreach(var global in program.Globals)
@@ -147,6 +149,7 @@ internal sealed partial class Emitter
             "void"=>"void","bool"=>"bool","i8"=>"sbyte","u8"=>"byte","i16"=>"short","u16"=>"ushort",
             "i32"=>"int","u32"=>"uint","i64"=>"long","u64"=>"ulong","f32"=>"float","f64"=>"double",
             "f80" or "f128"=>ExtendedFloatingType(unit,type),
+            "nullptr"=>"void*",
             "pointer" or "lvalue-reference" or "rvalue-reference"=>Pointer(unit,type.Pointee!.Value),
             "record"=>typeNames[(unit,type.Id)],
             "enum"=>typeNames[(unit,type.Id)],
@@ -181,6 +184,7 @@ internal sealed partial class Emitter
             allocator.Reserve("_");
             foreach(string value in emitter.symbolNames.Values)allocator.Reserve(value);
             foreach(string value in emitter.typeNames.Values)allocator.Reserve(value);
+            if(emitter.nullptrValueName is string helper)allocator.Reserve(helper);
             if(function is SymbolRef selected)
             {
                 foreach(var local in unit.Symbols.Values.Where(value=>value.Parent==selected.Id))
@@ -208,9 +212,13 @@ internal sealed partial class Emitter
         {
             string value=Expression(node);
             var type=unit.Original(node.Type??node.ExecutionType??throw unit.Missing(node,"condition type missing"));
-            return type.Kind=="bool"?value:"("+value+(type.Kind is "pointer" or "lvalue-reference" or "rvalue-reference"?" != null)":" != 0)");
+            return type.Kind=="bool"?value:"("+value+(type.Kind is "pointer" or "lvalue-reference" or "rvalue-reference" or "nullptr"?" != null)":" != 0)");
         }
         public string Expression(Node node)
+        {
+            return NormalizeValue(node,RawExpression(node));
+        }
+        private string RawExpression(Node node)
         {
             if(expandedValues.TryGetValue(node.Id,out var expanded))return expanded;
             if(node.Lifetime is long ownedLifetime && unit.Destructions.GetValueOrDefault(ownedLifetime,[]).Count!=0)

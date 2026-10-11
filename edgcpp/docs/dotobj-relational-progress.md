@@ -258,6 +258,30 @@ DuckDB object; this is not a full-unit time or memory measurement. The next type
 is standard `std::nullptr_t`; explicit export and consumption are next. The
 full-corpus campaign remains stopped.
 
+## Verified nullptr source type and value normalization
+
+`artifacts/review/dotobj-relational-nullptr-v2/` passes native C++, SQL integrity,
+source-hidden C# and Linux x64 NativeAOT. `std::nullptr_t` retains a distinct SQL
+type and EDG layout, with ordinary pointer storage in C#. Nodes explicitly record
+EDG's selected `nullptr-zero` result normalization; the consumer preserves operand
+evaluation once and emits the recorded null result. Lvalue storage stays intact.
+The fixture writes a nonzero byte into nullptr storage and then converts the
+value to an object pointer, checks a side-effecting nullptr-returning call,
+selected nullptr/pointer overloads, cross-unit fields/parameters/returns, and
+nullptr template arguments/defaults. Source typedef/qualifier layers remain.
+
+Provider: 184,320 bytes, 37 nodes, 20 types. Main: 192,512 bytes, 130 nodes, 31 types.
+Storage summaries and tool hashes are retained. Floating and bounded-body
+regressions pass native/C#/NativeAOT at `*-nullptr-regression-v1`; the body bound
+remains 251 peak nodes of 1,531. C++/CLI null types, pointer-to-member null values,
+and nullptr exception matching remain explicitly unsupported. Reproduce with
+`tests/verify_nullptr.py` and the usual arguments.
+
+The real DuckDB probe at `dotobj-relational-duckdb-hugeint-v9/` advances to
+`missing expression (EDG kind 10)`, an EDG condition declaration. No full DuckDB
+object has been published. Explicit condition initialization and lifetime scope
+are next; broad export remains stopped.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

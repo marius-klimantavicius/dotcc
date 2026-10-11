@@ -92,6 +92,12 @@ binary80/binary128 arithmetic through the existing software runtime, including
 source-hidden C# and NativeAOT. Floating environment/rounding-mode completeness
 and half-precision execution remain work.
 
+Standard `std::nullptr_t` retains its distinct source identity and EDG layout.
+`nodes.value_normalization` explicitly records zero-valued prvalue behavior;
+the consumer preserves operand effects and follows that fact. Run
+`tests/verify_nullptr.py` for byte-written storage, selected overloads, and
+cross-unit parameters/returns. Nullptr exception matching remains unsupported.
+
 Selected return initializations and `types.return_storage` distinguish ordinary
 value returns from caller-provided result storage. The latter becomes an explicit
 result pointer in C#, preserving object identity through forwarded calls. Run
