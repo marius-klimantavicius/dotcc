@@ -829,9 +829,13 @@ struct State {
     if(c->kind!=ck_dynamic_init)return constant(c,p,complete_object);
     auto init=c->variant.dynamic_init.ptr;
     // lower_init::lower_ck_dynamic_init applies this exact selected action
-    // to the current aggregate destination. Scalar components require no
-    // partial-object cleanup or constructor destination remapping.
-    if(!init || !is_scalar_type(c->type) ||
+    // to the current aggregate destination. add_init_assignment uses the
+    // selected expression/constant/zero action for complete record values
+    // without introducing a constructor. Base subobject copies still need
+    // an explicit destination extent and remain outside this bound.
+    bool value_component=is_scalar_type(c->type) ||
+      (complete_object && is_immediate_class_type(skip_typerefs(c->type)));
+    if(!init || !value_component ||
        (init->kind!=dik_expression && init->kind!=dik_constant && init->kind!=dik_zero) ||
        init->variable || init->destructor || init->lifetime || init->init_expr_lifetime ||
        init->lifetime_of_overlapping_temps || init->master_entry ||
@@ -840,7 +844,7 @@ struct State {
        init->destruction_is_for_partially_constructed_aggregate ||
        init->is_freeing_of_storage_on_exception)
       missing_initialization(init,c->type,p,
-        "aggregate component requires scalar initialization without cleanup/remapping",c);
+        "aggregate component requires scalar or complete record initialization without cleanup/remapping",c);
     Id id=node("initialize",p,type_id(c->type));
     db.update("nodes","id",id,{{"initialization_id",initialization_id(init,c->type)}});
     return id;

@@ -968,6 +968,32 @@ extension is being implemented; no full DuckDB object has yet been published.
 All retained probe timings remain early-rejection costs. Shared-result destination
 schema review remains pending independently.
 
+## Complete record aggregate component actions (2026-10-11)
+
+Verified `dotobj-relational-record-aggregate-components-v3` extends existing
+`initialize` nodes and selected initialization actions to cleanup-free complete
+record components. Stock selected expression/constant/zero initialization is
+applied to the recorded aggregate destination, without inferring or introducing
+a constructor. Cleanup/remapping exclusions remain unchanged; dynamic base
+subobject copies remain unsupported. Schema remains 1018 / 43 tables.
+
+The C++17 two-TU fixture reproduces the actual reference-parameter record field
+copy and checks reference-call/returned-value field actions, once-only aggregate
+ordering, copied value independence and retained pointer aliases. Native C++,
+source-hidden C# and Linux NativeAOT pass. SQL checks exact selected actions and
+field destinations; unsupported aggregate cleanup still rejects publication.
+Provider: 253,952 bytes / 68 nodes / 24 types; main: 286,720 bytes / 299 nodes /
+29 types. Tested hashes and per-table storage are retained. Native build passes;
+existing managed action consumption needs no changes. Valid exported complete
+record array components still meet an explicit managed record-array generation
+boundary and are not claimed as executable acceptance.
+
+Actual `exception-v4` passes the atomic-wait record field at
+`__atomic/atomic_sync.h:67:81` and rejects local declaration EDG 78. Its source
+declaration representation is being investigated. No complete real DuckDB object
+or actual DuckDB C# generation is yet published; probe timings remain rejection
+costs. Shared-result destination schema review remains pending.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
