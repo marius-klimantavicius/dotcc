@@ -424,6 +424,39 @@ Next work projects EDG's explicit va_list role and builtin operations into the
 existing portable cursor runtime, preserving source identity and nonexecuted
 last-parameter anchors.
 
+## Verified portable varargs and function values
+
+`artifacts/review/dotobj-relational-varargs-v1/` passes native C++, SQL integrity,
+source-hidden C# and Linux x64 NativeAOT. Schema version 1014 adds only
+`types.semantic_role` for EDG's builtin va_list typedef/storage identities. Source
+names, type chains and original layout/fields remain available in SQL. Five
+builtin operations carry typed operands; `va_start`'s ignored source parameter
+anchor uses a nonexecuted `last-parameter` edge. These additions directly support
+cursor emission and source browsing, without frontend bookkeeping.
+
+The consumer reuses unchanged shared VaArg/VaPack/VaList runtime sources. Variadic
+methods receive promoted argument snapshots via ReadOnlySpan; each activation owns
+a pack with bounded stack storage/native fallback and using disposal. Explicit
+cursor forwarding advances the original; va_copy borrows an independent cursor.
+Function pointer values use typed method addresses and indirect variadic calls
+pass explicit spans. Generated source retains routine/parameter/local names.
+
+Coverage includes promoted short/float/bool values, pointers, once-only argument
+effects, forwarding, copying, empty packs, a selected function pointer and exception
+cleanup. Provider: 221,184 bytes, 160 nodes, 32 types. Main: 217,088 bytes, 104 nodes,
+27 types. Virtual-dispatch and returned-object regressions pass native/C#/NativeAOT
+at `*-varargs-regression-v1`; old 14-table objects still link/run at
+`dotobj-relational-v3-varargs-compat`. Storage and tool hashes are retained.
+Reproduce with `tests/verify_varargs.py`. Aggregate variadic payloads and variadic
+virtual dispatch remain explicit unsupported generation paths.
+
+Actual bounded DuckDB `hugeint-v17` advances beyond va_start and rejects an array
+aggregate initializer (constant kind 12/type kind 9). Its reported line/column
+matches libc++'s 200-character decimal lookup table; file-confirming diagnostics
+are next. No complete DuckDB object is published, and measurements still describe
+early rejection. The next slice targets explicit array initialization destinations,
+values/repeats and zero actions needed by the generator, not generic compiler data.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

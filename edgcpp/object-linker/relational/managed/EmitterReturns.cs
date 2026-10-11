@@ -4,6 +4,13 @@ internal sealed partial class Emitter
 {
     private sealed partial class FunctionWriter
     {
+        private string FunctionAddress(Node node)
+        {
+            long id=node.ExecutionType??node.Type??throw unit.Missing(node,"function value type missing");
+            string pointer=unit.Original(id).Kind=="function"?emitter.Pointer(unit,id):Type(id);
+            return "(("+pointer+")&"+Name(node.Symbol??throw unit.Missing(node,"selected function missing"))+")";
+        }
+
         private ProgramType CallSignature(Node target)
         {
             var type=unit.Original(target.Type??target.ExecutionType??throw unit.Missing(target,"callable type missing"));
@@ -84,20 +91,15 @@ internal sealed partial class Emitter
                 throw unit.Missing(call,"exporter defect: class-result call return storage missing");
             if(call.EvaluationOrder=="right-to-left" && operands.Length>1)
                 throw unit.Missing(call,"right-to-left class result argument expansion is not yet implemented");
-            string target=ExpandedExpression(operands[0],indent);
+            string target=operands[0].Kind=="function"?Name(operands[0].Symbol!.Value):ExpandedExpression(operands[0],indent);
             if(operands[0].Kind!="function")
             {
                 string saved="__return_call_target_"+call.Id;
                 Line(indent,NodeType(operands[0])+" "+saved+" = "+target+";");
                 target=saved;
             }
-            var arguments=operands.Skip(1).Select(operand=>ExpandedExpression(operand,indent)).ToArray();
-            if(call.Operator=="dot-member-call")
-            {
-                if(arguments.Length==0)throw unit.Missing(call,"class result member-call receiver missing");
-                arguments[0]="(&"+arguments[0]+")";
-            }
-            Line(indent,target+"(&"+destination+(arguments.Length==0?"":", "+string.Join(", ",arguments))+");");
+            var arguments=CallArguments(call,operands,operand=>ExpandedExpression(operand,indent));
+            Line(indent,target+"(&"+destination+(arguments.Count==0?"":", "+string.Join(", ",arguments))+");");
         }
     }
 }

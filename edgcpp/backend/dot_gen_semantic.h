@@ -403,6 +403,13 @@ struct State {
         break;
       default:missing("type",int(t->kind));
     }
+    // These are EDG's builtin identities, not names or inferred layouts.
+    // Preserve the source typedef/record and its layout; the role selects
+    // the portable cursor representation used by the managed calling ABI.
+    const char *semantic_role=nullptr;
+    if(t->is_builtin_va_list)semantic_role="va-list";
+    else if((t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union) &&
+            class_type_supp(t)->is_va_list_tag)semantic_role="va-list-storage";
     db.insert("types",{{"id",id},{"kind",kind},{"name",name},{"link_name",t->source_corresp.name?t->source_corresp.name:""},
       {"linkage",linkage(t->source_corresp)},{"size",t->size},{"alignment",t->alignment},
       {"underlying_type_id",optional(underlying)},{"pointee_type_id",optional(pointee)},
@@ -411,7 +418,8 @@ struct State {
       {"is_volatile",bool(qualifiers&TQ_VOLATILE)},{"is_restrict",bool(qualifiers&TQ_RESTRICT)},
       {"is_variadic",variadic},{"is_incomplete",incomplete},{"record_kind",record_kind.empty()?Value(nullptr):Value(record_kind)},
       {"is_dependent",bool(is_template_dependent_type(t))},
-      {"builtin_name",builtin.empty()?Value(nullptr):Value(builtin)}});
+      {"builtin_name",builtin.empty()?Value(nullptr):Value(builtin)},
+      {"semantic_role",semantic_role?Value(semantic_role):Value(nullptr)}});
     if(t->kind==tk_template_param) {
       auto extra=t->variant.template_param.extra_info;
       const char *parameter_kind=nullptr;Id qualifier=0;
@@ -810,6 +818,8 @@ struct State {
       DOT_SEMANTIC_OP(eok_subscript,"subscript");DOT_SEMANTIC_OP(eok_dot_field,"dot-field");
       DOT_SEMANTIC_OP(eok_points_to_field,"points-to-field");DOT_SEMANTIC_OP(eok_call,"call");
       DOT_SEMANTIC_OP(eok_dot_member_call,"dot-member-call");DOT_SEMANTIC_OP(eok_points_to_member_call,"points-to-member-call");
+      DOT_SEMANTIC_OP(eok_va_start,"va-start");DOT_SEMANTIC_OP(eok_va_start_single_operand,"va-start-single");
+      DOT_SEMANTIC_OP(eok_va_arg,"va-arg");DOT_SEMANTIC_OP(eok_va_copy,"va-copy");DOT_SEMANTIC_OP(eok_va_end,"va-end");
 #undef DOT_SEMANTIC_OP
       default:missing("expression operation",int(kind));
     }
@@ -1048,8 +1058,15 @@ struct State {
         class_conversion(id,e);
       db.update("nodes","id",id,{{"evaluation_order",e->variant.operation.eval_left_to_right?"left-to-right":
         e->variant.operation.eval_right_to_left?"right-to-left":"unspecified"}});
-      unsigned ordinal=0;for(auto child=e->variant.operation.operands;child;child=child->next)
-        edge(id,"operand",ordinal++,expression(child));
+      unsigned ordinal=0;for(auto child=e->variant.operation.operands;child;child=child->next,++ordinal) {
+        // scan_va_start_operator retains the source last-parameter anchor.
+        // It supplies no argument value to the portable pack; GNU explicitly
+        // ignores it (il::lvalue/rvalue operand checks). Keep it navigable
+        // without asking generic operand expansion to evaluate it.
+        if(e->variant.operation.kind==eok_va_start && ordinal==1)
+          edge(id,"last-parameter",0,expression(child));
+        else edge(id,"operand",ordinal,expression(child));
+      }
     } else if(e->kind==enk_temp_init) {
       db.update("nodes","id",id,{{"initialization_id",initialization_id(e->variant.init.dynamic_init,e->type)}});
     } else if(e->kind==enk_condition) {

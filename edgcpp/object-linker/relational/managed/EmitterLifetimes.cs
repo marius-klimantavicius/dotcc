@@ -58,6 +58,7 @@ internal sealed partial class Emitter
             if(constructorCompletionRequired)Line(indent+1,"bool __constructor_complete = false;");
             void Core(int level)
             {
+                WriteVarargsPrologue(level);
                 void Body(int content)
                 {
                     if(details.Kind=="constructor")
@@ -91,7 +92,7 @@ internal sealed partial class Emitter
             }
             bool empty=!unit.Children(body,"statement").Any(child=>child.Kind!="empty" && !(child.Kind=="return" && !unit.Children(child,"value").Any())) &&
                 unit.ConstructorInitializers.GetValueOrDefault(functionId,[]).Count==0 && cleanupFlags.Count==0 &&
-                unit.VptrWrites.GetValueOrDefault(functionId,[]).Count==0;
+                unit.VptrWrites.GetValueOrDefault(functionId,[]).Count==0 && varargs is null;
             if(details.ExceptionPolicy=="terminate" && !empty)
             {
                 Line(indent+1,"try");Line(indent+1,"{");Core(indent+2);Line(indent+1,"}");

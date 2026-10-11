@@ -15,5 +15,8 @@
     <EmbeddedResource Include="../../../backend/runtime/Float128.cs" LogicalName="DotObj.Relational.Float128.cs" />
     <EmbeddedResource Include="../../../backend/runtime/Float128Conversions.cs" LogicalName="DotObj.Relational.Float128Conversions.cs" />
     <EmbeddedResource Include="../../../backend/runtime/CppVirtual.cs" LogicalName="DotObj.Relational.CppVirtual.cs" />
+    <EmbeddedResource Include="../../../backend/runtime/VaArg.cs" LogicalName="DotObj.Relational.VaArg.cs" />
+    <EmbeddedResource Include="../../../backend/runtime/VaPack.cs" LogicalName="DotObj.Relational.VaPack.cs" />
+    <EmbeddedResource Include="../../../backend/runtime/VaList.cs" LogicalName="DotObj.Relational.VaList.cs" />
   </ItemGroup>
 </Project>

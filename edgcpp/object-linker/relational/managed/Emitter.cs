@@ -27,7 +27,7 @@ internal sealed partial class Emitter
         PrepareVirtualCatalog();
         FindExecutableTypes();
         foreach(var unit in program.Units)
-            foreach(var type in unit.Types.Values.Where(type=>type.Kind=="record" && executableTypes.Contains((unit,type.Id))))
+            foreach(var type in unit.Types.Values.Where(type=>type.Kind=="record" && unit.VaListRole(type.Id) is null && executableTypes.Contains((unit,type.Id))))
             {
                 string key=type.Linkage=="external"?"external:"+type.LinkName:unit.Path+":"+type.Id;
                 if(!records.TryGetValue(key,out var record))
@@ -61,6 +61,7 @@ internal sealed partial class Emitter
             if(NeedsExceptionRuntime)WriteExceptionRuntime(directory);
             WriteFloatingRuntime(directory);
             WriteVirtualRuntime(directory);
+            WriteVarargsRuntime(directory);
         }
         catch
         {
@@ -145,6 +146,7 @@ internal sealed partial class Emitter
 
     private string Type(Unit unit,long id,bool allowIncomplete=false)
     {
+        if(unit.VaListRole(id) is not null)return VaListStorageType();
         var type=unit.Original(id);
         if(type.Dependent)throw new InvalidDataException("Dependent type reached executable C# emission: "+type.Name);
         if(type.Kind=="record" && type.Incomplete && !allowIncomplete)
@@ -165,8 +167,8 @@ internal sealed partial class Emitter
     {
         var type=unit.Original(target);
         if(type.Kind!="function")return Type(unit,target,allowIncomplete:true)+"*";
-        if(type.Variadic)throw new InvalidDataException("Variadic function pointers require a supported runtime signature");
         var parameters=unit.TypeParameters.GetValueOrDefault(type.Id,[]).Select(id=>Type(unit,id));
+        if(type.Variadic){needsVarargsRuntime=true;parameters=parameters.Append(VaSpanType);}
         if(type.ReturnStorage=="caller-provided")parameters=parameters.Prepend(Type(unit,type.Result!.Value)+"*");
         return "delegate* managed<"+string.Join(", ",parameters.Append(type.ReturnStorage=="caller-provided"?"void":Type(unit,type.Result!.Value)))+">";
     }
@@ -199,6 +201,10 @@ internal sealed partial class Emitter
                     locals.Add(local.Id,allocator.Allocate(local.Name,"local_"+local.Id));
                 if(unit.Original(selected.Symbol.Type).ReturnStorage=="caller-provided")
                     returnDestination=allocator.Allocate("__result","return_value");
+                if(unit.Original(selected.Symbol.Type).Variadic)
+                    varargs=new(allocator.Allocate("__varargs","varargs"),allocator.Allocate("__varargs_capacity","varargs_capacity"),
+                        allocator.Allocate("__varargs_workspace","varargs_workspace"),allocator.Allocate("__varargs_pack","varargs_pack"),
+                        allocator.Allocate("__varargs_cursor","varargs_cursor"));
             }
         }
         private void Line(int indent,string text="")=>emitter.Line(indent,text);
@@ -210,9 +216,9 @@ internal sealed partial class Emitter
         {
             var selected=function!.Value;
             var signature=unit.Original(selected.Symbol.Type);
-            if(signature.Variadic)throw new InvalidDataException("Variadic definitions not yet supported: "+selected.Symbol.Name);
             string parameters=string.Join(", ",unit.Parameters.GetValueOrDefault(selected.Id,[]).Select(id=>Type(unit.Symbols[id].Type)+" "+Name(id)));
             if(returnDestination is not null)parameters=Type(signature.Result!.Value)+"* "+returnDestination+(parameters.Length==0?"":", "+parameters);
+            if(varargs is not null)parameters+=(parameters.Length==0?"":", ")+"params "+VaSpanType+" "+varargs.Span;
             Line(1,"public static "+(returnDestination is null?Type(signature.Result!.Value):"void")+" "+emitter.symbolNames[selected]+"("+parameters+")");
             WriteFunctionBody(unit.Nodes[unit.Functions[selected.Id]],1);
         }
@@ -237,7 +243,8 @@ internal sealed partial class Emitter
             switch(node.Kind)
             {
                 case "constant":return Constant(node);
-                case "variable":case "function":return Name(node.Symbol??throw unit.Missing(node,"selected symbol missing"));
+                case "variable":return Name(node.Symbol??throw unit.Missing(node,"selected symbol missing"));
+                case "function":return FunctionAddress(node);
                 case "initialize":return unit.Children(node,"value").FirstOrDefault() is Node value?Expression(value):"default";
                 case "operation":return Operation(node);
                 case "lifetime-scope":
@@ -288,6 +295,7 @@ internal sealed partial class Emitter
                 case "pre-increment":return Unary("++");case "pre-decrement":return Unary("--");
                 case "post-increment":return "("+E(0)+"++)";case "post-decrement":return "("+E(0)+"--)";
                 case "address-of":case "reference-to":
+                    if(N(0).Kind=="function")return FunctionAddress(N(0));
                     if(N(0).Kind=="variable" && N(0).Symbol is long addressed && unit.Symbols[addressed].Parent is null)
                         throw unit.Missing(node,"address-taken global requires pinned storage support");
                     return "(&"+E(0)+")";
@@ -298,7 +306,10 @@ internal sealed partial class Emitter
                     return "unchecked(("+NodeType(node)+")"+E(0)+")";
                 case "lvalue-adjust":case "class-rvalue-adjust":return E(0);
                 case "base-class-cast":case "derived-class-cast":return ClassConversionExpression(node,N(0));
-                case "array-to-pointer":throw unit.Missing(node,"array storage emission is not yet implemented");
+                case "array-to-pointer":
+                    if(unit.VaListRole(N(0).ExecutionType??N(0).Type!.Value) is not null)return "(&"+E(0)+")";
+                    throw unit.Missing(node,"array storage emission is not yet implemented");
+                case "va-start":case "va-start-single":case "va-arg":case "va-copy":case "va-end":return VarargsOperation(node);
                 case "conditional":return "("+Truth(N(0))+" ? "+E(1)+" : "+E(2)+")";
                 case "subscript":return "("+E(0)+")["+E(1)+"]";
                 case "dot-field":case "points-to-field":
@@ -308,9 +319,8 @@ internal sealed partial class Emitter
                     if(unit.VirtualCalls.TryGetValue(node.Id,out var dispatch))return VirtualCallExpression(node,dispatch);
                     if(CallSignature(N(0)).ReturnStorage=="caller-provided")
                         throw unit.Missing(node,"caller-provided class result requires an explicit initialization destination");
-                    string target=E(0);
-                    var args=operands.Skip(1).Select(Expression).ToArray();
-                    if(op=="dot-member-call")args[0]="(&"+args[0]+")";
+                    string target=N(0).Kind=="function"?Name(N(0).Symbol!.Value):E(0);
+                    var args=CallArguments(node,operands,Expression);
                     return target+"("+string.Join(", ",args)+")";
                 default:throw unit.Missing(node,"C# operation emission is not implemented");
             }
@@ -326,6 +336,7 @@ internal sealed partial class Emitter
         {
             string value=rendered??Expression(node);
             if(UsesCompoundHelper(node))return "_ = "+value;
+            if(node.Operator is "va-start" or "va-start-single" or "va-copy" or "va-end")return value;
             if(node.Kind=="operation" && node.Operator is "assign" or "add-assign" or "subtract-assign" or "multiply-assign" or "divide-assign" or "remainder-assign" or "pre-increment" or "post-increment" or "pre-decrement" or "post-decrement")
                 return value[1..^1];
             if(node.Kind=="operation" && node.Operator is "call" or "dot-member-call" or "points-to-member-call")return value;

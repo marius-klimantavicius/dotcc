@@ -128,3 +128,10 @@ SELECT n.id,n.operator,n.value_category,n.evaluation_order,
        stored.builtin_name AS stored_type,calculation.builtin_name AS calculation_type
 FROM nodes n JOIN types stored ON stored.id=n.type_id
 JOIN types calculation ON calculation.id=n.operation_type_id ORDER BY n.id;
+
+SELECT id,name,kind,semantic_role,size,alignment
+FROM types WHERE semantic_role IS NOT NULL ORDER BY id;
+
+SELECT n.id,n.operator,n.type_id,e.role,e.ordinal,e.child_id
+FROM nodes n JOIN edges e ON e.parent_id=n.id
+WHERE n.operator LIKE 'va-%' ORDER BY n.id,e.role,e.ordinal;

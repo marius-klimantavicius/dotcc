@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1013;
+PRAGMA user_version = 1014;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -17,6 +17,7 @@ CREATE TABLE types (
  id INTEGER PRIMARY KEY,
  kind TEXT NOT NULL,
  builtin_name TEXT,
+ semantic_role TEXT CHECK(semantic_role IN('va-list','va-list-storage')),
  name TEXT NOT NULL DEFAULT '',
  link_name TEXT NOT NULL DEFAULT '',
  linkage TEXT NOT NULL DEFAULT 'none',

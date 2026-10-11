@@ -92,6 +92,7 @@ internal sealed partial class Emitter
         if(!executableTypes.Add((unit,id)))return;
         var type=unit.Types[id];
         if(type.Dependent)return;
+        if(unit.VaListRole(id) is not null)return;
         if(type.Underlying is long underlying)UseType(unit,underlying);
         if(type.Pointee is long pointee)UseType(unit,pointee);
         if(type.Element is long element)UseType(unit,element);

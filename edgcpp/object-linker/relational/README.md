@@ -109,6 +109,13 @@ helpers preserve operand order, narrowing and lvalue result identity. Run
 `tests/verify_compound_assignments.py` for arithmetic, bitwise and shift coverage,
 including conditional execution and address/reference results.
 
+EDG builtin va_list types carry a `semantic_role` while keeping their source type
+chains and layout in SQL. The consumer uses the shared portable VaArg/VaPack/VaList
+runtime, ReadOnlySpan argument packs and typed function pointers. `va_start` retains
+its nonexecuted source anchor separately. Run `tests/verify_varargs.py` for argument
+promotions, cursor forwarding/copying, indirect calls and exception cleanup.
+Aggregate payloads and variadic virtual dispatch remain unsupported.
+
 Standard `std::nullptr_t` retains its distinct source identity and EDG layout.
 `nodes.value_normalization` explicitly records zero-valued prvalue behavior;
 the consumer preserves operand effects and follows that fact. Run
