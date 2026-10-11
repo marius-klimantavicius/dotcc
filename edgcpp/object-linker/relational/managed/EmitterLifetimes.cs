@@ -181,6 +181,14 @@ internal sealed partial class Emitter
         private string ExpandedExpression(Node node,int indent)
         {
             if(expandedValues.TryGetValue(node.Id,out string? found))return NormalizeValue(node,found);
+            if(node.Kind=="temporary" && node.Initialization is long dependent &&
+               unit.Initializations[dependent].DestinationInitialization is not null)
+            {
+                var initialization=unit.Initializations[dependent];
+                string destination=SharedDestination(initialization);
+                WriteInitialization(initialization,destination,indent);
+                return NormalizeValue(node,destination);
+            }
             // The source operand is navigation; the selected execution graph
             // owns its evaluation, including any converted call arguments.
             if(node.Kind=="delete")return NormalizeValue(node,ExpandedExpression(Child(node,"execution"),indent));
@@ -226,10 +234,12 @@ internal sealed partial class Emitter
 
         private void WriteInitialization(Initialization initialization,string destination,int indent,string? impliedSource=null)
         {
+            if(initialization.DestinationInitialization is not null)destination=SharedDestination(initialization);
             CheckInitialization(initialization);
             switch(initialization.Kind)
             {
                 case "none":break;
+                case "shared-result":WriteSharedResult(initialization,destination,indent);break;
                 case "zero":Line(indent,destination+" = default;");break;
                 case "expression":case "constant":
                     var value=unit.Nodes[initialization.Value??throw new InvalidDataException("Initialization value missing")];

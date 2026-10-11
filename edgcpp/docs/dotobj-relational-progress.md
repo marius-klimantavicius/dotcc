@@ -1134,6 +1134,37 @@ first, 148 tests next, with 224 musl and 56 libc++ provider units tracked explic
 No complete real DuckDB object or actual DuckDB C# output has been published.
 Project probe timings remain early-rejection costs.
 
+## Shared selected class-result destinations (2026-10-11)
+
+Verified `dotobj-relational-shared-results-v1` adds one nullable self-reference,
+`initializations.destination_initialization_id`, for EDG's exact selected master
+destination. A master `shared-result` action evaluates its source conditional or
+comma graph for construction effects, without a final value copy. Source types,
+ordered children, selected calls/constructors and cleanup schedules remain intact.
+Schema is 1019 / 43 ordinary tables; no new capture map or callback is needed.
+
+The generator binds the exact master action to supplied destination storage,
+constructs the selected dependent directly there and restores nested bindings
+with `finally`. It intercepts bound temporaries before ordinary temporary
+allocation. Only the existing owner arms cleanup after successful construction;
+unexpected dependent cleanup remains an explicit generation boundary.
+
+The two-TU fixture checks caller-return self identity, conditional/copy branches,
+comma/nested destinations, once-only selection, local master destruction and
+constructor/copy failure cleanup. Native C++, source-hidden C# and Linux NativeAOT
+pass. Existing return-storage and lifetime/EH regressions also pass all three
+execution paths. Native/managed builds pass. Provider: 282,624 bytes / 273 nodes /
+41 types; main: 323,584 bytes / 606 nodes / 46 types. Tested hashes and per-table
+storage are retained; director inspected generated return construction and cleanup.
+
+Actual `hugeint-v41` passes `hugeint.cpp:184` shared conditional return and reaches
+placement construction of a 24-byte `LogicalType` at libc++
+`__memory/allocator.h:173:5`, the same selected placement/exception-deallocation
+family blocking `exception-v7`. This converged placement path is the next active
+feature. Generic unsupported expressions now include domain/function/source
+diagnostics. No complete real DuckDB object or actual DuckDB C# output has been
+published; project probe timings remain early-rejection costs.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

@@ -245,6 +245,10 @@ result pointer in C#, preserving object identity through forwarded calls. Run
 `tests/verify_returns.py` to check self-pointer identity and construction failure
 cleanup. Implicit member copies use the recorded `copy_source_symbol_id`; optional
 NRVO optimization and more complex return-result unwinding remain work.
+Shared conditional/comma class results explicitly reference their selected master
+initialization through `destination_initialization_id`. The generator constructs
+directly in that supplied destination, with one cleanup owner;
+`tests/verify_shared_results.py` checks nested destinations and failure paths.
 
 Condition declarations retain selected initialization, test expression, optional
 C++17 initializer and lifetime ownership. Generated loops preserve per-iteration

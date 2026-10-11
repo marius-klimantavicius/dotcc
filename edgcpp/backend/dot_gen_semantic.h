@@ -1446,11 +1446,8 @@ struct State {
   Id initialization_id(a_dynamic_init_ptr init,a_type_ptr target=nullptr) {
     if(!init)return 0;
     if(template_recipe)missing("template recipe initialization ownership");
-    if(init->master_entry || init->class_rvalue_initialized_through_master_entry) {
-      a_source_position pos={};
-      missing_initialization(init,target,pos,"shared class-result initialization destination");
-    }
-    Id target_type=type_id(target?target:init->variable?init->variable->type:nullptr);
+    auto selected_target=target?target:init->variable?init->variable->type:nullptr;
+    Id target_type=type_id(selected_target);
     auto found=initializations.find(init);
     if(found!=initializations.end()) {
       if(target_type && !initialization_types[init]) {
@@ -1463,10 +1460,21 @@ struct State {
     const char *kind=nullptr;Id value=0,constructor=0;
     bool implied_source=false,sequenced=false,value_init=false;
     a_source_position pos={};if(init->variable)pos=init->variable->source_corresp.decl_position;
+    if(init->class_rvalue_initialized_through_master_entry && init->kind!=dik_expression)
+      missing_initialization(init,selected_target,pos,"shared-result selected effect action kind");
+    // The selected destination is a semantic storage-sharing relation.
+    // Reserving this action first handles either master-first or dependent-
+    // first capture, including a nested master using an outer destination.
+    Id destination=init->master_entry?initialization_id(init->master_entry,selected_target):0;
     switch(init->kind) {
       case dik_none:kind="none";break;
       case dik_zero:kind="zero";break;
-      case dik_expression:kind="expression";value=expression(init->variant.expression);break;
+      case dik_expression:
+        // Stock lower_class_rvalue_returning_operation evaluates this
+        // conditional/comma graph for initialization effects; its class
+        // result is not copied into the destination afterward.
+        kind=init->class_rvalue_initialized_through_master_entry?"shared-result":"expression";
+        value=expression(init->variant.expression);break;
       case dik_class_result_via_ctor:kind="class-result";value=expression(init->variant.expression);break;
       case dik_constant:kind="constant";value=constant(init->variant.constant.ptr,pos,!subobject_initializations.count(init));break;
       case dik_nonconstant_aggregate:
@@ -1496,6 +1504,7 @@ struct State {
     Id overlap=lifetime_id(init->lifetime_of_overlapping_temps);
     db.insert("initializations",{{"id",id},{"function_id",optional(function)},{"kind",kind},
       {"type_id",optional(initialization_types[init])},
+      {"destination_initialization_id",optional(destination)},
       {"variable_symbol_id",optional(init->variable?variable(init->variable,true):0)},
       {"constructor_symbol_id",optional(constructor)},
       {"destructor_symbol_id",optional(init->destructor?routine(init->destructor):0)},
@@ -2048,7 +2057,14 @@ struct State {
           symbol=routine(first->variant.routine.ptr);
         break;
       }
-      default:missing("expression",int(e->kind));
+      default: {
+        auto pos=location(source_position);std::string path,owner;
+        for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+        for(const auto &entry:routines)if(entry.second==function){owner=spelling(entry.first->source_corresp);break;}
+        missing("expression [domain="+std::string(template_recipe?"template-recipe":"program")+
+          ", function="+owner+", file="+path+", line="+std::to_string(pos.line)+
+          ", column="+std::to_string(pos.column)+"]",int(e->kind));
+      }
     }
     Id id=node(kind,source_position,type_id(e->type),e->is_lvalue?"lvalue":e->is_xvalue?"xvalue":"prvalue",
       op,text,symbol,field,type_id(e->orig_lvalue_type),e->compiler_generated);
