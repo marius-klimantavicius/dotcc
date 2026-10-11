@@ -149,3 +149,12 @@ LEFT JOIN record_initializer_elements e ON e.initializer_node_id=r.node_id
 LEFT JOIN fields f ON f.id=e.field_id
 LEFT JOIN base_subobjects b ON b.id=e.base_subobject_id
 LEFT JOIN nodes n ON n.id=e.value_node_id ORDER BY r.node_id,e.ordinal;
+
+SELECT l.id,t.kind,t.size,l.byte_count,s.link_name,s.linkage
+FROM literal_objects l JOIN types t ON t.id=l.type_id
+LEFT JOIN symbols s ON s.id=l.selected_symbol_id ORDER BY l.id;
+SELECT literal_id,byte_offset,value FROM literal_bytes ORDER BY literal_id,byte_offset;
+SELECT n.id,n.kind,n.literal_object_id,n.literal_byte_offset,
+       i.copy_byte_count,i.zero_byte_count
+FROM nodes n LEFT JOIN literal_initializers i ON i.node_id=n.id
+WHERE n.literal_object_id IS NOT NULL ORDER BY n.id;

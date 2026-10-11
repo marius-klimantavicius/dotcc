@@ -64,6 +64,20 @@ struct State {
   std::map<a_base_class_ptr,Id> base_subobjects;
   std::map<a_constant_ptr,Id> enum_values;
   std::map<std::pair<Id,std::string>,Id> floating_values;
+  Id next_literal=1;
+  // Keep source constant identities until their owning function finishes
+  // lowering. Already-promoted constexpr literals use stable assoc_var
+  // identities, including when reached from namespace initializers.
+  a_memory_region_number literal_source_region=NULL_region_number;
+  std::map<a_memory_region_number,std::map<a_constant_ptr,Id>> literal_constants;
+  struct SelectedLiteral {
+    Id object=0,symbol=0;
+    a_type_ptr type=nullptr;
+    a_const_char *bytes=nullptr;
+    a_targ_size_t byte_count=0;
+    a_source_position position{};
+  };
+  std::map<a_variable_ptr,SelectedLiteral> selected_literals;
   std::map<a_template_ptr,Id> templates;
   std::map<std::string,Id> files;
   std::map<an_expr_node_ptr,Id> expressions;
@@ -373,7 +387,12 @@ struct State {
           case ik_unsigned_int128:kind="u128";builtin="unsigned __int128";break;
 #endif
           default:missing("integer type",int(t->variant.integer.int_kind));
-        }break;
+        }
+        if(t->variant.integer.wchar_t_type)builtin="wchar_t";
+        else if(t->variant.integer.char8_t_type)builtin="char8_t";
+        else if(t->variant.integer.char16_t_type)builtin="char16_t";
+        else if(t->variant.integer.char32_t_type)builtin="char32_t";
+        break;
       case tk_float: {
         builtin=floating_name(t->variant.float_kind);
         // These target properties are initialized for every EDG float kind
@@ -795,6 +814,110 @@ struct State {
       index+=count;
     }
   }
+  a_memory_region_number literal_region(a_constant_ptr c) {
+    if(in_file_scope(c))return NULL_region_number;
+#if EXPENSIVE_CHECKING
+    return il_entry_prefix_of(c).region_number;
+#else
+    if(literal_source_region==NULL_region_number)
+      missing("unassociated function literal outside source owner");
+    return literal_source_region;
+#endif
+  }
+  Id emit_literal(a_type_ptr type,a_const_char *bytes,a_targ_size_t count) {
+    Id id=next_literal++;
+    db.insert("literal_objects",{{"id",id},{"type_id",type_id(type)},{"byte_count",count}});
+    // EDG already decoded escapes and target encoding. In particular, length
+    // includes embedded NULs and may omit a terminal NUL; never use strlen.
+    for(a_targ_size_t offset=0;offset<count;++offset)
+      db.insert("literal_bytes",{{"literal_id",id},{"byte_offset",offset},
+        {"value",static_cast<unsigned char>(bytes[offset])}});
+    return id;
+  }
+  void bind_literal_storage(a_variable_ptr v,SelectedLiteral &selected,Id object) {
+    if(!selected.symbol) {
+      selected.symbol=next_symbol++;
+      auto pos=location(selected.position);
+      // lower_il::promote_static_variable_out_of_function selects external
+      // relaxed definitions (and IA64 COMDAT) for this narrow string path in
+      // multiply emitted functions. Keep that exact link entity
+      // separate from ordinary global initialization/storage emission.
+      db.insert("symbols",{{"id",selected.symbol},{"kind","literal"},
+        {"name",spelling(v->source_corresp)},
+        {"link_name",v->source_corresp.name?v->source_corresp.name:""},
+        {"linkage",linkage(v->source_corresp)},{"type_id",type_id(selected.type)},
+        {"is_definition",true},{"definition_kind",std::string(linkage(v->source_corresp))=="external"?"weak":"strong"},
+        {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
+    }
+    db.update("literal_objects","id",object,{{"selected_symbol_id",selected.symbol}});
+    if(!selected.object)selected.object=object;
+  }
+  void literal_storage_selected(a_constant_ptr c,a_variable_ptr v) {
+    // Called at get_variable_for_string_constant's common return, after
+    // promotion/linkage selection. The constant may precede source capture;
+    // keep only correspondence and file-scope type/text, emitting no row yet.
+    if(c->kind!=ck_string)missing("selected literal storage constant",int(c->kind));
+    auto &selected=selected_literals[v];
+    if(!selected.type) {
+      selected.type=c->type;selected.bytes=c->variant.string.value;
+      selected.byte_count=c->variant.string.length;
+      selected.position=c->source_corresp.decl_position;
+    }
+    // The common-return hook may run outside source capture. Look up this
+    // exact constant identity in the still-live owner caches, never derive
+    // an owner from the currently lowering function.
+    for(const auto &region:literal_constants) {
+      auto found=region.second.find(c);
+      if(found!=region.second.end())bind_literal_storage(v,selected,found->second);
+    }
+  }
+  void literal_function_complete(a_routine_ptr r) {
+    // lower_function_scope has finished all string-to-variable rewrites.
+    // No constant pointer from this region can survive its reclamation.
+    if(mem_region_for_routine(r)!=NULL_region_number)
+      literal_constants.erase(mem_region_for_routine(r));
+  }
+  Id selected_literal_object(a_variable_ptr v) {
+    auto found=selected_literals.find(v);
+    if(found==selected_literals.end())missing("nonliteral variable constant address");
+    auto &selected=found->second;
+    if(!selected.object) {
+      Id id=emit_literal(selected.type,selected.bytes,selected.byte_count);
+      bind_literal_storage(v,selected,id);
+    }
+    return selected.object;
+  }
+  Id literal_object(a_constant_ptr c) {
+    if(c->kind!=ck_string)missing("nonstring literal address target",int(c->kind));
+    if(c->variant.string.embed_expansion)missing("embed literal expansion");
+    if(c->assoc_var) {
+      literal_storage_selected(c,c->assoc_var);
+      return selected_literal_object(c->assoc_var);
+    }
+    auto &ids=literal_constants[literal_region(c)];
+    auto found=ids.find(c);if(found!=ids.end())return found->second;
+    Id id=emit_literal(c->type,c->variant.string.value,c->variant.string.length);
+    ids[c]=id;return id;
+  }
+  void attach_literal(Id id,a_constant_ptr c,bool initializer=false) {
+    if(c->kind==ck_string) {
+      db.update("nodes","id",id,{{"literal_object_id",literal_object(c)}});
+      // check_string_constant_type retains the destination extent and marks
+      // partial initialization. c_gen_be::dump_init_assignment copies exactly
+      // length bytes, after the selected partial aggregate zero action.
+      if(initializer && !template_recipe)
+        db.insert("literal_initializers",{{"node_id",id},{"copy_byte_count",c->variant.string.length},
+          {"zero_byte_count",c->is_partially_initialized?c->type->size:0}});
+    } else {
+      Id object=0;
+      if(c->variant.address.kind==abk_constant)
+        object=literal_object(c->variant.address.variant.constant);
+      else if(c->variant.address.kind==abk_variable)
+        object=selected_literal_object(c->variant.address.variant.variable);
+      else missing("nonliteral constant address",int(c->variant.address.kind));
+      db.update("nodes","id",id,{{"literal_object_id",object},{"literal_byte_offset",c->variant.address.offset}});
+    }
+  }
   Id constant(a_constant_ptr c,const a_source_position &p,bool complete_object=true) {
     if(template_recipe) {
       auto found=recipe_constants.find(c);if(found!=recipe_constants.end())return found->second;
@@ -809,6 +932,11 @@ struct State {
         p,type_id(c->type),"prvalue");
       if(template_recipe)recipe_constants[c]=id;
       aggregate_initializer(id,c,p,complete_object);return id;
+    }
+    if(c->kind==ck_string || c->kind==ck_address) {
+      Id id=node(c->kind==ck_string?"string-literal":"address-constant",p,type_id(c->type),"prvalue");
+      if(template_recipe)recipe_constants[c]=id;
+      attach_literal(id,c,true);return id;
     }
     Id id=node("constant",p,type_id(c->type),"prvalue",nullptr,literal_text(c,"initializer",&p));
     if(template_recipe)recipe_constants[c]=id;
@@ -1160,10 +1288,14 @@ struct State {
     switch(e->kind) {
       case enk_constant:
         if(node_constant(e)->kind==ck_template_param)kind=dependent_value_kind(node_constant(e));
+        else if(node_constant(e)->kind==ck_string)kind="string-literal";
+        else if(node_constant(e)->kind==ck_address)kind="address-constant";
         else if(node_constant(e)->kind==ck_aggregate)
           kind=is_immediate_class_type(skip_typerefs(e->type))?"record-initializer":"array-initializer";
         else {kind="constant";text=literal_text(node_constant(e),"expression",&e->position);}break;
-      case enk_variable:kind="variable";symbol=variable(node_variable(e));break;
+      case enk_variable:
+        if(selected_literals.count(node_variable(e)))kind="string-literal";
+        else {kind="variable";symbol=variable(node_variable(e));}break;
       case enk_routine:kind="function";symbol=routine(e->variant.routine.ptr);break;
       case enk_field:kind="field";field=field_id(node_field(e));break;
       case enk_temp_init:kind="temporary";break;
@@ -1185,6 +1317,9 @@ struct State {
     Id id=node(kind,e->position,type_id(e->type),e->is_lvalue?"lvalue":e->is_xvalue?"xvalue":"prvalue",
       op,text,symbol,field,type_id(e->orig_lvalue_type),e->compiler_generated);
     expression_ids[e]=id;
+    if(e->kind==enk_variable && selected_literals.count(node_variable(e))) {
+      db.update("nodes","id",id,{{"literal_object_id",selected_literal_object(node_variable(e))}});
+    }
     // Source-form predicate for lower_il::rewrite_nullptr_expr_if_necessary.
     // lower_expr first changes xvalues to lvalues, so both glvalue forms are
     // excluded here. Retain the original children for evaluation/side effects;
@@ -1193,6 +1328,7 @@ struct State {
        e->kind!=enk_constant && e->kind!=enk_field && !e->result_is_not_used)
       db.update("nodes","id",id,{{"value_normalization","nullptr-zero"}});
     if(e->kind==enk_constant) {
+      if(node_constant(e)->kind==ck_string || node_constant(e)->kind==ck_address)attach_literal(id,node_constant(e));
       if(node_constant(e)->kind==ck_template_param)dependent_value(id,node_constant(e));
       if(node_constant(e)->kind==ck_aggregate)aggregate_initializer(id,node_constant(e),e->position);
       attach_enum_value(id,node_constant(e));
@@ -1401,7 +1537,31 @@ struct State {
           kind="delegation";target=skip_typerefs(scope->variant.routine.ptr->type)->variant.routine.extra_info->this_class;break;
         default:missing("constructor initializer target",int(entry->kind));
       }
-      if(!entry->initializer)missing("default field initializer selection");
+      if(!entry->initializer) {
+        auto member=entry->kind==cik_field?entry->variant.field:nullptr;
+        auto selected=member?member->initializer:nullptr;
+        auto owner=member?parent_class_of(member):nullptr;
+        auto pos=location(member?member->source_corresp.decl_position:
+          scope->variant.routine.ptr->source_corresp.decl_position);
+        std::string path;for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+        std::string detail="default field initializer selection [constructor="+
+          spelling(scope->variant.routine.ptr->source_corresp)+", owner="+
+          (owner?spelling(owner->source_corresp):"")+", field="+
+          (member?spelling(member->source_corresp):"")+", type="+
+          (target?spelling(target->source_corresp):"")+", type-kind="+
+          std::to_string(target?int(target->kind):-1)+", ordinal="+std::to_string(ordinal)+
+          ", use-field="+std::to_string(int(entry->use_field_initializer))+
+          ", ctor-dependent="+std::to_string(member?int(member->init_is_ctor_dependent):0)+
+          ", init-kind="+std::to_string(selected?int(selected->kind):-1);
+        if(selected && selected->kind==dik_constant)
+          detail+=", constant-kind="+std::to_string(int(selected->variant.constant.ptr->kind));
+        if(selected && selected->kind==dik_expression)
+          detail+=", expression-kind="+std::to_string(int(selected->variant.expression->kind));
+        detail+=", destructor="+std::to_string(selected && selected->destructor?1:0)+
+          ", lifetime="+std::to_string(selected && selected->lifetime?1:0)+
+          ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]";
+        missing(detail);
+      }
       if(entry->source_expr)missing("explicit array constructor initializer source");
       Id copy_source=0;
       auto init=entry->initializer;
@@ -1438,6 +1598,8 @@ struct State {
         missing(detail);
       }
       Id previous=function;auto previous_return_type=return_type;
+      auto previous_literal_region=literal_source_region;
+      literal_source_region=mem_region_for_routine(r);
       return_type=skip_typerefs(r->type)->variant.routine.return_type;
       function=routine(r);expressions.clear();
       db.update("symbols","id",function,{{"is_definition",true}});
@@ -1478,7 +1640,7 @@ struct State {
       for(auto variable:local_variables)variables.erase(variable);
       local_variables.clear();expressions.clear();declaration_initializers.clear();subobject_initializations.clear();
       lifetimes.clear();initializations.clear();initialization_values.clear();initialization_types.clear();initializing.clear();
-      function=previous;return_type=previous_return_type;return;
+      function=previous;return_type=previous_return_type;literal_source_region=previous_literal_region;return;
     }
     if(!declaration_scopes.insert(scope).second)return;
     // File and namespace initializers have an explicit EDG execution list.
@@ -1511,6 +1673,11 @@ struct State {
     for(auto ns=scope->namespaces;ns;ns=ns->next)if(!ns->is_namespace_alias)capture(ns->variant.assoc_scope);
   }
   void finish() {
+    for(const auto &entry:selected_literals)if(entry.second.symbol) {
+      auto v=entry.first;
+      db.update("symbols","id",entry.second.symbol,{{"link_name",v->source_corresp.name?v->source_corresp.name:""},
+        {"linkage",linkage(v->source_corresp)}});
+    }
     for(const auto &item:virtual_tables) {
       auto table=item.first.first;
       db.update("virtual_tables","id",item.second,{{"link_name",table->source_corresp.name?table->source_corresp.name:""},
@@ -1542,6 +1709,12 @@ inline State &state() { static State value;return value; }
 inline void capture_scope(a_scope_ptr scope) {
   if(!enabled())return;
   state().capture(scope);
+}
+inline void literal_storage_selected(a_constant_ptr constant,a_variable_ptr variable) {
+  if(enabled())state().literal_storage_selected(constant,variable);
+}
+inline void literal_function_complete(a_routine_ptr routine) {
+  if(enabled())state().literal_function_complete(routine);
 }
 inline void virtual_source_class(a_type_ptr type) {
   if(enabled())state().virtual_source_class(type);

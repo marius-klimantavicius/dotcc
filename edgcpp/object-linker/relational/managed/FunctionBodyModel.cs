@@ -21,6 +21,7 @@ internal sealed class FunctionBody
     public Dictionary<long,List<ArrayElement>> ArrayElements {get;}
     public Dictionary<long,RecordInitializer> RecordInitializers {get;}
     public Dictionary<long,List<RecordElement>> RecordElements {get;}
+    public Dictionary<long,LiteralInitializer> LiteralInitializers {get;}
 
     public FunctionBody(FunctionBody? globals=null)
     {
@@ -41,6 +42,7 @@ internal sealed class FunctionBody
         ArrayElements=globals is null?[]:new(globals.ArrayElements);
         RecordInitializers=globals is null?[]:new(globals.RecordInitializers);
         RecordElements=globals is null?[]:new(globals.RecordElements);
+        LiteralInitializers=globals is null?[]:new(globals.LiteralInitializers);
     }
 
     public long RowCount=>Nodes.Count+Edges.Values.Sum(values=>(long)values.Count)+Lifetimes.Count+Initializations.Count+
@@ -48,7 +50,7 @@ internal sealed class FunctionBody
         ConstructorInitializers.Values.Sum(values=>(long)values.Count)+Handlers.Values.Sum(values=>(long)values.Count)+
         Throws.Count+ClassConversions.Count+FloatingValues.Count+VirtualCalls.Count+VptrWrites.Values.Sum(values=>(long)values.Count)+
         ArrayInitializers.Count+ArrayElements.Values.Sum(values=>(long)values.Count)+
-        RecordInitializers.Count+RecordElements.Values.Sum(values=>(long)values.Count);
+        RecordInitializers.Count+RecordElements.Values.Sum(values=>(long)values.Count)+LiteralInitializers.Count;
 }
 
 internal sealed class ReleaseScope(Action release) : IDisposable
@@ -83,6 +85,7 @@ internal sealed partial class Unit
             ReadVirtualBody(function);
             ReadArrayInitializers(function);
             ReadRecordInitializers(function);
+            ReadLiteralInitializers(function);
             return new ReleaseScope(()=>functionBody=null);
         }
         catch {functionBody=null;throw;}
@@ -100,8 +103,8 @@ internal sealed partial class Unit
 
     private void ReadNodes(long? function)
     {
-        using(var q=database.Prepare("SELECT id,function_id,kind,type_id,execution_type_id,value_category,operator,constant_text,symbol_id,field_id,file_id,line,column,original_lvalue_type_id,"+(HasLifecycles?"initialization_id,lifetime_id,evaluation_order":"NULL,NULL,NULL")+","+(HasEnums?"enum_value_id":"NULL")+","+(HasFloatingValues?"floating_value_id":"NULL")+","+(HasValueNormalization?"value_normalization":"NULL")+","+(HasOperationType?"operation_type_id":"NULL")+" FROM nodes WHERE "+ProgramNodeFilter(function)+" ORDER BY id"))
-            while(q.Read())Nodes.Add(q.Integer(0),new(q.Integer(0),q.OptionalInteger(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalText(5),q.OptionalText(6),q.OptionalText(7),q.OptionalInteger(8),q.OptionalInteger(9),q.OptionalInteger(10),q.OptionalInteger(11),q.OptionalInteger(12),q.OptionalInteger(13),q.OptionalInteger(14),q.OptionalInteger(15),q.OptionalText(16),q.OptionalInteger(17),q.OptionalInteger(18),q.OptionalText(19),q.OptionalInteger(20)));
+        using(var q=database.Prepare("SELECT id,function_id,kind,type_id,execution_type_id,value_category,operator,constant_text,symbol_id,field_id,file_id,line,column,original_lvalue_type_id,"+(HasLifecycles?"initialization_id,lifetime_id,evaluation_order":"NULL,NULL,NULL")+","+(HasEnums?"enum_value_id":"NULL")+","+(HasFloatingValues?"floating_value_id":"NULL")+","+(HasValueNormalization?"value_normalization":"NULL")+","+(HasOperationType?"operation_type_id":"NULL")+","+(HasLiterals?"literal_object_id,literal_byte_offset":"NULL,NULL")+" FROM nodes WHERE "+ProgramNodeFilter(function)+" ORDER BY id"))
+            while(q.Read())Nodes.Add(q.Integer(0),new(q.Integer(0),q.OptionalInteger(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalText(5),q.OptionalText(6),q.OptionalText(7),q.OptionalInteger(8),q.OptionalInteger(9),q.OptionalInteger(10),q.OptionalInteger(11),q.OptionalInteger(12),q.OptionalInteger(13),q.OptionalInteger(14),q.OptionalInteger(15),q.OptionalText(16),q.OptionalInteger(17),q.OptionalInteger(18),q.OptionalText(19),q.OptionalInteger(20),q.OptionalInteger(21),q.OptionalInteger(22)));
         using(var q=database.Prepare("SELECT e.parent_id,e.role,e.ordinal,e.child_id FROM nodes n JOIN edges e ON e.parent_id=n.id WHERE "+ProgramNodeFilter(function,"n.")+" ORDER BY e.parent_id,e.role,e.ordinal"))
             while(q.Read())Add(Edges,q.Integer(0),new Edge(q.Text(1),q.Integer(2),q.Integer(3)));
     }

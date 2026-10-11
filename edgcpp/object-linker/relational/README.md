@@ -130,6 +130,14 @@ covers temporary receivers, partial/designated/nested values and cross-unit glob
 Dynamic components and partial-construction cleanup remain unsupported. These facts
 serve generation; exposed compiler metadata alone is not a reason to add a relation.
 
+String objects retain exact target bytes in ordinary offset/value rows, with selected
+storage identities and address offsets. Narrow stock-lowering hooks preserve inline
+literal linker identities; the consumer does not pool by contents or reinterpret
+character encodings. Explicit copy/zero actions exist only for initialization uses.
+The generator streams bytes into pinned aligned storage. `tests/verify_literals.py`
+covers embedded zeros, character widths, constexpr references, offsets, and arrays.
+General relocated variable/routine constant addresses remain unsupported.
+
 Signed/unsigned 128-bit integers retain exact EDG decimal scalar values and layout,
 using System.Int128/UInt128 in generated C#. No separate wide-value payload is used.
 `tests/verify_wide_integers.py` covers literals, templates, arithmetic, arrays,

@@ -43,6 +43,7 @@ internal sealed partial class Emitter
             }
         PrepareEnums();
         PrepareArrays();
+        PrepareLiteralStorage();
         if(needsNullptrNormalization)nullptrValueName=names.Allocate("__nullptr_value","nullptr_value");
     }
 
@@ -84,6 +85,7 @@ internal sealed partial class Emitter
         WriteVirtualTables();
         WriteNullptrHelper();
         PrepareExceptionDescriptors();
+        WriteLiteralStorage();
         foreach(var unit in program.Units){WriteClassConversionHelpers(unit,null);WriteVirtualCallHelpers(unit,null);WriteCompoundHelpers(unit,null);}
         foreach(var global in program.Globals)
         {
@@ -204,6 +206,7 @@ internal sealed partial class Emitter
             foreach(string value in emitter.virtualCallNames.Values)allocator.Reserve(value);
             foreach(string value in emitter.compoundHelpers.Values)allocator.Reserve(value);
             foreach(string value in emitter.arrayNames.Values)allocator.Reserve(value);
+            foreach(string value in emitter.literalNames.Values)allocator.Reserve(value);
             if(emitter.localArrayStorageName is string arrayStorage)allocator.Reserve(arrayStorage);
             if(emitter.nullptrValueName is string helper)allocator.Reserve(helper);
             if(function is SymbolRef selected)
@@ -256,6 +259,8 @@ internal sealed partial class Emitter
             switch(node.Kind)
             {
                 case "constant":return Constant(node);
+                case "address-constant":return LiteralAddress(node);
+                case "string-literal":return "(*"+ArrayAddress(node)+")";
                 case "variable":
                     long variable=node.Symbol??throw unit.Missing(node,"selected symbol missing");
                     return unit.IsArray(unit.Symbols[variable].Type) || emitter.HasPinnedRecordStorage(unit,variable)?"(*"+Name(variable)+")":Name(variable);

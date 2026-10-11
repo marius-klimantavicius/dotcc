@@ -33,7 +33,7 @@ internal static class Program
             new Emitter(program, namespaceName, className).Write(Path.GetFullPath(output), entry);
             Console.WriteLine($"Generated C# from {paths.Count} relational object(s).");
             Console.WriteLine($"Body loading: peak rows {program.PeakFunctionBodyRows}; peak nodes {program.PeakFunctionBodyNodes}; functions loaded {program.FunctionBodyLoads}; active bodies {program.LoadedFunctionBodies}; peak bodies {program.PeakLoadedFunctionBodies}");
-            Console.WriteLine($"Retained catalogs: types {program.Units.Sum(unit=>unit.Types.Count)}; symbols {program.Units.Sum(unit=>unit.Symbols.Count)}; virtual tables {program.Units.Sum(unit=>unit.VirtualTables.Count)}; virtual entries {program.Units.Sum(unit=>unit.VirtualEntries.Values.Sum(entries=>entries.Count))}; global nodes {program.Units.Sum(unit=>unit.GlobalExpressionNodes)}. Catalog loading is not yet bounded.");
+            Console.WriteLine($"Retained catalogs: types {program.Units.Sum(unit=>unit.Types.Count)}; symbols {program.Units.Sum(unit=>unit.Symbols.Count)}; virtual tables {program.Units.Sum(unit=>unit.VirtualTables.Count)}; virtual entries {program.Units.Sum(unit=>unit.VirtualEntries.Values.Sum(entries=>entries.Count))}; literal objects {program.Units.Sum(unit=>unit.Literals.Count)}; global nodes {program.Units.Sum(unit=>unit.GlobalExpressionNodes)}. Catalog loading is not yet bounded; literal bytes are streamed.");
             return 0;
         }
         catch (Exception error) when (error is ArgumentException or InvalidDataException or IOException or DllNotFoundException or KeyNotFoundException or InvalidOperationException)

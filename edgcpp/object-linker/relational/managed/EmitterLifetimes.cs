@@ -164,7 +164,7 @@ internal sealed partial class Emitter
             if(initialization.Unordered || initialization.OverlapsInner || initialization.PartialAggregate || initialization.FreeOnException || initialization.StaticStorage || initialization.OverlapLifetime is not null)
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs unsupported unordered/overlap/array/storage cleanup emission");
             bool hasAggregateActions=initialization.Value is long aggregate &&
-                (unit.ArrayInitializers.ContainsKey(aggregate) || unit.RecordInitializers.ContainsKey(aggregate));
+                (unit.ArrayInitializers.ContainsKey(aggregate) || unit.RecordInitializers.ContainsKey(aggregate) || unit.LiteralInitializers.ContainsKey(aggregate));
             if(initialization.PartiallyInitialized && !hasAggregateActions || initialization.ValueInitialization ||
                 initialization.TemporaryLifetime && initialization.Destructor is not null)
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs unsupported partial/value/temporary initialization emission");
@@ -227,6 +227,7 @@ internal sealed partial class Emitter
                 case "expression":case "constant":
                     var value=unit.Nodes[initialization.Value??throw new InvalidDataException("Initialization value missing")];
                     if(unit.RecordInitializers.ContainsKey(value.Id))WriteRecordInitializer(value,destination,indent);
+                    else if(unit.ArrayInitializers.ContainsKey(value.Id) || unit.LiteralInitializers.ContainsKey(value.Id))WriteArrayInitializer(value,"(&"+destination+")",indent);
                     else Line(indent,destination+" = "+ExpandedExpression(value,indent)+";");
                     break;
                 case "bitwise-copy":

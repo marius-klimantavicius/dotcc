@@ -54,7 +54,7 @@ internal sealed partial class Emitter
                 else throw unit.Missing(node,"exporter defect: aggregate element requires one selected field or base");
                 var value=unit.Nodes[element.Value];
                 if(unit.RecordInitializers.ContainsKey(value.Id))WriteRecordInitializer(value,target,indent);
-                else if(unit.ArrayInitializers.ContainsKey(value.Id))WriteArrayInitializer(value,"(&"+target+")",indent);
+                else if(unit.ArrayInitializers.ContainsKey(value.Id) || unit.LiteralInitializers.ContainsKey(value.Id))WriteArrayInitializer(value,"(&"+target+")",indent);
                 else if(element.Base is not null)
                     throw unit.Missing(value,"aggregate base copy requires an explicit destination extent");
                 else Line(indent,target+" = "+ExpandedExpression(value,indent)+";");

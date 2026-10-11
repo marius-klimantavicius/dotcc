@@ -1473,6 +1473,22 @@ for filename in ("lower_il.c", "lower_c99.c"):
         '  dot_object_source::observe_scope(scope);',
         '  dot_semantic::capture_scope(scope);\n  dot_object_source::observe_scope(scope);')
 
+# Preserve the linker identity selected by stock lowering for a string object.
+# The callback observes the promoted variable; it does not create or pool literals.
+object_source_overlay(lower,
+    '  return string_var;\n}  /* get_variable_for_string_constant */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::literal_storage_selected(constant, string_var);\n'
+    '#endif\n'
+    '  return string_var;\n}  /* get_variable_for_string_constant */')
+object_source_overlay(lower,
+    '  lower_top_level_scope(scope, memory_region);\n}  /* lower_function_scope */',
+    '  lower_top_level_scope(scope, memory_region);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::literal_function_complete(routine);\n'
+    '#endif\n'
+    '}  /* lower_function_scope */')
+
 # Targeted relational dispatch facts at stock EDG decision points. These hooks
 # observe selected entries and writes; they neither change IL nor select overrides.
 object_source_overlay(root / "upstream/src/lower_init.c",

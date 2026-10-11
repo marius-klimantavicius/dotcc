@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1016;
+PRAGMA user_version = 1017;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -171,6 +171,8 @@ CREATE TABLE nodes (
  field_id INTEGER REFERENCES fields(id),
  enum_value_id INTEGER REFERENCES enum_values(id),
  floating_value_id INTEGER REFERENCES floating_values(id),
+ literal_object_id INTEGER REFERENCES literal_objects(id),
+ literal_byte_offset INTEGER,
  file_id INTEGER REFERENCES files(id),
  line INTEGER,
  column INTEGER,
@@ -433,3 +435,22 @@ CREATE TABLE record_initializer_elements (
  CHECK((field_id IS NULL) <> (base_subobject_id IS NULL)),
  PRIMARY KEY(initializer_node_id,ordinal)
 ) STRICT, WITHOUT ROWID;
+
+-- Literal content is exact target character storage, not an encoded graph.
+CREATE TABLE literal_objects (
+ id INTEGER PRIMARY KEY,
+ type_id INTEGER NOT NULL REFERENCES types(id),
+ selected_symbol_id INTEGER REFERENCES symbols(id),
+ byte_count INTEGER NOT NULL CHECK(byte_count>=0)
+) STRICT;
+CREATE TABLE literal_bytes (
+ literal_id INTEGER NOT NULL REFERENCES literal_objects(id),
+ byte_offset INTEGER NOT NULL CHECK(byte_offset>=0),
+ value INTEGER NOT NULL CHECK(value BETWEEN 0 AND 255),
+ PRIMARY KEY(literal_id,byte_offset)
+) STRICT, WITHOUT ROWID;
+CREATE TABLE literal_initializers (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ copy_byte_count INTEGER NOT NULL CHECK(copy_byte_count>=0),
+ zero_byte_count INTEGER NOT NULL CHECK(zero_byte_count>=0)
+) STRICT;

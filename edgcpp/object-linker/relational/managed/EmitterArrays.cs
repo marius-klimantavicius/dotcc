@@ -104,6 +104,8 @@ internal sealed partial class Emitter
 
         private string ArrayAddress(Node node)
         {
+            if(node.Kind=="string-literal" && node.LiteralObject is long literal)
+                return "(("+NodeType(node)+"*)"+emitter.literalNames[(unit,literal)]+")";
             if(node.Kind=="variable" && node.Symbol is long symbol)return Name(symbol);
             if(node.Kind=="operation" && node.Operator is "indirect" or "ref-indirect")return Expression(Child(node,"operand"));
             if(node.Kind=="operation" && node.Operator=="lvalue-adjust")return ArrayAddress(Child(node,"operand"));
@@ -141,6 +143,7 @@ internal sealed partial class Emitter
 
         public void WriteArrayInitializer(Node node,string address,int indent)
         {
+            if(unit.LiteralInitializers.ContainsKey(node.Id)){WriteLiteralInitializer(node,address,indent);return;}
             if(!unit.ArrayInitializers.TryGetValue(node.Id,out var initialization))
                 throw unit.Missing(node,"exporter defect: array initializer actions missing");
             var type=unit.Original(node.Type??throw unit.Missing(node,"array initializer type missing"));

@@ -7,7 +7,8 @@ internal sealed record Field(long Id, long Owner, string Name, long Type, long O
 internal sealed record Symbol(long Id, string Kind, string Name, string LinkName, string Linkage, long Type, long? Parent, bool Definition, string DefinitionKind);
 internal sealed record Node(long Id, long? Function, string Kind, long? Type, long? ExecutionType,
     string? ValueCategory, string? Operator, string? Constant, long? Symbol, long? Field, long? File, long? Line, long? Column, long? OriginalLvalueType,
-    long? Initialization,long? Lifetime,string? EvaluationOrder,long? EnumValue,long? FloatingValue,string? ValueNormalization,long? OperationType);
+    long? Initialization,long? Lifetime,string? EvaluationOrder,long? EnumValue,long? FloatingValue,string? ValueNormalization,long? OperationType,
+    long? LiteralObject,long? LiteralByteOffset);
 internal sealed record Edge(string Role, long Ordinal, long Child);
 internal readonly record struct SymbolRef(Unit Unit, long Id)
 {
@@ -88,6 +89,7 @@ internal sealed partial class Unit : IDisposable
             ReadVirtualTables();
             ReadArrayFeatures();
             ReadRecordInitializerFeatures();
+            ReadLiterals();
             ReadFunctionDetails();
             ReadNodes(null);
             ReadFloatingValues(null);
@@ -96,6 +98,7 @@ internal sealed partial class Unit : IDisposable
             ReadVirtualBody(null);
             ReadArrayInitializers(null);
             ReadRecordInitializers(null);
+            ReadLiteralInitializers(null);
         }
         catch { database.Dispose(); throw; }
     }

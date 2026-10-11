@@ -549,6 +549,46 @@ rejection, not full-TU cost. Next work is exact literal storage and selected add
 references, preserving EDG identity and target bytes without consumer pooling or
 opaque semantic payloads. The broad campaign remains stopped.
 
+## Verified exact string objects and selected addresses
+
+`artifacts/review/dotobj-relational-literals-v4/` passes native C++, SQL integrity,
+source-hidden C# and Linux x64 NativeAOT. Schema 1017 has 42 tables. Literal objects,
+ordinary byte-offset/value rows, and selected array copy/zero actions represent
+target character storage, including embedded zeros and wide encodings. Expression
+nodes reference selected objects and byte offsets. No content pooling or UTF
+conversion is performed by the consumer. Character builtin names retain wchar_t,
+char8_t, char16_t and char32_t identity alongside their target scalar storage.
+
+Two narrow stock-lowering callbacks observe selected promoted literal variables
+and release source-function identity maps before region reclamation. Final linker
+names come from EDG's selected variable. Callback-only transient correspondence
+is not dumped unless the source program references it. Release builds use explicit
+captured ownership or stable promoted identity, not a checking-only region field.
+Copy/zero action rows exist only for actual initialization contexts: three in the
+provider fixture, none for main's literal reads. Exact bytes are streamed during
+C# generation into aligned pinned backing; only object metadata remains resident.
+
+Coverage includes embedded zeros, all four wider/UTF character spellings, constexpr
+literal references, a selected nonzero address offset, and local/global padded
+arrays. SQL checks retained inline-literal linker identity. Pointer equality across
+GCC's constexpr and runtime string evaluations was not used as an oracle for EDG's
+pooling decisions. Provider: 249,856 bytes, 114 nodes, 41 types, 11 literal objects
+and 82 bytes of literal content. Main: 278,528 bytes, 259 nodes, 40 types, two literal
+objects and 24 bytes of content. Storage summaries/tool hashes are retained.
+
+Array and bounded-body regressions pass native/C#/NativeAOT at
+`*-literals-regression-v1`; peak body nodes remain 251 of 1,531. Original 14-table
+objects still link/run at `dotobj-relational-v3-literals-compat`. Reproduce with
+`tests/verify_literals.py`. General relocated variable/routine address constants
+remain unsupported; callback-known promoted literal variables are handled.
+
+Actual bounded DuckDB `hugeint-v24` advances to the selected default field
+initializer `ValidityArray::validity_mask = nullptr` in `validity_mask.hpp:483`.
+No complete object is published. Its 0.84 s / 219,136 KiB is early-rejection cost,
+not a full-TU measurement. The next bounded change can reuse existing selected
+constructor initialization rows for this scalar case; richer defaults requiring
+remapping/destruction must follow stock EDG decisions. Broad campaign remains stopped.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
