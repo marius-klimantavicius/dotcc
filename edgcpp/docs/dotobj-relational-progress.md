@@ -345,6 +345,35 @@ DuckDB probe at `dotobj-relational-duckdb-hugeint-v11/` advances to
 `noninteger constant value (EDG kind 14)`, a dependent template value. No complete
 DuckDB object is published yet. Source-shaped dependent-value projection is next.
 
+## Verified dependent source value recipes
+
+`artifacts/review/dotobj-relational-dependent-values-v2/` passes native C++, SQL
+integrity, source-hidden C# and Linux x64 NativeAOT. `template_arguments.expression_id`
+and `template_formals.default_expression_id` reference ordinary expression graphs;
+`template_value_references` preserves EDG parameter coordinates and qualified member
+references. The 35-table schema distinguishes recipe ownership with `nodes.domain`.
+Recipe nodes always have NULL function ownership and remain browsable in SQL; the
+consumer does not instantiate them or load them into executable body/global data.
+
+The fixture covers `Gate<(N > 1)>`, `Gate<T::enabled>`, integer default `N + 1`, and
+floating default `V + 0.5`. Concrete EDG instantiations execute across two units.
+Provider: 208,896 bytes, 38 nodes, 46 types, including 13 recipe nodes. Main:
+217,088 bytes, 84 nodes, 50 types, including 17 recipe nodes. Both link with zero
+loaded global expression nodes. Recipe caches are scoped to a capture, avoiding
+stale EDG function-region pointers. Unsupported dependent operations retain
+contextual diagnostics instead of text payloads or managed semantic analysis.
+
+Virtual, floating and bounded-body regressions pass native/C#/NativeAOT under
+`*-dependent-regression-v1`; body retention remains 251 of 1,531 nodes. Preserved
+14-table v3 objects also link and execute with the new reader at
+`dotobj-relational-v3-dependent-compat`. Storage summaries and hashes are retained.
+Reproduce with `tests/verify_dependent_values.py` and the usual arguments.
+
+The actual DuckDB probe at `dotobj-relational-duckdb-hugeint-v13/` advances past the
+`enable_if` dependent argument and reports `field owner`. This may be declaration
+capture reentrancy and is being distinguished from a lowered ABI field before any
+fix. No complete DuckDB object is published; the broad campaign remains stopped.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

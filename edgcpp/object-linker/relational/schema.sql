@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1011;
+PRAGMA user_version = 1012;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -155,6 +155,7 @@ CREATE TABLE empty_parameter_packs (
 ) STRICT, WITHOUT ROWID;
 CREATE TABLE nodes (
  id INTEGER PRIMARY KEY,
+ domain TEXT NOT NULL DEFAULT 'program' CHECK(domain IN('program','template-recipe')),
  function_id INTEGER REFERENCES symbols(id),
  kind TEXT NOT NULL,
  type_id INTEGER REFERENCES types(id),
@@ -175,7 +176,8 @@ CREATE TABLE nodes (
  source_node_id INTEGER REFERENCES nodes(id),
  initialization_id INTEGER REFERENCES initializations(id),
  lifetime_id INTEGER REFERENCES lifetimes(id),
- evaluation_order TEXT NOT NULL DEFAULT 'unspecified' CHECK(evaluation_order IN('unspecified','left-to-right','right-to-left'))
+ evaluation_order TEXT NOT NULL DEFAULT 'unspecified' CHECK(evaluation_order IN('unspecified','left-to-right','right-to-left')),
+ CHECK(domain!='template-recipe' OR function_id IS NULL)
 ) STRICT;
 CREATE TABLE edges (
  parent_id INTEGER NOT NULL REFERENCES nodes(id),
@@ -243,6 +245,7 @@ CREATE TABLE template_formals (
  default_value_type_id INTEGER REFERENCES types(id),
  default_value_text TEXT,
  default_floating_value_id INTEGER REFERENCES floating_values(id),
+ default_expression_id INTEGER REFERENCES nodes(id),
  file_id INTEGER REFERENCES files(id),
  line INTEGER,
  column INTEGER,
@@ -392,3 +395,12 @@ CREATE TABLE vptr_writes (
  construction_index INTEGER,
  PRIMARY KEY(function_id,ordinal)
 ) STRICT, WITHOUT ROWID;
+
+CREATE TABLE template_value_references (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ name TEXT NOT NULL,
+ parameter_depth INTEGER,
+ parameter_position INTEGER,
+ is_pack INTEGER NOT NULL CHECK(is_pack IN(0,1)),
+ qualifier_type_id INTEGER REFERENCES types(id)
+) STRICT;

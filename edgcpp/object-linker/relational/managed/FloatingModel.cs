@@ -24,7 +24,7 @@ internal sealed partial class Unit
     private void ReadFloatingValues(long? function)
     {
         if(!HasFloatingValues)return;
-        using var q=database.Prepare("SELECT DISTINCT v.id,v.type_id,v.bits_hex FROM nodes n JOIN floating_values v ON v.id=n.floating_value_id WHERE "+FunctionFilter(function,"n.")+" ORDER BY v.id");
+        using var q=database.Prepare("SELECT DISTINCT v.id,v.type_id,v.bits_hex FROM nodes n JOIN floating_values v ON v.id=n.floating_value_id WHERE "+ProgramNodeFilter(function,"n.")+" ORDER BY v.id");
         while(q.Read())FloatingValues.TryAdd(q.Integer(0),new(q.Integer(0),q.Integer(1),q.Text(2)));
     }
 }

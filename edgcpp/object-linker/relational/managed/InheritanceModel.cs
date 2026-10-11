@@ -23,7 +23,7 @@ internal sealed partial class Unit
     private void ReadClassConversions(long? function)
     {
         if(!HasBaseSubobjects)return;
-        using(var q=database.Prepare("SELECT c.node_id,c.base_subobject_id,c.direction,c.preserves_null,c.byte_adjustment,c.source_representation,c.result_representation FROM nodes n JOIN class_conversions c ON c.node_id=n.id WHERE "+FunctionFilter(function,"n.")+" ORDER BY c.node_id"))
+        using(var q=database.Prepare("SELECT c.node_id,c.base_subobject_id,c.direction,c.preserves_null,c.byte_adjustment,c.source_representation,c.result_representation FROM nodes n JOIN class_conversions c ON c.node_id=n.id WHERE "+ProgramNodeFilter(function,"n.")+" ORDER BY c.node_id"))
             while(q.Read())ClassConversions.Add(q.Integer(0),new(q.Integer(0),q.Integer(1),q.Text(2),q.Integer(3)!=0,q.OptionalInteger(4),q.Text(5),q.Text(6)));
     }
 }

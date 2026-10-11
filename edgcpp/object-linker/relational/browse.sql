@@ -118,3 +118,8 @@ SELECT s.name,w.ordinal,w.phase,w.base_subobject_id,w.vptr_byte_offset,
        w.table_id,w.source_kind,w.construction_index
 FROM vptr_writes w JOIN symbols s ON s.id=w.function_id
 ORDER BY w.function_id,w.ordinal;
+
+SELECT n.id,n.domain,n.kind,n.operator,n.type_id,r.name,r.parameter_depth,
+       r.parameter_position,r.is_pack,r.qualifier_type_id
+FROM nodes n LEFT JOIN template_value_references r ON r.node_id=n.id
+WHERE n.domain='template-recipe' ORDER BY n.id;

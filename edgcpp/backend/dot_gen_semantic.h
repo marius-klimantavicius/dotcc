@@ -64,6 +64,10 @@ struct State {
   std::map<a_template_ptr,Id> templates;
   std::map<std::string,Id> files;
   std::map<an_expr_node_ptr,Id> expressions;
+  std::map<an_expr_node_ptr,Id> recipe_expressions;
+  std::map<a_constant_ptr,Id> recipe_constants;
+  bool template_recipe=false;
+  unsigned recipe_capture_depth=0;
   std::set<a_routine_ptr> bodies;
   std::set<a_variable_ptr> local_variables;
   std::set<a_dynamic_init_ptr> declaration_initializers;
@@ -116,7 +120,7 @@ struct State {
       {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
     unsigned ordinal=0;
     for(auto formal=t->template_decl?t->template_decl->param_list:nullptr;formal;formal=formal->next,++ordinal) {
-      const char *formal_kind=nullptr;Id formal_type=0,formal_template=0,default_type=0,default_template=0,default_value_type=0,default_float=0;
+      const char *formal_kind=nullptr;Id formal_type=0,formal_template=0,default_type=0,default_template=0,default_value_type=0,default_float=0,default_expression=0;
       Value depth=nullptr,position=nullptr,default_value=nullptr;
       switch(formal->kind) {
         case tpk_type: {
@@ -137,7 +141,11 @@ struct State {
           depth=parameter_value->variant.template_param.variant.coordinates.depth;
           position=parameter_value->variant.template_param.variant.coordinates.position;
           if(auto initial=formal->variant.nontype.default_arg_constant) {
-            default_value_type=type_id(initial->type);default_value=literal_text(initial);
+            default_value_type=type_id(initial->type);
+            if(initial->kind==ck_template_param)
+              default_expression=recipe_value(initial,formal->source_corresp.decl_position);
+            else default_value=literal_text(initial,"template default "+spelling(t->source_corresp)+
+              "::"+spelling(formal->source_corresp),&formal->source_corresp.decl_position);
             if(initial->kind==ck_float)default_float=floating_value(initial);
           }
           break;
@@ -158,6 +166,7 @@ struct State {
         {"default_type_id",optional(default_type)},{"default_template_id",optional(default_template)},
         {"default_value_type_id",optional(default_value_type)},{"default_value_text",default_value},
         {"default_floating_value_id",optional(default_float)},
+        {"default_expression_id",optional(default_expression)},
         {"file_id",optional(formal_pos.file)},{"line",formal_pos.line},{"column",formal_pos.column}});
     }
     return id;
@@ -170,11 +179,22 @@ struct State {
     if(overflow)missing("integer constant wider than 64 bits");
     return value;
   }
-  std::string literal_text(a_constant_ptr c) {
+  std::string literal_text(a_constant_ptr c,const std::string &context="literal",
+                           const a_source_position *position=nullptr) {
     if(c && c->kind==ck_float) {
       auto t=skip_typerefs(c->type);
       // Display only; the exact value is the separate literal bit pattern.
       return fp_to_string(t->variant.float_kind,&c->variant.float_value,nullptr,nullptr,nullptr).as_temp_characters();
+    }
+    if(c && c->kind!=ck_integer) {
+      std::string detail="noninteger constant in "+context+" [name="+spelling(c->source_corresp);
+      if(c->kind==ck_template_param)
+        detail+=", template-kind="+std::to_string(int(c->variant.template_param.kind));
+      if(c->type)detail+=", type="+spelling(c->type->source_corresp)+
+        ", type-kind="+std::to_string(int(c->type->kind));
+      auto pos=location(position?*position:c->source_corresp.decl_position);
+      detail+=", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]";
+      missing(detail,int(c->kind));
     }
     return integer(c);
   }
@@ -226,7 +246,7 @@ struct State {
         pack_ordinal=int(ordinal);continue;
       }
       if(!arg->is_pack_element && !arg->is_pack)pack_ordinal=-1;
-      const char *kind=nullptr;Id argument_type=0,templ=0,floating=0;Value value=nullptr;
+      const char *kind=nullptr;Id argument_type=0,templ=0,floating=0,argument_expression=0;Value value=nullptr;
       switch(arg->kind) {
         case tak_type:
           kind="type";argument_type=type_id(arg->variant.type);break;
@@ -234,7 +254,11 @@ struct State {
           kind="constant";
           if(arg->is_array_bound_of_unknown_type || !arg->variant.constant)
             missing("unresolved nontype template argument");
-          argument_type=type_id(arg->variant.constant->type);value=literal_text(arg->variant.constant);
+          argument_type=type_id(arg->variant.constant->type);
+          if(arg->variant.constant->kind==ck_template_param)
+            argument_expression=recipe_value(arg->variant.constant,arg->variant.constant->source_corresp.decl_position);
+          else value=literal_text(arg->variant.constant,"template argument "+spelling(t->source_corresp)+
+            " ordinal "+std::to_string(ordinal));
           if(arg->variant.constant->kind==ck_float)floating=floating_value(arg->variant.constant);break;
         case tak_template:
           kind="template";templ=template_id(arg->variant.templ.ptr);
@@ -245,7 +269,7 @@ struct State {
         {"parent_ordinal",pack_ordinal<0?Value(nullptr):Value(pack_ordinal)},
         {"is_pack_expansion",bool(arg->pack_expansion_descr || arg->is_pack || arg->has_pack_ellipsis)},
         {"type_id",optional(argument_type)},{"template_id",optional(templ)},{"constant_text",value},
-        {"floating_value_id",optional(floating)}});
+        {"floating_value_id",optional(floating)},{"expression_id",optional(argument_expression)}});
     }
   }
   const char *exception_policy(a_type_ptr type) {
@@ -504,10 +528,10 @@ struct State {
       {"is_definition",v->storage_class!=sc_extern},{"file_id",optional(pos.file)},
       {"line",pos.line},{"column",pos.column}});
     if(!local && v->init_kind==initk_static) {
-      Id previous=function;function=0;
+      Id previous=function;bool previous_recipe=template_recipe;function=0;template_recipe=false;
       Id initializer=constant(v->initializer.constant,v->source_corresp.decl_position);
       db.insert("global_initializers",{{"symbol_id",id},{"initializer_node_id",initializer}});
-      function=previous;
+      function=previous;template_recipe=previous_recipe;
     }
     return id;
   }
@@ -515,6 +539,7 @@ struct State {
           const char *op=nullptr,const std::string &constant="",Id symbol=0,Id field=0,Id original=0,bool synthetic=false) {
     Id id=next_node++;auto pos=location(p);
     db.insert("nodes",{{"id",id},{"function_id",optional(function)},{"kind",kind},{"type_id",optional(type)},
+      {"domain",template_recipe?"template-recipe":"program"},
       {"value_category",category},{"operator",op},{"constant_text",constant.empty()?Value(nullptr):Value(constant)},
       {"symbol_id",optional(symbol)},{"field_id",optional(field)},{"original_lvalue_type_id",optional(original)},
       {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column},{"is_synthetic",synthetic}});
@@ -523,9 +548,65 @@ struct State {
   void edge(Id parent,const char *role,unsigned ordinal,Id child) {
     if(child)db.insert("edges",{{"parent_id",parent},{"role",role},{"ordinal",ordinal},{"child_id",child}});
   }
+  Id recipe_value(a_constant_ptr c,const a_source_position &pos) {
+    auto previous_function=function;bool previous_recipe=template_recipe;
+    if(recipe_capture_depth++==0){recipe_expressions.clear();recipe_constants.clear();}
+    function=0;template_recipe=true;
+    Id id=constant(c,pos);
+    template_recipe=previous_recipe;function=previous_function;
+    if(--recipe_capture_depth==0){recipe_expressions.clear();recipe_constants.clear();}
+    return id;
+  }
+  const char *dependent_value_kind(a_constant_ptr c) {
+    switch(c->variant.template_param.kind) {
+      case tpck_param:return "template-parameter-reference";
+      case tpck_member:return "dependent-member-reference";
+      case tpck_expression:return "dependent-expression";
+      case tpck_dependent_constant:return "dependent-constant";
+      case tpck_address:return "dependent-address";
+      default:missing("dependent value "+spelling(c->source_corresp),int(c->variant.template_param.kind));
+    }
+  }
+  void dependent_value(Id id,a_constant_ptr c) {
+    auto &value=c->variant.template_param;
+    switch(value.kind) {
+      case tpck_param:case tpck_member: {
+        Value depth=nullptr,position=nullptr;Id qualifier=0;
+        if(value.kind==tpck_param) {
+          depth=value.variant.coordinates.depth;position=value.variant.coordinates.position;
+        } else {
+          auto owner=parent_class_or_null(c);
+          if(owner && class_type_supp(owner)->proxy_of_type)owner=class_type_supp(owner)->proxy_of_type;
+          qualifier=type_id(owner);
+        }
+        db.insert("template_value_references",{{"node_id",id},{"name",spelling(c->source_corresp)},
+          {"parameter_depth",depth},{"parameter_position",position},{"is_pack",bool(value.is_pack)},
+          {"qualifier_type_id",optional(qualifier)}});
+        break;
+      }
+      case tpck_expression: {
+        // This stock accessor also resolves EDG's file/function-region
+        // correspondence. Only the source expression is projected.
+        auto operand=expr_node_from_tpck_expression(c);
+        if(!operand)missing("dependent source expression");
+        edge(id,"operand",0,expression(operand));break;
+      }
+      case tpck_dependent_constant:case tpck_address:
+        edge(id,"operand",0,constant(value.variant.constant,c->source_corresp.decl_position));break;
+      default:missing("dependent value",int(value.kind));
+    }
+  }
   Id constant(a_constant_ptr c,const a_source_position &p) {
-    if(c->kind!=ck_integer && c->kind!=ck_float)missing("constant",int(c->kind));
-    Id id=node("constant",p,type_id(c->type),"prvalue",nullptr,literal_text(c));
+    if(template_recipe) {
+      auto found=recipe_constants.find(c);if(found!=recipe_constants.end())return found->second;
+    }
+    if(c->kind==ck_template_param) {
+      Id id=node(dependent_value_kind(c),p,type_id(c->type),"prvalue");
+      if(template_recipe)recipe_constants[c]=id;
+      dependent_value(id,c);return id;
+    }
+    Id id=node("constant",p,type_id(c->type),"prvalue",nullptr,literal_text(c,"initializer",&p));
+    if(template_recipe)recipe_constants[c]=id;
     if(c->kind==ck_float)db.update("nodes","id",id,{{"floating_value_id",floating_value(c)}});
     attach_enum_value(id,c);return id;
   }
@@ -552,6 +633,7 @@ struct State {
   }
   Id lifetime_id(an_object_lifetime_ptr value) {
     if(!value)return 0;
+    if(template_recipe)missing("template recipe lifetime ownership");
     bool persistent=value->kind==olk_global_static || value->kind==olk_function_static;
     auto &ids=persistent?static_lifetimes:lifetimes;
     auto found=ids.find(value);if(found!=ids.end())return found->second;
@@ -589,6 +671,7 @@ struct State {
   }
   Id initialization_id(a_dynamic_init_ptr init,a_type_ptr target=nullptr) {
     if(!init)return 0;
+    if(template_recipe)missing("template recipe initialization ownership");
     if(init->master_entry || init->class_rvalue_initialized_through_master_entry)
       missing("shared class-result initialization destination");
     Id target_type=type_id(target?target:init->variable?init->variable->type:nullptr);
@@ -858,10 +941,13 @@ struct State {
   }
   Id expression(an_expr_node_ptr e) {
     if(!e)return 0;
-    auto found=expressions.find(e);if(found!=expressions.end())return found->second;
+    auto &expression_ids=template_recipe?recipe_expressions:expressions;
+    auto found=expression_ids.find(e);if(found!=expression_ids.end())return found->second;
     const char *kind=nullptr,*op=nullptr;std::string text;Id symbol=0,field=0;
     switch(e->kind) {
-      case enk_constant:kind="constant";text=literal_text(node_constant(e));break;
+      case enk_constant:
+        if(node_constant(e)->kind==ck_template_param)kind=dependent_value_kind(node_constant(e));
+        else {kind="constant";text=literal_text(node_constant(e),"expression",&e->position);}break;
       case enk_variable:kind="variable";symbol=variable(node_variable(e));break;
       case enk_routine:kind="function";symbol=routine(e->variant.routine.ptr);break;
       case enk_field:kind="field";field=field_id(node_field(e));break;
@@ -883,7 +969,7 @@ struct State {
     }
     Id id=node(kind,e->position,type_id(e->type),e->is_lvalue?"lvalue":e->is_xvalue?"xvalue":"prvalue",
       op,text,symbol,field,type_id(e->orig_lvalue_type),e->compiler_generated);
-    expressions[e]=id;
+    expression_ids[e]=id;
     // Source-form predicate for lower_il::rewrite_nullptr_expr_if_necessary.
     // lower_expr first changes xvalues to lvalues, so both glvalue forms are
     // excluded here. Retain the original children for evaluation/side effects;
@@ -892,6 +978,7 @@ struct State {
        e->kind!=enk_constant && e->kind!=enk_field && !e->result_is_not_used)
       db.update("nodes","id",id,{{"value_normalization","nullptr-zero"}});
     if(e->kind==enk_constant) {
+      if(node_constant(e)->kind==ck_template_param)dependent_value(id,node_constant(e));
       attach_enum_value(id,node_constant(e));
       if(node_constant(e)->kind==ck_float)
         db.update("nodes","id",id,{{"floating_value_id",floating_value(node_constant(e))}});

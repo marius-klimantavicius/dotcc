@@ -24,6 +24,7 @@ internal sealed partial class Unit : IDisposable
     public bool HasLifecycles {get;}
     public bool HasReturnStorage {get;}
     public bool HasValueNormalization {get;}
+    public bool HasNodeDomain {get;}
     public Dictionary<long, ProgramType> Types { get; } = [];
     public Dictionary<long, Field> Fields { get; } = [];
     public Dictionary<long, Symbol> Symbols { get; } = [];
@@ -57,6 +58,8 @@ internal sealed partial class Unit : IDisposable
                 HasReturnStorage=query.Read();
             using(var query=database.Prepare("SELECT 1 FROM pragma_table_info('nodes') WHERE name='value_normalization'"))
                 HasValueNormalization=query.Read();
+            using(var query=database.Prepare("SELECT 1 FROM pragma_table_info('nodes') WHERE name='domain'"))
+                HasNodeDomain=query.Read();
             using (var q = database.Prepare("SELECT id,path FROM files ORDER BY id"))
                 while (q.Read()) Files.Add(q.Integer(0), q.Text(1));
             using (var q = database.Prepare("SELECT id,kind,name,size,alignment,pointee_type_id,element_type_id,element_count,return_type_id,underlying_type_id,is_variadic,is_incomplete,link_name,linkage,is_volatile,"+(HasLifecycles?"builtin_name":"NULL")+","+(hasDependentTypes?"is_dependent":"0")+","+(HasReturnStorage?"return_storage":"'value'")+" FROM types ORDER BY id"))

@@ -80,11 +80,17 @@ internal sealed partial class Unit
     private static string FunctionFilter(long? function,string alias="")=>alias+"function_id"+
         (function is long id?" = "+id.ToString(System.Globalization.CultureInfo.InvariantCulture):" IS NULL");
 
+    // Recipe ownership is an explicit exporter fact, independent of whether
+    // the expression's type or value is dependent. Never load recipe graphs
+    // into executable global storage or a function-body lease.
+    private string ProgramNodeFilter(long? function,string alias="")=>FunctionFilter(function,alias)+
+        (HasNodeDomain?" AND "+alias+"domain = 'program'":"");
+
     private void ReadNodes(long? function)
     {
-        using(var q=database.Prepare("SELECT id,function_id,kind,type_id,execution_type_id,value_category,operator,constant_text,symbol_id,field_id,file_id,line,column,original_lvalue_type_id,"+(HasLifecycles?"initialization_id,lifetime_id,evaluation_order":"NULL,NULL,NULL")+","+(HasEnums?"enum_value_id":"NULL")+","+(HasFloatingValues?"floating_value_id":"NULL")+","+(HasValueNormalization?"value_normalization":"NULL")+" FROM nodes WHERE "+FunctionFilter(function)+" ORDER BY id"))
+        using(var q=database.Prepare("SELECT id,function_id,kind,type_id,execution_type_id,value_category,operator,constant_text,symbol_id,field_id,file_id,line,column,original_lvalue_type_id,"+(HasLifecycles?"initialization_id,lifetime_id,evaluation_order":"NULL,NULL,NULL")+","+(HasEnums?"enum_value_id":"NULL")+","+(HasFloatingValues?"floating_value_id":"NULL")+","+(HasValueNormalization?"value_normalization":"NULL")+" FROM nodes WHERE "+ProgramNodeFilter(function)+" ORDER BY id"))
             while(q.Read())Nodes.Add(q.Integer(0),new(q.Integer(0),q.OptionalInteger(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalText(5),q.OptionalText(6),q.OptionalText(7),q.OptionalInteger(8),q.OptionalInteger(9),q.OptionalInteger(10),q.OptionalInteger(11),q.OptionalInteger(12),q.OptionalInteger(13),q.OptionalInteger(14),q.OptionalInteger(15),q.OptionalText(16),q.OptionalInteger(17),q.OptionalInteger(18),q.OptionalText(19)));
-        using(var q=database.Prepare("SELECT e.parent_id,e.role,e.ordinal,e.child_id FROM nodes n JOIN edges e ON e.parent_id=n.id WHERE "+FunctionFilter(function,"n.")+" ORDER BY e.parent_id,e.role,e.ordinal"))
+        using(var q=database.Prepare("SELECT e.parent_id,e.role,e.ordinal,e.child_id FROM nodes n JOIN edges e ON e.parent_id=n.id WHERE "+ProgramNodeFilter(function,"n.")+" ORDER BY e.parent_id,e.role,e.ordinal"))
             while(q.Read())Add(Edges,q.Integer(0),new Edge(q.Text(1),q.Integer(2),q.Integer(3)));
     }
 }

@@ -92,6 +92,12 @@ binary80/binary128 arithmetic through the existing software runtime, including
 source-hidden C# and NativeAOT. Floating environment/rounding-mode completeness
 and half-precision execution remain work.
 
+Dependent template values/defaults reference source expression graphs and explicit
+parameter/member references. `nodes.domain='template-recipe'` keeps those graphs
+inspectable without loading or instantiating them in the executable consumer.
+`tests/verify_dependent_values.py` checks concrete execution and recipe isolation,
+including dependent integer and floating defaults.
+
 Standard `std::nullptr_t` retains its distinct source identity and EDG layout.
 `nodes.value_normalization` explicitly records zero-valued prvalue behavior;
 the consumer preserves operand effects and follows that fact. Run
