@@ -176,11 +176,9 @@ struct State {
   }
   std::string integer(a_constant_ptr c) {
     if(!c || c->kind!=ck_integer)missing("noninteger constant value",c?int(c->kind):-1);
-    a_boolean overflow=FALSE;
-    std::string value=int_constant_is_signed(c)?std::to_string((long long)value_of_integer_constant(c,&overflow)):
-      std::to_string((unsigned long long)unsigned_value_of_integer_constant(c,&overflow));
-    if(overflow)missing("integer constant wider than 64 bits");
-    return value;
+    // EDG formats the selected signedness and target width directly, without
+    // narrowing through a host integer (including 128-bit literal values).
+    return decimal_str_for_integer_constant(c).as_temp_characters();
   }
   std::string literal_text(a_constant_ptr c,const std::string &context="literal",
                            const a_source_position *position=nullptr) {
@@ -369,6 +367,10 @@ struct State {
           case ik_long_long:kind="i64";builtin="long long";break;
           case ik_unsigned_long:kind=t->size==8?"u64":"u32";builtin="unsigned long";break;
           case ik_unsigned_long_long:kind="u64";builtin="unsigned long long";break;
+#if INT128_EXTENSIONS_ALLOWED
+          case ik_int128:kind="i128";builtin="__int128";break;
+          case ik_unsigned_int128:kind="u128";builtin="unsigned __int128";break;
+#endif
           default:missing("integer type",int(t->variant.integer.int_kind));
         }break;
       case tk_float: {

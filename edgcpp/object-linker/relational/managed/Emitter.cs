@@ -158,6 +158,7 @@ internal sealed partial class Emitter
         {
             "void"=>"void","bool"=>"bool","i8"=>"sbyte","u8"=>"byte","i16"=>"short","u16"=>"ushort",
             "i32"=>"int","u32"=>"uint","i64"=>"long","u64"=>"ulong","f32"=>"float","f64"=>"double",
+            "i128"=>"global::System.Int128","u128"=>"global::System.UInt128",
             "f80" or "f128"=>ExtendedFloatingType(unit,type),
             "nullptr"=>"void*",
             "pointer" or "lvalue-reference" or "rvalue-reference"=>Pointer(unit,type.Pointee!.Value),
@@ -270,6 +271,7 @@ internal sealed partial class Emitter
             if(EnumConstant(node) is string enumeration)return enumeration;
             string value=node.Constant??throw unit.Missing(node,"constant payload missing");
             string type=NodeType(node);
+            if(type is "global::System.Int128" or "global::System.UInt128")return WideIntegerConstant(node,type,value);
             if(type=="bool")return value is "0" or "false"?"false":"true";
             if(type.EndsWith('*') || type.StartsWith("delegate*",StringComparison.Ordinal))
                 return value=="0"?"(("+type+")0)":throw unit.Missing(node,"nonzero pointer constant needs a relocation");
@@ -314,6 +316,7 @@ internal sealed partial class Emitter
                 case "cast":case "ref-cast":case "bool-cast":case "lvalue-cast":
                     if(NodeType(node)=="bool")return Truth(N(0));
                     if(NodeType(N(0))=="bool" && NodeType(node)!="bool")return "(("+NodeType(node)+")("+E(0)+" ? 1 : 0))";
+                    if(WidePointerConversion(node,N(0)) is string converted)return converted;
                     return "unchecked(("+NodeType(node)+")"+E(0)+")";
                 case "lvalue-adjust":case "class-rvalue-adjust":return E(0);
                 case "base-class-cast":case "derived-class-cast":return ClassConversionExpression(node,N(0));

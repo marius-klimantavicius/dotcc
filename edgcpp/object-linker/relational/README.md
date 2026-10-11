@@ -123,6 +123,12 @@ lookup tables, partial/empty/nested initialization, declaration-order completion
 cross-unit mutation and cleanup reads. Array actions follow function-body leases.
 Dynamic/record array initialization and local-static guards remain unsupported.
 
+Signed/unsigned 128-bit integers retain exact EDG decimal scalar values and layout,
+using System.Int128/UInt128 in generated C#. No separate wide-value payload is used.
+`tests/verify_wide_integers.py` covers literals, templates, arithmetic, arrays,
+varargs, pointer conversion and extended floating conversion. Wide enum execution
+remains unsupported.
+
 Standard `std::nullptr_t` retains its distinct source identity and EDG layout.
 `nodes.value_normalization` explicitly records zero-valued prvalue behavior;
 the consumer preserves operand effects and follows that fact. Run

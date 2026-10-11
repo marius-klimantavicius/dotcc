@@ -494,6 +494,30 @@ rejects unsigned __int128 (integer kind 12). No complete object is published and
 probe measurements remain early-rejection data. The next change uses existing
 scalar type/literal columns and EDG's exact decimal formatter, adding no tables.
 
+## Verified exact 128-bit scalar integers
+
+`artifacts/review/dotobj-relational-wide-v1/` passes native C++, SQL integrity,
+source-hidden C# and Linux x64 NativeAOT. Existing type/scalar columns now carry
+`i128`/`u128`, source builtin names and EDG layout. All integer formatting uses
+EDG's stock decimal formatter instead of a host64 conversion. No tables or payload
+formats were added. Literals, template arguments/defaults and existing enum values
+retain exact decimal scalars; C# wide literals use readable values or high/low
+constructors with the exact decimal value shown alongside.
+
+Coverage includes unsigned maximum and signed minimum, signed division/remainder
+and shift, unsigned compound operations, narrowing, cross-unit calls, template
+values/defaults, aligned static arrays, variadic wide values, pointer round trips
+and long-double conversion. Provider: 217,088 bytes, 55 nodes, 17 types. Main:
+233,472 bytes, 191 nodes, 25 types. Enum and dependent-template regressions pass
+native/C#/NativeAOT at `*-wide-regression-v1`. Storage/tool hashes are retained;
+reproduce with `tests/verify_wide_integers.py`. Wide enum execution remains an
+explicit unsupported target representation.
+
+Actual bounded DuckDB `hugeint-v20` advances to a non-array aggregate initializer.
+No complete DuckDB object is published. Next work must identify its precise source
+record and project the selected field/base destinations needed for generation;
+the consumer must not reconstruct aggregate member selection.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
