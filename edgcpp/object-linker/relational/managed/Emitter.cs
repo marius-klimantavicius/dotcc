@@ -362,6 +362,7 @@ internal sealed partial class Emitter
         }
         private string Declaration(Node node)
         {
+            if(node.Kind=="static-assertion")return "";
             if(node.Kind=="static-declaration"){StaticDeclarationSymbol(node);return "";}
             long id=node.Symbol??throw unit.Missing(node,"declaration symbol missing");
             return Type(unit.Symbols[id].Type)+" "+Name(id)+" = "+Expression(node);
@@ -394,7 +395,7 @@ internal sealed partial class Emitter
                 if(declarations.Length!=1)throw unit.Missing(node,"for initializer with multiple declarations not yet supported");
                 return Declaration(declarations[0]);
             }
-            if(node.Kind is "initialize" or "static-declaration")return Declaration(node);
+            if(node.Kind is "initialize" or "static-declaration" or "static-assertion")return Declaration(node);
             if(node.Kind=="expr-stmt")return StatementExpression(Child(node,"value"));
             if(node.Kind=="empty")return "";
             return StatementExpression(node);
@@ -424,6 +425,7 @@ internal sealed partial class Emitter
                 case "decl":foreach(var declaration in unit.Children(node,"declaration"))WriteDeclaration(declaration,indent);break;
                 case "initialize":WriteDeclaration(node,indent);break;
                 case "static-declaration":WriteStaticDeclaration(node,indent);break;
+                case "static-assertion":WriteDeclaration(node,indent);break;
                 case "if":WriteIf(node,indent);break;
                 case "while":WriteWhile(node,indent);break;
                 case "do-while":

@@ -261,6 +261,11 @@ internal sealed partial class Emitter
 
         private void WriteDeclaration(Node node,int indent)
         {
+            if(node.Kind=="static-assertion")
+            {
+                Line(indent,"// static_assert (accepted by EDG).");
+                return;
+            }
             if(node.Kind=="static-declaration"){WriteStaticDeclaration(node,indent);return;}
             if(node.Symbol is long array && unit.IsArray(unit.Symbols[array].Type)){WriteArrayDeclaration(node,indent);return;}
             if(node.Initialization is not long id){Line(indent,Declaration(node)+";");return;}

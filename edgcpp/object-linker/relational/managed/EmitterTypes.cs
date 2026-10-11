@@ -57,6 +57,9 @@ internal sealed partial class Emitter
     private void UseNode(Unit unit,Node node,HashSet<long> visited)
     {
         if(!visited.Add(node.Id))return;
+        // EDG has already accepted this declaration. Its recorded condition
+        // and message are source metadata, without executable type/storage use.
+        if(node.Kind=="static-assertion")return;
         if(node.Kind=="type-info-address")
         {
             var provider=ResolveTypeInfoObject(unit,node);

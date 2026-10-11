@@ -2203,7 +2203,29 @@ struct State {
             edge(id,"declaration",ordinal++,declaration(v,s->position));
           }
           else if(item->entity.kind==iek_type)type_id((a_type_ptr)item->entity.ptr);
-          else missing("local declaration",int(item->entity.kind));
+          else if(item->entity.kind==iek_static_assertion) {
+            auto assertion=(a_static_assertion_ptr)item->entity.ptr;
+            const auto &position=assertion->position.seq?assertion->position:s->position;
+            Id selected=node("static-assertion",position);
+            // EDG has resolved this source declaration. Its selected condition
+            // and optional message are navigation recipes, never executable
+            // operands or runtime literal storage requirements.
+            if(!assertion->condition)missing("selected static assertion condition");
+            edge(selected,"condition",0,recipe_value(assertion->condition,position));
+            if(assertion->string_literal)
+              edge(selected,"message",0,recipe_value(assertion->string_literal,position));
+            edge(id,"declaration",ordinal++,selected);
+          }
+          else {
+            a_source_position position=s->position;
+            auto source=location(position);std::string path,name;
+            for(const auto &file:files)if(file.second==source.file){path=file.first;break;}
+            for(const auto &entry:routines)if(entry.second==function){name=spelling(entry.first->source_corresp);break;}
+            std::string detail="local declaration [function="+name+
+              ", file="+path+", line="+std::to_string(source.line)+
+              ", column="+std::to_string(source.column);
+            missing(detail+"]",int(item->entity.kind));
+          }
         }break;
       }
       case stmk_init: {

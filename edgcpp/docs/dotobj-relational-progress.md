@@ -994,6 +994,30 @@ declaration representation is being investigated. No complete real DuckDB object
 or actual DuckDB C# generation is yet published; probe timings remain rejection
 costs. Shared-result destination schema review remains pending.
 
+## Local static assertion source declarations (2026-10-11)
+
+Verified `dotobj-relational-static-assertions-v1` retains local EDG-selected
+static assertions as ordinary source declaration nodes with condition/message
+navigation edges to recipe-domain metadata. These children have no function
+ownership and never enter executable type or literal-storage closure. The C#
+generator emits a compile-time assertion comment; it does not re-evaluate EDG's
+condition or allocate the message as runtime data. Schema remains 1018 / 43 tables.
+
+The fixture checks three local and two instantiated-function assertions, exact
+selected true constants, terse/empty/optional message bytes, source positions and
+declaration ownership. Native C++, source-hidden C# and Linux NativeAOT pass;
+generated code contains five assertion comments and no message storage. Native
+and managed builds pass. Object: 245,760 bytes / 30 nodes / 11 types; hashes and
+per-table storage are retained. Unknown local declaration diagnostics now include
+function/source context.
+
+Actual `exception-v5` advances through local assertions and rejects the selected
+default field initializer for `vector::__end_cap_` (`__compressed_pair`) at
+libc++ `vector:728:46`. Its stock selected initializer projection is being
+investigated. No complete DuckDB object or actual DuckDB C# generation has yet
+been published. Probe timings are early-rejection costs; shared-result destination
+schema review remains pending.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
