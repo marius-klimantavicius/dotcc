@@ -436,7 +436,8 @@ internal sealed partial class Emitter
                     else
                     {
                         Node expression=Child(node,"value");
-                        Line(indent,StatementExpression(expression,ExpandedExpression(expression,indent))+";");
+                        if(!WriteSourceCompoundStatement(expression,indent))
+                            Line(indent,StatementExpression(expression,ExpandedExpression(expression,indent))+";");
                     }
                     break;
                 case "decl":foreach(var declaration in unit.Children(node,"declaration"))WriteDeclaration(declaration,indent);break;

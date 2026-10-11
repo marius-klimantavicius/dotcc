@@ -20,10 +20,40 @@ internal sealed partial class Emitter
         return "unchecked(("+target+")"+value+")";
     }
 
+    private static bool IsSourceCompoundCandidate(Unit unit,Node node,long? function)
+    {
+        if(function is null || node.Kind!="operation" || node.Operator is not ("bit-and-assign" or "bit-or-assign" or "bit-xor-assign") ||
+           node.OperationType is not long calculation)return false;
+        var operands=unit.Children(node,"operand").ToArray();
+        if(operands.Length!=2 || operands[0].Kind!="variable" || operands[0].Symbol is not long symbol ||
+           unit.Symbols[symbol].Parent!=function || unit.Symbols[symbol].Kind is not ("local" or "parameter") ||
+           operands[1].Kind!="constant")return false;
+        string stored=unit.Original(unit.Symbols[symbol].Type).Kind;
+        if(stored is not ("i32" or "u32" or "i64" or "u64" or "i128" or "u128") ||
+           operands[1].Type is not long right || unit.Original(right).Kind!=stored ||
+           unit.Original(calculation).Kind!=stored)return false;
+        if(operands[0].ExecutionType is long leftExecution && unit.Original(leftExecution).Kind!=stored ||
+           operands[1].ExecutionType is long rightExecution && unit.Original(rightExecution).Kind!=stored)return false;
+        if(unit.IsVolatile(unit.Symbols[symbol].Type) ||
+           node.OriginalLvalueType is long original && unit.IsVolatile(original) ||
+           node.Type is long type && unit.IsVolatile(type))return false;
+        return node.Lifetime is not long lifetime || unit.Destructions.GetValueOrDefault(lifetime,[]).Count==0;
+    }
+
     private void WriteCompoundHelpers(Unit unit,long? function)
     {
+        var discarded=new HashSet<long>();var otherUses=new HashSet<long>();
+        foreach(var parent in unit.Edges)
+            foreach(var edge in parent.Value)
+            {
+                if(unit.Nodes[parent.Key].Kind=="expr-stmt" && edge.Role=="value")discarded.Add(edge.Child);
+                else otherUses.Add(edge.Child);
+            }
         foreach(var node in unit.Nodes.Values.Where(node=>node.Function==function && IsCompound(node.Operator)))
         {
+            // Only this exact discarded site is emitted directly. Helpers for
+            // other expression sites of the same kind/types remain available.
+            if(discarded.Contains(node.Id) && !otherUses.Contains(node.Id) && IsSourceCompoundCandidate(unit,node,function))continue;
             if(!unit.HasOperationType)continue;
             long operation=node.OperationType??throw unit.Missing(node,"exporter defect: compound operation type missing");
             var operands=unit.Children(node,"operand").ToArray();
@@ -81,6 +111,18 @@ internal sealed partial class Emitter
     private sealed partial class FunctionWriter
     {
         private bool UsesCompoundHelper(Node node)=>unit.HasOperationType && IsCompound(node.Operator);
+
+        private bool WriteSourceCompoundStatement(Node node,int indent)
+        {
+            if(!IsSourceCompoundCandidate(unit,node,function?.Id))return false;
+            var operands=unit.Children(node,"operand").ToArray();
+            // The recorded constant RHS has no effects. Thus C#'s compound
+            // old-value read cannot move before an observable RHS action,
+            // including when EDG records right-to-left operand evaluation.
+            string operation=node.Operator switch {"bit-and-assign"=>"&=","bit-or-assign"=>"|=",_=>"^="};
+            Line(indent,Expression(operands[0])+" "+operation+" "+Expression(operands[1])+";");
+            return true;
+        }
 
         private bool HasCompoundAddress(Node node)
         {

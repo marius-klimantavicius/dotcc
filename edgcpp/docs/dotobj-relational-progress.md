@@ -1440,6 +1440,22 @@ discarded named-local compound helpers for a narrow source-readability correctio
 Configured bundled dependency export/generation counts are 1/1; DuckDB core counts
 remain 0/0. Full configured library translation remains work.
 
+## Discarded named-local compound statements (2026-10-11)
+
+Verified `dotobj-relational-source-compounds-v1` emits ordinary `&=`, `|=` and `^=`
+statements for discarded named-local/parameter operations with effect-free constant
+RHS and identical recorded native integer storage, calculation and RHS types.
+Selected execution-type divergence, volatile storage, result glvalues, narrowing,
+effectful RHS and complex destinations retain helpers. Exact standalone statement
+parent relations suppress unused helpers without changing other expression uses.
+Native, source-hidden C# and Linux NativeAOT pass, including retained helper paths.
+
+Actual ICU `generated-v3/Translated.cs` contains 1,022 lines and ordinary
+`c &= 7`, `c &= 15` and `c &= 63`; the unused integer bitwise helper is absent.
+Required byte-narrowing helpers remain. All 14 bodies and seven required provider
+imports are retained, with tested hashes and source assertions. This improves actual
+source readability; it does not add runtime provider coverage or complete a core TU.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
