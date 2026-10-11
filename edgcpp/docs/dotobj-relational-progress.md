@@ -1420,6 +1420,26 @@ table sizes and partial source are retained. This is one complete bundled depend
 TU, zero complete DuckDB core TUs and zero complete actual C# sources; it does not
 establish library completeness or runtime coverage.
 
+## Inline nested local assignments and first actual source generation (2026-10-11)
+
+Verified `dotobj-relational-nested-assignments-v1` permits direct selected prvalue
+assignments to named scalar locals/parameters inside conditional and short-circuit
+expressions. Their destination designation has no effect; the exact RHS remains
+inside the recorded branch. Complex destinations and assignment-result glvalues
+retain existing order/expansion boundaries. Once-only/skipped effects, byte conversion
+and selected results pass native, source-hidden C# and Linux NativeAOT checks.
+
+The retained ICU object now generates complete `generated-v2/Translated.cs` (1,033
+lines) with all 14 function bodies and seven required external declarations in
+`Imports.tsv`. Successful generation takes 0.13 seconds / 43,776 KiB peak RSS.
+Reader metrics: 28 body leases across two passes, peak one body / 819 rows / 408 nodes;
+244 types / 162 symbols / 262 global nodes remain catalog-resident. The source keeps
+`t2`/`t3` assignments inside their short-circuit conditions. Required providers are
+unresolved, so compilation/runtime coverage is not claimed. Director review identified
+discarded named-local compound helpers for a narrow source-readability correction.
+Configured bundled dependency export/generation counts are 1/1; DuckDB core counts
+remain 0/0. Full configured library translation remains work.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

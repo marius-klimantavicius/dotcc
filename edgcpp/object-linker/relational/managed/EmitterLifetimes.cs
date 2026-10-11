@@ -212,6 +212,10 @@ internal sealed partial class Emitter
             // These helpers preserve the recorded operand order inside the
             // expression, including conditional and short-circuit branches.
             if(UsesCompoundHelper(node))return Expression(node);
+            // A named local's designation has no evaluation effect. Keeping
+            // this recorded value assignment inline preserves short-circuit
+            // and conditional selection without moving its RHS outwards.
+            if(IsDirectLocalAssignment(node))return Expression(node);
             var operands=unit.Children(node,"operand").ToArray();
             if(node.EvaluationOrder=="right-to-left" && operands.Length>1)
             {

@@ -322,7 +322,7 @@ internal sealed partial class Emitter
             string BooleanResult(string value)=>NodeType(node)=="bool"?value:"(("+NodeType(node)+")("+value+" ? 1 : 0))";
             string op=node.Operator??throw unit.Missing(node,"operation discriminator missing");
             if(UsesCompoundHelper(node))return CompoundExpression(node,N(0),N(1));
-            if(node.EvaluationOrder=="right-to-left" && operands.Length>1 && !expandedValues.ContainsKey(operands[1].Id))
+            if(node.EvaluationOrder=="right-to-left" && operands.Length>1 && !expandedValues.ContainsKey(operands[1].Id) && !IsDirectLocalAssignment(node))
                 throw unit.Missing(node,"right-to-left operation needs statement expansion");
             switch(op)
             {
