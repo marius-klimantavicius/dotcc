@@ -2,11 +2,12 @@ namespace DotObj.Relational;
 
 internal sealed record ProgramType(long Id, string Kind, string Name, long? Size, long? Alignment,
     long? Pointee, long? Element, long? Count, long? Result, long? Underlying, bool Variadic, bool Incomplete,
-    string LinkName, string Linkage, bool Volatile);
+    string LinkName, string Linkage, bool Volatile,string? BuiltinName);
 internal sealed record Field(long Id, long Owner, string Name, long Type, long Ordinal, long Offset, long? BitOffset, long? BitWidth);
 internal sealed record Symbol(long Id, string Kind, string Name, string LinkName, string Linkage, long Type, long? Parent, bool Definition, string DefinitionKind);
 internal sealed record Node(long Id, long? Function, string Kind, long? Type, long? ExecutionType,
-    string? ValueCategory, string? Operator, string? Constant, long? Symbol, long? Field, long? File, long? Line, long? Column, long? OriginalLvalueType);
+    string? ValueCategory, string? Operator, string? Constant, long? Symbol, long? Field, long? File, long? Line, long? Column, long? OriginalLvalueType,
+    long? Initialization,long? Lifetime,string? EvaluationOrder);
 internal sealed record Edge(string Role, long Ordinal, long Child);
 internal readonly record struct SymbolRef(Unit Unit, long Id)
 {
@@ -15,11 +16,12 @@ internal readonly record struct SymbolRef(Unit Unit, long Id)
 
 // This reader materializes explicit program relations. It does not type-check
 // expressions, select overloads or reconstruct EDG's language decisions.
-internal sealed class Unit : IDisposable
+internal sealed partial class Unit : IDisposable
 {
     public string Path { get; }
     public string Source { get; }
     public string Abi { get; }
+    public bool HasLifecycles {get;}
     public Dictionary<long, ProgramType> Types { get; } = [];
     public Dictionary<long, Field> Fields { get; } = [];
     public Dictionary<long, Symbol> Symbols { get; } = [];
@@ -44,10 +46,12 @@ internal sealed class Unit : IDisposable
                     throw new InvalidDataException("Unsupported relational object: " + Path);
                 Source = query.Text(1); Abi = query.Text(2);
             }
+            using(var query=database.Prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='lifetimes'"))
+                HasLifecycles=query.Read();
             using (var q = database.Prepare("SELECT id,path FROM files ORDER BY id"))
                 while (q.Read()) Files.Add(q.Integer(0), q.Text(1));
-            using (var q = database.Prepare("SELECT id,kind,name,size,alignment,pointee_type_id,element_type_id,element_count,return_type_id,underlying_type_id,is_variadic,is_incomplete,link_name,linkage,is_volatile FROM types ORDER BY id"))
-                while (q.Read()) Types.Add(q.Integer(0), new(q.Integer(0),q.Text(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalInteger(5),q.OptionalInteger(6),q.OptionalInteger(7),q.OptionalInteger(8),q.OptionalInteger(9),q.Integer(10)!=0,q.Integer(11)!=0,q.Text(12),q.Text(13),q.Integer(14)!=0));
+            using (var q = database.Prepare("SELECT id,kind,name,size,alignment,pointee_type_id,element_type_id,element_count,return_type_id,underlying_type_id,is_variadic,is_incomplete,link_name,linkage,is_volatile,"+(HasLifecycles?"builtin_name":"NULL")+" FROM types ORDER BY id"))
+                while (q.Read()) Types.Add(q.Integer(0), new(q.Integer(0),q.Text(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalInteger(5),q.OptionalInteger(6),q.OptionalInteger(7),q.OptionalInteger(8),q.OptionalInteger(9),q.Integer(10)!=0,q.Integer(11)!=0,q.Text(12),q.Text(13),q.Integer(14)!=0,q.OptionalText(15)));
             using (var q = database.Prepare("SELECT id,owner_type_id,name,type_id,ordinal,byte_offset,bit_offset,bit_width FROM fields ORDER BY owner_type_id,ordinal"))
                 while (q.Read()) Fields.Add(q.Integer(0), new(q.Integer(0),q.Integer(1),q.Text(2),q.Integer(3),q.Integer(4),q.Integer(5),q.OptionalInteger(6),q.OptionalInteger(7)));
             using (var q = database.Prepare("SELECT id,kind,name,link_name,linkage,type_id,parent_symbol_id,is_definition,definition_kind FROM symbols ORDER BY id"))
@@ -58,12 +62,13 @@ internal sealed class Unit : IDisposable
                 while (q.Read()) Add(Parameters,q.Integer(0),q.Integer(1));
             using (var q = database.Prepare("SELECT type_id,parameter_type_id FROM type_parameters ORDER BY type_id,ordinal"))
                 while (q.Read()) Add(TypeParameters,q.Integer(0),q.Integer(1));
-            using (var q = database.Prepare("SELECT id,function_id,kind,type_id,execution_type_id,value_category,operator,constant_text,symbol_id,field_id,file_id,line,column,original_lvalue_type_id FROM nodes ORDER BY id"))
-                while (q.Read()) Nodes.Add(q.Integer(0),new(q.Integer(0),q.OptionalInteger(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalText(5),q.OptionalText(6),q.OptionalText(7),q.OptionalInteger(8),q.OptionalInteger(9),q.OptionalInteger(10),q.OptionalInteger(11),q.OptionalInteger(12),q.OptionalInteger(13)));
+            using (var q = database.Prepare("SELECT id,function_id,kind,type_id,execution_type_id,value_category,operator,constant_text,symbol_id,field_id,file_id,line,column,original_lvalue_type_id,"+(HasLifecycles?"initialization_id,lifetime_id,evaluation_order":"NULL,NULL,NULL")+" FROM nodes ORDER BY id"))
+                while (q.Read()) Nodes.Add(q.Integer(0),new(q.Integer(0),q.OptionalInteger(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalText(5),q.OptionalText(6),q.OptionalText(7),q.OptionalInteger(8),q.OptionalInteger(9),q.OptionalInteger(10),q.OptionalInteger(11),q.OptionalInteger(12),q.OptionalInteger(13),q.OptionalInteger(14),q.OptionalInteger(15),q.OptionalText(16)));
             using (var q = database.Prepare("SELECT parent_id,role,ordinal,child_id FROM edges ORDER BY parent_id,role,ordinal"))
                 while (q.Read()) Add(Edges,q.Integer(0),new Edge(q.Text(1),q.Integer(2),q.Integer(3)));
             using (var q = database.Prepare("SELECT symbol_id,initializer_node_id FROM global_initializers ORDER BY symbol_id"))
                 while (q.Read()) Initializers.Add(q.Integer(0),q.Integer(1));
+            ReadLifecycles();
         }
         catch { database.Dispose(); throw; }
     }

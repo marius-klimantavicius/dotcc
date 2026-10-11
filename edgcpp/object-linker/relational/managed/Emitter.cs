@@ -2,7 +2,7 @@ using System.Text;
 
 namespace DotObj.Relational;
 
-internal sealed class Emitter
+internal sealed partial class Emitter
 {
     private readonly LinkedProgram program;
     private readonly string namespaceName, className;
@@ -18,7 +18,12 @@ internal sealed class Emitter
         this.program=program;this.namespaceName=namespaceName;this.className=className;
         names.Reserve(className);names.Reserve("Main");
         foreach(var symbol in program.Functions.Concat(program.Globals))
-            symbolNames.Add(symbol,names.Allocate(symbol.Symbol.Name,"symbol_"+symbol.Id));
+        {
+            string source=symbol.Symbol.Name;
+            if(symbol.Unit.FunctionDetails.TryGetValue(symbol.Id,out var details))
+                source=details.Kind switch {"constructor"=>"__ctor_"+source,"destructor"=>"__dtor_"+source,_=>source};
+            symbolNames.Add(symbol,names.Allocate(source,"symbol_"+symbol.Id));
+        }
         foreach(var unit in program.Units)
             foreach(var type in unit.Types.Values.Where(type=>type.Kind=="record"))
             {
@@ -42,6 +47,7 @@ internal sealed class Emitter
         Line(0,"namespace "+namespaceName+";");
         Line(0,"public static unsafe partial class "+className);Line(0,"{");
         foreach(var record in records.Values) Record(record.Unit,record.Type,record.Name);
+        PrepareExceptionDescriptors();
         foreach(var global in program.Globals)
         {
             string value=global.Unit.Initializers.TryGetValue(global.Id,out var initializer)
@@ -64,6 +70,7 @@ internal sealed class Emitter
         Directory.CreateDirectory(directory);
         File.WriteAllText(Path.Combine(directory,"Translated.cs"),output.ToString(),new UTF8Encoding(false));
         File.WriteAllText(Path.Combine(directory,"Translated.csproj"),"<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>enable</Nullable><OutputType>"+(entry is null?"Library":"Exe")+"</OutputType></PropertyGroup></Project>\n",new UTF8Encoding(false));
+        if(NeedsExceptionRuntime)WriteExceptionRuntime(directory);
     }
 
     private void Record(Unit unit,ProgramType record,string name)
@@ -116,7 +123,7 @@ internal sealed class Emitter
     }
     private void Line(int indent,string text="") => output.Append(' ',indent*4).AppendLine(text);
 
-    private sealed class FunctionWriter
+    private sealed partial class FunctionWriter
     {
         private readonly Emitter emitter;
         private readonly Unit unit;
@@ -145,7 +152,7 @@ internal sealed class Emitter
             if(signature.Variadic)throw new InvalidDataException("Variadic definitions not yet supported: "+selected.Symbol.Name);
             string parameters=string.Join(", ",unit.Parameters.GetValueOrDefault(selected.Id,[]).Select(id=>Type(unit.Symbols[id].Type)+" "+Name(id)));
             Line(1,"public static "+Type(signature.Result!.Value)+" "+emitter.symbolNames[selected]+"("+parameters+")");
-            Statement(unit.Nodes[unit.Functions[selected.Id]],1);
+            WriteFunctionBody(unit.Nodes[unit.Functions[selected.Id]],1);
         }
         private string Truth(Node node)
         {
@@ -155,6 +162,9 @@ internal sealed class Emitter
         }
         public string Expression(Node node)
         {
+            if(expandedValues.TryGetValue(node.Id,out var expanded))return expanded;
+            if(node.Lifetime is long ownedLifetime && unit.Destructions.GetValueOrDefault(ownedLifetime,[]).Count!=0)
+                throw unit.Missing(node,"expression lifetime cleanup needs statement expansion");
             if(node.OriginalLvalueType is long original && unit.IsVolatile(original) ||
                 node.Type is long type && unit.IsVolatile(type))
                 throw unit.Missing(node,"volatile access emission is not yet implemented");
@@ -164,6 +174,10 @@ internal sealed class Emitter
                 case "variable":case "function":return Name(node.Symbol??throw unit.Missing(node,"selected symbol missing"));
                 case "initialize":return unit.Children(node,"value").FirstOrDefault() is Node value?Expression(value):"default";
                 case "operation":return Operation(node);
+                case "lifetime-scope":
+                    if(node.Lifetime is long lifetime && unit.Destructions.GetValueOrDefault(lifetime,[]).Count!=0)
+                        throw unit.Missing(node,"expression lifetime cleanup needs statement expansion");
+                    return Expression(Child(node,"operand"));
                 default:throw unit.Missing(node,"C# expression emission is not implemented");
             }
         }
@@ -188,6 +202,8 @@ internal sealed class Emitter
             string Binary(string op)=>"("+E(0)+" "+op+" "+E(1)+")";
             string Unary(string op)=>"("+op+E(0)+")";
             string op=node.Operator??throw unit.Missing(node,"operation discriminator missing");
+            if(node.EvaluationOrder=="right-to-left" && operands.Length>1 && !expandedValues.ContainsKey(operands[1].Id))
+                throw unit.Missing(node,"right-to-left operation needs statement expansion");
             switch(op)
             {
                 case "add":case "pointer-add":return Binary("+");case "subtract":case "pointer-subtract":return Binary("-");case "multiply":return Binary("*");
@@ -233,9 +249,9 @@ internal sealed class Emitter
         }
         // C# statement expressions cannot be enclosed in the outer parentheses
         // used for expression precedence. Keep the emitted operation itself.
-        private string StatementExpression(Node node)
+        private string StatementExpression(Node node,string? rendered=null)
         {
-            string value=Expression(node);
+            string value=rendered??Expression(node);
             if(node.Kind=="operation" && node.Operator is "assign" or "add-assign" or "subtract-assign" or "multiply-assign" or "divide-assign" or "remainder-assign" or "pre-increment" or "post-increment" or "pre-decrement" or "post-decrement")
                 return value[1..^1];
             if(node.Kind=="operation" && node.Operator is "call" or "dot-member-call" or "points-to-member-call")return value;
@@ -272,12 +288,20 @@ internal sealed class Emitter
             {
                 case "empty":Line(indent,";");break;
                 case "block":
-                    Line(indent,"{");foreach(var child in unit.Children(node,"statement"))Statement(child,indent+1);Line(indent,"}");break;
+                    WriteBlock(node,indent);break;
                 case "return":
+                    if(constructorCompletionRequired)Line(indent,"__constructor_complete = true;");
                     Line(indent,unit.Children(node,"value").FirstOrDefault() is Node value?"return "+Expression(value)+";":"return;");break;
-                case "expr-stmt":Line(indent,StatementExpression(Child(node,"value"))+";");break;
-                case "decl":foreach(var declaration in unit.Children(node,"declaration"))Line(indent,Declaration(declaration)+";");break;
-                case "initialize":Line(indent,Declaration(node)+";");break;
+                case "expr-stmt":
+                    if(Child(node,"value").Kind is "throw" or "rethrow")WriteThrow(Child(node,"value"),indent);
+                    else
+                    {
+                        Node expression=Child(node,"value");
+                        Line(indent,StatementExpression(expression,ExpandedExpression(expression,indent))+";");
+                    }
+                    break;
+                case "decl":foreach(var declaration in unit.Children(node,"declaration"))WriteDeclaration(declaration,indent);break;
+                case "initialize":WriteDeclaration(node,indent);break;
                 case "if":
                     Line(indent,"if ("+Truth(Child(node,"condition"))+")");Body(Child(node,"then"),indent);
                     if(unit.Children(node,"else").FirstOrDefault() is Node alternative){Line(indent,"else");Body(alternative,indent);}break;
@@ -287,6 +311,8 @@ internal sealed class Emitter
                     string Part(string role)=>unit.Children(node,role).FirstOrDefault() is Node part?role=="condition"?Truth(part):Header(part):"";
                     Line(indent,"for ("+Part("initializer")+"; "+Part("condition")+"; "+Part("step")+")");Body(Child(node,"body"),indent);break;
                 case "break":Line(indent,"break;");break;case "continue":Line(indent,"continue;");break;
+                case "try":WriteTry(node,indent);break;
+                case "throw":case "rethrow":WriteThrow(node,indent);break;
                 default:throw unit.Missing(node,"C# statement emission is not implemented");
             }
         }

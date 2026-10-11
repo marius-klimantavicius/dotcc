@@ -34,9 +34,11 @@ struct Location { Id file=0;unsigned long long line=0,column=0; };
 struct State {
   dot_semantic_sqlite::Database db;
   Id next_type=1,next_symbol=1,next_node=1,next_field=1,next_file=1,next_template=1,next_instance=1;
+  Id next_lifetime=1,next_initialization=1;
   Id function=0;
   std::map<a_type_ptr,Id> types;
   std::map<a_routine_ptr,Id> routines;
+  std::map<a_routine_ptr,Id> routine_source_types;
   std::map<a_variable_ptr,Id> variables;
   std::map<a_field_ptr,Id> fields;
   std::map<a_template_ptr,Id> templates;
@@ -46,6 +48,10 @@ struct State {
   std::set<a_variable_ptr> local_variables;
   std::set<a_dynamic_init_ptr> declaration_initializers;
   std::set<a_scope_ptr> declaration_scopes;
+  std::map<an_object_lifetime_ptr,Id> lifetimes,static_lifetimes;
+  std::map<a_dynamic_init_ptr,Id> initializations,initialization_values;
+  std::map<a_dynamic_init_ptr,Id> initialization_types;
+  std::set<a_dynamic_init_ptr> initializing;
   State():db(std::getenv("EDG_DOT_SEMANTIC")) {}
   [[noreturn]] void missing(const std::string &what,int kind=-1) {
     std::fprintf(stderr,"semantic exporter missing %s%s\n",what.c_str(),
@@ -93,34 +99,48 @@ struct State {
       else missing("template argument",int(arg->kind));
     }
   }
+  const char *exception_policy(a_type_ptr type) {
+    auto t=skip_typerefs(type);
+    if(t->kind!=tk_routine)return "unwind";
+    auto spec=t->variant.routine.extra_info->exception_specification;
+    if(!spec || spec->throw_any)return "unwind";
+    if(spec->indeterminate || spec->arg_cached || spec->copy_from_prototype)return "dependent";
+    if(spec->is_noexcept)return "terminate";
+    missing("dynamic exception specification projection");
+  }
   Id type_id(a_type_ptr t) {
     if(!t)return 0;
     auto found=types.find(t);if(found!=types.end())return found->second;
     Id id=next_type++;types[t]=id;
-    std::string kind,name=spelling(t->source_corresp),record_kind;
+    std::string kind,name=spelling(t->source_corresp),record_kind,builtin;
     Id underlying=0,pointee=0,element=0,result=0,object=0;
     Value count=nullptr;bool variadic=false,incomplete=is_incomplete_type(t);
     unsigned qualifiers=get_type_qualifiers(t);
     if(qualifiers & ~(TQ_CONST|TQ_VOLATILE|TQ_RESTRICT))missing("extended type qualifiers");
     switch(t->kind) {
-      case tk_void:kind="void";break;
+      case tk_void:kind="void";builtin="void";break;
       case tk_typeref:
         kind=type_is_typedef(t)?"typedef":"qualified";underlying=type_id(t->variant.typeref.type);break;
       case tk_integer:
         if(t->variant.integer.enum_type && !t->variant.integer.bool_type)missing("enum metadata");
-        if(t->variant.integer.bool_type)kind="bool";
+        if(t->variant.integer.bool_type){kind="bool";builtin="bool";}
         else switch(t->variant.integer.int_kind) {
-          case ik_char:kind=targ_has_signed_chars?"i8":"u8";break;
-          case ik_signed_char:kind="i8";break;case ik_unsigned_char:kind="u8";break;
-          case ik_short:kind="i16";break;case ik_unsigned_short:kind="u16";break;
-          case ik_int:kind="i32";break;case ik_unsigned_int:kind="u32";break;
-          case ik_long:case ik_long_long:kind=t->size==8?"i64":"i32";break;
-          case ik_unsigned_long:case ik_unsigned_long_long:kind=t->size==8?"u64":"u32";break;
+          case ik_char:kind=targ_has_signed_chars?"i8":"u8";builtin="char";break;
+          case ik_signed_char:kind="i8";builtin="signed char";break;
+          case ik_unsigned_char:kind="u8";builtin="unsigned char";break;
+          case ik_short:kind="i16";builtin="short";break;
+          case ik_unsigned_short:kind="u16";builtin="unsigned short";break;
+          case ik_int:kind="i32";builtin="int";break;
+          case ik_unsigned_int:kind="u32";builtin="unsigned int";break;
+          case ik_long:kind=t->size==8?"i64":"i32";builtin="long";break;
+          case ik_long_long:kind="i64";builtin="long long";break;
+          case ik_unsigned_long:kind=t->size==8?"u64":"u32";builtin="unsigned long";break;
+          case ik_unsigned_long_long:kind="u64";builtin="unsigned long long";break;
           default:missing("integer type",int(t->variant.integer.int_kind));
         }break;
       case tk_float:
-        if(t->variant.float_kind==fk_float)kind="f32";
-        else if(t->variant.float_kind==fk_double)kind="f64";
+        if(t->variant.float_kind==fk_float){kind="f32";builtin="float";}
+        else if(t->variant.float_kind==fk_double){kind="f64";builtin="double";}
         else missing("floating type",int(t->variant.float_kind));break;
       case tk_pointer:
         kind=t->variant.pointer.is_reference?(t->variant.pointer.is_rvalue_reference?"rvalue-reference":"lvalue-reference"):"pointer";
@@ -146,8 +166,10 @@ struct State {
       {"element_type_id",optional(element)},{"element_count",count},{"return_type_id",optional(result)},
       {"object_type_id",optional(object)},{"is_const",bool(qualifiers&TQ_CONST)},
       {"is_volatile",bool(qualifiers&TQ_VOLATILE)},{"is_restrict",bool(qualifiers&TQ_RESTRICT)},
-      {"is_variadic",variadic},{"is_incomplete",incomplete},{"record_kind",record_kind.empty()?Value(nullptr):Value(record_kind)}});
+      {"is_variadic",variadic},{"is_incomplete",incomplete},{"record_kind",record_kind.empty()?Value(nullptr):Value(record_kind)},
+      {"builtin_name",builtin.empty()?Value(nullptr):Value(builtin)}});
     if(t->kind==tk_routine) {
+      db.update("types","id",id,{{"exception_policy",exception_policy(t)}});
       unsigned ordinal=0;
       for(auto p=t->variant.routine.extra_info->param_type_list;p;p=p->next)
         db.insert("type_parameters",{{"type_id",id},{"ordinal",ordinal++},{"parameter_type_id",type_id(p->type)}});
@@ -172,9 +194,10 @@ struct State {
   Id routine(a_routine_ptr r) {
     auto found=routines.find(r);if(found!=routines.end())return found->second;
     Id id=next_symbol++;routines[r]=id;auto pos=location(r->source_corresp.decl_position);
+    Id signature=type_id(r->type);routine_source_types[r]=signature;
     db.insert("symbols",{{"id",id},{"kind","function"},{"name",spelling(r->source_corresp)},
       {"link_name",r->source_corresp.name?r->source_corresp.name:""},{"linkage",linkage(r->source_corresp)},
-      {"type_id",type_id(r->type)},{"is_definition",r->function_def_number!=NULL_function_def_number},
+      {"type_id",signature},{"is_definition",r->function_def_number!=NULL_function_def_number},
       {"definition_kind",r->is_inline || (r->is_template_function && !r->is_specialized)?"weak":"strong"},
       {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
     instance(r->assoc_template,r->template_arg_list,id,0);return id;
@@ -217,6 +240,100 @@ struct State {
     if(c->kind!=ck_integer)missing("constant",int(c->kind));
     return node("constant",p,type_id(c->type),"prvalue",nullptr,integer(c));
   }
+  Id lifetime_id(an_object_lifetime_ptr value) {
+    if(!value)return 0;
+    bool persistent=value->kind==olk_global_static || value->kind==olk_function_static;
+    auto &ids=persistent?static_lifetimes:lifetimes;
+    auto found=ids.find(value);if(found!=ids.end())return found->second;
+    Id id=next_lifetime++;ids[value]=id;
+    const char *kind=nullptr;
+    switch(value->kind) {
+      case olk_global_static:kind="global-static";break;
+      case olk_function_static:kind="function-static";break;
+      case olk_block:kind="block";break;
+      case olk_block_after_label:kind="block-after-label";break;
+      case olk_expr_temporary:kind="expression-temporary";break;
+      case olk_try_block:kind="try-block";break;
+      default:missing("object lifetime kind",int(value->kind));
+    }
+    db.insert("lifetimes",{{"id",id},{"function_id",persistent?Value(nullptr):optional(function)},
+      {"kind",kind},{"parent_id",optional(lifetime_id(value->parent_lifetime))},
+      {"parent_initialization_id",optional(initialization_id(value->parent_destruction_sublist))}});
+    if(persistent) {
+      if(value->destructions)missing("persistent object destruction schedule");
+      return id;
+    }
+    unsigned ordinal=0;
+    for(auto action=value->destructions;action;action=action->next_in_destruction_list)
+      db.insert("lifetime_destructions",{{"lifetime_id",id},{"ordinal",ordinal++},{"initialization_id",initialization_id(action)}});
+    ordinal=0;
+    for(auto child=value->child_lifetime;child;child=child->next)
+      db.update("lifetimes","id",lifetime_id(child),{{"sibling_ordinal",ordinal++}});
+    return id;
+  }
+  void attach_lifetime(Id owner,an_object_lifetime_ptr value) {
+    if(!value)return;
+    Id id=lifetime_id(value);
+    db.update("nodes","id",owner,{{"lifetime_id",id}});
+    db.update("lifetimes","id",id,{{"owner_node_id",owner}});
+  }
+  Id initialization_id(a_dynamic_init_ptr init,a_type_ptr target=nullptr) {
+    if(!init)return 0;
+    Id target_type=type_id(target?target:init->variable?init->variable->type:nullptr);
+    auto found=initializations.find(init);
+    if(found!=initializations.end()) {
+      if(target_type && !initialization_types[init]) {
+        initialization_types[init]=target_type;
+        if(!initializing.count(init))db.update("initializations","id",found->second,{{"type_id",target_type}});
+      }
+      return found->second;
+    }
+    Id id=next_initialization++;initializations[init]=id;initialization_types[init]=target_type;initializing.insert(init);
+    const char *kind=nullptr;Id value=0,constructor=0;
+    bool implied_source=false,sequenced=false,value_init=false;
+    a_source_position pos={};if(init->variable)pos=init->variable->source_corresp.decl_position;
+    switch(init->kind) {
+      case dik_none:kind="none";break;
+      case dik_zero:kind="zero";break;
+      case dik_expression:kind="expression";value=expression(init->variant.expression);break;
+      case dik_constant:kind="constant";value=constant(init->variant.constant.ptr,pos);break;
+      case dik_constructor:
+        kind="constructor";
+        if(!init->variant.constructor.ptr)missing("selected constructor");
+        if(init->variant.constructor.is_array_copy)missing("array-copy constructor initialization");
+        constructor=routine(init->variant.constructor.ptr);
+        implied_source=init->variant.constructor.is_copy_constructor_with_implied_source;
+        sequenced=init->variant.constructor.has_sequenced_arguments;
+        value_init=init->variant.constructor.value_initialization;
+        break;
+      case dik_bitwise_copy:
+        kind="bitwise-copy";value=expression(init->variant.bitwise_copy.source);
+        implied_source=init->variant.bitwise_copy.source==nullptr;break;
+      default:missing("dynamic initialization",int(init->kind));
+    }
+    Id life=lifetime_id(init->lifetime),expr_life=lifetime_id(init->init_expr_lifetime);
+    Id overlap=lifetime_id(init->lifetime_of_overlapping_temps);
+    db.insert("initializations",{{"id",id},{"function_id",optional(function)},{"kind",kind},
+      {"type_id",optional(initialization_types[init])},
+      {"variable_symbol_id",optional(init->variable?variable(init->variable,true):0)},
+      {"constructor_symbol_id",optional(constructor)},
+      {"destructor_symbol_id",optional(init->destructor?routine(init->destructor):0)},
+      {"lifetime_id",optional(life)},{"init_expr_lifetime_id",optional(expr_life)},{"value_node_id",optional(value)},
+      {"conditional",bool(init->inside_conditional_expression)},{"unordered",bool(init->unordered)},
+      {"overlaps_inner",bool(init->overlaps_temps_in_inner_lifetime)},
+      {"partial_aggregate",bool(init->destruction_is_for_partially_constructed_aggregate)},
+      {"free_on_exception",bool(init->is_freeing_of_storage_on_exception)},
+      {"follows_exec",bool(init->follows_an_exec_statement)},{"temporary_lifetime",bool(init->has_temporary_lifetime)},
+      {"is_constructor_init",bool(init->is_constructor_init)},{"is_partially_initialized",bool(init->is_partially_initialized)},
+      {"static_storage",bool(init->static_temp)},{"implied_source",implied_source},
+      {"sequenced_arguments",sequenced},{"value_initialization",value_init},{"overlap_lifetime_id",optional(overlap)}});
+    initialization_values[init]=value;initializing.erase(init);
+    if(init->kind==dik_constructor) {
+      unsigned ordinal=0;for(auto argument=init->variant.constructor.args;argument;argument=argument->next)
+        db.insert("initialization_arguments",{{"initialization_id",id},{"ordinal",ordinal++},{"node_id",expression(argument)}});
+    }
+    return id;
+  }
   const char *operation(an_expr_operator_kind kind) {
     switch(kind) {
 #define DOT_SEMANTIC_OP(edg,text) case edg:return text
@@ -257,7 +374,13 @@ struct State {
       case enk_variable:kind="variable";symbol=variable(node_variable(e));break;
       case enk_routine:kind="function";symbol=routine(e->variant.routine.ptr);break;
       case enk_field:kind="field";field=field_id(node_field(e));break;
+      case enk_temp_init:kind="temporary";break;
+      case enk_object_lifetime:kind="lifetime-scope";break;
+      case enk_throw:kind=e->variant.throw_info?"throw":"rethrow";break;
       case enk_operation: {
+        if(e->variant.operation.is_virtual_call)missing("virtual call dispatch projection");
+        if(e->variant.operation.kind==eok_subscript && e->variant.operation.pointer_operand_is_second)
+          missing("reversed subscript operand projection");
         kind="operation";op=operation(e->variant.operation.kind);
         auto first=e->variant.operation.operands;
         if(first && first->kind==enk_routine && (e->variant.operation.kind==eok_call ||
@@ -271,30 +394,44 @@ struct State {
       op,text,symbol,field,type_id(e->orig_lvalue_type),e->compiler_generated);
     expressions[e]=id;
     if(e->kind==enk_operation) {
+      db.update("nodes","id",id,{{"evaluation_order",e->variant.operation.eval_left_to_right?"left-to-right":
+        e->variant.operation.eval_right_to_left?"right-to-left":"unspecified"}});
       unsigned ordinal=0;for(auto child=e->variant.operation.operands;child;child=child->next)
         edge(id,"operand",ordinal++,expression(child));
+    } else if(e->kind==enk_temp_init) {
+      db.update("nodes","id",id,{{"initialization_id",initialization_id(e->variant.init.dynamic_init,e->type)}});
+    } else if(e->kind==enk_object_lifetime) {
+      attach_lifetime(id,e->variant.object_lifetime.ptr);
+      edge(id,"operand",0,expression(e->variant.object_lifetime.expr));
+    } else if(e->kind==enk_throw) {
+      auto info=e->variant.throw_info;
+      db.insert("throws",{{"node_id",id},{"type_id",optional(info?type_id(info->type):0)},
+        {"initialization_id",optional(info?initialization_id(info->dynamic_init,info->type):0)},
+        {"destructor_symbol_id",optional(info && info->destructor?routine(info->destructor):0)},
+        {"is_rethrow",info==nullptr}});
     }
     return id;
   }
   Id dynamic(a_dynamic_init_ptr init,const a_source_position &pos) {
-    if(init->destructor)missing("destruction lifetime projection");
-    if(init->kind==dik_none)return 0;
-    if(init->kind==dik_expression)return expression(init->variant.expression);
-    if(init->kind==dik_constant)return constant(init->variant.constant.ptr,pos);
-    if(init->kind==dik_zero)return node("constant",pos,type_id(init->variable->type),"prvalue",nullptr,"0");
-    missing("dynamic initialization",int(init->kind));
+    initialization_id(init);
+    if(init->kind==dik_zero && init->variable)
+      return node("constant",pos,type_id(init->variable->type),"prvalue",nullptr,"0");
+    return initialization_values[init];
   }
   Id declaration(a_variable_ptr v,const a_source_position &pos,bool value=true) {
     Id symbol=variable(v,true),id=node("initialize",pos,type_id(v->type),nullptr,nullptr,"",symbol);
     if(value) {
-      if(v->init_kind==initk_dynamic)edge(id,"value",0,dynamic(v->initializer.dynamic,pos));
+      if(v->init_kind==initk_dynamic) {
+        db.update("nodes","id",id,{{"initialization_id",initialization_id(v->initializer.dynamic,v->type)}});
+        edge(id,"value",0,dynamic(v->initializer.dynamic,pos));
+      }
       else if(v->init_kind==initk_static)edge(id,"value",0,constant(v->initializer.constant,pos));
       else if(v->init_kind==initk_zero)edge(id,"value",0,node("constant",pos,type_id(v->type),"prvalue",nullptr,"0"));
       else if(v->init_kind!=initk_none)missing("variable initializer",int(v->init_kind));
     }
     return id;
   }
-  Id statement(a_statement_ptr s) {
+  Id statement(a_statement_ptr s,a_scope_ptr root_scope=nullptr) {
     if(!s)return 0;
     if(s->kind==stmk_init && declaration_initializers.count(s->variant.dynamic_init))return 0;
     const char *kind=nullptr;
@@ -303,6 +440,7 @@ struct State {
       case stmk_expr:kind="expr-stmt";break;case stmk_if:kind="if";break;
       case stmk_while:kind="while";break;case stmk_end_test_while:kind="do-while";break;
       case stmk_for:kind="for";break;case stmk_decl:kind="decl";break;case stmk_init:kind="decl";break;
+      case stmk_try_block:kind="try";break;
       case stmk_goto:
         if(s->variant.label.ptr->continue_label)kind="continue";
         else if(s->variant.label.ptr->break_label)kind="break";
@@ -316,8 +454,9 @@ struct State {
     Id id=node(kind,s->position);
     switch(s->kind) {
       case stmk_block: {
-        auto scope=s->variant.block.extra_info->assoc_scope;
+        auto scope=root_scope?root_scope:s->variant.block.extra_info->assoc_scope;
         if(scope && (scope->variables || scope->local_static_variable_inits))missing("block static storage projection");
+        attach_lifetime(id,scope?scope->lifetime:s->variant.block.extra_info->lifetime);
         if(scope)for(auto v=scope->nonstatic_variables;v;v=v->next)variable(v,true);
         unsigned ordinal=0;for(auto child=s->variant.block.statements;child;child=child->next)
           edge(id,"statement",ordinal++,statement(child));break;
@@ -357,11 +496,57 @@ struct State {
       case stmk_init: {
         auto init=s->variant.dynamic_init;
         if(!init->variable)missing("initializer without destination variable");
-        Id d=declaration(init->variable,s->position,false);edge(d,"value",0,dynamic(init,s->position));edge(id,"declaration",0,d);break;
+        Id d=declaration(init->variable,s->position,false);
+        db.update("nodes","id",d,{{"initialization_id",initialization_id(init,init->variable->type)}});
+        edge(d,"value",0,dynamic(init,s->position));edge(id,"declaration",0,d);break;
+      }
+      case stmk_try_block: {
+        auto info=s->variant.try_block;
+        if(info->is_function_try_block)db.update("nodes","id",id,{{"operator","function-try"}});
+        attach_lifetime(id,info->lifetime);
+        edge(id,"body",0,statement(info->statement));
+        unsigned ordinal=0;
+        for(auto handler=info->handlers;handler;handler=handler->next,++ordinal) {
+          Id caught=node("catch",handler->catch_position);
+          Id parameter=handler->parameter?variable(handler->parameter,true):0;
+          Id type=handler->parameter?type_id(handler->parameter->type):0;
+          Id init=initialization_id(handler->dynamic_init,handler->parameter?handler->parameter->type:nullptr);
+          db.insert("try_handlers",{{"try_node_id",id},{"ordinal",ordinal},{"catch_node_id",caught},
+            {"parameter_symbol_id",optional(parameter)},{"parameter_type_id",optional(type)},{"initialization_id",optional(init)}});
+          edge(caught,"body",0,statement(handler->statement));edge(id,"handler",ordinal,caught);
+        }
+        break;
       }
       default:break;
     }
     return id;
+  }
+  void local_bindings(a_scope_ptr scope) {
+    if(!scope)return;
+    if(scope->variables || scope->local_static_variable_inits)missing("local static storage projection");
+    for(auto v=scope->nonstatic_variables;v;v=v->next)variable(v,true);
+    for(auto child=scope->scopes;child;child=child->next)local_bindings(child);
+  }
+  void constructor_initializers(a_scope_ptr scope) {
+    unsigned ordinal=0;
+    for(auto entry=scope->variant.routine.constructor_inits;entry;entry=entry->next,++ordinal) {
+      const char *kind=nullptr;Id field=0;bool is_virtual=false;a_type_ptr target=nullptr;
+      switch(entry->kind) {
+        case cik_field:
+          kind="field";field=field_id(entry->variant.field);target=entry->variant.field->type;break;
+        case cik_direct_base_class:case cik_virtual_base_class:
+          kind=entry->kind==cik_direct_base_class?"direct-base":"virtual-base";
+          is_virtual=entry->kind==cik_virtual_base_class;target=entry->variant.base_class->type;break;
+        case cik_delegation:
+          kind="delegation";target=skip_typerefs(scope->variant.routine.ptr->type)->variant.routine.extra_info->this_class;break;
+        default:missing("constructor initializer target",int(entry->kind));
+      }
+      if(!entry->initializer)missing("default field initializer selection");
+      if(entry->source_expr)missing("explicit array constructor initializer source");
+      db.insert("constructor_initializers",{{"function_id",function},{"ordinal",ordinal},{"kind",kind},
+        {"field_id",optional(field)},{"target_type_id",optional(type_id(target))},{"is_virtual",is_virtual},
+        {"initialization_id",initialization_id(entry->initializer,target)}});
+    }
   }
   void capture(a_scope_ptr scope) {
     if(!scope)return;
@@ -369,8 +554,6 @@ struct State {
       auto r=scope->variant.routine.ptr;
       if(r->is_prototype_instantiation || !scope->assoc_block || !bodies.insert(r).second)return;
       if(scope->variables || scope->local_static_variable_inits)missing("function static storage projection");
-      if(scope->variant.routine.constructor_inits)missing("constructor member initializers");
-      if(scope->lifetime && scope->lifetime->destructions)missing("function destruction lifetime");
       Id previous=function;function=routine(r);expressions.clear();
       db.update("symbols","id",function,{{"is_definition",true}});
       unsigned ordinal=0;Id receiver=0;
@@ -387,11 +570,20 @@ struct State {
         Id symbol=variable(p,true,true);
         db.insert("parameters",{{"function_id",function},{"ordinal",ordinal++},{"symbol_id",symbol}});
       }
-      for(auto v=scope->nonstatic_variables;v;v=v->next)variable(v,true);
-      Id body=statement(scope->assoc_block);
-      db.insert("functions",{{"symbol_id",function},{"body_node_id",body},{"receiver_symbol_id",optional(receiver)}});
+      local_bindings(scope);
+      constructor_initializers(scope);
+      lifetime_id(scope->lifetime);
+      Id body=statement(scope->assoc_block,scope);
+      const char *policy=exception_policy(r->type);
+      if(std::string(policy)=="dependent")missing("finalized function exception policy");
+      db.update("types","id",routine_source_types[r],{{"exception_policy",policy}});
+      const char *kind=r->special_kind==sfk_constructor?"constructor":r->special_kind==sfk_destructor?"destructor":"ordinary";
+      db.insert("functions",{{"symbol_id",function},{"body_node_id",body},{"receiver_symbol_id",optional(receiver)},
+        {"kind",kind},{"exception_policy",policy}});
       for(auto variable:local_variables)variables.erase(variable);
-      local_variables.clear();expressions.clear();declaration_initializers.clear();function=previous;return;
+      local_variables.clear();expressions.clear();declaration_initializers.clear();
+      lifetimes.clear();initializations.clear();initialization_values.clear();initialization_types.clear();initializing.clear();
+      function=previous;return;
     }
     if(!declaration_scopes.insert(scope).second)return;
     // File and namespace initializers have an explicit EDG execution list.
@@ -400,6 +592,12 @@ struct State {
     if(scope->dynamic_inits)missing("file/namespace dynamic initialization schedule");
     if(scope->asm_entries)missing("file-scope assembly declaration");
     for(auto v=scope->variables;v;v=v->next) {
+#if DO_IL_LOWERING
+      // Earlier function lowering can append ABI-only RTTI/vtable storage to
+      // this later file-scope list. Such storage is not a source declaration;
+      // selected source type/throw operations already own the relevant facts.
+      if(v->lowering_generated)continue;
+#endif
       if(v->is_nonreal)missing("dependent global declaration");
       variable(v);
     }

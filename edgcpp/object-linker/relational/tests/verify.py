@@ -75,7 +75,7 @@ def main():
         if len(apps) != 1:
             raise RuntimeError('Expected one NativeAOT application')
         run(apps, work/'nativeaot-run.log')
-    for case in ('unsupported_lifetime', 'unsupported_global_init'):
+    for case in ('unsupported_global_init', 'unsupported_virtual_call', 'unsupported_reversed_subscript'):
         unsupported = work / (case + '.dotobj')
         with (work/(case+'.log')).open('w') as log:
             result = subprocess.run([sys.executable, str(RELATIONAL/'compile.py'),

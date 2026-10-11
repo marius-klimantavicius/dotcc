@@ -51,8 +51,24 @@ python3 edgcpp/object-linker/relational/tests/verify.py \
   --linker edgcpp/artifacts/relational-tool/dotobj-relational.dll --nativeaot
 ```
 
-Explicit construction/destruction, lifetime/exception regions, macros, all type
-variants, addressable globals/TLS storage and complex initialization are still required work.
+Explicit construction/destruction and exception execution now have a verified
+cross-unit slice. `initializations`, `initialization_arguments`, `lifetimes`,
+`lifetime_destructions`, `constructor_initializers`, `try_handlers` and `throws`
+store EDG-selected semantic facts. Destruction ordinals are the actual EDG order;
+initialization nodes and cleanup actions reference the same initialization row.
+The generator preserves executable initialization positions, arms cleanup after
+success, and reuses the existing shared C++ exception runtime. Run:
+
+```sh
+python3 edgcpp/object-linker/relational/tests/verify_lifetime.py \
+  --out /path/new-lifetime-directory \
+  --linker edgcpp/artifacts/relational-tool/dotobj-relational.dll --nativeaot
+```
+
+This covers lexical return cleanup, partial member construction, reference catches,
+rethrow and exception-object destruction. Arrays/base construction, nontrivial
+temporaries, function-try blocks, complex catch conversions, macros, all type
+variants, addressable globals/TLS storage and complex initialization remain work.
 Unsupported forms must produce diagnostics, not an opaque fallback or silently
 incomplete object. The preserved legacy runtime/emitter contains algorithms to
 port for those requirements. Full-project bounded loading also remains to be

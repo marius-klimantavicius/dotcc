@@ -19,3 +19,23 @@ SELECT t.name AS template,s.name AS instance,a.ordinal,a.kind,ty.kind AS argumen
 FROM template_instances i JOIN templates t ON t.id=i.template_id
 LEFT JOIN symbols s ON s.id=i.symbol_id JOIN template_arguments a ON a.instance_id=i.id
 LEFT JOIN types ty ON ty.id=a.type_id ORDER BY i.id,a.ordinal;
+
+-- Destruction ordinal is the order supplied by EDG, not an inferred reversal.
+SELECT l.id,l.kind,l.parent_id,l.owner_node_id,d.ordinal,i.id AS initialization,
+       v.name AS variable,dt.name AS destructor,i.conditional,i.partial_aggregate
+FROM lifetimes l JOIN lifetime_destructions d ON d.lifetime_id=l.id
+JOIN initializations i ON i.id=d.initialization_id
+LEFT JOIN symbols v ON v.id=i.variable_symbol_id
+LEFT JOIN symbols dt ON dt.id=i.destructor_symbol_id ORDER BY l.id,d.ordinal;
+
+SELECT s.name,c.ordinal,c.kind,f.name AS field,i.id AS initialization,
+       ctor.name AS constructor,dtor.name AS destructor
+FROM constructor_initializers c JOIN symbols s ON s.id=c.function_id
+JOIN initializations i ON i.id=c.initialization_id
+LEFT JOIN fields f ON f.id=c.field_id
+LEFT JOIN symbols ctor ON ctor.id=i.constructor_symbol_id
+LEFT JOIN symbols dtor ON dtor.id=i.destructor_symbol_id
+ORDER BY c.function_id,c.ordinal;
+
+SELECT * FROM try_handlers ORDER BY try_node_id,ordinal;
+SELECT * FROM throws ORDER BY node_id;

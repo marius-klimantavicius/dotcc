@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1001;
+PRAGMA user_version = 1002;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -16,6 +16,7 @@ CREATE TABLE files (
 CREATE TABLE types (
  id INTEGER PRIMARY KEY,
  kind TEXT NOT NULL,
+ builtin_name TEXT,
  name TEXT NOT NULL DEFAULT '',
  link_name TEXT NOT NULL DEFAULT '',
  linkage TEXT NOT NULL DEFAULT 'none',
@@ -31,6 +32,7 @@ CREATE TABLE types (
  is_volatile INTEGER NOT NULL DEFAULT 0 CHECK(is_volatile IN(0,1)),
  is_restrict INTEGER NOT NULL DEFAULT 0 CHECK(is_restrict IN(0,1)),
  is_variadic INTEGER NOT NULL DEFAULT 0 CHECK(is_variadic IN(0,1)),
+ exception_policy TEXT NOT NULL DEFAULT 'unwind' CHECK(exception_policy IN('unwind','terminate','dependent')),
  record_kind TEXT,
  is_incomplete INTEGER NOT NULL DEFAULT 0 CHECK(is_incomplete IN(0,1))
 ) STRICT;
@@ -70,8 +72,10 @@ CREATE TABLE symbols (
 ) STRICT;
 CREATE TABLE functions (
  symbol_id INTEGER PRIMARY KEY REFERENCES symbols(id),
+ kind TEXT NOT NULL DEFAULT 'ordinary' CHECK(kind IN('ordinary','constructor','destructor')),
  body_node_id INTEGER NOT NULL REFERENCES nodes(id),
- receiver_symbol_id INTEGER REFERENCES symbols(id)
+ receiver_symbol_id INTEGER REFERENCES symbols(id),
+ exception_policy TEXT NOT NULL DEFAULT 'unwind' CHECK(exception_policy IN('unwind','terminate'))
 ) STRICT;
 CREATE TABLE parameters (
  function_id INTEGER NOT NULL REFERENCES symbols(id),
@@ -95,7 +99,10 @@ CREATE TABLE nodes (
  line INTEGER,
  column INTEGER,
  is_synthetic INTEGER NOT NULL DEFAULT 0 CHECK(is_synthetic IN(0,1)),
- source_node_id INTEGER REFERENCES nodes(id)
+ source_node_id INTEGER REFERENCES nodes(id),
+ initialization_id INTEGER REFERENCES initializations(id),
+ lifetime_id INTEGER REFERENCES lifetimes(id),
+ evaluation_order TEXT NOT NULL DEFAULT 'unspecified' CHECK(evaluation_order IN('unspecified','left-to-right','right-to-left'))
 ) STRICT;
 CREATE TABLE edges (
  parent_id INTEGER NOT NULL REFERENCES nodes(id),
@@ -134,3 +141,79 @@ CREATE TABLE template_arguments (
  constant_text TEXT,
  PRIMARY KEY(instance_id,ordinal)
 ) STRICT, WITHOUT ROWID;
+
+-- EDG-selected initialization and cleanup facts. Ordinals preserve the supplied
+-- order; in lifetime_destructions, ordinal zero is the FIRST destruction.
+CREATE TABLE lifetimes (
+ id INTEGER PRIMARY KEY,
+ function_id INTEGER REFERENCES symbols(id),
+ kind TEXT NOT NULL,
+ parent_id INTEGER REFERENCES lifetimes(id),
+ owner_node_id INTEGER REFERENCES nodes(id),
+ parent_initialization_id INTEGER REFERENCES initializations(id),
+ sibling_ordinal INTEGER
+) STRICT;
+CREATE TABLE initializations (
+ id INTEGER PRIMARY KEY,
+ function_id INTEGER REFERENCES symbols(id),
+ kind TEXT NOT NULL,
+ type_id INTEGER REFERENCES types(id),
+ variable_symbol_id INTEGER REFERENCES symbols(id),
+ constructor_symbol_id INTEGER REFERENCES symbols(id),
+ destructor_symbol_id INTEGER REFERENCES symbols(id),
+ lifetime_id INTEGER REFERENCES lifetimes(id),
+ init_expr_lifetime_id INTEGER REFERENCES lifetimes(id),
+ overlap_lifetime_id INTEGER REFERENCES lifetimes(id),
+ value_node_id INTEGER REFERENCES nodes(id),
+ implied_source INTEGER NOT NULL DEFAULT 0 CHECK(implied_source IN(0,1)),
+ sequenced_arguments INTEGER NOT NULL DEFAULT 0 CHECK(sequenced_arguments IN(0,1)),
+ value_initialization INTEGER NOT NULL DEFAULT 0 CHECK(value_initialization IN(0,1)),
+ conditional INTEGER NOT NULL DEFAULT 0 CHECK(conditional IN(0,1)),
+ unordered INTEGER NOT NULL DEFAULT 0 CHECK(unordered IN(0,1)),
+ overlaps_inner INTEGER NOT NULL DEFAULT 0 CHECK(overlaps_inner IN(0,1)),
+ partial_aggregate INTEGER NOT NULL DEFAULT 0 CHECK(partial_aggregate IN(0,1)),
+ free_on_exception INTEGER NOT NULL DEFAULT 0 CHECK(free_on_exception IN(0,1)),
+ follows_exec INTEGER NOT NULL DEFAULT 0 CHECK(follows_exec IN(0,1)),
+ temporary_lifetime INTEGER NOT NULL DEFAULT 0 CHECK(temporary_lifetime IN(0,1)),
+ is_constructor_init INTEGER NOT NULL DEFAULT 0 CHECK(is_constructor_init IN(0,1)),
+ is_partially_initialized INTEGER NOT NULL DEFAULT 0 CHECK(is_partially_initialized IN(0,1)),
+ static_storage INTEGER NOT NULL DEFAULT 0 CHECK(static_storage IN(0,1))
+) STRICT;
+CREATE TABLE initialization_arguments (
+ initialization_id INTEGER NOT NULL REFERENCES initializations(id),
+ ordinal INTEGER NOT NULL,
+ node_id INTEGER NOT NULL REFERENCES nodes(id),
+ PRIMARY KEY(initialization_id,ordinal)
+) STRICT, WITHOUT ROWID;
+CREATE TABLE lifetime_destructions (
+ lifetime_id INTEGER NOT NULL REFERENCES lifetimes(id),
+ ordinal INTEGER NOT NULL,
+ initialization_id INTEGER NOT NULL REFERENCES initializations(id),
+ PRIMARY KEY(lifetime_id,ordinal)
+) STRICT, WITHOUT ROWID;
+CREATE TABLE constructor_initializers (
+ function_id INTEGER NOT NULL REFERENCES symbols(id),
+ ordinal INTEGER NOT NULL,
+ kind TEXT NOT NULL,
+ field_id INTEGER REFERENCES fields(id),
+ target_type_id INTEGER REFERENCES types(id),
+ is_virtual INTEGER NOT NULL DEFAULT 0 CHECK(is_virtual IN(0,1)),
+ initialization_id INTEGER NOT NULL REFERENCES initializations(id),
+ PRIMARY KEY(function_id,ordinal)
+) STRICT, WITHOUT ROWID;
+CREATE TABLE try_handlers (
+ try_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ ordinal INTEGER NOT NULL,
+ catch_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ parameter_symbol_id INTEGER REFERENCES symbols(id),
+ parameter_type_id INTEGER REFERENCES types(id),
+ initialization_id INTEGER REFERENCES initializations(id),
+ PRIMARY KEY(try_node_id,ordinal)
+) STRICT, WITHOUT ROWID;
+CREATE TABLE throws (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ type_id INTEGER REFERENCES types(id),
+ initialization_id INTEGER REFERENCES initializations(id),
+ destructor_symbol_id INTEGER REFERENCES symbols(id),
+ is_rethrow INTEGER NOT NULL CHECK(is_rethrow IN(0,1))
+) STRICT;

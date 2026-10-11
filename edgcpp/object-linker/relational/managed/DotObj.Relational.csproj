@@ -10,5 +10,6 @@
   <ItemGroup>
     <Compile Include="../../managed/Sqlite.cs" Link="Sqlite.cs" />
     <Compile Include="../../managed/Names.cs" Link="Names.cs" />
+    <EmbeddedResource Include="../../runtime/CppExceptions.cs" LogicalName="DotObj.Relational.CppExceptions.cs" />
   </ItemGroup>
 </Project>
