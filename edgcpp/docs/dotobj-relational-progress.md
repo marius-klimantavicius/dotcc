@@ -589,6 +589,30 @@ not a full-TU measurement. The next bounded change can reuse existing selected
 constructor initialization rows for this scalar case; richer defaults requiring
 remapping/destruction must follow stock EDG decisions. Broad campaign remains stopped.
 
+## Verified scalar default member initialization
+
+`artifacts/review/dotobj-relational-default-members-v1/` passes native C++, SQL
+integrity, source-hidden C# and Linux x64 NativeAOT. No schema or managed changes
+were needed. When EDG explicitly selects a field initializer, the exporter reuses
+its scalar constant through existing constructor initialization rows. It does not
+infer a default from an absent explicit initializer. Constructor-dependent
+expressions, variable/master bindings and lifetime/destruction actions remain
+explicitly unsupported until stock copying/remapping decisions are represented.
+
+Coverage includes typed pointer zero, booleans, signed and floating constants,
+enums, explicit constructor overrides, inherited construction, and instantiated
+template members across two units. Provider: 253,952 bytes, 123 nodes, 49 types.
+Main: 249,856 bytes, 73 nodes, 51 types. Reproduce with
+`tests/verify_default_members.py`; storage summaries and tested tool/header hashes
+are retained. The lifetime/EH regression passes native/C#/NativeAOT at `*-defaults-regression-v1`.
+
+Actual bounded DuckDB `hugeint-v26` identifies a runtime-count scalar array new
+at `string.hpp:290`: selected operator new[], no explicit initialization, placement,
+alignment, destructor or exception cleanup. It still publishes no complete object.
+The next step projects the exact allocation size/count and selected call decisions
+from stock lowering; it must not replace C++ allocation failure behavior with a
+CLR exception or override a supplied allocator. The broad campaign remains stopped.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

@@ -138,6 +138,11 @@ The generator streams bytes into pinned aligned storage. `tests/verify_literals.
 covers embedded zeros, character widths, constexpr references, offsets, and arrays.
 General relocated variable/routine constant addresses remain unsupported.
 
+Scalar default member initializers reuse ordinary selected constructor actions when
+EDG explicitly selects the field initializer. `tests/verify_default_members.py`
+covers constants, typed null pointers, templates, and explicit overrides. Richer
+defaults needing constructor remapping or cleanup remain unsupported.
+
 Signed/unsigned 128-bit integers retain exact EDG decimal scalar values and layout,
 using System.Int128/UInt128 in generated C#. No separate wide-value payload is used.
 `tests/verify_wide_integers.py` covers literals, templates, arithmetic, arrays,

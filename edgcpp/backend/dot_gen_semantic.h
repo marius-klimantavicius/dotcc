@@ -1302,6 +1302,39 @@ struct State {
       case enk_condition:kind="condition";break;
       case enk_object_lifetime:kind="lifetime-scope";break;
       case enk_throw:kind=e->variant.throw_info?"throw":"rethrow";break;
+      case enk_new_delete: {
+        auto allocation=e->variant.new_delete;
+        auto allocated_type=allocation->type?skip_typerefs(allocation->type):nullptr;
+        auto element_type=allocated_type && allocated_type->kind==tk_array?
+          skip_typerefs(allocated_type->variant.array.element_type):nullptr;
+        auto init=allocation->dynamic_init;
+        auto cleanup=allocation->freeing_of_storage_on_exception;
+        auto pos=location(e->position);
+        std::string path;for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+        unsigned arguments=0;for(auto argument=allocation->arg;argument;argument=argument->next)++arguments;
+        std::string detail="new/delete expression [operation="+std::string(allocation->is_new?"new":"delete")+
+          ", array="+std::to_string(allocation->is_new?
+            int(allocated_type && allocated_type->kind==tk_array):int(allocation->array_delete))+
+          ", placement="+std::to_string(int(allocation->placement_new))+
+          ", aligned="+std::to_string(int(allocation->aligned_version))+
+          ", routine="+(allocation->routine?spelling(allocation->routine->source_corresp):"<none>")+
+          ", type="+(allocated_type?spelling(allocated_type->source_corresp):"")+
+          ", type-kind="+std::to_string(allocated_type?int(allocated_type->kind):-1)+
+          ", type-size="+std::to_string(allocated_type?(unsigned long long)allocated_type->size:0)+
+          ", element-type="+(element_type?spelling(element_type->source_corresp):"")+
+          ", element-kind="+std::to_string(element_type?int(element_type->kind):-1)+
+          ", arguments="+std::to_string(arguments)+
+          ", runtime-count="+std::to_string(allocation->number_of_elements?1:0)+
+          ", explicit-init="+std::to_string(int(allocation->has_new_initializer))+
+          ", init-kind="+std::to_string(init?int(init->kind):-1)+
+          ", constructor="+(init && init->kind==dik_constructor && init->variant.constructor.ptr?
+            spelling(init->variant.constructor.ptr->source_corresp):"<none>")+
+          ", destructor="+(init && init->destructor?spelling(init->destructor->source_corresp):"<none>")+
+          ", exception-delete="+(cleanup && cleanup->destructor?spelling(cleanup->destructor->source_corresp):"<none>")+
+          ", exception-cleanup="+std::to_string(cleanup?1:0)+
+          ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]";
+        missing(detail,int(e->kind));
+      }
       case enk_operation: {
         if(e->variant.operation.kind==eok_subscript && e->variant.operation.pointer_operand_is_second)
           missing("reversed subscript operand projection");
@@ -1537,14 +1570,31 @@ struct State {
           kind="delegation";target=skip_typerefs(scope->variant.routine.ptr->type)->variant.routine.extra_info->this_class;break;
         default:missing("constructor initializer target",int(entry->kind));
       }
-      if(!entry->initializer) {
+      auto init=entry->initializer;
+      if(!init && entry->kind==cik_field && entry->use_field_initializer) {
+        auto member=entry->variant.field;
+        auto selected=member->initializer;
+        // Exact lower_init::lower_ctor_init selection. The stock copy path
+        // additionally remaps constructor-dependent expressions and attaches
+        // destruction lifetimes. Only scalar constants without those actions
+        // can reuse the source initializer directly here; never reconstruct
+        // the missing per-constructor expression or cleanup graph.
+        if(!member->init_is_ctor_dependent && selected && selected->kind==dik_constant &&
+           is_scalar_type(target) && !selected->variant.constant.non_constant &&
+           (selected->variant.constant.ptr->kind==ck_integer || selected->variant.constant.ptr->kind==ck_float) &&
+           !selected->variable && !selected->destructor && !selected->lifetime &&
+           !selected->init_expr_lifetime && !selected->lifetime_of_overlapping_temps &&
+           !selected->master_entry && !selected->class_rvalue_initialized_through_master_entry)
+          init=selected;
+      }
+      if(!init) {
         auto member=entry->kind==cik_field?entry->variant.field:nullptr;
         auto selected=member?member->initializer:nullptr;
         auto owner=member?parent_class_of(member):nullptr;
         auto pos=location(member?member->source_corresp.decl_position:
           scope->variant.routine.ptr->source_corresp.decl_position);
         std::string path;for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
-        std::string detail="default field initializer selection [constructor="+
+        std::string detail="default field initializer selection requires scalar constant without lifetime/remapping [constructor="+
           spelling(scope->variant.routine.ptr->source_corresp)+", owner="+
           (owner?spelling(owner->source_corresp):"")+", field="+
           (member?spelling(member->source_corresp):"")+", type="+
@@ -1564,7 +1614,6 @@ struct State {
       }
       if(entry->source_expr)missing("explicit array constructor initializer source");
       Id copy_source=0;
-      auto init=entry->initializer;
       bool implied=(init->kind==dik_bitwise_copy && !init->variant.bitwise_copy.source) ||
         (init->kind==dik_constructor && init->variant.constructor.is_copy_constructor_with_implied_source);
       if(implied) {
@@ -1581,7 +1630,7 @@ struct State {
         {"field_id",optional(field)},{"base_subobject_id",optional(base)},
         {"copy_source_symbol_id",optional(copy_source)},
         {"target_type_id",optional(type_id(target))},{"is_virtual",is_virtual},
-        {"initialization_id",initialization_id(entry->initializer,target)}});
+        {"initialization_id",initialization_id(init,target)}});
     }
   }
   void capture(a_scope_ptr scope) {
