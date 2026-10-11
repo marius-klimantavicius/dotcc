@@ -273,7 +273,7 @@ internal sealed partial class Emitter
                 case "variable":
                     long variable=node.Symbol??throw unit.Missing(node,"selected symbol missing");
                     return unit.IsArray(unit.Symbols[variable].Type) || emitter.HasPinnedRecordStorage(unit,variable) || emitter.HasPinnedScalarStorage(unit,variable)?"(*"+Name(variable)+")":Name(variable);
-                case "function":return FunctionAddress(node);
+                case "function":case "routine-address":return FunctionAddress(node);
                 case "initialize":return unit.Children(node,"value").FirstOrDefault() is Node value?Expression(value):"default";
                 case "operation":return Operation(node);
                 case "lifetime-scope":

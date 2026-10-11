@@ -1,0 +1,10 @@
+struct State { int value; };
+extern int body_effects;
+extern int capture_effects;
+int selected_value(int value);
+int captureless_call(int input);
+int& captureless_reference(State& state);
+int captured_values(int input);
+int captured_reference(int& input);
+int capture_once(int input);
+int converted_call(int input);

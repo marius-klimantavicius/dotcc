@@ -341,30 +341,14 @@ struct State {
     if(!spec || spec->throw_any)return "unwind";
     if(spec->indeterminate || spec->arg_cached || spec->copy_from_prototype)return "dependent";
     if(spec->is_noexcept)return "terminate";
-    auto owner=t->variant.routine.extra_info->assoc_routine;
-    a_source_position position=owner?owner->source_corresp.decl_position:t->source_corresp.decl_position;
-#if EXTRA_SOURCE_POSITIONS_IN_IL
-    if(spec->source_range.start.seq)position=spec->source_range.start;
-#endif
-    auto pos=location(position);std::string path,context;
-    for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
-    for(const auto &entry:routines)if(entry.second==function){context=spelling(entry.first->source_corresp);break;}
-    unsigned count=0;auto first=spec->variant.exception_specification_type_list;
-    for(auto selected=first;selected;selected=selected->next)++count;
-    missing("dynamic exception specification projection [routine="+
-      (owner?spelling(owner->source_corresp):"<none>")+
-      ", definition="+std::to_string(owner && owner->function_def_number!=NULL_function_def_number?1:0)+
-      ", type="+spelling(type->source_corresp)+", context="+context+
-      ", noexcept="+std::to_string(int(spec->is_noexcept))+
-      ", throw-any="+std::to_string(int(spec->throw_any))+
-      ", indeterminate="+std::to_string(int(spec->indeterminate))+
-      ", cached="+std::to_string(int(spec->arg_cached))+
-      ", pending-copy="+std::to_string(int(spec->copy_from_prototype))+
-      ", generated="+std::to_string(int(spec->compiler_generated))+
-      ", attribute="+std::to_string(int(spec->from_attribute))+
-      ", allowed-types="+std::to_string(count)+
-      ", first-type="+(first?spelling(first->type->source_corresp):"")+
-      ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]");
+    return "dynamic";
+  }
+  void exception_specification_types(Id signature,a_type_ptr type) {
+    auto spec=skip_typerefs(type)->variant.routine.extra_info->exception_specification;
+    unsigned ordinal=0;
+    for(auto selected=spec->variant.exception_specification_type_list;selected;selected=selected->next)
+      db.insert("exception_specification_types",{{"function_type_id",signature},{"ordinal",ordinal++},
+        {"allowed_type_id",type_id(selected->type)}});
   }
   const char *floating_name(a_float_kind kind) {
     // Preserve language type identity even when two kinds share a format.
@@ -481,6 +465,14 @@ struct State {
       case tk_pointer:
         kind=t->variant.pointer.is_reference?(t->variant.pointer.is_rvalue_reference?"rvalue-reference":"lvalue-reference"):"pointer";
         pointee=type_id(t->variant.pointer.type);break;
+      case tk_ptr_to_member:
+#if MICROSOFT_EXTENSIONS_ALLOWED
+        if(t->variant.ptr_to_member.modifiers)missing("member-pointer extended pointer modifiers");
+#endif
+        kind="member-pointer";
+        object=type_id(t->variant.ptr_to_member.orig_class_of_which_a_member?
+          t->variant.ptr_to_member.orig_class_of_which_a_member:t->variant.ptr_to_member.class_of_which_a_member);
+        pointee=type_id(t->variant.ptr_to_member.type);break;
       case tk_array:
         if(t->variant.array.is_variable_size_array || t->variant.array.is_template_dependent_size_array)missing("dependent/runtime array bound");
         kind="array";element=type_id(t->variant.array.element_type);
@@ -493,7 +485,23 @@ struct State {
       case tk_struct:case tk_class:case tk_union:
         kind="record";record_kind=t->kind==tk_struct?"struct":t->kind==tk_class?"class":"union";
         break;
-      default:missing("type",int(t->kind));
+      default: {
+        auto pos=location(t->source_corresp.decl_position);std::string path,owner;
+        for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+        for(const auto &entry:routines)if(entry.second==function){owner=spelling(entry.first->source_corresp);break;}
+        std::string detail="type [name="+name+", function="+owner+
+          ", recipe="+std::to_string(template_recipe?1:0)+", file="+path+
+          ", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]";
+        unsigned container_count=0;
+        for(auto container:capturing_types)if(container!=t && container_count++<3) {
+          auto source=location(container->source_corresp.decl_position);
+          detail+=" [capturing-type="+spelling(container->source_corresp)+
+            ", kind="+std::to_string(int(container->kind))+
+            ", file-id="+std::to_string(source.file)+", line="+std::to_string(source.line)+
+            ", column="+std::to_string(source.column)+"]";
+        }
+        missing(detail,int(t->kind));
+      }
     }
     // These are EDG's builtin identities, not names or inferred layouts.
     // Preserve the source typedef/record and its layout; the role selects
@@ -538,8 +546,10 @@ struct State {
       {"min_exponent",min_exponent[int(t->variant.float_kind)]},
       {"max_exponent",max_exponent[int(t->variant.float_kind)]}});
     if(t->kind==tk_routine) {
-      db.update("types","id",id,{{"exception_policy",exception_policy(t)},
+      const char *policy=exception_policy(t);
+      db.update("types","id",id,{{"exception_policy",policy},
         {"return_storage",t->variant.routine.extra_info->value_returned_by_cctor?"caller-provided":"value"}});
+      if(std::string(policy)=="dynamic")exception_specification_types(id,t);
       unsigned ordinal=0;
       for(auto p=t->variant.routine.extra_info->param_type_list;p;p=p->next)
         db.insert("type_parameters",{{"type_id",id},{"ordinal",ordinal++},{"parameter_type_id",type_id(p->type)}});
@@ -868,7 +878,7 @@ struct State {
     // selected expression/constant/zero action for complete record values
     // without introducing a constructor. Base subobject copies still need
     // an explicit destination extent and remain outside this bound.
-    bool value_component=is_scalar_type(c->type) ||
+    bool value_component=is_scalar_type(c->type) || is_reference_type(c->type) ||
       (complete_object && is_immediate_class_type(skip_typerefs(c->type)));
     if(!init || !value_component ||
        (init->kind!=dik_expression && init->kind!=dik_constant && init->kind!=dik_zero) ||
@@ -879,7 +889,7 @@ struct State {
        init->destruction_is_for_partially_constructed_aggregate ||
        init->is_freeing_of_storage_on_exception)
       missing_initialization(init,c->type,p,
-        "aggregate component requires scalar or complete record initialization without cleanup/remapping",c);
+        "aggregate component requires scalar, reference or complete record initialization without cleanup/remapping",c);
     Id id=node("initialize",p,type_id(c->type));
     db.update("nodes","id",id,{{"initialization_id",initialization_id(init,c->type)}});
     return id;
@@ -1113,6 +1123,16 @@ struct State {
     db.update("nodes","id",id,{{"kind","operation"},{"operator","cast"}});
     edge(id,"operand",0,address);
   }
+  void attach_routine_address(Id id,a_constant_ptr c) {
+    auto selected=c->variant.address.variant.routine;
+    if(!selected || !is_pointer_type(c->type) || c->variant.address.offset ||
+       c->variant.address.subobject_path || c->variant.address.one_past_the_end ||
+       c->variant.address.is_object_reflection)
+      missing("routine address constant requires selected function pointer at offset zero");
+    // The selected routine and converted pointer type completely describe
+    // this value. Retain the source constant without synthetic operators.
+    db.update("nodes","id",id,{{"kind","routine-address"},{"symbol_id",routine(selected)}});
+  }
   void typeinfo_storage_selected(a_type_ptr target,a_variable_ptr v) {
     auto found=selected_typeinfos.find(target);
     if(found==selected_typeinfos.end())return;
@@ -1204,6 +1224,7 @@ struct State {
         if(!selected_literals.count(v)){attach_variable_address(id,c,p);return;}
         object=selected_literal_object(v);
       }
+      else if(c->variant.address.kind==abk_routine) {attach_routine_address(id,c);return;}
       else if(c->variant.address.kind==abk_typeid) {attach_typeinfo_address(id,c,p);return;}
       else {
         auto pos=location(p);std::string path,owner;
@@ -1481,14 +1502,26 @@ struct State {
       case dik_class_result_via_ctor:kind="class-result";value=expression(init->variant.expression);break;
       case dik_constant:kind="constant";value=constant(init->variant.constant.ptr,pos,!subobject_initializations.count(init));break;
       case dik_nonconstant_aggregate:
+      case dik_lambda:
         if(init->destructor || init->lifetime || init->init_expr_lifetime ||
            init->lifetime_of_overlapping_temps || init->unordered ||
            init->overlaps_temps_in_inner_lifetime ||
            init->destruction_is_for_partially_constructed_aggregate ||
            init->is_freeing_of_storage_on_exception)
           missing_initialization(init,target,pos,"nonconstant aggregate requires richer cleanup projection");
-        kind="aggregate";
-        value=constant(init->variant.constant.ptr,pos,!subobject_initializations.count(init));break;
+        kind=init->kind==dik_lambda && !init->variant.constant.non_constant?"constant":"aggregate";
+        if(init->kind==dik_lambda) {
+          auto selected=init->variant.constant.lambda;
+          if(!selected || !selected->closure_class || !init->variant.constant.ptr)
+            missing_initialization(init,target,pos,"selected lambda aggregate initializer");
+          // A direct closure declaration can retain only dik_lambda, without
+          // an enk_lambda wrapper. Preserve its source identity on the same
+          // selected aggregate value, without another initialization action.
+          value=constant(init->variant.constant.ptr,selected->start_position,!subobject_initializations.count(init));
+          db.update("nodes","id",value,{{"operator","lambda"},
+            {"symbol_id",optional(selected->lambda_routine?routine(selected->lambda_routine):0)}});
+        } else value=constant(init->variant.constant.ptr,pos,!subobject_initializations.count(init));
+        break;
       case dik_constructor:
         kind="constructor";
         if(!init->variant.constructor.ptr)missing("selected constructor");
@@ -2146,6 +2179,17 @@ struct State {
       case enk_routine:kind="function";symbol=routine(e->variant.routine.ptr);break;
       case enk_field:kind="field";field=field_id(node_field(e));break;
       case enk_temp_init:kind="temporary";break;
+      case enk_lambda: {
+        auto selected=e->variant.init.source.lambda;
+        if(!selected || !selected->closure_class || !e->variant.init.dynamic_init)
+          missing("selected lambda closure/call initialization");
+        // The closure type owns EDG's selected capture fields. Its existing
+        // aggregate action initializes them; lower_lambda materializes this
+        // same closure without interpreting the source capture list again.
+        kind="lambda";
+        if(selected->lambda_routine)symbol=routine(selected->lambda_routine);
+        break;
+      }
       case enk_condition:kind="condition";break;
       case enk_object_lifetime:kind="lifetime-scope";break;
       case enk_throw:kind=e->variant.throw_info?"throw":"rethrow";break;
@@ -2336,7 +2380,7 @@ struct State {
       db.update("nodes","id",name,{{"source_node_id",id}});
       function=previous;template_recipe=previous_recipe;
       edge(id,"source-name",0,name);
-    } else if(e->kind==enk_temp_init) {
+    } else if(e->kind==enk_temp_init || e->kind==enk_lambda) {
       db.update("nodes","id",id,{{"initialization_id",initialization_id(e->variant.init.dynamic_init,e->type)}});
     } else if(e->kind==enk_condition) {
       auto condition=e->variant.condition;
@@ -2482,7 +2526,21 @@ struct State {
         if(scope && has_static_storage(scope))missing("block static storage projection");
         attach_lifetime(id,scope?scope->lifetime:s->variant.block.extra_info->lifetime);
         if(scope)for(auto v=scope->nonstatic_variables;v;v=v->next)variable(v,true);
-        unsigned ordinal=0;for(auto child=s->variant.block.statements;child;child=child->next)
+        unsigned ordinal=0;
+        if(root_scope && scope->kind==sck_function &&
+           scope->variant.routine.ptr->special_kind==sfk_lambda_entry_point) {
+          // The stock generated helper owns these storage variables even
+          // though its body has assignments/returns without stmk_decl nodes.
+          // Preserve the selected storage, without adding initialization.
+          for(auto v=scope->nonstatic_variables;v;v=v->next)if(!v->is_parameter) {
+            if(!v->lowering_generated || v->init_kind!=initk_none)
+              missing("lambda entry generated storage declaration");
+            const auto &pos=v->source_corresp.decl_position.seq?v->source_corresp.decl_position:
+              scope->variant.routine.ptr->source_corresp.decl_position;
+            edge(id,"statement",ordinal++,declaration(v,pos,false));
+          }
+        }
+        for(auto child=s->variant.block.statements;child;child=child->next)
           edge(id,"statement",ordinal++,statement(child));break;
       }
       case stmk_return:
@@ -2885,6 +2943,10 @@ struct State {
       if(std::string(policy)=="dependent")missing("finalized function exception policy");
       db.update("types","id",routine_source_types[r],{{"exception_policy",policy},
         {"return_storage",skip_typerefs(r->type)->variant.routine.extra_info->value_returned_by_cctor?"caller-provided":"value"}});
+      // A previously cached declaration can have a deferred specification.
+      // Keep its same source signature and replace only the finalized list.
+      db.exec("DELETE FROM exception_specification_types WHERE function_type_id="+std::to_string(routine_source_types[r]));
+      if(std::string(policy)=="dynamic")exception_specification_types(routine_source_types[r],r->type);
       const char *kind=r->special_kind==sfk_constructor?"constructor":r->special_kind==sfk_destructor?"destructor":"ordinary";
       db.insert("functions",{{"symbol_id",function},{"body_node_id",body},{"receiver_symbol_id",optional(receiver)},
         {"kind",kind},{"exception_policy",policy},
@@ -2905,7 +2967,45 @@ struct State {
     // File and namespace initializers have an explicit EDG execution list.
     // Until startup actions are represented, fail even when the initialized
     // variable is never referenced by an executable body.
-    if(scope->dynamic_inits)missing("file/namespace dynamic initialization schedule");
+    if(scope->dynamic_inits) {
+      unsigned count=0,effective=0;
+      for(auto init=scope->dynamic_inits;init;init=init->next) {
+        ++count;auto var=init->variable;
+        if(!var || (!ignore_variable_in_back_end(var) && !var->suppress_inline_definition))++effective;
+      }
+      std::string detail="file/namespace dynamic initialization schedule [entries="+std::to_string(count)+
+        ", effective="+std::to_string(effective)+
+        ", scope-kind="+std::to_string(int(scope->kind))+
+        ", scope-lifetime="+std::to_string(scope->lifetime?1:0)+"]";
+      unsigned ordinal=0;
+      for(auto init=scope->dynamic_inits;init && ordinal<3;init=init->next) {
+        auto var=init->variable;
+        if(var && (ignore_variable_in_back_end(var) || var->suppress_inline_definition))continue;
+        auto type=var?skip_typerefs(var->type):nullptr;
+        auto pos=location(var?var->source_corresp.decl_position:null_source_position);
+        std::string path;for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+        unsigned priority=0;
+#if GNU_EXTENSIONS_ALLOWED && GNU_INIT_PRIORITY_ATTRIBUTE_ALLOWED
+        if(var)priority=var->init_priority;
+#endif
+        detail+=" [entry="+std::to_string(ordinal)+", variable="+(var?spelling(var->source_corresp):"<none>")+
+          ", type="+(type?spelling(type->source_corresp):"")+
+          ", type-kind="+std::to_string(type?int(type->kind):-1)+
+          ", action-kind="+std::to_string(int(init->kind))+
+          ", inline="+std::to_string(var?int(var->is_inline):0)+
+          ", template="+std::to_string(var?int(var->is_template_variable):0)+
+          ", thread-local="+std::to_string(var?int(is_effective_thread_local(var)):0)+
+          ", priority="+std::to_string(priority)+
+          ", suppressed="+std::to_string(var?int(var->suppress_inline_definition):0)+
+          ", ignored="+std::to_string(var?int(ignore_variable_in_back_end(var)):0)+
+          ", destructor="+std::to_string(init->destructor?1:0)+
+          ", lifetime="+std::to_string(init->lifetime?1:0)+
+          ", expression-lifetime="+std::to_string(init->init_expr_lifetime?1:0)+
+          ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]";
+        ++ordinal;
+      }
+      if(effective)missing(detail);
+    }
     if(scope->asm_entries)missing("file-scope assembly declaration");
     for(auto v=scope->variables;v;v=v->next) {
       // Lowering later promotes the same dummy to file scope. Its source
@@ -2930,6 +3030,32 @@ struct State {
     }
     for(auto child=scope->scopes;child;child=child->next)capture(child);
     for(auto ns=scope->namespaces;ns;ns=ns->next)if(!ns->is_namespace_alias)capture(ns->variant.assoc_scope);
+  }
+  void lambda_entry_complete(a_routine_ptr entry,a_scope_ptr scope) {
+    if(!entry || entry->special_kind!=sfk_lambda_entry_point || !routines.count(entry))return;
+    auto selected=entry->variant.lambda_call_operator;
+    if(!selected || !scope || scope->variant.routine.ptr!=entry || !scope->assoc_block)
+      missing("completed selected lambda entry body");
+    auto signature=skip_typerefs(entry->type)->variant.routine.extra_info;
+    if(signature->value_returned_as_parameter)
+      missing("lambda entry caller-provided class result body");
+    // The stock factory has attached its actual NULL receiver, ordered
+    // forwarded parameters and return/call statements. Capture that exact
+    // helper, preserving the previously recorded source signature identity.
+    Id previous=function;bool previous_recipe=template_recipe;
+    function=0;template_recipe=true;
+    Id source=routine(selected);
+    Id reference=node("function",entry->source_corresp.decl_position,
+      routine_source_types.at(selected),nullptr,"lambda-call-operator","",source);
+    function=previous;template_recipe=previous_recipe;
+    capture(scope);
+    Id symbol=routines.at(entry);
+    db.update("symbols","id",symbol,{{"is_definition",true},
+      {"link_name",entry->source_corresp.name?entry->source_corresp.name:""},
+      {"linkage",linkage(entry->source_corresp)},
+      {"definition_kind",entry->use_comdat || entry->is_inline ||
+        (entry->is_template_function && !entry->is_specialized)?"weak":"strong"}});
+    db.update("nodes","function_id",symbol,{{"is_synthetic",true},{"source_node_id",reference}});
   }
   void finish() {
     finish_typeinfo_symbols();
@@ -3058,6 +3184,9 @@ inline void virtual_vptr_end() {if(enabled())state().virtual_vptr_end();}
 inline void virtual_vptr_write(a_type_ptr owner,a_base_class_ptr base,an_expr_node_ptr address,
                                bool construction,long long construction_index) {
   if(enabled())state().virtual_vptr_write(owner,base,address,construction,construction_index);
+}
+inline void lambda_entry_complete(a_routine_ptr entry,a_scope_ptr scope) {
+  if(enabled())state().lambda_entry_complete(entry,scope);
 }
 inline void emit() { state().finish(); }
 }

@@ -2,7 +2,7 @@ namespace DotObj.Relational;
 
 internal sealed record ProgramType(long Id, string Kind, string Name, long? Size, long? Alignment,
     long? Pointee, long? Element, long? Count, long? Result, long? Underlying, bool Variadic, bool Incomplete,
-    string LinkName, string Linkage, bool Volatile,string? BuiltinName,bool Dependent,string ReturnStorage,string? SemanticRole);
+    string LinkName, string Linkage, bool Volatile,string? BuiltinName,bool Dependent,string ReturnStorage,string? SemanticRole,string ExceptionPolicy,long? ObjectType);
 internal sealed record Field(long Id, long Owner, string Name, long Type, long Ordinal, long Offset, long? BitOffset, long? BitWidth);
 internal sealed record Symbol(long Id, string Kind, string Name, string LinkName, string Linkage, long Type, long? Parent, bool Definition, string DefinitionKind);
 internal sealed record Node(long Id, long? Function, string Kind, long? Type, long? ExecutionType,
@@ -60,6 +60,12 @@ internal sealed partial class Unit : IDisposable
             bool hasSemanticRole;
             using(var query=database.Prepare("SELECT 1 FROM pragma_table_info('types') WHERE name='semantic_role'"))
                 hasSemanticRole=query.Read();
+            bool hasExceptionPolicy;
+            using(var query=database.Prepare("SELECT 1 FROM pragma_table_info('types') WHERE name='exception_policy'"))
+                hasExceptionPolicy=query.Read();
+            bool hasObjectType;
+            using(var query=database.Prepare("SELECT 1 FROM pragma_table_info('types') WHERE name='object_type_id'"))
+                hasObjectType=query.Read();
             using(var query=database.Prepare("SELECT 1 FROM pragma_table_info('types') WHERE name='return_storage'"))
                 HasReturnStorage=query.Read();
             using(var query=database.Prepare("SELECT 1 FROM pragma_table_info('nodes') WHERE name='value_normalization'"))
@@ -72,8 +78,9 @@ internal sealed partial class Unit : IDisposable
                 HasControlLifetimes=query.Read();
             using (var q = database.Prepare("SELECT id,path FROM files ORDER BY id"))
                 while (q.Read()) Files.Add(q.Integer(0), q.Text(1));
-            using (var q = database.Prepare("SELECT id,kind,name,size,alignment,pointee_type_id,element_type_id,element_count,return_type_id,underlying_type_id,is_variadic,is_incomplete,link_name,linkage,is_volatile,"+(HasLifecycles?"builtin_name":"NULL")+","+(hasDependentTypes?"is_dependent":"0")+","+(HasReturnStorage?"return_storage":"'value'")+","+(hasSemanticRole?"semantic_role":"NULL")+" FROM types ORDER BY id"))
-                while (q.Read()) Types.Add(q.Integer(0), new(q.Integer(0),q.Text(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalInteger(5),q.OptionalInteger(6),q.OptionalInteger(7),q.OptionalInteger(8),q.OptionalInteger(9),q.Integer(10)!=0,q.Integer(11)!=0,q.Text(12),q.Text(13),q.Integer(14)!=0,q.OptionalText(15),q.Integer(16)!=0,q.Text(17),q.OptionalText(18)));
+            using (var q = database.Prepare("SELECT id,kind,name,size,alignment,pointee_type_id,element_type_id,element_count,return_type_id,underlying_type_id,is_variadic,is_incomplete,link_name,linkage,is_volatile,"+(HasLifecycles?"builtin_name":"NULL")+","+(hasDependentTypes?"is_dependent":"0")+","+(HasReturnStorage?"return_storage":"'value'")+","+(hasSemanticRole?"semantic_role":"NULL")+","+(hasExceptionPolicy?"exception_policy":"'unwind'")+","+(hasObjectType?"object_type_id":"NULL")+" FROM types ORDER BY id"))
+                while (q.Read()) Types.Add(q.Integer(0), new(q.Integer(0),q.Text(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalInteger(5),q.OptionalInteger(6),q.OptionalInteger(7),q.OptionalInteger(8),q.OptionalInteger(9),q.Integer(10)!=0,q.Integer(11)!=0,q.Text(12),q.Text(13),q.Integer(14)!=0,q.OptionalText(15),q.Integer(16)!=0,q.Text(17),q.OptionalText(18),q.Text(19),q.OptionalInteger(20)));
+            ReadExceptionSpecifications();
             ReadEnums();
             ReadFloatingFormats();
             using (var q = database.Prepare("SELECT id,owner_type_id,name,type_id,ordinal,byte_offset,bit_offset,bit_width FROM fields ORDER BY owner_type_id,ordinal"))

@@ -16,7 +16,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--work-dir', type=Path, required=True)
     parser.add_argument('--compiler', type=Path, default=ROOT / 'build/bin/cpfe-dot')
-    parser.add_argument('--std', choices=['c11', 'c++17', 'c++20'], default='c++20')
+    parser.add_argument('--std', choices=['c11', 'c++14', 'c++17', 'c++20'], default='c++20')
     parser.add_argument('-I', dest='includes', type=Path, action='append', default=[])
     parser.add_argument('-D', dest='defines', action='append', default=[])
     args = parser.parse_args()

@@ -103,6 +103,23 @@ the definition. Layout and source fields/bases are filled once before ABI loweri
 `tests/verify_record_completion.py` checks an early pointer-reference function followed
 by construction and member access after the definition.
 
+Lambda expressions and declaration-optimized closures retain their selected closure
+type, call operator and aggregate initialization actions. Stock-generated captureless
+entry helpers retain their completed body and scope-owned storage declarations.
+`tests/verify_lambdas.py` checks value/reference/initialized captures, reference return
+and an executed function-pointer conversion in native, source-hidden C# and NativeAOT.
+Capture initialization is never reconstructed from source capture lists. Entry helpers
+with caller-provided class results remain an explicit export boundary.
+
+Schema 1022 stores dynamic exception specifications separately from `noexcept`, with
+ordered allowed-type references in `exception_specification_types`; an empty dynamic
+list is `throw()`. Member-pointer signatures retain their source class alias, member
+type and EDG layout through existing type relations. These declaration facts do not
+force executable type realization. `tests/verify_dynamic_exception_specs.py` checks
+both metadata paths and source-hidden declaration-only execution. Defined dynamic
+specification bodies retain an explicit generation boundary until runtime handling
+is implemented; member-pointer operations also remain unsupported.
+
 Compound assignments carry EDG's selected calculation type in
 `nodes.operation_type_id`, distinct from their stored/result type. Named generated
 helpers preserve operand order, narrowing and lvalue result identity. Run
@@ -139,8 +156,9 @@ character encodings. Explicit copy/zero actions exist only for initialization us
 The generator streams bytes into pinned aligned storage. `tests/verify_literals.py`
 covers embedded zeros, character widths, constexpr references, offsets, and arrays.
 Complete persistent variable addresses at byte offset zero use ordinary selected
-cast/address-of/variable expressions. Other variable/routine relocations remain
-unsupported.
+cast/address-of/variable expressions. Other variable relocations remain unsupported.
+Selected routine addresses at offset zero retain one typed `routine-address` node
+and exact linkage identity; the consumer reuses ordinary function-pointer emission.
 
 Constant/zero static locals retain lexical declarations and EDG-selected persistent
 link identities. Scalar globals and statics use aligned pinned backing, allocated

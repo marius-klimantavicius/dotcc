@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1021;
+PRAGMA user_version = 1022;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -34,7 +34,7 @@ CREATE TABLE types (
  is_volatile INTEGER NOT NULL DEFAULT 0 CHECK(is_volatile IN(0,1)),
  is_restrict INTEGER NOT NULL DEFAULT 0 CHECK(is_restrict IN(0,1)),
  is_variadic INTEGER NOT NULL DEFAULT 0 CHECK(is_variadic IN(0,1)),
- exception_policy TEXT NOT NULL DEFAULT 'unwind' CHECK(exception_policy IN('unwind','terminate','dependent')),
+ exception_policy TEXT NOT NULL DEFAULT 'unwind' CHECK(exception_policy IN('unwind','terminate','dynamic','dependent')),
  record_kind TEXT,
  is_dependent INTEGER NOT NULL DEFAULT 0 CHECK(is_dependent IN(0,1)),
  is_incomplete INTEGER NOT NULL DEFAULT 0 CHECK(is_incomplete IN(0,1))
@@ -44,6 +44,14 @@ CREATE TABLE type_parameters (
  ordinal INTEGER NOT NULL,
  parameter_type_id INTEGER NOT NULL REFERENCES types(id),
  PRIMARY KEY(type_id,ordinal)
+) STRICT, WITHOUT ROWID;
+-- Declared dynamic exception specification, in EDG's selected list order.
+-- A dynamic specification with no rows is throw(); it is distinct from noexcept.
+CREATE TABLE exception_specification_types (
+ function_type_id INTEGER NOT NULL REFERENCES types(id),
+ ordinal INTEGER NOT NULL,
+ allowed_type_id INTEGER NOT NULL REFERENCES types(id),
+ PRIMARY KEY(function_type_id,ordinal)
 ) STRICT, WITHOUT ROWID;
 CREATE TABLE floating_types (
  type_id INTEGER PRIMARY KEY REFERENCES types(id),
@@ -135,7 +143,7 @@ CREATE TABLE functions (
  body_node_id INTEGER NOT NULL REFERENCES nodes(id),
  receiver_symbol_id INTEGER REFERENCES symbols(id),
  nrvo_candidate_symbol_id INTEGER REFERENCES symbols(id),
- exception_policy TEXT NOT NULL DEFAULT 'unwind' CHECK(exception_policy IN('unwind','terminate'))
+ exception_policy TEXT NOT NULL DEFAULT 'unwind' CHECK(exception_policy IN('unwind','terminate','dynamic'))
 ) STRICT;
 CREATE TABLE parameters (
  function_id INTEGER NOT NULL REFERENCES symbols(id),

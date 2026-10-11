@@ -1459,6 +1459,14 @@ object_source_overlay(lower,
     '    check_assertion(!ignore_variable_in_back_end(variable));')
 
 # Relational semantic backend: direct program rows, no legacy raw graph capture.
+object_source_overlay(init_lower,
+    '    pop_generated_routine_context(new_routine_scope, new_routine_il_region,\n'
+    '                                  &grcontext);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::lambda_entry_complete(new_routine, new_routine_scope);\n'
+    '#endif\n'
+    '    pop_generated_routine_context(new_routine_scope, new_routine_il_region,\n'
+    '                                  &grcontext);')
 semantic_schema = (root / "object-linker/relational/schema.sql").read_text()
 semantic_schema_header = root / "upstream/src/dot_gen_semantic_schema.h"
 semantic_schema_text = ('#pragma once\nstatic const char dot_semantic_schema[] = R"DOTSCHEMA(' +

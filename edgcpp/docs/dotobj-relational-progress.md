@@ -1283,6 +1283,51 @@ and ABI navigation references. A future natural schema revision should distingui
 that metadata name while preserving exact references and executable isolation.
 This naming correction does not justify delaying real-TU export work.
 
+## Selected closures, generated entries and declared exception specifications (2026-10-11)
+
+Verified `dotobj-relational-lambdas-v7` retains source lambda types, call operators
+and EDG-selected closure initialization actions. Declaration-optimized `dik_lambda`
+aggregates use the same field actions, including exact reference-slot bindings.
+There is no capture-list analysis or duplicated closure storage. A narrow completion
+observer captures stock-generated captureless entry bodies after their actual call
+and return statements are attached. Their scope-owned generated locals receive
+storage declarations without invented value initializers. Original selected
+assignments remain in place. Zero-offset selected routine addresses use one typed
+`routine-address` node instead of synthetic cast/address scaffolding.
+
+The two-TU fixture executes captureless and reference-return calls, value/reference
+and initialized captures, once-only effects and an actual function-pointer
+conversion/invocation. Native C++, source-hidden C# and Linux NativeAOT pass.
+Caller-provided class-result entry helpers and richer temporary cleanup remain
+explicit boundaries. Provider: 282,624 bytes / 188 nodes / 109 types; main:
+258,048 bytes / 110 nodes / 24 types.
+
+Schema 1022 / 44 ordinary tables adds ordered selected allowed-type references in
+`exception_specification_types` and a distinct `dynamic` specification tag. An empty
+dynamic list is `throw()`, not `noexcept`; final function capture refreshes both the
+cached signature policy and its selected list. Imported declarations remain valid
+without providers. Defined dynamic-specification bodies explicitly reject generation
+until runtime boundary handling exists. Member-pointer declarations preserve exact
+source owner aliases, member types, size and alignment using existing type relations;
+unrepresented Microsoft pointer modifiers reject. Metadata does not force executable
+member-pointer layout or operation support.
+
+Verified `dotobj-relational-dynamic-exception-specs-v3` checks C++14 empty/nonempty
+lists, ordered `int,float`, noexcept/unwind distinctions, member-pointer data/function
+signatures and the explicit defined-body boundary. Native, source-hidden declaration
+C# and NativeAOT pass. Each object is 249,856 bytes; declaration object: 3 nodes /
+23 types, body object: 8 nodes / 5 types. Builds, tested hashes, SQL/storage summaries,
+sources and generated review artifacts are retained.
+
+File-scope startup selection now admits only genuinely empty selected schedules,
+using stock ignored-variable/suppressed-definition predicates. It still rejects
+every remaining executable startup action with selected-entry diagnostics; no
+runtime action is silently skipped. Actual `checksum-v11` and `exception-v14` pass
+the prior lambda, imported dynamic signature and member-pointer type boundaries,
+then converge on dependent/runtime array-bound metadata. `hugeint-v47` remains at
+virtual deleting destruction. Complete real DuckDB objects and actual DuckDB C#
+remain zero. Project timing/RSS measurements still describe rejected export stages.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

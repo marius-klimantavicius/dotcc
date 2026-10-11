@@ -36,7 +36,7 @@ internal sealed partial class Emitter
             // This edge, rather than the expression's class result type,
             // selects the supplied destination. Nested masters bind their
             // own dependents while using the same outer destination.
-            if(node.Kind=="temporary" && node.Initialization is long id &&
+            if((node.Kind is "temporary" or "lambda") && node.Initialization is long id &&
                unit.Initializations[id].DestinationInitialization is not null)
             {
                 var initialization=unit.Initializations[id];

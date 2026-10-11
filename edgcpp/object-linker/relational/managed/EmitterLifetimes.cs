@@ -38,6 +38,8 @@ internal sealed partial class Emitter
         {
             long functionId=function!.Value.Id;
             var details=unit.FunctionDetails[functionId];
+            if(details.ExceptionPolicy=="dynamic")
+                throw unit.Missing(body,"dynamic exception specification runtime boundary emission is not yet implemented");
             PreparePlacementCleanups(functionId);
             PrepareNamedLabels(functionId);
             CheckReturnCleanup();
@@ -196,7 +198,7 @@ internal sealed partial class Emitter
             if(expandedValues.TryGetValue(node.Id,out string? found))return NormalizeValue(node,found);
             if(IsPlacementWrapper(node))return ExpandedPlacementWrapper(node,indent);
             if(node.Kind=="new" && node.Operator=="placement")return ExpandedPlacementAllocation(node,indent);
-            if(node.Kind=="temporary" && node.Initialization is long dependent &&
+            if((node.Kind is "temporary" or "lambda") && node.Initialization is long dependent &&
                unit.Initializations[dependent].DestinationInitialization is not null)
             {
                 var initialization=unit.Initializations[dependent];
@@ -227,7 +229,7 @@ internal sealed partial class Emitter
                 }
                 finally {expandedValues.Remove(right.Id);}
             }
-            if(node.Kind=="temporary")
+            if(node.Kind is "temporary" or "lambda")
             {
                 var initialization=unit.Initializations[node.Initialization??throw unit.Missing(node,"temporary initialization missing")];
                 if(initialization.Destructor is not null)throw unit.Missing(node,"temporary cleanup expansion is not yet implemented");
