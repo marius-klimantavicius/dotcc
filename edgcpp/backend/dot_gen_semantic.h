@@ -562,7 +562,9 @@ struct State {
         if(array.dep_constant_bound_expr_in_local_expr_node_ref) {
           local_expr=find_local_expr_node((char*)t,lerk_dep_array_bound);
           if(!local_expr)missing("dependent array bound local expression correspondence");
-          if(!selected || selected->kind!=ck_template_param || selected->variant.template_param.kind!=tpck_expression)
+          if(!selected || selected->kind!=ck_template_param ||
+             (selected->variant.template_param.kind!=tpck_expression && selected->variant.template_param.kind!=tpck_sizeof &&
+              selected->variant.template_param.kind!=tpck_datasizeof && selected->variant.template_param.kind!=tpck_alignof))
             missing("dependent array bound local constant family");
         }
         if(selected)bound=recipe_value(selected,t->source_corresp.decl_position,local_expr);
@@ -813,6 +815,16 @@ struct State {
     if(--recipe_capture_depth==0){recipe_expressions.clear();recipe_constants.clear();}
     return id;
   }
+  void query_operand(Id id,a_type_ptr selected_type,an_expr_node_ptr selected_expression,const a_source_position &p) {
+    Id operand=0;
+    if(selected_expression)operand=expression(selected_expression,&p,id);
+    else {
+      if(!selected_type)missing("source query selected operand correspondence");
+      operand=node("type-reference",p,type_id(selected_type));
+      db.update("nodes","id",operand,{{"source_node_id",id}});
+    }
+    edge(id,"operand",0,operand);
+  }
   [[noreturn]] void missing_dependent_value(a_constant_ptr c,const a_source_position &p,const char *reason) {
     auto source=location(p);std::string path;
     for(const auto &file:files)if(file.second==source.file){path=file.first;break;}
@@ -840,6 +852,7 @@ struct State {
       case tpck_dependent_constant:return "dependent-constant";
       case tpck_address:return "dependent-address";
       case tpck_template_ref:return "dependent-template-reference";
+      case tpck_sizeof:case tpck_datasizeof:case tpck_alignof:return "operation";
       case tpck_unknown_function:return c->variant.template_param.is_qualified_name?
         "dependent-qualified-function-reference":"dependent-function-reference";
       default:missing_dependent_value(c,p,"dependent value");
@@ -903,6 +916,19 @@ struct State {
         auto operand=local_expression?local_expression:expr_node_from_tpck_expression(c);
         if(!operand)missing("dependent source expression");
         edge(id,"operand",0,expression(operand));break;
+      }
+      case tpck_sizeof:case tpck_datasizeof:case tpck_alignof: {
+        if(!template_recipe)missing_dependent_value(c,p,"size/alignment constant outside source recipe");
+        auto &selected=value.variant.templ_sizeof;
+        auto operand=local_expression?local_expression:generic_sizeof_arg_expr(c);
+#if PROTOTYPE_INSTANTIATIONS_IN_IL
+        if(value.local_expr_ref && !operand)
+          missing_dependent_value(c,p,"size/alignment local expression correspondence");
+#endif
+        const char *op=value.kind==tpck_sizeof?"sizeof":value.kind==tpck_datasizeof?"datasizeof":
+          selected.is_std_alignof?"alignof":"gnu-alignof";
+        db.update("nodes","id",id,{{"operator",op}});
+        query_operand(id,selected.type,operand,p);break;
       }
       case tpck_dependent_constant:case tpck_address:
         edge(id,"operand",0,constant(value.variant.constant,c->source_corresp.decl_position));break;
@@ -2433,31 +2459,16 @@ struct State {
         db.update("nodes","id",id,{{"floating_value_id",floating_value(node_constant(e))}});
     }
     if(e->kind==enk_sizeof || e->kind==enk_alignof || e->kind==enk_datasizeof) {
-      auto &selected=e->variant.sizeof_info;Id operand=0;
-      if(selected.is_type) {
-        if(!selected.variant.type)missing("size/alignment selected type reference");
-        operand=node("type-reference",source_position,type_id(selected.variant.type));
-        db.update("nodes","id",operand,{{"source_node_id",id}});
-      } else {
-        if(!selected.variant.expr)missing("size/alignment selected expression reference");
-        operand=expression(selected.variant.expr,&source_position,id);
-      }
-      edge(id,"operand",0,operand);
+      auto &selected=e->variant.sizeof_info;
+      query_operand(id,selected.is_type?selected.variant.type:nullptr,
+        selected.is_type?nullptr:selected.variant.expr,source_position);
     }
     if(e->kind==enk_sizeof_pack) {
       // cp_gen_be retains exactly this selected pack operand. It supplies
       // source navigation only; EDG owns any eventual pack-size evaluation.
       auto &selected=e->variant.sizeof_pack;
-      Id operand=0;
-      if(selected.is_type) {
-        if(!selected.variant.type)missing("sizeof-pack selected type reference");
-        operand=node("type-reference",source_position,type_id(selected.variant.type));
-        db.update("nodes","id",operand,{{"source_node_id",id}});
-      } else {
-        if(!selected.variant.expr)missing("sizeof-pack selected expression reference");
-        operand=expression(selected.variant.expr,&source_position,id);
-      }
-      edge(id,"operand",0,operand);
+      query_operand(id,selected.is_type?selected.variant.type:nullptr,
+        selected.is_type?nullptr:selected.variant.expr,source_position);
     }
     if(e->kind==enk_operation) {
       bool vacuous=e->variant.operation.kind==eok_dot_vacuous_destructor_call ||

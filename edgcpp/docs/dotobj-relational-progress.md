@@ -1396,6 +1396,30 @@ without evaluating them. `hugeint-v47` remains at virtual deleting destruction.
 Complete real DuckDB objects and generated actual DuckDB C# remain zero. Resource
 evidence still describes rejected export stages, never a completed TU.
 
+## Selected query constants and first bundled library object (2026-10-11)
+
+Verified `dotobj-relational-query-constant-recipes-v1` retains selected dependent
+`sizeof`, `datasizeof` and standard/GNU alignment constants as source operations
+with exact selected type or expression operands. Stock local-expression accessors
+and recorded array correspondence resolve local references; absent required
+correspondence rejects. It computes no query value or array extent. The shared
+operand projection also serves the previously supported source-expression queries.
+Native, source-hidden C# and Linux NativeAOT pass. Schema 1023 / 44 tables is unchanged.
+Actual checksum-v15 and exception-v18 pass string:813 and reach a dependent
+`__min_cap` enumerator at string:814, currently incorrectly sent to integer formatting.
+Preserving its selected source expression is the next metadata correction.
+
+The configured C++17 ICU `common/utf_impl.cpp` bundled dependency publishes the first
+complete library-scope object with original manifest arguments/source pin: 503,808
+bytes, 14 functions, 1,652 nodes, 244 types and 162 symbols. SQLite integrity and
+foreign keys pass. Full-TU export takes 0.09 seconds / 17,920 KiB peak RSS. Required
+provider C# generation reaches a nested right-to-left local assignment in a
+short-circuit condition at source:143:35 and rejects; its rejected stage takes
+0.12 seconds / 41,472 KiB peak RSS. The object, tool/source hashes, provenance,
+table sizes and partial source are retained. This is one complete bundled dependency
+TU, zero complete DuckDB core TUs and zero complete actual C# sources; it does not
+establish library completeness or runtime coverage.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
