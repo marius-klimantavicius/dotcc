@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1017;
+PRAGMA user_version = 1018;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -453,4 +453,19 @@ CREATE TABLE literal_initializers (
  node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
  copy_byte_count INTEGER NOT NULL CHECK(copy_byte_count>=0),
  zero_byte_count INTEGER NOT NULL CHECK(zero_byte_count>=0)
+) STRICT;
+
+-- Selected allocation decisions. Check/size values are ordinary expression nodes.
+CREATE TABLE allocations (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ allocated_type_id INTEGER NOT NULL REFERENCES types(id),
+ allocator_symbol_id INTEGER NOT NULL REFERENCES symbols(id),
+ count_value_node_id INTEGER REFERENCES nodes(id),
+ count_symbol_id INTEGER REFERENCES symbols(id),
+ size_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ length_check_node_id INTEGER REFERENCES nodes(id),
+ length_failure_symbol_id INTEGER REFERENCES symbols(id),
+ result_byte_offset INTEGER NOT NULL,
+ CHECK(count_symbol_id IS NULL OR count_value_node_id IS NOT NULL),
+ CHECK((length_check_node_id IS NULL) = (length_failure_symbol_id IS NULL))
 ) STRICT;

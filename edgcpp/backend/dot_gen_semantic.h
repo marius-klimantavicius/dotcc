@@ -78,6 +78,17 @@ struct State {
     a_source_position position{};
   };
   std::map<a_variable_ptr,SelectedLiteral> selected_literals;
+  struct Allocation {
+    Id node=0,owner=0,allocated_type=0,allocator=0,count_value=0,count_symbol=0,size=0,check=0,failure=0;
+    a_memory_region_number region=NULL_region_number;
+    an_expr_node_ptr source_count=nullptr;
+    a_variable_ptr count_temporary=nullptr;
+    a_source_position position{};
+    std::map<an_expr_node_ptr,Id> projected;
+    bool complete=false;
+  };
+  std::map<a_new_delete_supplement_ptr,Allocation> allocations;
+  std::vector<a_new_delete_supplement_ptr> allocation_stack;
   std::map<a_template_ptr,Id> templates;
   std::map<std::string,Id> files;
   std::map<an_expr_node_ptr,Id> expressions;
@@ -876,6 +887,12 @@ struct State {
     // No constant pointer from this region can survive its reclamation.
     if(mem_region_for_routine(r)!=NULL_region_number)
       literal_constants.erase(mem_region_for_routine(r));
+    for(auto entry=allocations.begin();entry!=allocations.end();) {
+      if(entry->second.region==mem_region_for_routine(r)) {
+        if(!entry->second.complete)missing("new expression without selected allocation size/result");
+        entry=allocations.erase(entry);
+      } else ++entry;
+    }
   }
   Id selected_literal_object(a_variable_ptr v) {
     auto found=selected_literals.find(v);
@@ -1280,6 +1297,95 @@ struct State {
       {"callable_type_id",routine_source_types.at(selected)},{"vptr_byte_offset",offset},
       {"slot_index",selected->number.virtual_function}});
   }
+  bool plain_allocation(a_new_delete_supplement_ptr value) {
+    if(!value->is_new || !value->routine || value->placement_new || value->aligned_version ||
+       value->arg || value->dynamic_init || value->freeing_of_storage_on_exception || value->has_new_initializer)
+      return false;
+    auto allocated_type=skip_typerefs(value->type);
+    auto element=allocated_type->kind==tk_array?skip_typerefs(allocated_type->variant.array.element_type):allocated_type;
+    // Scalar elements use lower_new's plain allocation branch. Class cookies,
+    // multidimensional counts, and initialized storage need further selected
+    // actions and are deliberately outside this projection.
+    return is_scalar_type(element);
+  }
+  void source_allocation(Id id,an_expr_node_ptr e) {
+    if(template_recipe || !function)missing("allocation outside executable function");
+    auto value=e->variant.new_delete;
+    auto &selected=allocations[value];
+    selected.node=id;selected.owner=function;selected.region=literal_source_region;
+    selected.position=e->position;selected.allocated_type=type_id(value->type);
+    selected.allocator=routine(value->routine);selected.source_count=value->number_of_elements;
+    selected.count_value=expression(value->number_of_elements);
+    edge(id,"element-count",0,selected.count_value);
+  }
+  Id allocation_expression(Allocation &selected,an_expr_node_ptr e) {
+    if(!e)missing("selected allocation expression");
+    if(e==selected.source_count)return selected.count_value;
+    auto found=selected.projected.find(e);if(found!=selected.projected.end())return found->second;
+    Id previous=function;bool previous_recipe=template_recipe;
+    function=selected.owner;template_recipe=false;
+    Id id=0;
+    if(e->kind==enk_variable && node_variable(e)==selected.count_temporary) {
+      id=node("variable",selected.position,type_id(e->type),e->is_lvalue?"lvalue":"prvalue",
+        nullptr,"",selected.count_symbol,0,0,true);
+    } else if(e->kind==enk_constant && node_constant(e)->kind==ck_integer) {
+      id=constant(node_constant(e),selected.position);
+    } else if(e->kind==enk_operation) {
+      switch(e->variant.operation.kind) {
+        case eok_cast:case eok_lvalue_cast:case eok_lvalue_adjust:
+        case eok_multiply:case eok_subtract:case eok_divide:
+        case eok_gt:case eok_lt:case eok_lor:break;
+        default:missing("selected allocation size/check operation",int(e->variant.operation.kind));
+      }
+      id=node("operation",selected.position,type_id(e->type),"prvalue",operation(e->variant.operation.kind));
+      unsigned ordinal=0;
+      for(auto child=e->variant.operation.operands;child;child=child->next)
+        edge(id,"operand",ordinal++,allocation_expression(selected,child));
+    } else missing("selected allocation size/check expression",int(e->kind));
+    selected.projected[e]=id;
+    db.update("nodes","id",id,{{"source_node_id",selected.node},{"is_synthetic",true}});
+    function=previous;template_recipe=previous_recipe;return id;
+  }
+  void allocation_size_begin(a_new_delete_supplement_ptr value) {
+    allocation_stack.push_back(allocations.count(value)?value:nullptr);
+  }
+  void allocation_count_binding(a_variable_ptr temporary) {
+    if(allocation_stack.empty() || !allocation_stack.back())return;
+    auto &selected=allocations.at(allocation_stack.back());
+    if(selected.count_temporary)missing("multiple allocation count bindings");
+    selected.count_temporary=temporary;selected.count_symbol=next_symbol++;
+    auto pos=location(selected.position);
+    db.insert("symbols",{{"id",selected.count_symbol},{"kind","local"},
+      {"name",spelling(temporary->source_corresp)},{"link_name",""},{"linkage","none"},
+      {"type_id",type_id(temporary->type)},{"parent_symbol_id",selected.owner},{"is_definition",true},
+      {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
+  }
+  void allocation_length_check(an_expr_node_ptr predicate,a_routine_ptr failure) {
+    if(allocation_stack.empty() || !allocation_stack.back())return;
+    auto &selected=allocations.at(allocation_stack.back());
+    selected.check=allocation_expression(selected,predicate);selected.failure=routine(failure);
+  }
+  void allocation_size_end(a_new_delete_supplement_ptr value,an_expr_node_ptr size) {
+    if(allocation_stack.empty())missing("allocation size hook nesting");
+    if(allocation_stack.back()) {
+      if(allocation_stack.back()!=value)missing("allocation size hook owner");
+      auto &selected=allocations.at(value);selected.size=allocation_expression(selected,size);
+    }
+    allocation_stack.pop_back();
+  }
+  void allocation_simple_result(a_new_delete_supplement_ptr value) {
+    auto found=allocations.find(value);if(found==allocations.end())return;
+    auto &selected=found->second;
+    if(!selected.size || selected.complete)missing("selected plain allocation completion");
+    // This callback is at lower_new's final plain-path change_to_cast. The
+    // result is the allocation call's pointer, with no cookie adjustment.
+    db.insert("allocations",{{"node_id",selected.node},{"allocated_type_id",selected.allocated_type},
+      {"allocator_symbol_id",selected.allocator},{"count_value_node_id",optional(selected.count_symbol?selected.count_value:0)},
+      {"count_symbol_id",optional(selected.count_symbol)},{"size_node_id",selected.size},
+      {"length_check_node_id",optional(selected.check)},{"length_failure_symbol_id",optional(selected.failure)},
+      {"result_byte_offset",0}});
+    selected.complete=true;
+  }
   Id expression(an_expr_node_ptr e) {
     if(!e)return 0;
     auto &expression_ids=template_recipe?recipe_expressions:expressions;
@@ -1304,6 +1410,7 @@ struct State {
       case enk_throw:kind=e->variant.throw_info?"throw":"rethrow";break;
       case enk_new_delete: {
         auto allocation=e->variant.new_delete;
+        if(plain_allocation(allocation)){kind="new";symbol=routine(allocation->routine);break;}
         auto allocated_type=allocation->type?skip_typerefs(allocation->type):nullptr;
         auto element_type=allocated_type && allocated_type->kind==tk_array?
           skip_typerefs(allocated_type->variant.array.element_type):nullptr;
@@ -1350,6 +1457,7 @@ struct State {
     Id id=node(kind,e->position,type_id(e->type),e->is_lvalue?"lvalue":e->is_xvalue?"xvalue":"prvalue",
       op,text,symbol,field,type_id(e->orig_lvalue_type),e->compiler_generated);
     expression_ids[e]=id;
+    if(e->kind==enk_new_delete)source_allocation(id,e);
     if(e->kind==enk_variable && selected_literals.count(node_variable(e))) {
       db.update("nodes","id",id,{{"literal_object_id",selected_literal_object(node_variable(e))}});
     }
@@ -1722,6 +1830,8 @@ struct State {
     for(auto ns=scope->namespaces;ns;ns=ns->next)if(!ns->is_namespace_alias)capture(ns->variant.assoc_scope);
   }
   void finish() {
+    for(const auto &entry:allocations)
+      if(!entry.second.complete)missing("new expression without selected allocation size/result");
     for(const auto &entry:selected_literals)if(entry.second.symbol) {
       auto v=entry.first;
       db.update("symbols","id",entry.second.symbol,{{"link_name",v->source_corresp.name?v->source_corresp.name:""},
@@ -1764,6 +1874,21 @@ inline void literal_storage_selected(a_constant_ptr constant,a_variable_ptr vari
 }
 inline void literal_function_complete(a_routine_ptr routine) {
   if(enabled())state().literal_function_complete(routine);
+}
+inline void allocation_size_begin(a_new_delete_supplement_ptr allocation) {
+  if(enabled())state().allocation_size_begin(allocation);
+}
+inline void allocation_count_binding(a_variable_ptr temporary) {
+  if(enabled())state().allocation_count_binding(temporary);
+}
+inline void allocation_length_check(an_expr_node_ptr predicate,a_routine_ptr failure) {
+  if(enabled())state().allocation_length_check(predicate,failure);
+}
+inline void allocation_size_end(a_new_delete_supplement_ptr allocation,an_expr_node_ptr size) {
+  if(enabled())state().allocation_size_end(allocation,size);
+}
+inline void allocation_simple_result(a_new_delete_supplement_ptr allocation) {
+  if(enabled())state().allocation_simple_result(allocation);
 }
 inline void virtual_source_class(a_type_ptr type) {
   if(enabled())state().virtual_source_class(type);

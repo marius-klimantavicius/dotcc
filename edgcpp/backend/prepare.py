@@ -1494,6 +1494,41 @@ object_source_overlay(lower,
 object_source_overlay(root / "upstream/src/lower_init.c",
     '#include "dot_gen_object_source.h"',
     '#include "dot_gen_object_source.h"\n#include "dot_gen_semantic.h"')
+# Preserve only the selected size/check graph for a source allocation expression.
+object_source_overlay(init_lower,
+    '  number_of_elements = ndsp->number_of_elements;',
+    '  number_of_elements = ndsp->number_of_elements;\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::allocation_size_begin(ndsp);\n'
+    '#endif')
+object_source_overlay(init_lower,
+    '  temp = make_lowered_temporary(num_elements_type);',
+    '  temp = make_lowered_temporary(num_elements_type);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::allocation_count_binding(temp);\n'
+    '#endif')
+object_source_overlay(init_lower,
+    '  insert_expr(call_node, &then_insert_location);\n'
+    '  release_local_constant(&zero_constant);\n'
+    '  release_local_constant(&elem_size_constant);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::allocation_length_check(test_node, throw_bad_array_new_length_routine);\n'
+    '#endif\n'
+    '  insert_expr(call_node, &then_insert_location);\n'
+    '  release_local_constant(&zero_constant);\n'
+    '  release_local_constant(&elem_size_constant);')
+object_source_overlay(init_lower,
+    '  return number_of_bytes;\n}  /* size_arg_for_new */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::allocation_size_end(ndsp, number_of_bytes);\n'
+    '#endif\n'
+    '  return number_of_bytes;\n}  /* size_arg_for_new */')
+object_source_overlay(init_lower,
+    '    change_to_cast(expr, call_node, expr->type);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::allocation_simple_result(ndsp);\n'
+    '#endif\n'
+    '    change_to_cast(expr, call_node, expr->type);')
 object_source_overlay(lower,
     '    dot_object_source::observe_record_before_prelowering(class_type);',
     '    dot_semantic::virtual_source_class(class_type);\n'

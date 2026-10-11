@@ -143,6 +143,12 @@ EDG explicitly selects the field initializer. `tests/verify_default_members.py`
 covers constants, typed null pointers, templates, and explicit overrides. Richer
 defaults needing constructor remapping or cleanup remain unsupported.
 
+Plain allocation uses EDG-selected count bindings, check/size expression graphs,
+failure calls and allocator calls. `tests/verify_allocations.py` supplies explicit
+allocator providers and checks once-only effects, invalid/zero/fixed counts,
+conditional execution and exceptions. This is not a standard runtime binder.
+Initialization, placement/aligned allocation, cookies and rollback remain unsupported.
+
 Signed/unsigned 128-bit integers retain exact EDG decimal scalar values and layout,
 using System.Int128/UInt128 in generated C#. No separate wide-value payload is used.
 `tests/verify_wide_integers.py` covers literals, templates, arithmetic, arrays,

@@ -613,6 +613,40 @@ The next step projects the exact allocation size/count and selected call decisio
 from stock lowering; it must not replace C++ allocation failure behavior with a
 CLR exception or override a supplied allocator. The broad campaign remains stopped.
 
+## Verified selected plain allocation expressions
+
+`artifacts/review/dotobj-relational-allocations-v2/` passes native C++, SQL integrity,
+source-hidden C# and Linux x64 NativeAOT. Schema 1018 has 43 tables. One allocation
+relation references the source count, EDG-selected count temporary, ordinary
+check/size expression graphs, selected failure/allocator symbols and result
+adjustment. Five narrow hooks observe stock decisions; no whole lowered function
+graph is collected. Synthetic expressions retain the owning source new node.
+Runtime array type metadata does not demand a fixed generated array layout.
+
+Expression-local helpers bind the selected count once, test the exact predicate,
+call the selected failure routine, and pass the exact size expression to the
+selected allocator. Fixed-count allocation retains no unused count/check actions.
+C# preserves stock C-like integer comparison/logical results as explicit 1/0 values.
+No consumer sizeof/cookie/overflow rules or blanket host allocator replacements
+were introduced. Initialization, placement/alignment, class/cookie handling and
+rollback remain explicit unsupported boundaries.
+
+The fixture supplies arena allocator and length-failure definitions, exercising
+count effects once, zero/invalid/fixed counts, conditional evaluation and allocator
+exceptions. It does not establish standard allocation-runtime completeness. Provider:
+245,760 bytes, 56 nodes, 19 types, one allocation. Main: 286,720 bytes, 276 nodes,
+22 types, six allocations. Conditions and bounded-body regressions pass
+native/C#/NativeAOT at `*-allocations-regression-v1`; peak body nodes remain 251
+of 1,531. Storage summaries/tool hashes are retained; reproduce with
+`tests/verify_allocations.py`.
+
+Actual `hugeint-v27` advances to `delete[] ptr` at `string.hpp:299`, with selected
+operator delete[], a scalar character pointee and no destructor. No complete
+DuckDB object is published; 0.86 s / 221,184 KiB remains early-rejection cost.
+Next delete work can use ordinary selected call nodes/edges, preserving stock
+argument conversions and null behavior without another table. Broad campaign
+remains stopped.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

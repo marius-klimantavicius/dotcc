@@ -86,7 +86,7 @@ internal sealed partial class Emitter
         WriteNullptrHelper();
         PrepareExceptionDescriptors();
         WriteLiteralStorage();
-        foreach(var unit in program.Units){WriteClassConversionHelpers(unit,null);WriteVirtualCallHelpers(unit,null);WriteCompoundHelpers(unit,null);}
+        foreach(var unit in program.Units){WriteClassConversionHelpers(unit,null);WriteVirtualCallHelpers(unit,null);WriteCompoundHelpers(unit,null);WriteAllocationHelpers(unit,null);}
         foreach(var global in program.Globals)
         {
             if(global.Unit.IsArray(global.Symbol.Type)){WriteGlobalArray(global);continue;}
@@ -106,9 +106,10 @@ internal sealed partial class Emitter
                 WriteClassConversionHelpers(function.Unit,function.Id);
                 WriteVirtualCallHelpers(function.Unit,function.Id);
                 WriteCompoundHelpers(function.Unit,function.Id);
+                WriteAllocationHelpers(function.Unit,function.Id);
                 new FunctionWriter(this,function.Unit,function).Write();
             }
-            finally {ReleaseClassConversionNames(function.Unit,function.Id);ReleaseVirtualCallNames(function.Unit,function.Id);ReleaseCompoundNames(function.Unit,function.Id);}
+            finally {ReleaseClassConversionNames(function.Unit,function.Id);ReleaseVirtualCallNames(function.Unit,function.Id);ReleaseCompoundNames(function.Unit,function.Id);ReleaseAllocationNames(function.Unit,function.Id);}
         }
         if(entry is not null)
         {
@@ -207,6 +208,7 @@ internal sealed partial class Emitter
             foreach(string value in emitter.compoundHelpers.Values)allocator.Reserve(value);
             foreach(string value in emitter.arrayNames.Values)allocator.Reserve(value);
             foreach(string value in emitter.literalNames.Values)allocator.Reserve(value);
+            foreach(string value in emitter.allocationNames.Values)allocator.Reserve(value);
             if(emitter.localArrayStorageName is string arrayStorage)allocator.Reserve(arrayStorage);
             if(emitter.nullptrValueName is string helper)allocator.Reserve(helper);
             if(function is SymbolRef selected)
@@ -261,6 +263,7 @@ internal sealed partial class Emitter
                 case "constant":return Constant(node);
                 case "address-constant":return LiteralAddress(node);
                 case "string-literal":return "(*"+ArrayAddress(node)+")";
+                case "new":return AllocationExpression(node);
                 case "variable":
                     long variable=node.Symbol??throw unit.Missing(node,"selected symbol missing");
                     return unit.IsArray(unit.Symbols[variable].Type) || emitter.HasPinnedRecordStorage(unit,variable)?"(*"+Name(variable)+")":Name(variable);
@@ -297,6 +300,7 @@ internal sealed partial class Emitter
             string E(int index)=>Expression(N(index));
             string Binary(string op)=>"("+E(0)+" "+op+" "+E(1)+")";
             string Unary(string op)=>"("+op+E(0)+")";
+            string BooleanResult(string value)=>NodeType(node)=="bool"?value:"(("+NodeType(node)+")("+value+" ? 1 : 0))";
             string op=node.Operator??throw unit.Missing(node,"operation discriminator missing");
             if(UsesCompoundHelper(node))return CompoundExpression(node,N(0),N(1));
             if(node.EvaluationOrder=="right-to-left" && operands.Length>1 && !expandedValues.ContainsKey(operands[1].Id))
@@ -309,10 +313,10 @@ internal sealed partial class Emitter
                 case "and":case "bit-and":return Binary("&");case "or":case "bit-or":return Binary("|");case "xor":case "bit-xor":return Binary("^");
                 case "assign":return Binary("=");case "add-assign":return Binary("+=");case "subtract-assign":return Binary("-=");
                 case "multiply-assign":return Binary("*=");case "divide-assign":return Binary("/=");case "remainder-assign":return Binary("%=");
-                case "eq":return Binary("==");case "ne":return Binary("!=");case "lt":return Binary("<");case "le":return Binary("<=");case "gt":return Binary(">");case "ge":return Binary(">=");
-                case "logical-and":return "("+Truth(N(0))+" && "+Truth(N(1))+")";
-                case "logical-or":return "("+Truth(N(0))+" || "+Truth(N(1))+")";
-                case "not":return "(!"+Truth(N(0))+")";case "negate":return Unary("-");case "plus":return Unary("+");case "complement":return Unary("~");
+                case "eq":return BooleanResult(Binary("=="));case "ne":return BooleanResult(Binary("!="));case "lt":return BooleanResult(Binary("<"));case "le":return BooleanResult(Binary("<="));case "gt":return BooleanResult(Binary(">"));case "ge":return BooleanResult(Binary(">="));
+                case "logical-and":return BooleanResult("("+Truth(N(0))+" && "+Truth(N(1))+")");
+                case "logical-or":return BooleanResult("("+Truth(N(0))+" || "+Truth(N(1))+")");
+                case "not":return BooleanResult("(!"+Truth(N(0))+")");case "negate":return Unary("-");case "plus":return Unary("+");case "complement":return Unary("~");
                 case "pre-increment":return Unary("++");case "pre-decrement":return Unary("--");
                 case "post-increment":return "("+E(0)+"++)";case "post-decrement":return "("+E(0)+"--)";
                 case "address-of":case "reference-to":

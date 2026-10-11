@@ -158,3 +158,11 @@ SELECT n.id,n.kind,n.literal_object_id,n.literal_byte_offset,
        i.copy_byte_count,i.zero_byte_count
 FROM nodes n LEFT JOIN literal_initializers i ON i.node_id=n.id
 WHERE n.literal_object_id IS NOT NULL ORDER BY n.id;
+
+SELECT a.node_id,t.kind AS allocated_type,s.name AS allocator,a.count_value_node_id,
+       count.name AS selected_count,a.size_node_id,a.length_check_node_id,
+       failure.link_name AS selected_failure,a.result_byte_offset
+FROM allocations a JOIN types t ON t.id=a.allocated_type_id
+JOIN symbols s ON s.id=a.allocator_symbol_id
+LEFT JOIN symbols count ON count.id=a.count_symbol_id
+LEFT JOIN symbols failure ON failure.id=a.length_failure_symbol_id ORDER BY a.node_id;

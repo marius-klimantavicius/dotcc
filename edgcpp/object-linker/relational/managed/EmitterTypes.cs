@@ -71,6 +71,17 @@ internal sealed partial class Emitter
         if(node.EnumValue is long enumeration)UseType(unit,unit.EnumValues[enumeration].Type);
         if(node.FloatingValue is long floating)UseType(unit,unit.FloatingValues[floating].Type);
         if(node.LiteralObject is long literal)UseLiteral(unit,literal);
+        if(unit.Allocations.TryGetValue(node.Id,out var allocation))
+        {
+            // The allocated array type is source metadata. Runtime execution
+            // uses the selected pointer result and supplied size/check graph.
+            UseType(unit,unit.Symbols[allocation.Allocator].Type);
+            if(allocation.CountSymbol is long count)UseType(unit,unit.Symbols[count].Type);
+            if(allocation.CountValue is long countValue)UseNode(unit,unit.Nodes[countValue],visited);
+            UseNode(unit,unit.Nodes[allocation.Size],visited);
+            if(allocation.Check is long check)UseNode(unit,unit.Nodes[check],visited);
+            if(allocation.Failure is long failure)UseType(unit,unit.Symbols[failure].Type);
+        }
         foreach(var element in unit.ArrayElements.GetValueOrDefault(node.Id,[]))UseNode(unit,unit.Nodes[element.Value],visited);
         foreach(var element in unit.RecordElements.GetValueOrDefault(node.Id,[]))
         {

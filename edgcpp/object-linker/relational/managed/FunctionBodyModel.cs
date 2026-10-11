@@ -22,6 +22,7 @@ internal sealed class FunctionBody
     public Dictionary<long,RecordInitializer> RecordInitializers {get;}
     public Dictionary<long,List<RecordElement>> RecordElements {get;}
     public Dictionary<long,LiteralInitializer> LiteralInitializers {get;}
+    public Dictionary<long,Allocation> Allocations {get;}
 
     public FunctionBody(FunctionBody? globals=null)
     {
@@ -43,6 +44,7 @@ internal sealed class FunctionBody
         RecordInitializers=globals is null?[]:new(globals.RecordInitializers);
         RecordElements=globals is null?[]:new(globals.RecordElements);
         LiteralInitializers=globals is null?[]:new(globals.LiteralInitializers);
+        Allocations=globals is null?[]:new(globals.Allocations);
     }
 
     public long RowCount=>Nodes.Count+Edges.Values.Sum(values=>(long)values.Count)+Lifetimes.Count+Initializations.Count+
@@ -50,7 +52,7 @@ internal sealed class FunctionBody
         ConstructorInitializers.Values.Sum(values=>(long)values.Count)+Handlers.Values.Sum(values=>(long)values.Count)+
         Throws.Count+ClassConversions.Count+FloatingValues.Count+VirtualCalls.Count+VptrWrites.Values.Sum(values=>(long)values.Count)+
         ArrayInitializers.Count+ArrayElements.Values.Sum(values=>(long)values.Count)+
-        RecordInitializers.Count+RecordElements.Values.Sum(values=>(long)values.Count)+LiteralInitializers.Count;
+        RecordInitializers.Count+RecordElements.Values.Sum(values=>(long)values.Count)+LiteralInitializers.Count+Allocations.Count;
 }
 
 internal sealed class ReleaseScope(Action release) : IDisposable
@@ -86,6 +88,7 @@ internal sealed partial class Unit
             ReadArrayInitializers(function);
             ReadRecordInitializers(function);
             ReadLiteralInitializers(function);
+            ReadAllocations(function);
             return new ReleaseScope(()=>functionBody=null);
         }
         catch {functionBody=null;throw;}

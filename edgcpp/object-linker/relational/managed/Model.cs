@@ -90,6 +90,7 @@ internal sealed partial class Unit : IDisposable
             ReadArrayFeatures();
             ReadRecordInitializerFeatures();
             ReadLiterals();
+            ReadAllocationFeatures();
             ReadFunctionDetails();
             ReadNodes(null);
             ReadFloatingValues(null);
@@ -99,6 +100,7 @@ internal sealed partial class Unit : IDisposable
             ReadArrayInitializers(null);
             ReadRecordInitializers(null);
             ReadLiteralInitializers(null);
+            ReadAllocations(null);
         }
         catch { database.Dispose(); throw; }
     }
