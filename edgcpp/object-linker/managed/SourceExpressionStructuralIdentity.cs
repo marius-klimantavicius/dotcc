@@ -45,7 +45,7 @@ internal sealed partial class ObjectFile
         if(SourceExpressionOperations.TryGetValue(id,out var operation))result+="O"+SourceIdentityFrame(operation.Opcode.ToString(CultureInfo.InvariantCulture))+SourceIdentityFrame(operation.Name)+SourceIdentityFrame(operation.OriginalTypeKind?.ToString(CultureInfo.InvariantCulture)??"");
         result+="F"+SourceIdentityFrame(SourceExpressionFlags.GetValueOrDefault(id,[]).Count.ToString(CultureInfo.InvariantCulture))+string.Concat(SourceExpressionFlags.GetValueOrDefault(id,[]).Order(StringComparer.Ordinal).Select(SourceIdentityFrame));
         if(SourceExpressionTypeOperands.TryGetValue(id,out long operand))result+="T"+SourceIdentityFrame(SourceArgumentTypeIdentity(operand,depth+1));
-        if(SourceExpressionConstants.TryGetValue(id,out long constant))result+="C"+SourceIdentityFrame(SourceConstantIdentity(constant,depth+1));
+        if(SourceExpressionConstants.ContainsKey(id))result+="C"+SourceIdentityFrame(SourceExpressionConstantIdentity(id,depth+1));
         if(SourceExpressionParameterReferences.TryGetValue(id,out var reference))result+="R"+SourceIdentityFrame((reference.Ordinal+1).ToString(CultureInfo.InvariantCulture))+SourceIdentityFrame(reference.Levels.ToString(CultureInfo.InvariantCulture))+SourceIdentityFrame(SourceParameterReferenceContextKey(id));
         if(SourceExpressionRequirements.TryGetValue(id,out bool noex))result+=noex?"N1":"N0";
         if(SourceExpressionQueries.TryGetValue(id,out bool standard))result+=standard?"Q1":"Q0";

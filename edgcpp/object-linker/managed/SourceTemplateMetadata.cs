@@ -106,8 +106,10 @@ internal sealed partial class ObjectFile
             if ((type.ArrayBoundKind == "dependent") != SourceArrayBounds.ContainsKey(type.Id))
                 throw new InvalidDataException("Dependent array is missing its exact original bound expression");
         ReadSourceConstraints();
+        ReadSourceMemberNames();
         ReadSourceTypeOrigins();
         ReadSourceRoutineSubstitutions();
+        ReadSourceDeclaratorContexts();
         ReadSourceConstantExpressions();
         ReadSourceAggregateConstants();
         ReadSourcePackSizes();
@@ -206,7 +208,8 @@ internal sealed partial class ObjectFile
                     throw new InvalidDataException("Source constant expression wrapper changes its operand type");
             }
         }
-        SourceConstantIdentity(value.Id, 0); // Includes cycle/depth validation.
+        // Name-only leaves have their receiver-bound identity checked separately.
+        if(!sourceMemberNameConstants.Contains(value.Id)) SourceConstantIdentity(value.Id, 0); // Includes cycle/depth validation.
     }
 
     private static string SourceIdentityFrame(string value) => Encoding.UTF8.GetByteCount(value).ToString(CultureInfo.InvariantCulture) + ":" + value;
@@ -313,7 +316,7 @@ internal sealed partial class ObjectFile
                 record.IdentityKey.StartsWith("source-member-instantiation:", StringComparison.Ordinal) ||
                 record.IdentityKey.StartsWith("source-parameter-instantiation:", StringComparison.Ordinal);
             bool selectedConcrete= !record.IsDependent && SourceRecordInstantiations.ContainsKey(record.Id);
-            if(selectedConcrete && !SourceExpressionDeclarations.Values.Any(declaration=>declaration.TemplateOriginKind=="class-member-function" &&
+            if(selectedConcrete && !SourceDeclaratorClassWitnesses.Contains(record.Id) && !SourceExpressionDeclarations.Values.Any(declaration=>declaration.TemplateOriginKind=="class-member-function" &&
                 declaration.OwnerType==record.SourceTypeId && declaration.TemplatePrototype is long primary &&
                 SourceExpressionDeclarations.TryGetValue(primary,out var original) && original.OwnerType is long originalOwner &&
                 SourceRecordsByType.TryGetValue(originalOwner,out var prototype) && prototype.Id==SourceRecordInstantiations[record.Id].PrototypeSourceRecordId))

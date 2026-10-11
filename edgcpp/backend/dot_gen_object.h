@@ -52,7 +52,7 @@ string array(const std::vector<string> &values) {
       }
     }
   }
-  unsupported((string("dotobj scalar-v61: ")+what).c_str(),kind);
+  unsupported((string("dotobj scalar-v62: ")+what).c_str(),kind);
 }
 }
 namespace dot_object {
@@ -208,6 +208,8 @@ struct Writer {
   std::map<unsigned,std::map<unsigned long long,unsigned char>> bitfield_data;
   std::vector<string> routine_types,routine_parameters,source_routine_types,source_routine_parameters,source_routine_prototype_origins;
   std::vector<string> source_routine_type_substitutions,source_routine_borrowed_arguments;
+  std::vector<string> source_declarator_contexts,source_declarator_borrowed_arguments;
+  std::map<unsigned,unsigned> source_declarator_context_ids;
   std::vector<string> deferred_routine_abis;
   std::vector<string> deferred_function_declarations;
   std::map<string,unsigned> signature_ids;
@@ -510,6 +512,29 @@ struct Writer {
     }
     reject("source parameter reference context does not reach its exact owner");return "";
   }
+  string source_expression_constant_identity(unsigned id,unsigned depth) {
+    auto &graph=dot_object_source::source_constraint_graph();
+    const auto &expression=graph.expressions.at(id-1);
+    const auto &constant=dot_object_source::state().semantic_constants.at(expression.constant-1);
+    if(constant.kind!="member" || !constant.member_owner)return source_constant_identity(expression.constant,depth);
+    const auto &owner=dot_object_source::state().types.at(constant.member_owner-1);
+    if(owner.kind!="dependent" || owner.dependent_kind!="unknown")return source_constant_identity(expression.constant,depth);
+    unsigned receiver=0;int opcode=-1;unsigned uses=0;
+    for(const auto &parent:graph.expressions)for(unsigned ordinal=0;ordinal<parent.edges.size();++ordinal) {
+      const auto &edge=parent.edges.at(ordinal);if(edge.child!=id)continue;++uses;
+      if(parent.kind!="operation" || (parent.operation!="eok_dot_static" && parent.operation!="eok_points_to_static") ||
+         parent.edges.size()!=2 || ordinal!=1 || edge.role!="operand" || parent.edges.at(0).role!="operand")
+        reject("unknown-owner member name lacks its exact source receiver operation");
+      receiver=parent.edges.at(0).child;opcode=parent.opcode;
+    }
+    if(uses!=1 || !receiver || expression.kind!="constant" || expression.type!=constant.type)
+      reject("unknown-owner member name has an invalid receiver or name operand");
+    const auto &result_type=dot_object_source::state().types.at(constant.type-1);
+    string type_key=result_type.kind=="dependent" && result_type.dependent_kind=="unknown"?
+      "dependent-unknown":source_argument_type_identity(constant.type,depth+1);
+    return "dependent-member-name:"+source_frame(type_key)+
+      source_frame(constant.name)+source_frame(std::to_string(opcode))+source_frame(source_expression_key(receiver,depth+1));
+  }
   string source_expression_key(unsigned id,unsigned depth) {
     if(!id || depth>128)reject("source expression structural identity cycle/depth");
     const auto &value=dot_object_source::source_constraint_graph().expressions.at(id-1);
@@ -520,7 +545,7 @@ struct Writer {
     if(value.kind=="operation" || value.kind=="builtin-operation")result+="O"+source_frame(std::to_string(value.opcode))+source_frame(value.operation)+source_frame(value.operation_type_kind<0?"":std::to_string(value.operation_type_kind));
     auto flags=value.flags;std::sort(flags.begin(),flags.end());result+="F"+source_frame(std::to_string(flags.size()));for(const auto &flag:flags)result+=source_frame(flag);
     if(value.type_operand)result+="T"+source_frame(source_argument_type_identity(value.type_operand,depth+1));
-    if(value.constant)result+="C"+source_frame(source_constant_identity(value.constant,depth+1));
+    if(value.constant)result+="C"+source_frame(source_expression_constant_identity(id,depth+1));
     if(value.kind=="parameter-reference")result+="R"+source_frame(std::to_string(value.parameter_number))+source_frame(std::to_string(value.levels_up))+source_frame(source_parameter_reference_context_key(value));
     if(value.kind=="compound-requirement")result+=value.noexcept_required?"N1":"N0";
     if(value.kind=="sizeof" || value.kind=="alignof" || value.kind=="datasizeof")result+=value.standard_alignof?"Q1":"Q0";
@@ -725,6 +750,29 @@ struct Writer {
     }
     return source_namespace_nominal_identity(source.namespace_owner,identity);
   }
+  unsigned source_declarator_context(unsigned captured) {
+    auto previous=source_declarator_context_ids.find(captured);
+    if(previous!=source_declarator_context_ids.end())return previous->second;
+    const auto observation=dot_object_source::source_constraint_graph().declarator_contexts.at(captured-1);
+    if(!observation.error.empty())reject(observation.error.c_str());
+    if(!observation.owner_captured || observation.observed_arguments.empty())reject("original declarator context has no observed borrowed arguments");
+    unsigned id=unsigned(source_declarator_context_ids.size()+1);source_declarator_context_ids[captured]=id;
+    auto &captured_types=dot_object_source::state().types;
+    unsigned declaration=observation.declaration?source_constraint_declaration(observation.declaration):0;
+    unsigned record=observation.record_type?source_record_metadata(captured_types.at(observation.record_type-1).record_type):0;
+    unsigned header=observation.header_type?source_class_header(captured_types.at(observation.header_type-1).record_type):0;
+    source_declarator_contexts.push_back("{\"id\":"+number(id)+",\"routineSourceTypeId\":"+number(source_type(observation.routine_type))+
+      ",\"scopeOrdinal\":"+std::to_string(observation.scope_ordinal)+",\"kind\":"+quote(observation.kind)+
+      ",\"selectedSourceDeclarationId\":"+number(declaration)+",\"sourceRecordId\":"+number(record)+
+      ",\"headerSourceRecordId\":"+number(header)+",\"argumentCount\":"+std::to_string(observation.original.arguments.size())+
+      ",\"borrowedArgumentCount\":"+std::to_string(observation.observed_arguments.size())+position(observation.position)+
+      ",\"captureProof\":"+quote(observation.original.from_function_factory?
+        "observed-function-instantiation-declarator-context":"observed-routine-declarator-instantiation-context")+"}");
+    for(const auto &argument:observation.observed_arguments)
+      source_declarator_borrowed_arguments.push_back("{\"contextId\":"+number(id)+",\"argumentOrdinal\":"+
+        std::to_string(argument.first)+",\"sourceTypeId\":"+number(source_type(argument.second))+"}");
+    return id;
+  }
   unsigned source_record_metadata(a_type_ptr t) {
     auto prior=source_record_ids.find(t);if(prior!=source_record_ids.end())return prior->second;
     auto &captured=dot_object_source::state();
@@ -765,6 +813,7 @@ struct Writer {
         // Its original owner/prototype relation is verified by the existing
         // concrete-class substitution contract; no new routine is fabricated.
         if(source->template_member_witness)source_constraint_declaration(source->template_member_witness);
+        if(source->template_declarator_witness)source_declarator_context(source->template_declarator_witness);
         unsigned prototype_record=source->template_prototype?
           source_record_metadata(captured.types.at(source->template_prototype-1).record_type):0;
         source_record_instantiations.push_back("{\"sourceRecordId\":"+number(source_record)+
@@ -1618,6 +1667,13 @@ struct Writer {
           (slot.role=="source" || slot.role=="indirect-source"?std::to_string(slot.source_ordinal):"null")+"}");
       }
       }
+      unsigned declarator_context_count=0;
+      const auto &context_graph=dot_object_source::source_constraint_graph();
+      auto declarator_contexts=context_graph.routine_declarator_contexts.find(captured);
+      if(declarator_contexts!=context_graph.routine_declarator_contexts.end())for(unsigned context:declarator_contexts->second)
+        if(!context_graph.declarator_contexts.at(context-1).observed_arguments.empty()) {
+          source_declarator_context(context);++declarator_context_count;
+        }
       const auto &substitutions=dot_object_source::source_constraint_graph().routine_substitutions;
       auto substituted=substitutions.find(captured);
       bool has_borrowed_arguments=substituted!=substitutions.end() && !substituted->second.observed_arguments.empty();
@@ -1637,7 +1693,7 @@ struct Writer {
           dot_object_source::state().routine_exception_resolutions.at(captured).implicit_destructor?"implicit-destructor-resolution":"generated-resolution":"captured")+",\"parameterMode\":"+quote(type.parameter_mode)+",\"objectTypeId\":"+number(type.object_type?source_type(type.object_type):0)+
         ",\"objectIsConst\":"+(type.object_is_const?"true":"false")+",\"objectIsVolatile\":"+(type.object_is_volatile?"true":"false")+
         ",\"objectRefQualifier\":"+quote(type.object_ref_qualifier)+",\"prototypeOrigin\":"+
-          quote(type.prototype_origin?"lambda-conversion-copy":"original")+",\"hasBorrowedArguments\":"+(has_borrowed_arguments?"true":"false")+"}");
+          quote(type.prototype_origin?"lambda-conversion-copy":"original")+",\"hasBorrowedArguments\":"+(has_borrowed_arguments?"true":"false")+",\"declaratorContextCount\":"+std::to_string(declarator_context_count)+"}");
       if(type.prototype_origin)source_routine_prototype_origins.push_back("{\"routineSourceTypeId\":"+number(id)+
         ",\"originalRoutineSourceTypeId\":"+number(source_type(type.prototype_origin))+
         ",\"originalBinderId\":"+number(source_parameter_binder(type.prototype_origin_binder))+
@@ -5529,7 +5585,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v61\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v62\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+
@@ -5641,7 +5697,7 @@ struct Writer {
       ",\"sourceDynamicExceptionSpecifications\":"+array(source_dynamic_exception_specifications)+
       ",\"sourceDynamicExceptionTypes\":"+array(source_dynamic_exception_types)+
       ",\"functionDynamicExceptionBoundaries\":"+array(function_dynamic_exception_boundaries)+
-      ",\"sourceRoutinePrototypeOrigins\":"+array(source_routine_prototype_origins)+",\"sourceRoutineTypeSubstitutions\":"+array(source_routine_type_substitutions)+",\"sourceRoutineBorrowedArguments\":"+array(source_routine_borrowed_arguments)+",\"sourceRoutineTypes\":"+array(source_routine_types)+",\"sourceRoutineParameters\":"+array(source_routine_parameters)+
+      ",\"sourceDeclaratorContexts\":"+array(source_declarator_contexts)+",\"sourceDeclaratorBorrowedArguments\":"+array(source_declarator_borrowed_arguments)+",\"sourceRoutinePrototypeOrigins\":"+array(source_routine_prototype_origins)+",\"sourceRoutineTypeSubstitutions\":"+array(source_routine_type_substitutions)+",\"sourceRoutineBorrowedArguments\":"+array(source_routine_borrowed_arguments)+",\"sourceRoutineTypes\":"+array(source_routine_types)+",\"sourceRoutineParameters\":"+array(source_routine_parameters)+
       ",\"deferredRoutineAbis\":"+array(deferred_routine_abis)+
       ",\"deferredFunctionDeclarations\":"+array(deferred_function_declarations)+
       ",\"sourceRoutineAbis\":"+array(source_routine_abis)+",\"sourceRoutineAbiParameters\":"+array(source_routine_abi_parameters)+

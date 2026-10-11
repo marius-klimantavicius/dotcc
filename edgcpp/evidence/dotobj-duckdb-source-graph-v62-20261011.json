@@ -1,0 +1,69 @@
+{
+  "profile": "scalar-control-v62",
+  "date": "2026-10-11",
+  "status": "accepted-bounded-milestone",
+  "checks": 407,
+  "tools": {
+    "native160": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-native160-verified-snapshot/cpfe-dot",
+      "sha256": "af8495c56a978e4e743626c6f95d0249e11926edc8fd915451e0f35d1b2f84f2"
+    },
+    "managed191": {
+      "path": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-managed-build-191/bin/DotObj.Linker/debug/dotobj-link.dll",
+      "sha256": "9f7e07a23932a603cd48482b1af179d50084a45a64fcfffdfa07b4ea74c4673a"
+    }
+  },
+  "acceptance": [
+    {
+      "name": "declarators-c++17",
+      "checks": 59,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v62-declarator-contexts-160-190-cxx17-002/results.json"
+    },
+    {
+      "name": "declarators-c++20",
+      "checks": 59,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v62-declarator-contexts-160-190-cxx20-002/results.json"
+    },
+    {
+      "name": "member-names",
+      "checks": 38,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v62-member-names-160-191-001/results.json"
+    },
+    {
+      "name": "records",
+      "checks": 153,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v62-records-160-191/results.json"
+    },
+    {
+      "name": "compressed-snapshots",
+      "checks": 67,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v62-source-compression-160-191/results.json"
+    },
+    {
+      "name": "project-storage-floor",
+      "checks": 31,
+      "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-project-storage-floor-158-001/results.json"
+    }
+  ],
+  "finalManagedDeclaratorReverification": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-v62-declarator-reverify-191/results.json",
+  "realUnits": {
+    "selected": 6,
+    "exported": 5,
+    "verified": 5,
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-cxx20-verify160-191/results.json"
+  },
+  "combinedGeneration": {
+    "units": 4,
+    "definitions": 4402,
+    "receipt": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-cxx20-combined4-160-191/results.json",
+    "review": "edgcpp/artifacts/review/dotobj-duckdb-v62"
+  },
+  "candidateCxx20Manifest": "/mnt/storage/dotcc-edg-campaign-20261003/dotobj-duckdb-cxx20-candidate-001/project.json",
+  "limitations": [
+    "unittest original type-operator binder across ordinary members of class templates remains gated",
+    "Full2635 coherent corpus has not run; historical2634 exports span tool versions",
+    "Existing linker retains all objects; catalog work is pending",
+    "No full DuckDB C# compile/run/NativeAOT acceptance",
+    "Native160 breadth32 C++20 probe remains in progress; candidate language mode is not full-project acceptance"
+  ]
+}

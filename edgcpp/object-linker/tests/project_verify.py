@@ -5,6 +5,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import shutil
 import sqlite3
 import subprocess
 import sys
@@ -64,6 +65,17 @@ def main():
         resumed = run('resume', built, ('--resume',))
         check('resume reuses successful objects', before == {str(p): p.stat().st_mtime_ns for p in objects})
         check('resume retains attempts', resumed['units'] == first['units'])
+        impossible_floor = str(shutil.disk_usage(out).total // (1024 * 1024) + 1)
+        retained = run('storage-floor-existing', built, ('--resume', '--min-free-space-mib', impossible_floor))
+        check('storage floor retains completed units', retained['units'] == first['units'])
+        limited_dir = out / 'storage-limited'
+        limited = run('storage-floor', limited_dir, ('--jobs', '2', '--min-free-space-mib', impossible_floor), expected=1)
+        check('storage floor defers all unscheduled units', limited['status'] == 'storage-limited' and
+              limited['packagedUnits'] == 0 and limited['deferredUnits'] == 2)
+        check('storage floor starts no compiler attempts', not list(limited_dir.glob('*/request.json')))
+        recovered = run('storage-floor-resume', limited_dir, ('--resume',))
+        check('storage-limited project resumes completely', recovered['status'] == 'packaged' and
+              recovered['packagedUnits'] == 2 and recovered['deferredUnits'] == 0)
         victim = objects[0]
         with victim.open('ab') as stream:
             stream.write(b'object corruption')

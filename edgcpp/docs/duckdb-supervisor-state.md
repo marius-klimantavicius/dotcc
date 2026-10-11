@@ -1183,3 +1183,80 @@ for every ObjectFile. The next storage slice will losslessly compress new
 source BLOBs with exact decoded-content verification, retaining self-contained
 objects and all intermediates. Linker scaling analysis proceeds independently
 of libc++ runtime work.
+
+### Resumed by user, 2026-10-11
+
+User resume supersedes the saved pause. Both implementation workers resumed:
+base_provenance owns the exact anonymous routine declarator/enclosing template
+substitution witness; lifetime_export owns the real C++17/C++20 libc++ template
+header contract mismatch. Supervisor retains sole build/prepare/Git ownership.
+Preserved compression and sequential verification changes remain candidate188,
+67 compression checks and 64-object streamed verification already passed.
+
+First integration remains native159/managed189/profile62, followed by a coherent
+2,635-unit corpus; historical 2,634 exports do not establish that result. Storage
+now has31 GiB persistent and85 GiB workspace free, with12/20 GiB reserves. Preserve
+all intermediates and use bounded per-unit jobs. Whole-link memory scaling and
+C# generation precede runtime closure. Pause handoff remains historical evidence.
+
+### Candidate v62 resumed integration, native159 / managed189
+
+An explicit C++20 DuckDB manifest derivative retains all 2,635 sources and
+arguments while changing 2,207 library and 148 test language modes from 17 to 20.
+The 6-unit probe exports 5; unittest retains the anonymous routine context gate.
+Three 20-mode consumers plus 40 existing 20-mode libc++ units link and generate
+7,777 definitions in 20.7 seconds without weakening source/type compatibility.
+Review: `artifacts/review/dotobj-duckdb-cxx20-158`; retained result
+`dotobj-cxx20-consumer-combined43-158-187/results.json`. This is a candidate
+configuration, not full-project acceptance. The real libc++ helper smoke passes
+native and stock EDG C-lowered 17/20 at O0/O2, retaining the intentionally different
+contiguous-iterator trait selection. The stock commands use the same portable
+libc include paths as the project and explicit target endian definitions.
+
+New types.cpp in C++20 exports but rejects one unknown-owner member-name constant.
+The exact original dot/arrow selection receiver is already retained; a bounded
+contextual identity fix is in scratch, not general unknown-type acceptance.
+The anonymous routine observer/schema/reader builds in 159/189, but its combined
+fixture fails capture of one exact template-rescan scope owner after native and
+stock runtime probes pass. Candidate159 is not accepted.
+
+The project scheduling floor passes 31 checks, including no compiler invocation
+below the floor, completed-object reuse and successful resume. Source compression
+67 checks and sequential 64-object verification from188 remain retained; final
+integration acceptance is still pending. No fresh full corpus has started.
+
+### Candidate v62 integration, native160 / managed190–191
+
+The original template-function factory observer now retains exact anonymous
+declarator owners. The focused source/declarator suite passes 59 checks each
+in C++17 and C++20, including native and stock C-backend O0/O2 execution,
+translated JIT execution, and malformed ownership rejection. Six real C++20
+units still export five: unittest reaches a narrower shared type-operator
+lexical-binder conflict between __unwrap and __call; the native worker owns
+that next gate. This is not a full-export claim.
+
+Dependent dot/arrow member-name capture passes native/stock/export/link/JIT.
+Managed191 adds strict rejection of a bare unknown template type argument and
+a contextual member-name token reused as an expression root. Its focused and
+five-unit real-object verification is pending. The managed worker next owns
+a disk-backed catalog/import implementation for bounded-memory linking; full
+ObjectFile metadata is still resident in the existing link path. No fresh full
+corpus has started, and all intermediate outputs are preserved.
+
+### Accepted v62 bounded milestone (native160 / managed191)
+
+Acceptance totals 407 checks: declarator ownership 59 each in C++17/C++20,
+member names 38, record/layout regressions 153, compressed snapshots 67, and
+project scheduling floor 31. The declarator suites ran managed190, followed
+by final managed191 object re-verification; other receipt tool versions are
+explicit in the evidence. All five exported real C++20 probe units verify.
+Four consumers combine into 4,402 generated definitions, exposed for review
+at `artifacts/review/dotobj-duckdb-v62`. See
+`evidence/dotobj-duckdb-source-graph-v62-20261011.json`.
+
+Unittest still requires exact ordinary-member/class-template substitution
+ownership. The six-line reduced gate is next, rather than a broad lexical
+binder relaxation. A 32-large-unit C++20 breadth probe is active; no coherent
+full inventory or full generated DuckDB library is claimed. The separate
+managed worker is implementing verified catalog import as the first explicit
+bounded-memory linker slice. Native/managed runtime closure remains later.

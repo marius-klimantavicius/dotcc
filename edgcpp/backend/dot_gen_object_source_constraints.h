@@ -188,7 +188,18 @@ struct SourceRoutineTypeSubstitution {
   std::map<unsigned,unsigned> observed_arguments;
   unsigned declaration=0;
 };
+struct SourceDeclaratorContext {
+  unsigned routine_type=0,scope_ordinal=0,declaration=0,record_type=0,header_type=0;
+  std::string kind,error;
+  a_source_position position={};
+  RoutineDeclaratorContext original;
+  std::map<a_type_ptr,std::vector<unsigned>> roots;
+  std::map<unsigned,unsigned> observed_arguments;
+  bool owner_captured=false;
+};
 struct SourceConstraintGraph {
+  std::vector<SourceDeclaratorContext> declarator_contexts;
+  std::map<unsigned,std::vector<unsigned>> routine_declarator_contexts;
   std::map<unsigned,SourceRoutineTypeSubstitution> routine_substitutions;
   std::map<a_scope_ptr,SourceLocalScopeSnapshot> local_scope_snapshots;
   std::map<a_scope_ptr,unsigned> local_scope_ids;
@@ -575,6 +586,70 @@ inline void capture_selected_member_owner(unsigned owner_id,unsigned primary_id,
     record.template_arguments.push_back(capture_constraint_argument(argument,record.template_error));
   if(!record.template_error.empty())error=record.template_error;
   s.records[owner]=record;
+}
+inline bool same_declarator_argument(const SourceTemplateArgument &left,const SourceTemplateArgument &right) {
+  return std::tie(left.kind,left.type,left.constant,left.templ,left.pack,left.pack_element,left.ellipsis,
+    left.integer_pack,left.explicit_argument,left.injected_class,left.auto_parameter,left.decltype_auto_parameter,
+    left.expansion,left.substituted_template)==std::tie(right.kind,right.type,right.constant,right.templ,
+    right.pack,right.pack_element,right.ellipsis,right.integer_pack,right.explicit_argument,right.injected_class,
+    right.auto_parameter,right.decltype_auto_parameter,right.expansion,right.substituted_template);
+}
+inline void capture_declarator_context_owner(unsigned context_id) {
+  auto &graph=source_constraint_graph();
+  if(graph.declarator_contexts.at(context_id-1).owner_captured)return;
+  graph.declarator_contexts.at(context_id-1).owner_captured=true;
+  auto value=graph.declarator_contexts.at(context_id-1);const auto original=value.original;
+  SourceParameterScope original_scope(0);std::vector<SourceTemplateArgument> arguments;
+  if(original.routine && original.routine->assoc_template && original.routine->assoc_template->template_decl) {
+    auto templ=original.routine->assoc_template;
+    if((templ->kind!=templk_function && templ->kind!=templk_member_function) ||
+       original.header!=templ->template_decl || original.routine->is_prototype_instantiation)
+      value.error="anonymous routine context differs from its original function template header";
+    else {
+      value.kind="routine";value.declaration=capture_constraint_routine(original.routine);
+      arguments=graph.declarations.at(value.declaration-1).template_arguments;
+    }
+  } else {
+    auto owner=original.record;
+    if(!owner && original.routine && original.routine->source_corresp.is_class_member)
+      owner=scp_parent_class(&original.routine->source_corresp);
+    if(!owner || !is_immediate_class_type(owner))value.error="anonymous routine declarator requires an owned original routine or class context";
+    else {
+      auto supplement=class_type_supp(owner);auto templ=supplement->assoc_template;
+      if(!templ || (templ->kind!=templk_class && templ->kind!=templk_member_class) ||
+         !templ->template_decl || original.header!=templ->template_decl || owner->variant.class_struct_union.is_prototype_instantiation)
+        value.error="anonymous routine context differs from its original class template header";
+      else {
+        value.record_type=capture_type(owner);value.header_type=capture_source_class_template_header(templ,value.error);
+        bool partial=capture_source_class_specialization(owner,templ,value.error);
+        auto record=state().records.at(owner);
+        auto header=graph.class_template_headers.at(templ->prototype_instantiation.type);
+        unsigned primary=header.type;
+        if(record.template_prototype && record.template_prototype!=primary)
+          value.error="anonymous routine context conflicts with original class prototype";
+        else if(!record.template_prototype) {
+          record.template_prototype=primary;record.template_declarator_witness=context_id;
+          state().records[owner]=record;
+          for(auto argument=supplement->template_arg_list;argument;argument=argument->next)
+            record.template_arguments.push_back(capture_constraint_argument(argument,record.template_error));
+          state().records[owner]=record;
+        }
+        value.kind=partial?"class-partial":"class";
+        arguments=partial?graph.class_specializations.at(owner).arguments:state().records.at(owner).template_arguments;
+      }
+    }
+  }
+  if(value.error.empty() && arguments.size()!=original.arguments.size())
+    value.error="anonymous routine declarator context has different original argument count";
+  for(unsigned ordinal=0;value.error.empty() && ordinal<original.arguments.size();++ordinal) {
+    auto argument=original.arguments[ordinal];auto captured=capture_constraint_argument(&argument,value.error);
+    if(!same_declarator_argument(captured,arguments.at(ordinal)))
+      value.error="anonymous routine declarator context differs from the exact original ordered arguments";
+  }
+  // Recursive capture can add observed borrows. Preserve those live facts.
+  auto &destination=graph.declarator_contexts.at(context_id-1);
+  destination.kind=value.kind;destination.error=value.error;destination.declaration=value.declaration;
+  destination.record_type=value.record_type;destination.header_type=value.header_type;
 }
 inline unsigned capture_constraint_routine(a_routine_ptr routine) {
   SourceParameterScope declaration_scope(0);

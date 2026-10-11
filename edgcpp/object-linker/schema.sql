@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v61'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v62'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -31,8 +31,12 @@ CREATE TABLE source_files (
  available INTEGER NOT NULL CHECK(available IN (0,1)),
  sha256 TEXT,
  bytes BLOB,
- CHECK((available=1 AND sha256 IS NOT NULL AND bytes IS NOT NULL) OR
-       (available=0 AND sha256 IS NULL AND bytes IS NULL))
+ codec TEXT CHECK(codec IN ('raw','zlib')),
+ decoded_byte_length INTEGER CHECK(decoded_byte_length>=0 AND decoded_byte_length<=2147483647),
+ CHECK((available=1 AND sha256 IS NOT NULL AND bytes IS NOT NULL AND codec IS NOT NULL AND decoded_byte_length IS NOT NULL) OR
+       (available=0 AND sha256 IS NULL AND bytes IS NULL AND codec IS NULL AND decoded_byte_length IS NULL)),
+ CHECK(codec IS NULL OR (codec='raw' AND length(bytes)=decoded_byte_length) OR
+       (codec='zlib' AND length(bytes)>=6 AND length(bytes)<decoded_byte_length))
 ) STRICT;
 CREATE TABLE types (
  id INTEGER PRIMARY KEY CHECK(id>0),
@@ -58,6 +62,7 @@ CREATE TABLE routine_parameters (
  PRIMARY KEY(type_id,ordinal)
 ) STRICT;
 CREATE TABLE source_routine_types (
+ declarator_context_count INTEGER NOT NULL CHECK(declarator_context_count>=0),
  has_borrowed_arguments INTEGER NOT NULL CHECK(has_borrowed_arguments IN (0,1)),
  prototype_origin TEXT NOT NULL DEFAULT 'original' CHECK(prototype_origin IN('original','lambda-conversion-copy')),
  exception_policy_origin TEXT NOT NULL CHECK(exception_policy_origin IN ('captured','generated-resolution','implicit-destructor-resolution')),
@@ -1917,4 +1922,31 @@ CREATE TABLE source_routine_borrowed_arguments (
  argument_ordinal INTEGER NOT NULL CHECK(argument_ordinal>=0),
  source_type_id INTEGER NOT NULL REFERENCES source_types(id),
  PRIMARY KEY(routine_source_type_id,argument_ordinal)
+) STRICT;
+
+-- Original parser-factory witnesses for anonymous routine signatures. These
+-- are source metadata only; no executable calling convention is implied.
+CREATE TABLE source_declarator_contexts (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ routine_source_type_id INTEGER NOT NULL REFERENCES source_routine_types(type_id),
+ scope_ordinal INTEGER NOT NULL CHECK(scope_ordinal>=0),
+ kind TEXT NOT NULL CHECK(kind IN('routine','class','class-partial')),
+ selected_source_declaration_id INTEGER REFERENCES source_expression_declarations(id),
+ source_record_id INTEGER REFERENCES source_record_types(id),
+ header_source_record_id INTEGER REFERENCES source_class_template_headers(source_record_id),
+ argument_count INTEGER NOT NULL CHECK(argument_count>0),
+ borrowed_argument_count INTEGER NOT NULL CHECK(borrowed_argument_count>0 AND borrowed_argument_count<=argument_count),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),column INTEGER NOT NULL CHECK(column>=0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN('observed-routine-declarator-instantiation-context','observed-function-instantiation-declarator-context')),
+ CHECK(capture_proof<>'observed-function-instantiation-declarator-context' OR kind='routine'),
+ UNIQUE(routine_source_type_id,scope_ordinal),
+ CHECK((kind='routine' AND selected_source_declaration_id IS NOT NULL AND source_record_id IS NULL AND header_source_record_id IS NULL) OR
+       (kind<>'routine' AND selected_source_declaration_id IS NULL AND source_record_id IS NOT NULL AND header_source_record_id IS NOT NULL))
+) STRICT;
+CREATE TABLE source_declarator_borrowed_arguments (
+ context_id INTEGER NOT NULL REFERENCES source_declarator_contexts(id),
+ argument_ordinal INTEGER NOT NULL CHECK(argument_ordinal>=0),
+ source_type_id INTEGER NOT NULL REFERENCES source_types(id),
+ PRIMARY KEY(context_id,argument_ordinal)
 ) STRICT;

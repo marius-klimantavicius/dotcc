@@ -127,6 +127,7 @@ internal sealed partial class ObjectFile : IDisposable
         ["source_dynamic_exception_specifications"] = "source_routine_type_id",
         ["source_dynamic_exception_types"] = "source_routine_type_id,ordinal",
         ["function_dynamic_exception_boundaries"] = "function_entity_id",
+        ["source_declarator_contexts"] = "id", ["source_declarator_borrowed_arguments"] = "context_id,argument_ordinal",
         ["source_routine_type_substitutions"] = "routine_source_type_id", ["source_routine_borrowed_arguments"] = "routine_source_type_id,argument_ordinal",
         ["source_routine_types"] = "type_id", ["source_routine_parameters"] = "type_id,ordinal",
         ["deferred_function_declarations"] = "entity_id", ["deferred_routine_abis"] = "routine_type_id,source_routine_type_id", ["source_routine_abis"] = "source_routine_type_id", ["source_routine_abi_parameters"] = "source_routine_type_id,execution_ordinal",
@@ -170,7 +171,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v61" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v62" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -262,18 +263,7 @@ internal sealed partial class ObjectFile : IDisposable
         using (var digest = database.Prepare("SELECT algorithm,sha256 FROM content_digest"))
             if (!digest.Read() || digest.Text(0) != "dotobj-semantic-sha256-v1" || digest.Text(1) != actual || digest.Read())
                 throw new InvalidDataException("Semantic object digest mismatch");
-        var sourceIdentities = new Dictionary<string, string>(StringComparer.Ordinal);
-        using (var sources = database.Prepare("SELECT available,sha256,bytes,path FROM source_files"))
-            while (sources.Read())
-                if (sources.Integer(0) == 1)
-                {
-                    string digest = sources.Text(1), path = sources.Text(3);
-                    if (Convert.ToHexStringLower(SHA256.HashData(sources.Bytes(2))) != digest)
-                        throw new InvalidDataException("Source snapshot digest mismatch");
-                    if (sourceIdentities.TryGetValue(path, out string? prior) && prior != digest)
-                        throw new InvalidDataException("Include occurrences disagree on source snapshot identity");
-                    sourceIdentities[path] = digest;
-                }
+        VerifySourceSnapshots();
     }
 
     private void ReadSummaries()

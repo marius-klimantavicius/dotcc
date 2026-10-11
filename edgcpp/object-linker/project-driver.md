@@ -66,6 +66,13 @@ attempt, compiler snapshot, raw wire, diagnostic and partial database remains.
 Each worker exits after one object, releasing the in-memory wire before another
 unit is assigned. The coordinator retains only small result records.
 
+`--min-free-space-mib N` defers new compiler attempts when the output filesystem
+has less than N MiB free. Already running workers finish, so reserve additional
+space for those attempts. Deferred units produce a `storage-limited` project
+receipt and a nonzero exit; completed objects are preserved. Resume after space
+becomes available, or with a different scheduling floor. The floor does not
+change semantic inputs and never removes artifacts. Its default is zero.
+
 Repeat the same command with `--resume` to reuse unchanged successful objects
 and retry failures in fresh attempt directories. Compiler, manifest, driver,
 packager, schema, environment, original sources and include-directory contents
@@ -96,4 +103,5 @@ python3 -B edgcpp/object-linker/tests/project_verify.py \
 
 The test checks separate original TUs, retained included headers and macros,
 successful resume, fresh retry after object corruption, header-search changes,
-forbidden frontend switches, and compiler/child termination on timeout.
+forbidden frontend switches, storage deferral/resume without starting compilers,
+and compiler/child termination on timeout.

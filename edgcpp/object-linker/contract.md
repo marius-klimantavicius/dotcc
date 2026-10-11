@@ -313,6 +313,21 @@ code as one ASCII digit followed by frame of value (integer invariant decimal,
 text UTF8, blob raw bytes, null empty); LF after row. LF after each table. REAL
 cells unsupported. source snapshots SHA256 additionally verified independently.
 
+Source snapshots remain self-contained in `source_files`. Available rows carry
+`codec` (`raw` or `zlib`) and `decoded_byte_length`; unavailable rows have neither
+encoding metadata nor contents. The packager uses zlib only when it is smaller
+than the original bytes. Empty snapshots use raw encoding. The existing source
+SHA256 always covers the decoded original bytes; the logical object digest also
+covers the encoded bytes, codec and declared length. Include occurrence IDs,
+paths, ancestry and source locations are unchanged.
+
+Verification streams decompression through a bounded buffer, checks the exact
+decoded length and SHA256, and rejects malformed frames, external dictionaries,
+truncation, concatenated streams and trailing data. It does not allocate the
+declared decoded length. No original source file or external compression
+dictionary is required. Snapshot encoding is storage policy, not a semantic
+type or source reconstruction shortcut.
+
 Required nodes_by_function(function_id,id), bindings_by_function(function_id,id),
 and source_declarations_by_function(function_entity_id,id) indexes support
 per-function graph/provenance loading; index definitions are validated
@@ -1561,3 +1576,31 @@ and null-safe covariant result adjustment operations. Adjustment tuples remain
 descriptive provenance, checked for shape and cross-unit agreement; verification
 does not yet establish symbolic equivalence between those tuples and body
 arithmetic. Variadic wrappers remain explicitly unsupported.
+
+## Anonymous declarator ownership and member names (v62)
+
+`source_declarator_contexts` records the original routine/class template scope
+observed when an anonymous function declarator is constructed. Each context
+refers to the exact selected original declaration or class/header and its
+ordered actual arguments. `source_declarator_borrowed_arguments` identifies
+the exact original type arguments borrowed by that declarator; counts, dense
+ordinals, selected ownership and signature reachability are verified. An
+observer in the template-function factory provides the allocated routine only
+when both the original header and actual-argument list match the active rescan
+scope. It does not infer ownership from source names or compatible type shapes.
+Original recipes retain their lexical parameter binders. This coverage does
+not yet authorize ordinary non-template members of class-template instances
+that share a borrowed type-operator recipe across selected members.
+
+A dependent member-name token whose EDG owner is the unknown placeholder may
+be represented contextually only as the right operand of its owned dot/arrow
+member selection. Its identity includes that selection and the full receiver
+graph, rather than treating the placeholder as a standalone type. Independent
+constant consumers, expression-root escape, and bare unknown template type
+arguments are rejected. Named source types and valid dependent recipes remain
+separate typed records; no source metadata is omitted to permit this case.
+
+The `verify` command disposes each complete object before opening the next.
+This bounds multi-object verification metadata residency by one unit, but the
+current `link` command still retains all input objects. A disk link catalog is
+a separate implementation task and is not implied by streaming verification.

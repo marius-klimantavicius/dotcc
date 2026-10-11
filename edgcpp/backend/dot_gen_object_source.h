@@ -158,6 +158,7 @@ struct SourceTemplateArgument {
   unsigned expansion=0,substituted_template=0;
 };
 inline SourceTemplateArgument capture_constraint_argument(a_template_arg_ptr,std::string&);
+inline bool same_declarator_argument(const SourceTemplateArgument&,const SourceTemplateArgument&);
 struct Enumerator {
   unsigned constant=0;
   std::string name,value;
@@ -239,7 +240,7 @@ struct PrelowerBase {
   std::string access;
 };
 struct Record {
-  unsigned template_member_witness=0;
+  unsigned template_member_witness=0,template_declarator_witness=0;
   unsigned namespace_owner=0;
   std::string name,identity,error,layout_kind;
   bool template_identity=false,complete=false,dependent=false,prototype=false,layout_known=false;
@@ -558,6 +559,22 @@ struct SourceAliasInstance {
   int minimum_arguments=-1;std::string error;
   std::vector<SourceTemplateArgument> arguments,original_arguments;
 };
+// Exact parser-factory context. Frontend scope entries are transient, so copy
+// the argument payloads and original IL owner/header while the scope is live.
+struct RoutineInstantiationFactory {
+  a_routine_ptr routine=nullptr;
+  a_template_decl_ptr header=nullptr;
+  a_template_arg_ptr arguments=nullptr;
+};
+struct RoutineDeclaratorContext {
+  bool from_function_factory=false;
+  a_routine_ptr routine=nullptr;
+  a_type_ptr record=nullptr;
+  a_template_decl_ptr header=nullptr;
+  std::vector<a_template_arg> arguments;
+  a_source_position position={};
+  unsigned scope_ordinal=0;
+};
 struct State {
   std::map<a_type_ptr,SourceAliasInstance> source_aliases;
   std::vector<SourceTemplateReference> source_templates;
@@ -661,6 +678,9 @@ struct State {
   std::map<a_routine_ptr,ThunkWrapper> thunk_wrappers;
   std::map<a_routine_ptr,LambdaEntry> lambda_entries;
   std::map<a_type_ptr,std::pair<a_type_ptr,a_routine_ptr>> lambda_prototype_recipes;
+  std::map<a_type_ptr,std::vector<RoutineDeclaratorContext>> routine_declarator_contexts;
+  std::vector<RoutineInstantiationFactory> routine_instantiation_factories;
+  std::map<a_type_ptr,std::string> routine_declarator_errors;
   std::map<an_asm_entry_ptr,AsmStatement> asm_statements;
   std::map<a_variable_ptr,Declaration> variables;
   std::map<a_type_ptr,Record> records;
@@ -685,6 +705,58 @@ struct State {
   unsigned next_original_field=1;
 };
 inline State &state(){static State value;return value;}
+// make_template_function allocates rp before rescanning its declaration but
+// deliberately gives the temporary scope no instance symbol/routine. Preserve
+// that precise factory edge without changing the incomplete frontend object.
+struct RoutineInstantiationCapture {
+  bool active=false;
+  RoutineInstantiationCapture(a_routine_ptr routine,a_template_decl_ptr header,a_template_arg_ptr arguments) {
+    if(enabled()) {state().routine_instantiation_factories.push_back({routine,header,arguments});active=true;}
+  }
+  ~RoutineInstantiationCapture() {if(active)state().routine_instantiation_factories.pop_back();}
+};
+inline bool original_type_has_expression_recipe(a_type_ptr type,std::set<a_type_ptr> &seen) {
+  if(!type || !seen.insert(type).second)return false;
+  if(type->kind==tk_typeref) {
+    if(type->variant.typeref.kind==trk_is_decltype || type->variant.typeref.kind==trk_is_typeof_with_expression)return true;
+    return original_type_has_expression_recipe(type->variant.typeref.type,seen);
+  }
+  if(type->kind==tk_pointer)return original_type_has_expression_recipe(type->variant.pointer.type,seen);
+  if(type->kind==tk_array)return original_type_has_expression_recipe(type->variant.array.element_type,seen);
+  return false;
+}
+inline void observe_routine_declarator_context(a_type_ptr type,const a_source_position &position) {
+  if(!enabled() || !type || type->kind!=tk_routine)return;
+  std::vector<RoutineDeclaratorContext> contexts;unsigned ordinal=0;
+  for(auto scope=scope_stack_entry_for(depth_innermost_instantiation_scope);scope;scope=previous_scope_of(scope)) {
+    if(!scope_is(scope,sck_template_instantiation))continue;
+    unsigned scope_ordinal=ordinal++;bool relevant=false;
+    for(auto argument=scope->template_arg_list;argument;argument=argument->next) {
+      std::set<a_type_ptr> seen;
+      if(argument->kind==tak_type && original_type_has_expression_recipe(argument->variant.type,seen))relevant=true;
+    }
+    if(!relevant)continue;
+    RoutineDeclaratorContext value;value.routine=scope->assoc_routine;value.record=scope->assoc_type;
+    value.header=scope->template_decl_info?scope->template_decl_info->template_decl:nullptr;
+    if(!value.routine && !value.record && !scope->instance_sym && value.header) {
+      for(const auto &factory:state().routine_instantiation_factories)
+        if(factory.header==value.header && factory.arguments==scope->template_arg_list) {
+          if(value.routine && value.routine!=factory.routine)
+            state().routine_declarator_errors[type]="anonymous routine declarator has competing exact instantiation factories";
+          else {value.routine=factory.routine;value.from_function_factory=true;}
+        }
+    }
+    value.position=position;value.scope_ordinal=scope_ordinal;
+    for(auto argument=scope->template_arg_list;argument;argument=argument->next) {
+      value.arguments.push_back(*argument);value.arguments.back().next=nullptr;
+    }
+    contexts.push_back(value);
+  }
+  if(contexts.empty())return;
+  auto inserted=state().routine_declarator_contexts.emplace(type,contexts);
+  if(!inserted.second)state().routine_declarator_errors[type]="routine declarator has competing original factory contexts";
+}
+
 inline void observe_lambda_conversion_prototype(a_type_ptr copied,a_routine_ptr selected) {
   if(!enabled() || !copied || !selected)return;
   auto value=std::make_pair(selected->type,selected);
@@ -1351,6 +1423,26 @@ inline void capture_record(a_type_ptr t) {
     if(original.access.empty())original.access="unknown";
     value.bases.push_back(original);
   }
+  // A field's anonymous signature can observe this very class instance while
+  // its source record is recursively being captured. Keep that exact witness
+  // when committing the enclosing record's otherwise independent snapshot.
+  const auto context_record=s.records.at(t);
+  if(context_record.template_declarator_witness) {
+    if(value.template_prototype && value.template_prototype!=context_record.template_prototype)
+      value.template_error="declarator class witness conflicts with its original selected prototype";
+    else if(!value.template_prototype) {
+      value.template_prototype=context_record.template_prototype;
+      value.template_arguments=context_record.template_arguments;
+    } else {
+      if(value.template_arguments.size()!=context_record.template_arguments.size())
+        value.template_error="declarator class witness conflicts with its original argument count";
+      else for(unsigned argument=0;argument<value.template_arguments.size();++argument)
+        if(!same_declarator_argument(value.template_arguments[argument],context_record.template_arguments[argument]))
+          value.template_error="declarator class witness conflicts with its exact original arguments";
+    }
+    if(!context_record.template_error.empty())value.template_error=context_record.template_error;
+    value.template_declarator_witness=context_record.template_declarator_witness;
+  }
   s.records[t]=value;
   for(const auto &field:value.fields)capture_field_initializer(field.il,t);
 }
@@ -1400,10 +1492,39 @@ inline void capture_routine_substitution_roots(a_type_ptr type,unsigned id) {
       graph.routine_substitutions.at(id).roots[argument->variant.type].push_back(ordinal);
   }
 }
+inline void capture_declarator_substitution_roots(a_type_ptr type,unsigned id) {
+  if(type->variant.routine.extra_info->assoc_routine)return;
+  auto &graph=source_constraint_graph();auto found=state().routine_declarator_contexts.find(type);
+  if(found==state().routine_declarator_contexts.end() || graph.routine_declarator_contexts.count(id))return;
+  graph.routine_declarator_contexts[id]={};SourceParameterScope original_scope(0);
+  for(const auto &original:found->second) {
+    unsigned context_id=unsigned(graph.declarator_contexts.size()+1);SourceDeclaratorContext value;
+    value.routine_type=id;value.scope_ordinal=original.scope_ordinal;value.position=original.position;value.original=original;
+    value.error=state().routine_declarator_errors[type];graph.declarator_contexts.push_back(value);
+    graph.routine_declarator_contexts.at(id).push_back(context_id);
+    for(unsigned ordinal=0;ordinal<original.arguments.size();++ordinal) {
+      const auto &argument=original.arguments[ordinal];if(argument.kind!=tak_type)continue;
+      unsigned source=capture_type(argument.variant.type);std::set<unsigned> seen;
+      if(source_type_has_parameter_recipe(source,seen))
+        graph.declarator_contexts.at(context_id-1).roots[argument.variant.type].push_back(ordinal);
+    }
+  }
+}
 inline unsigned source_type_lexical_binder(a_type_ptr type) {
   auto &graph=source_constraint_graph();unsigned binder=graph.active_binder;
   if(!binder)return 0;
   unsigned routine=graph.binders.at(binder).routine;
+  auto factory=graph.routine_declarator_contexts.find(routine);
+  bool borrowed=false;
+  if(factory!=graph.routine_declarator_contexts.end())for(unsigned context_id:factory->second) {
+    auto roots=graph.declarator_contexts.at(context_id-1).roots.find(type);
+    if(roots==graph.declarator_contexts.at(context_id-1).roots.end())continue;
+    auto source=state().type_ids.find(type);if(source==state().type_ids.end())continue;
+    auto ordinals=roots->second;
+    for(unsigned ordinal:ordinals)graph.declarator_contexts.at(context_id-1).observed_arguments[ordinal]=source->second;
+    capture_declarator_context_owner(context_id);borrowed=true;
+  }
+  if(borrowed)return 0;
   auto substitution=graph.routine_substitutions.find(routine);
   if(substitution==graph.routine_substitutions.end())return binder;
   auto root=substitution->second.roots.find(type);
@@ -1755,6 +1876,7 @@ inline unsigned capture_type(a_type_ptr t) {
       }
     }
     capture_routine_substitution_roots(recipe,recipe_id);
+    capture_declarator_substitution_roots(recipe,recipe_id);
     auto frames=capture_parameter_binder_pair(0,recipe_id,recipe_parent,recipe->variant.routine.extra_info->param_type_list);
     if(value.prototype_origin)value.prototype_origin_binder=frames.second;
     {SourceParameterScope prototype(frames.second);value.result=capture_type(t->variant.routine.return_type);}

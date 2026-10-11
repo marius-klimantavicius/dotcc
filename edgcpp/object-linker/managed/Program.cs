@@ -42,15 +42,16 @@ internal static class Program
             if (command == "link" && paths.All(path => providerPaths.Contains(Path.GetFullPath(path)))) throw new ArgumentException("At least one primary semantic object is required");
             if (command == "link" && output is null) throw new ArgumentException("link requires --out DIRECTORY");
             _ = Names.Namespace(namespaceName); _ = Names.OptionIdentifier(className);
-            foreach (string path in paths) objects.Add(new ObjectFile(path));
             if (command == "verify")
             {
-                foreach (ObjectFile obj in objects)
-                    foreach (long function in obj.Functions.Keys) _ = obj.ReadBody(function);
-                Console.WriteLine($"Verified {objects.Count} scalar-control-v61 semantic object(s).");
+                // Verification has no cross-unit state. Release each object's
+                // metadata and SQLite snapshot before opening the next unit.
+                foreach (string path in paths) VerifyObject(path);
+                Console.WriteLine($"Verified {paths.Count} scalar-control-v62 semantic object(s).");
             }
             else
             {
+                foreach (string path in paths) objects.Add(new ObjectFile(path));
                 var providers = objects.Where(obj => providerPaths.Contains(Path.GetFullPath(obj.Path))).ToHashSet();
                 var linker = new Linker(objects, className, allowExterns, providers, sharedExceptionProvider);
                 linker.VerifyBodies();
@@ -66,5 +67,11 @@ internal static class Program
             return 1;
         }
         finally { foreach (ObjectFile obj in objects) obj.Dispose(); }
+    }
+
+    private static void VerifyObject(string path)
+    {
+        using var obj = new ObjectFile(path);
+        foreach (long function in obj.Functions.Keys) _ = obj.ReadBody(function);
     }
 }

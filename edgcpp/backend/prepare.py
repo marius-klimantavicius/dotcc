@@ -140,6 +140,28 @@ def object_source_overlay(path, original, patched):
         raise RuntimeError(f"EDG object source overlay does not match pinned {path.name}")
     path.write_text(source.replace(original, patched))
 
+# The selected routine exists before the declaration's symbol/type does.
+# Retain that stock factory edge for nested anonymous declarators only.
+object_source_overlay(root / "upstream/src/templates.c",
+    '#include "fe_common.h"',
+    '#include "fe_common.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
+object_source_overlay(root / "upstream/src/templates.c",
+    '  rp = alloc_routine();\n  {\n    /* Create a routine type by rescanning the original declaration',
+    '  rp = alloc_routine();\n#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::RoutineInstantiationCapture dot_routine_instantiation_capture(\n'
+    '    rp, tssp->variant.function.decl_cache->decl_info->template_decl, templ_arg_list);\n'
+    '#endif\n  {\n    /* Create a routine type by rescanning the original declaration')
+
+# Preserve original enclosing template context of reparsed routine declarators.
+object_source_overlay(root / "upstream/src/declarator.c",
+    '#include "fe_common.h"',
+    '#include "fe_common.h"\n#if defined(EDG_DOT_BACKEND)\n#include "dot_gen_object_source.h"\n#endif')
+object_source_overlay(root / "upstream/src/declarator.c",
+    '  db_exit();\n}  /* function_declarator */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_routine_declarator_context(*new_type_ptr, start_pos);\n'
+    '#endif\n  db_exit();\n}  /* function_declarator */')
+
 # Observe the precise lazy defaulted/generated exception-specification boundary.
 class_declarations = root / "upstream/src/class_decl.c"
 object_source_overlay(class_declarations,

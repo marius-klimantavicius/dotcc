@@ -289,7 +289,7 @@ internal sealed partial class ObjectFile
         if(SourceExpressionOperations.TryGetValue(id,out var operation))result+=SourceIdentityFrame(operation.Opcode.ToString(CultureInfo.InvariantCulture))+SourceIdentityFrame(operation.Name)+SourceIdentityFrame(operation.OriginalTypeKind?.ToString(CultureInfo.InvariantCulture)??"");
         result+=string.Concat(SourceExpressionFlags.GetValueOrDefault(id,[]).Order(StringComparer.Ordinal).Select(SourceIdentityFrame));
         if(SourceExpressionTypeOperands.TryGetValue(id,out long operand))result+=SourceIdentityFrame(SourceTypeSignature(operand));
-        if(SourceExpressionConstants.TryGetValue(id,out long constant))result+=SourceIdentityFrame(SourceConstantIdentity(constant,0));
+        if(SourceExpressionConstants.ContainsKey(id))result+=SourceIdentityFrame(SourceExpressionConstantIdentity(id,0));
         if(SourceExpressionParameterReferences.TryGetValue(id,out var reference))result+=SourceIdentityFrame(reference.Ordinal.ToString(CultureInfo.InvariantCulture))+SourceIdentityFrame(reference.Levels.ToString(CultureInfo.InvariantCulture))+SourceIdentityFrame(SourceParameterReferenceContextKey(id));
         if(SourceExpressionRequirements.TryGetValue(id,out bool noexceptRequired))result+=noexceptRequired?"1":"0";
         if(SourceExpressionQueries.TryGetValue(id,out bool standard))result+=standard?"1":"0";

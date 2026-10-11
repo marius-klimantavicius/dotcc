@@ -13,7 +13,11 @@ internal sealed partial class ObjectFile
 
     private bool SourceTemplatePayloadValid(string kind, long? type, long? constant, long? template) => kind switch
     {
-        "type" => type is long id && SourceTypes.ContainsKey(id) && constant is null && template is null,
+        "type" => type is long id && SourceTypes.ContainsKey(id) && constant is null && template is null &&
+            // The generic unknown result is valid for source expressions, but
+            // cannot replace an actual/formal/default type argument. Original
+            // decltype/typeof/alias recipes retain distinct source-form nodes.
+            (SourceTypes[id].Kind!="dependent" || SourceDependentTypes[id].Kind!="unknown"),
         "constant" => constant is long id && SourceSemanticConstants.ContainsKey(id) && type is null && template is null,
         "template" => template is long id && SourceTemplates.ContainsKey(id) && type is null && constant is null,
         _ => false

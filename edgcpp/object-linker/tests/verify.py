@@ -105,7 +105,7 @@ def main():
 
     def save(status):
         (out / 'results.json').write_text(json.dumps(dict(status=status, checks=checks,
-            profile='scalar-control-v61', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only, wideOverflowOnly=args.wide_overflow_only, recordTransportOnly=args.record_transport_only,
+            profile='scalar-control-v62', nativeAotRequested=args.nativeaot, lifetimesOnly=args.lifetimes_only, recordsOnly=args.records_only, wideOverflowOnly=args.wide_overflow_only, recordTransportOnly=args.record_transport_only,
             platform=platform.platform(), implementation='fresh-owned-semantic-graph',
             limitations=['No complete prelower source view, macro expansion history or general C++ lifetime/EH coverage.',
                          'No complete DuckDB or general C++ acceptance.']), indent=2) + '\n')
@@ -472,7 +472,7 @@ def main():
             ("INSERT INTO source_types (has_namespace_owner,id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count,is_restrict,is_atomic) SELECT 0,max(id)+1,'unsigned-char','',NULL,3,0,0,NULL,0,0,NULL,0,0 FROM source_types", ()),
             ("UPDATE source_parameters SET source_type_id=(SELECT max(id) FROM source_types) WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ()),
             ("INSERT INTO source_types (has_namespace_owner,id,kind,source_name,underlying_type_id,execution_type_id,is_const,is_volatile,source_file_id,line,column,element_count,is_restrict,is_atomic) SELECT has_namespace_owner,(SELECT max(id)+1 FROM source_types),kind,source_name,underlying_type_id,(SELECT max(id) FROM types),is_const,is_volatile,source_file_id,line,column,element_count,is_restrict,is_atomic FROM source_types WHERE id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
-            ("INSERT INTO source_routine_types (type_id,return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier,exception_policy_origin,has_borrowed_arguments) SELECT (SELECT max(id) FROM source_types),return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier,exception_policy_origin,0 FROM source_routine_types WHERE type_id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
+            ("INSERT INTO source_routine_types (type_id,return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier,exception_policy_origin,has_borrowed_arguments,declarator_context_count) SELECT (SELECT max(id) FROM source_types),return_type_id,variadic,exception_policy,parameter_mode,object_type_id,object_is_const,object_is_volatile,object_ref_qualifier,exception_policy_origin,0,0 FROM source_routine_types WHERE type_id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
             ("INSERT INTO source_routine_parameters SELECT (SELECT max(id) FROM source_types),ordinal,source_type_id FROM source_parameters WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a')", ()),
             ("INSERT INTO source_routine_abis SELECT (SELECT max(id) FROM source_types),return_passing,capture_proof FROM source_routine_abis WHERE source_routine_type_id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
             ("INSERT INTO source_routine_abi_parameters SELECT (SELECT max(id) FROM source_types),execution_ordinal,parameter_role,source_ordinal FROM source_routine_abi_parameters WHERE source_routine_type_id=(SELECT routine_source_type_id FROM source_functions WHERE entity_id=(SELECT id FROM entities WHERE source_name='from_a'))", ()),
@@ -486,7 +486,7 @@ def main():
         run('invalid-edge', ['dotnet', tool, 'verify', bad_edge], None)
         bad_kind = mutate('node', provider, [('UPDATE nodes SET kind=? WHERE id=(SELECT min(id) FROM nodes)', ('raw-csharp',))])
         run('invalid-node-kind', ['dotnet', tool, 'verify', bad_kind], None)
-        bad_snapshot = mutate('snapshot', provider, [('UPDATE source_files SET bytes=? WHERE id=1', (b'changed',))])
+        bad_snapshot = mutate('snapshot', provider, [("UPDATE source_files SET bytes=?,codec='raw',decoded_byte_length=7 WHERE id=1", (b'changed',))])
         run('snapshot-mismatch', ['dotnet', tool, 'verify', bad_snapshot], None)
         bad_primary = mutate('primary-hash', provider, [('UPDATE object_info SET source_sha256=?', ('0' * 64,))])
         run('primary-provenance-mismatch', ['dotnet', tool, 'verify', bad_primary], None)

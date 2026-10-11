@@ -9,6 +9,7 @@ from pathlib import Path
 import sqlite3
 import subprocess
 import time
+import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = Path(__file__).with_name('schema.sql')
@@ -81,7 +82,9 @@ ARRAYS = {
     'sourceDynamicExceptionSpecifications': ('source_dynamic_exception_specifications', ['sourceRoutineTypeId', 'kind', 'allowedTypeCount', 'captureProof']),
     'sourceDynamicExceptionTypes': ('source_dynamic_exception_types', ['sourceRoutineTypeId', 'ordinal', 'declaredSourceTypeId', 'matchSourceTypeId']),
     'functionDynamicExceptionBoundaries': ('function_dynamic_exception_boundaries', ['functionEntityId', 'sourceRoutineTypeId', 'captureProof']),
-    'sourceRoutineTypes': ('source_routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy', 'parameterMode', 'objectTypeId', 'objectIsConst', 'objectIsVolatile', 'objectRefQualifier', 'exceptionPolicyOrigin', 'prototypeOrigin', 'hasBorrowedArguments']),
+    'sourceRoutineTypes': ('source_routine_types', ['typeId', 'returnTypeId', 'variadic', 'exceptionPolicy', 'parameterMode', 'objectTypeId', 'objectIsConst', 'objectIsVolatile', 'objectRefQualifier', 'exceptionPolicyOrigin', 'prototypeOrigin', 'hasBorrowedArguments', 'declaratorContextCount']),
+    'sourceDeclaratorContexts': ('source_declarator_contexts', ['id', 'routineSourceTypeId', 'scopeOrdinal', 'kind', 'selectedSourceDeclarationId', 'sourceRecordId', 'headerSourceRecordId', 'argumentCount', 'borrowedArgumentCount', 'sourceFileId', 'line', 'column', 'captureProof']),
+    'sourceDeclaratorBorrowedArguments': ('source_declarator_borrowed_arguments', ['contextId', 'argumentOrdinal', 'sourceTypeId']),
     'sourceRoutineTypeSubstitutions': ('source_routine_type_substitutions', ['routineSourceTypeId', 'selectedSourceDeclarationId', 'borrowedArgumentCount', 'captureProof']),
     'sourceRoutineBorrowedArguments': ('source_routine_borrowed_arguments', ['routineSourceTypeId', 'argumentOrdinal', 'sourceTypeId']),
     'sourceRoutineParameters': ('source_routine_parameters', ['typeId', 'ordinal', 'parameterTypeId']),
@@ -281,7 +284,7 @@ def logical_hash(db):
 def package(wire, path, source, unit_id, provenance, started_ns):
     if set(wire) != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
         raise ValueError('Unexpected semantic wire fields')
-    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v61':
+    if wire['formatVersion'] != 1 or wire['profile'] != 'scalar-control-v62':
         raise ValueError('Unsupported semantic wire version/profile')
     if wire['sourceLanguage'] not in ('c', 'c++'):
         raise ValueError('Unsupported source language')
@@ -301,7 +304,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
         db.execute('PRAGMA foreign_keys=OFF')
         db.execute('BEGIN IMMEDIATE')
         db.execute('INSERT INTO object_info VALUES(1,1,?,?,?,?,?,?,0,0,0,1,1,?)',
-                   ('scalar-control-v61', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
+                   ('scalar-control-v62', 'portable-lp64-binary80-v2', 'dotobj-scalar-v1',
                     unit_id, str(source), sha(source), wire['sourceLanguage']))
         for index, (kind, value) in enumerate(provenance):
             db.execute('INSERT INTO provenance VALUES(?,?,?)', (index, kind, value))
@@ -312,7 +315,7 @@ def package(wire, path, source, unit_id, provenance, started_ns):
             if name == 'storageData':
                 columns[-1] = 'bytes'
             if name == 'sourceFiles':
-                columns += ['available', 'sha256', 'bytes']
+                columns += ['available', 'sha256', 'bytes', 'codec', 'decoded_byte_length']
             schema_columns = [row[1] for row in db.execute('PRAGMA table_info(' + quote(table) + ')')]
             if len(columns) != len(set(columns)) or set(columns) != set(schema_columns):
                 raise ValueError('Semantic field/schema mismatch: ' + name)
@@ -340,9 +343,13 @@ def package(wire, path, source, unit_id, provenance, started_ns):
                             raise ValueError('Source changed during compilation: ' + str(file))
                         digest = hashlib.sha256(data).hexdigest()
                         source_hashes[str(file)] = digest
-                        values += [1, digest, data]
+                        if len(data) > 2147483647:
+                            raise ValueError('Source snapshot exceeds supported decoded length: ' + str(file))
+                        compressed = zlib.compress(data, level=9)
+                        encoded, codec = (compressed, 'zlib') if len(compressed) < len(data) else (data, 'raw')
+                        values += [1, digest, encoded, codec, len(data)]
                     else:
-                        values += [0, None, None]
+                        values += [0, None, None, None, None]
                 db.execute(insert, values)
         errors = list(db.execute('PRAGMA foreign_key_check'))
         if errors:

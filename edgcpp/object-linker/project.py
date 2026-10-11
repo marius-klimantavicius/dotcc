@@ -239,6 +239,14 @@ def build(args):
         previous = report['units'].get(key)
         if previous and previous.get('status') == 'packaged' and object_unchanged(previous):
             return key, previous
+        # A scheduling floor, not a per-process disk limit: already running
+        # workers finish and retain their evidence. A resumed campaign can
+        # lower the floor or use newly available space without changing inputs.
+        free = shutil.disk_usage(out).free
+        if free < args.min_free_space_mib * 1024 * 1024:
+            return key, dict(status='deferred', source=unit['source'],
+                             reason='minimum-free-space', freeBytes=free,
+                             minimumFreeBytes=args.min_free_space_mib * 1024 * 1024)
         stem = hashlib.sha256(key.encode()).hexdigest()[:24]
         attempt = 1
         while (out / f'{stem}-{attempt:03d}').exists():
@@ -288,7 +296,9 @@ def build(args):
         report['status'] = 'inputs-changed'
     else:
         report['packagedUnits'] = sum(x['status'] == 'packaged' for x in report['units'].values())
-        report['status'] = 'packaged' if report['packagedUnits'] == len(units) else 'failed'
+        report['deferredUnits'] = sum(x['status'] == 'deferred' for x in report['units'].values())
+        report['status'] = ('packaged' if report['packagedUnits'] == len(units)
+                            else 'storage-limited' if report['deferredUnits'] else 'failed')
     save(out / 'results.json', report)
     if report['status'] != 'packaged':
         return 1
@@ -313,12 +323,15 @@ def main():
     project.add_argument('--timeout', type=float, default=600)
     project.add_argument('--memory-limit-mib', type=int, default=8192,
                          help='per-worker address-space cap on POSIX; 0 disables')
+    project.add_argument('--min-free-space-mib', type=int, default=0,
+                         help='defer new workers below this free-space floor; running workers finish; 0 disables')
     args = parser.parse_args()
     if args.command == '_unit':
         compile_unit(args.request)
         return 0
-    if args.jobs < 1 or args.timeout <= 0 or args.memory_limit_mib < 0 or args.limit is not None and args.limit < 1:
-        parser.error('jobs, timeout and limit must be positive')
+    if (args.jobs < 1 or args.timeout <= 0 or args.memory_limit_mib < 0 or
+            args.min_free_space_mib < 0 or args.limit is not None and args.limit < 1):
+        parser.error('jobs, timeout and limit must be positive; memory and free-space limits must be nonnegative')
     return build(args)
 
 
