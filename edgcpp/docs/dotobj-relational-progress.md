@@ -939,6 +939,35 @@ early rejection, with no complete DuckDB object. `hugeint-v40` still awaits
 architecture review of the explicit shared-result initialization destination;
 no schema change has been implemented while that review is pending.
 
+## Selected pointer compound assignments (2026-10-11)
+
+Verified `dotobj-relational-pointer-compounds-v2` preserves stock pointer `+=`
+and `-=` with recorded pointer operation type, integer offset, source result
+category and operand order. The existing compound helpers perform typed pointer
+arithmetic while evaluating the selected offset/destination once, returning the
+same destination lvalue. Fixed positive pointee layout and ordinary native integer
+offset emission are supported; runtime-sized/void/function/incomplete pointees,
+wide-struct offsets and stock bool-plus-pointer cases remain explicit boundaries.
+Schema remains 1018 / 43 tables.
+
+The two-TU fixture passes native C++, source-hidden C# and Linux NativeAOT for
+byte/int scaling, positive/negative/zero offsets, nested signed/unsigned offsets,
+EDG RHS-before-target order, address/reference/assignment identity, skipped
+branches and a selected shared global pointer. SQL retains contextual prvalues
+and checks lvalues specifically in the recorded address/reference/destination
+uses. Provider: 253,952 bytes / 65 nodes / 12 types; main: 323,584 bytes /
+581 nodes / 22 types. Tested hashes and per-table storage are retained. Managed
+build passes with zero warnings/errors. Existing numeric-compound and
+pointer-difference regressions also pass native/source-hidden C#/NativeAOT.
+
+Actual `exception-v3` advances past libc++ hash pointer `+=` and rejects a
+cleanup-free complete record component in `__cxx_atomic_wait` at
+`__atomic/atomic_sync.h:67:81`. Stock selected `dik_expression` assigns the
+referenced `__test_fn` into its aggregate field. This next bounded existing-action
+extension is being implemented; no full DuckDB object has yet been published.
+All retained probe timings remain early-rejection costs. Shared-result destination
+schema review remains pending independently.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

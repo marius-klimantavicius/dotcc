@@ -317,6 +317,8 @@ internal sealed partial class Emitter
                 case "shift-left":return "("+E(0)+" << (int)"+E(1)+")";case "shift-right":return "("+E(0)+" >> (int)"+E(1)+")";
                 case "and":case "bit-and":return Binary("&");case "or":case "bit-or":return Binary("|");case "xor":case "bit-xor":return Binary("^");
                 case "assign":return Binary("=");case "add-assign":return Binary("+=");case "subtract-assign":return Binary("-=");
+                case "pointer-add-assign":case "pointer-subtract-assign":
+                    throw unit.Missing(node,"pointer compound assignment requires recorded operation type/helper support");
                 case "multiply-assign":return Binary("*=");case "divide-assign":return Binary("/=");case "remainder-assign":return Binary("%=");
                 case "eq":return BooleanResult(Binary("=="));case "ne":return BooleanResult(Binary("!="));case "lt":return BooleanResult(Binary("<"));case "le":return BooleanResult(Binary("<="));case "gt":return BooleanResult(Binary(">"));case "ge":return BooleanResult(Binary(">="));
                 case "logical-and":return BooleanResult("("+Truth(N(0))+" && "+Truth(N(1))+")");
@@ -372,7 +374,7 @@ internal sealed partial class Emitter
             if(node.Kind=="delete")return value;
             if(UsesCompoundHelper(node))return "_ = "+value;
             if(node.Operator is "va-start" or "va-start-single" or "va-copy" or "va-end")return value;
-            if(node.Kind=="operation" && node.Operator is "assign" or "add-assign" or "subtract-assign" or "multiply-assign" or "divide-assign" or "remainder-assign" or "pre-increment" or "post-increment" or "pre-decrement" or "post-decrement")
+            if(node.Kind=="operation" && node.Operator is "assign" or "add-assign" or "subtract-assign" or "pointer-add-assign" or "pointer-subtract-assign" or "multiply-assign" or "divide-assign" or "remainder-assign" or "pre-increment" or "post-increment" or "pre-decrement" or "post-decrement")
                 return value[1..^1];
             if(node.Kind=="operation" && node.Operator is "call" or "dot-member-call" or "points-to-member-call")return value;
             return "_ = "+value;

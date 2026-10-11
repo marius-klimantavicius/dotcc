@@ -1496,6 +1496,8 @@ struct State {
       DOT_SEMANTIC_OP(eok_eq,"eq");DOT_SEMANTIC_OP(eok_ne,"ne");DOT_SEMANTIC_OP(eok_lt,"lt");
       DOT_SEMANTIC_OP(eok_le,"le");DOT_SEMANTIC_OP(eok_gt,"gt");DOT_SEMANTIC_OP(eok_ge,"ge");
       DOT_SEMANTIC_OP(eok_assign,"assign");DOT_SEMANTIC_OP(eok_add_assign,"add-assign");
+      DOT_SEMANTIC_OP(eok_padd_assign,"pointer-add-assign");
+      DOT_SEMANTIC_OP(eok_psubtract_assign,"pointer-subtract-assign");
       DOT_SEMANTIC_OP(eok_subtract_assign,"subtract-assign");DOT_SEMANTIC_OP(eok_multiply_assign,"multiply-assign");
       DOT_SEMANTIC_OP(eok_divide_assign,"divide-assign");DOT_SEMANTIC_OP(eok_remainder_assign,"remainder-assign");
       DOT_SEMANTIC_OP(eok_and_assign,"bit-and-assign");DOT_SEMANTIC_OP(eok_or_assign,"bit-or-assign");

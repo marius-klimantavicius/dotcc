@@ -190,7 +190,7 @@ internal sealed partial class Emitter
             var operands=unit.Children(node,"operand").ToArray();
             if(node.EvaluationOrder=="right-to-left" && operands.Length>1)
             {
-                if(node.Operator is not("assign" or "add-assign" or "subtract-assign" or "multiply-assign" or "divide-assign" or "remainder-assign"))
+                if(node.Operator is not("assign" or "add-assign" or "subtract-assign" or "pointer-add-assign" or "pointer-subtract-assign" or "multiply-assign" or "divide-assign" or "remainder-assign"))
                     throw unit.Missing(node,"right-to-left operation lowering is not yet implemented");
                 Node right=operands[1];
                 string name="__rhs_"+node.Id;

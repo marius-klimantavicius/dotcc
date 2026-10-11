@@ -7,7 +7,9 @@ internal sealed partial class Emitter
 
     private static bool IsCompound(string? operation)=>operation is "add-assign" or "subtract-assign" or "multiply-assign" or
         "divide-assign" or "remainder-assign" or "bit-and-assign" or "bit-or-assign" or "bit-xor-assign" or
-        "shift-left-assign" or "shift-right-assign";
+        "shift-left-assign" or "shift-right-assign" or "pointer-add-assign" or "pointer-subtract-assign";
+
+    private static bool IsPointerCompound(string? operation)=>operation is "pointer-add-assign" or "pointer-subtract-assign";
 
     private string CompoundConversion(Unit unit,long from,long to,string value)
     {
@@ -28,7 +30,15 @@ internal sealed partial class Emitter
             if(operands.Length!=2)throw unit.Missing(node,"compound assignment operand relation missing");
             long stored=operands[0].ExecutionType??operands[0].Type??throw unit.Missing(node,"compound destination type missing");
             long right=operands[1].ExecutionType??operands[1].Type??throw unit.Missing(node,"compound source type missing");
-            if(unit.Original(stored).Kind is "pointer" or "lvalue-reference" or "rvalue-reference" or "record" ||
+            bool pointer=IsPointerCompound(node.Operator);
+            if(pointer)
+            {
+                RequireFixedPointerLayout(unit,node,stored,"pointer compound assignment");
+                RequireFixedPointerLayout(unit,node,operation,"pointer compound assignment");
+                if(unit.Original(right).Kind is not ("i8" or "u8" or "i16" or "u16" or "i32" or "u32" or "i64" or "u64"))
+                    throw unit.Missing(node,"pointer compound assignment offset emission requires a recorded native integer type");
+            }
+            else if(unit.Original(stored).Kind is "pointer" or "lvalue-reference" or "rvalue-reference" or "record" ||
                 unit.Original(right).Kind is "pointer" or "lvalue-reference" or "rvalue-reference" or "record")
                 throw unit.Missing(node,"pointer/record compound assignment emission is not yet implemented");
             var key=(unit,node.Operator!,stored,right,operation);
@@ -38,12 +48,16 @@ internal sealed partial class Emitter
                 compoundHelpers.Add(key,name);
                 string symbol=node.Operator switch
                 {
-                    "add-assign"=>"+","subtract-assign"=>"-","multiply-assign"=>"*","divide-assign"=>"/","remainder-assign"=>"%",
+                    "add-assign" or "pointer-add-assign"=>"+","subtract-assign" or "pointer-subtract-assign"=>"-",
+                    "multiply-assign"=>"*","divide-assign"=>"/","remainder-assign"=>"%",
                     "bit-and-assign"=>"&","bit-or-assign"=>"|","bit-xor-assign"=>"^","shift-left-assign"=>"<<","shift-right-assign"=>">>",
                     _=>throw unit.Missing(node,"compound assignment operator missing")
                 };
                 string leftValue=CompoundConversion(unit,stored,operation,"(*target)");
-                string rightValue=node.Operator is "shift-left-assign" or "shift-right-assign"
+                // Pointer offsets remain integers. Typed pointer arithmetic
+                // scales them by the emitted pointee layout, without converting
+                // the offset to the pointer operation type.
+                string rightValue=pointer?"right":node.Operator is "shift-left-assign" or "shift-right-assign"
                     ?Type(unit,right)=="bool"?"(right ? 1 : 0)":"unchecked((int)right)":CompoundConversion(unit,right,operation,"right");
                 string computation="unchecked("+leftValue+" "+symbol+" "+rightValue+")";
                 string result=CompoundConversion(unit,operation,stored,computation);
