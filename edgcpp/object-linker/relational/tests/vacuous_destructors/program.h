@@ -1,0 +1,16 @@
+typedef int Scalar;
+struct Empty { int value; };
+extern int evaluations;
+extern Scalar scalar;
+extern Empty object;
+Scalar* scalar_pointer();
+Empty* object_pointer();
+Scalar& scalar_reference();
+Empty& object_reference();
+Scalar scalar_value();
+void points_scalar();
+void points_record();
+void dot_scalar();
+void dot_record();
+void dot_field();
+void dot_value();

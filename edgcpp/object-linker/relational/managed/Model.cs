@@ -8,7 +8,7 @@ internal sealed record Symbol(long Id, string Kind, string Name, string LinkName
 internal sealed record Node(long Id, long? Function, string Kind, long? Type, long? ExecutionType,
     string? ValueCategory, string? Operator, string? Constant, long? Symbol, long? Field, long? File, long? Line, long? Column, long? OriginalLvalueType,
     long? Initialization,long? Lifetime,string? EvaluationOrder,long? EnumValue,long? FloatingValue,string? ValueNormalization,long? OperationType,
-    long? LiteralObject,long? LiteralByteOffset);
+    long? LiteralObject,long? LiteralByteOffset,long? CommonLifetime,long? ContainingLifetime);
 internal sealed record Edge(string Role, long Ordinal, long Child);
 internal readonly record struct SymbolRef(Unit Unit, long Id)
 {
@@ -27,6 +27,7 @@ internal sealed partial class Unit : IDisposable
     public bool HasValueNormalization {get;}
     public bool HasNodeDomain {get;}
     public bool HasOperationType {get;}
+    public bool HasControlLifetimes {get;}
     public Dictionary<long, ProgramType> Types { get; } = [];
     public Dictionary<long, Field> Fields { get; } = [];
     public Dictionary<long, Symbol> Symbols { get; } = [];
@@ -67,6 +68,8 @@ internal sealed partial class Unit : IDisposable
                 HasNodeDomain=query.Read();
             using(var query=database.Prepare("SELECT 1 FROM pragma_table_info('nodes') WHERE name='operation_type_id'"))
                 HasOperationType=query.Read();
+            using(var query=database.Prepare("SELECT 1 FROM pragma_table_info('nodes') WHERE name='common_lifetime_id'"))
+                HasControlLifetimes=query.Read();
             using (var q = database.Prepare("SELECT id,path FROM files ORDER BY id"))
                 while (q.Read()) Files.Add(q.Integer(0), q.Text(1));
             using (var q = database.Prepare("SELECT id,kind,name,size,alignment,pointee_type_id,element_type_id,element_count,return_type_id,underlying_type_id,is_variadic,is_incomplete,link_name,linkage,is_volatile,"+(HasLifecycles?"builtin_name":"NULL")+","+(hasDependentTypes?"is_dependent":"0")+","+(HasReturnStorage?"return_storage":"'value'")+","+(hasSemanticRole?"semantic_role":"NULL")+" FROM types ORDER BY id"))

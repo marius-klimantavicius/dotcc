@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1020;
+PRAGMA user_version = 1021;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -180,6 +180,9 @@ CREATE TABLE nodes (
  source_node_id INTEGER REFERENCES nodes(id),
  initialization_id INTEGER REFERENCES initializations(id),
  lifetime_id INTEGER REFERENCES lifetimes(id),
+ -- Selected control-flow references; these do not own cleanup regions.
+ common_lifetime_id INTEGER REFERENCES lifetimes(id), -- goto: common lifetime
+ containing_lifetime_id INTEGER REFERENCES lifetimes(id), -- label: target scope
  evaluation_order TEXT NOT NULL DEFAULT 'unspecified' CHECK(evaluation_order IN('unspecified','left-to-right','right-to-left')),
  CHECK(domain!='template-recipe' OR function_id IS NULL)
 ) STRICT;

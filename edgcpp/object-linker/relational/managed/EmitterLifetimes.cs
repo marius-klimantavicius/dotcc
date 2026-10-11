@@ -39,6 +39,7 @@ internal sealed partial class Emitter
             long functionId=function!.Value.Id;
             var details=unit.FunctionDetails[functionId];
             PreparePlacementCleanups(functionId);
+            PrepareNamedLabels(functionId);
             CheckReturnCleanup();
             foreach(var lifetime in unit.Lifetimes.Values.Where(lifetime=>lifetime.Function==functionId))
                 foreach(long initialization in unit.Destructions.GetValueOrDefault(lifetime.Id,[]))
@@ -84,7 +85,7 @@ internal sealed partial class Emitter
                         if(!wroteVptrs)WriteVptrWrites("after-bases-before-members",content);
                     }
                     WriteVptrWrites("before-body",content);
-                    foreach(var child in unit.Children(body,"statement"))Statement(child,content);
+                    WriteBlockStatements(body,content);
                     if(constructorCompletionRequired && unit.Children(body,"statement").LastOrDefault()?.Kind!="return")Line(content,"__constructor_complete = true;");
                 }
                 void Root(int content)=>WriteLifetimeRegion(body,content,Body);
@@ -112,7 +113,7 @@ internal sealed partial class Emitter
         private void WriteBlock(Node block,int indent)
         {
             Line(indent,"{");
-            WriteLifetimeRegion(block,indent+1,content=>{foreach(var child in unit.Children(block,"statement"))Statement(child,content);});
+            WriteLifetimeRegion(block,indent+1,content=>WriteBlockStatements(block,content));
             Line(indent,"}");
         }
 

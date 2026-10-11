@@ -312,6 +312,7 @@ internal sealed partial class Emitter
             switch(op)
             {
                 case "is-constant-evaluated":return Constant(node);
+                case "dot-vacuous-destructor-call":case "points-to-vacuous-destructor-call":return VacuousDestructorExpression(node);
                 case "add":case "pointer-add":return Binary("+");case "subtract":case "pointer-subtract":return Binary("-");case "multiply":return Binary("*");
                 case "pointer-difference":return PointerDifference(node,N(0),N(1));
                 case "divide":return Binary("/");case "remainder":return Binary("%");
@@ -439,6 +440,8 @@ internal sealed partial class Emitter
                 case "case":case "default":WriteCase(node,indent);break;
                 case "break":WriteBreak(node,indent);break;
                 case "continue":WriteContinue(node,indent);break;
+                case "goto":WriteNamedGoto(node,indent);break;
+                case "label":WriteNamedLabel(node,indent);break;
                 case "try":WriteTry(node,indent);break;
                 case "throw":case "rethrow":WriteThrow(node,indent);break;
                 default:throw unit.Missing(node,"C# statement emission is not implemented");

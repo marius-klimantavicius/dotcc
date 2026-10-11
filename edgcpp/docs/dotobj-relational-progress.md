@@ -1202,6 +1202,41 @@ to `1521`, with EDG-selected common block lifetime. These source-shaped projecti
 are next. Complete real DuckDB objects and generated actual DuckDB C# sources
 remain zero; recorded project costs are rejected-export costs, not full-TU costs.
 
+## Vacuous destruction and selected named jumps (2026-10-11)
+
+Verified `dotobj-relational-vacuous-destructors-v2` preserves the source vacuous
+operation, evaluates its sole executable object/pointer once and retains optional
+NULL-routine destructor-name/type qualifiers as navigation metadata. Pointer
+forms never dereference; discarded glvalues evaluate designation rather than
+copying/loading records. No destructor/provider is invented. The first fixture
+exposed a multi-operand field-node selection bug; selecting recorded operand zero
+fixes it without changing the export contract.
+
+Verified `dotobj-relational-named-gotos-v1` preserves source goto/label spelling and
+exact selected target identity using the existing per-function statement cache.
+Schema 1021 adds nullable `nodes.common_lifetime_id` and `containing_lifetime_id`
+for EDG control-flow references. Owned `nodes.lifetime_id` and lifetime cleanup
+owners stay unchanged; there remain 43 ordinary tables. Generated forward gotos
+in current/enclosing lexical blocks use existing finally cleanup. Richer target
+scopes and unsupported discarded glvalue forms remain explicit emission boundaries.
+
+Both two-TU fixtures pass native C++, source-hidden C# and Linux NativeAOT.
+Existing switch and lifecycle/EH regressions also pass all three paths. The
+vacuous fixture checks scalar/record/field designation and value effects; the goto
+fixture checks nested loop/if exits, skipped construction/failure and selected
+cleanup order. Native/managed builds pass. Vacuous provider/main: 253,952 bytes
+with 79/63 nodes and 29/32 types; goto provider/main: 258,048 bytes with 142/159
+nodes and 17/19 types. Tested source/tool hashes and per-table storage are retained.
+
+Actual `hugeint-v45` passes vacuous destruction and reaches runtime-count scalar
+array new with selected zero initialization at DuckDB `common/helper.hpp:103`.
+Actual `exception-v11` passes named goto and reaches scalar delete of 88-byte
+`SampleOptions` with selected destructor at libc++ `__memory/unique_ptr.h:66`.
+Interrupted v44/v10 launcher artifacts are retained and are not semantic probe
+results. Complete real DuckDB objects and actual C# output remain zero; measured
+project costs still describe rejected export stages only. These allocation
+families are the next active work.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

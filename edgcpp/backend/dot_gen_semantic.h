@@ -113,7 +113,7 @@ struct State {
   std::map<a_template_ptr,Id> templates;
   std::map<std::string,Id> files;
   std::map<an_expr_node_ptr,Id> expressions;
-  std::map<a_statement_ptr,Id> switch_case_nodes;
+  std::map<a_statement_ptr,Id> source_statement_nodes;
   std::map<an_expr_node_ptr,Id> recipe_expressions;
   std::map<a_constant_ptr,Id> recipe_constants;
   bool template_recipe=false;
@@ -1534,6 +1534,8 @@ struct State {
       DOT_SEMANTIC_OP(eok_class_rvalue_adjust,"class-rvalue-adjust");
       DOT_SEMANTIC_OP(eok_base_class_cast,"base-class-cast");DOT_SEMANTIC_OP(eok_derived_class_cast,"derived-class-cast");
       DOT_SEMANTIC_OP(eok_bool_cast,"bool-cast");DOT_SEMANTIC_OP(eok_array_to_pointer,"array-to-pointer");
+      DOT_SEMANTIC_OP(eok_dot_vacuous_destructor_call,"dot-vacuous-destructor-call");
+      DOT_SEMANTIC_OP(eok_points_to_vacuous_destructor_call,"points-to-vacuous-destructor-call");
       DOT_SEMANTIC_OP(eok_add,"add");DOT_SEMANTIC_OP(eok_subtract,"subtract");
       DOT_SEMANTIC_OP(eok_multiply,"multiply");DOT_SEMANTIC_OP(eok_divide,"divide");DOT_SEMANTIC_OP(eok_remainder,"remainder");
       DOT_SEMANTIC_OP(eok_padd,"pointer-add");DOT_SEMANTIC_OP(eok_psubtract,"pointer-subtract");
@@ -1957,6 +1959,35 @@ struct State {
       missing("delete expression without selected deallocator call");
     deallocation_stack.pop_back();
   }
+  Id vacuous_destructor_name(an_expr_node_ptr value,const a_source_position &pos,Id owner) {
+    if(value->kind!=enk_routine || value->variant.routine.ptr || value->next)
+      missing("vacuous destructor source-name operand");
+    auto reference=value->variant.routine.name_reference;
+    if(!reference || reference->special_kind!=sfk_none || reference->is_template_id ||
+       reference->orig_template_arg_list || reference->is_super_qualified || reference->is_decltype_qualified)
+      missing("vacuous destructor source-name form");
+    Id previous=function;bool previous_recipe=template_recipe;
+    function=0;template_recipe=true;
+    auto named_type=reference->variant.destructor_type;
+    const auto &position=value->position.seq?value->position:pos;
+    Id id=node("reference-name",position,type_id(named_type),nullptr,
+      reference->is_global_qualified_name?"global-destructor-name":"destructor-name",
+      named_type?spelling(named_type->source_corresp):"");
+    db.update("nodes","id",id,{{"source_node_id",owner}});
+    std::vector<a_name_qualifier_ptr> qualifiers;
+    for(auto qualifier=reference->qualifier;qualifier;qualifier=qualifier->previous_qualifier)
+      qualifiers.push_back(qualifier);
+    unsigned ordinal=0;
+    for(auto qualifier=qualifiers.rbegin();qualifier!=qualifiers.rend();++qualifier) {
+      auto selected=*qualifier;
+      Id part=node("reference-name",position,selected->is_class?type_id(selected->qualifier.class_type):0,
+        nullptr,selected->is_class?"class-qualifier":"namespace-qualifier",selected->name?selected->name:"");
+      db.update("nodes","id",part,{{"source_node_id",owner}});
+      edge(id,"qualifier",ordinal++,part);
+    }
+    function=previous;template_recipe=previous_recipe;
+    return id;
+  }
   Id expression(an_expr_node_ptr e,const a_source_position *inherited_position=nullptr,Id source_node=0,
                 bool source_condition=false) {
     if(!e)return 0;
@@ -2159,6 +2190,9 @@ struct State {
         db.update("nodes","id",id,{{"floating_value_id",floating_value(node_constant(e))}});
     }
     if(e->kind==enk_operation) {
+      bool vacuous=e->variant.operation.kind==eok_dot_vacuous_destructor_call ||
+        e->variant.operation.kind==eok_points_to_vacuous_destructor_call;
+      if(vacuous && !e->variant.operation.operands)missing("vacuous destructor object operand");
       if(is_compound_assignment_operator(e->variant.operation.kind))
         // The stock helper handles promotions (especially the promoted left
         // operand of a shift). This is distinct from the stored/result type
@@ -2174,7 +2208,11 @@ struct State {
         // It supplies no argument value to the portable pack; GNU explicitly
         // ignores it (il::lvalue/rvalue operand checks). Keep it navigable
         // without asking generic operand expansion to evaluate it.
-        if(e->variant.operation.kind==eok_va_start && ordinal==1)
+        if(vacuous && ordinal==1)
+          // Stock lower_il evaluates only the object/pointer. A trailing
+          // NULL-routine operand describes the source destructor name.
+          edge(id,"source-name",0,vacuous_destructor_name(child,source_position,id));
+        else if(e->variant.operation.kind==eok_va_start && ordinal==1)
           edge(id,"last-parameter",0,expression(child,&source_position,id));
         else edge(id,"operand",ordinal,expression(child,&source_position,id));
       }
@@ -2242,10 +2280,10 @@ struct State {
   }
   Id statement(a_statement_ptr s,a_scope_ptr root_scope=nullptr,bool condition_initializer=false) {
     if(!s)return 0;
-    if(s->kind==stmk_switch_case) {
-      auto found=switch_case_nodes.find(s);
-      if(found==switch_case_nodes.end())missing("switch case without selected enclosing switch");
-      return found->second;
+    if(s->kind==stmk_switch_case || s->kind==stmk_label) {
+      auto found=source_statement_nodes.find(s);
+      if(found!=source_statement_nodes.end())return found->second;
+      if(s->kind==stmk_switch_case)missing("switch case without selected enclosing switch");
     }
     if(s->kind==stmk_init && declaration_initializers.count(s->variant.dynamic_init))return 0;
     auto missing_label=[&](const char *reason) {
@@ -2278,10 +2316,10 @@ struct State {
       case stmk_goto:
         if(s->variant.label.ptr->continue_label)kind="continue";
         else if(s->variant.label.ptr->break_label)kind="break";
-        else missing_label("named goto projection");break;
+        else kind="goto";break;
       case stmk_label:
         if(s->variant.label.ptr->continue_label || s->variant.label.ptr->break_label)kind="empty";
-        else missing_label("named label projection");break;
+        else kind="label";break;
       case stmk_empty:kind="empty";break;
       default: {
         auto pos=location(s->position);std::string path,name;
@@ -2292,7 +2330,24 @@ struct State {
       }
     }
     Id id=node(kind,s->position);
+    if(s->kind==stmk_label)source_statement_nodes[s]=id;
     switch(s->kind) {
+      case stmk_goto:
+        if(std::string(kind)=="goto") {
+          auto label=s->variant.label.ptr;
+          if(!label->exec_stmt || label->exec_stmt->kind!=stmk_label)
+            missing_label("named goto without selected label definition");
+          edge(id,"target",0,statement(label->exec_stmt));
+          // The exact common lifetime is the boundary for this transfer,
+          // distinct from a lifetime region owned by the statement.
+          db.update("nodes","id",id,{{"common_lifetime_id",optional(lifetime_id(s->variant.label.lifetime))}});
+        }
+        break;
+      case stmk_label:
+        if(std::string(kind)=="label")
+          db.update("nodes","id",id,{{"constant_text",spelling(s->variant.label.ptr->source_corresp)},
+            {"containing_lifetime_id",optional(lifetime_id(s->variant.label.lifetime))}});
+        break;
       case stmk_switch: {
         // Reserve the selected case statements before traversing the body:
         // the dispatch list and the lexical body reference the same source
@@ -2300,7 +2355,7 @@ struct State {
         unsigned ordinal=0;
         for(auto entry=s->variant.switch_stmt.extra_info->cases;entry;entry=entry->next) {
           Id selected=node(entry->case_value?"case":"default",entry->stmt->position);
-          switch_case_nodes[entry->stmt]=selected;
+          source_statement_nodes[entry->stmt]=selected;
           edge(id,"case",ordinal++,selected);
           if(entry->case_value)edge(selected,"value",0,constant(entry->case_value,entry->position));
 #if GNU_EXTENSIONS_ALLOWED
@@ -2677,7 +2732,7 @@ struct State {
       auto previous_literal_region=literal_source_region;
       literal_source_region=mem_region_for_routine(r);
       return_type=skip_typerefs(r->type)->variant.routine.return_type;
-      function=routine(r);expressions.clear();switch_case_nodes.clear();
+      function=routine(r);expressions.clear();source_statement_nodes.clear();
       db.update("symbols","id",function,{{"is_definition",true}});
       unsigned empty_ordinal=0;
       for(auto v=scope->variables;v;v=v->next)if(empty_pack_parameter(v)) {
@@ -2731,7 +2786,7 @@ struct State {
         pending->second.lifetime_ids=lifetimes;
       }
       for(auto variable:local_variables)variables.erase(variable);
-      local_variables.clear();expressions.clear();switch_case_nodes.clear();declaration_initializers.clear();subobject_initializations.clear();
+      local_variables.clear();expressions.clear();source_statement_nodes.clear();declaration_initializers.clear();subobject_initializations.clear();
       lifetimes.clear();initializations.clear();initialization_values.clear();initialization_types.clear();initializing.clear();
       function=previous;return_type=previous_return_type;literal_source_region=previous_literal_region;return;
     }

@@ -270,6 +270,15 @@ arrays and typed function pointers, without selecting overrides. Run
 adjustment and receiver/argument effects. Construction tables, virtual destructors,
 virtual-base/covariant adjustments and variadic slots remain unsupported.
 
+Vacuous destructor calls retain the selected source operation and evaluate only
+its object/pointer designation, without a destructor/provider. Optional type-name
+operands remain recipe metadata. `tests/verify_vacuous_destructors.py` checks
+scalar/record/field and value effects. Named gotos retain exact label targets and
+separate common/containing lifetime references, without changing cleanup owners.
+Forward jumps to labels in current/enclosing source blocks preserve existing
+finally cleanup; richer target scopes reject explicitly. Run
+`tests/verify_named_gotos.py` for nested loop/if exits and skipped construction.
+
 This covers lexical return cleanup, partial member/base construction, reference catches,
 rethrow and exception-object destruction. Arrays/virtual-base construction, nontrivial
 temporaries, function-try blocks, complex catch conversions, macros, all type
