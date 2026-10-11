@@ -38,11 +38,13 @@ internal sealed partial class Emitter
         {
             long functionId=function!.Value.Id;
             var details=unit.FunctionDetails[functionId];
+            PreparePlacementCleanups(functionId);
             CheckReturnCleanup();
             foreach(var lifetime in unit.Lifetimes.Values.Where(lifetime=>lifetime.Function==functionId))
                 foreach(long initialization in unit.Destructions.GetValueOrDefault(lifetime.Id,[]))
                 {
                     var action=unit.Initializations[initialization];
+                    if(allocationOwnedCleanups.Contains(initialization))continue;
                     if(action.Destructor is null)continue;
                     if(details.Kind=="destructor" && action.ConstructorInit)continue;
                     cleanupFlags.Add(initialization);
@@ -123,7 +125,8 @@ internal sealed partial class Emitter
             if(active.Length>1)throw unit.Missing(owner,"multiple cleanup lifetimes on one owner need explicit nesting emission");
             if(active.Length==0){content(indent);return;}
             WriteCleanupRegion("lifetime_"+active[0],unit.Destructions[active[0]].Where(ActionNeeded).ToArray(),indent,content);
-            bool ActionNeeded(long id)=>!(unit.FunctionDetails[function!.Value.Id].Kind=="destructor" && unit.Initializations[id].ConstructorInit);
+            bool ActionNeeded(long id)=>!allocationOwnedCleanups.Contains(id) &&
+                !(unit.FunctionDetails[function!.Value.Id].Kind=="destructor" && unit.Initializations[id].ConstructorInit);
         }
 
         private void WriteCleanupRegion(string key,IReadOnlyList<long> actions,int indent,Action<int> content,bool always=false)
@@ -174,13 +177,24 @@ internal sealed partial class Emitter
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs unsupported partial/value/temporary initialization emission");
             if(initialization.ImpliedSource && initialization.Kind!="bitwise-copy")
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs implied-source constructor argument emission");
-            if(initialization.ExpressionLifetime is long lifetime && unit.Destructions.GetValueOrDefault(lifetime,[]).Count!=0)
+            if(initialization.ExpressionLifetime is long lifetime && unit.Destructions.GetValueOrDefault(lifetime,[]).Any(id=>!allocationOwnedCleanups.Contains(id)))
                 throw new InvalidDataException("Initialization "+initialization.Id+" requires initializer expression cleanup");
         }
 
+        private int expressionExpansionDepth;
+
         private string ExpandedExpression(Node node,int indent)
         {
+            ++expressionExpansionDepth;
+            try {return ExpandedExpressionCore(node,indent);}
+            finally {--expressionExpansionDepth;}
+        }
+
+        private string ExpandedExpressionCore(Node node,int indent)
+        {
             if(expandedValues.TryGetValue(node.Id,out string? found))return NormalizeValue(node,found);
+            if(IsPlacementWrapper(node))return ExpandedPlacementWrapper(node,indent);
+            if(node.Kind=="new" && node.Operator=="placement")return ExpandedPlacementAllocation(node,indent);
             if(node.Kind=="temporary" && node.Initialization is long dependent &&
                unit.Initializations[dependent].DestinationInitialization is not null)
             {

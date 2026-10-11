@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1019;
+PRAGMA user_version = 1020;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -467,6 +467,7 @@ CREATE TABLE allocations (
  length_check_node_id INTEGER REFERENCES nodes(id),
  length_failure_symbol_id INTEGER REFERENCES symbols(id),
  result_byte_offset INTEGER NOT NULL,
+ construction_null_check INTEGER CHECK(construction_null_check IN(0,1)),
  CHECK(count_symbol_id IS NULL OR count_value_node_id IS NOT NULL),
  CHECK((length_check_node_id IS NULL) = (length_failure_symbol_id IS NULL))
 ) STRICT;

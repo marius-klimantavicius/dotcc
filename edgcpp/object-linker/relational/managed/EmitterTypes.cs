@@ -81,6 +81,7 @@ internal sealed partial class Emitter
         if(node.LiteralObject is long literal)UseLiteral(unit,literal);
         if(unit.Allocations.TryGetValue(node.Id,out var allocation))
         {
+            NeedsExceptionRuntime|=node.Operator=="placement";
             // The allocated array type is source metadata. Runtime execution
             // uses the selected pointer result and supplied size/check graph.
             UseType(unit,unit.Symbols[allocation.Allocator].Type);

@@ -26,6 +26,7 @@ internal sealed partial class Emitter
             foreach(long id in unit.Destructions.Values.SelectMany(actions=>actions))
             {
                 var initialization=unit.Initializations[id];
+                if(allocationOwnedCleanups.Contains(id))continue;
                 if(initialization.Function!=function!.Value.Id || initialization.Destructor is not long destructor)continue;
                 var selected=emitter.program.Resolve(unit,destructor);
                 if(!selected.Unit.FunctionDetails.TryGetValue(selected.Id,out var details))

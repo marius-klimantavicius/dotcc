@@ -97,7 +97,7 @@ struct State {
     a_variable_ptr count_temporary=nullptr;
     a_source_position position{};
     std::map<an_expr_node_ptr,Id> projected;
-    bool complete=false;
+    bool placement=false,construction_null_check=false,construction_null_check_observed=false,complete=false;
   };
   std::map<a_new_delete_supplement_ptr,Allocation> allocations;
   std::vector<a_new_delete_supplement_ptr> allocation_stack;
@@ -1765,6 +1765,22 @@ struct State {
     // actions and are deliberately outside this projection.
     return is_scalar_type(element);
   }
+  bool placement_construction(a_new_delete_supplement_ptr value) {
+    if(!value->is_new || !value->routine || !value->placement_new || value->aligned_version ||
+       !value->arg || value->arg->next || !is_scalar_type(value->arg->type) || value->number_of_elements)
+      return false;
+    auto allocated_type=skip_typerefs(value->type);
+    auto init=value->dynamic_init;auto cleanup=value->freeing_of_storage_on_exception;
+    bool selected_init=init &&
+      ((init->kind==dik_constructor && init->variant.constructor.ptr) ||
+       (init->kind==dik_expression && init->variant.expression));
+    return is_immediate_class_type(allocated_type) && !is_incomplete_type(allocated_type) &&
+      selected_init &&
+      !init->variable && !init->destructor && !init->lifetime && !init->master_entry &&
+      !init->class_rvalue_initialized_through_master_entry &&
+      cleanup && cleanup->kind==dik_none && cleanup->destructor &&
+      cleanup->is_freeing_of_storage_on_exception && !cleanup->is_array_freeing;
+  }
   void source_allocation(Id id,an_expr_node_ptr e) {
     if(template_recipe || !function)missing("allocation outside executable function");
     auto value=e->variant.new_delete;
@@ -1774,6 +1790,32 @@ struct State {
     selected.allocator=routine(value->routine);selected.source_count=value->number_of_elements;
     selected.count_value=expression(value->number_of_elements);
     edge(id,"element-count",0,selected.count_value);
+    if(value->placement_new) {
+      selected.placement=true;
+      unsigned ordinal=0;
+      for(auto argument=value->arg;argument;argument=argument->next,++ordinal) {
+        Id source=expression(argument,&e->position,id);
+        edge(id,"placement-argument",ordinal,source);
+        // Stock extra_args_for_operator_delete reuses these evaluated
+        // placement argument values; failure cleanup must not reevaluate them.
+        edge(id,"exception-argument",ordinal,source);
+      }
+      Id initialize=node("initialize",e->position,selected.allocated_type,nullptr,
+        nullptr,"",0,0,0,true);
+      db.update("nodes","id",initialize,{{"source_node_id",id},
+        {"initialization_id",initialization_id(value->dynamic_init,value->type)}});
+      edge(id,"initialize",0,initialize);
+      // In stock lower_new's accepted non-array initialization path,
+      // turn_off_freeing_of_storage_on_exception protects this initialization
+      // expression. Placement arguments and the allocator result assignment
+      // remain outside that internal try; the selected null guard surrounds it.
+      edge(id,"exception-protected",0,initialize);
+      Id cleanup=node("allocation-cleanup",e->position,selected.allocated_type,nullptr,
+        nullptr,"",0,0,0,true);
+      db.update("nodes","id",cleanup,{{"source_node_id",id},
+        {"initialization_id",initialization_id(value->freeing_of_storage_on_exception,value->type)}});
+      edge(id,"allocation-cleanup",0,cleanup);
+    }
   }
   Id allocation_expression(Allocation &selected,an_expr_node_ptr e) {
     if(!e)missing("selected allocation expression");
@@ -1830,17 +1872,26 @@ struct State {
     }
     allocation_stack.pop_back();
   }
+  void allocation_construction_null_check(a_new_delete_supplement_ptr value,bool required) {
+    auto found=allocations.find(value);if(found==allocations.end() || !found->second.placement)return;
+    auto &selected=found->second;
+    if(selected.construction_null_check_observed && selected.construction_null_check!=required)
+      missing("conflicting selected construction null check");
+    selected.construction_null_check=required;selected.construction_null_check_observed=true;
+  }
   void allocation_simple_result(a_new_delete_supplement_ptr value) {
     auto found=allocations.find(value);if(found==allocations.end())return;
     auto &selected=found->second;
-    if(!selected.size || selected.complete)missing("selected plain allocation completion");
-    // This callback is at lower_new's final plain-path change_to_cast. The
+    if(!selected.size || selected.complete)missing("selected allocation completion");
+    if(selected.placement && !selected.construction_null_check_observed)
+      missing("placement construction without selected null-check decision (initialization may have been removed)");
+    // This callback is at lower_new's final non-array change_to_cast. The
     // result is the allocation call's pointer, with no cookie adjustment.
     db.insert("allocations",{{"node_id",selected.node},{"allocated_type_id",selected.allocated_type},
       {"allocator_symbol_id",selected.allocator},{"count_value_node_id",optional(selected.count_symbol?selected.count_value:0)},
       {"count_symbol_id",optional(selected.count_symbol)},{"size_node_id",selected.size},
       {"length_check_node_id",optional(selected.check)},{"length_failure_symbol_id",optional(selected.failure)},
-      {"result_byte_offset",0}});
+      {"result_byte_offset",0},{"construction_null_check",selected.placement?Value(selected.construction_null_check):Value(nullptr)}});
     selected.complete=true;
   }
   bool plain_deallocation(a_new_delete_supplement_ptr value) {
@@ -1978,6 +2029,9 @@ struct State {
       case enk_new_delete: {
         auto allocation=e->variant.new_delete;
         if(plain_allocation(allocation)){kind="new";symbol=routine(allocation->routine);break;}
+        if(placement_construction(allocation)) {
+          kind="new";op="placement";symbol=routine(allocation->routine);break;
+        }
         if(plain_deallocation(allocation)) {
           kind="delete";op=allocation->array_delete?"array":"scalar";symbol=routine(allocation->routine);break;
         }
@@ -2194,6 +2248,23 @@ struct State {
       return found->second;
     }
     if(s->kind==stmk_init && declaration_initializers.count(s->variant.dynamic_init))return 0;
+    auto missing_label=[&](const char *reason) {
+      auto label=s->variant.label.ptr;
+      auto pos=location(s->position);
+      auto target_pos=location(label->exec_stmt?label->exec_stmt->position:label->source_corresp.decl_position);
+      std::string path,target_path,name;
+      for(const auto &file:files) {
+        if(file.second==pos.file)path=file.first;
+        if(file.second==target_pos.file)target_path=file.first;
+      }
+      for(const auto &entry:routines)if(entry.second==function){name=spelling(entry.first->source_corresp);break;}
+      missing(std::string(reason)+" [function="+name+", label="+spelling(label->source_corresp)+
+        ", common-lifetime-kind="+std::to_string(s->variant.label.lifetime?int(s->variant.label.lifetime->kind):-1)+
+        ", target-statement-kind="+std::to_string(label->exec_stmt?int(label->exec_stmt->kind):-1)+
+        ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+
+        ", target-file="+target_path+", target-line="+std::to_string(target_pos.line)+
+        ", target-column="+std::to_string(target_pos.column)+"]",int(s->kind));
+    };
     const char *kind=nullptr;
     switch(s->kind) {
       case stmk_block:kind="block";break;case stmk_return:kind="return";break;
@@ -2207,10 +2278,10 @@ struct State {
       case stmk_goto:
         if(s->variant.label.ptr->continue_label)kind="continue";
         else if(s->variant.label.ptr->break_label)kind="break";
-        else missing("named goto and label projection");break;
+        else missing_label("named goto projection");break;
       case stmk_label:
         if(s->variant.label.ptr->continue_label || s->variant.label.ptr->break_label)kind="empty";
-        else missing("named label projection");break;
+        else missing_label("named label projection");break;
       case stmk_empty:kind="empty";break;
       default: {
         auto pos=location(s->position);std::string path,name;
@@ -2777,6 +2848,9 @@ inline void allocation_size_end(a_new_delete_supplement_ptr allocation,an_expr_n
 }
 inline void allocation_simple_result(a_new_delete_supplement_ptr allocation) {
   if(enabled())state().allocation_simple_result(allocation);
+}
+inline void allocation_construction_null_check(a_new_delete_supplement_ptr allocation,bool required) {
+  if(enabled())state().allocation_construction_null_check(allocation,required);
 }
 inline void deallocation_begin(a_new_delete_supplement_ptr allocation) {
   if(enabled())state().deallocation_begin(allocation);

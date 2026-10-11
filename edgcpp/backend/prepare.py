@@ -1536,6 +1536,14 @@ object_source_overlay(init_lower,
     '  dot_semantic::allocation_size_end(ndsp, number_of_bytes);\n'
     '#endif\n'
     '  return number_of_bytes;\n}  /* size_arg_for_new */')
+# Observe the exact stock decision for initialization after allocation. The
+# correspondence already exists for requested source allocation expressions.
+object_source_overlay(init_lower,
+    '  return result;\n}  /* null_check_needed */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::allocation_construction_null_check(ndsp, result);\n'
+    '#endif\n'
+    '  return result;\n}  /* null_check_needed */')
 object_source_overlay(init_lower,
     '    change_to_cast(expr, call_node, expr->type);',
     '#if defined(EDG_DOT_BACKEND)\n'

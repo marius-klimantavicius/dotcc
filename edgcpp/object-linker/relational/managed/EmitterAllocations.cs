@@ -53,6 +53,7 @@ internal sealed partial class Emitter
 
         private string AllocationExpression(Node node)
         {
+            if(node.Operator=="placement")throw unit.Missing(node,"placement construction requires statement expansion");
             if(!unit.Allocations.TryGetValue(node.Id,out var allocation))
                 throw unit.Missing(node,"exporter defect: selected allocation facts missing");
             if(allocation.CountSymbol is not null)

@@ -255,7 +255,7 @@ internal sealed partial class Emitter
         private string RawExpression(Node node)
         {
             if(expandedValues.TryGetValue(node.Id,out var expanded))return expanded;
-            if(node.Lifetime is long ownedLifetime && unit.Destructions.GetValueOrDefault(ownedLifetime,[]).Count!=0)
+            if(node.Lifetime is long ownedLifetime && unit.Destructions.GetValueOrDefault(ownedLifetime,[]).Any(id=>!allocationOwnedCleanups.Contains(id)))
                 throw unit.Missing(node,"expression lifetime cleanup needs statement expansion");
             if(node.OriginalLvalueType is long original && unit.IsVolatile(original) ||
                 node.Type is long type && unit.IsVolatile(type))
@@ -275,7 +275,7 @@ internal sealed partial class Emitter
                 case "initialize":return unit.Children(node,"value").FirstOrDefault() is Node value?Expression(value):"default";
                 case "operation":return Operation(node);
                 case "lifetime-scope":
-                    if(node.Lifetime is long lifetime && unit.Destructions.GetValueOrDefault(lifetime,[]).Count!=0)
+                    if(node.Lifetime is long lifetime && unit.Destructions.GetValueOrDefault(lifetime,[]).Any(id=>!allocationOwnedCleanups.Contains(id)))
                         throw unit.Missing(node,"expression lifetime cleanup needs statement expansion");
                     return Expression(Child(node,"operand"));
                 default:throw unit.Missing(node,"C# expression emission is not implemented");

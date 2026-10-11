@@ -178,7 +178,13 @@ Plain allocation uses EDG-selected count bindings, check/size expression graphs,
 failure calls and allocator calls. `tests/verify_allocations.py` supplies explicit
 allocator providers and checks once-only effects, invalid/zero/fixed counts,
 conditional execution and exceptions. This is not a standard runtime binder.
-Initialization, placement/aligned allocation, cookies and rollback remain unsupported.
+Scalar placement construction now retains selected complete-record constructor or
+expression actions, reusable placement/failure arguments, exact protected scope
+and exception-only deallocation. Stock lowering supplies the nullable recorded
+construction null guard. `tests/verify_placement_allocations.py` checks stable
+destination identity, copy actions, once-only arguments and failure ordering.
+Conditional/short-circuit placement, richer temporary cleanup, aligned/array
+construction and cookies remain unsupported.
 
 Dynamic scalar aggregate components reference exact initialization actions at the
 existing selected field/array destinations. `tests/verify_dynamic_aggregates.py`

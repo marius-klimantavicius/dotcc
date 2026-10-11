@@ -1165,6 +1165,43 @@ feature. Generic unsupported expressions now include domain/function/source
 diagnostics. No complete real DuckDB object or actual DuckDB C# output has been
 published; project probe timings remain early-rejection costs.
 
+## Selected scalar placement construction and failure cleanup (2026-10-11)
+
+Verified `dotobj-relational-placement-allocations-v1` retains one scalar placement
+argument, the selected complete-record constructor or expression initialization,
+and its exact exception-only deallocation action. Reusable failure arguments
+alias the same source expressions. `exception-protected` aliases the same
+initialization node and identifies the stock internal try's action: constructor
+argument/action evaluation is protected, while placement arguments and allocation
+remain outside. No lowered graph or copied action is retained.
+
+Schema 1020 adds nullable boolean `allocations.construction_null_check`; the
+narrow stock `null_check_needed` return callback records this decision without
+changing IL or guessing allocator behavior. There are still 43 ordinary tables.
+The generator saves the placement argument once, allocates first, follows the
+recorded guard, writes into returned storage and invokes selected deallocation
+with the saved arguments on protected failure, then rethrows. Only the exact
+allocation-owned cleanup is removed from generic scope destruction. Source
+cast/adjust wrappers preserve sequencing; conditional/short-circuit placement,
+richer initialization cleanup, arrays/alignment/cookies remain explicit boundaries.
+
+The C++17 two-TU fixture checks selected guarded/unguarded paths, allocator size,
+returned self identity, saved arguments despite mutation, placement/allocator/
+constructor-argument/constructor failure, null-result skipping, explicit
+destruction, void wrappers and the real selected-expression record-copy case.
+Native C++, source-hidden C# and Linux NativeAOT pass. Existing allocation,
+deallocation and shared-result regressions pass all three execution paths.
+Native/managed builds pass. Provider: 311,296 bytes / 398 nodes / 59 types; main:
+360,448 bytes / 793 nodes / 61 types. Tested hashes and per-table storage are retained.
+
+Actual `hugeint-v43` advances through LogicalType construction and allocator copy
+placement, reaching selected points-to vacuous destruction at libc++
+`__memory/shared_ptr.h:310:63`. Actual `exception-v9` advances placement and locates
+named goto `__done` in `__emplace_unique_key_args`, libc++ `__hash_table:1490`
+to `1521`, with EDG-selected common block lifetime. These source-shaped projections
+are next. Complete real DuckDB objects and generated actual DuckDB C# sources
+remain zero; recorded project costs are rejected-export costs, not full-TU costs.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
