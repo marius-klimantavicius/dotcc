@@ -18,7 +18,7 @@ FROM types t LEFT JOIN nodes n ON n.id=t.array_bound_node_id
 WHERE t.kind='array' ORDER BY t.id;
 
 SELECT t.name AS enum,storage.builtin_name AS underlying,e.is_scoped,
-       e.has_explicit_base,v.ordinal,v.name,v.value_text
+       e.has_explicit_base,v.ordinal,v.name,v.value_text,v.expression_node_id
 FROM enums e JOIN types t ON t.id=e.type_id
 JOIN types storage ON storage.id=t.underlying_type_id
 LEFT JOIN enum_values v ON v.enum_type_id=e.type_id ORDER BY e.type_id,v.ordinal;

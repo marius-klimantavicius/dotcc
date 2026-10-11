@@ -163,7 +163,7 @@ internal sealed class LinkedProgram : IDisposable
             if(Units.Select(unit=>unit.Abi).Distinct(StringComparer.Ordinal).Count()!=1)
                 throw new InvalidDataException("Cannot link objects with different recorded target ABIs");
             foreach(var unit in Units)
-                foreach(var symbol in unit.Symbols.Values.Where(symbol=>symbol.Definition && (symbol.Parent is null || symbol.Kind=="static-local")))
+                foreach(var symbol in unit.Symbols.Values.Where(symbol=>symbol.Kind!="source-variable" && symbol.Definition && (symbol.Parent is null || symbol.Kind=="static-local")))
                 {
                     var value=new SymbolRef(unit,symbol.Id);
                     if(symbol.Linkage=="external" && !external.TryAdd(symbol.LinkName,value))
@@ -175,7 +175,7 @@ internal sealed class LinkedProgram : IDisposable
                     }
                 }
             foreach(var unit in Units)
-                foreach(var symbol in unit.Symbols.Values.Where(symbol=>symbol.Definition && (symbol.Parent is null || symbol.Kind=="static-local")))
+                foreach(var symbol in unit.Symbols.Values.Where(symbol=>symbol.Kind!="source-variable" && symbol.Definition && (symbol.Parent is null || symbol.Kind=="static-local")))
                 {
                     var value=new SymbolRef(unit,symbol.Id);
                     if(Resolve(unit,symbol.Id)!=value)continue;
@@ -188,7 +188,7 @@ internal sealed class LinkedProgram : IDisposable
     public SymbolRef Resolve(Unit unit,long id)
     {
         var symbol=unit.Symbols[id];
-        return symbol.Linkage=="external" && external.TryGetValue(symbol.LinkName,out var selected)?selected:new(unit,id);
+        return symbol.Kind!="source-variable" && symbol.Linkage=="external" && external.TryGetValue(symbol.LinkName,out var selected)?selected:new(unit,id);
     }
     public IDisposable LoadFunction(SymbolRef function)
     {

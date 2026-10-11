@@ -627,8 +627,13 @@ struct State {
       for(auto value=enum_constants(t);value;value=value->next,++ordinal) {
         Id value_id=next_enum_value++;enum_values[value]=value_id;
         auto value_pos=location(value->source_corresp.decl_position);
+        Value selected_integer=nullptr;Id selected_expression=0;
+        if(value->kind==ck_template_param)
+          selected_expression=recipe_value(value,value->source_corresp.decl_position);
+        else selected_integer=integer(value);
         db.insert("enum_values",{{"id",value_id},{"enum_type_id",id},{"ordinal",ordinal},
-          {"name",spelling(value->source_corresp)},{"value_text",integer(value)},
+          {"name",spelling(value->source_corresp)},{"value_text",selected_integer},
+          {"expression_node_id",optional(selected_expression)},
           {"value_type_id",type_id(value->type)},{"file_id",optional(value_pos.file)},
           {"line",value_pos.line},{"column",value_pos.column}});
       }
@@ -751,6 +756,10 @@ struct State {
     }
   }
   Id variable(a_variable_ptr v,bool local=false,bool parameter=false,bool source_definition=false) {
+    if(v->is_nonreal) {
+      if(!template_recipe)missing_source_variable(v,"dependent variable in executable expression");
+      return source_variable(v);
+    }
     auto found=variables.find(v);if(found!=variables.end()) {
       // A function can refer to an extern declaration before its definition
       // is seen. Final source-scope capture completes that same EDG entity;
@@ -814,6 +823,68 @@ struct State {
     template_recipe=previous_recipe;function=previous_function;
     if(--recipe_capture_depth==0){recipe_expressions.clear();recipe_constants.clear();}
     return id;
+  }
+  [[noreturn]] void missing_source_variable(a_variable_ptr v,const char *reason) {
+    auto source=location(v->source_corresp.decl_position);std::string path;
+    for(const auto &file:files)if(file.second==source.file){path=file.first;break;}
+    auto init=v->init_kind==initk_dynamic?v->initializer.dynamic:nullptr;
+    missing(std::string(reason)+" [variable="+spelling(v->source_corresp)+
+      ", type="+spelling(v->type->source_corresp)+", type-kind="+std::to_string(int(v->type->kind))+
+      ", nonreal="+std::to_string(int(v->is_nonreal))+
+      ", prototype="+std::to_string(int(v->is_prototype_instantiation))+
+      ", init-kind="+std::to_string(int(v->init_kind))+
+      ", action-kind="+std::to_string(init?int(init->kind):-1)+
+      ", destructor="+std::to_string(init && init->destructor?1:0)+
+      ", lifetime="+std::to_string(init && init->lifetime?1:0)+
+      ", expression-lifetime="+std::to_string(init && init->init_expr_lifetime?1:0)+
+      ", file="+path+", line="+std::to_string(source.line)+
+      ", column="+std::to_string(source.column)+"]");
+  }
+  Id source_variable(a_variable_ptr v) {
+    auto found=variables.find(v);if(found!=variables.end())return found->second;
+    Id symbol=next_symbol++;variables[v]=symbol;
+    auto previous_function=function;bool previous_recipe=template_recipe;
+    if(recipe_capture_depth++==0){recipe_expressions.clear();recipe_constants.clear();}
+    function=0;template_recipe=true;
+    auto pos=location(v->source_corresp.decl_position);Id type=type_id(v->type);
+    db.insert("symbols",{{"id",symbol},{"kind","source-variable"},{"name",spelling(v->source_corresp)},
+      {"link_name",v->source_corresp.name?v->source_corresp.name:""},{"linkage",linkage(v->source_corresp)},
+      {"type_id",type},{"is_definition",v->storage_class!=sc_extern},
+      {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
+    Id declaration=node("variable-declaration",v->source_corresp.decl_position,type,nullptr,nullptr,"",symbol);
+    const char *kind=nullptr;Id initializer=0;
+    switch(v->init_kind) {
+      case initk_none:kind="none";break;
+      case initk_zero:kind="zero";break;
+      case initk_static:
+        kind="constant";initializer=constant(v->initializer.constant,v->source_corresp.decl_position);break;
+      case initk_dynamic: {
+        auto init=v->initializer.dynamic;
+        if(!init || init->destructor || init->lifetime || init->init_expr_lifetime ||
+           init->lifetime_of_overlapping_temps || init->master_entry ||
+           init->class_rvalue_initialized_through_master_entry || init->unordered ||
+           init->overlaps_temps_in_inner_lifetime || init->destruction_is_for_partially_constructed_aggregate ||
+           init->is_freeing_of_storage_on_exception)
+          missing_source_variable(v,"source variable initializer ownership");
+        switch(init->kind) {
+          case dik_none:kind="none";break;
+          case dik_zero:kind="zero";break;
+          case dik_constant:
+            kind="constant";initializer=constant(init->variant.constant.ptr,v->source_corresp.decl_position);break;
+          case dik_expression:
+            kind="expression";initializer=expression(init->variant.expression,&v->source_corresp.decl_position,declaration);break;
+          default:missing_source_variable(v,"source variable selected initializer");
+        }
+        break;
+      }
+      default:missing_source_variable(v,"source variable initialization");
+    }
+    db.update("nodes","id",declaration,{{"operator",kind}});
+    edge(declaration,"initializer",0,initializer);
+    if(v->template_info)instance(v->template_info->assoc_template,v->template_info->template_arg_list,symbol,0,true);
+    template_recipe=previous_recipe;function=previous_function;
+    if(--recipe_capture_depth==0){recipe_expressions.clear();recipe_constants.clear();}
+    return symbol;
   }
   void query_operand(Id id,a_type_ptr selected_type,an_expr_node_ptr selected_expression,const a_source_position &p) {
     Id operand=0;
@@ -1333,7 +1404,7 @@ struct State {
     if(c->kind==ck_template_param) {
       Id id=node(dependent_value_kind(c,p),p,type_id(c->type),"prvalue");
       if(template_recipe)recipe_constants[c]=id;
-      dependent_value(id,c,p,local_expression);return id;
+      dependent_value(id,c,p,local_expression);attach_enum_value(id,c);return id;
     }
     if(c->kind==ck_aggregate) {
       Id id=node(is_immediate_class_type(skip_typerefs(c->type))?"record-initializer":"array-initializer",
@@ -1352,13 +1423,16 @@ struct State {
     attach_enum_value(id,c);return id;
   }
   void attach_enum_value(Id id,a_constant_ptr c) {
-    if(!is_enum_constant(c))return;
+    auto found=enum_values.find(c);
+    if(found==enum_values.end()) {
+      if(!is_enum_constant(c))return;
+      auto type=skip_lexical_typerefs(c->type);
+      type_id(underlying_enum_type(type));
+      found=enum_values.find(c);
+    }
     // C enumerators carry an affiliated integral type; C++ enumerators
     // carry the enum type itself. Retain only an actual EDG entity identity,
     // never guess a declaration from a coincidentally equal value or name.
-    auto type=skip_lexical_typerefs(c->type);
-    type_id(underlying_enum_type(type));
-    auto found=enum_values.find(c);
     if(found!=enum_values.end())db.update("nodes","id",id,{{"enum_value_id",found->second}});
   }
   bool empty_pack_parameter(a_variable_ptr v) {
@@ -3157,7 +3231,7 @@ struct State {
       // selected source type/throw operations already own the relevant facts.
       if(v->lowering_generated)continue;
 #endif
-      if(v->is_nonreal)missing("dependent global declaration");
+      if(v->is_nonreal){source_variable(v);continue;}
       variable(v,false,false,true);
     }
     for(auto r=scope->routines;r;r=r->next)

@@ -1456,6 +1456,36 @@ Required byte-narrowing helpers remain. All 14 bodies and seven required provide
 imports are retained, with tested hashes and source assertions. This improves actual
 source readability; it does not add runtime provider coverage or complete a core TU.
 
+## Dependent enum values and nonreal source declarations (2026-10-11)
+
+Schema 1024 / 44 tables makes `enum_values.value_text` nullable and adds an exact
+`expression_node_id` reference to its selected dependent recipe. Concrete numeric
+values remain unchanged. Selected enum IDs survive both expression and constant
+capture paths, using existing EDG entity identity. Reader metadata retains the
+expression without evaluating it or realizing dependent enum layouts. Runtime
+emission of an unresolved dependent enum remains an explicit boundary.
+`dotobj-relational-dependent-enums-v1` passes native, source-hidden C# and NativeAOT,
+including exact dependent root/enum correspondence and concrete selected values.
+
+Exact nonreal EDG variables now retain a `source-variable` symbol and nonexecuting
+source declaration/selected initializer edges. Definition and declaration facts,
+types, template instances/arguments, names and linkage remain distinct. They create
+no runtime storage, initialization action, startup entry or required import, and
+are excluded from executable definition pooling. Richer selected initializer ownership
+remains a located boundary. `dotobj-relational-source-variables-v2` checks both a
+primary constant-initialized definition and its separate no-initializer reference
+declaration, with genuine concrete variable execution. Native, source-hidden C# and
+NativeAOT pass; the initial fixture's overstrict definition assumption was corrected
+against EDG's recorded rows without changing native facts. Hashes, SQL/table sizes
+and all review artifacts are retained.
+
+Actual checksum-v17 and exception-v20 pass both boundaries and converge on selected
+`tpck_noexcept` source recipe metadata. Projection of that exact query operand is
+next; no compile-time value is computed by the exporter or consumer. Configured
+bundled dependency export/generation counts remain 1/1 (ICU); core DuckDB counts
+remain 0/0. Measurements for the core probes describe rejected export stages with
+two concurrent probes and fixture/AOT jobs, not completed TU costs.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

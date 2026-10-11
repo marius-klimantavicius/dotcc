@@ -45,7 +45,7 @@ internal sealed partial class Emitter
                 throw new InvalidDataException("C# enum storage is not supported: "+type.Name+" ("+storage+")");
             Line(1,"public enum "+name+" : "+storage);Line(1,"{");
             foreach(var value in unit.EnumValues.Values.Where(value=>value.Type==type.Id).OrderBy(value=>value.Ordinal))
-                Line(2,enumValueNames[(unit,value.Id)]+" = "+IntegerLiteral(storage,value.Value)+",");
+                Line(2,enumValueNames[(unit,value.Id)]+" = "+IntegerLiteral(storage,value.Value??throw new InvalidDataException("Dependent enumerator runtime emission is not supported: "+type.Name+"."+value.Name))+",");
             Line(1,"}");
         }
     }
