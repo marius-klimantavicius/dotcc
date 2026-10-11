@@ -422,6 +422,7 @@ internal sealed partial class Emitter
                     Line(indent,"do");WriteLoopBody(node,indent);
                     Line(indent,"while ("+Truth(Child(node,"condition"))+");");break;
                 case "for":WriteFor(node,indent);break;
+                case "range-for":WriteRangeFor(node,indent);break;
                 case "break":Line(indent,"break;");break;
                 case "continue":WriteContinue(node,indent);break;
                 case "try":WriteTry(node,indent);break;

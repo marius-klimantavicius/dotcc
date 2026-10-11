@@ -149,6 +149,11 @@ allocator providers and checks once-only effects, invalid/zero/fixed counts,
 conditional execution and exceptions. This is not a standard runtime binder.
 Initialization, placement/aligned allocation, cookies and rollback remain unsupported.
 
+Range-based loops retain EDG-selected initialization, comparison and increment
+expressions with explicit outer/iterator lifetimes. `tests/verify_ranges.py` covers
+arrays, custom cursor/sentinel calls, C++20 initializers, nested control flow and
+cleanup on return/throw/constructor failure. The reader performs no iterator lookup.
+
 Plain scalar-pointee deletion retains the selected call and stock converted arguments
 as ordinary expression nodes with a source `delete` node. `tests/verify_deallocations.py`
 checks once-only pointer effects, null arguments, skipped branches, and cross-TU calls.

@@ -91,6 +91,22 @@ internal sealed partial class Emitter
             Line(indent,"}");
         }
 
+        private void WriteRangeFor(Node statement,int indent)
+        {
+            Line(indent,"{");
+            WriteLifetimeRegion(statement,indent+1,level=>
+            {
+                if(unit.Children(statement,"initializer").FirstOrDefault() is Node initializer)WriteForInitializer(initializer,level);
+                foreach(string role in new[]{"range","begin","end"})Statement(Child(statement,role),level);
+                // EDG supplies the selected comparison/increment expressions.
+                // The body owns its iterator lifetime, so continue first runs
+                // that cleanup and then executes the ordinary for increment.
+                Line(level,"for (; "+Truth(Child(statement,"condition"))+"; "+StatementExpression(Child(statement,"step"))+")");
+                WriteLoopBody(statement,level);
+            });
+            Line(indent,"}");
+        }
+
         private void WriteForInitializer(Node initializer,int indent)
         {
             if(initializer.Kind!="block"){Statement(initializer,indent);return;}

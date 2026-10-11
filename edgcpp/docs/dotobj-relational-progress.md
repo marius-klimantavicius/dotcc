@@ -672,6 +672,34 @@ Actual `hugeint-v28` gets past `delete[] ptr` and rejects statement kind 14
 is early-rejection cost. Next work is the selected range iteration graph and its
 source/lifetime relationships. Broad campaign remains stopped.
 
+## Resolved range iteration and lifetimes (2026-10-11)
+
+Verified `dotobj-relational-ranges-v3` passes native C++, source-hidden generated
+C#, and Linux NativeAOT. No schema/table additions: source `range-for` nodes retain
+EDG's selected range/begin/end variable initialization, comparison and increment
+expressions. The root owns the actual outer range scope lifetime; a source-linked
+synthetic body owns the iterator scope lifetime and contains the selected iterator
+initialization followed by the source body. This follows the actions documented in
+stock `lower_range_based_for_statement` without exporting its generic lowered body.
+
+C# preserves optional C++20 initialization scope, initialization order and iterator
+cleanup before increment, including continue, break, return and exception paths.
+Tests cover scalar arrays, reference mutation, a custom cursor with a different
+sentinel type, class-valued iteration variables, nested loops, constructor failure,
+and distinct outer/per-iteration destruction. The initial fixture's nonconstant
+aggregate returns reached an existing unsupported initializer; explicit constructors
+isolate range behavior. That aggregate boundary remains unchanged.
+main: 311,296 bytes / 429 nodes / 63 types
+provider: 266,240 bytes / 136 nodes / 69 types.
+Per-table storage/tool hashes are retained. The condition-loop regression also passes
+native/C#/NativeAOT at `dotobj-relational-conditions-ranges-regression-v1`.
+
+Actual `hugeint-v29` gets past ranges and rejects the selected class-valued default
+member initializer `ColumnIndex::type = LogicalType::INVALID` (constructor action
+with destructor). No full DuckDB object is published: 1.11 s / 274,432 KiB is still
+early-rejection cost. Next work must capture the selected per-constructor action
+without reconstructing its remapping or cleanup. Broad campaign remains stopped.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

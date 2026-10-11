@@ -1637,6 +1637,7 @@ struct State {
       case stmk_expr:kind="expr-stmt";break;case stmk_if:kind="if";break;
       case stmk_while:kind="while";break;case stmk_end_test_while:kind="do-while";break;
       case stmk_for:kind="for";break;case stmk_decl:kind="decl";break;case stmk_init:kind="decl";break;
+      case stmk_range_based_for:kind="range-for";break;
       case stmk_try_block:kind="try";break;
       case stmk_goto:
         if(s->variant.label.ptr->continue_label)kind="continue";
@@ -1646,7 +1647,13 @@ struct State {
         if(s->variant.label.ptr->continue_label || s->variant.label.ptr->break_label)kind="empty";
         else missing("named label projection");break;
       case stmk_empty:kind="empty";break;
-      default:missing("statement",int(s->kind));
+      default: {
+        auto pos=location(s->position);std::string path,name;
+        for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+        for(const auto &entry:routines)if(entry.second==function){name=spelling(entry.first->source_corresp);break;}
+        missing("statement [function="+name+", file="+path+", line="+std::to_string(pos.line)+
+          ", column="+std::to_string(pos.column)+"]",int(s->kind));
+      }
     }
     Id id=node(kind,s->position);
     switch(s->kind) {
@@ -1684,6 +1691,41 @@ struct State {
         edge(id,"initializer",0,statement(s->variant.for_loop.extra_info->initialization));
         edge(id,"condition",0,expression(s->expr));edge(id,"step",0,expression(s->variant.for_loop.extra_info->increment));
         edge(id,"body",0,statement(s->variant.for_loop.statement));break;
+      }
+      case stmk_range_based_for: {
+        auto range=s->variant.range_based_for_loop.extra_info;
+        if(range->use_await)missing("await range-for projection");
+        auto outer=range->range_based_for_scope,iteration=range->iterator_scope;
+        if(!outer || !iteration || !range->range || !range->begin || !range->end || !range->iterator ||
+           !range->ne_call_expr || !range->incr_call_expr)missing("selected range-for source facts");
+        if(has_static_storage(outer) || has_static_storage(iteration))missing("range-for static storage projection");
+        // These are the exact scopes and ordered actions consumed by stock
+        // lower_il::lower_range_based_for_statement. The selected variables
+        // deliberately have no stmk_init statements in source IL.
+        attach_lifetime(id,outer->lifetime);
+        for(auto v=outer->nonstatic_variables;v;v=v->next)variable(v,true);
+        edge(id,"initializer",0,statement(range->initialization,nullptr,true));
+        auto binding=[&](a_variable_ptr v,const char *role) {
+          const auto &pos=v->source_corresp.decl_position.seq?v->source_corresp.decl_position:s->position;
+          Id action=declaration(v,pos);
+          db.update("nodes","id",action,{{"source_node_id",id},{"is_synthetic",true}});
+          edge(id,role,0,action);
+        };
+        binding(range->range,"range");binding(range->begin,"begin");binding(range->end,"end");
+        edge(id,"condition",0,expression(range->ne_call_expr));
+        edge(id,"step",0,expression(range->incr_call_expr));
+        Id body=node("block",s->position,0,nullptr,nullptr,"",0,0,0,true);
+        db.update("nodes","id",body,{{"source_node_id",id}});
+        attach_lifetime(body,iteration->lifetime);
+        for(auto v=iteration->nonstatic_variables;v;v=v->next)variable(v,true);
+        const auto &pos=range->iterator->source_corresp.decl_position.seq?
+          range->iterator->source_corresp.decl_position:s->position;
+        edge(body,"statement",0,declaration(range->iterator,pos));
+        edge(body,"statement",1,statement(s->variant.range_based_for_loop.statement));
+        // Leaving this block (also by continue) performs iteration cleanup.
+        // The selected increment is outside it; the outer lifetime surrounds
+        // the entire loop and handles break, return, and exceptional exits.
+        edge(id,"body",0,body);break;
       }
       case stmk_decl: {
         unsigned ordinal=0;
