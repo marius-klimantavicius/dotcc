@@ -338,7 +338,30 @@ struct State {
     if(!spec || spec->throw_any)return "unwind";
     if(spec->indeterminate || spec->arg_cached || spec->copy_from_prototype)return "dependent";
     if(spec->is_noexcept)return "terminate";
-    missing("dynamic exception specification projection");
+    auto owner=t->variant.routine.extra_info->assoc_routine;
+    a_source_position position=owner?owner->source_corresp.decl_position:t->source_corresp.decl_position;
+#if EXTRA_SOURCE_POSITIONS_IN_IL
+    if(spec->source_range.start.seq)position=spec->source_range.start;
+#endif
+    auto pos=location(position);std::string path,context;
+    for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+    for(const auto &entry:routines)if(entry.second==function){context=spelling(entry.first->source_corresp);break;}
+    unsigned count=0;auto first=spec->variant.exception_specification_type_list;
+    for(auto selected=first;selected;selected=selected->next)++count;
+    missing("dynamic exception specification projection [routine="+
+      (owner?spelling(owner->source_corresp):"<none>")+
+      ", definition="+std::to_string(owner && owner->function_def_number!=NULL_function_def_number?1:0)+
+      ", type="+spelling(type->source_corresp)+", context="+context+
+      ", noexcept="+std::to_string(int(spec->is_noexcept))+
+      ", throw-any="+std::to_string(int(spec->throw_any))+
+      ", indeterminate="+std::to_string(int(spec->indeterminate))+
+      ", cached="+std::to_string(int(spec->arg_cached))+
+      ", pending-copy="+std::to_string(int(spec->copy_from_prototype))+
+      ", generated="+std::to_string(int(spec->compiler_generated))+
+      ", attribute="+std::to_string(int(spec->from_attribute))+
+      ", allowed-types="+std::to_string(count)+
+      ", first-type="+(first?spelling(first->type->source_corresp):"")+
+      ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]");
   }
   const char *floating_name(a_float_kind kind) {
     // Preserve language type identity even when two kinds share a format.
@@ -1886,6 +1909,34 @@ struct State {
     // Retain their nearest enclosing expression's navigation and explicit
     // source link without changing EDG entries or reconstructing syntax.
     const auto &source_position=e->position.seq || !inherited_position?e->position:*inherited_position;
+#if BUILTIN_FUNCTIONS_ENABLED
+    if(e->kind==enk_operation && e->variant.operation.kind==eok_call) {
+      auto callee=e->variant.operation.operands;
+      auto selected=callee && callee->kind==enk_routine?callee->variant.routine.ptr:nullptr;
+      if(selected && selected->special_kind==sfk_none &&
+         selected->variant.builtin_function_kind==bfk_is_constant_evaluated) {
+        if(callee->next)missing("constant-evaluation intrinsic arguments");
+        // c_gen_be::dump_intrinsic_call emits typed zero for this residual
+        // runtime query. There is no callable ABI or exception boundary.
+        // A dependent source recipe records the selected query, not its
+        // eventual value; EDG owns any later constant evaluation.
+        Id id=node("operation",source_position,type_id(e->type),
+          e->is_lvalue?"lvalue":e->is_xvalue?"xvalue":"prvalue",
+          "is-constant-evaluated",template_recipe?"":"0",0,0,type_id(e->orig_lvalue_type),e->compiler_generated);
+        expression_ids[e]=id;
+        if(!e->position.seq && source_position.seq && source_node)
+          db.update("nodes","id",id,{{"source_node_id",source_node}});
+        Id previous=function;bool previous_recipe=template_recipe;
+        function=0;template_recipe=true;
+        Id name=node("reference-name",callee->position.seq?callee->position:source_position,
+          0,nullptr,nullptr,spelling(selected->source_corresp));
+        db.update("nodes","id",name,{{"source_node_id",id}});
+        function=previous;template_recipe=previous_recipe;
+        edge(id,"source-name",0,name);
+        return id;
+      }
+    }
+#endif
     const char *kind=nullptr,*op=nullptr;std::string text;Id symbol=0,field=0;
     switch(e->kind) {
       case enk_constant:

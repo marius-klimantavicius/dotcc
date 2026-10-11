@@ -113,10 +113,9 @@ internal sealed partial class Emitter
         {
             UseType(unit,call.ReceiverType);UseType(unit,call.CallableType);
         }
-        // Selected-type and source-condition edges retain source metadata.
-        // RTTI storage and constexpr branch execution follow their selected
-        // program references, without realizing or evaluating this metadata.
-        foreach(var edge in unit.Edges.GetValueOrDefault(node.Id,[]).Where(edge=>edge.Role is not ("selected-type" or "source-condition")))
+        // These edges retain source metadata. Selected execution follows its
+        // program references without realizing or evaluating this metadata.
+        foreach(var edge in unit.Edges.GetValueOrDefault(node.Id,[]).Where(edge=>edge.Role is not ("selected-type" or "source-condition" or "source-name")))
             UseNode(unit,unit.Nodes[edge.Child],visited);
     }
 

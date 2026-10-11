@@ -311,6 +311,7 @@ internal sealed partial class Emitter
                 throw unit.Missing(node,"right-to-left operation needs statement expansion");
             switch(op)
             {
+                case "is-constant-evaluated":return Constant(node);
                 case "add":case "pointer-add":return Binary("+");case "subtract":case "pointer-subtract":return Binary("-");case "multiply":return Binary("*");
                 case "pointer-difference":return PointerDifference(node,N(0),N(1));
                 case "divide":return Binary("/");case "remainder":return Binary("%");

@@ -1069,10 +1069,43 @@ main: 262,144 bytes / 190 nodes / 28 types. Hashes and per-table storage are ret
 Actual `exception-v7` advances through constexpr-if and rejects placement-new
 record construction with selected exception deallocation at libc++
 `__memory/allocator.h:173:5`. Its exact null-guard/cleanup capture needs director
-review. Independently configured `checksum-v1` rejects a dynamic exception
-specification; its actual stock policy is being investigated. `hugeint-v40`
+review. Independently configured `checksum-v2`, using a diagnostic-only native
+rebuild, locates the selected predefined `__builtin_is_constant_evaluated` type
+at libc++ `__type_traits/is_constant_evaluated.h:27:10`; its enclosing
+`__libcpp_is_constant_evaluated` wrapper is `noexcept`. The builtin's transient
+callable type has an empty legacy exception specification, but stock
+`c_gen_be.c` emits the runtime query directly as `0`, without a callable boundary.
+An exact selected-builtin operation projection is being implemented instead of
+changing generic exception policies. Stock legacy `throw()` must not be collapsed
+to `noexcept` merely because both are nonthrowing at a call site. No policy/schema
+change has been made. `hugeint-v40`
 still awaits shared-result destination schema review. No complete DuckDB object
 or actual DuckDB C# output has been published; probe timings are rejection costs.
+
+## Selected constant-evaluation runtime intrinsic (2026-10-11)
+
+Verified `dotobj-relational-constant-evaluation-query-v1` projects the exact
+EDG-selected `bfk_is_constant_evaluated` direct intrinsic before its transient
+callable ABI type is captured. Stock `c_gen_be::dump_intrinsic_call` emits typed
+zero for the residual runtime query; the program operation records that value.
+Already folded compile-time values remain EDG's constants. A `source-name` edge
+retains the exact builtin spelling in navigation-only recipe metadata; there is
+no executable callee or invented provider. Recipe queries do not assert a future
+runtime value. Schema remains 1018 / 43 tables.
+
+The focused fixture checks direct/wrapped runtime false, short-circuit/branch
+behavior, folded compile-time true, exact source/type/category/navigation and no
+callable builtin symbol. Native C++, source-hidden C# and Linux NativeAOT pass.
+Native/managed builds pass. Object: 253,952 bytes / 73 nodes / 15 types; tested
+hashes and per-table storage are retained. Generic unsupported dynamic exception
+specifications now include selected source and policy diagnostics; their policy
+is unchanged.
+
+Actual `checksum-v3` advances through the intrinsic and rejects expression EDG
+kind 25. Its selected source representation is being investigated. Shared-result
+destination and placement-construction reviews remain pending for `hugeint-v40`
+and `exception-v7`. No complete real DuckDB object or actual DuckDB C# output has
+been published. Retained project probe timings remain early-rejection costs.
 
 ## Remaining work
 

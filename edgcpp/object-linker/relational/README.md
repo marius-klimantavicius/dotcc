@@ -108,6 +108,8 @@ Compound assignments carry EDG's selected calculation type in
 helpers preserve operand order, narrowing and lvalue result identity. Run
 `tests/verify_compound_assignments.py` for arithmetic, bitwise and shift coverage,
 including conditional execution and address/reference results.
+`tests/verify_pointer_compounds.py` covers fixed-layout pointer addition/subtraction
+assignments with integer offsets, selected order and stable lvalue results.
 
 EDG builtin va_list types carry a `semantic_role` while keeping their source type
 chains and layout in SQL. The consumer uses the shared portable VaArg/VaPack/VaList
@@ -164,6 +166,9 @@ Scalar default member initializers reuse ordinary selected constructor actions w
 EDG explicitly selects the field initializer. `tests/verify_default_members.py`
 covers constants, typed null pointers, templates, and explicit overrides. Richer
 defaults needing constructor remapping or expression cleanup remain unsupported.
+Cleanup-free folded record default constants also use those selected actions and
+recorded field/base/zero writes; `tests/verify_default_record_constants.py` checks
+nested values, explicit overrides and independent instances.
 Class defaults with scalar constant constructor arguments use EDG's exact copied
 initialization and finalized constructor cleanup order. `tests/verify_class_defaults.py`
 covers partial failure, explicit overrides and constructor-exit destructor failure;
@@ -178,7 +183,29 @@ Initialization, placement/aligned allocation, cookies and rollback remain unsupp
 Dynamic scalar aggregate components reference exact initialization actions at the
 existing selected field/array destinations. `tests/verify_dynamic_aggregates.py`
 covers nested aggregates, returned records, side effects, zeroing and throws.
+Cleanup-free complete record components use the same selected actions;
+`tests/verify_record_aggregate_components.py` exercises record fields initialized
+from references and returned values. Exported record array components still meet
+an explicit managed record-array generation boundary.
 Nontrivial component cleanup and dynamic repeated elements remain unsupported.
+
+Local static assertions retain source declarations and recipe-only condition/message
+navigation. The generator emits an accepted-EDG assertion comment and performs no
+condition rechecking or message allocation; `tests/verify_static_assertions.py`
+checks this separation. Dependent explicit template references retain ordered
+source arguments in recipe graphs; `tests/verify_dependent_template_reference.py`
+checks their isolation from concrete execution.
+
+`if constexpr` retains EDG's recorded selected boolean and selected-body alias.
+The predicate remains recipe metadata, while any C++17 initializer and its cleanup
+remain executable. `tests/verify_constexpr_if.py` checks true/false template branches,
+normal/exceptional initializer cleanup and explicit rejection of nonempty retained
+discarded branches. The consumer never evaluates the compile-time predicate.
+
+Residual `__builtin_is_constant_evaluated` queries use stock EDG's typed runtime
+zero, while compile-time folded values remain EDG constants. Exact selected builtin
+spelling remains navigation metadata, with no callable ABI/provider. Run
+`tests/verify_constant_evaluation_query.py` for runtime and compile-time separation.
 
 Switches retain exact selected case/default identities, values and source body order.
 `tests/verify_switches.py` covers lexical fallthrough, nested exits and condition/local
