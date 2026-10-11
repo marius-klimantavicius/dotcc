@@ -105,3 +105,16 @@ WHERE n.value_normalization IS NOT NULL ORDER BY n.id;
 SELECT n.id,n.kind,n.initialization_id,n.lifetime_id,l.owner_node_id
 FROM nodes n LEFT JOIN lifetimes l ON l.id=n.lifetime_id
 WHERE n.kind IN ('condition','for') ORDER BY n.id;
+
+SELECT t.id,t.link_name,t.address_point_byte_offset,e.slot_index,
+       selected.name AS selected,target.name AS target,e.entry_kind,
+       e.target_variant,e.this_delta,e.vcall_index,e.return_delta,e.vbase_index
+FROM virtual_tables t JOIN virtual_table_entries e ON e.table_id=t.id
+JOIN symbols selected ON selected.id=e.selected_symbol_id
+LEFT JOIN symbols target ON target.id=e.target_symbol_id
+ORDER BY t.id,e.slot_index;
+
+SELECT s.name,w.ordinal,w.phase,w.base_subobject_id,w.vptr_byte_offset,
+       w.table_id,w.source_kind,w.construction_index
+FROM vptr_writes w JOIN symbols s ON s.id=w.function_id
+ORDER BY w.function_id,w.ordinal;

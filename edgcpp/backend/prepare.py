@@ -1472,3 +1472,115 @@ for filename in ("lower_il.c", "lower_c99.c"):
     object_source_overlay(root / "upstream/src" / filename,
         '  dot_object_source::observe_scope(scope);',
         '  dot_semantic::capture_scope(scope);\n  dot_object_source::observe_scope(scope);')
+
+# Targeted relational dispatch facts at stock EDG decision points. These hooks
+# observe selected entries and writes; they neither change IL nor select overrides.
+object_source_overlay(root / "upstream/src/lower_init.c",
+    '#include "dot_gen_object_source.h"',
+    '#include "dot_gen_object_source.h"\n#include "dot_gen_semantic.h"')
+object_source_overlay(lower,
+    '    dot_object_source::observe_record_before_prelowering(class_type);',
+    '    dot_semantic::virtual_source_class(class_type);\n'
+    '    dot_object_source::observe_record_before_prelowering(class_type);')
+object_source_overlay(lower,
+    '  dot_object_source::observe_routine(routine);',
+    '  dot_semantic::virtual_source_routine(routine);\n'
+    '  dot_object_source::observe_routine(routine);')
+object_source_overlay(lower,
+    '    /* Put out the body of the table. */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::virtual_table_begin(class_type, bcp, ctor_bcp, vtbl_var,\n'
+    '#if IA64_ABI\n'
+    '      (num_negative_vtable_entries(class_type, bcp) +\n'
+    '       (bcp != NULL && ctor_bcp == NULL ? bcp->virtual_function_table_offset : 0)) * vtbl_entry_size(),\n'
+    '#else\n'
+    '      0,\n'
+    '#endif\n'
+    '#if IA64_ABI\n'
+    '      vtbl_entry_size()\n'
+    '#else\n'
+    '      make_vtbl_entry_type()->size\n'
+    '#endif\n'
+    '    );\n'
+    '#endif\n'
+    '    /* Put out the body of the table. */')
+object_source_overlay(lower,
+    '                                &next_entry_number, first_virtual);',
+    '                                &next_entry_number, first_virtual);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::virtual_table_end();\n'
+    '#endif')
+object_source_overlay(lower,
+    '    add_vtbl_entry_init(delta,\n#if IA64_ABI\n                        use_null_function ?',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::virtual_table_entry(entry_number, primary_function, func_to_call, delta,\n'
+    '#if IA64_ABI\n'
+    '      use_null_function\n'
+    '#else\n'
+    '      FALSE\n'
+    '#endif\n'
+    '    );\n'
+    '#endif\n'
+    '    add_vtbl_entry_init(delta,\n#if IA64_ABI\n                        use_null_function ?')
+object_source_overlay(lower,
+    '      add_vtbl_entry_init(delta,\n#if IA64_ABI\n                          use_null_function ?',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_semantic::virtual_table_entry(entry_number + 1, primary_function, second_func_to_call, delta, use_null_function);\n'
+    '#endif\n'
+    '      add_vtbl_entry_init(delta,\n#if IA64_ABI\n                          use_null_function ?')
+ctor_vptr_call = ('  initialize_vptrs_in_class(class_type, this_param_var, construction_vtbls_var,\n'
+                 '                            (a_constant_ptr)NULL, insert_location);')
+object_source_overlay(init_lower, ctor_vptr_call,
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::virtual_vptr_begin(innermost_function_scope->variant.routine.ptr, "after-bases-before-members");\n'
+    '#endif\n' + ctor_vptr_call + '\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::virtual_vptr_end();\n'
+    '#endif')
+object_source_overlay(init_lower,
+    '  insert_primary_vtbl_assignment(class_type, this_param_var,\n'
+    '                                 dtor_info.destruction_vtbls_var,',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::virtual_vptr_begin(innermost_function_scope->variant.routine.ptr, "before-body");\n'
+    '#endif\n'
+    '  insert_primary_vtbl_assignment(class_type, this_param_var,\n'
+    '                                 dtor_info.destruction_vtbls_var,')
+object_source_overlay(init_lower,
+    '  /* Now generate epilogue wrapper code to destroy members and base classes.',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::virtual_vptr_end();\n'
+    '#endif\n'
+    '  /* Now generate epilogue wrapper code to destroy members and base classes.')
+object_source_overlay(init_lower,
+    '    initialize_vptr(vtbl_addr_node,\n'
+    '                    aggr_con == NULL ?',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::virtual_vptr_write(class_type, (a_base_class_ptr)NULL, vtbl_addr_node,\n'
+    '#if IA64_ABI\n'
+    '      ctor_vtbl_var != NULL,\n'
+    '#else\n'
+    '      FALSE,\n'
+    '#endif\n'
+    '      0);\n'
+    '#endif\n'
+    '    initialize_vptr(vtbl_addr_node,\n'
+    '                    aggr_con == NULL ?')
+base_vptr_hook = ('#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_semantic::virtual_vptr_write(class_type, bcp, vtbl_addr_node,\n'
+    '#if ABI_CHANGES_FOR_CONSTRUCTION_VTBLS\n'
+    '        bcp->index_in_construction_vtbl_array != 0, bcp->index_in_construction_vtbl_array\n'
+    '#else\n'
+    '        FALSE, 0\n'
+    '#endif\n'
+    '      );\n'
+    '#endif\n')
+object_source_overlay(init_lower,
+    '      initialize_vptr(vtbl_addr_node, vptr_node, bcp_con, insert_location);',
+    base_vptr_hook +
+    '      initialize_vptr(vtbl_addr_node, vptr_node, bcp_con, insert_location);')
+object_source_overlay(init_lower,
+    '      vptr_node = make_base_class_lvalue_from_var(this_param_var, bcp,\n'
+    '                                                  /*complete_object=*/FALSE);',
+    base_vptr_hook +
+    '      vptr_node = make_base_class_lvalue_from_var(this_param_var, bcp,\n'
+    '                                                  /*complete_object=*/FALSE);')

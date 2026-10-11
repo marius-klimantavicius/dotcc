@@ -60,6 +60,14 @@ internal sealed partial class Emitter
 
         private void WriteClassResultCall(Node call,string destination,int indent)
         {
+            if(unit.VirtualCalls.TryGetValue(call.Id,out var dispatch))
+            {
+                if(call.Lifetime is long virtualLifetime && unit.Destructions.GetValueOrDefault(virtualLifetime,[]).Count!=0)
+                    throw unit.Missing(call,"virtual class result expression cleanup emission is not yet implemented");
+                if(call.EvaluationOrder=="right-to-left")
+                    throw unit.Missing(call,"right-to-left virtual class result expansion is not yet implemented");
+                Line(indent,VirtualCallExpression(call,dispatch,destination)+";");return;
+            }
             if(call.Kind=="operation" && call.Operator=="class-rvalue-adjust")
             {
                 if(call.Lifetime is long adjustedLifetime && unit.Destructions.GetValueOrDefault(adjustedLifetime,[]).Count!=0)

@@ -111,6 +111,14 @@ cleanup and the selected increment/continue order. `tests/verify_conditions.py`
 checks these with Clang as the original-source oracle (GCC bug 86769 destroys
 for-condition variables too early), plus source-hidden C# and NativeAOT.
 
+Virtual dispatch uses `virtual_calls`, `virtual_tables`, `virtual_table_entries`
+and `vptr_writes`. Targeted stock lowering hooks supply exact targets, slots,
+adjustments and constructor/destructor phases. The consumer uses pinned slot
+arrays and typed function pointers, without selecting overrides. Run
+`tests/verify_virtual.py` for phase changes, pure-slot metadata, second-base
+adjustment and receiver/argument effects. Construction tables, virtual destructors,
+virtual-base/covariant adjustments and variadic slots remain unsupported.
+
 This covers lexical return cleanup, partial member/base construction, reference catches,
 rethrow and exception-object destruction. Arrays/virtual-base construction, nontrivial
 temporaries, function-try blocks, complex catch conversions, macros, all type

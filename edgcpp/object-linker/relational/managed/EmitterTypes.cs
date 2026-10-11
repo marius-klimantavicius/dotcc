@@ -38,6 +38,8 @@ internal sealed partial class Emitter
             }
             foreach(var conversion in unit.ClassConversions.Values.Where(conversion=>unit.Nodes[conversion.Node].Function==function.Id))
                 UseBase(unit,unit.BaseSubobjects[conversion.Base]);
+            foreach(var write in unit.VptrWrites.GetValueOrDefault(function.Id,[]))
+                if(write.Table is long table)UseVirtualTable(unit,table);
             foreach(var site in unit.Throws.Values.Where(site=>unit.Nodes[site.Node].Function==function.Id))
                 if(site.Type is long type)UseType(unit,type);
             foreach(var handler in unit.Handlers.Values.SelectMany(handlers=>handlers).Where(handler=>unit.Nodes[handler.CatchNode].Function==function.Id))
@@ -72,6 +74,10 @@ internal sealed partial class Emitter
             foreach(long argument in unit.InitializationArguments.GetValueOrDefault(selected,[]))UseNode(unit,unit.Nodes[argument],visited);
         }
         if(unit.ClassConversions.TryGetValue(node.Id,out var conversion))UseBase(unit,unit.BaseSubobjects[conversion.Base]);
+        if(unit.VirtualCalls.TryGetValue(node.Id,out var call))
+        {
+            UseType(unit,call.ReceiverType);UseType(unit,call.CallableType);
+        }
         foreach(var edge in unit.Edges.GetValueOrDefault(node.Id,[]))UseNode(unit,unit.Nodes[edge.Child],visited);
     }
 

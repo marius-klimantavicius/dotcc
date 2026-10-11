@@ -7,6 +7,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <vector>
 #include "fe_common.h"
 #include "il.h"
 #include "types.h"
@@ -42,6 +43,19 @@ struct State {
   std::map<a_type_ptr,Id> types;
   std::map<a_routine_ptr,Id> routines;
   std::map<a_routine_ptr,Id> routine_source_types;
+  std::map<a_routine_ptr,Id> routine_receiver_types;
+  Id next_virtual_table=1;
+  std::map<std::pair<a_variable_ptr,long long>,Id> virtual_tables;
+  std::vector<Id> virtual_table_stack;
+  struct VirtualEntry {
+    Id selected=0,signature=0,receiver=0,target=0;
+    a_routine_ptr abi_routine=nullptr;
+    const char *kind="ordinary",*variant="ordinary";
+    long long delta=0,vcall=0,return_delta=0,vbase=0;
+  };
+  std::map<std::pair<Id,long long>,VirtualEntry> virtual_entries;
+  std::vector<std::pair<Id,std::string>> vptr_phases;
+  std::map<Id,unsigned> vptr_ordinals;
   std::map<a_variable_ptr,Id> variables;
   std::map<a_field_ptr,Id> fields;
   std::map<a_base_class_ptr,Id> base_subobjects;
@@ -435,6 +449,12 @@ struct State {
       }
       unsigned ordinal=0;
       for(auto f=t->variant.class_struct_union.field_list;f;f=f->next,++ordinal)field_id(f,id,ordinal);
+      // Virtual table lowering needs these exact source signatures after
+      // routine types have acquired ABI parameters. Capture only the named
+      // virtual declarations of this already-selected record.
+      if(extra->assoc_scope && !is_template_dependent_type(t))
+        for(auto r=extra->assoc_scope->routines;r;r=r->next)
+          if(r->is_virtual && !r->is_consteval)routine(r);
       instance(extra->assoc_template,extra->template_arg_list,0,id,is_template_dependent_type(t));
     }
     return id;
@@ -460,6 +480,8 @@ struct State {
     auto found=routines.find(r);if(found!=routines.end())return found->second;
     Id id=next_symbol++;routines[r]=id;auto pos=location(r->source_corresp.decl_position);
     Id signature=type_id(r->type);routine_source_types[r]=signature;
+    auto signature_type=skip_typerefs(r->type);
+    routine_receiver_types[r]=type_id(signature_type->variant.routine.extra_info->this_class);
     db.insert("symbols",{{"id",id},{"kind","function"},{"name",spelling(r->source_corresp)},
       {"link_name",r->source_corresp.name?r->source_corresp.name:""},{"linkage",linkage(r->source_corresp)},
       {"type_id",signature},{"is_definition",r->function_def_number!=NULL_function_def_number},
@@ -684,6 +706,156 @@ struct State {
       {"byte_adjustment",base->is_virtual?Value(nullptr):Value(derived?-(long long)base->offset:(long long)base->offset)},
       {"source_representation",source_rep},{"result_representation",result_rep}});
   }
+  a_routine_ptr virtual_source(a_routine_ptr r) {
+    if(!r)return nullptr;
+#if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN
+    if(r->overriding_function_for_wrapper)r=r->overriding_function_for_wrapper;
+#endif
+#if DO_IL_LOWERING && IA64_ABI
+    if(r->primary_ctor_or_dtor)r=r->primary_ctor_or_dtor;
+#endif
+    return r;
+  }
+  void virtual_source_routine(a_routine_ptr r) {
+    if(!r || virtual_source(r)!=r || !r->is_virtual || r->is_consteval)return;
+    auto owner=parent_class_or_null(r);
+    if(owner && types.count(owner))routine(r);
+  }
+  void virtual_source_class(a_type_ptr t) {
+    if(!types.count(t) || is_template_dependent_type(t))return;
+    auto scope=class_type_supp(t)->assoc_scope;
+    if(scope)for(auto r=scope->routines;r;r=r->next)virtual_source_routine(r);
+  }
+  Id virtual_table(a_type_ptr owner,a_base_class_ptr base,a_base_class_ptr construction,
+                   a_variable_ptr table,long long address_point,long long entry_size,bool definition) {
+    auto key=std::make_pair(table,address_point);
+    auto found=virtual_tables.find(key);
+    if(found!=virtual_tables.end()) {
+      if(definition)db.update("virtual_tables","id",found->second,{{"is_definition",true}});
+      return found->second;
+    }
+    Id id=next_virtual_table++;virtual_tables[key]=id;
+    db.insert("virtual_tables",{{"id",id},{"owner_type_id",type_id(owner)},
+      {"base_subobject_id",optional(base_id(base))},{"construction_base_subobject_id",optional(base_id(construction))},
+      {"link_name",table->source_corresp.name?table->source_corresp.name:""},
+      {"linkage",linkage(table->source_corresp)},{"address_point_byte_offset",address_point},
+      {"entry_size",entry_size},{"is_definition",definition}});
+    return id;
+  }
+  void virtual_table_begin(a_type_ptr owner,a_base_class_ptr base,a_base_class_ptr construction,
+                          a_variable_ptr table,long long address_point,long long entry_size) {
+    // Tables belonging solely to lowering/runtime internals are not source
+    // entities. A zero context also shields a nested internal table build.
+    virtual_table_stack.push_back(types.count(owner)?
+      virtual_table(owner,base,construction,table,address_point,entry_size,true):0);
+  }
+  void virtual_table_end() {
+    if(virtual_table_stack.empty())missing("virtual table capture context");
+    virtual_table_stack.pop_back();
+  }
+  void virtual_table_entry(long long slot,a_routine_ptr selected,a_routine_ptr target,
+                           long long delta,bool null_entry) {
+    if(virtual_table_stack.empty() || !virtual_table_stack.back())return;
+    auto original_selected=virtual_source(selected),original_target=virtual_source(target);
+    auto source_signature=routine_source_types.find(original_selected);
+    if(source_signature==routine_source_types.end())
+      missing("virtual slot source signature for "+spelling(original_selected->source_corresp));
+    VirtualEntry entry;
+    entry.selected=routines.at(original_selected);entry.signature=source_signature->second;
+    entry.receiver=routine_receiver_types.at(original_selected);
+    if(!entry.receiver)missing("virtual slot source receiver");
+    if(original_target) {
+      auto source_target=routines.find(original_target);
+      if(source_target==routines.end())
+        missing("virtual target source signature for "+spelling(original_target->source_corresp));
+      entry.target=source_target->second;
+    }
+    entry.abi_routine=target;entry.delta=delta;
+    entry.kind=null_entry || !target?"null":original_target->pure_virtual?"pure":
+      original_target->is_deleted?"deleted":"ordinary";
+#if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN && IA64_ABI
+    if(target && target->overriding_function_for_wrapper) {
+      entry.delta+=target->delta;entry.vcall=target->vcall_index;
+      entry.return_delta=target->return_delta;entry.vbase=target->vbase_index;
+    }
+#endif
+#if DO_IL_LOWERING && IA64_ABI
+    auto variant_target=target;
+#if DO_IL_LOWERING && ABI_CHANGES_FOR_COVARIANT_VIRTUAL_FUNC_RETURN
+    if(variant_target && variant_target->overriding_function_for_wrapper)
+      variant_target=variant_target->overriding_function_for_wrapper;
+#endif
+    if(variant_target) {
+      switch(variant_target->ctor_dtor_kind) {
+        case cdk_none:break;
+        case cdk_subobject:entry.variant="base";break;
+        case cdk_complete:entry.variant="complete";break;
+        case cdk_deleting:entry.variant="deleting";break;
+        default:missing("virtual table constructor/destructor entry variant",int(variant_target->ctor_dtor_kind));
+      }
+    }
+#endif
+    // One final semantic row per physical slot, even if EDG revisits a table
+    // after deciding its definition is required later in the translation.
+    virtual_entries[{virtual_table_stack.back(),slot}]=entry;
+  }
+  void virtual_vptr_begin(a_routine_ptr r,const char *phase) {
+    auto source=routines.find(virtual_source(r));
+    vptr_phases.push_back({source==routines.end()?0:source->second,phase});
+  }
+  void virtual_vptr_end() {
+    if(vptr_phases.empty())missing("virtual pointer action capture context");
+    vptr_phases.pop_back();
+  }
+  void virtual_vptr_write(a_type_ptr owner,a_base_class_ptr base,an_expr_node_ptr address,
+                          bool construction,long long construction_index) {
+    if(vptr_phases.empty() || !vptr_phases.back().first)return;
+    Id table=0;Value offset=nullptr;
+    auto object_type=base?base->type:owner;
+    if(!base || !any_virtual_steps_in_derivation(base)) {
+#if IA64_ABI
+      offset=base?(long long)base->offset:0LL;
+#else
+      offset=(base?(long long)base->offset:0LL)+
+        (long long)class_type_supp(object_type)->virtual_function_info_offset;
+#endif
+    }
+    (void)object_type;
+    if(!construction) {
+      if(!address || address->kind!=enk_constant)missing("selected virtual table address constant");
+      auto c=node_constant(address);
+      if(c->kind!=ck_address || c->variant.address.kind!=abk_variable)
+        missing("selected virtual table variable address");
+      auto variable=c->variant.address.variant.variable;
+      table=virtual_table(owner,base,nullptr,variable,(long long)c->variant.address.offset,
+        (long long)skip_typerefs(type_pointed_to(c->type))->size,false);
+    }
+    auto current=vptr_phases.back();
+    db.insert("vptr_writes",{{"function_id",current.first},{"ordinal",vptr_ordinals[current.first]++},
+      {"phase",current.second},{"base_subobject_id",optional(base_id(base))},{"vptr_byte_offset",offset},
+      {"table_id",optional(table)},{"source_kind",construction?"construction-table":"table"},
+      {"construction_index",construction?Value(construction_index):Value(nullptr)}});
+  }
+  void virtual_call(Id id,an_expr_node_ptr e) {
+    auto callee=e->variant.operation.operands;
+    auto receiver=callee?callee->next:nullptr;
+    if(!callee || callee->kind!=enk_routine || !receiver) {
+      auto pos=location(e->position);
+      missing("selected virtual callee/receiver at line "+std::to_string(pos.line));
+    }
+    auto selected=callee->variant.routine.ptr;
+    auto receiver_type=skip_typerefs(receiver->type);
+    if(e->variant.operation.kind==eok_points_to_member_call)
+      receiver_type=skip_typerefs(type_pointed_to(receiver_type));
+    long long offset=0;
+#if !IA64_ABI
+    offset=(long long)class_type_supp(receiver_type)->virtual_function_info_offset;
+#endif
+    db.insert("virtual_calls",{{"node_id",id},{"selected_symbol_id",routine(selected)},
+      {"receiver_node_id",expression(receiver)},{"receiver_type_id",type_id(receiver_type)},
+      {"callable_type_id",routine_source_types.at(selected)},{"vptr_byte_offset",offset},
+      {"slot_index",selected->number.virtual_function}});
+  }
   Id expression(an_expr_node_ptr e) {
     if(!e)return 0;
     auto found=expressions.find(e);if(found!=expressions.end())return found->second;
@@ -698,7 +870,6 @@ struct State {
       case enk_object_lifetime:kind="lifetime-scope";break;
       case enk_throw:kind=e->variant.throw_info?"throw":"rethrow";break;
       case enk_operation: {
-        if(e->variant.operation.is_virtual_call)missing("virtual call dispatch projection");
         if(e->variant.operation.kind==eok_subscript && e->variant.operation.pointer_operand_is_second)
           missing("reversed subscript operand projection");
         kind="operation";op=operation(e->variant.operation.kind);
@@ -726,6 +897,7 @@ struct State {
         db.update("nodes","id",id,{{"floating_value_id",floating_value(node_constant(e))}});
     }
     if(e->kind==enk_operation) {
+      if(e->variant.operation.is_virtual_call)virtual_call(id,e);
       if(e->variant.operation.kind==eok_base_class_cast || e->variant.operation.kind==eok_derived_class_cast)
         class_conversion(id,e);
       db.update("nodes","id",id,{{"evaluation_order",e->variant.operation.eval_left_to_right?"left-to-right":
@@ -1019,6 +1191,19 @@ struct State {
     for(auto ns=scope->namespaces;ns;ns=ns->next)if(!ns->is_namespace_alias)capture(ns->variant.assoc_scope);
   }
   void finish() {
+    for(const auto &item:virtual_tables) {
+      auto table=item.first.first;
+      db.update("virtual_tables","id",item.second,{{"link_name",table->source_corresp.name?table->source_corresp.name:""},
+        {"linkage",linkage(table->source_corresp)}});
+    }
+    for(const auto &item:virtual_entries) {
+      const auto &entry=item.second;
+      db.insert("virtual_table_entries",{{"table_id",item.first.first},{"slot_index",item.first.second},
+        {"selected_symbol_id",entry.selected},{"callable_type_id",entry.signature},{"receiver_type_id",entry.receiver},
+        {"target_symbol_id",optional(entry.target)},{"entry_kind",entry.kind},{"target_variant",entry.variant},
+        {"abi_entry_name",entry.abi_routine && entry.abi_routine->source_corresp.name?entry.abi_routine->source_corresp.name:""},
+        {"this_delta",entry.delta},{"vcall_index",entry.vcall},{"return_delta",entry.return_delta},{"vbase_index",entry.vbase}});
+    }
     for(const auto &entry:routines)db.update("symbols","id",entry.second,{{"link_name",entry.first->source_corresp.name?entry.first->source_corresp.name:""}});
     for(const auto &entry:types) {
       auto t=entry.first;if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union ||
@@ -1037,6 +1222,28 @@ inline State &state() { static State value;return value; }
 inline void capture_scope(a_scope_ptr scope) {
   if(!enabled())return;
   state().capture(scope);
+}
+inline void virtual_source_class(a_type_ptr type) {
+  if(enabled())state().virtual_source_class(type);
+}
+inline void virtual_source_routine(a_routine_ptr routine) {
+  if(enabled())state().virtual_source_routine(routine);
+}
+inline void virtual_table_begin(a_type_ptr owner,a_base_class_ptr base,a_base_class_ptr construction,
+                                a_variable_ptr table,long long address_point,long long entry_size) {
+  if(enabled())state().virtual_table_begin(owner,base,construction,table,address_point,entry_size);
+}
+inline void virtual_table_end() {if(enabled())state().virtual_table_end();}
+inline void virtual_table_entry(long long slot,a_routine_ptr selected,a_routine_ptr target,long long delta,bool null_entry) {
+  if(enabled())state().virtual_table_entry(slot,selected,target,delta,null_entry);
+}
+inline void virtual_vptr_begin(a_routine_ptr routine,const char *phase) {
+  if(enabled())state().virtual_vptr_begin(routine,phase);
+}
+inline void virtual_vptr_end() {if(enabled())state().virtual_vptr_end();}
+inline void virtual_vptr_write(a_type_ptr owner,a_base_class_ptr base,an_expr_node_ptr address,
+                               bool construction,long long construction_index) {
+  if(enabled())state().virtual_vptr_write(owner,base,address,construction,construction_index);
 }
 inline void emit() { state().finish(); }
 }

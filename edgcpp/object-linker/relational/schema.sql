@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1010;
+PRAGMA user_version = 1011;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -342,3 +342,53 @@ CREATE TABLE throws (
  destructor_symbol_id INTEGER REFERENCES symbols(id),
  is_rethrow INTEGER NOT NULL CHECK(is_rethrow IN(0,1))
 ) STRICT;
+
+-- EDG-selected virtual dispatch and lifecycle writes, captured at the stock
+-- lowering decision points. No override selection is performed by consumers.
+CREATE TABLE virtual_calls (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ selected_symbol_id INTEGER NOT NULL REFERENCES symbols(id),
+ receiver_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ receiver_type_id INTEGER NOT NULL REFERENCES types(id),
+ callable_type_id INTEGER NOT NULL REFERENCES types(id),
+ vptr_byte_offset INTEGER NOT NULL,
+ slot_index INTEGER NOT NULL
+) STRICT;
+CREATE TABLE virtual_tables (
+ id INTEGER PRIMARY KEY,
+ owner_type_id INTEGER NOT NULL REFERENCES types(id),
+ base_subobject_id INTEGER REFERENCES base_subobjects(id),
+ construction_base_subobject_id INTEGER REFERENCES base_subobjects(id),
+ link_name TEXT NOT NULL,
+ linkage TEXT NOT NULL,
+ address_point_byte_offset INTEGER NOT NULL,
+ entry_size INTEGER NOT NULL,
+ is_definition INTEGER NOT NULL CHECK(is_definition IN(0,1))
+) STRICT;
+CREATE TABLE virtual_table_entries (
+ table_id INTEGER NOT NULL REFERENCES virtual_tables(id),
+ slot_index INTEGER NOT NULL,
+ selected_symbol_id INTEGER NOT NULL REFERENCES symbols(id),
+ callable_type_id INTEGER NOT NULL REFERENCES types(id),
+ receiver_type_id INTEGER NOT NULL REFERENCES types(id),
+ target_symbol_id INTEGER REFERENCES symbols(id),
+ entry_kind TEXT NOT NULL CHECK(entry_kind IN('ordinary','pure','deleted','null')),
+ target_variant TEXT NOT NULL CHECK(target_variant IN('ordinary','base','complete','deleting')),
+ abi_entry_name TEXT NOT NULL,
+ this_delta INTEGER NOT NULL,
+ vcall_index INTEGER NOT NULL,
+ return_delta INTEGER NOT NULL,
+ vbase_index INTEGER NOT NULL,
+ PRIMARY KEY(table_id,slot_index)
+) STRICT, WITHOUT ROWID;
+CREATE TABLE vptr_writes (
+ function_id INTEGER NOT NULL REFERENCES symbols(id),
+ ordinal INTEGER NOT NULL,
+ phase TEXT NOT NULL CHECK(phase IN('after-bases-before-members','before-body')),
+ base_subobject_id INTEGER REFERENCES base_subobjects(id),
+ vptr_byte_offset INTEGER,
+ table_id INTEGER REFERENCES virtual_tables(id),
+ source_kind TEXT NOT NULL CHECK(source_kind IN('table','construction-table')),
+ construction_index INTEGER,
+ PRIMARY KEY(function_id,ordinal)
+) STRICT, WITHOUT ROWID;

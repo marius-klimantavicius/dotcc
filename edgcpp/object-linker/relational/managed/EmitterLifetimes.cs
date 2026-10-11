@@ -61,13 +61,22 @@ internal sealed partial class Emitter
                 void Body(int content)
                 {
                     if(details.Kind=="constructor")
+                    {
+                        bool wroteVptrs=false;
                         foreach(var member in unit.ConstructorInitializers.GetValueOrDefault(functionId,[]))
                         {
+                            if(member.Kind=="field" && !wroteVptrs)
+                            {
+                                WriteVptrWrites("after-bases-before-members",content);wroteVptrs=true;
+                            }
                             var initialization=unit.Initializations[member.Initialization];
                             string? source=initialization.ImpliedSource
                                 ?Target(member,member.CopySource??throw new InvalidDataException("Exporter defect: implied constructor member copy source missing")):null;
                             WriteInitialization(initialization,Target(member),content,source);
                         }
+                        if(!wroteVptrs)WriteVptrWrites("after-bases-before-members",content);
+                    }
+                    WriteVptrWrites("before-body",content);
                     foreach(var child in unit.Children(body,"statement"))Statement(child,content);
                     if(constructorCompletionRequired && unit.Children(body,"statement").LastOrDefault()?.Kind!="return")Line(content,"__constructor_complete = true;");
                 }
@@ -81,7 +90,8 @@ internal sealed partial class Emitter
                 else Root(level);
             }
             bool empty=!unit.Children(body,"statement").Any(child=>child.Kind!="empty" && !(child.Kind=="return" && !unit.Children(child,"value").Any())) &&
-                unit.ConstructorInitializers.GetValueOrDefault(functionId,[]).Count==0 && cleanupFlags.Count==0;
+                unit.ConstructorInitializers.GetValueOrDefault(functionId,[]).Count==0 && cleanupFlags.Count==0 &&
+                unit.VptrWrites.GetValueOrDefault(functionId,[]).Count==0;
             if(details.ExceptionPolicy=="terminate" && !empty)
             {
                 Line(indent+1,"try");Line(indent+1,"{");Core(indent+2);Line(indent+1,"}");
@@ -188,6 +198,10 @@ internal sealed partial class Emitter
                 return NormalizeValue(node,name);
             }
             if(node.Kind=="operation" && node.Operator is "conditional" or "logical-and" or "logical-or")return Expression(node);
+            // A virtual call's selected declaration describes its slot. It
+            // need not have a body (for example, a pure virtual declaration).
+            // The recorded table target supplies executable dispatch.
+            if(unit.VirtualCalls.ContainsKey(node.Id))operands=operands.Skip(1).ToArray();
             if(node.EvaluationOrder=="right-to-left")operands=operands.Reverse().ToArray();
             foreach(var operand in operands.Where(operand=>operand.Kind!="field"))ExpandedExpression(operand,indent);
             return Expression(node);

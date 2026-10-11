@@ -24,6 +24,7 @@ internal sealed partial class Emitter
                 source=details.Kind switch {"constructor"=>"__ctor_"+source,"destructor"=>"__dtor_"+source,_=>source};
             symbolNames.Add(symbol,names.Allocate(source,"symbol_"+symbol.Id));
         }
+        PrepareVirtualCatalog();
         FindExecutableTypes();
         foreach(var unit in program.Units)
             foreach(var type in unit.Types.Values.Where(type=>type.Kind=="record" && executableTypes.Contains((unit,type.Id))))
@@ -59,6 +60,7 @@ internal sealed partial class Emitter
             File.WriteAllText(Path.Combine(directory,"Translated.csproj"),"<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>enable</Nullable><OutputType>"+(entry is null?"Library":"Exe")+"</OutputType></PropertyGroup></Project>\n",new UTF8Encoding(false));
             if(NeedsExceptionRuntime)WriteExceptionRuntime(directory);
             WriteFloatingRuntime(directory);
+            WriteVirtualRuntime(directory);
         }
         catch
         {
@@ -76,9 +78,10 @@ internal sealed partial class Emitter
         WriteEnums();
         foreach(var record in records.Values) Record(record.Unit,record.Type,record.Name);
         WriteInheritanceHelpers();
+        WriteVirtualTables();
         WriteNullptrHelper();
         PrepareExceptionDescriptors();
-        foreach(var unit in program.Units)WriteClassConversionHelpers(unit,null);
+        foreach(var unit in program.Units){WriteClassConversionHelpers(unit,null);WriteVirtualCallHelpers(unit,null);}
         foreach(var global in program.Globals)
         {
             string value=global.Unit.Initializers.TryGetValue(global.Id,out var initializer)
@@ -91,9 +94,10 @@ internal sealed partial class Emitter
             try
             {
                 WriteClassConversionHelpers(function.Unit,function.Id);
+                WriteVirtualCallHelpers(function.Unit,function.Id);
                 new FunctionWriter(this,function.Unit,function).Write();
             }
-            finally {ReleaseClassConversionNames(function.Unit,function.Id);}
+            finally {ReleaseClassConversionNames(function.Unit,function.Id);ReleaseVirtualCallNames(function.Unit,function.Id);}
         }
         if(entry is not null)
         {
@@ -184,6 +188,8 @@ internal sealed partial class Emitter
             allocator.Reserve("_");
             foreach(string value in emitter.symbolNames.Values)allocator.Reserve(value);
             foreach(string value in emitter.typeNames.Values)allocator.Reserve(value);
+            foreach(string value in emitter.virtualTableNames.Values)allocator.Reserve(value);
+            foreach(string value in emitter.virtualCallNames.Values)allocator.Reserve(value);
             if(emitter.nullptrValueName is string helper)allocator.Reserve(helper);
             if(function is SymbolRef selected)
             {
@@ -296,6 +302,7 @@ internal sealed partial class Emitter
                     long field=node.Field??N(1).Field??throw unit.Missing(node,"selected field missing");
                     return "("+E(0)+")"+(op=="dot-field"?".":"->")+emitter.fieldNames[(unit,field)];
                 case "call":case "dot-member-call":case "points-to-member-call":
+                    if(unit.VirtualCalls.TryGetValue(node.Id,out var dispatch))return VirtualCallExpression(node,dispatch);
                     if(CallSignature(N(0)).ReturnStorage=="caller-provided")
                         throw unit.Missing(node,"caller-provided class result requires an explicit initialization destination");
                     string target=E(0);

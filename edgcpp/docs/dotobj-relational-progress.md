@@ -313,6 +313,38 @@ The real bounded probe at `dotobj-relational-duckdb-hugeint-v10/` advances to
 Explicit EDG-selected virtual dispatch tables/calls and lifecycle writes are the
 next investigation, without reconstructing override selection in C#.
 
+## Verified EDG-selected virtual dispatch
+
+`artifacts/review/dotobj-relational-virtual-v6/` passes native C++, SQL integrity,
+source-hidden C# and Linux x64 NativeAOT. The 34-table schema adds selected virtual
+calls, table/address-point identities, finalized entries with source signatures
+and exact thunk adjustments, and ordered constructor/destructor vptr writes.
+Targeted stock lowering hooks record those decisions; the consumer never selects
+overrides or rebuilds a hierarchy. Source signatures are retained before lowering
+changes them. No EDG semantic state is changed by these hooks.
+
+Pinned BCL slot arrays and typed managed function pointers implement dispatch.
+Named helpers capture receiver and target before arguments; translated method
+bodies remain source-readable. The fixture checks construction/destruction trace
+1221 through an external virtual-call helper, a pure slot without a method body,
+multiple inheritance with an EDG-selected -16 receiver adjustment, and exactly-once
+receiver/argument side effects. The pure slot is represented but is not invoked.
+
+Provider: 225,280 bytes, 173 nodes, 85 types, six tables/address points and eleven
+entries. Main: 221,184 bytes, 100 nodes, 82 types. Storage summaries and tool hashes
+are retained. Condition, return-object and bounded-body regressions pass native/
+C#/NativeAOT at `*-virtual-regression-v1`; peak body nodes remain 251 of 1,531.
+Calls and vptr writes share function-body leases; table/entry catalogs remain
+resident and are reported. Constructor tables/VTT, virtual destructors, dynamic
+virtual-base and covariant adjustments, and variadic slots remain explicit
+unsupported generation paths. The existing separate value-initialization boundary
+was also retained in the failed `virtual-v3` artifact.
+
+Reproduce with `tests/verify_virtual.py` and the usual arguments. The real bounded
+DuckDB probe at `dotobj-relational-duckdb-hugeint-v11/` advances to
+`noninteger constant value (EDG kind 14)`, a dependent template value. No complete
+DuckDB object is published yet. Source-shaped dependent-value projection is next.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
