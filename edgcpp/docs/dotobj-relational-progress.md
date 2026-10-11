@@ -1486,6 +1486,32 @@ bundled dependency export/generation counts remain 1/1 (ICU); core DuckDB counts
 remain 0/0. Measurements for the core probes describe rejected export stages with
 two concurrent probes and fixture/AOT jobs, not completed TU costs.
 
+## Named bitfield storage and target facts (2026-10-11)
+
+Schema 1025 / 44 tables records EDG target `char_bit` / `little_endian` and selected
+`fields.bit_is_signed`. Named bitfields emit properties over exactly their occupied
+bytes, using recorded starting byte and in-byte bit offset. Shared byte backing and
+masked stores preserve neighboring fields without reading a guessed allocation
+unit. Signed getters follow EDG's selected flag. This initial slice supports
+nonvolatile 8-bit little-endian targets, widths up to 64 within recorded base-value
+storage, field initialization, reads and discarded selected assignments. Volatile,
+other targets, value-producing assignments, address and compound/increment paths
+retain explicit boundaries. The 63-bit getter assembles bytes; wider access
+optimization and efficiency acceptance remain separate work.
+
+`dotobj-relational-bitfields-v1` passes native, source-hidden C# and Linux NativeAOT,
+including libc++ string-shaped 1+63 / 1+7 layouts, signed/unsigned truncation,
+boolean values, cross-byte canaries and once-only selected RHS/receiver order.
+The used-assignment-result negative produces the source-located boundary.
+Hashes and SQL/storage summaries are retained. Existing schema-1023 real ICU object
+still generates complete `generated-v4/Translated.cs` with all 14 functions and
+seven required imports; no new ICU runtime coverage is claimed.
+
+Actual checksum-v18 and exception-v21 advance to the same unevaluated destructor
+recipe operation at libc++ `is_nothrow_destructible.h:37:66`. General exact selected
+recipe operator projection is in progress; runtime mappings remain bounded.
+Core complete export / generation counts remain 0/0; bundled ICU remains 1/1.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

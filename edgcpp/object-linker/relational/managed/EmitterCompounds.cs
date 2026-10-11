@@ -58,6 +58,8 @@ internal sealed partial class Emitter
             long operation=node.OperationType??throw unit.Missing(node,"exporter defect: compound operation type missing");
             var operands=unit.Children(node,"operand").ToArray();
             if(operands.Length!=2)throw unit.Missing(node,"compound assignment operand relation missing");
+            if(SelectedBitfield(unit,operands[0]) is not null)
+                throw unit.Missing(node,"Bitfield compound/increment result emission is not yet implemented");
             long stored=operands[0].ExecutionType??operands[0].Type??throw unit.Missing(node,"compound destination type missing");
             long right=operands[1].ExecutionType??operands[1].Type??throw unit.Missing(node,"compound source type missing");
             bool pointer=IsPointerCompound(node.Operator);

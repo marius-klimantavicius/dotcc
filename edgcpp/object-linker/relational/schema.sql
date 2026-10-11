@@ -1,13 +1,15 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1024;
+PRAGMA user_version = 1025;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format TEXT NOT NULL CHECK(format='relational-program-v1'),
  primary_source TEXT NOT NULL,
- target_abi TEXT NOT NULL
+ target_abi TEXT NOT NULL,
+ char_bit INTEGER NOT NULL CHECK(char_bit>0),
+ little_endian INTEGER NOT NULL CHECK(little_endian IN(0,1))
 ) STRICT;
 CREATE TABLE files (
  id INTEGER PRIMARY KEY,
@@ -104,6 +106,7 @@ CREATE TABLE fields (
  byte_offset INTEGER NOT NULL,
  bit_offset INTEGER,
  bit_width INTEGER,
+ bit_is_signed INTEGER CHECK(bit_is_signed IN(0,1)),
  file_id INTEGER REFERENCES files(id),
  line INTEGER,
  column INTEGER,

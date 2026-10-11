@@ -48,7 +48,11 @@ internal sealed partial class Emitter
                 var members=new Names();
                 members.Reserve(record.Name);
                 foreach(var field in unit.Fields.Values.Where(field=>field.Owner==type.Id).OrderBy(field=>field.Ordinal))
-                    fieldNames.Add((unit,field.Id),members.Allocate(field.Name,"field_"+field.Ordinal));
+                {
+                    string member=field.BitWidth is null?members.Allocate(field.Name,"field_"+field.Ordinal):members.AllocateProperty(field.Name,"field_"+field.Ordinal);
+                    if(field.BitWidth is not null)members.Reserve("set_"+member.TrimStart('@'));
+                    fieldNames.Add((unit,field.Id),member);
+                }
             }
         PrepareEnums();
         PrepareArrays();
@@ -152,9 +156,14 @@ internal sealed partial class Emitter
             throw new InvalidDataException("Virtual base record emission is not yet implemented: "+record.Name);
         Line(1,"[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = "+record.Size+")]");
         Line(1,"public struct "+name);Line(1,"{");
+        var bitfields=WriteBitfieldBacking(unit,record);
         foreach(var field in unit.Fields.Values.Where(field=>field.Owner==record.Id).OrderBy(field=>field.Ordinal))
         {
-            if(field.BitWidth is not null)throw new InvalidDataException("Relational C# emission does not yet support bitfield "+record.Name+"."+field.Name);
+            if(field.BitWidth is not null)
+            {
+                if(bitfields.TryGetValue(field.Id,out var bitfield))WriteBitfieldProperty(unit,bitfield);
+                continue;
+            }
             Line(2,"[global::System.Runtime.InteropServices.FieldOffset("+field.Offset+")]");
             Line(2,"public "+Type(unit,field.Type)+" "+fieldNames[(unit,field.Id)]+";");
         }
@@ -321,6 +330,7 @@ internal sealed partial class Emitter
             string Unary(string op)=>"("+op+E(0)+")";
             string BooleanResult(string value)=>NodeType(node)=="bool"?value:"(("+NodeType(node)+")("+value+" ? 1 : 0))";
             string op=node.Operator??throw unit.Missing(node,"operation discriminator missing");
+            RequireBitfieldOperationSupport(node,operands);
             if(UsesCompoundHelper(node))return CompoundExpression(node,N(0),N(1));
             if(node.EvaluationOrder=="right-to-left" && operands.Length>1 && !expandedValues.ContainsKey(operands[1].Id) && !IsDirectLocalAssignment(node))
                 throw unit.Missing(node,"right-to-left operation needs statement expansion");
@@ -436,7 +446,7 @@ internal sealed partial class Emitter
                     else
                     {
                         Node expression=Child(node,"value");
-                        if(!WriteSourceCompoundStatement(expression,indent))
+                        if(!WriteBitfieldAssignmentStatement(expression,indent) && !WriteSourceCompoundStatement(expression,indent))
                             Line(indent,StatementExpression(expression,ExpandedExpression(expression,indent))+";");
                     }
                     break;

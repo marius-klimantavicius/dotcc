@@ -15,6 +15,7 @@
 #include "exprutil.h"
 #include "expr.h"
 #include "float_pt.h"
+#include "target.h"
 #include "dot_gen_semantic_sqlite.h"
 BEGIN_EDG_NAMESPACE
 namespace dot_semantic {
@@ -721,6 +722,7 @@ struct State {
       {"type_id",type_id(f->type)},{"ordinal",ordinal},{"byte_offset",f->offset},
       {"bit_offset",f->is_bit_field?Value(f->offset_bit_remainder):Value(nullptr)},
       {"bit_width",f->is_bit_field?Value(f->bit_size):Value(nullptr)},
+      {"bit_is_signed",f->is_bit_field?Value(bool(f->bit_field_is_signed)):Value(nullptr)},
       {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});return id;
   }
   Id routine(a_routine_ptr r) {
@@ -3316,7 +3318,8 @@ struct State {
     const char *target=std::getenv("EDG_DOT_TARGET");
     if(!target || !*target)missing("explicit target ABI profile");
     db.insert("object_info",{{"singleton",1},{"format","relational-program-v1"},
-      {"primary_source",source?(source->full_name?source->full_name:source->file_name):""},{"target_abi",target}});
+      {"primary_source",source?(source->full_name?source->full_name:source->file_name):""},{"target_abi",target},
+      {"char_bit",targ_char_bit},{"little_endian",bool(targ_little_endian)}});
     db.finish();
   }
 };
