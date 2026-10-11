@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1015;
+PRAGMA user_version = 1016;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -417,5 +417,19 @@ CREATE TABLE array_initializer_elements (
  array_index INTEGER NOT NULL CHECK(array_index>=0),
  repeat_count INTEGER NOT NULL CHECK(repeat_count>0),
  value_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ PRIMARY KEY(initializer_node_id,ordinal)
+) STRICT, WITHOUT ROWID;
+
+CREATE TABLE record_initializers (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ zero_byte_count INTEGER NOT NULL CHECK(zero_byte_count>=0)
+) STRICT;
+CREATE TABLE record_initializer_elements (
+ initializer_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ field_id INTEGER REFERENCES fields(id),
+ base_subobject_id INTEGER REFERENCES base_subobjects(id),
+ value_node_id INTEGER NOT NULL REFERENCES nodes(id),
+ CHECK((field_id IS NULL) <> (base_subobject_id IS NULL)),
  PRIMARY KEY(initializer_node_id,ordinal)
 ) STRICT, WITHOUT ROWID;

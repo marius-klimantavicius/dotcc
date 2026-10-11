@@ -1,0 +1,10 @@
+struct Empty {};
+struct Hash : Empty { int operator()(int value) const { return value * 3; } };
+struct Pair { int first; int second; };
+struct Derived : Pair { int third; };
+struct Constructed : Pair { int third; Constructed() : Pair{6}, third(8) {} };
+struct Nested { Pair pair; int values[3]; };
+extern const Derived fixed_value;
+Pair make_pair();
+Pair forward_pair();
+int local_records();

@@ -123,6 +123,13 @@ lookup tables, partial/empty/nested initialization, declaration-order completion
 cross-unit mutation and cleanup reads. Array actions follow function-body leases.
 Dynamic/record array initialization and local-static guards remain unsupported.
 
+Record aggregate initialization uses selected field/base references and native-selected
+zero byte extents, including empty-base and constructor-base destinations. Initialized
+global records have pinned aligned backing. `tests/verify_record_initializers.py`
+covers temporary receivers, partial/designated/nested values and cross-unit globals.
+Dynamic components and partial-construction cleanup remain unsupported. These facts
+serve generation; exposed compiler metadata alone is not a reason to add a relation.
+
 Signed/unsigned 128-bit integers retain exact EDG decimal scalar values and layout,
 using System.Int128/UInt128 in generated C#. No separate wide-value payload is used.
 `tests/verify_wide_integers.py` covers literals, templates, arithmetic, arrays,

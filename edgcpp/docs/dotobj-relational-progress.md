@@ -518,12 +518,43 @@ No complete DuckDB object is published. Next work must identify its precise sour
 record and project the selected field/base destinations needed for generation;
 the consumer must not reconstruct aggregate member selection.
 
+## Verified selected record and base initializer actions
+
+`artifacts/review/dotobj-relational-record-initializers-v2/` passes native C++, SQL
+integrity, source-hidden C# and Linux x64 NativeAOT. Schema 1016 has 39 tables.
+Two new relations carry selected field/base destinations and exact zero byte
+extents. These are concrete generator actions, not general EDG metadata. Native
+capture follows stock aggregate member selection and initialization lowering:
+empty bases have no zero write; base extents exclude reusable tail padding.
+The consumer never reconstructs member selection from declaration order.
+
+Coverage includes the actual empty inherited hash temporary shape, partial and
+designated fields, nested record/array initialization, constructor base actions,
+record value returns and a cross-unit initialized record global. Global record
+backing is pinned and aligned so selected base projections have stable addresses.
+The hash check also exposed an if-test path bypassing temporary expansion; the
+consumer now uses its existing selected initialization expansion there. Provider:
+237,568 bytes, 174 nodes, 59 types. Main: 233,472 bytes, 75 nodes, 62 types.
+
+Array, return-storage and bounded-body regressions pass native/C#/NativeAOT at
+`*-records-regression-v1`; body retention remains one active function. Reproduce
+with `tests/verify_record_initializers.py`; SQL storage and tool hashes are retained.
+Dynamic record components, partial-construction cleanup, virtual layout actions,
+overlapping nonempty fields and pointer-to-member zero models reject explicitly.
+
+Actual bounded DuckDB `hugeint-v22` passes the inherited hash initializer and
+reaches a constant address to the newline string in `exception.hpp:146`. It still
+publishes no complete object. The 0.54 s / 162,304 KiB measurement is an early
+rejection, not full-TU cost. Next work is exact literal storage and selected address
+references, preserving EDG identity and target bytes without consumer pooling or
+opaque semantic payloads. The broad campaign remains stopped.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
 lifecycle emission includes nontrivial/dynamic arrays, virtual-base/delegating construction, function-try
 blocks, nontrivial expression temporaries, overlap/unordered cleanup, nontrivial
-by-value catches, pointer/base-conversion catches, and value/partial aggregate
+by-value catches, pointer/base-conversion catches, and dynamic/partial aggregate
 initialization. Those unsupported execution paths reject explicitly. Finalized
 `noexcept` policy is emitted; this slice does not separately exercise termination
 or destructor failure during unwinding. More complex constrained expression

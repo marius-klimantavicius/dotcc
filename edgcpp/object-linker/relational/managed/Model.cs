@@ -87,6 +87,7 @@ internal sealed partial class Unit : IDisposable
             ReadInheritance();
             ReadVirtualTables();
             ReadArrayFeatures();
+            ReadRecordInitializerFeatures();
             ReadFunctionDetails();
             ReadNodes(null);
             ReadFloatingValues(null);
@@ -94,6 +95,7 @@ internal sealed partial class Unit : IDisposable
             ReadClassConversions(null);
             ReadVirtualBody(null);
             ReadArrayInitializers(null);
+            ReadRecordInitializers(null);
         }
         catch { database.Dispose(); throw; }
     }

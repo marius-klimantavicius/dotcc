@@ -20,8 +20,11 @@ internal sealed partial class Emitter
                 return Name(receiver)+"->"+emitter.fieldNames[(unit,field)];
             if(member.Kind=="direct-base" && !member.Virtual)
             {
+                var initialization=unit.Initializations[member.Initialization];
+                bool hasRecordActions=initialization.Kind is "constant" or "expression" &&
+                    initialization.Value is long value && unit.RecordInitializers.ContainsKey(value);
                 if(unit.FunctionDetails[function!.Value.Id].Kind=="constructor" &&
-                    unit.Initializations[member.Initialization].Kind is not ("none" or "constructor"))
+                    initialization.Kind is not ("none" or "constructor") && !hasRecordActions)
                     throw new InvalidDataException("Base subobject initialization needs explicit copy/zero extent emission: "+member.Initialization);
                 long selected=member.Base??throw new InvalidDataException("Exporter defect: constructor/destructor base subobject missing");
                 if(!emitter.baseProjections.TryGetValue((unit,selected),out string? projection))
@@ -160,8 +163,9 @@ internal sealed partial class Emitter
         {
             if(initialization.Unordered || initialization.OverlapsInner || initialization.PartialAggregate || initialization.FreeOnException || initialization.StaticStorage || initialization.OverlapLifetime is not null)
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs unsupported unordered/overlap/array/storage cleanup emission");
-            bool hasArrayActions=initialization.Value is long array && unit.ArrayInitializers.ContainsKey(array);
-            if(initialization.PartiallyInitialized && !hasArrayActions || initialization.ValueInitialization ||
+            bool hasAggregateActions=initialization.Value is long aggregate &&
+                (unit.ArrayInitializers.ContainsKey(aggregate) || unit.RecordInitializers.ContainsKey(aggregate));
+            if(initialization.PartiallyInitialized && !hasAggregateActions || initialization.ValueInitialization ||
                 initialization.TemporaryLifetime && initialization.Destructor is not null)
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs unsupported partial/value/temporary initialization emission");
             if(initialization.ImpliedSource && initialization.Kind!="bitwise-copy")
@@ -221,7 +225,10 @@ internal sealed partial class Emitter
                 case "none":break;
                 case "zero":Line(indent,destination+" = default;");break;
                 case "expression":case "constant":
-                    Line(indent,destination+" = "+ExpandedExpression(unit.Nodes[initialization.Value??throw new InvalidDataException("Initialization value missing")],indent)+";");break;
+                    var value=unit.Nodes[initialization.Value??throw new InvalidDataException("Initialization value missing")];
+                    if(unit.RecordInitializers.ContainsKey(value.Id))WriteRecordInitializer(value,destination,indent);
+                    else Line(indent,destination+" = "+ExpandedExpression(value,indent)+";");
+                    break;
                 case "bitwise-copy":
                     string source=initialization.ImpliedSource?impliedSource??throw new InvalidDataException("Implied initialization source missing")
                         :ExpandedExpression(unit.Nodes[initialization.Value??throw new InvalidDataException("Copy initialization source missing")],indent);

@@ -88,6 +88,10 @@ internal sealed partial class Emitter
         foreach(var global in program.Globals)
         {
             if(global.Unit.IsArray(global.Symbol.Type)){WriteGlobalArray(global);continue;}
+            if(global.Unit.Initializers.TryGetValue(global.Id,out long recordInitializer) && global.Unit.RecordInitializers.ContainsKey(recordInitializer))
+            {
+                WriteGlobalRecord(global,recordInitializer);continue;
+            }
             string value=global.Unit.Initializers.TryGetValue(global.Id,out var initializer)
                 ? new FunctionWriter(this,global.Unit,null).Expression(global.Unit.Nodes[initializer]):"default";
             Line(1,"public static "+Type(global.Unit,global.Symbol.Type)+" "+SymbolName(global.Unit,global.Id)+" = "+value+";");
@@ -231,9 +235,9 @@ internal sealed partial class Emitter
             Line(1,"public static "+(returnDestination is null?Type(signature.Result!.Value):"void")+" "+emitter.symbolNames[selected]+"("+parameters+")");
             WriteFunctionBody(unit.Nodes[unit.Functions[selected.Id]],1);
         }
-        private string Truth(Node node)
+        private string Truth(Node node,string? rendered=null)
         {
-            string value=Expression(node);
+            string value=rendered??Expression(node);
             var type=unit.Original(node.Type??node.ExecutionType??throw unit.Missing(node,"condition type missing"));
             return type.Kind=="bool"?value:"("+value+(type.Kind is "pointer" or "lvalue-reference" or "rvalue-reference" or "nullptr"?" != null)":" != 0)");
         }
@@ -254,7 +258,7 @@ internal sealed partial class Emitter
                 case "constant":return Constant(node);
                 case "variable":
                     long variable=node.Symbol??throw unit.Missing(node,"selected symbol missing");
-                    return unit.IsArray(unit.Symbols[variable].Type)?"(*"+Name(variable)+")":Name(variable);
+                    return unit.IsArray(unit.Symbols[variable].Type) || emitter.HasPinnedRecordStorage(unit,variable)?"(*"+Name(variable)+")":Name(variable);
                 case "function":return FunctionAddress(node);
                 case "initialize":return unit.Children(node,"value").FirstOrDefault() is Node value?Expression(value):"default";
                 case "operation":return Operation(node);
@@ -309,6 +313,7 @@ internal sealed partial class Emitter
                 case "address-of":case "reference-to":
                     if(N(0).Kind=="function")return FunctionAddress(N(0));
                     if(N(0).Type is long addressedType && unit.IsArray(addressedType))return ArrayAddress(N(0));
+                    if(N(0).Kind=="variable" && N(0).Symbol is long pinned && emitter.HasPinnedRecordStorage(unit,pinned))return Name(pinned);
                     if(N(0).Kind=="variable" && N(0).Symbol is long addressed && unit.Symbols[addressed].Parent is null)
                         throw unit.Missing(node,"address-taken global requires pinned storage support");
                     return "(&"+E(0)+")";

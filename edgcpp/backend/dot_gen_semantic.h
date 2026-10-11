@@ -74,6 +74,7 @@ struct State {
   std::set<a_routine_ptr> bodies;
   std::set<a_variable_ptr> local_variables;
   std::set<a_dynamic_init_ptr> declaration_initializers;
+  std::set<a_dynamic_init_ptr> subobject_initializations;
   std::set<a_scope_ptr> declaration_scopes;
   std::map<an_object_lifetime_ptr,Id> lifetimes,static_lifetimes;
   std::map<a_dynamic_init_ptr,Id> initializations,initialization_values;
@@ -687,9 +688,75 @@ struct State {
       default:missing("dependent value",int(value.kind));
     }
   }
-  void array_initializer(Id id,a_constant_ptr c,const a_source_position &p) {
+  void record_initializer(Id id,a_constant_ptr c,const a_source_position &p,bool complete_object) {
     auto type=skip_typerefs(c->type);
-    if(type->kind!=tk_array)missing("non-array aggregate initializer");
+    auto &record=type->variant.class_struct_union;
+    if(c->variant.aggregate.has_dynamic_init_component)missing("record initializer dynamic component");
+    if(record.any_virtual_base_classes || record.any_virtual_functions_including_in_base_classes)
+      missing("record initializer virtual layout actions");
+    if(c->uses_designated_initializers && !c->explicit_braces_on_aggregate &&
+       !c->explicit_parentheses_on_aggregate)
+      missing("unbraced designated record initializer merge");
+#if DO_IL_LOWERING
+    if(c->has_been_prelowered)missing("record initializer already lowered");
+#endif
+    a_targ_size_t zero_bytes=0;
+    if(c->is_partially_initialized && !record.is_empty_class) {
+#if IA64_ABI
+      if(contains_ptr_to_data_member(c->type))missing("record initializer pointer-member zero model");
+#endif
+      // Exact extent selected by lower_init::insert_call_to_initialize_entity:
+      // empty classes need no writes; base subobjects exclude reusable tail
+      // padding and virtual bases. The consumer receives only this action.
+      zero_bytes=complete_object?type->size:class_type_supp(type)->size_without_virtual_base_classes;
+    }
+    db.insert("record_initializers",{{"node_id",id},{"zero_byte_count",zero_bytes}});
+    auto field=next_proper_initializable_field(record.field_list);
+    auto base=direct_base_classes_of(type);
+    unsigned ordinal=0;
+    for(auto item=c->variant.aggregate.first_constant;item;item=item->next) {
+      if(item->is_pack_expansion)missing("record initializer dependent pack destination");
+      if(item->kind==ck_designator) {
+        if(item->variant.designator.is_generic || !item->variant.designator.is_field_designator)
+          missing("record initializer non-field designator");
+        field=item->variant.designator.variant.field;
+        item=item->next;
+        if(!item || item->kind==ck_designator)missing("record initializer designator value");
+      }
+      if(item->kind==ck_dynamic_init)missing("record initializer dynamic component");
+      if(item->kind==ck_init_repeat)missing("record initializer repetition");
+      Id selected_field=0,selected_base=0;
+      bool child_complete=true;
+      if(item->constant_for_base_class) {
+        if(!base || base->is_virtual)missing("record initializer selected direct base");
+        selected_base=base_id(base);child_complete=false;base=base->next_direct;
+      } else {
+        if(!field)missing("record initializer selected field");
+        if(field->has_no_unique_address_attribute && is_immediate_class_type(skip_typerefs(field->type)) &&
+           !skip_typerefs(field->type)->variant.class_struct_union.is_empty_class)
+          missing("record initializer overlapping nonempty field");
+        selected_field=field_id(field);
+        field=type->kind==tk_union?nullptr:next_proper_initializable_field(field->next);
+      }
+      const auto &position=item->source_corresp.decl_position.seq?item->source_corresp.decl_position:p;
+      db.insert("record_initializer_elements",{{"initializer_node_id",id},{"ordinal",ordinal++},
+        {"field_id",optional(selected_field)},{"base_subobject_id",optional(selected_base)},
+        {"value_node_id",constant(item,position,child_complete)}});
+    }
+  }
+  void aggregate_initializer(Id id,a_constant_ptr c,const a_source_position &p,bool complete_object=true) {
+    auto type=skip_typerefs(c->type);
+    if(is_immediate_class_type(type)) {
+      record_initializer(id,c,p,complete_object);return;
+    }
+    if(type->kind!=tk_array) {
+      auto pos=location(c->source_corresp.decl_position.seq?c->source_corresp.decl_position:p);
+      std::string path;
+      for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+      missing("aggregate initializer type [type="+spelling(type->source_corresp)+
+        ", type-kind="+std::to_string(int(type->kind))+
+        ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]");
+    }
     if(c->variant.aggregate.has_dynamic_init_component)
       missing("array initializer dynamic component");
     if(c->uses_designated_initializers && !c->explicit_braces_on_aggregate &&
@@ -728,7 +795,7 @@ struct State {
       index+=count;
     }
   }
-  Id constant(a_constant_ptr c,const a_source_position &p) {
+  Id constant(a_constant_ptr c,const a_source_position &p,bool complete_object=true) {
     if(template_recipe) {
       auto found=recipe_constants.find(c);if(found!=recipe_constants.end())return found->second;
     }
@@ -738,9 +805,10 @@ struct State {
       dependent_value(id,c);return id;
     }
     if(c->kind==ck_aggregate) {
-      Id id=node("array-initializer",p,type_id(c->type),"prvalue");
+      Id id=node(is_immediate_class_type(skip_typerefs(c->type))?"record-initializer":"array-initializer",
+        p,type_id(c->type),"prvalue");
       if(template_recipe)recipe_constants[c]=id;
-      array_initializer(id,c,p);return id;
+      aggregate_initializer(id,c,p,complete_object);return id;
     }
     Id id=node("constant",p,type_id(c->type),"prvalue",nullptr,literal_text(c,"initializer",&p));
     if(template_recipe)recipe_constants[c]=id;
@@ -829,7 +897,7 @@ struct State {
       case dik_zero:kind="zero";break;
       case dik_expression:kind="expression";value=expression(init->variant.expression);break;
       case dik_class_result_via_ctor:kind="class-result";value=expression(init->variant.expression);break;
-      case dik_constant:kind="constant";value=constant(init->variant.constant.ptr,pos);break;
+      case dik_constant:kind="constant";value=constant(init->variant.constant.ptr,pos,!subobject_initializations.count(init));break;
       case dik_constructor:
         kind="constructor";
         if(!init->variant.constructor.ptr)missing("selected constructor");
@@ -1092,7 +1160,8 @@ struct State {
     switch(e->kind) {
       case enk_constant:
         if(node_constant(e)->kind==ck_template_param)kind=dependent_value_kind(node_constant(e));
-        else if(node_constant(e)->kind==ck_aggregate)kind="array-initializer";
+        else if(node_constant(e)->kind==ck_aggregate)
+          kind=is_immediate_class_type(skip_typerefs(e->type))?"record-initializer":"array-initializer";
         else {kind="constant";text=literal_text(node_constant(e),"expression",&e->position);}break;
       case enk_variable:kind="variable";symbol=variable(node_variable(e));break;
       case enk_routine:kind="function";symbol=routine(e->variant.routine.ptr);break;
@@ -1125,7 +1194,7 @@ struct State {
       db.update("nodes","id",id,{{"value_normalization","nullptr-zero"}});
     if(e->kind==enk_constant) {
       if(node_constant(e)->kind==ck_template_param)dependent_value(id,node_constant(e));
-      if(node_constant(e)->kind==ck_aggregate)array_initializer(id,node_constant(e),e->position);
+      if(node_constant(e)->kind==ck_aggregate)aggregate_initializer(id,node_constant(e),e->position);
       attach_enum_value(id,node_constant(e));
       if(node_constant(e)->kind==ck_float)
         db.update("nodes","id",id,{{"floating_value_id",floating_value(node_constant(e))}});
@@ -1313,6 +1382,11 @@ struct State {
     for(auto child=scope->scopes;child;child=child->next)local_bindings(child);
   }
   void constructor_initializers(a_scope_ptr scope) {
+    // Seed selected base destinations before any lifetime traversal can reach
+    // another initializer in this constructor's list.
+    for(auto entry=scope->variant.routine.constructor_inits;entry;entry=entry->next)
+      if(entry->kind==cik_direct_base_class || entry->kind==cik_virtual_base_class)
+        subobject_initializations.insert(entry->initializer);
     unsigned ordinal=0;
     for(auto entry=scope->variant.routine.constructor_inits;entry;entry=entry->next,++ordinal) {
       const char *kind=nullptr;Id field=0,base=0;bool is_virtual=false;a_type_ptr target=nullptr;
@@ -1402,7 +1476,7 @@ struct State {
         {"nrvo_candidate_symbol_id",optional(scope->variant.routine.return_value_variable?
           variable(scope->variant.routine.return_value_variable,true):0)}});
       for(auto variable:local_variables)variables.erase(variable);
-      local_variables.clear();expressions.clear();declaration_initializers.clear();
+      local_variables.clear();expressions.clear();declaration_initializers.clear();subobject_initializations.clear();
       lifetimes.clear();initializations.clear();initialization_values.clear();initialization_types.clear();initializing.clear();
       function=previous;return_type=previous_return_type;return;
     }

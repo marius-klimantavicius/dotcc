@@ -141,3 +141,11 @@ SELECT a.node_id,a.zero_initialize,e.ordinal,e.array_index,e.repeat_count,
 FROM array_initializers a
 LEFT JOIN array_initializer_elements e ON e.initializer_node_id=a.node_id
 LEFT JOIN nodes n ON n.id=e.value_node_id ORDER BY a.node_id,e.ordinal;
+
+SELECT r.node_id,r.zero_byte_count,e.ordinal,f.name AS selected_field,
+       b.base_type_id AS selected_base,e.value_node_id,n.kind
+FROM record_initializers r
+LEFT JOIN record_initializer_elements e ON e.initializer_node_id=r.node_id
+LEFT JOIN fields f ON f.id=e.field_id
+LEFT JOIN base_subobjects b ON b.id=e.base_subobject_id
+LEFT JOIN nodes n ON n.id=e.value_node_id ORDER BY r.node_id,e.ordinal;

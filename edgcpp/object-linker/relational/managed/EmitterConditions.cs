@@ -40,7 +40,7 @@ internal sealed partial class Emitter
             Node condition=Child(statement,"condition");
             void Selection(int level,Node value)
             {
-                Line(level,"if ("+Truth(value)+")");Body(Child(statement,"then"),level);
+                Line(level,"if ("+Truth(value,ExpandedExpression(value,level))+")");Body(Child(statement,"then"),level);
                 if(unit.Children(statement,"else").FirstOrDefault() is Node alternative)
                 {
                     Line(level,"else");Body(alternative,level);
