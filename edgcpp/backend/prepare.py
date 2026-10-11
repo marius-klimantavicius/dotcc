@@ -1473,6 +1473,19 @@ for filename in ("lower_il.c", "lower_c99.c"):
         '  dot_object_source::observe_scope(scope);',
         '  dot_semantic::capture_scope(scope);\n  dot_object_source::observe_scope(scope);')
 
+# Bind only requested static typeid facts to the persistent RTTI variable
+# returned by stock selection. The callback does not generate RTTI storage.
+object_source_overlay(eh_lower,
+    '#include "dot_gen_object_source.h"',
+    '#include "dot_gen_object_source.h"\n#include "dot_gen_semantic.h"')
+for selection in ("make_typeinfo_var", "get_typeinfo_var"):
+    object_source_overlay(eh_lower,
+        '  return typeinfo_var;\n}  /* ' + selection + ' */',
+        '#if defined(EDG_DOT_BACKEND)\n'
+        '  dot_semantic::typeinfo_storage_selected(type, typeinfo_var);\n'
+        '#endif\n'
+        '  return typeinfo_var;\n}  /* ' + selection + ' */')
+
 # Preserve the linker identity selected by stock lowering for a string object.
 # The callback observes the promoted variable; it does not create or pool literals.
 object_source_overlay(lower,

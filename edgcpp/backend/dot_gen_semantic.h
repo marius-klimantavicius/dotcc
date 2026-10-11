@@ -80,6 +80,16 @@ struct State {
     a_source_position position{};
   };
   std::map<a_variable_ptr,SelectedLiteral> selected_literals;
+  // Static typeid constants retain their selected C++ type before lowering.
+  // Stock RTTI selection supplies the persistent ABI variable independently
+  // of copied constants and reclaimed function memory regions.
+  struct SelectedTypeInfo {
+    Id symbol=0,reference=0;
+    a_variable_ptr variable=nullptr;
+  };
+  struct TypeInfoVariable { Id symbol=0;bool row_exists=false,emitted=false; };
+  std::map<a_type_ptr,SelectedTypeInfo> selected_typeinfos;
+  std::map<a_variable_ptr,TypeInfoVariable> typeinfo_variables;
   struct Allocation {
     Id node=0,owner=0,allocated_type=0,allocator=0,count_value=0,count_symbol=0,size=0,check=0,failure=0;
     a_memory_region_number region=NULL_region_number;
@@ -988,6 +998,79 @@ struct State {
     db.update("nodes","id",id,{{"kind","operation"},{"operator","cast"}});
     edge(id,"operand",0,address);
   }
+  void typeinfo_storage_selected(a_type_ptr target,a_variable_ptr v) {
+    auto found=selected_typeinfos.find(target);
+    if(found==selected_typeinfos.end())return;
+    auto &selected=found->second;
+    if(selected.variable && selected.variable!=v)
+      missing("static typeid selected storage correspondence");
+    auto variable_entry=typeinfo_variables.find(v);
+    if(variable_entry==typeinfo_variables.end()) {
+      auto existing=variables.find(v);
+      TypeInfoVariable storage;
+      storage.symbol=existing==variables.end()?selected.symbol:existing->second;
+      storage.row_exists=existing!=variables.end();
+      typeinfo_variables[v]=storage;variables[v]=storage.symbol;
+      variable_entry=typeinfo_variables.find(v);
+    }
+    if(selected.symbol!=variable_entry->second.symbol) {
+      db.update("nodes","symbol_id",selected.symbol,{{"symbol_id",variable_entry->second.symbol}});
+      selected.symbol=variable_entry->second.symbol;
+    }
+    selected.variable=v;
+  }
+  void attach_typeinfo_target(Id id,a_type_ptr target,const a_source_position &p) {
+    auto &selected=selected_typeinfos[target];
+    if(!selected.reference) {
+      selected.symbol=next_symbol++;
+      auto previous_function=function;bool previous_recipe=template_recipe;
+      function=0;template_recipe=false;
+      selected.reference=node("type-reference",p,type_id(target));
+      template_recipe=previous_recipe;function=previous_function;
+    }
+    db.update("nodes","id",id,{{"kind","type-info-address"},{"symbol_id",selected.symbol}});
+    edge(id,"selected-type",0,selected.reference);
+    if(target->typeinfo_var)typeinfo_storage_selected(target,target->typeinfo_var);
+  }
+  void attach_typeinfo_address(Id id,a_constant_ptr c,const a_source_position &p) {
+    if(c->variant.address.offset || c->variant.address.subobject_path ||
+       c->variant.address.one_past_the_end || c->variant.address.is_object_reflection ||
+       !is_pointer_type(c->type))
+      missing("static typeid address requires selected complete object pointer");
+    attach_typeinfo_target(id,c->variant.address.variant.type,p);
+  }
+  void finish_typeinfo_symbols() {
+    for(const auto &entry:selected_typeinfos)
+      if(!entry.second.variable)missing("static typeid without EDG-selected persistent RTTI variable");
+    // A definition can select other RTTI objects in its initializer. Emit each
+    // final ABI entity once, using its actual stock initializer when present.
+    bool pending=true;
+    while(pending) {
+      pending=false;
+      for(auto &entry:typeinfo_variables) {
+        auto &selected=entry.second;if(selected.emitted)continue;
+        selected.emitted=true;pending=true;
+        auto v=entry.first;auto pos=location(v->source_corresp.decl_position);
+        bool weak=false;
+#if DO_IL_LOWERING
+        weak=v->comdat_group!=nullptr;
+#endif
+#if GNU_EXTENSIONS_ALLOWED
+        weak=weak || v->is_weak;
+#endif
+        std::initializer_list<std::pair<const char*,Value>> values={
+          {"id",selected.symbol},{"kind","rtti-object"},{"name",spelling(v->source_corresp)},
+          {"link_name",v->source_corresp.name?v->source_corresp.name:""},
+          {"linkage",linkage(v->source_corresp)},{"type_id",type_id(v->type)},
+          {"parent_symbol_id",nullptr},{"is_definition",v->storage_class!=sc_extern},
+          {"definition_kind",weak?"weak":"strong"},{"file_id",optional(pos.file)},
+          {"line",pos.line},{"column",pos.column}};
+        if(selected.row_exists)db.update("symbols","id",selected.symbol,values);
+        else db.insert("symbols",values);
+        if(!selected.row_exists)global_initializer(v,selected.symbol);
+      }
+    }
+  }
   void attach_literal(Id id,a_constant_ptr c,const a_source_position &p,bool initializer=false) {
     if(c->kind==ck_string) {
       db.update("nodes","id",id,{{"literal_object_id",literal_object(c)}});
@@ -1006,6 +1089,7 @@ struct State {
         if(!selected_literals.count(v)){attach_variable_address(id,c,p);return;}
         object=selected_literal_object(v);
       }
+      else if(c->variant.address.kind==abk_typeid) {attach_typeinfo_address(id,c,p);return;}
       else {
         auto pos=location(p);std::string path,owner;
         for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
@@ -1182,6 +1266,16 @@ struct State {
     if(!pos.seq && component)pos=component->source_corresp.decl_position;
     if(!pos.seq && selected && selected->kind==dik_expression)
       pos=selected->variant.expression->position;
+    if(!pos.seq && init->variable)pos=init->variable->source_corresp.decl_position;
+    if(!pos.seq && (init->kind==dik_expression || init->kind==dik_class_result_via_ctor))
+      pos=init->variant.expression->position;
+    if(!pos.seq && init->kind==dik_constructor && init->variant.constructor.args)
+      pos=init->variant.constructor.args->position;
+    auto init_expression=(init->kind==dik_expression || init->kind==dik_class_result_via_ctor)?
+      init->variant.expression:nullptr;
+    if(!pos.seq && init_expression && init_expression->kind==enk_operation)
+      for(auto child=init_expression->variant.operation.operands;child;child=child->next)
+        if(child->position.seq){pos=child->position;break;}
     std::string name;
     for(const auto &entry:routines)if(entry.second==function) {
       name=spelling(entry.first->source_corresp);
@@ -1201,7 +1295,31 @@ struct State {
       ", lifetime="+std::to_string(init->lifetime?1:0)+
       ", expression-lifetime="+std::to_string(init->init_expr_lifetime?1:0)+
       ", overlap="+std::to_string(init->lifetime_of_overlapping_temps?1:0)+
+      ", shared-result="+std::to_string(int(init->class_rvalue_initialized_through_master_entry))+
+      ", master-kind="+std::to_string(init->master_entry?int(init->master_entry->kind):-1)+
+      ", master-variable="+(init->master_entry && init->master_entry->variable?
+        spelling(init->master_entry->variable->source_corresp):"")+
       ", partial-cleanup="+std::to_string(int(init->destruction_is_for_partially_constructed_aggregate));
+    if(init_expression) {
+      detail+=", expression-kind="+std::to_string(int(init_expression->kind))+
+        ", expression-operator="+std::to_string(init_expression->kind==enk_operation?
+          int(init_expression->variant.operation.kind):-1);
+      if(init_expression->kind==enk_operation) {
+        unsigned ordinal=0;
+        for(auto child=init_expression->variant.operation.operands;child && ordinal<3;child=child->next,++ordinal) {
+          auto child_source=location(child->position);std::string child_path;
+          for(const auto &file:files)if(file.second==child_source.file){child_path=file.first;break;}
+          auto child_init=child->kind==enk_temp_init?child->variant.init.dynamic_init:nullptr;
+          detail+=" [operand="+std::to_string(ordinal)+", kind="+std::to_string(int(child->kind))+
+            ", operator="+std::to_string(child->kind==enk_operation?int(child->variant.operation.kind):-1)+
+            ", initialization-kind="+std::to_string(child_init?int(child_init->kind):-1)+
+            ", shares-selected-destination="+std::to_string(child_init && child_init->master_entry==init?1:0)+
+            ", variable="+(child_init && child_init->variable?spelling(child_init->variable->source_corresp):"")+
+            ", file="+child_path+", line="+std::to_string(child_source.line)+
+            ", column="+std::to_string(child_source.column)+"]";
+        }
+      }
+    }
     if(selected)detail+=", component-kind="+std::to_string(int(selected->kind))+
       ", component-type="+(component->type?spelling(component->type->source_corresp):"")+
       ", component-type-kind="+std::to_string(component->type?int(skip_typerefs(component->type)->kind):-1)+
@@ -1216,8 +1334,10 @@ struct State {
   Id initialization_id(a_dynamic_init_ptr init,a_type_ptr target=nullptr) {
     if(!init)return 0;
     if(template_recipe)missing("template recipe initialization ownership");
-    if(init->master_entry || init->class_rvalue_initialized_through_master_entry)
-      missing("shared class-result initialization destination");
+    if(init->master_entry || init->class_rvalue_initialized_through_master_entry) {
+      a_source_position pos={};
+      missing_initialization(init,target,pos,"shared class-result initialization destination");
+    }
     Id target_type=type_id(target?target:init->variable?init->variable->type:nullptr);
     auto found=initializations.find(init);
     if(found!=initializations.end()) {
@@ -1663,10 +1783,14 @@ struct State {
       missing("delete expression without selected deallocator call");
     deallocation_stack.pop_back();
   }
-  Id expression(an_expr_node_ptr e) {
+  Id expression(an_expr_node_ptr e,const a_source_position *inherited_position=nullptr,Id source_node=0) {
     if(!e)return 0;
     auto &expression_ids=template_recipe?recipe_expressions:expressions;
     auto found=expression_ids.find(e);if(found!=expression_ids.end())return found->second;
+    // Some stock folded/synthetic operands have no position of their own.
+    // Retain their nearest enclosing expression's navigation and explicit
+    // source link without changing EDG entries or reconstructing syntax.
+    const auto &source_position=e->position.seq || !inherited_position?e->position:*inherited_position;
     const char *kind=nullptr,*op=nullptr;std::string text;Id symbol=0,field=0;
     switch(e->kind) {
       case enk_constant:
@@ -1685,6 +1809,17 @@ struct State {
       case enk_condition:kind="condition";break;
       case enk_object_lifetime:kind="lifetime-scope";break;
       case enk_throw:kind=e->variant.throw_info?"throw":"rethrow";break;
+      case enk_typeid:
+        if(e->variant.typeid_info.is_dynamic)missing("dynamic source typeid expression");
+#if MICROSOFT_EXTENSIONS_ALLOWED
+        if(e->is_cli_typeid)missing("C++/CLI source typeid expression");
+#endif
+        if(e->variant.typeid_info.type_with_opt_expr &&
+           e->variant.typeid_info.type_with_opt_expr->next)
+          missing("static source typeid expression operand correspondence");
+        // lower_eh::lower_typeid selects the same static RTTI object and
+        // views its public type_info prefix as the recorded source lvalue.
+        kind="operation";op="indirect";break;
       case enk_new_delete: {
         auto allocation=e->variant.new_delete;
         if(plain_allocation(allocation)){kind="new";symbol=routine(allocation->routine);break;}
@@ -1734,9 +1869,22 @@ struct State {
       }
       default:missing("expression",int(e->kind));
     }
-    Id id=node(kind,e->position,type_id(e->type),e->is_lvalue?"lvalue":e->is_xvalue?"xvalue":"prvalue",
+    Id id=node(kind,source_position,type_id(e->type),e->is_lvalue?"lvalue":e->is_xvalue?"xvalue":"prvalue",
       op,text,symbol,field,type_id(e->orig_lvalue_type),e->compiler_generated);
     expression_ids[e]=id;
+    if(!e->position.seq && source_position.seq && source_node)
+      db.update("nodes","id",id,{{"source_node_id",source_node}});
+    if(e->kind==enk_typeid) {
+      auto operand=e->variant.typeid_info.type_with_opt_expr;
+      if(!operand || operand->kind!=enk_type_operand)missing("static typeid selected type operand");
+      Id address=node("type-info-address",source_position,type_id(make_pointer_type(e->type)),"prvalue",
+        nullptr,"",0,0,0,true);
+      db.update("nodes","id",address,{{"source_node_id",id}});
+      attach_typeinfo_target(address,operand->variant.type_operand.type,source_position);
+      edge(id,"operand",0,address);
+      // EDG selects the static type directly. Optional unevaluated source
+      // expression operands require a separate navigation projection above.
+    }
     if(e->kind==enk_new_delete) {
       if(e->variant.new_delete->is_new)source_allocation(id,e);
       else source_deallocation(id,e);
@@ -1752,7 +1900,7 @@ struct State {
        e->kind!=enk_constant && e->kind!=enk_field && !e->result_is_not_used)
       db.update("nodes","id",id,{{"value_normalization","nullptr-zero"}});
     if(e->kind==enk_constant) {
-      if(node_constant(e)->kind==ck_string || node_constant(e)->kind==ck_address)attach_literal(id,node_constant(e),e->position);
+      if(node_constant(e)->kind==ck_string || node_constant(e)->kind==ck_address)attach_literal(id,node_constant(e),source_position);
       if(node_constant(e)->kind==ck_template_param)dependent_value(id,node_constant(e));
       if(node_constant(e)->kind==ck_aggregate)aggregate_initializer(id,node_constant(e),e->position);
       attach_enum_value(id,node_constant(e));
@@ -1776,8 +1924,8 @@ struct State {
         // ignores it (il::lvalue/rvalue operand checks). Keep it navigable
         // without asking generic operand expansion to evaluate it.
         if(e->variant.operation.kind==eok_va_start && ordinal==1)
-          edge(id,"last-parameter",0,expression(child));
-        else edge(id,"operand",ordinal,expression(child));
+          edge(id,"last-parameter",0,expression(child,&source_position,id));
+        else edge(id,"operand",ordinal,expression(child,&source_position,id));
       }
     } else if(e->kind==enk_temp_init) {
       db.update("nodes","id",id,{{"initialization_id",initialization_id(e->variant.init.dynamic_init,e->type)}});
@@ -2286,6 +2434,7 @@ struct State {
     for(auto ns=scope->namespaces;ns;ns=ns->next)if(!ns->is_namespace_alias)capture(ns->variant.assoc_scope);
   }
   void finish() {
+    finish_typeinfo_symbols();
     if(!default_member_initializers.empty())
       missing("default member initializers without finalized constructor cleanup");
     for(const auto &entry:allocations)
@@ -2349,6 +2498,9 @@ inline void default_member_initializers_complete(a_scope_ptr scope) {
 }
 inline void static_local_storage_selected(a_variable_ptr variable,a_routine_ptr routine) {
   if(enabled())state().static_local_storage_selected(variable,routine);
+}
+inline void typeinfo_storage_selected(a_type_ptr type,a_variable_ptr variable) {
+  if(enabled())state().typeinfo_storage_selected(type,variable);
 }
 inline void allocation_size_begin(a_new_delete_supplement_ptr allocation) {
   if(enabled())state().allocation_size_begin(allocation);

@@ -147,6 +147,14 @@ before recorded scalar/record/array constant initialization actions execute.
 stable addresses and forward cross-TU pointer initializers. Dynamic static guards,
 static destruction and TLS remain unsupported.
 
+Static RTTI addresses retain EDG's selected represented type and exact persistent
+ABI symbol, separately from the public source `std::type_info` view. External
+RTTI declarations publish valid objects; executable generation reports a missing
+provider explicitly. `tests/verify_typeinfo_addresses.py` checks ordinary SQL
+selection, ABI layouts, source navigation and this source-hidden diagnostic.
+Dynamic/CLI typeid and unprojected source expression operands remain unsupported;
+no opaque type tokens or invented provider storage are used.
+
 Fixed-layout pointer differences use selected typed operands and result, preserving
 element counts through ordinary C# pointer subtraction. `tests/verify_pointer_differences.py`
 checks cross-unit char/int counts, effects and conditional execution. Void, function,

@@ -57,13 +57,18 @@ internal sealed partial class Emitter
     private void UseNode(Unit unit,Node node,HashSet<long> visited)
     {
         if(!visited.Add(node.Id))return;
+        if(node.Kind=="type-info-address")
+        {
+            var provider=ResolveTypeInfoObject(unit,node);
+            UseType(provider.Unit,provider.Symbol.Type);
+        }
         needsNullptrNormalization|=node.ValueNormalization=="nullptr-zero";
         if(node.Function is null)executableGlobalNodes.Add((unit,node.Id));
         if(node.Type is long type)UseType(unit,type);
         if(node.ExecutionType is long execution)UseType(unit,execution);
         if(node.OperationType is long operation)UseType(unit,operation);
         if(node.OriginalLvalueType is long original)UseType(unit,original);
-        if(node.Symbol is long symbol)UseType(unit,unit.Symbols[symbol].Type);
+        if(node.Symbol is long symbol && node.Kind!="type-info-address")UseType(unit,unit.Symbols[symbol].Type);
         if(node.Field is long field)
         {
             UseType(unit,unit.Fields[field].Owner);UseType(unit,unit.Fields[field].Type);
@@ -105,7 +110,10 @@ internal sealed partial class Emitter
         {
             UseType(unit,call.ReceiverType);UseType(unit,call.CallableType);
         }
-        foreach(var edge in unit.Edges.GetValueOrDefault(node.Id,[]))UseNode(unit,unit.Nodes[edge.Child],visited);
+        // A selected-type reference describes the represented C++ type. RTTI
+        // storage comes from the selected provider, without realizing that type.
+        foreach(var edge in unit.Edges.GetValueOrDefault(node.Id,[]).Where(edge=>edge.Role!="selected-type"))
+            UseNode(unit,unit.Nodes[edge.Child],visited);
     }
 
     private void UseBase(Unit unit,BaseSubobject subobject)

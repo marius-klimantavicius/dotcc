@@ -858,6 +858,44 @@ its provider storage needs an explicit architecture review; opaque type tokens
 are not a substitute. No complete DuckDB object is published; retained timings
 remain early-rejection costs. Broad campaign remains stopped.
 
+## Selected static RTTI references and external ABI declarations (2026-10-11)
+
+Verified `dotobj-relational-typeinfo-addresses-v4` publishes valid inspectable
+SQLite objects for static `typeid` addresses and source `typeid(T)` lvalues.
+Schema remains 1018 / 43 tables. Ordinary `type-info-address` nodes retain their
+source pointer view and exact selected `rtti-object` symbol. A `selected-type`
+edge targets one shared global `type-reference` node per EDG-selected type;
+this serves source browsing and provider selection, without requiring represented
+type layout to execute. Source lvalues use an ordinary indirect operation and
+source-linked selected address. Unpositioned folded children retain the nearest
+enclosing expression's position and explicit source correspondence.
+
+Narrow stock `make_typeinfo_var` / `get_typeinfo_var` return callbacks bind only
+requested types to their actual persistent ABI variable. Final symbols retain
+EDG-selected link identities, storage types, linkage and definition facts.
+The fixture checks void/int/double/int* external objects, repeated and qualified
+selection, array/record/static initializers and source lvalue navigation. SQL
+distinguishes the public `std::type_info` view from actual ABI storage, including
+the recorded 16-byte/8-aligned fundamental prefix and vptr/name field offsets.
+No runtime definition is fabricated. A separate expression-operand fixture checks
+EDG's already folded selected-int result with no operand evaluation; source
+`enk_typeid` forms still retaining an optional expression operand reject explicitly
+until its navigation can be preserved. Dynamic/CLI typeid remains unsupported.
+
+Source-hidden linking reports the exact unresolved `_ZTIv` provider at the selected
+source node. Valid external RTTI declarations do not block object publication.
+This is exporter/reference acceptance, not RTTI runtime execution or provider
+closure. Main fixture: 253,952 bytes / 43 nodes / 99 types / 52 symbols;
+folded fixture: 253,952 bytes / 13 nodes / 77 types / 38 symbols. SQL summaries,
+per-table storage and tested tool hashes are retained. Managed tool build passes.
+
+Actual `hugeint-v40` passes the empty `std::function` RTTI policy and rejects the
+final `ToString` conditional at `hugeint.cpp:184:9`. EDG's shared-result master is
+an effect-only conditional: operator+ and copy-constructor temporary actions both
+select its same result destination. Capturing that explicit destination relation
+requires architecture review. No complete DuckDB object is published; timings
+remain early-rejection costs. Exporter progress continues before runtime closure.
+
 ## Retention purpose audit (2026-10-11)
 
 The resolved program graph includes requested source browsing facts beyond current

@@ -166,7 +166,7 @@ internal sealed class LinkedProgram : IDisposable
                     var value=new SymbolRef(unit,symbol.Id);
                     if(Resolve(unit,symbol.Id)!=value)continue;
                     if(unit.Functions.ContainsKey(symbol.Id)) Functions.Add(value);
-                    else if(symbol.Kind is "global" or "static-local") Globals.Add(value);
+                    else if(symbol.Kind is "global" or "static-local" or "rtti-object") Globals.Add(value);
                 }
         }
         catch { Dispose(); throw; }

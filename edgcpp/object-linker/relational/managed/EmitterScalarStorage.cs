@@ -14,7 +14,7 @@ internal sealed partial class Emitter
 
     private bool HasPinnedScalarStorage(Unit unit,long symbol)
     {
-        if(unit.Symbols[symbol].Kind is not ("global" or "static-local"))return false;
+        if(unit.Symbols[symbol].Kind is not ("global" or "static-local" or "rtti-object"))return false;
         var selected=program.Resolve(unit,symbol);
         return selected.Unit.Original(selected.Symbol.Type).Kind is
             "bool" or "i8" or "u8" or "i16" or "u16" or "i32" or "u32" or "i64" or "u64" or "i128" or "u128" or

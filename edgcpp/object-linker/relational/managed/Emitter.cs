@@ -264,6 +264,7 @@ internal sealed partial class Emitter
             {
                 case "constant":return Constant(node);
                 case "address-constant":return LiteralAddress(node);
+                case "type-info-address":return TypeInfoAddress(node);
                 case "string-literal":return "(*"+ArrayAddress(node)+")";
                 case "new":return AllocationExpression(node);
                 case "delete":return Expression(Child(node,"execution"));

@@ -4,7 +4,7 @@ internal sealed partial class Emitter
 {
     private bool HasPinnedRecordStorage(Unit unit,long symbol)
     {
-        if(unit.Symbols[symbol].Kind is not ("global" or "static-local"))return false;
+        if(unit.Symbols[symbol].Kind is not ("global" or "static-local" or "rtti-object"))return false;
         var global=program.Resolve(unit,symbol);
         return global.Unit.Initializers.TryGetValue(global.Id,out long initializer) && global.Unit.RecordInitializers.ContainsKey(initializer);
     }
