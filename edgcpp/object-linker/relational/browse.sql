@@ -62,6 +62,10 @@ SELECT t.builtin_name,t.size,t.alignment,f.format,f.precision_bits,
        f.min_exponent,f.max_exponent
 FROM floating_types f JOIN types t ON t.id=f.type_id ORDER BY t.id;
 
+SELECT v.id,t.builtin_name,f.format,v.bits_hex
+FROM floating_values v JOIN types t ON t.id=v.type_id
+JOIN floating_types f ON f.type_id=t.id ORDER BY v.id;
+
 -- Destruction ordinal is the order supplied by EDG, not an inferred reversal.
 SELECT l.id,l.kind,l.parent_id,l.owner_node_id,d.ordinal,i.id AS initialization,
        v.name AS variable,dt.name AS destructor,i.conditional,i.partial_aggregate

@@ -85,7 +85,12 @@ prototype fields. The generator follows recorded executable references to choose
 types for C# emission; it does not instantiate dependent recipes. Empty function
 packs have a source declaration row and no runtime storage. Run `tests/verify_packs.py`
 for the executable slice. `tests/verify_floating_metadata.py` checks explicit
-floating formats and source identities; extended floating arithmetic remains work.
+floating formats and source identities. `floating_values` stores EDG-selected exact
+scalar bits, referenced by expressions and floating template arguments/defaults.
+`tests/verify_floats.py` checks negative zero, readable float/double literals and
+binary80/binary128 arithmetic through the existing software runtime, including
+source-hidden C# and NativeAOT. Floating environment/rounding-mode completeness
+and half-precision execution remain work.
 
 Selected return initializations and `types.return_storage` distinguish ordinary
 value returns from caller-provided result storage. The latter becomes an explicit

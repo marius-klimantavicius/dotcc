@@ -13,6 +13,7 @@
 #include "const_ints.h"
 #include "exprutil.h"
 #include "expr.h"
+#include "float_pt.h"
 #include "dot_gen_semantic_sqlite.h"
 BEGIN_EDG_NAMESPACE
 namespace dot_semantic {
@@ -35,7 +36,7 @@ struct Location { Id file=0;unsigned long long line=0,column=0; };
 struct State {
   dot_semantic_sqlite::Database db;
   Id next_type=1,next_symbol=1,next_node=1,next_field=1,next_file=1,next_template=1,next_instance=1;
-  Id next_lifetime=1,next_initialization=1,next_base=1,next_enum_value=1,next_formal=1;
+  Id next_lifetime=1,next_initialization=1,next_base=1,next_enum_value=1,next_formal=1,next_floating_value=1;
   Id function=0;
   a_type_ptr return_type=nullptr;
   std::map<a_type_ptr,Id> types;
@@ -45,6 +46,7 @@ struct State {
   std::map<a_field_ptr,Id> fields;
   std::map<a_base_class_ptr,Id> base_subobjects;
   std::map<a_constant_ptr,Id> enum_values;
+  std::map<std::pair<Id,std::string>,Id> floating_values;
   std::map<a_template_ptr,Id> templates;
   std::map<std::string,Id> files;
   std::map<an_expr_node_ptr,Id> expressions;
@@ -100,7 +102,7 @@ struct State {
       {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
     unsigned ordinal=0;
     for(auto formal=t->template_decl?t->template_decl->param_list:nullptr;formal;formal=formal->next,++ordinal) {
-      const char *formal_kind=nullptr;Id formal_type=0,formal_template=0,default_type=0,default_template=0,default_value_type=0;
+      const char *formal_kind=nullptr;Id formal_type=0,formal_template=0,default_type=0,default_template=0,default_value_type=0,default_float=0;
       Value depth=nullptr,position=nullptr,default_value=nullptr;
       switch(formal->kind) {
         case tpk_type: {
@@ -121,7 +123,8 @@ struct State {
           depth=parameter_value->variant.template_param.variant.coordinates.depth;
           position=parameter_value->variant.template_param.variant.coordinates.position;
           if(auto initial=formal->variant.nontype.default_arg_constant) {
-            default_value_type=type_id(initial->type);default_value=integer(initial);
+            default_value_type=type_id(initial->type);default_value=literal_text(initial);
+            if(initial->kind==ck_float)default_float=floating_value(initial);
           }
           break;
         }
@@ -140,6 +143,7 @@ struct State {
         {"parameter_depth",depth},{"parameter_position",position},{"is_pack",bool(formal->is_pack)},
         {"default_type_id",optional(default_type)},{"default_template_id",optional(default_template)},
         {"default_value_type_id",optional(default_value_type)},{"default_value_text",default_value},
+        {"default_floating_value_id",optional(default_float)},
         {"file_id",optional(formal_pos.file)},{"line",formal_pos.line},{"column",formal_pos.column}});
     }
     return id;
@@ -151,6 +155,47 @@ struct State {
       std::to_string((unsigned long long)unsigned_value_of_integer_constant(c,&overflow));
     if(overflow)missing("integer constant wider than 64 bits");
     return value;
+  }
+  std::string literal_text(a_constant_ptr c) {
+    if(c && c->kind==ck_float) {
+      auto t=skip_typerefs(c->type);
+      // Display only; the exact value is the separate literal bit pattern.
+      return fp_to_string(t->variant.float_kind,&c->variant.float_value,nullptr,nullptr,nullptr).as_temp_characters();
+    }
+    return integer(c);
+  }
+  Id floating_value(a_constant_ptr c) {
+#if IA64_ABI
+    auto t=skip_typerefs(c->type);Id value_type=type_id(c->type);
+    // Stock float_pt::fp_to_hex_string emits high-order bytes first, retaining
+    // negative zero and NaN payloads. No host-number conversion is involved.
+    std::string bits=fp_to_hex_string(t->variant.float_kind,&c->variant.float_value).as_temp_characters();
+    auto precision=num_mantissa_bits[int(t->variant.float_kind)];
+    int minimum=min_exponent[int(t->variant.float_kind)];
+    int maximum=max_exponent[int(t->variant.float_kind)];
+    unsigned digits=0;
+    if(precision==11 && minimum==-13 && maximum==16)digits=4;
+    else if(precision==8 && minimum==-125 && maximum==128)digits=4;
+    else if(precision==24 && minimum==-125 && maximum==128)digits=8;
+    else if(precision==53 && minimum==-1021 && maximum==1024)digits=16;
+    else if(precision==64 && minimum==-16381 && maximum==16384) {
+      digits=20;
+      // The stock formatter prefixes zero long-double storage padding.
+      // Strip only that checked padding, never any significand/exponent bits.
+      if(bits.size()>digits && bits.substr(0,bits.size()-digits).find_first_not_of('0')==std::string::npos)
+        bits=bits.substr(bits.size()-digits);
+    } else if(precision==113 && minimum==-16381 && maximum==16384)digits=32;
+    if(!digits || bits.size()!=digits || bits.find_first_not_of("0123456789abcdef")!=std::string::npos)
+      missing("exact floating literal encoding for "+std::string(floating_name(t->variant.float_kind)));
+    auto key=std::make_pair(value_type,bits);auto found=floating_values.find(key);
+    if(found!=floating_values.end())return found->second;
+    Id id=next_floating_value++;floating_values[key]=id;
+    db.insert("floating_values",{{"id",id},{"type_id",value_type},{"bits_hex",bits}});
+    return id;
+#else
+    (void)c;
+    missing("exact floating literal encoding for target ABI");
+#endif
   }
   void instance(a_template_ptr t,a_template_arg_ptr args,Id symbol,Id type,bool dependent) {
     if(!t)return;
@@ -167,7 +212,7 @@ struct State {
         pack_ordinal=int(ordinal);continue;
       }
       if(!arg->is_pack_element && !arg->is_pack)pack_ordinal=-1;
-      const char *kind=nullptr;Id argument_type=0,templ=0;Value value=nullptr;
+      const char *kind=nullptr;Id argument_type=0,templ=0,floating=0;Value value=nullptr;
       switch(arg->kind) {
         case tak_type:
           kind="type";argument_type=type_id(arg->variant.type);break;
@@ -175,7 +220,8 @@ struct State {
           kind="constant";
           if(arg->is_array_bound_of_unknown_type || !arg->variant.constant)
             missing("unresolved nontype template argument");
-          argument_type=type_id(arg->variant.constant->type);value=integer(arg->variant.constant);break;
+          argument_type=type_id(arg->variant.constant->type);value=literal_text(arg->variant.constant);
+          if(arg->variant.constant->kind==ck_float)floating=floating_value(arg->variant.constant);break;
         case tak_template:
           kind="template";templ=template_id(arg->variant.templ.ptr);
           if(!templ)missing("selected template template argument");break;
@@ -184,7 +230,8 @@ struct State {
       db.insert("template_arguments",{{"instance_id",id},{"ordinal",ordinal},{"kind",kind},
         {"parent_ordinal",pack_ordinal<0?Value(nullptr):Value(pack_ordinal)},
         {"is_pack_expansion",bool(arg->pack_expansion_descr || arg->is_pack || arg->has_pack_ellipsis)},
-        {"type_id",optional(argument_type)},{"template_id",optional(templ)},{"constant_text",value}});
+        {"type_id",optional(argument_type)},{"template_id",optional(templ)},{"constant_text",value},
+        {"floating_value_id",optional(floating)}});
     }
   }
   const char *exception_policy(a_type_ptr type) {
@@ -449,8 +496,9 @@ struct State {
     if(child)db.insert("edges",{{"parent_id",parent},{"role",role},{"ordinal",ordinal},{"child_id",child}});
   }
   Id constant(a_constant_ptr c,const a_source_position &p) {
-    if(c->kind!=ck_integer)missing("constant",int(c->kind));
-    Id id=node("constant",p,type_id(c->type),"prvalue",nullptr,integer(c));
+    if(c->kind!=ck_integer && c->kind!=ck_float)missing("constant",int(c->kind));
+    Id id=node("constant",p,type_id(c->type),"prvalue",nullptr,literal_text(c));
+    if(c->kind==ck_float)db.update("nodes","id",id,{{"floating_value_id",floating_value(c)}});
     attach_enum_value(id,c);return id;
   }
   void attach_enum_value(Id id,a_constant_ptr c) {
@@ -634,7 +682,7 @@ struct State {
     auto found=expressions.find(e);if(found!=expressions.end())return found->second;
     const char *kind=nullptr,*op=nullptr;std::string text;Id symbol=0,field=0;
     switch(e->kind) {
-      case enk_constant:kind="constant";text=integer(node_constant(e));break;
+      case enk_constant:kind="constant";text=literal_text(node_constant(e));break;
       case enk_variable:kind="variable";symbol=variable(node_variable(e));break;
       case enk_routine:kind="function";symbol=routine(e->variant.routine.ptr);break;
       case enk_field:kind="field";field=field_id(node_field(e));break;
@@ -657,7 +705,11 @@ struct State {
     Id id=node(kind,e->position,type_id(e->type),e->is_lvalue?"lvalue":e->is_xvalue?"xvalue":"prvalue",
       op,text,symbol,field,type_id(e->orig_lvalue_type),e->compiler_generated);
     expressions[e]=id;
-    if(e->kind==enk_constant)attach_enum_value(id,node_constant(e));
+    if(e->kind==enk_constant) {
+      attach_enum_value(id,node_constant(e));
+      if(node_constant(e)->kind==ck_float)
+        db.update("nodes","id",id,{{"floating_value_id",floating_value(node_constant(e))}});
+    }
     if(e->kind==enk_operation) {
       if(e->variant.operation.kind==eok_base_class_cast || e->variant.operation.kind==eok_derived_class_cast)
         class_conversion(id,e);

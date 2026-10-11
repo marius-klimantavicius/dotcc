@@ -61,6 +61,7 @@ internal sealed partial class Emitter
             UseType(unit,unit.Fields[field].Owner);UseType(unit,unit.Fields[field].Type);
         }
         if(node.EnumValue is long enumeration)UseType(unit,unit.EnumValues[enumeration].Type);
+        if(node.FloatingValue is long floating)UseType(unit,unit.FloatingValues[floating].Type);
         if(node.Initialization is long selected && unit.Initializations.TryGetValue(selected,out var initialization))
         {
             if(initialization.Type is long initializedType)UseType(unit,initializedType);

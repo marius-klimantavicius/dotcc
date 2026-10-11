@@ -229,6 +229,35 @@ next exporter/consumer work. This is still an early rejection without a publishe
 DuckDB object. Reproduce returns with `tests/verify_returns.py` and the usual
 `--out`, `--linker`, `--nativeaot` arguments.
 
+## Verified exact floating values
+
+`artifacts/review/dotobj-relational-floats-v1/` passes native C++, SQL integrity,
+source-hidden C# and Linux x64 NativeAOT. Cross-unit execution checks negative
+zero through reciprocal sign, double rounding, a binary80 increment at 2^-63,
+a binary128 increment at 2^-112, and floating template arguments/defaults.
+EDG supplies exact literal bits through its target floating API. The 30-table
+schema stores each literal as a typed `floating_values` scalar row; expressions
+and template arguments/defaults reference it. Display text is separate.
+
+C# emits readable round-trip finite float/double literals, with bit constructors
+for negative zero and nonfinite values. Extended values use the existing Float80
+and Float128 software runtime. This verifies the exercised arithmetic, not full
+floating-environment or dynamic-rounding-mode behavior. Half formats remain
+unsupported. Function-local floating values share the existing body lease rather
+than becoming an unbounded literal catalog.
+
+Provider: 184,320 bytes, 20 nodes, 16 types. Main: 192,512 bytes, 100 nodes, 27 types.
+Storage summaries and tool hashes are retained. Return-object and body-loading
+regressions pass native/C#/NativeAOT at `*-float-regression-v1`; peak retained
+body nodes remain 251 of 1,531. Reproduce with
+`tests/verify_floats.py` and the usual `--out`, `--linker`, `--nativeaot` arguments.
+
+The real DuckDB probe at `dotobj-relational-duckdb-hugeint-v8/` advances to
+`missing type (EDG kind 23)`. It still rejects before publishing a complete
+DuckDB object; this is not a full-unit time or memory measurement. The next type
+is standard `std::nullptr_t`; explicit export and consumption are next. The
+full-corpus campaign remains stopped.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

@@ -7,7 +7,7 @@ internal sealed record Field(long Id, long Owner, string Name, long Type, long O
 internal sealed record Symbol(long Id, string Kind, string Name, string LinkName, string Linkage, long Type, long? Parent, bool Definition, string DefinitionKind);
 internal sealed record Node(long Id, long? Function, string Kind, long? Type, long? ExecutionType,
     string? ValueCategory, string? Operator, string? Constant, long? Symbol, long? Field, long? File, long? Line, long? Column, long? OriginalLvalueType,
-    long? Initialization,long? Lifetime,string? EvaluationOrder,long? EnumValue);
+    long? Initialization,long? Lifetime,string? EvaluationOrder,long? EnumValue,long? FloatingValue);
 internal sealed record Edge(string Role, long Ordinal, long Child);
 internal readonly record struct SymbolRef(Unit Unit, long Id)
 {
@@ -59,6 +59,7 @@ internal sealed partial class Unit : IDisposable
             using (var q = database.Prepare("SELECT id,kind,name,size,alignment,pointee_type_id,element_type_id,element_count,return_type_id,underlying_type_id,is_variadic,is_incomplete,link_name,linkage,is_volatile,"+(HasLifecycles?"builtin_name":"NULL")+","+(hasDependentTypes?"is_dependent":"0")+","+(HasReturnStorage?"return_storage":"'value'")+" FROM types ORDER BY id"))
                 while (q.Read()) Types.Add(q.Integer(0), new(q.Integer(0),q.Text(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalInteger(5),q.OptionalInteger(6),q.OptionalInteger(7),q.OptionalInteger(8),q.OptionalInteger(9),q.Integer(10)!=0,q.Integer(11)!=0,q.Text(12),q.Text(13),q.Integer(14)!=0,q.OptionalText(15),q.Integer(16)!=0,q.Text(17)));
             ReadEnums();
+            ReadFloatingFormats();
             using (var q = database.Prepare("SELECT id,owner_type_id,name,type_id,ordinal,byte_offset,bit_offset,bit_width FROM fields ORDER BY owner_type_id,ordinal"))
                 while (q.Read()) Fields.Add(q.Integer(0), new(q.Integer(0),q.Integer(1),q.Text(2),q.Integer(3),q.Integer(4),q.Integer(5),q.OptionalInteger(6),q.OptionalInteger(7)));
             using (var q = database.Prepare("SELECT id,kind,name,link_name,linkage,type_id,parent_symbol_id,is_definition,definition_kind FROM symbols ORDER BY id"))
@@ -74,6 +75,7 @@ internal sealed partial class Unit : IDisposable
             ReadInheritance();
             ReadFunctionDetails();
             ReadNodes(null);
+            ReadFloatingValues(null);
             ReadLifecycles(null);
             ReadClassConversions(null);
         }

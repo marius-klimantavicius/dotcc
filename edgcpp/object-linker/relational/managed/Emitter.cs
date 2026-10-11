@@ -57,6 +57,7 @@ internal sealed partial class Emitter
             File.Move(temporary,Path.Combine(directory,"Translated.cs"),overwrite:true);
             File.WriteAllText(Path.Combine(directory,"Translated.csproj"),"<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>enable</Nullable><OutputType>"+(entry is null?"Library":"Exe")+"</OutputType></PropertyGroup></Project>\n",new UTF8Encoding(false));
             if(NeedsExceptionRuntime)WriteExceptionRuntime(directory);
+            WriteFloatingRuntime(directory);
         }
         catch
         {
@@ -145,6 +146,7 @@ internal sealed partial class Emitter
         {
             "void"=>"void","bool"=>"bool","i8"=>"sbyte","u8"=>"byte","i16"=>"short","u16"=>"ushort",
             "i32"=>"int","u32"=>"uint","i64"=>"long","u64"=>"ulong","f32"=>"float","f64"=>"double",
+            "f80" or "f128"=>ExtendedFloatingType(unit,type),
             "pointer" or "lvalue-reference" or "rvalue-reference"=>Pointer(unit,type.Pointee!.Value),
             "record"=>typeNames[(unit,type.Id)],
             "enum"=>typeNames[(unit,type.Id)],
@@ -231,6 +233,7 @@ internal sealed partial class Emitter
         }
         private string Constant(Node node)
         {
+            if(node.FloatingValue is long floating)return FloatingConstant(node,floating);
             if(EnumConstant(node) is string enumeration)return enumeration;
             string value=node.Constant??throw unit.Missing(node,"constant payload missing");
             string type=NodeType(node);

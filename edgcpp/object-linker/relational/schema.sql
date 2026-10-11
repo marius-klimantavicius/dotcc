@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1008;
+PRAGMA user_version = 1009;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -50,6 +50,14 @@ CREATE TABLE floating_types (
  precision_bits INTEGER NOT NULL,
  min_exponent INTEGER NOT NULL,
  max_exponent INTEGER NOT NULL
+) STRICT;
+-- Exact literal value bytes in standard target-format, high-byte-first hex.
+-- This scalar literal payload is not an encoded semantic record.
+CREATE TABLE floating_values (
+ id INTEGER PRIMARY KEY,
+ type_id INTEGER NOT NULL REFERENCES types(id),
+ bits_hex TEXT NOT NULL,
+ UNIQUE(type_id,bits_hex)
 ) STRICT;
 CREATE TABLE enums (
  type_id INTEGER PRIMARY KEY REFERENCES types(id),
@@ -158,6 +166,7 @@ CREATE TABLE nodes (
  symbol_id INTEGER REFERENCES symbols(id),
  field_id INTEGER REFERENCES fields(id),
  enum_value_id INTEGER REFERENCES enum_values(id),
+ floating_value_id INTEGER REFERENCES floating_values(id),
  file_id INTEGER REFERENCES files(id),
  line INTEGER,
  column INTEGER,
@@ -232,6 +241,7 @@ CREATE TABLE template_formals (
  default_template_id INTEGER REFERENCES templates(id),
  default_value_type_id INTEGER REFERENCES types(id),
  default_value_text TEXT,
+ default_floating_value_id INTEGER REFERENCES floating_values(id),
  file_id INTEGER REFERENCES files(id),
  line INTEGER,
  column INTEGER,
@@ -247,6 +257,7 @@ CREATE TABLE template_arguments (
  expression_id INTEGER REFERENCES nodes(id),
  template_id INTEGER REFERENCES templates(id),
  constant_text TEXT,
+ floating_value_id INTEGER REFERENCES floating_values(id),
  PRIMARY KEY(instance_id,ordinal),
  FOREIGN KEY(instance_id,parent_ordinal) REFERENCES template_arguments(instance_id,ordinal)
 ) STRICT, WITHOUT ROWID;
