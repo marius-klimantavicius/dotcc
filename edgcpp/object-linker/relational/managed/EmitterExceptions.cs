@@ -23,6 +23,8 @@ internal sealed partial class Emitter
             {
                 long id=site.Type??throw new InvalidDataException("Thrown type missing");
                 var (type,identity)=ExceptionType(unit,id);
+                if(type.Kind=="record" && unit.BaseSubobjects.Values.Any(subobject=>subobject.Owner==type.Id))
+                    throw new InvalidDataException("Exception base matching emission is not yet implemented for "+type.Name);
                 if(!exceptionDescriptors.ContainsKey((unit,id)))
                 {
                     if(type.Size is null or <=0 || type.Alignment is null or <=0)throw new InvalidDataException("Thrown payload layout missing");

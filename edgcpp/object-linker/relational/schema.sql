@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1002;
+PRAGMA user_version = 1003;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -51,6 +51,25 @@ CREATE TABLE fields (
  byte_offset INTEGER NOT NULL,
  bit_offset INTEGER,
  bit_width INTEGER,
+ file_id INTEGER REFERENCES files(id),
+ line INTEGER,
+ column INTEGER,
+ UNIQUE(owner_type_id,ordinal)
+) STRICT;
+-- EDG's actual base subobjects, including distinct indirect occurrences.
+-- ordinal is EDG postorder; direct_ordinal preserves base declaration order.
+CREATE TABLE base_subobjects (
+ id INTEGER PRIMARY KEY,
+ owner_type_id INTEGER NOT NULL REFERENCES types(id),
+ base_type_id INTEGER NOT NULL REFERENCES types(id),
+ declared_type_id INTEGER REFERENCES types(id),
+ ordinal INTEGER NOT NULL,
+ direct_ordinal INTEGER,
+ byte_offset INTEGER NOT NULL,
+ is_direct INTEGER NOT NULL CHECK(is_direct IN(0,1)),
+ is_virtual INTEGER NOT NULL CHECK(is_virtual IN(0,1)),
+ is_optimized_empty INTEGER NOT NULL CHECK(is_optimized_empty IN(0,1)),
+ access TEXT CHECK(access IN('public','protected','private')),
  file_id INTEGER REFERENCES files(id),
  line INTEGER,
  column INTEGER,
@@ -112,6 +131,16 @@ CREATE TABLE edges (
  PRIMARY KEY(parent_id,role,ordinal)
 ) STRICT, WITHOUT ROWID;
 CREATE INDEX edges_child ON edges(child_id);
+-- Selected class conversion facts, not a request to resolve a base path.
+CREATE TABLE class_conversions (
+ node_id INTEGER PRIMARY KEY REFERENCES nodes(id),
+ base_subobject_id INTEGER NOT NULL REFERENCES base_subobjects(id),
+ direction TEXT NOT NULL CHECK(direction IN('to-base','to-derived')),
+ byte_adjustment INTEGER,
+ preserves_null INTEGER NOT NULL CHECK(preserves_null IN(0,1)),
+ source_representation TEXT NOT NULL CHECK(source_representation IN('pointer','reference','object')),
+ result_representation TEXT NOT NULL CHECK(result_representation IN('pointer','reference','object'))
+) STRICT;
 CREATE TABLE global_initializers (
  symbol_id INTEGER PRIMARY KEY REFERENCES symbols(id),
  initializer_node_id INTEGER NOT NULL REFERENCES nodes(id)
@@ -197,6 +226,7 @@ CREATE TABLE constructor_initializers (
  kind TEXT NOT NULL,
  field_id INTEGER REFERENCES fields(id),
  target_type_id INTEGER REFERENCES types(id),
+ base_subobject_id INTEGER REFERENCES base_subobjects(id),
  is_virtual INTEGER NOT NULL DEFAULT 0 CHECK(is_virtual IN(0,1)),
  initialization_id INTEGER NOT NULL REFERENCES initializations(id),
  PRIMARY KEY(function_id,ordinal)

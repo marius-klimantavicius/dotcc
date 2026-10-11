@@ -68,6 +68,7 @@ internal sealed partial class Unit : IDisposable
                 while (q.Read()) Add(Edges,q.Integer(0),new Edge(q.Text(1),q.Integer(2),q.Integer(3)));
             using (var q = database.Prepare("SELECT symbol_id,initializer_node_id FROM global_initializers ORDER BY symbol_id"))
                 while (q.Read()) Initializers.Add(q.Integer(0),q.Integer(1));
+            ReadInheritance();
             ReadLifecycles();
         }
         catch { database.Dispose(); throw; }

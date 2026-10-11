@@ -81,10 +81,43 @@ pass. The next concrete type work is EDG-selected base relationships and layout;
 the declaration must not be replaced with a raw graph placeholder. Whole-project
 bounded loading remains required before increasing linker input scale.
 
+## Verified nonvirtual base layout and execution
+
+Review artifacts: `artifacts/review/dotobj-relational-bases-v2/`. The source-hidden
+two-unit fixture passes native C++, generated C# and Linux x64 NativeAOT. `Derived`
+contains `Left` at offset 0 and `Right` at offset 4. Selected conversions preserve
+null pointers, adjust the second base by +4 or -4, and allow cross-unit mutation.
+Normal construction/destruction gives trace `123476`; a throwing second base
+destroys only the completed first base and gives `1269` after the handler.
+
+The schema has 23 ordinary tables. `base_subobjects` records EDG layout and direct
+declaration order; `class_conversions` records selected base identity, signed
+adjustment and null/representation facts. Constructor/destructor entries reference
+the selected base. The generator uses named pointer projections into the recorded
+layout, avoiding full-size base fields that could overwrite reused tail padding.
+Provider: 139,264 bytes, 158 nodes, 47 types. Main: 126,976 bytes, 67 nodes, 37 types.
+SQL inspection, table sizes and tool hashes are retained. The original cross-unit
+and lifetime slices pass native/C#/NativeAOT at `dotobj-relational-regression-v5`
+and `dotobj-relational-lifetime-regression-v5` respectively.
+
+Virtual base execution, base copy/zero initialization without an explicit extent,
+and derived-exception matching remain explicit unsupported-generation diagnostics.
+Metadata for virtual bases is retained. The base milestone does not claim those
+execution paths.
+
+The same bounded DuckDB `hugeint.cpp` probe now passes the base metadata boundary
+and rejects `enum metadata` before publication. Evidence:
+`artifacts/review/dotobj-relational-duckdb-hugeint-v2/` (0.07 seconds, 32,144 KiB
+maximum RSS for this early rejection, not a complete TU measurement). Enum
+declarations, values and EDG-selected underlying types are the next active work.
+
+Reproduce with `object-linker/relational/tests/verify_bases.py --out <new-directory>
+--linker artifacts/relational-tool/dotobj-relational.dll --nativeaot`.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
-lifecycle emission includes arrays, base/delegating construction, function-try
+lifecycle emission includes arrays, virtual-base/delegating construction, function-try
 blocks, nontrivial expression temporaries, overlap/unordered cleanup, nontrivial
 by-value catches, pointer/base-conversion catches, and value/partial aggregate
 initialization. Those unsupported execution paths reject explicitly. Finalized

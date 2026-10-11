@@ -15,6 +15,16 @@ SELECT t.name AS record,f.name,f.byte_offset,ft.kind AS field_type
 FROM fields f JOIN types t ON t.id=f.owner_type_id JOIN types ft ON ft.id=f.type_id
 ORDER BY f.owner_type_id,f.ordinal;
 
+SELECT owner.name AS record,base.name AS base,b.ordinal,b.direct_ordinal,
+       b.byte_offset,b.is_direct,b.is_virtual,b.is_optimized_empty,b.access
+FROM base_subobjects b JOIN types owner ON owner.id=b.owner_type_id
+JOIN types base ON base.id=b.base_type_id ORDER BY b.owner_type_id,b.ordinal;
+
+SELECT c.node_id,c.direction,b.id AS selected_base,c.byte_adjustment,
+       c.preserves_null,c.source_representation,c.result_representation
+FROM class_conversions c JOIN base_subobjects b ON b.id=c.base_subobject_id
+ORDER BY c.node_id;
+
 SELECT t.name AS template,s.name AS instance,a.ordinal,a.kind,ty.kind AS argument_type
 FROM template_instances i JOIN templates t ON t.id=i.template_id
 LEFT JOIN symbols s ON s.id=i.symbol_id JOIN template_arguments a ON a.instance_id=i.id

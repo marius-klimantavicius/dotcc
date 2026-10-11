@@ -14,11 +14,21 @@ internal sealed partial class Emitter
         private string Flag(long initialization)=>"__constructed_"+initialization;
         private string Target(ConstructorInitializer member)
         {
-            if(member.Kind!="field" || member.Field is not long field || member.Virtual)
-                throw new InvalidDataException("Base/delegating constructor emission is not yet implemented");
             long receiver=unit.FunctionDetails[function!.Value.Id].Receiver
                 ??throw new InvalidDataException("Constructor/destructor receiver was not exported");
-            return Name(receiver)+"->"+emitter.fieldNames[(unit,field)];
+            if(member.Kind=="field" && member.Field is long field)
+                return Name(receiver)+"->"+emitter.fieldNames[(unit,field)];
+            if(member.Kind=="direct-base" && !member.Virtual)
+            {
+                if(unit.FunctionDetails[function.Value.Id].Kind=="constructor" &&
+                    unit.Initializations[member.Initialization].Kind is not ("none" or "constructor"))
+                    throw new InvalidDataException("Base subobject initialization needs explicit copy/zero extent emission: "+member.Initialization);
+                long selected=member.Base??throw new InvalidDataException("Exporter defect: constructor/destructor base subobject missing");
+                if(!emitter.baseProjections.TryGetValue((unit,selected),out string? projection))
+                    throw new InvalidDataException("Constructor/destructor base projection is unavailable: "+selected);
+                return "(*"+projection+"("+Name(receiver)+"))";
+            }
+            throw new InvalidDataException("Virtual base/delegating constructor emission is not yet implemented");
         }
 
         private void WriteFunctionBody(Node body,int indent)

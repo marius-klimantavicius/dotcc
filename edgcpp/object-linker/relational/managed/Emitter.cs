@@ -47,6 +47,7 @@ internal sealed partial class Emitter
         Line(0,"namespace "+namespaceName+";");
         Line(0,"public static unsafe partial class "+className);Line(0,"{");
         foreach(var record in records.Values) Record(record.Unit,record.Type,record.Name);
+        WriteInheritanceHelpers();
         PrepareExceptionDescriptors();
         foreach(var global in program.Globals)
         {
@@ -81,6 +82,8 @@ internal sealed partial class Emitter
             Line(1,"public struct "+name+" { }");return;
         }
         if(record.Size is null or <=0)throw new InvalidDataException("Complete record has no positive recorded layout size: "+record.Name);
+        if(unit.BaseSubobjects.Values.Any(subobject=>subobject.Owner==record.Id && subobject.Virtual))
+            throw new InvalidDataException("Virtual base record emission is not yet implemented: "+record.Name);
         Line(1,"[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = "+record.Size+")]");
         Line(1,"public struct "+name);Line(1,"{");
         foreach(var field in unit.Fields.Values.Where(field=>field.Owner==record.Id).OrderBy(field=>field.Ordinal))
@@ -228,6 +231,7 @@ internal sealed partial class Emitter
                     if(NodeType(N(0))=="bool" && NodeType(node)!="bool")return "(("+NodeType(node)+")("+E(0)+" ? 1 : 0))";
                     return "unchecked(("+NodeType(node)+")"+E(0)+")";
                 case "lvalue-adjust":return E(0);
+                case "base-class-cast":case "derived-class-cast":return ClassConversionExpression(node,N(0));
                 case "array-to-pointer":throw unit.Missing(node,"array storage emission is not yet implemented");
                 case "conditional":return "("+Truth(N(0))+" ? "+E(1)+" : "+E(2)+")";
                 case "subscript":return "("+E(0)+")["+E(1)+"]";

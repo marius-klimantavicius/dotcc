@@ -65,8 +65,15 @@ python3 edgcpp/object-linker/relational/tests/verify_lifetime.py \
   --linker edgcpp/artifacts/relational-tool/dotobj-relational.dll --nativeaot
 ```
 
-This covers lexical return cleanup, partial member construction, reference catches,
-rethrow and exception-object destruction. Arrays/base construction, nontrivial
+Nonvirtual base layout, selected pointer/reference conversions and explicit base
+construction/destruction are also supported. `base_subobjects` and
+`class_conversions` retain EDG-selected identities and adjustments, including null
+preservation. Named pointer projections respect reused base tail padding. Run
+`tests/verify_bases.py` with the same arguments to compare native, source-hidden
+C# and NativeAOT execution, including second-base construction failure.
+
+This covers lexical return cleanup, partial member/base construction, reference catches,
+rethrow and exception-object destruction. Arrays/virtual-base construction, nontrivial
 temporaries, function-try blocks, complex catch conversions, macros, all type
 variants, addressable globals/TLS storage and complex initialization remain work.
 Unsupported forms must produce diagnostics, not an opaque fallback or silently

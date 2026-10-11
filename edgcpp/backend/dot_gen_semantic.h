@@ -34,13 +34,14 @@ struct Location { Id file=0;unsigned long long line=0,column=0; };
 struct State {
   dot_semantic_sqlite::Database db;
   Id next_type=1,next_symbol=1,next_node=1,next_field=1,next_file=1,next_template=1,next_instance=1;
-  Id next_lifetime=1,next_initialization=1;
+  Id next_lifetime=1,next_initialization=1,next_base=1;
   Id function=0;
   std::map<a_type_ptr,Id> types;
   std::map<a_routine_ptr,Id> routines;
   std::map<a_routine_ptr,Id> routine_source_types;
   std::map<a_variable_ptr,Id> variables;
   std::map<a_field_ptr,Id> fields;
+  std::map<a_base_class_ptr,Id> base_subobjects;
   std::map<a_template_ptr,Id> templates;
   std::map<std::string,Id> files;
   std::map<an_expr_node_ptr,Id> expressions;
@@ -156,7 +157,6 @@ struct State {
         object=type_id(t->variant.routine.extra_info->this_class);break;
       case tk_struct:case tk_class:case tk_union:
         kind="record";record_kind=t->kind==tk_struct?"struct":t->kind==tk_class?"class":"union";
-        if(class_type_supp(t)->base_classes)missing("record base classes");
         break;
       default:missing("type",int(t->kind));
     }
@@ -175,11 +175,43 @@ struct State {
         db.insert("type_parameters",{{"type_id",id},{"ordinal",ordinal++},{"parameter_type_id",type_id(p->type)}});
     }
     if(kind=="record") {
+      auto extra=class_type_supp(t);
+      // EDG's list identifies subobjects, including repeated indirect bases;
+      // the direct base number separately retains source declaration order.
+      for(auto base=extra->base_classes;base;base=base->next)
+        if(!base_subobjects.count(base))base_subobjects[base]=next_base++;
+      unsigned base_ordinal=0;
+      for(auto base=extra->base_classes;base;base=base->next,++base_ordinal) {
+        const char *access=nullptr;
+        if(base->direct)for(auto path=base->derivation;path;path=path->next)if(path->direct) {
+          switch(path->access) {
+            case as_public:access="public";break;
+            case as_protected:access="protected";break;
+            case as_private:access="private";break;
+            default:missing("base access specifier",int(path->access));
+          }
+          break;
+        }
+        auto pos=location(base->decl_position);
+        db.insert("base_subobjects",{{"id",base_subobjects[base]},{"owner_type_id",id},
+          {"base_type_id",type_id(base->type)},{"declared_type_id",optional(type_id(base->orig_type))},
+          {"ordinal",base_ordinal},{"direct_ordinal",base->direct?Value(base->direct_base_number-1):Value(nullptr)},
+          {"byte_offset",base->offset},{"is_direct",bool(base->direct)},{"is_virtual",bool(base->is_virtual)},
+          {"is_optimized_empty",bool(base->is_optimized_empty_base)},{"access",access},
+          {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
+      }
       unsigned ordinal=0;
       for(auto f=t->variant.class_struct_union.field_list;f;f=f->next,++ordinal)field_id(f,id,ordinal);
-      auto extra=class_type_supp(t);instance(extra->assoc_template,extra->template_arg_list,0,id);
+      instance(extra->assoc_template,extra->template_arg_list,0,id);
     }
     return id;
+  }
+  Id base_id(a_base_class_ptr base) {
+    if(!base)return 0;
+    type_id(base->derived_class);
+    auto found=base_subobjects.find(base);
+    if(found==base_subobjects.end())missing("selected base subobject");
+    return found->second;
   }
   Id field_id(a_field_ptr f,Id owner=0,unsigned ordinal=0) {
     auto found=fields.find(f);if(found!=fields.end())return found->second;
@@ -341,6 +373,7 @@ struct State {
       DOT_SEMANTIC_OP(eok_indirect,"indirect");DOT_SEMANTIC_OP(eok_ref_indirect,"ref-indirect");
       DOT_SEMANTIC_OP(eok_cast,"cast");DOT_SEMANTIC_OP(eok_ref_cast,"ref-cast");
       DOT_SEMANTIC_OP(eok_lvalue_cast,"lvalue-cast");DOT_SEMANTIC_OP(eok_lvalue_adjust,"lvalue-adjust");
+      DOT_SEMANTIC_OP(eok_base_class_cast,"base-class-cast");DOT_SEMANTIC_OP(eok_derived_class_cast,"derived-class-cast");
       DOT_SEMANTIC_OP(eok_bool_cast,"bool-cast");DOT_SEMANTIC_OP(eok_array_to_pointer,"array-to-pointer");
       DOT_SEMANTIC_OP(eok_add,"add");DOT_SEMANTIC_OP(eok_subtract,"subtract");
       DOT_SEMANTIC_OP(eok_multiply,"multiply");DOT_SEMANTIC_OP(eok_divide,"divide");DOT_SEMANTIC_OP(eok_remainder,"remainder");
@@ -364,6 +397,32 @@ struct State {
 #undef DOT_SEMANTIC_OP
       default:missing("expression operation",int(kind));
     }
+  }
+  void class_conversion(Id id,an_expr_node_ptr e) {
+    auto operand=e->variant.operation.operands;
+    bool derived=e->variant.operation.kind==eok_derived_class_cast;
+    a_type_ptr source=operand->type,target=e->type;
+    // Mirror lower_il::related_class_cast_step: EDG represents a resolved
+    // conversion as direct/virtual steps, so only that exact step is selected.
+    // This is not a search through possible source-language derivation paths.
+    bool pointer_form=!e->is_lvalue && is_ptr_or_ref_type(e->type);
+    if(pointer_form){source=type_pointed_to(source);target=type_pointed_to(target);}
+    source=skip_typerefs(source);target=skip_typerefs(target);
+    auto owner=derived?target:source;auto base_type=derived?source:target;
+    auto base=class_type_supp(owner)->base_classes;
+    for(;base;base=base->next)
+      if((base->direct || base->is_virtual) && base->type==base_type)break;
+    if(!base)missing("EDG selected class conversion step");
+    auto representation=[](a_type_ptr type)->const char * {
+      auto t=skip_typerefs(type);
+      return t->kind!=tk_pointer?"object":t->variant.pointer.is_reference?"reference":"pointer";
+    };
+    const char *source_rep=representation(operand->type),*result_rep=representation(e->type);
+    db.insert("class_conversions",{{"node_id",id},{"base_subobject_id",base_id(base)},
+      {"direction",derived?"to-derived":"to-base"},
+      {"preserves_null",pointer_form && std::string(source_rep)=="pointer"},
+      {"byte_adjustment",base->is_virtual?Value(nullptr):Value(derived?-(long long)base->offset:(long long)base->offset)},
+      {"source_representation",source_rep},{"result_representation",result_rep}});
   }
   Id expression(an_expr_node_ptr e) {
     if(!e)return 0;
@@ -394,6 +453,8 @@ struct State {
       op,text,symbol,field,type_id(e->orig_lvalue_type),e->compiler_generated);
     expressions[e]=id;
     if(e->kind==enk_operation) {
+      if(e->variant.operation.kind==eok_base_class_cast || e->variant.operation.kind==eok_derived_class_cast)
+        class_conversion(id,e);
       db.update("nodes","id",id,{{"evaluation_order",e->variant.operation.eval_left_to_right?"left-to-right":
         e->variant.operation.eval_right_to_left?"right-to-left":"unspecified"}});
       unsigned ordinal=0;for(auto child=e->variant.operation.operands;child;child=child->next)
@@ -530,13 +591,14 @@ struct State {
   void constructor_initializers(a_scope_ptr scope) {
     unsigned ordinal=0;
     for(auto entry=scope->variant.routine.constructor_inits;entry;entry=entry->next,++ordinal) {
-      const char *kind=nullptr;Id field=0;bool is_virtual=false;a_type_ptr target=nullptr;
+      const char *kind=nullptr;Id field=0,base=0;bool is_virtual=false;a_type_ptr target=nullptr;
       switch(entry->kind) {
         case cik_field:
           kind="field";field=field_id(entry->variant.field);target=entry->variant.field->type;break;
         case cik_direct_base_class:case cik_virtual_base_class:
           kind=entry->kind==cik_direct_base_class?"direct-base":"virtual-base";
-          is_virtual=entry->kind==cik_virtual_base_class;target=entry->variant.base_class->type;break;
+          is_virtual=entry->kind==cik_virtual_base_class;target=entry->variant.base_class->type;
+          base=base_id(entry->variant.base_class);break;
         case cik_delegation:
           kind="delegation";target=skip_typerefs(scope->variant.routine.ptr->type)->variant.routine.extra_info->this_class;break;
         default:missing("constructor initializer target",int(entry->kind));
@@ -544,7 +606,8 @@ struct State {
       if(!entry->initializer)missing("default field initializer selection");
       if(entry->source_expr)missing("explicit array constructor initializer source");
       db.insert("constructor_initializers",{{"function_id",function},{"ordinal",ordinal},{"kind",kind},
-        {"field_id",optional(field)},{"target_type_id",optional(type_id(target))},{"is_virtual",is_virtual},
+        {"field_id",optional(field)},{"base_subobject_id",optional(base)},
+        {"target_type_id",optional(type_id(target))},{"is_virtual",is_virtual},
         {"initialization_id",initialization_id(entry->initializer,target)}});
     }
   }
