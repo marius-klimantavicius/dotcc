@@ -66,6 +66,21 @@ v3 objects; compatibility output is `artifacts/review/dotobj-relational-v3-compa
 Reproduce with `object-linker/relational/tests/verify_lifetime.py --out <new-directory>
 --linker artifacts/relational-tool/dotobj-relational.dll --nativeaot`.
 
+## First bounded real-project probe
+
+After the lifecycle milestone, one retained DuckDB source unit,
+`src/common/types/hugeint.cpp`, was compiled with the current direct relational
+exporter and the retained libc++/DuckDB include and define recipe. Evidence is
+`artifacts/review/dotobj-relational-duckdb-hugeint-v1/`: source hash, invocation,
+diagnostics and GNU time output. No bulk job was started.
+
+The exporter rejected `record base classes` before publishing a `.dotobj`.
+The measured early rejection took 0.08 seconds wall time and 30,892 KiB maximum
+RSS. This is not a full-TU performance measurement or a DuckDB export/generation
+pass. The next concrete type work is EDG-selected base relationships and layout;
+the declaration must not be replaced with a raw graph placeholder. Whole-project
+bounded loading remains required before increasing linker input scale.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
