@@ -565,7 +565,9 @@ struct State {
           if(!local_expr)missing("dependent array bound local expression correspondence");
           if(!selected || selected->kind!=ck_template_param ||
              (selected->variant.template_param.kind!=tpck_expression && selected->variant.template_param.kind!=tpck_sizeof &&
-              selected->variant.template_param.kind!=tpck_datasizeof && selected->variant.template_param.kind!=tpck_alignof))
+              selected->variant.template_param.kind!=tpck_datasizeof && selected->variant.template_param.kind!=tpck_alignof &&
+              selected->variant.template_param.kind!=tpck_noexcept && selected->variant.template_param.kind!=tpck_typeid &&
+              selected->variant.template_param.kind!=tpck_uuidof))
             missing("dependent array bound local constant family");
         }
         if(selected)bound=recipe_value(selected,t->source_corresp.decl_position,local_expr);
@@ -898,6 +900,20 @@ struct State {
     }
     edge(id,"operand",0,operand);
   }
+  Id recipe_operand(an_expr_node_ptr selected,const a_source_position &pos,Id owner) {
+    if(selected->kind!=enk_type_operand &&
+       !(selected->kind==enk_routine && !selected->variant.routine.ptr))
+      return expression(selected,&pos,owner);
+    auto found=recipe_expressions.find(selected);if(found!=recipe_expressions.end())return found->second;
+    Id id=0;
+    if(selected->kind==enk_type_operand) {
+      if(!selected->variant.type_operand.type)missing("source recipe selected type operand");
+      id=node("type-reference",selected->position.seq?selected->position:pos,
+        type_id(selected->variant.type_operand.type));
+      db.update("nodes","id",id,{{"source_node_id",owner}});
+    } else id=vacuous_destructor_name(selected,pos,owner);
+    recipe_expressions[selected]=id;return id;
+  }
   [[noreturn]] void missing_dependent_value(a_constant_ptr c,const a_source_position &p,const char *reason) {
     auto source=location(p);std::string path;
     for(const auto &file:files)if(file.second==source.file){path=file.first;break;}
@@ -925,7 +941,9 @@ struct State {
       case tpck_dependent_constant:return "dependent-constant";
       case tpck_address:return "dependent-address";
       case tpck_template_ref:return "dependent-template-reference";
-      case tpck_sizeof:case tpck_datasizeof:case tpck_alignof:return "operation";
+      case tpck_destructor:return "dependent-destructor-reference";
+      case tpck_sizeof:case tpck_datasizeof:case tpck_alignof:
+      case tpck_noexcept:case tpck_typeid:case tpck_uuidof:return "operation";
       case tpck_unknown_function:return c->variant.template_param.is_qualified_name?
         "dependent-qualified-function-reference":"dependent-function-reference";
       default:missing_dependent_value(c,p,"dependent value");
@@ -990,16 +1008,23 @@ struct State {
         if(!operand)missing("dependent source expression");
         edge(id,"operand",0,expression(operand));break;
       }
-      case tpck_sizeof:case tpck_datasizeof:case tpck_alignof: {
-        if(!template_recipe)missing_dependent_value(c,p,"size/alignment constant outside source recipe");
+      case tpck_sizeof:case tpck_datasizeof:case tpck_alignof:
+      case tpck_noexcept:case tpck_typeid:case tpck_uuidof: {
+        if(!template_recipe)missing_dependent_value(c,p,"source query constant outside source recipe");
         auto &selected=value.variant.templ_sizeof;
         auto operand=local_expression?local_expression:generic_sizeof_arg_expr(c);
 #if PROTOTYPE_INSTANTIATIONS_IN_IL
         if(value.local_expr_ref && !operand)
-          missing_dependent_value(c,p,"size/alignment local expression correspondence");
+          missing_dependent_value(c,p,"source query local expression correspondence");
 #endif
         const char *op=value.kind==tpck_sizeof?"sizeof":value.kind==tpck_datasizeof?"datasizeof":
+          value.kind==tpck_noexcept?"noexcept":value.kind==tpck_typeid?"typeid-address":
+          value.kind==tpck_uuidof?"uuidof-address":
           selected.is_std_alignof?"alignof":"gnu-alignof";
+        if(value.kind==tpck_noexcept && !operand)
+          missing_dependent_value(c,p,"noexcept selected expression correspondence");
+        if(!operand && !selected.type)
+          missing_dependent_value(c,p,"source query selected operand correspondence");
         db.update("nodes","id",id,{{"operator",op}});
         query_operand(id,selected.type,operand,p);break;
       }
@@ -1024,6 +1049,12 @@ struct State {
         if(!template_recipe)missing_dependent_value(c,p,"unresolved template reference outside source recipe");
         edge(id,"template",0,constant(value.variant.template_ref.con,p));
         dependent_template_arguments(id,c,p);break;
+      case tpck_destructor:
+        if(!template_recipe)missing_dependent_value(c,p,"dependent destructor outside source recipe");
+        db.update("nodes","id",id,{{"operator",value.variant.destructor.unqualified?"unqualified":"qualified"}});
+        db.insert("template_value_references",{{"node_id",id},{"name",spelling(c->source_corresp)},
+          {"is_pack",bool(value.is_pack)},{"qualifier_type_id",optional(type_id(value.variant.destructor.type))}});
+        break;
       default:missing_dependent_value(c,p,"dependent value");
     }
   }
@@ -1106,6 +1137,23 @@ struct State {
     }
   }
   void aggregate_initializer(Id id,a_constant_ptr c,const a_source_position &p,bool complete_object=true) {
+    if(template_recipe) {
+      db.update("nodes","id",id,{{"kind","aggregate-initializer"},
+        {"operator",c->explicit_braces_on_aggregate?"braces":c->explicit_parentheses_on_aggregate?"parentheses":"implicit"}});
+      unsigned ordinal=0;
+      for(auto item=c->variant.aggregate.first_constant;item;item=item->next,++ordinal) {
+        const auto &position=item->source_corresp.decl_position.seq?item->source_corresp.decl_position:p;
+        if(item->kind==ck_designator || item->kind==ck_init_repeat || item->kind==ck_dynamic_init) {
+          auto source=location(position);std::string path;
+          for(const auto &file:files)if(file.second==source.file){path=file.first;break;}
+          missing("source aggregate selected component [type="+spelling(c->type->source_corresp)+
+            ", ordinal="+std::to_string(ordinal)+", file="+path+
+            ", line="+std::to_string(source.line)+", column="+std::to_string(source.column)+"]",int(item->kind));
+        }
+        edge(id,"element",ordinal,constant(item,position));
+      }
+      return;
+    }
     auto type=skip_typerefs(c->type);
     if(is_immediate_class_type(type)) {
       record_initializer(id,c,p,complete_object);return;
@@ -1409,7 +1457,7 @@ struct State {
       dependent_value(id,c,p,local_expression);attach_enum_value(id,c);return id;
     }
     if(c->kind==ck_aggregate) {
-      Id id=node(is_immediate_class_type(skip_typerefs(c->type))?"record-initializer":"array-initializer",
+      Id id=node(template_recipe?"aggregate-initializer":is_immediate_class_type(skip_typerefs(c->type))?"record-initializer":"array-initializer",
         p,type_id(c->type),"prvalue");
       if(template_recipe)recipe_constants[c]=id;
       aggregate_initializer(id,c,p,complete_object);return id;
@@ -1761,6 +1809,7 @@ struct State {
       DOT_SEMANTIC_OP(eok_va_arg,"va-arg");DOT_SEMANTIC_OP(eok_va_copy,"va-copy");DOT_SEMANTIC_OP(eok_va_end,"va-end");
 #undef DOT_SEMANTIC_OP
       default: {
+        if(template_recipe)return recipe_operation(kind,source);
         std::string detail="expression operation";
         if(source) {
           auto pos=location(source->position);std::string path,owner;
@@ -1771,6 +1820,54 @@ struct State {
         }
         missing(detail,int(kind));
       }
+    }
+  }
+  const char *recipe_operation(an_expr_operator_kind kind,an_expr_node_ptr source) {
+    // These names describe the selected source operation. Its ordered typed
+    // operands remain recipes; no runtime conversion, dispatch or evaluation
+    // is required to browse the expression.
+    switch(kind) {
+#define DOT_RECIPE_OP(edg,text) case edg:return text
+      DOT_RECIPE_OP(eok_handle_to,"handle-to");DOT_RECIPE_OP(eok_box,"box");
+      DOT_RECIPE_OP(eok_handle_to_box,"handle-to-box");DOT_RECIPE_OP(eok_unbox,"unbox");
+      DOT_RECIPE_OP(eok_unbox_lvalue,"unbox-lvalue");
+      DOT_RECIPE_OP(eok_pm_base_class_cast,"member-pointer-to-base");
+      DOT_RECIPE_OP(eok_pm_derived_class_cast,"member-pointer-to-derived");
+      DOT_RECIPE_OP(eok_dynamic_cast,"dynamic-cast");DOT_RECIPE_OP(eok_ref_dynamic_cast,"reference-dynamic-cast");
+#if MICROSOFT_EXTENSIONS_ALLOWED
+      DOT_RECIPE_OP(eok_assume,"assume");
+#endif
+      DOT_RECIPE_OP(eok_noexcept,"noexcept");DOT_RECIPE_OP(eok_parens,"parentheses");
+      DOT_RECIPE_OP(eok_unary_plus,"unary-plus");DOT_RECIPE_OP(eok_vector_not,"vector-not");
+      DOT_RECIPE_OP(eok_vector_fill,"vector-fill");
+#if C99_IL_EXTENSIONS_SUPPORTED
+      DOT_RECIPE_OP(eok_xconj,"complex-conjugate");DOT_RECIPE_OP(eok_real_part,"real-part");
+      DOT_RECIPE_OP(eok_imag_part,"imaginary-part");DOT_RECIPE_OP(eok_jmultiply,"imaginary-multiply");
+      DOT_RECIPE_OP(eok_jdivide,"imaginary-divide");DOT_RECIPE_OP(eok_fjadd,"real-imaginary-add");
+      DOT_RECIPE_OP(eok_jfadd,"imaginary-real-add");DOT_RECIPE_OP(eok_fjsubtract,"real-imaginary-subtract");
+      DOT_RECIPE_OP(eok_jfsubtract,"imaginary-real-subtract");
+#endif
+      DOT_RECIPE_OP(eok_spaceship,"three-way-comparison");
+      DOT_RECIPE_OP(eok_vector_eq,"vector-eq");DOT_RECIPE_OP(eok_vector_ne,"vector-ne");
+      DOT_RECIPE_OP(eok_vector_gt,"vector-gt");DOT_RECIPE_OP(eok_vector_lt,"vector-lt");
+      DOT_RECIPE_OP(eok_vector_ge,"vector-ge");DOT_RECIPE_OP(eok_vector_le,"vector-le");
+      DOT_RECIPE_OP(eok_gnu_min,"minimum");DOT_RECIPE_OP(eok_gnu_max,"maximum");
+      DOT_RECIPE_OP(eok_bassign,"block-assignment");DOT_RECIPE_OP(eok_vector_land,"vector-logical-and");
+      DOT_RECIPE_OP(eok_vector_lor,"vector-logical-or");DOT_RECIPE_OP(eok_vector_subscript,"vector-subscript");
+      DOT_RECIPE_OP(eok_pm_field,"member-pointer-field");
+      DOT_RECIPE_OP(eok_pm_points_to_field,"member-pointer-points-to-field");
+      DOT_RECIPE_OP(eok_dot_pm_func_ptr,"member-function-pointer");
+      DOT_RECIPE_OP(eok_points_to_pm_func_ptr,"points-to-member-function-pointer");
+      DOT_RECIPE_OP(eok_dot_static,"dot-static");DOT_RECIPE_OP(eok_points_to_static,"points-to-static");
+      DOT_RECIPE_OP(eok_virtual_function_ptr,"virtual-function-pointer");
+      DOT_RECIPE_OP(eok_vector_question,"vector-conditional");
+      DOT_RECIPE_OP(eok_dot_pm_call,"member-pointer-call");
+      DOT_RECIPE_OP(eok_points_to_pm_call,"points-to-member-pointer-call");
+      DOT_RECIPE_OP(eok_cli_subscript,"cli-subscript");DOT_RECIPE_OP(eok_lvalue,"dependent-lvalue");
+      DOT_RECIPE_OP(eok_await,"co-await");DOT_RECIPE_OP(eok_yield,"co-yield");
+      DOT_RECIPE_OP(eok_splice,"expression-splice");
+#undef DOT_RECIPE_OP
+      default:missing("source recipe operation discriminator",int(source?source->variant.operation.kind:kind));
     }
   }
   void class_conversion(Id id,an_expr_node_ptr e) {
@@ -2331,7 +2428,7 @@ struct State {
         else if(node_constant(e)->kind==ck_string)kind="string-literal";
         else if(node_constant(e)->kind==ck_address)kind="address-constant";
         else if(node_constant(e)->kind==ck_aggregate)
-          kind=is_immediate_class_type(skip_typerefs(e->type))?"record-initializer":"array-initializer";
+          kind=template_recipe?"aggregate-initializer":is_immediate_class_type(skip_typerefs(e->type))?"record-initializer":"array-initializer";
         else {kind="constant";text=literal_text(node_constant(e),"expression",&e->position);}break;
       case enk_variable:
         if(selected_literals.count(node_variable(e)))kind="string-literal";
@@ -2378,10 +2475,13 @@ struct State {
         kind="sizeof-pack";op=selected.is_type?"type":"expression";break;
       }
       case enk_typeid:
-        if(e->variant.typeid_info.is_dynamic)missing("dynamic source typeid expression");
 #if MICROSOFT_EXTENSIONS_ALLOWED
         if(e->is_cli_typeid)missing("C++/CLI source typeid expression");
 #endif
+        if(template_recipe) {
+          kind="operation";op=e->variant.typeid_info.is_dynamic?"dynamic-typeid":"typeid";break;
+        }
+        if(e->variant.typeid_info.is_dynamic)missing("dynamic source typeid expression");
         if(e->variant.typeid_info.type_with_opt_expr &&
            e->variant.typeid_info.type_with_opt_expr->next)
           missing("static source typeid expression operand correspondence");
@@ -2478,11 +2578,11 @@ struct State {
         missing(detail,int(e->kind));
       }
       case enk_operation: {
-        if(e->variant.operation.kind==eok_subscript && e->variant.operation.pointer_operand_is_second)
+        if(!template_recipe && e->variant.operation.kind==eok_subscript && e->variant.operation.pointer_operand_is_second)
           missing("reversed subscript operand projection");
         kind="operation";op=operation(e->variant.operation.kind,e);
         auto first=e->variant.operation.operands;
-        if(first && first->kind==enk_routine && (e->variant.operation.kind==eok_call ||
+        if(first && first->kind==enk_routine && first->variant.routine.ptr && (e->variant.operation.kind==eok_call ||
           e->variant.operation.kind==eok_dot_member_call || e->variant.operation.kind==eok_points_to_member_call))
           symbol=routine(first->variant.routine.ptr);
         break;
@@ -2504,13 +2604,17 @@ struct State {
     if(e->kind==enk_typeid) {
       auto operand=e->variant.typeid_info.type_with_opt_expr;
       if(!operand || operand->kind!=enk_type_operand)missing("static typeid selected type operand");
-      Id address=node("type-info-address",source_position,type_id(make_pointer_type(e->type)),"prvalue",
-        nullptr,"",0,0,0,true);
-      db.update("nodes","id",address,{{"source_node_id",id}});
-      attach_typeinfo_target(address,operand->variant.type_operand.type,source_position);
-      edge(id,"operand",0,address);
-      // EDG selects the static type directly. Optional unevaluated source
-      // expression operands require a separate navigation projection above.
+      if(template_recipe) {
+        unsigned ordinal=0;
+        for(auto selected=operand;selected;selected=selected->next,++ordinal)
+          edge(id,"operand",ordinal,recipe_operand(selected,source_position,id));
+      } else {
+        Id address=node("type-info-address",source_position,type_id(make_pointer_type(e->type)),"prvalue",
+          nullptr,"",0,0,0,true);
+        db.update("nodes","id",address,{{"source_node_id",id}});
+        attach_typeinfo_target(address,operand->variant.type_operand.type,source_position);
+        edge(id,"operand",0,address);
+      }
     }
     if(e->kind==enk_new_delete) {
       if(e->variant.new_delete->is_new)source_allocation(id,e);
@@ -2550,13 +2654,13 @@ struct State {
       bool vacuous=e->variant.operation.kind==eok_dot_vacuous_destructor_call ||
         e->variant.operation.kind==eok_points_to_vacuous_destructor_call;
       if(vacuous && !e->variant.operation.operands)missing("vacuous destructor object operand");
-      if(is_compound_assignment_operator(e->variant.operation.kind))
+      if(!template_recipe && is_compound_assignment_operator(e->variant.operation.kind))
         // The stock helper handles promotions (especially the promoted left
         // operand of a shift). This is distinct from the stored/result type
         // and does not ask the consumer to re-run arithmetic conversions.
         db.update("nodes","id",id,{{"operation_type_id",type_id(compound_assignment_operation_type(e))}});
-      if(e->variant.operation.is_virtual_call)virtual_call(id,e);
-      if(e->variant.operation.kind==eok_base_class_cast || e->variant.operation.kind==eok_derived_class_cast)
+      if(!template_recipe && e->variant.operation.is_virtual_call)virtual_call(id,e);
+      if(!template_recipe && (e->variant.operation.kind==eok_base_class_cast || e->variant.operation.kind==eok_derived_class_cast))
         class_conversion(id,e);
       db.update("nodes","id",id,{{"evaluation_order",e->variant.operation.eval_left_to_right?"left-to-right":
         e->variant.operation.eval_right_to_left?"right-to-left":"unspecified"}});
@@ -2565,7 +2669,9 @@ struct State {
         // It supplies no argument value to the portable pack; GNU explicitly
         // ignores it (il::lvalue/rvalue operand checks). Keep it navigable
         // without asking generic operand expansion to evaluate it.
-        if(vacuous && ordinal==1)
+        if(template_recipe)
+          edge(id,"operand",ordinal,recipe_operand(child,source_position,id));
+        else if(vacuous && ordinal==1)
           // Stock lower_il evaluates only the object/pointer. A trailing
           // NULL-routine operand describes the source destructor name.
           edge(id,"source-name",0,vacuous_destructor_name(child,source_position,id));

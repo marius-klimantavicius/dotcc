@@ -1512,6 +1512,54 @@ recipe operation at libc++ `is_nothrow_destructible.h:37:66`. General exact sele
 recipe operator projection is in progress; runtime mappings remain bounded.
 Core complete export / generation counts remain 0/0; bundled ICU remains 1/1.
 
+## Actual bundled ICU execution checkpoint (2026-10-11)
+
+The isolated `dotobj-relational-duckdb-icu-utf-impl-managed-smoke-v1` harness copies
+`generated-v4/Translated.cs` unchanged, preserving all 14 recorded function bodies.
+Seven required partial providers use existing LibcMath/BCL absolute-value operations
+and the existing quotient/remainder formulas with exact generated record fields.
+They remain handwritten verification adapters, separate from the generated source.
+SQLite references show these imports belong only to retained stdlib header wrappers.
+The bare generated library fails only on their seven missing implementations.
+
+The original configured ICU source supplies the native oracle. All four real UTF
+APIs and all seven wrappers pass C# and Linux NativeAOT verification. Thirty-three
+shared cases cover valid, malformed and truncated sequences, surrogate/noncharacter
+handling, null termination, index updates, append errors and destination bytes.
+Native, managed and NativeAOT result files are byte-identical (1,000 bytes, SHA256
+`c682d47bfe01f2b5fd76e630c45ff8f095c1610366a20002bc0ff7fa2e11a213`). Original and
+copied source hashes, provider references, inputs and full logs are retained.
+This verifies one configured bundled dependency TU; complete DuckDB core exports
+and sources remain 0/0. It does not complete library translation or provider closure.
+
+## Unevaluated source operators and dependent aggregate recipes (2026-10-11)
+
+Source query constants retain exact selected operands through stock local-expression
+correspondence: noexcept, typeid-address and uuidof-address remain distinct typed
+operations with no computed result. Source C++ typeid expressions independently
+retain their selected lvalue result and ordered type/optional-expression operands
+without materializing RTTI storage; executable typeid retains its prior provider
+requirements. CLI typeid remains an explicit boundary. Remaining direct source
+recipe operations retain named EDG semantic discriminators and ordered typed
+operands. Dependent destructor references keep exact name, qualifier type and
+unqualified fact; they never become invented routine calls. Recipe-only operations
+do not request executable compound conversions, dispatch or class-cast lowering.
+
+Dependent aggregate constants now retain exact target type, selected braces /
+parentheses / implicit form and ordered element nodes. They do not demand concrete
+field layout or create execution destinations, zeroing, array counts or actions.
+Selected designators, repeats and dynamic components remain located boundaries.
+`dotobj-relational-source-query-recipes-v5` passes native, source-hidden C# and Linux
+NativeAOT with actual alias<bool>{true}, selected destructor/noexcept and source
+lvalue typeid metadata. It does not separately exercise every recipe operator or
+constant typeid/uuidof address family. Schema remains 1025 / 44 tables; hashes,
+SQL/storage summaries and all intermediate failures are retained.
+
+Actual checksum-v20 and exception-v23 are running beyond the previous dependent
+aggregate boundary. Partial databases are progress artifacts, not complete objects.
+The next real result will choose subsequent exporter work. Complete core counts
+remain 0/0 at this milestone; bundled ICU export/source/runtime smoke is verified.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
