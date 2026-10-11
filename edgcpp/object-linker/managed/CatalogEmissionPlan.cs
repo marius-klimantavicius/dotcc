@@ -64,7 +64,7 @@ internal sealed class CatalogEmissionPlan : IDisposable
     public void WriteReport(string path,string namespaceName,string className,bool programArguments,bool shared)
     {
         using var output=File.Create(path);using var writer=new Utf8JsonWriter(output,new JsonWriterOptions{Indented=true});
-        writer.WriteStartObject();writer.WriteNumber("formatVersion",1);writer.WriteString("profile","scalar-control-v64");writer.WriteString("status","generated");
+        writer.WriteStartObject();writer.WriteNumber("formatVersion",1);writer.WriteString("profile","scalar-control-v65");writer.WriteString("status","generated");
         writer.WriteString("targetAbi","portable-lp64-binary80-v2");writer.WriteString("runtimeAbi","dotobj-scalar-v1");
         writer.WritePropertyName("capabilities");JsonSerializer.Serialize(writer,new {
             sourceDeclarations=true,macroDefinitions=true,lexicalCleanups=true,cleanupStates=true,sourceLifetimes=true,prelowerSource=false,macros=false,lifetimes=false });

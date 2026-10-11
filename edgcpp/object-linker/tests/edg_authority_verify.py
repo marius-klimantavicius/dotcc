@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Round-trip EDG graph data without repeating its source-language analysis."""
 import argparse
+from collections import Counter
 import importlib.util
 import json
 import os
@@ -21,11 +22,14 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     tooling = out / 'tooling'
     tooling.mkdir()
-    for name in ('compile.py', 'schema.sql'):
+    for name in ('compile.py', 'schema.sql', 'graph_fields.py'):
         shutil.copy2(args.packager.resolve().parent / name, tooling / name)
     spec = importlib.util.spec_from_file_location('packager', tooling / 'compile.py')
     packager = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(packager)
+    spec = importlib.util.spec_from_file_location('graph_fields', tooling / 'graph_fields.py')
+    graph = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(graph)
     checks, commands, summaries = [], [], []
 
     def check(name, condition):
@@ -65,12 +69,13 @@ def main():
             with sqlite3.connect(obj) as db:
                 scalar = lambda sql: db.execute(sql).fetchone()[0]
                 nodes = scalar('SELECT count(*) FROM edg_graph_nodes')
-                fields = scalar('SELECT count(*) FROM edg_graph_fields')
+                fields = scalar('SELECT coalesce(sum(row_count),0) FROM edg_graph_field_blocks')
                 if not args.projection_only:
                     check(fixture + ':typed-graph-retained', nodes > 0 and fields > nodes)
                 check(fixture + ':configured-field-schema-retained', scalar("SELECT count(*) FROM edg_graph_coverage WHERE field='$configuration' AND disposition='configuration'") == 1)
                 if not args.projection_only:
-                    check(fixture + ':shared-nodes-retained', scalar('SELECT count(*) FROM (SELECT target_id FROM edg_graph_fields WHERE target_id IS NOT NULL GROUP BY target_id HAVING count(*)>1)') > 0)
+                    targets = Counter(row['targetId'] for row in graph.rows(db) if row['targetId'] is not None)
+                    check(fixture + ':shared-nodes-retained', any(count > 1 for count in targets.values()))
                 check(fixture + ':source-expressions-retained', scalar('SELECT count(*) FROM source_expressions') > 0)
                 if fixture.endswith('member_substitutions'):
                     check(fixture + ':selected-argument-occurrences-retained', scalar('SELECT count(*) FROM source_routine_borrowed_arguments') > 0)
@@ -84,8 +89,8 @@ def main():
             # Corrupt only serialization structure. A reader is not asked to
             # decide whether a different, well-formed C++ recipe is valid.
             corruptions = [
-                ('dangling-typed-edge', "UPDATE edg_graph_fields SET target_id=9223372036854775807 WHERE rowid=(SELECT rowid FROM edg_graph_fields WHERE target_id IS NOT NULL LIMIT 1)"),
-                ('invalid-integer-encoding', "UPDATE edg_graph_fields SET value='01' WHERE rowid=(SELECT rowid FROM edg_graph_fields WHERE value_kind='unsigned' LIMIT 1)"),
+                ('dangling-typed-edge', None),
+                ('invalid-integer-encoding', None),
                 ('missing-configuration', "DELETE FROM edg_graph_coverage WHERE field='$configuration'"),
             ]
             if args.projection_only:
@@ -95,7 +100,26 @@ def main():
                 shutil.copy2(obj, damaged)
                 with sqlite3.connect(damaged) as db:
                     db.execute('PRAGMA ignore_check_constraints=ON')
-                    db.execute(sql)
+                    if sql:
+                        db.execute(sql)
+                    else:
+                        ordinal, count, data, codec, length, digest = db.execute('SELECT * FROM edg_graph_field_blocks ORDER BY ordinal LIMIT 1').fetchone()
+                        raw = graph.read_stored(data, codec, length, digest)
+                        if name == 'invalid-integer-encoding':
+                            _, end = graph.read_varuint(raw, 0)
+                            raw = raw[:end - 1] + bytes([raw[end - 1] | 128, 0]) + raw[end:]
+                        else:
+                            definitions = {r[0]: dict(id=r[0], ownerEntryKind=r[1], name=r[2], valueKind=r[3], targetEntryKind=r[4]) for r in db.execute('SELECT * FROM edg_graph_field_definitions')}
+                            decoded = list(graph.decode_block(raw, count, definitions))
+                            next(row for row in decoded if row['targetId'] is not None)['targetId'] = 9223372036854775807
+                            payload = bytearray()
+                            for row in decoded:
+                                owner = db.execute('SELECT entry_kind FROM edg_graph_nodes WHERE id=?', (row['nodeId'],)).fetchone()[0]
+                                definition = next(d for d in definitions.values() if (d['ownerEntryKind'], d['name'], d['valueKind'], d['targetEntryKind']) == (owner, row['name'], row['valueKind'], row['targetEntryKind']))
+                                payload += graph.encode_row(row, definition['id'], definition)
+                            raw = payload
+                        values = graph.stored_block(ordinal, count, raw)
+                        db.execute('UPDATE edg_graph_field_blocks SET row_count=?,bytes=?,codec=?,decoded_byte_length=?,sha256=? WHERE ordinal=?', (*values[1:], ordinal))
                     check(fixture + ':' + name + '-changed', db.total_changes > 0)
                     db.execute('UPDATE content_digest SET sha256=?', (packager.logical_hash(db),))
                 run(work, name, ['dotnet', args.linker.resolve(), 'verify', damaged], success=False)

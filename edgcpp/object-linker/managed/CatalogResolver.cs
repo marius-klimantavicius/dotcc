@@ -207,8 +207,8 @@ internal sealed class CatalogResolver : IDisposable
     }
     private void ResolveFunctions()
     {
-        using var functions=database.Prepare("SELECT f.symbol_key,f.unit_id,f.entity_id,f.definition,f.callable_execution,f.source_signature,f.semantic_signature,f.is_deferred,f.is_original_ordinary FROM functions f JOIN units u ON u.id=f.unit_id ORDER BY f.sort_key,u.provider,u.input_ordinal,f.entity_id");
-        string? key=null,signature=null,source=null,semantic=null,strength=null;
+        using var functions=database.Prepare("SELECT f.symbol_key,f.unit_id,f.entity_id,f.definition,f.callable_execution,f.source_signature,f.semantic_signature,f.is_deferred,f.is_original_ordinary,f.recorded_abi FROM functions f JOIN units u ON u.id=f.unit_id ORDER BY f.sort_key,u.provider,u.input_ordinal,f.entity_id");
+        string? key=null,signature=null,source=null,semantic=null,strength=null,abi=null;
         long winnerUnit=0,winnerId=0; bool deferred=false,ordinary=true;
         void Finish()
         {
@@ -219,13 +219,17 @@ internal sealed class CatalogResolver : IDisposable
         while(functions.Read())
         {
             string next=functions.Text(0),candidate=Canonical(functions.Text(4));
-            if(next!=key){Finish();key=next;signature=null;source=null;semantic=null;strength=null;deferred=false;ordinary=true;}
+            if(next!=key){Finish();key=next;signature=null;source=null;semantic=null;strength=null;abi=null;deferred=false;ordinary=true;}
             if(signature is not null && signature!=candidate)throw new InvalidDataException("Signature mismatch for "+key);
             signature=candidate;
             string? nextSource=functions.OptionalText(5),nextSemantic=functions.OptionalText(6);
-            if(source is not null && nextSource is not null && source!=nextSource)throw new InvalidDataException("Source signature mismatch for "+key);
-            if(semantic is not null && nextSemantic is not null && semantic!=nextSemantic)throw new InvalidDataException("Original semantic signature mismatch for "+key);
-            source??=nextSource;semantic??=nextSemantic;
+            if(source is not null && nextSource is not null && !ObjectFile.CompatibleSourceSignatures(source,nextSource))throw new InvalidDataException("Source signature mismatch for "+key);
+            if(semantic is not null && nextSemantic is not null && !ObjectFile.CompatibleSourceSignatures(semantic,nextSemantic))throw new InvalidDataException("Original semantic signature mismatch for "+key);
+            if(!ObjectFile.IsLocalSourceObservation(nextSource))source??=nextSource;
+            if(!ObjectFile.IsLocalSourceObservation(nextSemantic))semantic??=nextSemantic;
+            string? nextAbi=functions.OptionalText(9);
+            if(abi is not null && nextAbi is not null && abi!=nextAbi)throw new InvalidDataException("Recorded ABI role mismatch for "+key);
+            abi??=nextAbi;
             deferred|=functions.Integer(7)==1;ordinary&=functions.Integer(8)==1;
             string definition=functions.Text(3);
             if(definition=="declaration")continue;
@@ -236,8 +240,8 @@ internal sealed class CatalogResolver : IDisposable
     }
     private void ResolveStorages()
     {
-        using var storages=database.Prepare("SELECT s.symbol_key,s.unit_id,s.storage_id,s.definition,s.signature,s.alignment,s.required_alignment FROM storages s JOIN units u ON u.id=s.unit_id ORDER BY s.sort_key,u.provider,u.input_ordinal,s.storage_id");
-        string? key=null,signature=null,strength=null;long winnerUnit=0,winnerId=0,alignment=0,required=1;
+        using var storages=database.Prepare("SELECT s.symbol_key,s.unit_id,s.storage_id,s.definition,s.signature,s.alignment,s.required_alignment,s.execution_type FROM storages s JOIN units u ON u.id=s.unit_id ORDER BY s.sort_key,u.provider,u.input_ordinal,s.storage_id");
+        string? key=null,signature=null,strength=null,execution=null;long winnerUnit=0,winnerId=0,alignment=0,required=1;
         void Finish()
         {
             if(strength is null)return;
@@ -247,9 +251,13 @@ internal sealed class CatalogResolver : IDisposable
         while(storages.Read())
         {
             string next=storages.Text(0),candidate=storages.Text(4);
-            if(next!=key){Finish();key=next;signature=null;strength=null;required=1;}
-            if(signature is not null && !CompatibleStorage(signature,candidate))throw new InvalidDataException("Storage type/TLS mismatch: "+key);
-            signature=candidate;required=Math.Max(required,storages.Integer(6));
+            if(next!=key){Finish();key=next;signature=null;strength=null;execution=null;required=1;}
+            string nextExecution=Canonical(storages.Text(7))+candidate[candidate.LastIndexOf(':')..];
+            if(execution is not null && !CompatibleStorage(execution,nextExecution))throw new InvalidDataException("Storage execution ABI/TLS mismatch: "+key);
+            if(execution is null || ScalarTypes.IsIncompleteArray(execution[..execution.LastIndexOf(':')]))execution=nextExecution;
+            if(signature is not null && !CompatibleStorage(signature,candidate,sourceObservations:true))throw new InvalidDataException("Storage type/TLS mismatch: "+key);
+            if(!ObjectFile.IsLocalSourceObservation(candidate) && (signature is null || ScalarTypes.IsIncompleteArray(signature[..signature.LastIndexOf(':')])))signature=candidate;
+            required=Math.Max(required,storages.Integer(6));
             string definition=storages.Text(3);if(definition=="declaration")continue;
             if(strength=="strong" && definition=="strong")throw new InvalidDataException("Duplicate strong storage definition: "+key);
             if(strength is null || definition=="strong" || strength=="tentative" && definition=="linkonce")
@@ -257,12 +265,13 @@ internal sealed class CatalogResolver : IDisposable
         }
         Finish();
     }
-    private static bool CompatibleStorage(string left,string right)
+    private static bool CompatibleStorage(string left,string right,bool sourceObservations=false)
     {
         if(left==right)return true;
         int a=left.LastIndexOf(':'),b=right.LastIndexOf(':');
         if(a<0 || b<0 || left[a..]!=right[b..])return false;
         string x=left[..a],y=right[..b];
+        if(sourceObservations && (ObjectFile.IsLocalSourceObservation(x) || ObjectFile.IsLocalSourceObservation(y)))return true;
         return ScalarTypes.IsArray(x) && ScalarTypes.IsArray(y) && ScalarTypes.Element(x)==ScalarTypes.Element(y) &&
             (ScalarTypes.IsIncompleteArray(x) || ScalarTypes.IsIncompleteArray(y));
     }
@@ -330,13 +339,28 @@ internal sealed class CatalogResolver : IDisposable
             var a=previous.DeepClone();var b=value.DeepClone();
             if(a["Source"] is JsonObject sourceA && b["Source"] is JsonObject sourceB)
             {
+                if(sourceA.ContainsKey("LocalObservation") || sourceB.ContainsKey("LocalObservation"))
+                { a["Source"]=null; b["Source"]=null; }
+                else
+                {
                 if(sourceA["Language"]!.GetValue<string>()!="c++" || sourceB["Language"]!.GetValue<string>()!="c++")
                 {sourceA.Remove("Operations");sourceB.Remove("Operations");}
                 sourceA.Remove("Language");sourceB.Remove("Language");
+                }
             }
-            if(!JsonNode.DeepEquals(a,b))throw new InvalidDataException("Record layout mismatch for "+key);
+            if(!CompatibleRecordContract(a,b))throw new InvalidDataException("Record layout mismatch for "+key);
         }
         Finish();
+    }
+    private static bool CompatibleRecordContract(JsonNode? left, JsonNode? right, bool sourceObservationAllowed = false)
+    {
+        if(sourceObservationAllowed && (left is JsonValue a && a.TryGetValue<string>(out var x) && ObjectFile.IsLocalSourceObservation(x) ||
+            right is JsonValue b && b.TryGetValue<string>(out var y) && ObjectFile.IsLocalSourceObservation(y))) return true;
+        if(left is JsonObject ao && right is JsonObject bo)
+            return ao.Count==bo.Count && ao.All(pair=>bo.ContainsKey(pair.Key) && CompatibleRecordContract(pair.Value,bo[pair.Key],sourceObservationAllowed || pair.Key is "Source" or "SourceSignature" or "BitWidthIdentity"));
+        if(left is JsonArray aa && right is JsonArray ba)
+            return aa.Count==ba.Count && aa.Select((value,index)=>CompatibleRecordContract(value,ba[index],sourceObservationAllowed)).All(value=>value);
+        return JsonNode.DeepEquals(left,right);
     }
     public void Dispose()=>database.Dispose();
 }

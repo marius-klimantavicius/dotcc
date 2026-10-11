@@ -2,18 +2,7 @@ namespace DotObj;
 
 internal sealed partial class ObjectFile
 {
-    private bool SourceTypeContainsParameter(long id, int depth)
-    {
-        if (depth > 128) throw new InvalidDataException("Source type dependency cycle/depth");
-        SourceType type = SourceTypeById(id);
-        if (type.Kind == "dependent") return true;
-        if (type.Kind == "record") return SourceRecordsByType[id].IsDependent;
-        if (type.Kind == "enum") return SourceEnums[id].IsNonreal;
-        return type.UnderlyingTypeId is long underlying && SourceTypeContainsParameter(underlying, depth + 1) ||
-            type.ArrayBoundKind == "dependent";
-    }
-
-    private void VerifySourceTypedExpression(SourceSemanticConstant value, SourceType result)
+    private void VerifySourceTypedExpression(SourceSemanticConstant value)
     {
         long[] children = SourceSemanticConstantOperands.GetValueOrDefault(value.Id, []);
         bool typeQuery = value.Kind is "sizeof" or "alignof" or "datasizeof";

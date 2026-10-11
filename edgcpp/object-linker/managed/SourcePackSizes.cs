@@ -27,11 +27,4 @@ internal sealed partial class ObjectFile
             SourceSemanticConstantOperands.GetValueOrDefault(constant.Id,[]).Length!=0)
             throw new InvalidDataException("Original pack size contains an unexpected evaluated value or operand list");
     }
-    private string SourcePackSizeIdentity(long id,int depth)
-    {
-        if(depth>128)throw new InvalidDataException("Original pack-size identity is cyclic or too deep");
-        var value=SourcePackSizes[id];
-        return (value.IsType?"1":"0")+(value.IsTemplate?"1":"0")+SourceIdentityFrame(value.Type is long type?SourceArgumentTypeIdentity(type,depth+1):
-            value.Template is long template?SourceTemplateIdentity(template,depth+1):SourceStructuralExpressionKey(value.Expression!.Value,depth+1));
-    }
 }

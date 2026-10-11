@@ -2,7 +2,7 @@ using System.Globalization;
 namespace DotObj;
 internal sealed record SourceConstraintArgumentDetails(bool Pack,bool PackElement,bool Ellipsis,bool IntegerPack,bool Explicit,bool InjectedClass,bool Auto,bool DecltypeAuto,long? Expansion,long? SubstitutedTemplate);
 internal sealed record SourcePackExpansion(long Count,bool Ellipsis,bool EnclosingOnly,bool EnclosingAny,bool FunctionDeclarator,bool PackIndex,bool TemplateTemplate,long? ParameterType);
-internal sealed record SourcePackReference(SourceTemplateArgument Argument,long? Depth,long? Position,bool Enclosing);
+internal sealed record SourcePackReference(SourceTemplateArgument Argument,long OriginalKind,long? Depth,long? Position,bool Enclosing);
 internal sealed record SourceDependentFunctionLookup(string Name,string QualifiedName,long? Owner,long? Conversion,long Operator,bool ExplicitArguments,bool Qualified,bool Address,bool Symbol,long CandidateCount,bool UnknownBase,bool QualifiedUnknownBase);
 internal sealed partial class ObjectFile
 {
@@ -20,17 +20,23 @@ internal sealed partial class ObjectFile
             while(q.Read())
             {
                 var value=new SourcePackExpansion(q.Integer(1),q.Integer(2)==1,q.Integer(3)==1,q.Integer(4)==1,q.Integer(5)==1,q.Integer(6)==1,q.Integer(7)==1,q.OptionalInteger(8));
-                if(q.Integer(0)<=0 || value.Count<0 || Enumerable.Range(2,6).Any(index=>q.Integer(index) is not(0 or 1)) || value.Count>0 && value.EnclosingOnly && !value.EnclosingAny ||
+                if(q.Integer(0)<=0 || value.Count<0 || Enumerable.Range(2,6).Any(index=>q.Integer(index) is not(0 or 1)) ||
                     value.ParameterType is long type && !SourceTypes.ContainsKey(type) || q.Text(9)!="original-pack-expansion" || q.Integer(10)<0 || q.Integer(11)<0 || !SourcePackExpansions.TryAdd(q.Integer(0),value))
                     throw new InvalidDataException("Invalid original source pack expansion descriptor");
             }
-        using(var q=database.Prepare("SELECT expansion_id,ordinal,kind,source_type_id,constant_id,template_id,parameter_depth,parameter_position,uses_enclosing_pack FROM source_pack_references ORDER BY expansion_id,ordinal"))
+        using(var q=database.Prepare("SELECT expansion_id,ordinal,kind,source_type_id,constant_id,template_id,parameter_depth,parameter_position,uses_enclosing_pack,original_kind FROM source_pack_references ORDER BY expansion_id,ordinal"))
             while(q.Read())
             {
                 var argument=new SourceTemplateArgument(q.Integer(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalInteger(5));
-                var value=new SourcePackReference(argument,q.OptionalInteger(6),q.OptionalInteger(7),q.Integer(8)==1);
-                if(!SourcePackExpansions.ContainsKey(q.Integer(0)) || !SourceTemplatePayloadValid(argument.Kind,argument.TypeId,argument.ConstantId,argument.TemplateId) ||
-                    (value.Depth is null)!=(value.Position is null) || value.Depth<0 || value.Position<=0 || q.Integer(8) is not(0 or 1))throw new InvalidDataException("Source pack reference lacks exact original template parameter");
+                var value=new SourcePackReference(argument,q.Integer(9),q.OptionalInteger(6),q.OptionalInteger(7),q.Integer(8)==1);
+                bool payload = argument.Kind == "observed"
+                    ? (argument.TypeId is null || SourceTypes.ContainsKey(argument.TypeId.Value)) &&
+                      (argument.ConstantId is null || SourceSemanticConstants.ContainsKey(argument.ConstantId.Value)) &&
+                      (argument.TemplateId is null || SourceTemplates.ContainsKey(argument.TemplateId.Value))
+                    : SourceTemplatePayloadValid(argument.Kind,argument.TypeId,argument.ConstantId,argument.TemplateId);
+                if(!SourcePackExpansions.ContainsKey(q.Integer(0)) || !payload || value.OriginalKind<0 ||
+                    value.Depth<0 || value.Position<=0 || q.Integer(8) is not(0 or 1))
+                    throw new InvalidDataException("Source pack reference has an invalid original kind, coordinate or typed projection");
                 if(!SourcePackReferences.TryGetValue(q.Integer(0),out var values))SourcePackReferences[q.Integer(0)]=values=[];
                 if(argument.Ordinal!=values.Count)throw new InvalidDataException("Source pack reference order is not contiguous");values.Add(value);
             }

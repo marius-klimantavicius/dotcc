@@ -253,6 +253,7 @@ internal sealed partial class ObjectFile
 
     private string SourceRoutineSignature(RoutineType routine, int depth, bool includeAbi = false)
     {
+        if(routine.ExceptionPolicy=="unsupported-dynamic")return SourceObservationIdentity("type",routine.TypeId);
         if (depth > 128) throw new InvalidDataException("Source routine type nesting exceeds supported limit");
         // This profile admits unspecified C definitions only with known zero
         // parameters. They are compatible with an explicit (void) prototype.
@@ -293,9 +294,9 @@ internal sealed partial class ObjectFile
         while (type.Kind is "typedef" or "qualified")
         {
             if(SourceAliasInstances.TryGetValue(type.Id,out var alias) && alias.Nonreal)
-                return (isConst?"const:":"")+(isVolatile?"volatile:":"")+(isRestrict?"restrict:":"")+(isAtomic?"atomic:":"")+string.Concat(extra.Select(name=>name+":"))+SourceAliasIdentity(type.Id,depth+1);
+                return (isConst?"const:":"")+(isVolatile?"volatile:":"")+(isRestrict?"restrict:":"")+(isAtomic?"atomic:":"")+string.Concat(extra.Select(name=>name+":"))+SourceObservationIdentity("type",type.Id);
             if(SourceTypeOperators.TryGetValue(type.Id,out var operation) && operation.Dependent)
-                return (isConst?"const:":"")+(isVolatile?"volatile:":"")+(isRestrict?"restrict:":"")+(isAtomic?"atomic:":"")+string.Concat(extra.Select(name=>name+":"))+SourceTypeOperatorIdentity(type.Id,depth+1);
+                return (isConst?"const:":"")+(isVolatile?"volatile:":"")+(isRestrict?"restrict:":"")+(isAtomic?"atomic:":"")+string.Concat(extra.Select(name=>name+":"))+SourceObservationIdentity("type",type.Id);
             if (++depth > 128) throw new InvalidDataException("Source field type nesting exceeds supported limit");
             type = SourceTypeById(type.UnderlyingTypeId!.Value);
             isConst |= type.IsConst; isVolatile |= type.IsVolatile;
@@ -303,7 +304,7 @@ internal sealed partial class ObjectFile
             extra.UnionWith(SourceTypeQualifiers.GetValueOrDefault(type.Id, []));
         }
         if (type.Kind == "array") return "array(" + (SourceArrayBounds.TryGetValue(type.Id, out long bound)
-            ? "dependent:" + SourceConstantIdentity(bound, depth + 1) : type.ElementCount?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "?") + "," +
+            ? "dependent:" + SourceObservationIdentity("constant",bound) : type.ElementCount?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "?") + "," +
             SourceTypeSignature(type.UnderlyingTypeId!.Value, depth + 1, isConst, isVolatile) + ")";
         // References themselves cannot be cv-qualified; qualifiers belong to
         // their referent and are retained inside the distinct lref/rref node.
@@ -313,11 +314,11 @@ internal sealed partial class ObjectFile
         return qualifiers + (type.Kind switch
         {
             "pointer" => "ptr(" + SourceTypeSignature(type.UnderlyingTypeId!.Value, depth + 1, false, false) + ")",
-            "record" => "record(" + Convert.ToHexStringLower(System.Text.Encoding.UTF8.GetBytes(SourceRecordsByType[type.Id].IdentityKey)) + ")",
+            "record" => IsLocalSourceRecord(SourceRecordsByType[type.Id].Id) ? SourceObservationIdentity("type",type.Id) : "record(" + Convert.ToHexStringLower(System.Text.Encoding.UTF8.GetBytes(SourceRecordsByType[type.Id].IdentityKey)) + ")",
             "routine" => SourceRoutineSignature(SourceRoutines[type.Id], depth + 1),
             "enum" => SourceEnumSignature(type, depth + 1),
             "member-pointer" => "member-pointer(" + SourceTypeSignature(SourceMemberPointers[type.Id].OwnerTypeId, depth + 1, false, false) + "," + SourceTypeSignature(SourceMemberPointers[type.Id].MemberTypeId, depth + 1, false, false) + ")",
-            "dependent" => DependentSourceSignature(type, depth + 1),
+            "dependent" or "edg-node" => SourceObservationIdentity("type",type.Id),
             _ => type.Kind
         });
     }
@@ -360,14 +361,7 @@ internal sealed partial class ObjectFile
             }
             writer.WriteEndArray();
         }
-        Table("edgGraphNodes", "SELECT id,entry_kind,entry_kind_name,capture_phase FROM edg_graph_nodes ORDER BY id",
-            "id", "entryKind", "entryKindName", "capturePhase");
-        Table("edgGraphFields", "SELECT node_id,name,ordinal,value_kind,value,target_id,target_entry_kind FROM edg_graph_fields ORDER BY node_id,name,ordinal",
-            "nodeId", "name", "ordinal", "valueKind", "value", "targetId", "targetEntryKind");
-        Table("edgGraphRoots", "SELECT node_id,context_node_id,role,ordinal FROM edg_graph_roots ORDER BY role,ordinal",
-            "nodeId", "contextNodeId", "role", "ordinal");
-        Table("edgGraphCoverage", "SELECT entry_kind,field,disposition,detail FROM edg_graph_coverage ORDER BY entry_kind,field",
-            "entryKind", "field", "disposition", "detail");
+        WriteEdgGraphDescriptor(writer);
         Table("sourceArrayDeletions", "SELECT source_obligation_id,deallocator_entity_id,capture_proof FROM source_array_deletions ORDER BY source_obligation_id",
             "sourceObligationId", "deallocatorEntityId", "captureProof");
         Table("arrayDeletionOperations", "SELECT node_id,source_obligation_id,destructor_entity_id,deallocator_entity_id,element_type_id,padding_size,helper_kind,capture_proof,callback_kind FROM array_deletion_operations ORDER BY node_id",
@@ -477,8 +471,8 @@ internal sealed partial class ObjectFile
             "ownerKind", "ownerId", "substitutionOrdinal", "argumentOrdinal", "isPack", "isPackElement", "hasPackEllipsis", "isIntegerPack", "isExplicit", "isInjectedClassName", "parameterIsAuto", "parameterIsDecltypeAuto", "packExpansionId", "substitutedTemplateId", "captureProof");
         Table("sourcePackExpansions", "SELECT id,reference_count,ellipsis_seen,uses_only_enclosing_packs,uses_any_enclosing_packs,is_function_declarator,is_pack_index,parameter_is_template_template,parameter_source_type_id,source_file_id,line,column,capture_proof FROM source_pack_expansions ORDER BY id",
             "id", "referenceCount", "ellipsisSeen", "usesOnlyEnclosingPacks", "usesAnyEnclosingPacks", "isFunctionDeclarator", "isPackIndex", "parameterIsTemplateTemplate", "parameterSourceTypeId", "sourceFileId", "line", "column", "captureProof");
-        Table("sourcePackReferences", "SELECT expansion_id,ordinal,kind,source_type_id,constant_id,template_id,parameter_depth,parameter_position,uses_enclosing_pack,source_file_id,line,column FROM source_pack_references ORDER BY expansion_id,ordinal",
-            "expansionId", "ordinal", "kind", "sourceTypeId", "constantId", "templateId", "parameterDepth", "parameterPosition", "usesEnclosingPack", "sourceFileId", "line", "column");
+        Table("sourcePackReferences", "SELECT expansion_id,ordinal,original_kind,kind,source_type_id,constant_id,template_id,parameter_depth,parameter_position,uses_enclosing_pack,source_file_id,line,column FROM source_pack_references ORDER BY expansion_id,ordinal",
+            "expansionId", "ordinal", "originalKind", "kind", "sourceTypeId", "constantId", "templateId", "parameterDepth", "parameterPosition", "usesEnclosingPack", "sourceFileId", "line", "column");
         Table("sourceDependentFunctionLookups", "SELECT expression_id,source_name,qualified_name,owner_source_type_id,conversion_source_type_id,operator_kind,has_explicit_template_arguments,is_qualified_name,has_address_of,has_lookup_symbol,candidate_count,member_of_unknown_base,qualified_unknown_base_member,capture_proof FROM source_dependent_function_lookups ORDER BY expression_id",
             "expressionId", "sourceName", "qualifiedName", "ownerSourceTypeId", "conversionSourceTypeId", "operatorKind", "hasExplicitTemplateArguments", "isQualifiedName", "hasAddressOf", "hasLookupSymbol", "candidateCount", "memberOfUnknownBase", "qualifiedUnknownBaseMember", "captureProof");
         Table("sourceDependentFunctionCandidates", "SELECT expression_id,ordinal,declaration_id FROM source_dependent_function_candidates ORDER BY expression_id,ordinal",
@@ -646,8 +640,8 @@ internal sealed partial class ObjectFile
         Table("recordValueTransfers", "SELECT node_id,kind,capture_proof FROM record_value_transfers ORDER BY node_id",
             "nodeId", "kind", "captureProof");
         Table("sourceRecordOwners", "SELECT source_record_id,owner_source_record_id,owner_field_id,kind,capture_proof FROM source_record_owners ORDER BY source_record_id", "sourceRecordId", "ownerSourceRecordId", "ownerFieldId", "kind", "captureProof");
-        Table("sourceRecords", "SELECT id,source_type_id,identity_key,source_name,record_kind,is_complete,native_size,native_alignment,is_trivially_copyable,capture_phase,source_file_id,line,column,is_packed,max_member_alignment,explicit_alignment,layout_known,is_dependent,is_prototype_instantiation FROM source_record_types ORDER BY id",
-            "id", "sourceTypeId", "identityKey", "sourceName", "recordKind", "isComplete", "nativeSize", "nativeAlignment", "isTriviallyCopyable", "capturePhase", "sourceFileId", "line", "column", "isPacked", "maxMemberAlignment", "explicitAlignment", "layoutKnown", "isDependent", "isPrototypeInstantiation");
+        Table("sourceRecords", "SELECT id,source_type_id,identity_key,source_name,record_kind,is_complete,native_size,native_alignment,is_trivially_copyable,capture_phase,source_file_id,line,column,is_packed,max_member_alignment,explicit_alignment,layout_known,is_dependent,is_prototype_instantiation,navigation_kind FROM source_record_types ORDER BY id",
+            "id", "sourceTypeId", "identityKey", "sourceName", "recordKind", "isComplete", "nativeSize", "nativeAlignment", "isTriviallyCopyable", "capturePhase", "sourceFileId", "line", "column", "isPacked", "maxMemberAlignment", "explicitAlignment", "layoutKnown", "isDependent", "isPrototypeInstantiation", "navigationKind");
         Table("sourceFields", "SELECT id,source_record_id,ordinal,source_type_id,source_name,is_mutable,has_no_unique_address,bit_width,source_file_id,line,column,has_initializer,is_packed,explicit_alignment FROM source_record_fields ORDER BY id",
             "id", "sourceRecordId", "ordinal", "sourceTypeId", "sourceName", "isMutable", "hasNoUniqueAddress", "bitWidth", "sourceFileId", "line", "column", "hasInitializer", "isPacked", "explicitAlignment");
         Table("sourceBases", "SELECT id,source_record_id,ordinal,base_source_type_id,access_kind,is_virtual,source_file_id,line,column FROM source_record_bases ORDER BY id",

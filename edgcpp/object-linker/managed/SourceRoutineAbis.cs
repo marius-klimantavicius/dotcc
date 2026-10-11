@@ -40,7 +40,7 @@ internal sealed partial class ObjectFile
             SourceRoutineAbi abi = SourceRoutineAbis[routine.TypeId];
             var physical = RoutineTypes.Signature(Type(source.ExecutionTypeId));
             var slots = RoutineAbiParameters(routine.TypeId);
-            if (slots.Count != physical.Parameters.Length || physical.Variadic != routine.Variadic || physical.ExceptionPolicy != routine.ExceptionPolicy)
+            if (slots.Count != physical.Parameters.Length || physical.Variadic != routine.Variadic || physical.ExceptionPolicy != routine.ExceptionPolicy && routine.ExceptionPolicy!="unsupported-dynamic")
                 throw new InvalidDataException("Original routine ABI slot count or calling policy mismatch");
             int sourceOrdinal = 0, receivers = 0, results = 0, vtts = 0;
             bool sawSource = false;

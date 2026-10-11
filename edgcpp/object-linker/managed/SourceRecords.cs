@@ -3,7 +3,7 @@ namespace DotObj;
 internal sealed record SourceRecord(long Id, long SourceTypeId, string IdentityKey, string SourceName,
     string RecordKind, bool IsComplete, long NativeSize, long NativeAlignment, bool? IsTriviallyCopyable,
     string CapturePhase, long? SourceFileId, long Line, long Column, bool IsPacked, long MaxMemberAlignment, long ExplicitAlignment,
-    bool LayoutKnown, bool IsDependent, bool IsPrototypeInstantiation);
+    bool LayoutKnown, bool IsDependent, bool IsPrototypeInstantiation, string NavigationKind);
 internal sealed record SourceRecordField(long Id, long SourceRecordId, long Ordinal, long SourceTypeId,
     string SourceName, bool IsMutable, bool HasNoUniqueAddress, long? BitWidth,
     long? SourceFileId, long Line, long Column, bool HasInitializer, bool IsPacked, long ExplicitAlignment);
@@ -17,13 +17,13 @@ internal sealed partial class ObjectFile
 
     private void ReadSourceRecordMetadata()
     {
-        using (var query = database.Prepare("SELECT id,source_type_id,identity_key,source_name,record_kind,is_complete,native_size,native_alignment,is_trivially_copyable,capture_phase,source_file_id,line,column,is_packed,max_member_alignment,explicit_alignment,layout_known,is_dependent,is_prototype_instantiation FROM source_record_types ORDER BY id"))
+        using (var query = database.Prepare("SELECT id,source_type_id,identity_key,source_name,record_kind,is_complete,native_size,native_alignment,is_trivially_copyable,capture_phase,source_file_id,line,column,is_packed,max_member_alignment,explicit_alignment,layout_known,is_dependent,is_prototype_instantiation,navigation_kind FROM source_record_types ORDER BY id"))
             while (query.Read())
             {
                 var record = new SourceRecord(query.Integer(0), query.Integer(1), query.Text(2), query.Text(3), query.Text(4),
                     query.Integer(5) == 1, query.Integer(6), query.Integer(7), query.OptionalInteger(8) is long copyable ? copyable == 1 : null,
-                    query.Text(9), query.OptionalInteger(10), query.Integer(11), query.Integer(12), query.Integer(13) == 1, query.Integer(14), query.Integer(15), query.Integer(16) == 1, query.Integer(17) == 1, query.Integer(18) == 1);
-                if (record.Id <= 0 || record.SourceTypeId <= 0 || record.IdentityKey.Length == 0 ||
+                    query.Text(9), query.OptionalInteger(10), query.Integer(11), query.Integer(12), query.Integer(13) == 1, query.Integer(14), query.Integer(15), query.Integer(16) == 1, query.Integer(17) == 1, query.Integer(18) == 1, query.Text(19));
+                if (record.NavigationKind is not("detailed" or "edg-node") || record.Id <= 0 || record.SourceTypeId <= 0 || record.IdentityKey.Length == 0 ||
                     record.RecordKind is not ("struct" or "union" or "class") || query.Integer(5) is not (0 or 1) ||
                     query.OptionalInteger(8) is not (null or 0 or 1) || record.NativeSize < 0 || record.NativeAlignment < 0 ||
                     record.Line < 0 || record.Column < 0 || record.CapturePhase is not ("before-lowering" or "before-class-prelowering") ||
@@ -36,6 +36,8 @@ internal sealed partial class ObjectFile
                     throw new InvalidDataException("Invalid original record identity, completeness or capture metadata");
                 if (!SourceRecords.TryAdd(record.Id, record) || !SourceRecordsByType.TryAdd(record.SourceTypeId, record)) throw new InvalidDataException("Duplicate original record ID");
             }
+        RejectRows("SELECT c.id FROM source_record_types c LEFT JOIN edg_graph_roots r ON r.role='source-record' AND r.ordinal=c.id-1 LEFT JOIN edg_graph_nodes n ON n.id=r.node_id WHERE c.navigation_kind='edg-node' AND (n.id IS NULL OR n.entry_kind_name<>'type')",
+            "Raw source record navigation lacks its exact typed EDG type root");
         using (var query = database.Prepare("SELECT id,source_record_id,ordinal,source_type_id,source_name,is_mutable,has_no_unique_address,bit_width,source_file_id,line,column,has_initializer,is_packed,explicit_alignment FROM source_record_fields ORDER BY source_record_id,ordinal"))
             while (query.Read())
             {
@@ -59,40 +61,25 @@ internal sealed partial class ObjectFile
         foreach (SourceRecord source in SourceRecords.Values)
         {
             SourceType type = SourceTypeById(source.SourceTypeId);
-            if (type.Kind != "record" || type.ExecutionRepresentationId is long physical && (!Records.TryGetValue(physical, out RecordType? execution) ||
+            if (type.Kind is not("record" or "edg-node") || type.ExecutionRepresentationId is long physical && (!Records.TryGetValue(physical, out RecordType? execution) ||
                 source.IsDependent || source.IsComplete && (!source.LayoutKnown || source.IsTriviallyCopyable is null) ||
                 execution.SourceRecordId != source.Id || execution.RepresentationKind != "complete" ||
-                source.IdentityKey != execution.IdentityKey || source.SourceName != execution.SourceName || source.RecordKind != execution.LayoutKind ||
+                !IsLocalSourceRecord(source.Id) && source.IdentityKey != execution.IdentityKey ||
+                source.SourceName != execution.SourceName || source.RecordKind != execution.LayoutKind ||
                 source.IsComplete != (execution.Size != 0) || source.NativeSize != execution.Size || source.NativeAlignment != execution.Alignment))
                 throw new InvalidDataException("Original record does not match its complete execution representation");
             SourceRecordField[] fields = sourceFieldsByRecord.GetValueOrDefault(source.Id, []);
-            if (!source.IsComplete && fields.Length != 0) throw new InvalidDataException("Incomplete source record contains member declarations");
-            var names = new HashSet<string>(StringComparer.Ordinal);
             for (int index = 0; index < fields.Length; ++index)
             {
                 SourceRecordField field = fields[index];
-                if (field.Ordinal != index || field.SourceName.Length != 0 && !names.Add(field.SourceName))
-                    throw new InvalidDataException("Original record field order or names are invalid");
-                SourceType member = SourceTypeById(field.SourceTypeId);
+                if (field.Ordinal != index)
+                    throw new InvalidDataException("Original record field order is invalid");
+                _ = SourceTypeById(field.SourceTypeId);
                 if (field.BitWidth is long width)
                 {
-                    SourceType integer = Original(member);
-                    if (integer.Kind == "enum") integer = Original(SourceTypeById(SourceEnums[integer.Id].UnderlyingTypeId));
-                    // A prototype may declare T::size_type bits : N. Its
-                    // original member type and width recipe are owned, but no
-                    // integral storage width exists before substitution.
-                    bool dependentInteger = integer.Kind == "dependent" && SourceTypeContainsParameter(integer.Id, 0);
-                    if (dependentInteger)
-                    {
-                        if (!source.IsDependent || source.LayoutKnown || member.ExecutionRepresentationId is not null)
-                            throw new InvalidDataException("Dependent bitfield member claims a concrete integral layout");
-                        continue;
-                    }
-                    var shape = SourceIntegerShape(integer);
-                    long storageBits = member.ExecutionRepresentationId is long physicalMember
-                        ? StorageSize(Type(physicalMember)) * 8 : Math.Max(8, shape.Bits);
-                    if (width > storageBits || width == 0 && field.SourceName.Length != 0)
-                        throw new InvalidDataException("Original bitfield width or unnamed zero-width declaration is invalid");
+                    if (width<0) throw new InvalidDataException("Original bitfield width is negative");
+                    // Physical bit offsets/widths are checked in the execution
+                    // record below. Source-only dependent types need no inferred width.
                 }
             }
         }

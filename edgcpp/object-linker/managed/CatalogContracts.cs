@@ -53,7 +53,9 @@ internal static class CatalogContracts
     }
     private static object OriginalRecord(ObjectFile obj,long id,SourceRecordField[] fields)
     {
-        var record=obj.SourceRecords[id];return new {
+        var record=obj.SourceRecords[id];
+        if(obj.IsLocalSourceRecord(id))return new {LocalObservation=true};
+        return new {
             record.IdentityKey,record.SourceName,record.RecordKind,record.IsTriviallyCopyable,record.IsPacked,
             record.LayoutKnown,record.IsDependent,record.IsPrototypeInstantiation,record.MaxMemberAlignment,record.ExplicitAlignment,
             Language=obj.SourceLanguage,Operations=obj.RecordOperations.GetValueOrDefault(id),

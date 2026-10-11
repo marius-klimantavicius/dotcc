@@ -40,7 +40,7 @@ internal sealed class CatalogUnitReader : IDisposable
     {
         var expected=(descriptor.ByteLength,descriptor.FileHash);
         if(Identity(descriptor.Path)!=expected)throw new InvalidDataException("Catalog input bytes changed after import: "+descriptor.Path);
-        using var obj=new ObjectFile(descriptor.Path);
+        using var obj=new ObjectFile(descriptor.Path,expected);
         if(obj.UnitId!=descriptor.UnitId || obj.Digest!=descriptor.Digest || obj.PrimarySource!=descriptor.PrimarySource ||
             obj.SourceLanguage!=descriptor.Language || obj.Functions.Count!=descriptor.FunctionCount)
             throw new InvalidDataException("Catalog unit identity differs from its verified object");
@@ -65,7 +65,7 @@ internal sealed class CatalogUnitReader : IDisposable
         using var macros=new Utf8JsonWriter(macroStream,new JsonWriterOptions{Indented=true});
         foreach(var writer in new[]{source,macros})
         {
-            writer.WriteStartObject();writer.WriteNumber("formatVersion",1);writer.WriteString("profile","scalar-control-v64");
+            writer.WriteStartObject();writer.WriteNumber("formatVersion",1);writer.WriteString("profile","scalar-control-v65");
             writer.WriteStartArray("objects");
         }
         foreach(var unit in Units())WithUnit(unit,obj=>{obj.WriteSourceMap(source);obj.WriteMacroMap(macros);});

@@ -19,7 +19,7 @@ internal static class CatalogGenerator
         using var lifetimes=new Utf8JsonWriter(lifetimeStream,new JsonWriterOptions{Indented=true});
         foreach(var writer in new[]{source,macros,lifetimes})
         {
-            writer.WriteStartObject();writer.WriteNumber("formatVersion",1);writer.WriteString("profile","scalar-control-v64");
+            writer.WriteStartObject();writer.WriteNumber("formatVersion",1);writer.WriteString("profile","scalar-control-v65");
             if(ReferenceEquals(writer,source)){writer.WriteString("capture","scalar-declarations-before-lowering");writer.WriteBoolean("prelowerSource",false);}
             else if(ReferenceEquals(writer,macros)){writer.WriteString("capture","preprocessor-definition-events");writer.WriteBoolean("macroDefinitions",true);writer.WriteBoolean("macros",false);}
             else

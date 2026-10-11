@@ -167,7 +167,7 @@ internal sealed partial class ObjectFile
         if(formal.Line<0 || formal.Column<0 || !SourceTemplatePayloadValid(formal.Kind,formal.TypeId,formal.ConstantId,formal.TemplateId))
             throw new InvalidDataException("Source constraint formal lacks its exact typed payload");
         bool hasDefault=formal.DefaultTypeId is not null || formal.DefaultConstantId is not null || formal.DefaultTemplateId is not null;
-        if(hasDefault && (formal.IsPack || !SourceTemplatePayloadValid(formal.Kind,formal.DefaultTypeId,formal.DefaultConstantId,formal.DefaultTemplateId)))
+        if(hasDefault && (!SourceTemplatePayloadValid(formal.Kind,formal.DefaultTypeId,formal.DefaultConstantId,formal.DefaultTemplateId)))
             throw new InvalidDataException("Source constraint formal default has a different semantic kind");
 
     }

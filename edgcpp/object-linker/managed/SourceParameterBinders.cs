@@ -84,19 +84,4 @@ internal sealed partial class ObjectFile
             reference.Binder is long binder && !SourceParameterBinders.ContainsKey(binder))
             throw new InvalidDataException("Source parameter reference has an invalid recorded coordinate");
     }
-    private string SourceParameterReferenceContextKey(long expression)
-    {
-        var reference=SourceExpressionParameterReferences[expression];
-        if(reference.Binder is null)return "edg-coordinate:"+reference.Number+":"+reference.Levels;
-        long current=SourceExpressionBinders.GetValueOrDefault(expression);string result="";
-        var seen=new HashSet<long>();
-        while(current!=0)
-        {
-            if(!seen.Add(current))throw new InvalidDataException("Source parameter reference context cycle");
-            var value=SourceParameterBinders[current];result+=SourceIdentityFrame(value.Kind)+(value.Outside?"1":"0");
-            if(current==reference.Binder)return result;
-            current=value.Parent??0;
-        }
-        throw new InvalidDataException("Source parameter reference context does not reach its owner");
-    }
 }

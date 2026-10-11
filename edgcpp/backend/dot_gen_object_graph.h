@@ -12,6 +12,8 @@
 #include <type_traits>
 #include <cstring>
 #include "mem_tables.h"
+#include "scope_stk.h"
+#include "exprutil.h"
 BEGIN_EDG_NAMESPACE
 namespace dot_object_source { namespace typed_graph {
 inline std::string json(const std::string &s) {
@@ -44,6 +46,57 @@ struct Spool {
   }
   ~Spool(){if(file)std::fclose(file);}
 };
+inline void varuint(std::string &destination,unsigned long long value) {
+  while(value>=128) {destination+=char((value&127)|128);value>>=7;}
+  destination+=char(value);
+}
+inline bool expanded_fields() {
+  static bool value=[](){auto setting=std::getenv("EDG_DOT_GRAPH_EXPANDED_FIELDS");return setting && std::strcmp(setting,"1")==0;}();
+  return value;
+}
+// The spool contains the public, explicitly typed row encoding. Its private
+// block framing is two little-endian uint64s: byte length and row count.
+struct FieldBlocks {
+  FILE *file=nullptr;std::string pending;unsigned pending_rows=0;
+  unsigned long long rows=0,bytes=0,blocks=0;
+  void block(const char *data,size_t size,unsigned count) {
+    if(!file)file=std::tmpfile();
+    if(!file){std::fputs("dotobj: cannot create typed field block spool\n",stderr);std::abort();}
+    unsigned char header[16];
+    for(unsigned i=0;i<8;++i){header[i]=(static_cast<unsigned long long>(size)>>(i*8))&255;header[i+8]=(static_cast<unsigned long long>(count)>>(i*8))&255;}
+    if(std::fwrite(header,1,16,file)!=16 || std::fwrite(data,1,size,file)!=size)std::abort();
+    ++blocks;bytes+=size;rows+=count;
+  }
+  void flush(){if(pending_rows){block(pending.data(),pending.size(),pending_rows);pending.clear();pending_rows=0;}}
+  void row(const std::string &value) {
+    if(value.size()>65536){flush();block(value.data(),value.size(),1);return;}
+    if(pending.size()+value.size()>65536)flush();
+    pending+=value;++pending_rows;
+  }
+  void write(FILE *destination) {
+    flush();std::fputc('[',destination);
+    if(file) {
+      std::rewind(file);unsigned char header[16];unsigned long long ordinal=0;size_t header_size;
+      while((header_size=std::fread(header,1,16,file))==16) {
+        unsigned long long length=0,count=0;
+        for(unsigned i=0;i<8;++i){length|=(unsigned long long)header[i]<<(i*8);count|=(unsigned long long)header[i+8]<<(i*8);}
+        if(ordinal)std::fputc(',',destination);
+        std::fprintf(destination,"{\"blockOrdinal\":%llu,\"rowCount\":%llu,\"dataHex\":\"",ordinal++,count);
+        char buffer[4096],hex[8192];const char *digits="0123456789abcdef";
+        while(length) {
+          size_t size=length>sizeof(buffer)?sizeof(buffer):size_t(length);
+          if(std::fread(buffer,1,size,file)!=size)std::abort();
+          for(size_t i=0;i<size;++i){unsigned char byte=buffer[i];hex[i*2]=digits[byte>>4];hex[i*2+1]=digits[byte&15];}
+          if(std::fwrite(hex,2,size,destination)!=size)std::abort();length-=size;
+        }
+        std::fputs("\"}",destination);
+      }
+      if(header_size || std::ferror(file))std::abort();
+    }
+    std::fputc(']',destination);
+  }
+  ~FieldBlocks(){if(file)std::fclose(file);}
+};
 struct Node {const void *pointer=nullptr;an_il_entry_kind kind=iek_none;unsigned id=0;};
 struct Graph {
   struct Identity {unsigned first=0,latest=0;};
@@ -53,7 +106,16 @@ struct Graph {
   unsigned next_node=1;bool refreshing=false,refresh_file_scope=false;
   unsigned refresh_mode=0;std::set<const void*> refresh_targets;
   Spool nodes,fields,roots;
+  Spool field_definitions;FieldBlocks field_blocks;std::string encoded_field;
+  std::map<std::tuple<unsigned,std::string,std::string,int>,unsigned> field_definition_ids;
   std::map<std::string,unsigned> field_ordinals;
+  std::string field_prefix;
+  struct FrontendUse {unsigned node;an_il_entry_kind kind;std::string path;};
+  std::map<const void*,std::vector<FrontendUse>> pack_uses;
+  std::map<const void*,unsigned> pack_projection_ids;
+  std::set<const void*> inline_active;
+  std::map<const void*,unsigned> frontend_ids;
+  unsigned next_frontend_identity=1;
   struct Coverage {
     std::map<std::pair<unsigned,std::string>,std::string> entries,details;
     void emplace(unsigned kind,const std::string &name,const std::string &disposition,const std::string &detail="") {
@@ -67,7 +129,8 @@ struct Graph {
   ~Graph() {
     if(std::getenv("EDG_DOT_GRAPH_STATS"))
       std::fprintf(stderr,"dotobj typed graph: canonical=%llu nodes=%llu fields=%llu roots=%llu bytes=%llu\n",
-        (unsigned long long)ids.size(),nodes.rows,fields.rows,roots.rows,nodes.bytes+fields.bytes+roots.bytes);
+        (unsigned long long)ids.size(),nodes.rows,expanded_fields()?fields.rows:field_blocks.rows+field_blocks.pending_rows,roots.rows,
+        nodes.bytes+roots.bytes+(expanded_fields()?fields.bytes:field_blocks.bytes+field_blocks.pending.size()+field_definitions.bytes));
   }
 };
 inline Graph &graph(){static Graph value;return value;}
@@ -95,23 +158,64 @@ inline unsigned intern(const void *pointer,an_il_entry_kind kind,bool primary=fa
     ",\"entryKindName\":"+json(il_entry_kind_names[int(kind)])+",\"capturePhase\":\"frontend-observation\"}");
   return id;
 }
+inline bool begin_field(const char *name,const char *kind,int target_kind,std::string &key) {
+  auto &g=graph();key=g.field_prefix+field_name(name);if(!g.field_ordinals.emplace(key,0).second)return false;
+  if(expanded_fields()){g.coverage.emplace(unsigned(g.current_kind),key,"retained");return true;}
+  auto descriptor=std::make_tuple(unsigned(g.current_kind),key,std::string(kind),target_kind);
+  auto definition=g.field_definition_ids.emplace(descriptor,unsigned(g.field_definition_ids.size()+1));
+  unsigned id=definition.first->second;
+  if(definition.second) {
+    g.coverage.emplace(unsigned(g.current_kind),key,"retained");
+    g.field_definitions.row("{\"id\":"+std::to_string(id)+",\"ownerEntryKind\":"+
+      std::to_string(unsigned(g.current_kind))+",\"name\":"+json(key)+",\"valueKind\":"+json(kind)+
+      ",\"targetEntryKind\":"+(target_kind<0?"null":std::to_string(target_kind))+"}");
+  }
+  g.encoded_field.clear();varuint(g.encoded_field,g.current);varuint(g.encoded_field,id);varuint(g.encoded_field,0);
+  return true;
+}
 inline void field(const char *name,const char *kind,const std::string &value,unsigned target=0,int target_kind=-1) {
-  auto &g=graph();auto key=field_name(name);if(!g.field_ordinals.emplace(key,0).second)return;unsigned ordinal=0;
-  g.coverage.emplace(unsigned(g.current_kind),key,"retained");
+  auto &g=graph();std::string key;if(!begin_field(name,kind,target_kind,key))return;
+  if(!expanded_fields()) {
+    if(target_kind>=0)varuint(g.encoded_field,target);
+    else {varuint(g.encoded_field,value.size());g.encoded_field+=value;}
+    g.field_blocks.row(g.encoded_field);return;
+  }
+  std::string encoded=value;
+  if(std::strcmp(kind,"bytes")==0) {
+    encoded.clear();const char *digits="0123456789abcdef";
+    for(unsigned char byte:value){encoded+=digits[byte>>4];encoded+=digits[byte&15];}
+  }
+  unsigned ordinal=0;
   g.fields.row("{\"nodeId\":"+std::to_string(g.current)+",\"name\":"+json(key)+",\"ordinal\":"+std::to_string(ordinal)+
-    ",\"valueKind\":"+json(kind)+",\"value\":"+(target_kind<0?json(value):"null")+
+    ",\"valueKind\":"+json(kind)+",\"value\":"+(target_kind<0?json(encoded):"null")+
     ",\"targetId\":"+(target?std::to_string(target):"null")+",\"targetEntryKind\":"+
     (target_kind<0?"null":std::to_string(target_kind))+"}");
+}
+inline void integer_field(const char *name,unsigned long long value,bool is_signed,bool is_boolean=false) {
+  auto &g=graph();const char *kind=is_boolean?"boolean":is_signed?"signed":"unsigned";
+  std::string key;if(!begin_field(name,kind,-1,key))return;
+  if(expanded_fields()) {
+    auto text=is_signed?std::to_string(static_cast<long long>(value)):std::to_string(value);
+    g.fields.row("{\"nodeId\":"+std::to_string(g.current)+",\"name\":"+json(key)+",\"ordinal\":0,\"valueKind\":"+
+      json(kind)+",\"value\":"+json(text)+",\"targetId\":null,\"targetEntryKind\":null}");return;
+  }
+  if(is_boolean)g.encoded_field+=char(value);
+  else {
+    if(is_signed)value=(value<<1)^(0ULL-(value>>63));
+    varuint(g.encoded_field,value);
+  }
+  g.field_blocks.row(g.encoded_field);
 }
 inline void reference(const char *name,const void *pointer,an_il_entry_kind kind,bool primary=false) {
   // A null tagged pointer can have iek_none. There is no referenced node.
   field(name,"reference","",intern(pointer,kind,primary),int(kind));
 }
+template<class T,bool IsEnum=std::is_enum<T>::value> struct ScalarBase {typedef T type;};
+template<class T> struct ScalarBase<T,true> {typedef typename std::underlying_type<T>::type type;};
 template<class T> inline typename std::enable_if<std::is_integral<T>::value || std::is_enum<T>::value>::type
 scalar(const char *name,T value,unsigned index=~0U) {
   std::string key=name;if(index!=~0U)key+='['+std::to_string(index)+']';
-  if(std::is_signed<T>::value)field(key.c_str(),"signed",std::to_string(static_cast<long long>(value)));
-  else field(key.c_str(),"unsigned",std::to_string(static_cast<unsigned long long>(value)));
+  integer_field(key.c_str(),static_cast<unsigned long long>(value),std::is_signed<typename ScalarBase<T>::type>::value,std::is_same<T,bool>::value);
 }
 template<class T> inline typename std::enable_if<!std::is_integral<T>::value && !std::is_enum<T>::value>::type
 scalar(const char *name,const T &,unsigned=~0U) {
@@ -120,10 +224,10 @@ scalar(const char *name,const T &,unsigned=~0U) {
 inline void string_field(const char *name,const char *pointer,an_il_entry_kind kind,sizeof_t length) {
   if(!pointer)return;
   if(kind!=iek_string_text) {field(name,"text",pointer);return;}
-  std::string bytes;const char *hex="0123456789abcdef";
-  for(sizeof_t i=0;i<length;++i){unsigned char byte=static_cast<unsigned char>(pointer[i]);bytes+=hex[byte>>4];bytes+=hex[byte&15];}
-  field(name,"bytes",bytes);
+  field(name,"bytes",std::string(pointer,length));
 }
+inline void observe_frontend_field(const char *,a_pack_expansion_descr_ptr,int);
+inline void observe_frontend_field(const char *,an_expr_rescan_info_entry_ptr,int);
 template<class T> inline auto observe_frontend_field(const char *name,T *pointer,int)
   -> decltype(type_to_il_entry_kind<typename std::remove_cv<T>::type>(), void()) {
   reference(name,pointer,type_to_il_entry_kind<typename std::remove_cv<T>::type>());
@@ -131,16 +235,235 @@ template<class T> inline auto observe_frontend_field(const char *name,T *pointer
 template<class T> inline void observe_frontend_field(const char *name,T *,long) {
   // Frontend-private structures need their own declared representation before
   // any fields can be retained; never export the address or raw object bytes.
-  graph().coverage.emplace(unsigned(graph().current_kind),field_name(name),"gap");
+  graph().coverage.emplace(unsigned(graph().current_kind),graph().field_prefix+field_name(name),"gap");
 }
 #include "dot_gen_object_graph_walk.h"
+struct InlineFields {
+  std::string previous;
+  explicit InlineFields(const std::string &name):previous(graph().field_prefix) {
+    graph().field_prefix+=field_name(name)+".";
+  }
+  ~InlineFields(){graph().field_prefix=previous;}
+};
+inline void frontend_gap(const char *name,const char *detail) {
+  auto &g=graph();g.coverage.emplace(unsigned(g.current_kind),g.field_prefix+name,"gap",detail);
+}
+inline unsigned frontend_identity(const void *pointer) {
+  if(!pointer)return 0;
+  auto &g=graph();auto found=g.frontend_ids.find(pointer);
+  if(found!=g.frontend_ids.end())return found->second;
+  unsigned id=g.next_frontend_identity++;g.frontend_ids.emplace(pointer,id);return id;
+}
+inline void frontend_symbol_reference(const char *name,a_symbol_ptr symbol) {
+  InlineFields prefix(name);scalar("identity",frontend_identity(symbol));if(!symbol)return;
+  scalar("kind",symbol->kind);
+  if(symbol->header && symbol->header->identifier)
+    field("identifier","bytes",std::string(symbol->header->identifier,symbol->header->identifier_length));
+  // Read the actual symbol union tag; do not resolve aliases or look up names.
+  switch(symbol->kind) {
+    case sk_type:reference("variant.type.ptr",symbol->variant.type.ptr,iek_type);break;
+    case sk_constant:reference("variant.constant",symbol->variant.constant,iek_constant);break;
+    case sk_variable:reference("variant.variable.ptr",symbol->variant.variable.ptr,iek_variable);break;
+    case sk_field:reference("variant.field.ptr",symbol->variant.field.ptr,iek_field);break;
+    case sk_routine:case sk_member_function:reference("variant.routine.ptr",symbol->variant.routine.ptr,iek_routine);break;
+    case sk_class_template:case sk_function_template:
+      if(symbol->variant.template_info)reference("variant.template_info.il_template_entry",symbol->variant.template_info->il_template_entry,iek_template);
+      break;
+    default:frontend_gap("variant","Frontend symbol variant has no declared IL target representation");break;
+  }
+  frontend_gap("frontend_state","Symbol declaration/lookup bookkeeping is not a standalone retained node");
+}
+inline void frontend_template_parameter(const char *name,a_template_param_ptr parameter) {
+  InlineFields prefix(name);scalar("identity",frontend_identity(parameter));if(!parameter)return;
+  scalar("next.identity",frontend_identity(parameter->next));
+#define DOT_TEMPLATE_PARAMETER_SCALAR(member) scalar(#member,parameter->member)
+  DOT_TEMPLATE_PARAMETER_SCALAR(has_default_arg);DOT_TEMPLATE_PARAMETER_SCALAR(def_arg_involves_template_param);
+  DOT_TEMPLATE_PARAMETER_SCALAR(def_arg_has_not_been_scanned);DOT_TEMPLATE_PARAMETER_SCALAR(def_arg_from_other_decl);
+  DOT_TEMPLATE_PARAMETER_SCALAR(is_pack);DOT_TEMPLATE_PARAMETER_SCALAR(is_pack_expansion);DOT_TEMPLATE_PARAMETER_SCALAR(is_pack_element);
+  DOT_TEMPLATE_PARAMETER_SCALAR(is_empty_pack);DOT_TEMPLATE_PARAMETER_SCALAR(do_prototype_instantiation);
+  DOT_TEMPLATE_PARAMETER_SCALAR(is_dependent);DOT_TEMPLATE_PARAMETER_SCALAR(used_in_alias);DOT_TEMPLATE_PARAMETER_SCALAR(uses_auto);
+  DOT_TEMPLATE_PARAMETER_SCALAR(param_num);
+#undef DOT_TEMPLATE_PARAMETER_SCALAR
+  reference("il_template_parameter",parameter->il_template_parameter,iek_template_parameter);
+  frontend_symbol_reference("param_symbol",parameter->param_symbol);
+  if(parameter->param_symbol)switch(parameter->param_symbol->kind) {
+    case sk_type:
+      reference("variant.type",parameter->variant.type,iek_type);
+      if(parameter->has_default_arg)reference("default_arg.type",parameter->default_arg.type,iek_type);break;
+    case sk_constant:
+      reference("variant.constant.ptr",parameter->variant.constant.ptr,iek_constant);
+      scalar("variant.constant.type_involves_template_param",parameter->variant.constant.type_involves_template_param);
+      if(parameter->has_default_arg)reference("default_arg.constant",parameter->default_arg.constant,iek_constant);break;
+    case sk_class_template:
+      if(parameter->variant.templ)reference("variant.templ.il_template_entry",parameter->variant.templ->il_template_entry,iek_template);
+      if(parameter->has_default_arg)reference("default_arg.templ",parameter->default_arg.templ,iek_template);break;
+    default:frontend_gap("variant/default_arg","Frontend formal union tag has no represented IL arm");break;
+  }
+  if(parameter->cache.tokens.ptr() || parameter->cache.decl_info)
+    frontend_gap("cache","Reusable declaration token cache/context has no standalone typed representation");
+  if(parameter->def_arg_involves_template_param && (parameter->default_arg_cache.tokens.ptr() || parameter->default_arg_cache.decl_info))
+    frontend_gap("default_arg_cache","Reusable default-argument token cache/context has no standalone typed representation");
+}
+inline void source_position_fields(const char *name,const a_source_position &position) {
+  InlineFields prefix(name);scalar("seq",position.seq);scalar("column",position.column);
+#if FULLY_RESOLVED_MACRO_POSITIONS
+  scalar("orig_column",position.orig_column);scalar("orig_seq",position.orig_seq);
+#endif
+#if RECORD_MACRO_INVOCATIONS
+  scalar("macro_context",position.macro_context);
+#endif
+}
+inline void bind_pack_projection(const void *pointer,unsigned projection) {
+  auto &g=graph();g.pack_projection_ids[pointer]=projection;
+  auto uses=g.pack_uses.find(pointer);if(uses==g.pack_uses.end())return;
+  auto current=g.current;auto kind=g.current_kind;auto prefix=g.field_prefix;
+  auto ordinals=std::move(g.field_ordinals);
+  for(const auto &use:uses->second) {
+    g.current=use.node;g.current_kind=use.kind;g.field_prefix=use.path;g.field_ordinals.clear();
+    scalar("sourcePackExpansionId",projection);
+  }
+  g.pack_uses.erase(uses);g.current=current;g.current_kind=kind;g.field_prefix=prefix;g.field_ordinals=std::move(ordinals);
+}
+inline void observe_frontend_field(const char *name,a_pack_expansion_descr_ptr pointer,int) {
+  InlineFields prefix(name);scalar("present",pointer!=nullptr);if(!pointer)return;
+  scalar("identity",frontend_identity(pointer));
+  auto &g=graph();auto projected=g.pack_projection_ids.find(pointer);
+  if(projected!=g.pack_projection_ids.end())scalar("sourcePackExpansionId",projected->second);
+  else g.pack_uses[pointer].push_back({g.current,g.current_kind,g.field_prefix});
+  scalar("first_token",pointer->first_token);scalar("last_token",pointer->last_token);
+  scalar("tentative_pack_expansion_depth",pointer->tentative_pack_expansion_depth);
+  scalar("ellipsis_seen",pointer->ellipsis_seen);scalar("is_function_declarator",pointer->is_function_declarator);
+  scalar("uses_only_enclosing_packs",pointer->uses_only_enclosing_packs);scalar("uses_any_enclosing_packs",pointer->uses_any_enclosing_packs);
+  scalar("is_pack_index",pointer->is_pack_index);scalar("param_symbol_is_template_template",pointer->param_symbol_is_template_template);
+  source_position_fields("ellipsis_position",pointer->ellipsis_position);
+  reference("param_symbol_type",pointer->param_symbol_type,iek_type);
+  if(pointer->param_symbol_header) {
+    field("param_symbol_header.identifier","bytes",std::string(pointer->param_symbol_header->identifier,pointer->param_symbol_header->identifier_length));
+    frontend_gap("param_symbol_header.symbol","Frontend symbol relationship has no standalone graph representation");
+  }
+  if(pointer->next || pointer->previous)
+    frontend_gap("next/previous","Frontend pack-context list identity has no standalone projection");
+  scalar("next.identity",frontend_identity(pointer->next));scalar("previous.identity",frontend_identity(pointer->previous));
+  std::set<a_pack_reference_ptr> seen;unsigned ordinal=0;
+  for(auto item=pointer->packs_referenced;item;item=item->next,++ordinal) {
+    if(!seen.insert(item).second){frontend_gap("packs_referenced.next","Cyclic frontend list relationship requires a represented identity");break;}
+    InlineFields item_prefix("packs_referenced["+std::to_string(ordinal)+"]");
+    scalar("identity",frontend_identity(item));scalar("next.identity",frontend_identity(item->next));
+    scalar("kind",item->kind);scalar("param_or_binding_num",item->param_or_binding_num);
+    scalar("token_sequence_number",item->token_sequence_number);scalar("function_or_block_scopes_to_skip",item->function_or_block_scopes_to_skip);
+    scalar("uses_enclosing_pack",item->uses_enclosing_pack);scalar("direct_bases",item->direct_bases);
+    source_position_fields("position",item->position);
+    scalar("coordinates.present",item->coordinates!=nullptr);
+    if(item->coordinates){scalar("coordinates.depth",item->coordinates->depth);scalar("coordinates.position",item->coordinates->position);}
+    reference("prev_template_arg",item->prev_template_arg,iek_template_arg);
+    switch(item->kind) {
+      case prk_variable:case prk_binding:reference("curr_argument.variable",item->curr_argument.variable,iek_variable);break;
+      case prk_init_capture:reference("curr_argument.field",item->curr_argument.field,iek_field);break;
+      case prk_template_param:case prk_bases:reference("curr_argument.template_arg",item->curr_argument.template_arg,iek_template_arg);break;
+      case prk_parameter:
+        scalar("curr_argument.identity",frontend_identity(item->curr_argument.param_type));
+        if(item->param_info)reference("curr_argument.param_type",item->curr_argument.param_type,iek_param_type);
+        else frontend_gap("curr_argument","Pointer identity retained; parser/rescan tag and pointed-to contents unavailable");
+        break;
+    }
+    frontend_symbol_reference("symbol",item->symbol);
+    frontend_symbol_reference("primary_pack_symbol",item->primary_pack_symbol);
+    if(item->param_info) {
+      std::set<a_variadic_param_info_ptr> seen_parameters;unsigned parameter_ordinal=0;
+      for(auto parameter=item->param_info;parameter;parameter=parameter->next,++parameter_ordinal) {
+        if(!seen_parameters.insert(parameter).second){frontend_gap("param_info.next","Cyclic frontend descriptor list needs a represented identity");break;}
+        InlineFields parameter_prefix("param_info["+std::to_string(parameter_ordinal)+"]");
+        scalar("level",parameter->level);reference("param_type",parameter->param_type,iek_param_type);
+        reference("orig_param_type",parameter->orig_param_type,iek_param_type);
+      }
+      scalar("param_info.count",parameter_ordinal);
+    }
+    frontend_template_parameter("template_param",item->template_param);
+  }
+  scalar("packs_referenced.count",ordinal);
+}
+inline void observe_frontend_field(const char *name,an_expr_rescan_info_entry_ptr pointer,int) {
+  InlineFields prefix(name);scalar("present",pointer!=nullptr);if(!pointer)return;
+  scalar("identity",frontend_identity(pointer));
+  auto &g=graph();if(!g.inline_active.insert(pointer).second){frontend_gap("identity","Shared recursive frontend descriptor needs a standalone identity");return;}
+  scalar("expression_kind",pointer->expression_kind);scalar("operator_token_sequence_number",pointer->operator_token_sequence_number);
+  source_position_fields("operator_position",pointer->operator_position);
+  source_position_fields("secondary_operator_position",pointer->secondary_operator_position);
+  reference("type",pointer->type,iek_type);
+  {
+    InlineFields operand_prefix("saved_operand");const auto &operand=pointer->saved_operand;
+    reference("type",operand.type,iek_type);
+#if OPTIMIZE_VIRTUAL_FUNCTION_CALLS
+    reference("orig_routine_type",operand.orig_routine_type,iek_type);
+#endif
+#define DOT_OPERAND_SCALAR(member) scalar(#member,operand.member)
+    DOT_OPERAND_SCALAR(kind);DOT_OPERAND_SCALAR(state);DOT_OPERAND_SCALAR(bound_function);
+    DOT_OPERAND_SCALAR(selector_is_object_pointer);DOT_OPERAND_SCALAR(virtual_function);
+    DOT_OPERAND_SCALAR(is_id_expression);DOT_OPERAND_SCALAR(is_address_of_id_expression);DOT_OPERAND_SCALAR(id_expression_was_parenthesized);
+    DOT_OPERAND_SCALAR(is_qualified_name);DOT_OPERAND_SCALAR(is_microsoft_deferred_name);DOT_OPERAND_SCALAR(access_control_error_reported);
+    DOT_OPERAND_SCALAR(is_operand_of_address_of);DOT_OPERAND_SCALAR(has_required_ptr_to_member_form);DOT_OPERAND_SCALAR(is_template_id);
+    DOT_OPERAND_SCALAR(is_simple_string_literal);DOT_OPERAND_SCALAR(conditional_simple_string_literal);DOT_OPERAND_SCALAR(is_cfront_null_pointer_constant);
+    DOT_OPERAND_SCALAR(is_name_followed_by_left_paren);DOT_OPERAND_SCALAR(is_dummy_lvalue);DOT_OPERAND_SCALAR(is_parenthesized);
+    DOT_OPERAND_SCALAR(name_reference_set);DOT_OPERAND_SCALAR(caused_template_instantiation);DOT_OPERAND_SCALAR(pending_capture);DOT_OPERAND_SCALAR(ruled_out_expr_kinds);
+#if MICROSOFT_EXTENSIONS_ALLOWED
+    DOT_OPERAND_SCALAR(is_microsoft_noop);DOT_OPERAND_SCALAR(allow_addr_of_managed_member);
+#endif
+#undef DOT_OPERAND_SCALAR
+    source_position_fields("position",operand.position);
+#if EXTRA_SOURCE_POSITIONS_IN_IL
+    source_position_fields("end_position",operand.end_position);
+#endif
+    source_position_fields("id_position",operand.id_position);source_position_fields("ampersand_position",operand.ampersand_position);
+    reference("template_arg_list",operand.template_arg_list,iek_template_arg);
+    if(operand.name_reference_set){InlineFields nested("name_reference");capture_entry((char*)&operand.name_reference,iek_name_reference);}
+    observe_frontend_field("pack_expansion_descr",operand.pack_expansion_descr,0);
+    if(operand.ref_entries_list)frontend_gap("ref_entries_list","Frontend reference-use bookkeeping has no standalone graph representation");
+    if(operand.saved_ref_entries_list)frontend_gap("saved_ref_entries_list","Frontend reference-use bookkeeping has no standalone graph representation");
+    frontend_symbol_reference("symbol",operand.symbol);
+    switch(operand.kind) {
+      case ok_expression:reference("variant.expression",operand.variant.expression,iek_expr_node);break;
+      case ok_constant:{InlineFields nested("variant.constant");capture_entry((char*)&operand.variant.constant,iek_constant);break;}
+      case ok_braced_init_list:observe_frontend_field("variant.braced_init_list",operand.variant.braced_init_list,0);break;
+#if MICROSOFT_EXTENSIONS_ALLOWED
+      case ok_property_ref:reference("variant.property_ref.object",operand.variant.property_ref.object,iek_expr_node);observe_frontend_field("variant.property_ref.subscripts",operand.variant.property_ref.subscripts,0);break;
+      case ok_event_ref:reference("variant.event_ref.object",operand.variant.event_ref.object,iek_expr_node);break;
+#endif
+      default:break;
+    }
+  }
+  g.inline_active.erase(pointer);
+}
+inline void requires_substitutions(an_expr_node_ptr expression) {
+  if(expression->kind!=enk_requires)return;
+  InlineFields prefix("observation.requires_substitutions");
+  scalar("map_present",requires_expr_substs!=nullptr);if(!requires_expr_substs)return;
+  const auto &substitutions=requires_expr_substs->get(expression);unsigned ordinal=0;
+  for(auto pair=substitutions.begin();pair!=substitutions.end();++pair,++ordinal) {
+    InlineFields item("pairs["+std::to_string(ordinal)+"]");
+    scalar("args_known_dependent",pair->args_known_dependent);scalar("args_known_nondependent",pair->args_known_nondependent);
+    scalar("adjust_coordinates",pair->adjust_coordinates);scalar("alias_deduction_guide",pair->alias_deduction_guide);
+    reference("args",pair->args,iek_template_arg);
+    unsigned argument_ordinal=0;for(auto argument=pair->args;argument;argument=argument->next,++argument_ordinal)
+      reference(("args["+std::to_string(argument_ordinal)+"]").c_str(),argument,iek_template_arg);
+    scalar("argument_count",argument_ordinal);
+    unsigned parameter_ordinal=0;for(auto parameter=pair->params;parameter;parameter=parameter->next,++parameter_ordinal)
+      frontend_template_parameter(("params["+std::to_string(parameter_ordinal)+"]").c_str(),parameter);
+    scalar("parameter_count",parameter_ordinal);
+  }
+  scalar("count",ordinal);
+}
 inline void drain() {
   auto &g=graph();if(g.draining)return;g.draining=true;
+  // FE descriptors can be recycled between parser observations. Identities
+  // denote shared storage only within this read-only observation; projection
+  // IDs provide explicit links across observations where already captured.
+  g.frontend_ids.clear();
   for(size_t index=0;index<g.pending.size();++index) {
     auto node=g.pending[index];g.current=node.id;g.current_kind=node.kind;g.field_ordinals.clear();
     unsigned identity=g.ids.at(std::make_pair(node.pointer,unsigned(node.kind))).first;
     field("observation.identity","reference","",identity,int(node.kind));
     capture_entry(static_cast<char*>(const_cast<void*>(node.pointer)),node.kind);
+    if(node.kind==iek_expr_node)requires_substitutions((an_expr_node_ptr)node.pointer);
   }
   g.pending.clear();g.current=0;g.current_kind=iek_none;g.draining=false;
 }
@@ -214,9 +537,37 @@ inline void projection(unsigned node,const char *role,unsigned ordinal) {
   if(node && graph().written_roots.emplace(role,ordinal).second)
     graph().roots.row("{\"nodeId\":"+std::to_string(node)+",\"contextNodeId\":null,\"role\":"+json(role)+",\"ordinal\":"+std::to_string(ordinal)+"}");
 }
+inline void header_roots() {
+  auto &g=graph();g.refresh_targets.clear();
+  std::vector<a_source_file_ptr> pending_files;
+  if(il_header.primary_source_file)pending_files.push_back(il_header.primary_source_file);
+  for(auto entry=il_header.seq_number_lookup_entries;entry;entry=entry->next) {
+    g.refresh_targets.insert(entry);
+    if(entry->source_file)pending_files.push_back(entry->source_file);
+  }
+  while(!pending_files.empty()) {
+    auto file=pending_files.back();pending_files.pop_back();
+    if(!g.refresh_targets.insert(file).second)continue;
+    if(file->next)pending_files.push_back(file->next);
+    if(file->first_child_file)pending_files.push_back(file->first_child_file);
+  }
+  root(il_header.primary_source_file,iek_source_file,"il-header.primary-source-file",0,0,true,2);
+  root(il_header.seq_number_lookup_entries,iek_seq_number_lookup_entry,"il-header.seq-number-lookup-entries",0,0,true,2);
+  g.refresh_targets.clear();
+}
 inline void write(FILE *destination) {
-  auto &g=graph();register_generated_coverage();std::fputs(",\"edgGraphNodes\":",destination);g.nodes.write(destination);
-  std::fputs(",\"edgGraphFields\":",destination);g.fields.write(destination);
+  header_roots();
+  for(const auto &entry:graph().pack_uses)for(const auto &use:entry.second)
+    graph().coverage.emplace(unsigned(use.kind),use.path+"sourcePackExpansionId","gap","Descriptor has inline fields but no emitted source-pack projection identity");
+  auto &g=graph();register_generated_coverage();
+  g.coverage.emplace(0,"$frontendIdentity","configuration","Unsigned identity fields are object-local IDs shared within one frontend observation; zero denotes null. They do not assert object continuity across parser allocation reuse. Existing sourcePackExpansionId fields link emitted source-pack projections across observations.");
+  std::fputs(",\"edgGraphNodes\":",destination);g.nodes.write(destination);
+  if(expanded_fields()) {
+    std::fputs(",\"edgGraphFields\":",destination);g.fields.write(destination);
+  } else {
+    std::fputs(",\"edgGraphFieldDefinitions\":",destination);g.field_definitions.write(destination);
+    std::fputs(",\"edgGraphFieldBlocks\":",destination);g.field_blocks.write(destination);
+  }
   std::fputs(",\"edgGraphRoots\":",destination);g.roots.write(destination);
   std::fputs(",\"edgGraphCoverage\":[",destination);
   std::fputs("{\"entryKind\":0,\"field\":\"$configuration\",\"disposition\":\"configuration\",\"detail\":\"" DOT_GRAPH_FINGERPRINT "\"}",destination);

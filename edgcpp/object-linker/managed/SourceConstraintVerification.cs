@@ -15,14 +15,21 @@ internal sealed partial class ObjectFile
         VerifySourceFoldPresence();
         foreach(var expression in SourceExpressions.Values)
             if((expression.Kind=="temporary-initialization")!=SourceExpressionTemporaries.ContainsKey(expression.Id))throw new InvalidDataException("Original temporary expression is missing its initialization provenance");
+        RejectRows("SELECT e.id FROM source_expressions e LEFT JOIN edg_graph_roots r ON r.role='source-expression' AND r.ordinal=e.id-1 LEFT JOIN edg_graph_nodes n ON n.id=r.node_id WHERE e.kind='edg-node' AND (n.id IS NULL OR n.entry_kind_name<>'expr-node')",
+            "Raw source expression lacks its exact typed EDG expression root");
+        var substitutionCounts=SourceExpressionSubstitutions.Keys.GroupBy(key=>key.Expression).ToDictionary(group=>group.Key,group=>group.Count());
         foreach(var value in SourceExpressions.Values)
         {
             var edges=SourceExpressionEdges.GetValueOrDefault(value.Id,[]);
             if(edges.Count!=value.EdgeCount || SourceExpressionParameters.GetValueOrDefault(value.Id,[]).Count!=value.ParameterCount ||
                 (value.Kind=="dependent-function-reference"?SourceDependentFunctionArguments:SourceConceptArguments).GetValueOrDefault(value.Id,[]).Count!=value.ArgumentCount ||
-                SourceExpressionSubstitutions.Keys.Count(key=>key.Expression==value.Id)!=value.SubstitutionCount ||
+                substitutionCounts.GetValueOrDefault(value.Id)!=value.SubstitutionCount ||
                 value.Kind!="requires" && (value.ParameterCount!=0 || value.SubstitutionCount!=0) || value.Kind is not("concept-id" or "dependent-function-reference") && value.ArgumentCount!=0)
                 throw new InvalidDataException("Original source expression lists are incomplete or have the wrong owner");
+            // Common typed references and list extents have already been read.
+            // EDG's raw node owns the original discriminant and children for
+            // observations outside the convenience projection families.
+            if(value.Kind=="edg-node") continue;
             bool query=value.Kind is "sizeof" or "alignof" or "datasizeof";
             if(SourceConceptUses.ContainsKey(value.Id)!=(value.Kind=="concept-id") ||
                 SourceDependentFunctionLookups.ContainsKey(value.Id)!=(value.Kind=="dependent-function-reference") ||

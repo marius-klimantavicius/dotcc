@@ -20,6 +20,7 @@ internal sealed partial class Linker
     private readonly bool sharedExceptionProvider;
     private readonly Dictionary<string, Symbol> definitions = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> signatures = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, string> recordedAbiSignatures = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> sourceSignatures = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string> semanticFunctionSignatures = new(StringComparer.Ordinal);
     private readonly Dictionary<string, Symbol> completeDeclarations = new(StringComparer.Ordinal);
@@ -54,19 +55,25 @@ internal sealed partial class Linker
                 if (signatures.TryGetValue(symbol.Key, out string? prior) && prior != signature)
                     throw new InvalidDataException($"Signature mismatch for {entity.ExternalKey ?? entity.SourceName}: {prior} versus {symbol.Signature}");
                 signatures[symbol.Key] = signature;
+                if (!obj.DeferredFunctionDeclarations.ContainsKey(entity.Id) && obj.RecordedFunctionAbiSignature(entity.Id) is string abi)
+                {
+                    if (recordedAbiSignatures.TryGetValue(symbol.Key,out string? previousAbi) && previousAbi != abi)
+                        throw new InvalidDataException("Recorded ABI role mismatch for " + symbol.Key);
+                    recordedAbiSignatures[symbol.Key] = abi;
+                }
                 if (obj.EntitySourceRoutines.TryGetValue(entity.Id, out RoutineType? original))
                 {
                     string semanticSignature = obj.SourceTypeSignature(original.TypeId);
-                    if (semanticFunctionSignatures.TryGetValue(symbol.Key, out string? priorSemantic) && priorSemantic != semanticSignature)
+                    if (semanticFunctionSignatures.TryGetValue(symbol.Key, out string? priorSemantic) && !ObjectFile.CompatibleSourceSignatures(priorSemantic, semanticSignature))
                         throw new InvalidDataException($"Original semantic signature mismatch for {entity.ExternalKey ?? entity.SourceName}");
-                    semanticFunctionSignatures[symbol.Key] = semanticSignature;
+                    if (!ObjectFile.IsLocalSourceObservation(semanticSignature)) semanticFunctionSignatures[symbol.Key] = semanticSignature;
                 }
                 if (!obj.DeferredFunctionDeclarations.ContainsKey(entity.Id))
                 {
                     string sourceSignature = obj.FunctionSourceSignature(entity.Id);
-                    if (sourceSignatures.TryGetValue(symbol.Key, out string? priorSource) && priorSource != sourceSignature)
+                    if (sourceSignatures.TryGetValue(symbol.Key, out string? priorSource) && !ObjectFile.CompatibleSourceSignatures(priorSource, sourceSignature))
                         throw new InvalidDataException($"Source signature mismatch for {entity.ExternalKey ?? entity.SourceName}: {priorSource} versus {sourceSignature}");
-                    sourceSignatures[symbol.Key] = sourceSignature;
+                    if (!ObjectFile.IsLocalSourceObservation(sourceSignature)) sourceSignatures[symbol.Key] = sourceSignature;
                     completeDeclarations.TryAdd(symbol.Key, symbol);
                 }
                 if (entity.Definition != "declaration")
@@ -78,14 +85,22 @@ internal sealed partial class Linker
                 }
             }
         var storageSignatures = new Dictionary<string, string>(StringComparer.Ordinal);
+        var storageExecutionSignatures = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (ObjectFile obj in resolutionOrder)
             foreach (Storage storage in obj.Storages.Values)
             {
                 var symbol = new StorageSymbol(obj, storage);
                 requiredStorageAlignments[symbol.Key] = Math.Max(requiredStorageAlignments.GetValueOrDefault(symbol.Key, 1), obj.StorageRequiredAlignment(storage));
-                if (storageSignatures.TryGetValue(symbol.Key, out string? prior) && !CompatibleStorage(prior, symbol.Signature))
+                string execution = CanonicalExecutionType(obj.Type(storage.TypeId)) + (storage.IsThreadLocal ? ":tls" : ":global");
+                if (storageExecutionSignatures.TryGetValue(symbol.Key,out string? priorExecution) && !CompatibleStorage(priorExecution,execution))
+                    throw new InvalidDataException("Storage execution ABI/TLS mismatch: " + symbol.Key);
+                if (priorExecution is null || ScalarTypes.IsIncompleteArray(priorExecution[..priorExecution.LastIndexOf(':')]))
+                    storageExecutionSignatures[symbol.Key] = execution;
+                if (storageSignatures.TryGetValue(symbol.Key, out string? prior) && !CompatibleStorage(prior, symbol.Signature, sourceObservations: true))
                     throw new InvalidDataException($"Storage type/TLS mismatch: {storage.ExternalKey ?? storage.SourceName}");
-                storageSignatures[symbol.Key] = symbol.Signature;
+                if (!ObjectFile.IsLocalSourceObservation(symbol.Signature) &&
+                    (prior is null || ScalarTypes.IsIncompleteArray(prior[..prior.LastIndexOf(':')])))
+                    storageSignatures[symbol.Key] = symbol.Signature;
                 if (storage.Definition == "declaration") continue;
                 if (!storageDefinitions.TryGetValue(symbol.Key, out StorageSymbol? existing)) storageDefinitions.Add(symbol.Key, symbol);
                 else if (existing.Storage.Definition == "strong" && storage.Definition == "strong")
@@ -129,7 +144,7 @@ internal sealed partial class Linker
                             field.ByteOffset != expected[index].ByteOffset || field.BitOffset != expected[index].BitOffset || field.BitWidth != expected[index].BitWidth || field.BitSigned != expected[index].BitSigned || CanonicalExecutionType(obj.Type(field.TypeId)) != CanonicalExecutionType(prior.Object.Type(expected[index].TypeId)) ||
                             field.FieldRole != expected[index].FieldRole || field.ObservedAlignment != expected[index].ObservedAlignment ||
                             FieldBaseOrdinal(obj, field) != FieldBaseOrdinal(prior.Object, expected[index]) ||
-                            FieldSourceSignature(obj, field) != FieldSourceSignature(prior.Object, expected[index])).Any())
+                            !ObjectFile.CompatibleSourceSignatures(FieldSourceSignature(obj, field), FieldSourceSignature(prior.Object, expected[index]))).Any())
                         throw new InvalidDataException($"Record layout mismatch for {record.IdentityKey}");
                 }
                 else Records.Add(record.Key, (obj, record));
@@ -141,43 +156,6 @@ internal sealed partial class Linker
             Names.Add(symbol.Key, names.Allocate(symbol.Entity.SourceName, "function_" + symbol.Entity.Id));
     }
 
-    private void VerifyEnumDefinitions()
-    {
-        var definitions = new Dictionary<string, (ObjectFile Object, SourceEnumType Type)>(StringComparer.Ordinal);
-        foreach (ObjectFile obj in Objects)
-            foreach (SourceEnumType type in obj.SourceEnums.Values)
-            {
-                if (!definitions.TryGetValue(type.IdentityKey, out var prior))
-                {
-                    definitions.Add(type.IdentityKey, (obj, type));
-                    continue;
-                }
-                if ((type.OwnerTypeId is long owner?obj.SourceTypeSignature(owner):null)!=
-                    (prior.Type.OwnerTypeId is long priorOwner?prior.Object.SourceTypeSignature(priorOwner):null) ||
-                    type.IsNonreal!=prior.Type.IsNonreal || type.IsPrototype!=prior.Type.IsPrototype ||
-                    type.IsSpecialized!=prior.Type.IsSpecialized || type.OriginallyUnnamed!=prior.Type.OriginallyUnnamed ||
-                    type.UnderlyingOrigin!=prior.Type.UnderlyingOrigin ||
-                    type.IsTemplate != prior.Type.IsTemplate || type.IsScoped != prior.Type.IsScoped ||
-                    obj.SourceTypes[type.TypeId].SourceName != prior.Object.SourceTypes[prior.Type.TypeId].SourceName ||
-                    obj.SourceTypeSignature(type.UnderlyingTypeId) != prior.Object.SourceTypeSignature(prior.Type.UnderlyingTypeId))
-                    throw new InvalidDataException($"Original enum type mismatch for {type.IdentityKey}");
-                if (type.EnumeratorListComplete && prior.Type.EnumeratorListComplete)
-                {
-                    var current = obj.SourceEnumerators.GetValueOrDefault(type.TypeId, []);
-                    var previous = prior.Object.SourceEnumerators.GetValueOrDefault(prior.Type.TypeId, []);
-                    IEnumerable<(string Name, string Value)> currentValues = current.Select(item => (item.SourceName, obj.SourceEnumeratorValueIdentity(item)));
-                    IEnumerable<(string Name, string Value)> previousValues = previous.Select(item => (item.SourceName, prior.Object.SourceEnumeratorValueIdentity(item)));
-                    if (obj.SourceLanguage == "c" && prior.Object.SourceLanguage == "c")
-                    {
-                        currentValues = currentValues.OrderBy(item => item.Name, StringComparer.Ordinal);
-                        previousValues = previousValues.OrderBy(item => item.Name, StringComparer.Ordinal);
-                    }
-                    if (!currentValues.SequenceEqual(previousValues))
-                        throw new InvalidDataException($"Original enum definition mismatch for {type.IdentityKey}");
-                }
-                if (type.EnumeratorListComplete && !prior.Type.EnumeratorListComplete) definitions[type.IdentityKey] = (obj, type);
-            }
-    }
 
     private static string? FieldSourceSignature(ObjectFile obj, RecordField field) =>
         field.SourceTypeId is long id ? obj.SourceTypeSignature(id) : null;
@@ -222,6 +200,7 @@ internal sealed partial class Linker
     {
         if (left.SourceRecordId is not long leftId || right.SourceRecordId is not long rightId)
             return left.SourceRecordId is null && right.SourceRecordId is null;
+        if (leftObject.IsLocalSourceRecord(leftId) || rightObject.IsLocalSourceRecord(rightId)) return true;
         SourceRecord a = leftObject.SourceRecords[leftId], b = rightObject.SourceRecords[rightId];
         if (a.IdentityKey != b.IdentityKey || a.SourceName != b.SourceName || a.RecordKind != b.RecordKind ||
             a.IsTriviallyCopyable != b.IsTriviallyCopyable || a.IsPacked != b.IsPacked ||
@@ -234,8 +213,8 @@ internal sealed partial class Linker
         if (expectedBases.Length != actualBases.Length || actualBases.Where((item, index) =>
             item.Ordinal != expectedBases[index].Ordinal || item.AccessKind != expectedBases[index].AccessKind ||
             item.IsVirtual != expectedBases[index].IsVirtual ||
-            rightObject.SourceTypeSignature(item.BaseSourceTypeId) !=
-                leftObject.SourceTypeSignature(expectedBases[index].BaseSourceTypeId)).Any()) return false;
+            !ObjectFile.CompatibleSourceSignatures(rightObject.SourceTypeSignature(item.BaseSourceTypeId),
+                leftObject.SourceTypeSignature(expectedBases[index].BaseSourceTypeId))).Any()) return false;
         var expected = OriginalFields(leftObject, leftId);
         var actual = OriginalFields(rightObject, rightId);
         return expected.Length == actual.Length && !actual.Where((field, index) =>
@@ -243,8 +222,8 @@ internal sealed partial class Linker
             field.HasInitializer != expected[index].HasInitializer || field.IsPacked != expected[index].IsPacked ||
             field.ExplicitAlignment != expected[index].ExplicitAlignment ||
             field.HasNoUniqueAddress != expected[index].HasNoUniqueAddress || field.BitWidth != expected[index].BitWidth ||
-            rightObject.SourceBitfieldWidthIdentity(field.Id) != leftObject.SourceBitfieldWidthIdentity(expected[index].Id) ||
-            rightObject.SourceTypeSignature(field.SourceTypeId) != leftObject.SourceTypeSignature(expected[index].SourceTypeId)).Any();
+            !ObjectFile.CompatibleSourceSignatures(rightObject.SourceBitfieldWidthIdentity(field.Id), leftObject.SourceBitfieldWidthIdentity(expected[index].Id)) ||
+            !ObjectFile.CompatibleSourceSignatures(rightObject.SourceTypeSignature(field.SourceTypeId), leftObject.SourceTypeSignature(expected[index].SourceTypeId))).Any();
     }
 
     public Symbol Resolve(ObjectFile obj, long id)
@@ -274,12 +253,13 @@ internal sealed partial class Linker
         return Externs[declaration.Key];
     }
 
-    private static bool CompatibleStorage(string left, string right)
+    private static bool CompatibleStorage(string left, string right, bool sourceObservations = false)
     {
         if (left == right) return true;
         int a = left.LastIndexOf(':'), b = right.LastIndexOf(':');
         if (a < 0 || b < 0 || left[a..] != right[b..]) return false;
         string x = left[..a], y = right[..b];
+        if(sourceObservations && (ObjectFile.IsLocalSourceObservation(x) || ObjectFile.IsLocalSourceObservation(y))) return true;
         return ScalarTypes.IsArray(x) && ScalarTypes.IsArray(y) && ScalarTypes.Element(x) == ScalarTypes.Element(y) &&
             (ScalarTypes.IsIncompleteArray(x) || ScalarTypes.IsIncompleteArray(y));
     }

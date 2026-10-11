@@ -4,6 +4,7 @@ std::vector<string> source_dependent_function_lookups,source_dependent_function_
 unsigned source_constraint_expansion(unsigned id) {
   if(!id || !written_source_pack_expansions.insert(id).second)return id;
   const auto value=dot_object_source::source_constraint_graph().expansions.at(id-1);
+  dot_object_source::typed_graph::bind_pack_projection(value.original,id);
   if(!value.error.empty())reject(value.error.c_str());
   source_pack_expansions.push_back("{\"id\":"+number(id)+",\"referenceCount\":"+std::to_string(value.references.size())+
     ",\"ellipsisSeen\":"+(value.ellipsis?"true":"false")+",\"usesOnlyEnclosingPacks\":"+(value.enclosing_only?"true":"false")+
@@ -13,6 +14,7 @@ unsigned source_constraint_expansion(unsigned id) {
     ",\"captureProof\":\"original-pack-expansion\"}");
   unsigned ordinal=0;for(const auto &reference:value.references)
     source_pack_references.push_back("{\"expansionId\":"+number(id)+",\"ordinal\":"+std::to_string(ordinal++)+
+      ",\"originalKind\":"+std::to_string(reference.original_kind)+
       ",\"kind\":"+quote(reference.kind)+",\"sourceTypeId\":"+number(reference.type?source_type(reference.type):0)+
       ",\"constantId\":"+number(reference.constant?source_semantic_constant(reference.constant):0)+
       ",\"templateId\":"+number(reference.templ?source_template_reference(reference.templ):0)+
@@ -199,6 +201,7 @@ unsigned source_constraint_expression(unsigned captured) {
   if(!captured)reject("source expression reference is absent");
   if(!written_source_expressions.insert(captured).second)return captured;
   const auto value=dot_object_source::source_constraint_graph().expressions.at(captured-1);
+  if(!value.graph_node)reject("source expression has no captured EDG graph root");
   dot_object_source::typed_graph::projection(value.graph_node,"source-expression",captured-1);
   if(!value.error.empty())reject(value.error.c_str());
   source_expressions.push_back("{\"id\":"+number(captured)+",\"kind\":"+quote(value.kind)+
@@ -209,8 +212,8 @@ unsigned source_constraint_expression(unsigned captured) {
     ",\"isVolatileFetch\":"+(value.volatile_fetch?"true":"false")+
     ",\"isPackExpansion\":"+(value.pack_expansion?"true":"false")+
     ",\"valueCategory\":"+quote(!value.type?"none":value.lvalue?"lvalue":value.xvalue?"xvalue":"prvalue")+
-    ",\"edgeCount\":"+std::to_string(value.edges.size())+",\"parameterCount\":"+std::to_string(value.parameters.size())+
-    ",\"argumentCount\":"+std::to_string(value.arguments.size())+",\"substitutionCount\":"+std::to_string(value.substitutions.size())+
+    ",\"edgeCount\":"+std::to_string(value.edges.size())+",\"parameterCount\":"+std::to_string(value.navigation_available?value.parameters.size():0)+
+    ",\"argumentCount\":"+std::to_string(value.navigation_available?value.arguments.size():0)+",\"substitutionCount\":"+std::to_string(value.navigation_available?value.substitutions.size():0)+
     ",\"captureProof\":\"original-source-expression\""+position(value.location)+"}");
   if(value.kind=="field-reference") {
     auto owner=dot_object_source::state().types.at(value.field_owner-1).record_type;
@@ -243,13 +246,19 @@ unsigned source_constraint_expression(unsigned captured) {
       ",\"constructorDeclarationId\":"+number(temp.constructor?source_constraint_declaration(temp.constructor):0)+
       ",\"destructorDeclarationId\":"+number(temp.destructor?source_constraint_declaration(temp.destructor):0)+
       ",\"constantId\":"+number(temp.constant?source_semantic_constant(temp.constant):0)+
-      ",\"isDependentConstructor\":"+(temp.dependent_constructor?"true":"false")+",\"lifetimeDisposition\":\"no-linked-lifetime\",\"captureProof\":\"original-expression-temporary\"}");
+      ",\"isDependentConstructor\":"+(temp.dependent_constructor?"true":"false")+
+      ",\"lifetimeDisposition\":"+quote(temp.linked_lifetime_present?"retained-in-edg-graph":"no-linked-lifetime")+
+      ",\"captureProof\":\"original-expression-temporary\"}");
     for(const auto &flag:temp.flags)source_expression_temporary_flags.push_back("{\"expressionId\":"+number(captured)+",\"flag\":"+quote(flag)+"}");
   }
   std::map<string,unsigned> ordinals;
   for(const auto &edge:value.edges)source_expression_edges.push_back("{\"expressionId\":"+number(captured)+
     ",\"role\":"+quote(edge.role)+",\"ordinal\":"+std::to_string(ordinals[edge.role]++)+
     ",\"childExpressionId\":"+number(source_constraint_expression(edge.child))+"}");
+  if(!value.navigation_available) {
+    for(const auto &flag:value.flags)source_expression_flags.push_back("{\"expressionId\":"+number(captured)+",\"flag\":"+quote(flag)+"}");
+    return captured;
+  }
   if(value.binder)source_expression_bindings.push_back("{\"expressionId\":"+number(captured)+
     ",\"lexicalBinderId\":"+number(source_parameter_binder(value.binder))+"}");
   if(value.declaration)source_expression_declaration_references.push_back("{\"expressionId\":"+number(captured)+

@@ -28,9 +28,11 @@ internal sealed partial class ObjectFile
                 var value = new SourceSemanticConstant(q.Integer(0), q.Text(1), q.Integer(2), q.Text(3), q.Text(4),
                     q.OptionalInteger(5), q.OptionalInteger(6), q.Integer(7) == 1, q.Text(8), q.OptionalInteger(9), q.OptionalInteger(10), q.OptionalInteger(11), q.Integer(12) == 1, q.OptionalInteger(13), q.Integer(14), q.Integer(15));
                 if (value.Id <= 0 || !SourceTypes.ContainsKey(value.SourceTypeId) || q.Integer(7) is not (0 or 1) || q.Integer(12) is not (0 or 1) ||
-                    value.Kind is not ("integer" or "parameter" or "operation" or "expression" or "member" or "type-operand" or "builtin-trait" or "sizeof" or "alignof" or "datasizeof" or "source-expression" or "aggregate" or "sizeof-pack") || value.Line < 0 || value.Column < 0 ||
+                    value.Kind is not ("integer" or "parameter" or "operation" or "expression" or "member" or "type-operand" or "builtin-trait" or "sizeof" or "alignof" or "datasizeof" or "source-expression" or "aggregate" or "sizeof-pack" or "edg-node") || value.Line < 0 || value.Column < 0 ||
                     !SourceSemanticConstants.TryAdd(value.Id, value)) throw new InvalidDataException("Invalid original semantic constant");
             }
+        RejectRows("SELECT c.id FROM source_semantic_constants c LEFT JOIN edg_graph_roots r ON r.role='source-constant' AND r.ordinal=c.id-1 LEFT JOIN edg_graph_nodes n ON n.id=r.node_id WHERE c.kind='edg-node' AND (n.id IS NULL OR n.entry_kind_name<>'constant')",
+            "Raw source constant lacks its exact typed EDG constant root");
         var operands = new Dictionary<long, List<long>>();
         using (var q = database.Prepare("SELECT constant_id,ordinal,operand_id FROM source_semantic_constant_operands ORDER BY constant_id,ordinal"))
             while (q.Read())
@@ -74,13 +76,13 @@ internal sealed partial class ObjectFile
                 else if (relation.ResolutionKind == "dependent-member-template")
                 {
                     if (relation.PrototypeSourceRecordId is not null || relation.SourceTemplateId is not null || relation.MemberOwnerSourceTypeId is not long owner ||
-                        !SourceTypes.ContainsKey(owner) || !SourceTypeContainsParameter(owner, 0) || instance.SourceName.Length == 0 ||
+                        !SourceTypes.ContainsKey(owner) || instance.SourceName.Length == 0 ||
                         q.Text(7) != "original-nonreal-member-template")
                         throw new InvalidDataException("Dependent member template requires its original owner and no fabricated prototype");
                 }
                 else if (relation.ResolutionKind == "template-parameter")
                 {
-                    if (relation.SourceTemplateId is not long template || !SourceTemplates.TryGetValue(template, out var parameter) || parameter.Kind!="parameter" || instance.SourceName != parameter.SourceName ||
+                    if (relation.SourceTemplateId is not long template || !SourceTemplates.TryGetValue(template, out var parameter) || parameter.Kind is not("parameter" or "edg-node") ||
                         relation.PrototypeSourceRecordId is not null || relation.MemberOwnerSourceTypeId is not null ||
                         relation.MemberOfUnknownBase || relation.QualifiedUnknownBaseMember ||
                         q.Text(7) != "original-template-parameter-instantiation")
@@ -106,7 +108,6 @@ internal sealed partial class ObjectFile
             if ((type.ArrayBoundKind == "dependent") != SourceArrayBounds.ContainsKey(type.Id))
                 throw new InvalidDataException("Dependent array is missing its exact original bound expression");
         ReadSourceConstraints();
-        ReadSourceMemberNames();
         ReadSourceTypeOrigins();
         ReadSourceRoutineSubstitutions();
         ReadSourceDeclaratorContexts();
@@ -120,38 +121,19 @@ internal sealed partial class ObjectFile
 
     private void VerifySourceSemanticConstant(SourceSemanticConstant value)
     {
+        if(value.Kind=="edg-node")return; // Typed root and all recorded references were checked while reading.
         if(value.Kind=="source-expression")
         {
             VerifySourceConstantExpression(value);
             return;
         }
-        SourceType valueType = Original(SourceTypeById(value.SourceTypeId));
-        bool unknownType = valueType.Kind == "dependent" && SourceDependentTypes[valueType.Id].Kind == "unknown";
-        if (unknownType && value.Kind is not ("member" or "expression" or "source-expression"))
-            throw new InvalidDataException("Only unresolved source member values may retain an unknown result type");
-        // A symbolic prototype expression such as T(-1) retains T as its exact
-        // source type. It has no integral width until substitution; only a
-        // resolved integer literal is allowed to claim a checked integer range.
-        bool dependentSymbolic = value.Kind is "parameter" or "member" or "expression" or "operation" or "source-expression" &&
-            SourceTypeContainsParameter(value.SourceTypeId, 0);
-        // Stock ck_integer can preserve a cast-to-pointer source type (see
-        // il_to_str::form_integer_constant). A typed null retains that exact
-        // pointer identity; it does not acquire an integral source width.
-        bool pointerInteger = value.Kind == "integer" && valueType.Kind is "pointer" or "nullptr";
-        // A nullptr_t template formal is symbolic declaration metadata, not
-        // an integer value. Its original type and coordinates remain checked.
-        bool nullptrParameter = value.Kind == "parameter" && valueType.Kind == "nullptr";
-        var shape = unknownType || dependentSymbolic || pointerInteger || nullptrParameter || value.Kind is "type-operand" or "aggregate"
-            ? (Bits: 0, Signed: false) : SourceIntegerShape(valueType);
-        VerifySourceTypedExpression(value, valueType);
+        VerifySourceTypedExpression(value);
         if ((value.Kind == "member") != (value.OwnerSourceTypeId is not null))
             throw new InvalidDataException("Source constant member owner differs from its semantic kind");
         long[] operands = SourceSemanticConstantOperands.GetValueOrDefault(value.Id, []);
         if (value.Kind == "member")
         {
-            SourceType owner = Original(SourceTypeById(value.OwnerSourceTypeId!.Value));
-            if (owner.Kind != "dependent" && (owner.Kind != "record" || !SourceRecordsByType[owner.Id].IsDependent) ||
-                value.SourceName.Length == 0 || value.ParameterDepth is not null || value.ParameterPosition is not null ||
+            if (value.SourceName.Length == 0 || value.ParameterDepth is not null || value.ParameterPosition is not null ||
                 value.IsPack || value.ValueText.Length != 0 || value.OperatorName.Length != 0 || operands.Length != 0)
                 throw new InvalidDataException("Dependent constant member requires its exact dependent owner and member name");
         }
@@ -175,11 +157,8 @@ internal sealed partial class ObjectFile
             else if (value.Kind == "integer")
             {
                 if (!BigInteger.TryParse(value.ValueText, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var number) ||
-                    number.ToString(CultureInfo.InvariantCulture) != value.ValueText || operands.Length != 0 || value.OperatorName.Length != 0 ||
-                    (pointerInteger ? number != BigInteger.Zero :
-                     number < (shape.Signed ? -(BigInteger.One << (shape.Bits - 1)) : BigInteger.Zero) ||
-                     number >= (BigInteger.One << (shape.Bits - (shape.Signed ? 1 : 0)))))
-                    throw new InvalidDataException("Source integer constant exceeds its exact original type");
+                    number.ToString(CultureInfo.InvariantCulture) != value.ValueText || operands.Length != 0 || value.OperatorName.Length != 0)
+                    throw new InvalidDataException("Source integer constant has invalid canonical encoding or payload");
             }
             else
             {
@@ -196,97 +175,4 @@ internal sealed partial class ObjectFile
     }
 
     private static string SourceIdentityFrame(string value) => Encoding.UTF8.GetByteCount(value).ToString(CultureInfo.InvariantCulture) + ":" + value;
-    private string SourceConstantParameterIdentity(SourceSemanticConstant value)
-    {
-        using var file = database.Prepare($"SELECT path FROM source_files WHERE id={value.SourceFileId}");
-        if (!file.Read()) throw new InvalidDataException("Source constant declaration file is absent");
-        return file.Text(0) + ":" + value.Line + ":" + value.Column + ":" + value.ParameterDepth + ":" + value.ParameterPosition;
-    }
-    private string SourceConstantTypeIdentity(long id, int depth)
-    {
-        SourceType type = SourceTypeById(id);
-        return type.Kind == "dependent" && SourceDependentTypes[id].Kind == "unknown" ? "dependent-unknown" : SourceArgumentTypeIdentity(id, depth);
-    }
-    private string SourceConstantIdentity(long id, int depth)
-    {
-        if (depth > 128) throw new InvalidDataException("Source constant identity cycle/depth");
-        SourceSemanticConstant value = SourceSemanticConstants[id];
-        string result = value.Kind + ":" + SourceIdentityFrame(SourceConstantTypeIdentity(value.SourceTypeId, depth + 1));
-        if (value.OperandSourceTypeId is long operandType) result += SourceIdentityFrame(SourceArgumentTypeIdentity(operandType, depth + 1));
-        if (value.Kind == "builtin-trait") result += SourceIdentityFrame(value.BuiltinOperatorKind!.Value.ToString(CultureInfo.InvariantCulture));
-        if (value.Kind == "alignof") result += value.IsStandardAlignof ? "std:" : "extension:";
-        return value.Kind switch
-        {
-            "sizeof-pack" => result + SourcePackSizeIdentity(value.Id,depth+1),
-            "aggregate" => result + SourceAggregateIdentity(value.Id,depth+1),
-            "source-expression" => result + SourceIdentityFrame(UnitId)+SourceIdentityFrame(SourceSemanticConstantExpressions[id].ToString(CultureInfo.InvariantCulture)),
-            "integer" => result + SourceIdentityFrame(value.ValueText),
-            "member" => result + SourceIdentityFrame(SourceArgumentTypeIdentity(value.OwnerSourceTypeId!.Value, depth + 1)) + SourceIdentityFrame(value.SourceName),
-            "parameter" => result + SourceIdentityFrame(SourceConstantParameterIdentity(value)) + ":" + (value.IsPack ? "1" : "0"),
-            _ => result + SourceIdentityFrame(value.OperatorName) + string.Concat(SourceSemanticConstantOperands.GetValueOrDefault(id, [])
-                .Select(child => SourceIdentityFrame(SourceConstantIdentity(child, depth + 1))))
-        };
-    }
-    private string SourceArgumentTypeIdentity(long id, int depth)
-    {
-        if (depth > 128) throw new InvalidDataException("Source template type identity cycle/depth");
-        SourceType value = SourceTypeById(id);
-        string QualifyOrigin(string origin) {
-            string qualifiers=(value.IsConst?"c":"")+(value.IsVolatile?"v":"")+(value.IsRestrict?"r":"")+(value.IsAtomic?"a":"")+
-                string.Concat(SourceTypeQualifiers.GetValueOrDefault(id,[]).Select(SourceIdentityFrame));
-            return qualifiers.Length==0?origin:"q"+SourceIdentityFrame(qualifiers)+SourceIdentityFrame(origin);
-        }
-        if(SourceAliasInstances.TryGetValue(id,out var alias) && alias.Nonreal)return QualifyOrigin(SourceAliasIdentity(id,depth+1));
-        if(SourceTypeOperators.TryGetValue(id,out var operation) && operation.Dependent)return QualifyOrigin(SourceTypeOperatorIdentity(id,depth+1));
-        if (value.Kind is "typedef" or "qualified")
-        {
-            string inner = SourceArgumentTypeIdentity(value.UnderlyingTypeId!.Value, depth + 1);
-            string qualifiers = (value.IsConst ? "c" : "") + (value.IsVolatile ? "v" : "") + (value.IsRestrict ? "r" : "") + (value.IsAtomic ? "a" : "") +
-                string.Concat(SourceTypeQualifiers.GetValueOrDefault(id, []).Select(SourceIdentityFrame));
-            return qualifiers.Length == 0 ? inner : "q" + SourceIdentityFrame(qualifiers) + SourceIdentityFrame(inner);
-        }
-        if (value.Kind == "record") return "r" + SourceIdentityFrame(SourceRecordIdentity(SourceRecordsByType[id].Id, depth + 1));
-        if (value.Kind == "dependent")
-        {
-            var parameter = SourceDependentTypes[id];
-            return parameter.Kind switch
-            {
-                "parameter" => "p" + SourceIdentityFrame(parameter.IdentityKey) + (parameter.IsPack ? "1" : "0"),
-                "auto-placeholder" => "auto:" + SourceIdentityFrame(parameter.ParameterPosition!.Value.ToString(CultureInfo.InvariantCulture)) +
-                    SourceIdentityFrame(SourceTypeConstraints.TryGetValue(id,out long constraint)?SourceStructuralExpressionKey(constraint,depth+1):""),
-                "member" => "m" + SourceIdentityFrame(SourceArgumentTypeIdentity(parameter.OwnerTypeId!.Value, depth + 1)) + SourceIdentityFrame(value.SourceName),
-                _ => throw new InvalidDataException("Unknown dependent type cannot identify a template argument")
-            };
-        }
-        if (value.Kind == "array") return "a" + SourceIdentityFrame(SourceArrayBounds.TryGetValue(id, out long bound)
-            ? SourceConstantIdentity(bound, depth + 1) : value.ElementCount?.ToString(CultureInfo.InvariantCulture) ?? "?") +
-            SourceIdentityFrame(SourceArgumentTypeIdentity(value.UnderlyingTypeId!.Value, depth + 1));
-        if (value.Kind is "pointer" or "lvalue-reference" or "rvalue-reference")
-            return value.Kind + ":" + SourceIdentityFrame(SourceArgumentTypeIdentity(value.UnderlyingTypeId!.Value, depth + 1));
-        if(value.Kind=="routine") {
-            var routine=SourceRoutines[id];string result="routine:"+SourceIdentityFrame(SourceExpressionTypeKey(routine.ReturnTypeId,depth+1))+
-                SourceIdentityFrame(routine.ObjectTypeId is long owner?SourceArgumentTypeIdentity(owner,depth+1):"")+(routine.ObjectIsConst?"1":"0")+(routine.ObjectIsVolatile?"1":"0")+
-                SourceIdentityFrame(routine.ObjectRefQualifier)+(routine.Variadic?"1":"0")+SourceIdentityFrame(routine.ExceptionPolicy)+SourceIdentityFrame(routine.ParameterMode);
-            foreach(long parameter in routine.Parameters)result+=SourceIdentityFrame(SourceExpressionTypeKey(parameter,depth+1));
-            if(DynamicExceptionSpecifications.TryGetValue(id,out var specification))foreach(var item in specification.Types)result+=SourceIdentityFrame(SourceArgumentTypeIdentity(item.DeclaredSourceTypeId,depth+1));
-            return result;
-        }
-        if(value.Kind=="member-pointer")return "member-pointer:"+SourceIdentityFrame(SourceArgumentTypeIdentity(SourceMemberPointers[id].OwnerTypeId,depth+1))+SourceIdentityFrame(SourceArgumentTypeIdentity(SourceMemberPointers[id].MemberTypeId,depth+1));
-        if (value.Kind == "enum") return "enum:"+SourceIdentityFrame(SourceEnums[id].IdentityKey);
-        return value.Kind;
-    }
-    private string SourceRecordIdentity(long id, int depth)
-    {
-        if (depth > 128) throw new InvalidDataException("Source record template identity cycle/depth");
-        if (!SourceRecords[id].IsDependent || !SourceRecordInstantiations.TryGetValue(id, out var relation)) return SourceRecords[id].IdentityKey;
-        string owner = relation.ResolutionKind == "class-template"
-            ? "source-instantiation:" + SourceIdentityFrame(SourceRecordIdentity(relation.PrototypeSourceRecordId!.Value, depth + 1))
-            : relation.ResolutionKind == "template-parameter"
-            ? "source-parameter-instantiation:" + SourceIdentityFrame(SourceTemplateIdentity(relation.SourceTemplateId!.Value, depth + 1))
-            : "source-member-instantiation:" + SourceIdentityFrame(SourceArgumentTypeIdentity(relation.MemberOwnerSourceTypeId!.Value, depth + 1)) +
-                SourceIdentityFrame(SourceRecords[id].SourceName);
-        return owner + string.Concat(SourceTemplateArguments.GetValueOrDefault(id, []).Select(argument => SourceIdentityFrame((argument.Kind == "pack-boundary" ? "pack-boundary" : argument.Kind == "type"
-                ? "t" + SourceArgumentTypeIdentity(argument.TypeId!.Value, depth + 1) : argument.Kind == "constant"
-                ? "c" + SourceConstantIdentity(argument.ConstantId!.Value, depth + 1) : "m" + SourceTemplateIdentity(argument.TemplateId!.Value, depth + 1))+(argument.IsPack?":pack":""))));
-    }
 }

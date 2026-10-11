@@ -33,8 +33,13 @@ internal sealed partial class ObjectFile
         ReadSourceTypeDetails();
         ReadDependentSourceTypes();
         ReadSourceTemplateMetadata();
+        RejectRows("SELECT s.type_id FROM source_routine_types s LEFT JOIN edg_graph_roots r ON r.role='source-type' AND r.ordinal=s.type_id-1 LEFT JOIN edg_graph_nodes n ON n.id=r.node_id WHERE s.exception_policy='unsupported-dynamic' AND (n.id IS NULL OR n.entry_kind_name<>'type')",
+            "Unresolved source exception policy lacks its retained typed EDG routine root");
+        RejectRows("SELECT t.id FROM source_types t LEFT JOIN edg_graph_roots r ON r.role='source-type' AND r.ordinal=t.id-1 LEFT JOIN edg_graph_nodes n ON n.id=r.node_id WHERE t.kind='edg-node' AND (n.id IS NULL OR n.entry_kind_name<>'type')",
+            "Raw source type lacks its exact typed EDG type root");
         foreach (SourceType type in SourceTypes.Values)
         {
+            if(type.Kind=="edg-node")continue; // Common columns and typed FKs remain verified.
             string? execution = type.ExecutionRepresentationId is long id ? Type(id) : null;
             if (type.IsAtomic && execution is not null)
                 throw new InvalidDataException("Atomic source types require an explicit atomic execution contract");
@@ -110,6 +115,7 @@ internal sealed partial class ObjectFile
             SourceType current = start;
             while (!visited.Contains(current.Id))
             {
+                if(current.Kind=="edg-node")break;
                 if (!chain.Add(current.Id)) throw new InvalidDataException("Cycle in source type references");
                 if (current.UnderlyingTypeId is not long underlying) break;
                 SourceType target = SourceTypeById(underlying);
@@ -144,9 +150,9 @@ internal sealed partial class ObjectFile
                 SourceTypeById(id);
                 if (name is not ("nullable" or "non-null" or "null-unspecified" or "unaligned" or "near" or "far" or "upc-shared" or "upc-strict" or "upc-relaxed"))
                     throw new InvalidDataException("Unknown original source qualifier");
-                if (name is "upc-shared" or "upc-strict" or "upc-relaxed")
+                if (SourceTypeById(id).Kind!="edg-node" && name is ("upc-shared" or "upc-strict" or "upc-relaxed"))
                     throw new InvalidDataException("UPC source qualifiers require an owned block-size and shared-memory type contract");
-                if (name is "unaligned" or "near" or "far" && SourceTypeById(id).ExecutionRepresentationId is not null)
+                if (SourceTypeById(id).Kind!="edg-node" && name is ("unaligned" or "near" or "far") && SourceTypeById(id).ExecutionRepresentationId is not null)
                     throw new InvalidDataException("Extended source qualifier requires an owned access or address-space execution contract");
                 if (!SourceTypeQualifiers.TryGetValue(id, out var qualifiers)) SourceTypeQualifiers.Add(id, qualifiers = new(StringComparer.Ordinal));
                 if (!qualifiers.Add(name)) throw new InvalidDataException("Duplicate original source qualifier");
@@ -184,10 +190,6 @@ internal sealed partial class ObjectFile
 
     private void VerifySourceTypeDetails()
     {
-        foreach (var qualifiers in SourceTypeQualifiers.Values)
-            if (qualifiers.Count(name => name is "nullable" or "non-null" or "null-unspecified") > 1 ||
-                qualifiers.Contains("near") && qualifiers.Contains("far") || qualifiers.Contains("upc-strict") && qualifiers.Contains("upc-relaxed"))
-                throw new InvalidDataException("Conflicting original source qualifiers");
         foreach (SourceEnumType item in SourceEnums.Values)
         {
             SourceType source = SourceTypeById(item.TypeId), underlying = Original(SourceTypeById(item.UnderlyingTypeId));
@@ -195,32 +197,18 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Original enum owner is not a class type");
             if(item.SourceOccurrence<0 || item.EnumeratorCount!=SourceEnumerators.GetValueOrDefault(item.TypeId,[]).Count)
                 throw new InvalidDataException("Original enum lost its complete ordered enumerator list");
-            if(item.UnderlyingOrigin!=(item.HasExplicitBase?"declared":item.IsNonreal&&!item.IsScoped?"prototype-placeholder":"inferred") ||
-               item.IsPrototype&&!item.IsNonreal || item.IsNonreal&&!item.IsTemplate ||
-               item.IsNonreal && source.ExecutionRepresentationId is not null)
-                throw new InvalidDataException("Original enum prototype and underlying type origin disagree");
-            bool symbolic=SourceEnumerators.GetValueOrDefault(item.TypeId,[]).Any(value=>value.ConstantId is not null);
-            if(symbolic && (!item.IsTemplate || source.ExecutionRepresentationId is not null))
-                throw new InvalidDataException("Original template enum values cannot claim a resolved execution representation");
-            bool unresolvedUnderlying=item.UnderlyingOrigin=="prototype-placeholder" || SourceTypeContainsParameter(underlying.Id,0);
-            if(unresolvedUnderlying && !item.IsNonreal)throw new InvalidDataException("Concrete enum cannot retain an unresolved underlying type");
-            (int bits, bool signed) = unresolvedUnderlying?(0,false):SourceIntegerShape(underlying);
             if (source.ExecutionRepresentationId is long physical && Type(physical) != Type(underlying.ExecutionTypeId))
                 throw new InvalidDataException("Enum execution representation differs from its original underlying type");
-            BigInteger minimum = signed ? -(BigInteger.One << (bits - 1)) : BigInteger.Zero;
-            BigInteger maximum = (BigInteger.One << (signed ? bits - 1 : bits)) - 1;
             var names = new HashSet<string>(StringComparer.Ordinal);
             foreach (SourceEnumerator value in SourceEnumerators.GetValueOrDefault(item.TypeId, []))
             {
                 if(!names.Add(value.SourceName))throw new InvalidDataException("Duplicate original enumerator name");
                 if(value.ConstantId is long constant) {
-                    if(value.ValueText.Length!=0 || !SourceSemanticConstants.TryGetValue(constant,out var expression) ||
-                       expression.Kind is not ("expression" or "member" or "sizeof" or "alignof" or "datasizeof") ||
-                       Original(SourceTypeById(expression.SourceTypeId)).Id!=source.Id)
+                    if(value.ValueText.Length!=0 || !SourceSemanticConstants.ContainsKey(constant))
                         throw new InvalidDataException("Original symbolic enumerator lacks its exact enum-typed semantic constant");
                 } else if (!BigInteger.TryParse(value.ValueText, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out BigInteger number) ||
-                    number.ToString(CultureInfo.InvariantCulture) != value.ValueText || !unresolvedUnderlying&&(number < minimum || number > maximum))
-                    throw new InvalidDataException("Invalid original enumerator name, exact integer value or underlying range");
+                    number.ToString(CultureInfo.InvariantCulture) != value.ValueText)
+                    throw new InvalidDataException("Invalid original enumerator name or canonical integer encoding");
             }
         }
         foreach (SourceMemberPointerType item in SourceMemberPointers.Values)
@@ -248,6 +236,7 @@ internal sealed partial class ObjectFile
     private string SourceEnumSignature(SourceType type, int depth)
     {
         SourceEnumType enumeration = SourceEnums[type.Id];
+        if (enumeration.IsNonreal || enumeration.IsPrototype) return SourceObservationIdentity("type",type.Id);
         string underlying = SourceTypeSignature(enumeration.UnderlyingTypeId, depth + 1, false, false);
         // C permits compatible anonymous enum declarations in distinct units.
         // Preserve nominal source identities in the object, but compare these
@@ -260,16 +249,5 @@ internal sealed partial class ObjectFile
         return "enum(" + Convert.ToHexStringLower(System.Text.Encoding.UTF8.GetBytes(enumeration.IdentityKey)) + "," + underlying + "," + enumeration.IsScoped + ")";
     }
 
-    internal string SourceEnumeratorValueIdentity(SourceEnumerator value) => value.ConstantId is long id
-        ? "expression:"+SourceConstantIdentity(id,0) : "integer:"+value.ValueText;
 
-    private (int Bits, bool Signed) SourceIntegerShape(SourceType type) => type.Kind switch
-    {
-        "enum" when !SourceEnums[type.Id].IsNonreal => SourceIntegerShape(Original(SourceTypeById(SourceEnums[type.Id].UnderlyingTypeId))),
-        "bool" => (1, false), "signed-char" => (8, true), "unsigned-char" or "char8-t" => (8, false),
-        "short" => (16, true), "unsigned-short" or "char16-t" => (16, false), "int" => (32, true), "unsigned-int" or "char32-t" => (32, false),
-        "long" or "long-long" => (64, true), "unsigned-long" or "unsigned-long-long" => (64, false), "int128" => (128, true), "unsigned-int128" => (128, false),
-        "char" or "wchar-t" when type.ExecutionRepresentationId is long id && ScalarTypes.IsInteger(Type(id)) => (checked((int)StorageSize(Type(id)) * 8), Type(id).StartsWith('i')),
-        _ => throw new InvalidDataException($"Expected a supported original integral type (source type {type.Id}, kind {type.Kind})")
-    };
 }

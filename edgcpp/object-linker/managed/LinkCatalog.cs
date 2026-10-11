@@ -27,7 +27,7 @@ internal sealed class LinkCatalog : IDisposable
         database.Execute("PRAGMA mmap_size=0");
         foreach(string command in Schema)database.Execute(command);
         Insert("INSERT INTO catalog_info VALUES(1,?,?,?,?)",FormatVersion,
-            typeof(LinkCatalog).Assembly.ManifestModule.ModuleVersionId.ToString(),"importing","trusted-unit-import-v2");
+            typeof(LinkCatalog).Assembly.ManifestModule.ModuleVersionId.ToString(),"importing","trusted-unit-import-v3");
     }
     public void BeginUnit()=>database.Execute("BEGIN IMMEDIATE");
     public void CommitUnit()=>database.Execute("COMMIT");
@@ -72,7 +72,7 @@ internal sealed class LinkCatalog : IDisposable
         "CREATE TABLE contracts(kind TEXT NOT NULL,digest TEXT NOT NULL,payload TEXT NOT NULL,PRIMARY KEY(kind,digest)) STRICT,WITHOUT ROWID",
         "CREATE TABLE facts(unit_id INTEGER NOT NULL REFERENCES units(id),kind TEXT NOT NULL,local_id INTEGER NOT NULL,identity_key TEXT NOT NULL,contract_digest TEXT NOT NULL,PRIMARY KEY(unit_id,kind,local_id,identity_key),FOREIGN KEY(kind,contract_digest) REFERENCES contracts(kind,digest)) STRICT,WITHOUT ROWID",
         "CREATE INDEX facts_identity ON facts(kind,identity_key,unit_id)",
-        "CREATE TABLE functions(unit_id INTEGER NOT NULL REFERENCES units(id),entity_id INTEGER NOT NULL,symbol_key TEXT NOT NULL,sort_key BLOB NOT NULL,definition TEXT NOT NULL,source_name TEXT NOT NULL,linkage TEXT NOT NULL,is_weak INTEGER NOT NULL,raw_execution TEXT NOT NULL,callable_execution TEXT NOT NULL,source_signature TEXT,semantic_signature TEXT,is_deferred INTEGER NOT NULL,is_original_ordinary INTEGER NOT NULL,runtime_method TEXT,PRIMARY KEY(unit_id,entity_id)) STRICT,WITHOUT ROWID",
+        "CREATE TABLE functions(unit_id INTEGER NOT NULL REFERENCES units(id),entity_id INTEGER NOT NULL,symbol_key TEXT NOT NULL,sort_key BLOB NOT NULL,definition TEXT NOT NULL,source_name TEXT NOT NULL,linkage TEXT NOT NULL,is_weak INTEGER NOT NULL,raw_execution TEXT NOT NULL,callable_execution TEXT NOT NULL,source_signature TEXT,semantic_signature TEXT,is_deferred INTEGER NOT NULL,is_original_ordinary INTEGER NOT NULL,runtime_method TEXT,recorded_abi TEXT,PRIMARY KEY(unit_id,entity_id)) STRICT,WITHOUT ROWID",
         "CREATE INDEX functions_symbol ON functions(symbol_key,unit_id)",
         "CREATE TABLE storages(unit_id INTEGER NOT NULL REFERENCES units(id),storage_id INTEGER NOT NULL,symbol_key TEXT NOT NULL,sort_key BLOB NOT NULL,definition TEXT NOT NULL,source_name TEXT NOT NULL,linkage TEXT NOT NULL,signature TEXT NOT NULL,execution_type TEXT NOT NULL,alignment INTEGER NOT NULL,required_alignment INTEGER NOT NULL,extent INTEGER,declared_extent INTEGER NOT NULL,PRIMARY KEY(unit_id,storage_id)) STRICT,WITHOUT ROWID",
         "CREATE INDEX storages_symbol ON storages(symbol_key,unit_id)",

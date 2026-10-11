@@ -54,11 +54,4 @@ internal sealed partial class ObjectFile
             type.Kind=="array" && type.ElementCount is long count && original.Count>count)
             throw new InvalidDataException("Original aggregate initializer has a different element list or nonaggregate type");
     }
-    private string SourceAggregateIdentity(long id,int depth)
-    {
-        var value=SourceAggregateConstants[id];
-        return SourceIdentityFrame(value.Flags.ToString(System.Globalization.CultureInfo.InvariantCulture))+(value.TemplateConst?"1":"0")+
-            SourceIdentityFrame(value.OriginalType is long type?SourceArgumentTypeIdentity(type,depth+1):"")+
-            string.Concat(SourceSemanticConstantOperands.GetValueOrDefault(id,[]).Select(child=>SourceIdentityFrame(SourceConstantIdentity(child,depth+1))));
-    }
 }

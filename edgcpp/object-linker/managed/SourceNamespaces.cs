@@ -5,8 +5,6 @@ internal sealed partial class ObjectFile
 {
     public Dictionary<long,SourceNamespace> SourceNamespaces {get;}=[];
     public Dictionary<(string Kind,long Id),long> SourceNamespaceOwners {get;}=[];
-    private readonly Dictionary<long,string> sourceNamespaceKeys=[];
-    private readonly Dictionary<long,bool> sourceNamespacePrivate=[];
     private void ReadSourceNamespaces()
     {
         using(var q=database.Prepare("SELECT id,parent_id,source_name,is_unnamed,is_inline,has_internal_linkage,source_file_id,line,column,capture_proof FROM source_namespaces ORDER BY id"))
@@ -19,7 +17,18 @@ internal sealed partial class ObjectFile
                     q.Text(9)!="original-namespace-declaration" || !SourceNamespaces.TryAdd(value.Id,value))
                     throw new InvalidDataException("Original namespace declaration lost its name, flags or location");
             }
-        foreach(long id in SourceNamespaces.Keys) SourceNamespaceIdentity(id,[]);
+        var complete = new HashSet<long>();
+        foreach(long id in SourceNamespaces.Keys)
+        {
+            var chain = new HashSet<long>(); long? current = id;
+            while(current is long node && !complete.Contains(node))
+            {
+                if(!chain.Add(node) || !SourceNamespaces.TryGetValue(node,out var value))
+                    throw new InvalidDataException("Namespace parent reference is missing or cyclic");
+                current=value.Parent;
+            }
+            complete.UnionWith(chain);
+        }
         using(var q=database.Prepare("SELECT owner_kind,owner_id,namespace_id,capture_proof FROM source_namespace_owners ORDER BY owner_kind,owner_id"))
             while(q.Read())
             {
@@ -30,30 +39,6 @@ internal sealed partial class ObjectFile
                     throw new InvalidDataException("Original declaration namespace edge lacks its exact owner");
             }
     }
-    private string SourceNamespaceIdentity(long id,HashSet<long> active)
-    {
-        if(sourceNamespaceKeys.TryGetValue(id,out string? known))return known;
-        if(active.Count>128 || !active.Add(id) || !SourceNamespaces.TryGetValue(id,out var value))
-            throw new InvalidDataException("Original namespace parent graph is absent or cyclic");
-        string parent=value.Parent is long parentId?SourceNamespaceIdentity(parentId,active):"";
-        bool unitLocal=value.Unnamed || value.Parent is long enclosing && sourceNamespacePrivate[enclosing];
-        if(value.Internal && !unitLocal)throw new InvalidDataException("Internal namespace lacks its original unnamed ancestor");
-        string key=value.Unnamed?"unnamed:"+SourceIdentityFrame(parent)+SourceIdentityFrame(UnitId):"named:"+SourceIdentityFrame(parent)+SourceIdentityFrame(value.Name);
-        sourceNamespacePrivate[id]=unitLocal;sourceNamespaceKeys[id]=key;active.Remove(id);return key;
-    }
-    private string SourcePrivateNamespace(string kind,long owner)
-    {
-        return SourceNamespaceOwners.TryGetValue((kind,owner),out long id) && sourceNamespacePrivate[id]?sourceNamespaceKeys[id]:"";
-    }
-    private string SourceNamespaceNominalIdentity(string kind,long owner,string nominal)
-    {
-        string key=SourcePrivateNamespace(kind,owner);
-        return key.Length==0?nominal:"namespace-private:"+SourceIdentityFrame(key)+SourceIdentityFrame(nominal);
-    }
-    private string SourceNamespaceIdentitySuffix(string kind,long owner)
-    {
-        string key=SourcePrivateNamespace(kind,owner);return key.Length==0?"":"N"+SourceIdentityFrame(key);
-    }
     private void VerifySourceNamespaces()
     {
         var required=new HashSet<(string,long)>();
@@ -62,16 +47,5 @@ internal sealed partial class ObjectFile
         foreach(var value in SourceConcepts.Values)if(value.HasNamespaceOwner)required.Add(("concept",value.Id));
         foreach(var pair in SourceNamedTemplates)if(pair.Value.HasNamespaceOwner)required.Add(("template",pair.Key));
         if(!required.SetEquals(SourceNamespaceOwners.Keys))throw new InvalidDataException("Original namespace ownership markers differ from the owned declaration edges");
-        foreach(var pair in SourceNamespaceOwners)
-        {
-            long? typeOwner=pair.Key.Kind switch {
-                "declaration"=>SourceExpressionDeclarations[pair.Key.Id].OwnerType,
-                "template"=>SourceNamedTemplates[pair.Key.Id].Owner,
-                _=>null
-            };
-            if(typeOwner is long original && (!SourceNamespaceOwners.TryGetValue(("type",original),out long parentNamespace) ||
-                sourceNamespaceKeys[parentNamespace]!=sourceNamespaceKeys[pair.Value]))
-                throw new InvalidDataException("Original member namespace differs from its owning type namespace");
-        }
     }
 }

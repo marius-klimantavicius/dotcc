@@ -18,13 +18,6 @@ internal sealed partial class ObjectFile
         }
     }
 
-    private string SourceNestedTypeIdentity(long id, int depth = 0)
-    {
-        if (depth > 128) throw new InvalidDataException("Nested source declaration identity cycle/depth");
-        var type = SourceTypeById(id);
-        return "source-nested-declaration:" + SourceIdentityFrame(SourceArgumentTypeIdentity(SourceNestedTypeDeclarations[id], depth + 1)) +
-            SourceIdentityFrame(type.Kind) + SourceIdentityFrame(type.SourceName);
-    }
 
     private void VerifySourceNestedTypeDeclarations()
     {

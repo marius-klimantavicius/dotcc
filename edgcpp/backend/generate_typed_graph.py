@@ -287,6 +287,7 @@ def generate(walker, configured):
               + 'inline void register_generated_coverage() {\n' + ''.join(static_coverage) + '}\n'
               '#undef DO_SUBTREE_WALK\n#undef NEEDED_FLAG_WALK\n#undef KEEP_IN_IL_WALK\n'
               '#undef WALK_ENTRY_ROUTINE_STATIC\n#undef WALK_ENTRY_ROUTINE_NAME\n#undef walk_next_ptr\n')
+    output = "\n".join(line.rstrip() for line in output.splitlines()) + "\n"
     return output, dict(fingerprint=fingerprint, retained=sorted(retained), gaps=sorted(gaps), configured_disabled=sorted(configured_disabled), pointer_unions=sorted(pointer_unions))
 
 

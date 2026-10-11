@@ -102,24 +102,4 @@ internal sealed partial class ObjectFile
                 throw new InvalidDataException("Alias instance original argument lists/prototype ownership are incomplete");
         }
     }
-    private string SourceAliasIdentity(long id,int depth)
-    {
-        if(depth>128)throw new InvalidDataException("Source alias identity cycle/depth");
-        var value=SourceAliasInstances[id];string result="alias-instance:"+SourceIdentityFrame(SourceTemplateIdentity(value.Template,depth+1));
-        foreach(var argument in SourceAliasSelectedArguments.GetValueOrDefault(id,[]))
-        {
-            if(!SourceConstraintArgumentDetails.TryGetValue(("alias-selected",id,0,argument.Ordinal),out var flags))throw new InvalidDataException("Original argument lacks exact pack, expansion and substitution facts");
-            string item=argument.Kind=="pack-boundary"?"pack-boundary":argument.Kind=="type"?"t"+SourceArgumentTypeIdentity(argument.TypeId!.Value,depth+1):
-                argument.Kind=="constant"?"c"+SourceConstantIdentity(argument.ConstantId!.Value,depth+1):"m"+SourceTemplateIdentity(argument.TemplateId!.Value,depth+1);
-            result+=SourceIdentityFrame(item+(flags.Pack?":pack":""));
-        }
-        return result;
-    }
-    private string SourceTypeOperatorIdentity(long id,int depth)
-    {
-        if(depth>128)throw new InvalidDataException("Source type operator identity cycle/depth");
-        var value=SourceTypeOperators[id];
-        if(value.Operand is long type)return "type-operator:"+SourceIdentityFrame(value.Opcode.ToString(CultureInfo.InvariantCulture))+SourceIdentityFrame(SourceArgumentTypeIdentity(type,depth+1));
-        return "type-operator:"+SourceIdentityFrame(value.Opcode.ToString(CultureInfo.InvariantCulture))+(value.Unparenthesized?"1":"0")+SourceIdentityFrame(SourceStructuralExpressionKey(value.Expression!.Value,depth+1));
-    }
 }

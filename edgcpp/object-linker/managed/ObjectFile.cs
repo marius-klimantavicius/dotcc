@@ -8,6 +8,7 @@ namespace DotObj;
 internal sealed partial class ObjectFile : IDisposable
 {
     private readonly Sqlite database;
+    private (long Size,string Hash)? physicalReceipt;
     public string Path { get; }
     public string UnitId { get; }
     public string PrimarySource { get; }
@@ -20,7 +21,9 @@ internal sealed partial class ObjectFile : IDisposable
 
     private static readonly Dictionary<string, string> Tables = new(StringComparer.Ordinal)
     {
-        ["edg_graph_nodes"] = "id", ["edg_graph_fields"] = "node_id,name,ordinal",
+        ["edg_graph_node_entries"] = "id", ["edg_graph_node_kinds"] = "entry_kind",
+        ["edg_graph_field_definitions"] = "id",
+        ["edg_graph_field_blocks"] = "ordinal",
         ["edg_graph_roots"] = "role,ordinal", ["edg_graph_coverage"] = "entry_kind,field",
         ["exception_types"] = "id", ["exception_base_conversions"] = "exception_type_id,ordinal",
         ["throw_expressions"] = "node_id", ["throw_object_addresses"] = "node_id",
@@ -152,15 +155,18 @@ internal sealed partial class ObjectFile : IDisposable
         using var reader = new StreamReader(stream);
         string schema = reader.ReadToEnd();
         var result = new Dictionary<string, (string Kind, string Sql)>(StringComparer.Ordinal);
-        foreach (Match match in Regex.Matches(schema, @"CREATE (TABLE|INDEX) ([a-z_]+)\b[^;]*;", RegexOptions.CultureInvariant))
+        foreach (Match match in Regex.Matches(schema, @"CREATE (TABLE|INDEX|VIEW) ([a-z_]+)\b[^;]*;", RegexOptions.CultureInvariant))
             result.Add(match.Groups[2].Value, (match.Groups[1].Value.ToLowerInvariant(), match.Value[..^1]));
-        if (result.Count != Tables.Count + 3) throw new InvalidOperationException("Unexpected canonical object schema");
+        var physicalTables = result.Where(pair => pair.Value.Kind == "table").Select(pair => pair.Key).ToHashSet(StringComparer.Ordinal);
+        if (!physicalTables.SetEquals(Tables.Keys.Append("content_digest")))
+            throw new InvalidOperationException("Canonical object tables differ from the digest table catalog");
         return result;
     }
 
-    public ObjectFile(string path)
+    public ObjectFile(string path, (long Size,string Hash)? verifiedReceipt = null)
     {
         Path = System.IO.Path.GetFullPath(path);
+        physicalReceipt = verifiedReceipt;
         database = new Sqlite(Path);
         try
         {
@@ -173,7 +179,7 @@ internal sealed partial class ObjectFile : IDisposable
             VerifyDigest();
             using (var info = database.Prepare("SELECT format_version,profile,target_abi,runtime_abi,unit_id,primary_source,prelower_source,macros,lifetimes,source_declarations,macro_definitions,source_language FROM object_info"))
             {
-                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v64" ||
+                if (!info.Read() || info.Integer(0) != 1 || info.Text(1) != "scalar-control-v65" ||
                     info.Text(2) != "portable-lp64-binary80-v2" || info.Text(3) != "dotobj-scalar-v1" ||
                     info.Integer(6) != 0 || info.Integer(7) != 0 || info.Integer(8) != 0 || info.Integer(9) != 1 || info.Integer(10) != 1)
                     throw new InvalidDataException("Unsupported object profile, format, ABI or capture capabilities");
@@ -234,7 +240,7 @@ internal sealed partial class ObjectFile : IDisposable
                 schemaObjects.Add(name);
                 if (kind == "table") schemas.Add(name, sql);
             }
-        if (schemaObjects.Count != ExpectedSchema.Count) throw new InvalidDataException("Missing required semantic table or index");
+        if (schemaObjects.Count != ExpectedSchema.Count) throw new InvalidDataException("Missing required object table, index or view");
         using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         void Text(string text) => hash.AppendData(Encoding.UTF8.GetBytes(text));
         void Frame(byte[] bytes) { Text(bytes.Length.ToString(CultureInfo.InvariantCulture) + ":"); hash.AppendData(bytes); }

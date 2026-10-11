@@ -61,7 +61,7 @@ internal sealed partial class ObjectFile
                 long id = query.Integer(0), result = query.Integer(1), variadic = query.Integer(2);
                 if (id <= 0 || result <= 0 || variadic is not (0 or 1)) throw new InvalidDataException("Invalid routine metadata");
                 string policy = query.Text(3);
-                if (policy is not ("unwind" or "terminate" or "dynamic")) throw new InvalidDataException("Invalid routine exception policy");
+                if (policy is not ("unwind" or "terminate" or "dynamic") && !(source && policy=="unsupported-dynamic")) throw new InvalidDataException("Invalid routine exception policy");
                 string mode = source ? query.Text(4) : "prototype";
                 if (mode is not ("prototype" or "unspecified") || mode == "unspecified" && (variadic != 0 || parameters.GetValueOrDefault(id, []).Count != 0))
                     throw new InvalidDataException("Unsupported original unspecified parameter signature");

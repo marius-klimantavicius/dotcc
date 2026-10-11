@@ -1,0 +1,105 @@
+{
+  "status": "verified-storage-and-trusted-navigation-milestone",
+  "profile": "scalar-control-v65",
+  "native": 171,
+  "managed": 212,
+  "authority": "EDG",
+  "compilerSha256": "222bbdc2258b9f081478eb1dcc083aad1f8496fcd2a8ec2689fdffa987762f99",
+  "schemaSha256": "ad5560929ff06d8053aee66858c6cdcf7cd88476e5881560ba393e77edc4d5f9",
+  "changes": [
+    "typed graph compact field definitions and lossless varint blocks with zlib, shared/cyclic IDs preserved",
+    "source-only recursive signatures and semantic reproof removed from managed reads and global linking",
+    "generic source navigation references exact typed EDG roots, preserving available common metadata and children",
+    "source unresolved exception specifications remain represented separately from concrete execution policies",
+    "catalog generation loads one unit at a time and emits immutable graph object receipts instead of duplicating all graph fields in source maps",
+    "node IDs/kinds stored separately from exact repeated kind names/phase; logical SQL view unchanged",
+    "source observation identities no longer compared to executable nominal ABI identities; physical layout/link checks retained",
+    "direct requires-expression external-map observations use actual flags/ordered refs, no reconstructed binders"
+  ],
+  "focused": {
+    "graph": {
+      "tools": "171/212",
+      "status": "passed-graph-integration",
+      "checks": 62,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/graph171-212/results.json"
+    },
+    "terminalPartial": {
+      "tools": "170/211",
+      "status": "passed",
+      "checks": 35,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/terminal170-211/results.json"
+    },
+    "codec": {
+      "tools": "171/212",
+      "status": "passed",
+      "checks": 60,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/codec171-212/results.json"
+    },
+    "genericBridge": {
+      "tools": "171/212",
+      "status": "passed",
+      "checks": 71,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/generic171-212/results.json"
+    },
+    "catalogConstraints": {
+      "tools": "171/212",
+      "status": "passed",
+      "checks": 28,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/catalog-constraints171-212/results.json"
+    },
+    "catalogTerminal": {
+      "tools": "170/211",
+      "status": "passed",
+      "checks": 32,
+      "path": "edgcpp/artifacts/campaign/edg-authority-20261011/catalog-terminal170-211/results.json"
+    }
+  },
+  "real": {
+    "exception169": {
+      "exportSeconds": 21.11,
+      "exportPeakKiB": 635436,
+      "objectBytes": 326107136,
+      "verify210": true,
+      "catalog210Generation": true,
+      "functions": 597
+    },
+    "cast170": {
+      "unit": "duckdb:src/common/operator/cast_operators.cpp:494cba4847ce283e",
+      "exitCode": 0,
+      "seconds": 146.98838272102876,
+      "time": "146.97 3384852\n",
+      "wireBytes": 1452384340,
+      "wireCompression": "gzip-1",
+      "path": "/home/marius/p/dotcc/edgcpp/artifacts/campaign/edg-authority-20261011/after170-cast_operators",
+      "objectBytesBeforeNormalization": 1704976384,
+      "objectBytes": 1248817152,
+      "exactLogicalNodeRows": true,
+      "verify212": true,
+      "verifySeconds": 83.83,
+      "verifyPeakKiB": 374956,
+      "identityMismatchEvidence": "edgcpp/artifacts/campaign/edg-authority-20261011/cast170-source-record-identity212.json"
+    },
+    "unittest169": {
+      "nativeSeconds": 176.15,
+      "nativePeakKiB": 4993844,
+      "wireBytes": 10319113573,
+      "packagedBytes": 2462056448,
+      "packagingSeconds": 265.5,
+      "packagingPeakKiB": 31152,
+      "diagnosticCanonicalSchemaCopyBytes": 2424582144,
+      "verify211": true,
+      "verifySeconds": 122.71,
+      "verifyPeakKiB": 530412,
+      "normalizedBytes": 1791815680,
+      "note": "Native169 data preserved via explicitly recorded schema compatibility copy; not native171 coherent corpus evidence."
+    }
+  },
+  "limitations": [
+    "No coherent full2635-object corpus",
+    "No full DuckDB managed compilation/run",
+    "Graph coverage still records actual frontend descriptor gaps",
+    "Expanded typed capture costs more time/storage than older incomplete projection; no net speedup claim",
+    "Real cast170 is verified, not yet combined-generated; unittest169 diagnostic schema copy is separately labeled",
+    "Direct requires map test observed present empty maps; no claim of nonempty substitution execution coverage"
+  ]
+}

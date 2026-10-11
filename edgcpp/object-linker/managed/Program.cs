@@ -7,7 +7,7 @@ internal static class Program
         var objects = new List<ObjectFile>();
         try
         {
-            if (args.Length == 0 || args[0] is not ("link" or "verify" or "catalog" or "catalog-maps" or "catalog-generate")) throw new ArgumentException("Usage: dotobj-link link --out DIRECTORY [--namespace NAME] [--class NAME] [--entry SYMBOL] [--exception-provider shared|external] [--provider LIBRARY.dotobj] OBJECT.dotobj... | verify OBJECT.dotobj... | catalog [--resolve] --out CATALOG.sqlite [--provider OBJECT.dotobj] OBJECT.dotobj... | catalog-maps --out DIRECTORY CATALOG.sqlite | catalog-generate --out DIRECTORY CATALOG.sqlite");
+            if (args.Length == 0 || args[0] is not ("link" or "verify" or "catalog" or "catalog-maps" or "catalog-generate" or "inspect-edg-graph")) throw new ArgumentException("Usage: dotobj-link link --out DIRECTORY [--namespace NAME] [--class NAME] [--entry SYMBOL] [--exception-provider shared|external] [--provider LIBRARY.dotobj] OBJECT.dotobj... | verify OBJECT.dotobj... | catalog [--resolve] --out CATALOG.sqlite [--provider OBJECT.dotobj] OBJECT.dotobj... | catalog-maps --out DIRECTORY CATALOG.sqlite | catalog-generate --out DIRECTORY CATALOG.sqlite | inspect-edg-graph [--out FILE.jsonl] OBJECT.dotobj");
             string command = args[0], namespaceName = "Translated", className = "Program";
             string? output = null, entry = null;
             bool allowExterns = false, auditCatalogLifetimes = false, resolveCatalog = false;
@@ -46,7 +46,20 @@ internal static class Program
             if (command == "link" && paths.All(path => providerPaths.Contains(Path.GetFullPath(path)))) throw new ArgumentException("At least one primary semantic object is required");
             if (command is "link" or "catalog" or "catalog-maps" or "catalog-generate" && output is null) throw new ArgumentException(command + " requires --out");
             _ = Names.Namespace(namespaceName); _ = Names.OptionIdentifier(className);
-            if(command=="catalog-generate")
+            if (command == "inspect-edg-graph")
+            {
+                if (paths.Count != 1 || providerPaths.Count != 0)
+                    throw new ArgumentException("inspect-edg-graph requires exactly one semantic object");
+                using var obj = new ObjectFile(paths[0]);
+                using Stream stream = new BufferedStream(output is null ? Console.OpenStandardOutput()
+                    : new FileStream(output, FileMode.CreateNew, FileAccess.Write, FileShare.Read), 65536);
+                using var writer = new System.Text.Json.Utf8JsonWriter(stream);
+                foreach (var field in obj.ReadEdgGraphFields())
+                {
+                    field.Write(writer); writer.Flush(); stream.WriteByte((byte)'\n'); writer.Reset(stream);
+                }
+            }
+            else if(command=="catalog-generate")
             {
                 if(paths.Count!=1 || providerPaths.Count!=0)throw new ArgumentException("catalog-generate requires exactly one resolved catalog");
                 CatalogGenerator.Write(paths[0],Path.GetFullPath(output!),namespaceName,className,entry,sharedExceptionProvider,
@@ -92,7 +105,7 @@ internal static class Program
                 // Verification has no cross-unit state. Release each object's
                 // metadata and SQLite snapshot before opening the next unit.
                 foreach (string path in paths) VerifyObject(path);
-                Console.WriteLine($"Verified {paths.Count} scalar-control-v64 semantic object(s).");
+                Console.WriteLine($"Verified {paths.Count} scalar-control-v65 semantic object(s).");
             }
             else
             {

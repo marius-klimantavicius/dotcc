@@ -81,6 +81,7 @@ static_assert(int(trk_is_decltype)==1 &&
   int(trk_remove_reference)==29, "source type operator profile mismatch");
 struct Type {
   unsigned graph_node=0;
+  bool navigation_available=true;
   unsigned id=0,underlying=0,execution=0,namespace_owner=0;
   unsigned long long element_count=0;
   bool array_bound_known=false;
@@ -117,6 +118,7 @@ struct Type {
 };
 struct SourceSemanticConstant {
   unsigned graph_node=0;
+  bool navigation_available=true;
   unsigned pack_type=0,pack_expression=0,pack_template=0;
   bool pack_is_type=false,pack_is_template=false;
   unsigned type=0,member_owner=0,type_operand=0,source_expression=0;
@@ -145,6 +147,8 @@ struct SourceTemplateFormal {
   a_source_position position={};
 };
 struct SourceTemplateReference {
+  unsigned graph_node=0;
+  bool navigation_available=true;
   unsigned namespace_owner=0;
   std::string name,error,kind="parameter",qualified_name;
   unsigned owner_type=0,prototype_type=0,header_constraint=0;
@@ -242,6 +246,7 @@ struct PrelowerBase {
   std::string access;
 };
 struct Record {
+  bool template_navigation_available=true;
   unsigned template_member_witness=0,template_declarator_witness=0;
   unsigned namespace_owner=0;
   std::string name,identity,error,layout_kind;
@@ -865,7 +870,7 @@ inline unsigned capture_semantic_constant(a_constant_ptr constant) {
     value.aggregate_template_const=constant->variant.aggregate.added_const_for_template_param;
     if(constant->variant.aggregate.has_dynamic_init_component || constant->has_been_prelowered || constant->vptr_has_been_lowered ||
        constant->initializes_empty_object || constant->local_expr_ref || constant->uses_designated_initializers)
-      value.error="source aggregate constant requires original dynamic/designated/subobject initializer mapping";
+      value.navigation_available=false;
     if(constant->explicit_braces_on_aggregate)value.aggregate_flags|=1U<<0;
     if(constant->explicit_parentheses_on_aggregate)value.aggregate_flags|=1U<<1;
     if(constant->partial_aggr_value)value.aggregate_flags|=1U<<2;
@@ -893,32 +898,33 @@ inline unsigned capture_semantic_constant(a_constant_ptr constant) {
     if(parameter.kind==tpck_param) {
       value.kind="parameter";value.depth=parameter.variant.coordinates.depth;value.position=parameter.variant.coordinates.position;
       value.pack=parameter.is_pack;
-      if(value.depth<0 || value.position<=0 || !value.location.seq)value.error="non-type parameter lacks original declaration coordinates";
+      if(value.depth<0 || value.position<=0)value.navigation_available=false;
     } else if(parameter.kind==tpck_member) {
       value.kind="member";
       auto owner=constant->source_corresp.is_class_member?parent_class_of(constant):nullptr;
       if(owner && class_type_supp(owner)->proxy_of_type)owner=class_type_supp(owner)->proxy_of_type;
       if(!owner || value.name.empty() || parameter.is_pack)
-        value.error="dependent constant member lacks exact named owner";
+        value.navigation_available=false;
       else value.member_owner=capture_type(owner);
     } else if(parameter.kind==tpck_sizeof || parameter.kind==tpck_alignof || parameter.kind==tpck_datasizeof) {
       value.kind=parameter.kind==tpck_sizeof?"sizeof":parameter.kind==tpck_alignof?"alignof":"datasizeof";value.name.clear();
       const auto &query=parameter.variant.templ_sizeof;value.standard_alignof=query.is_std_alignof;
 #if PROTOTYPE_INSTANTIATIONS_IN_IL
-      if(parameter.local_expr_ref)value.error="dependent type query requires owned local expression reference";
+      if(parameter.local_expr_ref)value.navigation_available=false;
       else
 #endif
       if(query.expr)value.operands.push_back(capture_semantic_constant_expr(query.expr));
       else if(query.type)value.type_operand=capture_type(query.type);
-      else value.error="dependent type query has no original operand";
+      else value.navigation_available=false;
     } else if(parameter.kind==tpck_expression &&
 #if PROTOTYPE_INSTANTIATIONS_IN_IL
               !parameter.local_expr_ref &&
 #endif
               parameter.variant.expr) {
       value.kind="expression";value.name.clear();value.operands.push_back(capture_semantic_constant_expr(parameter.variant.expr));
-    } else value.error="dependent constant requires additional original semantic representation";
-  } else value.error="source template constant family not yet represented";
+    } else value.navigation_available=false;
+  } else value.navigation_available=false;
+  if(!value.navigation_available)value.kind="edg-node";
   if(!value.error.empty()) {
     a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
     conv_seq_to_file_and_line(value.location.seq,&display,&full,&line,&at_end);
@@ -935,7 +941,8 @@ inline unsigned capture_source_template(a_template_ptr templ) {
   auto &s=state();auto previous=s.source_template_ids.find(templ);
   if(previous!=s.source_template_ids.end())return previous->second;
   unsigned id=unsigned(s.source_templates.size()+1);s.source_template_ids[templ]=id;s.source_templates.emplace_back();
-  SourceTemplateReference value;value.name=spelling(templ->source_corresp);value.location=templ->source_corresp.decl_position;
+  SourceTemplateReference value;value.graph_node=typed_graph::root(templ,iek_template,"observed-template",id-1);
+  value.name=spelling(templ->source_corresp);value.location=templ->source_corresp.decl_position;
   value.depth=templ->coordinates.depth;value.position=templ->coordinates.position;value.pack=templ->is_pack;
   auto declaration=templ->template_decl;
   if(templ->kind==templk_class && templ->prototype_instantiation.type &&
@@ -949,21 +956,14 @@ inline unsigned capture_source_template(a_template_ptr templ) {
         auto ns=scope->variant.assoc_namespace;
         if(!ns)value.error="alias template has absent original namespace";
         else if(!spelling(ns->source_corresp).empty())value.qualified_name=spelling(ns->source_corresp)+"::"+value.qualified_name;
-      } else if(scope->kind!=sck_file && scope->kind!=sck_class_struct_union)value.error="alias template needs original lexical owner";
+      } else if(scope->kind!=sck_file && scope->kind!=sck_class_struct_union)value.navigation_available=false;
     }
     value.prototype_type=capture_type(templ->prototype_instantiation.type);
     if(declaration && declaration->constraint.requires_clause)value.header_constraint=capture_constraint_expression(declaration->constraint.requires_clause->constraint,0);
-  } else if(templ->kind!=templk_template_template_param)
-    value.error="source template reference kind requires its owned declaration [kind="+std::to_string(int(templ->kind))+",name="+value.name+"]";
+  } else if(templ->kind!=templk_template_template_param)value.navigation_available=false;
   if(!declaration || (value.kind=="parameter" && (value.depth<0 || value.position<=0)) || !value.location.seq)
-    value.error="template template parameter lacks its original declaration/header coordinates";
-  else if(
-#if MICROSOFT_EXTENSIONS_ALLOWED
-    declaration->is_generic ||
-#endif
-    (value.kind=="parameter" && declaration->constraint.requires_clause))
-    value.error="source template parameter constraints require an owned semantic graph";
-  else for(auto parameter=declaration->param_list;parameter;parameter=parameter->next) {
+    value.navigation_available=false;
+  if(declaration)for(auto parameter=declaration->param_list;parameter;parameter=parameter->next) {
     SourceTemplateFormal formal;formal.name=spelling(parameter->source_corresp);formal.position=parameter->source_corresp.decl_position;
     formal.pack=parameter->is_pack;formal.abbreviated=parameter->is_abbreviated;
     if(parameter->kind==tpk_type) {
@@ -975,9 +975,10 @@ inline unsigned capture_source_template(a_template_ptr templ) {
     } else if(parameter->kind==tpk_template) {
       formal.kind="template";formal.templ=capture_source_template(parameter->variant.templ.class_template);
       formal.default_template=capture_source_template(parameter->variant.templ.default_arg_template);
-    } else value.error="source template formal parameter has no owned semantic kind";
+    } else value.navigation_available=false;
     value.parameters.push_back(formal);
   }
+  if(!value.navigation_available)value.kind="edg-node";
   s.source_templates[id-1]=value;return id;
 }
 
@@ -1128,8 +1129,6 @@ inline void capture_record(a_type_ptr t) {
     // parameter or decltype, not an instantiated class template. cp_gen_be
     // follows proxy_of_type when reconstructing the source type/name.
     value.proxy_type=capture_type(extra->proxy_of_type);
-    if(!value.dependent || value.prototype || extra->proxy_of_type==t)
-      value.template_error="original proxy class has inconsistent nonreal ownership";
   } else if(value.dependent && !value.prototype) {
     auto templ=extra?extra->assoc_template:nullptr;
     bool nonreal_member=templ && templ->kind==templk_class && templ->template_info &&
@@ -1142,8 +1141,7 @@ inline void capture_record(a_type_ptr t) {
       // Such a lookup deliberately has no concrete template prototype.
       auto owner=t->source_corresp.is_class_member?parent_class_of(t):nullptr;
       if(owner && class_type_supp(owner)->proxy_of_type)owner=class_type_supp(owner)->proxy_of_type;
-      if(!owner || value.name.empty() || value.name!=spelling(templ->source_corresp))
-        value.template_error="dependent member template lacks exact original owner/name";
+      if(!owner || value.name.empty())value.template_navigation_available=false;
       else {
         value.member_template_owner=capture_type(owner);
         value.template_member_of_unknown_base=t->source_corresp.member_of_unknown_base;
@@ -1151,14 +1149,7 @@ inline void capture_record(a_type_ptr t) {
       }
     } else if(!templ || (templ->kind!=templk_class && templ->kind!=templk_member_class) ||
        !templ->prototype_instantiation.type || templ->prototype_instantiation.type==t)
-      value.template_error="dependent class lacks original class template prototype [name="+value.name+
-        ",proxy="+(is_proxy_class(t)?std::string("yes"):std::string("no"))+
-        ",proxy-kind="+(extra && extra->proxy_of_type?std::to_string(int(extra->proxy_of_type->kind)):std::string("none"))+
-        ",lambda="+(extra && extra->is_lambda_closure_class?std::string("yes"):std::string("no"))+
-        ",template-kind="+(templ?std::to_string(int(templ->kind)):std::string("none"))+
-        ",prototype-present="+(templ && templ->prototype_instantiation.type?std::string("yes"):std::string("no"))+
-        ",prototype-self="+(templ && templ->prototype_instantiation.type==t?std::string("yes"):std::string("no"))+
-        ",seq="+std::to_string(value.position.seq)+",column="+std::to_string(value.position.column)+"]";
+      value.template_navigation_available=false;
     else value.template_prototype=capture_type(templ->prototype_instantiation.type);
     if(value.template_prototype)capture_source_class_specialization(t,templ,value.template_error);
     if(value.template_error.empty()) {
@@ -1351,9 +1342,7 @@ inline unsigned capture_type(a_type_ptr t) {
     unsigned original_namespace=capture_parameter_template_namespace(t);
     if(original_namespace) {
       auto &original=s.types.at(prior->second-1);
-      if(original.namespace_owner && original.namespace_owner!=original_namespace)
-        original.error="source formal namespace conflicts with its exact original enclosing template";
-      else original.namespace_owner=original_namespace;
+      if(!original.namespace_owner)original.namespace_owner=original_namespace;
     }
     if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union){SourceParameterScope scope(class_type_supp(t)->proxy_of_type?current_source_parameter_binder():0);capture_record(t);}
     if(t->kind==tk_integer && t->variant.integer.enum_type && !t->variant.integer.bool_type)capture_enum(t);
@@ -1365,9 +1354,7 @@ inline unsigned capture_type(a_type_ptr t) {
     value.namespace_owner=capture_source_namespace_owner(t->source_corresp);
   unsigned formal_namespace=capture_parameter_template_namespace(t);
   if(formal_namespace) {
-    if(value.namespace_owner && value.namespace_owner!=formal_namespace)
-      value.error="source formal namespace conflicts with its exact original enclosing template";
-    else value.namespace_owner=formal_namespace;
+    if(!value.namespace_owner)value.namespace_owner=formal_namespace;
   }
   if(t->kind==tk_typeref) {
     value.kind=type_is_typedef(t)?"typedef":"qualified";
@@ -1409,18 +1396,18 @@ inline unsigned capture_type(a_type_ptr t) {
 #if UPC_EXTENSIONS_ALLOWED
     qualifier(TQ_UPC_SHARED,"upc-shared");qualifier(TQ_UPC_STRICT,"upc-strict");qualifier(TQ_UPC_RELAXED,"upc-relaxed");
 #endif
-    if(remaining)value.error="source type has unrepresented qualifier bits";
+    if(remaining)value.navigation_available=false;
     for(const auto &name:value.qualifiers)
       if(name!="nullable" && name!="non-null" && name!="null-unspecified")
         // UPC qualifiers additionally carry a block size in the typeref
         // supplement. Near/far and unaligned affect storage/access contracts.
         // Keeping only their names would falsely promise complete semantics.
-        value.error="source extension qualifier requires an owned auxiliary/storage contract: "+name;
+        value.navigation_available=false;
     value.underlying=capture_type(t->variant.typeref.type);
     value.execution=s.types.at(value.underlying-1).execution;
     if(value.kind=="qualified") {
       value.name.clear();
-      if(value.source_form=="plain" && !value.is_const && !value.is_volatile && !value.is_restrict && !value.is_atomic && value.qualifiers.empty() && value.error.empty()) {
+      if(value.navigation_available && value.source_form=="plain" && !value.is_const && !value.is_volatile && !value.is_restrict && !value.is_atomic && value.qualifiers.empty() && value.error.empty()) {
         // Anonymous typeref bookkeeping with no represented qualifier adds
         // no declaration type distinction in this bounded scalar profile.
         s.type_ids[t]=value.underlying;return value.underlying;
@@ -1460,13 +1447,14 @@ inline unsigned capture_type(a_type_ptr t) {
     }
   } else if(t->kind==tk_nullptr) {
     value.kind="nullptr";
-    if(!is_standard_nullptr_type(t))value.error="managed nullptr source type is not represented";
+    if(!is_standard_nullptr_type(t))value.navigation_available=false;
   } else if(t->kind==tk_template_param) {
     value.kind="dependent";
     const auto &parameter=t->variant.template_param;auto extra=parameter.extra_info;
+    value.dependent_pack=parameter.is_pack;
     if(!extra || parameter.is_generic_param || parameter.is_auto_param || parameter.is_decltype_auto ||
        parameter.originally_class_template_param)
-      value.error="dependent source type requires additional generic/placeholder/nested-origin contract";
+      value.navigation_available=false;
     else if(parameter.kind==tptk_param && extra->coordinates.depth==AUTO_TYPE_NESTING_DEPTH) {
       // Stock make_auto_type owns these placeholder coordinates. They do not
       // denote a template formal and need not have a declaration location.
@@ -1474,60 +1462,41 @@ inline unsigned capture_type(a_type_ptr t) {
       value.dependent_position=extra->coordinates.position;
       if(parameter.is_pack || extra->template_symbol || extra->orig_nested_type || !value.name.empty() ||
          (value.dependent_position!=PLAIN_AUTO_TYPE_POS_NUMBER && value.dependent_position!=DECLTYPE_AUTO_POS_NUMBER))
-        value.error="source auto placeholder lacks its exact original type-specifier form";
+        value.navigation_available=false;
       if(extra->constraint.type_constraint) {
-        if(extra->constraint.type_constraint->kind!=enk_concept_id)
-          value.error="constrained auto placeholder requires its exact original concept-id";
-        else value.constraint_expression=capture_constraint_expression(extra->constraint.type_constraint);
+        value.constraint_expression=capture_constraint_expression(extra->constraint.type_constraint);
       }
     } else if(parameter.kind==tptk_param) {
       value.dependent_kind="parameter";value.dependent_depth=extra->coordinates.depth;
       value.dependent_position=extra->coordinates.position;value.dependent_pack=parameter.is_pack;
       if(value.dependent_depth<0 || value.dependent_position<=0)
-        value.error="dependent source parameter lacks ordinary original coordinates";
+        value.navigation_available=false;
       if(extra->constraint.type_constraint) {
-        if(extra->constraint.type_constraint->kind!=enk_concept_id)
-          value.error="original constrained type requires its exact concept-id";
-        else value.constraint_expression=capture_constraint_expression(extra->constraint.type_constraint);
+        value.constraint_expression=capture_constraint_expression(extra->constraint.type_constraint);
       }
-      a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
-      conv_seq_to_file_and_line(value.position.seq,&display,&full,&line,&at_end);
-      if(!line || !(full?full:display))value.error="dependent source parameter lacks original declaration location [name="+value.name+
-        ",seq="+std::to_string(value.position.seq)+",column="+std::to_string(value.position.column)+
-        ",depth="+std::to_string(value.dependent_depth)+",position="+std::to_string(value.dependent_position)+
-        ",pack="+(parameter.is_pack?"yes":"no")+",template-symbol="+(extra->template_symbol?"yes":"no")+
-        ",original-nested-type="+(extra->orig_nested_type?"yes":"no")+"]";
-      else value.dependent_identity=std::string(full?full:display)+":"+std::to_string(line)+":"+
-        std::to_string(value.position.column)+":"+std::to_string(value.dependent_depth)+":"+std::to_string(value.dependent_position);
+      value.dependent_identity="edg-source-node:"+std::to_string(id);
     } else if(parameter.kind==tptk_member) {
       value.dependent_kind="member";
       a_type_ptr owner=t->source_corresp.is_class_member?parent_class_of(t):nullptr;
       if(owner && class_type_supp(owner)->proxy_of_type)owner=class_type_supp(owner)->proxy_of_type;
       if(!owner || owner==t || value.name.empty() || parameter.is_pack)
-        value.error="dependent source member lacks exact named owner";
+        value.navigation_available=false;
       else {
         value.dependent_owner=capture_type(owner);
         if(extra->orig_nested_type) {
           auto original=extra->orig_nested_type;
-          if(!original->source_corresp.is_class_member || parent_class_of(original)!=owner ||
-             spelling(original->source_corresp)!=value.name || value.name.empty())
-            value.error="nonreal nested type lost its exact original declaration owner/name";
-          else {
-            auto prior_owner=s.nested_type_declarations.emplace(original,owner);
-            if(!prior_owner.second && prior_owner.first->second!=owner)
-              value.error="original nested type has conflicting enclosing declarations";
-            value.dependent_original_nested=capture_type(original);
-          }
+          if(original->source_corresp.is_class_member)
+            s.nested_type_declarations.emplace(original,parent_class_of(original));
+          value.dependent_original_nested=capture_type(original);
         }
       }
     } else if(parameter.kind==tptk_unknown) {
       value.dependent_kind="unknown";value.name.clear();
-      if(parameter.is_pack)value.error="unknown dependent pack requires an explicit expansion contract";
-    } else value.error="dependent bit-precise source type requires its width expression";
+    } else value.navigation_available=false;
   } else if(t->kind==tk_ptr_to_member) {
     value.kind="member-pointer";
 #if MICROSOFT_EXTENSIONS_ALLOWED
-    if(t->variant.ptr_to_member.modifiers)value.error="member-pointer modifiers are not represented in the source type contract";
+    if(t->variant.ptr_to_member.modifiers)value.navigation_available=false;
 #endif
     value.member_owner=capture_type(t->variant.ptr_to_member.orig_class_of_which_a_member?
       t->variant.ptr_to_member.orig_class_of_which_a_member:t->variant.ptr_to_member.class_of_which_a_member);
@@ -1609,8 +1578,8 @@ inline unsigned capture_type(a_type_ptr t) {
       s.routine_abis[id]=abi;
     }
   }
-  // Unknown entries are retained privately as unavailable, never exported as
-  // opaque payloads. An unused unsupported declaration cannot block the TU.
+  // The original typed graph owns forms outside the navigation projection.
+  if(value.kind.empty())value.navigation_available=false;
   if(t->kind!=tk_typeref && value.kind!="record" && value.kind!="enum" && value.kind!="dependent")value.name.clear();
   s.types[id-1]=value;
   if(value.source_form=="template-alias")capture_source_alias(t);

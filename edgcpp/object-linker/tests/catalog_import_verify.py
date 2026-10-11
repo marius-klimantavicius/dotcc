@@ -112,7 +112,33 @@ def main():
         (out/'reopened-maps.stderr').write_bytes(maps.stderr)
         check('catalog-reopens-verified-unit-for-maps',maps.returncode==0)
         source_map=json.loads((out/'reopened-maps'/'source-map.json').read_text())
-        check('catalog-maps-preserve-typed-graph',len(source_map['objects'])==1 and all(key in source_map['objects'][0] for key in ('edgGraphNodes','edgGraphFields','edgGraphRoots','edgGraphCoverage')))
+        check('catalog-maps-reference-retained-typed-graph',len(source_map['objects'])==1 and 'edgGraph' in source_map['objects'][0])
+        graph=source_map['objects'][0]['edgGraph']
+        with reopen_input.open('rb') as stream:graph_hash=hashlib.file_digest(stream,'sha256').hexdigest()
+        check('graph-map-physical-receipt',graph['path']==str(reopen_input) and graph['byteLength']==reopen_input.stat().st_size and graph['sha256']==graph_hash)
+        with sqlite3.connect(reopen_input) as db:
+            expected_counts=dict(nodes=db.execute('SELECT count(*) FROM edg_graph_nodes').fetchone()[0],
+                fields=db.execute('SELECT coalesce(sum(row_count),0) FROM edg_graph_field_blocks').fetchone()[0],
+                roots=db.execute('SELECT count(*) FROM edg_graph_roots').fetchone()[0],
+                definitions=db.execute('SELECT count(*) FROM edg_graph_field_definitions').fetchone()[0],
+                blocks=db.execute('SELECT count(*) FROM edg_graph_field_blocks').fetchone()[0])
+            check('graph-map-exact-logical-receipt',graph['unitId']==db.execute('SELECT unit_id FROM object_info').fetchone()[0] and
+                  graph['semanticDigest']==db.execute('SELECT sha256 FROM content_digest').fetchone()[0])
+        check('graph-map-exact-counts',graph['counts']==expected_counts)
+        check('graph-map-explicit-typed-accessor',graph['fieldRows']['encoding']=='graph-fields-v1' and
+              graph['fieldRows']['inspectionCommand']==['dotobj-link','inspect-edg-graph',str(reopen_input)] and
+              graph['tables']==dict(nodes='edg_graph_nodes',nodeEntries='edg_graph_node_entries',nodeKinds='edg_graph_node_kinds',definitions='edg_graph_field_definitions',blocks='edg_graph_field_blocks',roots='edg_graph_roots',coverage='edg_graph_coverage'))
+        check('graph-map-explicit-logical-node-view',graph['nodeRows']==dict(view='edg_graph_nodes',columns=['id','entry_kind','entry_kind_name','capture_phase']))
+        check('graph-map-does-not-expand-raw-rows',not any(key in source_map['objects'][0] for key in ('edgGraphNodes','edgGraphFields','edgGraphRoots')))
+        if expected_counts['fields']<=100000:
+            inspector_command=['dotnet',str(a.driver.resolve()),'inspect-edg-graph','--out',str(out/'graph-fields.jsonl'),str(reopen_input)]
+            inspected=subprocess.run(inspector_command,capture_output=True,timeout=600)
+            (out/'graph-inspection.stderr').write_bytes(inspected.stderr)
+            commands.append(dict(name='graph-inspection',command=inspector_command,exitCode=inspected.returncode))
+            check('referenced-graph-can-be-expanded-explicitly',inspected.returncode==0)
+            with (out/'graph-fields.jsonl').open() as rows:
+                count=sum(1 for row in rows if set(json.loads(row))==set(graph['fieldRows']['columns']))
+            check('expanded-graph-exact-row-count-and-columns',count==expected_counts['fields'])
         with sqlite3.connect(reopen_input) as db:
             db.execute("UPDATE object_info SET unit_id=unit_id||'-changed'")
             db.execute('UPDATE content_digest SET sha256=?',(packager.logical_hash(db),))

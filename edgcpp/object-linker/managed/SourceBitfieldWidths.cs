@@ -47,5 +47,5 @@ internal sealed partial class ObjectFile
     internal string SourceBitfieldWidthIdentity(long fieldId)
         => !SourceBitfieldWidths.TryGetValue(fieldId, out var width) ? "not-bitfield"
             : width.Kind == "evaluated" ? "width:" + width.DeclaredWidth!.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)
-            : "dependent:" + SourceConstantIdentity(width.ConstantId!.Value, 0);
+            : "dependent:" + SourceObservationIdentity("constant",width.ConstantId!.Value);
 }

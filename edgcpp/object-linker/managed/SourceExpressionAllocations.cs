@@ -49,12 +49,4 @@ internal sealed partial class ObjectFile
         // EDG selected the operator, result type and initialization/rollback
         // policy. The raw graph retains those facts without selecting again.
     }
-    private string SourceAllocationIdentity(long id,int depth)
-    {
-        if(depth>128)throw new InvalidDataException("Source allocation identity depth");
-        var v=SourceExpressionAllocations[id];
-        return SourceIdentityFrame(SourceExpressionTypeKey(v.ObjectType,depth+1))+SourceIdentityFrame(v.Routine is long routine?SourceStructuralDeclarationKey(routine,depth+1):"")+
-            (v.New?"1":"0")+(v.Dependent?"1":"0")+(v.Placement?"1":"0")+(v.Aligned?"1":"0")+(v.ArrayDelete?"1":"0")+(v.Global?"1":"0")+
-            (v.HasInitializer?"1":"0")+(v.Braced?"1":"0")+(v.ParenthesizedAggregate?"1":"0")+(v.Deducible?"1":"0")+(v.ParenthesizedType?"1":"0")+(v.LookupDeferred?"1":"0");
-    }
 }

@@ -75,10 +75,11 @@ inline const char *source_fold_operator(a_token_kind token) {
 }
 using SourceConstraintArgument=SourceTemplateArgument;
 struct SourceConstraintPackReference : SourceTemplateArgument {
-  bool enclosing=false;int depth=-1,position=-1;
+  bool enclosing=false;int original_kind=0,depth=-1,position=-1;
   a_source_position location={};
 };
 struct SourceConstraintPackExpansion {
+  const void *original=nullptr;
   bool ellipsis=false,enclosing_only=false,enclosing_any=false,function_declarator=false,pack_index=false,template_template=false;
   unsigned parameter_type=0;std::string error;
   a_source_position location={};std::vector<SourceConstraintPackReference> references;
@@ -97,7 +98,7 @@ struct SourceConstraintSubstitution {
 struct SourceConstraintTemporary {
   int initialization_kind=-1;
   unsigned spelled_type=0,constructor=0,destructor=0,constant=0;
-  bool dependent_constructor=false;
+  bool dependent_constructor=false,linked_lifetime_present=false;
   std::vector<std::string> flags;
 };
 struct SourceConstraintAllocation {
@@ -109,6 +110,7 @@ struct SourceConstraintAllocation {
 };
 struct SourceConstraintExpression {
   unsigned graph_node=0;
+  bool navigation_available=true;
   std::string kind,operation,error;
   SourceConstraintTemporary temporary;
   SourceConstraintAllocation allocation;
@@ -272,21 +274,20 @@ inline unsigned capture_constraint_pack_expansion(a_pack_expansion_descr_ptr ori
   auto &graph=source_constraint_graph();auto previous=graph.expansions_by_original.find(original);
   if(previous!=graph.expansions_by_original.end())return previous->second;
   unsigned id=unsigned(graph.expansions.size()+1);graph.expansions_by_original[original]=id;graph.expansions.emplace_back();
-  SourceConstraintPackExpansion value;
+  SourceConstraintPackExpansion value;value.original=original;
   value.ellipsis=original->ellipsis_seen;value.location=original->ellipsis_position;
   value.enclosing_only=original->uses_only_enclosing_packs;value.enclosing_any=original->uses_any_enclosing_packs;
   value.function_declarator=original->is_function_declarator;value.pack_index=original->is_pack_index;
   value.template_template=original->param_symbol_is_template_template;value.parameter_type=capture_type(original->param_symbol_type);
   for(auto ref=original->packs_referenced;ref;ref=ref->next) {
-    SourceConstraintPackReference item;item.enclosing=ref->uses_enclosing_pack;item.location=ref->position;
-    if(ref->kind!=prk_template_param)value.error="source constraint pack requires original function/binding pack ownership: kind="+std::to_string(int(ref->kind));
-    else {
-      auto symbol=ref->symbol?fundamental_symbol_of(ref->symbol):nullptr;
+    SourceConstraintPackReference item;item.original_kind=int(ref->kind);item.kind="observed";
+    item.enclosing=ref->uses_enclosing_pack;item.location=ref->position;
+    if(ref->kind==prk_template_param) {
+      auto symbol=ref->symbol;
       if(ref->coordinates){item.depth=ref->coordinates->depth;item.position=ref->coordinates->position;}
       if(symbol && symbol->kind==sk_type){item.kind="type";item.type=capture_type(symbol->variant.type.ptr);}
       else if(symbol && symbol->kind==sk_constant){item.kind="constant";item.constant=capture_semantic_constant(symbol->variant.constant);}
       else if(symbol && symbol->kind==sk_class_template){item.kind="template";item.templ=capture_source_template(symbol->variant.template_info->il_template_entry);}
-      else value.error="source constraint pack reference lacks its original template parameter declaration";
     }
     value.references.push_back(item);
   }
@@ -670,9 +671,9 @@ inline void capture_constraint_lookup_candidates(a_symbol_ptr symbol,SourceConst
     value.lookup_candidates.push_back(capture_constraint_routine(symbol->variant.routine.ptr));
   else if(symbol->kind==sk_function_template) {
     auto templ=symbol->variant.template_info->il_template_entry;
-    if(!templ || !templ->prototype_instantiation.routine)value.error="source dependent function lookup lacks original function template prototype";
+    if(!templ || !templ->prototype_instantiation.routine)value.navigation_available=false;
     else value.lookup_candidates.push_back(capture_constraint_routine(templ->prototype_instantiation.routine));
-  } else value.error="source dependent function lookup candidate requires owned symbol family: kind="+std::to_string(int(symbol->kind));
+  } else value.navigation_available=false;
 }
 inline void capture_constraint_function_constant(a_constant_ptr constant,SourceConstraintExpression &value) {
   value.kind="dependent-function-reference";
@@ -684,12 +685,12 @@ inline void capture_constraint_function_constant(a_constant_ptr constant,SourceC
       value.arguments.push_back(capture_constraint_argument(arg,value.error));
   }
   if(!target || target->kind!=ck_template_param || target->variant.template_param.kind!=tpck_unknown_function) {
-    value.error="source function-template reference lacks its original dependent function lookup";return;
+    value.navigation_available=false;return;
   }
   const auto &parameter=target->variant.template_param;
   SourceConstraintDeclaration scope;capture_constraint_declaration_scope(target->source_corresp,scope);
   value.lookup_name=scope.name;value.lookup_qualified_name=scope.qualified_name;value.lookup_owner=scope.owner_type;
-  if(!scope.error.empty())value.error=scope.error;
+  if(!scope.error.empty())value.navigation_available=false;
   value.lookup_qualified=parameter.is_qualified_name;value.lookup_address=parameter.has_address_of;
   value.lookup_unknown_base=target->source_corresp.member_of_unknown_base;value.lookup_qualified_unknown_base=target->source_corresp.qualified_unknown_base_member;
   const auto &function=parameter.variant.unknown_function;
@@ -697,11 +698,8 @@ inline void capture_constraint_function_constant(a_constant_ptr constant,SourceC
   value.lookup_symbol=function.symbol!=nullptr;
   if(function.symbol){std::set<a_symbol_ptr> seen;capture_constraint_lookup_candidates(function.symbol,value,seen);}
 #if MICROSOFT_EXTENSIONS_ALLOWED
-  if(function.property_or_event_descr || function.special_kind!=sfk_none)value.error="source dependent accessor requires original property/event contract";
+  if(function.property_or_event_descr || function.special_kind!=sfk_none)value.navigation_available=false;
 #endif
-  if(value.lookup_operator || value.lookup_conversion_type) {
-    if(value.error=="source expression declaration needs original anonymous member identity")value.error.clear();
-  }
 }
 inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsigned binder) {
   if(!expression)return 0;
@@ -739,9 +737,6 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
       value.kind="requires";
       auto frames=capture_parameter_binder_pair(id,0,binder,expression->variant.requires_expr.parameters);
       graph.requires_binders[id]=frames.second;value.parameters=graph.binders.at(frames.second).parameters;
-      for(auto param=expression->variant.requires_expr.parameters;param;param=param->next)
-        if(param->has_default_arg || param->default_arg_expr || !param->is_requires_expr_param)
-          value.error="source requires parameter lost original parameter contract";
       for(auto req=expression->variant.requires_expr.requirements;req;req=req->next)edge("requirement",req,frames.second);
       if(requires_expr_substs) {
         const auto &substitutions=requires_expr_substs->get(expression);
@@ -764,7 +759,7 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
       value.kind="compound-requirement";value.noexcept_required=expression->variant.compound_req.is_noexcept;
       auto first=expression->variant.compound_req.expr_and_constraint;
       if(!first)value.error="compound requirement has no expression";
-      else {edge("expression",first,binder);if(first->next){edge("constraint",first->next,binder);if(first->next->next)value.error="compound requirement has excess constraint nodes";}}
+      else {edge("expression",first,binder);if(first->next)edge("constraint",first->next,binder);}
       break;
     }
     case enk_nested_req:value.kind="nested-requirement";edge("constraint",expression->variant.nested_req.constraint,binder);break;
@@ -776,7 +771,7 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
       if(record!=state().records.end())for(const auto &field:record->second.fields) {
         if(field.il==value.field) {found=true;break;}++value.field_ordinal;
       }
-      if(!found)value.error="source field reference lacks its exact original enclosing record/member";
+      if(!found)value.navigation_available=false;
       break;
     }
     case enk_braced_init_list:
@@ -786,7 +781,7 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
     case enk_fold: {
       value.kind="fold-expression";value.fold_token=int(expression->variant.fold.operator_token);value.fold_left=expression->variant.fold.left_associative;
       auto fold_spelling=source_fold_operator(expression->variant.fold.operator_token);
-      if(!fold_spelling)value.error="original fold operator is not a C++17 fold token";
+      if(!fold_spelling)value.navigation_available=false;
       else value.fold_operator=fold_spelling;
       // Partial substitution can retain more than two original operands.
       for(auto operand=expression->variant.fold.operands;operand;operand=operand->next)edge("operand",operand,binder);
@@ -809,7 +804,6 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
       allocation.initialization_present=supplement->dynamic_init!=nullptr;
       allocation.rollback_present=supplement->freeing_of_storage_on_exception!=nullptr;
       if(!allocation.type)value.error="original allocation expression lacks its object type";
-      if(!allocation.routine && !allocation.dependent)value.error="source allocation requires its original folded/default operator selection";
       // Initializer and rollback are retained as typed EDG graph links.
       // Their presence does not require a second source-language projection.
       for(auto arg=supplement->arg;arg;arg=arg->next)edge(allocation.is_new?"allocation-argument":"delete-operand",arg,binder);
@@ -823,14 +817,12 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
       auto &temp=value.temporary;temp.initialization_kind=int(dip->kind);
       temp.spelled_type=capture_type(expression->variant.init.source.type);
       temp.destructor=capture_constraint_routine(dip->destructor);
-      // This is an unevaluated/source-expression graph, not an execution body.
-      // A real linked lifetime must get its own original source-only graph;
-      // never adopt it into an unrelated emitted function or silently drop it.
-      if(dip->variable || dip->lifetime || dip->init_expr_lifetime || dip->next_in_destruction_list ||
+      // The typed expression graph retains these original initialization,
+      // lifetime and rollback links independently of this navigation projection.
+      temp.linked_lifetime_present=dip->variable || dip->lifetime || dip->init_expr_lifetime || dip->next_in_destruction_list ||
          dip->master_entry || dip->lifetime_of_overlapping_temps || dip->is_freeing_of_storage_on_exception ||
          dip->is_array_freeing || dip->is_constructor_init || dip->destruction_is_for_partially_constructed_aggregate ||
-         dip->overlaps_temps_in_inner_lifetime)
-        value.error="source temporary requires its original linked lifetime/master initialization graph";
+         dip->overlaps_temps_in_inner_lifetime;
       auto flag=[&](bool set,const char *name){if(set)temp.flags.push_back(name);};
       flag(dip->static_temp,"static-storage");flag(dip->follows_an_exec_statement,"after-statement");
       flag(dip->inside_conditional_expression,"conditional");flag(dip->unordered,"unordered-destruction");
@@ -848,21 +840,17 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
         case dik_constructor:
           temp.constructor=capture_constraint_routine(dip->variant.constructor.ptr);
           temp.dependent_constructor=!dip->variant.constructor.ptr && is_template_dependent_type(expression->type);
-          if(!temp.constructor && !temp.dependent_constructor)value.error="source temporary constructor has no selected routine or dependent type";
           flag(dip->variant.constructor.is_copy_constructor_with_implied_source,"implied-copy-source");
           flag(dip->variant.constructor.is_implicit_copy_for_copy_initialization,"implicit-copy-initialization");
           flag(dip->variant.constructor.value_initialization,"value-initialization");
           flag(dip->variant.constructor.has_sequenced_arguments,"sequenced-arguments");
           flag(dip->variant.constructor.is_array_copy,"array-copy");
-          if(dip->variant.constructor.is_copy_constructor_with_implied_source || dip->variant.constructor.is_array_copy)
-            value.error="source temporary copy requires original implied source/array recipe";
           for(auto arg=dip->variant.constructor.args;arg;arg=arg->next)edge("argument",arg,binder);
           break;
         case dik_bitwise_copy:
-          if(!dip->variant.bitwise_copy.source)value.error="source temporary bitwise copy requires original implied source";
-          else edge("source",dip->variant.bitwise_copy.source,binder);
+          if(dip->variant.bitwise_copy.source)edge("source",dip->variant.bitwise_copy.source,binder);
           break;
-        default:value.error="source temporary initialization kind requires its original family: kind="+std::to_string(int(dip->kind));break;
+        default:break; // Other EDG initialization forms remain in the typed graph.
       }
       break;
     }
@@ -874,7 +862,7 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
     case enk_variable:value.kind="variable-reference";value.declaration=capture_constraint_variable(expression->variant.variable.ptr);break;
     case enk_routine:
       value.kind="routine-reference";value.declaration=capture_constraint_routine(expression->variant.routine.ptr);
-      if(!value.declaration)value.error="source vacuous destructor needs original name-reference contract";
+      if(!value.declaration)value.navigation_available=false;
       break;
     case enk_type_operand:value.kind="type-operand";value.type_operand=capture_type(expression->variant.type_operand.type);break;
     case enk_constant: {
@@ -884,7 +872,7 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
       else if(constant->kind==ck_template_param && constant->variant.template_param.kind==tpck_expression) {
         value.kind="expression-constant";
 #if PROTOTYPE_INSTANTIATIONS_IN_IL
-        if(constant->variant.template_param.local_expr_ref)value.error="source constraint constant requires an owned local expression reference";
+        if(constant->variant.template_param.local_expr_ref)value.navigation_available=false;
         else
 #endif
         edge("expression",constant->variant.template_param.variant.expr,binder);
@@ -908,7 +896,7 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
     case enk_operation:
       value.kind="operation";value.opcode=int(expression->variant.operation.kind);
       if(auto name=source_constraint_operation_name(expression->variant.operation.kind))value.operation=name;
-      else value.error="source constraint contains an invalid original operation";
+      else value.navigation_available=false;
       value.operation_type_kind=int(expression->variant.operation.type_kind);
       {
         const auto &op=expression->variant.operation;
@@ -944,14 +932,14 @@ inline unsigned capture_constraint_expression(an_expr_node_ptr expression,unsign
 #endif
 #if MICROSOFT_EXTENSIONS_ALLOWED
         if(op.is_tracking_reference_cast || op.requires_runtime_cast_check || op.rewritten_property_reference_kind!=rprk_none)
-          value.error="source operation requires managed extension auxiliary contract";
+          value.navigation_available=false;
 #endif
       }
-      // Each supported opcode gets a checked role/arity contract in the reader;
-      // operation-specific auxiliary metadata must be captured before export.
+      // This navigation projection supplements the original typed EDG fields.
       for(auto operand=expression->variant.operation.operands;operand;operand=operand->next)edge("operand",operand,binder);
       break;
-    default:value.error="source constraint expression family not yet owned: kind="+std::to_string(int(expression->kind));break;
+    default:value.navigation_available=false;break;
   }
+  if(!value.navigation_available)value.kind="edg-node";
   graph.expressions[id-1]=value;return id;
 }

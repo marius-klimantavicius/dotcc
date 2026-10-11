@@ -69,18 +69,7 @@ internal sealed partial class ObjectFile
     }
     private void VerifySourceFieldReference(SourceExpression expression)
     {
-        var field=SourceFields[SourceExpressionFieldReferences[expression.Id]];
-        if((expression.OriginalLvalueTypeId??expression.SourceTypeId) is not long type || SourceTypeSignature(type)!=SourceTypeSignature(field.SourceTypeId))
-            throw new InvalidDataException("Original field reference differs from its selected declaration type");
-    }
-    private string SourceFieldReferenceIdentity(long id,int depth)
-    {
-        var field=SourceFields[SourceExpressionFieldReferences[id]];var owner=SourceRecords[field.SourceRecordId];
-        return SourceIdentityFrame(SourceExpressionTypeKey(owner.SourceTypeId,depth+1))+SourceIdentityFrame(field.Ordinal.ToString(CultureInfo.InvariantCulture));
-    }
-    private string SourceFoldIdentity(long id)
-    {
-        var value=SourceExpressionFolds[id];
-        return SourceIdentityFrame(value.Token.ToString(CultureInfo.InvariantCulture))+SourceIdentityFrame(value.Spelling)+(value.LeftAssociative?"1":"0");
+        if((expression.OriginalLvalueTypeId??expression.SourceTypeId) is null)
+            throw new InvalidDataException("Original field reference lacks its recorded type");
     }
 }

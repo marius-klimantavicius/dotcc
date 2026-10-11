@@ -34,7 +34,7 @@ internal static class CatalogImporter
         if(File.Exists(path+"-wal") || File.Exists(path+"-journal"))
             throw new InvalidDataException("Catalog import requires a checkpointed standalone semantic object");
         var before=FileIdentity(path);var timer=Stopwatch.StartNew();
-        using var obj=new ObjectFile(path);objectLifetime=new WeakReference(obj);long unit=checked(ordinal+1);
+        using var obj=new ObjectFile(path,before);objectLifetime=new WeakReference(obj);long unit=checked(ordinal+1);
         output.BeginUnit();
         try
         {
@@ -62,11 +62,11 @@ internal static class CatalogImporter
         {
             var symbol=new Symbol(obj,entity);bool deferred=obj.DeferredFunctionDeclarations.ContainsKey(entity.Id);
             string? semantic=obj.EntitySourceRoutines.TryGetValue(entity.Id,out var original)?obj.SourceTypeSignature(original.TypeId):null;
-            output.Insert("INSERT INTO functions VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",unit,entity.Id,symbol.Key,
+            output.Insert("INSERT INTO functions VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",unit,entity.Id,symbol.Key,
                 Encoding.BigEndianUnicode.GetBytes(symbol.Key),entity.Definition,entity.SourceName,entity.Linkage,entity.IsWeak,
                 symbol.Signature,obj.CallableRoutine(entity.Id),deferred?null:obj.FunctionSourceSignature(entity.Id),semantic,deferred,
                 original is not null && obj.SourceFunctionKinds.GetValueOrDefault(entity.Id)=="ordinary",
-                RuntimeArrayProvider.TryGetMethod(symbol));
+                RuntimeArrayProvider.TryGetMethod(symbol),deferred?null:obj.RecordedFunctionAbiSignature(entity.Id));
         }
         foreach(var storage in obj.Storages.Values.OrderBy(value=>value.Id))
         {

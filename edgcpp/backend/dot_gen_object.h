@@ -314,6 +314,7 @@ struct Writer {
     auto prior=source_semantic_constant_ids.find(captured);if(prior!=source_semantic_constant_ids.end())return prior->second;
     const auto &value=dot_object_source::state().semantic_constants.at(captured-1);
     if(!value.error.empty())reject(value.error.c_str());
+    if(!value.graph_node)reject("source constant has no captured EDG graph root");
     unsigned id=unsigned(source_semantic_constant_ids.size()+1);source_semantic_constant_ids[captured]=id;
     dot_object_source::typed_graph::projection(value.graph_node,"source-constant",id-1);
     source_semantic_constants.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(value.kind)+
@@ -354,11 +355,14 @@ struct Writer {
     auto previous=source_template_ids.find(captured);if(previous!=source_template_ids.end())return previous->second;
     const auto &value=dot_object_source::state().source_templates.at(captured-1);
     if(!value.error.empty())reject(value.error.c_str());
+    if(!value.graph_node)reject("source template has no captured EDG graph root");
     unsigned id=unsigned(source_template_ids.size()+1);source_template_ids[captured]=id;
+    dot_object_source::typed_graph::projection(value.graph_node,"source-template",id-1);
     source_templates.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(value.kind)+",\"sourceName\":"+quote(value.name)+
-      ",\"parameterDepth\":"+(value.kind=="parameter"?std::to_string(value.depth):"null")+",\"parameterPosition\":"+(value.kind=="parameter"?std::to_string(value.position):"null")+
-      ",\"isPack\":"+(value.pack?"true":"false")+",\"parameterCount\":"+std::to_string(value.parameters.size())+",\"captureProof\":"+
-      quote(value.kind=="parameter"?"original-template-parameter":"original-alias-template")+position(value.location)+"}");
+      ",\"parameterDepth\":"+(value.kind!="alias"?std::to_string(value.depth):"null")+",\"parameterPosition\":"+(value.kind!="alias"?std::to_string(value.position):"null")+
+      ",\"isPack\":"+(value.pack?"true":"false")+",\"parameterCount\":"+std::to_string(value.navigation_available?value.parameters.size():0)+",\"captureProof\":"+
+      quote(value.kind=="edg-node"?"original-edg-template":value.kind=="parameter"?"original-template-parameter":"original-alias-template")+position(value.location)+"}");
+    if(!value.navigation_available)return id;
     if(value.kind=="alias")source_namespace_owner("template",id,value.namespace_owner);
     if(value.kind=="alias")source_named_templates.push_back("{\"templateId\":"+number(id)+",\"qualifiedName\":"+quote(value.qualified_name)+
       ",\"ownerSourceTypeId\":"+number(value.owner_type?source_type(value.owner_type):0)+",\"prototypeSourceTypeId\":"+number(source_type(value.prototype_type))+
@@ -469,13 +473,25 @@ struct Writer {
     if(!source->error.empty() && source->error!="record outside complete plain layout profile" &&
        source->error!="record field outside plain layout profile" && source->error!="bitfield outside fixed integer layout")
       reject(source->error.c_str());
-    string identity=original_record_identity(t),name=source->name,layout=source->layout_kind;
+    bool navigation_available=source->template_navigation_available && source->template_error.empty();
+    auto specialization=dot_object_source::source_constraint_graph().class_specializations.find(t);
+    if(specialization!=dot_object_source::source_constraint_graph().class_specializations.end() &&
+       (!specialization->second.error.empty() || !specialization->second.selected))navigation_available=false;
+    bool unfinalized_identity=(source->template_identity || (!C_mode() && source->identity.find("local-record:")==0)) &&
+      !captured.finalized_record_identities.count(t) && !captured.owned_local_record_identities.count(t);
+    if(unfinalized_identity)navigation_available=false;
+    auto source_type_it=captured.type_ids.find(t);
+    if(source_type_it==captured.type_ids.end())reject("record source type was not captured before lowering");
+    unsigned graph_node=captured.types.at(source_type_it->second-1).graph_node;
+    if(!graph_node)reject("source record has no captured EDG graph root");
+    string identity=unfinalized_identity?source_local_type_identity(source_type_it->second):original_record_identity(t),name=source->name,layout=source->layout_kind;
     auto pos=source->position;
     bool copy_known=source->layout_known && (C_mode() ||
       (pre!=captured.prelower_records.end() && pre->second.trivial_copy_known));
     bool trivial=C_mode() || (copy_known && pre->second.trivial_copy);
     unsigned source_record=0;
       source_record=next_source_record++;source_record_ids[t]=source_record;
+      dot_object_source::typed_graph::projection(graph_node,"source-record",source_record-1);
       // Reserve every original member/base identity before following any
       // source type. A field can point to a derived class whose physical base
       // view re-enters this record while its source rows are still being
@@ -485,13 +501,12 @@ struct Writer {
         source_field_ids.emplace(field.il,next_source_field++);
       for(const auto &base:source->bases)
         source_base_ids.emplace(base.il,next_source_base++);
-      source_class_specialization_metadata(t);
-      if(source->proxy_type)source_proxy_types.push_back("{\"sourceRecordId\":"+number(source_record)+
+      if(navigation_available)source_class_specialization_metadata(t);
+      if(navigation_available && source->proxy_type)source_proxy_types.push_back("{\"sourceRecordId\":"+number(source_record)+
         ",\"originalTypeId\":"+number(source_type(source->proxy_type))+
         ",\"sourceOccurrence\":"+std::to_string(source->source_occurrence)+
         ",\"captureProof\":\"original-class-proxy-of-type\"}");
-      if((source->dependent || source->template_prototype) && !source->proxy_type && !source->prototype && !captured.record_owners.count(t) && !captured.nested_type_declarations.count(t)) {
-        if(!source->template_error.empty())reject(source->template_error.c_str());
+      if(navigation_available && (source->dependent || source->template_prototype) && !source->proxy_type && !source->prototype && !captured.record_owners.count(t) && !captured.nested_type_declarations.count(t)) {
         // Keep the exact capture cause reachable even when the discovering
         // expression belongs to an unused template and is not itself emitted.
         // Its original owner/prototype relation is verified by the existing
@@ -530,9 +545,8 @@ struct Writer {
           ",\"ownerFieldId\":"+number(source_field_ids.at(owner->second.field))+
           ",\"kind\":\"anonymous-member\",\"captureProof\":\"original-member-declaration\"}");
       }
-      auto source_type_it=captured.type_ids.find(t);
-      if(source_type_it==captured.type_ids.end())reject("record source type was not captured before lowering");
       source_records.push_back("{\"id\":"+number(source_record)+",\"sourceTypeId\":"+number(source_type(source_type_it->second))+
+        ",\"navigationKind\":"+quote(navigation_available?"detailed":"edg-node")+
         ",\"identityKey\":"+quote(identity)+",\"sourceName\":"+quote(name)+",\"recordKind\":"+quote(layout)+
         ",\"isComplete\":"+(source->complete?"true":"false")+",\"nativeSize\":"+std::to_string(source->layout_known?source->size:0)+
         ",\"nativeAlignment\":"+std::to_string(source->layout_known?source->alignment:0)+",\"isTriviallyCopyable\":"+
@@ -1299,17 +1313,12 @@ struct Writer {
     auto prior=source_type_ids.find(captured);if(prior!=source_type_ids.end())return prior->second;
     const auto &type=dot_object_source::state().types.at(captured-1);
     if(!type.error.empty())reject(type.error.c_str());
-    if(type.kind.empty()) {
-      a_const_char *display=nullptr,*full=nullptr;a_line_number line=0;a_boolean at_end=FALSE;
-      conv_seq_to_file_and_line(type.position.seq,&display,&full,&line,&at_end);
-      reject((string("source type family not yet represented in semantic schema: original-kind=")+
-        std::to_string(type.original_type?(int)type.original_type->kind:-1)+" name="+type.name+
-        " source="+(full?full:display?display:"")+":"+std::to_string(line)+":"+std::to_string(type.position.column)).c_str());
-    }
+    if(!type.graph_node)reject("source type has no captured EDG graph root");
     unsigned id=next_source_type++;source_type_ids[captured]=id;
     dot_object_source::typed_graph::projection(type.graph_node,"source-type",id-1);
-    unsigned execution=optional_source_execution_type(captured);
+    unsigned execution=type.navigation_available?optional_source_execution_type(captured):0;
     unsigned underlying=type.underlying?source_type(type.underlying):0;
+    if(type.navigation_available) {
     if(type.kind=="record")source_record_metadata(type.record_type);
     const auto &source_state=dot_object_source::state();
     auto nested_owner=source_state.nested_type_declarations.find(type.original_type);
@@ -1423,18 +1432,19 @@ struct Writer {
       source_member_pointer_types.push_back("{\"typeId\":"+number(id)+",\"ownerTypeId\":"+number(source_type(type.member_owner))+
         ",\"memberTypeId\":"+number(underlying)+",\"captureProof\":"+
         quote(execution?"observed-member-pointer-lowering":"observed-source-type")+"}");
+    }
     for(const auto &qualifier:type.qualifiers)
       source_type_qualifiers.push_back("{\"typeId\":"+number(id)+",\"name\":"+quote(qualifier)+"}");
-    source_type_origin(id,type);
+    if(type.navigation_available)source_type_origin(id,type);
     source_namespace_owner("type",id,type.namespace_owner);
-    source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.kind)+",\"sourceName\":"+quote(type.name)+
+    source_types.push_back("{\"id\":"+number(id)+",\"kind\":"+quote(type.navigation_available?type.kind:"edg-node")+",\"sourceName\":"+quote(type.name)+
       ",\"hasNamespaceOwner\":"+(type.namespace_owner?"true":"false")+
-      ",\"sourceForm\":"+quote(type.source_form)+
+      ",\"sourceForm\":"+quote(type.navigation_available?type.source_form:"plain")+
       ",\"underlyingTypeId\":"+number(underlying)+",\"executionTypeId\":"+number(execution)+
       ",\"isConst\":"+(type.is_const?"true":"false")+",\"isVolatile\":"+(type.is_volatile?"true":"false")+
       ",\"isRestrict\":"+(type.is_restrict?"true":"false")+",\"isAtomic\":"+(type.is_atomic?"true":"false")+
-      ",\"elementCount\":"+(type.kind=="array" && type.array_bound_known?std::to_string(type.element_count):"null")+
-      ",\"arrayBoundKind\":"+(type.kind=="array"?quote(type.dependent_array_bound?"dependent":type.array_bound_known?"constant":"unspecified"):"null")+position(type.position)+"}");
+      ",\"elementCount\":"+(type.navigation_available && type.kind=="array" && type.array_bound_known?std::to_string(type.element_count):"null")+
+      ",\"arrayBoundKind\":"+(type.navigation_available && type.kind=="array"?quote(type.dependent_array_bound?"dependent":type.array_bound_known?"constant":"unspecified"):"null")+position(type.position)+"}");
     return id;
   }
   void source_declaration(const dot_object_source::Declaration &declaration,
@@ -5271,7 +5281,7 @@ struct Writer {
     const char *primitive_kinds[]={"void","i32","u8","i8","i16","u16","u32","i64","u64","f32","f64"};
     for(unsigned i=0;i<11;++i)types.push_back("{\"id\":"+number(i+1)+",\"kind\":"+quote(primitive_kinds[i])+",\"pointeeTypeId\":null,\"elementTypeId\":null,\"elementCount\":null}");
     types.insert(types.end(),execution_types.begin(),execution_types.end());
-    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v64\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
+    string result="{\"formatVersion\":1,\"profile\":\"scalar-control-v65\",\"sourceLanguage\":"+quote(C_mode()?"c":"c++")+",\"sourceFiles\":"+array(files)+
       ",\"macroDefinitions\":"+array(macro_definitions)+",\"macroParameters\":"+array(macro_parameters)+
       ",\"macroEvents\":"+array(macro_events)+
       ",\"sourceTypes\":"+array(source_types)+",\"sourceDeclarations\":"+array(source_declarations)+

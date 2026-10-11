@@ -6,7 +6,7 @@ BEGIN IMMEDIATE;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
  format_version INTEGER NOT NULL CHECK(format_version=1),
- profile TEXT NOT NULL CHECK(profile='scalar-control-v64'),
+ profile TEXT NOT NULL CHECK(profile='scalar-control-v65'),
  target_abi TEXT NOT NULL,
  runtime_abi TEXT NOT NULL,
  unit_id TEXT NOT NULL,
@@ -26,31 +26,42 @@ CREATE TABLE provenance (
 ) STRICT;
 -- EDG owns the meaning of this graph. These tables enforce its serialization
 -- structure, without resolving source-language recipes or lexical binders.
-CREATE TABLE edg_graph_nodes (
- id INTEGER PRIMARY KEY CHECK(id>0),
- entry_kind INTEGER NOT NULL CHECK(entry_kind>=0),
+CREATE TABLE edg_graph_node_kinds (
+ entry_kind INTEGER PRIMARY KEY CHECK(entry_kind>0),
  entry_kind_name TEXT NOT NULL CHECK(length(entry_kind_name)>0),
- capture_phase TEXT NOT NULL CHECK(capture_phase='frontend-observation'),
- UNIQUE(id,entry_kind)
+ capture_phase TEXT NOT NULL CHECK(capture_phase='frontend-observation')
 ) STRICT;
-CREATE TABLE edg_graph_fields (
- node_id INTEGER NOT NULL REFERENCES edg_graph_nodes(id),
+CREATE TABLE edg_graph_node_entries (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ entry_kind INTEGER NOT NULL REFERENCES edg_graph_node_kinds(entry_kind)
+) STRICT;
+CREATE VIEW edg_graph_nodes AS
+ SELECT e.id,e.entry_kind,k.entry_kind_name,k.capture_phase
+ FROM edg_graph_node_entries e JOIN edg_graph_node_kinds k ON k.entry_kind=e.entry_kind;
+CREATE TABLE edg_graph_field_definitions (
+ id INTEGER PRIMARY KEY CHECK(id>0),
+ owner_entry_kind INTEGER NOT NULL CHECK(owner_entry_kind>0),
  name TEXT NOT NULL CHECK(length(name)>0),
- ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  value_kind TEXT NOT NULL CHECK(value_kind IN ('signed','unsigned','boolean','text','bytes','reference')),
- value TEXT,
- target_id INTEGER,
  target_entry_kind INTEGER CHECK(target_entry_kind>=0),
- PRIMARY KEY(node_id,name,ordinal),
- FOREIGN KEY(target_id,target_entry_kind) REFERENCES edg_graph_nodes(id,entry_kind),
- CHECK((value_kind='reference' AND value IS NULL AND target_entry_kind IS NOT NULL) OR
-       (value_kind<>'reference' AND value IS NOT NULL AND target_id IS NULL AND target_entry_kind IS NULL)),
- CHECK(value_kind<>'boolean' OR value IN ('0','1')),
- CHECK(value_kind<>'bytes' OR (length(value)%2=0 AND value NOT GLOB '*[^0-9a-f]*'))
+ CHECK((value_kind='reference' AND target_entry_kind IS NOT NULL) OR
+       (value_kind<>'reference' AND target_entry_kind IS NULL))
+) STRICT;
+-- Exact typed rows, encoded by the public graph-fields-v1 grammar. Compression
+-- changes storage only; definitions and the decoded rows retain every field.
+CREATE TABLE edg_graph_field_blocks (
+ ordinal INTEGER PRIMARY KEY CHECK(ordinal>=0),
+ row_count INTEGER NOT NULL CHECK(row_count>0),
+ bytes BLOB NOT NULL,
+ codec TEXT NOT NULL CHECK(codec IN ('raw','zlib')),
+ decoded_byte_length INTEGER NOT NULL CHECK(decoded_byte_length>0 AND decoded_byte_length<=2147483647),
+ sha256 TEXT NOT NULL CHECK(length(sha256)=64 AND sha256 NOT GLOB '*[^0-9a-f]*'),
+ CHECK((codec='raw' AND length(bytes)=decoded_byte_length) OR
+       (codec='zlib' AND length(bytes)>=6 AND length(bytes)<decoded_byte_length))
 ) STRICT;
 CREATE TABLE edg_graph_roots (
- node_id INTEGER NOT NULL REFERENCES edg_graph_nodes(id),
- context_node_id INTEGER REFERENCES edg_graph_nodes(id),
+ node_id INTEGER NOT NULL REFERENCES edg_graph_node_entries(id),
+ context_node_id INTEGER REFERENCES edg_graph_node_entries(id),
  role TEXT NOT NULL CHECK(length(role)>0),
  ordinal INTEGER NOT NULL CHECK(ordinal>=0),
  PRIMARY KEY(role,ordinal)
@@ -107,7 +118,7 @@ CREATE TABLE source_routine_types (
  type_id INTEGER PRIMARY KEY REFERENCES source_types(id),
  return_type_id INTEGER NOT NULL REFERENCES source_types(id),
  variadic INTEGER NOT NULL CHECK(variadic IN (0,1)),
- exception_policy TEXT NOT NULL CHECK(exception_policy IN ('unwind','terminate','dynamic')),
+ exception_policy TEXT NOT NULL CHECK(exception_policy IN ('unwind','terminate','dynamic','unsupported-dynamic')),
  parameter_mode TEXT NOT NULL CHECK(parameter_mode IN ('prototype','unspecified')),
  object_type_id INTEGER REFERENCES source_types(id),
  object_is_const INTEGER NOT NULL CHECK(object_is_const IN (0,1)),
@@ -858,6 +869,7 @@ CREATE TABLE source_record_types (
  layout_known INTEGER NOT NULL CHECK(layout_known IN (0,1)),
  is_dependent INTEGER NOT NULL CHECK(is_dependent IN (0,1)),
  is_prototype_instantiation INTEGER NOT NULL CHECK(is_prototype_instantiation IN (0,1)),
+ navigation_kind TEXT NOT NULL CHECK(navigation_kind IN ('detailed','edg-node')),
  CHECK(is_complete=1 OR (layout_known=0 AND is_trivially_copyable IS NULL)),
  CHECK((layout_known=1 AND is_complete=1 AND is_dependent=0 AND native_alignment>0) OR
        (layout_known=0 AND native_size=0 AND native_alignment=0)),
@@ -868,7 +880,7 @@ CREATE TABLE source_record_types (
 -- Source-only template arguments and dependent extents never imply storage.
 CREATE TABLE source_semantic_constants (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind IN ('integer','parameter','operation','expression','member','type-operand','builtin-trait','sizeof','alignof','datasizeof','source-expression','aggregate','sizeof-pack')),
+ kind TEXT NOT NULL CHECK(kind IN ('integer','parameter','operation','expression','member','type-operand','builtin-trait','sizeof','alignof','datasizeof','source-expression','aggregate','sizeof-pack','edg-node')),
  source_type_id INTEGER NOT NULL REFERENCES source_types(id),
  source_name TEXT NOT NULL,
  value_text TEXT NOT NULL,
@@ -883,14 +895,14 @@ CREATE TABLE source_semantic_constants (
  source_file_id INTEGER REFERENCES source_files(id),
  line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
- CHECK((kind='parameter' AND parameter_depth>=0 AND parameter_position>0 AND source_file_id IS NOT NULL AND line>0) OR
+ CHECK(kind='edg-node' OR (kind='parameter' AND parameter_depth>=0 AND parameter_position>0 AND source_file_id IS NOT NULL AND line>0) OR
        (kind<>'parameter' AND parameter_depth IS NULL AND parameter_position IS NULL AND is_pack=0)),
- CHECK((kind='integer' AND length(value_text)>0) OR (kind<>'integer' AND value_text='')),
- CHECK((kind IN ('operation','builtin-trait') AND length(operator_name)>0) OR (kind NOT IN ('operation','builtin-trait') AND operator_name='')),
- CHECK((kind='builtin-trait')=(builtin_operator_kind IS NOT NULL)),
- CHECK(operand_source_type_id IS NULL OR kind IN ('type-operand','sizeof','alignof','datasizeof')),
- CHECK(kind='alignof' OR is_standard_alignof=0),
- CHECK((kind='member' AND owner_source_type_id IS NOT NULL) OR (kind<>'member' AND owner_source_type_id IS NULL))
+ CHECK(kind='edg-node' OR (kind='integer' AND length(value_text)>0) OR (kind<>'integer' AND value_text='')),
+ CHECK(kind='edg-node' OR (kind IN ('operation','builtin-trait') AND length(operator_name)>0) OR (kind NOT IN ('operation','builtin-trait') AND operator_name='')),
+ CHECK(kind='edg-node' OR (kind='builtin-trait')=(builtin_operator_kind IS NOT NULL)),
+ CHECK(kind='edg-node' OR operand_source_type_id IS NULL OR kind IN ('type-operand','sizeof','alignof','datasizeof')),
+ CHECK(kind='edg-node' OR kind='alignof' OR is_standard_alignof=0),
+ CHECK(kind='edg-node' OR (kind='member' AND owner_source_type_id IS NOT NULL) OR (kind<>'member' AND owner_source_type_id IS NULL))
 ) STRICT;
 CREATE TABLE source_semantic_constant_operands (
  constant_id INTEGER NOT NULL REFERENCES source_semantic_constants(id),
@@ -905,17 +917,18 @@ CREATE TABLE source_array_bounds (
 ) STRICT;
 CREATE TABLE source_templates (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind IN('parameter','alias')),
+ kind TEXT NOT NULL CHECK(kind IN('parameter','alias','edg-node')),
  source_name TEXT NOT NULL,
- parameter_depth INTEGER CHECK(parameter_depth>=0),
- parameter_position INTEGER CHECK(parameter_position>0),
+ parameter_depth INTEGER,
+ parameter_position INTEGER,
  is_pack INTEGER NOT NULL CHECK(is_pack IN (0,1)),
  parameter_count INTEGER NOT NULL CHECK(parameter_count>=0),
- capture_proof TEXT NOT NULL CHECK(capture_proof IN('original-template-parameter','original-alias-template')),
- source_file_id INTEGER NOT NULL REFERENCES source_files(id),
- line INTEGER NOT NULL CHECK(line>0),
+ capture_proof TEXT NOT NULL CHECK(capture_proof IN('original-template-parameter','original-alias-template','original-edg-template')),
+ source_file_id INTEGER REFERENCES source_files(id),
+ line INTEGER NOT NULL CHECK(line>=0),
  column INTEGER NOT NULL CHECK(column>=0),
- CHECK((kind='parameter' AND parameter_depth IS NOT NULL AND parameter_position IS NOT NULL AND capture_proof='original-template-parameter') OR (kind='alias' AND parameter_depth IS NULL AND parameter_position IS NULL AND is_pack=0 AND capture_proof='original-alias-template'))
+ CHECK((kind='parameter' AND parameter_depth>=0 AND parameter_position>0 AND parameter_depth IS NOT NULL AND parameter_position IS NOT NULL AND capture_proof='original-template-parameter') OR (kind='alias' AND parameter_depth IS NULL AND parameter_position IS NULL AND is_pack=0 AND capture_proof='original-alias-template') OR (kind='edg-node' AND capture_proof='original-edg-template')),
+ CHECK(kind='edg-node' OR (source_file_id IS NOT NULL AND line>0))
 ) STRICT;
 CREATE TABLE source_template_parameters (
  source_template_id INTEGER NOT NULL REFERENCES source_templates(id),
@@ -1415,7 +1428,7 @@ CREATE TABLE source_concept_parameters (
 ) STRICT;
 CREATE TABLE source_expressions (
  id INTEGER PRIMARY KEY CHECK(id>0),
- kind TEXT NOT NULL CHECK(kind IN('concept-id','requires','compound-requirement','nested-requirement','parameter-reference','variable-reference','routine-reference','dependent-function-reference','type-operand','constant','expression-constant','sizeof','alignof','datasizeof','builtin-operation','operation','temporary-initialization','allocation-expression','braced-initializer-list','fold-expression','field-reference')),
+ kind TEXT NOT NULL CHECK(kind IN('edg-node','concept-id','requires','compound-requirement','nested-requirement','parameter-reference','variable-reference','routine-reference','dependent-function-reference','type-operand','constant','expression-constant','sizeof','alignof','datasizeof','builtin-operation','operation','temporary-initialization','allocation-expression','braced-initializer-list','fold-expression','field-reference')),
  edge_count INTEGER NOT NULL CHECK(edge_count>=0),
  parameter_count INTEGER NOT NULL CHECK(parameter_count>=0),
  argument_count INTEGER NOT NULL CHECK(argument_count>=0),
@@ -1585,7 +1598,8 @@ CREATE TABLE source_pack_expansions (
 ) STRICT;
 CREATE TABLE source_pack_references (
  expansion_id INTEGER NOT NULL REFERENCES source_pack_expansions(id),ordinal INTEGER NOT NULL CHECK(ordinal>=0),
- kind TEXT NOT NULL CHECK(kind IN('type','constant','template')),source_type_id INTEGER REFERENCES source_types(id),
+ original_kind INTEGER NOT NULL CHECK(original_kind>=0),
+ kind TEXT NOT NULL CHECK(kind IN('type','constant','template','observed')),source_type_id INTEGER REFERENCES source_types(id),
  constant_id INTEGER REFERENCES source_semantic_constants(id),template_id INTEGER REFERENCES source_templates(id),
  parameter_depth INTEGER CHECK(parameter_depth>=0),parameter_position INTEGER CHECK(parameter_position>0),
  uses_enclosing_pack INTEGER NOT NULL CHECK(uses_enclosing_pack IN(0,1)),source_file_id INTEGER REFERENCES source_files(id),line INTEGER NOT NULL,column INTEGER NOT NULL,
@@ -1710,11 +1724,11 @@ CREATE TABLE source_type_operators (
 ) STRICT;
 
 CREATE TABLE source_expression_temporaries (
- expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),initialization_kind INTEGER NOT NULL CHECK(initialization_kind BETWEEN 0 AND 7),
+ expression_id INTEGER PRIMARY KEY REFERENCES source_expressions(id),initialization_kind INTEGER NOT NULL CHECK(initialization_kind>=0),
  spelled_source_type_id INTEGER REFERENCES source_types(id),constructor_declaration_id INTEGER REFERENCES source_expression_declarations(id),
  destructor_declaration_id INTEGER REFERENCES source_expression_declarations(id),constant_id INTEGER REFERENCES source_semantic_constants(id),
  is_dependent_constructor INTEGER NOT NULL CHECK(is_dependent_constructor IN(0,1)),
- lifetime_disposition TEXT NOT NULL CHECK(lifetime_disposition='no-linked-lifetime'),
+ lifetime_disposition TEXT NOT NULL CHECK(lifetime_disposition IN ('no-linked-lifetime','retained-in-edg-graph')),
  capture_proof TEXT NOT NULL CHECK(capture_proof='original-expression-temporary')
 ) STRICT;
 CREATE TABLE source_expression_temporary_flags (

@@ -44,37 +44,6 @@ internal sealed partial class ObjectFile
                 value.ParameterPosition is not null || value.IsPack || value.IdentityKey.Length != 0 || type.SourceName.Length != 0)
                 throw new InvalidDataException("Invalid unknown dependent source type");
         }
-        foreach (var value in SourceDependentTypes.Values)
-        {
-            var seen = new HashSet<long>();
-            SourceType type = SourceTypeById(value.TypeId);
-            while (true)
-            {
-                if (!seen.Add(type.Id)) throw new InvalidDataException("Cycle in dependent source member owners");
-                if (type.Kind is "typedef" or "qualified") { type = SourceTypeById(type.UnderlyingTypeId!.Value); continue; }
-                if (type.Kind != "dependent")
-                {
-                    if (type.Kind != "record") throw new InvalidDataException("Dependent member owner is not a class or dependent type");
-                    break;
-                }
-                if (!SourceDependentTypes.TryGetValue(type.Id, out var owner))
-                    throw new InvalidDataException("Dependent source type has no semantic description");
-                if (owner.Kind != "member") break;
-                type = SourceTypeById(owner.OwnerTypeId!.Value);
-            }
-        }
     }
 
-    private string DependentSourceSignature(SourceType type, int depth)
-    {
-        var value = SourceDependentTypes[type.Id];
-        static string Encode(string text) => Convert.ToHexString(System.Text.Encoding.UTF8.GetBytes(text));
-        return value.Kind switch
-        {
-            "parameter" => "dependent-parameter(" + Encode(value.IdentityKey) + ";" + value.IsPack + ")",
-            "auto-placeholder" => SourceArgumentTypeIdentity(type.Id,depth+1),
-            "member" => "dependent-member(" + SourceTypeSignature(value.OwnerTypeId!.Value, depth + 1, false, false) + ";" + Encode(type.SourceName) + ")",
-            _ => "dependent-unknown"
-        };
-    }
 }

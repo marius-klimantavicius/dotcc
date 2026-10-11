@@ -29,12 +29,6 @@ internal sealed partial class ObjectFile
                     throw new InvalidDataException("Original local declaration lacks its exact nonstatic list membership");
             }
     }
-    private string SourceLocalScopeKey(long id,int depth)
-    {
-        if(depth>128 || !SourceLocalScopes.TryGetValue(id,out var value))throw new InvalidDataException("Original local scope identity is missing or cyclic");
-        return SourceIdentityFrame(value.Kind)+SourceIdentityFrame(value.Parent is long parent?SourceLocalScopeKey(parent,depth+1):SourceStructuralDeclarationKey(value.Routine,depth+1))+
-            SourceIdentityFrame(value.Ordinal.ToString(CultureInfo.InvariantCulture));
-    }
     private void VerifySourceLocalDeclarations()
     {
         var roots=new HashSet<long>();var siblings=new HashSet<(long,long)>();var used=new HashSet<long>();

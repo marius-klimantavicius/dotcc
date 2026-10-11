@@ -16,7 +16,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = Path(__file__).with_name('schema.sql')
 ARRAYS = {
     'edgGraphNodes': ('edg_graph_nodes', ['id', 'entryKind', 'entryKindName', 'capturePhase']),
-    'edgGraphFields': ('edg_graph_fields', ['nodeId', 'name', 'ordinal', 'valueKind', 'value', 'targetId', 'targetEntryKind']),
+    'edgGraphFieldDefinitions': ('edg_graph_field_definitions', ['id', 'ownerEntryKind', 'name', 'valueKind', 'targetEntryKind']),
+    'edgGraphFieldBlocks': ('edg_graph_field_blocks', ['blockOrdinal', 'rowCount', 'dataHex']),
     'edgGraphRoots': ('edg_graph_roots', ['nodeId', 'contextNodeId', 'role', 'ordinal']),
     'edgGraphCoverage': ('edg_graph_coverage', ['entryKind', 'field', 'disposition', 'detail']),
     'sourceNamespaces': ('source_namespaces', ['id','parentId','sourceName','isUnnamed','isInline','hasInternalLinkage','sourceFileId','line','column','captureProof']),
@@ -29,7 +30,7 @@ ARRAYS = {
 
     'sourceConstraintArgumentDetails': ('source_constraint_argument_details', ['ownerKind', 'ownerId', 'substitutionOrdinal', 'argumentOrdinal', 'isPack', 'isPackElement', 'hasPackEllipsis', 'isIntegerPack', 'isExplicit', 'isInjectedClassName', 'parameterIsAuto', 'parameterIsDecltypeAuto', 'packExpansionId', 'substitutedTemplateId', 'captureProof']),
     'sourcePackExpansions': ('source_pack_expansions', ['id', 'referenceCount', 'ellipsisSeen', 'usesOnlyEnclosingPacks', 'usesAnyEnclosingPacks', 'isFunctionDeclarator', 'isPackIndex', 'parameterIsTemplateTemplate', 'parameterSourceTypeId', 'sourceFileId', 'line', 'column', 'captureProof']),
-    'sourcePackReferences': ('source_pack_references', ['expansionId', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId', 'parameterDepth', 'parameterPosition', 'usesEnclosingPack', 'sourceFileId', 'line', 'column']),
+    'sourcePackReferences': ('source_pack_references', ['expansionId', 'ordinal', 'originalKind', 'kind', 'sourceTypeId', 'constantId', 'templateId', 'parameterDepth', 'parameterPosition', 'usesEnclosingPack', 'sourceFileId', 'line', 'column']),
     'sourceDependentFunctionLookups': ('source_dependent_function_lookups', ['expressionId', 'sourceName', 'qualifiedName', 'ownerSourceTypeId', 'conversionSourceTypeId', 'operatorKind', 'hasExplicitTemplateArguments', 'isQualifiedName', 'hasAddressOf', 'hasLookupSymbol', 'candidateCount', 'memberOfUnknownBase', 'qualifiedUnknownBaseMember', 'captureProof']),
     'sourceDependentFunctionCandidates': ('source_dependent_function_candidates', ['expressionId', 'ordinal', 'declarationId']),
     'sourceDependentFunctionArguments': ('source_dependent_function_arguments', ['expressionId', 'ordinal', 'kind', 'sourceTypeId', 'constantId', 'templateId']),
@@ -180,7 +181,7 @@ ARRAYS = {
     'sourceArrayBounds': ('source_array_bounds', ['typeId', 'constantId', 'captureProof']),
     'sourceSemanticConstants': ('source_semantic_constants', ['id', 'kind', 'sourceTypeId', 'sourceName', 'valueText', 'parameterDepth', 'parameterPosition', 'isPack', 'operatorName', 'ownerSourceTypeId', 'operandSourceTypeId', 'builtinOperatorKind', 'isStandardAlignof', 'sourceFileId', 'line', 'column']),
     'sourceSemanticConstantOperands': ('source_semantic_constant_operands', ['constantId', 'ordinal', 'operandId']),
-    'sourceRecords': ('source_record_types', ['id', 'sourceTypeId', 'identityKey', 'sourceName', 'recordKind', 'isComplete', 'nativeSize', 'nativeAlignment', 'isTriviallyCopyable', 'capturePhase', 'sourceFileId', 'line', 'column', 'isPacked', 'maxMemberAlignment', 'explicitAlignment', 'layoutKnown', 'isDependent', 'isPrototypeInstantiation']),
+    'sourceRecords': ('source_record_types', ['id', 'sourceTypeId', 'identityKey', 'sourceName', 'recordKind', 'isComplete', 'nativeSize', 'nativeAlignment', 'isTriviallyCopyable', 'capturePhase', 'sourceFileId', 'line', 'column', 'isPacked', 'maxMemberAlignment', 'explicitAlignment', 'layoutKnown', 'isDependent', 'isPrototypeInstantiation', 'navigationKind']),
     'exceptionTypes': ('exception_types', ['id', 'sourceTypeId', 'leafSourceTypeId', 'payloadTypeId', 'payloadSize', 'payloadAlignment', 'sourceDestructorEntityId', 'captureProof']),
     'exceptionBaseConversions': ('exception_base_conversions', ['exceptionTypeId', 'ordinal', 'baseSourceTypeId', 'byteOffset', 'isPublic', 'isAmbiguous', 'captureProof']),
     'throwExpressions': ('throw_expressions', ['nodeId', 'exceptionTypeId', 'destructorEntityId', 'initializationKind', 'captureProof']),
@@ -372,6 +373,73 @@ def logical_hash(db):
     return digest.hexdigest()
 
 
+# Public graph-fields-v1 serialization primitives. Kept with the standalone packager.
+_GRAPH_MAX_BYTES = 2147483647
+_GRAPH_BLOCK_BYTES = 65536
+_GRAPH_UINT64_MAX = (1 << 64) - 1
+
+def _graph_varuint(value):
+    if type(value) is not int or not 0 <= value <= _GRAPH_UINT64_MAX:
+        raise ValueError('Graph integer outside unsigned 64-bit encoding')
+    out = bytearray()
+    while value >= 128:
+        out.append((value & 127) | 128)
+        value >>= 7
+    out.append(value)
+    return out
+
+
+def _graph_canonical_hex(value):
+    if not isinstance(value, str) or len(value) % 2 or re.fullmatch('[0-9a-f]*', value) is None:
+        raise ValueError('Noncanonical graph bytes')
+    return bytes.fromhex(value)
+
+
+def _graph_encode_row(record, definition_id, definition):
+    if type(record['nodeId']) is not int or record['nodeId'] <= 0:
+        raise ValueError('Invalid graph field owner')
+    if record['targetId'] is not None and (type(record['targetId']) is not int or record['targetId'] <= 0):
+        raise ValueError('Invalid graph reference ID')
+    if definition['valueKind'] != 'reference' and (record['targetId'] is not None or record['targetEntryKind'] is not None):
+        raise ValueError('Primitive graph field carries a reference')
+    out = _graph_varuint(record['nodeId']) + _graph_varuint(definition_id) + _graph_varuint(record['ordinal'])
+    kind, value = definition['valueKind'], record['value']
+    if kind == 'reference':
+        if value is not None:
+            raise ValueError('Reference carries a primitive payload')
+        out += _graph_varuint(record['targetId'] or 0)
+    elif kind in ('signed', 'unsigned'):
+        if not isinstance(value, str):
+            raise ValueError('Graph primitive is not canonical decimal text')
+        number = int(value)
+        if str(number) != value or (kind == 'signed' and not -(1 << 63) <= number < (1 << 63)):
+            raise ValueError('Noncanonical graph primitive')
+        out += _graph_varuint(((number << 1) ^ (number >> 63)) if kind == 'signed' else number)
+    elif kind == 'boolean':
+        if value not in ('0', '1'):
+            raise ValueError('Invalid graph boolean')
+        out.append(int(value))
+    elif kind in ('text', 'bytes'):
+        payload = value.encode('utf-8') if kind == 'text' else _graph_canonical_hex(value)
+        if len(payload) > _GRAPH_MAX_BYTES:
+            raise ValueError('Graph field exceeds supported byte length')
+        out += _graph_varuint(len(payload)) + payload
+    else:
+        raise ValueError('Unknown graph primitive kind')
+    return out
+
+
+def _graph_stored_block(ordinal, row_count, data):
+    if type(ordinal) is not int or ordinal < 0 or type(row_count) is not int or row_count <= 0:
+        raise ValueError('Invalid graph block counts')
+    if not data or len(data) > _GRAPH_MAX_BYTES:
+        raise ValueError('Unsupported graph block byte length')
+    compressed = zlib.compress(data, level=6)
+    encoded, codec = (compressed, 'zlib') if len(compressed) < len(data) else (data, 'raw')
+    return ordinal, row_count, encoded, codec, len(data), hashlib.sha256(data).hexdigest()
+
+
+
 def package(wire, path, source, unit_id, provenance, started_ns):
     """Compatibility entry point for already decoded fixture wires."""
     return package_entries(iter(wire.items()), path, source, unit_id, provenance, started_ns)
@@ -408,6 +476,60 @@ def package_entries(entries, path, source, unit_id, provenance, started_ns):
             if name in ('formatVersion', 'profile', 'sourceLanguage'):
                 header[name] = records
                 continue
+            if name == 'edgGraphNodes':
+                if not isinstance(records, (list, types.GeneratorType)):
+                    raise ValueError('Expected array: ' + name)
+                counts[name] = 0
+                fields, kinds = set(ARRAYS[name][1]), {}
+                for record in records:
+                    if not isinstance(record, dict) or set(record) != fields:
+                        raise ValueError('Invalid fields in ' + name)
+                    kind = record['entryKind']
+                    metadata = (record['entryKindName'], record['capturePhase'])
+                    if kind not in kinds:
+                        db.execute('INSERT INTO edg_graph_node_kinds VALUES(?,?,?)',
+                                   (kind, *metadata))
+                        kinds[kind] = metadata
+                    elif kinds[kind] != metadata:
+                        raise ValueError('Inconsistent EDG node kind metadata')
+                    db.execute('INSERT INTO edg_graph_node_entries VALUES(?,?)',
+                               (record['id'], kind))
+                    counts[name] += 1
+                continue
+            if name == 'edgGraphFields':
+                # Diagnostic compatibility path: losslessly transcode expanded
+                # typed rows into the same declared codec used by native output.
+                # It is intentionally not used by the normal compact exporter.
+                if 'edgGraphFieldDefinitions' in seen or 'edgGraphFieldBlocks' in seen:
+                    raise ValueError('Mixed EDG graph field representations')
+                definitions, payload, row_count, block_ordinal = {}, bytearray(), 0, 0
+                fields = {'nodeId', 'name', 'ordinal', 'valueKind', 'value', 'targetId', 'targetEntryKind'}
+                counts[name] = 0
+                for record in records:
+                    if not isinstance(record, dict) or set(record) != fields:
+                        raise ValueError('Invalid expanded graph field')
+                    node = db.execute('SELECT entry_kind FROM edg_graph_nodes WHERE id=?', (record['nodeId'],)).fetchone()
+                    if node is None:
+                        raise ValueError('Expanded graph field has no node')
+                    key = (node[0], record['name'], record['valueKind'], record['targetEntryKind'])
+                    if key not in definitions:
+                        definition_id = len(definitions) + 1
+                        definitions[key] = definition_id
+                        db.execute('INSERT INTO edg_graph_field_definitions VALUES(?,?,?,?,?)', (definition_id, *key))
+                    encoded = _graph_encode_row(record, definitions[key],
+                        dict(valueKind=record['valueKind']))
+                    if payload and len(payload) + len(encoded) > _GRAPH_BLOCK_BYTES:
+                        db.execute('INSERT INTO edg_graph_field_blocks VALUES(?,?,?,?,?,?)',
+                            _graph_stored_block(block_ordinal, row_count, payload))
+                        block_ordinal += 1
+                        payload, row_count = bytearray(), 0
+                    payload += encoded
+                    row_count += 1
+                    counts[name] += 1
+                if payload:
+                    db.execute('INSERT INTO edg_graph_field_blocks VALUES(?,?,?,?,?,?)',
+                        _graph_stored_block(block_ordinal, row_count, payload))
+                continue
             if name not in ARRAYS:
                 raise ValueError('Unexpected semantic wire field: ' + name)
             table, fields = ARRAYS[name]
@@ -417,6 +539,12 @@ def package_entries(entries, path, source, unit_id, provenance, started_ns):
             columns = [re.sub(r'[A-Z]', lambda match: '_' + match[0].lower(), field) for field in fields]
             if name == 'storageData':
                 columns[-1] = 'bytes'
+            if name == 'edgGraphFieldBlocks':
+                if 'edgGraphFields' in seen:
+                    raise ValueError('Mixed EDG graph field representations')
+                columns = ['ordinal', 'row_count', 'bytes', 'codec', 'decoded_byte_length', 'sha256']
+            if name == 'edgGraphFieldDefinitions' and 'edgGraphFields' in seen:
+                raise ValueError('Mixed EDG graph field representations')
             if name == 'sourceFiles':
                 columns += ['available', 'sha256', 'bytes', 'codec', 'decoded_byte_length']
             schema_columns = [row[1] for row in db.execute('PRAGMA table_info(' + quote(table) + ')')]
@@ -427,8 +555,11 @@ def package_entries(entries, path, source, unit_id, provenance, started_ns):
             for record in records:
                 counts[name] += 1
                 if not isinstance(record, dict) or set(record) != set(fields):
-                    raise ValueError('Invalid fields in ' + name + ': ' + str(record))
+                    raise ValueError('Invalid fields in ' + name + ': ' + str(sorted(record) if isinstance(record, dict) else type(record).__name__))
                 values = [record[key] for key in fields]
+                if name == 'edgGraphFieldBlocks':
+                    values = _graph_stored_block(record['blockOrdinal'], record['rowCount'],
+                                                       _graph_canonical_hex(record['dataHex']))
                 if name == 'storageData':
                     data = record['dataHex']
                     if (not isinstance(data, str) or not data or len(data) % 2
@@ -455,9 +586,13 @@ def package_entries(entries, path, source, unit_id, provenance, started_ns):
                     else:
                         values += [0, None, None, None, None]
                 db.execute(insert, values)
-        if seen != {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}:
+        expected = {'formatVersion', 'profile', 'sourceLanguage', *ARRAYS}
+        if 'edgGraphFields' in seen:
+            expected -= {'edgGraphFieldDefinitions', 'edgGraphFieldBlocks'}
+            expected.add('edgGraphFields')
+        if seen != expected:
             raise ValueError('Missing semantic wire fields')
-        if header['formatVersion'] != 1 or header['profile'] != 'scalar-control-v64':
+        if header['formatVersion'] != 1 or header['profile'] != 'scalar-control-v65':
             raise ValueError('Unsupported semantic wire version/profile')
         if header['sourceLanguage'] not in ('c', 'c++'):
             raise ValueError('Unsupported source language')

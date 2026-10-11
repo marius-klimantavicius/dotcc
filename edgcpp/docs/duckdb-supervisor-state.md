@@ -1417,3 +1417,21 @@ reported gaps), no fullcorpusclaim. Evidence: evidence/dotobj-edg-authority-remo
 Next candidate v65 replaces repeated field JSON/SQL rows with explicit typed field
 definitions and lossless bounded compressed row blocks; native/managed/packager
 work starts from frozen167/206 snapshots, not a restart.
+
+Implementation removal checkpoint committed b68a50673 (native167/managed206,
+62 focused graph checks +35 native/stock/JIT/NativeAOT lifetime checks).
+Candidatev65/native168/managed207 lossless typedblock codec passes60checks:
+nativeexpanded/compact exactfield parity and independent Python/C# decoders.
+62graph integrationchecks pass. Realexception exports17.71s/633900KiB,wire
+1030648208bytes; graph593380293spoolbytes,928735canonical/1504647totalnodes,
+60297015fields. Packaged302424064-byte object in26.74s/29824KiB;207integrity
+verification running. Frozen168packager/schema/inspector under persistent
+dotobj-v65-compact168-tooling; canonicalnowadvances native169/managed208
+sourcepack originalKind/observed fields and remaining source-only recursive
+identity removal. Do not mix168objects with new208embeddedschema.
+
+2026-10-11 native169 integration: exception exports21.11s/635436KiB, packages326107136B and verifies with21014.82s/143196KiB. Real disk catalog import/resolve16.09s/157769728B working set and C# generation passed (597 functions; unresolved external providers retained; no compile/run claim). unittest exports176.15s/4993844KiB,10319113573B wire, but packaging rejects preserved dependent source unsupported-dynamic exception policy. Source-only policy schema/reader correction in progress; execution policies remain concrete. cast_operators still rejects source template coordinates; native170 optional navigation bridges completed and built, managed211 pending. Required typed roots retain actual EDG families; no opaque source replacement or blanket error suppression. v65 work remains candidate and uncompacted storage cost remains material.
+
+Native170/managed211 frozen candidate passes62 graph checks,35 terminal partial checks including NativeAOT,60 exact codec/native compact-expanded/Python-managed inspection checks,32 diskcatalog generation checks with exact terminal cleanup trace. Real cast_operators now exports successfully146.97s/3384852KiB (includes gzip output),1452384340B gzipwire;5329382canonical/8563099observationnodes,382142778fields,1422945roots. Packaging/reader integration pending, no full-corpus claim.
+
+Verified v65 milestone native171/managed212:62 graph,60 exactcodec,71 genericbridge,28 constraint catalog generation/JIT checks. Prior170/211 retains35 terminal lifetime/NativeAOT and32 terminal catalog checks. Cast170 now verifies21283.83s/374956KiB;22 previous failures were source observation IDs compared with nominal executable IDs, all4018 physical record layouts matched. Normalized graph node storage preserves every logical row, reducing cast1701704976384->1248817152B and unittest1692424582144->1791815680B. Native169 unittest diagnostic canonical170-schema copy verifies211122.71s/530412KiB; explicit provenance, not coherent171 export. Candidate v66 native172/managed213 grouped blocks now in progress: exact row order/IDs/typed payloads, dictionary only repeated descriptor sequences; real sample64 spread blocks byte-exact and21.89% prior compressedsize. No full corpus or full DuckDB compile/run yet.
