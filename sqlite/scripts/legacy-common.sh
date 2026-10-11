@@ -2,7 +2,7 @@
 set -euo pipefail
 SQLITE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DOTCC_ROOT="$(cd "$SQLITE_ROOT/.." && pwd)"
-SQLITE_AMALGAMATION="$SQLITE_ROOT/ref/sqlite-amalgamation-3530400"
+SQLITE_AMALGAMATION="$SQLITE_ROOT/ref/$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["product"]["directory"])' "$SQLITE_ROOT/config/sources.json")"
 SQLITE_DEFINES=()
 while IFS= read -r definition; do
   [[ -z "$definition" || "$definition" == \#* ]] || SQLITE_DEFINES+=("-D$definition")

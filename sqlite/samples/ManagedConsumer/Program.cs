@@ -447,7 +447,7 @@ internal static unsafe partial class Program
             if (ftsDestroyed != 1) throw new InvalidOperationException("FTS5 context destructor must run exactly once on close");
             if (sqlite3_shutdown() != SQLITE_OK)
                 throw new InvalidOperationException("Shutdown failed");
-            Console.WriteLine("managed consumer: SQLite 3.53.4, WAL SQL workloads, JSONB, FTS5, cached C# callbacks, nested SQL, function identity, GC and cleanup passed");
+            Console.WriteLine($"managed consumer: SQLite {SQLITE_VERSION}, WAL SQL workloads, JSONB, FTS5, cached C# callbacks, nested SQL, function identity, GC and cleanup passed");
             return 0;
         }
         catch (Exception error)

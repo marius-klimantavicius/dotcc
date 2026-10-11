@@ -2,7 +2,7 @@
 
 HostVfs remains the default product implementation in `Managed.Database`.
 The experiment builds a separate engine in `Managed.Database.UpstreamUnix`.
-Reference SQLite 3.53.4 stays unchanged under `ref/`; the experiment uses the
+Reference SQLite 3.54.0 stays unchanged under `ref/`; the experiment uses the
 same checksum-guarded APPDEF mutex adaptation as the product.
 
 The amalgamation contains the upstream `os_unix.c` and `os_win.c` modules. Enable

@@ -27,6 +27,9 @@ flags=()
 while IFS= read -r definition; do flags+=("-D$definition"); done < "$prefix-defines.txt"
 compiler="$DOTCC_ROOT/DotCC/bin/Release/net10.0/dotcc.dll"
 source_directory="$SQLITE_ROOT/generated/sqlite-port"
+# The campaign translator stages inputs in its run directory. Prepare this
+# standalone native probe input too, so a release upgrade cannot reuse old C.
+"$PYTHON_CMD" "$SQLITE_ROOT/scripts/prepare-host-source.py" >&2
 dotnet "$compiler" -std=c17 "${flags[@]}" -I "$source_directory" -I "$SQLITE_ROOT/tests" \
   --overrides-file "$SQLITE_ROOT/config/dotcc-overrides.json" \
   -E "$source_directory/sqlite3.c" > "$prefix-preprocessed.c"

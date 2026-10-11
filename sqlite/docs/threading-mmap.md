@@ -30,8 +30,8 @@ is still needed: semantic overrides cannot restore calls already removed by
 SQLite's no-op-mutex macros. SQLite retains its own initialization and configuration
 logic, including concurrent cold initialization. No module initializer is used.
 
-The generator requires exact SQLite 3.53.4 source/header hashes, exactly one
-matching selection guard, and the expected adapted hash. It writes an adaptation
+The generator requires exactly one matching selection guard. Strict hash mode
+also requires the pinned SQLite 3.54.0 source/header and adapted hashes. It writes an adaptation
 manifest. The downloaded archives and files in `ref/` remain unchanged. This is a
 platform adaptation of the generated input, not a compiler recognition of SQLite
 names or a fork of its SQL algorithms. Upgrading SQLite requires reviewing this
@@ -73,7 +73,7 @@ maximum. Live `xFetch` references prevent a limit change or remapping that would
 invalidate their addresses. Duplicate fetches are tracked separately; each must
 be matched by `xUnfetch`. A null-pointer unfetch invalidates an idle mapping.
 
-Ranges must fit within both the mapped file and cap, with SQLite 3.53.4's extra
+Ranges must fit within both the mapped file and cap, with SQLite 3.54.0's extra
 256-byte safety margin beyond the requested page. Reads near EOF therefore use
 ordinary I/O. Growth beyond a borrowed mapping also falls back until remapping
 is safe. Truncation releases idle mappings and refuses to invalidate live

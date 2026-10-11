@@ -1,16 +1,21 @@
 {
   "product": {
-    "url": "https://www.sqlite.org/2026/sqlite-amalgamation-3530400.zip",
-    "archive": "sqlite-amalgamation-3530400.zip",
-    "directory": "sqlite-amalgamation-3530400",
-    "sha256": "1e71ddf93849c6a6ecf58b827c0692073d2dd7ee40196158068f7b29f422e87d",
-    "required": ["sqlite3.c", "sqlite3.h"]
+    "url": "https://www.sqlite.org/2026/sqlite-amalgamation-3540000.zip",
+    "archive": "sqlite-amalgamation-3540000.zip",
+    "directory": "sqlite-amalgamation-3540000",
+    "sha256": "68e913b0fe8ec6b4e5f391c594a28872884e80d6cd042a1e50c957be46b5aa4d",
+    "required": [
+      "sqlite3.c",
+      "sqlite3.h"
+    ]
   },
   "tests": {
-    "url": "https://www.sqlite.org/2026/sqlite-src-3530400.zip",
-    "archive": "upstream-tests/sqlite-src-3530400.zip",
-    "directory": "upstream-tests/sqlite-src-3530400",
-    "sha256": "d18fa15aec74d8c17e1463f861095adc01b5ad190256acb4f91d22f0368d232b",
-    "required": ["test/jsonb01.test"]
+    "url": "https://www.sqlite.org/2026/sqlite-src-3540000.zip",
+    "archive": "upstream-tests/sqlite-src-3540000.zip",
+    "directory": "upstream-tests/sqlite-src-3540000",
+    "sha256": "8847659821e0c5116bd14a94644c82ba932b2d9a05ac81af2e34af814aad7c58",
+    "required": [
+      "test/jsonb01.test"
+    ]
   }
 }

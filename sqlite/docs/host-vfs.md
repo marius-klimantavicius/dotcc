@@ -106,7 +106,7 @@ codes so the engine can select its readonly recovery path. Unmap releases the
 connection's locks; the last local lease releases mappings and the file handle.
 The engine requests sidecar deletion when it can safely complete WAL cleanup.
 
-The pinned 3.53.4 engine includes the upstream WAL-reset race fix. WAL requires
+The pinned 3.54.0 engine includes the upstream WAL-reset race fix. WAL requires
 all processes on the same host and filesystem support for shared mappings and
 byte locks; use a local filesystem. Keep the database and live `-wal` file
 together when moving/copying database state, or use SQLite's backup API.

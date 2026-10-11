@@ -1,30 +1,35 @@
 # Pinned upstream SQLite
 
-SQLite **3.53.4**, released 2026-07-24, is the campaign baseline. This fixed
-release includes the upstream WAL-reset race fix. It replaces the original
-3.50.4 baseline when enabling WAL and uses the user-requested 3.53.4 release
-with pinned official amalgamation and matching source archives.
-See [upstream WAL-reset notes](https://www.sqlite.org/wal.html#walresetbug).
+SQLite **3.54.0**, released 2026-10-09, is the campaign baseline. It supersedes
+3.53.4 and uses the official amalgamation and matching source/test archive.
+Downloaded reference sources remain unchanged.
 
-- Official release: https://www.sqlite.org/releaselog/3_53_4.html
-- Archive: https://www.sqlite.org/2026/sqlite-amalgamation-3530400.zip
-- Archive SHA-256: `1e71ddf93849c6a6ecf58b827c0692073d2dd7ee40196158068f7b29f422e87d`
-- `SQLITE_SOURCE_ID`: `2026-07-24 19:02:57 bf7c7f30031888f4e796e429ab3978879485813aaca6f641c7b33e4e09459bcc`
-- Upstream-published sqlite3.c SHA3-256: `67f423e9ebbbdc473cbc4772c872ee6b89f31fde4ed0279a5c25d5f65c043a16`
+- Official release: https://www.sqlite.org/releaselog/3_54_0.html
+- Archive: https://www.sqlite.org/2026/sqlite-amalgamation-3540000.zip
+- Archive SHA-256: `68e913b0fe8ec6b4e5f391c594a28872884e80d6cd042a1e50c957be46b5aa4d`
+- Archive SHA3-256 (verified against the official download page):
+  `7b670a62fdfbd672b75fef004cb703c8a3e87d3a5cc7d675b4a08337004a2d93`
+- `SQLITE_SOURCE_ID`: `2026-10-09 15:46:58 be8d059e9a49089ab2dce5ed26dd87aaf598fdc5fbe0b107c0dd758464bcd5e3`
+- sqlite3.c SHA3-256: `8efd453d08a7cfc4c79de5923153036cdc4dcaa254d4f1e617be6a2a98828f9e`
 
-Run `python3 scripts/fetch.py` from `sqlite/`. Every invocation verifies the
-archive checksum before extracting unchanged upstream files into `ref/`.
-Fetched inputs are ignored.
+Run `python3 scripts/fetch.py` from `sqlite/` to acquire missing sources.
+The shared campaign runner supports `--hashes strict` to enforce the pinned
+archive/source identities; its default hash policy is advisory. Fetched inputs
+are ignored by Git. The host mutex-selection adaptation remains a single guarded
+replacement in generated input, with identities in `config/host-source.json`.
 
 ## Matching public test source
 
-- Archive: https://www.sqlite.org/2026/sqlite-src-3530400.zip
-- Archive SHA-256: `d18fa15aec74d8c17e1463f861095adc01b5ad190256acb4f91d22f0368d232b`
-- Extracted unchanged under `ref/upstream-tests/sqlite-src-3530400/`.
+- Archive: https://www.sqlite.org/2026/sqlite-src-3540000.zip
+- Archive SHA-256: `8847659821e0c5116bd14a94644c82ba932b2d9a05ac81af2e34af814aad7c58`
+- Archive SHA3-256 (verified against the official download page):
+  `a5c29342ca185abcda332448fbb27c536661245be27e20199b46c49099b0e15e`
+- Extracted unchanged under `ref/upstream-tests/sqlite-src-3540000/`.
 - Selected `test/jsonb01.test` SHA-256:
-  `33415ec57cf217025e24a08dc947e6014b93134726f485938003cd18bd5b1df3`.
+  `0c2cb44a953cca9c301df314670d565c276eaf0e48b96919417def2ab7274bc8`.
 - The public test source disclaims copyright; its original notice remains in
   the downloaded source. The generated runner records its provenance.
 
-`fetch.py` checks both archive hashes on every run. Test adaptation is described
-in `upstream-tests.md`; generated C is never manually edited.
+Test adaptation is described in `upstream-tests.md`; generated C is never
+manually edited. Test helpers resolve the selected version from
+`config/sources.json` rather than hard-coding a release directory.

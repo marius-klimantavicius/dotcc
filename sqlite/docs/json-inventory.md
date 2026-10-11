@@ -1,4 +1,4 @@
-# SQLite 3.53.4 JSON inventory
+# SQLite 3.54.0 JSON inventory
 
 Inventory comes from the pinned `sqlite3RegisterJsonFunctions` registration table
 and `sqlite3JsonTableFunctions`, not a moving release's function list.

@@ -10,7 +10,8 @@ from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-source = ROOT / "ref/upstream-tests/sqlite-src-3530400/test/jsonb01.test"
+source_spec = json.loads((ROOT / "config/sources.json").read_text())["tests"]
+source = ROOT / "ref" / source_spec["directory"] / "test/jsonb01.test"
 text = source.read_text()
 
 def sql_body(test):
@@ -81,7 +82,7 @@ out += '''  if (sqlite3_step(stmt) != SQLITE_ERROR || strcmp(sqlite3_errmsg(db),
 (ROOT / "generated").mkdir(exist_ok=True)
 (ROOT / "generated/upstream-jsonb.c").write_text(out)
 (ROOT / "generated/upstream-jsonb-manifest.json").write_text(json.dumps({
-    "source": "sqlite-src-3530400/test/jsonb01.test",
+    "source": Path(source_spec["directory"]).name + "/test/jsonb01.test",
     "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
     "setup": "jsonb01-1.1", "cases": [case[0] for case in cases] + ["jsonb01-2.0"],
     "skipped_cases": [],
