@@ -116,6 +116,13 @@ its nonexecuted source anchor separately. Run `tests/verify_varargs.py` for argu
 promotions, cursor forwarding/copying, indirect calls and exception cleanup.
 Aggregate payloads and variadic virtual dispatch remain unsupported.
 
+Fixed scalar/nested arrays use explicit initializer indices/repeats/value references
+and EDG-selected zero actions. Global backing is pinned and aligned; local backing
+is function-owned and survives source cleanup. `tests/verify_arrays.py` covers
+lookup tables, partial/empty/nested initialization, declaration-order completion,
+cross-unit mutation and cleanup reads. Array actions follow function-body leases.
+Dynamic/record array initialization and local-static guards remain unsupported.
+
 Standard `std::nullptr_t` retains its distinct source identity and EDG layout.
 `nodes.value_normalization` explicitly records zero-valued prvalue behavior;
 the consumer preserves operand effects and follows that fact. Run

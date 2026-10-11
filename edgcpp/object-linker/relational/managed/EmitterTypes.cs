@@ -19,7 +19,11 @@ internal sealed partial class Emitter
         {
             var unit=function.Unit;
             UseType(unit,function.Symbol.Type);
-            foreach(var local in unit.Symbols.Values.Where(symbol=>symbol.Parent==function.Id))UseType(unit,local.Type);
+            foreach(var local in unit.Symbols.Values.Where(symbol=>symbol.Parent==function.Id))
+            {
+                UseType(unit,local.Type);
+                needsLocalArrayStorage|=local.Kind=="local" && unit.IsArray(local.Type);
+            }
             using var body=program.LoadFunction(function);
             var visited=new HashSet<long>();
             foreach(var node in unit.Nodes.Values.Where(node=>node.Function==function.Id))UseNode(unit,node,visited);
@@ -66,6 +70,7 @@ internal sealed partial class Emitter
         }
         if(node.EnumValue is long enumeration)UseType(unit,unit.EnumValues[enumeration].Type);
         if(node.FloatingValue is long floating)UseType(unit,unit.FloatingValues[floating].Type);
+        foreach(var element in unit.ArrayElements.GetValueOrDefault(node.Id,[]))UseNode(unit,unit.Nodes[element.Value],visited);
         if(node.Initialization is long selected && unit.Initializations.TryGetValue(selected,out var initialization))
         {
             if(initialization.Type is long initializedType)UseType(unit,initializedType);

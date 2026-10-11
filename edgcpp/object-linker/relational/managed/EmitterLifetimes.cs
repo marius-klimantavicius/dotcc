@@ -58,6 +58,7 @@ internal sealed partial class Emitter
             if(constructorCompletionRequired)Line(indent+1,"bool __constructor_complete = false;");
             void Core(int level)
             {
+                WriteLocalArrayStorage(level);
                 WriteVarargsPrologue(level);
                 void Body(int content)
                 {
@@ -92,7 +93,7 @@ internal sealed partial class Emitter
             }
             bool empty=!unit.Children(body,"statement").Any(child=>child.Kind!="empty" && !(child.Kind=="return" && !unit.Children(child,"value").Any())) &&
                 unit.ConstructorInitializers.GetValueOrDefault(functionId,[]).Count==0 && cleanupFlags.Count==0 &&
-                unit.VptrWrites.GetValueOrDefault(functionId,[]).Count==0 && varargs is null;
+                unit.VptrWrites.GetValueOrDefault(functionId,[]).Count==0 && varargs is null && localArrayOwners.Count==0;
             if(details.ExceptionPolicy=="terminate" && !empty)
             {
                 Line(indent+1,"try");Line(indent+1,"{");Core(indent+2);Line(indent+1,"}");
@@ -159,7 +160,8 @@ internal sealed partial class Emitter
         {
             if(initialization.Unordered || initialization.OverlapsInner || initialization.PartialAggregate || initialization.FreeOnException || initialization.StaticStorage || initialization.OverlapLifetime is not null)
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs unsupported unordered/overlap/array/storage cleanup emission");
-            if(initialization.PartiallyInitialized || initialization.ValueInitialization ||
+            bool hasArrayActions=initialization.Value is long array && unit.ArrayInitializers.ContainsKey(array);
+            if(initialization.PartiallyInitialized && !hasArrayActions || initialization.ValueInitialization ||
                 initialization.TemporaryLifetime && initialization.Destructor is not null)
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs unsupported partial/value/temporary initialization emission");
             if(initialization.ImpliedSource && initialization.Kind!="bitwise-copy")
@@ -238,6 +240,7 @@ internal sealed partial class Emitter
 
         private void WriteDeclaration(Node node,int indent)
         {
+            if(node.Symbol is long array && unit.IsArray(unit.Symbols[array].Type)){WriteArrayDeclaration(node,indent);return;}
             if(node.Initialization is not long id){Line(indent,Declaration(node)+";");return;}
             long variable=node.Symbol??unit.Initializations[id].Variable??throw unit.Missing(node,"initialization destination missing");
             if(unit.Initializations[id].Destructor is not null && !cleanupFlags.Contains(id))

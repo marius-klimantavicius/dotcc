@@ -42,6 +42,7 @@ internal sealed partial class Emitter
                     fieldNames.Add((unit,field.Id),members.Allocate(field.Name,"field_"+field.Ordinal));
             }
         PrepareEnums();
+        PrepareArrays();
         if(needsNullptrNormalization)nullptrValueName=names.Allocate("__nullptr_value","nullptr_value");
     }
 
@@ -77,6 +78,7 @@ internal sealed partial class Emitter
         Line(0,"namespace "+namespaceName+";");
         Line(0,"public static unsafe partial class "+className);Line(0,"{");
         WriteEnums();
+        WriteArrayTypes();
         foreach(var record in records.Values) Record(record.Unit,record.Type,record.Name);
         WriteInheritanceHelpers();
         WriteVirtualTables();
@@ -85,6 +87,7 @@ internal sealed partial class Emitter
         foreach(var unit in program.Units){WriteClassConversionHelpers(unit,null);WriteVirtualCallHelpers(unit,null);WriteCompoundHelpers(unit,null);}
         foreach(var global in program.Globals)
         {
+            if(global.Unit.IsArray(global.Symbol.Type)){WriteGlobalArray(global);continue;}
             string value=global.Unit.Initializers.TryGetValue(global.Id,out var initializer)
                 ? new FunctionWriter(this,global.Unit,null).Expression(global.Unit.Nodes[initializer]):"default";
             Line(1,"public static "+Type(global.Unit,global.Symbol.Type)+" "+SymbolName(global.Unit,global.Id)+" = "+value+";");
@@ -160,6 +163,7 @@ internal sealed partial class Emitter
             "pointer" or "lvalue-reference" or "rvalue-reference"=>Pointer(unit,type.Pointee!.Value),
             "record"=>typeNames[(unit,type.Id)],
             "enum"=>typeNames[(unit,type.Id)],
+            "array"=>arrayNames[(unit,type.Id)],
             _=>throw new InvalidDataException("Unsupported relational C# type "+type.Id+": "+type.Kind+" "+type.Name)
         };
     }
@@ -194,11 +198,15 @@ internal sealed partial class Emitter
             foreach(string value in emitter.virtualTableNames.Values)allocator.Reserve(value);
             foreach(string value in emitter.virtualCallNames.Values)allocator.Reserve(value);
             foreach(string value in emitter.compoundHelpers.Values)allocator.Reserve(value);
+            foreach(string value in emitter.arrayNames.Values)allocator.Reserve(value);
+            if(emitter.localArrayStorageName is string arrayStorage)allocator.Reserve(arrayStorage);
             if(emitter.nullptrValueName is string helper)allocator.Reserve(helper);
             if(function is SymbolRef selected)
             {
                 foreach(var local in unit.Symbols.Values.Where(value=>value.Parent==selected.Id))
                     locals.Add(local.Id,allocator.Allocate(local.Name,"local_"+local.Id));
+                foreach(var local in unit.Symbols.Values.Where(value=>value.Parent==selected.Id && value.Kind=="local" && unit.IsArray(value.Type)))
+                    localArrayOwners.Add(local.Id,allocator.Allocate("__"+Name(local.Id)+"_storage","local_array_storage"));
                 if(unit.Original(selected.Symbol.Type).ReturnStorage=="caller-provided")
                     returnDestination=allocator.Allocate("__result","return_value");
                 if(unit.Original(selected.Symbol.Type).Variadic)
@@ -243,7 +251,9 @@ internal sealed partial class Emitter
             switch(node.Kind)
             {
                 case "constant":return Constant(node);
-                case "variable":return Name(node.Symbol??throw unit.Missing(node,"selected symbol missing"));
+                case "variable":
+                    long variable=node.Symbol??throw unit.Missing(node,"selected symbol missing");
+                    return unit.IsArray(unit.Symbols[variable].Type)?"(*"+Name(variable)+")":Name(variable);
                 case "function":return FunctionAddress(node);
                 case "initialize":return unit.Children(node,"value").FirstOrDefault() is Node value?Expression(value):"default";
                 case "operation":return Operation(node);
@@ -296,6 +306,7 @@ internal sealed partial class Emitter
                 case "post-increment":return "("+E(0)+"++)";case "post-decrement":return "("+E(0)+"--)";
                 case "address-of":case "reference-to":
                     if(N(0).Kind=="function")return FunctionAddress(N(0));
+                    if(N(0).Type is long addressedType && unit.IsArray(addressedType))return ArrayAddress(N(0));
                     if(N(0).Kind=="variable" && N(0).Symbol is long addressed && unit.Symbols[addressed].Parent is null)
                         throw unit.Missing(node,"address-taken global requires pinned storage support");
                     return "(&"+E(0)+")";
@@ -308,7 +319,7 @@ internal sealed partial class Emitter
                 case "base-class-cast":case "derived-class-cast":return ClassConversionExpression(node,N(0));
                 case "array-to-pointer":
                     if(unit.VaListRole(N(0).ExecutionType??N(0).Type!.Value) is not null)return "(&"+E(0)+")";
-                    throw unit.Missing(node,"array storage emission is not yet implemented");
+                    return ArrayDecay(N(0));
                 case "va-start":case "va-start-single":case "va-arg":case "va-copy":case "va-end":return VarargsOperation(node);
                 case "conditional":return "("+Truth(N(0))+" ? "+E(1)+" : "+E(2)+")";
                 case "subscript":return "("+E(0)+")["+E(1)+"]";

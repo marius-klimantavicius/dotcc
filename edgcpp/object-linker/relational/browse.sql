@@ -135,3 +135,9 @@ FROM types WHERE semantic_role IS NOT NULL ORDER BY id;
 SELECT n.id,n.operator,n.type_id,e.role,e.ordinal,e.child_id
 FROM nodes n JOIN edges e ON e.parent_id=n.id
 WHERE n.operator LIKE 'va-%' ORDER BY n.id,e.role,e.ordinal;
+
+SELECT a.node_id,a.zero_initialize,e.ordinal,e.array_index,e.repeat_count,
+       e.value_node_id,n.kind,n.constant_text
+FROM array_initializers a
+LEFT JOIN array_initializer_elements e ON e.initializer_node_id=a.node_id
+LEFT JOIN nodes n ON n.id=e.value_node_id ORDER BY a.node_id,e.ordinal;

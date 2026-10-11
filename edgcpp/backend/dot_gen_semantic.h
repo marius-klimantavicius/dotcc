@@ -59,6 +59,7 @@ struct State {
   std::vector<std::pair<Id,std::string>> vptr_phases;
   std::map<Id,unsigned> vptr_ordinals;
   std::map<a_variable_ptr,Id> variables;
+  std::set<a_variable_ptr> incomplete_globals;
   std::map<a_field_ptr,Id> fields;
   std::map<a_base_class_ptr,Id> base_subobjects;
   std::map<a_constant_ptr,Id> enum_values;
@@ -195,7 +196,8 @@ struct State {
       if(c->type)detail+=", type="+spelling(c->type->source_corresp)+
         ", type-kind="+std::to_string(int(c->type->kind));
       auto pos=location(position?*position:c->source_corresp.decl_position);
-      detail+=", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]";
+      std::string path;for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+      detail+=", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]";
       missing(detail,int(c->kind));
     }
     return integer(c);
@@ -569,8 +571,41 @@ struct State {
       {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
     instance(r->assoc_template,r->template_arg_list,id,0,is_template_dependent_type(r->type));return id;
   }
-  Id variable(a_variable_ptr v,bool local=false,bool parameter=false) {
-    auto found=variables.find(v);if(found!=variables.end())return found->second;
+  void global_initializer(a_variable_ptr v,Id id) {
+    if(v->init_kind!=initk_none && v->init_kind!=initk_zero && v->init_kind!=initk_static)
+      missing("global dynamic initializer");
+    // Declaration processing canonicalizes storage duration (il.h). Its
+    // default-initialization path explicitly treats static-duration objects
+    // as zero-initialized (decls.c); preserve that action for array storage.
+    bool zero_array=v->storage_class!=sc_extern && var_has_static_or_thread_storage_duration(v) &&
+      (v->init_kind==initk_none || v->init_kind==initk_zero) && is_array_type(v->type);
+    if(v->init_kind==initk_static || zero_array) {
+      Id previous=function;bool previous_recipe=template_recipe;function=0;template_recipe=false;
+      Id initializer;
+      if(zero_array) {
+        initializer=node("array-initializer",v->source_corresp.decl_position,type_id(v->type),"prvalue");
+        db.insert("array_initializers",{{"node_id",initializer},{"zero_initialize",true}});
+      } else initializer=constant(v->initializer.constant,v->source_corresp.decl_position);
+      db.insert("global_initializers",{{"symbol_id",id},{"initializer_node_id",initializer}});
+      function=previous;template_recipe=previous_recipe;
+    }
+  }
+  Id variable(a_variable_ptr v,bool local=false,bool parameter=false,bool source_definition=false) {
+    auto found=variables.find(v);if(found!=variables.end()) {
+      // A function can refer to an extern declaration before its definition
+      // is seen. Final source-scope capture completes that same EDG entity;
+      // already-defined globals are never refreshed from lowered storage.
+      if(source_definition && incomplete_globals.count(v) && v->storage_class!=sc_extern) {
+        incomplete_globals.erase(v);
+        auto pos=location(v->source_corresp.decl_position);
+        db.update("symbols","id",found->second,{{"name",spelling(v->source_corresp)},
+          {"link_name",v->source_corresp.name?v->source_corresp.name:""},{"linkage",linkage(v->source_corresp)},
+          {"type_id",type_id(v->type)},{"is_definition",true},{"file_id",optional(pos.file)},
+          {"line",pos.line},{"column",pos.column}});
+        global_initializer(v,found->second);
+      }
+      return found->second;
+    }
     Id id=next_symbol++;variables[v]=id;auto pos=location(v->source_corresp.decl_position);
     if(local)local_variables.insert(v);
     if(is_effective_thread_local(v))missing("thread-local storage");
@@ -583,11 +618,9 @@ struct State {
       {"parent_symbol_id",local?optional(function):Value(nullptr)},
       {"is_definition",v->storage_class!=sc_extern},{"file_id",optional(pos.file)},
       {"line",pos.line},{"column",pos.column}});
-    if(!local && v->init_kind==initk_static) {
-      Id previous=function;bool previous_recipe=template_recipe;function=0;template_recipe=false;
-      Id initializer=constant(v->initializer.constant,v->source_corresp.decl_position);
-      db.insert("global_initializers",{{"symbol_id",id},{"initializer_node_id",initializer}});
-      function=previous;template_recipe=previous_recipe;
+    if(!local) {
+      if(v->storage_class==sc_extern)incomplete_globals.insert(v);
+      global_initializer(v,id);
     }
     return id;
   }
@@ -652,6 +685,47 @@ struct State {
       default:missing("dependent value",int(value.kind));
     }
   }
+  void array_initializer(Id id,a_constant_ptr c,const a_source_position &p) {
+    auto type=skip_typerefs(c->type);
+    if(type->kind!=tk_array)missing("non-array aggregate initializer");
+    if(c->variant.aggregate.has_dynamic_init_component)
+      missing("array initializer dynamic component");
+    if(c->uses_designated_initializers && !c->explicit_braces_on_aggregate &&
+       !c->explicit_parentheses_on_aggregate)
+      missing("unbraced designated array initializer merge");
+    // decl_inits propagates this selected flag to dynamic initialization;
+    // c_gen_be::start_initializer_assignments uses it to zero the object
+    // before element writes. No element-count inference is needed here.
+    db.insert("array_initializers",{{"node_id",id},{"zero_initialize",bool(c->is_partially_initialized)}});
+    a_targ_size_t index=0;unsigned ordinal=0;
+    for(auto item=c->variant.aggregate.first_constant;item;item=item->next) {
+      // Same selected position updates as c_gen_be::dump_initializer_part.
+      if(item->kind==ck_designator) {
+        if(item->variant.designator.is_generic || item->variant.designator.is_field_designator)
+          missing("non-array initializer designator");
+        index=item->variant.designator.variant.array_element;
+        item=item->next;
+        if(!item || item->kind==ck_designator)missing("array initializer designator value");
+      }
+      auto value=item;a_targ_size_t count=1;
+      if(item->kind==ck_init_repeat) {
+        value=item->variant.init_repeat.constant;count=item->variant.init_repeat.count;
+        if(!count)missing("runtime array initializer repetition");
+        if(item->variant.init_repeat.multidimensional_aggr_tail_not_repeated)
+          missing("designated array initializer repetition tail");
+        // EDG can compact repeated leaf values across several nested rows.
+        // That selected form needs an explicit multidimensional destination;
+        // this immediate-element relation deliberately does not flatten it.
+        if(!identical_types_ignoring_qualifiers(value->type,type->variant.array.element_type))
+          missing("flattened multidimensional array initializer repetition");
+      }
+      if(value->kind==ck_dynamic_init)missing("array initializer dynamic component");
+      const auto &position=value->source_corresp.decl_position.seq?value->source_corresp.decl_position:p;
+      db.insert("array_initializer_elements",{{"initializer_node_id",id},{"ordinal",ordinal++},
+        {"array_index",index},{"repeat_count",count},{"value_node_id",constant(value,position)}});
+      index+=count;
+    }
+  }
   Id constant(a_constant_ptr c,const a_source_position &p) {
     if(template_recipe) {
       auto found=recipe_constants.find(c);if(found!=recipe_constants.end())return found->second;
@@ -660,6 +734,11 @@ struct State {
       Id id=node(dependent_value_kind(c),p,type_id(c->type),"prvalue");
       if(template_recipe)recipe_constants[c]=id;
       dependent_value(id,c);return id;
+    }
+    if(c->kind==ck_aggregate) {
+      Id id=node("array-initializer",p,type_id(c->type),"prvalue");
+      if(template_recipe)recipe_constants[c]=id;
+      array_initializer(id,c,p);return id;
     }
     Id id=node("constant",p,type_id(c->type),"prvalue",nullptr,literal_text(c,"initializer",&p));
     if(template_recipe)recipe_constants[c]=id;
@@ -1011,6 +1090,7 @@ struct State {
     switch(e->kind) {
       case enk_constant:
         if(node_constant(e)->kind==ck_template_param)kind=dependent_value_kind(node_constant(e));
+        else if(node_constant(e)->kind==ck_aggregate)kind="array-initializer";
         else {kind="constant";text=literal_text(node_constant(e),"expression",&e->position);}break;
       case enk_variable:kind="variable";symbol=variable(node_variable(e));break;
       case enk_routine:kind="function";symbol=routine(e->variant.routine.ptr);break;
@@ -1043,6 +1123,7 @@ struct State {
       db.update("nodes","id",id,{{"value_normalization","nullptr-zero"}});
     if(e->kind==enk_constant) {
       if(node_constant(e)->kind==ck_template_param)dependent_value(id,node_constant(e));
+      if(node_constant(e)->kind==ck_aggregate)array_initializer(id,node_constant(e),e->position);
       attach_enum_value(id,node_constant(e));
       if(node_constant(e)->kind==ck_float)
         db.update("nodes","id",id,{{"floating_value_id",floating_value(node_constant(e))}});
@@ -1340,7 +1421,7 @@ struct State {
       if(v->lowering_generated)continue;
 #endif
       if(v->is_nonreal)missing("dependent global declaration");
-      variable(v);
+      variable(v,false,false,true);
     }
     for(auto r=scope->routines;r;r=r->next)
       if(!r->is_prototype_instantiation && r->source_corresp.decl_position.seq)routine(r);

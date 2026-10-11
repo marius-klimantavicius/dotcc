@@ -17,6 +17,8 @@ internal sealed class FunctionBody
     public Dictionary<long,FloatingValue> FloatingValues {get;}
     public Dictionary<long,VirtualCall> VirtualCalls {get;}
     public Dictionary<long,List<VptrWrite>> VptrWrites {get;}
+    public Dictionary<long,ArrayInitializer> ArrayInitializers {get;}
+    public Dictionary<long,List<ArrayElement>> ArrayElements {get;}
 
     public FunctionBody(FunctionBody? globals=null)
     {
@@ -33,12 +35,15 @@ internal sealed class FunctionBody
         FloatingValues=globals is null?[]:new(globals.FloatingValues);
         VirtualCalls=globals is null?[]:new(globals.VirtualCalls);
         VptrWrites=globals is null?[]:new(globals.VptrWrites);
+        ArrayInitializers=globals is null?[]:new(globals.ArrayInitializers);
+        ArrayElements=globals is null?[]:new(globals.ArrayElements);
     }
 
     public long RowCount=>Nodes.Count+Edges.Values.Sum(values=>(long)values.Count)+Lifetimes.Count+Initializations.Count+
         InitializationArguments.Values.Sum(values=>(long)values.Count)+Destructions.Values.Sum(values=>(long)values.Count)+
         ConstructorInitializers.Values.Sum(values=>(long)values.Count)+Handlers.Values.Sum(values=>(long)values.Count)+
-        Throws.Count+ClassConversions.Count+FloatingValues.Count+VirtualCalls.Count+VptrWrites.Values.Sum(values=>(long)values.Count);
+        Throws.Count+ClassConversions.Count+FloatingValues.Count+VirtualCalls.Count+VptrWrites.Values.Sum(values=>(long)values.Count)+
+        ArrayInitializers.Count+ArrayElements.Values.Sum(values=>(long)values.Count);
 }
 
 internal sealed class ReleaseScope(Action release) : IDisposable
@@ -71,6 +76,7 @@ internal sealed partial class Unit
             ReadLifecycles(function);
             ReadClassConversions(function);
             ReadVirtualBody(function);
+            ReadArrayInitializers(function);
             return new ReleaseScope(()=>functionBody=null);
         }
         catch {functionBody=null;throw;}

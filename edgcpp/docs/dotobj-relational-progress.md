@@ -457,10 +457,47 @@ are next. No complete DuckDB object is published, and measurements still describ
 early rejection. The next slice targets explicit array initialization destinations,
 values/repeats and zero actions needed by the generator, not generic compiler data.
 
+## Verified scalar array initialization and storage
+
+`artifacts/review/dotobj-relational-arrays-v2/` passes native C++, SQL integrity,
+source-hidden C# and Linux x64 NativeAOT. Schema 1015 has 37 tables; the two new
+relations carry generator-needed zero actions and ordered selected array element
+indices/repeats/value references. Nested initializers remain ordinary graph nodes.
+The zero flag comes from EDG's selected partial-initialization flag; source static
+zero arrays receive an explicit empty zero action using EDG's storage-duration
+predicate. The consumer does not infer zeroing from omitted element rows.
+
+Named fixed layouts retain EDG size/stride. Globals have aligned pinned GC backing;
+fixed local arrays have aligned function-owned native storage, disposed after
+source cleanup. Writes still execute at each source declaration, including loop
+iterations. Array action rows share body leases and retention metrics. Globals
+and their initializer data remain resident, as previously disclosed.
+
+The fixture covers a character lookup table, partial/nested/empty local arrays,
+repeated loop initialization, shared mutable globals and stable cross-unit pointers.
+A destructor reads a local array on both normal return and exception unwinding.
+An early extern reference exposed a cached-declaration bug: final source capture
+now completes the same global symbol ID and records its initializer once. The
+fixture verifies initialized and default-zero globals after such early references.
+Provider: 237,568 bytes, 262 nodes, 34 types. Main: 229,376 bytes, 178 nodes, 19 types.
+
+Varargs and bounded-body regressions pass native/C#/NativeAOT at
+`*-arrays-regression-v1`; peak body nodes remain 251 of 1,531. Old 14-table objects
+still link/run at `dotobj-relational-v3-arrays-compat`. Reproduce with
+`tests/verify_arrays.py`; storage summaries and tool hashes are retained. Dynamic
+array components, record-element construction/destruction, runtime counts, flattened
+multidimensional repeats and local-static guards remain unsupported. Nonzero
+relocated initializer constants and more general static ordering are also work.
+
+Actual bounded DuckDB `hugeint-v19` advances beyond the array initializer and
+rejects unsigned __int128 (integer kind 12). No complete object is published and
+probe measurements remain early-rejection data. The next change uses existing
+scalar type/literal columns and EDG's exact decimal formatter, adding no tables.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
-lifecycle emission includes arrays, virtual-base/delegating construction, function-try
+lifecycle emission includes nontrivial/dynamic arrays, virtual-base/delegating construction, function-try
 blocks, nontrivial expression temporaries, overlap/unordered cleanup, nontrivial
 by-value catches, pointer/base-conversion catches, and value/partial aggregate
 initialization. Those unsupported execution paths reject explicitly. Finalized

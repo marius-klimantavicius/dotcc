@@ -86,12 +86,14 @@ internal sealed partial class Unit : IDisposable
                 while (q.Read()) Initializers.Add(q.Integer(0),q.Integer(1));
             ReadInheritance();
             ReadVirtualTables();
+            ReadArrayFeatures();
             ReadFunctionDetails();
             ReadNodes(null);
             ReadFloatingValues(null);
             ReadLifecycles(null);
             ReadClassConversions(null);
             ReadVirtualBody(null);
+            ReadArrayInitializers(null);
         }
         catch { database.Dispose(); throw; }
     }
