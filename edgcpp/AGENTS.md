@@ -51,3 +51,16 @@ their actual tests establish. Keep the campaign ledger current across handoffs.
 Canonical backend sources live in `backend/`; `backend/prepare.py` copies them
 into the embedded upstream build tree. Edit the canonical files. `build/` and
 `artifacts/` remain ignored but must be retained during this campaign.
+
+## EDG semantic authority (user correction, 2026-10-11)
+
+Follow `docs/dotobj-edg-authority-plan-20261011.md`. EDG is the C/C++ semantic
+authority. Export its typed graph and selected semantic results; do not redo
+source-language analysis in the exporter or managed reader. Preserve complete
+source/type/lifetime data without requiring unused/dependent recipes to be
+reinterpreted or normalized before serialization. Keep object integrity checks
+and actual symbol/ABI/linking requirements separate from source metadata.
+Continue from the existing implementation and preserve all current work.
+The C# linker and generator must assume `.dotobj` is semantically correct.
+Only missing or mis-exported semantic data warrants an exporter-defect diagnostic;
+do not independently revalidate EDG's language decisions in managed code.
