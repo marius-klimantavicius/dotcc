@@ -141,7 +141,11 @@ General relocated variable/routine constant addresses remain unsupported.
 Scalar default member initializers reuse ordinary selected constructor actions when
 EDG explicitly selects the field initializer. `tests/verify_default_members.py`
 covers constants, typed null pointers, templates, and explicit overrides. Richer
-defaults needing constructor remapping or cleanup remain unsupported.
+defaults needing constructor remapping or expression cleanup remain unsupported.
+Class defaults with scalar constant constructor arguments use EDG's exact copied
+initialization and finalized constructor cleanup order. `tests/verify_class_defaults.py`
+covers partial failure, explicit overrides and constructor-exit destructor failure;
+member-valued default arguments still reject explicitly.
 
 Plain allocation uses EDG-selected count bindings, check/size expression graphs,
 failure calls and allocator calls. `tests/verify_allocations.py` supplies explicit

@@ -114,6 +114,15 @@ struct State {
   std::map<a_dynamic_init_ptr,Id> initializations,initialization_values;
   std::map<a_dynamic_init_ptr,Id> initialization_types;
   std::set<a_dynamic_init_ptr> initializing;
+  struct DefaultMemberInitializers {
+    Id owner=0,body=0;
+    an_object_lifetime_ptr original_root=nullptr;
+    std::map<a_constructor_init_ptr,Id> selected;
+    std::map<a_dynamic_init_ptr,Id> init_ids;
+    std::map<an_object_lifetime_ptr,Id> lifetime_ids;
+  };
+  std::map<a_scope_ptr,DefaultMemberInitializers> default_member_initializers;
+  std::set<an_object_lifetime_ptr> deferred_destructions;
   State():db(std::getenv("EDG_DOT_SEMANTIC")) {}
   [[noreturn]] void missing(const std::string &what,int kind=-1) {
     std::fprintf(stderr,"semantic exporter missing %s%s\n",what.c_str(),
@@ -896,6 +905,9 @@ struct State {
     // No constant pointer from this region can survive its reclamation.
     if(mem_region_for_routine(r)!=NULL_region_number)
       literal_constants.erase(mem_region_for_routine(r));
+    for(const auto &entry:default_member_initializers)
+      if(entry.first->variant.routine.ptr==r)
+        missing("default member initializers without finalized constructor cleanup");
     for(auto entry=allocations.begin();entry!=allocations.end();) {
       if(entry->second.region==mem_region_for_routine(r)) {
         if(!entry->second.complete)missing("new expression without selected allocation size/result");
@@ -1021,8 +1033,9 @@ struct State {
       return id;
     }
     unsigned ordinal=0;
-    for(auto action=value->destructions;action;action=action->next_in_destruction_list)
-      db.insert("lifetime_destructions",{{"lifetime_id",id},{"ordinal",ordinal++},{"initialization_id",initialization_id(action)}});
+    if(!deferred_destructions.count(value))
+      for(auto action=value->destructions;action;action=action->next_in_destruction_list)
+        db.insert("lifetime_destructions",{{"lifetime_id",id},{"ordinal",ordinal++},{"initialization_id",initialization_id(action)}});
     ordinal=0;
     for(auto child=value->child_lifetime;child;child=child->next)
       db.update("lifetimes","id",lifetime_id(child),{{"sibling_ordinal",ordinal++}});
@@ -1784,6 +1797,89 @@ struct State {
     for(auto v=scope->nonstatic_variables;v;v=v->next)variable(v,true);
     for(auto child=scope->scopes;child;child=child->next)local_bindings(child);
   }
+  bool bounded_default_constructor(a_field_ptr member) {
+    auto init=member->initializer;
+    if(member->init_is_ctor_dependent || !is_immediate_class_type(skip_typerefs(member->type)) ||
+       !init || init->kind!=dik_constructor ||
+       !init->variant.constructor.ptr || init->variant.constructor.is_array_copy ||
+       init->variant.constructor.is_copy_constructor_with_implied_source ||
+       init->variable || init->lifetime || init->init_expr_lifetime ||
+       init->lifetime_of_overlapping_temps || init->master_entry ||
+       init->class_rvalue_initialized_through_master_entry || init->unordered ||
+       init->overlaps_temps_in_inner_lifetime ||
+       init->destruction_is_for_partially_constructed_aggregate ||
+       init->is_freeing_of_storage_on_exception)return false;
+    for(auto arg=init->variant.constructor.args;arg;arg=arg->next) {
+      if(arg->kind!=enk_constant || !is_scalar_type(arg->type))return false;
+      auto value=arg->variant.constant.ptr;
+      if(value->kind!=ck_integer && value->kind!=ck_float)return false;
+    }
+    return true;
+  }
+  void default_member_initializers_complete(a_scope_ptr scope) {
+    auto found=default_member_initializers.find(scope);
+    if(found==default_member_initializers.end())return;
+    auto &pending=found->second;
+    // copy_non_static_data_member_initializers_if_necessary has installed
+    // each exact per-constructor copy and finished interleaving destructions.
+    // Only identity correspondence survives the source capture; no expression
+    // cloning or cleanup ordering is performed by the exporter.
+    for(const auto &entry:pending.selected) {
+      auto copied=entry.first->initializer;
+      if(!copied)missing("eliminated default member constructor initialization");
+      if(copied->kind!=dik_constructor || !copied->is_constructor_init ||
+         copied->variant.constructor.is_array_copy ||
+         copied->variant.constructor.is_copy_constructor_with_implied_source ||
+         copied->variable || copied->init_expr_lifetime ||
+         copied->lifetime_of_overlapping_temps || copied->master_entry ||
+         copied->class_rvalue_initialized_through_master_entry || copied->unordered ||
+         copied->overlaps_temps_in_inner_lifetime ||
+         copied->destruction_is_for_partially_constructed_aggregate ||
+         copied->is_freeing_of_storage_on_exception ||
+         (copied->lifetime && copied->lifetime!=scope->lifetime))
+        missing("copied default member constructor requires richer cleanup projection");
+      pending.init_ids[copied]=entry.second;
+    }
+    Id previous=function;function=pending.owner;
+    initializations.swap(pending.init_ids);lifetimes.swap(pending.lifetime_ids);
+    if(scope->lifetime)deferred_destructions.insert(scope->lifetime);
+    Id life=lifetime_id(scope->lifetime);
+    for(const auto &entry:pending.selected) {
+      auto copied=entry.first->initializer;
+      db.update("initializations","id",entry.second,{
+        {"is_constructor_init",bool(copied->is_constructor_init)},
+        {"lifetime_id",copied->lifetime?Value(life):Value(nullptr)},
+        {"conditional",bool(copied->inside_conditional_expression)},
+        {"unordered",bool(copied->unordered)},
+        {"overlaps_inner",bool(copied->overlaps_temps_in_inner_lifetime)},
+        {"partial_aggregate",bool(copied->destruction_is_for_partially_constructed_aggregate)},
+        {"free_on_exception",bool(copied->is_freeing_of_storage_on_exception)},
+        {"is_partially_initialized",bool(copied->is_partially_initialized)},
+        {"static_storage",bool(copied->static_temp)},
+        {"implied_source",bool(copied->variant.constructor.is_copy_constructor_with_implied_source)},
+        {"sequenced_arguments",bool(copied->variant.constructor.has_sequenced_arguments)},
+        {"value_initialization",bool(copied->variant.constructor.value_initialization)},
+        {"follows_exec",bool(copied->follows_an_exec_statement)},
+        {"temporary_lifetime",bool(copied->has_temporary_lifetime)}});
+    }
+    if(scope->lifetime) {
+      attach_lifetime(pending.body,scope->lifetime);
+      unsigned ordinal=0;
+      for(auto action=scope->lifetime->destructions;action;action=action->next_in_destruction_list) {
+        auto selected=initializations.find(action);
+        if(selected==initializations.end())
+          missing("copied default member constructor introduced uncaptured destruction");
+        db.insert("lifetime_destructions",{{"lifetime_id",life},{"ordinal",ordinal++},
+          {"initialization_id",selected->second}});
+      }
+      deferred_destructions.erase(scope->lifetime);
+    }
+    // Stock can unbind a newly useless lifetime. Never retain either its
+    // earlier identity or its replacement beyond the owning function region.
+    deferred_destructions.erase(pending.original_root);
+    initializations.swap(pending.init_ids);lifetimes.swap(pending.lifetime_ids);
+    function=previous;default_member_initializers.erase(found);
+  }
   void constructor_initializers(a_scope_ptr scope) {
     // Seed selected base destinations before any lifetime traversal can reach
     // another initializer in this constructor's list.
@@ -1808,11 +1904,9 @@ struct State {
       if(!init && entry->kind==cik_field && entry->use_field_initializer) {
         auto member=entry->variant.field;
         auto selected=member->initializer;
-        // Exact lower_init::lower_ctor_init selection. The stock copy path
-        // additionally remaps constructor-dependent expressions and attaches
-        // destruction lifetimes. Only scalar constants without those actions
-        // can reuse the source initializer directly here; never reconstruct
-        // the missing per-constructor expression or cleanup graph.
+        // Exact lower_init::lower_ctor_init selection. Scalar constants need
+        // no remapping. Class construction additionally waits for the stock
+        // per-constructor copy to supply its cleanup lifetime and ordering.
         if(!member->init_is_ctor_dependent && selected && selected->kind==dik_constant &&
            is_scalar_type(target) && !selected->variant.constant.non_constant &&
            (selected->variant.constant.ptr->kind==ck_integer || selected->variant.constant.ptr->kind==ck_float) &&
@@ -1820,6 +1914,7 @@ struct State {
            !selected->init_expr_lifetime && !selected->lifetime_of_overlapping_temps &&
            !selected->master_entry && !selected->class_rvalue_initialized_through_master_entry)
           init=selected;
+        else if(bounded_default_constructor(member))init=selected;
       }
       if(!init) {
         auto member=entry->kind==cik_field?entry->variant.field:nullptr;
@@ -1828,7 +1923,7 @@ struct State {
         auto pos=location(member?member->source_corresp.decl_position:
           scope->variant.routine.ptr->source_corresp.decl_position);
         std::string path;for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
-        std::string detail="default field initializer selection requires scalar constant without lifetime/remapping [constructor="+
+        std::string detail="default field initializer selection requires scalar constant or constructor with scalar constant arguments [constructor="+
           spelling(scope->variant.routine.ptr->source_corresp)+", owner="+
           (owner?spelling(owner->source_corresp):"")+", field="+
           (member?spelling(member->source_corresp):"")+", type="+
@@ -1860,11 +1955,14 @@ struct State {
         if(!source)missing("selected constructor copy source parameter");
         copy_source=variable(source,true,true);
       }
+      Id selected_init=initialization_id(init,target);
+      if(!entry->initializer && init->kind==dik_constructor)
+        default_member_initializers.at(scope).selected[entry]=selected_init;
       db.insert("constructor_initializers",{{"function_id",function},{"ordinal",ordinal},{"kind",kind},
         {"field_id",optional(field)},{"base_subobject_id",optional(base)},
         {"copy_source_symbol_id",optional(copy_source)},
         {"target_type_id",optional(type_id(target))},{"is_virtual",is_virtual},
-        {"initialization_id",initialization_id(init,target)}});
+        {"initialization_id",selected_init}});
     }
   }
   void capture(a_scope_ptr scope) {
@@ -1907,6 +2005,17 @@ struct State {
         Id symbol=variable(p,true,true);
         db.insert("parameters",{{"function_id",function},{"ordinal",ordinal++},{"symbol_id",symbol}});
       }
+      // Defer before any initializer/body traversal can reach the root
+      // lifetime. EDG will insert the copied default members among its
+      // existing explicit member and local destruction entries.
+      for(auto entry=scope->variant.routine.constructor_inits;entry;entry=entry->next)
+        if(!entry->initializer && entry->kind==cik_field && entry->use_field_initializer &&
+           bounded_default_constructor(entry->variant.field)) {
+          default_member_initializers[scope].owner=function;
+          default_member_initializers[scope].original_root=scope->lifetime;
+          if(scope->lifetime)deferred_destructions.insert(scope->lifetime);
+          break;
+        }
       local_bindings(scope);
       constructor_initializers(scope);
       lifetime_id(scope->lifetime);
@@ -1920,6 +2029,12 @@ struct State {
         {"kind",kind},{"exception_policy",policy},
         {"nrvo_candidate_symbol_id",optional(scope->variant.routine.return_value_variable?
           variable(scope->variant.routine.return_value_variable,true):0)}});
+      auto pending=default_member_initializers.find(scope);
+      if(pending!=default_member_initializers.end()) {
+        pending->second.body=body;
+        pending->second.init_ids=initializations;
+        pending->second.lifetime_ids=lifetimes;
+      }
       for(auto variable:local_variables)variables.erase(variable);
       local_variables.clear();expressions.clear();declaration_initializers.clear();subobject_initializations.clear();
       lifetimes.clear();initializations.clear();initialization_values.clear();initialization_types.clear();initializing.clear();
@@ -1956,6 +2071,8 @@ struct State {
     for(auto ns=scope->namespaces;ns;ns=ns->next)if(!ns->is_namespace_alias)capture(ns->variant.assoc_scope);
   }
   void finish() {
+    if(!default_member_initializers.empty())
+      missing("default member initializers without finalized constructor cleanup");
     for(const auto &entry:allocations)
       if(!entry.second.complete)missing("new expression without selected allocation size/result");
     for(const auto &entry:deallocations)
@@ -2002,6 +2119,9 @@ inline void literal_storage_selected(a_constant_ptr constant,a_variable_ptr vari
 }
 inline void literal_function_complete(a_routine_ptr routine) {
   if(enabled())state().literal_function_complete(routine);
+}
+inline void default_member_initializers_complete(a_scope_ptr scope) {
+  if(enabled())state().default_member_initializers_complete(scope);
 }
 inline void allocation_size_begin(a_new_delete_supplement_ptr allocation) {
   if(enabled())state().allocation_size_begin(allocation);

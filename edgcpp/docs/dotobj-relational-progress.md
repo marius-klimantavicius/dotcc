@@ -700,6 +700,64 @@ with destructor). No full DuckDB object is published: 1.11 s / 274,432 KiB is st
 early-rejection cost. Next work must capture the selected per-constructor action
 without reconstructing its remapping or cleanup. Broad campaign remains stopped.
 
+## Copied class default initialization and rollback (2026-10-11)
+
+Verified `dotobj-relational-class-defaults-v2` passes native C++, source-hidden
+C#, and Linux NativeAOT. Schema remains 1018 / 43 tables. Source-selected class
+constructors with scalar constant arguments use the existing initialization rows.
+A narrow callback at the end of stock
+`copy_non_static_data_member_initializers_if_necessary` associates the exact copied
+initializer with that row, records its finalized flags/lifetime, and writes the
+stock constructor-scope destruction order once. The incomplete pre-copy root list
+is deferred. Only per-constructor identity maps survive to this callback and are
+then released; no expression cloning or cleanup-order reconstruction is performed.
+
+Tests cover normal defaults, explicit overrides, the same field default in two
+constructors, and failure after earlier members completed. Default arguments that
+refer to another member remain unsupported and reject before object publication.
+Constructor-dependent remapping, expression temporary/overlap cleanup and partial
+aggregate copying remain explicit boundaries; this is not general default-member
+initializer support. EDG's ctor-dependent flag alone is not sufficient to identify
+all nonconstant member expressions, so the narrow argument-shape check also applies.
+
+Review also found a constructor-exit cleanup bug: a noexcept(false) body-local
+destructor can throw after the generated completion flag is set. Member cleanup
+now also considers that cleanup region's existing unwinding flag, so already
+constructed members unwind in the supplied order. Both fallthrough and explicit
+return exits pass, including NativeAOT (`dotobj-relational-constructor-exit-v1` and
+the combined fixture). Successful exits still preserve member lifetime.
+main: 258,048 bytes / 160 nodes / 49 types
+provider: 245,760 bytes / 60 nodes / 57 types.
+Per-table storage and tested tool hashes are retained. Original lifetime/EH and
+scalar-default regressions pass native/C#/NativeAOT at `*-class-defaults-regression-v1`.
+
+Actual `hugeint-v30` gets past `ColumnIndex::type` and rejects the switch in
+`TryCastStringBool`, `cast_operators.hpp:483`. No complete DuckDB object is published;
+1.15 s / 293,888 KiB remains early-rejection cost. Next work
+is selected switch labels/control-flow using ordinary source nodes and edges.
+Broad campaign remains stopped.
+
+## Retention purpose audit (2026-10-11)
+
+The resolved program graph includes requested source browsing facts beyond current
+executable generation. `templates`, `template_instances`, `template_arguments`,
+`template_formals`, `template_type_parameters`, `template_value_references`, and
+`empty_parameter_packs` currently have no managed linker/generator readers. Their
+purpose is ordinary SQL navigation from declarations to instantiations/selected
+arguments, pack boundaries, formal defaults and dependent references; `browse.sql`
+and dependent-value fixtures exercise that purpose. They must not be described as
+necessary runtime inputs merely because they are retained.
+
+`nodes.domain` is consumed to exclude template recipes from execution/body loading;
+`types.is_dependent` prevents realization of unresolved types. `source_node_id` and
+`is_synthetic` preserve source-to-selected-action navigation (allocation/deletion/
+range initialization); C# execution follows explicit selected action edges instead.
+Node source locations feed diagnostics; declaration locations also serve browsing.
+This is a bounded purpose audit, not a claim that every retained scalar has been
+proven minimal. Each added relation must have a concrete linker/generator or
+requested navigation purpose. No metadata removal or new collection follows merely
+from the absence of a current managed reader.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

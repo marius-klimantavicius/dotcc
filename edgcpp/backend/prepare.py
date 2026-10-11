@@ -1546,6 +1546,12 @@ object_source_overlay(init_lower,
     '  dot_semantic::deallocation_arguments(delete_routine, arg_node);\n'
     '#endif\n'
     '  call_node = make_call_node(delete_routine, arg_node);')
+object_source_overlay(init_lower,
+    '}  /* copy_non_static_data_member_initializers_if_necessary */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::default_member_initializers_complete(scope);\n'
+    '#endif\n'
+    '}  /* copy_non_static_data_member_initializers_if_necessary */')
 object_source_overlay(lower,
     '    dot_object_source::observe_record_before_prelowering(class_type);',
     '    dot_semantic::virtual_source_class(class_type);\n'

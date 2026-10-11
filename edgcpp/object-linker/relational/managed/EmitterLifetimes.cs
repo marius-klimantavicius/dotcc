@@ -145,7 +145,11 @@ internal sealed partial class Emitter
                     ??throw new InvalidDataException("Cleanup destination missing for initialization "+action.Id);
                 Line(level,"try");Line(level,"{");
                 string condition=always?"true":Flag(action.Id);
-                if(action.ConstructorInit && unit.FunctionDetails[function!.Value.Id].Kind=="constructor")condition+=" && !__constructor_complete";
+                // A body-local destructor can fail after the source return or
+                // fallthrough marked completion. The existing filters mark
+                // this region as unwinding before later cleanup actions run.
+                if(action.ConstructorInit && unit.FunctionDetails[function!.Value.Id].Kind=="constructor")
+                    condition+=" && (!__constructor_complete || "+unwinding+")";
                 Line(level+1,"if ("+condition+")");Line(level+1,"{");
                 if(!always)Line(level+2,Flag(action.Id)+" = false;");
                 Line(level+2,emitter.SymbolName(unit,action.Destructor.Value)+"(&"+target+");");
