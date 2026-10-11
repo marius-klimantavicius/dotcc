@@ -139,6 +139,27 @@ argument identity; dependent recipes must remain metadata rather than C# analysi
 Reproduce with `object-linker/relational/tests/verify_enums.py --out <new-directory>
 --linker artifacts/relational-tool/dotobj-relational.dll --nativeaot`.
 
+## Verified bounded function-body loading
+
+`artifacts/review/dotobj-relational-body-loading-v1/` contains a generated five-unit,
+41-function acceptance case. Native C++, source-hidden C# and Linux x64 NativeAOT
+pass. The objects contain 1,531 function nodes; the reader peaks at 251 loaded
+function nodes / 502 body relation rows, with one active function body maximum
+and zero remaining after generation. The exception prepass and generation each
+load/release bodies, for 82 function loads. Generated C# streams to disk. The
+reader retains one body lease at a time rather than all bodies in all input units.
+
+This is a body-retention bound, not a whole-project memory bound or an RSS/GC
+measurement. Type/symbol/field/parameter and generated-name/exception catalogs,
+plus global expressions, still remain in memory. The acceptance case reports 131
+types, 202 symbols and no global nodes. Whole-project catalog loading remains work.
+
+Base, lifetime and enum slices pass native/C#/NativeAOT with the body-loading reader
+at `dotobj-relational-{bases,lifetime,enums}-body-regression-v1`. The preserved
+14-table objects also link and execute at `dotobj-relational-v3-body-compat/`.
+Reproduce the retention check with `tests/verify_body_loading.py` using the usual
+`--out`, `--linker` and optional `--nativeaot` arguments.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining
@@ -153,7 +174,8 @@ Do not infer C++ rules in the reader or add another frontend snapshot layer.
 
 Also incomplete: source template formals/dependent type variants, all declarations
 and macros, complex initialization, allocations/statics/TLS, ABI-sensitive C++
-features and full library/runtime closure. Current C# reader holds its small
-input units in memory; bounded whole-project loading is not yet implemented.
-The next real-project checkpoint must be a bounded DuckDB subset, not another
-blind full-corpus export or a compression project.
+features and full library/runtime closure. Function bodies now load one at a time,
+but type/symbol catalogs and global expressions are still materialized; bounded
+whole-project loading is not yet implemented. The next real-project checkpoint
+must be a bounded DuckDB subset, not another blind full-corpus export or a
+compression project.

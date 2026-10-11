@@ -20,29 +20,39 @@ internal sealed partial class Emitter
                 baseProjections.Add((unit,subobject.Id),name);
                 Line(1,"private static "+target+"* "+name+"("+owner+"* value) => ("+target+"*)((byte*)value + "+subobject.Offset+");");
             }
-            foreach(var conversion in unit.ClassConversions.Values)
-            {
-                Node node=unit.Nodes[conversion.Node];
-                if(!unit.BaseSubobjects.TryGetValue(conversion.Base,out var subobject))
-                    throw unit.Missing(node,"exporter defect: selected base subobject missing");
-                if(subobject.Virtual || conversion.Adjustment is null)
-                    throw unit.Missing(node,"virtual base conversion emission is not yet implemented");
-                long source,target;
-                switch(conversion.Direction)
-                {
-                    case "to-base":source=subobject.Owner;target=subobject.Type;break;
-                    case "to-derived":source=subobject.Type;target=subobject.Owner;break;
-                    default:throw unit.Missing(node,"unsupported recorded class conversion direction "+conversion.Direction);
-                }
-                string sourceType=Type(unit,source),targetType=Type(unit,target);
-                string name=names.Allocate("__as_"+targetType+"_from_"+sourceType,"class_conversion");
-                classConversions.Add((unit,node.Id),name);
-                string address="("+targetType+"*)((byte*)value + ("+conversion.Adjustment+"))";
-                // The helper evaluates a side-effectful source once, including
-                // when EDG requests null-preserving pointer adjustment.
-                Line(1,"private static "+targetType+"* "+name+"("+sourceType+"* value) => "+(conversion.PreservesNull?"value == null ? null : ":"")+address+";");
-            }
         }
+    }
+
+    private void WriteClassConversionHelpers(Unit unit,long? function)
+    {
+        foreach(var conversion in unit.ClassConversions.Values.Where(conversion=>unit.Nodes[conversion.Node].Function==function))
+        {
+            Node node=unit.Nodes[conversion.Node];
+            if(!unit.BaseSubobjects.TryGetValue(conversion.Base,out var subobject))
+                throw unit.Missing(node,"exporter defect: selected base subobject missing");
+            if(subobject.Virtual || conversion.Adjustment is null)
+                throw unit.Missing(node,"virtual base conversion emission is not yet implemented");
+            long source,target;
+            switch(conversion.Direction)
+            {
+                case "to-base":source=subobject.Owner;target=subobject.Type;break;
+                case "to-derived":source=subobject.Type;target=subobject.Owner;break;
+                default:throw unit.Missing(node,"unsupported recorded class conversion direction "+conversion.Direction);
+            }
+            string sourceType=Type(unit,source),targetType=Type(unit,target);
+            string name=names.Allocate("__as_"+targetType+"_from_"+sourceType,"class_conversion");
+            classConversions.Add((unit,node.Id),name);
+            string address="("+targetType+"*)((byte*)value + ("+conversion.Adjustment+"))";
+            // The helper evaluates a side-effectful source once, including
+            // when EDG requests null-preserving pointer adjustment.
+            Line(1,"private static "+targetType+"* "+name+"("+sourceType+"* value) => "+(conversion.PreservesNull?"value == null ? null : ":"")+address+";");
+        }
+    }
+
+    private void ReleaseClassConversionNames(Unit unit,long function)
+    {
+        foreach(var conversion in unit.ClassConversions.Values.Where(conversion=>unit.Nodes[conversion.Node].Function==function))
+            classConversions.Remove((unit,conversion.Node));
     }
 
     private sealed partial class FunctionWriter

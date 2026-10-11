@@ -32,6 +32,8 @@ internal static class Program
             using var program = new LinkedProgram(paths);
             new Emitter(program, namespaceName, className).Write(Path.GetFullPath(output), entry);
             Console.WriteLine($"Generated C# from {paths.Count} relational object(s).");
+            Console.WriteLine($"Body loading: peak rows {program.PeakFunctionBodyRows}; peak nodes {program.PeakFunctionBodyNodes}; functions loaded {program.FunctionBodyLoads}; active bodies {program.LoadedFunctionBodies}; peak bodies {program.PeakLoadedFunctionBodies}");
+            Console.WriteLine($"Retained catalogs: types {program.Units.Sum(unit=>unit.Types.Count)}; symbols {program.Units.Sum(unit=>unit.Symbols.Count)}; global nodes {program.Units.Sum(unit=>unit.GlobalExpressionNodes)}. Catalog loading is not yet bounded.");
             return 0;
         }
         catch (Exception error) when (error is ArgumentException or InvalidDataException or IOException or DllNotFoundException or KeyNotFoundException or InvalidOperationException)

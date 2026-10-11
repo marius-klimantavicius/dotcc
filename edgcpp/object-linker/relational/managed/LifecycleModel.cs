@@ -13,15 +13,15 @@ internal sealed record Throw(long Node,long? Type,long? Initialization,long? Des
 internal sealed partial class Unit
 {
     public Dictionary<long,FunctionDetails> FunctionDetails {get;}=[];
-    public Dictionary<long,Lifetime> Lifetimes {get;}=[];
-    public Dictionary<long,Initialization> Initializations {get;}=[];
-    public Dictionary<long,List<long>> InitializationArguments {get;}=[];
-    public Dictionary<long,List<long>> Destructions {get;}=[];
-    public Dictionary<long,List<ConstructorInitializer>> ConstructorInitializers {get;}=[];
-    public Dictionary<long,List<Handler>> Handlers {get;}=[];
-    public Dictionary<long,Throw> Throws {get;}=[];
+    public Dictionary<long,Lifetime> Lifetimes=>Body.Lifetimes;
+    public Dictionary<long,Initialization> Initializations=>Body.Initializations;
+    public Dictionary<long,List<long>> InitializationArguments=>Body.InitializationArguments;
+    public Dictionary<long,List<long>> Destructions=>Body.Destructions;
+    public Dictionary<long,List<ConstructorInitializer>> ConstructorInitializers=>Body.ConstructorInitializers;
+    public Dictionary<long,List<Handler>> Handlers=>Body.Handlers;
+    public Dictionary<long,Throw> Throws=>Body.Throws;
 
-    private void ReadLifecycles()
+    private void ReadFunctionDetails()
     {
         if(!HasLifecycles)
         {
@@ -30,19 +30,24 @@ internal sealed partial class Unit
         }
         using(var q=database.Prepare("SELECT symbol_id,kind,receiver_symbol_id,exception_policy FROM functions ORDER BY symbol_id"))
             while(q.Read())FunctionDetails.Add(q.Integer(0),new(q.Text(1),q.OptionalInteger(2),q.Text(3)));
-        using(var q=database.Prepare("SELECT id,function_id,kind,parent_id,owner_node_id,parent_initialization_id,sibling_ordinal FROM lifetimes ORDER BY id"))
+    }
+
+    private void ReadLifecycles(long? function)
+    {
+        if(!HasLifecycles)return;
+        using(var q=database.Prepare("SELECT id,function_id,kind,parent_id,owner_node_id,parent_initialization_id,sibling_ordinal FROM lifetimes WHERE "+FunctionFilter(function)+" ORDER BY id"))
             while(q.Read())Lifetimes.Add(q.Integer(0),new(q.Integer(0),q.OptionalInteger(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalInteger(5),q.OptionalInteger(6)));
-        using(var q=database.Prepare("SELECT id,function_id,kind,type_id,variable_symbol_id,constructor_symbol_id,destructor_symbol_id,lifetime_id,init_expr_lifetime_id,value_node_id,conditional,unordered,overlaps_inner,partial_aggregate,free_on_exception,follows_exec,temporary_lifetime,is_constructor_init,is_partially_initialized,static_storage,implied_source,sequenced_arguments,value_initialization,overlap_lifetime_id FROM initializations ORDER BY id"))
+        using(var q=database.Prepare("SELECT id,function_id,kind,type_id,variable_symbol_id,constructor_symbol_id,destructor_symbol_id,lifetime_id,init_expr_lifetime_id,value_node_id,conditional,unordered,overlaps_inner,partial_aggregate,free_on_exception,follows_exec,temporary_lifetime,is_constructor_init,is_partially_initialized,static_storage,implied_source,sequenced_arguments,value_initialization,overlap_lifetime_id FROM initializations WHERE "+FunctionFilter(function)+" ORDER BY id"))
             while(q.Read())Initializations.Add(q.Integer(0),new(q.Integer(0),q.OptionalInteger(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalInteger(5),q.OptionalInteger(6),q.OptionalInteger(7),q.OptionalInteger(8),q.OptionalInteger(9),q.Integer(10)!=0,q.Integer(11)!=0,q.Integer(12)!=0,q.Integer(13)!=0,q.Integer(14)!=0,q.Integer(15)!=0,q.Integer(16)!=0,q.Integer(17)!=0,q.Integer(18)!=0,q.Integer(19)!=0,q.Integer(20)!=0,q.Integer(21)!=0,q.Integer(22)!=0,q.OptionalInteger(23)));
-        using(var q=database.Prepare("SELECT initialization_id,node_id FROM initialization_arguments ORDER BY initialization_id,ordinal"))
+        using(var q=database.Prepare("SELECT a.initialization_id,a.node_id FROM initializations i JOIN initialization_arguments a ON a.initialization_id=i.id WHERE "+FunctionFilter(function,"i.")+" ORDER BY a.initialization_id,a.ordinal"))
             while(q.Read())Add(InitializationArguments,q.Integer(0),q.Integer(1));
-        using(var q=database.Prepare("SELECT lifetime_id,initialization_id FROM lifetime_destructions ORDER BY lifetime_id,ordinal"))
+        using(var q=database.Prepare("SELECT d.lifetime_id,d.initialization_id FROM lifetimes l JOIN lifetime_destructions d ON d.lifetime_id=l.id WHERE "+FunctionFilter(function,"l.")+" ORDER BY d.lifetime_id,d.ordinal"))
             while(q.Read())Add(Destructions,q.Integer(0),q.Integer(1));
-        using(var q=database.Prepare("SELECT function_id,kind,field_id,target_type_id,is_virtual,initialization_id,"+(HasBaseSubobjects?"base_subobject_id":"NULL")+" FROM constructor_initializers ORDER BY function_id,ordinal"))
+        using(var q=database.Prepare("SELECT function_id,kind,field_id,target_type_id,is_virtual,initialization_id,"+(HasBaseSubobjects?"base_subobject_id":"NULL")+" FROM constructor_initializers WHERE "+FunctionFilter(function)+" ORDER BY function_id,ordinal"))
             while(q.Read())Add(ConstructorInitializers,q.Integer(0),new ConstructorInitializer(q.Text(1),q.OptionalInteger(2),q.OptionalInteger(3),q.Integer(4)!=0,q.Integer(5),q.OptionalInteger(6)));
-        using(var q=database.Prepare("SELECT try_node_id,catch_node_id,parameter_symbol_id,parameter_type_id,initialization_id FROM try_handlers ORDER BY try_node_id,ordinal"))
+        using(var q=database.Prepare("SELECT h.try_node_id,h.catch_node_id,h.parameter_symbol_id,h.parameter_type_id,h.initialization_id FROM nodes n JOIN try_handlers h ON h.try_node_id=n.id WHERE "+FunctionFilter(function,"n.")+" ORDER BY h.try_node_id,h.ordinal"))
             while(q.Read())Add(Handlers,q.Integer(0),new Handler(q.Integer(1),q.OptionalInteger(2),q.OptionalInteger(3),q.OptionalInteger(4)));
-        using(var q=database.Prepare("SELECT node_id,type_id,initialization_id,destructor_symbol_id,is_rethrow FROM throws ORDER BY node_id"))
+        using(var q=database.Prepare("SELECT t.node_id,t.type_id,t.initialization_id,t.destructor_symbol_id,t.is_rethrow FROM nodes n JOIN throws t ON t.node_id=n.id WHERE "+FunctionFilter(function,"n.")+" ORDER BY t.node_id"))
             while(q.Read())Throws.Add(q.Integer(0),new(q.Integer(0),q.OptionalInteger(1),q.OptionalInteger(2),q.OptionalInteger(3),q.Integer(4)!=0));
     }
 }

@@ -2,7 +2,7 @@ namespace DotObj.Relational;
 
 internal sealed partial class Emitter
 {
-    private bool NeedsExceptionRuntime => program.Units.Any(unit=>unit.Throws.Count!=0 || unit.Handlers.Count!=0 || unit.Destructions.Count!=0 || unit.FunctionDetails.Values.Any(function=>function.ExceptionPolicy=="terminate"));
+    private bool NeedsExceptionRuntime {get;set;}
 
     private sealed partial class FunctionWriter
     {

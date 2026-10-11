@@ -85,4 +85,8 @@ variants, addressable globals/TLS storage and complex initialization remain work
 Unsupported forms must produce diagnostics, not an opaque fallback or silently
 incomplete object. The preserved legacy runtime/emitter contains algorithms to
 port for those requirements. Full-project bounded loading also remains to be
-implemented; the initial C# consumer materializes the small input units.
+implemented. The C# consumer now loads one selected function body at a time and
+streams generated source; the exception prepass uses the same bounded leases.
+`tests/verify_body_loading.py` checks this with five units and 41 functions. CLI
+metrics distinguish peak loaded body rows from catalogs and global expressions,
+which still remain resident. This is not yet a whole-project memory bound.

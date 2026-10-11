@@ -28,8 +28,8 @@ internal sealed partial class Unit : IDisposable
     public Dictionary<long, long> Functions { get; } = [];
     public Dictionary<long, List<long>> Parameters { get; } = [];
     public Dictionary<long, List<long>> TypeParameters { get; } = [];
-    public Dictionary<long, Node> Nodes { get; } = [];
-    public Dictionary<long, List<Edge>> Edges { get; } = [];
+    public Dictionary<long, Node> Nodes => Body.Nodes;
+    public Dictionary<long, List<Edge>> Edges => Body.Edges;
     public Dictionary<long, long> Initializers { get; } = [];
     public Dictionary<long, string> Files { get; } = [];
     private readonly Sqlite database;
@@ -63,14 +63,13 @@ internal sealed partial class Unit : IDisposable
                 while (q.Read()) Add(Parameters,q.Integer(0),q.Integer(1));
             using (var q = database.Prepare("SELECT type_id,parameter_type_id FROM type_parameters ORDER BY type_id,ordinal"))
                 while (q.Read()) Add(TypeParameters,q.Integer(0),q.Integer(1));
-            using (var q = database.Prepare("SELECT id,function_id,kind,type_id,execution_type_id,value_category,operator,constant_text,symbol_id,field_id,file_id,line,column,original_lvalue_type_id,"+(HasLifecycles?"initialization_id,lifetime_id,evaluation_order":"NULL,NULL,NULL")+","+(HasEnums?"enum_value_id":"NULL")+" FROM nodes ORDER BY id"))
-                while (q.Read()) Nodes.Add(q.Integer(0),new(q.Integer(0),q.OptionalInteger(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalText(5),q.OptionalText(6),q.OptionalText(7),q.OptionalInteger(8),q.OptionalInteger(9),q.OptionalInteger(10),q.OptionalInteger(11),q.OptionalInteger(12),q.OptionalInteger(13),q.OptionalInteger(14),q.OptionalInteger(15),q.OptionalText(16),q.OptionalInteger(17)));
-            using (var q = database.Prepare("SELECT parent_id,role,ordinal,child_id FROM edges ORDER BY parent_id,role,ordinal"))
-                while (q.Read()) Add(Edges,q.Integer(0),new Edge(q.Text(1),q.Integer(2),q.Integer(3)));
             using (var q = database.Prepare("SELECT symbol_id,initializer_node_id FROM global_initializers ORDER BY symbol_id"))
                 while (q.Read()) Initializers.Add(q.Integer(0),q.Integer(1));
             ReadInheritance();
-            ReadLifecycles();
+            ReadFunctionDetails();
+            ReadNodes(null);
+            ReadLifecycles(null);
+            ReadClassConversions(null);
         }
         catch { database.Dispose(); throw; }
     }
@@ -105,6 +104,11 @@ internal sealed class LinkedProgram : IDisposable
     public List<Unit> Units { get; } = [];
     public List<SymbolRef> Functions { get; } = [];
     public List<SymbolRef> Globals { get; } = [];
+    public long FunctionBodyLoads {get;private set;}
+    public long PeakFunctionBodyRows {get;private set;}
+    public long PeakFunctionBodyNodes {get;private set;}
+    public int LoadedFunctionBodies {get;private set;}
+    public int PeakLoadedFunctionBodies {get;private set;}
     private readonly Dictionary<string,SymbolRef> external = new(StringComparer.Ordinal);
     public LinkedProgram(IEnumerable<string> paths)
     {
@@ -140,6 +144,15 @@ internal sealed class LinkedProgram : IDisposable
     {
         var symbol=unit.Symbols[id];
         return symbol.Linkage=="external" && external.TryGetValue(symbol.LinkName,out var selected)?selected:new(unit,id);
+    }
+    public IDisposable LoadFunction(SymbolRef function)
+    {
+        var body=function.Unit.LoadFunction(function.Id);
+        ++FunctionBodyLoads;++LoadedFunctionBodies;
+        PeakLoadedFunctionBodies=Math.Max(PeakLoadedFunctionBodies,LoadedFunctionBodies);
+        PeakFunctionBodyRows=Math.Max(PeakFunctionBodyRows,Units.Sum(unit=>unit.LoadedFunctionRows));
+        PeakFunctionBodyNodes=Math.Max(PeakFunctionBodyNodes,Units.Sum(unit=>unit.LoadedFunctionNodes));
+        return new ReleaseScope(()=>{body.Dispose();--LoadedFunctionBodies;});
     }
     public void Dispose() { foreach(var unit in Units)unit.Dispose(); }
 }

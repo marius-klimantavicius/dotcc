@@ -17,42 +17,51 @@ internal sealed partial class Emitter
 
     private void PrepareExceptionDescriptors()
     {
-        foreach(var unit in program.Units)
+        foreach(var unit in program.Units)PrepareExceptionDescriptors(unit);
+        foreach(var function in program.Functions)
         {
-            foreach(var site in unit.Throws.Values.Where(site=>!site.Rethrow))
+            using var body=program.LoadFunction(function);
+            NeedsExceptionRuntime|=function.Unit.FunctionDetails[function.Id].ExceptionPolicy=="terminate";
+            PrepareExceptionDescriptors(function.Unit);
+        }
+    }
+
+    private void PrepareExceptionDescriptors(Unit unit)
+    {
+        NeedsExceptionRuntime|=unit.Throws.Count!=0 || unit.Handlers.Count!=0 || unit.Destructions.Count!=0;
+        foreach(var site in unit.Throws.Values.Where(site=>!site.Rethrow))
+        {
+            long id=site.Type??throw new InvalidDataException("Thrown type missing");
+            var (type,identity)=ExceptionType(unit,id);
+            if(type.Kind=="record" && unit.BaseSubobjects.Values.Any(subobject=>subobject.Owner==type.Id))
+                throw new InvalidDataException("Exception base matching emission is not yet implemented for "+type.Name);
+            if(!exceptionDescriptors.ContainsKey((unit,id)))
             {
-                long id=site.Type??throw new InvalidDataException("Thrown type missing");
-                var (type,identity)=ExceptionType(unit,id);
-                if(type.Kind=="record" && unit.BaseSubobjects.Values.Any(subobject=>subobject.Owner==type.Id))
-                    throw new InvalidDataException("Exception base matching emission is not yet implemented for "+type.Name);
-                if(!exceptionDescriptors.ContainsKey((unit,id)))
+                if(type.Size is null or <=0 || type.Alignment is null or <=0)throw new InvalidDataException("Thrown payload layout missing");
+                string name=names.Allocate("__exception_type_"+exceptionDescriptors.Count,"exception_type");
+                exceptionDescriptors.Add((unit,id),name);
+                Line(1,"private static readonly global::Edg.Runtime.CppExceptionType "+name+" = new("+StringLiteral(identity)+", "+StringLiteral(identity)+", "+StringLiteral(type.Kind)+", global::System.Array.Empty<int>(), "+type.Size+"U, "+type.Alignment+"U, "+(site.Destructor is null?"false":"true")+", global::System.Array.Empty<global::Edg.Runtime.CppExceptionBase>());");
+            }
+            if(site.Destructor is long destructor)
+            {
+                var selected=program.Resolve(unit,destructor);
+                if(!payloadDestructors.ContainsKey(selected))
                 {
-                    if(type.Size is null or <=0 || type.Alignment is null or <=0)throw new InvalidDataException("Thrown payload layout missing");
-                    string name=names.Allocate("__exception_type_"+exceptionDescriptors.Count,"exception_type");
-                    exceptionDescriptors.Add((unit,id),name);
-                    Line(1,"private static readonly global::Edg.Runtime.CppExceptionType "+name+" = new("+StringLiteral(identity)+", "+StringLiteral(identity)+", "+StringLiteral(type.Kind)+", global::System.Array.Empty<int>(), "+type.Size+"U, "+type.Alignment+"U, "+(site.Destructor is null?"false":"true")+", global::System.Array.Empty<global::Edg.Runtime.CppExceptionBase>());");
-                }
-                if(site.Destructor is long destructor)
-                {
-                    var selected=program.Resolve(unit,destructor);
-                    if(!payloadDestructors.ContainsKey(selected))
-                    {
-                        string name=names.Allocate("__destroy_payload_"+payloadDestructors.Count,"destroy_payload");
-                        payloadDestructors.Add(selected,name);
-                        long parameter=selected.Unit.Parameters.GetValueOrDefault(selected.Id,[]).Single();
-                        Line(1,"private static void "+name+"(void* payload) => "+SymbolName(unit,destructor)+"(("+Type(selected.Unit,selected.Unit.Symbols[parameter].Type)+")payload);");
-                    }
+                    string name=names.Allocate("__destroy_payload_"+payloadDestructors.Count,"destroy_payload");
+                    payloadDestructors.Add(selected,name);
+                    long parameter=selected.Unit.Parameters.GetValueOrDefault(selected.Id,[]).Single();
+                    Line(1,"private static void "+name+"(void* payload) => "+SymbolName(unit,destructor)+"(("+Type(selected.Unit,selected.Unit.Symbols[parameter].Type)+")payload);");
                 }
             }
-            foreach(var handler in unit.Handlers.Values.SelectMany(handlers=>handlers).Where(handler=>handler.Type is not null))
-            {
-                long id=handler.Type!.Value;
-                if(catchDescriptors.ContainsKey((unit,id)))continue;
-                var (type,identity)=ExceptionType(unit,id,reference:true);
-                string name=names.Allocate("__catch_type_"+catchDescriptors.Count,"catch_type");
-                catchDescriptors.Add((unit,id),name);
-                Line(1,"private static readonly global::Edg.Runtime.CppCatchType "+name+" = new("+StringLiteral(identity)+", "+StringLiteral(identity)+", "+StringLiteral(type.Kind)+", global::System.Array.Empty<int>());");
-            }
+        }
+        foreach(var handler in unit.Handlers.Values.SelectMany(handlers=>handlers).Where(handler=>handler.Type is not null))
+        {
+            long id=handler.Type!.Value;
+            if(catchDescriptors.ContainsKey((unit,id)))continue;
+            var (type,identity)=ExceptionType(unit,id,reference:true);
+            string name=names.Allocate("__catch_type_"+catchDescriptors.Count,"catch_type");
+            catchDescriptors.Add((unit,id),name);
+            Line(1,"private static readonly global::Edg.Runtime.CppCatchType "+name+" = new("+StringLiteral(identity)+", "+StringLiteral(identity)+", "+StringLiteral(type.Kind)+", global::System.Array.Empty<int>());");
         }
     }
 
