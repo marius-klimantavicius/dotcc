@@ -5,6 +5,8 @@ import shutil
 
 root = Path(__file__).resolve().parents[1]
 for source, target in [
+    (root / "backend/dot_gen_semantic.h", root / "upstream/src/dot_gen_semantic.h"),
+    (root / "backend/dot_gen_semantic_sqlite.h", root / "upstream/src/dot_gen_semantic_sqlite.h"),
     (root / "backend/dot_gen_object_field_state.h", root / "upstream/src/dot_gen_object_field_state.h"),
     (root / "backend/dot_gen_object_graph.h", root / "upstream/src/dot_gen_object_graph.h"),
     (root / "backend/dot_gen_object_graph_walk.h", root / "upstream/src/dot_gen_object_graph_walk.h"),
@@ -1455,3 +1457,18 @@ object_source_overlay(lower,
     '      dot_object_source::capture_variable(variable);\n'
     '#endif\n'
     '    check_assertion(!ignore_variable_in_back_end(variable));')
+
+# Relational semantic backend: direct program rows, no legacy raw graph capture.
+semantic_schema = (root / "object-linker/relational/schema.sql").read_text()
+semantic_schema_header = root / "upstream/src/dot_gen_semantic_schema.h"
+semantic_schema_text = ('#pragma once\nstatic const char dot_semantic_schema[] = R"DOTSCHEMA(' +
+                        semantic_schema + ')DOTSCHEMA";\n')
+if not semantic_schema_header.exists() or semantic_schema_header.read_text() != semantic_schema_text:
+    semantic_schema_header.write_text(semantic_schema_text)
+for filename in ("lower_il.c", "lower_c99.c"):
+    object_source_overlay(root / "upstream/src" / filename,
+        '#include "dot_gen_object_source.h"',
+        '#include "dot_gen_object_source.h"\n#include "dot_gen_semantic.h"')
+    object_source_overlay(root / "upstream/src" / filename,
+        '  dot_object_source::observe_scope(scope);',
+        '  dot_semantic::capture_scope(scope);\n  dot_object_source::observe_scope(scope);')

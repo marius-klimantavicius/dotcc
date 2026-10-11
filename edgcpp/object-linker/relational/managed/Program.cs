@@ -1,0 +1,43 @@
+namespace DotObj.Relational;
+
+internal static class Program
+{
+    public static int Main(string[] args)
+    {
+        try
+        {
+            if (args.Length == 0 || args[0] != "link")
+                throw new ArgumentException("Usage: dotobj-relational link --out DIRECTORY [--namespace NAME] [--class NAME] [--entry SYMBOL] OBJECT.dotobj...");
+            string? output = null, entry = null;
+            string namespaceName = "Translated", className = "Program";
+            var paths = new List<string>();
+            for (int index = 1; index < args.Length; index++)
+            {
+                string argument = args[index];
+                if (!argument.StartsWith("--", StringComparison.Ordinal)) { paths.Add(argument); continue; }
+                if (++index == args.Length) throw new ArgumentException("Missing value for " + argument);
+                string value = args[index];
+                switch (argument)
+                {
+                    case "--out": output = value; break;
+                    case "--namespace": namespaceName = value; break;
+                    case "--class": className = value; break;
+                    case "--entry": entry = value; break;
+                    default: throw new ArgumentException("Unknown option " + argument);
+                }
+            }
+            if (output is null || paths.Count == 0) throw new ArgumentException("An output directory and at least one object are required");
+            namespaceName = Names.Namespace(namespaceName);
+            className = Names.OptionIdentifier(className);
+            using var program = new LinkedProgram(paths);
+            new Emitter(program, namespaceName, className).Write(Path.GetFullPath(output), entry);
+            Console.WriteLine($"Generated C# from {paths.Count} relational object(s).");
+            return 0;
+        }
+        catch (Exception error) when (error is ArgumentException or InvalidDataException or IOException or DllNotFoundException or KeyNotFoundException or InvalidOperationException)
+        {
+            Console.Error.WriteLine("dotobj-relational: " + error.Message);
+            return 1;
+        }
+    }
+}

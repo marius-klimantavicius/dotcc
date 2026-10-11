@@ -21,6 +21,7 @@
 #include "types.h"
 #include "dot_gen_object_source.h"
 #include "dot_gen_object_macros.h"
+#include "dot_gen_semantic.h"
 USING_NAMESPACE_EDG
 #include "../util/decode.h"
 
@@ -1630,6 +1631,7 @@ void emit_library_export(a_routine_ptr r,a_variable_ptr params,const string &sig
 
 // EDG's custom-backend entry point intentionally has global namespace linkage.
 void back_end(void) {
+  if(dot_semantic::enabled()) {dot_semantic::emit();return;}
   if(getenv("EDG_DOT_OBJECT") && string(getenv("EDG_DOT_OBJECT"))=="1") {dot_object::emit();return;}
   primitive_data_properties.clear();
   unbound_partial=getenv("EDG_DOT_UNBOUND_EXTERNALS") && string(getenv("EDG_DOT_UNBOUND_EXTERNALS"))=="partial";

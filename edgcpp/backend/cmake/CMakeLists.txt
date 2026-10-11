@@ -8,3 +8,13 @@ target_compile_definitions(cpfe-dot PRIVATE EDG_DOT_BACKEND=1)
 target_include_directories(cpfe-dot PRIVATE ${PROJECT_SOURCE_DIR})
 add_dependencies(cpfe-dot error-info)
 add_softfloat_to_target(cpfe-dot)
+
+find_package(SQLite3 REQUIRED)
+if(UNIX AND NOT APPLE AND CMAKE_BUILD_TYPE STREQUAL "Release")
+  # The pinned EDG build links Release executables statically on these hosts.
+  find_library(DOT_SQLITE_STATIC_LIBRARY NAMES libsqlite3.a REQUIRED)
+  target_include_directories(cpfe-dot PRIVATE ${SQLite3_INCLUDE_DIRS})
+  target_link_libraries(cpfe-dot PRIVATE ${DOT_SQLITE_STATIC_LIBRARY} ${CMAKE_DL_LIBS})
+else()
+  target_link_libraries(cpfe-dot PRIVATE SQLite::SQLite3)
+endif()

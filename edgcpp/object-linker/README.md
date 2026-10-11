@@ -1,3 +1,7 @@
+> The current restart is [relational/README.md](relational/README.md): direct,
+> browsable SQLite program rows. The v66 broad EDG graph path described by later
+> legacy contract updates is preserved for comparison and is not the new direction.
+
 # Owned semantic `.dotobj` compilation and linking
 
 This implements the owned object path of the [new design](../docs/dotobj-format.md).

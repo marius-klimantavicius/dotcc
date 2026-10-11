@@ -64,3 +64,15 @@ Continue from the existing implementation and preserve all current work.
 The C# linker and generator must assume `.dotobj` is semantically correct.
 Only missing or mis-exported semantic data warrants an exporter-defect diagnostic;
 do not independently revalidate EDG's language decisions in managed code.
+
+## Relational program contract (latest user correction)
+
+`docs/dotobj-relational-restart.md` supersedes the raw graph capture/storage
+approach above. Export a compact source-shaped resolved program graph directly
+into ordinary browsable SQLite tables. No JSON semantic transport/payloads, no
+custom binary semantic field blocks, no parser bookkeeping or repeated graph
+observations. Preserve expression types/categories, selected references, type
+instantiations and explicit lifetime/exception facts. Reuse useful algorithms,
+but do not carry raw-graph placeholders or independent semantic verifiers into
+the new path. Old full-corpus work remains stopped. Root coordinates the new
+implementation and builds; verify an inspectable executable slice before scaling.
