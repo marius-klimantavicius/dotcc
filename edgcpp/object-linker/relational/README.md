@@ -136,7 +136,16 @@ literal linker identities; the consumer does not pool by contents or reinterpret
 character encodings. Explicit copy/zero actions exist only for initialization uses.
 The generator streams bytes into pinned aligned storage. `tests/verify_literals.py`
 covers embedded zeros, character widths, constexpr references, offsets, and arrays.
-General relocated variable/routine constant addresses remain unsupported.
+Complete persistent variable addresses at byte offset zero use ordinary selected
+cast/address-of/variable expressions. Other variable/routine relocations remain
+unsupported.
+
+Constant/zero static locals retain lexical declarations and EDG-selected persistent
+link identities. Scalar globals and statics use aligned pinned backing, allocated
+before recorded scalar/record/array constant initialization actions execute.
+`tests/verify_static_locals.py` covers shared inline and separate internal statics,
+stable addresses and forward cross-TU pointer initializers. Dynamic static guards,
+static destruction and TLS remain unsupported.
 
 Scalar default member initializers reuse ordinary selected constructor actions when
 EDG explicitly selects the field initializer. `tests/verify_default_members.py`

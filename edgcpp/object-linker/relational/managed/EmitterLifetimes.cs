@@ -261,6 +261,7 @@ internal sealed partial class Emitter
 
         private void WriteDeclaration(Node node,int indent)
         {
+            if(node.Kind=="static-declaration"){WriteStaticDeclaration(node,indent);return;}
             if(node.Symbol is long array && unit.IsArray(unit.Symbols[array].Type)){WriteArrayDeclaration(node,indent);return;}
             if(node.Initialization is not long id){Line(indent,Declaration(node)+";");return;}
             long variable=node.Symbol??unit.Initializations[id].Variable??throw unit.Missing(node,"initialization destination missing");

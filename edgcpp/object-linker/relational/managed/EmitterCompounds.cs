@@ -70,7 +70,7 @@ internal sealed partial class Emitter
 
         private bool HasCompoundAddress(Node node)
         {
-            if(node.Kind=="variable")return node.Symbol is long symbol && unit.Symbols[symbol].Parent is not null;
+            if(node.Kind=="variable")return node.Symbol is long symbol && (unit.Symbols[symbol].Parent is not null || emitter.HasPinnedScalarStorage(unit,symbol));
             if(node.Kind!="operation")return false;
             if(UsesCompoundHelper(node))return true;
             return node.Operator switch
@@ -83,7 +83,7 @@ internal sealed partial class Emitter
 
         private string CompoundExpression(Node node,Node left,Node right)
         {
-            if(left.Kind=="variable" && left.Symbol is long symbol && unit.Symbols[symbol].Parent is null)
+            if(left.Kind=="variable" && left.Symbol is long symbol && unit.Symbols[symbol].Parent is null && !emitter.HasPinnedScalarStorage(unit,symbol))
                 throw unit.Missing(node,"compound assignment to address-taken global requires pinned storage support");
             if(!HasCompoundAddress(left))throw unit.Missing(node,"compound assignment destination requires unsupported lvalue address emission");
             if(!emitter.compoundNames.TryGetValue((unit,node.Id),out string? name))

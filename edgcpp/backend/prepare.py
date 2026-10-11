@@ -1546,6 +1546,12 @@ object_source_overlay(init_lower,
     '  dot_semantic::deallocation_arguments(delete_routine, arg_node);\n'
     '#endif\n'
     '  call_node = make_call_node(delete_routine, arg_node);')
+object_source_overlay(lower,
+    '}  /* promote_static_variable_out_of_function */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::static_local_storage_selected(variable, routine);\n'
+    '#endif\n'
+    '}  /* promote_static_variable_out_of_function */')
 object_source_overlay(init_lower,
     '}  /* copy_non_static_data_member_initializers_if_necessary */',
     '#if defined(EDG_DOT_BACKEND)\n'

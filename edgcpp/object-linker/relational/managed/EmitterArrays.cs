@@ -77,15 +77,13 @@ internal sealed partial class Emitter
         string create=names.Allocate("__"+name+"_initialize","initialize_global_array");
         long bytes=checked(type.Size!.Value+type.Alignment!.Value-1);
         if(bytes>int.MaxValue)throw new InvalidDataException("Pinned global array size exceeds supported managed storage");
-        Line(1,"private static readonly byte[] "+storage+" = "+create+"();");
+        Line(1,"private static readonly byte[] "+storage+" = global::System.GC.AllocateArray<byte>("+bytes+", pinned: true);");
         Line(1,"public static "+Type(unit,type.Id)+"* "+name+" => ("+Type(unit,type.Id)+"*)"+AlignedArrayAddress(storage,type.Alignment!.Value)+";");
-        Line(1,"private static byte[] "+create+"()");Line(1,"{");
-        Line(2,"var storage = global::System.GC.AllocateArray<byte>("+bytes+", pinned: true);");
+        Line(1,"private static void "+create+"()");Line(1,"{");
         if(!unit.Initializers.TryGetValue(global.Id,out long initialization))
             throw new InvalidDataException("Exporter defect: global array initialization actions missing for "+global.Symbol.Name);
-        Line(2,Type(unit,type.Id)+"* destination = ("+Type(unit,type.Id)+"*)"+AlignedArrayAddress("storage",type.Alignment!.Value)+";");
-        new FunctionWriter(this,unit,null).WriteArrayInitializer(unit.Nodes[initialization],"destination",2);
-        Line(2,"return storage;");Line(1,"}");
+        new FunctionWriter(this,unit,null).WriteArrayInitializer(unit.Nodes[initialization],name,2);
+        Line(1,"}");globalInitializerNames.Add(create);
     }
 
     private sealed partial class FunctionWriter

@@ -4,7 +4,7 @@ internal sealed partial class Emitter
 {
     private bool HasPinnedRecordStorage(Unit unit,long symbol)
     {
-        if(unit.Symbols[symbol].Parent is not null)return false;
+        if(unit.Symbols[symbol].Kind is not ("global" or "static-local"))return false;
         var global=program.Resolve(unit,symbol);
         return global.Unit.Initializers.TryGetValue(global.Id,out long initializer) && global.Unit.RecordInitializers.ContainsKey(initializer);
     }
@@ -18,15 +18,12 @@ internal sealed partial class Emitter
         long bytes=checked(layout.Size.Value+layout.Alignment.Value-1);
         if(bytes>int.MaxValue)throw new InvalidDataException("Pinned global record size exceeds supported managed storage");
         string create=names.Allocate("__"+name+"_initialize","initialize_global_record");
-        string value=names.Allocate("__"+name+"_value","global_record_value");
         string storage=names.Allocate("__"+name+"_storage","global_record_storage");
-        Line(1,"private static readonly byte[] "+storage+" = "+create+"();");
+        Line(1,"private static readonly byte[] "+storage+" = global::System.GC.AllocateArray<byte>("+bytes+", pinned: true);");
         Line(1,"public static "+type+"* "+name+" => ("+type+"*)"+AlignedArrayAddress(storage,layout.Alignment.Value)+";");
-        Line(1,"private static byte[] "+create+"()");Line(1,"{");
-        Line(2,"var storage = global::System.GC.AllocateArray<byte>("+bytes+", pinned: true);");
-        Line(2,type+"* "+value+" = ("+type+"*)"+AlignedArrayAddress("storage",layout.Alignment.Value)+";");
-        new FunctionWriter(this,global.Unit,null).WriteRecordInitializer(global.Unit.Nodes[initializer],"(*"+value+")",2);
-        Line(2,"return storage;");Line(1,"}");
+        Line(1,"private static void "+create+"()");Line(1,"{");
+        new FunctionWriter(this,global.Unit,null).WriteRecordInitializer(global.Unit.Nodes[initializer],"(*"+name+")",2);
+        Line(1,"}");globalInitializerNames.Add(create);
     }
 
     private sealed partial class FunctionWriter

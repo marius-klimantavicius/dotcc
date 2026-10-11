@@ -797,6 +797,41 @@ storage/link identity and stable address emission for this bounded scalar case.
 Dynamic static initialization/guard protocols are not implied by that slice.
 Broad campaign remains stopped.
 
+## Constant static locals and stable scalar storage (2026-10-11)
+
+Verified `dotobj-relational-static-locals-v3` passes native C++, source-hidden
+C#, and Linux NativeAOT. Schema remains 1018 / 43 ordinary tables. Source
+`static-local` symbols retain lexical function ownership and a `static-declaration`
+node; their selected zero/constant initializer belongs to persistent storage in
+`global_initializers`. A narrow callback after stock static promotion records
+EDG's selected linkage and weak identity. SQL and execution verify shared inline
+statics across TUs, separate internal statics and separate same-spelling scopes.
+
+Scalar globals/statics now use aligned pinned backing. All scalar/record/array
+backing allocations complete before the generated static constructor applies
+their recorded constant initialization actions. Cross-TU scalar, record and array
+pointer initializers target a scalar defined later in link input order; this
+exercises the allocation-order requirement without selecting C++ initialization
+rules in the consumer. The bounded variable-address constant projection uses
+ordinary cast/address-of/variable nodes and source-to-synthetic links. Only
+complete non-TLS persistent pointer targets at byte offset zero are supported;
+subobjects, one-past addresses and other relocations reject explicitly.
+
+Tests also cover pointer-to-integer stable addresses, scalar double/bool/UInt128/
+enum mutation and constant record/array statics. Dynamic guarded initialization,
+static destruction and TLS remain unsupported; the dynamic negative fixture
+does not publish an object. Provider: 262,144 bytes / 155 nodes / 57 types;
+main: 331,776 bytes / 594 nodes / 71 types. Storage summaries and tested tool
+hashes are retained. Arrays, record initializers and dynamic aggregates pass
+native/C#/NativeAOT at their `*-static-regression-v1` artifacts.
+
+Actual `hugeint-v35` passes the former `__seed` static-address blocker and rejects
+EDG pointer difference (`eok_pdiff`, kind 53) in libc++ `__to_chars_itoa`,
+`__charconv/to_chars_integral.h:84:24`. No complete DuckDB object is published;
+retained performance remains early-rejection cost. Next work is the selected
+typed pointer-difference expression, using existing nodes/edges. Broad campaign
+remains stopped.
+
 ## Retention purpose audit (2026-10-11)
 
 The resolved program graph includes requested source browsing facts beyond current

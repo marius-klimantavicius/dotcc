@@ -94,10 +94,12 @@ internal sealed partial class Emitter
             {
                 WriteGlobalRecord(global,recordInitializer);continue;
             }
+            if(HasPinnedScalarStorage(global.Unit,global.Id)){WriteGlobalScalar(global);continue;}
             string value=global.Unit.Initializers.TryGetValue(global.Id,out var initializer)
                 ? new FunctionWriter(this,global.Unit,null).Expression(global.Unit.Nodes[initializer]):"default";
             Line(1,"public static "+Type(global.Unit,global.Symbol.Type)+" "+SymbolName(global.Unit,global.Id)+" = "+value+";");
         }
+        WriteGlobalInitializers();
         foreach(var function in program.Functions)
         {
             using var body=program.LoadFunction(function);
@@ -213,7 +215,7 @@ internal sealed partial class Emitter
             if(emitter.nullptrValueName is string helper)allocator.Reserve(helper);
             if(function is SymbolRef selected)
             {
-                foreach(var local in unit.Symbols.Values.Where(value=>value.Parent==selected.Id))
+                foreach(var local in unit.Symbols.Values.Where(value=>value.Parent==selected.Id && value.Kind!="static-local"))
                     locals.Add(local.Id,allocator.Allocate(local.Name,"local_"+local.Id));
                 foreach(var local in unit.Symbols.Values.Where(value=>value.Parent==selected.Id && value.Kind=="local" && unit.IsArray(value.Type)))
                     localArrayOwners.Add(local.Id,allocator.Allocate("__"+Name(local.Id)+"_storage","local_array_storage"));
@@ -267,7 +269,7 @@ internal sealed partial class Emitter
                 case "delete":return Expression(Child(node,"execution"));
                 case "variable":
                     long variable=node.Symbol??throw unit.Missing(node,"selected symbol missing");
-                    return unit.IsArray(unit.Symbols[variable].Type) || emitter.HasPinnedRecordStorage(unit,variable)?"(*"+Name(variable)+")":Name(variable);
+                    return unit.IsArray(unit.Symbols[variable].Type) || emitter.HasPinnedRecordStorage(unit,variable) || emitter.HasPinnedScalarStorage(unit,variable)?"(*"+Name(variable)+")":Name(variable);
                 case "function":return FunctionAddress(node);
                 case "initialize":return unit.Children(node,"value").FirstOrDefault() is Node value?Expression(value):"default";
                 case "operation":return Operation(node);
@@ -323,7 +325,7 @@ internal sealed partial class Emitter
                 case "address-of":case "reference-to":
                     if(N(0).Kind=="function")return FunctionAddress(N(0));
                     if(N(0).Type is long addressedType && unit.IsArray(addressedType))return ArrayAddress(N(0));
-                    if(N(0).Kind=="variable" && N(0).Symbol is long pinned && emitter.HasPinnedRecordStorage(unit,pinned))return Name(pinned);
+                    if(N(0).Kind=="variable" && N(0).Symbol is long pinned && (emitter.HasPinnedRecordStorage(unit,pinned) || emitter.HasPinnedScalarStorage(unit,pinned)))return Name(pinned);
                     if(N(0).Kind=="variable" && N(0).Symbol is long addressed && unit.Symbols[addressed].Parent is null)
                         throw unit.Missing(node,"address-taken global requires pinned storage support");
                     return "(&"+E(0)+")";
@@ -356,6 +358,7 @@ internal sealed partial class Emitter
         }
         private string Declaration(Node node)
         {
+            if(node.Kind=="static-declaration"){StaticDeclarationSymbol(node);return "";}
             long id=node.Symbol??throw unit.Missing(node,"declaration symbol missing");
             return Type(unit.Symbols[id].Type)+" "+Name(id)+" = "+Expression(node);
         }
@@ -387,7 +390,7 @@ internal sealed partial class Emitter
                 if(declarations.Length!=1)throw unit.Missing(node,"for initializer with multiple declarations not yet supported");
                 return Declaration(declarations[0]);
             }
-            if(node.Kind=="initialize")return Declaration(node);
+            if(node.Kind is "initialize" or "static-declaration")return Declaration(node);
             if(node.Kind=="expr-stmt")return StatementExpression(Child(node,"value"));
             if(node.Kind=="empty")return "";
             return StatementExpression(node);
@@ -416,6 +419,7 @@ internal sealed partial class Emitter
                     break;
                 case "decl":foreach(var declaration in unit.Children(node,"declaration"))WriteDeclaration(declaration,indent);break;
                 case "initialize":WriteDeclaration(node,indent);break;
+                case "static-declaration":WriteStaticDeclaration(node,indent);break;
                 case "if":WriteIf(node,indent);break;
                 case "while":WriteWhile(node,indent);break;
                 case "do-while":

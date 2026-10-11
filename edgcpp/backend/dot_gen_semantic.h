@@ -59,6 +59,8 @@ struct State {
   std::vector<std::pair<Id,std::string>> vptr_phases;
   std::map<Id,unsigned> vptr_ordinals;
   std::map<a_variable_ptr,Id> variables;
+  std::map<a_variable_ptr,Id> static_local_symbols;
+  std::set<a_variable_ptr> promoted_static_locals;
   std::set<a_variable_ptr> incomplete_globals;
   std::map<a_field_ptr,Id> fields;
   std::map<a_base_class_ptr,Id> base_subobjects;
@@ -962,7 +964,31 @@ struct State {
     Id id=emit_literal(c->type,c->variant.string.value,c->variant.string.length);
     ids[c]=id;return id;
   }
-  void attach_literal(Id id,a_constant_ptr c,bool initializer=false) {
+  void attach_variable_address(Id id,a_constant_ptr c,const a_source_position &p) {
+    auto v=c->variant.address.variant.variable;
+    // EDG records a selected base entity, a byte offset and the converted
+    // pointer type. This slice handles only a complete persistent object at
+    // offset zero; subobject/routine/member-pointer relocations remain separate.
+    if(c->variant.address.offset || c->variant.address.subobject_path ||
+       c->variant.address.one_past_the_end || c->variant.address.is_object_reflection)
+      missing("variable address constant requires complete object at offset zero");
+    if(!is_pointer_type(c->type) || !var_has_static_or_thread_storage_duration(v) ||
+       is_effective_thread_local(v))
+      missing("variable address constant requires non-TLS persistent pointer target");
+    if(v->source_corresp.is_local_to_function && !static_local_symbols.count(v))
+      missing("variable address constant missing selected local static storage");
+    Id symbol=variable(v);
+    Id target=node("variable",p,type_id(v->type),"lvalue",nullptr,"",symbol,0,0,true);
+    Id address=node("operation",p,type_id(make_pointer_type(v->type)),"prvalue","address-of","",0,0,0,true);
+    db.update("nodes","id",target,{{"source_node_id",id}});
+    db.update("nodes","id",address,{{"source_node_id",id}});
+    edge(address,"operand",0,target);
+    // set_variable_address_constant uses the same stock pointer type. Any
+    // conversion retained on the final constant is explicit on this root.
+    db.update("nodes","id",id,{{"kind","operation"},{"operator","cast"}});
+    edge(id,"operand",0,address);
+  }
+  void attach_literal(Id id,a_constant_ptr c,const a_source_position &p,bool initializer=false) {
     if(c->kind==ck_string) {
       db.update("nodes","id",id,{{"literal_object_id",literal_object(c)}});
       // check_string_constant_type retains the destination extent and marks
@@ -975,8 +1001,11 @@ struct State {
       Id object=0;
       if(c->variant.address.kind==abk_constant)
         object=literal_object(c->variant.address.variant.constant);
-      else if(c->variant.address.kind==abk_variable)
-        object=selected_literal_object(c->variant.address.variant.variable);
+      else if(c->variant.address.kind==abk_variable) {
+        auto v=c->variant.address.variant.variable;
+        if(!selected_literals.count(v)){attach_variable_address(id,c,p);return;}
+        object=selected_literal_object(v);
+      }
       else missing("nonliteral constant address",int(c->variant.address.kind));
       db.update("nodes","id",id,{{"literal_object_id",object},{"literal_byte_offset",c->variant.address.offset}});
     }
@@ -999,7 +1028,7 @@ struct State {
     if(c->kind==ck_string || c->kind==ck_address) {
       Id id=node(c->kind==ck_string?"string-literal":"address-constant",p,type_id(c->type),"prvalue");
       if(template_recipe)recipe_constants[c]=id;
-      attach_literal(id,c,true);return id;
+      attach_literal(id,c,p,true);return id;
     }
     Id id=node("constant",p,type_id(c->type),"prvalue",nullptr,literal_text(c,"initializer",&p));
     if(template_recipe)recipe_constants[c]=id;
@@ -1021,11 +1050,71 @@ struct State {
     // this dummy for an empty expansion; it never denotes runtime storage.
     return v->compiler_generated && type_is(v->type,tk_template_param);
   }
+  a_local_static_variable_init_ptr static_local_initializer(a_scope_ptr scope,a_variable_ptr v) {
+    for(auto init=scope->local_static_variable_inits;init;init=init->next)
+      if(init->variable==v)return init;
+    return nullptr;
+  }
+  bool supported_static_local(a_scope_ptr scope,a_variable_ptr v) {
+    if(v->storage_class!=sc_static || is_effective_thread_local(v))return false;
+    if(v->init_kind==initk_none || v->init_kind==initk_zero || v->init_kind==initk_static)return true;
+    if(v->init_kind!=initk_function_local)return false;
+    auto init=static_local_initializer(scope,v);
+    return init && init->init_kind==initk_static && !init->lifetime;
+  }
   bool has_static_storage(a_scope_ptr scope) {
-    if(scope->local_static_variable_inits)return true;
+    for(auto init=scope->local_static_variable_inits;init;init=init->next)
+      if(init->init_kind!=initk_static || init->lifetime)return true;
     for(auto v=scope->variables;v;v=v->next)
-      if(!empty_pack_parameter(v))return true;
+      if(!empty_pack_parameter(v) && !supported_static_local(scope,v))return true;
     return false;
+  }
+  void static_local(a_scope_ptr scope,a_variable_ptr v) {
+    if(static_local_symbols.count(v))return;
+    if(!supported_static_local(scope,v))missing("local static requires constant/zero storage without guard or destruction");
+    if(variables.count(v))missing("local static captured without lexical storage owner");
+    Id id=next_symbol++;static_local_symbols[v]=id;variables[v]=id;
+    auto pos=location(v->source_corresp.decl_position);
+    db.insert("symbols",{{"id",id},{"kind","static-local"},{"name",spelling(v->source_corresp)},
+      {"link_name",v->source_corresp.name?v->source_corresp.name:""},{"linkage",linkage(v->source_corresp)},
+      {"type_id",type_id(v->type)},{"parent_symbol_id",function},{"is_definition",true},
+      {"definition_kind","strong"},{"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
+    auto init_kind=v->init_kind;
+    a_constant_ptr value=nullptr;
+    if(init_kind==initk_function_local) {
+      auto selected=static_local_initializer(scope,v);
+      init_kind=selected->init_kind;value=selected->initializer.constant;
+    } else if(init_kind==initk_static)value=v->initializer.constant;
+    Id previous=function;bool previous_recipe=template_recipe;function=0;template_recipe=false;
+    Id action;
+    if(init_kind==initk_static)action=constant(value,v->source_corresp.decl_position);
+    else {
+      auto type=skip_typerefs(v->type);
+#if IA64_ABI
+      if(contains_ptr_to_data_member(type))missing("local static pointer-member zero model");
+#endif
+      if(type->kind==tk_array) {
+        action=node("array-initializer",v->source_corresp.decl_position,type_id(v->type),"prvalue");
+        db.insert("array_initializers",{{"node_id",action},{"zero_initialize",true}});
+      } else if(is_scalar_type(type)) {
+        action=node("constant",v->source_corresp.decl_position,type_id(v->type),"prvalue",nullptr,"0");
+      } else missing("local static zero storage type",int(type->kind));
+    }
+    db.insert("global_initializers",{{"symbol_id",id},{"initializer_node_id",action}});
+    function=previous;template_recipe=previous_recipe;
+  }
+  void static_local_storage_selected(a_variable_ptr v,a_routine_ptr owner) {
+    auto found=static_local_symbols.find(v);if(found==static_local_symbols.end())return;
+    if(!routines.count(owner))missing("promoted local static without source function");
+    if(v->initialization_rewritten_as_assignment)
+      missing("local static constant rewritten as guarded initialization");
+    promoted_static_locals.insert(v);
+    // promote_static_variable_out_of_function selects external linkage only
+    // for the relaxed ref/def model of a multiple-copy routine (and adds an
+    // IA64 COMDAT). No consumer name-based pooling or guard is inferred.
+    db.update("symbols","id",found->second,{{"link_name",v->source_corresp.name?v->source_corresp.name:""},
+      {"linkage",linkage(v->source_corresp)},{"is_definition",v->storage_class!=sc_extern},
+      {"definition_kind",v->source_corresp.name_linkage==nlk_external?"weak":"strong"}});
   }
   Id lifetime_id(an_object_lifetime_ptr value) {
     if(!value)return 0;
@@ -1182,7 +1271,7 @@ struct State {
     }
     return id;
   }
-  const char *operation(an_expr_operator_kind kind) {
+  const char *operation(an_expr_operator_kind kind,an_expr_node_ptr source=nullptr) {
     switch(kind) {
 #define DOT_SEMANTIC_OP(edg,text) case edg:return text
       DOT_SEMANTIC_OP(eok_address_of,"address-of");DOT_SEMANTIC_OP(eok_reference_to,"reference-to");
@@ -1217,7 +1306,17 @@ struct State {
       DOT_SEMANTIC_OP(eok_va_start,"va-start");DOT_SEMANTIC_OP(eok_va_start_single_operand,"va-start-single");
       DOT_SEMANTIC_OP(eok_va_arg,"va-arg");DOT_SEMANTIC_OP(eok_va_copy,"va-copy");DOT_SEMANTIC_OP(eok_va_end,"va-end");
 #undef DOT_SEMANTIC_OP
-      default:missing("expression operation",int(kind));
+      default: {
+        std::string detail="expression operation";
+        if(source) {
+          auto pos=location(source->position);std::string path,owner;
+          for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+          for(const auto &routine:routines)if(routine.second==function){owner=spelling(routine.first->source_corresp);break;}
+          detail+=" [function="+owner+", file="+path+", line="+std::to_string(pos.line)+
+            ", column="+std::to_string(pos.column)+"]";
+        }
+        missing(detail,int(kind));
+      }
     }
   }
   void class_conversion(Id id,an_expr_node_ptr e) {
@@ -1613,7 +1712,7 @@ struct State {
       case enk_operation: {
         if(e->variant.operation.kind==eok_subscript && e->variant.operation.pointer_operand_is_second)
           missing("reversed subscript operand projection");
-        kind="operation";op=operation(e->variant.operation.kind);
+        kind="operation";op=operation(e->variant.operation.kind,e);
         auto first=e->variant.operation.operands;
         if(first && first->kind==enk_routine && (e->variant.operation.kind==eok_call ||
           e->variant.operation.kind==eok_dot_member_call || e->variant.operation.kind==eok_points_to_member_call))
@@ -1640,7 +1739,7 @@ struct State {
        e->kind!=enk_constant && e->kind!=enk_field && !e->result_is_not_used)
       db.update("nodes","id",id,{{"value_normalization","nullptr-zero"}});
     if(e->kind==enk_constant) {
-      if(node_constant(e)->kind==ck_string || node_constant(e)->kind==ck_address)attach_literal(id,node_constant(e));
+      if(node_constant(e)->kind==ck_string || node_constant(e)->kind==ck_address)attach_literal(id,node_constant(e),e->position);
       if(node_constant(e)->kind==ck_template_param)dependent_value(id,node_constant(e));
       if(node_constant(e)->kind==ck_aggregate)aggregate_initializer(id,node_constant(e),e->position);
       attach_enum_value(id,node_constant(e));
@@ -1703,6 +1802,9 @@ struct State {
     return initialization_values[init];
   }
   Id declaration(a_variable_ptr v,const a_source_position &pos,bool value=true) {
+    auto persistent=static_local_symbols.find(v);
+    if(persistent!=static_local_symbols.end())
+      return node("static-declaration",pos,type_id(v->type),nullptr,nullptr,"",persistent->second);
     Id symbol=variable(v,true),id=node("initialize",pos,type_id(v->type),nullptr,nullptr,"",symbol);
     if(value) {
       if(v->init_kind==initk_dynamic) {
@@ -1892,6 +1994,8 @@ struct State {
   void local_bindings(a_scope_ptr scope) {
     if(!scope)return;
     if(has_static_storage(scope))missing("local static storage projection");
+    for(auto v=scope->variables;v;v=v->next)
+      if(!empty_pack_parameter(v))static_local(scope,v);
     for(auto v=scope->nonstatic_variables;v;v=v->next)variable(v,true);
     for(auto child=scope->scopes;child;child=child->next)local_bindings(child);
   }
@@ -2175,6 +2279,15 @@ struct State {
       if(!entry.second.complete)missing("new expression without selected allocation size/result");
     for(const auto &entry:deallocations)
       if(!entry.second.execution)missing("delete expression without selected deallocator call");
+    for(const auto &entry:static_local_symbols) {
+      auto v=entry.first;
+      if(v->initialization_rewritten_as_assignment)
+        missing("local static constant rewritten as guarded initialization");
+      if(v->promoted_local_static && !promoted_static_locals.count(v))
+        missing("promoted local static without selected link identity");
+      db.update("symbols","id",entry.second,{{"link_name",v->source_corresp.name?v->source_corresp.name:""},
+        {"linkage",linkage(v->source_corresp)}});
+    }
     for(const auto &entry:selected_literals)if(entry.second.symbol) {
       auto v=entry.first;
       db.update("symbols","id",entry.second.symbol,{{"link_name",v->source_corresp.name?v->source_corresp.name:""},
@@ -2220,6 +2333,9 @@ inline void literal_function_complete(a_routine_ptr routine) {
 }
 inline void default_member_initializers_complete(a_scope_ptr scope) {
   if(enabled())state().default_member_initializers_complete(scope);
+}
+inline void static_local_storage_selected(a_variable_ptr variable,a_routine_ptr routine) {
+  if(enabled())state().static_local_storage_selected(variable,routine);
 }
 inline void allocation_size_begin(a_new_delete_supplement_ptr allocation) {
   if(enabled())state().allocation_size_begin(allocation);
