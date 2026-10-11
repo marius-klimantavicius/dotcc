@@ -177,6 +177,9 @@ internal sealed partial class Emitter
         private string ExpandedExpression(Node node,int indent)
         {
             if(expandedValues.TryGetValue(node.Id,out string? found))return NormalizeValue(node,found);
+            // The source operand is navigation; the selected execution graph
+            // owns its evaluation, including any converted call arguments.
+            if(node.Kind=="delete")return NormalizeValue(node,ExpandedExpression(Child(node,"execution"),indent));
             // These helpers preserve the recorded operand order inside the
             // expression, including conditional and short-circuit branches.
             if(UsesCompoundHelper(node))return Expression(node);

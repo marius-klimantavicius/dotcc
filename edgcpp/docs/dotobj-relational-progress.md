@@ -647,6 +647,31 @@ Next delete work can use ordinary selected call nodes/edges, preserving stock
 argument conversions and null behavior without another table. Broad campaign
 remains stopped.
 
+## Selected plain deallocation calls (2026-10-11)
+
+Verified `dotobj-relational-deallocations-v1` passes native C++, source-hidden generated
+C#, and Linux NativeAOT. The schema remains 1018 / 43 tables: source `delete` nodes
+retain their pointer operand for navigation and an `execution` edge to the exact
+selected routine call. Stock `modify_delete_call_args` supplies pointer casts and
+any sized/aligned scalar arguments before the call is captured. Synthesized call
+nodes point back to their source node; no generic lowered body snapshot is retained.
+
+The supported stock plain branch delegates null handling to the selected routine.
+C# executes that supplied call graph without adding a null guard; the source pointer
+is evaluated once through its execution argument. The fixture supplies a null-safe
+arena deallocator and checks side effects, skipped branches and cross-TU release.
+Class/destructor/cookie/destroying-delete paths remain explicit unsupported cases.
+No external runtime binding is claimed. Provider: 253,952 bytes / 85 nodes / 23 types;
+main: 290,816 bytes / 353 nodes / 27 types. Per-table storage summaries and tested
+tool hashes are retained in the artifact directory.
+Allocation regression also passes native/C#/NativeAOT at
+`dotobj-relational-allocations-deallocations-regression-v1`.
+
+Actual `hugeint-v28` gets past `delete[] ptr` and rejects statement kind 14
+(range-based for). No complete DuckDB object is published: 0.96 s / 250,624 KiB
+is early-rejection cost. Next work is the selected range iteration graph and its
+source/lifetime relationships. Broad campaign remains stopped.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

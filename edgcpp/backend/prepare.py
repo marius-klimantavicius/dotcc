@@ -1529,6 +1529,23 @@ object_source_overlay(init_lower,
     '    dot_semantic::allocation_simple_result(ndsp);\n'
     '#endif\n'
     '    change_to_cast(expr, call_node, expr->type);')
+object_source_overlay(init_lower,
+    '    call_node = make_delete_call_node(delete_routine, ndsp->type, ptr_node);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::deallocation_begin(ndsp);\n'
+    '#endif\n'
+    '    call_node = make_delete_call_node(delete_routine, ndsp->type, ptr_node);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::deallocation_end(ndsp);\n'
+    '#endif')
+object_source_overlay(init_lower,
+    '  arg_node = modify_delete_call_args(delete_routine, delete_type, arg_node);\n'
+    '  call_node = make_call_node(delete_routine, arg_node);',
+    '  arg_node = modify_delete_call_args(delete_routine, delete_type, arg_node);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::deallocation_arguments(delete_routine, arg_node);\n'
+    '#endif\n'
+    '  call_node = make_call_node(delete_routine, arg_node);')
 object_source_overlay(lower,
     '    dot_object_source::observe_record_before_prelowering(class_type);',
     '    dot_semantic::virtual_source_class(class_type);\n'

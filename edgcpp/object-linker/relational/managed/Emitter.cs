@@ -264,6 +264,7 @@ internal sealed partial class Emitter
                 case "address-constant":return LiteralAddress(node);
                 case "string-literal":return "(*"+ArrayAddress(node)+")";
                 case "new":return AllocationExpression(node);
+                case "delete":return Expression(Child(node,"execution"));
                 case "variable":
                     long variable=node.Symbol??throw unit.Missing(node,"selected symbol missing");
                     return unit.IsArray(unit.Symbols[variable].Type) || emitter.HasPinnedRecordStorage(unit,variable)?"(*"+Name(variable)+")":Name(variable);
@@ -363,6 +364,7 @@ internal sealed partial class Emitter
         private string StatementExpression(Node node,string? rendered=null)
         {
             string value=rendered??Expression(node);
+            if(node.Kind=="delete")return value;
             if(UsesCompoundHelper(node))return "_ = "+value;
             if(node.Operator is "va-start" or "va-start-single" or "va-copy" or "va-end")return value;
             if(node.Kind=="operation" && node.Operator is "assign" or "add-assign" or "subtract-assign" or "multiply-assign" or "divide-assign" or "remainder-assign" or "pre-increment" or "post-increment" or "pre-decrement" or "post-decrement")

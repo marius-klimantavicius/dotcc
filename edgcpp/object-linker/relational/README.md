@@ -149,6 +149,12 @@ allocator providers and checks once-only effects, invalid/zero/fixed counts,
 conditional execution and exceptions. This is not a standard runtime binder.
 Initialization, placement/aligned allocation, cookies and rollback remain unsupported.
 
+Plain scalar-pointee deletion retains the selected call and stock converted arguments
+as ordinary expression nodes with a source `delete` node. `tests/verify_deallocations.py`
+checks once-only pointer effects, null arguments, skipped branches, and cross-TU calls.
+The consumer executes the supplied graph; it does not invent a null guard or choose
+a deallocator. Class destructors, destroying delete, and array cookies remain unsupported.
+
 Signed/unsigned 128-bit integers retain exact EDG decimal scalar values and layout,
 using System.Int128/UInt128 in generated C#. No separate wide-value payload is used.
 `tests/verify_wide_integers.py` covers literals, templates, arithmetic, arrays,

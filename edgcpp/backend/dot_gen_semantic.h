@@ -89,6 +89,15 @@ struct State {
   };
   std::map<a_new_delete_supplement_ptr,Allocation> allocations;
   std::vector<a_new_delete_supplement_ptr> allocation_stack;
+  struct Deallocation {
+    Id node=0,owner=0,pointer_value=0,execution=0;
+    a_memory_region_number region=NULL_region_number;
+    an_expr_node_ptr source_pointer=nullptr;
+    a_source_position position{};
+    std::map<an_expr_node_ptr,Id> projected;
+  };
+  std::map<a_new_delete_supplement_ptr,Deallocation> deallocations;
+  std::vector<a_new_delete_supplement_ptr> deallocation_stack;
   std::map<a_template_ptr,Id> templates;
   std::map<std::string,Id> files;
   std::map<an_expr_node_ptr,Id> expressions;
@@ -893,6 +902,12 @@ struct State {
         entry=allocations.erase(entry);
       } else ++entry;
     }
+    for(auto entry=deallocations.begin();entry!=deallocations.end();) {
+      if(entry->second.region==mem_region_for_routine(r)) {
+        if(!entry->second.execution)missing("delete expression without selected deallocator call");
+        entry=deallocations.erase(entry);
+      } else ++entry;
+    }
   }
   Id selected_literal_object(a_variable_ptr v) {
     auto found=selected_literals.find(v);
@@ -1386,6 +1401,69 @@ struct State {
       {"result_byte_offset",0}});
     selected.complete=true;
   }
+  bool plain_deallocation(a_new_delete_supplement_ptr value) {
+    return !value->is_new && value->routine && value->arg && !value->arg->next &&
+      !value->dynamic_init && !value->freeing_of_storage_on_exception &&
+      is_scalar_type(skip_typerefs(value->type));
+  }
+  void source_deallocation(Id id,an_expr_node_ptr e) {
+    if(template_recipe || !function)missing("deallocation outside executable function");
+    auto value=e->variant.new_delete;
+    auto &selected=deallocations[value];
+    selected.node=id;selected.owner=function;selected.region=literal_source_region;
+    selected.position=e->position;selected.source_pointer=value->arg;
+    selected.pointer_value=expression(value->arg);
+    edge(id,"operand",0,selected.pointer_value);
+  }
+  Id deallocation_expression(Deallocation &selected,an_expr_node_ptr e) {
+    if(!e)missing("selected deallocation argument");
+    if(e==selected.source_pointer)return selected.pointer_value;
+    auto found=selected.projected.find(e);if(found!=selected.projected.end())return found->second;
+    Id id=0;
+    if(e->kind==enk_constant && node_constant(e)->kind==ck_integer) {
+      id=constant(node_constant(e),selected.position);
+    } else if(e->kind==enk_operation && (e->variant.operation.kind==eok_cast ||
+              e->variant.operation.kind==eok_lvalue_cast || e->variant.operation.kind==eok_lvalue_adjust)) {
+      id=node("operation",selected.position,type_id(e->type),"prvalue",operation(e->variant.operation.kind));
+      unsigned ordinal=0;
+      for(auto child=e->variant.operation.operands;child;child=child->next)
+        edge(id,"operand",ordinal++,deallocation_expression(selected,child));
+    } else missing("selected deallocation argument expression",int(e->kind));
+    selected.projected[e]=id;
+    db.update("nodes","id",id,{{"source_node_id",selected.node},{"is_synthetic",true}});
+    return id;
+  }
+  void deallocation_begin(a_new_delete_supplement_ptr value) {
+    deallocation_stack.push_back(deallocations.count(value)?value:nullptr);
+  }
+  void deallocation_arguments(a_routine_ptr callee,an_expr_node_ptr arguments) {
+    if(deallocation_stack.empty() || !deallocation_stack.back())return;
+    auto &selected=deallocations.at(deallocation_stack.back());
+    if(selected.execution)missing("multiple selected deallocator calls");
+    Id previous=function;bool previous_recipe=template_recipe;
+    function=selected.owner;template_recipe=false;
+    Id symbol=routine(callee);
+    Id call=node("operation",selected.position,type_id(skip_typerefs(callee->type)->variant.routine.return_type),
+      "prvalue","call","",symbol,0,0,true);
+    Id target=node("function",selected.position,routine_source_types.at(callee),"prvalue",nullptr,"",symbol,0,0,true);
+    db.update("nodes","id",call,{{"source_node_id",selected.node}});
+    db.update("nodes","id",target,{{"source_node_id",selected.node}});
+    edge(call,"operand",0,target);
+    unsigned ordinal=1;
+    for(auto argument=arguments;argument;argument=argument->next)
+      edge(call,"operand",ordinal++,deallocation_expression(selected,argument));
+    // lower_delete's plain branch calls this exact routine without adding a
+    // null guard. modify_delete_call_args has already supplied the selected
+    // pointer cast and any sized/aligned scalar arguments.
+    edge(selected.node,"execution",0,call);selected.execution=call;
+    function=previous;template_recipe=previous_recipe;
+  }
+  void deallocation_end(a_new_delete_supplement_ptr value) {
+    if(deallocation_stack.empty())missing("deallocation hook nesting");
+    if(deallocation_stack.back() && (deallocation_stack.back()!=value || !deallocations.at(value).execution))
+      missing("delete expression without selected deallocator call");
+    deallocation_stack.pop_back();
+  }
   Id expression(an_expr_node_ptr e) {
     if(!e)return 0;
     auto &expression_ids=template_recipe?recipe_expressions:expressions;
@@ -1411,6 +1489,9 @@ struct State {
       case enk_new_delete: {
         auto allocation=e->variant.new_delete;
         if(plain_allocation(allocation)){kind="new";symbol=routine(allocation->routine);break;}
+        if(plain_deallocation(allocation)) {
+          kind="delete";op=allocation->array_delete?"array":"scalar";symbol=routine(allocation->routine);break;
+        }
         auto allocated_type=allocation->type?skip_typerefs(allocation->type):nullptr;
         auto element_type=allocated_type && allocated_type->kind==tk_array?
           skip_typerefs(allocated_type->variant.array.element_type):nullptr;
@@ -1457,7 +1538,10 @@ struct State {
     Id id=node(kind,e->position,type_id(e->type),e->is_lvalue?"lvalue":e->is_xvalue?"xvalue":"prvalue",
       op,text,symbol,field,type_id(e->orig_lvalue_type),e->compiler_generated);
     expression_ids[e]=id;
-    if(e->kind==enk_new_delete)source_allocation(id,e);
+    if(e->kind==enk_new_delete) {
+      if(e->variant.new_delete->is_new)source_allocation(id,e);
+      else source_deallocation(id,e);
+    }
     if(e->kind==enk_variable && selected_literals.count(node_variable(e))) {
       db.update("nodes","id",id,{{"literal_object_id",selected_literal_object(node_variable(e))}});
     }
@@ -1832,6 +1916,8 @@ struct State {
   void finish() {
     for(const auto &entry:allocations)
       if(!entry.second.complete)missing("new expression without selected allocation size/result");
+    for(const auto &entry:deallocations)
+      if(!entry.second.execution)missing("delete expression without selected deallocator call");
     for(const auto &entry:selected_literals)if(entry.second.symbol) {
       auto v=entry.first;
       db.update("symbols","id",entry.second.symbol,{{"link_name",v->source_corresp.name?v->source_corresp.name:""},
@@ -1889,6 +1975,15 @@ inline void allocation_size_end(a_new_delete_supplement_ptr allocation,an_expr_n
 }
 inline void allocation_simple_result(a_new_delete_supplement_ptr allocation) {
   if(enabled())state().allocation_simple_result(allocation);
+}
+inline void deallocation_begin(a_new_delete_supplement_ptr allocation) {
+  if(enabled())state().deallocation_begin(allocation);
+}
+inline void deallocation_arguments(a_routine_ptr callee,an_expr_node_ptr arguments) {
+  if(enabled())state().deallocation_arguments(callee,arguments);
+}
+inline void deallocation_end(a_new_delete_supplement_ptr allocation) {
+  if(enabled())state().deallocation_end(allocation);
 }
 inline void virtual_source_class(a_type_ptr type) {
   if(enabled())state().virtual_source_class(type);
