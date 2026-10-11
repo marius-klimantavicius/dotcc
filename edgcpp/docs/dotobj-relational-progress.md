@@ -1018,6 +1018,32 @@ investigated. No complete DuckDB object or actual DuckDB C# generation has yet
 been published. Probe timings are early-rejection costs; shared-result destination
 schema review remains pending.
 
+## Selected folded record default member constants (2026-10-11)
+
+Verified `dotobj-relational-default-record-constants-v2` consumes EDG-selected
+immutable record aggregate constants as default member initialization actions.
+Existing constructor field destinations and recorded record field/base/zero
+actions supply every write. No constructor choice, constexpr evaluation,
+initializer cloning or new capture hook is introduced. The bounded selection
+requires nondependent constant aggregates without dynamic components or
+ownership/cleanup/remapping facts. Source action flags follow the existing
+direct scalar-constant convention. Schema remains 1018 / 43 tables.
+
+The C++17 two-TU fixture checks folded member values, nested record/empty-base
+actions, recorded zero initialization, repeated constructors, explicit overrides
+and instance independence. Native C++, source-hidden C# and Linux NativeAOT pass.
+Existing scalar default-member and class-default constructor-cleanup regressions
+also pass all three execution paths. Native build passes; existing managed action
+consumption needs no patch. Provider: 266,240 bytes / 242 nodes / 60 types;
+main: 253,952 bytes / 93 nodes / 60 types. Hashes and per-table storage are retained.
+
+Actual `exception-v6` advances the vector default field and rejects C++17
+`if constexpr` in libc++ `__hash_table:1700:13`. EDG's explicit selected branch,
+source condition navigation and initializer scope are being inspected. No
+complete DuckDB object or actual DuckDB C# output has been published; recorded
+probe timings remain early-rejection costs. Shared-result destination schema
+review remains pending independently.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

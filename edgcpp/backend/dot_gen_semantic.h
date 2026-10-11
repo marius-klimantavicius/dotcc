@@ -2264,6 +2264,22 @@ struct State {
     for(auto v=scope->nonstatic_variables;v;v=v->next)variable(v,true);
     for(auto child=scope->scopes;child;child=child->next)local_bindings(child);
   }
+  bool bounded_default_constant(a_field_ptr member) {
+    auto init=member->initializer;
+    if(member->init_is_ctor_dependent || !init || init->kind!=dik_constant ||
+       init->variant.constant.non_constant ||
+       init->variable || init->destructor || init->lifetime || init->init_expr_lifetime ||
+       init->lifetime_of_overlapping_temps || init->master_entry ||
+       init->class_rvalue_initialized_through_master_entry || init->unordered ||
+       init->overlaps_temps_in_inner_lifetime ||
+       init->destruction_is_for_partially_constructed_aggregate ||
+       init->is_freeing_of_storage_on_exception)return false;
+    auto value=init->variant.constant.ptr;
+    return value && ((is_scalar_type(member->type) &&
+      (value->kind==ck_integer || value->kind==ck_float)) ||
+      (is_immediate_class_type(skip_typerefs(member->type)) && value->kind==ck_aggregate &&
+       !value->variant.aggregate.has_dynamic_init_component));
+  }
   bool bounded_default_constructor(a_field_ptr member) {
     auto init=member->initializer;
     if(member->init_is_ctor_dependent || !is_immediate_class_type(skip_typerefs(member->type)) ||
@@ -2374,13 +2390,9 @@ struct State {
         // Exact lower_init::lower_ctor_init selection. Scalar constants need
         // no remapping. Class construction additionally waits for the stock
         // per-constructor copy to supply its cleanup lifetime and ordering.
-        if(!member->init_is_ctor_dependent && selected && selected->kind==dik_constant &&
-           is_scalar_type(target) && !selected->variant.constant.non_constant &&
-           (selected->variant.constant.ptr->kind==ck_integer || selected->variant.constant.ptr->kind==ck_float) &&
-           !selected->variable && !selected->destructor && !selected->lifetime &&
-           !selected->init_expr_lifetime && !selected->lifetime_of_overlapping_temps &&
-           !selected->master_entry && !selected->class_rvalue_initialized_through_master_entry)
-          init=selected;
+        // EDG-selected immutable record aggregates use the same direct
+        // constant action; their field/base/zero writes are already recorded.
+        if(bounded_default_constant(member))init=selected;
         else if(bounded_default_constructor(member))init=selected;
       }
       if(!init) {
@@ -2390,7 +2402,7 @@ struct State {
         auto pos=location(member?member->source_corresp.decl_position:
           scope->variant.routine.ptr->source_corresp.decl_position);
         std::string path;for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
-        std::string detail="default field initializer selection requires scalar constant or constructor with scalar constant arguments [constructor="+
+        std::string detail="default field initializer selection requires scalar/record constant or constructor with scalar constant arguments [constructor="+
           spelling(scope->variant.routine.ptr->source_corresp)+", owner="+
           (owner?spelling(owner->source_corresp):"")+", field="+
           (member?spelling(member->source_corresp):"")+", type="+
