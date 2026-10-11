@@ -1751,3 +1751,56 @@ Logs are under `artifacts/test-only-vfs-*.log` and
 `translated-*.log` names. Tests were run serially on Linux x64. This change does
 not modify dotcc itself; repository-wide compiler suites and other operating
 systems were not rerun.
+
+
+## 2026-10-11 — SQLite 3.54.0 release upgrade
+
+Updated the official amalgamation and matching source/test archives from 3.53.4
+to SQLite 3.54.0, released 2026-10-09. Both downloaded archive SHA3-256 values
+matched SQLite's official download page. SHA-256 pins and the source/header/
+adapted-input identities are recorded in `config/sources.json` and
+`config/host-source.json`; provenance is summarized in `source.md`.
+The existing single APPDEF guard adaptation still applies exactly once.
+No dotcc compiler or HostVfs implementation changes were required.
+
+Legacy corpus helpers and the upstream JSONB adapter now resolve their source
+directories from the manifest. The product layout probe explicitly prepares its
+own current host input because the campaign runner stages translation input in
+its per-run directory. This prevents reuse of an earlier release's C source.
+ManagedConsumer reports the generated `SQLITE_VERSION` instead of a hard-coded
+version string. Native baselines were regenerated and reviewed: core changes
+only its version string; layout changes are in Parse, Vdbe and WalIterator.
+
+Commands:
+
+```sh
+sqlite/scripts/translate.sh --hashes strict
+sqlite/scripts/test.sh --tools reuse --hashes strict --form all --mode all \
+  --suite source-preparation --suite consumer --suite layout --suite threading \
+  --suite host-vfs --suite native-layout --suite corpora --suite image-exchange
+```
+
+Both campaign receipts report `passed` with empty warning lists:
+
+- Translation: `artifacts/campaign/20261011-170621-5cc8647f/receipt.json`.
+- Verification: `artifacts/campaign/20261011-170815-5a21c376/receipt.json`.
+
+Raw output is `generated/TranslatedSqlite.Raw/`; postprocessed output is
+`generated/TranslatedSqlite/`. Both libraries build. ManagedConsumer passes
+against both forms under JIT and NativeAOT, including SQLite 3.54.0 SQL workloads,
+JSONB, FTS5, optional math/percentile/metadata features, preupdate hooks, WAL,
+callbacks, GC and cleanup. Source-preparation tests pass. Product and corpus
+layouts pass JIT/AOT, including 41 product offsetof contracts, 67 actual field
+offsets and 8 pointer-array checks. Threading and HostVfs pass JIT/AOT, including
+cross-process native interoperability, WAL recovery/checkpoints and mmap.
+
+All seven translated corpora match freshly built native 3.54.0 runs: core, API,
+VFS, virtual tables, allocation, upstream JSONB and FTS5. API and VFS also pass
+NativeAOT. This includes 128 injected allocation failures, 37 upstream JSONB
+cases and 34 FTS5 assertions. Native-to-managed, managed-to-native and
+managed-to-managed image exchange pass.
+
+Verification was serial on Linux x64. This does not claim the full upstream Tcl
+suite, other operating systems, or the experimental translated upstream OS VFS
+implementations were requalified. Compiler-wide suites were not rerun because
+there were no compiler changes.
