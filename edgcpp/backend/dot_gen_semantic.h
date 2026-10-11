@@ -101,6 +101,7 @@ struct State {
   std::map<a_template_ptr,Id> templates;
   std::map<std::string,Id> files;
   std::map<an_expr_node_ptr,Id> expressions;
+  std::map<a_statement_ptr,Id> switch_case_nodes;
   std::map<an_expr_node_ptr,Id> recipe_expressions;
   std::map<a_constant_ptr,Id> recipe_constants;
   bool template_recipe=false;
@@ -1643,6 +1644,11 @@ struct State {
   }
   Id statement(a_statement_ptr s,a_scope_ptr root_scope=nullptr,bool condition_initializer=false) {
     if(!s)return 0;
+    if(s->kind==stmk_switch_case) {
+      auto found=switch_case_nodes.find(s);
+      if(found==switch_case_nodes.end())missing("switch case without selected enclosing switch");
+      return found->second;
+    }
     if(s->kind==stmk_init && declaration_initializers.count(s->variant.dynamic_init))return 0;
     const char *kind=nullptr;
     switch(s->kind) {
@@ -1651,6 +1657,7 @@ struct State {
       case stmk_while:kind="while";break;case stmk_end_test_while:kind="do-while";break;
       case stmk_for:kind="for";break;case stmk_decl:kind="decl";break;case stmk_init:kind="decl";break;
       case stmk_range_based_for:kind="range-for";break;
+      case stmk_switch:kind="switch";break;
       case stmk_try_block:kind="try";break;
       case stmk_goto:
         if(s->variant.label.ptr->continue_label)kind="continue";
@@ -1670,6 +1677,24 @@ struct State {
     }
     Id id=node(kind,s->position);
     switch(s->kind) {
+      case stmk_switch: {
+        // Reserve the selected case statements before traversing the body:
+        // the dispatch list and the lexical body reference the same source
+        // nodes. EDG's numeric sorted list is not part of the program graph.
+        unsigned ordinal=0;
+        for(auto entry=s->variant.switch_stmt.extra_info->cases;entry;entry=entry->next) {
+          Id selected=node(entry->case_value?"case":"default",entry->stmt->position);
+          switch_case_nodes[entry->stmt]=selected;
+          edge(id,"case",ordinal++,selected);
+          if(entry->case_value)edge(selected,"value",0,constant(entry->case_value,entry->position));
+#if GNU_EXTENSIONS_ALLOWED
+          if(entry->range_end)edge(selected,"range-end",0,constant(entry->range_end,entry->position));
+#endif
+        }
+        edge(id,"condition",0,expression(s->expr));
+        edge(id,"body",0,statement(s->variant.switch_stmt.body_statement));
+        break;
+      }
       case stmk_block: {
         auto scope=root_scope?root_scope:s->variant.block.extra_info->assoc_scope;
         if(scope && has_static_storage(scope))missing("block static storage projection");
@@ -1982,7 +2007,7 @@ struct State {
       auto previous_literal_region=literal_source_region;
       literal_source_region=mem_region_for_routine(r);
       return_type=skip_typerefs(r->type)->variant.routine.return_type;
-      function=routine(r);expressions.clear();
+      function=routine(r);expressions.clear();switch_case_nodes.clear();
       db.update("symbols","id",function,{{"is_definition",true}});
       unsigned empty_ordinal=0;
       for(auto v=scope->variables;v;v=v->next)if(empty_pack_parameter(v)) {
@@ -2036,7 +2061,7 @@ struct State {
         pending->second.lifetime_ids=lifetimes;
       }
       for(auto variable:local_variables)variables.erase(variable);
-      local_variables.clear();expressions.clear();declaration_initializers.clear();subobject_initializations.clear();
+      local_variables.clear();expressions.clear();switch_case_nodes.clear();declaration_initializers.clear();subobject_initializations.clear();
       lifetimes.clear();initializations.clear();initialization_values.clear();initialization_types.clear();initializing.clear();
       function=previous;return_type=previous_return_type;literal_source_region=previous_literal_region;return;
     }

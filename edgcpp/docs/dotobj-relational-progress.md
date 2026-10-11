@@ -737,6 +737,33 @@ Actual `hugeint-v30` gets past `ColumnIndex::type` and rejects the switch in
 is selected switch labels/control-flow using ordinary source nodes and edges.
 Broad campaign remains stopped.
 
+## Selected switch labels and source fallthrough (2026-10-11)
+
+Verified `dotobj-relational-switches-v2` passes native C++, source-hidden generated
+C#, and Linux NativeAOT. Schema remains 1018 / 43 tables. Ordinary switch nodes
+reference the selected condition/body and exact ordered case/default node identities;
+those same labels occur in the original lexical body. EDG supplies typed case values
+and optional range endpoints; no sorted compiler lists or fallthrough observations
+are collected. C# dispatches to source-order labels, preserving lexical fallthrough,
+with separate loop/switch break targets and existing nearest-loop continue handling.
+
+Tests cover grouped cases, a default between other labels, fallthrough, an unmatched
+selector with no default, nested loops/switches, full-width unsigned constants,
+C++17 condition/init lifetimes, scoped local cleanup, return/throw and constructor
+failure. Nested label entry into a distinct scope rejects explicitly at generation
+(the negative fixture exports successfully). GNU case ranges and 128-bit dispatch
+also remain explicit generation boundaries. Range-loop regression passes
+native/C#/NativeAOT at `dotobj-relational-ranges-switches-regression-v1`.
+provider: 282,624 bytes / 279 nodes / 24 types
+main: 258,048 bytes / 159 nodes / 24 types.
+Storage summaries and tested tool hashes are retained.
+
+Actual `hugeint-v31` passes the switch and reaches dynamic initialization kind 6
+(nonconstant aggregate). No complete DuckDB object is published; retained timing is
+1.11 s / 297,728 KiB early-rejection cost. Next step is a source-located diagnostic, then the exact
+selected aggregate components using existing destination/initialization rows.
+Broad campaign remains stopped.
+
 ## Retention purpose audit (2026-10-11)
 
 The resolved program graph includes requested source browsing facts beyond current

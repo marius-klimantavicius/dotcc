@@ -195,11 +195,11 @@ internal sealed partial class Emitter
         private readonly Unit unit;
         private readonly SymbolRef? function;
         private readonly Dictionary<long,string> locals=[];
+        private readonly Names allocator=new();
         private readonly string? returnDestination;
         public FunctionWriter(Emitter emitter,Unit unit,SymbolRef? function)
         {
             this.emitter=emitter;this.unit=unit;this.function=function;
-            var allocator=new Names();
             allocator.Reserve("_");
             foreach(string value in emitter.symbolNames.Values)allocator.Reserve(value);
             foreach(string value in emitter.typeNames.Values)allocator.Reserve(value);
@@ -423,7 +423,9 @@ internal sealed partial class Emitter
                     Line(indent,"while ("+Truth(Child(node,"condition"))+");");break;
                 case "for":WriteFor(node,indent);break;
                 case "range-for":WriteRangeFor(node,indent);break;
-                case "break":Line(indent,"break;");break;
+                case "switch":WriteSwitch(node,indent);break;
+                case "case":case "default":WriteCase(node,indent);break;
+                case "break":WriteBreak(node,indent);break;
                 case "continue":WriteContinue(node,indent);break;
                 case "try":WriteTry(node,indent);break;
                 case "throw":case "rethrow":WriteThrow(node,indent);break;

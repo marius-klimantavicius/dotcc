@@ -153,6 +153,12 @@ allocator providers and checks once-only effects, invalid/zero/fixed counts,
 conditional execution and exceptions. This is not a standard runtime binder.
 Initialization, placement/aligned allocation, cookies and rollback remain unsupported.
 
+Switches retain exact selected case/default identities, values and source body order.
+`tests/verify_switches.py` covers lexical fallthrough, nested exits and condition/local
+cleanup. The reader emits the supplied control flow; it does not infer reachability.
+Nested label-entry scopes, GNU case ranges and 128-bit dispatch currently diagnose
+unsupported generation.
+
 Range-based loops retain EDG-selected initialization, comparison and increment
 expressions with explicit outer/iterator lifetimes. `tests/verify_ranges.py` covers
 arrays, custom cursor/sentinel calls, C++20 initializers, nested control flow and

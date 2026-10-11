@@ -25,8 +25,9 @@ internal sealed partial class Emitter
         private void WriteLoopBody(Node loop,int indent)
         {
             continueTargets.Push(new(null));
+            breakTargets.Push(null);
             try {Body(Child(loop,"body"),indent);}
-            finally {continueTargets.Pop();}
+            finally {breakTargets.Pop();continueTargets.Pop();}
         }
 
         private void WriteConditionInitialization(Node condition,int indent)
@@ -124,8 +125,9 @@ internal sealed partial class Emitter
                 Line(level,"if (!"+Truth(Child(condition,"value"))+") break;");
                 var target=new ContinueTarget(step is null?null:"__continue_step_"+statement.Id);
                 continueTargets.Push(target);
+                breakTargets.Push(null);
                 try {Body(Child(statement,"body"),level);}
-                finally {continueTargets.Pop();}
+                finally {breakTargets.Pop();continueTargets.Pop();}
                 if(target.Used)Line(level,target.Label+":;");
                 if(step is not null)Line(level,StatementExpression(step,ExpandedExpression(step,level))+";");
             });
