@@ -652,3 +652,27 @@ and root closure succeed, 5,304 resolved function definitions/486 globals select
 1,283 functions/31 globals. Retained managed heap 25,814,840 bytes, peak RSS 130,640
 KiB, 1.12 seconds. All 558,203 type and 162,241 symbol catalog rows remain available.
 This proves linking/selection, not combined C# source or execution.
+
+## Recorded scope emission and heap export review
+
+Exact-scope milestone `4146557a6` passes native/source-hidden C#/NativeAOT:
+void throw cleanup and record-lvalue address preservation, including constructor,
+receiver, call and exception-payload failure, plus identity after destruction.
+Director caught an intermediate discard branch accidentally placed in Truth();
+it was moved to StatementExpression before the accepted snapshot/proof.
+No new C++ lifetime computation was added.
+
+Director reviewed ordinary heap export against lower_init: saved size and
+allocator evaluation precede protected construction; exact selected delete
+argument suffix and null guard are recorded; no C EH table is exported.
+Heap-constructions-v1 native/SQL proof covers argument/constructor/allocator
+failure, saved allocation result despite a changed allocator-source variable,
+sized/unsized deletion and nullable allocation. This accepts export only;
+managed heap construction is not yet proved. StringUtil-v14 passes the new
+allocation to repeated dynamic aggregate evaluation; RandomEngine-v2 passes
+trivial record delete to eok_points_to_static, also blocking ComplexJSON.
+
+The fmt aggregate kind7 is EDG bitwise copy of a lambda capture. A NULL source
+is legitimate because stock lowering supplies the exact selected capture as
+implied source. Export that relationship when needed; never infer a source
+from the variable spelling or reconstruct lambda capture semantics.

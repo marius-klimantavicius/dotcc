@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../../managed/Sqlite.cs" Link="Sqlite.cs" />
+    <Compile Include="../../managed/SqliteCatalog.cs" Link="SqliteCatalog.cs" />
     <Compile Include="../../managed/Names.cs" Link="Names.cs" />
     <EmbeddedResource Include="../../runtime/CppExceptions.cs" LogicalName="DotObj.Relational.CppExceptions.cs" />
     <EmbeddedResource Include="../../../backend/runtime/Float80.cs" LogicalName="DotObj.Relational.Float80.cs" />

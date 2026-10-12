@@ -163,26 +163,22 @@ internal sealed partial class LinkedProgram : IDisposable
     public long PeakFunctionBodyNodes {get;private set;}
     public int LoadedFunctionBodies {get;private set;}
     public int PeakLoadedFunctionBodies {get;private set;}
-    private readonly Dictionary<string,SymbolRef> external = new(StringComparer.Ordinal);
-    public LinkedProgram(IEnumerable<string> paths)
+    private LinkDefinitionIndex? definitions;
+    public string? LinkIndexPath=>definitions?.Path;
+    public int CachedDefinitionWinners=>definitions?.CachedRows??0;
+    public LinkedProgram(IEnumerable<string> paths):this(paths,null) {}
+    public LinkedProgram(IEnumerable<string> paths,string? linkIndexPath)
     {
         try
         {
             foreach(string path in paths) Units.Add(new Unit(path));
             if(Units.Select(unit=>unit.Abi).Distinct(StringComparer.Ordinal).Count()!=1)
                 throw new InvalidDataException("Cannot link objects with different recorded target ABIs");
-            foreach(var unit in Units)
-                foreach(var symbol in unit.DefinedStorageSymbols())
-                {
-                    var value=new SymbolRef(unit,symbol.Id);
-                    if(symbol.Linkage=="external" && !external.TryAdd(symbol.LinkName,value))
-                    {
-                        var previous=external[symbol.LinkName];
-                        if(previous.Symbol.DefinitionKind=="strong" && symbol.DefinitionKind=="strong")
-                            throw new InvalidDataException("Multiple strong definitions of " + symbol.LinkName);
-                        if(symbol.DefinitionKind=="strong") external[symbol.LinkName]=value;
-                    }
-                }
+            definitions=new(Units,linkIndexPath);
+            for(int unitId=0;unitId<Units.Count;++unitId)
+                foreach(var symbol in Units[unitId].DefinedStorageSymbols())
+                    if(symbol.Linkage=="external")definitions.Add(unitId,symbol);
+            definitions.Complete();
             foreach(var unit in Units)
                 foreach(var symbol in unit.DefinedStorageSymbols())
                 {
@@ -197,7 +193,7 @@ internal sealed partial class LinkedProgram : IDisposable
     public SymbolRef Resolve(Unit unit,long id)
     {
         var symbol=unit.Symbols[id];
-        return symbol.Kind is not ("source-variable" or "source-function") && symbol.Linkage=="external" && external.TryGetValue(symbol.LinkName,out var selected)?selected:new(unit,id);
+        return symbol.Kind is not ("source-variable" or "source-function") && symbol.Linkage=="external" && definitions is not null && definitions.TryGet(symbol.LinkName,out var selected)?selected:new(unit,id);
     }
     public IDisposable LoadFunction(SymbolRef function)
     {
@@ -208,5 +204,5 @@ internal sealed partial class LinkedProgram : IDisposable
         PeakFunctionBodyNodes=Math.Max(PeakFunctionBodyNodes,Units.Sum(unit=>unit.LoadedFunctionNodes));
         return new ReleaseScope(()=>{body.Dispose();--LoadedFunctionBodies;});
     }
-    public void Dispose() { foreach(var unit in Units)unit.Dispose(); }
+    public void Dispose() { definitions?.Dispose();foreach(var unit in Units)unit.Dispose(); }
 }

@@ -7,8 +7,8 @@ The broad v66 graph campaign remains stopped. The replacement contract is
 
 Verified objects now use schema 1030 / 48 tables. Sixteen distinct original
 DuckDB core TUs have been attempted with their original manifest modes/options;
-nine export completely: checksum, exception, Date, Hugeint, assert, constants,
-identifier, path and data-only Chimp constants. Chimp generates complete C# and passes native/C#/NativeAOT
+eleven export completely: checksum, exception, Date, Hugeint, assert, constants,
+identifier, path, RandomEngine, ComplexJSON and data-only Chimp constants. Chimp generates complete C# and passes native/C#/NativeAOT
 checks for all three tables, five scalars and eight stable pinned addresses. Checksum is the first functional core TU with complete selected C# and
 matching native/C#/Linux NativeAOT output. Bundled ICU independently preserves
 all 14 bodies and passes 33 UTF differential cases plus seven genuine provider
@@ -1783,3 +1783,15 @@ consumer support for this new allocation form remains pending. Original
 StringUtil passes ComplexJSON allocation and reaches repeated aggregate component
 evaluation; RandomEngine passes RandomState delete and reaches a selected static
 member operation. Neither unit is a complete export yet.
+
+## Disk-backed external definition winners
+
+The linker now streams external definition identities into an ordinary SQLite
+index and retains at most 4096 winner lookups. Its first-weak/strong-replacement
+policy and duplicate-strong error match the previous resolver. Genuine weak and
+strong source globals execute the strong provider in both orders; a duplicate
+strong definition rejects. Nine prior selected/opaque sources remain byte-identical,
+as does the verified checksum. The same eight-object selected counts remain
+1283 functions and 31 globals, with 25.7 MB managed heap, 122724 KiB peak RSS
+and 1.30 s wall. Selected lists, global catalogs and emission name/type plans
+still grow with inputs; no fully bounded whole-project claim is made.

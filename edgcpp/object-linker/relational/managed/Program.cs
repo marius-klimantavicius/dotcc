@@ -39,15 +39,16 @@ internal static class Program
             if (output is null || paths.Count == 0) throw new ArgumentException("An output directory and at least one object are required");
             namespaceName = Names.Namespace(namespaceName);
             className = Names.OptionIdentifier(className);
-            using var program = new LinkedProgram(paths);
+            using var program = new LinkedProgram(paths,Path.Combine(Path.GetFullPath(output),".link-index-"+Guid.NewGuid().ToString("N")+".sqlite"));
             program.SelectEmission(emissionSelection,entry);
             new Emitter(program, namespaceName, className, requiredProviders).Write(Path.GetFullPath(output), entry);
             Console.WriteLine($"Generated C# from {paths.Count} relational object(s).");
             Console.WriteLine($"Emission selection: {program.EmissionSelection}; selected functions {program.Functions.Count} of {program.CapturedFunctionDefinitions}; selected globals {program.Globals.Count} of {program.CapturedGlobalDefinitions}; conservative unknown roots {program.ConservativeEmissionRoots}");
             Console.WriteLine($"Body loading: peak rows {program.PeakFunctionBodyRows}; peak nodes {program.PeakFunctionBodyNodes}; functions loaded {program.FunctionBodyLoads}; active bodies {program.LoadedFunctionBodies}; peak bodies {program.PeakLoadedFunctionBodies}");
-            Console.WriteLine($"Object catalog rows: types {program.Units.Sum(unit=>unit.Types.Count)}; symbols {program.Units.Sum(unit=>unit.Symbols.Count)}; virtual tables {program.Units.Sum(unit=>unit.VirtualTables.Count)}; virtual entries {program.Units.Sum(unit=>unit.VirtualEntries.Values.Sum(entries=>entries.Count))}; literal objects {program.Units.Sum(unit=>unit.Literals.Count)}; global nodes {program.Units.Sum(unit=>unit.GlobalExpressionNodes)}. Connections and remaining planning catalogs are not yet bounded; literal bytes are streamed.");
+            Console.WriteLine($"Object catalog rows: types {program.Units.Sum(unit=>unit.Types.Count)}; symbols {program.Units.Sum(unit=>unit.Symbols.Count)}; virtual tables {program.Units.Sum(unit=>unit.VirtualTables.Count)}; virtual entries {program.Units.Sum(unit=>unit.VirtualEntries.Values.Sum(entries=>entries.Count))}; literal objects {program.Units.Sum(unit=>unit.Literals.Count)}; global nodes {program.Units.Sum(unit=>unit.GlobalExpressionNodes)}. Remaining planning catalogs are not yet bounded; literal bytes are streamed.");
             Console.WriteLine($"Cached primary rows: types {program.Units.Sum(unit=>unit.Types.CachedRows)}; symbols {program.Units.Sum(unit=>unit.Symbols.CachedRows)}; fields {program.Units.Sum(unit=>unit.Fields.CachedRows)}; process cap 4096 per row family; enumeration does not populate caches");
             Console.WriteLine($"Object connections: open {ObjectDatabase.OpenConnections}; peak {ObjectDatabase.PeakConnections}; cap {ObjectDatabase.ConnectionLimit}; SQLite page cache cap 8192 KiB per connection");
+            Console.WriteLine($"External definition index: {program.LinkIndexPath}; cached winners {program.CachedDefinitionWinners}; cap 4096; remaining selected/name plans are not yet bounded");
             return 0;
         }
         catch (Exception error) when (error is ArgumentException or InvalidDataException or IOException or DllNotFoundException or KeyNotFoundException or InvalidOperationException)
