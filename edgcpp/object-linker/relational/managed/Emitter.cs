@@ -26,6 +26,7 @@ internal sealed partial class Emitter
             symbolNames.Add(symbol,names.Allocate(source,"symbol_"+symbol.Id));
         }
         PrepareVirtualCatalog();
+        PrepareRecordedRecordDefinitions();
         FindExecutableTypes();
         // Callable source names take priority over generated storage getters.
         foreach(var global in program.Globals)
@@ -172,6 +173,8 @@ internal sealed partial class Emitter
                 continue;
             }
             Line(2,"[global::System.Runtime.InteropServices.FieldOffset("+field.Offset+")]");
+            if(OpaqueCallablePointer(unit,field.Type))
+                Line(2,"// Source callback "+(unit.Types[field.Type].Name.Length==0?field.Name:unit.Types[field.Type].Name)+": address storage; this declaration has no finalized result ABI.");
             Line(2,"public "+Type(unit,field.Type)+" "+fieldNames[(unit,field.Id)]+";");
         }
         Line(1,"}");
@@ -190,8 +193,8 @@ internal sealed partial class Emitter
         if(unit.VaListRole(id) is not null)return VaListStorageType();
         var type=unit.Original(id);
         if(type.Dependent)throw new InvalidDataException("Dependent type reached executable C# emission: "+type.Name);
-        if(type.Kind=="record" && type.Incomplete && !allowIncomplete)
-            throw new InvalidDataException("Incomplete record used by value: "+type.Name);
+        if(type.Kind=="record" && type.Incomplete && !allowIncomplete && !RecordedRecordDefinition(type,out _))
+            throw new InvalidDataException("Incomplete record used by value: type "+type.Id+" "+type.LinkName+" in "+unit.Path);
         return type.Kind switch
         {
             "void"=>"void","bool"=>"bool","i8"=>"sbyte","u8"=>"byte","i16"=>"short","u16"=>"ushort",
@@ -214,10 +217,11 @@ internal sealed partial class Emitter
         if(IsIncompleteArray(unit,type.Id))
             return Pointer(unit,type.Element??throw new InvalidDataException("Incomplete array element type missing: "+type.Id));
         if(type.Kind!="function")return Type(unit,target,allowIncomplete:true)+"*";
+        if(UnfinalizedCallableResult(unit,type))return "void*";
         var parameters=unit.TypeParameters.GetValueOrDefault(type.Id,[]).Select(id=>Type(unit,id));
         if(type.Variadic){needsVarargsRuntime=true;parameters=parameters.Append(VaSpanType);}
         if(type.ObjectType is long receiver && type.ParametersIncludeReceiver!=true)parameters=parameters.Prepend(Pointer(unit,receiver));
-        if(type.ReturnStorage=="caller-provided")parameters=parameters.Prepend(Type(unit,type.Result!.Value)+"*");
+        if(type.ReturnStorage=="caller-provided")parameters=parameters.Prepend(Pointer(unit,type.Result!.Value));
         return "delegate* managed<"+string.Join(", ",parameters.Append(type.ReturnStorage=="caller-provided"?"void":Type(unit,type.Result!.Value)))+">";
     }
     private void Line(int indent,string text="")

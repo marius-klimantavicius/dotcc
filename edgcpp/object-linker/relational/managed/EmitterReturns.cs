@@ -7,6 +7,17 @@ internal sealed partial class Emitter
         private string FunctionAddress(Node node)
         {
             long id=node.ExecutionType??node.Type??throw unit.Missing(node,"function value type missing");
+            var source=unit.Original(id);
+            if(source.Kind is "pointer" or "lvalue-reference" or "rvalue-reference")source=unit.Original(source.Pointee!.Value);
+            if(source.Kind=="function" && emitter.UnfinalizedCallableResult(unit,source))
+            {
+                long symbol=node.Symbol??throw unit.Missing(node,"selected function missing");
+                var selected=emitter.program.Resolve(unit,symbol);
+                var actual=selected.Unit.Original(selected.Symbol.Type);
+                if(actual.Kind!="function" || emitter.UnfinalizedCallableResult(selected.Unit,actual))
+                    throw unit.Missing(node,"function address binding requires a recorded finalized result ABI: type "+source.Id);
+                return "((void*)("+emitter.Pointer(selected.Unit,actual.Id)+")&"+Name(symbol)+")";
+            }
             string pointer=unit.Original(id).Kind=="function"?emitter.Pointer(unit,id):Type(id);
             return "(("+pointer+")&"+Name(node.Symbol??throw unit.Missing(node,"selected function missing"))+")";
         }
@@ -17,6 +28,8 @@ internal sealed partial class Emitter
             if(type.Kind is "pointer" or "lvalue-reference" or "rvalue-reference")
                 type=unit.Original(type.Pointee??throw unit.Missing(target,"callable pointee type missing"));
             if(type.Kind!="function")throw unit.Missing(target,"callable function signature missing");
+            if(emitter.UnfinalizedCallableResult(unit,type))
+                throw unit.Missing(target,"callback invocation requires a recorded finalized result ABI: type "+type.Id);
             return type;
         }
 

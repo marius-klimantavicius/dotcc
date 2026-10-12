@@ -159,6 +159,7 @@ internal sealed partial class Emitter
         foreach(long parameter in unit.TypeParameters.GetValueOrDefault(id,[]))UseType(unit,parameter);
         if(type.Kind=="record")
         {
+            if(type.Incomplete && RecordedRecordDefinition(type,out var definition))UseType(definition.Unit,definition.Type.Id);
             foreach(var field in unit.Fields.Values.Where(field=>field.Owner==id))UseType(unit,field.Type);
             foreach(var subobject in unit.BaseSubobjects.Values.Where(subobject=>subobject.Owner==id))UseType(unit,subobject.Type);
         }
