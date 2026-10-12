@@ -164,10 +164,11 @@ runtime callee.
 Moreover, stock virtual-call lowering replaces the original selected-routine node
 with an indirect call (`src/lower_il.c:12524–12542`). The schema can preserve all
 resulting dispatch operations/table entities without having a per-call link to
-the original source-selected overload. This concrete loss is an open approval
-decision against the original query requirements. Do not infer the lost link
-from a slot, signature or mangled spelling, and do not equate null with satisfied
-coverage of that original requirement.
+the original source-selected overload. The user accepted this source-query
+limitation on 2026-10-12 in favor of lowered execution. Store a source-target
+link only when EDG explicitly retains it; otherwise it is absent. Do not infer
+the lost link from a slot, signature or mangled spelling. All resulting
+execution operations and their semantic dependencies remain required.
 
 ## Executable graph
 

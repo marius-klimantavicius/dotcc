@@ -3,11 +3,11 @@
 Status: revised phases 1–2 design following the user's API and lowering feedback.
 Implementation has not started. This design requires approval before phases 3–4.
 
-**Open priority decision:** stock general lowering loses some requested original
-semantic-query facts, notably the selected declaration at a virtual-call site.
-The lowered-first proposal below does not silently waive that requirement. The
-user has been asked whether to accept those source-query limits or prioritize
-the original-source query coverage with more downstream lowering work.
+**Accepted priority (2026-10-12):** prefer lowered execution and accept documented
+limits on original-source queries, including the selected declaration at a
+virtual-call site and declaration default arguments. Preserve source facts where
+stock EDG retains them; do not reconstruct lost facts. This decision resolves the
+fidelity tradeoff; approval of the implementation plan remains pending.
 
 ## Scope and authority
 
@@ -123,8 +123,8 @@ Some boundaries remain substantial. EDG does not completely lower coroutine
 frames, and certain accepted dialects cannot use its general lowering. Preserve
 their semantic forms through explicit compatibility profiles and report the
 remaining translator work as difficult, not as an easy C# implementation.
-Source-name/type/member/origin retention after lowering is a specific acceptance
-gate: the model must not invent an original signature, selected source overload,
+Source-name/type/member/origin retention after lowering must be documented
+within the accepted source-query limits: the model must not invent an original signature, selected source overload,
 default argument or syntax tree that the stock backend boundary no longer has.
 In particular, `lower_virtual_function_call` replaces the `enk_routine` that
 identified the selected method with a new indirect-call operation
