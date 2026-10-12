@@ -1,0 +1,62 @@
+namespace RoslynObj;
+
+/// <summary>Owns one immutable translation-unit snapshot. Independent objects are never linked or deduplicated.</summary>
+public sealed partial class RoslynObject : IDisposable
+{
+    internal SnapshotStore Store { get; }
+    public ObjectManifest Manifest { get; }
+    private readonly BoundedCache<(string Table, long Id), WeakReference<object>> identities;
+    private readonly object identityLock = new();
+
+    private RoslynObject(SnapshotStore store, ObjectManifest manifest, ReadOptions options)
+    {
+        Store = store;
+        Manifest = manifest;
+        identities = new(options.CachedRowCount);
+    }
+
+    internal T Cached<T>(string table, long id, Func<Row, T> create) where T : class
+    {
+        Store.EnsureActive();
+        lock (identityLock)
+        {
+            if (identities.TryGet((table, id), out var reference) && reference.TryGetTarget(out var value))
+                return (T)value;
+            var result = create(Store.Required(table, id));
+            identities.Set((table, id), new(result));
+            return result;
+        }
+    }
+
+    internal string? Text(long? id) => id is null ? null : Store.Required("text_atom", id.Value).Text("value");
+
+    internal PagedList<T> List<T>(string sql, long owner, Func<Row, T> create, string? table = null)
+        => new(Store, sql, owner, create, table);
+
+    public ReaderStatistics Statistics => Store.Statistics;
+    public void Dispose()
+    {
+        Store.Dispose();
+        lock (identityLock) identities.Clear();
+    }
+}
+
+/// <summary>Equality is local EDG identity within one artifact, never a name or inferred C++ equivalence.</summary>
+public abstract class SemanticEntity : IEquatable<SemanticEntity>
+{
+    internal RoslynObject Object { get; }
+    internal long Id { get; }
+    private readonly string artifact;
+    internal SemanticEntity(RoslynObject owner, long id)
+    {
+        Object = owner; Id = id; artifact = owner.Manifest.ArtifactIdentity;
+    }
+    public IReadOnlyList<AttributeDetails> Attributes => Object.List("SELECT * FROM attribute WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new AttributeDetails(Object,r),"attribute");
+    public IReadOnlyList<SynthesizedOriginDetails> SynthesizedOrigins => Object.List("SELECT * FROM synthesized_origin WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new SynthesizedOriginDetails(Object,r));
+    public IReadOnlyList<ConstraintMetadataDetails> Constraints => Object.List("SELECT * FROM constraint_metadata WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new ConstraintMetadataDetails(Object,r));
+    public bool Equals(SemanticEntity? other) => other is not null && Id == other.Id && artifact == other.artifact;
+    public override bool Equals(object? obj) => obj is SemanticEntity other && Equals(other);
+    public override int GetHashCode() => HashCode.Combine(artifact, Id);
+    public static bool operator ==(SemanticEntity? left, SemanticEntity? right) => Equals(left, right);
+    public static bool operator !=(SemanticEntity? left, SemanticEntity? right) => !Equals(left, right);
+}

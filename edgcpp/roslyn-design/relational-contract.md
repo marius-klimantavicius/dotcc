@@ -1,5 +1,7 @@
 # Proposed normalized relational contract
 
+**Implementation approved by the user, 2026-10-12:** phases 3–4 are now authorized through M0–M5. Historical proposal language below records the reviewed design; current evidence and remaining work are tracked in `../roslyn/docs/IMPLEMENTATION.md`.
+
 This is the phase-2 design, not an implemented schema. Names below specify the
 logical contract; implementation milestone M1 freezes the full DDL and the
 field-by-field upstream adapter inventory together. Adding a missed executable

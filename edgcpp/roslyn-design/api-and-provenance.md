@@ -1,6 +1,8 @@
 # Idiomatic C# semantic API and source provenance
 
-Revised design proposal only, 2026-10-12. No implementation is authorized by this document. This is a new `.roslynobj` reader API with no dependency on `Microsoft.CodeAnalysis`, no managed C++ semantic analyzer, and no translator. Provenance evidence below pins pristine `edgcpp/compiler` revision `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`. Names and signatures describe the proposed API, not implemented code.
+**Implementation approved by the user, 2026-10-12:** phases 3–4 are now authorized through M0–M5. Historical proposal language below records the reviewed design; current evidence and remaining work are tracked in `../roslyn/docs/IMPLEMENTATION.md`.
+
+Approved design, 2026-10-12. Implementation authorization is recorded above. This is a new `.roslynobj` reader API with no dependency on `Microsoft.CodeAnalysis`, no managed C++ semantic analyzer, and no translator. Provenance evidence below pins pristine `edgcpp/compiler` revision `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`. Names and signatures specify the approved API; implemented coverage is recorded in the implementation ledger.
 
 ## Public model
 
@@ -10,7 +12,7 @@ The public API presents immutable C# objects with properties and ordinary collec
 
 The proposed primary execution model follows the EDG lowering profile in [lowering-and-integration.md](lowering-and-integration.md): ordinary IL lowering with partial exception lowering and retained EDG cleanup tables. The reader exposes executable operations and surviving symbols/types directly. Source correspondence, original constructs and origins are available only where EDG retained them. It does not reconstruct an original C++ tree from lowered operations. Compatibility profiles can retain different high-level constructs; the manifest identifies their execution representation.
 
-**Accepted priority (2026-10-12): lowered execution.** The user explicitly accepts documented original-source query limits in favor of stock EDG lowering. Original selected declarations, virtual-call classification, source signatures and declaration default arguments are available only where EDG retains them. Missing optional source references return null and missing optional collections are empty; capability and retention metadata explain these limits separately. This does not permit dropping required lowered operations, types or lifetime semantics. The examples below follow this accepted priority; implementation still requires plan approval.
+**Accepted priority (2026-10-12): lowered execution.** The user explicitly accepts documented original-source query limits in favor of stock EDG lowering. Original selected declarations, virtual-call classification, source signatures and declaration default arguments are available only where EDG retains them. Missing optional source references return null and missing optional collections are empty; capability and retention metadata explain these limits separately. This does not permit dropping required lowered operations, types or lifetime semantics. The examples below follow this accepted priority; implementation is now authorized through all planned milestones.
 
 | Public object | Ordinary navigation |
 | --- | --- |

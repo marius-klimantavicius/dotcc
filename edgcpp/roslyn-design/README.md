@@ -1,13 +1,15 @@
 # EDG semantic tree and `.roslynobj`: design for approval
 
+**Implementation approved by the user, 2026-10-12:** phases 3–4 are now authorized through M0–M5. Historical proposal language below records the reviewed design; current evidence and remaining work are tracked in `../roslyn/docs/IMPLEMENTATION.md`.
+
 Status: revised phases 1–2 design following the user's API and lowering feedback.
-Implementation has not started. This design requires approval before phases 3–4.
+Implementation is authorized and under way for phases 3–4; complete M0–M5 acceptance remains required.
 
 **Accepted priority (2026-10-12):** prefer lowered execution and accept documented
 limits on original-source queries, including the selected declaration at a
 virtual-call site and declaration default arguments. Preserve source facts where
 stock EDG retains them; do not reconstruct lost facts. This decision resolves the
-fidelity tradeoff; approval of the implementation plan remains pending.
+fidelity tradeoff. The user approved the implementation plan on 2026-10-12.
 
 ## Scope and authority
 

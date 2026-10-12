@@ -1,7 +1,8 @@
 # Implementation and acceptance plan
 
-Status: proposed, awaiting approval. No backend, schema DDL, build integration,
-managed project, or tests have been implemented by phases 1–2.
+**Implementation approved by the user, 2026-10-12:** phases 3–4 are now authorized through M0–M5. Historical proposal language below records the reviewed design; current evidence and remaining work are tracked in `../roslyn/docs/IMPLEMENTATION.md`.
+
+Status: approved, 2026-10-12. Phases 1–2 produced this design; phases 3–4 implementation and verification are now in progress.
 
 ## Roles, ownership, and repository layout
 
@@ -55,7 +56,7 @@ created in these phases.
 
 | Milestone | Deliverable | Acceptance gate and commit |
 |---|---|---|
-| P: design | These six documents, upstream pin, coverage inventory, chosen configuration and boundaries | Cross-review consistency; commit design only; lowered execution priority accepted on 2026-10-12; obtain implementation plan approval before M0 |
+| P: design | These six documents, upstream pin, coverage inventory, chosen configuration and boundaries | Cross-review consistency; design committed; lowered execution priority and implementation plan approved on 2026-10-12 |
 | M0: integration feasibility | Isolated stock-source build with new backend entrypoint; full macro/capability profile; separate SQLite dependency; basic object header publication | Core EDG diff remains empty; verify `back_end` timing/live IL; successfully compile representative dialect inputs; verify output wrapper; commit |
 | M1: frozen format/API foundation | Complete field-to-relation/field-to-property matrix; DDL, stable enum catalog, exact scalar and EH table adapters; high-level object/property API and loader skeleton | Map every active executable union/auxiliary field and retained metadata family; settle exact values, ABI-conditioned EH records and property contracts; hand-author a small valid object fixture; commit |
 | M2: complete basic vertical slice | Native and managed handling of retained declarations/owners, types, constants, expressions, control flow, lowered call targets and available source coordinates | Real EDG-produced object navigated through properties and direct SQL; selected lowered targets/types/conversions/exact constants/jumps and execution ordering demonstrated; source fidelity matches approved limits; commit |

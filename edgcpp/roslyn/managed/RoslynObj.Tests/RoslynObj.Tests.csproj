@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../RoslynObj/RoslynObj.csproj" />
+    <EmbeddedResource Include="../../schema/roslynobj.sql" LogicalName="RoslynObj.Tests.schema.sql" />
+    <EmbeddedResource Include="Fixtures/basic.sql" LogicalName="RoslynObj.Tests.basic.sql" />
+  </ItemGroup>
+</Project>
