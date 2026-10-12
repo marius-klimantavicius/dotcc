@@ -1,7 +1,8 @@
 namespace DotObj.Relational;
 
 internal sealed record BaseSubobject(long Id,long Owner,long Type,long? DeclaredType,long Ordinal,long? DirectOrdinal,
-    long Offset,bool Direct,bool Virtual,bool OptimizedEmpty,string? Access,long? File,long? Line,long? Column);
+    long Offset,bool Direct,bool Virtual,bool OptimizedEmpty,string? Access,long? File,long? Line,long? Column,
+    bool? IsAmbiguous,bool? IsPublic);
 internal sealed record ClassConversion(long Node,long Base,string Direction,bool PreservesNull,long? Adjustment,
     string SourceRepresentation,string ResultRepresentation);
 
@@ -16,8 +17,10 @@ internal sealed partial class Unit
         using(var q=database.Prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='base_subobjects'"))
             HasBaseSubobjects=q.Read();
         if(!HasBaseSubobjects)return;
-        using(var q=database.Prepare("SELECT id,owner_type_id,base_type_id,declared_type_id,ordinal,direct_ordinal,byte_offset,is_direct,is_virtual,is_optimized_empty,access,file_id,line,column FROM base_subobjects ORDER BY owner_type_id,ordinal"))
-            while(q.Read())BaseSubobjects.Add(q.Integer(0),new(q.Integer(0),q.Integer(1),q.Integer(2),q.OptionalInteger(3),q.Integer(4),q.OptionalInteger(5),q.Integer(6),q.Integer(7)!=0,q.Integer(8)!=0,q.Integer(9)!=0,q.OptionalText(10),q.OptionalInteger(11),q.OptionalInteger(12),q.OptionalInteger(13)));
+        bool hasSelectedBaseAccess;
+        using(var q=database.Prepare("SELECT 1 FROM pragma_table_info('base_subobjects') WHERE name='is_public'"))hasSelectedBaseAccess=q.Read();
+        using(var q=database.Prepare("SELECT id,owner_type_id,base_type_id,declared_type_id,ordinal,direct_ordinal,byte_offset,is_direct,is_virtual,is_optimized_empty,access,file_id,line,column,"+(hasSelectedBaseAccess?"is_ambiguous,is_public":"NULL,NULL")+" FROM base_subobjects ORDER BY owner_type_id,ordinal"))
+            while(q.Read())BaseSubobjects.Add(q.Integer(0),new(q.Integer(0),q.Integer(1),q.Integer(2),q.OptionalInteger(3),q.Integer(4),q.OptionalInteger(5),q.Integer(6),q.Integer(7)!=0,q.Integer(8)!=0,q.Integer(9)!=0,q.OptionalText(10),q.OptionalInteger(11),q.OptionalInteger(12),q.OptionalInteger(13),q.OptionalInteger(14) is long ambiguous?ambiguous!=0:null,q.OptionalInteger(15) is long accessible?accessible!=0:null));
     }
 
     private void ReadClassConversions(long? function)

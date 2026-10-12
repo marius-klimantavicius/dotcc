@@ -14,6 +14,7 @@
 #include "const_ints.h"
 #include "exprutil.h"
 #include "expr.h"
+#include "symbol_tbl.h"
 #include "float_pt.h"
 #include "target.h"
 #include "dot_gen_semantic_sqlite.h"
@@ -63,6 +64,12 @@ struct State {
   std::map<a_variable_ptr,Id> static_local_symbols;
   std::set<a_variable_ptr> promoted_static_locals;
   std::set<a_variable_ptr> incomplete_globals;
+  std::set<a_variable_ptr> dynamic_globals,scheduled_globals;
+  struct StartupGroup {
+    a_scope_ptr scope=nullptr;Id owner=0,body=0,lifetime=0;unsigned ordinal=0,rank=0;unsigned long priority=0;
+  };
+  StartupGroup startup;
+  unsigned startup_ordinal=0;
   std::map<a_field_ptr,Id> fields;
   std::map<a_base_class_ptr,Id> base_subobjects;
   std::map<a_constant_ptr,Id> enum_values;
@@ -672,10 +679,16 @@ struct State {
           break;
         }
         auto pos=location(base->decl_position);
+        bool concrete=!is_template_dependent_type(t);
+        auto derivation=concrete?preferred_derivation_of(base):nullptr;
+        Value public_path=nullptr;
+        if(concrete && derivation)
+          public_path=Value(access_to_end_of_path(as_public,derivation->path,derivation)==as_public);
         db.insert("base_subobjects",{{"id",base_subobjects[base]},{"owner_type_id",id},
           {"base_type_id",type_id(base->type)},{"declared_type_id",optional(type_id(base->orig_type))},
           {"ordinal",base_ordinal},{"direct_ordinal",base->direct?Value(base->direct_base_number-1):Value(nullptr)},
           {"byte_offset",base->offset},{"is_direct",bool(base->direct)},{"is_virtual",bool(base->is_virtual)},
+          {"is_ambiguous",concrete?Value(bool(base->ambiguous)):Value(nullptr)},{"is_public",public_path},
           {"is_optimized_empty",bool(base->is_optimized_empty_base)},{"access",access},
           {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
       }
@@ -752,6 +765,11 @@ struct State {
     return id;
   }
   void global_initializer(a_variable_ptr v,Id id) {
+    if(v->init_kind==initk_dynamic) {
+      // Source storage is declared before stock selects its startup group.
+      // Its action is captured only at that selected execution boundary.
+      dynamic_globals.insert(v);return;
+    }
     if(v->init_kind!=initk_none && v->init_kind!=initk_zero && v->init_kind!=initk_static)
       missing("global dynamic initializer");
     // Declaration processing canonicalizes storage duration (il.h). Its
@@ -794,7 +812,7 @@ struct State {
     if(local)local_variables.insert(v);
     if(is_effective_thread_local(v))missing("thread-local storage");
     if(local && !parameter && v->storage_class==sc_static)missing("local static storage initialization");
-    if(!local && v->init_kind!=initk_none && v->init_kind!=initk_zero && v->init_kind!=initk_static)
+    if(!local && v->init_kind!=initk_none && v->init_kind!=initk_zero && v->init_kind!=initk_static && v->init_kind!=initk_dynamic)
       missing("global dynamic initializer");
     db.insert("symbols",{{"id",id},{"kind",parameter?"parameter":local?"local":"global"},
       {"name",spelling(v->source_corresp)},{"link_name",v->source_corresp.name?v->source_corresp.name:""},
@@ -3457,48 +3475,8 @@ struct State {
       function=previous;return_type=previous_return_type;literal_source_region=previous_literal_region;return;
     }
     if(!declaration_scopes.insert(scope).second)return;
-    // File and namespace initializers have an explicit EDG execution list.
-    // Until startup actions are represented, fail even when the initialized
-    // variable is never referenced by an executable body.
-    if(scope->dynamic_inits) {
-      unsigned count=0,effective=0;
-      for(auto init=scope->dynamic_inits;init;init=init->next) {
-        ++count;auto var=init->variable;
-        if(!var || (!ignore_variable_in_back_end(var) && !var->suppress_inline_definition))++effective;
-      }
-      std::string detail="file/namespace dynamic initialization schedule [entries="+std::to_string(count)+
-        ", effective="+std::to_string(effective)+
-        ", scope-kind="+std::to_string(int(scope->kind))+
-        ", scope-lifetime="+std::to_string(scope->lifetime?1:0)+"]";
-      unsigned ordinal=0;
-      for(auto init=scope->dynamic_inits;init && ordinal<3;init=init->next) {
-        auto var=init->variable;
-        if(var && (ignore_variable_in_back_end(var) || var->suppress_inline_definition))continue;
-        auto type=var?skip_typerefs(var->type):nullptr;
-        auto pos=location(var?var->source_corresp.decl_position:null_source_position);
-        std::string path;for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
-        unsigned priority=0;
-#if GNU_EXTENSIONS_ALLOWED && GNU_INIT_PRIORITY_ATTRIBUTE_ALLOWED
-        if(var)priority=var->init_priority;
-#endif
-        detail+=" [entry="+std::to_string(ordinal)+", variable="+(var?spelling(var->source_corresp):"<none>")+
-          ", type="+(type?spelling(type->source_corresp):"")+
-          ", type-kind="+std::to_string(type?int(type->kind):-1)+
-          ", action-kind="+std::to_string(int(init->kind))+
-          ", inline="+std::to_string(var?int(var->is_inline):0)+
-          ", template="+std::to_string(var?int(var->is_template_variable):0)+
-          ", thread-local="+std::to_string(var?int(is_effective_thread_local(var)):0)+
-          ", priority="+std::to_string(priority)+
-          ", suppressed="+std::to_string(var?int(var->suppress_inline_definition):0)+
-          ", ignored="+std::to_string(var?int(ignore_variable_in_back_end(var)):0)+
-          ", destructor="+std::to_string(init->destructor?1:0)+
-          ", lifetime="+std::to_string(init->lifetime?1:0)+
-          ", expression-lifetime="+std::to_string(init->init_expr_lifetime?1:0)+
-          ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]";
-        ++ordinal;
-      }
-      if(effective)missing(detail);
-    }
+    // Declare source storage here. Stock's selected startup callbacks later
+    // capture its ordered actions after group/priority/guard decisions.
     if(scope->asm_entries)missing("file-scope assembly declaration");
     for(auto v=scope->variables;v;v=v->next) {
       // Lowering later promotes the same dummy to file scope. Its source
@@ -3584,8 +3562,72 @@ struct State {
     (void)selected;(void)entry;(void)scope;
 #endif
   }
+  void startup_group(a_scope_ptr scope,unsigned long priority,bool thread_local_group) {
+    if(startup.scope)missing("overlapping selected startup groups");
+    auto first=il_header.primary_scope->dynamic_inits;
+    for(;first;first=first->next)if(first->variable &&
+       !ignore_variable_in_back_end(first->variable) && !first->variable->suppress_inline_definition)break;
+    if(!first)return;
+    if(thread_local_group)
+      missing_initialization(first,first->variable->type,first->variable->source_corresp.decl_position,
+        "selected thread-local startup group");
+    auto lifetime=il_header.primary_scope->lifetime;
+    if(lifetime && lifetime->destructions)
+      missing_initialization(lifetime->destructions,nullptr,first->variable->source_corresp.decl_position,
+        "selected startup global destruction schedule");
+    startup.scope=scope;startup.owner=routine(scope->variant.routine.ptr);
+    startup.rank=startup_ordinal++;startup.priority=priority;
+    Id previous=function;bool previous_recipe=template_recipe;function=startup.owner;template_recipe=false;
+    startup.body=node("block",first->variable->source_corresp.decl_position,0,nullptr,nullptr,"",0,0,0,true);
+    attach_lifetime(startup.body,scope->lifetime);
+    if(scope->lifetime)startup.lifetime=lifetimes.at(scope->lifetime);
+    function=previous;template_recipe=previous_recipe;
+  }
+  void startup_initialization(a_scope_ptr scope,a_dynamic_init_ptr init,a_variable_ptr guard) {
+    if(!startup.scope)return;
+    if(scope!=startup.scope || !init || !init->variable)missing("selected startup action owner");
+    auto v=init->variable;const auto &pos=v->source_corresp.decl_position;
+    if(guard || is_effective_thread_local(v) || init->destructor || init->lifetime || init->init_expr_lifetime ||
+       init->lifetime_of_overlapping_temps || init->master_entry || init->class_rvalue_initialized_through_master_entry ||
+       init->unordered || init->overlaps_temps_in_inner_lifetime ||
+       init->destruction_is_for_partially_constructed_aggregate || init->is_freeing_of_storage_on_exception)
+      missing_initialization(init,v->type,pos,guard?"selected guarded startup action":"selected startup action ownership");
+    Id previous=function;bool previous_recipe=template_recipe;
+    auto previous_region=literal_source_region;
+    function=startup.owner;template_recipe=false;literal_source_region=mem_region_for_routine(scope->variant.routine.ptr);
+    if(scope->lifetime && startup.lifetime)lifetimes[scope->lifetime]=startup.lifetime;
+    Id symbol=variable(v,false,false,true);
+    Id action=initialization_id(init,v->type,&pos);
+    for(const auto &entry:lifetimes)if(entry.second!=startup.lifetime)
+      missing_initialization(init,v->type,pos,"selected startup argument lifetime ownership");
+    Id selected=node("initialize",pos,type_id(v->type),nullptr,nullptr,"",symbol,0,0,true);
+    db.update("nodes","id",selected,{{"initialization_id",action}});
+    edge(selected,"value",0,initialization_values.at(init));
+    edge(startup.body,"statement",startup.ordinal++,selected);
+    scheduled_globals.insert(v);
+    // Each cleanup-free source action is captured before stock mutates it.
+    // Other generated routines may be lowered between selected entries.
+    expressions.clear();source_statement_nodes.clear();initializations.clear();initialization_values.clear();
+    initialization_types.clear();initializing.clear();lifetimes.clear();
+    function=previous;template_recipe=previous_recipe;literal_source_region=previous_region;
+  }
+  void startup_complete(a_scope_ptr scope) {
+    if(!startup.scope)return;
+    if(scope!=startup.scope || !startup.ordinal)missing("selected startup group completion");
+    auto r=scope->variant.routine.ptr;
+    db.insert("functions",{{"symbol_id",startup.owner},{"body_node_id",startup.body},
+      {"kind","ordinary"},{"exception_policy",exception_policy(r->type)}});
+    db.insert("startup_groups",{{"function_symbol_id",startup.owner},{"ordinal",startup.rank},
+      {"init_priority",startup.priority},{"is_thread_local",false}});
+    db.update("symbols","id",startup.owner,{{"is_definition",true}});
+    bodies.insert(r);startup=StartupGroup{};
+  }
   void finish() {
     finish_typeinfo_symbols();
+    if(startup.scope)missing("selected startup group without completion");
+    for(auto v:dynamic_globals)if(!scheduled_globals.count(v) &&
+      !ignore_variable_in_back_end(v) && !v->suppress_inline_definition)
+      missing_source_variable(v,"dynamic global without selected startup action");
     if(!default_member_initializers.empty())
       missing("default member initializers without finalized constructor cleanup");
     for(const auto &entry:allocations)
@@ -3732,6 +3774,15 @@ inline void lambda_entry_complete(a_routine_ptr entry,a_scope_ptr scope) {
 }
 inline void abi_entry_complete(a_routine_ptr selected,a_routine_ptr entry,a_scope_ptr scope) {
   if(enabled())state().abi_entry_complete(selected,entry,scope);
+}
+inline void startup_group(a_scope_ptr scope,unsigned long priority,bool thread_local_group) {
+  if(enabled())state().startup_group(scope,priority,thread_local_group);
+}
+inline void startup_initialization(a_scope_ptr scope,a_dynamic_init_ptr init,a_variable_ptr guard) {
+  if(enabled())state().startup_initialization(scope,init,guard);
+}
+inline void startup_complete(a_scope_ptr scope) {
+  if(enabled())state().startup_complete(scope);
 }
 inline void emit() { state().finish(); }
 }

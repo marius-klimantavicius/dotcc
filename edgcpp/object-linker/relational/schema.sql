@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1026;
+PRAGMA user_version = 1027;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -129,6 +129,10 @@ CREATE TABLE base_subobjects (
  is_virtual INTEGER NOT NULL CHECK(is_virtual IN(0,1)),
  is_optimized_empty INTEGER NOT NULL CHECK(is_optimized_empty IN(0,1)),
  access TEXT CHECK(access IN('public','protected','private')),
+ -- EDG's selected ambiguity and public reachability for the complete owner.
+ -- These differ from the direct source access spelling above.
+ is_ambiguous INTEGER CHECK(is_ambiguous IN(0,1)),
+ is_public INTEGER CHECK(is_public IN(0,1)),
  file_id INTEGER REFERENCES files(id),
  line INTEGER,
  column INTEGER,
@@ -162,6 +166,16 @@ CREATE TABLE parameters (
  symbol_id INTEGER NOT NULL REFERENCES symbols(id),
  PRIMARY KEY(function_id,ordinal)
 ) STRICT, WITHOUT ROWID;
+-- Stock-selected file-scope startup groups. The referenced ordinary function
+-- body owns its ordered initialization actions and lifetime relationships.
+-- Ordinal records stock group creation order, not priority execution order.
+-- Cross-TU order remains a linker invocation policy for default-priority groups.
+CREATE TABLE startup_groups (
+ function_symbol_id INTEGER PRIMARY KEY REFERENCES functions(symbol_id),
+ ordinal INTEGER NOT NULL UNIQUE CHECK(ordinal>=0),
+ init_priority INTEGER NOT NULL,
+ is_thread_local INTEGER NOT NULL CHECK(is_thread_local IN(0,1))
+) STRICT;
 -- Source declaration of an empty function parameter pack. EDG's compiler
 -- placeholder is not a runtime static variable and has no executable storage.
 CREATE TABLE empty_parameter_packs (

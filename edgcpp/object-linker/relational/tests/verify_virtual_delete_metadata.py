@@ -15,7 +15,7 @@ def inspect(path):
         db.row_factory=sqlite3.Row
         assert tuple(db.execute('PRAGMA integrity_check').fetchone())==('ok',)
         assert not list(db.execute('PRAGMA foreign_key_check'))
-        assert db.execute('PRAGMA user_version').fetchone()[0]==1026
+        assert db.execute('PRAGMA user_version').fetchone()[0]>=1026
         deletes=db.execute("SELECT * FROM nodes WHERE kind='delete' AND operator='virtual-destroy'").fetchall()
         assert len(deletes)==1, [dict(row) for row in deletes]
         delete=deletes[0]

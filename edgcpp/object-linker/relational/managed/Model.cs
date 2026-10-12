@@ -103,6 +103,7 @@ internal sealed partial class Unit : IDisposable
             using (var q = database.Prepare("SELECT symbol_id,initializer_node_id FROM global_initializers ORDER BY symbol_id"))
                 while (q.Read()) Initializers.Add(q.Integer(0),q.Integer(1));
             ReadInheritance();
+            ReadStartupGroups();
             ReadVirtualTables();
             ReadArrayFeatures();
             ReadRecordInitializerFeatures();

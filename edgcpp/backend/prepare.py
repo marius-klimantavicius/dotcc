@@ -688,6 +688,7 @@ object_source_overlay(init_lower,
     '#if defined(EDG_DOT_BACKEND)\n'
     '  dot_object_source::observe_generated_initializer(scope, needed_bit_number,\n'
     '      init_priority, do_thread_local);\n'
+    '  dot_semantic::startup_group(scope, init_priority, do_thread_local);\n'
     '#endif\n'
     '  return scope;\n}  /* file_scope_init_insert_location */')
 object_source_overlay(init_lower,
@@ -1474,6 +1475,22 @@ semantic_schema_text = ('#pragma once\nstatic const char dot_semantic_schema[] =
                         semantic_schema + ')DOTSCHEMA";\n')
 if not semantic_schema_header.exists() or semantic_schema_header.read_text() != semantic_schema_text:
     semantic_schema_header.write_text(semantic_schema_text)
+object_source_overlay(init_lower,
+    '      set_var_init_pos_descr(var, &ipd);\n'
+    '      check_assertion(pending_stmk_init_statements == NULL);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_semantic::startup_initialization(scope, dip, guard_var);\n'
+    '#endif\n'
+    '      set_var_init_pos_descr(var, &ipd);\n'
+    '      check_assertion(pending_stmk_init_statements == NULL);')
+object_source_overlay(init_lower,
+    '    pop_generated_routine_context(scope, region_number, &grcontext);\n'
+    '    processing_file_scope_init_routine = FALSE;',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::startup_complete(scope);\n'
+    '#endif\n'
+    '    pop_generated_routine_context(scope, region_number, &grcontext);\n'
+    '    processing_file_scope_init_routine = FALSE;')
 for filename in ("lower_il.c", "lower_c99.c"):
     object_source_overlay(root / "upstream/src" / filename,
         '#include "dot_gen_object_source.h"',
