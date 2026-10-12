@@ -22,6 +22,7 @@ internal sealed partial class Emitter
                 expressionTemporaryStorage.Add(id,name);
                 cleanupTargets.Add(id,name);
             }
+            PrepareUnorderedTemporaryGroups(functionId);
         }
 
         private void WriteExpressionTemporaryStorage(int indent)

@@ -48,10 +48,16 @@ internal sealed partial class Emitter
                 var operands=unit.Children(node,"operand").ToArray();
                 if(operands.Length!=3)throw unit.Missing(node,"exporter defect: shared conditional operands missing");
                 Line(indent,"if ("+Truth(operands[0],ExpandedExpression(operands[0],indent))+")");Line(indent,"{");
-                WriteSharedResultEffects(operands[1],indent+1,requiresDestination);Line(indent,"}");
+                Branch(operands[1]);Line(indent,"}");
                 Line(indent,"else");Line(indent,"{");
-                WriteSharedResultEffects(operands[2],indent+1,requiresDestination);Line(indent,"}");
+                Branch(operands[2]);Line(indent,"}");
                 return;
+                void Branch(Node selected)
+                {
+                    ++nonlinearTemporaryEmissionDepth;
+                    try {WriteSharedResultEffects(selected,indent+1,requiresDestination);}
+                    finally {--nonlinearTemporaryEmissionDepth;}
+                }
             }
             if(node.Kind=="operation" && node.Operator=="comma")
             {

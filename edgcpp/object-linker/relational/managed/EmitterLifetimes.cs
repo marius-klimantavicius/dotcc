@@ -140,13 +140,14 @@ internal sealed partial class Emitter
             string unwinding="__unwinding_"+key;
             Line(indent,"bool "+unwinding+" = false;");
             Line(indent,"try");Line(indent,"{");content(indent+1);Line(indent,"}");
+            var destructionOrder=CompletedTemporaryDestructionOrder(actions);
             Line(indent,"catch (global::System.Exception __error_"+key+") when (global::Edg.Runtime.ObjectProgram.BeginUnwind(__error_"+key+", ref "+unwinding+"))");
             Line(indent,"{");Line(indent+1,"throw;");Line(indent,"}");
             Line(indent,"finally");Line(indent,"{");Cleanup(0,indent+1);Line(indent,"}");
             void Cleanup(int index,int level)
             {
-                if(index==actions.Count)return;
-                var action=unit.Initializations[actions[index]];
+                if(index==destructionOrder.Count)return;
+                var action=unit.Initializations[destructionOrder[index]];
                 if(action.Destructor is null){Cleanup(index+1,level);return;}
                 CheckInitialization(action);
                 string target=cleanupTargets.GetValueOrDefault(action.Id)
@@ -167,13 +168,15 @@ internal sealed partial class Emitter
                 Line(level,"{");Line(level+1,"throw;");Line(level,"}");
                 Line(level,"catch (global::System.Exception "+error+"_begin) when (global::Edg.Runtime.ObjectProgram.BeginUnwind("+error+"_begin, ref "+unwinding+"))");
                 Line(level,"{");Line(level+1,"throw;");Line(level,"}");
-                if(index+1<actions.Count){Line(level,"finally");Line(level,"{");Cleanup(index+1,level+1);Line(level,"}");}
+                if(index+1<destructionOrder.Count){Line(level,"finally");Line(level,"{");Cleanup(index+1,level+1);Line(level,"}");}
             }
         }
 
         private void CheckInitialization(Initialization initialization)
         {
-            if(initialization.Unordered || initialization.OverlapsInner || initialization.PartialAggregate || initialization.FreeOnException || initialization.StaticStorage || initialization.OverlapLifetime is not null)
+            if(initialization.Unordered && nonlinearTemporaryEmissionDepth!=0)
+                throw new InvalidDataException("Unordered temporary cleanup requires linear expression expansion: initialization "+initialization.Id);
+            if(initialization.Unordered && !CanEmitUnorderedTemporary(initialization) || initialization.OverlapsInner || initialization.PartialAggregate || initialization.FreeOnException || initialization.StaticStorage || initialization.OverlapLifetime is not null)
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs unsupported unordered/overlap/array/storage cleanup emission");
             bool hasAggregateActions=initialization.Value is long aggregate &&
                 (unit.ArrayInitializers.ContainsKey(aggregate) || unit.RecordInitializers.ContainsKey(aggregate) || unit.LiteralInitializers.ContainsKey(aggregate));
@@ -316,7 +319,11 @@ internal sealed partial class Emitter
                     WriteClassResultCall(unit.Nodes[initialization.Value??throw new InvalidDataException("Class result call missing")],destination,indent);break;
                 default:throw new InvalidDataException("Unsupported initialization kind "+initialization.Kind);
             }
-            if(cleanupFlags.Contains(initialization.Id))Line(indent,Flag(initialization.Id)+" = true;");
+            if(cleanupFlags.Contains(initialization.Id))
+            {
+                Line(indent,Flag(initialization.Id)+" = true;");
+                RecordUnorderedTemporaryCompletion(initialization);
+            }
         }
 
         private void WriteDeclaration(Node node,int indent)
