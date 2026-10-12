@@ -153,10 +153,12 @@ internal sealed partial class Emitter
             Line(1,"public struct "+name+" { }");return;
         }
         if(record.Size is null or <=0)throw new InvalidDataException("Complete record has no positive recorded layout size: "+record.Name);
-        if(unit.BaseSubobjects.Values.Any(subobject=>subobject.Owner==record.Id && subobject.Virtual))
-            throw new InvalidDataException("Virtual base record emission is not yet implemented: "+record.Name);
-        Line(1,"[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = "+record.Size+")]");
+        bool completeStorage=unit.BaseSubobjects.Values.Any(subobject=>subobject.Owner==record.Id && subobject.Virtual);
+        string? alignment=completeStorage?CompleteRecordAlignment(record):null;
+        Line(1,"[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = "+record.Size+
+            (completeStorage?", Pack = "+record.Alignment:"")+")]");
         Line(1,"public struct "+name);Line(1,"{");
+        if(completeStorage)WriteCompleteRecordStorage(unit,record,name,alignment!);
         var bitfields=WriteBitfieldBacking(unit,record);
         foreach(var field in unit.Fields.Values.Where(field=>field.Owner==record.Id).OrderBy(field=>field.Ordinal))
         {
@@ -299,7 +301,9 @@ internal sealed partial class Emitter
                 case "type-info-address":return TypeInfoAddress(node);
                 case "string-literal":return "(*"+ArrayAddress(node)+")";
                 case "new":return AllocationExpression(node);
-                case "delete":return node.Operator=="destroy"?DeallocationExpression(node):Expression(Child(node,"execution"));
+                case "delete":
+                    if(node.Operator=="virtual-destroy")throw unit.Missing(node,"virtual deleting ABI entry execution is not yet implemented");
+                    return node.Operator=="destroy"?DeallocationExpression(node):Expression(Child(node,"execution"));
                 case "variable":
                     long variable=node.Symbol??throw unit.Missing(node,"selected symbol missing");
                     return unit.IsArray(unit.Symbols[variable].Type) || emitter.HasPinnedRecordStorage(unit,variable) || emitter.HasPinnedScalarStorage(unit,variable) || emitter.HasProviderAddress(unit,variable)?"(*"+Name(variable)+")":Name(variable);
