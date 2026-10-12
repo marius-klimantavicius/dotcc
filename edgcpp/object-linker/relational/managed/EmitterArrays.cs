@@ -44,8 +44,10 @@ internal sealed partial class Emitter
             throw new InvalidDataException("Fixed array storage requires recorded positive count, size and alignment: "+type.Name);
         if(type.Element is not long element)throw new InvalidDataException("Array element type missing");
         var entry=unit.Original(element);
-        if(entry.Kind=="record" || unit.VaListRole(element) is not null)
-            throw new InvalidDataException("Record or va_list array elements are not yet implemented");
+        if(unit.VaListRole(element) is not null)
+            throw new InvalidDataException("va_list array elements are not yet implemented");
+        if(entry.Kind=="record" && (entry.Dependent || entry.Incomplete || entry.Size is not >0 || entry.Alignment is not >0))
+            throw new InvalidDataException("Record array elements require recorded complete size and alignment: "+entry.Name);
     }
 
     private void WriteArrayTypes()
@@ -54,8 +56,12 @@ internal sealed partial class Emitter
         {
             var unit=layout.Unit;var type=unit.Types[layout.Type];CheckArrayLayout(unit,type);
             Line(1,"// Fixed array storage: "+Type(unit,type.Element!.Value)+"["+type.Count+"].");
-            Line(1,"[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = "+type.Size+")]");
+            bool recordElements=unit.Original(type.Element!.Value).Kind=="record";
+            string? alignment=recordElements?CompleteRecordAlignment(type):null;
+            Line(1,"[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Explicit, Size = "+type.Size+
+                (recordElements?", Pack = "+type.Alignment:"")+")]");
             Line(1,"public struct "+layout.Name);Line(1,"{");
+            if(recordElements)WriteCompleteRecordStorage(unit,type,layout.Name,alignment!);
             Line(2,"[global::System.Runtime.InteropServices.FieldOffset(0)]");
             Line(2,"public "+Type(unit,type.Element!.Value)+" First;");Line(1,"}");
         }
@@ -82,8 +88,7 @@ internal sealed partial class Emitter
         if(bytes>int.MaxValue)throw new InvalidDataException("Pinned global array size exceeds supported managed storage");
         Line(1,"private static readonly byte[] "+storage+" = global::System.GC.AllocateArray<byte>("+bytes+", pinned: true);");
         Line(1,"public static "+Type(unit,type.Id)+"* "+name+" => ("+Type(unit,type.Id)+"*)"+AlignedArrayAddress(storage,type.Alignment!.Value)+";");
-        if(!unit.Initializers.TryGetValue(global.Id,out long initialization))
-            throw new InvalidDataException("Exporter defect: global array initialization actions missing for "+global.Symbol.Name);
+        if(!unit.Initializers.TryGetValue(global.Id,out long initialization))return;
         string? data=WriteConstantArrayData(unit,unit.Nodes[initialization],type,name);
         Line(1,"private static void "+create+"()");Line(1,"{");
         if(data is not null)

@@ -6,9 +6,10 @@ internal sealed partial class Emitter
 
     private void WriteGlobalInitializers()
     {
-        if(globalInitializerNames.Count==0)return;
+        if(globalInitializerNames.Count==0 && !program.Units.Any(unit=>unit.StartupGroups.Count!=0))return;
         Line(1,"static "+className+"()");Line(1,"{");
         foreach(string initializer in globalInitializerNames)Line(2,initializer+"();");
+        WriteStartupCalls(2);
         Line(1,"}");
     }
 

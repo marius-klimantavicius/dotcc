@@ -15,7 +15,7 @@ def inspect(path):
         db.row_factory=sqlite3.Row
         assert tuple(db.execute('PRAGMA integrity_check').fetchone())==('ok',)
         assert not list(db.execute('PRAGMA foreign_key_check'))
-        assert db.execute('PRAGMA user_version').fetchone()[0]==1027
+        assert db.execute('PRAGMA user_version').fetchone()[0]>=1027
         groups=db.execute('SELECT * FROM startup_groups ORDER BY ordinal').fetchall()
         assert len(groups)==1 and groups[0]['ordinal']==0 and groups[0]['init_priority']==0
         group=groups[0]

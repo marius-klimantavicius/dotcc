@@ -105,9 +105,9 @@ internal sealed partial class Emitter
         foreach(var global in program.Globals)
         {
             if(global.Unit.IsArray(global.Symbol.Type)){WriteGlobalArray(global);continue;}
-            if(global.Unit.Initializers.TryGetValue(global.Id,out long recordInitializer) && global.Unit.RecordInitializers.ContainsKey(recordInitializer))
+            if(HasPinnedRecordStorage(global.Unit,global.Id))
             {
-                WriteGlobalRecord(global,recordInitializer);continue;
+                WriteGlobalRecord(global,global.Unit.Initializers.TryGetValue(global.Id,out long recordInitializer)?recordInitializer:null);continue;
             }
             if(HasPinnedScalarStorage(global.Unit,global.Id)){WriteGlobalScalar(global);continue;}
             string value=global.Unit.Initializers.TryGetValue(global.Id,out var initializer)

@@ -6,10 +6,10 @@ internal sealed partial class Emitter
     {
         if(unit.Symbols[symbol].Kind is not ("global" or "static-local" or "rtti-object"))return false;
         var global=program.Resolve(unit,symbol);
-        return global.Unit.Initializers.TryGetValue(global.Id,out long initializer) && global.Unit.RecordInitializers.ContainsKey(initializer);
+        return global.Unit.Original(global.Symbol.Type).Kind=="record";
     }
 
-    private void WriteGlobalRecord(SymbolRef global,long initializer)
+    private void WriteGlobalRecord(SymbolRef global,long? initializer)
     {
         string name=SymbolName(global.Unit,global.Id),type=Type(global.Unit,global.Symbol.Type);
         var layout=global.Unit.Original(global.Symbol.Type);
@@ -21,8 +21,9 @@ internal sealed partial class Emitter
         string storage=names.Allocate("__"+name+"_storage","global_record_storage");
         Line(1,"private static readonly byte[] "+storage+" = global::System.GC.AllocateArray<byte>("+bytes+", pinned: true);");
         Line(1,"public static "+type+"* "+name+" => ("+type+"*)"+AlignedArrayAddress(storage,layout.Alignment.Value)+";");
+        if(initializer is null)return;
         Line(1,"private static void "+create+"()");Line(1,"{");
-        new FunctionWriter(this,global.Unit,null).WriteRecordInitializer(global.Unit.Nodes[initializer],"(*"+name+")",2);
+        new FunctionWriter(this,global.Unit,null).WriteRecordInitializer(global.Unit.Nodes[initializer.Value],"(*"+name+")",2);
         Line(1,"}");globalInitializerNames.Add(create);
     }
 

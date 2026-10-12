@@ -175,7 +175,11 @@ internal sealed partial class Emitter
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs unsupported unordered/overlap/array/storage cleanup emission");
             bool hasAggregateActions=initialization.Value is long aggregate &&
                 (unit.ArrayInitializers.ContainsKey(aggregate) || unit.RecordInitializers.ContainsKey(aggregate) || unit.LiteralInitializers.ContainsKey(aggregate));
-            if(initialization.PartiallyInitialized && !hasAggregateActions || initialization.ValueInitialization ||
+            if(initialization.ValueInitialization && initialization.ValueInitializationNeedsZeroing==true)
+                throw new InvalidDataException("Value initialization "+initialization.Id+" requires its selected zeroing extent, which is not yet emitted");
+            bool unsupportedValueInitialization=initialization.ValueInitialization &&
+                !(initialization.Kind=="constructor" && initialization.ValueInitializationNeedsZeroing==false);
+            if(initialization.PartiallyInitialized && !hasAggregateActions || unsupportedValueInitialization ||
                 initialization.TemporaryLifetime && initialization.Destructor is not null)
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs unsupported partial/value/temporary initialization emission");
             if(initialization.ImpliedSource && initialization.Kind!="bitwise-copy")
@@ -303,6 +307,10 @@ internal sealed partial class Emitter
                 return;
             }
             if(node.Kind=="static-declaration"){WriteStaticDeclaration(node,indent);return;}
+            if(node.Symbol is long global && unit.Symbols[global].Kind=="global")
+            {
+                WriteGlobalInitialization(node,global,indent);return;
+            }
             if(node.Symbol is long array && unit.IsArray(unit.Symbols[array].Type)){WriteArrayDeclaration(node,indent);return;}
             if(node.Initialization is not long id){Line(indent,Declaration(node)+";");return;}
             long variable=node.Symbol??unit.Initializations[id].Variable??throw unit.Missing(node,"initialization destination missing");
