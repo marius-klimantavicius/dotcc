@@ -31,6 +31,7 @@ internal sealed partial class Emitter
                     throw new InvalidDataException("Constructor/destructor base projection is unavailable: "+selected);
                 return "(*"+projection+"("+Name(receiver)+"))";
             }
+            if(member.Kind=="delegation" && !member.Virtual)return DelegatingConstructorTarget(member,receiver);
             throw new InvalidDataException("Virtual base/delegating constructor emission is not yet implemented");
         }
 
