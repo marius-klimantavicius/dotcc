@@ -99,3 +99,49 @@ delegating ordinary in-contract decisions to the supervisor.
 | 19:03 | ICU generated-v3, source-variable patch and enum reference paths | `2b6db2560` emits ordinary local bitwise statements and removes unused helpers; real ICU source retains all 14 definitions. Nonreal variables use source-only declaration/initializer nodes and are excluded from executable symbol resolution. Caught the constant-path early return bypassing dependent enum identity attachment; native confirmed and added exact-ID verification before final acceptance build. No heuristic name/value matching. |
 | 19:21 | Bitfield emitter, stock signedness/offset facts, bitfields-v1 reports and staged snapshot | Named properties use only recorded occupied bytes, signedness and target ordering; cross-byte canaries and string-shaped layouts pass native/C#/NativeAOT. Wider fields still use per-byte assembly, so this is correctness support, not final efficiency. Commit verified bitfield facts separately from ongoing source-query changes. Keep native on the shared core blocker and managed on actual ICU compilation/provider reachability using existing runtime support. |
 | 19:26 | Batched recipe operator/query patch and source-query-recipes-v3 reports | Typed source operators retain ordered operands without forcing executable dispatch or RTTI storage. Fixture passes native/C#/NativeAOT; checksum-v19 advances to an aggregate initializer with a dependent target type. Preserve its selected type and ordered source elements without requiring runtime field layout or resolving the alias again. ICU differential harness remains an isolated verification task using existing runtime adapters. |
+| 19:36 | ICU differential files, chimp constants source and progressing core export processes | Independently confirmed identical native/C#/NativeAOT result hashes and unchanged generated ICU bodies. Chimp is a complete data-only core object/source with zero imports, not an algorithm pass. Its per-byte static writes violate requested readability; assigned typed span constants plus `CopyTo`. Core checksum-v20 now reaches actual source-recipe initialization ownership; pursue that observed boundary while exception-v23 continues around 292 MiB RSS, without scaling the corpus. |
+
+## Resumption and storage review on 2026-10-12
+
+At 02:54 UTC the user resumed work. The saved eight process identities from the
+pause were no longer present; none were signalled or confused with another
+process. The existing supervisor and original implementation agents were
+reactivated with their retained requested model configurations. Preserve the
+uncommitted source-initialization and constant-array changes and restart bounded
+probes through the supervisor.
+
+At 03:00 UTC the director reproduced the suspected SQLite construction bottleneck
+with the actual 44-table schema. Recursive forward-reference insertion of
+1,000 / 4,000 / 12,000 pointer types took 0.083 / 1.223 / 10.548 seconds with
+deferred foreign-key enforcement. Indexing every child reference reduced this to
+0.010 / 0.043 / 0.125 seconds but adds many persistent indexes. Checking foreign
+keys once before commit took 0.0025 / 0.0099 / 0.0287 seconds for insertion and
+0.0001 / 0.0004 / 0.0011 seconds for the final check. These are an isolated storage
+reproduction, not measured full-TU speedups.
+
+The adapter now retains all declared foreign keys but enforces them with one
+`foreign_key_check` before commit, rolling back a broken object. Immediate SQL
+CHECK, UNIQUE and NOT NULL constraints are unchanged. This is object-reference
+integrity, not C++ semantic verification. No schema or semantic payload changed.
+`dotobj-relational-sqlite-writer-v1` compiles the actual adapter and passes valid
+12,000-row forward/cyclic references, missing parent references, WITHOUT ROWID
+references, invalid updates, immediate constraints and unfinished rollback.
+The native valid case completes in 0.042 seconds. Supervisor owns the integration
+build and real-unit measurements before attributing campaign throughput gains.
+
+The integrated writer/source-initializer build completes actual checksum-v22 in
+1.06 seconds (0.88 seconds user CPU, 199,168 KiB peak RSS), producing an
+11,276,288-byte object with 42,592 types, 11,510 symbols, 31,105 nodes,
+1,399 functions, 659 initializations and 107 lifetimes. All three definitions
+originating in `checksum.cpp` are present. Earlier checksum-v20 rejected after
+322.89 seconds; the source-initializer change also advances coverage, so this is
+not an otherwise identical whole-TU benchmark. Exception-v24 also completes in
+1.85 seconds / 298,752 KiB. These are complete exporter results, not full C#
+generation or runtime acceptance.
+
+Checksum generation now reaches a required external virtual table:
+`_ZTVSt9exception`, selected address point 16. Extend required-provider metadata
+and declarations for this exact ABI storage instead of inventing a table or
+requiring libc++ implementation before source emission. Keep strict mode and
+the external provider's stable-address obligation explicit. Whole-project
+catalog loading remains an open memory-scaling issue; measure bounded batches.

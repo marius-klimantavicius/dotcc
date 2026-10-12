@@ -1560,6 +1560,40 @@ aggregate boundary. Partial databases are progress artifacts, not complete objec
 The next real result will choose subsequent exporter work. Complete core counts
 remain 0/0 at this milestone; bundled ICU export/source/runtime smoke is verified.
 
+## Source initializer recipes and checked SQLite construction (2026-10-12)
+
+Selected dependent temporary/lambda initializers now retain source-only nodes with
+exact target type, initialization form, selected constructor when present, ordered
+arguments/evaluation order, value graph and explicit source cast type. They create
+no executable initialization or lifetime ownership rows. Undecided prototype
+constructors remain genuinely undecided. Cleanup, sharing, partial and implied-copy
+forms still produce located explicit boundaries. `source-initializers-v1` passes
+native, exact SQL metadata checks, source-hidden C# and Linux NativeAOT.
+
+SQLite construction accepts forward/cyclic references without enforcing foreign
+keys on each recursive parent insertion. Before commit it checks every declared
+foreign key on the completed object. CHECK/UNIQUE/NOT NULL remain immediate; invalid
+references roll back and no invalid object is published. The actual adapter fixture
+checks valid forward/cyclic relationships, normal/WITHOUT ROWID/update failures,
+immediate constraints and unfinished rollback. A 12,000-node forward graph completes
+in 0.042 seconds. This is database integrity checking, not C++ semantic validation.
+
+Actual original C++17 `checksum.cpp` now completes export in 1.06 seconds / 199,168
+KiB peak RSS: 11,276,288 bytes, 42,592 types, 11,510 symbols, 31,105 nodes (17,175
+program / 13,930 recipe), 1,399 captured function definitions, 659 initializations
+and 107 lifetimes. Its three original source definitions are retained. Original
+`exception.cpp` also completes in 1.85 seconds / 298,752 KiB. Both objects pass
+SQLite integrity and foreign-key checks. Earlier minute-scale runs stopped before
+completion; source-initializer support and writer policy changed together, so these
+are complete-stage costs rather than a claimed identical-input speedup factor.
+
+Checksum C# generation now stops explicitly at the missing external virtual table
+`_ZTVSt9exception`, address point 16. Required-provider support is in progress;
+no table or entries are fabricated. Core complete exports are three (Chimp data-only,
+checksum and exception); complete core C# source remains Chimp data-only. Bundled ICU
+export/source/native differential remains verified. A bounded additional-core batch
+tracks separate exporter boundaries; the full configured library remains unfinished.
+
 ## Remaining work
 
 This is a new executable foundation, not a complete C++ implementation. Remaining

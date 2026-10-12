@@ -35,8 +35,14 @@ class Database {
 public:
   explicit Database(const std::string &path) {
     check(sqlite3_open_v2(path.c_str(),&db,SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE,nullptr));
-      exec("PRAGMA foreign_keys=ON; PRAGMA cache_size=-8192; PRAGMA temp_store=FILE;");
-      exec("BEGIN IMMEDIATE; PRAGMA defer_foreign_keys=ON;");
+    // Recursive projection writes forward/cyclic references. Deferred FK
+    // enforcement repeatedly scans unindexed child tables on parent inserts,
+    // making construction quadratic. Check the complete relation once before
+    // committing instead; CHECK/UNIQUE/NOT NULL constraints remain immediate.
+    exec("PRAGMA foreign_keys=OFF; PRAGMA cache_size=-8192; PRAGMA temp_store=FILE;");
+    exec("BEGIN IMMEDIATE;");
+    // The schema's connection-level foreign_keys pragma has no effect inside
+    // this transaction. All declared relationships are checked by finish().
     exec(dot_semantic_schema);
   }
   Database(const Database&)=delete;
@@ -100,7 +106,24 @@ public:
     }
     check(sqlite3_reset(statement));check(sqlite3_clear_bindings(statement));
   }
-  void finish() { exec("COMMIT");finished=true; }
+  void finish() {
+    sqlite3_stmt *integrity=nullptr;
+    check(sqlite3_prepare_v2(db,"PRAGMA foreign_key_check",-1,&integrity,nullptr));
+    int code=sqlite3_step(integrity);
+    if(code==SQLITE_ROW) {
+      std::fprintf(stderr,"semantic SQLite: unresolved foreign key: table=%s rowid=%lld parent=%s constraint=%d\n",
+        sqlite3_column_text(integrity,0),
+        static_cast<long long>(sqlite3_column_int64(integrity,1)),
+        sqlite3_column_text(integrity,2),sqlite3_column_int(integrity,3));
+      sqlite3_finalize(integrity);
+      exec("ROLLBACK");
+      std::exit(1);
+    }
+    check(code);
+    check(sqlite3_finalize(integrity));
+    exec("COMMIT");
+    finished=true;
+  }
 };
 }
 #endif
