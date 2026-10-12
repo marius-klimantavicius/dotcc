@@ -3,6 +3,25 @@
 The broad v66 graph campaign remains stopped. The replacement contract is
 [dotobj-relational-restart.md](dotobj-relational-restart.md).
 
+## Current checkpoint — 2026-10-12
+
+The compact SQLite format is schema 1025 / 44 tables. Eight distinct original
+DuckDB core TUs have been attempted with their original manifest modes/options;
+three export completely: data-only Chimp constants, functional checksum and
+exception. Chimp generates complete C# and passes native/C#/NativeAOT data/address
+checks. Its three tables now use typed span literals and `CopyTo`. Checksum and
+exception source generation is pending exact external virtual-table providers.
+Bundled ICU independently exports/emits all 14 bodies and passes 33 UTF differential
+cases plus seven genuine provider adapters; it does not count as a core TU.
+
+Current exporter boundaries are virtual deleting destruction (hugeint), dynamic
+function-local static initialization (allocator), contiguous multideclarator
+initialization (shared date/string), and owned string default-member initialization
+(buffer manager). The bounded batch retained every command/pin/failure; no full-corpus
+run has resumed. Verified source-initializer and checked-writer changes are
+`aeb61196a` and `b1f2302fd`. Full configured library translation remains incomplete.
+The sections below retain historical milestone evidence and counts.
+
 ## Verified result
 
 Native compiler built with the all-extensions configuration and direct SQLite
@@ -1593,6 +1612,24 @@ no table or entries are fabricated. Core complete exports are three (Chimp data-
 checksum and exception); complete core C# source remains Chimp data-only. Bundled ICU
 export/source/native differential remains verified. A bounded additional-core batch
 tracks separate exporter boundaries; the full configured library remains unfinished.
+
+## Typed constant-array source data (2026-10-12)
+
+Eligible fixed native-integer arrays retain typed `ReadOnlySpan<T>` literal
+properties and copy once to their exact pinned destinations. Recorded zero/repeat
+and constant actions determine every slot; missing values and relocations keep the
+ordinary writer. There is no arbitrary table-size eligibility cutoff; the count
+must fit the real Int32 span/index contract. All storage allocations still precede
+the static-write phase. Native-width signed/unsigned values, extrema, zeros, repeats,
+mutation, addresses and forward relocations pass the retained source-hidden fixture
+and native/C#/NativeAOT checks. The existing array regression also passes.
+
+Actual Chimp `generated-v2/Translated.cs` shrinks from 211 to 96 lines, with three
+typed byte spans / three `CopyTo` calls and all eight pinned fields preserved.
+The v2 native/managed/NativeAOT oracle agrees on all 141 bytes and eight exact link
+identities; addresses survive three forced compacting collections. Zero imports
+are needed. This proves the original core data TU's output, not compression
+algorithm execution. Tool/source hashes and both generations remain retained.
 
 ## Remaining work
 

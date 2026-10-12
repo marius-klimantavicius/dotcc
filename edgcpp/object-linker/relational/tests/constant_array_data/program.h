@@ -1,0 +1,13 @@
+extern unsigned char byte_values[6];
+extern signed char signed_values[4];
+extern short short_values[4];
+extern unsigned short ushort_values[4];
+extern int integer_values[6];
+extern unsigned int unsigned_values[4];
+extern long long wide_values[4];
+extern unsigned long long uwide_values[4];
+extern int repeated_values[12];
+extern int zero_values[5];
+extern int forward_value;
+extern int *relocations[2];
+int *integer_address();
