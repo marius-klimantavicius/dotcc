@@ -38,25 +38,29 @@ internal sealed partial class Emitter
         foreach(var entry in unit.VirtualEntries.GetValueOrDefault(table.Id,[]))
         {
             UseType(unit,entry.CallableType);UseType(unit,entry.ReceiverType);
-            if(entry.Target is long target)
+            if(entry.AbiCallableType is long abi)UseType(unit,abi);
+            if(entry.Kind=="ordinary")
             {
-                if(entry.Kind!="ordinary")
-                {
-                    UseType(unit,unit.Symbols[target].Type);continue;
-                }
+                long target=VirtualEntryTarget(entry);
                 var function=program.Resolve(unit,target);
                 UseSymbol(unit,target);
                 if(function.Unit.FunctionDetails.TryGetValue(function.Id,out var details) && details.Receiver is long receiver)
                     UseType(function.Unit,function.Unit.Symbols[receiver].Type);
             }
+            else if(entry.Target is long target)UseType(unit,unit.Symbols[target].Type);
         }
     }
+
+    private static long VirtualEntryTarget(VirtualEntry entry)=>entry.AbiEntrySymbol ??
+        (entry.Variant=="ordinary"?entry.Target:null) ??
+        throw new InvalidDataException("Selected virtual ABI entry symbol is missing: "+entry.AbiName);
 
     private string VirtualPointer(Unit unit,long callable,long receiver)
     {
         var signature=unit.Original(callable);
         if(signature.Variadic)throw new InvalidDataException("Variadic virtual dispatch is not yet implemented");
-        var parameters=unit.TypeParameters.GetValueOrDefault(signature.Id,[]).Select(id=>Type(unit,id)).Prepend(Type(unit,receiver)+"*");
+        var parameters=unit.TypeParameters.GetValueOrDefault(signature.Id,[]).Select(id=>Type(unit,id));
+        if(signature.ParametersIncludeReceiver!=true)parameters=parameters.Prepend(Type(unit,receiver)+"*");
         if(signature.ReturnStorage=="caller-provided")parameters=parameters.Prepend(Type(unit,signature.Result!.Value)+"*");
         return "delegate* managed<"+string.Join(", ",parameters.Append(signature.ReturnStorage=="caller-provided"?"void":Type(unit,signature.Result!.Value)))+">";
     }
@@ -87,8 +91,10 @@ internal sealed partial class Emitter
             var callbacks=new List<(VirtualEntry Entry,string? Name)>();
             foreach(var entry in entries)
             {
-                if(entry.Variant!="ordinary" || entry.VcallIndex!=0 || entry.ReturnDelta!=0 || entry.VbaseIndex!=0)
-                    throw new InvalidDataException("Virtual destructor, virtual-base or covariant thunk emission is not yet implemented: "+entry.AbiName);
+                if(entry.Variant is not ("ordinary" or "complete" or "deleting") || entry.VcallIndex!=0 || entry.ReturnDelta!=0 || entry.VbaseIndex!=0)
+                    throw new InvalidDataException("Virtual-base or covariant thunk emission is not yet implemented: "+entry.AbiName);
+                if(entry.Variant=="deleting" && (entry.AbiCallableType is not long abi || unit.Original(abi).ParametersIncludeReceiver!=true))
+                    throw new InvalidDataException("Selected deleting ABI entry signature is missing: "+entry.AbiName);
                 string? callback=entry.Kind=="null"?null:names.Allocate("__virtual_entry_"+unit.Symbols[entry.Selected].Name,"virtual_entry");
                 callbacks.Add((entry,callback));
                 if(callback is not null)WriteVirtualEntry(unit,entry,callback);
@@ -97,19 +103,25 @@ internal sealed partial class Emitter
             Line(1,"private static nint[] "+create+"()");Line(1,"{");
             Line(2,"var entries = global::System.GC.AllocateArray<nint>("+(entries.Max(entry=>entry.Slot)+1)+", pinned: true);");
             foreach(var callback in callbacks.Where(callback=>callback.Name is not null))
-                Line(2,"entries["+callback.Entry.Slot+"] = (nint)("+VirtualPointer(unit,callback.Entry.CallableType,callback.Entry.ReceiverType)+")&"+callback.Name+";");
+                Line(2,"entries["+callback.Entry.Slot+"] = (nint)("+VirtualPointer(unit,callback.Entry.AbiCallableType??callback.Entry.CallableType,callback.Entry.ReceiverType)+")&"+callback.Name+";");
             Line(2,"return entries;");Line(1,"}");
         }
     }
 
     private void WriteVirtualEntry(Unit unit,VirtualEntry entry,string name)
     {
-        var signature=VirtualSignature(unit,entry.CallableType);
-        bool indirect=unit.Original(entry.CallableType).ReturnStorage=="caller-provided";
-        var parameters=unit.TypeParameters.GetValueOrDefault(unit.Original(entry.CallableType).Id,[])
+        long callable=entry.AbiCallableType??entry.CallableType;
+        var signature=VirtualSignature(unit,callable);
+        var type=unit.Original(callable);
+        bool indirect=type.ReturnStorage=="caller-provided";
+        var supplied=unit.TypeParameters.GetValueOrDefault(type.Id,[]);
+        int receiverCount=type.ParametersIncludeReceiver==true?1:0;
+        if(receiverCount!=0 && supplied.Count==0)
+            throw new InvalidDataException("Selected virtual ABI receiver parameter is missing: "+entry.AbiName);
+        var parameters=supplied.Skip(receiverCount)
             .Select((id,index)=>Type(unit,id)+" argument"+index).ToList();
-        parameters.Insert(0,Type(unit,entry.ReceiverType)+"* receiver");
-        if(indirect)parameters.Insert(0,Type(unit,unit.Original(entry.CallableType).Result!.Value)+"* result");
+        parameters.Insert(0,(receiverCount==0?Type(unit,entry.ReceiverType)+"*":Type(unit,supplied[0]))+" receiver");
+        if(indirect)parameters.Insert(0,Type(unit,type.Result!.Value)+"* result");
         Line(1,"private static "+signature.Result+" "+name+"("+string.Join(", ",parameters)+")");Line(1,"{");
         if(entry.Kind is "pure" or "deleted")
         {
@@ -119,12 +131,12 @@ internal sealed partial class Emitter
         }
         else
         {
-            long targetId=entry.Target??throw new InvalidDataException("Exporter defect: virtual entry target missing");
+            long targetId=VirtualEntryTarget(entry);
             var target=program.Resolve(unit,targetId);
             string targetName=SymbolName(unit,targetId);
             string receiverType=ReceiverType(target);
             string receiver="("+receiverType+")"+(entry.ThisDelta==0?"receiver":"((byte*)receiver + "+entry.ThisDelta+")");
-            var arguments=Enumerable.Range(0,unit.TypeParameters.GetValueOrDefault(unit.Original(entry.CallableType).Id,[]).Count).Select(index=>"argument"+index).ToList();
+            var arguments=Enumerable.Range(0,supplied.Count-receiverCount).Select(index=>"argument"+index).ToList();
             arguments.Insert(0,receiver);if(indirect)arguments.Insert(0,"result");
             string call=targetName+"("+string.Join(", ",arguments)+")";
             Line(2,signature.Result=="void"?call+";":"return ("+signature.Result+")"+call+";");
@@ -139,7 +151,10 @@ internal sealed partial class Emitter
             string name=names.Allocate("__virtual_"+unit.Types[call.ReceiverType].Name+"_"+unit.Symbols[call.Selected].Name,"virtual_call");
             virtualCallNames.Add((unit,call.Node),name);
             var signature=VirtualSignature(unit,call.CallableType);
-            string pointer=VirtualPointer(unit,call.CallableType,call.ReceiverType);
+            long callable=call.AbiCallableType??call.CallableType;
+            if(call.AbiCallableType is not null && unit.Original(callable).ParametersIncludeReceiver!=true)
+                throw unit.Missing(unit.Nodes[call.Node],"selected virtual ABI signature requires its recorded receiver parameter");
+            string pointer=VirtualPointer(unit,callable,call.ReceiverType);
             string receiverType=Type(unit,call.ReceiverType)+"*";
             Line(1,"private readonly struct "+name);Line(1,"{");
             Line(2,"private readonly "+receiverType+" receiver;");Line(2,"private readonly "+pointer+" target;");

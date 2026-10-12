@@ -35,7 +35,7 @@ internal sealed partial class Emitter
             {
                 if(initialization.Type is long type && !byteZeroInitializations.Contains(initialization.Id))UseType(unit,type);
                 if(initialization.Constructor is long constructor)UseSymbol(unit,constructor);
-                if(initialization.Destructor is long destructor)UseSymbol(unit,destructor);
+                if(initialization.Destructor is long destructor && !virtualDestructionMetadata.Contains(initialization.Id))UseSymbol(unit,destructor);
             }
             foreach(var member in unit.ConstructorInitializers.GetValueOrDefault(function.Id,[]))
             {
@@ -122,7 +122,7 @@ internal sealed partial class Emitter
         {
             if(initialization.Type is long initializedType && !byteZero)UseType(unit,initializedType);
             if(initialization.Constructor is long constructor)UseSymbol(unit,constructor);
-            if(initialization.Destructor is long destructor)UseSymbol(unit,destructor);
+            if(initialization.Destructor is long destructor && !virtualDestructionMetadata.Contains(initialization.Id))UseSymbol(unit,destructor);
             if(initialization.Value is long value)UseNode(unit,unit.Nodes[value],visited);
             foreach(long argument in unit.InitializationArguments.GetValueOrDefault(selected,[]))UseNode(unit,unit.Nodes[argument],visited);
         }
@@ -130,6 +130,7 @@ internal sealed partial class Emitter
         if(unit.VirtualCalls.TryGetValue(node.Id,out var call))
         {
             UseType(unit,call.ReceiverType);UseType(unit,call.CallableType);
+            if(call.AbiCallableType is long abi)UseType(unit,abi);
         }
         // These edges retain source metadata. Selected execution follows its
         // program references without realizing or evaluating this metadata.

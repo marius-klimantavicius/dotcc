@@ -212,8 +212,7 @@ internal sealed partial class Emitter
             // owns its evaluation, including any converted call arguments.
             if(node.Kind=="delete")
             {
-                if(node.Operator=="virtual-destroy")throw unit.Missing(node,"virtual deleting ABI entry execution is not yet implemented");
-                return node.Operator=="destroy"?Expression(node):NormalizeValue(node,ExpandedExpression(Child(node,"execution"),indent));
+                return node.Operator is "destroy" or "virtual-destroy"?Expression(node):NormalizeValue(node,ExpandedExpression(Child(node,"execution"),indent));
             }
             // These helpers preserve the recorded operand order inside the
             // expression, including conditional and short-circuit branches.

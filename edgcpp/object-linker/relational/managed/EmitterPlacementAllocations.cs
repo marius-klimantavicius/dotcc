@@ -46,10 +46,10 @@ internal sealed partial class Emitter
             bool nullCheck=allocation.ConstructionNullCheck
                 ??throw unit.Missing(node,"exporter defect: selected construction null guard missing");
             var allocated=unit.Original(allocation.Type);
-            if(allocated.Kind!="record" || allocated.Incomplete || allocated.Size is not >0 ||
+            if(allocated.Kind is "array" or "function" or "void" || allocated.Incomplete || allocated.Size is not >0 ||
                allocation.CountValue is not null || allocation.CountSymbol is not null ||
                allocation.Check is not null || allocation.Failure is not null || allocation.ResultOffset!=0)
-                throw unit.Missing(node,"placement construction supports a complete record without array/cookie handling");
+                throw unit.Missing(node,"placement construction supports a complete object without array/cookie handling");
             if(node.Lifetime is long lifetime && unit.Destructions.GetValueOrDefault(lifetime,[]).Any(id=>!allocationOwnedCleanups.Contains(id)))
                 throw unit.Missing(node,"placement construction has unsupported additional expression cleanup");
             var arguments=unit.Children(node,"placement-argument").ToArray();
@@ -66,7 +66,7 @@ internal sealed partial class Emitter
                 throw unit.Missing(node,"placement protected action emission requires its recorded initialization alias");
             var initialization=unit.Initializations[initialize.Initialization
                 ??throw unit.Missing(initialize,"exporter defect: placement initialization action missing")];
-            if(initialization.Kind is not ("constructor" or "expression") || initialization.Destructor is not null || initialization.DestinationInitialization is not null)
+            if(initialization.Kind is not ("constructor" or "expression" or "constant" or "zero") || initialization.Destructor is not null || initialization.DestinationInitialization is not null)
                 throw unit.Missing(initialize,"placement initialization requires its selected complete-object action without end-lifetime cleanup");
             var cleanup=unit.Initializations[cleanupNode.Initialization
                 ??throw unit.Missing(cleanupNode,"exporter defect: allocation cleanup action missing")];

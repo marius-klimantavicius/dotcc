@@ -90,7 +90,7 @@ internal sealed partial class Emitter
             throw new InvalidDataException("Required provider return type is missing for "+selected.Symbol.LinkName);
         var parameters=unit.TypeParameters.GetValueOrDefault(signature.Id,[])
             .Select((type,index)=>Type(unit,type)+" argument"+index).ToList();
-        if(signature.ObjectType is long receiver)parameters.Insert(0,Pointer(unit,receiver)+" receiver");
+        if(signature.ObjectType is long receiver && signature.ParametersIncludeReceiver!=true)parameters.Insert(0,Pointer(unit,receiver)+" receiver");
         if(signature.ReturnStorage=="caller-provided")parameters.Insert(0,Type(unit,result)+"* result");
         if(signature.Variadic)parameters.Add("params "+VaSpanType+" arguments");
         return "public static partial "+(signature.ReturnStorage=="caller-provided"?"void":Type(unit,result))+" "+import.Name+"("+string.Join(", ",parameters)+");";

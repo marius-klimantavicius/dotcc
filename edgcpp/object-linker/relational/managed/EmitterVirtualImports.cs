@@ -6,6 +6,7 @@ internal sealed partial class Emitter
     private readonly Dictionary<string,VirtualTableImport> virtualTableImports=new(StringComparer.Ordinal);
     private Unit? virtualCalleeUnit;
     private HashSet<long> virtualCalleeMetadata=[];
+    private HashSet<long> virtualDestructionMetadata=[];
 
     private void PrepareVirtualCalleeMetadata(Unit unit)
     {
@@ -21,7 +22,22 @@ internal sealed partial class Emitter
                     if(candidates.Contains(edge.Child) &&
                         !(unit.VirtualCalls.ContainsKey(pair.Key) && edge.Role=="operand" && edge.Ordinal==0))
                         candidates.Remove(edge.Child);
-        virtualCalleeUnit=unit;virtualCalleeMetadata=candidates;
+        var destructionCandidates=new HashSet<long>();
+        var destructionNodes=new HashSet<long>();
+        foreach(var node in unit.Nodes.Values.Where(node=>node.Kind=="delete" && node.Operator=="virtual-destroy"))
+            foreach(var edge in unit.Edges.GetValueOrDefault(node.Id,[]).Where(edge=>edge.Role=="destroy"))
+                if(unit.Nodes[edge.Child].Initialization is long initialization)
+                {
+                    destructionCandidates.Add(initialization);destructionNodes.Add(edge.Child);
+                }
+        // A source destructor action retained by virtual delete describes the
+        // logical selection; the supplied D0 execution owns its actual call.
+        // Retain a provider when the same action also has another recorded use.
+        foreach(var node in unit.Nodes.Values)
+            if(node.Initialization is long initialization && !destructionNodes.Contains(node.Id))destructionCandidates.Remove(initialization);
+        foreach(long initialization in unit.Destructions.Values.SelectMany(actions=>actions))destructionCandidates.Remove(initialization);
+        foreach(var initialization in unit.ConstructorInitializers.Values.SelectMany(actions=>actions))destructionCandidates.Remove(initialization.Initialization);
+        virtualCalleeUnit=unit;virtualCalleeMetadata=candidates;virtualDestructionMetadata=destructionCandidates;
     }
 
     private VirtualTableImport RequireVirtualTableProvider(Unit unit,VirtualTable table)

@@ -213,7 +213,7 @@ internal sealed partial class Emitter
         if(type.Kind!="function")return Type(unit,target,allowIncomplete:true)+"*";
         var parameters=unit.TypeParameters.GetValueOrDefault(type.Id,[]).Select(id=>Type(unit,id));
         if(type.Variadic){needsVarargsRuntime=true;parameters=parameters.Append(VaSpanType);}
-        if(type.ObjectType is long receiver)parameters=parameters.Prepend(Pointer(unit,receiver));
+        if(type.ObjectType is long receiver && type.ParametersIncludeReceiver!=true)parameters=parameters.Prepend(Pointer(unit,receiver));
         if(type.ReturnStorage=="caller-provided")parameters=parameters.Prepend(Type(unit,type.Result!.Value)+"*");
         return "delegate* managed<"+string.Join(", ",parameters.Append(type.ReturnStorage=="caller-provided"?"void":Type(unit,type.Result!.Value)))+">";
     }
@@ -302,8 +302,7 @@ internal sealed partial class Emitter
                 case "string-literal":return "(*"+ArrayAddress(node)+")";
                 case "new":return AllocationExpression(node);
                 case "delete":
-                    if(node.Operator=="virtual-destroy")throw unit.Missing(node,"virtual deleting ABI entry execution is not yet implemented");
-                    return node.Operator=="destroy"?DeallocationExpression(node):Expression(Child(node,"execution"));
+                    return node.Operator is "destroy" or "virtual-destroy"?DeallocationExpression(node):Expression(Child(node,"execution"));
                 case "variable":
                     long variable=node.Symbol??throw unit.Missing(node,"selected symbol missing");
                     return unit.IsArray(unit.Symbols[variable].Type) || emitter.HasPinnedRecordStorage(unit,variable) || emitter.HasPinnedScalarStorage(unit,variable) || emitter.HasProviderAddress(unit,variable)?"(*"+Name(variable)+")":Name(variable);

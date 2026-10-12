@@ -6,7 +6,7 @@ internal sealed partial class Emitter
 
     private void WriteDeallocationHelpers(Unit unit,long? function)
     {
-        foreach(var node in unit.Nodes.Values.Where(node=>node.Function==function && node.Kind=="delete" && node.Operator=="destroy"))
+        foreach(var node in unit.Nodes.Values.Where(node=>node.Function==function && node.Kind=="delete" && node.Operator is "destroy" or "virtual-destroy"))
         {
             string name=names.Allocate("__delete_object_"+node.Id,"delete_object");
             deallocationNames.Add((unit,node.Id),name);
@@ -16,7 +16,7 @@ internal sealed partial class Emitter
 
     private void ReleaseDeallocationNames(Unit unit,long function)
     {
-        foreach(var node in unit.Nodes.Values.Where(node=>node.Function==function && node.Kind=="delete" && node.Operator=="destroy"))
+        foreach(var node in unit.Nodes.Values.Where(node=>node.Function==function && node.Kind=="delete" && node.Operator is "destroy" or "virtual-destroy"))
             deallocationNames.Remove((unit,node.Id));
     }
 
@@ -42,16 +42,24 @@ internal sealed partial class Emitter
             {
                 if(nullCheck){Line(2,"if ("+parameter+" != null)");Line(2,"{");}
                 int indent=nullCheck?3:2;
-                var selected=emitter.program.Resolve(unit,destructor);
-                if(selected.Symbol.Definition && selected.Unit.Parameters.GetValueOrDefault(selected.Id,[]).Count!=1 ||
-                   !selected.Symbol.Definition && selected.Unit.TypeParameters.GetValueOrDefault(selected.Unit.Original(selected.Symbol.Type).Id,[]).Count!=0)
-                    throw unit.Missing(destroy,"selected source destructor requires its recorded receiver definition");
-                string receiverType=emitter.ReceiverType(selected);
-                // The existing source destructor body includes its recorded
-                // complete-object member/base epilogue. The complete ABI entry
-                // is retained separately as navigation, without a fake body.
-                Line(indent,Name(destructor)+"(("+receiverType+")"+parameter+");");
                 Node execution=Child(node,"execution");
+                if(node.Operator=="virtual-destroy")
+                {
+                    if(!unit.VirtualCalls.TryGetValue(execution.Id,out var dispatch) ||
+                       dispatch.Receiver!=pointer.Id || dispatch.AbiCallableType is null)
+                        throw unit.Missing(execution,"virtual deletion requires its recorded deleting ABI dispatch and saved receiver");
+                    // The selected D0 body owns complete destruction and
+                    // deallocation. Invoke that supplied execution once.
+                }
+                else
+                {
+                    var selected=emitter.program.Resolve(unit,destructor);
+                    if(selected.Symbol.Definition && selected.Unit.Parameters.GetValueOrDefault(selected.Id,[]).Count!=1 ||
+                       !selected.Symbol.Definition && selected.Unit.TypeParameters.GetValueOrDefault(selected.Unit.Original(selected.Symbol.Type).Id,[]).Count!=0)
+                        throw unit.Missing(destroy,"selected source destructor requires its recorded receiver definition");
+                    string receiverType=emitter.ReceiverType(selected);
+                    Line(indent,Name(destructor)+"(("+receiverType+")"+parameter+");");
+                }
                 Line(indent,StatementExpression(execution)+";");
                 if(nullCheck)Line(2,"}");
             }
