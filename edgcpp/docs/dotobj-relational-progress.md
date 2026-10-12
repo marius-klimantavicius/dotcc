@@ -1756,3 +1756,18 @@ capped at 4096 rows per family. Catalog-only measurements on eight genuinely
 distinct objects retain 22.1 MB of managed data with 95344 KiB peak RSS; this is
 not a complete eight-object link. Global catalogs and linker/emitter identity and
 name plans still require bounded storage before broad linking.
+
+## Recorded void and record-lvalue cleanup scopes
+
+The focused native/source-hidden C#/NativeAOT proof now emits a recorded void
+throw statement inside its cleanup region and retains a record lvalue's address
+across its cleanup region. It tests completed temporary cleanup on input,
+receiver, call and payload-constructor failure, plus reference identity after
+cleanup. No void result or record value copy is invented. Date, Assert and
+Constants advance to recorded delegating constructor cleanup; Hugeint advances
+to a selected temporary expression. These remain explicit consumer boundaries.
+
+Eight consistent distinct complete objects now link and select together in
+1.12 s with 130640 KiB peak RSS and 25.8 MB retained managed heap: 5304 resolved
+functions/486 globals become 1283 functions/31 globals. This measures link
+selection, not combined C# generation or whole-project memory bounds.

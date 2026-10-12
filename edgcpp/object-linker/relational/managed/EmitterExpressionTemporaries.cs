@@ -56,12 +56,42 @@ internal sealed partial class Emitter
             return true;
         }
 
-        private string ExpandedExpressionLifetimeScope(Node node,int indent)
+        private long[] ExpressionScopeCleanupLifetimes(Node node)
         {
             var lifetimes=unit.Lifetimes.Values.Where(lifetime=>lifetime.OwnerNode==node.Id).Select(lifetime=>lifetime.Id);
             if(node.Lifetime is long direct)lifetimes=lifetimes.Append(direct);
-            var active=lifetimes.Distinct().Where(id=>unit.Destructions.GetValueOrDefault(id,[])
+            return lifetimes.Distinct().Where(id=>unit.Destructions.GetValueOrDefault(id,[])
                 .Any(action=>!allocationOwnedCleanups.Contains(action))).ToArray();
+        }
+
+        private bool WriteVoidLifetimeStatement(Node node,int indent)
+        {
+            if(node.Kind!="lifetime-scope" || node.Type is not long type || unit.Original(type).Kind!="void")return false;
+            var active=ExpressionScopeCleanupLifetimes(node);
+            if(active.Length>1)throw unit.Missing(node,"multiple expression cleanup scopes require explicit nesting");
+            void Content(int level)
+            {
+                Node operand=Child(node,"operand");
+                if(operand.Kind is "throw" or "rethrow")WriteThrow(operand,level);
+                else if(!WriteVoidLifetimeStatement(operand,level) && !WriteVoidDiscardStatement(operand,level))
+                    Line(level,StatementExpression(operand,ExpandedExpression(operand,level))+";");
+            }
+            if(active.Length==0 || protectedExpressionLifetimes.Contains(active[0]))Content(indent);
+            else
+            {
+                protectedExpressionLifetimes.Add(active[0]);
+                try {WriteLifetimeRegion(node,indent,Content);}
+                finally {protectedExpressionLifetimes.Remove(active[0]);}
+            }
+            return true;
+        }
+
+        private bool IsRecordLvalueScope(Node node)=>node.Kind=="lifetime-scope" && node.ValueCategory=="lvalue" &&
+            node.Type is long type && unit.Original(type).Kind=="record";
+
+        private string ExpandedExpressionLifetimeScope(Node node,int indent)
+        {
+            var active=ExpressionScopeCleanupLifetimes(node);
             if(active.Length==0)return NormalizeValue(node,ExpandedExpression(Child(node,"operand"),indent));
             if(active.Length!=1)throw unit.Missing(node,"multiple expression cleanup scopes require explicit nesting");
             long selectedLifetime=active[0];
@@ -72,19 +102,29 @@ internal sealed partial class Emitter
                 return NormalizeValue(node,value);
             }
             var result=unit.Original(node.ExecutionType??node.Type??throw unit.Missing(node,"expression cleanup result type missing"));
-            if(result.Kind is "record" or "array" or "function" or "void")
+            bool location=result.Kind=="record" && node.ValueCategory=="lvalue";
+            if(result.Kind is "array" or "function" or "void" || result.Kind=="record" && !location)
                 throw unit.Missing(node,"expression cleanup result requires a scalar or recorded reference/address value");
-            string name=allocator.Allocate("__scope_value_"+node.Id,"expression_scope_result");
-            Line(indent,NodeType(node)+" "+name+" = default;");
+            string name=allocator.Allocate((location?"__scope_address_":"__scope_value_")+node.Id,"expression_scope_result");
+            Line(indent,NodeType(node)+(location?"*":"")+" "+name+" = default;");
             protectedExpressionLifetimes.Add(selectedLifetime);
             try
             {
                 WriteLifetimeRegion(node,indent,level=>
-                    Line(level,name+" = "+ExpandedExpression(Child(node,"operand"),level)+";"));
+                {
+                    Node operand=Child(node,"operand");
+                    if(location)
+                    {
+                        ExpandAddressLocation(operand,level);
+                        Line(level,name+" = "+AddressExpression(operand)+";");
+                    }
+                    else Line(level,name+" = "+ExpandedExpression(operand,level)+";");
+                });
             }
             finally {protectedExpressionLifetimes.Remove(selectedLifetime);}
-            expandedValues.Add(node.Id,name);
-            return NormalizeValue(node,name);
+            string rendered=location?"(*"+name+")":name;
+            expandedValues.Add(node.Id,rendered);
+            return NormalizeValue(node,rendered);
         }
     }
 }

@@ -423,6 +423,7 @@ internal sealed partial class Emitter
                 return Name(operands[0].Symbol!.Value)+" = "+Expression(operands[1]);
             }
             string value=rendered??Expression(node);
+            if(IsRecordLvalueScope(node))return "_ = "+AddressExpression(node);
             if(node.Kind=="delete")return value;
             if(UsesCompoundHelper(node))return "_ = "+value;
             if(node.Operator is "va-start" or "va-start-single" or "va-copy" or "va-end")return value;
@@ -470,7 +471,7 @@ internal sealed partial class Emitter
                     else
                     {
                         Node expression=Child(node,"value");
-                        if(!WriteVoidDiscardStatement(expression,indent) && !WriteBitfieldAssignmentStatement(expression,indent) && !WriteSourceCompoundStatement(expression,indent))
+                        if(!WriteVoidLifetimeStatement(expression,indent) && !WriteVoidDiscardStatement(expression,indent) && !WriteBitfieldAssignmentStatement(expression,indent) && !WriteSourceCompoundStatement(expression,indent))
                             Line(indent,StatementExpression(expression,ExpandedExpression(expression,indent))+";");
                     }
                     break;

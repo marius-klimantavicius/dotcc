@@ -630,3 +630,25 @@ member initializer; complex_json Flatten expression operation102 at line43.
 Classify through stock EDG fields/backend, without interpreting/rechecking source
 semantics. Fresh distinct successes also support meaningful >4-connection and
 eight-object memory probes without duplicating an object artificially.
+
+## Resume and eight-object actual link
+
+User paused for clarification about lifetime analysis, then explicitly resumed.
+EDG remains sole authority: current work emits recorded cleanup scopes and result
+addresses, never computes C++ lifetimes. All three existing agents resumed with
+their requested models unchanged.
+
+Four new selected-generation probes show assert node5497 and constants node6053
+are void lifetime scopes with throw operands, matching Date's current case.
+Identifier stops at record-initializer23641 (compressed_pair.h:119); Path at
+implied-source constructor initialization219. These are generation frontiers,
+not failures to parse or export their completed objects.
+
+Director refreshed Date/Hugeint using the exact original manifest and immutable
+inline-linkage compiler; both export successfully in 2.01/2.65 seconds. Those
+plus checksum, exception and four new successes support eight distinct, corrected
+core inputs. Independently inspected catalog-scaling-v3 evidence: actual link
+and root closure succeed, 5,304 resolved function definitions/486 globals select
+1,283 functions/31 globals. Retained managed heap 25,814,840 bytes, peak RSS 130,640
+KiB, 1.12 seconds. All 558,203 type and 162,241 symbol catalog rows remain available.
+This proves linking/selection, not combined C# source or execution.
