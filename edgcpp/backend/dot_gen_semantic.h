@@ -15,6 +15,7 @@
 #include "exprutil.h"
 #include "expr.h"
 #include "symbol_tbl.h"
+#include "lower_init.h"
 #include "float_pt.h"
 #include "target.h"
 #include "dot_gen_semantic_sqlite.h"
@@ -1828,7 +1829,9 @@ struct State {
       {"follows_exec",bool(init->follows_an_exec_statement)},{"temporary_lifetime",bool(init->has_temporary_lifetime)},
       {"is_constructor_init",bool(init->is_constructor_init)},{"is_partially_initialized",bool(init->is_partially_initialized)},
       {"static_storage",bool(init->static_temp)},{"implied_source",implied_source},
-      {"sequenced_arguments",sequenced},{"value_initialization",value_init},{"overlap_lifetime_id",optional(overlap)}});
+      {"sequenced_arguments",sequenced},{"value_initialization",value_init},
+      {"value_initialization_needs_zeroing",value_init?Value(bool(need_zeroing_for_value_initialization(init))):Value(nullptr)},
+      {"overlap_lifetime_id",optional(overlap)}});
     initialization_values[init]=value;initializing.erase(init);
     if(init->kind==dik_constructor) {
       unsigned ordinal=0;for(auto argument=init->variant.constructor.args;argument;argument=argument->next)
@@ -3293,6 +3296,8 @@ struct State {
         {"implied_source",bool(copied->variant.constructor.is_copy_constructor_with_implied_source)},
         {"sequenced_arguments",bool(copied->variant.constructor.has_sequenced_arguments)},
         {"value_initialization",bool(copied->variant.constructor.value_initialization)},
+        {"value_initialization_needs_zeroing",copied->variant.constructor.value_initialization?
+          Value(bool(need_zeroing_for_value_initialization(copied))):Value(nullptr)},
         {"follows_exec",bool(copied->follows_an_exec_statement)},
         {"temporary_lifetime",bool(copied->has_temporary_lifetime)}});
     }
@@ -3562,12 +3567,15 @@ struct State {
     (void)selected;(void)entry;(void)scope;
 #endif
   }
-  void startup_group(a_scope_ptr scope,unsigned long priority,bool thread_local_group) {
+  void startup_group(a_scope_ptr scope,unsigned long priority,bool thread_local_group,bool instantiation_slice) {
     if(startup.scope)missing("overlapping selected startup groups");
     auto first=il_header.primary_scope->dynamic_inits;
     for(;first;first=first->next)if(first->variable &&
        !ignore_variable_in_back_end(first->variable) && !first->variable->suppress_inline_definition)break;
     if(!first)return;
+    if(instantiation_slice)
+      missing_initialization(first,first->variable->type,first->variable->source_corresp.decl_position,
+        "selected instantiation startup slice");
     if(thread_local_group)
       missing_initialization(first,first->variable->type,first->variable->source_corresp.decl_position,
         "selected thread-local startup group");
@@ -3775,8 +3783,8 @@ inline void lambda_entry_complete(a_routine_ptr entry,a_scope_ptr scope) {
 inline void abi_entry_complete(a_routine_ptr selected,a_routine_ptr entry,a_scope_ptr scope) {
   if(enabled())state().abi_entry_complete(selected,entry,scope);
 }
-inline void startup_group(a_scope_ptr scope,unsigned long priority,bool thread_local_group) {
-  if(enabled())state().startup_group(scope,priority,thread_local_group);
+inline void startup_group(a_scope_ptr scope,unsigned long priority,bool thread_local_group,bool instantiation_slice) {
+  if(enabled())state().startup_group(scope,priority,thread_local_group,instantiation_slice);
 }
 inline void startup_initialization(a_scope_ptr scope,a_dynamic_init_ptr init,a_variable_ptr guard) {
   if(enabled())state().startup_initialization(scope,init,guard);

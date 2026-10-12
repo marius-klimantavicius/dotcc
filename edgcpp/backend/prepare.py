@@ -683,12 +683,23 @@ object_source_overlay(init_lower,
     '#if defined(EDG_DOT_BACKEND)\n'
     '  dot_object_source::observe_file_initializers();\n'
     '#endif\n\n#if IMPLEMENTATION_SUPPORTS_MULTIPLE_THREADS')
+# Migrate the previous three-argument callback before installing the selected
+# slice observation. Retaining both hook blocks would capture one group twice.
+startup_hook_source = init_lower.read_text()
+for old_startup_call in ('',
+        '  dot_semantic::startup_group(scope, init_priority, do_thread_local);\n'):
+    old_startup_hook = ('#if defined(EDG_DOT_BACKEND)\n'
+        '  dot_object_source::observe_generated_initializer(scope, needed_bit_number,\n'
+        '      init_priority, do_thread_local);\n' + old_startup_call + '#endif\n')
+    startup_hook_source = startup_hook_source.replace(old_startup_hook, '')
+if startup_hook_source != init_lower.read_text():
+    init_lower.write_text(startup_hook_source)
 object_source_overlay(init_lower,
     '  return scope;\n}  /* file_scope_init_insert_location */',
     '#if defined(EDG_DOT_BACKEND)\n'
     '  dot_object_source::observe_generated_initializer(scope, needed_bit_number,\n'
     '      init_priority, do_thread_local);\n'
-    '  dot_semantic::startup_group(scope, init_priority, do_thread_local);\n'
+    '  dot_semantic::startup_group(scope, init_priority, do_thread_local, needed_bit_number != 0);\n'
     '#endif\n'
     '  return scope;\n}  /* file_scope_init_insert_location */')
 object_source_overlay(init_lower,

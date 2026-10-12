@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1027;
+PRAGMA user_version = 1028;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -333,6 +333,8 @@ CREATE TABLE initializations (
  implied_source INTEGER NOT NULL DEFAULT 0 CHECK(implied_source IN(0,1)),
  sequenced_arguments INTEGER NOT NULL DEFAULT 0 CHECK(sequenced_arguments IN(0,1)),
  value_initialization INTEGER NOT NULL DEFAULT 0 CHECK(value_initialization IN(0,1)),
+ -- Exact stock decision for selected value-initializing constructor actions.
+ value_initialization_needs_zeroing INTEGER CHECK(value_initialization_needs_zeroing IN(0,1)),
  conditional INTEGER NOT NULL DEFAULT 0 CHECK(conditional IN(0,1)),
  unordered INTEGER NOT NULL DEFAULT 0 CHECK(unordered IN(0,1)),
  overlaps_inner INTEGER NOT NULL DEFAULT 0 CHECK(overlaps_inner IN(0,1)),
