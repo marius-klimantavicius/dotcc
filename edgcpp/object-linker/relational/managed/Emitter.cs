@@ -374,11 +374,7 @@ internal sealed partial class Emitter
                 case "post-increment":return "("+E(0)+"++)";case "post-decrement":return "("+E(0)+"--)";
                 case "address-of":case "reference-to":
                     if(N(0).Kind=="function")return FunctionAddress(N(0));
-                    if(N(0).Type is long addressedType && unit.IsArray(addressedType))return ArrayAddress(N(0));
-                    if(N(0).Kind=="variable" && N(0).Symbol is long pinned && (emitter.HasPinnedRecordStorage(unit,pinned) || emitter.HasPinnedScalarStorage(unit,pinned) || emitter.HasProviderAddress(unit,pinned)))return Name(pinned);
-                    if(N(0).Kind=="variable" && N(0).Symbol is long addressed && unit.Symbols[addressed].Parent is null)
-                        throw unit.Missing(node,"address-taken global requires pinned storage support");
-                    return "(&"+E(0)+")";
+                    return AddressExpression(N(0));
                 case "indirect":case "ref-indirect":return "(*"+E(0)+")";
                 case "cast":case "ref-cast":case "bool-cast":case "lvalue-cast":
                     if(NodeType(node)=="bool")return Truth(N(0));

@@ -200,6 +200,12 @@ internal sealed partial class Emitter
         private string ExpandedExpressionCore(Node node,int indent)
         {
             if(expandedValues.TryGetValue(node.Id,out string? found))return NormalizeValue(node,found);
+            if(node.Kind=="operation" && node.Operator is "address-of" or "reference-to" &&
+               IsVolatileLocation(Child(node,"operand")))
+            {
+                ExpandAddressLocation(Child(node,"operand"),indent);
+                return Expression(node);
+            }
             if(node.Type is long zeroArray && IsZeroExtentArray(unit,zeroArray) && ZeroExtentFieldAddress(node) is string address)
                 return NormalizeValue(node,address);
             if(IsPlacementWrapper(node))return ExpandedPlacementWrapper(node,indent);

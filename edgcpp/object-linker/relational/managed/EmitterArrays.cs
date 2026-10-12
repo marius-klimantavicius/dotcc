@@ -183,7 +183,8 @@ internal sealed partial class Emitter
                 var value=unit.Nodes[action.Value];
                 if(!WriteAggregateComponent(value,destination,level,action.Repeat))
                 {
-                    if(unit.IsArray(type.Element!.Value))WriteArrayInitializer(value,"(&"+destination+")",level);
+                    if(unit.RecordInitializers.ContainsKey(value.Id))WriteRecordInitializer(value,destination,level);
+                    else if(unit.IsArray(type.Element!.Value))WriteArrayInitializer(value,"(&"+destination+")",level);
                     else Line(level,destination+" = "+ExpandedExpression(value,level)+";");
                 }
                 if(action.Repeat>1)Line(indent,"}");
