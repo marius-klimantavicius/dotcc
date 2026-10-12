@@ -202,7 +202,8 @@ internal sealed partial class Emitter
             "pointer" or "lvalue-reference" or "rvalue-reference"=>Pointer(unit,type.Pointee!.Value),
             "record"=>typeNames[(unit,type.Id)],
             "enum"=>typeNames[(unit,type.Id)],
-            "array"=>IsZeroExtentArray(unit,type.Id)?
+            "array"=>IsIncompleteArray(unit,type.Id)?
+                throw new InvalidDataException("Incomplete array value/stride storage requires recorded complete layout: type "+type.Id+" in "+unit.Path):IsZeroExtentArray(unit,type.Id)?
                 throw new InvalidDataException("Zero-extent array value or stride storage emission is not yet implemented: type "+type.Id):arrayNames[(unit,type.Id)],
             _=>throw new InvalidDataException("Unsupported relational C# type "+type.Id+": "+type.Kind+" "+type.Name)
         };
@@ -210,6 +211,8 @@ internal sealed partial class Emitter
     private string Pointer(Unit unit,long target)
     {
         var type=unit.Original(target);
+        if(IsIncompleteArray(unit,type.Id))
+            return Pointer(unit,type.Element??throw new InvalidDataException("Incomplete array element type missing: "+type.Id));
         if(type.Kind!="function")return Type(unit,target,allowIncomplete:true)+"*";
         var parameters=unit.TypeParameters.GetValueOrDefault(type.Id,[]).Select(id=>Type(unit,id));
         if(type.Variadic){needsVarargsRuntime=true;parameters=parameters.Append(VaSpanType);}
@@ -287,6 +290,7 @@ internal sealed partial class Emitter
         private string RawExpression(Node node)
         {
             if(expandedValues.TryGetValue(node.Id,out var expanded))return expanded;
+            if(IncompleteArrayAddress(node) is string incomplete)return incomplete;
             if(node.Type is long zeroArray && IsZeroExtentArray(unit,zeroArray))
                 throw unit.Missing(node,"zero-extent array value emission requires a recorded field address view");
             if(node.Lifetime is long ownedLifetime && unit.Destructions.GetValueOrDefault(ownedLifetime,[]).Any(id=>!allocationOwnedCleanups.Contains(id)))

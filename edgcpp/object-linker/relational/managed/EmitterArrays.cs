@@ -23,7 +23,7 @@ internal sealed partial class Emitter
             PrepareArrayType(unit,type.Pointee!.Value);return;
         }
         if(!unit.IsArray(type.Id) || arrayNames.ContainsKey((unit,type.Id)))return;
-        if(IsZeroExtentArray(unit,type.Id))return;
+        if(IsZeroExtentArray(unit,type.Id) || IsIncompleteArray(unit,type.Id))return;
         long elementId=type.Element??throw new InvalidDataException("Array element type missing");
         PrepareArrayType(unit,elementId);
         string element=Type(unit,elementId);
@@ -117,6 +117,7 @@ internal sealed partial class Emitter
         private string ArrayAddress(Node node)
         {
             if(ZeroExtentFieldAddress(node) is string zeroField)return zeroField;
+            if(IncompleteArrayAddress(node) is string incomplete)return incomplete;
             if(node.Kind=="string-literal" && node.LiteralObject is long literal)
                 return "(("+NodeType(node)+"*)"+emitter.literalNames[(unit,literal)]+")";
             if(node.Kind=="variable" && node.Symbol is long symbol)return Name(symbol);
