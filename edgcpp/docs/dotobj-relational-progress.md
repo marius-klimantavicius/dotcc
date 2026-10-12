@@ -1771,3 +1771,15 @@ Eight consistent distinct complete objects now link and select together in
 1.12 s with 130640 KiB peak RSS and 25.8 MB retained managed heap: 5304 resolved
 functions/486 globals become 1283 functions/31 globals. This measures link
 selection, not combined C# generation or whole-project memory bounds.
+
+## Selected ordinary heap construction metadata
+
+Ordinary complete-record heap construction now retains its selected constructor,
+observed null guard and exact constructor-failure delete call/suffix arguments in
+the existing allocation, initialization and cleanup relations. The native/SQL
+proof covers allocation failure, argument and constructor failure, in-place self
+identity, nullable allocation and a destructor-free record delete. Source C#
+consumer support for this new allocation form remains pending. Original
+StringUtil passes ComplexJSON allocation and reaches repeated aggregate component
+evaluation; RandomEngine passes RandomState delete and reaches a selected static
+member operation. Neither unit is a complete export yet.

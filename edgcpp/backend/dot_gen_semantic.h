@@ -130,14 +130,15 @@ struct State {
   std::map<a_type_ptr,SelectedTypeInfo> selected_typeinfos;
   std::map<a_variable_ptr,TypeInfoVariable> typeinfo_variables;
   struct Allocation {
-    Id node=0,owner=0,allocated_type=0,allocator=0,count_value=0,count_symbol=0,size=0,check=0,failure=0,zero_initialization=0,effective_count_value=0;
+    Id node=0,owner=0,allocated_type=0,allocator=0,count_value=0,count_symbol=0,size=0,check=0,failure=0,zero_initialization=0,effective_count_value=0,construction_initialization=0;
     a_memory_region_number region=NULL_region_number;
     an_expr_node_ptr source_count=nullptr;
     a_variable_ptr count_temporary=nullptr;
     a_variable_ptr effective_count_temporary=nullptr;
+    a_variable_ptr size_temporary=nullptr;
     a_source_position position{};
     std::map<an_expr_node_ptr,Id> projected;
-    bool placement=false,zeroing_observed=false,construction_null_check=false,construction_null_check_observed=false,complete=false;
+    bool placement=false,construction=false,protection_observed=false,zeroing_observed=false,construction_null_check=false,construction_null_check_observed=false,complete=false;
   };
   std::map<a_new_delete_supplement_ptr,Allocation> allocations;
   std::vector<a_new_delete_supplement_ptr> allocation_stack;
@@ -2619,6 +2620,18 @@ struct State {
       !init->lifetime && !init->init_expr_lifetime && !init->master_entry &&
       !init->class_rvalue_initialized_through_master_entry;
   }
+  bool record_construction(a_new_delete_supplement_ptr value) {
+    if(!value->is_new || !value->routine || value->placement_new || value->aligned_version ||
+       value->arg || value->number_of_elements)return false;
+    auto type=skip_typerefs(value->type);
+    auto init=value->dynamic_init;auto cleanup=value->freeing_of_storage_on_exception;
+    return is_immediate_class_type(type) && !is_incomplete_type(type) &&
+      init && init->kind==dik_constructor && init->variant.constructor.ptr &&
+      !init->variable && !init->destructor && !init->lifetime && !init->master_entry &&
+      !init->class_rvalue_initialized_through_master_entry &&
+      cleanup && cleanup->kind==dik_none && cleanup->destructor &&
+      cleanup->is_freeing_of_storage_on_exception && !cleanup->is_array_freeing;
+  }
   void source_allocation(Id id,an_expr_node_ptr e) {
     if(template_recipe || !function)missing("allocation outside executable function");
     auto value=e->variant.new_delete;
@@ -2628,8 +2641,8 @@ struct State {
     selected.allocator=routine(value->routine);selected.source_count=value->number_of_elements;
     selected.count_value=expression(value->number_of_elements);
     edge(id,"element-count",0,selected.count_value);
-    if(value->placement_new) {
-      selected.placement=true;
+    if(value->placement_new || record_construction(value)) {
+      selected.placement=value->placement_new;selected.construction=true;
       unsigned ordinal=0;
       for(auto argument=value->arg;argument;argument=argument->next,++ordinal) {
         Id source=expression(argument,&e->position,id);
@@ -2640,14 +2653,13 @@ struct State {
       }
       Id initialize=node("initialize",e->position,selected.allocated_type,nullptr,
         nullptr,"",0,0,0,true);
+      selected.construction_initialization=initialize;
       db.update("nodes","id",initialize,{{"source_node_id",id},
         {"initialization_id",initialization_id(value->dynamic_init,value->type)}});
       edge(id,"initialize",0,initialize);
-      // In stock lower_new's accepted non-array initialization path,
-      // turn_off_freeing_of_storage_on_exception protects this initialization
-      // expression. Placement arguments and the allocator result assignment
-      // remain outside that internal try; the selected null guard surrounds it.
-      edge(id,"exception-protected",0,initialize);
+      // The stock setup callback records the protected initialization after
+      // allocation succeeds. Ordinary new uses its selected cleanup region;
+      // placement uses its internal try. Both protect this same source action.
       Id cleanup=node("allocation-cleanup",e->position,selected.allocated_type,nullptr,
         nullptr,"",0,0,0,true);
       db.update("nodes","id",cleanup,{{"source_node_id",id},
@@ -2666,6 +2678,8 @@ struct State {
     if(e==selected.source_count)return selected.count_value;
     if(e->kind==enk_variable && node_variable(e)==selected.effective_count_temporary)
       return selected.effective_count_value;
+    if(e->kind==enk_variable && node_variable(e)==selected.size_temporary)
+      return selected.size;
     auto found=selected.projected.find(e);if(found!=selected.projected.end())return found->second;
     Id previous=function;bool previous_recipe=template_recipe;
     function=selected.owner;template_recipe=false;
@@ -2731,11 +2745,34 @@ struct State {
   }
   void allocation_construction_null_check(a_new_delete_supplement_ptr value,bool required) {
     auto found=allocations.find(value);
-    if(found==allocations.end() || (!found->second.placement && !found->second.zero_initialization))return;
+    if(found==allocations.end() || (!found->second.construction && !found->second.zero_initialization))return;
     auto &selected=found->second;
     if(selected.construction_null_check_observed && selected.construction_null_check!=required)
       missing("conflicting selected construction null check");
     selected.construction_null_check=required;selected.construction_null_check_observed=true;
+  }
+  void allocation_exception_arguments(a_new_delete_supplement_ptr value,an_expr_node_ptr allocation_args,
+                                      an_expr_node_ptr delete_args) {
+    auto found=allocations.find(value);
+    if(found==allocations.end() || !found->second.construction || found->second.placement)return;
+    auto &selected=found->second;
+    if(!selected.size || !allocation_args || allocation_args->kind!=enk_variable || allocation_args->next)
+      missing("selected ordinary allocation saved size argument");
+    selected.size_temporary=node_variable(allocation_args);
+    unsigned ordinal=0;
+    for(auto argument=delete_args;argument;argument=argument->next)
+      edge(selected.node,"exception-argument",ordinal++,allocation_expression(selected,argument));
+  }
+  void allocation_protection(a_new_delete_supplement_ptr value) {
+    auto found=allocations.find(value);
+    if(found==allocations.end() || !found->second.construction)return;
+    auto &selected=found->second;
+    if(selected.protection_observed)missing("duplicate selected allocation protection");
+    // set_up_freeing_of_storage_on_exception runs immediately before the
+    // selected lower_dynamic_init. Size/allocator evaluation is outside this
+    // region; constructor arguments and its action are inside until success.
+    if(!selected.construction_initialization)missing("selected allocation protection initialization");
+    edge(selected.node,"exception-protected",0,selected.construction_initialization);selected.protection_observed=true;
   }
   void allocation_zeroing(a_new_delete_supplement_ptr value,a_variable_ptr byte_count) {
     auto found=allocations.find(value);if(found==allocations.end() || !found->second.zero_initialization)return;
@@ -2751,8 +2788,10 @@ struct State {
     auto found=allocations.find(value);if(found==allocations.end())return;
     auto &selected=found->second;
     if(!selected.size || selected.complete)missing("selected allocation completion");
-    if((selected.placement || selected.zero_initialization) && !selected.construction_null_check_observed)
+    if((selected.construction || selected.zero_initialization) && !selected.construction_null_check_observed)
       missing("allocation initialization without selected null-check decision (initialization may have been removed)");
+    if(selected.construction && !selected.protection_observed)
+      missing("construction without selected allocation cleanup protection");
     if(selected.zero_initialization && !selected.zeroing_observed)
       missing("scalar runtime-array initialization without observed stock byte-zero action");
     // This callback is at lower_new's final non-array change_to_cast. The
@@ -2761,7 +2800,7 @@ struct State {
       {"allocator_symbol_id",selected.allocator},{"count_value_node_id",optional(selected.count_symbol?selected.count_value:0)},
       {"count_symbol_id",optional(selected.count_symbol)},{"size_node_id",selected.size},
       {"length_check_node_id",optional(selected.check)},{"length_failure_symbol_id",optional(selected.failure)},
-      {"result_byte_offset",0},{"construction_null_check",selected.placement || selected.zero_initialization?
+      {"result_byte_offset",0},{"construction_null_check",selected.construction || selected.zero_initialization?
         Value(selected.construction_null_check):Value(nullptr)}});
     selected.complete=true;
   }
@@ -2769,6 +2808,15 @@ struct State {
     return !value->is_new && value->routine && value->arg && !value->arg->next &&
       !value->dynamic_init && !value->freeing_of_storage_on_exception &&
       is_scalar_type(skip_typerefs(value->type));
+  }
+  bool trivial_record_deallocation(a_new_delete_supplement_ptr value) {
+    auto type=skip_typerefs(value->type);
+    // lower_delete directly calls the selected deallocator when EDG supplies
+    // no destruction action, including complete class objects.
+    return !value->is_new && value->routine && value->arg && !value->arg->next &&
+      !value->array_delete && !value->aligned_version && !value->dynamic_init &&
+      !value->freeing_of_storage_on_exception &&
+      is_immediate_class_type(type) && !is_incomplete_type(type);
   }
   bool record_deallocation(a_new_delete_supplement_ptr value) {
 #if IA64_ABI
@@ -3067,11 +3115,14 @@ struct State {
         if(zero_array_allocation(allocation)) {
           kind="new";op="zero-initialized";symbol=routine(allocation->routine);break;
         }
+        if(record_construction(allocation)) {
+          kind="new";op="construct";symbol=routine(allocation->routine);break;
+        }
         if(record_deallocation(allocation)) {
           kind="delete";op=allocation->dynamic_init->destructor->is_virtual?"virtual-destroy":"destroy";
           if(allocation->routine)symbol=routine(allocation->routine);break;
         }
-        if(plain_deallocation(allocation)) {
+        if(plain_deallocation(allocation) || trivial_record_deallocation(allocation)) {
           kind="delete";op=allocation->array_delete?"array":"scalar";symbol=routine(allocation->routine);break;
         }
         auto allocated_type=allocation->type?skip_typerefs(allocation->type):nullptr;
@@ -4238,6 +4289,13 @@ inline void allocation_simple_result(a_new_delete_supplement_ptr allocation) {
 }
 inline void allocation_construction_null_check(a_new_delete_supplement_ptr allocation,bool required) {
   if(enabled())state().allocation_construction_null_check(allocation,required);
+}
+inline void allocation_exception_arguments(a_new_delete_supplement_ptr allocation,an_expr_node_ptr arguments,
+                                          an_expr_node_ptr delete_arguments) {
+  if(enabled())state().allocation_exception_arguments(allocation,arguments,delete_arguments);
+}
+inline void allocation_protection(a_new_delete_supplement_ptr allocation) {
+  if(enabled())state().allocation_protection(allocation);
 }
 inline void allocation_zeroing(a_new_delete_supplement_ptr allocation,a_variable_ptr byte_count) {
   if(enabled())state().allocation_zeroing(allocation,byte_count);

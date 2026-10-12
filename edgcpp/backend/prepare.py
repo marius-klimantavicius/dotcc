@@ -1698,6 +1698,18 @@ object_source_overlay(init_lower,
 # Observe the exact stock decision for initialization after allocation. The
 # correspondence already exists for requested source allocation expressions.
 object_source_overlay(init_lower,
+    '  return delete_args;\n}  /* extra_args_for_operator_delete */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::allocation_exception_arguments(ndsp, allocation_args, delete_args);\n'
+    '#endif\n'
+    '  return delete_args;\n}  /* extra_args_for_operator_delete */')
+object_source_overlay(init_lower,
+    '}  /* set_up_freeing_of_storage_on_exception */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::allocation_protection(ndsp);\n'
+    '#endif\n'
+    '}  /* set_up_freeing_of_storage_on_exception */')
+object_source_overlay(init_lower,
     '  return result;\n}  /* null_check_needed */',
     '#if defined(EDG_DOT_BACKEND)\n'
     '  dot_semantic::allocation_construction_null_check(ndsp, result);\n'
