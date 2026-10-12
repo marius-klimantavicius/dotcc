@@ -1611,8 +1611,15 @@ struct State {
       if(item->kind==ck_init_repeat) {
         value=item->variant.init_repeat.constant;count=item->variant.init_repeat.count;
         if(value->kind==ck_dynamic_init ||
-           (value->kind==ck_aggregate && value->variant.aggregate.has_dynamic_init_component))
-          missing("repeated dynamic aggregate component evaluation");
+           (value->kind==ck_aggregate && value->variant.aggregate.has_dynamic_init_component)) {
+          const auto &position=value->source_corresp.decl_position.seq?value->source_corresp.decl_position:p;
+          std::string detail="repeated dynamic aggregate component evaluation [repeat-count="+
+            std::to_string((unsigned long long)count)+", repeated-kind="+std::to_string(int(value->kind))+
+            ", aggregate-dynamic="+std::to_string(value->kind==ck_aggregate?
+              int(value->variant.aggregate.has_dynamic_init_component):0)+"]";
+          missing_initialization(value->kind==ck_dynamic_init?value->variant.dynamic_init.ptr:nullptr,
+            value->type,position,detail.c_str(),value);
+        }
         if(!count)missing("runtime array initializer repetition");
         if(item->variant.init_repeat.multidimensional_aggr_tail_not_repeated)
           missing("designated array initializer repetition tail");
@@ -2326,6 +2333,10 @@ struct State {
       DOT_SEMANTIC_OP(eok_comma,"comma");DOT_SEMANTIC_OP(eok_question,"conditional");
       DOT_SEMANTIC_OP(eok_subscript,"subscript");DOT_SEMANTIC_OP(eok_dot_field,"dot-field");
       DOT_SEMANTIC_OP(eok_points_to_field,"points-to-field");DOT_SEMANTIC_OP(eok_call,"call");
+      // Stock lower_il retains first-operand effects before selecting the
+      // second static-member operand. Preserve both typed source operands and
+      // the original result category; do not analyze receiver side effects.
+      DOT_SEMANTIC_OP(eok_dot_static,"dot-static");DOT_SEMANTIC_OP(eok_points_to_static,"points-to-static");
       DOT_SEMANTIC_OP(eok_dot_member_call,"dot-member-call");DOT_SEMANTIC_OP(eok_points_to_member_call,"points-to-member-call");
       DOT_SEMANTIC_OP(eok_va_start,"va-start");DOT_SEMANTIC_OP(eok_va_start_single_operand,"va-start-single");
       DOT_SEMANTIC_OP(eok_va_arg,"va-arg");DOT_SEMANTIC_OP(eok_va_copy,"va-copy");DOT_SEMANTIC_OP(eok_va_end,"va-end");

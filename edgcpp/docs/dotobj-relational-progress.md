@@ -1795,3 +1795,12 @@ as does the verified checksum. The same eight-object selected counts remain
 1283 functions and 31 globals, with 25.7 MB managed heap, 122724 KiB peak RSS
 and 1.30 s wall. Selected lists, global catalogs and emission name/type plans
 still grow with inputs; no fully bounded whole-project claim is made.
+
+## Selected static-member expression projection
+
+Native dot-static and points-to-static operators preserve their recorded type,
+category, source and ordered receiver/selected-member operands. The focused
+native/SQL proof passes without dropping receiver effects. Original RandomEngine
+and ComplexJSON now export completely (1.34 s/243200 KiB and 1.38 s/240640 KiB);
+StringUtil reaches a located cleanup-free MapElem constructor repetition of 128.
+Managed static-member emission remains a separate consumer task.
