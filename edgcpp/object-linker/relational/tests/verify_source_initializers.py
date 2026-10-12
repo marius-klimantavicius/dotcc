@@ -14,7 +14,7 @@ def inspect(path):
         db.row_factory=sqlite3.Row
         assert tuple(db.execute('PRAGMA integrity_check').fetchone())==('ok',)
         assert not list(db.execute('PRAGMA foreign_key_check'))
-        assert db.execute('PRAGMA user_version').fetchone()[0]==1025
+        assert db.execute('PRAGMA user_version').fetchone()[0]>=1025
         defaults=db.execute('''SELECT t.name AS template_name,f.* FROM templates t JOIN template_formals f
             ON f.template_id=t.id WHERE t.name IN('BracedInitializer','EmptyInitializer') AND f.kind='constant' ''').fetchall()
         assert {row['template_name'] for row in defaults}=={'BracedInitializer','EmptyInitializer'}

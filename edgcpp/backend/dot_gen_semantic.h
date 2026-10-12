@@ -51,7 +51,7 @@ struct State {
   std::map<std::pair<a_variable_ptr,long long>,Id> virtual_tables;
   std::vector<Id> virtual_table_stack;
   struct VirtualEntry {
-    Id selected=0,signature=0,receiver=0,target=0;
+    Id selected=0,signature=0,receiver=0,target=0,abi_symbol=0,abi_signature=0;
     a_routine_ptr abi_routine=nullptr;
     const char *kind="ordinary",*variant="ordinary";
     long long delta=0,vcall=0,return_delta=0,vbase=0;
@@ -739,6 +739,17 @@ struct State {
       {"definition_kind",r->is_inline || (r->is_template_function && !r->is_specialized)?"weak":"strong"},
       {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
     instance(r->assoc_template,r->template_arg_list,id,0,is_template_dependent_type(r->type));return id;
+  }
+  Id abi_entry(a_routine_ptr r) {
+    Id id=routine(r);
+#if IA64_ABI
+    if(r->primary_ctor_or_dtor && (r->ctor_dtor_kind==cdk_complete || r->ctor_dtor_kind==cdk_deleting)) {
+      // alternate_entry_point creates the selected receiver as its first
+      // ordinary parameter, while retaining this_class for correspondence.
+      db.update("types","id",routine_source_types.at(r),{{"parameters_include_receiver",true}});
+    }
+#endif
+    return id;
   }
   void global_initializer(a_variable_ptr v,Id id) {
     if(v->init_kind!=initk_none && v->init_kind!=initk_zero && v->init_kind!=initk_static)
@@ -1526,6 +1537,34 @@ struct State {
       auto selected=static_local_initializer(scope,v);
       init_kind=selected->init_kind;value=selected->initializer.constant;
     } else if(init_kind==initk_static)value=v->initializer.constant;
+    if(init_kind==initk_static && std::getenv("DOTCC_RELATIONAL_STATIC_INIT_DIAGNOSTICS")) {
+      auto source=location(v->source_corresp.decl_position);std::string owner;
+      for(const auto &entry:routines)if(entry.second==function){owner=spelling(entry.first->source_corresp);break;}
+      auto saved=static_local_initializer(scope,v);
+      // Optional locator output precedes access to the selected constant.
+      // It is diagnostic context, not additional semantic transport.
+      std::fprintf(stderr,"relational static initializer: variable=%s owner=%s type-kind=%d variable-init=%d saved-init=%d lowering-generated=%d compiler-generated=%d value-present=%d file-id=%llu line=%llu column=%llu\n",
+        spelling(v->source_corresp).c_str(),owner.c_str(),int(skip_typerefs(v->type)->kind),int(v->init_kind),
+        saved?int(saved->init_kind):-1,int(v->lowering_generated),int(v->compiler_generated),value?1:0,
+        source.file,source.line,source.column);
+    }
+    if(init_kind==initk_static && (!value || !value->type)) {
+      auto source=location(v->source_corresp.decl_position);std::string path,owner;
+      for(const auto &file:files)if(file.second==source.file){path=file.first;break;}
+      for(const auto &entry:routines)if(entry.second==function){owner=spelling(entry.first->source_corresp);break;}
+      auto saved=static_local_initializer(scope,v);
+      missing("selected static initializer correspondence [variable="+spelling(v->source_corresp)+
+        ", owner="+owner+", type="+spelling(v->type->source_corresp)+
+        ", type-kind="+std::to_string(int(skip_typerefs(v->type)->kind))+
+        ", variable-init-kind="+std::to_string(int(v->init_kind))+
+        ", saved-init-kind="+std::to_string(saved?int(saved->init_kind):-1)+
+        ", lowering-generated="+std::to_string(bool(v->lowering_generated))+
+        ", compiler-generated="+std::to_string(bool(v->compiler_generated))+
+        ", scope-kind="+std::to_string(int(scope->kind))+
+        ", constant-kind="+std::to_string(value?int(value->kind):-1)+
+        ", value-present="+std::to_string(value?1:0)+", value-type=null, file="+path+", line="+std::to_string(source.line)+
+        ", column="+std::to_string(source.column)+"]");
+    }
     Id previous=function;bool previous_recipe=template_recipe;function=0;template_recipe=false;
     Id action;
     if(init_kind==initk_static)action=constant(value,v->source_corresp.decl_position);
@@ -2041,6 +2080,13 @@ struct State {
         case cdk_deleting:entry.variant="deleting";break;
         default:missing("virtual table constructor/destructor entry variant",int(variant_target->ctor_dtor_kind));
       }
+      if((variant_target->ctor_dtor_kind==cdk_complete || variant_target->ctor_dtor_kind==cdk_deleting) &&
+         variant_target==target) {
+        entry.abi_symbol=abi_entry(target);
+        // A primary entry already has its original source signature. Only
+        // a distinct stock alternate supplies this explicit ABI type list.
+        if(target->primary_ctor_or_dtor)entry.abi_signature=routine_source_types.at(target);
+      }
     }
 #endif
     // One final semantic row per physical slot, even if EDG revisits a table
@@ -2121,10 +2167,12 @@ struct State {
       return false;
     auto allocated_type=skip_typerefs(value->type);
     auto init=value->dynamic_init;auto cleanup=value->freeing_of_storage_on_exception;
+    bool scalar=is_scalar_type(allocated_type);
     bool selected_init=init &&
-      ((init->kind==dik_constructor && init->variant.constructor.ptr) ||
-       (init->kind==dik_expression && init->variant.expression));
-    return is_immediate_class_type(allocated_type) && !is_incomplete_type(allocated_type) &&
+      ((is_immediate_class_type(allocated_type) && init->kind==dik_constructor && init->variant.constructor.ptr) ||
+       (init->kind==dik_expression && init->variant.expression) ||
+       (scalar && (init->kind==dik_zero || (init->kind==dik_constant && init->variant.constant.ptr))));
+    return (scalar || (is_immediate_class_type(allocated_type) && !is_incomplete_type(allocated_type))) &&
       selected_init &&
       !init->variable && !init->destructor && !init->lifetime && !init->master_entry &&
       !init->class_rvalue_initialized_through_master_entry &&
@@ -2296,10 +2344,11 @@ struct State {
   bool record_deallocation(a_new_delete_supplement_ptr value) {
 #if IA64_ABI
     auto type=skip_typerefs(value->type);auto init=value->dynamic_init;
-    return !value->is_new && value->routine && value->arg && !value->arg->next &&
+    return !value->is_new && value->arg && !value->arg->next &&
       !value->array_delete && !value->aligned_version && !value->freeing_of_storage_on_exception &&
       is_immediate_class_type(type) && !is_incomplete_type(type) &&
-      init && init->kind==dik_none && init->destructor && !init->destructor->is_virtual &&
+      init && init->kind==dik_none && init->destructor &&
+      (init->destructor->is_virtual?!value->routine:value->routine!=nullptr) &&
       is_non_throwing_routine(init->destructor) && !init->variable && !init->lifetime &&
       !init->init_expr_lifetime && !init->master_entry && !init->class_rvalue_initialized_through_master_entry;
 #else
@@ -2348,17 +2397,20 @@ struct State {
     if(deallocation_stack.empty() || !deallocation_stack.back())return;
     auto &selected=deallocations.at(deallocation_stack.back());
     if(!selected.destruction || selected.destruction_observed || init!=selected.source_destruction ||
-       !receiver || !reused_pointer || !selected_routine)
+       !receiver || !selected_routine)
       missing("selected record delete destruction correspondence");
+    bool virtual_delete=init->destructor->is_virtual;
 #if IA64_ABI
-    if(selected_routine->ctor_dtor_kind!=cdk_complete || virtual_source(selected_routine)!=init->destructor)
-      missing("selected record delete complete destructor entry");
+    if(selected_routine->ctor_dtor_kind!=(virtual_delete?cdk_deleting:cdk_complete) ||
+       virtual_source(selected_routine)!=init->destructor ||
+       (virtual_delete?reused_pointer!=nullptr:reused_pointer==nullptr))
+      missing("selected record delete destructor entry/pointer correspondence");
 #endif
     // make_reusable_copy supplies the same saved pointer for the destructor
     // and deallocator. Keep that alias to the captured source operand rather
     // than exporting lowering temporaries or reevaluating the source.
     selected.projected[receiver]=selected.pointer_value;
-    selected.projected[reused_pointer]=selected.pointer_value;
+    if(reused_pointer)selected.projected[reused_pointer]=selected.pointer_value;
     Id previous=function;bool previous_recipe=template_recipe;
     function=selected.owner;template_recipe=false;
     Id guard=node("constant",selected.position,type_id(bool_type()),"prvalue",nullptr,
@@ -2366,13 +2418,46 @@ struct State {
     db.update("nodes","id",guard,{{"source_node_id",selected.node}});
     edge(selected.node,"null-check",0,guard);
     function=0;template_recipe=true;
-    Id symbol=routine(selected_routine);
+    Id symbol=abi_entry(selected_routine);
     Id abi=node("function",selected.position,routine_source_types.at(selected_routine),nullptr,
-      "complete-destructor","",symbol);
+      virtual_delete?"deleting-destructor":"complete-destructor","",symbol);
     db.update("nodes","id",abi,{{"source_node_id",selected.destruction}});
     edge(selected.destruction,"selected-abi-entry",0,abi);
     function=previous;template_recipe=previous_recipe;
     selected.destruction_observed=true;
+  }
+  void deallocation_virtual_call(a_dynamic_init_ptr init,a_routine_ptr selected_routine,an_expr_node_ptr expression_node) {
+    if(deallocation_stack.empty() || !deallocation_stack.back())return;
+    auto &selected=deallocations.at(deallocation_stack.back());
+    if(!selected.source_destruction || !selected.source_destruction->destructor->is_virtual)return;
+    if(init!=selected.source_destruction || !selected.destruction_observed || selected.execution ||
+       !expression_node || expression_node->kind!=enk_operation ||
+       expression_node->variant.operation.kind!=eok_call || !expression_node->variant.operation.is_virtual_call)
+      missing("selected deleting destructor virtual call correspondence");
+    auto callee=expression_node->variant.operation.operands;
+    auto receiver=callee?callee->next:nullptr;
+    if(!callee || callee->kind!=enk_routine || callee->variant.routine.ptr!=selected_routine ||
+       !receiver || receiver->next)
+      missing("selected deleting destructor virtual operands");
+    Id previous=function;bool previous_recipe=template_recipe;
+    function=selected.owner;template_recipe=false;
+    Id symbol=abi_entry(selected_routine),signature=routine_source_types.at(selected_routine);
+    Id call=node("operation",selected.position,type_id(expression_node->type),"prvalue","call","",symbol,0,0,true);
+    Id target=node("function",selected.position,signature,"prvalue",nullptr,"",symbol,0,0,true);
+    Id pointer=deallocation_expression(selected,receiver);
+    db.update("nodes","id",call,{{"source_node_id",selected.node}});
+    db.update("nodes","id",target,{{"source_node_id",selected.node}});
+    edge(call,"operand",0,target);edge(call,"operand",1,pointer);
+    auto source=virtual_source(selected_routine);
+    auto receiver_type=parent_class_of(source);
+    // Stock make_vptr_field_lvalue's IA64 branch selects offset zero through
+    // the first fields; make_vtbl_entry_node uses this selected routine slot.
+    db.insert("virtual_calls",{{"node_id",call},{"selected_symbol_id",routine(source)},
+      {"receiver_node_id",pointer},{"receiver_type_id",type_id(receiver_type)},
+      {"callable_type_id",routine_source_types.at(source)},{"abi_callable_type_id",signature},
+      {"vptr_byte_offset",0},{"slot_index",selected_routine->number.virtual_function}});
+    edge(selected.node,"execution",0,call);selected.execution=call;
+    function=previous;template_recipe=previous_recipe;
   }
   void deallocation_arguments(a_routine_ptr callee,an_expr_node_ptr arguments) {
     if(deallocation_stack.empty() || !deallocation_stack.back())return;
@@ -2553,7 +2638,8 @@ struct State {
           kind="new";op="zero-initialized";symbol=routine(allocation->routine);break;
         }
         if(record_deallocation(allocation)) {
-          kind="delete";op="destroy";symbol=routine(allocation->routine);break;
+          kind="delete";op=allocation->dynamic_init->destructor->is_virtual?"virtual-destroy":"destroy";
+          if(allocation->routine)symbol=routine(allocation->routine);break;
         }
         if(plain_deallocation(allocation)) {
           kind="delete";op=allocation->array_delete?"array":"scalar";symbol=routine(allocation->routine);break;
@@ -3464,6 +3550,40 @@ struct State {
         (entry->is_template_function && !entry->is_specialized)?"weak":"strong"}});
     db.update("nodes","function_id",symbol,{{"is_synthetic",true},{"source_node_id",reference}});
   }
+  void abi_entry_complete(a_routine_ptr selected,a_routine_ptr entry,a_scope_ptr scope) {
+#if IA64_ABI
+    if(!entry || !entry->primary_ctor_or_dtor || entry->special_kind!=sfk_destructor ||
+       (entry->ctor_dtor_kind!=cdk_complete && entry->ctor_dtor_kind!=cdk_deleting) ||
+       !routines.count(virtual_source(entry)))return;
+    if(!selected || !scope || scope->variant.routine.ptr!=entry || !scope->assoc_block)
+      missing("completed selected destructor ABI entry body");
+    if(skip_typerefs(entry->type)->variant.routine.extra_info->value_returned_as_parameter) {
+      auto pos=location(entry->source_corresp.decl_position);std::string path;
+      for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+      missing("completed destructor ABI entry caller-provided result [entry="+spelling(entry->source_corresp)+
+        ", kind="+std::to_string(int(entry->ctor_dtor_kind))+", file="+path+
+        ", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]");
+    }
+    Id previous=function;bool previous_recipe=template_recipe;
+    function=0;template_recipe=true;
+    Id source=routine(virtual_source(selected));
+    Id reference=node("function",entry->source_corresp.decl_position,
+      routine_source_types.at(virtual_source(selected)),nullptr,"complete-destructor","",source);
+    function=previous;template_recipe=previous_recipe;
+    Id symbol=abi_entry(entry);
+    // Capture the real completed scope: EDG has attached the complete-entry
+    // call and selected operator-delete statement, followed by its return.
+    capture(scope);
+    db.update("symbols","id",symbol,{{"is_definition",true},
+      {"link_name",entry->source_corresp.name?entry->source_corresp.name:""},
+      {"linkage",linkage(entry->source_corresp)},
+      {"definition_kind",entry->use_comdat || entry->is_inline ||
+        (entry->is_template_function && !entry->is_specialized)?"weak":"strong"}});
+    db.update("nodes","function_id",symbol,{{"is_synthetic",true},{"source_node_id",reference}});
+#else
+    (void)selected;(void)entry;(void)scope;
+#endif
+  }
   void finish() {
     finish_typeinfo_symbols();
     if(!default_member_initializers.empty())
@@ -3495,11 +3615,22 @@ struct State {
       const auto &entry=item.second;
       db.insert("virtual_table_entries",{{"table_id",item.first.first},{"slot_index",item.first.second},
         {"selected_symbol_id",entry.selected},{"callable_type_id",entry.signature},{"receiver_type_id",entry.receiver},
-        {"target_symbol_id",optional(entry.target)},{"entry_kind",entry.kind},{"target_variant",entry.variant},
+        {"target_symbol_id",optional(entry.target)},{"abi_entry_symbol_id",optional(entry.abi_symbol)},
+        {"abi_callable_type_id",optional(entry.abi_signature)},{"entry_kind",entry.kind},{"target_variant",entry.variant},
         {"abi_entry_name",entry.abi_routine && entry.abi_routine->source_corresp.name?entry.abi_routine->source_corresp.name:""},
         {"this_delta",entry.delta},{"vcall_index",entry.vcall},{"return_delta",entry.return_delta},{"vbase_index",entry.vbase}});
     }
-    for(const auto &entry:routines)db.update("symbols","id",entry.second,{{"link_name",entry.first->source_corresp.name?entry.first->source_corresp.name:""}});
+    for(const auto &entry:routines) {
+      auto r=entry.first;
+      db.update("symbols","id",entry.second,{{"link_name",r->source_corresp.name?r->source_corresp.name:""}});
+#if IA64_ABI
+      // Stock can assign COMDAT after the completed factory callback.
+      // Refresh only genuine captured alternate bodies from its final fact.
+      if(bodies.count(r) && r->primary_ctor_or_dtor && r->special_kind==sfk_destructor)
+        db.update("symbols","id",entry.second,{{"definition_kind",r->use_comdat || r->is_inline ||
+          (r->is_template_function && !r->is_specialized)?"weak":"strong"}});
+#endif
+    }
     for(const auto &entry:types) {
       auto t=entry.first;if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union ||
                            (t->kind==tk_integer && t->variant.integer.enum_type))
@@ -3565,6 +3696,9 @@ inline void deallocation_destruction(a_dynamic_init_ptr init,a_routine_ptr routi
     an_expr_node_ptr receiver,an_expr_node_ptr reused_pointer,bool null_check) {
   if(enabled())state().deallocation_destruction(init,routine,receiver,reused_pointer,null_check);
 }
+inline void deallocation_virtual_call(a_dynamic_init_ptr init,a_routine_ptr routine,an_expr_node_ptr expression) {
+  if(enabled())state().deallocation_virtual_call(init,routine,expression);
+}
 inline void deallocation_arguments(a_routine_ptr callee,an_expr_node_ptr arguments) {
   if(enabled())state().deallocation_arguments(callee,arguments);
 }
@@ -3595,6 +3729,9 @@ inline void virtual_vptr_write(a_type_ptr owner,a_base_class_ptr base,an_expr_no
 }
 inline void lambda_entry_complete(a_routine_ptr entry,a_scope_ptr scope) {
   if(enabled())state().lambda_entry_complete(entry,scope);
+}
+inline void abi_entry_complete(a_routine_ptr selected,a_routine_ptr entry,a_scope_ptr scope) {
+  if(enabled())state().abi_entry_complete(selected,entry,scope);
 }
 inline void emit() { state().finish(); }
 }

@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1025;
+PRAGMA user_version = 1026;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -35,6 +35,9 @@ CREATE TABLE types (
  return_type_id INTEGER REFERENCES types(id),
  return_storage TEXT NOT NULL DEFAULT 'value' CHECK(return_storage IN('value','caller-provided')),
  object_type_id INTEGER REFERENCES types(id),
+ -- Selected ABI parameter list already contains the receiver when true.
+ -- NULL retains the source callable view and older objects' representation.
+ parameters_include_receiver INTEGER CHECK(parameters_include_receiver IN(0,1)),
  underlying_type_id INTEGER REFERENCES types(id),
  is_const INTEGER NOT NULL DEFAULT 0 CHECK(is_const IN(0,1)),
  is_volatile INTEGER NOT NULL DEFAULT 0 CHECK(is_volatile IN(0,1)),
@@ -378,6 +381,8 @@ CREATE TABLE virtual_calls (
  receiver_node_id INTEGER NOT NULL REFERENCES nodes(id),
  receiver_type_id INTEGER NOT NULL REFERENCES types(id),
  callable_type_id INTEGER NOT NULL REFERENCES types(id),
+ -- Physical selected entry signature, distinct from the logical source call.
+ abi_callable_type_id INTEGER REFERENCES types(id),
  vptr_byte_offset INTEGER NOT NULL,
  slot_index INTEGER NOT NULL
 ) STRICT;
@@ -402,6 +407,8 @@ CREATE TABLE virtual_table_entries (
  entry_kind TEXT NOT NULL CHECK(entry_kind IN('ordinary','pure','deleted','null')),
  target_variant TEXT NOT NULL CHECK(target_variant IN('ordinary','base','complete','deleting')),
  abi_entry_name TEXT NOT NULL,
+ abi_entry_symbol_id INTEGER REFERENCES symbols(id),
+ abi_callable_type_id INTEGER REFERENCES types(id),
  this_delta INTEGER NOT NULL,
  vcall_index INTEGER NOT NULL,
  return_delta INTEGER NOT NULL,

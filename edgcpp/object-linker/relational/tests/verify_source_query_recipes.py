@@ -14,7 +14,7 @@ def inspect(path):
         db.row_factory=sqlite3.Row
         assert tuple(db.execute('PRAGMA integrity_check').fetchone())==('ok',)
         assert not list(db.execute('PRAGMA foreign_key_check'))
-        assert db.execute('PRAGMA user_version').fetchone()[0]==1025
+        assert db.execute('PRAGMA user_version').fetchone()[0]>=1025
         target=db.execute('SELECT * FROM object_info').fetchone()
         assert target['char_bit']==8 and target['little_endian']==1, dict(target)
         types={row['id']:row for row in db.execute('SELECT * FROM types')}

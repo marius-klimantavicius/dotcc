@@ -1464,6 +1464,7 @@ object_source_overlay(init_lower,
     '                                  &grcontext);',
     '#if defined(EDG_DOT_BACKEND)\n'
     '    dot_semantic::lambda_entry_complete(new_routine, new_routine_scope);\n'
+    '    dot_semantic::abi_entry_complete(routine, new_routine, new_routine_scope);\n'
     '#endif\n'
     '    pop_generated_routine_context(new_routine_scope, new_routine_il_region,\n'
     '                                  &grcontext);')
@@ -1600,7 +1601,7 @@ object_source_overlay(init_lower,
     '#if defined(EDG_DOT_BACKEND)\n'
     '    dot_semantic::deallocation_end(ndsp);\n'
     '#endif')
-# Selected complete destructor, null guard, and reusable pointer identities.
+# Selected complete/deleting destructor, null guard, and reusable pointer identities.
 object_source_overlay(init_lower,
     '  /* Make a call of the destructor. */\n'
     '  call_node = make_call_node_full(dtor_routine, ptr_node,',
@@ -1610,6 +1611,14 @@ object_source_overlay(init_lower,
     '#endif\n'
     '  /* Make a call of the destructor. */\n'
     '  call_node = make_call_node_full(dtor_routine, ptr_node,')
+object_source_overlay(init_lower,
+    '  check_assertion(call_node != NULL);\n'
+    '  if (dtor_routine->is_virtual) {',
+    '  check_assertion(call_node != NULL);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::deallocation_virtual_call(dip, dtor_routine, call_node);\n'
+    '#endif\n'
+    '  if (dtor_routine->is_virtual) {')
 object_source_overlay(lower,
     '}  /* promote_static_variable_out_of_function */',
     '#if defined(EDG_DOT_BACKEND)\n'

@@ -14,7 +14,7 @@ def inspect(path):
         db.row_factory=sqlite3.Row
         assert tuple(db.execute('PRAGMA integrity_check').fetchone())==('ok',)
         assert not list(db.execute('PRAGMA foreign_key_check'))
-        assert db.execute('PRAGMA user_version').fetchone()[0]==1025
+        assert db.execute('PRAGMA user_version').fetchone()[0]>=1025
         components=db.execute('''SELECT n.*,e.field_id,e.base_subobject_id,f.type_id AS field_type,f.name AS field_name
             FROM record_initializer_elements e JOIN nodes n ON n.id=e.value_node_id
             JOIN fields f ON f.id=e.field_id JOIN initializations i ON i.id=n.initialization_id

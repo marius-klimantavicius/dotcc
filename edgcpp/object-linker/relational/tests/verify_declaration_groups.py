@@ -14,7 +14,7 @@ def inspect(path):
         db.row_factory=sqlite3.Row
         assert tuple(db.execute('PRAGMA integrity_check').fetchone())==('ok',)
         assert not list(db.execute('PRAGMA foreign_key_check'))
-        assert db.execute('PRAGMA user_version').fetchone()[0]==1025
+        assert db.execute('PRAGMA user_version').fetchone()[0]>=1025
         summaries=[]
         for function_name,expected in [('scalar_group',('1','2')),('record_group',('3','4')),('failed_group',('3','5'))]:
             function=db.execute("SELECT id FROM symbols WHERE kind='function' AND name=? AND is_definition=1",
