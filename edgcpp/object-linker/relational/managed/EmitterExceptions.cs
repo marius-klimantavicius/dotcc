@@ -43,14 +43,13 @@ internal sealed partial class Emitter
             long id=requirement.Key.Type;
             var site=requirement.Value;
             var (type,identity)=ExceptionType(unit,id);
-            if(type.Kind=="record" && unit.BaseSubobjects.Values.Any(subobject=>subobject.Owner==type.Id))
-                throw new InvalidDataException("Exception base matching emission is not yet implemented for "+type.Name);
             if(!exceptionDescriptors.ContainsKey((unit,id)))
             {
                 if(type.Size is null or <=0 || type.Alignment is null or <=0)throw new InvalidDataException("Thrown payload layout missing");
                 string name=names.Allocate("__exception_type_"+exceptionDescriptors.Count,"exception_type");
                 exceptionDescriptors.Add((unit,id),name);
-                Line(1,"private static readonly global::Edg.Runtime.CppExceptionType "+name+" = new("+StringLiteral(identity)+", "+StringLiteral(identity)+", "+StringLiteral(type.Kind)+", global::System.Array.Empty<int>(), "+type.Size+"U, "+type.Alignment+"U, "+(site.Destructor is null?"false":"true")+", global::System.Array.Empty<global::Edg.Runtime.CppExceptionBase>());");
+                string bases=ExceptionBases(unit,type);
+                Line(1,"private static readonly global::Edg.Runtime.CppExceptionType "+name+" = new("+StringLiteral(identity)+", "+StringLiteral(identity)+", "+StringLiteral(type.Kind)+", global::System.Array.Empty<int>(), "+type.Size+"U, "+type.Alignment+"U, "+(site.Destructor is null?"false":"true")+", "+bases+");");
             }
             if(site.Destructor is long destructor)
             {
@@ -74,6 +73,21 @@ internal sealed partial class Emitter
             catchDescriptors.Add((unit,id),name);
             Line(1,"private static readonly global::Edg.Runtime.CppCatchType "+name+" = new("+StringLiteral(identity)+", "+StringLiteral(identity)+", "+StringLiteral(type.Kind)+", global::System.Array.Empty<int>());");
         }
+    }
+
+    private string ExceptionBases(Unit unit,ProgramType type)
+    {
+        var values=new List<string>();
+        if(type.Kind=="record")
+            foreach(var subobject in unit.BaseSubobjects.Values.Where(subobject=>subobject.Owner==type.Id).OrderBy(subobject=>subobject.Ordinal))
+            {
+                if(subobject.IsPublic is not bool accessible || subobject.IsAmbiguous is not bool ambiguous)
+                    throw new InvalidDataException($"{unit.Files.GetValueOrDefault(subobject.File??0,unit.Source)}:{subobject.Line}:{subobject.Column}: exception base matching requires recorded public/ambiguity flags for {type.Name}, subobject {subobject.Id}");
+                var (_,identity)=ExceptionType(unit,subobject.Type);
+                values.Add("new("+StringLiteral(identity)+", "+subobject.Offset+"U, "+(accessible?"true":"false")+", "+(ambiguous?"true":"false")+")");
+            }
+        return values.Count==0?"global::System.Array.Empty<global::Edg.Runtime.CppExceptionBase>()":
+            "new global::Edg.Runtime.CppExceptionBase[] { "+string.Join(", ",values)+" }";
     }
 
     private sealed partial class FunctionWriter
