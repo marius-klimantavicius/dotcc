@@ -596,3 +596,18 @@ Primary catalog stress independently read: all 331,890 type, 98,091 symbol and
 cache remains at 4,096 entries and disposing all units releases every cached row.
 Emitter selected-ID iteration preserves ordering; owner/parent lookups avoid
 full-catalog scans. Connection pooling remains the separate next memory step.
+
+## Precise lifetime frontier classification
+
+After delegation generation, Date-v9 node15139 is a void/prvalue lifetime scope
+containing throw node15140, lifetime191, function3795. It is not a record-valued
+expression. Hugeint-v53 node16895 is a record-typed **lvalue**, with ref-indirect
+operand16896, lifetime238, function4384. Its result needs preserved address
+identity across cleanup, not an invented record copy. The old generic diagnostic
+grouped void, record, array and function results together; use actual exported
+type/category/operand facts to choose the next implementation.
+
+Director also required removing redundant delegation validity checks (same
+receiver/destination type identity and impossible member-field combinations).
+Trust EDG's recorded delegation relation; retain only required missing-data and
+unimplemented representation/cleanup capability boundaries.

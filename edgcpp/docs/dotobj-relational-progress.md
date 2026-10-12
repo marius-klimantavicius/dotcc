@@ -1722,3 +1722,17 @@ but type/symbol catalogs and global expressions are still materialized; bounded
 whole-project loading is not yet implemented. The next real-project checkpoint
 must be a bounded DuckDB subset, not another blind full-corpus export or a
 compression project.
+
+## Final inline-global identity and void source constants
+
+The native exporter now refreshes each source global's finalized ABI link identity
+and records EDG inline/COMDAT/GNU weak classification. A two-TU native/source-hidden
+SQL proof retains distinct namespace variables and shared weak inline arrays while
+ordinary definitions remain strong. Actual refreshed checksum/exception now link
+and select together without the former raw-name strong collision. This is link
+selection evidence, not complete combined C# generation.
+
+Selected C++14 void constants retain their void type/category/source with no
+scalar payload. The focused native/SQL proof passes; StringUtil advances to an
+ordinary record heap-new constructor cleanup boundary at ComplexJSON, rather than
+transporting generated C EH implementation tables.

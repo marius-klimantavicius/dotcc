@@ -1168,6 +1168,16 @@ struct State {
       function=previous;template_recipe=previous_recipe;
     }
   }
+  const char *variable_definition_kind(a_variable_ptr v) {
+    bool weak=v->is_inline;
+#if IA64_ABI
+    weak=weak || v->comdat_group!=nullptr;
+#endif
+#if GNU_EXTENSIONS_ALLOWED
+    weak=weak || v->is_weak;
+#endif
+    return weak?"weak":"strong";
+  }
   Id variable(a_variable_ptr v,bool local=false,bool parameter=false,bool source_definition=false) {
     if(v->is_nonreal) {
       if(!template_recipe)missing_source_variable(v,"dependent variable in executable expression");
@@ -1200,6 +1210,7 @@ struct State {
       {"name",spelling(v->source_corresp)},{"link_name",v->source_corresp.name?v->source_corresp.name:""},
       {"linkage",local?"none":linkage(v->source_corresp)},{"type_id",type_id(v->type)},
       {"parent_symbol_id",local?optional(function):Value(nullptr)},
+      {"definition_kind",local?"strong":variable_definition_kind(v)},
       {"is_definition",v->storage_class!=sc_extern},{"file_id",optional(pos.file)},
       {"line",pos.line},{"column",pos.column}});
     if(!local) {
@@ -1867,6 +1878,12 @@ struct State {
       Id id=node(dependent_value_kind(c,p),p,type_id(c->type),"prvalue");
       if(template_recipe)recipe_constants[c]=id;
       dependent_value(id,c,p,local_expression);attach_enum_value(id,c);return id;
+    }
+    if(c->kind==ck_void) {
+      // This selected literal has no variant payload or runtime value.
+      Id id=node("void-constant",p,type_id(c->type),"prvalue");
+      if(template_recipe)recipe_constants[c]=id;
+      return id;
     }
     if(c->kind==ck_aggregate) {
       Id id=node(template_recipe?"aggregate-initializer":is_immediate_class_type(skip_typerefs(c->type))?"record-initializer":"array-initializer",
@@ -2977,6 +2994,7 @@ struct State {
     switch(e->kind) {
       case enk_constant:
         if(node_constant(e)->kind==ck_template_param)kind=dependent_value_kind(node_constant(e),source_position);
+        else if(node_constant(e)->kind==ck_void)kind="void-constant";
         else if(node_constant(e)->kind==ck_string)kind="string-literal";
         else if(node_constant(e)->kind==ck_address)kind="address-constant";
         else if(node_constant(e)->kind==ck_aggregate)
@@ -4127,6 +4145,16 @@ struct State {
         db.update("symbols","id",entry.second,{{"definition_kind",r->use_comdat || r->is_inline ||
           (r->is_template_function && !r->is_specialized)?"weak":"strong"}});
 #endif
+    }
+    for(const auto &entry:variables) {
+      auto v=entry.first;
+      if(v->is_nonreal || v->is_parameter || v->is_handler_param ||
+         v->source_corresp.is_local_to_function || v->lowering_generated)continue;
+      // Source globals can acquire their selected ABI name/COMDAT during
+      // lowering. Keep their definition/source facts and refresh only final
+      // linkage identity and coalescing policy, as for recorded routines.
+      db.update("symbols","id",entry.second,{{"link_name",v->source_corresp.name?v->source_corresp.name:""},
+        {"linkage",linkage(v->source_corresp)},{"definition_kind",variable_definition_kind(v)}});
     }
     for(const auto &item:primary_destructor_abis) {
       auto r=item.first;
