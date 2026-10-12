@@ -49,7 +49,8 @@ internal sealed partial class Emitter
                 members.Reserve(record.Name);
                 foreach(var field in unit.Fields.Values.Where(field=>field.Owner==type.Id).OrderBy(field=>field.Ordinal))
                 {
-                    string member=field.BitWidth is null?members.Allocate(field.Name,"field_"+field.Ordinal):members.AllocateProperty(field.Name,"field_"+field.Ordinal);
+                    bool property=field.BitWidth is not null || IsZeroExtentArray(unit,field.Type);
+                    string member=property?members.AllocateProperty(field.Name,"field_"+field.Ordinal):members.Allocate(field.Name,"field_"+field.Ordinal);
                     if(field.BitWidth is not null)members.Reserve("set_"+member.TrimStart('@'));
                     fieldNames.Add((unit,field.Id),member);
                 }
@@ -159,6 +160,10 @@ internal sealed partial class Emitter
         var bitfields=WriteBitfieldBacking(unit,record);
         foreach(var field in unit.Fields.Values.Where(field=>field.Owner==record.Id).OrderBy(field=>field.Ordinal))
         {
+            if(IsZeroExtentArray(unit,field.Type))
+            {
+                WriteZeroExtentArrayField(unit,record,name,field);continue;
+            }
             if(field.BitWidth is not null)
             {
                 if(bitfields.TryGetValue(field.Id,out var bitfield))WriteBitfieldProperty(unit,bitfield);
@@ -195,7 +200,8 @@ internal sealed partial class Emitter
             "pointer" or "lvalue-reference" or "rvalue-reference"=>Pointer(unit,type.Pointee!.Value),
             "record"=>typeNames[(unit,type.Id)],
             "enum"=>typeNames[(unit,type.Id)],
-            "array"=>arrayNames[(unit,type.Id)],
+            "array"=>IsZeroExtentArray(unit,type.Id)?
+                throw new InvalidDataException("Zero-extent array value or stride storage emission is not yet implemented: type "+type.Id):arrayNames[(unit,type.Id)],
             _=>throw new InvalidDataException("Unsupported relational C# type "+type.Id+": "+type.Kind+" "+type.Name)
         };
     }
@@ -279,6 +285,8 @@ internal sealed partial class Emitter
         private string RawExpression(Node node)
         {
             if(expandedValues.TryGetValue(node.Id,out var expanded))return expanded;
+            if(node.Type is long zeroArray && IsZeroExtentArray(unit,zeroArray))
+                throw unit.Missing(node,"zero-extent array value emission requires a recorded field address view");
             if(node.Lifetime is long ownedLifetime && unit.Destructions.GetValueOrDefault(ownedLifetime,[]).Any(id=>!allocationOwnedCleanups.Contains(id)))
                 throw unit.Missing(node,"expression lifetime cleanup needs statement expansion");
             if(node.OriginalLvalueType is long original && unit.IsVolatile(original) ||

@@ -196,6 +196,8 @@ internal sealed partial class Emitter
         private string ExpandedExpressionCore(Node node,int indent)
         {
             if(expandedValues.TryGetValue(node.Id,out string? found))return NormalizeValue(node,found);
+            if(node.Type is long zeroArray && IsZeroExtentArray(unit,zeroArray) && ZeroExtentFieldAddress(node) is string address)
+                return NormalizeValue(node,address);
             if(IsPlacementWrapper(node))return ExpandedPlacementWrapper(node,indent);
             if(node.Kind=="new" && node.Operator=="placement")return ExpandedPlacementAllocation(node,indent);
             if((node.Kind is "temporary" or "lambda") && node.Initialization is long dependent &&

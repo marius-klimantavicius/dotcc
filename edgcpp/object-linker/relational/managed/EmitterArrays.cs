@@ -23,6 +23,7 @@ internal sealed partial class Emitter
             PrepareArrayType(unit,type.Pointee!.Value);return;
         }
         if(!unit.IsArray(type.Id) || arrayNames.ContainsKey((unit,type.Id)))return;
+        if(IsZeroExtentArray(unit,type.Id))return;
         long elementId=type.Element??throw new InvalidDataException("Array element type missing");
         PrepareArrayType(unit,elementId);
         string element=Type(unit,elementId);
@@ -37,6 +38,8 @@ internal sealed partial class Emitter
 
     private static void CheckArrayLayout(Unit unit,ProgramType type)
     {
+        if(IsZeroExtentArray(unit,type.Id))
+            throw new InvalidDataException("Zero-extent array non-field storage emission is not yet implemented: type "+type.Id);
         if(type.Dependent || type.Incomplete || type.Count is not >0 || type.Size is not >0 || type.Size>int.MaxValue || type.Alignment is not >0)
             throw new InvalidDataException("Fixed array storage requires recorded positive count, size and alignment: "+type.Name);
         if(type.Element is not long element)throw new InvalidDataException("Array element type missing");
@@ -97,7 +100,10 @@ internal sealed partial class Emitter
         {
             foreach(var pair in localArrayOwners)
             {
-                var type=unit.Original(unit.Symbols[pair.Key].Type);CheckArrayLayout(unit,type);
+                var type=unit.Original(unit.Symbols[pair.Key].Type);
+                if(IsZeroExtentArray(unit,type.Id) && unit.Nodes.Values.FirstOrDefault(node=>node.Symbol==pair.Key && node.Kind=="initialize") is Node declaration)
+                    throw unit.Missing(declaration,"zero-extent array non-field storage emission is not yet implemented");
+                CheckArrayLayout(unit,type);
                 Line(indent,"using var "+pair.Value+" = new "+emitter.localArrayStorageName+"("+type.Size+"U, "+type.Alignment+"U);");
                 Line(indent,Type(type.Id)+"* "+Name(pair.Key)+" = ("+Type(type.Id)+"*)"+pair.Value+".Address;");
             }
@@ -105,6 +111,7 @@ internal sealed partial class Emitter
 
         private string ArrayAddress(Node node)
         {
+            if(ZeroExtentFieldAddress(node) is string zeroField)return zeroField;
             if(node.Kind=="string-literal" && node.LiteralObject is long literal)
                 return "(("+NodeType(node)+"*)"+emitter.literalNames[(unit,literal)]+")";
             if(node.Kind=="variable" && node.Symbol is long symbol)return Name(symbol);
@@ -148,6 +155,8 @@ internal sealed partial class Emitter
             if(!unit.ArrayInitializers.TryGetValue(node.Id,out var initialization))
                 throw unit.Missing(node,"exporter defect: array initializer actions missing");
             var type=unit.Original(node.Type??throw unit.Missing(node,"array initializer type missing"));
+            if(IsZeroExtentArray(unit,type.Id) && unit.ArrayElements.GetValueOrDefault(node.Id,[]).Count==0 &&
+                node.Initialization is null && node.Lifetime is null)return;
             CheckArrayLayout(unit,type);
             string element=Type(type.Element!.Value);
             if(initialization.ZeroInitialize)
