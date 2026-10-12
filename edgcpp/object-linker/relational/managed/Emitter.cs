@@ -37,7 +37,7 @@ internal sealed partial class Emitter
         }
         PrepareProviderStorageNames();
         foreach(var unit in program.Units)
-            foreach(var type in unit.Types.Values.Where(type=>type.Kind=="record" && unit.VaListRole(type.Id) is null && executableTypes.Contains((unit,type.Id))))
+            foreach(var type in ExecutableTypeRows(unit).Where(type=>type.Kind=="record" && unit.VaListRole(type.Id) is null))
             {
                 string key=type.Linkage=="external"?"external:"+type.LinkName:unit.Path+":"+type.Id;
                 if(!records.TryGetValue(key,out var record))
@@ -48,7 +48,7 @@ internal sealed partial class Emitter
                 typeNames.Add((unit,type.Id),record.Name);
                 var members=new Names();
                 members.Reserve(record.Name);
-                foreach(var field in unit.Fields.Values.Where(field=>field.Owner==type.Id).OrderBy(field=>field.Ordinal))
+                foreach(var field in unit.FieldsForOwner(type.Id))
                 {
                     bool property=field.BitWidth is not null || IsZeroExtentArray(unit,field.Type);
                     string member=property?members.AllocateProperty(field.Name,"field_"+field.Ordinal):members.Allocate(field.Name,"field_"+field.Ordinal);
@@ -161,7 +161,7 @@ internal sealed partial class Emitter
         Line(1,"public struct "+name);Line(1,"{");
         if(completeStorage)WriteCompleteRecordStorage(unit,record,name,alignment!);
         var bitfields=WriteBitfieldBacking(unit,record);
-        foreach(var field in unit.Fields.Values.Where(field=>field.Owner==record.Id).OrderBy(field=>field.Ordinal))
+        foreach(var field in unit.FieldsForOwner(record.Id))
         {
             if(IsZeroExtentArray(unit,field.Type))
             {
@@ -254,9 +254,9 @@ internal sealed partial class Emitter
             if(emitter.nullptrValueName is string helper)allocator.Reserve(helper);
             if(function is SymbolRef selected)
             {
-                foreach(var local in unit.Symbols.Values.Where(value=>value.Parent==selected.Id && value.Kind!="static-local"))
+                foreach(var local in unit.SymbolsForParent(selected.Id).Where(value=>value.Kind!="static-local"))
                     locals.Add(local.Id,allocator.Allocate(local.Name,"local_"+local.Id));
-                foreach(var local in unit.Symbols.Values.Where(value=>value.Parent==selected.Id && value.Kind=="local" && unit.IsArray(value.Type)))
+                foreach(var local in unit.SymbolsForParent(selected.Id).Where(value=>value.Kind=="local" && unit.IsArray(value.Type)))
                     localArrayOwners.Add(local.Id,allocator.Allocate("__"+Name(local.Id)+"_storage","local_array_storage"));
                 if(unit.Original(selected.Symbol.Type).ReturnStorage=="caller-provided")
                     returnDestination=allocator.Allocate("__result","return_value");

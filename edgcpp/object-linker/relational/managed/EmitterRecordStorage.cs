@@ -13,7 +13,7 @@ internal sealed partial class Emitter
     private void WriteCompleteRecordStorage(Unit unit,ProgramType record,string owner,string alignment)
     {
         var members=new Names();members.Reserve(owner);
-        foreach(var field in unit.Fields.Values.Where(field=>field.Owner==record.Id))
+        foreach(var field in unit.FieldsForOwner(record.Id))
         {
             string name=fieldNames[(unit,field.Id)];members.Reserve(name);
             if(field.BitWidth is not null || IsZeroExtentArray(unit,field.Type))members.Reserve("get_"+name.TrimStart('@'));

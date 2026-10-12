@@ -8,14 +8,14 @@ internal sealed partial class Emitter
     private Dictionary<long,BitfieldPlan> WriteBitfieldBacking(Unit unit,ProgramType record)
     {
         var plans=new Dictionary<long,BitfieldPlan>();
-        var fields=unit.Fields.Values.Where(field=>field.Owner==record.Id && field.BitWidth is >0).OrderBy(field=>field.Ordinal).ToArray();
+        var fields=unit.FieldsForOwner(record.Id).Where(field=>field.BitWidth is >0).ToArray();
         if(fields.Length==0)return plans;
         if(unit.TargetCharBit is null || unit.TargetLittleEndian is null)
             throw new InvalidDataException("Bitfield generation requires recorded target char_bit and little_endian facts: "+record.Name);
         if(unit.TargetCharBit!=8 || unit.TargetLittleEndian!=true)
             throw new InvalidDataException("Bitfield generation currently supports recorded 8-bit little-endian targets: "+record.Name);
         var members=new Names();members.Reserve(typeNames[(unit,record.Id)]);
-        foreach(var field in unit.Fields.Values.Where(field=>field.Owner==record.Id))
+        foreach(var field in unit.FieldsForOwner(record.Id))
         {
             string member=fieldNames[(unit,field.Id)];members.Reserve(member);
             if(field.BitWidth is not null){members.Reserve("get_"+member.TrimStart('@'));members.Reserve("set_"+member.TrimStart('@'));}

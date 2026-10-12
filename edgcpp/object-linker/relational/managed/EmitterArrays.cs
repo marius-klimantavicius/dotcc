@@ -10,7 +10,7 @@ internal sealed partial class Emitter
     private void PrepareArrays()
     {
         foreach(var unit in program.Units)
-            foreach(var type in unit.Types.Values.Where(type=>unit.IsArray(type.Id) && type.Kind=="array" && executableTypes.Contains((unit,type.Id))))
+            foreach(var type in ExecutableTypeRows(unit).Where(type=>type.Kind=="array"))
                 PrepareArrayType(unit,type.Id);
         if(needsLocalArrayStorage)localArrayStorageName=names.Allocate("__LocalArrayStorage","local_array_storage");
     }

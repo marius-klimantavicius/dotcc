@@ -8,7 +8,7 @@ internal sealed partial class Emitter
     private void PrepareEnums()
     {
         foreach(var unit in program.Units)
-            foreach(var type in unit.Types.Values.Where(type=>type.Kind=="enum" && executableTypes.Contains((unit,type.Id))))
+            foreach(var type in ExecutableTypeRows(unit).Where(type=>type.Kind=="enum"))
             {
                 if(!unit.Enums.TryGetValue(type.Id,out var details))
                     throw new InvalidDataException("Exporter defect: enum declaration missing for "+type.Name);

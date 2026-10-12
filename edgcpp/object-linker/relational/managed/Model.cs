@@ -29,13 +29,13 @@ internal sealed partial class Unit : IDisposable
     public bool HasNodeDomain {get;}
     public bool HasOperationType {get;}
     public bool HasControlLifetimes {get;}
-    public Dictionary<long, ProgramType> Types { get; } = [];
-    public Dictionary<long, Field> Fields { get; } = [];
-    public Dictionary<long, Symbol> Symbols { get; } = [];
+    public SqlRowCatalog<ProgramType> Types { get; }
+    public SqlRowCatalog<Field> Fields { get; }
+    public SqlRowCatalog<Symbol> Symbols { get; }
     public bool HasEmissionRoots {get;}
     public Dictionary<long, long> Functions { get; } = [];
     public Dictionary<long, List<long>> Parameters { get; } = [];
-    public Dictionary<long, List<long>> TypeParameters { get; } = [];
+    public SqlTypeParameterCatalog TypeParameters { get; }
     public Dictionary<long, Node> Nodes => Body.Nodes;
     public Dictionary<long, List<Edge>> Edges => Body.Edges;
     public Dictionary<long, long> Initializers { get; } = [];
@@ -86,22 +86,21 @@ internal sealed partial class Unit : IDisposable
                 HasControlLifetimes=query.Read();
             using (var q = database.Prepare("SELECT id,path FROM files ORDER BY id"))
                 while (q.Read()) Files.Add(q.Integer(0), q.Text(1));
-            using (var q = database.Prepare("SELECT id,kind,name,size,alignment,pointee_type_id,element_type_id,element_count,return_type_id,underlying_type_id,is_variadic,is_incomplete,link_name,linkage,is_volatile,"+(HasLifecycles?"builtin_name":"NULL")+","+(hasDependentTypes?"is_dependent":"0")+","+(HasReturnStorage?"return_storage":"'value'")+","+(hasSemanticRole?"semantic_role":"NULL")+","+(hasExceptionPolicy?"exception_policy":"'unwind'")+","+(hasObjectType?"object_type_id":"NULL")+","+(hasArrayBound?"array_bound_kind,array_bound_node_id":"NULL,NULL")+","+(hasReceiverParameterFact?"parameters_include_receiver":"NULL")+" FROM types ORDER BY id"))
-                while (q.Read()) Types.Add(q.Integer(0), new(q.Integer(0),q.Text(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalInteger(5),q.OptionalInteger(6),q.OptionalInteger(7),q.OptionalInteger(8),q.OptionalInteger(9),q.Integer(10)!=0,q.Integer(11)!=0,q.Text(12),q.Text(13),q.Integer(14)!=0,q.OptionalText(15),q.Integer(16)!=0,q.Text(17),q.OptionalText(18),q.Text(19),q.OptionalInteger(20),q.OptionalText(21),q.OptionalInteger(22),q.OptionalInteger(23) is long receiverFact?receiverFact!=0:null));
+            Types=new(database,"types","id,kind,name,size,alignment,pointee_type_id,element_type_id,element_count,return_type_id,underlying_type_id,is_variadic,is_incomplete,link_name,linkage,is_volatile,"+(HasLifecycles?"builtin_name":"NULL")+","+(hasDependentTypes?"is_dependent":"0")+","+(HasReturnStorage?"return_storage":"'value'")+","+(hasSemanticRole?"semantic_role":"NULL")+","+(hasExceptionPolicy?"exception_policy":"'unwind'")+","+(hasObjectType?"object_type_id":"NULL")+","+(hasArrayBound?"array_bound_kind,array_bound_node_id":"NULL,NULL")+","+(hasReceiverParameterFact?"parameters_include_receiver":"NULL"),
+                q=>new(q.Integer(0),q.Text(1),q.Text(2),q.OptionalInteger(3),q.OptionalInteger(4),q.OptionalInteger(5),q.OptionalInteger(6),q.OptionalInteger(7),q.OptionalInteger(8),q.OptionalInteger(9),q.Integer(10)!=0,q.Integer(11)!=0,q.Text(12),q.Text(13),q.Integer(14)!=0,q.OptionalText(15),q.Integer(16)!=0,q.Text(17),q.OptionalText(18),q.Text(19),q.OptionalInteger(20),q.OptionalText(21),q.OptionalInteger(22),q.OptionalInteger(23) is long receiverFact?receiverFact!=0:null));
             ReadExceptionSpecifications();
             ReadEnums();
             ReadFloatingFormats();
-            using (var q = database.Prepare("SELECT id,owner_type_id,name,type_id,ordinal,byte_offset,bit_offset,bit_width FROM fields ORDER BY owner_type_id,ordinal"))
-                while (q.Read()) Fields.Add(q.Integer(0), new(q.Integer(0),q.Integer(1),q.Text(2),q.Integer(3),q.Integer(4),q.Integer(5),q.OptionalInteger(6),q.OptionalInteger(7)));
+            Fields=new(database,"fields","id,owner_type_id,name,type_id,ordinal,byte_offset,bit_offset,bit_width",
+                q=>new(q.Integer(0),q.Integer(1),q.Text(2),q.Integer(3),q.Integer(4),q.Integer(5),q.OptionalInteger(6),q.OptionalInteger(7)));
             using(var q=database.Prepare("SELECT 1 FROM pragma_table_info('symbols') WHERE name='is_emission_root'"))HasEmissionRoots=q.Read();
-            using (var q = database.Prepare("SELECT id,kind,name,link_name,linkage,type_id,parent_symbol_id,is_definition,definition_kind,"+(HasEmissionRoots?"is_emission_root":"NULL")+" FROM symbols ORDER BY id"))
-                while (q.Read()) Symbols.Add(q.Integer(0),new(q.Integer(0),q.Text(1),q.Text(2),q.Text(3),q.Text(4),q.Integer(5),q.OptionalInteger(6),q.Integer(7)!=0,q.Text(8),q.OptionalInteger(9) is long root?root!=0:null));
+            Symbols=new(database,"symbols","id,kind,name,link_name,linkage,type_id,parent_symbol_id,is_definition,definition_kind,"+(HasEmissionRoots?"is_emission_root":"NULL"),
+                q=>new(q.Integer(0),q.Text(1),q.Text(2),q.Text(3),q.Text(4),q.Integer(5),q.OptionalInteger(6),q.Integer(7)!=0,q.Text(8),q.OptionalInteger(9) is long root?root!=0:null));
             using (var q = database.Prepare("SELECT symbol_id,body_node_id FROM functions ORDER BY symbol_id"))
                 while (q.Read()) Functions.Add(q.Integer(0),q.Integer(1));
             using (var q = database.Prepare("SELECT function_id,symbol_id FROM parameters ORDER BY function_id,ordinal"))
                 while (q.Read()) Add(Parameters,q.Integer(0),q.Integer(1));
-            using (var q = database.Prepare("SELECT type_id,parameter_type_id FROM type_parameters ORDER BY type_id,ordinal"))
-                while (q.Read()) Add(TypeParameters,q.Integer(0),q.Integer(1));
+            TypeParameters=new(database);
             using (var q = database.Prepare("SELECT symbol_id,initializer_node_id FROM global_initializers ORDER BY symbol_id"))
                 while (q.Read()) Initializers.Add(q.Integer(0),q.Integer(1));
             ReadInheritance();
@@ -123,7 +122,7 @@ internal sealed partial class Unit : IDisposable
             ReadLiteralInitializers(null);
             ReadAllocations(null);
         }
-        catch { database.Dispose(); throw; }
+        catch { Types?.Dispose();Symbols?.Dispose();Fields?.Dispose();database.Dispose();throw; }
     }
 
     private static void Add<T>(Dictionary<long,List<T>> map,long key,T value)
@@ -148,7 +147,10 @@ internal sealed partial class Unit : IDisposable
         return value.Volatile;
     }
     public InvalidDataException Missing(Node node,string message) => new($"{Files.GetValueOrDefault(node.File??0,Source)}:{node.Line}:{node.Column}: node {node.Id} ({node.Kind}/{node.Operator}): {message}");
-    public void Dispose() => database.Dispose();
+    public IEnumerable<Symbol> SymbolsForParent(long id)=>Symbols.Query("parent_symbol_id="+id);
+    public IEnumerable<Field> FieldsForOwner(long id)=>Fields.Query("owner_type_id="+id,"ordinal");
+    public IEnumerable<Symbol> DefinedStorageSymbols()=>Symbols.Query("kind NOT IN('source-variable','source-function') AND is_definition=1 AND (parent_symbol_id IS NULL OR kind='static-local')");
+    public void Dispose() {Types.Dispose();Symbols.Dispose();Fields.Dispose();database.Dispose();}
 }
 
 internal sealed partial class LinkedProgram : IDisposable
@@ -170,7 +172,7 @@ internal sealed partial class LinkedProgram : IDisposable
             if(Units.Select(unit=>unit.Abi).Distinct(StringComparer.Ordinal).Count()!=1)
                 throw new InvalidDataException("Cannot link objects with different recorded target ABIs");
             foreach(var unit in Units)
-                foreach(var symbol in unit.Symbols.Values.Where(symbol=>symbol.Kind is not ("source-variable" or "source-function") && symbol.Definition && (symbol.Parent is null || symbol.Kind=="static-local")))
+                foreach(var symbol in unit.DefinedStorageSymbols())
                 {
                     var value=new SymbolRef(unit,symbol.Id);
                     if(symbol.Linkage=="external" && !external.TryAdd(symbol.LinkName,value))
@@ -182,7 +184,7 @@ internal sealed partial class LinkedProgram : IDisposable
                     }
                 }
             foreach(var unit in Units)
-                foreach(var symbol in unit.Symbols.Values.Where(symbol=>symbol.Kind is not ("source-variable" or "source-function") && symbol.Definition && (symbol.Parent is null || symbol.Kind=="static-local")))
+                foreach(var symbol in unit.DefinedStorageSymbols())
                 {
                     var value=new SymbolRef(unit,symbol.Id);
                     if(Resolve(unit,symbol.Id)!=value)continue;

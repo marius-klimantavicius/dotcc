@@ -566,3 +566,33 @@ StringUtil-v13 passes the new void-constant export and stops at ordinary
 new ComplexJSON with EDG-selected constructor/failure operator-delete facts;
 source helper.hpp:66:72. Native inline-global metadata remains the first next
 export lane because it blocks real multi-unit linking.
+
+## Primary catalog reduction measured
+
+Director reviewed the new SQLite-backed row catalog: bounded process-wide
+4,096-entry LRU per primary row family; Values/Keys enumerate SQL without cache
+materialization. Parent/owner queries replace repeated whole-table scans. Query
+plans confirm field/type-parameter indexes; a symbols-parent index is needed
+for fresh objects. Failed Unit construction now clears initialized cache owners.
+
+Independent artifact read of `dotobj-relational-catalog-scaling-v2` confirms
+same-input one/two/four catalog managed heap 1,996,648 / 5,119,408 / 12,772,608
+bytes, versus 30.3/90.6/243.2 MB before. Row counts are unchanged. Supervisor
+reports peak RSS 46,080/57,600/88,064 KiB and identical checksum source. This
+accepts primary catalog reduction only: connections, auxiliary catalogs, winner
+indexes and emitter name/type plans are not yet globally bounded.
+
+Independent inline-variable audit: director compiled the focused provider/main
+with immutable native-inline-globals-v1 into director-inline-global-audit-v1.
+Used and dormant left/right namespace variables retain distinct EDG-mangled
+identities and weak definitions; shared digits are weak, strong_value remains
+strong. Fresh checksum-v27 and exception-v29 SQL both record __digits_base_10
+as `_ZNSt11__dotgen_v16__itoa16__digits_base_10E`, weak/root0, and __pow10_64
+as `_ZNSt11__dotgen_v16__itoa10__pow10_64E`, weak/root0. This fixes the prior
+raw strong header-variable collision without weakening linker diagnostics.
+
+Primary catalog stress independently read: all 331,890 type, 98,091 symbol and
+5,137 field point/stream rows match across four real objects; each row-family
+cache remains at 4,096 entries and disposing all units releases every cached row.
+Emitter selected-ID iteration preserves ordering; owner/parent lookups avoid
+full-catalog scans. Connection pooling remains the separate next memory step.

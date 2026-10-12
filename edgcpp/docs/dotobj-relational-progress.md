@@ -73,8 +73,15 @@ multiply/xor helpers and still matches all 727 cases. The checked-host fixture
 verifies this compound slice, not every emitted arithmetic operation. Focused selection
 passes both link orders, genuine nonroot dependencies, retained-unused source
 definitions, explicit all-bodies and conservative legacy/NULL root behavior. A native checksum oracle retains 727 numeric/byte cases for the first
-selected functional C#/AOT comparison. Full-corpus linking
-still requires measured bounded metadata/catalog loading.
+selected functional C#/AOT comparison. Measured primary catalog loading now uses SQLite point lookups and streamed
+enumeration with a process cap of 4096 rows per type/symbol/field family. On the
+same 1/2/4 distinct complete objects, live managed catalog heap falls from
+30.3/90.6/243.2 MB to 2.0/5.1/12.8 MB and peak RSS from
+79368/148688/318532 KiB to 46080/57600/88064 KiB. All row counts remain available;
+331890 type, 98091 symbol and 5137 field point/stream reads pass cache churn and
+disposal checks. Checksum and nine selected/opaque regression sources remain
+byte-identical. Connections, global catalogs and persistent linker/emitter name
+and identity plans are not yet bounded; full-corpus linking stays stopped.
 
 The bounded batch retains every command, pin and failed intermediate; no
 full-corpus run has resumed. Full configured library translation remains incomplete.

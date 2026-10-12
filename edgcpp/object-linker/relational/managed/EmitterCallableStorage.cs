@@ -2,17 +2,16 @@ namespace DotObj.Relational;
 
 internal sealed partial class Emitter
 {
-    private readonly Dictionary<string,(Unit Unit,ProgramType Type)> recordedRecordDefinitions=new(StringComparer.Ordinal);
+    private readonly Dictionary<string,(Unit Unit,long Type)> recordedRecordDefinitions=new(StringComparer.Ordinal);
 
     private void PrepareRecordedRecordDefinitions()
     {
         foreach(var unit in program.Units)
-            foreach(var type in unit.Types.Values.Where(type=>type.Kind=="record" && !type.Incomplete && !type.Dependent &&
-                type.Size is >0 && type.Alignment is >0 && type.Linkage=="external" && type.LinkName.Length!=0))
-                recordedRecordDefinitions.TryAdd(type.LinkName,(unit,type));
+            foreach(var type in unit.Types.Query("kind='record' AND is_incomplete=0 AND size>0 AND alignment>0 AND linkage='external' AND link_name<>''").Where(type=>!type.Dependent))
+                recordedRecordDefinitions.TryAdd(type.LinkName,(unit,type.Id));
     }
 
-    private bool RecordedRecordDefinition(ProgramType type,out (Unit Unit,ProgramType Type) definition)=>
+    private bool RecordedRecordDefinition(ProgramType type,out (Unit Unit,long Type) definition)=>
         recordedRecordDefinitions.TryGetValue(type.LinkName,out definition) && type.Linkage=="external";
 
     private bool UnfinalizedCallableResult(Unit unit,ProgramType signature)

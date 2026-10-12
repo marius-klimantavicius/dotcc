@@ -5,6 +5,9 @@ internal sealed partial class Emitter
     private readonly HashSet<(Unit,long)> executableTypes=[];
     private readonly HashSet<(Unit,long)> executableGlobalNodes=[];
 
+    private IEnumerable<ProgramType> ExecutableTypeRows(Unit unit)=>executableTypes
+        .Where(reference=>reference.Item1==unit).Select(reference=>reference.Item2).Order().Select(id=>unit.Types[id]);
+
     // Follow only recorded program references. Template recipes remain in the
     // object catalog; this traversal does not instantiate or analyze them.
     private void FindExecutableTypes()
@@ -20,7 +23,7 @@ internal sealed partial class Emitter
         {
             var unit=function.Unit;
             UseType(unit,function.Symbol.Type);
-            foreach(var local in unit.Symbols.Values.Where(symbol=>symbol.Parent==function.Id))
+            foreach(var local in unit.SymbolsForParent(function.Id))
             {
                 UseType(unit,local.Type);
                 needsLocalArrayStorage|=local.Kind=="local" && unit.IsArray(local.Type);
@@ -159,8 +162,8 @@ internal sealed partial class Emitter
         foreach(long parameter in unit.TypeParameters.GetValueOrDefault(id,[]))UseType(unit,parameter);
         if(type.Kind=="record")
         {
-            if(type.Incomplete && RecordedRecordDefinition(type,out var definition))UseType(definition.Unit,definition.Type.Id);
-            foreach(var field in unit.Fields.Values.Where(field=>field.Owner==id))UseType(unit,field.Type);
+            if(type.Incomplete && RecordedRecordDefinition(type,out var definition))UseType(definition.Unit,definition.Type);
+            foreach(var field in unit.FieldsForOwner(id))UseType(unit,field.Type);
             foreach(var subobject in unit.BaseSubobjects.Values.Where(subobject=>subobject.Owner==id))UseType(unit,subobject.Type);
         }
     }

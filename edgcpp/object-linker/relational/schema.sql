@@ -154,6 +154,7 @@ CREATE TABLE symbols (
  line INTEGER,
  column INTEGER
 ) STRICT;
+CREATE INDEX symbols_parent ON symbols(parent_symbol_id,id);
 CREATE TABLE functions (
  symbol_id INTEGER PRIMARY KEY REFERENCES symbols(id),
  kind TEXT NOT NULL DEFAULT 'ordinary' CHECK(kind IN('ordinary','constructor','destructor')),
