@@ -520,3 +520,49 @@ SHA256 `8c80e57526c965b12d6491a62c64bcba2d082e077f9900e707efe578ec142512`.
 Builds/runs exit zero. Exact generated source is retained unchanged; its sole
 external memcpy adapter uses shared `Edg.Runtime.LibcContext.Memcpy`. This proves
 one functional TU, not all DuckDB or runtime portability on other systems.
+
+## Bounded catalog scaling and first real cross-unit link defect
+
+`dotobj-relational-catalog-scaling-v1` measures one/two/four distinct actual
+checksum, exception, date and hugeint objects, without duplicated-object scaling.
+Retained managed catalog heap is 30.3/90.6/243.2 MB; peak RSS
+79,368/148,688/318,532 KiB. Four inputs contain 331,890 type rows and 98,091
+symbol rows. Selecting four checksum functions leaves its roughly 30 MB catalogs
+retained. Body leasing alone cannot make the full-project link memory bounded.
+
+The two-input real link separately fails on duplicate strong __digits_base_10.
+Director read the original libc++ tables.h:143 inline constexpr definition,
+queried both objects (external/strong/raw unmangled link_name), and inspected
+variable() export: its generic symbol INSERT omits definition_kind and generic
+variables lack a final link-name refresh. Adapt direct EDG inline/COMDAT/linkage
+facts; do not bypass duplicate-definition checks or independently reinterpret
+C++ source. Native investigation is active.
+
+Bounded-catalog implementation must avoid whole-table materialization disguised
+as lazy Values enumeration: query locals by parent and fields by owner, iterate
+selected type IDs, and keep record provider indexes as identities rather than
+retained full records. Measure the same real inputs before expanding the run.
+
+## Compound source readability and selected next frontiers
+
+Director independently accepted `dotobj-relational-source-compounds-v4` worker
+proof and re-compared `dotobj-relational-checksum-selected-oracle-v2`: all 727
+managed and NativeAOT rows still equal native. Checksum generated-native-roots-v4
+is 6,001 characters and contains no multiply/xor assignment helpers. Pure RHS
+local operations emit ordinary compounds; effectful RHS is evaluated once before
+the old local is read, with a focused escaped-address mutation case. New integer
+multiplication compounds preserve wrap under checked host compilation. This
+checked-host claim is limited to these changed operations: other existing raw
+arithmetic expressions still rely on the generated project's default context.
+
+The assignment cache now restores an existing RHS temporary binding after its
+scoped replacement. Actual Date/Hugeint objects pass their former duplicate-key
+failures. Director inspected Date's failing emitted signature and SQL: function
+2338, string_t(char const*), action209 is nonvirtual delegation to the same type,
+not virtual-base construction. Function2343/action210 is also delegation.
+Prioritize this actual narrow case over a generic virtual-base ABI campaign.
+
+StringUtil-v13 passes the new void-constant export and stops at ordinary
+new ComplexJSON with EDG-selected constructor/failure operator-delete facts;
+source helper.hpp:66:72. Native inline-global metadata remains the first next
+export lane because it blocks real multi-unit linking.

@@ -252,13 +252,18 @@ internal sealed partial class Emitter
                 string name="__rhs_"+node.Id;
                 string value=ExpandedExpression(right,indent);
                 Line(indent,NodeType(right)+" "+name+" = "+value+";");
-                expandedValues.Add(right.Id,name);
+                bool previousPresent=expandedValues.TryGetValue(right.Id,out string? previousValue);
+                expandedValues[right.Id]=name;
                 try
                 {
                     ExpandedExpression(operands[0],indent);
                     return Expression(node);
                 }
-                finally {expandedValues.Remove(right.Id);}
+                finally
+                {
+                    if(previousPresent)expandedValues[right.Id]=previousValue!;
+                    else expandedValues.Remove(right.Id);
+                }
             }
             if(node.Kind is "temporary" or "lambda")
             {

@@ -22,12 +22,11 @@ internal sealed partial class Emitter
 
     private static bool IsSourceCompoundCandidate(Unit unit,Node node,long? function)
     {
-        if(function is null || node.Kind!="operation" || node.Operator is not ("bit-and-assign" or "bit-or-assign" or "bit-xor-assign") ||
+        if(function is null || node.Kind!="operation" || node.Operator is not ("bit-and-assign" or "bit-or-assign" or "bit-xor-assign" or "multiply-assign") ||
            node.OperationType is not long calculation)return false;
         var operands=unit.Children(node,"operand").ToArray();
         if(operands.Length!=2 || operands[0].Kind!="variable" || operands[0].Symbol is not long symbol ||
-           unit.Symbols[symbol].Parent!=function || unit.Symbols[symbol].Kind is not ("local" or "parameter") ||
-           operands[1].Kind!="constant")return false;
+           unit.Symbols[symbol].Parent!=function || unit.Symbols[symbol].Kind is not ("local" or "parameter"))return false;
         string stored=unit.Original(unit.Symbols[symbol].Type).Kind;
         if(stored is not ("i32" or "u32" or "i64" or "u64" or "i128" or "u128") ||
            operands[1].Type is not long right || unit.Original(right).Kind!=stored ||
@@ -37,7 +36,22 @@ internal sealed partial class Emitter
         if(unit.IsVolatile(unit.Symbols[symbol].Type) ||
            node.OriginalLvalueType is long original && unit.IsVolatile(original) ||
            node.Type is long type && unit.IsVolatile(type))return false;
+        if(node.EvaluationOrder!="right-to-left" && !IsPureCompoundRight(unit,operands[1],function))return false;
         return node.Lifetime is not long lifetime || unit.Destructions.GetValueOrDefault(lifetime,[]).Count==0;
+    }
+
+    private static bool IsPureCompoundRight(Unit unit,Node node,long? function)
+    {
+        if(node.Type is long type && unit.IsVolatile(type))return false;
+        if(node.Lifetime is long lifetime && unit.Destructions.GetValueOrDefault(lifetime,[]).Count!=0)return false;
+        if(node.Kind=="constant")return true;
+        if(node.Kind=="variable")
+            return node.Symbol is long symbol && unit.Symbols[symbol].Parent==function &&
+                unit.Symbols[symbol].Kind is "local" or "parameter" && !unit.IsVolatile(unit.Symbols[symbol].Type);
+        if(node.Kind!="operation" || node.Operator is not ("cast" or "bool-cast" or "lvalue-adjust" or
+            "plus" or "negate" or "complement" or "not" or "add" or "subtract" or "multiply" or "divide" or
+            "remainder" or "bit-and" or "bit-or" or "bit-xor" or "shift-left" or "shift-right"))return false;
+        return unit.Children(node,"operand").All(operand=>IsPureCompoundRight(unit,operand,function));
     }
 
     private void WriteCompoundHelpers(Unit unit,long? function)
@@ -118,11 +132,20 @@ internal sealed partial class Emitter
         {
             if(!IsSourceCompoundCandidate(unit,node,function?.Id))return false;
             var operands=unit.Children(node,"operand").ToArray();
-            // The recorded constant RHS has no effects. Thus C#'s compound
-            // old-value read cannot move before an observable RHS action,
-            // including when EDG records right-to-left operand evaluation.
-            string operation=node.Operator switch {"bit-and-assign"=>"&=","bit-or-assign"=>"|=",_=>"^="};
-            Line(indent,Expression(operands[0])+" "+operation+" "+Expression(operands[1])+";");
+            // A direct local designation has no effects. For an effectful
+            // RHS, save the selected value before C# reads the old local:
+            // that RHS can change the same local through an escaped address.
+            string right;
+            if(IsPureCompoundRight(unit,operands[1],function?.Id))right=Expression(operands[1]);
+            else
+            {
+                right=allocator.Allocate("__compound_right_"+node.Id,"compound_right");
+                string value=ExpandedExpression(operands[1],indent);
+                Line(indent,NodeType(operands[1])+" "+right+" = "+value+";");
+            }
+            string operation=node.Operator switch {"bit-and-assign"=>"&=","bit-or-assign"=>"|=","multiply-assign"=>"*=",_=>"^="};
+            string statement=Expression(operands[0])+" "+operation+" "+right+";";
+            Line(indent,node.Operator=="multiply-assign"?"unchecked { "+statement+" }":statement);
             return true;
         }
 

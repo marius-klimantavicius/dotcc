@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Source compound statements where recorded types and constant effects permit."""
+"""Source compound statements with recorded types and once-only RHS effects."""
 import argparse
 from pathlib import Path
 import shutil
@@ -22,6 +22,10 @@ def inspect(path):
             WHERE n.operator IN ('bit-and-assign','bit-or-assign','bit-xor-assign') ORDER BY n.id''').fetchall()
         if path.stem=='provider':
             assert len(rows)>=7 and all(order=='right-to-left' for _,order,*_ in rows), rows
+            assert db.execute('''SELECT COUNT(*) FROM nodes a JOIN symbols s ON s.id=a.function_id
+                JOIN edges e ON e.parent_id=a.id AND e.role='operand' AND e.ordinal=1
+                JOIN nodes r ON r.id=e.child_id WHERE s.name='temporary_assignment'
+                AND a.operator='assign' AND a.evaluation_order='right-to-left' AND r.kind='temporary' ''').fetchone()[0]==1
         return path.name+': '+str(rows)
 
 
@@ -46,20 +50,25 @@ def main():
     source.rename(work/'original-source');generated=work/'generated'
     run(['dotnet',args.linker.resolve(),'link','--out',generated,'--entry','main',*objects],work/'link.log')
     code=(generated/'Translated.cs').read_text()
-    for statement in ('c &= 7;','c |= 16;','c ^= 3;'):
+    for statement in ('c &= 7;','c |= 16;','c ^= 3;','value *= factor;','value ^= (value >> (int)shift);'):
         assert statement in code, statement
     assert 'Apply((&c))' in code and 'Apply((&narrow))' in code, code
-    # The same int &= helper remains needed by expression/effectful sites,
-    # while the only int |= and ^= sites are emitted directly.
+    # Result-valued int &= and *= still need their lvalue helpers. Effectful
+    # discarded compounds instead save the RHS before reading aliased c.
     assert '__bit_and_assign_int' in code, code
+    assert '__multiply_assign_int' in code, code
     assert '__bit_or_assign_int' not in code and '__bit_xor_assign_int' not in code, code
+    assert 'c &= __compound_right_' in code and 'c ^= __compound_right_' in code and 'c *= __compound_right_' in code,code
+    assert 'unchecked { value *= factor; }' in code,code
+    project=generated/'Translated.csproj'
+    project.write_text(project.read_text().replace('</PropertyGroup>','<CheckForOverflowUnderflow>true</CheckForOverflowUnderflow></PropertyGroup>'))
     run(['dotnet','run','--project',generated/'Translated.csproj','-c','Release'],work/'managed-run.log')
     if args.nativeaot:
         run(['dotnet','publish',generated/'Translated.csproj','-c','Release','-p:PublishAot=true','-o',work/'nativeaot'],work/'nativeaot-build.log')
         apps=[p for p in (work/'nativeaot').iterdir() if p.is_file() and p.suffix=='' and p.stat().st_mode & 0o111]
         if len(apps)!=1:raise RuntimeError('Expected one NativeAOT application')
         run(apps,work/'nativeaot-run.log')
-    print('PASS: ordinary named-local bitwise compound statements; helpers retain selected glvalue, conversion, RHS effects/order and complex targets; '
+    print('PASS: ordinary named-local multiply/bitwise compound statements in a checked host; saved RHS preserves once-only alias mutation/order; helpers retain selected glvalue, conversion and complex targets; RTL temporary assignment cache retained; '
           'native/source-hidden C#'+('/NativeAOT' if args.nativeaot else ''))
     print(work)
 

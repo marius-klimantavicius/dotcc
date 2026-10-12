@@ -66,7 +66,11 @@ native roots, with no unknown current-format flags. It exports in 1.06 s with
 at actual checksum.cpp line 72; its narrow renderer now produces complete
 checksum C# with four functions, three globals and one memcpy provider. All 727 native checksum oracle rows match both C# and Linux x64 NativeAOT
 with SHA256 8c80e57526c965b12d6491a62c64bcba2d082e077f9900e707efe578ec142512.
-Only the shared LibcContext.Memcpy adapter is supplied. Focused selection
+Only the shared LibcContext.Memcpy adapter is supplied. Discarded local multiply and bitwise
+compounds now emit ordinary statements with recorded RHS evaluation order; multiply
+wrap remains unchecked. Refined generated checksum is 6001 characters with no
+multiply/xor helpers and still matches all 727 cases. The checked-host fixture
+verifies this compound slice, not every emitted arithmetic operation. Focused selection
 passes both link orders, genuine nonroot dependencies, retained-unused source
 definitions, explicit all-bodies and conservative legacy/NULL root behavior. A native checksum oracle retains 727 numeric/byte cases for the first
 selected functional C#/AOT comparison. Full-corpus linking
