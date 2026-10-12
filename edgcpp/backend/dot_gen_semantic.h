@@ -3007,21 +3007,44 @@ struct State {
         edge(id,"body",0,body);break;
       }
       case stmk_decl: {
-        unsigned ordinal=0;
+        unsigned ordinal=0;auto following_initialization=s->next;
         for(auto item=s->variant.decl.entities;item;item=item->next) {
           if(item->entity.kind==iek_variable) {
             auto v=(a_variable_ptr)item->entity.ptr;
-            // EDG retains the declaration and its immediately following
-            // executable initialization separately. Project that exact pair
-            // as the original source declaration with one initializer.
+            // EDG retains one declaration group and its immediately following
+            // executable initializations separately. Match each dynamic
+            // declarator to the next selected action in that exact order.
             // Standalone C++17 selection initializers instead use the
             // variable's recorded initializer directly, like stock
             // lower_il::make_init_statements_for_entity_list.
             if(v->init_kind==initk_dynamic) {
-              if(!condition_initializer && (!s->next || s->next->kind!=stmk_init ||
-                 s->next->variant.dynamic_init!=v->initializer.dynamic))
-                missing("nonadjacent declaration/initialization projection");
-              if(!condition_initializer)declaration_initializers.insert(v->initializer.dynamic);
+              if(!condition_initializer && (!following_initialization || following_initialization->kind!=stmk_init ||
+                 following_initialization->variant.dynamic_init!=v->initializer.dynamic)) {
+                auto pos=location(v->source_corresp.decl_position.seq?v->source_corresp.decl_position:s->position);
+                std::string path,name;
+                for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+                for(const auto &entry:routines)if(entry.second==function){name=spelling(entry.first->source_corresp);break;}
+                unsigned count=0;for(auto entity=s->variant.decl.entities;entity;entity=entity->next)++count;
+                std::string detail="nonadjacent declaration/initialization [function="+name+
+                  ", variable="+spelling(v->source_corresp)+", entity-ordinal="+std::to_string(ordinal)+
+                  ", entity-count="+std::to_string(count)+", action-kind="+std::to_string(int(v->initializer.dynamic->kind))+
+                  ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]";
+                unsigned next_ordinal=0;
+                for(auto following=following_initialization;following && next_ordinal<3;following=following->next,++next_ordinal) {
+                  auto selected=following->kind==stmk_init?following->variant.dynamic_init:nullptr;
+                  auto source=location(following->position);std::string next_path;
+                  for(const auto &file:files)if(file.second==source.file){next_path=file.first;break;}
+                  detail+=" [following="+std::to_string(next_ordinal)+", statement-kind="+std::to_string(int(following->kind))+
+                    ", matches-selected-action="+std::to_string(selected==v->initializer.dynamic?1:0)+
+                    ", variable="+(selected && selected->variable?spelling(selected->variable->source_corresp):"")+
+                    ", file="+next_path+", line="+std::to_string(source.line)+", column="+std::to_string(source.column)+"]";
+                }
+                missing(detail);
+              }
+              if(!condition_initializer) {
+                declaration_initializers.insert(v->initializer.dynamic);
+                following_initialization=following_initialization->next;
+              }
             }
             edge(id,"declaration",ordinal++,declaration(v,s->position));
           }
