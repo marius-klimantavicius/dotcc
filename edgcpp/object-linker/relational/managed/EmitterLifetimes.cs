@@ -59,9 +59,11 @@ internal sealed partial class Emitter
                 }
             foreach(var member in unit.ConstructorInitializers.GetValueOrDefault(functionId,[]))
                 cleanupTargets[member.Initialization]=Target(member);
+            PrepareExpressionTemporaryStorage(functionId);
             constructorCompletionRequired=details.Kind=="constructor" && cleanupFlags.Any(id=>unit.Initializations[id].ConstructorInit);
             Line(indent,"{");
             foreach(long variable in hoisted.Order())Line(indent+1,Type(unit.Symbols[variable].Type)+" "+Name(variable)+" = default;");
+            WriteExpressionTemporaryStorage(indent+1);
             foreach(long initialization in cleanupFlags.Order())Line(indent+1,"bool "+Flag(initialization)+" = false;");
             if(constructorCompletionRequired)Line(indent+1,"bool __constructor_complete = false;");
             void Core(int level)
@@ -180,11 +182,12 @@ internal sealed partial class Emitter
             bool unsupportedValueInitialization=initialization.ValueInitialization &&
                 !(initialization.Kind=="constructor" && initialization.ValueInitializationNeedsZeroing==false);
             if(initialization.PartiallyInitialized && !hasAggregateActions || unsupportedValueInitialization ||
-                initialization.TemporaryLifetime && initialization.Destructor is not null)
+                initialization.TemporaryLifetime && initialization.Destructor is not null && !expressionTemporaryStorage.ContainsKey(initialization.Id))
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs unsupported partial/value/temporary initialization emission");
             if(initialization.ImpliedSource && initialization.Kind!="bitwise-copy")
                 throw new InvalidDataException("Initialization "+initialization.Id+" needs implied-source constructor argument emission");
-            if(initialization.ExpressionLifetime is long lifetime && unit.Destructions.GetValueOrDefault(lifetime,[]).Any(id=>!allocationOwnedCleanups.Contains(id)))
+            if(initialization.ExpressionLifetime is long lifetime && !protectedExpressionLifetimes.Contains(lifetime) &&
+                unit.Destructions.GetValueOrDefault(lifetime,[]).Any(id=>!allocationOwnedCleanups.Contains(id)))
                 throw new InvalidDataException("Initialization "+initialization.Id+" requires initializer expression cleanup");
         }
 
@@ -251,12 +254,17 @@ internal sealed partial class Emitter
             if(node.Kind is "temporary" or "lambda")
             {
                 var initialization=unit.Initializations[node.Initialization??throw unit.Missing(node,"temporary initialization missing")];
-                if(initialization.Destructor is not null)throw unit.Missing(node,"temporary cleanup expansion is not yet implemented");
-                string name="__temporary_"+node.Id;
-                Line(indent,Type(initialization.Type??node.Type!.Value)+" "+name+" = default;");
-                WriteInitialization(initialization,name,indent);
-                expandedValues.Add(node.Id,name);
-                return NormalizeValue(node,name);
+                bool prepared=expressionTemporaryStorage.TryGetValue(initialization.Id,out string? name);
+                if(initialization.Destructor is not null && !prepared)
+                    throw unit.Missing(node,"temporary cleanup has no recorded emitted storage obligation");
+                if(!prepared)
+                {
+                    name="__temporary_"+node.Id;
+                    Line(indent,Type(initialization.Type??node.Type!.Value)+" "+name+" = default;");
+                }
+                WriteInitialization(initialization,name!,indent);
+                expandedValues.Add(node.Id,name!);
+                return NormalizeValue(node,name!);
             }
             if(node.Kind=="operation" && node.Operator is "conditional" or "logical-and" or "logical-or")return Expression(node);
             // A virtual call's selected declaration describes its slot. It
@@ -271,6 +279,7 @@ internal sealed partial class Emitter
         private void WriteInitialization(Initialization initialization,string destination,int indent,string? impliedSource=null)
         {
             if(initialization.DestinationInitialization is not null)destination=SharedDestination(initialization);
+            if(WriteInitializationExpressionLifetime(initialization,destination,indent,impliedSource))return;
             CheckInitialization(initialization);
             switch(initialization.Kind)
             {
