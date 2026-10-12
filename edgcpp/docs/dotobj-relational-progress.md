@@ -5,25 +5,46 @@ The broad v66 graph campaign remains stopped. The replacement contract is
 
 ## Current checkpoint — 2026-10-12
 
-The compact SQLite format is schema 1025 / 44 tables. Eight distinct original
+Verified objects now use schema 1028 / 45 tables. Eight distinct original
 DuckDB core TUs have been attempted with their original manifest modes/options;
-three export completely: data-only Chimp constants, functional checksum and
-exception. Chimp generates complete C# and passes native/C#/NativeAOT data/address
-checks. Its three tables now use typed span literals and `CopyTo`. Exact external
-virtual-table providers are implemented and verified. Checksum source generation
-now reaches physical complete-record storage for virtual-base stream types;
-its current output remains partial. Exception C# coverage remains pending.
-Bundled ICU independently exports/emits all 14 bodies and passes 33 UTF differential
-cases plus seven genuine provider adapters; it does not count as a core TU.
+five export completely: functional checksum, exception, Date and Hugeint, plus
+data-only Chimp constants. Chimp generates complete C# and passes native/C#/NativeAOT
+checks for all three tables, five scalars and eight stable pinned addresses. No
+functional core TU has complete C# output yet. Bundled ICU independently preserves
+all 14 bodies and passes 33 UTF differential cases plus seven genuine provider
+adapters; it does not count as a core TU.
 
-Current exporter boundaries are virtual deleting destruction (shared hugeint,
-date and string), dynamic function-local static initialization (allocator), and
-owned string default-member initialization (buffer manager). Contiguous declaration
-groups, cleanup-free record constructor components and named zero-extent fields
-are now verified (`4e608e8da`, `bf5176bbf`, `dc0a6e650`); virtual-table providers are
-`3c733387b`. The bounded batch retained every command/pin/failure; no full-corpus
-run has resumed. Verified source-initializer and checked-writer changes are
-`aeb61196a` and `b1f2302fd`. Full configured library translation remains incomplete.
+Selected startup groups and exact public/ambiguous exception-base facts are
+committed (`86dfbaf8a`, `d80b9ea14`). Startup C# now allocates all pinned storage and
+performs static writes before the separate recorded dynamic phase (`89fd621d5`).
+Its native/C#/NativeAOT proof covers ordered record-array/scalar construction,
+distinct element destinations, byte-image copies, alignment, canaries and stable
+addresses. Nondefault priority, TLS, guarded/sliced startup and persistent global
+destruction remain explicit limits. External incomplete-array address views are
+verified (`04098a3e7`) without inventing an outer extent.
+
+Exact D0 dispatch and genuine selected ABI bodies are verified
+(`cb16ed25b`, `86df2502b`), including the saved receiver/null guard, no duplicated
+receiver or deallocation, and direct-versus-virtual provider selection. Physical
+complete-record storage (`87ddfc467`) retains hidden bytes and alignment without
+claiming virtual construction or C++ copy-constructor support. Value initialization
+now preserves EDG's selected pre-zero decision (`bc0fdbb14`); recorded false reaches
+the selected constructor, while true remains explicitly bounded pending its exact
+zeroing extent.
+
+Fresh checksum-v25 and exception-v27 export in 1.06 s/200448 KiB and
+1.77 s/300800 KiB, respectively. Their C# generation currently stops at volatile
+field address formation and direct record initializer elements in an array.
+Fresh Date-v8 and Hugeint-v52 export in 1.97 s/320512 KiB and 2.51 s/392960 KiB.
+Their generation is being checked against the new incomplete-array and callable
+address representations. Exporter work now targets rich virtual-base D1 wrapper
+ownership (StringUtil); allocator function-local static initialization and owned
+string default-member initialization (BufferManager) remain unsupported. The
+StringUtil generated EH-array timing defect now fails cleanly and explicitly;
+raw generated C EH tables are not transported.
+
+The bounded batch retains every command, pin and failed intermediate; no
+full-corpus run has resumed. Full configured library translation remains incomplete.
 The sections below retain historical milestone evidence and counts.
 
 ## Verified result

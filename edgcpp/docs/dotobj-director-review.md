@@ -197,3 +197,122 @@ existing shared BCL CppGuards runtime and exact stock guard observations through
 compact relational references. Initialization failure must allow retry; persistent
 destruction must not be attached to the enclosing function's scope cleanup.
 This is next-work guidance, not implemented relational local-static support.
+
+The schema-1026 ABI extension adds four scalar/reference columns, retaining
+44 normalized tables. Independent SQL inspection of checksum-v23 finds four
+complete and four deleting table slots plus four ordinary slots. Every deleting
+slot has its exact ABI symbol/type references; five genuine generated D0 bodies
+have one recorded receiver. Exception-v25 has 28 complete / 28 deleting / 27
+ordinary slots and 31 receiver-marked ABI types. Distinct complete core units
+remain three; refreshed versions do not increase the count. The focused D0
+metadata proof checks native once-only receiver/null handling and records the
+real complete-destructor call followed by the selected sized delete. C# execution
+of those entries is still pending its consumer implementation.
+
+Fresh checksum-v23 exports in 1.02 seconds / 200,448 KiB and is 11,309,056 bytes;
+exception-v25 exports in 1.81 seconds / 300,288 KiB and is 22,065,152 bytes.
+Date-v6 and Hugeint-v50 advance past virtual deletion and scalar placement
+initialization to file-scope dynamic record-array startup schedules. String-util-v5
+instead crashes in our State::constant -> static_local -> capture inside the
+new ABI factory callback. Launched GDB identifies an exporter read defect; no
+EDG semantic change is authorized or indicated. Keep the native signal visible
+rather than treating its driver's exit 1 as an unsupported-feature diagnostic.
+
+Independently accepted `complete-record-storage-v1`: native/managed/NativeAOT
+result TSVs have SHA256
+`f18f6cc137190695e4f8e4f5389fa0c938485c9cfaee2c5bfb91abf0a743adfb`.
+Named fields coexist with full-size byte backing and an alignment anchor. The
+proof checks alignment 8 and packed alignment 1, embedded offsets/size, generic
+C# full-byte value copies and generated-name collisions. This is physical
+representation support, not implementation of source virtual-base copy
+constructors or dynamic base operations. Checksum generation-v4 passes the
+stream-class declaration and reaches the next explicit virtual destructor table
+entry guard (0.88 seconds / 106,852 KiB), still producing partial C# only.
+
+The scalar virtual-delete consumer now passes native/source-hidden C#/NativeAOT
+execution. Independently inspected its generated D0 body: it invokes the genuine
+complete destructor and then the selected sized delete; the caller evaluates its
+operand once and null-checks before dispatch. External virtual-only destructors
+do not create direct imports, while a genuine direct destructor call retains its
+required provider. Native ABI/schema changes are committed as `cb16ed25b`.
+Checksum-v23 generation advances to exception-base descriptors in 0.95 seconds /
+106,472 KiB. It still produces partial C#, not a complete translation.
+
+String-util-v7 now diagnoses the earlier crash precisely: a generated D1 wrapper
+contains a lowering-created EH aggregate whose constant type is not yet assigned.
+Stock `pop_generated_routine_context` completes that table after our callback.
+Moving capture later and serializing C EH tables would violate the relational
+program contract. The rich virtual-base D1 wrapper needs source-like selected
+calls and cleanup/lifetime relationships captured before that machinery; it
+remains an explicit unsupported case. No EDG semantic change is indicated.
+
+Directed next work toward two shared boundaries: ordered file-scope startup
+groups for Date/Hugeint, and class exception-base descriptors for checksum.
+Base accessibility and ambiguity must be copied from EDG's selected results
+(`preferred_derivation_of` / `access_to_end_of_path`, and `base->ambiguous`),
+not recomputed by the managed consumer. Exception payload adjustment uses the
+recorded base offset in the concrete complete thrown object. Existing shared
+`CppExceptionBase` descriptors already support those facts.
+
+Date-v7 and Hugeint-v51 now complete their first relational exports, raising
+distinct complete core units to five of eight attempted. Independent read-only
+SQL inspection confirms schema 1027 / 45 tables. Date has 3,066 function bodies
+and one priority-zero startup group with four ordered aggregate actions:
+`MONTH_NAMES_ABBREVIATED[12]`, `MONTH_NAMES[12]`, `DAY_NAMES[7]`, and
+`DAY_NAMES_ABBREVIATED[7]`, retaining source lines 20/22/24/25. Hugeint has 3,889
+function bodies and one priority-zero group initializing `POWERS_OF_TEN[39]`
+at source line 20. Group rows reference ordinary function/body/action nodes;
+they contain no encoded semantic payload or C EH table. Concrete base facts
+are recorded, while dependent source types retain nullable selected flags.
+
+Date export: 2.00 seconds / 318,972 KiB, 24,207,360 bytes, SHA256
+`12fb8a26dc1d845cde948a565da4bbbed852d0655f31220d71e9974f51a40105`.
+Hugeint export: 2.62 seconds / 391,680 KiB, 32,567,296 bytes, SHA256
+`10065310cee4ff61262a0c2f3a195f875490447f2eef4fed781587aff326f71b`.
+These are complete export results, not full C# generation/runtime claims.
+
+Startup consumer review identified three necessary implementation details:
+allocate and zero persistent storage before dynamic actions, write global
+initialization nodes into that storage rather than declaring locals, and retain
+complete record-array bytes/stride/alignment. Invocation catches must terminate
+only after the group's selected cleanup has run. Nondefault priority ordering
+across translation units still requires implementation or an explicit boundary;
+silently iterating input units would not implement that policy.
+
+Accepted the class exception-base consumer proof in
+`dotobj-relational-class-exception-bases-v2`: native, source-hidden C#, and
+NativeAOT result files share SHA256
+`bc7c1ba6f6c0908b9bdeace0dce5eec636a368979583f11ef9248c4aa44224aa`.
+The proof covers public indirect matching, private and ambiguous rejection,
+and a virtual-diamond catch/rethrow adjustment of 32 bytes. A genuinely supplied
+byte-copy constructor implements that fixture's external constructor body; this
+does not prove translated virtual-base construction/copy. Missing recorded flags
+produce a located exporter-data boundary rather than C# inheritance analysis.
+
+Fresh checksum-v24 generation passes those descriptors, then stops on
+initialization 2 in `__throw_bad_array_new_length`: the constructor action has
+value-initialization set and no cleanup/partial flags. Directed the native side
+to EDG's `need_zeroing_for_value_initialization` and selected complete/subobject
+zeroing behavior rather than reproducing the rule in C#. Date-v7 next rejects
+an incomplete array layout; Hugeint-v51 reaches the `ScalarFunction.statistics`
+callback field at offset 280. Its source callable returns an incomplete
+`unique_ptr<BaseStatistics>` declaration (type 5018), not a value stored in the
+containing record. The next investigation must distinguish callable declarations
+from actual value-storage or invocation ABI requirements without guessing layout.
+
+Accepted the basic startup-groups-v2 runtime proof: supervisor confirms native,
+source-hidden C#, and NativeAOT all exit zero with the same constructor trace and
+data checks. Independently inspected generated C#: pinned stores exist before
+the static-write phase; the group constructs `first[0]`, `first[1]`, initializes
+`middle`, then constructs `second[0]`, `second[1]` directly in persistent storage.
+The record-array wrapper retains eight bytes and alignment four. Broader canary,
+whole-array-copy, priority and termination probes remain separate coverage.
+
+The next Date boundary is now located: external incomplete arrays in fmt,
+including `zero_or_powers_of_10_64`, require an element-address view rather than
+an invented storage extent. The generator candidate skips incomplete array
+wrapper layout, retains explicit failures for value/stride storage, and preserves
+element types for pointer/address views. Verification is pending. The small
+schema-1028 candidate records EDG's `need_zeroing_for_value_initialization`
+decision; false permits the existing constructor path, while true remains an
+explicit selected-zeroing boundary until exact byte/helper behavior is supported.
