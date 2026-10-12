@@ -25,7 +25,7 @@ def main():
               (['dotnet',str(work/'tool/Probe.dll'),str(linker),*[str(p) for p in objects]],'query-stress.log')]
     for argv,name in commands:
         with (work/name).open('w') as log:
-            subprocess.run(argv,stdout=log,stderr=subprocess.STDOUT,check=True)
+            subprocess.run(argv,cwd=work,stdout=log,stderr=subprocess.STDOUT,check=True)
     hashes={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in [linker,*objects,Path(__file__).resolve(),*source.iterdir()] if p.is_file()}
     (work/'hashes.json').write_text(json.dumps(hashes,indent=2)+'\n')
     print((work/'query-stress.log').read_text(),end='')

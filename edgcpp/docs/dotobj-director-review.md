@@ -611,3 +611,22 @@ Director also required removing redundant delegation validity checks (same
 receiver/destination type identity and impossible member-field combinations).
 Trust EDG's recorded delegation relation; retain only required missing-data and
 unimplemented representation/cleanup capability boundaries.
+
+## Eight additional original-manifest core exports
+
+Director ran exactly eight additional core units serially with immutable
+native-inline-globals-v1 and unchanged original project standard/arguments.
+`director-duckdb-bounded-export-matrix-v1` retains manifest selection/hash, compiler
+hash, exact commands, logs, per-unit time/RSS and databases; no full-corpus run.
+Four succeed: assert (1,494 bodies/219 roots,12.6 MB), constants
+(1,628/223,12.6 MB), identifier (2,166/139,17.6 MB), path (2,291/590,18.3 MB).
+Each takes 1.16–1.51 seconds and about 206–257 MiB peak RSS. Core inventory is
+now nine complete objects from sixteen attempted units, not nine C# successes.
+
+Remaining four precise exporter frontiers: random_engine scalar record delete
+of trivially destructible RandomState; exception_format_value fmt basic_string_view
+aggregate component kind7; thread_util known ClientProperties.time_zone default
+member initializer; complex_json Flatten expression operation102 at line43.
+Classify through stock EDG fields/backend, without interpreting/rechecking source
+semantics. Fresh distinct successes also support meaningful >4-connection and
+eight-object memory probes without duplicating an object artificially.

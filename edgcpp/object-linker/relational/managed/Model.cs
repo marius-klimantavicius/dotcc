@@ -40,12 +40,12 @@ internal sealed partial class Unit : IDisposable
     public Dictionary<long, List<Edge>> Edges => Body.Edges;
     public Dictionary<long, long> Initializers { get; } = [];
     public Dictionary<long, string> Files { get; } = [];
-    private readonly Sqlite database;
+    private readonly ObjectDatabase database;
 
     public Unit(string path)
     {
         Path = System.IO.Path.GetFullPath(path);
-        database = new Sqlite(Path);
+        database = new ObjectDatabase(Path);
         try
         {
             using (var query = database.Prepare("SELECT format,primary_source,target_abi FROM object_info WHERE singleton=1"))

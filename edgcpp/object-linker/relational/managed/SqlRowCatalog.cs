@@ -1,12 +1,11 @@
 using System.Collections;
-using DotObj;
 
 namespace DotObj.Relational;
 
 // Point reads retain a bounded process-wide cache per row family. Enumeration
 // streams SQLite rows and does not populate that cache.
-internal sealed class SqlRowCatalog<T>(Sqlite database,string table,string columns,
-    Func<Sqlite.Statement,T> read) : IReadOnlyDictionary<long,T>, IDisposable where T:class
+internal sealed class SqlRowCatalog<T>(ObjectDatabase database,string table,string columns,
+    Func<ObjectDatabase.Statement,T> read) : IReadOnlyDictionary<long,T>, IDisposable where T:class
 {
     private const int Capacity=4096;
     private static readonly Dictionary<(SqlRowCatalog<T>,long),LinkedListNode<(SqlRowCatalog<T> Owner,long Id,T Value)>> cache=[];
@@ -28,8 +27,15 @@ internal sealed class SqlRowCatalog<T>(Sqlite database,string table,string colum
     {
         get
         {
-            using var q=database.Prepare("SELECT id FROM "+table+" ORDER BY id");
-            while(q.Read())yield return q.Integer(0);
+            long? after=null;
+            while(true)
+            {
+                var batch=new List<long>(256);
+                using(var q=database.Prepare("SELECT id FROM "+table+(after is null?"":" WHERE id>"+after)+" ORDER BY id LIMIT 256"))
+                    while(q.Read())batch.Add(q.Integer(0));
+                foreach(long id in batch)yield return id;
+                if(batch.Count<256)yield break;after=batch[^1];
+            }
         }
     }
     public T this[long id]=>TryGetValue(id,out var value)?value:throw new KeyNotFoundException(table+" row "+id);
@@ -55,13 +61,25 @@ internal sealed class SqlRowCatalog<T>(Sqlite database,string table,string colum
     // Clauses come only from typed internal lookup methods and numeric IDs.
     public IEnumerable<T> Query(string? where=null,string order="id")
     {
-        using var q=database.Prepare("SELECT "+columns+" FROM "+table+(where is null?"":" WHERE "+where)+" ORDER BY "+order);
-        while(q.Read())yield return read(q);
+        foreach(var pair in QueryPairs(where,order))yield return pair.Value;
     }
     public IEnumerator<KeyValuePair<long,T>> GetEnumerator()
     {
-        using var q=database.Prepare("SELECT "+columns+" FROM "+table+" ORDER BY id");
-        while(q.Read())yield return new(q.Integer(0),read(q));
+        return QueryPairs(null,"id").GetEnumerator();
+    }
+    private IEnumerable<KeyValuePair<long,T>> QueryPairs(string? where,string order)
+    {
+        long? after=null;
+        for(int offset=0;;offset+=256)
+        {
+            string? filter=where;
+            if(order=="id" && after is not null)filter=(where is null?"":"("+where+") AND ")+"id>"+after;
+            var batch=new List<KeyValuePair<long,T>>(256);
+            using(var q=database.Prepare("SELECT "+columns+" FROM "+table+(filter is null?"":" WHERE "+filter)+" ORDER BY "+order+" LIMIT 256"+(order=="id"?"":" OFFSET "+offset)))
+                while(q.Read())batch.Add(new(q.Integer(0),read(q)));
+            foreach(var row in batch)yield return row;
+            if(batch.Count<256)yield break;after=batch[^1].Key;
+        }
     }
     IEnumerator IEnumerable.GetEnumerator()=>GetEnumerator();
     public void Dispose()
@@ -72,7 +90,7 @@ internal sealed class SqlRowCatalog<T>(Sqlite database,string table,string colum
     }
 }
 
-internal sealed class SqlTypeParameterCatalog(Sqlite database) : IReadOnlyDictionary<long,List<long>>
+internal sealed class SqlTypeParameterCatalog(ObjectDatabase database) : IReadOnlyDictionary<long,List<long>>
 {
     public int Count
     {
@@ -80,7 +98,18 @@ internal sealed class SqlTypeParameterCatalog(Sqlite database) : IReadOnlyDictio
     }
     public IEnumerable<long> Keys
     {
-        get {using var q=database.Prepare("SELECT DISTINCT type_id FROM type_parameters ORDER BY type_id");while(q.Read())yield return q.Integer(0);}
+        get
+        {
+            long? after=null;
+            while(true)
+            {
+                var batch=new List<long>(256);
+                using(var q=database.Prepare("SELECT DISTINCT type_id FROM type_parameters"+(after is null?"":" WHERE type_id>"+after)+" ORDER BY type_id LIMIT 256"))
+                    while(q.Read())batch.Add(q.Integer(0));
+                foreach(long id in batch)yield return id;
+                if(batch.Count<256)yield break;after=batch[^1];
+            }
+        }
     }
     public IEnumerable<List<long>> Values=>Keys.Select(key=>this[key]);
     public List<long> this[long id]=>TryGetValue(id,out var value)?value:throw new KeyNotFoundException("type_parameters "+id);

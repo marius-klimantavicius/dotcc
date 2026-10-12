@@ -5,10 +5,10 @@ The broad v66 graph campaign remains stopped. The replacement contract is
 
 ## Current checkpoint — 2026-10-12
 
-Verified objects now use schema 1030 / 48 tables. Eight distinct original
+Verified objects now use schema 1030 / 48 tables. Sixteen distinct original
 DuckDB core TUs have been attempted with their original manifest modes/options;
-five export completely: functional checksum, exception, Date and Hugeint, plus
-data-only Chimp constants. Chimp generates complete C# and passes native/C#/NativeAOT
+nine export completely: checksum, exception, Date, Hugeint, assert, constants,
+identifier, path and data-only Chimp constants. Chimp generates complete C# and passes native/C#/NativeAOT
 checks for all three tables, five scalars and eight stable pinned addresses. Checksum is the first functional core TU with complete selected C# and
 matching native/C#/Linux NativeAOT output. Bundled ICU independently preserves
 all 14 bodies and passes 33 UTF differential cases plus seven genuine provider
@@ -1736,3 +1736,23 @@ Selected C++14 void constants retain their void type/category/source with no
 scalar payload. The focused native/SQL proof passes; StringUtil advances to an
 ordinary record heap-new constructor cleanup boundary at ComplexJSON, rather than
 transporting generated C EH implementation tables.
+
+## Recorded delegation and bounded object connections
+
+Nonvirtual constructor delegation emits the selected constructor directly into
+the recorded receiver. Its native/source-hidden C#/NativeAOT proof preserves
+receiver/self identity, nested delegation, argument effects and argument, target
+constructor and body throw paths in both link orders. Unsupported recorded
+cleanup and virtual-base/VTT forms retain explicit emission boundaries. Date
+advances to a void throw expression under its recorded cleanup lifetime; Hugeint
+requires retaining a record lvalue address across recorded cleanup. These are
+emission of EDG facts, not independent C++ lifetime analysis.
+
+The relational reader now caps open object connections at four. Paged SQL
+iteration closes its cursor before yielding to recursive consumers. A five-
+distinct-object test exercises 88 evictions, nested queries, all-pinned capacity
+failure, disposal and a changed immutable-input witness. Primary caches remain
+capped at 4096 rows per family. Catalog-only measurements on eight genuinely
+distinct objects retain 22.1 MB of managed data with 95344 KiB peak RSS; this is
+not a complete eight-object link. Global catalogs and linker/emitter identity and
+name plans still require bounded storage before broad linking.
