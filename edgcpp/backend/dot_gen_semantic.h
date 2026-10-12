@@ -1629,16 +1629,25 @@ struct State {
     auto source=location(pos);std::string path;
     for(const auto &file:files)if(file.second==source.file){path=file.first;break;}
     auto entity=target?target:init->variable?init->variable->type:aggregate?aggregate->type:nullptr;
+    auto selected_constant=(init->kind==dik_constant || init->kind==dik_nonconstant_aggregate || init->kind==dik_lambda)?
+      init->variant.constant.ptr:nullptr;
+    auto selected_constructor=init->kind==dik_constructor?init->variant.constructor.ptr:nullptr;
     std::string detail=std::string(reason)+" [function="+name+
+      ", recipe="+std::to_string(template_recipe?1:0)+
       ", target="+(entity?spelling(entity->source_corresp):"")+
       ", target-kind="+std::to_string(entity?int(skip_typerefs(entity)->kind):-1)+
       ", variable="+(init->variable?spelling(init->variable->source_corresp):"")+
       ", aggregate-kind="+std::to_string(aggregate?int(aggregate->kind):-1)+
+      ", constant-kind="+std::to_string(selected_constant?int(selected_constant->kind):-1)+
+      ", constructor="+(selected_constructor?spelling(selected_constructor->source_corresp):"<none>")+
       ", partial="+std::to_string(int(init->is_partially_initialized))+
       ", destructor="+std::to_string(init->destructor?1:0)+
       ", lifetime="+std::to_string(init->lifetime?1:0)+
       ", expression-lifetime="+std::to_string(init->init_expr_lifetime?1:0)+
       ", overlap="+std::to_string(init->lifetime_of_overlapping_temps?1:0)+
+      ", unordered="+std::to_string(int(init->unordered))+
+      ", temporary-lifetime="+std::to_string(int(init->has_temporary_lifetime))+
+      ", static-storage="+std::to_string(int(init->static_temp))+
       ", shared-result="+std::to_string(int(init->class_rvalue_initialized_through_master_entry))+
       ", master-kind="+std::to_string(init->master_entry?int(init->master_entry->kind):-1)+
       ", master-variable="+(init->master_entry && init->master_entry->variable?
@@ -1675,10 +1684,11 @@ struct State {
     missing(detail+", file="+path+", line="+std::to_string(source.line)+
       ", column="+std::to_string(source.column)+"]",int(init->kind));
   }
-  Id initialization_id(a_dynamic_init_ptr init,a_type_ptr target=nullptr) {
+  Id initialization_id(a_dynamic_init_ptr init,a_type_ptr target=nullptr,const a_source_position *source_position=nullptr) {
     if(!init)return 0;
-    if(template_recipe)missing("template recipe initialization ownership");
     auto selected_target=target?target:init->variable?init->variable->type:nullptr;
+    if(template_recipe)missing_initialization(init,selected_target,
+      source_position?*source_position:null_source_position,"source recipe selected initialization");
     Id target_type=type_id(selected_target);
     auto found=initializations.find(init);
     if(found!=initializations.end()) {
@@ -1765,6 +1775,50 @@ struct State {
     if(init->kind==dik_constructor) {
       unsigned ordinal=0;for(auto argument=init->variant.constructor.args;argument;argument=argument->next)
         db.insert("initialization_arguments",{{"initialization_id",id},{"ordinal",ordinal++},{"node_id",expression(argument)}});
+    }
+    return id;
+  }
+  Id recipe_initialization(a_dynamic_init_ptr init,a_type_ptr target,const a_source_position &pos) {
+    if(!init)missing("source recipe without selected initialization");
+    if(init->destructor || init->lifetime || init->init_expr_lifetime ||
+       init->lifetime_of_overlapping_temps || init->master_entry ||
+       init->class_rvalue_initialized_through_master_entry || init->overlaps_temps_in_inner_lifetime ||
+       init->destruction_is_for_partially_constructed_aggregate || init->is_partially_initialized ||
+       init->is_freeing_of_storage_on_exception)
+      missing_initialization(init,target,pos,"source recipe initialization cleanup/sharing");
+    const char *kind=nullptr;Id selected=0;
+    switch(init->kind) {
+      case dik_none:kind="none";break;
+      case dik_zero:kind="zero";break;
+      case dik_expression:kind="expression";break;
+      case dik_class_result_via_ctor:kind="class-result";break;
+      case dik_constant:kind="constant";break;
+      case dik_nonconstant_aggregate:kind="aggregate";break;
+      case dik_lambda:kind="lambda";break;
+      case dik_constructor:
+        if(init->variant.constructor.is_array_copy || init->variant.constructor.is_copy_constructor_with_implied_source)
+          missing_initialization(init,target,pos,"source recipe constructor implied destination/source");
+        kind=init->variant.constructor.value_initialization?"value-constructor":"constructor";
+        if(init->variant.constructor.ptr)selected=routine(init->variant.constructor.ptr);
+        break;
+      case dik_bitwise_copy:
+        if(!init->variant.bitwise_copy.source)
+          missing_initialization(init,target,pos,"source recipe bitwise copy implied source");
+        kind="bitwise-copy";break;
+      default:missing_initialization(init,target,pos,"source recipe selected initialization");
+    }
+    Id id=node("source-initialization",pos,type_id(target),nullptr,kind,"",selected);
+    if(init->kind==dik_expression || init->kind==dik_class_result_via_ctor)
+      edge(id,"value",0,expression(init->variant.expression,&pos,id));
+    else if(init->kind==dik_constant || init->kind==dik_nonconstant_aggregate || init->kind==dik_lambda)
+      edge(id,"value",0,constant(init->variant.constant.ptr,pos));
+    else if(init->kind==dik_bitwise_copy)
+      edge(id,"value",0,expression(init->variant.bitwise_copy.source,&pos,id));
+    else if(init->kind==dik_constructor) {
+      db.update("nodes","id",id,{{"evaluation_order",init->variant.constructor.has_sequenced_arguments?"left-to-right":"unspecified"}});
+      unsigned ordinal=0;
+      for(auto arg=init->variant.constructor.args;arg;arg=arg->next)
+        edge(id,"argument",ordinal++,recipe_operand(arg,pos,id));
     }
     return id;
   }
@@ -2703,7 +2757,14 @@ struct State {
         edge(id,"source-name",0,name);
       }
     } else if(e->kind==enk_temp_init || e->kind==enk_lambda) {
-      db.update("nodes","id",id,{{"initialization_id",initialization_id(e->variant.init.dynamic_init,e->type)}});
+      if(template_recipe) {
+        edge(id,"initializer",0,recipe_initialization(e->variant.init.dynamic_init,e->type,source_position));
+        if(e->kind==enk_temp_init && e->variant.init.source.type) {
+          Id reference=node("type-reference",source_position,type_id(e->variant.init.source.type));
+          db.update("nodes","id",reference,{{"source_node_id",id}});
+          edge(id,"source-type",0,reference);
+        }
+      } else db.update("nodes","id",id,{{"initialization_id",initialization_id(e->variant.init.dynamic_init,e->type,&source_position)}});
     } else if(e->kind==enk_condition) {
       auto condition=e->variant.condition;
       // lower_il::lower_condition keeps this scope around the complete
@@ -2714,7 +2775,7 @@ struct State {
         for(auto v=condition->scope->nonstatic_variables;v;v=v->next)variable(v,true);
       }
       if(condition->dynamic_init)
-        db.update("nodes","id",id,{{"initialization_id",initialization_id(condition->dynamic_init)}});
+        db.update("nodes","id",id,{{"initialization_id",initialization_id(condition->dynamic_init,nullptr,&source_position)}});
       // A C++17 selection initializer is a freestanding statement: EDG
       // deliberately supplies no adjacent stmk_init for its declarations.
       edge(id,"initializer",0,statement(condition->initialization,nullptr,true));
@@ -2727,14 +2788,14 @@ struct State {
     } else if(e->kind==enk_throw) {
       auto info=e->variant.throw_info;
       db.insert("throws",{{"node_id",id},{"type_id",optional(info?type_id(info->type):0)},
-        {"initialization_id",optional(info?initialization_id(info->dynamic_init,info->type):0)},
+        {"initialization_id",optional(info?initialization_id(info->dynamic_init,info->type,&source_position):0)},
         {"destructor_symbol_id",optional(info && info->destructor?routine(info->destructor):0)},
         {"is_rethrow",info==nullptr}});
     }
     return id;
   }
   Id dynamic(a_dynamic_init_ptr init,const a_source_position &pos) {
-    initialization_id(init);
+    initialization_id(init,nullptr,&pos);
     if(init->kind==dik_zero && init->variable)
       return node("constant",pos,type_id(init->variable->type),"prvalue",nullptr,"0");
     return initialization_values[init];
