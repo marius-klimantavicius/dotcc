@@ -17,7 +17,7 @@ internal sealed partial class Emitter
     {
         this.program=program;this.namespaceName=namespaceName;this.className=className;
         this.requiredProviders=requiredProviders;
-        names.Reserve(className);names.Reserve("Main");
+        names.Reserve(className);names.Reserve("Main");names.Reserve("_");
         foreach(var symbol in program.Functions)
         {
             string source=symbol.Symbol.Name;
@@ -413,6 +413,7 @@ internal sealed partial class Emitter
         // used for expression precedence. Keep the emitted operation itself.
         private string StatementExpression(Node node,string? rendered=null)
         {
+            if(VoidDiscardOperand(node) is Node discarded)return StatementExpression(discarded);
             string value=rendered??Expression(node);
             if(node.Kind=="delete")return value;
             if(UsesCompoundHelper(node))return "_ = "+value;
@@ -461,7 +462,7 @@ internal sealed partial class Emitter
                     else
                     {
                         Node expression=Child(node,"value");
-                        if(!WriteBitfieldAssignmentStatement(expression,indent) && !WriteSourceCompoundStatement(expression,indent))
+                        if(!WriteVoidDiscardStatement(expression,indent) && !WriteBitfieldAssignmentStatement(expression,indent) && !WriteSourceCompoundStatement(expression,indent))
                             Line(indent,StatementExpression(expression,ExpandedExpression(expression,indent))+";");
                     }
                     break;
