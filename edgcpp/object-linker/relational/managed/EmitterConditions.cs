@@ -100,7 +100,7 @@ internal sealed partial class Emitter
             bool hasLifetime=statement.Lifetime is not null || unit.Lifetimes.Values.Any(lifetime=>lifetime.OwnerNode==statement.Id);
             if(condition?.Kind!="condition" && !hasLifetime)
             {
-                Line(indent,"for ("+(initializer is null?"":Header(initializer))+"; "+(condition is null?"":Truth(condition))+"; "+(step is null?"":Header(step))+")");
+                Line(indent,"for ("+(initializer is null?"":Header(initializer))+"; "+(condition is null?"":Truth(condition))+"; "+(step is null?"":ForIterator(step))+")");
                 WriteLoopBody(statement,indent);return;
             }
             Line(indent,"{");
@@ -110,7 +110,7 @@ internal sealed partial class Emitter
                 if(condition?.Kind=="condition")WriteConditionLoop(statement,condition,step,level);
                 else
                 {
-                    Line(level,"for (; "+(condition is null?"":Truth(condition))+"; "+(step is null?"":Header(step))+")");
+                    Line(level,"for (; "+(condition is null?"":Truth(condition))+"; "+(step is null?"":ForIterator(step))+")");
                     WriteLoopBody(statement,level);
                 }
             });
