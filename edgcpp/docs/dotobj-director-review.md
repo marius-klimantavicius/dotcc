@@ -316,3 +316,177 @@ element types for pointer/address views. Verification is pending. The small
 schema-1028 candidate records EDG's `need_zeroing_for_value_initialization`
 decision; false permits the existing constructor path, while true remains an
 explicit selected-zeroing boundary until exact byte/helper behavior is supported.
+
+## Startup extent and incomplete external arrays: independent acceptance
+
+Director reviewed committed startup execution and external incomplete-array
+fixtures plus retained generated sources and logs. Startup native, managed and
+NativeAOT output agrees exactly: `4\t8\t16\t4\t12\t1234578`, SHA-256
+`0433eaf75c6660ba01019276092eebdc859ef9dd409094f3bada1e05ed73d995`.
+The canary fixture checks complete array bytes, containing-record offsets,
+whole-value copying, constructor order and pinned address stability. It does not
+claim persistent destruction, TLS or nondefault-priority initialization.
+
+The external-array proof uses a genuinely separately translated provider, required
+address imports, and direct linking in both input orders. Managed and NativeAOT
+builds pass in all three configurations. The consumer database retains unknown
+outer extents as NULL; nested fixed extents remain recorded and no external storage
+is fabricated. Actual DuckDB Date-v8 and Hugeint-v52 pass these former declaration
+barriers and converge on the address-of-volatile-field consumer boundary.
+
+Inspected opaque callback implementation retains the source signature in SQLite,
+emits address-sized storage when the result ABI is unfinalized, and rejects actual
+invocation absent a recorded callable ABI. Linking a completed record layout by
+exact external identity does not by itself authorize inventing a function ABI.
+Runtime proof for this callback slice is tracked separately by the supervisor.
+
+## Callback storage and address/aggregate execution acceptance
+
+Director independently reviewed `opaque-callable-storage-v1`: incomplete source
+return declarations retain pointer-sized callback storage; actual provider ABI is
+required for function address binding. Both link orders pass native/source-hidden
+C#/NativeAOT address identity, copy/null and GC checks. The absent-provider case
+fails at a source-located missing finalized ABI. Commit `81c8f34ec`.
+
+Director reviewed `address-record-elements-v2`: volatile field and indexed
+location address evaluation calls receiver/index once, while a volatile pointer
+load is still rejected. Direct enum/char[48] record elements retain exact array
+stride and neighbor bytes in native/source-hidden C#/NativeAOT. Commit `3854a5080`.
+The initial generator bug used the unary child accessor for multi-operand fields;
+root identified it from the real four-TU failure and the corrected snapshot passed.
+
+Checksum-v25, Exception-v27, Date-v8 and Hugeint-v52 generation-v3 all pass prior
+barriers and stop at the same builtin comma in a `for` step (`__locale:552:36`).
+SQL confirms checksum has eight for-step commas plus three nested commas, allowing
+ordinary C# comma-separated header statements without a new helper or control-flow
+rewrite. Generic comma values/lvalues remain a separate execution requirement.
+
+Keep source/readability and allocation improvements on the remaining-work list:
+current array-record fixture redundantly clears parent/row/char storage and emits
+one pinned allocation per literal with hex bytes. Earlier requested compact
+struct initializers, UTF8 spans/comments and pooled literals still apply to this
+new consumer. These do not justify expanding the semantic database.
+
+## Initializer expression cleanup and the next shared call boundary
+
+Director accepted `initializer-expression-temporaries-v1` after inspecting the
+source, SQL summary, generated wrapper and native/managed/NativeAOT evidence.
+The wrapper uses a typed local, marks it complete after its producer returns,
+constructs the outer result directly in caller storage and destroys the temporary
+once. The fixture checks self-address preservation, success trace 12435, failed
+temporary construction trace 1 and outer-call failure trace 123. A genuine
+potentially throwing temporary destructor is rejected for caller-provided results
+without recorded return-result unwinding support. The existing `CheckReturnCleanup`
+checks the selected destructor declaration policy; no result cleanup is invented.
+Committed as `6d64f0d6a`.
+
+All four core generation-v5 attempts advance to node 5079, the right-to-left
+member call in `sql_identifier.hpp:50`: `lhs += SQLIdentifier::ToString(rhs.raw_string)`.
+EDG already records the order, function target, receiver lvalue and argument
+reference. Consumer work must materialize values/receiver addresses according to
+that order, and reject contexts that bypass the expansion until implemented.
+
+Director requested a measured follow-up on EDG final needed/definition-needed
+facts. Existing native and old C# backends use these, while the relational linker
+emits every captured definition. Retain all source facts in SQLite. Native
+emission facts can guide roots, but the earlier executable graph's actual
+references still require ordinary linker dependency closure: a function used
+there must not disappear merely because later stock lowering simplified its call.
+This is not authorization to reanalyze C++ semantics or discard unsupported
+needed code.
+
+## Right-to-left checkpoint and destructor condition timing
+
+Right-to-left call/address/lifetime support is committed as `f32d9a4e0`.
+The four current functional core probes pass that boundary and stop at the
+unordered expression-temporary group in `Exception::FormatStackTrace`.
+The candidate consumer chooses a valid linear evaluation order and destroys
+completed temporaries in reverse order without per-call heap allocation.
+Its proof must include failed constructors, outer-call failure, and the ordered
+receiver neighbor; dynamic conditional producers cannot silently use lexical
+completion order.
+
+Fresh Leaf-v3 and StringUtil-v10 exporter attempts pass the earlier ABI signature
+timing boundary and expose retained virtual-base cleanup ownership. The active
+stock configuration keeps both the D2 original actions and D1 copied actions.
+D2 gates its originals on complete-object entry status; D1 supplies a non-null
+VTT and then performs its copied actions. Keep both actions and their exact
+source-copy relationship, with a typed condition expression/reference.
+
+Director inspected `lower_init.c`: the complete-object comparison is evaluated
+once at destructor entry, before default construction-table initialization can
+overwrite the same VTT parameter. Re-evaluating `(vtt == NULL)` at cleanup is
+incorrect. Preserve the entry-phase typed local/capture and use that stable value
+for normal and exceptional cleanup. This requires no C exception tables.
+
+A bounded stock-C checksum comparison in `dotobj-director-native-selection-v1`
+stopped immediately because stock targets lack the portable system macro hook.
+No code was generated and no equivalent-emission claim is made. Prefer recording
+final needed/definition-needed facts from the real portable-target compiler for
+the next selection measurement.
+
+## Native emission measurement: selection is now the highest-impact lane
+
+The follow-up used the existing portable-target `cpfe-dot` and its legacy
+`EDG_DOT_TRACE` hook, which runs `routine_body_needed` before C# generation.
+Exact original checksum command and environment are retained in
+`dotobj-director-native-selection-v2`; no provider-pruning manifest was used.
+The complete trace selects four bodies: `Checksum(ulong)`, `ChecksumRemainder`,
+`Load<ulong>` and `Checksum(byte*,ulong)`. The later legacy generator stops at
+its executable-only no-main check, after the trace. Runtime 0.46s, peak RSS
+183296 KiB. This is a needed-body measurement, not a successful C# build.
+
+Checksum-v25 contains 1,404 captured function rows (the earlier 1,399 count was
+the link-selected subset). SQL inspection of the four bodies finds references
+to each other and external `memcpy`; their initialization counts are 0/6/0/2.
+This makes exact final native emission facts plus ordinary linker dependency
+closure the next priority over unrelated header-body execution gaps. Preserve
+all source facts. Closure must follow required earlier-graph executable facts,
+including initializer/cleanup/ABI references, rather than blindly deleting any
+body absent from a later stock-lowered native list.
+
+## Unordered temporary acceptance and broader selection evidence
+
+Director inspected `unordered-expression-temporaries-v2` SQL and generated
+`evaluate`: a comma-sequenced receiver precedes two unordered Value temporaries;
+chosen construction order 1/2 yields cleanup 2/1/receiver. Completion flags follow
+successful constructors. Native/source-hidden C#/NativeAOT cover both constructor
+failure positions and outer-call failure, with caller-result self identity.
+A conditional shared-result producer is explicitly rejected by structural branch
+context, independently of EDG's action flags. Generation-v7 for checksum and
+exception passes the former unordered boundary and reaches a record-initializer
+value in libc++ string:3917. Do not make that unselected header function a new
+checksum gate.
+
+The same original-command portable-target trace gives captured/native-selected
+counts: checksum 1404/4, date 3066/388, exception 2748/639, hugeint 3889/297.
+All traces complete before the legacy executable-only no-main check. Selection
+should use the finalized EDG symbol root fact while retaining all captured bodies
+as available definitions and traversing actual executable dependencies.
+
+A native oracle from the actual DuckDB checksum.cpp is retained in
+`dotobj-director-checksum-oracle-v1`: 727 TSV rows, four input patterns, aligned
+buffer storage, all short tails, larger block boundaries, and uint64 overflow
+inputs. Native TSV SHA256 is
+`8c80e57526c965b12d6491a62c64bcba2d082e077f9900e707efe578ec142512`.
+This is a numeric/byte-result oracle, not a C++ standard-library ABI claim.
+
+Unordered temporary milestone committed as `4ae5c0e23`. The native root flag
+and managed dependency selection are the active next implementation lane.
+
+## Authoritative emission-root export accepted
+
+Director independently queried `dotobj-relational-duckdb-checksum-v26/checksum.dotobj`:
+schema 1030, 1,404 function rows retained, exactly four function roots matching
+the independent native trace, no other roots and no unknown flags. Size
+11,354,112 bytes; SHA256
+`3096ad70b0036b0339dd050d527fc46314bed8ca7227e27fec3ae5a427f58cd4`.
+Worker proof reports integrity/FKs clean and export 1.06s/200192 KiB. The focused
+root fixture preserves dormant source bodies/storage and selected startup facts.
+This accepts root export, not completion of the rich destructor ABI lane.
+
+Director also required a generator capability boundary for new destructor
+entry-condition/ABI-prologue and selected cleanup invocation facts until those
+are actually emitted. Reading a correct new fact and silently omitting it is
+not acceptable; rejecting an unimplemented generator operation is distinct
+from rechecking EDG semantics. Plain checksum contains none of these operations.

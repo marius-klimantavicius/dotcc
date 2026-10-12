@@ -5,7 +5,7 @@ internal sealed record ProgramType(long Id, string Kind, string Name, long? Size
     string LinkName, string Linkage, bool Volatile,string? BuiltinName,bool Dependent,string ReturnStorage,string? SemanticRole,string ExceptionPolicy,long? ObjectType,
     string? ArrayBoundKind,long? ArrayBoundNode,bool? ParametersIncludeReceiver);
 internal sealed record Field(long Id, long Owner, string Name, long Type, long Ordinal, long Offset, long? BitOffset, long? BitWidth);
-internal sealed record Symbol(long Id, string Kind, string Name, string LinkName, string Linkage, long Type, long? Parent, bool Definition, string DefinitionKind);
+internal sealed record Symbol(long Id, string Kind, string Name, string LinkName, string Linkage, long Type, long? Parent, bool Definition, string DefinitionKind,bool? EmissionRoot);
 internal sealed record Node(long Id, long? Function, string Kind, long? Type, long? ExecutionType,
     string? ValueCategory, string? Operator, string? Constant, long? Symbol, long? Field, long? File, long? Line, long? Column, long? OriginalLvalueType,
     long? Initialization,long? Lifetime,string? EvaluationOrder,long? EnumValue,long? FloatingValue,string? ValueNormalization,long? OperationType,
@@ -32,6 +32,7 @@ internal sealed partial class Unit : IDisposable
     public Dictionary<long, ProgramType> Types { get; } = [];
     public Dictionary<long, Field> Fields { get; } = [];
     public Dictionary<long, Symbol> Symbols { get; } = [];
+    public bool HasEmissionRoots {get;}
     public Dictionary<long, long> Functions { get; } = [];
     public Dictionary<long, List<long>> Parameters { get; } = [];
     public Dictionary<long, List<long>> TypeParameters { get; } = [];
@@ -92,8 +93,9 @@ internal sealed partial class Unit : IDisposable
             ReadFloatingFormats();
             using (var q = database.Prepare("SELECT id,owner_type_id,name,type_id,ordinal,byte_offset,bit_offset,bit_width FROM fields ORDER BY owner_type_id,ordinal"))
                 while (q.Read()) Fields.Add(q.Integer(0), new(q.Integer(0),q.Integer(1),q.Text(2),q.Integer(3),q.Integer(4),q.Integer(5),q.OptionalInteger(6),q.OptionalInteger(7)));
-            using (var q = database.Prepare("SELECT id,kind,name,link_name,linkage,type_id,parent_symbol_id,is_definition,definition_kind FROM symbols ORDER BY id"))
-                while (q.Read()) Symbols.Add(q.Integer(0),new(q.Integer(0),q.Text(1),q.Text(2),q.Text(3),q.Text(4),q.Integer(5),q.OptionalInteger(6),q.Integer(7)!=0,q.Text(8)));
+            using(var q=database.Prepare("SELECT 1 FROM pragma_table_info('symbols') WHERE name='is_emission_root'"))HasEmissionRoots=q.Read();
+            using (var q = database.Prepare("SELECT id,kind,name,link_name,linkage,type_id,parent_symbol_id,is_definition,definition_kind,"+(HasEmissionRoots?"is_emission_root":"NULL")+" FROM symbols ORDER BY id"))
+                while (q.Read()) Symbols.Add(q.Integer(0),new(q.Integer(0),q.Text(1),q.Text(2),q.Text(3),q.Text(4),q.Integer(5),q.OptionalInteger(6),q.Integer(7)!=0,q.Text(8),q.OptionalInteger(9) is long root?root!=0:null));
             using (var q = database.Prepare("SELECT symbol_id,body_node_id FROM functions ORDER BY symbol_id"))
                 while (q.Read()) Functions.Add(q.Integer(0),q.Integer(1));
             using (var q = database.Prepare("SELECT function_id,symbol_id FROM parameters ORDER BY function_id,ordinal"))
@@ -104,6 +106,7 @@ internal sealed partial class Unit : IDisposable
                 while (q.Read()) Initializers.Add(q.Integer(0),q.Integer(1));
             ReadInheritance();
             ReadStartupGroups();
+            ReadFunctionAbiEntries();
             ReadVirtualTables();
             ReadArrayFeatures();
             ReadRecordInitializerFeatures();
@@ -148,7 +151,7 @@ internal sealed partial class Unit : IDisposable
     public void Dispose() => database.Dispose();
 }
 
-internal sealed class LinkedProgram : IDisposable
+internal sealed partial class LinkedProgram : IDisposable
 {
     public List<Unit> Units { get; } = [];
     public List<SymbolRef> Functions { get; } = [];
@@ -167,7 +170,7 @@ internal sealed class LinkedProgram : IDisposable
             if(Units.Select(unit=>unit.Abi).Distinct(StringComparer.Ordinal).Count()!=1)
                 throw new InvalidDataException("Cannot link objects with different recorded target ABIs");
             foreach(var unit in Units)
-                foreach(var symbol in unit.Symbols.Values.Where(symbol=>symbol.Kind!="source-variable" && symbol.Definition && (symbol.Parent is null || symbol.Kind=="static-local")))
+                foreach(var symbol in unit.Symbols.Values.Where(symbol=>symbol.Kind is not ("source-variable" or "source-function") && symbol.Definition && (symbol.Parent is null || symbol.Kind=="static-local")))
                 {
                     var value=new SymbolRef(unit,symbol.Id);
                     if(symbol.Linkage=="external" && !external.TryAdd(symbol.LinkName,value))
@@ -179,7 +182,7 @@ internal sealed class LinkedProgram : IDisposable
                     }
                 }
             foreach(var unit in Units)
-                foreach(var symbol in unit.Symbols.Values.Where(symbol=>symbol.Kind!="source-variable" && symbol.Definition && (symbol.Parent is null || symbol.Kind=="static-local")))
+                foreach(var symbol in unit.Symbols.Values.Where(symbol=>symbol.Kind is not ("source-variable" or "source-function") && symbol.Definition && (symbol.Parent is null || symbol.Kind=="static-local")))
                 {
                     var value=new SymbolRef(unit,symbol.Id);
                     if(Resolve(unit,symbol.Id)!=value)continue;
@@ -192,7 +195,7 @@ internal sealed class LinkedProgram : IDisposable
     public SymbolRef Resolve(Unit unit,long id)
     {
         var symbol=unit.Symbols[id];
-        return symbol.Kind!="source-variable" && symbol.Linkage=="external" && external.TryGetValue(symbol.LinkName,out var selected)?selected:new(unit,id);
+        return symbol.Kind is not ("source-variable" or "source-function") && symbol.Linkage=="external" && external.TryGetValue(symbol.LinkName,out var selected)?selected:new(unit,id);
     }
     public IDisposable LoadFunction(SymbolRef function)
     {

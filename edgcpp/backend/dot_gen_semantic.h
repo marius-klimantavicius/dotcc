@@ -16,6 +16,7 @@
 #include "expr.h"
 #include "symbol_tbl.h"
 #include "lower_init.h"
+#include "lower_il.h"
 #include "float_pt.h"
 #include "target.h"
 #include "dot_gen_semantic_sqlite.h"
@@ -47,8 +48,37 @@ struct State {
   std::set<a_type_ptr> capturing_types;
   std::set<a_type_ptr> incomplete_records,record_template_instances;
   std::map<a_routine_ptr,Id> routines;
+  std::map<Id,a_routine_ptr> function_owners;
   std::map<a_routine_ptr,Id> routine_source_types;
   std::map<a_routine_ptr,Id> routine_receiver_types;
+  struct PrimaryDestructorABI {
+    Id source=0,entry=0,signature=0,body=0,destruction_condition=0;
+    a_variable_ptr vtt=nullptr;
+    bool signature_complete=false;
+  };
+  std::map<a_routine_ptr,PrimaryDestructorABI> primary_destructor_abis;
+  std::map<a_routine_ptr,Id> source_function_bodies;
+  std::map<a_routine_ptr,std::map<a_dynamic_init_ptr,Id>> function_initializations;
+  std::map<a_routine_ptr,std::map<an_object_lifetime_ptr,Id>> function_lifetimes;
+  std::map<a_routine_ptr,std::map<a_variable_ptr,Id>> function_parameters;
+  std::map<a_routine_ptr,std::map<a_dynamic_init_ptr,Id>> copied_initializations;
+  struct VTTBinding {
+    a_variable_ptr storage=nullptr;
+    an_expr_node_ptr address=nullptr;
+    Id symbol=0;
+    a_statement_ptr assignment=nullptr;
+  };
+  std::map<a_routine_ptr,std::map<a_variable_ptr,VTTBinding>> vtt_bindings;
+  std::map<a_variable_ptr,Id> vtt_symbols;
+  std::set<a_variable_ptr> vtt_entry_symbols;
+  std::map<Id,std::vector<std::pair<a_variable_ptr,long long>>> vtt_selected_entries;
+  std::vector<std::pair<a_routine_ptr,a_dynamic_init_ptr>> cleanup_stack;
+  std::map<Id,a_routine_ptr> cleanup_entries;
+  std::set<a_routine_ptr> abi_aliases;
+  bool rich_destructor(a_routine_ptr r) {
+    return r && r->special_kind==sfk_destructor && parent_class_or_null(r) &&
+      parent_class_of(r)->variant.class_struct_union.any_virtual_base_classes;
+  }
   Id next_virtual_table=1;
   std::map<std::pair<a_variable_ptr,long long>,Id> virtual_tables;
   std::vector<Id> virtual_table_stack;
@@ -743,7 +773,7 @@ struct State {
   }
   Id routine(a_routine_ptr r) {
     auto found=routines.find(r);if(found!=routines.end())return found->second;
-    Id id=next_symbol++;routines[r]=id;auto pos=location(r->source_corresp.decl_position);
+    Id id=next_symbol++;routines[r]=id;function_owners[id]=r;auto pos=location(r->source_corresp.decl_position);
     Id signature=type_id(r->type);routine_source_types[r]=signature;
     auto signature_type=skip_typerefs(r->type);
     routine_receiver_types[r]=type_id(signature_type->variant.routine.extra_info->this_class);
@@ -755,15 +785,364 @@ struct State {
     instance(r->assoc_template,r->template_arg_list,id,0,is_template_dependent_type(r->type));return id;
   }
   Id abi_entry(a_routine_ptr r) {
+    auto primary=primary_destructor_abis.find(r);
+    if(primary!=primary_destructor_abis.end())return primary->second.entry;
     Id id=routine(r);
 #if IA64_ABI
-    if(r->primary_ctor_or_dtor && (r->ctor_dtor_kind==cdk_complete || r->ctor_dtor_kind==cdk_deleting)) {
+    if(r->primary_ctor_or_dtor && (r->ctor_dtor_kind==cdk_complete || r->ctor_dtor_kind==cdk_deleting ||
+                                  r->ctor_dtor_kind==cdk_subobject)) {
       // alternate_entry_point creates the selected receiver as its first
       // ordinary parameter, while retaining this_class for correspondence.
       db.update("types","id",routine_source_types.at(r),{{"parameters_include_receiver",true}});
     }
+    if(r->special_kind==sfk_destructor && r->is_alias_entry && r->primary_ctor_or_dtor && abi_aliases.insert(r).second)
+      db.insert("function_abi_entries",{{"source_symbol_id",routine(r->primary_ctor_or_dtor)},
+        {"entry_symbol_id",id},{"variant","base"},{"callable_type_id",routine_source_types.at(r)},
+        {"alias_target_symbol_id",abi_entry(r->primary_ctor_or_dtor)}});
 #endif
     return id;
+  }
+  Id abi_signature(a_routine_ptr r) {
+    auto primary=primary_destructor_abis.find(r);
+    return primary!=primary_destructor_abis.end()?primary->second.signature:routine_source_types.at(r);
+  }
+  void primary_destructor_abi(a_routine_ptr r,a_type_ptr selected_type=nullptr,const char *phase="reservation") {
+#if IA64_ABI
+    if(!rich_destructor(r) || r->primary_ctor_or_dtor ||
+       r->ctor_dtor_kind!=cdk_subobject || !routines.count(r))return;
+    auto found=primary_destructor_abis.find(r);
+    if(found!=primary_destructor_abis.end() && found->second.signature_complete)return;
+    auto &selected=primary_destructor_abis[r];
+    if(!selected.entry) {
+      selected.source=routines.at(r);selected.signature=next_type++;selected.entry=next_symbol++;
+      function_owners[selected.entry]=r;
+      auto pos=location(r->source_corresp.decl_position);
+      db.insert("symbols",{{"id",selected.entry},{"kind","function"},{"name",spelling(r->source_corresp)},
+        {"link_name",r->source_corresp.name?r->source_corresp.name:""},{"linkage",linkage(r->source_corresp)},
+        {"type_id",selected.signature},{"is_definition",r->function_def_number!=NULL_function_def_number},
+        {"definition_kind",r->use_comdat || r->is_inline || (r->is_template_function && !r->is_specialized)?"weak":"strong"},
+        {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
+      db.update("symbols","id",selected.source,{{"kind","source-function"}});
+      db.insert("function_abi_entries",{{"source_symbol_id",selected.source},{"entry_symbol_id",selected.entry},
+        {"variant","base"},{"callable_type_id",selected.signature}});
+      transfer_primary_destructor_body(r);
+    }
+    // prelower_class_type can recursively generate the complete wrapper
+    // before lower_destructor_routine_type has inserted the VTT parameter.
+    // Reserve identity here; only the supplied final type completes its ABI.
+    if(!selected_type)return;
+    auto type=skip_typerefs(selected_type);auto extra=type->variant.routine.extra_info;
+    auto first=extra->param_type_list;
+    if(!first || !first->next || first->next->next || !is_pointer_type(first->type) ||
+       !is_pointer_type(first->next->type) || extra->value_returned_as_parameter ||
+       !is_void_type(type->variant.routine.return_type)) {
+      unsigned count=0;for(auto p=first;p;p=p->next)++count;
+      auto pos=location(r->source_corresp.decl_position);std::string path;
+      for(const auto &file:files)if(file.second==pos.file){path=file.first;break;}
+      missing("selected subobject destructor ABI signature [routine="+spelling(r->source_corresp)+
+        ", phase="+phase+", parameters="+std::to_string(count)+
+        ", first-kind="+std::to_string(first?int(first->type->kind):-1)+
+        ", second-kind="+std::to_string(first && first->next?int(first->next->type->kind):-1)+
+        ", return-kind="+std::to_string(int(type->variant.routine.return_type->kind))+
+        ", file="+path+", line="+std::to_string(pos.line)+", column="+std::to_string(pos.column)+"]");
+    }
+    db.insert("types",{{"id",selected.signature},{"kind","function"},
+      {"name",spelling(type->source_corresp)},{"size",type->size},{"alignment",type->alignment},
+      {"return_type_id",type_id(type->variant.routine.return_type)},
+      {"object_type_id",optional(routine_receiver_types.at(r))},{"parameters_include_receiver",true},
+      {"is_variadic",bool(extra->has_ellipsis)},{"exception_policy",exception_policy(type)}});
+    unsigned ordinal=0;
+    for(auto p=first;p;p=p->next)
+      db.insert("type_parameters",{{"type_id",selected.signature},{"ordinal",ordinal++},{"parameter_type_id",type_id(p->type)}});
+    selected.signature_complete=true;
+#else
+    (void)r;(void)selected_type;(void)phase;
+#endif
+  }
+  void transfer_primary_destructor_body(a_routine_ptr r) {
+    auto found=primary_destructor_abis.find(r);
+    if(found==primary_destructor_abis.end() || found->second.body || !source_function_bodies.count(r))return;
+    auto &selected=found->second;selected.body=source_function_bodies.at(r);
+    // One body graph is shared by source navigation and the stock-selected
+    // physical subobject entry. Only the latter owns executable storage.
+    for(const char *table:{"nodes","initializations","lifetimes","parameters","empty_parameter_packs",
+                          "constructor_initializers","vptr_writes"})
+      db.update(table,"function_id",selected.source,{{"function_id",selected.entry}});
+    db.update("symbols","parent_symbol_id",selected.source,{{"parent_symbol_id",selected.entry}});
+    db.exec("INSERT INTO functions(symbol_id,body_node_id,receiver_symbol_id,kind,exception_policy,nrvo_candidate_symbol_id) "
+      "SELECT "+std::to_string(selected.entry)+",body_node_id,receiver_symbol_id,kind,exception_policy,nrvo_candidate_symbol_id "
+      "FROM functions WHERE symbol_id="+std::to_string(selected.source));
+    for(auto &value:allocations)if(value.second.owner==selected.source)value.second.owner=selected.entry;
+    for(auto &value:deallocations)if(value.second.owner==selected.source)value.second.owner=selected.entry;
+  }
+  void destructor_vtt_parameter(a_routine_ptr r,a_variable_ptr parameter) {
+    // Variable lowering precedes file-scope routine type lowering. This
+    // supplies the exact VTT variable, never a finalized callable signature.
+    primary_destructor_abi(r);
+    auto found=primary_destructor_abis.find(r);if(found==primary_destructor_abis.end())return;
+    auto &selected=found->second;
+    if(selected.vtt && selected.vtt!=parameter)missing("selected destructor VTT parameter identity");
+    if(selected.vtt)return;
+    selected.vtt=parameter;Id previous=function;function=selected.entry;
+    Id symbol=variable(parameter,true,true);function_parameters[r][parameter]=symbol;
+    db.insert("parameters",{{"function_id",selected.entry},{"ordinal",1},{"symbol_id",symbol}});
+    function=previous;
+  }
+  Id vtt_symbol(a_variable_ptr v) {
+    auto found=vtt_symbols.find(v);if(found!=vtt_symbols.end())return found->second;
+    Id id=next_symbol++;vtt_symbols[v]=id;auto pos=location(v->source_corresp.decl_position);
+    const char *definition="strong";
+#if IA64_ABI
+    if(v->comdat_group)definition="weak";
+#endif
+    db.insert("symbols",{{"id",id},{"kind","virtual-table-table"},{"name",spelling(v->source_corresp)},
+      {"link_name",v->source_corresp.name?v->source_corresp.name:""},{"linkage",linkage(v->source_corresp)},
+      {"type_id",type_id(v->type)},{"is_definition",v->storage_class!=sc_extern},
+      {"definition_kind",definition},
+      {"file_id",optional(pos.file)},{"line",pos.line},{"column",pos.column}});
+    return id;
+  }
+  void vtt_definition(a_type_ptr owner,a_variable_ptr v,a_construction_vtbl_ptr elements) {
+#if IA64_ABI
+    if(!vtt_symbols.count(v))return;
+    Id symbol=vtt_symbol(v);auto type=skip_typerefs(v->type);
+    db.update("types","id",types.at(v->type),{{"size",v->type->size},{"alignment",v->type->alignment},
+      {"element_count",type->variant.array.variant.number_of_elements},{"is_incomplete",false}});
+    db.update("symbols","id",symbol,{{"is_definition",v->storage_class!=sc_extern}});
+    if(!vtt_entry_symbols.insert(v).second)return;
+    for(auto selected=elements;selected;selected=selected->next) {
+      long long address=(long long)selected->virtual_function_table_index*(long long)vtbl_entry_size();
+      vtt_selected_entries[symbol].push_back({selected->virtual_function_table_var,address});
+    }
+    (void)owner;
+#else
+    (void)owner;(void)v;(void)elements;
+#endif
+  }
+  void vtt_binding(a_routine_ptr owner,a_variable_ptr local,a_variable_ptr storage,an_expr_node_ptr address,
+                   a_statement_ptr assignment) {
+    if(!owner || owner->special_kind!=sfk_destructor)return;
+    vtt_symbol(storage);vtt_bindings[owner][local]={storage,address,0,assignment};
+    if(storage->init_kind==initk_static)
+      vtt_definition(parent_class_of(owner),storage,class_type_supp(parent_class_of(owner))->construction_vtbls);
+  }
+  Id abi_expression(an_expr_node_ptr e,const a_source_position &pos) {
+    if(!e)missing("selected destructor ABI expression");
+    if(e->kind==enk_routine) {
+      auto r=e->variant.routine.ptr;
+      if(!r)missing("selected destructor ABI callee");
+      Id symbol=abi_entry(r);
+      return node("function",pos,abi_signature(r),"prvalue",nullptr,"",symbol,0,0,true);
+    }
+    if(e->kind==enk_variable) {
+      auto v=node_variable(e);
+      if(vtt_symbols.count(v))
+        return node("variable",pos,type_id(e->type),e->is_lvalue?"lvalue":"prvalue",
+          nullptr,"",vtt_symbols.at(v),0,0,true);
+      if(!variables.count(v)) {
+        auto owner=function_owners.at(function);auto parameters=function_parameters.find(owner);
+        if(parameters!=function_parameters.end() && parameters->second.count(v))variables[v]=parameters->second.at(v);
+        else {
+          auto bindings=vtt_bindings.find(owner);
+          if(bindings==vtt_bindings.end() || !bindings->second.count(v) || !bindings->second.at(v).symbol)
+            missing("selected destructor ABI variable without storage correspondence [routine="+
+              spelling(owner->source_corresp)+", variable="+spelling(v->source_corresp)+
+              ", type-kind="+std::to_string(int(v->type->kind))+
+              ", selected-VTT="+std::to_string(vtt_symbols.count(v))+
+              ", selected-parameter="+std::to_string(parameters!=function_parameters.end() && parameters->second.count(v))+
+              ", selected-binding="+std::to_string(bindings!=vtt_bindings.end() && bindings->second.count(v))+
+              ", line="+std::to_string(location(v->source_corresp.decl_position).line)+"]");
+          variables[v]=bindings->second.at(v).symbol;
+        }
+      }
+      return node("variable",pos,type_id(e->type),e->is_lvalue?"lvalue":"prvalue",
+        nullptr,"",variables.at(v),0,0,true);
+    }
+    if(e->kind==enk_constant) {
+      auto value=node_constant(e);
+      if(value->kind==ck_address && value->variant.address.kind==abk_variable &&
+         vtt_symbols.count(value->variant.address.variant.variable)) {
+        if(value->variant.address.offset)missing("selected VTT address offset");
+        return node("vtt-address",pos,type_id(e->type),"prvalue",nullptr,"",
+          vtt_symbols.at(value->variant.address.variant.variable),0,0,true);
+      }
+      return constant(value,pos);
+    }
+    if(e->kind!=enk_operation)missing("selected destructor ABI expression",int(e->kind));
+    Id id=node("operation",pos,type_id(e->type),e->is_lvalue?"lvalue":"prvalue",
+      operation(e->variant.operation.kind),"",0,0,0,true);
+    db.update("nodes","id",id,{{"evaluation_order",e->variant.operation.eval_left_to_right?"left-to-right":
+      e->variant.operation.eval_right_to_left?"right-to-left":"unspecified"}});
+    unsigned ordinal=0;
+    for(auto child=e->variant.operation.operands;child;child=child->next)
+      edge(id,"operand",ordinal++,abi_expression(child,pos));
+    return id;
+  }
+  void destructor_initialization_copy(a_scope_ptr from,a_scope_ptr to,a_constructor_init_ptr original,a_constructor_init_ptr copy) {
+    auto source=from->variant.routine.ptr;
+    if(!rich_destructor(source) || !routines.count(source))return;
+    auto actions=function_initializations.find(source);
+    if(actions==function_initializations.end() || !actions->second.count(original->initializer))
+      missing("selected destructor copied action without source correspondence");
+    copied_initializations[to->variant.routine.ptr][copy->initializer]=actions->second.at(original->initializer);
+  }
+  void destructor_initializations_copied(a_scope_ptr from,a_scope_ptr to,bool removed) {
+    auto r=from->variant.routine.ptr;
+    if(!rich_destructor(r) || !routines.count(r))return;
+    // With subobject virtual-base handling enabled, stock retains the
+    // originals. Its later complete-object test guards those exact actions.
+    if(!removed)return;
+    primary_destructor_abi(r);
+    if(!primary_destructor_abis.count(r))missing("selected destructor action move without physical entry");
+    auto &selected=primary_destructor_abis.at(r);
+    for(const auto &copy:copied_initializations.at(to->variant.routine.ptr)) {
+      Id original=copy.second;
+      // Stock has removed this exact action from the D2 destruction list.
+      // Retain its source destination relation under the source-only owner.
+      db.update("constructor_initializers","initialization_id",original,{{"function_id",selected.source}});
+      db.update("initializations","id",original,{{"function_id",selected.source},{"lifetime_id",nullptr}});
+      db.exec("DELETE FROM lifetime_destructions WHERE initialization_id="+std::to_string(original));
+    }
+    if(from->lifetime) {
+      auto mapped=function_lifetimes.find(r);
+      if(mapped==function_lifetimes.end() || !mapped->second.count(from->lifetime))
+        missing("selected destructor moved lifetime correspondence");
+      Id lifetime=mapped->second.at(from->lifetime);
+      db.exec("DELETE FROM lifetime_destructions WHERE lifetime_id="+std::to_string(lifetime));
+      unsigned ordinal=0;
+      for(auto action=from->lifetime->destructions;action;action=action->next_in_destruction_list) {
+        auto original=function_initializations.at(r).find(action);
+        if(original==function_initializations.at(r).end())missing("selected destructor surviving action correspondence");
+        db.insert("lifetime_destructions",{{"lifetime_id",lifetime},{"ordinal",ordinal++},{"initialization_id",original->second}});
+      }
+    } else if(selected.body) {
+      db.update("nodes","id",selected.body,{{"lifetime_id",nullptr}});
+      db.update("lifetimes","owner_node_id",selected.body,{{"owner_node_id",nullptr},{"function_id",selected.source}});
+    }
+  }
+  void destructor_condition(a_scope_ptr scope,an_expr_node_ptr comparison) {
+    auto r=scope->variant.routine.ptr;
+    if(!rich_destructor(r) || r->primary_ctor_or_dtor || !routines.count(r))return;
+    primary_destructor_abi(r);
+    auto &selected=primary_destructor_abis.at(r);
+    if(!selected.body || selected.destruction_condition)
+      missing("selected destructor entry condition correspondence");
+    Id previous=function;auto previous_region=literal_source_region;
+    function=selected.entry;literal_source_region=mem_region_for_routine(r);
+    selected.destruction_condition=abi_expression(comparison,r->source_corresp.decl_position);
+    // This edge is an entry-phase value capture, before ABI prologue writes.
+    // Cleanup uses the saved value rather than evaluating the node again.
+    edge(selected.body,"destruction-condition",0,selected.destruction_condition);
+    auto actions=function_initializations.find(r);
+    for(auto init=scope->variant.routine.constructor_inits;init;init=init->next)
+      if(init->kind==cik_virtual_base_class) {
+        if(actions==function_initializations.end() || !actions->second.count(init->initializer))
+          missing("selected guarded destructor action correspondence");
+        db.update("initializations","id",actions->second.at(init->initializer),
+          {{"destruction_condition_node_id",selected.destruction_condition}});
+      }
+    function=previous;literal_source_region=previous_region;
+  }
+  void destructor_vtt_prologue(a_routine_ptr r,a_variable_ptr local) {
+    if(!rich_destructor(r) || r->primary_ctor_or_dtor || !routines.count(r))return;
+    auto &selected=primary_destructor_abis.at(r);
+    auto bindings=vtt_bindings.find(r);
+    if(!selected.destruction_condition || bindings==vtt_bindings.end() || !bindings->second.count(local))
+      missing("selected destructor VTT prologue correspondence");
+    auto statement=bindings->second.at(local).assignment;
+    if(!statement || statement->kind!=stmk_expr || !statement->expr)
+      missing("selected destructor VTT assignment statement");
+    Id previous=function;auto previous_region=literal_source_region;
+    function=selected.entry;literal_source_region=mem_region_for_routine(r);
+    const auto &pos=r->source_corresp.decl_position;
+    Id conditional=node("if",pos,0,nullptr,nullptr,"",0,0,0,true);
+    edge(conditional,"condition",0,selected.destruction_condition);
+    Id assignment=node("expr-stmt",pos,0,nullptr,nullptr,"",0,0,0,true);
+    edge(assignment,"value",0,abi_expression(statement->expr,pos));
+    edge(conditional,"then",0,assignment);
+    edge(selected.body,"abi-prologue",0,conditional);
+    function=previous;literal_source_region=previous_region;
+  }
+  void semantic_destructor_wrapper(a_routine_ptr source,a_routine_ptr entry,a_scope_ptr scope,an_expr_node_ptr call) {
+#if IA64_ABI
+    if(!entry || entry->special_kind!=sfk_destructor || entry->ctor_dtor_kind!=cdk_complete ||
+       !entry->primary_ctor_or_dtor || !rich_destructor(source) || !routines.count(source))return;
+    if(!call || bodies.count(entry))
+      missing("selected complete destructor semantic wrapper");
+    primary_destructor_abi(source);
+    Id owner=abi_entry(entry),signature=abi_signature(entry);
+    auto previous=function;auto previous_region=literal_source_region;
+    function=owner;literal_source_region=mem_region_for_routine(entry);
+    expressions.clear();source_statement_nodes.clear();initializations.clear();initialization_values.clear();
+    initialization_types.clear();lifetimes.clear();initializing.clear();
+    const auto &pos=source->source_corresp.decl_position;
+    Id body=node("block",pos,0,nullptr,nullptr,"",0,0,0,true);
+    unsigned ordinal=0;Id receiver=0;
+    for(auto parameter=scope->variant.routine.parameters;parameter;parameter=parameter->next) {
+      Id symbol=variable(parameter,true,true);if(parameter==scope->variant.routine.this_param_variable)receiver=symbol;
+      db.insert("parameters",{{"function_id",owner},{"ordinal",ordinal++},{"symbol_id",symbol}});
+    }
+    ordinal=0;
+    auto bindings=vtt_bindings.find(entry);
+    if(bindings!=vtt_bindings.end())for(auto &binding:bindings->second) {
+      auto local=binding.first;Id symbol=variable(local,true);
+      binding.second.symbol=symbol;
+      Id declaration=node("initialize",pos,type_id(local->type),nullptr,nullptr,"",symbol,0,0,true);
+      edge(declaration,"value",0,abi_expression(binding.second.address,pos));
+      edge(body,"statement",ordinal++,declaration);
+    }
+    constructor_initializers(scope);attach_lifetime(body,scope->lifetime);
+    Id statement_node=node("expr-stmt",pos,0,nullptr,nullptr,"",0,0,0,true);
+    edge(statement_node,"value",0,abi_expression(call,pos));edge(body,"statement",ordinal++,statement_node);
+    db.insert("functions",{{"symbol_id",owner},{"body_node_id",body},{"receiver_symbol_id",optional(receiver)},
+      {"kind","destructor"},{"exception_policy",exception_policy(entry->type)}});
+    db.insert("function_abi_entries",{{"source_symbol_id",routines.at(source)},{"entry_symbol_id",owner},
+      {"variant","complete"},{"callable_type_id",signature}});
+    db.update("symbols","id",owner,{{"is_definition",true}});bodies.insert(entry);
+    for(auto v:local_variables)variables.erase(v);local_variables.clear();
+    expressions.clear();source_statement_nodes.clear();initializations.clear();initialization_values.clear();
+    initialization_types.clear();lifetimes.clear();initializing.clear();
+    function=previous;literal_source_region=previous_region;
+#else
+    (void)source;(void)entry;(void)scope;(void)call;
+#endif
+  }
+  void cleanup_begin(a_dynamic_init_ptr action,a_routine_ptr owner) {cleanup_stack.push_back({owner,action});}
+  void cleanup_end() {if(cleanup_stack.empty())missing("selected cleanup scope");cleanup_stack.pop_back();}
+  void selected_cleanup(a_routine_ptr callee,an_expr_node_ptr call) {
+    if(cleanup_stack.empty() || !callee || callee->special_kind!=sfk_destructor || !call)return;
+    auto context=cleanup_stack.back();auto found=function_initializations.find(context.first);
+    if(found==function_initializations.end() || !found->second.count(context.second))return;
+    auto primary=virtual_source(callee);
+    if(!rich_destructor(primary) && !rich_destructor(context.first))return;
+    Id action=found->second.at(context.second);Id entry=abi_entry(callee),signature=abi_signature(callee);
+    auto prior=cleanup_entries.find(action);
+    if(prior!=cleanup_entries.end()) {
+      if(prior->second!=callee)missing("selected cleanup entry changed for one action");
+      return;
+    }
+    cleanup_entries[action]=callee;
+    db.update("initializations","id",action,{{"selected_cleanup_entry_symbol_id",entry},
+      {"selected_cleanup_callable_type_id",signature}});
+    if(call->kind!=enk_operation || call->variant.operation.kind!=eok_call)
+      missing("selected cleanup call expression");
+    auto receiver=call->variant.operation.operands?call->variant.operation.operands->next:nullptr;
+    if(!receiver)missing("selected cleanup receiver");
+    Id previous=function;auto previous_region=literal_source_region;
+    auto physical=primary_destructor_abis.find(context.first);
+    function=physical!=primary_destructor_abis.end()?physical->second.entry:routines.at(context.first);
+    literal_source_region=mem_region_for_routine(context.first);
+    unsigned ordinal=0;
+    for(auto argument=receiver->next;argument;argument=argument->next)
+      db.insert("cleanup_arguments",{{"initialization_id",action},{"ordinal",ordinal++},
+        {"node_id",abi_expression(argument,context.first->source_corresp.decl_position)}});
+    function=previous;literal_source_region=previous_region;
+  }
+  void destructor_scope_complete(a_scope_ptr scope) {
+    if(scope->kind!=sck_function)return;
+    auto r=scope->variant.routine.ptr;
+    function_initializations.erase(r);function_lifetimes.erase(r);function_parameters.erase(r);
+    copied_initializations.erase(r);vtt_bindings.erase(r);
   }
   void global_initializer(a_variable_ptr v,Id id) {
     if(v->init_kind==initk_dynamic) {
@@ -810,6 +1189,8 @@ struct State {
       return found->second;
     }
     Id id=next_symbol++;variables[v]=id;auto pos=location(v->source_corresp.decl_position);
+    if(parameter && function && function_owners.count(function) && rich_destructor(function_owners.at(function)))
+      function_parameters[function_owners.at(function)][v]=id;
     if(local)local_variables.insert(v);
     if(is_effective_thread_local(v))missing("thread-local storage");
     if(local && !parameter && v->storage_class==sc_static)missing("local static storage initialization");
@@ -1622,6 +2003,8 @@ struct State {
     auto &ids=persistent?static_lifetimes:lifetimes;
     auto found=ids.find(value);if(found!=ids.end())return found->second;
     Id id=next_lifetime++;ids[value]=id;
+    if(!persistent && function && function_owners.count(function) && rich_destructor(function_owners.at(function)))
+      function_lifetimes[function_owners.at(function)][value]=id;
     const char *kind=nullptr;
     switch(value->kind) {
       case olk_global_static:kind="global-static";break;
@@ -1758,6 +2141,11 @@ struct State {
       return found->second;
     }
     Id id=next_initialization++;initializations[init]=id;initialization_types[init]=target_type;initializing.insert(init);
+    a_routine_ptr action_owner=function && function_owners.count(function)?function_owners.at(function):nullptr;
+    if(action_owner && (rich_destructor(action_owner) || rich_destructor(init->destructor)))
+      function_initializations[action_owner][init]=id;
+    auto copies=copied_initializations.find(action_owner);
+    Id source_init=copies!=copied_initializations.end() && copies->second.count(init)?copies->second.at(init):0;
     const char *kind=nullptr;Id value=0,constructor=0;
     bool implied_source=false,sequenced=false,value_init=false;
     a_source_position pos={};if(init->variable)pos=init->variable->source_corresp.decl_position;
@@ -1818,6 +2206,7 @@ struct State {
     db.insert("initializations",{{"id",id},{"function_id",optional(function)},{"kind",kind},
       {"type_id",optional(initialization_types[init])},
       {"destination_initialization_id",optional(destination)},
+      {"source_initialization_id",optional(source_init)},
       {"variable_symbol_id",optional(init->variable?variable(init->variable,true):0)},
       {"constructor_symbol_id",optional(constructor)},
       {"destructor_symbol_id",optional(init->destructor?routine(init->destructor):0)},
@@ -2116,7 +2505,9 @@ struct State {
   }
   void virtual_vptr_begin(a_routine_ptr r,const char *phase) {
     auto source=routines.find(virtual_source(r));
-    vptr_phases.push_back({source==routines.end()?0:source->second,phase});
+    auto physical=primary_destructor_abis.find(r);
+    vptr_phases.push_back({physical!=primary_destructor_abis.end()?physical->second.entry:
+      source==routines.end()?0:source->second,phase});
   }
   void virtual_vptr_end() {
     if(vptr_phases.empty())missing("virtual pointer action capture context");
@@ -3468,6 +3859,8 @@ struct State {
         {"kind",kind},{"exception_policy",policy},
         {"nrvo_candidate_symbol_id",optional(scope->variant.routine.return_value_variable?
           variable(scope->variant.routine.return_value_variable,true):0)}});
+      if(rich_destructor(r))source_function_bodies[r]=body;
+      transfer_primary_destructor_body(r);
       auto pending=default_member_initializers.find(scope);
       if(pending!=default_member_initializers.end()) {
         pending->second.body=body;
@@ -3557,6 +3950,10 @@ struct State {
     // Capture the real completed scope: EDG has attached the complete-entry
     // call and selected operator-delete statement, followed by its return.
     capture(scope);
+    auto primary=primary_destructor_abis.find(virtual_source(entry));
+    if(primary!=primary_destructor_abis.end() && entry->ctor_dtor_kind==cdk_deleting)
+      db.insert("function_abi_entries",{{"source_symbol_id",primary->second.source},{"entry_symbol_id",symbol},
+        {"variant","deleting"},{"callable_type_id",abi_signature(entry)}});
     db.update("symbols","id",symbol,{{"is_definition",true},
       {"link_name",entry->source_corresp.name?entry->source_corresp.name:""},
       {"linkage",linkage(entry->source_corresp)},
@@ -3630,6 +4027,55 @@ struct State {
     db.update("symbols","id",startup.owner,{{"is_definition",true}});
     bodies.insert(r);startup=StartupGroup{};
   }
+  bool native_entity_needed(a_source_correspondence &source) {
+#if MAINTAIN_NEEDED_FLAGS
+    return needed_flag_is_set(&source);
+#else
+    return source.referenced;
+#endif
+  }
+  bool native_body_root(a_routine_ptr r) {
+    return !ignore_routine_in_back_end(r) && native_entity_needed(r->source_corresp) &&
+      r->function_def_number!=NULL_function_def_number
+#if MAINTAIN_NEEDED_FLAGS
+      && routine_definition_needed_flag_is_set(r)
+#endif
+      ;
+  }
+  bool native_storage_root(a_variable_ptr v) {
+    // c_gen_be::dump_variable_decl/start_unreferenced_bracket retain the
+    // stock __link marker as well as needed definitions. Suppressed inline
+    // definitions are declarations, while their source facts stay intact.
+    bool magic=v->source_corresp.name_linkage==nlk_internal && v->source_corresp.name &&
+      std::string(v->source_corresp.name)=="__link";
+    return !ignore_variable_in_back_end(v) && !v->suppress_inline_definition &&
+      v->storage_class!=sc_extern && (magic || native_entity_needed(v->source_corresp));
+  }
+  void finish_emission_roots() {
+#if ONE_INSTANTIATION_PER_OBJECT
+    if(needed_flag_bit_number!=0)missing("selected native emission roots for nonzero instantiation slice");
+#endif
+    // This is the final backend phase, after stock needed flags and generated
+    // bodies are settled. All source definitions remain link candidates;
+    // this scalar records native executable roots, not a reachability walk.
+    db.exec("UPDATE symbols SET is_emission_root=0");
+    for(const auto &entry:routines)
+      if(!primary_destructor_abis.count(entry.first))
+        db.update("symbols","id",entry.second,{{"is_emission_root",native_body_root(entry.first)}});
+    for(const auto &entry:primary_destructor_abis)
+      db.update("symbols","id",entry.second.entry,{{"is_emission_root",native_body_root(entry.first)}});
+    auto storage_root=[&](a_variable_ptr v,Id symbol) {
+      // Only selected persistent storage can be a global root; retained
+      // parameter/local/recipe references never acquire independent storage.
+      db.exec("UPDATE symbols SET is_emission_root="+std::to_string(native_storage_root(v)?1:0)+
+        " WHERE id="+std::to_string(symbol)+" AND kind IN('global','literal','rtti-object','virtual-table-table')");
+    };
+    for(const auto &entry:variables)storage_root(entry.first,entry.second);
+    for(const auto &entry:static_local_symbols)storage_root(entry.first,entry.second);
+    for(const auto &entry:selected_literals)if(entry.second.symbol)storage_root(entry.first,entry.second.symbol);
+    for(const auto &entry:typeinfo_variables)storage_root(entry.first,entry.second.symbol);
+    for(const auto &entry:vtt_symbols)storage_root(entry.first,entry.second);
+  }
   void finish() {
     finish_typeinfo_symbols();
     if(startup.scope)missing("selected startup group without completion");
@@ -3672,7 +4118,8 @@ struct State {
     }
     for(const auto &entry:routines) {
       auto r=entry.first;
-      db.update("symbols","id",entry.second,{{"link_name",r->source_corresp.name?r->source_corresp.name:""}});
+      if(!primary_destructor_abis.count(r))
+        db.update("symbols","id",entry.second,{{"link_name",r->source_corresp.name?r->source_corresp.name:""}});
 #if IA64_ABI
       // Stock can assign COMDAT after the completed factory callback.
       // Refresh only genuine captured alternate bodies from its final fact.
@@ -3681,11 +4128,39 @@ struct State {
           (r->is_template_function && !r->is_specialized)?"weak":"strong"}});
 #endif
     }
+    for(const auto &item:primary_destructor_abis) {
+      auto r=item.first;
+      if(!item.second.signature_complete)
+        missing("selected subobject destructor ABI signature without completed stock type [routine="+
+          spelling(r->source_corresp)+"]");
+      db.update("symbols","id",item.second.entry,{{"link_name",r->source_corresp.name?r->source_corresp.name:""},
+        {"definition_kind",r->use_comdat || r->is_inline || (r->is_template_function && !r->is_specialized)?"weak":"strong"}});
+    }
+    for(const auto &item:vtt_symbols) {
+      const char *definition="strong";
+#if IA64_ABI
+      if(item.first->comdat_group)definition="weak";
+#endif
+      db.update("symbols","id",item.second,{{"link_name",item.first->source_corresp.name?item.first->source_corresp.name:""},
+        {"linkage",linkage(item.first->source_corresp)},{"is_definition",item.first->storage_class!=sc_extern},
+        {"definition_kind",definition}});
+    }
+    for(const auto &item:vtt_selected_entries) {
+      unsigned ordinal=0;
+      for(const auto &selected:item.second) {
+        auto found=virtual_tables.find(selected);
+        if(found==virtual_tables.end())missing("selected VTT entry without virtual table correspondence [table="+
+          spelling(selected.first->source_corresp)+", address-point="+std::to_string(selected.second)+"]");
+        db.insert("vtt_entries",{{"symbol_id",item.first},{"ordinal",ordinal++},
+          {"virtual_table_id",found->second},{"address_point_byte_offset",selected.second}});
+      }
+    }
     for(const auto &entry:types) {
       auto t=entry.first;if(t->kind==tk_struct || t->kind==tk_class || t->kind==tk_union ||
                            (t->kind==tk_integer && t->variant.integer.enum_type))
         db.update("types","id",entry.second,{{"link_name",t->source_corresp.name?t->source_corresp.name:""}});
     }
+    finish_emission_roots();
     const auto source=il_header.primary_source_file;
     const char *target=std::getenv("EDG_DOT_TARGET");
     if(!target || !*target)missing("explicit target ABI profile");
@@ -3782,6 +4257,50 @@ inline void lambda_entry_complete(a_routine_ptr entry,a_scope_ptr scope) {
 }
 inline void abi_entry_complete(a_routine_ptr selected,a_routine_ptr entry,a_scope_ptr scope) {
   if(enabled())state().abi_entry_complete(selected,entry,scope);
+}
+inline void primary_destructor_abi(a_type_ptr type) {
+  if(enabled())state().primary_destructor_abi(type->variant.routine.extra_info->assoc_routine,type,"destructor-type");
+}
+inline void primary_destructor_abi(a_routine_ptr routine) {
+  if(enabled())state().primary_destructor_abi(routine,routine->type,"routine-type");
+}
+inline void destructor_vtt_parameter(a_routine_ptr r,a_variable_ptr v) {
+  if(enabled())state().destructor_vtt_parameter(r,v);
+}
+inline void destructor_initialization_copy(a_scope_ptr from,a_scope_ptr to,a_constructor_init_ptr original,a_constructor_init_ptr copy) {
+  if(enabled())state().destructor_initialization_copy(from,to,original,copy);
+}
+inline void destructor_initializations_copied(a_scope_ptr from,a_scope_ptr to,bool removed) {
+  if(enabled())state().destructor_initializations_copied(from,to,removed);
+}
+inline void destructor_condition(a_scope_ptr scope,an_expr_node_ptr comparison) {
+  if(enabled())state().destructor_condition(scope,comparison);
+}
+inline void destructor_vtt_prologue(a_routine_ptr r,a_variable_ptr local) {
+  if(enabled())state().destructor_vtt_prologue(r,local);
+}
+inline void semantic_destructor_wrapper(a_routine_ptr source,a_routine_ptr entry,a_scope_ptr scope,an_expr_node_ptr call) {
+  if(enabled())state().semantic_destructor_wrapper(source,entry,scope,call);
+}
+inline void vtt_binding(a_routine_ptr owner,a_variable_ptr local,a_variable_ptr storage,an_expr_node_ptr address,
+                        a_statement_ptr assignment) {
+  if(enabled())state().vtt_binding(owner,local,storage,address,assignment);
+}
+inline void vtt_definition(a_type_ptr owner,a_variable_ptr v,a_construction_vtbl_ptr elements) {
+  if(enabled())state().vtt_definition(owner,v,elements);
+}
+inline void selected_cleanup(a_routine_ptr callee,an_expr_node_ptr call) {
+  if(enabled())state().selected_cleanup(callee,call);
+}
+struct CleanupCapture {
+  bool active;
+  CleanupCapture(a_dynamic_init_ptr init,a_routine_ptr owner):active(enabled()) {
+    if(active)state().cleanup_begin(init,owner);
+  }
+  ~CleanupCapture() {if(active)state().cleanup_end();}
+};
+inline void destructor_scope_complete(a_scope_ptr scope) {
+  if(enabled())state().destructor_scope_complete(scope);
 }
 inline void startup_group(a_scope_ptr scope,unsigned long priority,bool thread_local_group,bool instantiation_slice) {
   if(enabled())state().startup_group(scope,priority,thread_local_group,instantiation_slice);

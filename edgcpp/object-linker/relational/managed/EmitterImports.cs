@@ -11,6 +11,9 @@ internal sealed partial class Emitter
 
     private ProviderImport? RequireProvider(SymbolRef selected)
     {
+        if(selected.Symbol.Kind=="source-function")
+            throw new InvalidDataException("Executable reference requires a recorded selected ABI entry for source function "+
+                selected.Symbol.Id+" ("+selected.Symbol.LinkName+") in "+selected.Unit.Path);
         if(!requiredProviders || selected.Symbol.Definition)return null;
         var symbol=selected.Symbol;
         if(symbol.Linkage!="external" || string.IsNullOrEmpty(symbol.LinkName))

@@ -812,21 +812,46 @@ object_source_overlay(lower,
     '  dot_object_source::observe_vptr_field(observed_field);\n'
     '#else\n  (void)observed_field;\n#endif\n}  /* add_dummy_field */')
 for vtt_kind in ('constructor', 'destructor'):
+    if vtt_kind == 'destructor':
+        old_dtor_vtt = ('#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
+            '  dot_object_source::observe_vtt_type(routine_type);\n#endif\n'
+            '}  /* lower_destructor_routine_type */')
+        dtor_vtt_source = lower.read_text()
+        new_dtor_vtt = ('#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
+            '  dot_object_source::observe_vtt_type(routine_type);\n'
+            '  dot_semantic::primary_destructor_abi(routine_type);\n#endif\n'
+            '}  /* lower_destructor_routine_type */')
+        if new_dtor_vtt not in dtor_vtt_source and old_dtor_vtt in dtor_vtt_source:
+            lower.write_text(dtor_vtt_source.replace(old_dtor_vtt, '}  /* lower_destructor_routine_type */'))
     object_source_overlay(lower,
         '#endif /* IA64_ABI */\n}  /* lower_' + vtt_kind + '_routine_type */',
         '#endif /* IA64_ABI */\n#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
-        '  dot_object_source::observe_vtt_type(routine_type);\n#endif\n'
+        '  dot_object_source::observe_vtt_type(routine_type);\n' +
+        ('  dot_semantic::primary_destructor_abi(routine_type);\n' if vtt_kind == 'destructor' else '') + '#endif\n'
         '}  /* lower_' + vtt_kind + '_routine_type */')
 object_source_overlay(lower,
     '    prev_param_var->next = vtt_param_var;\n',
     '    prev_param_var->next = vtt_param_var;\n'
     '#if defined(EDG_DOT_BACKEND)\n'
     '    dot_object_source::observe_vtt_parameter(ctor_routine, vtt_param_var);\n#endif\n')
+old_dtor_param_hook = ('#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_object_source::observe_vtt_parameter(dtor_routine, vtt_param_var);\n#endif\n')
+dtor_param_source = lower.read_text()
+if old_dtor_param_hook in dtor_param_source:
+    lower.write_text(dtor_param_source.replace(old_dtor_param_hook, ''))
 object_source_overlay(lower,
     '      this_param_var->next = vtt_param_var;\n',
     '      this_param_var->next = vtt_param_var;\n'
     '#if defined(EDG_DOT_BACKEND)\n'
-    '      dot_object_source::observe_vtt_parameter(dtor_routine, vtt_param_var);\n#endif\n')
+    '      dot_object_source::observe_vtt_parameter(dtor_routine, vtt_param_var);\n'
+    '      dot_semantic::destructor_vtt_parameter(dtor_routine, vtt_param_var);\n#endif\n')
+object_source_overlay(lower,
+    '    lower_type(routine->type);\n    lower_template_arg_list(routine->template_arg_list);',
+    '    lower_type(routine->type);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::primary_destructor_abi(routine);\n'
+    '#endif\n'
+    '    lower_template_arg_list(routine->template_arg_list);')
 
 # Preserve exact base-descriptor correspondence at the physical insertion.
 object_source_overlay(lower,
@@ -1004,12 +1029,19 @@ object_source_overlay(il_source,
 
 # Associate retained ordinary destructor calls with exact source obligations.
 # The observation scope changes no frontend inputs, insertion, or inlining.
+old_normal_cleanup_hook = ('#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::NormalDestructionCapture dot_object_normal_destruction(dip, innermost_function_scope->variant.routine.ptr);\n'
+    '#endif\n')
+normal_cleanup_source = init_lower.read_text()
+if old_normal_cleanup_hook in normal_cleanup_source:
+    init_lower.write_text(normal_cleanup_source.replace(old_normal_cleanup_hook, ''))
 object_source_overlay(init_lower,
     '  check_assertion(dip->destructor != NULL);\n'
     '  /* Set the cleanup state to what it should be after the destruction,',
     '  check_assertion(dip->destructor != NULL);\n'
     '#if defined(EDG_DOT_BACKEND)\n'
     '  dot_object_source::NormalDestructionCapture dot_object_normal_destruction(dip, innermost_function_scope->variant.routine.ptr);\n'
+    '  dot_semantic::CleanupCapture dot_semantic_cleanup(dip, innermost_function_scope->variant.routine.ptr);\n'
     '#endif\n'
     '  /* Set the cleanup state to what it should be after the destruction,')
 object_source_overlay(init_lower,
@@ -1017,6 +1049,7 @@ object_source_overlay(init_lower,
     '                      vtt_addr_node, insert_location);',
     '#if defined(EDG_DOT_BACKEND)\n'
     '  dot_object_source::NormalDestructionCapture dot_object_normal_destruction(dip, innermost_function_scope->variant.routine.ptr);\n'
+    '  dot_semantic::CleanupCapture dot_semantic_cleanup(dip, innermost_function_scope->variant.routine.ptr);\n'
     '#endif\n'
     '  add_destructor_call(dip->destructor, ipdp, have_complete_object,\n'
     '                      vtt_addr_node, insert_location);')
@@ -1026,8 +1059,19 @@ old_entity_call_observer = ('#if defined(EDG_DOT_BACKEND)\n'
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '#endif\n')
 entity_call_source = init_lower.read_text()
-if old_entity_call_observer in entity_call_source:
-    init_lower.write_text(entity_call_source.replace(old_entity_call_observer, ''))
+old_entity_multi_observer = ('#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_object_source::observe_normal_destruction_call(routine, call_node, top_level_node,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '  dot_object_source::observe_generated_entity_initializer_call(routine, top_level_node,\n'
+    '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '#endif\n')
+old_semantic_call_observer = ('#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::selected_cleanup(routine, call_node);\n'
+    '#endif\n')
+for prior_call_observer in (old_entity_call_observer, old_entity_multi_observer, old_semantic_call_observer):
+    entity_call_source = entity_call_source.replace(prior_call_observer, '')
+if entity_call_source != init_lower.read_text():
+    init_lower.write_text(entity_call_source)
 object_source_overlay(init_lower,
     '  return top_level_node;\n}  /* make_call_node_full */',
     '#if defined(EDG_DOT_BACKEND)\n'
@@ -1035,6 +1079,7 @@ object_source_overlay(init_lower,
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
     '  dot_object_source::observe_generated_entity_initializer_call(routine, top_level_node,\n'
     '    innermost_function_scope ? innermost_function_scope->variant.routine.ptr : NULL);\n'
+    '  dot_semantic::selected_cleanup(routine, call_node);\n'
     '#endif\n'
     '  return top_level_node;\n}  /* make_call_node_full */')
 
@@ -1471,6 +1516,77 @@ object_source_overlay(lower,
     '    check_assertion(!ignore_variable_in_back_end(variable));')
 
 # Relational semantic backend: direct program rows, no legacy raw graph capture.
+object_source_overlay(init_lower,
+    '      copy = copy_ctor_init_with_remap(ctor_init, from_scope, to_scope,\n'
+    '                                       CE_COPYING_FROM_ONE_FUNC_TO_ANOTHER);',
+    '      copy = copy_ctor_init_with_remap(ctor_init, from_scope, to_scope,\n'
+    '                                       CE_COPYING_FROM_ONE_FUNC_TO_ANOTHER);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_semantic::destructor_initialization_copy(from_scope, to_scope, ctor_init, copy);\n'
+    '#endif')
+object_source_overlay(init_lower,
+    '}  /* copy_ctor_inits */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::destructor_initializations_copied(from_scope, to_scope, remove_originals);\n'
+    '#endif\n}  /* copy_ctor_inits */')
+object_source_overlay(init_lower,
+    '    /* If the routine has a void type, insert a statement for the call\n',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '    dot_semantic::semantic_destructor_wrapper(routine, new_routine, new_routine_scope, call_node);\n'
+    '#endif\n'
+    '    /* If the routine has a void type, insert a statement for the call\n')
+object_source_overlay(init_lower,
+    '  a_construction_vtbl_array_index num_elements = 0;',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  a_construction_vtbl_ptr dot_semantic_vtt_elements = elements;\n'
+    '#endif\n'
+    '  a_construction_vtbl_array_index num_elements = 0;')
+object_source_overlay(init_lower,
+    '  release_local_constant(&con);\n}  /* define_construction_vtbls_array */',
+    '  release_local_constant(&con);\n'
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::vtt_definition(class_type, var, dot_semantic_vtt_elements);\n'
+    '#endif\n}  /* define_construction_vtbls_array */')
+old_vtt_binding_hook = ('#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::vtt_binding(innermost_function_scope->variant.routine.ptr, construction_vtbls_var, array_var, array_addr);\n'
+    '#endif\n')
+vtt_assignment_source = init_lower.read_text()
+if old_vtt_binding_hook in vtt_assignment_source:
+    init_lower.write_text(vtt_assignment_source.replace(old_vtt_binding_hook, ''))
+object_source_overlay(init_lower,
+    '  (void)insert_var_assignment_statement(construction_vtbls_var, array_addr,\n'
+    '                                        insert_location);',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  a_statement_ptr dot_semantic_vtt_assignment =\n'
+    '    insert_var_assignment_statement(construction_vtbls_var, array_addr, insert_location);\n'
+    '  dot_semantic::vtt_binding(innermost_function_scope->variant.routine.ptr,\n'
+    '    construction_vtbls_var, array_var, array_addr, dot_semantic_vtt_assignment);\n'
+    '#else\n'
+    '  (void)insert_var_assignment_statement(construction_vtbls_var, array_addr,\n'
+    '                                        insert_location);\n'
+    '#endif')
+object_source_overlay(init_lower,
+    '      (void)insert_var_assignment_statement(dtor_info.complete_obj_var,\n',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '      dot_semantic::destructor_condition(scope, compare_node);\n'
+    '#endif\n'
+    '      (void)insert_var_assignment_statement(dtor_info.complete_obj_var,\n')
+object_source_overlay(init_lower,
+    '                                                 &insert_location2);\n'
+    '#if !IA64_ABI\n'
+    '    /* Inserting under else_insert_location, in the "else" of the "if"\n',
+    '                                                 &insert_location2);\n'
+    '#if defined(EDG_DOT_BACKEND) && IA64_ABI\n'
+    '    dot_semantic::destructor_vtt_prologue(dtor_routine, dtor_info.destruction_vtbls_var);\n'
+    '#endif\n'
+    '#if !IA64_ABI\n'
+    '    /* Inserting under else_insert_location, in the "else" of the "if"\n')
+object_source_overlay(lower,
+    '  db_exit();\n}  /* lower_scope */',
+    '#if defined(EDG_DOT_BACKEND)\n'
+    '  dot_semantic::destructor_scope_complete(scope);\n'
+    '#endif\n'
+    '  db_exit();\n}  /* lower_scope */')
 object_source_overlay(init_lower,
     '    pop_generated_routine_context(new_routine_scope, new_routine_il_region,\n'
     '                                  &grcontext);',

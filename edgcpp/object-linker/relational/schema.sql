@@ -1,7 +1,7 @@
 -- Resolved program graph. Semantic facts are ordinary relational rows.
 -- No parser history, generic EDG field dumps, JSON, or encoded semantic blobs.
 PRAGMA application_id = 1146045002;
-PRAGMA user_version = 1028;
+PRAGMA user_version = 1030;
 PRAGMA foreign_keys = ON;
 CREATE TABLE object_info (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1),
@@ -148,6 +148,8 @@ CREATE TABLE symbols (
  parent_symbol_id INTEGER REFERENCES symbols(id),
  is_definition INTEGER NOT NULL DEFAULT 0 CHECK(is_definition IN(0,1)),
  definition_kind TEXT NOT NULL DEFAULT 'strong',
+ -- Final EDG native output roots; nonroots remain valid dependency providers.
+ is_emission_root INTEGER CHECK(is_emission_root IN(0,1)),
  file_id INTEGER REFERENCES files(id),
  line INTEGER,
  column INTEGER
@@ -335,6 +337,13 @@ CREATE TABLE initializations (
  value_initialization INTEGER NOT NULL DEFAULT 0 CHECK(value_initialization IN(0,1)),
  -- Exact stock decision for selected value-initializing constructor actions.
  value_initialization_needs_zeroing INTEGER CHECK(value_initialization_needs_zeroing IN(0,1)),
+ source_initialization_id INTEGER REFERENCES initializations(id),
+ selected_cleanup_entry_symbol_id INTEGER REFERENCES symbols(id),
+ selected_cleanup_callable_type_id INTEGER REFERENCES types(id),
+ -- The shared typed predicate is captured by the body's destruction-condition
+ -- edge exactly once at entry, before ABI prologue/VTT writes and user code.
+ -- Cleanup consumes that saved result; it must not reevaluate the expression.
+ destruction_condition_node_id INTEGER REFERENCES nodes(id),
  conditional INTEGER NOT NULL DEFAULT 0 CHECK(conditional IN(0,1)),
  unordered INTEGER NOT NULL DEFAULT 0 CHECK(unordered IN(0,1)),
  overlaps_inner INTEGER NOT NULL DEFAULT 0 CHECK(overlaps_inner IN(0,1)),
@@ -348,6 +357,14 @@ CREATE TABLE initializations (
 ) STRICT;
 CREATE INDEX lifetimes_function ON lifetimes(function_id,id);
 CREATE INDEX initializations_function ON initializations(function_id,id);
+-- Actual stock copying and selected cleanup entry invocation; source destructor
+-- identity above remains navigation, not a guessed physical ABI target.
+CREATE TABLE cleanup_arguments (
+ initialization_id INTEGER NOT NULL REFERENCES initializations(id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ node_id INTEGER NOT NULL REFERENCES nodes(id),
+ PRIMARY KEY(initialization_id,ordinal)
+) STRICT, WITHOUT ROWID;
 CREATE TABLE initialization_arguments (
  initialization_id INTEGER NOT NULL REFERENCES initializations(id),
  ordinal INTEGER NOT NULL,
@@ -513,3 +530,24 @@ CREATE TABLE allocations (
  CHECK(count_symbol_id IS NULL OR count_value_node_id IS NOT NULL),
  CHECK((length_check_node_id IS NULL) = (length_failure_symbol_id IS NULL))
 ) STRICT;
+
+-- Source identities remain browsable while distinct selected ABI entries own
+-- their actual bodies. The logical functions row retains the single shared
+-- source body root for navigation; this relation does not duplicate that fact.
+CREATE TABLE function_abi_entries (
+ source_symbol_id INTEGER NOT NULL REFERENCES symbols(id),
+ entry_symbol_id INTEGER NOT NULL REFERENCES symbols(id),
+ variant TEXT NOT NULL CHECK(variant IN('ordinary','base','complete','deleting')),
+ -- Exact stock alias target; independent of the logical source identity.
+ alias_target_symbol_id INTEGER REFERENCES symbols(id),
+ callable_type_id INTEGER NOT NULL REFERENCES types(id),
+ PRIMARY KEY(source_symbol_id,variant,entry_symbol_id)
+) STRICT, WITHOUT ROWID;
+-- Ordered selected construction-table addresses, not a lowered C array dump.
+CREATE TABLE vtt_entries (
+ symbol_id INTEGER NOT NULL REFERENCES symbols(id),
+ ordinal INTEGER NOT NULL CHECK(ordinal>=0),
+ virtual_table_id INTEGER NOT NULL REFERENCES virtual_tables(id),
+ address_point_byte_offset INTEGER NOT NULL,
+ PRIMARY KEY(symbol_id,ordinal)
+) STRICT, WITHOUT ROWID;

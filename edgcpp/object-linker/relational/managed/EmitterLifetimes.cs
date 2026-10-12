@@ -37,6 +37,7 @@ internal sealed partial class Emitter
         private void WriteFunctionBody(Node body,int indent)
         {
             long functionId=function!.Value.Id;
+            RequireSupportedAbiBody(body,functionId);
             var details=unit.FunctionDetails[functionId];
             if(details.ExceptionPolicy=="dynamic")
                 throw unit.Missing(body,"dynamic exception specification runtime boundary emission is not yet implemented");

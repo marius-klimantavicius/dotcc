@@ -5,7 +5,7 @@ The broad v66 graph campaign remains stopped. The replacement contract is
 
 ## Current checkpoint — 2026-10-12
 
-Verified objects now use schema 1028 / 45 tables. Eight distinct original
+Verified objects now use schema 1030 / 48 tables. Eight distinct original
 DuckDB core TUs have been attempted with their original manifest modes/options;
 five export completely: functional checksum, exception, Date and Hugeint, plus
 data-only Chimp constants. Chimp generates complete C# and passes native/C#/NativeAOT
@@ -33,19 +33,51 @@ the selected constructor, while true remains explicitly bounded pending its exac
 zeroing extent.
 
 Fresh checksum-v25 and exception-v27 export in 1.06 s/200448 KiB and
-1.77 s/300800 KiB, respectively. Their C# generation currently stops at volatile
-field address formation and direct record initializer elements in an array.
+1.77 s/300800 KiB, respectively. Their C# generation now passes volatile field address formation and direct
+record initializer elements in an array (`3854a5080`), with a focused native/C#/AOT
+proof and explicit rejection of actual volatile pointer loads. Structured for iterators are verified (`d2be7d7cf`). Recorded initializer-expression
+temporaries now use the selected cleanup lifetime (`6d64f0d6a`); normal construction,
+constructor failure, outer call failure and caller destination identity pass native/
+C#/AOT. Potentially throwing return cleanup remains explicitly unsupported. Void
+discard statements preserve operand effects (`d483ddaa3`). RTL member calls preserve receiver addresses and reference results (`f32d9a4e0`);
+recorded unordered temporary groups use reverse actual construction order with
+ordered neighbors retained (`4ae5c0e23`). Native/C#/AOT proofs cover each failure
+point and explicitly reject nonlinear branch producers. The current all-body
+source probes stop at std::string record initialization, outside checksum's needed
+function set.
 Fresh Date-v8 and Hugeint-v52 export in 1.97 s/320512 KiB and 2.51 s/392960 KiB.
-Their generation is being checked against the new incomplete-array and callable
-address representations. Exporter work now targets rich virtual-base D1 wrapper
-ownership (StringUtil); allocator function-local static initialization and owned
-string default-member initialization (BufferManager) remain unsupported. The
-StringUtil generated EH-array timing defect now fails cleanly and explicitly;
-raw generated C EH tables are not transported.
+Incomplete callback declarations now use opaque pointer-sized address storage
+(`81c8f34ec`): storage/copy/null and genuinely finalized cross-TU address binding
+pass native/C#/AOT; unresolved ABI binding/invocation remains explicit. Rich virtual-base D1 metadata now passes a focused native/SQL proof: distinct
+source and physical entries share one body, D2 cleanup uses an entry-time predicate,
+D1 owns selected copied actions, and VTT values and aliases are explicit. Consumer
+emission of these new ABI facts remains gated. StringUtil advances to a selected
+void constant-family boundary; allocator local-static and BufferManager owned DMI
+remain unsupported. Raw generated C EH tables are not transported.
+
+A bounded trace of the real portable native backend gives a more useful emission
+checkpoint: checksum needs 4 of 1404 captured bodies, Date 388 of 3066, exception
+639 of 2748, and Hugeint 297 of 3889. Source graphs remain complete. The next
+selection uses exact finalized EDG roots plus the exported executable-reference
+closure; nonroot definitions remain available as providers. Old/NULL root facts
+must not be treated as false. Checksum-v26 retains all 1404 bodies and 31171 nodes while recording exactly four
+native roots, with no unknown current-format flags. It exports in 1.06 s with
+200192 KiB peak RSS and produces an 11,354,112-byte object. The first selected
+source generation reaches actual checksum.cpp line 72 and stops on RTL assignment
+expansion. A native checksum oracle retains 727 numeric/byte cases for the first
+selected functional C#/AOT comparison. Full-corpus linking
+still requires measured bounded metadata/catalog loading.
 
 The bounded batch retains every command, pin and failed intermediate; no
 full-corpus run has resumed. Full configured library translation remains incomplete.
 The sections below retain historical milestone evidence and counts.
+
+Source-output follow-ups remain required: avoid redundant aggregate zeroing when
+the exact selected actions permit it; emit readable UTF8 spans/comments and pool
+compatible literal storage rather than allocate one pinned array per literal.
+Current byte-backed bitfield access is correctness support, not a maximal-efficiency
+claim. Future production body selection must use EDG's finalized emission decisions
+while preserving every source graph; explicit all-body mode remains available.
 
 ## Verified result
 

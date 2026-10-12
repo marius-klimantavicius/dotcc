@@ -9,6 +9,7 @@ internal sealed class FunctionBody
     public Dictionary<long,Lifetime> Lifetimes {get;}
     public Dictionary<long,Initialization> Initializations {get;}
     public Dictionary<long,List<long>> InitializationArguments {get;}
+    public Dictionary<long,List<long>> CleanupArguments {get;}
     public Dictionary<long,List<long>> Destructions {get;}
     public Dictionary<long,List<ConstructorInitializer>> ConstructorInitializers {get;}
     public Dictionary<long,List<Handler>> Handlers {get;}
@@ -31,6 +32,7 @@ internal sealed class FunctionBody
         Lifetimes=globals is null?[]:new(globals.Lifetimes);
         Initializations=globals is null?[]:new(globals.Initializations);
         InitializationArguments=globals is null?[]:new(globals.InitializationArguments);
+        CleanupArguments=globals is null?[]:new(globals.CleanupArguments);
         Destructions=globals is null?[]:new(globals.Destructions);
         ConstructorInitializers=globals is null?[]:new(globals.ConstructorInitializers);
         Handlers=globals is null?[]:new(globals.Handlers);
@@ -48,7 +50,7 @@ internal sealed class FunctionBody
     }
 
     public long RowCount=>Nodes.Count+Edges.Values.Sum(values=>(long)values.Count)+Lifetimes.Count+Initializations.Count+
-        InitializationArguments.Values.Sum(values=>(long)values.Count)+Destructions.Values.Sum(values=>(long)values.Count)+
+        InitializationArguments.Values.Sum(values=>(long)values.Count)+CleanupArguments.Values.Sum(values=>(long)values.Count)+Destructions.Values.Sum(values=>(long)values.Count)+
         ConstructorInitializers.Values.Sum(values=>(long)values.Count)+Handlers.Values.Sum(values=>(long)values.Count)+
         Throws.Count+ClassConversions.Count+FloatingValues.Count+VirtualCalls.Count+VptrWrites.Values.Sum(values=>(long)values.Count)+
         ArrayInitializers.Count+ArrayElements.Values.Sum(values=>(long)values.Count)+

@@ -1,3 +1,33 @@
+# Current relational supervisor — 2026-10-12
+
+The active replacement is `docs/dotobj-relational-restart.md`; historical entries
+below retain evidence. Supervisor `/root/relational_supervisor_61` serializes builds
+and Git, with native and managed implementers on GPT-6.1-Sol/xhigh and the
+supervisor on GPT-6.1-Sol/high. Immutable snapshots allow independent proofs.
+
+Verified checkpoint: schema 1030 / 48 tables; eight distinct original core probes,
+five complete exports, and one complete core C# data-only unit (Chimp). Bundled
+ICU separately retains all 14 bodies with 33 UTF and seven provider differential
+cases. Functional core C# completion remains pending.
+
+Checksum-v26 preserves all 1404 bodies and records exactly four final native
+roots. Selected source generation now reaches a real checksum RTL assignment,
+rather than the unneeded header initializer barrier. The native oracle retains
+727 numeric/byte cases. Managed root/reference-closure selection is built and
+under verification. Old or NULL root facts remain conservative.
+
+Rich D1 metadata/native proof passes with source/physical entry correspondence,
+entry-time cleanup predicate, copied ownership and selected VTT/alias facts.
+New unimplemented ABI body facts have an explicit consumer gate. StringUtil now
+stops on a selected void constant family; allocator local-static and BufferManager
+owned DMI remain later export blockers. No generated C EH tables are transported.
+
+See `dotobj-relational-progress.md` for proof scopes and historical checkpoints.
+No whole-corpus link or disk cleanup has resumed; full-scope linking requires
+bounded metadata/catalog measurements after the first functional selected TU.
+
+---
+
 # Fresh EDG-authority supervisor — 2026-10-11
 
 Current authority: `docs/dotobj-edg-authority-plan-20261011.md` (04d1767d9).
@@ -1440,4 +1470,8 @@ Committed775fb5fd0 v65 milestone from exact171/212 snapshots; index clear afterw
 
 ## 2026-10-11: coherent v66/native174/managed213 cohort launched
 
-The three original exception/cast_operators/unittest units all export, package and pass standalone integrity verification under frozen174/213/v66 tools. Unittest verification took91.20s/577804KiB. The332focused checks and exact receipts are in evidence/dotobj-edg-grouped-graph-20261011.json. Full2635 C++20 original-unit/provider export is running at artifacts/campaign/edg-authority-20261011/full174-cxx20 with gzip wire,2workers,8GiB per-worker address-space limit and36GiB free-space floors on /mnt/secondary and /media/marius/WORK campaign roots. Frozen authority174 tooling and compiler are used throughout. No full-corpus generation/compile/run claim. Current catalog reopening retains graph integrity validation because persisted receipt columns are mutable and cannot establish an authenticated prior validation capability.
+The original exception, cast_operators and unittest units all export, package and pass standalone integrity verification under frozen native174/managed213/v66 tools. Unittest verification took 91.20 seconds and 577804 KiB peak RSS. The focused checks and exact receipts are in evidence/dotobj-edg-grouped-graph-20261011.json. Full 2635-unit C++20 original-unit/provider export is running at artifacts/campaign/edg-authority-20261011/full174-cxx20 with gzip wire, two workers, an 8 GiB per-worker address-space limit and 36 GiB free-space floors on the /mnt/secondary and /media/marius/WORK campaign roots. Frozen authority174 tooling and compiler are used throughout. No full-corpus generation, compilation or execution is claimed. Catalog reopening retains graph integrity validation because persisted receipt columns are mutable and cannot establish an authenticated prior validation capability.
+
+The v66 milestone is committed as e10cd5161. The additional catalog-import/rewritten-receipt regression passed 40 checks, bringing the focused total to 372. The full-cohort import/resolve/generate runner is artifacts/campaign/edg-authority-20261011/full174_catalog.py; its incomplete-cohort guard was checked and launches nothing before 2635 successful receipts. At the latest durable full174-progress.json snapshot, ten units packaged with zero failures and 6.42 GiB object plus wire storage. Storage capacity may constrain completion; no cleanup was performed. The native worker is preparing an opt-in diagnostic candidate for conditional IL address reuse at discarded-body/local-constant recycling. Stock paths exist, but no captured-pointer collision has been witnessed in the current cohort; native174 production remains unchanged.
+
+The finite recycling diagnostic is complete: the small fixture had 12 captured keys at storage release and real exception.cpp had 234; all were sampled, with zero subsequent lookups in both runs. This does not prove the absence of reuse in every program. No production repair was made. The diagnostic patch, immutable native175 binary/source and all outputs are retained; recycle175-assessment.json records the limits. Canonical backend files and generated observer hooks were restored exactly to native174. The mutable build/bin/cpfe-dot still contains diagnostic175 until the next scheduled build; production commands must continue using the frozen native174 snapshot.
