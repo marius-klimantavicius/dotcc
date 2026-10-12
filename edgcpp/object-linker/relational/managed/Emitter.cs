@@ -417,6 +417,11 @@ internal sealed partial class Emitter
         private string StatementExpression(Node node,string? rendered=null)
         {
             if(VoidDiscardOperand(node) is Node discarded)return StatementExpression(discarded);
+            if(rendered is null && IsDiscardedLocalAssignment(node))
+            {
+                var operands=unit.Children(node,"operand").ToArray();
+                return Name(operands[0].Symbol!.Value)+" = "+Expression(operands[1]);
+            }
             string value=rendered??Expression(node);
             if(node.Kind=="delete")return value;
             if(UsesCompoundHelper(node))return "_ = "+value;

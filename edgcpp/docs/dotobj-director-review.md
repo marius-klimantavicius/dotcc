@@ -490,3 +490,33 @@ entry-condition/ABI-prologue and selected cleanup invocation facts until those
 are actually emitted. Reading a correct new fact and silently omitting it is
 not acceptable; rejecting an unimplemented generator operation is distinct
 from rechecking EDG semantics. Plain checksum contains none of these operations.
+
+## Final root selection and first checksum C# generation
+
+The rich destructor fixture v5 independently records the entry destruction
+condition before its VTT-writing ABI prologue; D2 originals retain that condition
+and D1 copied cleanup actions do not. Explicit generator boundaries remain for
+these not-yet-emitted operations. This is export acceptance, not D1 execution.
+Native ownership/root milestone is committed as `815d2a79a`.
+
+New schema-1030 objects have function root counts checksum 4, exception 496,
+date 338 and hugeint 273. The higher legacy trace counts above include absent
+physical C2/D2/CI2 variants; audit found no ordinary-function discrepancy. Retained
+source C1/D1 entries are roots. Do not invent extra semantic entities to reproduce
+a physical ABI trace census.
+
+Checksum-v26 with `native-root-selection-v2` now emits complete C# selecting
+four of 1,404 functions and three of 196 globals, retaining the complete database.
+The 727-case native/JIT/NativeAOT comparison is pending. Director source review
+found unnecessary discarded-local compound assignment helpers and switch labels;
+readability is not complete. Prefer direct compounds for pure RHS expressions,
+and an RHS temporary followed by a direct compound when needed to preserve EDG's
+RHS-before-old-LHS-read order. Do not infer that calls cannot alias local storage.
+
+Checksum selected-source runtime acceptance: director independently compared all
+727 rows in `dotobj-relational-checksum-selected-oracle-v1` against the original
+DuckDB native oracle. Managed and Linux x64 NativeAOT TSVs are byte-identical,
+SHA256 `8c80e57526c965b12d6491a62c64bcba2d082e077f9900e707efe578ec142512`.
+Builds/runs exit zero. Exact generated source is retained unchanged; its sole
+external memcpy adapter uses shared `Edg.Runtime.LibcContext.Memcpy`. This proves
+one functional TU, not all DuckDB or runtime portability on other systems.

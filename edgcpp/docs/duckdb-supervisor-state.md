@@ -8,13 +8,13 @@ supervisor on GPT-6.1-Sol/high. Immutable snapshots allow independent proofs.
 Verified checkpoint: schema 1030 / 48 tables; eight distinct original core probes,
 five complete exports, and one complete core C# data-only unit (Chimp). Bundled
 ICU separately retains all 14 bodies with 33 UTF and seven provider differential
-cases. Functional core C# completion remains pending.
+cases. Checksum selected C# now passes all 727 native cases in C# and Linux x64 NativeAOT.
 
 Checksum-v26 preserves all 1404 bodies and records exactly four final native
 roots. Selected source generation now reaches a real checksum RTL assignment,
 rather than the unneeded header initializer barrier. The native oracle retains
-727 numeric/byte cases. Managed root/reference-closure selection is built and
-under verification. Old or NULL root facts remain conservative.
+727 numeric/byte cases. Managed root/reference-closure selection is verified in both link orders, including
+nonroot dependencies and explicit all-body/legacy behavior. Old or NULL root facts remain conservative.
 
 Rich D1 metadata/native proof passes with source/physical entry correspondence,
 entry-time cleanup predicate, copied ownership and selected VTT/alias facts.

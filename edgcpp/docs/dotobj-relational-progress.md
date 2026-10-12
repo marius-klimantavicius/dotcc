@@ -9,8 +9,8 @@ Verified objects now use schema 1030 / 48 tables. Eight distinct original
 DuckDB core TUs have been attempted with their original manifest modes/options;
 five export completely: functional checksum, exception, Date and Hugeint, plus
 data-only Chimp constants. Chimp generates complete C# and passes native/C#/NativeAOT
-checks for all three tables, five scalars and eight stable pinned addresses. No
-functional core TU has complete C# output yet. Bundled ICU independently preserves
+checks for all three tables, five scalars and eight stable pinned addresses. Checksum is the first functional core TU with complete selected C# and
+matching native/C#/Linux NativeAOT output. Bundled ICU independently preserves
 all 14 bodies and passes 33 UTF differential cases plus seven genuine provider
 adapters; it does not count as a core TU.
 
@@ -55,16 +55,20 @@ emission of these new ABI facts remains gated. StringUtil advances to a selected
 void constant-family boundary; allocator local-static and BufferManager owned DMI
 remain unsupported. Raw generated C EH tables are not transported.
 
-A bounded trace of the real portable native backend gives a more useful emission
-checkpoint: checksum needs 4 of 1404 captured bodies, Date 388 of 3066, exception
-639 of 2748, and Hugeint 297 of 3889. Source graphs remain complete. The next
-selection uses exact finalized EDG roots plus the exported executable-reference
-closure; nonroot definitions remain available as providers. Old/NULL root facts
+A bounded legacy trace gives 4 checksum bodies, 388 Date, 639 exception and
+297 Hugeint. Its extra C2/D2 physical variants make it a superset comparator:
+finalized source-entry root facts are 4/1404 checksum, 338/3066 Date, 496/2748
+exception and 273/3889 Hugeint. All source bodies remain captured. Selection uses
+exact finalized EDG roots plus the exported executable-reference closure; nonroot definitions remain available as providers. Old/NULL root facts
 must not be treated as false. Checksum-v26 retains all 1404 bodies and 31171 nodes while recording exactly four
 native roots, with no unknown current-format flags. It exports in 1.06 s with
-200192 KiB peak RSS and produces an 11,354,112-byte object. The first selected
-source generation reaches actual checksum.cpp line 72 and stops on RTL assignment
-expansion. A native checksum oracle retains 727 numeric/byte cases for the first
+200192 KiB peak RSS and produces an 11,354,112-byte object. The first selected source generation exposed a discarded local RTL assignment
+at actual checksum.cpp line 72; its narrow renderer now produces complete
+checksum C# with four functions, three globals and one memcpy provider. All 727 native checksum oracle rows match both C# and Linux x64 NativeAOT
+with SHA256 8c80e57526c965b12d6491a62c64bcba2d082e077f9900e707efe578ec142512.
+Only the shared LibcContext.Memcpy adapter is supplied. Focused selection
+passes both link orders, genuine nonroot dependencies, retained-unused source
+definitions, explicit all-bodies and conservative legacy/NULL root behavior. A native checksum oracle retains 727 numeric/byte cases for the first
 selected functional C#/AOT comparison. Full-corpus linking
 still requires measured bounded metadata/catalog loading.
 
