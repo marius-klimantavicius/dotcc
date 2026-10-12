@@ -6,6 +6,13 @@ field-by-field upstream adapter inventory together. Adding a missed executable
 variant requires an explicit typed relation/column and corresponding API support,
 not an opaque extension payload.
 
+The primary profile now stores **lowered execution with partial EH**, together
+with the type/declaration/source relationships stock EDG retains. Earlier
+unlowered-only assumptions are superseded. Compatibility profiles can store
+unlowered forms when stock EDG cannot lower a dialect; the manifest states the
+profile and remaining execution requirements. No two snapshots are implicitly
+combined, and no source shape is inferred from similar names or generated code.
+
 ## Identity and normalization rules
 
 One database represents one primary translation unit. Its header records format
@@ -55,7 +62,7 @@ integer stored as text is an atomic number, not a packed structured value.
 
 | Relation | Key and essential scalar/foreign-key fields |
 |---|---|
-| `object_header` | Singleton key; format major/minor, artifact ID, producer/revision text IDs, stage ID, target-profile ID, main-source-file ID |
+| `object_header` | Singleton key; format major/minor, artifact ID, producer/revision text IDs, capture/lowering profile ID, target-profile ID, main-source-file ID |
 | `translation_unit` | Singleton entity; global scope ID, primary input ID, language mode ID |
 | `target_profile` | ABI family, addressable-unit bits, endianness, pointer representation facts EDG exposes |
 | `arithmetic_kind` | Stable kind, target bit width/alignment, signedness, precision/radix where applicable |
@@ -75,11 +82,16 @@ the frozen scalar contract provides an exact wide-integer representation where
 the EDG field's range requires it. This applies to extents/offsets as well as
 literal values; it is not permission to approximate large quantities with REAL.
 
-Availability defaults are specified per field and profile. The public API returns
-`Fact<T>.Available(value)` or `Unavailable(reason)`; reasons distinguish dependent,
-not applicable, not retained, and not computed at this stage. A known absence is
-`Available(Optional<T>.None)`. This needs no row for every known boolean. An
-absent implementation for required data is an export error, not `Unavailable`.
+Availability defaults are specified per field and profile, but do not wrap the
+ordinary public API. Collections such as `unit.Functions`, `type.Members` and
+`method.TypeArguments` are read-only properties and return empty when absent or
+unsupported. Optional singular relationships return null/optional values.
+Capabilities and sparse retention metadata let interested callers distinguish
+known-empty, dependent, not applicable, lost/not retained, and unsupported optional
+data. IDs stay inside the loader; navigating to a member or instance follows an
+object relationship, not a `Get(id)` call. Missing required executable adapters,
+database I/O failures and incompatible required schema are errors, not reasons
+to silently return empty program bodies.
 
 ## Scopes, declarations, symbols, and types
 
@@ -88,10 +100,10 @@ absent implementation for required data is an export error, not `Unavailable`.
 | `scope` | Kind, semantic parent, associated namespace/routine/record entity, lifetime if EDG supplies one |
 | `scope_member` | Scope, ordinal, member symbol; scope membership is not declaration occurrence order |
 | `declaration` | Entity kind, symbol, lexical scope, source origin, retained generation flags and explicit/implicit state only when actually known |
-| `declaration_sequence` | Scope/container, ordinal, declaration occurrence; retain EDG source-sequence ordering |
+| `declaration_sequence` | Scope/container, ordinal, declaration occurrence only if a profile supplies a valid retained source sequence; not populated from guessed source order in the main lowered profile |
 | `symbol` | Symbol kind, name, semantic containing entity, declared type, EDG linkage/storage/access facts |
 | `namespace_symbol` | Namespace alias target/inline/anonymous facts as applicable |
-| `routine_symbol` | Routine type, containing record, body state, body root, special-function category, virtual/constexpr/consteval/deleted/defaulted facts |
+| `routine_symbol` | Lowered routine type, retained containing record, body state/root, special-function category and retained semantic flags; explicit alternate-entry/thunk/source-origin links where EDG provides them |
 | `routine_parameter` | Routine, ordinal, parameter symbol, default initializer reference if retained |
 | `variable_symbol` | Type, storage duration, initializer, thread-local/inline facts, associated lifetime/init record |
 | `field_symbol` | Record, type, access, mutable/static distinctions, default initializer, bit-field declaration |
@@ -104,7 +116,7 @@ absent implementation for required data is an export error, not `Unavailable`.
 | `member_pointer_type` | Declaring class and member type; no invented lowered native encoding |
 | `array_type` | Element type, bound kind, constant bound or EDG bound expression, variable/dependent/incomplete state |
 | `routine_type` | Result, calling convention, language linkage, variadic state, member/ref qualifiers, exception specification |
-| `routine_type_parameter` | Routine type, ordinal, parameter type and EDG-retained parameter-type facts |
+| `routine_type_parameter` | Routine type, ordinal, parameter type and EDG-retained facts, including hidden receiver/return-slot/VTT/ABI parameter roles |
 | `record_type` | Defining class/struct/union symbol, definition state, template instance if any |
 | `typedef_type` / `type_reference` | Retained named/sugared type relation and underlying/resolved type |
 | Specialized type tables | Vector, complex/imaginary, fixed-point, nullptr, template/dependent/decltype, extension-managed types and every other upstream type family in the inventory |
@@ -114,6 +126,14 @@ EDG entities can share source correspondence without becoming the same entity.
 Multiple declarations of a routine point to one routine symbol when EDG says so.
 Function types and named routine symbols are separate. `T`, `const T`, `T&`, and
 an alias spelling of `T` are not flattened into a single display-name key.
+
+Class/member identities can survive while their representation changes: generated
+base/vptr fields and lowered signatures belong to the stored execution stage.
+Populate the high-level model from retained semantic ownership and flags, not
+the post-promotion list that happens to hold a member. Original declared types,
+argument defaults and source signatures are separate optional facts only where
+backend-accessible EDG data actually retain them. A saved lowering-internal
+pointer is not automatically a supported original-type interface.
 
 Dependent/prototype types remain queryable metadata. Canonicalization is an EDG
 relationship, not a C# structural-equality algorithm. If upstream discards a
@@ -130,7 +150,10 @@ source spelling, the model cannot promise it back.
 | `base_derivation_step` | EDG derivation/path identity, ordinal, base relationship; distinguish repeated bases |
 | `virtual_member` | Record, member, inherited/introduction/override/final/pure facts that EDG retains |
 | `override_relation` | Overrider, overridden member, applicable EDG subobject/derivation context |
-| `virtual_dispatch_detail` | Only concrete slot/adjustment details actually present at this stage; availability otherwise |
+| `virtual_dispatch_detail` | EDG-generated slot/adjustment/table/thunk facts present in this profile; no inferred source-call target |
+| `lowered_type_relationship` | Backend-supported retained declared/storage/subobject-partner links with their actual relation kind; exclude private `typeref.orig_type` and routine `unlowered_type` copies |
+| `abi_routine_relationship` | Primary/alternate constructor-destructor entries, adjustment thunks and wrapper targets supplied by EDG |
+| `virtual_table`, `virtual_table_entry` | Generated table variable and ordered typed entries, selected routine/adjustment/RTTI/VTT dependencies |
 
 An EDG target layout offset is a target addressable-unit count with documented
 units; do not imply a .NET layout or a globally constant virtual-base offset.
@@ -138,13 +161,22 @@ The same base type can occupy different subobjects. API queries must retain that
 distinction. A selected virtual declaration is not a statically known ultimate
 runtime callee.
 
+Moreover, stock virtual-call lowering replaces the original selected-routine node
+with an indirect call (`src/lower_il.c:12524–12542`). The schema can preserve all
+resulting dispatch operations/table entities without having a per-call link to
+the original source-selected overload. This concrete loss is an open approval
+decision against the original query requirements. Do not infer the lost link
+from a slot, signature or mangled spelling, and do not equate null with satisfied
+coverage of that original requirement.
+
 ## Executable graph
 
 `semantic_node(id, node_kind_id, origin_id, compiler_generated, synthesis_kind_id)` is the common
 operation/statement identity. `expression(id, type_id, value_category_id)` and
 `statement(id, statement_kind_id)` add their common facts. Detailed facts live
 in typed payload tables. An expression's EDG category and implicit conversions
-are preserved; they are not inferred from spelling or the selected C# type.
+at capture are preserved; they are not inferred from spelling or the selected
+C# type. They need not equal the pre-lowering expression's type or category.
 
 Preserve EDG's raw generation flag separately from any richer synthesis-origin
 fact. A false `compiler_generated` flag does not prove explicit source spelling;
@@ -153,49 +185,52 @@ can project as a `SemanticNode` without duplicating its stored identity/payload.
 
 Every payload field is classified as a containment operand, semantic reference,
 source/backing-expression reference, scalar, or irrelevant parser state.
-The API's source-shaped traversal is a view over designated containment roles.
-Semantic expansion traversal is explicit, so visiting a range-for does not
-accidentally count both its source range and expansion components as sequential
-execution. Shared nodes and cycles in semantic references are legal.
+The API's normal traversal follows the captured executable structure. Retained
+source/backing-expression traversal is separate, so metadata cannot accidentally
+become a second execution of a lowered operation. A lowered range-for is an
+ordinary loop; expose a source range-for only if EDG retained a supported
+association. Shared nodes and cycles in semantic references are legal.
 
 | Relation family | Required content |
 |---|---|
 | `expression_operand` | Owner, role, ordinal, operand; semantic evaluation/sequencing category is separate from list order |
 | `operator_expression` | Expression, stable EDG operation code, EDG-specific operation facts |
-| `call_expression` | Callee expression, selected routine if direct/resolved, dispatch kind, receiver, function type, result/return-slot facts |
-| `call_argument` | Call, ordinal, expression, selected parameter association where available; preserve implicit/default arguments |
+| `call_expression` | Callee expression, exact lowered routine if direct/resolved, execution direct/indirect call kind, receiver only when explicitly identified, function type, result/return-slot facts; optional original selected member and source-dispatch kind only when retained |
+| `call_argument` | Call, ordinal, expression, selected parameter association where available; retain every executed operand, including expanded default/implicit arguments, without promising surviving default-argument provenance |
 | `conversion_expression` | Operand, source/target type, conversion category, EDG-selected conversion function/base path |
 | `reference_expression` | Referenced entity, reference kind and EDG access/adjustment context |
 | `constant_expression` | Constant occurrence/value, original type and retained backing expression |
 | `block_statement`, `block_item` | Scope/lifetime, ordered declaration/statement children |
 | `if_statement`, `loop_statement` | Init/condition/test/body/increment roles, EDG flags, scope and lifetime boundaries |
-| `range_for` | Source range/body, resolved range/begin/end variables, compare/increment/initialization records and their scopes |
+| `range_for` | For retained unlowered metadata/compatibility forms only; the main profile uses EDG's ordinary loop and selected iterator operations |
 | `switch_statement`, `switch_case` | Selector, ordered case/default nodes, selected constant/range values and target labels |
 | `jump_statement` | Return/break/continue/goto category, value/label/target relations and EDG lifetime transition information |
 | `label_statement` | Label symbol, target statement, source origin |
 | `try_statement`, `handler` | Protected body, ordered catch handlers, caught type/parameter, handler lifetime, function-try distinctions |
 | `throw_expression` | Operand, EDG exception initialization/type/cleanup and rethrow state |
-| `new_expression`, `delete_expression` | Allocated type/count, selected operator routines, placement operands, initialization, failure cleanup, array/scalar flags |
-| `lambda_expression`, `lambda_capture` | Closure type/call operator, ordered captured entities and initialization, capture kind, generic-template relation |
+| `new_expression`, `delete_expression` | For surviving unlowered forms: selected routines/type/count/initialization/failure cleanup; main-profile lowering's calls, arithmetic, cookie/runtime helpers and cleanup operations use their actual typed payloads |
+| `lambda_expression`, `lambda_capture` | Retained closure/capture associations if available; lowered closure storage, constructor and call operator are ordinary executable/type entities |
 | `coroutine`, `coroutine_operation` | EDG promise/suspend/await/yield/return protocol, selected functions, placeholders and allocation/deallocation facts |
 | `builtin_expression`, typed builtin details | Stable builtin opcode, operands, target types and order/alignment/volatile/atomic facts actually supplied |
 | `asm_statement`, `asm_operand`, `asm_clobber`, `asm_label` | Upstream-retained assembly text and separately normalized constraints/operands/clobbers/labels |
 | Extension payload tables | GNU statement expressions/computed goto, Microsoft SEH/managed operations/properties, vector/UPC and other enabled families from the upstream inventory |
-| Metadata expression tables | Unevaluated/type traits/requires/reflection/dependent forms with EDG results or explicit dependent state |
+| `lowered_eh_operation` and typed details | Prologue/epilogue, cleanup-state, caught/thrown-object address, internal-try, and other active partial-EH kinds; region/handler/object references |
+| Metadata expression tables | Surviving unevaluated/type traits/requires/reflection/dependent forms with EDG results or explicit dependent state |
 
 This is a logical family catalog, not permission to implement only these example
 operators. The exhaustive enum/union inventory in
 [semantic-inventory.md](semantic-inventory.md) defines the coverage obligation.
-Do not flatten `new`, await, or initialization into a generic call and lose the
+Preserve the complete graph EDG produces for `new`, await and initialization;
+do not flatten several operations into an invented generic call and lose their
 protocol. Do not encode an extension's semantics as an uninterpreted text field.
 Raw assembly and original source fragments are text by nature; they are not a
 substitute for typed semantic operands.
 
-No persisted CFG is required initially. Traversal of structured statements,
-explicit labels/jumps, and lifetime records meets the navigation contract.
-Constructing a target execution CFG and cleanup placement is future translator
-work. A generic `GetControlFlowGraph()` API must not imply that such a graph was
-exported by EDG.
+No separately computed CFG is required initially. Preserve EDG's structured
+statements, explicit jumps, normal-path cleanup calls and EH state/region graph.
+A target consumer maps these to C# control flow and CLR unwinding without
+replanning C++ lifetime rules. A generic `GetControlFlowGraph()` API must not
+imply that a distinct CFG was exported by EDG.
 
 ## Initialization, lifetime, and cleanup
 
@@ -218,11 +253,45 @@ executes unconditionally. In particular, a default-constructed temporary, failed
 constructor, array prefix, return value, or lifetime-extended reference must not
 be treated as a simple block-local destructor call.
 
-The exporter does not calculate a new destructor chain from C++ declarations.
-The C# library exposes the exported chain and its conditions. Concrete target
-cleanup code remains a future consumer responsibility using these EDG facts.
-This separation also prevents duplicating potentially quadratic cleanup lists
-at every exit when the EDG lifetime graph already shares them.
+These descriptive lifetime records are supplemental in the lowered profile.
+Stock end-of-lowering cleanup frees `destructible_entity_descr` even when lifetime
+records are retained (`src/lower_il.c:22882–22922`). Do not traverse it, patch its
+retention, or rebuild it from C++ declarations. Executable cleanup uses EDG's
+surviving normal-path calls and the partial-EH interface below.
+
+### EDG-generated partial-EH interface
+
+| Relation | Required content |
+|---|---|
+| `function_eh` | Function, prologue/epilogue operations, generated region/array table identities, initial/sentinel state conventions |
+| `cleanup_region` | Owning function, EDG region index, next-region foreign key, action and condition; normalize supplemental rows without changing referenced indices |
+| `cleanup_action` | EDG action kind, selected destructor/deallocation/guard operation, symbolic object location, array descriptor and ABI supplements where applicable |
+| `cleanup_storage_location` | Direct variable, indirect variable, receiver-relative or static-address kind; referenced variable and exact offset; no fabricated physical stack address |
+| `cleanup_array` | EDG table identity/index, storage locator, element size, live element-count source and applicable VLA facts |
+| `cleanup_condition` | EDG guard/condition locator and supplied comparison/state semantics |
+| `cleanup_abi_detail` | VTT, base-subobject, delegated-constructor and other target-dependent payloads, in typed fields/relations |
+| `cleanup_state_operation` | Captured operation, referenced region/state and required temporary/operand relationships |
+| `eh_handler_region` | EDG-provided protected-region/handler associations and boundaries |
+
+Decode the stock table representation according to `lower_eh.c` and the EDG
+runtime contract. This is lossless representation adaptation, not a new cleanup
+solver. Flag meanings depend on ABI and entry kind; the same numeric bit may
+denote different facts. Preserve real conditional/unordered/partial-array actions
+and supplemental entries. The `ck_stack_offset` payload is still a variable plus
+offset, not a measured host stack position (`src/lower_eh.c:3210–3306`).
+
+Expose this naturally as `body.ExceptionHandling.CleanupRegions`, region actions
+and next-region references, with object properties for routines and storage.
+The consumer does not decode EDG table indexes or bit masks itself. Target
+exception transport and actually performing an action remain translator/runtime
+work; they need no new decision about which C++ destructor was selected.
+
+Normalize generated tables once. Preserve their symbol identity and all executable
+references, but do not persist both a positional constant-array dump and a second
+typed copy of the same facts. A generated-table symbol can reference its typed
+initializer representation. If an ordinary address/value query exposes that
+table, its model view must project the same authoritative rows. Required ordinary
+constants not fully represented by that projection stay in the constant tables.
 
 ## Templates and synthesized material
 
@@ -318,8 +387,10 @@ contribute several origins; a node may lack an exact spelling range. See
 
 1. Discover file/namespace/class declarations and all retained routine bodies,
    static/thread initialization, instantiated and synthesized material, source
-   sequences and requested provenance. Include local declarations and local
-   classes through their owning memory regions.
+   sequences where a profile actually preserves them, and requested provenance.
+   Include promoted and orphaned entities, synthetic routines/tables, local
+   declarations and local classes through their owning memory regions and
+   retained semantic-owner links. Post-promotion class lists alone are incomplete.
 2. Assign identities before descending. Follow only the field-level semantic
    whitelist into types, constants, templates, layout, initializations, lifetimes,
    and selected references. Cycles are handled by identity maps, not recursion

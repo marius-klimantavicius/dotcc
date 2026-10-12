@@ -1,7 +1,13 @@
 # EDG semantic tree and `.roslynobj`: design for approval
 
-Status: phases 1–2, analysis and proposed contract only. Implementation has not
-started. This design requires user approval before phases 3–4.
+Status: revised phases 1–2 design following the user's API and lowering feedback.
+Implementation has not started. This design requires approval before phases 3–4.
+
+**Open priority decision:** stock general lowering loses some requested original
+semantic-query facts, notably the selected declaration at a virtual-call site.
+The lowered-first proposal below does not silently waive that requirement. The
+user has been asked whether to accept those source-query limits or prioritize
+the original-source query coverage with more downstream lowering work.
 
 ## Scope and authority
 
@@ -13,7 +19,8 @@ project; neither the backend nor the model emits C# in these phases.
 ```mermaid
 flowchart LR
     A["C++ translation unit"] --> B["EDG semantic analysis"]
-    B --> C["roslyn_gen_be.c"]
+    B --> L["EDG lowering with partial EH"]
+    L --> C["roslyn_gen_be.c"]
     C --> D["Normalized .roslynobj SQLite"]
     D --> E["Independent C# semantic model"]
     E -. "future separate project" .-> F["C++ to C# translator"]
@@ -27,24 +34,30 @@ changes, database identities, and traversing EDG-provided relationships are allo
 The investigation uses a fresh checkout of upstream
 [`edgcpp/compiler@89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`](https://github.com/edgcpp/compiler/tree/89e67e07c7f6d0fc38622f9778d8e79f40deaa0f),
 the revision recorded by `../upstream-origin.json`. Its `src/version.h` identifies
-EDG 7.0. Existing custom backends, serialized-object efforts, their designs,
-findings, tests, and artifacts were excluded. Existing worktree modifications
-are neither changed nor used as semantic evidence. Upstream source citations in
-the companion documents refer to this pinned revision, not modified local files.
+EDG 7.0. The user subsequently authorized inspection of the direct C# backend's
+configuration and emission code to reassess lowering. That comparison informs
+the revised configuration; all claims about stock EDG still use pristine
+upstream. The dotobj effort, its findings and its implementation remain excluded.
+Existing worktree modifications are untouched. Upstream source citations in the
+companion documents refer to the pinned revision, not modified local files.
 
 ## Decisions proposed for approval
 
-1. Export EDG's semantically elaborated C++ IL with optional general IL lowering
-   disabled. This is not an unresolved parser tree: selected routines, instantiated
-   bodies, implicit conversions, range-for expansion components, initialization,
-   and lifetime records already exist. Preserve structured C++ operations and
-   their EDG-selected semantic components together.
-2. Preserve native exception constructs. Do not generate setjmp/longjmp,
-   exception runtime tables, C-shaped class representations, or coroutine state
-   machines for this format.
-3. Store a typed semantic graph with a source-shaped traversal view, not a clone
-   of every EDG allocation. Declaration occurrences, symbols, types, operations,
-   initialization, and lifetimes have separate identities and relationships.
+1. Enable general EDG IL lowering for the main native C++ profile, using the
+   direct backend's lowering set as the baseline. C++ object construction,
+   destruction, virtual/member-pointer operations, allocation, range-for, and
+   other difficult language transformations belong in EDG. Disable a lowering
+   only when the residual managed transformation demonstrably needs no deep
+   C++ knowledge. The detailed switch matrix is in the lowering document.
+2. Use partial EH: `DO_FULL_PORTABLE_EH_LOWERING=0`, `GENERATE_EH_TABLES=1`.
+   Preserve try/catch/throw and normalize EDG's generated cleanup tables/state
+   operations. Do not generate setjmp/longjmp for C++ exceptions. Retain available
+   lifetime records as descriptive metadata, without using descriptors freed by
+   stock lowering or copying the direct backend's retention patch.
+3. Store lowered execution and retained declaration/type/source relationships in
+   one typed graph. The public API groups and traverses these naturally. It does
+   not pretend to recreate source constructs or signatures discarded by EDG.
+   No pre-lowering snapshot hook or second semantic pass is assumed.
 4. Keep every retained executable definition and every retained declaration/type
    definition in the translation unit, including header entities and unused
    definitions. Add their transitive semantic dependencies. Do not prune using
@@ -56,11 +69,16 @@ the companion documents refer to this pinned revision, not modified local files.
    Intern names and literal values; never merge entities merely because their
    spelling or value matches. No JSON, BLOB semantic payloads, binary structs,
    encoded struct dumps, or lists packed into text columns.
-7. Provide an immutable Roslyn-inspired C# API with no Microsoft.CodeAnalysis
-   dependency. Multiple objects may be open at once, but identities and semantic
-   queries remain translation-unit-local. Cross-unit linking/deduplication is
-   deferred.
-8. Retain EDG source positions and available macro records by default. Full token
+7. Provide an immutable, high-level Roslyn-inspired C# API with no
+   Microsoft.CodeAnalysis dependency. Ordinary navigation follows objects and
+   collection properties: `unit.Functions`, `method.Parameters`, `type.Members`,
+   `type.TypeArguments`, and `type.OriginalDefinition`. Database IDs are an
+   internal detail. Missing/unsupported collections are empty; singular optional
+   relationships use null/optional values. Detailed retention status is optional
+   metadata, not a wrapper required for every access.
+8. Keep translation units separate when opening multiple objects; linking and
+   cross-unit deduplication remain deferred. Retain EDG source positions and
+   available macro records by default. Full token
    tapes, comments, exact argument tokens, and token-paste lineage are not
    promised: ordinary retained IL does not provide them. Source coordinate kinds
    and availability are explicit.
@@ -93,19 +111,32 @@ IL and the semantic dependencies needed to interpret it at the chosen stage.
 It does not promise an already assembled native executable, machine-code CFG,
 or the semantics of every possible future template instantiation.
 
-For example, a range-for retains the source range and body plus the selected
-begin/end operations and iteration machinery. A `new[]` retains the selected
-allocation/deallocation routines, element type, count, initialization, and cleanup
-protocol; it does not invent a target array-cookie size. A coroutine retains
-EDG's promise/await protocol; a future target backend chooses its frame and state
-machine. Lifetimes retain ordered cleanup obligations, construction dependencies,
-and exit relationships supplied by EDG; the model does not advertise a freshly
-computed cleanup program as an EDG result.
+For example, a range-for is represented by the ordinary loop and iterator
+operations EDG produces. Allocation records/calls use EDG's selected routines,
+size/cookie calculations and initialization code where lowering supplies them.
+Normal-path destructor calls and exceptional cleanup regions are separate
+execution facts; the library reads their relationships without solving C++
+lifetime rules again. C# rendering, CLR unwinding and symbolic storage access are
+future consumer work based on those decisions.
+
+Some boundaries remain substantial. EDG does not completely lower coroutine
+frames, and certain accepted dialects cannot use its general lowering. Preserve
+their semantic forms through explicit compatibility profiles and report the
+remaining translator work as difficult, not as an easy C# implementation.
+Source-name/type/member/origin retention after lowering is a specific acceptance
+gate: the model must not invent an original signature, selected source overload,
+default argument or syntax tree that the stock backend boundary no longer has.
+In particular, `lower_virtual_function_call` replaces the `enk_routine` that
+identified the selected method with a new indirect-call operation
+(`src/lower_il.c:12524–12542`). Preserving the resulting call faithfully does not
+preserve that source-selected declaration. This is a known fidelity loss, not
+an implementation probe expected to recover the same link by enabling a flag.
 
 Known absence, inapplicability, dependent information, a disabled retention option,
 and an exporter implementation gap are different states. In particular, an
 unimplemented required payload prevents publishing a complete object. Optional
-metadata that upstream does not retain may be explicitly unavailable.
+metadata uses null/empty collections in ordinary navigation; callers who need
+the reason can inspect capabilities and retention metadata separately.
 
 ## Approval boundary
 

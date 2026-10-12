@@ -8,7 +8,9 @@ managed project, or tests have been implemented by phases 1–2.
 Phases 1–2 use GPT-6-Astra with high reasoning effort. The current primary agent
 integrates three independent analysis agents covering lowering/integration,
 semantic coverage, and C# API/provenance. They investigate pristine upstream
-sources and review this design against each other.
+sources and review this design against each other. The revised plan also uses
+the user-authorized comparison with the direct C# backend's lowering settings;
+the dotobj effort remains excluded.
 
 After approval, use GPT-6.1-Sol with **high** reasoning effort as implementation
 coordinator/supervisor and GPT-6.1-Sol with **xhigh** reasoning effort for
@@ -53,11 +55,11 @@ created in these phases.
 
 | Milestone | Deliverable | Acceptance gate and commit |
 |---|---|---|
-| P: design | These six documents, upstream pin, coverage inventory, chosen configuration and boundaries | Cross-review consistency; commit design only; ask user for approval |
+| P: design | These six documents, upstream pin, coverage inventory, chosen configuration and boundaries | Cross-review consistency; commit design only; resolve the source-selected overload fidelity tradeoff with the user before implementation approval/M0 |
 | M0: integration feasibility | Isolated stock-source build with new backend entrypoint; full macro/capability profile; separate SQLite dependency; basic object header publication | Core EDG diff remains empty; verify `back_end` timing/live IL; successfully compile representative dialect inputs; verify output wrapper; commit |
-| M1: frozen format/API foundation | Complete field-to-relation/field-to-property matrix; DDL, stable enum catalog, exact scalar adapters; managed identities, availability and loader skeleton | Map every active executable union/auxiliary field and each retained metadata family; settle numeric losslessness and profile-specific semantics; hand-author a small valid object fixture; commit |
-| M2: complete basic vertical slice | Native and managed handling of declarations, scopes, types, constants, expressions, control flow, selected calls and source coordinates | Real EDG-produced object navigated through API and direct SQL; overload/types/conversions/exact constants/jumps and declaration ordering demonstrated; commit |
-| M3: C++ object semantics | Initialization, lifetime, exceptions, class layout, inheritance/virtual relations, templates/instances, lambdas, allocation and destruction | Export and query normal/exceptional cleanup obligations, partial construction, virtual bases/covariance, instantiations/origins, new/delete and captures; commit |
+| M1: frozen format/API foundation | Complete field-to-relation/field-to-property matrix; DDL, stable enum catalog, exact scalar and EH table adapters; high-level object/property API and loader skeleton | Map every active executable union/auxiliary field and retained metadata family; settle exact values, ABI-conditioned EH records and property contracts; hand-author a small valid object fixture; commit |
+| M2: complete basic vertical slice | Native and managed handling of retained declarations/owners, types, constants, expressions, control flow, lowered call targets and available source coordinates | Real EDG-produced object navigated through properties and direct SQL; selected lowered targets/types/conversions/exact constants/jumps and execution ordering demonstrated; source fidelity matches approved limits; commit |
+| M3: C++ object semantics | EDG-lowered initialization/destruction/allocation, partial-EH state and cleanup regions, retained lifetimes and source metadata, class/ABI layout, inheritance/virtual/template relations | Query EDG-generated destructor calls and exceptional actions, conditions/partial arrays/VTTs, virtual bases/thunks, instantiations and retained origins through object properties; commit |
 | M4: full configured surface/provenance | Every remaining enabled kind/profile, coroutine protocols, GNU/MS and other upstream extensions, optional template retention profile, macros/source history | Exhaustive adapter coverage for accepted modes; selected upstream suites pass export/read checks; unsupported exporter kinds are zero in completion matrix; commit |
 | M5: scale and packaging | Large-TU measurements, lazy/batched API, multi-object isolation, deterministic logical export, user documentation | Data normalization demonstrated, no loss of required data for size, bounded read behavior, independent TU identities, full supported profile matrix and remaining upstream retention limits published; commit |
 
@@ -71,20 +73,35 @@ calendar estimates until a working isolated build establishes cost.
 1. Create a clean staging checkout and the new backend target with a consistent
    macro set across all its EDG translation units. Apply the flags and separate
    compatibility profiles in [lowering-and-integration.md](lowering-and-integration.md).
-2. Confirm baseline no optional IL lowering, no allocation folding, full semantic
-   and macro retention available in that profile, no unwanted needed-entity
-   pruning, and preserved instantiation state. Capture resolved macro values,
-   rather than trusting intended CMake definitions.
-3. Use tiny valid inputs to observe live file/function IL and available template,
-   layout, lifetime and macro fields at `back_end`. Do not invoke semantic routines
-   to manufacture absent records. Do not read freed front-end memory.
+2. Confirm general IL lowering and partial EH are active, full portable EH is
+   disabled, and the chosen individual lowerings match the reviewed matrix.
+   Capture resolved macro values, allocation-folding/ABI policy, metadata and
+   macro-retention settings, rather than trusting intended CMake definitions.
+   Avoid unwanted needed-entity pruning. Inlining is disabled for readability.
+3. Use tiny valid inputs to observe live lowered file/function IL, prologue EH
+   tables, cleanup-state references, type/template ownership and macro fields at
+   `back_end`. Decode symbolic locations and every action/supplement through the
+   stock table contract. The direct backend's lifetime-retention patch is not
+   allowed: prove sufficiency without reading freed destructible descriptors.
+   Do not invoke semantic routines to manufacture absent records.
 4. Resolve compatibility-profile dependencies before claiming coverage: ordinary
    independent templates, legacy exported templates/definition discovery, legacy
    assignment-to-this with folded allocation, GNU versus Microsoft ABI settings,
-   optional managed/UPC/vector features supported by upstream. Do not infer
+   optional managed/UPC/vector features supported by upstream. Where stock EDG
+   disables lowering/backend invocation for a dialect, use the separately
+   specified semantic-capture profile; do not claim it has execution parity with
+   the lowered profile. Do not infer
    CUDA/GPU support from EDG's use by other compilers: the pinned IL inventory
    does not establish such nodes. Macro-tree
    availability may differ for modes involving EDG secondary translation units.
+   Explicitly assess loss of original signatures, source-selected call targets,
+   default arguments, range-for structure and lexical ownership. Supported
+   retained links may populate source-facing API properties; guessed inversions
+   of generated code may not. Required semantic-query losses are design findings
+   to resolve, not automatically optional because a collection can be empty.
+   The virtual-call source-target link is already known to be overwritten by
+   stock lowering. Approval must settle that source-query loss explicitly;
+   M0 is not permission to search for a heuristic reconstruction or core patch.
 5. Verify available exact numeric helpers and representations for integer extremes,
    extended floating formats, signed zero, infinities and NaNs. Define relational
    scalar extraction without host-width truncation or display-only conversion.
@@ -92,6 +109,14 @@ calendar estimates until a working isolated build establishes cost.
    and identity map per invocation. Prove success publication and ordinary write
    error cleanup. Stock `-o` is not directly available to this custom resident-IL
    backend: expose `ROSLYNOBJ_OUTPUT`/derived filename plus an external wrapper.
+
+The criterion for skipping an available EDG lowering is a short, demonstrably
+mechanical C# transformation using resolved operands/types, with no lookup,
+layout, lifetime, overload, ABI-selection or partial-construction algorithm.
+Formatting, grouping by retained owners and simple condition conversions qualify.
+Constructor/destructor scheduling, member-pointer/virtual adjustment and coroutine
+frame construction do not. An upstream lowering gap remains explicit difficult
+future translator work; the API does not quietly take it over.
 
 Any requirement that cannot be met without modifying core EDG is reported with
 the upstream evidence and proposed contract consequence. This gate authorizes
@@ -109,7 +134,11 @@ ledger is the starting point, not a substitute for this mechanical field audit.
 
 Freeze keys, cardinalities, units, null meanings, stable kinds, containment versus
 reference roles, source coordinate conventions, literal precision, synthesized
-flags, and backward compatibility. Keep a single DDL and kind catalog; generate
+flags, typed EH table projections, and backward compatibility. Public collections
+are properties returning read-only lists and empty for missing/unsupported optional
+data. Singular optional relationships use null/optional values. Store retention
+reasons separately; ordinary user code does not resolve IDs or unpack `Fact<T>`.
+Keep a single DDL and kind catalog; generate
 or embed copies for C/C# mechanically. SQL strings and managed enum numbers must
 not drift independently. Supporting code generation is a build concern, not
 additional semantic processing.
@@ -128,28 +157,31 @@ output; fixture-only reader tests are insufficient. The supervisor reviews any
 new conditional field/extension against the coverage matrix and ensures no
 raw-payload fallback, EDG modification, or independent semantic resolver appears.
 
-Source-shaped and semantic-expansion traversal have explicit policies. Lifetime
-queries expose EDG records, not a computed cleanup plan. Template-origin queries
-must follow retained IL relationships; parser-only symbols cannot be recovered
-through the already freed front-end region. Native offsets remain target facts.
+Execution and optional retained-source traversal have explicit policies. Cleanup
+queries expose EDG's generated actions/state transitions and descriptive lifetime
+records, not a freshly computed C++ cleanup plan. Template-origin queries follow
+retained IL relationships; parser-only symbols cannot be recovered through the
+already freed front-end region. Native offsets remain target facts. Keep public
+object navigation simple without hiding required exporter omissions as emptiness.
 
 Concrete high-value acceptance examples:
 
 | Family | Questions the exporter/reader must answer |
 |---|---|
 | Names/declarations | Which declarations and definition belong to this EDG routine? Which lexical scope differs from semantic ownership? |
-| Calls/conversions | Which overload or conversion was selected? Which receiver, converted/default arguments and virtual/indirect target expression remain? |
+| Calls/conversions | Which lowered function/alternate entry is selected? Which tagged receiver, converted/expanded operands and indirect target expression remain? Is a source-selected overload or original virtual-dispatch classification retained, and is its absence reported honestly? |
 | Types/layout | Is this a typedef/qualified/reference wrapper or class instance? What are its EDG field/bitfield offsets, repeated/virtual bases, overrides and adjustments? |
 | Templates | Which actual specialization/arguments and originating template/member are retained? Which pattern is dependent and lacks an executable definition? |
-| Lifetime | Which initialization owns this temporary and destructor? What destruction ordering, full-expression lifetime, exit checkpoint and failure cleanup did EDG record? |
+| Lifetime | Which destructor calls and exceptional cleanup regions/actions/state changes did EDG generate? Can the user follow their storage/conditions/arrays/VTTs without decoding indexes? Which descriptive lifetimes survive? |
 | Initialization | What are the selected constructor, base/member/delegating steps, array prefix obligations, return-slot/elision and initializer-list backing lifetime? |
-| Range-for | Which range/begin/end objects, resolved comparisons/increments, scopes, initializer and source body are present? |
-| Allocation | Which scalar/array/aligned/placement operator and constructor were selected? Which deallocation is used on initialization failure? |
+| Range-for | Which ordinary loop, iterator initialization/comparison/increment and calls did EDG generate? Is source-range correspondence present, without a fabricated range-for node? |
+| Allocation | Which selected allocator/constructor/destructor/deallocator, lowered size/cookie calculations and runtime helpers appear? Which EH action handles initialization failure? |
 | Coroutines | Which promise and await-ready/suspend/resume operations and parameter copies are retained? Is native frame layout correctly unclaimed? |
 | Exceptions/extensions | Which ordered handlers, rethrow/throw initialization, noexcept fact, Microsoft filter/finally/SEH or GNU control construct is represented? |
 | Literals | Do integers beyond 64 bits, wide/embedded-NUL strings, exact floats and aggregates/repeats retain their values and distinct address identities? |
 | Macros/positions | Which nested definition version/invocation and original/expansion positions contributed? Are canonical args, `#line`, repeated includes, tabs and Unicode reported honestly? |
 | Multiple objects | Can two TUs with identical names coexist and be queried independently without cross-unit resolution or accidental identity merging? |
+| API ergonomics | Can a caller traverse functions, bodies, call targets, named-type members, template instances, layouts and cleanup actions using object properties alone? Do unsupported optional lists return empty and optional singular links remain safe to access? |
 
 Compiler accepted inline assembly is retained with its semantic operands and
 constraints; these phases do not promise it can later execute as C#. Likewise,
@@ -178,7 +210,7 @@ upstream inputs and inspectable EDG facts as the reference. They are not a new
 C++ conformance engine and do not second-guess EDG's overload, lifetime or layout
 decisions. The C generator guides adapter coverage and may provide reference
 observations where its lowered stage applies; textual equality to generated C
-is not the unlowered object contract.
+is not the serialized object contract.
 
 Use real fixture assertions, node-family coverage, selected upstream positive
 tests, SQL inspection, managed query tests and scale measurements. Ordinary
