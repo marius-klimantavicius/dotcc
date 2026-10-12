@@ -11,6 +11,7 @@ internal sealed partial class Emitter
     {
         foreach(var global in program.Globals)
         {
+            if(virtualCalleeUnit!=global.Unit)PrepareVirtualCalleeMetadata(global.Unit);
             UseType(global.Unit,global.Symbol.Type);
             if(global.Unit.Initializers.TryGetValue(global.Id,out long initializer))
                 UseNode(global.Unit,global.Unit.Nodes[initializer],[]);
@@ -25,6 +26,7 @@ internal sealed partial class Emitter
                 needsLocalArrayStorage|=local.Kind=="local" && unit.IsArray(local.Type);
             }
             using var body=program.LoadFunction(function);
+            PrepareVirtualCalleeMetadata(unit);
             var visited=new HashSet<long>();
             foreach(var node in unit.Nodes.Values.Where(node=>node.Function==function.Id))UseNode(unit,node,visited);
             var byteZeroInitializations=unit.Nodes.Values.Where(node=>IsAllocationByteZero(unit,node))
@@ -82,7 +84,9 @@ internal sealed partial class Emitter
         if(node.OriginalLvalueType is long original)UseType(unit,original);
         if(node.Symbol is long symbol && node.Kind!="type-info-address")
         {
-            if(node.Kind is "variable" or "function" or "routine-address")UseSymbol(unit,symbol);
+            if(node.Kind=="function" && virtualCalleeUnit==unit && virtualCalleeMetadata.Contains(node.Id))
+                UseType(unit,unit.Symbols[symbol].Type);
+            else if(node.Kind is "variable" or "function" or "routine-address")UseSymbol(unit,symbol);
             else UseType(unit,unit.Symbols[symbol].Type);
         }
         if(node.Field is long field)

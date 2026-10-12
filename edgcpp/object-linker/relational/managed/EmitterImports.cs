@@ -47,6 +47,7 @@ internal sealed partial class Emitter
     private void PrepareProviderStorageNames()
     {
         foreach(var import in providerImports.Values.Where(import=>import.Symbol.Symbol.Kind!="function").ToArray())NameProviderStorage(import);
+        PrepareVirtualTableProviderNames();
         providerStorageNamesPrepared=true;
     }
 
@@ -106,6 +107,7 @@ internal sealed partial class Emitter
             if(import.Accessor is not null)
                 Line(1,"public static "+Pointer(import.Symbol.Unit,import.Symbol.Symbol.Type)+" "+import.Name+" => "+import.Accessor+"();");
         }
+        WriteRequiredVirtualTableProviders();
     }
 
     private void WriteImportsManifest(string directory)
@@ -113,13 +115,19 @@ internal sealed partial class Emitter
         static string Cell(string value)=>value.Replace("\\","\\\\",StringComparison.Ordinal)
             .Replace("\t","\\t",StringComparison.Ordinal).Replace("\r","\\r",StringComparison.Ordinal).Replace("\n","\\n",StringComparison.Ordinal);
         using var writer=new StreamWriter(Path.Combine(directory,"Imports.tsv"),false,new UTF8Encoding(false));
-        writer.WriteLine("link_name\tkind\tsource_name\tunit\tsymbol_id\ttype_id\texception_policy\tdeclaration");
+        writer.WriteLine("link_name\tkind\tsource_name\tunit\tsymbol_id\ttype_id\texception_policy\tdeclaration\tvirtual_table_id\taddress_point_byte_offset\tentry_size");
         foreach(var import in providerImports.Values)
         {
             var selected=import.Symbol;var symbol=selected.Symbol;
             writer.WriteLine(string.Join('\t',new[]{symbol.LinkName,symbol.Kind,symbol.Name,selected.Unit.Path,
                 symbol.Id.ToString(System.Globalization.CultureInfo.InvariantCulture),symbol.Type.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                symbol.Kind=="function"?selected.Unit.Original(symbol.Type).ExceptionPolicy:"",ProviderDeclaration(import)}.Select(Cell)));
+                symbol.Kind=="function"?selected.Unit.Original(symbol.Type).ExceptionPolicy:"",ProviderDeclaration(import),"","",""}.Select(Cell)));
         }
+        foreach(var import in virtualTableImports.Values)
+            writer.WriteLine(string.Join('\t',new[]{import.Table.LinkName,"virtual-table",import.Unit.Types[import.Table.Owner].Name,
+                import.Unit.Path,"",import.Table.Owner.ToString(System.Globalization.CultureInfo.InvariantCulture),"",
+                VirtualTableProviderDeclaration(import),import.Table.Id.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                import.Table.AddressPoint.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                import.Table.EntrySize.ToString(System.Globalization.CultureInfo.InvariantCulture)}.Select(Cell)));
     }
 }

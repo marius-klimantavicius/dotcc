@@ -20,13 +20,18 @@ internal sealed partial class Emitter
     private (Unit Unit,VirtualTable Table) ResolveVirtualTable(Unit unit,long id)
     {
         var table=unit.VirtualTables[id];
-        return virtualDefinitions.TryGetValue(VirtualKey(unit,table),out var selected)?selected:
-            throw new InvalidDataException("No definition for virtual table "+table.LinkName+" at address point "+table.AddressPoint);
+        if(virtualDefinitions.TryGetValue(VirtualKey(unit,table),out var selected))return selected;
+        if(requiredProviders && !table.Definition && table.Linkage=="external")return(unit,table);
+        throw new InvalidDataException("No definition for virtual table "+table.LinkName+" at address point "+table.AddressPoint);
     }
 
     private void UseVirtualTable(Unit unit,long id)
     {
         var selected=ResolveVirtualTable(unit,id);unit=selected.Unit;var table=selected.Table;
+        if(!table.Definition)
+        {
+            RequireVirtualTableProvider(unit,table);UseType(unit,table.Owner);return;
+        }
         if(virtualTableNames.ContainsKey((unit,table.Id)))return;
         virtualTableNames.Add((unit,table.Id),names.Allocate("__vtable_"+unit.Types[table.Owner].Name,"virtual_table"));
         UseType(unit,table.Owner);
@@ -188,8 +193,15 @@ internal sealed partial class Emitter
                     throw new InvalidDataException("Construction-table or dynamic virtual-base vptr initialization is not yet implemented");
                 long receiver=unit.FunctionDetails[function!.Value.Id].Receiver??throw new InvalidDataException("Vptr initialization receiver missing");
                 var selected=emitter.ResolveVirtualTable(unit,table);
-                string name=emitter.virtualTableNames[(selected.Unit,selected.Table.Id)];
-                Line(indent,"*(nint**)((byte*)"+Name(receiver)+" + "+offset+") = (nint*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref "+name+"[0]);");
+                string address;
+                if(!selected.Table.Definition)
+                    address=emitter.RequireVirtualTableProvider(selected.Unit,selected.Table).Accessor+"()";
+                else
+                {
+                    string name=emitter.virtualTableNames[(selected.Unit,selected.Table.Id)];
+                    address="(nint*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref "+name+"[0])";
+                }
+                Line(indent,"*(nint**)((byte*)"+Name(receiver)+" + "+offset+") = "+address+";");
             }
         }
     }
