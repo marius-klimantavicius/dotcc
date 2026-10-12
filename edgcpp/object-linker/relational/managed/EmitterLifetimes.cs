@@ -196,19 +196,24 @@ internal sealed partial class Emitter
         private string ExpandedExpression(Node node,int indent)
         {
             ++expressionExpansionDepth;
+            expressionExpansionPath.Push(node);
             try {return ExpandedExpressionCore(node,indent);}
-            finally {--expressionExpansionDepth;}
+            finally {expressionExpansionPath.Pop();--expressionExpansionDepth;}
         }
 
         private string ExpandedExpressionCore(Node node,int indent)
         {
             if(expandedValues.TryGetValue(node.Id,out string? found))return NormalizeValue(node,found);
+            if(node.Kind=="lifetime-scope")return ExpandedExpressionLifetimeScope(node,indent);
             if(node.Kind=="operation" && node.Operator is "address-of" or "reference-to" &&
                IsVolatileLocation(Child(node,"operand")))
             {
                 ExpandAddressLocation(Child(node,"operand"),indent);
                 return Expression(node);
             }
+            if(node.Kind=="operation" && node.EvaluationOrder=="right-to-left" &&
+               node.Operator is "call" or "dot-member-call" or "points-to-member-call")
+                return ExpandedRightToLeftCall(node,indent);
             if(node.Type is long zeroArray && IsZeroExtentArray(unit,zeroArray) && ZeroExtentFieldAddress(node) is string address)
                 return NormalizeValue(node,address);
             if(IsPlacementWrapper(node))return ExpandedPlacementWrapper(node,indent);

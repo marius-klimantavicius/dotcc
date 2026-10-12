@@ -351,6 +351,9 @@ internal sealed partial class Emitter
             string op=node.Operator??throw unit.Missing(node,"operation discriminator missing");
             RequireBitfieldOperationSupport(node,operands);
             if(UsesCompoundHelper(node))return CompoundExpression(node,N(0),N(1));
+            if(node.EvaluationOrder=="right-to-left" && op is "call" or "dot-member-call" or "points-to-member-call" &&
+                !orderedCallRenderings.Contains(node.Id))
+                throw unit.Missing(node,"right-to-left call requires ordered statement expansion in this context");
             if(node.EvaluationOrder=="right-to-left" && operands.Length>1 && !expandedValues.ContainsKey(operands[1].Id) && !IsDirectLocalAssignment(node))
                 throw unit.Missing(node,"right-to-left operation needs statement expansion");
             switch(op)
