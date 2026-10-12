@@ -34,7 +34,9 @@ internal sealed partial class Emitter
             if(node.Initialization is not long selected || !unit.Initializations.TryGetValue(selected,out var action))
                 throw unit.Missing(node,"exporter defect: aggregate component initialization missing");
             if(repeat!=1)throw unit.Missing(node,"repeated dynamic aggregate component emission is not yet supported");
-            if(action.Kind is not ("constant" or "expression" or "zero") || action.Constructor is not null ||
+            bool constructor=action.Kind=="constructor" && action.Constructor is not null && action.Type is long target &&
+                unit.Original(target).Kind=="record" && !unit.Original(target).Incomplete && !unit.Original(target).Dependent;
+            if(action.Kind is not ("constant" or "expression" or "zero") && !constructor || action.Constructor is not null && !constructor ||
                 action.Destructor is not null || action.Lifetime is not null || action.ExpressionLifetime is not null)
                 throw unit.Missing(node,"aggregate component constructor or lifetime action emission is not yet supported");
             // The parent element relation supplies this destination. No local
