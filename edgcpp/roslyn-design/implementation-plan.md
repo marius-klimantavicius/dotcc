@@ -2,6 +2,8 @@
 
 **Implementation approved by the user, 2026-10-12:** phases 3–4 are now authorized through M0–M5. Historical proposal language below records the reviewed design; current evidence and remaining work are tracked in `../roslyn/docs/IMPLEMENTATION.md`.
 
+**Subsequent user scope change (2026-10-12):** C++/CLI and C++/CX implementation and metadata/profile acceptance are excluded. Native Microsoft C++ extensions remain required. Managed-dialect sections below are historical design material and do not impose current implementation gates.
+
 Status: approved, 2026-10-12. Phases 1–2 produced this design; phases 3–4 implementation and verification are now in progress.
 
 ## Roles, ownership, and repository layout

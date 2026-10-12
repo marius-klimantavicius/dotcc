@@ -2,6 +2,8 @@
 
 **Implementation approved by the user, 2026-10-12:** phases 3–4 are now authorized through M0–M5. Historical proposal language below records the reviewed design; current evidence and remaining work are tracked in `../roslyn/docs/IMPLEMENTATION.md`.
 
+**Subsequent user scope change (2026-10-12):** C++/CLI and C++/CX implementation and metadata/profile acceptance are excluded. Native Microsoft C++ extensions remain required. Managed-dialect sections below are historical design material and do not impose current implementation gates.
+
 Design only, revised to follow the user's preference for the direct C# backend's lowering strategy. Upstream evidence is pristine EDG revision `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`, inspected at `/tmp/roslynobj-edg-upstream-20261012`; upstream citations below use paths/lines at that revision. The newly authorized comparison uses only `edgcpp/config/cpfe-dot.cmakedef` and the direct emitter `edgcpp/backend/dot_gen_cleanup.h`, plus the parent investigation's effective flag inventory. No existing object exporter, object linker, or its findings are evidence. No implementation or EDG core changes are proposed here.
 
 ## Revised decision

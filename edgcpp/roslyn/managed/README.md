@@ -26,7 +26,8 @@ foreach (var function in obj.TranslationUnit.Functions)
 ```
 
 Current parameters include EDG's ABI parameters. A declaration-only signature
-can expose a parameter type with a null `Symbol` and `Name`. Optional source
+can expose a parameter descriptor without a variable `Symbol`. Retained signature
+names remain available; absent names are null. Optional source
 parameters, declaration defaults, source-selected call targets and original
 source types are available only through retained associations. Optional lists
 are empty and optional singular relationships are null.
@@ -34,7 +35,8 @@ are empty and optional singular relationships are null.
 `DescendantOperations` includes statements, expressions and initialization
 operations, visits each captured identity once, and follows executable structural
 relationships. It excludes backing metadata expressions and does not traverse
-callees, types or exceptional cleanup as executable children. `Children`, typed
+callee routine definitions, types or exceptional cleanup as executable children.
+Evaluated callee expressions remain structural children. `Children`, typed
 operands, semantic references and source associations remain available separately.
 
 Types, templates, layouts, partial EH, macros and source positions have ordinary
@@ -44,6 +46,15 @@ is generated from the shared schema and records each scalar/foreign-key property
 Internal SQLite identities are unnecessary for navigation. Entity equality uses
 artifact identity plus captured entity identity; `RoslynWorkspace` opens many
 objects without linking or merging them.
+
+`SemanticModel.GetReferences(symbol)` returns captured reference uses and selected
+call targets, with their owner nodes and optional source origins. Declaration
+objects are semantic nodes, so `GetSymbol(declaration)` and `GetType(declaration)`
+follow retained descriptor links without reconstructing C++ lookup. A type's
+`DeclarationSymbol` has its own named identity; the type descriptor stays separate.
+Template headers, parameter placeholders and defaults navigate through typed
+objects. Function signatures and requires-expression parameters share canonical
+`ParameterType` descriptors, including retained declared types and default facts.
 
 Exact integers, target sizes, offsets and EH states use `BigInteger`. Floats
 retain class, sign, radix, significand, exponent and supplied NaN facts; they are

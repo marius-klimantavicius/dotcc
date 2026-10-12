@@ -157,6 +157,11 @@ internal sealed class SnapshotStore : IDisposable
         if (!order.Success) throw new InvalidOperationException("A paged relation needs deterministic ordering.");
         var columns = order.Groups[1].Value.Split(',');
         var keys = columns.Select((_, i) => $"__key{i}").ToArray();
+        if (sql.Contains(" UNION ", StringComparison.OrdinalIgnoreCase))
+        {
+            var projected = string.Join(',', columns.Select((c, i) => $"combined.{c.Trim().Split('.')[^1]} AS {keys[i]}"));
+            return ($"SELECT combined.*,{projected} FROM ({sql[..order.Index]}) combined", keys);
+        }
         var start = sql.StartsWith("WITH ", StringComparison.OrdinalIgnoreCase) ? sql.LastIndexOf(") SELECT ", StringComparison.Ordinal) + 2 : 0;
         var from = sql.IndexOf(" FROM ", start, StringComparison.OrdinalIgnoreCase);
         if (from < 0) throw new InvalidOperationException("Unsupported internal relation query.");
@@ -176,6 +181,7 @@ internal sealed class SnapshotStore : IDisposable
             "expression" => new[] { "entity", "semantic_node", "call_expression", "conversion_expression", "cleanup_state_operation" },
             "statement" => new[] { "entity", "semantic_node" },
             "symbol" => new[] { "entity" },
+            "type_symbol" => new[] { "entity", "symbol", "enum_symbol", "alias_symbol" },
             _ => System.Array.Empty<string>()
         };
         foreach (var companion in companions)

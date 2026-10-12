@@ -49,6 +49,10 @@ pointer_bits INTEGER NOT NULL
 pointer_alignment TEXT NOT NULL
 description_id @text_atom''')
 entity('translation_unit', 'global_scope_id @scope NOT NULL\nprimary_input_id @source_file\nlanguage_mode_id @text_atom NOT NULL')
+relation('translation_unit_root', 'owner_id @translation_unit NOT NULL\nkind_id @kind NOT NULL\nordinal INTEGER NOT NULL\nentity_id @entity NOT NULL', 'owner_id, kind_id, ordinal')
+relation('file_scope_dynamic_init_routine', 'owner_id @translation_unit NOT NULL\nordinal INTEGER NOT NULL\nroutine_id @routine_symbol NOT NULL\nis_thread_local INTEGER NOT NULL DEFAULT 0')
+entity('orphan_scope', 'translation_unit_id @translation_unit NOT NULL\nroutine_id @routine_symbol\nscope_number TEXT NOT NULL')
+relation('orphan_scope_member', 'owner_id @orphan_scope NOT NULL\nkind_id @kind NOT NULL\nordinal INTEGER NOT NULL\nentity_id @entity NOT NULL', 'owner_id, kind_id, ordinal')
 relation('build_capability', 'name_id @text_atom NOT NULL\nstate_id @kind NOT NULL\nvalue_id @text_atom\nrequired INTEGER NOT NULL DEFAULT 0\nenabled INTEGER', 'name_id')
 relation('invocation_argument', 'ordinal INTEGER NOT NULL\ntext_id @text_atom NOT NULL', 'ordinal')
 relation('fact_availability', 'owner_id @entity NOT NULL\nfact_id @kind NOT NULL\nstate_id @kind NOT NULL\nreason_id @text_atom', 'owner_id, fact_id')
@@ -56,6 +60,7 @@ entity('name', 'spelling_id @text_atom\ncategory_id @kind NOT NULL')
 relation('qualified_name_part', 'owner_id @name NOT NULL\nordinal INTEGER NOT NULL\nname_id @name NOT NULL')
 entity('scope', 'kind_id @kind NOT NULL\nparent_id @scope\nassociated_entity_id @entity\nlifetime_id @lifetime')
 relation('scope_member', 'owner_id @scope NOT NULL\nordinal INTEGER NOT NULL\nmember_id @entity NOT NULL')
+relation('scope_initialization', 'owner_id @scope NOT NULL\nordinal INTEGER NOT NULL\ninitialization_id @initialization NOT NULL')
 entity('symbol', '''kind_id @kind NOT NULL
 name_id @name
 containing_entity_id @entity
@@ -65,6 +70,7 @@ linkage_id @kind
 storage_id @kind
 access_id @kind
 compiler_generated INTEGER NOT NULL DEFAULT 0''')
+entity('type_symbol', 'type_id @type NOT NULL')
 entity('declaration', 'kind_id @kind NOT NULL\nsymbol_id @entity NOT NULL\nlexical_scope_id @scope\nsource_origin_id @source_origin\ncompiler_generated INTEGER NOT NULL DEFAULT 0\nimplicit INTEGER')
 relation('declaration_sequence', 'owner_id @entity NOT NULL\nordinal INTEGER NOT NULL\ndeclaration_id @declaration NOT NULL')
 entity('namespace_symbol', 'alias_target_id @namespace_symbol\nis_inline INTEGER NOT NULL DEFAULT 0\nis_anonymous INTEGER NOT NULL DEFAULT 0\nscope_id @scope')
@@ -86,9 +92,12 @@ is_inline INTEGER NOT NULL DEFAULT 0
 is_constexpr INTEGER NOT NULL DEFAULT 0
 is_consteval INTEGER NOT NULL DEFAULT 0
 is_deleted INTEGER NOT NULL DEFAULT 0
-is_defaulted INTEGER NOT NULL DEFAULT 0''')
+is_defaulted INTEGER NOT NULL DEFAULT 0
+is_tls_initialization_routine INTEGER NOT NULL DEFAULT 0
+is_tls_initialization_alias INTEGER NOT NULL DEFAULT 0''')
 relation('routine_parameter', 'owner_id @routine_symbol NOT NULL\nordinal INTEGER NOT NULL\nparameter_id @variable_symbol NOT NULL\nrole_id @kind NOT NULL\ndefault_initialization_id @initialization\nis_source_parameter INTEGER NOT NULL DEFAULT 0')
 entity('variable_symbol', '''type_id @type NOT NULL
+initialization_kind_id @kind NOT NULL
 initializer_id @initialization
 constant_initializer_id @constant
 lifetime_id @lifetime
@@ -97,7 +106,8 @@ is_thread_local INTEGER NOT NULL DEFAULT 0
 is_inline INTEGER NOT NULL DEFAULT 0
 is_parameter INTEGER NOT NULL DEFAULT 0
 parameter_type_ordinal INTEGER
-binding_container_id @variable_symbol''')
+binding_container_id @variable_symbol
+instance_id @template_instance''')
 relation('variable_binding', 'owner_id @variable_symbol NOT NULL\nordinal INTEGER NOT NULL\nvariable_id @variable_symbol NOT NULL\nexpression_id @expression')
 entity('field_symbol', '''record_type_id @type NOT NULL
 type_id @type NOT NULL
@@ -107,15 +117,31 @@ is_bit_field INTEGER NOT NULL DEFAULT 0
 is_generated_base INTEGER NOT NULL DEFAULT 0
 is_generated_vptr INTEGER NOT NULL DEFAULT 0''')
 entity('label_symbol', 'statement_id @statement\nlifetime_id @lifetime\nis_break INTEGER NOT NULL DEFAULT 0\nis_continue INTEGER NOT NULL DEFAULT 0\nis_leave INTEGER NOT NULL DEFAULT 0')
-entity('enum_symbol', 'underlying_type_id @type NOT NULL\nis_scoped INTEGER NOT NULL DEFAULT 0')
+entity('enum_symbol', 'underlying_type_id @type\nis_scoped INTEGER NOT NULL DEFAULT 0')
 relation('enumerator', 'owner_id @enum_symbol NOT NULL\nordinal INTEGER NOT NULL\nsymbol_id @symbol NOT NULL\nconstant_id @constant NOT NULL')
 entity('alias_symbol', 'target_id @entity\nunderlying_type_id @type')
-entity('using_declaration', 'target_id @entity\nlexical_scope_id @scope')
+entity('using_declaration', '''target_id @entity
+lexical_scope_id @scope
+source_origin_id @source_origin
+is_directive INTEGER NOT NULL DEFAULT 0
+is_class_member INTEGER NOT NULL DEFAULT 0
+is_inheriting_constructor INTEGER NOT NULL DEFAULT 0
+is_hidden INTEGER NOT NULL DEFAULT 0
+compiler_generated INTEGER NOT NULL DEFAULT 0
+is_inline_namespace INTEGER NOT NULL DEFAULT 0
+is_strong INTEGER NOT NULL DEFAULT 0
+is_pack_expansion INTEGER NOT NULL DEFAULT 0
+is_representative INTEGER NOT NULL DEFAULT 0
+is_using_enum INTEGER NOT NULL DEFAULT 0''')
+entity('static_assertion', 'condition_id @constant NOT NULL\nmessage_id @constant\nsource_origin_id @source_origin')
 entity('type', '''kind_id @kind NOT NULL
 name_id @name
+symbol_id @type_symbol
 source_origin_id @source_origin
 size TEXT NOT NULL
 alignment TEXT NOT NULL
+descriptor_size TEXT
+descriptor_alignment TEXT
 incomplete INTEGER NOT NULL
 canonical_type_id @type
 declared_type_id @type
@@ -136,9 +162,49 @@ is_const INTEGER NOT NULL DEFAULT 0
 is_volatile INTEGER NOT NULL DEFAULT 0
 ref_qualifier_id @kind
 has_prototype INTEGER NOT NULL DEFAULT 1''')
-relation('routine_type_parameter', 'owner_id @routine_type NOT NULL\nordinal INTEGER NOT NULL\ntype_id @type NOT NULL\nrole_id @kind NOT NULL\ndefault_expression_id @expression\npassed_indirectly INTEGER NOT NULL DEFAULT 0')
+entity('parameter_type', '''type_id @type NOT NULL
+declared_type_id @type
+name_id @text_atom
+source_origin_id @source_origin
+parameter_number INTEGER NOT NULL
+default_expression_id @expression
+has_name_conflict INTEGER NOT NULL DEFAULT 0
+passed_via_copy_constructor INTEGER NOT NULL DEFAULT 0
+has_default_argument INTEGER NOT NULL DEFAULT 0
+default_argument_in_class INTEGER NOT NULL DEFAULT 0
+has_unevaluated_template_default INTEGER NOT NULL DEFAULT 0
+type_involves_deduced_template_parameter INTEGER NOT NULL DEFAULT 0
+type_involves_template_parameter INTEGER NOT NULL DEFAULT 0
+is_parameter_pack INTEGER NOT NULL DEFAULT 0
+is_pack_element INTEGER NOT NULL DEFAULT 0
+was_nontrailing_pack INTEGER NOT NULL DEFAULT 0
+is_auto_parameter INTEGER NOT NULL DEFAULT 0
+duplicate_name INTEGER NOT NULL DEFAULT 0
+move_constructor_or_assignment_parameter INTEGER NOT NULL DEFAULT 0
+copy_or_move_constructor_parameter INTEGER NOT NULL DEFAULT 0
+is_requires_expression_parameter INTEGER NOT NULL DEFAULT 0
+is_explicit_this INTEGER NOT NULL DEFAULT 0
+is_transparent INTEGER NOT NULL DEFAULT 0
+is_nonnull INTEGER NOT NULL DEFAULT 0
+is_cli_parameter_array INTEGER NOT NULL DEFAULT 0
+is_const INTEGER NOT NULL DEFAULT 0
+is_volatile INTEGER NOT NULL DEFAULT 0
+is_restrict INTEGER NOT NULL DEFAULT 0
+is_atomic INTEGER NOT NULL DEFAULT 0
+is_nullable INTEGER NOT NULL DEFAULT 0
+is_nonnull_qualified INTEGER NOT NULL DEFAULT 0
+is_null_unspecified INTEGER NOT NULL DEFAULT 0
+is_unaligned INTEGER NOT NULL DEFAULT 0
+is_near INTEGER NOT NULL DEFAULT 0
+is_far INTEGER NOT NULL DEFAULT 0
+is_upc_shared INTEGER NOT NULL DEFAULT 0
+is_upc_strict INTEGER NOT NULL DEFAULT 0
+is_upc_relaxed INTEGER NOT NULL DEFAULT 0
+named_address_space INTEGER''')
+relation('parameter_default_entity', 'owner_id @parameter_type NOT NULL\nordinal INTEGER NOT NULL\nentity_id @entity NOT NULL')
+relation('routine_type_parameter', 'owner_id @routine_type NOT NULL\nordinal INTEGER NOT NULL\nparameter_type_id @parameter_type NOT NULL\nrole_id @kind NOT NULL\nbase_subobject_id @base_subobject')
 entity('record_type', 'scope_id @scope\ndefinition_state_id @kind NOT NULL\ninstance_id @template_instance\nsubobject_partner_id @type\nis_lambda INTEGER NOT NULL DEFAULT 0\nis_empty INTEGER NOT NULL DEFAULT 0\nis_abstract INTEGER NOT NULL DEFAULT 0')
-entity('type_reference', 'underlying_type_id @type NOT NULL\nreference_kind_id @kind NOT NULL\ntypedef_symbol_id @entity\ndecltype_expression_id @expression')
+entity('type_reference', 'underlying_type_id @type NOT NULL\nreference_kind_id @kind NOT NULL\ntypedef_symbol_id @entity\ndecltype_expression_id @expression\ninstance_id @template_instance')
 entity('vector_type', 'element_type_id @type NOT NULL\nelement_count TEXT\nvector_kind_id @kind NOT NULL\nscalable_count_type_id @type\nsize_constant_id @constant\nis_boolean INTEGER NOT NULL DEFAULT 0\ntuple_elements INTEGER\nlength_multiplier INTEGER')
 entity('dependent_type', 'parameter_kind_id @kind\nparameter_number INTEGER\nparameter_depth INTEGER\nparent_type_id @type\nexpression_id @expression\nconstraint_id @expression\nbit_width_constant_id @constant')
 entity('managed_type', 'managed_kind_id @kind NOT NULL\nunderlying_type_id @type\nrank INTEGER\nassembly_name_id @text_atom')
@@ -203,10 +269,25 @@ rewritten_property_kind_id @kind''')
 entity('call_expression', 'callee_id @expression NOT NULL\ntarget_routine_id @routine_symbol\nsource_target_routine_id @routine_symbol\nreceiver_id @expression\nfunction_type_id @type\ncall_kind_id @kind NOT NULL\nsource_dispatch_kind_id @kind\nreturn_slot_id @expression')
 relation('call_argument', 'owner_id @call_expression NOT NULL\nordinal INTEGER NOT NULL\nexpression_id @expression NOT NULL\nparameter_id @variable_symbol\nrole_id @kind')
 entity('reference_expression', 'target_id @entity\nreference_kind_id @kind NOT NULL\nname_reference_id @name_reference\nsubobject_id @base_subobject')
-entity('name_reference', 'kind_id @kind\nbuiltin_kind_id @kind\nproperty_id @field_symbol\ndestructor_type_id @type')
+entity('name_reference', '''kind_id @kind
+builtin_kind_id @kind
+property_id @field_symbol
+destructor_type_id @type
+qualifier_id @name_qualifier
+num_template_arguments TEXT
+is_global_qualified_name INTEGER NOT NULL DEFAULT 0
+is_template_id INTEGER NOT NULL DEFAULT 0
+is_super_qualified INTEGER NOT NULL DEFAULT 0
+is_decltype_qualified INTEGER NOT NULL DEFAULT 0
+from_prototype_instantiation INTEGER NOT NULL DEFAULT 0
+used_in_primary_declarator INTEGER NOT NULL DEFAULT 0''')
+entity('name_qualifier', 'previous_qualifier_id @name_qualifier\ntarget_id @entity\nname_id @text_atom\nis_class INTEGER NOT NULL DEFAULT 0')
+relation('original_template_argument', 'owner_id @name_reference NOT NULL\nordinal INTEGER NOT NULL\nargument_id @template_argument NOT NULL')
 entity('constant_expression', 'constant_id @constant NOT NULL\nname_reference_id @name_reference')
 entity('conversion_expression', 'operand_id @expression NOT NULL\nsource_type_id @type\ntarget_type_id @type NOT NULL\nkind_id @kind NOT NULL\nroutine_id @routine_symbol\nbase_path_id @entity')
 entity('block_statement', 'scope_id @scope\nlifetime_id @lifetime\nend_reachable INTEGER NOT NULL DEFAULT 0\nis_statement_expression INTEGER NOT NULL DEFAULT 0\nimplicit_scope_not_allowed INTEGER NOT NULL DEFAULT 0\nupc_access_method_id @kind')
+entity('declaration_statement', 'has_static_or_thread_variable INTEGER NOT NULL DEFAULT 0')
+relation('declaration_statement_entity', 'owner_id @declaration_statement NOT NULL\nordinal INTEGER NOT NULL\nentity_id @entity NOT NULL')
 entity('initialization_statement', 'initialization_id @initialization NOT NULL')
 relation('block_item', 'owner_id @block_statement NOT NULL\nordinal INTEGER NOT NULL\nstatement_id @statement NOT NULL')
 entity('if_statement', 'then_id @statement\nelse_id @statement\ncondition_id @expression\ninitialization_id @statement\nselection_known INTEGER\nselected_then INTEGER')
@@ -230,9 +311,11 @@ entity('statement_expression', 'statement_id @statement NOT NULL\nresult_id @exp
 entity('reuse_expression', 'initialization_id @initialization NOT NULL')
 entity('builtin_expression', 'kind_id @kind NOT NULL\nselected_expression_id @expression\nresult_constant_id @constant')
 entity('parameter_reference_expression', 'parameter_number INTEGER NOT NULL\nparameter_depth INTEGER NOT NULL\nis_this INTEGER NOT NULL DEFAULT 0')
-entity('dependent_expression', 'kind_id @kind NOT NULL\nwrapped_expression_id @expression\ntemplate_id @template_definition\ninitialization_id @initialization\nparameter_scope_id @scope\nnoexcept_required INTEGER\nis_dependent INTEGER NOT NULL DEFAULT 1\npack_index_id @expression\npack_type_id @type\npack_template_id @template_definition\nfold_operator_id @kind\nfold_left_associative INTEGER')
-relation('requirement_parameter', 'owner_id @dependent_expression NOT NULL\nordinal INTEGER NOT NULL\ntype_id @type NOT NULL\nparameter_id @variable_symbol')
+entity('dependent_expression', 'kind_id @kind NOT NULL\nwrapped_expression_id @expression\ntemplate_id @template_definition\ninitialization_id @initialization\nparameter_scope_id @scope\nnoexcept_required INTEGER\nis_dependent INTEGER NOT NULL DEFAULT 1\npack_index_id @expression\npack_type_id @type\npack_template_id @template_definition\nfold_operator_id @kind\nfold_left_associative INTEGER\ntoken_sequence_id @token_sequence\nreattempt_default_argument INTEGER\nreattempt_default_member_initializer INTEGER')
+relation('requirement_parameter', 'owner_id @dependent_expression NOT NULL\nordinal INTEGER NOT NULL\nparameter_type_id @parameter_type NOT NULL')
 relation('expression_template_argument', 'owner_id @expression NOT NULL\nordinal INTEGER NOT NULL\nargument_id @template_argument NOT NULL')
+entity('token_sequence', '')
+relation('token_sequence_token', 'owner_id @token_sequence NOT NULL\nordinal INTEGER NOT NULL\nkind_id @kind NOT NULL\nspelling_id @text_atom\nsource_position_id @source_position')
 relation('dependent_requirement', 'owner_id @dependent_expression NOT NULL\nordinal INTEGER NOT NULL\nexpression_id @expression NOT NULL')
 entity('allocation_expression', '''allocated_type_id @type
 allocator_id @routine_symbol
@@ -246,7 +329,16 @@ operand_id @expression
 is_delete INTEGER NOT NULL DEFAULT 0
 is_array INTEGER NOT NULL DEFAULT 0
 is_global INTEGER NOT NULL DEFAULT 0
-is_gcnew INTEGER NOT NULL DEFAULT 0''')
+is_gcnew INTEGER NOT NULL DEFAULT 0
+is_placement INTEGER NOT NULL DEFAULT 0
+is_aligned INTEGER NOT NULL DEFAULT 0
+has_initializer INTEGER NOT NULL DEFAULT 0
+brace_initializer INTEGER NOT NULL DEFAULT 0
+paren_aggregate_initializer INTEGER NOT NULL DEFAULT 0
+deducible_type INTEGER NOT NULL DEFAULT 0
+parenthesized_type INTEGER NOT NULL DEFAULT 0
+exception_freeing_id @initialization''')
+relation('allocation_argument', 'owner_id @allocation_expression NOT NULL\nordinal INTEGER NOT NULL\nexpression_id @expression NOT NULL')
 entity('lambda_definition', '''closure_type_id @type NOT NULL
 call_operator_id @routine_symbol
 source_origin_id @source_origin
@@ -343,26 +435,61 @@ token_text_id @text_atom
 token_kind_id @kind
 is_pack_expansion INTEGER NOT NULL DEFAULT 0
 source_origin_id @source_origin''')
-entity('constant', 'type_id @type NOT NULL\nvalue_id @constant_value NOT NULL\nsource_origin_id @source_origin\nbacking_expression_id @expression\nis_pack_expansion INTEGER NOT NULL DEFAULT 0\nis_literal INTEGER NOT NULL DEFAULT 0')
+entity('constant', '''type_id @type
+name_id @name
+containing_entity_id @entity
+orig_type_id @type
+value_id @constant_value NOT NULL
+source_origin_id @source_origin
+backing_expression_id @expression
+name_reference_id @name_reference
+character_kind_id @kind
+is_pack_expansion INTEGER NOT NULL DEFAULT 0
+is_literal INTEGER NOT NULL DEFAULT 0
+implicit_cast INTEGER NOT NULL DEFAULT 0
+explicit_cast_applied INTEGER NOT NULL DEFAULT 0
+is_reinterpret_cast INTEGER NOT NULL DEFAULT 0
+is_reinterpret_like_cast INTEGER NOT NULL DEFAULT 0
+is_simple_zero INTEGER NOT NULL DEFAULT 0''')
 entity('constant_value', 'kind_id @kind NOT NULL')
+relation('constant_component', 'owner_id @constant NOT NULL\nrole_id @kind NOT NULL\nordinal INTEGER NOT NULL\nconstant_id @constant NOT NULL', 'owner_id, role_id, ordinal')
 value_table('integer_value', 'value_id @text_atom NOT NULL')
 value_table('floating_value', 'class_id @kind NOT NULL\nnegative INTEGER NOT NULL\nradix INTEGER NOT NULL\nsignificand_id @text_atom\nexponent INTEGER\nnan_payload_id @text_atom\nnan_quiet INTEGER\nrepresentation_kind_id @kind')
 value_table('fixed_point_value', 'scaled_integer_id @text_atom NOT NULL\nscale INTEGER NOT NULL')
 value_table('complex_value', 'real_value_id @constant_value\nimaginary_value_id @constant_value NOT NULL')
 value_table('string_value', 'element_bits INTEGER NOT NULL\nlength TEXT NOT NULL\nencoding_id @kind NOT NULL\nunit_kind_id @kind NOT NULL\ntext_id @text_atom')
 relation('string_unit', 'owner_id @string_value NOT NULL\nordinal INTEGER NOT NULL\nunit INTEGER NOT NULL')
-value_table('address_value', 'base_kind_id @kind NOT NULL\nbase_entity_id @entity\noffset TEXT NOT NULL\none_past_end INTEGER NOT NULL DEFAULT 0\nsubobject_path_id @entity')
+value_table('address_value', 'base_kind_id @kind NOT NULL\nbase_entity_id @entity\noffset TEXT NOT NULL\none_past_end INTEGER NOT NULL DEFAULT 0\nsubobject_path_id @entity\nis_object_reflection INTEGER NOT NULL DEFAULT 0\nparameter_number INTEGER')
 value_table('stack_offset_value', 'variable_id @variable_symbol NOT NULL\noffset TEXT NOT NULL')
-value_table('member_pointer_value', 'member_id @entity\ncontaining_type_id @type\nadjustment TEXT\nsubobject_id @base_subobject\nis_null INTEGER NOT NULL DEFAULT 0')
-value_table('label_difference_value', 'left_label_id @label_symbol NOT NULL\nright_label_id @label_symbol NOT NULL\noffset TEXT NOT NULL')
+value_table('member_pointer_value', 'member_id @entity\ncontaining_type_id @type\nadjustment TEXT\nsubobject_id @base_subobject\nis_function_ptr INTEGER NOT NULL DEFAULT 0\ncast_to_base INTEGER NOT NULL DEFAULT 0\nis_null INTEGER NOT NULL DEFAULT 0')
+value_table('label_difference_value', 'left_label_id @label_symbol\nright_label_id @label_symbol\nfrom_value_id @constant_value NOT NULL\nfrom_type_id @type\nto_value_id @constant_value NOT NULL\nto_type_id @type\noffset TEXT')
 value_table('aggregate_value', 'type_id @type NOT NULL')
-relation('aggregate_element', 'owner_id @aggregate_value NOT NULL\nordinal INTEGER NOT NULL\nconstant_id @constant NOT NULL\nfield_id @field_symbol\ninitialization_id @initialization')
-value_table('repeat_value', 'constant_id @constant NOT NULL\ncount TEXT NOT NULL')
-value_table('designator_value', 'kind_id @kind NOT NULL\nfield_id @field_symbol\nindex_value TEXT\nrange_end TEXT\nconstant_id @constant')
+relation('aggregate_element', 'owner_id @aggregate_value NOT NULL\nordinal INTEGER NOT NULL\nvalue_id @constant_value NOT NULL\ntype_id @type\nfield_id @field_symbol\ninitialization_id @initialization')
+value_table('repeat_value', 'value_id @constant_value NOT NULL\ntype_id @type\ncount TEXT NOT NULL\nmultidimensional_tail_not_repeated INTEGER NOT NULL DEFAULT 0')
+value_table('designator_value', 'kind_id @kind NOT NULL\nfield_id @field_symbol\nfield_name_id @text_atom\nis_generic INTEGER NOT NULL DEFAULT 0\nuses_direct_init_syntax INTEGER NOT NULL DEFAULT 0\nindex_value TEXT\nrange_end TEXT\nvalue_id @constant_value\ntype_id @type')
+relation('designator_subscript', 'owner_id @designator_value NOT NULL\nordinal INTEGER NOT NULL\nvalue_id @constant_value NOT NULL\ntype_id @type')
 value_table('dynamic_initialization_value', 'initialization_id @initialization NOT NULL')
-value_table('dependent_value', 'kind_id @kind NOT NULL\nparameter_number INTEGER\nparameter_depth INTEGER\nexpression_id @expression\ntype_id @type\nentity_id @entity\nconstant_id @constant')
-value_table('reflection_value', 'kind_id @kind NOT NULL\nentity_id @entity\nowner_routine_id @routine_symbol')
-entity('subobject_path', 'kind_id @kind NOT NULL\nfield_id @field_symbol\nbase_subobject_id @base_subobject\nelement_offset TEXT\nnext_id @subobject_path')
+value_table('dependent_value', '''kind_id @kind NOT NULL
+parameter_number INTEGER
+parameter_depth INTEGER
+expression_id @expression
+type_id @type
+entity_id @entity
+constant_value_id @constant_value
+constant_type_id @type
+is_qualified_name INTEGER NOT NULL DEFAULT 0
+has_address_of INTEGER NOT NULL DEFAULT 0
+is_pack INTEGER NOT NULL DEFAULT 0
+has_generic_cast INTEGER NOT NULL DEFAULT 0
+conversion_type_id @type
+opname_kind_id @kind
+special_kind_id @kind
+is_standard_alignof INTEGER NOT NULL DEFAULT 0
+destructor_unqualified INTEGER NOT NULL DEFAULT 0''')
+relation('dependent_constant_element', 'owner_id @dependent_value NOT NULL\nordinal INTEGER NOT NULL\nvalue_id @constant_value NOT NULL\ntype_id @type')
+relation('dependent_template_argument', 'owner_id @dependent_value NOT NULL\nordinal INTEGER NOT NULL\nargument_id @template_argument NOT NULL')
+value_table('reflection_value', 'kind_id @kind NOT NULL\nentity_id @entity\nowner_routine_id @routine_symbol\nlocal_scope_number TEXT')
+entity('subobject_path', 'kind_id @kind NOT NULL\nfield_id @field_symbol\nbase_subobject_id @base_subobject\nelement_offset TEXT\nnext_id @subobject_path\nis_converted INTEGER NOT NULL DEFAULT 0')
 entity('initialization', '''kind_id @kind NOT NULL
 target_id @entity
 type_id @type
@@ -416,7 +543,7 @@ entity('lifetime', 'kind_id @kind NOT NULL\nparent_id @lifetime\nowner_id @entit
 relation('lifetime_cleanup', 'owner_id @lifetime NOT NULL\nordinal INTEGER NOT NULL\ninitialization_id @initialization NOT NULL\ndestructor_id @routine_symbol\nis_unordered INTEGER NOT NULL DEFAULT 0\nis_conditional INTEGER NOT NULL DEFAULT 0')
 relation('lifetime_transition', 'owner_id @semantic_node NOT NULL\nordinal INTEGER NOT NULL\nkind_id @kind NOT NULL\nsource_id @lifetime\ntarget_id @lifetime')
 relation('construction_dependency', 'owner_id @initialization NOT NULL\nordinal INTEGER NOT NULL\ndependency_id @initialization NOT NULL\ncondition_id @variable_symbol')
-relation('static_initialization', 'owner_id @translation_unit NOT NULL\nordinal INTEGER NOT NULL\nvariable_id @variable_symbol NOT NULL\ninitialization_id @initialization\nconstant_id @constant\ninit_routine_id @routine_symbol\ntermination_routine_id @routine_symbol\nis_thread_local INTEGER NOT NULL DEFAULT 0')
+relation('static_initialization', 'owner_id @translation_unit NOT NULL\nordinal INTEGER NOT NULL\nvariable_id @variable_symbol NOT NULL\ninitialization_kind_id @kind NOT NULL\ninitialization_id @initialization\nconstant_id @constant\ninit_routine_id @routine_symbol\ntermination_routine_id @routine_symbol\nis_thread_local INTEGER NOT NULL DEFAULT 0')
 entity('exception_specification', 'kind_id @kind NOT NULL\nnoexcept_expression_id @expression\nthrow_any INTEGER NOT NULL DEFAULT 0\nnoexcept_effective INTEGER\nis_dependent INTEGER NOT NULL DEFAULT 0\nis_indeterminate INTEGER NOT NULL DEFAULT 0')
 relation('exception_specification_type', 'owner_id @exception_specification NOT NULL\nordinal INTEGER NOT NULL\ntype_id @type NOT NULL')
 entity('function_eh', 'routine_id @routine_symbol NOT NULL\nprologue_id @expression\nepilogue_id @expression\nregion_table_id @variable_symbol\narray_table_id @variable_symbol\ninitial_state TEXT NOT NULL\nnull_state TEXT NOT NULL')
@@ -457,10 +584,13 @@ is_exported INTEGER NOT NULL DEFAULT 0
 ignore_export INTEGER NOT NULL DEFAULT 0
 is_pack INTEGER NOT NULL DEFAULT 0
 is_friend_template INTEGER NOT NULL DEFAULT 0
+parameter_number INTEGER
+parameter_depth INTEGER
+definition_text_id @text_atom
 export_position_id @source_position
 definition_range_id @source_range''')
 entity('template_header', 'template_id @template_definition\nparent_id @template_header\nscope_id @scope\nsource_origin_id @source_origin\nis_generic INTEGER NOT NULL DEFAULT 0\nconstraint_id @expression\nrequires_position_id @source_position')
-entity('template_parameter', 'template_id @template_definition\nheader_id @template_header\nordinal INTEGER NOT NULL\ndepth INTEGER NOT NULL\nkind_id @kind NOT NULL\nname_id @name\nis_pack INTEGER NOT NULL DEFAULT 0\nis_abbreviated INTEGER NOT NULL DEFAULT 0\nplaceholder_type_id @type\nplaceholder_constant_id @constant\nplaceholder_template_id @template_definition\ndefault_argument_id @template_argument\nconstraint_id @expression')
+entity('template_parameter', 'template_id @template_definition\nheader_id @template_header\nordinal INTEGER NOT NULL\ndepth INTEGER NOT NULL\nkind_id @kind NOT NULL\nname_id @name\nsource_origin_id @source_origin\nis_pack INTEGER NOT NULL DEFAULT 0\nis_abbreviated INTEGER NOT NULL DEFAULT 0\nplaceholder_type_id @type\nplaceholder_constant_id @constant\nplaceholder_template_id @template_definition\ndefault_argument_id @template_argument\nconstraint_id @expression')
 entity('template_generic_constraint_clause', 'header_id @template_header NOT NULL\nordinal INTEGER NOT NULL\nparameter_type_id @type NOT NULL\ntype_position_id @source_position\nwhere_position_id @source_position\ncolon_position_id @source_position')
 relation('template_generic_constraint', 'owner_id @template_generic_constraint_clause NOT NULL\nordinal INTEGER NOT NULL\nkind_id @kind NOT NULL\ntype_id @type\nis_implicit INTEGER NOT NULL DEFAULT 0\nsource_position_id @source_position')
 entity('template_argument', '''kind_id @kind NOT NULL
@@ -578,6 +708,9 @@ for id_,family,name in embedded_rows:
     canonical=kind_ids.get(aliases[name]) if name in aliases else None
     sql_parts.append(f"INSERT INTO kind_disposition VALUES({id_},'{state}',{canonical if canonical else 'NULL'});\n")
 sql_parts.append('CREATE INDEX symbol_name ON symbol(name_id);\nCREATE INDEX symbol_owner ON symbol(containing_entity_id);\nCREATE INDEX declaration_symbol ON declaration(symbol_id);\nCREATE INDEX structural_parent ON structural_child(child_id);\nCREATE INDEX semantic_reference_target ON semantic_reference(target_id);\nCREATE INDEX macro_parent ON macro_invocation(parent_id,ordinal);\nCREATE INDEX cleanup_function ON cleanup_region(function_eh_id,ordinal);\nCREATE INDEX template_instance_template ON template_instance(template_id);\nCREATE INDEX type_name ON type(name_id);\nCREATE INDEX lifetime_owner ON lifetime(owner_id);\n')
+sql_parts.append('CREATE INDEX constant_component_target ON constant_component(constant_id);\n')
+sql_parts.append('CREATE INDEX constant_name ON constant(name_id);\n')
+sql_parts.append('CREATE INDEX enumerator_constant ON enumerator(constant_id);\nCREATE INDEX enumerator_symbol ON enumerator(symbol_id);\n')
 sql=''.join(sql_parts)
 # Execute actual DDL before publication; this tests storage syntax only.
 connection=sqlite3.connect(':memory:')

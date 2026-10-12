@@ -6,10 +6,15 @@ public sealed class Constant : SemanticEntity
 {
     internal Constant(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public ConstantDetails Details { get; }
-    public CppType Type => Details.Type;
+    public CppType? Type => Details.Type;
+    public CppType? OriginalType => Details.OrigType;
+    public string? Name => Object.Name(Object.Store.Required("constant",Id).OptionalLong("name_id"));
+    public SemanticEntity? ContainingEntity => Details.ContainingEntity;
     public ConstantValue Value => Details.Value;
     public Operation? BackingExpression => Details.BackingExpression;
     public SourceInfo? Source => Details.SourceOrigin;
+    public IReadOnlyList<ConstantComponentDetails> Components => Object.List("SELECT * FROM constant_component WHERE owner_id=$owner ORDER BY role_id,ordinal",Id,r=>new ConstantComponentDetails(Object,r));
+    public IReadOnlyList<Constant> Elements => Object.List("SELECT c.* FROM constant_component r JOIN constant c ON c.id=r.constant_id JOIN kind k ON k.id=r.role_id WHERE r.owner_id=$owner AND k.name='element' ORDER BY r.ordinal",Id,r=>Object.Constant(r.Long("id")),"constant");
 }
 
 public class ConstantValue : SemanticEntity

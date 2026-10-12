@@ -18,8 +18,10 @@ struct RoslynSqlValue {
 };
 static RoslynSqlValue roslyn_ref(sqlite3_int64 n) { return n?RoslynSqlValue(n):RoslynSqlValue(); }
 static int roslyn_tag(const char *family,const char *name) {
-  for(const auto &k:roslyn_catalog) if(std::strcmp(k.family,family)==0&&std::strcmp(k.name,name)==0)return k.id;
-  return 0;
+  size_t first=0,last=sizeof(roslyn_catalog)/sizeof(roslyn_catalog[0]);
+  while(first<last){size_t middle=first+(last-first)/2;const auto &k=roslyn_catalog[middle];int comparison=std::strcmp(k.family,family);if(!comparison)comparison=std::strcmp(k.name,name);if(comparison<0)first=middle+1;else last=middle;}
+  if(first==sizeof(roslyn_catalog)/sizeof(roslyn_catalog[0]))return 0;
+  const auto &k=roslyn_catalog[first];return std::strcmp(k.family,family)==0&&std::strcmp(k.name,name)==0?k.id:0;
 }
 struct RoslynStore {
   sqlite3 *connection=nullptr; bool failed=false; std::string failure;
@@ -27,6 +29,8 @@ struct RoslynStore {
   std::map<std::pair<int,const void*>,sqlite3_int64> identities;
   std::map<std::string,sqlite3_int64> atoms;
   std::map<std::string,sqlite3_stmt*> statements;
+  std::set<sqlite3_int64> persisted_kinds;
+  std::map<std::string,std::set<std::string>> kind_columns;
   ~RoslynStore() { close(); }
   void fail(const std::string &s) { if(!failed) failure=s; failed=true; }
   void close() {
@@ -38,8 +42,27 @@ struct RoslynStore {
     if(sqlite3_exec(connection,s,nullptr,nullptr,&message)!=SQLITE_OK)fail(message?message:sqlite3_errmsg(connection));
     sqlite3_free(message);
   }
-  void put(const char *table,std::initializer_list<std::pair<const char*,RoslynSqlValue>> fields) {
+  void ensure_kind(sqlite3_int64 id) {
+    if(!id||persisted_kinds.count(id))return;
+    for(const auto &entry:roslyn_catalog)if(entry.id==id){
+      persisted_kinds.insert(id);sqlite3_stmt *insert=nullptr;
+      if(sqlite3_prepare_v2(connection,"INSERT OR IGNORE INTO kind(id,family,name) VALUES(?,?,?)",-1,&insert,nullptr)!=SQLITE_OK){fail(sqlite3_errmsg(connection));return;}
+      int rc=sqlite3_bind_int64(insert,1,id);if(rc==SQLITE_OK)rc=sqlite3_bind_text(insert,2,entry.family,-1,SQLITE_STATIC);if(rc==SQLITE_OK)rc=sqlite3_bind_text(insert,3,entry.name,-1,SQLITE_STATIC);if(rc==SQLITE_OK)rc=sqlite3_step(insert);if(rc!=SQLITE_DONE)fail(sqlite3_errmsg(connection));if(sqlite3_finalize(insert)!=SQLITE_OK)fail("kind insert finalize failed");
+      if(sqlite3_prepare_v2(connection,"INSERT OR IGNORE INTO kind_disposition(kind_id,state) VALUES(?,'semantic')",-1,&insert,nullptr)!=SQLITE_OK){fail(sqlite3_errmsg(connection));return;}
+      rc=sqlite3_bind_int64(insert,1,id);if(rc==SQLITE_OK)rc=sqlite3_step(insert);if(rc!=SQLITE_DONE)fail(sqlite3_errmsg(connection));if(sqlite3_finalize(insert)!=SQLITE_OK)fail("kind disposition finalize failed");return;
+    }
+    fail("Unknown shared kind ID");
+  }
+  const std::set<std::string> &kind_foreign_keys(const char *table) {
+    auto found=kind_columns.find(table);if(found!=kind_columns.end())return found->second;
+    std::set<std::string> columns;std::string sql="PRAGMA foreign_key_list("+std::string(table)+")";sqlite3_stmt *query=nullptr;
+    if(sqlite3_prepare_v2(connection,sql.c_str(),-1,&query,nullptr)!=SQLITE_OK)fail(sqlite3_errmsg(connection));
+    else {int rc;while((rc=sqlite3_step(query))==SQLITE_ROW){const char *target=reinterpret_cast<const char*>(sqlite3_column_text(query,2));const char *column=reinterpret_cast<const char*>(sqlite3_column_text(query,3));if(target&&column&&std::strcmp(target,"kind")==0)columns.insert(column);}if(rc!=SQLITE_DONE)fail(sqlite3_errmsg(connection));if(sqlite3_finalize(query)!=SQLITE_OK)fail("FK introspection finalize failed");}
+    return kind_columns.emplace(table,std::move(columns)).first->second;
+  }
+  template<class Fields> void put_fields(const char *table,const Fields &fields) {
     if(failed)return;
+    const auto &kind_fields=kind_foreign_keys(table);for(const auto &field:fields)if(field.second.tag==1&&kind_fields.count(field.first))ensure_kind(field.second.number);if(failed)return;
     std::string sql="INSERT INTO ";sql+=table;sql+='(';bool first=true;
     for(const auto &f:fields){if(!first)sql+=',';first=false;sql+=f.first;}
     sql+=") VALUES (";first=true;for(const auto &f:fields){(void)f;if(!first)sql+=',';first=false;sql+='?';}sql+=')';
@@ -49,6 +72,15 @@ struct RoslynStore {
     if(sqlite3_reset(stmt)!=SQLITE_OK||sqlite3_clear_bindings(stmt)!=SQLITE_OK){fail("SQLite statement reset failed");return;}int i=1;
     for(const auto &f:fields){int rc;if(f.second.tag==0)rc=sqlite3_bind_null(stmt,i);else if(f.second.tag==1)rc=sqlite3_bind_int64(stmt,i,f.second.number);else rc=sqlite3_bind_text(stmt,i,f.second.text.data(),static_cast<int>(f.second.text.size()),SQLITE_TRANSIENT);if(rc!=SQLITE_OK){fail("SQLite bind failed");return;}++i;}
     if(sqlite3_step(stmt)!=SQLITE_DONE)fail(sql+": "+sqlite3_errmsg(connection));
+  }
+  void put(const char *table,std::initializer_list<std::pair<const char*,RoslynSqlValue>> fields) { put_fields(table,fields); }
+  void promote_execution(sqlite3_int64 id,int role) {
+    if(!id||(role!=7001&&role!=7003)||failed)return;
+    const std::string sql="UPDATE semantic_node SET representation_role_id=? WHERE id=? AND representation_role_id=7002";
+    sqlite3_stmt *stmt=nullptr;auto found=statements.find(sql);
+    if(found!=statements.end())stmt=found->second;
+    else {if(sqlite3_prepare_v2(connection,sql.c_str(),-1,&stmt,nullptr)!=SQLITE_OK){fail(sqlite3_errmsg(connection));return;}statements.emplace(sql,stmt);}
+    if(sqlite3_reset(stmt)!=SQLITE_OK||sqlite3_clear_bindings(stmt)!=SQLITE_OK||sqlite3_bind_int(stmt,1,role)!=SQLITE_OK||sqlite3_bind_int64(stmt,2,id)!=SQLITE_OK||sqlite3_step(stmt)!=SQLITE_DONE)fail(sqlite3_errmsg(connection));
   }
   sqlite3_int64 atom(const char *s) { return s?atom(std::string(s)):0; }
   sqlite3_int64 atom(const std::string &s) {

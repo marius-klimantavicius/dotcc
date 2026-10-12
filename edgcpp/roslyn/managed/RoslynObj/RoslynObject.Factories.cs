@@ -15,6 +15,9 @@ public sealed partial class RoslynObject
     internal Lifetime Lifetime(long id) => Cached("lifetime",id,r=>new Lifetime(this,id,r));
     internal TemplateSymbol Template(long id) => Cached("template_definition",id,r=>new TemplateSymbol(this,id,r));
     internal TemplateInstantiation Instance(long id) => Cached("template_instance",id,r=>new TemplateInstantiation(this,id,r));
+    internal TemplateHeader Header(long id) => Cached("template_header",id,r=>new TemplateHeader(this,id,r));
+    internal TemplateParameter TemplateParameter(long id) => Cached("template_parameter",id,r=>new TemplateParameter(this,id,r));
+    internal GenericConstraintClause GenericClause(long id) => Cached("template_generic_constraint_clause",id,r=>new GenericConstraintClause(this,id,r));
     internal TemplateArgument Argument(long id) => Cached("template_argument",id,r=>new TemplateArgument(this,id,r));
     internal SourceInfo Source(long id) => Cached("source_origin",id,r=>new SourceInfo(this,id,r));
     internal SourcePosition Position(long id) => Cached("source_position",id,r=>new SourcePosition(this,id,r));
@@ -31,6 +34,15 @@ public sealed partial class RoslynObject
     internal BaseSubobject Subobject(long id) => Cached("base_subobject",id,r=>new BaseSubobject(this,id,r));
     internal BaseDerivation Derivation(long id) => Cached("base_derivation",id,r=>new BaseDerivation(this,id,r));
     internal RecordLayout Layout(long id) => Cached("record_layout",id,r=>new RecordLayout(this,id,r));
+    internal TypeSymbol TypeSymbol(long id) => Cached<TypeSymbol>("type_symbol",id,r=>Store.Get("enum_symbol",id) is {} enumeration ? new EnumSymbol(this,id,enumeration)
+        : Store.Get("alias_symbol",id) is {} alias ? new AliasSymbol(this,id,alias) : new TypeSymbol(this,id,r));
+    internal EnumSymbol Enum(long id) => TypeSymbol(id) as EnumSymbol ?? throw new IncompatibleObjectException("The relationship does not identify an enum symbol.");
+    internal AliasSymbol Alias(long id) => TypeSymbol(id) as AliasSymbol ?? throw new IncompatibleObjectException("The relationship does not identify an alias symbol.");
+    internal ExceptionHandler Handler(long id) => Cached("handler",id,r=>new ExceptionHandler(this,id,r));
+    internal ParameterType ParameterType(long id) => Cached("parameter_type",id,r=>new ParameterType(this,id,r));
+    internal TokenSequence TokenSequence(long id) => Cached("token_sequence",id,r=>new TokenSequence(this,id,r));
+    internal TemplateSpecialization Specialization(long id) => Cached("template_specialization",id,r=>new TemplateSpecialization(this,id,r));
+    internal EnumeratorSymbol Enumerator(long id) => Cached("symbol",id,r=>new EnumeratorSymbol(this,id,r));
 
     internal Symbol Symbol(long id) => Entity(id) as Symbol
         ?? throw new IncompatibleObjectException("A symbol relationship has an incompatible entity kind.");
@@ -70,13 +82,14 @@ public sealed partial class RoslynObject
         "stmk_goto" or "stmk_return" or "stmk_assigned_goto"=>new JumpOperation(this,id,row),
         "stmk_switch"=>new SwitchOperation(this,id,row), "stmk_try_block"=>new TryOperation(this,id,row),
         "stmk_asm" or "stmk_asm_func_body"=>new AssemblyOperation(this,id,row),
-        "stmk_range_based_for"=>new StatementOperation<RangeForDetails>(this,id,row,"range_for",r=>new(this,r)),
-        "stmk_for_each"=>new StatementOperation<ForEachStatementDetails>(this,id,row,"for_each_statement",r=>new(this,r)),
-        "stmk_microsoft_try"=>new StatementOperation<MicrosoftTryStatementDetails>(this,id,row,"microsoft_try_statement",r=>new(this,r)),
-        "stmk_label"=>new StatementOperation<LabelStatementDetails>(this,id,row,"label_statement",r=>new(this,r)),
-        "stmk_coroutine"=>new StatementOperation<CoroutineDetails>(this,id,row,"coroutine",r=>new(this,r)),
-        "stmk_set_vla_size" or "stmk_vla_decl"=>new StatementOperation<VlaOperationDetails>(this,id,row,"vla_operation",r=>new(this,r)),
-        "stmk_expr" or "stmk_empty" or "stmk_coroutine_return" or "stmk_switch_case" or "stmk_init" or "stmk_decl" or "stmk_upc_notify" or "stmk_upc_wait" or "stmk_upc_barrier" or "stmk_upc_fence" or "stmk_stmt_expr_result"=>new StatementOperation(this,id,row),
+        "stmk_range_based_for"=>new RangeForOperation(this,id,row),
+        "stmk_for_each"=>new ForEachOperation(this,id,row),
+        "stmk_microsoft_try"=>new MicrosoftTryOperation(this,id,row),
+        "stmk_label"=>new LabelOperation(this,id,row),
+        "stmk_coroutine"=>new CoroutineOperation(this,id,row),
+        "stmk_set_vla_size" or "stmk_vla_decl"=>new VlaStatementOperation(this,id,row),
+        "stmk_decl"=>new DeclarationOperation(this,id,row),
+        "stmk_expr" or "stmk_empty" or "stmk_coroutine_return" or "stmk_switch_case" or "stmk_init" or "stmk_upc_notify" or "stmk_upc_wait" or "stmk_upc_barrier" or "stmk_upc_fence" or "stmk_stmt_expr_result"=>new StatementOperation(this,id,row),
         _=>throw new IncompatibleObjectException("The required statement kind is unsupported.")
     };
 
@@ -89,16 +102,17 @@ public sealed partial class RoslynObject
         "enk_throw"=>new ThrowOperation(this,id,row), "enk_await" or "enk_yield"=>new AwaitOperation(this,id,row),
         "enk_new_delete" or "enk_gcnew"=>new AllocationOperation(this,id,row), "enk_lambda"=>new LambdaOperation(this,id,row),
         "enk_lowered_eh_construct"=>Store.Get("cleanup_state_operation",id) is not null ? new CleanupStateOperation(this,id,row) : new LoweredEhOperation(this,id,row),
-        "enk_temp_init"=>new ExpressionOperation<TemporaryExpressionDetails>(this,id,row,"temporary_expression",r=>new(this,r)),
-        "enk_condition"=>new ExpressionOperation<ConditionExpressionDetails>(this,id,row,"condition_expression",r=>new(this,r)),
-        "enk_object_lifetime"=>new ExpressionOperation<LifetimeExpressionDetails>(this,id,row,"lifetime_expression",r=>new(this,r)),
-        "enk_typeid" or "enk_sizeof" or "enk_runtime_sizeof" or "enk_alignof" or "enk_datasizeof" or "enk_type_operand"=>new ExpressionOperation<TypeQueryExpressionDetails>(this,id,row,"type_query_expression",r=>new(this,r)),
-        "enk_statement"=>new ExpressionOperation<StatementExpressionDetails>(this,id,row,"statement_expression",r=>new(this,r)),
-        "enk_reuse_value"=>new ExpressionOperation<ReuseExpressionDetails>(this,id,row,"reuse_expression",r=>new(this,r)),
-        "enk_vla_dealloc"=>new ExpressionOperation<VlaOperationDetails>(this,id,row,"vla_operation",r=>new(this,r)),
-        "enk_builtin_operation" or "enk_c11_generic" or "enk_builtin_choose_expr"=>new ExpressionOperation<BuiltinExpressionDetails>(this,id,row,"builtin_expression",r=>new(this,r)),
-        "enk_param_ref"=>new ExpressionOperation<ParameterReferenceExpressionDetails>(this,id,row,"parameter_reference_expression",r=>new(this,r)),
-        "enk_sizeof_pack" or "enk_braced_init_list" or "enk_fold" or "enk_initializer" or "enk_concept_id" or "enk_requires" or "enk_compound_req" or "enk_nested_req" or "enk_const_eval_deferred" or "enk_template_name" or "enk_token_sequence" or "enk_pack_index"=>new ExpressionOperation<DependentExpressionDetails>(this,id,row,"dependent_expression",r=>new(this,r)),
+        "enk_temp_init"=>new TemporaryOperation(this,id,row),
+        "enk_condition"=>new ConditionOperation(this,id,row),
+        "enk_object_lifetime"=>new LifetimeOperation(this,id,row),
+        "enk_type_operand"=>new TypeOperandOperation(this,id,row),
+        "enk_typeid" or "enk_sizeof" or "enk_runtime_sizeof" or "enk_alignof" or "enk_datasizeof"=>new TypeQueryOperation(this,id,row),
+        "enk_statement"=>new StatementExpressionOperation(this,id,row),
+        "enk_reuse_value"=>new ReuseOperation(this,id,row),
+        "enk_vla_dealloc"=>new VlaExpressionOperation(this,id,row),
+        "enk_builtin_operation" or "enk_c11_generic" or "enk_builtin_choose_expr"=>new BuiltinOperation(this,id,row),
+        "enk_param_ref"=>new ParameterReferenceOperation(this,id,row),
+        "enk_sizeof_pack" or "enk_braced_init_list" or "enk_fold" or "enk_initializer" or "enk_concept_id" or "enk_requires" or "enk_compound_req" or "enk_nested_req" or "enk_const_eval_deferred" or "enk_template_name" or "enk_token_sequence" or "enk_pack_index"=>new DependentOperation(this,id,row),
         "enk_address_of_ellipsis" or "enk_result_of_overriding_function"=>new ExpressionOperation(this,id,row),
         _=>throw new IncompatibleObjectException("The required expression kind is unsupported.")
     };
@@ -129,8 +143,9 @@ public sealed partial class RoslynObject
         {
             "constant"=>Constant(id),
             "constant_value"=>Value(id),
-            "handler"=>new SemanticRecord<HandlerDetails>(this,id,Detail("handler",id,r=>new HandlerDetails(this,r))),
-            "template_header"=>new SemanticRecord<TemplateHeaderDetails>(this,id,Detail("template_header",id,r=>new TemplateHeaderDetails(this,r))),
+            "handler"=>Handler(id),
+            "generic_constraint_clause"=>GenericClause(id),
+            "template_header"=>Header(id),
             "lambda_definition"=>new SemanticRecord<LambdaDefinitionDetails>(this,id,Detail("lambda_definition",id,r=>new LambdaDefinitionDetails(this,r))),
             "translation_unit"=>Unit(id),
             "namespace"=>Namespace(id),
@@ -139,6 +154,7 @@ public sealed partial class RoslynObject
             "field"=>Field(id),
             "label"=>Label(id),
             "type"=>Type(id),
+            "type_symbol"=>TypeSymbol(id),
             "declaration"=>Declaration(id),
             "scope"=>Scope(id),
             "expression"=>Expression(id),
@@ -163,18 +179,20 @@ public sealed partial class RoslynObject
             "cleanup_abi"=>AbiDetail(id),
             "name"=>new SemanticRecord<NameDetails>(this,id,Detail("name",id,r=>new NameDetails(this,r))),
             "symbol"=>new Symbol(this,id),
-            "enum"=>Cached("enum_symbol",id,r=>new EnumSymbol(this,id,r)),
-            "alias"=>Cached("alias_symbol",id,r=>new AliasSymbol(this,id,r)),
+            "enum"=>Enum(id),
+            "enumerator_symbol"=>Enumerator(id),
+            "alias"=>Alias(id),
             "using"=>new SemanticRecord<UsingDeclarationDetails>(this,id,Detail("using_declaration",id,r=>new UsingDeclarationDetails(this,r))),
             "temporary"=>new SemanticRecord<TemporaryDetails>(this,id,Detail("temporary",id,r=>new TemporaryDetails(this,r))),
             "base_derivation"=>Derivation(id),
             "base_subobject"=>Subobject(id),
-            "template_parameter"=>new SemanticRecord<TemplateParameterDetails>(this,id,Detail("template_parameter",id,r=>new TemplateParameterDetails(this,r))),
-            "template_specialization"=>new SemanticRecord<TemplateSpecializationDetails>(this,id,Detail("template_specialization",id,r=>new TemplateSpecializationDetails(this,r))),
+            "template_parameter"=>TemplateParameter(id),
+            "template_specialization"=>Specialization(id),
             "include_occurrence"=>new SemanticRecord<IncludeOccurrenceDetails>(this,id,Detail("include_occurrence",id,r=>new IncludeOccurrenceDetails(this,r))),
             "source_mapping"=>new SemanticRecord<SourceMappingSegmentDetails>(this,id,Detail("source_mapping_segment",id,r=>new SourceMappingSegmentDetails(this,r))),
             "source_attachment"=>new SemanticRecord<SourceAttachmentDetails>(this,id,Detail("source_attachment",id,r=>new SourceAttachmentDetails(this,r))),
             "attribute"=>new SemanticRecord<AttributeDetails>(this,id,Detail("attribute",id,r=>new AttributeDetails(this,r))),
+            "attribute_group"=>new SemanticRecord<AttributeGroupDetails>(this,id,Detail("attribute_group",id,r=>new AttributeGroupDetails(this,r))),
             "subobject_path"=>new SemanticRecord<SubobjectPathDetails>(this,id,Detail("subobject_path",id,r=>new SubobjectPathDetails(this,r))),
             "name_reference"=>new SemanticRecord<NameReferenceDetails>(this,id,Detail("name_reference",id,r=>new NameReferenceDetails(this,r))),
             "exception_specification"=>new SemanticRecord<ExceptionSpecificationDetails>(this,id,Detail("exception_specification",id,r=>new ExceptionSpecificationDetails(this,r))),
@@ -182,6 +200,11 @@ public sealed partial class RoslynObject
             "vla_dimension"=>new SemanticRecord<VlaDimensionDetails>(this,id,Detail("vla_dimension",id,r=>new VlaDimensionDetails(this,r))),
             "coroutine"=>new SemanticRecord<CoroutineDetails>(this,id,Detail("coroutine",id,r=>new CoroutineDetails(this,r))),
             "function_eh"=>new SemanticRecord<FunctionEhDetails>(this,id,Detail("function_eh",id,r=>new FunctionEhDetails(this,r))),
+            "static_assertion"=>new SemanticRecord<StaticAssertionDetails>(this,id,Detail("static_assertion",id,r=>new StaticAssertionDetails(this,r))),
+            "name_qualifier"=>new SemanticRecord<NameQualifierDetails>(this,id,Detail("name_qualifier",id,r=>new NameQualifierDetails(this,r))),
+            "orphan_scope"=>new SemanticRecord<OrphanScopeDetails>(this,id,Detail("orphan_scope",id,r=>new OrphanScopeDetails(this,r))),
+            "token_sequence"=>TokenSequence(id),
+            "parameter_type"=>ParameterType(id),
             _=>throw new IncompatibleObjectException("A required entity kind is unsupported.")
         };
     }

@@ -23,7 +23,7 @@ INSERT INTO entity(id,kind_id) SELECT value, k.id FROM
   UNION ALL SELECT 93,'template_parameter' UNION ALL SELECT 94,'name'
   UNION ALL SELECT 100,'constant_value' UNION ALL SELECT 101,'constant' UNION ALL SELECT 102,'type'
   UNION ALL SELECT 105,'type' UNION ALL SELECT 106,'type' UNION ALL SELECT 103,'constant_value' UNION ALL SELECT 104,'constant'
-  UNION ALL SELECT 150,'expression') a JOIN kind k ON k.family='entity' AND k.name=a.name;
+  UNION ALL SELECT 150,'expression' UNION ALL SELECT 170,'parameter_type') a JOIN kind k ON k.family='entity' AND k.name=a.name;
 INSERT INTO target_profile(id,abi_id,addressable_unit_bits,little_endian,pointer_bits,pointer_alignment)
  VALUES(1,(SELECT id FROM kind WHERE family='abi' AND name='itanium'),8,1,64,'8');
 INSERT INTO scope(id,kind_id,parent_id,associated_entity_id)
@@ -51,15 +51,16 @@ INSERT INTO arithmetic_type(id,arithmetic_kind_id,bits,signed,precision,radix) V
  (106,(SELECT id FROM kind WHERE family='arithmetic_kind' AND name='unsigned_integer'),16,0,16,2);
 INSERT INTO array_type(id,element_type_id,bound_kind_id,bound) VALUES(105,106,(SELECT id FROM kind WHERE family='bound_kind' AND name='constant'),'3');
 INSERT INTO routine_type(id,result_type_id) VALUES(4,3);
-INSERT INTO routine_type_parameter(owner_id,ordinal,type_id,role_id)
- VALUES(4,0,3,(SELECT id FROM kind WHERE family='role' AND name='ordinary_parameter'));
+INSERT INTO parameter_type(id,type_id,parameter_number) VALUES(170,3,1);
+INSERT INTO routine_type_parameter(owner_id,ordinal,parameter_type_id,role_id)
+ VALUES(4,0,170,(SELECT id FROM kind WHERE family='role' AND name='ordinary_parameter'));
 INSERT INTO symbol(id,kind_id,name_id,containing_entity_id,type_id) SELECT a.id,k.id,name_id,owner_id,type_id
  FROM (SELECT 6 id,'routine' n,5 name_id,1 owner_id,4 type_id UNION ALL SELECT 20,'routine',21,1,4
  UNION ALL SELECT 7,'variable',8,6,3 UNION ALL SELECT 42,'field',43,40,3) a JOIN kind k ON k.family='entity' AND k.name=a.n;
 INSERT INTO routine_symbol(id,routine_type_id,body_root_id,body_scope_id,body_state_id) VALUES
  (6,4,10,9,(SELECT id FROM kind WHERE family='body_state' AND name='definition')),
  (20,4,NULL,NULL,(SELECT id FROM kind WHERE family='body_state' AND name='declaration_only'));
-INSERT INTO variable_symbol(id,type_id,is_parameter) VALUES(7,3,1);
+INSERT INTO variable_symbol(id,type_id,is_parameter,initialization_kind_id) VALUES(7,3,1,(SELECT id FROM kind WHERE family='initializer' AND name='initk_none'));
 INSERT INTO routine_parameter(owner_id,ordinal,parameter_id,role_id,is_source_parameter)
  VALUES(6,0,7,(SELECT id FROM kind WHERE family='role' AND name='ordinary_parameter'),1);
 INSERT INTO scope_member VALUES(2,0,6),(2,1,20),(2,2,40),(9,0,7);

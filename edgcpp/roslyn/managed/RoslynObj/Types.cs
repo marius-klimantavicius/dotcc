@@ -9,14 +9,21 @@ public class CppType : SemanticEntity
     public string? Name => Object.Name(Object.Store.Required("type", Id).OptionalLong("name_id"));
     public BigInteger Size => Details.Size;
     public BigInteger Alignment => Details.Alignment;
+    public BigInteger DescriptorSize => Details.DescriptorSize ?? Size;
+    public BigInteger DescriptorAlignment => Details.DescriptorAlignment ?? Alignment;
     public bool IsIncomplete => Details.Incomplete;
     public bool IsDependent => Details.IsDependent;
     public SourceInfo? Source => Details.SourceOrigin;
     public CppType? CanonicalType => Details.CanonicalType;
     public CppType? DeclaredType => Details.DeclaredType;
-    public IReadOnlyList<Symbol> Members => Object.List("SELECT s.* FROM symbol s WHERE s.containing_entity_id=$owner ORDER BY s.id", Id, r => Object.Symbol(r.Long("id")), "symbol");
+    public TypeSymbol? DeclarationSymbol => Details.Symbol;
+    public IReadOnlyList<Symbol> Members => Object.List("SELECT s.* FROM symbol s WHERE s.containing_entity_id=$owner OR s.id IN (SELECT id FROM field_symbol WHERE record_type_id=$owner UNION SELECT id FROM routine_symbol WHERE containing_type_id=$owner) ORDER BY s.id", Id, r => Object.Symbol(r.Long("id")), "symbol");
     public IReadOnlyList<FieldSymbol> Fields => Object.List("SELECT * FROM field_symbol WHERE record_type_id=$owner ORDER BY id", Id, r => Object.Field(r.Long("id")), "field_symbol");
     public IReadOnlyList<FunctionSymbol> Methods => Object.List("SELECT * FROM routine_symbol WHERE containing_type_id=$owner ORDER BY id", Id, r => Object.Function(r.Long("id")), "routine_symbol");
+    public virtual TemplateInstantiation? Instantiation => null;
+    public IReadOnlyList<TemplateArgument> TemplateArguments => Instantiation?.Arguments ?? [];
+    public IReadOnlyList<CppType> TypeArguments => Instantiation?.TypeArguments ?? [];
+    public TemplateSymbol? Template => Instantiation?.OriginalDefinition;
     public RecordLayout? Layout => Object.Store.Query("SELECT id FROM record_layout WHERE type_id=$owner", Id).FirstOrDefault() is { } row ? Object.Layout(row.Long("id")) : null;
     public IReadOnlyList<DirectBaseDetails> Bases => Object.List("SELECT * FROM direct_base WHERE owner_id=$owner ORDER BY ordinal", Id, r => new DirectBaseDetails(Object, r));
     public IReadOnlyList<BaseSubobject> BaseSubobjects => Object.List("SELECT * FROM base_subobject WHERE most_derived_type_id=$owner ORDER BY id", Id, r => Object.Subobject(r.Long("id")), "base_subobject");
@@ -33,11 +40,11 @@ public sealed class ArithmeticType : CppType
     public ArithmeticTypeDetails Arithmetic => Object.Detail("arithmetic_type", Id, r => new ArithmeticTypeDetails(Object, r));
 }
 
-public sealed class QualifiedType : CppType
+public sealed class QualifiedType : TypeReference
 {
     internal QualifiedType(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
     public QualifiedTypeDetails Qualification => Object.Detail("qualified_type", Id, r => new QualifiedTypeDetails(Object, r));
-    public CppType UnderlyingType => Qualification.UnderlyingType;
+    public new CppType UnderlyingType => Qualification.UnderlyingType;
     public bool IsConst => Qualification.IsConst;
     public bool IsVolatile => Qualification.IsVolatile;
 }
@@ -65,7 +72,7 @@ public sealed class RoutineType : CppType
     internal RoutineType(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
     public RoutineTypeDetails Routine => Object.Detail("routine_type", Id, r => new RoutineTypeDetails(Object, r));
     public CppType ReturnType => Routine.ResultType;
-    public IReadOnlyList<RoutineTypeParameterDetails> Parameters => Object.List("SELECT * FROM routine_type_parameter WHERE owner_id=$owner ORDER BY ordinal", Id, r => new RoutineTypeParameterDetails(Object, r));
+    public IReadOnlyList<SignatureParameter> Parameters => Object.List("SELECT p.*,t.owner_id,t.ordinal,t.parameter_type_id,t.role_id,t.base_subobject_id FROM routine_type_parameter t JOIN parameter_type p ON p.id=t.parameter_type_id WHERE t.owner_id=$owner ORDER BY t.ordinal", Id, r => new SignatureParameter(Object, r),"parameter_type");
     public ExceptionSpecificationDetails? ExceptionSpecification => Routine.ExceptionSpecification;
 }
 
@@ -74,23 +81,22 @@ public class RecordType : CppType
     internal RecordType(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
     public RecordTypeDetails Record => Object.Detail("record_type", Id, r => new RecordTypeDetails(Object, r));
     public CppType? SubobjectPartner => Record.SubobjectPartner;
-    public TemplateInstantiation? Instantiation => Record.Instance;
+    public override TemplateInstantiation? Instantiation => Record.Instance;
 }
 
 public sealed class ConstructedType : RecordType
 {
     internal ConstructedType(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
     public TemplateSymbol? OriginalDefinition => Instantiation?.OriginalDefinition;
-    public TemplateSymbol? Template => OriginalDefinition;
-    public IReadOnlyList<TemplateArgument> TemplateArguments => Instantiation?.Arguments ?? [];
-    public IReadOnlyList<CppType> TypeArguments => Instantiation?.TypeArguments ?? [];
+
 }
 
-public sealed class TypeReference : CppType
+public class TypeReference : CppType
 {
     internal TypeReference(RoslynObject owner, long id, Row row) : base(owner, id, row) { }
     public TypeReferenceDetails Reference => Object.Detail("type_reference", Id, r => new TypeReferenceDetails(Object, r));
     public CppType UnderlyingType => Reference.UnderlyingType;
+    public override TemplateInstantiation? Instantiation => Reference.Instance;
 }
 
 public sealed class VectorType : CppType

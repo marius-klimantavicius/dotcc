@@ -24,20 +24,27 @@ models = {
     'initialization':('Initialization','Initialization'), 'lifetime':('Lifetime','Lifetime'),
     'template_definition':('TemplateSymbol','Template'), 'template_instance':('TemplateInstantiation','Instance'),
     'template_argument':('TemplateArgument','Argument'),
+    'template_header':('TemplateHeader','Header'), 'template_parameter':('TemplateParameter','TemplateParameter'),
+    'template_generic_constraint_clause':('GenericConstraintClause','GenericClause'),
     'source_origin':('SourceInfo','Source'), 'source_position':('SourcePosition','Position'),
     'source_range':('SourceRange','Range'), 'source_file':('SourceFile','File'),
     'macro_definition':('MacroDefinition','MacroDefinition'), 'macro_invocation':('MacroInvocation','MacroInvocation'),
     'cleanup_region':('CleanupRegion','Region'), 'cleanup_action':('CleanupAction','Action'),
     'cleanup_storage_location':('CleanupStorageLocation','Storage'), 'cleanup_array':('CleanupArray','Array'),
     'cleanup_condition':('CleanupCondition','Condition'), 'cleanup_abi_detail':('CleanupAbiDetail','AbiDetail'),
-    'record_layout':('RecordLayout','Layout'),
+    'record_layout':('RecordLayout','Layout'), 'type_symbol':('TypeSymbol','TypeSymbol'),
+    'handler':('ExceptionHandler','Handler'),
+    'parameter_type':('ParameterType','ParameterType'), 'token_sequence':('TokenSequence','TokenSequence'),
+    'enum_symbol':('EnumSymbol','Enum'), 'alias_symbol':('AliasSymbol','Alias'),
+    'template_specialization':('TemplateSpecialization','Specialization'),
     'base_subobject':('BaseSubobject','Subobject'), 'base_derivation':('BaseDerivation','Derivation')
 }
 booleans = {'compiler_generated','negative','nan_quiet','signed','incomplete','implicit','result_unused','initialization_guard',
     'generated_default_argument','volatile_fetch','type_definition_needed','boolean_not_normalized',
     'selection_known','selected_then','one_past_end','frees_storage','frees_array','throw_any',
-    'noexcept_effective','noexcept_required','result','required','enabled','passed_indirectly','complete'}
-numeric_text = {'state_number','initial_state','null_state','size','alignment','offset','bound','length','count','adjustment','return_adjustment',
+    'noexcept_effective','noexcept_required','result','required','enabled','passed_indirectly','complete',
+    'fold_left_associative','reattempt_default_argument','reattempt_default_member_initializer'}
+numeric_text = {'scope_number','num_template_arguments','deduced_array_bound','state_number','initial_state','null_state','size','alignment','offset','bound','length','count','adjustment','return_adjustment',
     'slot','index_value','range_end','element_offset','comparison_value','delegation_argument',
     'sequence','original_sequence','first_sequence','last_sequence','logical_line','physical_line',
     'integer_argument','integer_value','pointer_alignment','shared_block_size'}
@@ -97,7 +104,7 @@ for table, block in blocks:
         for child,childblock in blocks:
             cols={m.group(1):m.group(2) for m in re.finditer(r'^  (\w+) (INTEGER|TEXT)',childblock,re.M)}
             ownercol=None
-            for candidate in ('owner_id','template_id','try_id','region_id','function_eh_id'):
+            for candidate in ('owner_id','template_id','header_id','base_subobject_id','try_id','region_id','function_eh_id'):
                 if re.search(rf'^  {candidate} INTEGER REFERENCES {table}\(id\)',childblock,re.M):
                     ownercol=candidate
                     break

@@ -2,6 +2,8 @@
 
 **Implementation approved by the user, 2026-10-12:** phases 3–4 are now authorized through M0–M5. Historical proposal language below records the reviewed design; current evidence and remaining work are tracked in `../roslyn/docs/IMPLEMENTATION.md`.
 
+**Subsequent user scope change (2026-10-12):** C++/CLI and C++/CX implementation and metadata/profile acceptance are excluded. Native Microsoft C++ extensions remain required. Managed-dialect sections below are historical design material and do not impose current implementation gates.
+
 Status: approved design; phases 3–4 implementation is in progress. This revision follows the user's preference for EDG to do general C++ lowering, leaving only deliberately selected residual operations that a future C# backend can implement without redoing deep C++ semantic decisions. Evidence comes from pristine EDG commit `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`, checkout `/tmp/roslynobj-edg-upstream-20261012`. All `src/...:line` citations refer to that revision. No previous object exporter/linker implementation or its findings were used. No core EDG changes or prelower snapshot hook are proposed.
 
 ## 1. Chosen boundary and authority

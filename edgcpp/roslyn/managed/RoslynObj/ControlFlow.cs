@@ -51,7 +51,19 @@ public sealed class TryOperation : StatementOperation
     internal TryOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public TryStatementDetails Try => Object.Detail("try_statement",Id,r=>new TryStatementDetails(Object,r));
     public StatementOperation Body => Try.Body;
-    public IReadOnlyList<HandlerDetails> Handlers => Object.List("SELECT * FROM handler WHERE try_id=$owner ORDER BY ordinal",Id,r=>new HandlerDetails(Object,r),"handler");
+    public IReadOnlyList<ExceptionHandler> Handlers => Object.List("SELECT * FROM handler WHERE try_id=$owner ORDER BY ordinal",Id,r=>Object.Handler(r.Long("id")),"handler");
+}
+
+public sealed class ExceptionHandler : SemanticEntity
+{
+    internal ExceptionHandler(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
+    public HandlerDetails Details { get; }
+    public StatementOperation Body => Details.Body;
+    public CppType? CaughtType => Details.CaughtType;
+    public VariableSymbol? Parameter => Details.Parameter;
+    public Initialization? ParameterInitialization => Details.ParameterInitialization;
+    public Lifetime? Lifetime => Details.Lifetime;
+    public SourcePosition? Source => Details.SourcePosition;
 }
 
 public sealed class AssemblyOperation : StatementOperation
@@ -91,9 +103,17 @@ public sealed class AllocationOperation : ExpressionOperation
     public AllocationExpressionDetails Allocation => Object.Detail("allocation_expression",Id,r=>new AllocationExpressionDetails(Object,r));
     public FunctionSymbol? Allocator => Allocation.Allocator;
     public FunctionSymbol? Deallocator => Allocation.Deallocator;
-    public FunctionSymbol? Constructor => Allocation.Constructor;
-    public FunctionSymbol? Destructor => Allocation.Destructor;
+    public FunctionSymbol? Constructor => Allocation.Constructor ?? Initialization?.Constructor;
+    public FunctionSymbol? Destructor => Allocation.Destructor ?? Initialization?.Destructor;
     public Initialization? Initialization => Allocation.Initialization;
+    public Initialization? ExceptionFreeing => Allocation.ExceptionFreeing;
+    public CppType? AllocatedType => Allocation.AllocatedType;
+    public ExpressionOperation? ArrayCount => Allocation.ArrayCount;
+    public ExpressionOperation? Operand => Allocation.Operand;
+    public bool IsDelete => Allocation.IsDelete;
+    public bool IsArray => Allocation.IsArray;
+    public bool IsPlacement => Allocation.IsPlacement;
+    public IReadOnlyList<ExpressionOperation> Arguments => Object.List("SELECT e.* FROM allocation_argument a JOIN expression e ON e.id=a.expression_id WHERE a.owner_id=$owner ORDER BY a.ordinal",Id,r=>Object.Expression(r.Long("id")),"expression");
 }
 
 public sealed class LambdaOperation : ExpressionOperation

@@ -65,16 +65,17 @@ def members(owner,start,end,path=''):
                 field=path+name.group(1)
                 disposition='pending'
                 reason='Requires guarded field-to-relation audit and extraction evidence.'
-                if name.group(1) in ('next','prev','previous','last','tail'):
-                    disposition='list_plumbing'
-                    reason='Ordered relations replace linked-list traversal storage; verify ordering at adapter.'
+                # Member spelling cannot determine semantics. In particular,
+                # numeric "last" values may be meaningful range endpoints.
+                # Linked-list exclusions require an explicit typed adapter and
+                # comment/ordering audit in the maintained worksheet.
                 if field in ('variant.typeref.orig_type','variant.routine.unlowered_type') or name.group(1)=='destructible_entity_descr':
                     disposition='excluded_private'
                     reason='Approved contract forbids backend use of lowering-private or freed state.'
                 rows.append([owner,field,guard(pos),'src/il_def.h:'+str(raw.count('\n',0,pos)+1),disposition,'','','',reason])
             declaration=i+1
         i+=1
-for m in re.finditer(r'typedef\s+struct\s+(\w+)\s*\{',source):
+for m in re.finditer(r'(?:typedef\s+)?struct\s+(\w+)\s*\{',source):
     start=m.end()-1; end=close_brace(start)
     members(m.group(1),start+1,end)
 existing={}

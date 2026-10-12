@@ -4,6 +4,11 @@ The initial exporter→reader checkpoint is verified. Phases 3–4 remain in
 progress until all M0–M5 gates and field/kind coverage rows are satisfied.
 The items below are required work, not optional exporter omissions.
 
+The user subsequently excluded C++/CLI support; C++/CLI and C++/CX implementation
+and metadata/profile gates are outside the revised task. Native Microsoft C++
+extensions remain required. This explicit scope change does not relax other
+remaining acceptance work.
+
 ## Native adapters and profiles
 
 - Complete every retained common semantic field and active union arm in
@@ -21,15 +26,16 @@ The items below are required work, not optional exporter omissions.
   discriminants and sparse used-kind catalog publication.
 - Complete coroutine protocols and enabled GNU/MS/UPC/vector/fixed-point and
   other pinned-source extension families, including retained dependent metadata.
-- Build and probe all approved compatibility profiles: primary lowered native,
-  source-semantic CLI/CX/Microsoft ABI, cfront/assignment-to-this and legacy
-  exported templates. Stock CLI/CX suppression cannot be bypassed by a flag.
-  Linux portable-assembly import needs legitimate EDG portable metadata; ordinary
-  PE import requires stock Windows metadata integration. Report operational
-  upstream constraints with exact evidence while preserving profile obligations.
+- Build and probe all remaining approved compatibility profiles: primary lowered
+  native, source-semantic native Microsoft ABI, cfront/assignment-to-this and
+  legacy exported templates. C++/CLI/CX and metadata imports are excluded by the
+  user's subsequent instruction.
+- Resolve exact ABI provenance: distinguish cfront-like from USL cfront 2.1/3.0
+  compatibility and record runtime ABI flags. Microsoft pointer-member sizing
+  alone must not label a full Microsoft ABI profile.
 - Finish native host portability and callable-host resource integration where
   required; initial CLI publication is POSIX. Explicit CXX language configuration
-  for the new backend is a pending preparation correction.
+  for the new backend is implemented and verified by independent compilation.
 
 ## Exception and source evidence
 
@@ -45,6 +51,10 @@ The items below are required work, not optional exporter omissions.
 - Complete retained source ranges/history/declarations/macros and optional
   availability facts; token/trivia/paste lineage is not retained stock IL and must
   remain explicitly unavailable, never reconstructed.
+- Named class/enum/typedef symbols must navigate to descriptors; genuine retained
+  declaration occurrences project semantic nodes without invented source records.
+  Scope discriminants must remain exact rather than defaulting unhandled kinds to
+  block. Exhaustive mappings and corresponding navigation fixtures remain required.
 - Complete value sharing across applicable exact families while retaining
   distinct occurrence, addressable storage and source identities. String units
   explicitly distinguish target bytes from target character units.
@@ -56,7 +66,10 @@ The items below are required work, not optional exporter omissions.
 
 - Integrate new native family output through ordinary property navigation,
   not only generated detail rows. Initializers and statements are executable
-  operations; metadata/callees/types remain outside execution containment.
+  operations; metadata/callee routine definitions/types remain outside execution containment.
+- Complete useful typed visitor dispatch and cast helpers for the expanded named
+  operations and declarations, with actual dispatch assertions. Generic operation
+  callbacks alone do not close the approved typed visitor surface.
 - Finish bounded batch loading/query-count measurements on large real inputs;
   maximum page-size companion batches are capped at 900 parameters and prefetch
   is bounded. Verify cache eviction, concurrent disposal and independent TUs.

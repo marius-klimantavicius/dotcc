@@ -2,6 +2,8 @@
 
 **Implementation approved by the user, 2026-10-12:** phases 3–4 are now authorized through M0–M5. Historical proposal language below records the reviewed design; current evidence and remaining work are tracked in `../roslyn/docs/IMPLEMENTATION.md`.
 
+**Subsequent user scope change (2026-10-12):** C++/CLI and C++/CX implementation and metadata/profile acceptance are excluded. Native Microsoft C++ extensions remain required. Managed-dialect sections below are historical design material and do not impose current implementation gates.
+
 Approved design, 2026-10-12. Implementation authorization is recorded above. This is a new `.roslynobj` reader API with no dependency on `Microsoft.CodeAnalysis`, no managed C++ semantic analyzer, and no translator. Provenance evidence below pins pristine `edgcpp/compiler` revision `89e67e07c7f6d0fc38622f9778d8e79f40deaa0f`. Names and signatures specify the approved API; implemented coverage is recorded in the implementation ledger.
 
 ## Public model
