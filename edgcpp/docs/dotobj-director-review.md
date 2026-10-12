@@ -145,3 +145,55 @@ and declarations for this exact ABI storage instead of inventing a table or
 requiring libc++ implementation before source emission. Keep strict mode and
 the external provider's stable-address obligation explicit. Whole-project
 catalog loading remains an open memory-scaling issue; measure bounded batches.
+
+The bounded core batch totals eight distinct attempted units: three complete
+exports (Chimp constants, checksum, exceptions) and five explicit rejections.
+The rejected probes complete in 0.67–1.12 seconds with 240–339 MiB peak RSS.
+The four distinct boundaries are virtual deletion (`hugeint`), dynamic local
+static initialization (`allocator`), multi-declarator initialization (`date`
+and `string_util`), and string default member initialization (`buffer_manager`).
+Prioritize the shared declaration case. Located second probes show two source
+declarators followed immediately by their exact two selected initialization
+actions. Extend existing fusion only over that matching contiguous sequence;
+do not move initialization across intervening executable statements.
+
+Chimp's compact span output independently passes the original 141-byte data
+oracle and eight stable addresses in native/C#/NativeAOT, with identical result
+hashes. The required virtual-table provider candidate preserves link identity,
+selected address point and entry size; its contract requires stable storage and
+generated managed-call signatures. A selected virtual callee is metadata for
+dispatch, so it must not itself require a direct-call partial implementation.
+Preserve imports for genuine direct calls or function addresses. The focused
+proof must obtain its table from a genuine separately translated provider TU,
+without fabricating slots or treating a native table as a managed table.
+
+The selected external virtual-table milestone is now committed as `3c733387b`.
+Its focused proof obtains the table from a real separately translated provider;
+strict mode still rejects unresolved storage. Checksum generated-v3 passes that
+boundary and zero-extent fields, then reaches a blanket virtual-base record
+emission guard for `basic_ostream`. The two relevant record types have recorded
+size 160/alignment 8 and no ordinary fields, with recorded base subobjects.
+Separate physical record declaration from unsupported dynamic virtual-base
+operations. Preserve hidden base/vptr bytes through managed value copies, and
+retain the recorded alignment instead of introducing only byte-aligned storage.
+
+Independently inspected `record-constructor-components-v1` generated source:
+constructors receive `&(holder).view` directly and the constructor stores that
+same address in `self`. The worker proof passes native/source-hidden C#/NativeAOT,
+including ordered argument effects and a throwing constructor. The exact selected
+initializer and constructor IDs are retained; no copied temporary is substituted.
+The actual date probe now joins hugeint/string_util at virtual deleting destruction.
+
+Independently inspected the corrected `zero-extent-fields-v2` generated source
+and retained proof logs. A named pointer property denotes the source zero-sized
+field at byte offset 1 without creating storage; size 24, adjacent fields/canaries
+and pinned-global addresses survive the tested GC passes. The v1 fixture remains
+an explicitly failed folded global-subobject relocation probe, not part of this
+coverage claim. No wall-time/RSS measurement was recorded for the v2 proof.
+
+Prepared the next allocator boundary by inspecting its actual local static
+`shared_ptr<Allocator>` and stock lower_init.c guard/lifetime sequence. Reuse the
+existing shared BCL CppGuards runtime and exact stock guard observations through
+compact relational references. Initialization failure must allow retry; persistent
+destruction must not be attached to the enclosing function's scope cleanup.
+This is next-work guidance, not implemented relational local-static support.

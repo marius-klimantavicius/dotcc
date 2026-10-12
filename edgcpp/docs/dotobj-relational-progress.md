@@ -9,15 +9,19 @@ The compact SQLite format is schema 1025 / 44 tables. Eight distinct original
 DuckDB core TUs have been attempted with their original manifest modes/options;
 three export completely: data-only Chimp constants, functional checksum and
 exception. Chimp generates complete C# and passes native/C#/NativeAOT data/address
-checks. Its three tables now use typed span literals and `CopyTo`. Checksum and
-exception source generation is pending exact external virtual-table providers.
+checks. Its three tables now use typed span literals and `CopyTo`. Exact external
+virtual-table providers are implemented and verified. Checksum source generation
+now reaches physical complete-record storage for virtual-base stream types;
+its current output remains partial. Exception C# coverage remains pending.
 Bundled ICU independently exports/emits all 14 bodies and passes 33 UTF differential
 cases plus seven genuine provider adapters; it does not count as a core TU.
 
-Current exporter boundaries are virtual deleting destruction (hugeint), dynamic
-function-local static initialization (allocator), contiguous multideclarator
-initialization (shared date/string), and owned string default-member initialization
-(buffer manager). The bounded batch retained every command/pin/failure; no full-corpus
+Current exporter boundaries are virtual deleting destruction (shared hugeint,
+date and string), dynamic function-local static initialization (allocator), and
+owned string default-member initialization (buffer manager). Contiguous declaration
+groups, cleanup-free record constructor components and named zero-extent fields
+are now verified (`4e608e8da`, `bf5176bbf`, `dc0a6e650`); virtual-table providers are
+`3c733387b`. The bounded batch retained every command/pin/failure; no full-corpus
 run has resumed. Verified source-initializer and checked-writer changes are
 `aeb61196a` and `b1f2302fd`. Full configured library translation remains incomplete.
 The sections below retain historical milestone evidence and counts.
