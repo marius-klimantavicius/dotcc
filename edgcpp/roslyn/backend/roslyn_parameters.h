@@ -39,6 +39,7 @@ static a_type_ptr roslyn_call_type(an_expr_node_ptr callee) {
  if(!callee||!callee->type)return nullptr;
  a_type_ptr t=skip_typerefs(callee->type);
  if(t->kind==tk_pointer)t=skip_typerefs(t->variant.pointer.type);
+ if(t->kind==tk_ptr_to_member)t=skip_typerefs(t->variant.ptr_to_member.type);
  return t->kind==tk_routine?t:nullptr;
 }
 static Rid roslyn_parameter_type(a_param_type_ptr p) {

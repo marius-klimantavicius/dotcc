@@ -39,6 +39,13 @@ callee routine definitions, types or exceptional cleanup as executable children.
 Evaluated callee expressions remain structural children. `Children`, typed
 operands, semantic references and source associations remain available separately.
 
+`As<T>()` returns the same captured entity through its named façade, or null when
+the façade does not match. `SemanticVisitor` dispatches to named declaration and
+operation hooks, then through their base hooks. Calling the base hook continues
+through captured structural children, including the shape of metadata prototypes.
+Visitors visit each structural occurrence; `DescendantOperations` provides the
+separate identity-deduplicated executable traversal.
+
 Types, templates, layouts, partial EH, macros and source positions have ordinary
 object properties. `Details` and typed auxiliary records expose the complete
 normalized column and ordered-row projection. [field-bindings.tsv](field-bindings.tsv)
@@ -55,6 +62,12 @@ follow retained descriptor links without reconstructing C++ lookup. A type's
 Template headers, parameter placeholders and defaults navigate through typed
 objects. Function signatures and requires-expression parameters share canonical
 `ParameterType` descriptors, including retained declared types and default facts.
+Template definitions and parameters participate in the common `Symbol` hierarchy;
+`TemplateKind` and `ParameterKind` expose their retained subtype classifications.
+Named type symbols delegate attributes to their authoritative type descriptor.
+Lambda initializations and lambda expressions share one `LambdaDefinition` with
+its actual capture list. Assembly operations similarly delegate to their captured
+`AssemblyDefinition`; module/import objects retain ordered translation-unit imports.
 
 Exact integers, target sizes, offsets and EH states use `BigInteger`. Floats
 retain class, sign, radix, significand, exponent and supplied NaN facts; they are
@@ -94,6 +107,11 @@ fixture and reader behavior/scale checks. With paths, it also navigates real EDG
 outputs. The named integration fixtures check selected calls, exceptional actions
 and retained macro definitions/invocations. These tests verify projection and
 reader behavior; they do not re-evaluate EDG language decisions.
+
+Use `--benchmark` followed by object paths to measure full public entity and body
+navigation on each object twice. The cold pass starts with empty reader caches;
+the warm pass reuses the bounded caches. The harness reports commands, rows, wall
+time, process working set and cache counts without flushing operating-system caches.
 
 After a supervisor-owned schema change, regenerate committed bindings with
 `python3 edgcpp/roslyn/managed/tools/generate_bindings.py`. Normal library builds

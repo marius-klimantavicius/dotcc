@@ -35,6 +35,9 @@ models = {
     'record_layout':('RecordLayout','Layout'), 'type_symbol':('TypeSymbol','TypeSymbol'),
     'handler':('ExceptionHandler','Handler'),
     'parameter_type':('ParameterType','ParameterType'), 'token_sequence':('TokenSequence','TokenSequence'),
+    'lambda_definition':('LambdaDefinition','LambdaDefinition'),
+    'asm_entry':('AssemblyDefinition','AssemblyDefinition'),
+    'module':('CppModule','Module'), 'module_import':('ModuleImport','ModuleImport'),
     'enum_symbol':('EnumSymbol','Enum'), 'alias_symbol':('AliasSymbol','Alias'),
     'template_specialization':('TemplateSpecialization','Specialization'),
     'base_subobject':('BaseSubobject','Subobject'), 'base_derivation':('BaseDerivation','Derivation')
@@ -43,11 +46,12 @@ booleans = {'compiler_generated','negative','nan_quiet','signed','incomplete','i
     'generated_default_argument','volatile_fetch','type_definition_needed','boolean_not_normalized',
     'selection_known','selected_then','one_past_end','frees_storage','frees_array','throw_any',
     'noexcept_effective','noexcept_required','result','required','enabled','passed_indirectly','complete',
-    'fold_left_associative','reattempt_default_argument','reattempt_default_member_initializer'}
+    'fold_left_associative','reattempt_default_argument','reattempt_default_member_initializer','gnu_asm_form','error_descriptor',
+    'contains_unsupported_constructs','implementation_unit_importing_self'}
 numeric_text = {'scope_number','num_template_arguments','deduced_array_bound','state_number','initial_state','null_state','size','alignment','offset','bound','length','count','adjustment','return_adjustment',
     'slot','index_value','range_end','element_offset','comparison_value','delegation_argument',
     'sequence','original_sequence','first_sequence','last_sequence','logical_line','physical_line',
-    'integer_argument','integer_value','pointer_alignment','shared_block_size'}
+    'integer_argument','integer_value','pointer_alignment','shared_block_size','number_of_constraints'}
 numeric_atom = {('integer_value','value_id'),('floating_value','significand_id'),
     ('floating_value','nan_payload_id'),('fixed_point_value','scaled_integer_id')}
 lines = ['// Generated from schema/roslynobj.sql by managed/tools/generate_bindings.py. Do not edit.',

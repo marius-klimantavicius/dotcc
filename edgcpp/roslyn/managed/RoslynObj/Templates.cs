@@ -1,15 +1,14 @@
 namespace RoslynObj;
 
-public sealed class TemplateSymbol : SemanticEntity
+public sealed class TemplateSymbol : Symbol
 {
     internal TemplateSymbol(RoslynObject owner, long id, Row row) : base(owner, id) => Details = new(owner, row);
     public TemplateDefinitionDetails Details { get; }
-    public string? Name => Object.Name(Object.Store.Required("template_definition", Id).OptionalLong("name_id"));
+    public SemanticKind TemplateKind => Details.Kind;
     public SemanticEntity? Pattern => Details.Pattern;
     public TemplateSymbol? OriginalDefinition => Details.CanonicalTemplate;
     public TemplateSymbol? Definition => Details.DefinitionTemplate;
     public TemplateSymbol? Prototype => Details.PrototypeTemplate;
-    public SourceInfo? Source => Details.SourceOrigin;
     public ExpressionOperation? Constraint => Details.Constraint;
     public bool IsPack => Details.IsPack;
     public IReadOnlyList<TemplateParameter> Parameters => Object.List("SELECT * FROM template_parameter WHERE template_id=$owner ORDER BY depth,ordinal", Id, r => Object.TemplateParameter(r.Long("id")), "template_parameter");
@@ -78,18 +77,16 @@ public sealed class TemplateHeader : SemanticEntity
     public IReadOnlyList<GenericConstraintClause> GenericConstraints => Object.List("SELECT * FROM template_generic_constraint_clause WHERE header_id=$owner ORDER BY ordinal,id",Id,r=>Object.GenericClause(r.Long("id")),"template_generic_constraint_clause");
 }
 
-public sealed class TemplateParameter : SemanticEntity
+public sealed class TemplateParameter : Symbol
 {
     internal TemplateParameter(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
     public TemplateParameterDetails Details { get; }
-    public string? Name => Object.Name(Object.Store.Required("template_parameter",Id).OptionalLong("name_id"));
-    public SemanticKind Kind => Details.Kind;
+    public SemanticKind ParameterKind => Details.Kind;
     public long Ordinal => Details.Ordinal;
     public long Depth => Details.Depth;
     public bool IsPack => Details.IsPack;
     public bool IsAbbreviated => Details.IsAbbreviated;
     public TemplateHeader? Header => Details.Header;
-    public SourceInfo? Source => Details.SourceOrigin;
     public CppType? PlaceholderType => Details.PlaceholderType;
     public Constant? PlaceholderConstant => Details.PlaceholderConstant;
     public TemplateSymbol? PlaceholderTemplate => Details.PlaceholderTemplate;

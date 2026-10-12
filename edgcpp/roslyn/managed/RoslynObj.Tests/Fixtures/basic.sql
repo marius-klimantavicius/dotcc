@@ -29,7 +29,7 @@ INSERT INTO target_profile(id,abi_id,addressable_unit_bits,little_endian,pointer
 INSERT INTO scope(id,kind_id,parent_id,associated_entity_id)
  VALUES(2,(SELECT id FROM kind WHERE family='scope_kind' AND name='file'),NULL,1),
  (9,(SELECT id FROM kind WHERE family='scope_kind' AND name='function'),2,6);
-INSERT INTO translation_unit VALUES(1,2,74,4);
+INSERT INTO translation_unit(id,global_scope_id,primary_input_id,language_mode_id) VALUES(1,2,74,4);
 INSERT INTO object_header VALUES(1,1,0,'fixture-artifact',1,2,3,
  (SELECT id FROM kind WHERE family='capture_profile' AND name='native_lowered'),1,74,1,1);
 INSERT INTO build_capability(name_id,state_id,value_id,required,enabled)
@@ -135,12 +135,15 @@ INSERT INTO macro_definition(id,name_id,text_id,kind_id,is_function_like)
 INSERT INTO macro_invocation(id,definition_id,position_id,argument_text_id,ordinal) VALUES(71,70,72,15,0);
 INSERT INTO lifetime(id,kind_id,owner_id,scope_id)
  VALUES(80,(SELECT id FROM kind WHERE family='lifetime' AND name='olk_block'),6,9);
-INSERT INTO template_definition(id,kind_id,name_id,pattern_id)
- VALUES(90,(SELECT id FROM kind WHERE family='template' AND name='templk_class'),41,40);
+INSERT INTO symbol(id,kind_id,name_id,type_id)
+ VALUES(90,(SELECT id FROM kind WHERE family='entity' AND name='template'),41,40),
+       (93,(SELECT id FROM kind WHERE family='entity' AND name='template_parameter'),94,3);
+INSERT INTO template_definition(id,kind_id,pattern_id)
+ VALUES(90,(SELECT id FROM kind WHERE family='template' AND name='templk_class'),40);
 INSERT INTO template_argument(id,kind_id,type_id)
  VALUES(91,(SELECT id FROM kind WHERE family='template_argument' AND name='tak_type'),3);
 INSERT INTO template_instance(id,result_id,template_id,state_id)
  VALUES(92,40,90,(SELECT id FROM kind WHERE family='instantiation_state' AND name='concrete'));
 INSERT INTO template_instance_argument VALUES(92,(SELECT id FROM kind WHERE family='template_argument_role' AND name='primary'),0,91);
-INSERT INTO template_parameter(id,template_id,ordinal,depth,kind_id,name_id)
- VALUES(93,90,0,0,(SELECT id FROM kind WHERE family='template_parameter' AND name='tpk_type'),94);
+INSERT INTO template_parameter(id,template_id,ordinal,depth,kind_id)
+ VALUES(93,90,0,0,(SELECT id FROM kind WHERE family='template_parameter' AND name='tpk_type'));

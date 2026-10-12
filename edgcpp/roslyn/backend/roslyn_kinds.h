@@ -1,6 +1,7 @@
 /* Generated from schema/kinds.tsv and pristine EDG enums. */
 static const struct { const char *family; const char *name; int id; } roslyn_catalog[] = {
 {"abi","cfront",3002},
+{"abi","cfront_like",3004},
 {"abi","itanium",3001},
 {"abi","microsoft",3003},
 {"abi_routine_kind","alternate_complete",25002},
@@ -248,6 +249,69 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_access","as_private",307003},
 {"edg_access","as_protected",307002},
 {"edg_access","as_public",307001},
+{"edg_asm_constraint","aoc_any",318009},
+{"edg_asm_constraint","aoc_cc",318058},
+{"edg_asm_constraint","aoc_end_of_constraint",318002},
+{"edg_asm_constraint","aoc_general",318010},
+{"edg_asm_constraint","aoc_imm_80387",318054},
+{"edg_asm_constraint","aoc_imm_and_zext",318053},
+{"edg_asm_constraint","aoc_imm_float",318032},
+{"edg_asm_constraint","aoc_imm_int",318029},
+{"edg_asm_constraint","aoc_imm_lea_shift",318050},
+{"edg_asm_constraint","aoc_imm_long_shift",318049},
+{"edg_asm_constraint","aoc_imm_number",318030},
+{"edg_asm_constraint","aoc_imm_sext32",318056},
+{"edg_asm_constraint","aoc_imm_short_shift",318048},
+{"edg_asm_constraint","aoc_imm_signed8",318051},
+{"edg_asm_constraint","aoc_imm_sse",318055},
+{"edg_asm_constraint","aoc_imm_symbol",318031},
+{"edg_asm_constraint","aoc_imm_unsigned8",318052},
+{"edg_asm_constraint","aoc_imm_zext32",318057},
+{"edg_asm_constraint","aoc_invalid",318001},
+{"edg_asm_constraint","aoc_last",318059},
+{"edg_asm_constraint","aoc_match_0",318011},
+{"edg_asm_constraint","aoc_match_1",318012},
+{"edg_asm_constraint","aoc_match_2",318013},
+{"edg_asm_constraint","aoc_match_3",318014},
+{"edg_asm_constraint","aoc_match_4",318015},
+{"edg_asm_constraint","aoc_match_5",318016},
+{"edg_asm_constraint","aoc_match_6",318017},
+{"edg_asm_constraint","aoc_match_7",318018},
+{"edg_asm_constraint","aoc_match_8",318019},
+{"edg_asm_constraint","aoc_match_9",318020},
+{"edg_asm_constraint","aoc_mem_any",318023},
+{"edg_asm_constraint","aoc_mem_autodec",318028},
+{"edg_asm_constraint","aoc_mem_autoinc",318027},
+{"edg_asm_constraint","aoc_mem_load",318024},
+{"edg_asm_constraint","aoc_mem_nonoffset",318026},
+{"edg_asm_constraint","aoc_mem_offset",318025},
+{"edg_asm_constraint","aoc_mod_commutative_ops",318004},
+{"edg_asm_constraint","aoc_mod_disparage_severely",318008},
+{"edg_asm_constraint","aoc_mod_disparage_slightly",318007},
+{"edg_asm_constraint","aoc_mod_earlyclobber",318003},
+{"edg_asm_constraint","aoc_mod_ignore",318005},
+{"edg_asm_constraint","aoc_mod_ignore_char",318006},
+{"edg_asm_constraint","aoc_reg_Q",318041},
+{"edg_asm_constraint","aoc_reg_a",318033},
+{"edg_asm_constraint","aoc_reg_ad",318042},
+{"edg_asm_constraint","aoc_reg_b",318034},
+{"edg_asm_constraint","aoc_reg_c",318035},
+{"edg_asm_constraint","aoc_reg_d",318036},
+{"edg_asm_constraint","aoc_reg_di",318038},
+{"edg_asm_constraint","aoc_reg_float",318022},
+{"edg_asm_constraint","aoc_reg_float_second",318044},
+{"edg_asm_constraint","aoc_reg_float_tos",318043},
+{"edg_asm_constraint","aoc_reg_integer",318021},
+{"edg_asm_constraint","aoc_reg_legacy",318039},
+{"edg_asm_constraint","aoc_reg_mmx",318047},
+{"edg_asm_constraint","aoc_reg_q",318040},
+{"edg_asm_constraint","aoc_reg_si",318037},
+{"edg_asm_constraint","aoc_reg_sse",318045},
+{"edg_asm_constraint","aoc_reg_sse2",318046},
+{"edg_asm_modifier","aom_input",319002},
+{"edg_asm_modifier","aom_invalid",319001},
+{"edg_asm_modifier","aom_modify",319004},
+{"edg_asm_modifier","aom_output",319003},
 {"edg_attribute","ak_abi_tag",301080},
 {"edg_attribute","ak_alias",301032},
 {"edg_attribute","ak_align",301004},
@@ -37566,12 +37630,79 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"edg_integer_kind","ik_unsigned_long",200009},
 {"edg_integer_kind","ik_unsigned_long_long",200011},
 {"edg_integer_kind","ik_unsigned_short",200005},
+{"edg_module","mk_header_unit",321002},
+{"edg_module","mk_none",321001},
+{"edg_module","mk_unit",321003},
+{"edg_module","mk_unit_partition",321004},
+{"edg_module_file","mfk_edg_ifc",322002},
+{"edg_module_file","mfk_ms_ifc",322003},
+{"edg_module_file","mfk_unknown",322001},
 {"edg_name_linkage","CUSTOM_NAME_LINKAGE_KINDS",305006},
 {"edg_name_linkage","nlk_cplusplus_external",305003},
 {"edg_name_linkage","nlk_external",305004},
 {"edg_name_linkage","nlk_internal",305002},
 {"edg_name_linkage","nlk_last_standard",305005},
 {"edg_name_linkage","nlk_none",305001},
+{"edg_named_register","anr_16",320054},
+{"edg_named_register","anr_17",320055},
+{"edg_named_register","anr_18",320056},
+{"edg_named_register","anr_19",320057},
+{"edg_named_register","anr_20",320058},
+{"edg_named_register","anr_a",320003},
+{"edg_named_register","anr_b",320004},
+{"edg_named_register","anr_bp",320009},
+{"edg_named_register","anr_c",320005},
+{"edg_named_register","anr_d",320006},
+{"edg_named_register","anr_di",320008},
+{"edg_named_register","anr_dirflag",320053},
+{"edg_named_register","anr_f0",320035},
+{"edg_named_register","anr_f1",320036},
+{"edg_named_register","anr_f10",320045},
+{"edg_named_register","anr_f11",320046},
+{"edg_named_register","anr_f12",320047},
+{"edg_named_register","anr_f13",320048},
+{"edg_named_register","anr_f14",320049},
+{"edg_named_register","anr_f15",320050},
+{"edg_named_register","anr_f2",320037},
+{"edg_named_register","anr_f3",320038},
+{"edg_named_register","anr_f4",320039},
+{"edg_named_register","anr_f5",320040},
+{"edg_named_register","anr_f6",320041},
+{"edg_named_register","anr_f7",320042},
+{"edg_named_register","anr_f8",320043},
+{"edg_named_register","anr_f9",320044},
+{"edg_named_register","anr_flags",320051},
+{"edg_named_register","anr_fpsr",320052},
+{"edg_named_register","anr_invalid",320001},
+{"edg_named_register","anr_last",320060},
+{"edg_named_register","anr_memory",320002},
+{"edg_named_register","anr_mm0",320027},
+{"edg_named_register","anr_mm1",320028},
+{"edg_named_register","anr_mm2",320029},
+{"edg_named_register","anr_mm3",320030},
+{"edg_named_register","anr_mm4",320031},
+{"edg_named_register","anr_mm5",320032},
+{"edg_named_register","anr_mm6",320033},
+{"edg_named_register","anr_mm7",320034},
+{"edg_named_register","anr_r10",320013},
+{"edg_named_register","anr_r11",320014},
+{"edg_named_register","anr_r12",320015},
+{"edg_named_register","anr_r13",320016},
+{"edg_named_register","anr_r14",320017},
+{"edg_named_register","anr_r15",320018},
+{"edg_named_register","anr_r8",320011},
+{"edg_named_register","anr_r9",320012},
+{"edg_named_register","anr_si",320007},
+{"edg_named_register","anr_sp",320010},
+{"edg_named_register","anr_st",320019},
+{"edg_named_register","anr_st1",320020},
+{"edg_named_register","anr_st2",320021},
+{"edg_named_register","anr_st3",320022},
+{"edg_named_register","anr_st4",320023},
+{"edg_named_register","anr_st5",320024},
+{"edg_named_register","anr_st6",320025},
+{"edg_named_register","anr_st7",320026},
+{"edg_named_register","anr_unrecognized",320059},
 {"edg_opname","onk_ampersand",314012},
 {"edg_opname","onk_and_and",314036},
 {"edg_opname","onk_and_assign",314025},
@@ -37713,6 +37844,7 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"eh_table_kind","array",47002},
 {"eh_table_kind","region",47001},
 {"entity","alias",1011},
+{"entity","asm_entry",1067},
 {"entity","attribute",1035},
 {"entity","attribute_group",1056},
 {"entity","base_derivation",1055},
@@ -37742,6 +37874,8 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"entity","lifetime",1018},
 {"entity","macro_definition",1032},
 {"entity","macro_invocation",1033},
+{"entity","module",1065},
+{"entity","module_import",1066},
 {"entity","name",1002},
 {"entity","name_qualifier",1060},
 {"entity","name_reference",1037},
@@ -37825,12 +37959,16 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"expression","enk_variable",101007},
 {"expression","enk_vla_dealloc",101023},
 {"expression","enk_yield",101029},
+{"fact","alignment",5016},
 {"fact","declaration_sequence",5008},
+{"fact","layout",5017},
 {"fact","lifetime_details",5013},
 {"fact","lowering_origin",5006},
 {"fact","macro_arguments",5010},
 {"fact","macro_tree",5009},
+{"fact","original_signature",5014},
 {"fact","original_type",5005},
+{"fact","size",5015},
 {"fact","source",5001},
 {"fact","source_dispatch",5003},
 {"fact","source_parameters",5004},
@@ -38132,6 +38270,9 @@ static const struct { const char *family; const char *name; int id; } roslyn_cat
 {"source_attachment_kind","external",42003},
 {"source_attachment_kind","frozen_compilation_input",42001},
 {"source_attachment_kind","post_compilation_reread",42002},
+{"source_dispatch_kind","member_pointer",51003},
+{"source_dispatch_kind","non_virtual",51001},
+{"source_dispatch_kind","virtual",51002},
 {"source_origin_kind","command_line",21003},
 {"source_origin_kind","macro",21006},
 {"source_origin_kind","ordinary",21001},
@@ -77360,3 +77501,164 @@ case iek_scoped_expression: return 316112;
 case iek_data_member_spec: return 316113;
 case iek_last: return 316114;
 default: return 0; } }
+#if GNU_EXTENSIONS_ALLOWED && !RECORD_RAW_ASM_OPERAND_DESCRIPTIONS
+static int roslyn_kind_edg_asm_constraint(an_asm_operand_constraint_kind value) { switch(value) {
+case aoc_invalid: return 318001;
+case aoc_end_of_constraint: return 318002;
+case aoc_mod_earlyclobber: return 318003;
+case aoc_mod_commutative_ops: return 318004;
+case aoc_mod_ignore: return 318005;
+case aoc_mod_ignore_char: return 318006;
+case aoc_mod_disparage_slightly: return 318007;
+case aoc_mod_disparage_severely: return 318008;
+case aoc_any: return 318009;
+case aoc_general: return 318010;
+case aoc_match_0: return 318011;
+case aoc_match_1: return 318012;
+case aoc_match_2: return 318013;
+case aoc_match_3: return 318014;
+case aoc_match_4: return 318015;
+case aoc_match_5: return 318016;
+case aoc_match_6: return 318017;
+case aoc_match_7: return 318018;
+case aoc_match_8: return 318019;
+case aoc_match_9: return 318020;
+case aoc_reg_integer: return 318021;
+case aoc_reg_float: return 318022;
+case aoc_mem_any: return 318023;
+case aoc_mem_load: return 318024;
+case aoc_mem_offset: return 318025;
+case aoc_mem_nonoffset: return 318026;
+case aoc_mem_autoinc: return 318027;
+case aoc_mem_autodec: return 318028;
+case aoc_imm_int: return 318029;
+case aoc_imm_number: return 318030;
+case aoc_imm_symbol: return 318031;
+case aoc_imm_float: return 318032;
+#if GNU_X86_ASM_EXTENSIONS_ALLOWED
+case aoc_reg_a: return 318033;
+case aoc_reg_b: return 318034;
+case aoc_reg_c: return 318035;
+case aoc_reg_d: return 318036;
+case aoc_reg_si: return 318037;
+case aoc_reg_di: return 318038;
+case aoc_reg_legacy: return 318039;
+case aoc_reg_q: return 318040;
+case aoc_reg_Q: return 318041;
+case aoc_reg_ad: return 318042;
+case aoc_reg_float_tos: return 318043;
+case aoc_reg_float_second: return 318044;
+case aoc_reg_sse: return 318045;
+case aoc_reg_sse2: return 318046;
+case aoc_reg_mmx: return 318047;
+case aoc_imm_short_shift: return 318048;
+case aoc_imm_long_shift: return 318049;
+case aoc_imm_lea_shift: return 318050;
+case aoc_imm_signed8: return 318051;
+case aoc_imm_unsigned8: return 318052;
+case aoc_imm_and_zext: return 318053;
+case aoc_imm_80387: return 318054;
+case aoc_imm_sse: return 318055;
+case aoc_imm_sext32: return 318056;
+case aoc_imm_zext32: return 318057;
+case aoc_cc: return 318058;
+#endif
+case aoc_last: return 318059;
+default: return 0; } }
+#endif
+#if GNU_EXTENSIONS_ALLOWED && !RECORD_RAW_ASM_OPERAND_DESCRIPTIONS
+static int roslyn_kind_edg_asm_modifier(an_asm_operand_modifier value) { switch(value) {
+case aom_invalid: return 319001;
+case aom_input: return 319002;
+case aom_output: return 319003;
+default: return 0; } }
+#endif
+#if GNU_EXTENSIONS_ALLOWED
+static int roslyn_kind_edg_named_register(a_named_register value) { switch(value) {
+case anr_invalid: return 320001;
+case anr_memory: return 320002;
+#if GNU_X86_ASM_EXTENSIONS_ALLOWED
+case anr_a: return 320003;
+case anr_b: return 320004;
+case anr_c: return 320005;
+case anr_d: return 320006;
+case anr_si: return 320007;
+case anr_di: return 320008;
+case anr_bp: return 320009;
+case anr_sp: return 320010;
+case anr_r8: return 320011;
+case anr_r9: return 320012;
+case anr_r10: return 320013;
+case anr_r11: return 320014;
+case anr_r12: return 320015;
+case anr_r13: return 320016;
+case anr_r14: return 320017;
+case anr_r15: return 320018;
+case anr_st: return 320019;
+case anr_st1: return 320020;
+case anr_st2: return 320021;
+case anr_st3: return 320022;
+case anr_st4: return 320023;
+case anr_st5: return 320024;
+case anr_st6: return 320025;
+case anr_st7: return 320026;
+case anr_mm0: return 320027;
+case anr_mm1: return 320028;
+case anr_mm2: return 320029;
+case anr_mm3: return 320030;
+case anr_mm4: return 320031;
+case anr_mm5: return 320032;
+case anr_mm6: return 320033;
+case anr_mm7: return 320034;
+case anr_f0: return 320035;
+case anr_f1: return 320036;
+case anr_f2: return 320037;
+case anr_f3: return 320038;
+case anr_f4: return 320039;
+case anr_f5: return 320040;
+case anr_f6: return 320041;
+case anr_f7: return 320042;
+case anr_f8: return 320043;
+case anr_f9: return 320044;
+case anr_f10: return 320045;
+case anr_f11: return 320046;
+case anr_f12: return 320047;
+case anr_f13: return 320048;
+case anr_f14: return 320049;
+case anr_f15: return 320050;
+case anr_flags: return 320051;
+case anr_fpsr: return 320052;
+case anr_dirflag: return 320053;
+case anr_16: return 320054;
+case anr_17: return 320055;
+case anr_18: return 320056;
+case anr_19: return 320057;
+case anr_20: return 320058;
+#endif
+#if ACCEPT_UNRECOGNIZED_GNU_ASM_OPERANDS
+case anr_unrecognized: return 320059;
+#endif
+case anr_last: return 320060;
+default: return 0; } }
+#endif
+static int roslyn_kind_edg_module(a_module_kind value) { switch(value) {
+case mk_none: return 321001;
+case mk_header_unit: return 321002;
+case mk_unit: return 321003;
+case mk_unit_partition: return 321004;
+default: return 0; } }
+static int roslyn_kind_edg_module_file(a_module_file_kind value) { switch(value) {
+case mfk_unknown: return 322001;
+case mfk_edg_ifc: return 322002;
+case mfk_ms_ifc: return 322003;
+default: return 0; } }
+#if MICROSOFT_EXTENSIONS_ALLOWED
+static int roslyn_kind_rewritten_property(a_rewritten_property_reference_kind value) { switch(value) {
+case rprk_none: return 203001;
+case rprk_compound_assignment: return 203002;
+case rprk_pre_incr_decr: return 203003;
+case rprk_post_incr_decr: return 203004;
+case rprk_comma_discard_first: return 203005;
+case rprk_comma_discard_second: return 203006;
+default: return 0; } }
+#endif

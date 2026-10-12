@@ -33,12 +33,16 @@ static Rid roslyn_entity(const a_tagged_pointer &p) {
  case iek_dynamic_init:return roslyn_init(reinterpret_cast<a_dynamic_init_ptr>(p.ptr));
  case iek_using_decl:return roslyn_using(reinterpret_cast<a_using_decl_ptr>(p.ptr));
  case iek_static_assertion:return roslyn_static_assertion(reinterpret_cast<a_static_assertion_ptr>(p.ptr));
+ case iek_module_import_decl:return roslyn_module_import(reinterpret_cast<a_module_import_decl_ptr>(p.ptr));
+ case iek_asm_entry:return roslyn_asm(reinterpret_cast<an_asm_entry_ptr>(p.ptr));
+ case iek_vla_dimension:return roslyn_vla_dimension(reinterpret_cast<a_vla_dimension_ptr>(p.ptr));
  case iek_base_class:return roslyn_base(reinterpret_cast<a_base_class_ptr>(p.ptr));
  default:DB.fail("Tagged semantic entity adapter missing: "+Q(p.kind));return 0;
  }
 }
 static void roslyn_header_roots() {
- int ordinal=0;
+ int ordinal=0;for(a_module_import_decl_ptr p=il_header.imported_modules;p;p=p->next)DB.put("translation_unit_module_import",{{"owner_id",roslyn_unit},{"ordinal",ordinal++},{"import_id",roslyn_module_import(p)}});
+ ordinal=0;
  for(a_memory_region_number region=1;region<=highest_used_region_number;++region)
   for(a_scope_ptr s=il_header.region_scope_entry[region];s;s=s->next)
    DB.put("translation_unit_root",{{"owner_id",roslyn_unit},{"kind_id",K("root_kind","resident_region")},{"ordinal",ordinal++},{"entity_id",roslyn_scope(s)}});

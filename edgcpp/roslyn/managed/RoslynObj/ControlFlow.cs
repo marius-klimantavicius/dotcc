@@ -2,6 +2,7 @@ namespace RoslynObj;
 
 public sealed class BlockOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitBlock(this);
     internal BlockOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public BlockStatementDetails Block => Object.Detail("block_statement",Id,r=>new BlockStatementDetails(Object,r));
     public Scope? Scope => Block.Scope;
@@ -10,6 +11,7 @@ public sealed class BlockOperation : StatementOperation
 
 public sealed class ConditionalOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitConditional(this);
     internal ConditionalOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public IfStatementDetails Conditional => Object.Detail("if_statement",Id,r=>new IfStatementDetails(Object,r));
     public ExpressionOperation? Condition => Conditional.Condition;
@@ -20,6 +22,7 @@ public sealed class ConditionalOperation : StatementOperation
 
 public sealed class LoopOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitLoop(this);
     internal LoopOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public LoopStatementDetails Loop => Object.Detail("loop_statement",Id,r=>new LoopStatementDetails(Object,r));
     public StatementOperation? Body => Loop.Body;
@@ -30,6 +33,7 @@ public sealed class LoopOperation : StatementOperation
 
 public sealed class JumpOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitJump(this);
     internal JumpOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public JumpStatementDetails Jump => Object.Detail("jump_statement",Id,r=>new JumpStatementDetails(Object,r));
     public SemanticKind JumpKind => Jump.Kind;
@@ -39,6 +43,7 @@ public sealed class JumpOperation : StatementOperation
 
 public sealed class SwitchOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitSwitch(this);
     internal SwitchOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public SwitchStatementDetails Switch => Object.Detail("switch_statement",Id,r=>new SwitchStatementDetails(Object,r));
     public ExpressionOperation? Selector => Switch.Selector;
@@ -48,6 +53,7 @@ public sealed class SwitchOperation : StatementOperation
 
 public sealed class TryOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitTry(this);
     internal TryOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public TryStatementDetails Try => Object.Detail("try_statement",Id,r=>new TryStatementDetails(Object,r));
     public StatementOperation Body => Try.Body;
@@ -68,16 +74,38 @@ public sealed class ExceptionHandler : SemanticEntity
 
 public sealed class AssemblyOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitAssembly(this);
     internal AssemblyOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public AsmStatementDetails Assembly => Object.Detail("asm_statement",Id,r=>new AsmStatementDetails(Object,r));
-    public string Text => Assembly.Text;
-    public IReadOnlyList<AsmOperandDetails> Operands => Object.List("SELECT * FROM asm_operand WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new AsmOperandDetails(Object,r));
-    public IReadOnlyList<string> Clobbers => Object.List("SELECT * FROM asm_clobber WHERE owner_id=$owner ORDER BY ordinal",Id,r=>Object.Text(r.Long("text_id"))!);
-    public IReadOnlyList<AsmLabelDetails> Labels => Object.List("SELECT * FROM asm_label WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new AsmLabelDetails(Object,r));
+    public string? Text => Assembly.Text;
+    public AssemblyDefinition? Definition => Assembly.Entry;
+    public Constant? AsmString => Definition?.AsmString;
+    public bool? IsVolatile => Definition?.IsVolatile;
+    public bool? IsGoto => Definition?.IsGoto;
+    public IReadOnlyList<AsmOperandDetails> Operands => Definition?.Operands ?? [];
+    public IReadOnlyList<AsmClobberDetails> Clobbers => Definition?.Clobbers ?? [];
+    public IReadOnlyList<AsmOperandConstraintDetails> OperandConstraints => Definition?.OperandConstraints ?? [];
+    public IReadOnlyList<AsmLabelDetails> Labels => Definition?.Labels ?? [];
+}
+
+public sealed class AssemblyDefinition : SemanticEntity
+{
+    internal AssemblyDefinition(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
+    public AsmEntryDetails Details { get; }
+    public Constant AsmString => Details.AsmString;
+    public SourceInfo? Source => Details.SourceOrigin;
+    public bool IsGnu => Details.GnuAsmForm;
+    public bool IsVolatile => Details.IsVolatile;
+    public bool IsGoto => Details.IsGoto;
+    public IReadOnlyList<AsmOperandDetails> Operands => Details.AsmOperandRows;
+    public IReadOnlyList<AsmClobberDetails> Clobbers => Details.AsmClobberRows;
+    public IReadOnlyList<AsmOperandConstraintDetails> OperandConstraints => Details.AsmOperandConstraintRows;
+    public IReadOnlyList<AsmLabelDetails> Labels => Details.AsmLabelRows;
 }
 
 public sealed class ThrowOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitThrow(this);
     internal ThrowOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public ThrowExpressionDetails Throw => Object.Detail("throw_expression",Id,r=>new ThrowExpressionDetails(Object,r));
     public ExpressionOperation? Operand => Throw.Operand;
@@ -89,6 +117,7 @@ public sealed class ThrowOperation : ExpressionOperation
 
 public sealed class AwaitOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitAwait(this);
     internal AwaitOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public CoroutineOperationDetails Protocol => Object.Detail("coroutine_operation",Id,r=>new CoroutineOperationDetails(Object,r));
     public ExpressionOperation? Operand => Protocol.Operand;
@@ -99,6 +128,7 @@ public sealed class AwaitOperation : ExpressionOperation
 
 public sealed class AllocationOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitAllocation(this);
     internal AllocationOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public AllocationExpressionDetails Allocation => Object.Detail("allocation_expression",Id,r=>new AllocationExpressionDetails(Object,r));
     public FunctionSymbol? Allocator => Allocation.Allocator;
@@ -118,10 +148,25 @@ public sealed class AllocationOperation : ExpressionOperation
 
 public sealed class LambdaOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitLambda(this);
     internal LambdaOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public LambdaExpressionDetails Lambda => Object.Detail("lambda_expression",Id,r=>new LambdaExpressionDetails(Object,r));
-    public LambdaDefinitionDetails Definition => Lambda.Lambda;
+    public LambdaDefinition Definition => Lambda.Lambda;
     public CppType ClosureType => Definition.ClosureType;
     public FunctionSymbol? CallOperator => Definition.CallOperator;
-    public IReadOnlyList<LambdaCaptureDetails> Captures => Object.List("SELECT * FROM lambda_capture WHERE owner_id=$owner ORDER BY ordinal",Object.Store.Required("lambda_expression",Id).Long("lambda_id"),r=>new LambdaCaptureDetails(Object,r));
+    public IReadOnlyList<LambdaCaptureDetails> Captures => Definition.Captures;
+}
+
+public sealed class LambdaDefinition : SemanticEntity
+{
+    internal LambdaDefinition(RoslynObject owner,long id,Row row) : base(owner,id) => Details=new(owner,row);
+    public LambdaDefinitionDetails Details { get; }
+    public CppType ClosureType => Details.ClosureType;
+    public FunctionSymbol? CallOperator => Details.CallOperator;
+    public SourceInfo? Source => Details.SourceOrigin;
+    public bool IsGeneric => Details.IsGeneric;
+    public bool IsMutable => Details.IsMutable;
+    public bool HasCaptureDefault => Details.HasCaptureDefault;
+    public bool DefaultIsReference => Details.DefaultIsReference;
+    public IReadOnlyList<LambdaCaptureDetails> Captures => Details.LambdaCaptureRows;
 }

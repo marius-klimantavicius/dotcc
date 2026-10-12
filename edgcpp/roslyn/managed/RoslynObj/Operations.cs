@@ -13,7 +13,6 @@ public abstract class SemanticNode : SemanticEntity
     public IReadOnlyList<StructuralChildDetails> ChildRelations => Object.List("SELECT * FROM structural_child WHERE owner_id=$owner ORDER BY role_id,ordinal", Id, r => new StructuralChildDetails(Object, r));
     public IReadOnlyList<SemanticNode> StructuralParents => Object.List("SELECT DISTINCT n.* FROM structural_child c JOIN semantic_node n ON n.id=c.owner_id WHERE c.child_id=$owner ORDER BY n.id", Id, r => Object.Node(r.Long("id")), "semantic_node");
     public IReadOnlyList<SemanticReferenceDetails> References => Object.List("SELECT * FROM semantic_reference WHERE owner_id=$owner ORDER BY role_id,ordinal", Id, r => new SemanticReferenceDetails(Object, r));
-    public T? As<T>() where T : SemanticNode => this as T;
     public virtual void Accept(SemanticVisitor visitor) => visitor.VisitNode(this);
 
     public IEnumerable<Operation> DescendantOperations(CancellationToken cancellationToken = default)
@@ -66,6 +65,7 @@ public sealed class ExpressionOperation<TDetails> : ExpressionOperation where TD
 
 public class OperatorOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitOperator(this);
     internal OperatorOperation(RoslynObject owner, long id, Row row) : base(owner,id,row) { }
     public OperatorExpressionDetails Operator => Object.Detail("operator_expression", Id, r => new OperatorExpressionDetails(Object,r));
     public SemanticKind OperatorKind => Operator.OperatorKind;
@@ -97,6 +97,7 @@ public sealed class CallArgument
 
 public sealed class ConversionOperation : OperatorOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitConversion(this);
     internal ConversionOperation(RoslynObject owner, long id, Row row) : base(owner,id,row) { }
     public ConversionExpressionDetails Conversion => Object.Detail("conversion_expression", Id, r => new ConversionExpressionDetails(Object,r));
     public ExpressionOperation Operand => Conversion.Operand;
@@ -106,12 +107,14 @@ public sealed class ConversionOperation : OperatorOperation
 
 public sealed class ConstantOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitConstant(this);
     internal ConstantOperation(RoslynObject owner, long id, Row row) : base(owner,id,row) { }
     public Constant Constant => Object.Constant(Object.Store.Required("constant_expression",Id).Long("constant_id"));
 }
 
 public sealed class ReferenceOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitReference(this);
     internal ReferenceOperation(RoslynObject owner, long id, Row row) : base(owner,id,row) { }
     public ReferenceExpressionDetails Reference => Object.Detail("reference_expression",Id,r=>new ReferenceExpressionDetails(Object,r));
     public SemanticEntity? Target => Reference.Target;
@@ -119,12 +122,14 @@ public sealed class ReferenceOperation : ExpressionOperation
 
 public class LoweredEhOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitLoweredEh(this);
     internal LoweredEhOperation(RoslynObject owner, long id, Row row) : base(owner,id,row) { }
     public LoweredEhOperationDetails ExceptionOperation => Object.Detail("lowered_eh_operation",Id,r=>new LoweredEhOperationDetails(Object,r));
 }
 
 public sealed class CleanupStateOperation : LoweredEhOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitCleanupState(this);
     internal CleanupStateOperation(RoslynObject owner, long id, Row row) : base(owner,id,row) { }
     public CleanupStateOperationDetails State => Object.Detail("cleanup_state_operation",Id,r=>new CleanupStateOperationDetails(Object,r));
     public CleanupRegion? Region => State.Region;
@@ -161,14 +166,14 @@ public sealed class FunctionBody
     public IEnumerable<Operation> DescendantOperations(CancellationToken cancellationToken=default) => Root.DescendantOperations(cancellationToken);
 }
 
-public abstract class SemanticVisitor
+public abstract partial class SemanticVisitor
 {
     public virtual void Visit(SemanticNode node) => node.Accept(this);
     public virtual void VisitNode(SemanticNode node) { foreach(var child in node.Children) Visit(child); }
     public virtual void VisitOperation(Operation operation) => VisitNode(operation);
-    public virtual void VisitStatement(StatementOperation statement) => VisitNode(statement);
+    public virtual void VisitStatement(StatementOperation statement) => VisitOperation(statement);
     public virtual void VisitInitialization(InitializationOperation initialization) => VisitOperation(initialization);
-    public virtual void VisitCall(CallOperation call) => VisitOperation(call);
+    public virtual void VisitCall(CallOperation call) => VisitOperator(call);
 }
 
 public sealed class InitializationOperation : Operation

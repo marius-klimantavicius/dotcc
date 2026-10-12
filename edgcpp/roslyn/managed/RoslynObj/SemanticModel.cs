@@ -16,6 +16,8 @@ public sealed class SemanticModel
         {
             Declaration declaration=>declaration.Symbol as Symbol,CallOperation call=>call.TargetMethod,
             ReferenceOperation reference=>reference.Target as Symbol,
+            DependentOperation dependent=>dependent.Template,
+            TypeOperandOperation operand=>operand.OperandType?.DeclarationSymbol,
             ConstantOperation constant=>owner.Store.Query("SELECT symbol_id FROM enumerator WHERE constant_id=$owner ORDER BY owner_id,ordinal",constant.Constant.Id).FirstOrDefault() is {} row ? owner.Enumerator(row.Long("symbol_id")) : null,
             _=>null
         };
@@ -29,8 +31,25 @@ public sealed class SemanticModel
     public IReadOnlyList<SymbolReference> GetReferences(Symbol symbol)
     {
         Check(symbol);
-        const string query = "SELECT id AS owner_id,target_id,reference_kind_id AS role_id,0 AS usage FROM reference_expression WHERE target_id=$owner UNION SELECT c.id,e.symbol_id,NULL,0 FROM constant_expression c JOIN enumerator e ON e.constant_id=c.constant_id WHERE e.symbol_id=$owner UNION SELECT id,target_routine_id,NULL,1 FROM call_expression WHERE target_routine_id=$owner UNION SELECT id,source_target_routine_id,NULL,2 FROM call_expression WHERE source_target_routine_id=$owner UNION SELECT s.owner_id,s.target_id,s.role_id,3 FROM semantic_reference s WHERE s.target_id=$owner AND NOT EXISTS (SELECT 1 FROM reference_expression r WHERE r.id=s.owner_id AND r.target_id=s.target_id) AND NOT EXISTS (SELECT 1 FROM constant_expression c JOIN enumerator e ON e.constant_id=c.constant_id WHERE c.id=s.owner_id AND e.symbol_id=s.target_id) AND NOT EXISTS (SELECT 1 FROM call_expression c WHERE c.id=s.owner_id AND (c.target_routine_id=s.target_id OR c.source_target_routine_id=s.target_id)) ORDER BY owner_id,usage,role_id";
-        return owner.List(query,symbol.Id,r=>new SymbolReference(owner.Entity(r.Long("owner_id")),symbol,(SymbolReferenceRole)r.Int("usage"),owner.OptionalKind(r.OptionalLong("role_id"))));
+        const string query = """
+            SELECT id AS owner_id,target_id,reference_kind_id AS role_id,0 AS usage FROM reference_expression WHERE target_id=$owner
+            UNION SELECT r.id,t.symbol_id,r.reference_kind_id,0 FROM reference_expression r JOIN type t ON t.id=r.target_id WHERE t.symbol_id=$owner
+            UNION SELECT c.id,e.symbol_id,NULL,0 FROM constant_expression c JOIN enumerator e ON e.constant_id=c.constant_id WHERE e.symbol_id=$owner
+            UNION SELECT id,template_id,NULL,0 FROM dependent_expression WHERE template_id=$owner
+            UNION SELECT id,template_id,NULL,3 FROM template_instance WHERE template_id=$owner
+            UNION SELECT id,target_routine_id,NULL,1 FROM call_expression WHERE target_routine_id=$owner
+            UNION SELECT id,source_target_routine_id,NULL,2 FROM call_expression WHERE source_target_routine_id=$owner
+            UNION SELECT s.owner_id,t.symbol_id,s.role_id,3 FROM semantic_reference s JOIN type t ON t.id=s.target_id WHERE t.symbol_id=$owner
+                AND NOT EXISTS (SELECT 1 FROM reference_expression r WHERE r.id=s.owner_id AND r.target_id=s.target_id)
+            UNION SELECT s.owner_id,s.target_id,s.role_id,3 FROM semantic_reference s WHERE s.target_id=$owner
+                AND NOT EXISTS (SELECT 1 FROM reference_expression r WHERE r.id=s.owner_id AND r.target_id=s.target_id)
+                AND NOT EXISTS (SELECT 1 FROM constant_expression c JOIN enumerator e ON e.constant_id=c.constant_id WHERE c.id=s.owner_id AND e.symbol_id=s.target_id)
+                AND NOT EXISTS (SELECT 1 FROM dependent_expression d WHERE d.id=s.owner_id AND d.template_id=s.target_id)
+                AND NOT EXISTS (SELECT 1 FROM template_instance i WHERE i.id=s.owner_id AND i.template_id=s.target_id)
+                AND NOT EXISTS (SELECT 1 FROM call_expression c WHERE c.id=s.owner_id AND (c.target_routine_id=s.target_id OR c.source_target_routine_id=s.target_id))
+            ORDER BY owner_id,usage,role_id
+            """;
+        return owner.List(query.ReplaceLineEndings(" "),symbol.Id,r=>new SymbolReference(owner.Entity(r.Long("owner_id")),symbol,(SymbolReferenceRole)r.Int("usage"),owner.OptionalKind(r.OptionalLong("role_id"))));
     }
     public IReadOnlyList<Symbol> FindSymbols(string name)
     {
@@ -55,7 +74,7 @@ public sealed record SymbolReference(SemanticEntity Owner,Symbol ReferencedSymbo
     public SourceInfo? Source => Owner switch
     {
         SemanticNode node=>node.Source,Symbol symbol=>symbol.Source,
-        CppType type=>type.Source,TemplateSymbol template=>template.Source,Constant constant=>constant.Source,
+        CppType type=>type.Source,Constant constant=>constant.Source,
         _=>null
     };
 }

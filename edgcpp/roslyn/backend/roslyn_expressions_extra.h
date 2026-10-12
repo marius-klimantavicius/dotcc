@@ -148,7 +148,7 @@ static bool roslyn_extra_expression(an_expr_node_ptr p,int role,Rid id,int kind)
     case enk_c11_generic: {
       Rid selected=roslyn_expr(p->variant.c11_generic.result,role);
       DB.put("builtin_expression",{{"id",id},{"kind_id",kind},{"selected_expression_id",R(selected)}});
-      roslyn_expr_operands(id,p->variant.c11_generic.operands,7002);
+      roslyn_expr_operands(id,p->variant.c11_generic.operands,7002,false);
       roslyn_child(id,"result",0,selected);return true;
     }
 #if BUILTIN_FUNCTIONS_ENABLED
@@ -158,7 +158,7 @@ static bool roslyn_extra_expression(an_expr_node_ptr p,int role,Rid id,int kind)
       an_expr_node_ptr selected=info.choose_first?first:(first?first->next:nullptr);
       Rid result=roslyn_expr(selected,role);
       DB.put("builtin_expression",{{"id",id},{"kind_id",kind},{"selected_expression_id",R(result)}});
-      roslyn_expr_operands(id,info.operands,7002);roslyn_child(id,"result",0,result);return true;
+      roslyn_expr_operands(id,info.operands,7002,false);roslyn_child(id,"result",0,result);return true;
     }
 #endif
     case enk_await:case enk_yield: {
@@ -185,7 +185,7 @@ static bool roslyn_extra_expression(an_expr_node_ptr p,int role,Rid id,int kind)
       DB.put("dependent_expression",{{"id",id},{"kind_id",kind},
         {"fold_operator_id",roslyn_kind_token(info.operator_token)},
         {"fold_left_associative",static_cast<int>(info.left_associative)}});
-      roslyn_expr_operands(id,info.operands,7002);return true;
+      roslyn_expr_operands(id,info.operands,7002,false);return true;
     }
     case enk_pack_index: {
       Rid expression=roslyn_expr(p->variant.pack_index.expr,7002);
@@ -221,7 +221,7 @@ static bool roslyn_extra_expression(an_expr_node_ptr p,int role,Rid id,int kind)
       Rid expression=roslyn_expr(p->variant.compound_req.expr_and_constraint,7002);
       DB.put("dependent_expression",{{"id",id},{"kind_id",kind},{"wrapped_expression_id",R(expression)},
         {"noexcept_required",static_cast<int>(p->variant.compound_req.is_noexcept)}});
-      roslyn_expr_operands(id,p->variant.compound_req.expr_and_constraint,7002);return true;
+      roslyn_expr_operands(id,p->variant.compound_req.expr_and_constraint,7002,false);return true;
     }
     case enk_nested_req: {
       Rid expression=roslyn_expr(p->variant.nested_req.constraint,7002);
@@ -230,7 +230,7 @@ static bool roslyn_extra_expression(an_expr_node_ptr p,int role,Rid id,int kind)
     }
     case enk_braced_init_list:
       DB.put("dependent_expression",{{"id",id},{"kind_id",kind}});
-      roslyn_expr_operands(id,p->variant.braced_init_list,7002);return true;
+      roslyn_expr_operands(id,p->variant.braced_init_list,7002,false);return true;
     case enk_initializer: {
       Rid initialization=roslyn_init(p->variant.initializer.dyn_init,7002);
       DB.put("dependent_expression",{{"id",id},{"kind_id",kind},{"initialization_id",R(initialization)}});
@@ -249,7 +249,7 @@ static bool roslyn_extra_expression(an_expr_node_ptr p,int role,Rid id,int kind)
     case enk_token_sequence:
       DB.put("dependent_expression",{{"id",id},{"kind_id",kind},
         {"token_sequence_id",R(roslyn_token_sequence(p->variant.token_sequence.tokens))}});
-      roslyn_expr_operands(id,p->variant.token_sequence.interpolations,7002);return true;
+      roslyn_expr_operands(id,p->variant.token_sequence.interpolations,7002,false);return true;
     default:return false;
   }
 }

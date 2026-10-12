@@ -7,6 +7,7 @@ public sealed class TranslationUnit : SemanticEntity
     public Scope GlobalScope => Details.GlobalScope;
     public string LanguageMode => Details.LanguageMode;
     public SourceFile? PrimaryInput => Details.PrimaryInput;
+    public FunctionSymbol? EntryPoint => Details.EntryPoint;
     public IReadOnlyList<FunctionSymbol> Functions => Object.List("SELECT * FROM routine_symbol ORDER BY id", 0, r => Object.Function(r.Long("id")), "routine_symbol");
     public IReadOnlyList<VariableSymbol> Variables => Object.List("SELECT * FROM variable_symbol ORDER BY id", 0, r => Object.Variable(r.Long("id")), "variable_symbol");
     public IReadOnlyList<NamespaceSymbol> Namespaces => Object.List("SELECT * FROM namespace_symbol ORDER BY id", 0, r => Object.Namespace(r.Long("id")), "namespace_symbol");
@@ -20,6 +21,8 @@ public sealed class TranslationUnit : SemanticEntity
     public IReadOnlyList<VirtualTableDetails> VirtualTables => Object.List("SELECT * FROM virtual_table ORDER BY id",0,r=>new VirtualTableDetails(Object,r),"virtual_table");
     public IReadOnlyList<SourceFile> Sources => Object.List("SELECT * FROM source_file ORDER BY id", 0, r => Object.File(r.Long("id")), "source_file");
     public IReadOnlyList<SourceMappingSegmentDetails> SourceMappings => Object.List("SELECT * FROM source_mapping_segment ORDER BY id", 0, r => new SourceMappingSegmentDetails(Object, r), "source_mapping_segment");
+    public IReadOnlyList<CppModule> Modules => Object.List("SELECT * FROM module ORDER BY id",0,r=>Object.Module(r.Long("id")),"module");
+    public IReadOnlyList<ModuleImport> ModuleImports => Object.List("SELECT m.* FROM translation_unit_module_import r JOIN module_import m ON m.id=r.import_id WHERE r.owner_id=$owner ORDER BY r.ordinal",Id,r=>Object.ModuleImport(r.Long("id")),"module_import");
     public IReadOnlyList<StaticInitializationDetails> StaticInitializations => Object.List("SELECT * FROM static_initialization WHERE owner_id=$owner ORDER BY ordinal", Id, r => new StaticInitializationDetails(Object, r));
     public IReadOnlyList<BuildCapability> Capabilities => Object.List("SELECT * FROM build_capability ORDER BY name_id", 0,
         r => new BuildCapability(Object.Text(r.Long("name_id"))!, Object.Text(r.OptionalLong("value_id")), r.Bool("required"), r.OptionalBool("enabled"), Object.Kind(r.Long("state_id"))));
@@ -130,6 +133,7 @@ public sealed class FieldSymbol : Symbol
 {
     internal FieldSymbol(RoslynObject owner, long id, Row row) : base(owner, id) => Details = new(owner, row);
     public FieldSymbolDetails Details { get; }
+    public FieldPropertyDetails? Property => Object.Store.Get("field_property",Id) is {} row ? new(Object,row) : null;
     public CppType Type => Details.Type;
     public CppType ContainingType => Details.RecordType;
     public Initialization? DefaultInitializer => Details.DefaultInitialization;
@@ -171,6 +175,7 @@ public sealed class Declaration : SemanticNode
     public override SemanticKind RepresentationRole => Object.Kind(7003);
     public override bool IsCompilerGenerated => Details.CompilerGenerated;
     public override IReadOnlyList<SemanticNode> Children => [];
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitDeclaration(this);
 }
 
 public sealed class EnumSymbol : TypeSymbol
@@ -202,4 +207,5 @@ public class TypeSymbol : Symbol
     internal TypeSymbol(RoslynObject owner,long id,Row row) : base(owner,id) { }
     public TypeSymbolDetails Details => Object.Detail("type_symbol",Id,r=>new TypeSymbolDetails(Object,r));
     public CppType Type => Details.Type;
+    public override IReadOnlyList<AttributeDetails> Attributes => Type.Attributes;
 }

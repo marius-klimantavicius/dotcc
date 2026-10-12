@@ -8,6 +8,7 @@ public sealed class Initialization : SemanticEntity
     public SemanticEntity? Target => Details.Target;
     public Operation? Expression => Details.Expression;
     public Constant? Constant => Details.Constant;
+    public LambdaDefinition? Lambda => Details.Lambda;
     public FunctionSymbol? Constructor => Details.Constructor;
     public FunctionSymbol? Destructor => Details.Destructor;
     public Lifetime? Lifetime => Details.Lifetime;

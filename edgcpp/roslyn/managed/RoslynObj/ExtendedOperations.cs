@@ -2,6 +2,7 @@ namespace RoslynObj;
 
 public sealed class DeclarationOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitDeclarationStatement(this);
     internal DeclarationOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public DeclarationStatementDetails Declaration => Object.Detail("declaration_statement",Id,r=>new DeclarationStatementDetails(Object,r));
     public bool HasStaticOrThreadVariable => Declaration.HasStaticOrThreadVariable;
@@ -10,6 +11,7 @@ public sealed class DeclarationOperation : StatementOperation
 
 public sealed class RangeForOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitRangeFor(this);
     internal RangeForOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public RangeForDetails Range => Object.Detail("range_for",Id,r=>new RangeForDetails(Object,r));
     public StatementOperation? Body => Range.Body;
@@ -27,6 +29,7 @@ public sealed class RangeForOperation : StatementOperation
 
 public sealed class ForEachOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitForEach(this);
     internal ForEachOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public ForEachStatementDetails ForEach => Object.Detail("for_each_statement",Id,r=>new ForEachStatementDetails(Object,r));
     public StatementOperation? Body => ForEach.Body;
@@ -36,10 +39,18 @@ public sealed class ForEachOperation : StatementOperation
     public ExpressionOperation? Initialization => ForEach.Initialization;
     public ExpressionOperation? Test => ForEach.Test;
     public ExpressionOperation? Increment => ForEach.Increment;
+    public VariableSymbol? CollectionReference => ForEach.CollectionReference;
+    public VariableSymbol? TemporaryVariable => ForEach.TemporaryVariable;
+    public VariableSymbol? EndVariable => ForEach.EndVariable;
+    public Scope? Scope => ForEach.Scope;
+    public Scope? IteratorScope => ForEach.IteratorScope;
+    public ExpressionOperation? Assignment => ForEach.Assignment;
+    public bool UsesPreviousDeclarationIterator => ForEach.UsesPreviousDeclarationIterator;
 }
 
 public sealed class MicrosoftTryOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitMicrosoftTry(this);
     internal MicrosoftTryOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public MicrosoftTryStatementDetails Try => Object.Detail("microsoft_try_statement",Id,r=>new MicrosoftTryStatementDetails(Object,r));
     public StatementOperation Body => Try.Body;
@@ -51,6 +62,7 @@ public sealed class MicrosoftTryOperation : StatementOperation
 
 public sealed class LabelOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitLabel(this);
     internal LabelOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public LabelStatementDetails LabelStatement => Object.Detail("label_statement",Id,r=>new LabelStatementDetails(Object,r));
     public LabelSymbol Label => LabelStatement.Label;
@@ -59,12 +71,14 @@ public sealed class LabelOperation : StatementOperation
 
 public sealed class CoroutineOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitCoroutine(this);
     internal CoroutineOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public CoroutineDetails Coroutine => Object.Detail("coroutine",Id,r=>new CoroutineDetails(Object,r));
     public FunctionSymbol Function => Coroutine.Routine;
     public StatementOperation? Body => Coroutine.Body;
     public VariableSymbol? Promise => Coroutine.Promise;
     public VariableSymbol? Handle => Coroutine.Handle;
+    public VariableSymbol? ThisParameterCopy => Coroutine.ThisParameterCopy;
     public ExpressionOperation? Allocation => Coroutine.Allocation;
     public ExpressionOperation? Deallocation => Coroutine.Deallocation;
     public ExpressionOperation? InitialSuspend => Coroutine.InitialSuspend;
@@ -75,11 +89,12 @@ public sealed class CoroutineOperation : StatementOperation
     public ExpressionOperation? AllocationFailureCall => Coroutine.AllocationFailureCall;
     public FunctionSymbol? Allocator => Coroutine.Allocator;
     public FunctionSymbol? Deallocator => Coroutine.Deallocator;
-    public IReadOnlyList<CoroutineParameterCopyDetails> ParameterCopies => Coroutine.CoroutineParameterCopyRows;
+    public IReadOnlyList<CoroutineParameterCopyDetails> ParameterCopies => Object.List("SELECT c.* FROM coroutine_parameter_copy c JOIN variable_symbol v ON v.id=c.copy_id WHERE c.owner_id=$owner AND v.is_parameter=1 AND c.copy_id<>COALESCE((SELECT this_parameter_copy_id FROM coroutine WHERE id=$owner),0) ORDER BY c.ordinal",Id,r=>new CoroutineParameterCopyDetails(Object,r));
 }
 
 public sealed class VlaStatementOperation : StatementOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitVlaStatement(this);
     internal VlaStatementOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public VlaOperationDetails Vla => Object.Detail("vla_operation",Id,r=>new VlaOperationDetails(Object,r));
     public VariableSymbol? Variable => Vla.Variable;
@@ -89,6 +104,7 @@ public sealed class VlaStatementOperation : StatementOperation
 
 public sealed class TemporaryOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitTemporary(this);
     internal TemporaryOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public TemporaryExpressionDetails TemporaryExpression => Object.Detail("temporary_expression",Id,r=>new TemporaryExpressionDetails(Object,r));
     public Initialization? Initialization => TemporaryExpression.Initialization;
@@ -98,6 +114,7 @@ public sealed class TemporaryOperation : ExpressionOperation
 
 public sealed class ConditionOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitCondition(this);
     internal ConditionOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public ConditionExpressionDetails Condition => Object.Detail("condition_expression",Id,r=>new ConditionExpressionDetails(Object,r));
     public ExpressionOperation? Value => Condition.Expression;
@@ -109,6 +126,7 @@ public sealed class ConditionOperation : ExpressionOperation
 
 public sealed class LifetimeOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitLifetime(this);
     internal LifetimeOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public LifetimeExpressionDetails LifetimeExpression => Object.Detail("lifetime_expression",Id,r=>new LifetimeExpressionDetails(Object,r));
     public ExpressionOperation Value => LifetimeExpression.Expression;
@@ -117,6 +135,7 @@ public sealed class LifetimeOperation : ExpressionOperation
 
 public sealed class TypeQueryOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitTypeQuery(this);
     internal TypeQueryOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public TypeQueryExpressionDetails Query => Object.Detail("type_query_expression",Id,r=>new TypeQueryExpressionDetails(Object,r));
     public SemanticKind QueryKind => Query.QueryKind;
@@ -129,6 +148,7 @@ public sealed class TypeQueryOperation : ExpressionOperation
 
 public sealed class StatementExpressionOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitStatementExpression(this);
     internal StatementExpressionOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public StatementExpressionDetails StatementExpression => Object.Detail("statement_expression",Id,r=>new StatementExpressionDetails(Object,r));
     public StatementOperation Statement => StatementExpression.Statement;
@@ -137,6 +157,7 @@ public sealed class StatementExpressionOperation : ExpressionOperation
 
 public sealed class ReuseOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitReuse(this);
     internal ReuseOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public ReuseExpressionDetails Reuse => Object.Detail("reuse_expression",Id,r=>new ReuseExpressionDetails(Object,r));
     public Initialization Initialization => Reuse.Initialization;
@@ -144,6 +165,7 @@ public sealed class ReuseOperation : ExpressionOperation
 
 public sealed class VlaExpressionOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitVlaExpression(this);
     internal VlaExpressionOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public VlaOperationDetails Vla => Object.Detail("vla_operation",Id,r=>new VlaOperationDetails(Object,r));
     public VariableSymbol? Variable => Vla.Variable;
@@ -153,6 +175,7 @@ public sealed class VlaExpressionOperation : ExpressionOperation
 
 public sealed class BuiltinOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitBuiltin(this);
     internal BuiltinOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public BuiltinExpressionDetails Builtin => Object.Detail("builtin_expression",Id,r=>new BuiltinExpressionDetails(Object,r));
     public SemanticKind BuiltinKind => Builtin.Kind;
@@ -162,6 +185,7 @@ public sealed class BuiltinOperation : ExpressionOperation
 
 public sealed class ParameterReferenceOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitParameterReference(this);
     internal ParameterReferenceOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public ParameterReferenceExpressionDetails ParameterReference => Object.Detail("parameter_reference_expression",Id,r=>new ParameterReferenceExpressionDetails(Object,r));
     public long ParameterNumber => ParameterReference.ParameterNumber;
@@ -171,6 +195,7 @@ public sealed class ParameterReferenceOperation : ExpressionOperation
 
 public sealed class DependentOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitDependent(this);
     internal DependentOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public DependentExpressionDetails Dependency => Object.Detail("dependent_expression",Id,r=>new DependentExpressionDetails(Object,r));
     public ExpressionOperation? WrappedExpression => Dependency.WrappedExpression;
@@ -202,6 +227,7 @@ public sealed class RequirementParameter
 
 public sealed class TypeOperandOperation : ExpressionOperation
 {
+    public override void Accept(SemanticVisitor visitor) => visitor.VisitTypeOperand(this);
     internal TypeOperandOperation(RoslynObject o,long id,Row r):base(o,id,r) { }
     public ReferenceExpressionDetails Reference => Object.Detail("reference_expression",Id,r=>new ReferenceExpressionDetails(Object,r));
     public CppType? OperandType => Reference.Target as CppType;

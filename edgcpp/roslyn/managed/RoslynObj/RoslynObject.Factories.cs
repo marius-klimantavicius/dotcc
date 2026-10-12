@@ -2,6 +2,27 @@ namespace RoslynObj;
 
 public sealed partial class RoslynObject
 {
+    internal static string EntityTable(string kind) => kind switch
+    {
+        "routine"=>"routine_symbol", "variable"=>"variable_symbol", "field"=>"field_symbol",
+        "namespace"=>"namespace_symbol", "label"=>"label_symbol", "enumerator_symbol" or "symbol"=>"symbol",
+        "enum" or "alias" or "type_symbol"=>"type_symbol",
+        "expression" or "statement"=>"semantic_node", "template"=>"template_definition",
+        "cleanup_storage"=>"cleanup_storage_location", "cleanup_condition"=>"cleanup_condition",
+        "cleanup_abi"=>"cleanup_abi_detail", "using"=>"using_declaration",
+        "generic_constraint_clause"=>"template_generic_constraint_clause",
+        "source_mapping"=>"source_mapping_segment",
+        "translation_unit" or "constant" or "constant_value" or "handler" or "template_header" or "lambda_definition"
+            or "type" or "declaration" or "scope" or "initialization" or "lifetime" or "template_argument"
+            or "template_instance" or "source_file" or "source_position" or "source_range" or "source_origin"
+            or "macro_definition" or "macro_invocation" or "record_layout" or "cleanup_region" or "cleanup_action"
+            or "cleanup_array" or "name" or "temporary" or "base_derivation" or "base_subobject"
+            or "template_parameter" or "template_specialization" or "include_occurrence" or "source_attachment"
+            or "attribute" or "attribute_group" or "subobject_path" or "name_reference" or "exception_specification"
+            or "virtual_table" or "vla_dimension" or "coroutine" or "function_eh" or "static_assertion"
+            or "name_qualifier" or "orphan_scope" or "token_sequence" or "parameter_type" or "asm_entry" or "module" or "module_import"=>kind,
+        _=>throw new IncompatibleObjectException("A required entity kind is unsupported.")
+    };
     internal TranslationUnit Unit(long id) => Cached("translation_unit",id,r=>new TranslationUnit(this,id,r));
     internal FunctionSymbol Function(long id) => Cached("routine_symbol",id,r=>new FunctionSymbol(this,id,r));
     internal VariableSymbol Variable(long id) => Cached("variable_symbol",id,r=>new VariableSymbol(this,id,r));
@@ -41,6 +62,10 @@ public sealed partial class RoslynObject
     internal ExceptionHandler Handler(long id) => Cached("handler",id,r=>new ExceptionHandler(this,id,r));
     internal ParameterType ParameterType(long id) => Cached("parameter_type",id,r=>new ParameterType(this,id,r));
     internal TokenSequence TokenSequence(long id) => Cached("token_sequence",id,r=>new TokenSequence(this,id,r));
+    internal LambdaDefinition LambdaDefinition(long id) => Cached("lambda_definition",id,r=>new LambdaDefinition(this,id,r));
+    internal AssemblyDefinition AssemblyDefinition(long id) => Cached("asm_entry",id,r=>new AssemblyDefinition(this,id,r));
+    internal CppModule Module(long id) => Cached("module",id,r=>new CppModule(this,id,r));
+    internal ModuleImport ModuleImport(long id) => Cached("module_import",id,r=>new ModuleImport(this,id,r));
     internal TemplateSpecialization Specialization(long id) => Cached("template_specialization",id,r=>new TemplateSpecialization(this,id,r));
     internal EnumeratorSymbol Enumerator(long id) => Cached("symbol",id,r=>new EnumeratorSymbol(this,id,r));
 
@@ -146,7 +171,10 @@ public sealed partial class RoslynObject
             "handler"=>Handler(id),
             "generic_constraint_clause"=>GenericClause(id),
             "template_header"=>Header(id),
-            "lambda_definition"=>new SemanticRecord<LambdaDefinitionDetails>(this,id,Detail("lambda_definition",id,r=>new LambdaDefinitionDetails(this,r))),
+            "lambda_definition"=>LambdaDefinition(id),
+            "asm_entry"=>AssemblyDefinition(id),
+            "module"=>Module(id),
+            "module_import"=>ModuleImport(id),
             "translation_unit"=>Unit(id),
             "namespace"=>Namespace(id),
             "routine"=>Function(id),

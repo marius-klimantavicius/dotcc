@@ -51,9 +51,10 @@ public abstract class SemanticEntity : IEquatable<SemanticEntity>
     {
         Object = owner; Id = id; artifact = owner.Manifest.ArtifactIdentity;
     }
-    public IReadOnlyList<AttributeDetails> Attributes => Object.List("SELECT * FROM attribute WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new AttributeDetails(Object,r),"attribute");
+    public virtual IReadOnlyList<AttributeDetails> Attributes => Object.List("SELECT * FROM attribute WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new AttributeDetails(Object,r),"attribute");
     public IReadOnlyList<SynthesizedOriginDetails> SynthesizedOrigins => Object.List("SELECT * FROM synthesized_origin WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new SynthesizedOriginDetails(Object,r));
     public IReadOnlyList<ConstraintMetadataDetails> Constraints => Object.List("SELECT * FROM constraint_metadata WHERE owner_id=$owner ORDER BY ordinal",Id,r=>new ConstraintMetadataDetails(Object,r));
+    public T? As<T>() where T : SemanticEntity => this as T;
     public bool Equals(SemanticEntity? other) => other is not null && Id == other.Id && artifact == other.artifact;
     public override bool Equals(object? obj) => obj is SemanticEntity other && Equals(other);
     public override int GetHashCode() => HashCode.Combine(artifact, Id);

@@ -99,11 +99,12 @@ static Rid roslyn_template_header(a_template_decl_ptr p,a_template_ptr context) 
   for(a_template_parameter_ptr parameter=p->param_list;parameter;parameter=parameter->next,++ordinal) {
     bool parameter_fresh;Rid parameter_id=DB.claim(parameter,"template_parameter",parameter_fresh);
     if(!parameter_fresh)continue;
-    Rid type=0,constant=0,templ=0,default_argument=0,constraint=0;
+    Rid type=0,constant=0,templ=0,default_argument=0,constraint=0,symbol_type=0;
     int depth=0;
     switch(parameter->kind) {
       case tpk_type:
         type=roslyn_type(parameter->variant.type.ptr);
+        symbol_type=type;
         default_argument=roslyn_default_template_argument(tak_type,roslyn_type(parameter->variant.type.default_arg_type));
         if(parameter->variant.type.ptr && parameter->variant.type.ptr->kind==tk_template_param) {
           auto supplement=parameter->variant.type.ptr->variant.template_param.extra_info;
@@ -114,6 +115,7 @@ static Rid roslyn_template_header(a_template_decl_ptr p,a_template_ptr context) 
         break;
       case tpk_nontype:
         constant=roslyn_constant(parameter->variant.nontype.constant);
+        symbol_type=roslyn_type(parameter->variant.nontype.constant?parameter->variant.nontype.constant->type:nullptr);
         default_argument=roslyn_default_template_argument(tak_nontype,roslyn_constant(parameter->variant.nontype.default_arg_constant));
         if(parameter->variant.nontype.constant && parameter->variant.nontype.constant->kind==ck_template_param
             && parameter->variant.nontype.constant->variant.template_param.kind==tpck_param)
@@ -126,9 +128,11 @@ static Rid roslyn_template_header(a_template_decl_ptr p,a_template_ptr context) 
         break;
       case tpk_error:DB.fail("Error template parameter in successful retained IL");break;
     }
+    roslyn_symbol(parameter_id,"template_parameter",parameter->source_corresp,symbol_type,
+                  0,0,true,!parameter->is_abbreviated);
     DB.put("template_parameter",{{"id",parameter_id},{"template_id",R(owner_id)},{"header_id",id},
       {"ordinal",ordinal},{"depth",depth},{"kind_id",roslyn_kind_template_parameter(parameter->kind)},
-      {"name_id",roslyn_name(parameter->source_corresp)},{"source_origin_id",R(roslyn_origin(parameter->source_corresp.decl_position))},{"is_pack",static_cast<int>(parameter->is_pack)},
+      {"is_pack",static_cast<int>(parameter->is_pack)},
       {"is_abbreviated",static_cast<int>(parameter->is_abbreviated)},
       {"placeholder_type_id",R(type)},{"placeholder_constant_id",R(constant)},
       {"placeholder_template_id",R(templ)},{"default_argument_id",R(default_argument)},
@@ -141,17 +145,22 @@ static Rid roslyn_template(a_template_ptr p) {
   bool fresh;Rid id=DB.claim(p,"template",fresh);if(!fresh)return id;
   // Claim the header before following prototype bodies, whose members can point back.
   roslyn_template_header(p->template_decl,p);
-  Rid pattern=0,constraint=0;
+  Rid pattern=0,constraint=0,symbol_type=0;
   switch(p->kind) {
     case templk_function:case templk_member_function:
-      pattern=roslyn_routine(p->prototype_instantiation.routine);break;
+      pattern=roslyn_routine(p->prototype_instantiation.routine);
+      symbol_type=roslyn_type(p->prototype_instantiation.routine?p->prototype_instantiation.routine->type:nullptr);break;
     case templk_class:case templk_member_class:case templk_member_enum:
-      pattern=roslyn_type(p->prototype_instantiation.type);break;
+      pattern=roslyn_type(p->prototype_instantiation.type);symbol_type=pattern;break;
     case templk_variable:case templk_static_data_member:
-      pattern=roslyn_variable(p->prototype_instantiation.variable);break;
-    case templk_concept:constraint=roslyn_expr(p->prototype_instantiation.constraint,7002);pattern=constraint;break;
+      pattern=roslyn_variable(p->prototype_instantiation.variable);
+      symbol_type=roslyn_type(p->prototype_instantiation.variable?p->prototype_instantiation.variable->type:nullptr);break;
+    case templk_concept:
+      constraint=roslyn_expr(p->prototype_instantiation.constraint,7002);pattern=constraint;
+      symbol_type=roslyn_type(p->prototype_instantiation.constraint?p->prototype_instantiation.constraint->type:nullptr);break;
     case templk_none:case templk_template_template_param:break;
   }
+  roslyn_symbol(id,"template",p->source_corresp,symbol_type);
   Rid export_position=0,definition_range=0,definition_text=0;
 #if RECORD_TEMPLATE_STRINGS
   definition_text=DB.atom(p->text);
@@ -165,8 +174,6 @@ static Rid roslyn_template(a_template_ptr p) {
   }
 #endif
   DB.put("template_definition",{{"id",id},{"kind_id",roslyn_kind_template(p->kind)},
-    {"name_id",roslyn_name(p->source_corresp)},{"owner_id",R(roslyn_owner(p->source_corresp))},
-    {"source_origin_id",R(roslyn_origin(p->source_corresp.decl_position))},
     {"pattern_id",R(pattern)},{"constraint_id",R(constraint)},
     {"canonical_template_id",R(roslyn_template(p->canonical_template))},
     {"definition_template_id",R(roslyn_template(p->definition_template))},

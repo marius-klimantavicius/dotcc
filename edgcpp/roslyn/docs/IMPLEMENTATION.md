@@ -147,7 +147,7 @@ No successful input may omit required data under an optional-capability label.
 
 ## Expanded primary checkpoint
 
-The next verified primary checkpoint contains 192 normalized tables, 38,747
+Commit `627a85e4b` contains 192 normalized tables, 38,747
 append-only stable kind tags and 1,221 generated managed properties. Tests pass
 113 assertions across a valid normalized fixture and nine genuine EDG objects.
 Native storage inspection confirms complete headers, no semantic BLOB/REAL columns
@@ -170,12 +170,12 @@ The component child-FK index reduced an earlier 4.621-second export to 4.260;
 nullable unnamed constant names reduced it further, but targeted indexes alone
 have not eliminated the regression. Broad index proliferation is not assumed.
 
-Coverage currently records 44 primary mappings verified, 118 implemented mappings
+Coverage at that checkpoint recorded 44 primary mappings verified, 118 implemented mappings
 awaiting their specific fixture/profile evidence, 18 mappings awaiting implementation,
 and 1,696 raw pending fields. Twenty-three managed-dialect rows are excluded by
 the user's explicit scope change; other field exclusions have specific reasons.
 
-This checkpoint does not close M0–M5. A separate retained fixture reaches an
+This checkpoint did not close M0–M5. A separate retained fixture reached an
 unimplemented statement kind and fails before publication, as required. Prototype
 auxiliary role closure, evaluated-edge promotion, full native/source profiles,
 remaining type/execution/common fields, scoped availability, typed visitors and
@@ -186,4 +186,55 @@ The checkpoint independently verifies 176 materialized stock source inputs again
 the pinned Git blobs without changing staging; the expanded preparation hash gate
 is included for subsequent full builds. Declaration projections without a Source
 are semantic/generated records and do not claim retained original-source
-occurrences. Exact source-origin/range interning remains required normalization work.
+occurrences. Exact source-origin/range interning was still pending at this checkpoint.
+
+## Active family integration after the checkpoint
+
+The current contract contains 198 tables and 38,888 stable kind tags. The reader
+generates 196 detail classes and 1,280 properties. The final checkpoint passes 240 public
+assertions across the valid self fixture and 26 genuine native/profile objects.
+All inspected objects publish complete headers with zero FK failures and no
+semantic BLOB/REAL columns. The primary fixture batch includes
+retained coroutine copies, extended template metadata and active
+float16/float128/bfloat constants. Source-profile statements, VLA, native Microsoft,
+template-edge and expanded retained fixtures also publish with zero FK failures.
+Strict source prototype metadata closure, throw/condition/catch initialization
+execution exactly once, actual coroutine parameter copies, module imports,
+EntryPoint and bit-precise 9/129 versus 16/136 storage bits all pass. Remaining
+field coverage and profile gates are still open.
+
+Native exact-content names and source-origin/range tuples are now interned while
+symbol, declaration and operation occurrences remain distinct. The current scale
+fixture retains 71,446 entities, 1,021 names, 13,038 origins and 11,022 ranges;
+export takes 3.127 seconds. Scoped availability is populated, including 105 rows
+in basic and 1,646 in retained. Exact state/reason API validation remains required.
+
+The inventory includes source positions from `basics.h` as well as guarded IL
+structures: 2,000 fields, 116 verified mappings, 162 implemented mappings awaiting
+specific evidence, 17 mappings awaiting implementation and 1,524 raw pending
+fields. Exact source/header audits preserve gaps in physical-versus-presumed
+files, include flags and source declaration history. They exclude only typed
+list storage, documented frontend/bookkeeping state and the user's managed-dialect
+scope. Current family closure continues alongside implementation.
+
+The packaging harness now also compares all 61 composite-primary-key tables
+using WITHOUT ROWID, retaining rowid identity tables. Valid copies preserve every
+table's row count and have zero FK failures. At 4 KiB, current scale drops from
+5,910,528 to 5,185,536 bytes and basic from 1,384,448 to 1,130,496 bytes; ordinary
+scans remain approximately 24 ms and 0.23 ms. Native insertion and WITHOUT ROWID managed
+navigation comparisons remain required before choosing that storage default.
+These measurements use valid snapshot repackaging, not malformed inputs.
+
+Final snapshot verification independently compares every one of the 183
+materialized stock files in each of four staging profiles with pinned Git blobs.
+Ordinary valid-compilation publication failure tests preserve existing
+destinations and clean temporary output. Exact dependency/incompleteness, source
+physical mapping/declaration history, ordered bases/classes, maximum native guard
+profiles and final storage/default measurements remain required, as recorded in
+REVIEW.md. No frontend module-entity object is dereferenced.
+
+On valid rowid copies at 1/2/4/8 KiB, full managed scale sweeps issue about
+22,160 commands and 163,078 rows per pass; post-JIT timing is 0.87–0.89 seconds,
+RSS 104–113 MB and caches remain bounded at 4,096 rows/128 pages. Those copies
+measure 5.11/5.33/5.91/7.16 MB. Cold-start JIT and native insertion remain separate
+measurement gates; no universal storage default is inferred from one sample.

@@ -112,6 +112,7 @@ internal sealed class SnapshotStore : IDisposable
             token.ThrowIfCancellationRequested();
             if (pages.TryGet((sql, owner, page), out var cached))
             {
+                if (entityTable is not null) HydratePage(entityTable,cached,token);
                 if (sql == ChildrenQuery) PrimeChildPages(cached, token);
                 return cached;
             }
@@ -122,13 +123,18 @@ internal sealed class SnapshotStore : IDisposable
             var result = QueryParameters(command, owner, token, previous is null ? [] : keys.Select(k => previous[k]).ToArray());
             if (entityTable is not null)
             {
-                foreach (var row in result) rows.Set((entityTable, row.Long("id")), row);
-                PrimeCompanions(entityTable, result, token);
+                HydratePage(entityTable,result,token);
             }
             pages.Set((sql, owner, page), result);
             if (sql == ChildrenQuery) PrimeChildPages(result, token);
             return result;
         }
+    }
+
+    private void HydratePage(string table,Row[] page,CancellationToken token)
+    {
+        foreach(var row in page)rows.Set((table,row.Long("id")),row);
+        PrimeCompanions(table,page,token);
     }
 
     private void PrimeChildPages(Row[] nodes, CancellationToken token, int depth = 1)
@@ -173,30 +179,68 @@ internal sealed class SnapshotStore : IDisposable
     {
         if (page.Length == 0) return;
         var ids = page.Select(r => r.Long("id")).Distinct().ToArray();
+        if(table=="entity")
+        {
+            foreach(var group in page.GroupBy(r=>RoslynObject.EntityTable(RoslynObject.CatalogKind(r.Long("kind_id")).Name)))
+            {
+                var related=PrimeRows(group.Key,group.Select(r=>r.Long("id")).ToArray(),token);
+                PrimeCompanions(group.Key,related,token);
+            }
+            return;
+        }
+        if(table is "semantic_node" or "expression" or "statement")
+        {
+            _=PrimeRows("entity",ids,token);
+            var nodes=table=="semantic_node" ? page : PrimeRows("semantic_node",ids,token);
+            foreach(var family in nodes.GroupBy(r=>RoslynObject.CatalogKind(r.Long("kind_id")).Family))
+            {
+                var principal=family.Key switch
+                {
+                    "expression"=>"expression", "statement"=>"statement", "dynamic_init"=>"initialization",
+                    _=>throw new IncompatibleObjectException("The required operation kind is unsupported.")
+                };
+                _=PrimeRows(principal,family.Select(r=>r.Long("id")).Distinct().ToArray(),token);
+            }
+            var operations=nodes.Where(r=>RoslynObject.CatalogKind(r.Long("kind_id")).Name=="enk_operation").Select(r=>r.Long("id")).ToArray();
+            _=PrimeRows("call_expression",operations,token);
+            _=PrimeRows("conversion_expression",operations,token);
+            var exceptionOperations=nodes.Where(r=>RoslynObject.CatalogKind(r.Long("kind_id")).Name=="enk_lowered_eh_construct").Select(r=>r.Long("id")).ToArray();
+            _=PrimeRows("cleanup_state_operation",exceptionOperations,token);
+            return;
+        }
         var companions = table switch
         {
-            "routine_symbol" or "variable_symbol" or "field_symbol" or "namespace_symbol" or "label_symbol" => new[] { "entity", "symbol" },
+            "routine_symbol" or "variable_symbol" or "field_symbol" or "namespace_symbol" or "label_symbol" or "template_definition" or "template_parameter" => new[] { "entity", "symbol" },
             "type" => new[] { "entity", "record_type", "qualified_type" },
-            "semantic_node" => new[] { "entity", "expression", "statement", "call_expression", "conversion_expression", "cleanup_state_operation" },
-            "expression" => new[] { "entity", "semantic_node", "call_expression", "conversion_expression", "cleanup_state_operation" },
-            "statement" => new[] { "entity", "semantic_node" },
             "symbol" => new[] { "entity" },
             "type_symbol" => new[] { "entity", "symbol", "enum_symbol", "alias_symbol" },
             _ => System.Array.Empty<string>()
         };
         foreach (var companion in companions)
         {
-            foreach (var batch in ids.Chunk(900))
+            _=PrimeRows(companion,ids,token);
+        }
+    }
+
+    private Row[] PrimeRows(string table,long[] ids,CancellationToken token)
+    {
+        var found=new List<Row>();
+        var pending=new List<long>();
+        foreach(var id in ids)
+            if(rows.TryGet((table,id),out var cached)) { if(cached is not null)found.Add(cached); }
+            else pending.Add(id);
+        foreach (var batch in pending.Chunk(900))
             {
                 var placeholders = string.Join(',', batch.Select((_, i) => $"$key{i}"));
-                var result = QueryParameters($"SELECT * FROM {companion} WHERE id IN ({placeholders})", 0, token, batch.Select(id => (object?)id).ToArray());
+                var result = QueryParameters($"SELECT * FROM {table} WHERE id IN ({placeholders})", 0, token, batch.Select(id => (object?)id).ToArray());
                 var present = result.Select(row => row.Long("id")).ToHashSet();
                 foreach (var id in batch)
-                    if (!present.Contains(id)) rows.Set((companion, id), null);
+                    if (!present.Contains(id)) rows.Set((table, id), null);
                 foreach (var row in result)
-                    rows.Set((companion, row.Long("id")), row);
+                    rows.Set((table, row.Long("id")), row);
+                found.AddRange(result);
             }
-        }
+        return found.ToArray();
     }
 
     internal long Scalar(string sql, long owner = 0)

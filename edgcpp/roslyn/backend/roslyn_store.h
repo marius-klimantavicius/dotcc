@@ -29,6 +29,8 @@ struct RoslynStore {
   std::map<std::pair<int,const void*>,sqlite3_int64> identities;
   std::map<std::string,sqlite3_int64> atoms;
   std::map<std::string,sqlite3_stmt*> statements;
+  std::map<sqlite3_int64,int> semantic_roles;
+  std::map<sqlite3_int64,std::vector<sqlite3_int64>> evaluated_children;
   std::set<sqlite3_int64> persisted_kinds;
   std::map<std::string,std::set<std::string>> kind_columns;
   ~RoslynStore() { close(); }
@@ -41,6 +43,12 @@ struct RoslynStore {
     if(failed)return; char *message=nullptr;
     if(sqlite3_exec(connection,s,nullptr,nullptr,&message)!=SQLITE_OK)fail(message?message:sqlite3_errmsg(connection));
     sqlite3_free(message);
+  }
+  void check_foreign_keys() {
+    if(failed)return;sqlite3_stmt *query=nullptr;
+    if(sqlite3_prepare_v2(connection,"PRAGMA foreign_key_check",-1,&query,nullptr)!=SQLITE_OK){fail(sqlite3_errmsg(connection));return;}
+    int rc=sqlite3_step(query);if(rc==SQLITE_ROW){const char *table=reinterpret_cast<const char*>(sqlite3_column_text(query,0));const char *parent=reinterpret_cast<const char*>(sqlite3_column_text(query,2));fail(std::string("Foreign key violation: ")+(table?table:"")+" row "+std::to_string(sqlite3_column_int64(query,1))+" -> "+(parent?parent:"")+" (constraint "+std::to_string(sqlite3_column_int(query,3))+")");}else if(rc!=SQLITE_DONE)fail(sqlite3_errmsg(connection));
+    if(sqlite3_finalize(query)!=SQLITE_OK)fail("Foreign key check finalize failed");
   }
   void ensure_kind(sqlite3_int64 id) {
     if(!id||persisted_kinds.count(id))return;
@@ -74,13 +82,24 @@ struct RoslynStore {
     if(sqlite3_step(stmt)!=SQLITE_DONE)fail(sql+": "+sqlite3_errmsg(connection));
   }
   void put(const char *table,std::initializer_list<std::pair<const char*,RoslynSqlValue>> fields) { put_fields(table,fields); }
+  int semantic_role(sqlite3_int64 id,int role) {
+    auto found=semantic_roles.find(id);if(found!=semantic_roles.end()&&(found->second==7001||found->second==7003))return found->second;
+    semantic_roles[id]=role;return role;
+  }
+  void evaluated_child(sqlite3_int64 owner,sqlite3_int64 child) {
+    evaluated_children[owner].push_back(child);auto found=semantic_roles.find(owner);
+    if(found!=semantic_roles.end())promote_execution(child,found->second);
+  }
   void promote_execution(sqlite3_int64 id,int role) {
     if(!id||(role!=7001&&role!=7003)||failed)return;
+    auto known=semantic_roles.find(id);if(known!=semantic_roles.end()&&known->second==role)return;
+    semantic_roles[id]=role;
     const std::string sql="UPDATE semantic_node SET representation_role_id=? WHERE id=? AND representation_role_id=7002";
     sqlite3_stmt *stmt=nullptr;auto found=statements.find(sql);
     if(found!=statements.end())stmt=found->second;
     else {if(sqlite3_prepare_v2(connection,sql.c_str(),-1,&stmt,nullptr)!=SQLITE_OK){fail(sqlite3_errmsg(connection));return;}statements.emplace(sql,stmt);}
     if(sqlite3_reset(stmt)!=SQLITE_OK||sqlite3_clear_bindings(stmt)!=SQLITE_OK||sqlite3_bind_int(stmt,1,role)!=SQLITE_OK||sqlite3_bind_int64(stmt,2,id)!=SQLITE_OK||sqlite3_step(stmt)!=SQLITE_DONE)fail(sqlite3_errmsg(connection));
+    auto children=evaluated_children.find(id);if(children!=evaluated_children.end())for(auto child:children->second)promote_execution(child,role);
   }
   sqlite3_int64 atom(const char *s) { return s?atom(std::string(s)):0; }
   sqlite3_int64 atom(const std::string &s) {

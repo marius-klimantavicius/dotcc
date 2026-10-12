@@ -48,8 +48,9 @@ public sealed partial class RoslynObject
         catch { store.Dispose(); throw; }
     }
 
-    internal SemanticKind Kind(long id) => catalog.TryGetValue(id, out var kind) ? kind
+    internal static SemanticKind CatalogKind(long id) => catalog.TryGetValue(id, out var kind) ? kind
         : throw new IncompatibleObjectException("A required semantic kind is not supported by this reader.");
+    internal SemanticKind Kind(long id) => CatalogKind(id);
     internal SemanticKind? OptionalKind(long? id) => id is null ? null : Kind(id.Value);
     internal T? Link<T>(long? id, Func<long, T> resolve) where T : class => id is null ? null : resolve(id.Value);
     internal T Detail<T>(string table, long id, Func<Row, T> create) where T : SemanticDetail => create(Store.Required(table, id));
